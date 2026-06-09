@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import {
   markEmailConfirmBannerShown,
@@ -8,20 +9,23 @@ import {
 } from "@/lib/auth-callback";
 
 export function EmailConfirmedBanner() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { isLoggedIn, loading } = useAuth();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (loading) return;
-    if (shouldShowEmailConfirmBanner()) {
+    if (searchParams.get("emailConfirmed") === "1" || shouldShowEmailConfirmBanner()) {
       setVisible(true);
       const timer = window.setTimeout(() => {
         setVisible(false);
         markEmailConfirmBannerShown();
+        router.replace("/");
       }, 8000);
       return () => window.clearTimeout(timer);
     }
-  }, [loading, isLoggedIn]);
+  }, [loading, isLoggedIn, searchParams, router]);
 
   if (!visible) return null;
 
@@ -32,6 +36,12 @@ export function EmailConfirmedBanner() {
   const subtext = isLoggedIn
     ? "Your statistics will now save to your online account."
     : "You can now log in and save your statistics online.";
+
+  const dismiss = () => {
+    setVisible(false);
+    markEmailConfirmBannerShown();
+    router.replace("/");
+  };
 
   return (
     <div
@@ -48,10 +58,7 @@ export function EmailConfirmedBanner() {
         </div>
         <button
           type="button"
-          onClick={() => {
-            setVisible(false);
-            markEmailConfirmBannerShown();
-          }}
+          onClick={dismiss}
           className="shrink-0 text-gray-500 transition hover:text-white"
           aria-label="Dismiss"
         >

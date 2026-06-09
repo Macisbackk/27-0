@@ -600,7 +600,7 @@ export function GameBoard({
           )}
 
           {(phase === "pitch" || phase === "choice") && (
-            <div className="overflow-y-auto pb-2 sm:overflow-visible">
+            <div className="max-h-[min(88vh,900px)] overflow-y-auto overflow-x-hidden pb-2 sm:max-h-none sm:overflow-visible">
             <RugbyPitch
               squad={squad}
               totalValue={totalValue}

@@ -1,3 +1,4 @@
+import { getEmailConfirmRedirectUrl } from "./auth-redirect";
 import { isSupabaseConfigured, supabase } from "./supabase";
 import {
   type AuthActionResult,
@@ -99,7 +100,10 @@ export async function signUp(
     const { data, error } = await supabase.auth.signUp({
       email: email.trim(),
       password,
-      options: { data: { coach_name: nameCheck.value } },
+      options: {
+        data: { coach_name: nameCheck.value },
+        emailRedirectTo: getEmailConfirmRedirectUrl(),
+      },
     });
     if (error) throw error;
 

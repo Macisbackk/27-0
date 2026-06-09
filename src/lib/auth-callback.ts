@@ -9,6 +9,9 @@ export function markEmailConfirmPending(): void {
 export function detectEmailConfirmationRedirect(): boolean {
   if (typeof window === "undefined") return false;
 
+  const search = new URLSearchParams(window.location.search);
+  if (search.get("emailConfirmed") === "1") return true;
+
   const hash = window.location.hash.startsWith("#")
     ? window.location.hash.slice(1)
     : window.location.hash;
@@ -23,7 +26,6 @@ export function detectEmailConfirmationRedirect(): boolean {
     return type === "signup" || type === "email" || type === "magiclink";
   }
 
-  const search = new URLSearchParams(window.location.search);
   if (search.has("code") || search.get("confirmed") === "true") {
     return true;
   }
@@ -52,5 +54,7 @@ export function cleanAuthRedirectFromUrl(): void {
   url.hash = "";
   url.searchParams.delete("code");
   url.searchParams.delete("confirmed");
-  window.history.replaceState({}, "", url.pathname + url.search);
+  url.searchParams.delete("emailConfirmed");
+  const qs = url.searchParams.toString();
+  window.history.replaceState({}, "", qs ? `${url.pathname}?${qs}` : url.pathname);
 }

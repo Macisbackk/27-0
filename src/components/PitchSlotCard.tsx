@@ -7,7 +7,7 @@ import { POSITION_SHORT, POSITION_TILE_LABEL } from "@/lib/positions";
 
 /** Shared footprint for empty and filled pitch slots. */
 export const PITCH_SLOT_SIZE_CLASS =
-  "h-[68px] w-[60px] sm:h-[72px] sm:w-[64px]";
+  "h-[56px] w-[50px] sm:h-[60px] sm:w-[54px] md:h-[64px] md:w-[58px]";
 
 interface PitchSlotCardProps {
   player: Player;
@@ -45,14 +45,9 @@ export function PitchSlotCard({
         <span className="font-display text-[5px] font-bold tracking-wider text-gray-500 sm:text-[6px]">
           {shortPos}
         </span>
-        <p className="w-full truncate text-center font-display text-[6px] font-semibold leading-tight text-white sm:text-[7px]">
+        <p className="w-full truncate text-center font-display text-[5px] font-semibold leading-tight text-white sm:text-[6px]">
           {player.name}
         </p>
-        {!hardMode && (
-          <span className="font-display text-[7px] font-bold leading-none text-accent-green/90 sm:text-[8px]">
-            {player.peakRating}
-          </span>
-        )}
       </div>
     </div>
   );

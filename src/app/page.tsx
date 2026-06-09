@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { AuthCoachCard } from "@/components/AuthCoachCard";
 import { EmailConfirmedBanner } from "@/components/EmailConfirmedBanner";
 import { HomeModeSelector } from "@/components/HomeModeSelector";
@@ -26,7 +27,9 @@ export default function HomePage() {
           </p>
         </div>
 
-        <EmailConfirmedBanner />
+        <Suspense fallback={null}>
+          <EmailConfirmedBanner />
+        </Suspense>
 
         <div className="mt-10">
           <AuthCoachCard />

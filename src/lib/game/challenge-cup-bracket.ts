@@ -67,6 +67,7 @@ export interface BracketMatch {
   feederIds: string[] | null;
   userFixture: MatchFixture | null;
   scoringDetail: BracketScoringDetail | null;
+  matchEvents: string[] | null;
 }
 
 export interface ChallengeCupBracketState {
@@ -135,6 +136,7 @@ function createMatch(
     feederIds,
     userFixture: null,
     scoringDetail: null,
+    matchEvents: null,
   };
 }
 
@@ -308,28 +310,119 @@ function simulateClubVsClub(
   };
 }
 
-function advanceWinner(
+/** Rebuild child fixtures from feeder winners only — never infer from slot order. */
+function rebuildBracketFromWinners(
   matches: BracketMatch[],
-  completed: BracketMatch,
   userClub: string
 ): void {
-  if (!completed.winner) return;
-
   for (const child of matches) {
-    if (!child.feederIds?.includes(completed.id)) continue;
+    if (!child.feederIds?.length || child.status === "complete") continue;
 
-    if (child.homeTeam === null) {
-      child.homeTeam = completed.winner;
-    } else if (child.awayTeam === null) {
-      child.awayTeam = completed.winner;
+    const feederWinners = child.feederIds.map((feederId) => {
+      const feeder = matches.find((m) => m.id === feederId);
+      return feeder?.status === "complete" ? feeder.winner : null;
+    });
+
+    if (child.feederIds.length === 1) {
+      child.awayTeam = feederWinners[0] ?? null;
+    } else {
+      child.homeTeam = feederWinners[0] ?? null;
+      child.awayTeam = feederWinners[1] ?? null;
     }
 
-    if (child.homeTeam && child.awayTeam) {
-      child.status = "ready";
+    const ready =
+      child.homeTeam !== null && child.awayTeam !== null;
+    child.status = ready ? "ready" : "pending";
+    if (ready) {
       child.isUserMatch =
         isUserTeam(child.homeTeam, userClub) ||
         isUserTeam(child.awayTeam, userClub);
     }
+  }
+}
+
+function validateBracket(matches: BracketMatch[]): boolean {
+  let valid = true;
+
+  for (const match of matches) {
+    if (match.status !== "complete") continue;
+
+    if (
+      !match.winner ||
+      (match.winner !== match.homeTeam && match.winner !== match.awayTeam)
+    ) {
+      console.error(
+        `[bracket] ${match.id}: invalid winner "${match.winner}" (${match.homeTeam} vs ${match.awayTeam})`
+      );
+      valid = false;
+    }
+
+    if (match.loser && match.loser === match.winner) {
+      console.error(
+        `[bracket] ${match.id}: loser equals winner "${match.winner}"`
+      );
+      valid = false;
+    }
+  }
+
+  for (const child of matches) {
+    if (!child.feederIds?.length) continue;
+
+    for (const feederId of child.feederIds) {
+      const feeder = matches.find((m) => m.id === feederId);
+      if (feeder?.status !== "complete" || !feeder.loser) continue;
+
+      if (
+        child.homeTeam === feeder.loser ||
+        child.awayTeam === feeder.loser
+      ) {
+        console.error(
+          `[bracket] Loser "${feeder.loser}" from ${feederId} incorrectly placed in ${child.id}`
+        );
+        valid = false;
+      }
+    }
+
+    const feederWinners = child.feederIds
+      .map((id) => matches.find((m) => m.id === id))
+      .filter((f): f is BracketMatch => f?.status === "complete")
+      .map((f) => f.winner)
+      .filter((w): w is string => w !== null);
+
+    for (const winner of feederWinners) {
+      if (
+        child.status !== "complete" &&
+        child.homeTeam !== winner &&
+        child.awayTeam !== winner
+      ) {
+        console.error(
+          `[bracket] Winner "${winner}" from feeder missing in ${child.id}`
+        );
+        valid = false;
+      }
+    }
+  }
+
+  const final = matches.find((m) => m.id === "4-0");
+  if (final?.status === "complete" && final.winner) {
+    if (final.winner !== final.homeTeam && final.winner !== final.awayTeam) {
+      console.error(`[bracket] Final winner "${final.winner}" is invalid`);
+      valid = false;
+    }
+  }
+
+  return valid;
+}
+
+function syncBracketAfterMatch(
+  matches: BracketMatch[],
+  userClub: string
+): void {
+  rebuildBracketFromWinners(matches, userClub);
+  if (!validateBracket(matches)) {
+    console.error("[bracket] Validation failed — rebuilding from winners");
+    rebuildBracketFromWinners(matches, userClub);
+    validateBracket(matches);
   }
 }
 
@@ -349,6 +442,9 @@ function completeMatch(
   match.status = "complete";
   match.scoringDetail = scoringDetail;
   match.userFixture = userFixture;
+  match.matchEvents = [
+    `${winner} def. ${loser} ${homeScore}-${awayScore}`,
+  ];
 }
 
 function simulateUserMatch(
@@ -387,7 +483,7 @@ function simulateUserMatch(
   const matches = state.matches.map((m) => ({ ...m }));
   const m = matches.find((x) => x.id === match.id)!;
   completeMatch(m, homeScore, awayScore, winner, loser, scoringDetail, fixture);
-  advanceWinner(matches, m, state.userClub);
+  syncBracketAfterMatch(matches, state.userClub);
 
   const userLost = fixture.result === "L";
   const userWonFinal =
@@ -448,7 +544,7 @@ function simulateAiMatch(
     scoringDetail,
     null
   );
-  advanceWinner(matches, m, state.userClub);
+  syncBracketAfterMatch(matches, state.userClub);
 
   return { ...state, matches };
 }
@@ -491,7 +587,9 @@ export function simulateBracketRound(
     next = runMatch(next, match.id, squad);
   }
 
-  return next;
+  const matches = next.matches.map((m) => ({ ...m }));
+  syncBracketAfterMatch(matches, next.userClub);
+  return { ...next, matches };
 }
 
 export function simulateBracketTournament(

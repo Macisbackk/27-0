@@ -88,13 +88,13 @@ export function RugbyPitch({
         <div
           className={`relative w-full overflow-hidden rounded-2xl border-2 border-white/15 shadow-2xl rugby-pitch-pro ${
             compact
-              ? "min-h-[440px]"
-              : "min-h-[640px] sm:min-h-[600px] md:min-h-[560px]"
+              ? "min-h-[480px]"
+              : "min-h-[720px] sm:min-h-[660px] md:min-h-[620px] lg:aspect-[5/8] lg:min-h-0"
           }`}
         >
           <PitchMarkings />
 
-          <div className="absolute inset-x-[8%] inset-y-[6%] z-10 flex flex-col justify-evenly gap-y-1 sm:inset-y-[8%] sm:gap-y-2 md:gap-y-3">
+          <div className="absolute inset-x-[10%] inset-y-[9%] z-10 flex flex-col justify-between gap-y-0.5 py-1 sm:inset-y-[10%] sm:gap-y-1 md:gap-y-1.5">
             {FORMATION_ROWS.map((row, rowIndex) => (
               <FormationRow
                 key={rowIndex}
@@ -290,9 +290,7 @@ function SquadMarker({
 }) {
   const player = slot.player;
   const description = POSITION_DESCRIPTIONS[slot.position];
-  const sizeClass = compact
-    ? "h-[68px] w-[60px] sm:h-[72px] sm:w-[64px]"
-    : PITCH_SLOT_SIZE_CLASS;
+  const sizeClass = PITCH_SLOT_SIZE_CLASS;
 
   if (!player) {
     const positionLabel = POSITION_TILE_LABEL[slot.position];

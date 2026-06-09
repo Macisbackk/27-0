@@ -81,7 +81,7 @@ function RecapMatch({
         showByeAdvance={
           !!byeTeams &&
           match.round === 2 &&
-          match.status !== "complete" &&
+          (match.feederIds?.length ?? 0) === 1 &&
           match.homeTeam !== null &&
           byeTeams.includes(match.homeTeam)
         }
@@ -93,13 +93,7 @@ function RecapMatch({
         winner={match.winner === match.awayTeam}
         loser={match.loser === match.awayTeam}
         userClub={userClub}
-        showByeAdvance={
-          !!byeTeams &&
-          match.round === 2 &&
-          match.status !== "complete" &&
-          match.awayTeam !== null &&
-          byeTeams.includes(match.awayTeam)
-        }
+        showByeAdvance={false}
       />
     </div>
   );
@@ -159,7 +153,7 @@ function RecapTeam({
       </div>
       {showByeAdvance && (
         <p className="mt-0.5 pl-6 text-[7px] font-semibold uppercase tracking-wide text-accent-gold/90">
-          Advanced to Quarter Finals
+          Bye to Quarter Finals
         </p>
       )}
     </div>
