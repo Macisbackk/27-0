@@ -210,6 +210,33 @@ async function insertToSupabase(
   if (!isSupabaseConfigured) return;
 
   try {
+    const { data: existing } = await supabase
+      .from("leaderboard")
+      .select("id, score")
+      .eq("user_id", userId)
+      .eq("mode", dbMode)
+      .eq("difficulty", difficulty)
+      .maybeSingle();
+
+    if (existing && squadValue <= existing.score) {
+      return;
+    }
+
+    if (existing) {
+      const { error } = await supabase
+        .from("leaderboard")
+        .update({
+          score: squadValue,
+          wins,
+          losses,
+          coach_name: coachName,
+          player_name: coachName,
+        })
+        .eq("id", existing.id);
+      if (error) throw error;
+      return;
+    }
+
     const { error } = await supabase.from("leaderboard").insert({
       player_name: coachName,
       coach_name: coachName,
@@ -222,7 +249,7 @@ async function insertToSupabase(
     });
     if (error) throw error;
   } catch (error) {
-    console.error("[leaderboard] Supabase insert failed:", error);
+    console.error("[leaderboard] Supabase upsert failed:", error);
   }
 }
 
@@ -236,16 +263,39 @@ function saveLocalEntry(
   achievedAt: Date
 ): void {
   const periods: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
-  const entries = loadLocalEntries();
+  let entries = loadLocalEntries();
 
   for (const period of periods) {
+    const periodKey = getPeriodKey(period, achievedAt);
+    const existingIndex = entries.findIndex(
+      (e) =>
+        e.username === username &&
+        e.mode === mode &&
+        (e.difficulty ?? "NORMAL") === difficulty &&
+        e.period === period &&
+        e.periodKey === periodKey
+    );
+
+    if (existingIndex >= 0) {
+      const existing = entries[existingIndex];
+      if (squadValue <= existing.squadValue) continue;
+      entries[existingIndex] = {
+        ...existing,
+        squadValue,
+        wins,
+        losses,
+        achievedAt: achievedAt.toISOString(),
+      };
+      continue;
+    }
+
     entries.push({
       id: `${Date.now()}-${period}-${Math.random().toString(36).slice(2, 8)}`,
       username,
       squadValue,
       achievedAt: achievedAt.toISOString(),
       period,
-      periodKey: getPeriodKey(period, achievedAt),
+      periodKey,
       mode,
       difficulty,
       wins,

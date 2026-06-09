@@ -255,7 +255,6 @@ export function getChallengeCupView(normal: UserStatsData, hard: UserStatsData) 
     quarterFinals:
       normal.challengeCupQuarterFinals + hard.challengeCupQuarterFinals,
     bestFinish: pickBestCupFinish(normal.bestCupFinish, hard.bestCupFinish),
-    mostTournamentWins: normal.challengeCupsWon + hard.challengeCupsWon,
     bestRanking: pickBestRanking(
       normal.bestCupNationalRanking,
       hard.bestCupNationalRanking

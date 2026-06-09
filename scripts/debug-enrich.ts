@@ -1,7 +1,8 @@
-import { existsSync, readFileSync, readdirSync } from "fs";
+import { readFileSync, readdirSync } from "fs";
 import { join } from "path";
 import current from "../data/current-squads.json";
 import historic from "../data/historic-players.json";
+import legends from "../data/legends.json";
 
 function norm(n: string) {
   return n
@@ -30,41 +31,34 @@ function fmt(rlpName: string): string {
 const html = readFileSync(join(__dirname, "rlp-players.html"), "utf8");
 const tbody = html.slice(html.indexOf("<tbody>"), html.indexOf("</tbody>"));
 const parts = tbody.split(/<tr><td><a href="\/players\/(\d+)">/);
-const map = new Map<string, string>();
+const idToName = new Map<string, string>();
+const nameToId = new Map<string, string>();
 for (let i = 1; i < parts.length; i += 2) {
   const id = parts[i];
   const m = parts[i + 1]?.match(/^([^<]+)<\/a>/);
-  if (m) map.set(norm(fmt(m[1])), id);
+  if (!m) continue;
+  const name = fmt(m[1]);
+  idToName.set(id, name);
+  nameToId.set(norm(name), id);
 }
 
-const unknown = [...current, ...historic].filter(
-  (p) => p.nationality === "Unknown"
+const all = [...current, ...historic, ...legends];
+const unknownById = new Map(
+  all
+    .filter((p) => p.nationality === "Unknown")
+    .map((p) => [nameToId.get(norm(p.name)), p.name] as const)
 );
-const cacheIds = new Set(
-  readdirSync(join(__dirname, "rlp-cache")).map((f) => f.replace(".html", ""))
-);
 
-let overlap = 0;
-let valid = 0;
-for (const p of unknown) {
-  const id = map.get(norm(p.name));
-  if (!id || !cacheIds.has(id)) continue;
-  overlap++;
-  const html = readFileSync(join(__dirname, "rlp-cache", `${id}.html`), "utf8");
-  if (html.includes("Place Of Birth")) valid++;
+let enrichable = 0;
+for (const f of readdirSync(join(__dirname, "rlp-cache"))) {
+  const id = f.replace(".html", "");
+  const page = readFileSync(join(__dirname, "rlp-cache", f), "utf8");
+  if (!page.includes("Place Of Birth")) continue;
+  if (unknownById.has(id)) {
+    enrichable++;
+    if (enrichable <= 5) console.log("Can enrich:", unknownById.get(id), id);
+  }
 }
 
-console.log("Unknown players:", unknown.length);
-console.log("Cache files:", cacheIds.size);
-console.log("Unknown with cache file:", overlap);
-console.log("Valid cache (Place Of Birth):", valid);
-
-for (const p of unknown.slice(0, 3)) {
-  const id = map.get(norm(p.name));
-  console.log(
-    p.name,
-    "->",
-    id,
-    existsSync(join(__dirname, "rlp-cache", `${id}.html`))
-  );
-}
+console.log("Unknown total:", unknownById.size);
+console.log("Enrichable with valid cache:", enrichable);

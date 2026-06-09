@@ -33,6 +33,32 @@ export async function fetchProfile(userId: string): Promise<UserProfile | null> 
   }
 }
 
+export async function isCoachNameTaken(
+  coachName: string,
+  excludeUserId?: string
+): Promise<boolean> {
+  if (!isSupabaseConfigured) return false;
+  const validation = validateCoachName(coachName);
+  if (!validation.valid || !validation.value) return false;
+
+  try {
+    let query = supabase
+      .from("profiles")
+      .select("id")
+      .ilike("coach_name", validation.value)
+      .limit(1);
+    if (excludeUserId) {
+      query = query.neq("id", excludeUserId);
+    }
+    const { data, error } = await query;
+    if (error) throw error;
+    return (data?.length ?? 0) > 0;
+  } catch (err) {
+    console.error("[auth] isCoachNameTaken failed:", err);
+    return false;
+  }
+}
+
 export async function createProfile(
   userId: string,
   coachName: string
@@ -43,6 +69,9 @@ export async function createProfile(
   const validation = validateCoachName(coachName);
   if (!validation.valid) {
     return { ok: false, error: validation.error };
+  }
+  if (await isCoachNameTaken(coachName)) {
+    return { ok: false, error: "Coach name already taken." };
   }
   try {
     const { error } = await supabase.from("profiles").insert({
@@ -67,6 +96,9 @@ export async function updateProfileCoachName(
   const validation = validateCoachName(coachName);
   if (!validation.valid) {
     return { ok: false, error: validation.error };
+  }
+  if (await isCoachNameTaken(coachName, userId)) {
+    return { ok: false, error: "Coach name already taken." };
   }
   try {
     const { error } = await supabase
@@ -95,6 +127,9 @@ export async function signUp(
   }
   const nameCheck = validateCoachName(coachName);
   if (!nameCheck.valid) return { ok: false, error: nameCheck.error };
+  if (await isCoachNameTaken(coachName)) {
+    return { ok: false, error: "Coach name already taken." };
+  }
 
   try {
     const { data, error } = await supabase.auth.signUp({

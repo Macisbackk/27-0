@@ -8,6 +8,7 @@ import type {
 } from "@/lib/squad-analysis";
 import { RLClubRow } from "./cards/RLClubRow";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
+import { formatValue } from "@/lib/players";
 import { POSITION_LABELS } from "@/lib/positions";
 
 interface ClubRepresentationProps {
@@ -70,18 +71,22 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                           className="flex items-center justify-between gap-3"
                         >
                           <span className="min-w-0 flex-1 break-words text-sm font-semibold text-white">
-                            {player.name}
+                            {player.name}{" "}
+                            <span className="font-normal text-gray-400">
+                              ({DISPLAY_LABEL[player.displayCategory]}) —{" "}
+                              {player.peakRating} OVR — {formatValue(player.value)}
+                            </span>
                           </span>
-                          <div className="flex shrink-0 items-center gap-2">
+                          <div className="flex shrink-0 items-center gap-2 sm:hidden">
                             <span
                               className={`rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${DISPLAY_CLASS[player.displayCategory]}`}
                             >
                               {DISPLAY_LABEL[player.displayCategory]}
                             </span>
-                            <span className="hidden text-xs text-gray-500 sm:inline">
-                              {POSITION_LABELS[player.position]}
-                            </span>
                           </div>
+                          <span className="hidden shrink-0 text-xs text-gray-500 sm:inline">
+                            {POSITION_LABELS[player.position]}
+                          </span>
                         </li>
                       ))}
                     </div>

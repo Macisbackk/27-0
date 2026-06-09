@@ -100,9 +100,8 @@ export function GameBoard({
   const [slotOffers, setSlotOffers] = useState<
     Map<number, RecruitmentRound>
   >(new Map());
-  const [rerollsUsedBySlot, setRerollsUsedBySlot] = useState<Set<number>>(
-    new Set()
-  );
+  const MAX_REROLLS_PER_RUN = 3;
+  const [rerollsRemaining, setRerollsRemaining] = useState(MAX_REROLLS_PER_RUN);
   const [discardedPlayerIds, setDiscardedPlayerIds] = useState<Set<string>>(
     new Set()
   );
@@ -148,11 +147,11 @@ export function GameBoard({
         recruitmentOptions
       )
     );
-    setRerollsUsedBySlot(new Set());
     setDiscardedPlayerIds(new Set());
+    setRerollsRemaining(isHardMode ? 0 : MAX_REROLLS_PER_RUN);
     setRerollsThisRun(0);
     rerollsThisRunRef.current = 0;
-  }, [seed, joeMellorMode, recruitmentOptions, isChallengeCup, cupClub]);
+  }, [seed, joeMellorMode, recruitmentOptions, isChallengeCup, cupClub, isHardMode]);
 
   useEffect(() => {
     if (joeMellorMode && !joeMellorSoundPlayed.current) {
@@ -203,9 +202,7 @@ export function GameBoard({
   const filledCount = getFilledCount(squad);
   const totalValue = getSquadValue(squad);
   const rerollAvailable =
-    !isHardMode &&
-    selectedSlotIndex !== null &&
-    !rerollsUsedBySlot.has(selectedSlotIndex);
+    !isHardMode && selectedSlotIndex !== null && rerollsRemaining > 0;
 
   const resetRun = useCallback(() => {
     setRunKey((k) => k + 1);
@@ -360,7 +357,7 @@ export function GameBoard({
       rerolling ||
       choosing ||
       phase !== "choice" ||
-      rerollsUsedBySlot.has(selectedSlotIndex)
+      rerollsRemaining <= 0
     ) {
       return;
     }
@@ -395,7 +392,7 @@ export function GameBoard({
         return next;
       });
       setDiscardedPlayerIds(discarded);
-      setRerollsUsedBySlot((prev) => new Set(prev).add(selectedSlotIndex));
+      setRerollsRemaining((n) => n - 1);
       setRerollsThisRun((count) => {
         const next = count + 1;
         rerollsThisRunRef.current = next;
@@ -411,7 +408,7 @@ export function GameBoard({
     rerolling,
     choosing,
     phase,
-    rerollsUsedBySlot,
+    rerollsRemaining,
     squad,
     slotOffers,
     discardedPlayerIds,
@@ -561,6 +558,19 @@ export function GameBoard({
           />
         )}
 
+        {joeMellorMode && phase !== "clubSelect" && phase !== "review" && (
+          <motion.div
+            className="mt-4 overflow-hidden rounded-xl border border-accent-gold/50 bg-accent-gold/15 px-3 py-3 text-center sm:px-4 sm:py-4"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.35 }}
+          >
+            <p className="font-display text-[10px] font-black uppercase tracking-[0.28em] text-accent-gold sm:text-xs sm:tracking-[0.35em]">
+              GOAT MODE ACTIVATED
+            </p>
+          </motion.div>
+        )}
+
         {isChallengeCup && cupClub && phase !== "clubSelect" && (
           <motion.div
             className="mt-4 overflow-hidden rounded-xl border border-accent-gold/40 bg-accent-gold/10"
@@ -671,10 +681,7 @@ export function GameBoard({
                     onChoose={handleChoose}
                     onReroll={handleReroll}
                     rerollAvailable={rerollAvailable}
-                    rerollUsed={
-                      selectedSlotIndex !== null &&
-                      rerollsUsedBySlot.has(selectedSlotIndex)
-                    }
+                    rerollsRemaining={rerollsRemaining}
                     disabled={choosing || rerolling}
                     hardMode={isHardMode}
                     draftMode={draftMode}
@@ -690,6 +697,7 @@ export function GameBoard({
         <ChallengeCupReview
           squad={squad}
           cupResult={cupResult}
+          seed={seed}
           difficulty={difficulty}
           joeMellorMode={joeMellorMode}
           cupRankingResult={cupRankingResult}
@@ -703,6 +711,7 @@ export function GameBoard({
         <SeasonReview
           squad={squad}
           mode={mode}
+          seed={seed}
           difficulty={difficulty}
           joeMellorMode={joeMellorMode}
           seasonResult={seasonResult}

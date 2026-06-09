@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { GameDifficulty, GameMode, SquadSlot } from "@/lib/types";
@@ -9,8 +8,11 @@ import { getSeasonSummaryMessage } from "@/lib/game/season-simulation";
 import { getSeasonGradeFromSquad } from "@/lib/grades";
 import { getClubBreakdownSummary } from "@/lib/squad-analysis";
 import { generateSeasonAwards } from "@/lib/season-awards";
+import { formatValue } from "@/lib/players";
 import { getSquadValue } from "@/lib/positions";
+import { getMostExpensiveTeam } from "@/lib/team-value-comparison";
 import { playGradeSound } from "@/lib/sound";
+import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { FixtureResultRow } from "./FixtureResultRow";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
 import type { MatchFixture } from "@/lib/game/season-simulation";
@@ -24,6 +26,7 @@ interface SeasonReviewProps {
   squad: SquadSlot[];
   mode: GameMode;
   seasonResult: SeasonResult;
+  seed: string;
   difficulty?: GameDifficulty;
   joeMellorMode?: boolean;
   runRank?: number;
@@ -35,6 +38,7 @@ interface SeasonReviewProps {
 export function SeasonReview({
   squad,
   seasonResult,
+  seed,
   difficulty = "NORMAL",
   joeMellorMode = false,
   runRank,
@@ -48,7 +52,13 @@ export function SeasonReview({
   const clubSummary = getClubBreakdownSummary(squad, filledCount, {
     joeMellorMode,
   });
-  const awards = generateSeasonAwards(squad, seasonResult);
+  const awards = generateSeasonAwards(squad, seasonResult, { joeMellorMode });
+  const mostExpensive = getMostExpensiveTeam(
+    "Dream Team",
+    totalValue,
+    seasonResult.fixtures,
+    seed
+  );
   const isPerfect = seasonResult.isPerfect;
   const isSuperSquad = gradeInfo.grade === "S" || gradeInfo.grade === "S+";
   const isHardMode = difficulty === "HARD";
@@ -189,7 +199,34 @@ export function SeasonReview({
           >
             {summaryMessage}
           </motion.p>
+
+          <motion.div
+            className="mx-auto mt-4 max-w-md rounded-lg border border-pitch-600/50 bg-pitch-900/50 px-4 py-3 text-sm text-gray-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.28 }}
+          >
+            <span className="font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
+              Most Expensive Team
+            </span>
+            <p className="mt-1 font-semibold text-white">
+              {mostExpensive.name} — {formatValue(mostExpensive.value)}
+            </p>
+          </motion.div>
         </motion.header>
+
+        <motion.div
+          className="mt-6 w-full max-w-xl"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <ReviewPlayAgain
+            onPlayAgain={handlePlayAgain}
+            leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
+            compact
+          />
+        </motion.div>
 
         <ReviewSection title="Season Awards" delay={0.35}>
           <div className="grid gap-3 text-left sm:grid-cols-2">
@@ -235,6 +272,8 @@ export function SeasonReview({
                       <MatchDetailsPanel
                         key={fixture.round}
                         fixture={fixture}
+                        seed={seed}
+                        userSquad={squad}
                         onClose={() => setSelectedFixture(null)}
                       />
                     )}
@@ -252,30 +291,15 @@ export function SeasonReview({
         </ReviewSection>
 
         <motion.footer
-          className="mt-8 w-full max-w-xl space-y-3"
+          className="mt-8 w-full max-w-xl"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65 }}
         >
-          <button
-            type="button"
-            onClick={handlePlayAgain}
-            className="btn-play-again w-full py-4 text-lg"
-          >
-            Play Again
-          </button>
-
-          <div className="grid grid-cols-2 gap-3">
-            <Link href="/" className="btn-secondary text-center">
-              Return Home
-            </Link>
-            <Link
-              href={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
-              className="btn-secondary text-center"
-            >
-              Leaderboard
-            </Link>
-          </div>
+          <ReviewPlayAgain
+            onPlayAgain={handlePlayAgain}
+            leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
+          />
         </motion.footer>
       </div>
 

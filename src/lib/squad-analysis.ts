@@ -15,6 +15,8 @@ export interface ClubPlayerEntry {
   position: Position;
   category: PlayerCategory;
   displayCategory: ClubPlayerDisplayCategory;
+  peakRating: number;
+  value: number;
 }
 
 export interface ClubBreakdown {
@@ -75,6 +77,8 @@ export function getClubBreakdown(
       position: player.position,
       category: player.category,
       displayCategory: getPlayerDisplayCategory(player, options?.joeMellorMode),
+      peakRating: player.peakRating,
+      value: player.value,
     });
     map.set(clubName, existing);
   }

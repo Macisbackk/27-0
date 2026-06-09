@@ -2,16 +2,15 @@
  * Bulk-download RLP player summary pages into scripts/rlp-cache/.
  * Run before enrich:rlp when network is slow.
  */
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from "fs";
+import { mkdirSync, readFileSync, writeFileSync, existsSync, unlinkSync, readdirSync } from "fs";
 import { join } from "path";
-import { spawn } from "child_process";
 
 const DATA_DIR = join(__dirname, "..", "data");
 const HTML_PATH = join(__dirname, "rlp-players.html");
 const CACHE_DIR = join(__dirname, "rlp-cache");
 const FILES = ["current-squads.json", "historic-players.json", "legends.json"] as const;
-const CONCURRENCY = 4;
-const MAX_TIME_SEC = 45;
+const CONCURRENCY = 3;
+const FETCH_TIMEOUT_MS = 60_000;
 const RETRIES = 3;
 
 function normalizeName(name: string): string {
@@ -54,51 +53,47 @@ function buildRlpIdMap(html: string): Map<string, string> {
   return map;
 }
 
-function curlOnce(rlpId: string, out: string): Promise<boolean> {
-  const url = `https://www.rugbyleagueproject.org/players/${rlpId}/summary.html`;
-  return new Promise((resolve) => {
-    const proc = spawn(
-      "curl.exe",
-      [
-        "-sL",
-        "-A",
-        "Mozilla/5.0",
-        url,
-        "-o",
-        out,
-        "--max-time",
-        String(MAX_TIME_SEC),
-        "--retry",
-        "2",
-        "--retry-delay",
-        "2",
-      ],
-      { stdio: "ignore" }
-    );
-    proc.on("close", (code) => {
-      if (code !== 0) {
-        resolve(false);
-        return;
-      }
-      try {
-        const html = readFileSync(out, "utf-8");
-        resolve(html.includes("Place Of Birth"));
-      } catch {
-        resolve(false);
-      }
-    });
-  });
+function isValidCache(path: string): boolean {
+  if (!existsSync(path)) return false;
+  try {
+    return readFileSync(path, "utf-8").includes("Place Of Birth");
+  } catch {
+    return false;
+  }
 }
 
-async function curlDownload(rlpId: string): Promise<boolean> {
-  const out = join(CACHE_DIR, `${rlpId}.html`);
-  if (existsSync(out) && readFileSync(out, "utf-8").includes("Place Of Birth")) {
-    return true;
+function purgeInvalidCaches(): number {
+  let removed = 0;
+  for (const file of readdirSync(CACHE_DIR)) {
+    if (!file.endsWith(".html")) continue;
+    const path = join(CACHE_DIR, file);
+    if (!isValidCache(path)) {
+      unlinkSync(path);
+      removed++;
+    }
   }
+  return removed;
+}
 
+async function downloadPage(rlpId: string): Promise<boolean> {
+  const out = join(CACHE_DIR, `${rlpId}.html`);
+  if (isValidCache(out)) return true;
+
+  const url = `https://www.rugbyleagueproject.org/players/${rlpId}/summary.html`;
   for (let attempt = 0; attempt < RETRIES; attempt++) {
-    if (await curlOnce(rlpId, out)) return true;
-    await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
+    try {
+      const res = await fetch(url, {
+        headers: { "User-Agent": "Mozilla/5.0 (27-0 player enricher)" },
+        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+      });
+      if (!res.ok) continue;
+      const html = await res.text();
+      if (!html.includes("Place Of Birth")) continue;
+      writeFileSync(out, html);
+      return true;
+    } catch {
+      await new Promise((r) => setTimeout(r, 800 * (attempt + 1)));
+    }
   }
   return false;
 }
@@ -122,6 +117,9 @@ async function mapPool<T, R>(
 
 async function main() {
   mkdirSync(CACHE_DIR, { recursive: true });
+  const removed = purgeInvalidCaches();
+  if (removed > 0) console.log(`Removed ${removed} invalid partial cache files`);
+
   const idMap = buildRlpIdMap(readFileSync(HTML_PATH, "utf-8"));
   const ids = new Set<string>();
 
@@ -136,15 +134,17 @@ async function main() {
     }
   }
 
-  const list = [...ids];
+  const list = [...ids].filter((id) => !isValidCache(join(CACHE_DIR, `${id}.html`)));
   console.log(`Downloading ${list.length} player pages (${CONCURRENCY} at a time)…`);
 
   let done = 0;
+  let okCount = 0;
   const results = await mapPool(list, CONCURRENCY, async (id) => {
-    const ok = await curlDownload(id);
+    const ok = await downloadPage(id);
     done++;
-    if (done % 50 === 0 || done === list.length) {
-      console.log(`  ${done}/${list.length}`);
+    if (ok) okCount++;
+    if (done % 25 === 0 || done === list.length) {
+      console.log(`  ${done}/${list.length} (${okCount} ok)`);
     }
     return ok;
   });

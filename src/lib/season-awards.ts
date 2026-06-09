@@ -2,6 +2,7 @@ import type { Player, SquadSlot } from "./types";
 import type { SeasonResult } from "./game/season-simulation";
 import type { PlayerTryTotal } from "./game/season-tries";
 import { getPlayerTryWeight } from "./game/try-weights";
+import { isGoatPlayer, JOE_MELLOR_GOAT_ID } from "./players/goat";
 
 export interface SeasonAward {
   title: string;
@@ -34,7 +35,8 @@ function getPlayers(squad: SquadSlot[]): { player: Player; slot: SquadSlot }[] {
 function buildPerformances(
   squad: SquadSlot[],
   tryScorers: PlayerTryTotal[],
-  seasonWins: number
+  seasonWins: number,
+  joeMellorMode?: boolean
 ): PlayerPerformance[] {
   const entries = getPlayers(squad);
   if (entries.length === 0) return [];
@@ -67,12 +69,16 @@ function buildPerformances(
         : 0;
     const winBonus = (seasonWins / 27) * 1.5;
 
-    const impactScore =
+    let impactScore =
       tryDelta * 2.2 +
       consistencyBonus +
       underperformPenalty +
       overperformBonus +
       winBonus;
+
+    if (joeMellorMode && isGoatPlayer(player)) {
+      impactScore += 500 + tries * 8;
+    }
 
     return {
       playerId: player.id,
@@ -119,15 +125,19 @@ function getWorstNarrative(perf: PlayerPerformance): string {
 
 export function generateSeasonAwards(
   squad: SquadSlot[],
-  seasonResult: SeasonResult
+  seasonResult: SeasonResult,
+  options?: { joeMellorMode?: boolean }
 ): SeasonAward[] {
   const entries = getPlayers(squad);
   if (entries.length === 0) return [];
 
+  const joeMellorMode = options?.joeMellorMode ?? false;
+
   const performances = buildPerformances(
     squad,
     seasonResult.tryScorers,
-    seasonResult.wins
+    seasonResult.wins,
+    joeMellorMode
   );
 
   const sortedBest = [...performances].sort(
@@ -137,7 +147,9 @@ export function generateSeasonAwards(
   const awardedIds = new Set<string>([playerOfSeason.playerId]);
 
   const worstCandidates = sortedBest.filter(
-    (p) => !awardedIds.has(p.playerId)
+    (p) =>
+      !awardedIds.has(p.playerId) &&
+      !(joeMellorMode && p.playerId === JOE_MELLOR_GOAT_ID)
   );
   const worstPlayer =
     worstCandidates.length > 0

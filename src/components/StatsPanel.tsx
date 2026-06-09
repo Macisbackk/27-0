@@ -357,7 +357,10 @@ function ChallengeCupTab({
   return (
     <div className="space-y-8">
       <StatsSection title="Career">
-        <StatCard label="Challenge Cup Runs" value={String(view.runs)} />
+        <StatCard
+          label="Challenge Cup Appearances"
+          value={String(view.runs)}
+        />
         <StatCard
           label="Challenge Cup Match Wins"
           value={String(view.wins)}
@@ -395,11 +398,6 @@ function ChallengeCupTab({
           label="Best Cup Finish"
           value={view.bestFinish ?? "—"}
           highlight={view.bestFinish === "Winners"}
-        />
-        <StatCard
-          label="Most Tournament Wins"
-          value={String(view.mostTournamentWins)}
-          highlight={view.mostTournamentWins > 0}
         />
         <StatCard
           label="Best Tournament Ranking"

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type {
@@ -18,9 +17,13 @@ import {
   getTournamentPotyNarrative,
   getTournamentWorstNarrative,
 } from "@/lib/game/tournament-awards";
+import { formatValue } from "@/lib/players";
+import { getSquadValue } from "@/lib/positions";
 import { getClubBreakdownSummary } from "@/lib/squad-analysis";
 import { generateSeasonAwards } from "@/lib/season-awards";
+import { getMostExpensiveTeam } from "@/lib/team-value-comparison";
 import { playGradeSound } from "@/lib/sound";
+import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { FixtureResultRow } from "./FixtureResultRow";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
 import type { MatchFixture, SeasonResult } from "@/lib/game/season-simulation";
@@ -35,6 +38,7 @@ import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 interface ChallengeCupReviewProps {
   squad: SquadSlot[];
   cupResult: ChallengeCupResult;
+  seed: string;
   difficulty?: GameDifficulty;
   joeMellorMode?: boolean;
   cupRankingResult?: CupRunRankingResult;
@@ -46,6 +50,7 @@ interface ChallengeCupReviewProps {
 export function ChallengeCupReview({
   squad,
   cupResult,
+  seed,
   difficulty = "NORMAL",
   joeMellorMode = false,
   cupRankingResult,
@@ -53,6 +58,7 @@ export function ChallengeCupReview({
   onPlayAgain,
   onClose,
 }: ChallengeCupReviewProps) {
+  const totalValue = getSquadValue(squad);
   const filledCount = squad.filter((s) => s.player).length;
   const clubSummary = getClubBreakdownSummary(squad, filledCount, {
     joeMellorMode,
@@ -89,7 +95,14 @@ export function ChallengeCupReview({
     "Top 3 Try Scorers": "Top Try Scorers",
   };
 
-  const awards = generateSeasonAwards(squad, seasonLikeResult)
+  const mostExpensive = getMostExpensiveTeam(
+    userTeamName,
+    totalValue,
+    cupResult.fixtures,
+    seed
+  );
+
+  const awards = generateSeasonAwards(squad, seasonLikeResult, { joeMellorMode })
     .filter((a) => a.title in CUP_AWARD_TITLES)
     .map((a) => {
       const title = CUP_AWARD_TITLES[a.title] ?? a.title;
@@ -213,7 +226,29 @@ export function ChallengeCupReview({
           >
             {commentary}
           </motion.p>
+
+          <motion.div
+            className="mx-auto mt-4 max-w-md rounded-lg border border-pitch-600/50 bg-pitch-900/50 px-4 py-3 text-sm text-gray-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <span className="font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
+              Most Expensive Team
+            </span>
+            <p className="mt-1 font-semibold text-white">
+              {mostExpensive.name} — {formatValue(mostExpensive.value)}
+            </p>
+          </motion.div>
         </motion.header>
+
+        <motion.div
+          className="mt-6 w-full max-w-xl"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <ReviewPlayAgain onPlayAgain={handlePlayAgain} compact />
+        </motion.div>
 
         <ReviewSection title="Tournament Awards" delay={0.35}>
           <div className="grid gap-3 text-left sm:grid-cols-2">
@@ -268,6 +303,8 @@ export function ChallengeCupReview({
                       <MatchDetailsPanel
                         key={fixture.round}
                         fixture={fixture}
+                        seed={seed}
+                        userSquad={squad}
                         userTeamName={userTeamName}
                         onClose={() => setSelectedFixture(null)}
                         roundLabel={getCupRoundLabel(fixture.round)}
@@ -295,26 +332,12 @@ export function ChallengeCupReview({
         </ReviewSection>
 
         <motion.footer
-          className="mt-8 w-full max-w-xl space-y-3"
+          className="mt-8 w-full max-w-xl"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65 }}
         >
-          <button
-            type="button"
-            onClick={handlePlayAgain}
-            className="btn-play-again w-full py-4 text-lg"
-          >
-            Play Again
-          </button>
-          <div className="grid grid-cols-2 gap-3">
-            <Link href="/" className="btn-secondary text-center">
-              Return Home
-            </Link>
-            <Link href="/leaderboard" className="btn-secondary text-center">
-              Leaderboard
-            </Link>
-          </div>
+          <ReviewPlayAgain onPlayAgain={handlePlayAgain} />
         </motion.footer>
       </div>
     </div>

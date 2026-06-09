@@ -31,7 +31,7 @@ export default function HomePage() {
           <EmailConfirmedBanner />
         </Suspense>
 
-        <div className="mt-10">
+        <div id="account" className="mt-10 scroll-mt-24">
           <AuthCoachCard />
         </div>
 

@@ -506,20 +506,6 @@
     "rating": 82
   },
   {
-    "id": "st-helens-cur-shane-wright",
-    "name": "Shane Wright",
-    "position": "SECOND_ROW",
-    "club": "St Helens",
-    "nationality": "Australia",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
-    "category": "current",
-    "peakRating": 77,
-    "value": 170000,
-    "intlCaps": 0,
-    "rating": 77
-  },
-  {
     "id": "st-helens-cur-david-klemmer",
     "name": "David Klemmer",
     "position": "LOOSE_FORWARD",
@@ -644,20 +630,6 @@
     "value": 120000,
     "intlCaps": 0,
     "rating": 75
-  },
-  {
-    "id": "st-helens-cur-joe-shorrocks",
-    "name": "Joe Shorrocks",
-    "position": "LOOSE_FORWARD",
-    "club": "St Helens",
-    "nationality": "England",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
-    "category": "current",
-    "peakRating": 76,
-    "value": 135000,
-    "intlCaps": 0,
-    "rating": 76
   },
   {
     "id": "st-helens-cur-jake-burns",
@@ -4174,20 +4146,6 @@
     "rating": 76
   },
   {
-    "id": "catalans-cur-kruise-leeming",
-    "name": "Kruise Leeming",
-    "position": "HOOKER",
-    "club": "Catalans Dragons",
-    "nationality": "England",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
-    "category": "current",
-    "peakRating": 82,
-    "value": 610000,
-    "intlCaps": 0,
-    "rating": 82
-  },
-  {
     "id": "catalans-cur-zac-lipowicz",
     "name": "Zac Lipowicz",
     "position": "PROP",
@@ -5070,20 +5028,6 @@
     "rating": 83
   },
   {
-    "id": "salford-cur-amir-bourouh",
-    "name": "Amir Bourouh",
-    "position": "HOOKER",
-    "club": "Salford Red Devils",
-    "nationality": "England",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
-    "category": "current",
-    "peakRating": 77,
-    "value": 170000,
-    "intlCaps": 0,
-    "rating": 77
-  },
-  {
     "id": "salford-cur-tim-bergin",
     "name": "Tim Bergin",
     "position": "CENTRE",
@@ -5166,20 +5110,6 @@
     "value": 170000,
     "intlCaps": 0,
     "rating": 77
-  },
-  {
-    "id": "salford-cur-tyler-dupree",
-    "name": "Tyler Dupree",
-    "position": "LOOSE_FORWARD",
-    "club": "Salford Red Devils",
-    "nationality": "England",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
-    "category": "current",
-    "peakRating": 82,
-    "value": 610000,
-    "intlCaps": 0,
-    "rating": 82
   },
   {
     "id": "york-cur-jesse-sebastian",

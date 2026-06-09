@@ -25,8 +25,37 @@ function loadPlayers(): {
   const legendPlayers = (legends as Record<string, unknown>[]).map(normalizePlayer);
 
   const byId = new Map<string, Player>();
+  const byName = new Map<string, Player>();
+
+  const categoryRank = (c: Player["category"]) =>
+    c === "legend" ? 3 : c === "historic" ? 2 : 1;
+
   for (const p of [...current, ...historicRaw, ...legendPlayers]) {
+    if (isHiddenPlayer(p)) {
+      byId.set(p.id, p);
+      continue;
+    }
+    const nameKey = p.name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s]/g, "")
+      .trim();
+    const existing = byName.get(nameKey);
+    if (
+      !existing ||
+      categoryRank(p.category) > categoryRank(existing.category) ||
+      (p.peakRating ?? 0) > (existing.peakRating ?? 0)
+    ) {
+      byName.set(nameKey, p);
+    }
+  }
+
+  for (const p of byName.values()) {
     byId.set(p.id, p);
+  }
+  for (const p of [...current, ...historicRaw, ...legendPlayers]) {
+    if (isHiddenPlayer(p)) byId.set(p.id, p);
   }
 
   const all = Array.from(byId.values());

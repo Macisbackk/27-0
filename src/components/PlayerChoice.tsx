@@ -15,7 +15,7 @@ interface PlayerChoiceProps {
   onChoose: (player: Player) => void;
   onReroll?: () => void;
   rerollAvailable?: boolean;
-  rerollUsed?: boolean;
+  rerollsRemaining?: number;
   disabled?: boolean;
   hardMode?: boolean;
   draftMode?: boolean;
@@ -28,7 +28,7 @@ export function PlayerChoice({
   onChoose,
   onReroll,
   rerollAvailable,
-  rerollUsed,
+  rerollsRemaining = 0,
   disabled,
   hardMode,
   draftMode,
@@ -73,17 +73,15 @@ export function PlayerChoice({
         {!hardMode && (
           <div className="mx-auto mt-2 inline-flex items-center gap-2 rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-3 py-1.5 sm:mt-4 sm:gap-3 sm:px-4 sm:py-2">
             <span className="font-display text-[9px] font-bold uppercase tracking-[0.15em] text-gray-500 sm:text-[10px] sm:tracking-[0.2em]">
-              Rerolls
+              Rerolls Remaining
             </span>
-            {rerollUsed ? (
-              <span className="font-display text-[10px] font-bold uppercase tracking-wider text-gray-500 sm:text-xs">
-                Used
-              </span>
-            ) : (
-              <span className="font-display text-xs font-bold text-accent-green sm:text-sm">
-                1
-              </span>
-            )}
+            <span
+              className={`font-display text-xs font-bold sm:text-sm ${
+                rerollsRemaining > 0 ? "text-accent-green" : "text-gray-500"
+              }`}
+            >
+              {rerollsRemaining}
+            </span>
           </div>
         )}
       </header>
@@ -93,14 +91,14 @@ export function PlayerChoice({
           <button
             type="button"
             onClick={onReroll}
-            disabled={disabled || !rerollAvailable || rerollUsed}
+            disabled={disabled || !rerollAvailable || rerollsRemaining <= 0}
             className={`rounded-lg border px-3 py-2 font-display text-[10px] font-bold uppercase tracking-[0.12em] transition sm:px-5 sm:py-2.5 sm:text-xs sm:tracking-[0.18em] ${
-              rerollAvailable && !rerollUsed && !disabled
+              rerollAvailable && rerollsRemaining > 0 && !disabled
                 ? "border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20"
                 : "cursor-not-allowed border-pitch-700/60 bg-pitch-900/50 text-gray-600"
             }`}
           >
-            {rerollUsed ? "Used" : "Reroll"}
+            Reroll
           </button>
         </div>
       )}

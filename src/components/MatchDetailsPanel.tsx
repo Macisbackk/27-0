@@ -8,6 +8,11 @@ import {
   formatFixtureScore,
   type TeamScoringDetail,
 } from "@/lib/game/season-simulation";
+import { getOpponentTeamSummary } from "@/lib/game/opponent-scorers";
+import { formatValue, getValueTier } from "@/lib/players";
+import { getAverageSquadRating } from "@/lib/squad-analysis";
+import { getSquadValue } from "@/lib/positions";
+import type { SquadSlot } from "@/lib/types";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
 import { ClubTeamLabel } from "./ClubTeamLabel";
 
@@ -15,6 +20,8 @@ interface MatchDetailsPanelProps {
   fixture: MatchFixture;
   onClose: () => void;
   roundLabel?: string;
+  seed: string;
+  userSquad?: SquadSlot[];
   /** User's team name — defaults to Dream Team for season mode. */
   userTeamName?: string;
 }
@@ -23,9 +30,19 @@ export function MatchDetailsPanel({
   fixture,
   onClose,
   roundLabel,
+  seed,
+  userSquad,
   userTeamName = DREAM_TEAM_NAME,
 }: MatchDetailsPanelProps) {
   const detail = fixture.scoringDetail;
+  const userValue = userSquad ? getSquadValue(userSquad) : 0;
+  const userAvgRating = userSquad ? getAverageSquadRating(userSquad) : 0;
+  const userTier = getValueTier(userValue);
+  const opponentSummary = getOpponentTeamSummary(
+    fixture.opponent,
+    seed,
+    fixture.round
+  );
 
   return (
     <motion.div
@@ -38,9 +55,9 @@ export function MatchDetailsPanel({
       <div className="p-4">
         <div className="mb-3 flex items-start justify-between gap-2">
           <div>
-                <p className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-green">
-                  {roundLabel ?? `Round ${fixture.round}`} · Match Details
-                </p>
+            <p className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-green">
+              {roundLabel ?? `Round ${fixture.round}`} · Match Details
+            </p>
             <p className="mt-1 font-display text-base font-bold text-white sm:text-lg">
               {formatFixtureScore(fixture)}
             </p>
@@ -59,10 +76,18 @@ export function MatchDetailsPanel({
             <TeamScoringBlock
               teamName={userTeamName}
               scoring={detail.dreamTeam}
+              totalValue={userValue}
+              averageRating={userAvgRating}
+              tier={userTier}
+              finalScore={fixture.pointsFor}
             />
             <TeamScoringBlock
               teamName={fixture.opponent}
               scoring={detail.opponent}
+              totalValue={opponentSummary.totalValue}
+              averageRating={opponentSummary.averageRating}
+              tier={opponentSummary.tier}
+              finalScore={fixture.pointsAgainst}
             />
           </div>
         ) : (
@@ -76,9 +101,17 @@ export function MatchDetailsPanel({
 function TeamScoringBlock({
   teamName,
   scoring,
+  totalValue,
+  averageRating,
+  tier,
+  finalScore,
 }: {
   teamName: string;
   scoring: TeamScoringDetail;
+  totalValue: number;
+  averageRating: number;
+  tier: string;
+  finalScore: number;
 }) {
   const hasTries = scoring.tryScorers.length > 0;
   const kicking = scoring.kicking;
@@ -86,13 +119,15 @@ function TeamScoringBlock({
   const hasPenalties = (kicking?.penalties ?? 0) > 0;
   const hasDropGoals = (kicking?.dropGoals ?? 0) > 0;
 
-  if (!hasTries && !hasConversions && !hasPenalties && !hasDropGoals) {
-    return null;
-  }
-
   return (
     <div className="space-y-2">
       <ClubTeamLabel club={teamName} />
+      <div className={`${RL_INFO_BOX_CLASS} grid gap-1 p-3 text-xs sm:grid-cols-2`}>
+        <TeamStat label="Squad Value" value={formatValue(totalValue)} />
+        <TeamStat label="Team Tier" value={tier} />
+        <TeamStat label="Avg Rating" value={`${averageRating} OVR`} />
+        <TeamStat label="Final Score" value={String(finalScore)} highlight />
+      </div>
       {hasTries && (
         <ScoringSection title="Tries">
           <ul className="space-y-1">
@@ -130,7 +165,29 @@ function TeamScoringBlock({
           </p>
         </ScoringSection>
       )}
+      {!hasTries && !hasConversions && !hasPenalties && !hasDropGoals && (
+        <p className="text-xs text-gray-500">No scoring breakdown recorded.</p>
+      )}
     </div>
+  );
+}
+
+function TeamStat({
+  label,
+  value,
+  highlight,
+}: {
+  label: string;
+  value: string;
+  highlight?: boolean;
+}) {
+  return (
+    <p className="text-gray-500">
+      {label}:{" "}
+      <span className={highlight ? "font-semibold text-accent-green" : "text-white"}>
+        {value}
+      </span>
+    </p>
   );
 }
 

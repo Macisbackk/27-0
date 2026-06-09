@@ -1,5 +1,5 @@
 import seedrandom from "seedrandom";
-import { getPlayersByClub } from "../players";
+import { getPlayersByClub, getValueTier } from "../players";
 import type { Player, Position } from "../types";
 import type {
   FixtureKicking,
@@ -27,9 +27,48 @@ const OPPONENT_LINEUP: Position[] = [
   "LOOSE_FORWARD",
 ];
 
+/** Weighted bands — mid-range players most common, not all-star picks. */
+const OPP_BANDS: { min: number; max: number; weight: number }[] = [
+  { min: 75, max: 79, weight: 35 },
+  { min: 80, max: 84, weight: 30 },
+  { min: 85, max: 89, weight: 20 },
+  { min: 90, max: 94, weight: 10 },
+  { min: 95, max: 99, weight: 5 },
+];
+
+function rollBand(rng: () => number): (typeof OPP_BANDS)[0] {
+  const total = OPP_BANDS.reduce((s, b) => s + b.weight, 0);
+  let roll = rng() * total;
+  for (const band of OPP_BANDS) {
+    roll -= band.weight;
+    if (roll <= 0) return band;
+  }
+  return OPP_BANDS[0];
+}
+
+function pickWeighted(
+  candidates: Player[],
+  rng: () => number
+): Player | null {
+  if (candidates.length === 0) return null;
+  const band = rollBand(rng);
+  let inBand = candidates.filter(
+    (p) => p.peakRating >= band.min && p.peakRating <= band.max
+  );
+  if (inBand.length === 0) {
+    inBand = [...candidates].sort(
+      (a, b) =>
+        Math.abs(a.peakRating - (band.min + band.max) / 2) -
+        Math.abs(b.peakRating - (band.min + band.max) / 2)
+    );
+    inBand = inBand.slice(0, Math.min(8, inBand.length));
+  }
+  return inBand[Math.floor(rng() * inBand.length)] ?? null;
+}
+
 /**
  * Select a match-day XIII from the opponent club's database
- * (current, historic, and legends assigned to that club).
+ * using weighted randomness (mid-range favoured over elite-only).
  */
 export function selectClubMatchSquad(
   club: string,
@@ -52,12 +91,50 @@ export function selectClubMatchSquad(
     }
     if (candidates.length === 0) break;
 
-    const pick = candidates[Math.floor(rng() * candidates.length)];
+    const pick = pickWeighted(candidates, rng);
+    if (!pick) break;
     used.add(pick.id);
     squad.push(pick);
   }
 
   return squad;
+}
+
+export function getOpponentSquadValue(
+  club: string,
+  seed: string,
+  round: number
+): number {
+  return selectClubMatchSquad(club, seed, round).reduce(
+    (sum, p) => sum + p.value,
+    0
+  );
+}
+
+export function getOpponentTeamSummary(
+  club: string,
+  seed: string,
+  round: number
+): {
+  name: string;
+  totalValue: number;
+  averageRating: number;
+  tier: string;
+} {
+  const squad = selectClubMatchSquad(club, seed, round);
+  const totalValue = squad.reduce((s, p) => s + p.value, 0);
+  const averageRating =
+    squad.length > 0
+      ? Math.round(
+          (squad.reduce((s, p) => s + p.peakRating, 0) / squad.length) * 10
+        ) / 10
+      : 0;
+  return {
+    name: club,
+    totalValue,
+    averageRating,
+    tier: getValueTier(totalValue),
+  };
 }
 
 function pickKicker(squad: Player[]): Player | null {
