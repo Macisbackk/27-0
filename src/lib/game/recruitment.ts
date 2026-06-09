@@ -21,7 +21,70 @@ const MIN_HISTORIC_OFFERS = 2;
 const MIN_LEGEND_OFFERS = 1;
 const MIN_ELITE_RATING_OFFERS = 1;
 const ELITE_RATING_THRESHOLD = 90;
-const MAX_PAIR_RATING_GAP = 4;
+const TYPICAL_PAIR_RATING_GAP = 6;
+const EXTREME_PAIR_RATING_GAP = 12;
+const EXTREME_PAIR_CHANCE = 0.08;
+
+type RatingTier = "elite" | "strong" | "mid" | "lower" | "weak";
+
+const TIER_WEIGHTS: Record<RatingTier, number> = {
+  elite: 0.12,
+  strong: 0.22,
+  mid: 0.46,
+  lower: 0.17,
+  weak: 0.03,
+};
+
+function getRatingTier(rating: number): RatingTier {
+  if (rating >= 90) return "elite";
+  if (rating >= 85) return "strong";
+  if (rating >= 78) return "mid";
+  if (rating >= 70) return "lower";
+  return "weak";
+}
+
+function rollTier(rng: () => number): RatingTier {
+  const roll = rng();
+  let cumulative = 0;
+  for (const tier of Object.keys(TIER_WEIGHTS) as RatingTier[]) {
+    cumulative += TIER_WEIGHTS[tier];
+    if (roll < cumulative) return tier;
+  }
+  return "mid";
+}
+
+function playersInTier(players: Player[], tier: RatingTier): Player[] {
+  return players.filter((p) => getRatingTier(p.peakRating) === tier);
+}
+
+function pickFromTierWithFallback(
+  candidates: Player[],
+  tier: RatingTier,
+  rng: () => number
+): Player | null {
+  if (candidates.length === 0) return null;
+
+  const fallbackOrder: RatingTier[] = [
+    tier,
+    "mid",
+    "strong",
+    "lower",
+    "elite",
+    "weak",
+  ];
+  const seen = new Set<RatingTier>();
+
+  for (const t of fallbackOrder) {
+    if (seen.has(t)) continue;
+    seen.add(t);
+    const inTier = playersInTier(candidates, t);
+    if (inTier.length > 0) {
+      return inTier[Math.floor(rng() * inTier.length)];
+    }
+  }
+
+  return candidates[Math.floor(rng() * candidates.length)];
+}
 
 export interface RecruitmentRound {
   roundIndex: number;
@@ -79,42 +142,44 @@ function playersForCategory(
   return pool.filter((p) => p.category === category);
 }
 
-function pickSimilarPair(
+function pickBalancedPair(
   candidates: Player[],
   rng: () => number
 ): [Player, Player] | null {
   if (candidates.length < 2) return null;
 
-  const shuffled = shuffle(candidates, rng);
-  const closePairs: [Player, Player][] = [];
+  const allowExtreme = rng() < EXTREME_PAIR_CHANCE;
+  const maxGap = allowExtreme ? EXTREME_PAIR_RATING_GAP : TYPICAL_PAIR_RATING_GAP;
+  const targetTier = rollTier(rng);
+  const anchor = pickFromTierWithFallback(candidates, targetTier, rng);
+  if (!anchor) return null;
 
-  for (let i = 0; i < shuffled.length; i++) {
-    for (let j = i + 1; j < shuffled.length; j++) {
-      const gap = Math.abs(shuffled[i].peakRating - shuffled[j].peakRating);
-      if (gap <= MAX_PAIR_RATING_GAP) {
-        closePairs.push([shuffled[i], shuffled[j]]);
-      }
-    }
+  let partners = candidates.filter(
+    (p) =>
+      p.id !== anchor.id &&
+      Math.abs(p.peakRating - anchor.peakRating) <= maxGap
+  );
+
+  if (!allowExtreme && anchor.peakRating >= ELITE_RATING_THRESHOLD) {
+    partners = partners.filter(
+      (p) => p.peakRating >= anchor.peakRating - 8
+    );
   }
 
-  if (closePairs.length > 0) {
-    return closePairs[Math.floor(rng() * closePairs.length)];
+  if (partners.length === 0) {
+    partners = candidates.filter((p) => p.id !== anchor.id);
+    partners.sort(
+      (a, b) =>
+        Math.abs(a.peakRating - anchor.peakRating) -
+        Math.abs(b.peakRating - anchor.peakRating)
+    );
+    partners = partners.slice(0, Math.min(6, partners.length));
   }
 
-  let best: [Player, Player] = [shuffled[0], shuffled[1]];
-  let bestGap = Math.abs(best[0].peakRating - best[1].peakRating);
+  if (partners.length === 0) return null;
 
-  for (let i = 0; i < shuffled.length; i++) {
-    for (let j = i + 1; j < shuffled.length; j++) {
-      const gap = Math.abs(shuffled[i].peakRating - shuffled[j].peakRating);
-      if (gap < bestGap) {
-        bestGap = gap;
-        best = [shuffled[i], shuffled[j]];
-      }
-    }
-  }
-
-  return best;
+  const partner = partners[Math.floor(rng() * partners.length)];
+  return [anchor, partner];
 }
 
 function pickPairForPosition(
@@ -151,7 +216,7 @@ function pickPairForPosition(
     if (categoryPool.length >= 2) primaryPool = categoryPool;
   }
 
-  const pair = pickSimilarPair(primaryPool, rng);
+  const pair = pickBalancedPair(primaryPool, rng);
   if (!pair) return null;
   return [pair[0].id, pair[1].id];
 }
@@ -213,7 +278,21 @@ function pickPairWithEliteRating(
   if (elite.length === 0 || allForPosition.length < 2) return null;
 
   const star = elite[Math.floor(rng() * elite.length)];
-  const partners = allForPosition.filter((p) => p.id !== star.id);
+  let partners = allForPosition.filter(
+    (p) =>
+      p.id !== star.id &&
+      Math.abs(p.peakRating - star.peakRating) <= TYPICAL_PAIR_RATING_GAP &&
+      p.peakRating >= star.peakRating - 8
+  );
+  if (partners.length === 0) {
+    partners = allForPosition.filter((p) => p.id !== star.id);
+    partners.sort(
+      (a, b) =>
+        Math.abs(a.peakRating - star.peakRating) -
+        Math.abs(b.peakRating - star.peakRating)
+    );
+    partners = partners.slice(0, Math.min(5, partners.length));
+  }
   if (partners.length === 0) return null;
 
   const partner = partners[Math.floor(rng() * partners.length)];

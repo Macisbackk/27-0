@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth-context";
 import type { GameDifficulty, GameMode } from "@/lib/types";
 import { getDifficulty, setDifficulty } from "@/lib/storage/preferences";
 import { GameBoard } from "./GameBoard";
@@ -32,32 +30,21 @@ export function GameStarter({
   initialDifficulty = "NORMAL",
   joeMellorMode = false,
 }: GameStarterProps) {
-  const router = useRouter();
-  const { isLoggedIn, loading: authLoading } = useAuth();
   const [difficulty, setDifficultyState] =
     useState<GameDifficulty>(initialDifficulty);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (authLoading) return;
-
-    if (!isLoggedIn) {
-      router.replace("/");
-      return;
-    }
-
     const resolved = resolveDifficulty(initialDifficulty);
     setDifficultyState(resolved);
     setDifficulty(resolved);
     setReady(true);
-  }, [initialDifficulty, router, isLoggedIn, authLoading]);
+  }, [initialDifficulty]);
 
-  if (authLoading || !ready) {
+  if (!ready) {
     return (
       <div className="matchday-arena flex min-h-screen items-center justify-center">
-        <p className="text-sm text-gray-500">
-          {authLoading ? "Loading account…" : "Loading run…"}
-        </p>
+        <p className="text-sm text-gray-500">Loading run…</p>
       </div>
     );
   }

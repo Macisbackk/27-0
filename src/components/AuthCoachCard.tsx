@@ -31,6 +31,13 @@ export function AuthCoachCard() {
   const [busy, setBusy] = useState(false);
   const [editingCoach, setEditingCoach] = useState(false);
 
+  const scrollToPlay = () => {
+    document.getElementById("play-modes")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   const handleSubmit = async () => {
     setBusy(true);
     setError(null);
@@ -150,7 +157,19 @@ export function AuthCoachCard() {
   return (
     <section className="matchday-panel mx-auto max-w-md p-6 sm:p-8">
       <p className={RL_SECTION_TITLE_CLASS}>Account</p>
-      <div className="mt-3 flex gap-2">
+
+      <button
+        type="button"
+        onClick={scrollToPlay}
+        className="mt-4 w-full rounded-lg border border-accent-green/40 bg-accent-green/10 px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-accent-green transition hover:bg-accent-green/20"
+      >
+        Continue as Guest
+      </button>
+      <p className="mt-2 text-center text-xs text-gray-500">
+        Play without an account — stats stay on this device only.
+      </p>
+
+      <div className="mt-6 flex gap-2">
         <button
           type="button"
           onClick={() => {

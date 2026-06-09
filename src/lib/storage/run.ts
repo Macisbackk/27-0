@@ -19,6 +19,7 @@ import {
 export interface CompletedRunResult {
   cupRanking?: CupRunRankingResult;
   nationalRank?: number;
+  submittedOnline: boolean;
 }
 
 export async function recordCompletedRun(
@@ -41,23 +42,11 @@ export async function recordCompletedRun(
     matchResults?: ("W" | "L")[];
   }
 ): Promise<CompletedRunResult> {
-  if (!isLoggedIn()) {
-    console.warn("[run] Completed run not saved — login required.");
-    return {};
-  }
-
   const totalValue = run.totalValue || getSquadValue(run.squad);
   const isCupRun = options?.challengeCupMode === true;
   const wins = options?.seasonWins ?? 0;
   const losses = options?.seasonLosses ?? 0;
-
-  await addLeaderboardEntry(totalValue, run.mode, difficulty, { wins, losses });
-
-  const nationalRank = isCupRun
-    ? undefined
-    : (
-        await getLeaderboardAsync("ALL_TIME", difficulty, 50, "super-league")
-      ).rows.find((e) => e.isCurrentUser)?.rank;
+  const loggedIn = isLoggedIn();
 
   updateStats(signedIds, totalValue, difficulty);
 
@@ -65,14 +54,26 @@ export async function recordCompletedRun(
     updateRerollStats(options?.rerollsUsed ?? 0, difficulty);
   }
 
-  if (
+  const hasSeasonData =
     isCupRun ||
     (options?.seasonWins !== undefined &&
       options?.seasonLosses !== undefined &&
-      options?.seasonLeaguePosition !== undefined)
-  ) {
+      options?.seasonLeaguePosition !== undefined);
+
+  let nationalRank: number | undefined;
+
+  if (loggedIn) {
+    await addLeaderboardEntry(totalValue, run.mode, difficulty, { wins, losses });
+    if (!isCupRun) {
+      nationalRank = (
+        await getLeaderboardAsync("ALL_TIME", difficulty, 50, "super-league")
+      ).rows.find((e) => e.isCurrentUser)?.rank;
+    }
+  }
+
+  if (hasSeasonData) {
     if (isCupRun) {
-      const username = getUsername()!;
+      const username = getUsername() ?? "Guest";
       const storedBefore = getAllStats();
       const beforeBests = getChallengeCupPersonalBests(
         storedBefore.normal,
@@ -120,13 +121,16 @@ export async function recordCompletedRun(
       const profilesAfter = getAllCupLeaderboardProfiles();
 
       return {
-        cupRanking: computeCupRunRankingResult(
-          username,
-          beforeBests,
-          afterBests,
-          profilesBefore,
-          profilesAfter
-        ),
+        submittedOnline: loggedIn,
+        cupRanking: loggedIn
+          ? computeCupRunRankingResult(
+              username,
+              beforeBests,
+              afterBests,
+              profilesBefore,
+              profilesAfter
+            )
+          : undefined,
       };
     }
 
@@ -151,5 +155,5 @@ export async function recordCompletedRun(
     );
   }
 
-  return { nationalRank };
+  return { nationalRank, submittedOnline: loggedIn };
 }

@@ -1,3 +1,4 @@
+import { LeaderboardGuestNotice } from "@/components/LeaderboardGuestNotice";
 import { LeaderboardTable } from "@/components/LeaderboardTable";
 
 export default async function LeaderboardPage({
@@ -14,10 +15,11 @@ export default async function LeaderboardPage({
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
       <div className="relative mx-auto max-w-4xl px-4 py-8">
         <h1 className="font-display text-2xl font-bold">Leaderboard</h1>
-        <p className="mb-6 text-sm text-gray-500">
+        <p className="mb-4 text-sm text-gray-500">
           Super League squad-value rankings and dedicated Challenge Cup records,
           updated online across all players.
         </p>
+        <LeaderboardGuestNotice />
         <LeaderboardTable initialDifficulty={difficulty} />
       </div>
     </div>

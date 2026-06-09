@@ -21,6 +21,11 @@ import {
 } from "./auth";
 import { setAuthCache } from "./auth-session";
 import { supabase } from "./supabase";
+import {
+  cleanAuthRedirectFromUrl,
+  detectEmailConfirmationRedirect,
+  markEmailConfirmPending,
+} from "./auth-callback";
 import { loadCloudStats } from "./storage/stats-cloud";
 import { STORAGE_KEYS } from "./storage/keys";
 
@@ -97,15 +102,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let mounted = true;
 
     void (async () => {
+      const hadConfirmRedirect = detectEmailConfirmationRedirect();
       const { data } = await supabase.auth.getSession();
       if (!mounted) return;
       await syncFromSession(data.session);
+      if (hadConfirmRedirect) {
+        markEmailConfirmPending();
+        cleanAuthRedirectFromUrl();
+      }
       setLoading(false);
     })();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && detectEmailConfirmationRedirect()) {
+        markEmailConfirmPending();
+        cleanAuthRedirectFromUrl();
+      }
       void syncFromSession(session);
     });
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AuthCoachCard } from "@/components/AuthCoachCard";
+import { EmailConfirmedBanner } from "@/components/EmailConfirmedBanner";
 import { HomeModeSelector } from "@/components/HomeModeSelector";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
 
@@ -25,11 +26,13 @@ export default function HomePage() {
           </p>
         </div>
 
+        <EmailConfirmedBanner />
+
         <div className="mt-10">
           <AuthCoachCard />
         </div>
 
-        <div className="mt-8">
+        <div id="play-modes" className="mt-8 scroll-mt-8">
           <HomeModeSelector />
         </div>
 

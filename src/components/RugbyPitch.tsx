@@ -89,13 +89,12 @@ export function RugbyPitch({
           className={`relative w-full overflow-hidden rounded-2xl border-2 border-white/15 shadow-2xl rugby-pitch-pro ${
             compact
               ? "min-h-[440px]"
-              : "min-h-[500px] sm:min-h-0 sm:aspect-[68/112]"
+              : "min-h-[640px] sm:min-h-[600px] md:min-h-[560px]"
           }`}
         >
           <PitchMarkings />
 
-          {/* Formation grid — min 12px horizontal / 16px vertical gap */}
-          <div className="absolute inset-x-[9%] inset-y-[9%] z-10 flex flex-col justify-between gap-y-2 sm:inset-y-[11%] sm:gap-y-4">
+          <div className="absolute inset-x-[8%] inset-y-[6%] z-10 flex flex-col justify-evenly gap-y-1 sm:inset-y-[8%] sm:gap-y-2 md:gap-y-3">
             {FORMATION_ROWS.map((row, rowIndex) => (
               <FormationRow
                 key={rowIndex}

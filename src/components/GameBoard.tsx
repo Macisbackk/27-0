@@ -55,6 +55,7 @@ import { ChallengeCupClubSelect } from "./ChallengeCupClubSelect";
 import { MatchdayScoreboard } from "./MatchdayScoreboard";
 import { HardModeBadge } from "./HardModeBadge";
 import { ClubHeaderBar } from "./ClubBadge";
+import { GuestNotice } from "./GuestNotice";
 
 type GamePhase = "clubSelect" | "pitch" | "choice" | "simulation" | "review";
 
@@ -110,6 +111,7 @@ export function GameBoard({
   const [cupRankingResult, setCupRankingResult] = useState<
     CupRunRankingResult | undefined
   >();
+  const [submittedOnline, setSubmittedOnline] = useState(false);
   const [choosing, setChoosing] = useState(false);
   const [rerolling, setRerolling] = useState(false);
   const recordedRef = useRef(false);
@@ -178,6 +180,7 @@ export function GameBoard({
     setCupResult(null);
     setRunRank(undefined);
     setCupRankingResult(undefined);
+    setSubmittedOnline(false);
     setChoosing(false);
     setRerolling(false);
     recordedRef.current = false;
@@ -238,6 +241,7 @@ export function GameBoard({
             rerollsUsed: rerollsThisRunRef.current,
           }
         ).then((completed) => {
+          setSubmittedOnline(completed.submittedOnline);
           if (completed.nationalRank) setRunRank(completed.nationalRank);
         });
 
@@ -445,6 +449,7 @@ export function GameBoard({
           matchResults: result.fixtures.map((fixture) => fixture.result),
         }
       ).then((completed) => {
+        setSubmittedOnline(completed.submittedOnline);
         setCupRankingResult(completed.cupRanking);
         if (completed.cupRanking?.cupWinsRank) {
           setRunRank(completed.cupRanking.cupWinsRank);
@@ -491,6 +496,10 @@ export function GameBoard({
       )}
 
       <div className="relative mx-auto max-w-6xl overflow-x-hidden px-4 py-4 pb-10 sm:py-6">
+        {phase !== "clubSelect" && phase !== "review" && (
+          <GuestNotice variant="play" />
+        )}
+
         {phase !== "clubSelect" && (
           <MatchdayScoreboard
             difficulty={difficulty}
@@ -551,7 +560,7 @@ export function GameBoard({
           </div>
         )}
 
-        <div className="relative mt-4 overflow-x-hidden">
+        <div className="relative mt-4 overflow-x-hidden overflow-y-visible">
           {phase === "clubSelect" && isChallengeCup && (
             <ChallengeCupClubSelect
               seed={seed}
@@ -560,6 +569,7 @@ export function GameBoard({
           )}
 
           {(phase === "pitch" || phase === "choice") && (
+            <div className="overflow-y-auto pb-2 sm:overflow-visible">
             <RugbyPitch
               squad={squad}
               totalValue={totalValue}
@@ -574,6 +584,7 @@ export function GameBoard({
                 joeMellorMode ? [LOOSE_FORWARD_SLOT_INDEX] : undefined
               }
             />
+            </div>
           )}
 
           {phase === "simulation" && isChallengeCup && !cupResult && (
@@ -648,6 +659,7 @@ export function GameBoard({
           difficulty={difficulty}
           joeMellorMode={joeMellorMode}
           cupRankingResult={cupRankingResult}
+          submittedOnline={submittedOnline}
           onPlayAgain={resetRun}
           onClose={() => setPhase(isChallengeCup ? "clubSelect" : "pitch")}
         />
@@ -661,6 +673,7 @@ export function GameBoard({
           joeMellorMode={joeMellorMode}
           seasonResult={seasonResult}
           runRank={runRank}
+          submittedOnline={submittedOnline}
           onPlayAgain={resetRun}
           onClose={() => setPhase("pitch")}
         />

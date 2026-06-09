@@ -2,24 +2,18 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/lib/auth-context";
 import type { GameDifficulty } from "@/lib/types";
 import { getDifficulty, setDifficulty } from "@/lib/storage/preferences";
+import { GuestNotice } from "./GuestNotice";
 import { TYPO } from "@/lib/ui/typography";
 
 export function HomeModeSelector() {
-  const { isLoggedIn, loading: authLoading } = useAuth();
   const [difficulty, setDifficultyState] = useState<GameDifficulty>("NORMAL");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const sync = () => {
-      setDifficultyState(getDifficulty());
-      setMounted(true);
-    };
-    sync();
-    window.addEventListener("auth-state-changed", sync);
-    return () => window.removeEventListener("auth-state-changed", sync);
+    setDifficultyState(getDifficulty());
+    setMounted(true);
   }, []);
 
   const select = (d: GameDifficulty) => {
@@ -32,15 +26,15 @@ export function HomeModeSelector() {
   const cupHref = mounted
     ? `/play?cup=1${query ? query.replace("?", "&") : ""}`
     : "/play?cup=1";
-
-  const canPlay = isLoggedIn && !authLoading;
-  const blockedMessage = !authLoading && !isLoggedIn
-    ? "Create an account or log in to start a run and submit online leaderboard scores."
-    : null;
+  const jmHref = mounted
+    ? `/play?joeMellor=1${query ? query.replace("?", "&") : ""}`
+    : "/play?joeMellor=1";
 
   return (
     <div>
-      <div className="mb-8 flex flex-col items-center">
+      <GuestNotice variant="home" />
+
+      <div className="mb-8 mt-4 flex flex-col items-center">
         <p className={`mb-3 ${TYPO.sectionLabel}`}>Select Difficulty</p>
         <div className="inline-flex rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1">
           <button
@@ -74,81 +68,54 @@ export function HomeModeSelector() {
         )}
       </div>
 
-      {blockedMessage && (
-        <p className="mb-4 text-center text-sm font-medium text-amber-400/90">
-          {blockedMessage}
-        </p>
-      )}
-
       <div className="mx-auto grid max-w-2xl gap-4 sm:grid-cols-2">
-        {canPlay ? (
-          <>
-            <Link
-              href={seasonHref}
-              className="card-glass matchday-panel group block p-6 transition hover:border-accent-green/30"
-            >
-              <h2 className="font-display text-xl font-bold group-hover:text-accent-green">
-                Super League Season
-              </h2>
-              <p className="mt-2 text-sm text-gray-400">
-                Draft your XIII and simulate a full Super League campaign. Can
-                you go 27-0?
-              </p>
-              <span className="mt-4 inline-block text-sm font-semibold text-accent-green">
-                Start Season →
-              </span>
-            </Link>
+        <Link
+          href={seasonHref}
+          className="card-glass matchday-panel group block p-6 transition hover:border-accent-green/30"
+        >
+          <h2 className="font-display text-xl font-bold group-hover:text-accent-green">
+            Super League Season
+          </h2>
+          <p className="mt-2 text-sm text-gray-400">
+            Draft your XIII and simulate a full Super League campaign. Can you
+            go 27-0?
+          </p>
+          <span className="mt-4 inline-block text-sm font-semibold text-accent-green">
+            Start Season →
+          </span>
+        </Link>
 
-            <Link
-              href={cupHref}
-              className="card-glass matchday-panel group block p-6 transition hover:border-accent-gold/30"
-            >
-              <h2 className="font-display text-xl font-bold group-hover:text-accent-gold">
-                Challenge Cup
-              </h2>
-              <p className="mt-2 text-sm text-gray-400">
-                Draft your squad and battle through a knockout tournament. Win
-                four matches to lift the cup.
-              </p>
-              <span className="mt-4 inline-block text-sm font-semibold text-accent-gold">
-                Start Cup Run →
-              </span>
-            </Link>
-          </>
-        ) : (
-          <>
-            <ModeCardDisabled
-              title="Super League Season"
-              description="Draft your XIII and simulate a full Super League campaign."
-            />
-            <ModeCardDisabled
-              title="Challenge Cup"
-              description="Draft your squad and battle through a knockout tournament."
-            />
-          </>
-        )}
+        <Link
+          href={cupHref}
+          className="card-glass matchday-panel group block p-6 transition hover:border-accent-gold/30"
+        >
+          <h2 className="font-display text-xl font-bold group-hover:text-accent-gold">
+            Challenge Cup
+          </h2>
+          <p className="mt-2 text-sm text-gray-400">
+            Draft your squad and battle through a knockout tournament. Win four
+            matches to lift the cup.
+          </p>
+          <span className="mt-4 inline-block text-sm font-semibold text-accent-gold">
+            Start Cup Run →
+          </span>
+        </Link>
       </div>
-    </div>
-  );
-}
 
-function ModeCardDisabled({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
-  return (
-    <div
-      className="card-glass matchday-panel block cursor-not-allowed p-6 opacity-50"
-      aria-disabled
-    >
-      <h2 className="font-display text-xl font-bold text-gray-500">{title}</h2>
-      <p className="mt-2 text-sm text-gray-500">{description}</p>
-      <span className="mt-4 inline-block text-sm font-semibold text-gray-600">
-        Account required
-      </span>
+      <div className="mx-auto mt-4 max-w-2xl">
+        <Link
+          href={jmHref}
+          className="card-glass matchday-panel group block p-5 transition hover:border-accent-gold/30"
+        >
+          <h2 className="font-display text-lg font-bold group-hover:text-accent-gold">
+            Joe Mellor Mode
+          </h2>
+          <p className="mt-1 text-sm text-gray-500">
+            The GOAT is locked at Loose Forward — build your dynasty around Joe
+            Mellor.
+          </p>
+        </Link>
+      </div>
     </div>
   );
 }

@@ -18,6 +18,7 @@ import { Confetti } from "./Confetti";
 import { HardModeBadge } from "./HardModeBadge";
 import { ClubRepresentation } from "./ClubRepresentation";
 import { RLAwardCard } from "./cards/RLAwardCard";
+import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 
 interface SeasonReviewProps {
   squad: SquadSlot[];
@@ -26,6 +27,7 @@ interface SeasonReviewProps {
   difficulty?: GameDifficulty;
   joeMellorMode?: boolean;
   runRank?: number;
+  submittedOnline?: boolean;
   onPlayAgain: () => void;
   onClose: () => void;
 }
@@ -36,6 +38,7 @@ export function SeasonReview({
   difficulty = "NORMAL",
   joeMellorMode = false,
   runRank,
+  submittedOnline = false,
   onPlayAgain,
   onClose,
 }: SeasonReviewProps) {
@@ -100,6 +103,8 @@ export function SeasonReview({
           <p className="font-display text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
             Season Review
           </p>
+
+          <ReviewSubmissionNotice submittedOnline={submittedOnline} />
 
           {isHardMode && (
             <div className="mt-3 flex justify-center">

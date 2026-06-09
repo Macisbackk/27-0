@@ -30,6 +30,7 @@ import { Confetti } from "./Confetti";
 import { HardModeBadge } from "./HardModeBadge";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { BracketRecap } from "./BracketRecap";
+import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 
 interface ChallengeCupReviewProps {
   squad: SquadSlot[];
@@ -37,6 +38,7 @@ interface ChallengeCupReviewProps {
   difficulty?: GameDifficulty;
   joeMellorMode?: boolean;
   cupRankingResult?: CupRunRankingResult;
+  submittedOnline?: boolean;
   onPlayAgain: () => void;
   onClose: () => void;
 }
@@ -47,6 +49,7 @@ export function ChallengeCupReview({
   difficulty = "NORMAL",
   joeMellorMode = false,
   cupRankingResult,
+  submittedOnline = false,
   onPlayAgain,
   onClose,
 }: ChallengeCupReviewProps) {
@@ -133,6 +136,8 @@ export function ChallengeCupReview({
           <p className="font-display text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
             Challenge Cup Review
           </p>
+
+          <ReviewSubmissionNotice submittedOnline={submittedOnline} />
 
           {isHardMode && (
             <div className="mt-3 flex justify-center">
