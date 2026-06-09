@@ -1,0 +1,621 @@
+import seedrandom from "seedrandom";
+import type { SquadSlot } from "../types";
+import { getActiveSuperLeagueClubNames } from "../clubs/super-league-display";
+import { buildOpponentScoringDetail } from "./opponent-scorers";
+import {
+  decomposeRLScore,
+  pickRLScore,
+  snapToRLScore,
+} from "./rl-scores";
+import {
+  distributeSeasonTries,
+  enrichSingleFixtureScoring,
+} from "./season-tries";
+import type {
+  ChallengeCupResult,
+  CupFinish,
+  CupRoundName,
+} from "./challenge-cup-simulation";
+import { CUP_ROUND_NAMES } from "./challenge-cup-simulation";
+import {
+  calculateSquadStrength,
+  simulateOneFixture,
+  type MatchFixture,
+  type MatchSimState,
+  type TeamScoringDetail,
+} from "./season-simulation";
+import type { ScoreBreakdown } from "./rl-scores";
+
+const CLUB_STRENGTH: Record<string, number> = {
+  "Wigan Warriors": 84,
+  "St Helens": 83,
+  "Leeds Rhinos": 81,
+  "Warrington Wolves": 80,
+  "Hull KR": 79,
+  "Catalans Dragons": 78,
+  "Hull FC": 76,
+  "Leigh Leopards": 75,
+  "Huddersfield Giants": 73,
+  "Salford Red Devils": 72,
+  "Castleford Tigers": 70,
+  "Bradford Bulls": 69,
+  "Wakefield Trinity": 66,
+  "London Broncos": 60,
+  "Widnes Vikings": 62,
+  "Halifax Panthers": 61,
+  "York Knights": 74,
+  "Toulouse Olympique": 76,
+};
+
+export interface BracketScoringDetail {
+  home: TeamScoringDetail;
+  away: TeamScoringDetail;
+}
+
+export interface BracketMatch {
+  id: string;
+  round: number;
+  slot: number;
+  homeTeam: string | null;
+  awayTeam: string | null;
+  homeScore: number | null;
+  awayScore: number | null;
+  winner: string | null;
+  loser: string | null;
+  status: "pending" | "ready" | "complete";
+  isUserMatch: boolean;
+  feederIds: string[] | null;
+  userFixture: MatchFixture | null;
+  scoringDetail: BracketScoringDetail | null;
+}
+
+export interface ChallengeCupBracketState {
+  seed: string;
+  userClub: string;
+  /** Two clubs randomly seeded directly into the quarter-finals. */
+  byeTeams: [string, string];
+  matches: BracketMatch[];
+  simState: MatchSimState;
+  userEliminated: boolean;
+  tournamentComplete: boolean;
+  userWon: boolean;
+}
+
+function shuffle<T>(arr: T[], rng: () => number): T[] {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function getClubStrength(club: string, rng: () => number): number {
+  const base = CLUB_STRENGTH[club] ?? 70;
+  return base + (rng() - 0.5) * 8;
+}
+
+/** Pick two distinct clubs for quarter-final byes — equal chance for every active club. */
+function pickByeTeams(
+  allClubs: string[],
+  seed: string
+): [string, string] {
+  const rng = seedrandom(`${seed}-byes`);
+  const shuffled = shuffle([...allClubs], rng);
+  return [shuffled[0], shuffled[1]];
+}
+
+function isUserTeam(team: string | null, userClub: string): boolean {
+  return team === userClub;
+}
+
+function createMatch(
+  id: string,
+  round: number,
+  slot: number,
+  homeTeam: string | null,
+  awayTeam: string | null,
+  feederIds: string[] | null,
+  userClub: string
+): BracketMatch {
+  const ready = homeTeam !== null && awayTeam !== null;
+  return {
+    id,
+    round,
+    slot,
+    homeTeam,
+    awayTeam,
+    homeScore: null,
+    awayScore: null,
+    winner: null,
+    loser: null,
+    status: ready ? "ready" : "pending",
+    isUserMatch:
+      isUserTeam(homeTeam, userClub) || isUserTeam(awayTeam, userClub),
+    feederIds,
+    userFixture: null,
+    scoringDetail: null,
+  };
+}
+
+export function createChallengeCupBracket(
+  seed: string,
+  userClub: string
+): ChallengeCupBracketState {
+  const allClubs = getActiveSuperLeagueClubNames();
+  const byeTeams = pickByeTeams(allClubs, seed);
+  const byeSet = new Set(byeTeams);
+  const r16Rng = seedrandom(`${seed}-r16`);
+  const r16Teams = shuffle(
+    allClubs.filter((c) => !byeSet.has(c)),
+    r16Rng
+  );
+  const matches: BracketMatch[] = [];
+
+  for (let i = 0; i < 6; i++) {
+    matches.push(
+      createMatch(
+        `1-${i}`,
+        1,
+        i,
+        r16Teams[i * 2],
+        r16Teams[i * 2 + 1],
+        null,
+        userClub
+      )
+    );
+  }
+
+  matches.push(
+    createMatch("2-0", 2, 0, null, null, ["1-0", "1-1"], userClub),
+    createMatch("2-1", 2, 1, null, null, ["1-2", "1-3"], userClub),
+    createMatch("2-2", 2, 2, byeTeams[0], null, ["1-4"], userClub),
+    createMatch("2-3", 2, 3, byeTeams[1], null, ["1-5"], userClub)
+  );
+
+  for (let i = 0; i < 2; i++) {
+    matches.push(
+      createMatch(
+        `3-${i}`,
+        3,
+        i,
+        null,
+        null,
+        [`2-${i * 2}`, `2-${i * 2 + 1}`],
+        userClub
+      )
+    );
+  }
+  matches.push(
+    createMatch("4-0", 4, 0, null, null, ["3-0", "3-1"], userClub)
+  );
+
+  return {
+    seed,
+    userClub,
+    byeTeams,
+    matches,
+    simState: { form: 0, seasonDropGoals: 0 },
+    userEliminated: false,
+    tournamentComplete: false,
+    userWon: false,
+  };
+}
+
+export function getMatchById(
+  state: ChallengeCupBracketState,
+  id: string
+): BracketMatch | undefined {
+  return state.matches.find((m) => m.id === id);
+}
+
+export function getMatchesForRound(
+  state: ChallengeCupBracketState,
+  round: number
+): BracketMatch[] {
+  return state.matches.filter((m) => m.round === round);
+}
+
+export function getActiveRound(state: ChallengeCupBracketState): number {
+  for (let r = 1; r <= 4; r++) {
+    const roundMatches = getMatchesForRound(state, r);
+    if (roundMatches.some((m) => m.status === "ready")) return r;
+  }
+  return 4;
+}
+
+export function canSimulateMatch(
+  state: ChallengeCupBracketState,
+  matchId: string
+): boolean {
+  if (state.userEliminated || state.tournamentComplete) return false;
+  const match = getMatchById(state, matchId);
+  return match?.status === "ready";
+}
+
+function buildClubScoring(
+  club: string,
+  tries: number,
+  scoring: ScoreBreakdown,
+  seed: string,
+  round: number,
+  matchId: string
+): TeamScoringDetail {
+  const fakeFixture: MatchFixture = {
+    round,
+    opponent: club,
+    isHome: true,
+    pointsFor: 0,
+    pointsAgainst: 0,
+    triesFor: 0,
+    triesAgainst: tries,
+    scoringFor: {
+      tries: 0,
+      conversions: 0,
+      penalties: 0,
+      dropGoals: 0,
+      points: 0,
+    },
+    scoringAgainst: scoring,
+    result: "W",
+  };
+  return buildOpponentScoringDetail(
+    fakeFixture,
+    `${seed}-${matchId}`
+  );
+}
+
+function simulateClubVsClub(
+  home: string,
+  away: string,
+  seed: string,
+  matchId: string,
+  round: number
+): {
+  homeScore: number;
+  awayScore: number;
+  homeScoring: ScoreBreakdown;
+  awayScoring: ScoreBreakdown;
+  winner: string;
+  loser: string;
+} {
+  const rng = seedrandom(`${seed}-ai-${matchId}`);
+  const homeStr = getClubStrength(home, rng);
+  const awayStr = getClubStrength(away, rng);
+  const homeAdvantage = 3;
+  const homeWins =
+    rng() <
+    0.5 + ((homeStr + homeAdvantage - awayStr) / 100) * 0.65;
+
+  const winScore = pickRLScore(14, 38, rng);
+  const lossScore = pickRLScore(0, 26, rng);
+  let homeScore = snapToRLScore(homeWins ? winScore : lossScore);
+  let awayScore = snapToRLScore(homeWins ? lossScore : winScore);
+  if (homeScore === awayScore) {
+    if (homeWins) homeScore = snapToRLScore(homeScore + 2);
+    else awayScore = snapToRLScore(awayScore + 2);
+  }
+  const homeScoring = decomposeRLScore(homeScore);
+  const awayScoring = decomposeRLScore(awayScore);
+
+  return {
+    homeScore,
+    awayScore,
+    homeScoring,
+    awayScoring,
+    winner: homeWins ? home : away,
+    loser: homeWins ? away : home,
+  };
+}
+
+function advanceWinner(
+  matches: BracketMatch[],
+  completed: BracketMatch,
+  userClub: string
+): void {
+  if (!completed.winner) return;
+
+  for (const child of matches) {
+    if (!child.feederIds?.includes(completed.id)) continue;
+
+    if (child.homeTeam === null) {
+      child.homeTeam = completed.winner;
+    } else if (child.awayTeam === null) {
+      child.awayTeam = completed.winner;
+    }
+
+    if (child.homeTeam && child.awayTeam) {
+      child.status = "ready";
+      child.isUserMatch =
+        isUserTeam(child.homeTeam, userClub) ||
+        isUserTeam(child.awayTeam, userClub);
+    }
+  }
+}
+
+function completeMatch(
+  match: BracketMatch,
+  homeScore: number,
+  awayScore: number,
+  winner: string,
+  loser: string,
+  scoringDetail: BracketScoringDetail | null,
+  userFixture: MatchFixture | null
+): void {
+  match.homeScore = homeScore;
+  match.awayScore = awayScore;
+  match.winner = winner;
+  match.loser = loser;
+  match.status = "complete";
+  match.scoringDetail = scoringDetail;
+  match.userFixture = userFixture;
+}
+
+function simulateUserMatch(
+  state: ChallengeCupBracketState,
+  match: BracketMatch,
+  squad: SquadSlot[]
+): ChallengeCupBracketState {
+  const home = match.homeTeam!;
+  const away = match.awayTeam!;
+  const userClub = state.userClub;
+  const isHome = home === userClub;
+  const opponent = isHome ? away : home;
+
+  const { fixture, state: nextSim } = simulateOneFixture(
+    squad,
+    opponent,
+    isHome,
+    match.round,
+    `${state.seed}-cup-${match.id}`,
+    state.simState
+  );
+
+  enrichSingleFixtureScoring(squad, fixture, state.seed);
+
+  const homeScore = isHome ? fixture.pointsFor : fixture.pointsAgainst;
+  const awayScore = isHome ? fixture.pointsAgainst : fixture.pointsFor;
+  const winner = fixture.result === "W" ? userClub : opponent;
+  const loser = fixture.result === "W" ? opponent : userClub;
+
+  const detail = fixture.scoringDetail!;
+  const scoringDetail: BracketScoringDetail = {
+    home: isHome ? detail.dreamTeam : detail.opponent,
+    away: isHome ? detail.opponent : detail.dreamTeam,
+  };
+
+  const matches = state.matches.map((m) => ({ ...m }));
+  const m = matches.find((x) => x.id === match.id)!;
+  completeMatch(m, homeScore, awayScore, winner, loser, scoringDetail, fixture);
+  advanceWinner(matches, m, state.userClub);
+
+  const userLost = fixture.result === "L";
+  const userWonFinal =
+    match.round === 4 && fixture.result === "W";
+  const tournamentComplete = userLost || userWonFinal;
+
+  return {
+    ...state,
+    matches,
+    simState: nextSim,
+    userEliminated: userLost,
+    tournamentComplete,
+    userWon: userWonFinal,
+  };
+}
+
+function simulateAiMatch(
+  state: ChallengeCupBracketState,
+  match: BracketMatch
+): ChallengeCupBracketState {
+  const home = match.homeTeam!;
+  const away = match.awayTeam!;
+  const result = simulateClubVsClub(
+    home,
+    away,
+    state.seed,
+    match.id,
+    match.round
+  );
+
+  const scoringDetail: BracketScoringDetail = {
+    home: buildClubScoring(
+      home,
+      result.homeScoring.tries,
+      result.homeScoring,
+      state.seed,
+      match.round,
+      match.id
+    ),
+    away: buildClubScoring(
+      away,
+      result.awayScoring.tries,
+      result.awayScoring,
+      state.seed,
+      match.round,
+      match.id
+    ),
+  };
+
+  const matches = state.matches.map((m) => ({ ...m }));
+  const m = matches.find((x) => x.id === match.id)!;
+  completeMatch(
+    m,
+    result.homeScore,
+    result.awayScore,
+    result.winner,
+    result.loser,
+    scoringDetail,
+    null
+  );
+  advanceWinner(matches, m, state.userClub);
+
+  return { ...state, matches };
+}
+
+function runMatch(
+  state: ChallengeCupBracketState,
+  matchId: string,
+  squad: SquadSlot[]
+): ChallengeCupBracketState {
+  const match = getMatchById(state, matchId);
+  if (!match || match.status !== "ready") return state;
+
+  if (match.isUserMatch) {
+    return simulateUserMatch(state, match, squad);
+  }
+  return simulateAiMatch(state, match);
+}
+
+export function simulateBracketMatch(
+  state: ChallengeCupBracketState,
+  matchId: string,
+  squad: SquadSlot[]
+): ChallengeCupBracketState {
+  if (!canSimulateMatch(state, matchId)) return state;
+  return runMatch(state, matchId, squad);
+}
+
+export function simulateBracketRound(
+  state: ChallengeCupBracketState,
+  round: number,
+  squad: SquadSlot[]
+): ChallengeCupBracketState {
+  let next = state;
+  const roundMatches = getMatchesForRound(next, round).filter(
+    (m) => m.status === "ready"
+  );
+
+  for (const match of roundMatches) {
+    if (next.userEliminated || next.tournamentComplete) break;
+    next = runMatch(next, match.id, squad);
+  }
+
+  return next;
+}
+
+export function simulateBracketTournament(
+  state: ChallengeCupBracketState,
+  squad: SquadSlot[]
+): ChallengeCupBracketState {
+  let next = state;
+  for (let round = 1; round <= 4; round++) {
+    if (next.tournamentComplete) break;
+    next = simulateBracketRound(next, round, squad);
+  }
+  return next;
+}
+
+function deriveFinish(
+  userFixtures: MatchFixture[],
+  won: boolean
+): { finish: CupFinish; label: string } {
+  const roundReached = userFixtures.length;
+  if (roundReached === 4 && won) {
+    return { finish: "Winners", label: "Challenge Cup Winners" };
+  }
+  if (roundReached === 4) {
+    return { finish: "Runners-Up", label: "Runners-Up" };
+  }
+  if (roundReached === 3) {
+    return { finish: "Semi Final", label: "Semi Final Exit" };
+  }
+  if (roundReached === 2) {
+    return { finish: "Quarter Final", label: "Quarter Final Exit" };
+  }
+  return { finish: "Round of 16", label: "Round of 16 Exit" };
+}
+
+/** Simulate remaining AI fixtures so the bracket recap is fully populated. */
+export function finalizeBracketDisplay(
+  state: ChallengeCupBracketState
+): ChallengeCupBracketState {
+  let next = state;
+  for (let round = 1; round <= 4; round++) {
+    let progress = true;
+    while (progress) {
+      progress = false;
+      const ready = next.matches.filter(
+        (m) =>
+          m.round === round &&
+          m.status === "ready" &&
+          !m.isUserMatch
+      );
+      for (const match of ready) {
+        next = simulateAiMatch(next, match);
+        progress = true;
+      }
+    }
+  }
+  return next;
+}
+
+export function buildChallengeCupResult(
+  state: ChallengeCupBracketState,
+  squad: SquadSlot[]
+): ChallengeCupResult {
+  const finalized = finalizeBracketDisplay(state);
+  const userMatches = finalized.matches
+    .filter((m) => m.isUserMatch && m.status === "complete")
+    .sort((a, b) => a.round - b.round);
+
+  const fixtures: MatchFixture[] = userMatches
+    .map((m) => m.userFixture)
+    .filter((f): f is MatchFixture => f !== null);
+
+  const wins = fixtures.filter((f) => f.result === "W").length;
+  const losses = fixtures.filter((f) => f.result === "L").length;
+  const pointsFor = fixtures.reduce((s, f) => s + f.pointsFor, 0);
+  const pointsAgainst = fixtures.reduce((s, f) => s + f.pointsAgainst, 0);
+  const strength = calculateSquadStrength(squad);
+  const { finish, label } = deriveFinish(fixtures, state.userWon);
+  const tryScorers = distributeSeasonTries(squad, fixtures, state.seed, wins);
+
+  return {
+    finish,
+    resultLabel: label,
+    matchesPlayed: fixtures.length,
+    wins,
+    losses,
+    pointsFor,
+    pointsAgainst,
+    fixtures,
+    tryScorers,
+    squadStrength: Math.round(strength * 10) / 10,
+    insights: [],
+    isWinner: state.userWon,
+    userClub: state.userClub,
+    byeTeams: state.byeTeams,
+    bracketMatches: finalized.matches,
+  };
+}
+
+export function getCupRoundLabel(round: number): CupRoundName {
+  return CUP_ROUND_NAMES[round - 1] ?? "Final";
+}
+
+export function bracketMatchToDisplayFixture(match: BracketMatch): {
+  homeTeam: string;
+  awayTeam: string;
+  homeScore: number;
+  awayScore: number;
+  scoringDetail: BracketScoringDetail | null;
+  userFixture: MatchFixture | null;
+  round: number;
+  roundLabel: string;
+} | null {
+  if (match.status !== "complete") return null;
+  if (!match.homeTeam || !match.awayTeam) return null;
+  if (match.homeScore === null || match.awayScore === null) return null;
+
+  return {
+    homeTeam: match.homeTeam,
+    awayTeam: match.awayTeam,
+    homeScore: match.homeScore,
+    awayScore: match.awayScore,
+    scoringDetail: match.scoringDetail,
+    userFixture: match.userFixture,
+    round: match.round,
+    roundLabel: getCupRoundLabel(match.round),
+  };
+}

@@ -1,0 +1,674 @@
+"use client";
+
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import type {
+  CupRunRankingResult,
+  GameDifficulty,
+  GameMode,
+  Player,
+  SquadSlot,
+} from "@/lib/types";
+import {
+  autofillFromOffers,
+  collectUsedPlayerIds,
+  generateSlotOffers,
+  getOfferForSlot,
+  getRoundPlayers,
+  rerollSlotOffer,
+  type RecruitmentRound,
+} from "@/lib/game/recruitment";
+import { getPlayerById } from "@/lib/players";
+import { getJoeMellorGoatPlayer } from "@/lib/players/goat";
+import { generateRunSeed } from "@/lib/game/generator";
+import {
+  simulateSeason,
+  type SeasonResult,
+} from "@/lib/game/season-simulation";
+import type { ChallengeCupResult } from "@/lib/game/challenge-cup-simulation";
+import { createJoeMellorStartingSquad } from "@/lib/game/joe-mellor-mode";
+import { JOE_MELLOR_GOAT_ID } from "@/lib/players/goat";
+import {
+  createEmptySquad,
+  getFilledCount,
+  getSquadValue,
+  LOOSE_FORWARD_SLOT_INDEX,
+  signPlayerToSlot,
+  TOTAL_SLOTS,
+} from "@/lib/positions";
+import { recordCompletedRun } from "@/lib/storage/run";
+import { getAverageSquadRating } from "@/lib/squad-analysis";
+import { getLeaderboard } from "@/lib/storage/leaderboard";
+import { addHallOfFameEntry } from "@/lib/storage/hall-of-fame";
+import {
+  playJoeMellorActivate,
+  playPlayerSelect,
+  playPositionComplete,
+  playSeasonStart,
+} from "@/lib/sound";
+import { PlayerChoice } from "./PlayerChoice";
+import { RugbyPitch } from "./RugbyPitch";
+import { SeasonReview } from "./SeasonReview";
+import { SeasonSimulation } from "./SeasonSimulation";
+import { ChallengeCupReview } from "./ChallengeCupReview";
+import { ChallengeCupBracket } from "./ChallengeCupBracket";
+import { ChallengeCupClubSelect } from "./ChallengeCupClubSelect";
+import { MatchdayScoreboard } from "./MatchdayScoreboard";
+import { HardModeBadge } from "./HardModeBadge";
+import { ClubHeaderBar } from "./ClubBadge";
+
+type GamePhase = "clubSelect" | "pitch" | "choice" | "simulation" | "review";
+
+interface GameBoardProps {
+  mode: GameMode;
+  difficulty: GameDifficulty;
+  title?: string;
+  subtitle?: string;
+  joeMellorMode?: boolean;
+}
+
+function createRunSeed(runKey: number): string {
+  return `${generateRunSeed()}-${runKey}`;
+}
+
+function createStartingSquad(joeMellorMode: boolean): SquadSlot[] {
+  return joeMellorMode ? createJoeMellorStartingSquad() : createEmptySquad();
+}
+
+export function GameBoard({
+  mode,
+  difficulty,
+  title,
+  subtitle,
+  joeMellorMode = false,
+}: GameBoardProps) {
+  const isChallengeCup = mode === "CHALLENGE_CUP";
+  const [runKey, setRunKey] = useState(0);
+  const [phase, setPhase] = useState<GamePhase>(
+    isChallengeCup ? "clubSelect" : "pitch"
+  );
+  const [cupClub, setCupClub] = useState<string | null>(null);
+  const [selectedSlotIndex, setSelectedSlotIndex] = useState<number | null>(
+    null
+  );
+  const [squad, setSquad] = useState<SquadSlot[]>(() =>
+    createStartingSquad(joeMellorMode)
+  );
+  const [slotOffers, setSlotOffers] = useState<
+    Map<number, RecruitmentRound>
+  >(new Map());
+  const [rerollsUsedBySlot, setRerollsUsedBySlot] = useState<Set<number>>(
+    new Set()
+  );
+  const [discardedPlayerIds, setDiscardedPlayerIds] = useState<Set<string>>(
+    new Set()
+  );
+  const [rerollsThisRun, setRerollsThisRun] = useState(0);
+  const rerollsThisRunRef = useRef(0);
+  const [seasonResult, setSeasonResult] = useState<SeasonResult | null>(null);
+  const [cupResult, setCupResult] = useState<ChallengeCupResult | null>(null);
+  const [runRank, setRunRank] = useState<number | undefined>();
+  const [cupRankingResult, setCupRankingResult] = useState<
+    CupRunRankingResult | undefined
+  >();
+  const [choosing, setChoosing] = useState(false);
+  const [rerolling, setRerolling] = useState(false);
+  const recordedRef = useRef(false);
+  const joeMellorSoundPlayed = useRef(false);
+
+  const isHardMode = difficulty === "HARD";
+  const recruitmentOptions = useMemo(
+    () => ({
+      hardMode: isHardMode,
+      clubFilter: isChallengeCup && cupClub ? cupClub : undefined,
+    }),
+    [isHardMode, isChallengeCup, cupClub]
+  );
+
+  const { seed, runId } = useMemo(() => {
+    const s = createRunSeed(runKey);
+    return {
+      seed: s,
+      runId: `run-${Date.now()}-${runKey}`,
+    };
+  }, [runKey]);
+
+  useEffect(() => {
+    if (isChallengeCup && !cupClub) return;
+
+    setSlotOffers(
+      generateSlotOffers(
+        seed,
+        joeMellorMode ? [LOOSE_FORWARD_SLOT_INDEX] : [],
+        joeMellorMode ? [JOE_MELLOR_GOAT_ID] : [],
+        recruitmentOptions
+      )
+    );
+    setRerollsUsedBySlot(new Set());
+    setDiscardedPlayerIds(new Set());
+    setRerollsThisRun(0);
+    rerollsThisRunRef.current = 0;
+  }, [seed, joeMellorMode, recruitmentOptions, isChallengeCup, cupClub]);
+
+  useEffect(() => {
+    if (joeMellorMode && !joeMellorSoundPlayed.current) {
+      joeMellorSoundPlayed.current = true;
+      playJoeMellorActivate();
+    }
+  }, [joeMellorMode]);
+
+  const currentRound: RecruitmentRound | null =
+    selectedSlotIndex !== null
+      ? getOfferForSlot(slotOffers, selectedSlotIndex)
+      : null;
+
+  const filledCount = getFilledCount(squad);
+  const totalValue = getSquadValue(squad);
+  const rerollAvailable =
+    !isHardMode &&
+    selectedSlotIndex !== null &&
+    !rerollsUsedBySlot.has(selectedSlotIndex);
+
+  const resetRun = useCallback(() => {
+    setRunKey((k) => k + 1);
+    setPhase(isChallengeCup ? "clubSelect" : "pitch");
+    setCupClub(null);
+    setSelectedSlotIndex(null);
+    setSquad(createStartingSquad(joeMellorMode));
+    setSeasonResult(null);
+    setCupResult(null);
+    setRunRank(undefined);
+    setCupRankingResult(undefined);
+    setChoosing(false);
+    setRerolling(false);
+    recordedRef.current = false;
+  }, [joeMellorMode, isChallengeCup]);
+
+  const handleCupClubSelected = useCallback((club: string) => {
+    setCupClub(club);
+    setPhase("pitch");
+  }, []);
+
+  const startTournamentSimulation = useCallback(
+    (finalSquad: SquadSlot[]) => {
+      playSeasonStart();
+
+      if (isChallengeCup) {
+        setCupResult(null);
+        setSeasonResult(null);
+        setPhase("simulation");
+      } else {
+        const result = simulateSeason(finalSquad, seed);
+        setSeasonResult(result);
+        setCupResult(null);
+        setPhase("simulation");
+
+        if (recordedRef.current) return;
+        recordedRef.current = true;
+
+        const signedIds = finalSquad
+          .filter((s) => s.player)
+          .map((s) => s.player!.id);
+        const value = getSquadValue(finalSquad);
+
+        recordCompletedRun(
+          {
+            id: runId,
+            mode,
+            status: "COMPLETED",
+            currentPlayer: null,
+            currentIndex: TOTAL_SLOTS,
+            totalOffers: TOTAL_SLOTS,
+            squad: finalSquad,
+            totalValue: value,
+            filledCount: getFilledCount(finalSquad),
+            totalSlots: TOTAL_SLOTS,
+            canSign: false,
+            seed,
+          },
+          signedIds,
+          difficulty,
+          {
+            joeMellorMode,
+            seasonWins: result.wins,
+            seasonLosses: result.losses,
+            seasonLeaguePosition: result.leaguePosition,
+            isPerfectSeason: result.isPerfect,
+            longestWinStreak: result.longestWinStreak,
+            longestLosingStreak: result.longestLosingStreak,
+            rerollsUsed: rerollsThisRunRef.current,
+          }
+        );
+
+        if (result.isPerfect) {
+          addHallOfFameEntry(value, mode, difficulty);
+        }
+      }
+
+      const userEntry = getLeaderboard("ALL_TIME", difficulty).find(
+        (e) => e.isCurrentUser
+      );
+      if (userEntry) setRunRank(userEntry.rank);
+    },
+    [
+      runId,
+      mode,
+      seed,
+      difficulty,
+      joeMellorMode,
+      isChallengeCup,
+    ]
+  );
+
+  const handleSelectSlot = useCallback(
+    (slotIndex: number) => {
+      if (phase !== "pitch") return;
+      if (joeMellorMode && slotIndex === LOOSE_FORWARD_SLOT_INDEX) return;
+      const slot = squad.find((s) => s.slotIndex === slotIndex);
+      if (!slot || slot.player) return;
+      setSelectedSlotIndex(slotIndex);
+      setPhase("choice");
+    },
+    [phase, squad, joeMellorMode]
+  );
+
+  const handleChoose = useCallback(
+    (player: Player) => {
+      if (!currentRound || choosing || phase !== "choice") return;
+      setChoosing(true);
+      playPlayerSelect();
+
+      const newSquad = signPlayerToSlot(
+        squad,
+        player,
+        currentRound.slotIndex
+      );
+      setSquad(newSquad);
+
+      setTimeout(() => {
+        setChoosing(false);
+        setSelectedSlotIndex(null);
+
+        if (getFilledCount(newSquad) >= TOTAL_SLOTS) {
+          playPositionComplete();
+          startTournamentSimulation(newSquad);
+        } else {
+          playPositionComplete();
+          setPhase("pitch");
+        }
+      }, 400);
+    },
+    [currentRound, choosing, phase, squad, startTournamentSimulation]
+  );
+
+  const handleReroll = useCallback(() => {
+    if (
+      isHardMode ||
+      !currentRound ||
+      selectedSlotIndex === null ||
+      rerolling ||
+      choosing ||
+      phase !== "choice" ||
+      rerollsUsedBySlot.has(selectedSlotIndex)
+    ) {
+      return;
+    }
+
+    setRerolling(true);
+
+    const signedIds = squad
+      .filter((s) => s.player)
+      .map((s) => s.player!.id);
+    const usedIds = collectUsedPlayerIds(
+      slotOffers,
+      signedIds,
+      selectedSlotIndex
+    );
+    const discarded = new Set(discardedPlayerIds);
+    discarded.add(currentRound.optionA);
+    discarded.add(currentRound.optionB);
+
+    const nextRound = rerollSlotOffer(
+      seed,
+      selectedSlotIndex,
+      currentRound,
+      usedIds,
+      discarded,
+      recruitmentOptions
+    );
+
+    if (nextRound) {
+      setSlotOffers((prev) => {
+        const next = new Map(prev);
+        next.set(selectedSlotIndex, nextRound);
+        return next;
+      });
+      setDiscardedPlayerIds(discarded);
+      setRerollsUsedBySlot((prev) => new Set(prev).add(selectedSlotIndex));
+      setRerollsThisRun((count) => {
+        const next = count + 1;
+        rerollsThisRunRef.current = next;
+        return next;
+      });
+    }
+
+    setRerolling(false);
+  }, [
+    isHardMode,
+    currentRound,
+    selectedSlotIndex,
+    rerolling,
+    choosing,
+    phase,
+    rerollsUsedBySlot,
+    squad,
+    slotOffers,
+    discardedPlayerIds,
+    seed,
+    recruitmentOptions,
+  ]);
+
+  const handleBackToPitch = useCallback(() => {
+    setSelectedSlotIndex(null);
+    setPhase("pitch");
+  }, []);
+
+  const handleAutofill = useCallback(() => {
+    if (phase !== "pitch" || filledCount >= TOTAL_SLOTS) return;
+
+    const skipSlots = joeMellorMode ? [LOOSE_FORWARD_SLOT_INDEX] : [];
+    const choices = autofillFromOffers(seed, slotOffers, skipSlots);
+
+    let newSquad = squad;
+    for (const [slotIndex, playerId] of choices) {
+      const player =
+        getPlayerById(playerId) ??
+        (playerId === JOE_MELLOR_GOAT_ID ? getJoeMellorGoatPlayer() : undefined);
+      if (!player) continue;
+      newSquad = signPlayerToSlot(newSquad, player, slotIndex);
+    }
+
+    setSquad(newSquad);
+    playPositionComplete();
+    startTournamentSimulation(newSquad);
+  }, [
+    phase,
+    filledCount,
+    joeMellorMode,
+    seed,
+    slotOffers,
+    squad,
+    startTournamentSimulation,
+  ]);
+
+  const handleSimulationComplete = useCallback(() => {
+    setPhase("review");
+  }, []);
+
+  const handleCupComplete = useCallback(
+    (result: ChallengeCupResult) => {
+      setCupResult(result);
+
+      if (recordedRef.current) {
+        setPhase("review");
+        return;
+      }
+      recordedRef.current = true;
+
+      const signedIds = squad
+        .filter((s) => s.player)
+        .map((s) => s.player!.id);
+      const value = getSquadValue(squad);
+
+      const rankingResult = recordCompletedRun(
+        {
+          id: runId,
+          mode,
+          status: "COMPLETED",
+          currentPlayer: null,
+          currentIndex: TOTAL_SLOTS,
+          totalOffers: TOTAL_SLOTS,
+          squad,
+          totalValue: value,
+          filledCount: getFilledCount(squad),
+          totalSlots: TOTAL_SLOTS,
+          canSign: false,
+          seed,
+        },
+        signedIds,
+        difficulty,
+        {
+          joeMellorMode,
+          challengeCupMode: true,
+          seasonWins: result.wins,
+          seasonLosses: result.losses,
+          cupFinish: result.finish,
+          cupWon: result.isWinner,
+          averageSquadRating: getAverageSquadRating(squad),
+          rerollsUsed: rerollsThisRunRef.current,
+          matchResults: result.fixtures.map((fixture) => fixture.result),
+        }
+      );
+
+      setCupRankingResult(rankingResult);
+      if (rankingResult?.cupWinsRank) {
+        setRunRank(rankingResult.cupWinsRank);
+      }
+
+      setPhase("review");
+    },
+    [
+      squad,
+      runId,
+      mode,
+      seed,
+      difficulty,
+      joeMellorMode,
+    ]
+  );
+
+  const playerPair =
+    phase === "choice" && currentRound
+      ? getRoundPlayers(currentRound)
+      : null;
+
+  const choiceKey =
+    selectedSlotIndex !== null
+      ? `${runKey}-slot-${selectedSlotIndex}-${currentRound?.optionA}-${currentRound?.optionB}`
+      : "";
+
+  return (
+    <div className="matchday-arena min-h-screen">
+      <div className="stadium-backdrop pointer-events-none fixed inset-0" />
+      <div className="stadium-lights pointer-events-none fixed inset-0" />
+
+      {(title || subtitle || isHardMode) && (
+        <div className="relative mx-auto max-w-6xl px-4 pt-4">
+          <div className="flex flex-wrap items-center gap-3">
+            {title && (
+              <h1 className="font-display text-lg font-bold">{title}</h1>
+            )}
+            {isHardMode && <HardModeBadge />}
+          </div>
+          {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+        </div>
+      )}
+
+      <div className="relative mx-auto max-w-6xl px-4 py-4 sm:py-6">
+        {phase !== "clubSelect" && (
+          <MatchdayScoreboard
+            difficulty={difficulty}
+            filledCount={filledCount}
+            totalSlots={TOTAL_SLOTS}
+            totalValue={totalValue}
+            hideScore={isHardMode}
+          />
+        )}
+
+        {joeMellorMode && (
+          <motion.div
+            className="relative mt-4 overflow-hidden rounded-xl border border-accent-gold/50 bg-gradient-to-b from-accent-gold/20 via-accent-gold/10 to-pitch-950 px-4 py-4 text-center"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(251,191,36,0.2),transparent_65%)]" />
+            <p className="relative font-display text-sm font-black uppercase tracking-[0.3em] text-accent-gold sm:text-base">
+              Joe Mellor Mode Active
+            </p>
+            <p className="relative mt-2 font-display text-[10px] font-bold uppercase tracking-[0.25em] text-accent-gold/80">
+              JOE MELLOR MODE
+            </p>
+            <p className="relative mt-2 text-xs text-gray-300 sm:text-sm">
+              The Greatest Of All Time is locked at Loose Forward. Recruit 12
+              more players and chase 27-0 with Joe Mellor leading the charge.
+            </p>
+          </motion.div>
+        )}
+
+        {isChallengeCup && cupClub && phase !== "clubSelect" && (
+          <motion.div
+            className="mt-4 overflow-hidden rounded-xl border border-accent-gold/40 bg-accent-gold/10"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <ClubHeaderBar club={cupClub} size="md" thick />
+            <div className="px-4 py-3 text-center">
+              <p className="font-display text-xs font-black uppercase tracking-[0.35em] text-accent-gold">
+                Challenge Cup — {cupClub}
+              </p>
+              <p className="mt-1 text-[11px] text-gray-400">
+                Club-only draft · Single elimination knockout tournament
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        {phase === "pitch" && filledCount < TOTAL_SLOTS && (
+          <div className="mt-4 flex justify-center">
+            <button
+              type="button"
+              onClick={handleAutofill}
+              className="rounded-lg border border-accent-green/50 bg-accent-green/10 px-6 py-2.5 font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-green transition hover:bg-accent-green/20"
+            >
+              Auto Fill Squad
+            </button>
+          </div>
+        )}
+
+        <div className="relative mt-4">
+          {phase === "clubSelect" && isChallengeCup && (
+            <ChallengeCupClubSelect
+              seed={seed}
+              onSelect={handleCupClubSelected}
+            />
+          )}
+
+          {(phase === "pitch" || phase === "choice") && (
+            <RugbyPitch
+              squad={squad}
+              totalValue={totalValue}
+              filledCount={filledCount}
+              totalSlots={TOTAL_SLOTS}
+              selectedSlot={selectedSlotIndex ?? undefined}
+              hardMode={isHardMode}
+              interactive={phase === "pitch"}
+              onSlotClick={handleSelectSlot}
+              dimmed={phase === "choice"}
+              lockedSlots={
+                joeMellorMode ? [LOOSE_FORWARD_SLOT_INDEX] : undefined
+              }
+            />
+          )}
+
+          {phase === "simulation" && isChallengeCup && !cupResult && (
+            <div className="matchday-panel mt-4 p-2 sm:p-4">
+              <ChallengeCupBracket
+                squad={squad}
+                seed={seed}
+                userClub={cupClub!}
+                onComplete={handleCupComplete}
+              />
+            </div>
+          )}
+
+          {phase === "simulation" && seasonResult && !isChallengeCup && (
+            <div className="matchday-panel mt-4 p-4">
+              <SeasonSimulation
+                result={seasonResult}
+                onComplete={handleSimulationComplete}
+              />
+            </div>
+          )}
+
+          <AnimatePresence>
+            {phase === "choice" && currentRound && playerPair && (
+              <motion.div
+                key={choiceKey}
+                className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <motion.div
+                  className="matchday-panel max-h-[90vh] w-full max-w-4xl overflow-y-auto p-6 sm:p-8"
+                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                >
+                  <button
+                    type="button"
+                    onClick={handleBackToPitch}
+                    disabled={choosing || rerolling}
+                    className="mb-4 text-sm text-gray-500 transition hover:text-white disabled:opacity-40"
+                  >
+                    ← Back to team sheet
+                  </button>
+                  <PlayerChoice
+                    playerA={playerPair[0]}
+                    playerB={playerPair[1]}
+                    positionLabel={currentRound.slotLabel}
+                    onChoose={handleChoose}
+                    onReroll={handleReroll}
+                    rerollAvailable={rerollAvailable}
+                    rerollUsed={
+                      selectedSlotIndex !== null &&
+                      rerollsUsedBySlot.has(selectedSlotIndex)
+                    }
+                    disabled={choosing || rerolling}
+                    hardMode={isHardMode}
+                  />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {phase === "review" && cupResult && isChallengeCup && (
+        <ChallengeCupReview
+          squad={squad}
+          cupResult={cupResult}
+          difficulty={difficulty}
+          joeMellorMode={joeMellorMode}
+          cupRankingResult={cupRankingResult}
+          onPlayAgain={resetRun}
+          onClose={() => setPhase(isChallengeCup ? "clubSelect" : "pitch")}
+        />
+      )}
+
+      {phase === "review" && seasonResult && !isChallengeCup && (
+        <SeasonReview
+          squad={squad}
+          mode={mode}
+          difficulty={difficulty}
+          joeMellorMode={joeMellorMode}
+          seasonResult={seasonResult}
+          runRank={runRank}
+          onPlayAgain={resetRun}
+          onClose={() => setPhase("pitch")}
+        />
+      )}
+    </div>
+  );
+}
