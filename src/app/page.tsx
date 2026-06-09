@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { AuthCoachCard } from "@/components/AuthCoachCard";
+import { HomeAuthBar } from "@/components/HomeAuthBar";
 import { EmailConfirmedBanner } from "@/components/EmailConfirmedBanner";
 import { HomeModeSelector } from "@/components/HomeModeSelector";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
@@ -31,8 +31,8 @@ export default function HomePage() {
           <EmailConfirmedBanner />
         </Suspense>
 
-        <div id="account" className="mt-10 scroll-mt-24">
-          <AuthCoachCard />
+        <div className="mt-10">
+          <HomeAuthBar />
         </div>
 
         <div id="play-modes" className="mt-8 scroll-mt-8">

@@ -1,17 +1,28 @@
 /**
  * Bulk-download RLP player summary pages into scripts/rlp-cache/.
- * Run before enrich:rlp when network is slow.
+ * Validates each page before saving. Re-run safe — skips valid caches.
+ * Run: npm run download:rlp && npm run enrich:rlp
  */
-import { mkdirSync, readFileSync, writeFileSync, existsSync, unlinkSync, readdirSync } from "fs";
+import {
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+  existsSync,
+  unlinkSync,
+  readdirSync,
+  renameSync,
+} from "fs";
 import { join } from "path";
+import { spawn } from "child_process";
 
 const DATA_DIR = join(__dirname, "..", "data");
 const HTML_PATH = join(__dirname, "rlp-players.html");
 const CACHE_DIR = join(__dirname, "rlp-cache");
 const FILES = ["current-squads.json", "historic-players.json", "legends.json"] as const;
-const CONCURRENCY = 3;
-const FETCH_TIMEOUT_MS = 60_000;
-const RETRIES = 3;
+const CONCURRENCY = 2;
+const MAX_TIME_SEC = 60;
+const RETRIES = 2;
+const DELAY_MS = 500;
 
 function normalizeName(name: string): string {
   return name
@@ -75,25 +86,63 @@ function purgeInvalidCaches(): number {
   return removed;
 }
 
+function curlOnce(rlpId: string, tmp: string): Promise<boolean> {
+  const url = `https://www.rugbyleagueproject.org/players/${rlpId}/summary.html`;
+  return new Promise((resolve) => {
+    const proc = spawn(
+      "curl.exe",
+      [
+        "-sL",
+        "-A",
+        "Mozilla/5.0",
+        url,
+        "-o",
+        tmp,
+        "--max-time",
+        String(MAX_TIME_SEC),
+      ],
+      { stdio: "ignore" }
+    );
+    proc.on("close", (code) => resolve(code === 0));
+  });
+}
+
 async function downloadPage(rlpId: string): Promise<boolean> {
   const out = join(CACHE_DIR, `${rlpId}.html`);
   if (isValidCache(out)) return true;
 
-  const url = `https://www.rugbyleagueproject.org/players/${rlpId}/summary.html`;
+  const tmp = `${out}.tmp`;
   for (let attempt = 0; attempt < RETRIES; attempt++) {
     try {
-      const res = await fetch(url, {
-        headers: { "User-Agent": "Mozilla/5.0 (27-0 player enricher)" },
-        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-      });
-      if (!res.ok) continue;
-      const html = await res.text();
-      if (!html.includes("Place Of Birth")) continue;
-      writeFileSync(out, html);
+      if (existsSync(tmp)) unlinkSync(tmp);
+    } catch {
+      /* ignore */
+    }
+
+    const ok = await curlOnce(rlpId, tmp);
+    if (!ok) {
+      await new Promise((r) => setTimeout(r, DELAY_MS * (attempt + 2)));
+      continue;
+    }
+
+    try {
+      const html = readFileSync(tmp, "utf-8");
+      if (!html.includes("Place Of Birth")) {
+        unlinkSync(tmp);
+        await new Promise((r) => setTimeout(r, DELAY_MS * (attempt + 2)));
+        continue;
+      }
+      renameSync(tmp, out);
       return true;
     } catch {
-      await new Promise((r) => setTimeout(r, 800 * (attempt + 1)));
+      await new Promise((r) => setTimeout(r, DELAY_MS * (attempt + 2)));
     }
+  }
+
+  try {
+    if (existsSync(tmp)) unlinkSync(tmp);
+  } catch {
+    /* ignore */
   }
   return false;
 }
@@ -109,6 +158,7 @@ async function mapPool<T, R>(
     while (index < items.length) {
       const i = index++;
       results[i] = await fn(items[i]);
+      await new Promise((r) => setTimeout(r, DELAY_MS));
     }
   }
   await Promise.all(Array.from({ length: limit }, () => worker()));
@@ -150,9 +200,8 @@ async function main() {
   });
 
   const ok = results.filter(Boolean).length;
-  const failed = list.length - ok;
   console.log(`Downloaded ${ok}/${list.length} pages to ${CACHE_DIR}`);
-  if (failed > 0) console.log(`  Failed: ${failed}`);
+  if (list.length - ok > 0) console.log(`  Failed: ${list.length - ok}`);
 }
 
 main().catch((e) => {

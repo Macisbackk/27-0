@@ -82,7 +82,7 @@ export function RugbyPitch({
 
       <div
         className={`mx-auto w-full transition ${
-          compact ? "max-w-[320px]" : "max-w-[400px] sm:max-w-[500px] md:max-w-[580px]"
+          compact ? "max-w-[380px]" : "max-w-[480px] sm:max-w-[580px] md:max-w-[680px]"
         } ${dimmed ? "opacity-60" : ""}`}
       >
         <div
@@ -319,21 +319,21 @@ function SquadMarker({
         title={interactive ? `${slot.label}: ${description}` : undefined}
       >
         <span
-          className={`w-full text-center font-display text-[9px] font-black uppercase leading-tight tracking-wide sm:text-[10px] ${
+          className={`w-full text-center font-display text-[11px] font-black uppercase leading-tight tracking-wide sm:text-xs ${
             interactive ? "text-white" : "text-white/40"
           }`}
         >
           {positionLabel}
         </span>
         <span
-          className={`font-display text-[7px] font-bold tracking-wider sm:text-[8px] ${
+          className={`font-display text-[9px] font-bold tracking-wider sm:text-[10px] ${
             interactive ? "text-gray-400" : "text-white/30"
           }`}
         >
           {POSITION_SHORT[slot.position]}
         </span>
         {interactive && (
-          <span className="text-[7px] font-semibold uppercase tracking-wider text-accent-green sm:text-[8px]">
+          <span className="text-[9px] font-semibold uppercase tracking-wider text-accent-green sm:text-[10px]">
             +
           </span>
         )}

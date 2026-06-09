@@ -7,7 +7,7 @@ import { POSITION_SHORT, POSITION_TILE_LABEL } from "@/lib/positions";
 
 /** Shared footprint for empty and filled pitch slots. */
 export const PITCH_SLOT_SIZE_CLASS =
-  "h-[56px] w-[50px] sm:h-[60px] sm:w-[54px] md:h-[64px] md:w-[58px]";
+  "h-[80px] w-[72px] sm:h-[88px] sm:w-[80px] md:h-[96px] md:w-[88px]";
 
 interface PitchSlotCardProps {
   player: Player;
@@ -36,16 +36,16 @@ export function PitchSlotCard({
         <span className="h-full flex-1" style={{ backgroundColor: colors.secondary }} />
       </div>
       <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-0 px-0.5 py-0.5">
-        <span className="font-display text-[9px] font-black uppercase leading-none tracking-wide text-accent-green sm:text-[10px]">
+        <span className="font-display text-[11px] font-black uppercase leading-none tracking-wide text-accent-green sm:text-xs">
           {initials}
         </span>
-        <span className="w-full text-center font-display text-[6px] font-bold uppercase leading-tight tracking-wide text-gray-300 sm:text-[7px]">
+        <span className="w-full text-center font-display text-[8px] font-bold uppercase leading-tight tracking-wide text-gray-300 sm:text-[9px]">
           {positionLabel}
         </span>
-        <span className="font-display text-[5px] font-bold tracking-wider text-gray-500 sm:text-[6px]">
+        <span className="font-display text-[7px] font-bold tracking-wider text-gray-500 sm:text-[8px]">
           {shortPos}
         </span>
-        <p className="w-full truncate text-center font-display text-[5px] font-semibold leading-tight text-white sm:text-[6px]">
+        <p className="w-full truncate text-center font-display text-[7px] font-semibold leading-tight text-white sm:text-[8px]">
           {player.name}
         </p>
       </div>

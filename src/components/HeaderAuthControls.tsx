@@ -21,9 +21,9 @@ export function HeaderAuthControls() {
 
   if (!isLoggedIn) {
     return (
-      <Link href="/#account" className={HEADER_BTN}>
+      <Link href="/login" className={HEADER_BTN}>
         <span className="hidden sm:inline">Log In</span>
-        <span className="sm:hidden">Account</span>
+        <span className="sm:hidden">Log In</span>
       </Link>
     );
   }
@@ -54,7 +54,7 @@ export function HeaderAuthControls() {
             className="absolute right-0 z-50 mt-2 min-w-[10rem] rounded-lg border border-pitch-600 bg-pitch-950/95 py-1 shadow-xl"
           >
             <Link
-              href="/#account"
+              href="/"
               role="menuitem"
               className="block px-4 py-2 text-xs text-gray-300 transition hover:bg-pitch-800 hover:text-white"
               onClick={() => setOpen(false)}

@@ -27,7 +27,7 @@ const UNKNOWN_ABBREV = "UNK";
 /** 3-letter uppercase nationality code. */
 export function getNationalityAbbrev(nationality: string): string {
   const trimmed = nationality.trim();
-  if (!trimmed) return UNKNOWN_ABBREV;
+  if (!trimmed || trimmed === "Unknown") return UNKNOWN_ABBREV;
   if (NATIONALITY_ABBREV[trimmed]) return NATIONALITY_ABBREV[trimmed];
   const compact = trimmed.replace(/\s+/g, "").toUpperCase();
   return compact.length >= 3 ? compact.slice(0, 3) : compact.padEnd(3, "X");
