@@ -245,7 +245,7 @@ export function GameBoard({
           if (completed.nationalRank) setRunRank(completed.nationalRank);
         });
 
-        if (result.isPerfect) {
+        if (result.isPerfect && !joeMellorMode) {
           addHallOfFameEntry(value, mode, difficulty);
         }
       }
@@ -508,26 +508,6 @@ export function GameBoard({
             totalValue={totalValue}
             hideScore={isHardMode}
           />
-        )}
-
-        {joeMellorMode && (
-          <motion.div
-            className="relative mt-4 overflow-hidden rounded-xl border border-accent-gold/50 bg-gradient-to-b from-accent-gold/20 via-accent-gold/10 to-pitch-950 px-4 py-4 text-center"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(251,191,36,0.2),transparent_65%)]" />
-            <p className="relative font-display text-sm font-black uppercase tracking-[0.3em] text-accent-gold sm:text-base">
-              Joe Mellor Mode Active
-            </p>
-            <p className="relative mt-2 font-display text-[10px] font-bold uppercase tracking-[0.25em] text-accent-gold/80">
-              JOE MELLOR MODE
-            </p>
-            <p className="relative mt-2 text-xs text-gray-300 sm:text-sm">
-              The Greatest Of All Time is locked at Loose Forward. Recruit 12
-              more players and chase 27-0 with Joe Mellor leading the charge.
-            </p>
-          </motion.div>
         )}
 
         {isChallengeCup && cupClub && phase !== "clubSelect" && (

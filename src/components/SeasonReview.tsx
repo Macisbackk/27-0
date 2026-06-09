@@ -142,14 +142,16 @@ export function SeasonReview({
               >
                 27-0 ACHIEVED
               </motion.h1>
-              <motion.p
-                className="mt-2 font-display text-sm font-bold uppercase tracking-[0.25em] text-accent-green"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.25 }}
-              >
-                Hall of Fame Entry Unlocked
-              </motion.p>
+              {!joeMellorMode && (
+                <motion.p
+                  className="mt-2 font-display text-sm font-bold uppercase tracking-[0.25em] text-accent-green"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.25 }}
+                >
+                  Hall of Fame Entry Unlocked
+                </motion.p>
+              )}
             </>
           )}
 

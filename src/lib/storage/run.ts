@@ -47,11 +47,14 @@ export async function recordCompletedRun(
   const wins = options?.seasonWins ?? 0;
   const losses = options?.seasonLosses ?? 0;
   const loggedIn = isLoggedIn();
+  const isHiddenRun = options?.joeMellorMode === true;
 
-  updateStats(signedIds, totalValue, difficulty);
+  if (!isHiddenRun) {
+    updateStats(signedIds, totalValue, difficulty);
 
-  if (difficulty === "NORMAL") {
-    updateRerollStats(options?.rerollsUsed ?? 0, difficulty);
+    if (difficulty === "NORMAL") {
+      updateRerollStats(options?.rerollsUsed ?? 0, difficulty);
+    }
   }
 
   const hasSeasonData =
@@ -62,7 +65,7 @@ export async function recordCompletedRun(
 
   let nationalRank: number | undefined;
 
-  if (loggedIn) {
+  if (loggedIn && !isHiddenRun) {
     await addLeaderboardEntry(totalValue, run.mode, difficulty, { wins, losses });
     if (!isCupRun) {
       nationalRank = (
@@ -121,8 +124,8 @@ export async function recordCompletedRun(
       const profilesAfter = getAllCupLeaderboardProfiles();
 
       return {
-        submittedOnline: loggedIn,
-        cupRanking: loggedIn
+        submittedOnline: loggedIn && !isHiddenRun,
+        cupRanking: loggedIn && !isHiddenRun
           ? computeCupRunRankingResult(
               username,
               beforeBests,
@@ -155,5 +158,5 @@ export async function recordCompletedRun(
     );
   }
 
-  return { nationalRank, submittedOnline: loggedIn };
+  return { nationalRank, submittedOnline: loggedIn && !isHiddenRun };
 }

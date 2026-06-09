@@ -231,6 +231,23 @@ export function applySeasonLifetimeUpdate(
     };
   }
 
+  if (joeMellorMode) {
+    const jmBetter = isBetterRecord(
+      wins,
+      losses,
+      existing.bestJoeMellorWins,
+      existing.bestJoeMellorLosses
+    );
+    return {
+      ...existing,
+      joeMellorRuns: existing.joeMellorRuns + 1,
+      bestJoeMellorWins: jmBetter ? wins : existing.bestJoeMellorWins,
+      bestJoeMellorLosses: jmBetter ? losses : existing.bestJoeMellorLosses,
+      joeMellorPerfectSeasons:
+        existing.joeMellorPerfectSeasons + (isPerfect ? 1 : 0),
+    };
+  }
+
   const seasons = existing.totalSeasonsSimulated + 1;
   const newSeasonWins = existing.seasonWins + wins;
   const newSeasonLosses = existing.seasonLosses + losses;
@@ -326,23 +343,6 @@ export function applySeasonLifetimeUpdate(
     playerSeasonWins,
     playerSeasonLosses,
   };
-
-  if (joeMellorMode) {
-    const jmBetter = isBetterRecord(
-      wins,
-      losses,
-      existing.bestJoeMellorWins,
-      existing.bestJoeMellorLosses
-    );
-    updated = {
-      ...updated,
-      joeMellorRuns: existing.joeMellorRuns + 1,
-      bestJoeMellorWins: jmBetter ? wins : existing.bestJoeMellorWins,
-      bestJoeMellorLosses: jmBetter ? losses : existing.bestJoeMellorLosses,
-      joeMellorPerfectSeasons:
-        existing.joeMellorPerfectSeasons + (isPerfect ? 1 : 0),
-    };
-  }
 
   return updated;
 }

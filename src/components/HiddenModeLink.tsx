@@ -4,21 +4,18 @@ import Link from "next/link";
 
 interface HiddenModeLinkProps {
   href: string;
-  label: string;
-  ariaLabel: string;
 }
 
-export function HiddenModeLink({ href, label, ariaLabel }: HiddenModeLinkProps) {
+/** Unlabeled subtle hit target — no public mode name. */
+export function HiddenModeLink({ href }: HiddenModeLinkProps) {
   return (
     <Link
       href={href}
-      className="flex h-5 w-5 items-center justify-center rounded-full opacity-0 transition-all duration-300 hover:!opacity-70 focus:opacity-50 focus:outline-none group-hover:opacity-30"
-      aria-label={ariaLabel}
-      title={ariaLabel}
+      className="flex h-4 w-4 items-center justify-center rounded-full opacity-0 transition-all duration-300 hover:!opacity-40 focus:opacity-30 focus:outline-none group-hover:opacity-20"
+      aria-hidden
+      tabIndex={-1}
     >
-      <span className="text-[9px] font-black tracking-tighter text-gray-600 group-hover:text-accent-gold">
-        {label}
-      </span>
+      <span className="h-1 w-1 rounded-full bg-gray-600 group-hover:bg-accent-gold/60" />
     </Link>
   );
 }

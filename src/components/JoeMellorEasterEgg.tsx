@@ -18,7 +18,7 @@ export function JoeMellorEasterEgg() {
 
   return (
     <div className="group flex flex-row flex-wrap items-center justify-center gap-2 sm:gap-3">
-      <HiddenModeLink href={href} label="JM" ariaLabel="Special Mode" />
+      <HiddenModeLink href={href} />
     </div>
   );
 }

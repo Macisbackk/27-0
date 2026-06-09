@@ -26,9 +26,6 @@ export function HomeModeSelector() {
   const cupHref = mounted
     ? `/play?cup=1${query ? query.replace("?", "&") : ""}`
     : "/play?cup=1";
-  const jmHref = mounted
-    ? `/play?joeMellor=1${query ? query.replace("?", "&") : ""}`
-    : "/play?joeMellor=1";
 
   return (
     <div>
@@ -99,21 +96,6 @@ export function HomeModeSelector() {
           <span className="mt-4 inline-block text-sm font-semibold text-accent-gold">
             Start Cup Run →
           </span>
-        </Link>
-      </div>
-
-      <div className="mx-auto mt-4 max-w-2xl">
-        <Link
-          href={jmHref}
-          className="card-glass matchday-panel group block p-5 transition hover:border-accent-gold/30"
-        >
-          <h2 className="font-display text-lg font-bold group-hover:text-accent-gold">
-            Joe Mellor Mode
-          </h2>
-          <p className="mt-1 text-sm text-gray-500">
-            The GOAT is locked at Loose Forward — build your dynasty around Joe
-            Mellor.
-          </p>
         </Link>
       </div>
     </div>
