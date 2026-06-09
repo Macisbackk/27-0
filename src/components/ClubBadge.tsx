@@ -1,11 +1,13 @@
 import type { ClubColorSet } from "@/lib/clubs";
 import {
+  clubHeaderUsesStroke,
   getClubColors,
   getClubHeaderBarStyle,
   getClubIdentityStripStyle,
   getClubLogoBoxStyle,
   getClubTheme,
 } from "@/lib/clubs";
+import { getClubLogoTextColor } from "@/lib/ui/contrast";
 
 export type ClubLogoSize = "xs" | "sm" | "md" | "lg";
 
@@ -67,7 +69,21 @@ export function ClubLogoBox({
       )}
       {showAbbrev && (
         <span
-          className={`relative z-10 m-auto club-abbrev-stroke-thick font-display font-black leading-none text-white ${dim.text}`}
+          className={`relative z-10 m-auto font-display font-black leading-none ${dim.text}`}
+          style={(() => {
+            const logoText = getClubLogoTextColor(
+              colors.primary,
+              colors.secondary,
+              colors.accent
+            );
+            return {
+              color: logoText,
+              textShadow:
+                logoText === "#ffffff"
+                  ? "0 1px 2px rgba(0,0,0,0.85)"
+                  : "none",
+            };
+          })()}
         >
           {initials}
         </span>
@@ -106,7 +122,12 @@ export function ClubHeaderBar({
 }: ClubHeaderBarProps) {
   const colors = colorsProp ?? getClubColors(club);
   const dim = HEADER_SIZE[size];
-  const strokeClass = thick ? "club-abbrev-stroke-thick" : "club-abbrev-stroke";
+  const useStroke = clubHeaderUsesStroke(club);
+  const strokeClass = useStroke
+    ? thick
+      ? "club-abbrev-stroke-thick"
+      : "club-abbrev-stroke"
+    : "";
 
   return (
     <div
@@ -116,7 +137,7 @@ export function ClubHeaderBar({
     >
       <span
         className={`${strokeClass} font-display font-black leading-none ${dim.text}`}
-        style={{ color: "inherit" }}
+        style={{ color: "inherit", textShadow: "inherit" }}
       >
         {colors.shortName}
       </span>

@@ -7,7 +7,7 @@ import {
   updateCupLeaderboardProfile,
 } from "./cup-leaderboard";
 import { getChallengeCupPersonalBests } from "../stats-views";
-import { getUsername } from "./user";
+import { getUsername, hasUsername } from "./user";
 import {
   getAllStats,
   updateRerollStats,
@@ -40,6 +40,11 @@ export async function recordCompletedRun(
     matchResults?: ("W" | "L")[];
   }
 ): Promise<CompletedRunResult> {
+  if (!hasUsername()) {
+    console.warn("[run] Completed run not saved — coach username required.");
+    return {};
+  }
+
   const totalValue = run.totalValue || getSquadValue(run.squad);
   const isCupRun = options?.challengeCupMode === true;
   const wins = options?.seasonWins ?? 0;
@@ -66,7 +71,7 @@ export async function recordCompletedRun(
       options?.seasonLeaguePosition !== undefined)
   ) {
     if (isCupRun) {
-      const username = getUsername();
+      const username = getUsername()!;
       const storedBefore = getAllStats();
       const beforeBests = getChallengeCupPersonalBests(
         storedBefore.normal,

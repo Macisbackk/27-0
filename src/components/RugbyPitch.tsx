@@ -50,7 +50,7 @@ export function RugbyPitch({
   const slotByIndex = new Map(squad.map((s) => [s.slotIndex, s]));
 
   return (
-    <div className="relative">
+    <div className="relative w-full overflow-x-hidden">
       {!compact && (
         <div className="matchday-panel mb-3 flex items-center justify-between px-4 py-2">
           <h3 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-green">
@@ -85,11 +85,17 @@ export function RugbyPitch({
           compact ? "max-w-[320px]" : "max-w-[400px] sm:max-w-[500px] md:max-w-[580px]"
         } ${dimmed ? "opacity-60" : ""}`}
       >
-        <div className="relative aspect-[68/112] w-full overflow-hidden rounded-2xl border-2 border-white/15 shadow-2xl rugby-pitch-pro">
+        <div
+          className={`relative w-full overflow-hidden rounded-2xl border-2 border-white/15 shadow-2xl rugby-pitch-pro ${
+            compact
+              ? "min-h-[480px]"
+              : "min-h-[580px] sm:min-h-0 sm:aspect-[68/112]"
+          }`}
+        >
           <PitchMarkings />
 
           {/* Formation grid — min 12px horizontal / 16px vertical gap */}
-          <div className="absolute inset-x-[9%] inset-y-[11%] z-10 flex flex-col justify-between gap-y-4">
+          <div className="absolute inset-x-[9%] inset-y-[9%] z-10 flex flex-col justify-between gap-y-2 sm:inset-y-[11%] sm:gap-y-4">
             {FORMATION_ROWS.map((row, rowIndex) => (
               <FormationRow
                 key={rowIndex}
@@ -287,7 +293,7 @@ function SquadMarker({
   const description = POSITION_DESCRIPTIONS[slot.position];
   const sizeClass = compact
     ? "h-[80px] w-[56px] sm:h-[84px] sm:w-[60px]"
-    : "aspect-square w-[88px] sm:w-[92px] md:w-[96px]";
+    : "h-[72px] w-[72px] sm:aspect-square sm:h-auto sm:w-[92px] md:w-[96px]";
 
   if (!player) {
     const positionLabel = POSITION_TILE_LABEL[slot.position];

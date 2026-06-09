@@ -62,3 +62,32 @@ export function getContrastTextForClub(
     (accent ? 3 : 2);
   return avg > 0.42 ? DARK_TEXT : LIGHT_TEXT;
 }
+
+/** Text colour plus optional shadow for club-coloured panels (e.g. Leigh). */
+export function getClubPanelTextStyle(backgroundHex: string): {
+  color: ContrastText;
+  textShadow: string;
+  useStroke: boolean;
+} {
+  const color = getReadableTextColor(backgroundHex);
+  const isLightBg = color === DARK_TEXT;
+
+  return {
+    color,
+    textShadow: isLightBg
+      ? "none"
+      : "0 1px 2px rgba(0,0,0,0.85), 0 0 1px rgba(0,0,0,0.6)",
+    useStroke: !isLightBg,
+  };
+}
+
+/** Best contrast text when label spans a two-tone club logo. */
+export function getClubLogoTextColor(
+  primary: string,
+  secondary: string,
+  accent?: string
+): ContrastText {
+  const darker =
+    getLuminance(primary) <= getLuminance(secondary) ? primary : secondary;
+  return getReadableTextColor(darker);
+}

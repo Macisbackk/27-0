@@ -7,7 +7,7 @@ import type {
   LeaderboardRow,
 } from "../types";
 import { STORAGE_KEYS } from "./keys";
-import { getUsername } from "./user";
+import { getUsername, hasUsername } from "./user";
 
 export interface StoredLeaderboardEntry {
   id: string;
@@ -72,7 +72,7 @@ function dedupeByBestScore(
   rows: { username: string; squadValue: number; achievedAt: string; difficulty: GameDifficulty }[],
   limit: number
 ): LeaderboardRow[] {
-  const currentUser = getUsername();
+  const currentUser = getUsername() ?? "";
   const bestByUser = new Map<
     string,
     { squadValue: number; achievedAt: string; difficulty: GameDifficulty }
@@ -99,7 +99,7 @@ function dedupeByBestScore(
     squadValue: data.squadValue,
     achievedAt: data.achievedAt,
     difficulty: data.difficulty,
-    isCurrentUser: username === currentUser,
+    isCurrentUser: !!currentUser && username === currentUser,
   }));
 }
 
@@ -133,14 +133,14 @@ function mapLocalToRows(
     if (deduped.length >= limit) break;
   }
 
-  const currentUser = getUsername();
+  const currentUser = getUsername() ?? "";
   return deduped.map((entry, index) => ({
     rank: index + 1,
     username: entry.username,
     squadValue: entry.squadValue,
     achievedAt: entry.achievedAt,
     difficulty: entry.difficulty ?? "NORMAL",
-    isCurrentUser: entry.username === currentUser,
+    isCurrentUser: !!currentUser && entry.username === currentUser,
   }));
 }
 
@@ -221,6 +221,7 @@ async function insertToSupabase(
 }
 
 function saveLocalEntry(
+  username: string,
   squadValue: number,
   mode: GameMode,
   difficulty: GameDifficulty,
@@ -228,7 +229,6 @@ function saveLocalEntry(
   losses: number,
   achievedAt: Date
 ): void {
-  const username = getUsername();
   const periods: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
   const entries = loadLocalEntries();
 
@@ -260,13 +260,18 @@ export async function addLeaderboardEntry(
     achievedAt?: Date;
   }
 ): Promise<void> {
-  const username = getUsername();
+  if (!hasUsername()) {
+    console.warn("[leaderboard] Skipped save — no coach username set.");
+    return;
+  }
+
+  const username = getUsername()!;
   const achievedAt = options?.achievedAt ?? new Date();
   const wins = options?.wins ?? 0;
   const losses = options?.losses ?? 0;
   const dbMode = gameModeToDbMode(mode);
 
-  saveLocalEntry(squadValue, mode, difficulty, wins, losses, achievedAt);
+  saveLocalEntry(username, squadValue, mode, difficulty, wins, losses, achievedAt);
   await insertToSupabase(username, squadValue, dbMode, difficulty, wins, losses);
 }
 
@@ -303,7 +308,7 @@ export interface CupWinsLeaderboardRow {
 export async function getCupWinsLeaderboardAsync(
   limit = 50
 ): Promise<CupWinsLeaderboardRow[]> {
-  const currentUser = getUsername();
+  const currentUser = getUsername() ?? "";
 
   if (!isSupabaseConfigured) return [];
 
@@ -333,7 +338,7 @@ export async function getCupWinsLeaderboardAsync(
         username,
         totalWins: stats.wins,
         totalLosses: stats.losses,
-        isCurrentUser: username === currentUser,
+        isCurrentUser: !!currentUser && username === currentUser,
       }));
   } catch (error) {
     console.error("[leaderboard] Cup wins fetch failed:", error);

@@ -36,7 +36,7 @@ export function addHallOfFameEntry(
   const entries = loadEntries();
   entries.unshift({
     id: `hof-${Date.now()}`,
-    username: getUsername(),
+    username: getUsername() ?? "Unknown",
     achievedAt: achievedAt.toISOString(),
     squadValue,
     mode,

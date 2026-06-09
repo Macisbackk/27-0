@@ -30,7 +30,7 @@ function FeaturedList({
   profiles: CupLeaderboardProfile[];
   formatValue: (profile: CupLeaderboardProfile) => string;
 }) {
-  const currentUser = getUsername();
+  const currentUser = getUsername() ?? "";
 
   return (
     <section className="matchday-panel overflow-hidden">
@@ -80,7 +80,7 @@ function CategoryTable({
   profiles: CupLeaderboardProfile[];
   formatValue: (profile: CupLeaderboardProfile) => string;
 }) {
-  const currentUser = getUsername();
+  const currentUser = getUsername() ?? "";
   const ranked = profiles.slice(0, CATEGORY_LIMIT);
 
   return (
@@ -159,7 +159,9 @@ export function ChallengeCupLeaderboard() {
   useEffect(() => {
     const stored = getAllStats();
     const username = getUsername();
-    ensureCupLeaderboardSynced(username, stored.normal, stored.hard);
+    if (username) {
+      ensureCupLeaderboardSynced(username, stored.normal, stored.hard);
+    }
     setProfiles(getAllCupLeaderboardProfiles());
     void getCupWinsLeaderboardAsync().then(setOnlineWins);
   }, []);

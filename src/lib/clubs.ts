@@ -1,8 +1,7 @@
 import type { CSSProperties } from "react";
 import clubsData from "../../data/clubs.json";
 import {
-  getContrastText,
-  getContrastTextForClub,
+  getClubPanelTextStyle,
   getLuminance,
 } from "./ui/contrast";
 
@@ -147,10 +146,12 @@ export function getClubChoiceCardStyle(clubName: string): CSSProperties {
 
 export function getClubHeaderBarStyle(clubName: string): CSSProperties {
   const theme = getClubTheme(clubName);
+  const text = getClubPanelTextStyle(theme.headerBackground);
   return {
     backgroundColor: theme.headerBackground,
     borderBottom: `4px solid ${theme.headerStripe}`,
-    color: getContrastText(theme.headerBackground),
+    color: text.color,
+    textShadow: text.textShadow,
   };
 }
 
@@ -165,11 +166,19 @@ function getClubStripBackground(clubName: string): string {
 export function getClubIdentityStripStyle(clubName: string): CSSProperties {
   const theme = getClubTheme(clubName);
   const background = getClubStripBackground(clubName);
+  const text = getClubPanelTextStyle(background);
   return {
     backgroundColor: background,
     borderBottom: `2px solid ${theme.headerStripe}`,
-    color: getContrastText(background),
+    color: text.color,
+    textShadow: text.textShadow,
   };
+}
+
+/** Whether club header text should use the dark outline utility class. */
+export function clubHeaderUsesStroke(clubName: string): boolean {
+  const theme = getClubTheme(clubName);
+  return getClubPanelTextStyle(theme.headerBackground).useStroke;
 }
 
 export function getClubLogoBoxStyle(clubName: string): CSSProperties {

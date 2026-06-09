@@ -71,7 +71,7 @@ export function getAllCupLeaderboardProfiles(): CupLeaderboardProfile[] {
 export function getCupLeaderboardProfile(
   username?: string
 ): CupLeaderboardProfile {
-  const name = username ?? getUsername();
+  const name = username ?? getUsername() ?? "Unknown";
   const profiles = loadProfiles();
   return profiles[name] ?? emptyProfile(name);
 }
@@ -80,7 +80,7 @@ export function updateCupLeaderboardProfile(
   input: CupRunInput,
   username?: string
 ): CupLeaderboardProfile {
-  const name = username ?? getUsername();
+  const name = username ?? getUsername() ?? "Unknown";
   const profiles = loadProfiles();
   const existing = profiles[name] ?? emptyProfile(name);
 

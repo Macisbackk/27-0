@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CoachUsernameCard } from "@/components/CoachUsernameCard";
 import { HomeModeSelector } from "@/components/HomeModeSelector";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
 
@@ -24,7 +25,11 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="mt-12">
+        <div className="mt-10">
+          <CoachUsernameCard />
+        </div>
+
+        <div className="mt-8">
           <HomeModeSelector />
         </div>
 

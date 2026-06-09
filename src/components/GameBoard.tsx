@@ -490,7 +490,7 @@ export function GameBoard({
         </div>
       )}
 
-      <div className="relative mx-auto max-w-6xl px-4 py-4 sm:py-6">
+      <div className="relative mx-auto max-w-6xl overflow-x-hidden px-4 py-4 pb-10 sm:py-6">
         {phase !== "clubSelect" && (
           <MatchdayScoreboard
             difficulty={difficulty}
@@ -551,7 +551,7 @@ export function GameBoard({
           </div>
         )}
 
-        <div className="relative mt-4">
+        <div className="relative mt-4 overflow-x-hidden">
           {phase === "clubSelect" && isChallengeCup && (
             <ChallengeCupClubSelect
               seed={seed}
