@@ -7,5 +7,11 @@ export const isSupabaseConfigured =
   supabaseUrl.length > 0 && supabaseAnonKey.length > 0;
 
 export const supabase: SupabaseClient = isSupabaseConfigured
-  ? createClient(supabaseUrl, supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+      },
+    })
   : createClient("https://placeholder.local", "placeholder-key");

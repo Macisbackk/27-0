@@ -7,7 +7,8 @@ import type {
   LeaderboardRow,
 } from "../types";
 import { STORAGE_KEYS } from "./keys";
-import { getUsername, hasUsername } from "./user";
+import { getAuthUserId, isLoggedIn } from "../auth-session";
+import { getUsername } from "./user";
 
 export interface StoredLeaderboardEntry {
   id: string;
@@ -24,7 +25,9 @@ export interface StoredLeaderboardEntry {
 
 export interface SupabaseLeaderboardRow {
   id: string;
-  player_name: string;
+  player_name: string | null;
+  coach_name: string | null;
+  user_id: string | null;
   score: number;
   mode: string | null;
   difficulty: string | null;
@@ -153,7 +156,7 @@ function mapSupabaseRows(
     rows
       .filter((row) => (row.difficulty ?? "NORMAL") === difficulty)
       .map((row) => ({
-        username: row.player_name,
+        username: row.coach_name ?? row.player_name ?? "Unknown",
         squadValue: row.score,
         achievedAt: row.created_at,
         difficulty: (row.difficulty ?? "NORMAL") as GameDifficulty,
@@ -174,7 +177,7 @@ async function fetchFromSupabase(
     let query = supabase
       .from("leaderboard")
       .select(
-        "id, player_name, score, mode, difficulty, wins, losses, created_at"
+        "id, player_name, coach_name, user_id, score, mode, difficulty, wins, losses, created_at"
       )
       .eq("mode", dbMode)
       .eq("difficulty", difficulty)
@@ -196,7 +199,8 @@ async function fetchFromSupabase(
 }
 
 async function insertToSupabase(
-  username: string,
+  coachName: string,
+  userId: string,
   squadValue: number,
   dbMode: LeaderboardDbMode,
   difficulty: GameDifficulty,
@@ -207,7 +211,9 @@ async function insertToSupabase(
 
   try {
     const { error } = await supabase.from("leaderboard").insert({
-      player_name: username,
+      player_name: coachName,
+      coach_name: coachName,
+      user_id: userId,
       score: squadValue,
       mode: dbMode,
       difficulty,
@@ -260,19 +266,29 @@ export async function addLeaderboardEntry(
     achievedAt?: Date;
   }
 ): Promise<void> {
-  if (!hasUsername()) {
-    console.warn("[leaderboard] Skipped save — no coach username set.");
+  if (!isLoggedIn()) {
+    console.warn("[leaderboard] Skipped save — login required for online leaderboard.");
     return;
   }
 
-  const username = getUsername()!;
+  const userId = getAuthUserId();
+  const username = getUsername();
+  if (!userId || !username) return;
   const achievedAt = options?.achievedAt ?? new Date();
   const wins = options?.wins ?? 0;
   const losses = options?.losses ?? 0;
   const dbMode = gameModeToDbMode(mode);
 
   saveLocalEntry(username, squadValue, mode, difficulty, wins, losses, achievedAt);
-  await insertToSupabase(username, squadValue, dbMode, difficulty, wins, losses);
+  await insertToSupabase(
+    username,
+    userId,
+    squadValue,
+    dbMode,
+    difficulty,
+    wins,
+    losses
+  );
 }
 
 export function getLeaderboard(
@@ -315,14 +331,14 @@ export async function getCupWinsLeaderboardAsync(
   try {
     const { data, error } = await supabase
       .from("leaderboard")
-      .select("player_name, wins, losses")
+      .select("player_name, coach_name, wins, losses")
       .eq("mode", "challenge-cup");
 
     if (error) throw error;
 
     const aggregated = new Map<string, { wins: number; losses: number }>();
     for (const row of data ?? []) {
-      const name = row.player_name as string;
+      const name = (row.coach_name ?? row.player_name) as string;
       const existing = aggregated.get(name) ?? { wins: 0, losses: 0 };
       aggregated.set(name, {
         wins: existing.wins + (row.wins ?? 0),

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CoachUsernameCard } from "@/components/CoachUsernameCard";
+import { AuthCoachCard } from "@/components/AuthCoachCard";
 import { HomeModeSelector } from "@/components/HomeModeSelector";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
 
@@ -26,7 +26,7 @@ export default function HomePage() {
         </div>
 
         <div className="mt-10">
-          <CoachUsernameCard />
+          <AuthCoachCard />
         </div>
 
         <div className="mt-8">

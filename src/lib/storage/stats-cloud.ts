@@ -1,0 +1,87 @@
+import { isSupabaseConfigured, supabase } from "../supabase";
+import { getAuthUserId } from "../auth-session";
+import type { GameDifficulty, UserStatsData } from "../types";
+import { EMPTY_STATS, migrateUserStats } from "./stats";
+
+const BUNDLE_KEY = "stats_bundle";
+
+interface StoredStats {
+  normal: UserStatsData;
+  hard: UserStatsData;
+}
+
+export async function loadCloudStats(): Promise<StoredStats | null> {
+  const userId = getAuthUserId();
+  if (!userId || !isSupabaseConfigured) return null;
+
+  try {
+    const { data, error } = await supabase
+      .from("user_stats")
+      .select("mode, stat_json")
+      .eq("user_id", userId)
+      .eq("stat_key", BUNDLE_KEY);
+
+    if (error) throw error;
+    if (!data || data.length === 0) return null;
+
+    const result: StoredStats = {
+      normal: { ...EMPTY_STATS },
+      hard: { ...EMPTY_STATS },
+    };
+
+    for (const row of data) {
+      const mode = row.mode as GameDifficulty;
+      if (mode === "NORMAL" || mode === "HARD") {
+        result[mode === "HARD" ? "hard" : "normal"] = migrateUserStats(
+          (row.stat_json as Partial<UserStatsData>) ?? {}
+        );
+      }
+    }
+
+    return result;
+  } catch (err) {
+    console.error("[stats-cloud] load failed:", err);
+    return null;
+  }
+}
+
+export async function saveCloudStats(stats: StoredStats): Promise<void> {
+  const userId = getAuthUserId();
+  if (!userId || !isSupabaseConfigured) return;
+
+  const modes: GameDifficulty[] = ["NORMAL", "HARD"];
+
+  try {
+    for (const mode of modes) {
+      const data = mode === "HARD" ? stats.hard : stats.normal;
+      const { error } = await supabase.from("user_stats").upsert(
+        {
+          user_id: userId,
+          mode,
+          stat_key: BUNDLE_KEY,
+          stat_value: 0,
+          stat_json: data,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "user_id,mode,stat_key" }
+      );
+      if (error) throw error;
+    }
+  } catch (err) {
+    console.error("[stats-cloud] save failed:", err);
+  }
+}
+
+export async function importLocalStatsToCloud(
+  local: StoredStats
+): Promise<{ ok: boolean; error?: string }> {
+  const userId = getAuthUserId();
+  if (!userId) return { ok: false, error: "Log in to import stats." };
+
+  try {
+    await saveCloudStats(local);
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "Import failed." };
+  }
+}

@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 import type { GameDifficulty, GameMode } from "@/lib/types";
 import { getDifficulty, setDifficulty } from "@/lib/storage/preferences";
-import { hasUsername } from "@/lib/storage/user";
 import { GameBoard } from "./GameBoard";
 
 interface GameStarterProps {
@@ -33,14 +33,15 @@ export function GameStarter({
   joeMellorMode = false,
 }: GameStarterProps) {
   const router = useRouter();
+  const { isLoggedIn, loading: authLoading } = useAuth();
   const [difficulty, setDifficultyState] =
     useState<GameDifficulty>(initialDifficulty);
   const [ready, setReady] = useState(false);
-  const [blocked, setBlocked] = useState(false);
 
   useEffect(() => {
-    if (!hasUsername()) {
-      setBlocked(true);
+    if (authLoading) return;
+
+    if (!isLoggedIn) {
       router.replace("/");
       return;
     }
@@ -49,27 +50,14 @@ export function GameStarter({
     setDifficultyState(resolved);
     setDifficulty(resolved);
     setReady(true);
-  }, [initialDifficulty, router]);
+  }, [initialDifficulty, router, isLoggedIn, authLoading]);
 
-  if (blocked) {
-    return (
-      <div className="matchday-arena flex min-h-screen items-center justify-center px-4">
-        <div className="matchday-panel max-w-md p-8 text-center">
-          <p className="font-display text-sm font-bold uppercase tracking-wider text-accent-green">
-            Coach Name Required
-          </p>
-          <p className="mt-3 text-sm text-gray-400">
-            Choose your coach name on the home page before starting a run.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!ready) {
+  if (authLoading || !ready) {
     return (
       <div className="matchday-arena flex min-h-screen items-center justify-center">
-        <p className="text-sm text-gray-500">Loading run...</p>
+        <p className="text-sm text-gray-500">
+          {authLoading ? "Loading account…" : "Loading run…"}
+        </p>
       </div>
     );
   }

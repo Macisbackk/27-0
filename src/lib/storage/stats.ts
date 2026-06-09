@@ -270,6 +270,8 @@ function saveStoredStats(data: StoredStats): void {
 
   localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(data));
 
+  void import("./stats-cloud").then(({ saveCloudStats }) => saveCloudStats(data));
+
 }
 
 

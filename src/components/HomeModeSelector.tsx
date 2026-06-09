@@ -2,25 +2,24 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/lib/auth-context";
 import type { GameDifficulty } from "@/lib/types";
 import { getDifficulty, setDifficulty } from "@/lib/storage/preferences";
-import { hasUsername } from "@/lib/storage/user";
 import { TYPO } from "@/lib/ui/typography";
 
 export function HomeModeSelector() {
+  const { isLoggedIn, loading: authLoading } = useAuth();
   const [difficulty, setDifficultyState] = useState<GameDifficulty>("NORMAL");
   const [mounted, setMounted] = useState(false);
-  const [usernameReady, setUsernameReady] = useState(false);
 
   useEffect(() => {
     const sync = () => {
       setDifficultyState(getDifficulty());
-      setUsernameReady(hasUsername());
       setMounted(true);
     };
     sync();
-    window.addEventListener("coach-username-changed", sync);
-    return () => window.removeEventListener("coach-username-changed", sync);
+    window.addEventListener("auth-state-changed", sync);
+    return () => window.removeEventListener("auth-state-changed", sync);
   }, []);
 
   const select = (d: GameDifficulty) => {
@@ -34,8 +33,9 @@ export function HomeModeSelector() {
     ? `/play?cup=1${query ? query.replace("?", "&") : ""}`
     : "/play?cup=1";
 
-  const blockedMessage = !usernameReady
-    ? "Choose your coach name above before starting a run."
+  const canPlay = isLoggedIn && !authLoading;
+  const blockedMessage = !authLoading && !isLoggedIn
+    ? "Create an account or log in to start a run and submit online leaderboard scores."
     : null;
 
   return (
@@ -81,7 +81,7 @@ export function HomeModeSelector() {
       )}
 
       <div className="mx-auto grid max-w-2xl gap-4 sm:grid-cols-2">
-        {usernameReady ? (
+        {canPlay ? (
           <>
             <Link
               href={seasonHref}
@@ -120,12 +120,10 @@ export function HomeModeSelector() {
             <ModeCardDisabled
               title="Super League Season"
               description="Draft your XIII and simulate a full Super League campaign."
-              accent="green"
             />
             <ModeCardDisabled
               title="Challenge Cup"
               description="Draft your squad and battle through a knockout tournament."
-              accent="gold"
             />
           </>
         )}
@@ -137,23 +135,19 @@ export function HomeModeSelector() {
 function ModeCardDisabled({
   title,
   description,
-  accent,
 }: {
   title: string;
   description: string;
-  accent: "green" | "gold";
 }) {
   return (
     <div
-      className={`card-glass matchday-panel block cursor-not-allowed p-6 opacity-50 ${
-        accent === "green" ? "" : ""
-      }`}
+      className="card-glass matchday-panel block cursor-not-allowed p-6 opacity-50"
       aria-disabled
     >
       <h2 className="font-display text-xl font-bold text-gray-500">{title}</h2>
       <p className="mt-2 text-sm text-gray-500">{description}</p>
       <span className="mt-4 inline-block text-sm font-semibold text-gray-600">
-        Coach name required
+        Account required
       </span>
     </div>
   );

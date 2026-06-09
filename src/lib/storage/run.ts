@@ -7,7 +7,8 @@ import {
   updateCupLeaderboardProfile,
 } from "./cup-leaderboard";
 import { getChallengeCupPersonalBests } from "../stats-views";
-import { getUsername, hasUsername } from "./user";
+import { isLoggedIn } from "../auth-session";
+import { getUsername } from "./user";
 import {
   getAllStats,
   updateRerollStats,
@@ -40,8 +41,8 @@ export async function recordCompletedRun(
     matchResults?: ("W" | "L")[];
   }
 ): Promise<CompletedRunResult> {
-  if (!hasUsername()) {
-    console.warn("[run] Completed run not saved — coach username required.");
+  if (!isLoggedIn()) {
+    console.warn("[run] Completed run not saved — login required.");
     return {};
   }
 

@@ -9,7 +9,7 @@ import {
   POSITION_SHORT,
   POSITION_TILE_LABEL,
 } from "@/lib/positions";
-import { SquadPlayerCard, PITCH_CARD_SIZE_CLASS } from "./SquadPlayerCard";
+import { PitchSlotCard, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
 
 interface RugbyPitchProps {
   squad: SquadSlot[];
@@ -88,8 +88,8 @@ export function RugbyPitch({
         <div
           className={`relative w-full overflow-hidden rounded-2xl border-2 border-white/15 shadow-2xl rugby-pitch-pro ${
             compact
-              ? "min-h-[480px]"
-              : "min-h-[580px] sm:min-h-0 sm:aspect-[68/112]"
+              ? "min-h-[440px]"
+              : "min-h-[500px] sm:min-h-0 sm:aspect-[68/112]"
           }`}
         >
           <PitchMarkings />
@@ -292,14 +292,14 @@ function SquadMarker({
   const player = slot.player;
   const description = POSITION_DESCRIPTIONS[slot.position];
   const sizeClass = compact
-    ? "h-[80px] w-[56px] sm:h-[84px] sm:w-[60px]"
-    : "h-[72px] w-[72px] sm:aspect-square sm:h-auto sm:w-[92px] md:w-[96px]";
+    ? "h-[68px] w-[60px] sm:h-[72px] sm:w-[64px]"
+    : PITCH_SLOT_SIZE_CLASS;
 
   if (!player) {
     const positionLabel = POSITION_TILE_LABEL[slot.position];
     const content = (
       <motion.div
-        className={`squad-marker-empty group flex shrink-0 flex-col items-center justify-center gap-1 rounded-lg border-2 px-1.5 py-2.5 transition ${sizeClass} ${
+        className={`squad-marker-empty group flex shrink-0 flex-col items-center justify-center gap-0.5 rounded-lg border-2 px-1 py-1.5 transition ${sizeClass} ${
           selected
             ? "z-20 border-accent-gold bg-accent-gold/20 shadow-[0_0_16px_rgba(251,191,36,0.45)] ring-2 ring-accent-gold"
             : highlighted
@@ -322,22 +322,22 @@ function SquadMarker({
         title={interactive ? `${slot.label}: ${description}` : undefined}
       >
         <span
-          className={`w-full text-center font-display text-[11px] font-black uppercase leading-tight tracking-wide sm:text-xs ${
+          className={`w-full text-center font-display text-[9px] font-black uppercase leading-tight tracking-wide sm:text-[10px] ${
             interactive ? "text-white" : "text-white/40"
           }`}
         >
           {positionLabel}
         </span>
         <span
-          className={`font-display text-[9px] font-bold tracking-wider sm:text-[10px] ${
+          className={`font-display text-[7px] font-bold tracking-wider sm:text-[8px] ${
             interactive ? "text-gray-400" : "text-white/30"
           }`}
         >
           {POSITION_SHORT[slot.position]}
         </span>
         {interactive && (
-          <span className="text-[8px] font-semibold uppercase tracking-wider text-accent-green sm:text-[9px]">
-            Available
+          <span className="text-[7px] font-semibold uppercase tracking-wider text-accent-green sm:text-[8px]">
+            +
           </span>
         )}
       </motion.div>
@@ -364,9 +364,8 @@ function SquadMarker({
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
-      <SquadPlayerCard
+      <PitchSlotCard
         player={player}
-        compact={compact}
         hardMode={hardMode}
         className={sizeClass}
       />
