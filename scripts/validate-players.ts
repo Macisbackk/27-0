@@ -59,10 +59,6 @@ function validatePlayers(
       throw new Error(`Missing yearsActive in ${source}: ${p.id}`);
     }
 
-    if (p.intlCaps !== undefined && (p.intlCaps < 0 || !Number.isInteger(p.intlCaps))) {
-      throw new Error(`Invalid intlCaps for ${p.name}: ${p.intlCaps}`);
-    }
-
     if (p.peakRating < 50 || p.peakRating > 99) {
       throw new Error(`Invalid rating for ${p.name}: ${p.peakRating}`);
     }
