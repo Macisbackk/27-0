@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Anton } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { Header } from "@/components/Header";
@@ -35,6 +36,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <SiteFooter />
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
