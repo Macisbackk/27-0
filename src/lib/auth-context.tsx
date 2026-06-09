@@ -17,6 +17,7 @@ import {
   signOut as authSignOut,
   signUp as authSignUp,
   updateProfileCoachName,
+  type AuthActionResult,
   type UserProfile,
 } from "./auth";
 import { setAuthCache } from "./auth-session";
@@ -41,8 +42,8 @@ interface AuthContextValue {
     password: string,
     confirmPassword: string,
     coachName: string
-  ) => Promise<{ ok: boolean; error?: string }>;
-  signIn: (email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
+  ) => Promise<AuthActionResult>;
+  signIn: (email: string, password: string) => Promise<AuthActionResult>;
   signOut: () => Promise<void>;
   updateCoachName: (name: string) => Promise<{ ok: boolean; error?: string }>;
 }

@@ -27,3 +27,19 @@ export function getSoundMuted(): boolean {
 export function setSoundMuted(muted: boolean): void {
   localStorage.setItem(STORAGE_KEYS.soundMuted, muted ? "1" : "0");
 }
+
+export type RecruitmentStyle = "manual" | "draft";
+
+export function getRecruitmentStyle(): RecruitmentStyle {
+  if (typeof window === "undefined") return "manual";
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.recruitmentStyle);
+    return raw === "draft" ? "draft" : "manual";
+  } catch {
+    return "manual";
+  }
+}
+
+export function setRecruitmentStyle(style: RecruitmentStyle): void {
+  localStorage.setItem(STORAGE_KEYS.recruitmentStyle, style);
+}

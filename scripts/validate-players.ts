@@ -59,7 +59,7 @@ function validatePlayers(
       throw new Error(`Missing yearsActive in ${source}: ${p.id}`);
     }
 
-    if (p.peakRating < 50 || p.peakRating > 99) {
+    if (p.peakRating < 75 || p.peakRating > 99) {
       throw new Error(`Invalid rating for ${p.name}: ${p.peakRating}`);
     }
     if (p.value < 10000) {

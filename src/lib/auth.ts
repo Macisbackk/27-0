@@ -1,5 +1,13 @@
 import { isSupabaseConfigured, supabase } from "./supabase";
+import {
+  type AuthActionResult,
+  loginSuccessResult,
+  mapAuthError,
+  signupSuccessResult,
+} from "./auth-errors";
 import { validateCoachName } from "./storage/user";
+
+export type { AuthActionResult };
 
 export interface UserProfile {
   id: string;
@@ -79,7 +87,7 @@ export async function signUp(
   email: string,
   password: string,
   coachName: string
-): Promise<{ ok: boolean; error?: string }> {
+): Promise<AuthActionResult> {
   if (!email.trim()) return { ok: false, error: "Email is required." };
   if (password.length < 6) {
     return { ok: false, error: "Password must be at least 6 characters." };
@@ -94,20 +102,26 @@ export async function signUp(
       options: { data: { coach_name: nameCheck.value } },
     });
     if (error) throw error;
+
     if (data.user) {
       await createProfile(data.user.id, nameCheck.value!);
     }
-    return { ok: true };
+
+    if (data.session) {
+      return loginSuccessResult();
+    }
+
+    return signupSuccessResult();
   } catch (err) {
     const message = err instanceof Error ? err.message : "Sign up failed.";
-    return { ok: false, error: message };
+    return mapAuthError(message, "signup");
   }
 }
 
 export async function signIn(
   email: string,
   password: string
-): Promise<{ ok: boolean; error?: string }> {
+): Promise<AuthActionResult> {
   if (!email.trim()) return { ok: false, error: "Email is required." };
   if (!password) return { ok: false, error: "Password is required." };
 
@@ -117,10 +131,10 @@ export async function signIn(
       password,
     });
     if (error) throw error;
-    return { ok: true };
+    return loginSuccessResult();
   } catch (err) {
     const message = err instanceof Error ? err.message : "Log in failed.";
-    return { ok: false, error: message };
+    return mapAuthError(message, "login");
   }
 }
 

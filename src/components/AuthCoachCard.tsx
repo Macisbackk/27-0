@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import {
   COACH_NAME_MAX_LENGTH,
@@ -28,8 +28,28 @@ export function AuthCoachCard() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [coachInput, setCoachInput] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [editingCoach, setEditingCoach] = useState(false);
+  const [cooldownUntil, setCooldownUntil] = useState<number | null>(null);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
+
+  useEffect(() => {
+    if (!cooldownUntil) {
+      setCooldownSeconds(0);
+      return;
+    }
+    const tick = () => {
+      const remaining = Math.max(0, Math.ceil((cooldownUntil - Date.now()) / 1000));
+      setCooldownSeconds(remaining);
+      if (remaining <= 0) setCooldownUntil(null);
+    };
+    tick();
+    const id = window.setInterval(tick, 1000);
+    return () => window.clearInterval(id);
+  }, [cooldownUntil]);
+
+  const signupBlocked = mode === "signup" && cooldownSeconds > 0;
 
   const scrollToPlay = () => {
     document.getElementById("play-modes")?.scrollIntoView({
@@ -39,8 +59,10 @@ export function AuthCoachCard() {
   };
 
   const handleSubmit = async () => {
+    if (signupBlocked) return;
     setBusy(true);
     setError(null);
+    setSuccess(null);
     try {
       if (mode === "signup") {
         const result = await signUp(
@@ -49,7 +71,17 @@ export function AuthCoachCard() {
           confirmPassword,
           coachInput
         );
-        if (!result.ok) setError(result.error ?? "Sign up failed.");
+        if (!result.ok) {
+          setError(result.error ?? "Sign up failed.");
+          if (result.cooldownSeconds) {
+            setCooldownUntil(Date.now() + result.cooldownSeconds * 1000);
+          }
+        } else if (result.emailSent) {
+          setSuccess("Confirmation email sent. Please check your inbox.");
+          if (result.cooldownSeconds) {
+            setCooldownUntil(Date.now() + result.cooldownSeconds * 1000);
+          }
+        }
       } else {
         const result = await signIn(emailInput, password);
         if (!result.ok) setError(result.error ?? "Log in failed.");
@@ -175,6 +207,7 @@ export function AuthCoachCard() {
           onClick={() => {
             setMode("login");
             setError(null);
+            setSuccess(null);
           }}
           className={`flex-1 rounded-lg px-4 py-2 font-display text-xs font-bold uppercase tracking-wider ${
             mode === "login"
@@ -189,6 +222,7 @@ export function AuthCoachCard() {
           onClick={() => {
             setMode("signup");
             setError(null);
+            setSuccess(null);
           }}
           className={`flex-1 rounded-lg px-4 py-2 font-display text-xs font-bold uppercase tracking-wider ${
             mode === "signup"
@@ -240,19 +274,35 @@ export function AuthCoachCard() {
         )}
       </div>
 
+      {success && (
+        <p className="mt-3 text-sm font-medium text-accent-green" role="status">
+          {success}
+        </p>
+      )}
+
       {error && (
         <p className="mt-3 text-sm font-medium text-red-400" role="alert">
           {error}
         </p>
       )}
 
+      {signupBlocked && (
+        <p className="mt-2 text-center text-xs text-gray-500">
+          Please wait {cooldownSeconds}s before signing up again.
+        </p>
+      )}
+
       <button
         type="button"
-        disabled={busy}
+        disabled={busy || signupBlocked}
         onClick={() => void handleSubmit()}
         className="mt-5 w-full rounded-lg bg-accent-green px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-pitch-950 transition hover:bg-emerald-400 disabled:opacity-50"
       >
-        {mode === "signup" ? "Create Account" : "Log In"}
+        {mode === "signup"
+          ? signupBlocked
+            ? `Wait ${cooldownSeconds}s`
+            : "Create Account"
+          : "Log In"}
       </button>
     </section>
   );

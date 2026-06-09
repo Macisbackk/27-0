@@ -56,6 +56,7 @@ import { MatchdayScoreboard } from "./MatchdayScoreboard";
 import { HardModeBadge } from "./HardModeBadge";
 import { ClubHeaderBar } from "./ClubBadge";
 import { GuestNotice } from "./GuestNotice";
+import { pickRandomUnfilledSlot } from "@/lib/game/draft-mode";
 
 type GamePhase = "clubSelect" | "pitch" | "choice" | "simulation" | "review";
 
@@ -65,6 +66,7 @@ interface GameBoardProps {
   title?: string;
   subtitle?: string;
   joeMellorMode?: boolean;
+  draftMode?: boolean;
 }
 
 function createRunSeed(runKey: number): string {
@@ -81,6 +83,7 @@ export function GameBoard({
   title,
   subtitle,
   joeMellorMode = false,
+  draftMode = false,
 }: GameBoardProps) {
   const isChallengeCup = mode === "CHALLENGE_CUP";
   const [runKey, setRunKey] = useState(0);
@@ -158,10 +161,44 @@ export function GameBoard({
     }
   }, [joeMellorMode]);
 
+  const draftSkipSlots = useMemo(
+    () => (joeMellorMode ? [LOOSE_FORWARD_SLOT_INDEX] : []),
+    [joeMellorMode]
+  );
+
   const currentRound: RecruitmentRound | null =
     selectedSlotIndex !== null
       ? getOfferForSlot(slotOffers, selectedSlotIndex)
       : null;
+
+  const beginDraftPick = useCallback(
+    (currentSquad: SquadSlot[], pickIndex: number) => {
+      const slot = pickRandomUnfilledSlot(
+        currentSquad,
+        draftSkipSlots,
+        seed,
+        pickIndex
+      );
+      if (slot === null || !getOfferForSlot(slotOffers, slot)) return;
+      setSelectedSlotIndex(slot);
+      setPhase("choice");
+    },
+    [draftSkipSlots, seed, slotOffers]
+  );
+
+  useEffect(() => {
+    if (!draftMode || isChallengeCup || phase !== "pitch") return;
+    if (getFilledCount(squad) >= TOTAL_SLOTS) return;
+    if (slotOffers.size === 0) return;
+    beginDraftPick(squad, getFilledCount(squad));
+  }, [
+    draftMode,
+    isChallengeCup,
+    phase,
+    squad,
+    slotOffers,
+    beginDraftPick,
+  ]);
 
   const filledCount = getFilledCount(squad);
   const totalValue = getSquadValue(squad);
@@ -289,16 +326,30 @@ export function GameBoard({
         setChoosing(false);
         setSelectedSlotIndex(null);
 
-        if (getFilledCount(newSquad) >= TOTAL_SLOTS) {
+        const filled = getFilledCount(newSquad);
+        if (filled >= TOTAL_SLOTS) {
           playPositionComplete();
           startTournamentSimulation(newSquad);
+        } else if (draftMode) {
+          playPositionComplete();
+          setSelectedSlotIndex(null);
+          beginDraftPick(newSquad, filled);
         } else {
           playPositionComplete();
+          setSelectedSlotIndex(null);
           setPhase("pitch");
         }
       }, 400);
     },
-    [currentRound, choosing, phase, squad, startTournamentSimulation]
+    [
+      currentRound,
+      choosing,
+      phase,
+      squad,
+      startTournamentSimulation,
+      draftMode,
+      beginDraftPick,
+    ]
   );
 
   const handleReroll = useCallback(() => {
@@ -557,7 +608,7 @@ export function GameBoard({
               totalSlots={TOTAL_SLOTS}
               selectedSlot={selectedSlotIndex ?? undefined}
               hardMode={isHardMode}
-              interactive={phase === "pitch"}
+              interactive={phase === "pitch" && !draftMode}
               onSlotClick={handleSelectSlot}
               dimmed={phase === "choice"}
               lockedSlots={
@@ -603,14 +654,16 @@ export function GameBoard({
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
                 >
-                  <button
-                    type="button"
-                    onClick={handleBackToPitch}
-                    disabled={choosing || rerolling}
-                    className="mb-4 text-sm text-gray-500 transition hover:text-white disabled:opacity-40"
-                  >
-                    ← Back to team sheet
-                  </button>
+                  {!draftMode && (
+                    <button
+                      type="button"
+                      onClick={handleBackToPitch}
+                      disabled={choosing || rerolling}
+                      className="mb-4 text-sm text-gray-500 transition hover:text-white disabled:opacity-40"
+                    >
+                      ← Back to team sheet
+                    </button>
+                  )}
                   <PlayerChoice
                     playerA={playerPair[0]}
                     playerB={playerPair[1]}
@@ -624,6 +677,7 @@ export function GameBoard({
                     }
                     disabled={choosing || rerolling}
                     hardMode={isHardMode}
+                    draftMode={draftMode}
                   />
                 </motion.div>
               </motion.div>

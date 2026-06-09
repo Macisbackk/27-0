@@ -22,64 +22,79 @@ const MIN_LEGEND_OFFERS = 1;
 const MIN_ELITE_RATING_OFFERS = 1;
 const ELITE_RATING_THRESHOLD = 90;
 const TYPICAL_PAIR_RATING_GAP = 6;
-const EXTREME_PAIR_RATING_GAP = 12;
-const EXTREME_PAIR_CHANCE = 0.08;
+const EXTREME_PAIR_RATING_GAP = 10;
+const EXTREME_PAIR_CHANCE = 0.06;
 
-type RatingTier = "elite" | "strong" | "mid" | "lower" | "weak";
+type RatingBand = "b75_79" | "b80_84" | "b85_89" | "b90_94" | "b95_99";
 
-const TIER_WEIGHTS: Record<RatingTier, number> = {
-  elite: 0.12,
-  strong: 0.22,
-  mid: 0.46,
-  lower: 0.17,
-  weak: 0.03,
+const NORMAL_BAND_WEIGHTS: Record<RatingBand, number> = {
+  b75_79: 0.15,
+  b80_84: 0.35,
+  b85_89: 0.3,
+  b90_94: 0.15,
+  b95_99: 0.05,
 };
 
-function getRatingTier(rating: number): RatingTier {
-  if (rating >= 90) return "elite";
-  if (rating >= 85) return "strong";
-  if (rating >= 78) return "mid";
-  if (rating >= 70) return "lower";
-  return "weak";
+const CUP_BAND_WEIGHTS: Record<RatingBand, number> = {
+  b75_79: 0.08,
+  b80_84: 0.22,
+  b85_89: 0.35,
+  b90_94: 0.25,
+  b95_99: 0.1,
+};
+
+const CUP_CURRENT_RATIO = 0.28;
+const CUP_HISTORIC_RATIO = 0.42;
+const CUP_LEGEND_RATIO = 0.3;
+
+function getRatingBand(rating: number): RatingBand {
+  if (rating >= 95) return "b95_99";
+  if (rating >= 90) return "b90_94";
+  if (rating >= 85) return "b85_89";
+  if (rating >= 80) return "b80_84";
+  return "b75_79";
 }
 
-function rollTier(rng: () => number): RatingTier {
+function rollBand(
+  rng: () => number,
+  weights: Record<RatingBand, number>
+): RatingBand {
   const roll = rng();
   let cumulative = 0;
-  for (const tier of Object.keys(TIER_WEIGHTS) as RatingTier[]) {
-    cumulative += TIER_WEIGHTS[tier];
-    if (roll < cumulative) return tier;
+  for (const band of Object.keys(weights) as RatingBand[]) {
+    cumulative += weights[band];
+    if (roll < cumulative) return band;
   }
-  return "mid";
+  return "b80_84";
 }
 
-function playersInTier(players: Player[], tier: RatingTier): Player[] {
-  return players.filter((p) => getRatingTier(p.peakRating) === tier);
+function playersInBand(players: Player[], band: RatingBand): Player[] {
+  return players.filter((p) => getRatingBand(p.peakRating) === band);
 }
 
-function pickFromTierWithFallback(
+function pickFromBandWithFallback(
   candidates: Player[],
-  tier: RatingTier,
+  band: RatingBand,
   rng: () => number
 ): Player | null {
   if (candidates.length === 0) return null;
 
-  const fallbackOrder: RatingTier[] = [
-    tier,
-    "mid",
-    "strong",
-    "lower",
-    "elite",
-    "weak",
+  const fallbackOrder: RatingBand[] = [
+    band,
+    "b80_84",
+    "b85_89",
+    "b75_79",
+    "b90_94",
+    "b95_99",
   ];
-  const seen = new Set<RatingTier>();
+  const seen = new Set<RatingBand>();
 
-  for (const t of fallbackOrder) {
-    if (seen.has(t)) continue;
-    seen.add(t);
-    const inTier = playersInTier(candidates, t);
-    if (inTier.length > 0) {
-      return inTier[Math.floor(rng() * inTier.length)];
+  for (const b of fallbackOrder) {
+    if (seen.has(b)) continue;
+    seen.add(b);
+    const inBand = playersInBand(candidates, b);
+    if (inBand.length > 0) {
+      return inBand[Math.floor(rng() * inBand.length)];
     }
   }
 
@@ -111,8 +126,6 @@ function basePlayerPool(options?: RecruitmentOptions): Player[] {
   return [...CURRENT_PLAYERS, ...HISTORIC_PLAYERS, ...LEGEND_PLAYERS];
 }
 
-const CUP_CATEGORY_THIRD = 1 / 3;
-
 function selectCategoryPool(rng: () => number, options?: RecruitmentOptions): Player[] {
   if (options?.clubFilter) {
     const clubPlayers = getPlayersByClub(options.clubFilter);
@@ -120,8 +133,10 @@ function selectCategoryPool(rng: () => number, options?: RecruitmentOptions): Pl
     const historic = clubPlayers.filter((p) => p.category === "historic");
     const current = clubPlayers.filter((p) => p.category === "current");
     const roll = rng();
-    if (roll < CUP_CATEGORY_THIRD && current.length > 0) return current;
-    if (roll < CUP_CATEGORY_THIRD * 2 && historic.length > 0) return historic;
+    if (roll < CUP_CURRENT_RATIO && current.length > 0) return current;
+    if (roll < CUP_CURRENT_RATIO + CUP_HISTORIC_RATIO && historic.length > 0) {
+      return historic;
+    }
     if (legends.length > 0) return legends;
     if (historic.length > 0) return historic;
     if (current.length > 0) return current;
@@ -144,14 +159,16 @@ function playersForCategory(
 
 function pickBalancedPair(
   candidates: Player[],
-  rng: () => number
+  rng: () => number,
+  options?: RecruitmentOptions
 ): [Player, Player] | null {
   if (candidates.length < 2) return null;
 
   const allowExtreme = rng() < EXTREME_PAIR_CHANCE;
   const maxGap = allowExtreme ? EXTREME_PAIR_RATING_GAP : TYPICAL_PAIR_RATING_GAP;
-  const targetTier = rollTier(rng);
-  const anchor = pickFromTierWithFallback(candidates, targetTier, rng);
+  const weights = options?.clubFilter ? CUP_BAND_WEIGHTS : NORMAL_BAND_WEIGHTS;
+  const targetBand = rollBand(rng, weights);
+  const anchor = pickFromBandWithFallback(candidates, targetBand, rng);
   if (!anchor) return null;
 
   let partners = candidates.filter(
@@ -216,7 +233,7 @@ function pickPairForPosition(
     if (categoryPool.length >= 2) primaryPool = categoryPool;
   }
 
-  const pair = pickBalancedPair(primaryPool, rng);
+  const pair = pickBalancedPair(primaryPool, rng, options);
   if (!pair) return null;
   return [pair[0].id, pair[1].id];
 }

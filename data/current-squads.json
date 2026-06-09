@@ -8,11 +8,12 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 89,
-    "value": 1400000,
+    "peakRating": 88,
+    "value": 1665000,
     "appearances": 110,
     "tries": 69,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "rating": 88
   },
   {
     "id": "wigan-cur-zach-eckersley",
@@ -23,9 +24,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 180000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wigan-cur-adam-keighran",
@@ -37,8 +39,9 @@
     "yearsActive": "2018–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 550000,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "wigan-cur-jake-wardle",
@@ -49,9 +52,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 650000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "wigan-cur-liam-marshall",
@@ -62,9 +66,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 85,
-    "value": 700000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "wigan-cur-bevan-french",
@@ -75,9 +80,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
-    "peakRating": 93,
-    "value": 2200000,
-    "intlCaps": 0
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 0,
+    "rating": 88
   },
   {
     "id": "wigan-cur-harry-smith",
@@ -88,9 +94,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 86,
-    "value": 800000,
-    "intlCaps": 4
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 4,
+    "rating": 88
   },
   {
     "id": "wigan-cur-ethan-havard",
@@ -101,9 +108,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 450000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "wigan-cur-brad-oneill",
@@ -115,8 +123,9 @@
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 500000,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "wigan-cur-luke-thompson",
@@ -127,9 +136,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 87,
-    "value": 900000,
-    "intlCaps": 16
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 16,
+    "rating": 88
   },
   {
     "id": "wigan-cur-junior-nsemba",
@@ -140,9 +150,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 650000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "wigan-cur-liam-farrell",
@@ -154,8 +165,9 @@
     "yearsActive": "2010–Present",
     "category": "current",
     "peakRating": 88,
-    "value": 850000,
-    "intlCaps": 0
+    "value": 1665000,
+    "intlCaps": 0,
+    "rating": 88
   },
   {
     "id": "wigan-cur-kaide-ellis",
@@ -166,9 +178,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 700000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "wigan-cur-sam-walters",
@@ -179,9 +192,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wigan-cur-patrick-mago",
@@ -192,9 +206,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "wigan-cur-abbas-miski",
@@ -205,9 +220,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 300000,
-    "intlCaps": 12
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 12,
+    "rating": 77
   },
   {
     "id": "wigan-cur-kruise-leeming",
@@ -218,9 +234,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 400000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "wigan-cur-jack-farrimond",
@@ -231,9 +248,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 120000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wigan-cur-sam-eseh",
@@ -244,9 +262,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 71,
-    "value": 130000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wigan-cur-oliver-wilson",
@@ -257,9 +276,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 250000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wigan-cur-tom-forber",
@@ -270,9 +290,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 110000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wigan-cur-kian-mcdermott",
@@ -283,9 +304,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 68,
-    "value": 90000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "wigan-cur-harvey-makin",
@@ -296,9 +318,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 80000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "wigan-cur-taylor-kerr",
@@ -309,9 +332,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 66,
-    "value": 70000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "wigan-cur-nathan-lowe",
@@ -322,9 +346,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 66,
-    "value": 70000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "st-helens-cur-jack-welsby",
@@ -335,9 +360,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 90,
-    "value": 1500000,
-    "intlCaps": 11
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 11,
+    "rating": 88
   },
   {
     "id": "st-helens-cur-kyle-feldt",
@@ -349,8 +375,9 @@
     "yearsActive": "2013–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 600000,
-    "intlCaps": 0
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "st-helens-cur-harry-robertson",
@@ -361,9 +388,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "st-helens-cur-mark-percival",
@@ -374,9 +402,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 86,
-    "value": 750000,
-    "intlCaps": 0
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 0,
+    "rating": 88
   },
   {
     "id": "st-helens-cur-deon-cross",
@@ -387,9 +416,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "st-helens-cur-tristan-sailor",
@@ -401,8 +431,9 @@
     "yearsActive": "2018–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 520000,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "st-helens-cur-jonny-lomax",
@@ -414,8 +445,9 @@
     "yearsActive": "2009–Present",
     "category": "current",
     "peakRating": 88,
-    "value": 820000,
-    "intlCaps": 18
+    "value": 1665000,
+    "intlCaps": 18,
+    "rating": 88
   },
   {
     "id": "st-helens-cur-alex-walmsley",
@@ -426,9 +458,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2012–Present",
     "category": "current",
-    "peakRating": 87,
-    "value": 900000,
-    "intlCaps": 33
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 33,
+    "rating": 88
   },
   {
     "id": "st-helens-cur-daryl-clark",
@@ -439,9 +472,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2011–Present",
     "category": "current",
-    "peakRating": 86,
-    "value": 700000,
-    "intlCaps": 15
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 15,
+    "rating": 88
   },
   {
     "id": "st-helens-cur-matty-lees",
@@ -453,8 +487,9 @@
     "yearsActive": "2017–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 580000,
-    "intlCaps": 6
+    "value": 750000,
+    "intlCaps": 6,
+    "rating": 83
   },
   {
     "id": "st-helens-cur-curtis-sironen",
@@ -466,8 +501,9 @@
     "yearsActive": "2012–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 520000,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "st-helens-cur-shane-wright",
@@ -479,8 +515,9 @@
     "yearsActive": "2017–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 300000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "st-helens-cur-david-klemmer",
@@ -491,9 +528,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 85,
-    "value": 850000,
-    "intlCaps": 32
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 32,
+    "rating": 83
   },
   {
     "id": "st-helens-cur-jacob-host",
@@ -504,9 +542,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 380000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "st-helens-cur-george-delaney",
@@ -518,8 +557,9 @@
     "yearsActive": "2022–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 260000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "st-helens-cur-matt-whitley",
@@ -530,9 +570,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2015–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 340000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "st-helens-cur-george-whitby",
@@ -543,9 +584,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 170000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "st-helens-cur-jake-wingfield",
@@ -556,9 +598,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 240000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "st-helens-cur-agnatius-paasi",
@@ -569,9 +612,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2011–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 420000,
-    "intlCaps": 6
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 6,
+    "rating": 82
   },
   {
     "id": "st-helens-cur-lewis-murphy",
@@ -583,8 +627,9 @@
     "yearsActive": "2019–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 300000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "st-helens-cur-noah-stephens",
@@ -595,9 +640,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 68,
-    "value": 90000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "st-helens-cur-joe-shorrocks",
@@ -609,8 +655,9 @@
     "yearsActive": "2019–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 260000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "st-helens-cur-jake-burns",
@@ -621,9 +668,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 71,
-    "value": 140000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "st-helens-cur-owen-dagnall",
@@ -634,9 +682,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 120000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "st-helens-cur-nene-macdonald",
@@ -647,9 +696,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2012–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 480000,
-    "intlCaps": 18
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 18,
+    "rating": 82
   },
   {
     "id": "leeds-cur-lachie-miller",
@@ -661,8 +711,9 @@
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 520000,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "leeds-cur-maika-sivo",
@@ -673,9 +724,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2015–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 620000,
-    "intlCaps": 2
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 2,
+    "rating": 83
   },
   {
     "id": "leeds-cur-harry-newman",
@@ -686,9 +738,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 650000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "leeds-cur-ash-handley",
@@ -699,9 +752,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 86,
-    "value": 700000,
-    "intlCaps": 0
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 0,
+    "rating": 88
   },
   {
     "id": "leeds-cur-ryan-hall",
@@ -713,8 +767,9 @@
     "yearsActive": "2007–Present",
     "category": "current",
     "peakRating": 88,
-    "value": 750000,
-    "intlCaps": 39
+    "value": 1665000,
+    "intlCaps": 39,
+    "rating": 88
   },
   {
     "id": "leeds-cur-brodie-croft",
@@ -725,9 +780,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
-    "peakRating": 86,
-    "value": 820000,
-    "intlCaps": 0
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 0,
+    "rating": 88
   },
   {
     "id": "leeds-cur-jake-connor",
@@ -738,9 +794,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
-    "peakRating": 85,
-    "value": 720000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "leeds-cur-mikolaj-oledzki",
@@ -751,9 +808,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 670000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "leeds-cur-jarrod-oconnor",
@@ -764,9 +822,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 360000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "leeds-cur-tom-holroyd",
@@ -777,9 +836,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 430000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "leeds-cur-kallum-watkins",
@@ -790,9 +850,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2008–Present",
     "category": "current",
-    "peakRating": 87,
-    "value": 700000,
-    "intlCaps": 29
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 29,
+    "rating": 88
   },
   {
     "id": "leeds-cur-james-mcdonnell",
@@ -803,9 +864,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 330000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "leeds-cur-keenan-palasia",
@@ -816,9 +878,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 360000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "leeds-cur-chris-hankinson",
@@ -829,9 +892,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "leeds-cur-cooper-jenkins",
@@ -842,9 +906,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 200000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "leeds-cur-ethan-oneill",
@@ -855,9 +920,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "leeds-cur-cameron-smith",
@@ -869,8 +935,9 @@
     "yearsActive": "2017–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 500000,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "leeds-cur-max-simpson",
@@ -881,9 +948,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 170000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "leeds-cur-jeremiah-matautia",
@@ -894,9 +962,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2012–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 280000,
-    "intlCaps": 4
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 4,
+    "rating": 77
   },
   {
     "id": "leeds-cur-presley-cassell",
@@ -907,9 +976,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 69,
-    "value": 100000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "leeds-cur-alfie-edgell",
@@ -920,9 +990,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 71,
-    "value": 130000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "leeds-cur-riley-lumb",
@@ -933,9 +1004,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 150000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "leeds-cur-danny-levi",
@@ -947,8 +1019,9 @@
     "yearsActive": "2016–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 300000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "leeds-cur-ned-mccormack",
@@ -959,9 +1032,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 68,
-    "value": 90000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "leeds-cur-ben-littlewood",
@@ -972,9 +1046,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 85000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "warrington-cur-cai-taylor-wray",
@@ -985,9 +1060,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 140000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "warrington-cur-josh-thewlis",
@@ -998,9 +1074,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "warrington-cur-toby-king",
@@ -1012,8 +1089,9 @@
     "yearsActive": "2014–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 520000,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "warrington-cur-albert-hopoate",
@@ -1024,9 +1102,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "warrington-cur-matty-ashton",
@@ -1037,9 +1116,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 650000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "warrington-cur-george-williams",
@@ -1050,9 +1130,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 90,
-    "value": 1400000,
-    "intlCaps": 21
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 21,
+    "rating": 88
   },
   {
     "id": "warrington-cur-marc-sneyd",
@@ -1063,9 +1144,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2010–Present",
     "category": "current",
-    "peakRating": 86,
-    "value": 780000,
-    "intlCaps": 0
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 0,
+    "rating": 88
   },
   {
     "id": "warrington-cur-luke-yates",
@@ -1076,9 +1158,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 420000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "warrington-cur-danny-walker",
@@ -1090,8 +1173,9 @@
     "yearsActive": "2018–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 550000,
-    "intlCaps": 0
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "warrington-cur-james-harrison",
@@ -1102,9 +1186,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "warrington-cur-adam-holroyd",
@@ -1115,9 +1200,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 210000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "warrington-cur-sam-stone",
@@ -1129,8 +1215,9 @@
     "yearsActive": "2017–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 280000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "warrington-cur-ben-currie",
@@ -1141,9 +1228,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 85,
-    "value": 620000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "warrington-cur-sam-powell",
@@ -1155,8 +1243,9 @@
     "yearsActive": "2013–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 480000,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "warrington-cur-toafofoa-sipley",
@@ -1167,9 +1256,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "warrington-cur-liam-byrne",
@@ -1180,9 +1270,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 340000,
-    "intlCaps": 5
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 5,
+    "rating": 77
   },
   {
     "id": "warrington-cur-jordy-crowther",
@@ -1194,8 +1285,9 @@
     "yearsActive": "2017–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 250000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "warrington-cur-ewan-irwin",
@@ -1206,9 +1298,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 68,
-    "value": 90000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "warrington-cur-leon-hayes",
@@ -1219,9 +1312,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 160000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "warrington-cur-james-bentley",
@@ -1232,9 +1326,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 330000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "warrington-cur-luke-thomas",
@@ -1245,9 +1340,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 69,
-    "value": 95000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "warrington-cur-joe-philbin",
@@ -1258,9 +1354,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 360000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "warrington-cur-arron-lindop",
@@ -1271,9 +1368,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 150000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "warrington-cur-max-wood",
@@ -1284,9 +1382,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 80000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "warrington-cur-josh-smith",
@@ -1297,9 +1396,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 80000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "bradford-cur-caleb-aekins",
@@ -1310,9 +1410,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 420000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "bradford-cur-jayden-okunbor",
@@ -1324,8 +1425,9 @@
     "yearsActive": "2019–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 280000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "bradford-cur-esan-marsters",
@@ -1337,8 +1439,9 @@
     "yearsActive": "2017–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 520000,
-    "intlCaps": 4
+    "value": 610000,
+    "intlCaps": 4,
+    "rating": 82
   },
   {
     "id": "bradford-cur-waqa-blake",
@@ -1350,8 +1453,9 @@
     "yearsActive": "2015–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 600000,
-    "intlCaps": 0
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "bradford-cur-ethan-ryan",
@@ -1362,9 +1466,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 300000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "bradford-cur-jayden-nikorima",
@@ -1375,9 +1480,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 450000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "bradford-cur-rowan-milnes",
@@ -1388,9 +1494,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 360000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "bradford-cur-ryan-sutton",
@@ -1402,8 +1509,9 @@
     "yearsActive": "2015–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 650000,
-    "intlCaps": 6
+    "value": 750000,
+    "intlCaps": 6,
+    "rating": 83
   },
   {
     "id": "bradford-cur-andy-ackers",
@@ -1414,9 +1522,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 700000,
-    "intlCaps": 3
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 3,
+    "rating": 83
   },
   {
     "id": "bradford-cur-loghan-lewis",
@@ -1428,8 +1537,9 @@
     "yearsActive": "2018–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 280000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "bradford-cur-dan-russell",
@@ -1440,9 +1550,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2015–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 430000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "bradford-cur-zac-fulton",
@@ -1453,9 +1564,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "bradford-cur-joe-mellor",
@@ -1466,9 +1578,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2011–Present",
     "category": "current",
-    "peakRating": 83,
-    "value": 120000,
-    "intlCaps": 0
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 0,
+    "rating": 88
   },
   {
     "id": "bradford-cur-mitch-souter",
@@ -1479,9 +1592,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 190000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "bradford-cur-eribe-doro",
@@ -1492,9 +1606,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 170000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "bradford-cur-ebon-scurr",
@@ -1505,9 +1620,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "bradford-cur-ed-chamberlain",
@@ -1518,9 +1634,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 230000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "bradford-cur-joe-keyes",
@@ -1531,9 +1648,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2012–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 280000,
-    "intlCaps": 7
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 7,
+    "rating": 77
   },
   {
     "id": "bradford-cur-will-gardiner",
@@ -1544,9 +1662,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 120000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "bradford-cur-brandon-douglas",
@@ -1557,9 +1676,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 68,
-    "value": 90000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "bradford-cur-sam-hallas",
@@ -1571,8 +1691,9 @@
     "yearsActive": "2016–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 240000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "bradford-cur-luke-hooley",
@@ -1583,9 +1704,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "bradford-cur-connor-wynne",
@@ -1596,9 +1718,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 210000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "bradford-cur-guy-armitage",
@@ -1609,9 +1732,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 150000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "bradford-cur-eliot-peposhi",
@@ -1622,9 +1746,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 85000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "bradford-cur-ronan-michael",
@@ -1635,9 +1760,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 85000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "hull-kr-cur-arthur-mourgue",
@@ -1648,9 +1774,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 480000,
-    "intlCaps": 7
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 7,
+    "rating": 82
   },
   {
     "id": "hull-kr-cur-tom-davies",
@@ -1662,8 +1789,9 @@
     "yearsActive": "2015–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 540000,
-    "intlCaps": 0
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "hull-kr-cur-peta-hiku",
@@ -1674,9 +1802,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 560000,
-    "intlCaps": 15
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 15,
+    "rating": 83
   },
   {
     "id": "hull-kr-cur-oliver-gildart",
@@ -1687,9 +1816,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2015–Present",
     "category": "current",
-    "peakRating": 85,
-    "value": 620000,
-    "intlCaps": 10
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 10,
+    "rating": 83
   },
   {
     "id": "hull-kr-cur-joe-burgess",
@@ -1700,9 +1830,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 600000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "hull-kr-cur-mikey-lewis",
@@ -1713,9 +1844,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 92,
-    "value": 2000000,
-    "intlCaps": 12
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 12,
+    "rating": 88
   },
   {
     "id": "hull-kr-cur-tyrone-may",
@@ -1727,8 +1859,9 @@
     "yearsActive": "2017–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 520000,
-    "intlCaps": 6
+    "value": 610000,
+    "intlCaps": 6,
+    "rating": 82
   },
   {
     "id": "hull-kr-cur-sauaso-sue",
@@ -1739,9 +1872,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 350000,
-    "intlCaps": 9
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 9,
+    "rating": 82
   },
   {
     "id": "hull-kr-cur-jez-litten",
@@ -1752,9 +1886,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 650000,
-    "intlCaps": 3
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 3,
+    "rating": 83
   },
   {
     "id": "hull-kr-cur-tom-amone",
@@ -1765,9 +1900,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 700000,
-    "intlCaps": 3
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 3,
+    "rating": 83
   },
   {
     "id": "hull-kr-cur-dean-hadley",
@@ -1778,9 +1914,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 340000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "hull-kr-cur-james-batchelor",
@@ -1791,9 +1928,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 400000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "hull-kr-cur-elliot-minchella",
@@ -1804,9 +1942,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 85,
-    "value": 620000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "hull-kr-cur-jack-broadbent",
@@ -1818,8 +1957,9 @@
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 260000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "hull-kr-cur-sam-luckley",
@@ -1830,9 +1970,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 300000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "hull-kr-cur-jai-whitbread",
@@ -1843,9 +1984,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 300000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "hull-kr-cur-rhyse-martin",
@@ -1856,9 +1998,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2015–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 620000,
-    "intlCaps": 20
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 20,
+    "rating": 83
   },
   {
     "id": "hull-kr-cur-jack-brown",
@@ -1869,9 +2012,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 180000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-kr-cur-jordan-dezaria",
@@ -1882,9 +2026,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 240000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-kr-cur-noah-booth",
@@ -1895,9 +2040,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 71,
-    "value": 130000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-kr-cur-bill-leyland",
@@ -1908,9 +2054,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 71,
-    "value": 130000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-kr-cur-lee-kershaw",
@@ -1922,8 +2069,9 @@
     "yearsActive": "2019–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 240000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-kr-cur-jack-charles",
@@ -1934,9 +2082,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 68,
-    "value": 90000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "hull-kr-cur-louix-gorman",
@@ -1947,9 +2096,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 80000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "hull-kr-cur-harvey-horne",
@@ -1960,9 +2110,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 80000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "hull-fc-cur-will-pryce",
@@ -1973,9 +2124,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 620000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "hull-fc-cur-harvey-barron",
@@ -1986,9 +2138,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 190000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-fc-cur-davy-litten",
@@ -2000,8 +2153,9 @@
     "yearsActive": "2022–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 260000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-fc-cur-zak-hardaker",
@@ -2012,9 +2166,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2010–Present",
     "category": "current",
-    "peakRating": 86,
-    "value": 550000,
-    "intlCaps": 4
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 4,
+    "rating": 88
   },
   {
     "id": "hull-fc-cur-lewis-martin",
@@ -2025,9 +2180,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-fc-cur-jake-arthur",
@@ -2038,9 +2194,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 360000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "hull-fc-cur-aidan-sezer",
@@ -2051,9 +2208,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2011–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 620000,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "hull-fc-cur-herman-eseese",
@@ -2064,9 +2222,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 700000,
-    "intlCaps": 4
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 4,
+    "rating": 83
   },
   {
     "id": "hull-fc-cur-amir-bourouh",
@@ -2078,8 +2237,9 @@
     "yearsActive": "2021–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 280000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "hull-fc-cur-harvie-hill",
@@ -2091,8 +2251,9 @@
     "yearsActive": "2021–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 260000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-fc-cur-joe-batchelor",
@@ -2103,9 +2264,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 420000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "hull-fc-cur-jed-cartwright",
@@ -2116,9 +2278,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 300000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "hull-fc-cur-john-asiata",
@@ -2129,9 +2292,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2012–Present",
     "category": "current",
-    "peakRating": 85,
+    "peakRating": 83,
     "value": 750000,
-    "intlCaps": 4
+    "intlCaps": 4,
+    "rating": 83
   },
   {
     "id": "hull-fc-cur-cade-cust",
@@ -2142,9 +2306,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 340000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "hull-fc-cur-james-bell",
@@ -2155,9 +2320,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 300000,
-    "intlCaps": 10
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 10,
+    "rating": 77
   },
   {
     "id": "hull-fc-cur-sam-lisone",
@@ -2168,9 +2334,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2015–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 450000,
-    "intlCaps": 5
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 5,
+    "rating": 82
   },
   {
     "id": "hull-fc-cur-liam-knight",
@@ -2181,9 +2348,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "hull-fc-cur-ligi-sao",
@@ -2194,9 +2362,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 330000,
-    "intlCaps": 5
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 5,
+    "rating": 77
   },
   {
     "id": "hull-fc-cur-tom-briscoe",
@@ -2207,9 +2376,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2008–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 360000,
-    "intlCaps": 2
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 2,
+    "rating": 83
   },
   {
     "id": "hull-fc-cur-yusuf-aydin",
@@ -2220,9 +2390,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 190000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-fc-cur-arthur-romano",
@@ -2233,9 +2404,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 180000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-fc-cur-connor-bailey",
@@ -2246,9 +2418,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 160000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-fc-cur-brad-fash",
@@ -2260,8 +2433,9 @@
     "yearsActive": "2015–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 240000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "hull-fc-cur-logan-moy",
@@ -2272,9 +2446,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 120000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "hull-fc-cur-matty-laidlaw",
@@ -2285,9 +2460,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 85000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "hull-fc-cur-hugo-salabio",
@@ -2298,9 +2474,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 170000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "leigh-cur-david-armstrong",
@@ -2312,8 +2489,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 500000,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "leigh-cur-keanan-brand",
@@ -2324,9 +2502,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 260000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "leigh-cur-tesi-niu",
@@ -2338,8 +2517,9 @@
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 520000,
-    "intlCaps": 7
+    "value": 610000,
+    "intlCaps": 7,
+    "rating": 82
   },
   {
     "id": "leigh-cur-umyla-hanley",
@@ -2350,9 +2530,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "leigh-cur-josh-charnley",
@@ -2364,8 +2545,9 @@
     "yearsActive": "2009–Present",
     "category": "current",
     "peakRating": 88,
-    "value": 550000,
-    "intlCaps": 8
+    "value": 1665000,
+    "intlCaps": 8,
+    "rating": 88
   },
   {
     "id": "leigh-cur-adam-cook",
@@ -2376,9 +2558,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "leigh-cur-lachlan-lam",
@@ -2389,9 +2572,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 87,
-    "value": 820000,
-    "intlCaps": 18
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 18,
+    "rating": 88
   },
   {
     "id": "leigh-cur-joe-ofahengaue",
@@ -2403,8 +2587,9 @@
     "yearsActive": "2015–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 600000,
-    "intlCaps": 10
+    "value": 610000,
+    "intlCaps": 10,
+    "rating": 82
   },
   {
     "id": "leigh-cur-edwin-ipape",
@@ -2415,9 +2600,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 86,
-    "value": 900000,
-    "intlCaps": 26
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 26,
+    "rating": 88
   },
   {
     "id": "leigh-cur-robbie-mulhern",
@@ -2429,8 +2615,9 @@
     "yearsActive": "2016–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 500000,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "leigh-cur-frankie-halton",
@@ -2441,9 +2628,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "leigh-cur-owen-trout",
@@ -2454,9 +2642,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 500000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "leigh-cur-isaac-liu",
@@ -2467,9 +2656,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 620000,
-    "intlCaps": 15
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 15,
+    "rating": 83
   },
   {
     "id": "leigh-cur-aaron-pene",
@@ -2481,8 +2671,9 @@
     "yearsActive": "2019–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 260000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "leigh-cur-jacob-alick-wiencke",
@@ -2493,9 +2684,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 220000,
-    "intlCaps": 2
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 2,
+    "rating": 76
   },
   {
     "id": "leigh-cur-matt-davis",
@@ -2507,8 +2699,9 @@
     "yearsActive": "2019–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 250000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "leigh-cur-liam-horne",
@@ -2519,9 +2712,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 230000,
-    "intlCaps": 8
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 8,
+    "rating": 76
   },
   {
     "id": "leigh-cur-bailey-hodgson",
@@ -2532,9 +2726,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 290000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "leigh-cur-innes-senior",
@@ -2546,8 +2741,9 @@
     "yearsActive": "2018–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 240000,
-    "intlCaps": 1
+    "value": 135000,
+    "intlCaps": 1,
+    "rating": 76
   },
   {
     "id": "leigh-cur-aj-towse",
@@ -2558,9 +2754,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 71,
-    "value": 130000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "leigh-cur-gareth-obrien",
@@ -2571,9 +2768,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2011–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 300000,
-    "intlCaps": 8
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 8,
+    "rating": 82
   },
   {
     "id": "leigh-cur-jack-hughes",
@@ -2584,9 +2782,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2012–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 280000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "leigh-cur-andrew-badrock",
@@ -2597,9 +2796,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 120000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "leigh-cur-ben-mcnamara",
@@ -2610,9 +2810,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 190000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "leigh-cur-louis-brogan",
@@ -2623,9 +2824,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 85000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "leigh-cur-nathan-wilde",
@@ -2636,9 +2838,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 85000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "wakefield-cur-max-jowitt",
@@ -2649,9 +2852,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 340000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "wakefield-cur-oliver-pratt",
@@ -2662,9 +2866,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 200000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wakefield-cur-cam-scott",
@@ -2676,8 +2881,9 @@
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 250000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wakefield-cur-corey-hall",
@@ -2689,8 +2895,9 @@
     "yearsActive": "2021–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 280000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "wakefield-cur-tom-johnstone",
@@ -2701,9 +2908,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 86,
-    "value": 700000,
-    "intlCaps": 5
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 5,
+    "rating": 88
   },
   {
     "id": "wakefield-cur-jake-trueman",
@@ -2715,8 +2923,9 @@
     "yearsActive": "2017–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 550000,
-    "intlCaps": 0
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "wakefield-cur-mason-lino",
@@ -2727,9 +2936,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 420000,
-    "intlCaps": 3
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 3,
+    "rating": 82
   },
   {
     "id": "wakefield-cur-mike-mcmeeken",
@@ -2740,9 +2950,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 85,
-    "value": 700000,
-    "intlCaps": 4
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 4,
+    "rating": 83
   },
   {
     "id": "wakefield-cur-tyson-smoothy",
@@ -2753,9 +2964,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "wakefield-cur-ky-rodwell",
@@ -2767,8 +2979,9 @@
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 260000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "wakefield-cur-seth-nikotemo",
@@ -2779,9 +2992,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 210000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wakefield-cur-matty-storton",
@@ -2793,8 +3007,9 @@
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 260000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wakefield-cur-jazz-tevaga",
@@ -2806,8 +3021,9 @@
     "yearsActive": "2016–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 620000,
-    "intlCaps": 10
+    "value": 750000,
+    "intlCaps": 10,
+    "rating": 83
   },
   {
     "id": "wakefield-cur-jay-pitts",
@@ -2818,9 +3034,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2010–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 280000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "wakefield-cur-caleb-hamlin-uele",
@@ -2831,9 +3048,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "wakefield-cur-caius-faatili",
@@ -2844,9 +3062,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 180000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wakefield-cur-harvey-smith",
@@ -2857,9 +3076,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 150000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wakefield-cur-isaiah-vagana",
@@ -2870,9 +3090,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 150000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wakefield-cur-lachlan-walmsley",
@@ -2883,9 +3104,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 200000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wakefield-cur-jack-sinfield",
@@ -2896,9 +3118,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 180000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wakefield-cur-jayden-myers",
@@ -2909,9 +3132,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 120000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wakefield-cur-thomas-doyle",
@@ -2922,9 +3146,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 68,
-    "value": 90000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "wakefield-cur-josh-rourke",
@@ -2935,9 +3160,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 160000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wakefield-cur-tray-lolesio",
@@ -2948,9 +3174,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 120000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "wakefield-cur-jordan-williams",
@@ -2961,9 +3188,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 69,
-    "value": 95000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "castleford-cur-blake-taaffe",
@@ -2974,9 +3202,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 420000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "castleford-cur-semi-valemei",
@@ -2987,9 +3216,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 450000,
-    "intlCaps": 5
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 5,
+    "rating": 82
   },
   {
     "id": "castleford-cur-zac-cini",
@@ -3000,9 +3230,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 300000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "castleford-cur-darnell-mcintosh",
@@ -3013,9 +3244,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "castleford-cur-mikaele-ravalawa",
@@ -3027,8 +3259,9 @@
     "yearsActive": "2019–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 620000,
-    "intlCaps": 1
+    "value": 750000,
+    "intlCaps": 1,
+    "rating": 83
   },
   {
     "id": "castleford-cur-daejarn-asi",
@@ -3039,9 +3272,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 430000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "castleford-cur-tom-weaver",
@@ -3052,9 +3286,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 190000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "castleford-cur-renouf-atoni",
@@ -3065,9 +3300,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 300000,
-    "intlCaps": 2
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 2,
+    "rating": 77
   },
   {
     "id": "castleford-cur-liam-hood",
@@ -3078,9 +3314,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2012–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 260000,
-    "intlCaps": 7
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 7,
+    "rating": 77
   },
   {
     "id": "castleford-cur-george-lawler",
@@ -3091,9 +3328,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 260000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "castleford-cur-jordan-lane",
@@ -3104,9 +3342,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 360000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "castleford-cur-alex-mellor",
@@ -3117,9 +3356,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 280000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "castleford-cur-joe-stimson",
@@ -3130,9 +3370,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "castleford-cur-brock-greacen",
@@ -3143,9 +3384,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 160000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "castleford-cur-jack-ashworth",
@@ -3157,8 +3399,9 @@
     "yearsActive": "2018–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 240000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "castleford-cur-joe-westerman",
@@ -3170,8 +3413,9 @@
     "yearsActive": "2007–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 300000,
-    "intlCaps": 2
+    "value": 610000,
+    "intlCaps": 2,
+    "rating": 82
   },
   {
     "id": "castleford-cur-chris-atkin",
@@ -3182,9 +3426,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 250000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "castleford-cur-fletcher-rooney",
@@ -3195,9 +3440,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 180000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "castleford-cur-brad-singleton",
@@ -3208,9 +3454,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2011–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "castleford-cur-aiden-doolan",
@@ -3221,9 +3468,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 120000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "castleford-cur-louis-senior",
@@ -3234,9 +3482,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 220000,
-    "intlCaps": 1
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 1,
+    "rating": 76
   },
   {
     "id": "castleford-cur-jason-qareqare",
@@ -3248,8 +3497,9 @@
     "yearsActive": "2021–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 280000,
-    "intlCaps": 2
+    "value": 170000,
+    "intlCaps": 2,
+    "rating": 77
   },
   {
     "id": "castleford-cur-jimmy-beckett",
@@ -3260,9 +3510,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 120000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "castleford-cur-jenson-windley",
@@ -3273,9 +3524,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 71,
-    "value": 130000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "castleford-cur-sam-hall",
@@ -3286,9 +3538,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 120000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "castleford-cur-alfie-lindsey",
@@ -3299,9 +3552,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 85000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "huddersfield-cur-niall-evalds",
@@ -3313,8 +3567,9 @@
     "yearsActive": "2013–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 500000,
-    "intlCaps": 1
+    "value": 750000,
+    "intlCaps": 1,
+    "rating": 83
   },
   {
     "id": "huddersfield-cur-adam-swift",
@@ -3325,9 +3580,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2012–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 520000,
-    "intlCaps": 1
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 1,
+    "rating": 83
   },
   {
     "id": "huddersfield-cur-jacob-gagai",
@@ -3339,8 +3595,9 @@
     "yearsActive": "2023–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 260000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "huddersfield-cur-taane-milne",
@@ -3351,9 +3608,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 420000,
-    "intlCaps": 5
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 5,
+    "rating": 82
   },
   {
     "id": "huddersfield-cur-sam-halsall",
@@ -3364,9 +3622,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 180000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "huddersfield-cur-tui-lolohea",
@@ -3377,9 +3636,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 520000,
-    "intlCaps": 12
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 12,
+    "rating": 83
   },
   {
     "id": "huddersfield-cur-adam-clune",
@@ -3390,9 +3650,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 420000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "huddersfield-cur-tristan-powell",
@@ -3403,9 +3664,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "huddersfield-cur-zac-woolford",
@@ -3416,9 +3678,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 360000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "huddersfield-cur-thomas-burgess",
@@ -3429,9 +3692,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 86,
-    "value": 780000,
-    "intlCaps": 14
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 14,
+    "rating": 88
   },
   {
     "id": "huddersfield-cur-asher-odonnell",
@@ -3442,9 +3706,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 200000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "huddersfield-cur-sam-hewitt",
@@ -3456,8 +3721,9 @@
     "yearsActive": "2019–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 240000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "huddersfield-cur-harry-rushton",
@@ -3468,9 +3734,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 320000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "huddersfield-cur-fenton-rogers",
@@ -3481,9 +3748,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "huddersfield-cur-matty-english",
@@ -3494,9 +3762,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2015–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 380000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "huddersfield-cur-george-king",
@@ -3508,8 +3777,9 @@
     "yearsActive": "2014–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 420000,
-    "intlCaps": 7
+    "value": 610000,
+    "intlCaps": 7,
+    "rating": 82
   },
   {
     "id": "huddersfield-cur-joe-greenwood",
@@ -3520,9 +3790,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2011–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 300000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "huddersfield-cur-kieran-rush",
@@ -3533,9 +3804,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 69,
-    "value": 100000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "huddersfield-cur-liam-sutcliffe",
@@ -3546,9 +3818,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 260000,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "huddersfield-cur-mathieu-cozza",
@@ -3559,9 +3832,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 230000,
-    "intlCaps": 1
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 1,
+    "rating": 76
   },
   {
     "id": "huddersfield-cur-george-flanagan-jr",
@@ -3572,9 +3846,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 180000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "huddersfield-cur-jack-billington",
@@ -3585,9 +3860,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 68,
-    "value": 90000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "huddersfield-cur-chris-patolo",
@@ -3599,8 +3875,9 @@
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 240000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "huddersfield-cur-connor-carr",
@@ -3611,9 +3888,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 68,
-    "value": 90000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "huddersfield-cur-jacob-algar",
@@ -3624,9 +3902,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 85000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "huddersfield-cur-archie-sykes",
@@ -3637,9 +3916,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 85000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "catalans-cur-charlie-staines",
@@ -3650,9 +3930,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 450000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "catalans-cur-tommy-makinson",
@@ -3663,9 +3944,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2011–Present",
     "category": "current",
-    "peakRating": 87,
-    "value": 700000,
-    "intlCaps": 19
+    "peakRating": 88,
+    "value": 1665000,
+    "intlCaps": 19,
+    "rating": 88
   },
   {
     "id": "catalans-cur-nick-cotric",
@@ -3677,8 +3959,9 @@
     "yearsActive": "2017–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 550000,
-    "intlCaps": 11
+    "value": 750000,
+    "intlCaps": 11,
+    "rating": 83
   },
   {
     "id": "catalans-cur-solomona-faataape",
@@ -3689,9 +3972,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "catalans-cur-manase-kaho",
@@ -3702,9 +3986,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 71,
-    "value": 130000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "catalans-cur-toby-sexton",
@@ -3715,9 +4000,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 420000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "catalans-cur-lewis-dodd",
@@ -3728,9 +4014,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 480000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "catalans-cur-chris-satae",
@@ -3742,8 +4029,9 @@
     "yearsActive": "2018–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 500000,
-    "intlCaps": 8
+    "value": 610000,
+    "intlCaps": 8,
+    "rating": 82
   },
   {
     "id": "catalans-cur-alrix-da-costa",
@@ -3754,9 +4042,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 300000,
-    "intlCaps": 5
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 5,
+    "rating": 77
   },
   {
     "id": "catalans-cur-julian-bousquet",
@@ -3767,9 +4056,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2012–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 320000,
-    "intlCaps": 9
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 9,
+    "rating": 82
   },
   {
     "id": "catalans-cur-franck-maria",
@@ -3780,9 +4070,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 280000,
-    "intlCaps": 10
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 10,
+    "rating": 77
   },
   {
     "id": "catalans-cur-ben-condon",
@@ -3794,8 +4085,9 @@
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 260000,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "catalans-cur-benjamin-garcia",
@@ -3806,9 +4098,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2011–Present",
     "category": "current",
-    "peakRating": 85,
-    "value": 620000,
-    "intlCaps": 28
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 28,
+    "rating": 83
   },
   {
     "id": "catalans-cur-phoenix-laulu-togagae",
@@ -3820,8 +4113,9 @@
     "yearsActive": "2015–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 260000,
-    "intlCaps": 8
+    "value": 170000,
+    "intlCaps": 8,
+    "rating": 77
   },
   {
     "id": "catalans-cur-iszac-faasuamaleaui",
@@ -3832,9 +4126,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "catalans-cur-josh-allen",
@@ -3846,8 +4141,9 @@
     "yearsActive": "2016–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 250000,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "catalans-cur-romain-navarette",
@@ -3858,9 +4154,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2011–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 260000,
-    "intlCaps": 6
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 6,
+    "rating": 77
   },
   {
     "id": "catalans-cur-harvey-wilson",
@@ -3871,9 +4168,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 72,
-    "value": 160000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "catalans-cur-kruise-leeming",
@@ -3884,9 +4182,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 400000,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "catalans-cur-zac-lipowicz",
@@ -3897,9 +4196,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 70,
-    "value": 120000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "catalans-cur-matthieu-laguerre",
@@ -3911,8 +4211,9 @@
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 280000,
-    "intlCaps": 4
+    "value": 170000,
+    "intlCaps": 4,
+    "rating": 77
   },
   {
     "id": "catalans-cur-josh-simm",
@@ -3923,9 +4224,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 220000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "catalans-cur-guillermo-aispuro-bichet",
@@ -3936,9 +4238,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 73,
-    "value": 180000,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "catalans-cur-lenny-marc",
@@ -3949,9 +4252,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 68,
-    "value": 90000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "catalans-cur-ugo-tison",
@@ -3962,9 +4266,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 67,
-    "value": 85000,
-    "intlCaps": 0
+    "peakRating": 75,
+    "value": 120000,
+    "intlCaps": 0,
+    "rating": 75
   },
   {
     "id": "york-cur-toa-mata-afa",
@@ -3975,9 +4280,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "york-cur-ben-jones-bishop",
@@ -3988,9 +4294,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "york-cur-jordan-lipp",
@@ -4001,9 +4308,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "york-cur-sam-wood",
@@ -4015,8 +4323,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 0,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "york-cur-scott-galeano",
@@ -4027,9 +4336,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "york-cur-ata-hingano",
@@ -4040,9 +4350,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "york-cur-liam-harris",
@@ -4054,8 +4365,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 0,
-    "intlCaps": 0
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "york-cur-jack-martin",
@@ -4066,9 +4378,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "york-cur-paul-mcshane",
@@ -4080,8 +4393,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 0,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "york-cur-paul-vaughan",
@@ -4092,9 +4406,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 85,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "york-cur-josh-griffin",
@@ -4105,9 +4420,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "york-cur-jesse-dee",
@@ -4118,9 +4434,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "york-cur-jordan-thompson",
@@ -4131,9 +4448,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "york-cur-denive-balmforth",
@@ -4145,8 +4463,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 0,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "york-cur-xavier-va-a",
@@ -4157,9 +4476,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "york-cur-justin-sangare",
@@ -4171,8 +4491,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 0,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "york-cur-kieran-hudson",
@@ -4184,8 +4505,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 0,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "york-cur-danny-richardson",
@@ -4196,9 +4518,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "york-cur-oli-field",
@@ -4209,9 +4532,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "york-cur-kieran-buchanan",
@@ -4223,8 +4547,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 0,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "york-cur-john-sagaga",
@@ -4236,8 +4561,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 0,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "york-cur-jon-bennison",
@@ -4248,9 +4574,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "york-cur-will-dagger",
@@ -4261,9 +4588,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "york-cur-jack-smith",
@@ -4274,9 +4602,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "york-cur-nikau-williams",
@@ -4287,9 +4616,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "york-cur-matty-foster",
@@ -4300,9 +4630,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "toulouse-cur-olly-ashall-bott",
@@ -4314,8 +4645,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 0,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "toulouse-cur-paul-ulberg",
@@ -4326,9 +4658,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "toulouse-cur-reubenn-rennie",
@@ -4339,9 +4672,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "toulouse-cur-paul-marcon",
@@ -4352,9 +4686,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "toulouse-cur-benjamin-laguerre",
@@ -4366,8 +4701,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 0,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "toulouse-cur-thomas-lacans",
@@ -4378,9 +4714,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "toulouse-cur-jake-shorrocks",
@@ -4392,8 +4729,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 83,
-    "value": 0,
-    "intlCaps": 0
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "toulouse-cur-lambert-belmas",
@@ -4404,9 +4742,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "toulouse-cur-brendan-hands",
@@ -4417,9 +4756,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "toulouse-cur-james-roumanos",
@@ -4431,8 +4771,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 0,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "toulouse-cur-maxime-stefani",
@@ -4443,9 +4784,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 80,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "toulouse-cur-mathieu-jussaume",
@@ -4456,9 +4798,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 79,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "toulouse-cur-anthony-marion",
@@ -4469,9 +4812,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 81,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "toulouse-cur-calum-gahan",
@@ -4483,8 +4827,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 0,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "toulouse-cur-joe-cator",
@@ -4496,8 +4841,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 82,
-    "value": 0,
-    "intlCaps": 0
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
   },
   {
     "id": "toulouse-cur-joe-bretherton",
@@ -4508,9 +4854,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 78,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "toulouse-cur-rob-butler",
@@ -4522,8 +4869,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 0,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "toulouse-cur-baptiste-rodriguez",
@@ -4534,9 +4882,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "toulouse-cur-romeo-tropis",
@@ -4548,8 +4897,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 0,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "toulouse-cur-aj-wallace",
@@ -4561,8 +4911,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 77,
-    "value": 0,
-    "intlCaps": 0
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
   },
   {
     "id": "toulouse-cur-ellis-gillam",
@@ -4573,9 +4924,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 75,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "toulouse-cur-henry-o-kane",
@@ -4587,8 +4939,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 0,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "toulouse-cur-tyler-dupree",
@@ -4599,9 +4952,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   },
   {
     "id": "toulouse-cur-pierre-jean-lima",
@@ -4612,9 +4966,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "toulouse-cur-luke-polselli",
@@ -4626,8 +4981,9 @@
     "yearsActive": "2024–Present",
     "category": "current",
     "peakRating": 76,
-    "value": 0,
-    "intlCaps": 0
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
   },
   {
     "id": "toulouse-cur-trevor-chiffolleau",
@@ -4638,8 +4994,289 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 74,
-    "value": 0,
-    "intlCaps": 0
+    "peakRating": 76,
+    "value": 135000,
+    "intlCaps": 0,
+    "rating": 76
+  },
+  {
+    "id": "salford-cur-chris-savelio",
+    "name": "Chris Savelio",
+    "position": "HOOKER",
+    "club": "Salford Red Devils",
+    "nationality": "Samoa",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2018–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "salford-cur-brodie-shields",
+    "name": "Brodie Shields",
+    "position": "PROP",
+    "club": "Salford Red Devils",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2019–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "salford-cur-dele-sule",
+    "name": "Dele Sule",
+    "position": "WING",
+    "club": "Salford Red Devils",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2022–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "salford-cur-ben-hellewell",
+    "name": "Ben Hellewell",
+    "position": "FULLBACK",
+    "club": "Salford Red Devils",
+    "nationality": "Scotland",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2015–Present",
+    "category": "current",
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
+  },
+  {
+    "id": "salford-cur-joe-shorrocks",
+    "name": "Joe Shorrocks",
+    "position": "STAND_OFF",
+    "club": "Salford Red Devils",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2019–Present",
+    "category": "current",
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
+  },
+  {
+    "id": "salford-cur-amir-bourouh",
+    "name": "Amir Bourouh",
+    "position": "HOOKER",
+    "club": "Salford Red Devils",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2020–Present",
+    "category": "current",
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
+  },
+  {
+    "id": "salford-cur-tim-bergin",
+    "name": "Tim Bergin",
+    "position": "CENTRE",
+    "club": "Salford Red Devils",
+    "nationality": "Australia",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2023–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "salford-cur-logan-ewington",
+    "position": "SCRUM_HALF",
+    "name": "Logan Ewington",
+    "club": "Salford Red Devils",
+    "nationality": "Australia",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2024–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "salford-cur-sitili-ngahe",
+    "name": "Sitili-Losala Ngahe",
+    "position": "SECOND_ROW",
+    "club": "Salford Red Devils",
+    "nationality": "Tonga",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2023–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "salford-cur-shane-wright",
+    "name": "Shane Wright",
+    "position": "LOOSE_FORWARD",
+    "club": "Salford Red Devils",
+    "nationality": "Australia",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2022–Present",
+    "category": "current",
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
+  },
+  {
+    "id": "salford-cur-mitch-clark",
+    "name": "Mitch Clark",
+    "position": "PROP",
+    "club": "Salford Red Devils",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2012–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "salford-cur-ryan-kingston",
+    "name": "Ryan Kingston",
+    "position": "WING",
+    "club": "Salford Red Devils",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2024–Present",
+    "category": "current",
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
+  },
+  {
+    "id": "salford-cur-tyler-dupree",
+    "name": "Tyler Dupree",
+    "position": "LOOSE_FORWARD",
+    "club": "Salford Red Devils",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2022–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "york-cur-jesse-sebastian",
+    "name": "Jesse Sebastian",
+    "position": "PROP",
+    "club": "York Knights",
+    "nationality": "Australia",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2024–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "york-cur-ajy-karim",
+    "name": "Ajy Karim",
+    "position": "WING",
+    "club": "York Knights",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2023–Present",
+    "category": "current",
+    "peakRating": 77,
+    "value": 170000,
+    "intlCaps": 0,
+    "rating": 77
+  },
+  {
+    "id": "toulouse-cur-stan-jury",
+    "name": "Stan Jury",
+    "position": "FULLBACK",
+    "club": "Toulouse Olympique",
+    "nationality": "France",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2021–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "toulouse-cur-chris-knight",
+    "name": "Chris Knight",
+    "position": "CENTRE",
+    "club": "Toulouse Olympique",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2023–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "leigh-cur-tom-amelia",
+    "name": "Tom Amelia",
+    "position": "FULLBACK",
+    "club": "Leigh Leopards",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2020–Present",
+    "category": "current",
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
+  },
+  {
+    "id": "leigh-cur-edward-smith",
+    "name": "Edward Smith",
+    "position": "PROP",
+    "club": "Leigh Leopards",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2022–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 610000,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "huddersfield-cur-jake-bibby",
+    "name": "Jake Bibby",
+    "position": "CENTRE",
+    "club": "Huddersfield Giants",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2018–Present",
+    "category": "current",
+    "peakRating": 83,
+    "value": 750000,
+    "intlCaps": 0,
+    "rating": 83
   }
 ]

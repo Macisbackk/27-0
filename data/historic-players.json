@@ -8,13 +8,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1999–2017",
     "category": "historic",
-    "peakRating": 90,
-    "value": 250000,
+    "peakRating": 88,
+    "value": 1665000,
     "appearances": 363,
     "tries": 180,
     "intlCaps": 14,
     "clubLegend": false,
-    "rating": 90
+    "rating": 88
   },
   {
     "id": "bradford-hist-stuart-fielden",
@@ -26,7 +26,7 @@
     "yearsActive": "1998–2013",
     "category": "historic",
     "peakRating": 88,
-    "value": 248000,
+    "value": 1665000,
     "appearances": 333,
     "tries": 36,
     "intlCaps": 20,
@@ -42,13 +42,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1999–2015",
     "category": "historic",
-    "peakRating": 92,
-    "value": 375000,
+    "peakRating": 93,
+    "value": 2940000,
     "appearances": 551,
     "tries": 45,
     "intlCaps": 26,
     "clubLegend": false,
-    "rating": 92
+    "rating": 93
   },
   {
     "id": "bradford-hist-robbie-paul",
@@ -59,13 +59,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1994–2011",
     "category": "historic",
-    "peakRating": 89,
-    "value": 280000,
+    "peakRating": 88,
+    "value": 1665000,
     "appearances": 389,
     "tries": 152,
     "intlCaps": 15,
     "clubLegend": false,
-    "rating": 89
+    "rating": 88
   },
   {
     "id": "bradford-hist-paul-deacon",
@@ -76,13 +76,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1996–2011",
     "category": "historic",
-    "peakRating": 86,
-    "value": 183000,
+    "peakRating": 87,
+    "value": 1450000,
     "appearances": 487,
     "tries": 105,
     "intlCaps": 5,
     "clubLegend": true,
-    "rating": 86
+    "rating": 87
   },
   {
     "id": "bradford-hist-lesley-vainikolo",
@@ -93,13 +93,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2002–2007",
     "category": "historic",
-    "peakRating": 91,
-    "value": 313000,
+    "peakRating": 88,
+    "value": 1665000,
     "appearances": 154,
     "tries": 152,
     "intlCaps": 13,
     "clubLegend": false,
-    "rating": 91
+    "rating": 88
   },
   {
     "id": "bradford-hist-joe-vagana",
@@ -110,13 +110,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1995–2005",
     "category": "historic",
-    "peakRating": 85,
-    "value": 150000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 244,
     "tries": 23,
     "intlCaps": 9,
     "clubLegend": false,
-    "rating": 85
+    "rating": 82
   },
   {
     "id": "bradford-hist-brian-mcdermott",
@@ -127,13 +127,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1990–2006",
     "category": "historic",
-    "peakRating": 80,
-    "value": 90000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 391,
     "tries": 41,
     "intlCaps": 4,
     "clubLegend": false,
-    "rating": 80
+    "rating": 82
   },
   {
     "id": "bradford-hist-karl-pratt",
@@ -144,13 +144,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2007–2014",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 122,
     "tries": 9,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "wigan-hist-sean-oloughlin",
@@ -161,13 +161,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2002–2020",
     "category": "historic",
-    "peakRating": 92,
-    "value": 375000,
+    "peakRating": 93,
+    "value": 2940000,
     "appearances": 459,
     "tries": 87,
     "intlCaps": 27,
     "clubLegend": true,
-    "rating": 92
+    "rating": 93
   },
   {
     "id": "wigan-hist-sam-tomkins",
@@ -178,13 +178,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2008–2023",
     "category": "historic",
-    "peakRating": 92,
-    "value": 375000,
+    "peakRating": 93,
+    "value": 2940000,
     "appearances": 429,
     "tries": 176,
     "intlCaps": 30,
     "clubLegend": false,
-    "rating": 92
+    "rating": 93
   },
   {
     "id": "wigan-hist-thomas-leuluai",
@@ -196,7 +196,7 @@
     "yearsActive": "2003–2022",
     "category": "historic",
     "peakRating": 88,
-    "value": 248000,
+    "value": 1665000,
     "appearances": 449,
     "tries": 94,
     "intlCaps": 36,
@@ -212,13 +212,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2001–2015",
     "category": "historic",
-    "peakRating": 91,
-    "value": 313000,
+    "peakRating": 88,
+    "value": 1665000,
     "appearances": 311,
     "tries": 170,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 91
+    "rating": 88
   },
   {
     "id": "wigan-hist-george-carmont",
@@ -229,13 +229,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2004–2013",
     "category": "historic",
-    "peakRating": 84,
-    "value": 180000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 247,
     "tries": 89,
     "intlCaps": 4,
     "clubLegend": false,
-    "rating": 84
+    "rating": 82
   },
   {
     "id": "wigan-hist-harrison-hansen",
@@ -246,13 +246,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2005–2021",
     "category": "historic",
-    "peakRating": 84,
-    "value": 180000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 377,
     "tries": 59,
     "intlCaps": 13,
     "clubLegend": false,
-    "rating": 84
+    "rating": 82
   },
   {
     "id": "wigan-hist-paul-prescott",
@@ -263,13 +263,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2004–2012",
     "category": "historic",
-    "peakRating": 75,
-    "value": 45000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 95,
     "tries": 8,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 75
+    "rating": 78
   },
   {
     "id": "wigan-hist-darrell-goulding",
@@ -280,13 +280,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2007–2015",
     "category": "historic",
-    "peakRating": 76,
-    "value": 59000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 141,
     "tries": 41,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 76
+    "rating": 78
   },
   {
     "id": "wigan-hist-iafeta-paleaaesina",
@@ -297,13 +297,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2006–2010",
     "category": "historic",
-    "peakRating": 77,
-    "value": 73000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 138,
     "tries": 12,
     "intlCaps": 2,
     "clubLegend": false,
-    "rating": 77
+    "rating": 78
   },
   {
     "id": "wigan-hist-blake-green",
@@ -314,13 +314,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2007–2021",
     "category": "historic",
-    "peakRating": 80,
-    "value": 90000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 238,
     "tries": 52,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 80
+    "rating": 82
   },
   {
     "id": "wigan-hist-andy-coley",
@@ -331,13 +331,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2000–2012",
     "category": "historic",
-    "peakRating": 79,
-    "value": 100000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 231,
     "tries": 10,
     "intlCaps": 6,
     "clubLegend": false,
-    "rating": 79
+    "rating": 78
   },
   {
     "id": "st-helens-hist-paul-wellens",
@@ -348,13 +348,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1999–2015",
     "category": "historic",
-    "peakRating": 91,
-    "value": 313000,
+    "peakRating": 88,
+    "value": 1665000,
     "appearances": 495,
     "tries": 141,
     "intlCaps": 32,
     "clubLegend": true,
-    "rating": 91
+    "rating": 88
   },
   {
     "id": "st-helens-hist-ade-gardner",
@@ -366,7 +366,7 @@
     "yearsActive": "2002–2014",
     "category": "historic",
     "peakRating": 82,
-    "value": 135000,
+    "value": 610000,
     "appearances": 327,
     "tries": 170,
     "intlCaps": 6,
@@ -382,13 +382,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2001–2018",
     "category": "historic",
-    "peakRating": 86,
-    "value": 183000,
+    "peakRating": 87,
+    "value": 1450000,
     "appearances": 492,
     "tries": 123,
     "intlCaps": 16,
     "clubLegend": false,
-    "rating": 86
+    "rating": 87
   },
   {
     "id": "st-helens-hist-kyle-amor",
@@ -399,13 +399,13 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2009–2021",
     "category": "historic",
-    "peakRating": 79,
-    "value": 100000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 290,
     "tries": 25,
     "intlCaps": 5,
     "clubLegend": false,
-    "rating": 79
+    "rating": 78
   },
   {
     "id": "st-helens-hist-francis-meli",
@@ -416,13 +416,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2000–2010",
     "category": "historic",
-    "peakRating": 86,
-    "value": 183000,
+    "peakRating": 87,
+    "value": 1450000,
     "appearances": 260,
     "tries": 164,
     "intlCaps": 7,
     "clubLegend": false,
-    "rating": 86
+    "rating": 87
   },
   {
     "id": "st-helens-hist-lee-gilmour",
@@ -433,13 +433,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1997–2011",
     "category": "historic",
-    "peakRating": 83,
-    "value": 158000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 390,
     "tries": 95,
     "intlCaps": 15,
     "clubLegend": false,
-    "rating": 83
+    "rating": 82
   },
   {
     "id": "st-helens-hist-sean-long",
@@ -450,13 +450,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1997–2011",
     "category": "historic",
-    "peakRating": 93,
-    "value": 438000,
+    "peakRating": 94,
+    "value": 3235000,
     "appearances": 434,
     "tries": 133,
     "intlCaps": 11,
     "clubLegend": false,
-    "rating": 93
+    "rating": 94
   },
   {
     "id": "st-helens-hist-matt-gidley",
@@ -467,13 +467,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "1999–2011",
     "category": "historic",
-    "peakRating": 87,
-    "value": 215000,
+    "peakRating": 88,
+    "value": 1665000,
     "appearances": 298,
     "tries": 128,
     "intlCaps": 11,
     "clubLegend": false,
-    "rating": 87
+    "rating": 88
   },
   {
     "id": "st-helens-hist-sia-soliola",
@@ -484,13 +484,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2005–2021",
     "category": "historic",
-    "peakRating": 83,
-    "value": 158000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 341,
     "tries": 58,
     "intlCaps": 14,
     "clubLegend": false,
-    "rating": 83
+    "rating": 82
   },
   {
     "id": "st-helens-hist-james-roby",
@@ -501,13 +501,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2004–2023",
     "category": "historic",
-    "peakRating": 92,
-    "value": 375000,
+    "peakRating": 93,
+    "value": 2940000,
     "appearances": 551,
     "tries": 124,
     "intlCaps": 31,
     "clubLegend": true,
-    "rating": 92
+    "rating": 93
   },
   {
     "id": "st-helens-hist-willie-talau",
@@ -519,7 +519,7 @@
     "yearsActive": "1994–2006",
     "category": "historic",
     "peakRating": 82,
-    "value": 135000,
+    "value": 610000,
     "appearances": 231,
     "tries": 83,
     "intlCaps": 6,
@@ -535,13 +535,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2001–2019",
     "category": "historic",
-    "peakRating": 92,
-    "value": 375000,
+    "peakRating": 93,
+    "value": 2940000,
     "appearances": 502,
     "tries": 271,
     "intlCaps": 16,
     "clubLegend": true,
-    "rating": 92
+    "rating": 93
   },
   {
     "id": "leeds-hist-rob-burrow",
@@ -552,13 +552,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2001–2017",
     "category": "historic",
-    "peakRating": 90,
-    "value": 250000,
+    "peakRating": 88,
+    "value": 1665000,
     "appearances": 493,
     "tries": 157,
     "intlCaps": 15,
     "clubLegend": true,
-    "rating": 90
+    "rating": 88
   },
   {
     "id": "leeds-hist-keith-senior",
@@ -570,7 +570,7 @@
     "yearsActive": "1996–2011",
     "category": "historic",
     "peakRating": 88,
-    "value": 248000,
+    "value": 1665000,
     "appearances": 506,
     "tries": 199,
     "intlCaps": 33,
@@ -586,13 +586,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2003–2018",
     "category": "historic",
-    "peakRating": 81,
-    "value": 113000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 312,
     "tries": 132,
     "intlCaps": 6,
     "clubLegend": false,
-    "rating": 81
+    "rating": 82
   },
   {
     "id": "leeds-hist-jamie-jones-buchanan",
@@ -603,13 +603,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1999–2019",
     "category": "historic",
-    "peakRating": 86,
-    "value": 183000,
+    "peakRating": 87,
+    "value": 1450000,
     "appearances": 429,
     "tries": 65,
     "intlCaps": 20,
     "clubLegend": true,
-    "rating": 86
+    "rating": 87
   },
   {
     "id": "leeds-hist-ali-lauitiiti",
@@ -620,13 +620,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1998–2015",
     "category": "historic",
-    "peakRating": 90,
-    "value": 250000,
+    "peakRating": 88,
+    "value": 1665000,
     "appearances": 360,
     "tries": 121,
     "intlCaps": 17,
     "clubLegend": false,
-    "rating": 90
+    "rating": 88
   },
   {
     "id": "leeds-hist-brent-webb",
@@ -637,13 +637,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2001–2012",
     "category": "historic",
-    "peakRating": 85,
-    "value": 150000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 273,
     "tries": 109,
     "intlCaps": 1,
     "clubLegend": false,
-    "rating": 85
+    "rating": 82
   },
   {
     "id": "leeds-hist-ryan-bailey",
@@ -655,7 +655,7 @@
     "yearsActive": "2000–2017",
     "category": "historic",
     "peakRating": 78,
-    "value": 86000,
+    "value": 220000,
     "appearances": 372,
     "tries": 24,
     "intlCaps": 6,
@@ -671,13 +671,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2000–2019",
     "category": "historic",
-    "peakRating": 79,
-    "value": 100000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 340,
     "tries": 33,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 79
+    "rating": 78
   },
   {
     "id": "leeds-hist-kylie-leuluai",
@@ -688,13 +688,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2002–2015",
     "category": "historic",
-    "peakRating": 83,
-    "value": 158000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 285,
     "tries": 18,
     "intlCaps": 8,
     "clubLegend": false,
-    "rating": 83
+    "rating": 82
   },
   {
     "id": "warrington-hist-lee-briers",
@@ -705,13 +705,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1997–2013",
     "category": "historic",
-    "peakRating": 90,
-    "value": 250000,
+    "peakRating": 88,
+    "value": 1665000,
     "appearances": 503,
     "tries": 182,
     "intlCaps": 21,
     "clubLegend": true,
-    "rating": 90
+    "rating": 88
   },
   {
     "id": "warrington-hist-ryan-atkins",
@@ -722,13 +722,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2005–2020",
     "category": "historic",
-    "peakRating": 86,
-    "value": 183000,
+    "peakRating": 87,
+    "value": 1450000,
     "appearances": 390,
     "tries": 208,
     "intlCaps": 6,
     "clubLegend": false,
-    "rating": 86
+    "rating": 87
   },
   {
     "id": "warrington-hist-chris-bridge",
@@ -740,7 +740,7 @@
     "yearsActive": "2002–2017",
     "category": "historic",
     "peakRating": 82,
-    "value": 135000,
+    "value": 610000,
     "appearances": 362,
     "tries": 132,
     "intlCaps": 5,
@@ -756,13 +756,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2000–2018",
     "category": "historic",
-    "peakRating": 81,
-    "value": 113000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 386,
     "tries": 39,
     "intlCaps": 8,
     "clubLegend": false,
-    "rating": 81
+    "rating": 82
   },
   {
     "id": "warrington-hist-adrian-morley",
@@ -773,13 +773,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1995–2015",
     "category": "historic",
-    "peakRating": 91,
-    "value": 313000,
+    "peakRating": 88,
+    "value": 1665000,
     "appearances": 485,
     "tries": 69,
     "intlCaps": 36,
     "clubLegend": false,
-    "rating": 91
+    "rating": 88
   },
   {
     "id": "warrington-hist-richie-myler",
@@ -790,13 +790,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2007–2022",
     "category": "historic",
-    "peakRating": 81,
-    "value": 113000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 336,
     "tries": 119,
     "intlCaps": 2,
     "clubLegend": false,
-    "rating": 81
+    "rating": 82
   },
   {
     "id": "warrington-hist-michael-monaghan",
@@ -807,13 +807,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2001–2014",
     "category": "historic",
-    "peakRating": 85,
-    "value": 150000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 286,
     "tries": 95,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 85
+    "rating": 82
   },
   {
     "id": "warrington-hist-brett-hodgson",
@@ -824,13 +824,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "1997–2012",
     "category": "historic",
-    "peakRating": 83,
-    "value": 158000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 331,
     "tries": 83,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 83
+    "rating": 82
   },
   {
     "id": "warrington-hist-paul-rauhihi",
@@ -842,7 +842,7 @@
     "yearsActive": "1993–2008",
     "category": "historic",
     "peakRating": 78,
-    "value": 86000,
+    "value": 220000,
     "appearances": 260,
     "tries": 12,
     "intlCaps": 11,
@@ -858,13 +858,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2001–2020",
     "category": "historic",
-    "peakRating": 90,
-    "value": 250000,
+    "peakRating": 88,
+    "value": 1665000,
     "appearances": 495,
     "tries": 83,
     "intlCaps": 33,
     "clubLegend": false,
-    "rating": 90
+    "rating": 88
   },
   {
     "id": "hull-fc-hist-richard-horne",
@@ -876,7 +876,7 @@
     "yearsActive": "2000–2015",
     "category": "historic",
     "peakRating": 82,
-    "value": 135000,
+    "value": 610000,
     "appearances": 373,
     "tries": 96,
     "intlCaps": 7,
@@ -892,13 +892,13 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2007–2023",
     "category": "historic",
-    "peakRating": 85,
-    "value": 150000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 459,
     "tries": 36,
     "intlCaps": 0,
     "clubLegend": true,
-    "rating": 85
+    "rating": 82
   },
   {
     "id": "hull-fc-hist-kirk-yeaman",
@@ -910,7 +910,7 @@
     "yearsActive": "2001–2017",
     "category": "historic",
     "peakRating": 82,
-    "value": 135000,
+    "value": 610000,
     "appearances": 354,
     "tries": 124,
     "intlCaps": 8,
@@ -926,13 +926,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2003–2019",
     "category": "historic",
-    "peakRating": 81,
-    "value": 113000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 331,
     "tries": 89,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 81
+    "rating": 82
   },
   {
     "id": "hull-fc-hist-danny-washbrook",
@@ -943,13 +943,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2005–2021",
     "category": "historic",
-    "peakRating": 75,
-    "value": 45000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 287,
     "tries": 36,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 75
+    "rating": 78
   },
   {
     "id": "hull-fc-hist-richard-whiting",
@@ -961,7 +961,7 @@
     "yearsActive": "2002–2015",
     "category": "historic",
     "peakRating": 78,
-    "value": 86000,
+    "value": 220000,
     "appearances": 258,
     "tries": 70,
     "intlCaps": 0,
@@ -977,13 +977,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "1998–2011",
     "category": "historic",
-    "peakRating": 84,
-    "value": 180000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 250,
     "tries": 55,
     "intlCaps": 11,
     "clubLegend": false,
-    "rating": 84
+    "rating": 82
   },
   {
     "id": "hull-kr-hist-clint-newton",
@@ -994,13 +994,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2003–2013",
     "category": "historic",
-    "peakRating": 81,
-    "value": 113000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 224,
     "tries": 96,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 81
+    "rating": 82
   },
   {
     "id": "hull-kr-hist-ben-cockayne",
@@ -1011,13 +1011,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2003–2014",
     "category": "historic",
-    "peakRating": 76,
-    "value": 59000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 233,
     "tries": 102,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 76
+    "rating": 78
   },
   {
     "id": "hull-kr-hist-shaun-briscoe",
@@ -1028,13 +1028,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2002–2015",
     "category": "historic",
-    "peakRating": 84,
-    "value": 180000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 322,
     "tries": 101,
     "intlCaps": 14,
     "clubLegend": false,
-    "rating": 84
+    "rating": 82
   },
   {
     "id": "hull-kr-hist-michael-dobson",
@@ -1045,13 +1045,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2006–2017",
     "category": "historic",
-    "peakRating": 80,
-    "value": 90000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 284,
     "tries": 75,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 80
+    "rating": 82
   },
   {
     "id": "hull-kr-hist-kris-welham",
@@ -1062,13 +1062,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2006–2020",
     "category": "historic",
-    "peakRating": 79,
-    "value": 100000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 337,
     "tries": 145,
     "intlCaps": 0,
     "clubLegend": true,
-    "rating": 79
+    "rating": 78
   },
   {
     "id": "hull-kr-hist-graeme-horne",
@@ -1079,13 +1079,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2002–2016",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 248,
     "tries": 31,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "castleford-hist-michael-shenton",
@@ -1096,13 +1096,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2003–2021",
     "category": "historic",
-    "peakRating": 84,
-    "value": 180000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 456,
     "tries": 191,
     "intlCaps": 5,
     "clubLegend": true,
-    "rating": 84
+    "rating": 82
   },
   {
     "id": "castleford-hist-danny-orr",
@@ -1113,13 +1113,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2000–2013",
     "category": "historic",
-    "peakRating": 79,
-    "value": 100000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 347,
     "tries": 122,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 79
+    "rating": 78
   },
   {
     "id": "castleford-hist-ryan-mcgoldrick",
@@ -1130,13 +1130,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2001–2017",
     "category": "historic",
-    "peakRating": 77,
-    "value": 73000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 294,
     "tries": 116,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 77
+    "rating": 78
   },
   {
     "id": "castleford-hist-ben-roberts",
@@ -1148,7 +1148,7 @@
     "yearsActive": "2007–2020",
     "category": "historic",
     "peakRating": 82,
-    "value": 135000,
+    "value": 610000,
     "appearances": 263,
     "tries": 84,
     "intlCaps": 8,
@@ -1164,13 +1164,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2008–2022",
     "category": "historic",
-    "peakRating": 77,
-    "value": 73000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 285,
     "tries": 54,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 77
+    "rating": 78
   },
   {
     "id": "castleford-hist-jake-webster",
@@ -1182,7 +1182,7 @@
     "yearsActive": "2005–2016",
     "category": "historic",
     "peakRating": 78,
-    "value": 86000,
+    "value": 220000,
     "appearances": 227,
     "tries": 97,
     "intlCaps": 0,
@@ -1198,13 +1198,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2009–2018",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 146,
     "tries": 53,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "wakefield-hist-danny-brough",
@@ -1216,7 +1216,7 @@
     "yearsActive": "2002–2021",
     "category": "historic",
     "peakRating": 88,
-    "value": 248000,
+    "value": 1665000,
     "appearances": 507,
     "tries": 153,
     "intlCaps": 0,
@@ -1232,13 +1232,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2005–2021",
     "category": "historic",
-    "peakRating": 77,
-    "value": 73000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 322,
     "tries": 89,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 77
+    "rating": 78
   },
   {
     "id": "wakefield-hist-kevin-henderson",
@@ -1250,7 +1250,7 @@
     "yearsActive": "2001–2010",
     "category": "historic",
     "peakRating": 78,
-    "value": 86000,
+    "value": 220000,
     "appearances": 206,
     "tries": 71,
     "intlCaps": 15,
@@ -1266,13 +1266,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2005–2010",
     "category": "historic",
-    "peakRating": 74,
-    "value": 50000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 109,
     "tries": 44,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 74
+    "rating": 78
   },
   {
     "id": "wakefield-hist-damien-blanch",
@@ -1283,13 +1283,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2002–2011",
     "category": "historic",
-    "peakRating": 76,
-    "value": 59000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 231,
     "tries": 92,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 76
+    "rating": 78
   },
   {
     "id": "wakefield-hist-jason-demetriou",
@@ -1300,13 +1300,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1997–2004",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 139,
     "tries": 35,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "wakefield-hist-richard-agar",
@@ -1317,13 +1317,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1994–2001",
     "category": "historic",
-    "peakRating": 71,
-    "value": 28000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 186,
     "tries": 22,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 71
+    "rating": 78
   },
   {
     "id": "huddersfield-hist-eorl-crabtree",
@@ -1334,13 +1334,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2001–2016",
     "category": "historic",
-    "peakRating": 83,
-    "value": 158000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 428,
     "tries": 40,
     "intlCaps": 14,
     "clubLegend": true,
-    "rating": 83
+    "rating": 82
   },
   {
     "id": "huddersfield-hist-kevin-brown",
@@ -1351,13 +1351,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2003–2020",
     "category": "historic",
-    "peakRating": 84,
-    "value": 180000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 391,
     "tries": 108,
     "intlCaps": 9,
     "clubLegend": false,
-    "rating": 84
+    "rating": 82
   },
   {
     "id": "huddersfield-hist-keith-mason",
@@ -1368,13 +1368,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2002–2012",
     "category": "historic",
-    "peakRating": 74,
-    "value": 50000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 189,
     "tries": 14,
     "intlCaps": 1,
     "clubLegend": false,
-    "rating": 74
+    "rating": 78
   },
   {
     "id": "huddersfield-hist-luke-robinson",
@@ -1385,13 +1385,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2000–2013",
     "category": "historic",
-    "peakRating": 75,
-    "value": 45000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 250,
     "tries": 43,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 75
+    "rating": 78
   },
   {
     "id": "huddersfield-hist-chris-thorman",
@@ -1402,13 +1402,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2002–2011",
     "category": "historic",
-    "peakRating": 76,
-    "value": 59000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 219,
     "tries": 49,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 76
+    "rating": 78
   },
   {
     "id": "huddersfield-hist-paul-whatuira",
@@ -1419,13 +1419,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1997–2010",
     "category": "historic",
-    "peakRating": 80,
-    "value": 90000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 279,
     "tries": 102,
     "intlCaps": 3,
     "clubLegend": false,
-    "rating": 80
+    "rating": 82
   },
   {
     "id": "huddersfield-hist-michael-lawrence",
@@ -1437,7 +1437,7 @@
     "yearsActive": "2010–2022",
     "category": "historic",
     "peakRating": 78,
-    "value": 86000,
+    "value": 220000,
     "appearances": 325,
     "tries": 44,
     "intlCaps": 4,
@@ -1453,13 +1453,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1996–2008",
     "category": "historic",
-    "peakRating": 75,
-    "value": 45000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 311,
     "tries": 39,
     "intlCaps": 1,
     "clubLegend": false,
-    "rating": 75
+    "rating": 78
   },
   {
     "id": "salford-hist-martin-gleeson",
@@ -1471,7 +1471,7 @@
     "yearsActive": "1999–2014",
     "category": "historic",
     "peakRating": 88,
-    "value": 248000,
+    "value": 1665000,
     "appearances": 331,
     "tries": 145,
     "intlCaps": 15,
@@ -1487,13 +1487,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "1997–2011",
     "category": "historic",
-    "peakRating": 80,
-    "value": 90000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 315,
     "tries": 148,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 80
+    "rating": 82
   },
   {
     "id": "salford-hist-rangi-chase",
@@ -1504,13 +1504,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2007–2016",
     "category": "historic",
-    "peakRating": 84,
-    "value": 180000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 222,
     "tries": 63,
     "intlCaps": 10,
     "clubLegend": false,
-    "rating": 84
+    "rating": 82
   },
   {
     "id": "salford-hist-lee-jewitt",
@@ -1521,13 +1521,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2008–2018",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 211,
     "tries": 14,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "salford-hist-gareth-hock",
@@ -1538,13 +1538,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2003–2017",
     "category": "historic",
-    "peakRating": 83,
-    "value": 158000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 288,
     "tries": 87,
     "intlCaps": 11,
     "clubLegend": false,
-    "rating": 83
+    "rating": 82
   },
   {
     "id": "london-hist-tony-clubb",
@@ -1555,13 +1555,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2006–2022",
     "category": "historic",
-    "peakRating": 79,
-    "value": 100000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 351,
     "tries": 49,
     "intlCaps": 4,
     "clubLegend": false,
-    "rating": 79
+    "rating": 78
   },
   {
     "id": "london-hist-rob-purdham",
@@ -1572,13 +1572,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2002–2013",
     "category": "historic",
-    "peakRating": 77,
-    "value": 73000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 238,
     "tries": 74,
     "intlCaps": 0,
     "clubLegend": true,
-    "rating": 77
+    "rating": 78
   },
   {
     "id": "london-hist-luke-dorn",
@@ -1589,13 +1589,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2000–2014",
     "category": "historic",
-    "peakRating": 80,
-    "value": 90000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 353,
     "tries": 165,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 80
+    "rating": 82
   },
   {
     "id": "london-hist-dennis-moran",
@@ -1606,13 +1606,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1999–2010",
     "category": "historic",
-    "peakRating": 79,
-    "value": 100000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 216,
     "tries": 70,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 79
+    "rating": 78
   },
   {
     "id": "london-hist-mark-mclinden",
@@ -1623,13 +1623,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1998–2010",
     "category": "historic",
-    "peakRating": 81,
-    "value": 113000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 230,
     "tries": 95,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 81
+    "rating": 82
   },
   {
     "id": "london-hist-lee-hopkins",
@@ -1640,13 +1640,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1997–2007",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 210,
     "tries": 28,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "widnes-hist-jon-clarke",
@@ -1657,13 +1657,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1997–2013",
     "category": "historic",
-    "peakRating": 79,
-    "value": 100000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 397,
     "tries": 52,
     "intlCaps": 3,
     "clubLegend": false,
-    "rating": 79
+    "rating": 78
   },
   {
     "id": "widnes-hist-rhys-hanbury",
@@ -1674,13 +1674,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2010–2015",
     "category": "historic",
-    "peakRating": 74,
-    "value": 50000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 128,
     "tries": 48,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 74
+    "rating": 78
   },
   {
     "id": "widnes-hist-patrick-ah-van",
@@ -1692,7 +1692,7 @@
     "yearsActive": "2006–2014",
     "category": "historic",
     "peakRating": 78,
-    "value": 86000,
+    "value": 220000,
     "appearances": 170,
     "tries": 80,
     "intlCaps": 8,
@@ -1708,13 +1708,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2008–2017",
     "category": "historic",
-    "peakRating": 76,
-    "value": 59000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 176,
     "tries": 33,
     "intlCaps": 4,
     "clubLegend": false,
-    "rating": 76
+    "rating": 78
   },
   {
     "id": "widnes-hist-cameron-phelps",
@@ -1725,13 +1725,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2007–2014",
     "category": "historic",
-    "peakRating": 74,
-    "value": 50000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 146,
     "tries": 46,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 74
+    "rating": 78
   },
   {
     "id": "widnes-hist-eamon-ocarroll",
@@ -1742,13 +1742,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2006–2017",
     "category": "historic",
-    "peakRating": 74,
-    "value": 50000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 159,
     "tries": 10,
     "intlCaps": 7,
     "clubLegend": false,
-    "rating": 74
+    "rating": 78
   },
   {
     "id": "halifax-hist-martin-moana",
@@ -1759,13 +1759,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1994–2001",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 176,
     "tries": 63,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "halifax-hist-rob-worrincy",
@@ -1776,13 +1776,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2008–2017",
     "category": "historic",
-    "peakRating": 74,
-    "value": 50000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 233,
     "tries": 108,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 74
+    "rating": 78
   },
   {
     "id": "halifax-hist-ben-heaton",
@@ -1793,13 +1793,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2009–2016",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 172,
     "tries": 31,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "halifax-hist-sean-penkywicz",
@@ -1810,13 +1810,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2003–2016",
     "category": "historic",
-    "peakRating": 76,
-    "value": 59000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 296,
     "tries": 58,
     "intlCaps": 0,
     "clubLegend": true,
-    "rating": 76
+    "rating": 78
   },
   {
     "id": "halifax-hist-steve-tyrer",
@@ -1827,13 +1827,13 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2003–2021",
     "category": "historic",
-    "peakRating": 75,
-    "value": 45000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 428,
     "tries": 215,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 75
+    "rating": 78
   },
   {
     "id": "halifax-hist-wayne-godwin",
@@ -1844,13 +1844,13 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "2000–2014",
     "category": "historic",
-    "peakRating": 74,
-    "value": 50000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 242,
     "tries": 29,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 74
+    "rating": 78
   },
   {
     "id": "sheffield-hist-mark-aston",
@@ -1861,13 +1861,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1987–2004",
     "category": "historic",
-    "peakRating": 77,
-    "value": 73000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 406,
     "tries": 107,
     "intlCaps": 1,
     "clubLegend": true,
-    "rating": 77
+    "rating": 78
   },
   {
     "id": "sheffield-hist-paul-broadbent",
@@ -1878,13 +1878,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1990–2003",
     "category": "historic",
-    "peakRating": 74,
-    "value": 50000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 251,
     "tries": 30,
     "intlCaps": 2,
     "clubLegend": false,
-    "rating": 74
+    "rating": 78
   },
   {
     "id": "sheffield-hist-daryl-powell",
@@ -1895,13 +1895,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1989–2001",
     "category": "historic",
-    "peakRating": 81,
-    "value": 113000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 309,
     "tries": 96,
     "intlCaps": 14,
     "clubLegend": false,
-    "rating": 81
+    "rating": 82
   },
   {
     "id": "sheffield-hist-gary-mercer",
@@ -1912,13 +1912,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1987–2003",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 297,
     "tries": 41,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "sheffield-hist-jon-hepworth",
@@ -1929,13 +1929,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2006–2016",
     "category": "historic",
-    "peakRating": 72,
-    "value": 35000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 181,
     "tries": 59,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 72
+    "rating": 78
   },
   {
     "id": "oldham-hist-chris-joynt",
@@ -1947,7 +1947,7 @@
     "yearsActive": "1989–2004",
     "category": "historic",
     "peakRating": 82,
-    "value": 135000,
+    "value": 610000,
     "appearances": 338,
     "tries": 57,
     "intlCaps": 11,
@@ -1963,13 +1963,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1987–2001",
     "category": "historic",
-    "peakRating": 75,
-    "value": 45000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 282,
     "tries": 72,
     "intlCaps": 2,
     "clubLegend": true,
-    "rating": 75
+    "rating": 78
   },
   {
     "id": "oldham-hist-david-hodgson",
@@ -1980,13 +1980,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1993–2006",
     "category": "historic",
-    "peakRating": 75,
-    "value": 45000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 251,
     "tries": 116,
     "intlCaps": 4,
     "clubLegend": false,
-    "rating": 75
+    "rating": 78
   },
   {
     "id": "oldham-hist-phil-vievers",
@@ -1997,13 +1997,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1987–2001",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 263,
     "tries": 45,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "oldham-hist-paul-lord",
@@ -2014,13 +2014,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1993–2008",
     "category": "historic",
-    "peakRating": 72,
-    "value": 35000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 216,
     "tries": 23,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 72
+    "rating": 78
   },
   {
     "id": "toulouse-hist-sylvain-houles",
@@ -2031,13 +2031,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1992–2005",
     "category": "historic",
-    "peakRating": 77,
-    "value": 73000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 254,
     "tries": 69,
     "intlCaps": 14,
     "clubLegend": true,
-    "rating": 77
+    "rating": 78
   },
   {
     "id": "toulouse-hist-maxime-greseque",
@@ -2049,7 +2049,7 @@
     "yearsActive": "2000–2013",
     "category": "historic",
     "peakRating": 78,
-    "value": 86000,
+    "value": 220000,
     "appearances": 242,
     "tries": 73,
     "intlCaps": 10,
@@ -2065,13 +2065,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2005–2017",
     "category": "historic",
-    "peakRating": 77,
-    "value": 73000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 205,
     "tries": 39,
     "intlCaps": 12,
     "clubLegend": false,
-    "rating": 77
+    "rating": 78
   },
   {
     "id": "toulouse-hist-frederic-vaccari",
@@ -2082,13 +2082,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2008–2018",
     "category": "historic",
-    "peakRating": 74,
-    "value": 50000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 176,
     "tries": 52,
     "intlCaps": 6,
     "clubLegend": false,
-    "rating": 74
+    "rating": 78
   },
   {
     "id": "york-hist-graeme-steadman",
@@ -2099,13 +2099,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1989–2000",
     "category": "historic",
-    "peakRating": 79,
-    "value": 100000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 301,
     "tries": 167,
     "intlCaps": 10,
     "clubLegend": false,
-    "rating": 79
+    "rating": 78
   },
   {
     "id": "york-hist-barrie-jon-mather",
@@ -2116,13 +2116,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1995–2002",
     "category": "historic",
-    "peakRating": 75,
-    "value": 45000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 138,
     "tries": 42,
     "intlCaps": 6,
     "clubLegend": false,
-    "rating": 75
+    "rating": 78
   },
   {
     "id": "york-hist-henry-paul",
@@ -2133,13 +2133,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1992–2008",
     "category": "historic",
-    "peakRating": 84,
-    "value": 180000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 297,
     "tries": 120,
     "intlCaps": 6,
     "clubLegend": false,
-    "rating": 84
+    "rating": 82
   },
   {
     "id": "york-hist-jason-golden",
@@ -2150,13 +2150,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1995–2006",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 208,
     "tries": 31,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "catalans-hist-thomas-bosc",
@@ -2167,13 +2167,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2006–2018",
     "category": "historic",
-    "peakRating": 86,
-    "value": 183000,
+    "peakRating": 87,
+    "value": 1450000,
     "appearances": 253,
     "tries": 98,
     "intlCaps": 25,
     "clubLegend": true,
-    "rating": 86
+    "rating": 87
   },
   {
     "id": "catalans-hist-jerome-guisset",
@@ -2184,13 +2184,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1992–2006",
     "category": "historic",
-    "peakRating": 83,
-    "value": 158000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 287,
     "tries": 34,
     "intlCaps": 27,
     "clubLegend": false,
-    "rating": 83
+    "rating": 82
   },
   {
     "id": "catalans-hist-olivier-elima",
@@ -2202,7 +2202,7 @@
     "yearsActive": "2005–2015",
     "category": "historic",
     "peakRating": 82,
-    "value": 135000,
+    "value": 610000,
     "appearances": 234,
     "tries": 56,
     "intlCaps": 21,
@@ -2218,13 +2218,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2006–2017",
     "category": "historic",
-    "peakRating": 81,
-    "value": 113000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 241,
     "tries": 42,
     "intlCaps": 26,
     "clubLegend": false,
-    "rating": 81
+    "rating": 82
   },
   {
     "id": "catalans-hist-greg-mounis",
@@ -2235,13 +2235,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2004–2017",
     "category": "historic",
-    "peakRating": 79,
-    "value": 100000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 259,
     "tries": 28,
     "intlCaps": 17,
     "clubLegend": false,
-    "rating": 79
+    "rating": 78
   },
   {
     "id": "catalans-hist-remi-casty",
@@ -2252,13 +2252,13 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2006–2022",
     "category": "historic",
-    "peakRating": 84,
-    "value": 180000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 329,
     "tries": 43,
     "intlCaps": 16,
     "clubLegend": true,
-    "rating": 84
+    "rating": 82
   },
   {
     "id": "catalans-hist-vincent-duport",
@@ -2269,13 +2269,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2008–2020",
     "category": "historic",
-    "peakRating": 80,
-    "value": 90000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 238,
     "tries": 75,
     "intlCaps": 18,
     "clubLegend": false,
-    "rating": 80
+    "rating": 82
   },
   {
     "id": "crusaders-hist-michael-witt",
@@ -2287,7 +2287,7 @@
     "yearsActive": "2003–2011",
     "category": "historic",
     "peakRating": 78,
-    "value": 86000,
+    "value": 220000,
     "appearances": 163,
     "tries": 49,
     "intlCaps": 0,
@@ -2303,13 +2303,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2003–2010",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 120,
     "tries": 32,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "crusaders-hist-gareth-thomas",
@@ -2320,13 +2320,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2001–2011",
     "category": "historic",
-    "peakRating": 76,
-    "value": 59000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 169,
     "tries": 40,
     "intlCaps": 2,
     "clubLegend": false,
-    "rating": 76
+    "rating": 78
   },
   {
     "id": "crusaders-hist-clinton-schifcofske",
@@ -2337,13 +2337,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "1998–2010",
     "category": "historic",
-    "peakRating": 80,
-    "value": 90000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 262,
     "tries": 112,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 80
+    "rating": 82
   },
   {
     "id": "psg-hist-frederic-banquet",
@@ -2354,13 +2354,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1993–2001",
     "category": "historic",
-    "peakRating": 76,
-    "value": 59000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 147,
     "tries": 41,
     "intlCaps": 12,
     "clubLegend": false,
-    "rating": 76
+    "rating": 78
   },
   {
     "id": "psg-hist-david-frayssinous",
@@ -2371,13 +2371,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1996–2003",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 116,
     "tries": 16,
     "intlCaps": 5,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "psg-hist-denis-betts",
@@ -2388,13 +2388,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1986–2001",
     "category": "historic",
-    "peakRating": 85,
-    "value": 150000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 383,
     "tries": 128,
     "intlCaps": 32,
     "clubLegend": false,
-    "rating": 85
+    "rating": 82
   },
   {
     "id": "psg-hist-martin-hall",
@@ -2405,13 +2405,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1986–2000",
     "category": "historic",
-    "peakRating": 77,
-    "value": 73000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 278,
     "tries": 90,
     "intlCaps": 10,
     "clubLegend": false,
-    "rating": 77
+    "rating": 78
   },
   {
     "id": "gateshead-hist-andrew-dunemann",
@@ -2422,13 +2422,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1996–2004",
     "category": "historic",
-    "peakRating": 75,
-    "value": 45000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 159,
     "tries": 43,
     "intlCaps": 0,
     "clubLegend": true,
-    "rating": 75
+    "rating": 78
   },
   {
     "id": "gateshead-hist-martin-masella",
@@ -2439,13 +2439,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1998–2005",
     "category": "historic",
-    "peakRating": 73,
-    "value": 43000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 134,
     "tries": 19,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 73
+    "rating": 78
   },
   {
     "id": "gateshead-hist-darren-shaw",
@@ -2456,13 +2456,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1995–2001",
     "category": "historic",
-    "peakRating": 71,
-    "value": 28000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 102,
     "tries": 23,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 71
+    "rating": 78
   },
   {
     "id": "leigh-hist-lee-hansen",
@@ -2473,13 +2473,13 @@
     "era": "SUPER_LEAGUE_ORIGINS",
     "yearsActive": "1995–2004",
     "category": "historic",
-    "peakRating": 76,
-    "value": 59000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 215,
     "tries": 44,
     "intlCaps": 4,
     "clubLegend": false,
-    "rating": 76
+    "rating": 78
   },
   {
     "id": "leigh-hist-stuart-littler",
@@ -2490,13 +2490,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2000–2014",
     "category": "historic",
-    "peakRating": 74,
-    "value": 50000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 282,
     "tries": 28,
     "intlCaps": 0,
     "clubLegend": true,
-    "rating": 74
+    "rating": 78
   },
   {
     "id": "leigh-hist-mickey-higham",
@@ -2507,13 +2507,13 @@
     "era": "MODERN_ERA",
     "yearsActive": "2001–2019",
     "category": "historic",
-    "peakRating": 81,
-    "value": 113000,
+    "peakRating": 82,
+    "value": 610000,
     "appearances": 482,
     "tries": 49,
     "intlCaps": 2,
     "clubLegend": false,
-    "rating": 81
+    "rating": 82
   },
   {
     "id": "leigh-hist-martyn-ridyard",
@@ -2524,13 +2524,13 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2009–2022",
     "category": "historic",
-    "peakRating": 76,
-    "value": 59000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 292,
     "tries": 68,
     "intlCaps": 1,
     "clubLegend": false,
-    "rating": 76
+    "rating": 78
   },
   {
     "id": "leigh-hist-bob-beswick",
@@ -2541,12 +2541,124 @@
     "era": "MODERN_ERA",
     "yearsActive": "2004–2019",
     "category": "historic",
-    "peakRating": 74,
-    "value": 50000,
+    "peakRating": 78,
+    "value": 220000,
     "appearances": 307,
     "tries": 35,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 74
+    "rating": 78
+  },
+  {
+    "id": "salford-hist-shannon-ball",
+    "name": "Shannon Ball",
+    "position": "LOOSE_FORWARD",
+    "club": "Salford Red Devils",
+    "nationality": "England",
+    "era": "SUMMER_ERA",
+    "yearsActive": "1997–2008",
+    "category": "historic",
+    "peakRating": 82,
+    "value": 610000,
+    "appearances": 250,
+    "tries": 45,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "warrington-hist-paul-wood",
+    "name": "Paul Wood",
+    "position": "PROP",
+    "club": "Warrington Wolves",
+    "nationality": "England",
+    "era": "SUMMER_ERA",
+    "yearsActive": "2003–2022",
+    "category": "historic",
+    "peakRating": 87,
+    "value": 1450000,
+    "appearances": 450,
+    "tries": 35,
+    "intlCaps": 0,
+    "rating": 87
+  },
+  {
+    "id": "warrington-hist-mike-cooper",
+    "name": "Mike Cooper",
+    "position": "SECOND_ROW",
+    "club": "Warrington Wolves",
+    "nationality": "England",
+    "era": "SUMMER_ERA",
+    "yearsActive": "2008–2023",
+    "category": "historic",
+    "peakRating": 82,
+    "value": 610000,
+    "appearances": 320,
+    "tries": 40,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "hullkr-hist-neil-maskell",
+    "name": "Neil Maskell",
+    "position": "PROP",
+    "club": "Hull KR",
+    "nationality": "England",
+    "era": "SUMMER_ERA",
+    "yearsActive": "1999–2011",
+    "category": "historic",
+    "peakRating": 82,
+    "value": 610000,
+    "appearances": 280,
+    "tries": 20,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "catalans-hist-stacy-jones",
+    "name": "Stacy Jones",
+    "position": "STAND_OFF",
+    "club": "Catalans Dragons",
+    "nationality": "Australia",
+    "era": "SUMMER_ERA",
+    "yearsActive": "2006–2010",
+    "category": "historic",
+    "peakRating": 88,
+    "value": 1665000,
+    "appearances": 95,
+    "tries": 30,
+    "intlCaps": 0,
+    "rating": 88
+  },
+  {
+    "id": "castleford-hist-ryan-hampson",
+    "name": "Ryan Hampson",
+    "position": "SCRUM_HALF",
+    "club": "Castleford Tigers",
+    "nationality": "England",
+    "era": "SUMMER_ERA",
+    "yearsActive": "2000–2014",
+    "category": "historic",
+    "peakRating": 82,
+    "value": 610000,
+    "appearances": 300,
+    "tries": 80,
+    "intlCaps": 0,
+    "rating": 82
+  },
+  {
+    "id": "york-hist-graeme-hallas",
+    "name": "Graeme Hallas",
+    "position": "STAND_OFF",
+    "club": "York Knights",
+    "nationality": "England",
+    "era": "SUMMER_ERA",
+    "yearsActive": "2003–2012",
+    "category": "historic",
+    "peakRating": 82,
+    "value": 610000,
+    "appearances": 200,
+    "tries": 60,
+    "intlCaps": 0,
+    "rating": 82
   }
 ]

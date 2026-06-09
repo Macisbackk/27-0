@@ -18,6 +18,7 @@ interface PlayerChoiceProps {
   rerollUsed?: boolean;
   disabled?: boolean;
   hardMode?: boolean;
+  draftMode?: boolean;
 }
 
 export function PlayerChoice({
@@ -30,6 +31,7 @@ export function PlayerChoice({
   rerollUsed,
   disabled,
   hardMode,
+  draftMode,
 }: PlayerChoiceProps) {
   const appearSoundPlayed = useRef(false);
 
@@ -59,10 +61,10 @@ export function PlayerChoice({
     >
       <header className="mb-3 border-b border-pitch-600/40 pb-3 text-center sm:mb-6 sm:pb-5">
         <p className={`${RL_SECTION_TITLE_CLASS} text-[10px] sm:text-xs`}>
-          Recruitment
+          {draftMode ? "Draft Pick" : "Recruitment"}
         </p>
         <h2 className="mt-1 font-display text-lg font-black uppercase tracking-tight text-white sm:mt-2 sm:text-3xl">
-          {positionLabel}
+          {draftMode ? `Recruiting: ${positionLabel}` : positionLabel}
         </h2>
         <p className="mt-1 hidden text-sm text-gray-400 sm:mt-2 sm:block">
           Pick one signing — the other walks away forever

@@ -7,12 +7,14 @@ export default async function PlayPage({
     difficulty?: string;
     cup?: string;
     joeMellor?: string;
+    draft?: string;
   }>;
 }) {
   const params = await searchParams;
   const wantsHard = params.difficulty === "hard";
   const wantsCup = params.cup === "1";
   const wantsJoeMellor = params.joeMellor === "1";
+  const wantsDraft = params.draft === "1";
 
   const joeMellorMode = wantsJoeMellor;
   const difficulty = wantsHard ? ("HARD" as const) : ("NORMAL" as const);
@@ -31,6 +33,7 @@ export default async function PlayPage({
       subtitle={subtitle}
       initialDifficulty={difficulty}
       joeMellorMode={joeMellorMode}
+      draftMode={wantsDraft && !wantsCup && !joeMellorMode}
     />
   );
 }

@@ -6,4 +6,5 @@ export const STORAGE_KEYS = {
   soundMuted: "27-0-sound-muted",
   hallOfFame: "27-0-hall-of-fame",
   cupLeaderboard: "27-0-cup-leaderboard",
+  recruitmentStyle: "27-0-recruitment-style",
 } as const;
