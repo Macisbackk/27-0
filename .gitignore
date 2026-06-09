@@ -20,6 +20,9 @@
 
 # misc
 .DS_Store
+/scripts/rlp-cache/
+/scripts/rlp-players.html
+/scripts/rlp-sample-player*.html
 *.pem
 
 # debug

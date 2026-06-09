@@ -9,6 +9,9 @@
     "lint": "next lint",
     "validate:players": "tsx scripts/validate-players.ts",
     "merge:players": "tsx scripts/merge-player-additions.ts",
+    "import:rlp": "tsx scripts/import-rlp-players.ts",
+    "download:rlp": "tsx scripts/download-rlp-cache.ts",
+    "enrich:rlp": "tsx scripts/enrich-rlp-players.ts",
     "rebalance:ratings": "tsx scripts/rebalance-ratings.ts"
   },
   "dependencies": {
