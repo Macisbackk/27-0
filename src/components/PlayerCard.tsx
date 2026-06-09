@@ -14,6 +14,7 @@ interface PlayerCardProps {
   selectable?: boolean;
   hardMode?: boolean;
   equalHeight?: boolean;
+  compactMobile?: boolean;
 }
 
 export function PlayerCard({
@@ -23,6 +24,7 @@ export function PlayerCard({
   selectable,
   hardMode,
   equalHeight,
+  compactMobile,
 }: PlayerCardProps) {
   const colors = getClubColors(player.club);
 
@@ -53,6 +55,7 @@ export function PlayerCard({
         variant={selectable ? "recruitment" : "default"}
         hardMode={hardMode}
         equalHeight={equalHeight}
+        compactMobile={compactMobile}
         className="flex-1"
       />
       {!selectable && canSign !== undefined && (

@@ -77,6 +77,7 @@ export function RLStatBox({
   large,
   light,
   prominent,
+  compact,
   className = "",
 }: {
   label: string;
@@ -85,22 +86,33 @@ export function RLStatBox({
   large?: boolean;
   light?: boolean;
   prominent?: boolean;
+  compact?: boolean;
   className?: string;
 }) {
   return (
     <div
-      className={`${RL_INFO_BOX_CLASS} ${large ? "px-2.5 py-2" : "px-2 py-1.5"} ${className}`}
+      className={`${RL_INFO_BOX_CLASS} ${
+        compact ? "px-1.5 py-1" : large ? "px-2.5 py-2" : "px-2 py-1.5"
+      } ${className}`}
     >
-      <p className={RL_STAT_LABEL_CLASS}>{label}</p>
+      <p
+        className={`${RL_STAT_LABEL_CLASS} ${
+          compact ? "text-[8px] tracking-wide" : ""
+        }`}
+      >
+        {label}
+      </p>
       <p
         className={`truncate font-medium text-white ${
           prominent
             ? "text-lg font-bold sm:text-xl"
-            : light
-              ? "font-normal text-gray-300"
-              : large
-                ? "text-sm"
-                : "text-[11px]"
+            : compact
+              ? "text-[10px] leading-tight sm:text-sm"
+              : light
+                ? "font-normal text-gray-300"
+                : large
+                  ? "text-sm"
+                  : "text-[11px]"
         } ${highlight ? "!text-accent-gold" : ""}`}
       >
         {value}
@@ -112,24 +124,30 @@ export function RLStatBox({
 export function RLRatingDisplay({
   rating,
   large,
+  compact,
   className = "",
 }: {
   rating: number;
   large?: boolean;
+  compact?: boolean;
   className?: string;
 }) {
   return (
     <div className={`shrink-0 text-center ${className}`}>
       <p
         className={`font-bold uppercase tracking-wider text-accent-green/80 ${
-          large ? "text-[10px]" : "text-[8px]"
+          compact ? "text-[7px]" : large ? "text-[10px]" : "text-[8px]"
         }`}
       >
         Rating
       </p>
       <p
         className={`rl-rating-value font-display font-black leading-none text-accent-green drop-shadow-[0_0_14px_rgba(34,197,94,0.5)] ${
-          large ? "text-5xl sm:text-6xl" : "text-2xl sm:text-3xl"
+          compact
+            ? "text-2xl sm:text-6xl"
+            : large
+              ? "text-5xl sm:text-6xl"
+              : "text-2xl sm:text-3xl"
         }`}
       >
         {rating}

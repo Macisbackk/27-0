@@ -57,27 +57,29 @@ export function PlayerChoice({
       transition={{ duration: 0.4, ease: "easeOut" }}
       className="w-full"
     >
-      <header className="mb-6 border-b border-pitch-600/40 pb-5 text-center">
-        <p className={RL_SECTION_TITLE_CLASS}>Recruitment</p>
-        <h2 className="mt-2 font-display text-2xl font-black uppercase tracking-tight text-white sm:text-3xl">
+      <header className="mb-3 border-b border-pitch-600/40 pb-3 text-center sm:mb-6 sm:pb-5">
+        <p className={`${RL_SECTION_TITLE_CLASS} text-[10px] sm:text-xs`}>
+          Recruitment
+        </p>
+        <h2 className="mt-1 font-display text-lg font-black uppercase tracking-tight text-white sm:mt-2 sm:text-3xl">
           {positionLabel}
         </h2>
-        <p className="mt-2 text-sm text-gray-400">
+        <p className="mt-1 hidden text-sm text-gray-400 sm:mt-2 sm:block">
           Pick one signing — the other walks away forever
         </p>
 
         {!hardMode && (
-          <div className="mx-auto mt-4 inline-flex items-center gap-3 rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-4 py-2">
-            <span className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
-              Position Rerolls
+          <div className="mx-auto mt-2 inline-flex items-center gap-2 rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-3 py-1.5 sm:mt-4 sm:gap-3 sm:px-4 sm:py-2">
+            <span className="font-display text-[9px] font-bold uppercase tracking-[0.15em] text-gray-500 sm:text-[10px] sm:tracking-[0.2em]">
+              Rerolls
             </span>
             {rerollUsed ? (
-              <span className="font-display text-xs font-bold uppercase tracking-wider text-gray-500">
+              <span className="font-display text-[10px] font-bold uppercase tracking-wider text-gray-500 sm:text-xs">
                 Used
               </span>
             ) : (
-              <span className="font-display text-sm font-bold text-accent-green">
-                1 Available
+              <span className="font-display text-xs font-bold text-accent-green sm:text-sm">
+                1
               </span>
             )}
           </div>
@@ -85,33 +87,33 @@ export function PlayerChoice({
       </header>
 
       {!hardMode && onReroll && (
-        <div className="mb-5 flex justify-center">
+        <div className="mb-3 flex justify-center sm:mb-5">
           <button
             type="button"
             onClick={onReroll}
             disabled={disabled || !rerollAvailable || rerollUsed}
-            className={`rounded-lg border px-5 py-2.5 font-display text-xs font-bold uppercase tracking-[0.18em] transition ${
+            className={`rounded-lg border px-3 py-2 font-display text-[10px] font-bold uppercase tracking-[0.12em] transition sm:px-5 sm:py-2.5 sm:text-xs sm:tracking-[0.18em] ${
               rerollAvailable && !rerollUsed && !disabled
                 ? "border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20"
                 : "cursor-not-allowed border-pitch-700/60 bg-pitch-900/50 text-gray-600"
             }`}
           >
-            {rerollUsed ? "Reroll Used" : "Reroll Position"}
+            {rerollUsed ? "Used" : "Reroll"}
           </button>
         </div>
       )}
 
-      <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-2 md:gap-6">
+      <div className="grid grid-cols-2 items-stretch gap-2 sm:gap-5 md:gap-6">
         <ChoiceCard
           player={playerA}
-          label="Option A"
+          label="A"
           onChoose={() => onChoose(playerA)}
           disabled={disabled}
           hardMode={hardMode}
         />
         <ChoiceCard
           player={playerB}
-          label="Option B"
+          label="B"
           onChoose={() => onChoose(playerB)}
           disabled={disabled}
           hardMode={hardMode}
@@ -139,30 +141,31 @@ function ChoiceCard({
       type="button"
       onClick={onChoose}
       disabled={disabled}
-      className="group flex h-full w-full flex-col text-left"
+      className="group flex h-full w-full min-w-0 flex-col text-left"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
       whileHover={{ scale: disabled ? 1 : 1.01 }}
       whileTap={{ scale: disabled ? 1 : 0.995 }}
     >
-      <div className="mb-2 flex min-h-[22px] items-center justify-between px-1">
-        <span className="font-display text-[11px] font-bold uppercase tracking-wider text-gray-500">
+      <div className="mb-1 flex min-h-[16px] items-center justify-between px-0.5 sm:mb-2 sm:min-h-[22px] sm:px-1">
+        <span className="font-display text-[9px] font-bold uppercase tracking-wider text-gray-500 sm:text-[11px]">
           {label}
         </span>
-        <span className="rounded-full bg-accent-green/20 px-2.5 py-0.5 text-[10px] font-semibold text-accent-green opacity-0 transition group-hover:opacity-100">
+        <span className="hidden rounded-full bg-accent-green/20 px-2 py-0.5 text-[10px] font-semibold text-accent-green opacity-0 transition group-hover:opacity-100 sm:inline">
           Sign →
         </span>
       </div>
-      <div className="flex min-h-[380px] flex-1 flex-col overflow-hidden rounded-lg transition sm:min-h-[400px] group-hover:opacity-95">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg transition sm:min-h-[400px] group-hover:opacity-95">
         <PlayerCard
           player={player}
           selectable
           hardMode={hardMode}
           equalHeight
+          compactMobile
         />
       </div>
-      <p className="mt-2 min-h-[16px] text-center text-[11px] text-gray-500">
+      <p className="mt-1 hidden min-h-[16px] text-center text-[11px] text-gray-500 sm:block">
         {POSITION_LABELS[player.position]} · Tap to sign
       </p>
     </motion.button>

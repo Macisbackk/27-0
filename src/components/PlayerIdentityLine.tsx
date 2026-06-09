@@ -10,25 +10,39 @@ import { POSITION_LABELS } from "@/lib/positions";
 interface PlayerIdentityLineProps {
   player: Player;
   className?: string;
+  compact?: boolean;
 }
 
 /** Nationality abbreviation + • position beneath player name. */
 export function PlayerIdentityLine({
   player,
   className = "",
+  compact = false,
 }: PlayerIdentityLineProps) {
   const abbrev = getNationalityAbbrev(player.nationality);
   const position = POSITION_LABELS[player.position];
 
   return (
     <p
-      className={`player-identity-line mt-1.5 flex items-center gap-2 text-sm font-medium leading-snug text-gray-300 sm:text-base ${className}`}
+      className={`player-identity-line flex items-center font-medium leading-snug text-gray-300 ${
+        compact
+          ? "mt-0.5 gap-1 text-[10px]"
+          : "mt-1.5 gap-2 text-sm sm:text-base"
+      } ${className}`}
     >
-      <span className="font-display text-sm font-bold tracking-wider text-accent-green sm:text-base">
+      <span
+        className={`shrink-0 font-display font-bold tracking-wider text-accent-green ${
+          compact ? "text-[10px]" : "text-sm sm:text-base"
+        }`}
+      >
         {abbrev}
       </span>
-      <span className="text-gray-600">•</span>
-      <span className="text-base font-semibold text-white sm:text-[17px]">
+      <span className="shrink-0 text-gray-600">•</span>
+      <span
+        className={`truncate font-semibold text-white ${
+          compact ? "text-[10px]" : "text-base sm:text-[17px]"
+        }`}
+      >
         {position}
       </span>
     </p>

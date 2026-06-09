@@ -32,6 +32,7 @@ interface RugbyLeaguePlayerCardProps {
   hardMode?: boolean;
   compact?: boolean;
   equalHeight?: boolean;
+  compactMobile?: boolean;
   className?: string;
 }
 
@@ -44,6 +45,7 @@ export function RugbyLeaguePlayerCard({
   hardMode,
   compact,
   equalHeight,
+  compactMobile,
   className = "",
 }: RugbyLeaguePlayerCardProps) {
   const colors = getClubColors(player.club);
@@ -69,7 +71,11 @@ export function RugbyLeaguePlayerCard({
   const categoryBadge = showCategoryBadge ? (
     <div
       className={`shrink-0 px-2 py-0.5 text-center font-medium uppercase tracking-widest ${
-        isRecruitment ? "text-[9px]" : "text-[8px]"
+        isRecruitment
+          ? compactMobile
+            ? "text-[7px] px-1.5 py-px sm:text-[9px]"
+            : "text-[9px]"
+          : "text-[8px]"
       } ${
         isGoat
           ? "bg-accent-gold text-pitch-950"
@@ -166,6 +172,8 @@ export function RugbyLeaguePlayerCard({
   }
 
   if (isRecruitment) {
+    const mobileCompact = compactMobile;
+
     return (
       <RLCardShell
         club={player.club}
@@ -173,33 +181,82 @@ export function RugbyLeaguePlayerCard({
       >
         {categoryBadge}
 
-        <div className="flex items-start gap-3 px-4 pb-2 pt-4 sm:px-5 sm:pt-5">
+        <div
+          className={`flex items-start gap-1.5 px-2 pb-1 pt-2 sm:gap-3 sm:px-5 sm:pb-2 sm:pt-5 ${
+            mobileCompact ? "gap-1" : ""
+          }`}
+        >
           <div className="min-w-0 flex-1">
-            <h2 className={`truncate ${TYPO.playerName}`}>{player.name}</h2>
-            <PlayerIdentityLine player={player} />
+            <h2
+              className={`truncate ${
+                mobileCompact
+                  ? "text-xs font-bold leading-tight sm:text-base"
+                  : TYPO.playerName
+              }`}
+            >
+              {player.name}
+            </h2>
+            <PlayerIdentityLine player={player} compact={mobileCompact} />
           </div>
           <RLRatingDisplay
             rating={player.peakRating}
             large
+            compact={mobileCompact}
             className={hiddenClass}
           />
         </div>
 
         <ClubColourBar club={player.club} />
-        <ClubNameStrip club={player.club} colors={colors} />
+        <ClubNameStrip
+          club={player.club}
+          colors={colors}
+          compact={mobileCompact}
+        />
 
-        <div className="flex flex-1 flex-col gap-2.5 px-4 pb-4 sm:gap-3 sm:px-5 sm:pb-5">
-          {achievementBadges}
+        <div
+          className={`flex flex-1 flex-col px-2 pb-2 sm:gap-3 sm:px-5 sm:pb-5 ${
+            mobileCompact ? "gap-1" : "gap-2.5"
+          }`}
+        >
+          {achievementBadges && (
+            <div className={mobileCompact ? "hidden sm:block" : ""}>
+              {achievementBadges}
+            </div>
+          )}
 
-          <div className="grid grid-cols-3 gap-2">
-            <RLStatBox label="Apps" value={appearancesValue} large light />
-            <RLStatBox label="Tries" value={formatCareerTries(player.tries)} large light />
-            <RLStatBox label="Years" value={player.yearsActive} large light />
+          <div
+            className={`grid gap-1 sm:grid-cols-3 sm:gap-2 ${
+              mobileCompact ? "grid-cols-2" : "grid-cols-3"
+            }`}
+          >
+            <RLStatBox
+              label="Apps"
+              value={appearancesValue}
+              large
+              light
+              compact={mobileCompact}
+            />
+            <RLStatBox
+              label="Tries"
+              value={formatCareerTries(player.tries)}
+              large
+              light
+              compact={mobileCompact}
+            />
+            <RLStatBox
+              label="Years"
+              value={player.yearsActive}
+              large
+              light
+              compact={mobileCompact}
+              className={mobileCompact ? "hidden sm:block" : ""}
+            />
             <RLStatBox
               label="Value"
               value={formatValue(player.value)}
               large
               light
+              compact={mobileCompact}
               className={hiddenClass}
             />
             <RLStatBox
@@ -207,6 +264,7 @@ export function RugbyLeaguePlayerCard({
               value={tier}
               large
               light
+              compact={mobileCompact}
               className={hiddenClass}
             />
             <RLStatBox
@@ -214,6 +272,7 @@ export function RugbyLeaguePlayerCard({
               value={player.intlCaps > 0 ? String(player.intlCaps) : "—"}
               large
               light
+              compact={mobileCompact}
               className={hiddenClass}
             />
           </div>

@@ -11,6 +11,10 @@ import {
   ensureCupLeaderboardSynced,
   getAllCupLeaderboardProfiles,
 } from "@/lib/storage/cup-leaderboard";
+import {
+  getCupWinsLeaderboardAsync,
+  type CupWinsLeaderboardRow,
+} from "@/lib/storage/leaderboard";
 import { getAllStats } from "@/lib/storage/stats";
 import { getUsername } from "@/lib/storage/user";
 
@@ -112,14 +116,52 @@ function CategoryTable({
   );
 }
 
+function OnlineCupWinsList({ entries }: { entries: CupWinsLeaderboardRow[] }) {
+  if (entries.length === 0) return null;
+
+  return (
+    <section className="matchday-panel overflow-hidden">
+      <h2 className="border-b border-pitch-600/50 px-4 py-3 font-display text-sm font-bold uppercase tracking-wider text-accent-gold">
+        Online Challenge Cup Wins
+      </h2>
+      <ol className="divide-y divide-pitch-700/30">
+        {entries.slice(0, 10).map((entry, index) => (
+          <li
+            key={entry.username}
+            className={`flex items-center justify-between px-4 py-3 ${
+              entry.isCurrentUser ? "bg-accent-green/5" : ""
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <span
+                className={`w-6 font-bold ${
+                  index < 3 ? "text-accent-gold" : "text-gray-400"
+                }`}
+              >
+                {entry.rank}.
+              </span>
+              <span className="font-medium">{entry.username}</span>
+            </div>
+            <span className="font-semibold text-accent-gold">
+              {entry.totalWins}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 export function ChallengeCupLeaderboard() {
   const [profiles, setProfiles] = useState<CupLeaderboardProfile[]>([]);
+  const [onlineWins, setOnlineWins] = useState<CupWinsLeaderboardRow[]>([]);
 
   useEffect(() => {
     const stored = getAllStats();
     const username = getUsername();
     ensureCupLeaderboardSynced(username, stored.normal, stored.hard);
     setProfiles(getAllCupLeaderboardProfiles());
+    void getCupWinsLeaderboardAsync().then(setOnlineWins);
   }, []);
 
   const matchWins = rankProfilesByCategory(profiles, "cupMatchWins");
@@ -139,8 +181,11 @@ export function ChallengeCupLeaderboard() {
   return (
     <div className="space-y-6">
       <p className="text-sm text-gray-500">
-        All-time Challenge Cup records saved locally in this browser.
+        Challenge Cup records updated online across all players. Detailed
+        category stats also sync from your local career data.
       </p>
+
+      <OnlineCupWinsList entries={onlineWins} />
 
       <div className="grid gap-4 lg:grid-cols-2">
         <FeaturedList

@@ -16,7 +16,7 @@ export default async function LeaderboardPage({
         <h1 className="font-display text-2xl font-bold">Leaderboard</h1>
         <p className="mb-6 text-sm text-gray-500">
           Super League squad-value rankings and dedicated Challenge Cup records,
-          saved locally in this browser.
+          updated online across all players.
         </p>
         <LeaderboardTable initialDifficulty={difficulty} />
       </div>

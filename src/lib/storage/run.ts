@@ -1,7 +1,7 @@
 import type { CupRunRankingResult, GameDifficulty, RunState } from "../types";
 import { computeCupRunRankingResult } from "../cup-run-ranking";
 import { getSquadValue } from "../positions";
-import { addLeaderboardEntry, getLeaderboard } from "./leaderboard";
+import { addLeaderboardEntry, getLeaderboardAsync } from "./leaderboard";
 import {
   getAllCupLeaderboardProfiles,
   updateCupLeaderboardProfile,
@@ -15,7 +15,12 @@ import {
   updateStats,
 } from "./stats";
 
-export function recordCompletedRun(
+export interface CompletedRunResult {
+  cupRanking?: CupRunRankingResult;
+  nationalRank?: number;
+}
+
+export async function recordCompletedRun(
   run: RunState,
   signedIds: string[],
   difficulty: GameDifficulty = "NORMAL",
@@ -34,17 +39,19 @@ export function recordCompletedRun(
     averageSquadRating?: number;
     matchResults?: ("W" | "L")[];
   }
-): CupRunRankingResult | undefined {
+): Promise<CompletedRunResult> {
   const totalValue = run.totalValue || getSquadValue(run.squad);
   const isCupRun = options?.challengeCupMode === true;
+  const wins = options?.seasonWins ?? 0;
+  const losses = options?.seasonLosses ?? 0;
 
-  if (!isCupRun) {
-    addLeaderboardEntry(totalValue, run.mode, difficulty);
-  }
+  await addLeaderboardEntry(totalValue, run.mode, difficulty, { wins, losses });
 
   const nationalRank = isCupRun
     ? undefined
-    : getLeaderboard("ALL_TIME", difficulty).find((e) => e.isCurrentUser)?.rank;
+    : (
+        await getLeaderboardAsync("ALL_TIME", difficulty, 50, "super-league")
+      ).rows.find((e) => e.isCurrentUser)?.rank;
 
   updateStats(signedIds, totalValue, difficulty);
 
@@ -69,8 +76,8 @@ export function recordCompletedRun(
 
       updateSeasonLifetimeStats(
         {
-          wins: options.seasonWins ?? 0,
-          losses: options.seasonLosses ?? 0,
+          wins,
+          losses,
           leaguePosition: options.seasonLeaguePosition ?? 1,
           isPerfect: options.isPerfectSeason ?? false,
           longestWinStreak: options.longestWinStreak ?? 0,
@@ -90,8 +97,8 @@ export function recordCompletedRun(
 
       updateCupLeaderboardProfile(
         {
-          wins: options.seasonWins ?? 0,
-          losses: options.seasonLosses ?? 0,
+          wins,
+          losses,
           cupWon: options.cupWon ?? false,
           cupFinish: options.cupFinish,
           matchResults: options.matchResults ?? [],
@@ -106,19 +113,21 @@ export function recordCompletedRun(
       );
       const profilesAfter = getAllCupLeaderboardProfiles();
 
-      return computeCupRunRankingResult(
-        username,
-        beforeBests,
-        afterBests,
-        profilesBefore,
-        profilesAfter
-      );
+      return {
+        cupRanking: computeCupRunRankingResult(
+          username,
+          beforeBests,
+          afterBests,
+          profilesBefore,
+          profilesAfter
+        ),
+      };
     }
 
     updateSeasonLifetimeStats(
       {
-        wins: options.seasonWins ?? 0,
-        losses: options.seasonLosses ?? 0,
+        wins,
+        losses,
         leaguePosition: options.seasonLeaguePosition ?? 1,
         isPerfect: options.isPerfectSeason ?? false,
         longestWinStreak: options.longestWinStreak ?? 0,
@@ -136,5 +145,5 @@ export function recordCompletedRun(
     );
   }
 
-  return undefined;
+  return { nationalRank };
 }

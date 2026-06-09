@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { GameDifficulty, LeaderboardPeriod, LeaderboardRow } from "@/lib/types";
 import { formatValue } from "@/lib/players";
 import { formatPeriodLabel } from "@/lib/leaderboard";
-import { getLeaderboard } from "@/lib/storage/leaderboard";
+import { getLeaderboardAsync } from "@/lib/storage/leaderboard";
 import { ChallengeCupLeaderboard } from "./ChallengeCupLeaderboard";
 import { HardModeBadge } from "./HardModeBadge";
 
@@ -25,12 +25,29 @@ export function LeaderboardTable({
   const [difficulty, setDifficulty] =
     useState<GameDifficulty>(initialDifficulty);
   const [entries, setEntries] = useState<LeaderboardRow[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [usingFallback, setUsingFallback] = useState(false);
 
-  useEffect(() => {
-    if (leaderboardMode === "super-league") {
-      setEntries(getLeaderboard(period, difficulty));
+  const loadEntries = useCallback(async () => {
+    if (leaderboardMode !== "super-league") return;
+    setLoading(true);
+    try {
+      const result = await getLeaderboardAsync(
+        period,
+        difficulty,
+        50,
+        "super-league"
+      );
+      setEntries(result.rows);
+      setUsingFallback(result.source === "local");
+    } finally {
+      setLoading(false);
     }
   }, [period, difficulty, leaderboardMode]);
+
+  useEffect(() => {
+    void loadEntries();
+  }, [loadEntries]);
 
   return (
     <div>
@@ -106,7 +123,11 @@ export function LeaderboardTable({
             ))}
           </div>
 
-          {entries.length === 0 ? (
+          {loading ? (
+            <div className="matchday-panel p-12 text-center text-gray-500">
+              Loading leaderboard…
+            </div>
+          ) : entries.length === 0 ? (
             <div className="matchday-panel p-12 text-center text-gray-500">
               No {difficulty === "HARD" ? "hard mode" : "normal"} entries yet.
               Complete a run to appear on the leaderboard!
@@ -156,9 +177,11 @@ export function LeaderboardTable({
           )}
 
           <p className="mt-4 text-center text-xs text-gray-600">
-            Scores saved locally in this browser ·{" "}
+            {usingFallback
+              ? "Showing local fallback · online sync unavailable"
+              : "Updated online across all players"}
+            {" · "}
             {difficulty === "HARD" ? "Hard Mode" : "Normal Mode"} Super League
-            leaderboard
           </p>
         </>
       )}

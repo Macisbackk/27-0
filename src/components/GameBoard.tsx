@@ -38,7 +38,6 @@ import {
 } from "@/lib/positions";
 import { recordCompletedRun } from "@/lib/storage/run";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
-import { getLeaderboard } from "@/lib/storage/leaderboard";
 import { addHallOfFameEntry } from "@/lib/storage/hall-of-fame";
 import {
   playJoeMellorActivate,
@@ -211,7 +210,7 @@ export function GameBoard({
           .map((s) => s.player!.id);
         const value = getSquadValue(finalSquad);
 
-        recordCompletedRun(
+        void recordCompletedRun(
           {
             id: runId,
             mode,
@@ -238,17 +237,14 @@ export function GameBoard({
             longestLosingStreak: result.longestLosingStreak,
             rerollsUsed: rerollsThisRunRef.current,
           }
-        );
+        ).then((completed) => {
+          if (completed.nationalRank) setRunRank(completed.nationalRank);
+        });
 
         if (result.isPerfect) {
           addHallOfFameEntry(value, mode, difficulty);
         }
       }
-
-      const userEntry = getLeaderboard("ALL_TIME", difficulty).find(
-        (e) => e.isCurrentUser
-      );
-      if (userEntry) setRunRank(userEntry.rank);
     },
     [
       runId,
@@ -420,7 +416,7 @@ export function GameBoard({
         .map((s) => s.player!.id);
       const value = getSquadValue(squad);
 
-      const rankingResult = recordCompletedRun(
+      void recordCompletedRun(
         {
           id: runId,
           mode,
@@ -448,14 +444,14 @@ export function GameBoard({
           rerollsUsed: rerollsThisRunRef.current,
           matchResults: result.fixtures.map((fixture) => fixture.result),
         }
-      );
-
-      setCupRankingResult(rankingResult);
-      if (rankingResult?.cupWinsRank) {
-        setRunRank(rankingResult.cupWinsRank);
-      }
-
-      setPhase("review");
+      ).then((completed) => {
+        setCupRankingResult(completed.cupRanking);
+        if (completed.cupRanking?.cupWinsRank) {
+          setRunRank(completed.cupRanking.cupWinsRank);
+        }
+        setPhase("review");
+      });
+      return;
     },
     [
       squad,
@@ -610,7 +606,7 @@ export function GameBoard({
                 exit={{ opacity: 0 }}
               >
                 <motion.div
-                  className="matchday-panel max-h-[90vh] w-full max-w-4xl overflow-y-auto p-6 sm:p-8"
+                  className="matchday-panel max-h-[92vh] w-full max-w-4xl overflow-y-auto p-2 sm:p-8"
                   initial={{ opacity: 0, y: 40, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 20 }}
