@@ -1713,10 +1713,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
-    "peakRating": 76,
-    "value": 135000,
+    "peakRating": 80,
+    "value": 450000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 80
   },
   {
     "id": "bradford-cur-joe-mellor",
@@ -1727,10 +1727,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2011–Present",
     "category": "current",
-    "peakRating": 88,
-    "value": 1665000,
+    "peakRating": 85,
+    "value": 150000,
     "intlCaps": 0,
-    "rating": 88,
+    "rating": 85,
     "appearances": 204,
     "tries": 60
   },
@@ -2038,10 +2038,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 82,
-    "value": 610000,
+    "peakRating": 85,
+    "value": 1140000,
     "intlCaps": 6,
-    "rating": 82,
+    "rating": 85,
     "appearances": 100,
     "tries": 21
   },
