@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import type { GameDifficulty, GameMode } from "@/lib/types";
-import { setHardModeEnabled } from "@/lib/storage/preferences";
+import {
+  setModeDifficulty,
+  type PlayModeKey,
+} from "@/lib/storage/preferences";
 import { GameBoard } from "./GameBoard";
 
 interface GameStarterProps {
@@ -12,6 +15,16 @@ interface GameStarterProps {
   initialDifficulty?: GameDifficulty;
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
+}
+
+function resolvePlayModeKey(
+  mode: GameMode,
+  search: URLSearchParams
+): PlayModeKey | null {
+  if (mode === "CHALLENGE_CUP") return null;
+  if (mode === "DRAFT") return "draft";
+  if (search.get("draft") === "1") return "draft";
+  return "normal";
 }
 
 export function GameStarter({
@@ -36,14 +49,13 @@ export function GameStarter({
 
     setDifficultyState(resolved);
 
-    if (difficultyParam === "hard") {
-      setHardModeEnabled(true);
-    } else if (difficultyParam === "normal") {
-      setHardModeEnabled(false);
+    const modeKey = resolvePlayModeKey(mode, params);
+    if (modeKey && difficultyParam) {
+      setModeDifficulty(modeKey, resolved);
     }
 
     setReady(true);
-  }, [initialDifficulty]);
+  }, [initialDifficulty, mode]);
 
   if (!ready) {
     return (

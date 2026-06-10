@@ -12,7 +12,6 @@ import { getOpponentTeamSummary } from "@/lib/game/opponent-scorers";
 import { formatValue } from "@/lib/players";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import { getTeamTier } from "@/lib/team-tiers";
-import { ClubNameLabel } from "./ClubNameLabel";
 import {
   findSlotByPlayerId,
   formatPlayerLineExtras,
@@ -23,7 +22,6 @@ import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { StatBox } from "./ui/StatBox";
 import { ClubTeamLabel } from "./ClubTeamLabel";
-import { TryScorerClubBadge } from "./TryScorerClubBadge";
 
 interface MatchDetailsPanelProps {
   fixture: MatchFixture;
@@ -101,7 +99,6 @@ export function MatchDetailsPanel({
               averageRating={opponentSummary.averageRating}
               tier={opponentSummary.tier}
               finalScore={fixture.pointsAgainst}
-              oppositionLabel
             />
           </div>
         ) : (
@@ -120,7 +117,6 @@ function TeamScoringBlock({
   tier,
   finalScore,
   userSquad,
-  oppositionLabel,
 }: {
   teamName: string;
   scoring: TeamScoringDetail;
@@ -129,7 +125,6 @@ function TeamScoringBlock({
   tier: string;
   finalScore: number;
   userSquad?: SquadSlot[];
-  oppositionLabel?: boolean;
 }) {
   const hasTries = scoring.tryScorers.length > 0;
   const kicking = scoring.kicking;
@@ -140,16 +135,6 @@ function TeamScoringBlock({
   return (
     <div className={SPACING.stackSm}>
       <ClubTeamLabel club={teamName} />
-      {oppositionLabel && (
-        <div className={`flex flex-wrap items-center ${SPACING.buttonGap} ${TYPO.bodySm}`}>
-          <span className={TYPO.statLabel}>Opposition</span>
-          <ClubNameLabel club={teamName} variant="inline" />
-          <span className="text-gray-600">·</span>
-          <span className={`${TYPO.statValue} font-display font-bold`}>
-            {averageRating.toFixed(1)} OVR
-          </span>
-        </div>
-      )}
       <div className={`grid ${SPACING.cardGridGap} sm:grid-cols-2`}>
         <StatBox label="Squad Value" value={formatValue(totalValue)} size="sm" />
         <StatBox label="Team Tier" value={tier} size="sm" />
@@ -164,31 +149,25 @@ function TeamScoringBlock({
       {hasTries && (
         <ScoringSection title="Tries">
           <ul className={SPACING.stackSm}>
-            {scoring.tryScorers.flatMap((s) => {
+            {scoring.tryScorers.map((s) => {
               const slot = userSquad
                 ? findSlotByPlayerId(userSquad, s.playerId)
                 : undefined;
               const extras = formatPlayerLineExtras(slot);
-              const suffix = [extras.positionNote, extras.ratingNote]
-                .filter(Boolean)
-                .join(" · ");
-              const club = slot?.player?.club;
-              return Array.from({ length: s.tries }, (_, i) => (
+              const positionNote = extras.positionNote;
+              const label =
+                s.tries > 1 ? `${s.name} x${s.tries}` : s.name;
+              return (
                 <li
-                  key={`${s.playerId}-${i}`}
+                  key={s.playerId}
                   className={`${CARD.inset} px-2.5 py-2`}
                 >
-                  <p className={TYPO.statValue}>{s.name}</p>
-                  {club && (
-                    <div className="mt-1">
-                      <TryScorerClubBadge club={club} />
-                    </div>
-                  )}
-                  {suffix && (
-                    <p className={`mt-1 ${TYPO.bodySm}`}>{suffix}</p>
+                  <p className={TYPO.statValue}>{label}</p>
+                  {positionNote && (
+                    <p className={`mt-1 ${TYPO.bodySm}`}>{positionNote}</p>
                   )}
                 </li>
-              ));
+              );
             })}
           </ul>
         </ScoringSection>

@@ -20,13 +20,25 @@ export function buildPlayHref(
 
 export function isPlayModeActive(
   pathname: string,
-  search: { cup?: string | null; draft?: string | null },
-  mode: PublicPlayMode
+  search: {
+    cup?: string | null;
+    draft?: string | null;
+    difficulty?: string | null;
+  },
+  mode: PublicPlayMode,
+  expectedDifficulty?: GameDifficulty
 ): boolean {
   if (!pathname.startsWith("/play")) return false;
   const isCup = search.cup === "1";
   const isDraft = search.draft === "1";
-  if (mode === "cup") return isCup;
-  if (mode === "draft") return isDraft && !isCup;
-  return !isCup && !isDraft;
+  const urlHard = search.difficulty === "hard";
+
+  let matches = false;
+  if (mode === "cup") matches = isCup;
+  else if (mode === "draft") matches = isDraft && !isCup;
+  else matches = !isCup && !isDraft;
+
+  if (!matches) return false;
+  if (expectedDifficulty === undefined || mode === "cup") return true;
+  return (expectedDifficulty === "HARD") === urlHard;
 }

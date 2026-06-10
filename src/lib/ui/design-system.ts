@@ -58,7 +58,7 @@ export const BTN = {
   primary:
     "border-2 border-accent-green/75 bg-accent-green text-pitch-950 shadow-[0_0_28px_rgba(34,197,94,0.35)] hover:bg-accent-green/90 hover:shadow-[0_0_36px_rgba(34,197,94,0.45)] disabled:cursor-not-allowed disabled:opacity-50",
   primaryHard:
-    "border-2 border-red-500/75 bg-red-600 text-white shadow-[0_0_28px_rgba(220,38,38,0.4)] hover:bg-red-500 hover:shadow-[0_0_36px_rgba(220,38,38,0.5)] disabled:cursor-not-allowed disabled:opacity-50",
+    "border-2 border-red-500/80 bg-red-950/75 text-red-100 shadow-[0_0_28px_rgba(220,38,38,0.45)] hover:border-red-400 hover:bg-red-950/90 hover:shadow-[0_0_36px_rgba(220,38,38,0.55)] disabled:cursor-not-allowed disabled:opacity-50",
   primaryLg:
     "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-accent-green to-emerald-400 py-4 font-display text-lg font-black uppercase tracking-wider text-pitch-950 shadow-[0_0_30px_rgba(34,197,94,0.35)] transition-all hover:from-emerald-400 hover:to-accent-green hover:shadow-[0_0_40px_rgba(34,197,94,0.5)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
   primaryLgHard:
@@ -78,8 +78,8 @@ export const BTN = {
   tabGroupIdle:
     "text-gray-400 hover:border-accent-green/30 hover:bg-accent-green/10 hover:text-accent-green",
   hardActive:
-    "border-2 border-red-500/75 bg-red-600 text-white shadow-[0_0_28px_rgba(220,38,38,0.45),inset_0_1px_0_rgba(255,255,255,0.08)]",
-  hardIdle: "text-gray-400 hover:border-red-500/30 hover:bg-red-950/30 hover:text-red-300",
+    "border-2 border-red-500/80 bg-red-950/75 text-red-100 shadow-[0_0_28px_rgba(220,38,38,0.55),inset_0_1px_0_rgba(255,255,255,0.06)]",
+  hardIdle: "text-gray-400 hover:border-red-500/35 hover:bg-red-950/40 hover:text-red-300",
   accentOutline: `w-full border border-accent-green/40 bg-accent-green/10 text-accent-green hover:border-accent-green/55 hover:bg-accent-green/20 sm:w-auto`,
   hardAccentOutline: `w-full border border-red-500/45 bg-red-950/35 text-red-300 hover:border-red-500/65 hover:bg-red-950/50 hover:text-red-200 sm:w-auto`,
   goldOutline: `w-full border border-accent-gold/35 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/15 sm:w-auto`,
@@ -125,6 +125,10 @@ export const NAV = {
   menuItem: `block w-full min-h-[44px] rounded-lg px-4 py-3 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-white`,
   menuItemDanger: `block w-full min-h-[44px] rounded-lg px-4 py-3 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-red-400`,
   menuActions: "space-y-1 px-1.5 py-1.5",
+  playModeList: "space-y-4",
+  playModeGroup: "space-y-2",
+  nestedBlock: "space-y-2 px-1",
+  nestedLabel: "px-1 font-display text-[10px] font-bold uppercase tracking-wider text-gray-500",
 } as const;
 
 export const LINK = {
@@ -161,4 +165,26 @@ export function tabGroupClass(
   if (hardActive) return `${FILTER.tabGroup} ${HARD.tabGroupRing}`;
   if (normalActive) return `${FILTER.tabGroup} ${NORMAL.tabGroupRing}`;
   return FILTER.tabGroup;
+}
+
+/** Compact nested toggle for sidebar play modes. */
+export function nestedTabGroupClass(
+  hardActive = false,
+  normalActive = false
+): string {
+  const base = `${FILTER.tabGroup} w-full p-0.5`;
+  if (hardActive) return `${base} ${HARD.tabGroupRing}`;
+  if (normalActive) return `${base} ${NORMAL.tabGroupRing}`;
+  return base;
+}
+
+export function nestedTabGroupButtonClass(
+  active: boolean,
+  variant: "normal" | "hard" = "normal"
+): string {
+  const base = `${TYPO.button} flex-1 rounded-lg px-3 py-2 min-h-[40px] text-xs sm:text-sm`;
+  if (!active) {
+    return `${base} ${variant === "hard" ? BTN.hardIdle : BTN.tabGroupIdle}`;
+  }
+  return `${base} ${variant === "hard" ? BTN.hardActive : BTN.tabGroupActive}`;
 }

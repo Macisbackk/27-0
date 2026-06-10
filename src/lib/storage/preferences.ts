@@ -1,34 +1,73 @@
 import type { GameDifficulty } from "../types";
 import { STORAGE_KEYS } from "./keys";
 
-export const HARD_MODE_CHANGED_EVENT = "27-0-hard-mode-changed";
+export type PlayModeKey = "normal" | "draft";
 
-export function getHardModeEnabled(): boolean {
-  if (typeof window === "undefined") return false;
+export const MODE_DIFFICULTY_CHANGED_EVENT = "27-0-mode-difficulty-changed";
+
+const MODE_KEY_MAP: Record<PlayModeKey, string> = {
+  normal: STORAGE_KEYS.normalDifficulty,
+  draft: STORAGE_KEYS.draftDifficulty,
+};
+
+function parseDifficulty(raw: string | null): GameDifficulty | null {
+  if (raw === "HARD" || raw === "hard") return "HARD";
+  if (raw === "NORMAL" || raw === "normal") return "NORMAL";
+  return null;
+}
+
+function migrateLegacyDifficulty(): void {
+  if (typeof window === "undefined") return;
   try {
-    const raw = localStorage.getItem(STORAGE_KEYS.hardModeEnabled);
-    if (raw !== null) return raw === "1" || raw === "true";
-    return localStorage.getItem(STORAGE_KEYS.difficulty) === "HARD";
+    if (localStorage.getItem(STORAGE_KEYS.normalDifficulty) !== null) return;
+    const legacy =
+      localStorage.getItem(STORAGE_KEYS.hardModeEnabled) ??
+      localStorage.getItem(STORAGE_KEYS.difficulty);
+    if (legacy === null) return;
+    const hard =
+      legacy === "1" ||
+      legacy === "true" ||
+      legacy === "HARD" ||
+      legacy === "hard";
+    const migrated: GameDifficulty = hard ? "HARD" : "NORMAL";
+    localStorage.setItem(STORAGE_KEYS.normalDifficulty, migrated);
+    localStorage.setItem(STORAGE_KEYS.draftDifficulty, "NORMAL");
   } catch {
-    return false;
+    // ignore
   }
 }
 
-export function setHardModeEnabled(enabled: boolean): void {
-  const difficulty: GameDifficulty = enabled ? "HARD" : "NORMAL";
-  localStorage.setItem(STORAGE_KEYS.hardModeEnabled, enabled ? "1" : "0");
-  localStorage.setItem(STORAGE_KEYS.difficulty, difficulty);
+export function getModeDifficulty(mode: PlayModeKey): GameDifficulty {
+  if (typeof window === "undefined") return "NORMAL";
+  migrateLegacyDifficulty();
+  try {
+    const parsed = parseDifficulty(localStorage.getItem(MODE_KEY_MAP[mode]));
+    return parsed ?? "NORMAL";
+  } catch {
+    return "NORMAL";
+  }
+}
+
+export function setModeDifficulty(
+  mode: PlayModeKey,
+  difficulty: GameDifficulty
+): void {
+  migrateLegacyDifficulty();
+  localStorage.setItem(MODE_KEY_MAP[mode], difficulty);
   window.dispatchEvent(
-    new CustomEvent(HARD_MODE_CHANGED_EVENT, { detail: difficulty })
+    new CustomEvent(MODE_DIFFICULTY_CHANGED_EVENT, {
+      detail: { mode, difficulty },
+    })
   );
 }
 
+/** Classic / easter-egg default difficulty preference. */
 export function getDifficulty(): GameDifficulty {
-  return getHardModeEnabled() ? "HARD" : "NORMAL";
+  return getModeDifficulty("normal");
 }
 
 export function setDifficulty(difficulty: GameDifficulty): void {
-  setHardModeEnabled(difficulty === "HARD");
+  setModeDifficulty("normal", difficulty);
 }
 
 export function getSoundMuted(): boolean {

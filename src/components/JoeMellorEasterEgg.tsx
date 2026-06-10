@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getDifficulty } from "@/lib/storage/preferences";
+import { getModeDifficulty } from "@/lib/storage/preferences";
 import { HiddenModeLink } from "./HiddenModeLink";
 
 export function JoeMellorEasterEgg() {
@@ -9,7 +9,7 @@ export function JoeMellorEasterEgg() {
   const [sshHref, setSshHref] = useState("/play?superSamHallas=1");
 
   useEffect(() => {
-    const difficulty = getDifficulty();
+    const difficulty = getModeDifficulty("normal");
     const hardSuffix = difficulty === "HARD" ? "&difficulty=hard" : "";
     setJmHref(`/play?joeMellor=1${hardSuffix}`);
     setSshHref(`/play?superSamHallas=1${hardSuffix}`);

@@ -4,14 +4,28 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { GameDifficulty } from "@/lib/types";
 import { buildPlayHref, isPlayModeActive } from "@/lib/play-links";
 import {
-  getHardModeEnabled,
-  HARD_MODE_CHANGED_EVENT,
-  setHardModeEnabled,
+  getModeDifficulty,
+  MODE_DIFFICULTY_CHANGED_EVENT,
+  setModeDifficulty,
+  type PlayModeKey,
 } from "@/lib/storage/preferences";
-import { isSoundMuted, playHardModeOff, playHardModeOn, playMenuClose, toggleSoundMuted } from "@/lib/sound";
-import { BTN, HARD, NAV, tabGroupButtonClass, tabGroupClass } from "@/lib/ui/design-system";
+import {
+  isSoundMuted,
+  playHardModeOff,
+  playHardModeOn,
+  playMenuClose,
+  toggleSoundMuted,
+} from "@/lib/sound";
+import {
+  BTN,
+  HARD,
+  NAV,
+  nestedTabGroupButtonClass,
+  nestedTabGroupClass,
+} from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 interface SidebarNavProps {
@@ -26,34 +40,40 @@ const MAIN_NAV_ITEMS = [
   { href: "/leaderboard", label: "Leaderboard", icon: "🏆" },
 ] as const;
 
-const PLAY_MODE_ITEMS = [
-  { mode: "classic" as const, label: "Normal Mode", icon: "🏉" },
-  { mode: "draft" as const, label: "Draft Mode", icon: "📋" },
-  { mode: "cup" as const, label: "Challenge Cup", icon: "🏆" },
+const PLAY_MODE_GROUPS = [
+  { mode: "classic" as const, modeKey: "normal" as const, label: "Normal Mode", icon: "🏉" },
+  { mode: "draft" as const, modeKey: "draft" as const, label: "Draft Mode", icon: "📋" },
 ] as const;
 
 export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [hardMode, setHardMode] = useState(false);
+  const [normalDifficulty, setNormalDifficulty] =
+    useState<GameDifficulty>("NORMAL");
+  const [draftDifficulty, setDraftDifficulty] =
+    useState<GameDifficulty>("NORMAL");
   const [muted, setMuted] = useState(false);
 
-  const syncHardMode = useCallback(() => {
-    setHardMode(getHardModeEnabled());
+  const syncDifficulties = useCallback(() => {
+    setNormalDifficulty(getModeDifficulty("normal"));
+    setDraftDifficulty(getModeDifficulty("draft"));
   }, []);
 
   useEffect(() => {
     if (!open) return;
-    syncHardMode();
+    syncDifficulties();
     setMuted(isSoundMuted());
-  }, [open, syncHardMode]);
+  }, [open, syncDifficulties]);
 
   useEffect(() => {
-    const onHardModeChanged = () => syncHardMode();
-    window.addEventListener(HARD_MODE_CHANGED_EVENT, onHardModeChanged);
+    const onDifficultyChanged = () => syncDifficulties();
+    window.addEventListener(MODE_DIFFICULTY_CHANGED_EVENT, onDifficultyChanged);
     return () =>
-      window.removeEventListener(HARD_MODE_CHANGED_EVENT, onHardModeChanged);
-  }, [syncHardMode]);
+      window.removeEventListener(
+        MODE_DIFFICULTY_CHANGED_EVENT,
+        onDifficultyChanged
+      );
+  }, [syncDifficulties]);
 
   useEffect(() => {
     if (!open) return;
@@ -72,11 +92,15 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     setMuted(toggleSoundMuted());
   };
 
-  const toggleHardMode = (enabled: boolean) => {
-    if (enabled && !hardMode) playHardModeOn();
-    if (!enabled && hardMode) playHardModeOff();
-    setHardMode(enabled);
-    setHardModeEnabled(enabled);
+  const toggleModeDifficulty = (modeKey: PlayModeKey, enabled: boolean) => {
+    const next: GameDifficulty = enabled ? "HARD" : "NORMAL";
+    const current =
+      modeKey === "normal" ? normalDifficulty : draftDifficulty;
+    if (enabled && current !== "HARD") playHardModeOn();
+    if (!enabled && current === "HARD") playHardModeOff();
+    if (modeKey === "normal") setNormalDifficulty(next);
+    else setDraftDifficulty(next);
+    setModeDifficulty(modeKey, next);
   };
 
   const isActive = (href: string) => {
@@ -96,9 +120,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const playSearch = {
     cup: searchParams.get("cup"),
     draft: searchParams.get("draft"),
+    difficulty: searchParams.get("difficulty"),
   };
-
-  const difficulty = hardMode ? "HARD" : "NORMAL";
 
   return (
     <AnimatePresence>
@@ -171,62 +194,85 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 
               <section className={NAV.sectionGap}>
                 <p className={NAV.sectionLabel}>Play</p>
-                <ul className={NAV.list}>
-                  {PLAY_MODE_ITEMS.map((item) => {
+                <ul className={NAV.playModeList}>
+                  {PLAY_MODE_GROUPS.map((group) => {
+                    const difficulty =
+                      group.modeKey === "normal"
+                        ? normalDifficulty
+                        : draftDifficulty;
+                    const isHard = difficulty === "HARD";
                     const active = isPlayModeActive(
                       pathname,
                       playSearch,
-                      item.mode
+                      group.mode,
+                      difficulty
                     );
-                    const href = buildPlayHref(item.mode, difficulty);
-                    const hardAccent =
-                      hardMode && (item.mode === "classic" || item.mode === "draft");
+                    const href = buildPlayHref(group.mode, difficulty);
+
                     return (
-                      <li key={item.mode}>
+                      <li key={group.mode} className={NAV.playModeGroup}>
                         <Link
                           href={href}
                           onClick={onClose}
-                          className={navLinkClass(active, hardAccent)}
+                          className={navLinkClass(active, isHard)}
                         >
                           <span aria-hidden className={NAV.icon}>
-                            {item.icon}
+                            {group.icon}
                           </span>
-                          {item.label}
+                          {group.label}
                           {active && (
                             <span
                               className={`ml-auto h-1.5 w-1.5 rounded-full ${
-                                hardAccent ? HARD.dot : "bg-accent-green"
+                                isHard ? HARD.dot : "bg-accent-green"
                               }`}
                             />
                           )}
                         </Link>
+                        <div className={NAV.nestedBlock}>
+                          <p className={NAV.nestedLabel}>Hard Mode</p>
+                          <div className={nestedTabGroupClass(isHard, !isHard)}>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                toggleModeDifficulty(group.modeKey, false)
+                              }
+                              className={nestedTabGroupButtonClass(!isHard, "normal")}
+                            >
+                              Off
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                toggleModeDifficulty(group.modeKey, true)
+                              }
+                              className={nestedTabGroupButtonClass(isHard, "hard")}
+                            >
+                              On
+                            </button>
+                          </div>
+                        </div>
                       </li>
                     );
                   })}
-                </ul>
 
-                <div className="mt-4 px-2">
-                  <p className={`mb-2 ${TYPO.sectionLabel}`}>Hard Mode</p>
-                  <div className={tabGroupClass(hardMode, !hardMode)}>
-                    <button
-                      type="button"
-                      onClick={() => toggleHardMode(false)}
-                      className={tabGroupButtonClass(!hardMode, "normal")}
+                  <li>
+                    <Link
+                      href={buildPlayHref("cup")}
+                      onClick={onClose}
+                      className={navLinkClass(
+                        isPlayModeActive(pathname, playSearch, "cup")
+                      )}
                     >
-                      Off
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => toggleHardMode(true)}
-                      className={tabGroupButtonClass(hardMode, "hard")}
-                    >
-                      On
-                    </button>
-                  </div>
-                  <p className={`mt-2 ${TYPO.bodySm} text-gray-500`}>
-                    Affects Normal Mode and Draft Mode only.
-                  </p>
-                </div>
+                      <span aria-hidden className={NAV.icon}>
+                        🏆
+                      </span>
+                      Challenge Cup
+                      {isPlayModeActive(pathname, playSearch, "cup") && (
+                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-gold" />
+                      )}
+                    </Link>
+                  </li>
+                </ul>
               </section>
             </nav>
 

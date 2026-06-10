@@ -5,9 +5,10 @@ import { useEffect, useState, type ReactNode } from "react";
 import type { GameDifficulty } from "@/lib/types";
 import { buildPlayHref } from "@/lib/play-links";
 import {
-  getHardModeEnabled,
-  HARD_MODE_CHANGED_EVENT,
-  setHardModeEnabled,
+  getModeDifficulty,
+  MODE_DIFFICULTY_CHANGED_EVENT,
+  setModeDifficulty,
+  type PlayModeKey,
 } from "@/lib/storage/preferences";
 import {
   playHardModeOff,
@@ -28,46 +29,55 @@ import { TYPO } from "@/lib/ui/typography";
 import { GuestNotice } from "./GuestNotice";
 
 export function HomeModeSelector() {
-  const [difficulty, setDifficulty] = useState<GameDifficulty>("NORMAL");
+  const [classicDifficulty, setClassicDifficulty] =
+    useState<GameDifficulty>("NORMAL");
+  const [draftDifficulty, setDraftDifficulty] =
+    useState<GameDifficulty>("NORMAL");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setDifficulty(getHardModeEnabled() ? "HARD" : "NORMAL");
+    setClassicDifficulty(getModeDifficulty("normal"));
+    setDraftDifficulty(getModeDifficulty("draft"));
     setMounted(true);
 
     const sync = (event: Event) => {
-      const detail = (event as CustomEvent<GameDifficulty>).detail;
-      if (detail) {
-        setDifficulty(detail);
-        return;
-      }
-      setDifficulty(getHardModeEnabled() ? "HARD" : "NORMAL");
+      const detail = (event as CustomEvent<{ mode: PlayModeKey; difficulty: GameDifficulty }>)
+        .detail;
+      if (!detail) return;
+      if (detail.mode === "normal") setClassicDifficulty(detail.difficulty);
+      if (detail.mode === "draft") setDraftDifficulty(detail.difficulty);
     };
 
-    window.addEventListener(HARD_MODE_CHANGED_EVENT, sync);
-    return () => window.removeEventListener(HARD_MODE_CHANGED_EVENT, sync);
+    window.addEventListener(MODE_DIFFICULTY_CHANGED_EVENT, sync);
+    return () =>
+      window.removeEventListener(MODE_DIFFICULTY_CHANGED_EVENT, sync);
   }, []);
 
-  const updateDifficulty = (next: GameDifficulty) => {
-    if (next === "HARD" && difficulty !== "HARD") playHardModeOn();
-    if (next === "NORMAL" && difficulty === "HARD") playHardModeOff();
-    setDifficulty(next);
-    setHardModeEnabled(next === "HARD");
+  const updateModeDifficulty = (mode: PlayModeKey, next: GameDifficulty) => {
+    const current =
+      mode === "normal" ? classicDifficulty : draftDifficulty;
+    if (next === "HARD" && current !== "HARD") playHardModeOn();
+    if (next === "NORMAL" && current === "HARD") playHardModeOff();
+    if (mode === "normal") setClassicDifficulty(next);
+    else setDraftDifficulty(next);
+    setModeDifficulty(mode, next);
   };
 
-  const classicHref = mounted ? buildPlayHref("classic", difficulty) : "/play";
+  const classicHref = mounted
+    ? buildPlayHref("classic", classicDifficulty)
+    : "/play";
   const draftHref = mounted
-    ? buildPlayHref("draft", difficulty)
+    ? buildPlayHref("draft", draftDifficulty)
     : "/play?draft=1";
-  const isHard = difficulty === "HARD";
-  const classicAction = isHard ? "Start Hard Season" : "Start Season";
+  const classicHard = classicDifficulty === "HARD";
+  const draftHard = draftDifficulty === "HARD";
 
   return (
     <div>
       <GuestNotice variant="home" />
 
       <div className={`mx-auto flex max-w-xl flex-col gap-5`}>
-        <ModePanel title="Normal Mode" hardActive={isHard}>
+        <ModePanel title="Normal Mode" hardActive={classicHard}>
           <p className={TYPO.body}>
             Draft your XIII position by position and simulate a full Super League
             campaign. Can you go 27-0?
@@ -75,23 +85,23 @@ export function HomeModeSelector() {
 
           <div className="mt-5">
             <p className={`mb-2 ${TYPO.sectionLabel}`}>Difficulty</p>
-            <div className={tabGroupClass(isHard, !isHard)}>
+            <div className={tabGroupClass(classicHard, !classicHard)}>
               <button
                 type="button"
-                onClick={() => updateDifficulty("NORMAL")}
-                className={tabGroupButtonClass(!isHard, "normal")}
+                onClick={() => updateModeDifficulty("normal", "NORMAL")}
+                className={tabGroupButtonClass(!classicHard, "normal")}
               >
                 Normal
               </button>
               <button
                 type="button"
-                onClick={() => updateDifficulty("HARD")}
-                className={tabGroupButtonClass(isHard, "hard")}
+                onClick={() => updateModeDifficulty("normal", "HARD")}
+                className={tabGroupButtonClass(classicHard, "hard")}
               >
                 Hard
               </button>
             </div>
-            {isHard && (
+            {classicHard && (
               <p className={`mt-2 ${TYPO.bodySm} font-medium text-red-400`}>
                 Ratings and values hidden until season review. No rerolls.
               </p>
@@ -101,13 +111,13 @@ export function HomeModeSelector() {
           <Link
             href={classicHref}
             onClick={() => playUiClick()}
-            className={`mt-5 w-full ${BTN.base} ${isHard ? BTN.primaryHard : BTN.primary}`}
+            className={`mt-5 w-full ${BTN.base} ${classicHard ? BTN.primaryHard : BTN.primary}`}
           >
-            {classicAction} →
+            {classicHard ? "Start Hard Season" : "Start Season"} →
           </Link>
         </ModePanel>
 
-        <ModePanel title="Draft Mode" hardActive={isHard}>
+        <ModePanel title="Draft Mode" hardActive={draftHard}>
           <p className={TYPO.body}>
             Pick players from pairs, then place them in any empty slot. Natural
             positions carry no penalty; out-of-position placements cost 5 OVR.
@@ -115,23 +125,23 @@ export function HomeModeSelector() {
 
           <div className="mt-5">
             <p className={`mb-2 ${TYPO.sectionLabel}`}>Draft Type</p>
-            <div className={tabGroupClass(isHard, !isHard)}>
+            <div className={tabGroupClass(draftHard, !draftHard)}>
               <button
                 type="button"
-                onClick={() => updateDifficulty("NORMAL")}
-                className={tabGroupButtonClass(!isHard, "normal")}
+                onClick={() => updateModeDifficulty("draft", "NORMAL")}
+                className={tabGroupButtonClass(!draftHard, "normal")}
               >
                 Standard Draft
               </button>
               <button
                 type="button"
-                onClick={() => updateDifficulty("HARD")}
-                className={tabGroupButtonClass(isHard, "hard")}
+                onClick={() => updateModeDifficulty("draft", "HARD")}
+                className={tabGroupButtonClass(draftHard, "hard")}
               >
                 Hard Draft
               </button>
             </div>
-            {isHard && (
+            {draftHard && (
               <p className={`mt-2 ${TYPO.bodySm} font-medium text-red-400`}>
                 Ratings and values hidden until season review.
               </p>
@@ -141,9 +151,9 @@ export function HomeModeSelector() {
           <Link
             href={draftHref}
             onClick={() => playUiClick()}
-            className={`mt-5 w-full ${BTN.base} ${isHard ? BTN.primaryHard : BTN.primary}`}
+            className={`mt-5 w-full ${BTN.base} ${draftHard ? BTN.primaryHard : BTN.primary}`}
           >
-            {isHard ? "Start Hard Draft" : "Start Draft"} →
+            {draftHard ? "Start Hard Draft" : "Start Draft"} →
           </Link>
         </ModePanel>
 
