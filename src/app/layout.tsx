@@ -5,6 +5,7 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { Header } from "@/components/Header";
 import { SiteFooter } from "@/components/SiteFooter";
+import { SoundUnlock } from "@/components/SoundUnlock";
 
 const anton = Anton({
   weight: "400",
@@ -32,6 +33,7 @@ export default function RootLayout({
     <html lang="en" className={anton.variable} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
         <AuthProvider>
+          <SoundUnlock />
           <Header />
           <main className="flex-1">{children}</main>
           <SiteFooter />

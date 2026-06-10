@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { PlayerTryTotal } from "@/lib/game/season-tries";
 import { POSITION_LABELS } from "@/lib/positions";
 import { TryScorerClubBadge } from "./TryScorerClubBadge";
+import { playPanelExpand } from "@/lib/sound";
 
 function formatScorerPosition(scorer: PlayerTryTotal): string {
   if (scorer.playedPosition && scorer.playedPosition !== scorer.position) {
@@ -33,7 +34,12 @@ export function TryScorersPanel({
     <div className="mt-3">
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          setOpen((v) => {
+            if (!v) playPanelExpand();
+            return !v;
+          });
+        }}
         className="w-full rounded-lg border border-pitch-600/40 bg-pitch-950/50 px-3 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-accent-green transition hover:border-accent-green/35 hover:bg-pitch-900/60 hover:text-emerald-300"
         aria-expanded={open}
       >

@@ -17,7 +17,7 @@ import {
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { formatSeasonWinPercentageOrDash } from "@/lib/stats-views";
-import { playGradeSound } from "@/lib/sound";
+import { playGradeSound, playPanelExpand } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { FixtureResultRow } from "./FixtureResultRow";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
@@ -93,7 +93,10 @@ export function SeasonReview({
     onPlayAgain();
   };
 
+  const gradeSoundPlayed = useRef(false);
   useEffect(() => {
+    if (gradeSoundPlayed.current) return;
+    gradeSoundPlayed.current = true;
     playGradeSound(gradeInfo.grade);
   }, [gradeInfo.grade]);
 
@@ -281,9 +284,10 @@ export function SeasonReview({
                 >
                   <FixtureResultRow
                     fixture={fixture}
-                    onClick={() =>
-                      setSelectedFixture(isSelected ? null : fixture)
-                    }
+                    onClick={() => {
+                      if (!isSelected) playPanelExpand();
+                      setSelectedFixture(isSelected ? null : fixture);
+                    }}
                     selected={isSelected}
                   />
                   <AnimatePresence initial={false}>

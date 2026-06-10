@@ -18,11 +18,12 @@ import {
 } from "@/lib/game/challenge-cup-bracket";
 import type { ChallengeCupResult } from "@/lib/game/challenge-cup-simulation";
 import {
+  playCupFinalLoss,
+  playCupFinalWin,
   playMatchBigWin,
   playMatchDefeat,
   playMatchNarrowWin,
   playMatchUpsetVictory,
-  playSeasonComplete,
 } from "@/lib/sound";
 import { getReadableTextColor } from "@/lib/ui/contrast";
 import { UI_SURFACES } from "@/lib/ui/surfaces";
@@ -75,8 +76,11 @@ export function ChallengeCupBracket({
 
       setState(next);
       if (next.tournamentComplete) {
-        playSeasonComplete();
-        onComplete(buildChallengeCupResult(next, squad));
+        const cupResult = buildChallengeCupResult(next, squad);
+        if (cupResult.isWinner) playCupFinalWin();
+        else if (cupResult.finish === "Runners-Up") playCupFinalLoss();
+        else playMatchDefeat();
+        onComplete(cupResult);
       }
     },
     [state, squad, onComplete]
@@ -86,16 +90,22 @@ export function ChallengeCupBracket({
     const next = simulateBracketRound(state, activeRound, squad);
     setState(next);
     if (next.tournamentComplete) {
-      playSeasonComplete();
-      onComplete(buildChallengeCupResult(next, squad));
+      const cupResult = buildChallengeCupResult(next, squad);
+      if (cupResult.isWinner) playCupFinalWin();
+      else if (cupResult.finish === "Runners-Up") playCupFinalLoss();
+      else playMatchDefeat();
+      onComplete(cupResult);
     }
   }, [state, activeRound, squad, onComplete]);
 
   const handleSimulateTournament = useCallback(() => {
     const next = simulateBracketTournament(state, squad);
     setState(next);
-    playSeasonComplete();
-    onComplete(buildChallengeCupResult(next, squad));
+    const cupResult = buildChallengeCupResult(next, squad);
+    if (cupResult.isWinner) playCupFinalWin();
+    else if (cupResult.finish === "Runners-Up") playCupFinalLoss();
+    else playMatchDefeat();
+    onComplete(cupResult);
   }, [state, squad, onComplete]);
 
   const canSimRound = useMemo(

@@ -4,7 +4,12 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import type { Player } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
-import { playHistoricPlayerAppears, playLegendAppears } from "@/lib/sound";
+import {
+  playGoatAppears,
+  playHistoricPlayerAppears,
+  playLegendAppears,
+} from "@/lib/sound";
+import { isGoatPlayer } from "@/lib/players/goat";
 import { DRAFT_MODE_RULE } from "@/lib/mode-labels";
 import { RL_SECTION_TITLE_CLASS } from "./cards/rl-card";
 import { PlayerCard } from "./PlayerCard";
@@ -44,9 +49,14 @@ export function PlayerChoice({
 
   useEffect(() => {
     if (appearSoundPlayed.current) return;
-    const hasLegend = [playerA, playerB].some((p) => p.category === "legend");
-    const hasHistoric = [playerA, playerB].some((p) => p.category === "historic");
-    if (hasLegend) {
+    const players = [playerA, playerB];
+    const hasGoat = players.some((p) => isGoatPlayer(p));
+    const hasLegend = players.some((p) => p.category === "legend");
+    const hasHistoric = players.some((p) => p.category === "historic");
+    if (hasGoat) {
+      playGoatAppears();
+      appearSoundPlayed.current = true;
+    } else if (hasLegend) {
       playLegendAppears();
       appearSoundPlayed.current = true;
     } else if (hasHistoric) {

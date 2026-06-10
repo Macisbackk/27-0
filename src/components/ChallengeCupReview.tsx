@@ -25,7 +25,7 @@ import { generateSeasonAwards } from "@/lib/season-awards";
 import { getTeamComparisonSummary } from "@/lib/team-value-comparison";
 import { formatValue } from "@/lib/players";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
-import { playGradeSound } from "@/lib/sound";
+import { playGradeSound, playPanelExpand } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { FixtureResultRow } from "./FixtureResultRow";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
@@ -131,8 +131,13 @@ export function ChallengeCupReview({
     }
   }, [selectedFixture]);
 
+  const gradeSoundPlayed = useRef(false);
   useEffect(() => {
-    playGradeSound(cupResult.isWinner ? "S+" : cupResult.finish === "Runners-Up" ? "A" : "C");
+    if (gradeSoundPlayed.current) return;
+    gradeSoundPlayed.current = true;
+    playGradeSound(
+      cupResult.isWinner ? "S+" : cupResult.finish === "Runners-Up" ? "A" : "C"
+    );
   }, [cupResult.isWinner, cupResult.finish]);
 
   const handlePlayAgain = () => {
@@ -308,9 +313,10 @@ export function ChallengeCupReview({
                     fixture={displayFixture}
                     showRound={false}
                     userTeamName={userTeamName}
-                    onClick={() =>
-                      setSelectedFixture(isSelected ? null : fixture)
-                    }
+                    onClick={() => {
+                      if (!isSelected) playPanelExpand();
+                      setSelectedFixture(isSelected ? null : fixture);
+                    }}
                     selected={isSelected}
                   />
                   <AnimatePresence initial={false}>

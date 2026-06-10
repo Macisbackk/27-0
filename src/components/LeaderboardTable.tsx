@@ -14,6 +14,7 @@ import {
   getTrackerLeaderboardAsync,
   type LeaderboardDbMode,
 } from "@/lib/storage/leaderboard";
+import { playUiClick } from "@/lib/sound";
 import { HardModeBadge } from "./HardModeBadge";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
@@ -55,6 +56,7 @@ export function LeaderboardTable({
     : getDefaultTrackerForDbMode(leaderboardMode);
 
   const handleModeChange = (mode: LeaderboardDbMode) => {
+    if (mode !== leaderboardMode) playUiClick();
     setLeaderboardMode(mode);
     setTracker(getDefaultTrackerForDbMode(mode));
     if (mode === "challenge-cup") {
@@ -149,7 +151,10 @@ export function LeaderboardTable({
               <button
                 key={t.id}
                 type="button"
-                onClick={() => setTracker(t.id)}
+                onClick={() => {
+                  if (activeTracker !== t.id) playUiClick();
+                  setTracker(t.id);
+                }}
                 className={`shrink-0 border-b-2 px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wider transition sm:px-4 sm:text-xs ${
                   selected
                     ? "border-accent-green text-accent-green"
@@ -167,7 +172,10 @@ export function LeaderboardTable({
         <div className="mb-5 flex flex-wrap gap-3">
           <button
             type="button"
-            onClick={() => setDifficulty("NORMAL")}
+            onClick={() => {
+              if (difficulty !== "NORMAL") playUiClick();
+              setDifficulty("NORMAL");
+            }}
             className={`rounded-xl border-2 px-5 py-3 font-display text-xs font-bold uppercase tracking-wider transition sm:text-sm ${
               difficulty === "NORMAL"
                 ? "border-accent-green/60 bg-accent-green/10 text-accent-green"
@@ -178,7 +186,10 @@ export function LeaderboardTable({
           </button>
           <button
             type="button"
-            onClick={() => setDifficulty("HARD")}
+            onClick={() => {
+              if (difficulty !== "HARD") playUiClick();
+              setDifficulty("HARD");
+            }}
             className={`rounded-xl border-2 px-5 py-3 font-display text-xs font-bold uppercase tracking-wider transition sm:text-sm ${
               difficulty === "HARD"
                 ? "border-red-500/60 bg-red-600/15 text-red-300 shadow-[0_0_20px_rgba(220,38,38,0.15)]"
@@ -201,7 +212,10 @@ export function LeaderboardTable({
           <button
             key={p}
             type="button"
-            onClick={() => setPeriod(p)}
+            onClick={() => {
+              if (period !== p) playUiClick();
+              setPeriod(p);
+            }}
             className={`rounded-full px-3 py-1.5 text-xs font-medium transition ${
               period === p
                 ? "bg-pitch-700 text-white"

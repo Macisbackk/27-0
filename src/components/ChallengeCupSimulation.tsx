@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  playCupFinalLoss,
+  playCupFinalWin,
   playMatchBigWin,
   playMatchDefeat,
   playMatchNarrowWin,
   playMatchUpsetVictory,
-  playSeasonComplete,
   playSeasonStart,
 } from "@/lib/sound";
 import type { ChallengeCupResult } from "@/lib/game/challenge-cup-simulation";
@@ -46,7 +47,9 @@ export function ChallengeCupSimulation({
       setPhase("complete");
       if (!completeSoundPlayed.current) {
         completeSoundPlayed.current = true;
-        playSeasonComplete();
+        if (result.isWinner) playCupFinalWin();
+        else if (result.finish === "Runners-Up") playCupFinalLoss();
+        else playMatchDefeat();
       }
       const timer = setTimeout(onComplete, 2800);
       return () => clearTimeout(timer);

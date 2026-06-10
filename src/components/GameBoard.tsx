@@ -45,8 +45,14 @@ import { getAverageSquadRating } from "@/lib/squad-analysis";
 import { addHallOfFameEntry } from "@/lib/storage/hall-of-fame";
 import {
   playJoeMellorActivate,
+  playModeChallengeCupStart,
+  playModeClassicStart,
+  playModeDraftStart,
   playPlayerSelect,
   playPositionComplete,
+  playPositionSelect,
+  playRevealChoices,
+  playReroll,
   playSeasonStart,
 } from "@/lib/sound";
 import { PlayerChoice } from "./PlayerChoice";
@@ -123,7 +129,8 @@ export function GameBoard({
     number | null
   >(null);
   const recordedRef = useRef(false);
-  const joeMellorSoundPlayed = useRef(false);
+  const modeSoundPlayed = useRef(false);
+  const revealSoundKey = useRef<string | null>(null);
 
   const isHardMode = difficulty === "HARD";
   const recruitmentOptions = useMemo(
@@ -176,11 +183,18 @@ export function GameBoard({
   ]);
 
   useEffect(() => {
-    if (joeMellorMode && !joeMellorSoundPlayed.current) {
-      joeMellorSoundPlayed.current = true;
+    if (modeSoundPlayed.current) return;
+    modeSoundPlayed.current = true;
+    if (joeMellorMode) {
       playJoeMellorActivate();
+    } else if (isChallengeCup) {
+      playModeChallengeCupStart();
+    } else if (isDraftMode) {
+      playModeDraftStart(difficulty);
+    } else {
+      playModeClassicStart(difficulty);
     }
-  }, [joeMellorMode]);
+  }, [joeMellorMode, isChallengeCup, isDraftMode, difficulty]);
 
   const activeOfferKey = isDraftMode ? draftPickIndex : selectedSlotIndex;
 
@@ -192,6 +206,14 @@ export function GameBoard({
           ? getOfferForSlot(slotOffers, selectedSlotIndex)
           : null
       : null;
+
+  useEffect(() => {
+    if (phase !== "choice") return;
+    const key = `${activeOfferKey ?? "x"}-${seed}`;
+    if (revealSoundKey.current === key) return;
+    revealSoundKey.current = key;
+    playRevealChoices();
+  }, [phase, activeOfferKey, seed]);
 
   useEffect(() => {
     if (!isDraftMode || phase !== "pitch") return;
@@ -359,6 +381,7 @@ export function GameBoard({
       if (joeMellorMode && slotIndex === LOOSE_FORWARD_SLOT_INDEX) return;
       const slot = squad.find((s) => s.slotIndex === slotIndex);
       if (!slot || slot.player) return;
+      playPositionSelect();
       setSelectedSlotIndex(slotIndex);
       setPhase("choice");
     },
@@ -459,6 +482,7 @@ export function GameBoard({
       });
       setDiscardedPlayerIds(discarded);
       setRerollsRemaining((n) => n - 1);
+      playReroll();
       setRerollsThisRun((count) => {
         const next = count + 1;
         rerollsThisRunRef.current = next;

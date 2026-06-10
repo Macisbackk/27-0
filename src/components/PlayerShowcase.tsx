@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { getShowcasePlayers, formatValue } from "@/lib/players";
 import type { PlayerCategory, Position } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
@@ -24,6 +24,7 @@ import {
   RL_INFO_BOX_CLASS,
   RL_SECTION_TITLE_CLASS,
 } from "./cards/rl-card";
+import { playUiClick } from "@/lib/sound";
 import { TYPO } from "@/lib/ui/typography";
 
 const ALL_PLAYERS = getShowcasePlayers();
@@ -57,6 +58,14 @@ export function PlayerShowcase() {
     return sortShowcasePlayers(result, sortKey, sortDir);
   }, [filters, sortKey, sortDir]);
 
+  const updateFilters = useCallback(
+    (updater: (f: ShowcaseFilters) => ShowcaseFilters) => {
+      playUiClick();
+      setFilters(updater);
+    },
+    []
+  );
+
   const activeFilters = useMemo(() => {
     const chips: { key: string; label: string; clear: () => void }[] = [];
 
@@ -64,49 +73,49 @@ export function PlayerShowcase() {
       chips.push({
         key: "search",
         label: `Search: "${filters.search.trim()}"`,
-        clear: () => setFilters((f) => ({ ...f, search: "" })),
+        clear: () => updateFilters((f) => ({ ...f, search: "" })),
       });
     }
     if (filters.status !== "all") {
       chips.push({
         key: "status",
         label: `Type: ${filters.status}`,
-        clear: () => setFilters((f) => ({ ...f, status: "all" })),
+        clear: () => updateFilters((f) => ({ ...f, status: "all" })),
       });
     }
     if (filters.position !== "all") {
       chips.push({
         key: "position",
         label: `Position: ${POSITION_LABELS[filters.position]}`,
-        clear: () => setFilters((f) => ({ ...f, position: "all" })),
+        clear: () => updateFilters((f) => ({ ...f, position: "all" })),
       });
     }
     if (filters.club !== "all") {
       chips.push({
         key: "club",
         label: `Team: ${filters.club}`,
-        clear: () => setFilters((f) => ({ ...f, club: "all" })),
+        clear: () => updateFilters((f) => ({ ...f, club: "all" })),
       });
     }
     if (filters.ratingMin !== "all") {
       chips.push({
         key: "rating",
         label: `Rating: ${filters.ratingMin}+`,
-        clear: () => setFilters((f) => ({ ...f, ratingMin: "all" })),
+        clear: () => updateFilters((f) => ({ ...f, ratingMin: "all" })),
       });
     }
     if (filters.tier !== "all") {
       chips.push({
         key: "tier",
         label: `Tier: ${TIER_FILTER_LABELS[filters.tier]}`,
-        clear: () => setFilters((f) => ({ ...f, tier: "all" })),
+        clear: () => updateFilters((f) => ({ ...f, tier: "all" })),
       });
     }
     if (filters.yearsActive.trim()) {
       chips.push({
         key: "years",
         label: `Years: ${filters.yearsActive.trim()}`,
-        clear: () => setFilters((f) => ({ ...f, yearsActive: "" })),
+        clear: () => updateFilters((f) => ({ ...f, yearsActive: "" })),
       });
     }
     if (sortKey === "name") {
@@ -114,6 +123,7 @@ export function PlayerShowcase() {
         key: "alpha",
         label: `A–Z: ${sortDir === "asc" ? "A→Z" : "Z→A"}`,
         clear: () => {
+          playUiClick();
           setSortKey("rating");
           setSortDir("desc");
         },
@@ -121,15 +131,17 @@ export function PlayerShowcase() {
     }
 
     return chips;
-  }, [filters, sortKey, sortDir]);
+  }, [filters, sortKey, sortDir, updateFilters]);
 
   const resetFilters = () => {
+    playUiClick();
     setFilters(DEFAULT_FILTERS);
     setSortKey("rating");
     setSortDir("desc");
   };
 
   const setAlphaSort = (dir: "asc" | "desc") => {
+    playUiClick();
     setSortKey("name");
     setSortDir(dir);
   };
@@ -206,7 +218,7 @@ export function PlayerShowcase() {
             <select
               value={filters.club}
               onChange={(e) =>
-                setFilters((f) => ({ ...f, club: e.target.value }))
+                updateFilters((f) => ({ ...f, club: e.target.value }))
               }
               className={RL_FILTER_INPUT_CLASS}
             >
@@ -223,7 +235,7 @@ export function PlayerShowcase() {
             <select
               value={filters.position}
               onChange={(e) =>
-                setFilters((f) => ({
+                updateFilters((f) => ({
                   ...f,
                   position: e.target.value as Position | "all",
                 }))
@@ -243,7 +255,7 @@ export function PlayerShowcase() {
             <select
               value={filters.status}
               onChange={(e) =>
-                setFilters((f) => ({
+                updateFilters((f) => ({
                   ...f,
                   status: e.target.value as PlayerCategory | "all",
                 }))
@@ -288,7 +300,7 @@ export function PlayerShowcase() {
             <select
               value={filters.ratingMin}
               onChange={(e) =>
-                setFilters((f) => ({
+                updateFilters((f) => ({
                   ...f,
                   ratingMin: e.target.value as RatingFilter,
                 }))
@@ -307,7 +319,7 @@ export function PlayerShowcase() {
             <div className="flex flex-wrap gap-1.5">
               <TierChip
                 active={filters.tier === "all"}
-                onClick={() => setFilters((f) => ({ ...f, tier: "all" }))}
+                onClick={() => updateFilters((f) => ({ ...f, tier: "all" }))}
               >
                 All
               </TierChip>
@@ -315,7 +327,7 @@ export function PlayerShowcase() {
                 <TierChip
                   key={key}
                   active={filters.tier === key}
-                  onClick={() => setFilters((f) => ({ ...f, tier: key }))}
+                  onClick={() => updateFilters((f) => ({ ...f, tier: key }))}
                 >
                   {label}
                 </TierChip>
@@ -349,6 +361,7 @@ export function PlayerShowcase() {
                   key={key}
                   type="button"
                   onClick={() => {
+                    playUiClick();
                     setSortKey(key);
                     setSortDir("desc");
                   }}

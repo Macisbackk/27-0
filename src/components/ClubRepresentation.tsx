@@ -9,6 +9,7 @@ import type {
 import { getClubColors } from "@/lib/clubs";
 import { RLClubRow } from "./cards/RLClubRow";
 import { RLTag } from "./cards/rl-card";
+import { playPanelExpand } from "@/lib/sound";
 import { formatValue } from "@/lib/players";
 import type { Position } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
@@ -61,7 +62,10 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
   const [expandedClub, setExpandedClub] = useState<string | null>(null);
 
   const toggleClub = (club: string) => {
-    setExpandedClub((prev) => (prev === club ? null : club));
+    setExpandedClub((prev) => {
+      if (prev !== club) playPanelExpand();
+      return prev === club ? null : club;
+    });
   };
 
   return (

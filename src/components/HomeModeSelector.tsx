@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import type { GameDifficulty } from "@/lib/types";
+import { playUiClick } from "@/lib/sound";
 import { GuestNotice } from "./GuestNotice";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -85,6 +86,7 @@ export function HomeModeSelector() {
 
           <Link
             href={classicHref}
+            onClick={() => playUiClick()}
             className="mt-5 inline-flex w-full items-center justify-center rounded-xl border border-accent-green/40 bg-accent-green/10 px-4 py-3 text-sm font-semibold text-accent-green transition hover:bg-accent-green/20 sm:w-auto"
           >
             {classicAction} →
@@ -132,6 +134,7 @@ export function HomeModeSelector() {
 
           <Link
             href={draftHref}
+            onClick={() => playUiClick()}
             className="mt-5 inline-flex w-full items-center justify-center rounded-xl border border-accent-green/40 bg-accent-green/10 px-4 py-3 text-sm font-semibold text-accent-green transition hover:bg-accent-green/20 sm:w-auto"
           >
             Start Draft →
@@ -140,6 +143,7 @@ export function HomeModeSelector() {
 
         <Link
           href="/play?cup=1"
+          onClick={() => playUiClick()}
           className="card-glass matchday-panel group block w-full p-6 transition hover:border-accent-gold/30 sm:p-7"
         >
           <h2 className="font-display text-xl font-bold group-hover:text-accent-gold sm:text-2xl">

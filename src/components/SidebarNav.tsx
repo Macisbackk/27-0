@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getDifficulty } from "@/lib/storage/preferences";
-import { isSoundMuted, toggleSoundMuted } from "@/lib/sound";
+import { isSoundMuted, playMenuClose, toggleSoundMuted } from "@/lib/sound";
 import { TYPO } from "@/lib/ui/typography";
 
 interface SidebarNavProps {
@@ -67,7 +67,10 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={() => {
+              playMenuClose();
+              onClose();
+            }}
           />
           <motion.aside
             className="sidebar-panel fixed inset-y-0 left-0 z-[70] flex w-[min(300px,85vw)] flex-col shadow-2xl"
@@ -85,7 +88,10 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
               </div>
               <button
                 type="button"
-                onClick={onClose}
+                onClick={() => {
+                  playMenuClose();
+                  onClose();
+                }}
                 className="rounded-lg border border-pitch-600 px-2.5 py-1 text-xs text-gray-400 transition hover:text-white"
               >
                 Close
@@ -155,7 +161,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 >
                   <span>Sound Effects</span>
                   <span className="font-medium text-white">
-                    {muted ? "Muted" : "On"}
+                    {muted ? "Sound Off" : "Sound On"}
                   </span>
                 </button>
               </div>

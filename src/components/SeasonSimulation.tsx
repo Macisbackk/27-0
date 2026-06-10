@@ -6,7 +6,9 @@ import {
   playMatchDefeat,
   playMatchNarrowWin,
   playMatchUpsetVictory,
+  playPerfectSeason,
   playSeasonComplete,
+  playWinlessSeason,
 } from "@/lib/sound";
 import { motion, AnimatePresence } from "framer-motion";
 import type { SeasonResult } from "@/lib/game/season-simulation";
@@ -36,7 +38,9 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
       setPhase("complete");
       if (!seasonCompleteSoundPlayed.current) {
         seasonCompleteSoundPlayed.current = true;
-        playSeasonComplete();
+        if (result.isPerfect) playPerfectSeason();
+        else if (result.wins === 0) playWinlessSeason();
+        else playSeasonComplete();
       }
       const timer = setTimeout(onComplete, 2800);
       return () => clearTimeout(timer);

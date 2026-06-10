@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { HeaderAuthControls } from "./HeaderAuthControls";
 import { SidebarNav } from "./SidebarNav";
+import { SoundToggle } from "./SoundToggle";
+import { playMenuOpen } from "@/lib/sound";
 
 const HEADER_BTN =
   "header-control-btn flex h-9 min-w-[5.5rem] items-center justify-center gap-1.5 rounded-lg border border-pitch-600 px-3 text-xs font-medium text-gray-300 transition hover:border-accent-green hover:text-white";
@@ -17,7 +19,10 @@ export function Header() {
         <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-2 px-4 py-3 sm:gap-3">
           <button
             type="button"
-            onClick={() => setMenuOpen(true)}
+            onClick={() => {
+              playMenuOpen();
+              setMenuOpen(true);
+            }}
             className={`${HEADER_BTN} shrink-0 justify-self-start`}
             aria-label="Open menu"
           >
@@ -38,7 +43,8 @@ export function Header() {
             </span>
           </Link>
 
-          <div className="shrink-0 justify-self-end">
+          <div className="flex shrink-0 items-center justify-end gap-2 justify-self-end">
+            <SoundToggle />
             <HeaderAuthControls />
           </div>
         </div>
