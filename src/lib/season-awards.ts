@@ -4,6 +4,12 @@ import type { PlayerTryTotal } from "./game/season-tries";
 import { getPlayerTryWeight } from "./game/try-weights";
 import { isGoatPlayer, JOE_MELLOR_GOAT_ID } from "./players/goat";
 import { getEffectivePeakRating } from "./squad-analysis";
+import {
+  findSlotByPlayerId,
+  formatPlayerLineExtras,
+  getSlotDisplayInfo,
+} from "./squad-display";
+import { POSITION_LABELS } from "./positions";
 
 export interface SeasonAward {
   title: string;
@@ -12,6 +18,8 @@ export interface SeasonAward {
   detail: string;
   narrative?: string;
   rankedLines?: string[];
+  positionNote?: string;
+  ratingNote?: string;
   variant?: "positive" | "negative" | "neutral";
 }
 
@@ -20,7 +28,11 @@ interface PlayerPerformance {
   name: string;
   club: string;
   position: Player["position"];
+  playedPosition: Player["position"];
+  positionNote: string | null;
   peakRating: number;
+  originalRating: number;
+  ratingNote: string | null;
   slotLabel: string;
   tries: number;
   expectedTries: number;
@@ -83,12 +95,18 @@ function buildPerformances(
       impactScore += 500 + tries * 8;
     }
 
+    const display = getSlotDisplayInfo(slot);
+
     return {
       playerId: player.id,
       name: player.name,
       club: player.club,
       position: player.position,
+      playedPosition: slot.position,
+      positionNote: display?.positionCompact ?? null,
       peakRating: effectiveRating,
+      originalRating: player.peakRating,
+      ratingNote: display?.ratingAdjusted ? display.ratingCompact : null,
       slotLabel: slot.label,
       tries,
       expectedTries,
@@ -162,7 +180,15 @@ export function generateSeasonAwards(
   const topThree = seasonResult.tryScorers.slice(0, 3);
   const rankedLines = topThree.map((scorer, index) => {
     const rank = index === 0 ? "1st" : index === 1 ? "2nd" : "3rd";
-    return `${rank} — ${scorer.name} — ${scorer.tries} Tries`;
+    const slot = findSlotByPlayerId(squad, scorer.playerId);
+    const extras = formatPlayerLineExtras(slot);
+    const pos =
+      scorer.playedPosition && scorer.playedPosition !== scorer.position
+        ? ` · ${POSITION_LABELS[scorer.position]} → ${POSITION_LABELS[scorer.playedPosition]}`
+        : extras.positionNote
+          ? ` · ${extras.positionNote}`
+          : "";
+    return `${rank} — ${scorer.name} — ${scorer.tries} Tries${pos}`;
   });
 
   return [
@@ -171,6 +197,8 @@ export function generateSeasonAwards(
       playerName: playerOfSeason.name,
       club: playerOfSeason.club,
       detail: `${playerOfSeason.tries} tries · Impact ${playerOfSeason.impactScore}`,
+      positionNote: playerOfSeason.positionNote ?? undefined,
+      ratingNote: playerOfSeason.ratingNote ?? undefined,
       narrative: getPotyNarrative(playerOfSeason, seasonResult),
       variant: "positive",
     },
@@ -179,6 +207,8 @@ export function generateSeasonAwards(
       playerName: worstPlayer.name,
       club: worstPlayer.club,
       detail: `${worstPlayer.tries} tries · Impact ${worstPlayer.impactScore}`,
+      positionNote: worstPlayer.positionNote ?? undefined,
+      ratingNote: worstPlayer.ratingNote ?? undefined,
       narrative: getWorstNarrative(worstPlayer),
       variant: "negative",
     },

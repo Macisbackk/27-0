@@ -39,6 +39,7 @@ import { BracketRecap } from "./BracketRecap";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import { TeamComparisonBox } from "./TeamComparisonBox";
 import { TryScorersPanel } from "./TryScorersPanel";
+import { SquadSummaryPanel } from "./SquadSummaryPanel";
 
 interface ChallengeCupReviewProps {
   squad: SquadSlot[];
@@ -264,6 +265,8 @@ export function ChallengeCupReview({
                   playerName={award.playerName}
                   club={award.club}
                   detail={award.detail}
+                  positionNote={award.positionNote}
+                  ratingNote={award.ratingNote}
                   narrative={award.narrative}
                   rankedLines={award.rankedLines}
                 />
@@ -338,6 +341,10 @@ export function ChallengeCupReview({
             />
           </ReviewSection>
         )}
+
+        <ReviewSection title="Squad Summary" delay={0.5}>
+          <SquadSummaryPanel squad={squad} revealRatings />
+        </ReviewSection>
 
         <ReviewSection title="Club Representation" delay={0.55}>
           <ClubRepresentation summary={clubSummary} />

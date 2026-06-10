@@ -4,6 +4,16 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { PlayerTryTotal } from "@/lib/game/season-tries";
 import { POSITION_LABELS } from "@/lib/positions";
+
+function formatScorerPosition(scorer: PlayerTryTotal): string {
+  if (
+    scorer.playedPosition &&
+    scorer.playedPosition !== scorer.position
+  ) {
+    return `${POSITION_LABELS[scorer.position]} → ${POSITION_LABELS[scorer.playedPosition]}`;
+  }
+  return POSITION_LABELS[scorer.position];
+}
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
 
 interface TryScorersPanelProps {
@@ -62,7 +72,7 @@ export function TryScorersPanel({
                         {scorer.name}
                       </td>
                       <td className="py-2 pr-3 text-gray-400">
-                        {POSITION_LABELS[scorer.position]}
+                        {formatScorerPosition(scorer)}
                       </td>
                       <td className="py-2 pr-3 text-gray-400">{scorer.club}</td>
                       <td className="py-2 text-right font-display font-bold text-accent-gold">

@@ -9,8 +9,13 @@ import {
   type TeamScoringDetail,
 } from "@/lib/game/season-simulation";
 import { getOpponentTeamSummary } from "@/lib/game/opponent-scorers";
-import { formatValue, getValueTier } from "@/lib/players";
+import { formatValue } from "@/lib/players";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
+import { getTeamTier, formatTeamRatingDisplay } from "@/lib/team-tiers";
+import {
+  findSlotByPlayerId,
+  formatPlayerLineExtras,
+} from "@/lib/squad-display";
 import { getSquadValue } from "@/lib/positions";
 import type { SquadSlot } from "@/lib/types";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
@@ -37,7 +42,7 @@ export function MatchDetailsPanel({
   const detail = fixture.scoringDetail;
   const userValue = userSquad ? getSquadValue(userSquad) : 0;
   const userAvgRating = userSquad ? getAverageSquadRating(userSquad) : 0;
-  const userTier = getValueTier(userValue);
+  const userTier = getTeamTier(userAvgRating);
   const opponentSummary = getOpponentTeamSummary(
     fixture.opponent,
     seed,
@@ -80,6 +85,7 @@ export function MatchDetailsPanel({
               averageRating={userAvgRating}
               tier={userTier}
               finalScore={fixture.pointsFor}
+              userSquad={userSquad}
             />
             <TeamScoringBlock
               teamName={fixture.opponent}
@@ -88,6 +94,7 @@ export function MatchDetailsPanel({
               averageRating={opponentSummary.averageRating}
               tier={opponentSummary.tier}
               finalScore={fixture.pointsAgainst}
+              oppositionLabel
             />
           </div>
         ) : (
@@ -105,6 +112,8 @@ function TeamScoringBlock({
   averageRating,
   tier,
   finalScore,
+  userSquad,
+  oppositionLabel,
 }: {
   teamName: string;
   scoring: TeamScoringDetail;
@@ -112,6 +121,8 @@ function TeamScoringBlock({
   averageRating: number;
   tier: string;
   finalScore: number;
+  userSquad?: SquadSlot[];
+  oppositionLabel?: boolean;
 }) {
   const hasTries = scoring.tryScorers.length > 0;
   const kicking = scoring.kicking;
@@ -122,25 +133,48 @@ function TeamScoringBlock({
   return (
     <div className="space-y-2">
       <ClubTeamLabel club={teamName} />
+      {oppositionLabel && (
+        <p className="text-xs text-gray-400">
+          Opposition: {teamName} — {formatTeamRatingDisplay(averageRating)}
+        </p>
+      )}
       <div className={`${RL_INFO_BOX_CLASS} grid gap-1 p-3 text-xs sm:grid-cols-2`}>
         <TeamStat label="Squad Value" value={formatValue(totalValue)} />
         <TeamStat label="Team Tier" value={tier} />
-        <TeamStat label="Avg Rating" value={`${averageRating} OVR`} />
+        <TeamStat
+          label="Avg Rating"
+          value={`${formatTeamRatingDisplay(averageRating)}`}
+        />
         <TeamStat label="Final Score" value={String(finalScore)} highlight />
       </div>
       {hasTries && (
         <ScoringSection title="Tries">
           <ul className="space-y-1">
-            {scoring.tryScorers.flatMap((s) =>
-              Array.from({ length: s.tries }, (_, i) => (
+            {scoring.tryScorers.flatMap((s) => {
+              const slot = userSquad
+                ? findSlotByPlayerId(userSquad, s.playerId)
+                : undefined;
+              const extras = formatPlayerLineExtras(slot);
+              const suffix = [
+                extras.positionNote,
+                extras.ratingNote,
+              ]
+                .filter(Boolean)
+                .join(" · ");
+              return Array.from({ length: s.tries }, (_, i) => (
                 <li
                   key={`${s.playerId}-${i}`}
                   className="text-sm font-medium text-white"
                 >
                   {s.name}
+                  {suffix && (
+                    <span className="mt-0.5 block text-xs font-normal text-gray-400">
+                      {suffix}
+                    </span>
+                  )}
                 </li>
-              ))
-            )}
+              ));
+            })}
           </ul>
         </ScoringSection>
       )}

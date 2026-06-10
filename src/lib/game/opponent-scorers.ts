@@ -1,5 +1,6 @@
 import seedrandom from "seedrandom";
-import { getPlayersByClub, getValueTier } from "../players";
+import { getPlayersByClub } from "../players";
+import { getTeamTier } from "../team-tiers";
 import type { Player, Position } from "../types";
 import type {
   FixtureKicking,
@@ -133,7 +134,7 @@ export function getOpponentTeamSummary(
     name: club,
     totalValue,
     averageRating,
-    tier: getValueTier(totalValue),
+    tier: getTeamTier(averageRating),
   };
 }
 

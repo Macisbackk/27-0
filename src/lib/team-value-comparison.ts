@@ -3,6 +3,7 @@ import {
   getOpponentSquadValue,
   getOpponentTeamSummary,
 } from "./game/opponent-scorers";
+import { getTeamTier } from "./team-tiers";
 
 export interface TeamValueEntry {
   name: string;
@@ -12,10 +13,12 @@ export interface TeamValueEntry {
 export interface TeamRatingEntry {
   name: string;
   rating: number;
+  tier: string;
 }
 
 export interface TeamComparisonSummary {
   myTeamRating: number;
+  myTeamTier: string;
   myTeamValue: number;
   bestRatedTeam: TeamRatingEntry;
   mostExpensiveTeam: TeamValueEntry;
@@ -66,9 +69,15 @@ export function getBestRatedTeam(
     teams.set(fixture.opponent, Math.max(prev, opp.averageRating));
   }
 
-  let best: TeamRatingEntry = { name: userTeamName, rating: userRating };
+  let best: TeamRatingEntry = {
+    name: userTeamName,
+    rating: userRating,
+    tier: getTeamTier(userRating),
+  };
   for (const [name, rating] of teams) {
-    if (rating > best.rating) best = { name, rating };
+    if (rating > best.rating) {
+      best = { name, rating, tier: getTeamTier(rating) };
+    }
   }
   return best;
 }
@@ -82,6 +91,7 @@ export function getTeamComparisonSummary(
 ): TeamComparisonSummary {
   return {
     myTeamRating: userRating,
+    myTeamTier: getTeamTier(userRating),
     myTeamValue: userValue,
     bestRatedTeam: getBestRatedTeam(
       userTeamName,

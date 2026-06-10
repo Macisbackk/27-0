@@ -6,6 +6,7 @@ import { normalizePlayer } from "./normalize";
 import { isHiddenPlayer } from "./goat";
 import { getValueTier as getValueTierFromRating } from "./ratings";
 import { getActiveSuperLeagueClubNames } from "../clubs/super-league-display";
+import { normalizePlayerNameKey } from "../player-name-normalize";
 
 function loadPlayers(): {
   all: Player[];
@@ -35,12 +36,7 @@ function loadPlayers(): {
       byId.set(p.id, p);
       continue;
     }
-    const nameKey = p.name
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9\s]/g, "")
-      .trim();
+    const nameKey = normalizePlayerNameKey(p.name);
     const existing = byName.get(nameKey);
     if (
       !existing ||

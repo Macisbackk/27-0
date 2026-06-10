@@ -1938,23 +1938,6 @@
     "rating": 78
   },
   {
-    "id": "leigh-hist-mickey-higham",
-    "name": "Mickey Higham",
-    "position": "Hooker",
-    "club": "Leigh Leopards",
-    "nationality": "England",
-    "era": "MODERN_ERA",
-    "yearsActive": "2001–2019",
-    "category": "historic",
-    "peakRating": 90,
-    "value": 250000,
-    "appearances": 482,
-    "tries": 49,
-    "intlCaps": 2,
-    "clubLegend": false,
-    "rating": 90
-  },
-  {
     "id": "leigh-hist-martyn-ridyard",
     "name": "Martyn Ridyard",
     "position": "Scrum-half",
@@ -19757,5 +19740,22 @@
     "tries": 79,
     "intlCaps": 0,
     "clubLegend": true
+  },
+  {
+    "id": "warrington-hist-mickey-higham",
+    "name": "Mickey Higham",
+    "position": "Hooker",
+    "club": "Warrington Wolves",
+    "nationality": "England",
+    "era": "MODERN_ERA",
+    "yearsActive": "2001–2019",
+    "category": "historic",
+    "peakRating": 90,
+    "value": 250000,
+    "appearances": 482,
+    "tries": 49,
+    "intlCaps": 2,
+    "clubLegend": false,
+    "rating": 90
   }
 ]

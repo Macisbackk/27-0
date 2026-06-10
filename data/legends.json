@@ -1428,27 +1428,6 @@
     "rating": 92
   },
   {
-    "id": "wakefield-leg-mick-higham",
-    "name": "Mick Higham",
-    "position": "HOOKER",
-    "club": "Wakefield Trinity",
-    "nationality": "Unknown",
-    "era": "EARLY_DOMINANCE",
-    "yearsActive": "1998–2016",
-    "category": "legend",
-    "peakRating": 98,
-    "value": 4555000,
-    "rating": 98,
-    "intlCaps": 0,
-    "appearances": 350,
-    "tries": 81,
-    "hallOfFame": false,
-    "clubLegend": true,
-    "manOfSteel": false,
-    "challengeCupWinner": false,
-    "superLeagueWinner": false
-  },
-  {
     "id": "bradford-leg-robbie-hunter-paul",
     "name": "Robbie Hunter-Paul",
     "position": "SCRUM_HALF",

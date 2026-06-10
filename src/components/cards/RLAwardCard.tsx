@@ -28,6 +28,8 @@ interface RLAwardCardProps {
   playerName?: string;
   club?: string;
   detail?: string;
+  positionNote?: string;
+  ratingNote?: string;
   narrative?: string;
   rankedLines?: string[];
   className?: string;
@@ -40,6 +42,8 @@ export function RLAwardCard({
   playerName,
   club,
   detail,
+  positionNote,
+  ratingNote,
   narrative,
   rankedLines,
   className = "",
@@ -73,6 +77,14 @@ export function RLAwardCard({
           {playerName && (
             <p className="mt-1 font-display text-sm font-bold text-white">
               {playerName}
+            </p>
+          )}
+          {positionNote && (
+            <p className="mt-1 text-xs text-amber-300/90">{positionNote}</p>
+          )}
+          {ratingNote && (
+            <p className="mt-0.5 font-display text-xs font-bold text-accent-green">
+              {ratingNote}
             </p>
           )}
           {(club || detail) && (

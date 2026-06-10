@@ -9,7 +9,30 @@ import type {
 import { getClubColors } from "@/lib/clubs";
 import { RLClubRow } from "./cards/RLClubRow";
 import { formatValue } from "@/lib/players";
+import type { Position } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
+
+function formatPositionLine(player: {
+  positionMismatch: boolean;
+  naturalPosition: Position;
+  playedPosition: Position;
+}): string {
+  if (player.positionMismatch) {
+    return `${POSITION_LABELS[player.naturalPosition]} → ${POSITION_LABELS[player.playedPosition]}`;
+  }
+  return POSITION_LABELS[player.playedPosition];
+}
+
+function formatRatingLine(player: {
+  ratingAdjusted: boolean;
+  originalRating: number;
+  adjustedRating: number;
+}): string {
+  if (player.ratingAdjusted) {
+    return `${player.originalRating} → ${player.adjustedRating} OVR`;
+  }
+  return `${player.adjustedRating} OVR`;
+}
 
 interface ClubRepresentationProps {
   summary: ClubBreakdownSummary;
@@ -81,7 +104,7 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                                 {player.name}
                               </p>
                               <p className="mt-0.5 text-xs text-gray-400">
-                                {POSITION_LABELS[player.position]}
+                                {formatPositionLine(player)}
                               </p>
                             </div>
                             <span
@@ -92,7 +115,7 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                           </div>
                           <div className="mt-2 flex flex-wrap items-center gap-3 text-xs">
                             <span className="font-display font-bold text-accent-green">
-                              {player.peakRating} OVR
+                              {formatRatingLine(player)}
                             </span>
                             <span className="text-gray-500">·</span>
                             <span className="font-semibold text-accent-gold">

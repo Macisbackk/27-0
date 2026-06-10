@@ -2,6 +2,7 @@ import type { Player, PlayerCategory, Position, SquadSlot } from "./types";
 import { TOTAL_SLOTS } from "./positions";
 import { resolveDisplayClub } from "./clubs/super-league-display";
 import { JOE_MELLOR_GOAT_ID } from "./players/goat";
+import { getSlotDisplayInfo } from "./squad-display";
 
 export type ClubPlayerDisplayCategory = PlayerCategory | "goat";
 
@@ -12,10 +13,18 @@ export interface ClubBreakdownOptions {
 export interface ClubPlayerEntry {
   playerId: string;
   name: string;
+  /** Position played this run (slot position). */
   position: Position;
+  naturalPosition: Position;
+  playedPosition: Position;
+  positionMismatch: boolean;
   category: PlayerCategory;
   displayCategory: ClubPlayerDisplayCategory;
+  /** Effective OVR after run penalties. */
   peakRating: number;
+  originalRating: number;
+  adjustedRating: number;
+  ratingAdjusted: boolean;
   value: number;
 }
 
@@ -71,13 +80,20 @@ export function getClubBreakdown(
     };
     existing.count++;
     existing.totalValue += player.value;
+    const display = getSlotDisplayInfo(slot)!;
     existing.players.push({
       playerId: player.id,
       name: player.name,
-      position: player.position,
+      position: display.playedPosition,
+      naturalPosition: display.naturalPosition,
+      playedPosition: display.playedPosition,
+      positionMismatch: display.positionMismatch,
       category: player.category,
       displayCategory: getPlayerDisplayCategory(player, options?.joeMellorMode),
-      peakRating: getEffectivePeakRating(slot),
+      peakRating: display.adjustedRating,
+      originalRating: display.originalRating,
+      adjustedRating: display.adjustedRating,
+      ratingAdjusted: display.ratingAdjusted,
       value: player.value,
     });
     map.set(clubName, existing);

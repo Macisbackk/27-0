@@ -31,7 +31,10 @@ export interface PlayerTryTotal {
   playerId: string;
   name: string;
   club: string;
+  /** Natural/database position. */
   position: Position;
+  /** Slot position played this run (if different). */
+  playedPosition?: Position;
   tries: number;
 }
 
@@ -219,9 +222,7 @@ export function aggregateTryTotalsFromFixtures(
   squad: SquadSlot[],
   fixtures: MatchFixture[]
 ): PlayerTryTotal[] {
-  const entries = squad
-    .filter((s) => s.player)
-    .map((s) => s.player!);
+  const filledSlots = squad.filter((s) => s.player);
 
   const totals = new Map<string, number>();
 
@@ -232,14 +233,19 @@ export function aggregateTryTotalsFromFixtures(
     }
   }
 
-  return entries
-    .map((p) => ({
-      playerId: p.id,
-      name: p.name,
-      club: p.club,
-      position: p.position,
-      tries: totals.get(p.id) ?? 0,
-    }))
+  return filledSlots
+    .map((slot) => {
+      const p = slot.player!;
+      return {
+        playerId: p.id,
+        name: p.name,
+        club: p.club,
+        position: p.position,
+        playedPosition:
+          slot.position !== p.position ? slot.position : undefined,
+        tries: totals.get(p.id) ?? 0,
+      };
+    })
     .filter((t) => t.tries > 0)
     .sort((a, b) => b.tries - a.tries);
 }

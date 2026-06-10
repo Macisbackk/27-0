@@ -18,11 +18,11 @@ export function TeamComparisonBox({
   const rows = [
     {
       label: "My Team Rating",
-      value: summary.myTeamRating.toFixed(1),
+      value: `${summary.myTeamRating.toFixed(1)} — ${summary.myTeamTier}`,
     },
     {
       label: "Best Team Rating This Season",
-      value: `${summary.bestRatedTeam.name} — ${summary.bestRatedTeam.rating.toFixed(1)}`,
+      value: `${summary.bestRatedTeam.name} — ${summary.bestRatedTeam.rating.toFixed(1)} — ${summary.bestRatedTeam.tier}`,
     },
     {
       label: "Most Expensive Team",

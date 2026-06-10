@@ -4,6 +4,7 @@
  */
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { normalizePlayerNameKey } from "../src/lib/player-name-normalize";
 
 type RawPlayer = Record<string, unknown> & {
   id: string;
@@ -22,17 +23,7 @@ const FILES = [
 
 const HIDDEN_IDS = new Set(["jm-goat-joe-mellor"]);
 
-function normalizeName(name: string): string {
-  let key = name
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9\s]/g, "")
-    .trim()
-    .replace(/\s+/g, " ");
-  if (key.startsWith("gary ")) key = `garry ${key.slice(5)}`;
-  return key;
-}
+const normalizeName = normalizePlayerNameKey;
 
 function scorePlayer(p: RawPlayer, filePriority: number): number {
   const category = (p.category as string) ?? "current";
