@@ -156,7 +156,7 @@ export function isHistoricPlayer(player: Player): boolean {
   return player.category === "historic" || player.category === "legend";
 }
 
-export { isActivePlayer } from "./active";
+export { isActivePlayer, resolveCategory } from "./active";
 export { getPlayerAchievements } from "./achievements";
 export { formatCareerTries } from "./career-tries";
 

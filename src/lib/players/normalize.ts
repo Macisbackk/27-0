@@ -8,22 +8,24 @@ import { resolveYearsActive } from "./years-active";
 import { resolveIntlCaps } from "./intl-caps";
 import { resolveDisplayClub } from "../clubs/super-league-display";
 import { resolveCareerTries } from "./career-tries";
+import { resolveCategory } from "./active";
 
 export function normalizePlayer(raw: Record<string, unknown>): Player {
   const id = raw.id as string;
   const rawRating = (raw.peakRating ?? raw.rating) as number;
-  const category = raw.category as Player["category"];
-  let peakRating = compressPeakRating(rawRating, category);
-
-  if (RATING_OVERRIDES[id] !== undefined) {
-    peakRating = RATING_OVERRIDES[id];
-  }
+  const rawCategory = raw.category as Player["category"];
   const { position, originalPosition, mappedFromUtility } =
     resolvePosition(raw);
   const yearsActive = resolveYearsActive(
     id,
     (raw.yearsActive as string) ?? ""
   );
+  const category = resolveCategory(rawCategory, yearsActive);
+  let peakRating = compressPeakRating(rawRating, category);
+
+  if (RATING_OVERRIDES[id] !== undefined) {
+    peakRating = RATING_OVERRIDES[id];
+  }
 
   const rawClub = raw.club as string;
   const name = raw.name as string;
