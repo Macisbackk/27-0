@@ -251,32 +251,14 @@ export function getSuperLeagueView(stats: UserStatsData) {
   };
 }
 
+/** Hard classic signing — season stats only (not draft or cup). */
+export function getHardNormalModeView(stats: UserStatsData) {
+  return getSuperLeagueView(stats);
+}
+
+/** @deprecated Use getHardNormalModeView */
 export function getHardModeView(stats: UserStatsData) {
-  const wins = stats.seasonWins + stats.challengeCupWins;
-  const losses = stats.seasonLosses + stats.challengeCupLosses;
-  return {
-    runs: stats.totalRuns,
-    wins,
-    losses,
-    winPercentage: formatWinPercentage(stats.seasonWins, stats.seasonLosses),
-    hasSeasons: stats.totalSeasonsSimulated > 0,
-    bestRecord: {
-      wins: stats.bestRecordWins,
-      losses: stats.bestRecordLosses,
-    },
-    worstRecord: {
-      wins: stats.worstRecordWins,
-      losses: stats.worstRecordLosses,
-    },
-    leagueTitles: stats.leagueTitlesWon,
-    challengeCups: stats.challengeCupsWon,
-    perfectSeasons: stats.totalPerfectSeasons,
-    winlessSeasons: stats.totalWinlessSeasons,
-    bestRanking: pickBestRanking(
-      stats.bestNationalRanking,
-      stats.bestCupNationalRanking
-    ),
-  };
+  return getHardNormalModeView(stats);
 }
 
 export function getDraftModeView(stats: UserStatsData) {
@@ -306,8 +288,33 @@ export function getHardDraftModeView(stats: UserStatsData) {
     runs: stats.totalSeasonsSimulated,
     wins: stats.seasonWins,
     losses: stats.seasonLosses,
-    perfectSeasons: stats.totalPerfectSeasons,
+    winPercentage: formatWinPercentage(stats.seasonWins, stats.seasonLosses),
     hasSeasons: stats.totalSeasonsSimulated > 0,
+    bestRecord: {
+      wins: stats.bestRecordWins,
+      losses: stats.bestRecordLosses,
+    },
+    worstRecord: {
+      wins: stats.worstRecordWins,
+      losses: stats.worstRecordLosses,
+    },
+    leagueTitles: stats.leagueTitlesWon,
+    perfectSeasons: stats.totalPerfectSeasons,
+    winlessSeasons: stats.totalWinlessSeasons,
+  };
+}
+
+export function getHardChallengeCupView(stats: UserStatsData) {
+  const wins = stats.challengeCupWins;
+  const losses = stats.challengeCupLosses;
+  return {
+    appearances: stats.challengeCupRuns,
+    wins,
+    losses,
+    cupsWon: stats.challengeCupsWon,
+    finals: stats.challengeCupFinals,
+    winPercentage: formatWinPercentage(wins, losses),
+    hasGames: wins + losses > 0,
   };
 }
 

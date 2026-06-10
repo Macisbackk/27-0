@@ -8,8 +8,9 @@ import {
   STATS_TABS,
   getChallengeCupView,
   getDraftModeView,
+  getHardChallengeCupView,
   getHardDraftModeView,
-  getHardModeView,
+  getHardNormalModeView,
   getOverallView,
   getSuperLeagueView,
   formatRankingOrDash,
@@ -109,12 +110,11 @@ export function StatsPanel() {
         />
       )}
       {activeTab === "super-league" && <SuperLeagueTab stats={normalStats} />}
-      {activeTab === "hard-mode" && <HardModeTab stats={hardStats} />}
+      {activeTab === "hard-mode" && (
+        <HardModeTab stats={hardStats} draftHard={draftHardStats} />
+      )}
       {activeTab === "draft-mode" && (
-        <DraftModeTab
-          draftNormal={draftNormalStats}
-          draftHard={draftHardStats}
-        />
+        <DraftModeTab draftNormal={draftNormalStats} />
       )}
       {activeTab === "challenge-cup" && (
         <ChallengeCupTab normal={normalStats} hard={hardStats} />
@@ -338,78 +338,142 @@ function SuperLeagueTab({ stats }: { stats: UserStatsData }) {
   );
 }
 
-function HardModeTab({ stats }: { stats: UserStatsData }) {
-  const view = getHardModeView(stats);
+function HardModeTab({
+  stats,
+  draftHard,
+}: {
+  stats: UserStatsData;
+  draftHard: UserStatsData;
+}) {
+  const normalView = getHardNormalModeView(stats);
+  const draftView = getHardDraftModeView(draftHard);
+  const cupView = getHardChallengeCupView(stats);
 
   return (
     <div className="space-y-8">
-      <StatsSection title="Hard Mode Records" headerExtra={<HardModeBadge />}>
-        <StatCard label="Hard Mode Runs" value={String(view.runs)} />
+      <StatsSection title="Hard Normal Mode" headerExtra={<HardModeBadge />}>
+        <StatCard label="Runs" value={String(normalView.runs)} />
         <StatCard
-          label="Hard Mode Wins"
-          value={String(view.wins)}
-          highlight={view.wins > 0}
+          label="Wins"
+          value={String(normalView.wins)}
+          highlight={normalView.wins > 0}
         />
-        <StatCard label="Hard Mode Losses" value={String(view.losses)} />
+        <StatCard label="Losses" value={String(normalView.losses)} />
         <StatCard
-          label="Win Rate"
+          label="Win %"
           value={formatWinPercentageOrDash(
-            view.winPercentage,
-            view.hasSeasons
+            normalView.winPercentage,
+            normalView.wins + normalView.losses > 0
           )}
-          highlight={(view.winPercentage ?? 0) >= 75}
+          highlight={(normalView.winPercentage ?? 0) >= 75}
         />
         <StatCard
-          label="Best Hard Mode Record"
+          label="Best Record"
           value={formatRecordOrDash(
-            view.hasSeasons ? view.bestRecord : null
+            normalView.hasSeasons ? normalView.bestRecord : null
           )}
-          highlight={view.bestRecord.wins >= 20}
+          highlight={normalView.bestRecord.wins >= 20}
         />
         <StatCard
-          label="Worst Hard Mode Record"
+          label="Worst Record"
           value={formatRecordOrDash(
-            view.hasSeasons ? view.worstRecord : null
+            normalView.hasSeasons ? normalView.worstRecord : null
           )}
         />
         <StatCard
-          label="Hard Mode League Titles"
-          value={String(view.leagueTitles)}
-          highlight={view.leagueTitles > 0}
+          label="League Titles"
+          value={String(normalView.leagueTitles)}
+          highlight={normalView.leagueTitles > 0}
         />
         <StatCard
-          label="Hard Mode Challenge Cups"
-          value={String(view.challengeCups)}
-          highlight={view.challengeCups > 0}
+          label="27-0 Seasons"
+          value={String(normalView.perfectSeasons)}
+          highlight={normalView.perfectSeasons > 0}
         />
         <StatCard
-          label="Hard Mode 27-0 Seasons"
-          value={String(view.perfectSeasons)}
-          highlight={view.perfectSeasons > 0}
+          label="0-27 Seasons"
+          value={String(normalView.winlessSeasons)}
+        />
+      </StatsSection>
+
+      <StatsSection title="Hard Draft Mode" headerExtra={<HardModeBadge />}>
+        <StatCard label="Runs" value={String(draftView.runs)} />
+        <StatCard
+          label="Wins"
+          value={String(draftView.wins)}
+          highlight={draftView.wins > 0}
+        />
+        <StatCard label="Losses" value={String(draftView.losses)} />
+        <StatCard
+          label="Win %"
+          value={formatWinPercentageOrDash(
+            draftView.winPercentage,
+            draftView.wins + draftView.losses > 0
+          )}
+          highlight={(draftView.winPercentage ?? 0) >= 75}
         />
         <StatCard
-          label="Hard Mode 0-27 Seasons"
-          value={String(view.winlessSeasons)}
+          label="Best Record"
+          value={formatRecordOrDash(
+            draftView.hasSeasons ? draftView.bestRecord : null
+          )}
+          highlight={draftView.bestRecord.wins >= 20}
         />
         <StatCard
-          label="Best Hard Mode Ranking"
-          value={formatRankingOrDash(view.bestRanking)}
-          highlight={view.bestRanking === 1}
+          label="Worst Record"
+          value={formatRecordOrDash(
+            draftView.hasSeasons ? draftView.worstRecord : null
+          )}
+        />
+        <StatCard
+          label="League Titles"
+          value={String(draftView.leagueTitles)}
+          highlight={draftView.leagueTitles > 0}
+        />
+        <StatCard
+          label="27-0 Seasons"
+          value={String(draftView.perfectSeasons)}
+          highlight={draftView.perfectSeasons > 0}
+        />
+        <StatCard
+          label="0-27 Seasons"
+          value={String(draftView.winlessSeasons)}
+        />
+      </StatsSection>
+
+      <StatsSection title="Hard Challenge Cup" headerExtra={<HardModeBadge />}>
+        <StatCard label="Appearances" value={String(cupView.appearances)} />
+        <StatCard
+          label="Cup Match Wins"
+          value={String(cupView.wins)}
+          highlight={cupView.wins > 0}
+        />
+        <StatCard label="Cup Match Losses" value={String(cupView.losses)} />
+        <StatCard
+          label="Win %"
+          value={formatWinPercentageOrDash(
+            cupView.winPercentage,
+            cupView.hasGames
+          )}
+          highlight={(cupView.winPercentage ?? 0) >= 75}
+        />
+        <StatCard
+          label="Cups Won"
+          value={String(cupView.cupsWon)}
+          highlight={cupView.cupsWon > 0}
+        />
+        <StatCard
+          label="Finals Reached"
+          value={String(cupView.finals)}
+          highlight={cupView.finals > 0}
         />
       </StatsSection>
     </div>
   );
 }
 
-function DraftModeTab({
-  draftNormal,
-  draftHard,
-}: {
-  draftNormal: UserStatsData;
-  draftHard: UserStatsData;
-}) {
+function DraftModeTab({ draftNormal }: { draftNormal: UserStatsData }) {
   const view = getDraftModeView(draftNormal);
-  const hardView = getHardDraftModeView(draftHard);
 
   return (
     <div className="space-y-8">
@@ -446,21 +510,6 @@ function DraftModeTab({
         <StatCard
           label="Draft Mode 0-27 Seasons"
           value={String(view.winlessSeasons)}
-        />
-      </StatsSection>
-
-      <StatsSection title="Hard Draft Mode" headerExtra={<HardModeBadge />}>
-        <StatCard label="Hard Draft Mode Runs" value={String(hardView.runs)} />
-        <StatCard
-          label="Hard Draft Mode Wins"
-          value={String(hardView.wins)}
-          highlight={hardView.wins > 0}
-        />
-        <StatCard label="Hard Draft Mode Losses" value={String(hardView.losses)} />
-        <StatCard
-          label="Hard Draft Mode 27-0 Seasons"
-          value={String(hardView.perfectSeasons)}
-          highlight={hardView.perfectSeasons > 0}
         />
       </StatsSection>
     </div>

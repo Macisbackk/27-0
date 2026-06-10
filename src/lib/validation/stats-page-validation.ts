@@ -3,7 +3,7 @@ import {
   getChallengeCupView,
   getDraftModeView,
   getHardDraftModeView,
-  getHardModeView,
+  getHardNormalModeView,
   getOverallView,
   getSuperLeagueView,
   formatWinPercentage,
@@ -119,12 +119,9 @@ export function validateStatsPageStats(input: {
     issues.push("Draft hard runs mismatch");
   }
 
-  const hardView = getHardModeView(hard);
-  const hardSeasonPct = formatWinPercentage(hard.seasonWins, hard.seasonLosses);
-  if (hardView.winPercentage !== hardSeasonPct) {
-    issues.push(
-      `Hard mode win % (${hardView.winPercentage}) should use season-only W/L`
-    );
+  const hardNormalView = getHardNormalModeView(hard);
+  if (hardNormalView.runs !== hard.totalSeasonsSimulated) {
+    issues.push("Hard normal mode runs mismatch with totalSeasonsSimulated");
   }
 
   const slView = getSuperLeagueView(normal);

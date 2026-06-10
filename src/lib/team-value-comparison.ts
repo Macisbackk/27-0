@@ -1,4 +1,13 @@
-import type { MatchFixture } from "./game/season-simulation";
+import {
+  DREAM_TEAM_NAME,
+  SEASON_GAMES,
+  type MatchFixture,
+  type SeasonResult,
+} from "./game/season-simulation";
+import {
+  buildTeamSeasonStats,
+  getHeadToHeadTries,
+} from "./game/team-season-stats";
 import {
   getOpponentSquadValue,
   getOpponentTeamSummary,
@@ -74,18 +83,39 @@ function getUserTopPlayer(squad: SquadSlot[]): TeamPlayerHighlight {
   return best;
 }
 
-function getOpponentFixtureStats(
+function getHeadToHeadWinPct(
   opponentName: string,
   fixtures: MatchFixture[]
-): { winPct: string; totalTries: number } {
+): string {
   const vsUser = fixtures.filter((f) => f.opponent === opponentName);
-  if (vsUser.length === 0) {
-    return { winPct: "—", totalTries: 0 };
-  }
+  if (vsUser.length === 0) return "—";
   const oppWins = vsUser.filter((f) => f.result === "L").length;
-  const winPct = `${Math.round((oppWins / vsUser.length) * 100)}%`;
-  const totalTries = vsUser.reduce((sum, f) => sum + f.triesAgainst, 0);
-  return { winPct, totalTries };
+  return `${Math.round((oppWins / vsUser.length) * 100)}%`;
+}
+
+function isFullLeagueSeason(fixtures: MatchFixture[]): boolean {
+  return fixtures.length === SEASON_GAMES;
+}
+
+function getComparisonStatsFromSeason(
+  seasonResult: SeasonResult,
+  seed: string,
+  opponentName: string
+): { userWinPct: string; userTries: number; oppWinPct: string; oppTries: number } {
+  const statsMap = buildTeamSeasonStats(seasonResult, seed);
+  const userStats = statsMap.get(DREAM_TEAM_NAME);
+  const oppStats = statsMap.get(opponentName);
+
+  return {
+    userWinPct: userStats
+      ? formatWinPercentage(userStats.wins, userStats.losses)
+      : "—",
+    userTries: userStats?.triesFor ?? 0,
+    oppWinPct: oppStats
+      ? formatWinPercentage(oppStats.wins, oppStats.losses)
+      : "—",
+    oppTries: oppStats?.triesFor ?? 0,
+  };
 }
 
 function findBestOpponentRound(
@@ -234,7 +264,12 @@ export function getExtendedTeamComparison(
   userValue: number,
   fixtures: MatchFixture[],
   seed: string,
-  options: { squad: SquadSlot[]; wins: number; losses: number }
+  options: {
+    squad: SquadSlot[];
+    wins: number;
+    losses: number;
+    seasonResult?: SeasonResult;
+  }
 ): ExtendedTeamComparison {
   const summary = getTeamComparisonSummary(
     userTeamName,
@@ -250,8 +285,21 @@ export function getExtendedTeamComparison(
       rating: 0,
       tier: "—",
     };
-  const userTotalTries = fixtures.reduce((sum, f) => sum + f.triesFor, 0);
-  const oppStats = getOpponentFixtureStats(bestOpposition.name, fixtures);
+  const useLeagueStats =
+    isFullLeagueSeason(fixtures) && options.seasonResult != null;
+  const comparisonStats = useLeagueStats
+    ? getComparisonStatsFromSeason(
+        options.seasonResult!,
+        seed,
+        bestOpposition.name
+      )
+    : {
+        userWinPct: formatWinPercentage(options.wins, options.losses),
+        userTries: getHeadToHeadTries(userTeamName, fixtures, "user"),
+        oppWinPct: getHeadToHeadWinPct(bestOpposition.name, fixtures),
+        oppTries: getHeadToHeadTries(bestOpposition.name, fixtures, "opponent"),
+      };
+
   const oppRound = findBestOpponentRound(bestOpposition.name, fixtures, seed);
   const oppValue =
     bestOpposition.name === "—"
@@ -271,8 +319,8 @@ export function getExtendedTeamComparison(
       rating: userRating,
       tier: summary.myTeamTier,
       value: userValue,
-      winPct: formatWinPercentage(options.wins, options.losses),
-      totalTries: userTotalTries,
+      winPct: comparisonStats.userWinPct,
+      totalTries: comparisonStats.userTries,
       topPlayer: getUserTopPlayer(options.squad),
     },
     opponent: {
@@ -280,8 +328,8 @@ export function getExtendedTeamComparison(
       rating: bestOpposition.rating,
       tier: bestOpposition.tier,
       value: oppValue,
-      winPct: oppStats.winPct,
-      totalTries: oppStats.totalTries,
+      winPct: comparisonStats.oppWinPct,
+      totalTries: comparisonStats.oppTries,
       topPlayer:
         bestOpposition.name === "—"
           ? { name: "—", rating: 0 }

@@ -2,6 +2,10 @@ import type { SquadSlot } from "../types";
 import type { SeasonResult } from "../game/season-simulation";
 import { getSeasonTryTotal } from "../game/season-tries";
 import { buildLeagueTable } from "../game/league-table";
+import {
+  buildTeamSeasonStats,
+  runTeamSeasonStatsValidation,
+} from "../game/team-season-stats";
 import { getSquadValue } from "../positions";
 import {
   getAverageSquadRating,
@@ -182,10 +186,27 @@ export function validateSeasonReviewStats(input: {
       squadValue,
       fixtures,
       seed,
-      { squad, wins, losses }
+      { squad, wins, losses, seasonResult }
     );
     if (comparison.opponent.name === userTeamName) {
       issues.push("Team comparison opponent must not be the user team");
+    }
+
+    const dreamStats = buildTeamSeasonStats(seasonResult, seed).get(userTeamName);
+    if (dreamStats) {
+      if (comparison.user.totalTries !== dreamStats.triesFor) {
+        issues.push(
+          `Team comparison user tries (${comparison.user.totalTries}) ≠ season tries (${dreamStats.triesFor})`
+        );
+      }
+      const oppStats = buildTeamSeasonStats(seasonResult, seed).get(
+        comparison.opponent.name
+      );
+      if (oppStats && comparison.opponent.totalTries !== oppStats.triesFor) {
+        issues.push(
+          `Team comparison opponent tries (${comparison.opponent.totalTries}) ≠ league tries (${oppStats.triesFor})`
+        );
+      }
     }
     if (
       (input.joeMellorMode || input.superSamHallasMode) &&
@@ -206,4 +227,5 @@ export function runSeasonReviewValidation(
     wins: input.seasonResult.wins,
     losses: input.seasonResult.losses,
   });
+  runTeamSeasonStatsValidation(input.seasonResult, input.seed);
 }

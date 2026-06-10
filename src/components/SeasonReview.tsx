@@ -88,9 +88,10 @@ export function SeasonReview({
           squad,
           wins: seasonResult.wins,
           losses: seasonResult.losses,
+          seasonResult,
         }
       ),
-    [squad, totalValue, seasonResult.fixtures, seasonResult.wins, seasonResult.losses, seed]
+    [squad, totalValue, seasonResult, seed]
   );
   const playerAwards = useMemo(
     () =>
