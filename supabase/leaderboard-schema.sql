@@ -19,6 +19,10 @@ alter table public.leaderboard add column if not exists best_record_wins integer
 alter table public.leaderboard add column if not exists best_record_losses integer;
 alter table public.leaderboard add column if not exists best_win_percentage numeric;
 alter table public.leaderboard add column if not exists challenge_cup_wins integer;
+alter table public.leaderboard add column if not exists cup_finals integer;
+alter table public.leaderboard add column if not exists best_cup_finish text;
+alter table public.leaderboard add column if not exists best_cup_finish_rank integer;
+alter table public.leaderboard add column if not exists cup_win_percentage numeric;
 alter table public.leaderboard add column if not exists updated_at timestamptz;
 
 update public.leaderboard set mode = 'super-league' where mode is null;
@@ -31,6 +35,9 @@ update public.leaderboard set best_record_wins = coalesce(best_record_wins, wins
 update public.leaderboard set best_record_losses = coalesce(best_record_losses, losses, 0) where best_record_losses is null;
 update public.leaderboard set best_win_percentage = 0 where best_win_percentage is null;
 update public.leaderboard set challenge_cup_wins = 0 where challenge_cup_wins is null;
+update public.leaderboard set cup_finals = 0 where cup_finals is null;
+update public.leaderboard set best_cup_finish_rank = 0 where best_cup_finish_rank is null;
+update public.leaderboard set cup_win_percentage = 0 where cup_win_percentage is null;
 update public.leaderboard set coach_name = player_name where coach_name is null;
 
 create index if not exists leaderboard_mode_difficulty_score_idx

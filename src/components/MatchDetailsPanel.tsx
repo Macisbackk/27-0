@@ -20,6 +20,7 @@ import { getSquadValue } from "@/lib/positions";
 import type { SquadSlot } from "@/lib/types";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
 import { ClubTeamLabel } from "./ClubTeamLabel";
+import { TryScorerClubBadge } from "./TryScorerClubBadge";
 
 interface MatchDetailsPanelProps {
   fixture: MatchFixture;
@@ -161,16 +162,20 @@ function TeamScoringBlock({
               ]
                 .filter(Boolean)
                 .join(" · ");
+              const club = slot?.player?.club;
               return Array.from({ length: s.tries }, (_, i) => (
                 <li
                   key={`${s.playerId}-${i}`}
-                  className="text-sm font-medium text-white"
+                  className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-2.5 py-2"
                 >
-                  {s.name}
+                  <p className="text-sm font-medium text-white">{s.name}</p>
+                  {club && (
+                    <div className="mt-1">
+                      <TryScorerClubBadge club={club} />
+                    </div>
+                  )}
                   {suffix && (
-                    <span className="mt-0.5 block text-xs font-normal text-gray-400">
-                      {suffix}
-                    </span>
+                    <p className="mt-1 text-xs text-gray-400">{suffix}</p>
                   )}
                 </li>
               ));

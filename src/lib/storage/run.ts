@@ -74,6 +74,7 @@ export async function recordCompletedRun(
       losses,
       isPerfectSeason: options?.isPerfectSeason,
       cupWon: options?.cupWon,
+      cupFinish: options?.cupFinish,
     });
     if (!isCupRun) {
       const dbMode = gameModeToDbMode(run.mode);

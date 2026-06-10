@@ -1,15 +1,14 @@
 "use client";
 
-import type { SquadSlot } from "@/lib/types";
 import type { PlayerTryTotal } from "@/lib/game/season-tries";
-import { getClubColors } from "@/lib/clubs";
 import { POSITION_LABELS } from "@/lib/positions";
+import { TryScorerClubBadge } from "./TryScorerClubBadge";
 import { TryScorersPanel } from "./TryScorersPanel";
 
 const RANK_STYLES = [
   "text-accent-gold",
   "text-gray-300",
-  "text-amber-700",
+  "text-amber-700/90",
 ] as const;
 
 function formatScorerPosition(scorer: PlayerTryTotal): string {
@@ -22,7 +21,6 @@ function formatScorerPosition(scorer: PlayerTryTotal): string {
 interface TopTryScorersCardProps {
   tryScorers: PlayerTryTotal[];
   expectedTotalTries: number;
-  squad?: SquadSlot[];
   title?: string;
 }
 
@@ -35,53 +33,39 @@ export function TopTryScorersCard({
   if (topThree.length === 0) return null;
 
   return (
-    <div className="rounded-lg border border-pitch-600/40 bg-pitch-900/50 p-3 sm:p-4">
-      <p className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-gold">
+    <div className="rounded-lg border border-pitch-600/40 bg-pitch-900/50 p-3">
+      <p className="text-[10px] font-bold uppercase tracking-wider text-accent-gold">
         {title}
       </p>
 
-      <div className="mt-3 space-y-2.5">
+      <div className="mt-2 space-y-2">
         {topThree.map((scorer, index) => {
-          const colors = getClubColors(scorer.club);
           const rankStyle = RANK_STYLES[index] ?? "text-gray-400";
 
           return (
             <div
               key={scorer.playerId}
-              className="relative overflow-hidden rounded-lg border border-pitch-700/50 bg-pitch-950/70"
-              style={{
-                borderLeftWidth: "4px",
-                borderLeftColor: colors.primary,
-              }}
+              className="rounded-lg border border-pitch-700/50 bg-pitch-950/60 px-3 py-2.5"
             >
-              <div
-                className="pointer-events-none absolute inset-0 opacity-[0.07]"
-                style={{
-                  background: `linear-gradient(135deg, ${colors.primary} 0%, transparent 60%)`,
-                }}
-              />
-              <div className="relative flex items-start gap-3 px-3 py-3 sm:gap-4 sm:px-4">
+              <div className="flex items-start gap-3">
                 <span
-                  className={`font-display text-2xl font-black leading-none sm:text-3xl ${rankStyle}`}
+                  className={`w-7 shrink-0 font-display text-xl font-black leading-none sm:text-2xl ${rankStyle}`}
                 >
                   {index + 1}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-display text-sm font-bold text-white sm:text-base">
+                  <p className="truncate font-display text-sm font-bold text-white">
                     {scorer.name}
                   </p>
-                  <p
-                    className="mt-0.5 truncate text-xs font-semibold sm:text-sm"
-                    style={{ color: colors.primary }}
-                  >
-                    {scorer.club}
-                  </p>
-                  <p className="mt-1 text-[11px] text-gray-400 sm:text-xs">
+                  <div className="mt-1">
+                    <TryScorerClubBadge club={scorer.club} />
+                  </div>
+                  <p className="mt-1.5 text-xs text-gray-400">
                     {formatScorerPosition(scorer)}
                   </p>
                 </div>
                 <div className="shrink-0 text-right">
-                  <p className="font-display text-2xl font-black text-accent-gold sm:text-3xl">
+                  <p className="font-display text-xl font-black text-accent-gold sm:text-2xl">
                     {scorer.tries}
                   </p>
                   <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">

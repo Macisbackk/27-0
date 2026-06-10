@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { GameDifficulty, LeaderboardPeriod } from "@/lib/types";
 import { formatPeriodLabel } from "@/lib/leaderboard";
 import {
-  LEADERBOARD_TRACKERS,
+  getTrackersForDbMode,
   type LeaderboardTrackerRow,
   type LeaderboardTrackerType,
 } from "@/lib/leaderboard-trackers";
@@ -15,6 +15,19 @@ import {
 import { HardModeBadge } from "./HardModeBadge";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
+
+const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
+  squad_value: "Squad Value",
+  most_wins: "Wins",
+  perfect_runs: "27-0 Seasons",
+  win_percentage: "Win %",
+  best_record: "Record",
+  challenge_cup_wins: "Cups Won",
+  cup_match_wins: "Cup Wins",
+  cup_finals: "Finals",
+  cup_best_run: "Best Run",
+  cup_win_percentage: "Cup Win %",
+};
 
 interface LeaderboardTableProps {
   initialDifficulty?: GameDifficulty;
@@ -32,6 +45,8 @@ export function LeaderboardTable({
   const [entries, setEntries] = useState<LeaderboardTrackerRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [usingFallback, setUsingFallback] = useState(false);
+
+  const availableTrackers = getTrackersForDbMode(leaderboardMode);
 
   const loadEntries = useCallback(async () => {
     setLoading(true);
@@ -51,19 +66,12 @@ export function LeaderboardTable({
   }, [period, difficulty, leaderboardMode, tracker]);
 
   useEffect(() => {
-    const available = LEADERBOARD_TRACKERS.filter(
-      (t) => !t.cupOnly || leaderboardMode === "challenge-cup"
-    );
-    if (!available.some((t) => t.id === tracker)) {
-      setTracker(available[0]?.id ?? "squad_value");
+    if (!availableTrackers.some((t) => t.id === tracker)) {
+      setTracker(availableTrackers[0]?.id ?? "squad_value");
       return;
     }
     void loadEntries();
-  }, [loadEntries, tracker, leaderboardMode]);
-
-  const availableTrackers = LEADERBOARD_TRACKERS.filter(
-    (t) => !t.cupOnly || leaderboardMode === "challenge-cup"
-  );
+  }, [loadEntries, tracker, leaderboardMode, availableTrackers]);
 
   const modeLabel =
     leaderboardMode === "draft"
@@ -73,90 +81,87 @@ export function LeaderboardTable({
         : "Normal Mode";
 
   const trackerLabel =
-    LEADERBOARD_TRACKERS.find((t) => t.id === tracker)?.label ?? "Leaderboard";
-
-  const statColumnLabel =
-    tracker === "squad_value"
-      ? "Squad Value"
-      : tracker === "best_record"
-        ? "Record"
-        : tracker === "win_percentage"
-          ? "Win %"
-          : tracker === "challenge_cup_wins"
-            ? "Cups Won"
-            : tracker === "perfect_runs"
-              ? "27-0 Seasons"
-              : "Total";
+    availableTrackers.find((t) => t.id === tracker)?.label ?? "Leaderboard";
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap gap-2">
-        <button
-          onClick={() => setLeaderboardMode("super-league")}
-          className={`rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
-            leaderboardMode === "super-league"
-              ? "bg-accent-green text-pitch-950"
-              : "bg-pitch-800 text-gray-400 hover:text-white"
-          }`}
-        >
-          Normal Mode
-        </button>
-        <button
-          onClick={() => setLeaderboardMode("draft")}
-          className={`rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
-            leaderboardMode === "draft"
-              ? "bg-accent-green text-pitch-950"
-              : "bg-pitch-800 text-gray-400 hover:text-white"
-          }`}
-        >
-          Draft Mode
-        </button>
-        <button
-          onClick={() => setLeaderboardMode("challenge-cup")}
-          className={`rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
-            leaderboardMode === "challenge-cup"
-              ? "bg-accent-green text-pitch-950"
-              : "bg-pitch-800 text-gray-400 hover:text-white"
-          }`}
-        >
-          Challenge Cup
-        </button>
+      {/* Mode selectors — card-style */}
+      <div className="mb-5 grid gap-3 sm:grid-cols-3">
+        {(
+          [
+            { id: "super-league" as const, label: "Normal Mode" },
+            { id: "draft" as const, label: "Draft Mode" },
+            { id: "challenge-cup" as const, label: "Challenge Cup" },
+          ] as const
+        ).map((mode) => {
+          const selected = leaderboardMode === mode.id;
+          return (
+            <button
+              key={mode.id}
+              type="button"
+              onClick={() => setLeaderboardMode(mode.id)}
+              className={`rounded-xl border-2 px-4 py-4 text-left transition ${
+                selected
+                  ? "border-accent-green/60 bg-accent-green/10 shadow-[0_0_24px_rgba(34,197,94,0.12)]"
+                  : "border-pitch-600/50 bg-pitch-900/50 hover:border-pitch-500/60 hover:bg-pitch-800/40"
+              }`}
+            >
+              <span
+                className={`font-display text-sm font-bold uppercase tracking-wider sm:text-base ${
+                  selected ? "text-accent-green" : "text-gray-300"
+                }`}
+              >
+                {mode.label}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
-      <div className="mb-4 flex flex-wrap gap-2">
-        {availableTrackers.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setTracker(t.id)}
-            className={`rounded-lg px-3 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:text-sm ${
-              tracker === t.id
-                ? "bg-pitch-700 text-white"
-                : "bg-pitch-800 text-gray-400 hover:text-white"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+      {/* Tracker tabs — compact underline navigation */}
+      <div className="mb-5 border-b border-pitch-700/60">
+        <div className="-mb-px flex gap-1 overflow-x-auto pb-px">
+          {availableTrackers.map((t) => {
+            const selected = tracker === t.id;
+            return (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setTracker(t.id)}
+                className={`shrink-0 border-b-2 px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wider transition sm:px-4 sm:text-xs ${
+                  selected
+                    ? "border-accent-green text-accent-green"
+                    : "border-transparent text-gray-500 hover:border-pitch-600 hover:text-gray-300"
+                }`}
+              >
+                {t.shortLabel}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
+      {/* Difficulty selectors — card-style (season modes only) */}
       {leaderboardMode !== "challenge-cup" && (
-        <div className="mb-4 flex flex-wrap gap-2">
+        <div className="mb-5 flex flex-wrap gap-3">
           <button
+            type="button"
             onClick={() => setDifficulty("NORMAL")}
-            className={`rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
+            className={`rounded-xl border-2 px-5 py-3 font-display text-xs font-bold uppercase tracking-wider transition sm:text-sm ${
               difficulty === "NORMAL"
-                ? "bg-accent-green text-pitch-950"
-                : "bg-pitch-800 text-gray-400 hover:text-white"
+                ? "border-accent-green/60 bg-accent-green/10 text-accent-green"
+                : "border-pitch-600/50 bg-pitch-900/50 text-gray-400 hover:text-white"
             }`}
           >
             {leaderboardMode === "draft" ? "Standard Draft" : "Normal"}
           </button>
           <button
+            type="button"
             onClick={() => setDifficulty("HARD")}
-            className={`rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
+            className={`rounded-xl border-2 px-5 py-3 font-display text-xs font-bold uppercase tracking-wider transition sm:text-sm ${
               difficulty === "HARD"
-                ? "bg-red-600 text-white"
-                : "bg-pitch-800 text-gray-400 hover:text-white"
+                ? "border-red-500/60 bg-red-600/15 text-red-300 shadow-[0_0_20px_rgba(220,38,38,0.15)]"
+                : "border-pitch-600/50 bg-pitch-900/50 text-gray-400 hover:text-white"
             }`}
           >
             {leaderboardMode === "draft" ? "Hard Draft" : "Hard"}
@@ -170,15 +175,17 @@ export function LeaderboardTable({
         </div>
       )}
 
+      {/* Period — subtle pills */}
       <div className="mb-6 flex flex-wrap gap-2">
         {PERIODS.map((p) => (
           <button
             key={p}
+            type="button"
             onClick={() => setPeriod(p)}
-            className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+            className={`rounded-full px-3 py-1.5 text-xs font-medium transition ${
               period === p
                 ? "bg-pitch-700 text-white"
-                : "bg-pitch-800 text-gray-400 hover:text-white"
+                : "bg-pitch-800/80 text-gray-500 hover:text-gray-300"
             }`}
           >
             {formatPeriodLabel(p)}
@@ -202,7 +209,9 @@ export function LeaderboardTable({
               <tr className="border-b border-pitch-600/50 text-left text-xs uppercase tracking-wider text-gray-500">
                 <th className="px-4 py-3">#</th>
                 <th className="px-4 py-3">Coach</th>
-                <th className="px-4 py-3">{statColumnLabel}</th>
+                <th className="px-4 py-3">
+                  {STAT_COLUMN[tracker] ?? "Stat"}
+                </th>
                 <th className="hidden px-4 py-3 sm:table-cell">Updated</th>
               </tr>
             </thead>

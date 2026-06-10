@@ -34,6 +34,10 @@ export interface StoredLeaderboardEntry {
   bestRecordLosses: number;
   bestWinPercentage: number;
   challengeCupWins: number;
+  cupFinals: number;
+  bestCupFinishRank: number;
+  bestCupFinishLabel: string;
+  cupWinPercentage: number;
 }
 
 export interface SupabaseLeaderboardRow {
@@ -51,6 +55,10 @@ export interface SupabaseLeaderboardRow {
   best_record_losses: number | null;
   best_win_percentage: number | null;
   challenge_cup_wins: number | null;
+  cup_finals: number | null;
+  best_cup_finish: string | null;
+  best_cup_finish_rank: number | null;
+  cup_win_percentage: number | null;
   created_at: string;
   updated_at?: string | null;
 }
@@ -86,6 +94,10 @@ function loadLocalEntries(): StoredLeaderboardEntry[] {
       bestRecordLosses: entry.bestRecordLosses ?? entry.losses ?? 0,
       bestWinPercentage: entry.bestWinPercentage ?? 0,
       challengeCupWins: entry.challengeCupWins ?? 0,
+      cupFinals: entry.cupFinals ?? 0,
+      bestCupFinishRank: entry.bestCupFinishRank ?? 0,
+      bestCupFinishLabel: entry.bestCupFinishLabel ?? "",
+      cupWinPercentage: entry.cupWinPercentage ?? 0,
     }));
   } catch {
     return [];
@@ -132,6 +144,10 @@ function toTrackerEntry(
     bestRecordLosses: row.bestRecordLosses ?? 0,
     bestWinPercentage: row.bestWinPercentage ?? 0,
     challengeCupWins: row.challengeCupWins ?? 0,
+    cupFinals: row.cupFinals ?? 0,
+    bestCupFinishRank: row.bestCupFinishRank ?? 0,
+    bestCupFinishLabel: row.bestCupFinishLabel ?? "",
+    cupWinPercentage: row.cupWinPercentage ?? 0,
   };
 }
 
@@ -183,6 +199,10 @@ function mapSupabaseToTrackerEntries(
       bestRecordLosses: row.best_record_losses ?? 0,
       bestWinPercentage: row.best_win_percentage ?? 0,
       challengeCupWins: row.challenge_cup_wins ?? 0,
+      cupFinals: row.cup_finals ?? 0,
+      bestCupFinishRank: row.best_cup_finish_rank ?? 0,
+      bestCupFinishLabel: row.best_cup_finish ?? "",
+      cupWinPercentage: row.cup_win_percentage ?? 0,
     });
 
     if (!existing || candidate.squadValue > existing.squadValue) {
@@ -219,7 +239,7 @@ async function fetchTrackerEntriesFromSupabase(
     let query = supabase
       .from("leaderboard")
       .select(
-        "id, player_name, coach_name, user_id, score, mode, difficulty, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, created_at, updated_at"
+        "id, player_name, coach_name, user_id, score, mode, difficulty, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage, created_at, updated_at"
       )
       .eq("mode", dbMode)
       .eq("difficulty", difficulty)
@@ -256,7 +276,7 @@ async function insertToSupabase(
     const { data: existing } = await supabase
       .from("leaderboard")
       .select(
-        "id, score, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins"
+        "id, score, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage"
       )
       .eq("user_id", userId)
       .eq("mode", dbMode)
@@ -272,6 +292,10 @@ async function insertToSupabase(
       best_record_losses: stats.bestRecordLosses,
       best_win_percentage: stats.bestWinPercentage,
       challenge_cup_wins: stats.challengeCupWins,
+      cup_finals: stats.cupFinals,
+      best_cup_finish: stats.bestCupFinishLabel || null,
+      best_cup_finish_rank: stats.bestCupFinishRank,
+      cup_win_percentage: stats.cupWinPercentage,
       coach_name: coachName,
       player_name: coachName,
       updated_at: new Date().toISOString(),
@@ -331,6 +355,10 @@ function saveLocalEntry(
         bestRecordLosses: stats.bestRecordLosses,
         bestWinPercentage: stats.bestWinPercentage,
         challengeCupWins: stats.challengeCupWins,
+        cupFinals: stats.cupFinals,
+        bestCupFinishRank: stats.bestCupFinishRank,
+        bestCupFinishLabel: stats.bestCupFinishLabel,
+        cupWinPercentage: stats.cupWinPercentage,
         achievedAt: achievedAt.toISOString(),
       };
       continue;
@@ -352,6 +380,10 @@ function saveLocalEntry(
       bestRecordLosses: stats.bestRecordLosses,
       bestWinPercentage: stats.bestWinPercentage,
       challengeCupWins: stats.challengeCupWins,
+      cupFinals: stats.cupFinals,
+      bestCupFinishRank: stats.bestCupFinishRank,
+      bestCupFinishLabel: stats.bestCupFinishLabel,
+      cupWinPercentage: stats.cupWinPercentage,
     });
   }
 
@@ -384,7 +416,7 @@ async function getExistingRemoteStats(
     const { data } = await supabase
       .from("leaderboard")
       .select(
-        "score, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins"
+        "score, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage"
       )
       .eq("user_id", userId)
       .eq("mode", dbMode)
@@ -402,6 +434,10 @@ async function getExistingRemoteStats(
       bestRecordLosses: data.best_record_losses ?? 0,
       bestWinPercentage: data.best_win_percentage ?? 0,
       challengeCupWins: data.challenge_cup_wins ?? 0,
+      cupFinals: data.cup_finals ?? 0,
+      bestCupFinishRank: data.best_cup_finish_rank ?? 0,
+      bestCupFinishLabel: data.best_cup_finish ?? "",
+      cupWinPercentage: data.cup_win_percentage ?? 0,
     };
   } catch {
     return null;
@@ -417,6 +453,7 @@ export async function addLeaderboardEntry(
     losses?: number;
     isPerfectSeason?: boolean;
     cupWon?: boolean;
+    cupFinish?: string;
     achievedAt?: Date;
   }
 ): Promise<void> {
@@ -435,12 +472,15 @@ export async function addLeaderboardEntry(
 
   const localExisting = getExistingLocalStats(username, mode, difficulty);
   const remoteExisting = await getExistingRemoteStats(userId, dbMode, difficulty);
+  const isCupRun = mode === "CHALLENGE_CUP";
   const merged = mergeLeaderboardStats(remoteExisting ?? localExisting, {
     squadValue,
     wins,
     losses,
     isPerfectSeason: options?.isPerfectSeason,
     cupWon: options?.cupWon,
+    cupFinish: options?.cupFinish,
+    isCupRun,
   });
 
   saveLocalEntry(username, mode, difficulty, merged, achievedAt);

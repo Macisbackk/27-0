@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { PlayerTryTotal } from "@/lib/game/season-tries";
-import { getClubColors } from "@/lib/clubs";
 import { POSITION_LABELS } from "@/lib/positions";
+import { TryScorerClubBadge } from "./TryScorerClubBadge";
 
 function formatScorerPosition(scorer: PlayerTryTotal): string {
   if (scorer.playedPosition && scorer.playedPosition !== scorer.position) {
@@ -30,11 +30,11 @@ export function TryScorersPanel({
   if (tryScorers.length === 0) return null;
 
   return (
-    <div className="mt-4">
+    <div className="mt-3">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full rounded-lg border border-pitch-600/50 bg-pitch-950/60 px-4 py-2.5 font-display text-[10px] font-bold uppercase tracking-wider text-accent-green transition hover:border-accent-green/40 hover:bg-pitch-900/80 hover:text-emerald-300"
+        className="w-full rounded-lg border border-pitch-600/40 bg-pitch-950/50 px-3 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-accent-green transition hover:border-accent-green/35 hover:bg-pitch-900/60 hover:text-emerald-300"
         aria-expanded={open}
       >
         {open ? "Hide All Try Scorers" : title}
@@ -49,15 +49,13 @@ export function TryScorersPanel({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="mt-3 space-y-2">
-              {tryScorers.map((scorer, index) => {
-                const colors = getClubColors(scorer.club);
-                return (
-                  <div
-                    key={scorer.playerId}
-                    className="flex items-center gap-3 rounded-lg border border-pitch-700/40 bg-pitch-950/60 px-3 py-2.5"
-                    style={{ borderLeftWidth: "3px", borderLeftColor: colors.primary }}
-                  >
+            <div className="mt-2 space-y-2">
+              {tryScorers.map((scorer, index) => (
+                <div
+                  key={scorer.playerId}
+                  className="rounded-lg border border-pitch-700/50 bg-pitch-950/60 px-3 py-2.5"
+                >
+                  <div className="flex items-center gap-3">
                     <span className="w-6 shrink-0 text-center font-display text-xs font-bold text-gray-500">
                       {index + 1}
                     </span>
@@ -65,19 +63,20 @@ export function TryScorersPanel({
                       <p className="truncate text-sm font-semibold text-white">
                         {scorer.name}
                       </p>
-                      <p className="truncate text-xs text-gray-500">
-                        <span style={{ color: colors.primary }}>{scorer.club}</span>
-                        <span className="mx-1.5 text-pitch-600">·</span>
-                        {formatScorerPosition(scorer)}
-                      </p>
+                      <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                        <TryScorerClubBadge club={scorer.club} />
+                        <span className="text-[11px] text-gray-500">
+                          {formatScorerPosition(scorer)}
+                        </span>
+                      </div>
                     </div>
                     <span className="shrink-0 font-display text-lg font-bold text-accent-gold">
                       {scorer.tries}
                     </span>
                   </div>
-                );
-              })}
-              <div className="flex items-center justify-between rounded-lg border border-pitch-700/30 bg-pitch-900/40 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                </div>
+              ))}
+              <div className="flex items-center justify-between rounded-lg border border-pitch-700/40 bg-pitch-900/40 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">
                 <span>Total tries</span>
                 <span className="font-display text-sm text-white">
                   {listedTotal}
