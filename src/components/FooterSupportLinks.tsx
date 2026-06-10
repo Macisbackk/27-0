@@ -1,6 +1,7 @@
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
 const SUGGESTIONS_MAIL =
   "mailto:twentysevenzero@yahoo.com?subject=27-0%20Suggestion";
+const X_URL = "https://x.com/27and0";
 
 const LINK_CLASS =
   "inline-flex items-center gap-1.5 rounded-lg border border-pitch-600/60 bg-pitch-900/50 px-3 py-1.5 text-[11px] font-medium text-gray-400 transition hover:border-accent-green/40 hover:text-white";
@@ -12,15 +13,25 @@ export function FooterSupportLinks() {
         href={COFFEE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Support 27-0"
+        aria-label="Buy Me A Coffee — support 27-0"
         className={LINK_CLASS}
       >
         <CoffeeIcon />
-        <span className="hidden sm:inline">Support</span>
+        <span className="hidden sm:inline">Buy Me A Coffee</span>
       </a>
       <a href={SUGGESTIONS_MAIL} aria-label="Send a suggestion" className={LINK_CLASS}>
         <SuggestionsIcon />
         <span>Suggestions</span>
+      </a>
+      <a
+        href={X_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Follow 27-0 on X"
+        className={LINK_CLASS}
+      >
+        <XIcon />
+        <span>X</span>
       </a>
     </div>
   );
@@ -62,6 +73,20 @@ function SuggestionsIcon() {
       aria-hidden
     >
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  );
+}
+
+function XIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden
+    >
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
   );
 }
