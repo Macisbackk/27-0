@@ -1,30 +1,34 @@
 "use client";
 
-import type { Player } from "@/lib/types";
+import type { SquadSlot } from "@/lib/types";
 import { getClubColors } from "@/lib/clubs";
-import { getPlayerInitials } from "@/lib/players/initials";
-import { POSITION_SHORT, POSITION_TILE_LABEL } from "@/lib/positions";
+import { POSITION_TILE_LABEL } from "@/lib/positions";
+import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
 /** Shared footprint for empty and filled pitch slots. */
 export const PITCH_SLOT_SIZE_CLASS =
   "h-[80px] w-[72px] sm:h-[88px] sm:w-[80px] md:h-[96px] md:w-[88px]";
 
 interface PitchSlotCardProps {
-  player: Player;
+  slot: SquadSlot;
   hardMode?: boolean;
   className?: string;
 }
 
 /** Compact tactical-board marker — matches empty position box footprint. */
 export function PitchSlotCard({
-  player,
+  slot,
   hardMode,
   className = "",
 }: PitchSlotCardProps) {
+  const player = slot.player!;
   const colors = getClubColors(player.club);
-  const initials = getPlayerInitials(player.name);
-  const positionLabel = POSITION_TILE_LABEL[player.position];
-  const shortPos = POSITION_SHORT[player.position];
+  const positionLabel = POSITION_TILE_LABEL[slot.position];
+  const effectiveRating = getEffectivePeakRating(slot);
+  const baseRating = player.peakRating;
+  const hasPenalty =
+    (slot.runRatingPenalty ?? 0) > 0 && effectiveRating < baseRating;
+  const ratingLabel = hardMode ? "??" : String(Math.round(effectiveRating));
 
   return (
     <div
@@ -36,14 +40,20 @@ export function PitchSlotCard({
         <span className="h-full flex-1" style={{ backgroundColor: colors.secondary }} />
       </div>
       <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-0 px-0.5 py-0.5">
-        <span className="font-display text-[11px] font-black uppercase leading-none tracking-wide text-accent-green sm:text-xs">
-          {initials}
+        <span
+          className={`font-display text-sm font-black leading-none sm:text-base ${
+            hardMode ? "text-gray-500" : "text-accent-green"
+          }`}
+        >
+          {ratingLabel}
         </span>
+        {!hardMode && hasPenalty && (
+          <span className="font-display text-[6px] font-bold leading-none text-gray-500 sm:text-[7px]">
+            {baseRating}→{Math.round(effectiveRating)}
+          </span>
+        )}
         <span className="w-full text-center font-display text-[8px] font-bold uppercase leading-tight tracking-wide text-gray-300 sm:text-[9px]">
           {positionLabel}
-        </span>
-        <span className="font-display text-[7px] font-bold tracking-wider text-gray-500 sm:text-[8px]">
-          {shortPos}
         </span>
         <p className="w-full truncate text-center font-display text-[7px] font-semibold leading-tight text-white sm:text-[8px]">
           {player.name}

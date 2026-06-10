@@ -378,7 +378,7 @@ function SquadMarker({
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
       <PitchSlotCard
-        player={player}
+        slot={slot}
         hardMode={hardMode}
         className={sizeClass}
       />

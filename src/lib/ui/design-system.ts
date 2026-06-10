@@ -33,7 +33,7 @@ export const CARD = {
   featured:
     "border border-accent-green/15 shadow-[0_0_32px_rgba(34,197,94,0.06)]",
   featuredHard:
-    "border border-red-500/30 shadow-[0_0_32px_rgba(220,38,38,0.08)]",
+    "border border-accent-red/30 shadow-[0_0_32px_rgba(239,68,68,0.14)]",
   interactive:
     "cursor-pointer transition hover:border-accent-green/40 hover:bg-pitch-800/60",
   selected: "border-accent-green/40 bg-pitch-800/40",
@@ -58,11 +58,11 @@ export const BTN = {
   primary:
     "border-2 border-accent-green/75 bg-accent-green text-pitch-950 shadow-[0_0_28px_rgba(34,197,94,0.35)] hover:bg-accent-green/90 hover:shadow-[0_0_36px_rgba(34,197,94,0.45)] disabled:cursor-not-allowed disabled:opacity-50",
   primaryHard:
-    "border-2 border-red-500/80 bg-red-950/75 text-red-100 shadow-[0_0_28px_rgba(220,38,38,0.45)] hover:border-red-400 hover:bg-red-950/90 hover:shadow-[0_0_36px_rgba(220,38,38,0.55)] disabled:cursor-not-allowed disabled:opacity-50",
+    "border-2 border-accent-red/85 bg-accent-red text-white shadow-[0_0_28px_rgba(239,68,68,0.45)] hover:bg-red-500 hover:shadow-[0_0_36px_rgba(239,68,68,0.55)] disabled:cursor-not-allowed disabled:opacity-50",
   primaryLg:
     "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-accent-green to-emerald-400 py-4 font-display text-lg font-black uppercase tracking-wider text-pitch-950 shadow-[0_0_30px_rgba(34,197,94,0.35)] transition-all hover:from-emerald-400 hover:to-accent-green hover:shadow-[0_0_40px_rgba(34,197,94,0.5)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
   primaryLgHard:
-    "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-red-700 to-red-500 py-4 font-display text-lg font-black uppercase tracking-wider text-white shadow-[0_0_30px_rgba(220,38,38,0.4)] transition-all hover:from-red-600 hover:to-red-400 hover:shadow-[0_0_40px_rgba(220,38,38,0.55)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
+    "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-accent-red to-red-500 py-4 font-display text-lg font-black uppercase tracking-wider text-white shadow-[0_0_30px_rgba(239,68,68,0.4)] transition-all hover:from-red-500 hover:to-accent-red hover:shadow-[0_0_40px_rgba(239,68,68,0.55)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
   secondary:
     "border border-pitch-600 text-gray-300 hover:border-pitch-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-50",
   secondaryLg: "btn-secondary text-center",
@@ -78,10 +78,10 @@ export const BTN = {
   tabGroupIdle:
     "text-gray-400 hover:border-accent-green/30 hover:bg-accent-green/10 hover:text-accent-green",
   hardActive:
-    "border-2 border-red-500/80 bg-red-950/75 text-red-100 shadow-[0_0_28px_rgba(220,38,38,0.55),inset_0_1px_0_rgba(255,255,255,0.06)]",
-  hardIdle: "text-gray-400 hover:border-red-500/35 hover:bg-red-950/40 hover:text-red-300",
+    "border-2 border-accent-red/85 bg-accent-red text-white shadow-[0_0_28px_rgba(239,68,68,0.5),inset_0_1px_0_rgba(255,255,255,0.1)]",
+  hardIdle: "text-gray-400 hover:border-accent-red/40 hover:bg-accent-red/10 hover:text-accent-red",
   accentOutline: `w-full border border-accent-green/40 bg-accent-green/10 text-accent-green hover:border-accent-green/55 hover:bg-accent-green/20 sm:w-auto`,
-  hardAccentOutline: `w-full border border-red-500/45 bg-red-950/35 text-red-300 hover:border-red-500/65 hover:bg-red-950/50 hover:text-red-200 sm:w-auto`,
+  hardAccentOutline: `w-full border border-accent-red/45 bg-accent-red/10 text-accent-red hover:border-accent-red/65 hover:bg-accent-red/20 hover:text-red-300 sm:w-auto`,
   goldOutline: `w-full border border-accent-gold/35 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/15 sm:w-auto`,
   goldOutlineSm: `border border-accent-gold/50 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/20`,
   greenOutlineSm: `border border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20`,
@@ -101,16 +101,16 @@ export const NORMAL = {
 /** Hard mode visual tokens — red mirror of normal green styling. */
 export const HARD = {
   tabGroupRing:
-    "border-red-500/45 shadow-[0_0_20px_rgba(220,38,38,0.18)]",
+    "border-accent-red/50 shadow-[0_0_20px_rgba(239,68,68,0.22)]",
   modeCard: CARD.featuredHard,
-  modeCardHover: "hover:border-red-500/40 group-hover:text-red-300",
+  modeCardHover: "hover:border-accent-red/45 group-hover:text-accent-red",
   banner:
-    "border border-red-500/50 bg-red-950/35 shadow-[0_0_16px_rgba(220,38,38,0.12)]",
+    "border border-accent-red/50 bg-accent-red/10 shadow-[0_0_16px_rgba(239,68,68,0.15)]",
   badge:
-    "inline-flex items-center gap-2 rounded-lg border-2 border-red-500/60 bg-red-950/70 px-3 py-1.5 font-display text-[11px] font-black uppercase tracking-[0.22em] text-red-300 shadow-[0_0_18px_rgba(239,68,68,0.35)]",
-  reviewAccent: "text-red-400",
-  itemActive: "border border-red-500/30 bg-red-950/40 text-red-300",
-  dot: "bg-red-500",
+    "inline-flex items-center gap-2 rounded-lg border-2 border-accent-red/70 bg-accent-red/15 px-3 py-1.5 font-display text-[11px] font-black uppercase tracking-[0.22em] text-accent-red shadow-[0_0_18px_rgba(239,68,68,0.35)]",
+  reviewAccent: "text-accent-red",
+  itemActive: "border border-accent-red/40 bg-accent-red/15 text-accent-red",
+  dot: "bg-accent-red",
 } as const;
 
 /** Navigation & links. */
@@ -129,6 +129,10 @@ export const NAV = {
   playModeGroup: "space-y-2",
   nestedBlock: "space-y-2 px-1",
   nestedLabel: "px-1 font-display text-[10px] font-bold uppercase tracking-wider text-gray-500",
+  soundToggle:
+    "flex min-h-[54px] w-full min-w-0 items-center gap-3 overflow-hidden rounded-xl border border-pitch-600 px-3 py-3 text-left transition hover:border-accent-green/40",
+  soundStatus:
+    "shrink-0 rounded-md border border-pitch-600/80 bg-pitch-900/60 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider",
 } as const;
 
 export const LINK = {

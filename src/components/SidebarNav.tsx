@@ -288,7 +288,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         ? "Sound off — click to enable"
                         : "Sound on — click to mute"
                     }
-                    className={`${NAV.item} w-full border border-pitch-600 text-base hover:border-accent-green/40`}
+                    className={NAV.soundToggle}
                   >
                     <span
                       className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${
@@ -300,13 +300,15 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     >
                       {muted ? <SoundOffIcon /> : <SoundOnIcon />}
                     </span>
-                    <span className="flex-1 text-left">Sound Effects</span>
+                    <span className={`min-w-0 flex-1 truncate ${TYPO.nav}`}>
+                      Sound
+                    </span>
                     <span
-                      className={`${TYPO.button} ${
+                      className={`${NAV.soundStatus} ${
                         muted ? "text-gray-500" : "text-accent-green"
                       }`}
                     >
-                      {muted ? "Sound: OFF" : "Sound: ON"}
+                      {muted ? "OFF" : "ON"}
                     </span>
                   </button>
                 </li>

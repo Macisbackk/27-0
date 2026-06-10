@@ -579,16 +579,7 @@ export function GameBoard({
 
     setSquad(newSquad);
     playPositionComplete();
-    startTournamentSimulation(newSquad);
-  }, [
-    phase,
-    filledCount,
-    joeMellorMode,
-    seed,
-    slotOffers,
-    squad,
-    startTournamentSimulation,
-  ]);
+  }, [phase, filledCount, joeMellorMode, seed, slotOffers, squad]);
 
   const handleSimulationComplete = useCallback(() => {
     setPhase("review");

@@ -102,7 +102,7 @@ export function HomeModeSelector() {
               </button>
             </div>
             {classicHard && (
-              <p className={`mt-2 ${TYPO.bodySm} font-medium text-red-400`}>
+              <p className={`mt-2 ${TYPO.bodySm} font-medium text-accent-red`}>
                 Ratings and values hidden until season review. No rerolls.
               </p>
             )}
@@ -142,7 +142,7 @@ export function HomeModeSelector() {
               </button>
             </div>
             {draftHard && (
-              <p className={`mt-2 ${TYPO.bodySm} font-medium text-red-400`}>
+              <p className={`mt-2 ${TYPO.bodySm} font-medium text-accent-red`}>
                 Ratings and values hidden until season review.
               </p>
             )}
@@ -197,7 +197,7 @@ function ModePanel({
     >
       <h2
         className={`${TYPO.cardTitle} ${
-          hardActive ? "text-red-300" : "text-white"
+          hardActive ? "text-accent-red" : "text-white"
         }`}
       >
         {title}
