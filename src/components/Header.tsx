@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { HeaderAuthControls } from "./HeaderAuthControls";
 import { SidebarNav } from "./SidebarNav";
 import { playMenuOpen } from "@/lib/sound";
@@ -46,7 +46,9 @@ export function Header() {
         </div>
       </header>
 
-      <SidebarNav open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <Suspense fallback={null}>
+        <SidebarNav open={menuOpen} onClose={() => setMenuOpen(false)} />
+      </Suspense>
     </>
   );
 }

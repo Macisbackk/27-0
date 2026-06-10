@@ -176,7 +176,12 @@ export function LeaderboardTable({
       </div>
 
       {leaderboardMode !== "challenge-cup" && (
-        <div className={`mb-5 inline-flex flex-wrap ${tabGroupClass(difficulty === "HARD")}`}>
+        <div
+          className={`mb-5 inline-flex flex-wrap ${tabGroupClass(
+            difficulty === "HARD",
+            difficulty === "NORMAL"
+          )}`}
+        >
           <button
             type="button"
             onClick={() => {

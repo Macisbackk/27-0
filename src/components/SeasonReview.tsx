@@ -31,7 +31,7 @@ import { TryScorersSection } from "./TryScorersSection";
 import { buildLeagueTable } from "@/lib/game/league-table";
 import { LeagueTable } from "./LeagueTable";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
-import { HARD } from "@/lib/ui/design-system";
+import { HARD, NORMAL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 interface SeasonReviewProps {
@@ -172,7 +172,7 @@ export function SeasonReview({
         >
           <p
             className={`font-display text-xs font-semibold uppercase tracking-[0.3em] ${
-              isHardMode ? HARD.reviewAccent : "text-gray-500"
+              isHardMode ? HARD.reviewAccent : NORMAL.reviewAccent
             }`}
           >
             {getSeasonReviewLabel(mode, difficulty)}

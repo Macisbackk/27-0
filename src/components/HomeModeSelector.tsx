@@ -3,6 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import type { GameDifficulty } from "@/lib/types";
+import { buildPlayHref } from "@/lib/play-links";
+import {
+  getHardModeEnabled,
+  HARD_MODE_CHANGED_EVENT,
+  setHardModeEnabled,
+} from "@/lib/storage/preferences";
 import {
   playHardModeOff,
   playHardModeOn,
@@ -12,6 +18,8 @@ import {
 import {
   BTN,
   CARD,
+  HARD,
+  NORMAL,
   SPACING,
   tabGroupButtonClass,
   tabGroupClass,
@@ -19,45 +27,47 @@ import {
 import { TYPO } from "@/lib/ui/typography";
 import { GuestNotice } from "./GuestNotice";
 
-function buildPlayHref(
-  mode: "classic" | "draft" | "cup",
-  difficulty: GameDifficulty = "NORMAL"
-): string {
-  const params = new URLSearchParams();
-  if (mode === "cup") params.set("cup", "1");
-  if (mode === "draft") params.set("draft", "1");
-  if (difficulty === "HARD") params.set("difficulty", "hard");
-  const qs = params.toString();
-  return qs ? `/play?${qs}` : "/play";
-}
-
 export function HomeModeSelector() {
-  const [classicDifficulty, setClassicDifficulty] =
-    useState<GameDifficulty>("NORMAL");
-  const [draftDifficulty, setDraftDifficulty] =
-    useState<GameDifficulty>("NORMAL");
+  const [difficulty, setDifficulty] = useState<GameDifficulty>("NORMAL");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setDifficulty(getHardModeEnabled() ? "HARD" : "NORMAL");
     setMounted(true);
+
+    const sync = (event: Event) => {
+      const detail = (event as CustomEvent<GameDifficulty>).detail;
+      if (detail) {
+        setDifficulty(detail);
+        return;
+      }
+      setDifficulty(getHardModeEnabled() ? "HARD" : "NORMAL");
+    };
+
+    window.addEventListener(HARD_MODE_CHANGED_EVENT, sync);
+    return () => window.removeEventListener(HARD_MODE_CHANGED_EVENT, sync);
   }, []);
 
-  const classicHref = mounted
-    ? buildPlayHref("classic", classicDifficulty)
-    : "/play";
-  const draftHref = mounted
-    ? buildPlayHref("draft", draftDifficulty)
-    : "/play?draft=1";
+  const updateDifficulty = (next: GameDifficulty) => {
+    if (next === "HARD" && difficulty !== "HARD") playHardModeOn();
+    if (next === "NORMAL" && difficulty === "HARD") playHardModeOff();
+    setDifficulty(next);
+    setHardModeEnabled(next === "HARD");
+  };
 
-  const classicAction =
-    classicDifficulty === "HARD" ? "Start Hard Season" : "Start Season";
+  const classicHref = mounted ? buildPlayHref("classic", difficulty) : "/play";
+  const draftHref = mounted
+    ? buildPlayHref("draft", difficulty)
+    : "/play?draft=1";
+  const isHard = difficulty === "HARD";
+  const classicAction = isHard ? "Start Hard Season" : "Start Season";
 
   return (
     <div>
       <GuestNotice variant="home" />
 
       <div className={`mx-auto flex max-w-xl flex-col gap-5`}>
-        <ModePanel title="Normal Mode" accent="green">
+        <ModePanel title="Normal Mode" hardActive={isHard}>
           <p className={TYPO.body}>
             Draft your XIII position by position and simulate a full Super League
             campaign. Can you go 27-0?
@@ -65,35 +75,23 @@ export function HomeModeSelector() {
 
           <div className="mt-5">
             <p className={`mb-2 ${TYPO.sectionLabel}`}>Difficulty</p>
-            <div className={tabGroupClass(classicDifficulty === "HARD")}>
+            <div className={tabGroupClass(isHard, !isHard)}>
               <button
                 type="button"
-                onClick={() => {
-                  if (classicDifficulty === "HARD") playHardModeOff();
-                  setClassicDifficulty("NORMAL");
-                }}
-                className={tabGroupButtonClass(
-                  classicDifficulty === "NORMAL",
-                  "normal"
-                )}
+                onClick={() => updateDifficulty("NORMAL")}
+                className={tabGroupButtonClass(!isHard, "normal")}
               >
                 Normal
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  if (classicDifficulty !== "HARD") playHardModeOn();
-                  setClassicDifficulty("HARD");
-                }}
-                className={tabGroupButtonClass(
-                  classicDifficulty === "HARD",
-                  "hard"
-                )}
+                onClick={() => updateDifficulty("HARD")}
+                className={tabGroupButtonClass(isHard, "hard")}
               >
                 Hard
               </button>
             </div>
-            {classicDifficulty === "HARD" && (
+            {isHard && (
               <p className={`mt-2 ${TYPO.bodySm} font-medium text-red-400`}>
                 Ratings and values hidden until season review. No rerolls.
               </p>
@@ -103,15 +101,13 @@ export function HomeModeSelector() {
           <Link
             href={classicHref}
             onClick={() => playUiClick()}
-            className={`mt-5 ${BTN.base} ${
-              classicDifficulty === "HARD" ? BTN.hardAccentOutline : BTN.accentOutline
-            }`}
+            className={`mt-5 w-full ${BTN.base} ${isHard ? BTN.primaryHard : BTN.primary}`}
           >
             {classicAction} →
           </Link>
         </ModePanel>
 
-        <ModePanel title="Draft Mode" accent="green">
+        <ModePanel title="Draft Mode" hardActive={isHard}>
           <p className={TYPO.body}>
             Pick players from pairs, then place them in any empty slot. Natural
             positions carry no penalty; out-of-position placements cost 5 OVR.
@@ -119,35 +115,23 @@ export function HomeModeSelector() {
 
           <div className="mt-5">
             <p className={`mb-2 ${TYPO.sectionLabel}`}>Draft Type</p>
-            <div className={tabGroupClass(draftDifficulty === "HARD")}>
+            <div className={tabGroupClass(isHard, !isHard)}>
               <button
                 type="button"
-                onClick={() => {
-                  if (draftDifficulty === "HARD") playHardModeOff();
-                  setDraftDifficulty("NORMAL");
-                }}
-                className={tabGroupButtonClass(
-                  draftDifficulty === "NORMAL",
-                  "normal"
-                )}
+                onClick={() => updateDifficulty("NORMAL")}
+                className={tabGroupButtonClass(!isHard, "normal")}
               >
                 Standard Draft
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  if (draftDifficulty !== "HARD") playHardModeOn();
-                  setDraftDifficulty("HARD");
-                }}
-                className={tabGroupButtonClass(
-                  draftDifficulty === "HARD",
-                  "hard"
-                )}
+                onClick={() => updateDifficulty("HARD")}
+                className={tabGroupButtonClass(isHard, "hard")}
               >
                 Hard Draft
               </button>
             </div>
-            {draftDifficulty === "HARD" && (
+            {isHard && (
               <p className={`mt-2 ${TYPO.bodySm} font-medium text-red-400`}>
                 Ratings and values hidden until season review.
               </p>
@@ -157,16 +141,14 @@ export function HomeModeSelector() {
           <Link
             href={draftHref}
             onClick={() => playUiClick()}
-            className={`mt-5 ${BTN.base} ${
-              draftDifficulty === "HARD" ? BTN.hardAccentOutline : BTN.accentOutline
-            }`}
+            className={`mt-5 w-full ${BTN.base} ${isHard ? BTN.primaryHard : BTN.primary}`}
           >
-            Start Draft →
+            {isHard ? "Start Hard Draft" : "Start Draft"} →
           </Link>
         </ModePanel>
 
         <Link
-          href="/play?cup=1"
+          href={buildPlayHref("cup")}
           onClick={() => playModeChallengeCupStart()}
           className={`${CARD.glass} ${CARD.panel} group block w-full ${SPACING.cardPaddingLg} transition hover:border-accent-gold/30`}
         >
@@ -188,27 +170,28 @@ export function HomeModeSelector() {
 
 function ModePanel({
   title,
-  accent,
+  hardActive,
   children,
 }: {
   title: string;
-  accent: "green" | "gold";
+  hardActive: boolean;
   children: ReactNode;
 }) {
-  const hoverBorder =
-    accent === "gold"
-      ? "hover:border-accent-gold/30"
-      : "hover:border-accent-green/30";
-  const hoverTitle =
-    accent === "gold"
-      ? "group-hover:text-accent-gold"
-      : "group-hover:text-accent-green";
+  const cardAccent = hardActive
+    ? `${HARD.modeCard} ${HARD.modeCardHover}`
+    : `${CARD.featured} ${NORMAL.modeCardHover}`;
 
   return (
     <div
-      className={`${CARD.glass} ${CARD.panel} group w-full ${SPACING.cardPaddingLg} transition ${hoverBorder}`}
+      className={`${CARD.glass} ${CARD.panel} group w-full ${SPACING.cardPaddingLg} transition ${cardAccent}`}
     >
-      <h2 className={`${TYPO.cardTitle} ${hoverTitle}`}>{title}</h2>
+      <h2
+        className={`${TYPO.cardTitle} ${
+          hardActive ? "text-red-300" : "text-white"
+        }`}
+      >
+        {title}
+      </h2>
       {children}
     </div>
   );

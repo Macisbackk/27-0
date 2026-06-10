@@ -32,6 +32,8 @@ export const CARD = {
     "transition hover:border-pitch-500/60 hover:bg-pitch-900/70",
   featured:
     "border border-accent-green/15 shadow-[0_0_32px_rgba(34,197,94,0.06)]",
+  featuredHard:
+    "border border-red-500/30 shadow-[0_0_32px_rgba(220,38,38,0.08)]",
   interactive:
     "cursor-pointer transition hover:border-accent-green/40 hover:bg-pitch-800/60",
   selected: "border-accent-green/40 bg-pitch-800/40",
@@ -54,7 +56,9 @@ export const FILTER = {
 export const BTN = {
   base: `${TYPO.button} inline-flex min-h-[44px] items-center justify-center rounded-lg px-4 py-2.5 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-green`,
   primary:
-    "bg-accent-green text-pitch-950 hover:bg-accent-green/90 disabled:cursor-not-allowed disabled:opacity-50",
+    "border-2 border-accent-green/75 bg-accent-green text-pitch-950 shadow-[0_0_28px_rgba(34,197,94,0.35)] hover:bg-accent-green/90 hover:shadow-[0_0_36px_rgba(34,197,94,0.45)] disabled:cursor-not-allowed disabled:opacity-50",
+  primaryHard:
+    "border-2 border-red-500/75 bg-red-600 text-white shadow-[0_0_28px_rgba(220,38,38,0.4)] hover:bg-red-500 hover:shadow-[0_0_36px_rgba(220,38,38,0.5)] disabled:cursor-not-allowed disabled:opacity-50",
   primaryLg:
     "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-accent-green to-emerald-400 py-4 font-display text-lg font-black uppercase tracking-wider text-pitch-950 shadow-[0_0_30px_rgba(34,197,94,0.35)] transition-all hover:from-emerald-400 hover:to-accent-green hover:shadow-[0_0_40px_rgba(34,197,94,0.5)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
   primaryLgHard:
@@ -74,7 +78,7 @@ export const BTN = {
   tabGroupIdle:
     "text-gray-400 hover:border-accent-green/30 hover:bg-accent-green/10 hover:text-accent-green",
   hardActive:
-    "border-2 border-red-500/80 bg-red-950/75 text-white shadow-[0_0_28px_rgba(220,38,38,0.55),inset_0_1px_0_rgba(255,255,255,0.06)]",
+    "border-2 border-red-500/75 bg-red-600 text-white shadow-[0_0_28px_rgba(220,38,38,0.45),inset_0_1px_0_rgba(255,255,255,0.08)]",
   hardIdle: "text-gray-400 hover:border-red-500/30 hover:bg-red-950/30 hover:text-red-300",
   accentOutline: `w-full border border-accent-green/40 bg-accent-green/10 text-accent-green hover:border-accent-green/55 hover:bg-accent-green/20 sm:w-auto`,
   hardAccentOutline: `w-full border border-red-500/45 bg-red-950/35 text-red-300 hover:border-red-500/65 hover:bg-red-950/50 hover:text-red-200 sm:w-auto`,
@@ -86,15 +90,27 @@ export const BTN = {
   header: `header-control-btn flex h-11 min-h-[44px] min-w-[5.75rem] items-center justify-center gap-2 rounded-lg border border-pitch-600 px-4 text-sm font-medium text-gray-300 transition hover:border-accent-green hover:text-white`,
 } as const;
 
-/** Hard mode visual tokens. */
+/** Normal mode visual tokens — green mirror of HARD. */
+export const NORMAL = {
+  tabGroupRing:
+    "border-accent-green/40 shadow-[0_0_20px_rgba(34,197,94,0.15)]",
+  modeCardHover: "hover:border-accent-green/30 group-hover:text-accent-green",
+  reviewAccent: "text-gray-500",
+} as const;
+
+/** Hard mode visual tokens — red mirror of normal green styling. */
 export const HARD = {
   tabGroupRing:
     "border-red-500/45 shadow-[0_0_20px_rgba(220,38,38,0.18)]",
+  modeCard: CARD.featuredHard,
+  modeCardHover: "hover:border-red-500/40 group-hover:text-red-300",
   banner:
     "border border-red-500/50 bg-red-950/35 shadow-[0_0_16px_rgba(220,38,38,0.12)]",
   badge:
     "inline-flex items-center gap-2 rounded-lg border-2 border-red-500/60 bg-red-950/70 px-3 py-1.5 font-display text-[11px] font-black uppercase tracking-[0.22em] text-red-300 shadow-[0_0_18px_rgba(239,68,68,0.35)]",
   reviewAccent: "text-red-400",
+  itemActive: "border border-red-500/30 bg-red-950/40 text-red-300",
+  dot: "bg-red-500",
 } as const;
 
 /** Navigation & links. */
@@ -137,7 +153,12 @@ export function tabGroupButtonClass(
   return `${base} ${variant === "hard" ? BTN.hardActive : BTN.tabGroupActive}`;
 }
 
-/** Tab group wrapper — add red ring when hard mode is active. */
-export function tabGroupClass(hardActive = false): string {
-  return `${FILTER.tabGroup}${hardActive ? ` ${HARD.tabGroupRing}` : ""}`;
+/** Tab group wrapper — green ring when normal active, red when hard active. */
+export function tabGroupClass(
+  hardActive = false,
+  normalActive = false
+): string {
+  if (hardActive) return `${FILTER.tabGroup} ${HARD.tabGroupRing}`;
+  if (normalActive) return `${FILTER.tabGroup} ${NORMAL.tabGroupRing}`;
+  return FILTER.tabGroup;
 }

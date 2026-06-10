@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { GameDifficulty, GameMode } from "@/lib/types";
-import { setDifficulty } from "@/lib/storage/preferences";
+import { setHardModeEnabled } from "@/lib/storage/preferences";
 import { GameBoard } from "./GameBoard";
 
 interface GameStarterProps {
@@ -12,15 +12,6 @@ interface GameStarterProps {
   initialDifficulty?: GameDifficulty;
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
-}
-
-function resolveDifficulty(initialDifficulty: GameDifficulty): GameDifficulty {
-  if (typeof window === "undefined") return initialDifficulty;
-
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("difficulty") === "hard") return "HARD";
-  if (params.get("difficulty") === "normal") return "NORMAL";
-  return initialDifficulty;
 }
 
 export function GameStarter({
@@ -36,9 +27,21 @@ export function GameStarter({
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const resolved = resolveDifficulty(initialDifficulty);
+    const params = new URLSearchParams(window.location.search);
+    let resolved: GameDifficulty = initialDifficulty;
+    const difficultyParam = params.get("difficulty");
+
+    if (difficultyParam === "hard") resolved = "HARD";
+    else if (difficultyParam === "normal") resolved = "NORMAL";
+
     setDifficultyState(resolved);
-    setDifficulty(resolved);
+
+    if (difficultyParam === "hard") {
+      setHardModeEnabled(true);
+    } else if (difficultyParam === "normal") {
+      setHardModeEnabled(false);
+    }
+
     setReady(true);
   }, [initialDifficulty]);
 
