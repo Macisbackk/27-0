@@ -7,6 +7,8 @@ import { getAllStats } from "@/lib/storage/stats";
 import {
   STATS_TABS,
   getChallengeCupView,
+  getDraftModeView,
+  getHardDraftModeView,
   getHardModeView,
   getOverallView,
   getSuperLeagueView,
@@ -24,11 +26,18 @@ export function StatsPanel() {
   const [activeTab, setActiveTab] = useState<StatsTabId>("overall");
   const [normalStats, setNormalStats] = useState<UserStatsData | null>(null);
   const [hardStats, setHardStats] = useState<UserStatsData | null>(null);
+  const [draftNormalStats, setDraftNormalStats] =
+    useState<UserStatsData | null>(null);
+  const [draftHardStats, setDraftHardStats] = useState<UserStatsData | null>(
+    null
+  );
 
   const refresh = () => {
     const stored = getAllStats();
     setNormalStats(stored.normal);
     setHardStats(stored.hard);
+    setDraftNormalStats(stored.draftNormal);
+    setDraftHardStats(stored.draftHard);
   };
 
   useEffect(() => {
@@ -37,7 +46,7 @@ export function StatsPanel() {
     return () => window.removeEventListener("focus", refresh);
   }, []);
 
-  if (!normalStats || !hardStats) {
+  if (!normalStats || !hardStats || !draftNormalStats || !draftHardStats) {
     return (
       <div className="card-glass p-12 text-center text-gray-500">
         Loading stats...
@@ -45,7 +54,11 @@ export function StatsPanel() {
     );
   }
 
-  const hasAnyRuns = normalStats.totalRuns > 0 || hardStats.totalRuns > 0;
+  const hasAnyRuns =
+    normalStats.totalRuns > 0 ||
+    hardStats.totalRuns > 0 ||
+    draftNormalStats.totalSeasonsSimulated > 0 ||
+    draftHardStats.totalSeasonsSimulated > 0;
 
   return (
     <div className="space-y-6">
@@ -75,10 +88,21 @@ export function StatsPanel() {
       )}
 
       {activeTab === "overall" && (
-        <OverallTab normal={normalStats} hard={hardStats} />
+        <OverallTab
+          normal={normalStats}
+          hard={hardStats}
+          draftNormal={draftNormalStats}
+          draftHard={draftHardStats}
+        />
       )}
       {activeTab === "super-league" && <SuperLeagueTab stats={normalStats} />}
       {activeTab === "hard-mode" && <HardModeTab stats={hardStats} />}
+      {activeTab === "draft-mode" && (
+        <DraftModeTab
+          draftNormal={draftNormalStats}
+          draftHard={draftHardStats}
+        />
+      )}
       {activeTab === "challenge-cup" && (
         <ChallengeCupTab normal={normalStats} hard={hardStats} />
       )}
@@ -93,11 +117,15 @@ export function StatsPanel() {
 function OverallTab({
   normal,
   hard,
+  draftNormal,
+  draftHard,
 }: {
   normal: UserStatsData;
   hard: UserStatsData;
+  draftNormal: UserStatsData;
+  draftHard: UserStatsData;
 }) {
-  const view = getOverallView(normal, hard);
+  const view = getOverallView(normal, hard, draftNormal, draftHard);
 
   return (
     <div className="space-y-8">
@@ -354,6 +382,72 @@ function HardModeTab({ stats }: { stats: UserStatsData }) {
           label="Best Hard Mode Ranking"
           value={formatRankingOrDash(view.bestRanking)}
           highlight={view.bestRanking === 1}
+        />
+      </StatsSection>
+    </div>
+  );
+}
+
+function DraftModeTab({
+  draftNormal,
+  draftHard,
+}: {
+  draftNormal: UserStatsData;
+  draftHard: UserStatsData;
+}) {
+  const view = getDraftModeView(draftNormal);
+  const hardView = getHardDraftModeView(draftHard);
+
+  return (
+    <div className="space-y-8">
+      <StatsSection title="Draft Mode">
+        <StatCard label="Draft Mode Runs" value={String(view.runs)} />
+        <StatCard label="Draft Mode Wins" value={String(view.wins)} />
+        <StatCard label="Draft Mode Losses" value={String(view.losses)} />
+        <StatCard
+          label="Win Rate"
+          value={formatWinPercentageOrDash(
+            view.winPercentage,
+            view.wins + view.losses > 0
+          )}
+        />
+        <StatCard
+          label="Best Draft Mode Record"
+          value={formatRecordOrDash(view.hasSeasons ? view.bestRecord : null)}
+          highlight={view.bestRecord.wins >= 20}
+        />
+        <StatCard
+          label="Worst Draft Mode Record"
+          value={formatRecordOrDash(view.hasSeasons ? view.worstRecord : null)}
+        />
+        <StatCard
+          label="League Titles"
+          value={String(view.leagueTitles)}
+          highlight={view.leagueTitles > 0}
+        />
+        <StatCard
+          label="Draft Mode 27-0 Seasons"
+          value={String(view.perfectSeasons)}
+          highlight={view.perfectSeasons > 0}
+        />
+        <StatCard
+          label="Draft Mode 0-27 Seasons"
+          value={String(view.winlessSeasons)}
+        />
+      </StatsSection>
+
+      <StatsSection title="Hard Draft Mode" headerExtra={<HardModeBadge />}>
+        <StatCard label="Hard Draft Mode Runs" value={String(hardView.runs)} />
+        <StatCard
+          label="Hard Draft Mode Wins"
+          value={String(hardView.wins)}
+          highlight={hardView.wins > 0}
+        />
+        <StatCard label="Hard Draft Mode Losses" value={String(hardView.losses)} />
+        <StatCard
+          label="Hard Draft Mode 27-0 Seasons"
+          value={String(hardView.perfectSeasons)}
+          highlight={hardView.perfectSeasons > 0}
         />
       </StatsSection>
     </div>

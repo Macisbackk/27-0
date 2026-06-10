@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description:
     "Build the most valuable Super League rugby team from random player offers. Sign or skip — every decision matters.",
   openGraph: {
-    title: "27-0 — Super League Squad Builder",
+    title: "27-0 — Rugby League Squad Builder",
     description: "Can you build the ultimate Super League starting XIII?",
   },
 };

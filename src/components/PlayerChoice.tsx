@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import type { Player } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
 import { playHistoricPlayerAppears, playLegendAppears } from "@/lib/sound";
+import { DRAFT_MODE_RULE } from "@/lib/mode-labels";
 import { RL_SECTION_TITLE_CLASS } from "./cards/rl-card";
 import { PlayerCard } from "./PlayerCard";
 
@@ -76,12 +77,9 @@ export function PlayerChoice({
         {showDraftRule && (
           <p className="mx-auto mt-3 max-w-md rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-3 py-2 text-left text-xs text-gray-400">
             <span className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-green">
-              Draft Mode Rule
+              Draft Mode
             </span>
-            <span className="mt-1 block">
-              Place players in any empty slot. Out-of-position placements lose 5
-              OVR for this run (compatible swaps are fine).
-            </span>
+            <span className="mt-1 block">{DRAFT_MODE_RULE}</span>
           </p>
         )}
 

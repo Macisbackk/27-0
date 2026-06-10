@@ -13,12 +13,14 @@ export type StatsTabId =
   | "overall"
   | "super-league"
   | "hard-mode"
+  | "draft-mode"
   | "challenge-cup";
 
 export const STATS_TABS: { id: StatsTabId; label: string }[] = [
   { id: "overall", label: "Overall" },
   { id: "super-league", label: "Normal Mode" },
   { id: "hard-mode", label: "Hard Mode" },
+  { id: "draft-mode", label: "Draft Mode" },
   { id: "challenge-cup", label: "Challenge Cup" },
 ];
 
@@ -107,36 +109,61 @@ function pickBestCupFinish(
   return aRank >= bRank ? a : b;
 }
 
-export function getOverallView(normal: UserStatsData, hard: UserStatsData) {
+export function getOverallView(
+  normal: UserStatsData,
+  hard: UserStatsData,
+  draftNormal?: UserStatsData,
+  draftHard?: UserStatsData
+) {
+  const draftN = draftNormal ?? normal;
+  const draftH = draftHard ?? hard;
   const bestRecord = pickBestSeasonRecord(normal, hard);
   const worstRecord = pickWorstSeasonRecord(normal, hard);
-  const mergedDrafts = mergeDraftCounts(normal.draftCounts, hard.draftCounts);
+  const mergedDrafts = mergeDraftCounts(
+    mergeDraftCounts(normal.draftCounts, hard.draftCounts),
+    mergeDraftCounts(draftN.draftCounts, draftH.draftCounts)
+  );
   const mergedSeasonWins = mergeDraftCounts(
-    normal.playerSeasonWins,
-    hard.playerSeasonWins
+    mergeDraftCounts(normal.playerSeasonWins, hard.playerSeasonWins),
+    mergeDraftCounts(draftN.playerSeasonWins, draftH.playerSeasonWins)
   );
   const mergedSeasonLosses = mergeDraftCounts(
-    normal.playerSeasonLosses,
-    hard.playerSeasonLosses
+    mergeDraftCounts(normal.playerSeasonLosses, hard.playerSeasonLosses),
+    mergeDraftCounts(draftN.playerSeasonLosses, draftH.playerSeasonLosses)
   );
 
-  const lowestValues = [normal.lowestSquadValue, hard.lowestSquadValue].filter(
-    (v): v is number => v !== null
-  );
+  const lowestValues = [
+    normal.lowestSquadValue,
+    hard.lowestSquadValue,
+    draftN.lowestSquadValue,
+    draftH.lowestSquadValue,
+  ].filter((v): v is number => v !== null);
 
   return {
-    totalRuns: normal.totalRuns + hard.totalRuns,
+    totalRuns:
+      normal.totalRuns +
+      hard.totalRuns +
+      draftN.totalSeasonsSimulated +
+      draftH.totalSeasonsSimulated,
     totalWins:
       normal.seasonWins +
       normal.challengeCupWins +
       hard.seasonWins +
-      hard.challengeCupWins,
+      hard.challengeCupWins +
+      draftN.seasonWins +
+      draftH.seasonWins,
     totalLosses:
       normal.seasonLosses +
       normal.challengeCupLosses +
       hard.seasonLosses +
-      hard.challengeCupLosses,
-    totalSeasons: normal.totalSeasonsSimulated + hard.totalSeasonsSimulated,
+      hard.challengeCupLosses +
+      draftN.seasonLosses +
+      draftH.seasonLosses,
+    totalSeasons:
+      normal.totalSeasonsSimulated +
+      hard.totalSeasonsSimulated +
+      draftN.totalSeasonsSimulated +
+      draftH.totalSeasonsSimulated,
     bestRecord,
     worstRecord,
     longestUnbeatenRun: Math.max(
@@ -147,21 +174,33 @@ export function getOverallView(normal: UserStatsData, hard: UserStatsData) {
       normal.longestLosingStreak,
       hard.longestLosingStreak
     ),
-    leagueTitles: normal.leagueTitlesWon + hard.leagueTitlesWon,
+    leagueTitles:
+      normal.leagueTitlesWon +
+      hard.leagueTitlesWon +
+      draftN.leagueTitlesWon +
+      draftH.leagueTitlesWon,
     challengeCups: normal.challengeCupsWon + hard.challengeCupsWon,
     perfectSeasons:
-      normal.totalPerfectSeasons + hard.totalPerfectSeasons,
+      normal.totalPerfectSeasons +
+      hard.totalPerfectSeasons +
+      draftN.totalPerfectSeasons +
+      draftH.totalPerfectSeasons,
     winlessSeasons:
-      normal.totalWinlessSeasons + hard.totalWinlessSeasons,
+      normal.totalWinlessSeasons +
+      hard.totalWinlessSeasons +
+      draftN.totalWinlessSeasons +
+      draftH.totalWinlessSeasons,
     highestSquadValue: Math.max(
       normal.highestSquadValue,
-      hard.highestSquadValue
+      hard.highestSquadValue,
+      draftN.highestSquadValue,
+      draftH.highestSquadValue
     ),
     lowestSquadValue:
       lowestValues.length > 0 ? Math.min(...lowestValues) : null,
     bestNationalRanking: pickBestRanking(
-      normal.bestNationalRanking,
-      hard.bestNationalRanking
+      pickBestRanking(normal.bestNationalRanking, hard.bestNationalRanking),
+      pickBestRanking(draftN.bestNationalRanking, draftH.bestNationalRanking)
     ),
     mostSelected: getMostSelectedPlayer(mergedDrafts),
     mostSuccessful: getMostSuccessfulPlayer(mergedSeasonWins),
@@ -236,6 +275,38 @@ export function getHardModeView(stats: UserStatsData) {
       stats.bestNationalRanking,
       stats.bestCupNationalRanking
     ),
+  };
+}
+
+export function getDraftModeView(stats: UserStatsData) {
+  return {
+    runs: stats.totalSeasonsSimulated,
+    wins: stats.seasonWins,
+    losses: stats.seasonLosses,
+    winPercentage: formatWinPercentage(stats.seasonWins, stats.seasonLosses),
+    hasSeasons: stats.totalSeasonsSimulated > 0,
+    bestRecord: {
+      wins: stats.bestRecordWins,
+      losses: stats.bestRecordLosses,
+    },
+    worstRecord: {
+      wins: stats.worstRecordWins,
+      losses: stats.worstRecordLosses,
+    },
+    leagueTitles: stats.leagueTitlesWon,
+    perfectSeasons: stats.totalPerfectSeasons,
+    winlessSeasons: stats.totalWinlessSeasons,
+    bestRanking: stats.bestNationalRanking,
+  };
+}
+
+export function getHardDraftModeView(stats: UserStatsData) {
+  return {
+    runs: stats.totalSeasonsSimulated,
+    wins: stats.seasonWins,
+    losses: stats.seasonLosses,
+    perfectSeasons: stats.totalPerfectSeasons,
+    hasSeasons: stats.totalSeasonsSimulated > 0,
   };
 }
 

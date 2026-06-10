@@ -11,7 +11,6 @@ interface GameStarterProps {
   subtitle?: string;
   initialDifficulty?: GameDifficulty;
   joeMellorMode?: boolean;
-  draftMode?: boolean;
 }
 
 function resolveDifficulty(initialDifficulty: GameDifficulty): GameDifficulty {
@@ -30,7 +29,6 @@ export function GameStarter({
   subtitle,
   initialDifficulty = "NORMAL",
   joeMellorMode = false,
-  draftMode = false,
 }: GameStarterProps) {
   const [difficulty, setDifficultyState] =
     useState<GameDifficulty>(initialDifficulty);
@@ -58,7 +56,6 @@ export function GameStarter({
       subtitle={subtitle}
       difficulty={difficulty}
       joeMellorMode={joeMellorMode}
-      draftMode={draftMode}
     />
   );
 }

@@ -34,8 +34,9 @@ export function DraftPlacementBanner({
             Draft Mode Rule
           </p>
           <p className="mt-1">
-            You can place players in any empty position. Players used out of
-            position lose {OUT_OF_POSITION_PENALTY} rating points for this run.
+            Pick a player from the pair offered, then tap an empty slot on the
+            team sheet. No penalty at natural position; −5 OVR if out of
+            position. Repeat until your squad is full.
           </p>
           <p className="mt-1 text-gray-500">
             Compatible swaps (no penalty): Wing/Full Back, Stand Off/Scrum Half,

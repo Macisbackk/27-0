@@ -4,13 +4,14 @@ import { useCallback, useEffect, useState } from "react";
 import type { GameDifficulty, LeaderboardPeriod, LeaderboardRow } from "@/lib/types";
 import { formatValue } from "@/lib/players";
 import { formatPeriodLabel } from "@/lib/leaderboard";
-import { getLeaderboardAsync } from "@/lib/storage/leaderboard";
+import {
+  getLeaderboardAsync,
+  type LeaderboardDbMode,
+} from "@/lib/storage/leaderboard";
 import { ChallengeCupLeaderboard } from "./ChallengeCupLeaderboard";
 import { HardModeBadge } from "./HardModeBadge";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
-
-type LeaderboardMode = "super-league" | "challenge-cup";
 
 interface LeaderboardTableProps {
   initialDifficulty?: GameDifficulty;
@@ -20,7 +21,7 @@ export function LeaderboardTable({
   initialDifficulty = "NORMAL",
 }: LeaderboardTableProps) {
   const [leaderboardMode, setLeaderboardMode] =
-    useState<LeaderboardMode>("super-league");
+    useState<LeaderboardDbMode>("super-league");
   const [period, setPeriod] = useState<LeaderboardPeriod>("ALL_TIME");
   const [difficulty, setDifficulty] =
     useState<GameDifficulty>(initialDifficulty);
@@ -29,14 +30,14 @@ export function LeaderboardTable({
   const [usingFallback, setUsingFallback] = useState(false);
 
   const loadEntries = useCallback(async () => {
-    if (leaderboardMode !== "super-league") return;
+    if (leaderboardMode === "challenge-cup") return;
     setLoading(true);
     try {
       const result = await getLeaderboardAsync(
         period,
         difficulty,
         50,
-        "super-league"
+        leaderboardMode
       );
       setEntries(result.rows);
       setUsingFallback(result.source === "local");
@@ -49,6 +50,13 @@ export function LeaderboardTable({
     void loadEntries();
   }, [loadEntries]);
 
+  const modeLabel =
+    leaderboardMode === "draft"
+      ? "Draft Mode"
+      : leaderboardMode === "challenge-cup"
+        ? "Challenge Cup"
+        : "Normal Mode";
+
   return (
     <div>
       <div className="mb-4 flex flex-wrap gap-2">
@@ -60,7 +68,17 @@ export function LeaderboardTable({
               : "bg-pitch-800 text-gray-400 hover:text-white"
           }`}
         >
-          Super League
+          Normal Mode
+        </button>
+        <button
+          onClick={() => setLeaderboardMode("draft")}
+          className={`rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
+            leaderboardMode === "draft"
+              ? "bg-accent-green text-pitch-950"
+              : "bg-pitch-800 text-gray-400 hover:text-white"
+          }`}
+        >
+          Draft Mode
         </button>
         <button
           onClick={() => setLeaderboardMode("challenge-cup")}
@@ -87,7 +105,7 @@ export function LeaderboardTable({
                   : "bg-pitch-800 text-gray-400 hover:text-white"
               }`}
             >
-              Normal Mode
+              {leaderboardMode === "draft" ? "Standard Draft" : "Normal Mode"}
             </button>
             <button
               onClick={() => setDifficulty("HARD")}
@@ -97,7 +115,7 @@ export function LeaderboardTable({
                   : "bg-pitch-800 text-gray-400 hover:text-white"
               }`}
             >
-              Hard Mode
+              {leaderboardMode === "draft" ? "Hard Draft" : "Hard Mode"}
             </button>
           </div>
 
@@ -129,8 +147,8 @@ export function LeaderboardTable({
             </div>
           ) : entries.length === 0 ? (
             <div className="matchday-panel p-12 text-center text-gray-500">
-              No {difficulty === "HARD" ? "hard mode" : "normal"} entries yet.
-              Complete a run to appear on the leaderboard!
+              No {modeLabel.toLowerCase()} entries yet. Complete a run to appear
+              on the leaderboard!
             </div>
           ) : (
             <div className="matchday-panel overflow-hidden">
@@ -181,7 +199,8 @@ export function LeaderboardTable({
               ? "Showing local fallback · online sync unavailable"
               : "Updated online across all players"}
             {" · "}
-            {difficulty === "HARD" ? "Hard Mode" : "Normal Mode"}
+            {modeLabel}
+            {difficulty === "HARD" ? " · Hard" : ""}
           </p>
         </>
       )}

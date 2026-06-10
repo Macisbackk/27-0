@@ -144,6 +144,34 @@ interface StoredStats {
 
   hard: UserStatsData;
 
+  draftNormal: UserStatsData;
+
+  draftHard: UserStatsData;
+
+}
+
+
+
+export type StatsBucket = keyof StoredStats;
+
+
+
+export function resolveStatsBucket(
+
+  mode: import("../types").GameMode,
+
+  difficulty: GameDifficulty
+
+): StatsBucket {
+
+  if (mode === "DRAFT") {
+
+    return difficulty === "HARD" ? "draftHard" : "draftNormal";
+
+  }
+
+  return difficulty === "HARD" ? "hard" : "normal";
+
 }
 
 
@@ -220,7 +248,17 @@ function loadStoredStats(): StoredStats {
 
   if (typeof window === "undefined") {
 
-    return { normal: { ...EMPTY_STATS }, hard: { ...EMPTY_STATS } };
+    return {
+
+      normal: { ...EMPTY_STATS },
+
+      hard: { ...EMPTY_STATS },
+
+      draftNormal: { ...EMPTY_STATS },
+
+      draftHard: { ...EMPTY_STATS },
+
+    };
 
   }
 
@@ -228,7 +266,21 @@ function loadStoredStats(): StoredStats {
 
     const raw = localStorage.getItem(STORAGE_KEYS.stats);
 
-    if (!raw) return { normal: { ...EMPTY_STATS }, hard: { ...EMPTY_STATS } };
+    if (!raw) {
+
+      return {
+
+        normal: { ...EMPTY_STATS },
+
+        hard: { ...EMPTY_STATS },
+
+        draftNormal: { ...EMPTY_STATS },
+
+        draftHard: { ...EMPTY_STATS },
+
+      };
+
+    }
 
     const parsed = JSON.parse(raw) as Partial<StoredStats> & Partial<UserStatsData>;
 
@@ -242,6 +294,10 @@ function loadStoredStats(): StoredStats {
 
         hard: migrateUserStats(parsed.hard ?? {}),
 
+        draftNormal: migrateUserStats(parsed.draftNormal ?? {}),
+
+        draftHard: migrateUserStats(parsed.draftHard ?? {}),
+
       };
 
     }
@@ -254,11 +310,25 @@ function loadStoredStats(): StoredStats {
 
       hard: { ...EMPTY_STATS },
 
+      draftNormal: { ...EMPTY_STATS },
+
+      draftHard: { ...EMPTY_STATS },
+
     };
 
   } catch {
 
-    return { normal: { ...EMPTY_STATS }, hard: { ...EMPTY_STATS } };
+    return {
+
+      normal: { ...EMPTY_STATS },
+
+      hard: { ...EMPTY_STATS },
+
+      draftNormal: { ...EMPTY_STATS },
+
+      draftHard: { ...EMPTY_STATS },
+
+    };
 
   }
 
@@ -276,11 +346,49 @@ function saveStoredStats(data: StoredStats): void {
 
 
 
-export function getStats(difficulty: GameDifficulty = "NORMAL"): UserStatsData {
+export function getStats(
+
+  difficulty: GameDifficulty = "NORMAL",
+
+  bucket?: StatsBucket
+
+): UserStatsData {
 
   const stored = loadStoredStats();
 
-  return difficulty === "HARD" ? stored.hard : stored.normal;
+  const key = bucket ?? (difficulty === "HARD" ? "hard" : "normal");
+
+  return stored[key];
+
+}
+
+
+
+export function getClassicStats(
+
+  difficulty: GameDifficulty = "NORMAL"
+
+): UserStatsData {
+
+  return getStats(difficulty, difficulty === "HARD" ? "hard" : "normal");
+
+}
+
+
+
+export function getDraftStats(
+
+  difficulty: GameDifficulty = "NORMAL"
+
+): UserStatsData {
+
+  return getStats(
+
+    difficulty,
+
+    difficulty === "HARD" ? "draftHard" : "draftNormal"
+
+  );
 
 }
 
@@ -298,13 +406,15 @@ export function updateRerollStats(
 
   rerollsUsed: number,
 
-  difficulty: GameDifficulty = "NORMAL"
+  difficulty: GameDifficulty = "NORMAL",
+
+  bucket: StatsBucket = "normal"
 
 ): UserStatsData {
 
-  if (difficulty === "HARD") {
+  if (difficulty === "HARD" || bucket.startsWith("draft")) {
 
-    return getStats(difficulty);
+    return getStats(difficulty, bucket);
 
   }
 
@@ -312,7 +422,7 @@ export function updateRerollStats(
 
   const stored = loadStoredStats();
 
-  const existing = stored.normal;
+  const existing = stored[bucket];
 
   const newTotalRuns = existing.totalRuns;
 
@@ -342,7 +452,7 @@ export function updateRerollStats(
 
 
 
-  stored.normal = updated;
+  stored[bucket] = updated;
 
   saveStoredStats(stored);
 
@@ -360,13 +470,15 @@ export function updateStats(
 
   difficulty: GameDifficulty = "NORMAL",
 
-  achievedAt = new Date()
+  achievedAt = new Date(),
+
+  bucket: StatsBucket = "normal"
 
 ): UserStatsData {
 
   const stored = loadStoredStats();
 
-  const existing = difficulty === "HARD" ? stored.hard : stored.normal;
+  const existing = stored[bucket];
 
   const squad = buildSquadFromIds(signedIds);
 
@@ -462,15 +574,7 @@ export function updateStats(
 
 
 
-  if (difficulty === "HARD") {
-
-    stored.hard = updated;
-
-  } else {
-
-    stored.normal = updated;
-
-  }
+  stored[bucket] = updated;
 
   saveStoredStats(stored);
 
@@ -484,27 +588,21 @@ export function updateSeasonLifetimeStats(
 
   input: SeasonLifetimeInput,
 
-  difficulty: GameDifficulty = "NORMAL"
+  difficulty: GameDifficulty = "NORMAL",
+
+  bucket: StatsBucket = "normal"
 
 ): UserStatsData {
 
   const stored = loadStoredStats();
 
-  const existing = difficulty === "HARD" ? stored.hard : stored.normal;
+  const existing = stored[bucket];
 
   const updated = applySeasonLifetimeUpdate(existing, input);
 
 
 
-  if (difficulty === "HARD") {
-
-    stored.hard = updated;
-
-  } else {
-
-    stored.normal = updated;
-
-  }
+  stored[bucket] = updated;
 
   saveStoredStats(stored);
 

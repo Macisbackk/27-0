@@ -40,6 +40,8 @@ export interface PlayerTryTotal {
 
 interface SquadEntry {
   player: SquadSlot["player"] & NonNullable<SquadSlot["player"]>;
+  playedPosition: Position;
+  slot: SquadSlot;
 }
 
 function getMaxIndividualTries(seasonWins: number, seasonTries: number): number {
@@ -60,22 +62,20 @@ function getPlayerCap(
 ): number {
   return Math.min(
     getMaxIndividualTries(seasonWins, seasonTries),
-    getPositionCap(entry.player.position, seasonTries)
+    getPositionCap(entry.playedPosition, seasonTries)
   );
 }
 
 function getMatchWeights(
   entries: SquadEntry[],
-  slots: SquadSlot[],
   rng: () => number
 ): number[] {
-  return entries.map((e, i) => {
-    const slot = slots.find((s) => s.player?.id === e.player.id);
+  return entries.map((e) => {
     const ratingFactor =
-      slot && slot.runRatingPenalty
-        ? Math.max(0.75, getEffectivePeakRating(slot) / e.player.peakRating)
+      e.slot.runRatingPenalty
+        ? Math.max(0.75, getEffectivePeakRating(e.slot) / e.player.peakRating)
         : 1;
-    const base = getPlayerTryWeight(e.player) * ratingFactor;
+    const base = getPlayerTryWeight(e.player, e.playedPosition) * ratingFactor;
     const variance = 0.9 + rng() * 0.2;
     return Math.max(0.05, base * variance);
   });
@@ -84,8 +84,8 @@ function getMatchWeights(
 function pickKicker(entries: SquadEntry[]): SquadEntry | null {
   const halves = entries.filter(
     (e) =>
-      e.player.position === "SCRUM_HALF" ||
-      e.player.position === "STAND_OFF"
+      e.playedPosition === "SCRUM_HALF" ||
+      e.playedPosition === "STAND_OFF"
   );
   if (halves.length === 0) return entries[0] ?? null;
   return halves.sort((a, b) => b.player.peakRating - a.player.peakRating)[0];
@@ -182,7 +182,9 @@ function rebalanceTowardCaps(
   rng: () => number
 ): void {
   const caps = entries.map((e) => getPlayerCap(e, seasonTries, seasonWins));
-  const weights = entries.map((e) => getPlayerTryWeight(e.player));
+  const weights = entries.map((e) =>
+    getPlayerTryWeight(e.player, e.playedPosition)
+  );
   const maxIterations = seasonTries * entries.length * 3;
 
   for (let guard = 0; guard < maxIterations; guard++) {
@@ -258,12 +260,16 @@ export function enrichSingleFixtureScoring(
 ): void {
   const entries: SquadEntry[] = squad
     .filter((s) => s.player)
-    .map((s) => ({ player: s.player! }));
+    .map((s) => ({
+      player: s.player!,
+      playedPosition: s.position,
+      slot: s,
+    }));
 
   if (entries.length === 0) return;
 
   const rng = seedrandom(`${seed}-tries-${fixture.round}`);
-  const weights = getMatchWeights(entries, squad, rng);
+  const weights = getMatchWeights(entries, rng);
   const matchAlloc = allocateMatchTries(fixture.triesFor, weights, rng);
   applyScoringDetails(entries, [fixture], [matchAlloc], seed);
 }
@@ -280,7 +286,11 @@ export function distributeSeasonTries(
 ): PlayerTryTotal[] {
   const entries: SquadEntry[] = squad
     .filter((s) => s.player)
-    .map((s) => ({ player: s.player! }));
+    .map((s) => ({
+      player: s.player!,
+      playedPosition: s.position,
+      slot: s,
+    }));
 
   if (entries.length === 0) return [];
 
@@ -288,7 +298,7 @@ export function distributeSeasonTries(
   const perMatchAllocs: number[][] = [];
 
   for (const fixture of fixtures) {
-    const weights = getMatchWeights(entries, squad, rng);
+    const weights = getMatchWeights(entries, rng);
     const matchAlloc = allocateMatchTries(fixture.triesFor, weights, rng);
     perMatchAllocs.push(matchAlloc);
   }

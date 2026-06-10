@@ -6,6 +6,7 @@ import type { GameDifficulty, GameMode, SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
 import { getSeasonSummaryMessage } from "@/lib/game/season-simulation";
 import { getSeasonGradeFromSquad } from "@/lib/grades";
+import { getSeasonReviewLabel } from "@/lib/mode-labels";
 import { getClubBreakdownSummary } from "@/lib/squad-analysis";
 import { generateSeasonAwards } from "@/lib/season-awards";
 import { getSquadValue } from "@/lib/positions";
@@ -45,6 +46,7 @@ interface SeasonReviewProps {
 
 export function SeasonReview({
   squad,
+  mode,
   seasonResult,
   seed,
   difficulty = "NORMAL",
@@ -120,7 +122,7 @@ export function SeasonReview({
           className="w-full max-w-xl text-center"
         >
           <p className="font-display text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
-            Season Review
+            {getSeasonReviewLabel(mode, difficulty)}
           </p>
 
           <ReviewSubmissionNotice submittedOnline={submittedOnline} />

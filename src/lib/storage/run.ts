@@ -11,10 +11,12 @@ import { isLoggedIn } from "../auth-session";
 import { getUsername } from "./user";
 import {
   getAllStats,
+  resolveStatsBucket,
   updateRerollStats,
   updateSeasonLifetimeStats,
   updateStats,
 } from "./stats";
+import { gameModeToDbMode } from "./leaderboard";
 
 export interface CompletedRunResult {
   cupRanking?: CupRunRankingResult;
@@ -48,12 +50,13 @@ export async function recordCompletedRun(
   const losses = options?.seasonLosses ?? 0;
   const loggedIn = isLoggedIn();
   const isHiddenRun = options?.joeMellorMode === true;
+  const statsBucket = resolveStatsBucket(run.mode, difficulty);
 
   if (!isHiddenRun) {
-    updateStats(signedIds, totalValue, difficulty);
+    updateStats(signedIds, totalValue, difficulty, new Date(), statsBucket);
 
-    if (difficulty === "NORMAL") {
-      updateRerollStats(options?.rerollsUsed ?? 0, difficulty);
+    if (difficulty === "NORMAL" && run.mode === "CLASSIC") {
+      updateRerollStats(options?.rerollsUsed ?? 0, difficulty, statsBucket);
     }
   }
 
@@ -68,8 +71,9 @@ export async function recordCompletedRun(
   if (loggedIn && !isHiddenRun) {
     await addLeaderboardEntry(totalValue, run.mode, difficulty, { wins, losses });
     if (!isCupRun) {
+      const dbMode = gameModeToDbMode(run.mode);
       nationalRank = (
-        await getLeaderboardAsync("ALL_TIME", difficulty, 50, "super-league")
+        await getLeaderboardAsync("ALL_TIME", difficulty, 50, dbMode)
       ).rows.find((e) => e.isCurrentUser)?.rank;
     }
   }
@@ -102,7 +106,8 @@ export async function recordCompletedRun(
           averageSquadRating: options.averageSquadRating,
           matchResults: options.matchResults ?? [],
         },
-        difficulty
+        difficulty,
+        statsBucket
       );
 
       updateCupLeaderboardProfile(
@@ -154,7 +159,8 @@ export async function recordCompletedRun(
         cupWon: options.cupWon,
         averageSquadRating: options.averageSquadRating,
       },
-      difficulty
+      difficulty,
+      statsBucket
     );
   }
 

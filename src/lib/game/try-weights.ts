@@ -33,7 +33,11 @@ export function getCareerTryMultiplier(player: Player): number {
 }
 
 /** Combined position + career try weight for match allocation. */
-export function getPlayerTryWeight(player: Player): number {
-  const positionWeight = POSITION_TRY_WEIGHT[player.position];
+export function getPlayerTryWeight(
+  player: Player,
+  playedPosition?: Position
+): number {
+  const position = playedPosition ?? player.position;
+  const positionWeight = POSITION_TRY_WEIGHT[position];
   return positionWeight * getCareerTryMultiplier(player);
 }

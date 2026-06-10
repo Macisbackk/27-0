@@ -14,6 +14,7 @@ alter table public.leaderboard add column if not exists wins integer;
 alter table public.leaderboard add column if not exists losses integer;
 
 update public.leaderboard set mode = 'super-league' where mode is null;
+-- Valid mode values: super-league, challenge-cup, draft
 update public.leaderboard set difficulty = 'NORMAL' where difficulty is null;
 update public.leaderboard set wins = 0 where wins is null;
 update public.leaderboard set losses = 0 where losses is null;

@@ -36,10 +36,12 @@ export interface SupabaseLeaderboardRow {
   created_at: string;
 }
 
-export type LeaderboardDbMode = "super-league" | "challenge-cup";
+export type LeaderboardDbMode = "super-league" | "challenge-cup" | "draft";
 
 export function gameModeToDbMode(mode: GameMode): LeaderboardDbMode {
-  return mode === "CHALLENGE_CUP" ? "challenge-cup" : "super-league";
+  if (mode === "CHALLENGE_CUP") return "challenge-cup";
+  if (mode === "DRAFT") return "draft";
+  return "super-league";
 }
 
 function loadLocalEntries(): StoredLeaderboardEntry[] {
@@ -114,7 +116,11 @@ function mapLocalToRows(
 ): LeaderboardRow[] {
   const periodKey = getPeriodKey(period);
   const gameMode: GameMode =
-    dbMode === "challenge-cup" ? "CHALLENGE_CUP" : "CLASSIC";
+    dbMode === "challenge-cup"
+      ? "CHALLENGE_CUP"
+      : dbMode === "draft"
+        ? "DRAFT"
+        : "CLASSIC";
 
   const filtered = loadLocalEntries().filter(
     (e) =>

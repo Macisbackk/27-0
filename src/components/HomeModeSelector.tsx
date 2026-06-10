@@ -3,163 +3,159 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { GameDifficulty } from "@/lib/types";
-import {
-  getDifficulty,
-  getRecruitmentStyle,
-  setDifficulty,
-  setRecruitmentStyle,
-  type RecruitmentStyle,
-} from "@/lib/storage/preferences";
 import { GuestNotice } from "./GuestNotice";
 import { TYPO } from "@/lib/ui/typography";
 
-function buildPlayQuery(
-  difficulty: GameDifficulty,
-  options?: { cup?: boolean; draft?: boolean }
+function buildPlayHref(
+  mode: "classic" | "draft" | "cup",
+  difficulty: GameDifficulty = "NORMAL"
 ): string {
   const params = new URLSearchParams();
-  if (options?.cup) params.set("cup", "1");
+  if (mode === "cup") params.set("cup", "1");
+  if (mode === "draft") params.set("draft", "1");
   if (difficulty === "HARD") params.set("difficulty", "hard");
-  if (options?.draft) params.set("draft", "1");
   const qs = params.toString();
-  return qs ? `?${qs}` : "";
+  return qs ? `/play?${qs}` : "/play";
 }
 
 export function HomeModeSelector() {
-  const [difficulty, setDifficultyState] = useState<GameDifficulty>("NORMAL");
-  const [recruitmentStyle, setRecruitmentStyleState] =
-    useState<RecruitmentStyle>("manual");
+  const [draftDifficulty, setDraftDifficulty] =
+    useState<GameDifficulty>("NORMAL");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setDifficultyState(getDifficulty());
-    setRecruitmentStyleState(getRecruitmentStyle());
     setMounted(true);
   }, []);
 
-  const selectDifficulty = (d: GameDifficulty) => {
-    setDifficulty(d);
-    setDifficultyState(d);
-  };
-
-  const selectRecruitmentStyle = (style: RecruitmentStyle) => {
-    setRecruitmentStyle(style);
-    setRecruitmentStyleState(style);
-  };
-
-  const seasonHref = mounted
-    ? `/play${buildPlayQuery(difficulty, {
-        draft: recruitmentStyle === "draft",
-      })}`
-    : "/play";
-  const cupHref = mounted
-    ? `/play${buildPlayQuery(difficulty, { cup: true })}`
-    : "/play?cup=1";
+  const draftHref = mounted
+    ? buildPlayHref("draft", draftDifficulty)
+    : "/play?draft=1";
 
   return (
     <div>
       <GuestNotice variant="home" />
 
-      <div className="mb-8 mt-4 flex flex-col items-center">
-        <p className={`mb-3 ${TYPO.sectionLabel}`}>Select Difficulty</p>
-        <div className="inline-flex rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1">
-          <button
-            type="button"
-            onClick={() => selectDifficulty("NORMAL")}
-            className={`rounded-lg px-6 py-2.5 font-display text-sm font-bold uppercase tracking-wider transition ${
-              difficulty === "NORMAL"
-                ? "bg-accent-green text-pitch-950 shadow-lg"
-                : "text-gray-400 hover:text-white"
-            }`}
-          >
-            Normal Mode
-          </button>
-          <button
-            type="button"
-            onClick={() => selectDifficulty("HARD")}
-            className={`rounded-lg px-6 py-2.5 font-display text-sm font-bold uppercase tracking-wider transition ${
-              difficulty === "HARD"
-                ? "bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.4)]"
-                : "text-gray-400 hover:text-white"
-            }`}
-          >
-            Hard Mode
-          </button>
-        </div>
-        {difficulty === "HARD" && (
-          <p className="mt-3 max-w-md text-center text-xs text-red-400/80">
-            Ratings and values hidden — judge players by Rugby League knowledge
-            alone.
-          </p>
-        )}
-      </div>
+      <div className="mx-auto grid max-w-3xl gap-4 sm:grid-cols-2">
+        <ModeCard
+          href="/play"
+          title="Normal Mode"
+          description="Draft your XIII position by position and simulate a full Super League campaign. Can you go 27-0?"
+          action="Start Season"
+          accent="green"
+        />
 
-      <div className="mx-auto mb-6 flex max-w-2xl flex-col items-center">
-          <p className={`mb-3 ${TYPO.sectionLabel}`}>Recruitment Style</p>
-          <div className="inline-flex rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1">
-            <button
-              type="button"
-              onClick={() => selectRecruitmentStyle("manual")}
-              className={`rounded-lg px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:px-6 sm:text-sm ${
-                recruitmentStyle === "manual"
-                  ? "bg-accent-green text-pitch-950 shadow-lg"
-                  : "text-gray-400 hover:text-white"
-              }`}
-            >
-              Manual Position
-            </button>
-            <button
-              type="button"
-              onClick={() => selectRecruitmentStyle("draft")}
-              className={`rounded-lg px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:px-6 sm:text-sm ${
-                recruitmentStyle === "draft"
-                  ? "bg-accent-green text-pitch-950 shadow-lg"
-                  : "text-gray-400 hover:text-white"
-              }`}
-            >
-              Draft Mode
-            </button>
-          </div>
-          <p className="mt-2 max-w-md text-center text-xs text-gray-500">
-            {recruitmentStyle === "manual"
-              ? "Choose which position to fill on the team sheet."
-              : "Pick players, then place them in any empty slot. Out-of-position placements cost 5 OVR."}
-          </p>
-        </div>
+        <ModeCard
+          href="/play?difficulty=hard"
+          title="Hard Mode"
+          description="Ratings and values hidden during recruitment — judge players by Rugby League knowledge alone."
+          action="Start Hard Season"
+          accent="red"
+        />
 
-      <div className="mx-auto grid max-w-2xl gap-4 sm:grid-cols-2">
-        <Link
-          href={seasonHref}
-          className="card-glass matchday-panel group block p-6 transition hover:border-accent-green/30"
-        >
+        <div className="card-glass matchday-panel group flex flex-col p-6 transition hover:border-accent-green/30">
           <h2 className="font-display text-xl font-bold group-hover:text-accent-green">
-            Normal Mode
+            Draft Mode
           </h2>
-          <p className="mt-2 text-sm text-gray-400">
-            Draft your XIII and simulate a full Super League campaign. Can you
-            go 27-0?
+          <p className="mt-2 flex-1 text-sm text-gray-400">
+            Pick players from pairs, then place them in any empty slot. Natural
+            positions carry no penalty; out-of-position placements cost 5 OVR.
           </p>
-          <span className="mt-4 inline-block text-sm font-semibold text-accent-green">
-            Start Season →
-          </span>
-        </Link>
 
-        <Link
-          href={cupHref}
-          className="card-glass matchday-panel group block p-6 transition hover:border-accent-gold/30"
-        >
-          <h2 className="font-display text-xl font-bold group-hover:text-accent-gold">
-            Challenge Cup
-          </h2>
-          <p className="mt-2 text-sm text-gray-400">
-            Draft your squad and battle through a knockout tournament. Win four
-            matches to lift the cup.
-          </p>
-          <span className="mt-4 inline-block text-sm font-semibold text-accent-gold">
-            Start Cup Run →
-          </span>
-        </Link>
+          <div className="mt-4">
+            <p className={`mb-2 ${TYPO.sectionLabel}`}>Draft Type</p>
+            <div className="inline-flex rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1">
+              <button
+                type="button"
+                onClick={() => setDraftDifficulty("NORMAL")}
+                className={`rounded-lg px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-5 sm:text-sm ${
+                  draftDifficulty === "NORMAL"
+                    ? "bg-accent-green text-pitch-950 shadow-lg"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                Standard Draft
+              </button>
+              <button
+                type="button"
+                onClick={() => setDraftDifficulty("HARD")}
+                className={`rounded-lg px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-5 sm:text-sm ${
+                  draftDifficulty === "HARD"
+                    ? "bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.4)]"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                Hard Draft
+              </button>
+            </div>
+            {draftDifficulty === "HARD" && (
+              <p className="mt-2 text-xs text-red-400/80">
+                Ratings and values hidden until season review.
+              </p>
+            )}
+          </div>
+
+          <Link
+            href={draftHref}
+            className="mt-4 inline-block text-sm font-semibold text-accent-green"
+          >
+            Start Draft →
+          </Link>
+        </div>
+
+        <ModeCard
+          href="/play?cup=1"
+          title="Challenge Cup"
+          description="Draft your squad and battle through a knockout tournament. Win four matches to lift the cup."
+          action="Start Challenge Cup"
+          accent="gold"
+        />
       </div>
     </div>
+  );
+}
+
+function ModeCard({
+  href,
+  title,
+  description,
+  action,
+  accent,
+}: {
+  href: string;
+  title: string;
+  description: string;
+  action: string;
+  accent: "green" | "red" | "gold";
+}) {
+  const hoverBorder =
+    accent === "gold"
+      ? "hover:border-accent-gold/30"
+      : accent === "red"
+        ? "hover:border-red-500/30"
+        : "hover:border-accent-green/30";
+  const hoverTitle =
+    accent === "gold"
+      ? "group-hover:text-accent-gold"
+      : accent === "red"
+        ? "group-hover:text-red-400"
+        : "group-hover:text-accent-green";
+  const actionColor =
+    accent === "gold"
+      ? "text-accent-gold"
+      : accent === "red"
+        ? "text-red-400"
+        : "text-accent-green";
+
+  return (
+    <Link
+      href={href}
+      className={`card-glass matchday-panel group block p-6 transition ${hoverBorder}`}
+    >
+      <h2 className={`font-display text-xl font-bold ${hoverTitle}`}>{title}</h2>
+      <p className="mt-2 text-sm text-gray-400">{description}</p>
+      <span className={`mt-4 inline-block text-sm font-semibold ${actionColor}`}>
+        {action} →
+      </span>
+    </Link>
   );
 }

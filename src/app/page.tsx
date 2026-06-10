@@ -12,7 +12,7 @@ export default function HomePage() {
       <div className="relative mx-auto max-w-4xl px-4 py-12 sm:py-20">
         <div className="text-center">
           <p className="font-display text-xs font-bold uppercase tracking-[0.35em] text-accent-green">
-            Super League Squad Builder
+            Rugby League Squad Builder
           </p>
           <h1 className="mt-3 text-5xl font-black tracking-tight sm:text-7xl">
             <span className="text-gradient">27</span>

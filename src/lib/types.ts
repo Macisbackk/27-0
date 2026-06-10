@@ -23,7 +23,7 @@ export type UtilityPositionHint = {
 
 export type PlayerCategory = "current" | "historic" | "legend";
 
-export type GameMode = "CLASSIC" | "CHALLENGE_CUP";
+export type GameMode = "CLASSIC" | "CHALLENGE_CUP" | "DRAFT";
 
 export type GameDifficulty = "NORMAL" | "HARD";
 

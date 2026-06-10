@@ -1,4 +1,9 @@
 import { GameStarter } from "@/components/GameStarter";
+import {
+  DRAFT_MODE_INTRO,
+  getPlayPageTitle,
+} from "@/lib/mode-labels";
+import type { GameDifficulty, GameMode } from "@/lib/types";
 
 export default async function PlayPage({
   searchParams,
@@ -17,14 +22,23 @@ export default async function PlayPage({
   const wantsDraft = params.draft === "1";
 
   const joeMellorMode = wantsJoeMellor;
-  const difficulty = wantsHard ? ("HARD" as const) : ("NORMAL" as const);
-  const mode = wantsCup ? ("CHALLENGE_CUP" as const) : ("CLASSIC" as const);
+  const difficulty: GameDifficulty = wantsHard ? "HARD" : "NORMAL";
 
-  const title = wantsCup ? "Challenge Cup" : "Normal Mode";
+  let mode: GameMode = "CLASSIC";
+  if (wantsCup) {
+    mode = "CHALLENGE_CUP";
+  } else if (wantsDraft && !joeMellorMode) {
+    mode = "DRAFT";
+  }
 
-  const subtitle = wantsCup
-    ? "Choose your club, draft club legends, and fight through a knockout tournament."
-    : undefined;
+  const title = joeMellorMode ? "Joe Mellor Mode" : getPlayPageTitle(mode, difficulty);
+
+  const subtitle =
+    mode === "CHALLENGE_CUP"
+      ? "Choose your club, draft club legends, and fight through a knockout tournament."
+      : mode === "DRAFT"
+        ? DRAFT_MODE_INTRO
+        : undefined;
 
   return (
     <GameStarter
@@ -33,7 +47,6 @@ export default async function PlayPage({
       subtitle={subtitle}
       initialDifficulty={difficulty}
       joeMellorMode={joeMellorMode}
-      draftMode={wantsDraft && !wantsCup && !joeMellorMode}
     />
   );
 }

@@ -68,7 +68,6 @@ interface GameBoardProps {
   title?: string;
   subtitle?: string;
   joeMellorMode?: boolean;
-  draftMode?: boolean;
 }
 
 function createRunSeed(runKey: number): string {
@@ -85,9 +84,9 @@ export function GameBoard({
   title,
   subtitle,
   joeMellorMode = false,
-  draftMode = false,
 }: GameBoardProps) {
   const isChallengeCup = mode === "CHALLENGE_CUP";
+  const isDraftMode = mode === "DRAFT";
   const [runKey, setRunKey] = useState(0);
   const [phase, setPhase] = useState<GamePhase>(
     isChallengeCup ? "clubSelect" : "pitch"
@@ -151,7 +150,7 @@ export function GameBoard({
     const pickCount = TOTAL_SLOTS - skipCount;
 
     setSlotOffers(
-      draftMode && !isChallengeCup
+      isDraftMode
         ? generateDraftOffers(seed, pickCount, lockedIds, recruitmentOptions)
         : generateSlotOffers(
             seed,
@@ -173,7 +172,7 @@ export function GameBoard({
     isChallengeCup,
     cupClub,
     isHardMode,
-    draftMode,
+    isDraftMode,
   ]);
 
   useEffect(() => {
@@ -183,12 +182,11 @@ export function GameBoard({
     }
   }, [joeMellorMode]);
 
-  const activeOfferKey =
-    draftMode && !isChallengeCup ? draftPickIndex : selectedSlotIndex;
+  const activeOfferKey = isDraftMode ? draftPickIndex : selectedSlotIndex;
 
   const currentRound: RecruitmentRound | null =
     activeOfferKey !== null
-      ? draftMode && !isChallengeCup
+      ? isDraftMode
         ? getOfferForPick(slotOffers, draftPickIndex)
         : selectedSlotIndex !== null
           ? getOfferForSlot(slotOffers, selectedSlotIndex)
@@ -196,14 +194,13 @@ export function GameBoard({
       : null;
 
   useEffect(() => {
-    if (!draftMode || isChallengeCup || phase !== "pitch") return;
+    if (!isDraftMode || phase !== "pitch") return;
     if (pendingPlayer) return;
     if (getFilledCount(squad) >= TOTAL_SLOTS) return;
     if (!getOfferForPick(slotOffers, draftPickIndex)) return;
     setPhase("choice");
   }, [
-    draftMode,
-    isChallengeCup,
+    isDraftMode,
     phase,
     squad,
     slotOffers,
@@ -358,14 +355,14 @@ export function GameBoard({
         handlePlacementSlot(slotIndex);
         return;
       }
-      if (phase !== "pitch" || draftMode) return;
+      if (phase !== "pitch" || isDraftMode) return;
       if (joeMellorMode && slotIndex === LOOSE_FORWARD_SLOT_INDEX) return;
       const slot = squad.find((s) => s.slotIndex === slotIndex);
       if (!slot || slot.player) return;
       setSelectedSlotIndex(slotIndex);
       setPhase("choice");
     },
-    [phase, squad, joeMellorMode, draftMode, handlePlacementSlot]
+    [phase, squad, joeMellorMode, isDraftMode, handlePlacementSlot]
   );
 
   const handleChoose = useCallback(
@@ -374,7 +371,7 @@ export function GameBoard({
       setChoosing(true);
       playPlayerSelect();
 
-      if (draftMode && !isChallengeCup) {
+      if (isDraftMode) {
         setTimeout(() => {
           setChoosing(false);
           setPendingPlayer(player);
@@ -411,14 +408,14 @@ export function GameBoard({
       phase,
       squad,
       startTournamentSimulation,
-      draftMode,
+      isDraftMode,
       isChallengeCup,
     ]
   );
 
   const handleReroll = useCallback(() => {
     const rerollKey =
-      draftMode && !isChallengeCup ? draftPickIndex : selectedSlotIndex;
+      isDraftMode ? draftPickIndex : selectedSlotIndex;
     if (
       isHardMode ||
       !currentRound ||
@@ -708,7 +705,7 @@ export function GameBoard({
                 hardMode={isHardMode}
                 interactive={
                   phase === "placement" ||
-                  (phase === "pitch" && !draftMode)
+                  (phase === "pitch" && !isDraftMode)
                 }
                 onSlotClick={handleSelectSlot}
                 onSlotHover={
@@ -760,7 +757,7 @@ export function GameBoard({
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
                 >
-                  {!draftMode && (
+                  {!isDraftMode && (
                     <button
                       type="button"
                       onClick={handleBackToPitch}
@@ -774,7 +771,7 @@ export function GameBoard({
                     playerA={playerPair[0]}
                     playerB={playerPair[1]}
                     positionLabel={
-                      draftMode && !isChallengeCup
+                      isDraftMode
                         ? `Pick ${draftPickIndex + 1}`
                         : currentRound.slotLabel
                     }
@@ -784,10 +781,8 @@ export function GameBoard({
                     rerollsRemaining={rerollsRemaining}
                     disabled={choosing || rerolling}
                     hardMode={isHardMode}
-                    draftMode={draftMode && !isChallengeCup}
-                    showDraftRule={
-                      draftMode && !isChallengeCup && draftPickIndex === 0
-                    }
+                    draftMode={isDraftMode}
+                    showDraftRule={isDraftMode && draftPickIndex === 0}
                   />
                 </motion.div>
               </motion.div>
