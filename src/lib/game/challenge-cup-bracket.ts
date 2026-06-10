@@ -464,7 +464,8 @@ function simulateUserMatch(
     isHome,
     match.round,
     `${state.seed}-cup-${match.id}`,
-    state.simState
+    state.simState,
+    { cupMode: true }
   );
 
   enrichSingleFixtureScoring(squad, fixture, state.seed);

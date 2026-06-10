@@ -100,7 +100,8 @@ export function simulateChallengeCup(
       isHome,
       i + 1,
       `${seed}-cup`,
-      state
+      state,
+      { cupMode: true }
     );
     state = nextState;
 

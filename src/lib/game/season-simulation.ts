@@ -81,7 +81,6 @@ function getAttackProfile(strength: number): AttackProfile {
   };
 }
 
-type SquadTier = "elite" | "average" | "weak";
 type MatchType =
   | "low"
   | "normal"
@@ -187,12 +186,6 @@ function getOpponentStrength(opponent: string, rng: () => number): number {
   return base + (rng() - 0.5) * 8;
 }
 
-function getSquadTier(strength: number): SquadTier {
-  if (strength >= 80) return "elite";
-  if (strength >= 62) return "average";
-  return "weak";
-}
-
 export function calculateSquadStrength(squad: SquadSlot[]): number {
   const players = squad.filter((s) => s.player).map((s) => s.player!);
   if (players.length === 0) return 0;
@@ -202,8 +195,8 @@ export function calculateSquadStrength(squad: SquadSlot[]): number {
   const legendCount = players.filter((p) => p.category === "legend").length;
   const hasGoat = players.some(isGoatPlayer);
 
-  const valueScore = Math.min(totalValue / 5_500_000, 1.2) * 32;
-  const ratingScore = (avgRating / 95) * 38;
+  const valueScore = Math.min(totalValue / 5_500_000, 1.35) * 38;
+  const ratingScore = (avgRating / 95) * 45;
   const legendBonus = legendCount * 3.5;
   const goatBonus = hasGoat ? 18 : 0;
   const balanceBonus = players.length === 13 ? 8 : 0;
@@ -281,6 +274,7 @@ function pickTeamScore(
 function pickMatchType(
   squadStrength: number,
   opponentStrength: number,
+  ratingGap: number,
   won: boolean,
   isUpset: boolean,
   rng: () => number
@@ -288,12 +282,15 @@ function pickMatchType(
   if (isUpset) return won ? "upset_win" : "upset_loss";
 
   const margin = squadStrength - opponentStrength;
+  const gap = Math.max(margin, ratingGap);
 
-  if (won && margin > 16 && rng() < 0.38) return "blowout";
-  if (won && margin > 10 && rng() < 0.22) return "high";
-  if (!won && margin < -6 && rng() < 0.25) return "high";
-  if (rng() < 0.14) return "low";
-  if (rng() < 0.2) return "grinding";
+  if (won && gap >= 12 && rng() < 0.52) return "blowout";
+  if (won && gap >= 8 && rng() < 0.38) return "high";
+  if (won && gap >= 5 && rng() < 0.24) return "high";
+  if (!won && gap <= -8 && rng() < 0.28) return "high";
+  if (won && gap >= 3 && rng() < 0.12) return "low";
+  if (rng() < 0.1) return "low";
+  if (rng() < 0.14) return "grinding";
   return "normal";
 }
 
@@ -537,59 +534,107 @@ function generateScoreline(
   };
 }
 
+export interface SimulateFixtureOptions {
+  /** Slightly more upset variance in knockout cup ties. */
+  cupMode?: boolean;
+}
+
+function getValueConsistencyBonus(totalValue: number): number {
+  if (totalValue >= 8_000_000) return 7;
+  if (totalValue >= 6_500_000) return 5.5;
+  if (totalValue >= 5_000_000) return 4;
+  if (totalValue >= 3_500_000) return 2.5;
+  if (totalValue >= 2_500_000) return 1.2;
+  return 0;
+}
+
 function resolveOutcome(
+  squad: SquadSlot[],
   strength: number,
   opponentStrength: number,
   form: number,
   isHome: boolean,
-  rng: () => number
-): { won: boolean; isUpset: boolean } {
-  const homeAdvantage = isHome ? 2.5 : -2.5;
-  const noise = (rng() - 0.5) * (strength >= 85 ? 10 : 14);
-  const diff = strength - opponentStrength + homeAdvantage + form + noise;
-  const logisticDivisor = strength >= 88 ? 5 : strength >= 72 ? 6 : 6.5;
+  rng: () => number,
+  options: SimulateFixtureOptions = {}
+): { won: boolean; isUpset: boolean; ratingGap: number } {
+  const avgRating = getAverageSquadRating(squad);
+  const totalValue = getSquadValue(squad);
+  const ratingGap = avgRating - opponentStrength;
+  const valueBonus = getValueConsistencyBonus(totalValue);
+  const cupMode = options.cupMode ?? false;
+
+  const homeAdvantage = isHome ? 2 : -2;
+  const formEffect = form * 0.45;
+
+  let noiseScale = 9;
+  const absGap = Math.abs(ratingGap);
+  if (absGap >= 10) noiseScale = 2.5;
+  else if (absGap >= 8) noiseScale = 3.5;
+  else if (absGap >= 5) noiseScale = 5;
+  else if (absGap >= 3) noiseScale = 6.5;
+
+  const noise = (rng() - 0.5) * noiseScale;
+  const strengthGap = strength - opponentStrength;
+  const diff =
+    ratingGap * 1.35 +
+    strengthGap * 0.35 +
+    valueBonus * 0.75 +
+    homeAdvantage +
+    formEffect +
+    noise;
+
+  const logisticDivisor = 4.2;
   let winProbability = 1 / (1 + Math.exp(-diff / logisticDivisor));
 
-  if (strength >= 92) {
-    winProbability = Math.min(0.97, winProbability * 1.12);
-  } else if (strength >= 85) {
-    winProbability = Math.min(0.93, winProbability * 1.06);
-  }
+  if (ratingGap >= 10) winProbability = Math.max(winProbability, 0.9);
+  else if (ratingGap >= 8) winProbability = Math.max(winProbability, 0.82);
+  else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.72);
+  else if (ratingGap <= -10) winProbability = Math.min(winProbability, 0.1);
+  else if (ratingGap <= -8) winProbability = Math.min(winProbability, 0.16);
+  else if (ratingGap <= -5) winProbability = Math.min(winProbability, 0.26);
+
+  winProbability = Math.max(0.04, Math.min(0.96, winProbability));
 
   let won = rng() < winProbability;
   let isUpset = false;
 
-  const tier = getSquadTier(strength);
-
-  // Upsets are possible but uncommon — elite squads can still go unbeaten
-  if (won && tier === "elite" && opponentStrength < strength - 6) {
-    const upsetChance =
-      strength >= 93 ? 0.02 : strength >= 88 ? 0.04 : 0.07;
+  // Favourite losses — rare when rating gap is large
+  if (won && ratingGap >= 10) {
+    const upsetChance = cupMode ? 0.035 : 0.02;
     if (rng() < upsetChance) {
       won = false;
       isUpset = true;
     }
-  } else if (won && tier === "average" && opponentStrength > strength + 6) {
-    if (rng() < 0.1) {
+  } else if (won && ratingGap >= 8) {
+    const upsetChance = cupMode ? 0.06 : 0.04;
+    if (rng() < upsetChance) {
+      won = false;
+      isUpset = true;
+    }
+  } else if (won && ratingGap >= 5) {
+    const upsetChance = cupMode ? 0.1 : 0.07;
+    if (rng() < upsetChance) {
       won = false;
       isUpset = true;
     }
   }
 
-  // Weak squads can spring surprise wins
-  if (!won && tier === "weak" && opponentStrength > strength + 4) {
-    if (rng() < 0.14) {
+  // Underdog wins — only when Dream Team is weaker on paper
+  if (!won && ratingGap <= -8) {
+    const upsetChance = cupMode ? 0.14 : 0.09;
+    if (rng() < upsetChance) {
       won = true;
       isUpset = true;
     }
-  } else if (!won && tier === "average" && opponentStrength > strength + 12) {
-    if (rng() < 0.08) {
+  } else if (!won && ratingGap <= -5) {
+    const upsetChance = cupMode ? 0.1 : 0.06;
+    if (rng() < upsetChance) {
       won = true;
       isUpset = true;
     }
   }
 
-  return { won, isUpset };
+  return { won, isUpset, ratingGap };
 }
 
 interface ScheduledFixture {
@@ -767,23 +812,27 @@ export function simulateOneFixture(
   isHome: boolean,
   round: number,
   seed: string,
-  state: MatchSimState
+  state: MatchSimState,
+  options: SimulateFixtureOptions = {}
 ): { fixture: MatchFixture; state: MatchSimState } {
   const strength = calculateSquadStrength(squad);
   const rng = seedrandom(`${seed}-match-${round}`);
 
   const opponentStrength = getOpponentStrength(opponent, rng);
-  const { won: initialWon, isUpset: initialUpset } = resolveOutcome(
+  const { won: initialWon, isUpset: initialUpset, ratingGap } = resolveOutcome(
+    squad,
     strength,
     opponentStrength,
     state.form,
     isHome,
-    rng
+    rng,
+    options
   );
 
   const matchType = pickMatchType(
     strength,
     opponentStrength,
+    ratingGap,
     initialWon,
     initialUpset,
     rng
