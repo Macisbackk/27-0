@@ -11,8 +11,8 @@ interface LeagueTableProps {
 
 export const LeagueTable = memo(function LeagueTable({ rows }: LeagueTableProps) {
   return (
-    <div className="-mx-1 overflow-x-auto px-1">
-      <table className="w-full min-w-[640px] border-collapse text-left text-xs sm:text-sm">
+    <div className="-mx-1 px-1 max-sm:overflow-x-auto sm:overflow-x-visible">
+      <table className="w-full border-collapse text-left text-xs max-sm:min-w-[640px]">
         <thead>
           <tr className={`border-b border-pitch-700/60 ${TYPO.statLabel}`}>
             <th className="sticky left-0 z-10 bg-pitch-950/95 px-2 py-2.5 backdrop-blur-sm">

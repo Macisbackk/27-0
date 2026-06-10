@@ -23,7 +23,7 @@ export function Header() {
             className={`${BTN.header} shrink-0 justify-self-start`}
             aria-label="Open menu"
           >
-            <span aria-hidden className="text-sm leading-none">
+            <span aria-hidden className="text-base leading-none">
               ☰
             </span>
             <span className="hidden sm:inline">Menu</span>

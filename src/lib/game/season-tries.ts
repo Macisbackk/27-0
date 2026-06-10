@@ -11,8 +11,9 @@ import { allocateMatchTries } from "./try-allocation";
 import {
   getPlayerTryWeight,
   POSITION_SEASON_SHARE_MAX,
-  POSITION_SEASON_TRY_MAX,
+  POSITION_SOFT_TRY_GUIDE,
   POSITION_TRY_WEIGHT,
+  SEASON_TRY_THEORETICAL_MAX,
 } from "./try-weights";
 
 export { POSITION_TRY_WEIGHT } from "./try-weights";
@@ -34,28 +35,27 @@ interface SquadEntry {
   slot: SquadSlot;
 }
 
-function getMaxIndividualTries(seasonWins: number, seasonTries: number): number {
-  if (seasonWins <= 6) return Math.min(12, Math.max(5, Math.ceil(seasonTries * 0.18)));
-  if (seasonWins <= 14) return Math.min(18, Math.max(8, Math.ceil(seasonTries * 0.2)));
-  if (seasonWins <= 22) return Math.min(22, Math.max(10, Math.ceil(seasonTries * 0.21)));
-  return Math.min(28, Math.max(12, Math.ceil(seasonTries * 0.22)));
-}
-
-function getPositionCap(position: Position, seasonTries: number): number {
-  const shareCap = Math.ceil(seasonTries * POSITION_SEASON_SHARE_MAX[position]);
-  const absoluteCap = POSITION_SEASON_TRY_MAX[position];
-  return Math.max(position === "PROP" ? 0 : 1, Math.min(shareCap, absoluteCap));
-}
-
-function getPlayerCap(
-  entry: SquadEntry,
-  seasonTries: number,
-  seasonWins: number
+/** Soft target before rebalance/diminishing intensify — not a hard ceiling. */
+function getSoftPositionTarget(
+  position: Position,
+  seasonTries: number
 ): number {
+  const shareCap = Math.ceil(seasonTries * POSITION_SEASON_SHARE_MAX[position]);
+  const guide = POSITION_SOFT_TRY_GUIDE[position];
+  const scaledGuide = Math.ceil(guide * (1 + Math.min(0.25, seasonTries / 240)));
   return Math.min(
-    getMaxIndividualTries(seasonWins, seasonTries),
-    getPositionCap(entry.playedPosition, seasonTries)
+    SEASON_TRY_THEORETICAL_MAX,
+    Math.max(shareCap, scaledGuide)
   );
+}
+
+function getPositionHighTryPenalty(position: Position, playerTotal: number): number {
+  const tier = POSITION_TRY_WEIGHT[position];
+  const softGuide = POSITION_SOFT_TRY_GUIDE[position];
+  if (playerTotal <= softGuide) return 1;
+  const excess = playerTotal - softGuide;
+  const severity = tier >= 10 ? 0.07 : tier >= 6 ? 0.14 : tier >= 2 ? 0.22 : 0.42;
+  return 1 / (1 + excess * severity);
 }
 
 function getMinMatchWeight(position: Position): number {
@@ -92,10 +92,14 @@ function getMatchWeights(
       seasonTotalsSoFar[i],
       seasonTotalsSoFar
     );
+    const positionPenalty = getPositionHighTryPenalty(
+      e.playedPosition,
+      seasonTotalsSoFar[i]
+    );
     const variance = 0.82 + rng() * 0.36;
     return Math.max(
       getMinMatchWeight(e.playedPosition),
-      base * saturation * variance
+      base * saturation * positionPenalty * variance
     );
   });
 }
@@ -225,25 +229,28 @@ function softenMatchConcentration(
 }
 
 /**
- * Soft cap rebalance — transfers tries from over-cap players to under-cap squad
- * members while preserving per-match try totals.
+ * Soft rebalance — nudges tries from players well above soft targets toward
+ * underused teammates. Never hard-blocks the theoretical 34-try maximum.
  */
-function rebalanceTowardCaps(
+function rebalanceTowardSoftTargets(
   entries: SquadEntry[],
   perMatchAllocs: number[][],
   seasonTries: number,
-  seasonWins: number,
   rng: () => number
 ): void {
-  const caps = entries.map((e) => getPlayerCap(e, seasonTries, seasonWins));
+  const softTargets = entries.map((e) =>
+    getSoftPositionTarget(e.playedPosition, seasonTries)
+  );
   const weights = entries.map((e) =>
     getPlayerTryWeight(e.player, e.playedPosition)
   );
-  const maxIterations = seasonTries * entries.length * 3;
+  const maxIterations = Math.min(seasonTries * 2, 80);
 
   for (let guard = 0; guard < maxIterations; guard++) {
     const totals = getSeasonTotals(perMatchAllocs);
-    const overIdx = totals.findIndex((t, i) => t > caps[i]);
+    const overIdx = totals.findIndex(
+      (t, i) => t > softTargets[i] * 1.1 && t < SEASON_TRY_THEORETICAL_MAX
+    );
     if (overIdx === -1) break;
 
     const fixtureCandidates = perMatchAllocs
@@ -258,7 +265,7 @@ function rebalanceTowardCaps(
     const underCandidates = entries
       .map((e, i) => ({
         i,
-        headroom: caps[i] - totals[i],
+        headroom: softTargets[i] - totals[i],
         weight: weights[i],
       }))
       .filter((c) => c.i !== overIdx && c.headroom > 0);
@@ -408,13 +415,7 @@ function allocateSeasonTriesToFixtures(
   }
 
   const seasonTries = fixtures.reduce((sum, f) => sum + f.triesFor, 0);
-  rebalanceTowardCaps(
-    entries,
-    perMatchAllocs,
-    seasonTries,
-    seasonWins,
-    rng
-  );
+  rebalanceTowardSoftTargets(entries, perMatchAllocs, seasonTries, rng);
   spreadSeasonConcentration(entries, perMatchAllocs, seasonTries, rng);
 
   applyScoringDetails(entries, fixtures, perMatchAllocs, seed);

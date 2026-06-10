@@ -52,7 +52,9 @@ export const BTN = {
   primary:
     "bg-accent-green text-pitch-950 hover:bg-accent-green/90 disabled:cursor-not-allowed disabled:opacity-50",
   primaryLg:
-    "btn-play-again w-full min-h-[52px] py-4 text-lg",
+    "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-accent-green to-emerald-400 py-4 font-display text-lg font-black uppercase tracking-wider text-pitch-950 shadow-[0_0_30px_rgba(34,197,94,0.35)] transition-all hover:from-emerald-400 hover:to-accent-green hover:shadow-[0_0_40px_rgba(34,197,94,0.5)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
+  primaryLgHard:
+    "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-red-700 to-red-500 py-4 font-display text-lg font-black uppercase tracking-wider text-white shadow-[0_0_30px_rgba(220,38,38,0.4)] transition-all hover:from-red-600 hover:to-red-400 hover:shadow-[0_0_40px_rgba(220,38,38,0.55)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
   secondary:
     "border border-pitch-600 text-gray-300 hover:border-pitch-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-50",
   secondaryLg: "btn-secondary text-center",
@@ -63,18 +65,21 @@ export const BTN = {
     "border border-pitch-600 text-gray-400 hover:border-pitch-500 hover:text-white",
   tabGroupInner:
     "flex-1 rounded-lg px-4 py-2.5 sm:flex-none sm:px-5",
-  tabGroupActive: "bg-accent-green text-pitch-950 shadow-lg",
-  tabGroupIdle: "text-gray-400 hover:text-white",
+  tabGroupActive:
+    "border-2 border-accent-green/75 bg-accent-green text-pitch-950 shadow-[0_0_28px_rgba(34,197,94,0.45),inset_0_1px_0_rgba(255,255,255,0.08)]",
+  tabGroupIdle:
+    "text-gray-400 hover:border-accent-green/30 hover:bg-accent-green/10 hover:text-accent-green",
   hardActive:
     "border-2 border-red-500/80 bg-red-950/75 text-white shadow-[0_0_28px_rgba(220,38,38,0.55),inset_0_1px_0_rgba(255,255,255,0.06)]",
   hardIdle: "text-gray-400 hover:border-red-500/30 hover:bg-red-950/30 hover:text-red-300",
-  accentOutline: `w-full border border-accent-green/40 bg-accent-green/10 text-accent-green hover:bg-accent-green/20 sm:w-auto`,
+  accentOutline: `w-full border border-accent-green/40 bg-accent-green/10 text-accent-green hover:border-accent-green/55 hover:bg-accent-green/20 sm:w-auto`,
+  hardAccentOutline: `w-full border border-red-500/45 bg-red-950/35 text-red-300 hover:border-red-500/65 hover:bg-red-950/50 hover:text-red-200 sm:w-auto`,
   goldOutline: `w-full border border-accent-gold/35 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/15 sm:w-auto`,
   goldOutlineSm: `border border-accent-gold/50 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/20`,
   greenOutlineSm: `border border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20`,
   close: `shrink-0 min-h-[36px] rounded-lg border border-pitch-600 px-2.5 py-1 text-gray-400 transition hover:text-white`,
   closeSm: `shrink-0 rounded-lg border border-pitch-600 px-2 py-1 text-gray-400 transition hover:text-white`,
-  header: `header-control-btn flex h-9 min-w-[5.5rem] items-center justify-center gap-1.5 rounded-lg border border-pitch-600 px-3 text-xs font-medium text-gray-300 transition hover:border-accent-green hover:text-white`,
+  header: `header-control-btn flex h-11 min-h-[44px] min-w-[5.75rem] items-center justify-center gap-2 rounded-lg border border-pitch-600 px-4 text-sm font-medium text-gray-300 transition hover:border-accent-green hover:text-white`,
 } as const;
 
 /** Hard mode visual tokens. */

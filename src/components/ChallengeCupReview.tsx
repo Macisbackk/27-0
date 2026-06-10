@@ -236,7 +236,11 @@ export function ChallengeCupReview({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <ReviewPlayAgain onPlayAgain={handlePlayAgain} compact />
+          <ReviewPlayAgain
+            onPlayAgain={handlePlayAgain}
+            hardMode={isHardMode}
+            compact
+          />
         </motion.div>
 
         <CollapsibleReviewSection title="Challenge Cup Summary" delay={0.32}>
@@ -398,7 +402,10 @@ export function ChallengeCupReview({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65 }}
         >
-          <ReviewPlayAgain onPlayAgain={handlePlayAgain} />
+          <ReviewPlayAgain
+            onPlayAgain={handlePlayAgain}
+            hardMode={isHardMode}
+          />
         </motion.footer>
       </div>
     </div>

@@ -1,5 +1,8 @@
 import type { Player, Position } from "../types";
 
+/** Theoretical season maximum — soft logic only, never hard-blocked. */
+export const SEASON_TRY_THEORETICAL_MAX = 34;
+
 /**
  * Position try probability tiers (played position).
  * Highest: wings & fullbacks · High: centres · Medium: halves
@@ -30,17 +33,33 @@ export const POSITION_SEASON_SHARE_MAX: Record<Position, number> = {
   PROP: 0.04,
 };
 
-/** Absolute season try ceilings by played position. */
+/**
+ * Soft try guides — diminishing returns intensify beyond these, but 34 remains
+ * theoretically reachable for any position.
+ */
+export const POSITION_SOFT_TRY_GUIDE: Record<Position, number> = {
+  WING: 26,
+  FULLBACK: 16,
+  CENTRE: 16,
+  STAND_OFF: 12,
+  SCRUM_HALF: 12,
+  SECOND_ROW: 6,
+  LOOSE_FORWARD: 6,
+  HOOKER: 4,
+  PROP: 3,
+};
+
+/** @deprecated Use POSITION_SOFT_TRY_GUIDE — kept for imports; all positions cap at 34. */
 export const POSITION_SEASON_TRY_MAX: Record<Position, number> = {
-  WING: 28,
-  FULLBACK: 18,
-  CENTRE: 18,
-  STAND_OFF: 14,
-  SCRUM_HALF: 14,
-  SECOND_ROW: 8,
-  LOOSE_FORWARD: 8,
-  HOOKER: 6,
-  PROP: 4,
+  WING: SEASON_TRY_THEORETICAL_MAX,
+  FULLBACK: SEASON_TRY_THEORETICAL_MAX,
+  CENTRE: SEASON_TRY_THEORETICAL_MAX,
+  STAND_OFF: SEASON_TRY_THEORETICAL_MAX,
+  SCRUM_HALF: SEASON_TRY_THEORETICAL_MAX,
+  SECOND_ROW: SEASON_TRY_THEORETICAL_MAX,
+  LOOSE_FORWARD: SEASON_TRY_THEORETICAL_MAX,
+  HOOKER: SEASON_TRY_THEORETICAL_MAX,
+  PROP: SEASON_TRY_THEORETICAL_MAX,
 };
 
 export function hasKnownCareerTries(player: Player): boolean {

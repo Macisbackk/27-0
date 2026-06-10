@@ -7,12 +7,14 @@ interface ReviewPlayAgainProps {
   onPlayAgain: () => void;
   leaderboardHref?: string;
   compact?: boolean;
+  hardMode?: boolean;
 }
 
 export function ReviewPlayAgain({
   onPlayAgain,
   leaderboardHref = "/leaderboard",
   compact = false,
+  hardMode = false,
 }: ReviewPlayAgainProps) {
   return (
     <div
@@ -21,7 +23,7 @@ export function ReviewPlayAgain({
       <button
         type="button"
         onClick={onPlayAgain}
-        className={`${BTN.base} ${BTN.primaryLg}`}
+        className={`${BTN.base} ${hardMode ? BTN.primaryLgHard : BTN.primaryLg}`}
       >
         Play Again
       </button>

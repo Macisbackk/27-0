@@ -246,6 +246,7 @@ export function SeasonReview({
           <ReviewPlayAgain
             onPlayAgain={handlePlayAgain}
             leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
+            hardMode={isHardMode}
             compact
           />
         </motion.div>
@@ -396,6 +397,7 @@ export function SeasonReview({
           <ReviewPlayAgain
             onPlayAgain={handlePlayAgain}
             leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
+            hardMode={isHardMode}
           />
         </motion.footer>
       </div>

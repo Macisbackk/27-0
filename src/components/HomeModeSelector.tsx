@@ -103,7 +103,9 @@ export function HomeModeSelector() {
           <Link
             href={classicHref}
             onClick={() => playUiClick()}
-            className={`mt-5 ${BTN.base} ${BTN.accentOutline}`}
+            className={`mt-5 ${BTN.base} ${
+              classicDifficulty === "HARD" ? BTN.hardAccentOutline : BTN.accentOutline
+            }`}
           >
             {classicAction} →
           </Link>
@@ -155,7 +157,9 @@ export function HomeModeSelector() {
           <Link
             href={draftHref}
             onClick={() => playUiClick()}
-            className={`mt-5 ${BTN.base} ${BTN.accentOutline}`}
+            className={`mt-5 ${BTN.base} ${
+              draftDifficulty === "HARD" ? BTN.hardAccentOutline : BTN.accentOutline
+            }`}
           >
             Start Draft →
           </Link>
