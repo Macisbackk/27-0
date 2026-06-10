@@ -1,10 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { GameDifficulty, LeaderboardPeriod } from "@/lib/types";
 import { formatPeriodLabel } from "@/lib/leaderboard";
 import {
+  getDefaultTrackerForDbMode,
   getTrackersForDbMode,
+  isTrackerValidForDbMode,
   type LeaderboardTrackerRow,
   type LeaderboardTrackerType,
 } from "@/lib/leaderboard-trackers";
@@ -43,35 +45,56 @@ export function LeaderboardTable({
   const [difficulty, setDifficulty] =
     useState<GameDifficulty>(initialDifficulty);
   const [entries, setEntries] = useState<LeaderboardTrackerRow[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [usingFallback, setUsingFallback] = useState(false);
+  const requestId = useRef(0);
 
   const availableTrackers = getTrackersForDbMode(leaderboardMode);
+  const activeTracker = isTrackerValidForDbMode(tracker, leaderboardMode)
+    ? tracker
+    : getDefaultTrackerForDbMode(leaderboardMode);
+
+  const handleModeChange = (mode: LeaderboardDbMode) => {
+    setLeaderboardMode(mode);
+    setTracker(getDefaultTrackerForDbMode(mode));
+    if (mode === "challenge-cup") {
+      setDifficulty("NORMAL");
+    }
+  };
 
   const loadEntries = useCallback(async () => {
+    const currentRequest = ++requestId.current;
     setLoading(true);
+
     try {
       const result = await getTrackerLeaderboardAsync(
-        tracker,
+        activeTracker,
         period,
         difficulty,
         50,
         leaderboardMode
       );
+
+      if (currentRequest !== requestId.current) return;
+
       setEntries(result.rows);
       setUsingFallback(result.source === "local");
     } finally {
-      setLoading(false);
+      if (currentRequest === requestId.current) {
+        setLoading(false);
+      }
     }
-  }, [period, difficulty, leaderboardMode, tracker]);
+  }, [period, difficulty, leaderboardMode, activeTracker]);
 
   useEffect(() => {
-    if (!availableTrackers.some((t) => t.id === tracker)) {
-      setTracker(availableTrackers[0]?.id ?? "squad_value");
-      return;
+    if (!isTrackerValidForDbMode(tracker, leaderboardMode)) {
+      setTracker(getDefaultTrackerForDbMode(leaderboardMode));
     }
+  }, [leaderboardMode, tracker]);
+
+  useEffect(() => {
     void loadEntries();
-  }, [loadEntries, tracker, leaderboardMode, availableTrackers]);
+  }, [loadEntries]);
 
   const modeLabel =
     leaderboardMode === "draft"
@@ -81,11 +104,11 @@ export function LeaderboardTable({
         : "Normal Mode";
 
   const trackerLabel =
-    availableTrackers.find((t) => t.id === tracker)?.label ?? "Leaderboard";
+    availableTrackers.find((t) => t.id === activeTracker)?.label ??
+    "Leaderboard";
 
   return (
     <div>
-      {/* Mode selectors — card-style */}
       <div className="mb-5 grid gap-3 sm:grid-cols-3">
         {(
           [
@@ -99,7 +122,7 @@ export function LeaderboardTable({
             <button
               key={mode.id}
               type="button"
-              onClick={() => setLeaderboardMode(mode.id)}
+              onClick={() => handleModeChange(mode.id)}
               className={`rounded-xl border-2 px-4 py-4 text-left transition ${
                 selected
                   ? "border-accent-green/60 bg-accent-green/10 shadow-[0_0_24px_rgba(34,197,94,0.12)]"
@@ -118,11 +141,10 @@ export function LeaderboardTable({
         })}
       </div>
 
-      {/* Tracker tabs — compact underline navigation */}
       <div className="mb-5 border-b border-pitch-700/60">
         <div className="-mb-px flex gap-1 overflow-x-auto pb-px">
           {availableTrackers.map((t) => {
-            const selected = tracker === t.id;
+            const selected = activeTracker === t.id;
             return (
               <button
                 key={t.id}
@@ -141,7 +163,6 @@ export function LeaderboardTable({
         </div>
       </div>
 
-      {/* Difficulty selectors — card-style (season modes only) */}
       {leaderboardMode !== "challenge-cup" && (
         <div className="mb-5 flex flex-wrap gap-3">
           <button
@@ -175,7 +196,6 @@ export function LeaderboardTable({
         </div>
       )}
 
-      {/* Period — subtle pills */}
       <div className="mb-6 flex flex-wrap gap-2">
         {PERIODS.map((p) => (
           <button
@@ -193,7 +213,7 @@ export function LeaderboardTable({
         ))}
       </div>
 
-      {loading ? (
+      {loading && entries.length === 0 ? (
         <div className="matchday-panel p-12 text-center text-gray-500">
           Loading leaderboard…
         </div>
@@ -203,14 +223,18 @@ export function LeaderboardTable({
           on the leaderboard!
         </div>
       ) : (
-        <div className="matchday-panel overflow-hidden">
+        <div
+          className={`matchday-panel overflow-hidden transition-opacity ${
+            loading ? "opacity-60" : "opacity-100"
+          }`}
+        >
           <table className="w-full">
             <thead>
               <tr className="border-b border-pitch-600/50 text-left text-xs uppercase tracking-wider text-gray-500">
                 <th className="px-4 py-3">#</th>
                 <th className="px-4 py-3">Coach</th>
                 <th className="px-4 py-3">
-                  {STAT_COLUMN[tracker] ?? "Stat"}
+                  {STAT_COLUMN[activeTracker] ?? "Stat"}
                 </th>
                 <th className="hidden px-4 py-3 sm:table-cell">Updated</th>
               </tr>

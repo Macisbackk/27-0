@@ -77,6 +77,20 @@ function dbModeToGameMode(dbMode: LeaderboardDbMode): GameMode {
   return "CLASSIC";
 }
 
+/** Cup entries are stored under a single difficulty bucket. */
+function resolveLeaderboardDifficulty(
+  dbMode: LeaderboardDbMode,
+  difficulty: GameDifficulty
+): GameDifficulty {
+  return dbMode === "challenge-cup" ? "NORMAL" : difficulty;
+}
+
+const SUPABASE_SELECT_EXTENDED =
+  "id, player_name, coach_name, user_id, score, mode, difficulty, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage, created_at, updated_at";
+
+const SUPABASE_SELECT_BASE =
+  "id, player_name, coach_name, user_id, score, mode, difficulty, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, created_at, updated_at";
+
 function loadLocalEntries(): StoredLeaderboardEntry[] {
   if (typeof window === "undefined") return [];
   try {
@@ -158,12 +172,13 @@ function mapLocalToTrackerEntries(
 ): LeaderboardTrackerEntry[] {
   const periodKey = getPeriodKey(period);
   const gameMode = dbModeToGameMode(dbMode);
+  const effectiveDifficulty = resolveLeaderboardDifficulty(dbMode, difficulty);
 
   const filtered = loadLocalEntries().filter(
     (e) =>
       e.period === period &&
       e.periodKey === periodKey &&
-      (e.difficulty ?? "NORMAL") === difficulty &&
+      (e.difficulty ?? "NORMAL") === effectiveDifficulty &&
       (e.mode ?? "CLASSIC") === gameMode
   );
 
@@ -185,7 +200,8 @@ function mapSupabaseToTrackerEntries(
   for (const row of rows) {
     if ((row.difficulty ?? "NORMAL") !== difficulty) continue;
     const username = row.coach_name ?? row.player_name ?? "Unknown";
-    const existing = byUser.get(username);
+    const userKey = row.user_id ?? username;
+    const existing = byUser.get(userKey);
 
     const candidate = toTrackerEntry(username, {
       squadValue: row.score,
@@ -205,8 +221,22 @@ function mapSupabaseToTrackerEntries(
       cupWinPercentage: row.cup_win_percentage ?? 0,
     });
 
-    if (!existing || candidate.squadValue > existing.squadValue) {
-      byUser.set(username, candidate);
+    if (!existing) {
+      byUser.set(userKey, candidate);
+      continue;
+    }
+
+    // One row per account — prefer the row with richer merged stats.
+    const existingCupRank = existing.bestCupFinishRank ?? 0;
+    const candidateCupRank = candidate.bestCupFinishRank ?? 0;
+    const shouldReplace =
+      candidate.squadValue > existing.squadValue ||
+      candidate.totalWins > existing.totalWins ||
+      candidate.challengeCupWins > existing.challengeCupWins ||
+      candidateCupRank > existingCupRank;
+
+    if (shouldReplace) {
+      byUser.set(userKey, candidate);
     }
   }
 
@@ -235,14 +265,14 @@ async function fetchTrackerEntriesFromSupabase(
 ): Promise<LeaderboardTrackerEntry[] | null> {
   if (!isSupabaseConfigured) return null;
 
-  try {
+  const effectiveDifficulty = resolveLeaderboardDifficulty(dbMode, difficulty);
+
+  const runQuery = async (select: string) => {
     let query = supabase
       .from("leaderboard")
-      .select(
-        "id, player_name, coach_name, user_id, score, mode, difficulty, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage, created_at, updated_at"
-      )
+      .select(select)
       .eq("mode", dbMode)
-      .eq("difficulty", difficulty)
+      .eq("difficulty", effectiveDifficulty)
       .limit(250);
 
     const periodStart = getPeriodStart(period);
@@ -250,11 +280,23 @@ async function fetchTrackerEntriesFromSupabase(
       query = query.gte("created_at", periodStart.toISOString());
     }
 
-    const { data, error } = await query;
-    if (error) throw error;
+    return query;
+  };
+
+  try {
+    let result = await runQuery(SUPABASE_SELECT_EXTENDED);
+    if (result.error) {
+      console.warn(
+        "[leaderboard] Extended Supabase select failed, retrying base columns:",
+        result.error.message
+      );
+      result = await runQuery(SUPABASE_SELECT_BASE);
+    }
+    if (result.error) throw result.error;
+
     return mapSupabaseToTrackerEntries(
-      (data ?? []) as SupabaseLeaderboardRow[],
-      difficulty,
+      (result.data ?? []) as unknown as SupabaseLeaderboardRow[],
+      effectiveDifficulty,
       dbMode
     );
   } catch (error) {
@@ -469,9 +511,18 @@ export async function addLeaderboardEntry(
   const wins = options?.wins ?? 0;
   const losses = options?.losses ?? 0;
   const dbMode = gameModeToDbMode(mode);
+  const effectiveDifficulty = resolveLeaderboardDifficulty(dbMode, difficulty);
 
-  const localExisting = getExistingLocalStats(username, mode, difficulty);
-  const remoteExisting = await getExistingRemoteStats(userId, dbMode, difficulty);
+  const localExisting = getExistingLocalStats(
+    username,
+    mode,
+    effectiveDifficulty
+  );
+  const remoteExisting = await getExistingRemoteStats(
+    userId,
+    dbMode,
+    effectiveDifficulty
+  );
   const isCupRun = mode === "CHALLENGE_CUP";
   const merged = mergeLeaderboardStats(remoteExisting ?? localExisting, {
     squadValue,
@@ -483,8 +534,14 @@ export async function addLeaderboardEntry(
     isCupRun,
   });
 
-  saveLocalEntry(username, mode, difficulty, merged, achievedAt);
-  await insertToSupabase(username, userId, merged, dbMode, difficulty);
+  saveLocalEntry(username, mode, effectiveDifficulty, merged, achievedAt);
+  await insertToSupabase(
+    username,
+    userId,
+    merged,
+    dbMode,
+    effectiveDifficulty
+  );
 }
 
 export async function getTrackerLeaderboardAsync(
@@ -495,9 +552,15 @@ export async function getTrackerLeaderboardAsync(
   dbMode: LeaderboardDbMode = "super-league"
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
   const currentUser = getUsername() ?? "";
-  const remote = await fetchTrackerEntriesFromSupabase(period, difficulty, dbMode);
+  const effectiveDifficulty = resolveLeaderboardDifficulty(dbMode, difficulty);
+  const remote = await fetchTrackerEntriesFromSupabase(
+    period,
+    effectiveDifficulty,
+    dbMode
+  );
   const entries =
-    remote ?? mapLocalToTrackerEntries(period, difficulty, dbMode);
+    remote ??
+    mapLocalToTrackerEntries(period, effectiveDifficulty, dbMode);
 
   return {
     rows: rankByTracker(entries, tracker, limit, currentUser),

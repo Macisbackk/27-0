@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { formatValue } from "@/lib/players";
 import type { TeamComparisonSummary } from "@/lib/team-value-comparison";
+import { ClubNameLabel } from "./ClubNameLabel";
 
 interface TeamComparisonBoxProps {
   summary: TeamComparisonSummary;
@@ -15,26 +16,6 @@ export function TeamComparisonBox({
   userTeamName = "Dream Team",
   delay = 0,
 }: TeamComparisonBoxProps) {
-  const rows = [
-    {
-      label: "My Team Rating",
-      value: summary.myTeamRating.toFixed(1),
-    },
-    {
-      label: "Best Team Rating This Season",
-      value: `${summary.bestRatedTeam.name} — ${summary.bestRatedTeam.rating.toFixed(1)}`,
-    },
-    {
-      label: "Most Expensive Team",
-      value: `${summary.mostExpensiveTeam.name} — ${formatValue(summary.mostExpensiveTeam.value)}`,
-    },
-    {
-      label: "Total Team Value",
-      value: formatValue(summary.myTeamValue),
-      highlight: summary.myTeamValue >= summary.mostExpensiveTeam.value,
-    },
-  ];
-
   return (
     <motion.div
       className="mx-auto max-w-md rounded-xl border border-pitch-600/50 bg-pitch-900/60 px-4 py-4"
@@ -46,25 +27,59 @@ export function TeamComparisonBox({
         Team Comparison
       </p>
       <p className="mt-1 text-xs text-gray-500">{userTeamName} vs opposition</p>
-      <dl className="mt-3 space-y-2.5">
-        {rows.map((row) => (
-          <div
-            key={row.label}
-            className="flex flex-col gap-0.5 border-b border-pitch-700/40 pb-2 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between"
-          >
-            <dt className="font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
-              {row.label}
-            </dt>
-            <dd
-              className={`text-sm font-semibold ${
-                row.highlight ? "text-accent-green" : "text-white"
-              }`}
-            >
-              {row.value}
-            </dd>
-          </div>
-        ))}
+      <dl className="mt-3 space-y-3">
+        <ComparisonRow
+          label="My Team Rating"
+          value={summary.myTeamRating.toFixed(1)}
+        />
+        <ComparisonRow
+          label="Best Team Rating This Season"
+          teamName={summary.bestRatedTeam.name}
+          value={summary.bestRatedTeam.rating.toFixed(1)}
+        />
+        <ComparisonRow
+          label="Most Expensive Team"
+          teamName={summary.mostExpensiveTeam.name}
+          value={formatValue(summary.mostExpensiveTeam.value)}
+        />
+        <ComparisonRow
+          label="Total Team Value"
+          value={formatValue(summary.myTeamValue)}
+          highlight={summary.myTeamValue >= summary.mostExpensiveTeam.value}
+        />
       </dl>
     </motion.div>
+  );
+}
+
+function ComparisonRow({
+  label,
+  teamName,
+  value,
+  highlight,
+}: {
+  label: string;
+  teamName?: string;
+  value: string;
+  highlight?: boolean;
+}) {
+  return (
+    <div className="border-b border-pitch-700/40 pb-3 last:border-0 last:pb-0">
+      <dt className="font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
+        {label}
+      </dt>
+      <dd className="mt-1.5 space-y-1.5">
+        {teamName && (
+          <ClubNameLabel club={teamName} variant="inline" className="max-w-full" />
+        )}
+        <p
+          className={`font-display text-sm font-bold ${
+            highlight ? "text-accent-green" : "text-white"
+          }`}
+        >
+          {value}
+        </p>
+      </dd>
+    </div>
   );
 }

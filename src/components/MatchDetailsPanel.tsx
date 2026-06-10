@@ -11,7 +11,8 @@ import {
 import { getOpponentTeamSummary } from "@/lib/game/opponent-scorers";
 import { formatValue } from "@/lib/players";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
-import { getTeamTier, formatTeamRatingDisplay } from "@/lib/team-tiers";
+import { getTeamTier } from "@/lib/team-tiers";
+import { ClubNameLabel } from "./ClubNameLabel";
 import {
   findSlotByPlayerId,
   formatPlayerLineExtras,
@@ -135,17 +136,21 @@ function TeamScoringBlock({
     <div className="space-y-2">
       <ClubTeamLabel club={teamName} />
       {oppositionLabel && (
-        <p className="text-xs text-gray-400">
-          Opposition: {teamName} — {formatTeamRatingDisplay(averageRating)}
-        </p>
+        <div className="flex flex-wrap items-center gap-2 text-xs text-gray-400">
+          <span className="font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
+            Opposition
+          </span>
+          <ClubNameLabel club={teamName} variant="inline" />
+          <span className="text-gray-600">·</span>
+          <span className="font-display font-bold text-white">
+            {averageRating.toFixed(1)} OVR
+          </span>
+        </div>
       )}
       <div className={`${RL_INFO_BOX_CLASS} grid gap-1 p-3 text-xs sm:grid-cols-2`}>
         <TeamStat label="Squad Value" value={formatValue(totalValue)} />
         <TeamStat label="Team Tier" value={tier} />
-        <TeamStat
-          label="Avg Rating"
-          value={`${formatTeamRatingDisplay(averageRating)}`}
-        />
+        <TeamStat label="Avg Rating" value={averageRating.toFixed(1)} />
         <TeamStat label="Final Score" value={String(finalScore)} highlight />
       </div>
       {hasTries && (

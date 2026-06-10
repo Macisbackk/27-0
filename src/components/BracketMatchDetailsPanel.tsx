@@ -5,6 +5,7 @@ import type { BracketMatch } from "@/lib/game/challenge-cup-bracket";
 import { getCupRoundLabel } from "@/lib/game/challenge-cup-bracket";
 import type { TeamScoringDetail } from "@/lib/game/season-simulation";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
+import { ClubNameLabel } from "./ClubNameLabel";
 import { ClubTeamLabel } from "./ClubTeamLabel";
 
 interface BracketMatchDetailsPanelProps {
@@ -40,10 +41,13 @@ export function BracketMatchDetailsPanel({
             <p className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-green">
               {getCupRoundLabel(match.round)} · Match Details
             </p>
-            <p className="mt-1 font-display text-base font-bold text-white sm:text-lg">
-              {match.homeTeam} {match.homeScore} – {match.awayScore}{" "}
-              {match.awayTeam}
-            </p>
+            <div className="mt-2 flex flex-wrap items-center justify-center gap-2 sm:justify-start sm:gap-3">
+              <ClubNameLabel club={match.homeTeam} variant="inline" />
+              <span className="font-display text-base font-black text-white sm:text-lg">
+                {match.homeScore} – {match.awayScore}
+              </span>
+              <ClubNameLabel club={match.awayTeam} variant="inline" />
+            </div>
           </div>
           <button
             type="button"

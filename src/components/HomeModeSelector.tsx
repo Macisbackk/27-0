@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { GameDifficulty } from "@/lib/types";
 import { GuestNotice } from "./GuestNotice";
 import { TYPO } from "@/lib/ui/typography";
@@ -43,23 +43,20 @@ export function HomeModeSelector() {
     <div>
       <GuestNotice variant="home" />
 
-      <div className="mx-auto grid max-w-3xl gap-4 sm:grid-cols-2">
-        <div className="card-glass matchday-panel group flex flex-col p-6 transition hover:border-accent-green/30">
-          <h2 className="font-display text-xl font-bold group-hover:text-accent-green">
-            Normal Mode
-          </h2>
-          <p className="mt-2 flex-1 text-sm text-gray-400">
+      <div className="mx-auto flex max-w-xl flex-col gap-5">
+        <ModePanel title="Normal Mode" accent="green">
+          <p className="text-sm leading-relaxed text-gray-400">
             Draft your XIII position by position and simulate a full Super League
             campaign. Can you go 27-0?
           </p>
 
-          <div className="mt-4">
+          <div className="mt-5">
             <p className={`mb-2 ${TYPO.sectionLabel}`}>Difficulty</p>
-            <div className="inline-flex rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1">
+            <div className="inline-flex w-full rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto">
               <button
                 type="button"
                 onClick={() => setClassicDifficulty("NORMAL")}
-                className={`rounded-lg px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-5 sm:text-sm ${
+                className={`flex-1 rounded-lg px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:flex-none sm:px-5 sm:text-sm ${
                   classicDifficulty === "NORMAL"
                     ? "bg-accent-green text-pitch-950 shadow-lg"
                     : "text-gray-400 hover:text-white"
@@ -70,7 +67,7 @@ export function HomeModeSelector() {
               <button
                 type="button"
                 onClick={() => setClassicDifficulty("HARD")}
-                className={`rounded-lg px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-5 sm:text-sm ${
+                className={`flex-1 rounded-lg px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:flex-none sm:px-5 sm:text-sm ${
                   classicDifficulty === "HARD"
                     ? "bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.4)]"
                     : "text-gray-400 hover:text-white"
@@ -88,28 +85,25 @@ export function HomeModeSelector() {
 
           <Link
             href={classicHref}
-            className="mt-4 inline-block text-sm font-semibold text-accent-green"
+            className="mt-5 inline-flex w-full items-center justify-center rounded-xl border border-accent-green/40 bg-accent-green/10 px-4 py-3 text-sm font-semibold text-accent-green transition hover:bg-accent-green/20 sm:w-auto"
           >
             {classicAction} →
           </Link>
-        </div>
+        </ModePanel>
 
-        <div className="card-glass matchday-panel group flex flex-col p-6 transition hover:border-accent-green/30">
-          <h2 className="font-display text-xl font-bold group-hover:text-accent-green">
-            Draft Mode
-          </h2>
-          <p className="mt-2 flex-1 text-sm text-gray-400">
+        <ModePanel title="Draft Mode" accent="green">
+          <p className="text-sm leading-relaxed text-gray-400">
             Pick players from pairs, then place them in any empty slot. Natural
             positions carry no penalty; out-of-position placements cost 5 OVR.
           </p>
 
-          <div className="mt-4">
+          <div className="mt-5">
             <p className={`mb-2 ${TYPO.sectionLabel}`}>Draft Type</p>
-            <div className="inline-flex rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1">
+            <div className="inline-flex w-full rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto">
               <button
                 type="button"
                 onClick={() => setDraftDifficulty("NORMAL")}
-                className={`rounded-lg px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-5 sm:text-sm ${
+                className={`flex-1 rounded-lg px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:flex-none sm:px-5 sm:text-sm ${
                   draftDifficulty === "NORMAL"
                     ? "bg-accent-green text-pitch-950 shadow-lg"
                     : "text-gray-400 hover:text-white"
@@ -120,7 +114,7 @@ export function HomeModeSelector() {
               <button
                 type="button"
                 onClick={() => setDraftDifficulty("HARD")}
-                className={`rounded-lg px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-5 sm:text-sm ${
+                className={`flex-1 rounded-lg px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:flex-none sm:px-5 sm:text-sm ${
                   draftDifficulty === "HARD"
                     ? "bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.4)]"
                     : "text-gray-400 hover:text-white"
@@ -138,66 +132,60 @@ export function HomeModeSelector() {
 
           <Link
             href={draftHref}
-            className="mt-4 inline-block text-sm font-semibold text-accent-green"
+            className="mt-5 inline-flex w-full items-center justify-center rounded-xl border border-accent-green/40 bg-accent-green/10 px-4 py-3 text-sm font-semibold text-accent-green transition hover:bg-accent-green/20 sm:w-auto"
           >
             Start Draft →
           </Link>
-        </div>
+        </ModePanel>
 
-        <ModeCard
+        <Link
           href="/play?cup=1"
-          title="Challenge Cup"
-          description="Draft your squad and battle through a knockout tournament. Win four matches to lift the cup."
-          action="Start Challenge Cup"
-          accent="gold"
-        />
+          className="card-glass matchday-panel group block w-full p-6 transition hover:border-accent-gold/30 sm:p-7"
+        >
+          <h2 className="font-display text-xl font-bold group-hover:text-accent-gold sm:text-2xl">
+            Challenge Cup
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-gray-400">
+            Draft your squad and battle through a knockout tournament. Win four
+            matches to lift the cup.
+          </p>
+          <span className="mt-5 inline-flex w-full items-center justify-center rounded-xl border border-accent-gold/35 bg-accent-gold/10 px-4 py-3 text-sm font-semibold text-accent-gold transition group-hover:bg-accent-gold/15 sm:w-auto">
+            Start Challenge Cup →
+          </span>
+        </Link>
       </div>
     </div>
   );
 }
 
-function ModeCard({
-  href,
+function ModePanel({
   title,
-  description,
-  action,
   accent,
+  children,
 }: {
-  href: string;
   title: string;
-  description: string;
-  action: string;
-  accent: "green" | "red" | "gold";
+  accent: "green" | "gold";
+  children: ReactNode;
 }) {
   const hoverBorder =
     accent === "gold"
       ? "hover:border-accent-gold/30"
-      : accent === "red"
-        ? "hover:border-red-500/30"
-        : "hover:border-accent-green/30";
+      : "hover:border-accent-green/30";
   const hoverTitle =
     accent === "gold"
       ? "group-hover:text-accent-gold"
-      : accent === "red"
-        ? "group-hover:text-red-400"
-        : "group-hover:text-accent-green";
-  const actionColor =
-    accent === "gold"
-      ? "text-accent-gold"
-      : accent === "red"
-        ? "text-red-400"
-        : "text-accent-green";
+      : "group-hover:text-accent-green";
 
   return (
-    <Link
-      href={href}
-      className={`card-glass matchday-panel group block p-6 transition ${hoverBorder}`}
+    <div
+      className={`card-glass matchday-panel group w-full p-6 transition sm:p-7 ${hoverBorder}`}
     >
-      <h2 className={`font-display text-xl font-bold ${hoverTitle}`}>{title}</h2>
-      <p className="mt-2 text-sm text-gray-400">{description}</p>
-      <span className={`mt-4 inline-block text-sm font-semibold ${actionColor}`}>
-        {action} →
-      </span>
-    </Link>
+      <h2
+        className={`font-display text-xl font-bold sm:text-2xl ${hoverTitle}`}
+      >
+        {title}
+      </h2>
+      {children}
+    </div>
   );
 }

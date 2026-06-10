@@ -106,6 +106,19 @@ export function getTrackersForDbMode(
   return LEADERBOARD_TRACKERS.filter((t) => !t.cupOnly);
 }
 
+export function getDefaultTrackerForDbMode(
+  dbMode: "super-league" | "challenge-cup" | "draft"
+): LeaderboardTrackerType {
+  return getTrackersForDbMode(dbMode)[0]?.id ?? "squad_value";
+}
+
+export function isTrackerValidForDbMode(
+  tracker: LeaderboardTrackerType,
+  dbMode: "super-league" | "challenge-cup" | "draft"
+): boolean {
+  return getTrackersForDbMode(dbMode).some((t) => t.id === tracker);
+}
+
 const CUP_FINISH_LABELS: Record<number, string> = {
   5: "Winners",
   4: "Runners-Up",
