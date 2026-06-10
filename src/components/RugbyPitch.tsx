@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import type { SquadSlot } from "@/lib/types";
 import { formatValue } from "@/lib/players";
 import {
-  FORMATION_ROWS,
+  FORMATION_COORDS,
+  FORMATION_SLOT_INDICES,
   POSITION_DESCRIPTIONS,
   POSITION_SHORT,
   POSITION_TILE_LABEL,
@@ -88,30 +89,62 @@ export function RugbyPitch({
         } ${dimmed ? "opacity-60" : ""}`}
       >
         <div
-          className={`relative w-full overflow-hidden rounded-2xl border-2 border-white/15 shadow-2xl rugby-pitch-pro ${
+          className={`relative w-full overflow-hidden rounded-2xl border-2 border-accent-green/25 shadow-2xl rugby-pitch-pro ${
             compact
-              ? "min-h-[480px]"
-              : "min-h-[720px] sm:min-h-[660px] md:min-h-[620px] lg:aspect-[5/8] lg:min-h-0"
+              ? "min-h-[520px]"
+              : "min-h-[640px] sm:min-h-[600px] md:min-h-[580px] lg:aspect-[5/8] lg:min-h-0"
           }`}
         >
           <PitchMarkings />
 
-          <div className="absolute inset-x-[10%] inset-y-[9%] z-10 flex flex-col justify-between gap-y-0.5 py-1 sm:inset-y-[10%] sm:gap-y-1 md:gap-y-1.5">
-            {FORMATION_ROWS.map((row, rowIndex) => (
-              <FormationRow
-                key={rowIndex}
-                slotIndices={row}
-                slotByIndex={slotByIndex}
-                highlightSlot={highlightSlot}
-                selectedSlot={selectedSlot}
-                compact={compact}
-                hardMode={hardMode}
-                interactive={interactive}
-                lockedSet={lockedSet}
-                onSlotClick={onSlotClick}
-                onSlotHover={onSlotHover}
-              />
-            ))}
+          <div className="absolute inset-0 z-10">
+            {FORMATION_SLOT_INDICES.map((slotIndex) => {
+              const slot = slotByIndex.get(slotIndex);
+              const coords = FORMATION_COORDS[slotIndex];
+              if (!slot || !coords) return null;
+
+              const isSelected = selectedSlot === slotIndex;
+              const isHighlight = highlightSlot === slotIndex;
+              const isEmpty = !slot.player;
+              const isLocked = lockedSet.has(slotIndex);
+              const canClick = !!(
+                interactive &&
+                isEmpty &&
+                !isLocked &&
+                onSlotClick
+              );
+
+              return (
+                <div
+                  key={slotIndex}
+                  className="absolute z-10 -translate-x-1/2 -translate-y-1/2"
+                  style={{
+                    left: `${coords.left}%`,
+                    top: `${coords.top}%`,
+                  }}
+                  onMouseEnter={
+                    canClick && onSlotHover
+                      ? () => onSlotHover(slotIndex)
+                      : undefined
+                  }
+                  onMouseLeave={
+                    onSlotHover ? () => onSlotHover(null) : undefined
+                  }
+                >
+                  <SquadMarker
+                    slot={slot}
+                    highlighted={isHighlight}
+                    selected={isSelected}
+                    compact={compact}
+                    hardMode={hardMode}
+                    interactive={canClick}
+                    onClick={
+                      canClick ? () => onSlotClick!(slotIndex) : undefined
+                    }
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -126,90 +159,6 @@ export function RugbyPitch({
           />
         </div>
       )}
-    </div>
-  );
-}
-
-function FormationRow({
-  slotIndices,
-  slotByIndex,
-  highlightSlot,
-  selectedSlot,
-  compact,
-  hardMode,
-  interactive,
-  lockedSet,
-  onSlotClick,
-  onSlotHover,
-}: {
-  slotIndices: number[];
-  slotByIndex: Map<number, SquadSlot>;
-  highlightSlot?: number;
-  selectedSlot?: number;
-  compact?: boolean;
-  hardMode?: boolean;
-  interactive?: boolean;
-  lockedSet: Set<number>;
-  onSlotClick?: (slotIndex: number) => void;
-  onSlotHover?: (slotIndex: number | null) => void;
-}) {
-  const count = slotIndices.length;
-
-  return (
-    <div
-      className={`grid w-full shrink-0 items-center justify-items-center ${
-        count === 1
-          ? "grid-cols-1"
-          : count === 2
-            ? "grid-cols-2 gap-x-3 sm:gap-x-4 md:gap-x-5"
-            : "grid-cols-3 gap-x-3 sm:gap-x-4 md:gap-x-5"
-      }`}
-      style={{
-        columnGap: "max(12px, 0.75rem)",
-      }}
-    >
-      {slotIndices.map((slotIndex) => {
-        const slot = slotByIndex.get(slotIndex);
-        if (!slot) return <div key={slotIndex} />;
-
-        const isSelected = selectedSlot === slotIndex;
-        const isHighlight = highlightSlot === slotIndex;
-        const isEmpty = !slot.player;
-        const isLocked = lockedSet.has(slotIndex);
-        const canClick = !!(
-          interactive &&
-          isEmpty &&
-          !isLocked &&
-          onSlotClick
-        );
-
-        return (
-          <div
-            key={slotIndex}
-            className="flex justify-center"
-            onMouseEnter={
-              canClick && onSlotHover
-                ? () => onSlotHover(slotIndex)
-                : undefined
-            }
-            onMouseLeave={
-              onSlotHover ? () => onSlotHover(null) : undefined
-            }
-          >
-            <SquadMarker
-              slot={slot}
-              highlighted={isHighlight}
-              selected={isSelected}
-              compact={compact}
-              hardMode={hardMode}
-              interactive={canClick}
-              onClick={
-                canClick ? () => onSlotClick(slotIndex) : undefined
-              }
-            />
-          </div>
-        );
-      })}
     </div>
   );
 }
@@ -241,6 +190,9 @@ function PitchMarkings() {
       <div className="pitch-line-20m absolute left-[6%] right-[6%] top-[24%] h-px" />
       <div className="pitch-line-20m absolute bottom-[24%] left-[6%] right-[6%] h-px" />
 
+      <div className="pitch-line-40m absolute left-[6%] right-[6%] top-[32%] h-px" />
+      <div className="pitch-line-40m absolute bottom-[32%] left-[6%] right-[6%] h-px" />
+
       <div className="pitch-line-halfway absolute left-[6%] right-[6%] top-1/2 h-[2px] -translate-y-1/2" />
 
       <div
@@ -251,9 +203,6 @@ function PitchMarkings() {
         className="pitch-touchline absolute bottom-[8%] top-[8%] w-px"
         style={{ left: touchRight }}
       />
-
-      <div className="absolute left-[6%] right-[6%] top-0 h-px bg-white/25" />
-      <div className="absolute bottom-0 left-[6%] right-[6%] h-px bg-white/25" />
 
       <GoalPosts end="top" />
       <GoalPosts end="bottom" />
@@ -268,9 +217,9 @@ function GoalPosts({ end }: { end: "top" | "bottom" }) {
         className="absolute left-1/2 top-[8%] z-[1] h-0 w-10 -translate-x-1/2 sm:w-12"
         aria-hidden
       >
-        <div className="absolute left-0 right-0 top-0 h-[2px] rounded-full bg-white/90 shadow-[0_0_4px_rgba(255,255,255,0.35)]" />
-        <div className="absolute left-0 top-0 h-3 w-[2px] -translate-y-full rounded-full bg-white/85 sm:h-3.5" />
-        <div className="absolute right-0 top-0 h-3 w-[2px] -translate-y-full rounded-full bg-white/85 sm:h-3.5" />
+        <div className="pitch-line-try absolute left-0 right-0 top-0 h-[2px] rounded-full" />
+        <div className="pitch-line-try absolute left-0 top-0 h-3 w-[2px] -translate-y-full rounded-full sm:h-3.5" />
+        <div className="pitch-line-try absolute right-0 top-0 h-3 w-[2px] -translate-y-full rounded-full sm:h-3.5" />
       </div>
     );
   }
@@ -280,9 +229,9 @@ function GoalPosts({ end }: { end: "top" | "bottom" }) {
       className="absolute bottom-[8%] left-1/2 z-[1] h-0 w-10 -translate-x-1/2 sm:w-12"
       aria-hidden
     >
-      <div className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full bg-white/90 shadow-[0_0_4px_rgba(255,255,255,0.35)]" />
-      <div className="absolute bottom-0 left-0 h-3 w-[2px] translate-y-full rounded-full bg-white/85 sm:h-3.5" />
-      <div className="absolute bottom-0 right-0 h-3 w-[2px] translate-y-full rounded-full bg-white/85 sm:h-3.5" />
+      <div className="pitch-line-try absolute bottom-0 left-0 right-0 h-[2px] rounded-full" />
+      <div className="pitch-line-try absolute bottom-0 left-0 h-3 w-[2px] translate-y-full rounded-full sm:h-3.5" />
+      <div className="pitch-line-try absolute bottom-0 right-0 h-3 w-[2px] translate-y-full rounded-full sm:h-3.5" />
     </div>
   );
 }
@@ -318,8 +267,8 @@ function SquadMarker({
             : highlighted
               ? "border-accent-gold bg-accent-gold/10 ring-2 ring-accent-gold/50"
               : interactive
-                ? "cursor-pointer border-white/30 bg-black/50 hover:border-accent-green hover:bg-accent-green/10 hover:shadow-[0_0_12px_rgba(34,197,94,0.35)]"
-                : "border-dashed border-white/20 bg-black/30"
+                ? "cursor-pointer border-accent-green/40 bg-black/50 hover:border-accent-green hover:bg-accent-green/10 hover:shadow-[0_0_12px_rgba(34,197,94,0.35)]"
+                : "border-dashed border-accent-green/20 bg-black/30"
         }`}
         animate={
           selected
@@ -335,14 +284,14 @@ function SquadMarker({
         title={interactive ? `${slot.label}: ${description}` : undefined}
       >
         <span
-          className={`w-full text-center font-display text-[11px] font-black uppercase leading-tight tracking-wide sm:text-xs ${
+          className={`w-full text-center font-display text-[10px] font-black uppercase leading-tight tracking-wide sm:text-[11px] ${
             interactive ? "text-white" : "text-white/40"
           }`}
         >
           {positionLabel}
         </span>
         <span
-          className={`font-display text-[9px] font-bold tracking-wider sm:text-[10px] ${
+          className={`font-display text-[8px] font-bold tracking-wider sm:text-[9px] ${
             interactive ? "text-gray-400" : "text-white/30"
           }`}
         >
@@ -361,7 +310,7 @@ function SquadMarker({
         <button
           type="button"
           onClick={onClick}
-          className="border-0 bg-transparent p-0 outline-none focus:ring-2 focus:ring-accent-green/50 rounded-lg"
+          className="rounded-lg border-0 bg-transparent p-0 outline-none focus:ring-2 focus:ring-accent-green/50"
         >
           {content}
         </button>

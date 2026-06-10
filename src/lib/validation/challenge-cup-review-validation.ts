@@ -66,13 +66,29 @@ export function validateChallengeCupReviewStats(input: {
       .filter((m) => m.round === 4 && m.status === "complete")
       .pop();
     if (finalMatch?.winner) {
-      if (isWinner && finalMatch.winner !== (cupResult.userClub ?? "Dream Team")) {
+      const userClub = cupResult.userClub ?? "Dream Team";
+      if (isWinner && finalMatch.winner !== userClub) {
         issues.push(
           `Final winner (${finalMatch.winner}) ≠ user club when isWinner=true`
         );
       }
+      if (!isWinner && finalMatch.winner === userClub) {
+        issues.push(
+          `Final winner (${finalMatch.winner}) is user club but isWinner=false`
+        );
+      }
       if (!isWinner && cupResult.finish === "Winners") {
         issues.push("finish is Winners but isWinner=false");
+      }
+      if (isWinner && cupResult.resultLabel.includes("Exit")) {
+        issues.push(
+          `Winner result includes exit text: "${cupResult.resultLabel}"`
+        );
+      }
+      if (isWinner && cupResult.finish !== "Winners") {
+        issues.push(
+          `isWinner=true but finish is "${cupResult.finish}"`
+        );
       }
     }
   }

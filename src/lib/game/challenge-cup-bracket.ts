@@ -605,24 +605,67 @@ export function simulateBracketTournament(
   return next;
 }
 
-function deriveFinish(
-  userFixtures: MatchFixture[],
-  won: boolean
+function deriveFinishFromEliminationRound(
+  eliminatedRound: number
 ): { finish: CupFinish; label: string } {
-  const roundReached = userFixtures.length;
-  if (roundReached === 4 && won) {
-    return { finish: "Winners", label: "Challenge Cup Winners" };
+  if (eliminatedRound === 4) {
+    return { finish: "Runners-Up", label: "Final Defeat" };
   }
-  if (roundReached === 4) {
-    return { finish: "Runners-Up", label: "Runners-Up" };
-  }
-  if (roundReached === 3) {
+  if (eliminatedRound === 3) {
     return { finish: "Semi Final", label: "Semi Final Exit" };
   }
-  if (roundReached === 2) {
+  if (eliminatedRound === 2) {
     return { finish: "Quarter Final", label: "Quarter Final Exit" };
   }
   return { finish: "Round of 16", label: "Round of 16 Exit" };
+}
+
+export function getBracketFinalWinner(
+  matches: BracketMatch[]
+): string | null {
+  const final = matches.find((m) => m.id === "4-0" && m.status === "complete");
+  return final?.winner ?? null;
+}
+
+export function getUserEliminatedRound(
+  state: ChallengeCupBracketState
+): number | null {
+  const userLoss = state.matches
+    .filter((m) => m.isUserMatch && m.status === "complete")
+    .sort((a, b) => a.round - b.round)
+    .find((m) => m.userFixture?.result === "L");
+  return userLoss?.round ?? null;
+}
+
+/** Single source of truth: bracket final winner + user elimination round. */
+export function deriveCupOutcomeFromBracket(
+  state: ChallengeCupBracketState
+): { finish: CupFinish; label: string; isWinner: boolean } {
+  const userTeam = state.userClub;
+  const finalWinner = getBracketFinalWinner(state.matches);
+
+  if (finalWinner === userTeam) {
+    return {
+      finish: "Winners",
+      label: "Challenge Cup Winners",
+      isWinner: true,
+    };
+  }
+
+  const eliminatedRound = getUserEliminatedRound(state);
+  if (eliminatedRound !== null) {
+    const { finish, label } = deriveFinishFromEliminationRound(eliminatedRound);
+    return { finish, label, isWinner: false };
+  }
+
+  return { finish: "Round of 16", label: "Round of 16 Exit", isWinner: false };
+}
+
+function deriveFinish(
+  _userFixtures: MatchFixture[],
+  state: ChallengeCupBracketState
+): { finish: CupFinish; label: string; isWinner: boolean } {
+  return deriveCupOutcomeFromBracket(state);
 }
 
 /** Simulate remaining AI fixtures so the bracket recap is fully populated. */
@@ -667,12 +710,12 @@ export function buildChallengeCupResult(
   const pointsFor = fixtures.reduce((s, f) => s + f.pointsFor, 0);
   const pointsAgainst = fixtures.reduce((s, f) => s + f.pointsAgainst, 0);
   const strength = calculateSquadStrength(squad);
-  const { finish, label } = deriveFinish(fixtures, state.userWon);
+  const outcome = deriveFinish(fixtures, finalized);
   const tryScorers = distributeSeasonTries(squad, fixtures, state.seed, wins);
 
   return {
-    finish,
-    resultLabel: label,
+    finish: outcome.finish,
+    resultLabel: outcome.label,
     matchesPlayed: fixtures.length,
     wins,
     losses,
@@ -682,7 +725,7 @@ export function buildChallengeCupResult(
     tryScorers,
     squadStrength: Math.round(strength * 10) / 10,
     insights: [],
-    isWinner: state.userWon,
+    isWinner: outcome.isWinner,
     userClub: state.userClub,
     byeTeams: state.byeTeams,
     bracketMatches: finalized.matches,

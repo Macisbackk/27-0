@@ -5,9 +5,9 @@ import { getClubColors } from "@/lib/clubs";
 import { POSITION_TILE_LABEL } from "@/lib/positions";
 import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
-/** Shared footprint for empty and filled pitch slots. */
+/** Shared footprint for empty and filled pitch slots — scales down on mobile. */
 export const PITCH_SLOT_SIZE_CLASS =
-  "h-[80px] w-[72px] sm:h-[88px] sm:w-[80px] md:h-[96px] md:w-[88px]";
+  "h-[68px] w-[60px] sm:h-[80px] sm:w-[72px] md:h-[88px] md:w-[80px] lg:h-[96px] lg:w-[88px]";
 
 interface PitchSlotCardProps {
   slot: SquadSlot;

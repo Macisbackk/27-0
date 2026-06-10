@@ -257,28 +257,28 @@ body {
 
   .pitch-grass,
   .pitch-grass-pro {
-    background-color: #2b5a26;
+    background-color: #1a3d18;
     background-image:
       repeating-linear-gradient(
         90deg,
-        #2a5825 0px,
-        #2a5825 14px,
-        #327230 14px,
-        #327230 28px,
-        #2d6129 28px,
-        #2d6129 42px,
-        #357a34 42px,
-        #357a34 56px
+        #183516 0px,
+        #183516 14px,
+        #1f4520 14px,
+        #1f4520 28px,
+        #1b3e19 28px,
+        #1b3e19 42px,
+        #225222 42px,
+        #225222 56px
       ),
       repeating-linear-gradient(
         0deg,
         transparent,
         transparent 3px,
-        rgba(0, 0, 0, 0.03) 3px,
-        rgba(0, 0, 0, 0.03) 6px
+        rgba(0, 0, 0, 0.05) 3px,
+        rgba(0, 0, 0, 0.05) 6px
       ),
-      radial-gradient(ellipse at 50% 42%, rgba(255, 255, 255, 0.06) 0%, transparent 55%),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, transparent 18%, transparent 82%, rgba(0, 0, 0, 0.1) 100%);
+      radial-gradient(ellipse at 50% 42%, rgba(34, 197, 94, 0.04) 0%, transparent 55%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, transparent 18%, transparent 82%, rgba(0, 0, 0, 0.14) 100%);
   }
 
   .pitch-stadium-shadow {
@@ -307,6 +307,32 @@ body {
     );
   }
 
+  .rugby-pitch-pro .pitch-line-try {
+    background: rgba(34, 197, 94, 0.92);
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.35);
+  }
+
+  .rugby-pitch-pro .pitch-line-10m {
+    background: rgba(34, 197, 94, 0.35);
+  }
+
+  .rugby-pitch-pro .pitch-line-20m {
+    background: rgba(34, 197, 94, 0.45);
+  }
+
+  .rugby-pitch-pro .pitch-line-40m {
+    background: rgba(34, 197, 94, 0.28);
+  }
+
+  .rugby-pitch-pro .pitch-line-halfway {
+    background: rgba(34, 197, 94, 0.88);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+  }
+
+  .rugby-pitch-pro .pitch-touchline {
+    background: rgba(34, 197, 94, 0.55);
+  }
+
   .pitch-line-try {
     background: rgba(255, 255, 255, 0.92);
     box-shadow: 0 0 6px rgba(255, 255, 255, 0.15);
@@ -318,6 +344,10 @@ body {
 
   .pitch-line-20m {
     background: rgba(255, 255, 255, 0.55);
+  }
+
+  .pitch-line-40m {
+    background: rgba(255, 255, 255, 0.32);
   }
 
   .pitch-line-halfway {

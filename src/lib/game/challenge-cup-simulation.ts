@@ -65,7 +65,7 @@ function deriveCupFinish(
     return { finish: "Winners", label: "Challenge Cup Winners" };
   }
   if (roundReached === 4) {
-    return { finish: "Runners-Up", label: "Runners-Up" };
+    return { finish: "Runners-Up", label: "Final Defeat" };
   }
   if (roundReached === 3) {
     return { finish: "Semi Final", label: "Semi Final Exit" };

@@ -66,38 +66,43 @@ const SLOT_DEFINITIONS: { position: Position; label: string }[] = [
   { position: "SECOND_ROW", label: "Right Second Row" },
 ];
 
-/**
- * Rugby League team-sheet rows (attacking upward).
- * Grid layout prevents card overlap vs legacy percentage coords.
- */
-export const FORMATION_ROWS: number[][] = [
-  [0],
-  [1, 2],
-  [3, 4],
-  [5, 6],
-  [7, 8, 9],
-  [10, 11, 12],
-];
+/** All 13 starting slots in team-sheet order. */
+export const FORMATION_SLOT_INDICES = [
+  0, 1, 3, 4, 2, 5, 6, 7, 8, 9, 10, 12, 11,
+] as const;
 
-/** @deprecated Use FORMATION_ROWS grid layout */
+/**
+ * Rugby League 13-player formation — percentage coords inside pitch container.
+ * FB → back line (LW, LC, RC, RW) → halves → front row → second row → loose forward.
+ */
 export const FORMATION_COORDS: Record<
   number,
   { left: number; top: number }
 > = {
-  0: { left: 50, top: 14 },
-  1: { left: 18, top: 26 },
-  2: { left: 82, top: 26 },
-  3: { left: 30, top: 38 },
-  4: { left: 70, top: 38 },
-  5: { left: 30, top: 50 },
-  6: { left: 70, top: 50 },
-  7: { left: 18, top: 68 },
-  8: { left: 50, top: 68 },
-  9: { left: 82, top: 68 },
-  10: { left: 18, top: 82 },
-  11: { left: 50, top: 82 },
-  12: { left: 82, top: 82 },
+  0: { left: 50, top: 8 },
+  1: { left: 16, top: 24 },
+  3: { left: 36, top: 24 },
+  4: { left: 64, top: 24 },
+  2: { left: 84, top: 24 },
+  5: { left: 42, top: 42 },
+  6: { left: 58, top: 42 },
+  7: { left: 34, top: 60 },
+  8: { left: 50, top: 60 },
+  9: { left: 66, top: 60 },
+  10: { left: 40, top: 76 },
+  12: { left: 60, top: 76 },
+  11: { left: 50, top: 90 },
 };
+
+/** @deprecated Use FORMATION_COORDS absolute layout */
+export const FORMATION_ROWS: number[][] = [
+  [0],
+  [1, 3, 4, 2],
+  [5, 6],
+  [7, 8, 9],
+  [10, 12],
+  [11],
+];
 
 /** 13-player Super League starting side structure */
 export const SQUAD_STRUCTURE: { position: Position; count: number }[] = [
