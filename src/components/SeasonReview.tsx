@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { GameDifficulty, GameMode, SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
 import { getSeasonSummaryMessage } from "@/lib/game/season-simulation";
-import { getSeasonGradeFromSquad } from "@/lib/grades";
+import { getGradeReviewBio, getSeasonGradeFromSquad } from "@/lib/grades";
 import { getSeasonReviewLabel } from "@/lib/mode-labels";
 import { getClubBreakdownSummary } from "@/lib/squad-analysis";
 import { generateSeasonAwards } from "@/lib/season-awards";
@@ -26,11 +26,8 @@ import { ClubRepresentation } from "./ClubRepresentation";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import { TeamComparisonBox } from "./TeamComparisonBox";
-import { TopTryScorersCard } from "./TopTryScorersCard";
-import { TryScorersPanel } from "./TryScorersPanel";
-import { SquadSummaryPanel } from "./SquadSummaryPanel";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
-import { MostExpensiveTeamCard } from "./MostExpensiveTeamCard";
+import { TryScorersSection } from "./TryScorersSection";
 import { buildLeagueTable } from "@/lib/game/league-table";
 import { LeagueTable } from "./LeagueTable";
 
@@ -190,6 +187,13 @@ export function SeasonReview({
             <p className="mt-2 text-sm font-semibold text-gray-300">
               {gradeInfo.label}
             </p>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-500">
+              {getGradeReviewBio(
+                gradeInfo.grade,
+                seasonResult.wins,
+                seasonResult.losses
+              )}
+            </p>
           </motion.div>
 
           {isPerfect && (
@@ -268,16 +272,16 @@ export function SeasonReview({
           </div>
         </CollapsibleReviewSection>
 
+        <CollapsibleReviewSection title="League Table" delay={0.34}>
+          <LeagueTable rows={leagueTable} />
+        </CollapsibleReviewSection>
+
         <CollapsibleReviewSection
           title="Team Comparison"
           variant="featured"
-          delay={0.35}
+          delay={0.36}
         >
           <TeamComparisonBox comparison={teamComparison} />
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection title="League Table" delay={0.36}>
-          <LeagueTable rows={leagueTable} />
         </CollapsibleReviewSection>
 
         <CollapsibleReviewSection title="Player Awards" delay={0.38}>
@@ -299,34 +303,15 @@ export function SeasonReview({
         </CollapsibleReviewSection>
 
         {seasonResult.tryScorers.length > 0 && (
-          <>
-            <CollapsibleReviewSection title="Top Try Scorers" delay={0.4}>
-              <TopTryScorersCard
-                tryScorers={seasonResult.tryScorers}
-                expectedTotalTries={expectedTries}
-                includeFullList={false}
-              />
-            </CollapsibleReviewSection>
-
-            <CollapsibleReviewSection title="Full Try Scorer List" delay={0.42}>
-              <TryScorersPanel
-                tryScorers={seasonResult.tryScorers}
-                expectedTotalTries={expectedTries}
-                inline
-              />
-            </CollapsibleReviewSection>
-          </>
+          <CollapsibleReviewSection title="Try Scorers" delay={0.4}>
+            <TryScorersSection
+              tryScorers={seasonResult.tryScorers}
+              expectedTotalTries={expectedTries}
+            />
+          </CollapsibleReviewSection>
         )}
 
-        <CollapsibleReviewSection title="Most Expensive Team" delay={0.44}>
-          <MostExpensiveTeamCard
-            userTeamName="Dream Team"
-            userValue={totalValue}
-            mostExpensive={teamComparison.mostExpensiveTeam}
-          />
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection title="Match History" delay={0.46}>
+        <CollapsibleReviewSection title="Match History" delay={0.44}>
           <p className="mb-3 text-center text-xs text-gray-500">
             Click any result to view full match details.
           </p>
@@ -363,11 +348,7 @@ export function SeasonReview({
           </div>
         </CollapsibleReviewSection>
 
-        <CollapsibleReviewSection title="Team Stats" delay={0.48}>
-          <SquadSummaryPanel squad={squad} revealRatings />
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection title="Club Representation" delay={0.5}>
+        <CollapsibleReviewSection title="Club Representation" delay={0.48}>
           <div className="text-left">
             <ClubRepresentation summary={clubSummary} />
           </div>

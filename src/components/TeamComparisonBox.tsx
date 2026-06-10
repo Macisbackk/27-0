@@ -15,7 +15,7 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
   comparison,
   delay = 0,
 }: TeamComparisonBoxProps) {
-  const { user, opponent, ratingEdge } = comparison;
+  const { user, opponent, ratingEdge, mostExpensiveTeam } = comparison;
   const maxRating = Math.max(user.rating, opponent.rating, 1);
 
   const userBarPct = useMemo(
@@ -55,6 +55,7 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
             side={user}
             align="left"
             highlight={ratingEdge === "user"}
+            topPlayerLabel="Top Player"
           />
 
           <div className="flex items-center justify-center sm:pt-10">
@@ -68,7 +69,24 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
             side={opponent}
             align="right"
             highlight={ratingEdge === "opponent"}
+            topPlayerLabel="Best Player"
           />
+        </div>
+
+        <div className="mt-6 rounded-xl border border-pitch-700/50 bg-pitch-950/50 px-4 py-3 text-left sm:text-center">
+          <p className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-gold">
+            Most Expensive Team
+          </p>
+          <div className="mt-2 flex flex-wrap items-center justify-start gap-2 sm:justify-center">
+            <ClubNameLabel
+              club={mostExpensiveTeam.name}
+              variant="pill"
+              className="max-w-full truncate"
+            />
+            <span className="font-display text-base font-black text-accent-gold sm:text-lg">
+              {formatValue(mostExpensiveTeam.value)}
+            </span>
+          </div>
         </div>
       </div>
     </motion.div>
@@ -98,7 +116,6 @@ const RatingShowcase = memo(function RatingShowcase({
           rating={userRating}
           edge={ratingEdge === "user"}
           edgeColor="green"
-          align="left"
         />
         <span className="font-display text-xl font-black text-gray-600 sm:text-2xl">
           VS
@@ -107,7 +124,6 @@ const RatingShowcase = memo(function RatingShowcase({
           rating={opponentRating}
           edge={ratingEdge === "opponent"}
           edgeColor="red"
-          align="right"
         />
       </div>
 
@@ -149,12 +165,10 @@ const RatingBadge = memo(function RatingBadge({
   rating,
   edge,
   edgeColor = "green",
-  align,
 }: {
   rating: number;
   edge: boolean;
   edgeColor?: "green" | "red";
-  align: "left" | "right";
 }) {
   const edgeStyles =
     edgeColor === "red"
@@ -163,25 +177,33 @@ const RatingBadge = memo(function RatingBadge({
   const edgeText = edgeColor === "red" ? "text-red-400" : "text-accent-green";
   const glow =
     edgeColor === "red"
-      ? ["0 0 16px rgba(239,68,68,0.1)", "0 0 28px rgba(239,68,68,0.2)", "0 0 16px rgba(239,68,68,0.1)"]
-      : ["0 0 16px rgba(34,197,94,0.1)", "0 0 28px rgba(34,197,94,0.2)", "0 0 16px rgba(34,197,94,0.1)"];
+      ? [
+          "0 0 16px rgba(239,68,68,0.1)",
+          "0 0 28px rgba(239,68,68,0.2)",
+          "0 0 16px rgba(239,68,68,0.1)",
+        ]
+      : [
+          "0 0 16px rgba(34,197,94,0.1)",
+          "0 0 28px rgba(34,197,94,0.2)",
+          "0 0 16px rgba(34,197,94,0.1)",
+        ];
 
   return (
     <motion.div
-      className={`min-w-[5.5rem] rounded-xl border px-4 py-3 sm:min-w-[6.5rem] ${
+      className={`flex min-h-[5.5rem] min-w-[5.5rem] flex-col items-center justify-center rounded-xl border px-4 py-3 text-center sm:min-h-[6rem] sm:min-w-[6.5rem] ${
         edge ? edgeStyles : "border-pitch-600/50 bg-pitch-900/60"
-      } ${align === "right" ? "sm:text-right" : "sm:text-left"}`}
+      }`}
       animate={edge ? { boxShadow: glow } : undefined}
       transition={{ duration: 2.5, repeat: edge ? Infinity : 0 }}
     >
       <p
-        className={`font-display text-3xl font-black sm:text-4xl ${
+        className={`font-display text-3xl font-black leading-none sm:text-4xl ${
           edge ? edgeText : "text-white"
         }`}
       >
         {Math.round(rating)}
       </p>
-      <p className="mt-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
+      <p className="mt-1 font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
         OVR
       </p>
     </motion.div>
@@ -193,24 +215,30 @@ const TeamSidePanel = memo(function TeamSidePanel({
   side,
   align,
   highlight,
+  topPlayerLabel,
 }: {
   label: string;
   side: ExtendedTeamComparison["user"];
   align: "left" | "right";
   highlight: boolean;
+  topPlayerLabel: string;
 }) {
+  const isRight = align === "right";
+
   return (
     <div
       className={`rounded-xl border p-4 ${
         highlight
           ? "border-accent-green/25 bg-accent-green/[0.04]"
           : "border-pitch-700/50 bg-pitch-950/50"
-      } ${align === "right" ? "sm:text-right" : ""}`}
+      } ${isRight ? "sm:text-right" : "text-left"}`}
     >
       <p className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
         {label}
       </p>
-      <div className={`mt-2 ${align === "right" ? "sm:flex sm:justify-end" : ""}`}>
+      <div
+        className={`mt-2 ${isRight ? "sm:flex sm:justify-end" : "flex justify-start"}`}
+      >
         <ClubNameLabel
           club={side.name}
           variant="pill"
@@ -219,8 +247,17 @@ const TeamSidePanel = memo(function TeamSidePanel({
       </div>
 
       <dl className="mt-4 space-y-2.5 text-sm">
-        <StatRow label="Team Value" value={formatValue(side.value)} align={align} />
-        <StatRow label="Team Tier" value={side.tier} align={align} highlight={highlight} />
+        <StatRow
+          label="Team Value"
+          value={formatValue(side.value)}
+          align={align}
+        />
+        <StatRow
+          label="Team Tier"
+          value={side.tier}
+          align={align}
+          highlight={highlight}
+        />
         <StatRow label="Win %" value={side.winPct} align={align} />
         <StatRow
           label="Total Tries"
@@ -228,8 +265,8 @@ const TeamSidePanel = memo(function TeamSidePanel({
           align={align}
         />
         <StatRow
-          label={align === "left" ? "Top Player" : "Best Player"}
-          value={`${side.topPlayer.name} (${side.topPlayer.rating} OVR)`}
+          label={topPlayerLabel}
+          value={side.topPlayer.name}
           align={align}
           truncate
         />
@@ -251,10 +288,14 @@ const StatRow = memo(function StatRow({
   highlight?: boolean;
   truncate?: boolean;
 }) {
+  const isRight = align === "right";
+
   return (
     <div
-      className={`flex flex-col gap-0.5 border-b border-pitch-800/60 pb-2 last:border-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between ${
-        align === "right" ? "sm:flex-row-reverse" : ""
+      className={`flex flex-col gap-0.5 border-b border-pitch-800/60 pb-2 last:border-0 last:pb-0 sm:gap-2 ${
+        isRight
+          ? "sm:flex-row-reverse sm:items-baseline sm:justify-between"
+          : "sm:flex-row sm:items-baseline sm:justify-between"
       }`}
     >
       <dt className="shrink-0 font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
@@ -263,7 +304,7 @@ const StatRow = memo(function StatRow({
       <dd
         className={`font-display text-xs font-bold sm:text-sm ${
           highlight ? "text-accent-green" : "text-white"
-        } ${truncate ? "truncate" : ""}`}
+        } ${truncate ? "truncate" : ""} ${isRight ? "sm:text-right" : "sm:text-left"}`}
       >
         {value}
       </dd>

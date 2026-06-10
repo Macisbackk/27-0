@@ -11,7 +11,6 @@ export type LeaderboardTrackerType =
   | "challenge_cup_wins"
   | "cup_match_wins"
   | "cup_finals"
-  | "cup_best_run"
   | "cup_win_percentage";
 
 export const MIN_GAMES_FOR_WIN_PERCENTAGE = 10;
@@ -61,8 +60,8 @@ export const LEADERBOARD_TRACKERS: {
   },
   {
     id: "win_percentage",
-    label: "Best Win Percentage",
-    shortLabel: "Best Win %",
+    label: "Total Win Percentage",
+    shortLabel: "Total Win %",
   },
   { id: "best_record", label: "Best Record", shortLabel: "Best Record" },
   {
@@ -84,15 +83,9 @@ export const LEADERBOARD_TRACKERS: {
     cupOnly: true,
   },
   {
-    id: "cup_best_run",
-    label: "Best Cup Run",
-    shortLabel: "Best Run",
-    cupOnly: true,
-  },
-  {
     id: "cup_win_percentage",
-    label: "Best Cup Win Percentage",
-    shortLabel: "Cup Win %",
+    label: "Total Cup Win Percentage",
+    shortLabel: "Total Win %",
     cupOnly: true,
   },
 ];
@@ -143,11 +136,13 @@ export function rankByTracker(
       case "perfect_runs":
         return b.perfectRuns - a.perfectRuns;
       case "win_percentage": {
-        const gamesA = a.bestRecordWins + a.bestRecordLosses;
-        const gamesB = b.bestRecordWins + b.bestRecordLosses;
+        const gamesA = a.totalWins + a.totalLosses;
+        const gamesB = b.totalWins + b.totalLosses;
         if (gamesA < MIN_GAMES_FOR_WIN_PERCENTAGE) return 1;
         if (gamesB < MIN_GAMES_FOR_WIN_PERCENTAGE) return -1;
-        return b.bestWinPercentage - a.bestWinPercentage;
+        const pctA = gamesA > 0 ? a.totalWins / gamesA : 0;
+        const pctB = gamesB > 0 ? b.totalWins / gamesB : 0;
+        return pctB - pctA;
       }
       case "best_record": {
         if (b.bestRecordWins !== a.bestRecordWins) {
@@ -159,8 +154,6 @@ export function rankByTracker(
         return b.challengeCupWins - a.challengeCupWins;
       case "cup_finals":
         return b.cupFinals - a.cupFinals;
-      case "cup_best_run":
-        return b.bestCupFinishRank - a.bestCupFinishRank;
       case "cup_win_percentage": {
         const gamesA = a.totalWins + a.totalLosses;
         const gamesB = b.totalWins + b.totalLosses;
@@ -176,8 +169,7 @@ export function rankByTracker(
   const filtered = (() => {
     if (tracker === "win_percentage") {
       return sorted.filter(
-        (e) =>
-          e.bestRecordWins + e.bestRecordLosses >= MIN_GAMES_FOR_WIN_PERCENTAGE
+        (e) => e.totalWins + e.totalLosses >= MIN_GAMES_FOR_WIN_PERCENTAGE
       );
     }
     if (tracker === "cup_win_percentage") {
@@ -185,9 +177,6 @@ export function rankByTracker(
         (e) =>
           e.totalWins + e.totalLosses >= MIN_GAMES_FOR_CUP_WIN_PERCENTAGE
       );
-    }
-    if (tracker === "cup_best_run") {
-      return sorted.filter((e) => e.bestCupFinishRank > 0);
     }
     return sorted;
   })();
@@ -215,18 +204,22 @@ export function getTrackerStatDisplay(
       return String(entry.totalWins);
     case "perfect_runs":
       return String(entry.perfectRuns);
-    case "win_percentage":
-      return `${entry.bestWinPercentage.toFixed(1)}%`;
+    case "win_percentage": {
+      const games = entry.totalWins + entry.totalLosses;
+      const pct = games > 0 ? (entry.totalWins / games) * 100 : 0;
+      return `${pct.toFixed(1)}%`;
+    }
     case "best_record":
       return `${entry.bestRecordWins}-${entry.bestRecordLosses}`;
     case "challenge_cup_wins":
       return String(entry.challengeCupWins);
     case "cup_finals":
       return String(entry.cupFinals);
-    case "cup_best_run":
-      return entry.bestCupFinishLabel || "—";
-    case "cup_win_percentage":
-      return `${entry.cupWinPercentage.toFixed(1)}%`;
+    case "cup_win_percentage": {
+      const games = entry.totalWins + entry.totalLosses;
+      const pct = games > 0 ? (entry.totalWins / games) * 100 : 0;
+      return `${pct.toFixed(1)}%`;
+    }
     default:
       return "—";
   }
@@ -282,7 +275,7 @@ export function mergeLeaderboardStats(
     }
     const cupGames = totalWins + totalLosses;
     if (cupGames >= MIN_GAMES_FOR_CUP_WIN_PERCENTAGE) {
-      cupWinPercentage = getCupWinPercentage(totalWins, totalLosses);
+      cupWinPercentage = (totalWins / cupGames) * 100;
     }
   }
 
@@ -299,12 +292,11 @@ export function mergeLeaderboardStats(
   }
 
   let bestWinPercentage = existing?.bestWinPercentage ?? 0;
-  if (
-    !isCupRun &&
-    seasonGames >= MIN_GAMES_FOR_WIN_PERCENTAGE &&
-    seasonWinPct > bestWinPercentage
-  ) {
-    bestWinPercentage = seasonWinPct;
+  if (!isCupRun) {
+    const totalGames = totalWins + totalLosses;
+    if (totalGames >= MIN_GAMES_FOR_WIN_PERCENTAGE) {
+      bestWinPercentage = (totalWins / totalGames) * 100;
+    }
   }
 
   return {

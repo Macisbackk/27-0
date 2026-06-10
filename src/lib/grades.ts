@@ -204,3 +204,40 @@ export function getSquadGrade(totalValue: number): GradeInfo {
 export function formatGradeDisplay(info: GradeInfo): string {
   return `${info.grade} Grade (${info.label})`;
 }
+
+/** Short review-page bio shown under the grade heading. */
+export function getGradeReviewBio(
+  grade: SquadGrade,
+  wins: number,
+  losses: number
+): string {
+  const winless = wins === 0;
+  const dominant = wins >= 24 || grade === "S+" || grade === "S";
+
+  switch (grade) {
+    case "S+":
+      return dominant
+        ? "A once-in-a-generation squad that looked untouchable all season."
+        : "An extraordinary campaign — this side belonged in the history books.";
+    case "S":
+      return "A dominant squad that looked capable of beating anyone.";
+    case "A":
+      return "A strong campaign with enough quality to challenge at the top.";
+    case "B":
+      return "A solid season with clear strengths, but still room to improve.";
+    case "C":
+      return "Mid-table quality — not bad, not great, but competitive.";
+    case "D":
+      return winless
+        ? "A winless campaign that never found its rhythm."
+        : "A frustrating campaign that never fully clicked.";
+    case "E":
+      return losses >= 20
+        ? "A dire season that left plenty to fix in the off-season."
+        : "A disappointing run that fell well short of expectations.";
+    case "F":
+      return "A rebuild is needed. This squad struggled badly.";
+    default:
+      return "A season worth reflecting on before the next recruitment drive.";
+  }
+}

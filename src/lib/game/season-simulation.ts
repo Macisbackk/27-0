@@ -17,6 +17,7 @@ import {
   type ScorePickContext,
 } from "./rl-scores";
 import { getSeasonCommentary } from "./season-commentary";
+import { getSeasonLeagueClubs } from "./league-replacement";
 
 export const SEASON_GAMES = 27;
 export const DREAM_TEAM_NAME = "Dream Team";
@@ -146,6 +147,8 @@ export interface SeasonResult {
   squadStrength: number;
   tryScorers: PlayerTryTotal[];
   insights: string[];
+  /** Real club replaced by Dream Team this season (not in fixtures/table). */
+  replacedTeam: string;
 }
 
 const FORWARD_POSITIONS = new Set([
@@ -642,10 +645,13 @@ interface ScheduledFixture {
   isHome: boolean;
 }
 
-function buildFixtureList(rng: () => number): ScheduledFixture[] {
+function buildFixtureList(
+  rng: () => number,
+  opponentClubs: string[]
+): ScheduledFixture[] {
   const opponents: string[] = [];
   while (opponents.length < SEASON_GAMES) {
-    const shuffled = [...OPPONENT_CLUBS].sort(() => rng() - 0.5);
+    const shuffled = [...opponentClubs].sort(() => rng() - 0.5);
     for (const club of shuffled) {
       opponents.push(club);
       if (opponents.length >= SEASON_GAMES) break;
@@ -884,6 +890,7 @@ export function simulateSeason(
   seed: string
 ): SeasonResult {
   const strength = calculateSquadStrength(squad);
+  const { opponentClubs, replacedTeam } = getSeasonLeagueClubs(seed);
   const rng = seedrandom(`${seed}-season`);
 
   let wins = 0;
@@ -893,7 +900,7 @@ export function simulateSeason(
   let state: MatchSimState = { form: 0, seasonDropGoals: 0 };
   const gameResults: ("W" | "L")[] = [];
   const fixtures: MatchFixture[] = [];
-  const opponents = buildFixtureList(rng);
+  const opponents = buildFixtureList(rng, opponentClubs);
 
   for (let i = 0; i < SEASON_GAMES; i++) {
     const { opponent, isHome } = opponents[i];
@@ -941,6 +948,7 @@ export function simulateSeason(
     squadStrength: Math.round(strength * 10) / 10,
     tryScorers,
     insights: [],
+    replacedTeam,
   };
 
   partialResult.insights = generateSeasonInsights(partialResult);

@@ -1,26 +1,5 @@
 [
   {
-    "id": "robbie-paul",
-    "name": "Robbie Paul",
-    "position": "Scrum-half",
-    "club": "Bradford Bulls",
-    "nationality": "New Zealand",
-    "era": "Early Super League playmaker",
-    "yearsActive": "1994–2011",
-    "category": "legend",
-    "peakRating": 92,
-    "value": 2655000,
-    "appearances": 345,
-    "tries": 186,
-    "intlCaps": 15,
-    "hallOfFame": false,
-    "clubLegend": true,
-    "manOfSteel": true,
-    "challengeCupWinner": true,
-    "superLeagueWinner": true,
-    "rating": 92
-  },
-  {
     "id": "jamie-peacock",
     "name": "Jamie Peacock",
     "position": "Prop",
@@ -1439,14 +1418,14 @@
     "peakRating": 98,
     "value": 4555000,
     "rating": 98,
-    "intlCaps": 0,
-    "appearances": 307,
-    "tries": 130,
+    "intlCaps": 15,
+    "appearances": 345,
+    "tries": 186,
     "hallOfFame": false,
     "clubLegend": true,
-    "manOfSteel": false,
-    "challengeCupWinner": false,
-    "superLeagueWinner": false
+    "manOfSteel": true,
+    "challengeCupWinner": true,
+    "superLeagueWinner": true
   },
   {
     "id": "wigan-leg-mike-mcilorum",

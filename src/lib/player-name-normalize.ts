@@ -19,5 +19,10 @@ export function normalizePlayerNameKey(name: string): string {
     key = `mickey ${key.slice(5)}`;
   }
 
+  // Robbie Paul = Robbie Hunter-Paul (same player)
+  if (key === "robbie paul") {
+    key = "robbie hunter paul";
+  }
+
   return key;
 }

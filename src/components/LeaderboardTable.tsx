@@ -23,13 +23,12 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   squad_value: "Squad Value",
   most_wins: "Wins",
   perfect_runs: "27-0 Seasons",
-  win_percentage: "Win %",
+  win_percentage: "Total Win %",
   best_record: "Record",
   challenge_cup_wins: "Cups Won",
   cup_match_wins: "Cup Wins",
   cup_finals: "Finals",
-  cup_best_run: "Best Run",
-  cup_win_percentage: "Cup Win %",
+  cup_win_percentage: "Total Win %",
 };
 
 interface LeaderboardTableProps {

@@ -1,10 +1,10 @@
 import seedrandom from "seedrandom";
-import { SUPER_LEAGUE_CLUBS } from "../clubs";
 import {
   DREAM_TEAM_NAME,
   SEASON_GAMES,
   type SeasonResult,
 } from "./season-simulation";
+import { getSeasonLeagueClubs } from "./league-replacement";
 import { pickRLScore, snapToRLScore } from "./rl-scores";
 
 /** Club strength tiers — aligned with season opponent modelling. */
@@ -50,11 +50,8 @@ interface TeamAccumulator {
   pointsAgainst: number;
 }
 
-function getLeagueTeams(): string[] {
-  const opponents = SUPER_LEAGUE_CLUBS.filter((c) => c.active !== false)
-    .map((c) => c.name)
-    .slice(0, 13);
-  return [DREAM_TEAM_NAME, ...opponents];
+function getLeagueTeams(seed: string): string[] {
+  return getSeasonLeagueClubs(seed).leagueTeams;
 }
 
 function emptyAccumulator(): TeamAccumulator {
@@ -197,7 +194,7 @@ export function buildLeagueTable(
   seasonResult: SeasonResult,
   seed: string
 ): LeagueTableRow[] {
-  const leagueTeams = getLeagueTeams();
+  const leagueTeams = getLeagueTeams(seed);
   const stats = new Map<string, TeamAccumulator>();
   for (const team of leagueTeams) {
     stats.set(team, emptyAccumulator());

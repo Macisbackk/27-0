@@ -36,11 +36,8 @@ import { RLAwardCard } from "./cards/RLAwardCard";
 import { BracketRecap } from "./BracketRecap";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import { TeamComparisonBox } from "./TeamComparisonBox";
-import { TopTryScorersCard } from "./TopTryScorersCard";
-import { TryScorersPanel } from "./TryScorersPanel";
-import { SquadSummaryPanel } from "./SquadSummaryPanel";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
-import { MostExpensiveTeamCard } from "./MostExpensiveTeamCard";
+import { TryScorersSection } from "./TryScorersSection";
 
 interface ChallengeCupReviewProps {
   squad: SquadSlot[];
@@ -104,6 +101,7 @@ export function ChallengeCupReview({
       longestLosingStreak: cupResult.losses > 0 ? 1 : 0,
       gameResults: cupResult.fixtures.map((f) => f.result),
       insights: cupResult.insights ?? [],
+      replacedTeam: "",
     }),
     [cupResult]
   );
@@ -229,7 +227,7 @@ export function ChallengeCupReview({
           <ReviewPlayAgain onPlayAgain={handlePlayAgain} compact />
         </motion.div>
 
-        <CollapsibleReviewSection title="Season Summary" delay={0.32}>
+        <CollapsibleReviewSection title="Challenge Cup Summary" delay={0.32}>
           <div className="mx-auto max-w-md space-y-2 text-center text-sm text-gray-400">
             <p>
               Tournament Record:{" "}
@@ -272,10 +270,20 @@ export function ChallengeCupReview({
           </div>
         </CollapsibleReviewSection>
 
+        {cupResult.bracketMatches && cupResult.bracketMatches.length > 0 && (
+          <CollapsibleReviewSection title="Challenge Cup Journey" delay={0.34}>
+            <BracketRecap
+              matches={cupResult.bracketMatches}
+              userClub={userTeamName}
+              byeTeams={cupResult.byeTeams}
+            />
+          </CollapsibleReviewSection>
+        )}
+
         <CollapsibleReviewSection
           title="Team Comparison"
           variant="featured"
-          delay={0.35}
+          delay={0.36}
         >
           <TeamComparisonBox comparison={teamComparison} />
         </CollapsibleReviewSection>
@@ -299,35 +307,15 @@ export function ChallengeCupReview({
         </CollapsibleReviewSection>
 
         {cupResult.tryScorers.length > 0 && (
-          <>
-            <CollapsibleReviewSection title="Top Try Scorers" delay={0.4}>
-              <TopTryScorersCard
-                tryScorers={cupResult.tryScorers}
-                expectedTotalTries={expectedTries}
-                title="Top Try Scorers"
-                includeFullList={false}
-              />
-            </CollapsibleReviewSection>
-
-            <CollapsibleReviewSection title="Full Try Scorer List" delay={0.42}>
-              <TryScorersPanel
-                tryScorers={cupResult.tryScorers}
-                expectedTotalTries={expectedTries}
-                inline
-              />
-            </CollapsibleReviewSection>
-          </>
+          <CollapsibleReviewSection title="Try Scorers" delay={0.4}>
+            <TryScorersSection
+              tryScorers={cupResult.tryScorers}
+              expectedTotalTries={expectedTries}
+            />
+          </CollapsibleReviewSection>
         )}
 
-        <CollapsibleReviewSection title="Most Expensive Team" delay={0.44}>
-          <MostExpensiveTeamCard
-            userTeamName={userTeamName}
-            userValue={totalValue}
-            mostExpensive={teamComparison.mostExpensiveTeam}
-          />
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection title="Match History" delay={0.46}>
+        <CollapsibleReviewSection title="Match History" delay={0.44}>
           <p className="mb-3 text-center text-xs text-gray-500">
             Click any result to view full match details.
           </p>
@@ -372,21 +360,7 @@ export function ChallengeCupReview({
           </div>
         </CollapsibleReviewSection>
 
-        {cupResult.bracketMatches && cupResult.bracketMatches.length > 0 && (
-          <CollapsibleReviewSection title="Challenge Cup Journey" delay={0.48}>
-            <BracketRecap
-              matches={cupResult.bracketMatches}
-              userClub={userTeamName}
-              byeTeams={cupResult.byeTeams}
-            />
-          </CollapsibleReviewSection>
-        )}
-
-        <CollapsibleReviewSection title="Team Stats" delay={0.5}>
-          <SquadSummaryPanel squad={squad} revealRatings />
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection title="Club Representation" delay={0.52}>
+        <CollapsibleReviewSection title="Club Representation" delay={0.48}>
           <ClubRepresentation summary={clubSummary} />
         </CollapsibleReviewSection>
 
