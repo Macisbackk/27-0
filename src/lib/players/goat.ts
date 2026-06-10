@@ -2,6 +2,7 @@ import type { Player } from "../types";
 import { ratingToValue } from "./ratings";
 import { resolveCareerTries } from "./career-tries";
 import { resolveYearsActive } from "./years-active";
+import { isSuperSamHallasId } from "./super-sam-hallas";
 
 /** Normal database Joe Mellor — recruitable in standard modes. */
 export const JOE_MELLOR_NORMAL_ID = "bradford-cur-joe-mellor";
@@ -16,7 +17,7 @@ const HIDDEN_PLAYER_IDS = new Set([JOE_MELLOR_GOAT_ID]);
 
 export function isHiddenPlayer(playerOrId: Player | string): boolean {
   const id = typeof playerOrId === "string" ? playerOrId : playerOrId.id;
-  return HIDDEN_PLAYER_IDS.has(id);
+  return HIDDEN_PLAYER_IDS.has(id) || isSuperSamHallasId(id);
 }
 
 export function isGoatPlayer(player: Player): boolean {

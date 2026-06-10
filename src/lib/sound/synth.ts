@@ -108,6 +108,13 @@ export const synth = {
     setTimeout(() => playTone(466, 0.18, { type: "sawtooth", volume: 0.06 }), 220);
     setTimeout(() => playTone(622, 0.22, { type: "sawtooth", volume: 0.055 }), 330);
   },
+  superSamHallas: () => {
+    playTone(392, 0.1, { type: "triangle", volume: 0.07 });
+    setTimeout(() => playTone(523, 0.12, { type: "triangle", volume: 0.075 }), 90);
+    setTimeout(() => playTone(659, 0.14, { type: "triangle", volume: 0.07 }), 180);
+    setTimeout(() => playTone(784, 0.16, { type: "triangle", volume: 0.065 }), 270);
+    setTimeout(() => playTone(988, 0.2, { type: "triangle", volume: 0.06 }), 360);
+  },
   modeNormal: () => playTone(330, 0.1, { type: "triangle", volume: 0.05 }),
   modeHard: () =>
     playSequence([
@@ -124,6 +131,21 @@ export const synth = {
       { freq: 392, dur: 0.1, vol: 0.055, type: "triangle" },
       { freq: 523, dur: 0.12, vol: 0.05, type: "triangle" },
     ]),
+  challengeCup: () => {
+    playTone(262, 0.08, { type: "triangle", volume: 0.045 });
+    setTimeout(() => playTone(330, 0.1, { type: "triangle", volume: 0.05 }), 70);
+    setTimeout(() => playTone(392, 0.1, { type: "triangle", volume: 0.055 }), 140);
+    setTimeout(() => playTone(523, 0.12, { type: "triangle", volume: 0.06 }), 220);
+    setTimeout(() => playTone(659, 0.14, { type: "triangle", volume: 0.055 }), 310);
+    setTimeout(() => playTone(784, 0.18, { type: "triangle", volume: 0.05 }), 400);
+  },
+  hardOn: () =>
+    playSequence([
+      { freq: 185, dur: 0.14, vol: 0.07, type: "sawtooth" },
+      { freq: 147, dur: 0.16, vol: 0.065, type: "sawtooth" },
+      { freq: 110, dur: 0.2, vol: 0.06, type: "sawtooth" },
+    ], 0.1),
+  hardOff: () => playTone(440, 0.06, { volume: 0.04, type: "triangle" }),
   seasonStart: () => {
     playTone(220, 0.12, { type: "triangle", volume: 0.06 });
     setTimeout(() => playTone(330, 0.14, { type: "triangle", volume: 0.05 }), 80);

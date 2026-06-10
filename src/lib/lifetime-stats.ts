@@ -111,6 +111,7 @@ export interface SeasonLifetimeInput {
   totalValue: number;
   nationalRank?: number;
   joeMellorMode?: boolean;
+  superSamHallasMode?: boolean;
   challengeCupMode?: boolean;
   cupFinish?: string;
   cupWon?: boolean;
@@ -133,6 +134,7 @@ export function applySeasonLifetimeUpdate(
     totalValue,
     nationalRank,
     joeMellorMode,
+    superSamHallasMode,
     challengeCupMode,
     cupFinish,
     cupWon,
@@ -229,6 +231,10 @@ export function applySeasonLifetimeUpdate(
         wins
       ),
     };
+  }
+
+  if (superSamHallasMode) {
+    return existing;
   }
 
   if (joeMellorMode) {

@@ -38,6 +38,7 @@ interface SeasonReviewProps {
   seed: string;
   difficulty?: GameDifficulty;
   joeMellorMode?: boolean;
+  superSamHallasMode?: boolean;
   runRank?: number;
   submittedOnline?: boolean;
   onPlayAgain: () => void;
@@ -51,6 +52,7 @@ export function SeasonReview({
   seed,
   difficulty = "NORMAL",
   joeMellorMode = false,
+  superSamHallasMode = false,
   runRank,
   submittedOnline = false,
   onPlayAgain,
@@ -61,8 +63,12 @@ export function SeasonReview({
   const filledCount = squad.filter((s) => s.player).length;
   const clubSummary = getClubBreakdownSummary(squad, filledCount, {
     joeMellorMode,
+    superSamHallasMode,
   });
-  const awards = generateSeasonAwards(squad, seasonResult, { joeMellorMode });
+  const awards = generateSeasonAwards(squad, seasonResult, {
+    joeMellorMode,
+    superSamHallasMode,
+  });
   const teamComparison = getTeamComparisonSummary(
     "Dream Team",
     getAverageSquadRating(squad),
@@ -166,7 +172,7 @@ export function SeasonReview({
               >
                 27-0 ACHIEVED
               </motion.h1>
-              {!joeMellorMode && (
+              {!joeMellorMode && !superSamHallasMode && (
                 <motion.p
                   className="mt-2 font-display text-sm font-bold uppercase tracking-[0.25em] text-accent-green"
                   initial={{ opacity: 0 }}

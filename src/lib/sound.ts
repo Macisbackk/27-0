@@ -38,6 +38,14 @@ export function playPanelExpand(): void {
   playSound("expand");
 }
 
+export function playHardModeOn(): void {
+  playSound("hardOn");
+}
+
+export function playHardModeOff(): void {
+  playSound("hardOff");
+}
+
 /* ── Recruitment ── */
 
 export function playPositionSelect(): void {
@@ -83,11 +91,15 @@ export function playModeDraftStart(difficulty: GameDifficulty): void {
 }
 
 export function playModeChallengeCupStart(): void {
-  playSound("modeCup");
+  playSound("challengeCup");
 }
 
 export function playJoeMellorActivate(): void {
   playSound("joeMellor");
+}
+
+export function playSuperSamHallasActivate(): void {
+  playSound("superSamHallas");
 }
 
 /* ── Season simulation ── */

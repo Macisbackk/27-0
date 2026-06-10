@@ -45,16 +45,18 @@ const DISPLAY_LABEL: Record<ClubPlayerDisplayCategory, string> = {
   historic: "Historic",
   legend: "Legend",
   goat: "GOAT",
+  superSam: "SUPER SAM",
 };
 
 const DISPLAY_VARIANT: Record<
   ClubPlayerDisplayCategory,
-  "current" | "historic" | "legend" | "goat"
+  "current" | "historic" | "legend" | "goat" | "gold"
 > = {
   current: "current",
   historic: "historic",
   legend: "legend",
   goat: "goat",
+  superSam: "gold",
 };
 
 export function ClubRepresentation({ summary }: ClubRepresentationProps) {
@@ -112,7 +114,9 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                                 {player.name}
                               </p>
                               <p className="mt-0.5 text-xs text-gray-400">
-                                {formatPositionLine(player)}
+                                {player.playerId === "ssh-sam-hallas-group"
+                                  ? "All 13 positions"
+                                  : formatPositionLine(player)}
                               </p>
                             </div>
                             <RLTag

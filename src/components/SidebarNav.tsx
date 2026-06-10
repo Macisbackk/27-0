@@ -157,11 +157,30 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 <button
                   type="button"
                   onClick={handleToggleSound}
-                  className="flex w-full items-center justify-between rounded-lg border border-pitch-600 px-3 py-2.5 text-sm text-gray-300 transition hover:border-accent-green/40 hover:text-white"
+                  aria-label={
+                    muted
+                      ? "Sound off — click to enable"
+                      : "Sound on — click to mute"
+                  }
+                  className="flex w-full items-center gap-3 rounded-lg border border-pitch-600 px-3 py-2.5 text-sm text-gray-300 transition hover:border-accent-green/40 hover:text-white"
                 >
-                  <span>Sound Effects</span>
-                  <span className="font-medium text-white">
-                    {muted ? "Sound Off" : "Sound On"}
+                  <span
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${
+                      muted
+                        ? "border-pitch-600 bg-pitch-900/80 text-gray-500"
+                        : "border-accent-green/30 bg-accent-green/10 text-accent-green"
+                    }`}
+                    aria-hidden
+                  >
+                    {muted ? <SoundOffIcon /> : <SoundOnIcon />}
+                  </span>
+                  <span className="flex-1 text-left">Sound Effects</span>
+                  <span
+                    className={`font-display text-xs font-bold uppercase tracking-wider ${
+                      muted ? "text-gray-500" : "text-accent-green"
+                    }`}
+                  >
+                    {muted ? "Sound: OFF" : "Sound: ON"}
                   </span>
                 </button>
               </div>
@@ -170,5 +189,43 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
         </>
       )}
     </AnimatePresence>
+  );
+}
+
+function SoundOnIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    </svg>
+  );
+}
+
+function SoundOffIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <line x1="23" y1="9" x2="17" y2="15" />
+      <line x1="17" y1="9" x2="23" y2="15" />
+    </svg>
   );
 }

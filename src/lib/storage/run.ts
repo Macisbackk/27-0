@@ -30,6 +30,7 @@ export async function recordCompletedRun(
   difficulty: GameDifficulty = "NORMAL",
   options?: {
     joeMellorMode?: boolean;
+    superSamHallasMode?: boolean;
     seasonWins?: number;
     seasonLosses?: number;
     seasonLeaguePosition?: number;
@@ -49,7 +50,8 @@ export async function recordCompletedRun(
   const wins = options?.seasonWins ?? 0;
   const losses = options?.seasonLosses ?? 0;
   const loggedIn = isLoggedIn();
-  const isHiddenRun = options?.joeMellorMode === true;
+  const isHiddenRun =
+    options?.joeMellorMode === true || options?.superSamHallasMode === true;
   const statsBucket = resolveStatsBucket(run.mode, difficulty);
 
   if (!isHiddenRun) {
@@ -106,6 +108,7 @@ export async function recordCompletedRun(
           totalValue,
           nationalRank,
           joeMellorMode: options.joeMellorMode,
+          superSamHallasMode: options.superSamHallasMode,
           challengeCupMode: true,
           cupFinish: options.cupFinish,
           cupWon: options.cupWon,
@@ -160,6 +163,7 @@ export async function recordCompletedRun(
         totalValue,
         nationalRank,
         joeMellorMode: options.joeMellorMode,
+        superSamHallasMode: options.superSamHallasMode,
         challengeCupMode: options.challengeCupMode,
         cupFinish: options.cupFinish,
         cupWon: options.cupWon,

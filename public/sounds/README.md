@@ -16,10 +16,14 @@ Suggested files:
 | `legend.mp3` | Legend player in offers |
 | `goat.mp3` | GOAT player in offers |
 | `joe-mellor.mp3` | Joe Mellor easter egg mode |
+| `super-sam-hallas.mp3` | Super Sam Hallas easter egg mode |
 | `mode-normal.mp3` | Normal / Classic mode start |
 | `mode-hard.mp3` | Hard mode start |
 | `mode-draft.mp3` | Draft mode start |
-| `mode-cup.mp3` | Challenge Cup start |
+| `mode-cup.mp3` | Legacy Challenge Cup tone (unused if `challenge-cup.mp3` present) |
+| `challenge-cup.mp3` | Challenge Cup mode activation (tournament intro) |
+| `hard-on.mp3` | Hard Mode enabled |
+| `hard-off.mp3` | Hard Mode disabled |
 | `season-start.mp3` | Season / cup simulation start |
 | `win.mp3` | Narrow match win |
 | `loss.mp3` | Match loss |

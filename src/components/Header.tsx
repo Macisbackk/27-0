@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { HeaderAuthControls } from "./HeaderAuthControls";
 import { SidebarNav } from "./SidebarNav";
-import { SoundToggle } from "./SoundToggle";
 import { playMenuOpen } from "@/lib/sound";
 
 const HEADER_BTN =
@@ -44,7 +43,6 @@ export function Header() {
           </Link>
 
           <div className="flex shrink-0 items-center justify-end gap-2 justify-self-end">
-            <SoundToggle />
             <HeaderAuthControls />
           </div>
         </div>

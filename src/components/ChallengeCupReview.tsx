@@ -47,6 +47,7 @@ interface ChallengeCupReviewProps {
   seed: string;
   difficulty?: GameDifficulty;
   joeMellorMode?: boolean;
+  superSamHallasMode?: boolean;
   cupRankingResult?: CupRunRankingResult;
   submittedOnline?: boolean;
   onPlayAgain: () => void;
@@ -59,6 +60,7 @@ export function ChallengeCupReview({
   seed,
   difficulty = "NORMAL",
   joeMellorMode = false,
+  superSamHallasMode = false,
   cupRankingResult,
   submittedOnline = false,
   onPlayAgain,
@@ -68,6 +70,7 @@ export function ChallengeCupReview({
   const filledCount = squad.filter((s) => s.player).length;
   const clubSummary = getClubBreakdownSummary(squad, filledCount, {
     joeMellorMode,
+    superSamHallasMode,
   });
   const isHardMode = difficulty === "HARD";
   const [selectedFixture, setSelectedFixture] = useState<MatchFixture | null>(
@@ -109,7 +112,10 @@ export function ChallengeCupReview({
     seed
   );
 
-  const awards = generateSeasonAwards(squad, seasonLikeResult, { joeMellorMode })
+  const awards = generateSeasonAwards(squad, seasonLikeResult, {
+    joeMellorMode,
+    superSamHallasMode,
+  })
     .filter((a) => a.title in CUP_AWARD_TITLES)
     .map((a) => {
       const title = CUP_AWARD_TITLES[a.title] ?? a.title;

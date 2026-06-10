@@ -2,12 +2,14 @@ import type { Player, PlayerCategory, Position, SquadSlot } from "./types";
 import { TOTAL_SLOTS } from "./positions";
 import { resolveDisplayClub } from "./clubs/super-league-display";
 import { JOE_MELLOR_GOAT_ID } from "./players/goat";
+import { isSuperSamHallasId, isSuperSamHallasPlayer } from "./players/super-sam-hallas";
 import { getSlotDisplayInfo } from "./squad-display";
 
-export type ClubPlayerDisplayCategory = PlayerCategory | "goat";
+export type ClubPlayerDisplayCategory = PlayerCategory | "goat" | "superSam";
 
 export interface ClubBreakdownOptions {
   joeMellorMode?: boolean;
+  superSamHallasMode?: boolean;
 }
 
 export interface ClubPlayerEntry {
@@ -48,9 +50,12 @@ function getFilledSquadCount(squad: SquadSlot[]): number {
 
 function getPlayerDisplayCategory(
   player: Player,
-  joeMellorMode?: boolean
+  options?: ClubBreakdownOptions
 ): ClubPlayerDisplayCategory {
-  if (joeMellorMode && player.id === JOE_MELLOR_GOAT_ID) {
+  if (options?.superSamHallasMode && isSuperSamHallasPlayer(player)) {
+    return "superSam";
+  }
+  if (options?.joeMellorMode && player.id === JOE_MELLOR_GOAT_ID) {
     return "goat";
   }
   return player.category;
@@ -89,7 +94,7 @@ export function getClubBreakdown(
       playedPosition: display.playedPosition,
       positionMismatch: display.positionMismatch,
       category: player.category,
-      displayCategory: getPlayerDisplayCategory(player, options?.joeMellorMode),
+      displayCategory: getPlayerDisplayCategory(player, options),
       peakRating: display.adjustedRating,
       originalRating: display.originalRating,
       adjustedRating: display.adjustedRating,
@@ -106,7 +111,39 @@ export function getClubBreakdown(
       totalValue: data.totalValue,
       players: data.players.sort((a, b) => a.name.localeCompare(b.name)),
     }))
-    .sort((a, b) => b.count - a.count || b.totalValue - a.totalValue);
+    .sort((a, b) => b.count - a.count || b.totalValue - a.totalValue)
+    .map((entry) => {
+      if (
+        !options?.superSamHallasMode ||
+        !entry.players.every((p) => isSuperSamHallasId(p.playerId))
+      ) {
+        return entry;
+      }
+
+      const totalValue = entry.players.reduce((sum, p) => sum + p.value, 0);
+      const rating = entry.players[0]?.adjustedRating ?? 99;
+
+      return {
+        ...entry,
+        players: [
+          {
+            playerId: "ssh-sam-hallas-group",
+            name: `Sam Hallas ×${entry.count}`,
+            position: entry.players[0]!.position,
+            naturalPosition: entry.players[0]!.naturalPosition,
+            playedPosition: entry.players[0]!.playedPosition,
+            positionMismatch: false,
+            category: entry.players[0]!.category,
+            displayCategory: "superSam" as const,
+            peakRating: rating,
+            originalRating: rating,
+            adjustedRating: rating,
+            ratingAdjusted: false,
+            value: totalValue,
+          },
+        ],
+      };
+    });
 }
 
 export function getClubBreakdownSummary(

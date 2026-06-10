@@ -129,6 +129,12 @@ export {
   JOE_MELLOR_GOAT_ID,
   getJoeMellorGoatPlayer,
 } from "./goat";
+export {
+  isSuperSamHallasId,
+  isSuperSamHallasPlayer,
+  getSuperSamHallasPlayer,
+  SAM_HALLAS_ID_PREFIX,
+} from "./super-sam-hallas";
 
 /** Public player pool — excludes JM Mode-only entries. */
 export function getShowcasePlayers(): Player[] {

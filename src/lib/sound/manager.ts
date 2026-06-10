@@ -12,10 +12,14 @@ export const SOUND_FILES = {
   legend: "/sounds/legend.mp3",
   goat: "/sounds/goat.mp3",
   joeMellor: "/sounds/joe-mellor.mp3",
+  superSamHallas: "/sounds/super-sam-hallas.mp3",
   modeNormal: "/sounds/mode-normal.mp3",
   modeHard: "/sounds/mode-hard.mp3",
   modeDraft: "/sounds/mode-draft.mp3",
   modeCup: "/sounds/mode-cup.mp3",
+  challengeCup: "/sounds/challenge-cup.mp3",
+  hardOn: "/sounds/hard-on.mp3",
+  hardOff: "/sounds/hard-off.mp3",
   seasonStart: "/sounds/season-start.mp3",
   win: "/sounds/win.mp3",
   loss: "/sounds/loss.mp3",
@@ -46,6 +50,9 @@ const COOLDOWN_MS: Partial<Record<SoundId, number>> = {
   expand: 180,
   menuOpen: 200,
   menuClose: 200,
+  hardOn: 280,
+  hardOff: 160,
+  challengeCup: 400,
 };
 
 let interactionUnlocked = false;

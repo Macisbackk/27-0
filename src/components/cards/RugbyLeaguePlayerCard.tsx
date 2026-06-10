@@ -7,6 +7,7 @@ import { getValueTier } from "@/lib/players/ratings";
 import { isActivePlayer } from "@/lib/players/active";
 import { getPlayerAchievements } from "@/lib/players/achievements";
 import { isGoatPlayer } from "@/lib/players/goat";
+import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
 import { getClubColors } from "@/lib/clubs";
 import { POSITION_TILE_LABEL } from "@/lib/positions";
 import {
@@ -54,6 +55,7 @@ export function RugbyLeaguePlayerCard({
   const isLegend = player.category === "legend";
   const isHistoric = player.category === "historic" || isLegend;
   const isGoat = isGoatPlayer(player);
+  const isSuperSam = isSuperSamHallasPlayer(player);
   const isActive = isActivePlayer(player);
   const achievements = getPlayerAchievements(player);
   const tier = getValueTier(player.peakRating);
@@ -70,25 +72,30 @@ export function RugbyLeaguePlayerCard({
 
   const showCategoryBadge =
     isGoat ||
+    isSuperSam ||
     isLegend ||
-    (isHistoric && !isLegend && !isGoat) ||
-    (isActive && !isGoat && !isLegend && !isHistoric);
+    (isHistoric && !isLegend && !isGoat && !isSuperSam) ||
+    (isActive && !isGoat && !isLegend && !isHistoric && !isSuperSam);
 
-  const categoryVariant = isGoat
-    ? "goat"
-    : isLegend
-      ? "legend"
-      : isHistoric
-        ? "historic"
-        : "current";
+  const categoryVariant = isSuperSam
+    ? "gold"
+    : isGoat
+      ? "goat"
+      : isLegend
+        ? "legend"
+        : isHistoric
+          ? "historic"
+          : "current";
 
-  const categoryLabel = isGoat
-    ? "GOAT"
-    : isLegend
-      ? "Legend"
-      : isHistoric
-        ? "Historic"
-        : "Current";
+  const categoryLabel = isSuperSam
+    ? "SUPER SAM"
+    : isGoat
+      ? "GOAT"
+      : isLegend
+        ? "Legend"
+        : isHistoric
+          ? "Historic"
+          : "Current";
 
   const categoryTag = showCategoryBadge ? (
     <RLTag
@@ -124,7 +131,17 @@ export function RugbyLeaguePlayerCard({
         club={player.club}
         className={`shrink-0 ${PITCH_SIZE} ${className}`}
       >
-        {isGoat && (
+        {isSuperSam && (
+          <div
+            className={`flex justify-center border-b border-pitch-600/40 bg-pitch-950/90 px-1 py-0.5 ${hiddenClass}`}
+            aria-hidden={hardMode || undefined}
+          >
+            <RLTag variant="gold" compact>
+              SUPER SAM
+            </RLTag>
+          </div>
+        )}
+        {isGoat && !isSuperSam && (
           <div
             className={`flex justify-center border-b border-pitch-600/40 bg-pitch-950/90 px-1 py-0.5 ${hiddenClass}`}
             aria-hidden={hardMode || undefined}

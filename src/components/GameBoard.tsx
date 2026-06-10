@@ -24,6 +24,10 @@ import {
 import { getPlacementPenalty } from "@/lib/game/position-placement";
 import { getPlayerById } from "@/lib/players";
 import { getJoeMellorGoatPlayer } from "@/lib/players/goat";
+import {
+  getSuperSamHallasPlayer,
+  isSuperSamHallasId,
+} from "@/lib/players/super-sam-hallas";
 import { generateRunSeed } from "@/lib/game/generator";
 import {
   simulateSeason,
@@ -31,6 +35,10 @@ import {
 } from "@/lib/game/season-simulation";
 import type { ChallengeCupResult } from "@/lib/game/challenge-cup-simulation";
 import { createJoeMellorStartingSquad } from "@/lib/game/joe-mellor-mode";
+import {
+  ALL_SUPER_SAM_SLOT_INDICES,
+  createSuperSamHallasStartingSquad,
+} from "@/lib/game/super-sam-hallas-mode";
 import { JOE_MELLOR_GOAT_ID } from "@/lib/players/goat";
 import {
   createEmptySquad,
@@ -45,6 +53,7 @@ import { getAverageSquadRating } from "@/lib/squad-analysis";
 import { addHallOfFameEntry } from "@/lib/storage/hall-of-fame";
 import {
   playJoeMellorActivate,
+  playSuperSamHallasActivate,
   playModeChallengeCupStart,
   playModeClassicStart,
   playModeDraftStart,
@@ -74,14 +83,35 @@ interface GameBoardProps {
   title?: string;
   subtitle?: string;
   joeMellorMode?: boolean;
+  superSamHallasMode?: boolean;
 }
 
 function createRunSeed(runKey: number): string {
   return `${generateRunSeed()}-${runKey}`;
 }
 
-function createStartingSquad(joeMellorMode: boolean): SquadSlot[] {
-  return joeMellorMode ? createJoeMellorStartingSquad() : createEmptySquad();
+function createStartingSquad(options: {
+  joeMellorMode: boolean;
+  superSamHallasMode: boolean;
+}): SquadSlot[] {
+  if (options.superSamHallasMode) return createSuperSamHallasStartingSquad();
+  if (options.joeMellorMode) return createJoeMellorStartingSquad();
+  return createEmptySquad();
+}
+
+function resolveHiddenPlayer(playerId: string, slotIndex?: number): Player | undefined {
+  if (playerId === JOE_MELLOR_GOAT_ID) return getJoeMellorGoatPlayer();
+  if (isSuperSamHallasId(playerId)) {
+    const parsedIndex = Number.parseInt(
+      playerId.slice("ssh-sam-hallas-".length),
+      10
+    );
+    const idx = slotIndex ?? parsedIndex;
+    const squad = createEmptySquad();
+    const slot = squad.find((s) => s.slotIndex === idx);
+    if (slot) return getSuperSamHallasPlayer(idx, slot.position);
+  }
+  return undefined;
 }
 
 export function GameBoard({
@@ -90,6 +120,7 @@ export function GameBoard({
   title,
   subtitle,
   joeMellorMode = false,
+  superSamHallasMode = false,
 }: GameBoardProps) {
   const isChallengeCup = mode === "CHALLENGE_CUP";
   const isDraftMode = mode === "DRAFT";
@@ -102,7 +133,7 @@ export function GameBoard({
     null
   );
   const [squad, setSquad] = useState<SquadSlot[]>(() =>
-    createStartingSquad(joeMellorMode)
+    createStartingSquad({ joeMellorMode, superSamHallasMode })
   );
   const [slotOffers, setSlotOffers] = useState<
     Map<number, RecruitmentRound>
@@ -151,6 +182,16 @@ export function GameBoard({
 
   useEffect(() => {
     if (isChallengeCup && !cupClub) return;
+    if (superSamHallasMode) {
+      setSlotOffers(new Map());
+      setDraftPickIndex(0);
+      setPendingPlayer(null);
+      setDiscardedPlayerIds(new Set());
+      setRerollsRemaining(isHardMode ? 0 : MAX_REROLLS_PER_RUN);
+      setRerollsThisRun(0);
+      rerollsThisRunRef.current = 0;
+      return;
+    }
 
     const skipCount = joeMellorMode ? 1 : 0;
     const lockedIds = joeMellorMode ? [JOE_MELLOR_GOAT_ID] : [];
@@ -175,6 +216,7 @@ export function GameBoard({
   }, [
     seed,
     joeMellorMode,
+    superSamHallasMode,
     recruitmentOptions,
     isChallengeCup,
     cupClub,
@@ -185,7 +227,9 @@ export function GameBoard({
   useEffect(() => {
     if (modeSoundPlayed.current) return;
     modeSoundPlayed.current = true;
-    if (joeMellorMode) {
+    if (superSamHallasMode) {
+      playSuperSamHallasActivate();
+    } else if (joeMellorMode) {
       playJoeMellorActivate();
     } else if (isChallengeCup) {
       playModeChallengeCupStart();
@@ -194,7 +238,7 @@ export function GameBoard({
     } else {
       playModeClassicStart(difficulty);
     }
-  }, [joeMellorMode, isChallengeCup, isDraftMode, difficulty]);
+  }, [superSamHallasMode, joeMellorMode, isChallengeCup, isDraftMode, difficulty]);
 
   const activeOfferKey = isDraftMode ? draftPickIndex : selectedSlotIndex;
 
@@ -243,7 +287,7 @@ export function GameBoard({
     setPhase(isChallengeCup ? "clubSelect" : "pitch");
     setCupClub(null);
     setSelectedSlotIndex(null);
-    setSquad(createStartingSquad(joeMellorMode));
+    setSquad(createStartingSquad({ joeMellorMode, superSamHallasMode }));
     setSeasonResult(null);
     setCupResult(null);
     setRunRank(undefined);
@@ -255,7 +299,7 @@ export function GameBoard({
     setPendingPlayer(null);
     setHoveredPlacementSlot(null);
     recordedRef.current = false;
-  }, [joeMellorMode, isChallengeCup]);
+  }, [joeMellorMode, superSamHallasMode, isChallengeCup]);
 
   const handleCupClubSelected = useCallback((club: string) => {
     setCupClub(club);
@@ -303,6 +347,7 @@ export function GameBoard({
           difficulty,
           {
             joeMellorMode,
+            superSamHallasMode,
             seasonWins: result.wins,
             seasonLosses: result.losses,
             seasonLeaguePosition: result.leaguePosition,
@@ -316,7 +361,7 @@ export function GameBoard({
           if (completed.nationalRank) setRunRank(completed.nationalRank);
         });
 
-        if (result.isPerfect && !joeMellorMode) {
+        if (result.isPerfect && !joeMellorMode && !superSamHallasMode) {
           addHallOfFameEntry(value, mode, difficulty);
         }
       }
@@ -327,6 +372,7 @@ export function GameBoard({
       seed,
       difficulty,
       joeMellorMode,
+      superSamHallasMode,
       isChallengeCup,
     ]
   );
@@ -337,6 +383,7 @@ export function GameBoard({
       const slot = squad.find((s) => s.slotIndex === slotIndex);
       if (!slot || slot.player) return;
       if (joeMellorMode && slotIndex === LOOSE_FORWARD_SLOT_INDEX) return;
+      if (superSamHallasMode) return;
 
       const penalty = getPlacementPenalty(
         pendingPlayer.position,
@@ -367,6 +414,7 @@ export function GameBoard({
       choosing,
       squad,
       joeMellorMode,
+      superSamHallasMode,
       startTournamentSimulation,
     ]
   );
@@ -379,13 +427,14 @@ export function GameBoard({
       }
       if (phase !== "pitch" || isDraftMode) return;
       if (joeMellorMode && slotIndex === LOOSE_FORWARD_SLOT_INDEX) return;
+      if (superSamHallasMode) return;
       const slot = squad.find((s) => s.slotIndex === slotIndex);
       if (!slot || slot.player) return;
       playPositionSelect();
       setSelectedSlotIndex(slotIndex);
       setPhase("choice");
     },
-    [phase, squad, joeMellorMode, isDraftMode, handlePlacementSlot]
+    [phase, squad, joeMellorMode, superSamHallasMode, isDraftMode, handlePlacementSlot]
   );
 
   const handleChoose = useCallback(
@@ -521,7 +570,7 @@ export function GameBoard({
     for (const [slotIndex, playerId] of choices) {
       const player =
         getPlayerById(playerId) ??
-        (playerId === JOE_MELLOR_GOAT_ID ? getJoeMellorGoatPlayer() : undefined);
+        resolveHiddenPlayer(playerId, slotIndex);
       if (!player) continue;
       newSquad = signPlayerToSlot(newSquad, player, slotIndex);
     }
@@ -577,6 +626,7 @@ export function GameBoard({
         difficulty,
         {
           joeMellorMode,
+          superSamHallasMode,
           challengeCupMode: true,
           seasonWins: result.wins,
           seasonLosses: result.losses,
@@ -603,6 +653,7 @@ export function GameBoard({
       seed,
       difficulty,
       joeMellorMode,
+      superSamHallasMode,
     ]
   );
 
@@ -653,7 +704,20 @@ export function GameBoard({
           />
         )}
 
-        {joeMellorMode && phase !== "clubSelect" && phase !== "review" && (
+        {superSamHallasMode && phase !== "clubSelect" && phase !== "review" && (
+          <motion.div
+            className="mt-4 overflow-hidden rounded-xl border border-accent-gold/50 bg-accent-gold/15 px-3 py-3 text-center sm:px-4 sm:py-4"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.35 }}
+          >
+            <p className="font-display text-[10px] font-black uppercase tracking-[0.28em] text-accent-gold sm:text-xs sm:tracking-[0.35em]">
+              SUPER SAM HALLAS MODE ACTIVATED
+            </p>
+          </motion.div>
+        )}
+
+        {joeMellorMode && !superSamHallasMode && phase !== "clubSelect" && phase !== "review" && (
           <motion.div
             className="mt-4 overflow-hidden rounded-xl border border-accent-gold/50 bg-accent-gold/15 px-3 py-3 text-center sm:px-4 sm:py-4"
             initial={{ opacity: 0, scale: 0.96 }}
@@ -684,7 +748,7 @@ export function GameBoard({
           </motion.div>
         )}
 
-        {phase === "pitch" && filledCount < TOTAL_SLOTS && (
+        {phase === "pitch" && filledCount < TOTAL_SLOTS && !superSamHallasMode && (
           <div className="mt-4 flex justify-center">
             <button
               type="button"
@@ -692,6 +756,18 @@ export function GameBoard({
               className="rounded-lg border border-accent-green/50 bg-accent-green/10 px-6 py-2.5 font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-green transition hover:bg-accent-green/20"
             >
               Auto Fill Squad
+            </button>
+          </div>
+        )}
+
+        {phase === "pitch" && filledCount >= TOTAL_SLOTS && (
+          <div className="mt-4 flex justify-center">
+            <button
+              type="button"
+              onClick={() => startTournamentSimulation(squad)}
+              className="rounded-lg border border-accent-gold/50 bg-accent-gold/10 px-6 py-2.5 font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-gold transition hover:bg-accent-gold/20"
+            >
+              Simulate Season
             </button>
           </div>
         )}
@@ -728,8 +804,9 @@ export function GameBoard({
                 }
                 hardMode={isHardMode}
                 interactive={
-                  phase === "placement" ||
-                  (phase === "pitch" && !isDraftMode)
+                  !superSamHallasMode &&
+                  (phase === "placement" ||
+                    (phase === "pitch" && !isDraftMode))
                 }
                 onSlotClick={handleSelectSlot}
                 onSlotHover={
@@ -739,7 +816,11 @@ export function GameBoard({
                 }
                 dimmed={phase === "choice"}
                 lockedSlots={
-                  joeMellorMode ? [LOOSE_FORWARD_SLOT_INDEX] : undefined
+                  superSamHallasMode
+                    ? ALL_SUPER_SAM_SLOT_INDICES
+                    : joeMellorMode
+                      ? [LOOSE_FORWARD_SLOT_INDEX]
+                      : undefined
                 }
               />
             </div>
@@ -822,6 +903,7 @@ export function GameBoard({
           seed={seed}
           difficulty={difficulty}
           joeMellorMode={joeMellorMode}
+          superSamHallasMode={superSamHallasMode}
           cupRankingResult={cupRankingResult}
           submittedOnline={submittedOnline}
           onPlayAgain={resetRun}
@@ -836,6 +918,7 @@ export function GameBoard({
           seed={seed}
           difficulty={difficulty}
           joeMellorMode={joeMellorMode}
+          superSamHallasMode={superSamHallasMode}
           seasonResult={seasonResult}
           runRank={runRank}
           submittedOnline={submittedOnline}

@@ -3,6 +3,7 @@ import type { SeasonResult } from "./game/season-simulation";
 import type { PlayerTryTotal } from "./game/season-tries";
 import { getPlayerTryWeight } from "./game/try-weights";
 import { isGoatPlayer, JOE_MELLOR_GOAT_ID } from "./players/goat";
+import { isSuperSamHallasPlayer } from "./players/super-sam-hallas";
 import { getEffectivePeakRating } from "./squad-analysis";
 import {
   findSlotByPlayerId,
@@ -51,7 +52,8 @@ function buildPerformances(
   squad: SquadSlot[],
   tryScorers: PlayerTryTotal[],
   seasonWins: number,
-  joeMellorMode?: boolean
+  joeMellorMode?: boolean,
+  superSamHallasMode?: boolean
 ): PlayerPerformance[] {
   const entries = getPlayers(squad);
   if (entries.length === 0) return [];
@@ -96,6 +98,10 @@ function buildPerformances(
 
     if (joeMellorMode && isGoatPlayer(player)) {
       impactScore += 500 + tries * 8;
+    }
+
+    if (superSamHallasMode && isSuperSamHallasPlayer(player)) {
+      impactScore += 800 + tries * 10;
     }
 
     const display = getSlotDisplayInfo(slot);
@@ -236,7 +242,8 @@ function selectWorstPlayer(
   performances: PlayerPerformance[],
   playerOfSeasonId: string,
   topTryScorerIds: Set<string>,
-  joeMellorMode: boolean
+  joeMellorMode: boolean,
+  superSamHallasMode: boolean
 ): PlayerPerformance {
   const sortedByImpact = [...performances].sort(
     (a, b) => b.impactScoreNoWinBonus - a.impactScoreNoWinBonus
@@ -259,7 +266,8 @@ function selectWorstPlayer(
       !topTryScorerIds.has(p.playerId) &&
       !topQuarterIds.has(p.playerId) &&
       !isHighPerformer(p) &&
-      !(joeMellorMode && p.playerId === JOE_MELLOR_GOAT_ID)
+      !(joeMellorMode && p.playerId === JOE_MELLOR_GOAT_ID) &&
+      !(superSamHallasMode && isSuperSamHallasPlayer(p.playerId))
   );
 
   const pool =
@@ -268,7 +276,8 @@ function selectWorstPlayer(
       : performances.filter(
           (p) =>
             p.playerId !== playerOfSeasonId &&
-            !(joeMellorMode && p.playerId === JOE_MELLOR_GOAT_ID)
+            !(joeMellorMode && p.playerId === JOE_MELLOR_GOAT_ID) &&
+      !(superSamHallasMode && isSuperSamHallasPlayer(p.playerId))
         );
 
   const scored = pool.map((p) => {
@@ -293,18 +302,20 @@ function selectWorstPlayer(
 export function generateSeasonAwards(
   squad: SquadSlot[],
   seasonResult: SeasonResult,
-  options?: { joeMellorMode?: boolean }
+  options?: { joeMellorMode?: boolean; superSamHallasMode?: boolean }
 ): SeasonAward[] {
   const entries = getPlayers(squad);
   if (entries.length === 0) return [];
 
   const joeMellorMode = options?.joeMellorMode ?? false;
+  const superSamHallasMode = options?.superSamHallasMode ?? false;
 
   const performances = buildPerformances(
     squad,
     seasonResult.tryScorers,
     seasonResult.wins,
-    joeMellorMode
+    joeMellorMode,
+    superSamHallasMode
   );
 
   const sortedBest = [...performances].sort(
@@ -315,12 +326,15 @@ export function generateSeasonAwards(
   const topTryScorerIds = new Set(
     seasonResult.tryScorers.slice(0, 3).map((t) => t.playerId)
   );
-  const worstPlayer = selectWorstPlayer(
-    performances,
-    playerOfSeason.playerId,
-    topTryScorerIds,
-    joeMellorMode
-  );
+  const worstPlayer = superSamHallasMode
+    ? performances[0]
+    : selectWorstPlayer(
+        performances,
+        playerOfSeason.playerId,
+        topTryScorerIds,
+        joeMellorMode,
+        superSamHallasMode
+      );
 
   const topThree = seasonResult.tryScorers.slice(0, 3);
   const rankedLines = topThree.map((scorer, index) => {
@@ -349,16 +363,22 @@ export function generateSeasonAwards(
     },
     {
       title: "Worst Player of the Season",
-      playerName: worstPlayer.name,
-      club: worstPlayer.club,
-      detail: `${worstPlayer.tries} tries · Impact ${worstPlayer.impactScore}`,
-      positionNote: worstPlayer.positionNote ?? undefined,
-      ratingNote: worstPlayer.ratingNote ?? undefined,
-      narrative: getWorstNarrative(
-        worstPlayer,
-        seasonResult.wins,
-        seasonResult.losses
-      ),
+      playerName: superSamHallasMode
+        ? "Nobody"
+        : worstPlayer.name,
+      club: superSamHallasMode ? "—" : worstPlayer.club,
+      detail: superSamHallasMode
+        ? "Impossible in Super Sam Hallas Mode"
+        : `${worstPlayer.tries} tries · Impact ${worstPlayer.impactScore}`,
+      positionNote: superSamHallasMode ? undefined : worstPlayer.positionNote ?? undefined,
+      ratingNote: superSamHallasMode ? undefined : worstPlayer.ratingNote ?? undefined,
+      narrative: superSamHallasMode
+        ? "Nobody — impossible in Super Sam Hallas Mode. The opposition had a harder time."
+        : getWorstNarrative(
+            worstPlayer,
+            seasonResult.wins,
+            seasonResult.losses
+          ),
       variant: "negative",
     },
     {

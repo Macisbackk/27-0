@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import type { GameDifficulty } from "@/lib/types";
-import { playUiClick } from "@/lib/sound";
+import {
+  playHardModeOff,
+  playHardModeOn,
+  playModeChallengeCupStart,
+  playUiClick,
+} from "@/lib/sound";
 import { GuestNotice } from "./GuestNotice";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -56,7 +61,10 @@ export function HomeModeSelector() {
             <div className="inline-flex w-full rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto">
               <button
                 type="button"
-                onClick={() => setClassicDifficulty("NORMAL")}
+                onClick={() => {
+                  if (classicDifficulty === "HARD") playHardModeOff();
+                  setClassicDifficulty("NORMAL");
+                }}
                 className={`flex-1 rounded-lg px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:flex-none sm:px-5 sm:text-sm ${
                   classicDifficulty === "NORMAL"
                     ? "bg-accent-green text-pitch-950 shadow-lg"
@@ -67,7 +75,10 @@ export function HomeModeSelector() {
               </button>
               <button
                 type="button"
-                onClick={() => setClassicDifficulty("HARD")}
+                onClick={() => {
+                  if (classicDifficulty !== "HARD") playHardModeOn();
+                  setClassicDifficulty("HARD");
+                }}
                 className={`flex-1 rounded-lg px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:flex-none sm:px-5 sm:text-sm ${
                   classicDifficulty === "HARD"
                     ? "bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.4)]"
@@ -104,7 +115,10 @@ export function HomeModeSelector() {
             <div className="inline-flex w-full rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto">
               <button
                 type="button"
-                onClick={() => setDraftDifficulty("NORMAL")}
+                onClick={() => {
+                  if (draftDifficulty === "HARD") playHardModeOff();
+                  setDraftDifficulty("NORMAL");
+                }}
                 className={`flex-1 rounded-lg px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:flex-none sm:px-5 sm:text-sm ${
                   draftDifficulty === "NORMAL"
                     ? "bg-accent-green text-pitch-950 shadow-lg"
@@ -115,7 +129,10 @@ export function HomeModeSelector() {
               </button>
               <button
                 type="button"
-                onClick={() => setDraftDifficulty("HARD")}
+                onClick={() => {
+                  if (draftDifficulty !== "HARD") playHardModeOn();
+                  setDraftDifficulty("HARD");
+                }}
                 className={`flex-1 rounded-lg px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:flex-none sm:px-5 sm:text-sm ${
                   draftDifficulty === "HARD"
                     ? "bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.4)]"
@@ -143,7 +160,7 @@ export function HomeModeSelector() {
 
         <Link
           href="/play?cup=1"
-          onClick={() => playUiClick()}
+          onClick={() => playModeChallengeCupStart()}
           className="card-glass matchday-panel group block w-full p-6 transition hover:border-accent-gold/30 sm:p-7"
         >
           <h2 className="font-display text-xl font-bold group-hover:text-accent-gold sm:text-2xl">

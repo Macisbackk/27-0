@@ -12,26 +12,33 @@ export default async function PlayPage({
     difficulty?: string;
     cup?: string;
     joeMellor?: string;
+    superSamHallas?: string;
     draft?: string;
   }>;
 }) {
   const params = await searchParams;
   const wantsHard = params.difficulty === "hard";
   const wantsCup = params.cup === "1";
-  const wantsJoeMellor = params.joeMellor === "1";
+  const wantsSuperSamHallas = params.superSamHallas === "1";
+  const wantsJoeMellor = params.joeMellor === "1" && !wantsSuperSamHallas;
   const wantsDraft = params.draft === "1";
 
+  const superSamHallasMode = wantsSuperSamHallas;
   const joeMellorMode = wantsJoeMellor;
   const difficulty: GameDifficulty = wantsHard ? "HARD" : "NORMAL";
 
   let mode: GameMode = "CLASSIC";
   if (wantsCup) {
     mode = "CHALLENGE_CUP";
-  } else if (wantsDraft && !joeMellorMode) {
+  } else if (wantsDraft && !joeMellorMode && !superSamHallasMode) {
     mode = "DRAFT";
   }
 
-  const title = joeMellorMode ? "Joe Mellor Mode" : getPlayPageTitle(mode, difficulty);
+  const title = superSamHallasMode
+    ? "Super Sam Hallas Mode"
+    : joeMellorMode
+      ? "Joe Mellor Mode"
+      : getPlayPageTitle(mode, difficulty);
 
   const subtitle =
     mode === "CHALLENGE_CUP"
@@ -47,6 +54,7 @@ export default async function PlayPage({
       subtitle={subtitle}
       initialDifficulty={difficulty}
       joeMellorMode={joeMellorMode}
+      superSamHallasMode={superSamHallasMode}
     />
   );
 }
