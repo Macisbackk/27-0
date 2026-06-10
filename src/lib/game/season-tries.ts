@@ -54,12 +54,16 @@ function getPositionHighTryPenalty(position: Position, playerTotal: number): num
   const softGuide = POSITION_SOFT_TRY_GUIDE[position];
   if (playerTotal <= softGuide) return 1;
   const excess = playerTotal - softGuide;
-  const severity = tier >= 10 ? 0.07 : tier >= 6 ? 0.14 : tier >= 2 ? 0.22 : 0.42;
+  const severity =
+    tier >= 10 ? 0.07 : tier >= 6 ? 0.14 : tier >= 3 ? 0.2 : tier >= 1 ? 0.28 : 0.36;
   return 1 / (1 + excess * severity);
 }
 
 function getMinMatchWeight(position: Position): number {
-  return position === "PROP" ? 0.03 : position === "HOOKER" ? 0.05 : 0.08;
+  if (position === "PROP") return 0.045;
+  if (position === "HOOKER") return 0.07;
+  if (position === "SECOND_ROW" || position === "LOOSE_FORWARD") return 0.095;
+  return 0.08;
 }
 
 function getTeammateRelativeSaturation(
