@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { GameDifficulty, GameMode } from "@/lib/types";
-import { getDifficulty, setDifficulty } from "@/lib/storage/preferences";
+import { setDifficulty } from "@/lib/storage/preferences";
 import { GameBoard } from "./GameBoard";
 
 interface GameStarterProps {
@@ -19,8 +19,7 @@ function resolveDifficulty(initialDifficulty: GameDifficulty): GameDifficulty {
   const params = new URLSearchParams(window.location.search);
   if (params.get("difficulty") === "hard") return "HARD";
   if (params.get("difficulty") === "normal") return "NORMAL";
-  if (initialDifficulty === "HARD") return "HARD";
-  return getDifficulty();
+  return initialDifficulty;
 }
 
 export function GameStarter({

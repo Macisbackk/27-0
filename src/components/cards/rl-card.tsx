@@ -89,34 +89,46 @@ export function RLStatBox({
   compact?: boolean;
   className?: string;
 }) {
+  const isTierBadge = label === "Tier" && compact;
+
   return (
     <div
-      className={`${RL_INFO_BOX_CLASS} ${
+      className={`${RL_INFO_BOX_CLASS} min-w-0 ${
         compact ? "px-1.5 py-1" : large ? "px-2.5 py-2" : "px-2 py-1.5"
       } ${className}`}
     >
       <p
         className={`${RL_STAT_LABEL_CLASS} ${
-          compact ? "text-[8px] tracking-wide" : ""
+          compact ? "text-[9px] tracking-wide sm:text-[10px]" : ""
         }`}
       >
         {label}
       </p>
-      <p
-        className={`truncate font-medium text-white ${
-          prominent
-            ? "text-lg font-bold sm:text-xl"
-            : compact
-              ? "text-[10px] leading-tight sm:text-sm"
-              : light
-                ? "font-normal text-gray-300"
-                : large
-                  ? "text-sm"
-                  : "text-[11px]"
-        } ${highlight ? "!text-accent-gold" : ""}`}
-      >
-        {value}
-      </p>
+      {isTierBadge ? (
+        <p
+          className={`truncate rounded-full border border-pitch-600/60 bg-pitch-950/90 px-2 py-0.5 text-center text-[11px] font-semibold leading-tight text-white shadow-sm sm:text-sm ${
+            highlight ? "!text-accent-gold" : ""
+          }`}
+        >
+          {value}
+        </p>
+      ) : (
+        <p
+          className={`truncate font-medium text-white ${
+            prominent
+              ? "text-lg font-bold sm:text-xl"
+              : compact
+                ? "text-[11px] leading-tight sm:text-sm"
+                : light
+                  ? "font-normal text-gray-300"
+                  : large
+                    ? "text-sm"
+                    : "text-[11px]"
+          } ${highlight ? "!text-accent-gold" : ""}`}
+        >
+          {value}
+        </p>
+      )}
     </div>
   );
 }

@@ -46,10 +46,13 @@ const DISPLAY_LABEL: Record<ClubPlayerDisplayCategory, string> = {
 };
 
 const DISPLAY_CLASS: Record<ClubPlayerDisplayCategory, string> = {
-  current: "border-accent-green/40 bg-accent-green/15 text-accent-green",
-  historic: "border-purple-400/35 bg-purple-500/12 text-purple-200",
-  legend: "border-accent-gold/40 bg-accent-gold/12 text-accent-gold",
-  goat: "border-accent-gold/55 bg-accent-gold/20 text-accent-gold",
+  current:
+    "border-accent-green/50 bg-pitch-950/90 text-accent-green shadow-sm",
+  historic:
+    "border-purple-400/45 bg-purple-950/85 text-purple-200 shadow-sm",
+  legend:
+    "border-accent-gold/50 bg-pitch-950/90 text-accent-gold shadow-sm",
+  goat: "border-accent-gold/65 bg-accent-gold/25 text-accent-gold shadow-sm",
 };
 
 export function ClubRepresentation({ summary }: ClubRepresentationProps) {
@@ -108,7 +111,7 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                               </p>
                             </div>
                             <span
-                              className={`shrink-0 rounded-md border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${DISPLAY_CLASS[player.displayCategory]}`}
+                              className={`shrink-0 rounded-full border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide sm:text-xs ${DISPLAY_CLASS[player.displayCategory]}`}
                             >
                               {DISPLAY_LABEL[player.displayCategory]}
                             </span>

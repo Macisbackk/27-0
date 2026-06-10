@@ -274,16 +274,13 @@ export function enrichSingleFixtureScoring(
   applyScoringDetails(entries, [fixture], [matchAlloc], seed);
 }
 
-/**
- * Allocate tries from each fixture's simulated scoring breakdown.
- * Season totals are derived directly from per-match allocations.
- */
-export function distributeSeasonTries(
+/** Core per-match try allocation — does not validate or reconcile totals. */
+function allocateSeasonTriesToFixtures(
   squad: SquadSlot[],
   fixtures: MatchFixture[],
   seed: string,
   seasonWins: number
-): PlayerTryTotal[] {
+): boolean {
   const entries: SquadEntry[] = squad
     .filter((s) => s.player)
     .map((s) => ({
@@ -292,7 +289,7 @@ export function distributeSeasonTries(
       slot: s,
     }));
 
-  if (entries.length === 0) return [];
+  if (entries.length === 0) return false;
 
   const rng = seedrandom(`${seed}-tries`);
   const perMatchAllocs: number[][] = [];
@@ -313,8 +310,90 @@ export function distributeSeasonTries(
   );
 
   applyScoringDetails(entries, fixtures, perMatchAllocs, seed);
+  return true;
+}
 
-  return aggregateTryTotalsFromFixtures(squad, fixtures);
+/**
+ * Allocate tries from each fixture's simulated scoring breakdown.
+ * Season totals are derived directly from per-match allocations.
+ */
+export function distributeSeasonTries(
+  squad: SquadSlot[],
+  fixtures: MatchFixture[],
+  seed: string,
+  seasonWins: number
+): PlayerTryTotal[] {
+  allocateSeasonTriesToFixtures(squad, fixtures, seed, seasonWins);
+  return validateAndReconcileSeasonTries(squad, fixtures, seed, seasonWins);
+}
+
+/**
+ * Ensure fixture scoring events match triesFor and season totals reconcile.
+ * Rebuilds per-fixture or full allocation on mismatch; returns fixture-derived totals only.
+ */
+export function validateAndReconcileSeasonTries(
+  squad: SquadSlot[],
+  fixtures: MatchFixture[],
+  seed: string,
+  seasonWins: number,
+  depth = 0
+): PlayerTryTotal[] {
+  const totalTeamTriesFromScores = fixtures.reduce(
+    (sum, f) => sum + f.triesFor,
+    0
+  );
+
+  let fixtureMismatch = false;
+  for (const fixture of fixtures) {
+    const eventTries = (fixture.scoringDetail?.dreamTeam.tryScorers ?? []).reduce(
+      (sum, s) => sum + s.tries,
+      0
+    );
+    if (eventTries !== fixture.triesFor) {
+      console.error(
+        `[season-tries] Fixture round ${fixture.round}: scoring events (${eventTries}) !== triesFor (${fixture.triesFor}) — rebuilding fixture scoring`
+      );
+      enrichSingleFixtureScoring(squad, fixture, seed);
+      fixtureMismatch = true;
+    }
+  }
+
+  let aggregated = aggregateTryTotalsFromFixtures(squad, fixtures);
+  const totalPlayerTriesFromEvents = aggregated.reduce(
+    (sum, t) => sum + t.tries,
+    0
+  );
+
+  if (totalPlayerTriesFromEvents !== totalTeamTriesFromScores) {
+    console.error(
+      `[season-tries] Season mismatch: player event tries (${totalPlayerTriesFromEvents}) !== team triesFor total (${totalTeamTriesFromScores})`
+    );
+    if (depth < 1) {
+      allocateSeasonTriesToFixtures(squad, fixtures, seed, seasonWins);
+      return validateAndReconcileSeasonTries(
+        squad,
+        fixtures,
+        seed,
+        seasonWins,
+        depth + 1
+      );
+    }
+  } else if (fixtureMismatch && depth < 1) {
+    aggregated = aggregateTryTotalsFromFixtures(squad, fixtures);
+    const recheckTotal = aggregated.reduce((sum, t) => sum + t.tries, 0);
+    if (recheckTotal !== totalTeamTriesFromScores) {
+      allocateSeasonTriesToFixtures(squad, fixtures, seed, seasonWins);
+      return validateAndReconcileSeasonTries(
+        squad,
+        fixtures,
+        seed,
+        seasonWins,
+        depth + 1
+      );
+    }
+  }
+
+  return aggregated;
 }
 
 export function getSeasonTryTotal(fixtures: MatchFixture[]): number {

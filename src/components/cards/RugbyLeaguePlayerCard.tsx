@@ -71,18 +71,18 @@ export function RugbyLeaguePlayerCard({
 
   const categoryBadge = showCategoryBadge ? (
     <div
-      className={`shrink-0 px-2 py-0.5 text-center font-medium uppercase tracking-widest ${
+      className={`shrink-0 rounded-full border px-2.5 py-0.5 text-center font-bold uppercase tracking-widest shadow-sm ${
         isRecruitment
           ? compactMobile
-            ? "text-[7px] px-1.5 py-px sm:text-[9px]"
-            : "text-[9px]"
-          : "text-[8px]"
+            ? "text-[9px] px-2 py-0.5 sm:text-[10px]"
+            : "text-[10px]"
+          : "text-[9px] sm:text-[10px]"
       } ${
         isGoat
-          ? "bg-accent-gold text-pitch-950"
+          ? "border-accent-gold/70 bg-accent-gold text-pitch-950"
           : isLegend
-            ? "bg-accent-gold/15 text-accent-gold"
-            : "bg-purple-500/10 text-purple-300"
+            ? "border-accent-gold/50 bg-accent-gold/20 text-accent-gold"
+            : "border-purple-400/45 bg-purple-950/80 text-purple-200"
       } ${hiddenClass}`}
       aria-hidden={hardMode || undefined}
     >
@@ -118,7 +118,7 @@ export function RugbyLeaguePlayerCard({
       >
         {isGoat && (
           <div
-            className={`shrink-0 bg-accent-gold py-px text-center text-[5px] font-black uppercase text-pitch-950 ${hiddenClass}`}
+            className={`shrink-0 rounded-b-sm border-b border-accent-gold/60 bg-accent-gold py-0.5 text-center text-[8px] font-black uppercase tracking-wide text-pitch-950 shadow-sm sm:text-[9px] ${hiddenClass}`}
             aria-hidden={hardMode || undefined}
           >
             GOAT

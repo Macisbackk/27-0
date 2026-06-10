@@ -6,6 +6,7 @@ import {
   getMostSuccessfulPlayer,
   getWorstPerformingPlayer,
 } from "./lifetime-stats";
+import { EMPTY_STATS } from "./storage/stats";
 import { getCupWinPercentage } from "./cup-ranking";
 import type { CupPersonalBests, UserStatsData } from "./types";
 
@@ -115,8 +116,8 @@ export function getOverallView(
   draftNormal?: UserStatsData,
   draftHard?: UserStatsData
 ) {
-  const draftN = draftNormal ?? normal;
-  const draftH = draftHard ?? hard;
+  const draftN = draftNormal ?? { ...EMPTY_STATS };
+  const draftH = draftHard ?? { ...EMPTY_STATS };
   const bestRecord = pickBestSeasonRecord(normal, hard);
   const worstRecord = pickWorstSeasonRecord(normal, hard);
   const mergedDrafts = mergeDraftCounts(
