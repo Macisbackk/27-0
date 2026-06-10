@@ -7,7 +7,7 @@ const X_URL = "https://x.com/27and0";
 
 export function FooterSupportLinks() {
   return (
-    <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+    <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5">
       <a
         href={COFFEE_URL}
         target="_blank"

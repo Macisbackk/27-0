@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { COACH_NAME_MAX_LENGTH } from "@/lib/storage/user";
-import { BTN, CARD, FILTER, SPACING } from "@/lib/ui/design-system";
+import { BTN, CARD, FILTER, NAV, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 export function HeaderAuthControls() {
@@ -76,7 +76,7 @@ export function HeaderAuthControls() {
             role="menu"
             className={`absolute right-0 z-50 mt-2 w-[min(16rem,85vw)] ${CARD.base} py-2 shadow-xl`}
           >
-            <div className="border-b border-pitch-700/50 px-4 py-3">
+            <div className="border-b border-pitch-700/50 px-4 py-4">
               <p className={TYPO.sectionTitle}>Coach Profile</p>
               {!editingCoach ? (
                 <>
@@ -119,30 +119,32 @@ export function HeaderAuthControls() {
               )}
             </div>
             {!editingCoach && (
-              <button
-                type="button"
-                role="menuitem"
-                className={`block w-full px-4 py-2 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-white`}
-                onClick={() => {
-                  setCoachInput(coachName ?? "");
-                  setEditingCoach(true);
-                  setError(null);
-                }}
-              >
-                Change Coach Name
-              </button>
+              <div className={NAV.menuActions}>
+                <button
+                  type="button"
+                  role="menuitem"
+                  className={NAV.menuItem}
+                  onClick={() => {
+                    setCoachInput(coachName ?? "");
+                    setEditingCoach(true);
+                    setError(null);
+                  }}
+                >
+                  Change Coach Name
+                </button>
+                <button
+                  type="button"
+                  role="menuitem"
+                  className={NAV.menuItemDanger}
+                  onClick={() => {
+                    closeMenu();
+                    void signOut();
+                  }}
+                >
+                  Log Out
+                </button>
+              </div>
             )}
-            <button
-              type="button"
-              role="menuitem"
-              className={`block w-full px-4 py-2 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-red-400`}
-              onClick={() => {
-                closeMenu();
-                void signOut();
-              }}
-            >
-              Log Out
-            </button>
           </div>
         </>
       )}

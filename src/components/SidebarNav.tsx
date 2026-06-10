@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getDifficulty } from "@/lib/storage/preferences";
 import { isSoundMuted, playMenuClose, toggleSoundMuted } from "@/lib/sound";
-import { BTN, NAV, SPACING } from "@/lib/ui/design-system";
+import { BTN, NAV } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 interface SidebarNavProps {
@@ -14,7 +14,7 @@ interface SidebarNavProps {
   onClose: () => void;
 }
 
-const NAV_ITEMS = [
+const MAIN_NAV_ITEMS = [
   { href: "/", label: "Home", icon: "🏠" },
   { href: "/stats", label: "Statistics", icon: "📊" },
   { href: "/showcase", label: "Player Showcase", icon: "⭐" },
@@ -102,80 +102,90 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
               </button>
             </div>
 
-            <nav className="flex-1 overflow-y-auto px-3 py-4">
-              <p className={`mb-2 px-2 ${NAV.sectionLabel}`}>Navigation</p>
-              <ul className={SPACING.stackSm}>
-                {NAV_ITEMS.map((item) => {
-                  const active = isActive(item.href);
-                  return (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        onClick={onClose}
-                        className={navLinkClass(active)}
-                      >
-                        <span aria-hidden className={NAV.icon}>
-                          {item.icon}
-                        </span>
-                        {item.label}
-                        {active && (
-                          <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-green" />
-                        )}
-                      </Link>
-                    </li>
-                  );
-                })}
-                <li>
-                  <Link
-                    href={playHref}
-                    onClick={onClose}
-                    className={navLinkClass(pathname.startsWith("/play"))}
-                  >
-                    <span aria-hidden className={NAV.icon}>
-                      🏉
-                    </span>
-                    Play
-                    {pathname.startsWith("/play") && (
-                      <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-green" />
-                    )}
-                  </Link>
-                </li>
-              </ul>
+            <nav className="flex-1 overflow-y-auto px-3 py-5">
+              <section>
+                <p className={NAV.sectionLabel}>Navigation</p>
+                <ul className={NAV.list}>
+                  {MAIN_NAV_ITEMS.map((item) => {
+                    const active = isActive(item.href);
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          onClick={onClose}
+                          className={navLinkClass(active)}
+                        >
+                          <span aria-hidden className={NAV.icon}>
+                            {item.icon}
+                          </span>
+                          {item.label}
+                          {active && (
+                            <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-green" />
+                          )}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+
+              <section className={NAV.sectionGap}>
+                <p className={NAV.sectionLabel}>Play</p>
+                <ul className={NAV.list}>
+                  <li>
+                    <Link
+                      href={playHref}
+                      onClick={onClose}
+                      className={navLinkClass(pathname.startsWith("/play"))}
+                    >
+                      <span aria-hidden className={NAV.icon}>
+                        🏉
+                      </span>
+                      Play
+                      {pathname.startsWith("/play") && (
+                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-green" />
+                      )}
+                    </Link>
+                  </li>
+                </ul>
+              </section>
             </nav>
 
-            <div className="sidebar-settings border-t px-4 py-4">
-              <p className={`mb-3 px-1 ${NAV.sectionLabel}`}>Settings</p>
-              <div className={SPACING.stackSm}>
-                <button
-                  type="button"
-                  onClick={handleToggleSound}
-                  aria-label={
-                    muted
-                      ? "Sound off — click to enable"
-                      : "Sound on — click to mute"
-                  }
-                  className={`${NAV.item} w-full border border-pitch-600 text-base hover:border-accent-green/40`}
-                >
-                  <span
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${
+            <div className="sidebar-settings border-t px-4 py-5">
+              <p className={NAV.sectionLabel}>Settings</p>
+              <ul className={NAV.list}>
+                <li>
+                  <button
+                    type="button"
+                    onClick={handleToggleSound}
+                    aria-label={
                       muted
-                        ? "border-pitch-600 bg-pitch-900/80 text-gray-500"
-                        : "border-accent-green/30 bg-accent-green/10 text-accent-green"
-                    }`}
-                    aria-hidden
+                        ? "Sound off — click to enable"
+                        : "Sound on — click to mute"
+                    }
+                    className={`${NAV.item} w-full border border-pitch-600 text-base hover:border-accent-green/40`}
                   >
-                    {muted ? <SoundOffIcon /> : <SoundOnIcon />}
-                  </span>
-                  <span className="flex-1 text-left">Sound Effects</span>
-                  <span
-                    className={`${TYPO.button} ${
-                      muted ? "text-gray-500" : "text-accent-green"
-                    }`}
-                  >
-                    {muted ? "Sound: OFF" : "Sound: ON"}
-                  </span>
-                </button>
-              </div>
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${
+                        muted
+                          ? "border-pitch-600 bg-pitch-900/80 text-gray-500"
+                          : "border-accent-green/30 bg-accent-green/10 text-accent-green"
+                      }`}
+                      aria-hidden
+                    >
+                      {muted ? <SoundOffIcon /> : <SoundOnIcon />}
+                    </span>
+                    <span className="flex-1 text-left">Sound Effects</span>
+                    <span
+                      className={`${TYPO.button} ${
+                        muted ? "text-gray-500" : "text-accent-green"
+                      }`}
+                    >
+                      {muted ? "Sound: OFF" : "Sound: ON"}
+                    </span>
+                  </button>
+                </li>
+              </ul>
             </div>
           </motion.aside>
         </>

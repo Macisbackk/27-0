@@ -15,6 +15,10 @@ export const SPACING = {
   stackSm: "space-y-2",
   stackMd: "space-y-3",
   stackLg: "space-y-4",
+  /** Vertical gap between navigation list items. */
+  navItemGap: "space-y-2.5",
+  /** Gap between navigation section groups (e.g. main nav → play → settings). */
+  navSectionGap: "mt-5",
 } as const;
 
 /** Shared card surface classes. */
@@ -95,17 +99,22 @@ export const HARD = {
 
 /** Navigation & links. */
 export const NAV = {
-  item: `${TYPO.nav} flex min-h-[52px] items-center gap-4 rounded-xl px-4 py-3.5 text-base transition`,
+  item: `${TYPO.nav} flex min-h-[54px] items-center gap-4 rounded-xl px-[1.125rem] py-4 text-base transition`,
   itemActive: "border border-accent-green/30 bg-accent-green/10 text-accent-green",
   itemIdle: "text-gray-300 hover:bg-pitch-800/60 hover:text-white",
-  sectionLabel: TYPO.sectionLabel,
-  icon: "text-lg leading-none",
+  list: SPACING.navItemGap,
+  sectionLabel: `${TYPO.sectionLabel} mb-3 px-2`,
+  sectionGap: SPACING.navSectionGap,
+  icon: "shrink-0 text-lg leading-none",
+  menuItem: `block w-full min-h-[44px] rounded-lg px-4 py-3 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-white`,
+  menuItemDanger: `block w-full min-h-[44px] rounded-lg px-4 py-3 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-red-400`,
+  menuActions: "space-y-1 px-1.5 py-1.5",
 } as const;
 
 export const LINK = {
   subtle: "text-sm text-gray-500 transition hover:text-white",
   accent: "text-sm text-accent-green transition hover:underline",
-  footer: `${TYPO.button} inline-flex min-h-[48px] items-center gap-2 rounded-xl border border-pitch-600/60 bg-pitch-900/50 px-4 py-2.5 text-gray-400 transition hover:border-accent-green/40 hover:text-white`,
+  footer: `${TYPO.button} inline-flex min-h-[48px] items-center gap-2.5 rounded-xl border border-pitch-600/60 bg-pitch-900/50 px-4 py-3 text-gray-400 transition hover:border-accent-green/40 hover:text-white`,
 } as const;
 
 /** Stat highlight when a side wins a comparison. */
