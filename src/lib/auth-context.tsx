@@ -29,6 +29,7 @@ import {
 } from "./auth-callback";
 import { loadCloudStats } from "./storage/stats-cloud";
 import { STORAGE_KEYS } from "./storage/keys";
+import { isSupabaseConfigured } from "./supabase";
 
 interface AuthContextValue {
   user: User | null;
@@ -102,16 +103,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let mounted = true;
 
-    void (async () => {
-      const hadConfirmRedirect = detectEmailConfirmationRedirect();
-      const { data } = await supabase.auth.getSession();
-      if (!mounted) return;
-      await syncFromSession(data.session);
-      if (hadConfirmRedirect) {
-        markEmailConfirmPending();
-        cleanAuthRedirectFromUrl();
-      }
+    if (!isSupabaseConfigured) {
+      applySession(null, null);
       setLoading(false);
+      return;
+    }
+
+    void (async () => {
+      try {
+        const hadConfirmRedirect = detectEmailConfirmationRedirect();
+        const { data } = await supabase.auth.getSession();
+        if (!mounted) return;
+        await syncFromSession(data.session);
+        if (hadConfirmRedirect) {
+          markEmailConfirmPending();
+          cleanAuthRedirectFromUrl();
+        }
+      } catch (err) {
+        console.error("[auth] session init failed:", err);
+        if (mounted) {
+          applySession(null, null);
+        }
+      } finally {
+        if (mounted) setLoading(false);
+      }
     })();
 
     const {

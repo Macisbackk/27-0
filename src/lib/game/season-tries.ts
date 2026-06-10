@@ -10,22 +10,12 @@ import type {
 import { allocateMatchTries } from "./try-allocation";
 import {
   getPlayerTryWeight,
+  POSITION_SEASON_SHARE_MAX,
+  POSITION_SEASON_TRY_MAX,
   POSITION_TRY_WEIGHT,
 } from "./try-weights";
 
 export { POSITION_TRY_WEIGHT } from "./try-weights";
-
-const POSITION_SHARE_MAX: Record<Position, number> = {
-  WING: 0.22,
-  CENTRE: 0.18,
-  FULLBACK: 0.18,
-  STAND_OFF: 0.16,
-  SCRUM_HALF: 0.14,
-  HOOKER: 0.06,
-  SECOND_ROW: 0.12,
-  LOOSE_FORWARD: 0.1,
-  PROP: 0.04,
-};
 
 export interface PlayerTryTotal {
   playerId: string;
@@ -45,14 +35,16 @@ interface SquadEntry {
 }
 
 function getMaxIndividualTries(seasonWins: number, seasonTries: number): number {
-  if (seasonWins <= 6) return Math.min(12, Math.max(5, Math.ceil(seasonTries * 0.2)));
-  if (seasonWins <= 14) return Math.min(18, Math.max(8, Math.ceil(seasonTries * 0.22)));
-  if (seasonWins <= 22) return Math.min(24, Math.max(10, Math.ceil(seasonTries * 0.24)));
-  return Math.min(30, Math.max(12, Math.ceil(seasonTries * 0.26)));
+  if (seasonWins <= 6) return Math.min(12, Math.max(5, Math.ceil(seasonTries * 0.18)));
+  if (seasonWins <= 14) return Math.min(18, Math.max(8, Math.ceil(seasonTries * 0.2)));
+  if (seasonWins <= 22) return Math.min(24, Math.max(10, Math.ceil(seasonTries * 0.22)));
+  return Math.min(30, Math.max(12, Math.ceil(seasonTries * 0.24)));
 }
 
 function getPositionCap(position: Position, seasonTries: number): number {
-  return Math.max(1, Math.ceil(seasonTries * POSITION_SHARE_MAX[position]));
+  const shareCap = Math.ceil(seasonTries * POSITION_SEASON_SHARE_MAX[position]);
+  const absoluteCap = POSITION_SEASON_TRY_MAX[position];
+  return Math.max(position === "PROP" ? 0 : 1, Math.min(shareCap, absoluteCap));
 }
 
 function getPlayerCap(
@@ -66,18 +58,29 @@ function getPlayerCap(
   );
 }
 
+function getMinMatchWeight(position: Position): number {
+  return position === "PROP" ? 0.03 : position === "HOOKER" ? 0.05 : 0.08;
+}
+
 function getMatchWeights(
   entries: SquadEntry[],
-  rng: () => number
+  rng: () => number,
+  seasonTotalsSoFar: number[]
 ): number[] {
-  return entries.map((e) => {
+  return entries.map((e, i) => {
+    const rating = getEffectivePeakRating(e.slot);
     const ratingFactor =
       e.slot.runRatingPenalty
-        ? Math.max(0.75, getEffectivePeakRating(e.slot) / e.player.peakRating)
+        ? Math.max(0.75, rating / e.player.peakRating)
         : 1;
-    const base = getPlayerTryWeight(e.player, e.playedPosition) * ratingFactor;
-    const variance = 0.9 + rng() * 0.2;
-    return Math.max(0.05, base * variance);
+    const base =
+      getPlayerTryWeight(e.player, e.playedPosition, rating) * ratingFactor;
+    const saturation = 1 / (1 + seasonTotalsSoFar[i] * 0.09);
+    const variance = 0.82 + rng() * 0.36;
+    return Math.max(
+      getMinMatchWeight(e.playedPosition),
+      base * saturation * variance
+    );
   });
 }
 
@@ -162,6 +165,7 @@ function pickWeightedIndex(
   rng: () => number
 ): number {
   const weightSum = candidates.reduce((sum, c) => sum + c.weight, 0);
+  if (weightSum <= 0) return candidates[0]?.i ?? 0;
   let pick = rng() * weightSum;
   for (const c of candidates) {
     pick -= c.weight;
@@ -171,8 +175,42 @@ function pickWeightedIndex(
 }
 
 /**
- * Soft cap rebalance — transfers tries to higher-weight (prolific) players
- * while preserving per-match try totals.
+ * If one player hoards tries in a match, redistribute one try within the fixture.
+ */
+function softenMatchConcentration(
+  alloc: number[],
+  entries: SquadEntry[],
+  matchTries: number,
+  rng: () => number
+): void {
+  if (matchTries < 2) return;
+
+  const maxInMatch = Math.max(...alloc);
+  const dominantIdx = alloc.indexOf(maxInMatch);
+  const dominantShare = maxInMatch / matchTries;
+
+  if (dominantShare < 0.55 || maxInMatch < 2) return;
+
+  const recipients = entries
+    .map((e, i) => ({
+      i,
+      tries: alloc[i],
+      weight: getPlayerTryWeight(e.player, e.playedPosition),
+    }))
+    .filter((c) => c.i !== dominantIdx && c.tries < maxInMatch - 1);
+
+  if (recipients.length === 0) return;
+
+  const toIdx = pickWeightedIndex(
+    recipients.map((c) => ({ i: c.i, weight: c.weight })),
+    rng
+  );
+  transferTryInFixture(alloc, dominantIdx, toIdx);
+}
+
+/**
+ * Soft cap rebalance — transfers tries from over-cap players to under-cap squad
+ * members while preserving per-match try totals.
  */
 function rebalanceTowardCaps(
   entries: SquadEntry[],
@@ -216,6 +254,53 @@ function rebalanceTowardCaps(
       rng
     );
     if (!transferTryInFixture(alloc, overIdx, toIdx)) break;
+  }
+}
+
+/**
+ * Spread tries to underused squad members when one player dominates the season.
+ */
+function spreadSeasonConcentration(
+  entries: SquadEntry[],
+  perMatchAllocs: number[][],
+  seasonTries: number,
+  rng: () => number
+): void {
+  if (seasonTries < 12) return;
+
+  const maxIterations = Math.min(seasonTries, 40);
+
+  for (let guard = 0; guard < maxIterations; guard++) {
+    const totals = getSeasonTotals(perMatchAllocs);
+    const maxTotal = Math.max(...totals);
+    const dominantIdx = totals.indexOf(maxTotal);
+    const dominantShare = maxTotal / seasonTries;
+
+    if (dominantShare < 0.26) break;
+
+    const underused = entries
+      .map((e, i) => ({
+        i,
+        total: totals[i],
+        weight: getPlayerTryWeight(e.player, e.playedPosition),
+      }))
+      .filter((c) => c.i !== dominantIdx && c.total <= Math.max(2, maxTotal * 0.35));
+
+    if (underused.length === 0) break;
+
+    const fixtureCandidates = perMatchAllocs
+      .map((alloc, fi) => (alloc[dominantIdx] > 0 ? fi : -1))
+      .filter((fi) => fi >= 0);
+    if (fixtureCandidates.length === 0) break;
+
+    const fi =
+      fixtureCandidates[Math.floor(rng() * fixtureCandidates.length)];
+    const alloc = perMatchAllocs[fi];
+    const toIdx = pickWeightedIndex(
+      underused.map((c) => ({ i: c.i, weight: c.weight })),
+      rng
+    );
+    if (!transferTryInFixture(alloc, dominantIdx, toIdx)) break;
   }
 }
 
@@ -269,8 +354,9 @@ export function enrichSingleFixtureScoring(
   if (entries.length === 0) return;
 
   const rng = seedrandom(`${seed}-tries-${fixture.round}`);
-  const weights = getMatchWeights(entries, rng);
+  const weights = getMatchWeights(entries, rng, new Array(entries.length).fill(0));
   const matchAlloc = allocateMatchTries(fixture.triesFor, weights, rng);
+  softenMatchConcentration(matchAlloc, entries, fixture.triesFor, rng);
   applyScoringDetails(entries, [fixture], [matchAlloc], seed);
 }
 
@@ -293,11 +379,16 @@ function allocateSeasonTriesToFixtures(
 
   const rng = seedrandom(`${seed}-tries`);
   const perMatchAllocs: number[][] = [];
+  const seasonTotalsSoFar = new Array(entries.length).fill(0);
 
   for (const fixture of fixtures) {
-    const weights = getMatchWeights(entries, rng);
+    const weights = getMatchWeights(entries, rng, seasonTotalsSoFar);
     const matchAlloc = allocateMatchTries(fixture.triesFor, weights, rng);
+    softenMatchConcentration(matchAlloc, entries, fixture.triesFor, rng);
     perMatchAllocs.push(matchAlloc);
+    for (let i = 0; i < entries.length; i++) {
+      seasonTotalsSoFar[i] += matchAlloc[i];
+    }
   }
 
   const seasonTries = fixtures.reduce((sum, f) => sum + f.triesFor, 0);
@@ -308,6 +399,7 @@ function allocateSeasonTriesToFixtures(
     seasonWins,
     rng
   );
+  spreadSeasonConcentration(entries, perMatchAllocs, seasonTries, rng);
 
   applyScoringDetails(entries, fixtures, perMatchAllocs, seed);
   return true;

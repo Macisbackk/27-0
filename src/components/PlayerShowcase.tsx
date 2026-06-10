@@ -464,7 +464,7 @@ function TierChip({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-lg border px-2 py-1 text-[10px] font-medium transition ${
+      className={`whitespace-nowrap rounded-lg border px-2.5 py-1 text-[10px] font-medium transition ${
         active ? RL_FILTER_CHIP_ACTIVE : RL_FILTER_CHIP_IDLE
       }`}
     >

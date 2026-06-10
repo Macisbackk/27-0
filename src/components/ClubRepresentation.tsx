@@ -8,6 +8,7 @@ import type {
 } from "@/lib/squad-analysis";
 import { getClubColors } from "@/lib/clubs";
 import { RLClubRow } from "./cards/RLClubRow";
+import { RLTierBadge } from "./cards/rl-card";
 import { formatValue } from "@/lib/players";
 import type { Position } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
@@ -45,14 +46,14 @@ const DISPLAY_LABEL: Record<ClubPlayerDisplayCategory, string> = {
   goat: "GOAT",
 };
 
-const DISPLAY_CLASS: Record<ClubPlayerDisplayCategory, string> = {
-  current:
-    "border-accent-green/50 bg-pitch-950/90 text-accent-green shadow-sm",
-  historic:
-    "border-purple-400/45 bg-purple-950/85 text-purple-200 shadow-sm",
-  legend:
-    "border-accent-gold/50 bg-pitch-950/90 text-accent-gold shadow-sm",
-  goat: "border-accent-gold/65 bg-accent-gold/25 text-accent-gold shadow-sm",
+const DISPLAY_VARIANT: Record<
+  ClubPlayerDisplayCategory,
+  "current" | "historic" | "legend" | "goat"
+> = {
+  current: "current",
+  historic: "historic",
+  legend: "legend",
+  goat: "goat",
 };
 
 export function ClubRepresentation({ summary }: ClubRepresentationProps) {
@@ -101,7 +102,7 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                           key={player.playerId}
                           className="rounded-lg border border-pitch-700/50 bg-pitch-950/70 px-3 py-2.5"
                         >
-                          <div className="flex flex-wrap items-start justify-between gap-2">
+                          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                             <div className="min-w-0 flex-1">
                               <p className="text-sm font-bold text-white">
                                 {player.name}
@@ -110,11 +111,11 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                                 {formatPositionLine(player)}
                               </p>
                             </div>
-                            <span
-                              className={`shrink-0 rounded-full border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide sm:text-xs ${DISPLAY_CLASS[player.displayCategory]}`}
+                            <RLTierBadge
+                              variant={DISPLAY_VARIANT[player.displayCategory]}
                             >
                               {DISPLAY_LABEL[player.displayCategory]}
-                            </span>
+                            </RLTierBadge>
                           </div>
                           <div className="mt-2 flex flex-wrap items-center gap-3 text-xs">
                             <span className="font-display font-bold text-accent-green">

@@ -14,6 +14,8 @@ import { computeClubStats, mergeClubStats } from "../stats-helpers";
 
 import type { GameDifficulty, UserStatsData } from "../types";
 
+import { isLoggedIn } from "../auth-session";
+
 import { STORAGE_KEYS } from "./keys";
 
 
@@ -340,7 +342,9 @@ function saveStoredStats(data: StoredStats): void {
 
   localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(data));
 
-  void import("./stats-cloud").then(({ saveCloudStats }) => saveCloudStats(data));
+  if (isLoggedIn()) {
+    void import("./stats-cloud").then(({ saveCloudStats }) => saveCloudStats(data));
+  }
 
 }
 

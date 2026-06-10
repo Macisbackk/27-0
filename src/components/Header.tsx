@@ -14,11 +14,11 @@ export function Header() {
   return (
     <>
       <header className="app-header sticky top-0 z-50 border-b backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
+        <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-2 px-4 py-3 sm:gap-3">
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
-            className={`${HEADER_BTN} shrink-0`}
+            className={`${HEADER_BTN} shrink-0 justify-self-start`}
             aria-label="Open menu"
           >
             <span aria-hidden className="text-sm leading-none">
@@ -29,15 +29,16 @@ export function Header() {
 
           <Link
             href="/"
-            className="flex min-w-0 flex-1 items-center justify-center gap-2 sm:justify-start sm:flex-none"
+            className="flex min-w-0 items-center justify-center justify-self-center gap-2 px-1"
+            aria-label="27-0 home"
           >
-            <span className="text-xl font-black tracking-tight sm:text-2xl">
+            <span className="truncate text-xl font-black tracking-tight sm:text-2xl">
               <span className="text-gradient">27</span>
               <span className="text-white">-0</span>
             </span>
           </Link>
 
-          <div className="ml-auto shrink-0">
+          <div className="shrink-0 justify-self-end">
             <HeaderAuthControls />
           </div>
         </div>

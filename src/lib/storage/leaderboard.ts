@@ -122,6 +122,13 @@ function saveLocalEntries(entries: StoredLeaderboardEntry[]): void {
   localStorage.setItem(STORAGE_KEYS.leaderboard, JSON.stringify(entries));
 }
 
+/** Clears guest/offline leaderboard cache in this browser. */
+export function clearLocalLeaderboard(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(STORAGE_KEYS.leaderboard);
+  localStorage.removeItem(STORAGE_KEYS.cupLeaderboard);
+}
+
 function getPeriodStart(period: LeaderboardPeriod): Date | null {
   const now = new Date();
   if (period === "ALL_TIME") return null;

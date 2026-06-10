@@ -19,7 +19,7 @@ import {
 } from "@/lib/squad-display";
 import { getSquadValue } from "@/lib/positions";
 import type { SquadSlot } from "@/lib/types";
-import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
+import { RL_INFO_BOX_CLASS, RLTierBadge } from "./cards/rl-card";
 import { ClubTeamLabel } from "./ClubTeamLabel";
 import { TryScorerClubBadge } from "./TryScorerClubBadge";
 
@@ -225,10 +225,23 @@ function TeamStat({
   value: string;
   highlight?: boolean;
 }) {
+  if (label === "Team Tier") {
+    return (
+      <div className="flex min-w-0 flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
+        <span className="shrink-0 text-gray-500">{label}:</span>
+        <RLTierBadge highlight={highlight}>{value}</RLTierBadge>
+      </div>
+    );
+  }
+
   return (
-    <p className="text-gray-500">
+    <p className="min-w-0 text-gray-500">
       {label}:{" "}
-      <span className={highlight ? "font-semibold text-accent-green" : "text-white"}>
+      <span
+        className={
+          highlight ? "font-semibold text-accent-green" : "break-words text-white"
+        }
+      >
         {value}
       </span>
     </p>

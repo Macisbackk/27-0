@@ -18,10 +18,12 @@ import { PlayerIdentityLine } from "../PlayerIdentityLine";
 import { TYPO } from "@/lib/ui/typography";
 import {
   ACHIEVEMENT_BADGE_CLASSES,
+  RL_TIER_STAT_SPAN_CLASS,
   RLCardShell,
   RLInfoBox,
   RLRatingDisplay,
   RLStatBox,
+  RLTierBadge,
 } from "./rl-card";
 
 export type RLPlayerCardVariant = "recruitment" | "pitch" | "default";
@@ -67,26 +69,35 @@ export function RugbyLeaguePlayerCard({
       : "—";
 
   const showCategoryBadge =
-    isGoat || isLegend || (isHistoric && !isLegend && !isGoat);
+    isGoat ||
+    isLegend ||
+    (isHistoric && !isLegend && !isGoat) ||
+    (isActive && !isGoat && !isLegend && !isHistoric);
+
+  const categoryVariant = isGoat
+    ? "goat"
+    : isLegend
+      ? "legend"
+      : isHistoric
+        ? "historic"
+        : "current";
+
+  const categoryLabel = isGoat
+    ? "GOAT"
+    : isLegend
+      ? "Legend"
+      : isHistoric
+        ? "Historic"
+        : "Current";
 
   const categoryBadge = showCategoryBadge ? (
     <div
-      className={`shrink-0 rounded-full border px-2.5 py-0.5 text-center font-bold uppercase tracking-widest shadow-sm ${
-        isRecruitment
-          ? compactMobile
-            ? "text-[9px] px-2 py-0.5 sm:text-[10px]"
-            : "text-[10px]"
-          : "text-[9px] sm:text-[10px]"
-      } ${
-        isGoat
-          ? "border-accent-gold/70 bg-accent-gold text-pitch-950"
-          : isLegend
-            ? "border-accent-gold/50 bg-accent-gold/20 text-accent-gold"
-            : "border-purple-400/45 bg-purple-950/80 text-purple-200"
-      } ${hiddenClass}`}
+      className={`flex w-full justify-center px-2 pt-2 sm:justify-start sm:px-5 sm:pt-3 ${hiddenClass}`}
       aria-hidden={hardMode || undefined}
     >
-      {isGoat ? "GOAT" : isLegend ? "Legend" : "Historic"}
+      <RLTierBadge variant={categoryVariant} compact={compactMobile}>
+        {categoryLabel}
+      </RLTierBadge>
     </div>
   ) : null;
 
@@ -224,11 +235,7 @@ export function RugbyLeaguePlayerCard({
             </div>
           )}
 
-          <div
-            className={`grid gap-1 sm:grid-cols-3 sm:gap-2 ${
-              mobileCompact ? "grid-cols-2" : "grid-cols-3"
-            }`}
-          >
+          <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-2">
             <RLStatBox
               label="Apps"
               value={appearancesValue}
@@ -249,18 +256,11 @@ export function RugbyLeaguePlayerCard({
               large
               light
               compact={mobileCompact}
-              className={mobileCompact ? "hidden sm:block" : ""}
+              className="hidden sm:block"
             />
             <RLStatBox
               label="Value"
               value={maskValue(formatValue(player.value))}
-              large
-              light
-              compact={mobileCompact}
-            />
-            <RLStatBox
-              label="Tier"
-              value={maskValue(tier)}
               large
               light
               compact={mobileCompact}
@@ -273,6 +273,14 @@ export function RugbyLeaguePlayerCard({
               large
               light
               compact={mobileCompact}
+            />
+            <RLStatBox
+              label="Tier"
+              value={maskValue(tier)}
+              large
+              light
+              compact={mobileCompact}
+              className={RL_TIER_STAT_SPAN_CLASS}
             />
           </div>
         </div>
@@ -303,20 +311,28 @@ export function RugbyLeaguePlayerCard({
 
         {achievementBadges}
 
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           <RLStatBox label="Apps" value={appearancesValue} />
           <RLStatBox label="Tries" value={formatCareerTries(player.tries)} />
-          <RLStatBox label="Years" value={player.yearsActive} />
+          <RLStatBox
+            label="Years"
+            value={player.yearsActive}
+            className="hidden sm:block"
+          />
           <RLStatBox
             label="Value"
             value={maskValue(formatValue(player.value))}
           />
-          <RLStatBox label="Tier" value={maskValue(tier)} />
           <RLStatBox
             label="Intl Caps"
             value={maskValue(
               player.intlCaps > 0 ? String(player.intlCaps) : "—"
             )}
+          />
+          <RLStatBox
+            label="Tier"
+            value={maskValue(tier)}
+            className={RL_TIER_STAT_SPAN_CLASS}
           />
         </div>
       </div>
