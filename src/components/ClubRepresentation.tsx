@@ -8,7 +8,7 @@ import type {
 } from "@/lib/squad-analysis";
 import { getClubColors } from "@/lib/clubs";
 import { RLClubRow } from "./cards/RLClubRow";
-import { RLTierBadge } from "./cards/rl-card";
+import { RLTag } from "./cards/rl-card";
 import { formatValue } from "@/lib/players";
 import type { Position } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
@@ -111,11 +111,11 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                                 {formatPositionLine(player)}
                               </p>
                             </div>
-                            <RLTierBadge
+                            <RLTag
                               variant={DISPLAY_VARIANT[player.displayCategory]}
                             >
                               {DISPLAY_LABEL[player.displayCategory]}
-                            </RLTierBadge>
+                            </RLTag>
                           </div>
                           <div className="mt-2 flex flex-wrap items-center gap-3 text-xs">
                             <span className="font-display font-bold text-accent-green">

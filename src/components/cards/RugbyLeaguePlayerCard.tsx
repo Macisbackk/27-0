@@ -17,13 +17,13 @@ import {
 import { PlayerIdentityLine } from "../PlayerIdentityLine";
 import { TYPO } from "@/lib/ui/typography";
 import {
-  ACHIEVEMENT_BADGE_CLASSES,
+  ACHIEVEMENT_TAG_VARIANT,
   RL_TIER_STAT_SPAN_CLASS,
   RLCardShell,
   RLInfoBox,
   RLRatingDisplay,
   RLStatBox,
-  RLTierBadge,
+  RLTag,
 } from "./rl-card";
 
 export type RLPlayerCardVariant = "recruitment" | "pitch" | "default";
@@ -90,30 +90,27 @@ export function RugbyLeaguePlayerCard({
         ? "Historic"
         : "Current";
 
-  const categoryBadge = showCategoryBadge ? (
-    <div
-      className={`flex w-full justify-center px-2 pt-2 sm:justify-start sm:px-5 sm:pt-3 ${hiddenClass}`}
-      aria-hidden={hardMode || undefined}
+  const categoryTag = showCategoryBadge ? (
+    <RLTag
+      variant={categoryVariant}
+      compact={compactMobile}
+      className={hiddenClass}
     >
-      <RLTierBadge variant={categoryVariant} compact={compactMobile}>
-        {categoryLabel}
-      </RLTierBadge>
-    </div>
+      {categoryLabel}
+    </RLTag>
   ) : null;
 
   const achievementBadges =
     achievements.length > 0 ? (
       <RLInfoBox className="px-3 py-2.5">
-        <div className="flex flex-wrap items-center justify-center gap-2">
+        <div className="flex flex-wrap items-center justify-center gap-1.5">
           {achievements.map((achievement) => (
-            <span
+            <RLTag
               key={achievement.label}
-              className={`rounded-md border px-2.5 py-1 text-[10px] font-semibold leading-snug ${
-                ACHIEVEMENT_BADGE_CLASSES[achievement.color]
-              }`}
+              variant={ACHIEVEMENT_TAG_VARIANT[achievement.color]}
             >
               {achievement.label}
-            </span>
+            </RLTag>
           ))}
         </div>
       </RLInfoBox>
@@ -129,10 +126,12 @@ export function RugbyLeaguePlayerCard({
       >
         {isGoat && (
           <div
-            className={`shrink-0 rounded-b-sm border-b border-accent-gold/60 bg-accent-gold py-0.5 text-center text-[8px] font-black uppercase tracking-wide text-pitch-950 shadow-sm sm:text-[9px] ${hiddenClass}`}
+            className={`flex justify-center border-b border-pitch-600/40 bg-pitch-950/90 px-1 py-0.5 ${hiddenClass}`}
             aria-hidden={hardMode || undefined}
           >
-            GOAT
+            <RLTag variant="goat" compact>
+              GOAT
+            </RLTag>
           </div>
         )}
         <ClubHeaderBar club={player.club} size="pitch" thick />
@@ -190,8 +189,6 @@ export function RugbyLeaguePlayerCard({
         club={player.club}
         className={`${equalHeight ? "min-h-full" : ""} ${className}`}
       >
-        {categoryBadge}
-
         <div
           className={`flex items-start gap-1.5 px-2 pb-1 pt-2 sm:gap-3 sm:px-5 sm:pb-2 sm:pt-5 ${
             mobileCompact ? "gap-1" : ""
@@ -208,6 +205,11 @@ export function RugbyLeaguePlayerCard({
               {player.name}
             </h2>
             <PlayerIdentityLine player={player} compact={mobileCompact} />
+            {categoryTag && (
+              <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                {categoryTag}
+              </div>
+            )}
           </div>
           <RLRatingDisplay
             rating={player.peakRating}
@@ -295,8 +297,6 @@ export function RugbyLeaguePlayerCard({
         isGoat ? "ring-2 ring-accent-gold" : isLegend ? "ring-2 ring-accent-gold/40" : ""
       } ${className}`}
     >
-      {categoryBadge}
-
       <ClubColourBar club={player.club} />
       <ClubNameStrip club={player.club} colors={colors} />
 
@@ -305,6 +305,11 @@ export function RugbyLeaguePlayerCard({
           <div className="min-w-0 flex-1">
             <h2 className={`truncate ${TYPO.playerNameSm}`}>{player.name}</h2>
             <PlayerIdentityLine player={player} />
+            {categoryTag && (
+              <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                {categoryTag}
+              </div>
+            )}
           </div>
           <RLRatingDisplay rating={player.peakRating} masked={hardMode} />
         </div>

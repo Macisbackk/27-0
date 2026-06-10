@@ -5,6 +5,7 @@ import { formatValue } from "@/lib/players";
 import { getClubColors } from "@/lib/clubs";
 import { POSITION_LABELS } from "@/lib/positions";
 import { ClubLogoBox } from "./ClubBadge";
+import { RLTag } from "./cards/rl-card";
 import { RugbyLeaguePlayerCard } from "./cards/RugbyLeaguePlayerCard";
 
 interface PlayerCardProps {
@@ -60,15 +61,9 @@ export function PlayerCard({
       />
       {!selectable && canSign !== undefined && (
         <div className="mt-2 px-1">
-          <span
-            className={`inline-block rounded-full px-2 py-0.5 text-[9px] font-medium ${
-              canSign
-                ? "bg-accent-green/20 text-accent-green"
-                : "bg-red-500/20 text-red-400"
-            }`}
-          >
+          <RLTag variant={canSign ? "green" : "red"} compact>
             {canSign ? "Position Available" : "Position Full"}
-          </span>
+          </RLTag>
         </div>
       )}
     </div>

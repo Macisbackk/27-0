@@ -24,56 +24,83 @@ export const RL_FILTER_CHIP_ACTIVE =
 export const RL_FILTER_CHIP_IDLE =
   "border-pitch-600 text-gray-400 hover:text-white";
 
-export const ACHIEVEMENT_BADGE_CLASSES: Record<
-  "gold" | "green" | "purple" | "blue" | "silver",
-  string
-> = {
-  gold: "rl-achievement rl-achievement-gold",
-  green: "rl-achievement rl-achievement-green",
-  purple: "rl-achievement rl-achievement-purple",
-  blue: "rl-achievement rl-achievement-blue",
-  silver: "rl-achievement rl-achievement-silver",
+export type RLTagVariant =
+  | "neutral"
+  | "current"
+  | "historic"
+  | "legend"
+  | "goat"
+  | "gold"
+  | "green"
+  | "purple"
+  | "blue"
+  | "silver"
+  | "red";
+
+const RL_TAG_VARIANT_CLASS: Record<RLTagVariant, string> = {
+  neutral: "rl-tag-neutral",
+  current: "rl-tag-green",
+  historic: "rl-tag-purple",
+  legend: "rl-tag-gold",
+  goat: "rl-tag-gold",
+  gold: "rl-tag-gold",
+  green: "rl-tag-green",
+  purple: "rl-tag-purple",
+  blue: "rl-tag-blue",
+  silver: "rl-tag-silver",
+  red: "rl-tag-red",
 };
 
-/** Pill badge for tier / category labels — never clips on mobile. */
-export function RLTierBadge({
+/** Shared tag for category tiers, achievements, and status pills. */
+export function RLTag({
   children,
-  variant = "tier",
-  highlight,
+  variant = "neutral",
   compact,
   className = "",
 }: {
   children: ReactNode;
-  variant?: "tier" | "goat" | "legend" | "historic" | "current";
-  highlight?: boolean;
+  variant?: RLTagVariant;
   compact?: boolean;
   className?: string;
 }) {
-  const variantClass =
-    variant === "goat"
-      ? "border-accent-gold/70 bg-accent-gold text-pitch-950"
-      : variant === "legend"
-        ? "border-accent-gold/50 bg-accent-gold/20 text-accent-gold"
-        : variant === "historic"
-          ? "border-purple-400/45 bg-purple-950/80 text-purple-200"
-          : variant === "current"
-            ? "border-accent-green/45 bg-accent-green/15 text-accent-green"
-            : "border-pitch-600/60 bg-pitch-950/90 text-white";
-
   return (
     <span
-      className={`inline-flex w-fit max-w-full items-center justify-center whitespace-nowrap rounded-full border px-2.5 py-0.5 font-semibold leading-snug shadow-sm ${
+      className={`rl-tag ${RL_TAG_VARIANT_CLASS[variant]} ${
         compact
-          ? "text-[10px] tracking-normal sm:text-xs"
-          : "text-[10px] sm:text-xs"
-      } ${variantClass} ${
-        highlight ? "!border-accent-gold/50 !text-accent-gold" : ""
+          ? "px-1.5 py-px text-[9px] sm:px-2 sm:py-0.5 sm:text-[10px]"
+          : "px-2 py-0.5 text-[10px] sm:px-2.5 sm:py-1"
       } ${className}`}
     >
       {children}
     </span>
   );
 }
+
+/** @deprecated Use RLTag */
+export const RLTierBadge = RLTag;
+
+export const ACHIEVEMENT_TAG_VARIANT: Record<
+  "gold" | "green" | "purple" | "blue" | "silver",
+  RLTagVariant
+> = {
+  gold: "gold",
+  green: "green",
+  purple: "purple",
+  blue: "blue",
+  silver: "silver",
+};
+
+/** @deprecated Use RLTag with ACHIEVEMENT_TAG_VARIANT */
+export const ACHIEVEMENT_BADGE_CLASSES: Record<
+  "gold" | "green" | "purple" | "blue" | "silver",
+  string
+> = {
+  gold: "rl-tag rl-tag-gold",
+  green: "rl-tag rl-tag-green",
+  purple: "rl-tag rl-tag-purple",
+  blue: "rl-tag rl-tag-blue",
+  silver: "rl-tag rl-tag-silver",
+};
 
 interface RLCardShellProps {
   club: string;
@@ -110,6 +137,12 @@ export function RLInfoBox({
   );
 }
 
+function tierStatValueClass(compact?: boolean): string {
+  return compact
+    ? "whitespace-nowrap text-[10px] leading-snug sm:text-sm"
+    : "whitespace-nowrap text-[11px] sm:text-sm";
+}
+
 export function RLStatBox({
   label,
   value,
@@ -144,16 +177,11 @@ export function RLStatBox({
       >
         {label}
       </p>
-      {isTier ? (
-        <div className="mt-0.5 flex min-w-0 items-start">
-          <RLTierBadge highlight={highlight} compact={compact}>
-            {value}
-          </RLTierBadge>
-        </div>
-      ) : (
-        <p
-          className={`min-w-0 font-medium text-white ${
-            prominent
+      <p
+        className={`min-w-0 font-medium text-white ${
+          isTier
+            ? `font-normal text-gray-300 ${tierStatValueClass(compact)}`
+            : prominent
               ? "text-lg font-bold sm:text-xl"
               : compact
                 ? "text-[10px] leading-snug sm:text-sm"
@@ -162,11 +190,10 @@ export function RLStatBox({
                   : large
                     ? "truncate text-sm"
                     : "truncate text-[11px]"
-          } ${highlight ? "!text-accent-gold" : ""}`}
-        >
-          {value}
-        </p>
-      )}
+        } ${highlight ? "!text-accent-gold" : ""}`}
+      >
+        {value}
+      </p>
     </div>
   );
 }
@@ -212,5 +239,5 @@ export function RLRatingDisplay({
   );
 }
 
-/** Shared class for tier stat box spanning full row on narrow layouts. */
+/** Tier stat box spans full row on narrow layouts. */
 export const RL_TIER_STAT_SPAN_CLASS = "col-span-2 sm:col-span-1";
