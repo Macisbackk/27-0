@@ -63,11 +63,10 @@ export function RugbyLeaguePlayerCard({
   const maskValue = (value: string) => (hardMode ? "???" : value);
   const hiddenClass = hardMode ? "invisible select-none" : "";
 
-  const appearancesValue = isActive
-    ? "Still Playing"
-    : player.appearances !== undefined
+  const appearancesValue =
+    player.appearances !== undefined
       ? String(player.appearances)
-      : "—";
+      : "Unknown";
 
   const showCategoryBadge =
     isGoat ||

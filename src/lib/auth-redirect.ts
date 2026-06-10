@@ -15,5 +15,9 @@ export function getEmailConfirmRedirectUrl(): string {
 
 /** Redirect target for Supabase password reset links. */
 export function getPasswordResetRedirectUrl(): string {
-  return getAuthCallbackUrl();
+  if (typeof window !== "undefined") {
+    return `${window.location.origin}/auth/reset-password`;
+  }
+  const site = process.env.NEXT_PUBLIC_SITE_URL ?? PRODUCTION_SITE;
+  return `${site.replace(/\/$/, "")}/auth/reset-password`;
 }

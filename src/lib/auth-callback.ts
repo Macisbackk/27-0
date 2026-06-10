@@ -6,8 +6,23 @@ export function markEmailConfirmPending(): void {
 }
 
 /** Detect Supabase email-confirmation redirect in URL hash or query. */
+export function detectPasswordRecoveryRedirect(): boolean {
+  if (typeof window === "undefined") return false;
+
+  const search = new URLSearchParams(window.location.search);
+  if (search.get("type") === "recovery") return true;
+
+  const hash = window.location.hash.startsWith("#")
+    ? window.location.hash.slice(1)
+    : window.location.hash;
+  const hashParams = new URLSearchParams(hash);
+  return hashParams.get("type") === "recovery";
+}
+
 export function detectEmailConfirmationRedirect(): boolean {
   if (typeof window === "undefined") return false;
+
+  if (detectPasswordRecoveryRedirect()) return false;
 
   const search = new URLSearchParams(window.location.search);
   if (search.get("emailConfirmed") === "1") return true;
@@ -17,13 +32,8 @@ export function detectEmailConfirmationRedirect(): boolean {
     : window.location.hash;
   const hashParams = new URLSearchParams(hash);
   const type = hashParams.get("type");
-  if (
-    type === "signup" ||
-    type === "email" ||
-    type === "magiclink" ||
-    type === "recovery"
-  ) {
-    return type === "signup" || type === "email" || type === "magiclink";
+  if (type === "signup" || type === "email" || type === "magiclink") {
+    return true;
   }
 
   if (search.has("code") || search.get("confirmed") === "true") {

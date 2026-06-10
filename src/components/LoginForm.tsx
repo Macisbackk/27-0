@@ -22,6 +22,7 @@ export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = safeRedirect(searchParams.get("redirect"));
+  const passwordResetSuccess = searchParams.get("passwordReset") === "1";
   const { loading, isLoggedIn, signUp, signIn } = useAuth();
 
   const [mode, setMode] = useState<AuthMode>("login");
@@ -108,6 +109,12 @@ export function LoginForm() {
   return (
     <section className={`${CARD.panel} ${SPACING.cardPaddingLg}`}>
       <p className={TYPO.sectionTitle}>27-0 Account</p>
+
+      {passwordResetSuccess && (
+        <p className={`mt-3 ${TYPO.body} text-accent-green`}>
+          Password updated. Log in with your new password.
+        </p>
+      )}
 
       <Link
         href="/#play-modes"

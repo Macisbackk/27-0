@@ -22,8 +22,10 @@ https://27-0.co.uk
 ```
 https://27-0.co.uk
 https://27-0.co.uk/auth/callback
+https://27-0.co.uk/auth/reset-password
 https://www.27-0.co.uk
 https://www.27-0.co.uk/auth/callback
+https://www.27-0.co.uk/auth/reset-password
 ```
 
 For local development you may also keep:
@@ -107,3 +109,4 @@ If you did not request this email, you can safely ignore it.
 2. Request a password reset and verify **Reset password**
 3. If magic link login is enabled, test **Magic Link**
 4. Confirm links land on `https://27-0.co.uk/auth/callback` and complete successfully
+2. Request a password reset and verify the link opens `https://27-0.co.uk/auth/reset-password` with the new-password form

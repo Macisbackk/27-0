@@ -188,6 +188,24 @@ export async function signOut(): Promise<void> {
   }
 }
 
+export async function updatePassword(
+  password: string
+): Promise<AuthActionResult> {
+  if (password.length < 6) {
+    return { ok: false, error: "Password must be at least 6 characters." };
+  }
+
+  try {
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) throw error;
+    return { ok: true };
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "Could not update password.";
+    return mapAuthError(message, "signup");
+  }
+}
+
 export async function sendPasswordResetEmail(
   email: string
 ): Promise<AuthActionResult> {

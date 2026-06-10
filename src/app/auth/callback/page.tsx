@@ -3,13 +3,23 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { markEmailConfirmPending } from "@/lib/auth-callback";
+import {
+  detectPasswordRecoveryRedirect,
+  markEmailConfirmPending,
+} from "@/lib/auth-callback";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (detectPasswordRecoveryRedirect()) {
+      const search = window.location.search;
+      const hash = window.location.hash;
+      router.replace(`/auth/reset-password${search}${hash}`);
+      return;
+    }
+
     void (async () => {
       try {
         const params = new URLSearchParams(window.location.search);

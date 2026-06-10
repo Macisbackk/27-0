@@ -27,7 +27,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 47,
+    "tries": 33
   },
   {
     "id": "wigan-cur-adam-keighran",
@@ -41,7 +43,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 110,
+    "tries": 39
   },
   {
     "id": "wigan-cur-jake-wardle",
@@ -55,7 +59,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 89,
+    "tries": 44
   },
   {
     "id": "wigan-cur-liam-marshall",
@@ -69,7 +75,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 191,
+    "tries": 150
   },
   {
     "id": "wigan-cur-bevan-french",
@@ -83,7 +91,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 0,
-    "rating": 88
+    "rating": 88,
+    "appearances": 114,
+    "tries": 99
   },
   {
     "id": "wigan-cur-harry-smith",
@@ -97,7 +107,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 4,
-    "rating": 88
+    "rating": 88,
+    "appearances": 144,
+    "tries": 22
   },
   {
     "id": "wigan-cur-ethan-havard",
@@ -111,7 +123,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 84,
+    "tries": 8
   },
   {
     "id": "wigan-cur-brad-oneill",
@@ -125,7 +139,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 78,
+    "tries": 7
   },
   {
     "id": "wigan-cur-luke-thompson",
@@ -139,7 +155,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 16,
-    "rating": 88
+    "rating": 88,
+    "appearances": 199,
+    "tries": 29
   },
   {
     "id": "wigan-cur-junior-nsemba",
@@ -153,7 +171,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 77,
+    "tries": 19
   },
   {
     "id": "wigan-cur-liam-farrell",
@@ -167,7 +187,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 0,
-    "rating": 88
+    "rating": 88,
+    "appearances": 345,
+    "tries": 125
   },
   {
     "id": "wigan-cur-kaide-ellis",
@@ -181,7 +203,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 104,
+    "tries": 4
   },
   {
     "id": "wigan-cur-sam-walters",
@@ -195,7 +219,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 81,
+    "tries": 15
   },
   {
     "id": "wigan-cur-patrick-mago",
@@ -209,7 +235,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 111,
+    "tries": 7
   },
   {
     "id": "wigan-cur-abbas-miski",
@@ -223,7 +251,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 12,
-    "rating": 77
+    "rating": 77,
+    "appearances": 78,
+    "tries": 64
   },
   {
     "id": "wigan-cur-kruise-leeming",
@@ -237,7 +267,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 228,
+    "tries": 39
   },
   {
     "id": "wigan-cur-jack-farrimond",
@@ -251,7 +283,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 20,
+    "tries": 13
   },
   {
     "id": "wigan-cur-sam-eseh",
@@ -265,7 +299,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 6,
+    "tries": 1
   },
   {
     "id": "wigan-cur-oliver-wilson",
@@ -279,7 +315,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 105,
+    "tries": 2
   },
   {
     "id": "wigan-cur-tom-forber",
@@ -293,7 +331,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 20,
+    "tries": 3
   },
   {
     "id": "wigan-cur-kian-mcdermott",
@@ -307,7 +347,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 2
   },
   {
     "id": "wigan-cur-harvey-makin",
@@ -321,7 +362,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 1
   },
   {
     "id": "wigan-cur-taylor-kerr",
@@ -363,7 +405,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 11,
-    "rating": 88
+    "rating": 88,
+    "appearances": 166,
+    "tries": 71
   },
   {
     "id": "st-helens-cur-kyle-feldt",
@@ -405,7 +449,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 0,
-    "rating": 88
+    "rating": 88,
+    "appearances": 267,
+    "tries": 129
   },
   {
     "id": "st-helens-cur-deon-cross",
@@ -419,7 +465,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 197,
+    "tries": 88
   },
   {
     "id": "st-helens-cur-tristan-sailor",
@@ -433,7 +481,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 43,
+    "tries": 25
   },
   {
     "id": "st-helens-cur-jonny-lomax",
@@ -447,7 +497,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 18,
-    "rating": 88
+    "rating": 88,
+    "appearances": 329,
+    "tries": 125
   },
   {
     "id": "st-helens-cur-alex-walmsley",
@@ -461,7 +513,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 33,
-    "rating": 88
+    "rating": 88,
+    "appearances": 279,
+    "tries": 55
   },
   {
     "id": "st-helens-cur-daryl-clark",
@@ -475,7 +529,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 15,
-    "rating": 88
+    "rating": 88,
+    "appearances": 347,
+    "tries": 93
   },
   {
     "id": "st-helens-cur-matty-lees",
@@ -489,7 +545,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 6,
-    "rating": 83
+    "rating": 83,
+    "appearances": 194,
+    "tries": 6
   },
   {
     "id": "st-helens-cur-curtis-sironen",
@@ -503,7 +561,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 81,
+    "tries": 14
   },
   {
     "id": "st-helens-cur-david-klemmer",
@@ -545,7 +605,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 86,
+    "tries": 3
   },
   {
     "id": "st-helens-cur-matt-whitley",
@@ -559,7 +621,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 52,
+    "tries": 9
   },
   {
     "id": "st-helens-cur-george-whitby",
@@ -587,7 +651,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 65,
+    "tries": 1
   },
   {
     "id": "st-helens-cur-agnatius-paasi",
@@ -601,7 +667,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 6,
-    "rating": 82
+    "rating": 82,
+    "appearances": 94,
+    "tries": 9
   },
   {
     "id": "st-helens-cur-lewis-murphy",
@@ -615,7 +683,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 39,
+    "tries": 26
   },
   {
     "id": "st-helens-cur-noah-stephens",
@@ -629,7 +699,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 24,
+    "tries": 1
   },
   {
     "id": "st-helens-cur-jake-burns",
@@ -657,7 +729,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 21,
+    "tries": 12
   },
   {
     "id": "st-helens-cur-nene-macdonald",
@@ -671,7 +745,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 18,
-    "rating": 82
+    "rating": 82,
+    "appearances": 55,
+    "tries": 18
   },
   {
     "id": "leeds-cur-lachie-miller",
@@ -685,7 +761,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 50,
+    "tries": 16
   },
   {
     "id": "leeds-cur-maika-sivo",
@@ -699,7 +777,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 2,
-    "rating": 83
+    "rating": 83,
+    "appearances": 13,
+    "tries": 22
   },
   {
     "id": "leeds-cur-harry-newman",
@@ -713,7 +793,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 127,
+    "tries": 38
   },
   {
     "id": "leeds-cur-ash-handley",
@@ -727,7 +809,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 0,
-    "rating": 88
+    "rating": 88,
+    "appearances": 212,
+    "tries": 127
   },
   {
     "id": "leeds-cur-ryan-hall",
@@ -741,7 +825,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 39,
-    "rating": 88
+    "rating": 88,
+    "appearances": 390,
+    "tries": 259
   },
   {
     "id": "leeds-cur-brodie-croft",
@@ -755,7 +841,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 0,
-    "rating": 88
+    "rating": 88,
+    "appearances": 110,
+    "tries": 41
   },
   {
     "id": "leeds-cur-jake-connor",
@@ -769,7 +857,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 249,
+    "tries": 64
   },
   {
     "id": "leeds-cur-mikolaj-oledzki",
@@ -783,7 +873,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 167,
+    "tries": 15
   },
   {
     "id": "leeds-cur-jarrod-oconnor",
@@ -797,7 +889,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 129,
+    "tries": 6
   },
   {
     "id": "leeds-cur-tom-holroyd",
@@ -811,7 +905,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 79,
+    "tries": 11
   },
   {
     "id": "leeds-cur-kallum-watkins",
@@ -825,7 +921,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 29,
-    "rating": 88
+    "rating": 88,
+    "appearances": 329,
+    "tries": 135
   },
   {
     "id": "leeds-cur-james-mcdonnell",
@@ -839,7 +937,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 93,
+    "tries": 21
   },
   {
     "id": "leeds-cur-keenan-palasia",
@@ -867,7 +967,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 244,
+    "tries": 77
   },
   {
     "id": "leeds-cur-cooper-jenkins",
@@ -881,7 +983,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 31,
+    "tries": 6
   },
   {
     "id": "leeds-cur-ethan-oneill",
@@ -895,7 +999,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 4
   },
   {
     "id": "leeds-cur-cameron-smith",
@@ -923,7 +1028,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 7
   },
   {
     "id": "leeds-cur-jeremiah-matautia",
@@ -951,7 +1057,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 9,
+    "tries": 2
   },
   {
     "id": "leeds-cur-alfie-edgell",
@@ -965,7 +1073,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 25,
+    "tries": 10
   },
   {
     "id": "leeds-cur-riley-lumb",
@@ -979,7 +1089,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 24,
+    "tries": 12
   },
   {
     "id": "leeds-cur-danny-levi",
@@ -993,7 +1105,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 38,
+    "tries": 5
   },
   {
     "id": "leeds-cur-ned-mccormack",
@@ -1007,7 +1121,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 7,
+    "tries": 1
   },
   {
     "id": "leeds-cur-ben-littlewood",
@@ -1021,7 +1137,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 10
   },
   {
     "id": "warrington-cur-cai-taylor-wray",
@@ -1035,7 +1152,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 15,
+    "tries": 9
   },
   {
     "id": "warrington-cur-josh-thewlis",
@@ -1049,7 +1168,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 112,
+    "tries": 55
   },
   {
     "id": "warrington-cur-toby-king",
@@ -1063,7 +1184,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 205,
+    "tries": 78
   },
   {
     "id": "warrington-cur-albert-hopoate",
@@ -1091,7 +1214,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 143,
+    "tries": 137
   },
   {
     "id": "warrington-cur-george-williams",
@@ -1105,7 +1230,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 21,
-    "rating": 88
+    "rating": 88,
+    "appearances": 250,
+    "tries": 91
   },
   {
     "id": "warrington-cur-marc-sneyd",
@@ -1119,7 +1246,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 0,
-    "rating": 88
+    "rating": 88,
+    "appearances": 316,
+    "tries": 39
   },
   {
     "id": "warrington-cur-luke-yates",
@@ -1133,7 +1262,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 202,
+    "tries": 19
   },
   {
     "id": "warrington-cur-danny-walker",
@@ -1147,7 +1278,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 30,
+    "tries": 3
   },
   {
     "id": "warrington-cur-james-harrison",
@@ -1161,7 +1294,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 77,
+    "tries": 14
   },
   {
     "id": "warrington-cur-adam-holroyd",
@@ -1175,7 +1310,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 47,
+    "tries": 7
   },
   {
     "id": "warrington-cur-sam-stone",
@@ -1189,7 +1326,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 60,
+    "tries": 16
   },
   {
     "id": "warrington-cur-ben-currie",
@@ -1203,7 +1342,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 278,
+    "tries": 100
   },
   {
     "id": "warrington-cur-sam-powell",
@@ -1217,7 +1358,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 291,
+    "tries": 42
   },
   {
     "id": "warrington-cur-toafofoa-sipley",
@@ -1245,7 +1388,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 5,
-    "rating": 77
+    "rating": 77,
+    "appearances": 149,
+    "tries": 2
   },
   {
     "id": "warrington-cur-jordy-crowther",
@@ -1273,7 +1418,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 10,
+    "tries": 1
   },
   {
     "id": "warrington-cur-leon-hayes",
@@ -1287,7 +1434,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 12
   },
   {
     "id": "warrington-cur-james-bentley",
@@ -1301,7 +1449,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 124,
+    "tries": 21
   },
   {
     "id": "warrington-cur-luke-thomas",
@@ -1315,7 +1465,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 31,
+    "tries": 2
   },
   {
     "id": "warrington-cur-joe-philbin",
@@ -1329,7 +1481,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 212,
+    "tries": 16
   },
   {
     "id": "warrington-cur-arron-lindop",
@@ -1343,7 +1497,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 11,
+    "tries": 6
   },
   {
     "id": "warrington-cur-max-wood",
@@ -1357,7 +1513,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 32,
+    "tries": 3
   },
   {
     "id": "warrington-cur-josh-smith",
@@ -1385,7 +1543,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 147,
+    "tries": 66
   },
   {
     "id": "bradford-cur-jayden-okunbor",
@@ -1399,7 +1559,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 104,
+    "tries": 49
   },
   {
     "id": "bradford-cur-esan-marsters",
@@ -1413,7 +1575,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 4,
-    "rating": 82
+    "rating": 82,
+    "appearances": 71,
+    "tries": 14
   },
   {
     "id": "bradford-cur-waqa-blake",
@@ -1427,7 +1591,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 31,
+    "tries": 17
   },
   {
     "id": "bradford-cur-ethan-ryan",
@@ -1441,7 +1607,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 77,
+    "tries": 31
   },
   {
     "id": "bradford-cur-jayden-nikorima",
@@ -1455,7 +1623,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 37,
+    "tries": 11
   },
   {
     "id": "bradford-cur-rowan-milnes",
@@ -1469,7 +1639,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 5,
+    "tries": 15
   },
   {
     "id": "bradford-cur-ryan-sutton",
@@ -1483,7 +1655,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 6,
-    "rating": 83
+    "rating": 83,
+    "appearances": 214,
+    "tries": 15
   },
   {
     "id": "bradford-cur-andy-ackers",
@@ -1497,7 +1671,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 3,
-    "rating": 83
+    "rating": 83,
+    "appearances": 113,
+    "tries": 10
   },
   {
     "id": "bradford-cur-loghan-lewis",
@@ -1511,7 +1687,8 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 11
   },
   {
     "id": "bradford-cur-dan-russell",
@@ -1553,7 +1730,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 0,
-    "rating": 88
+    "rating": 88,
+    "appearances": 204,
+    "tries": 60
   },
   {
     "id": "bradford-cur-mitch-souter",
@@ -1581,7 +1760,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 25,
+    "tries": 2
   },
   {
     "id": "bradford-cur-ebon-scurr",
@@ -1609,7 +1790,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 5,
+    "tries": 3
   },
   {
     "id": "bradford-cur-joe-keyes",
@@ -1623,7 +1806,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 7,
-    "rating": 77
+    "rating": 77,
+    "appearances": 14,
+    "tries": 6
   },
   {
     "id": "bradford-cur-will-gardiner",
@@ -1637,7 +1822,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 47,
+    "tries": 1
   },
   {
     "id": "bradford-cur-brandon-douglas",
@@ -1665,7 +1852,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 4
   },
   {
     "id": "bradford-cur-luke-hooley",
@@ -1679,7 +1867,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 163,
+    "tries": 65
   },
   {
     "id": "bradford-cur-connor-wynne",
@@ -1693,7 +1883,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 94,
+    "tries": 57
   },
   {
     "id": "bradford-cur-guy-armitage",
@@ -1707,7 +1899,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 88,
+    "tries": 62
   },
   {
     "id": "bradford-cur-eliot-peposhi",
@@ -1735,7 +1929,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 136,
+    "tries": 11
   },
   {
     "id": "hull-kr-cur-arthur-mourgue",
@@ -1749,7 +1945,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 7,
-    "rating": 82
+    "rating": 82,
+    "appearances": 131,
+    "tries": 36
   },
   {
     "id": "hull-kr-cur-tom-davies",
@@ -1763,7 +1961,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 187,
+    "tries": 106
   },
   {
     "id": "hull-kr-cur-peta-hiku",
@@ -1777,7 +1977,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 15,
-    "rating": 83
+    "rating": 83,
+    "appearances": 82,
+    "tries": 31
   },
   {
     "id": "hull-kr-cur-oliver-gildart",
@@ -1791,7 +1993,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 10,
-    "rating": 83
+    "rating": 83,
+    "appearances": 160,
+    "tries": 65
   },
   {
     "id": "hull-kr-cur-joe-burgess",
@@ -1805,7 +2009,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 201,
+    "tries": 147
   },
   {
     "id": "hull-kr-cur-mikey-lewis",
@@ -1819,7 +2025,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 12,
-    "rating": 88
+    "rating": 88,
+    "appearances": 120,
+    "tries": 81
   },
   {
     "id": "hull-kr-cur-tyrone-may",
@@ -1833,7 +2041,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 6,
-    "rating": 82
+    "rating": 82,
+    "appearances": 100,
+    "tries": 21
   },
   {
     "id": "hull-kr-cur-sauaso-sue",
@@ -1847,7 +2057,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 9,
-    "rating": 82
+    "rating": 82,
+    "appearances": 74,
+    "tries": 13
   },
   {
     "id": "hull-kr-cur-jez-litten",
@@ -1861,7 +2073,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 3,
-    "rating": 83
+    "rating": 83,
+    "appearances": 18,
+    "tries": 1
   },
   {
     "id": "hull-kr-cur-tom-amone",
@@ -1875,7 +2089,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 3,
-    "rating": 83
+    "rating": 83,
+    "appearances": 127,
+    "tries": 20
   },
   {
     "id": "hull-kr-cur-dean-hadley",
@@ -1889,7 +2105,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 225,
+    "tries": 23
   },
   {
     "id": "hull-kr-cur-james-batchelor",
@@ -1903,7 +2121,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 166,
+    "tries": 29
   },
   {
     "id": "hull-kr-cur-elliot-minchella",
@@ -1917,7 +2137,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 131,
+    "tries": 17
   },
   {
     "id": "hull-kr-cur-jack-broadbent",
@@ -1931,7 +2153,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 105,
+    "tries": 38
   },
   {
     "id": "hull-kr-cur-sam-luckley",
@@ -1945,7 +2169,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 217,
+    "tries": 15
   },
   {
     "id": "hull-kr-cur-jai-whitbread",
@@ -1959,7 +2185,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 104,
+    "tries": 19
   },
   {
     "id": "hull-kr-cur-rhyse-martin",
@@ -1973,7 +2201,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 20,
-    "rating": 83
+    "rating": 83,
+    "appearances": 142,
+    "tries": 42
   },
   {
     "id": "hull-kr-cur-jack-brown",
@@ -1987,7 +2217,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 99,
+    "tries": 6
   },
   {
     "id": "hull-kr-cur-jordan-dezaria",
@@ -2001,7 +2233,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 112,
+    "tries": 5
   },
   {
     "id": "hull-kr-cur-noah-booth",
@@ -2015,7 +2249,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 10,
+    "tries": 9
   },
   {
     "id": "hull-kr-cur-bill-leyland",
@@ -2029,7 +2265,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 57,
+    "tries": 18
   },
   {
     "id": "hull-kr-cur-lee-kershaw",
@@ -2043,7 +2281,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 108,
+    "tries": 42
   },
   {
     "id": "hull-kr-cur-jack-charles",
@@ -2071,7 +2311,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 1
   },
   {
     "id": "hull-kr-cur-harvey-horne",
@@ -2099,7 +2340,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 45,
+    "tries": 17
   },
   {
     "id": "hull-fc-cur-harvey-barron",
@@ -2113,7 +2356,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 41,
+    "tries": 22
   },
   {
     "id": "hull-fc-cur-davy-litten",
@@ -2127,7 +2372,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 30,
+    "tries": 6
   },
   {
     "id": "hull-fc-cur-zak-hardaker",
@@ -2141,7 +2388,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 4,
-    "rating": 88
+    "rating": 88,
+    "appearances": 313,
+    "tries": 99
   },
   {
     "id": "hull-fc-cur-lewis-martin",
@@ -2155,7 +2404,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 66,
+    "tries": 40
   },
   {
     "id": "hull-fc-cur-jake-arthur",
@@ -2183,7 +2434,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 91,
+    "tries": 16
   },
   {
     "id": "hull-fc-cur-herman-eseese",
@@ -2197,7 +2450,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 4,
-    "rating": 83
+    "rating": 83,
+    "appearances": 49,
+    "tries": 10
   },
   {
     "id": "hull-fc-cur-amir-bourouh",
@@ -2211,7 +2466,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 83,
+    "tries": 7
   },
   {
     "id": "hull-fc-cur-harvie-hill",
@@ -2225,7 +2482,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 71,
+    "tries": 5
   },
   {
     "id": "hull-fc-cur-joe-batchelor",
@@ -2239,7 +2498,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 171,
+    "tries": 66
   },
   {
     "id": "hull-fc-cur-jed-cartwright",
@@ -2267,7 +2528,8 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 4,
-    "rating": 83
+    "rating": 83,
+    "appearances": 19
   },
   {
     "id": "hull-fc-cur-cade-cust",
@@ -2281,7 +2543,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 87,
+    "tries": 14
   },
   {
     "id": "hull-fc-cur-james-bell",
@@ -2295,7 +2559,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 10,
-    "rating": 77
+    "rating": 77,
+    "appearances": 98,
+    "tries": 10
   },
   {
     "id": "hull-fc-cur-sam-lisone",
@@ -2309,7 +2575,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 5,
-    "rating": 82
+    "rating": 82,
+    "appearances": 81,
+    "tries": 13
   },
   {
     "id": "hull-fc-cur-liam-knight",
@@ -2337,7 +2605,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 5,
-    "rating": 77
+    "rating": 77,
+    "appearances": 102,
+    "tries": 5
   },
   {
     "id": "hull-fc-cur-tom-briscoe",
@@ -2351,7 +2621,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 2,
-    "rating": 83
+    "rating": 83,
+    "appearances": 374,
+    "tries": 171
   },
   {
     "id": "hull-fc-cur-yusuf-aydin",
@@ -2365,7 +2637,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 64,
+    "tries": 3
   },
   {
     "id": "hull-fc-cur-arthur-romano",
@@ -2379,7 +2653,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 97,
+    "tries": 20
   },
   {
     "id": "hull-fc-cur-connor-bailey",
@@ -2393,7 +2669,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 15,
+    "tries": 1
   },
   {
     "id": "hull-fc-cur-brad-fash",
@@ -2407,7 +2685,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 185,
+    "tries": 6
   },
   {
     "id": "hull-fc-cur-logan-moy",
@@ -2421,7 +2701,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 26,
+    "tries": 3
   },
   {
     "id": "hull-fc-cur-matty-laidlaw",
@@ -2435,7 +2717,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 10
   },
   {
     "id": "hull-fc-cur-hugo-salabio",
@@ -2449,7 +2732,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 87,
+    "tries": 3
   },
   {
     "id": "leigh-cur-david-armstrong",
@@ -2477,7 +2762,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 109,
+    "tries": 45
   },
   {
     "id": "leigh-cur-tesi-niu",
@@ -2491,7 +2778,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 7,
-    "rating": 82
+    "rating": 82,
+    "appearances": 34,
+    "tries": 12
   },
   {
     "id": "leigh-cur-umyla-hanley",
@@ -2505,7 +2794,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 63,
+    "tries": 26
   },
   {
     "id": "leigh-cur-josh-charnley",
@@ -2519,7 +2810,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 8,
-    "rating": 88
+    "rating": 88,
+    "appearances": 318,
+    "tries": 257
   },
   {
     "id": "leigh-cur-adam-cook",
@@ -2547,7 +2840,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 18,
-    "rating": 88
+    "rating": 88,
+    "appearances": 93,
+    "tries": 22
   },
   {
     "id": "leigh-cur-joe-ofahengaue",
@@ -2575,7 +2870,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 26,
-    "rating": 88
+    "rating": 88,
+    "appearances": 114,
+    "tries": 47
   },
   {
     "id": "leigh-cur-robbie-mulhern",
@@ -2589,7 +2886,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 192,
+    "tries": 10
   },
   {
     "id": "leigh-cur-frankie-halton",
@@ -2603,7 +2902,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 83,
+    "tries": 16
   },
   {
     "id": "leigh-cur-owen-trout",
@@ -2617,7 +2918,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 61,
+    "tries": 7
   },
   {
     "id": "leigh-cur-isaac-liu",
@@ -2659,7 +2962,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 2,
-    "rating": 76
+    "rating": 76,
+    "appearances": 16,
+    "tries": 4
   },
   {
     "id": "leigh-cur-matt-davis",
@@ -2673,7 +2978,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 123,
+    "tries": 12
   },
   {
     "id": "leigh-cur-liam-horne",
@@ -2687,7 +2994,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 8,
-    "rating": 76
+    "rating": 76,
+    "appearances": 13,
+    "tries": 1
   },
   {
     "id": "leigh-cur-bailey-hodgson",
@@ -2701,7 +3010,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 34,
+    "tries": 6
   },
   {
     "id": "leigh-cur-innes-senior",
@@ -2715,7 +3026,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 1,
-    "rating": 76
+    "rating": 76,
+    "appearances": 129,
+    "tries": 57
   },
   {
     "id": "leigh-cur-aj-towse",
@@ -2729,7 +3042,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 83,
+    "tries": 44
   },
   {
     "id": "leigh-cur-gareth-obrien",
@@ -2743,7 +3058,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 8,
-    "rating": 82
+    "rating": 82,
+    "appearances": 215,
+    "tries": 40
   },
   {
     "id": "leigh-cur-jack-hughes",
@@ -2757,7 +3074,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 307,
+    "tries": 39
   },
   {
     "id": "leigh-cur-andrew-badrock",
@@ -2785,7 +3104,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 67,
+    "tries": 6
   },
   {
     "id": "leigh-cur-louis-brogan",
@@ -2799,7 +3120,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 12
   },
   {
     "id": "leigh-cur-nathan-wilde",
@@ -2827,7 +3149,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 136,
+    "tries": 46
   },
   {
     "id": "wakefield-cur-oliver-pratt",
@@ -2841,7 +3165,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 74,
+    "tries": 37
   },
   {
     "id": "wakefield-cur-cam-scott",
@@ -2869,7 +3195,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 79,
+    "tries": 15
   },
   {
     "id": "wakefield-cur-tom-johnstone",
@@ -2883,7 +3211,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 5,
-    "rating": 88
+    "rating": 88,
+    "appearances": 195,
+    "tries": 146
   },
   {
     "id": "wakefield-cur-jake-trueman",
@@ -2897,7 +3227,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 156,
+    "tries": 40
   },
   {
     "id": "wakefield-cur-mason-lino",
@@ -2911,7 +3243,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 3,
-    "rating": 82
+    "rating": 82,
+    "appearances": 99,
+    "tries": 13
   },
   {
     "id": "wakefield-cur-mike-mcmeeken",
@@ -2925,7 +3259,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 4,
-    "rating": 83
+    "rating": 83,
+    "appearances": 301,
+    "tries": 63
   },
   {
     "id": "wakefield-cur-tyson-smoothy",
@@ -2981,7 +3317,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 122,
+    "tries": 11
   },
   {
     "id": "wakefield-cur-jazz-tevaga",
@@ -3009,7 +3347,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 215,
+    "tries": 22
   },
   {
     "id": "wakefield-cur-caleb-hamlin-uele",
@@ -3079,7 +3419,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 128,
+    "tries": 125
   },
   {
     "id": "wakefield-cur-jack-sinfield",
@@ -3093,7 +3435,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 37,
+    "tries": 6
   },
   {
     "id": "wakefield-cur-jayden-myers",
@@ -3107,7 +3451,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 16,
+    "tries": 8
   },
   {
     "id": "wakefield-cur-thomas-doyle",
@@ -3135,7 +3481,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 59,
+    "tries": 26
   },
   {
     "id": "wakefield-cur-tray-lolesio",
@@ -3163,7 +3511,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 15,
+    "tries": 1
   },
   {
     "id": "castleford-cur-blake-taaffe",
@@ -3219,7 +3569,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 195,
+    "tries": 83
   },
   {
     "id": "castleford-cur-mikaele-ravalawa",
@@ -3233,7 +3585,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 1,
-    "rating": 83
+    "rating": 83,
+    "appearances": 110,
+    "tries": 69
   },
   {
     "id": "castleford-cur-daejarn-asi",
@@ -3247,7 +3601,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 82,
+    "tries": 12
   },
   {
     "id": "castleford-cur-tom-weaver",
@@ -3275,7 +3631,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 2,
-    "rating": 77
+    "rating": 77,
+    "appearances": 121,
+    "tries": 15
   },
   {
     "id": "castleford-cur-liam-hood",
@@ -3289,7 +3647,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 7,
-    "rating": 77
+    "rating": 77,
+    "appearances": 122,
+    "tries": 24
   },
   {
     "id": "castleford-cur-george-lawler",
@@ -3303,7 +3663,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 168,
+    "tries": 16
   },
   {
     "id": "castleford-cur-jordan-lane",
@@ -3317,7 +3679,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 163,
+    "tries": 17
   },
   {
     "id": "castleford-cur-alex-mellor",
@@ -3331,7 +3695,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 199,
+    "tries": 37
   },
   {
     "id": "castleford-cur-joe-stimson",
@@ -3373,7 +3739,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 111,
+    "tries": 7
   },
   {
     "id": "castleford-cur-joe-westerman",
@@ -3387,7 +3755,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 2,
-    "rating": 82
+    "rating": 82,
+    "appearances": 395,
+    "tries": 87
   },
   {
     "id": "castleford-cur-chris-atkin",
@@ -3401,7 +3771,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 156,
+    "tries": 23
   },
   {
     "id": "castleford-cur-fletcher-rooney",
@@ -3415,7 +3787,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 15,
+    "tries": 4
   },
   {
     "id": "castleford-cur-brad-singleton",
@@ -3429,7 +3803,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 321,
+    "tries": 30
   },
   {
     "id": "castleford-cur-aiden-doolan",
@@ -3443,7 +3819,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 3
   },
   {
     "id": "castleford-cur-louis-senior",
@@ -3457,7 +3834,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 1,
-    "rating": 76
+    "rating": 76,
+    "appearances": 69,
+    "tries": 41
   },
   {
     "id": "castleford-cur-jason-qareqare",
@@ -3471,7 +3850,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 2,
-    "rating": 77
+    "rating": 77,
+    "appearances": 53,
+    "tries": 31
   },
   {
     "id": "castleford-cur-jimmy-beckett",
@@ -3485,7 +3866,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 3
   },
   {
     "id": "castleford-cur-jenson-windley",
@@ -3499,7 +3881,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 19,
+    "tries": 4
   },
   {
     "id": "castleford-cur-sam-hall",
@@ -3513,7 +3897,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 67,
+    "tries": 2
   },
   {
     "id": "castleford-cur-alfie-lindsey",
@@ -3541,7 +3927,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 1,
-    "rating": 83
+    "rating": 83,
+    "appearances": 194,
+    "tries": 106
   },
   {
     "id": "huddersfield-cur-adam-swift",
@@ -3555,7 +3943,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 1,
-    "rating": 83
+    "rating": 83,
+    "appearances": 203,
+    "tries": 141
   },
   {
     "id": "huddersfield-cur-jacob-gagai",
@@ -3611,7 +4001,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 12,
-    "rating": 83
+    "rating": 83,
+    "appearances": 153,
+    "tries": 38
   },
   {
     "id": "huddersfield-cur-adam-clune",
@@ -3625,7 +4017,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 34,
+    "tries": 6
   },
   {
     "id": "huddersfield-cur-tristan-powell",
@@ -3639,7 +4033,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 15
   },
   {
     "id": "huddersfield-cur-zac-woolford",
@@ -3695,7 +4090,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 100,
+    "tries": 14
   },
   {
     "id": "huddersfield-cur-harry-rushton",
@@ -3709,7 +4106,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 61,
+    "tries": 3
   },
   {
     "id": "huddersfield-cur-fenton-rogers",
@@ -3723,7 +4122,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 25,
+    "tries": 1
   },
   {
     "id": "huddersfield-cur-matty-english",
@@ -3737,7 +4138,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 143,
+    "tries": 9
   },
   {
     "id": "huddersfield-cur-george-king",
@@ -3751,7 +4154,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 7,
-    "rating": 82
+    "rating": 82,
+    "appearances": 221,
+    "tries": 6
   },
   {
     "id": "huddersfield-cur-joe-greenwood",
@@ -3765,7 +4170,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 200,
+    "tries": 47
   },
   {
     "id": "huddersfield-cur-kieran-rush",
@@ -3779,7 +4186,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 34,
+    "tries": 1
   },
   {
     "id": "huddersfield-cur-liam-sutcliffe",
@@ -3793,7 +4202,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 271,
+    "tries": 84
   },
   {
     "id": "huddersfield-cur-mathieu-cozza",
@@ -3807,7 +4218,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 1,
-    "rating": 76
+    "rating": 76,
+    "appearances": 67,
+    "tries": 6
   },
   {
     "id": "huddersfield-cur-george-flanagan-jr",
@@ -3849,7 +4262,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 28,
+    "tries": 1
   },
   {
     "id": "huddersfield-cur-connor-carr",
@@ -3919,7 +4334,9 @@
     "peakRating": 88,
     "value": 1665000,
     "intlCaps": 19,
-    "rating": 88
+    "rating": 88,
+    "appearances": 381,
+    "tries": 222
   },
   {
     "id": "catalans-cur-nick-cotric",
@@ -3947,7 +4364,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 34,
+    "tries": 12
   },
   {
     "id": "catalans-cur-manase-kaho",
@@ -3989,7 +4408,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 9,
+    "tries": 4
   },
   {
     "id": "catalans-cur-chris-satae",
@@ -4003,7 +4424,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 8,
-    "rating": 82
+    "rating": 82,
+    "appearances": 146,
+    "tries": 18
   },
   {
     "id": "catalans-cur-alrix-da-costa",
@@ -4017,7 +4440,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 5,
-    "rating": 77
+    "rating": 77,
+    "appearances": 153,
+    "tries": 11
   },
   {
     "id": "catalans-cur-julian-bousquet",
@@ -4031,7 +4456,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 9,
-    "rating": 82
+    "rating": 82,
+    "appearances": 272,
+    "tries": 31
   },
   {
     "id": "catalans-cur-franck-maria",
@@ -4045,7 +4472,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 10,
-    "rating": 77
+    "rating": 77,
+    "appearances": 25,
+    "tries": 9
   },
   {
     "id": "catalans-cur-ben-condon",
@@ -4087,7 +4516,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 8,
-    "rating": 77
+    "rating": 77,
+    "appearances": 84,
+    "tries": 38
   },
   {
     "id": "catalans-cur-iszac-faasuamaleaui",
@@ -4157,7 +4588,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 16,
+    "tries": 5
   },
   {
     "id": "catalans-cur-matthieu-laguerre",
@@ -4171,7 +4604,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 4,
-    "rating": 77
+    "rating": 77,
+    "appearances": 66,
+    "tries": 24
   },
   {
     "id": "catalans-cur-josh-simm",
@@ -4185,7 +4620,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 87,
+    "tries": 35
   },
   {
     "id": "catalans-cur-guillermo-aispuro-bichet",
@@ -4199,7 +4636,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 31,
+    "tries": 7
   },
   {
     "id": "catalans-cur-lenny-marc",
@@ -4227,7 +4666,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 4,
+    "tries": 3
   },
   {
     "id": "york-cur-toa-mata-afa",
@@ -4255,7 +4696,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 215,
+    "tries": 126
   },
   {
     "id": "york-cur-jordan-lipp",
@@ -4283,7 +4726,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 128,
+    "tries": 33
   },
   {
     "id": "york-cur-scott-galeano",
@@ -4311,7 +4756,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 10,
+    "tries": 1
   },
   {
     "id": "york-cur-liam-harris",
@@ -4325,7 +4772,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 190,
+    "tries": 95
   },
   {
     "id": "york-cur-jack-martin",
@@ -4353,7 +4802,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 308,
+    "tries": 41
   },
   {
     "id": "york-cur-paul-vaughan",
@@ -4367,7 +4818,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 79,
+    "tries": 13
   },
   {
     "id": "york-cur-josh-griffin",
@@ -4381,7 +4834,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 235,
+    "tries": 85
   },
   {
     "id": "york-cur-jesse-dee",
@@ -4409,7 +4864,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 203,
+    "tries": 39
   },
   {
     "id": "york-cur-denive-balmforth",
@@ -4423,7 +4880,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 72,
+    "tries": 18
   },
   {
     "id": "york-cur-xavier-va-a",
@@ -4437,7 +4896,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 15,
+    "tries": 3
   },
   {
     "id": "york-cur-justin-sangare",
@@ -4451,7 +4912,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 175,
+    "tries": 32
   },
   {
     "id": "york-cur-kieran-hudson",
@@ -4465,7 +4928,8 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 1
   },
   {
     "id": "york-cur-danny-richardson",
@@ -4479,7 +4943,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 108,
+    "tries": 14
   },
   {
     "id": "york-cur-oli-field",
@@ -4507,7 +4973,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 167,
+    "tries": 39
   },
   {
     "id": "york-cur-john-sagaga",
@@ -4535,7 +5003,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 84,
+    "tries": 21
   },
   {
     "id": "york-cur-will-dagger",
@@ -4549,7 +5019,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 51,
+    "tries": 3
   },
   {
     "id": "york-cur-jack-smith",
@@ -4591,7 +5063,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 52,
+    "tries": 4
   },
   {
     "id": "toulouse-cur-olly-ashall-bott",
@@ -4605,7 +5079,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 97,
+    "tries": 54
   },
   {
     "id": "toulouse-cur-paul-ulberg",
@@ -4619,7 +5095,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 104,
+    "tries": 56
   },
   {
     "id": "toulouse-cur-reubenn-rennie",
@@ -4633,7 +5111,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 57,
+    "tries": 29
   },
   {
     "id": "toulouse-cur-paul-marcon",
@@ -4647,7 +5127,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 16,
+    "tries": 5
   },
   {
     "id": "toulouse-cur-benjamin-laguerre",
@@ -4661,7 +5143,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 61,
+    "tries": 41
   },
   {
     "id": "toulouse-cur-thomas-lacans",
@@ -4689,7 +5173,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 147,
+    "tries": 16
   },
   {
     "id": "toulouse-cur-lambert-belmas",
@@ -4703,7 +5189,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 58,
+    "tries": 3
   },
   {
     "id": "toulouse-cur-brendan-hands",
@@ -4745,7 +5233,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 72,
+    "tries": 32
   },
   {
     "id": "toulouse-cur-mathieu-jussaume",
@@ -4759,7 +5249,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 24,
+    "tries": 10
   },
   {
     "id": "toulouse-cur-anthony-marion",
@@ -4773,7 +5265,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 33,
+    "tries": 2
   },
   {
     "id": "toulouse-cur-calum-gahan",
@@ -4787,7 +5281,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 62,
+    "tries": 9
   },
   {
     "id": "toulouse-cur-joe-cator",
@@ -4801,7 +5297,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 145,
+    "tries": 20
   },
   {
     "id": "toulouse-cur-joe-bretherton",
@@ -4815,7 +5313,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 128,
+    "tries": 32
   },
   {
     "id": "toulouse-cur-rob-butler",
@@ -4829,7 +5329,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 78,
+    "tries": 2
   },
   {
     "id": "toulouse-cur-baptiste-rodriguez",
@@ -4871,7 +5373,8 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "appearances": 12
   },
   {
     "id": "toulouse-cur-ellis-gillam",
@@ -4899,7 +5402,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 3,
+    "tries": 1
   },
   {
     "id": "toulouse-cur-tyler-dupree",
@@ -4913,7 +5418,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 137,
+    "tries": 25
   },
   {
     "id": "toulouse-cur-pierre-jean-lima",
@@ -4941,7 +5448,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "appearances": 33,
+    "tries": 12
   },
   {
     "id": "toulouse-cur-trevor-chiffolleau",
@@ -5025,7 +5534,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 136,
+    "tries": 7
   },
   {
     "id": "salford-cur-tim-bergin",
@@ -5081,7 +5592,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "appearances": 67,
+    "tries": 11
   },
   {
     "id": "salford-cur-mitch-clark",
@@ -5095,7 +5608,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "appearances": 39,
+    "tries": 5
   },
   {
     "id": "salford-cur-ryan-kingston",
@@ -5246,7 +5761,7 @@
     "name": "Lewis Bienek",
     "position": "PROP",
     "club": "London Broncos",
-    "nationality": "Unknown",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
@@ -5262,14 +5777,15 @@
     "name": "Harry Bowes",
     "position": "HOOKER",
     "club": "Wakefield Trinity",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 76,
     "value": 135000,
     "rating": 76,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "appearances": 31
   },
   {
     "id": "london-cur-robert-butler",
@@ -5388,7 +5904,7 @@
     "name": "Jack Croft",
     "position": "CENTRE",
     "club": "Wakefield Trinity",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
@@ -5450,7 +5966,7 @@
     "name": "Riley Dean",
     "position": "STAND_OFF",
     "club": "Wakefield Trinity",
-    "nationality": "Unknown",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
@@ -5466,7 +5982,7 @@
     "name": "Jacob Douglas",
     "position": "WING",
     "club": "Wigan Warriors",
-    "nationality": "Unknown",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
@@ -5482,7 +5998,7 @@
     "name": "Elie El-Zakhem",
     "position": "SECOND_ROW",
     "club": "Castleford Tigers",
-    "nationality": "Unknown",
+    "nationality": "Lebanon",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
@@ -5498,7 +6014,7 @@
     "name": "Romain Franco",
     "position": "WING",
     "club": "Catalans Dragons",
-    "nationality": "Unknown",
+    "nationality": "France",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
@@ -5514,7 +6030,7 @@
     "name": "Morgan Gannon",
     "position": "SECOND_ROW",
     "club": "Leeds Rhinos",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
@@ -5537,7 +6053,8 @@
     "peakRating": 76,
     "value": 135000,
     "rating": 76,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "appearances": 28
   },
   {
     "id": "castleford-cur-daniel-hindmarsh-takyi",
@@ -5558,7 +6075,7 @@
     "name": "Tex Hoy",
     "position": "FULLBACK",
     "club": "Castleford Tigers",
-    "nationality": "Unknown",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
@@ -5590,7 +6107,7 @@
     "name": "Luis Johnson",
     "position": "SECOND_ROW",
     "club": "Hull KR",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
@@ -5622,21 +6139,23 @@
     "name": "Corentin Le-Cam",
     "position": "SECOND_ROW",
     "club": "Catalans Dragons",
-    "nationality": "Unknown",
+    "nationality": "France",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
     "peakRating": 76,
     "value": 135000,
     "rating": 76,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "appearances": 24,
+    "tries": 6
   },
   {
     "id": "london-cur-oliver-leyland",
     "name": "Oliver Leyland",
     "position": "STAND_OFF",
     "club": "London Broncos",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
@@ -5668,7 +6187,7 @@
     "name": "Joe Lovodua",
     "position": "STAND_OFF",
     "club": "Hull FC",
-    "nationality": "Unknown",
+    "nationality": "Fiji",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
@@ -5684,7 +6203,7 @@
     "name": "Krystian Mapapalangi",
     "position": "CENTRE",
     "club": "Castleford Tigers",
-    "nationality": "Unknown",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
@@ -5716,7 +6235,7 @@
     "name": "Jimmy Meadows",
     "position": "SCRUM_HALF",
     "club": "London Broncos",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
@@ -5732,7 +6251,7 @@
     "name": "Thomas Mikaele",
     "position": "PROP",
     "club": "Wakefield Trinity",
-    "nationality": "Unknown",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
@@ -5762,7 +6281,7 @@
     "name": "Craig Mullen",
     "position": "WING",
     "club": "Leigh Leopards",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
@@ -5810,7 +6329,7 @@
     "name": "Callum Mclelland",
     "position": "SCRUM_HALF",
     "club": "Leeds Rhinos",
-    "nationality": "Unknown",
+    "nationality": "Scotland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
@@ -5826,7 +6345,7 @@
     "name": "Sylvester Namo",
     "position": "PROP",
     "club": "Castleford Tigers",
-    "nationality": "Unknown",
+    "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
@@ -5922,14 +6441,15 @@
     "name": "Lewis Peachey",
     "position": "SECOND_ROW",
     "club": "Castleford Tigers",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
     "peakRating": 76,
     "value": 135000,
     "rating": 76,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "appearances": 11
   },
   {
     "id": "wigan-cur-kai-pearce-paul",
@@ -5959,7 +6479,8 @@
     "peakRating": 76,
     "value": 135000,
     "rating": 76,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "appearances": 60
   },
   {
     "id": "leeds-cur-luis-roberts",
@@ -6014,7 +6535,7 @@
     "name": "Sam Royle",
     "position": "SECOND_ROW",
     "club": "St Helens",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
@@ -6030,7 +6551,7 @@
     "name": "Leon Ruan",
     "position": "SECOND_ROW",
     "club": "Leeds Rhinos",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–Present",
     "category": "current",
@@ -6046,7 +6567,7 @@
     "name": "Oliver Russell",
     "position": "STAND_OFF",
     "club": "Huddersfield Giants",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
@@ -6078,7 +6599,7 @@
     "name": "Cameron Scott",
     "position": "CENTRE",
     "club": "Hull FC",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
@@ -6094,7 +6615,7 @@
     "name": "Jeremiah Simbiken",
     "position": "SECOND_ROW",
     "club": "Castleford Tigers",
-    "nationality": "Unknown",
+    "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
@@ -6126,7 +6647,7 @@
     "name": "Morgan Smithies",
     "position": "LOOSE_FORWARD",
     "club": "Wigan Warriors",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
@@ -6142,7 +6663,7 @@
     "name": "Robbie Storey",
     "position": "CENTRE",
     "club": "London Broncos",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
@@ -6174,7 +6695,7 @@
     "name": "Alex Sutcliffe",
     "position": "CENTRE",
     "club": "Castleford Tigers",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
@@ -6190,7 +6711,7 @@
     "name": "Rodrick Tai",
     "position": "CENTRE",
     "club": "Wakefield Trinity",
-    "nationality": "Unknown",
+    "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
@@ -6286,7 +6807,7 @@
     "name": "Calum Turner",
     "position": "FULLBACK",
     "club": "Castleford Tigers",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
@@ -6318,7 +6839,7 @@
     "name": "Jonny Vaughan",
     "position": "CENTRE",
     "club": "Salford Red Devils",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–Present",
     "category": "current",
@@ -6364,7 +6885,7 @@
     "name": "Elliot Wallis",
     "position": "WING",
     "club": "Castleford Tigers",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
@@ -6426,7 +6947,7 @@
     "name": "Connor Wrench",
     "position": "CENTRE",
     "club": "Wakefield Trinity",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
@@ -6442,7 +6963,7 @@
     "name": "Tanguy Zenon",
     "position": "WING",
     "club": "Huddersfield Giants",
-    "nationality": "Unknown",
+    "nationality": "France",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",

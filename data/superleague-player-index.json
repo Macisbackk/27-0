@@ -1,0 +1,2036 @@
+{
+  "builtAt": "2026-06-10T16:44:04.845Z",
+  "source": "superleague.co.uk",
+  "players": {
+    "tommy makinson": {
+      "id": 1,
+      "name": "Tommy Makinson",
+      "careerTries": 195,
+      "careerAppearances": 311,
+      "position": "Wing"
+    },
+    "adam swift": {
+      "id": 2,
+      "name": "Adam Swift",
+      "careerTries": 141,
+      "careerAppearances": 203,
+      "position": "WINGER"
+    },
+    "mark percival": {
+      "id": 3,
+      "name": "Mark Percival",
+      "careerTries": 104,
+      "careerAppearances": 229,
+      "position": "CENTRE"
+    },
+    "alex walmsley": {
+      "id": 8,
+      "name": "Alex Walmsley",
+      "careerTries": 55,
+      "careerAppearances": 279,
+      "position": "PROP"
+    },
+    "luke thompson": {
+      "id": 16,
+      "name": "Luke Thompson",
+      "careerTries": 29,
+      "careerAppearances": 199,
+      "position": "PROP"
+    },
+    "tom davies": {
+      "id": 19,
+      "name": "Tom Davies",
+      "careerTries": 106,
+      "careerAppearances": 187,
+      "position": "WINGER"
+    },
+    "joe burgess": {
+      "id": 21,
+      "name": "Joe Burgess",
+      "careerTries": 147,
+      "careerAppearances": 201,
+      "position": "WINGER"
+    },
+    "liam marshall": {
+      "id": 22,
+      "name": "Liam Marshall",
+      "careerTries": 150,
+      "careerAppearances": 191,
+      "position": "WINGER"
+    },
+    "george williams": {
+      "id": 23,
+      "name": "George Williams",
+      "careerTries": 91,
+      "careerAppearances": 250,
+      "position": "HALF BACK"
+    },
+    "ryan sutton": {
+      "id": 27,
+      "name": "Ryan Sutton",
+      "careerTries": 10,
+      "careerAppearances": 107,
+      "position": "PROP"
+    },
+    "liam farrell": {
+      "id": 29,
+      "name": "Liam Farrell",
+      "careerTries": 125,
+      "careerAppearances": 345,
+      "position": "2ND ROW"
+    },
+    "sam powell": {
+      "id": 32,
+      "name": "Sam Powell",
+      "careerTries": 42,
+      "careerAppearances": 291,
+      "position": "HOOKER"
+    },
+    "zak hardaker": {
+      "id": 35,
+      "name": "Zak Hardaker",
+      "careerTries": 99,
+      "careerAppearances": 313,
+      "position": "CENTRE"
+    },
+    "greg eden": {
+      "id": 39,
+      "name": "Greg Eden",
+      "careerTries": 135,
+      "careerAppearances": 176,
+      "position": "WINGER"
+    },
+    "paul mcshane": {
+      "id": 43,
+      "name": "Paul McShane",
+      "careerTries": 41,
+      "careerAppearances": 308,
+      "position": "HOOKER"
+    },
+    "mike mcmeeken": {
+      "id": 46,
+      "name": "Mike McMeeken",
+      "careerTries": 54,
+      "careerAppearances": 268,
+      "position": "PROP"
+    },
+    "ed chamberlain": {
+      "id": 54,
+      "name": "Ed Chamberlain",
+      "careerTries": 8,
+      "careerAppearances": 85,
+      "position": "WINGER"
+    },
+    "danny walker": {
+      "id": 67,
+      "name": "Danny Walker",
+      "careerTries": 17,
+      "careerAppearances": 162,
+      "position": "HOOKER"
+    },
+    "marc sneyd": {
+      "id": 75,
+      "name": "Marc Sneyd",
+      "careerTries": 39,
+      "careerAppearances": 316,
+      "position": "HALF BACK"
+    },
+    "brad fash": {
+      "id": 83,
+      "name": "Brad Fash",
+      "careerTries": 6,
+      "careerAppearances": 185,
+      "position": "PROP"
+    },
+    "liam hood": {
+      "id": 94,
+      "name": "Liam Hood",
+      "careerTries": 24,
+      "careerAppearances": 122,
+      "position": "HOOKER"
+    },
+    "ashton golding": {
+      "id": 103,
+      "name": "Ashton Golding",
+      "careerTries": 17,
+      "careerAppearances": 155,
+      "position": "Fullback"
+    },
+    "tom briscoe": {
+      "id": 104,
+      "name": "Tom Briscoe",
+      "careerTries": 171,
+      "careerAppearances": 374,
+      "position": "Wing"
+    },
+    "kallum watkins": {
+      "id": 105,
+      "name": "Kallum Watkins",
+      "careerTries": 135,
+      "careerAppearances": 329,
+      "position": "Centre"
+    },
+    "liam sutcliffe": {
+      "id": 106,
+      "name": "Liam Sutcliffe",
+      "careerTries": 68,
+      "careerAppearances": 224,
+      "position": "Loose Forward"
+    },
+    "ryan hall": {
+      "id": 107,
+      "name": "Ryan Hall",
+      "careerTries": 259,
+      "careerAppearances": 390,
+      "position": "Wing"
+    },
+    "brad singleton": {
+      "id": 110,
+      "name": "Brad Singleton",
+      "careerTries": 23,
+      "careerAppearances": 237,
+      "position": "PROP"
+    },
+    "matty russell": {
+      "id": 121,
+      "name": "Matty Russell",
+      "careerTries": 47,
+      "careerAppearances": 148,
+      "position": "Wing"
+    },
+    "jack hughes": {
+      "id": 122,
+      "name": "Jack Hughes",
+      "careerTries": 39,
+      "careerAppearances": 307,
+      "position": "Second Row"
+    },
+    "daryl clark": {
+      "id": 128,
+      "name": "Daryl Clark",
+      "careerTries": 93,
+      "careerAppearances": 347,
+      "position": "HOOKER"
+    },
+    "joe westerman": {
+      "id": 131,
+      "name": "Joe Westerman",
+      "careerTries": 87,
+      "careerAppearances": 395,
+      "position": "Loose Forward"
+    },
+    "george king": {
+      "id": 133,
+      "name": "George King",
+      "careerTries": 6,
+      "careerAppearances": 221,
+      "position": "PROP"
+    },
+    "joe philbin": {
+      "id": 136,
+      "name": "Joe Philbin",
+      "careerTries": 16,
+      "careerAppearances": 212,
+      "position": "PROP"
+    },
+    "gareth obrien": {
+      "id": 137,
+      "name": "Gareth O'Brien",
+      "careerTries": 40,
+      "careerAppearances": 215,
+      "position": "Fullback"
+    },
+    "niall evalds": {
+      "id": 138,
+      "name": "Niall Evalds",
+      "careerTries": 106,
+      "careerAppearances": 194,
+      "position": "Fullback"
+    },
+    "jordan dezaria": {
+      "id": 161,
+      "name": "Jordan Dezaria",
+      "careerTries": 2,
+      "careerAppearances": 78,
+      "position": "BACK ROW"
+    },
+    "julian bousquet": {
+      "id": 162,
+      "name": "Julian Bousquet",
+      "careerTries": 31,
+      "careerAppearances": 272,
+      "position": "PROP"
+    },
+    "alrix da costa": {
+      "id": 165,
+      "name": "Alrix Da Costa",
+      "careerTries": 11,
+      "careerAppearances": 153,
+      "position": "HOOKER"
+    },
+    "ben jonesbishop": {
+      "id": 172,
+      "name": "Ben Jones-Bishop",
+      "careerTries": 126,
+      "careerAppearances": 215,
+      "position": "OUTSIDE BACK"
+    },
+    "james batchelor": {
+      "id": 185,
+      "name": "James Batchelor",
+      "careerTries": 29,
+      "careerAppearances": 166,
+      "position": "BACK ROW"
+    },
+    "darnell mcintosh": {
+      "id": 192,
+      "name": "Darnell McIntosh",
+      "careerTries": 72,
+      "careerAppearances": 164,
+      "position": "Fullback"
+    },
+    "kruise leeming": {
+      "id": 196,
+      "name": "Kruise Leeming",
+      "careerTries": 39,
+      "careerAppearances": 228,
+      "position": "HOOKER"
+    },
+    "alex mellor": {
+      "id": 198,
+      "name": "Alex Mellor",
+      "careerTries": 37,
+      "careerAppearances": 199,
+      "position": "Centre"
+    },
+    "brad dwyer": {
+      "id": 205,
+      "name": "Brad Dwyer",
+      "careerTries": 43,
+      "careerAppearances": 243,
+      "position": "HOOKER"
+    },
+    "ash handley": {
+      "id": 219,
+      "name": "Ash Handley",
+      "careerTries": 121,
+      "careerAppearances": 224,
+      "position": "Wing"
+    },
+    "romain navarrete": {
+      "id": 223,
+      "name": "Romain Navarrete",
+      "careerTries": 5,
+      "careerAppearances": 181,
+      "position": "PROP"
+    },
+    "arthur romano": {
+      "id": 234,
+      "name": "Arthur Romano",
+      "careerTries": 20,
+      "careerAppearances": 97,
+      "position": "Centre"
+    },
+    "jake connor": {
+      "id": 237,
+      "name": "Jake Connor",
+      "careerTries": 64,
+      "careerAppearances": 249,
+      "position": "Stand-Off"
+    },
+    "ryan hampshire": {
+      "id": 241,
+      "name": "Ryan Hampshire",
+      "careerTries": 52,
+      "careerAppearances": 159,
+      "position": "UTILITY"
+    },
+    "jordan thompson": {
+      "id": 243,
+      "name": "Jordan Thompson",
+      "careerTries": 39,
+      "careerAppearances": 203,
+      "position": "Second Row"
+    },
+    "matt whitley": {
+      "id": 250,
+      "name": "Matt Whitley",
+      "careerTries": 52,
+      "careerAppearances": 224,
+      "position": "Second Row"
+    },
+    "max jowitt": {
+      "id": 253,
+      "name": "Max Jowitt",
+      "careerTries": 46,
+      "careerAppearances": 136,
+      "position": "OUTSIDE BACK"
+    },
+    "jake trueman": {
+      "id": 258,
+      "name": "Jake Trueman",
+      "careerTries": 37,
+      "careerAppearances": 146,
+      "position": "HALF BACK"
+    },
+    "jonny lomax": {
+      "id": 259,
+      "name": "Jonny Lomax",
+      "careerTries": 125,
+      "careerAppearances": 329,
+      "position": "UTILITY"
+    },
+    "oliver gildart": {
+      "id": 260,
+      "name": "Oliver Gildart",
+      "careerTries": 65,
+      "careerAppearances": 160,
+      "position": "OUTSIDE BACK"
+    },
+    "danny richardson": {
+      "id": 262,
+      "name": "Danny Richardson",
+      "careerTries": 14,
+      "careerAppearances": 108,
+      "position": "HALF BACK"
+    },
+    "will dagger": {
+      "id": 270,
+      "name": "Will Dagger",
+      "careerTries": 3,
+      "careerAppearances": 51,
+      "position": "OUTSIDE BACK"
+    },
+    "joe mellor": {
+      "id": 272,
+      "name": "Joe Mellor",
+      "careerTries": 60,
+      "careerAppearances": 204,
+      "position": "HALF BACK"
+    },
+    "ben garcia": {
+      "id": 282,
+      "name": "Ben Garcia",
+      "careerTries": 35,
+      "careerAppearances": 238,
+      "position": "Second Row"
+    },
+    "jack ormondroyd": {
+      "id": 285,
+      "name": "Jack Ormondroyd",
+      "careerTries": 6,
+      "careerAppearances": 122,
+      "position": "PROP"
+    },
+    "peta hiku": {
+      "id": 289,
+      "name": "Peta Hiku",
+      "careerTries": 26,
+      "careerAppearances": 69,
+      "position": "CENTRE"
+    },
+    "lambert belmas": {
+      "id": 300,
+      "name": "Lambert Belmas",
+      "careerTries": 1,
+      "careerAppearances": 37,
+      "position": "PROP"
+    },
+    "ben currie": {
+      "id": 301,
+      "name": "Ben Currie",
+      "careerTries": 83,
+      "careerAppearances": 280,
+      "position": "Second Row"
+    },
+    "sam wood": {
+      "id": 302,
+      "name": "Sam Wood",
+      "careerTries": 33,
+      "careerAppearances": 128,
+      "position": "Centre"
+    },
+    "harry newman": {
+      "id": 309,
+      "name": "Harry Newman",
+      "careerTries": 38,
+      "careerAppearances": 127,
+      "position": "Wing"
+    },
+    "mikolaj oledzki": {
+      "id": 310,
+      "name": "Mikolaj Oledzki",
+      "careerTries": 15,
+      "careerAppearances": 167,
+      "position": "PROP"
+    },
+    "cam smith": {
+      "id": 312,
+      "name": "Cam Smith",
+      "careerTries": 21,
+      "careerAppearances": 161,
+      "position": "Loose Forward"
+    },
+    "chris atkin": {
+      "id": 336,
+      "name": "Chris Atkin",
+      "careerTries": 23,
+      "careerAppearances": 156,
+      "position": "HALF BACK"
+    },
+    "robbie mulhern": {
+      "id": 342,
+      "name": "Robbie Mulhern",
+      "careerTries": 10,
+      "careerAppearances": 192,
+      "position": "PROP"
+    },
+    "tom johnstone": {
+      "id": 352,
+      "name": "Tom Johnstone",
+      "careerTries": 134,
+      "careerAppearances": 176,
+      "position": "OUTSIDE BACK"
+    },
+    "toby king": {
+      "id": 355,
+      "name": "Toby King",
+      "careerTries": 78,
+      "careerAppearances": 205,
+      "position": "Centre"
+    },
+    "jordan lane": {
+      "id": 359,
+      "name": "Jordan Lane",
+      "careerTries": 17,
+      "careerAppearances": 163,
+      "position": "Second Row"
+    },
+    "matty lees": {
+      "id": 361,
+      "name": "Matty Lees",
+      "careerTries": 5,
+      "careerAppearances": 169,
+      "position": "PROP"
+    },
+    "george lawler": {
+      "id": 363,
+      "name": "George Lawler",
+      "careerTries": 16,
+      "careerAppearances": 168,
+      "position": "BACK ROW"
+    },
+    "josh charnley": {
+      "id": 371,
+      "name": "Josh Charnley",
+      "careerTries": 257,
+      "careerAppearances": 318,
+      "position": "Wing"
+    },
+    "louis senior": {
+      "id": 373,
+      "name": "Louis Senior",
+      "careerTries": 34,
+      "careerAppearances": 74,
+      "position": "Centre"
+    },
+    "sam hewitt": {
+      "id": 374,
+      "name": "Sam Hewitt",
+      "careerTries": 13,
+      "careerAppearances": 100,
+      "position": "BACK ROW"
+    },
+    "jez litten": {
+      "id": 380,
+      "name": "Jez Litten",
+      "careerTries": 24,
+      "careerAppearances": 155,
+      "position": "HOOKER"
+    },
+    "innes senior": {
+      "id": 381,
+      "name": "Innes Senior",
+      "careerTries": 57,
+      "careerAppearances": 129,
+      "position": "OUTSIDE BACK"
+    },
+    "jake shorrocks": {
+      "id": 383,
+      "name": "Jake Shorrocks",
+      "careerTries": 2,
+      "careerAppearances": 43,
+      "position": "HALF BACK"
+    },
+    "keanan brand": {
+      "id": 384,
+      "name": "Keanan Brand",
+      "careerTries": 17,
+      "careerAppearances": 46,
+      "position": "OUTSIDE BACK"
+    },
+    "joe cator": {
+      "id": 393,
+      "name": "Joe Cator",
+      "careerTries": 1,
+      "careerAppearances": 69,
+      "position": "BACK ROW"
+    },
+    "olly russell": {
+      "id": 396,
+      "name": "Olly Russell",
+      "careerTries": 8,
+      "careerAppearances": 126,
+      "position": "HALF BACK"
+    },
+    "liam harris": {
+      "id": 404,
+      "name": "Liam Harris",
+      "careerTries": 5,
+      "careerAppearances": 16,
+      "position": "HALF BACK"
+    },
+    "tom holroyd": {
+      "id": 412,
+      "name": "Tom Holroyd",
+      "careerTries": 9,
+      "careerAppearances": 84,
+      "position": "PROP"
+    },
+    "joe greenwood": {
+      "id": 416,
+      "name": "Joe Greenwood",
+      "careerTries": 47,
+      "careerAppearances": 200,
+      "position": "BACK ROW"
+    },
+    "chris hankinson": {
+      "id": 420,
+      "name": "Chris Hankinson",
+      "careerTries": 20,
+      "careerAppearances": 96,
+      "position": "OUTSIDE BACK"
+    },
+    "jack ashworth": {
+      "id": 421,
+      "name": "Jack Ashworth",
+      "careerTries": 7,
+      "careerAppearances": 111,
+      "position": "PROP"
+    },
+    "jackson hastings": {
+      "id": 425,
+      "name": "Jackson Hastings",
+      "careerTries": 23,
+      "careerAppearances": 81,
+      "position": "HALF BACK"
+    },
+    "jay pitts": {
+      "id": 430,
+      "name": "Jay Pitts",
+      "careerTries": 22,
+      "careerAppearances": 215,
+      "position": "BACK ROW"
+    },
+    "josh griffin": {
+      "id": 432,
+      "name": "Josh Griffin",
+      "careerTries": 85,
+      "careerAppearances": 235,
+      "position": "Centre"
+    },
+    "dean hadley": {
+      "id": 455,
+      "name": "Dean Hadley",
+      "careerTries": 23,
+      "careerAppearances": 225,
+      "position": "Second Row"
+    },
+    "matty english": {
+      "id": 460,
+      "name": "Matty English",
+      "careerTries": 8,
+      "careerAppearances": 144,
+      "position": "PROP"
+    },
+    "oliver partington": {
+      "id": 468,
+      "name": "Oliver Partington",
+      "careerTries": 8,
+      "careerAppearances": 158,
+      "position": "BACK ROW"
+    },
+    "james bentley": {
+      "id": 476,
+      "name": "James Bentley",
+      "careerTries": 21,
+      "careerAppearances": 124,
+      "position": "BACK ROW"
+    },
+    "lee kershaw": {
+      "id": 479,
+      "name": "Lee Kershaw",
+      "careerTries": 24,
+      "careerAppearances": 79,
+      "position": "OUTSIDE BACK"
+    },
+    "rob butler": {
+      "id": 483,
+      "name": "Rob Butler",
+      "careerTries": 2,
+      "careerAppearances": 78,
+      "position": "PROP"
+    },
+    "arthur mourgue": {
+      "id": 487,
+      "name": "Arthur Mourgue",
+      "careerTries": 34,
+      "careerAppearances": 116,
+      "position": "FULL BACK"
+    },
+    "jack welsby": {
+      "id": 489,
+      "name": "Jack Welsby",
+      "careerTries": 68,
+      "careerAppearances": 143,
+      "position": "HALF BACK"
+    },
+    "liam byrne": {
+      "id": 494,
+      "name": "Liam Byrne",
+      "careerTries": 2,
+      "careerAppearances": 149,
+      "position": "PROP"
+    },
+    "tui lolohea": {
+      "id": 501,
+      "name": "Tui Lolohea",
+      "careerTries": 38,
+      "careerAppearances": 153,
+      "position": "Stand Off"
+    },
+    "mitch clark": {
+      "id": 506,
+      "name": "Mitch Clark",
+      "careerTries": 5,
+      "careerAppearances": 39,
+      "position": "PROP"
+    },
+    "luke yates": {
+      "id": 805,
+      "name": "Luke Yates",
+      "careerTries": 16,
+      "careerAppearances": 154,
+      "position": "BACK ROW"
+    },
+    "joe batchelor": {
+      "id": 813,
+      "name": "Joe Batchelor",
+      "careerTries": 20,
+      "careerAppearances": 100,
+      "position": "BACK ROW"
+    },
+    "jake wardle": {
+      "id": 823,
+      "name": "Jake Wardle",
+      "careerTries": 64,
+      "careerAppearances": 145,
+      "position": "OUTSIDE BACK"
+    },
+    "owen trout": {
+      "id": 827,
+      "name": "Owen Trout",
+      "careerTries": 16,
+      "careerAppearances": 113,
+      "position": "Loose Forward"
+    },
+    "matt davis": {
+      "id": 854,
+      "name": "Matt Davis",
+      "careerTries": 12,
+      "careerAppearances": 123,
+      "position": "LOCK"
+    },
+    "jack brown": {
+      "id": 889,
+      "name": "Jack Brown",
+      "careerTries": 6,
+      "careerAppearances": 99,
+      "position": "PROP"
+    },
+    "kieran buchanan": {
+      "id": 890,
+      "name": "Kieran Buchanan",
+      "careerTries": 4,
+      "careerAppearances": 20,
+      "position": "OUTSIDE BACK"
+    },
+    "oliver wilson": {
+      "id": 892,
+      "name": "Oliver Wilson",
+      "careerTries": 2,
+      "careerAppearances": 105,
+      "position": "PROP"
+    },
+    "joe shorrocks": {
+      "id": 905,
+      "name": "Joe Shorrocks",
+      "careerTries": 6,
+      "careerAppearances": 127,
+      "position": "Loose Forward"
+    },
+    "connor wynne": {
+      "id": 907,
+      "name": "Connor Wynne",
+      "careerTries": 16,
+      "careerAppearances": 46,
+      "position": "OUTSIDE BACK"
+    },
+    "harry smith": {
+      "id": 910,
+      "name": "Harry Smith",
+      "careerTries": 22,
+      "careerAppearances": 144,
+      "position": "HALF BACK"
+    },
+    "amir bourouh": {
+      "id": 912,
+      "name": "Amir Bourouh",
+      "careerTries": 3,
+      "careerAppearances": 79,
+      "position": "Hooker"
+    },
+    "kelepi tanginoa": {
+      "id": 921,
+      "name": "Kelepi Tanginoa",
+      "careerTries": 38,
+      "careerAppearances": 143,
+      "position": "BACK ROW"
+    },
+    "josh thewlis": {
+      "id": 926,
+      "name": "Josh Thewlis",
+      "careerTries": 55,
+      "careerAppearances": 112,
+      "position": "Fullback"
+    },
+    "connor bailey": {
+      "id": 930,
+      "name": "Connor Bailey",
+      "careerTries": 1,
+      "careerAppearances": 15,
+      "position": "BACK ROW"
+    },
+    "rhyse martin": {
+      "id": 934,
+      "name": "Rhyse Martin",
+      "careerTries": 42,
+      "careerAppearances": 142,
+      "position": "BACK ROW"
+    },
+    "ethan havard": {
+      "id": 947,
+      "name": "Ethan Havard",
+      "careerTries": 9,
+      "careerAppearances": 109,
+      "position": "PROP"
+    },
+    "guy armitage": {
+      "id": 952,
+      "name": "Guy Armitage",
+      "careerTries": 7,
+      "careerAppearances": 19,
+      "position": "OUTSIDE BACK"
+    },
+    "riley dean": {
+      "id": 955,
+      "name": "Riley Dean",
+      "careerTries": 4,
+      "careerAppearances": 14,
+      "position": "HALF BACK"
+    },
+    "bevan french": {
+      "id": 962,
+      "name": "Bevan French",
+      "careerTries": 99,
+      "careerAppearances": 114,
+      "position": "OUTSIDE BACK"
+    },
+    "mikey lewis": {
+      "id": 963,
+      "name": "Mikey Lewis",
+      "careerTries": 81,
+      "careerAppearances": 120,
+      "position": "HALF BACK"
+    },
+    "chris satae": {
+      "id": 964,
+      "name": "Chris Satae",
+      "careerTries": 18,
+      "careerAppearances": 146,
+      "position": "PROP"
+    },
+    "joe keyes": {
+      "id": 981,
+      "name": "Joe Keyes",
+      "careerTries": 6,
+      "careerAppearances": 14,
+      "position": "HALF BACK"
+    },
+    "ethan ryan": {
+      "id": 984,
+      "name": "Ethan Ryan",
+      "careerTries": 31,
+      "careerAppearances": 77,
+      "position": "OUTSIDE BACK"
+    },
+    "matty storton": {
+      "id": 986,
+      "name": "Matty Storton",
+      "careerTries": 11,
+      "careerAppearances": 122,
+      "position": "BACK ROW"
+    },
+    "sam walters": {
+      "id": 987,
+      "name": "Sam Walters",
+      "careerTries": 15,
+      "careerAppearances": 81,
+      "position": "BACK ROW"
+    },
+    "rowan milnes": {
+      "id": 988,
+      "name": "Rowan Milnes",
+      "careerTries": 15,
+      "careerAppearances": 89,
+      "position": "HALF BACK"
+    },
+    "lewis dodd": {
+      "id": 1004,
+      "name": "Lewis Dodd",
+      "careerTries": 30,
+      "careerAppearances": 85,
+      "position": "HALF BACK"
+    },
+    "elliot minchella": {
+      "id": 1006,
+      "name": "Elliot Minchella",
+      "careerTries": 17,
+      "careerAppearances": 131,
+      "position": "BACK ROW"
+    },
+    "andy ackers": {
+      "id": 1011,
+      "name": "Andy Ackers",
+      "careerTries": 10,
+      "careerAppearances": 113,
+      "position": "HOOKER"
+    },
+    "ligi sao": {
+      "id": 1014,
+      "name": "Ligi Sao",
+      "careerTries": 5,
+      "careerAppearances": 102,
+      "position": "PROP"
+    },
+    "aidan sezer": {
+      "id": 1016,
+      "name": "Aidan Sezer",
+      "careerTries": 16,
+      "careerAppearances": 91,
+      "position": "HALF BACK"
+    },
+    "bailey hodgson": {
+      "id": 1021,
+      "name": "Bailey Hodgson",
+      "careerTries": 6,
+      "careerAppearances": 34,
+      "position": "OUTSIDE BACK"
+    },
+    "sam hall": {
+      "id": 1039,
+      "name": "Sam Hall",
+      "careerTries": 2,
+      "careerAppearances": 67,
+      "position": "BACK ROW"
+    },
+    "matty ashton": {
+      "id": 1040,
+      "name": "Matty Ashton",
+      "careerTries": 78,
+      "careerAppearances": 102,
+      "position": "OUTSIDE BACK"
+    },
+    "eribe doro": {
+      "id": 1055,
+      "name": "Eribe Doro",
+      "careerTries": 2,
+      "careerAppearances": 25,
+      "position": "PROP"
+    },
+    "james mcdonnell": {
+      "id": 1056,
+      "name": "James McDonnell",
+      "careerTries": 21,
+      "careerAppearances": 93,
+      "position": "BACK ROW"
+    },
+    "harry rushton": {
+      "id": 1057,
+      "name": "Harry Rushton",
+      "careerTries": 3,
+      "careerAppearances": 61,
+      "position": "BACK ROW"
+    },
+    "jarrod oconnor": {
+      "id": 1091,
+      "name": "Jarrod O'Connor",
+      "careerTries": 6,
+      "careerAppearances": 129,
+      "position": "BACK ROW"
+    },
+    "yusuf aydin": {
+      "id": 1150,
+      "name": "Yusuf Aydin",
+      "careerTries": 3,
+      "careerAppearances": 86,
+      "position": "PROP"
+    },
+    "jack broadbent": {
+      "id": 1151,
+      "name": "Jack Broadbent",
+      "careerTries": 38,
+      "careerAppearances": 105,
+      "position": "OUTSIDE BACK"
+    },
+    "ben mcnamara": {
+      "id": 1154,
+      "name": "Ben McNamara",
+      "careerTries": 6,
+      "careerAppearances": 66,
+      "position": "HALF BACK"
+    },
+    "connor wrench": {
+      "id": 1159,
+      "name": "Connor Wrench",
+      "careerTries": 17,
+      "careerAppearances": 54,
+      "position": "BACK ROW"
+    },
+    "will tate": {
+      "id": 1166,
+      "name": "Will Tate",
+      "careerTries": 16,
+      "careerAppearances": 34,
+      "position": "FULL BACK"
+    },
+    "umyla hanley": {
+      "id": 1168,
+      "name": "Umyla Hanley",
+      "careerTries": 26,
+      "careerAppearances": 63,
+      "position": "FULLBACK"
+    },
+    "corey hall": {
+      "id": 1172,
+      "name": "Corey Hall",
+      "careerTries": 15,
+      "careerAppearances": 79,
+      "position": "OUTSIDE BACK"
+    },
+    "james harrison": {
+      "id": 1173,
+      "name": "James Harrison",
+      "careerTries": 14,
+      "careerAppearances": 77,
+      "position": "2ND ROW"
+    },
+    "oliver ashallbott": {
+      "id": 1180,
+      "name": "Oliver Ashall-Bott",
+      "careerTries": 15,
+      "careerAppearances": 33,
+      "position": "OUTSIDE BACK"
+    },
+    "jake wingfield": {
+      "id": 1183,
+      "name": "Jake Wingfield",
+      "careerTries": null,
+      "careerAppearances": 61,
+      "position": "BACK ROW"
+    },
+    "matty foster": {
+      "id": 1187,
+      "name": "Matty Foster",
+      "careerTries": 1,
+      "careerAppearances": 29,
+      "position": "Second Row"
+    },
+    "cain robb": {
+      "id": 1188,
+      "name": "Cain Robb",
+      "careerTries": null,
+      "careerAppearances": 51,
+      "position": "HOOKER"
+    },
+    "ronan michael": {
+      "id": 1192,
+      "name": "Ronan Michael",
+      "careerTries": null,
+      "careerAppearances": 1,
+      "position": "PROP"
+    },
+    "jai field": {
+      "id": 1198,
+      "name": "Jai Field",
+      "careerTries": 32,
+      "careerAppearances": 34,
+      "position": "Fullback"
+    },
+    "agnatius paasi": {
+      "id": 1261,
+      "name": "Agnatius Paasi",
+      "careerTries": 9,
+      "careerAppearances": 94,
+      "position": "PROP"
+    },
+    "mason lino": {
+      "id": 1267,
+      "name": "Mason Lino",
+      "careerTries": 13,
+      "careerAppearances": 99,
+      "position": "HALF BACK"
+    },
+    "matthieu laguerre": {
+      "id": 1268,
+      "name": "Matthieu Laguerre",
+      "careerTries": 10,
+      "careerAppearances": 54,
+      "position": "CENTRE"
+    },
+    "king vuniyayawa": {
+      "id": 1275,
+      "name": "King Vuniyayawa",
+      "careerTries": 6,
+      "careerAppearances": 78,
+      "position": "BACK ROW"
+    },
+    "james bell": {
+      "id": 1281,
+      "name": "James Bell",
+      "careerTries": 10,
+      "careerAppearances": 98,
+      "position": "BACK ROW"
+    },
+    "sam luckley": {
+      "id": 1287,
+      "name": "Sam Luckley",
+      "careerTries": 6,
+      "careerAppearances": 108,
+      "position": "PROP"
+    },
+    "harvey barron": {
+      "id": 1288,
+      "name": "Harvey Barron",
+      "careerTries": 25,
+      "careerAppearances": 48,
+      "position": "WINGER"
+    },
+    "jason qareqare": {
+      "id": 1302,
+      "name": "Jason Qareqare",
+      "careerTries": 31,
+      "careerAppearances": 53,
+      "position": "WINGER"
+    },
+    "cesar rouge": {
+      "id": 1304,
+      "name": "Cesar Rouge",
+      "careerTries": 6,
+      "careerAppearances": 67,
+      "position": "HALFBACK"
+    },
+    "brad oneill": {
+      "id": 1314,
+      "name": "Brad O'Neill",
+      "careerTries": 8,
+      "careerAppearances": 93,
+      "position": "HOOKER"
+    },
+    "will pryce": {
+      "id": 1315,
+      "name": "Will Pryce",
+      "careerTries": 20,
+      "careerAppearances": 57,
+      "position": "FIVE-EIGHTH"
+    },
+    "phoenix laulutogagae": {
+      "id": 1336,
+      "name": "Phoenix Laulu-Togaga'e",
+      "careerTries": 1,
+      "careerAppearances": 19,
+      "position": "FULLBACK"
+    },
+    "ata hingano": {
+      "id": 1338,
+      "name": "Ata Hingano",
+      "careerTries": 1,
+      "careerAppearances": 10,
+      "position": "HALFBACK"
+    },
+    "sam stone": {
+      "id": 1339,
+      "name": "Sam Stone",
+      "careerTries": 16,
+      "careerAppearances": 60,
+      "position": "2ND ROW"
+    },
+    "jai whitbread": {
+      "id": 1341,
+      "name": "Jai Whitbread",
+      "careerTries": 19,
+      "careerAppearances": 104,
+      "position": "PROP"
+    },
+    "thomas inman": {
+      "id": 1343,
+      "name": "Thomas Inman",
+      "careerTries": null,
+      "careerAppearances": 2,
+      "position": "HOOKER"
+    },
+    "jon bennison": {
+      "id": 1344,
+      "name": "Jon Bennison",
+      "careerTries": 21,
+      "careerAppearances": 84,
+      "position": "CENTRE"
+    },
+    "taylor pemberton": {
+      "id": 1346,
+      "name": "Taylor Pemberton",
+      "careerTries": null,
+      "careerAppearances": 2,
+      "position": "HOOKER"
+    },
+    "curtis sironen": {
+      "id": 1355,
+      "name": "Curtis Sironen",
+      "careerTries": 14,
+      "careerAppearances": 81,
+      "position": "2ND ROW"
+    },
+    "patrick mago": {
+      "id": 1357,
+      "name": "Patrick Mago",
+      "careerTries": 7,
+      "careerAppearances": 111,
+      "position": "PROP"
+    },
+    "shane wright": {
+      "id": 1359,
+      "name": "Shane Wright",
+      "careerTries": 11,
+      "careerAppearances": 67,
+      "position": "2ND ROW"
+    },
+    "tyrone may": {
+      "id": 1361,
+      "name": "Tyrone May",
+      "careerTries": 21,
+      "careerAppearances": 100,
+      "position": "FIVE-EIGHTH"
+    },
+    "kaide ellis": {
+      "id": 1362,
+      "name": "Kaide Ellis",
+      "careerTries": 4,
+      "careerAppearances": 104,
+      "position": "PROP"
+    },
+    "cade cust": {
+      "id": 1366,
+      "name": "Cade Cust",
+      "careerTries": 14,
+      "careerAppearances": 87,
+      "position": "HOOKER"
+    },
+    "frankie halton": {
+      "id": 1372,
+      "name": "Frankie Halton",
+      "careerTries": 16,
+      "careerAppearances": 83,
+      "position": "2ND ROW"
+    },
+    "tom whitehead": {
+      "id": 1382,
+      "name": "Tom Whitehead",
+      "careerTries": 1,
+      "careerAppearances": 35,
+      "position": "2ND ROW"
+    },
+    "oliver field": {
+      "id": 1383,
+      "name": "Oliver Field",
+      "careerTries": null,
+      "careerAppearances": 11,
+      "position": "FIVE-EIGHTH"
+    },
+    "mathieu cozza": {
+      "id": 1385,
+      "name": "Mathieu Cozza",
+      "careerTries": null,
+      "careerAppearances": 40,
+      "position": "PROP"
+    },
+    "max simpson": {
+      "id": 1389,
+      "name": "Max Simpson",
+      "careerTries": null,
+      "careerAppearances": 7,
+      "position": "CENTRE"
+    },
+    "kieran rush": {
+      "id": 1390,
+      "name": "Kieran Rush",
+      "careerTries": 1,
+      "careerAppearances": 34,
+      "position": "HOOKER"
+    },
+    "jack sinfield": {
+      "id": 1395,
+      "name": "Jack Sinfield",
+      "careerTries": 4,
+      "careerAppearances": 44,
+      "position": "FIVE-EIGHTH"
+    },
+    "paul marcon": {
+      "id": 1398,
+      "name": "Paul Marcon",
+      "careerTries": 5,
+      "careerAppearances": 16,
+      "position": "WINGER"
+    },
+    "joe bretherton": {
+      "id": 1399,
+      "name": "Joe Bretherton",
+      "careerTries": 4,
+      "careerAppearances": 38,
+      "position": "PROP"
+    },
+    "justin sangare": {
+      "id": 1400,
+      "name": "Justin Sangare",
+      "careerTries": 6,
+      "careerAppearances": 97,
+      "position": "PROP"
+    },
+    "anthony marion": {
+      "id": 1402,
+      "name": "Anthony Marion",
+      "careerTries": 2,
+      "careerAppearances": 33,
+      "position": "LOCK"
+    },
+    "deon cross": {
+      "id": 1412,
+      "name": "Deon Cross",
+      "careerTries": 37,
+      "careerAppearances": 104,
+      "position": "WINGER"
+    },
+    "brodie croft": {
+      "id": 1413,
+      "name": "Brodie Croft",
+      "careerTries": 41,
+      "careerAppearances": 110,
+      "position": "HALFBACK"
+    },
+    "maxime stefani": {
+      "id": 1422,
+      "name": "Maxime Stefani",
+      "careerTries": 2,
+      "careerAppearances": 20,
+      "position": "2ND ROW"
+    },
+    "danny levi": {
+      "id": 1423,
+      "name": "Danny Levi",
+      "careerTries": 5,
+      "careerAppearances": 38,
+      "position": "HOOKER"
+    },
+    "abbas miski": {
+      "id": 1426,
+      "name": "Abbas Miski",
+      "careerTries": 56,
+      "careerAppearances": 65,
+      "position": "WINGER"
+    },
+    "lewis murphy": {
+      "id": 1430,
+      "name": "Lewis Murphy",
+      "careerTries": 26,
+      "careerAppearances": 39,
+      "position": "WINGER"
+    },
+    "denive balmforth": {
+      "id": 1457,
+      "name": "Denive Balmforth",
+      "careerTries": 9,
+      "careerAppearances": 44,
+      "position": "HOOKER"
+    },
+    "george delaney": {
+      "id": 1460,
+      "name": "George Delaney",
+      "careerTries": 3,
+      "careerAppearances": 79,
+      "position": "PROP"
+    },
+    "jumah sambou": {
+      "id": 1463,
+      "name": "Jumah Sambou",
+      "careerTries": 1,
+      "careerAppearances": 1,
+      "position": "2ND ROW"
+    },
+    "mathieu jussaume": {
+      "id": 1464,
+      "name": "Mathieu Jussaume",
+      "careerTries": 10,
+      "careerAppearances": 24,
+      "position": "CENTRE"
+    },
+    "davy litten": {
+      "id": 1474,
+      "name": "Davy Litten",
+      "careerTries": 18,
+      "careerAppearances": 65,
+      "position": "FULLBACK"
+    },
+    "tyler dupree": {
+      "id": 1477,
+      "name": "Tyler Dupree",
+      "careerTries": 8,
+      "careerAppearances": 86,
+      "position": "PROP"
+    },
+    "luke thomas": {
+      "id": 1486,
+      "name": "Luke Thomas",
+      "careerTries": 2,
+      "careerAppearances": 31,
+      "position": "PROP"
+    },
+    "matty laidlaw": {
+      "id": 1525,
+      "name": "Matty Laidlaw",
+      "careerTries": null,
+      "careerAppearances": 42,
+      "position": "PROP"
+    },
+    "lewis martin": {
+      "id": 1529,
+      "name": "Lewis Martin",
+      "careerTries": 40,
+      "careerAppearances": 66,
+      "position": "WINGER"
+    },
+    "tiaki chan": {
+      "id": 1530,
+      "name": "Tiaki Chan",
+      "careerTries": 4,
+      "careerAppearances": 69,
+      "position": "PROP"
+    },
+    "zach fishwick": {
+      "id": 1531,
+      "name": "Zach Fishwick",
+      "careerTries": 1,
+      "careerAppearances": 9,
+      "position": "PROP"
+    },
+    "junior nsemba": {
+      "id": 1533,
+      "name": "Junior Nsemba",
+      "careerTries": 16,
+      "careerAppearances": 80,
+      "position": "PROP"
+    },
+    "kieran hudson": {
+      "id": 1540,
+      "name": "Kieran Hudson",
+      "careerTries": null,
+      "careerAppearances": 1,
+      "position": "PROP"
+    },
+    "harvie hill": {
+      "id": 1544,
+      "name": "Harvie Hill",
+      "careerTries": 5,
+      "careerAppearances": 71,
+      "position": "PROP"
+    },
+    "leon hayes": {
+      "id": 1546,
+      "name": "Leon Hayes",
+      "careerTries": null,
+      "careerAppearances": 18,
+      "position": "HALFBACK"
+    },
+    "adam holroyd": {
+      "id": 1547,
+      "name": "Adam Holroyd",
+      "careerTries": 6,
+      "careerAppearances": 48,
+      "position": "2ND ROW"
+    },
+    "zach eckersley": {
+      "id": 1552,
+      "name": "Zach Eckersley",
+      "careerTries": 31,
+      "careerAppearances": 59,
+      "position": "CENTRE"
+    },
+    "alfie edgell": {
+      "id": 1560,
+      "name": "Alfie Edgell",
+      "careerTries": 9,
+      "careerAppearances": 40,
+      "position": "FULLBACK"
+    },
+    "tom forber": {
+      "id": 1565,
+      "name": "Tom Forber",
+      "careerTries": 3,
+      "careerAppearances": 23,
+      "position": "HOOKER"
+    },
+    "will gardiner": {
+      "id": 1570,
+      "name": "Will Gardiner",
+      "careerTries": 1,
+      "careerAppearances": 47,
+      "position": "PROP"
+    },
+    "hugo salabio": {
+      "id": 1572,
+      "name": "Hugo Salabio",
+      "careerTries": null,
+      "careerAppearances": 28,
+      "position": "PROP"
+    },
+    "ugo tison": {
+      "id": 1578,
+      "name": "Ugo Tison",
+      "careerTries": 3,
+      "careerAppearances": 33,
+      "position": "2ND ROW"
+    },
+    "tanguy zenon": {
+      "id": 1581,
+      "name": "Tanguy Zenon",
+      "careerTries": 3,
+      "careerAppearances": 15,
+      "position": "WINGER"
+    },
+    "benjamin laguerre": {
+      "id": 1585,
+      "name": "Benjamin Laguerre",
+      "careerTries": 5,
+      "careerAppearances": 12,
+      "position": "WINGER"
+    },
+    "george hill": {
+      "id": 1600,
+      "name": "George Hill",
+      "careerTries": null,
+      "careerAppearances": 28,
+      "position": "HOOKER"
+    },
+    "esan marsters": {
+      "id": 1602,
+      "name": "Esan Marsters",
+      "careerTries": 14,
+      "careerAppearances": 71,
+      "position": "CENTRE"
+    },
+    "cameron scott": {
+      "id": 1607,
+      "name": "Cameron Scott",
+      "careerTries": 22,
+      "careerAppearances": 70,
+      "position": "CENTRE"
+    },
+    "sam lisone": {
+      "id": 1608,
+      "name": "Sam Lisone",
+      "careerTries": 13,
+      "careerAppearances": 81,
+      "position": "PROP"
+    },
+    "leon ruan": {
+      "id": 1611,
+      "name": "Leon Ruan",
+      "careerTries": 2,
+      "careerAppearances": 37,
+      "position": "2ND ROW"
+    },
+    "luke hooley": {
+      "id": 1612,
+      "name": "Luke Hooley",
+      "careerTries": 7,
+      "careerAppearances": 31,
+      "position": "FULLBACK"
+    },
+    "riley lumb": {
+      "id": 1613,
+      "name": "Riley Lumb",
+      "careerTries": 12,
+      "careerAppearances": 24,
+      "position": "FULLBACK"
+    },
+    "renouf atoni": {
+      "id": 1616,
+      "name": "Renouf Atoni",
+      "careerTries": 4,
+      "careerAppearances": 49,
+      "position": "PROP"
+    },
+    "aiden doolan": {
+      "id": 1623,
+      "name": "Aiden Doolan",
+      "careerTries": null,
+      "careerAppearances": 3,
+      "position": "HOOKER"
+    },
+    "jake thewlis": {
+      "id": 1624,
+      "name": "Jake Thewlis",
+      "careerTries": 2,
+      "careerAppearances": 6,
+      "position": "WINGER"
+    },
+    "tom amone": {
+      "id": 1628,
+      "name": "Tom Amone",
+      "careerTries": 14,
+      "careerAppearances": 74,
+      "position": "PROP"
+    },
+    "lachlan lam": {
+      "id": 1629,
+      "name": "Lachlan Lam",
+      "careerTries": 22,
+      "careerAppearances": 93,
+      "position": "FIVE-EIGHTH"
+    },
+    "sauaso sue": {
+      "id": 1634,
+      "name": "Sauaso Sue",
+      "careerTries": 13,
+      "careerAppearances": 74,
+      "position": "PROP"
+    },
+    "adam keighran": {
+      "id": 1638,
+      "name": "Adam Keighran",
+      "careerTries": 33,
+      "careerAppearances": 81,
+      "position": "FIVE-EIGHTH"
+    },
+    "nene macdonald": {
+      "id": 1702,
+      "name": "Nene Macdonald",
+      "careerTries": 18,
+      "careerAppearances": 55,
+      "position": "CENTRE"
+    },
+    "paul vaughan": {
+      "id": 1707,
+      "name": "Paul Vaughan",
+      "careerTries": 13,
+      "careerAppearances": 79,
+      "position": "Prop"
+    },
+    "john asiata": {
+      "id": 1710,
+      "name": "John Asiata",
+      "careerTries": null,
+      "careerAppearances": 19,
+      "position": "LOCK"
+    },
+    "oliver pratt": {
+      "id": 1719,
+      "name": "Oliver Pratt",
+      "careerTries": 14,
+      "careerAppearances": 12,
+      "position": "CENTRE"
+    },
+    "louix gorman": {
+      "id": 1739,
+      "name": "Louix Gorman",
+      "careerTries": null,
+      "careerAppearances": 5,
+      "position": "CENTRE"
+    },
+    "liam horne": {
+      "id": 1744,
+      "name": "Liam Horne",
+      "careerTries": 1,
+      "careerAppearances": 13,
+      "position": "HOOKER"
+    },
+    "harvey reynolds": {
+      "id": 1748,
+      "name": "Harvey Reynolds",
+      "careerTries": null,
+      "careerAppearances": 1,
+      "position": "2ND ROW"
+    },
+    "harvey horne": {
+      "id": 1749,
+      "name": "Harvey Horne",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "WINGER"
+    },
+    "cobie wainhouse": {
+      "id": 1751,
+      "name": "Cobie Wainhouse",
+      "careerTries": null,
+      "careerAppearances": 2,
+      "position": "PROP"
+    },
+    "fletcher rooney": {
+      "id": 1759,
+      "name": "Fletcher Rooney",
+      "careerTries": 4,
+      "careerAppearances": 15,
+      "position": "FULLBACK"
+    },
+    "thomas nicholsonwatton": {
+      "id": 1760,
+      "name": "Thomas Nicholson-Watton",
+      "careerTries": null,
+      "careerAppearances": 22,
+      "position": "LOCK"
+    },
+    "lachlan miller": {
+      "id": 1813,
+      "name": "Lachlan Miller",
+      "careerTries": 17,
+      "careerAppearances": 57,
+      "position": "FULLBACK"
+    },
+    "leon cowen": {
+      "id": 1821,
+      "name": "Leon Cowen",
+      "careerTries": null,
+      "careerAppearances": 2,
+      "position": "LOCK"
+    },
+    "jack farrimond": {
+      "id": 1828,
+      "name": "Jack Farrimond",
+      "careerTries": 16,
+      "careerAppearances": 31,
+      "position": "HALFBACK"
+    },
+    "josh simm": {
+      "id": 1834,
+      "name": "Josh Simm",
+      "careerTries": 11,
+      "careerAppearances": 29,
+      "position": "WINGER"
+    },
+    "jayden okunbor": {
+      "id": 1838,
+      "name": "Jayden Okunbor",
+      "careerTries": 1,
+      "careerAppearances": 10,
+      "position": "WINGER"
+    },
+    "logan moy": {
+      "id": 1843,
+      "name": "Logan Moy",
+      "careerTries": 5,
+      "careerAppearances": 35,
+      "position": "FULLBACK"
+    },
+    "oli leyland": {
+      "id": 1851,
+      "name": "Oli Leyland",
+      "careerTries": 2,
+      "careerAppearances": 33,
+      "position": "HALFBACK"
+    },
+    "jordan williams": {
+      "id": 1852,
+      "name": "Jordan Williams",
+      "careerTries": 1,
+      "careerAppearances": 15,
+      "position": "PROP"
+    },
+    "bill leyland": {
+      "id": 1856,
+      "name": "Bill Leyland",
+      "careerTries": 3,
+      "careerAppearances": 5,
+      "position": "HOOKER"
+    },
+    "aj wallace": {
+      "id": 1863,
+      "name": "AJ Wallace",
+      "careerTries": null,
+      "careerAppearances": 12,
+      "position": "2ND ROW"
+    },
+    "louis brogan": {
+      "id": 1866,
+      "name": "Louis Brogan",
+      "careerTries": null,
+      "careerAppearances": 25,
+      "position": "2ND ROW"
+    },
+    "kavan rothwell": {
+      "id": 1867,
+      "name": "Kavan Rothwell",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "2ND ROW"
+    },
+    "ben littlewood": {
+      "id": 1874,
+      "name": "Ben Littlewood",
+      "careerTries": null,
+      "careerAppearances": 10,
+      "position": "2ND ROW"
+    },
+    "ned mccormack": {
+      "id": 1875,
+      "name": "Ned McCormack",
+      "careerTries": 1,
+      "careerAppearances": 7,
+      "position": "CENTRE"
+    },
+    "herman eseese": {
+      "id": 1879,
+      "name": "Herman Ese'ese",
+      "careerTries": 10,
+      "careerAppearances": 49,
+      "position": "PROP"
+    },
+    "david nofoaluma": {
+      "id": 1890,
+      "name": "David Nofoaluma",
+      "careerTries": 8,
+      "careerAppearances": 14,
+      "position": "WINGER"
+    },
+    "arron lindop": {
+      "id": 1892,
+      "name": "Arron Lindop",
+      "careerTries": 6,
+      "careerAppearances": 11,
+      "position": "CENTRE"
+    },
+    "adam clune": {
+      "id": 1893,
+      "name": "Adam Clune",
+      "careerTries": 6,
+      "careerAppearances": 34,
+      "position": "HALFBACK"
+    },
+    "jayden nikorima": {
+      "id": 1900,
+      "name": "Jayden Nikorima",
+      "careerTries": 11,
+      "careerAppearances": 37,
+      "position": "FIVE-EIGHTH"
+    },
+    "waqa blake": {
+      "id": 1905,
+      "name": "Waqa Blake",
+      "careerTries": 17,
+      "careerAppearances": 31,
+      "position": "CENTRE"
+    },
+    "max wood": {
+      "id": 1910,
+      "name": "Max Wood",
+      "careerTries": 2,
+      "careerAppearances": 18,
+      "position": "PROP"
+    },
+    "keara bennett": {
+      "id": 1948,
+      "name": "Keara Bennett",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "HOOKER"
+    },
+    "caitlin casey": {
+      "id": 1950,
+      "name": "Caitlin Casey",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "HALFBACK"
+    },
+    "evie cousins": {
+      "id": 1951,
+      "name": "Evie Cousins",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "FULLBACK"
+    },
+    "ella donnelly": {
+      "id": 1953,
+      "name": "Ella Donnelly",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "LOCK"
+    },
+    "ruby enright": {
+      "id": 1955,
+      "name": "Ruby Enright",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "FULLBACK"
+    },
+    "grace field": {
+      "id": 1956,
+      "name": "Grace Field",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "PROP"
+    },
+    "kaiya glynn": {
+      "id": 1957,
+      "name": "Kaiya Glynn",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "PROP"
+    },
+    "amy hardcastle": {
+      "id": 1958,
+      "name": "Amy Hardcastle",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "CENTRE"
+    },
+    "shona hoyle": {
+      "id": 1960,
+      "name": "Shona Hoyle",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "PROP"
+    },
+    "bethany macmillan": {
+      "id": 1961,
+      "name": "Bethany MacMillan",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "CENTRE"
+    },
+    "tara moxon": {
+      "id": 1962,
+      "name": "Tara Moxon",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "WINGER"
+    },
+    "lucy murray": {
+      "id": 1963,
+      "name": "Lucy Murray",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "2ND ROW"
+    },
+    "olivia whitehead": {
+      "id": 1967,
+      "name": "Olivia Whitehead",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "WINGER"
+    },
+    "amy bennett": {
+      "id": 1969,
+      "name": "Amy Bennett",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "FULLBACK"
+    },
+    "amelia brown": {
+      "id": 1970,
+      "name": "Amelia Brown",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "FULLBACK"
+    },
+    "becky grady": {
+      "id": 1975,
+      "name": "Becky Grady",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "WINGER"
+    },
+    "jessica harrap": {
+      "id": 1978,
+      "name": "Jessica Harrap",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "PROP"
+    },
+    "samantha hulme": {
+      "id": 1979,
+      "name": "Samantha Hulme",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "HALFBACK"
+    },
+    "megan preston": {
+      "id": 1983,
+      "name": "Megan Preston",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "HOOKER"
+    },
+    "grace banks": {
+      "id": 1989,
+      "name": "Grace Banks",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "FULLBACK"
+    },
+    "mary coleman": {
+      "id": 1991,
+      "name": "Mary Coleman",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "PROP"
+    },
+    "anna davies": {
+      "id": 1993,
+      "name": "Anna Davies",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "WINGER"
+    },
+    "alice fisher": {
+      "id": 1996,
+      "name": "Alice Fisher",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "PROP"
+    },
+    "jade gregory": {
+      "id": 1997,
+      "name": "Jade Gregory",
+      "careerTries": null,
+      "careerAppearances": null,
+      "position": "PROP"
+    }
+  }
+}

@@ -1,0 +1,4429 @@
+{
+  "generatedAt": "2026-06-10T16:48:24.007Z",
+  "allowedSources": [
+    "Wikipedia",
+    "Official Super League website"
+  ],
+  "bannedSources": [
+    "Rugby League Project",
+    "Club websites",
+    "Fan databases",
+    "News websites",
+    "Forums",
+    "AI estimates"
+  ],
+  "playersUpdated": [
+    {
+      "id": "st-helens-cur-nene-macdonald",
+      "name": "Nene Macdonald",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 55,
+          "source": "Official Super League website"
+        },
+        {
+          "field": "tries",
+          "from": "Unknown",
+          "to": 18,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "leeds-cur-ned-mccormack",
+      "name": "Ned McCormack",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 7,
+          "source": "Official Super League website"
+        },
+        {
+          "field": "tries",
+          "from": "Unknown",
+          "to": 1,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "leeds-cur-ben-littlewood",
+      "name": "Ben Littlewood",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 10,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "warrington-cur-arron-lindop",
+      "name": "Arron Lindop",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 11,
+          "source": "Official Super League website"
+        },
+        {
+          "field": "tries",
+          "from": "Unknown",
+          "to": 6,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "bradford-cur-waqa-blake",
+      "name": "Waqa Blake",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 31,
+          "source": "Official Super League website"
+        },
+        {
+          "field": "tries",
+          "from": "Unknown",
+          "to": 17,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "bradford-cur-jayden-nikorima",
+      "name": "Jayden Nikorima",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 37,
+          "source": "Official Super League website"
+        },
+        {
+          "field": "tries",
+          "from": "Unknown",
+          "to": 11,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "hull-fc-cur-herman-eseese",
+      "name": "Herman Ese'ese",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 49,
+          "source": "Official Super League website"
+        },
+        {
+          "field": "tries",
+          "from": "Unknown",
+          "to": 10,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "hull-fc-cur-john-asiata",
+      "name": "John Asiata",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 19,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "leigh-cur-liam-horne",
+      "name": "Liam Horne",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 13,
+          "source": "Official Super League website"
+        },
+        {
+          "field": "tries",
+          "from": "Unknown",
+          "to": 1,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "wakefield-cur-jordan-williams",
+      "name": "Jordan Williams",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 15,
+          "source": "Official Super League website"
+        },
+        {
+          "field": "tries",
+          "from": "Unknown",
+          "to": 1,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "castleford-cur-fletcher-rooney",
+      "name": "Fletcher Rooney",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 15,
+          "source": "Official Super League website"
+        },
+        {
+          "field": "tries",
+          "from": "Unknown",
+          "to": 4,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "huddersfield-cur-adam-clune",
+      "name": "Adam Clune",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 34,
+          "source": "Official Super League website"
+        },
+        {
+          "field": "tries",
+          "from": "Unknown",
+          "to": 6,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "york-cur-paul-vaughan",
+      "name": "Paul Vaughan",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 79,
+          "source": "Official Super League website"
+        },
+        {
+          "field": "tries",
+          "from": "Unknown",
+          "to": 13,
+          "source": "Official Super League website"
+        }
+      ]
+    },
+    {
+      "id": "toulouse-cur-aj-wallace",
+      "name": "AJ Wallace",
+      "file": "current-squads.json",
+      "updates": [
+        {
+          "field": "appearances",
+          "from": "Unknown",
+          "to": 12,
+          "source": "Official Super League website"
+        }
+      ]
+    }
+  ],
+  "stillMissing": [
+    {
+      "id": "wigan-cur-kian-mcdermott",
+      "name": "Kian McDermott",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "wigan-cur-harvey-makin",
+      "name": "Harvey Makin",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "wigan-cur-taylor-kerr",
+      "name": "Taylor Kerr",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wigan-cur-nathan-lowe",
+      "name": "Nathan Lowe",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "st-helens-cur-kyle-feldt",
+      "name": "Kyle Feldt",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "st-helens-cur-harry-robertson",
+      "name": "Harry Robertson",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "st-helens-cur-david-klemmer",
+      "name": "David Klemmer",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "st-helens-cur-jacob-host",
+      "name": "Jacob Host",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "st-helens-cur-george-whitby",
+      "name": "George Whitby",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "st-helens-cur-jake-burns",
+      "name": "Jake Burns",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leeds-cur-keenan-palasia",
+      "name": "Keenan Palasia",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leeds-cur-ethan-oneill",
+      "name": "Ethan O'Neill",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "leeds-cur-cameron-smith",
+      "name": "Cameron Smith",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leeds-cur-max-simpson",
+      "name": "Max Simpson",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "leeds-cur-jeremiah-matautia",
+      "name": "Jeremiah Mata'utia",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leeds-cur-ben-littlewood",
+      "name": "Ben Littlewood",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "warrington-cur-albert-hopoate",
+      "name": "Albert Hopoate",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "warrington-cur-toafofoa-sipley",
+      "name": "Toafofoa Sipley",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "warrington-cur-jordy-crowther",
+      "name": "Jordy Crowther",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "warrington-cur-leon-hayes",
+      "name": "Leon Hayes",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "warrington-cur-josh-smith",
+      "name": "Josh Smith",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "bradford-cur-loghan-lewis",
+      "name": "Loghan Lewis",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "bradford-cur-dan-russell",
+      "name": "Dan Russell",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "bradford-cur-zac-fulton",
+      "name": "Zac Fulton",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "bradford-cur-mitch-souter",
+      "name": "Mitch Souter",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "bradford-cur-ebon-scurr",
+      "name": "Ebon Scurr",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "bradford-cur-brandon-douglas",
+      "name": "Brandon Douglas",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "bradford-cur-sam-hallas",
+      "name": "Sam Hallas",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "bradford-cur-eliot-peposhi",
+      "name": "Eliot Peposhi",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-jack-charles",
+      "name": "Jack Charles",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-louix-gorman",
+      "name": "Louix Gorman",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-harvey-horne",
+      "name": "Harvey Horne",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-jake-arthur",
+      "name": "Jake Arthur",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-jed-cartwright",
+      "name": "Jed Cartwright",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-john-asiata",
+      "name": "John Asiata",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-liam-knight",
+      "name": "Liam Knight",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-matty-laidlaw",
+      "name": "Matty Laidlaw",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "leigh-cur-david-armstrong",
+      "name": "David Armstrong",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leigh-cur-adam-cook",
+      "name": "Adam Cook",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leigh-cur-joe-ofahengaue",
+      "name": "Joe Ofahengaue",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leigh-cur-isaac-liu",
+      "name": "Isaac Liu",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leigh-cur-aaron-pene",
+      "name": "Aaron Pene",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leigh-cur-andrew-badrock",
+      "name": "Andrew Badrock",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leigh-cur-louis-brogan",
+      "name": "Louis Brogan",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "leigh-cur-nathan-wilde",
+      "name": "Nathan Wilde",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-cur-cam-scott",
+      "name": "Cam Scott",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-cur-tyson-smoothy",
+      "name": "Tyson Smoothy",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-cur-ky-rodwell",
+      "name": "Ky Rodwell",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-cur-seth-nikotemo",
+      "name": "Seth Nikotemo",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-cur-jazz-tevaga",
+      "name": "Jazz Tevaga",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-cur-caleb-hamlin-uele",
+      "name": "Caleb Hamlin-Uele",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-cur-caius-faatili",
+      "name": "Caius Faatili",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-cur-harvey-smith",
+      "name": "Harvey Smith",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-cur-isaiah-vagana",
+      "name": "Isaiah Vagana",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-cur-thomas-doyle",
+      "name": "Thomas Doyle",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-cur-tray-lolesio",
+      "name": "Tray Lolesio",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-blake-taaffe",
+      "name": "Blake Taaffe",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-semi-valemei",
+      "name": "Semi Valemei",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-zac-cini",
+      "name": "Zac Cini",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-tom-weaver",
+      "name": "Tom Weaver",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-joe-stimson",
+      "name": "Joe Stimson",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-brock-greacen",
+      "name": "Brock Greacen",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-aiden-doolan",
+      "name": "Aiden Doolan",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-jimmy-beckett",
+      "name": "Jimmy Beckett",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-alfie-lindsey",
+      "name": "Alfie Lindsey",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-jacob-gagai",
+      "name": "Jacob Gagai",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-taane-milne",
+      "name": "Taane Milne",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-sam-halsall",
+      "name": "Sam Halsall",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-tristan-powell",
+      "name": "Tristan Powell",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-zac-woolford",
+      "name": "Zac Woolford",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-thomas-burgess",
+      "name": "Thomas Burgess",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-asher-odonnell",
+      "name": "Asher O'Donnell",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-george-flanagan-jr",
+      "name": "George Flanagan Jr",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-jack-billington",
+      "name": "Jack Billington",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-connor-carr",
+      "name": "Connor Carr",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-jacob-algar",
+      "name": "Jacob Algar",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-archie-sykes",
+      "name": "Archie Sykes",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "catalans-cur-charlie-staines",
+      "name": "Charlie Staines",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "catalans-cur-nick-cotric",
+      "name": "Nick Cotric",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "catalans-cur-manase-kaho",
+      "name": "Manase Kaho",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "catalans-cur-toby-sexton",
+      "name": "Toby Sexton",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "catalans-cur-ben-condon",
+      "name": "Ben Condon",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "catalans-cur-benjamin-garcia",
+      "name": "Benjamin Garcia",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "catalans-cur-iszac-faasuamaleaui",
+      "name": "Iszac Fa'asuamaleaui",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "catalans-cur-josh-allen",
+      "name": "Josh Allen",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "catalans-cur-romain-navarette",
+      "name": "Romain Navarette",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "catalans-cur-harvey-wilson",
+      "name": "Harvey Wilson",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "catalans-cur-lenny-marc",
+      "name": "Lenny Marc",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "york-cur-toa-mata-afa",
+      "name": "Toa Mata'afa",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "york-cur-jordan-lipp",
+      "name": "Jordan Lipp",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "york-cur-scott-galeano",
+      "name": "Scott Galeano",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "york-cur-jack-martin",
+      "name": "Jack Martin",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "york-cur-jesse-dee",
+      "name": "Jesse Dee",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "york-cur-kieran-hudson",
+      "name": "Kieran Hudson",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "york-cur-oli-field",
+      "name": "Oli Field",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "york-cur-john-sagaga",
+      "name": "John Sagaga",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "york-cur-jack-smith",
+      "name": "Jack Smith",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "york-cur-nikau-williams",
+      "name": "Nikau Williams",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "toulouse-cur-thomas-lacans",
+      "name": "Thomas Lacans",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "toulouse-cur-brendan-hands",
+      "name": "Brendan Hands",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "toulouse-cur-james-roumanos",
+      "name": "James Roumanos",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "toulouse-cur-baptiste-rodriguez",
+      "name": "Baptiste Rodriguez",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "toulouse-cur-romeo-tropis",
+      "name": "Romeo Tropis",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "toulouse-cur-aj-wallace",
+      "name": "AJ Wallace",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "toulouse-cur-ellis-gillam",
+      "name": "Ellis Gillam",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "toulouse-cur-pierre-jean-lima",
+      "name": "Pierre-Jean Lima",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "toulouse-cur-trevor-chiffolleau",
+      "name": "Trevor Chiffolleau",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "salford-cur-chris-savelio",
+      "name": "Chris Savelio",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "salford-cur-brodie-shields",
+      "name": "Brodie Shields",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "salford-cur-dele-sule",
+      "name": "Dele Sule",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "salford-cur-ben-hellewell",
+      "name": "Ben Hellewell",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "salford-cur-tim-bergin",
+      "name": "Tim Bergin",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "salford-cur-logan-ewington",
+      "name": "Logan Ewington",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "salford-cur-sitili-ngahe",
+      "name": "Sitili-Losala Ngahe",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "salford-cur-ryan-kingston",
+      "name": "Ryan Kingston",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "york-cur-jesse-sebastian",
+      "name": "Jesse Sebastian",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "york-cur-ajy-karim",
+      "name": "Ajy Karim",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "toulouse-cur-stan-jury",
+      "name": "Stan Jury",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "toulouse-cur-chris-knight",
+      "name": "Chris Knight",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leigh-cur-tom-amelia",
+      "name": "Tom Amelia",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leigh-cur-edward-smith",
+      "name": "Edward Smith",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-jake-bibby",
+      "name": "Jake Bibby",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-cur-harry-bowes",
+      "name": "Harry Bowes",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "london-cur-robert-butler",
+      "name": "Robert Butler",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-cur-nathan-connell",
+      "name": "Nathan Connell",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-cur-leo-darrelatour",
+      "name": "Léo Darrélatour",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-cur-sam-davis",
+      "name": "Sam Davis",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-thomas-deakin",
+      "name": "Thomas Deakin",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-george-hill",
+      "name": "George Hill",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality",
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-daniel-hindmarsh-takyi",
+      "name": "Daniel Hindmarsh-Takyi",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality",
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "london-cur-jacob-jones",
+      "name": "Jacob Jones",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-cur-ellis-longstaff",
+      "name": "Ellis Longstaff",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-cur-bradley-martin",
+      "name": "Bradley Martin",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-cur-kai-morgan",
+      "name": "Kai Morgan",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality",
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-muizz-mustapha",
+      "name": "Muizz Mustapha",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-aidan-mcgowan",
+      "name": "Aidan Mcgowan",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-cur-bradley-o-neill",
+      "name": "Bradley O'neill",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-cur-lewis-peachey",
+      "name": "Lewis Peachey",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-cain-robb",
+      "name": "Cain Robb",
+      "file": "current-squads.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "salford-cur-ellis-robson",
+      "name": "Ellis Robson",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-brad-schneider",
+      "name": "Brad Schneider",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-morgan-smith",
+      "name": "Morgan Smith",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-matthew-storton",
+      "name": "Matthew Storton",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-william-tate",
+      "name": "William Tate",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-cur-brad-walker",
+      "name": "Brad Walker",
+      "file": "current-squads.json",
+      "missing": [
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "leeds-cur-jack-walker",
+      "name": "Jack Walker",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-cur-toby-warren",
+      "name": "Toby Warren",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality",
+        "appearances",
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-cur-thomas-weaver",
+      "name": "Thomas Weaver",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-cur-tom-whitehead",
+      "name": "Tom Whitehead",
+      "file": "current-squads.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "oldham-hist-darren-abram",
+      "name": "Darren Abram",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-sadiq-adebiyi",
+      "name": "Sadiq Adebiyi",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-david-atkins",
+      "name": "David Atkins",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-david-baildon",
+      "name": "David Baildon",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-richie-barnett",
+      "name": "Richie Barnett",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-steve-barrow",
+      "name": "Steve Barrow",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-neil-baynes",
+      "name": "Neil Baynes",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "oldham-hist-adrian-belle",
+      "name": "Adrian Belle",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-joe-berry",
+      "name": "Joe Berry",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-hist-david-berthezene",
+      "name": "David Berthezene",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality",
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-hist-kyle-bibb",
+      "name": "Kyle Bibb",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "leeds-hist-richie-blackmore",
+      "name": "Richie Blackmore",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-simon-booth",
+      "name": "Simon Booth",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-david-boyle",
+      "name": "David Boyle",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-dave-bradbury",
+      "name": "Dave Bradbury",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-andrew-brocklehurst",
+      "name": "Andrew Brocklehurst",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-darren-brown",
+      "name": "Darren Brown",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-travis-burns",
+      "name": "Travis Burns",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-logan-campbell",
+      "name": "Logan Campbell",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-phil-cantillon",
+      "name": "Phil Cantillon",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-darryl-cardiss",
+      "name": "Darryl Cardiss",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-dale-cardoza",
+      "name": "Dale Cardoza",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "sheffield-hist-paul-carr",
+      "name": "Paul Carr",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-jason-cayless",
+      "name": "Jason Cayless",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-gary-chambers",
+      "name": "Gary Chambers",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-david-chapman",
+      "name": "David Chapman",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-andy-cheetham",
+      "name": "Andy Cheetham",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "oldham-hist-john-clarke",
+      "name": "John Clarke",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-ryan-clayton",
+      "name": "Ryan Clayton",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-steve-collins",
+      "name": "Steve Collins",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-ben-cooper",
+      "name": "Ben Cooper",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-brandon-costin",
+      "name": "Brandon Costin",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-jordan-cox",
+      "name": "Jordan Cox",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-steve-craven",
+      "name": "Steve Craven",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "oldham-hist-martin-crompton",
+      "name": "Martin Crompton",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-garret-crossman",
+      "name": "Garret Crossman",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "st-helens-hist-heath-cruckshank",
+      "name": "Heath Cruckshank",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "london-hist-james-cunningham",
+      "name": "James Cunningham",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-paul-davidson",
+      "name": "Paul Davidson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-ben-davies",
+      "name": "Ben Davies",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-brad-davis",
+      "name": "Brad Davis",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-paul-devlin",
+      "name": "Paul Devlin",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-andrew-dixon",
+      "name": "Andrew Dixon",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-john-duffy",
+      "name": "John Duffy",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-greg-eden",
+      "name": "Greg Eden",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-anthony-england",
+      "name": "Anthony England",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-henry-fa-afili",
+      "name": "Henry Fa'afili",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-david-fa-alogo",
+      "name": "David Fa'alogo",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-maurie-fa-asavalu",
+      "name": "Maurie Fa'asavalu",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-joe-faimalo",
+      "name": "Joe Faimalo",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-bureta-faraimo",
+      "name": "Bureta Faraimo",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-mark-field",
+      "name": "Mark Field",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-andy-fisher",
+      "name": "Andy Fisher",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-mark-flanagan",
+      "name": "Mark Flanagan",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-darren-fleary",
+      "name": "Darren Fleary",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-greg-fleming",
+      "name": "Greg Fleming",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-richard-fletcher",
+      "name": "Richard Fletcher",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-paul-forber",
+      "name": "Paul Forber",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-mike-ford",
+      "name": "Mike Ford",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-mike-forshaw",
+      "name": "Mike Forshaw",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-mark-forster",
+      "name": "Mark Forster",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-matt-gardner",
+      "name": "Matt Gardner",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-lee-gaskell",
+      "name": "Lee Gaskell",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-richard-gay",
+      "name": "Richard Gay",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-andrew-gee",
+      "name": "Andrew Gee",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-stanley-gene",
+      "name": "Stanley Gene",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-alex-gerrard",
+      "name": "Alex Gerrard",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "oldham-hist-ian-gildart",
+      "name": "Ian Gildart",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "widnes-hist-chris-giles",
+      "name": "Chris Giles",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-peter-gill",
+      "name": "Peter Gill",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-bryson-goodwin",
+      "name": "Bryson Goodwin",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-bobbie-goulding",
+      "name": "Bobbie Goulding",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-nathan-graham",
+      "name": "Nathan Graham",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-chris-green",
+      "name": "Chris Green",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-james-green",
+      "name": "James Green",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-james-greenwood",
+      "name": "James Greenwood",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-lee-greenwood",
+      "name": "Lee Greenwood",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-hist-mathieu-griffi",
+      "name": "Mathieu Griffi",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "castleford-hist-george-griffin",
+      "name": "George Griffin",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-simon-grix",
+      "name": "Simon Grix",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-craig-hall",
+      "name": "Craig Hall",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-glenn-hall",
+      "name": "Glenn Hall",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-steve-hall",
+      "name": "Steve Hall",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-michael-hancock",
+      "name": "Michael Hancock",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-dean-hanger",
+      "name": "Dean Hanger",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "sheffield-hist-jeff-hardy",
+      "name": "Jeff Hardy",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-neil-harmon",
+      "name": "Neil Harmon",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-ben-harris",
+      "name": "Ben Harris",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-ben-harrison",
+      "name": "Ben Harrison",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-phil-hassan",
+      "name": "Phil Hassan",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-jackson-hastings",
+      "name": "Jackson Hastings",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-tommy-haughey",
+      "name": "Tommy Haughey",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-simon-haughton",
+      "name": "Simon Haughton",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-solomon-haumono",
+      "name": "Solomon Haumono",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-andy-hay",
+      "name": "Andy Hay",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-joey-hayes",
+      "name": "Joey Hayes",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-andrew-henderson",
+      "name": "Andrew Henderson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-hist-ian-henderson",
+      "name": "Ian Henderson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-mark-henry",
+      "name": "Mark Henry",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-tyla-hepi",
+      "name": "Tyla Hepi",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "widnes-hist-aaron-heremaia",
+      "name": "Aaron Heremaia",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-chris-hicks",
+      "name": "Chris Hicks",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-liam-higgins",
+      "name": "Liam Higgins",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-chris-hill",
+      "name": "Chris Hill",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "oldham-hist-howard-hill",
+      "name": "Howard Hill",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-scott-hill",
+      "name": "Scott Hill",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-mark-hilton",
+      "name": "Mark Hilton",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-andy-hodgson",
+      "name": "Andy Hodgson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-josh-hodgson",
+      "name": "Josh Hodgson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-daniel-holdsworth",
+      "name": "Daniel Holdsworth",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-stephen-holgate",
+      "name": "Stephen Holgate",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-oliver-holmes",
+      "name": "Oliver Holmes",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-tom-holmes",
+      "name": "Tom Holmes",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-sean-hoppe",
+      "name": "Sean Hoppe",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-chris-houston",
+      "name": "Chris Houston",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-harvey-howard",
+      "name": "Harvey Howard",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-david-howell",
+      "name": "David Howell",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-adam-hughes",
+      "name": "Adam Hughes",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-david-hulme",
+      "name": "David Hulme",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-alan-hunte",
+      "name": "Alan Hunte",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-krisnan-inu",
+      "name": "Krisnan Inu",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-andy-ireland",
+      "name": "Andy Ireland",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality",
+        "tries"
+      ]
+    },
+    {
+      "id": "st-helens-hist-kevin-iro",
+      "name": "Kevin Iro",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-willie-isa",
+      "name": "Willie Isa",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-lee-jackson",
+      "name": "Lee Jackson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "sheffield-hist-michael-jackson",
+      "name": "Michael Jackson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-paul-jackson",
+      "name": "Paul Jackson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-rob-jackson",
+      "name": "Rob Jackson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-jordan-james",
+      "name": "Jordan James",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-matt-james",
+      "name": "Matt James",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality",
+        "tries"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-mick-jenkins",
+      "name": "Mick Jenkins",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-andy-johnson",
+      "name": "Andy Johnson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-greg-johnson",
+      "name": "Greg Johnson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-josh-johnson",
+      "name": "Josh Johnson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-mark-johnson",
+      "name": "Mark Johnson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-josh-jones",
+      "name": "Josh Jones",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-phil-jones",
+      "name": "Phil Jones",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-stuart-jones",
+      "name": "Stuart Jones",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-philip-joseph",
+      "name": "Philip Joseph",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-ben-kavanagh",
+      "name": "Ben Kavanagh",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "leeds-hist-jimmy-keinhorst",
+      "name": "Jimmy Keinhorst",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-tony-kemp",
+      "name": "Tony Kemp",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-hist-younes-khattabi",
+      "name": "Younes Khattabi",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-david-kidwell",
+      "name": "David Kidwell",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-david-king",
+      "name": "David King",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-matt-king",
+      "name": "Matt King",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-paul-king",
+      "name": "Paul King",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-andy-kirk",
+      "name": "Andy Kirk",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-john-kirkpatrick",
+      "name": "John Kirkpatrick",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-michael-korkidas",
+      "name": "Michael Korkidas",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-olsi-krasniqi",
+      "name": "Olsi Krasniqi",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-jamie-langley",
+      "name": "Jamie Langley",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-ryan-lannon",
+      "name": "Ryan Lannon",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-neil-law",
+      "name": "Neil Law",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-jim-leatham",
+      "name": "Jim Leatham",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-mark-lee",
+      "name": "Mark Lee",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-tommy-lee",
+      "name": "Tommy Lee",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-tevita-leo-latu",
+      "name": "Tevita Leo-Latu",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-gary-lester",
+      "name": "Gary Lester",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-fili-lolohea",
+      "name": "Fili Lolohea",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "oldham-hist-gary-lord",
+      "name": "Gary Lord",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-paul-loughlin",
+      "name": "Paul Loughlin",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "sheffield-hist-karl-lovell",
+      "name": "Karl Lovell",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-james-lowes",
+      "name": "James Lowes",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-shaun-lunt",
+      "name": "Shaun Lunt",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-peter-lupton",
+      "name": "Peter Lupton",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-adam-maher",
+      "name": "Adam Maher",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-craig-makin",
+      "name": "Craig Makin",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-francis-maloney",
+      "name": "Francis Maloney",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-hist-james-maloney",
+      "name": "James Maloney",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-dominic-manfredi",
+      "name": "Dominic Manfredi",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-george-mann",
+      "name": "George Mann",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-david-march",
+      "name": "David March",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-paul-march",
+      "name": "Paul March",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-hist-antoni-maria",
+      "name": "Antoni Maria",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-hist-paul-marquet",
+      "name": "Paul Marquet",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-richard-marshall",
+      "name": "Richard Marshall",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-scott-martin",
+      "name": "Scott Martin",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-tony-martin",
+      "name": "Tony Martin",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-mose-masoe",
+      "name": "Mose Masoe",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-nathan-massey",
+      "name": "Nathan Massey",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-masi-matongo",
+      "name": "Masi Matongo",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-joe-mbu",
+      "name": "Joe Mbu",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-hist-david-mead",
+      "name": "David Mead",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-paul-medley",
+      "name": "Paul Medley",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-chris-melling",
+      "name": "Chris Melling",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-jacob-miller",
+      "name": "Jacob Miller",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-david-mills",
+      "name": "David Mills",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-jon-molloy",
+      "name": "Jon Molloy",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "sheffield-hist-steve-molloy",
+      "name": "Steve Molloy",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-richard-moore",
+      "name": "Richard Moore",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-scott-moore",
+      "name": "Scott Moore",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-glenn-morrison",
+      "name": "Glenn Morrison",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-iain-morrison",
+      "name": "Iain Morrison",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-hist-gregory-mounis",
+      "name": "Grégory Mounis",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-mark-moxon",
+      "name": "Mark Moxon",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-hist-justin-murphy",
+      "name": "Justin Murphy",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-daniel-murray",
+      "name": "Daniel Murray",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-steve-mccurrie",
+      "name": "Steve Mccurrie",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-wayne-mcdonald",
+      "name": "Wayne Mcdonald",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-richard-mckell",
+      "name": "Richard Mckell",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-chris-mckenna",
+      "name": "Chris Mckenna",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-paul-mcnicholas",
+      "name": "Paul Mcnicholas",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-shannan-mcpherson",
+      "name": "Shannan Mcpherson",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "salford-hist-stephen-nash",
+      "name": "Stephen Nash",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-scott-naylor",
+      "name": "Scott Naylor",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-adam-neal",
+      "name": "Adam Neal",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-jon-neill",
+      "name": "Jon Neill",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "wakefield-hist-tawera-nikau",
+      "name": "Tawera Nikau",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-rob-nolan",
+      "name": "Rob Nolan",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-paul-noone",
+      "name": "Paul Noone",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-dan-norman",
+      "name": "Dan Norman",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-andy-northey",
+      "name": "Andy Northey",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-terry-o-connor",
+      "name": "Terry O'connor",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-mark-o-halloran",
+      "name": "Mark O'halloran",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-tom-olbison",
+      "name": "Tom Olbison",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-hist-michael-oldfield",
+      "name": "Michael Oldfield",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-gene-ormsby",
+      "name": "Gene Ormsby",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-gareth-owen",
+      "name": "Gareth Owen",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-jack-owens",
+      "name": "Jack Owens",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-paul-parker",
+      "name": "Paul Parker",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-rob-parker",
+      "name": "Rob Parker",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-oliver-partington",
+      "name": "Oliver Partington",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-dec-patton",
+      "name": "Dec Patton",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-joseph-paulo",
+      "name": "Joseph Paulo",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-chris-percival",
+      "name": "Chris Percival",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-michael-platt",
+      "name": "Michael Platt",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-willie-poching",
+      "name": "Willie Poching",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-quentin-pongia",
+      "name": "Quentin Pongia",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality",
+        "tries"
+      ]
+    },
+    {
+      "id": "widnes-hist-dan-potter",
+      "name": "Dan Potter",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-craig-poucher",
+      "name": "Craig Poucher",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-gary-price",
+      "name": "Gary Price",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-matt-prior",
+      "name": "Matt Prior",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-hist-sebastien-raguin",
+      "name": "Sébastien Raguin",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-craig-randall",
+      "name": "Craig Randall",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-tyler-randell",
+      "name": "Tyler Randell",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-gareth-raynor",
+      "name": "Gareth Raynor",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-tahi-reihana",
+      "name": "Tahi Reihana",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-paul-reilly",
+      "name": "Paul Reilly",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-robert-relf",
+      "name": "Robert Relf",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-steele-retchless",
+      "name": "Steele Retchless",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leigh-hist-ben-reynolds",
+      "name": "Ben Reynolds",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-greg-richards",
+      "name": "Greg Richards",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-daniel-richardson",
+      "name": "Daniel Richardson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-sean-richardson",
+      "name": "Sean Richardson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-leroy-rivett",
+      "name": "Leroy Rivett",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-jason-roach",
+      "name": "Jason Roach",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-robert-roberts",
+      "name": "Robert Roberts",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-michael-robertson",
+      "name": "Michael Robertson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-will-robinson",
+      "name": "Will Robinson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-paul-rowley",
+      "name": "Paul Rowley",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-danny-russell",
+      "name": "Danny Russell",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-matthew-russell",
+      "name": "Matthew Russell",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-richard-russell",
+      "name": "Richard Russell",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-sean-rutgerson",
+      "name": "Sean Rutgerson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-chris-ryan",
+      "name": "Chris Ryan",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-matt-ryan",
+      "name": "Matt Ryan",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-sean-ryan",
+      "name": "Sean Ryan",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-matt-salter",
+      "name": "Matt Salter",
+      "file": "historic-players.json",
+      "missing": [
+        "tries"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-ben-sammut",
+      "name": "Ben Sammut",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-jarrod-sammut",
+      "name": "Jarrod Sammut",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-dean-sampson",
+      "name": "Dean Sampson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "psg-hist-jason-sands",
+      "name": "Jason Sands",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality",
+        "tries"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-andre-savelio",
+      "name": "Andre Savelio",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-lokeni-savelio",
+      "name": "Lokeni Savelio",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality",
+        "tries"
+      ]
+    },
+    {
+      "id": "bradford-hist-jonathan-scales",
+      "name": "Jonathan Scales",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-andrew-schick",
+      "name": "Andrew Schick",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-matt-schultz",
+      "name": "Matt Schultz",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-fili-seru",
+      "name": "Fili Seru",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-will-sharp",
+      "name": "Will Sharp",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-ryan-shaw",
+      "name": "Ryan Shaw",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-ryan-sheridan",
+      "name": "Ryan Sheridan",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-ashton-sims",
+      "name": "Ashton Sims",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-aaron-smith",
+      "name": "Aaron Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-andy-smith",
+      "name": "Andy Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-chris-smith",
+      "name": "Chris Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-craig-smith",
+      "name": "Craig Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-daniel-smith",
+      "name": "Daniel Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-darren-smith",
+      "name": "Darren Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-jamie-smith",
+      "name": "Jamie Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-jason-smith",
+      "name": "Jason Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-jeremy-smith",
+      "name": "Jeremy Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-jimmy-smith",
+      "name": "Jimmy Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-mark-smith",
+      "name": "Mark Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-matty-smith",
+      "name": "Matty Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-michael-smith",
+      "name": "Michael Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-paul-smith",
+      "name": "Paul Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-tim-smith",
+      "name": "Tim Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-tony-smith",
+      "name": "Tony Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-tyrone-smith",
+      "name": "Tyrone Smith",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-iosia-soliola",
+      "name": "Iosia Soliola",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-david-solomona",
+      "name": "David Solomona",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-stuart-spruce",
+      "name": "Stuart Spruce",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-john-stankevitch",
+      "name": "John Stankevitch",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leigh-hist-craig-stapleton",
+      "name": "Craig Stapleton",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-graham-steadman",
+      "name": "Graham Steadman",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-david-stephenson",
+      "name": "David Stephenson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-warren-stevens",
+      "name": "Warren Stevens",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-anthony-stewart",
+      "name": "Anthony Stewart",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-mitch-stringer",
+      "name": "Mitch Stringer",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality",
+        "tries"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-matt-sturm",
+      "name": "Matt Sturm",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-anthony-sullivan",
+      "name": "Anthony Sullivan",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-michael-sullivan",
+      "name": "Michael Sullivan",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "sheffield-hist-whetu-taewa",
+      "name": "Whetu Taewa",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-zeb-taia",
+      "name": "Zeb Taia",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-fetuli-talanoa",
+      "name": "Fetuli Talanoa",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-gael-tallec",
+      "name": "Gael Tallec",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-elijah-taylor",
+      "name": "Elijah Taylor",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-scott-taylor",
+      "name": "Scott Taylor",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-jamie-thackray",
+      "name": "Jamie Thackray",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-bobby-thompson",
+      "name": "Bobby Thompson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-john-timu",
+      "name": "John Timu",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "london-hist-tulsen-tollett",
+      "name": "Tulsen Tollett",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-ian-tonks",
+      "name": "Ian Tonks",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-motu-tony",
+      "name": "Motu Tony",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-clinton-toopi",
+      "name": "Clinton Toopi",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "oldham-hist-paul-topping",
+      "name": "Paul Topping",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-darren-treacy",
+      "name": "Darren Treacy",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-fereti-tuilagi",
+      "name": "Fereti Tuilagi",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "sheffield-hist-darren-turner",
+      "name": "Darren Turner",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "sheffield-hist-marcus-vassilakopoulos",
+      "name": "Marcus Vassilakopoulos",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-michael-wainwright",
+      "name": "Michael Wainwright",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-adam-walker",
+      "name": "Adam Walker",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "castleford-hist-jonathan-walker",
+      "name": "Jonathan Walker",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-josh-walters",
+      "name": "Josh Walters",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-barry-ward",
+      "name": "Barry Ward",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-danny-ward",
+      "name": "Danny Ward",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-stevie-ward",
+      "name": "Stevie Ward",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-frank-watene",
+      "name": "Frank Watene",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "sheffield-hist-dave-watson",
+      "name": "Dave Watson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-james-webster",
+      "name": "James Webster",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-jack-wells",
+      "name": "Jack Wells",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "st-helens-hist-gary-wheeler",
+      "name": "Gary Wheeler",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-matthew-whitaker",
+      "name": "Matthew Whitaker",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-josh-white",
+      "name": "Josh White",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "widnes-hist-lloyd-white",
+      "name": "Lloyd White",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-paul-white",
+      "name": "Paul White",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "bradford-hist-elliott-whitehead",
+      "name": "Elliott Whitehead",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-stephen-wild",
+      "name": "Stephen Wild",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-oliver-wilkes",
+      "name": "Oliver Wilkes",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-alex-wilkinson",
+      "name": "Alex Wilkinson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-danny-williams",
+      "name": "Danny Williams",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-rhys-williams",
+      "name": "Rhys Williams",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-sam-williams",
+      "name": "Sam Williams",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-john-wilshere",
+      "name": "John Wilshere",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-craig-wilson",
+      "name": "Craig Wilson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "catalans-hist-john-wilson",
+      "name": "John Wilson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-scott-wilson",
+      "name": "Scott Wilson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "salford-hist-josh-wood",
+      "name": "Josh Wood",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-kyle-wood",
+      "name": "Kyle Wood",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "sheffield-hist-martin-wood",
+      "name": "Martin Wood",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-nathan-wood",
+      "name": "Nathan Wood",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wakefield-hist-david-wrench",
+      "name": "David Wrench",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-francis-cummins",
+      "name": "Francis Cummins",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "wigan-hist-paul-johnson",
+      "name": "Paul Johnson",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    },
+    {
+      "id": "leeds-hist-richard-mathers",
+      "name": "Richard Mathers",
+      "file": "historic-players.json",
+      "missing": [
+        "nationality"
+      ]
+    }
+  ],
+  "duplicatesRemoved": []
+}
