@@ -30,9 +30,11 @@ export function HeaderAuthControls() {
     );
   }
 
+  const authButtonClass = `${BTN.header} min-w-[6.75rem] justify-center sm:min-w-[8.25rem]`;
+
   if (!isLoggedIn) {
     return (
-      <Link href="/login" className={BTN.header}>
+      <Link href="/login" className={authButtonClass}>
         Log In
       </Link>
     );
@@ -56,13 +58,12 @@ export function HeaderAuthControls() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className={BTN.header}
+        className={authButtonClass}
         aria-expanded={open}
         aria-haspopup="menu"
+        aria-label="Coach Profile"
       >
-        <span className={`max-w-[8rem] truncate ${TYPO.sectionTitle} sm:max-w-[10rem]`}>
-          {coachName}
-        </span>
+        <span className="truncate">Coach Profile</span>
       </button>
       {open && (
         <>
