@@ -6,8 +6,8 @@ import { formatValue } from "@/lib/players";
 import {
   FORMATION_COORDS,
   FORMATION_SLOT_INDICES,
+  FORMATION_SLOT_NUMBER,
   POSITION_DESCRIPTIONS,
-  POSITION_SHORT,
   POSITION_TILE_LABEL,
 } from "@/lib/positions";
 import { PitchSlotCard, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
@@ -89,10 +89,15 @@ export function RugbyPitch({
         } ${dimmed ? "opacity-60" : ""}`}
       >
         <div
-          className={`relative w-full overflow-hidden rounded-2xl border-2 border-accent-green/25 shadow-2xl rugby-pitch-pro ${
+          className={`${
+            compact ? "" : "max-h-[min(85vh,820px)] overflow-y-auto overflow-x-hidden sm:max-h-none sm:overflow-visible"
+          }`}
+        >
+        <div
+          className={`relative w-full overflow-hidden rounded-2xl border-2 border-accent-green/40 shadow-[0_0_24px_rgba(34,197,94,0.15)] rugby-pitch-pro ${
             compact
-              ? "min-h-[520px]"
-              : "min-h-[640px] sm:min-h-[600px] md:min-h-[580px] lg:aspect-[5/8] lg:min-h-0"
+              ? "min-h-[540px]"
+              : "min-h-[660px] sm:min-h-[620px] md:min-h-[600px] lg:aspect-[5/8] lg:min-h-0"
           }`}
         >
           <PitchMarkings />
@@ -147,6 +152,7 @@ export function RugbyPitch({
             })}
           </div>
         </div>
+        </div>
       </div>
 
       {!compact && (
@@ -194,6 +200,12 @@ function PitchMarkings() {
       <div className="pitch-line-40m absolute bottom-[32%] left-[6%] right-[6%] h-px" />
 
       <div className="pitch-line-halfway absolute left-[6%] right-[6%] top-1/2 h-[2px] -translate-y-1/2" />
+
+      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[24%] h-px" />
+      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[42%] h-px" />
+      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[60%] h-px" />
+      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[77%] h-px" />
+      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[91%] h-px" />
 
       <div
         className="pitch-touchline absolute bottom-[8%] top-[8%] w-px"
@@ -259,16 +271,17 @@ function SquadMarker({
 
   if (!player) {
     const positionLabel = POSITION_TILE_LABEL[slot.position];
+    const shirtNumber = FORMATION_SLOT_NUMBER[slot.slotIndex];
     const content = (
       <motion.div
-        className={`squad-marker-empty group flex shrink-0 flex-col items-center justify-center gap-0.5 rounded-lg border-2 px-1 py-1.5 transition ${sizeClass} ${
+        className={`squad-marker-empty group flex shrink-0 flex-col items-center justify-center gap-0.5 rounded-lg border-2 px-1 py-1 transition ${sizeClass} ${
           selected
             ? "z-20 border-accent-gold bg-accent-gold/20 shadow-[0_0_16px_rgba(251,191,36,0.45)] ring-2 ring-accent-gold"
             : highlighted
               ? "border-accent-gold bg-accent-gold/10 ring-2 ring-accent-gold/50"
               : interactive
-                ? "cursor-pointer border-accent-green/40 bg-black/50 hover:border-accent-green hover:bg-accent-green/10 hover:shadow-[0_0_12px_rgba(34,197,94,0.35)]"
-                : "border-dashed border-accent-green/20 bg-black/30"
+                ? "cursor-pointer border-accent-green/50 bg-black/60 hover:border-accent-green hover:bg-accent-green/10 hover:shadow-[0_0_12px_rgba(34,197,94,0.35)]"
+                : "border-dashed border-accent-green/30 bg-black/40"
         }`}
         animate={
           selected
@@ -283,19 +296,21 @@ function SquadMarker({
         }}
         title={interactive ? `${slot.label}: ${description}` : undefined}
       >
+        {shirtNumber !== undefined && (
+          <span
+            className={`font-display text-[11px] font-black leading-none sm:text-xs ${
+              interactive ? "text-accent-green" : "text-accent-green/50"
+            }`}
+          >
+            {shirtNumber}
+          </span>
+        )}
         <span
-          className={`w-full text-center font-display text-[10px] font-black uppercase leading-tight tracking-wide sm:text-[11px] ${
+          className={`w-full text-center font-display text-[8px] font-bold uppercase leading-tight tracking-wide sm:text-[9px] ${
             interactive ? "text-white" : "text-white/40"
           }`}
         >
           {positionLabel}
-        </span>
-        <span
-          className={`font-display text-[8px] font-bold tracking-wider sm:text-[9px] ${
-            interactive ? "text-gray-400" : "text-white/30"
-          }`}
-        >
-          {POSITION_SHORT[slot.position]}
         </span>
         {interactive && (
           <span className="text-[9px] font-semibold uppercase tracking-wider text-accent-green sm:text-[10px]">

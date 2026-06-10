@@ -7,7 +7,7 @@ import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
 /** Shared footprint for empty and filled pitch slots — scales down on mobile. */
 export const PITCH_SLOT_SIZE_CLASS =
-  "h-[68px] w-[60px] sm:h-[80px] sm:w-[72px] md:h-[88px] md:w-[80px] lg:h-[96px] lg:w-[88px]";
+  "h-[clamp(60px,14vw,96px)] w-[clamp(54px,12vw,88px)]";
 
 interface PitchSlotCardProps {
   slot: SquadSlot;
@@ -32,7 +32,7 @@ export function PitchSlotCard({
 
   return (
     <div
-      className={`pitch-slot-card flex shrink-0 flex-col overflow-hidden rounded-lg border border-white/35 bg-black/55 shadow-sm ${PITCH_SLOT_SIZE_CLASS} ${className}`}
+      className={`pitch-slot-card flex shrink-0 flex-col overflow-hidden rounded-lg border-2 border-accent-green/50 bg-black/70 shadow-[0_0_10px_rgba(34,197,94,0.2)] ${PITCH_SLOT_SIZE_CLASS} ${className}`}
       title={player.name}
     >
       <div className="flex h-1 w-full shrink-0">
