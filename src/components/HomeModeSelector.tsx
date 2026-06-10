@@ -12,9 +12,9 @@ import {
 import {
   BTN,
   CARD,
-  FILTER,
   SPACING,
   tabGroupButtonClass,
+  tabGroupClass,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GuestNotice } from "./GuestNotice";
@@ -65,7 +65,7 @@ export function HomeModeSelector() {
 
           <div className="mt-5">
             <p className={`mb-2 ${TYPO.sectionLabel}`}>Difficulty</p>
-            <div className={FILTER.tabGroup}>
+            <div className={tabGroupClass(classicDifficulty === "HARD")}>
               <button
                 type="button"
                 onClick={() => {
@@ -94,7 +94,7 @@ export function HomeModeSelector() {
               </button>
             </div>
             {classicDifficulty === "HARD" && (
-              <p className={`mt-2 ${TYPO.bodySm} text-red-400/80`}>
+              <p className={`mt-2 ${TYPO.bodySm} font-medium text-red-400`}>
                 Ratings and values hidden until season review. No rerolls.
               </p>
             )}
@@ -117,7 +117,7 @@ export function HomeModeSelector() {
 
           <div className="mt-5">
             <p className={`mb-2 ${TYPO.sectionLabel}`}>Draft Type</p>
-            <div className={FILTER.tabGroup}>
+            <div className={tabGroupClass(draftDifficulty === "HARD")}>
               <button
                 type="button"
                 onClick={() => {
@@ -146,7 +146,7 @@ export function HomeModeSelector() {
               </button>
             </div>
             {draftDifficulty === "HARD" && (
-              <p className={`mt-2 ${TYPO.bodySm} text-red-400/80`}>
+              <p className={`mt-2 ${TYPO.bodySm} font-medium text-red-400`}>
                 Ratings and values hidden until season review.
               </p>
             )}

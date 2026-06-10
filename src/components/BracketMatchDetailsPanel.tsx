@@ -1,10 +1,12 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import type { BracketMatch } from "@/lib/game/challenge-cup-bracket";
 import { getCupRoundLabel } from "@/lib/game/challenge-cup-bracket";
 import type { TeamScoringDetail } from "@/lib/game/season-simulation";
-import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
+import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 import { ClubNameLabel } from "./ClubNameLabel";
 import { ClubTeamLabel } from "./ClubTeamLabel";
 
@@ -27,44 +29,49 @@ export function BracketMatchDetailsPanel({
   }
 
   const scoring = match.scoringDetail;
+  const homeWon = match.homeScore > match.awayScore;
 
   return (
     <motion.div
-      className="match-details-expand mt-4 overflow-hidden rounded-lg border border-accent-green/30 bg-pitch-900/80 shadow-lg"
+      className={`match-details-expand mt-4 overflow-hidden ${CARD.base} border-accent-green/30 shadow-lg`}
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: "auto", opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
+      transition={{ duration: 0.22, ease: "easeOut" }}
     >
-      <div className="p-4">
-        <div className="mb-3 flex items-start justify-between gap-2">
-          <div>
-            <p className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-green">
+      <div className={SPACING.cardPadding}>
+        <div className={`${SPACING.headingMargin} flex items-start justify-between gap-2`}>
+          <div className="min-w-0">
+            <p className={TYPO.sectionLabel}>
               {getCupRoundLabel(match.round)} · Match Details
             </p>
-            <div className="mt-2 flex flex-wrap items-center justify-center gap-2 sm:justify-start sm:gap-3">
+            <div className={`mt-2 flex flex-wrap items-center justify-center ${SPACING.buttonGap} sm:justify-start`}>
               <ClubNameLabel club={match.homeTeam} variant="inline" />
-              <span className="font-display text-base font-black text-white sm:text-lg">
+              <span className={`${TYPO.cardTitle} whitespace-nowrap`}>
                 {match.homeScore} – {match.awayScore}
               </span>
               <ClubNameLabel club={match.awayTeam} variant="inline" />
             </div>
+            <p
+              className={`mt-1 font-display text-sm font-bold ${
+                homeWon ? "text-accent-green" : "text-red-400"
+              }`}
+            >
+              Winner: {match.winner ?? (homeWon ? match.homeTeam : match.awayTeam)}
+            </p>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="shrink-0 rounded-lg border border-pitch-600 px-2 py-1 text-[10px] text-gray-400 transition hover:text-white"
-          >
+          <button type="button" onClick={onClose} className={BTN.closeSm}>
             Close
           </button>
         </div>
 
         {scoring ? (
-          <div className="space-y-4">
+          <div className={SPACING.stackLg}>
             <TeamScoringBlock teamName={match.homeTeam} scoring={scoring.home} />
             <TeamScoringBlock teamName={match.awayTeam} scoring={scoring.away} />
           </div>
         ) : (
-          <p className="text-sm text-gray-500">Scoring data unavailable.</p>
+          <p className={TYPO.body}>Scoring data unavailable.</p>
         )}
       </div>
     </motion.div>
@@ -80,53 +87,69 @@ function TeamScoringBlock({
 }) {
   const hasTries = scoring.tryScorers.length > 0;
   const kicking = scoring.kicking;
+  const hasConversions = (kicking?.conversions ?? 0) > 0;
+  const hasPenalties = (kicking?.penalties ?? 0) > 0;
+  const hasDropGoals = (kicking?.dropGoals ?? 0) > 0;
 
   return (
-    <div className="space-y-2">
+    <div className={SPACING.stackSm}>
       <ClubTeamLabel club={teamName} />
-      {hasTries ? (
-        <div className={`${RL_INFO_BOX_CLASS} p-3`}>
-          <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">
-            Try Scorers
-          </p>
-          <ul className="space-y-1">
+      {hasTries && (
+        <ScoringSection title="Tries">
+          <ul className={SPACING.stackSm}>
             {scoring.tryScorers.map((s) => (
               <li
                 key={s.playerId}
-                className="flex justify-between text-sm text-gray-300"
+                className={`${CARD.inset} flex items-center justify-between gap-2 px-2.5 py-2`}
               >
-                <span>{s.name}</span>
-                <span className="font-bold text-accent-green">
+                <span className={TYPO.statValue}>{s.name}</span>
+                <span className={`shrink-0 ${TYPO.rating} text-sm`}>
                   {s.tries} {s.tries === 1 ? "try" : "tries"}
                 </span>
               </li>
             ))}
           </ul>
-        </div>
-      ) : (
-        <p className="text-xs text-gray-500">No tries scored.</p>
+        </ScoringSection>
       )}
-      {kicking && (
-        <div className={`${RL_INFO_BOX_CLASS} p-3`}>
-          <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">
-            Kicking
+      {hasConversions && kicking && (
+        <ScoringSection title="Conversions">
+          <p className={TYPO.statValue}>
+            {kicking.name} ({kicking.conversions}/{kicking.conversionAttempts})
           </p>
-          <p className="text-sm text-gray-300">{kicking.name}</p>
-          <div className="mt-1 flex flex-wrap gap-3 text-xs text-gray-400">
-            {kicking.conversions > 0 && (
-              <span>
-                Conversions: {kicking.conversions}/{kicking.conversionAttempts}
-              </span>
-            )}
-            {kicking.penalties > 0 && (
-              <span>Penalties: {kicking.penalties}</span>
-            )}
-            {kicking.dropGoals > 0 && (
-              <span>Drop Goals: {kicking.dropGoals}</span>
-            )}
-          </div>
-        </div>
+        </ScoringSection>
       )}
+      {hasPenalties && kicking && (
+        <ScoringSection title="Penalties">
+          <p className={TYPO.statValue}>
+            {kicking.name} ({kicking.penalties})
+          </p>
+        </ScoringSection>
+      )}
+      {hasDropGoals && kicking && (
+        <ScoringSection title="Drop Goals">
+          <p className={TYPO.statValue}>
+            {kicking.name} ({kicking.dropGoals})
+          </p>
+        </ScoringSection>
+      )}
+      {!hasTries && !hasConversions && !hasPenalties && !hasDropGoals && (
+        <p className={TYPO.bodySm}>No scoring breakdown recorded.</p>
+      )}
+    </div>
+  );
+}
+
+function ScoringSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
+      <p className={TYPO.sectionTitle}>{title}</p>
+      <div className="mt-2">{children}</div>
     </div>
   );
 }

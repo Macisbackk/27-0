@@ -17,13 +17,12 @@ import {
 } from "../ClubBadge";
 import { PlayerIdentityLine } from "../PlayerIdentityLine";
 import { TYPO } from "@/lib/ui/typography";
+import { StatBox, TIER_STAT_SPAN_CLASS } from "../ui/StatBox";
 import {
   ACHIEVEMENT_TAG_VARIANT,
-  RL_TIER_STAT_SPAN_CLASS,
   RLCardShell,
   RLInfoBox,
   RLRatingDisplay,
-  RLStatBox,
   RLTag,
 } from "./rl-card";
 
@@ -255,51 +254,51 @@ export function RugbyLeaguePlayerCard({
           )}
 
           <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-2">
-            <RLStatBox
+            <StatBox
               label="Apps"
               value={appearancesValue}
-              large
+              size="lg"
               light
               compact={mobileCompact}
             />
-            <RLStatBox
+            <StatBox
               label="Tries"
               value={formatCareerTries(player.tries)}
-              large
+              size="lg"
               light
               compact={mobileCompact}
             />
-            <RLStatBox
+            <StatBox
               label="Years"
               value={player.yearsActive}
-              large
+              size="lg"
               light
               compact={mobileCompact}
               className="hidden sm:block"
             />
-            <RLStatBox
+            <StatBox
               label="Value"
               value={maskValue(formatValue(player.value))}
-              large
+              size="lg"
               light
               compact={mobileCompact}
             />
-            <RLStatBox
+            <StatBox
               label="Intl Caps"
               value={maskValue(
                 player.intlCaps > 0 ? String(player.intlCaps) : "—"
               )}
-              large
+              size="lg"
               light
               compact={mobileCompact}
             />
-            <RLStatBox
+            <StatBox
               label="Tier"
               value={maskValue(tier)}
-              large
+              size="lg"
               light
               compact={mobileCompact}
-              className={RL_TIER_STAT_SPAN_CLASS}
+              className={TIER_STAT_SPAN_CLASS}
             />
           </div>
         </div>
@@ -334,27 +333,28 @@ export function RugbyLeaguePlayerCard({
         {achievementBadges}
 
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-          <RLStatBox label="Apps" value={appearancesValue} />
-          <RLStatBox label="Tries" value={formatCareerTries(player.tries)} />
-          <RLStatBox
+          <StatBox label="Apps" value={appearancesValue} />
+          <StatBox label="Tries" value={formatCareerTries(player.tries)} />
+          <StatBox
             label="Years"
             value={player.yearsActive}
             className="hidden sm:block"
           />
-          <RLStatBox
+          <StatBox
             label="Value"
             value={maskValue(formatValue(player.value))}
           />
-          <RLStatBox
+          <StatBox
             label="Intl Caps"
             value={maskValue(
               player.intlCaps > 0 ? String(player.intlCaps) : "—"
             )}
           />
-          <RLStatBox
+          <StatBox
             label="Tier"
             value={maskValue(tier)}
-            className={RL_TIER_STAT_SPAN_CLASS}
+            light
+            className={TIER_STAT_SPAN_CLASS}
           />
         </div>
       </div>

@@ -5,8 +5,9 @@ import { POSITION_LABELS } from "@/lib/positions";
 import {
   getPlacementPenalty,
   isNaturalPlacement,
-  OUT_OF_POSITION_PENALTY,
 } from "@/lib/game/position-placement";
+import { CARD, HARD, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 interface DraftPlacementBannerProps {
   player: Player;
@@ -26,13 +27,15 @@ export function DraftPlacementBanner({
       ? getPlacementPenalty(player.position, selectedSlotPosition)
       : 0;
 
+  const bannerClass = hardMode
+    ? `${HARD.banner} ${SPACING.cardPadding}`
+    : `${CARD.base} border-accent-green/30 bg-accent-green/5 ${SPACING.cardPadding}`;
+
   return (
-    <div className="mx-auto mb-4 max-w-2xl rounded-xl border border-accent-green/30 bg-accent-green/5 px-4 py-3 text-center">
+    <div className={`mx-auto mb-4 max-w-2xl text-center ${bannerClass}`}>
       {showRule && (
-        <div className="mb-3 border-b border-pitch-600/40 pb-3 text-left text-xs text-gray-400">
-          <p className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-green">
-            Draft Mode Rule
-          </p>
+        <div className={`mb-3 border-b border-pitch-600/40 pb-3 text-left ${TYPO.bodySm}`}>
+          <p className={TYPO.sectionTitle}>Draft Mode Rule</p>
           <p className="mt-1">
             Pick a player from the pair offered, then tap an empty slot on the
             team sheet. No penalty at natural position; −5 OVR if out of
@@ -45,21 +48,27 @@ export function DraftPlacementBanner({
         </div>
       )}
 
-      <p className="font-display text-xs font-bold uppercase tracking-wider text-accent-green">
+      {hardMode && (
+        <p className={`mb-2 ${TYPO.sectionTitle} ${HARD.reviewAccent}`}>
+          Hard Draft — ratings hidden
+        </p>
+      )}
+
+      <p className={TYPO.sectionTitle}>
         Place {player.name}
       </p>
-      <p className="mt-1 text-sm text-gray-300">
+      <p className={`mt-1 ${TYPO.body}`}>
         Natural Position:{" "}
-        <span className="font-semibold text-white">
+        <span className={TYPO.positionHighlight}>
           {POSITION_LABELS[player.position]}
         </span>
       </p>
 
       {selectedSlotPosition !== undefined && (
         <>
-          <p className="mt-1 text-sm text-gray-300">
+          <p className={`mt-1 ${TYPO.body}`}>
             Selected Position:{" "}
-            <span className="font-semibold text-white">
+            <span className={TYPO.positionHighlight}>
               {POSITION_LABELS[selectedSlotPosition]}
             </span>
           </p>
@@ -70,7 +79,7 @@ export function DraftPlacementBanner({
                 : `Penalty: -${penalty} OVR`}
             </p>
           ) : (
-            <p className="mt-2 text-sm text-accent-green">
+            <p className={`mt-2 ${TYPO.body} text-accent-green`}>
               {isNaturalPlacement(player.position, selectedSlotPosition)
                 ? "Natural position — no penalty."
                 : "Compatible position — no penalty."}
@@ -80,7 +89,7 @@ export function DraftPlacementBanner({
       )}
 
       {!selectedSlotPosition && (
-        <p className="mt-2 text-xs text-gray-500">
+        <p className={`mt-2 ${TYPO.bodySm}`}>
           Tap an empty slot on the team sheet to place this player.
         </p>
       )}

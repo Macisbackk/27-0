@@ -7,6 +7,8 @@ import { getClubsWithPlayers } from "@/lib/players";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { ClubHeaderBar } from "./ClubBadge";
 import { getClubColors } from "@/lib/clubs";
+import { BTN, CARD, FILTER, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 interface ChallengeCupClubSelectProps {
   seed: string;
@@ -37,15 +39,11 @@ export function ChallengeCupClubSelect({
   };
 
   return (
-    <div className="mx-auto w-full max-w-2xl px-4 py-8">
+    <div className={`mx-auto w-full max-w-2xl ${SPACING.pageX} py-8`}>
       <div className="text-center">
-        <p className="font-display text-xs font-bold uppercase tracking-[0.35em] text-accent-green">
-          Challenge Cup
-        </p>
-        <h2 className="mt-2 font-display text-2xl font-black sm:text-3xl">
-          Choose Your Team
-        </h2>
-        <p className="mt-2 text-sm text-gray-400">
+        <p className={TYPO.sectionLabel}>Challenge Cup</p>
+        <h2 className={`mt-2 ${TYPO.pageTitle}`}>Choose Your Team</h2>
+        <p className={`mt-2 ${TYPO.body}`}>
           Draft players from one club only — build the greatest version of that
           team.
         </p>
@@ -55,12 +53,12 @@ export function ChallengeCupClubSelect({
         {revealing ? (
           <motion.div
             key="reveal"
-            className="matchday-panel mt-8 overflow-hidden p-8 text-center"
+            className={`${CARD.panel} mt-8 overflow-hidden ${SPACING.cardPaddingLg} text-center`}
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.05 }}
           >
-            <p className="font-display text-xs font-bold uppercase tracking-[0.3em] text-accent-gold">
+            <p className={`${TYPO.sectionTitle} text-accent-gold`}>
               Random Club
             </p>
             <motion.div
@@ -70,10 +68,8 @@ export function ChallengeCupClubSelect({
               className="mt-6"
             >
               <ClubHeaderBar club={revealing} size="lg" thick />
-              <p className="mt-4 font-display text-2xl font-black text-white">
-                {revealing}
-              </p>
-              <p className="mt-2 text-sm text-gray-400">Preparing your squad…</p>
+              <p className={`mt-4 ${TYPO.pageTitle}`}>{revealing}</p>
+              <p className={`mt-2 ${TYPO.bodySm}`}>Preparing your squad…</p>
             </motion.div>
           </motion.div>
         ) : (
@@ -81,20 +77,17 @@ export function ChallengeCupClubSelect({
             key="select"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="matchday-panel mt-8 p-5 sm:p-6"
+            className={`${CARD.panel} mt-8 ${SPACING.cardPadding}`}
           >
-            <label
-              htmlFor="cup-club-select"
-              className="mb-2 block text-xs font-bold uppercase tracking-wider text-gray-500"
-            >
+            <label htmlFor="cup-club-select" className={`mb-2 block ${TYPO.statLabel}`}>
               Select Team
             </label>
-            <div className="flex gap-2">
+            <div className={`flex ${SPACING.buttonGap}`}>
               <select
                 id="cup-club-select"
                 value={selected}
                 onChange={(e) => setSelected(e.target.value)}
-                className="rl-filter-input min-w-0 flex-1 rounded-lg border border-pitch-600 bg-pitch-900/60 px-3 py-2.5 text-sm text-white outline-none focus:border-accent-green"
+                className={`${FILTER.input} min-w-0 flex-1`}
               >
                 <option value="">Choose a club…</option>
                 {clubs.map((club) => (
@@ -109,38 +102,36 @@ export function ChallengeCupClubSelect({
             </div>
 
             {selected && (
-              <div className="mt-4 overflow-hidden rounded-lg border border-pitch-600/40">
+              <div className={`mt-4 overflow-hidden ${CARD.base}`}>
                 <ClubHeaderBar club={selected} size="md" thick />
-                <p className="px-3 py-2 text-xs text-gray-400">
+                <p className={`px-3 py-2 ${TYPO.bodySm}`}>
                   Draft pool: {selected} players only (current, historic &
                   legends).
                 </p>
               </div>
             )}
 
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <div className={`mt-6 grid ${SPACING.buttonGap} sm:grid-cols-2`}>
               <button
                 type="button"
                 disabled={!selected}
                 onClick={handleConfirm}
-                className="btn-primary w-full py-3 font-display text-sm font-bold uppercase tracking-wider disabled:opacity-40"
+                className={`${BTN.base} ${BTN.primary} w-full disabled:opacity-40`}
               >
                 Confirm Team
               </button>
               <button
                 type="button"
                 onClick={handleRandom}
-                className="btn-secondary w-full py-3 font-display text-sm font-bold uppercase tracking-wider"
+                className={`${BTN.base} ${BTN.secondary} w-full`}
               >
                 Random Club
               </button>
             </div>
 
-            <div className="mt-5 max-h-48 overflow-y-auto rounded-lg border border-pitch-600/30 p-3">
-              <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">
-                Available Clubs
-              </p>
-              <div className="grid gap-1.5 sm:grid-cols-2">
+            <div className={`mt-5 max-h-48 overflow-y-auto ${CARD.inset} p-3`}>
+              <p className={`mb-2 ${TYPO.statLabel}`}>Available Clubs</p>
+              <div className={`grid gap-1.5 sm:grid-cols-2`}>
                 {clubs.map((club) => {
                   const colors = getClubColors(club);
                   return (
@@ -148,20 +139,17 @@ export function ChallengeCupClubSelect({
                       key={club}
                       type="button"
                       onClick={() => setSelected(club)}
-                      className={`flex items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs transition ${
+                      className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-2.5 py-2 text-left ${TYPO.bodySm} transition ${
                         selected === club
-                          ? "border-accent-green/50 bg-accent-green/10 text-accent-green"
-                          : "border-pitch-600/40 text-gray-300 hover:border-pitch-500/50"
+                          ? `${CARD.selected} border-accent-green/50 text-accent-green`
+                          : `${CARD.base} text-gray-300 hover:border-pitch-500/50`
                       }`}
                     >
                       <ClubDualSwatch club={club} size="xs" />
                       <span className="min-w-0 flex-1 break-words font-medium leading-snug">
                         {club}
                       </span>
-                      <span
-                        className="ml-auto hidden text-[9px] text-gray-500 sm:inline"
-                        style={{ color: "inherit" }}
-                      >
+                      <span className="ml-auto hidden text-[9px] sm:inline">
                         {colors.shortName}
                       </span>
                     </button>

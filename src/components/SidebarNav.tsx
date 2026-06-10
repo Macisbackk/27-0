@@ -114,7 +114,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         onClick={onClose}
                         className={navLinkClass(active)}
                       >
-                        <span aria-hidden className="text-base">
+                        <span aria-hidden className={NAV.icon}>
                           {item.icon}
                         </span>
                         {item.label}
@@ -131,7 +131,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     onClick={onClose}
                     className={navLinkClass(pathname.startsWith("/play"))}
                   >
-                    <span aria-hidden className="text-base">
+                    <span aria-hidden className={NAV.icon}>
                       🏉
                     </span>
                     Play
@@ -154,7 +154,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       ? "Sound off — click to enable"
                       : "Sound on — click to mute"
                   }
-                  className={`${NAV.item} w-full border border-pitch-600 hover:border-accent-green/40`}
+                  className={`${NAV.item} w-full border border-pitch-600 text-base hover:border-accent-green/40`}
                 >
                   <span
                     className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${

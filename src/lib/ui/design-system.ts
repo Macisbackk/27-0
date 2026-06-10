@@ -66,8 +66,8 @@ export const BTN = {
   tabGroupActive: "bg-accent-green text-pitch-950 shadow-lg",
   tabGroupIdle: "text-gray-400 hover:text-white",
   hardActive:
-    "bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.4)]",
-  hardIdle: "text-gray-400 hover:text-white",
+    "border-2 border-red-500/80 bg-red-950/75 text-white shadow-[0_0_28px_rgba(220,38,38,0.55),inset_0_1px_0_rgba(255,255,255,0.06)]",
+  hardIdle: "text-gray-400 hover:border-red-500/30 hover:bg-red-950/30 hover:text-red-300",
   accentOutline: `w-full border border-accent-green/40 bg-accent-green/10 text-accent-green hover:bg-accent-green/20 sm:w-auto`,
   goldOutline: `w-full border border-accent-gold/35 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/15 sm:w-auto`,
   goldOutlineSm: `border border-accent-gold/50 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/20`,
@@ -77,18 +77,30 @@ export const BTN = {
   header: `header-control-btn flex h-9 min-w-[5.5rem] items-center justify-center gap-1.5 rounded-lg border border-pitch-600 px-3 text-xs font-medium text-gray-300 transition hover:border-accent-green hover:text-white`,
 } as const;
 
+/** Hard mode visual tokens. */
+export const HARD = {
+  tabGroupRing:
+    "border-red-500/45 shadow-[0_0_20px_rgba(220,38,38,0.18)]",
+  banner:
+    "border border-red-500/50 bg-red-950/35 shadow-[0_0_16px_rgba(220,38,38,0.12)]",
+  badge:
+    "inline-flex items-center gap-2 rounded-lg border-2 border-red-500/60 bg-red-950/70 px-3 py-1.5 font-display text-[11px] font-black uppercase tracking-[0.22em] text-red-300 shadow-[0_0_18px_rgba(239,68,68,0.35)]",
+  reviewAccent: "text-red-400",
+} as const;
+
 /** Navigation & links. */
 export const NAV = {
-  item: `${TYPO.nav} flex min-h-[44px] items-center gap-3 rounded-lg px-3 py-2.5 transition`,
+  item: `${TYPO.nav} flex min-h-[52px] items-center gap-4 rounded-xl px-4 py-3.5 text-base transition`,
   itemActive: "border border-accent-green/30 bg-accent-green/10 text-accent-green",
   itemIdle: "text-gray-300 hover:bg-pitch-800/60 hover:text-white",
   sectionLabel: TYPO.sectionLabel,
+  icon: "text-lg leading-none",
 } as const;
 
 export const LINK = {
   subtle: "text-sm text-gray-500 transition hover:text-white",
   accent: "text-sm text-accent-green transition hover:underline",
-  footer: `${TYPO.button} inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-pitch-600/60 bg-pitch-900/50 px-3 py-1.5 text-gray-400 transition hover:border-accent-green/40 hover:text-white`,
+  footer: `${TYPO.button} inline-flex min-h-[48px] items-center gap-2 rounded-xl border border-pitch-600/60 bg-pitch-900/50 px-4 py-2.5 text-gray-400 transition hover:border-accent-green/40 hover:text-white`,
 } as const;
 
 /** Stat highlight when a side wins a comparison. */
@@ -104,9 +116,14 @@ export function tabGroupButtonClass(
   active: boolean,
   variant: "normal" | "hard" = "normal"
 ): string {
-  const base = `${TYPO.button} ${BTN.tabGroupInner}`;
+  const base = `${TYPO.button} ${BTN.tabGroupInner} min-h-[48px] sm:min-h-[44px]`;
   if (!active) {
     return `${base} ${variant === "hard" ? BTN.hardIdle : BTN.tabGroupIdle}`;
   }
   return `${base} ${variant === "hard" ? BTN.hardActive : BTN.tabGroupActive}`;
+}
+
+/** Tab group wrapper — add red ring when hard mode is active. */
+export function tabGroupClass(hardActive = false): string {
+  return `${FILTER.tabGroup}${hardActive ? ` ${HARD.tabGroupRing}` : ""}`;
 }

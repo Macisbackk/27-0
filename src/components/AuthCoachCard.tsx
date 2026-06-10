@@ -6,7 +6,14 @@ import {
   COACH_NAME_MAX_LENGTH,
   COACH_NAME_MIN_LENGTH,
 } from "@/lib/storage/user";
-import { RL_SECTION_TITLE_CLASS } from "./cards/rl-card";
+import {
+  BTN,
+  CARD,
+  FILTER,
+  SPACING,
+  tabGroupButtonClass,
+} from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 type AuthMode = "signup" | "login";
 
@@ -106,7 +113,7 @@ export function AuthCoachCard() {
 
   if (loading) {
     return (
-      <div className="matchday-panel mx-auto max-w-md p-6 text-center text-sm text-gray-500">
+      <div className={`${CARD.panel} mx-auto max-w-md ${SPACING.cardPadding} text-center ${TYPO.bodySm}`}>
         Loading account…
       </div>
     );
@@ -114,20 +121,16 @@ export function AuthCoachCard() {
 
   if (isLoggedIn && !editingCoach) {
     return (
-      <section className="matchday-panel mx-auto max-w-md p-5 sm:p-6">
-        <p className={RL_SECTION_TITLE_CLASS}>Coach Profile</p>
-        <div className="mt-3 space-y-1 text-center sm:text-left">
-          <p className="font-display text-[10px] font-bold uppercase tracking-[0.25em] text-accent-green">
-            Coach
-          </p>
-          <p className="font-display text-2xl font-black uppercase tracking-wide text-white">
-            {coachName}
-          </p>
-          <p className="text-sm text-gray-500">
+      <section className={`${CARD.panel} mx-auto max-w-md ${SPACING.cardPadding}`}>
+        <p className={TYPO.sectionTitle}>Coach Profile</p>
+        <div className={`mt-3 ${SPACING.stackSm} text-center sm:text-left`}>
+          <p className={TYPO.sectionLabel}>Coach</p>
+          <p className={TYPO.pageTitle}>{coachName}</p>
+          <p className={TYPO.bodySm}>
             Logged in as <span className="text-gray-300">{email}</span>
           </p>
         </div>
-        <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
+        <div className={`mt-5 flex flex-col ${SPACING.buttonGap} sm:flex-row sm:justify-center`}>
           <button
             type="button"
             onClick={() => {
@@ -135,14 +138,14 @@ export function AuthCoachCard() {
               setEditingCoach(true);
               setError(null);
             }}
-            className="rounded-lg border border-pitch-600 bg-pitch-900/60 px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-gray-300 transition hover:border-accent-green/50 hover:text-white"
+            className={`${BTN.base} ${BTN.secondary}`}
           >
             Change Coach Name
           </button>
           <button
             type="button"
             onClick={() => void signOut()}
-            className="rounded-lg border border-pitch-600 px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-gray-400 transition hover:border-red-500/50 hover:text-red-400"
+            className={`${BTN.base} ${BTN.danger}`}
           >
             Log Out
           </button>
@@ -153,31 +156,29 @@ export function AuthCoachCard() {
 
   if (isLoggedIn && editingCoach) {
     return (
-      <section className="matchday-panel mx-auto max-w-md p-6">
-        <h2 className="font-display text-lg font-black uppercase text-white">
-          Change Coach Name
-        </h2>
+      <section className={`${CARD.panel} mx-auto max-w-md ${SPACING.cardPadding}`}>
+        <h2 className={TYPO.cardTitle}>Change Coach Name</h2>
         <input
           type="text"
           value={coachInput}
           onChange={(e) => setCoachInput(e.target.value)}
           maxLength={COACH_NAME_MAX_LENGTH}
-          className="mt-4 w-full rounded-lg border border-pitch-600 bg-pitch-900/80 px-4 py-3 text-white outline-none focus:border-accent-green"
+          className={`mt-4 ${FILTER.input}`}
         />
-        {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
-        <div className="mt-4 flex gap-2">
+        {error && <p className={`mt-2 ${TYPO.body} text-red-400`}>{error}</p>}
+        <div className={`mt-4 flex ${SPACING.buttonGap}`}>
           <button
             type="button"
             disabled={busy}
             onClick={() => void handleUpdateCoach()}
-            className="rounded-lg bg-accent-green px-5 py-2.5 font-display text-xs font-bold uppercase text-pitch-950"
+            className={`${BTN.base} ${BTN.primary}`}
           >
             Save
           </button>
           <button
             type="button"
             onClick={() => setEditingCoach(false)}
-            className="rounded-lg border border-pitch-600 px-5 py-2.5 text-xs text-gray-400"
+            className={`${BTN.base} ${BTN.secondary}`}
           >
             Cancel
           </button>
@@ -187,21 +188,21 @@ export function AuthCoachCard() {
   }
 
   return (
-    <section className="matchday-panel mx-auto max-w-md p-6 sm:p-8">
-      <p className={RL_SECTION_TITLE_CLASS}>Account</p>
+    <section className={`${CARD.panel} mx-auto max-w-md ${SPACING.cardPaddingLg}`}>
+      <p className={TYPO.sectionTitle}>Account</p>
 
       <button
         type="button"
         onClick={scrollToPlay}
-        className="mt-4 w-full rounded-lg border border-accent-green/40 bg-accent-green/10 px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-accent-green transition hover:bg-accent-green/20"
+        className={`mt-4 w-full ${BTN.base} ${BTN.accentOutline}`}
       >
         Continue as Guest
       </button>
-      <p className="mt-2 text-center text-xs text-gray-500">
+      <p className={`mt-2 text-center ${TYPO.bodySm}`}>
         Play without an account — stats stay on this device only.
       </p>
 
-      <div className="mt-6 flex gap-2">
+      <div className={`mt-6 flex ${SPACING.buttonGap}`}>
         <button
           type="button"
           onClick={() => {
@@ -209,11 +210,7 @@ export function AuthCoachCard() {
             setError(null);
             setSuccess(null);
           }}
-          className={`flex-1 rounded-lg px-4 py-2 font-display text-xs font-bold uppercase tracking-wider ${
-            mode === "login"
-              ? "bg-accent-green text-pitch-950"
-              : "bg-pitch-800 text-gray-400"
-          }`}
+          className={`flex-1 ${tabGroupButtonClass(mode === "login")}`}
         >
           Log In
         </button>
@@ -224,30 +221,26 @@ export function AuthCoachCard() {
             setError(null);
             setSuccess(null);
           }}
-          className={`flex-1 rounded-lg px-4 py-2 font-display text-xs font-bold uppercase tracking-wider ${
-            mode === "signup"
-              ? "bg-accent-green text-pitch-950"
-              : "bg-pitch-800 text-gray-400"
-          }`}
+          className={`flex-1 ${tabGroupButtonClass(mode === "signup")}`}
         >
           Create Account
         </button>
       </div>
 
-      <div className="mt-5 space-y-3">
+      <div className={`mt-5 ${SPACING.stackMd}`}>
         <input
           type="email"
           value={emailInput}
           onChange={(e) => setEmailInput(e.target.value)}
           placeholder="Email"
-          className="w-full rounded-lg border border-pitch-600 bg-pitch-900/80 px-4 py-3 text-white outline-none focus:border-accent-green"
+          className={FILTER.input}
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
-          className="w-full rounded-lg border border-pitch-600 bg-pitch-900/80 px-4 py-3 text-white outline-none focus:border-accent-green"
+          className={FILTER.input}
         />
         {mode === "signup" && (
           <>
@@ -256,7 +249,7 @@ export function AuthCoachCard() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm Password"
-              className="w-full rounded-lg border border-pitch-600 bg-pitch-900/80 px-4 py-3 text-white outline-none focus:border-accent-green"
+              className={FILTER.input}
             />
             <input
               type="text"
@@ -264,9 +257,9 @@ export function AuthCoachCard() {
               onChange={(e) => setCoachInput(e.target.value)}
               placeholder="Coach Name"
               maxLength={COACH_NAME_MAX_LENGTH}
-              className="w-full rounded-lg border border-pitch-600 bg-pitch-900/80 px-4 py-3 text-white outline-none focus:border-accent-green"
+              className={FILTER.input}
             />
-            <p className="text-xs text-gray-500">
+            <p className={TYPO.bodySm}>
               Coach name {COACH_NAME_MIN_LENGTH}–{COACH_NAME_MAX_LENGTH}{" "}
               characters · letters, numbers, underscores
             </p>
@@ -275,19 +268,19 @@ export function AuthCoachCard() {
       </div>
 
       {success && (
-        <p className="mt-3 text-sm font-medium text-accent-green" role="status">
+        <p className={`mt-3 ${TYPO.body} font-medium text-accent-green`} role="status">
           {success}
         </p>
       )}
 
       {error && (
-        <p className="mt-3 text-sm font-medium text-red-400" role="alert">
+        <p className={`mt-3 ${TYPO.body} font-medium text-red-400`} role="alert">
           {error}
         </p>
       )}
 
       {signupBlocked && (
-        <p className="mt-2 text-center text-xs text-gray-500">
+        <p className={`mt-2 text-center ${TYPO.bodySm}`}>
           Please wait {cooldownSeconds}s before signing up again.
         </p>
       )}
@@ -296,7 +289,7 @@ export function AuthCoachCard() {
         type="button"
         disabled={busy || signupBlocked}
         onClick={() => void handleSubmit()}
-        className="mt-5 w-full rounded-lg bg-accent-green px-6 py-3 font-display text-sm font-bold uppercase tracking-wider text-pitch-950 transition hover:bg-emerald-400 disabled:opacity-50"
+        className={`mt-5 w-full ${BTN.base} ${BTN.primary}`}
       >
         {mode === "signup"
           ? signupBlocked

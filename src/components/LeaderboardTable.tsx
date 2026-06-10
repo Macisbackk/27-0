@@ -16,7 +16,13 @@ import {
 } from "@/lib/storage/leaderboard";
 import { playUiClick } from "@/lib/sound";
 import { HardModeBadge } from "./HardModeBadge";
-import { BTN, CARD, SPACING, tabGroupButtonClass } from "@/lib/ui/design-system";
+import {
+  BTN,
+  CARD,
+  SPACING,
+  tabGroupButtonClass,
+  tabGroupClass,
+} from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
@@ -170,14 +176,14 @@ export function LeaderboardTable({
       </div>
 
       {leaderboardMode !== "challenge-cup" && (
-        <div className="mb-5 flex flex-wrap gap-3">
+        <div className={`mb-5 inline-flex flex-wrap ${tabGroupClass(difficulty === "HARD")}`}>
           <button
             type="button"
             onClick={() => {
               if (difficulty !== "NORMAL") playUiClick();
               setDifficulty("NORMAL");
             }}
-            className={`${BTN.base} ${tabGroupButtonClass(difficulty === "NORMAL")} border-2 px-5`}
+            className={tabGroupButtonClass(difficulty === "NORMAL")}
           >
             {leaderboardMode === "draft" ? "Standard Draft" : "Normal"}
           </button>
@@ -187,7 +193,7 @@ export function LeaderboardTable({
               if (difficulty !== "HARD") playUiClick();
               setDifficulty("HARD");
             }}
-            className={`${BTN.base} ${tabGroupButtonClass(difficulty === "HARD", "hard")} border-2 px-5`}
+            className={tabGroupButtonClass(difficulty === "HARD", "hard")}
           >
             {leaderboardMode === "draft" ? "Hard Draft" : "Hard"}
           </button>

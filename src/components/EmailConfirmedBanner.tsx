@@ -7,6 +7,8 @@ import {
   markEmailConfirmBannerShown,
   shouldShowEmailConfirmBanner,
 } from "@/lib/auth-callback";
+import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 export function EmailConfirmedBanner() {
   const router = useRouter();
@@ -45,21 +47,19 @@ export function EmailConfirmedBanner() {
 
   return (
     <div
-      className="matchday-panel mx-auto mb-6 max-w-md border border-accent-green/40 bg-accent-green/10 p-4"
+      className={`${CARD.panel} mx-auto mb-6 max-w-md border border-accent-green/40 bg-accent-green/10 ${SPACING.cardPadding} shadow-[0_0_24px_rgba(34,197,94,0.12)]`}
       role="status"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="font-display text-sm font-bold uppercase tracking-wider text-accent-green">
-            Email confirmed successfully
-          </p>
-          <p className="mt-1 text-sm text-gray-200">{message}</p>
-          <p className="mt-1 text-xs text-gray-400">{subtext}</p>
+          <p className={TYPO.sectionTitle}>Email confirmed successfully</p>
+          <p className={`mt-1 ${TYPO.body} text-gray-200`}>{message}</p>
+          <p className={`mt-1 ${TYPO.bodySm}`}>{subtext}</p>
         </div>
         <button
           type="button"
           onClick={dismiss}
-          className="shrink-0 text-gray-500 transition hover:text-white"
+          className={BTN.closeSm}
           aria-label="Dismiss"
         >
           ✕

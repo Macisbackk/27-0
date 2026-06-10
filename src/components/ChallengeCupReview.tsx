@@ -39,6 +39,7 @@ import { TeamComparisonBox } from "./TeamComparisonBox";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { TryScorersSection } from "./TryScorersSection";
 import { runChallengeCupReviewValidation } from "@/lib/validation/challenge-cup-review-validation";
+import { HARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 interface ChallengeCupReviewProps {
@@ -212,7 +213,7 @@ export function ChallengeCupReview({
           <ReviewSubmissionNotice submittedOnline={submittedOnline} />
 
           {isHardMode && (
-            <div className="mt-3 flex justify-center">
+            <div className={`mt-3 flex justify-center ${HARD.banner} rounded-xl px-4 py-2`}>
               <HardModeBadge />
             </div>
           )}

@@ -31,6 +31,7 @@ import { TryScorersSection } from "./TryScorersSection";
 import { buildLeagueTable } from "@/lib/game/league-table";
 import { LeagueTable } from "./LeagueTable";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
+import { HARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 interface SeasonReviewProps {
@@ -169,14 +170,18 @@ export function SeasonReview({
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-xl text-center"
         >
-          <p className="font-display text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
+          <p
+            className={`font-display text-xs font-semibold uppercase tracking-[0.3em] ${
+              isHardMode ? HARD.reviewAccent : "text-gray-500"
+            }`}
+          >
             {getSeasonReviewLabel(mode, difficulty)}
           </p>
 
           <ReviewSubmissionNotice submittedOnline={submittedOnline} />
 
           {isHardMode && (
-            <div className="mt-3 flex justify-center">
+            <div className={`mt-3 flex justify-center ${HARD.banner} rounded-xl px-4 py-2`}>
               <HardModeBadge />
             </div>
           )}
