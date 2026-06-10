@@ -76,6 +76,8 @@ import { HardModeBadge } from "./HardModeBadge";
 import { ClubHeaderBar } from "./ClubBadge";
 import { GuestNotice } from "./GuestNotice";
 import { DraftPlacementBanner } from "./DraftPlacementBanner";
+import { BTN, CARD, LINK, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 interface GameBoardProps {
   mode: GameMode;
@@ -681,11 +683,11 @@ export function GameBoard({
         <div className="relative mx-auto max-w-6xl px-4 pt-4">
           <div className="flex flex-wrap items-center gap-3">
             {title && (
-              <h1 className="font-display text-lg font-bold">{title}</h1>
+              <h1 className="font-display text-lg font-bold text-white">{title}</h1>
             )}
             {isHardMode && <HardModeBadge />}
           </div>
-          {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+          {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
         </div>
       )}
 
@@ -706,12 +708,12 @@ export function GameBoard({
 
         {superSamHallasMode && phase !== "clubSelect" && phase !== "review" && (
           <motion.div
-            className="mt-4 overflow-hidden rounded-xl border border-accent-gold/50 bg-accent-gold/15 px-3 py-3 text-center sm:px-4 sm:py-4"
+            className={`mt-4 overflow-hidden ${CARD.base} border-accent-gold/50 bg-accent-gold/15 px-3 py-3 text-center sm:px-4 sm:py-4`}
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.35 }}
           >
-            <p className="font-display text-[10px] font-black uppercase tracking-[0.28em] text-accent-gold sm:text-xs sm:tracking-[0.35em]">
+            <p className={`${TYPO.sectionLabel} text-accent-gold`}>
               SUPER SAM HALLAS MODE ACTIVATED
             </p>
           </motion.div>
@@ -719,12 +721,12 @@ export function GameBoard({
 
         {joeMellorMode && !superSamHallasMode && phase !== "clubSelect" && phase !== "review" && (
           <motion.div
-            className="mt-4 overflow-hidden rounded-xl border border-accent-gold/50 bg-accent-gold/15 px-3 py-3 text-center sm:px-4 sm:py-4"
+            className={`mt-4 overflow-hidden ${CARD.base} border-accent-gold/50 bg-accent-gold/15 px-3 py-3 text-center sm:px-4 sm:py-4`}
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.35 }}
           >
-            <p className="font-display text-[10px] font-black uppercase tracking-[0.28em] text-accent-gold sm:text-xs sm:tracking-[0.35em]">
+            <p className={`${TYPO.sectionLabel} text-accent-gold`}>
               GOAT MODE ACTIVATED
             </p>
           </motion.div>
@@ -732,16 +734,16 @@ export function GameBoard({
 
         {isChallengeCup && cupClub && phase !== "clubSelect" && (
           <motion.div
-            className="mt-4 overflow-hidden rounded-xl border border-accent-gold/40 bg-accent-gold/10"
+            className={`mt-4 overflow-hidden ${CARD.base} border-accent-gold/40 bg-accent-gold/10`}
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
           >
             <ClubHeaderBar club={cupClub} size="md" thick />
             <div className="px-4 py-3 text-center">
-              <p className="font-display text-xs font-black uppercase tracking-[0.35em] text-accent-gold">
+              <p className={`${TYPO.sectionTitle} text-accent-gold`}>
                 Challenge Cup — {cupClub}
               </p>
-              <p className="mt-1 text-[11px] text-gray-400">
+              <p className={`mt-1 ${TYPO.bodySm}`}>
                 Club-only draft · Single elimination knockout tournament
               </p>
             </div>
@@ -753,7 +755,7 @@ export function GameBoard({
             <button
               type="button"
               onClick={handleAutofill}
-              className="rounded-lg border border-accent-green/50 bg-accent-green/10 px-6 py-2.5 font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-green transition hover:bg-accent-green/20"
+              className={`${BTN.base} ${BTN.greenOutlineSm} px-6`}
             >
               Auto Fill Squad
             </button>
@@ -765,7 +767,7 @@ export function GameBoard({
             <button
               type="button"
               onClick={() => startTournamentSimulation(squad)}
-              className="rounded-lg border border-accent-gold/50 bg-accent-gold/10 px-6 py-2.5 font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-gold transition hover:bg-accent-gold/20"
+              className={`${BTN.base} ${BTN.goldOutlineSm} px-6`}
             >
               Simulate Season
             </button>
@@ -827,7 +829,7 @@ export function GameBoard({
           )}
 
           {phase === "simulation" && isChallengeCup && !cupResult && (
-            <div className="matchday-panel mt-4 p-2 sm:p-4">
+            <div className={`${CARD.panel} mt-4 p-2 sm:p-4`}>
               <ChallengeCupBracket
                 squad={squad}
                 seed={seed}
@@ -838,7 +840,7 @@ export function GameBoard({
           )}
 
           {phase === "simulation" && seasonResult && !isChallengeCup && (
-            <div className="matchday-panel mt-4 p-4">
+            <div className={`${CARD.panel} mt-4 ${SPACING.cardPadding}`}>
               <SeasonSimulation
                 result={seasonResult}
                 onComplete={handleSimulationComplete}
@@ -856,7 +858,7 @@ export function GameBoard({
                 exit={{ opacity: 0 }}
               >
                 <motion.div
-                  className="matchday-panel max-h-[92vh] w-full max-w-4xl overflow-y-auto p-2 sm:p-8"
+                  className={`${CARD.panel} max-h-[92vh] w-full max-w-4xl overflow-y-auto overflow-x-hidden p-2 sm:p-8`}
                   initial={{ opacity: 0, y: 40, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 20 }}
@@ -867,7 +869,7 @@ export function GameBoard({
                       type="button"
                       onClick={handleBackToPitch}
                       disabled={choosing || rerolling}
-                      className="mb-4 text-sm text-gray-500 transition hover:text-white disabled:opacity-40"
+                      className={`mb-4 ${LINK.subtle} disabled:opacity-40`}
                     >
                       ← Back to team sheet
                     </button>

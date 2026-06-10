@@ -19,7 +19,9 @@ import {
 } from "@/lib/squad-display";
 import { getSquadValue } from "@/lib/positions";
 import type { SquadSlot } from "@/lib/types";
-import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
+import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
+import { StatBox } from "./ui/StatBox";
 import { ClubTeamLabel } from "./ClubTeamLabel";
 import { TryScorerClubBadge } from "./TryScorerClubBadge";
 
@@ -53,33 +55,36 @@ export function MatchDetailsPanel({
 
   return (
     <motion.div
-      className="match-details-expand overflow-hidden rounded-lg border border-accent-green/30 bg-pitch-900/80 shadow-lg"
+      className={`match-details-expand overflow-hidden ${CARD.base} border-accent-green/30 shadow-lg`}
       initial={{ height: 0, opacity: 0, marginTop: 0 }}
       animate={{ height: "auto", opacity: 1, marginTop: 4 }}
       exit={{ height: 0, opacity: 0, marginTop: 0 }}
       transition={{ duration: 0.22, ease: "easeOut" }}
     >
-      <div className="p-4">
-        <div className="mb-3 flex items-start justify-between gap-2">
-          <div>
-            <p className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-green">
+      <div className={SPACING.cardPadding}>
+        <div className={`${SPACING.headingMargin} flex items-start justify-between gap-2`}>
+          <div className="min-w-0">
+            <p className={TYPO.sectionLabel}>
               {roundLabel ?? `Round ${fixture.round}`} · Match Details
             </p>
-            <p className="mt-1 font-display text-base font-bold text-white sm:text-lg">
+            <p className={`mt-1 ${TYPO.cardTitle}`}>
               {formatFixtureScore(fixture)}
             </p>
+            <p
+              className={`mt-1 font-display text-sm font-bold ${
+                fixture.result === "W" ? "text-accent-green" : "text-red-400"
+              }`}
+            >
+              {fixture.result === "W" ? "Victory" : "Defeat"}
+            </p>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="shrink-0 rounded-lg border border-pitch-600 px-2 py-1 text-[10px] text-gray-400 transition hover:text-white"
-          >
+          <button type="button" onClick={onClose} className={BTN.closeSm}>
             Close
           </button>
         </div>
 
         {detail ? (
-          <div className="space-y-4">
+          <div className={SPACING.stackLg}>
             <TeamScoringBlock
               teamName={userTeamName}
               scoring={detail.dreamTeam}
@@ -100,7 +105,7 @@ export function MatchDetailsPanel({
             />
           </div>
         ) : (
-          <p className="text-sm text-gray-500">Scoring data unavailable.</p>
+          <p className={TYPO.body}>Scoring data unavailable.</p>
         )}
       </div>
     </motion.div>
@@ -133,54 +138,54 @@ function TeamScoringBlock({
   const hasDropGoals = (kicking?.dropGoals ?? 0) > 0;
 
   return (
-    <div className="space-y-2">
+    <div className={SPACING.stackSm}>
       <ClubTeamLabel club={teamName} />
       {oppositionLabel && (
-        <div className="flex flex-wrap items-center gap-2 text-xs text-gray-400">
-          <span className="font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
-            Opposition
-          </span>
+        <div className={`flex flex-wrap items-center ${SPACING.buttonGap} ${TYPO.bodySm}`}>
+          <span className={TYPO.statLabel}>Opposition</span>
           <ClubNameLabel club={teamName} variant="inline" />
           <span className="text-gray-600">·</span>
-          <span className="font-display font-bold text-white">
+          <span className={`${TYPO.statValue} font-display font-bold`}>
             {averageRating.toFixed(1)} OVR
           </span>
         </div>
       )}
-      <div className={`${RL_INFO_BOX_CLASS} grid gap-1 p-3 text-xs sm:grid-cols-2`}>
-        <TeamStat label="Squad Value" value={formatValue(totalValue)} />
-        <TeamStat label="Team Tier" value={tier} />
-        <TeamStat label="Avg Rating" value={averageRating.toFixed(1)} />
-        <TeamStat label="Final Score" value={String(finalScore)} highlight />
+      <div className={`grid ${SPACING.cardGridGap} sm:grid-cols-2`}>
+        <StatBox label="Squad Value" value={formatValue(totalValue)} size="sm" />
+        <StatBox label="Team Tier" value={tier} size="sm" />
+        <StatBox label="Avg Rating" value={averageRating.toFixed(1)} size="sm" />
+        <StatBox
+          label="Final Score"
+          value={String(finalScore)}
+          size="lg"
+          className="border-accent-green/20"
+        />
       </div>
       {hasTries && (
         <ScoringSection title="Tries">
-          <ul className="space-y-1">
+          <ul className={SPACING.stackSm}>
             {scoring.tryScorers.flatMap((s) => {
               const slot = userSquad
                 ? findSlotByPlayerId(userSquad, s.playerId)
                 : undefined;
               const extras = formatPlayerLineExtras(slot);
-              const suffix = [
-                extras.positionNote,
-                extras.ratingNote,
-              ]
+              const suffix = [extras.positionNote, extras.ratingNote]
                 .filter(Boolean)
                 .join(" · ");
               const club = slot?.player?.club;
               return Array.from({ length: s.tries }, (_, i) => (
                 <li
                   key={`${s.playerId}-${i}`}
-                  className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-2.5 py-2"
+                  className={`${CARD.inset} px-2.5 py-2`}
                 >
-                  <p className="text-sm font-medium text-white">{s.name}</p>
+                  <p className={TYPO.statValue}>{s.name}</p>
                   {club && (
                     <div className="mt-1">
                       <TryScorerClubBadge club={club} />
                     </div>
                   )}
                   {suffix && (
-                    <p className="mt-1 text-xs text-gray-400">{suffix}</p>
+                    <p className={`mt-1 ${TYPO.bodySm}`}>{suffix}</p>
                   )}
                 </li>
               ));
@@ -190,54 +195,29 @@ function TeamScoringBlock({
       )}
       {hasConversions && kicking && (
         <ScoringSection title="Conversions">
-          <p className="text-sm font-medium text-white">
+          <p className={TYPO.statValue}>
             {kicking.name} ({kicking.conversions}/{kicking.conversionAttempts})
           </p>
         </ScoringSection>
       )}
       {hasPenalties && kicking && (
         <ScoringSection title="Penalties">
-          <p className="text-sm font-medium text-white">
+          <p className={TYPO.statValue}>
             {kicking.name} ({kicking.penalties})
           </p>
         </ScoringSection>
       )}
       {hasDropGoals && kicking && (
         <ScoringSection title="Drop Goals">
-          <p className="text-sm font-medium text-white">
+          <p className={TYPO.statValue}>
             {kicking.name} ({kicking.dropGoals})
           </p>
         </ScoringSection>
       )}
       {!hasTries && !hasConversions && !hasPenalties && !hasDropGoals && (
-        <p className="text-xs text-gray-500">No scoring breakdown recorded.</p>
+        <p className={TYPO.bodySm}>No scoring breakdown recorded.</p>
       )}
     </div>
-  );
-}
-
-function TeamStat({
-  label,
-  value,
-  highlight,
-}: {
-  label: string;
-  value: string;
-  highlight?: boolean;
-}) {
-  return (
-    <p className="min-w-0 text-gray-500">
-      {label}:{" "}
-      <span
-        className={
-          highlight
-            ? "font-semibold text-accent-green"
-            : "break-words text-white"
-        }
-      >
-        {value}
-      </span>
-    </p>
   );
 }
 
@@ -246,13 +226,11 @@ function ScoringSection({
   children,
 }: {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
-    <div className={`${RL_INFO_BOX_CLASS} p-3`}>
-      <p className="text-[10px] font-bold uppercase tracking-wider text-accent-green">
-        {title}
-      </p>
+    <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
+      <p className={TYPO.sectionTitle}>{title}</p>
       <div className="mt-2">{children}</div>
     </div>
   );

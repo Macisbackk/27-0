@@ -13,6 +13,9 @@ import { playPanelExpand } from "@/lib/sound";
 import { formatValue } from "@/lib/players";
 import type { Position } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
+import { CARD, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
+import { getClubPillBackground } from "@/lib/ui/contrast";
 
 function formatPositionLine(player: {
   positionMismatch: boolean;
@@ -71,9 +74,9 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
   };
 
   return (
-    <div className="space-y-3">
+    <div className={SPACING.stackMd}>
       {clubs.length === 0 ? (
-        <p className="text-sm text-gray-500">No players signed</p>
+        <p className={TYPO.bodySm}>No players signed</p>
       ) : (
         clubs.map((c) => {
           const isExpanded = expandedClub === c.club;
@@ -97,23 +100,23 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                     className="overflow-hidden"
                   >
                     <div
-                      className="mt-2 space-y-2 rounded-xl border px-3 py-3 sm:px-4"
+                      className={`mt-2 ${SPACING.stackSm} ${CARD.base} ${SPACING.cardPaddingSm}`}
                       style={{
-                        borderColor: `${colors.primary}55`,
-                        background: `linear-gradient(135deg, ${colors.primary}18 0%, rgba(15,23,42,0.85) 55%)`,
+                        borderColor: `${getClubPillBackground(colors.primary, colors.secondary, colors.accent)}55`,
+                        background: `linear-gradient(135deg, ${colors.primary}18 0%, rgba(15,23,42,0.9) 55%)`,
                       }}
                     >
                       {c.players.map((player) => (
                         <li
                           key={player.playerId}
-                          className="rounded-lg border border-pitch-700/50 bg-pitch-950/70 px-3 py-2.5"
+                          className={`${CARD.inset} px-3 py-2.5`}
                         >
-                          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                          <div className={`flex flex-col ${SPACING.buttonGap} sm:flex-row sm:items-start sm:justify-between`}>
                             <div className="min-w-0 flex-1">
-                              <p className="text-sm font-bold text-white">
+                              <p className={TYPO.playerNameSm}>
                                 {player.name}
                               </p>
-                              <p className="mt-0.5 text-xs text-gray-400">
+                              <p className={`mt-0.5 ${TYPO.bodySm}`}>
                                 {player.playerId === "ssh-sam-hallas-group"
                                   ? "All 13 positions"
                                   : formatPositionLine(player)}
@@ -125,8 +128,8 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                               {DISPLAY_LABEL[player.displayCategory]}
                             </RLTag>
                           </div>
-                          <div className="mt-2 flex flex-wrap items-center gap-3 text-xs">
-                            <span className="font-display font-bold text-accent-green">
+                          <div className={`mt-2 flex flex-wrap items-center gap-3 ${TYPO.bodySm}`}>
+                            <span className={`${TYPO.rating} text-sm`}>
                               {formatRatingLine(player)}
                             </span>
                             <span className="text-gray-500">·</span>
@@ -147,13 +150,13 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
 
       {clubs.length > 0 && (
         <div
-          className={`flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-bold ${
+          className={`flex items-center justify-between ${CARD.base} px-4 py-3 ${TYPO.statValue} ${
             isValid
               ? "border-accent-green/35 bg-accent-green/10 text-accent-green"
               : "border-red-500/35 bg-red-500/10 text-red-400"
           }`}
         >
-          <span className="font-display text-xs uppercase tracking-wider">
+          <span className={TYPO.sectionTitle}>
             Total Players
           </span>
           <span>

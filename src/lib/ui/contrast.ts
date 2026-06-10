@@ -81,6 +81,67 @@ export function getClubPanelTextStyle(backgroundHex: string): {
   };
 }
 
+function darkenHex(hex: string, amount: number): string {
+  const normalized = hex.replace("#", "");
+  if (normalized.length < 6) return hex;
+  const clamp = (v: number) =>
+    Math.max(0, Math.min(255, Math.round(v * (1 - amount))));
+  const r = clamp(parseInt(normalized.slice(0, 2), 16));
+  const g = clamp(parseInt(normalized.slice(2, 4), 16));
+  const b = clamp(parseInt(normalized.slice(4, 6), 16));
+  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+}
+
+/**
+ * Pick a readable pill/badge background — avoids white/yellow primaries
+ * that clash on dark UI (Leigh, York, Warrington, Widnes).
+ */
+export function getClubPillBackground(
+  primary: string,
+  secondary: string,
+  accent?: string
+): string {
+  const primaryLum = getLuminance(primary);
+
+  if (primaryLum > 0.75) {
+    const candidates = [secondary, accent].filter(Boolean) as string[];
+    const usable = candidates.find(
+      (c) => getLuminance(c) >= 0.06 && getLuminance(c) <= 0.75
+    );
+    if (usable) return usable;
+    return darkenHex(primary, 0.5);
+  }
+
+  if (primaryLum > 0.58) {
+    return darkenHex(primary, 0.22);
+  }
+
+  return primary;
+}
+
+/** Full inline style for club-coloured pills. */
+export function getClubPillStyle(
+  primary: string,
+  secondary: string,
+  accent?: string
+): {
+  backgroundColor: string;
+  color: ContrastText;
+  textShadow: string;
+  WebkitTextStroke?: string;
+} {
+  const bg = getClubPillBackground(primary, secondary, accent);
+  const text = getClubPanelTextStyle(bg);
+  return {
+    backgroundColor: bg,
+    color: text.color,
+    textShadow: text.textShadow,
+    WebkitTextStroke: text.useStroke
+      ? "0.3px rgba(0,0,0,0.35)"
+      : undefined,
+  };
+}
+
 /** Best contrast text when label spans a two-tone club logo. */
 export function getClubLogoTextColor(
   primary: string,

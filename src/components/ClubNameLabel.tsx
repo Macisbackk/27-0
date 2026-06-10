@@ -3,8 +3,9 @@
 import { getClubColors } from "@/lib/clubs";
 import { DREAM_TEAM_COLORS } from "@/lib/clubs/dream-team";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
-import { getClubPanelTextStyle, getReadableTextColor } from "@/lib/ui/contrast";
+import { getReadableTextColor, getClubPillStyle } from "@/lib/ui/contrast";
 import { UI_SURFACES, type UiSurface } from "@/lib/ui/surfaces";
+import { TYPO } from "@/lib/ui/typography";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 
 export interface ClubNameLabelProps {
@@ -44,19 +45,16 @@ export function ClubNameLabel({
   const isRight = align === "right";
 
   if (variant === "pill") {
-    const textStyle = getClubPanelTextStyle(colors.primary);
+    const pillStyle = getClubPillStyle(
+      colors.primary,
+      colors.secondary,
+      "accent" in colors ? (colors as { accent?: string }).accent : undefined
+    );
     return (
       <span
         title={club}
-        className={`inline-block max-w-full truncate rounded px-2 py-0.5 font-display text-[11px] font-semibold uppercase tracking-wide sm:text-xs ${className}`}
-        style={{
-          backgroundColor: colors.primary,
-          color: textStyle.color,
-          textShadow: textStyle.textShadow,
-          WebkitTextStroke: textStyle.useStroke
-            ? "0.3px rgba(0,0,0,0.35)"
-            : undefined,
-        }}
+        className={`inline-block max-w-full truncate rounded px-2 py-0.5 ${TYPO.clubName} ${className}`}
+        style={pillStyle}
       >
         {club}
       </span>
@@ -74,9 +72,7 @@ export function ClubNameLabel({
           style={{ backgroundColor: colors.primary }}
           aria-hidden
         />
-        <span className="min-w-0 truncate font-display text-xs font-semibold text-gray-200 sm:text-sm">
-          {club}
-        </span>
+        <span className={`min-w-0 truncate ${TYPO.identityLine}`}>{club}</span>
       </span>
     );
   }
@@ -112,7 +108,7 @@ export function ClubNameLabel({
       <div className="min-w-0 flex-1">
         {compact && showAbbreviation && colors.shortName !== "???" && (
           <span
-            className="mb-0.5 inline-block rounded bg-pitch-800/80 px-1 py-px font-display text-[9px] font-bold uppercase tracking-wider text-gray-400"
+            className={`mb-0.5 inline-block rounded bg-pitch-800/80 px-1 py-px ${TYPO.statLabel}`}
             title={club}
           >
             {colors.shortName}

@@ -3,26 +3,19 @@ import {
   CLUB_CHOICE_CARD_CLASS,
   getClubChoiceCardStyle,
 } from "@/lib/clubs";
+import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
-/** Shared Rugby League card design tokens. */
+/** Shared Rugby League card design tokens — bridged to design-system. */
 export const RL_CARD_SHADOW = "shadow-lg";
 export const RL_CARD_RADIUS = "rounded-lg";
 export const RL_CARD_BORDER = "border-2 border-solid";
-export const RL_INFO_BOX_CLASS =
-  "rl-stat-box rounded-lg border border-pitch-600/40 bg-pitch-900/55";
-export const RL_STAT_LABEL_CLASS =
-  "text-[10px] font-medium uppercase tracking-wider text-gray-500";
-export const RL_SECTION_TITLE_CLASS =
-  "font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-green";
-
-export const RL_FILTER_INPUT_CLASS =
-  "w-full rounded-lg border border-pitch-600 bg-pitch-900/60 px-3 py-2 text-sm text-white outline-none transition focus:border-accent-green";
-
-export const RL_FILTER_CHIP_ACTIVE =
-  "border-accent-green/50 bg-accent-green/10 text-accent-green";
-
-export const RL_FILTER_CHIP_IDLE =
-  "border-pitch-600 text-gray-400 hover:text-white";
+export const RL_INFO_BOX_CLASS = CARD.stat;
+export const RL_STAT_LABEL_CLASS = TYPO.statLabel;
+export const RL_SECTION_TITLE_CLASS = TYPO.sectionTitle;
+export const RL_FILTER_INPUT_CLASS = FILTER.input;
+export const RL_FILTER_CHIP_ACTIVE = FILTER.chipActive;
+export const RL_FILTER_CHIP_IDLE = FILTER.chipIdle;
 
 export type RLTagVariant =
   | "neutral"
@@ -168,7 +161,7 @@ export function RLStatBox({
     <div
       className={`${RL_INFO_BOX_CLASS} flex min-h-0 flex-col ${
         isTier ? "min-w-[5.5rem]" : "min-w-0"
-      } ${compact ? "px-2 py-1.5" : large ? "px-2.5 py-2" : "px-2 py-1.5"} ${className}`}
+      } ${compact ? SPACING.cardPaddingSm : large ? "px-2.5 py-2" : "px-2 py-1.5"} ${className}`}
     >
       <p
         className={`${RL_STAT_LABEL_CLASS} shrink-0 ${

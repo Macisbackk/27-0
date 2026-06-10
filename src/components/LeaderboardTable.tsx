@@ -16,6 +16,8 @@ import {
 } from "@/lib/storage/leaderboard";
 import { playUiClick } from "@/lib/sound";
 import { HardModeBadge } from "./HardModeBadge";
+import { BTN, CARD, SPACING, tabGroupButtonClass } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
 
@@ -124,14 +126,14 @@ export function LeaderboardTable({
               key={mode.id}
               type="button"
               onClick={() => handleModeChange(mode.id)}
-              className={`rounded-xl border-2 px-4 py-4 text-left transition ${
+              className={`min-h-[44px] rounded-xl border-2 px-4 py-4 text-left transition ${
                 selected
-                  ? "border-accent-green/60 bg-accent-green/10 shadow-[0_0_24px_rgba(34,197,94,0.12)]"
-                  : "border-pitch-600/50 bg-pitch-900/50 hover:border-pitch-500/60 hover:bg-pitch-800/40"
+                  ? `${CARD.featured} border-accent-green/60 bg-accent-green/10`
+                  : `${CARD.base} hover:border-pitch-500/60 hover:bg-pitch-800/40`
               }`}
             >
               <span
-                className={`font-display text-sm font-bold uppercase tracking-wider sm:text-base ${
+                className={`${TYPO.sectionTitle} sm:text-base ${
                   selected ? "text-accent-green" : "text-gray-300"
                 }`}
               >
@@ -154,7 +156,7 @@ export function LeaderboardTable({
                   if (activeTracker !== t.id) playUiClick();
                   setTracker(t.id);
                 }}
-                className={`shrink-0 border-b-2 px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wider transition sm:px-4 sm:text-xs ${
+                className={`shrink-0 min-h-[40px] border-b-2 px-3 py-2 ${TYPO.button} transition sm:px-4 ${
                   selected
                     ? "border-accent-green text-accent-green"
                     : "border-transparent text-gray-500 hover:border-pitch-600 hover:text-gray-300"
@@ -175,11 +177,7 @@ export function LeaderboardTable({
               if (difficulty !== "NORMAL") playUiClick();
               setDifficulty("NORMAL");
             }}
-            className={`rounded-xl border-2 px-5 py-3 font-display text-xs font-bold uppercase tracking-wider transition sm:text-sm ${
-              difficulty === "NORMAL"
-                ? "border-accent-green/60 bg-accent-green/10 text-accent-green"
-                : "border-pitch-600/50 bg-pitch-900/50 text-gray-400 hover:text-white"
-            }`}
+            className={`${BTN.base} ${tabGroupButtonClass(difficulty === "NORMAL")} border-2 px-5`}
           >
             {leaderboardMode === "draft" ? "Standard Draft" : "Normal"}
           </button>
@@ -189,11 +187,7 @@ export function LeaderboardTable({
               if (difficulty !== "HARD") playUiClick();
               setDifficulty("HARD");
             }}
-            className={`rounded-xl border-2 px-5 py-3 font-display text-xs font-bold uppercase tracking-wider transition sm:text-sm ${
-              difficulty === "HARD"
-                ? "border-red-500/60 bg-red-600/15 text-red-300 shadow-[0_0_20px_rgba(220,38,38,0.15)]"
-                : "border-pitch-600/50 bg-pitch-900/50 text-gray-400 hover:text-white"
-            }`}
+            className={`${BTN.base} ${tabGroupButtonClass(difficulty === "HARD", "hard")} border-2 px-5`}
           >
             {leaderboardMode === "draft" ? "Hard Draft" : "Hard"}
           </button>

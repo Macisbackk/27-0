@@ -21,6 +21,9 @@ import {
 } from "@/lib/stats-views";
 import { HardModeBadge } from "./HardModeBadge";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
+import { BTN } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
+import { runStatsPageValidation } from "@/lib/validation/stats-page-validation";
 
 export function StatsPanel() {
   const [activeTab, setActiveTab] = useState<StatsTabId>("overall");
@@ -46,10 +49,22 @@ export function StatsPanel() {
     return () => window.removeEventListener("focus", refresh);
   }, []);
 
+  useEffect(() => {
+    if (!normalStats || !hardStats || !draftNormalStats || !draftHardStats) {
+      return;
+    }
+    runStatsPageValidation({
+      normal: normalStats,
+      hard: hardStats,
+      draftNormal: draftNormalStats,
+      draftHard: draftHardStats,
+    });
+  }, [normalStats, hardStats, draftNormalStats, draftHardStats]);
+
   if (!normalStats || !hardStats || !draftNormalStats || !draftHardStats) {
     return (
       <div className="card-glass p-12 text-center text-gray-500">
-        Loading stats...
+        <p className={TYPO.body}>Loading stats...</p>
       </div>
     );
   }
@@ -69,10 +84,8 @@ export function StatsPanel() {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`shrink-0 rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
-                activeTab === tab.id
-                  ? "bg-accent-green text-pitch-950"
-                  : "border border-pitch-600 text-gray-400 hover:border-pitch-500 hover:text-white"
+              className={`shrink-0 min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
+                activeTab === tab.id ? BTN.tabActive : BTN.tabIdle
               }`}
             >
               {tab.label}

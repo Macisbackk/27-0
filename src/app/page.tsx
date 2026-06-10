@@ -4,25 +4,25 @@ import { HomeAuthBar } from "@/components/HomeAuthBar";
 import { EmailConfirmedBanner } from "@/components/EmailConfirmedBanner";
 import { HomeModeSelector } from "@/components/HomeModeSelector";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
+import { CARD, LINK, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 export default function HomePage() {
   return (
     <div className="matchday-arena min-h-screen">
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
-      <div className="relative mx-auto max-w-4xl px-4 py-12 sm:py-20">
+      <div className={`relative mx-auto max-w-4xl ${SPACING.pageX} py-12 sm:py-20`}>
         <div className="text-center">
-          <p className="font-display text-xs font-bold uppercase tracking-[0.35em] text-accent-green">
-            Rugby League Squad Builder
-          </p>
+          <p className={TYPO.sectionLabel}>Rugby League Squad Builder</p>
           <h1 className="mt-3 text-5xl font-black tracking-tight sm:text-7xl">
             <span className="text-gradient">27</span>
             <span className="text-white">-0</span>
           </h1>
-          <p className="mt-4 text-lg text-gray-300 sm:text-xl">
+          <p className={`mt-4 ${TYPO.pageSubtitle}`}>
             Build the most valuable Super League team through strategic
             recruitment.
           </p>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className={`mt-2 ${TYPO.bodySm}`}>
             Build your squad on the team sheet — can you go 27-0?
           </p>
         </div>
@@ -39,11 +39,9 @@ export default function HomePage() {
           <HomeModeSelector />
         </div>
 
-        <div className="mt-8 matchday-panel p-6">
-          <h3 className="font-display text-sm font-bold uppercase tracking-wider text-accent-green">
-            How It Works
-          </h3>
-          <div className="mt-4 grid gap-4 sm:grid-cols-3">
+        <div className={`mt-8 ${CARD.panel} ${SPACING.cardPaddingLg}`}>
+          <h3 className={TYPO.sectionTitle}>How It Works</h3>
+          <div className={`mt-4 grid ${SPACING.cardGridGap} sm:grid-cols-3`}>
             <Step
               num="1"
               title="Click the Pitch"
@@ -62,18 +60,12 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col items-center gap-3 text-center">
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="/leaderboard"
-              className="text-sm text-gray-500 transition hover:text-white"
-            >
+        <div className={`mt-8 flex flex-col items-center ${SPACING.buttonGap} text-center`}>
+          <div className={`flex flex-wrap items-center justify-center gap-4`}>
+            <Link href="/leaderboard" className={LINK.subtle}>
               View Leaderboard →
             </Link>
-            <Link
-              href="/showcase"
-              className="text-sm text-gray-500 transition hover:text-white"
-            >
+            <Link href="/showcase" className={LINK.subtle}>
               Player Showcase →
             </Link>
           </div>
@@ -98,8 +90,8 @@ function Step({
       <span className="font-display text-2xl font-black text-pitch-600/80">
         {num}
       </span>
-      <h4 className="mt-1 font-display font-bold">{title}</h4>
-      <p className="mt-1 text-sm text-gray-500">{desc}</p>
+      <h4 className={`mt-1 font-display font-bold ${TYPO.statValue}`}>{title}</h4>
+      <p className={`mt-1 ${TYPO.bodySm}`}>{desc}</p>
     </div>
   );
 }

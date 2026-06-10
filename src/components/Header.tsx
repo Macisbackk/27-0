@@ -5,9 +5,7 @@ import { useState } from "react";
 import { HeaderAuthControls } from "./HeaderAuthControls";
 import { SidebarNav } from "./SidebarNav";
 import { playMenuOpen } from "@/lib/sound";
-
-const HEADER_BTN =
-  "header-control-btn flex h-9 min-w-[5.5rem] items-center justify-center gap-1.5 rounded-lg border border-pitch-600 px-3 text-xs font-medium text-gray-300 transition hover:border-accent-green hover:text-white";
+import { BTN } from "@/lib/ui/design-system";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -22,7 +20,7 @@ export function Header() {
               playMenuOpen();
               setMenuOpen(true);
             }}
-            className={`${HEADER_BTN} shrink-0 justify-self-start`}
+            className={`${BTN.header} shrink-0 justify-self-start`}
             aria-label="Open menu"
           >
             <span aria-hidden className="text-sm leading-none">

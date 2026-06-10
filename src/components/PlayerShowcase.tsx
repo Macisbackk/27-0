@@ -25,6 +25,7 @@ import {
   RL_SECTION_TITLE_CLASS,
 } from "./cards/rl-card";
 import { playUiClick } from "@/lib/sound";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 const ALL_PLAYERS = getShowcasePlayers();
@@ -156,11 +157,11 @@ export function PlayerShowcase() {
         </p>
       </header>
 
-      <section className="matchday-panel p-4 sm:p-6">
-        <h2 className="mb-4 text-center font-display text-xs font-bold uppercase tracking-wider text-gray-500">
+      <section className={`${CARD.panel} ${SPACING.cardPadding}`}>
+        <h2 className={`mb-4 text-center ${TYPO.statLabel}`}>
           Database Overview
         </h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className={`grid ${SPACING.cardGridGap} sm:grid-cols-2 lg:grid-cols-3`}>
           <StatChip label="Total Players" value={String(dbStats.total)} />
           <StatChip label="Current Players" value={String(dbStats.current)} />
           <StatChip label="Historic Players" value={String(dbStats.historic)} />
@@ -187,9 +188,9 @@ export function PlayerShowcase() {
       </section>
 
       <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
-        <aside className="matchday-panel flex max-h-[calc(100vh-6rem)] flex-col lg:sticky lg:top-20">
-          <div className="flex shrink-0 items-center justify-between gap-2 border-b border-pitch-600/30 px-4 py-3 sm:px-5">
-            <h2 className="font-display text-sm font-bold uppercase tracking-wider text-accent-green">
+        <aside className={`${CARD.panel} flex max-h-[calc(100vh-6rem)] flex-col lg:sticky lg:top-20`}>
+          <div className={`flex shrink-0 items-center justify-between ${SPACING.buttonGap} border-b border-pitch-600/30 px-4 py-3 sm:px-5`}>
+            <h2 className={TYPO.sectionTitle}>
               Filters
             </h2>
             <button

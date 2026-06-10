@@ -6,6 +6,8 @@ import { StatsPanel } from "@/components/StatsPanel";
 import { useAuth } from "@/lib/auth-context";
 import { getAllStats } from "@/lib/storage/stats";
 import { importLocalStatsToCloud } from "@/lib/storage/stats-cloud";
+import { BTN, CARD, LINK, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 export default function StatsPage() {
   const { isLoggedIn, coachName, loading } = useAuth();
@@ -31,38 +33,33 @@ export default function StatsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-2 text-2xl font-bold">{title}</h1>
+    <div className={`mx-auto max-w-4xl ${SPACING.pageX} py-8`}>
+      <h1 className={`mb-2 ${TYPO.pageTitle}`}>{title}</h1>
 
       {!loading && !isLoggedIn && (
-        <div className="matchday-panel mb-6 p-4 text-sm text-gray-400">
+        <div className={`${CARD.panel} mb-6 ${SPACING.cardPadding} ${TYPO.body}`}>
           <p>Log in to save your statistics online.</p>
-          <Link
-            href="/"
-            className="mt-2 inline-block font-semibold text-accent-green hover:underline"
-          >
+          <Link href="/" className={`mt-2 inline-block ${LINK.accent}`}>
             Go to Home to log in →
           </Link>
         </div>
       )}
 
       {isLoggedIn && (
-        <div className="mb-6 flex flex-wrap items-center gap-3">
+        <div className={`mb-6 flex flex-wrap items-center ${SPACING.buttonGap}`}>
           <button
             type="button"
             disabled={importing}
             onClick={() => void handleImport()}
-            className="rounded-lg border border-pitch-600 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gray-300 transition hover:border-accent-green/50 hover:text-white disabled:opacity-50"
+            className={`${BTN.base} ${BTN.secondary} !min-h-[40px] text-[10px]`}
           >
             Import local stats to account
           </button>
-          {importMsg && (
-            <p className="text-sm text-gray-400">{importMsg}</p>
-          )}
+          {importMsg && <p className={TYPO.body}>{importMsg}</p>}
         </div>
       )}
 
-      <p className="mb-6 text-sm text-gray-500">
+      <p className={`mb-6 ${TYPO.bodySm}`}>
         {isLoggedIn
           ? "Career statistics synced to your account when logged in."
           : "Career statistics on this device (local only until you log in)."}

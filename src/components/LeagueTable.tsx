@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import type { LeagueTableRow } from "@/lib/game/league-table";
+import { TYPO } from "@/lib/ui/typography";
 import { ClubNameLabel } from "./ClubNameLabel";
 
 interface LeagueTableProps {
@@ -13,7 +14,7 @@ export const LeagueTable = memo(function LeagueTable({ rows }: LeagueTableProps)
     <div className="-mx-1 overflow-x-auto px-1">
       <table className="w-full min-w-[640px] border-collapse text-left text-xs sm:text-sm">
         <thead>
-          <tr className="border-b border-pitch-700/60 text-[10px] font-bold uppercase tracking-wider text-gray-500 sm:text-[11px]">
+          <tr className={`border-b border-pitch-700/60 ${TYPO.statLabel}`}>
             <th className="sticky left-0 z-10 bg-pitch-950/95 px-2 py-2.5 backdrop-blur-sm">
               Pos
             </th>

@@ -1,10 +1,9 @@
+import { LINK } from "@/lib/ui/design-system";
+
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
 const SUGGESTIONS_MAIL =
   "mailto:twentysevenzero@yahoo.com?subject=27-0%20Suggestion";
 const X_URL = "https://x.com/27and0";
-
-const LINK_CLASS =
-  "inline-flex items-center gap-1.5 rounded-lg border border-pitch-600/60 bg-pitch-900/50 px-3 py-1.5 text-[11px] font-medium text-gray-400 transition hover:border-accent-green/40 hover:text-white";
 
 export function FooterSupportLinks() {
   return (
@@ -14,12 +13,12 @@ export function FooterSupportLinks() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Buy Me A Coffee — support 27-0"
-        className={LINK_CLASS}
+        className={LINK.footer}
       >
         <CoffeeIcon />
         <span className="hidden sm:inline">Buy Me A Coffee</span>
       </a>
-      <a href={SUGGESTIONS_MAIL} aria-label="Send a suggestion" className={LINK_CLASS}>
+      <a href={SUGGESTIONS_MAIL} aria-label="Send a suggestion" className={LINK.footer}>
         <SuggestionsIcon />
         <span>Suggestions</span>
       </a>
@@ -28,7 +27,7 @@ export function FooterSupportLinks() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Follow 27-0 on X"
-        className={LINK_CLASS}
+        className={LINK.footer}
       >
         <XIcon />
         <span>X</span>

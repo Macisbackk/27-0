@@ -30,6 +30,8 @@ import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { TryScorersSection } from "./TryScorersSection";
 import { buildLeagueTable } from "@/lib/game/league-table";
 import { LeagueTable } from "./LeagueTable";
+import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
+import { TYPO } from "@/lib/ui/typography";
 
 interface SeasonReviewProps {
   squad: SquadSlot[];
@@ -144,6 +146,16 @@ export function SeasonReview({
     [seasonResult, seed]
   );
 
+  useEffect(() => {
+    runSeasonReviewValidation({
+      squad,
+      seasonResult,
+      seed,
+      joeMellorMode,
+      superSamHallasMode,
+    });
+  }, [squad, seasonResult, seed, joeMellorMode, superSamHallasMode]);
+
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md">
       {showCelebration && <Confetti />}
@@ -234,7 +246,7 @@ export function SeasonReview({
         </motion.div>
 
         <CollapsibleReviewSection title="Season Summary" delay={0.32}>
-          <div className="mx-auto max-w-md space-y-2 text-center text-sm text-gray-400">
+          <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
             <p>
               Record:{" "}
               <span className="font-semibold text-white">
@@ -277,45 +289,11 @@ export function SeasonReview({
         </CollapsibleReviewSection>
 
         <CollapsibleReviewSection
-          title="Team Comparison"
-          variant="featured"
+          title="Match History"
           delay={0.36}
+          helper="Click any result to view full match details."
         >
-          <TeamComparisonBox comparison={teamComparison} />
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection title="Player Awards" delay={0.38}>
-          <div className="grid gap-3 text-left sm:grid-cols-2">
-            {playerAwards.map((award) => (
-              <RLAwardCard
-                key={award.title}
-                title={award.title}
-                variant={award.variant}
-                playerName={award.playerName}
-                club={award.club}
-                detail={award.detail}
-                positionNote={award.positionNote}
-                ratingNote={award.ratingNote}
-                narrative={award.narrative}
-              />
-            ))}
-          </div>
-        </CollapsibleReviewSection>
-
-        {seasonResult.tryScorers.length > 0 && (
-          <CollapsibleReviewSection title="Try Scorers" delay={0.4}>
-            <TryScorersSection
-              tryScorers={seasonResult.tryScorers}
-              expectedTotalTries={expectedTries}
-            />
-          </CollapsibleReviewSection>
-        )}
-
-        <CollapsibleReviewSection title="Match History" delay={0.44}>
-          <p className="mb-3 text-center text-xs text-gray-500">
-            Click any result to view full match details.
-          </p>
-          <div className="max-h-[28rem] space-y-2 overflow-y-auto pr-1 text-left">
+          <div className="max-h-[28rem] space-y-2 overflow-y-auto overflow-x-hidden pr-1 text-left">
             {seasonResult.fixtures.map((fixture) => {
               const isSelected = selectedFixture?.round === fixture.round;
               return (
@@ -348,7 +326,42 @@ export function SeasonReview({
           </div>
         </CollapsibleReviewSection>
 
-        <CollapsibleReviewSection title="Club Representation" delay={0.48}>
+        <CollapsibleReviewSection
+          title="Team Comparison"
+          variant="featured"
+          delay={0.38}
+        >
+          <TeamComparisonBox comparison={teamComparison} />
+        </CollapsibleReviewSection>
+
+        <CollapsibleReviewSection title="Player Awards" delay={0.4}>
+          <div className="grid gap-3 text-left sm:grid-cols-2">
+            {playerAwards.map((award) => (
+              <RLAwardCard
+                key={award.title}
+                title={award.title}
+                variant={award.variant}
+                playerName={award.playerName}
+                club={award.club}
+                detail={award.detail}
+                positionNote={award.positionNote}
+                ratingNote={award.ratingNote}
+                narrative={award.narrative}
+              />
+            ))}
+          </div>
+        </CollapsibleReviewSection>
+
+        {seasonResult.tryScorers.length > 0 && (
+          <CollapsibleReviewSection title="Try Scorers" delay={0.42}>
+            <TryScorersSection
+              tryScorers={seasonResult.tryScorers}
+              expectedTotalTries={expectedTries}
+            />
+          </CollapsibleReviewSection>
+        )}
+
+        <CollapsibleReviewSection title="Club Representation" delay={0.46}>
           <div className="text-left">
             <ClubRepresentation summary={clubSummary} />
           </div>

@@ -9,8 +9,15 @@ import {
   playModeChallengeCupStart,
   playUiClick,
 } from "@/lib/sound";
-import { GuestNotice } from "./GuestNotice";
+import {
+  BTN,
+  CARD,
+  FILTER,
+  SPACING,
+  tabGroupButtonClass,
+} from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { GuestNotice } from "./GuestNotice";
 
 function buildPlayHref(
   mode: "classic" | "draft" | "cup",
@@ -49,27 +56,26 @@ export function HomeModeSelector() {
     <div>
       <GuestNotice variant="home" />
 
-      <div className="mx-auto flex max-w-xl flex-col gap-5">
+      <div className={`mx-auto flex max-w-xl flex-col gap-5`}>
         <ModePanel title="Normal Mode" accent="green">
-          <p className="text-sm leading-relaxed text-gray-400">
+          <p className={TYPO.body}>
             Draft your XIII position by position and simulate a full Super League
             campaign. Can you go 27-0?
           </p>
 
           <div className="mt-5">
             <p className={`mb-2 ${TYPO.sectionLabel}`}>Difficulty</p>
-            <div className="inline-flex w-full rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto">
+            <div className={FILTER.tabGroup}>
               <button
                 type="button"
                 onClick={() => {
                   if (classicDifficulty === "HARD") playHardModeOff();
                   setClassicDifficulty("NORMAL");
                 }}
-                className={`flex-1 rounded-lg px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:flex-none sm:px-5 sm:text-sm ${
-                  classicDifficulty === "NORMAL"
-                    ? "bg-accent-green text-pitch-950 shadow-lg"
-                    : "text-gray-400 hover:text-white"
-                }`}
+                className={tabGroupButtonClass(
+                  classicDifficulty === "NORMAL",
+                  "normal"
+                )}
               >
                 Normal
               </button>
@@ -79,17 +85,16 @@ export function HomeModeSelector() {
                   if (classicDifficulty !== "HARD") playHardModeOn();
                   setClassicDifficulty("HARD");
                 }}
-                className={`flex-1 rounded-lg px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:flex-none sm:px-5 sm:text-sm ${
-                  classicDifficulty === "HARD"
-                    ? "bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.4)]"
-                    : "text-gray-400 hover:text-white"
-                }`}
+                className={tabGroupButtonClass(
+                  classicDifficulty === "HARD",
+                  "hard"
+                )}
               >
                 Hard
               </button>
             </div>
             {classicDifficulty === "HARD" && (
-              <p className="mt-2 text-xs text-red-400/80">
+              <p className={`mt-2 ${TYPO.bodySm} text-red-400/80`}>
                 Ratings and values hidden until season review. No rerolls.
               </p>
             )}
@@ -98,32 +103,31 @@ export function HomeModeSelector() {
           <Link
             href={classicHref}
             onClick={() => playUiClick()}
-            className="mt-5 inline-flex w-full items-center justify-center rounded-xl border border-accent-green/40 bg-accent-green/10 px-4 py-3 text-sm font-semibold text-accent-green transition hover:bg-accent-green/20 sm:w-auto"
+            className={`mt-5 ${BTN.base} ${BTN.accentOutline}`}
           >
             {classicAction} →
           </Link>
         </ModePanel>
 
         <ModePanel title="Draft Mode" accent="green">
-          <p className="text-sm leading-relaxed text-gray-400">
+          <p className={TYPO.body}>
             Pick players from pairs, then place them in any empty slot. Natural
             positions carry no penalty; out-of-position placements cost 5 OVR.
           </p>
 
           <div className="mt-5">
             <p className={`mb-2 ${TYPO.sectionLabel}`}>Draft Type</p>
-            <div className="inline-flex w-full rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto">
+            <div className={FILTER.tabGroup}>
               <button
                 type="button"
                 onClick={() => {
                   if (draftDifficulty === "HARD") playHardModeOff();
                   setDraftDifficulty("NORMAL");
                 }}
-                className={`flex-1 rounded-lg px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:flex-none sm:px-5 sm:text-sm ${
-                  draftDifficulty === "NORMAL"
-                    ? "bg-accent-green text-pitch-950 shadow-lg"
-                    : "text-gray-400 hover:text-white"
-                }`}
+                className={tabGroupButtonClass(
+                  draftDifficulty === "NORMAL",
+                  "normal"
+                )}
               >
                 Standard Draft
               </button>
@@ -133,17 +137,16 @@ export function HomeModeSelector() {
                   if (draftDifficulty !== "HARD") playHardModeOn();
                   setDraftDifficulty("HARD");
                 }}
-                className={`flex-1 rounded-lg px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider transition sm:flex-none sm:px-5 sm:text-sm ${
-                  draftDifficulty === "HARD"
-                    ? "bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.4)]"
-                    : "text-gray-400 hover:text-white"
-                }`}
+                className={tabGroupButtonClass(
+                  draftDifficulty === "HARD",
+                  "hard"
+                )}
               >
                 Hard Draft
               </button>
             </div>
             {draftDifficulty === "HARD" && (
-              <p className="mt-2 text-xs text-red-400/80">
+              <p className={`mt-2 ${TYPO.bodySm} text-red-400/80`}>
                 Ratings and values hidden until season review.
               </p>
             )}
@@ -152,7 +155,7 @@ export function HomeModeSelector() {
           <Link
             href={draftHref}
             onClick={() => playUiClick()}
-            className="mt-5 inline-flex w-full items-center justify-center rounded-xl border border-accent-green/40 bg-accent-green/10 px-4 py-3 text-sm font-semibold text-accent-green transition hover:bg-accent-green/20 sm:w-auto"
+            className={`mt-5 ${BTN.base} ${BTN.accentOutline}`}
           >
             Start Draft →
           </Link>
@@ -161,16 +164,16 @@ export function HomeModeSelector() {
         <Link
           href="/play?cup=1"
           onClick={() => playModeChallengeCupStart()}
-          className="card-glass matchday-panel group block w-full p-6 transition hover:border-accent-gold/30 sm:p-7"
+          className={`${CARD.glass} ${CARD.panel} group block w-full ${SPACING.cardPaddingLg} transition hover:border-accent-gold/30`}
         >
-          <h2 className="font-display text-xl font-bold group-hover:text-accent-gold sm:text-2xl">
+          <h2 className={`${TYPO.cardTitle} group-hover:text-accent-gold`}>
             Challenge Cup
           </h2>
-          <p className="mt-3 text-sm leading-relaxed text-gray-400">
+          <p className={`mt-3 ${TYPO.body}`}>
             Draft your squad and battle through a knockout tournament. Win four
             matches to lift the cup.
           </p>
-          <span className="mt-5 inline-flex w-full items-center justify-center rounded-xl border border-accent-gold/35 bg-accent-gold/10 px-4 py-3 text-sm font-semibold text-accent-gold transition group-hover:bg-accent-gold/15 sm:w-auto">
+          <span className={`mt-5 ${BTN.base} ${BTN.goldOutline}`}>
             Start Challenge Cup →
           </span>
         </Link>
@@ -199,13 +202,9 @@ function ModePanel({
 
   return (
     <div
-      className={`card-glass matchday-panel group w-full p-6 transition sm:p-7 ${hoverBorder}`}
+      className={`${CARD.glass} ${CARD.panel} group w-full ${SPACING.cardPaddingLg} transition ${hoverBorder}`}
     >
-      <h2
-        className={`font-display text-xl font-bold sm:text-2xl ${hoverTitle}`}
-      >
-        {title}
-      </h2>
+      <h2 className={`${TYPO.cardTitle} ${hoverTitle}`}>{title}</h2>
       {children}
     </div>
   );

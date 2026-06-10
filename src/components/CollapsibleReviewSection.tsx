@@ -2,9 +2,12 @@
 
 import { memo, useCallback, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { CARD, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 export interface CollapsibleReviewSectionProps {
   title: string;
+  helper?: string;
   delay?: number;
   defaultOpen?: boolean;
   variant?: "default" | "featured";
@@ -13,6 +16,7 @@ export interface CollapsibleReviewSectionProps {
 
 export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
   title,
+  helper,
   delay = 0,
   defaultOpen = true,
   variant = "default",
@@ -23,13 +27,13 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
 
   const panelClass =
     variant === "featured"
-      ? "mt-6 w-full max-w-3xl matchday-panel border border-accent-green/15 p-4 shadow-[0_0_32px_rgba(34,197,94,0.06)] sm:p-6"
-      : "mt-6 w-full max-w-2xl matchday-panel p-4";
+      ? `${SPACING.sectionGap} w-full max-w-3xl matchday-panel ${CARD.base} ${CARD.featured} ${SPACING.cardPadding}`
+      : `${SPACING.sectionGap} w-full max-w-2xl matchday-panel ${CARD.base} p-4`;
 
   const titleClass =
     variant === "featured"
       ? "font-display text-base font-bold uppercase tracking-wider text-accent-green sm:text-lg"
-      : "font-display text-sm font-bold uppercase tracking-wider text-accent-green";
+      : TYPO.sectionTitle;
 
   return (
     <motion.section
@@ -65,7 +69,18 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className={variant === "featured" ? "pt-5" : "pt-4"}>
+            <div
+              className={
+                variant === "featured"
+                  ? SPACING.sectionContentTopFeatured
+                  : SPACING.sectionContentTop
+              }
+            >
+              {helper && (
+                <p className={`${SPACING.headingMargin} ${TYPO.bodySm}`}>
+                  {helper}
+                </p>
+              )}
               {children}
             </div>
           </motion.div>

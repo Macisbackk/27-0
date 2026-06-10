@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { PlayerTryTotal } from "@/lib/game/season-tries";
 import { POSITION_LABELS } from "@/lib/positions";
 import { playPanelExpand } from "@/lib/sound";
+import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 import { TryScorerClubBadge } from "./TryScorerClubBadge";
 
 const RANK_STYLES = [
@@ -36,14 +38,14 @@ export function TryScorersSection({
   if (tryScorers.length === 0) return null;
 
   return (
-    <div className="rounded-lg border border-pitch-600/40 bg-pitch-900/50 p-3 text-left">
-      <div className="space-y-2">
+    <div className={`${CARD.base} ${SPACING.cardPaddingSm} text-left`}>
+      <div className={SPACING.stackSm}>
         {topThree.map((scorer, index) => {
           const rankStyle = RANK_STYLES[index] ?? "text-gray-400";
           return (
             <div
               key={scorer.playerId}
-              className="rounded-lg border border-pitch-700/50 bg-pitch-950/60 px-3 py-2.5"
+              className={`${CARD.inset} px-3 py-2.5`}
             >
               <div className="flex items-start gap-3">
                 <span
@@ -52,13 +54,13 @@ export function TryScorersSection({
                   {index + 1}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-display text-sm font-bold text-white">
+                  <p className={`truncate ${TYPO.playerNameSm}`}>
                     {scorer.name}
                   </p>
                   <div className="mt-1">
                     <TryScorerClubBadge club={scorer.club} />
                   </div>
-                  <p className="mt-1.5 text-xs text-gray-400">
+                  <p className={`mt-1.5 ${TYPO.bodySm}`}>
                     {formatScorerPosition(scorer)}
                   </p>
                 </div>
@@ -66,7 +68,7 @@ export function TryScorersSection({
                   <p className="font-display text-xl font-black text-accent-gold sm:text-2xl">
                     {scorer.tries}
                   </p>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                  <p className={TYPO.statLabel}>
                     {scorer.tries === 1 ? "Try" : "Tries"}
                   </p>
                 </div>
@@ -86,7 +88,7 @@ export function TryScorersSection({
                 return !v;
               });
             }}
-            className="mt-3 w-full rounded-lg border border-pitch-600/40 bg-pitch-950/50 px-3 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-accent-green transition hover:border-accent-green/35 hover:bg-pitch-900/60 hover:text-emerald-300"
+            className={`mt-3 w-full ${BTN.base} ${BTN.accentOutline} !min-h-[40px] text-[10px]`}
             aria-expanded={expanded}
           >
             {expanded ? "Collapse All" : "View All Try Scorers"}
@@ -101,28 +103,28 @@ export function TryScorersSection({
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="mt-2 space-y-2">
+                <div className={`mt-2 ${SPACING.stackSm}`}>
                   {tryScorers.map((scorer, index) => (
                     <div
                       key={scorer.playerId}
-                      className="rounded-lg border border-pitch-700/50 bg-pitch-950/60 px-3 py-2.5"
+                      className={`${CARD.inset} px-3 py-2.5`}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="w-6 shrink-0 text-center font-display text-xs font-bold text-gray-500">
+                        <span className={`w-6 shrink-0 text-center ${TYPO.statLabel}`}>
                           {index + 1}
                         </span>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-white">
+                          <p className={`truncate ${TYPO.statValue}`}>
                             {scorer.name}
                           </p>
                           <div className="mt-1 flex flex-wrap items-center gap-1.5">
                             <TryScorerClubBadge club={scorer.club} />
-                            <span className="text-[11px] text-gray-500">
+                            <span className={TYPO.bodySm}>
                               {formatScorerPosition(scorer)}
                             </span>
                           </div>
                         </div>
-                        <span className="shrink-0 font-display text-lg font-bold text-accent-gold">
+                        <span className={`shrink-0 ${TYPO.statValueLg} text-accent-gold`}>
                           {scorer.tries}
                         </span>
                       </div>
@@ -135,9 +137,9 @@ export function TryScorersSection({
         </>
       )}
 
-      <div className="mt-3 flex items-center justify-between rounded-lg border border-pitch-700/40 bg-pitch-900/40 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+      <div className={`mt-3 flex items-center justify-between ${CARD.inset} px-3 py-2 ${TYPO.statLabel}`}>
         <span>Total tries</span>
-        <span className="font-display text-sm text-white">
+        <span className={`${TYPO.statValue} font-display`}>
           {listedTotal}
           {listedTotal !== expectedTotalTries && (
             <span className="ml-1 text-red-400">/ {expectedTotalTries}</span>

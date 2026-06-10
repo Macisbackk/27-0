@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getDifficulty } from "@/lib/storage/preferences";
 import { isSoundMuted, playMenuClose, toggleSoundMuted } from "@/lib/sound";
+import { BTN, NAV, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 interface SidebarNavProps {
@@ -56,6 +57,9 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     return pathname.startsWith(href);
   };
 
+  const navLinkClass = (active: boolean) =>
+    `${NAV.item} ${active ? NAV.itemActive : NAV.itemIdle}`;
+
   return (
     <AnimatePresence>
       {open && (
@@ -92,17 +96,15 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   playMenuClose();
                   onClose();
                 }}
-                className="rounded-lg border border-pitch-600 px-2.5 py-1 text-xs text-gray-400 transition hover:text-white"
+                className={BTN.close}
               >
                 Close
               </button>
             </div>
 
             <nav className="flex-1 overflow-y-auto px-3 py-4">
-              <p className="mb-2 px-2 text-[10px] font-bold uppercase tracking-[0.2em] text-accent-green">
-                Navigation
-              </p>
-              <ul className="space-y-1">
+              <p className={`mb-2 px-2 ${NAV.sectionLabel}`}>Navigation</p>
+              <ul className={SPACING.stackSm}>
                 {NAV_ITEMS.map((item) => {
                   const active = isActive(item.href);
                   return (
@@ -110,11 +112,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       <Link
                         href={item.href}
                         onClick={onClose}
-                        className={`flex items-center gap-3 rounded-lg px-3 py-2.5 ${TYPO.nav} transition ${
-                          active
-                            ? "border border-accent-green/30 bg-accent-green/10 text-accent-green"
-                            : "text-gray-300 hover:bg-pitch-800/60 hover:text-white"
-                        }`}
+                        className={navLinkClass(active)}
                       >
                         <span aria-hidden className="text-base">
                           {item.icon}
@@ -131,11 +129,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   <Link
                     href={playHref}
                     onClick={onClose}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2.5 ${TYPO.nav} transition ${
-                      pathname.startsWith("/play")
-                        ? "border border-accent-green/30 bg-accent-green/10 text-accent-green"
-                        : "text-gray-300 hover:bg-pitch-800/60 hover:text-white"
-                    }`}
+                    className={navLinkClass(pathname.startsWith("/play"))}
                   >
                     <span aria-hidden className="text-base">
                       🏉
@@ -150,10 +144,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
             </nav>
 
             <div className="sidebar-settings border-t px-4 py-4">
-              <p className="mb-3 px-1 text-[10px] font-bold uppercase tracking-[0.2em] text-accent-green">
-                Settings
-              </p>
-              <div className="space-y-2">
+              <p className={`mb-3 px-1 ${NAV.sectionLabel}`}>Settings</p>
+              <div className={SPACING.stackSm}>
                 <button
                   type="button"
                   onClick={handleToggleSound}
@@ -162,7 +154,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       ? "Sound off — click to enable"
                       : "Sound on — click to mute"
                   }
-                  className="flex w-full items-center gap-3 rounded-lg border border-pitch-600 px-3 py-2.5 text-sm text-gray-300 transition hover:border-accent-green/40 hover:text-white"
+                  className={`${NAV.item} w-full border border-pitch-600 hover:border-accent-green/40`}
                 >
                   <span
                     className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${
@@ -176,7 +168,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   </span>
                   <span className="flex-1 text-left">Sound Effects</span>
                   <span
-                    className={`font-display text-xs font-bold uppercase tracking-wider ${
+                    className={`${TYPO.button} ${
                       muted ? "text-gray-500" : "text-accent-green"
                     }`}
                   >

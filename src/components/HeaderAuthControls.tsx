@@ -4,9 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { COACH_NAME_MAX_LENGTH } from "@/lib/storage/user";
-
-const HEADER_BTN =
-  "header-control-btn flex h-9 min-w-[4.5rem] items-center justify-center gap-1.5 rounded-lg border border-pitch-600 px-3 text-xs font-medium text-gray-300 transition hover:border-accent-green hover:text-white";
+import { BTN, CARD, FILTER, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 export function HeaderAuthControls() {
   const { loading, isLoggedIn, coachName, email, signOut, updateCoachName } =
@@ -25,7 +24,7 @@ export function HeaderAuthControls() {
 
   if (loading) {
     return (
-      <span className="text-xs text-gray-600" aria-hidden>
+      <span className={TYPO.bodySm} aria-hidden>
         …
       </span>
     );
@@ -33,9 +32,8 @@ export function HeaderAuthControls() {
 
   if (!isLoggedIn) {
     return (
-      <Link href="/login" className={HEADER_BTN}>
-        <span className="hidden sm:inline">Log In</span>
-        <span className="sm:hidden">Log In</span>
+      <Link href="/login" className={BTN.header}>
+        Log In
       </Link>
     );
   }
@@ -58,11 +56,11 @@ export function HeaderAuthControls() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className={HEADER_BTN}
+        className={BTN.header}
         aria-expanded={open}
         aria-haspopup="menu"
       >
-        <span className="max-w-[8rem] truncate font-display text-[10px] font-bold uppercase tracking-wider text-accent-green sm:max-w-[10rem] sm:text-xs">
+        <span className={`max-w-[8rem] truncate ${TYPO.sectionTitle} sm:max-w-[10rem]`}>
           {coachName}
         </span>
       </button>
@@ -76,18 +74,14 @@ export function HeaderAuthControls() {
           />
           <div
             role="menu"
-            className="absolute right-0 z-50 mt-2 w-[min(16rem,85vw)] rounded-lg border border-pitch-600 bg-pitch-950/95 py-2 shadow-xl"
+            className={`absolute right-0 z-50 mt-2 w-[min(16rem,85vw)] ${CARD.base} py-2 shadow-xl`}
           >
             <div className="border-b border-pitch-700/50 px-4 py-3">
-              <p className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-accent-green">
-                Coach Profile
-              </p>
+              <p className={TYPO.sectionTitle}>Coach Profile</p>
               {!editingCoach ? (
                 <>
-                  <p className="mt-2 font-display text-sm font-black uppercase text-white">
-                    {coachName}
-                  </p>
-                  <p className="mt-1 truncate text-xs text-gray-500">{email}</p>
+                  <p className={`mt-2 ${TYPO.cardTitle}`}>{coachName}</p>
+                  <p className={`mt-1 truncate ${TYPO.bodySm}`}>{email}</p>
                 </>
               ) : (
                 <>
@@ -96,17 +90,17 @@ export function HeaderAuthControls() {
                     value={coachInput}
                     onChange={(e) => setCoachInput(e.target.value)}
                     maxLength={COACH_NAME_MAX_LENGTH}
-                    className="mt-2 w-full rounded-lg border border-pitch-600 bg-pitch-900/80 px-3 py-2 text-sm text-white outline-none focus:border-accent-green"
+                    className={`mt-2 ${FILTER.input}`}
                   />
                   {error && (
-                    <p className="mt-2 text-xs text-red-400">{error}</p>
+                    <p className={`mt-2 ${TYPO.bodySm} text-red-400`}>{error}</p>
                   )}
-                  <div className="mt-2 flex gap-2">
+                  <div className={`mt-2 flex ${SPACING.buttonGap}`}>
                     <button
                       type="button"
                       disabled={busy}
                       onClick={() => void handleUpdateCoach()}
-                      className="rounded-lg bg-accent-green px-3 py-1.5 font-display text-[10px] font-bold uppercase text-pitch-950 disabled:opacity-50"
+                      className={`${BTN.base} ${BTN.primary} !min-h-[36px] px-3 py-1.5 text-[10px]`}
                     >
                       Save
                     </button>
@@ -116,7 +110,7 @@ export function HeaderAuthControls() {
                         setEditingCoach(false);
                         setError(null);
                       }}
-                      className="rounded-lg border border-pitch-600 px-3 py-1.5 text-[10px] text-gray-400"
+                      className={`${BTN.base} ${BTN.secondary} !min-h-[36px] px-3 py-1.5 text-[10px]`}
                     >
                       Cancel
                     </button>
@@ -128,7 +122,7 @@ export function HeaderAuthControls() {
               <button
                 type="button"
                 role="menuitem"
-                className="block w-full px-4 py-2 text-left text-xs text-gray-300 transition hover:bg-pitch-800 hover:text-white"
+                className={`block w-full px-4 py-2 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-white`}
                 onClick={() => {
                   setCoachInput(coachName ?? "");
                   setEditingCoach(true);
@@ -141,7 +135,7 @@ export function HeaderAuthControls() {
             <button
               type="button"
               role="menuitem"
-              className="block w-full px-4 py-2 text-left text-xs text-gray-400 transition hover:bg-pitch-800 hover:text-red-400"
+              className={`block w-full px-4 py-2 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-red-400`}
               onClick={() => {
                 closeMenu();
                 void signOut();

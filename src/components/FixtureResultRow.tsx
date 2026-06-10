@@ -4,6 +4,8 @@ import type { MatchFixture } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { getClubColors } from "@/lib/clubs";
 import { DREAM_TEAM_COLORS } from "@/lib/clubs/dream-team";
+import { CARD } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 import { ClubColorChip } from "./ClubColorChip";
 
 interface FixtureResultRowProps {
@@ -43,16 +45,16 @@ export function FixtureResultRow({
     <Wrapper
       type={onClick ? "button" : undefined}
       onClick={onClick}
-      className={`fixture-result-row w-full rounded-lg border text-left transition ${
+      className={`fixture-result-row w-full text-left transition ${
         selected
           ? "fixture-result-row--selected border-accent-green/50 bg-accent-green/10"
-          : "border-pitch-700/40 bg-pitch-900/40"
-      } ${onClick ? "cursor-pointer hover:border-accent-green/40 hover:bg-pitch-900/60" : ""} ${
+          : `${CARD.base} bg-pitch-900/40`
+      } ${onClick ? CARD.interactive : ""} ${
         compact ? "px-2 py-1.5" : "px-3 py-2.5"
       }`}
     >
       {showRound && (
-        <p className="mb-2 text-center text-[10px] font-bold uppercase tracking-wider text-gray-500">
+        <p className={`mb-2 text-center ${TYPO.statLabel}`}>
           Round {fixture.round}
           {!compact && (
             <span className="ml-2 text-gray-600">

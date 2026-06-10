@@ -1,5 +1,7 @@
 import { formatValue } from "@/lib/players";
 import { ClubNameLabel } from "@/components/ClubNameLabel";
+import { CARD, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 import { RL_INFO_BOX_CLASS } from "./rl-card";
 
 interface RLClubRowProps {
@@ -24,13 +26,11 @@ export function RLClubRow({
       type="button"
       onClick={onClick}
       disabled={!interactive}
-      className={`flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left text-sm ${RL_INFO_BOX_CLASS} ${
-        interactive
-          ? "cursor-pointer transition hover:border-accent-green/40 hover:bg-pitch-800/60"
-          : ""
-      } ${expanded ? "border-accent-green/40 bg-pitch-800/40" : ""}`}
+      className={`flex w-full min-h-[44px] items-center justify-between gap-3 px-3 py-2.5 text-left ${TYPO.body} ${RL_INFO_BOX_CLASS} ${
+        interactive ? CARD.interactive : ""
+      } ${expanded ? CARD.selected : ""}`}
     >
-      <div className="flex min-w-0 flex-1 items-center gap-2">
+      <div className={`flex min-w-0 flex-1 items-center ${SPACING.buttonGap}`}>
         <ClubNameLabel
           club={club}
           variant="row"
@@ -39,10 +39,10 @@ export function RLClubRow({
           surface="matchDetails"
           className="min-w-0 flex-1"
         />
-        <span className="shrink-0 text-xs text-gray-500">({count})</span>
+        <span className={`shrink-0 ${TYPO.bodySm}`}>({count})</span>
         {interactive && (
           <span
-            className={`shrink-0 text-[10px] text-gray-500 transition ${
+            className={`shrink-0 ${TYPO.statLabel} transition ${
               expanded ? "rotate-180" : ""
             }`}
             aria-hidden
@@ -51,7 +51,7 @@ export function RLClubRow({
           </span>
         )}
       </div>
-      <span className="shrink-0 font-display text-sm font-bold text-accent-gold">
+      <span className={`shrink-0 ${TYPO.statValue} font-display text-accent-gold`}>
         {formatValue(totalValue)}
       </span>
     </button>
