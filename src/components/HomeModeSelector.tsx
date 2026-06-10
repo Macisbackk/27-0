@@ -19,6 +19,8 @@ function buildPlayHref(
 }
 
 export function HomeModeSelector() {
+  const [classicDifficulty, setClassicDifficulty] =
+    useState<GameDifficulty>("NORMAL");
   const [draftDifficulty, setDraftDifficulty] =
     useState<GameDifficulty>("NORMAL");
   const [mounted, setMounted] = useState(false);
@@ -27,30 +29,70 @@ export function HomeModeSelector() {
     setMounted(true);
   }, []);
 
+  const classicHref = mounted
+    ? buildPlayHref("classic", classicDifficulty)
+    : "/play";
   const draftHref = mounted
     ? buildPlayHref("draft", draftDifficulty)
     : "/play?draft=1";
+
+  const classicAction =
+    classicDifficulty === "HARD" ? "Start Hard Season" : "Start Season";
 
   return (
     <div>
       <GuestNotice variant="home" />
 
       <div className="mx-auto grid max-w-3xl gap-4 sm:grid-cols-2">
-        <ModeCard
-          href="/play"
-          title="Normal Mode"
-          description="Draft your XIII position by position and simulate a full Super League campaign. Can you go 27-0?"
-          action="Start Season"
-          accent="green"
-        />
+        <div className="card-glass matchday-panel group flex flex-col p-6 transition hover:border-accent-green/30">
+          <h2 className="font-display text-xl font-bold group-hover:text-accent-green">
+            Normal Mode
+          </h2>
+          <p className="mt-2 flex-1 text-sm text-gray-400">
+            Draft your XIII position by position and simulate a full Super League
+            campaign. Can you go 27-0?
+          </p>
 
-        <ModeCard
-          href="/play?difficulty=hard"
-          title="Hard Mode"
-          description="Ratings and values hidden during recruitment — judge players by Rugby League knowledge alone."
-          action="Start Hard Season"
-          accent="red"
-        />
+          <div className="mt-4">
+            <p className={`mb-2 ${TYPO.sectionLabel}`}>Difficulty</p>
+            <div className="inline-flex rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1">
+              <button
+                type="button"
+                onClick={() => setClassicDifficulty("NORMAL")}
+                className={`rounded-lg px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-5 sm:text-sm ${
+                  classicDifficulty === "NORMAL"
+                    ? "bg-accent-green text-pitch-950 shadow-lg"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                Normal
+              </button>
+              <button
+                type="button"
+                onClick={() => setClassicDifficulty("HARD")}
+                className={`rounded-lg px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-5 sm:text-sm ${
+                  classicDifficulty === "HARD"
+                    ? "bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.4)]"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                Hard
+              </button>
+            </div>
+            {classicDifficulty === "HARD" && (
+              <p className="mt-2 text-xs text-red-400/80">
+                Ratings and values hidden until season review. No rerolls.
+              </p>
+            )}
+          </div>
+
+          <Link
+            href={classicHref}
+            className="mt-4 inline-block text-sm font-semibold text-accent-green"
+          >
+            {classicAction} →
+          </Link>
+        </div>
 
         <div className="card-glass matchday-panel group flex flex-col p-6 transition hover:border-accent-green/30">
           <h2 className="font-display text-xl font-bold group-hover:text-accent-green">

@@ -6,8 +6,7 @@ export const OUT_OF_POSITION_PENALTY = 5;
 const COMPATIBLE_PAIRS: [Position, Position][] = [
   ["WING", "FULLBACK"],
   ["STAND_OFF", "SCRUM_HALF"],
-  ["SECOND_ROW", "LOOSE_FORWARD"],
-  ["PROP", "HOOKER"],
+  ["PROP", "SECOND_ROW"],
 ];
 
 function isCompatible(a: Position, b: Position): boolean {

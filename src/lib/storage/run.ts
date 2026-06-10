@@ -69,7 +69,12 @@ export async function recordCompletedRun(
   let nationalRank: number | undefined;
 
   if (loggedIn && !isHiddenRun) {
-    await addLeaderboardEntry(totalValue, run.mode, difficulty, { wins, losses });
+    await addLeaderboardEntry(totalValue, run.mode, difficulty, {
+      wins,
+      losses,
+      isPerfectSeason: options?.isPerfectSeason,
+      cupWon: options?.cupWon,
+    });
     if (!isCupRun) {
       const dbMode = gameModeToDbMode(run.mode);
       nationalRank = (

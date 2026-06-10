@@ -3,18 +3,15 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { PlayerTryTotal } from "@/lib/game/season-tries";
+import { getClubColors } from "@/lib/clubs";
 import { POSITION_LABELS } from "@/lib/positions";
 
 function formatScorerPosition(scorer: PlayerTryTotal): string {
-  if (
-    scorer.playedPosition &&
-    scorer.playedPosition !== scorer.position
-  ) {
+  if (scorer.playedPosition && scorer.playedPosition !== scorer.position) {
     return `${POSITION_LABELS[scorer.position]} → ${POSITION_LABELS[scorer.playedPosition]}`;
   }
   return POSITION_LABELS[scorer.position];
 }
-import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
 
 interface TryScorersPanelProps {
   tryScorers: PlayerTryTotal[];
@@ -33,14 +30,14 @@ export function TryScorersPanel({
   if (tryScorers.length === 0) return null;
 
   return (
-    <div className="mt-3">
+    <div className="mt-4">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-green transition hover:text-emerald-300"
+        className="w-full rounded-lg border border-pitch-600/50 bg-pitch-950/60 px-4 py-2.5 font-display text-[10px] font-bold uppercase tracking-wider text-accent-green transition hover:border-accent-green/40 hover:bg-pitch-900/80 hover:text-emerald-300"
         aria-expanded={open}
       >
-        {open ? "Hide Try Scorers" : title}
+        {open ? "Hide All Try Scorers" : title}
       </button>
 
       <AnimatePresence initial={false}>
@@ -52,54 +49,45 @@ export function TryScorersPanel({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className={`${RL_INFO_BOX_CLASS} mt-3 overflow-x-auto p-3`}>
-              <table className="w-full min-w-[280px] text-left text-sm">
-                <thead>
-                  <tr className="border-b border-pitch-600/40 text-[10px] font-bold uppercase tracking-wider text-gray-500">
-                    <th className="pb-2 pr-3">Player</th>
-                    <th className="pb-2 pr-3">Position</th>
-                    <th className="pb-2 pr-3">Club</th>
-                    <th className="pb-2 text-right">Tries</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tryScorers.map((scorer) => (
-                    <tr
-                      key={scorer.playerId}
-                      className="border-b border-pitch-700/30 last:border-0"
-                    >
-                      <td className="py-2 pr-3 font-medium text-white">
+            <div className="mt-3 space-y-2">
+              {tryScorers.map((scorer, index) => {
+                const colors = getClubColors(scorer.club);
+                return (
+                  <div
+                    key={scorer.playerId}
+                    className="flex items-center gap-3 rounded-lg border border-pitch-700/40 bg-pitch-950/60 px-3 py-2.5"
+                    style={{ borderLeftWidth: "3px", borderLeftColor: colors.primary }}
+                  >
+                    <span className="w-6 shrink-0 text-center font-display text-xs font-bold text-gray-500">
+                      {index + 1}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold text-white">
                         {scorer.name}
-                      </td>
-                      <td className="py-2 pr-3 text-gray-400">
+                      </p>
+                      <p className="truncate text-xs text-gray-500">
+                        <span style={{ color: colors.primary }}>{scorer.club}</span>
+                        <span className="mx-1.5 text-pitch-600">·</span>
                         {formatScorerPosition(scorer)}
-                      </td>
-                      <td className="py-2 pr-3 text-gray-400">{scorer.club}</td>
-                      <td className="py-2 text-right font-display font-bold text-accent-gold">
-                        {scorer.tries}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td
-                      colSpan={3}
-                      className="pt-3 text-[10px] font-bold uppercase tracking-wider text-gray-500"
-                    >
-                      Total tries
-                    </td>
-                    <td className="pt-3 text-right font-display font-bold text-white">
-                      {listedTotal}
-                      {listedTotal !== expectedTotalTries && (
-                        <span className="ml-1 text-red-400">
-                          / {expectedTotalTries}
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+                      </p>
+                    </div>
+                    <span className="shrink-0 font-display text-lg font-bold text-accent-gold">
+                      {scorer.tries}
+                    </span>
+                  </div>
+                );
+              })}
+              <div className="flex items-center justify-between rounded-lg border border-pitch-700/30 bg-pitch-900/40 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                <span>Total tries</span>
+                <span className="font-display text-sm text-white">
+                  {listedTotal}
+                  {listedTotal !== expectedTotalTries && (
+                    <span className="ml-1 text-red-400">
+                      / {expectedTotalTries}
+                    </span>
+                  )}
+                </span>
+              </div>
             </div>
           </motion.div>
         )}

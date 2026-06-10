@@ -28,7 +28,7 @@ import { ClubRepresentation } from "./ClubRepresentation";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import { TeamComparisonBox } from "./TeamComparisonBox";
-import { TryScorersPanel } from "./TryScorersPanel";
+import { TopTryScorersCard } from "./TopTryScorersCard";
 import { SquadSummaryPanel } from "./SquadSummaryPanel";
 
 interface SeasonReviewProps {
@@ -242,14 +242,11 @@ export function SeasonReview({
 
         <ReviewSection title="Season Awards" delay={0.35}>
           <div className="grid gap-3 text-left sm:grid-cols-2">
-            {awards.map((award) => (
-              <div
-                key={award.title}
-                className={
-                  award.title === "Top 3 Try Scorers" ? "sm:col-span-2" : ""
-                }
-              >
+            {awards
+              .filter((award) => award.title !== "Top 3 Try Scorers")
+              .map((award) => (
                 <RLAwardCard
+                  key={award.title}
                   title={award.title}
                   variant={award.variant}
                   playerName={award.playerName}
@@ -258,16 +255,14 @@ export function SeasonReview({
                   positionNote={award.positionNote}
                   ratingNote={award.ratingNote}
                   narrative={award.narrative}
-                  rankedLines={award.rankedLines}
                 />
-                {award.title === "Top 3 Try Scorers" && (
-                  <TryScorersPanel
-                    tryScorers={seasonResult.tryScorers}
-                    expectedTotalTries={getSeasonTryTotal(seasonResult.fixtures)}
-                  />
-                )}
-              </div>
-            ))}
+              ))}
+            <div className="sm:col-span-2">
+              <TopTryScorersCard
+                tryScorers={seasonResult.tryScorers}
+                expectedTotalTries={getSeasonTryTotal(seasonResult.fixtures)}
+              />
+            </div>
           </div>
         </ReviewSection>
 

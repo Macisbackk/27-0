@@ -38,7 +38,7 @@ import { RLAwardCard } from "./cards/RLAwardCard";
 import { BracketRecap } from "./BracketRecap";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import { TeamComparisonBox } from "./TeamComparisonBox";
-import { TryScorersPanel } from "./TryScorersPanel";
+import { TopTryScorersCard } from "./TopTryScorersCard";
 import { SquadSummaryPanel } from "./SquadSummaryPanel";
 
 interface ChallengeCupReviewProps {
@@ -252,14 +252,15 @@ export function ChallengeCupReview({
 
         <ReviewSection title="Tournament Awards" delay={0.35}>
           <div className="grid gap-3 text-left sm:grid-cols-2">
-            {awards.map((award) => (
-              <div
-                key={award.title}
-                className={
-                  award.title === "Top Try Scorers" ? "sm:col-span-2" : ""
-                }
-              >
+            {awards
+              .filter(
+                (award) =>
+                  award.title !== "Top Try Scorers" &&
+                  award.title !== "Top 3 Try Scorers"
+              )
+              .map((award) => (
                 <RLAwardCard
+                  key={award.title}
                   title={award.title}
                   variant={award.variant}
                   playerName={award.playerName}
@@ -268,16 +269,15 @@ export function ChallengeCupReview({
                   positionNote={award.positionNote}
                   ratingNote={award.ratingNote}
                   narrative={award.narrative}
-                  rankedLines={award.rankedLines}
                 />
-                {award.title === "Top Try Scorers" && (
-                  <TryScorersPanel
-                    tryScorers={cupResult.tryScorers}
-                    expectedTotalTries={getSeasonTryTotal(cupResult.fixtures)}
-                  />
-                )}
-              </div>
-            ))}
+              ))}
+            <div className="sm:col-span-2">
+              <TopTryScorersCard
+                tryScorers={cupResult.tryScorers}
+                expectedTotalTries={getSeasonTryTotal(cupResult.fixtures)}
+                title="Top Try Scorers"
+              />
+            </div>
           </div>
         </ReviewSection>
 
