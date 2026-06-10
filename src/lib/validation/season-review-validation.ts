@@ -9,7 +9,9 @@ import {
   getEffectivePeakRating,
 } from "../squad-analysis";
 import {
+  getBestOppositionRatedTeam,
   getBestRatedTeam,
+  getExtendedTeamComparison,
   getMostExpensiveTeam,
 } from "../team-value-comparison";
 import { devWarnMany } from "./dev-warn";
@@ -164,6 +166,33 @@ export function validateSeasonReviewStats(input: {
     // OK
   } else if (mostExpensive.value <= 0) {
     issues.push("Most expensive team has invalid value");
+  }
+
+  if (fixtures.length > 0) {
+    const bestOpposition = getBestOppositionRatedTeam(fixtures, seed);
+    if (!bestOpposition || bestOpposition.rating <= 0) {
+      issues.push("Best opposition team has invalid rating");
+    } else if (bestOpposition.name === userTeamName) {
+      issues.push("Best opposition team must not be the user team");
+    }
+
+    const comparison = getExtendedTeamComparison(
+      userTeamName,
+      getAverageSquadRating(squad),
+      squadValue,
+      fixtures,
+      seed,
+      { squad, wins, losses }
+    );
+    if (comparison.opponent.name === userTeamName) {
+      issues.push("Team comparison opponent must not be the user team");
+    }
+    if (
+      (input.joeMellorMode || input.superSamHallasMode) &&
+      comparison.opponent.name === "—"
+    ) {
+      issues.push("Easter egg team comparison missing opposition data");
+    }
   }
 
   return issues;

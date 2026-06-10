@@ -6,11 +6,11 @@ import type { Player, Position } from "../types";
  * Low: second row & loose forward · Very low: props & hookers
  */
 export const POSITION_TRY_WEIGHT: Record<Position, number> = {
-  WING: 14,
-  FULLBACK: 13,
-  CENTRE: 10,
-  STAND_OFF: 6.5,
-  SCRUM_HALF: 6,
+  WING: 12.5,
+  FULLBACK: 11.5,
+  CENTRE: 11,
+  STAND_OFF: 8,
+  SCRUM_HALF: 7.5,
   SECOND_ROW: 2.5,
   LOOSE_FORWARD: 2.2,
   HOOKER: 1.2,
@@ -19,11 +19,11 @@ export const POSITION_TRY_WEIGHT: Record<Position, number> = {
 
 /** Soft season caps by played position (share of team tries). */
 export const POSITION_SEASON_SHARE_MAX: Record<Position, number> = {
-  WING: 0.28,
-  FULLBACK: 0.18,
-  CENTRE: 0.17,
-  STAND_OFF: 0.12,
-  SCRUM_HALF: 0.11,
+  WING: 0.22,
+  FULLBACK: 0.17,
+  CENTRE: 0.16,
+  STAND_OFF: 0.13,
+  SCRUM_HALF: 0.12,
   SECOND_ROW: 0.08,
   LOOSE_FORWARD: 0.07,
   HOOKER: 0.05,
@@ -32,11 +32,11 @@ export const POSITION_SEASON_SHARE_MAX: Record<Position, number> = {
 
 /** Absolute season try ceilings by played position. */
 export const POSITION_SEASON_TRY_MAX: Record<Position, number> = {
-  WING: 30,
+  WING: 28,
   FULLBACK: 18,
   CENTRE: 18,
-  STAND_OFF: 12,
-  SCRUM_HALF: 12,
+  STAND_OFF: 14,
+  SCRUM_HALF: 14,
   SECOND_ROW: 8,
   LOOSE_FORWARD: 8,
   HOOKER: 6,
@@ -68,7 +68,7 @@ export function getRatingTryModifier(
   const tier = POSITION_TRY_WEIGHT[position];
   const boost = 1 + (rating - 80) * 0.011;
   const maxLift =
-    tier >= 10 ? 1.32 : tier >= 6 ? 1.22 : tier >= 2 ? 1.14 : 1.08;
+    tier >= 10 ? 1.24 : tier >= 6 ? 1.22 : tier >= 2 ? 1.14 : 1.08;
   const minLift = tier >= 10 ? 0.82 : tier >= 6 ? 0.78 : 0.72;
   return Math.min(maxLift, Math.max(minLift, boost));
 }

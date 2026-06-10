@@ -37,8 +37,8 @@ interface SquadEntry {
 function getMaxIndividualTries(seasonWins: number, seasonTries: number): number {
   if (seasonWins <= 6) return Math.min(12, Math.max(5, Math.ceil(seasonTries * 0.18)));
   if (seasonWins <= 14) return Math.min(18, Math.max(8, Math.ceil(seasonTries * 0.2)));
-  if (seasonWins <= 22) return Math.min(24, Math.max(10, Math.ceil(seasonTries * 0.22)));
-  return Math.min(30, Math.max(12, Math.ceil(seasonTries * 0.24)));
+  if (seasonWins <= 22) return Math.min(22, Math.max(10, Math.ceil(seasonTries * 0.21)));
+  return Math.min(28, Math.max(12, Math.ceil(seasonTries * 0.22)));
 }
 
 function getPositionCap(position: Position, seasonTries: number): number {
@@ -62,6 +62,19 @@ function getMinMatchWeight(position: Position): number {
   return position === "PROP" ? 0.03 : position === "HOOKER" ? 0.05 : 0.08;
 }
 
+function getTeammateRelativeSaturation(
+  playerTotal: number,
+  seasonTotalsSoFar: number[]
+): number {
+  const activeTotals = seasonTotalsSoFar.filter((t) => t > 0);
+  const teamAvg =
+    activeTotals.length > 0
+      ? activeTotals.reduce((sum, t) => sum + t, 0) / activeTotals.length
+      : 0;
+  const leadAboveAvg = Math.max(0, playerTotal - teamAvg * 1.35);
+  return 1 / (1 + playerTotal * 0.06 + leadAboveAvg * 0.18);
+}
+
 function getMatchWeights(
   entries: SquadEntry[],
   rng: () => number,
@@ -75,7 +88,10 @@ function getMatchWeights(
         : 1;
     const base =
       getPlayerTryWeight(e.player, e.playedPosition, rating) * ratingFactor;
-    const saturation = 1 / (1 + seasonTotalsSoFar[i] * 0.09);
+    const saturation = getTeammateRelativeSaturation(
+      seasonTotalsSoFar[i],
+      seasonTotalsSoFar
+    );
     const variance = 0.82 + rng() * 0.36;
     return Math.max(
       getMinMatchWeight(e.playedPosition),
@@ -189,7 +205,7 @@ function softenMatchConcentration(
   const dominantIdx = alloc.indexOf(maxInMatch);
   const dominantShare = maxInMatch / matchTries;
 
-  if (dominantShare < 0.55 || maxInMatch < 2) return;
+  if (dominantShare < 0.45 || maxInMatch < 2) return;
 
   const recipients = entries
     .map((e, i) => ({
@@ -276,7 +292,7 @@ function spreadSeasonConcentration(
     const dominantIdx = totals.indexOf(maxTotal);
     const dominantShare = maxTotal / seasonTries;
 
-    if (dominantShare < 0.26) break;
+    if (dominantShare < 0.2) break;
 
     const underused = entries
       .map((e, i) => ({
@@ -284,7 +300,7 @@ function spreadSeasonConcentration(
         total: totals[i],
         weight: getPlayerTryWeight(e.player, e.playedPosition),
       }))
-      .filter((c) => c.i !== dominantIdx && c.total <= Math.max(2, maxTotal * 0.35));
+      .filter((c) => c.i !== dominantIdx && c.total <= Math.max(2, maxTotal * 0.42));
 
     if (underused.length === 0) break;
 

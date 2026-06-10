@@ -142,6 +142,34 @@ export function getMostExpensiveTeam(
   return best;
 }
 
+/** Best average match-day rating among generated opposition clubs only. */
+export function getBestOppositionRatedTeam(
+  fixtures: MatchFixture[],
+  seed: string
+): TeamRatingEntry | null {
+  const teams = new Map<string, number>();
+
+  for (const fixture of fixtures) {
+    const opp = getOpponentTeamSummary(
+      fixture.opponent,
+      seed,
+      fixture.round
+    );
+    const prev = teams.get(fixture.opponent) ?? 0;
+    teams.set(fixture.opponent, Math.max(prev, opp.averageRating));
+  }
+
+  if (teams.size === 0) return null;
+
+  let best: TeamRatingEntry = { name: "", rating: 0, tier: "—" };
+  for (const [name, rating] of teams) {
+    if (rating > best.rating) {
+      best = { name, rating, tier: getTeamTier(rating) };
+    }
+  }
+  return best.name ? best : null;
+}
+
 export function getBestRatedTeam(
   userTeamName: string,
   userRating: number,
@@ -215,19 +243,25 @@ export function getExtendedTeamComparison(
     fixtures,
     seed
   );
-  const { bestRatedTeam, mostExpensiveTeam } = summary;
+  const { mostExpensiveTeam } = summary;
+  const bestOpposition =
+    getBestOppositionRatedTeam(fixtures, seed) ?? {
+      name: "—",
+      rating: 0,
+      tier: "—",
+    };
   const userTotalTries = fixtures.reduce((sum, f) => sum + f.triesFor, 0);
-  const oppStats = getOpponentFixtureStats(bestRatedTeam.name, fixtures);
-  const oppRound = findBestOpponentRound(bestRatedTeam.name, fixtures, seed);
+  const oppStats = getOpponentFixtureStats(bestOpposition.name, fixtures);
+  const oppRound = findBestOpponentRound(bestOpposition.name, fixtures, seed);
   const oppValue =
-    bestRatedTeam.name === userTeamName
-      ? userValue
-      : getOpponentSquadValue(bestRatedTeam.name, seed, oppRound);
+    bestOpposition.name === "—"
+      ? 0
+      : getOpponentSquadValue(bestOpposition.name, seed, oppRound);
 
   const ratingEdge: ExtendedTeamComparison["ratingEdge"] =
-    userRating > bestRatedTeam.rating
+    userRating > bestOpposition.rating
       ? "user"
-      : userRating < bestRatedTeam.rating
+      : userRating < bestOpposition.rating
         ? "opponent"
         : "tie";
 
@@ -242,13 +276,16 @@ export function getExtendedTeamComparison(
       topPlayer: getUserTopPlayer(options.squad),
     },
     opponent: {
-      name: bestRatedTeam.name,
-      rating: bestRatedTeam.rating,
-      tier: bestRatedTeam.tier,
+      name: bestOpposition.name,
+      rating: bestOpposition.rating,
+      tier: bestOpposition.tier,
       value: oppValue,
       winPct: oppStats.winPct,
       totalTries: oppStats.totalTries,
-      topPlayer: getTopPlayerFromSquad(bestRatedTeam.name, seed, oppRound),
+      topPlayer:
+        bestOpposition.name === "—"
+          ? { name: "—", rating: 0 }
+          : getTopPlayerFromSquad(bestOpposition.name, seed, oppRound),
     },
     mostExpensiveTeam,
     ratingEdge,

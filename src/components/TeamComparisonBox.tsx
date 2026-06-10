@@ -68,7 +68,7 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
           oppBarPct={oppBarPct}
         />
 
-        <div className="relative mt-8 grid gap-6 sm:grid-cols-[1fr_auto_1fr] sm:items-start sm:gap-4">
+        <div className="relative mt-8 grid gap-6 sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-4">
           <TeamSidePanel
             label="Your Team"
             side={user}
@@ -81,7 +81,7 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
             topPlayerLabel="Top Player"
           />
 
-          <div className="flex items-center justify-center sm:pt-10">
+          <div className="flex items-center justify-center self-center">
             <span className="font-display text-2xl font-black uppercase tracking-widest text-gray-500 sm:text-3xl">
               VS
             </span>
