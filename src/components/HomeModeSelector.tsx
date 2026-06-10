@@ -94,9 +94,8 @@ export function HomeModeSelector() {
         )}
       </div>
 
-      {difficulty === "NORMAL" && (
-        <div className="mx-auto mb-6 flex max-w-2xl flex-col items-center">
-          <p className={`mb-3 ${TYPO.sectionLabel}`}>Super League Recruitment</p>
+      <div className="mx-auto mb-6 flex max-w-2xl flex-col items-center">
+          <p className={`mb-3 ${TYPO.sectionLabel}`}>Recruitment Style</p>
           <div className="inline-flex rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1">
             <button
               type="button"
@@ -124,10 +123,9 @@ export function HomeModeSelector() {
           <p className="mt-2 max-w-md text-center text-xs text-gray-500">
             {recruitmentStyle === "manual"
               ? "Choose which position to fill on the team sheet."
-              : "Positions are chosen at random — build your squad as the draft unfolds."}
+              : "Pick players, then place them in any empty slot. Out-of-position placements cost 5 OVR."}
           </p>
         </div>
-      )}
 
       <div className="mx-auto grid max-w-2xl gap-4 sm:grid-cols-2">
         <Link

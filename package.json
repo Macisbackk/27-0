@@ -11,7 +11,9 @@
     "merge:players": "tsx scripts/merge-player-additions.ts",
     "enrich:players": "tsx scripts/enrich-wikipedia-nationality.ts",
     "rebalance:ratings": "tsx scripts/rebalance-ratings.ts",
-    "fix:historic-players": "tsx scripts/apply-historic-player-corrections.ts"
+    "fix:historic-players": "tsx scripts/apply-historic-player-corrections.ts",
+    "fix:players-batch2": "tsx scripts/apply-player-corrections-batch2.ts",
+    "audit:duplicates": "tsx scripts/audit-duplicate-players.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.0",

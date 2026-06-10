@@ -22,6 +22,7 @@ interface RugbyPitchProps {
   hardMode?: boolean;
   interactive?: boolean;
   onSlotClick?: (slotIndex: number) => void;
+  onSlotHover?: (slotIndex: number | null) => void;
   dimmed?: boolean;
   lockedSlots?: number[];
 }
@@ -37,6 +38,7 @@ export function RugbyPitch({
   hardMode,
   interactive,
   onSlotClick,
+  onSlotHover,
   dimmed,
   lockedSlots,
 }: RugbyPitchProps) {
@@ -107,6 +109,7 @@ export function RugbyPitch({
                 interactive={interactive}
                 lockedSet={lockedSet}
                 onSlotClick={onSlotClick}
+                onSlotHover={onSlotHover}
               />
             ))}
           </div>
@@ -137,6 +140,7 @@ function FormationRow({
   interactive,
   lockedSet,
   onSlotClick,
+  onSlotHover,
 }: {
   slotIndices: number[];
   slotByIndex: Map<number, SquadSlot>;
@@ -147,6 +151,7 @@ function FormationRow({
   interactive?: boolean;
   lockedSet: Set<number>;
   onSlotClick?: (slotIndex: number) => void;
+  onSlotHover?: (slotIndex: number | null) => void;
 }) {
   const count = slotIndices.length;
 
@@ -179,7 +184,18 @@ function FormationRow({
         );
 
         return (
-          <div key={slotIndex} className="flex justify-center">
+          <div
+            key={slotIndex}
+            className="flex justify-center"
+            onMouseEnter={
+              canClick && onSlotHover
+                ? () => onSlotHover(slotIndex)
+                : undefined
+            }
+            onMouseLeave={
+              onSlotHover ? () => onSlotHover(null) : undefined
+            }
+          >
             <SquadMarker
               slot={slot}
               highlighted={isHighlight}

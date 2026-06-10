@@ -9,7 +9,11 @@ import { getSeasonGradeFromSquad } from "@/lib/grades";
 import { getClubBreakdownSummary } from "@/lib/squad-analysis";
 import { generateSeasonAwards } from "@/lib/season-awards";
 import { getSquadValue } from "@/lib/positions";
-import { getMostExpensiveTeam } from "@/lib/team-value-comparison";
+import { formatValue } from "@/lib/players";
+import {
+  getTeamComparisonSummary,
+} from "@/lib/team-value-comparison";
+import { getAverageSquadRating } from "@/lib/squad-analysis";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { formatSeasonWinPercentageOrDash } from "@/lib/stats-views";
 import { playGradeSound } from "@/lib/sound";
@@ -22,7 +26,7 @@ import { HardModeBadge } from "./HardModeBadge";
 import { ClubRepresentation } from "./ClubRepresentation";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
-import { MostExpensiveTeamBox } from "./MostExpensiveTeamBox";
+import { TeamComparisonBox } from "./TeamComparisonBox";
 import { TryScorersPanel } from "./TryScorersPanel";
 
 interface SeasonReviewProps {
@@ -56,8 +60,9 @@ export function SeasonReview({
     joeMellorMode,
   });
   const awards = generateSeasonAwards(squad, seasonResult, { joeMellorMode });
-  const mostExpensive = getMostExpensiveTeam(
+  const teamComparison = getTeamComparisonSummary(
     "Dream Team",
+    getAverageSquadRating(squad),
     totalValue,
     seasonResult.fixtures,
     seed
@@ -201,6 +206,12 @@ export function SeasonReview({
                 {runRank ? `#${runRank}` : "—"}
               </span>
             </p>
+            <p>
+              Total Team Value:{" "}
+              <span className="font-semibold text-accent-gold">
+                {formatValue(totalValue)}
+              </span>
+            </p>
           </motion.div>
 
           <motion.p
@@ -256,10 +267,7 @@ export function SeasonReview({
         </ReviewSection>
 
         <ReviewSection title="Results" delay={0.42}>
-          <MostExpensiveTeamBox
-            name={mostExpensive.name}
-            value={mostExpensive.value}
-          />
+          <TeamComparisonBox summary={teamComparison} />
           <p className="mb-3 mt-4 text-center text-xs text-gray-500">
             Click any result to view full match details.
           </p>

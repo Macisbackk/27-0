@@ -66,7 +66,17 @@ export interface SquadSlot {
   slotIndex: number;
   label: string;
   player: Player | null;
+  /** Run-only OVR penalty when placed out of position (draft mode). */
+  runRatingPenalty?: number;
 }
+
+export type GamePhase =
+  | "clubSelect"
+  | "pitch"
+  | "choice"
+  | "placement"
+  | "simulation"
+  | "review";
 
 export interface RunState {
   id: string;

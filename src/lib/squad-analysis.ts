@@ -77,7 +77,7 @@ export function getClubBreakdown(
       position: player.position,
       category: player.category,
       displayCategory: getPlayerDisplayCategory(player, options?.joeMellorMode),
-      peakRating: player.peakRating,
+      peakRating: getEffectivePeakRating(slot),
       value: player.value,
     });
     map.set(clubName, existing);
@@ -117,9 +117,15 @@ export function getClubBreakdownSummary(
   };
 }
 
+export function getEffectivePeakRating(slot: SquadSlot): number {
+  if (!slot.player) return 0;
+  const penalty = slot.runRatingPenalty ?? 0;
+  return Math.max(75, slot.player.peakRating - penalty);
+}
+
 export function getAverageSquadRating(squad: SquadSlot[]): number {
-  const players = squad.filter((s) => s.player).map((s) => s.player!);
-  if (players.length === 0) return 0;
-  const total = players.reduce((sum, p) => sum + p.peakRating, 0);
-  return Math.round((total / players.length) * 10) / 10;
+  const filled = squad.filter((s) => s.player);
+  if (filled.length === 0) return 0;
+  const total = filled.reduce((sum, s) => sum + getEffectivePeakRating(s), 0);
+  return Math.round((total / filled.length) * 10) / 10;
 }

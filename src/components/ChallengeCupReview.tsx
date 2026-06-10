@@ -17,9 +17,13 @@ import {
   getTournamentWorstNarrative,
 } from "@/lib/game/tournament-awards";
 import { getSquadValue } from "@/lib/positions";
-import { getClubBreakdownSummary } from "@/lib/squad-analysis";
+import {
+  getAverageSquadRating,
+  getClubBreakdownSummary,
+} from "@/lib/squad-analysis";
 import { generateSeasonAwards } from "@/lib/season-awards";
-import { getMostExpensiveTeam } from "@/lib/team-value-comparison";
+import { getTeamComparisonSummary } from "@/lib/team-value-comparison";
+import { formatValue } from "@/lib/players";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { playGradeSound } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
@@ -33,7 +37,7 @@ import { HardModeBadge } from "./HardModeBadge";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { BracketRecap } from "./BracketRecap";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
-import { MostExpensiveTeamBox } from "./MostExpensiveTeamBox";
+import { TeamComparisonBox } from "./TeamComparisonBox";
 import { TryScorersPanel } from "./TryScorersPanel";
 
 interface ChallengeCupReviewProps {
@@ -96,8 +100,9 @@ export function ChallengeCupReview({
     "Top 3 Try Scorers": "Top Try Scorers",
   };
 
-  const mostExpensive = getMostExpensiveTeam(
+  const teamComparison = getTeamComparisonSummary(
     userTeamName,
+    getAverageSquadRating(squad),
     totalValue,
     cupResult.fixtures,
     seed
@@ -208,6 +213,12 @@ export function ChallengeCupReview({
                 )}
               </p>
             )}
+            <p>
+              Total Team Value:{" "}
+              <span className="font-semibold text-accent-gold">
+                {formatValue(totalValue)}
+              </span>
+            </p>
             {(cupRankingResult?.newRecords.length ?? 0) > 0 && (
               <p className="font-display text-xs font-bold uppercase tracking-wider text-accent-gold">
                 🏆 New Challenge Cup Record
@@ -268,9 +279,9 @@ export function ChallengeCupReview({
         </ReviewSection>
 
         <ReviewSection title="Tournament Results" delay={0.42}>
-          <MostExpensiveTeamBox
-            name={mostExpensive.name}
-            value={mostExpensive.value}
+          <TeamComparisonBox
+            summary={teamComparison}
+            userTeamName={userTeamName}
           />
           <p className="mb-3 mt-4 text-center text-xs text-gray-500">
             Click any result to view full match details.

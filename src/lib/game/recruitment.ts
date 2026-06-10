@@ -480,6 +480,157 @@ export function rerollSlotOffer(
   };
 }
 
+function pickPairAny(
+  rng: () => number,
+  usedIds: Set<string>,
+  options?: RecruitmentOptions
+): [string, string] | null {
+  const pool = basePlayerPool(options).filter((p) => !usedIds.has(p.id));
+  if (pool.length < 2) return null;
+
+  let primaryPool = pool;
+  const categoryPool = selectCategoryPool(rng, options).filter(
+    (p) => !usedIds.has(p.id)
+  );
+  if (categoryPool.length >= 2) primaryPool = categoryPool;
+
+  const pair = pickBalancedPair(primaryPool, rng, options);
+  if (!pair) return null;
+  return [pair[0].id, pair[1].id];
+}
+
+function pickPairForCategory(
+  rng: () => number,
+  usedIds: Set<string>,
+  category: PlayerCategory,
+  options?: RecruitmentOptions
+): [string, string] | null {
+  const filtered = playersForCategory(category, options).filter(
+    (p) => !usedIds.has(p.id)
+  );
+  if (filtered.length < 2) return null;
+  const pair = pickBalancedPair(filtered, rng, options);
+  if (!pair) return null;
+  return [pair[0].id, pair[1].id];
+}
+
+function applyDraftGuarantees(
+  offers: Map<number, RecruitmentRound>,
+  rng: () => number,
+  lockedPlayerIds: Set<string>,
+  options?: RecruitmentOptions
+): void {
+  const picks = shuffle(Array.from(offers.keys()), rng);
+
+  const ensureMinimum = (
+    category: PlayerCategory,
+    minimum: number,
+    pickPool: number[]
+  ) => {
+    let count = countRoundsWithCategory(offers, category);
+    for (const pickIndex of pickPool) {
+      if (count >= minimum) break;
+      const round = offers.get(pickIndex);
+      if (!round || roundHasCategory(round, category)) continue;
+
+      const usedIds = new Set<string>(lockedPlayerIds);
+      for (const [idx, offer] of offers) {
+        if (idx === pickIndex) continue;
+        usedIds.add(offer.optionA);
+        usedIds.add(offer.optionB);
+      }
+
+      const pair = pickPairForCategory(rng, usedIds, category, options);
+      if (pair) {
+        offers.set(pickIndex, { ...round, optionA: pair[0], optionB: pair[1] });
+        count++;
+      }
+    }
+  };
+
+  ensureMinimum("historic", MIN_HISTORIC_OFFERS, picks);
+  ensureMinimum("legend", MIN_LEGEND_OFFERS, picks);
+
+  let eliteCount = countEliteRatingOffers(offers, ELITE_RATING_THRESHOLD);
+  for (const pickIndex of picks) {
+    if (eliteCount >= MIN_ELITE_RATING_OFFERS) break;
+    const round = offers.get(pickIndex);
+    if (!round || roundHasEliteRating(round, ELITE_RATING_THRESHOLD)) continue;
+
+    const usedIds = new Set<string>(lockedPlayerIds);
+    for (const [idx, offer] of offers) {
+      if (idx === pickIndex) continue;
+      usedIds.add(offer.optionA);
+      usedIds.add(offer.optionB);
+    }
+
+    const pool = basePlayerPool(options).filter(
+      (p) => !usedIds.has(p.id) && p.peakRating >= ELITE_RATING_THRESHOLD
+    );
+    if (pool.length === 0) continue;
+    const star = pool[Math.floor(rng() * pool.length)];
+    const partners = basePlayerPool(options).filter(
+      (p) =>
+        !usedIds.has(p.id) &&
+        p.id !== star.id &&
+        Math.abs(p.peakRating - star.peakRating) <= TYPICAL_PAIR_RATING_GAP
+    );
+    if (partners.length === 0) continue;
+    const partner = partners[Math.floor(rng() * partners.length)];
+    offers.set(pickIndex, {
+      ...round,
+      optionA: star.id,
+      optionB: partner.id,
+    });
+    eliteCount++;
+  }
+}
+
+/** Position-free draft picks keyed by pick index (0…n-1). */
+export function generateDraftOffers(
+  seed: string,
+  pickCount: number,
+  lockedPlayerIds: string[] = [],
+  options?: RecruitmentOptions
+): Map<number, RecruitmentRound> {
+  const rng = seedrandom(`${seed}-draft-offers`);
+  const offers = new Map<number, RecruitmentRound>();
+  const locked = new Set(lockedPlayerIds);
+
+  for (let pickIndex = 0; pickIndex < pickCount; pickIndex++) {
+    const usedIds = new Set(locked);
+    for (const offer of offers.values()) {
+      usedIds.add(offer.optionA);
+      usedIds.add(offer.optionB);
+    }
+
+    const pair = pickPairAny(rng, usedIds, options);
+    if (!pair) continue;
+
+    offers.set(pickIndex, {
+      roundIndex: pickIndex,
+      slotIndex: -1,
+      position: "CENTRE",
+      slotLabel: `Pick ${pickIndex + 1}`,
+      optionA: pair[0],
+      optionB: pair[1],
+    });
+  }
+
+  if (!options?.clubFilter) {
+    applyDraftGuarantees(offers, rng, locked, options);
+  }
+
+  return offers;
+}
+
+export function getOfferForPick(
+  offers: Map<number, RecruitmentRound>,
+  pickIndex: number
+): RecruitmentRound | null {
+  return offers.get(pickIndex) ?? null;
+}
+
 export function getRoundPlayers(round: RecruitmentRound): [Player, Player] {
   const a = getPlayerById(round.optionA);
   const b = getPlayerById(round.optionB);

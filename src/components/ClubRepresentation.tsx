@@ -6,8 +6,8 @@ import type {
   ClubBreakdownSummary,
   ClubPlayerDisplayCategory,
 } from "@/lib/squad-analysis";
+import { getClubColors } from "@/lib/clubs";
 import { RLClubRow } from "./cards/RLClubRow";
-import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
 import { formatValue } from "@/lib/players";
 import { POSITION_LABELS } from "@/lib/positions";
 
@@ -23,10 +23,10 @@ const DISPLAY_LABEL: Record<ClubPlayerDisplayCategory, string> = {
 };
 
 const DISPLAY_CLASS: Record<ClubPlayerDisplayCategory, string> = {
-  current: "border-accent-green/30 bg-accent-green/10 text-accent-green",
-  historic: "border-purple-500/30 bg-purple-500/10 text-purple-300",
-  legend: "border-accent-gold/35 bg-accent-gold/10 text-accent-gold",
-  goat: "border-accent-gold/50 bg-accent-gold/20 text-accent-gold",
+  current: "border-accent-green/40 bg-accent-green/15 text-accent-green",
+  historic: "border-purple-400/35 bg-purple-500/12 text-purple-200",
+  legend: "border-accent-gold/40 bg-accent-gold/12 text-accent-gold",
+  goat: "border-accent-gold/55 bg-accent-gold/20 text-accent-gold",
 };
 
 export function ClubRepresentation({ summary }: ClubRepresentationProps) {
@@ -44,6 +44,7 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
       ) : (
         clubs.map((c) => {
           const isExpanded = expandedClub === c.club;
+          const colors = getClubColors(c.club);
           return (
             <div key={c.club}>
               <RLClubRow
@@ -63,30 +64,41 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                     className="overflow-hidden"
                   >
                     <div
-                      className={`mt-2 space-y-2.5 border-l-2 border-accent-green/30 pl-4 ${RL_INFO_BOX_CLASS} py-3`}
+                      className="mt-2 space-y-2 rounded-xl border px-3 py-3 sm:px-4"
+                      style={{
+                        borderColor: `${colors.primary}55`,
+                        background: `linear-gradient(135deg, ${colors.primary}18 0%, rgba(15,23,42,0.85) 55%)`,
+                      }}
                     >
                       {c.players.map((player) => (
                         <li
                           key={player.playerId}
-                          className="flex items-center justify-between gap-3"
+                          className="rounded-lg border border-pitch-700/50 bg-pitch-950/70 px-3 py-2.5"
                         >
-                          <span className="min-w-0 flex-1 break-words text-sm font-semibold text-white">
-                            {player.name}{" "}
-                            <span className="font-normal text-gray-400">
-                              ({DISPLAY_LABEL[player.displayCategory]}) —{" "}
-                              {player.peakRating} OVR — {formatValue(player.value)}
-                            </span>
-                          </span>
-                          <div className="flex shrink-0 items-center gap-2 sm:hidden">
+                          <div className="flex flex-wrap items-start justify-between gap-2">
+                            <div className="min-w-0 flex-1">
+                              <p className="text-sm font-bold text-white">
+                                {player.name}
+                              </p>
+                              <p className="mt-0.5 text-xs text-gray-400">
+                                {POSITION_LABELS[player.position]}
+                              </p>
+                            </div>
                             <span
-                              className={`rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${DISPLAY_CLASS[player.displayCategory]}`}
+                              className={`shrink-0 rounded-md border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${DISPLAY_CLASS[player.displayCategory]}`}
                             >
                               {DISPLAY_LABEL[player.displayCategory]}
                             </span>
                           </div>
-                          <span className="hidden shrink-0 text-xs text-gray-500 sm:inline">
-                            {POSITION_LABELS[player.position]}
-                          </span>
+                          <div className="mt-2 flex flex-wrap items-center gap-3 text-xs">
+                            <span className="font-display font-bold text-accent-green">
+                              {player.peakRating} OVR
+                            </span>
+                            <span className="text-gray-500">·</span>
+                            <span className="font-semibold text-accent-gold">
+                              {formatValue(player.value)}
+                            </span>
+                          </div>
                         </li>
                       ))}
                     </div>
@@ -100,8 +112,10 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
 
       {clubs.length > 0 && (
         <div
-          className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold ${RL_INFO_BOX_CLASS} ${
-            isValid ? "text-accent-green" : "text-red-400"
+          className={`flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-bold ${
+            isValid
+              ? "border-accent-green/35 bg-accent-green/10 text-accent-green"
+              : "border-red-500/35 bg-red-500/10 text-red-400"
           }`}
         >
           <span className="font-display text-xs uppercase tracking-wider">

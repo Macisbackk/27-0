@@ -153,10 +153,13 @@ export function signPlayerToSquad(
 export function signPlayerToSlot(
   squad: SquadSlot[],
   player: import("./types").Player,
-  slotIndex: number
+  slotIndex: number,
+  runRatingPenalty = 0
 ): SquadSlot[] {
   return squad.map((s) =>
-    s.slotIndex === slotIndex ? { ...s, player } : s
+    s.slotIndex === slotIndex
+      ? { ...s, player, runRatingPenalty: runRatingPenalty || undefined }
+      : s
   );
 }
 

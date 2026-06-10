@@ -1,5 +1,6 @@
 import seedrandom from "seedrandom";
 import type { Position, SquadSlot } from "../types";
+import { getEffectivePeakRating } from "../squad-analysis";
 import { buildOpponentScoringDetail } from "./opponent-scorers";
 import type {
   FixtureScoringDetail,
@@ -15,15 +16,15 @@ import {
 export { POSITION_TRY_WEIGHT } from "./try-weights";
 
 const POSITION_SHARE_MAX: Record<Position, number> = {
-  WING: 0.32,
-  CENTRE: 0.2,
-  FULLBACK: 0.22,
-  STAND_OFF: 0.14,
-  SCRUM_HALF: 0.12,
-  HOOKER: 0.08,
-  SECOND_ROW: 0.1,
-  LOOSE_FORWARD: 0.08,
-  PROP: 0.05,
+  WING: 0.22,
+  CENTRE: 0.18,
+  FULLBACK: 0.18,
+  STAND_OFF: 0.16,
+  SCRUM_HALF: 0.14,
+  HOOKER: 0.06,
+  SECOND_ROW: 0.12,
+  LOOSE_FORWARD: 0.1,
+  PROP: 0.04,
 };
 
 export interface PlayerTryTotal {
@@ -39,10 +40,10 @@ interface SquadEntry {
 }
 
 function getMaxIndividualTries(seasonWins: number, seasonTries: number): number {
-  if (seasonWins <= 6) return Math.min(14, Math.max(6, Math.ceil(seasonTries * 0.28)));
-  if (seasonWins <= 14) return Math.min(22, Math.max(10, Math.ceil(seasonTries * 0.3)));
-  if (seasonWins <= 22) return Math.min(30, Math.max(14, Math.ceil(seasonTries * 0.32)));
-  return Math.min(38, Math.max(18, Math.ceil(seasonTries * 0.34)));
+  if (seasonWins <= 6) return Math.min(12, Math.max(5, Math.ceil(seasonTries * 0.2)));
+  if (seasonWins <= 14) return Math.min(18, Math.max(8, Math.ceil(seasonTries * 0.22)));
+  if (seasonWins <= 22) return Math.min(24, Math.max(10, Math.ceil(seasonTries * 0.24)));
+  return Math.min(30, Math.max(12, Math.ceil(seasonTries * 0.26)));
 }
 
 function getPositionCap(position: Position, seasonTries: number): number {
@@ -60,10 +61,19 @@ function getPlayerCap(
   );
 }
 
-function getMatchWeights(entries: SquadEntry[], rng: () => number): number[] {
-  return entries.map((e) => {
-    const base = getPlayerTryWeight(e.player);
-    const variance = 0.88 + rng() * 0.24;
+function getMatchWeights(
+  entries: SquadEntry[],
+  slots: SquadSlot[],
+  rng: () => number
+): number[] {
+  return entries.map((e, i) => {
+    const slot = slots.find((s) => s.player?.id === e.player.id);
+    const ratingFactor =
+      slot && slot.runRatingPenalty
+        ? Math.max(0.75, getEffectivePeakRating(slot) / e.player.peakRating)
+        : 1;
+    const base = getPlayerTryWeight(e.player) * ratingFactor;
+    const variance = 0.9 + rng() * 0.2;
     return Math.max(0.05, base * variance);
   });
 }
@@ -247,7 +257,7 @@ export function enrichSingleFixtureScoring(
   if (entries.length === 0) return;
 
   const rng = seedrandom(`${seed}-tries-${fixture.round}`);
-  const weights = getMatchWeights(entries, rng);
+  const weights = getMatchWeights(entries, squad, rng);
   const matchAlloc = allocateMatchTries(fixture.triesFor, weights, rng);
   applyScoringDetails(entries, [fixture], [matchAlloc], seed);
 }
@@ -272,7 +282,7 @@ export function distributeSeasonTries(
   const perMatchAllocs: number[][] = [];
 
   for (const fixture of fixtures) {
-    const weights = getMatchWeights(entries, rng);
+    const weights = getMatchWeights(entries, squad, rng);
     const matchAlloc = allocateMatchTries(fixture.triesFor, weights, rng);
     perMatchAllocs.push(matchAlloc);
   }

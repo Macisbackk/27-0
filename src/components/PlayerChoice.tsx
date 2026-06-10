@@ -19,6 +19,7 @@ interface PlayerChoiceProps {
   disabled?: boolean;
   hardMode?: boolean;
   draftMode?: boolean;
+  showDraftRule?: boolean;
 }
 
 export function PlayerChoice({
@@ -32,6 +33,7 @@ export function PlayerChoice({
   disabled,
   hardMode,
   draftMode,
+  showDraftRule,
 }: PlayerChoiceProps) {
   const appearSoundPlayed = useRef(false);
 
@@ -64,11 +66,24 @@ export function PlayerChoice({
           {draftMode ? "Draft Pick" : "Recruitment"}
         </p>
         <h2 className="mt-1 font-display text-lg font-black uppercase tracking-tight text-white sm:mt-2 sm:text-3xl">
-          {draftMode ? `Recruiting: ${positionLabel}` : positionLabel}
+          {draftMode ? positionLabel : positionLabel}
         </h2>
         <p className="mt-1 hidden text-sm text-gray-400 sm:mt-2 sm:block">
-          Pick one signing — the other walks away forever
+          {draftMode
+            ? "Pick a player, then choose where to place them on the team sheet."
+            : "Pick one signing — the other walks away forever"}
         </p>
+        {showDraftRule && (
+          <p className="mx-auto mt-3 max-w-md rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-3 py-2 text-left text-xs text-gray-400">
+            <span className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-green">
+              Draft Mode Rule
+            </span>
+            <span className="mt-1 block">
+              Place players in any empty slot. Out-of-position placements lose 5
+              OVR for this run (compatible swaps are fine).
+            </span>
+          </p>
+        )}
 
         {!hardMode && (
           <div className="mx-auto mt-2 inline-flex items-center gap-2 rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-3 py-1.5 sm:mt-4 sm:gap-3 sm:px-4 sm:py-2">

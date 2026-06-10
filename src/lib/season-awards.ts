@@ -3,6 +3,7 @@ import type { SeasonResult } from "./game/season-simulation";
 import type { PlayerTryTotal } from "./game/season-tries";
 import { getPlayerTryWeight } from "./game/try-weights";
 import { isGoatPlayer, JOE_MELLOR_GOAT_ID } from "./players/goat";
+import { getEffectivePeakRating } from "./squad-analysis";
 
 export interface SeasonAward {
   title: string;
@@ -44,7 +45,8 @@ function buildPerformances(
   const tryMap = new Map(tryScorers.map((t) => [t.playerId, t.tries]));
   const totalTries = tryScorers.reduce((sum, t) => sum + t.tries, 0);
   const avgRating =
-    entries.reduce((sum, e) => sum + e.player.peakRating, 0) / entries.length;
+    entries.reduce((sum, e) => sum + getEffectivePeakRating(e.slot), 0) /
+    entries.length;
 
   const weightSum = entries.reduce(
     (sum, e) => sum + getPlayerTryWeight(e.player),
@@ -59,12 +61,13 @@ function buildPerformances(
 
     const tryDelta = tries - expectedTries;
     const consistencyBonus = tries >= Math.max(2, expectedTries * 0.85) ? 2 : 0;
+    const effectiveRating = getEffectivePeakRating(slot);
     const underperformPenalty =
-      player.peakRating >= avgRating + 6 && tries < expectedTries * 0.45
+      effectiveRating >= avgRating + 6 && tries < expectedTries * 0.45
         ? -6
         : 0;
     const overperformBonus =
-      player.peakRating < avgRating - 4 && tries >= expectedTries * 1.1
+      effectiveRating < avgRating - 4 && tries >= expectedTries * 1.1
         ? 3
         : 0;
     const winBonus = (seasonWins / 27) * 1.5;
@@ -85,7 +88,7 @@ function buildPerformances(
       name: player.name,
       club: player.club,
       position: player.position,
-      peakRating: player.peakRating,
+      peakRating: effectiveRating,
       slotLabel: slot.label,
       tries,
       expectedTries,
