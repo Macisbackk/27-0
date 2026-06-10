@@ -22,12 +22,14 @@ interface TopTryScorersCardProps {
   tryScorers: PlayerTryTotal[];
   expectedTotalTries: number;
   title?: string;
+  includeFullList?: boolean;
 }
 
 export function TopTryScorersCard({
   tryScorers,
   expectedTotalTries,
   title = "Top 3 Try Scorers",
+  includeFullList = true,
 }: TopTryScorersCardProps) {
   const topThree = tryScorers.slice(0, 3);
   if (topThree.length === 0) return null;
@@ -78,10 +80,12 @@ export function TopTryScorersCard({
         })}
       </div>
 
-      <TryScorersPanel
-        tryScorers={tryScorers}
-        expectedTotalTries={expectedTotalTries}
-      />
+      {includeFullList && (
+        <TryScorersPanel
+          tryScorers={tryScorers}
+          expectedTotalTries={expectedTotalTries}
+        />
+      )}
     </div>
   );
 }
