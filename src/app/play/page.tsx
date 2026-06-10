@@ -20,7 +20,7 @@ export default async function PlayPage({
   const difficulty = wantsHard ? ("HARD" as const) : ("NORMAL" as const);
   const mode = wantsCup ? ("CHALLENGE_CUP" as const) : ("CLASSIC" as const);
 
-  const title = wantsCup ? "Challenge Cup" : "Super League Season";
+  const title = wantsCup ? "Challenge Cup" : "Normal Mode";
 
   const subtitle = wantsCup
     ? "Choose your club, draft club legends, and fight through a knockout tournament."

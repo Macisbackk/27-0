@@ -57,6 +57,7 @@ export function RugbyLeaguePlayerCard({
   const tier = getValueTier(player.peakRating);
   const isRecruitment = variant === "recruitment";
   const isPitch = variant === "pitch";
+  const maskValue = (value: string) => (hardMode ? "???" : value);
   const hiddenClass = hardMode ? "invisible select-none" : "";
 
   const appearancesValue = isActive
@@ -161,10 +162,9 @@ export function RugbyLeaguePlayerCard({
               compact
                 ? "text-sm sm:text-base"
                 : "text-base sm:text-[17px]"
-            } ${hiddenClass}`}
-            aria-hidden={hardMode || undefined}
+            } ${hardMode ? "text-gray-600" : ""}`}
           >
-            {player.peakRating}
+            {hardMode ? "???" : player.peakRating}
           </span>
         </div>
       </RLCardShell>
@@ -202,7 +202,7 @@ export function RugbyLeaguePlayerCard({
             rating={player.peakRating}
             large
             compact={mobileCompact}
-            className={hiddenClass}
+            masked={hardMode}
           />
         </div>
 
@@ -253,27 +253,26 @@ export function RugbyLeaguePlayerCard({
             />
             <RLStatBox
               label="Value"
-              value={formatValue(player.value)}
+              value={maskValue(formatValue(player.value))}
               large
               light
               compact={mobileCompact}
-              className={hiddenClass}
             />
             <RLStatBox
               label="Tier"
-              value={tier}
+              value={maskValue(tier)}
               large
               light
               compact={mobileCompact}
-              className={hiddenClass}
             />
             <RLStatBox
               label="Intl Caps"
-              value={player.intlCaps > 0 ? String(player.intlCaps) : "—"}
+              value={maskValue(
+                player.intlCaps > 0 ? String(player.intlCaps) : "—"
+              )}
               large
               light
               compact={mobileCompact}
-              className={hiddenClass}
             />
           </div>
         </div>
@@ -299,10 +298,7 @@ export function RugbyLeaguePlayerCard({
             <h2 className={`truncate ${TYPO.playerNameSm}`}>{player.name}</h2>
             <PlayerIdentityLine player={player} />
           </div>
-          <RLRatingDisplay
-            rating={player.peakRating}
-            className={hiddenClass}
-          />
+          <RLRatingDisplay rating={player.peakRating} masked={hardMode} />
         </div>
 
         {achievementBadges}
@@ -313,18 +309,14 @@ export function RugbyLeaguePlayerCard({
           <RLStatBox label="Years" value={player.yearsActive} />
           <RLStatBox
             label="Value"
-            value={formatValue(player.value)}
-            className={hiddenClass}
+            value={maskValue(formatValue(player.value))}
           />
-          <RLStatBox
-            label="Tier"
-            value={tier}
-            className={hiddenClass}
-          />
+          <RLStatBox label="Tier" value={maskValue(tier)} />
           <RLStatBox
             label="Intl Caps"
-            value={player.intlCaps > 0 ? String(player.intlCaps) : "—"}
-            className={hiddenClass}
+            value={maskValue(
+              player.intlCaps > 0 ? String(player.intlCaps) : "—"
+            )}
           />
         </div>
       </div>

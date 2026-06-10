@@ -35,9 +35,6 @@ export function Header() {
               <span className="text-gradient">27</span>
               <span className="text-white">-0</span>
             </span>
-            <span className="hidden text-xs text-gray-500 md:inline">
-              Super League
-            </span>
           </Link>
 
           <div className="ml-auto shrink-0">

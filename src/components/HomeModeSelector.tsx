@@ -135,7 +135,7 @@ export function HomeModeSelector() {
           className="card-glass matchday-panel group block p-6 transition hover:border-accent-green/30"
         >
           <h2 className="font-display text-xl font-bold group-hover:text-accent-green">
-            Super League Season
+            Normal Mode
           </h2>
           <p className="mt-2 text-sm text-gray-400">
             Draft your XIII and simulate a full Super League campaign. Can you

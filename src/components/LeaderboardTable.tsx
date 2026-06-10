@@ -87,7 +87,7 @@ export function LeaderboardTable({
                   : "bg-pitch-800 text-gray-400 hover:text-white"
               }`}
             >
-              Normal
+              Normal Mode
             </button>
             <button
               onClick={() => setDifficulty("HARD")}
@@ -181,7 +181,7 @@ export function LeaderboardTable({
               ? "Showing local fallback · online sync unavailable"
               : "Updated online across all players"}
             {" · "}
-            {difficulty === "HARD" ? "Hard Mode" : "Normal Mode"} Super League
+            {difficulty === "HARD" ? "Hard Mode" : "Normal Mode"}
           </p>
         </>
       )}

@@ -82,9 +82,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   <span className="text-gradient">27</span>
                   <span className="text-white">-0</span>
                 </p>
-                <p className="text-[10px] uppercase tracking-[0.25em] text-gray-500">
-                  Super League
-                </p>
               </div>
               <button
                 type="button"

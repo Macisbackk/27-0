@@ -248,39 +248,47 @@ function SuperLeagueTab({ stats }: { stats: UserStatsData }) {
 
   return (
     <div className="space-y-8">
-      <StatsSection title="Super League">
-        <StatCard label="Super League Runs" value={String(view.runs)} />
-        <StatCard label="Super League Wins" value={String(view.wins)} />
-        <StatCard label="Super League Losses" value={String(view.losses)} />
+      <StatsSection title="Normal Mode">
+        <StatCard label="Normal Mode Runs" value={String(view.runs)} />
+        <StatCard label="Normal Mode Wins" value={String(view.wins)} />
+        <StatCard label="Normal Mode Losses" value={String(view.losses)} />
         <StatCard
-          label="Best Super League Record"
+          label="Win Rate"
+          value={formatWinPercentageOrDash(
+            view.winPercentage,
+            view.wins + view.losses > 0
+          )}
+          highlight={(view.winPercentage ?? 0) >= 75}
+        />
+        <StatCard
+          label="Best Normal Mode Record"
           value={formatRecordOrDash(
             view.hasSeasons ? view.bestRecord : null
           )}
           highlight={view.bestRecord.wins >= 20}
         />
         <StatCard
-          label="Worst Super League Record"
+          label="Worst Normal Mode Record"
           value={formatRecordOrDash(
             view.hasSeasons ? view.worstRecord : null
           )}
         />
         <StatCard
-          label="Super League Titles"
+          label="League Titles"
           value={String(view.leagueTitles)}
           highlight={view.leagueTitles > 0}
         />
         <StatCard
-          label="Super League 27-0 Seasons"
+          label="Normal Mode 27-0 Seasons"
           value={String(view.perfectSeasons)}
           highlight={view.perfectSeasons > 0}
         />
         <StatCard
-          label="Super League 0-27 Seasons"
+          label="Normal Mode 0-27 Seasons"
           value={String(view.winlessSeasons)}
         />
         <StatCard
-          label="Best Super League Ranking"
+          label="Best Normal Mode Ranking"
           value={formatRankingOrDash(view.bestRanking)}
           highlight={view.bestRanking === 1}
         />
@@ -302,6 +310,14 @@ function HardModeTab({ stats }: { stats: UserStatsData }) {
           highlight={view.wins > 0}
         />
         <StatCard label="Hard Mode Losses" value={String(view.losses)} />
+        <StatCard
+          label="Win Rate"
+          value={formatWinPercentageOrDash(
+            view.winPercentage,
+            view.hasSeasons
+          )}
+          highlight={(view.winPercentage ?? 0) >= 75}
+        />
         <StatCard
           label="Best Hard Mode Record"
           value={formatRecordOrDash(

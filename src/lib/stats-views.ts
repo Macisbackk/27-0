@@ -17,7 +17,7 @@ export type StatsTabId =
 
 export const STATS_TABS: { id: StatsTabId; label: string }[] = [
   { id: "overall", label: "Overall" },
-  { id: "super-league", label: "Super League" },
+  { id: "super-league", label: "Normal Mode" },
   { id: "hard-mode", label: "Hard Mode" },
   { id: "challenge-cup", label: "Challenge Cup" },
 ];
@@ -194,6 +194,7 @@ export function getSuperLeagueView(stats: UserStatsData) {
     runs: stats.totalSeasonsSimulated,
     wins: stats.seasonWins,
     losses: stats.seasonLosses,
+    winPercentage: formatWinPercentage(stats.seasonWins, stats.seasonLosses),
     hasSeasons: stats.totalSeasonsSimulated > 0,
     bestRecord: {
       wins: stats.bestRecordWins,
@@ -211,10 +212,13 @@ export function getSuperLeagueView(stats: UserStatsData) {
 }
 
 export function getHardModeView(stats: UserStatsData) {
+  const wins = stats.seasonWins + stats.challengeCupWins;
+  const losses = stats.seasonLosses + stats.challengeCupLosses;
   return {
     runs: stats.totalRuns,
-    wins: stats.seasonWins + stats.challengeCupWins,
-    losses: stats.seasonLosses + stats.challengeCupLosses,
+    wins,
+    losses,
+    winPercentage: formatWinPercentage(stats.seasonWins, stats.seasonLosses),
     hasSeasons: stats.totalSeasonsSimulated > 0,
     bestRecord: {
       wins: stats.bestRecordWins,
@@ -278,12 +282,25 @@ export function formatRatingOrDash(rating: number | null): string {
   return rating !== null ? String(rating) : "—";
 }
 
+export function formatWinPercentage(wins: number, losses: number): number | null {
+  const total = wins + losses;
+  if (total === 0) return null;
+  return Math.round((wins / total) * 100);
+}
+
 export function formatWinPercentageOrDash(
-  value: number,
+  value: number | null,
   hasGames = true
 ): string {
-  if (!hasGames) return "—";
+  if (!hasGames || value === null) return "—";
   return `${value}%`;
+}
+
+export function formatSeasonWinPercentageOrDash(
+  wins: number,
+  losses: number
+): string {
+  return formatWinPercentageOrDash(formatWinPercentage(wins, losses));
 }
 
 export function getChallengeCupPersonalBests(

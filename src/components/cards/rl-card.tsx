@@ -125,11 +125,13 @@ export function RLRatingDisplay({
   rating,
   large,
   compact,
+  masked,
   className = "",
 }: {
   rating: number;
   large?: boolean;
   compact?: boolean;
+  masked?: boolean;
   className?: string;
 }) {
   return (
@@ -142,7 +144,11 @@ export function RLRatingDisplay({
         Rating
       </p>
       <p
-        className={`rl-rating-value font-display font-black leading-none text-accent-green drop-shadow-[0_0_14px_rgba(34,197,94,0.5)] ${
+        className={`rl-rating-value font-display font-black leading-none ${
+          masked
+            ? "text-gray-600"
+            : "text-accent-green drop-shadow-[0_0_14px_rgba(34,197,94,0.5)]"
+        } ${
           compact
             ? "text-2xl sm:text-6xl"
             : large
@@ -150,7 +156,7 @@ export function RLRatingDisplay({
               : "text-2xl sm:text-3xl"
         }`}
       >
-        {rating}
+        {masked ? "???" : rating}
       </p>
     </div>
   );

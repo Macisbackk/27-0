@@ -9,7 +9,6 @@ import type {
 } from "@/lib/types";
 import type { ChallengeCupResult } from "@/lib/game/challenge-cup-simulation";
 import {
-  formatCupFixtureScore,
   getCupRoundLabel,
 } from "@/lib/game/challenge-cup-simulation";
 import { getChallengeCupCommentary } from "@/lib/game/challenge-cup-commentary";
@@ -17,11 +16,11 @@ import {
   getTournamentPotyNarrative,
   getTournamentWorstNarrative,
 } from "@/lib/game/tournament-awards";
-import { formatValue } from "@/lib/players";
 import { getSquadValue } from "@/lib/positions";
 import { getClubBreakdownSummary } from "@/lib/squad-analysis";
 import { generateSeasonAwards } from "@/lib/season-awards";
 import { getMostExpensiveTeam } from "@/lib/team-value-comparison";
+import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { playGradeSound } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { FixtureResultRow } from "./FixtureResultRow";
@@ -34,6 +33,8 @@ import { HardModeBadge } from "./HardModeBadge";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { BracketRecap } from "./BracketRecap";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
+import { MostExpensiveTeamBox } from "./MostExpensiveTeamBox";
+import { TryScorersPanel } from "./TryScorersPanel";
 
 interface ChallengeCupReviewProps {
   squad: SquadSlot[];
@@ -226,19 +227,6 @@ export function ChallengeCupReview({
           >
             {commentary}
           </motion.p>
-
-          <motion.div
-            className="mx-auto mt-4 max-w-md rounded-lg border border-pitch-600/50 bg-pitch-900/50 px-4 py-3 text-sm text-gray-400"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <span className="font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
-              Most Expensive Team
-            </span>
-            <p className="mt-1 font-semibold text-white">
-              {mostExpensive.name} — {formatValue(mostExpensive.value)}
-            </p>
-          </motion.div>
         </motion.header>
 
         <motion.div
@@ -253,25 +241,38 @@ export function ChallengeCupReview({
         <ReviewSection title="Tournament Awards" delay={0.35}>
           <div className="grid gap-3 text-left sm:grid-cols-2">
             {awards.map((award) => (
-              <RLAwardCard
+              <div
                 key={award.title}
-                title={award.title}
-                variant={award.variant}
-                playerName={award.playerName}
-                club={award.club}
-                detail={award.detail}
-                narrative={award.narrative}
-                rankedLines={award.rankedLines}
                 className={
                   award.title === "Top Try Scorers" ? "sm:col-span-2" : ""
                 }
-              />
+              >
+                <RLAwardCard
+                  title={award.title}
+                  variant={award.variant}
+                  playerName={award.playerName}
+                  club={award.club}
+                  detail={award.detail}
+                  narrative={award.narrative}
+                  rankedLines={award.rankedLines}
+                />
+                {award.title === "Top Try Scorers" && (
+                  <TryScorersPanel
+                    tryScorers={cupResult.tryScorers}
+                    expectedTotalTries={getSeasonTryTotal(cupResult.fixtures)}
+                  />
+                )}
+              </div>
             ))}
           </div>
         </ReviewSection>
 
-        <ReviewSection title="Tournament Results" delay={0.45}>
-          <p className="mb-3 text-center text-xs text-gray-500">
+        <ReviewSection title="Tournament Results" delay={0.42}>
+          <MostExpensiveTeamBox
+            name={mostExpensive.name}
+            value={mostExpensive.value}
+          />
+          <p className="mb-3 mt-4 text-center text-xs text-gray-500">
             Click any result to view full match details.
           </p>
           <div className="max-h-[28rem] space-y-2 overflow-y-auto pr-1 text-left">
