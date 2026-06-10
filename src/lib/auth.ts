@@ -1,4 +1,7 @@
-import { getEmailConfirmRedirectUrl } from "./auth-redirect";
+import {
+  getEmailConfirmRedirectUrl,
+  getPasswordResetRedirectUrl,
+} from "./auth-redirect";
 import { isSupabaseConfigured, supabase } from "./supabase";
 import {
   type AuthActionResult,
@@ -182,5 +185,25 @@ export async function signOut(): Promise<void> {
     await supabase.auth.signOut();
   } catch (err) {
     console.error("[auth] signOut failed:", err);
+  }
+}
+
+export async function sendPasswordResetEmail(
+  email: string
+): Promise<AuthActionResult> {
+  if (!email.trim()) {
+    return { ok: false, error: "Email is required." };
+  }
+
+  try {
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: getPasswordResetRedirectUrl(),
+    });
+    if (error) throw error;
+    return { ok: true, emailSent: true };
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "Could not send reset email.";
+    return mapAuthError(message, "signup");
   }
 }

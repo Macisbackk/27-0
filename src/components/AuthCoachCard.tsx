@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import {
@@ -26,7 +27,6 @@ export function AuthCoachCard() {
     signUp,
     signIn,
     signOut,
-    updateCoachName,
   } = useAuth();
 
   const [mode, setMode] = useState<AuthMode>("login");
@@ -37,7 +37,6 @@ export function AuthCoachCard() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [editingCoach, setEditingCoach] = useState(false);
   const [cooldownUntil, setCooldownUntil] = useState<number | null>(null);
   const [cooldownSeconds, setCooldownSeconds] = useState(0);
 
@@ -98,19 +97,6 @@ export function AuthCoachCard() {
     }
   };
 
-  const handleUpdateCoach = async () => {
-    setBusy(true);
-    setError(null);
-    const result = await updateCoachName(coachInput);
-    if (!result.ok) {
-      setError(result.error ?? "Could not update coach name.");
-    } else {
-      setEditingCoach(false);
-      setCoachInput("");
-    }
-    setBusy(false);
-  };
-
   if (loading) {
     return (
       <div className={`${CARD.panel} mx-auto max-w-md ${SPACING.cardPadding} text-center ${TYPO.bodySm}`}>
@@ -119,7 +105,7 @@ export function AuthCoachCard() {
     );
   }
 
-  if (isLoggedIn && !editingCoach) {
+  if (isLoggedIn) {
     return (
       <section className={`${CARD.panel} mx-auto max-w-md ${SPACING.cardPadding}`}>
         <p className={TYPO.sectionTitle}>Coach Profile</p>
@@ -131,56 +117,15 @@ export function AuthCoachCard() {
           </p>
         </div>
         <div className={`mt-5 flex flex-col ${SPACING.buttonGap} sm:flex-row sm:justify-center`}>
-          <button
-            type="button"
-            onClick={() => {
-              setCoachInput(coachName ?? "");
-              setEditingCoach(true);
-              setError(null);
-            }}
-            className={`${BTN.base} ${BTN.secondary}`}
-          >
-            Change Coach Name
-          </button>
+          <Link href="/profile" className={`${BTN.base} ${BTN.primary} text-center`}>
+            View Profile
+          </Link>
           <button
             type="button"
             onClick={() => void signOut()}
             className={`${BTN.base} ${BTN.danger}`}
           >
             Log Out
-          </button>
-        </div>
-      </section>
-    );
-  }
-
-  if (isLoggedIn && editingCoach) {
-    return (
-      <section className={`${CARD.panel} mx-auto max-w-md ${SPACING.cardPadding}`}>
-        <h2 className={TYPO.cardTitle}>Change Coach Name</h2>
-        <input
-          type="text"
-          value={coachInput}
-          onChange={(e) => setCoachInput(e.target.value)}
-          maxLength={COACH_NAME_MAX_LENGTH}
-          className={`mt-4 ${FILTER.input}`}
-        />
-        {error && <p className={`mt-2 ${TYPO.body} text-red-400`}>{error}</p>}
-        <div className={`mt-4 flex ${SPACING.buttonGap}`}>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => void handleUpdateCoach()}
-            className={`${BTN.base} ${BTN.primary}`}
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            onClick={() => setEditingCoach(false)}
-            className={`${BTN.base} ${BTN.secondary}`}
-          >
-            Cancel
           </button>
         </div>
       </section>

@@ -16,7 +16,6 @@ import {
   signIn as authSignIn,
   signOut as authSignOut,
   signUp as authSignUp,
-  updateProfileCoachName,
   type AuthActionResult,
   type UserProfile,
 } from "./auth";
@@ -46,7 +45,6 @@ interface AuthContextValue {
   ) => Promise<AuthActionResult>;
   signIn: (email: string, password: string) => Promise<AuthActionResult>;
   signOut: () => Promise<void>;
-  updateCoachName: (name: string) => Promise<{ ok: boolean; error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -185,22 +183,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.dispatchEvent(new Event("auth-state-changed"));
   }, []);
 
-  const updateCoachName = useCallback(
-    async (name: string) => {
-      if (!user) return { ok: false, error: "Log in first." };
-      const result = await updateProfileCoachName(user.id, name);
-      if (result.ok) {
-        const refreshed = await fetchProfile(user.id);
-        setProfile(refreshed);
-        const { data } = await supabase.auth.getSession();
-        applySession(data.session, refreshed);
-        window.dispatchEvent(new Event("auth-state-changed"));
-      }
-      return result;
-    },
-    [user]
-  );
-
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
@@ -212,9 +194,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signUp,
       signIn,
       signOut,
-      updateCoachName,
     }),
-    [user, profile, loading, signUp, signIn, signOut, updateCoachName]
+    [user, profile, loading, signUp, signIn, signOut]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
