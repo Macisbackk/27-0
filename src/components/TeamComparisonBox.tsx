@@ -30,7 +30,7 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
   comparison,
   delay = 0,
 }: TeamComparisonBoxProps) {
-  const { user, opponent, ratingEdge, mostExpensiveOpposition, useTriesConceded } =
+  const { user, opponent, ratingEdge, mostExpensiveOpponent, useTriesConceded } =
     comparison;
   const defensiveLabel = useTriesConceded ? "Tries Conceded" : "Win %";
   const userDefensiveValue = useTriesConceded
@@ -165,7 +165,7 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
             triesEdge={triesEdge}
             topPlayerEdge={topPlayerEdge}
             topPlayerLabel="Top Player"
-            mostExpensiveOpponent={mostExpensiveOpposition}
+            mostExpensiveOpponent={mostExpensiveOpponent}
           />
         </div>
 
@@ -184,21 +184,21 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
             ))}
           </div>
 
-          {mostExpensiveOpposition && (
+          {mostExpensiveOpponent && (
             <div className={`${CARD.inset} mt-4 px-3 py-2.5 text-center`}>
               <p className={TYPO.statLabel}>Most Expensive Opposition</p>
               <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
-                {mostExpensiveOpposition.name === "N/A" ? (
+                {mostExpensiveOpponent.name === "N/A" ? (
                   <span className={TYPO.body}>N/A</span>
                 ) : (
                   <>
                     <ClubNameLabel
-                      club={mostExpensiveOpposition.name}
+                      club={mostExpensiveOpponent.name}
                       variant="pill"
                       className="max-w-full truncate"
                     />
                     <span className="font-display text-sm font-black text-accent-gold">
-                      {formatValue(mostExpensiveOpposition.value)}
+                      {formatValue(mostExpensiveOpponent.value)}
                     </span>
                   </>
                 )}

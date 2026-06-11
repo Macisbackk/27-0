@@ -11,30 +11,9 @@ import {
   type SeasonResult,
 } from "./season-simulation";
 import { getSeasonLeagueClubs } from "./league-replacement";
+import { getClubBaseStrength } from "./club-strength";
 import { getSeasonTryTotal } from "./season-tries";
 import { devWarnMany } from "../validation/dev-warn";
-
-/** Club strength tiers — aligned with season opponent modelling. */
-const CLUB_STRENGTH: Record<string, number> = {
-  "Wigan Warriors": 84,
-  "St Helens": 83,
-  "Leeds Rhinos": 81,
-  "Warrington Wolves": 80,
-  "Hull KR": 79,
-  "Catalans Dragons": 78,
-  "Hull FC": 76,
-  "Leigh Leopards": 75,
-  "Huddersfield Giants": 73,
-  "Salford Red Devils": 72,
-  "Castleford Tigers": 70,
-  "Bradford Bulls": 69,
-  "Wakefield Trinity": 66,
-  "London Broncos": 60,
-  "Widnes Vikings": 62,
-  "Halifax Panthers": 61,
-  "York Knights": 74,
-  "Toulouse Olympique": 76,
-};
 
 export interface SeasonMatchResult {
   round: number;
@@ -144,8 +123,8 @@ function simulateClubFixture(
   seed: string
 ): { homeScore: number; awayScore: number; homeTries: number; awayTries: number } {
   const rng = seedrandom(`${seed}-league-club-r${round}-${home}-${away}`);
-  const homeStr = (CLUB_STRENGTH[home] ?? 70) + 2;
-  const awayStr = CLUB_STRENGTH[away] ?? 70;
+  const homeStr = getClubBaseStrength(home) + 2;
+  const awayStr = getClubBaseStrength(away);
   const diff = homeStr - awayStr + (rng() - 0.5) * 10;
   const homeWins = rng() < 1 / (1 + Math.exp(-diff / 4.2));
 

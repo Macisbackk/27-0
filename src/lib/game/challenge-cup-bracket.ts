@@ -1,6 +1,7 @@
 import seedrandom from "seedrandom";
 import type { SquadSlot } from "../types";
 import { getActiveSuperLeagueClubNames } from "../clubs/super-league-display";
+import { getClubStrength } from "./club-strength";
 import { buildOpponentScoringDetail } from "./opponent-scorers";
 import {
   decomposeRLScore,
@@ -26,27 +27,6 @@ import {
   type TeamScoringDetail,
 } from "./season-simulation";
 import type { ScoreBreakdown } from "./rl-scores";
-
-const CLUB_STRENGTH: Record<string, number> = {
-  "Wigan Warriors": 84,
-  "St Helens": 83,
-  "Leeds Rhinos": 81,
-  "Warrington Wolves": 80,
-  "Hull KR": 79,
-  "Catalans Dragons": 78,
-  "Hull FC": 76,
-  "Leigh Leopards": 75,
-  "Huddersfield Giants": 73,
-  "Salford Red Devils": 72,
-  "Castleford Tigers": 70,
-  "Bradford Bulls": 69,
-  "Wakefield Trinity": 66,
-  "London Broncos": 60,
-  "Widnes Vikings": 62,
-  "Halifax Panthers": 61,
-  "York Knights": 74,
-  "Toulouse Olympique": 76,
-};
 
 export interface BracketScoringDetail {
   home: TeamScoringDetail;
@@ -92,12 +72,7 @@ function shuffle<T>(arr: T[], rng: () => number): T[] {
   return copy;
 }
 
-function getClubStrength(club: string, rng: () => number): number {
-  const base = CLUB_STRENGTH[club] ?? 70;
-  return base + (rng() - 0.5) * 8;
-}
 
-/** Pick two distinct clubs for quarter-final byes — equal chance for every active club. */
 function pickByeTeams(
   allClubs: string[],
   seed: string

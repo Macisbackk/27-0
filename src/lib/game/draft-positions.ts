@@ -11,6 +11,23 @@ export interface PositionRemainingEntry {
 
 export const HALFBACK_POSITIONS: Position[] = ["STAND_OFF", "SCRUM_HALF"];
 
+export function isHalfbackPosition(position: Position): boolean {
+  return position === "STAND_OFF" || position === "SCRUM_HALF";
+}
+
+/** Positions whose players may fill this draft slot (halfbacks share one pool). */
+export function getDraftCandidatePositions(position: Position): Position[] {
+  return isHalfbackPosition(position) ? HALFBACK_POSITIONS : [position];
+}
+
+/** UI label for eligible positions when picking for a slot, or null if single-position. */
+export function getDraftEligiblePositionsLabel(
+  position: Position
+): string | null {
+  if (!isHalfbackPosition(position)) return null;
+  return HALFBACK_POSITIONS.map((p) => POSITION_LABELS[p]).join(" • ");
+}
+
 /** Draft choice balancing group — Stand Off and Scrum Half share one pool. */
 export function getDraftBalanceGroup(position: Position): string {
   if (position === "STAND_OFF" || position === "SCRUM_HALF") return "HALFBACK";

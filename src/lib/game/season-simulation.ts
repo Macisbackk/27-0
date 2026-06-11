@@ -1,5 +1,6 @@
 import seedrandom from "seedrandom";
 import { getPlayableClubNames } from "../clubs/super-league-display";
+import { getClubStrength } from "./club-strength";
 import type { SquadSlot } from "../types";
 import { getAverageSquadRating } from "../squad-analysis";
 import { getSquadValue } from "../positions";
@@ -161,31 +162,8 @@ const FORWARD_POSITIONS = new Set([
 
 const OPPONENT_CLUBS = getPlayableClubNames();
 
-/** Approximate club strength tiers for opponent modelling. */
-const CLUB_STRENGTH: Record<string, number> = {
-  "Wigan Warriors": 84,
-  "St Helens": 83,
-  "Leeds Rhinos": 81,
-  "Warrington Wolves": 80,
-  "Hull KR": 79,
-  "Catalans Dragons": 78,
-  "Hull FC": 76,
-  "Leigh Leopards": 75,
-  "Huddersfield Giants": 73,
-  "Salford Red Devils": 72,
-  "Castleford Tigers": 70,
-  "Bradford Bulls": 69,
-  "Wakefield Trinity": 66,
-  "London Broncos": 60,
-  "Widnes Vikings": 62,
-  "Halifax Panthers": 61,
-  "York Knights": 74,
-  "Toulouse Olympique": 76,
-};
-
 function getOpponentStrength(opponent: string, rng: () => number): number {
-  const base = CLUB_STRENGTH[opponent] ?? 70;
-  return base + (rng() - 0.5) * 8;
+  return getClubStrength(opponent, rng);
 }
 
 export function calculateSquadStrength(squad: SquadSlot[]): number {

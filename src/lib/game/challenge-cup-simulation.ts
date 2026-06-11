@@ -1,6 +1,6 @@
 import seedrandom from "seedrandom";
 import type { SquadSlot } from "../types";
-import { getPlayableClubNames } from "../clubs/super-league-display";
+import { getPlayableClubsByStrength } from "./club-strength";
 import {
   buildChallengeCupTournamentStats,
   deriveCupTryScorersFromMatchEvents,
@@ -33,28 +33,8 @@ export const CUP_ROUND_NAMES = [
 
 export type CupRoundName = (typeof CUP_ROUND_NAMES)[number];
 
-const PLAYABLE_CUP_STRENGTH: Record<string, number> = {
-  "Wigan Warriors": 84,
-  "St Helens": 83,
-  "Leeds Rhinos": 81,
-  "Warrington Wolves": 80,
-  "Hull KR": 79,
-  "Catalans Dragons": 78,
-  "Hull FC": 76,
-  "Toulouse Olympique": 76,
-  "Leigh Leopards": 75,
-  "York Knights": 74,
-  "Huddersfield Giants": 73,
-  "Castleford Tigers": 70,
-  "Bradford Bulls": 69,
-  "Wakefield Trinity": 66,
-};
-
 function buildCupOpponentPools(): string[][] {
-  const sorted = [...getPlayableClubNames()].sort(
-    (a, b) =>
-      (PLAYABLE_CUP_STRENGTH[a] ?? 70) - (PLAYABLE_CUP_STRENGTH[b] ?? 70)
-  );
+  const sorted = getPlayableClubsByStrength();
   const pools: string[][] = [[], [], [], []];
   sorted.forEach((club, index) => {
     const poolIndex = Math.min(

@@ -7,6 +7,7 @@ import {
   getPlacementPenalty,
   isNaturalPlacement,
 } from "@/lib/game/position-placement";
+import { getDraftEligiblePositionsLabel } from "@/lib/game/draft-positions";
 import { DraftPositionsRemaining } from "./DraftPositionsRemaining";
 import { CARD, HARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -30,6 +31,9 @@ export function DraftPlacementBanner({
     selectedSlotPosition !== undefined
       ? getPlacementPenalty(player.position, selectedSlotPosition)
       : 0;
+  const eligiblePositionsLabel = selectedSlotPosition
+    ? getDraftEligiblePositionsLabel(selectedSlotPosition)
+    : null;
 
   const bannerClass = hardMode
     ? `${HARD.banner} ${SPACING.cardPadding}`
@@ -83,6 +87,12 @@ export function DraftPlacementBanner({
               {POSITION_LABELS[selectedSlotPosition]}
             </span>
           </p>
+          {eligiblePositionsLabel && (
+            <p className={`mt-1 ${TYPO.bodySm} text-gray-400`}>
+              Eligible Positions:{" "}
+              <span className="text-accent-green">{eligiblePositionsLabel}</span>
+            </p>
+          )}
           {penalty > 0 ? (
             <p className="mt-2 text-sm font-semibold text-amber-400">
               {hardMode

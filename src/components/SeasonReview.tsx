@@ -400,7 +400,7 @@ export function SeasonReview({
 
         <CollapsibleReviewSection
           title="Your Team vs Strongest Opponent"
-          helper="Comparing your squad against the strongest side you faced this run."
+          helper="Comparing your squad against the strongest-rated opponent you faced. Most expensive opposition is shown separately when different."
           variant="featured"
           delay={0.46}
         >

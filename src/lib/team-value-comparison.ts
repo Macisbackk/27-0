@@ -13,6 +13,7 @@ import {
   getOpponentTeamSummary,
   selectClubMatchSquad,
 } from "./game/opponent-scorers";
+import { isPlayableClub } from "./clubs/super-league-display";
 import { getEffectivePeakRating } from "./squad-analysis";
 import { getTeamTier } from "./team-tiers";
 import type { BracketMatch } from "./game/challenge-cup-bracket";
@@ -60,11 +61,16 @@ export interface TeamSideDisplay {
 export interface ExtendedTeamComparison {
   user: TeamSideDisplay;
   opponent: TeamSideDisplay;
+  strongestOpponent: TeamRatingEntry;
   mostExpensiveTeam: TeamValueEntry;
-  mostExpensiveOpposition: TeamValueEntry | null;
+  mostExpensiveOpponent: TeamValueEntry | null;
   ratingEdge: "user" | "opponent" | "tie";
   /** Challenge Cup comparisons use tries conceded instead of win %. */
   useTriesConceded?: boolean;
+}
+
+function playableFixtures(fixtures: MatchFixture[]): MatchFixture[] {
+  return fixtures.filter((fixture) => isPlayableClub(fixture.opponent));
 }
 
 function getTopPlayerFromSquad(
@@ -164,14 +170,14 @@ export function formatWinPercentage(wins: number, losses: number): string {
   return `${Math.round((wins / total) * 100)}%`;
 }
 
-/** Highest squad value among opposition clubs faced (excludes user team). */
+/** Highest squad value among playable opposition clubs faced. */
 export function getMostExpensiveOpposition(
   fixtures: MatchFixture[],
   seed: string
 ): TeamValueEntry | null {
   const teams = new Map<string, number>();
 
-  for (const fixture of fixtures) {
+  for (const fixture of playableFixtures(fixtures)) {
     const oppValue = getOpponentSquadValue(
       fixture.opponent,
       seed,
@@ -199,7 +205,7 @@ export function getMostExpensiveTeam(
   const teams = new Map<string, number>();
   teams.set(userTeamName, userValue);
 
-  for (const fixture of fixtures) {
+  for (const fixture of playableFixtures(fixtures)) {
     const oppValue = getOpponentSquadValue(
       fixture.opponent,
       seed,
@@ -216,6 +222,14 @@ export function getMostExpensiveTeam(
   return best;
 }
 
+/** Strongest average match-day rating among playable opposition clubs faced. */
+export function getStrongestOpposition(
+  fixtures: MatchFixture[],
+  seed: string
+): TeamRatingEntry | null {
+  return getBestOppositionRatedTeam(fixtures, seed);
+}
+
 /** Best average match-day rating among generated opposition clubs only. */
 export function getBestOppositionRatedTeam(
   fixtures: MatchFixture[],
@@ -223,7 +237,7 @@ export function getBestOppositionRatedTeam(
 ): TeamRatingEntry | null {
   const teams = new Map<string, number>();
 
-  for (const fixture of fixtures) {
+  for (const fixture of playableFixtures(fixtures)) {
     const opp = getOpponentTeamSummary(
       fixture.opponent,
       seed,
@@ -253,7 +267,7 @@ export function getBestRatedTeam(
   const teams = new Map<string, number>();
   teams.set(userTeamName, userRating);
 
-  for (const fixture of fixtures) {
+  for (const fixture of playableFixtures(fixtures)) {
     const opp = getOpponentTeamSummary(
       fixture.opponent,
       seed,
@@ -325,8 +339,8 @@ export function getExtendedTeamComparison(
     seed
   );
   const { mostExpensiveTeam } = summary;
-  const bestOpposition =
-    getBestOppositionRatedTeam(fixtures, seed) ?? {
+  const strongestOpponent =
+    getStrongestOpposition(fixtures, seed) ?? {
       name: "—",
       rating: 0,
       tier: "—",
@@ -340,7 +354,7 @@ export function getExtendedTeamComparison(
     ? getComparisonStatsFromSeason(
         options.seasonResult!,
         seed,
-        bestOpposition.name
+        strongestOpponent.name
       )
     : cupMode
       ? {
@@ -352,14 +366,14 @@ export function getExtendedTeamComparison(
           ),
           oppWinPct: "—",
           oppTries:
-            bestOpposition.name === "—"
+            strongestOpponent.name === "—"
               ? 0
-              : getClubBracketTriesScored(bestOpposition.name, bracketMatches),
+              : getClubBracketTriesScored(strongestOpponent.name, bracketMatches),
           oppTriesConceded:
-            bestOpposition.name === "—"
+            strongestOpponent.name === "—"
               ? 0
               : getClubBracketTriesConceded(
-                  bestOpposition.name,
+                  strongestOpponent.name,
                   bracketMatches
                 ),
         }
@@ -370,29 +384,29 @@ export function getExtendedTeamComparison(
             (sum, fixture) => sum + fixture.triesAgainst,
             0
           ),
-          oppWinPct: getHeadToHeadWinPct(bestOpposition.name, fixtures),
-          oppTries: getHeadToHeadTries(bestOpposition.name, fixtures, "opponent"),
+          oppWinPct: getHeadToHeadWinPct(strongestOpponent.name, fixtures),
+          oppTries: getHeadToHeadTries(strongestOpponent.name, fixtures, "opponent"),
           oppTriesConceded: getHeadToHeadTries(
-            bestOpposition.name,
+            strongestOpponent.name,
             fixtures,
             "user"
           ),
         };
 
-  const oppRound = findBestOpponentRound(bestOpposition.name, fixtures, seed);
-  const oppValue =
-    bestOpposition.name === "—"
+  const oppRound = findBestOpponentRound(strongestOpponent.name, fixtures, seed);
+  const strongestOpponentValue =
+    strongestOpponent.name === "—"
       ? 0
-      : getOpponentSquadValue(bestOpposition.name, seed, oppRound);
+      : getOpponentSquadValue(strongestOpponent.name, seed, oppRound);
 
   const ratingEdge: ExtendedTeamComparison["ratingEdge"] =
-    userRating > bestOpposition.rating
+    userRating > strongestOpponent.rating
       ? "user"
-      : userRating < bestOpposition.rating
+      : userRating < strongestOpponent.rating
         ? "opponent"
         : "tie";
 
-  const mostExpensiveOpposition =
+  const mostExpensiveOpponent =
     getMostExpensiveOpposition(fixtures, seed) ?? {
       name: "N/A",
       value: 0,
@@ -410,20 +424,21 @@ export function getExtendedTeamComparison(
       topPlayer: getUserTopPlayer(options.squad),
     },
     opponent: {
-      name: bestOpposition.name,
-      rating: bestOpposition.rating,
-      tier: bestOpposition.tier,
-      value: oppValue,
+      name: strongestOpponent.name,
+      rating: strongestOpponent.rating,
+      tier: strongestOpponent.tier,
+      value: strongestOpponentValue,
       winPct: comparisonStats.oppWinPct,
       totalTries: comparisonStats.oppTries,
       triesConceded: comparisonStats.oppTriesConceded,
       topPlayer:
-        bestOpposition.name === "—"
+        strongestOpponent.name === "—"
           ? { name: "—", rating: 0 }
-          : getTopPlayerFromSquad(bestOpposition.name, seed, oppRound),
+          : getTopPlayerFromSquad(strongestOpponent.name, seed, oppRound),
     },
+    strongestOpponent,
     mostExpensiveTeam,
-    mostExpensiveOpposition,
+    mostExpensiveOpponent,
     ratingEdge,
     useTriesConceded: cupMode,
   };

@@ -26,7 +26,7 @@ export function getPlayPageTitle(
 }
 
 export const DRAFT_MODE_INTRO =
-  "Pick between two players, then place them in any empty slot. Natural positions carry no penalty; out-of-position placements cost 5 OVR. Repeat until your squad is full.";
+  "Tap an empty slot, pick between two players for that position, and fill your squad. Natural positions carry no penalty; out-of-position placements cost 5 OVR. Scrum Half and Stand Off share one pool.";
 
 export const DRAFT_MODE_RULE =
-  "Choose a player from the pair offered, then tap an empty slot on the team sheet. No penalty at natural position; −5 OVR if out of position (compatible swaps are fine).";
+  "Tap an empty slot on the team sheet, then choose a player from the pair offered. No penalty at natural position; −5 OVR if out of position (Stand Off/Scrum Half swaps are fine).";

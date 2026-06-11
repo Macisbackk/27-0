@@ -12,7 +12,7 @@ import { SQUAD_STRUCTURE, TOTAL_SLOTS, createEmptySquad } from "../positions";
 import {
   getRemainingPositionCounts,
   getDraftBalanceGroup,
-  HALFBACK_POSITIONS,
+  getDraftCandidatePositions,
   positionsInSameDraftGroup,
 } from "./draft-positions";
 
@@ -502,12 +502,8 @@ export function rerollSlotOffer(
   };
 }
 
-function isHalfbackPosition(position: Position): boolean {
-  return position === "STAND_OFF" || position === "SCRUM_HALF";
-}
-
 function draftCandidatePositions(position: Position): Position[] {
-  return isHalfbackPosition(position) ? HALFBACK_POSITIONS : [position];
+  return getDraftCandidatePositions(position);
 }
 
 function positionHasAvailablePlayers(
@@ -926,6 +922,59 @@ export function collectRecentDraftPositions(
   return recent.slice(0, limit);
 }
 
+/** Draft offer for a specific empty slot — halfbacks share one candidate pool. */
+export function generateDraftOfferForSlot(
+  seed: string,
+  slotIndex: number,
+  squad: SquadSlot[],
+  signedPlayerIds: string[],
+  lockedPlayerIds: string[] = [],
+  options?: RecruitmentOptions
+): RecruitmentRound | null {
+  const slot = squad.find((s) => s.slotIndex === slotIndex);
+  if (!slot || slot.player) return null;
+
+  const rng = seedrandom(
+    `${seed}-draft-slot-${slotIndex}-${signedPlayerIds.length}`
+  );
+  const usedIds = new Set([...signedPlayerIds, ...lockedPlayerIds]);
+
+  const playerA = pickSinglePlayerForDraftPosition(
+    slot.position,
+    rng,
+    usedIds,
+    undefined,
+    options
+  );
+  if (!playerA) return null;
+
+  const usedWithA = new Set(usedIds);
+  usedWithA.add(playerA.id);
+
+  const playerB = pickSinglePlayerForDraftPosition(
+    slot.position,
+    rng,
+    usedWithA,
+    playerA.peakRating,
+    options
+  );
+  if (!playerB || playerA.id === playerB.id) return null;
+
+  const [optionA, optionB] =
+    rng() < 0.5
+      ? [playerA.id, playerB.id]
+      : [playerB.id, playerA.id];
+
+  return {
+    roundIndex: slotIndex,
+    slotIndex,
+    position: slot.position,
+    slotLabel: slot.label,
+    optionA,
+    optionB,
+  };
+}
+
 /** Balanced draft offer for a single pick using current squad needs. */
 export function generateDraftOfferForPick(
   seed: string,
@@ -956,6 +1005,55 @@ export function generateDraftOfferForPick(
     slotLabel: `Pick ${pickIndex + 1}`,
     optionA: pair[0],
     optionB: pair[1],
+  };
+}
+
+export function rerollDraftOfferForSlot(
+  seed: string,
+  slotIndex: number,
+  currentRound: RecruitmentRound,
+  squad: SquadSlot[],
+  usedIds: Set<string>,
+  discardedIds: Set<string>,
+  options?: RecruitmentOptions
+): RecruitmentRound | null {
+  const rng = seedrandom(
+    `${seed}-draft-slot-reroll-${slotIndex}-${discardedIds.size}`
+  );
+  const blocked = new Set([...usedIds, ...discardedIds]);
+  const slot = squad.find((s) => s.slotIndex === slotIndex);
+  if (!slot) return null;
+
+  const playerA = pickSinglePlayerForDraftPosition(
+    slot.position,
+    rng,
+    blocked,
+    undefined,
+    options
+  );
+  if (!playerA) return null;
+
+  const blockedWithA = new Set(blocked);
+  blockedWithA.add(playerA.id);
+
+  const playerB = pickSinglePlayerForDraftPosition(
+    slot.position,
+    rng,
+    blockedWithA,
+    playerA.peakRating,
+    options
+  );
+  if (!playerB || playerA.id === playerB.id) return null;
+
+  const [optionA, optionB] =
+    rng() < 0.5
+      ? [playerA.id, playerB.id]
+      : [playerB.id, playerA.id];
+
+  return {
+    ...currentRound,
+    optionA,
+    optionB,
   };
 }
 

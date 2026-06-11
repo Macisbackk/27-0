@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import type { Player, SquadSlot } from "@/lib/types";
+import type { Player, Position, SquadSlot } from "@/lib/types";
 import { DraftPositionsRemaining } from "./DraftPositionsRemaining";
 import { POSITION_LABELS } from "@/lib/positions";
+import { getDraftEligiblePositionsLabel } from "@/lib/game/draft-positions";
 import {
   playGoatAppears,
   playHistoricPlayerAppears,
@@ -29,6 +30,7 @@ interface PlayerChoiceProps {
   draftMode?: boolean;
   showDraftRule?: boolean;
   draftSquad?: SquadSlot[];
+  selectedSlotPosition?: Position;
 }
 
 export function PlayerChoice({
@@ -44,9 +46,13 @@ export function PlayerChoice({
   draftMode,
   showDraftRule,
   draftSquad,
+  selectedSlotPosition,
 }: PlayerChoiceProps) {
   const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
   const appearSoundPlayed = useRef(false);
+  const eligiblePositionsLabel = selectedSlotPosition
+    ? getDraftEligiblePositionsLabel(selectedSlotPosition)
+    : null;
 
   useEffect(() => {
     appearSoundPlayed.current = false;
@@ -82,11 +88,17 @@ export function PlayerChoice({
           {draftMode ? "Draft Pick" : "Recruitment"}
         </p>
         <h2 className="mt-1 font-display text-lg font-black uppercase tracking-tight text-white sm:mt-2 sm:text-3xl">
-          {draftMode ? positionLabel : positionLabel}
+          {positionLabel}
         </h2>
+        {eligiblePositionsLabel && (
+          <p className="mt-1 text-xs text-gray-400 sm:text-sm">
+            Eligible Positions:{" "}
+            <span className="text-accent-green">{eligiblePositionsLabel}</span>
+          </p>
+        )}
         <p className="mt-1 hidden text-sm text-gray-400 sm:mt-2 sm:block">
           {draftMode
-            ? "Pick a player, then choose where to place them on the team sheet."
+            ? "Pick a player for this slot on the team sheet."
             : "Pick one signing — the other walks away forever"}
         </p>
         {showDraftRule && (
