@@ -13,6 +13,7 @@ import {
   getRemainingPositionCounts,
   getDraftBalanceGroup,
   getDraftCandidatePositions,
+  isHalfbackPosition,
   positionsInSameDraftGroup,
 } from "./draft-positions";
 
@@ -648,12 +649,16 @@ function pickFromDraftPool(
     if (close.length > 0) pool = close;
   }
 
-  pool.sort((a, b) => {
-    const aExact = a.position === slotPosition ? 0 : 1;
-    const bExact = b.position === slotPosition ? 0 : 1;
-    if (aExact !== bExact) return aExact - bExact;
-    return b.peakRating - a.peakRating;
-  });
+  if (!isHalfbackPosition(slotPosition)) {
+    pool.sort((a, b) => {
+      const aExact = a.position === slotPosition ? 0 : 1;
+      const bExact = b.position === slotPosition ? 0 : 1;
+      if (aExact !== bExact) return aExact - bExact;
+      return b.peakRating - a.peakRating;
+    });
+  } else {
+    pool.sort((a, b) => b.peakRating - a.peakRating);
+  }
 
   const weights = options?.clubFilter ? CUP_BAND_WEIGHTS : NORMAL_BAND_WEIGHTS;
   const band = rollBand(rng, weights);
@@ -674,6 +679,17 @@ function pickSinglePlayerForDraftPosition(
       targetPositions.includes(player.position) && !usedIds.has(player.id)
   );
   if (pool.length === 0) return null;
+
+  if (isHalfbackPosition(slotPosition)) {
+    return pickFromDraftPool(
+      pool,
+      slotPosition,
+      rng,
+      usedIds,
+      anchorRating,
+      options
+    );
+  }
 
   const exact = pool.filter((player) => player.position === slotPosition);
   const compatible = pool.filter((player) => player.position !== slotPosition);

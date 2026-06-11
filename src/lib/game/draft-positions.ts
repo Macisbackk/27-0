@@ -9,7 +9,7 @@ export interface PositionRemainingEntry {
   remaining: number;
 }
 
-export const HALFBACK_POSITIONS: Position[] = ["STAND_OFF", "SCRUM_HALF"];
+export const HALFBACK_POSITIONS: Position[] = ["SCRUM_HALF", "STAND_OFF"];
 
 export function isHalfbackPosition(position: Position): boolean {
   return position === "STAND_OFF" || position === "SCRUM_HALF";

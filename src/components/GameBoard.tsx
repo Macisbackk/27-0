@@ -929,7 +929,10 @@ export function GameBoard({
                     showDraftRule={isDraftMode && filledCount === 0}
                     draftSquad={isDraftMode ? squad : undefined}
                     selectedSlotPosition={
-                      isDraftMode ? currentRound.position : undefined
+                      isDraftMode && selectedSlotIndex !== null
+                        ? squad.find((s) => s.slotIndex === selectedSlotIndex)
+                            ?.position
+                        : undefined
                     }
                   />
                 </motion.div>
