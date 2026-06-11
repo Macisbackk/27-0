@@ -23,6 +23,10 @@ export interface Club {
 
   active?: boolean;
 
+  isCurrentSuperLeague?: boolean;
+
+  playable?: boolean;
+
 }
 
 
@@ -187,6 +191,10 @@ export function getClubLogoBoxStyle(clubName: string): CSSProperties {
 }
 
 export {
+  isPlayableClub,
+
+  getPlayableClubNames,
+
   isActiveSuperLeagueClub,
 
   getActiveSuperLeagueClubNames,

@@ -5,10 +5,16 @@ import legendsData from "../../../data/legends.json";
 const clubs = clubsData as {
   name: string;
   active?: boolean;
+  isCurrentSuperLeague?: boolean;
+  playable?: boolean;
 }[];
 
-const ACTIVE_CLUB_NAMES = new Set(
-  clubs.filter((c) => c.active !== false).map((c) => c.name)
+function isClubPlayable(club: (typeof clubs)[number]): boolean {
+  return club.playable === true || club.isCurrentSuperLeague === true;
+}
+
+const PLAYABLE_CLUB_NAMES = new Set(
+  clubs.filter(isClubPlayable).map((c) => c.name)
 );
 
 const PLAYER_OVERRIDES = overridesData as Record<string, string>;
@@ -20,17 +26,27 @@ const legendClubByName = new Map<string, string>(
   ])
 );
 
-/** Clubs that may appear in player cards, recruitment, and squad breakdowns. */
-export function isActiveSuperLeagueClub(clubName: string): boolean {
-  return ACTIVE_CLUB_NAMES.has(clubName);
+/** Clubs that may appear as opponents, in league tables, and in recruitment pools. */
+export function isPlayableClub(clubName: string): boolean {
+  return PLAYABLE_CLUB_NAMES.has(clubName);
 }
 
+export function getPlayableClubNames(): string[] {
+  return Array.from(PLAYABLE_CLUB_NAMES);
+}
+
+/** @deprecated Use isPlayableClub — kept for existing imports. */
+export function isActiveSuperLeagueClub(clubName: string): boolean {
+  return isPlayableClub(clubName);
+}
+
+/** @deprecated Use getPlayableClubNames — kept for existing imports. */
 export function getActiveSuperLeagueClubNames(): string[] {
-  return Array.from(ACTIVE_CLUB_NAMES);
+  return getPlayableClubNames();
 }
 
 /**
- * Resolve a player's display club to an active Super League identity.
+ * Resolve a player's display club to a current Super League identity.
  * Raw JSON records are preserved; this only affects displayed/referenced clubs.
  */
 export function resolveDisplayClub(
@@ -38,17 +54,17 @@ export function resolveDisplayClub(
   rawClub: string,
   playerName: string
 ): string {
-  if (isActiveSuperLeagueClub(rawClub)) {
+  if (isPlayableClub(rawClub)) {
     return rawClub;
   }
 
   const override = PLAYER_OVERRIDES[playerId];
-  if (override && isActiveSuperLeagueClub(override)) {
+  if (override && isPlayableClub(override)) {
     return override;
   }
 
   const legendClub = legendClubByName.get(playerName);
-  if (legendClub && isActiveSuperLeagueClub(legendClub)) {
+  if (legendClub && isPlayableClub(legendClub)) {
     return legendClub;
   }
 

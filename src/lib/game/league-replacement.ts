@@ -1,13 +1,11 @@
 import seedrandom from "seedrandom";
-import { SUPER_LEAGUE_CLUBS } from "../clubs";
+import { getPlayableClubNames } from "../clubs/super-league-display";
 import { DREAM_TEAM_NAME } from "./season-simulation";
 
 const LEAGUE_OPPONENT_COUNT = 13;
 
 export function getActiveOpponentClubNames(): string[] {
-  return SUPER_LEAGUE_CLUBS.filter((c) => c.active !== false).map(
-    (c) => c.name
-  );
+  return getPlayableClubNames();
 }
 
 /** Picks which real club Dream Team replaces for this season run (seeded per run). */

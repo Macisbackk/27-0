@@ -1,5 +1,5 @@
 import seedrandom from "seedrandom";
-import { SUPER_LEAGUE_CLUBS } from "../clubs";
+import { getPlayableClubNames } from "../clubs/super-league-display";
 import type { SquadSlot } from "../types";
 import { getAverageSquadRating } from "../squad-analysis";
 import { getSquadValue } from "../positions";
@@ -158,9 +158,7 @@ const FORWARD_POSITIONS = new Set([
   "LOOSE_FORWARD",
 ]);
 
-const OPPONENT_CLUBS = SUPER_LEAGUE_CLUBS.filter((c) => c.active !== false).map(
-  (c) => c.name
-);
+const OPPONENT_CLUBS = getPlayableClubNames();
 
 /** Approximate club strength tiers for opponent modelling. */
 const CLUB_STRENGTH: Record<string, number> = {

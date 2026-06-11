@@ -36,7 +36,6 @@ import { RLAwardCard } from "./cards/RLAwardCard";
 import { BracketRecap } from "./BracketRecap";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import { TeamComparisonBox } from "./TeamComparisonBox";
-import { TeamStatisticsBox } from "./TeamStatisticsBox";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { TryScorersSection } from "./TryScorersSection";
 import { runChallengeCupReviewValidation } from "@/lib/validation/challenge-cup-review-validation";
@@ -343,22 +342,20 @@ export function ChallengeCupReview({
           </div>
         </CollapsibleReviewSection>
 
-        <CollapsibleReviewSection title="Team Statistics" delay={0.37}>
-          <TeamStatisticsBox
-            squad={squad}
-            totalValue={totalValue}
-            userTeamName={userTeamName}
-          />
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection
-          title="Your Team vs Strongest Opponent"
-          helper="Comparing your squad against the strongest side you faced this tournament."
-          variant="featured"
-          delay={0.38}
-        >
-          <TeamComparisonBox comparison={teamComparison} />
-        </CollapsibleReviewSection>
+        {(cupRankingResult?.newRecords.length ?? 0) > 0 && (
+          <CollapsibleReviewSection title="Records" delay={0.38}>
+            <ul className="space-y-2 text-left text-sm text-gray-400">
+              {cupRankingResult!.newRecords.map((record) => (
+                <li
+                  key={record}
+                  className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2"
+                >
+                  🏆 {record}
+                </li>
+              ))}
+            </ul>
+          </CollapsibleReviewSection>
+        )}
 
         <CollapsibleReviewSection title="Player Awards" delay={0.4}>
           <div className="grid gap-3 text-left sm:grid-cols-2">
@@ -387,24 +384,18 @@ export function ChallengeCupReview({
           </CollapsibleReviewSection>
         )}
 
-        <CollapsibleReviewSection title="Club Representation" delay={0.46}>
+        <CollapsibleReviewSection title="Club Representation" delay={0.44}>
           <ClubRepresentation summary={clubSummary} />
         </CollapsibleReviewSection>
 
-        {(cupRankingResult?.newRecords.length ?? 0) > 0 && (
-          <CollapsibleReviewSection title="Records" delay={0.54}>
-            <ul className="space-y-2 text-left text-sm text-gray-400">
-              {cupRankingResult!.newRecords.map((record) => (
-                <li
-                  key={record}
-                  className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2"
-                >
-                  🏆 {record}
-                </li>
-              ))}
-            </ul>
-          </CollapsibleReviewSection>
-        )}
+        <CollapsibleReviewSection
+          title="Your Team vs Strongest Opponent"
+          helper="Comparing your squad against the strongest side you faced this run."
+          variant="featured"
+          delay={0.46}
+        >
+          <TeamComparisonBox comparison={teamComparison} />
+        </CollapsibleReviewSection>
 
         <motion.footer
           className="mt-8 w-full max-w-xl"

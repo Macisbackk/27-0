@@ -26,7 +26,6 @@ import { ClubRepresentation } from "./ClubRepresentation";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import { TeamComparisonBox } from "./TeamComparisonBox";
-import { TeamStatisticsBox } from "./TeamStatisticsBox";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { TryScorersSection } from "./TryScorersSection";
 import { buildLeagueTable } from "@/lib/game/league-table";
@@ -336,18 +335,20 @@ export function SeasonReview({
           </div>
         </CollapsibleReviewSection>
 
-        <CollapsibleReviewSection title="Team Statistics" delay={0.37}>
-          <TeamStatisticsBox squad={squad} totalValue={totalValue} />
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection
-          title="Your Team vs Strongest Opponent"
-          helper="Comparing your squad against the strongest side you faced this season."
-          variant="featured"
-          delay={0.38}
-        >
-          <TeamComparisonBox comparison={teamComparison} />
-        </CollapsibleReviewSection>
+        {seasonResult.insights.length > 0 && (
+          <CollapsibleReviewSection title="Records" delay={0.38}>
+            <ul className="space-y-2 text-left text-sm text-gray-400">
+              {seasonResult.insights.map((insight) => (
+                <li
+                  key={insight}
+                  className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2"
+                >
+                  {insight}
+                </li>
+              ))}
+            </ul>
+          </CollapsibleReviewSection>
+        )}
 
         <CollapsibleReviewSection title="Player Awards" delay={0.4}>
           <div className="grid gap-3 text-left sm:grid-cols-2">
@@ -376,26 +377,20 @@ export function SeasonReview({
           </CollapsibleReviewSection>
         )}
 
-        <CollapsibleReviewSection title="Club Representation" delay={0.46}>
+        <CollapsibleReviewSection title="Club Representation" delay={0.44}>
           <div className="text-left">
             <ClubRepresentation summary={clubSummary} />
           </div>
         </CollapsibleReviewSection>
 
-        {seasonResult.insights.length > 0 && (
-          <CollapsibleReviewSection title="Records" delay={0.52}>
-            <ul className="space-y-2 text-left text-sm text-gray-400">
-              {seasonResult.insights.map((insight) => (
-                <li
-                  key={insight}
-                  className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2"
-                >
-                  {insight}
-                </li>
-              ))}
-            </ul>
-          </CollapsibleReviewSection>
-        )}
+        <CollapsibleReviewSection
+          title="Your Team vs Strongest Opponent"
+          helper="Comparing your squad against the strongest side you faced this run."
+          variant="featured"
+          delay={0.46}
+        >
+          <TeamComparisonBox comparison={teamComparison} />
+        </CollapsibleReviewSection>
 
         <motion.footer
           className="mt-8 w-full max-w-xl"
