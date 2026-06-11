@@ -134,7 +134,7 @@
     "era": "Short iconic SL cameo",
     "yearsActive": "1993–2007",
     "category": "legend",
-    "peakRating": 99,
+    "peakRating": 96,
     "value": 563000,
     "appearances": 249,
     "tries": 71,
@@ -144,7 +144,7 @@
     "manOfSteel": false,
     "challengeCupWinner": false,
     "superLeagueWinner": false,
-    "rating": 99
+    "rating": 96
   },
   {
     "id": "martin-offiah",
@@ -218,7 +218,7 @@
     "era": "Electrifying broken-field runner era",
     "yearsActive": "1991–2007",
     "category": "legend",
-    "peakRating": 98,
+    "peakRating": 96,
     "value": 500000,
     "appearances": 387,
     "tries": 238,
@@ -228,7 +228,7 @@
     "manOfSteel": true,
     "challengeCupWinner": false,
     "superLeagueWinner": false,
-    "rating": 98
+    "rating": 96
   },
   {
     "id": "garry-schofield",

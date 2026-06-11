@@ -43,6 +43,8 @@ export interface PlayerAchievements {
   lanceToddTrophy?: boolean;
   /** Populated at load from data/dream-team-years.json */
   dreamTeamYears?: number[];
+  /** Populated at load from data/golden-boot-years.json */
+  goldenBootYears?: number[];
 }
 
 export interface Player extends PlayerAchievements {

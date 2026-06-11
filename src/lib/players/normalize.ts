@@ -9,7 +9,7 @@ import { resolveIntlCaps } from "./intl-caps";
 import { resolveDisplayClub } from "../clubs/super-league-display";
 import { resolveCareerTries } from "./career-tries";
 import { resolveCategory } from "./active";
-import { getDreamTeamYears } from "./achievements";
+import { getDreamTeamYears, getGoldenBootYears } from "./achievements";
 
 export function normalizePlayer(raw: Record<string, unknown>): Player {
   const id = raw.id as string;
@@ -55,6 +55,7 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     superLeagueWinner: raw.superLeagueWinner as boolean | undefined,
     lanceToddTrophy: raw.lanceToddTrophy as boolean | undefined,
     dreamTeamYears: getDreamTeamYears(id),
+    goldenBootYears: getGoldenBootYears(id),
     availableInGame:
       raw.availableInGame === false ? false : undefined,
   };

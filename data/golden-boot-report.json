@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-06-11T09:30:37.705Z",
+  "sources": [
+    "https://en.wikipedia.org/wiki/IRL_Golden_Boot_Award"
+  ],
+  "goldenBootPlayers": 7,
+  "goldenBootAwards": 8,
+  "matched": [
+    {
+      "id": "ellery-hanley",
+      "years": [
+        1988
+      ]
+    },
+    {
+      "id": "garry-schofield",
+      "years": [
+        1990
+      ]
+    },
+    {
+      "id": "andrew-johns",
+      "years": [
+        1999,
+        2001
+      ]
+    },
+    {
+      "id": "catalans-hist-stacey-jones",
+      "years": [
+        2002
+      ]
+    },
+    {
+      "id": "andy-farrell",
+      "years": [
+        2004
+      ]
+    },
+    {
+      "id": "kevin-sinfield",
+      "years": [
+        2012
+      ]
+    },
+    {
+      "id": "catalans-cur-tommy-makinson",
+      "years": [
+        2018
+      ]
+    }
+  ],
+  "unmatched": [
+    "Anthony Minichiello (2005)",
+    "Benji Marshall (2010)",
+    "Billy Slater (2008)",
+    "Brad Fittler (2000)",
+    "Brett Kenny (1985)",
+    "Cameron Smith (2007)",
+    "Cameron Smith (2017)",
+    "Cooper Cronk (2016)",
+    "Darren Lockyer (2003)",
+    "Darren Lockyer (2006)",
+    "Garry Jack (1986)",
+    "Greg Inglis (2009)",
+    "Harry Grant (2025)",
+    "Hugh McGahan (1987)",
+    "International Rugby League (2017)",
+    "Isaah Yeo (2024)",
+    "James Fisher-Harris (2023)",
+    "Johnathan Thurston (2011)",
+    "Johnathan Thurston (2013)",
+    "Johnathan Thurston (2015)",
+    "Joseph Manu (2022)",
+    "Mal Meninga (1989)",
+    "Peter Sterling (1987)",
+    "Roger Tuivasa-Sheck (2019)",
+    "Shaun Johnson (2014)",
+    "Wally Lewis (1984)"
+  ]
+}

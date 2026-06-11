@@ -2,10 +2,12 @@ import type { Player } from "../types";
 import manOfSteelWinners from "../../../data/man-of-steel-winners.json";
 import lanceToddWinners from "../../../data/lance-todd-winners.json";
 import dreamTeamYearsData from "../../../data/dream-team-years.json";
+import goldenBootYearsData from "../../../data/golden-boot-years.json";
 
 const MOS_WINNERS = manOfSteelWinners as Record<string, number[]>;
 const LANCE_TODD_WINNERS = new Set(lanceToddWinners as string[]);
 const DREAM_TEAM_YEARS = dreamTeamYearsData as Record<string, number[]>;
+const GOLDEN_BOOT_YEARS = goldenBootYearsData as Record<string, number[]>;
 
 export type AchievementCategoryId =
   | "individualHonours"
@@ -47,12 +49,20 @@ export function getDreamTeamYears(playerId: string): number[] {
   return DREAM_TEAM_YEARS[playerId] ?? [];
 }
 
+export function getGoldenBootYears(playerId: string): number[] {
+  return GOLDEN_BOOT_YEARS[playerId] ?? [];
+}
+
 export function hasLanceToddTrophy(playerId: string): boolean {
   return LANCE_TODD_WINNERS.has(playerId);
 }
 
 export function hasDreamTeamSelection(playerId: string): boolean {
   return (DREAM_TEAM_YEARS[playerId]?.length ?? 0) > 0;
+}
+
+export function hasGoldenBootAward(playerId: string): boolean {
+  return (GOLDEN_BOOT_YEARS[playerId]?.length ?? 0) > 0;
 }
 
 export function getPlayerAchievements(player: Player): PlayerAchievement[] {
@@ -93,6 +103,14 @@ export function getPlayerAchievementGroups(
     push("individualHonours", {
       label: "Dream Team",
       color: "purple",
+      category: "individualHonours",
+    });
+  }
+
+  if (hasGoldenBootAward(player.id)) {
+    push("individualHonours", {
+      label: "Golden Boot Winner",
+      color: "gold",
       category: "individualHonours",
     });
   }
