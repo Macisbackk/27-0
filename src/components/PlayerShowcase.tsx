@@ -424,6 +424,7 @@ export function PlayerShowcase() {
                     player={player}
                     variant="default"
                     equalHeight
+                    achievementDisplay="showcase"
                   />
                 </button>
               ))}

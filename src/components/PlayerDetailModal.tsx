@@ -6,8 +6,8 @@ import {
   getGoldenBootYears,
   getPlayerAchievements,
 } from "@/lib/players/achievements";
+import { AchievementChipList } from "./cards/AchievementChipList";
 import { RugbyLeaguePlayerCard } from "./cards/RugbyLeaguePlayerCard";
-import { RLTag, ACHIEVEMENT_TAG_VARIANT } from "./cards/rl-card";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -17,7 +17,7 @@ interface PlayerDetailModalProps {
 }
 
 export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
-  const achievements = getPlayerAchievements(player);
+  const achievements = getPlayerAchievements(player, "expanded");
   const goldenBootYears = getGoldenBootYears(player.id);
 
   return (
@@ -39,21 +39,17 @@ export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
           </button>
         </div>
 
-        <RugbyLeaguePlayerCard player={player} variant="default" equalHeight />
+        <RugbyLeaguePlayerCard
+          player={player}
+          variant="default"
+          equalHeight
+          achievementDisplay="expanded"
+        />
 
         {achievements.length > 0 && (
           <div className={`mt-4 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
             <p className={`${TYPO.sectionTitle} mb-2`}>Achievements</p>
-            <div className="flex flex-wrap gap-1.5">
-              {achievements.map((achievement, index) => (
-                <RLTag
-                  key={`${achievement.label}-${index}`}
-                  variant={ACHIEVEMENT_TAG_VARIANT[achievement.color]}
-                >
-                  {achievement.label}
-                </RLTag>
-              ))}
-            </div>
+            <AchievementChipList achievements={achievements} />
           </div>
         )}
 

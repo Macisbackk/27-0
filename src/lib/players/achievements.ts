@@ -14,10 +14,14 @@ export type AchievementCategoryId =
   | "leagueTitles"
   | "challengeCups";
 
+export type AchievementDisplayMode = "compact" | "showcase" | "expanded";
+
 export interface PlayerAchievement {
   label: string;
   color: "gold" | "green" | "purple" | "blue" | "silver";
   category: AchievementCategoryId;
+  /** When set, compact cards render one collapsible Dream Team chip. */
+  dreamTeamYears?: number[];
 }
 
 export interface PlayerAchievementGroup {
@@ -65,12 +69,18 @@ export function hasGoldenBootAward(playerId: string): boolean {
   return (GOLDEN_BOOT_YEARS[playerId]?.length ?? 0) > 0;
 }
 
-export function getPlayerAchievements(player: Player): PlayerAchievement[] {
-  return getPlayerAchievementGroups(player).flatMap((group) => group.achievements);
+export function getPlayerAchievements(
+  player: Player,
+  mode: AchievementDisplayMode = "compact"
+): PlayerAchievement[] {
+  return getPlayerAchievementGroups(player, mode).flatMap(
+    (group) => group.achievements
+  );
 }
 
 export function getPlayerAchievementGroups(
-  player: Player
+  player: Player,
+  mode: AchievementDisplayMode = "compact"
 ): PlayerAchievementGroup[] {
   const byCategory = new Map<AchievementCategoryId, PlayerAchievement[]>();
 
@@ -102,12 +112,21 @@ export function getPlayerAchievementGroups(
   const dreamYears =
     player.dreamTeamYears ?? getDreamTeamYears(player.id);
   if (dreamYears.length > 0) {
-    for (const year of dreamYears) {
+    if (mode === "compact") {
       push("individualHonours", {
-        label: `Dream Team ${year}`,
+        label: "Dream Team",
         color: "purple",
         category: "individualHonours",
+        dreamTeamYears: dreamYears,
       });
+    } else {
+      for (const year of dreamYears) {
+        push("individualHonours", {
+          label: `Dream Team ${year}`,
+          color: "purple",
+          category: "individualHonours",
+        });
+      }
     }
   }
 

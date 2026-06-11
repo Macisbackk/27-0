@@ -4,7 +4,11 @@ import type { Player } from "@/lib/types";
 import { formatCareerTries, formatValue } from "@/lib/players";
 import { getPlayerInitials } from "@/lib/players/initials";
 import { getValueTier } from "@/lib/players/ratings";
-import { getPlayerAchievements } from "@/lib/players/achievements";
+import {
+  getPlayerAchievements,
+  type AchievementDisplayMode,
+} from "@/lib/players/achievements";
+import { AchievementChipList } from "./AchievementChipList";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
 import { getClubColors } from "@/lib/clubs";
@@ -18,11 +22,9 @@ import { PlayerIdentityLine } from "../PlayerIdentityLine";
 import { TYPO } from "@/lib/ui/typography";
 import { StatBox, TIER_STAT_SPAN_CLASS } from "../ui/StatBox";
 import {
-  ACHIEVEMENT_TAG_VARIANT,
   RLCardShell,
   RLInfoBox,
   RLRatingDisplay,
-  RLTag,
 } from "./rl-card";
 import {
   PlayerSpecialBadge,
@@ -39,6 +41,7 @@ interface RugbyLeaguePlayerCardProps {
   compact?: boolean;
   equalHeight?: boolean;
   compactMobile?: boolean;
+  achievementDisplay?: AchievementDisplayMode;
   className?: string;
 }
 
@@ -52,6 +55,7 @@ export function RugbyLeaguePlayerCard({
   compact,
   equalHeight,
   compactMobile,
+  achievementDisplay = "compact",
   className = "",
 }: RugbyLeaguePlayerCardProps) {
   const colors = getClubColors(player.club);
@@ -59,7 +63,7 @@ export function RugbyLeaguePlayerCard({
   const isGoat = isGoatPlayer(player);
   const isSuperSam = isSuperSamHallasPlayer(player);
   const playerStatus = resolvePlayerStatus(player);
-  const achievements = getPlayerAchievements(player);
+  const achievements = getPlayerAchievements(player, achievementDisplay);
   const tier = getValueTier(player.peakRating);
   const isRecruitment = variant === "recruitment";
   const isPitch = variant === "pitch";
@@ -94,19 +98,11 @@ export function RugbyLeaguePlayerCard({
 
   const achievementBadges =
     achievements.length > 0 ? (
-      <div
-        className={`flex flex-wrap items-center justify-center gap-1 px-1 py-0.5 ${hiddenClass}`}
-      >
-        {achievements.map((achievement, index) => (
-          <RLTag
-            key={`${achievement.label}-${index}`}
-            variant={ACHIEVEMENT_TAG_VARIANT[achievement.color]}
-            compact={compactMobile}
-          >
-            {achievement.label}
-          </RLTag>
-        ))}
-      </div>
+      <AchievementChipList
+        achievements={achievements}
+        compactMobile={compactMobile}
+        className={hiddenClass}
+      />
     ) : null;
 
   if (isPitch) {
