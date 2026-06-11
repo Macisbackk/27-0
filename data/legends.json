@@ -79,7 +79,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 96
   },
@@ -101,7 +101,7 @@
     "clubLegend": true,
     "manOfSteel": true,
     "challengeCupWinner": true,
-    "superLeagueWinner": false,
+    "superLeagueWinner": true,
     "rating": 97
   },
   {
@@ -121,7 +121,7 @@
     "hallOfFame": true,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 95
   },
@@ -164,7 +164,7 @@
     "clubLegend": true,
     "manOfSteel": false,
     "challengeCupWinner": true,
-    "superLeagueWinner": true,
+    "superLeagueWinner": false,
     "rating": 94
   },
   {
@@ -205,7 +205,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 92
   },
@@ -226,8 +226,8 @@
     "hallOfFame": true,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": true,
-    "superLeagueWinner": true,
+    "challengeCupWinner": false,
+    "superLeagueWinner": false,
     "rating": 98
   },
   {
@@ -247,7 +247,7 @@
     "hallOfFame": true,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": false,
     "rating": 97
   },

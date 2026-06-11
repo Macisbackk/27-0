@@ -1,0 +1,463 @@
+{
+  "generatedAt": "2026-06-11T08:50:28.549Z",
+  "allowedSources": [
+    "Wikipedia",
+    "Official Super League website"
+  ],
+  "cacheBuiltAt": "2026-06-11T08:46:40.682Z",
+  "superLeagueWinnersInCache": 226,
+  "challengeCupWinnersInCache": 162,
+  "playersUpdated": [
+    {
+      "id": "wigan-cur-harry-smith",
+      "name": "Harry Smith",
+      "file": "current-squads.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-cur-luke-thompson",
+      "name": "Luke Thompson",
+      "file": "current-squads.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-cur-ryan-hall",
+      "name": "Ryan Hall",
+      "file": "current-squads.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-cur-toby-king",
+      "name": "Toby King",
+      "file": "current-squads.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-cur-george-williams",
+      "name": "George Williams",
+      "file": "current-squads.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-cur-liam-byrne",
+      "name": "Liam Byrne",
+      "file": "current-squads.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-cur-james-bentley",
+      "name": "James Bentley",
+      "file": "current-squads.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-tom-davies",
+      "name": "Tom Davies",
+      "file": "current-squads.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-james-batchelor",
+      "name": "James Batchelor",
+      "file": "current-squads.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-jack-broadbent",
+      "name": "Jack Broadbent",
+      "file": "current-squads.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-jack-brown",
+      "name": "Jack Brown",
+      "file": "current-squads.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leigh-cur-jack-hughes",
+      "name": "Jack Hughes",
+      "file": "current-squads.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-adam-swift",
+      "name": "Adam Swift",
+      "file": "current-squads.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-cur-jack-walker",
+      "name": "Jack Walker",
+      "file": "current-squads.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-brian-mcdermott",
+      "name": "Brian McDermott",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "widnes-hist-jon-clarke",
+      "name": "Jon Clarke",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-paul-wood",
+      "name": "Paul Wood",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-john-bateman",
+      "name": "John Bateman",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-james-donaldson",
+      "name": "James Donaldson",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "salford-hist-mark-flanagan",
+      "name": "Mark Flanagan",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-ben-harris",
+      "name": "Ben Harris",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wakefield-hist-ben-harrison",
+      "name": "Ben Harrison",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "catalans-hist-ian-henderson",
+      "name": "Ian Henderson",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wakefield-hist-chris-hicks",
+      "name": "Chris Hicks",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wakefield-hist-chris-hill",
+      "name": "Chris Hill",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "st-helens-hist-josh-jones",
+      "name": "Josh Jones",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wakefield-hist-matt-king",
+      "name": "Matt King",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-jeff-lima",
+      "name": "Jeff Lima",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-matt-prior",
+      "name": "Matt Prior",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "st-helens-hist-greg-richards",
+      "name": "Greg Richards",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wakefield-hist-chris-riley",
+      "name": "Chris Riley",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "st-helens-hist-aaron-smith",
+      "name": "Aaron Smith",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-matty-smith",
+      "name": "Matty Smith",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-scott-taylor",
+      "name": "Scott Taylor",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-paul-johnson",
+      "name": "Paul Johnson",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "james-graham",
+      "name": "James Graham",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "henry-paul",
+      "name": "Henry Paul",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "paul-anderson",
+      "name": "Paul Anderson",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    }
+  ],
+  "trophiesAdded": {
+    "superLeague": [
+      "Aaron Smith",
+      "Adam Swift",
+      "Ben Harris",
+      "Brian McDermott",
+      "George Williams",
+      "Greg Richards",
+      "Harry Smith",
+      "Henry Paul",
+      "Ian Henderson",
+      "Jack Brown",
+      "Jack Hughes",
+      "Jack Walker",
+      "James Bentley",
+      "James Graham",
+      "John Bateman",
+      "Josh Jones",
+      "Liam Byrne",
+      "Luke Thompson",
+      "Mark Flanagan",
+      "Matty Smith",
+      "Paul Anderson",
+      "Paul Johnson",
+      "Ryan Hall",
+      "Scott Taylor",
+      "Toby King",
+      "Tom Davies"
+    ],
+    "challengeCup": [
+      "Ben Harrison",
+      "Chris Hicks",
+      "Chris Hill",
+      "Chris Riley",
+      "Harry Smith",
+      "Jack Broadbent",
+      "Jack Brown",
+      "James Batchelor",
+      "James Donaldson",
+      "Jeff Lima",
+      "John Bateman",
+      "Jon Clarke",
+      "Liam Byrne",
+      "Luke Thompson",
+      "Matt King",
+      "Matt Prior",
+      "Matty Smith",
+      "Paul Johnson",
+      "Paul Wood",
+      "Scott Taylor",
+      "Tom Davies"
+    ]
+  },
+  "trophiesRemoved": {
+    "superLeague": [],
+    "challengeCup": []
+  },
+  "manualReview": []
+}

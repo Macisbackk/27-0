@@ -13,7 +13,9 @@
     "appearances": 110,
     "tries": 69,
     "intlCaps": 0,
-    "rating": 90
+    "rating": 90,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-zach-eckersley",
@@ -29,7 +31,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 47,
-    "tries": 33
+    "tries": 33,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-adam-keighran",
@@ -45,7 +49,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 110,
-    "tries": 39
+    "tries": 39,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wigan-cur-jake-wardle",
@@ -61,7 +67,9 @@
     "intlCaps": 0,
     "rating": 90,
     "appearances": 89,
-    "tries": 44
+    "tries": 44,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-liam-marshall",
@@ -77,7 +85,9 @@
     "intlCaps": 0,
     "rating": 89,
     "appearances": 191,
-    "tries": 150
+    "tries": 150,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-bevan-french",
@@ -93,7 +103,9 @@
     "intlCaps": 0,
     "rating": 93,
     "appearances": 114,
-    "tries": 99
+    "tries": 99,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-harry-smith",
@@ -109,7 +121,9 @@
     "intlCaps": 4,
     "rating": 90,
     "appearances": 144,
-    "tries": 22
+    "tries": 22,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-ethan-havard",
@@ -125,7 +139,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 84,
-    "tries": 8
+    "tries": 8,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-brad-oneill",
@@ -141,7 +157,9 @@
     "intlCaps": 0,
     "rating": 86,
     "appearances": 78,
-    "tries": 7
+    "tries": 7,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-luke-thompson",
@@ -157,7 +175,9 @@
     "intlCaps": 16,
     "rating": 89,
     "appearances": 199,
-    "tries": 29
+    "tries": 29,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-junior-nsemba",
@@ -173,7 +193,9 @@
     "intlCaps": 0,
     "rating": 89,
     "appearances": 77,
-    "tries": 19
+    "tries": 19,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-liam-farrell",
@@ -189,7 +211,9 @@
     "intlCaps": 0,
     "rating": 89,
     "appearances": 345,
-    "tries": 125
+    "tries": 125,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-kaide-ellis",
@@ -205,7 +229,9 @@
     "intlCaps": 0,
     "rating": 90,
     "appearances": 104,
-    "tries": 4
+    "tries": 4,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-sam-walters",
@@ -237,7 +263,9 @@
     "intlCaps": 0,
     "rating": 86,
     "appearances": 111,
-    "tries": 7
+    "tries": 7,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-abbas-miski",
@@ -253,7 +281,9 @@
     "intlCaps": 12,
     "rating": 86,
     "appearances": 78,
-    "tries": 64
+    "tries": 64,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-kruise-leeming",
@@ -269,7 +299,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 228,
-    "tries": 39
+    "tries": 39,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-jack-farrimond",
@@ -285,7 +317,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 20,
-    "tries": 13
+    "tries": 13,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wigan-cur-sam-eseh",
@@ -333,7 +367,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 20,
-    "tries": 3
+    "tries": 3,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wigan-cur-kian-mcdermott",
@@ -407,7 +443,9 @@
     "intlCaps": 11,
     "rating": 90,
     "appearances": 166,
-    "tries": 71
+    "tries": 71,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "st-helens-cur-kyle-feldt",
@@ -451,7 +489,9 @@
     "intlCaps": 0,
     "rating": 89,
     "appearances": 267,
-    "tries": 129
+    "tries": 129,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "st-helens-cur-deon-cross",
@@ -499,7 +539,9 @@
     "intlCaps": 18,
     "rating": 89,
     "appearances": 329,
-    "tries": 125
+    "tries": 125,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "st-helens-cur-alex-walmsley",
@@ -515,7 +557,9 @@
     "intlCaps": 33,
     "rating": 89,
     "appearances": 279,
-    "tries": 55
+    "tries": 55,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "st-helens-cur-daryl-clark",
@@ -547,7 +591,9 @@
     "intlCaps": 6,
     "rating": 89,
     "appearances": 194,
-    "tries": 6
+    "tries": 6,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "st-helens-cur-curtis-sironen",
@@ -563,7 +609,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 81,
-    "tries": 14
+    "tries": 14,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-cur-david-klemmer",
@@ -653,7 +701,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 65,
-    "tries": 1
+    "tries": 1,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-cur-agnatius-paasi",
@@ -669,7 +719,9 @@
     "intlCaps": 6,
     "rating": 86,
     "appearances": 94,
-    "tries": 9
+    "tries": 9,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "st-helens-cur-lewis-murphy",
@@ -811,7 +863,9 @@
     "intlCaps": 0,
     "rating": 89,
     "appearances": 212,
-    "tries": 127
+    "tries": 127,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "leeds-cur-ryan-hall",
@@ -827,7 +881,9 @@
     "intlCaps": 39,
     "rating": 86,
     "appearances": 390,
-    "tries": 259
+    "tries": 259,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "leeds-cur-brodie-croft",
@@ -923,7 +979,9 @@
     "intlCaps": 29,
     "rating": 90,
     "appearances": 329,
-    "tries": 135
+    "tries": 135,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "leeds-cur-james-mcdonnell",
@@ -1186,7 +1244,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 205,
-    "tries": 78
+    "tries": 78,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "warrington-cur-albert-hopoate",
@@ -1232,7 +1292,9 @@
     "intlCaps": 21,
     "rating": 89,
     "appearances": 250,
-    "tries": 91
+    "tries": 91,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "warrington-cur-marc-sneyd",
@@ -1360,7 +1422,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 291,
-    "tries": 42
+    "tries": 42,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "warrington-cur-toafofoa-sipley",
@@ -1390,7 +1454,9 @@
     "intlCaps": 5,
     "rating": 77,
     "appearances": 149,
-    "tries": 2
+    "tries": 2,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "warrington-cur-jordy-crowther",
@@ -1451,7 +1517,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 124,
-    "tries": 21
+    "tries": 21,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "warrington-cur-luke-thomas",
@@ -1657,7 +1725,9 @@
     "intlCaps": 6,
     "rating": 87,
     "appearances": 214,
-    "tries": 15
+    "tries": 15,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "bradford-cur-andy-ackers",
@@ -1732,7 +1802,9 @@
     "intlCaps": 0,
     "rating": 86,
     "appearances": 204,
-    "tries": 60
+    "tries": 60,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "bradford-cur-mitch-souter",
@@ -1762,7 +1834,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 25,
-    "tries": 2
+    "tries": 2,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "bradford-cur-ebon-scurr",
@@ -1792,7 +1866,9 @@
     "intlCaps": 0,
     "rating": 81,
     "appearances": 5,
-    "tries": 3
+    "tries": 3,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "bradford-cur-joe-keyes",
@@ -1947,7 +2023,9 @@
     "intlCaps": 7,
     "rating": 82,
     "appearances": 131,
-    "tries": 36
+    "tries": 36,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "hull-kr-cur-tom-davies",
@@ -1963,7 +2041,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 187,
-    "tries": 106
+    "tries": 106,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-peta-hiku",
@@ -1979,7 +2059,9 @@
     "intlCaps": 15,
     "rating": 90,
     "appearances": 82,
-    "tries": 31
+    "tries": 31,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-oliver-gildart",
@@ -1995,7 +2077,9 @@
     "intlCaps": 10,
     "rating": 89,
     "appearances": 160,
-    "tries": 65
+    "tries": 65,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "hull-kr-cur-joe-burgess",
@@ -2011,7 +2095,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 201,
-    "tries": 147
+    "tries": 147,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-mikey-lewis",
@@ -2027,7 +2113,9 @@
     "intlCaps": 12,
     "rating": 91,
     "appearances": 120,
-    "tries": 81
+    "tries": 81,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-tyrone-may",
@@ -2043,7 +2131,9 @@
     "intlCaps": 6,
     "rating": 90,
     "appearances": 100,
-    "tries": 21
+    "tries": 21,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-sauaso-sue",
@@ -2059,7 +2149,9 @@
     "intlCaps": 9,
     "rating": 87,
     "appearances": 74,
-    "tries": 13
+    "tries": 13,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-jez-litten",
@@ -2075,7 +2167,9 @@
     "intlCaps": 3,
     "rating": 89,
     "appearances": 18,
-    "tries": 1
+    "tries": 1,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-tom-amone",
@@ -2091,7 +2185,9 @@
     "intlCaps": 3,
     "rating": 83,
     "appearances": 127,
-    "tries": 20
+    "tries": 20,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-dean-hadley",
@@ -2107,7 +2203,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 225,
-    "tries": 23
+    "tries": 23,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-james-batchelor",
@@ -2123,7 +2221,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 166,
-    "tries": 29
+    "tries": 29,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-elliot-minchella",
@@ -2139,7 +2239,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 131,
-    "tries": 17
+    "tries": 17,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-jack-broadbent",
@@ -2155,7 +2257,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 105,
-    "tries": 38
+    "tries": 38,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-sam-luckley",
@@ -2171,7 +2275,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 217,
-    "tries": 15
+    "tries": 15,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-jai-whitbread",
@@ -2187,7 +2293,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 104,
-    "tries": 19
+    "tries": 19,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-rhyse-martin",
@@ -2203,7 +2311,9 @@
     "intlCaps": 20,
     "rating": 83,
     "appearances": 142,
-    "tries": 42
+    "tries": 42,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-jack-brown",
@@ -2219,7 +2329,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 99,
-    "tries": 6
+    "tries": 6,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-cur-jordan-dezaria",
@@ -2390,7 +2502,9 @@
     "intlCaps": 4,
     "rating": 87,
     "appearances": 313,
-    "tries": 99
+    "tries": 99,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-fc-cur-lewis-martin",
@@ -2500,7 +2614,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 171,
-    "tries": 66
+    "tries": 66,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-fc-cur-jed-cartwright",
@@ -2529,7 +2645,9 @@
     "value": 750000,
     "intlCaps": 4,
     "rating": 87,
-    "appearances": 19
+    "appearances": 19,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-fc-cur-cade-cust",
@@ -2545,7 +2663,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 87,
-    "tries": 14
+    "tries": 14,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-fc-cur-james-bell",
@@ -2623,7 +2743,9 @@
     "intlCaps": 2,
     "rating": 87,
     "appearances": 427,
-    "tries": 213
+    "tries": 213,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-fc-cur-yusuf-aydin",
@@ -2812,7 +2934,9 @@
     "intlCaps": 8,
     "rating": 88,
     "appearances": 318,
-    "tries": 257
+    "tries": 257,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "leigh-cur-adam-cook",
@@ -2842,7 +2966,9 @@
     "intlCaps": 18,
     "rating": 90,
     "appearances": 93,
-    "tries": 22
+    "tries": 22,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "leigh-cur-joe-ofahengaue",
@@ -2872,7 +2998,9 @@
     "intlCaps": 26,
     "rating": 88,
     "appearances": 114,
-    "tries": 47
+    "tries": 47,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "leigh-cur-robbie-mulhern",
@@ -2888,7 +3016,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 192,
-    "tries": 10
+    "tries": 10,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "leigh-cur-frankie-halton",
@@ -3060,7 +3190,9 @@
     "intlCaps": 8,
     "rating": 87,
     "appearances": 215,
-    "tries": 40
+    "tries": 40,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "leigh-cur-jack-hughes",
@@ -3076,7 +3208,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 307,
-    "tries": 39
+    "tries": 39,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "leigh-cur-andrew-badrock",
@@ -3697,7 +3831,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 199,
-    "tries": 37
+    "tries": 37,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "castleford-cur-joe-stimson",
@@ -3741,7 +3877,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 111,
-    "tries": 7
+    "tries": 7,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "castleford-cur-joe-westerman",
@@ -3805,7 +3943,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 321,
-    "tries": 30
+    "tries": 30,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "castleford-cur-aiden-doolan",
@@ -3945,7 +4085,9 @@
     "intlCaps": 1,
     "rating": 86,
     "appearances": 203,
-    "tries": 141
+    "tries": 141,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "huddersfield-cur-jacob-gagai",
@@ -4172,7 +4314,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 200,
-    "tries": 47
+    "tries": 47,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "huddersfield-cur-kieran-rush",
@@ -4204,7 +4348,9 @@
     "intlCaps": 0,
     "rating": 77,
     "appearances": 271,
-    "tries": 84
+    "tries": 84,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "huddersfield-cur-mathieu-cozza",
@@ -4336,7 +4482,9 @@
     "intlCaps": 19,
     "rating": 89,
     "appearances": 381,
-    "tries": 222
+    "tries": 222,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "catalans-cur-nick-cotric",
@@ -4410,7 +4558,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 9,
-    "tries": 4
+    "tries": 4,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "catalans-cur-chris-satae",
@@ -4458,7 +4608,9 @@
     "intlCaps": 9,
     "rating": 86,
     "appearances": 272,
-    "tries": 31
+    "tries": 31,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "catalans-cur-franck-maria",
@@ -4502,7 +4654,9 @@
     "peakRating": 89,
     "value": 750000,
     "intlCaps": 28,
-    "rating": 89
+    "rating": 89,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "catalans-cur-phoenix-laulu-togagae",
@@ -4698,7 +4852,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 215,
-    "tries": 126
+    "tries": 126,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "york-cur-jordan-lipp",
@@ -5005,7 +5161,9 @@
     "intlCaps": 0,
     "rating": 76,
     "appearances": 84,
-    "tries": 21
+    "tries": 21,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "york-cur-will-dagger",
@@ -5420,7 +5578,9 @@
     "intlCaps": 0,
     "rating": 86,
     "appearances": 137,
-    "tries": 25
+    "tries": 25,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "toulouse-cur-pierre-jean-lima",
@@ -5536,7 +5696,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 136,
-    "tries": 7
+    "tries": 7,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "salford-cur-tim-bergin",
@@ -5722,7 +5884,9 @@
     "peakRating": 85,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 85
+    "rating": 85,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "catalans-cur-lucas-albert",
@@ -6386,7 +6550,9 @@
     "rating": 87,
     "intlCaps": 0,
     "appearances": 49,
-    "tries": 14
+    "tries": 14,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-cur-bradley-o-neill",
@@ -6465,7 +6631,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 59,
-    "tries": 7
+    "tries": 7,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "castleford-cur-cain-robb",
@@ -6656,7 +6824,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 105,
-    "tries": 2
+    "tries": 2,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "london-cur-robbie-storey",
@@ -6704,7 +6874,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 37,
-    "tries": 4
+    "tries": 4,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "wakefield-cur-rodrick-tai",
@@ -6878,7 +7050,9 @@
     "rating": 83,
     "intlCaps": 0,
     "appearances": 98,
-    "tries": 31
+    "tries": 31,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "castleford-cur-elliot-wallis",
@@ -7238,7 +7412,9 @@
     "peakRating": 89,
     "rating": 89,
     "value": 280000,
-    "intlCaps": 45
+    "intlCaps": 45,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "sheffield-cur-joe-brown",

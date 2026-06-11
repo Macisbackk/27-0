@@ -14,7 +14,9 @@
     "tries": 23,
     "intlCaps": 9,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "bradford-hist-brian-mcdermott",
@@ -31,7 +33,9 @@
     "tries": 41,
     "intlCaps": 4,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "bradford-hist-karl-pratt",
@@ -48,7 +52,9 @@
     "tries": 9,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 78
+    "rating": 78,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wigan-hist-thomas-leuluai",
@@ -65,7 +71,9 @@
     "tries": 94,
     "intlCaps": 36,
     "clubLegend": true,
-    "rating": 88
+    "rating": 88,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-hist-george-carmont",
@@ -82,7 +90,9 @@
     "tries": 89,
     "intlCaps": 4,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-hist-harrison-hansen",
@@ -99,7 +109,9 @@
     "tries": 59,
     "intlCaps": 13,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-hist-paul-prescott",
@@ -116,7 +128,9 @@
     "tries": 8,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 78
+    "rating": 78,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-hist-darrell-goulding",
@@ -133,7 +147,9 @@
     "tries": 41,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 78
+    "rating": 78,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-hist-iafeta-paleaaesina",
@@ -150,7 +166,9 @@
     "tries": 12,
     "intlCaps": 2,
     "clubLegend": false,
-    "rating": 78
+    "rating": 78,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wigan-hist-blake-green",
@@ -167,7 +185,9 @@
     "tries": 52,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-hist-andy-coley",
@@ -184,7 +204,9 @@
     "tries": 10,
     "intlCaps": 6,
     "clubLegend": false,
-    "rating": 78
+    "rating": 78,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "st-helens-hist-ade-gardner",
@@ -201,7 +223,9 @@
     "tries": 170,
     "intlCaps": 6,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-jon-wilkin",
@@ -218,7 +242,9 @@
     "tries": 123,
     "intlCaps": 16,
     "clubLegend": false,
-    "rating": 88
+    "rating": 88,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-kyle-amor",
@@ -235,7 +261,9 @@
     "tries": 25,
     "intlCaps": 5,
     "clubLegend": false,
-    "rating": 78
+    "rating": 78,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "st-helens-hist-francis-meli",
@@ -252,7 +280,9 @@
     "tries": 164,
     "intlCaps": 7,
     "clubLegend": false,
-    "rating": 88
+    "rating": 88,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-lee-gilmour",
@@ -269,7 +299,9 @@
     "tries": 95,
     "intlCaps": 15,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-sia-soliola",
@@ -303,7 +335,9 @@
     "tries": 83,
     "intlCaps": 6,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "leeds-hist-lee-smith",
@@ -337,7 +371,9 @@
     "tries": 109,
     "intlCaps": 1,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "leeds-hist-ryan-bailey",
@@ -371,7 +407,9 @@
     "tries": 33,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 78
+    "rating": 78,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "warrington-hist-ryan-atkins",
@@ -388,7 +426,9 @@
     "tries": 208,
     "intlCaps": 6,
     "clubLegend": false,
-    "rating": 88
+    "rating": 88,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "warrington-hist-chris-bridge",
@@ -405,7 +445,9 @@
     "tries": 132,
     "intlCaps": 5,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "warrington-hist-garreth-carvell",
@@ -422,7 +464,9 @@
     "tries": 39,
     "intlCaps": 8,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "warrington-hist-richie-myler",
@@ -439,7 +483,9 @@
     "tries": 119,
     "intlCaps": 2,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "warrington-hist-paul-rauhihi",
@@ -1051,7 +1097,9 @@
     "tries": 49,
     "intlCaps": 4,
     "clubLegend": false,
-    "rating": 78
+    "rating": 78,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "london-hist-rob-purdham",
@@ -1153,7 +1201,9 @@
     "tries": 52,
     "intlCaps": 3,
     "clubLegend": false,
-    "rating": 78
+    "rating": 78,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "widnes-hist-rhys-hanbury",
@@ -1663,7 +1713,9 @@
     "tries": 42,
     "intlCaps": 26,
     "clubLegend": false,
-    "rating": 82
+    "rating": 82,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "catalans-hist-greg-mounis",
@@ -1698,7 +1750,7 @@
     "tries": 53,
     "intlCaps": 17,
     "clubLegend": true,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": false
   },
   {
@@ -1750,7 +1802,9 @@
     "tries": 32,
     "intlCaps": 0,
     "clubLegend": false,
-    "rating": 78
+    "rating": 78,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "crusaders-hist-gareth-thomas",
@@ -2003,7 +2057,9 @@
     "appearances": 450,
     "tries": 35,
     "intlCaps": 0,
-    "rating": 88
+    "rating": 88,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "warrington-hist-mike-cooper",
@@ -2134,7 +2190,9 @@
     "intlCaps": 0,
     "appearances": 75,
     "tries": 14,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "salford-hist-luke-adamson",
@@ -2270,7 +2328,9 @@
     "intlCaps": 15,
     "appearances": 128,
     "tries": 12,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-hist-makali-aizue",
@@ -2321,7 +2381,9 @@
     "intlCaps": 3,
     "appearances": 236,
     "tries": 165,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "salford-hist-malcolm-alker",
@@ -2423,7 +2485,9 @@
     "intlCaps": 19,
     "appearances": 219,
     "tries": 50,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "wakefield-hist-scott-anderson",
@@ -2457,7 +2521,9 @@
     "intlCaps": 5,
     "appearances": 154,
     "tries": 53,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "wakefield-hist-chris-annakin",
@@ -2661,7 +2727,9 @@
     "intlCaps": 18,
     "appearances": 153,
     "tries": 43,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "huddersfield-hist-david-atkins",
@@ -2712,7 +2780,9 @@
     "intlCaps": 13,
     "appearances": 81,
     "tries": 51,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "hull-fc-hist-david-baildon",
@@ -2950,7 +3020,9 @@
     "intlCaps": 0,
     "appearances": 194,
     "tries": 43,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wakefield-hist-eddie-battye",
@@ -3662,7 +3734,9 @@
     "intlCaps": 0,
     "appearances": 41,
     "tries": 3,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "salford-hist-gary-broadbent",
@@ -3832,7 +3906,9 @@
     "intlCaps": 0,
     "appearances": 71,
     "tries": 14,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "london-hist-neil-budworth",
@@ -4274,7 +4350,9 @@
     "intlCaps": 0,
     "appearances": 244,
     "tries": 30,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-ned-catic",
@@ -4325,7 +4403,9 @@
     "intlCaps": 0,
     "appearances": 71,
     "tries": 7,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-gary-chambers",
@@ -4563,7 +4643,9 @@
     "intlCaps": 2,
     "appearances": 177,
     "tries": 21,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "castleford-hist-ryan-clayton",
@@ -4750,7 +4832,9 @@
     "intlCaps": 0,
     "appearances": 84,
     "tries": 42,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "huddersfield-hist-jamie-cording",
@@ -4801,7 +4885,9 @@
     "intlCaps": 0,
     "appearances": 143,
     "tries": 10,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "hull-kr-hist-jordan-cox",
@@ -5156,7 +5242,9 @@
     "intlCaps": 0,
     "appearances": 130,
     "tries": 30,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "catalans-hist-alrix-da-costa",
@@ -5343,7 +5431,9 @@
     "intlCaps": 0,
     "appearances": 181,
     "tries": 23,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "psg-hist-fabien-devecchi",
@@ -5462,7 +5552,9 @@
     "intlCaps": 0,
     "appearances": 131,
     "tries": 77,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "leeds-hist-james-donaldson",
@@ -5479,7 +5571,9 @@
     "intlCaps": 0,
     "appearances": 225,
     "tries": 16,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "huddersfield-hist-stuart-donlan",
@@ -5632,7 +5726,9 @@
     "intlCaps": 0,
     "appearances": 194,
     "tries": 29,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "widnes-hist-gil-dudson",
@@ -5649,7 +5745,9 @@
     "intlCaps": 0,
     "appearances": 227,
     "tries": 10,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wakefield-hist-john-duffy",
@@ -5734,7 +5832,9 @@
     "intlCaps": 0,
     "appearances": 255,
     "tries": 48,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-hist-luke-dyer",
@@ -6040,7 +6140,9 @@
     "intlCaps": 0,
     "appearances": 154,
     "tries": 80,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-ben-evans",
@@ -6159,7 +6261,9 @@
     "intlCaps": 0,
     "appearances": 142,
     "tries": 29,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-theo-fages",
@@ -6176,7 +6280,9 @@
     "intlCaps": 0,
     "appearances": 248,
     "tries": 60,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "salford-hist-esene-faimalo",
@@ -6533,7 +6639,9 @@
     "intlCaps": 0,
     "appearances": 52,
     "tries": 16,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "wakefield-hist-liam-finn",
@@ -6669,7 +6777,9 @@
     "intlCaps": 0,
     "appearances": 178,
     "tries": 18,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-chris-flannery",
@@ -6805,7 +6915,9 @@
     "intlCaps": 0,
     "appearances": 222,
     "tries": 23,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "castleford-hist-jason-flowers",
@@ -6907,7 +7019,9 @@
     "intlCaps": 0,
     "appearances": 204,
     "tries": 42,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-mark-forster",
@@ -7060,7 +7174,9 @@
     "intlCaps": 0,
     "appearances": 98,
     "tries": 29,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "leeds-hist-david-fusitu-a",
@@ -7179,7 +7295,9 @@
     "intlCaps": 0,
     "appearances": 96,
     "tries": 13,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "sheffield-hist-jean-marc-garcia",
@@ -7230,7 +7348,9 @@
     "intlCaps": 0,
     "appearances": 75,
     "tries": 26,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-dean-gaskell",
@@ -7332,7 +7452,9 @@
     "intlCaps": 0,
     "appearances": 119,
     "tries": 60,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "huddersfield-hist-stanley-gene",
@@ -7468,7 +7590,9 @@
     "intlCaps": 0,
     "appearances": 161,
     "tries": 46,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "oldham-hist-ian-gildart",
@@ -7790,7 +7914,9 @@
     "intlCaps": 0,
     "appearances": 112,
     "tries": 10,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "st-helens-hist-bobbie-goulding",
@@ -7841,7 +7967,9 @@
     "intlCaps": 0,
     "appearances": 128,
     "tries": 75,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "bradford-hist-nathan-graham",
@@ -8010,7 +8138,9 @@
     "intlCaps": 0,
     "appearances": 302,
     "tries": 25,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "castleford-hist-george-griffin",
@@ -8316,7 +8446,9 @@
     "intlCaps": 0,
     "appearances": 125,
     "tries": 79,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-ian-hardman",
@@ -8418,7 +8550,9 @@
     "intlCaps": 2,
     "appearances": 164,
     "tries": 49,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-ben-harrison",
@@ -8435,7 +8569,9 @@
     "intlCaps": 0,
     "appearances": 187,
     "tries": 14,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-fc-hist-karl-harrison",
@@ -8520,7 +8656,9 @@
     "intlCaps": 0,
     "appearances": 109,
     "tries": 32,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "london-hist-solomon-haumono",
@@ -8673,7 +8811,9 @@
     "intlCaps": 0,
     "appearances": 197,
     "tries": 25,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "salford-hist-mark-henry",
@@ -8791,7 +8931,9 @@
     "intlCaps": 0,
     "appearances": 72,
     "tries": 56,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "castleford-hist-liam-higgins",
@@ -8859,7 +9001,9 @@
     "intlCaps": 0,
     "appearances": 325,
     "tries": 29,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "oldham-hist-howard-hill",
@@ -9046,7 +9190,9 @@
     "intlCaps": 0,
     "appearances": 29,
     "tries": 11,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "st-helens-hist-lance-hohaia",
@@ -9063,7 +9209,9 @@
     "intlCaps": 0,
     "appearances": 76,
     "tries": 21,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "salford-hist-daniel-holdsworth",
@@ -9199,7 +9347,9 @@
     "intlCaps": 0,
     "appearances": 95,
     "tries": 35,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-william-hopoate",
@@ -9216,7 +9366,9 @@
     "intlCaps": 0,
     "appearances": 27,
     "tries": 5,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-sean-hoppe",
@@ -9233,7 +9385,9 @@
     "intlCaps": 0,
     "appearances": 85,
     "tries": 32,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-justin-horo",
@@ -9437,7 +9591,9 @@
     "intlCaps": 0,
     "appearances": 107,
     "tries": 45,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-hist-chaz-i-anson",
@@ -9555,7 +9711,9 @@
     "intlCaps": 0,
     "appearances": 92,
     "tries": 48,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wigan-hist-willie-isa",
@@ -9572,7 +9730,9 @@
     "intlCaps": 0,
     "appearances": 275,
     "tries": 24,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "leeds-hist-lee-jackson",
@@ -9826,7 +9986,9 @@
     "intlCaps": 0,
     "appearances": 246,
     "tries": 47,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wigan-hist-phil-jones",
@@ -9894,7 +10056,9 @@
     "intlCaps": 0,
     "appearances": 126,
     "tries": 12,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "widnes-hist-philip-joseph",
@@ -9945,7 +10109,9 @@
     "intlCaps": 0,
     "appearances": 104,
     "tries": 20,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "catalans-hist-sam-kasiano",
@@ -10063,7 +10229,9 @@
     "intlCaps": 0,
     "appearances": 144,
     "tries": 41,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "hull-fc-hist-albert-kelly",
@@ -10216,7 +10384,9 @@
     "intlCaps": 0,
     "appearances": 91,
     "tries": 58,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-fc-hist-paul-king",
@@ -10267,7 +10437,9 @@
     "intlCaps": 0,
     "appearances": 188,
     "tries": 11,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "st-helens-hist-john-kirkpatrick",
@@ -10335,7 +10507,9 @@
     "intlCaps": 0,
     "appearances": 222,
     "tries": 36,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "bradford-hist-simon-knox",
@@ -10573,7 +10747,9 @@
     "intlCaps": 0,
     "appearances": 116,
     "tries": 30,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "bradford-hist-jamie-langley",
@@ -10590,7 +10766,9 @@
     "intlCaps": 0,
     "appearances": 250,
     "tries": 37,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "salford-hist-ryan-lannon",
@@ -11015,7 +11193,9 @@
     "intlCaps": 9,
     "appearances": 97,
     "tries": 7,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "wakefield-hist-tom-lineham",
@@ -11252,7 +11432,9 @@
     "intlCaps": 7,
     "appearances": 205,
     "tries": 84,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "salford-hist-robert-lui",
@@ -11269,7 +11451,9 @@
     "intlCaps": 0,
     "appearances": 121,
     "tries": 37,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "london-hist-zebastian-luisi",
@@ -11320,7 +11504,9 @@
     "intlCaps": 0,
     "appearances": 181,
     "tries": 79,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "hull-fc-hist-peter-lupton",
@@ -11354,7 +11540,9 @@
     "intlCaps": 0,
     "appearances": 93,
     "tries": 22,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-reece-lyne",
@@ -11439,7 +11627,9 @@
     "intlCaps": 0,
     "appearances": 66,
     "tries": 40,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "leigh-hist-steve-maden",
@@ -11643,7 +11833,9 @@
     "intlCaps": 0,
     "appearances": 74,
     "tries": 57,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-george-mann",
@@ -11711,7 +11903,9 @@
     "intlCaps": 0,
     "appearances": 220,
     "tries": 51,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "bradford-hist-manase-manuokafoa",
@@ -11896,7 +12090,9 @@
     "intlCaps": 0,
     "appearances": 102,
     "tries": 16,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "huddersfield-hist-nathan-mason",
@@ -11964,7 +12160,9 @@
     "intlCaps": 0,
     "appearances": 75,
     "tries": 17,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-vila-mata-utia",
@@ -11981,7 +12179,9 @@
     "intlCaps": 0,
     "appearances": 99,
     "tries": 9,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "huddersfield-hist-suaia-matagi",
@@ -12236,7 +12436,9 @@
     "intlCaps": 0,
     "appearances": 145,
     "tries": 7,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "bradford-hist-brad-meyers",
@@ -12253,7 +12455,9 @@
     "intlCaps": 0,
     "appearances": 51,
     "tries": 13,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "hull-fc-hist-steve-michaels",
@@ -12474,7 +12678,9 @@
     "intlCaps": 0,
     "appearances": 147,
     "tries": 12,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "catalans-hist-adam-mogg",
@@ -12542,7 +12748,9 @@
     "intlCaps": 0,
     "appearances": 154,
     "tries": 70,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-hist-danny-moore",
@@ -12559,7 +12767,9 @@
     "intlCaps": 0,
     "appearances": 59,
     "tries": 18,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-richard-moore",
@@ -12729,7 +12939,9 @@
     "intlCaps": 0,
     "appearances": 221,
     "tries": 18,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "salford-hist-aaron-moule",
@@ -12797,7 +13009,9 @@
     "intlCaps": 0,
     "appearances": 117,
     "tries": 14,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "widnes-hist-damian-munro",
@@ -13052,7 +13266,9 @@
     "intlCaps": 0,
     "appearances": 136,
     "tries": 15,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "wakefield-hist-steve-mccurrie",
@@ -13289,7 +13505,9 @@
     "intlCaps": 0,
     "appearances": 115,
     "tries": 57,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "salford-hist-ben-nakubuwai",
@@ -13306,7 +13524,9 @@
     "intlCaps": 0,
     "appearances": 60,
     "tries": 3,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "salford-hist-stephen-nash",
@@ -13374,7 +13594,9 @@
     "intlCaps": 0,
     "appearances": 186,
     "tries": 5,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "bradford-hist-scott-naylor",
@@ -13391,7 +13613,9 @@
     "intlCaps": 0,
     "appearances": 160,
     "tries": 60,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "salford-hist-adam-neal",
@@ -13508,7 +13732,9 @@
     "intlCaps": 0,
     "appearances": 145,
     "tries": 23,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "salford-hist-jason-nicol",
@@ -13627,7 +13853,9 @@
     "intlCaps": 0,
     "appearances": 42,
     "tries": 2,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-danny-nutley",
@@ -14035,7 +14263,9 @@
     "intlCaps": 0,
     "appearances": 177,
     "tries": 57,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "hull-fc-hist-paul-parker",
@@ -14324,7 +14554,9 @@
     "intlCaps": 0,
     "appearances": 119,
     "tries": 27,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-josh-perry",
@@ -14409,7 +14641,9 @@
     "intlCaps": 0,
     "appearances": 129,
     "tries": 18,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-ian-pickavance",
@@ -14494,7 +14728,9 @@
     "intlCaps": 0,
     "appearances": 200,
     "tries": 64,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "catalans-hist-ben-pomeroy",
@@ -14646,7 +14882,9 @@
     "intlCaps": 0,
     "appearances": 58,
     "tries": 7,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "bradford-hist-karl-pryce",
@@ -15053,7 +15291,9 @@
     "intlCaps": 0,
     "appearances": 102,
     "tries": 1,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "st-helens-hist-daniel-richardson",
@@ -15104,7 +15344,9 @@
     "intlCaps": 0,
     "appearances": 56,
     "tries": 5,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "bradford-hist-shane-rigon",
@@ -15121,7 +15363,9 @@
     "intlCaps": 0,
     "appearances": 25,
     "tries": 12,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-chris-riley",
@@ -15138,7 +15382,9 @@
     "intlCaps": 0,
     "appearances": 204,
     "tries": 120,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "leeds-hist-leroy-rivett",
@@ -15782,7 +16028,9 @@
     "intlCaps": 0,
     "appearances": 184,
     "tries": 49,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "hull-fc-hist-tevita-satae",
@@ -15917,7 +16165,9 @@
     "intlCaps": 0,
     "appearances": 261,
     "tries": 20,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wigan-hist-danny-sculthorpe",
@@ -16002,7 +16252,9 @@
     "intlCaps": 0,
     "appearances": 43,
     "tries": 4,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-hist-jerry-seuseu",
@@ -16172,7 +16424,9 @@
     "intlCaps": 0,
     "appearances": 47,
     "tries": 11,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "salford-hist-mark-shipway",
@@ -16257,7 +16511,9 @@
     "intlCaps": 0,
     "appearances": 168,
     "tries": 6,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "wakefield-hist-ashton-sims",
@@ -16444,7 +16700,9 @@
     "intlCaps": 0,
     "appearances": 42,
     "tries": 9,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "bradford-hist-andy-smith",
@@ -16648,7 +16906,9 @@
     "intlCaps": 0,
     "appearances": 280,
     "tries": 38,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "castleford-hist-michael-smith",
@@ -16801,7 +17061,9 @@
     "intlCaps": 0,
     "appearances": 107,
     "tries": 27,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-david-solomona",
@@ -16818,7 +17080,9 @@
     "intlCaps": 0,
     "appearances": 186,
     "tries": 61,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "castleford-hist-denny-solomona",
@@ -16971,7 +17235,9 @@
     "intlCaps": 0,
     "appearances": 136,
     "tries": 25,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "leigh-hist-craig-stapleton",
@@ -17412,7 +17678,9 @@
     "intlCaps": 0,
     "appearances": 174,
     "tries": 57,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "hull-fc-hist-fetuli-talanoa",
@@ -17480,7 +17748,9 @@
     "intlCaps": 0,
     "appearances": 143,
     "tries": 38,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "leeds-hist-jordan-tansey",
@@ -17565,7 +17835,9 @@
     "intlCaps": 0,
     "appearances": 143,
     "tries": 6,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "salford-hist-elijah-taylor",
@@ -17599,7 +17871,9 @@
     "intlCaps": 0,
     "appearances": 285,
     "tries": 39,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "london-hist-karl-te-mata",
@@ -17736,7 +18010,9 @@
     "intlCaps": 0,
     "appearances": 122,
     "tries": 50,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "catalans-hist-lewis-tierney",
@@ -17753,7 +18029,9 @@
     "intlCaps": 0,
     "appearances": 95,
     "tries": 34,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-kr-hist-dane-tilse",
@@ -17821,7 +18099,9 @@
     "intlCaps": 0,
     "appearances": 157,
     "tries": 7,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "wakefield-hist-glen-tomlinson",
@@ -17906,7 +18186,9 @@
     "intlCaps": 0,
     "appearances": 43,
     "tries": 9,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "oldham-hist-paul-topping",
@@ -18110,7 +18392,9 @@
     "intlCaps": 2,
     "appearances": 320,
     "tries": 103,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wigan-hist-chris-tuson",
@@ -18127,7 +18411,9 @@
     "intlCaps": 0,
     "appearances": 92,
     "tries": 13,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "castleford-hist-brendon-tuuta",
@@ -18501,7 +18787,9 @@
     "intlCaps": 0,
     "appearances": 51,
     "tries": 9,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "salford-hist-jason-walton",
@@ -18569,7 +18857,9 @@
     "intlCaps": 0,
     "appearances": 115,
     "tries": 19,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-hist-jacob-wardle",
@@ -18688,7 +18978,9 @@
     "intlCaps": 0,
     "appearances": 70,
     "tries": 15,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "sheffield-hist-dave-watson",
@@ -19045,7 +19337,9 @@
     "intlCaps": 0,
     "appearances": 64,
     "tries": 25,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "wakefield-hist-oliver-wilkes",
@@ -19266,7 +19560,9 @@
     "intlCaps": 0,
     "appearances": 169,
     "tries": 95,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "huddersfield-hist-jeff-wittenberg",
@@ -19419,7 +19715,9 @@
     "intlCaps": 0,
     "appearances": 155,
     "tries": 93,
-    "clubLegend": false
+    "clubLegend": false,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true
   },
   {
     "id": "castleford-hist-nick-youngquest",
@@ -19487,7 +19785,9 @@
     "appearances": 296,
     "tries": 81,
     "intlCaps": 0,
-    "clubLegend": true
+    "clubLegend": true,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "leeds-hist-chev-walker",
@@ -19504,7 +19804,9 @@
     "appearances": 258,
     "tries": 87,
     "intlCaps": 0,
-    "clubLegend": true
+    "clubLegend": true,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "leeds-hist-francis-cummins",
@@ -19538,7 +19840,9 @@
     "appearances": 225,
     "tries": 80,
     "intlCaps": 0,
-    "clubLegend": true
+    "clubLegend": true,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "huddersfield-hist-jermaine-mcgillvary",
@@ -19572,7 +19876,9 @@
     "appearances": 261,
     "tries": 71,
     "intlCaps": 0,
-    "clubLegend": true
+    "clubLegend": true,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "hull-fc-hist-lee-radford",
@@ -19589,7 +19895,9 @@
     "appearances": 312,
     "tries": 41,
     "intlCaps": 0,
-    "clubLegend": true
+    "clubLegend": true,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "huddersfield-hist-leroy-cudjoe",
@@ -19623,7 +19931,9 @@
     "appearances": 312,
     "tries": 51,
     "intlCaps": 0,
-    "clubLegend": true
+    "clubLegend": true,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "wakefield-hist-paul-sykes",
@@ -19657,7 +19967,9 @@
     "appearances": 240,
     "tries": 84,
     "intlCaps": 2,
-    "clubLegend": true
+    "clubLegend": true,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "wigan-hist-terry-newton",
@@ -19708,7 +20020,9 @@
     "appearances": 226,
     "tries": 119,
     "intlCaps": 0,
-    "clubLegend": true
+    "clubLegend": true,
+    "superLeagueWinner": true,
+    "challengeCupWinner": false
   },
   {
     "id": "hull-fc-hist-danny-tickle",
@@ -19759,7 +20073,9 @@
     "tries": 49,
     "intlCaps": 2,
     "clubLegend": false,
-    "rating": 89
+    "rating": 89,
+    "superLeagueWinner": true,
+    "challengeCupWinner": true
   },
   {
     "id": "st-helens-hist-dom-peyroux",
@@ -19806,7 +20122,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -19827,7 +20143,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -19848,7 +20164,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -19870,7 +20186,7 @@
     "clubLegend": true,
     "manOfSteel": false,
     "challengeCupWinner": true,
-    "superLeagueWinner": false,
+    "superLeagueWinner": true,
     "rating": 90
   },
   {
@@ -19890,7 +20206,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -19911,7 +20227,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -19932,7 +20248,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -19953,7 +20269,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -19974,7 +20290,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -20184,7 +20500,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -20205,7 +20521,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -20226,7 +20542,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -20268,7 +20584,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -20289,7 +20605,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -20310,7 +20626,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -20415,7 +20731,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": false,
+    "challengeCupWinner": true,
     "superLeagueWinner": false,
     "rating": 88
   },
@@ -20436,7 +20752,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -20478,7 +20794,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -20499,8 +20815,8 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
-    "superLeagueWinner": true,
+    "challengeCupWinner": false,
+    "superLeagueWinner": false,
     "rating": 90
   },
   {
@@ -20520,7 +20836,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -20541,8 +20857,8 @@
     "hallOfFame": true,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
-    "superLeagueWinner": true,
+    "challengeCupWinner": false,
+    "superLeagueWinner": false,
     "rating": 90
   },
   {
@@ -20563,7 +20879,7 @@
     "clubLegend": true,
     "manOfSteel": false,
     "challengeCupWinner": true,
-    "superLeagueWinner": true,
+    "superLeagueWinner": false,
     "rating": 90
   },
   {
@@ -20584,7 +20900,7 @@
     "clubLegend": true,
     "manOfSteel": false,
     "challengeCupWinner": true,
-    "superLeagueWinner": true,
+    "superLeagueWinner": false,
     "rating": 90
   },
   {
@@ -20625,7 +20941,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": false,
     "rating": 90
   },
@@ -20688,7 +21004,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": false,
     "rating": 90
   },
@@ -20709,8 +21025,8 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
-    "superLeagueWinner": true,
+    "challengeCupWinner": false,
+    "superLeagueWinner": false,
     "rating": 90
   },
   {
@@ -20730,7 +21046,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": false,
     "rating": 90
   },
@@ -20814,7 +21130,7 @@
     "hallOfFame": true,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": false,
     "rating": 90
   },
@@ -20835,7 +21151,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -20856,7 +21172,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": true,
+    "challengeCupWinner": false,
     "superLeagueWinner": true,
     "rating": 90
   },
@@ -20878,7 +21194,7 @@
     "clubLegend": true,
     "manOfSteel": false,
     "challengeCupWinner": true,
-    "superLeagueWinner": true,
+    "superLeagueWinner": false,
     "rating": 90
   },
   {
@@ -20899,7 +21215,7 @@
     "clubLegend": true,
     "manOfSteel": false,
     "challengeCupWinner": true,
-    "superLeagueWinner": false,
+    "superLeagueWinner": true,
     "rating": 90
   },
   {
@@ -20939,7 +21255,7 @@
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": false,
-    "challengeCupWinner": false,
+    "challengeCupWinner": true,
     "superLeagueWinner": false
   }
 ]
