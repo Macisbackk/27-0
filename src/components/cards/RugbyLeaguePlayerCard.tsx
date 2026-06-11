@@ -71,22 +71,25 @@ export function RugbyLeaguePlayerCard({
       ? String(player.appearances)
       : "Unknown";
 
-  const statusRow =
-    playerStatus || isGoat || isSuperSam ? (
-      <div
-        className={`mt-1.5 flex flex-wrap items-center gap-1.5 ${hiddenClass}`}
-        aria-hidden={hardMode || undefined}
-      >
-        {isSuperSam && (
-          <PlayerSpecialBadge variant="superSam" compact={compactMobile} />
-        )}
-        {isGoat && !isSuperSam && (
-          <PlayerSpecialBadge variant="goat" compact={compactMobile} />
-        )}
-        {playerStatus && (
-          <PlayerStatusBadge status={playerStatus} compact={compactMobile} />
-        )}
-      </div>
+  const statusStrip =
+    isSuperSam ? (
+      <PlayerSpecialBadge
+        variant="superSam"
+        compact={compactMobile}
+        className={hiddenClass}
+      />
+    ) : isGoat ? (
+      <PlayerSpecialBadge
+        variant="goat"
+        compact={compactMobile}
+        className={hiddenClass}
+      />
+    ) : playerStatus ? (
+      <PlayerStatusBadge
+        status={playerStatus}
+        compact={compactMobile}
+        className={hiddenClass}
+      />
     ) : null;
 
   const achievementBadges =
@@ -116,7 +119,7 @@ export function RugbyLeaguePlayerCard({
       >
         {isSuperSam && (
           <div
-            className={`flex justify-center border-b border-pitch-600/40 bg-pitch-950/90 px-1 py-0.5 ${hiddenClass}`}
+            className={`flex justify-center border-b border-pitch-600/40 bg-pitch-950/90 px-1 py-px ${hiddenClass}`}
             aria-hidden={hardMode || undefined}
           >
             <PlayerSpecialBadge variant="superSam" compact />
@@ -124,7 +127,7 @@ export function RugbyLeaguePlayerCard({
         )}
         {isGoat && !isSuperSam && (
           <div
-            className={`flex justify-center border-b border-pitch-600/40 bg-pitch-950/90 px-1 py-0.5 ${hiddenClass}`}
+            className={`flex justify-center border-b border-pitch-600/40 bg-pitch-950/90 px-1 py-px ${hiddenClass}`}
             aria-hidden={hardMode || undefined}
           >
             <PlayerSpecialBadge variant="goat" compact />
@@ -200,8 +203,12 @@ export function RugbyLeaguePlayerCard({
             >
               {player.name}
             </h2>
-            <PlayerIdentityLine player={player} compact={mobileCompact} />
-            {statusRow}
+            {statusStrip}
+            <PlayerIdentityLine
+              player={player}
+              compact={mobileCompact}
+              className={statusStrip ? "!mt-0.5" : undefined}
+            />
           </div>
           <div className="flex shrink-0 flex-col items-end">
             <RLRatingDisplay
@@ -289,8 +296,11 @@ export function RugbyLeaguePlayerCard({
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1 pr-1">
             <h2 className={`truncate ${TYPO.playerNameSm}`}>{player.name}</h2>
-            <PlayerIdentityLine player={player} />
-            {statusRow}
+            {statusStrip}
+            <PlayerIdentityLine
+              player={player}
+              className={statusStrip ? "!mt-0.5" : undefined}
+            />
           </div>
           <div className="flex shrink-0 flex-col items-end">
             <RLRatingDisplay rating={player.peakRating} masked={hardMode} />

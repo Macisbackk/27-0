@@ -12,9 +12,9 @@ const STATUS_LABEL: Record<PlayerStatusType, string> = {
 };
 
 const STATUS_CLASS: Record<PlayerStatusType, string> = {
-  legend: "rl-status-badge rl-status-legend",
-  historic: "rl-status-badge rl-status-historic",
-  current: "rl-status-badge rl-status-current",
+  legend: "rl-status-strip rl-status-legend",
+  historic: "rl-status-strip rl-status-historic",
+  current: "rl-status-strip rl-status-current",
 };
 
 export function resolvePlayerStatus(player: Player): PlayerStatusType | null {
@@ -37,16 +37,20 @@ export function PlayerStatusBadge({
   className = "",
 }: PlayerStatusBadgeProps) {
   return (
-    <span
-      className={`${STATUS_CLASS[status]} font-display font-bold uppercase ${
+    <p
+      className={`${STATUS_CLASS[status]} ${
         compact
-          ? "px-2 py-0.5 text-[9px] tracking-[0.14em] sm:px-2.5 sm:py-1 sm:text-[10px]"
-          : "px-2.5 py-1 text-[10px] tracking-[0.14em] sm:px-3 sm:py-1.5 sm:text-[11px]"
+          ? "text-[8px] tracking-[0.07em] sm:text-[9px]"
+          : "text-[9px] tracking-[0.08em] sm:text-[10px]"
       } ${className}`}
       aria-label={`Player status: ${STATUS_LABEL[status]}`}
     >
-      {STATUS_LABEL[status]}
-    </span>
+      <span className="rl-status-prefix">STATUS</span>
+      <span className="rl-status-separator" aria-hidden>
+        ·
+      </span>
+      <span className="rl-status-value">{STATUS_LABEL[status]}</span>
+    </p>
   );
 }
 
@@ -58,8 +62,8 @@ const SPECIAL_LABEL: Record<SpecialBadgeVariant, string> = {
 };
 
 const SPECIAL_CLASS: Record<SpecialBadgeVariant, string> = {
-  goat: "rl-special-badge rl-special-goat",
-  superSam: "rl-special-badge rl-special-supersam",
+  goat: "rl-status-strip rl-special-goat",
+  superSam: "rl-status-strip rl-special-supersam",
 };
 
 interface PlayerSpecialBadgeProps {
@@ -68,21 +72,25 @@ interface PlayerSpecialBadgeProps {
   className?: string;
 }
 
-/** Easter-egg mode badges — distinct from status and achievements. */
+/** Easter-egg mode metadata — distinct from status and achievements. */
 export function PlayerSpecialBadge({
   variant,
   compact,
   className = "",
 }: PlayerSpecialBadgeProps) {
   return (
-    <span
-      className={`${SPECIAL_CLASS[variant]} font-display font-bold uppercase ${
+    <p
+      className={`${SPECIAL_CLASS[variant]} ${
         compact
-          ? "px-2 py-0.5 text-[9px] tracking-[0.12em] sm:px-2.5 sm:py-1 sm:text-[10px]"
-          : "px-2.5 py-1 text-[10px] tracking-[0.12em] sm:px-3 sm:py-1.5 sm:text-[11px]"
+          ? "text-[8px] tracking-[0.07em] sm:text-[9px]"
+          : "text-[9px] tracking-[0.08em] sm:text-[10px]"
       } ${className}`}
     >
-      {SPECIAL_LABEL[variant]}
-    </span>
+      <span className="rl-status-prefix">MODE</span>
+      <span className="rl-status-separator" aria-hidden>
+        ·
+      </span>
+      <span className="rl-status-value">{SPECIAL_LABEL[variant]}</span>
+    </p>
   );
 }
