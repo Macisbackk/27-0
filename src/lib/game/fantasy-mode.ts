@@ -142,3 +142,61 @@ export function getFantasyValueScore(player: Player): number {
   const valueUnits = Math.max(player.value, 1) / 100_000;
   return player.peakRating / valueUnits;
 }
+
+/** Value tiers aligned with ratingToValue bands (£3M squad ≈ £230k avg per slot). */
+export const FANTASY_VALUE_HIGH_MIN = 250_000;
+export const FANTASY_VALUE_MEDIUM_MIN = 100_000;
+
+export type FantasyRatingFilter = "all" | "high" | "good" | "average" | "low";
+export type FantasyValueFilter = "all" | "high" | "medium" | "low";
+
+export const FANTASY_RATING_FILTER_LABELS: Record<FantasyRatingFilter, string> = {
+  all: "Any Rating",
+  high: "High Rated (90+)",
+  good: "Good Rated (85-89)",
+  average: "Average Rated (80-84)",
+  low: "Low Rated (Below 80)",
+};
+
+export const FANTASY_VALUE_FILTER_LABELS: Record<FantasyValueFilter, string> = {
+  all: "Any Value",
+  high: "High Value",
+  medium: "Medium Value",
+  low: "Low Value",
+};
+
+export function matchesFantasyRatingFilter(
+  player: Player,
+  filter: FantasyRatingFilter
+): boolean {
+  const rating = player.peakRating;
+  switch (filter) {
+    case "high":
+      return rating >= 90;
+    case "good":
+      return rating >= 85 && rating < 90;
+    case "average":
+      return rating >= 80 && rating < 85;
+    case "low":
+      return rating < 80;
+    default:
+      return true;
+  }
+}
+
+export function matchesFantasyValueFilter(
+  player: Player,
+  filter: FantasyValueFilter
+): boolean {
+  const { value } = player;
+  switch (filter) {
+    case "high":
+      return value >= FANTASY_VALUE_HIGH_MIN;
+    case "medium":
+      return value >= FANTASY_VALUE_MEDIUM_MIN && value < FANTASY_VALUE_HIGH_MIN;
+    case "low":
+      return value < FANTASY_VALUE_MEDIUM_MIN;
+    default:
+      return true;
+  }
+}

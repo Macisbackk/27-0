@@ -19,6 +19,8 @@ import {
 
 export interface RecruitmentOptions {
   hardMode?: boolean;
+  /** Standard Draft — improved offer curve; Hard Draft stays tougher. */
+  draftMode?: boolean;
   /** Challenge Cup — only offer players from this club. */
   clubFilter?: string;
 }
@@ -47,6 +49,36 @@ const NORMAL_BAND_WEIGHTS: Record<RatingBand, number> = {
   b95_99: 0.05,
 };
 
+/** Standard Draft — mid/high quality common, low-end rarer, elites meaningful. */
+const DRAFT_BAND_WEIGHTS: Record<RatingBand, number> = {
+  b75_79: 0.08,
+  b80_84: 0.32,
+  b85_89: 0.35,
+  b90_94: 0.18,
+  b95_99: 0.07,
+};
+
+/** Hard Draft — closer to classic recruitment difficulty. */
+const HARD_DRAFT_BAND_WEIGHTS: Record<RatingBand, number> = {
+  b75_79: 0.2,
+  b80_84: 0.38,
+  b85_89: 0.28,
+  b90_94: 0.1,
+  b95_99: 0.04,
+};
+
+/** Reroll bias — slightly better tier odds than a fresh Standard Draft pick. */
+const DRAFT_REROLL_BAND_WEIGHTS: Record<RatingBand, number> = {
+  b75_79: 0.05,
+  b80_84: 0.28,
+  b85_89: 0.38,
+  b90_94: 0.22,
+  b95_99: 0.07,
+};
+
+const DRAFT_ELITE_PICK_CHANCE = 0.1;
+const DRAFT_HARD_ELITE_PICK_CHANCE = 0.04;
+
 const CUP_BAND_WEIGHTS: Record<RatingBand, number> = {
   b75_79: 0.08,
   b80_84: 0.22,
@@ -58,6 +90,18 @@ const CUP_BAND_WEIGHTS: Record<RatingBand, number> = {
 const CUP_CURRENT_RATIO = 0.28;
 const CUP_HISTORIC_RATIO = 0.42;
 const CUP_LEGEND_RATIO = 0.3;
+
+function getBandWeights(
+  options?: RecruitmentOptions,
+  reroll = false
+): Record<RatingBand, number> {
+  if (options?.clubFilter) return CUP_BAND_WEIGHTS;
+  if (options?.draftMode) {
+    if (reroll && !options.hardMode) return DRAFT_REROLL_BAND_WEIGHTS;
+    return options.hardMode ? HARD_DRAFT_BAND_WEIGHTS : DRAFT_BAND_WEIGHTS;
+  }
+  return NORMAL_BAND_WEIGHTS;
+}
 
 function getRatingBand(rating: number): RatingBand {
   if (rating >= 95) return "b95_99";
@@ -189,7 +233,7 @@ function pickBalancedPair(
 
   const allowExtreme = rng() < EXTREME_PAIR_CHANCE;
   const maxGap = allowExtreme ? EXTREME_PAIR_RATING_GAP : TYPICAL_PAIR_RATING_GAP;
-  const weights = options?.clubFilter ? CUP_BAND_WEIGHTS : NORMAL_BAND_WEIGHTS;
+  const weights = getBandWeights(options);
   const targetBand = rollBand(rng, weights);
   const anchor = pickFromBandWithFallback(candidates, targetBand, rng);
   if (!anchor) return null;
@@ -658,9 +702,109 @@ function pickSinglePlayerForPosition(
     if (close.length > 0) pool = close;
   }
 
-  const weights = options?.clubFilter ? CUP_BAND_WEIGHTS : NORMAL_BAND_WEIGHTS;
+  const weights = getBandWeights(options);
   const band = rollBand(rng, weights);
   return pickFromBandWithFallback(pool, band, rng);
+}
+
+function pairMaxRating(pair: [string, string]): number {
+  const a = getPlayerById(pair[0])?.peakRating ?? 0;
+  const b = getPlayerById(pair[1])?.peakRating ?? 0;
+  return Math.max(a, b);
+}
+
+function pickImprovedDraftRerollPair(
+  rng: () => number,
+  blocked: Set<string>,
+  squad: SquadSlot[],
+  recentPositions: Position[],
+  currentRound: RecruitmentRound,
+  options?: RecruitmentOptions
+): [string, string] | null {
+  const previousMax = Math.max(
+    getPlayerById(currentRound.optionA)?.peakRating ?? 0,
+    getPlayerById(currentRound.optionB)?.peakRating ?? 0
+  );
+  const attempts = options?.hardMode ? 1 : 3;
+  let best: [string, string] | null = null;
+  let bestMax = -1;
+
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    const attemptRng = () => rng();
+    const pair = pickDraftBalancedPair(
+      attemptRng,
+      blocked,
+      squad,
+      recentPositions,
+      options,
+      true
+    );
+    if (!pair) continue;
+    const maxRating = pairMaxRating(pair);
+    if (maxRating > bestMax) {
+      best = pair;
+      bestMax = maxRating;
+    }
+    if (maxRating > previousMax) return pair;
+  }
+
+  if (best && bestMax >= previousMax) return best;
+  return best;
+}
+
+function pickImprovedDraftSlotRerollPair(
+  rng: () => number,
+  blocked: Set<string>,
+  slot: SquadSlot,
+  currentRound: RecruitmentRound,
+  options?: RecruitmentOptions
+): [string, string] | null {
+  const previousMax = Math.max(
+    getPlayerById(currentRound.optionA)?.peakRating ?? 0,
+    getPlayerById(currentRound.optionB)?.peakRating ?? 0
+  );
+  const attempts = options?.hardMode ? 1 : 3;
+  let best: [string, string] | null = null;
+  let bestMax = -1;
+
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    const playerA = pickSinglePlayerForDraftPosition(
+      slot.position,
+      rng,
+      blocked,
+      undefined,
+      options,
+      true
+    );
+    if (!playerA) continue;
+
+    const blockedWithA = new Set(blocked);
+    blockedWithA.add(playerA.id);
+
+    const playerB = pickSinglePlayerForDraftPosition(
+      slot.position,
+      rng,
+      blockedWithA,
+      playerA.peakRating,
+      options,
+      true
+    );
+    if (!playerB || playerA.id === playerB.id) continue;
+
+    const pair: [string, string] =
+      rng() < 0.5
+        ? [playerA.id, playerB.id]
+        : [playerB.id, playerA.id];
+    const maxRating = pairMaxRating(pair);
+    if (maxRating > bestMax) {
+      best = pair;
+      bestMax = maxRating;
+    }
+    if (maxRating > previousMax) return pair;
+  }
+
+  if (best && bestMax >= previousMax) return best;
+  return best;
 }
 
 function pickFromDraftPool(
@@ -669,7 +813,8 @@ function pickFromDraftPool(
   rng: () => number,
   usedIds: Set<string>,
   anchorRating: number | undefined,
-  options?: RecruitmentOptions
+  options?: RecruitmentOptions,
+  reroll = false
 ): Player | null {
   if (candidates.length === 0) return null;
 
@@ -698,7 +843,7 @@ function pickFromDraftPool(
     return b.peakRating - a.peakRating;
   });
 
-  const weights = options?.clubFilter ? CUP_BAND_WEIGHTS : NORMAL_BAND_WEIGHTS;
+  const weights = getBandWeights(options, reroll);
   const band = rollBand(rng, weights);
   return pickFromBandWithFallback(pool, band, rng);
 }
@@ -709,7 +854,8 @@ function pickSinglePlayerForDraftPosition(
   rng: () => number,
   usedIds: Set<string>,
   anchorRating?: number,
-  options?: RecruitmentOptions
+  options?: RecruitmentOptions,
+  reroll = false
 ): Player | null {
   const targetPositions = draftCandidatePositions(slotPosition);
   const pool = basePlayerPool(options).filter(
@@ -718,6 +864,19 @@ function pickSinglePlayerForDraftPosition(
   );
   if (pool.length === 0) return null;
 
+  if (options?.draftMode) {
+    const eliteChance = options.hardMode
+      ? DRAFT_HARD_ELITE_PICK_CHANCE
+      : DRAFT_ELITE_PICK_CHANCE;
+    if (rng() < eliteChance) {
+      const elite = pool.filter((player) => player.peakRating >= ELITE_RATING_THRESHOLD);
+      if (elite.length > 0) {
+        sortCandidatesExactFirst(elite, slotPosition);
+        return elite[Math.floor(rng() * elite.length)];
+      }
+    }
+  }
+
   if (isHalfbackPosition(slotPosition)) {
     return pickFromDraftPool(
       pool,
@@ -725,7 +884,8 @@ function pickSinglePlayerForDraftPosition(
       rng,
       usedIds,
       anchorRating,
-      options
+      options,
+      reroll
     );
   }
 
@@ -733,14 +893,23 @@ function pickSinglePlayerForDraftPosition(
   const compatible = pool.filter((player) => player.position !== slotPosition);
 
   return (
-    pickFromDraftPool(exact, slotPosition, rng, usedIds, anchorRating, options) ??
+    pickFromDraftPool(
+      exact,
+      slotPosition,
+      rng,
+      usedIds,
+      anchorRating,
+      options,
+      reroll
+    ) ??
     pickFromDraftPool(
       compatible,
       slotPosition,
       rng,
       usedIds,
       anchorRating,
-      options
+      options,
+      reroll
     )
   );
 }
@@ -750,7 +919,8 @@ function pickDraftBalancedPair(
   usedIds: Set<string>,
   squad: SquadSlot[],
   recentPositions: Position[],
-  options?: RecruitmentOptions
+  options?: RecruitmentOptions,
+  reroll = false
 ): [string, string] | null {
   let remaining = getRemainingPositionCounts(squad);
   if (remaining.size === 0) {
@@ -798,7 +968,8 @@ function pickDraftBalancedPair(
     rng,
     usedIds,
     undefined,
-    options
+    options,
+    reroll
   );
   if (!playerA) return pickPairAny(rng, usedIds, options);
 
@@ -812,7 +983,8 @@ function pickDraftBalancedPair(
           rng,
           usedWithA,
           playerA.peakRating,
-          options
+          options,
+          reroll
         )
       : null;
 
@@ -832,7 +1004,8 @@ function pickDraftBalancedPair(
         rng,
         usedWithA,
         playerA.peakRating,
-        options
+        options,
+        reroll
       );
       if (playerB) break;
     }
@@ -844,7 +1017,8 @@ function pickDraftBalancedPair(
       rng,
       usedWithA,
       playerA.peakRating,
-      options
+      options,
+      reroll
     );
   }
 
@@ -1037,6 +1211,37 @@ export function generateDraftOfferForSlot(
   };
 }
 
+function tryDraftElitePair(
+  rng: () => number,
+  usedIds: Set<string>,
+  options?: RecruitmentOptions
+): [string, string] | null {
+  const pool = basePlayerPool(options).filter(
+    (player) =>
+      !usedIds.has(player.id) && player.peakRating >= ELITE_RATING_THRESHOLD
+  );
+  if (pool.length === 0) return null;
+
+  const star = pool[Math.floor(rng() * pool.length)];
+  let partners = basePlayerPool(options).filter(
+    (player) =>
+      !usedIds.has(player.id) &&
+      player.id !== star.id &&
+      Math.abs(player.peakRating - star.peakRating) <= TYPICAL_PAIR_RATING_GAP
+  );
+  if (partners.length === 0) {
+    partners = basePlayerPool(options).filter(
+      (player) => !usedIds.has(player.id) && player.id !== star.id
+    );
+  }
+  if (partners.length === 0) return null;
+
+  const partner = partners[Math.floor(rng() * partners.length)];
+  return rng() < 0.5
+    ? [star.id, partner.id]
+    : [partner.id, star.id];
+}
+
 /** Balanced draft offer for a single pick using current squad needs. */
 export function generateDraftOfferForPick(
   seed: string,
@@ -1049,14 +1254,27 @@ export function generateDraftOfferForPick(
 ): RecruitmentRound | null {
   const rng = seedrandom(`${seed}-draft-offer-${pickIndex}`);
   const usedIds = new Set([...signedPlayerIds, ...lockedPlayerIds]);
-  const pair =
+
+  let pair: [string, string] | null = null;
+  if (
+    options?.draftMode &&
+    !options.hardMode &&
+    pickIndex % 6 === 5 &&
+    pickIndex < TOTAL_SLOTS - 1
+  ) {
+    pair = tryDraftElitePair(rng, usedIds, options);
+  }
+
+  pair =
+    pair ??
     pickDraftBalancedPair(
       rng,
       usedIds,
       squad,
       recentPositions,
       options
-    ) ?? pickPairAny(rng, usedIds, options);
+    ) ??
+    pickPairAny(rng, usedIds, options);
   if (!pair) return null;
 
   const playerA = getPlayerById(pair[0]);
@@ -1086,36 +1304,19 @@ export function rerollDraftOfferForSlot(
   const slot = squad.find((s) => s.slotIndex === slotIndex);
   if (!slot) return null;
 
-  const playerA = pickSinglePlayerForDraftPosition(
-    slot.position,
+  const pair = pickImprovedDraftSlotRerollPair(
     rng,
     blocked,
-    undefined,
+    slot,
+    currentRound,
     options
   );
-  if (!playerA) return null;
-
-  const blockedWithA = new Set(blocked);
-  blockedWithA.add(playerA.id);
-
-  const playerB = pickSinglePlayerForDraftPosition(
-    slot.position,
-    rng,
-    blockedWithA,
-    playerA.peakRating,
-    options
-  );
-  if (!playerB || playerA.id === playerB.id) return null;
-
-  const [optionA, optionB] =
-    rng() < 0.5
-      ? [playerA.id, playerB.id]
-      : [playerB.id, playerA.id];
+  if (!pair) return null;
 
   return {
     ...currentRound,
-    optionA,
-    optionB,
+    optionA: pair[0],
+    optionB: pair[1],
   };
 }
 
@@ -1133,11 +1334,12 @@ export function rerollDraftOffer(
     `${seed}-draft-reroll-${pickIndex}-${discardedIds.size}`
   );
   const blocked = new Set([...usedIds, ...discardedIds]);
-  const pair = pickDraftBalancedPair(
+  const pair = pickImprovedDraftRerollPair(
     rng,
     blocked,
     squad,
     recentPositions,
+    currentRound,
     options
   );
   if (!pair) return null;

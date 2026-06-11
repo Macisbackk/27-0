@@ -1,6 +1,7 @@
 import seedrandom from "seedrandom";
 import { getPlayersByClub } from "../players";
 import { getFantasyEligiblePlayers } from "./fantasy-mode";
+import { getClubBaseStrength } from "./club-strength";
 import { getTeamTier } from "../team-tiers";
 import type { Player, Position } from "../types";
 import type {
@@ -38,22 +39,35 @@ const OPP_BANDS: { min: number; max: number; weight: number }[] = [
   { min: 95, max: 99, weight: 5 },
 ];
 
-function rollBand(rng: () => number): (typeof OPP_BANDS)[0] {
-  const total = OPP_BANDS.reduce((s, b) => s + b.weight, 0);
+/** Draft Mode opponents — more mid-table lineups, fewer stacked elite Xiiis. */
+const DRAFT_OPP_BANDS: { min: number; max: number; weight: number }[] = [
+  { min: 75, max: 79, weight: 30 },
+  { min: 80, max: 84, weight: 38 },
+  { min: 85, max: 89, weight: 22 },
+  { min: 90, max: 94, weight: 8 },
+  { min: 95, max: 99, weight: 2 },
+];
+
+function rollBand(
+  rng: () => number,
+  bands: { min: number; max: number; weight: number }[] = OPP_BANDS
+): (typeof OPP_BANDS)[0] {
+  const total = bands.reduce((s, b) => s + b.weight, 0);
   let roll = rng() * total;
-  for (const band of OPP_BANDS) {
+  for (const band of bands) {
     roll -= band.weight;
     if (roll <= 0) return band;
   }
-  return OPP_BANDS[0];
+  return bands[0];
 }
 
 function pickWeighted(
   candidates: Player[],
-  rng: () => number
+  rng: () => number,
+  bands: { min: number; max: number; weight: number }[] = OPP_BANDS
 ): Player | null {
   if (candidates.length === 0) return null;
-  const band = rollBand(rng);
+  const band = rollBand(rng, bands);
   let inBand = candidates.filter(
     (p) => p.peakRating >= band.min && p.peakRating <= band.max
   );
@@ -75,7 +89,8 @@ function pickWeighted(
 export function selectClubMatchSquad(
   club: string,
   seed: string,
-  round: number
+  round: number,
+  options?: { draftMode?: boolean }
 ): Player[] {
   const pool = getPlayersByClub(club);
   if (pool.length === 0) return [];
@@ -83,6 +98,7 @@ export function selectClubMatchSquad(
   const rng = seedrandom(`${seed}-opp-squad-${round}-${club}`);
   const used = new Set<string>();
   const squad: Player[] = [];
+  const bands = options?.draftMode ? DRAFT_OPP_BANDS : OPP_BANDS;
 
   for (const position of OPPONENT_LINEUP) {
     let candidates = pool.filter(
@@ -102,13 +118,24 @@ export function selectClubMatchSquad(
     }
     if (candidates.length === 0) break;
 
-    const pick = pickWeighted(candidates, rng);
+    const pick = pickWeighted(candidates, rng, bands);
     if (!pick) break;
     used.add(pick.id);
     squad.push(pick);
   }
 
   return squad;
+}
+
+export function getOpponentMatchRating(
+  club: string,
+  seed: string,
+  round: number,
+  options?: { draftMode?: boolean }
+): number {
+  const squad = selectClubMatchSquad(club, seed, round, options);
+  if (squad.length === 0) return getClubBaseStrength(club);
+  return squad.reduce((sum, p) => sum + p.peakRating, 0) / squad.length;
 }
 
 export function getOpponentSquadValue(

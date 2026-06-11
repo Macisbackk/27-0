@@ -17,6 +17,7 @@ import {
   type ScoreBreakdown,
   type ScorePickContext,
 } from "./rl-scores";
+import { getOpponentMatchRating } from "./opponent-scorers";
 import { getSeasonCommentary } from "./season-commentary";
 import { getSeasonLeagueClubs } from "./league-replacement";
 import { getDreamTeamTablePosition } from "./league-table";
@@ -519,6 +520,12 @@ export interface SimulateFixtureOptions {
   cupMode?: boolean;
   /** Use opponent squad average rating instead of club base strength. */
   opponentRatingOverride?: number;
+  /** Draft Mode — stronger teams rewarded, fewer unrealistic upsets. */
+  draftMode?: boolean;
+}
+
+export interface SimulateSeasonOptions {
+  draftMode?: boolean;
 }
 
 export interface ScheduledFixture {
@@ -526,13 +533,37 @@ export interface ScheduledFixture {
   isHome: boolean;
 }
 
-function getValueConsistencyBonus(totalValue: number): number {
-  if (totalValue >= 8_000_000) return 7;
-  if (totalValue >= 6_500_000) return 5.5;
-  if (totalValue >= 5_000_000) return 4;
-  if (totalValue >= 3_500_000) return 2.5;
-  if (totalValue >= 2_500_000) return 1.2;
+function getValueConsistencyBonus(totalValue: number, draftMode: boolean): number {
+  if (totalValue >= 8_000_000) return draftMode ? 8 : 7;
+  if (totalValue >= 6_500_000) return draftMode ? 6.5 : 5.5;
+  if (totalValue >= 5_000_000) return draftMode ? 5 : 4;
+  if (totalValue >= 3_500_000) return draftMode ? 3.5 : 2.5;
+  if (totalValue >= 2_500_000) return draftMode ? 2 : 1.2;
   return 0;
+}
+
+function getDraftTeamRatingBonus(avgRating: number): number {
+  if (avgRating >= 92) return 3.5;
+  if (avgRating >= 90) return 2.5;
+  if (avgRating >= 88) return 1.5;
+  if (avgRating >= 85) return 0.5;
+  return 0;
+}
+
+function getDraftFavoriteUpsetChance(ratingGap: number, cupMode: boolean): number {
+  if (ratingGap >= 10) return cupMode ? 0.008 : 0.004;
+  if (ratingGap >= 7) return cupMode ? 0.015 : 0.01;
+  if (ratingGap >= 4) return cupMode ? 0.03 : 0.022;
+  if (ratingGap >= 2) return cupMode ? 0.05 : 0.038;
+  return cupMode ? 0.08 : 0.06;
+}
+
+function getDraftWinProbabilityFloor(ratingGap: number): number | null {
+  if (ratingGap >= 10) return 0.94;
+  if (ratingGap >= 7) return 0.88;
+  if (ratingGap >= 4) return 0.8;
+  if (ratingGap >= 2) return 0.68;
+  return null;
 }
 
 function resolveOutcome(
@@ -547,36 +578,50 @@ function resolveOutcome(
   const avgRating = getAverageSquadRating(squad);
   const totalValue = getSquadValue(squad);
   const ratingGap = avgRating - opponentStrength;
-  const valueBonus = getValueConsistencyBonus(totalValue);
+  const draftMode = options.draftMode ?? false;
+  const valueBonus = getValueConsistencyBonus(totalValue, draftMode);
   const cupMode = options.cupMode ?? false;
 
   const homeAdvantage = isHome ? 2 : -2;
   const formEffect = form * 0.45;
+  const draftRatingBonus = draftMode ? getDraftTeamRatingBonus(avgRating) : 0;
 
-  let noiseScale = 9;
+  let noiseScale = draftMode ? 8 : 9;
   const absGap = Math.abs(ratingGap);
-  if (absGap >= 10) noiseScale = 2.5;
-  else if (absGap >= 8) noiseScale = 3.5;
-  else if (absGap >= 5) noiseScale = 5;
-  else if (absGap >= 3) noiseScale = 6.5;
+  if (absGap >= 10) noiseScale = draftMode ? 2 : 2.5;
+  else if (absGap >= 8) noiseScale = draftMode ? 2.8 : 3.5;
+  else if (absGap >= 7) noiseScale = draftMode ? 3.2 : 4;
+  else if (absGap >= 5) noiseScale = draftMode ? 4 : 5;
+  else if (absGap >= 4) noiseScale = draftMode ? 4.8 : 5.8;
+  else if (absGap >= 3) noiseScale = draftMode ? 5.5 : 6.5;
 
   const noise = (rng() - 0.5) * noiseScale;
   const strengthGap = strength - opponentStrength;
+  const ratingWeight = draftMode ? 1.55 : 1.35;
+  const valueWeight = draftMode ? 0.85 : 0.75;
   const diff =
-    ratingGap * 1.35 +
+    ratingGap * ratingWeight +
     strengthGap * 0.35 +
-    valueBonus * 0.75 +
+    valueBonus * valueWeight +
     homeAdvantage +
     formEffect +
+    draftRatingBonus +
     noise;
 
-  const logisticDivisor = 4.2;
+  const logisticDivisor = draftMode ? 3.9 : 4.2;
   let winProbability = 1 / (1 + Math.exp(-diff / logisticDivisor));
 
-  if (ratingGap >= 10) winProbability = Math.max(winProbability, 0.9);
-  else if (ratingGap >= 8) winProbability = Math.max(winProbability, 0.82);
-  else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.72);
-  else if (ratingGap <= -10) winProbability = Math.min(winProbability, 0.1);
+  if (draftMode) {
+    const floor = getDraftWinProbabilityFloor(ratingGap);
+    if (floor !== null) winProbability = Math.max(winProbability, floor);
+    else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.74);
+  } else {
+    if (ratingGap >= 10) winProbability = Math.max(winProbability, 0.9);
+    else if (ratingGap >= 8) winProbability = Math.max(winProbability, 0.82);
+    else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.72);
+  }
+
+  if (ratingGap <= -10) winProbability = Math.min(winProbability, 0.1);
   else if (ratingGap <= -8) winProbability = Math.min(winProbability, 0.16);
   else if (ratingGap <= -5) winProbability = Math.min(winProbability, 0.26);
 
@@ -586,21 +631,23 @@ function resolveOutcome(
   let isUpset = false;
 
   // Favourite losses — rare when rating gap is large
-  if (won && ratingGap >= 10) {
-    const upsetChance = cupMode ? 0.035 : 0.02;
-    if (rng() < upsetChance) {
-      won = false;
-      isUpset = true;
-    }
-  } else if (won && ratingGap >= 8) {
-    const upsetChance = cupMode ? 0.06 : 0.04;
-    if (rng() < upsetChance) {
-      won = false;
-      isUpset = true;
-    }
-  } else if (won && ratingGap >= 5) {
-    const upsetChance = cupMode ? 0.1 : 0.07;
-    if (rng() < upsetChance) {
+  if (won && ratingGap >= 2) {
+    const upsetChance = draftMode
+      ? getDraftFavoriteUpsetChance(ratingGap, cupMode)
+      : ratingGap >= 10
+        ? cupMode
+          ? 0.035
+          : 0.02
+        : ratingGap >= 8
+          ? cupMode
+            ? 0.06
+            : 0.04
+          : ratingGap >= 5
+            ? cupMode
+              ? 0.1
+              : 0.07
+            : 0;
+    if (upsetChance > 0 && rng() < upsetChance) {
       won = false;
       isUpset = true;
     }
@@ -608,13 +655,13 @@ function resolveOutcome(
 
   // Underdog wins — only when Dream Team is weaker on paper
   if (!won && ratingGap <= -8) {
-    const upsetChance = cupMode ? 0.14 : 0.09;
+    const upsetChance = cupMode ? 0.14 : draftMode ? 0.08 : 0.09;
     if (rng() < upsetChance) {
       won = true;
       isUpset = true;
     }
   } else if (!won && ratingGap <= -5) {
-    const upsetChance = cupMode ? 0.1 : 0.06;
+    const upsetChance = cupMode ? 0.1 : draftMode ? 0.05 : 0.06;
     if (rng() < upsetChance) {
       won = true;
       isUpset = true;
@@ -883,10 +930,13 @@ export function simulateOneFixture(
 
 export function simulateSeason(
   squad: SquadSlot[],
-  seed: string
+  seed: string,
+  options: SimulateSeasonOptions = {}
 ): SeasonResult {
   const strength = calculateSquadStrength(squad);
   const { schedule: opponents, replacedTeam } = buildSeasonSchedule(seed);
+  const draftMode = options.draftMode ?? false;
+  const fixtureOptions: SimulateFixtureOptions = draftMode ? { draftMode: true } : {};
 
   let wins = 0;
   let losses = 0;
@@ -898,13 +948,27 @@ export function simulateSeason(
 
   for (let i = 0; i < SEASON_GAMES; i++) {
     const { opponent, isHome } = opponents[i];
+    const round = i + 1;
+    const simOptions: SimulateFixtureOptions = draftMode
+      ? {
+          ...fixtureOptions,
+          opponentRatingOverride: getOpponentMatchRating(
+            opponent,
+            seed,
+            round,
+            { draftMode: true }
+          ),
+        }
+      : fixtureOptions;
+
     const { fixture, state: nextState } = simulateOneFixture(
       squad,
       opponent,
       isHome,
-      i + 1,
+      round,
       seed,
-      state
+      state,
+      simOptions
     );
     state = nextState;
 

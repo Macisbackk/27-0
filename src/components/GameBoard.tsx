@@ -172,9 +172,10 @@ export function GameBoard({
   const recruitmentOptions = useMemo(
     () => ({
       hardMode: isHardMode,
+      draftMode: isDraftMode,
       clubFilter: isChallengeCup && cupClub ? cupClub : undefined,
     }),
-    [isHardMode, isChallengeCup, cupClub]
+    [isHardMode, isDraftMode, isChallengeCup, cupClub]
   );
 
   const { seed, runId } = useMemo(() => {
@@ -375,7 +376,9 @@ export function GameBoard({
         setSeasonResult(null);
         setPhase("simulation");
       } else {
-        const result = simulateSeason(finalSquad, seed);
+        const result = simulateSeason(finalSquad, seed, {
+          draftMode: isDraftMode,
+        });
         setSeasonResult(result);
         setCupResult(null);
         setPhase("simulation");

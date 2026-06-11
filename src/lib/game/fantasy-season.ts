@@ -1,7 +1,6 @@
-import seedrandom from "seedrandom";
 import type { SquadSlot } from "../types";
 import { getAverageSquadRating } from "../squad-analysis";
-import { selectClubMatchSquad } from "./opponent-scorers";
+import { getOpponentMatchRating } from "./opponent-scorers";
 import { getSeasonLeagueClubs } from "./league-replacement";
 import {
   SEASON_GAMES,
@@ -19,7 +18,6 @@ import {
   distributeSeasonTries,
   enrichSingleFixtureScoring,
 } from "./season-tries";
-import { getClubBaseStrength } from "./club-strength";
 
 export type { ScheduledFixture };
 
@@ -39,14 +37,12 @@ export interface FantasySeasonState {
   isComplete: boolean;
 }
 
-function getOpponentMatchRating(
+function getOpponentMatchRatingForFantasy(
   opponent: string,
   seed: string,
   round: number
 ): number {
-  const squad = selectClubMatchSquad(opponent, seed, round);
-  if (squad.length === 0) return getClubBaseStrength(opponent);
-  return squad.reduce((sum, p) => sum + p.peakRating, 0) / squad.length;
+  return getOpponentMatchRating(opponent, seed, round);
 }
 
 function findLongestWinStreak(fixtures: MatchFixture[]): number {
@@ -105,7 +101,7 @@ function simulateRound(
 ): FantasySeasonState {
   const { opponent, isHome } = state.schedule[roundIndex];
   const round = roundIndex + 1;
-  const opponentRating = getOpponentMatchRating(
+  const opponentRating = getOpponentMatchRatingForFantasy(
     opponent,
     state.seed,
     round
