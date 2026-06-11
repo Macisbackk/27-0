@@ -72,6 +72,7 @@ body {
   align-items: center;
   gap: 0.3rem;
   margin-top: 0.125rem;
+  margin-bottom: 0.3125rem; /* ~5px gap below status, before identity row */
   max-width: 100%;
   font-weight: 600;
   line-height: 1.2;

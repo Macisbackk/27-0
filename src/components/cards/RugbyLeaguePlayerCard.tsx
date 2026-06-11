@@ -207,7 +207,7 @@ export function RugbyLeaguePlayerCard({
             <PlayerIdentityLine
               player={player}
               compact={mobileCompact}
-              className={statusStrip ? "!mt-0.5" : undefined}
+              className={statusStrip ? "!mt-0" : undefined}
             />
           </div>
           <div className="flex shrink-0 flex-col items-end">
@@ -299,7 +299,7 @@ export function RugbyLeaguePlayerCard({
             {statusStrip}
             <PlayerIdentityLine
               player={player}
-              className={statusStrip ? "!mt-0.5" : undefined}
+              className={statusStrip ? "!mt-0" : undefined}
             />
           </div>
           <div className="flex shrink-0 flex-col items-end">

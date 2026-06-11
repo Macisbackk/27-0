@@ -117,7 +117,7 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                             <ClubPlayerStatusBadge
                               category={player.displayCategory}
                             />
-                            <p className={`mt-0.5 ${TYPO.bodySm}`}>
+                            <p className={`mt-0 ${TYPO.bodySm}`}>
                               {player.playerId === "ssh-sam-hallas-group"
                                 ? "All 13 positions"
                                 : formatPositionLine(player)}
