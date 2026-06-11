@@ -268,15 +268,6 @@ export function ChallengeCupReview({
               </span>
             </p>
             <p>
-              Finals Reached:{" "}
-              <span className="font-semibold text-white">
-                {cupResult.finish === "Winners" ||
-                cupResult.finish === "Runners-Up"
-                  ? 1
-                  : 0}
-              </span>
-            </p>
-            <p>
               Tries Scored:{" "}
               <span className="font-semibold text-white">
                 {tournamentStats.triesFor}

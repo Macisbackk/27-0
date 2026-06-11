@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { memo, useCallback, useState } from "react";
 import type { PlayerAchievement } from "@/lib/players/achievements";
 import { ACHIEVEMENT_TAG_VARIANT, RLTag } from "./rl-card";
 
@@ -13,24 +12,19 @@ interface AchievementChipListProps {
   dreamTeamDefaultExpanded?: boolean;
 }
 
-function DreamTeamYearChip({
+const DreamTeamYearChip = memo(function DreamTeamYearChip({
   year,
-  compactMobile,
 }: {
   year: number;
-  compactMobile?: boolean;
 }) {
   return (
-    <span
-      className={`rl-tag-year ${compactMobile ? "text-[8px]" : ""}`}
-      aria-label={`Dream Team ${year}`}
-    >
+    <span className="rl-tag-year" aria-label={`Dream Team ${year}`}>
       {year}
     </span>
   );
-}
+});
 
-function DreamTeamCollapsibleChip({
+const DreamTeamCollapsibleChip = memo(function DreamTeamCollapsibleChip({
   years,
   compactMobile,
   defaultExpanded = false,
@@ -40,6 +34,10 @@ function DreamTeamCollapsibleChip({
   defaultExpanded?: boolean;
 }) {
   const [open, setOpen] = useState(defaultExpanded);
+  const toggle = useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
+    setOpen((value) => !value);
+  }, []);
 
   return (
     <div className="inline-flex max-w-full flex-col items-center">
@@ -51,10 +49,7 @@ function DreamTeamCollapsibleChip({
             ? "Collapse Dream Team years"
             : `Dream Team — ${years.length} selections`
         }
-        onClick={(event) => {
-          event.stopPropagation();
-          setOpen((value) => !value);
-        }}
+        onClick={toggle}
         className="inline-flex cursor-pointer border-0 bg-transparent p-0"
       >
         <RLTag
@@ -69,36 +64,28 @@ function DreamTeamCollapsibleChip({
         </RLTag>
       </button>
 
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
-            className="w-full max-w-full overflow-hidden"
+      <div
+        className={`grid w-full max-w-full transition-[grid-template-rows,opacity] duration-200 ease-out ${
+          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div
+            className={`mt-1 flex w-full max-w-full flex-wrap items-center justify-center gap-0.5 overscroll-contain px-0.5 ${
+              years.length > 8 ? "max-h-16 overflow-y-auto" : ""
+            }`}
           >
-            <div
-              className={`mt-1 flex w-full max-w-full flex-wrap items-center justify-center gap-0.5 overscroll-contain px-0.5 ${
-                years.length > 8 ? "max-h-16 overflow-y-auto" : ""
-              }`}
-            >
-              {years.map((year) => (
-                <DreamTeamYearChip
-                  key={year}
-                  year={year}
-                  compactMobile={compactMobile}
-                />
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {years.map((year) => (
+              <DreamTeamYearChip key={year} year={year} />
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
+});
 
-export function AchievementChipList({
+function AchievementChipListInner({
   achievements,
   compactMobile,
   className = "",
@@ -135,3 +122,5 @@ export function AchievementChipList({
     </div>
   );
 }
+
+export const AchievementChipList = memo(AchievementChipListInner);

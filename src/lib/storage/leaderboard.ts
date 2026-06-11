@@ -17,6 +17,7 @@ import type {
 import { STORAGE_KEYS } from "./keys";
 import { getAuthUserId, isLoggedIn } from "../auth-session";
 import { getUsername } from "./user";
+import { getCupTeamWinsLeaderboardAsync } from "./cup-team-wins";
 
 export interface StoredLeaderboardEntry {
   id: string;
@@ -558,6 +559,21 @@ export async function getTrackerLeaderboardAsync(
   limit = 50,
   dbMode: LeaderboardDbMode = "super-league"
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
+  if (tracker === "challenge_cup_team_wins") {
+    const result = await getCupTeamWinsLeaderboardAsync(limit);
+    return {
+      source: result.source,
+      rows: result.rows.map((row) => ({
+        rank: row.rank,
+        username: row.teamName,
+        statDisplay: String(row.tournamentWins),
+        achievedAt: row.lastWonAt ?? "",
+        difficulty: "NORMAL",
+        mode: "CHALLENGE_CUP",
+      })),
+    };
+  }
+
   const currentUser = getUsername() ?? "";
   const effectiveDifficulty = resolveLeaderboardDifficulty(dbMode, difficulty);
   const remote = await fetchTrackerEntriesFromSupabase(

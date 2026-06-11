@@ -11,7 +11,8 @@ export type LeaderboardTrackerType =
   | "challenge_cup_wins"
   | "cup_match_wins"
   | "cup_finals"
-  | "cup_win_percentage";
+  | "cup_win_percentage"
+  | "challenge_cup_team_wins";
 
 export const MIN_GAMES_FOR_WIN_PERCENTAGE = 10;
 export const MIN_GAMES_FOR_CUP_WIN_PERCENTAGE = 4;
@@ -88,6 +89,12 @@ export const LEADERBOARD_TRACKERS: {
     shortLabel: "Total Win %",
     cupOnly: true,
   },
+  {
+    id: "challenge_cup_team_wins",
+    label: "Challenge Cup Team Wins",
+    shortLabel: "Team Wins",
+    cupOnly: true,
+  },
 ];
 
 export function getTrackersForDbMode(
@@ -151,6 +158,7 @@ export function rankByTracker(
         return a.bestRecordLosses - b.bestRecordLosses;
       }
       case "challenge_cup_wins":
+      case "challenge_cup_team_wins":
         return b.challengeCupWins - a.challengeCupWins;
       case "cup_finals":
         return b.cupFinals - a.cupFinals;
@@ -212,6 +220,7 @@ export function getTrackerStatDisplay(
     case "best_record":
       return `${entry.bestRecordWins}-${entry.bestRecordLosses}`;
     case "challenge_cup_wins":
+    case "challenge_cup_team_wins":
       return String(entry.challengeCupWins);
     case "cup_finals":
       return String(entry.cupFinals);

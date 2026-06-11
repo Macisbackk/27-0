@@ -15,6 +15,10 @@ import {
   getCupWinsLeaderboardAsync,
   type CupWinsLeaderboardRow,
 } from "@/lib/storage/leaderboard";
+import {
+  getCupTeamWinsLeaderboardAsync,
+  type CupTeamWinsLeaderboardRow,
+} from "@/lib/storage/cup-team-wins";
 import { getAllStats } from "@/lib/storage/stats";
 import { getUsername } from "@/lib/storage/user";
 
@@ -116,6 +120,59 @@ function CategoryTable({
   );
 }
 
+function CupTeamWinsList({ entries }: { entries: CupTeamWinsLeaderboardRow[] }) {
+  if (entries.length === 0) {
+    return (
+      <section className="matchday-panel overflow-hidden">
+        <h2 className="border-b border-pitch-600/50 px-4 py-3 font-display text-sm font-bold uppercase tracking-wider text-accent-gold">
+          Challenge Cup Team Wins
+        </h2>
+        <p className="px-4 py-8 text-center text-sm text-gray-500">
+          No team wins recorded yet. Win a Challenge Cup tournament to appear
+          here.
+        </p>
+      </section>
+    );
+  }
+
+  return (
+    <section className="matchday-panel overflow-hidden">
+      <h2 className="border-b border-pitch-600/50 px-4 py-3 font-display text-sm font-bold uppercase tracking-wider text-accent-gold">
+        Challenge Cup Team Wins
+      </h2>
+      <ol className="divide-y divide-pitch-700/30">
+        {entries.slice(0, 10).map((entry) => (
+          <li
+            key={entry.teamName}
+            className="flex items-center justify-between gap-3 px-4 py-3"
+          >
+            <div className="flex min-w-0 items-center gap-3">
+              <span
+                className={`w-6 shrink-0 font-bold ${
+                  entry.rank <= 3 ? "text-accent-gold" : "text-gray-400"
+                }`}
+              >
+                {entry.rank}.
+              </span>
+              <span className="truncate font-medium">{entry.teamName}</span>
+            </div>
+            <div className="shrink-0 text-right">
+              <span className="font-semibold text-accent-gold">
+                {entry.tournamentWins}
+              </span>
+              {entry.lastWonAt && (
+                <p className="text-[10px] text-gray-500">
+                  {new Date(entry.lastWonAt).toLocaleDateString()}
+                </p>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 function OnlineCupWinsList({ entries }: { entries: CupWinsLeaderboardRow[] }) {
   if (entries.length === 0) return null;
 
@@ -155,6 +212,7 @@ function OnlineCupWinsList({ entries }: { entries: CupWinsLeaderboardRow[] }) {
 export function ChallengeCupLeaderboard() {
   const [profiles, setProfiles] = useState<CupLeaderboardProfile[]>([]);
   const [onlineWins, setOnlineWins] = useState<CupWinsLeaderboardRow[]>([]);
+  const [teamWins, setTeamWins] = useState<CupTeamWinsLeaderboardRow[]>([]);
 
   useEffect(() => {
     const stored = getAllStats();
@@ -164,6 +222,9 @@ export function ChallengeCupLeaderboard() {
     }
     setProfiles(getAllCupLeaderboardProfiles());
     void getCupWinsLeaderboardAsync().then(setOnlineWins);
+    void getCupTeamWinsLeaderboardAsync().then((result) =>
+      setTeamWins(result.rows)
+    );
   }, []);
 
   const matchWins = rankProfilesByCategory(profiles, "cupMatchWins");
@@ -186,6 +247,8 @@ export function ChallengeCupLeaderboard() {
         Challenge Cup records updated online across all players. Detailed
         category stats also sync from your local career data.
       </p>
+
+      <CupTeamWinsList entries={teamWins} />
 
       <OnlineCupWinsList entries={onlineWins} />
 

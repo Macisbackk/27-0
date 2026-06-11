@@ -9,7 +9,12 @@ import {
 } from "../players";
 import type { Player, PlayerCategory, Position, SquadSlot } from "../types";
 import { SQUAD_STRUCTURE, TOTAL_SLOTS, createEmptySquad } from "../positions";
-import { getRemainingPositionCounts, getDraftBalanceGroup, positionsInSameDraftGroup } from "./draft-positions";
+import {
+  getRemainingPositionCounts,
+  getDraftBalanceGroup,
+  HALFBACK_POSITIONS,
+  positionsInSameDraftGroup,
+} from "./draft-positions";
 
 export interface RecruitmentOptions {
   hardMode?: boolean;
@@ -497,13 +502,23 @@ export function rerollSlotOffer(
   };
 }
 
+function isHalfbackPosition(position: Position): boolean {
+  return position === "STAND_OFF" || position === "SCRUM_HALF";
+}
+
+function draftCandidatePositions(position: Position): Position[] {
+  return isHalfbackPosition(position) ? HALFBACK_POSITIONS : [position];
+}
+
 function positionHasAvailablePlayers(
   position: Position,
   usedIds: Set<string>,
   options?: RecruitmentOptions
 ): boolean {
+  const targets = draftCandidatePositions(position);
   return basePlayerPool(options).some(
-    (player) => player.position === position && !usedIds.has(player.id)
+    (player) =>
+      targets.includes(player.position) && !usedIds.has(player.id)
   );
 }
 
@@ -609,6 +624,77 @@ function pickSinglePlayerForPosition(
   return pickFromBandWithFallback(pool, band, rng);
 }
 
+function pickFromDraftPool(
+  candidates: Player[],
+  slotPosition: Position,
+  rng: () => number,
+  usedIds: Set<string>,
+  anchorRating: number | undefined,
+  options?: RecruitmentOptions
+): Player | null {
+  if (candidates.length === 0) return null;
+
+  let pool = candidates;
+  const targetPositions = draftCandidatePositions(slotPosition);
+  const categoryPool = selectCategoryPool(rng, options).filter(
+    (player) =>
+      targetPositions.includes(player.position) &&
+      !usedIds.has(player.id) &&
+      candidates.some((candidate) => candidate.id === player.id)
+  );
+  if (categoryPool.length > 0) pool = categoryPool;
+
+  if (anchorRating !== undefined) {
+    const close = pool.filter(
+      (player) =>
+        Math.abs(player.peakRating - anchorRating) <= TYPICAL_PAIR_RATING_GAP
+    );
+    if (close.length > 0) pool = close;
+  }
+
+  pool.sort((a, b) => {
+    const aExact = a.position === slotPosition ? 0 : 1;
+    const bExact = b.position === slotPosition ? 0 : 1;
+    if (aExact !== bExact) return aExact - bExact;
+    return b.peakRating - a.peakRating;
+  });
+
+  const weights = options?.clubFilter ? CUP_BAND_WEIGHTS : NORMAL_BAND_WEIGHTS;
+  const band = rollBand(rng, weights);
+  return pickFromBandWithFallback(pool, band, rng);
+}
+
+/** Draft pick — halfbacks share one candidate pool (SO + SH). */
+function pickSinglePlayerForDraftPosition(
+  slotPosition: Position,
+  rng: () => number,
+  usedIds: Set<string>,
+  anchorRating?: number,
+  options?: RecruitmentOptions
+): Player | null {
+  const targetPositions = draftCandidatePositions(slotPosition);
+  const pool = basePlayerPool(options).filter(
+    (player) =>
+      targetPositions.includes(player.position) && !usedIds.has(player.id)
+  );
+  if (pool.length === 0) return null;
+
+  const exact = pool.filter((player) => player.position === slotPosition);
+  const compatible = pool.filter((player) => player.position !== slotPosition);
+
+  return (
+    pickFromDraftPool(exact, slotPosition, rng, usedIds, anchorRating, options) ??
+    pickFromDraftPool(
+      compatible,
+      slotPosition,
+      rng,
+      usedIds,
+      anchorRating,
+      options
+    )
+  );
+}
+
 function pickDraftBalancedPair(
   rng: () => number,
   usedIds: Set<string>,
@@ -657,7 +743,7 @@ function pickDraftBalancedPair(
         options
       );
 
-  const playerA = pickSinglePlayerForPosition(
+  const playerA = pickSinglePlayerForDraftPosition(
     posA,
     rng,
     usedIds,
@@ -671,7 +757,7 @@ function pickDraftBalancedPair(
 
   let playerB =
     posB !== null
-      ? pickSinglePlayerForPosition(
+      ? pickSinglePlayerForDraftPosition(
           posB,
           rng,
           usedWithA,
@@ -683,7 +769,7 @@ function pickDraftBalancedPair(
   if (!playerB) {
     for (const [position] of remaining) {
       if (position === posA || positionsInSameDraftGroup(position, posA)) continue;
-      playerB = pickSinglePlayerForPosition(
+      playerB = pickSinglePlayerForDraftPosition(
         position,
         rng,
         usedWithA,
@@ -695,7 +781,7 @@ function pickDraftBalancedPair(
   }
 
   if (!playerB) {
-    playerB = pickSinglePlayerForPosition(
+    playerB = pickSinglePlayerForDraftPosition(
       posA,
       rng,
       usedWithA,

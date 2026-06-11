@@ -29,6 +29,13 @@ body {
   background: var(--header-bg);
   border-color: var(--border-subtle);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  overflow-x: clip;
+}
+
+/* Three-column header: equal side slots keep the logo centred on mobile */
+.app-header .grid-cols-\[1fr_auto_1fr\] > :first-child,
+.app-header .grid-cols-\[1fr_auto_1fr\] > :last-child {
+  flex-shrink: 0;
 }
 
 .sidebar-panel {

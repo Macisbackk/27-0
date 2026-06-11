@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import type { Player } from "@/lib/types";
 import { formatCareerTries, formatValue } from "@/lib/players";
 import { getPlayerInitials } from "@/lib/players/initials";
@@ -48,7 +49,7 @@ interface RugbyLeaguePlayerCardProps {
 const PITCH_SIZE =
   "w-[88px] min-h-[96px] sm:w-[92px] sm:min-h-[100px] md:w-[96px] md:min-h-[104px]";
 
-export function RugbyLeaguePlayerCard({
+export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
   player,
   variant = "default",
   hardMode,
@@ -63,7 +64,10 @@ export function RugbyLeaguePlayerCard({
   const isGoat = isGoatPlayer(player);
   const isSuperSam = isSuperSamHallasPlayer(player);
   const playerStatus = resolvePlayerStatus(player);
-  const achievements = getPlayerAchievements(player, achievementDisplay);
+  const achievements = useMemo(
+    () => getPlayerAchievements(player, achievementDisplay),
+    [player, achievementDisplay]
+  );
   const tier = getValueTier(player.peakRating);
   const isRecruitment = variant === "recruitment";
   const isPitch = variant === "pitch";
@@ -328,6 +332,6 @@ export function RugbyLeaguePlayerCard({
       </div>
     </RLCardShell>
   );
-}
+});
 
 export const PITCH_CARD_SIZE_CLASS = PITCH_SIZE;

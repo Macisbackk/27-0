@@ -37,6 +37,7 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   cup_match_wins: "Cup Wins",
   cup_finals: "Finals",
   cup_win_percentage: "Total Win %",
+  challenge_cup_team_wins: "Tournament Wins",
 };
 
 interface LeaderboardTableProps {
@@ -250,7 +251,11 @@ export function LeaderboardTable({
             <thead>
               <tr className="border-b border-pitch-600/50 text-left text-xs uppercase tracking-wider text-gray-500">
                 <th className="px-4 py-3">#</th>
-                <th className="px-4 py-3">Coach</th>
+                <th className="px-4 py-3">
+                  {activeTracker === "challenge_cup_team_wins"
+                    ? "Team"
+                    : "Coach"}
+                </th>
                 <th className="px-4 py-3">
                   {STAT_COLUMN[activeTracker] ?? "Stat"}
                 </th>

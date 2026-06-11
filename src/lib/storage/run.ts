@@ -17,6 +17,7 @@ import {
   updateStats,
 } from "./stats";
 import { gameModeToDbMode } from "./leaderboard";
+import { recordCupTeamWin } from "./cup-team-wins";
 
 export interface CompletedRunResult {
   cupRanking?: CupRunRankingResult;
@@ -43,6 +44,7 @@ export async function recordCompletedRun(
     cupWon?: boolean;
     averageSquadRating?: number;
     matchResults?: ("W" | "L")[];
+    cupTeam?: string;
   }
 ): Promise<CompletedRunResult> {
   const totalValue = run.totalValue || getSquadValue(run.squad);
@@ -129,6 +131,10 @@ export async function recordCompletedRun(
         },
         username
       );
+
+      if (options.cupWon && options.cupTeam) {
+        recordCupTeamWin(options.cupTeam);
+      }
 
       const storedAfter = getAllStats();
       const afterBests = getChallengeCupPersonalBests(

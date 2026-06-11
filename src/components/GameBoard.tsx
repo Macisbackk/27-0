@@ -166,6 +166,8 @@ export function GameBoard({
   const recordedRef = useRef(false);
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
+  const placementScrollRef = useRef<HTMLDivElement>(null);
+  const lastPlacementScrollKey = useRef<string | null>(null);
 
   const isHardMode = difficulty === "HARD";
   const recruitmentOptions = useMemo(
@@ -305,6 +307,21 @@ export function GameBoard({
     joeMellorMode,
     recruitmentOptions,
   ]);
+
+  useEffect(() => {
+    if (phase !== "placement" || !pendingPlayer || !isDraftMode) return;
+    const key = `${pendingPlayer.id}-${draftPickIndex}`;
+    if (lastPlacementScrollKey.current === key) return;
+    lastPlacementScrollKey.current = key;
+
+    const frame = requestAnimationFrame(() => {
+      placementScrollRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [phase, pendingPlayer, draftPickIndex, isDraftMode]);
 
   useEffect(() => {
     if (!isDraftMode || phase !== "pitch") return;
@@ -686,6 +703,7 @@ export function GameBoard({
           averageSquadRating: getAverageSquadRating(squad),
           rerollsUsed: rerollsThisRunRef.current,
           matchResults: result.fixtures.map((fixture) => fixture.result),
+          cupTeam: cupClub ?? result.userClub,
         }
       ).then((completed) => {
         setSubmittedOnline(completed.submittedOnline);
@@ -705,6 +723,7 @@ export function GameBoard({
       difficulty,
       joeMellorMode,
       superSamHallasMode,
+      cupClub,
     ]
   );
 
@@ -834,7 +853,14 @@ export function GameBoard({
           {(phase === "pitch" ||
             phase === "choice" ||
             phase === "placement") && (
-            <div className="max-h-[min(88vh,900px)] overflow-y-auto overflow-x-hidden pb-2 sm:max-h-none sm:overflow-visible">
+            <div
+              ref={placementScrollRef}
+              className={`pb-2 sm:max-h-none sm:overflow-visible ${
+                phase === "choice"
+                  ? "overflow-x-hidden overflow-y-visible"
+                  : "max-h-[min(88vh,900px)] overflow-x-hidden overflow-y-auto"
+              }`}
+            >
               {phase === "placement" && pendingPlayer && (
                 <DraftPlacementBanner
                   player={pendingPlayer}
