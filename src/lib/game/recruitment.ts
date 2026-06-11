@@ -938,13 +938,14 @@ export function generateDraftOfferForPick(
 ): RecruitmentRound | null {
   const rng = seedrandom(`${seed}-draft-offer-${pickIndex}`);
   const usedIds = new Set([...signedPlayerIds, ...lockedPlayerIds]);
-  const pair = pickDraftBalancedPair(
-    rng,
-    usedIds,
-    squad,
-    recentPositions,
-    options
-  );
+  const pair =
+    pickDraftBalancedPair(
+      rng,
+      usedIds,
+      squad,
+      recentPositions,
+      options
+    ) ?? pickPairAny(rng, usedIds, options);
   if (!pair) return null;
 
   const playerA = getPlayerById(pair[0]);

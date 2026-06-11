@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useDeferredValue,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { getShowcasePlayers, formatValue } from "@/lib/players";
 import type { PlayerCategory, Position } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
@@ -17,8 +23,8 @@ import {
   type TierFilter,
 } from "@/lib/players/showcase";
 import type { Player } from "@/lib/types";
-import { RugbyLeaguePlayerCard } from "./cards/RugbyLeaguePlayerCard";
 import { PlayerDetailModal } from "./PlayerDetailModal";
+import { ShowcasePlayerCard } from "./ShowcasePlayerCard";
 import {
   RL_FILTER_CHIP_ACTIVE,
   RL_FILTER_CHIP_IDLE,
@@ -50,6 +56,8 @@ const TIER_OPTIONS = Object.entries(TIER_FILTER_LABELS) as [
 
 export function PlayerShowcase() {
   const [filters, setFilters] = useState<ShowcaseFilters>(DEFAULT_FILTERS);
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedSearch = useDeferredValue(searchInput);
   const [sortKey, setSortKey] = useState<ShowcaseSortKey>("rating");
   const [sortDir, setSortDir] = useState<ShowcaseSortDir>("desc");
   const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
@@ -57,10 +65,19 @@ export function PlayerShowcase() {
   const clubs = useMemo(() => getUniqueClubs(ALL_PLAYERS), []);
   const dbStats = useMemo(() => computeShowcaseDbStats(ALL_PLAYERS), []);
 
+  const activeFiltersState = useMemo(
+    (): ShowcaseFilters => ({ ...filters, search: debouncedSearch }),
+    [filters, debouncedSearch]
+  );
+
   const filtered = useMemo(() => {
-    const result = filterShowcasePlayers(ALL_PLAYERS, filters);
+    const result = filterShowcasePlayers(ALL_PLAYERS, activeFiltersState);
     return sortShowcasePlayers(result, sortKey, sortDir);
-  }, [filters, sortKey, sortDir]);
+  }, [activeFiltersState, sortKey, sortDir]);
+
+  const handleSelectPlayer = useCallback((player: Player) => {
+    setDetailPlayer(player);
+  }, []);
 
   const updateFilters = useCallback(
     (updater: (f: ShowcaseFilters) => ShowcaseFilters) => {
@@ -73,11 +90,11 @@ export function PlayerShowcase() {
   const activeFilters = useMemo(() => {
     const chips: { key: string; label: string; clear: () => void }[] = [];
 
-    if (filters.search.trim()) {
+    if (debouncedSearch.trim()) {
       chips.push({
         key: "search",
-        label: `Search: "${filters.search.trim()}"`,
-        clear: () => updateFilters((f) => ({ ...f, search: "" })),
+        label: `Search: "${debouncedSearch.trim()}"`,
+        clear: () => setSearchInput(""),
       });
     }
     if (filters.status !== "all") {
@@ -135,11 +152,12 @@ export function PlayerShowcase() {
     }
 
     return chips;
-  }, [filters, sortKey, sortDir, updateFilters]);
+  }, [filters, debouncedSearch, sortKey, sortDir, updateFilters]);
 
   const resetFilters = () => {
     playUiClick();
     setFilters(DEFAULT_FILTERS);
+    setSearchInput("");
     setSortKey("rating");
     setSortDir("desc");
   };
@@ -209,10 +227,8 @@ export function PlayerShowcase() {
           <FilterField label="Search">
             <input
               type="search"
-              value={filters.search}
-              onChange={(e) =>
-                setFilters((f) => ({ ...f, search: e.target.value }))
-              }
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Name, club, position…"
               className={RL_FILTER_INPUT_CLASS}
             />
@@ -409,24 +425,13 @@ export function PlayerShowcase() {
               No players match your filters. Try adjusting or reset.
             </div>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
+            <div className="showcase-player-grid grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
               {filtered.map((player) => (
-                <button
+                <ShowcasePlayerCard
                   key={player.id}
-                  type="button"
-                  className="cursor-pointer text-left transition hover:opacity-95"
-                  onClick={() => {
-                    playUiClick();
-                    setDetailPlayer(player);
-                  }}
-                >
-                  <RugbyLeaguePlayerCard
-                    player={player}
-                    variant="default"
-                    equalHeight
-                    achievementDisplay="showcase"
-                  />
-                </button>
+                  player={player}
+                  onSelect={handleSelectPlayer}
+                />
               ))}
             </div>
           )}

@@ -160,9 +160,6 @@ export function GameBoard({
   const [rerolling, setRerolling] = useState(false);
   const [draftPickIndex, setDraftPickIndex] = useState(0);
   const [pendingPlayer, setPendingPlayer] = useState<Player | null>(null);
-  const [hoveredPlacementSlot, setHoveredPlacementSlot] = useState<
-    number | null
-  >(null);
   const recordedRef = useRef(false);
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
@@ -316,7 +313,7 @@ export function GameBoard({
 
     const frame = requestAnimationFrame(() => {
       placementScrollRef.current?.scrollIntoView({
-        behavior: "smooth",
+        behavior: "auto",
         block: "nearest",
       });
     });
@@ -361,7 +358,6 @@ export function GameBoard({
     setRerolling(false);
     setDraftPickIndex(0);
     setPendingPlayer(null);
-    setHoveredPlacementSlot(null);
     recordedRef.current = false;
   }, [joeMellorMode, superSamHallasMode, isChallengeCup]);
 
@@ -461,7 +457,6 @@ export function GameBoard({
       );
       setSquad(newSquad);
       setPendingPlayer(null);
-      setHoveredPlacementSlot(null);
       playPositionComplete();
 
       const filled = getFilledCount(newSquad);
@@ -737,11 +732,6 @@ export function GameBoard({
       ? `${runKey}-pick-${activeOfferKey}-${currentRound?.optionA}-${currentRound?.optionB}`
       : "";
 
-  const placementSlot =
-    hoveredPlacementSlot !== null
-      ? squad.find((s) => s.slotIndex === hoveredPlacementSlot)
-      : undefined;
-
   return (
     <div className="matchday-arena min-h-screen">
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
@@ -865,7 +855,6 @@ export function GameBoard({
                 <DraftPlacementBanner
                   player={pendingPlayer}
                   squad={squad}
-                  selectedSlotPosition={placementSlot?.position}
                   hardMode={isHardMode}
                   showRule={draftPickIndex === 0}
                 />
@@ -876,22 +865,20 @@ export function GameBoard({
                 filledCount={filledCount}
                 totalSlots={TOTAL_SLOTS}
                 selectedSlot={
-                  phase === "placement"
-                    ? hoveredPlacementSlot ?? undefined
-                    : selectedSlotIndex ?? undefined
+                  phase === "pitch" && !isDraftMode
+                    ? selectedSlotIndex ?? undefined
+                    : undefined
                 }
                 hardMode={isHardMode}
+                placementPlayer={
+                  phase === "placement" ? pendingPlayer : null
+                }
                 interactive={
                   !superSamHallasMode &&
                   (phase === "placement" ||
                     (phase === "pitch" && !isDraftMode))
                 }
                 onSlotClick={handleSelectSlot}
-                onSlotHover={
-                  phase === "placement"
-                    ? (idx) => setHoveredPlacementSlot(idx)
-                    : undefined
-                }
                 dimmed={phase === "choice"}
                 lockedSlots={
                   superSamHallasMode

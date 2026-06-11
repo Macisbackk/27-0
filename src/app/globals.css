@@ -55,6 +55,24 @@ body {
   letter-spacing: 0.01em;
 }
 
+/* Pitch slots — fixed footprint; hover must not change dimensions */
+.squad-marker-empty,
+.pitch-slot-card {
+  box-sizing: border-box;
+}
+
+/* Player Showcase — skip layout/paint for off-screen cards (mobile scroll perf) */
+.showcase-player-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 300px;
+  contain: layout style paint;
+  overflow: visible;
+}
+
+.showcase-player-grid {
+  overflow-anchor: none;
+}
+
 /* Achievement chips — compact pills for honours (not player status) */
 .rl-tag,
 .rl-achievement {

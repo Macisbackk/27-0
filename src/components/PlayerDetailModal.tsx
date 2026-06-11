@@ -2,10 +2,8 @@
 
 import type { Player } from "@/lib/types";
 import { formatValue } from "@/lib/players";
-import {
-  getGoldenBootYears,
-  getPlayerAchievements,
-} from "@/lib/players/achievements";
+import { getGoldenBootYears } from "@/lib/players/achievements";
+import { getCachedPlayerAchievements } from "@/lib/players/achievement-cache";
 import { AchievementChipList } from "./cards/AchievementChipList";
 import { RugbyLeaguePlayerCard } from "./cards/RugbyLeaguePlayerCard";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
@@ -17,7 +15,7 @@ interface PlayerDetailModalProps {
 }
 
 export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
-  const achievements = getPlayerAchievements(player, "expanded");
+  const achievements = getCachedPlayerAchievements(player, "expanded");
   const goldenBootYears = getGoldenBootYears(player.id);
 
   return (

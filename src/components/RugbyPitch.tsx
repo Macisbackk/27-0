@@ -1,8 +1,10 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import { motion } from "framer-motion";
-import type { SquadSlot } from "@/lib/types";
+import type { Player, SquadSlot } from "@/lib/types";
 import { formatValue } from "@/lib/players";
+import { getPlacementPenalty } from "@/lib/game/position-placement";
 import {
   FORMATION_COORDS,
   FORMATION_SLOT_INDICES,
@@ -23,12 +25,15 @@ interface RugbyPitchProps {
   hardMode?: boolean;
   interactive?: boolean;
   onSlotClick?: (slotIndex: number) => void;
+  /** @deprecated Hover highlight uses CSS only — avoids layout shake. */
   onSlotHover?: (slotIndex: number | null) => void;
   dimmed?: boolean;
   lockedSlots?: number[];
+  /** Draft placement — tooltips show penalty without parent hover state. */
+  placementPlayer?: Player | null;
 }
 
-export function RugbyPitch({
+function RugbyPitchInner({
   squad,
   totalValue,
   filledCount,
@@ -39,18 +44,21 @@ export function RugbyPitch({
   hardMode,
   interactive,
   onSlotClick,
-  onSlotHover,
   dimmed,
   lockedSlots,
+  placementPlayer,
 }: RugbyPitchProps) {
-  const lockedSet = new Set(lockedSlots ?? []);
+  const lockedSet = useMemo(() => new Set(lockedSlots ?? []), [lockedSlots]);
   const headerTitle = interactive
     ? "Squad Selection — Click to Recruit"
     : compact
       ? "Team Sheet"
       : "Matchday Squad";
 
-  const slotByIndex = new Map(squad.map((s) => [s.slotIndex, s]));
+  const slotByIndex = useMemo(
+    () => new Map(squad.map((s) => [s.slotIndex, s])),
+    [squad]
+  );
 
   return (
     <div className="relative w-full overflow-x-hidden">
@@ -84,74 +92,69 @@ export function RugbyPitch({
       )}
 
       <div
-        className={`mx-auto w-full transition ${
+        className={`mx-auto w-full ${
           compact ? "max-w-[380px]" : "max-w-[480px] sm:max-w-[580px] md:max-w-[680px]"
         } ${dimmed ? "opacity-60" : ""}`}
       >
         <div
-          className={`${
-            compact ? "" : "max-h-[min(85vh,820px)] overflow-y-auto overflow-x-hidden sm:max-h-none sm:overflow-visible"
-          }`}
-        >
-        <div
-          className={`relative w-full overflow-hidden rounded-2xl border-2 border-accent-green/40 shadow-[0_0_24px_rgba(34,197,94,0.15)] rugby-pitch-pro ${
+          className={
             compact
-              ? "min-h-[540px]"
-              : "min-h-[660px] sm:min-h-[620px] md:min-h-[600px] lg:aspect-[5/8] lg:min-h-0"
-          }`}
+              ? ""
+              : "max-h-[min(85vh,820px)] overflow-x-hidden overflow-y-auto sm:max-h-none sm:overflow-visible"
+          }
         >
-          <PitchMarkings />
+          <div
+            className={`relative w-full overflow-hidden rounded-2xl border-2 border-accent-green/40 shadow-[0_0_24px_rgba(34,197,94,0.15)] rugby-pitch-pro ${
+              compact
+                ? "min-h-[540px]"
+                : "min-h-[660px] sm:min-h-[620px] md:min-h-[600px] lg:aspect-[5/8] lg:min-h-0"
+            }`}
+          >
+            <PitchMarkings />
 
-          <div className="absolute inset-0 z-10">
-            {FORMATION_SLOT_INDICES.map((slotIndex) => {
-              const slot = slotByIndex.get(slotIndex);
-              const coords = FORMATION_COORDS[slotIndex];
-              if (!slot || !coords) return null;
+            <div className="absolute inset-0 z-10">
+              {FORMATION_SLOT_INDICES.map((slotIndex) => {
+                const slot = slotByIndex.get(slotIndex);
+                const coords = FORMATION_COORDS[slotIndex];
+                if (!slot || !coords) return null;
 
-              const isSelected = selectedSlot === slotIndex;
-              const isHighlight = highlightSlot === slotIndex;
-              const isEmpty = !slot.player;
-              const isLocked = lockedSet.has(slotIndex);
-              const canClick = !!(
-                interactive &&
-                isEmpty &&
-                !isLocked &&
-                onSlotClick
-              );
+                const isSelected = selectedSlot === slotIndex;
+                const isHighlight = highlightSlot === slotIndex;
+                const isEmpty = !slot.player;
+                const isLocked = lockedSet.has(slotIndex);
+                const canClick = !!(
+                  interactive &&
+                  isEmpty &&
+                  !isLocked &&
+                  onSlotClick
+                );
 
-              return (
-                <div
-                  key={slotIndex}
-                  className="absolute z-10 -translate-x-1/2 -translate-y-1/2"
-                  style={{
-                    left: `${coords.left}%`,
-                    top: `${coords.top}%`,
-                  }}
-                  onMouseEnter={
-                    canClick && onSlotHover
-                      ? () => onSlotHover(slotIndex)
-                      : undefined
-                  }
-                  onMouseLeave={
-                    onSlotHover ? () => onSlotHover(null) : undefined
-                  }
-                >
-                  <SquadMarker
-                    slot={slot}
-                    highlighted={isHighlight}
-                    selected={isSelected}
-                    compact={compact}
-                    hardMode={hardMode}
-                    interactive={canClick}
-                    onClick={
-                      canClick ? () => onSlotClick!(slotIndex) : undefined
-                    }
-                  />
-                </div>
-              );
-            })}
+                return (
+                  <div
+                    key={slotIndex}
+                    className="absolute z-10 -translate-x-1/2 -translate-y-1/2"
+                    style={{
+                      left: `${coords.left}%`,
+                      top: `${coords.top}%`,
+                    }}
+                  >
+                    <SquadMarker
+                      slot={slot}
+                      highlighted={isHighlight}
+                      selected={isSelected}
+                      compact={compact}
+                      hardMode={hardMode}
+                      interactive={canClick}
+                      placementPlayer={placementPlayer}
+                      onClick={
+                        canClick ? () => onSlotClick!(slotIndex) : undefined
+                      }
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
@@ -159,7 +162,7 @@ export function RugbyPitch({
         <div className="mx-auto mt-2 h-1.5 max-w-[580px] overflow-hidden rounded-full bg-pitch-800">
           <motion.div
             className="h-full rounded-full bg-gradient-to-r from-accent-green to-emerald-400"
-            initial={{ width: 0 }}
+            initial={false}
             animate={{ width: `${(filledCount / totalSlots) * 100}%` }}
             transition={{ duration: 0.5 }}
           />
@@ -168,6 +171,8 @@ export function RugbyPitch({
     </div>
   );
 }
+
+export const RugbyPitch = memo(RugbyPitchInner);
 
 function PitchMarkings() {
   const touchLeft = "6%";
@@ -248,13 +253,19 @@ function GoalPosts({ end }: { end: "top" | "bottom" }) {
   );
 }
 
-function SquadMarker({
+const EMPTY_SLOT_BASE_CLASS = `squad-marker-empty flex shrink-0 flex-col items-center justify-center gap-0.5 rounded-lg border-2 px-1 py-1 box-border ${PITCH_SLOT_SIZE_CLASS}`;
+
+const EMPTY_SLOT_INTERACTIVE_CLASS =
+  "cursor-pointer border-accent-green/50 bg-black/60 hover:border-accent-green hover:bg-accent-green/10 hover:shadow-[0_0_12px_rgba(34,197,94,0.35)] focus-visible:border-accent-green focus-visible:bg-accent-green/10 focus-visible:shadow-[0_0_12px_rgba(34,197,94,0.35)]";
+
+const SquadMarker = memo(function SquadMarker({
   slot,
   highlighted,
   selected,
-  compact,
+  compact: _compact,
   hardMode,
   interactive,
+  placementPlayer,
   onClick,
 }: {
   slot: SquadSlot;
@@ -263,39 +274,42 @@ function SquadMarker({
   compact?: boolean;
   hardMode?: boolean;
   interactive?: boolean;
+  placementPlayer?: Player | null;
   onClick?: () => void;
 }) {
   const player = slot.player;
   const description = POSITION_DESCRIPTIONS[slot.position];
-  const sizeClass = PITCH_SLOT_SIZE_CLASS;
 
   if (!player) {
     const positionLabel = POSITION_TILE_LABEL[slot.position];
     const shirtNumber = FORMATION_SLOT_NUMBER[slot.slotIndex];
-    const content = (
-      <motion.div
-        className={`squad-marker-empty group flex shrink-0 flex-col items-center justify-center gap-0.5 rounded-lg border-2 px-1 py-1 transition ${sizeClass} ${
-          selected
-            ? "z-20 border-accent-gold bg-accent-gold/20 shadow-[0_0_16px_rgba(251,191,36,0.45)] ring-2 ring-accent-gold"
-            : highlighted
-              ? "border-accent-gold bg-accent-gold/10 ring-2 ring-accent-gold/50"
-              : interactive
-                ? "cursor-pointer border-accent-green/50 bg-black/60 hover:border-accent-green hover:bg-accent-green/10 hover:shadow-[0_0_12px_rgba(34,197,94,0.35)]"
-                : "border-dashed border-accent-green/30 bg-black/40"
-        }`}
-        animate={
-          selected
-            ? { scale: [1.02, 1.04, 1.02] }
-            : highlighted
-              ? { scale: [1, 1.02, 1] }
-              : {}
-        }
-        transition={{
-          duration: selected ? 0.8 : 1,
-          repeat: selected || highlighted ? Infinity : 0,
-        }}
-        title={interactive ? `${slot.label}: ${description}` : undefined}
-      >
+
+    let stateClass =
+      "border-dashed border-accent-green/30 bg-black/40 text-white/40";
+    if (selected) {
+      stateClass =
+        "border-accent-gold bg-accent-gold/20 shadow-[0_0_16px_rgba(251,191,36,0.45)]";
+    } else if (highlighted) {
+      stateClass =
+        "border-accent-gold/80 bg-accent-gold/10 shadow-[0_0_10px_rgba(251,191,36,0.3)]";
+    } else if (interactive) {
+      stateClass = EMPTY_SLOT_INTERACTIVE_CLASS;
+    }
+
+    let tooltip = interactive ? `${slot.label}: ${description}` : undefined;
+    if (interactive && placementPlayer) {
+      const penalty = getPlacementPenalty(
+        placementPlayer.position,
+        slot.position
+      );
+      tooltip =
+        penalty === 0
+          ? `${slot.label} — no penalty`
+          : `${slot.label} — -${penalty} OVR`;
+    }
+
+    const inner = (
+      <>
         {shirtNumber !== undefined && (
           <span
             className={`font-display text-[11px] font-black leading-none sm:text-xs ${
@@ -317,7 +331,7 @@ function SquadMarker({
             +
           </span>
         )}
-      </motion.div>
+      </>
     );
 
     if (interactive && onClick) {
@@ -325,27 +339,28 @@ function SquadMarker({
         <button
           type="button"
           onClick={onClick}
-          className="rounded-lg border-0 bg-transparent p-0 outline-none focus:ring-2 focus:ring-accent-green/50"
+          title={tooltip}
+          className={`${EMPTY_SLOT_BASE_CLASS} ${stateClass} outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50`}
         >
-          {content}
+          {inner}
         </button>
       );
     }
 
-    return content;
+    return (
+      <div className={`${EMPTY_SLOT_BASE_CLASS} ${stateClass}`} title={tooltip}>
+        {inner}
+      </div>
+    );
   }
 
   return (
     <motion.div
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2 }}
     >
-      <PitchSlotCard
-        slot={slot}
-        hardMode={hardMode}
-        className={sizeClass}
-      />
+      <PitchSlotCard slot={slot} hardMode={hardMode} />
     </motion.div>
   );
-}
+});

@@ -190,8 +190,6 @@ function ChoiceCard({
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      whileHover={{ scale: disabled ? 1 : 1.01 }}
-      whileTap={{ scale: disabled ? 1 : 0.995 }}
     >
       <div className="mb-1 flex min-h-[16px] items-center justify-between px-0.5 sm:mb-2 sm:min-h-[22px] sm:px-1">
         <span className="font-display text-[9px] font-bold uppercase tracking-wider text-gray-500 sm:text-[11px]">

@@ -5,10 +5,8 @@ import type { Player } from "@/lib/types";
 import { formatCareerTries, formatValue } from "@/lib/players";
 import { getPlayerInitials } from "@/lib/players/initials";
 import { getValueTier } from "@/lib/players/ratings";
-import {
-  getPlayerAchievements,
-  type AchievementDisplayMode,
-} from "@/lib/players/achievements";
+import type { AchievementDisplayMode } from "@/lib/players/achievements";
+import { getCachedPlayerAchievements } from "@/lib/players/achievement-cache";
 import { AchievementChipList } from "./AchievementChipList";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
@@ -49,6 +47,22 @@ interface RugbyLeaguePlayerCardProps {
 const PITCH_SIZE =
   "w-[88px] min-h-[96px] sm:w-[92px] sm:min-h-[100px] md:w-[96px] md:min-h-[104px]";
 
+function playerCardPropsEqual(
+  prev: RugbyLeaguePlayerCardProps,
+  next: RugbyLeaguePlayerCardProps
+): boolean {
+  return (
+    prev.player.id === next.player.id &&
+    prev.variant === next.variant &&
+    prev.hardMode === next.hardMode &&
+    prev.compact === next.compact &&
+    prev.equalHeight === next.equalHeight &&
+    prev.compactMobile === next.compactMobile &&
+    prev.achievementDisplay === next.achievementDisplay &&
+    prev.className === next.className
+  );
+}
+
 export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
   player,
   variant = "default",
@@ -65,8 +79,8 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
   const isSuperSam = isSuperSamHallasPlayer(player);
   const playerStatus = resolvePlayerStatus(player);
   const achievements = useMemo(
-    () => getPlayerAchievements(player, achievementDisplay),
-    [player, achievementDisplay]
+    () => getCachedPlayerAchievements(player, achievementDisplay),
+    [player.id, achievementDisplay]
   );
   const tier = getValueTier(player.peakRating);
   const isRecruitment = variant === "recruitment";
@@ -283,12 +297,15 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
     );
   }
 
+  const allowAchievementPopover =
+    achievementDisplay === "showcase" || achievementDisplay === "expanded";
+
   return (
     <RLCardShell
       club={player.club}
       className={`${equalHeight ? "min-h-full" : ""} ${
         isGoat ? "ring-2 ring-accent-gold" : isLegend ? "ring-2 ring-accent-gold/40" : ""
-      } ${className}`}
+      } ${allowAchievementPopover ? "!overflow-visible" : ""} ${className}`}
     >
       <ClubColourBar club={player.club} />
       <ClubNameStrip club={player.club} colors={colors} />
@@ -308,7 +325,9 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
           </div>
         </div>
 
-        {achievementBadges}
+        {achievementBadges && (
+          <div className="relative z-20 overflow-visible">{achievementBadges}</div>
+        )}
 
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           <StatBox label="Apps" value={appearancesValue} />
@@ -332,6 +351,6 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
       </div>
     </RLCardShell>
   );
-});
+}, playerCardPropsEqual);
 
 export const PITCH_CARD_SIZE_CLASS = PITCH_SIZE;

@@ -29,18 +29,19 @@ const DreamTeamCollapsibleChip = memo(function DreamTeamCollapsibleChip({
   compactMobile,
   defaultExpanded = false,
 }: {
-  years: number[];
+  years: readonly number[];
   compactMobile?: boolean;
   defaultExpanded?: boolean;
 }) {
   const [open, setOpen] = useState(defaultExpanded);
   const toggle = useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
+    event.preventDefault();
     setOpen((value) => !value);
   }, []);
 
   return (
-    <div className="inline-flex max-w-full flex-col items-center">
+    <div className="relative inline-flex max-w-full flex-col items-center">
       <button
         type="button"
         aria-expanded={open}
@@ -64,23 +65,18 @@ const DreamTeamCollapsibleChip = memo(function DreamTeamCollapsibleChip({
         </RLTag>
       </button>
 
-      <div
-        className={`grid w-full max-w-full transition-[grid-template-rows,opacity] duration-200 ease-out ${
-          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
-      >
-        <div className="overflow-hidden">
-          <div
-            className={`mt-1 flex w-full max-w-full flex-wrap items-center justify-center gap-0.5 overscroll-contain px-0.5 ${
-              years.length > 8 ? "max-h-16 overflow-y-auto" : ""
-            }`}
-          >
-            {years.map((year) => (
-              <DreamTeamYearChip key={year} year={year} />
-            ))}
-          </div>
+      {open && (
+        <div
+          className={`absolute left-1/2 top-full z-30 mt-1 flex max-w-[min(100vw,14rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-0.5 overscroll-contain rounded-md border border-pitch-600/50 bg-pitch-950/95 px-1.5 py-1 shadow-lg ${
+            years.length > 8 ? "max-h-16 overflow-y-auto" : ""
+          }`}
+          onClick={(event) => event.stopPropagation()}
+        >
+          {years.map((year) => (
+            <DreamTeamYearChip key={year} year={year} />
+          ))}
         </div>
-      </div>
+      )}
     </div>
   );
 });
@@ -96,6 +92,7 @@ function AchievementChipListInner({
   return (
     <div
       className={`flex max-w-full flex-wrap items-start justify-center gap-1 px-1 py-0.5 ${className}`}
+      onClick={(event) => event.stopPropagation()}
     >
       {achievements.map((achievement, index) => {
         if (achievement.dreamTeamYears?.length) {
