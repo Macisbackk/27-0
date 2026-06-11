@@ -1704,12 +1704,12 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 85,
-    "value": 170000,
+    "peakRating": 83,
+    "value": 158000,
     "intlCaps": 0,
-    "rating": 85,
-    "appearances": 5,
-    "tries": 15
+    "rating": 83,
+    "appearances": 117,
+    "tries": 23
   },
   {
     "id": "bradford-cur-ryan-sutton",
@@ -1879,12 +1879,12 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2012–Present",
     "category": "current",
-    "peakRating": 82,
-    "value": 170000,
+    "peakRating": 84,
+    "value": 180000,
     "intlCaps": 7,
-    "rating": 82,
-    "appearances": 14,
-    "tries": 6
+    "rating": 84,
+    "appearances": 152,
+    "tries": 55
   },
   {
     "id": "bradford-cur-will-gardiner",
