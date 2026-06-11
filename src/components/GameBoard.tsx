@@ -434,6 +434,7 @@ export function GameBoard({
       joeMellorMode,
       superSamHallasMode,
       isChallengeCup,
+      isDraftMode,
     ]
   );
 

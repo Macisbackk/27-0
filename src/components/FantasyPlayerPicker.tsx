@@ -5,14 +5,8 @@ import {
   getFantasyEligiblePlayers,
   getFantasyEligiblePositions,
   getFantasyBudgetForSlot,
-  matchesFantasyRatingFilter,
-  matchesFantasyValueFilter,
-  FANTASY_RATING_FILTER_LABELS,
-  FANTASY_VALUE_FILTER_LABELS,
   canAffordPlayerForSlot,
   isPlayerInSquad,
-  type FantasyRatingFilter,
-  type FantasyValueFilter,
 } from "@/lib/game/fantasy-mode";
 import { formatValue } from "@/lib/players";
 import { filterShowcasePlayers, getUniqueClubs } from "@/lib/players/showcase";
@@ -25,7 +19,11 @@ import { TYPO } from "@/lib/ui/typography";
 const POOL = getFantasyEligiblePlayers();
 const CLUBS = getUniqueClubs(POOL);
 
-type FantasySortKey = "rating" | "value" | "name";
+type FantasySortKey =
+  | "rating-desc"
+  | "rating-asc"
+  | "value-desc"
+  | "value-asc";
 
 interface FantasyPlayerPickerProps {
   slot: SquadSlot;
@@ -45,10 +43,8 @@ export function FantasyPlayerPicker({
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDeferredValue(searchInput);
   const [club, setClub] = useState("all");
-  const [sortKey, setSortKey] = useState<FantasySortKey>("rating");
+  const [sortKey, setSortKey] = useState<FantasySortKey>("rating-desc");
   const [affordableOnly, setAffordableOnly] = useState(false);
-  const [ratingFilter, setRatingFilter] = useState<FantasyRatingFilter>("all");
-  const [valueFilter, setValueFilter] = useState<FantasyValueFilter>("all");
 
   const slotPositions = getFantasyEligiblePositions(slot.position);
   const slotBudget = getFantasyBudgetForSlot(squad, slot);
@@ -73,35 +69,19 @@ export function FantasyPlayerPicker({
       result = result.filter((p) => canAffordPlayerForSlot(squad, slot, p));
     }
 
-    if (ratingFilter !== "all") {
-      result = result.filter((p) => matchesFantasyRatingFilter(p, ratingFilter));
-    }
-
-    if (valueFilter !== "all") {
-      result = result.filter((p) => matchesFantasyValueFilter(p, valueFilter));
-    }
-
     return [...result].sort((a, b) => {
       switch (sortKey) {
-        case "value":
+        case "rating-asc":
+          return a.peakRating - b.peakRating;
+        case "value-desc":
           return b.value - a.value;
-        case "name":
-          return a.name.localeCompare(b.name);
+        case "value-asc":
+          return a.value - b.value;
         default:
           return b.peakRating - a.peakRating;
       }
     });
-  }, [
-    debouncedSearch,
-    club,
-    slotPositions,
-    sortKey,
-    affordableOnly,
-    ratingFilter,
-    valueFilter,
-    squad,
-    slot,
-  ]);
+  }, [debouncedSearch, club, slotPositions, sortKey, affordableOnly, squad, slot]);
 
   const handleSelect = useCallback(
     (player: Player) => {
@@ -159,7 +139,7 @@ export function FantasyPlayerPicker({
             />
           </div>
 
-          <div className="px-3 py-2.5 sm:px-4">
+          <div className="border-b border-pitch-700/50 px-3 py-2.5 sm:px-4">
             <p className={`${TYPO.statLabel} mb-2`}>Filters</p>
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <FilterSelect
@@ -186,42 +166,11 @@ export function FantasyPlayerPicker({
               >
                 Affordable Only
               </button>
-              <FilterSelect
-                value={ratingFilter}
-                onChange={(v) => {
-                  playUiClick();
-                  setRatingFilter(v as FantasyRatingFilter);
-                }}
-                options={(
-                  Object.entries(FANTASY_RATING_FILTER_LABELS) as [
-                    FantasyRatingFilter,
-                    string,
-                  ][]
-                ).map(([value, label]) => ({ value, label }))}
-              />
-              <FilterSelect
-                value={valueFilter}
-                onChange={(v) => {
-                  playUiClick();
-                  setValueFilter(v as FantasyValueFilter);
-                }}
-                options={(
-                  Object.entries(FANTASY_VALUE_FILTER_LABELS) as [
-                    FantasyValueFilter,
-                    string,
-                  ][]
-                ).map(([value, label]) => ({ value, label }))}
-              />
             </div>
           </div>
-        </div>
 
-        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-          <p className={TYPO.bodySm}>
-            {players.length} eligible player{players.length !== 1 ? "s" : ""}
-          </p>
-          <div className="flex items-center gap-1.5">
-            <span className={`${TYPO.bodySm} text-gray-500`}>Sort</span>
+          <div className="px-3 py-2.5 sm:px-4">
+            <p className={`${TYPO.statLabel} mb-2`}>Sort</p>
             <FilterSelect
               value={sortKey}
               onChange={(v) => {
@@ -229,13 +178,18 @@ export function FantasyPlayerPicker({
                 setSortKey(v as FantasySortKey);
               }}
               options={[
-                { value: "rating", label: "Rating" },
-                { value: "value", label: "Value" },
-                { value: "name", label: "Name" },
+                { value: "rating-desc", label: "Highest Rating" },
+                { value: "rating-asc", label: "Lowest Rating" },
+                { value: "value-desc", label: "Highest Value" },
+                { value: "value-asc", label: "Lowest Value" },
               ]}
             />
           </div>
         </div>
+
+        <p className={`${TYPO.bodySm} mt-2`}>
+          {players.length} eligible player{players.length !== 1 ? "s" : ""}
+        </p>
       </div>
 
       <div className={`min-h-0 flex-1 overflow-y-auto ${SPACING.pageX} py-3 sm:py-4`}>
