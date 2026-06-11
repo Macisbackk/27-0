@@ -63,14 +63,6 @@ export function getPlayerAchievementGroups(
     byCategory.set(category, list);
   };
 
-  if (player.category === "legend") {
-    push("hallOfFameLegend", {
-      label: "Legend",
-      color: "gold",
-      category: "hallOfFameLegend",
-    });
-  }
-
   for (const year of getManOfSteelYears(player.id)) {
     push("individualHonours", {
       label: `Man of Steel ${year}`,

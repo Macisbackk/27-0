@@ -19431,27 +19431,6 @@
       "superLeagueWinner": false
     },
     {
-      "id": "wigan-leg-mike-mcilorum",
-      "name": "Mike Mcilorum",
-      "position": "HOOKER",
-      "club": "Wigan Warriors",
-      "nationality": "Unknown",
-      "era": "MODERN_ERA",
-      "yearsActive": "2006–2024",
-      "category": "legend",
-      "peakRating": 96,
-      "value": 3870000,
-      "rating": 96,
-      "intlCaps": 0,
-      "appearances": 340,
-      "tries": 31,
-      "hallOfFame": false,
-      "clubLegend": true,
-      "manOfSteel": false,
-      "challengeCupWinner": false,
-      "superLeagueWinner": false
-    },
-    {
       "id": "wigan-leg-terry-newton",
       "name": "Terry Newton",
       "position": "HOOKER",
