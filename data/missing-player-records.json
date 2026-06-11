@@ -1,0 +1,397 @@
+[
+  {
+    "action": "map",
+    "batchName": "Tom Burgess",
+    "existingId": "huddersfield-cur-thomas-burgess",
+    "displayName": "Tom Burgess",
+    "rating": 90
+  },
+  {
+    "name": "Alfie Leake",
+    "rating": 76,
+    "club": "Bradford Bulls",
+    "position": "SECOND_ROW",
+    "nationality": "England",
+    "yearsActive": "2024–Present",
+    "category": "current"
+  },
+  {
+    "name": "Bailey Antrobus",
+    "rating": 80,
+    "club": "Wakefield Trinity",
+    "position": "CENTRE",
+    "nationality": "England",
+    "yearsActive": "2023–Present",
+    "category": "current"
+  },
+  {
+    "name": "Bastien Ader",
+    "rating": 82,
+    "club": "Catalans Dragons",
+    "position": "PROP",
+    "nationality": "France",
+    "yearsActive": "2023–Present",
+    "category": "current"
+  },
+  {
+    "name": "Ben Houston",
+    "rating": 82,
+    "club": "Huddersfield Giants",
+    "position": "PROP",
+    "nationality": "Scotland",
+    "yearsActive": "2022–Present",
+    "category": "current"
+  },
+  {
+    "name": "Cameron Bate",
+    "rating": 76,
+    "club": "Bradford Bulls",
+    "position": "PROP",
+    "nationality": "England",
+    "yearsActive": "2024–Present",
+    "category": "current"
+  },
+  {
+    "name": "Clement Martin",
+    "rating": 77,
+    "club": "Toulouse Olympique",
+    "position": "SECOND_ROW",
+    "nationality": "France",
+    "yearsActive": "2022–Present",
+    "category": "current"
+  },
+  {
+    "name": "Corentin Le Cam",
+    "rating": 80,
+    "club": "Catalans Dragons",
+    "position": "SECOND_ROW",
+    "nationality": "France",
+    "yearsActive": "2020–Present",
+    "category": "current"
+  },
+  {
+    "name": "Dayon Sambou",
+    "rating": 78,
+    "club": "London Broncos",
+    "position": "HOOKER",
+    "nationality": "England",
+    "yearsActive": "2024–Present",
+    "category": "current"
+  },
+  {
+    "name": "Dom Peyroux",
+    "rating": 84,
+    "club": "St Helens",
+    "position": "CENTRE",
+    "nationality": "France",
+    "yearsActive": "2012–2023",
+    "category": "historic",
+    "intlCaps": 0
+  },
+  {
+    "name": "Ellis Lingard",
+    "rating": 79,
+    "club": "Huddersfield Giants",
+    "position": "HOOKER",
+    "nationality": "England",
+    "yearsActive": "2021–Present",
+    "category": "current"
+  },
+  {
+    "name": "Finlay Aydin",
+    "rating": 79,
+    "club": "Wakefield Trinity",
+    "position": "WING",
+    "nationality": "England",
+    "yearsActive": "2023–Present",
+    "category": "current"
+  },
+  {
+    "name": "Finley Yates",
+    "rating": 78,
+    "club": "Hull FC",
+    "position": "WING",
+    "nationality": "England",
+    "yearsActive": "2023–Present",
+    "category": "current"
+  },
+  {
+    "name": "George Flanagan Sr",
+    "rating": 81,
+    "club": "St Helens",
+    "position": "HOOKER",
+    "nationality": "England",
+    "yearsActive": "1996–2006",
+    "category": "historic",
+    "intlCaps": 0
+  },
+  {
+    "name": "Harry Aldous",
+    "rating": 77,
+    "club": "London Broncos",
+    "position": "PROP",
+    "nationality": "England",
+    "yearsActive": "2023–Present",
+    "category": "current"
+  },
+  {
+    "name": "Harvey Hallas",
+    "rating": 79,
+    "club": "Bradford Bulls",
+    "position": "LOOSE_FORWARD",
+    "nationality": "England",
+    "yearsActive": "2024–Present",
+    "category": "current"
+  },
+  {
+    "name": "Harvey Ward",
+    "rating": 75,
+    "club": "Wigan Warriors",
+    "position": "WING",
+    "nationality": "England",
+    "yearsActive": "2023–Present",
+    "category": "current"
+  },
+  {
+    "name": "Hugo Pons",
+    "rating": 81,
+    "club": "Catalans Dragons",
+    "position": "WING",
+    "nationality": "France",
+    "yearsActive": "2022–Present",
+    "category": "current"
+  },
+  {
+    "name": "Jack Potter",
+    "rating": 78,
+    "club": "Hull KR",
+    "position": "WING",
+    "nationality": "England",
+    "yearsActive": "2022–Present",
+    "category": "current"
+  },
+  {
+    "name": "Jack Teanby",
+    "rating": 83,
+    "club": "Hull FC",
+    "position": "PROP",
+    "nationality": "England",
+    "yearsActive": "2018–Present",
+    "category": "current"
+  },
+  {
+    "name": "Jacob Hookem",
+    "rating": 79,
+    "club": "Hull FC",
+    "position": "PROP",
+    "nationality": "England",
+    "yearsActive": "2022–Present",
+    "category": "current"
+  },
+  {
+    "name": "Jamie Gill",
+    "rating": 77,
+    "club": "Bradford Bulls",
+    "position": "LOOSE_FORWARD",
+    "nationality": "England",
+    "yearsActive": "2024–Present",
+    "category": "current"
+  },
+  {
+    "name": "Jared Waerea-Hargreaves",
+    "rating": 89,
+    "club": "Hull KR",
+    "position": "PROP",
+    "nationality": "New Zealand",
+    "yearsActive": "2025–Present",
+    "category": "current",
+    "intlCaps": 45
+  },
+  {
+    "name": "Joe Brown",
+    "rating": 82,
+    "club": "Sheffield Eagles",
+    "position": "FULLBACK",
+    "nationality": "England",
+    "yearsActive": "2022–Present",
+    "category": "current"
+  },
+  {
+    "name": "Joe Porter",
+    "rating": 78,
+    "club": "York Knights",
+    "position": "PROP",
+    "nationality": "England",
+    "yearsActive": "2023–Present",
+    "category": "current"
+  },
+  {
+    "name": "Jonty Gorley",
+    "rating": 78,
+    "club": "Oldham RLFC",
+    "position": "STAND_OFF",
+    "nationality": "England",
+    "yearsActive": "2022–Present",
+    "category": "current"
+  },
+  {
+    "name": "Jordan Rapana",
+    "rating": 90,
+    "club": "Hull FC",
+    "position": "FULLBACK",
+    "nationality": "Cook Islands",
+    "yearsActive": "2025–Present",
+    "category": "current",
+    "intlCaps": 8
+  },
+  {
+    "name": "Josh Ralph",
+    "rating": 82,
+    "club": "Hull KR",
+    "position": "SCRUM_HALF",
+    "nationality": "England",
+    "yearsActive": "2021–Present",
+    "category": "current"
+  },
+  {
+    "name": "Jude Ferreira",
+    "rating": 79,
+    "club": "Wakefield Trinity",
+    "position": "WING",
+    "nationality": "France",
+    "yearsActive": "2025–Present",
+    "category": "current"
+  },
+  {
+    "name": "Leo Tennison",
+    "rating": 78,
+    "club": "Wakefield Trinity",
+    "position": "WING",
+    "nationality": "England",
+    "yearsActive": "2025–Present",
+    "category": "current"
+  },
+  {
+    "name": "Levi Edwards",
+    "rating": 78,
+    "club": "St Helens",
+    "position": "WING",
+    "nationality": "England",
+    "yearsActive": "2024–Present",
+    "category": "current"
+  },
+  {
+    "name": "Loris Zarantonello",
+    "rating": 80,
+    "club": "Catalans Dragons",
+    "position": "PROP",
+    "nationality": "France",
+    "yearsActive": "2024–Present",
+    "category": "current"
+  },
+  {
+    "name": "Luke Keary",
+    "rating": 91,
+    "club": "Catalans Dragons",
+    "position": "STAND_OFF",
+    "nationality": "Australia",
+    "yearsActive": "2025–Present",
+    "category": "current",
+    "intlCaps": 12
+  },
+  {
+    "name": "Matty Marsh",
+    "rating": 82,
+    "club": "Sheffield Eagles",
+    "position": "FULLBACK",
+    "nationality": "England",
+    "yearsActive": "2024–Present",
+    "category": "current"
+  },
+  {
+    "name": "Matty Russell",
+    "rating": 84,
+    "club": "York Knights",
+    "position": "FULLBACK",
+    "nationality": "Scotland",
+    "yearsActive": "2013–Present",
+    "category": "current",
+    "appearances": 148,
+    "tries": 47
+  },
+  {
+    "name": "Phoenix Steinwede",
+    "rating": 76,
+    "club": "Wigan Warriors",
+    "position": "PROP",
+    "nationality": "Germany",
+    "yearsActive": "2024–Present",
+    "category": "current"
+  },
+  {
+    "name": "Reimis Smith",
+    "rating": 87,
+    "club": "Catalans Dragons",
+    "position": "WING",
+    "nationality": "Cook Islands",
+    "yearsActive": "2022–Present",
+    "category": "current",
+    "intlCaps": 4
+  },
+  {
+    "name": "Robin Brochon",
+    "rating": 79,
+    "club": "Toulouse Olympique",
+    "position": "WING",
+    "nationality": "France",
+    "yearsActive": "2021–Present",
+    "category": "current"
+  },
+  {
+    "name": "Tee Ritson",
+    "rating": 79,
+    "club": "Bradford Bulls",
+    "position": "WING",
+    "nationality": "Scotland",
+    "yearsActive": "2018–Present",
+    "category": "current",
+    "intlCaps": 2
+  },
+  {
+    "name": "Tevita Pangai Jr",
+    "rating": 90,
+    "club": "Catalans Dragons",
+    "position": "SECOND_ROW",
+    "nationality": "Tonga",
+    "yearsActive": "2025–Present",
+    "category": "current",
+    "intlCaps": 10
+  },
+  {
+    "name": "Will Kirby",
+    "rating": 79,
+    "club": "Leigh Leopards",
+    "position": "WING",
+    "nationality": "England",
+    "yearsActive": "2023–Present",
+    "category": "current"
+  },
+  {
+    "name": "Zac Bardsley",
+    "rating": 78,
+    "club": "Leigh Leopards",
+    "position": "CENTRE",
+    "nationality": "England",
+    "yearsActive": "2024–Present",
+    "category": "current"
+  },
+  {
+    "name": "Zach Jebson",
+    "rating": 80,
+    "club": "Oldham RLFC",
+    "position": "CENTRE",
+    "nationality": "England",
+    "yearsActive": "2025–Present",
+    "category": "current"
+  }
+]
