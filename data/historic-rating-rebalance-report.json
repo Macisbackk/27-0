@@ -1,0 +1,314 @@
+{
+  "generatedAt": "2026-06-11T00:53:59.679Z",
+  "changes": [
+    {
+      "player": "Darren Albert",
+      "id": "st-helens-hist-darren-albert",
+      "oldRating": 94,
+      "newRating": 88,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "Jodie Broughton",
+      "id": "salford-hist-jodie-broughton",
+      "oldRating": 94,
+      "newRating": 86,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "Justin Carney",
+      "id": "castleford-hist-justin-carney",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Brett Dallas",
+      "id": "wigan-hist-brett-dallas",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Scott Donald",
+      "id": "leeds-hist-scott-donald",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Greg Eden",
+      "id": "castleford-hist-greg-eden",
+      "oldRating": 94,
+      "newRating": 86,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "Henry Fa'afili",
+      "id": "wakefield-hist-henry-fa-afili",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "Peter Fox",
+      "id": "hull-kr-hist-peter-fox",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Regan Grace",
+      "id": "st-helens-hist-regan-grace",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Clint Greenshields",
+      "id": "catalans-hist-clint-greenshields",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "Craig Hall",
+      "id": "hull-kr-hist-craig-hall",
+      "oldRating": 94,
+      "newRating": 88,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "Shontayne Hape",
+      "id": "bradford-hist-shontayne-hape",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Toa Kohe-Love",
+      "id": "wakefield-hist-toa-kohe-love",
+      "oldRating": 94,
+      "newRating": 89,
+      "reason": "Strong career (109 tries) — elite club legend tier 87-89"
+    },
+    {
+      "player": "Tom Lineham",
+      "id": "wakefield-hist-tom-lineham",
+      "oldRating": 94,
+      "newRating": 89,
+      "reason": "Strong career (123 tries) — elite club legend tier 87-89"
+    },
+    {
+      "player": "Thomas Makinson",
+      "id": "st-helens-hist-thomas-makinson",
+      "oldRating": 94,
+      "newRating": 89,
+      "reason": "Strong career (205 tries) — elite club legend tier 87-89"
+    },
+    {
+      "player": "Justin Murphy",
+      "id": "catalans-hist-justin-murphy",
+      "oldRating": 94,
+      "newRating": 86,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "Richard Myler",
+      "id": "wakefield-hist-richard-myler",
+      "oldRating": 94,
+      "newRating": 89,
+      "reason": "Strong career (144 tries) — elite club legend tier 87-89"
+    },
+    {
+      "player": "Karl Pryce",
+      "id": "bradford-hist-karl-pryce",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "Ken Sio",
+      "id": "salford-hist-ken-sio",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "Tony Smith",
+      "id": "wigan-hist-tony-smith",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Denny Solomona",
+      "id": "castleford-hist-denny-solomona",
+      "oldRating": 94,
+      "newRating": 88,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "Anthony Sullivan",
+      "id": "st-helens-hist-anthony-sullivan",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "Michael Withers",
+      "id": "bradford-hist-michael-withers",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Terry Newton",
+      "id": "wigan-hist-terry-newton",
+      "oldRating": 94,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Jai Field",
+      "id": "wigan-cur-jai-field",
+      "oldRating": 94,
+      "newRating": 90,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "George Williams",
+      "id": "warrington-cur-george-williams",
+      "oldRating": 94,
+      "newRating": 89,
+      "reason": "Explicit user update"
+    },
+    {
+      "player": "Sam Tomkins",
+      "id": "wigan-hist-sam-tomkins",
+      "oldRating": 93,
+      "newRating": 89,
+      "reason": "Strong career (176 tries) — elite club legend tier 87-89"
+    },
+    {
+      "player": "Marcus Bai",
+      "id": "leeds-hist-marcus-bai",
+      "oldRating": 93,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Morgan Escaré",
+      "id": "catalans-hist-morgan-escare",
+      "oldRating": 93,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Albert Kelly",
+      "id": "hull-fc-hist-albert-kelly",
+      "oldRating": 93,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Matt King",
+      "id": "wakefield-hist-matt-king",
+      "oldRating": 93,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "James Lowes",
+      "id": "bradford-hist-james-lowes",
+      "oldRating": 93,
+      "newRating": 89,
+      "reason": "Strong career (84 tries) — elite club legend tier 87-89"
+    },
+    {
+      "player": "Shaun Lunt",
+      "id": "huddersfield-hist-shaun-lunt",
+      "oldRating": 93,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Darren Rogers",
+      "id": "castleford-hist-darren-rogers",
+      "oldRating": 93,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Jamie Shaul",
+      "id": "hull-fc-hist-jamie-shaul",
+      "oldRating": 93,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Jordan Turner",
+      "id": "st-helens-hist-jordan-turner",
+      "oldRating": 93,
+      "newRating": 89,
+      "reason": "Strong career (103 tries) — elite club legend tier 87-89"
+    },
+    {
+      "player": "Alan Hunte",
+      "id": "wakefield-hist-alan-hunte",
+      "oldRating": 92,
+      "newRating": 87,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Ben Barba",
+      "id": "st-helens-hist-ben-barba",
+      "oldRating": 91,
+      "newRating": 85,
+      "reason": "Inflated 90+ without generational legacy — reduced to 84-86"
+    },
+    {
+      "player": "Matt Dufty",
+      "id": "wakefield-hist-matt-dufty",
+      "oldRating": 91,
+      "newRating": 85,
+      "reason": "Inflated 90+ without generational legacy — reduced to 84-86"
+    },
+    {
+      "player": "Chris Hicks",
+      "id": "wakefield-hist-chris-hicks",
+      "oldRating": 90,
+      "newRating": 85,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Morgan Knowles",
+      "id": "st-helens-hist-morgan-knowles",
+      "oldRating": 90,
+      "newRating": 85,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Lee Radford",
+      "id": "hull-fc-hist-lee-radford",
+      "oldRating": 90,
+      "newRating": 85,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Mickey Higham",
+      "id": "warrington-hist-mickey-higham",
+      "oldRating": 90,
+      "newRating": 85,
+      "reason": "Solid SL career — reduced to strong professional band 85-87"
+    },
+    {
+      "player": "Jermaine McGillvary",
+      "id": "huddersfield-hist-jermaine-mcgillvary",
+      "oldRating": 90,
+      "newRating": 89,
+      "reason": "Club legend + international — capped at 89 (strong intl tier)"
+    }
+  ],
+  "remaining90Plus": []
+}
