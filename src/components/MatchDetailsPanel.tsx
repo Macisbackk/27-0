@@ -22,6 +22,7 @@ import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { StatBox } from "./ui/StatBox";
 import { ClubTeamLabel } from "./ClubTeamLabel";
+import { TryScorerChips, TryScorersEmptyNote } from "./TryScorerChips";
 
 interface MatchDetailsPanelProps {
   fixture: MatchFixture;
@@ -152,29 +153,21 @@ function TeamScoringBlock({
       </div>
       {hasTries && (
         <ScoringSection title="Tries">
-          <div className="flex flex-wrap gap-1.5">
-            {scoring.tryScorers.map((s) => {
+          <TryScorerChips
+            scorers={scoring.tryScorers.map((s) => {
               const slot = userSquad
                 ? findSlotByPlayerId(userSquad, s.playerId)
                 : undefined;
               const extras = formatPlayerLineExtras(slot);
-              const positionNote = extras.positionNote;
-              const label =
-                s.tries > 1 ? `${s.name} x${s.tries}` : s.name;
-              const chipClass = isUserTeam
-                ? "border-accent-green/35 bg-accent-green/10 text-accent-green"
-                : "border-accent-red/30 bg-accent-red/10 text-red-300";
-              return (
-                <span
-                  key={s.playerId}
-                  title={positionNote ?? undefined}
-                  className={`inline-flex max-w-full items-center rounded-full border px-2.5 py-1 font-display text-xs font-bold ${chipClass}`}
-                >
-                  <span className="truncate">{label}</span>
-                </span>
-              );
+              return {
+                playerId: s.playerId,
+                name: s.name,
+                tries: s.tries,
+                positionNote: extras.positionNote,
+              };
             })}
-          </div>
+            variant={isUserTeam ? "user" : "opponent"}
+          />
         </ScoringSection>
       )}
       {hasConversions && kicking && (
@@ -199,7 +192,7 @@ function TeamScoringBlock({
         </ScoringSection>
       )}
       {!hasTries && !hasConversions && !hasPenalties && !hasDropGoals && (
-        <p className={TYPO.bodySm}>No scoring breakdown recorded.</p>
+        <TryScorersEmptyNote />
       )}
     </div>
   );

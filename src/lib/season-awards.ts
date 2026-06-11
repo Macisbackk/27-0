@@ -65,13 +65,13 @@ function buildPerformances(
     entries.length;
 
   const weightSum = entries.reduce(
-    (sum, e) => sum + getPlayerTryWeight(e.player),
+    (sum, e) => sum + getPlayerTryWeight(e.player, e.slot.position),
     0
   );
 
   return entries.map(({ player, slot }) => {
     const tries = tryMap.get(player.id) ?? 0;
-    const playerWeight = getPlayerTryWeight(player);
+    const playerWeight = getPlayerTryWeight(player, slot.position);
     const expectedTries =
       weightSum > 0 ? (playerWeight * totalTries) / weightSum : 0;
 
@@ -115,7 +115,7 @@ function buildPerformances(
       positionNote: display?.positionCompact ?? null,
       peakRating: effectiveRating,
       originalRating: player.peakRating,
-      ratingNote: display?.ratingAdjusted ? display.ratingCompact : null,
+      ratingNote: display?.ratingCompact ?? `${player.peakRating} OVR`,
       slotLabel: slot.label,
       tries,
       expectedTries,

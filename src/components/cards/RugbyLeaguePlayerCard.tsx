@@ -101,6 +101,7 @@ export function RugbyLeaguePlayerCard({
       <AchievementChipList
         achievements={achievements}
         compactMobile={compactMobile}
+        dreamTeamDefaultExpanded={achievementDisplay === "expanded"}
         className={hiddenClass}
       />
     ) : null;

@@ -9,7 +9,7 @@ import {
 } from "../players";
 import type { Player, PlayerCategory, Position, SquadSlot } from "../types";
 import { SQUAD_STRUCTURE, TOTAL_SLOTS, createEmptySquad } from "../positions";
-import { getRemainingPositionCounts } from "./draft-positions";
+import { getRemainingPositionCounts, getDraftBalanceGroup, positionsInSameDraftGroup } from "./draft-positions";
 
 export interface RecruitmentOptions {
   hardMode?: boolean;
@@ -29,6 +29,7 @@ const EXTREME_PAIR_CHANCE = 0.06;
 const DRAFT_SAME_POSITION_MAX_CHANCE = 0.12;
 const DRAFT_RECENT_POSITION_DECAY = 0.4;
 const DRAFT_NEED_MULTIPLIER = 3;
+const DRAFT_CENTRE_RECENT_DECAY = 0.5;
 
 type RatingBand = "b75_79" | "b80_84" | "b85_89" | "b90_94" | "b95_99";
 
@@ -514,36 +515,56 @@ function pickWeightedDraftPosition(
   options?: RecruitmentOptions,
   exclude?: Position
 ): Position | null {
+  const excludeGroup = exclude ? getDraftBalanceGroup(exclude) : null;
+
   let candidates = Array.from(remaining.entries()).filter(
     ([position, count]) =>
       count > 0 &&
       position !== exclude &&
+      (excludeGroup === null ||
+        getDraftBalanceGroup(position) !== excludeGroup) &&
       positionHasAvailablePlayers(position, usedIds, options)
   );
 
   if (candidates.length === 0) {
     candidates = SQUAD_STRUCTURE.map(
       ({ position }) => [position, 1] as [Position, number]
-    )
-      .filter(
-        ([position]) =>
-          position !== exclude &&
-          positionHasAvailablePlayers(position, usedIds, options)
-      );
+    ).filter(
+      ([position]) =>
+        position !== exclude &&
+        (excludeGroup === null ||
+          getDraftBalanceGroup(position) !== excludeGroup) &&
+        positionHasAvailablePlayers(position, usedIds, options)
+    );
   }
 
   if (candidates.length === 0) return null;
 
-  const recentCounts = new Map<Position, number>();
+  const groupNeeds = new Map<string, number>();
+  for (const [position, count] of candidates) {
+    const group = getDraftBalanceGroup(position);
+    groupNeeds.set(group, (groupNeeds.get(group) ?? 0) + count);
+  }
+
+  const recentGroupCounts = new Map<string, number>();
   for (const position of recentPositions) {
-    recentCounts.set(position, (recentCounts.get(position) ?? 0) + 1);
+    const group = getDraftBalanceGroup(position);
+    recentGroupCounts.set(group, (recentGroupCounts.get(group) ?? 0) + 1);
   }
 
   const weights = candidates.map(([position, need]) => {
-    const recent = recentCounts.get(position) ?? 0;
+    const group = getDraftBalanceGroup(position);
+    const groupNeed = groupNeeds.get(group) ?? need;
+    const positionsInGroup = candidates.filter(
+      ([candidate]) => getDraftBalanceGroup(candidate) === group
+    ).length;
+    const distributedNeed = groupNeed / Math.max(positionsInGroup, 1);
+    const recent = recentGroupCounts.get(group) ?? 0;
+    const centrePenalty = position === "CENTRE" ? DRAFT_CENTRE_RECENT_DECAY : 1;
     return (
-      Math.max(need, 1) *
+      Math.max(distributedNeed, 1) *
       DRAFT_NEED_MULTIPLIER *
+      centrePenalty *
       Math.pow(DRAFT_RECENT_POSITION_DECAY, recent)
     );
   });
@@ -661,7 +682,7 @@ function pickDraftBalancedPair(
 
   if (!playerB) {
     for (const [position] of remaining) {
-      if (position === posA) continue;
+      if (position === posA || positionsInSameDraftGroup(position, posA)) continue;
       playerB = pickSinglePlayerForPosition(
         position,
         rng,

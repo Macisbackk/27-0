@@ -47,7 +47,7 @@ export function DraftPlacementBanner({
           </p>
           <p className="mt-1 text-gray-500">
             Compatible swaps (no penalty): Wing/Full Back, Stand Off/Scrum Half,
-            Second Row/Loose Forward, Prop/Hooker.
+            Prop/Second Row.
           </p>
         </div>
       )}
@@ -67,7 +67,7 @@ export function DraftPlacementBanner({
         </span>
       </p>
 
-      <div className="mt-3 text-left">
+      <div className="mt-3">
         <DraftPositionsRemaining squad={squad} compact />
       </div>
 

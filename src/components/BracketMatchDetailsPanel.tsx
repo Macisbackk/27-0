@@ -9,6 +9,7 @@ import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubNameLabel } from "./ClubNameLabel";
 import { ClubTeamLabel } from "./ClubTeamLabel";
+import { TryScorerChips, TryScorersEmptyNote } from "./TryScorerChips";
 
 interface BracketMatchDetailsPanelProps {
   match: BracketMatch;
@@ -67,8 +68,16 @@ export function BracketMatchDetailsPanel({
 
         {scoring ? (
           <div className={SPACING.stackLg}>
-            <TeamScoringBlock teamName={match.homeTeam} scoring={scoring.home} />
-            <TeamScoringBlock teamName={match.awayTeam} scoring={scoring.away} />
+            <TeamScoringBlock
+              teamName={match.homeTeam}
+              scoring={scoring.home}
+              variant="user"
+            />
+            <TeamScoringBlock
+              teamName={match.awayTeam}
+              scoring={scoring.away}
+              variant="opponent"
+            />
           </div>
         ) : (
           <p className={TYPO.body}>Scoring data unavailable.</p>
@@ -81,9 +90,11 @@ export function BracketMatchDetailsPanel({
 function TeamScoringBlock({
   teamName,
   scoring,
+  variant,
 }: {
   teamName: string;
   scoring: TeamScoringDetail;
+  variant: "user" | "opponent";
 }) {
   const hasTries = scoring.tryScorers.length > 0;
   const kicking = scoring.kicking;
@@ -96,19 +107,14 @@ function TeamScoringBlock({
       <ClubTeamLabel club={teamName} />
       {hasTries && (
         <ScoringSection title="Tries">
-          <ul className={SPACING.stackSm}>
-            {scoring.tryScorers.map((s) => (
-              <li
-                key={s.playerId}
-                className={`${CARD.inset} flex items-center justify-between gap-2 px-2.5 py-2`}
-              >
-                <span className={TYPO.statValue}>{s.name}</span>
-                <span className={`shrink-0 ${TYPO.rating} text-sm`}>
-                  {s.tries} {s.tries === 1 ? "try" : "tries"}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <TryScorerChips
+            scorers={scoring.tryScorers.map((s) => ({
+              playerId: s.playerId,
+              name: s.name,
+              tries: s.tries,
+            }))}
+            variant={variant}
+          />
         </ScoringSection>
       )}
       {hasConversions && kicking && (
@@ -133,7 +139,7 @@ function TeamScoringBlock({
         </ScoringSection>
       )}
       {!hasTries && !hasConversions && !hasPenalties && !hasDropGoals && (
-        <p className={TYPO.bodySm}>No scoring breakdown recorded.</p>
+        <TryScorersEmptyNote />
       )}
     </div>
   );

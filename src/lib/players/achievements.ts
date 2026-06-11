@@ -20,7 +20,7 @@ export interface PlayerAchievement {
   label: string;
   color: "gold" | "green" | "purple" | "blue" | "silver";
   category: AchievementCategoryId;
-  /** When set, compact cards render one collapsible Dream Team chip. */
+  /** When set, cards render one collapsible Dream Team chip with year sub-chips. */
   dreamTeamYears?: number[];
 }
 
@@ -112,22 +112,12 @@ export function getPlayerAchievementGroups(
   const dreamYears =
     player.dreamTeamYears ?? getDreamTeamYears(player.id);
   if (dreamYears.length > 0) {
-    if (mode === "compact") {
-      push("individualHonours", {
-        label: "Dream Team",
-        color: "purple",
-        category: "individualHonours",
-        dreamTeamYears: dreamYears,
-      });
-    } else {
-      for (const year of dreamYears) {
-        push("individualHonours", {
-          label: `Dream Team ${year}`,
-          color: "purple",
-          category: "individualHonours",
-        });
-      }
-    }
+    push("individualHonours", {
+      label: "Dream Team",
+      color: "purple",
+      category: "individualHonours",
+      dreamTeamYears: dreamYears,
+    });
   }
 
   if (hasGoldenBootAward(player.id)) {

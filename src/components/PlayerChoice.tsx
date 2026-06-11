@@ -99,7 +99,7 @@ export function PlayerChoice({
         )}
 
         {draftMode && draftSquad && (
-          <div className="mx-auto mt-3 max-w-md text-left sm:mt-4">
+          <div className="mx-auto mt-3 max-w-md sm:mt-4">
             <DraftPositionsRemaining squad={draftSquad} compact />
           </div>
         )}

@@ -49,7 +49,10 @@ export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
         {achievements.length > 0 && (
           <div className={`mt-4 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
             <p className={`${TYPO.sectionTitle} mb-2`}>Achievements</p>
-            <AchievementChipList achievements={achievements} />
+            <AchievementChipList
+              achievements={achievements}
+              dreamTeamDefaultExpanded
+            />
           </div>
         )}
 

@@ -46,7 +46,7 @@ export function getSlotDisplayInfo(slot: SquadSlot): SlotDisplayInfo | null {
     ratingAdjusted,
     ratingCompact: ratingAdjusted
       ? `${originalRating} → ${adjustedRating} OVR`
-      : null,
+      : `${adjustedRating} OVR`,
     ratingBlock: ratingAdjusted
       ? `Original Rating: ${originalRating}\nAdjusted Rating: ${adjustedRating}`
       : null,
@@ -65,8 +65,7 @@ export function formatPlayerLineExtras(
 
   return {
     positionNote: info.positionCompact,
-    ratingNote:
-      reveal && info.ratingAdjusted ? info.ratingCompact : null,
+    ratingNote: reveal ? info.ratingCompact : null,
   };
 }
 

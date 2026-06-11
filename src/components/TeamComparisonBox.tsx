@@ -186,7 +186,7 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
 
           {mostExpensiveOpposition && (
             <div className={`${CARD.inset} mt-4 px-3 py-2.5 text-center`}>
-              <p className={TYPO.statLabel}>Most Expensive Opponent</p>
+              <p className={TYPO.statLabel}>Most Expensive Opposition</p>
               <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
                 {mostExpensiveOpposition.name === "N/A" ? (
                   <span className={TYPO.body}>N/A</span>
@@ -463,33 +463,27 @@ const TeamSidePanel = memo(function TeamSidePanel({
         />
       </dl>
 
-      <div
-        className={`mt-4 border-t border-pitch-700/60 pt-3 ${
-          isRight ? "sm:text-right" : "text-left"
-        }`}
-      >
-        <p className={TYPO.statLabel}>Most Expensive Opponent</p>
-        <div
-          className={`mt-1.5 flex flex-wrap items-center gap-2 ${
-            isRight ? "sm:justify-end" : "justify-start"
-          }`}
-        >
-          {mostExpensiveOpponent?.name === "N/A" || !mostExpensiveOpponent ? (
-            <span className={TYPO.body}>N/A</span>
-          ) : (
-            <>
-              <ClubNameLabel
-                club={mostExpensiveOpponent.name}
-                variant="pill"
-                className="max-w-full truncate"
-              />
-              <span className="font-display text-sm font-black text-accent-gold">
-                {formatValue(mostExpensiveOpponent.value)}
-              </span>
-            </>
-          )}
+      {isRight && (
+        <div className="mt-4 border-t border-pitch-700/60 pt-3 sm:text-right">
+          <p className={TYPO.statLabel}>Most Expensive Opposition</p>
+          <div className="mt-1.5 flex flex-wrap items-center gap-2 sm:justify-end">
+            {mostExpensiveOpponent?.name === "N/A" || !mostExpensiveOpponent ? (
+              <span className={TYPO.body}>N/A</span>
+            ) : (
+              <>
+                <ClubNameLabel
+                  club={mostExpensiveOpponent.name}
+                  variant="pill"
+                  className="max-w-full truncate"
+                />
+                <span className="font-display text-sm font-black text-accent-gold">
+                  {formatValue(mostExpensiveOpponent.value)}
+                </span>
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 });

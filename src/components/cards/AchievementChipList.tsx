@@ -9,16 +9,37 @@ interface AchievementChipListProps {
   achievements: PlayerAchievement[];
   compactMobile?: boolean;
   className?: string;
+  /** When true, Dream Team years start expanded (e.g. player detail modal). */
+  dreamTeamDefaultExpanded?: boolean;
+}
+
+function DreamTeamYearChip({
+  year,
+  compactMobile,
+}: {
+  year: number;
+  compactMobile?: boolean;
+}) {
+  return (
+    <span
+      className={`rl-tag-year ${compactMobile ? "text-[8px]" : ""}`}
+      aria-label={`Dream Team ${year}`}
+    >
+      {year}
+    </span>
+  );
 }
 
 function DreamTeamCollapsibleChip({
   years,
   compactMobile,
+  defaultExpanded = false,
 }: {
   years: number[];
   compactMobile?: boolean;
+  defaultExpanded?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultExpanded);
 
   return (
     <div className="inline-flex max-w-full flex-col items-center">
@@ -55,22 +76,21 @@ function DreamTeamCollapsibleChip({
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="w-full overflow-hidden"
+            className="w-full max-w-full overflow-hidden"
           >
-            <ul
-              className={`mt-1 max-h-20 w-full overflow-y-auto overscroll-contain rounded-md border border-pitch-600/40 bg-pitch-950/80 px-2 py-1 text-left ${
-                compactMobile ? "text-[9px]" : "text-[10px]"
+            <div
+              className={`mt-1 flex w-full max-w-full flex-wrap items-center justify-center gap-0.5 overscroll-contain px-0.5 ${
+                years.length > 8 ? "max-h-16 overflow-y-auto" : ""
               }`}
             >
               {years.map((year) => (
-                <li
+                <DreamTeamYearChip
                   key={year}
-                  className="py-0.5 leading-tight text-purple-200/90"
-                >
-                  • {year}
-                </li>
+                  year={year}
+                  compactMobile={compactMobile}
+                />
               ))}
-            </ul>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -82,12 +102,13 @@ export function AchievementChipList({
   achievements,
   compactMobile,
   className = "",
+  dreamTeamDefaultExpanded = false,
 }: AchievementChipListProps) {
   if (achievements.length === 0) return null;
 
   return (
     <div
-      className={`flex flex-wrap items-start justify-center gap-1 px-1 py-0.5 ${className}`}
+      className={`flex max-w-full flex-wrap items-start justify-center gap-1 px-1 py-0.5 ${className}`}
     >
       {achievements.map((achievement, index) => {
         if (achievement.dreamTeamYears?.length) {
@@ -96,6 +117,7 @@ export function AchievementChipList({
               key={`dream-team-${index}`}
               years={achievement.dreamTeamYears}
               compactMobile={compactMobile}
+              defaultExpanded={dreamTeamDefaultExpanded}
             />
           );
         }

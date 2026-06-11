@@ -140,6 +140,33 @@ body {
   color: #d8b4fe;
 }
 
+/* Dream Team year sub-chips — quieter supporting detail beneath the main honour */
+.rl-tag-year {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  border-radius: 0.25rem;
+  border-width: 1px;
+  border-style: solid;
+  white-space: nowrap;
+  background-color: rgba(4, 8, 7, 0.94);
+  border-color: rgba(168, 85, 247, 0.2);
+  color: rgba(167, 139, 250, 0.68);
+  font-size: 8px;
+  padding: 1px 4px;
+}
+
+@media (min-width: 640px) {
+  .rl-tag-year {
+    font-size: 9px;
+    padding: 1px 5px;
+  }
+}
+
 .rl-tag-blue,
 .rl-achievement-blue {
   border-color: rgba(56, 189, 248, 0.35);

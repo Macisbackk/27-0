@@ -262,9 +262,9 @@ export function ChallengeCupReview({
               </span>
             </p>
             <p>
-              Cups Won:{" "}
+              Tournament Finish:{" "}
               <span className="font-semibold text-white">
-                {cupResult.isWinner ? 1 : 0}
+                {cupResult.resultLabel}
               </span>
             </p>
             <p>
@@ -274,12 +274,6 @@ export function ChallengeCupReview({
                 cupResult.finish === "Runners-Up"
                   ? 1
                   : 0}
-              </span>
-            </p>
-            <p>
-              Win %:{" "}
-              <span className="font-semibold text-white">
-                {tournamentStats.winPct}
               </span>
             </p>
             <p>
