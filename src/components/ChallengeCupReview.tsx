@@ -411,8 +411,8 @@ export function ChallengeCupReview({
         </CollapsibleReviewSection>
 
         <CollapsibleReviewSection
-          title="Your Team vs Strongest Opponent"
-          helper="Comparing your squad against the strongest-rated opponent you faced. Most expensive opposition is shown separately when different."
+          title="Your Team vs Best Opposition"
+          helper="Squad OVR comparison — your Dream Team rating against the highest-rated opponent you faced in the cup."
           variant="featured"
           delay={0.46}
         >

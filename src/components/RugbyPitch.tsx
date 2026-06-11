@@ -24,6 +24,8 @@ interface RugbyPitchProps {
   compact?: boolean;
   hardMode?: boolean;
   interactive?: boolean;
+  /** Allow clicking filled slots (e.g. Fantasy Mode change player). */
+  allowFilledSlotClick?: boolean;
   onSlotClick?: (slotIndex: number) => void;
   /** @deprecated Hover highlight uses CSS only — avoids layout shake. */
   onSlotHover?: (slotIndex: number | null) => void;
@@ -43,6 +45,7 @@ function RugbyPitchInner({
   compact,
   hardMode,
   interactive,
+  allowFilledSlotClick,
   onSlotClick,
   dimmed,
   lockedSlots,
@@ -124,9 +127,9 @@ function RugbyPitchInner({
                 const isLocked = lockedSet.has(slotIndex);
                 const canClick = !!(
                   interactive &&
-                  isEmpty &&
                   !isLocked &&
-                  onSlotClick
+                  onSlotClick &&
+                  (isEmpty || allowFilledSlotClick)
                 );
 
                 return (
@@ -360,7 +363,22 @@ const SquadMarker = memo(function SquadMarker({
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2 }}
     >
-      <PitchSlotCard slot={slot} hardMode={hardMode} />
+      {interactive && onClick ? (
+        <button
+          type="button"
+          onClick={onClick}
+          title={`${slot.label}: change or remove player`}
+          className={`rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50 ${
+            selected
+              ? "ring-2 ring-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.45)]"
+              : "hover:ring-2 hover:ring-accent-green/40"
+          }`}
+        >
+          <PitchSlotCard slot={slot} hardMode={hardMode} />
+        </button>
+      ) : (
+        <PitchSlotCard slot={slot} hardMode={hardMode} />
+      )}
     </motion.div>
   );
 });

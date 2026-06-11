@@ -32,7 +32,7 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   most_wins: "Wins",
   perfect_runs: "27-0 Seasons",
   win_percentage: "Total Win %",
-  best_record: "Record",
+  best_record: "Total Record",
   challenge_cup_wins: "Cups Won",
   cup_match_wins: "Cup Wins",
   cup_finals: "Finals",

@@ -64,7 +64,7 @@ export const LEADERBOARD_TRACKERS: {
     label: "Total Win Percentage",
     shortLabel: "Total Win %",
   },
-  { id: "best_record", label: "Best Record", shortLabel: "Best Record" },
+  { id: "best_record", label: "Total Record", shortLabel: "Total Record" },
   {
     id: "challenge_cup_wins",
     label: "Challenge Cups Won",
@@ -101,7 +101,9 @@ export function getTrackersForDbMode(
   dbMode: "super-league" | "challenge-cup" | "draft" | "fantasy"
 ) {
   if (dbMode === "challenge-cup") {
-    return LEADERBOARD_TRACKERS.filter((t) => t.cupOnly);
+    return LEADERBOARD_TRACKERS.filter(
+      (t) => t.cupOnly || t.id === "best_record"
+    );
   }
   return LEADERBOARD_TRACKERS.filter((t) => !t.cupOnly);
 }
@@ -152,10 +154,10 @@ export function rankByTracker(
         return pctB - pctA;
       }
       case "best_record": {
-        if (b.bestRecordWins !== a.bestRecordWins) {
-          return b.bestRecordWins - a.bestRecordWins;
+        if (b.totalWins !== a.totalWins) {
+          return b.totalWins - a.totalWins;
         }
-        return a.bestRecordLosses - b.bestRecordLosses;
+        return a.totalLosses - b.totalLosses;
       }
       case "challenge_cup_wins":
       case "challenge_cup_team_wins":
@@ -218,7 +220,7 @@ export function getTrackerStatDisplay(
       return `${pct.toFixed(1)}%`;
     }
     case "best_record":
-      return `${entry.bestRecordWins}-${entry.bestRecordLosses}`;
+      return `${entry.totalWins}-${entry.totalLosses}`;
     case "challenge_cup_wins":
     case "challenge_cup_team_wins":
       return String(entry.challengeCupWins);
@@ -288,17 +290,8 @@ export function mergeLeaderboardStats(
     }
   }
 
-  let bestRecordWins = existing?.bestRecordWins ?? 0;
-  let bestRecordLosses = existing?.bestRecordLosses ?? 0;
-  if (!isCupRun) {
-    if (
-      update.wins > bestRecordWins ||
-      (update.wins === bestRecordWins && update.losses < bestRecordLosses)
-    ) {
-      bestRecordWins = update.wins;
-      bestRecordLosses = update.losses;
-    }
-  }
+  const bestRecordWins = totalWins;
+  const bestRecordLosses = totalLosses;
 
   let bestWinPercentage = existing?.bestWinPercentage ?? 0;
   if (!isCupRun) {

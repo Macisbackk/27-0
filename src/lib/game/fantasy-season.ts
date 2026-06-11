@@ -15,7 +15,10 @@ import {
   buildSeasonSchedule,
 } from "./season-simulation";
 import { getDreamTeamTablePosition } from "./league-table";
-import { distributeSeasonTries } from "./season-tries";
+import {
+  distributeSeasonTries,
+  enrichSingleFixtureScoring,
+} from "./season-tries";
 import { getClubBaseStrength } from "./club-strength";
 
 export type { ScheduledFixture };
@@ -117,6 +120,8 @@ function simulateRound(
     state.matchSimState,
     { opponentRatingOverride: opponentRating }
   );
+
+  enrichSingleFixtureScoring(state.squad, fixture, state.seed);
 
   const won = fixture.result === "W";
   return {

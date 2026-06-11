@@ -118,6 +118,8 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
         </div>
 
         <RatingShowcase
+          userName={user.name}
+          opponentName={opponent.name}
           userRating={user.rating}
           opponentRating={opponent.rating}
           ratingEdge={ratingEdge}
@@ -262,6 +264,8 @@ const MobileVsDivider = memo(function MobileVsDivider({
 });
 
 const RatingShowcase = memo(function RatingShowcase({
+  userName,
+  opponentName,
   userRating,
   opponentRating,
   ratingEdge,
@@ -269,6 +273,8 @@ const RatingShowcase = memo(function RatingShowcase({
   oppBarPct,
   className = "",
 }: {
+  userName: string;
+  opponentName: string;
   userRating: number;
   opponentRating: number;
   ratingEdge: ExtendedTeamComparison["ratingEdge"];
@@ -278,19 +284,27 @@ const RatingShowcase = memo(function RatingShowcase({
 }) {
   return (
     <div className={`text-center ${className}`}>
-      <p className={TYPO.statLabel}>Team Rating</p>
+      <p className={TYPO.statLabel}>Squad Rating</p>
       <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
         <RatingBadge
+          teamName={userName}
           rating={userRating}
-          edge={ratingEdge === "user"}
+          edge={ratingEdge === "user" ? "better" : ratingEdge === "tie" ? "tie" : "neutral"}
           variant="user"
         />
         <span className="hidden font-display text-xl font-black text-gray-600 sm:inline sm:text-2xl">
           VS
         </span>
         <RatingBadge
+          teamName={opponentName}
           rating={opponentRating}
-          edge={ratingEdge === "opponent"}
+          edge={
+            ratingEdge === "opponent"
+              ? "better"
+              : ratingEdge === "tie"
+                ? "tie"
+                : "neutral"
+          }
           variant="opponent"
         />
       </div>
@@ -330,18 +344,22 @@ const RatingShowcase = memo(function RatingShowcase({
 });
 
 const RatingBadge = memo(function RatingBadge({
+  teamName,
   rating,
   edge,
   variant,
 }: {
+  teamName: string;
   rating: number;
-  edge: boolean;
+  edge: "better" | "worse" | "tie" | "neutral";
   variant: "user" | "opponent";
 }) {
   const userEdgeStyles =
     "border-accent-green/50 bg-accent-green/10 shadow-[0_0_24px_rgba(34,197,94,0.15)]";
   const oppEdgeStyles =
     "border-accent-red/50 bg-accent-red/10 shadow-[0_0_24px_rgba(239,68,68,0.15)]";
+  const tieStyles =
+    "border-gray-500/50 bg-pitch-900/60 shadow-[0_0_16px_rgba(148,163,184,0.12)]";
   const userGlow = [
     "0 0 16px rgba(34,197,94,0.1)",
     "0 0 28px rgba(34,197,94,0.2)",
@@ -353,24 +371,43 @@ const RatingBadge = memo(function RatingBadge({
     "0 0 16px rgba(239,68,68,0.1)",
   ];
 
-  const edgeStyles = variant === "user" ? userEdgeStyles : oppEdgeStyles;
-  const glow = variant === "user" ? userGlow : oppGlow;
+  const edgeStyles =
+    edge === "better"
+      ? variant === "user"
+        ? userEdgeStyles
+        : oppEdgeStyles
+      : edge === "tie"
+        ? tieStyles
+        : "border-pitch-600/50 bg-pitch-900/60";
+  const glow =
+    edge === "better" ? (variant === "user" ? userGlow : oppGlow) : undefined;
   const textColor =
-    edge && variant === "user"
+    edge === "better" && variant === "user"
       ? "text-accent-green"
-      : edge && variant === "opponent"
+      : edge === "better" && variant === "opponent"
         ? "text-accent-red"
-        : "text-white";
+        : edge === "tie"
+          ? "text-gray-300"
+          : "text-white";
 
   return (
     <motion.div
-      className={`flex min-h-[5.5rem] min-w-[5.5rem] flex-col items-center justify-center rounded-xl border px-4 py-3 text-center sm:min-h-[6rem] sm:min-w-[6.5rem] ${
-        edge ? edgeStyles : "border-pitch-600/50 bg-pitch-900/60"
-      }`}
-      animate={edge ? { boxShadow: glow } : undefined}
-      transition={{ duration: 2.5, repeat: edge ? Infinity : 0 }}
+      className={`flex min-h-[6.5rem] min-w-[6.5rem] flex-col items-center justify-center rounded-xl border px-4 py-3 text-center sm:min-h-[7rem] sm:min-w-[7.5rem] ${edgeStyles}`}
+      animate={glow ? { boxShadow: glow } : undefined}
+      transition={{ duration: 2.5, repeat: glow ? Infinity : 0 }}
     >
-      <p className={`font-display text-3xl font-black leading-none sm:text-4xl ${textColor}`}>
+      <p
+        className={`max-w-[7rem] truncate font-display text-[10px] font-bold uppercase tracking-wide sm:max-w-[8rem] sm:text-xs ${
+          edge === "better" && variant === "user"
+            ? "text-accent-green/90"
+            : edge === "better" && variant === "opponent"
+              ? "text-accent-red/90"
+              : "text-gray-400"
+        }`}
+      >
+        {teamName}
+      </p>
+      <p className={`mt-1 font-display text-3xl font-black leading-none sm:text-4xl ${textColor}`}>
         {Math.round(rating)}
       </p>
       <p className={`mt-1 ${TYPO.statLabel}`}>OVR</p>

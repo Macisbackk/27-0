@@ -11,6 +11,7 @@ import {
   FANTASY_SQUAD_SIZE,
   getFantasyBudgetRemaining,
   signFantasyPlayerToSlot,
+  clearFantasySlot,
 } from "@/lib/game/fantasy-mode";
 import { createFantasySeasonState } from "@/lib/game/fantasy-season";
 import {
@@ -101,6 +102,12 @@ export function FantasyModeBoard() {
   const handlePickPlayer = (player: Player) => {
     if (selectedSlotIndex === null) return;
     setSquad((prev) => signFantasyPlayerToSlot(prev, player, selectedSlotIndex));
+    setSelectedSlotIndex(null);
+  };
+
+  const handleRemovePlayer = () => {
+    if (selectedSlotIndex === null) return;
+    setSquad((prev) => clearFantasySlot(prev, selectedSlotIndex));
     setSelectedSlotIndex(null);
   };
 
@@ -198,7 +205,11 @@ export function FantasyModeBoard() {
 
         {(phase === "squadBuild" || phase === "season") && (
           <>
-            <FantasyBudgetPanel squad={squad} compact={phase === "season"} />
+            <FantasyBudgetPanel
+              squad={squad}
+              selectedSlot={phase === "squadBuild" ? selectedSlot : null}
+              compact={phase === "season"}
+            />
 
             {phase === "squadBuild" && (
               <>
@@ -214,6 +225,7 @@ export function FantasyModeBoard() {
                     totalSlots={TOTAL_SLOTS}
                     selectedSlot={selectedSlotIndex ?? undefined}
                     interactive
+                    allowFilledSlotClick
                     onSlotClick={handleSelectSlot}
                   />
                 </div>
@@ -263,6 +275,7 @@ export function FantasyModeBoard() {
               slot={selectedSlot}
               squad={squad}
               onSelect={handlePickPlayer}
+              onRemove={selectedSlot.player ? handleRemovePlayer : undefined}
               onClose={() => setSelectedSlotIndex(null)}
             />
           )}

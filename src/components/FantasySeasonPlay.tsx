@@ -40,7 +40,7 @@ export function FantasySeasonPlay({
   onComplete,
 }: FantasySeasonPlayProps) {
   const [state, setState] = useState(initialState);
-  const [showTable, setShowTable] = useState(false);
+  const [showTableMobile, setShowTableMobile] = useState(true);
   const [showFixtures, setShowFixtures] = useState(false);
   const [selectedFixture, setSelectedFixture] = useState<MatchFixture | null>(
     null
@@ -183,17 +183,29 @@ export function FantasySeasonPlay({
         )}
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={() => {
-            playUiClick();
-            setShowTable((v) => !v);
-          }}
-          className={`${BTN.base} ${showTable ? BTN.primary : BTN.secondary}`}
+      <div className={`${CARD.panel} ${SPACING.cardPadding}`}>
+        <div className="flex items-center justify-between gap-2 md:hidden">
+          <h3 className={TYPO.cardTitle}>League Table</h3>
+          <button
+            type="button"
+            onClick={() => {
+              playUiClick();
+              setShowTableMobile((v) => !v);
+            }}
+            className={`${BTN.base} ${BTN.secondary} px-2 py-1 text-xs`}
+          >
+            {showTableMobile ? "Hide" : "Show"}
+          </button>
+        </div>
+        <h3 className={`${TYPO.cardTitle} hidden md:block`}>League Table</h3>
+        <div
+          className={`mt-4 ${showTableMobile ? "block" : "hidden md:block"}`}
         >
-          {showTable ? "Hide" : "View"} League Table
-        </button>
+          <LeagueTable rows={leagueTable} />
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
         <button
           type="button"
           onClick={() => {
@@ -205,15 +217,6 @@ export function FantasySeasonPlay({
           {showFixtures ? "Hide" : "View"} Match Results
         </button>
       </div>
-
-      {showTable && (
-        <div className={`${CARD.panel} ${SPACING.cardPadding}`}>
-          <h3 className={TYPO.cardTitle}>League Table</h3>
-          <div className="mt-4">
-            <LeagueTable rows={leagueTable} />
-          </div>
-        </div>
-      )}
 
       {showFixtures && state.fixtures.length > 0 && (
         <div className={`${CARD.panel} ${SPACING.cardPadding}`}>

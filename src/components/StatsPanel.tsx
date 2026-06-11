@@ -173,9 +173,9 @@ function OverallTab({
 
       <StatsSection title="Records">
         <StatCard
-          label="Best Record"
-          value={formatRecordOrDash(view.bestRecord)}
-          highlight={(view.bestRecord?.wins ?? 0) >= 20}
+          label="Total Record"
+          value={formatRecordOrDash(view.totalRecord)}
+          highlight={(view.totalRecord?.wins ?? 0) >= 20}
         />
         <StatCard
           label="Worst Record"
@@ -321,11 +321,11 @@ function SuperLeagueTab({ stats }: { stats: UserStatsData }) {
           highlight={(view.winPercentage ?? 0) >= 75}
         />
         <StatCard
-          label="Best Normal Mode Record"
+          label="Total Record"
           value={formatRecordOrDash(
-            view.hasSeasons ? view.bestRecord : null
+            view.hasSeasons ? view.totalRecord : null
           )}
-          highlight={view.bestRecord.wins >= 20}
+          highlight={view.totalRecord.wins >= 20}
         />
         <StatCard
           label="Worst Normal Mode Record"
@@ -387,11 +387,11 @@ function HardModeTab({
           highlight={(normalView.winPercentage ?? 0) >= 75}
         />
         <StatCard
-          label="Best Record"
+          label="Total Record"
           value={formatRecordOrDash(
-            normalView.hasSeasons ? normalView.bestRecord : null
+            normalView.hasSeasons ? normalView.totalRecord : null
           )}
-          highlight={normalView.bestRecord.wins >= 20}
+          highlight={normalView.totalRecord.wins >= 20}
         />
         <StatCard
           label="Worst Record"
@@ -432,11 +432,11 @@ function HardModeTab({
           highlight={(draftView.winPercentage ?? 0) >= 75}
         />
         <StatCard
-          label="Best Record"
+          label="Total Record"
           value={formatRecordOrDash(
-            draftView.hasSeasons ? draftView.bestRecord : null
+            draftView.hasSeasons ? draftView.totalRecord : null
           )}
-          highlight={draftView.bestRecord.wins >= 20}
+          highlight={draftView.totalRecord.wins >= 20}
         />
         <StatCard
           label="Worst Record"
@@ -508,9 +508,9 @@ function DraftModeTab({ draftNormal }: { draftNormal: UserStatsData }) {
           )}
         />
         <StatCard
-          label="Best Draft Mode Record"
-          value={formatRecordOrDash(view.hasSeasons ? view.bestRecord : null)}
-          highlight={view.bestRecord.wins >= 20}
+          label="Total Record"
+          value={formatRecordOrDash(view.hasSeasons ? view.totalRecord : null)}
+          highlight={view.totalRecord.wins >= 20}
         />
         <StatCard
           label="Worst Draft Mode Record"
@@ -552,9 +552,9 @@ function FantasyModeTab({ stats }: { stats: UserStatsData }) {
           )}
         />
         <StatCard
-          label="Best Fantasy Mode Record"
-          value={formatRecordOrDash(view.hasSeasons ? view.bestRecord : null)}
-          highlight={view.bestRecord.wins >= 20}
+          label="Total Record"
+          value={formatRecordOrDash(view.hasSeasons ? view.totalRecord : null)}
+          highlight={view.totalRecord.wins >= 20}
         />
         <StatCard
           label="Worst Fantasy Mode Record"
@@ -607,6 +607,13 @@ function ChallengeCupTab({
         <StatCard
           label="Challenge Cup Appearances"
           value={String(view.runs)}
+        />
+        <StatCard
+          label="Total Record"
+          value={formatRecordOrDash(
+            view.wins + view.losses > 0 ? view.totalRecord : null
+          )}
+          highlight={view.totalRecord.wins >= 10}
         />
         <StatCard
           label="Challenge Cup Match Wins"

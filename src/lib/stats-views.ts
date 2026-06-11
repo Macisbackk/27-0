@@ -1,6 +1,5 @@
 import {
   formatRecord,
-  isBetterRecord,
   isWorseRecord,
   getMostSelectedPlayer,
   getMostSuccessfulPlayer,
@@ -36,25 +35,6 @@ function mergeDraftCounts(
     merged[id] = (merged[id] ?? 0) + count;
   }
   return merged;
-}
-
-function pickBestSeasonRecord(
-  a: UserStatsData,
-  b: UserStatsData
-): { wins: number; losses: number } | null {
-  const aHas = a.totalSeasonsSimulated > 0;
-  const bHas = b.totalSeasonsSimulated > 0;
-  if (!aHas && !bHas) return null;
-  if (!aHas) return { wins: b.bestRecordWins, losses: b.bestRecordLosses };
-  if (!bHas) return { wins: a.bestRecordWins, losses: a.bestRecordLosses };
-  return isBetterRecord(
-    a.bestRecordWins,
-    a.bestRecordLosses,
-    b.bestRecordWins,
-    b.bestRecordLosses
-  )
-    ? { wins: a.bestRecordWins, losses: a.bestRecordLosses }
-    : { wins: b.bestRecordWins, losses: b.bestRecordLosses };
 }
 
 function pickWorstSeasonRecord(
@@ -120,7 +100,18 @@ export function getOverallView(
 ) {
   const draftN = draftNormal ?? { ...EMPTY_STATS };
   const draftH = draftHard ?? { ...EMPTY_STATS };
-  const bestRecord = pickBestSeasonRecord(normal, hard);
+  const totalRecord = {
+    wins:
+      normal.seasonWins +
+      hard.seasonWins +
+      draftN.seasonWins +
+      draftH.seasonWins,
+    losses:
+      normal.seasonLosses +
+      hard.seasonLosses +
+      draftN.seasonLosses +
+      draftH.seasonLosses,
+  };
   const worstRecord = pickWorstSeasonRecord(normal, hard);
   const mergedDrafts = mergeDraftCounts(
     mergeDraftCounts(normal.draftCounts, hard.draftCounts),
@@ -167,7 +158,7 @@ export function getOverallView(
       hard.totalSeasonsSimulated +
       draftN.totalSeasonsSimulated +
       draftH.totalSeasonsSimulated,
-    bestRecord,
+    totalRecord,
     worstRecord,
     longestUnbeatenRun: Math.max(
       normal.longestUnbeatenRun,
@@ -238,9 +229,9 @@ export function getSuperLeagueView(stats: UserStatsData) {
     losses: stats.seasonLosses,
     winPercentage: formatWinPercentage(stats.seasonWins, stats.seasonLosses),
     hasSeasons: stats.totalSeasonsSimulated > 0,
-    bestRecord: {
-      wins: stats.bestRecordWins,
-      losses: stats.bestRecordLosses,
+    totalRecord: {
+      wins: stats.seasonWins,
+      losses: stats.seasonLosses,
     },
     worstRecord: {
       wins: stats.worstRecordWins,
@@ -270,9 +261,9 @@ export function getDraftModeView(stats: UserStatsData) {
     losses: stats.seasonLosses,
     winPercentage: formatWinPercentage(stats.seasonWins, stats.seasonLosses),
     hasSeasons: stats.totalSeasonsSimulated > 0,
-    bestRecord: {
-      wins: stats.bestRecordWins,
-      losses: stats.bestRecordLosses,
+    totalRecord: {
+      wins: stats.seasonWins,
+      losses: stats.seasonLosses,
     },
     worstRecord: {
       wins: stats.worstRecordWins,
@@ -292,9 +283,9 @@ export function getHardDraftModeView(stats: UserStatsData) {
     losses: stats.seasonLosses,
     winPercentage: formatWinPercentage(stats.seasonWins, stats.seasonLosses),
     hasSeasons: stats.totalSeasonsSimulated > 0,
-    bestRecord: {
-      wins: stats.bestRecordWins,
-      losses: stats.bestRecordLosses,
+    totalRecord: {
+      wins: stats.seasonWins,
+      losses: stats.seasonLosses,
     },
     worstRecord: {
       wins: stats.worstRecordWins,
@@ -313,9 +304,9 @@ export function getFantasyModeView(stats: UserStatsData) {
     losses: stats.seasonLosses,
     winPercentage: formatWinPercentage(stats.seasonWins, stats.seasonLosses),
     hasSeasons: stats.totalSeasonsSimulated > 0,
-    bestRecord: {
-      wins: stats.bestRecordWins,
-      losses: stats.bestRecordLosses,
+    totalRecord: {
+      wins: stats.seasonWins,
+      losses: stats.seasonLosses,
     },
     worstRecord: {
       wins: stats.worstRecordWins,
@@ -357,6 +348,10 @@ export function getChallengeCupView(normal: UserStatsData, hard: UserStatsData) 
     runs: normal.challengeCupRuns + hard.challengeCupRuns,
     wins: normal.challengeCupWins + hard.challengeCupWins,
     losses: normal.challengeCupLosses + hard.challengeCupLosses,
+    totalRecord: {
+      wins: normal.challengeCupWins + hard.challengeCupWins,
+      losses: normal.challengeCupLosses + hard.challengeCupLosses,
+    },
     cupsWon: normal.challengeCupsWon + hard.challengeCupsWon,
     finals: normal.challengeCupFinals + hard.challengeCupFinals,
     semiFinals: normal.challengeCupSemiFinals + hard.challengeCupSemiFinals,

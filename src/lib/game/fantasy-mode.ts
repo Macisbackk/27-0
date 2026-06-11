@@ -1,17 +1,37 @@
 import { getRecruitablePlayers } from "../players";
-import type { Player, SquadSlot } from "../types";
+import type { Player, Position, SquadSlot } from "../types";
 import { getSquadValue } from "../positions";
 import { getAverageSquadRating } from "../squad-analysis";
-import { getPlacementPenalty } from "./position-placement";
 import { getDraftCandidatePositions } from "./draft-positions";
 
 export const FANTASY_BUDGET = 3_000_000;
 export const FANTASY_SQUAD_SIZE = 13;
 export const FANTASY_SEASON_ROUNDS = 27;
 
+/** Prop ↔ second row swaps allowed in Fantasy Mode (no OVR penalty). */
+const FANTASY_CROSS_POSITION: Partial<Record<Position, Position[]>> = {
+  PROP: ["SECOND_ROW"],
+  SECOND_ROW: ["PROP"],
+};
+
 /** Eligible pool: current, historic, legends — excludes hidden/easter-egg/unavailable. */
 export function getFantasyEligiblePlayers(): Player[] {
   return getRecruitablePlayers();
+}
+
+export function getFantasyEligiblePositions(slotPosition: Position): Position[] {
+  const positions = new Set(getDraftCandidatePositions(slotPosition));
+  for (const extra of FANTASY_CROSS_POSITION[slotPosition] ?? []) {
+    positions.add(extra);
+  }
+  return [...positions];
+}
+
+export function isFantasyEligibleForSlot(
+  playerPosition: Position,
+  slotPosition: Position
+): boolean {
+  return getFantasyEligiblePositions(slotPosition).includes(playerPosition);
 }
 
 export function getFantasyBudgetRemaining(
@@ -19,6 +39,24 @@ export function getFantasyBudgetRemaining(
   budget = FANTASY_BUDGET
 ): number {
   return budget - getSquadValue(squad);
+}
+
+/** Budget available when signing into a slot (includes refund of current occupant). */
+export function getFantasyBudgetForSlot(
+  squad: SquadSlot[],
+  slot: SquadSlot,
+  budget = FANTASY_BUDGET
+): number {
+  return getFantasyBudgetRemaining(squad, budget) + (slot.player?.value ?? 0);
+}
+
+export function canAffordPlayerForSlot(
+  squad: SquadSlot[],
+  slot: SquadSlot,
+  player: Player,
+  budget = FANTASY_BUDGET
+): boolean {
+  return player.value <= getFantasyBudgetForSlot(squad, slot, budget);
 }
 
 export function canAffordPlayer(
@@ -47,9 +85,8 @@ export function getFantasyCandidatesForSlot(
 ): Player[] {
   const signedIds = getSignedPlayerIds(squad);
   const currentPlayer = slot.player;
-  const budgetRemaining =
-    getFantasyBudgetRemaining(squad) + (currentPlayer?.value ?? 0);
-  const positions = getDraftCandidatePositions(slot.position);
+  const budgetRemaining = getFantasyBudgetForSlot(squad, slot);
+  const positions = getFantasyEligiblePositions(slot.position);
 
   return pool.filter((player) => {
     if (signedIds.has(player.id) && player.id !== currentPlayer?.id) {
@@ -67,14 +104,14 @@ export function signFantasyPlayerToSlot(
 ): SquadSlot[] {
   const slot = squad.find((s) => s.slotIndex === slotIndex);
   if (!slot) return squad;
+  if (!isFantasyEligibleForSlot(player.position, slot.position)) return squad;
 
-  const penalty = getPlacementPenalty(player.position, slot.position);
   return squad.map((s) => {
     if (s.slotIndex === slotIndex) {
       return {
         ...s,
         player,
-        runRatingPenalty: penalty || undefined,
+        runRatingPenalty: undefined,
       };
     }
     return s;

@@ -592,6 +592,8 @@ function pickWeightedDraftPosition(
 
   if (candidates.length === 0) return null;
 
+  candidates = shuffle(candidates, rng);
+
   const groupNeeds = new Map<string, number>();
   for (const [position, count] of candidates) {
     const group = getDraftBalanceGroup(position);
@@ -815,8 +817,16 @@ function pickDraftBalancedPair(
       : null;
 
   if (!playerB) {
-    for (const [position] of remaining) {
-      if (position === posA || positionsInSameDraftGroup(position, posA)) continue;
+    const fallbackPositions = shuffle(
+      Array.from(remaining.keys()).filter(
+        (position) =>
+          position !== posA &&
+          !positionsInSameDraftGroup(position, posA) &&
+          positionHasAvailablePlayers(position, usedWithA, options)
+      ),
+      rng
+    );
+    for (const position of fallbackPositions) {
       playerB = pickSinglePlayerForDraftPosition(
         position,
         rng,
