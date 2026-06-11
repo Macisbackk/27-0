@@ -52,7 +52,6 @@ import {
 } from "@/lib/positions";
 import { recordCompletedRun } from "@/lib/storage/run";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
-import { addHallOfFameEntry } from "@/lib/storage/hall-of-fame";
 import {
   playJoeMellorActivate,
   playSuperSamHallasActivate,
@@ -422,9 +421,6 @@ export function GameBoard({
           if (completed.nationalRank) setRunRank(completed.nationalRank);
         });
 
-        if (result.isPerfect && !joeMellorMode && !superSamHallasMode) {
-          addHallOfFameEntry(value, mode, difficulty);
-        }
       }
     },
     [

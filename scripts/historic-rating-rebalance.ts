@@ -127,7 +127,7 @@ const EXPLICIT_UPDATES: Record<string, Raw> = {
   },
 };
 
-/** Historic players that may legitimately stay 90+ (hall of fame / generational). */
+/** Historic players that may legitimately stay 90+ (generational calibre). */
 const KEEP_90_PLUS = new Set<string>([
   // None in historic file at 95+ tier — legends are separate file
 ]);
@@ -144,27 +144,26 @@ function suggestRebalance(
   const tries = (player.tries as number) ?? 0;
   const apps = (player.appearances as number) ?? 0;
   const intl = (player.intlCaps as number) ?? 0;
-  const hall = player.hallOfFame === true;
   const mos = player.manOfSteel === true;
   const clubLeg = player.clubLegend === true;
 
   if (currentRating < 90) return null;
 
-  // Genuine generational / HOF signals → cap at 90-92 max for historic
-  if (hall && mos && tries >= 150) {
+  // Genuine generational / MoS signals → cap at 90-92 max for historic
+  if (mos && tries >= 150) {
     if (currentRating > 92) {
       return {
         newRating: 92,
-        reason: "HOF + MoS calibre — capped at 92 (historic tier, not legend)",
+        reason: "MoS calibre — capped at 92 (historic tier, not legend)",
       };
     }
     return null;
   }
-  if (hall || (mos && tries >= 120)) {
+  if (mos && tries >= 120) {
     if (currentRating > 91) {
       return {
         newRating: 91,
-        reason: "HOF / MoS star — capped at 91",
+        reason: "MoS star — capped at 91",
       };
     }
     return null;

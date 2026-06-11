@@ -9,7 +9,6 @@ export const STORAGE_KEYS = {
   normalDifficulty: "27-0-normal-difficulty",
   draftDifficulty: "27-0-draft-difficulty",
   soundMuted: "27-0-sound-muted",
-  hallOfFame: "27-0-hall-of-fame",
   cupLeaderboard: "27-0-cup-leaderboard",
   cupTeamWins: "27-0-cup-team-wins",
   recruitmentStyle: "27-0-recruitment-style",

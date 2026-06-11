@@ -48,7 +48,6 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     tries:
       (raw.tries as number | undefined) ?? resolveCareerTries(id, category),
     intlCaps: resolveIntlCaps(id, raw.intlCaps),
-    hallOfFame: raw.hallOfFame as boolean | undefined,
     clubLegend: raw.clubLegend as boolean | undefined,
     manOfSteel: raw.manOfSteel as boolean | undefined,
     challengeCupWinner: raw.challengeCupWinner as boolean | undefined,

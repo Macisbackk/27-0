@@ -29,7 +29,6 @@ All game players come from these JSON files. **No fictional names.**
   "appearances": 200,
   "tries": 80,
   "intlCaps": 10,
-  "hallOfFame": false,
   "clubLegend": false,
   "manOfSteel": false,
   "challengeCupWinner": false,

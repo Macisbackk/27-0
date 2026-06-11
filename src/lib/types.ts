@@ -32,7 +32,6 @@ export type RunStatus = "IN_PROGRESS" | "COMPLETED" | "ABANDONED";
 export type LeaderboardPeriod = "WEEKLY" | "MONTHLY" | "ALL_TIME";
 
 export interface PlayerAchievements {
-  hallOfFame?: boolean;
   /** @deprecated Hidden from UI — kept for legacy data only */
   clubLegend?: boolean;
   /** @deprecated MoS years come from data/man-of-steel-winners.json */

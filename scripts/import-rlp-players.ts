@@ -393,7 +393,6 @@ function main() {
 
     if (category === "historic") entry.clubLegend = false;
     if (category === "legend") {
-      entry.hallOfFame = false;
       entry.clubLegend = true;
       entry.manOfSteel = false;
       entry.challengeCupWinner = false;

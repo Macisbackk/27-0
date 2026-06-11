@@ -23,7 +23,6 @@ import {
 } from "@/lib/positions";
 import { recordCompletedRun } from "@/lib/storage/run";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
-import { addHallOfFameEntry } from "@/lib/storage/hall-of-fame";
 import { playModeClassicStart, playPositionSelect, playSeasonStart } from "@/lib/sound";
 import { formatValue } from "@/lib/players";
 import { FANTASY_MODE_INTRO } from "@/lib/mode-labels";
@@ -163,9 +162,6 @@ export function FantasyModeBoard() {
         setSubmittedOnline(online);
       });
 
-      if (result.isPerfect) {
-        addHallOfFameEntry(value, "FANTASY", "NORMAL");
-      }
     },
     [squad, runId, seed]
   );
