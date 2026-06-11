@@ -210,7 +210,7 @@ export function RugbyLeaguePlayerCard({
             mobileCompact ? "gap-1" : ""
           }`}
         >
-          <div className="min-w-0 flex-1">
+          <div className="min-w-0 flex-1 pr-1">
             <h2
               className={`truncate ${
                 mobileCompact
@@ -221,18 +221,16 @@ export function RugbyLeaguePlayerCard({
               {player.name}
             </h2>
             <PlayerIdentityLine player={player} compact={mobileCompact} />
-            {categoryTag && (
-              <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                {categoryTag}
-              </div>
-            )}
           </div>
-          <RLRatingDisplay
-            rating={player.peakRating}
-            large
-            compact={mobileCompact}
-            masked={hardMode}
-          />
+          <div className="flex shrink-0 flex-col items-end gap-1">
+            {categoryTag}
+            <RLRatingDisplay
+              rating={player.peakRating}
+              large
+              compact={mobileCompact}
+              masked={hardMode}
+            />
+          </div>
         </div>
 
         <ClubColourBar club={player.club} />
@@ -248,7 +246,7 @@ export function RugbyLeaguePlayerCard({
           }`}
         >
           {achievementBadges && (
-            <div className={mobileCompact ? "hidden sm:block" : ""}>
+            <div className={`${mobileCompact ? "hidden sm:block" : ""} pt-0.5`}>
               {achievementBadges}
             </div>
           )}
@@ -309,16 +307,14 @@ export function RugbyLeaguePlayerCard({
 
       <div className="flex flex-1 flex-col gap-2 p-3 sm:p-4">
         <div className="flex items-start gap-3">
-          <div className="min-w-0 flex-1">
+          <div className="min-w-0 flex-1 pr-1">
             <h2 className={`truncate ${TYPO.playerNameSm}`}>{player.name}</h2>
             <PlayerIdentityLine player={player} />
-            {categoryTag && (
-              <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-                {categoryTag}
-              </div>
-            )}
           </div>
-          <RLRatingDisplay rating={player.peakRating} masked={hardMode} />
+          <div className="flex shrink-0 flex-col items-end gap-1">
+            {categoryTag}
+            <RLRatingDisplay rating={player.peakRating} masked={hardMode} />
+          </div>
         </div>
 
         {achievementBadges}
