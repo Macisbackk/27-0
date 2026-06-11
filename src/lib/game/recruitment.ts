@@ -222,6 +222,30 @@ function pickBalancedPair(
   return [anchor, partner];
 }
 
+function sortCandidatesExactFirst(
+  candidates: Player[],
+  slotPosition: Position
+): void {
+  candidates.sort((a, b) => {
+    const aExact = a.position === slotPosition ? 0 : 1;
+    const bExact = b.position === slotPosition ? 0 : 1;
+    if (aExact !== bExact) return aExact - bExact;
+    return b.peakRating - a.peakRating;
+  });
+}
+
+function playersMatchingSlotPosition(
+  position: Position,
+  usedIds: Set<string>,
+  options?: RecruitmentOptions
+): Player[] {
+  const targetPositions = getDraftCandidatePositions(position);
+  return basePlayerPool(options).filter(
+    (player) =>
+      targetPositions.includes(player.position) && !usedIds.has(player.id)
+  );
+}
+
 function pickPairForPosition(
   position: Position,
   rng: () => number,
@@ -229,8 +253,11 @@ function pickPairForPosition(
   categoryFilter?: PlayerCategory,
   options?: RecruitmentOptions
 ): [string, string] | null {
-  const allForPosition = basePlayerPool(options).filter(
-    (p) => p.position === position && !usedIds.has(p.id)
+  const targetPositions = getDraftCandidatePositions(position);
+  const allForPosition = playersMatchingSlotPosition(
+    position,
+    usedIds,
+    options
   );
 
   if (allForPosition.length < 2) return null;
@@ -238,11 +265,13 @@ function pickPairForPosition(
   let primaryPool = allForPosition;
   if (categoryFilter) {
     const filtered = playersForCategory(categoryFilter, options).filter(
-      (p) => p.position === position && !usedIds.has(p.id)
+      (player) =>
+        targetPositions.includes(player.position) && !usedIds.has(player.id)
     );
     if (filtered.length >= 2) {
       primaryPool = filtered;
     } else if (filtered.length === 1) {
+      sortCandidatesExactFirst(allForPosition, position);
       const partner = allForPosition.find((p) => p.id !== filtered[0].id);
       if (partner) return [filtered[0].id, partner.id];
       return null;
@@ -251,9 +280,17 @@ function pickPairForPosition(
     }
   } else {
     const categoryPool = selectCategoryPool(rng, options).filter(
-      (p) => p.position === position && !usedIds.has(p.id)
+      (player) =>
+        targetPositions.includes(player.position) && !usedIds.has(player.id)
     );
     if (categoryPool.length >= 2) primaryPool = categoryPool;
+  }
+
+  if (isHalfbackPosition(position)) {
+    sortCandidatesExactFirst(primaryPool, position);
+  } else {
+    const exact = primaryPool.filter((player) => player.position === position);
+    if (exact.length >= 2) primaryPool = exact;
   }
 
   const pair = pickBalancedPair(primaryPool, rng, options);
@@ -310,11 +347,14 @@ function pickPairWithEliteRating(
   minRating: number,
   options?: RecruitmentOptions
 ): [string, string] | null {
-  const allForPosition = basePlayerPool(options).filter(
-    (p) => p.position === position && !usedIds.has(p.id)
+  const allForPosition = playersMatchingSlotPosition(
+    position,
+    usedIds,
+    options
   );
 
   const elite = allForPosition.filter((p) => p.peakRating >= minRating);
+  sortCandidatesExactFirst(elite, position);
   if (elite.length === 0 || allForPosition.length < 2) return null;
 
   const star = elite[Math.floor(rng() * elite.length)];

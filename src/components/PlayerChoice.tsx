@@ -2,10 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import type { Player, Position, SquadSlot } from "@/lib/types";
+import type { Player, SquadSlot } from "@/lib/types";
 import { DraftPositionsRemaining } from "./DraftPositionsRemaining";
 import { POSITION_LABELS } from "@/lib/positions";
-import { getDraftEligiblePositionsLabel } from "@/lib/game/draft-positions";
 import {
   playGoatAppears,
   playHistoricPlayerAppears,
@@ -30,7 +29,6 @@ interface PlayerChoiceProps {
   draftMode?: boolean;
   showDraftRule?: boolean;
   draftSquad?: SquadSlot[];
-  selectedSlotPosition?: Position;
 }
 
 export function PlayerChoice({
@@ -46,13 +44,9 @@ export function PlayerChoice({
   draftMode,
   showDraftRule,
   draftSquad,
-  selectedSlotPosition,
 }: PlayerChoiceProps) {
   const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
   const appearSoundPlayed = useRef(false);
-  const eligiblePositionsLabel = selectedSlotPosition
-    ? getDraftEligiblePositionsLabel(selectedSlotPosition)
-    : null;
 
   useEffect(() => {
     appearSoundPlayed.current = false;
@@ -90,12 +84,6 @@ export function PlayerChoice({
         <h2 className="mt-1 font-display text-lg font-black uppercase tracking-tight text-white sm:mt-2 sm:text-3xl">
           {positionLabel}
         </h2>
-        {eligiblePositionsLabel && (
-          <p className="mt-1 text-xs text-gray-400 sm:text-sm">
-            Eligible Positions:{" "}
-            <span className="text-accent-green">{eligiblePositionsLabel}</span>
-          </p>
-        )}
         <p className="mt-1 hidden text-sm text-gray-400 sm:mt-2 sm:block">
           {draftMode
             ? "Pick a player for this slot on the team sheet."
@@ -157,7 +145,6 @@ export function PlayerChoice({
           onViewDetails={() => setDetailPlayer(playerA)}
           disabled={disabled}
           hardMode={hardMode}
-          showNaturalPositionLabel={draftMode && !!eligiblePositionsLabel}
         />
         <ChoiceCard
           player={playerB}
@@ -166,7 +153,6 @@ export function PlayerChoice({
           onViewDetails={() => setDetailPlayer(playerB)}
           disabled={disabled}
           hardMode={hardMode}
-          showNaturalPositionLabel={draftMode && !!eligiblePositionsLabel}
         />
       </div>
 
@@ -187,7 +173,6 @@ function ChoiceCard({
   onViewDetails,
   disabled,
   hardMode,
-  showNaturalPositionLabel,
 }: {
   player: Player;
   label: string;
@@ -195,7 +180,6 @@ function ChoiceCard({
   onViewDetails: () => void;
   disabled?: boolean;
   hardMode?: boolean;
-  showNaturalPositionLabel?: boolean;
 }) {
   return (
     <motion.button
@@ -244,23 +228,12 @@ function ChoiceCard({
           hardMode={hardMode}
           equalHeight
           compactMobile
-          showNaturalPositionLabel={showNaturalPositionLabel}
         />
       </div>
       <p className="mt-1 min-h-[16px] text-center text-[10px] text-gray-500 sm:text-[11px]">
-        {showNaturalPositionLabel ? (
-          <>
-            Natural Position:{" "}
-            <span className="font-semibold text-gray-300">
-              {POSITION_LABELS[player.position]}
-            </span>
-            <span className="hidden sm:inline"> · Tap to sign</span>
-          </>
-        ) : (
-          <span className="hidden sm:inline">
-            {POSITION_LABELS[player.position]} · Tap to sign
-          </span>
-        )}
+        <span className="hidden sm:inline">
+          {POSITION_LABELS[player.position]} · Tap to sign
+        </span>
       </p>
     </motion.button>
   );

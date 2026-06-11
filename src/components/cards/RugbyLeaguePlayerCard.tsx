@@ -40,7 +40,6 @@ interface RugbyLeaguePlayerCardProps {
   compact?: boolean;
   equalHeight?: boolean;
   compactMobile?: boolean;
-  showNaturalPositionLabel?: boolean;
   achievementDisplay?: AchievementDisplayMode;
   className?: string;
 }
@@ -59,7 +58,6 @@ function playerCardPropsEqual(
     prev.compact === next.compact &&
     prev.equalHeight === next.equalHeight &&
     prev.compactMobile === next.compactMobile &&
-    prev.showNaturalPositionLabel === next.showNaturalPositionLabel &&
     prev.achievementDisplay === next.achievementDisplay &&
     prev.className === next.className
   );
@@ -72,7 +70,6 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
   compact,
   equalHeight,
   compactMobile,
-  showNaturalPositionLabel,
   achievementDisplay = "compact",
   className = "",
 }: RugbyLeaguePlayerCardProps) {
@@ -225,7 +222,6 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
             <PlayerIdentityLine
               player={player}
               compact={mobileCompact}
-              showNaturalPositionLabel={showNaturalPositionLabel}
               className={statusStrip ? "!mt-0" : undefined}
             />
           </div>

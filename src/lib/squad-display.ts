@@ -18,6 +18,13 @@ export interface SlotDisplayInfo {
   ratingBlock: string | null;
 }
 
+function formatPositionArrow(
+  naturalPosition: Position,
+  playedPosition: Position
+): string {
+  return `${POSITION_LABELS[naturalPosition]} → ${POSITION_LABELS[playedPosition]}`;
+}
+
 export function formatPositionReviewText(
   info: Pick<
     SlotDisplayInfo,
@@ -25,7 +32,7 @@ export function formatPositionReviewText(
   >
 ): string {
   if (info.positionMismatch) {
-    return `Natural: ${POSITION_LABELS[info.naturalPosition]} · Played: ${POSITION_LABELS[info.playedPosition]}`;
+    return formatPositionArrow(info.naturalPosition, info.playedPosition);
   }
   return POSITION_LABELS[info.playedPosition];
 }
@@ -40,18 +47,15 @@ export function getSlotDisplayInfo(slot: SquadSlot): SlotDisplayInfo | null {
   const adjustedRating = getEffectivePeakRating(slot);
   const ratingAdjusted = adjustedRating !== originalRating;
 
-  const naturalLabel = POSITION_LABELS[naturalPosition];
-  const playedLabel = POSITION_LABELS[playedPosition];
-
   return {
     naturalPosition,
     playedPosition,
     positionMismatch,
     positionCompact: positionMismatch
-      ? `Natural: ${naturalLabel} · Played: ${playedLabel}`
+      ? formatPositionArrow(naturalPosition, playedPosition)
       : null,
     positionBlock: positionMismatch
-      ? `Natural: ${naturalLabel}\nPlayed: ${playedLabel}`
+      ? formatPositionArrow(naturalPosition, playedPosition)
       : null,
     originalRating,
     adjustedRating,
