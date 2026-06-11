@@ -6681,14 +6681,14 @@
       "club": "St Helens",
       "nationality": "England",
       "era": "MODERN_ERA",
-      "yearsActive": "2008–2026",
+      "yearsActive": "2010–2018",
       "category": "historic",
-      "peakRating": 88,
-      "value": 1665000,
-      "rating": 88,
+      "peakRating": 84,
+      "value": 180000,
+      "rating": 84,
       "intlCaps": 0,
-      "appearances": 91,
-      "tries": 49,
+      "appearances": 118,
+      "tries": 59,
       "clubLegend": false
     },
     {
@@ -19618,6 +19618,28 @@
       "manOfSteel": false,
       "challengeCupWinner": false,
       "superLeagueWinner": false
+    },
+    {
+      "id": "wigan-hist-sam-tomkins",
+      "name": "Sam Tomkins",
+      "position": "Fullback",
+      "club": "Wigan Warriors",
+      "nationality": "England",
+      "era": "Two-time Man of Steel fullback",
+      "yearsActive": "2008–2023",
+      "category": "legend",
+      "peakRating": 94,
+      "value": 4920000,
+      "rating": 94,
+      "appearances": 429,
+      "tries": 176,
+      "intlCaps": 30,
+      "hallOfFame": false,
+      "clubLegend": true,
+      "manOfSteel": true,
+      "challengeCupWinner": true,
+      "superLeagueWinner": true,
+      "lanceToddTrophy": true
     }
   ]
 }

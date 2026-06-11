@@ -14,6 +14,36 @@ interface TeamComparisonStatRowProps {
   truncate?: boolean;
 }
 
+function getSideHighlight(side: "left" | "right", edge: CompareEdge | undefined) {
+  const isWinner = edge !== "tie" && edge !== undefined && edge === side;
+  const isTie = edge === "tie" || edge === undefined;
+
+  if (isTie) {
+    return {
+      valueClass: STAT_HIGHLIGHT.tie,
+      glowClass: "",
+    };
+  }
+
+  if (isWinner) {
+    if (side === "left") {
+      return {
+        valueClass: STAT_HIGHLIGHT.win,
+        glowClass: STAT_HIGHLIGHT.winGlow,
+      };
+    }
+    return {
+      valueClass: "text-accent-red",
+      glowClass: "shadow-[0_0_8px_rgba(239,68,68,0.25)]",
+    };
+  }
+
+  return {
+    valueClass: STAT_HIGHLIGHT.neutral,
+    glowClass: "",
+  };
+}
+
 export const TeamComparisonStatRow = memo(function TeamComparisonStatRow({
   label,
   value,
@@ -23,14 +53,8 @@ export const TeamComparisonStatRow = memo(function TeamComparisonStatRow({
   truncate,
 }: TeamComparisonStatRowProps) {
   const isRight = align === "right";
-  const isWinner = edge !== "tie" && edge === side;
-  const isTie = edge === "tie";
-
-  const valueClass = isWinner
-    ? STAT_HIGHLIGHT.win
-    : isTie
-      ? STAT_HIGHLIGHT.tie
-      : STAT_HIGHLIGHT.neutral;
+  const { valueClass, glowClass } = getSideHighlight(side, edge);
+  const isWinner = edge !== "tie" && edge !== undefined && edge === side;
 
   return (
     <div
@@ -42,17 +66,55 @@ export const TeamComparisonStatRow = memo(function TeamComparisonStatRow({
     >
       <dt className={`shrink-0 ${TYPO.statLabel}`}>{label}</dt>
       <dd
-        className={`font-display text-xs font-bold sm:text-sm ${valueClass} ${
-          isWinner ? STAT_HIGHLIGHT.winGlow : ""
-        } ${truncate ? "truncate" : ""} ${isRight ? "sm:text-right" : "sm:text-left"}`}
+        className={`font-display text-xs font-bold sm:text-sm ${valueClass} ${glowClass} ${
+          truncate ? "truncate" : ""
+        } ${isRight ? "sm:text-right" : "sm:text-left"}`}
       >
-        {isWinner && (
+        {isWinner && side === "left" && (
           <span className="mr-1 text-accent-green" aria-hidden>
+            ✓
+          </span>
+        )}
+        {isWinner && side === "right" && (
+          <span className="mr-1 text-accent-red" aria-hidden>
             ✓
           </span>
         )}
         {value}
       </dd>
+    </div>
+  );
+});
+
+interface MobileComparisonStatRowProps {
+  label: string;
+  userValue: string;
+  opponentValue: string;
+  edge?: CompareEdge;
+}
+
+export const MobileComparisonStatRow = memo(function MobileComparisonStatRow({
+  label,
+  userValue,
+  opponentValue,
+  edge,
+}: MobileComparisonStatRowProps) {
+  const userHighlight = getSideHighlight("left", edge);
+  const oppHighlight = getSideHighlight("right", edge);
+
+  return (
+    <div className="rounded-lg border border-pitch-700/50 bg-pitch-950/50 px-4 py-3 text-center">
+      <p
+        className={`font-display text-lg font-black leading-none ${userHighlight.valueClass} ${userHighlight.glowClass}`}
+      >
+        {userValue}
+      </p>
+      <p className={`my-2 ${TYPO.statLabel}`}>{label}</p>
+      <p
+        className={`font-display text-lg font-black leading-none ${oppHighlight.valueClass} ${oppHighlight.glowClass}`}
+      >
+        {opponentValue}
+      </p>
     </div>
   );
 });

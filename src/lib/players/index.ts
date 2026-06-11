@@ -166,7 +166,13 @@ export function isHistoricPlayer(player: Player): boolean {
 }
 
 export { isActivePlayer, resolveCategory } from "./active";
-export { getPlayerAchievements } from "./achievements";
+export {
+  getPlayerAchievements,
+  getPlayerAchievementGroups,
+  getManOfSteelYears,
+  ACHIEVEMENT_CATEGORY_ORDER,
+  ACHIEVEMENT_CATEGORY_TITLES,
+} from "./achievements";
 export { formatCareerTries } from "./career-tries";
 
 export const PLAYER_COUNTS = {

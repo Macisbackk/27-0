@@ -1,31 +1,133 @@
 import type { Player } from "../types";
+import manOfSteelWinners from "../../../data/man-of-steel-winners.json";
+
+const MOS_WINNERS = manOfSteelWinners as Record<string, number[]>;
+
+export type AchievementCategoryId =
+  | "hallOfFameLegend"
+  | "individualHonours"
+  | "leagueTitles"
+  | "challengeCups"
+  | "clubHonours";
 
 export interface PlayerAchievement {
   label: string;
   color: "gold" | "green" | "purple" | "blue" | "silver";
+  category: AchievementCategoryId;
+}
+
+export interface PlayerAchievementGroup {
+  category: AchievementCategoryId;
+  title: string;
+  achievements: PlayerAchievement[];
+}
+
+export const ACHIEVEMENT_CATEGORY_ORDER: AchievementCategoryId[] = [
+  "hallOfFameLegend",
+  "individualHonours",
+  "leagueTitles",
+  "challengeCups",
+  "clubHonours",
+];
+
+export const ACHIEVEMENT_CATEGORY_TITLES: Record<
+  AchievementCategoryId,
+  string
+> = {
+  hallOfFameLegend: "Hall of Fame / Legend",
+  individualHonours: "Individual Honours",
+  leagueTitles: "League Titles",
+  challengeCups: "Challenge Cups",
+  clubHonours: "Club Honours",
+};
+
+export function getManOfSteelYears(playerId: string): number[] {
+  return MOS_WINNERS[playerId] ?? [];
 }
 
 export function getPlayerAchievements(player: Player): PlayerAchievement[] {
-  const achievements: PlayerAchievement[] = [];
+  return getPlayerAchievementGroups(player).flatMap((group) => group.achievements);
+}
+
+export function getPlayerAchievementGroups(
+  player: Player
+): PlayerAchievementGroup[] {
+  const byCategory = new Map<AchievementCategoryId, PlayerAchievement[]>();
+
+  const push = (
+    category: AchievementCategoryId,
+    achievement: PlayerAchievement
+  ) => {
+    const list = byCategory.get(category) ?? [];
+    list.push(achievement);
+    byCategory.set(category, list);
+  };
+
+  if (player.hallOfFame) {
+    push("hallOfFameLegend", {
+      label: "Hall of Fame",
+      color: "purple",
+      category: "hallOfFameLegend",
+    });
+  }
+
+  if (player.category === "legend" && !player.hallOfFame) {
+    push("hallOfFameLegend", {
+      label: "Legend",
+      color: "gold",
+      category: "hallOfFameLegend",
+    });
+  }
+
+  for (const year of getManOfSteelYears(player.id)) {
+    push("individualHonours", {
+      label: `Man of Steel ${year}`,
+      color: "green",
+      category: "individualHonours",
+    });
+  }
+
+  if (player.lanceToddTrophy) {
+    push("individualHonours", {
+      label: "Lance Todd Trophy",
+      color: "green",
+      category: "individualHonours",
+    });
+  }
+
+  if (player.superLeagueWinner) {
+    push("leagueTitles", {
+      label: "League Title",
+      color: "green",
+      category: "leagueTitles",
+    });
+  }
+
+  if (player.challengeCupWinner) {
+    push("challengeCups", {
+      label: "Challenge Cup",
+      color: "gold",
+      category: "challengeCups",
+    });
+  }
 
   if (player.clubLegend) {
-    achievements.push({ label: "Club Legend", color: "gold" });
-  }
-  if (player.hallOfFame) {
-    achievements.push({ label: "Hall of Fame", color: "purple" });
-  }
-  if (player.manOfSteel) {
-    achievements.push({ label: "Man of Steel", color: "green" });
-  }
-  if (player.challengeCupWinner) {
-    achievements.push({ label: "Challenge Cup Winner", color: "gold" });
-  }
-  if (player.superLeagueWinner) {
-    achievements.push({ label: "Grand Final Winner", color: "green" });
-  }
-  if (player.intlCaps > 0) {
-    achievements.push({ label: "International Representative", color: "blue" });
+    push("clubHonours", {
+      label: "Club Legend",
+      color: "gold",
+      category: "clubHonours",
+    });
   }
 
-  return achievements;
+  return ACHIEVEMENT_CATEGORY_ORDER.flatMap((category) => {
+    const achievements = byCategory.get(category);
+    if (!achievements?.length) return [];
+    return [
+      {
+        category,
+        title: ACHIEVEMENT_CATEGORY_TITLES[category],
+        achievements,
+      },
+    ];
+  });
 }

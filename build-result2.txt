@@ -1,0 +1,57 @@
+﻿node.exe : npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm 
+help npmrc` for supported config options.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn Unknow...config options.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+> 27-0@0.1.0 build
+> next build
+
+ ΓÜá Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\Macis\package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the 
+lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * C:\Users\Macis\Projects\27-0\package-lock.json
+
+   Γû▓ Next.js 15.5.19
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully in 17.2s
+   Linting and checking validity of types ...
+
+ ΓÜá The Next.js plugin was not detected in your ESLint configuration. See 
+https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config
+   Collecting page data ...
+   Generating static pages (0/12) ...
+   Generating static pages (3/12) 
+   Generating static pages (6/12) 
+   Generating static pages (9/12) 
+ Γ£ô Generating static pages (12/12)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+Γöî Γùï /                                    3.11 kB         248 kB
+Γö£ Γùï /_not-found                            994 B         104 kB
+Γö£ Γùï /auth/callback                       1.41 kB         164 kB
+Γö£ Γùï /auth/reset-password                 5.71 kB         172 kB
+Γö£ ╞Æ /leaderboard                         2.35 kB         252 kB
+Γö£ Γùï /login                               1.71 kB         243 kB
+Γö£ ╞Æ /play                                  48 kB         341 kB
+Γö£ Γùï /profile                             2.13 kB         248 kB
+Γö£ Γùï /showcase                            4.95 kB         180 kB
+Γöö Γùï /stats                               4.31 kB         250 kB
++ First Load JS shared by all             103 kB
+  Γö£ chunks/493-dbd4607ff9cca169.js       46.2 kB
+  Γö£ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  Γöö other shared chunks (total)          2.08 kB
+
+
+Γùï  (Static)   prerendered as static content
+╞Æ  (Dynamic)  server-rendered on demand
+

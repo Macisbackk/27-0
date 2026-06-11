@@ -52,6 +52,7 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     manOfSteel: raw.manOfSteel as boolean | undefined,
     challengeCupWinner: raw.challengeCupWinner as boolean | undefined,
     superLeagueWinner: raw.superLeagueWinner as boolean | undefined,
+    lanceToddTrophy: raw.lanceToddTrophy as boolean | undefined,
     availableInGame:
       raw.availableInGame === false ? false : undefined,
   };

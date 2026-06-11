@@ -1,0 +1,40 @@
+﻿node.exe : npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm 
+help npmrc` for supported config options.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn Unknow...config options.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+> 27-0@0.1.0 validate:players
+> tsx scripts/validate-players.ts
+
+≡ƒÅë 27-0 Player Database Validation
+
+Clubs: 24
+Γ£ô Current squads: 490 players
+  Γä╣ Utility mapped: Graeme Horne ΓåÆ CENTRE
+  ΓÜá Ian Watson: club "Salford" not in clubs.json
+  ΓÜá Martin Gleeson: club "Salford" not in clubs.json
+  ΓÜá Luke Patten: club "Salford" not in clubs.json
+  ΓÜá Lee Jewitt: club "Salford" not in clubs.json
+  ΓÜá Gareth Hock: club "Salford" not in clubs.json
+  ΓÜá Martin Moana: club "Halifax" not in clubs.json
+  ΓÜá Rob Worrincy: club "Halifax" not in clubs.json
+  ΓÜá Ben Heaton: club "Halifax" not in clubs.json
+  ΓÜá Sean Penkywicz: club "Halifax" not in clubs.json
+  ΓÜá Steve Tyrer: club "Halifax" not in clubs.json
+  ΓÜá Wayne Godwin: club "Halifax" not in clubs.json
+  ΓÜá Neil Holdsworth: club "Oldham" not in clubs.json
+  ΓÜá David Hodgson: club "Oldham" not in clubs.json
+  ΓÜá Phil Vievers: club "Oldham" not in clubs.json
+  ΓÜá Paul Lord: club "Oldham" not in clubs.json
+Γ£ô Historic players: 1165 players
+  ΓÜá Andrew Johns: club "Salford City Reds" not in clubs.json
+Γ£ô Legends: 71 players
+
+Γ£à Database valid ΓÇö 1726 unique players ready
+   1 Utility player(s) mapped to squad positions
+
+To add players: edit data/*.json and re-run npm run validate:players

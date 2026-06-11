@@ -5,7 +5,7 @@ import { formatCareerTries, formatValue } from "@/lib/players";
 import { getPlayerInitials } from "@/lib/players/initials";
 import { getValueTier } from "@/lib/players/ratings";
 import { isActivePlayer } from "@/lib/players/active";
-import { getPlayerAchievements } from "@/lib/players/achievements";
+import { getPlayerAchievementGroups } from "@/lib/players/achievements";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
 import { getClubColors } from "@/lib/clubs";
@@ -56,7 +56,7 @@ export function RugbyLeaguePlayerCard({
   const isGoat = isGoatPlayer(player);
   const isSuperSam = isSuperSamHallasPlayer(player);
   const isActive = isActivePlayer(player);
-  const achievements = getPlayerAchievements(player);
+  const achievementGroups = getPlayerAchievementGroups(player);
   const tier = getValueTier(player.peakRating);
   const isRecruitment = variant === "recruitment";
   const isPitch = variant === "pitch";
@@ -106,18 +106,27 @@ export function RugbyLeaguePlayerCard({
   ) : null;
 
   const achievementBadges =
-    achievements.length > 0 ? (
-      <RLInfoBox className="px-3 py-2.5">
-        <div className="flex flex-wrap items-center justify-center gap-1.5">
-          {achievements.map((achievement) => (
-            <RLTag
-              key={achievement.label}
-              variant={ACHIEVEMENT_TAG_VARIANT[achievement.color]}
+    achievementGroups.length > 0 ? (
+      <RLInfoBox className="space-y-2 px-3 py-2.5">
+        {achievementGroups.map((group) => (
+          <div key={group.category}>
+            <p
+              className={`mb-1 text-center ${TYPO.statLabel} text-gray-500 ${hiddenClass}`}
             >
-              {achievement.label}
-            </RLTag>
-          ))}
-        </div>
+              {group.title}
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-1.5">
+              {group.achievements.map((achievement) => (
+                <RLTag
+                  key={`${group.category}-${achievement.label}`}
+                  variant={ACHIEVEMENT_TAG_VARIANT[achievement.color]}
+                >
+                  {achievement.label}
+                </RLTag>
+              ))}
+            </div>
+          </div>
+        ))}
       </RLInfoBox>
     ) : null;
 

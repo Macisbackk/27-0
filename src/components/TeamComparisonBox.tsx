@@ -12,7 +12,10 @@ import {
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubNameLabel } from "./ClubNameLabel";
-import { TeamComparisonStatRow } from "./ui/TeamComparisonStatRow";
+import {
+  MobileComparisonStatRow,
+  TeamComparisonStatRow,
+} from "./ui/TeamComparisonStatRow";
 
 interface TeamComparisonBoxProps {
   comparison: ExtendedTeamComparison;
@@ -23,7 +26,7 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
   comparison,
   delay = 0,
 }: TeamComparisonBoxProps) {
-  const { user, opponent, ratingEdge, mostExpensiveTeam } = comparison;
+  const { user, opponent, ratingEdge } = comparison;
   const maxRating = Math.max(user.rating, opponent.rating, 1);
 
   const userBarPct = useMemo(
@@ -48,6 +51,33 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
     opponent.topPlayer.rating
   );
 
+  const statRows = [
+    {
+      label: "Team Value",
+      userValue: formatValue(user.value),
+      opponentValue: formatValue(opponent.value),
+      edge: valueEdge,
+    },
+    {
+      label: "Win %",
+      userValue: user.winPct,
+      opponentValue: opponent.winPct,
+      edge: winPctEdge,
+    },
+    {
+      label: "Total Tries",
+      userValue: String(user.totalTries),
+      opponentValue: String(opponent.totalTries),
+      edge: triesEdge,
+    },
+    {
+      label: "Top Player",
+      userValue: user.topPlayer.name,
+      opponentValue: opponent.topPlayer.name,
+      edge: topPlayerEdge,
+    },
+  ];
+
   return (
     <motion.div
       className={`overflow-hidden ${CARD.elevated}`}
@@ -55,22 +85,39 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
     >
-      <div className="border-b border-pitch-700/50 bg-pitch-900/60 px-4 py-3 text-center sm:px-6">
-        <p className={TYPO.sectionLabel}>Head-to-Head Comparison</p>
-      </div>
-
       <div className="px-4 py-6 sm:px-6 sm:py-8">
+        <div className="sm:hidden">
+          <div className="grid grid-cols-2 gap-3">
+            <TeamBadge
+              heading="Your Team"
+              badge="🟢 Your Team"
+              badgeClass="border-accent-green/40 bg-accent-green/10 text-accent-green"
+              club={user.name}
+            />
+            <TeamBadge
+              heading="Best Opposition"
+              badge="🔴 Best Opposition"
+              badgeClass="border-accent-red/40 bg-accent-red/10 text-accent-red"
+              club={opponent.name}
+              align="right"
+            />
+          </div>
+        </div>
+
         <RatingShowcase
           userRating={user.rating}
           opponentRating={opponent.rating}
           ratingEdge={ratingEdge}
           userBarPct={userBarPct}
           oppBarPct={oppBarPct}
+          className="mt-6 sm:mt-0"
         />
 
-        <div className="relative mt-8 grid gap-6 sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-4">
+        <div className="hidden sm:mt-8 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-stretch sm:gap-4">
           <TeamSidePanel
             label="Your Team"
+            badge="🟢 Your Team"
+            badgeClass="border-accent-green/40 bg-accent-green/10 text-accent-green"
             side={user}
             align="left"
             sideKey="left"
@@ -81,14 +128,16 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
             topPlayerLabel="Top Player"
           />
 
-          <div className="flex items-center justify-center self-center">
-            <span className="font-display text-2xl font-black uppercase tracking-widest text-gray-500 sm:text-3xl">
+          <div className="flex items-center justify-center self-center px-2">
+            <span className="font-display text-3xl font-black uppercase tracking-widest text-gray-500">
               VS
             </span>
           </div>
 
           <TeamSidePanel
             label="Best Opposition"
+            badge="🔴 Best Opposition"
+            badgeClass="border-accent-red/40 bg-accent-red/10 text-accent-red"
             side={opponent}
             align="right"
             sideKey="right"
@@ -100,23 +149,73 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
           />
         </div>
 
-        <div className={`mt-6 ${CARD.inset} px-4 py-3 text-left sm:text-center`}>
-          <p className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-gold">
-            Most Expensive Team
-          </p>
-          <div className="mt-2 flex flex-wrap items-center justify-start gap-2 sm:justify-center">
-            <ClubNameLabel
-              club={mostExpensiveTeam.name}
-              variant="pill"
-              className="max-w-full truncate"
-            />
-            <span className="font-display text-base font-black text-accent-gold sm:text-lg">
-              {formatValue(mostExpensiveTeam.value)}
-            </span>
+        <div className="sm:hidden">
+          <MobileVsDivider className="mt-6" />
+
+          <div className="mt-4 space-y-2.5">
+            {statRows.map((row) => (
+              <MobileComparisonStatRow
+                key={row.label}
+                label={row.label}
+                userValue={row.userValue}
+                opponentValue={row.opponentValue}
+                edge={row.edge}
+              />
+            ))}
           </div>
         </div>
       </div>
     </motion.div>
+  );
+});
+
+const TeamBadge = memo(function TeamBadge({
+  heading,
+  badge,
+  badgeClass,
+  club,
+  align = "left",
+}: {
+  heading: string;
+  badge: string;
+  badgeClass: string;
+  club: string;
+  align?: "left" | "right";
+}) {
+  const isRight = align === "right";
+
+  return (
+    <div className={`${CARD.inset} p-3 ${isRight ? "text-right" : "text-left"}`}>
+      <p className={TYPO.statLabel}>{heading}</p>
+      <span
+        className={`mt-1.5 inline-flex items-center rounded-full border px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider ${badgeClass}`}
+      >
+        {badge}
+      </span>
+      <div className={`mt-2 ${isRight ? "flex justify-end" : "flex justify-start"}`}>
+        <ClubNameLabel club={club} variant="pill" className="max-w-full truncate" />
+      </div>
+    </div>
+  );
+});
+
+const MobileVsDivider = memo(function MobileVsDivider({
+  className = "",
+}: {
+  className?: string;
+}) {
+  return (
+    <div className={`text-center ${className}`}>
+      <p className={TYPO.statLabel}>Your Team</p>
+      <div className="mt-2 flex items-center gap-3">
+        <div className="h-px flex-1 bg-pitch-700/80" aria-hidden />
+        <span className="shrink-0 font-display text-sm font-black uppercase tracking-widest text-gray-500">
+          VS
+        </span>
+        <div className="h-px flex-1 bg-pitch-700/80" aria-hidden />
+      </div>
+      <p className={`mt-2 ${TYPO.statLabel}`}>Best Opposition</p>
+    </div>
   );
 });
 
@@ -126,27 +225,31 @@ const RatingShowcase = memo(function RatingShowcase({
   ratingEdge,
   userBarPct,
   oppBarPct,
+  className = "",
 }: {
   userRating: number;
   opponentRating: number;
   ratingEdge: ExtendedTeamComparison["ratingEdge"];
   userBarPct: number;
   oppBarPct: number;
+  className?: string;
 }) {
   return (
-    <div className="text-center">
+    <div className={`text-center ${className}`}>
       <p className={TYPO.statLabel}>Team Rating</p>
       <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
         <RatingBadge
           rating={userRating}
           edge={ratingEdge === "user"}
+          variant="user"
         />
-        <span className="font-display text-xl font-black text-gray-600 sm:text-2xl">
+        <span className="hidden font-display text-xl font-black text-gray-600 sm:inline sm:text-2xl">
           VS
         </span>
         <RatingBadge
           rating={opponentRating}
           edge={ratingEdge === "opponent"}
+          variant="opponent"
         />
       </div>
 
@@ -170,7 +273,7 @@ const RatingShowcase = memo(function RatingShowcase({
             <motion.div
               className={`h-full rounded-full ${
                 ratingEdge === "opponent"
-                  ? "bg-accent-green shadow-[0_0_12px_rgba(34,197,94,0.5)]"
+                  ? "bg-accent-red shadow-[0_0_12px_rgba(239,68,68,0.5)]"
                   : "bg-pitch-600"
               }`}
               initial={{ width: 0 }}
@@ -187,17 +290,35 @@ const RatingShowcase = memo(function RatingShowcase({
 const RatingBadge = memo(function RatingBadge({
   rating,
   edge,
+  variant,
 }: {
   rating: number;
   edge: boolean;
+  variant: "user" | "opponent";
 }) {
-  const edgeStyles =
+  const userEdgeStyles =
     "border-accent-green/50 bg-accent-green/10 shadow-[0_0_24px_rgba(34,197,94,0.15)]";
-  const glow = [
+  const oppEdgeStyles =
+    "border-accent-red/50 bg-accent-red/10 shadow-[0_0_24px_rgba(239,68,68,0.15)]";
+  const userGlow = [
     "0 0 16px rgba(34,197,94,0.1)",
     "0 0 28px rgba(34,197,94,0.2)",
     "0 0 16px rgba(34,197,94,0.1)",
   ];
+  const oppGlow = [
+    "0 0 16px rgba(239,68,68,0.1)",
+    "0 0 28px rgba(239,68,68,0.2)",
+    "0 0 16px rgba(239,68,68,0.1)",
+  ];
+
+  const edgeStyles = variant === "user" ? userEdgeStyles : oppEdgeStyles;
+  const glow = variant === "user" ? userGlow : oppGlow;
+  const textColor =
+    edge && variant === "user"
+      ? "text-accent-green"
+      : edge && variant === "opponent"
+        ? "text-accent-red"
+        : "text-white";
 
   return (
     <motion.div
@@ -207,11 +328,7 @@ const RatingBadge = memo(function RatingBadge({
       animate={edge ? { boxShadow: glow } : undefined}
       transition={{ duration: 2.5, repeat: edge ? Infinity : 0 }}
     >
-      <p
-        className={`font-display text-3xl font-black leading-none sm:text-4xl ${
-          edge ? "text-accent-green" : "text-white"
-        }`}
-      >
+      <p className={`font-display text-3xl font-black leading-none sm:text-4xl ${textColor}`}>
         {Math.round(rating)}
       </p>
       <p className={`mt-1 ${TYPO.statLabel}`}>OVR</p>
@@ -221,6 +338,8 @@ const RatingBadge = memo(function RatingBadge({
 
 const TeamSidePanel = memo(function TeamSidePanel({
   label,
+  badge,
+  badgeClass,
   side,
   align,
   sideKey,
@@ -231,6 +350,8 @@ const TeamSidePanel = memo(function TeamSidePanel({
   topPlayerLabel,
 }: {
   label: string;
+  badge: string;
+  badgeClass: string;
   side: ExtendedTeamComparison["user"];
   align: "left" | "right";
   sideKey: "left" | "right";
@@ -245,6 +366,11 @@ const TeamSidePanel = memo(function TeamSidePanel({
   return (
     <div className={`${CARD.inset} p-4 ${isRight ? "sm:text-right" : "text-left"}`}>
       <p className={TYPO.statLabel}>{label}</p>
+      <span
+        className={`mt-1.5 inline-flex items-center rounded-full border px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider ${badgeClass}`}
+      >
+        {badge}
+      </span>
       <div
         className={`mt-2 ${isRight ? "sm:flex sm:justify-end" : "flex justify-start"}`}
       >

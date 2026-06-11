@@ -71,17 +71,17 @@
     "era": "Dominant modern middle forward",
     "yearsActive": "2007–2020",
     "category": "legend",
-    "peakRating": 93,
+    "peakRating": 95,
     "value": 4920000,
     "appearances": 270,
     "tries": 84,
     "intlCaps": 14,
     "hallOfFame": false,
     "clubLegend": true,
-    "manOfSteel": true,
+    "manOfSteel": false,
     "challengeCupWinner": false,
     "superLeagueWinner": false,
-    "rating": 93
+    "rating": 95
   },
   {
     "id": "kevin-sinfield",
@@ -1468,5 +1468,27 @@
     "manOfSteel": false,
     "challengeCupWinner": false,
     "superLeagueWinner": false
+  },
+  {
+    "id": "wigan-hist-sam-tomkins",
+    "name": "Sam Tomkins",
+    "position": "Fullback",
+    "club": "Wigan Warriors",
+    "nationality": "England",
+    "era": "Two-time Man of Steel fullback",
+    "yearsActive": "2008–2023",
+    "category": "legend",
+    "peakRating": 94,
+    "value": 4920000,
+    "rating": 94,
+    "appearances": 429,
+    "tries": 176,
+    "intlCaps": 30,
+    "hallOfFame": false,
+    "clubLegend": true,
+    "manOfSteel": true,
+    "challengeCupWinner": true,
+    "superLeagueWinner": true,
+    "lanceToddTrophy": true
   }
 ]

@@ -26,6 +26,7 @@ import { ClubRepresentation } from "./ClubRepresentation";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import { TeamComparisonBox } from "./TeamComparisonBox";
+import { TeamStatisticsBox } from "./TeamStatisticsBox";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { TryScorersSection } from "./TryScorersSection";
 import { buildLeagueTable } from "@/lib/game/league-table";
@@ -333,8 +334,17 @@ export function SeasonReview({
           </div>
         </CollapsibleReviewSection>
 
+        <CollapsibleReviewSection title="Team Statistics" delay={0.37}>
+          <TeamStatisticsBox
+            squad={squad}
+            totalValue={totalValue}
+            mostExpensiveTeam={teamComparison.mostExpensiveTeam}
+          />
+        </CollapsibleReviewSection>
+
         <CollapsibleReviewSection
-          title="Team Comparison"
+          title="Your Team vs Best Opposition"
+          helper="Comparing your final squad against the strongest team you faced this season."
           variant="featured"
           delay={0.38}
         >

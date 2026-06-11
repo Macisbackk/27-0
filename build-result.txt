@@ -1,0 +1,44 @@
+﻿node.exe : npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm 
+help npmrc` for supported config options.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn Unknow...config options.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+> 27-0@0.1.0 build
+> next build
+
+ ΓÜá Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\Macis\package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the 
+lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * C:\Users\Macis\Projects\27-0\package-lock.json
+
+   Γû▓ Next.js 15.5.19
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully in 9.3s
+   Linting and checking validity of types ...
+
+ ΓÜá The Next.js plugin was not detected in your ESLint configuration. See 
+https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config
+   Collecting page data ...
+   Generating static pages (0/12) ...
+   Generating static pages (3/12) 
+   Generating static pages (6/12) 
+   Generating static pages (9/12) 
+ Γ£ô Generating static pages (12/12)
+
+> Build error occurred
+[Error: ENOENT: no such file or directory, rename 'C:\Users\Macis\Projects\27-0\.next\export\500.html' -> 
+'C:\Users\Macis\Projects\27-0\.next\server\pages\500.html'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'rename',
+  path: 'C:\\Users\\Macis\\Projects\\27-0\\.next\\export\\500.html',
+  dest: 'C:\\Users\\Macis\\Projects\\27-0\\.next\\server\\pages\\500.html'
+}
