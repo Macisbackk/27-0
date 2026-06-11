@@ -33,12 +33,16 @@ export type LeaderboardPeriod = "WEEKLY" | "MONTHLY" | "ALL_TIME";
 
 export interface PlayerAchievements {
   hallOfFame?: boolean;
+  /** @deprecated Hidden from UI — kept for legacy data only */
   clubLegend?: boolean;
   /** @deprecated MoS years come from data/man-of-steel-winners.json */
   manOfSteel?: boolean;
   challengeCupWinner?: boolean;
   superLeagueWinner?: boolean;
+  /** @deprecated Use data/lance-todd-winners.json */
   lanceToddTrophy?: boolean;
+  /** Populated at load from data/dream-team-years.json */
+  dreamTeamYears?: number[];
 }
 
 export interface Player extends PlayerAchievements {

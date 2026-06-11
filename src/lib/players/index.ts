@@ -170,6 +170,9 @@ export {
   getPlayerAchievements,
   getPlayerAchievementGroups,
   getManOfSteelYears,
+  getDreamTeamYears,
+  hasLanceToddTrophy,
+  hasDreamTeamSelection,
   ACHIEVEMENT_CATEGORY_ORDER,
   ACHIEVEMENT_CATEGORY_TITLES,
 } from "./achievements";

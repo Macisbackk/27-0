@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { Player } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
@@ -13,6 +13,7 @@ import { isGoatPlayer } from "@/lib/players/goat";
 import { DRAFT_MODE_RULE } from "@/lib/mode-labels";
 import { RL_SECTION_TITLE_CLASS } from "./cards/rl-card";
 import { PlayerCard } from "./PlayerCard";
+import { PlayerDetailModal } from "./PlayerDetailModal";
 
 interface PlayerChoiceProps {
   playerA: Player;
@@ -41,6 +42,7 @@ export function PlayerChoice({
   draftMode,
   showDraftRule,
 }: PlayerChoiceProps) {
+  const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
   const appearSoundPlayed = useRef(false);
 
   useEffect(() => {
@@ -131,6 +133,7 @@ export function PlayerChoice({
           player={playerA}
           label="A"
           onChoose={() => onChoose(playerA)}
+          onViewDetails={() => setDetailPlayer(playerA)}
           disabled={disabled}
           hardMode={hardMode}
         />
@@ -138,10 +141,18 @@ export function PlayerChoice({
           player={playerB}
           label="B"
           onChoose={() => onChoose(playerB)}
+          onViewDetails={() => setDetailPlayer(playerB)}
           disabled={disabled}
           hardMode={hardMode}
         />
       </div>
+
+      {detailPlayer && (
+        <PlayerDetailModal
+          player={detailPlayer}
+          onClose={() => setDetailPlayer(null)}
+        />
+      )}
     </motion.div>
   );
 }
@@ -150,12 +161,14 @@ function ChoiceCard({
   player,
   label,
   onChoose,
+  onViewDetails,
   disabled,
   hardMode,
 }: {
   player: Player;
   label: string;
   onChoose: () => void;
+  onViewDetails: () => void;
   disabled?: boolean;
   hardMode?: boolean;
 }) {
@@ -175,8 +188,30 @@ function ChoiceCard({
         <span className="font-display text-[9px] font-bold uppercase tracking-wider text-gray-500 sm:text-[11px]">
           {label}
         </span>
-        <span className="hidden rounded-full bg-accent-green/20 px-2 py-0.5 text-[10px] font-semibold text-accent-green opacity-0 transition group-hover:opacity-100 sm:inline">
-          Sign →
+        <span className="flex items-center gap-1.5">
+          {!hardMode && (
+            <span
+              role="button"
+              tabIndex={0}
+              className="rounded-full border border-pitch-600/50 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-accent-green/40 hover:text-accent-green sm:text-[10px]"
+              onClick={(e) => {
+                e.stopPropagation();
+                onViewDetails();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onViewDetails();
+                }
+              }}
+            >
+              Info
+            </span>
+          )}
+          <span className="hidden rounded-full bg-accent-green/20 px-2 py-0.5 text-[10px] font-semibold text-accent-green opacity-0 transition group-hover:opacity-100 sm:inline">
+            Sign →
+          </span>
         </span>
       </div>
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg transition sm:min-h-[400px] group-hover:opacity-95">

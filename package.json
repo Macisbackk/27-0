@@ -21,7 +21,8 @@
     "clear:leaderboard": "tsx scripts/clear-leaderboard.ts",
     "trophies:cache": "tsx scripts/apply-trophy-achievements.ts --build-cache",
     "trophies:apply": "tsx scripts/apply-trophy-achievements.ts --apply",
-    "trophies:audit": "tsx scripts/apply-trophy-achievements.ts --build-cache --apply"
+    "trophies:audit": "tsx scripts/apply-trophy-achievements.ts --build-cache --apply",
+    "honours:apply": "tsx scripts/apply-honour-achievements.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.0",

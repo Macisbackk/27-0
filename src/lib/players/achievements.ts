@@ -1,14 +1,16 @@
 import type { Player } from "../types";
 import manOfSteelWinners from "../../../data/man-of-steel-winners.json";
+import lanceToddWinners from "../../../data/lance-todd-winners.json";
+import dreamTeamYearsData from "../../../data/dream-team-years.json";
 
 const MOS_WINNERS = manOfSteelWinners as Record<string, number[]>;
+const LANCE_TODD_WINNERS = new Set(lanceToddWinners as string[]);
+const DREAM_TEAM_YEARS = dreamTeamYearsData as Record<string, number[]>;
 
 export type AchievementCategoryId =
-  | "hallOfFameLegend"
   | "individualHonours"
   | "leagueTitles"
-  | "challengeCups"
-  | "clubHonours";
+  | "challengeCups";
 
 export interface PlayerAchievement {
   label: string;
@@ -23,26 +25,34 @@ export interface PlayerAchievementGroup {
 }
 
 export const ACHIEVEMENT_CATEGORY_ORDER: AchievementCategoryId[] = [
-  "hallOfFameLegend",
   "individualHonours",
   "leagueTitles",
   "challengeCups",
-  "clubHonours",
 ];
 
 export const ACHIEVEMENT_CATEGORY_TITLES: Record<
   AchievementCategoryId,
   string
 > = {
-  hallOfFameLegend: "Hall of Fame / Legend",
   individualHonours: "Individual Honours",
   leagueTitles: "League Titles",
   challengeCups: "Challenge Cups",
-  clubHonours: "Club Honours",
 };
 
 export function getManOfSteelYears(playerId: string): number[] {
   return MOS_WINNERS[playerId] ?? [];
+}
+
+export function getDreamTeamYears(playerId: string): number[] {
+  return DREAM_TEAM_YEARS[playerId] ?? [];
+}
+
+export function hasLanceToddTrophy(playerId: string): boolean {
+  return LANCE_TODD_WINNERS.has(playerId);
+}
+
+export function hasDreamTeamSelection(playerId: string): boolean {
+  return (DREAM_TEAM_YEARS[playerId]?.length ?? 0) > 0;
 }
 
 export function getPlayerAchievements(player: Player): PlayerAchievement[] {
@@ -71,10 +81,18 @@ export function getPlayerAchievementGroups(
     });
   }
 
-  if (player.lanceToddTrophy) {
+  if (hasLanceToddTrophy(player.id)) {
     push("individualHonours", {
       label: "Lance Todd Trophy",
       color: "green",
+      category: "individualHonours",
+    });
+  }
+
+  if (hasDreamTeamSelection(player.id)) {
+    push("individualHonours", {
+      label: "Dream Team",
+      color: "purple",
       category: "individualHonours",
     });
   }
@@ -92,14 +110,6 @@ export function getPlayerAchievementGroups(
       label: "Challenge Cup Winner",
       color: "gold",
       category: "challengeCups",
-    });
-  }
-
-  if (player.clubLegend) {
-    push("clubHonours", {
-      label: "Club Hero",
-      color: "gold",
-      category: "clubHonours",
     });
   }
 

@@ -16,7 +16,9 @@ import {
   type ShowcaseSortKey,
   type TierFilter,
 } from "@/lib/players/showcase";
+import type { Player } from "@/lib/types";
 import { RugbyLeaguePlayerCard } from "./cards/RugbyLeaguePlayerCard";
+import { PlayerDetailModal } from "./PlayerDetailModal";
 import {
   RL_FILTER_CHIP_ACTIVE,
   RL_FILTER_CHIP_IDLE,
@@ -50,6 +52,7 @@ export function PlayerShowcase() {
   const [filters, setFilters] = useState<ShowcaseFilters>(DEFAULT_FILTERS);
   const [sortKey, setSortKey] = useState<ShowcaseSortKey>("rating");
   const [sortDir, setSortDir] = useState<ShowcaseSortDir>("desc");
+  const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
 
   const clubs = useMemo(() => getUniqueClubs(ALL_PLAYERS), []);
   const dbStats = useMemo(() => computeShowcaseDbStats(ALL_PLAYERS), []);
@@ -408,17 +411,33 @@ export function PlayerShowcase() {
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
               {filtered.map((player) => (
-                <RugbyLeaguePlayerCard
+                <button
                   key={player.id}
-                  player={player}
-                  variant="default"
-                  equalHeight
-                />
+                  type="button"
+                  className="cursor-pointer text-left transition hover:opacity-95"
+                  onClick={() => {
+                    playUiClick();
+                    setDetailPlayer(player);
+                  }}
+                >
+                  <RugbyLeaguePlayerCard
+                    player={player}
+                    variant="default"
+                    equalHeight
+                  />
+                </button>
               ))}
             </div>
           )}
         </div>
       </div>
+
+      {detailPlayer && (
+        <PlayerDetailModal
+          player={detailPlayer}
+          onClose={() => setDetailPlayer(null)}
+        />
+      )}
     </div>
   );
 }
