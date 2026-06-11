@@ -123,6 +123,7 @@ export function filterShowcasePlayers(
   const minRating = ratingThreshold(filters.ratingMin);
 
   return players.filter((player) => {
+    if (player.availableInGame === false) return false;
     if (!matchesSearch(player, filters.search)) return false;
     if (filters.status !== "all" && player.category !== filters.status) {
       return false;

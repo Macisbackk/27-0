@@ -8,7 +8,7 @@
     "era": "Golden generation forward leader",
     "yearsActive": "1999–2015",
     "category": "legend",
-    "peakRating": 99,
+    "peakRating": 93,
     "value": 4920000,
     "appearances": 551,
     "tries": 56,
@@ -18,7 +18,7 @@
     "manOfSteel": true,
     "challengeCupWinner": true,
     "superLeagueWinner": true,
-    "rating": 99
+    "rating": 93
   },
   {
     "id": "leon-pryce",
@@ -71,7 +71,7 @@
     "era": "Dominant modern middle forward",
     "yearsActive": "2007–2020",
     "category": "legend",
-    "peakRating": 99,
+    "peakRating": 93,
     "value": 4920000,
     "appearances": 270,
     "tries": 84,
@@ -81,7 +81,7 @@
     "manOfSteel": true,
     "challengeCupWinner": false,
     "superLeagueWinner": false,
-    "rating": 99
+    "rating": 93
   },
   {
     "id": "kevin-sinfield",
@@ -92,7 +92,7 @@
     "era": "Leeds dynasty captaincy era",
     "yearsActive": "1997–2015",
     "category": "legend",
-    "peakRating": 99,
+    "peakRating": 95,
     "value": 4920000,
     "appearances": 521,
     "tries": 90,
@@ -102,7 +102,7 @@
     "manOfSteel": true,
     "challengeCupWinner": true,
     "superLeagueWinner": true,
-    "rating": 99
+    "rating": 95
   },
   {
     "id": "paul-sculthorpe",
@@ -113,7 +113,7 @@
     "era": "Two-time Man of Steel peak",
     "yearsActive": "1995–2008",
     "category": "legend",
-    "peakRating": 99,
+    "peakRating": 96,
     "value": 4920000,
     "appearances": 414,
     "tries": 136,
@@ -123,7 +123,7 @@
     "manOfSteel": true,
     "challengeCupWinner": true,
     "superLeagueWinner": true,
-    "rating": 99
+    "rating": 96
   },
   {
     "id": "sean-long",
@@ -176,7 +176,7 @@
     "era": "Cross-era all-time great",
     "yearsActive": "1981–1997",
     "category": "legend",
-    "peakRating": 99,
+    "peakRating": 97,
     "value": 4920000,
     "appearances": 495,
     "tries": 327,
@@ -186,7 +186,7 @@
     "manOfSteel": true,
     "challengeCupWinner": true,
     "superLeagueWinner": false,
-    "rating": 99
+    "rating": 97
   },
   {
     "id": "andy-farrell",
@@ -197,7 +197,7 @@
     "era": "Wigan leader through SL transition",
     "yearsActive": "1991–2004",
     "category": "legend",
-    "peakRating": 99,
+    "peakRating": 95,
     "value": 4920000,
     "appearances": 370,
     "tries": 142,
@@ -207,7 +207,7 @@
     "manOfSteel": true,
     "challengeCupWinner": true,
     "superLeagueWinner": true,
-    "rating": 99
+    "rating": 95
   },
   {
     "id": "iestyn-harris",
@@ -260,7 +260,7 @@
     "era": "Short iconic SL cameo",
     "yearsActive": "1993–2007",
     "category": "legend",
-    "peakRating": 96,
+    "peakRating": 99,
     "value": 563000,
     "appearances": 249,
     "tries": 71,
@@ -270,7 +270,7 @@
     "manOfSteel": false,
     "challengeCupWinner": false,
     "superLeagueWinner": false,
-    "rating": 96
+    "rating": 99
   },
   {
     "id": "martin-offiah",
@@ -281,7 +281,7 @@
     "era": "Pace icon around SL launch",
     "yearsActive": "1987–2000",
     "category": "legend",
-    "peakRating": 99,
+    "peakRating": 94,
     "value": 4920000,
     "appearances": 501,
     "tries": 501,
@@ -291,7 +291,7 @@
     "manOfSteel": false,
     "challengeCupWinner": true,
     "superLeagueWinner": true,
-    "rating": 99
+    "rating": 94
   },
   {
     "id": "kris-radlinski",
@@ -1016,7 +1016,7 @@
     "era": "Electrifying broken-field runner era",
     "yearsActive": "1991–2007",
     "category": "legend",
-    "peakRating": 95,
+    "peakRating": 98,
     "value": 500000,
     "appearances": 387,
     "tries": 238,
@@ -1026,7 +1026,7 @@
     "manOfSteel": true,
     "challengeCupWinner": true,
     "superLeagueWinner": true,
-    "rating": 95
+    "rating": 98
   },
   {
     "id": "shaun-edwards",
@@ -1310,7 +1310,7 @@
     "era": "Hall of fame playmaking icon",
     "yearsActive": "1982–1996",
     "category": "legend",
-    "peakRating": 96,
+    "peakRating": 97,
     "value": 563000,
     "appearances": 457,
     "tries": 223,
@@ -1320,7 +1320,7 @@
     "manOfSteel": true,
     "challengeCupWinner": true,
     "superLeagueWinner": false,
-    "rating": 96
+    "rating": 97
   },
   {
     "id": "chris-joynt",
@@ -1415,9 +1415,9 @@
     "era": "EARLY_DOMINANCE",
     "yearsActive": "1994–2012",
     "category": "legend",
-    "peakRating": 98,
+    "peakRating": 95,
     "value": 4555000,
-    "rating": 98,
+    "rating": 95,
     "intlCaps": 15,
     "appearances": 345,
     "tries": 186,

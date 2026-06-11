@@ -59,6 +59,8 @@ export interface Player extends PlayerAchievements {
   appearances?: number;
   tries?: number;
   intlCaps: number;
+  /** When false, excluded from recruitment, showcase, and selectable pools. */
+  availableInGame?: boolean;
 }
 
 export interface SquadSlot {

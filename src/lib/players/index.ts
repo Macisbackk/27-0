@@ -136,9 +136,18 @@ export {
   SAM_HALLAS_ID_PREFIX,
 } from "./super-sam-hallas";
 
-/** Public player pool — excludes JM Mode-only entries. */
+export function isAvailableInGame(player: Player): boolean {
+  return player.availableInGame !== false;
+}
+
+/** Public player pool — excludes hidden and archived entries. */
 export function getShowcasePlayers(): Player[] {
-  return PLAYER_POOL.filter((p) => !isHiddenPlayer(p));
+  return PLAYER_POOL.filter((p) => !isHiddenPlayer(p) && isAvailableInGame(p));
+}
+
+/** Players eligible for recruitment / draft offers. */
+export function getRecruitablePlayers(): Player[] {
+  return PLAYER_POOL.filter((p) => !isHiddenPlayer(p) && isAvailableInGame(p));
 }
 
 export function getValueTier(value: number): string {

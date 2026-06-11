@@ -5,6 +5,7 @@ import {
   LEGEND_PLAYERS,
   getPlayerById,
   getPlayersByClub,
+  isAvailableInGame,
 } from "../players";
 import type { Player, PlayerCategory, Position } from "../types";
 import { TOTAL_SLOTS, createEmptySquad } from "../positions";
@@ -119,11 +120,19 @@ function shuffle<T>(arr: T[], rng: () => number): T[] {
   return result;
 }
 
+function recruitable(players: Player[]): Player[] {
+  return players.filter(isAvailableInGame);
+}
+
 function basePlayerPool(options?: RecruitmentOptions): Player[] {
   if (options?.clubFilter) {
-    return getPlayersByClub(options.clubFilter);
+    return recruitable(getPlayersByClub(options.clubFilter));
   }
-  return [...CURRENT_PLAYERS, ...HISTORIC_PLAYERS, ...LEGEND_PLAYERS];
+  return recruitable([
+    ...CURRENT_PLAYERS,
+    ...HISTORIC_PLAYERS,
+    ...LEGEND_PLAYERS,
+  ]);
 }
 
 function selectCategoryPool(rng: () => number, options?: RecruitmentOptions): Player[] {
@@ -142,11 +151,14 @@ function selectCategoryPool(rng: () => number, options?: RecruitmentOptions): Pl
     if (current.length > 0) return current;
     return clubPlayers;
   }
-  if (rng() < CURRENT_RATIO) return CURRENT_PLAYERS;
-  if (rng() < LEGEND_WITHIN_HISTORIC && LEGEND_PLAYERS.length > 0) {
-    return LEGEND_PLAYERS;
+  const current = recruitable(CURRENT_PLAYERS);
+  const historic = recruitable(HISTORIC_PLAYERS);
+  const legends = recruitable(LEGEND_PLAYERS);
+  if (rng() < CURRENT_RATIO && current.length > 0) return current;
+  if (rng() < LEGEND_WITHIN_HISTORIC && legends.length > 0) {
+    return legends;
   }
-  return HISTORIC_PLAYERS;
+  return historic;
 }
 
 function playersForCategory(

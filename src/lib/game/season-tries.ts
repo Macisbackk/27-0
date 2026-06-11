@@ -198,38 +198,15 @@ function pickWeightedIndex(
   return candidates[candidates.length - 1].i;
 }
 
-/**
- * If one player hoards tries in a match, redistribute one try within the fixture.
- */
-function softenMatchConcentration(
-  alloc: number[],
+function buildAllocContext(
   entries: SquadEntry[],
-  matchTries: number,
-  rng: () => number
-): void {
-  if (matchTries < 2) return;
-
-  const maxInMatch = Math.max(...alloc);
-  const dominantIdx = alloc.indexOf(maxInMatch);
-  const dominantShare = maxInMatch / matchTries;
-
-  if (dominantShare < 0.45 || maxInMatch < 2) return;
-
-  const recipients = entries
-    .map((e, i) => ({
-      i,
-      tries: alloc[i],
-      weight: getPlayerTryWeight(e.player, e.playedPosition),
-    }))
-    .filter((c) => c.i !== dominantIdx && c.tries < maxInMatch - 1);
-
-  if (recipients.length === 0) return;
-
-  const toIdx = pickWeightedIndex(
-    recipients.map((c) => ({ i: c.i, weight: c.weight })),
-    rng
-  );
-  transferTryInFixture(alloc, dominantIdx, toIdx);
+  seasonTotalsSoFar: number[]
+) {
+  return {
+    positions: entries.map((e) => e.playedPosition),
+    ratings: entries.map((e) => getEffectivePeakRating(e.slot)),
+    seasonTotalsSoFar: [...seasonTotalsSoFar],
+  };
 }
 
 /**
@@ -381,9 +358,14 @@ export function enrichSingleFixtureScoring(
   if (entries.length === 0) return;
 
   const rng = seedrandom(`${seed}-tries-${fixture.round}`);
-  const weights = getMatchWeights(entries, rng, new Array(entries.length).fill(0));
-  const matchAlloc = allocateMatchTries(fixture.triesFor, weights, rng);
-  softenMatchConcentration(matchAlloc, entries, fixture.triesFor, rng);
+  const seasonZeros = new Array(entries.length).fill(0);
+  const weights = getMatchWeights(entries, rng, seasonZeros);
+  const matchAlloc = allocateMatchTries(
+    fixture.triesFor,
+    weights,
+    rng,
+    buildAllocContext(entries, seasonZeros)
+  );
   applyScoringDetails(entries, [fixture], [matchAlloc], seed);
 }
 
@@ -410,8 +392,12 @@ function allocateSeasonTriesToFixtures(
 
   for (const fixture of fixtures) {
     const weights = getMatchWeights(entries, rng, seasonTotalsSoFar);
-    const matchAlloc = allocateMatchTries(fixture.triesFor, weights, rng);
-    softenMatchConcentration(matchAlloc, entries, fixture.triesFor, rng);
+    const matchAlloc = allocateMatchTries(
+      fixture.triesFor,
+      weights,
+      rng,
+      buildAllocContext(entries, seasonTotalsSoFar)
+    );
     perMatchAllocs.push(matchAlloc);
     for (let i = 0; i < entries.length; i++) {
       seasonTotalsSoFar[i] += matchAlloc[i];

@@ -88,10 +88,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
-    "peakRating": 95,
+    "peakRating": 93,
     "value": 1665000,
     "intlCaps": 0,
-    "rating": 95,
+    "rating": 93,
     "appearances": 114,
     "tries": 99
   },
@@ -2618,12 +2618,12 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2008–Present",
     "category": "current",
-    "peakRating": 83,
+    "peakRating": 87,
     "value": 750000,
     "intlCaps": 2,
-    "rating": 83,
-    "appearances": 374,
-    "tries": 171
+    "rating": 87,
+    "appearances": 427,
+    "tries": 213
   },
   {
     "id": "hull-fc-cur-yusuf-aydin",
