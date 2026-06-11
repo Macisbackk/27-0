@@ -1683,6 +1683,25 @@
     "rating": 78
   },
   {
+    "id": "greg-bird",
+    "name": "Greg Bird",
+    "position": "LOOSE_FORWARD",
+    "club": "Catalans Dragons",
+    "nationality": "Australia",
+    "era": "MODERN_ERA",
+    "yearsActive": "2002–2018",
+    "category": "historic",
+    "peakRating": 87,
+    "value": 1800000,
+    "rating": 87,
+    "appearances": 289,
+    "tries": 53,
+    "intlCaps": 17,
+    "clubLegend": true,
+    "challengeCupWinner": true,
+    "superLeagueWinner": false
+  },
+  {
     "id": "catalans-hist-vincent-duport",
     "name": "Vincent Duport",
     "position": "Centre",

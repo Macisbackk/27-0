@@ -182,20 +182,117 @@ const POOR_SEASON_NARRATIVES = [
   "Drifted through the year without ever finding his best form.",
 ];
 
+const FORWARD_POSITIONS: Player["position"][] = [
+  "PROP",
+  "HOOKER",
+  "SECOND_ROW",
+  "LOOSE_FORWARD",
+];
+const HALF_POSITIONS: Player["position"][] = ["STAND_OFF", "SCRUM_HALF"];
+const BACK_POSITIONS: Player["position"][] = ["FULLBACK", "WING", "CENTRE"];
+
 function getPotyNarrative(
   perf: PlayerPerformance,
-  seasonResult: SeasonResult
+  seasonResult: SeasonResult,
+  isTopTryScorer: boolean
 ): string {
+  const seed = perf.playerId.length + perf.tries * 7 + perf.peakRating;
+
   if (seasonResult.isPerfect) {
-    return "Dominated throughout an unbeaten campaign and led the team to 27-0 glory.";
+    return pickFromPool(
+      [
+        "Dominated throughout an unbeaten campaign and led the team to 27-0 glory.",
+        "The standout in a perfect season — every week brought another decisive display.",
+        "A campaign worthy of a club great — decisive, consistent and impossible to ignore.",
+      ],
+      `${perf.playerId}-perfect`
+    );
   }
+
+  if (perf.peakRating >= 90 && perf.tries >= 15) {
+    return pickFromPool(
+      [
+        "A campaign worthy of a club great — decisive, consistent and impossible to ignore.",
+        "Elite form all season — the kind of year legends are built on.",
+        "Star quality every week and the numbers to prove it.",
+      ],
+      `${perf.playerId}-elite`
+    );
+  }
+
+  if (isTopTryScorer && perf.tries >= 12) {
+    return pickFromPool(
+      [
+        "Led the line with a try tally that separated this side from the rest.",
+        "The team's sharpest finisher — tries arrived when the season needed them most.",
+        "A constant threat with ball in hand and the player opposition sides struggled to contain.",
+      ],
+      `${perf.playerId}-tries`
+    );
+  }
+
+  if (FORWARD_POSITIONS.includes(perf.playedPosition)) {
+    return pickFromPool(
+      [
+        "Set the tone through the middle and gave the squad a platform every week.",
+        "Relentless in the trenches — the engine room of a strong campaign.",
+        "Led from the front with power, discipline and repeat efforts.",
+      ],
+      `${perf.playerId}-fwd`
+    );
+  }
+
+  if (HALF_POSITIONS.includes(perf.playedPosition)) {
+    return pickFromPool(
+      [
+        "Controlled the tempo, created chances and delivered when the season needed direction.",
+        "Ran the team with composure — the hub of everything this side did well.",
+        "Kicked, passed and organised the side through a standout campaign.",
+      ],
+      `${perf.playerId}-half`
+    );
+  }
+
+  if (BACK_POSITIONS.includes(perf.playedPosition)) {
+    return pickFromPool(
+      [
+        "A constant threat with ball in hand and the player opposition sides struggled to contain.",
+        "Explosive in attack and reliable when the stakes were highest.",
+        "Finished moves, broke the line and carried the team's attacking threat.",
+      ],
+      `${perf.playerId}-back`
+    );
+  }
+
   if (perf.tries >= 20) {
-    return "A prolific attacking threat who consistently delivered when it mattered.";
+    return pickFromPool(
+      [
+        "A prolific attacking threat who consistently delivered when it mattered.",
+        "Tries flowed all season — a finisher in irrepressible form.",
+      ],
+      `${perf.playerId}-prolific`
+    );
   }
+
   if (seasonResult.wins >= 20) {
-    return "Dominated throughout the campaign and drove the team deep into title contention.";
+    return pickFromPool(
+      [
+        "Dominated throughout the campaign and drove the team deep into title contention.",
+        "Match-winning contributions in a season that stayed in the hunt until the end.",
+      ],
+      `${perf.playerId}-wins`
+    );
   }
-  return "Stood above the rest with consistent match-winning contributions all season.";
+
+  void seed;
+  return pickFromPool(
+    [
+      "Stood above the rest with consistent match-winning contributions all season.",
+      "The pick of the squad — reliable, influential and always in the conversation.",
+      "Raised the standard week after week when others drifted.",
+    ],
+    perf.playerId
+  );
 }
 
 function getWorstNarrative(
@@ -358,7 +455,11 @@ export function generateSeasonAwards(
       detail: `${playerOfSeason.tries} tries · Impact ${playerOfSeason.impactScore}`,
       positionNote: playerOfSeason.positionNote ?? undefined,
       ratingNote: playerOfSeason.ratingNote ?? undefined,
-      narrative: getPotyNarrative(playerOfSeason, seasonResult),
+      narrative: getPotyNarrative(
+        playerOfSeason,
+        seasonResult,
+        topTryScorerIds.has(playerOfSeason.playerId)
+      ),
       variant: "positive",
     },
     {

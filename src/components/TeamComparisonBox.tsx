@@ -3,7 +3,10 @@
 import { memo, useMemo } from "react";
 import { motion } from "framer-motion";
 import { formatValue } from "@/lib/players";
-import type { ExtendedTeamComparison } from "@/lib/team-value-comparison";
+import type {
+  ExtendedTeamComparison,
+  TeamValueEntry,
+} from "@/lib/team-value-comparison";
 import {
   compareHigher,
   parseWinPct,
@@ -26,7 +29,10 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
   comparison,
   delay = 0,
 }: TeamComparisonBoxProps) {
-  const { user, opponent, ratingEdge } = comparison;
+  const { user, opponent, ratingEdge, mostExpensiveOpposition } = comparison;
+  const showMostExpensiveOpponent =
+    mostExpensiveOpposition != null &&
+    mostExpensiveOpposition.name !== opponent.name;
   const maxRating = Math.max(user.rating, opponent.rating, 1);
 
   const userBarPct = useMemo(
@@ -95,8 +101,8 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
               club={user.name}
             />
             <TeamBadge
-              heading="Best Opposition"
-              badge="🔴 Best Opposition"
+              heading="Opponent"
+              badge="🔴 Opponent"
               badgeClass="border-accent-red/40 bg-accent-red/10 text-accent-red"
               club={opponent.name}
               align="right"
@@ -135,8 +141,8 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
           </div>
 
           <TeamSidePanel
-            label="Best Opposition"
-            badge="🔴 Best Opposition"
+            label="Opponent"
+            badge="🔴 Opponent"
             badgeClass="border-accent-red/40 bg-accent-red/10 text-accent-red"
             side={opponent}
             align="right"
@@ -145,7 +151,10 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
             winPctEdge={winPctEdge}
             triesEdge={triesEdge}
             topPlayerEdge={topPlayerEdge}
-            topPlayerLabel="Best Player"
+            topPlayerLabel="Top Player"
+            mostExpensiveOpponent={
+              showMostExpensiveOpponent ? mostExpensiveOpposition : null
+            }
           />
         </div>
 
@@ -163,6 +172,22 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
               />
             ))}
           </div>
+
+          {showMostExpensiveOpponent && mostExpensiveOpposition && (
+            <div className={`${CARD.inset} mt-4 px-3 py-2.5 text-center`}>
+              <p className={TYPO.statLabel}>Most Expensive Opponent</p>
+              <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+                <ClubNameLabel
+                  club={mostExpensiveOpposition.name}
+                  variant="pill"
+                  className="max-w-full truncate"
+                />
+                <span className="font-display text-sm font-black text-accent-gold">
+                  {formatValue(mostExpensiveOpposition.value)}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </motion.div>
@@ -214,7 +239,7 @@ const MobileVsDivider = memo(function MobileVsDivider({
         </span>
         <div className="h-px flex-1 bg-pitch-700/80" aria-hidden />
       </div>
-      <p className={`mt-2 ${TYPO.statLabel}`}>Best Opposition</p>
+      <p className={`mt-2 ${TYPO.statLabel}`}>Opponent</p>
     </div>
   );
 });
@@ -348,6 +373,7 @@ const TeamSidePanel = memo(function TeamSidePanel({
   triesEdge,
   topPlayerEdge,
   topPlayerLabel,
+  mostExpensiveOpponent,
 }: {
   label: string;
   badge: string;
@@ -360,6 +386,7 @@ const TeamSidePanel = memo(function TeamSidePanel({
   triesEdge: CompareEdge;
   topPlayerEdge: CompareEdge;
   topPlayerLabel: string;
+  mostExpensiveOpponent?: TeamValueEntry | null;
 }) {
   const isRight = align === "right";
 
@@ -412,6 +439,30 @@ const TeamSidePanel = memo(function TeamSidePanel({
           truncate
         />
       </dl>
+
+      {mostExpensiveOpponent && (
+        <div
+          className={`mt-4 border-t border-pitch-700/60 pt-3 ${
+            isRight ? "sm:text-right" : "text-left"
+          }`}
+        >
+          <p className={TYPO.statLabel}>Most Expensive Opponent</p>
+          <div
+            className={`mt-1.5 flex flex-wrap items-center gap-2 ${
+              isRight ? "sm:justify-end" : "justify-start"
+            }`}
+          >
+            <ClubNameLabel
+              club={mostExpensiveOpponent.name}
+              variant="pill"
+              className="max-w-full truncate"
+            />
+            <span className="font-display text-sm font-black text-accent-gold">
+              {formatValue(mostExpensiveOpponent.value)}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 });

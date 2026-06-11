@@ -68,7 +68,7 @@ const RUNNER_UP = [
 ];
 
 const PLAYOFF = [
-  "Playoff football secured — the hard work paid off.",
+  "Finals rugby league secured — the hard work paid off.",
   "A top-six finish and a genuine shot at the title race.",
   "Into the playoffs with momentum and belief.",
   "September rugby awaits. This squad earned their shot.",

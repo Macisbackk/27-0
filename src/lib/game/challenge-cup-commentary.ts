@@ -4,7 +4,7 @@ const WINNER_LINES = [
   "A memorable cup run ends with silverware and a place in club folklore.",
   "A Wembley-worthy performance throughout the tournament.",
   "A cup campaign that supporters will remember for years.",
-  "Knockout football at its finest — the trophy is coming home.",
+  "Knockout rugby league at its finest — the trophy is coming home.",
   "A famous Challenge Cup triumph built on big-match mentality.",
 ];
 

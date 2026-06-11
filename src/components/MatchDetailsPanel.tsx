@@ -91,6 +91,7 @@ export function MatchDetailsPanel({
               tier={userTier}
               finalScore={fixture.pointsFor}
               userSquad={userSquad}
+              isUserTeam
             />
             <TeamScoringBlock
               teamName={fixture.opponent}
@@ -99,6 +100,7 @@ export function MatchDetailsPanel({
               averageRating={opponentSummary.averageRating}
               tier={opponentSummary.tier}
               finalScore={fixture.pointsAgainst}
+              isUserTeam={false}
             />
           </div>
         ) : (
@@ -117,6 +119,7 @@ function TeamScoringBlock({
   tier,
   finalScore,
   userSquad,
+  isUserTeam,
 }: {
   teamName: string;
   scoring: TeamScoringDetail;
@@ -125,6 +128,7 @@ function TeamScoringBlock({
   tier: string;
   finalScore: number;
   userSquad?: SquadSlot[];
+  isUserTeam: boolean;
 }) {
   const hasTries = scoring.tryScorers.length > 0;
   const kicking = scoring.kicking;
@@ -148,7 +152,7 @@ function TeamScoringBlock({
       </div>
       {hasTries && (
         <ScoringSection title="Tries">
-          <ul className={SPACING.stackSm}>
+          <div className="flex flex-wrap gap-1.5">
             {scoring.tryScorers.map((s) => {
               const slot = userSquad
                 ? findSlotByPlayerId(userSquad, s.playerId)
@@ -157,19 +161,20 @@ function TeamScoringBlock({
               const positionNote = extras.positionNote;
               const label =
                 s.tries > 1 ? `${s.name} x${s.tries}` : s.name;
+              const chipClass = isUserTeam
+                ? "border-accent-green/35 bg-accent-green/10 text-accent-green"
+                : "border-accent-red/30 bg-accent-red/10 text-red-300";
               return (
-                <li
+                <span
                   key={s.playerId}
-                  className={`${CARD.inset} px-2.5 py-2`}
+                  title={positionNote ?? undefined}
+                  className={`inline-flex max-w-full items-center rounded-full border px-2.5 py-1 font-display text-xs font-bold ${chipClass}`}
                 >
-                  <p className={TYPO.statValue}>{label}</p>
-                  {positionNote && (
-                    <p className={`mt-1 ${TYPO.bodySm}`}>{positionNote}</p>
-                  )}
-                </li>
+                  <span className="truncate">{label}</span>
+                </span>
               );
             })}
-          </ul>
+          </div>
         </ScoringSection>
       )}
       {hasConversions && kicking && (

@@ -5,7 +5,7 @@ import { formatCareerTries, formatValue } from "@/lib/players";
 import { getPlayerInitials } from "@/lib/players/initials";
 import { getValueTier } from "@/lib/players/ratings";
 import { isActivePlayer } from "@/lib/players/active";
-import { getPlayerAchievementGroups } from "@/lib/players/achievements";
+import { getPlayerAchievements } from "@/lib/players/achievements";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
 import { getClubColors } from "@/lib/clubs";
@@ -56,7 +56,7 @@ export function RugbyLeaguePlayerCard({
   const isGoat = isGoatPlayer(player);
   const isSuperSam = isSuperSamHallasPlayer(player);
   const isActive = isActivePlayer(player);
-  const achievementGroups = getPlayerAchievementGroups(player);
+  const achievements = getPlayerAchievements(player);
   const tier = getValueTier(player.peakRating);
   const isRecruitment = variant === "recruitment";
   const isPitch = variant === "pitch";
@@ -106,28 +106,20 @@ export function RugbyLeaguePlayerCard({
   ) : null;
 
   const achievementBadges =
-    achievementGroups.length > 0 ? (
-      <RLInfoBox className="space-y-2 px-3 py-2.5">
-        {achievementGroups.map((group) => (
-          <div key={group.category}>
-            <p
-              className={`mb-1 text-center ${TYPO.statLabel} text-gray-500 ${hiddenClass}`}
-            >
-              {group.title}
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-1.5">
-              {group.achievements.map((achievement) => (
-                <RLTag
-                  key={`${group.category}-${achievement.label}`}
-                  variant={ACHIEVEMENT_TAG_VARIANT[achievement.color]}
-                >
-                  {achievement.label}
-                </RLTag>
-              ))}
-            </div>
-          </div>
+    achievements.length > 0 ? (
+      <div
+        className={`flex flex-wrap items-center justify-center gap-1 px-1 py-0.5 ${hiddenClass}`}
+      >
+        {achievements.map((achievement) => (
+          <RLTag
+            key={achievement.label}
+            variant={ACHIEVEMENT_TAG_VARIANT[achievement.color]}
+            compact={compactMobile}
+          >
+            {achievement.label}
+          </RLTag>
         ))}
-      </RLInfoBox>
+      </div>
     ) : null;
 
   if (isPitch) {
@@ -292,21 +284,12 @@ export function RugbyLeaguePlayerCard({
               compact={mobileCompact}
             />
             <StatBox
-              label="Intl Caps"
-              value={maskValue(
-                player.intlCaps > 0 ? String(player.intlCaps) : "—"
-              )}
-              size="lg"
-              light
-              compact={mobileCompact}
-            />
-            <StatBox
               label="Tier"
               value={maskValue(tier)}
               size="lg"
               light
               compact={mobileCompact}
-              className={TIER_STAT_SPAN_CLASS}
+              className="col-span-2 sm:col-span-1"
             />
           </div>
         </div>
@@ -351,12 +334,6 @@ export function RugbyLeaguePlayerCard({
           <StatBox
             label="Value"
             value={maskValue(formatValue(player.value))}
-          />
-          <StatBox
-            label="Intl Caps"
-            value={maskValue(
-              player.intlCaps > 0 ? String(player.intlCaps) : "—"
-            )}
           />
           <StatBox
             label="Tier"

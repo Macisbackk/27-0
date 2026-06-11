@@ -63,15 +63,7 @@ export function getPlayerAchievementGroups(
     byCategory.set(category, list);
   };
 
-  if (player.hallOfFame) {
-    push("hallOfFameLegend", {
-      label: "Hall of Fame",
-      color: "purple",
-      category: "hallOfFameLegend",
-    });
-  }
-
-  if (player.category === "legend" && !player.hallOfFame) {
+  if (player.category === "legend") {
     push("hallOfFameLegend", {
       label: "Legend",
       color: "gold",
@@ -97,7 +89,7 @@ export function getPlayerAchievementGroups(
 
   if (player.superLeagueWinner) {
     push("leagueTitles", {
-      label: "League Title",
+      label: "Super League Champion",
       color: "green",
       category: "leagueTitles",
     });
@@ -105,7 +97,7 @@ export function getPlayerAchievementGroups(
 
   if (player.challengeCupWinner) {
     push("challengeCups", {
-      label: "Challenge Cup",
+      label: "Challenge Cup Winner",
       color: "gold",
       category: "challengeCups",
     });
@@ -113,7 +105,7 @@ export function getPlayerAchievementGroups(
 
   if (player.clubLegend) {
     push("clubHonours", {
-      label: "Club Legend",
+      label: "Club Hero",
       color: "gold",
       category: "clubHonours",
     });

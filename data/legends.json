@@ -1092,27 +1092,6 @@
     "rating": 92
   },
   {
-    "id": "greg-bird",
-    "name": "Greg Bird",
-    "position": "Loose forward",
-    "club": "Catalans Dragons",
-    "nationality": "Australia",
-    "era": "Catalans competitive rise era",
-    "yearsActive": "2002–2018",
-    "category": "legend",
-    "peakRating": 92,
-    "value": 2655000,
-    "appearances": 289,
-    "tries": 53,
-    "intlCaps": 17,
-    "hallOfFame": false,
-    "clubLegend": true,
-    "manOfSteel": false,
-    "challengeCupWinner": true,
-    "superLeagueWinner": false,
-    "rating": 92
-  },
-  {
     "id": "danny-houghton",
     "name": "Danny Houghton",
     "position": "Hooker",

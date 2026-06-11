@@ -207,11 +207,13 @@ export function SeasonReview({
               {gradeInfo.label}
             </p>
             <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-500">
-              {getGradeReviewBio(
-                gradeInfo.grade,
-                seasonResult.wins,
-                seasonResult.losses
-              )}
+              {getGradeReviewBio(gradeInfo.grade, {
+                wins: seasonResult.wins,
+                losses: seasonResult.losses,
+                leaguePosition: seasonResult.leaguePosition,
+                pointsDifference: seasonResult.pointsDifference,
+                isPerfect: seasonResult.isPerfect,
+              })}
             </p>
           </motion.div>
 
@@ -335,16 +337,12 @@ export function SeasonReview({
         </CollapsibleReviewSection>
 
         <CollapsibleReviewSection title="Team Statistics" delay={0.37}>
-          <TeamStatisticsBox
-            squad={squad}
-            totalValue={totalValue}
-            mostExpensiveTeam={teamComparison.mostExpensiveTeam}
-          />
+          <TeamStatisticsBox squad={squad} totalValue={totalValue} />
         </CollapsibleReviewSection>
 
         <CollapsibleReviewSection
-          title="Your Team vs Best Opposition"
-          helper="Comparing your final squad against the strongest team you faced this season."
+          title="Your Team vs Strongest Opponent"
+          helper="Comparing your squad against the strongest side you faced this season."
           variant="featured"
           delay={0.38}
         >

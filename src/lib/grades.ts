@@ -59,9 +59,9 @@ const GRADE_META: Record<
     glow: "rgba(34, 197, 94, 0.45)",
   },
   B: {
-    label: "Playoff Team",
-    subtitle: "Playoff Team",
-    explanation: "A strong playoff-level team.",
+    label: "Top Six Contender",
+    subtitle: "Top Six Contender",
+    explanation: "A strong top-six level team.",
     color: "#38bdf8",
     glow: "rgba(56, 189, 248, 0.4)",
   },
@@ -205,39 +205,120 @@ export function formatGradeDisplay(info: GradeInfo): string {
   return `${info.grade} Grade (${info.label})`;
 }
 
+export interface GradeReviewContext {
+  wins: number;
+  losses: number;
+  leaguePosition: number;
+  pointsDifference: number;
+  isPerfect: boolean;
+}
+
+function pickGradeBio(pool: string[], seed: number): string {
+  if (pool.length === 0) return "";
+  return pool[Math.abs(seed) % pool.length]!;
+}
+
 /** Short review-page bio shown under the grade heading. */
 export function getGradeReviewBio(
   grade: SquadGrade,
-  wins: number,
-  losses: number
+  ctx: GradeReviewContext
 ): string {
-  const winless = wins === 0;
-  const dominant = wins >= 24 || grade === "S+" || grade === "S";
+  const { wins, losses, leaguePosition, pointsDifference, isPerfect } = ctx;
+  const seed =
+    wins * 31 +
+    losses * 17 +
+    leaguePosition * 13 +
+    Math.round(pointsDifference);
 
-  switch (grade) {
-    case "S+":
-      return dominant
-        ? "A once-in-a-generation squad that looked untouchable all season."
-        : "An extraordinary campaign — this side belonged in the history books.";
-    case "S":
-      return "A dominant squad that looked capable of beating anyone.";
-    case "A":
-      return "A strong campaign with enough quality to challenge at the top.";
-    case "B":
-      return "A solid season with clear strengths, but still room to improve.";
-    case "C":
-      return "Mid-table quality — not bad, not great, but competitive.";
-    case "D":
-      return winless
-        ? "A winless campaign that never found its rhythm."
-        : "A frustrating campaign that never fully clicked.";
-    case "E":
-      return losses >= 20
-        ? "A dire season that left plenty to fix in the off-season."
-        : "A disappointing run that fell well short of expectations.";
-    case "F":
-      return "A rebuild is needed. This squad struggled badly.";
-    default:
-      return "A season worth reflecting on before the next recruitment drive.";
+  if (isPerfect || wins === 27) {
+    return pickGradeBio(
+      [
+        "A once-in-a-generation squad that looked untouchable all season.",
+        "27-0 perfection — this campaign belongs in rugby league folklore.",
+        "An immaculate season where every week felt inevitable.",
+      ],
+      seed
+    );
   }
+
+  const pools: Record<SquadGrade, string[]> = {
+    "S+": [
+      "A dominant campaign where the squad looked built for history.",
+      "Barely put a foot wrong — this side set the standard all year.",
+      "Championship-calibre rugby league from first whistle to last.",
+    ],
+    S: [
+      "A dominant campaign where the squad looked built for history.",
+      "Title-chasing form all season — this team meant business.",
+      "An elite run that only narrowly missed immortality.",
+    ],
+    A: [
+      "A genuine contender's season — strong, consistent and dangerous.",
+      "Grand final credentials with enough quality to trouble anyone.",
+      "A polished campaign that kept the pressure on at the top.",
+    ],
+    B: [
+      "A solid year with plenty to like, even if silverware stayed just out of reach.",
+      "Top-six form without quite breaking into the elite bracket.",
+      "Competitive throughout — a platform worth building on.",
+    ],
+    C: [
+      "Middle-of-the-pack rugby league: competitive enough, but lacking a killer edge.",
+      "A mixed bag of results that never quite found a defining identity.",
+      "Capable in flashes, inconsistent when it mattered most.",
+    ],
+    D: [
+      "Too many missed chances and not enough consistency to climb the table.",
+      "A frustrating season that promised more than it delivered.",
+      "Fell short of expectations and struggled to build momentum.",
+    ],
+    E: [
+      "A disappointing run that left the squad searching for answers.",
+      "Relegation form at times — serious improvement needed next year.",
+      "A tough campaign that exposed too many weaknesses.",
+    ],
+    F: [
+      "A season to forget. The rebuild starts now.",
+      "Wooden spoon territory — back to the drawing board.",
+      "A rebuild is needed. This squad struggled badly.",
+    ],
+  };
+
+  let bio = pickGradeBio(pools[grade], seed);
+
+  if (wins === 0) {
+    bio = pickGradeBio(
+      [
+        "A winless campaign that never found its rhythm.",
+        "Not a single victory all season — a brutal year to endure.",
+      ],
+      seed + 1
+    );
+  } else if (losses === 27) {
+    bio = pickGradeBio(
+      [
+        "0-27 misery — one of the toughest seasons imaginable.",
+        "A campaign with no respite and no answers.",
+      ],
+      seed + 2
+    );
+  } else if (leaguePosition <= 2 && wins >= 20) {
+    bio = pickGradeBio(
+      [
+        "Finished among the elite and looked every bit a title threat.",
+        "Near the summit all year — just missing the final step.",
+      ],
+      seed + 3
+    );
+  } else if (pointsDifference < -120) {
+    bio = pickGradeBio(
+      [
+        "Outscored heavily — defensive frailties cost this squad dearly.",
+        "A negative points difference that told the story of the season.",
+      ],
+      seed + 4
+    );
+  }
+
+  return bio;
 }

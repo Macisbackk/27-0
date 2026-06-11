@@ -347,14 +347,13 @@ export function ChallengeCupReview({
           <TeamStatisticsBox
             squad={squad}
             totalValue={totalValue}
-            mostExpensiveTeam={teamComparison.mostExpensiveTeam}
             userTeamName={userTeamName}
           />
         </CollapsibleReviewSection>
 
         <CollapsibleReviewSection
-          title="Your Team vs Best Opposition"
-          helper="Comparing your final squad against the strongest team you faced this season."
+          title="Your Team vs Strongest Opponent"
+          helper="Comparing your squad against the strongest side you faced this tournament."
           variant="featured"
           delay={0.38}
         >

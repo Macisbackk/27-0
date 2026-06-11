@@ -4,15 +4,19 @@
  */
 export function getTeamTier(averageRating: number): string {
   if (averageRating >= 99) return "Immortal XIII";
-  if (averageRating >= 96) return "All-Time Greats";
-  if (averageRating >= 93) return "Dynasty Squad";
-  if (averageRating >= 90) return "Title Favourites";
-  if (averageRating >= 87) return "Grand Final Contenders";
-  if (averageRating >= 84) return "Playoff Quality";
-  if (averageRating >= 81) return "Competitive Squad";
-  if (averageRating >= 78) return "Mid-Table Side";
-  if (averageRating >= 75) return "Rebuild Squad";
-  return "Wooden Spoon Squad";
+  if (averageRating >= 97) return "All-Time Greats";
+  if (averageRating >= 95) return "Generational Squad";
+  if (averageRating >= 93) return "Title Favourites";
+  if (averageRating >= 91) return "Grand Final Contenders";
+  if (averageRating >= 89) return "Trophy Contenders";
+  if (averageRating >= 87) return "Top Six Contender";
+  if (averageRating >= 85) return "Competitive Outfit";
+  if (averageRating >= 83) return "Dangerous Underdogs";
+  if (averageRating >= 81) return "Mid-Table Side";
+  if (averageRating >= 79) return "Inconsistent Squad";
+  if (averageRating >= 77) return "Rebuild Project";
+  if (averageRating >= 75) return "Basement Battlers";
+  return "Wooden Spoon Side";
 }
 
 export function formatTeamRatingDisplay(

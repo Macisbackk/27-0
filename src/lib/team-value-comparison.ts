@@ -55,6 +55,7 @@ export interface ExtendedTeamComparison {
   user: TeamSideDisplay;
   opponent: TeamSideDisplay;
   mostExpensiveTeam: TeamValueEntry;
+  mostExpensiveOpposition: TeamValueEntry | null;
   ratingEdge: "user" | "opponent" | "tie";
 }
 
@@ -144,6 +145,32 @@ export function formatWinPercentage(wins: number, losses: number): string {
   const total = wins + losses;
   if (total === 0) return "—";
   return `${Math.round((wins / total) * 100)}%`;
+}
+
+/** Highest squad value among opposition clubs faced (excludes user team). */
+export function getMostExpensiveOpposition(
+  fixtures: MatchFixture[],
+  seed: string
+): TeamValueEntry | null {
+  const teams = new Map<string, number>();
+
+  for (const fixture of fixtures) {
+    const oppValue = getOpponentSquadValue(
+      fixture.opponent,
+      seed,
+      fixture.round
+    );
+    const prev = teams.get(fixture.opponent) ?? 0;
+    teams.set(fixture.opponent, Math.max(prev, oppValue));
+  }
+
+  let best: TeamValueEntry | null = null;
+  for (const [name, value] of teams) {
+    if (!best || value > best.value) {
+      best = { name, value };
+    }
+  }
+  return best;
 }
 
 export function getMostExpensiveTeam(
@@ -336,6 +363,7 @@ export function getExtendedTeamComparison(
           : getTopPlayerFromSquad(bestOpposition.name, seed, oppRound),
     },
     mostExpensiveTeam,
+    mostExpensiveOpposition: getMostExpensiveOpposition(fixtures, seed),
     ratingEdge,
   };
 }
