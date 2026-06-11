@@ -203,7 +203,6 @@ export function FantasyModeBoard() {
           <>
             <FantasyBudgetPanel
               squad={squad}
-              selectedSlot={phase === "squadBuild" ? selectedSlot : null}
               compact={phase === "season"}
             />
 
