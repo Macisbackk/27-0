@@ -15,6 +15,11 @@ import {
 } from "./game/opponent-scorers";
 import { getEffectivePeakRating } from "./squad-analysis";
 import { getTeamTier } from "./team-tiers";
+import type { BracketMatch } from "./game/challenge-cup-bracket";
+import {
+  getClubBracketTriesConceded,
+  getClubBracketTriesScored,
+} from "./game/challenge-cup-stats";
 import type { SquadSlot } from "./types";
 
 export interface TeamValueEntry {
@@ -48,6 +53,7 @@ export interface TeamSideDisplay {
   value: number;
   winPct: string;
   totalTries: number;
+  triesConceded: number;
   topPlayer: TeamPlayerHighlight;
 }
 
@@ -57,6 +63,8 @@ export interface ExtendedTeamComparison {
   mostExpensiveTeam: TeamValueEntry;
   mostExpensiveOpposition: TeamValueEntry | null;
   ratingEdge: "user" | "opponent" | "tie";
+  /** Challenge Cup comparisons use tries conceded instead of win %. */
+  useTriesConceded?: boolean;
 }
 
 function getTopPlayerFromSquad(
@@ -102,7 +110,14 @@ function getComparisonStatsFromSeason(
   seasonResult: SeasonResult,
   seed: string,
   opponentName: string
-): { userWinPct: string; userTries: number; oppWinPct: string; oppTries: number } {
+): {
+  userWinPct: string;
+  userTries: number;
+  userTriesConceded: number;
+  oppWinPct: string;
+  oppTries: number;
+  oppTriesConceded: number;
+} {
   const statsMap = buildTeamSeasonStats(seasonResult, seed);
   const userStats = statsMap.get(DREAM_TEAM_NAME);
   const oppStats = statsMap.get(opponentName);
@@ -112,10 +127,12 @@ function getComparisonStatsFromSeason(
       ? formatWinPercentage(userStats.wins, userStats.losses)
       : "—",
     userTries: userStats?.triesFor ?? 0,
+    userTriesConceded: userStats?.triesAgainst ?? 0,
     oppWinPct: oppStats
       ? formatWinPercentage(oppStats.wins, oppStats.losses)
       : "—",
     oppTries: oppStats?.triesFor ?? 0,
+    oppTriesConceded: oppStats?.triesAgainst ?? 0,
   };
 }
 
@@ -296,6 +313,8 @@ export function getExtendedTeamComparison(
     wins: number;
     losses: number;
     seasonResult?: SeasonResult;
+    cupMode?: boolean;
+    bracketMatches?: BracketMatch[];
   }
 ): ExtendedTeamComparison {
   const summary = getTeamComparisonSummary(
@@ -314,18 +333,51 @@ export function getExtendedTeamComparison(
     };
   const useLeagueStats =
     isFullLeagueSeason(fixtures) && options.seasonResult != null;
+  const cupMode = options.cupMode === true;
+  const bracketMatches = options.bracketMatches ?? [];
+
   const comparisonStats = useLeagueStats
     ? getComparisonStatsFromSeason(
         options.seasonResult!,
         seed,
         bestOpposition.name
       )
-    : {
-        userWinPct: formatWinPercentage(options.wins, options.losses),
-        userTries: getHeadToHeadTries(userTeamName, fixtures, "user"),
-        oppWinPct: getHeadToHeadWinPct(bestOpposition.name, fixtures),
-        oppTries: getHeadToHeadTries(bestOpposition.name, fixtures, "opponent"),
-      };
+    : cupMode
+      ? {
+          userWinPct: formatWinPercentage(options.wins, options.losses),
+          userTries: fixtures.reduce((sum, fixture) => sum + fixture.triesFor, 0),
+          userTriesConceded: fixtures.reduce(
+            (sum, fixture) => sum + fixture.triesAgainst,
+            0
+          ),
+          oppWinPct: "—",
+          oppTries:
+            bestOpposition.name === "—"
+              ? 0
+              : getClubBracketTriesScored(bestOpposition.name, bracketMatches),
+          oppTriesConceded:
+            bestOpposition.name === "—"
+              ? 0
+              : getClubBracketTriesConceded(
+                  bestOpposition.name,
+                  bracketMatches
+                ),
+        }
+      : {
+          userWinPct: formatWinPercentage(options.wins, options.losses),
+          userTries: getHeadToHeadTries(userTeamName, fixtures, "user"),
+          userTriesConceded: fixtures.reduce(
+            (sum, fixture) => sum + fixture.triesAgainst,
+            0
+          ),
+          oppWinPct: getHeadToHeadWinPct(bestOpposition.name, fixtures),
+          oppTries: getHeadToHeadTries(bestOpposition.name, fixtures, "opponent"),
+          oppTriesConceded: getHeadToHeadTries(
+            bestOpposition.name,
+            fixtures,
+            "user"
+          ),
+        };
 
   const oppRound = findBestOpponentRound(bestOpposition.name, fixtures, seed);
   const oppValue =
@@ -340,6 +392,12 @@ export function getExtendedTeamComparison(
         ? "opponent"
         : "tie";
 
+  const mostExpensiveOpposition =
+    getMostExpensiveOpposition(fixtures, seed) ?? {
+      name: "N/A",
+      value: 0,
+    };
+
   return {
     user: {
       name: userTeamName,
@@ -348,6 +406,7 @@ export function getExtendedTeamComparison(
       value: userValue,
       winPct: comparisonStats.userWinPct,
       totalTries: comparisonStats.userTries,
+      triesConceded: comparisonStats.userTriesConceded,
       topPlayer: getUserTopPlayer(options.squad),
     },
     opponent: {
@@ -357,13 +416,15 @@ export function getExtendedTeamComparison(
       value: oppValue,
       winPct: comparisonStats.oppWinPct,
       totalTries: comparisonStats.oppTries,
+      triesConceded: comparisonStats.oppTriesConceded,
       topPlayer:
         bestOpposition.name === "—"
           ? { name: "—", rating: 0 }
           : getTopPlayerFromSquad(bestOpposition.name, seed, oppRound),
     },
     mostExpensiveTeam,
-    mostExpensiveOpposition: getMostExpensiveOpposition(fixtures, seed),
+    mostExpensiveOpposition,
     ratingEdge,
+    useTriesConceded: cupMode,
   };
 }

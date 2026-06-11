@@ -8,9 +8,10 @@ import {
   snapToRLScore,
 } from "./rl-scores";
 import {
-  distributeSeasonTries,
-  enrichSingleFixtureScoring,
-} from "./season-tries";
+  buildChallengeCupTournamentStats,
+  deriveCupTryScorersFromMatchEvents,
+} from "./challenge-cup-stats";
+import { enrichSingleFixtureScoring } from "./season-tries";
 import type {
   ChallengeCupResult,
   CupFinish,
@@ -705,24 +706,29 @@ export function buildChallengeCupResult(
     .map((m) => m.userFixture)
     .filter((f): f is MatchFixture => f !== null);
 
-  const wins = fixtures.filter((f) => f.result === "W").length;
-  const losses = fixtures.filter((f) => f.result === "L").length;
-  const pointsFor = fixtures.reduce((s, f) => s + f.pointsFor, 0);
-  const pointsAgainst = fixtures.reduce((s, f) => s + f.pointsAgainst, 0);
+  const tournamentStats = buildChallengeCupTournamentStats(fixtures);
+  const { wins, losses, pointsFor, pointsAgainst, matchesPlayed } =
+    tournamentStats;
   const strength = calculateSquadStrength(squad);
   const outcome = deriveFinish(fixtures, finalized);
-  const tryScorers = distributeSeasonTries(squad, fixtures, state.seed, wins);
+  const tryScorers = deriveCupTryScorersFromMatchEvents(
+    squad,
+    fixtures,
+    state.seed,
+    wins
+  );
 
   return {
     finish: outcome.finish,
     resultLabel: outcome.label,
-    matchesPlayed: fixtures.length,
+    matchesPlayed,
     wins,
     losses,
     pointsFor,
     pointsAgainst,
     fixtures,
     tryScorers,
+    tournamentStats,
     squadStrength: Math.round(strength * 10) / 10,
     insights: [],
     isWinner: outcome.isWinner,

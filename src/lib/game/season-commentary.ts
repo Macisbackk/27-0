@@ -71,7 +71,7 @@ const PLAYOFF = [
   "Finals rugby league secured — the hard work paid off.",
   "A top-six finish and a genuine shot at the title race.",
   "Into the playoffs with momentum and belief.",
-  "September rugby awaits. This squad earned their shot.",
+  "Playoff rugby secured — this squad earned their shot at the title.",
   "A strong finish booked a place among the contenders.",
 ];
 

@@ -7,8 +7,9 @@ import {
   getPlayersByClub,
   isAvailableInGame,
 } from "../players";
-import type { Player, PlayerCategory, Position } from "../types";
-import { TOTAL_SLOTS, createEmptySquad } from "../positions";
+import type { Player, PlayerCategory, Position, SquadSlot } from "../types";
+import { SQUAD_STRUCTURE, TOTAL_SLOTS, createEmptySquad } from "../positions";
+import { getRemainingPositionCounts } from "./draft-positions";
 
 export interface RecruitmentOptions {
   hardMode?: boolean;
@@ -25,6 +26,9 @@ const ELITE_RATING_THRESHOLD = 90;
 const TYPICAL_PAIR_RATING_GAP = 6;
 const EXTREME_PAIR_RATING_GAP = 10;
 const EXTREME_PAIR_CHANCE = 0.06;
+const DRAFT_SAME_POSITION_MAX_CHANCE = 0.12;
+const DRAFT_RECENT_POSITION_DECAY = 0.4;
+const DRAFT_NEED_MULTIPLIER = 3;
 
 type RatingBand = "b75_79" | "b80_84" | "b85_89" | "b90_94" | "b95_99";
 
@@ -492,6 +496,202 @@ export function rerollSlotOffer(
   };
 }
 
+function positionHasAvailablePlayers(
+  position: Position,
+  usedIds: Set<string>,
+  options?: RecruitmentOptions
+): boolean {
+  return basePlayerPool(options).some(
+    (player) => player.position === position && !usedIds.has(player.id)
+  );
+}
+
+function pickWeightedDraftPosition(
+  rng: () => number,
+  remaining: Map<Position, number>,
+  recentPositions: Position[],
+  usedIds: Set<string>,
+  options?: RecruitmentOptions,
+  exclude?: Position
+): Position | null {
+  let candidates = Array.from(remaining.entries()).filter(
+    ([position, count]) =>
+      count > 0 &&
+      position !== exclude &&
+      positionHasAvailablePlayers(position, usedIds, options)
+  );
+
+  if (candidates.length === 0) {
+    candidates = SQUAD_STRUCTURE.map(
+      ({ position }) => [position, 1] as [Position, number]
+    )
+      .filter(
+        ([position]) =>
+          position !== exclude &&
+          positionHasAvailablePlayers(position, usedIds, options)
+      );
+  }
+
+  if (candidates.length === 0) return null;
+
+  const recentCounts = new Map<Position, number>();
+  for (const position of recentPositions) {
+    recentCounts.set(position, (recentCounts.get(position) ?? 0) + 1);
+  }
+
+  const weights = candidates.map(([position, need]) => {
+    const recent = recentCounts.get(position) ?? 0;
+    return (
+      Math.max(need, 1) *
+      DRAFT_NEED_MULTIPLIER *
+      Math.pow(DRAFT_RECENT_POSITION_DECAY, recent)
+    );
+  });
+  const total = weights.reduce((sum, weight) => sum + weight, 0);
+  let roll = rng() * total;
+
+  for (let i = 0; i < candidates.length; i++) {
+    roll -= weights[i];
+    if (roll <= 0) return candidates[i][0];
+  }
+
+  return candidates[candidates.length - 1][0];
+}
+
+function pickSinglePlayerForPosition(
+  position: Position,
+  rng: () => number,
+  usedIds: Set<string>,
+  anchorRating?: number,
+  options?: RecruitmentOptions
+): Player | null {
+  let pool = basePlayerPool(options).filter(
+    (player) => player.position === position && !usedIds.has(player.id)
+  );
+  if (pool.length === 0) return null;
+
+  const categoryPool = selectCategoryPool(rng, options).filter(
+    (player) => player.position === position && !usedIds.has(player.id)
+  );
+  if (categoryPool.length > 0) pool = categoryPool;
+
+  if (anchorRating !== undefined) {
+    const close = pool.filter(
+      (player) =>
+        Math.abs(player.peakRating - anchorRating) <= TYPICAL_PAIR_RATING_GAP
+    );
+    if (close.length > 0) pool = close;
+  }
+
+  const weights = options?.clubFilter ? CUP_BAND_WEIGHTS : NORMAL_BAND_WEIGHTS;
+  const band = rollBand(rng, weights);
+  return pickFromBandWithFallback(pool, band, rng);
+}
+
+function pickDraftBalancedPair(
+  rng: () => number,
+  usedIds: Set<string>,
+  squad: SquadSlot[],
+  recentPositions: Position[],
+  options?: RecruitmentOptions
+): [string, string] | null {
+  let remaining = getRemainingPositionCounts(squad);
+  if (remaining.size === 0) {
+    remaining = new Map(
+      SQUAD_STRUCTURE.map(({ position, count }) => [position, count])
+    );
+  }
+
+  const posA = pickWeightedDraftPosition(
+    rng,
+    remaining,
+    recentPositions,
+    usedIds,
+    options
+  );
+  if (!posA) return pickPairAny(rng, usedIds, options);
+
+  const allowSamePosition = rng() < DRAFT_SAME_POSITION_MAX_CHANCE;
+  const posB = allowSamePosition
+    ? pickWeightedDraftPosition(
+        rng,
+        remaining,
+        recentPositions,
+        usedIds,
+        options
+      )
+    : pickWeightedDraftPosition(
+        rng,
+        remaining,
+        recentPositions,
+        usedIds,
+        options,
+        posA
+      ) ??
+      pickWeightedDraftPosition(
+        rng,
+        remaining,
+        recentPositions,
+        usedIds,
+        options
+      );
+
+  const playerA = pickSinglePlayerForPosition(
+    posA,
+    rng,
+    usedIds,
+    undefined,
+    options
+  );
+  if (!playerA) return pickPairAny(rng, usedIds, options);
+
+  const usedWithA = new Set(usedIds);
+  usedWithA.add(playerA.id);
+
+  let playerB =
+    posB !== null
+      ? pickSinglePlayerForPosition(
+          posB,
+          rng,
+          usedWithA,
+          playerA.peakRating,
+          options
+        )
+      : null;
+
+  if (!playerB) {
+    for (const [position] of remaining) {
+      if (position === posA) continue;
+      playerB = pickSinglePlayerForPosition(
+        position,
+        rng,
+        usedWithA,
+        playerA.peakRating,
+        options
+      );
+      if (playerB) break;
+    }
+  }
+
+  if (!playerB) {
+    playerB = pickSinglePlayerForPosition(
+      posA,
+      rng,
+      usedWithA,
+      playerA.peakRating,
+      options
+    );
+  }
+
+  if (!playerB || playerA.id === playerB.id) {
+    return pickPairAny(rng, usedIds, options);
+  }
+
+  return rng() < 0.5
+    ? [playerA.id, playerB.id]
+    : [playerB.id, playerA.id];
+}
+
 function pickPairAny(
   rng: () => number,
   usedIds: Set<string>,
@@ -598,42 +798,99 @@ function applyDraftGuarantees(
   }
 }
 
-/** Position-free draft picks keyed by pick index (0…n-1). */
-export function generateDraftOffers(
+export function collectRecentDraftPositions(
+  offers: Map<number, RecruitmentRound>,
+  beforePickIndex: number,
+  limit = 6
+): Position[] {
+  const recent: Position[] = [];
+  for (
+    let pickIndex = beforePickIndex - 1;
+    pickIndex >= 0 && recent.length < limit * 2;
+    pickIndex--
+  ) {
+    const round = offers.get(pickIndex);
+    if (!round) continue;
+    const playerA = getPlayerById(round.optionA);
+    const playerB = getPlayerById(round.optionB);
+    if (playerA) recent.push(playerA.position);
+    if (playerB) recent.push(playerB.position);
+  }
+  return recent.slice(0, limit);
+}
+
+/** Balanced draft offer for a single pick using current squad needs. */
+export function generateDraftOfferForPick(
   seed: string,
-  pickCount: number,
+  pickIndex: number,
+  squad: SquadSlot[],
+  signedPlayerIds: string[],
   lockedPlayerIds: string[] = [],
+  recentPositions: Position[] = [],
   options?: RecruitmentOptions
+): RecruitmentRound | null {
+  const rng = seedrandom(`${seed}-draft-offer-${pickIndex}`);
+  const usedIds = new Set([...signedPlayerIds, ...lockedPlayerIds]);
+  const pair = pickDraftBalancedPair(
+    rng,
+    usedIds,
+    squad,
+    recentPositions,
+    options
+  );
+  if (!pair) return null;
+
+  const playerA = getPlayerById(pair[0]);
+  return {
+    roundIndex: pickIndex,
+    slotIndex: -1,
+    position: playerA?.position ?? "CENTRE",
+    slotLabel: `Pick ${pickIndex + 1}`,
+    optionA: pair[0],
+    optionB: pair[1],
+  };
+}
+
+export function rerollDraftOffer(
+  seed: string,
+  pickIndex: number,
+  currentRound: RecruitmentRound,
+  squad: SquadSlot[],
+  usedIds: Set<string>,
+  discardedIds: Set<string>,
+  recentPositions: Position[],
+  options?: RecruitmentOptions
+): RecruitmentRound | null {
+  const rng = seedrandom(
+    `${seed}-draft-reroll-${pickIndex}-${discardedIds.size}`
+  );
+  const blocked = new Set([...usedIds, ...discardedIds]);
+  const pair = pickDraftBalancedPair(
+    rng,
+    blocked,
+    squad,
+    recentPositions,
+    options
+  );
+  if (!pair) return null;
+
+  const playerA = getPlayerById(pair[0]);
+  return {
+    ...currentRound,
+    position: playerA?.position ?? currentRound.position,
+    optionA: pair[0],
+    optionB: pair[1],
+  };
+}
+
+/** @deprecated Draft offers are generated lazily per pick — returns an empty map. */
+export function generateDraftOffers(
+  _seed: string,
+  _pickCount: number,
+  _lockedPlayerIds: string[] = [],
+  _options?: RecruitmentOptions
 ): Map<number, RecruitmentRound> {
-  const rng = seedrandom(`${seed}-draft-offers`);
-  const offers = new Map<number, RecruitmentRound>();
-  const locked = new Set(lockedPlayerIds);
-
-  for (let pickIndex = 0; pickIndex < pickCount; pickIndex++) {
-    const usedIds = new Set(locked);
-    for (const offer of offers.values()) {
-      usedIds.add(offer.optionA);
-      usedIds.add(offer.optionB);
-    }
-
-    const pair = pickPairAny(rng, usedIds, options);
-    if (!pair) continue;
-
-    offers.set(pickIndex, {
-      roundIndex: pickIndex,
-      slotIndex: -1,
-      position: "CENTRE",
-      slotLabel: `Pick ${pickIndex + 1}`,
-      optionA: pair[0],
-      optionB: pair[1],
-    });
-  }
-
-  if (!options?.clubFilter) {
-    applyDraftGuarantees(offers, rng, locked, options);
-  }
-
-  return offers;
+  return new Map();
 }
 
 export function getOfferForPick(

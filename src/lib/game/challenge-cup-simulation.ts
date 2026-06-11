@@ -1,6 +1,11 @@
 import seedrandom from "seedrandom";
 import type { SquadSlot } from "../types";
 import { getPlayableClubNames } from "../clubs/super-league-display";
+import {
+  buildChallengeCupTournamentStats,
+  deriveCupTryScorersFromMatchEvents,
+} from "./challenge-cup-stats";
+import type { ChallengeCupTournamentStats } from "./challenge-cup-stats";
 import { distributeSeasonTries } from "./season-tries";
 import {
   calculateSquadStrength,
@@ -73,6 +78,8 @@ export interface ChallengeCupResult {
   pointsAgainst: number;
   fixtures: MatchFixture[];
   tryScorers: PlayerTryTotal[];
+  /** Single source of truth for tournament totals used across review sections. */
+  tournamentStats: ChallengeCupTournamentStats;
   squadStrength: number;
   insights: string[];
   isWinner: boolean;
@@ -144,6 +151,7 @@ export function simulateChallengeCup(
     } else {
       const { finish, label } = deriveCupFinish(roundReached, false);
       const tryScorers = distributeSeasonTries(squad, fixtures, seed, wins);
+      const tournamentStats = buildChallengeCupTournamentStats(fixtures);
       return {
         finish,
         resultLabel: label,
@@ -154,6 +162,7 @@ export function simulateChallengeCup(
         pointsAgainst,
         fixtures,
         tryScorers,
+        tournamentStats,
         squadStrength: Math.round(strength * 10) / 10,
         insights: [],
         isWinner: false,
@@ -163,6 +172,7 @@ export function simulateChallengeCup(
 
   const { finish, label } = deriveCupFinish(4, true);
   const tryScorers = distributeSeasonTries(squad, fixtures, seed, wins);
+  const tournamentStats = buildChallengeCupTournamentStats(fixtures);
 
   return {
     finish,
@@ -174,6 +184,7 @@ export function simulateChallengeCup(
     pointsAgainst,
     fixtures,
     tryScorers,
+    tournamentStats,
     squadStrength: Math.round(strength * 10) / 10,
     insights: [],
     isWinner: true,

@@ -12,12 +12,14 @@ import type {
 } from "@/lib/types";
 import {
   autofillFromOffers,
+  collectRecentDraftPositions,
   collectUsedPlayerIds,
-  generateDraftOffers,
+  generateDraftOfferForPick,
   generateSlotOffers,
   getOfferForPick,
   getOfferForSlot,
   getRoundPlayers,
+  rerollDraftOffer,
   rerollSlotOffer,
   type RecruitmentRound,
 } from "@/lib/game/recruitment";
@@ -201,7 +203,7 @@ export function GameBoard({
 
     setSlotOffers(
       isDraftMode
-        ? generateDraftOffers(seed, pickCount, lockedIds, recruitmentOptions)
+        ? new Map()
         : generateSlotOffers(
             seed,
             joeMellorMode ? [LOOSE_FORWARD_SLOT_INDEX] : [],
@@ -260,6 +262,49 @@ export function GameBoard({
     revealSoundKey.current = key;
     playRevealChoices();
   }, [phase, activeOfferKey, seed]);
+
+  useEffect(() => {
+    if (!isDraftMode || superSamHallasMode || isChallengeCup) return;
+    const maxPicks = TOTAL_SLOTS - (joeMellorMode ? 1 : 0);
+    if (draftPickIndex >= maxPicks) return;
+    if (getOfferForPick(slotOffers, draftPickIndex)) return;
+
+    const signedIds = squad
+      .filter((slot) => slot.player)
+      .map((slot) => slot.player!.id);
+    const lockedIds = joeMellorMode ? [JOE_MELLOR_GOAT_ID] : [];
+    const recentPositions = collectRecentDraftPositions(
+      slotOffers,
+      draftPickIndex
+    );
+    const offer = generateDraftOfferForPick(
+      seed,
+      draftPickIndex,
+      squad,
+      signedIds,
+      lockedIds,
+      recentPositions,
+      recruitmentOptions
+    );
+    if (!offer) return;
+
+    setSlotOffers((prev) => {
+      if (prev.get(draftPickIndex)) return prev;
+      const next = new Map(prev);
+      next.set(draftPickIndex, offer);
+      return next;
+    });
+  }, [
+    isDraftMode,
+    superSamHallasMode,
+    isChallengeCup,
+    draftPickIndex,
+    squad,
+    seed,
+    slotOffers,
+    joeMellorMode,
+    recruitmentOptions,
+  ]);
 
   useEffect(() => {
     if (!isDraftMode || phase !== "pitch") return;
@@ -516,14 +561,25 @@ export function GameBoard({
     discarded.add(currentRound.optionA);
     discarded.add(currentRound.optionB);
 
-    const nextRound = rerollSlotOffer(
-      seed,
-      rerollKey!,
-      currentRound,
-      usedIds,
-      discarded,
-      recruitmentOptions
-    );
+    const nextRound = isDraftMode
+      ? rerollDraftOffer(
+          seed,
+          rerollKey!,
+          currentRound,
+          squad,
+          usedIds,
+          discarded,
+          collectRecentDraftPositions(slotOffers, rerollKey!),
+          recruitmentOptions
+        )
+      : rerollSlotOffer(
+          seed,
+          rerollKey!,
+          currentRound,
+          usedIds,
+          discarded,
+          recruitmentOptions
+        );
 
     if (nextRound) {
       setSlotOffers((prev) => {
@@ -544,6 +600,8 @@ export function GameBoard({
     setRerolling(false);
   }, [
     isHardMode,
+    isDraftMode,
+    draftPickIndex,
     currentRound,
     selectedSlotIndex,
     rerolling,
@@ -780,6 +838,7 @@ export function GameBoard({
               {phase === "placement" && pendingPlayer && (
                 <DraftPlacementBanner
                   player={pendingPlayer}
+                  squad={squad}
                   selectedSlotPosition={placementSlot?.position}
                   hardMode={isHardMode}
                   showRule={draftPickIndex === 0}
@@ -881,6 +940,7 @@ export function GameBoard({
                     hardMode={isHardMode}
                     draftMode={isDraftMode}
                     showDraftRule={isDraftMode && draftPickIndex === 0}
+                    draftSquad={isDraftMode ? squad : undefined}
                   />
                 </motion.div>
               </motion.div>

@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import type { Player } from "@/lib/types";
+import type { Player, SquadSlot } from "@/lib/types";
+import { DraftPositionsRemaining } from "./DraftPositionsRemaining";
 import { POSITION_LABELS } from "@/lib/positions";
 import {
   playGoatAppears,
@@ -27,6 +28,7 @@ interface PlayerChoiceProps {
   hardMode?: boolean;
   draftMode?: boolean;
   showDraftRule?: boolean;
+  draftSquad?: SquadSlot[];
 }
 
 export function PlayerChoice({
@@ -41,6 +43,7 @@ export function PlayerChoice({
   hardMode,
   draftMode,
   showDraftRule,
+  draftSquad,
 }: PlayerChoiceProps) {
   const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
   const appearSoundPlayed = useRef(false);
@@ -93,6 +96,12 @@ export function PlayerChoice({
             </span>
             <span className="mt-1 block">{DRAFT_MODE_RULE}</span>
           </p>
+        )}
+
+        {draftMode && draftSquad && (
+          <div className="mx-auto mt-3 max-w-md text-left sm:mt-4">
+            <DraftPositionsRemaining squad={draftSquad} compact />
+          </div>
         )}
 
         {!hardMode && (

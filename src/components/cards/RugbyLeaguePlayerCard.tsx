@@ -97,9 +97,9 @@ export function RugbyLeaguePlayerCard({
       <div
         className={`flex flex-wrap items-center justify-center gap-1 px-1 py-0.5 ${hiddenClass}`}
       >
-        {achievements.map((achievement) => (
+        {achievements.map((achievement, index) => (
           <RLTag
-            key={achievement.label}
+            key={`${achievement.label}-${index}`}
             variant={ACHIEVEMENT_TAG_VARIANT[achievement.color]}
             compact={compactMobile}
           >

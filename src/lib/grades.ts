@@ -322,3 +322,102 @@ export function getGradeReviewBio(
 
   return bio;
 }
+
+const SAFE_POSITION_FALLBACK_BIO =
+  "A competitive campaign with plenty to build on.";
+
+const POSITION_MENTION_PATTERNS = [
+  /\bfinished\s+(?:1st|2nd|3rd|\d+th)\b/i,
+  /\b(?:1st|2nd|3rd)\s+place\b/i,
+  /\b(?:top|bottom)\s+of\s+the\s+(?:table|pile)\b/i,
+  /\bmid-?table\b/i,
+  /\bwooden\s+spoon\b/i,
+  /\blast\s+place\b/i,
+  /\bleague\s+champions?\b/i,
+  /\brunner[- ]?up\b/i,
+  /\bplayoff\b/i,
+];
+
+function bioMentionsFinishingPosition(bio: string): boolean {
+  return POSITION_MENTION_PATTERNS.some((pattern) => pattern.test(bio));
+}
+
+function positionBucket(position: number): string {
+  if (position === 1) return "champion";
+  if (position === 2) return "runner-up";
+  if (position <= 6) return "playoff";
+  if (position <= 8) return "upper-mid";
+  if (position <= 11) return "mid";
+  if (position <= 13) return "lower";
+  return "bottom";
+}
+
+function bioMatchesTablePosition(bio: string, tablePosition: number): boolean {
+  const bucket = positionBucket(tablePosition);
+  const lower = bio.toLowerCase();
+
+  if (bucket === "champion") {
+    return (
+      lower.includes("champion") ||
+      lower.includes("trophy") ||
+      lower.includes("crowned") ||
+      lower.includes("top of the pile")
+    );
+  }
+  if (bucket === "runner-up") {
+    return lower.includes("runner") || lower.includes("second");
+  }
+  if (bucket === "playoff") {
+    return (
+      lower.includes("playoff") ||
+      lower.includes("finals") ||
+      lower.includes("top-six") ||
+      lower.includes("top six")
+    );
+  }
+  if (bucket === "bottom") {
+    return (
+      lower.includes("bottom") ||
+      lower.includes("last place") ||
+      lower.includes("wooden spoon") ||
+      lower.includes("rock bottom")
+    );
+  }
+  if (bucket === "mid" || bucket === "upper-mid" || bucket === "lower") {
+    return (
+      lower.includes("mid-table") ||
+      lower.includes("middle") ||
+      lower.includes("respectability") ||
+      lower.includes("mixed") ||
+      lower.includes("inconsistent") ||
+      lower.includes("platform") ||
+      lower.includes("competitive")
+    );
+  }
+  return true;
+}
+
+/** Grade bio with dev-time position consistency guard. */
+export function getValidatedGradeReviewBio(
+  grade: SquadGrade,
+  ctx: GradeReviewContext,
+  tablePosition: number
+): string {
+  const bio = getGradeReviewBio(grade, {
+    ...ctx,
+    leaguePosition: tablePosition,
+  });
+
+  if (
+    process.env.NODE_ENV === "development" &&
+    bioMentionsFinishingPosition(bio) &&
+    !bioMatchesTablePosition(bio, tablePosition)
+  ) {
+    console.warn(
+      `[season-review] Grade bio position mismatch (table ${tablePosition}): "${bio}"`
+    );
+    return SAFE_POSITION_FALLBACK_BIO;
+  }
+
+  return bio;
+}

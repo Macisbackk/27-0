@@ -1,5 +1,9 @@
 import type { SquadSlot } from "../types";
 import type { ChallengeCupResult } from "../game/challenge-cup-simulation";
+import {
+  buildChallengeCupTournamentStats,
+  validateCupTryTotals,
+} from "../game/challenge-cup-stats";
 import { getSeasonTryTotal } from "../game/season-tries";
 import { getSquadValue } from "../positions";
 import {
@@ -93,13 +97,24 @@ export function validateChallengeCupReviewStats(input: {
     }
   }
 
-  const expectedTries = getSeasonTryTotal(fixtures);
-  const scorerTotal = cupResult.tryScorers.reduce((s, t) => s + t.tries, 0);
-  if (scorerTotal !== expectedTries) {
+  const tournamentStats =
+    cupResult.tournamentStats ?? buildChallengeCupTournamentStats(fixtures);
+
+  if (tournamentStats.wins !== wins) {
     issues.push(
-      `Try scorer total (${scorerTotal}) ≠ fixture tries (${expectedTries})`
+      `Tournament stats wins (${tournamentStats.wins}) ≠ cupResult wins (${wins})`
     );
   }
+  if (tournamentStats.triesFor !== getSeasonTryTotal(fixtures)) {
+    issues.push("Tournament stats triesFor ≠ fixture try total");
+  }
+  if (tournamentStats.triesAgainst !== fixtures.reduce((s, f) => s + f.triesAgainst, 0)) {
+    issues.push("Tournament stats triesAgainst ≠ fixture conceded total");
+  }
+
+  issues.push(
+    ...validateCupTryTotals(squad, fixtures, cupResult.tryScorers)
+  );
 
   const filledCount = squad.filter((s) => s.player).length;
   const clubSummary = getClubBreakdownSummary(squad, filledCount, {

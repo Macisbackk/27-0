@@ -3,7 +3,6 @@
 import type { Player } from "@/lib/types";
 import { formatValue } from "@/lib/players";
 import {
-  getDreamTeamYears,
   getGoldenBootYears,
   getPlayerAchievements,
 } from "@/lib/players/achievements";
@@ -19,7 +18,6 @@ interface PlayerDetailModalProps {
 
 export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
   const achievements = getPlayerAchievements(player);
-  const dreamTeamYears = getDreamTeamYears(player.id);
   const goldenBootYears = getGoldenBootYears(player.id);
 
   return (
@@ -47,22 +45,15 @@ export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
           <div className={`mt-4 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
             <p className={`${TYPO.sectionTitle} mb-2`}>Achievements</p>
             <div className="flex flex-wrap gap-1.5">
-              {achievements.map((achievement) => (
+              {achievements.map((achievement, index) => (
                 <RLTag
-                  key={achievement.label}
+                  key={`${achievement.label}-${index}`}
                   variant={ACHIEVEMENT_TAG_VARIANT[achievement.color]}
                 >
                   {achievement.label}
                 </RLTag>
               ))}
             </div>
-          </div>
-        )}
-
-        {dreamTeamYears.length > 0 && (
-          <div className={`mt-3 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
-            <p className={TYPO.statLabel}>Dream Team</p>
-            <p className={`mt-1 ${TYPO.body}`}>{dreamTeamYears.join(", ")}</p>
           </div>
         )}
 

@@ -88,6 +88,11 @@ export function validateSeasonReviewStats(input: {
         `League table PA (${dreamRow.pointsAgainst}) ≠ season PA (${pointsAgainst})`
       );
     }
+    if (seasonResult.leaguePosition !== dreamRow.position) {
+      issues.push(
+        `Season leaguePosition (${seasonResult.leaguePosition}) ≠ league table position (${dreamRow.position})`
+      );
+    }
   }
 
   const expectedTries = getSeasonTryTotal(fixtures);

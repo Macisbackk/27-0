@@ -226,8 +226,8 @@
     "hallOfFame": true,
     "clubLegend": true,
     "manOfSteel": true,
-    "challengeCupWinner": false,
-    "superLeagueWinner": false,
+    "challengeCupWinner": true,
+    "superLeagueWinner": true,
     "rating": 96
   },
   {

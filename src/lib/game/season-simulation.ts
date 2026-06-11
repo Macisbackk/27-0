@@ -18,6 +18,7 @@ import {
 } from "./rl-scores";
 import { getSeasonCommentary } from "./season-commentary";
 import { getSeasonLeagueClubs } from "./league-replacement";
+import { getDreamTeamTablePosition } from "./league-table";
 
 export const SEASON_GAMES = 27;
 export const DREAM_TEAM_NAME = "Dream Team";
@@ -669,6 +670,7 @@ function buildFixtureList(
   }));
 }
 
+/** @deprecated Wins-only estimate — use getDreamTeamTablePosition after simulation. */
 function deriveLeaguePosition(
   wins: number,
   pointsDifference: number
@@ -950,6 +952,7 @@ export function simulateSeason(
   };
 
   partialResult.insights = generateSeasonInsights(partialResult);
+  partialResult.leaguePosition = getDreamTeamTablePosition(partialResult, seed);
 
   return partialResult;
 }

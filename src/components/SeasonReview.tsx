@@ -5,7 +5,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { GameDifficulty, GameMode, SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
 import { getSeasonSummaryMessage } from "@/lib/game/season-simulation";
-import { getGradeReviewBio, getSeasonGradeFromSquad } from "@/lib/grades";
+import {
+  getSeasonGradeFromSquad,
+  getValidatedGradeReviewBio,
+} from "@/lib/grades";
 import { getSeasonReviewLabel } from "@/lib/mode-labels";
 import { getClubBreakdownSummary } from "@/lib/squad-analysis";
 import { generateSeasonAwards } from "@/lib/season-awards";
@@ -132,21 +135,29 @@ export function SeasonReview({
     playGradeSound(gradeInfo.grade);
   }, [gradeInfo.grade]);
 
-  const leaguePositionLabel = formatLeaguePosition(
-    seasonResult.leaguePosition
-  );
-  const summaryMessage = getSeasonSummaryMessage(
-    seasonResult.leaguePosition,
-    seasonResult.losses,
-    seasonResult.wins,
-    gradeInfo.grade,
-    seasonResult
-  );
-  const expectedTries = getSeasonTryTotal(seasonResult.fixtures);
   const leagueTable = useMemo(
     () => buildLeagueTable(seasonResult, seed),
     [seasonResult, seed]
   );
+  const dreamTeamTablePosition =
+    leagueTable.find((row) => row.isUserTeam)?.position ??
+    seasonResult.leaguePosition;
+  const leaguePositionLabel = formatLeaguePosition(dreamTeamTablePosition);
+  const seasonResultForReview = useMemo(
+    () =>
+      dreamTeamTablePosition === seasonResult.leaguePosition
+        ? seasonResult
+        : { ...seasonResult, leaguePosition: dreamTeamTablePosition },
+    [seasonResult, dreamTeamTablePosition]
+  );
+  const summaryMessage = getSeasonSummaryMessage(
+    dreamTeamTablePosition,
+    seasonResult.losses,
+    seasonResult.wins,
+    gradeInfo.grade,
+    seasonResultForReview
+  );
+  const expectedTries = getSeasonTryTotal(seasonResult.fixtures);
 
   useEffect(() => {
     runSeasonReviewValidation({
@@ -206,13 +217,17 @@ export function SeasonReview({
               {gradeInfo.label}
             </p>
             <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-500">
-              {getGradeReviewBio(gradeInfo.grade, {
-                wins: seasonResult.wins,
-                losses: seasonResult.losses,
-                leaguePosition: seasonResult.leaguePosition,
-                pointsDifference: seasonResult.pointsDifference,
-                isPerfect: seasonResult.isPerfect,
-              })}
+              {getValidatedGradeReviewBio(
+                gradeInfo.grade,
+                {
+                  wins: seasonResult.wins,
+                  losses: seasonResult.losses,
+                  leaguePosition: dreamTeamTablePosition,
+                  pointsDifference: seasonResult.pointsDifference,
+                  isPerfect: seasonResult.isPerfect,
+                },
+                dreamTeamTablePosition
+              )}
             </p>
           </motion.div>
 

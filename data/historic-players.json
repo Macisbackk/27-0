@@ -19,6 +19,23 @@
     "challengeCupWinner": false
   },
   {
+    "id": "bradford-hist-ronan-michael",
+    "name": "Ronan Michael",
+    "position": "SECOND_ROW",
+    "club": "Bradford Bulls",
+    "nationality": "Wales",
+    "era": "MODERN_ERA",
+    "yearsActive": "2021–2026",
+    "category": "historic",
+    "peakRating": 80,
+    "value": 135000,
+    "rating": 80,
+    "intlCaps": 0,
+    "appearances": 136,
+    "tries": 11,
+    "clubLegend": false
+  },
+  {
     "id": "bradford-hist-brian-mcdermott",
     "name": "Brian McDermott",
     "position": "Hooker",

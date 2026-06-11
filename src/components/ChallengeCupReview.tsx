@@ -22,7 +22,7 @@ import {
 import { generateSeasonAwards } from "@/lib/season-awards";
 import { getExtendedTeamComparison } from "@/lib/team-value-comparison";
 import { formatValue } from "@/lib/players";
-import { getSeasonTryTotal } from "@/lib/game/season-tries";
+import { buildChallengeCupTournamentStats } from "@/lib/game/challenge-cup-stats";
 import { playGradeSound, playPanelExpand } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { FixtureResultRow } from "./FixtureResultRow";
@@ -88,25 +88,32 @@ export function ChallengeCupReview({
   const showCelebration = cupResult.isWinner;
   const userTeamName = cupResult.userClub ?? DREAM_TEAM_NAME;
 
+  const tournamentStats = useMemo(
+    () =>
+      cupResult.tournamentStats ??
+      buildChallengeCupTournamentStats(cupResult.fixtures),
+    [cupResult]
+  );
+
   const seasonLikeResult: SeasonResult = useMemo(
     () => ({
-      wins: cupResult.wins,
-      losses: cupResult.losses,
+      wins: tournamentStats.wins,
+      losses: tournamentStats.losses,
       tryScorers: cupResult.tryScorers,
       fixtures: cupResult.fixtures,
       squadStrength: cupResult.squadStrength,
-      pointsFor: cupResult.pointsFor,
-      pointsAgainst: cupResult.pointsAgainst,
-      pointsDifference: cupResult.pointsFor - cupResult.pointsAgainst,
+      pointsFor: tournamentStats.pointsFor,
+      pointsAgainst: tournamentStats.pointsAgainst,
+      pointsDifference: tournamentStats.pointsFor - tournamentStats.pointsAgainst,
       leaguePosition: 1,
       isPerfect: false,
-      longestWinStreak: cupResult.wins,
-      longestLosingStreak: cupResult.losses > 0 ? 1 : 0,
+      longestWinStreak: tournamentStats.wins,
+      longestLosingStreak: tournamentStats.losses > 0 ? 1 : 0,
       gameResults: cupResult.fixtures.map((f) => f.result),
       insights: cupResult.insights ?? [],
       replacedTeam: "",
     }),
-    [cupResult]
+    [cupResult, tournamentStats]
   );
 
   const teamComparison = useMemo(
@@ -119,8 +126,10 @@ export function ChallengeCupReview({
         seed,
         {
           squad,
-          wins: cupResult.wins,
-          losses: cupResult.losses,
+          wins: tournamentStats.wins,
+          losses: tournamentStats.losses,
+          cupMode: true,
+          bracketMatches: cupResult.bracketMatches,
         }
       ),
     [
@@ -128,8 +137,9 @@ export function ChallengeCupReview({
       squad,
       totalValue,
       cupResult.fixtures,
-      cupResult.wins,
-      cupResult.losses,
+      cupResult.bracketMatches,
+      tournamentStats.wins,
+      tournamentStats.losses,
       seed,
     ]
   );
@@ -182,7 +192,7 @@ export function ChallengeCupReview({
     onPlayAgain();
   };
 
-  const expectedTries = getSeasonTryTotal(cupResult.fixtures);
+  const expectedTries = tournamentStats.triesFor;
 
   useEffect(() => {
     runChallengeCupReviewValidation({
@@ -246,15 +256,42 @@ export function ChallengeCupReview({
         <CollapsibleReviewSection title="Challenge Cup Summary" delay={0.32}>
           <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
             <p>
-              Tournament Record:{" "}
+              Record:{" "}
               <span className="font-semibold text-white">
-                {cupResult.wins}-{cupResult.losses}
+                {tournamentStats.wins}-{tournamentStats.losses}
               </span>
             </p>
             <p>
-              Matches Played:{" "}
+              Cups Won:{" "}
               <span className="font-semibold text-white">
-                {cupResult.matchesPlayed}
+                {cupResult.isWinner ? 1 : 0}
+              </span>
+            </p>
+            <p>
+              Finals Reached:{" "}
+              <span className="font-semibold text-white">
+                {cupResult.finish === "Winners" ||
+                cupResult.finish === "Runners-Up"
+                  ? 1
+                  : 0}
+              </span>
+            </p>
+            <p>
+              Win %:{" "}
+              <span className="font-semibold text-white">
+                {tournamentStats.winPct}
+              </span>
+            </p>
+            <p>
+              Tries Scored:{" "}
+              <span className="font-semibold text-white">
+                {tournamentStats.triesFor}
+              </span>
+            </p>
+            <p>
+              Tries Conceded:{" "}
+              <span className="font-semibold text-white">
+                {tournamentStats.triesAgainst}
               </span>
             </p>
             <p>

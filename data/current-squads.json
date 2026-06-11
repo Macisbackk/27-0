@@ -1994,22 +1994,6 @@
     "rating": 78
   },
   {
-    "id": "bradford-cur-ronan-michael",
-    "name": "Ronan Michael",
-    "position": "HOOKER",
-    "club": "Bradford Bulls",
-    "nationality": "Wales",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
-    "category": "current",
-    "peakRating": 80,
-    "value": 135000,
-    "intlCaps": 0,
-    "rating": 80,
-    "appearances": 136,
-    "tries": 11
-  },
-  {
     "id": "hull-kr-cur-arthur-mourgue",
     "name": "Arthur Mourgue",
     "position": "FULLBACK",

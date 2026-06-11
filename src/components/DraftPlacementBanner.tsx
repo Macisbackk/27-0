@@ -2,15 +2,18 @@
 
 import type { Player, Position } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
+import type { SquadSlot } from "@/lib/types";
 import {
   getPlacementPenalty,
   isNaturalPlacement,
 } from "@/lib/game/position-placement";
+import { DraftPositionsRemaining } from "./DraftPositionsRemaining";
 import { CARD, HARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 interface DraftPlacementBannerProps {
   player: Player;
+  squad: SquadSlot[];
   selectedSlotPosition?: Position;
   hardMode?: boolean;
   showRule?: boolean;
@@ -18,6 +21,7 @@ interface DraftPlacementBannerProps {
 
 export function DraftPlacementBanner({
   player,
+  squad,
   selectedSlotPosition,
   hardMode = false,
   showRule = false,
@@ -54,14 +58,21 @@ export function DraftPlacementBanner({
         </p>
       )}
 
-      <p className={TYPO.sectionTitle}>
-        Place {player.name}
-      </p>
-      <p className={`mt-1 ${TYPO.body}`}>
+      <p className={TYPO.sectionTitle}>Selected Player</p>
+      <p className={`mt-1 font-semibold text-white ${TYPO.body}`}>{player.name}</p>
+      <p className={`mt-2 ${TYPO.body}`}>
         Natural Position:{" "}
         <span className={TYPO.positionHighlight}>
           {POSITION_LABELS[player.position]}
         </span>
+      </p>
+
+      <div className="mt-3 text-left">
+        <DraftPositionsRemaining squad={squad} compact />
+      </div>
+
+      <p className={`mt-3 ${TYPO.bodySm} text-amber-300/90`}>
+        Out-of-position players lose 5 OVR for this run.
       </p>
 
       {selectedSlotPosition !== undefined && (

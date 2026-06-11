@@ -99,12 +99,16 @@ export function getPlayerAchievementGroups(
     });
   }
 
-  if (hasDreamTeamSelection(player.id)) {
-    push("individualHonours", {
-      label: "Dream Team",
-      color: "purple",
-      category: "individualHonours",
-    });
+  const dreamYears =
+    player.dreamTeamYears ?? getDreamTeamYears(player.id);
+  if (dreamYears.length > 0) {
+    for (const year of dreamYears) {
+      push("individualHonours", {
+        label: `Dream Team ${year}`,
+        color: "purple",
+        category: "individualHonours",
+      });
+    }
   }
 
   if (hasGoldenBootAward(player.id)) {

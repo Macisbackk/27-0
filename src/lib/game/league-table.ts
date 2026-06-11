@@ -79,3 +79,13 @@ export function buildLeagueTable(
 
   return sortStandings(rows);
 }
+
+/** Dream Team finishing position from the same standings as the League Table UI. */
+export function getDreamTeamTablePosition(
+  seasonResult: SeasonResult,
+  seed: string
+): number {
+  const table = buildLeagueTable(seasonResult, seed);
+  const dreamRow = table.find((row) => row.isUserTeam);
+  return dreamRow?.position ?? 14;
+}
