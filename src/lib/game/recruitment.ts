@@ -649,16 +649,12 @@ function pickFromDraftPool(
     if (close.length > 0) pool = close;
   }
 
-  if (!isHalfbackPosition(slotPosition)) {
-    pool.sort((a, b) => {
-      const aExact = a.position === slotPosition ? 0 : 1;
-      const bExact = b.position === slotPosition ? 0 : 1;
-      if (aExact !== bExact) return aExact - bExact;
-      return b.peakRating - a.peakRating;
-    });
-  } else {
-    pool.sort((a, b) => b.peakRating - a.peakRating);
-  }
+  pool.sort((a, b) => {
+    const aExact = a.position === slotPosition ? 0 : 1;
+    const bExact = b.position === slotPosition ? 0 : 1;
+    if (aExact !== bExact) return aExact - bExact;
+    return b.peakRating - a.peakRating;
+  });
 
   const weights = options?.clubFilter ? CUP_BAND_WEIGHTS : NORMAL_BAND_WEIGHTS;
   const band = rollBand(rng, weights);

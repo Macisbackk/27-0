@@ -1,8 +1,7 @@
 "use client";
 
 import type { SquadSlot } from "@/lib/types";
-import { POSITION_LABELS } from "@/lib/positions";
-import { getSlotDisplayInfo } from "@/lib/squad-display";
+import { formatPositionReviewText, getSlotDisplayInfo } from "@/lib/squad-display";
 import { formatValue } from "@/lib/players";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
 
@@ -38,14 +37,7 @@ export function SquadSummaryPanel({
               <span className="text-xs text-gray-500">{slot.label}</span>
             </div>
             <p className="mt-1 text-xs text-gray-400">
-              {info.positionMismatch ? (
-                <>
-                  {POSITION_LABELS[info.naturalPosition]} →{" "}
-                  {POSITION_LABELS[info.playedPosition]}
-                </>
-              ) : (
-                POSITION_LABELS[info.playedPosition]
-              )}
+              {formatPositionReviewText(info)}
             </p>
             {revealRatings && (
               <p className="mt-1 text-xs">

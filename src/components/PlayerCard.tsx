@@ -16,6 +16,7 @@ interface PlayerCardProps {
   hardMode?: boolean;
   equalHeight?: boolean;
   compactMobile?: boolean;
+  showNaturalPositionLabel?: boolean;
 }
 
 export function PlayerCard({
@@ -26,6 +27,7 @@ export function PlayerCard({
   hardMode,
   equalHeight,
   compactMobile,
+  showNaturalPositionLabel,
 }: PlayerCardProps) {
   const colors = getClubColors(player.club);
 
@@ -57,6 +59,7 @@ export function PlayerCard({
         hardMode={hardMode}
         equalHeight={equalHeight}
         compactMobile={compactMobile}
+        showNaturalPositionLabel={showNaturalPositionLabel}
         className="flex-1"
       />
       {!selectable && canSign !== undefined && (

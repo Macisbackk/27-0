@@ -157,6 +157,7 @@ export function PlayerChoice({
           onViewDetails={() => setDetailPlayer(playerA)}
           disabled={disabled}
           hardMode={hardMode}
+          showNaturalPositionLabel={draftMode && !!eligiblePositionsLabel}
         />
         <ChoiceCard
           player={playerB}
@@ -165,6 +166,7 @@ export function PlayerChoice({
           onViewDetails={() => setDetailPlayer(playerB)}
           disabled={disabled}
           hardMode={hardMode}
+          showNaturalPositionLabel={draftMode && !!eligiblePositionsLabel}
         />
       </div>
 
@@ -185,6 +187,7 @@ function ChoiceCard({
   onViewDetails,
   disabled,
   hardMode,
+  showNaturalPositionLabel,
 }: {
   player: Player;
   label: string;
@@ -192,6 +195,7 @@ function ChoiceCard({
   onViewDetails: () => void;
   disabled?: boolean;
   hardMode?: boolean;
+  showNaturalPositionLabel?: boolean;
 }) {
   return (
     <motion.button
@@ -240,10 +244,23 @@ function ChoiceCard({
           hardMode={hardMode}
           equalHeight
           compactMobile
+          showNaturalPositionLabel={showNaturalPositionLabel}
         />
       </div>
-      <p className="mt-1 hidden min-h-[16px] text-center text-[11px] text-gray-500 sm:block">
-        {POSITION_LABELS[player.position]} · Tap to sign
+      <p className="mt-1 min-h-[16px] text-center text-[10px] text-gray-500 sm:text-[11px]">
+        {showNaturalPositionLabel ? (
+          <>
+            Natural Position:{" "}
+            <span className="font-semibold text-gray-300">
+              {POSITION_LABELS[player.position]}
+            </span>
+            <span className="hidden sm:inline"> · Tap to sign</span>
+          </>
+        ) : (
+          <span className="hidden sm:inline">
+            {POSITION_LABELS[player.position]} · Tap to sign
+          </span>
+        )}
       </p>
     </motion.button>
   );

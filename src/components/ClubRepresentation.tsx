@@ -15,22 +15,10 @@ import {
 } from "./cards/PlayerStatusBadge";
 import { playPanelExpand } from "@/lib/sound";
 import { formatValue } from "@/lib/players";
-import type { Position } from "@/lib/types";
-import { POSITION_LABELS } from "@/lib/positions";
+import { formatPositionReviewText } from "@/lib/squad-display";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubPillBackground } from "@/lib/ui/contrast";
-
-function formatPositionLine(player: {
-  positionMismatch: boolean;
-  naturalPosition: Position;
-  playedPosition: Position;
-}): string {
-  if (player.positionMismatch) {
-    return `${POSITION_LABELS[player.naturalPosition]} → ${POSITION_LABELS[player.playedPosition]}`;
-  }
-  return POSITION_LABELS[player.playedPosition];
-}
 
 function formatRatingLine(player: {
   ratingAdjusted: boolean;
@@ -120,7 +108,7 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                             <p className={`mt-0 ${TYPO.bodySm}`}>
                               {player.playerId === "ssh-sam-hallas-group"
                                 ? "All 13 positions"
-                                : formatPositionLine(player)}
+                                : formatPositionReviewText(player)}
                             </p>
                           </div>
                           <div className={`mt-2 flex flex-wrap items-center gap-3 ${TYPO.bodySm}`}>

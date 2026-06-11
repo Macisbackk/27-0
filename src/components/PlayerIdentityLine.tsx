@@ -11,6 +11,7 @@ interface PlayerIdentityLineProps {
   player: Player;
   className?: string;
   compact?: boolean;
+  showNaturalPositionLabel?: boolean;
 }
 
 /** Nationality abbreviation + • position beneath player name. */
@@ -18,6 +19,7 @@ export function PlayerIdentityLine({
   player,
   className = "",
   compact = false,
+  showNaturalPositionLabel = false,
 }: PlayerIdentityLineProps) {
   const abbrev = getNationalityAbbrev(player.nationality);
   const position = POSITION_LABELS[player.position];
@@ -43,7 +45,14 @@ export function PlayerIdentityLine({
           compact ? "text-[10px]" : "text-base sm:text-[17px]"
         }`}
       >
-        {position}
+        {showNaturalPositionLabel ? (
+          <>
+            <span className="font-medium text-gray-400">Natural Position:</span>{" "}
+            {position}
+          </>
+        ) : (
+          position
+        )}
       </span>
     </p>
   );

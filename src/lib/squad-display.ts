@@ -18,6 +18,18 @@ export interface SlotDisplayInfo {
   ratingBlock: string | null;
 }
 
+export function formatPositionReviewText(
+  info: Pick<
+    SlotDisplayInfo,
+    "positionMismatch" | "naturalPosition" | "playedPosition"
+  >
+): string {
+  if (info.positionMismatch) {
+    return `Natural: ${POSITION_LABELS[info.naturalPosition]} · Played: ${POSITION_LABELS[info.playedPosition]}`;
+  }
+  return POSITION_LABELS[info.playedPosition];
+}
+
 export function getSlotDisplayInfo(slot: SquadSlot): SlotDisplayInfo | null {
   if (!slot.player) return null;
 
@@ -36,7 +48,7 @@ export function getSlotDisplayInfo(slot: SquadSlot): SlotDisplayInfo | null {
     playedPosition,
     positionMismatch,
     positionCompact: positionMismatch
-      ? `${naturalLabel} → ${playedLabel}`
+      ? `Natural: ${naturalLabel} · Played: ${playedLabel}`
       : null,
     positionBlock: positionMismatch
       ? `Natural: ${naturalLabel}\nPlayed: ${playedLabel}`
