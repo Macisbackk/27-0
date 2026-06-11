@@ -9,6 +9,7 @@ export function getSeasonReviewLabel(
       ? "Hard Draft Mode Season Review"
       : "Draft Mode Season Review";
   }
+  if (mode === "FANTASY") return "Fantasy Mode Season Review";
   return difficulty === "HARD"
     ? "Hard Mode Season Review"
     : "Normal Mode Season Review";
@@ -19,11 +20,15 @@ export function getPlayPageTitle(
   difficulty: GameDifficulty
 ): string {
   if (mode === "CHALLENGE_CUP") return "Challenge Cup";
+  if (mode === "FANTASY") return "Fantasy Mode";
   if (mode === "DRAFT") {
     return difficulty === "HARD" ? "Hard Draft Mode" : "Draft Mode";
   }
   return difficulty === "HARD" ? "Hard Mode" : "Normal Mode";
 }
+
+export const FANTASY_MODE_INTRO =
+  "Build your dream squad under a budget, then take on randomised Super League teams across 27 rounds.";
 
 export const DRAFT_MODE_INTRO =
   "Tap an empty slot, pick between two players for that position, and fill your squad. Natural positions carry no penalty; out-of-position placements cost 5 OVR. Scrum Half and Stand Off share one pool.";

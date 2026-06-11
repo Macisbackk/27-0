@@ -23,7 +23,7 @@ export type UtilityPositionHint = {
 
 export type PlayerCategory = "current" | "historic" | "legend";
 
-export type GameMode = "CLASSIC" | "CHALLENGE_CUP" | "DRAFT";
+export type GameMode = "CLASSIC" | "CHALLENGE_CUP" | "DRAFT" | "FANTASY";
 
 export type GameDifficulty = "NORMAL" | "HARD";
 
@@ -176,6 +176,8 @@ export interface UserStatsData {
   longestTournamentWinsInRow: number;
   currentTournamentWinsInRow: number;
   bestCupMatchWinsInTournament: number;
+  /** Highest average squad rating across completed fantasy seasons. */
+  bestTeamRating: number;
 }
 
 export interface CupPersonalBests {

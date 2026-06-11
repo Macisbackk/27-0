@@ -517,6 +517,13 @@ function generateScoreline(
 export interface SimulateFixtureOptions {
   /** Slightly more upset variance in knockout cup ties. */
   cupMode?: boolean;
+  /** Use opponent squad average rating instead of club base strength. */
+  opponentRatingOverride?: number;
+}
+
+export interface ScheduledFixture {
+  opponent: string;
+  isHome: boolean;
 }
 
 function getValueConsistencyBonus(totalValue: number): number {
@@ -617,11 +624,6 @@ function resolveOutcome(
   return { won, isUpset, ratingGap };
 }
 
-interface ScheduledFixture {
-  opponent: string;
-  isHome: boolean;
-}
-
 function buildFixtureList(
   rng: () => number,
   opponentClubs: string[]
@@ -646,6 +648,21 @@ function buildFixtureList(
     opponent,
     isHome: homeFlags[index],
   }));
+}
+
+/** Pre-built 27-round schedule for incremental fantasy season play. */
+export function buildSeasonSchedule(seed: string): {
+  schedule: ScheduledFixture[];
+  opponentClubs: string[];
+  replacedTeam: string;
+} {
+  const { opponentClubs, replacedTeam } = getSeasonLeagueClubs(seed);
+  const rng = seedrandom(`${seed}-season`);
+  return {
+    schedule: buildFixtureList(rng, opponentClubs),
+    opponentClubs,
+    replacedTeam,
+  };
 }
 
 /** @deprecated Wins-only estimate — use getDreamTeamTablePosition after simulation. */
@@ -802,7 +819,8 @@ export function simulateOneFixture(
   const strength = calculateSquadStrength(squad);
   const rng = seedrandom(`${seed}-match-${round}`);
 
-  const opponentStrength = getOpponentStrength(opponent, rng);
+  const opponentStrength =
+    options.opponentRatingOverride ?? getOpponentStrength(opponent, rng);
   const { won: initialWon, isUpset: initialUpset, ratingGap } = resolveOutcome(
     squad,
     strength,
@@ -868,8 +886,7 @@ export function simulateSeason(
   seed: string
 ): SeasonResult {
   const strength = calculateSquadStrength(squad);
-  const { opponentClubs, replacedTeam } = getSeasonLeagueClubs(seed);
-  const rng = seedrandom(`${seed}-season`);
+  const { schedule: opponents, replacedTeam } = buildSeasonSchedule(seed);
 
   let wins = 0;
   let losses = 0;
@@ -878,7 +895,6 @@ export function simulateSeason(
   let state: MatchSimState = { form: 0, seasonDropGoals: 0 };
   const gameResults: ("W" | "L")[] = [];
   const fixtures: MatchFixture[] = [];
-  const opponents = buildFixtureList(rng, opponentClubs);
 
   for (let i = 0; i < SEASON_GAMES; i++) {
     const { opponent, isHome } = opponents[i];

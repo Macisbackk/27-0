@@ -14,11 +14,13 @@ export default async function PlayPage({
     joeMellor?: string;
     superSamHallas?: string;
     draft?: string;
+    fantasy?: string;
   }>;
 }) {
   const params = await searchParams;
   const wantsHard = params.difficulty === "hard";
   const wantsCup = params.cup === "1";
+  const wantsFantasy = params.fantasy === "1";
   const wantsSuperSamHallas = params.superSamHallas === "1";
   const wantsJoeMellor = params.joeMellor === "1" && !wantsSuperSamHallas;
   const wantsDraft = params.draft === "1";
@@ -30,6 +32,8 @@ export default async function PlayPage({
   let mode: GameMode = "CLASSIC";
   if (wantsCup) {
     mode = "CHALLENGE_CUP";
+  } else if (wantsFantasy && !joeMellorMode && !superSamHallasMode) {
+    mode = "FANTASY";
   } else if (wantsDraft && !joeMellorMode && !superSamHallasMode) {
     mode = "DRAFT";
   }
@@ -43,9 +47,11 @@ export default async function PlayPage({
   const subtitle =
     mode === "CHALLENGE_CUP"
       ? "Choose your club, draft club legends, and fight through a knockout tournament."
-      : mode === "DRAFT"
-        ? DRAFT_MODE_INTRO
-        : undefined;
+      : mode === "FANTASY"
+        ? undefined
+        : mode === "DRAFT"
+          ? DRAFT_MODE_INTRO
+          : undefined;
 
   return (
     <GameStarter

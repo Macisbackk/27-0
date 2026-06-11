@@ -10,6 +10,7 @@ interface StoredStats {
   hard: UserStatsData;
   draftNormal: UserStatsData;
   draftHard: UserStatsData;
+  fantasy: UserStatsData;
 }
 
 export async function loadCloudStats(): Promise<StoredStats | null> {
@@ -31,6 +32,7 @@ export async function loadCloudStats(): Promise<StoredStats | null> {
       hard: { ...EMPTY_STATS },
       draftNormal: { ...EMPTY_STATS },
       draftHard: { ...EMPTY_STATS },
+      fantasy: { ...EMPTY_STATS },
     };
 
     for (const row of data) {
@@ -49,6 +51,10 @@ export async function loadCloudStats(): Promise<StoredStats | null> {
         );
       } else if (mode === "DRAFT_HARD") {
         result.draftHard = migrateUserStats(
+          (row.stat_json as Partial<UserStatsData>) ?? {}
+        );
+      } else if (mode === "FANTASY") {
+        result.fantasy = migrateUserStats(
           (row.stat_json as Partial<UserStatsData>) ?? {}
         );
       }
@@ -70,6 +76,7 @@ export async function saveCloudStats(stats: StoredStats): Promise<void> {
     { key: "hard", mode: "HARD" },
     { key: "draftNormal", mode: "DRAFT_NORMAL" },
     { key: "draftHard", mode: "DRAFT_HARD" },
+    { key: "fantasy", mode: "FANTASY" },
   ];
 
   try {

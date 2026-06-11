@@ -136,6 +136,8 @@ export const EMPTY_STATS: UserStatsData = {
 
   bestCupMatchWinsInTournament: 0,
 
+  bestTeamRating: 0,
+
 };
 
 
@@ -149,6 +151,8 @@ interface StoredStats {
   draftNormal: UserStatsData;
 
   draftHard: UserStatsData;
+
+  fantasy: UserStatsData;
 
 }
 
@@ -169,6 +173,12 @@ export function resolveStatsBucket(
   if (mode === "DRAFT") {
 
     return difficulty === "HARD" ? "draftHard" : "draftNormal";
+
+  }
+
+  if (mode === "FANTASY") {
+
+    return "fantasy";
 
   }
 
@@ -238,7 +248,7 @@ export function migrateUserStats(raw: Partial<UserStatsData>): UserStatsData {
 
   merged.bestCupMatchWinsInTournament = merged.bestCupMatchWinsInTournament ?? 0;
 
-
+  merged.bestTeamRating = merged.bestTeamRating ?? 0;
 
   return merged;
 
@@ -260,6 +270,8 @@ function loadStoredStats(): StoredStats {
 
       draftHard: { ...EMPTY_STATS },
 
+      fantasy: { ...EMPTY_STATS },
+
     };
 
   }
@@ -276,11 +288,13 @@ function loadStoredStats(): StoredStats {
 
         hard: { ...EMPTY_STATS },
 
-        draftNormal: { ...EMPTY_STATS },
+      draftNormal: { ...EMPTY_STATS },
 
-        draftHard: { ...EMPTY_STATS },
+      draftHard: { ...EMPTY_STATS },
 
-      };
+      fantasy: { ...EMPTY_STATS },
+
+    };
 
     }
 
@@ -300,6 +314,8 @@ function loadStoredStats(): StoredStats {
 
         draftHard: migrateUserStats(parsed.draftHard ?? {}),
 
+        fantasy: migrateUserStats(parsed.fantasy ?? {}),
+
       };
 
     }
@@ -316,6 +332,8 @@ function loadStoredStats(): StoredStats {
 
       draftHard: { ...EMPTY_STATS },
 
+      fantasy: { ...EMPTY_STATS },
+
     };
 
   } catch {
@@ -329,6 +347,8 @@ function loadStoredStats(): StoredStats {
       draftNormal: { ...EMPTY_STATS },
 
       draftHard: { ...EMPTY_STATS },
+
+      fantasy: { ...EMPTY_STATS },
 
     };
 

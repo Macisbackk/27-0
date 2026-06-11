@@ -64,17 +64,19 @@ export interface SupabaseLeaderboardRow {
   updated_at?: string | null;
 }
 
-export type LeaderboardDbMode = "super-league" | "challenge-cup" | "draft";
+export type LeaderboardDbMode = "super-league" | "challenge-cup" | "draft" | "fantasy";
 
 export function gameModeToDbMode(mode: GameMode): LeaderboardDbMode {
   if (mode === "CHALLENGE_CUP") return "challenge-cup";
   if (mode === "DRAFT") return "draft";
+  if (mode === "FANTASY") return "fantasy";
   return "super-league";
 }
 
 function dbModeToGameMode(dbMode: LeaderboardDbMode): GameMode {
   if (dbMode === "challenge-cup") return "CHALLENGE_CUP";
   if (dbMode === "draft") return "DRAFT";
+  if (dbMode === "fantasy") return "FANTASY";
   return "CLASSIC";
 }
 
@@ -83,7 +85,7 @@ function resolveLeaderboardDifficulty(
   dbMode: LeaderboardDbMode,
   difficulty: GameDifficulty
 ): GameDifficulty {
-  return dbMode === "challenge-cup" ? "NORMAL" : difficulty;
+  return dbMode === "challenge-cup" || dbMode === "fantasy" ? "NORMAL" : difficulty;
 }
 
 const SUPABASE_SELECT_EXTENDED =

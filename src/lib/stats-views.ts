@@ -15,13 +15,15 @@ export type StatsTabId =
   | "super-league"
   | "hard-mode"
   | "draft-mode"
-  | "challenge-cup";
+  | "challenge-cup"
+  | "fantasy-mode";
 
 export const STATS_TABS: { id: StatsTabId; label: string }[] = [
   { id: "overall", label: "Overall" },
   { id: "super-league", label: "Normal Mode" },
   { id: "hard-mode", label: "Hard Mode" },
   { id: "draft-mode", label: "Draft Mode" },
+  { id: "fantasy-mode", label: "Fantasy Mode" },
   { id: "challenge-cup", label: "Challenge Cup" },
 ];
 
@@ -301,6 +303,29 @@ export function getHardDraftModeView(stats: UserStatsData) {
     leagueTitles: stats.leagueTitlesWon,
     perfectSeasons: stats.totalPerfectSeasons,
     winlessSeasons: stats.totalWinlessSeasons,
+  };
+}
+
+export function getFantasyModeView(stats: UserStatsData) {
+  return {
+    runs: stats.totalSeasonsSimulated,
+    wins: stats.seasonWins,
+    losses: stats.seasonLosses,
+    winPercentage: formatWinPercentage(stats.seasonWins, stats.seasonLosses),
+    hasSeasons: stats.totalSeasonsSimulated > 0,
+    bestRecord: {
+      wins: stats.bestRecordWins,
+      losses: stats.bestRecordLosses,
+    },
+    worstRecord: {
+      wins: stats.worstRecordWins,
+      losses: stats.worstRecordLosses,
+    },
+    leagueTitles: stats.leagueTitlesWon,
+    perfectSeasons: stats.totalPerfectSeasons,
+    winlessSeasons: stats.totalWinlessSeasons,
+    bestSquadValue: stats.highestSquadValue,
+    bestTeamRating: stats.bestTeamRating > 0 ? stats.bestTeamRating : null,
   };
 }
 

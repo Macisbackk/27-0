@@ -120,6 +120,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const playSearch = {
     cup: searchParams.get("cup"),
     draft: searchParams.get("draft"),
+    fantasy: searchParams.get("fantasy"),
     difficulty: searchParams.get("difficulty"),
   };
 
@@ -254,6 +255,24 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       </li>
                     );
                   })}
+
+                  <li>
+                    <Link
+                      href={buildPlayHref("fantasy")}
+                      onClick={onClose}
+                      className={navLinkClass(
+                        isPlayModeActive(pathname, playSearch, "fantasy")
+                      )}
+                    >
+                      <span aria-hidden className={NAV.icon}>
+                        ✨
+                      </span>
+                      Fantasy Mode
+                      {isPlayModeActive(pathname, playSearch, "fantasy") && (
+                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-green" />
+                      )}
+                    </Link>
+                  </li>
 
                   <li>
                     <Link

@@ -67,7 +67,7 @@ export function LeaderboardTable({
     if (mode !== leaderboardMode) playUiClick();
     setLeaderboardMode(mode);
     setTracker(getDefaultTrackerForDbMode(mode));
-    if (mode === "challenge-cup") {
+    if (mode === "challenge-cup" || mode === "fantasy") {
       setDifficulty("NORMAL");
     }
   };
@@ -111,7 +111,9 @@ export function LeaderboardTable({
       ? "Draft Mode"
       : leaderboardMode === "challenge-cup"
         ? "Challenge Cup"
-        : "Normal Mode";
+        : leaderboardMode === "fantasy"
+          ? "Fantasy Mode"
+          : "Normal Mode";
 
   const trackerLabel =
     availableTrackers.find((t) => t.id === activeTracker)?.label ??
@@ -119,11 +121,12 @@ export function LeaderboardTable({
 
   return (
     <div>
-      <div className="mb-5 grid gap-3 sm:grid-cols-3">
+      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {(
           [
             { id: "super-league" as const, label: "Normal Mode" },
             { id: "draft" as const, label: "Draft Mode" },
+            { id: "fantasy" as const, label: "Fantasy Mode" },
             { id: "challenge-cup" as const, label: "Challenge Cup" },
           ] as const
         ).map((mode) => {

@@ -10,6 +10,7 @@ import {
   getDraftModeView,
   getHardChallengeCupView,
   getHardDraftModeView,
+  getFantasyModeView,
   getHardNormalModeView,
   getOverallView,
   getSuperLeagueView,
@@ -35,6 +36,7 @@ export function StatsPanel() {
   const [draftHardStats, setDraftHardStats] = useState<UserStatsData | null>(
     null
   );
+  const [fantasyStats, setFantasyStats] = useState<UserStatsData | null>(null);
 
   const refresh = () => {
     const stored = getAllStats();
@@ -42,6 +44,7 @@ export function StatsPanel() {
     setHardStats(stored.hard);
     setDraftNormalStats(stored.draftNormal);
     setDraftHardStats(stored.draftHard);
+    setFantasyStats(stored.fantasy);
   };
 
   useEffect(() => {
@@ -51,7 +54,13 @@ export function StatsPanel() {
   }, []);
 
   useEffect(() => {
-    if (!normalStats || !hardStats || !draftNormalStats || !draftHardStats) {
+    if (
+      !normalStats ||
+      !hardStats ||
+      !draftNormalStats ||
+      !draftHardStats ||
+      !fantasyStats
+    ) {
       return;
     }
     runStatsPageValidation({
@@ -60,9 +69,15 @@ export function StatsPanel() {
       draftNormal: draftNormalStats,
       draftHard: draftHardStats,
     });
-  }, [normalStats, hardStats, draftNormalStats, draftHardStats]);
+  }, [normalStats, hardStats, draftNormalStats, draftHardStats, fantasyStats]);
 
-  if (!normalStats || !hardStats || !draftNormalStats || !draftHardStats) {
+  if (
+    !normalStats ||
+    !hardStats ||
+    !draftNormalStats ||
+    !draftHardStats ||
+    !fantasyStats
+  ) {
     return (
       <div className="card-glass p-12 text-center text-gray-500">
         <p className={TYPO.body}>Loading stats...</p>
@@ -74,7 +89,8 @@ export function StatsPanel() {
     normalStats.totalRuns > 0 ||
     hardStats.totalRuns > 0 ||
     draftNormalStats.totalSeasonsSimulated > 0 ||
-    draftHardStats.totalSeasonsSimulated > 0;
+    draftHardStats.totalSeasonsSimulated > 0 ||
+    fantasyStats.totalSeasonsSimulated > 0;
 
   return (
     <div className="space-y-6">
@@ -115,6 +131,9 @@ export function StatsPanel() {
       )}
       {activeTab === "draft-mode" && (
         <DraftModeTab draftNormal={draftNormalStats} />
+      )}
+      {activeTab === "fantasy-mode" && (
+        <FantasyModeTab stats={fantasyStats} />
       )}
       {activeTab === "challenge-cup" && (
         <ChallengeCupTab normal={normalStats} hard={hardStats} />
@@ -510,6 +529,62 @@ function DraftModeTab({ draftNormal }: { draftNormal: UserStatsData }) {
         <StatCard
           label="Draft Mode 0-27 Seasons"
           value={String(view.winlessSeasons)}
+        />
+      </StatsSection>
+    </div>
+  );
+}
+
+function FantasyModeTab({ stats }: { stats: UserStatsData }) {
+  const view = getFantasyModeView(stats);
+
+  return (
+    <div className="space-y-8">
+      <StatsSection title="Fantasy Mode">
+        <StatCard label="Fantasy Mode Runs" value={String(view.runs)} />
+        <StatCard label="Fantasy Mode Wins" value={String(view.wins)} />
+        <StatCard label="Fantasy Mode Losses" value={String(view.losses)} />
+        <StatCard
+          label="Win Rate"
+          value={formatWinPercentageOrDash(
+            view.winPercentage,
+            view.wins + view.losses > 0
+          )}
+        />
+        <StatCard
+          label="Best Fantasy Mode Record"
+          value={formatRecordOrDash(view.hasSeasons ? view.bestRecord : null)}
+          highlight={view.bestRecord.wins >= 20}
+        />
+        <StatCard
+          label="Worst Fantasy Mode Record"
+          value={formatRecordOrDash(view.hasSeasons ? view.worstRecord : null)}
+        />
+        <StatCard
+          label="League Titles"
+          value={String(view.leagueTitles)}
+          highlight={view.leagueTitles > 0}
+        />
+        <StatCard
+          label="Fantasy Mode 27-0 Seasons"
+          value={String(view.perfectSeasons)}
+          highlight={view.perfectSeasons > 0}
+        />
+        <StatCard
+          label="Fantasy Mode 0-27 Seasons"
+          value={String(view.winlessSeasons)}
+        />
+        <StatCard
+          label="Best Squad Value"
+          value={
+            view.bestSquadValue > 0 ? formatValue(view.bestSquadValue) : "—"
+          }
+          highlight={view.bestSquadValue >= 2_500_000}
+        />
+        <StatCard
+          label="Best Team Rating"
+          value={formatRatingOrDash(view.bestTeamRating)}
+          highlight={(view.bestTeamRating ?? 0) >= 88}
         />
       </StatsSection>
     </div>

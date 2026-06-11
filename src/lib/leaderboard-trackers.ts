@@ -98,7 +98,7 @@ export const LEADERBOARD_TRACKERS: {
 ];
 
 export function getTrackersForDbMode(
-  dbMode: "super-league" | "challenge-cup" | "draft"
+  dbMode: "super-league" | "challenge-cup" | "draft" | "fantasy"
 ) {
   if (dbMode === "challenge-cup") {
     return LEADERBOARD_TRACKERS.filter((t) => t.cupOnly);
@@ -107,14 +107,14 @@ export function getTrackersForDbMode(
 }
 
 export function getDefaultTrackerForDbMode(
-  dbMode: "super-league" | "challenge-cup" | "draft"
+  dbMode: "super-league" | "challenge-cup" | "draft" | "fantasy"
 ): LeaderboardTrackerType {
   return getTrackersForDbMode(dbMode)[0]?.id ?? "squad_value";
 }
 
 export function isTrackerValidForDbMode(
   tracker: LeaderboardTrackerType,
-  dbMode: "super-league" | "challenge-cup" | "draft"
+  dbMode: "super-league" | "challenge-cup" | "draft" | "fantasy"
 ): boolean {
   return getTrackersForDbMode(dbMode).some((t) => t.id === tracker);
 }

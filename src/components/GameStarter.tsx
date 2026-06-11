@@ -7,6 +7,7 @@ import {
   type PlayModeKey,
 } from "@/lib/storage/preferences";
 import { GameBoard } from "./GameBoard";
+import { FantasyModeBoard } from "./FantasyModeBoard";
 
 interface GameStarterProps {
   mode: GameMode;
@@ -22,6 +23,7 @@ function resolvePlayModeKey(
   search: URLSearchParams
 ): PlayModeKey | null {
   if (mode === "CHALLENGE_CUP") return null;
+  if (mode === "FANTASY") return null;
   if (mode === "DRAFT") return "draft";
   if (search.get("draft") === "1") return "draft";
   return "normal";
@@ -63,6 +65,10 @@ export function GameStarter({
         <p className="text-sm text-gray-500">Loading run…</p>
       </div>
     );
+  }
+
+  if (mode === "FANTASY") {
+    return <FantasyModeBoard />;
   }
 
   return (

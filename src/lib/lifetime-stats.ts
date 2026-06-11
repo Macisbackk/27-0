@@ -344,6 +344,10 @@ export function applySeasonLifetimeUpdate(
       existing.totalWinlessSeasons + (wins === 0 ? 1 : 0),
     lowestSquadValue,
     bestNationalRanking,
+    bestTeamRating:
+      averageSquadRating !== undefined
+        ? Math.max(existing.bestTeamRating ?? 0, averageSquadRating)
+        : (existing.bestTeamRating ?? 0),
     averageSeasonFinish: newAvgFinish,
     draftCounts,
     playerSeasonWins,

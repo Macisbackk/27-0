@@ -1,5 +1,6 @@
 import seedrandom from "seedrandom";
 import { getPlayersByClub } from "../players";
+import { getFantasyEligiblePlayers } from "./fantasy-mode";
 import { getTeamTier } from "../team-tiers";
 import type { Player, Position } from "../types";
 import type {
@@ -89,6 +90,15 @@ export function selectClubMatchSquad(
     );
     if (candidates.length === 0) {
       candidates = pool.filter((p) => !used.has(p.id));
+    }
+    if (candidates.length === 0) {
+      const fallback = getFantasyEligiblePlayers().filter(
+        (p) => p.position === position && !used.has(p.id)
+      );
+      candidates =
+        fallback.length > 0
+          ? fallback
+          : getFantasyEligiblePlayers().filter((p) => !used.has(p.id));
     }
     if (candidates.length === 0) break;
 
