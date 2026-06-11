@@ -44,7 +44,7 @@ const RL_TAG_VARIANT_CLASS: Record<RLTagVariant, string> = {
   red: "rl-tag-red",
 };
 
-/** Shared tag for category tiers, achievements, and status pills. */
+/** Compact achievement and utility chips — not for Legend/Historic/Current status. */
 export function RLTag({
   children,
   variant = "neutral",

@@ -48,7 +48,7 @@ body {
   letter-spacing: 0.01em;
 }
 
-/* Unified card tags — achievements, category tiers, status pills */
+/* Achievement chips — compact pills for honours (not player status) */
 .rl-tag,
 .rl-achievement {
   display: inline-flex;
@@ -64,6 +64,74 @@ body {
   white-space: nowrap;
   /* Dark base keeps tags readable on all club colour schemes */
   background-color: rgba(10, 15, 13, 0.88);
+}
+
+/* Player status badges — larger, premium banners separate from achievement chips */
+.rl-status-badge,
+.rl-special-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  max-width: 100%;
+  line-height: 1;
+  border-radius: 0.375rem;
+  border-width: 1px;
+  border-style: solid;
+  white-space: nowrap;
+}
+
+.rl-status-legend {
+  border-color: rgba(251, 191, 36, 0.55);
+  color: #fcd34d;
+  background: linear-gradient(
+    135deg,
+    rgba(251, 191, 36, 0.16) 0%,
+    rgba(10, 15, 13, 0.94) 72%
+  );
+  box-shadow:
+    0 0 14px rgba(251, 191, 36, 0.2),
+    inset 0 1px 0 rgba(251, 191, 36, 0.12);
+}
+
+.rl-status-historic {
+  border-color: rgba(168, 85, 247, 0.5);
+  color: #c4b5fd;
+  background: linear-gradient(
+    135deg,
+    rgba(168, 85, 247, 0.14) 0%,
+    rgba(10, 15, 13, 0.94) 72%
+  );
+  box-shadow:
+    0 0 14px rgba(168, 85, 247, 0.16),
+    inset 0 1px 0 rgba(168, 85, 247, 0.1);
+}
+
+.rl-status-current {
+  border-color: rgba(34, 197, 94, 0.48);
+  color: #4ade80;
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.12) 0%,
+    rgba(10, 15, 13, 0.94) 72%
+  );
+  box-shadow:
+    0 0 14px rgba(34, 197, 94, 0.14),
+    inset 0 1px 0 rgba(34, 197, 94, 0.08);
+}
+
+.rl-special-goat,
+.rl-special-supersam {
+  border-color: rgba(251, 191, 36, 0.62);
+  color: #fde68a;
+  background: linear-gradient(
+    135deg,
+    rgba(251, 191, 36, 0.22) 0%,
+    rgba(10, 15, 13, 0.94) 68%
+  );
+  box-shadow:
+    0 0 16px rgba(251, 191, 36, 0.24),
+    inset 0 1px 0 rgba(251, 191, 36, 0.14);
 }
 
 .rl-tag-neutral,

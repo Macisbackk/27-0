@@ -8,7 +8,11 @@ import type {
 } from "@/lib/squad-analysis";
 import { getClubColors } from "@/lib/clubs";
 import { RLClubRow } from "./cards/RLClubRow";
-import { RLTag } from "./cards/rl-card";
+import {
+  PlayerSpecialBadge,
+  PlayerStatusBadge,
+  type PlayerStatusType,
+} from "./cards/PlayerStatusBadge";
 import { playPanelExpand } from "@/lib/sound";
 import { formatValue } from "@/lib/players";
 import type { Position } from "@/lib/types";
@@ -43,24 +47,19 @@ interface ClubRepresentationProps {
   summary: ClubBreakdownSummary;
 }
 
-const DISPLAY_LABEL: Record<ClubPlayerDisplayCategory, string> = {
-  current: "Current",
-  historic: "Historic",
-  legend: "Legend",
-  goat: "GOAT",
-  superSam: "SUPER SAM",
-};
-
-const DISPLAY_VARIANT: Record<
-  ClubPlayerDisplayCategory,
-  "current" | "historic" | "legend" | "goat" | "gold"
-> = {
-  current: "current",
-  historic: "historic",
-  legend: "legend",
-  goat: "goat",
-  superSam: "gold",
-};
+function ClubPlayerStatusBadge({
+  category,
+}: {
+  category: ClubPlayerDisplayCategory;
+}) {
+  if (category === "goat") {
+    return <PlayerSpecialBadge variant="goat" />;
+  }
+  if (category === "superSam") {
+    return <PlayerSpecialBadge variant="superSam" />;
+  }
+  return <PlayerStatusBadge status={category as PlayerStatusType} />;
+}
 
 export function ClubRepresentation({ summary }: ClubRepresentationProps) {
   const { clubs, totalPlayers, expectedPlayers, isValid } = summary;
@@ -122,11 +121,9 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                                   : formatPositionLine(player)}
                               </p>
                             </div>
-                            <RLTag
-                              variant={DISPLAY_VARIANT[player.displayCategory]}
-                            >
-                              {DISPLAY_LABEL[player.displayCategory]}
-                            </RLTag>
+                            <ClubPlayerStatusBadge
+                              category={player.displayCategory}
+                            />
                           </div>
                           <div className={`mt-2 flex flex-wrap items-center gap-3 ${TYPO.bodySm}`}>
                             <span className={`${TYPO.rating} text-sm`}>
