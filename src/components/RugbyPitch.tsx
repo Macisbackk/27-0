@@ -33,6 +33,8 @@ interface RugbyPitchProps {
   lockedSlots?: number[];
   /** Draft placement — tooltips show penalty without parent hover state. */
   placementPlayer?: Player | null;
+  /** Hide squad value in the header (e.g. when budget is shown elsewhere). */
+  hideValueSummary?: boolean;
 }
 
 function RugbyPitchInner({
@@ -50,6 +52,7 @@ function RugbyPitchInner({
   dimmed,
   lockedSlots,
   placementPlayer,
+  hideValueSummary,
 }: RugbyPitchProps) {
   const lockedSet = useMemo(() => new Set(lockedSlots ?? []), [lockedSlots]);
   const headerTitle = interactive
@@ -71,25 +74,22 @@ function RugbyPitchInner({
             {headerTitle}
           </h3>
           <div className="text-right">
-            {!hardMode ? (
+            {!hideValueSummary && (
               <>
-                <p className="font-display text-lg font-bold text-accent-gold">
-                  {formatValue(totalValue)}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {filledCount}/{totalSlots} filled
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="font-display text-lg font-bold text-gray-600">
-                  ???
-                </p>
-                <p className="text-xs text-gray-500">
-                  {filledCount}/{totalSlots} filled
-                </p>
+                {!hardMode ? (
+                  <p className="font-display text-lg font-bold text-accent-gold">
+                    {formatValue(totalValue)}
+                  </p>
+                ) : (
+                  <p className="font-display text-lg font-bold text-gray-600">
+                    ???
+                  </p>
+                )}
               </>
             )}
+            <p className="text-xs text-gray-500">
+              {filledCount}/{totalSlots} filled
+            </p>
           </div>
         </div>
       )}

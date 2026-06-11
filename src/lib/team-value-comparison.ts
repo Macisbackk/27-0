@@ -399,12 +399,13 @@ export function getExtendedTeamComparison(
       ? 0
       : getOpponentSquadValue(strongestOpponent.name, seed, oppRound);
 
-  const ratingEdge: ExtendedTeamComparison["ratingEdge"] =
-    userRating > strongestOpponent.rating
+  const ratingCompare =
+    userRating > strongestOpponent.rating + 0.05
       ? "user"
-      : userRating < strongestOpponent.rating
+      : userRating < strongestOpponent.rating - 0.05
         ? "opponent"
         : "tie";
+  const ratingEdge: ExtendedTeamComparison["ratingEdge"] = ratingCompare;
 
   const mostExpensiveOpponent =
     getMostExpensiveOpposition(fixtures, seed) ?? {

@@ -13,12 +13,11 @@ import { TYPO } from "@/lib/ui/typography";
 
 interface FantasyBudgetPanelProps {
   squad: SquadSlot[];
-  compact?: boolean;
 }
 
 const LOW_BUDGET_THRESHOLD = FANTASY_BUDGET * 0.1;
 
-export function FantasyBudgetPanel({ squad, compact }: FantasyBudgetPanelProps) {
+export function FantasyBudgetPanel({ squad }: FantasyBudgetPanelProps) {
   const { totalValue, budgetRemaining, averageRating } =
     getFantasySquadSummary(squad);
   const overBudget = budgetRemaining < 0;
@@ -45,59 +44,40 @@ export function FantasyBudgetPanel({ squad, compact }: FantasyBudgetPanelProps) 
       ? "bg-accent-gold"
       : "bg-accent-green";
 
-  const stats = (
-    <>
-      <BudgetStat
-        label="Budget remaining"
-        value={formatValue(Math.max(0, budgetRemaining))}
-        accent={remainingAccent}
-        prominent={!compact}
-      />
-      <BudgetStat
-        label="Squad value used"
-        value={formatValue(totalValue)}
-        accent="text-white"
-        prominent={!compact}
-      />
-      <BudgetStat
-        label="Total budget"
-        value={formatValue(FANTASY_BUDGET)}
-        accent="text-gray-300"
-        prominent={!compact}
-      />
-    </>
-  );
-
-  if (compact) {
-    return (
-      <div
-        className={`${CARD.elevated} ${panelRing} grid grid-cols-3 gap-2 p-2 sm:gap-3 sm:p-3`}
-      >
-        {stats}
-      </div>
-    );
-  }
-
   return (
     <div className={`${CARD.elevated} ${panelRing} p-3 sm:p-4`}>
-      <div className="flex flex-wrap items-end justify-between gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
         <p className={TYPO.sectionLabel}>Budget</p>
-        <p className="text-xs text-gray-500">
+        <p className="text-[11px] text-gray-500 sm:text-xs">
           {filledCount}/{FANTASY_SQUAD_SIZE} signed
           {averageRating > 0 && <> · {averageRating} OVR avg</>}
         </p>
       </div>
 
-      <div className="mt-2 grid grid-cols-1 gap-2 sm:mt-3 sm:grid-cols-3 sm:gap-3">
-        {stats}
+      <div className="mt-2.5 grid grid-cols-3 gap-2 sm:mt-3 sm:gap-3">
+        <BudgetStat
+          label="Remaining"
+          value={formatValue(Math.max(0, budgetRemaining))}
+          accent={remainingAccent}
+        />
+        <BudgetStat
+          label="Squad used"
+          value={formatValue(totalValue)}
+          accent="text-white"
+        />
+        <BudgetStat
+          label="Total"
+          value={formatValue(FANTASY_BUDGET)}
+          accent="text-gray-300"
+        />
       </div>
 
-      <div className="mt-3 sm:mt-4">
-        <div className="mb-1 flex items-center justify-between text-[10px] uppercase tracking-wider text-gray-500 sm:text-xs">
+      <div className="mt-2.5 sm:mt-3">
+        <div className="mb-1 flex items-center justify-between text-[10px] uppercase tracking-wider text-gray-500">
           <span>Budget used</span>
           <span>{spentPct}%</span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-pitch-950/80">
+        <div className="h-1.5 overflow-hidden rounded-full bg-pitch-950/80 sm:h-2">
           <div
             className={`h-full rounded-full transition-all ${progressBarClass}`}
             style={{ width: `${spentPct}%` }}
@@ -106,19 +86,15 @@ export function FantasyBudgetPanel({ squad, compact }: FantasyBudgetPanelProps) 
       </div>
 
       {overBudget && (
-        <p className="mt-2 text-sm font-medium text-accent-red sm:mt-3">
+        <p className="mt-2 text-xs font-medium text-accent-red sm:text-sm">
           Squad exceeds budget — remove a player or pick a cheaper option.
         </p>
       )}
       {!overBudget && lowBudget && (
-        <p className="mt-2 text-sm font-medium text-accent-gold sm:mt-3">
+        <p className="mt-2 text-xs font-medium text-accent-gold sm:text-sm">
           Budget running low — choose remaining signings carefully.
         </p>
       )}
-
-      <p className="mt-2 text-xs text-gray-500 sm:mt-3">
-        {FANTASY_SQUAD_SIZE} players · {FANTASY_SEASON_ROUNDS} rounds
-      </p>
     </div>
   );
 }
@@ -127,24 +103,18 @@ function BudgetStat({
   label,
   value,
   accent = "text-white",
-  prominent = false,
 }: {
   label: string;
   value: string;
   accent?: string;
-  prominent?: boolean;
 }) {
   return (
-    <div className={`${CARD.stat} px-2.5 py-2 sm:px-3 sm:py-2.5`}>
-      <p className="text-[10px] uppercase tracking-wider text-gray-500 sm:text-xs">
+    <div className={`${CARD.stat} min-w-0 px-2 py-1.5 sm:px-2.5 sm:py-2`}>
+      <p className="truncate text-[9px] uppercase tracking-wider text-gray-500 sm:text-[10px]">
         {label}
       </p>
       <p
-        className={`mt-0.5 font-display font-bold ${accent} ${
-          prominent
-            ? "text-xl sm:text-2xl"
-            : "text-base sm:text-lg"
-        }`}
+        className={`mt-0.5 truncate font-display text-base font-bold sm:text-lg ${accent}`}
       >
         {value}
       </p>

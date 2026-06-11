@@ -26,6 +26,19 @@ interface TeamComparisonBoxProps {
   delay?: number;
 }
 
+function formatTeamRating(rating: number): string {
+  return rating.toFixed(1);
+}
+
+function ratingEdgeForSide(
+  side: "user" | "opponent",
+  ratingEdge: ExtendedTeamComparison["ratingEdge"]
+): "better" | "worse" | "tie" {
+  if (ratingEdge === "tie") return "tie";
+  if (side === "user") return ratingEdge === "user" ? "better" : "worse";
+  return ratingEdge === "opponent" ? "better" : "worse";
+}
+
 export const TeamComparisonBox = memo(function TeamComparisonBox({
   comparison,
   delay = 0,
@@ -99,24 +112,6 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
       transition={{ delay }}
     >
       <div className="px-4 py-6 sm:px-6 sm:py-8">
-        <div className="sm:hidden">
-          <div className="grid grid-cols-2 gap-3">
-            <TeamBadge
-              heading="Your Team"
-              badge="🟢 Your Team"
-              badgeClass="border-accent-green/40 bg-accent-green/10 text-accent-green"
-              club={user.name}
-            />
-            <TeamBadge
-              heading="Opponent"
-              badge="🔴 Opponent"
-              badgeClass="border-accent-red/40 bg-accent-red/10 text-accent-red"
-              club={opponent.name}
-              align="right"
-            />
-          </div>
-        </div>
-
         <RatingShowcase
           userName={user.name}
           opponentName={opponent.name}
@@ -125,10 +120,11 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
           ratingEdge={ratingEdge}
           userBarPct={userBarPct}
           oppBarPct={oppBarPct}
-          className="mt-6 sm:mt-0"
         />
 
-        <div className="hidden sm:mt-8 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-stretch sm:gap-4">
+        <p className={`mt-8 hidden text-center sm:block ${TYPO.statLabel}`}>Team Stats</p>
+
+        <div className="hidden sm:mt-3 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-stretch sm:gap-4">
           <TeamSidePanel
             label="Your Team"
             badge="🟢 Your Team"
@@ -172,9 +168,9 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
         </div>
 
         <div className="sm:hidden">
-          <MobileVsDivider className="mt-6" />
+          <p className={`mt-6 text-center ${TYPO.statLabel}`}>Team Stats</p>
 
-          <div className="mt-4 space-y-2.5">
+          <div className="mt-3 space-y-2.5">
             {statRows.map((row) => (
               <MobileComparisonStatRow
                 key={row.label}
@@ -213,56 +209,6 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
   );
 });
 
-const TeamBadge = memo(function TeamBadge({
-  heading,
-  badge,
-  badgeClass,
-  club,
-  align = "left",
-}: {
-  heading: string;
-  badge: string;
-  badgeClass: string;
-  club: string;
-  align?: "left" | "right";
-}) {
-  const isRight = align === "right";
-
-  return (
-    <div className={`${CARD.inset} p-3 ${isRight ? "text-right" : "text-left"}`}>
-      <p className={TYPO.statLabel}>{heading}</p>
-      <span
-        className={`mt-1.5 inline-flex items-center rounded-full border px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider ${badgeClass}`}
-      >
-        {badge}
-      </span>
-      <div className={`mt-2 ${isRight ? "flex justify-end" : "flex justify-start"}`}>
-        <ClubNameLabel club={club} variant="pill" className="max-w-full truncate" />
-      </div>
-    </div>
-  );
-});
-
-const MobileVsDivider = memo(function MobileVsDivider({
-  className = "",
-}: {
-  className?: string;
-}) {
-  return (
-    <div className={`text-center ${className}`}>
-      <p className={TYPO.statLabel}>Your Team</p>
-      <div className="mt-2 flex items-center gap-3">
-        <div className="h-px flex-1 bg-pitch-700/80" aria-hidden />
-        <span className="shrink-0 font-display text-sm font-black uppercase tracking-widest text-gray-500">
-          VS
-        </span>
-        <div className="h-px flex-1 bg-pitch-700/80" aria-hidden />
-      </div>
-      <p className={`mt-2 ${TYPO.statLabel}`}>Opponent</p>
-    </div>
-  );
-});
-
 const RatingShowcase = memo(function RatingShowcase({
   userName,
   opponentName,
@@ -271,7 +217,6 @@ const RatingShowcase = memo(function RatingShowcase({
   ratingEdge,
   userBarPct,
   oppBarPct,
-  className = "",
 }: {
   userName: string;
   opponentName: string;
@@ -280,64 +225,61 @@ const RatingShowcase = memo(function RatingShowcase({
   ratingEdge: ExtendedTeamComparison["ratingEdge"];
   userBarPct: number;
   oppBarPct: number;
-  className?: string;
 }) {
+  const userEdge = ratingEdgeForSide("user", ratingEdge);
+  const opponentEdge = ratingEdgeForSide("opponent", ratingEdge);
+
   return (
-    <div className={`text-center ${className}`}>
-      <p className={TYPO.statLabel}>Squad Rating</p>
-      <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
+    <div className="text-center">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-stretch gap-3 sm:gap-6">
         <RatingBadge
           teamName={userName}
           rating={userRating}
-          edge={ratingEdge === "user" ? "better" : ratingEdge === "tie" ? "tie" : "neutral"}
-          variant="user"
+          edge={userEdge}
         />
-        <span className="hidden font-display text-xl font-black text-gray-600 sm:inline sm:text-2xl">
-          VS
-        </span>
+        <div className="flex items-center justify-center px-1 sm:px-2">
+          <span className="font-display text-lg font-black uppercase tracking-widest text-gray-500 sm:text-3xl">
+            VS
+          </span>
+        </div>
         <RatingBadge
           teamName={opponentName}
           rating={opponentRating}
-          edge={
-            ratingEdge === "opponent"
-              ? "better"
-              : ratingEdge === "tie"
-                ? "tie"
-                : "neutral"
-          }
-          variant="opponent"
+          edge={opponentEdge}
         />
       </div>
 
-      <div className="mx-auto mt-5 flex max-w-md items-center gap-3">
-        <div className="flex-1">
-          <div className="h-2 overflow-hidden rounded-full bg-pitch-800">
-            <motion.div
-              className={`h-full rounded-full ${
-                ratingEdge === "user"
-                  ? "bg-accent-green shadow-[0_0_12px_rgba(34,197,94,0.5)]"
-                  : "bg-pitch-600"
-              }`}
-              initial={{ width: 0 }}
-              animate={{ width: `${userBarPct}%` }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-            />
-          </div>
-        </div>
-        <div className="flex-1">
-          <div className="h-2 overflow-hidden rounded-full bg-pitch-800">
-            <motion.div
-              className={`h-full rounded-full ${
-                ratingEdge === "opponent"
-                  ? "bg-accent-red shadow-[0_0_12px_rgba(239,68,68,0.5)]"
-                  : "bg-pitch-600"
-              }`}
-              initial={{ width: 0 }}
-              animate={{ width: `${oppBarPct}%` }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-            />
-          </div>
-        </div>
+      <div className="mx-auto mt-5 flex max-w-lg items-center gap-3">
+        <RatingBar pct={userBarPct} edge={userEdge} />
+        <RatingBar pct={oppBarPct} edge={opponentEdge} />
+      </div>
+    </div>
+  );
+});
+
+const RatingBar = memo(function RatingBar({
+  pct,
+  edge,
+}: {
+  pct: number;
+  edge: "better" | "worse" | "tie";
+}) {
+  const barClass =
+    edge === "better"
+      ? "bg-accent-green shadow-[0_0_12px_rgba(34,197,94,0.5)]"
+      : edge === "worse"
+        ? "bg-accent-red shadow-[0_0_12px_rgba(239,68,68,0.5)]"
+        : "bg-pitch-600";
+
+  return (
+    <div className="flex-1">
+      <div className="h-2 overflow-hidden rounded-full bg-pitch-800 sm:h-2.5">
+        <motion.div
+          className={`h-full rounded-full ${barClass}`}
+          initial={{ width: 0 }}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+        />
       </div>
     </div>
   );
@@ -347,25 +289,23 @@ const RatingBadge = memo(function RatingBadge({
   teamName,
   rating,
   edge,
-  variant,
 }: {
   teamName: string;
   rating: number;
-  edge: "better" | "worse" | "tie" | "neutral";
-  variant: "user" | "opponent";
+  edge: "better" | "worse" | "tie";
 }) {
-  const userEdgeStyles =
+  const betterStyles =
     "border-accent-green/50 bg-accent-green/10 shadow-[0_0_24px_rgba(34,197,94,0.15)]";
-  const oppEdgeStyles =
+  const worseStyles =
     "border-accent-red/50 bg-accent-red/10 shadow-[0_0_24px_rgba(239,68,68,0.15)]";
   const tieStyles =
     "border-gray-500/50 bg-pitch-900/60 shadow-[0_0_16px_rgba(148,163,184,0.12)]";
-  const userGlow = [
+  const betterGlow = [
     "0 0 16px rgba(34,197,94,0.1)",
     "0 0 28px rgba(34,197,94,0.2)",
     "0 0 16px rgba(34,197,94,0.1)",
   ];
-  const oppGlow = [
+  const worseGlow = [
     "0 0 16px rgba(239,68,68,0.1)",
     "0 0 28px rgba(239,68,68,0.2)",
     "0 0 16px rgba(239,68,68,0.1)",
@@ -373,44 +313,52 @@ const RatingBadge = memo(function RatingBadge({
 
   const edgeStyles =
     edge === "better"
-      ? variant === "user"
-        ? userEdgeStyles
-        : oppEdgeStyles
-      : edge === "tie"
-        ? tieStyles
-        : "border-pitch-600/50 bg-pitch-900/60";
+      ? betterStyles
+      : edge === "worse"
+        ? worseStyles
+        : tieStyles;
   const glow =
-    edge === "better" ? (variant === "user" ? userGlow : oppGlow) : undefined;
-  const textColor =
-    edge === "better" && variant === "user"
+    edge === "better" ? betterGlow : edge === "worse" ? worseGlow : undefined;
+  const nameColor =
+    edge === "better"
+      ? "text-accent-green/90"
+      : edge === "worse"
+        ? "text-accent-red/90"
+        : "text-gray-400";
+  const ratingColor =
+    edge === "better"
       ? "text-accent-green"
-      : edge === "better" && variant === "opponent"
+      : edge === "worse"
         ? "text-accent-red"
-        : edge === "tie"
-          ? "text-gray-300"
-          : "text-white";
+        : "text-gray-300";
 
   return (
     <motion.div
-      className={`flex min-h-[6.5rem] min-w-[6.5rem] flex-col items-center justify-center rounded-xl border px-4 py-3 text-center sm:min-h-[7rem] sm:min-w-[7.5rem] ${edgeStyles}`}
+      className={`flex min-h-[7.5rem] flex-col items-center justify-center rounded-xl border px-3 py-4 text-center sm:min-h-[8.5rem] sm:px-5 sm:py-5 ${edgeStyles}`}
       animate={glow ? { boxShadow: glow } : undefined}
       transition={{ duration: 2.5, repeat: glow ? Infinity : 0 }}
     >
+      <div className="flex w-full justify-center">
+        {teamName === "—" ? (
+          <p className={`font-display text-xs font-bold uppercase tracking-wide ${nameColor}`}>
+            {teamName}
+          </p>
+        ) : (
+          <ClubNameLabel
+            club={teamName}
+            variant="pill"
+            className={`max-w-full truncate ${nameColor}`}
+          />
+        )}
+      </div>
       <p
-        className={`max-w-[7rem] truncate font-display text-[10px] font-bold uppercase tracking-wide sm:max-w-[8rem] sm:text-xs ${
-          edge === "better" && variant === "user"
-            ? "text-accent-green/90"
-            : edge === "better" && variant === "opponent"
-              ? "text-accent-red/90"
-              : "text-gray-400"
-        }`}
+        className={`mt-3 font-display text-4xl font-black leading-none sm:mt-4 sm:text-5xl ${ratingColor}`}
       >
-        {teamName}
+        {formatTeamRating(rating)}
       </p>
-      <p className={`mt-1 font-display text-3xl font-black leading-none sm:text-4xl ${textColor}`}>
-        {Math.round(rating)}
+      <p className={`mt-1.5 font-display text-xs font-bold uppercase tracking-widest ${nameColor}`}>
+        OVR
       </p>
-      <p className={`mt-1 ${TYPO.statLabel}`}>OVR</p>
     </motion.div>
   );
 });

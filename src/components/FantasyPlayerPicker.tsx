@@ -13,13 +13,8 @@ import { formatValue } from "@/lib/players";
 import { filterShowcasePlayers, getUniqueClubs } from "@/lib/players/showcase";
 import type { Player, SquadSlot } from "@/lib/types";
 import { PlayerCard } from "./PlayerCard";
-import {
-  RL_FILTER_CHIP_ACTIVE,
-  RL_FILTER_CHIP_IDLE,
-  RL_FILTER_INPUT_CLASS,
-} from "./cards/rl-card";
 import { playPlayerSelect, playUiClick } from "@/lib/sound";
-import { BTN, CARD } from "@/lib/ui/design-system";
+import { BTN, CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 const POOL = getFantasyEligiblePlayers();
@@ -102,9 +97,9 @@ export function FantasyPlayerPicker({
             {slot.label}
           </h2>
           <p className="mt-0.5 text-xs text-gray-500">
-            Slot budget: {formatValue(slotBudget)}
+            Slot budget {formatValue(slotBudget)}
             {changingPlayer && slot.player && (
-              <> · Current: {formatValue(slot.player.value)}</>
+              <> · Current {formatValue(slot.player.value)}</>
             )}
           </p>
         </div>
@@ -113,82 +108,84 @@ export function FantasyPlayerPicker({
         </button>
       </div>
 
-      <div className="shrink-0 space-y-3 border-b border-pitch-700/40 px-3 py-2 sm:px-4 sm:py-3">
+      <div className="shrink-0 px-3 py-2 sm:px-4 sm:py-3">
         {changingPlayer && onRemove && (
-          <div className="flex flex-wrap gap-2">
+          <div className="mb-2 flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => {
                 playUiClick();
                 onRemove();
               }}
-              className={`${BTN.base} ${BTN.secondary} text-xs`}
+              className={`${BTN.base} ${BTN.secondary} min-h-[36px] px-3 py-1.5 text-xs`}
             >
               Remove Player
             </button>
           </div>
         )}
 
-        <div>
-          <p className={`${TYPO.sectionLabel} mb-1.5`}>Search</p>
-          <input
-            type="search"
-            placeholder="Search players…"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            className={`${RL_FILTER_INPUT_CLASS} w-full py-1.5 text-xs sm:text-sm`}
-          />
-        </div>
+        <div className={`${CARD.base} overflow-hidden`}>
+          <div className="border-b border-pitch-700/50 px-3 py-2.5 sm:px-4">
+            <p className={`${TYPO.statLabel} mb-1.5`}>Search</p>
+            <input
+              type="search"
+              placeholder="Search players…"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              className={`${FILTER.input} py-2 text-xs sm:text-sm`}
+            />
+          </div>
 
-        <div>
-          <p className={`${TYPO.sectionLabel} mb-1.5`}>Filters</p>
-          <div className="flex flex-wrap items-center gap-2">
-            <FilterSelect
-              value={club}
-              onChange={(v) => {
-                playUiClick();
-                setClub(v);
-              }}
-              options={[
-                { value: "all", label: "All clubs" },
-                ...CLUBS.map((c) => ({ value: c, label: c })),
-              ]}
-            />
-            <button
-              type="button"
-              aria-pressed={affordableOnly}
-              onClick={() => {
-                playUiClick();
-                setAffordableOnly((v) => !v);
-              }}
-              className={`min-h-[32px] rounded-full border px-3 py-1 text-xs font-medium transition ${
-                affordableOnly ? RL_FILTER_CHIP_ACTIVE : RL_FILTER_CHIP_IDLE
-              }`}
-            >
-              Affordable only
-            </button>
-            <FilterSelect
-              value={sortKey}
-              onChange={(v) => {
-                playUiClick();
-                setSortKey(v as FantasySortKey);
-              }}
-              options={[
-                { value: "rating", label: "Sort: Rating" },
-                { value: "value", label: "Sort: Value" },
-                { value: "valueScore", label: "Sort: Best value" },
-                { value: "name", label: "Sort: Name" },
-              ]}
-            />
+          <div className="px-3 py-2.5 sm:px-4">
+            <p className={`${TYPO.statLabel} mb-2`}>Filters</p>
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <FilterSelect
+                value={club}
+                onChange={(v) => {
+                  playUiClick();
+                  setClub(v);
+                }}
+                options={[
+                  { value: "all", label: "All clubs" },
+                  ...CLUBS.map((c) => ({ value: c, label: c })),
+                ]}
+              />
+              <FilterSelect
+                value={sortKey}
+                onChange={(v) => {
+                  playUiClick();
+                  setSortKey(v as FantasySortKey);
+                }}
+                options={[
+                  { value: "rating", label: "Rating" },
+                  { value: "value", label: "Value" },
+                  { value: "valueScore", label: "Best value" },
+                  { value: "name", label: "Name" },
+                ]}
+              />
+              <button
+                type="button"
+                aria-pressed={affordableOnly}
+                onClick={() => {
+                  playUiClick();
+                  setAffordableOnly((v) => !v);
+                }}
+                className={`min-h-[32px] rounded-lg border px-2.5 py-1 text-[11px] font-medium transition sm:px-3 sm:text-xs ${
+                  affordableOnly ? FILTER.chipActive : FILTER.chipIdle
+                }`}
+              >
+                Affordable only
+              </button>
+            </div>
           </div>
         </div>
 
-        <p className="text-xs text-gray-500">
-          {players.length} eligible · Slot budget {formatValue(slotBudget)}
+        <p className={`mt-2 ${TYPO.bodySm}`}>
+          {players.length} eligible player{players.length !== 1 ? "s" : ""}
         </p>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-3 py-3 sm:px-4 sm:py-4">
+      <div className={`min-h-0 flex-1 overflow-y-auto ${SPACING.pageX} py-3 sm:py-4`}>
         {players.length === 0 ? (
           <p className="py-12 text-center text-gray-500">
             No players match your filters.
@@ -257,7 +254,7 @@ function FilterSelect({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className={`${RL_FILTER_INPUT_CLASS} min-w-[6rem] py-1 text-xs`}
+      className={`${FILTER.input} max-w-full py-1.5 pl-2.5 pr-7 text-[11px] sm:min-w-0 sm:py-2 sm:pl-3 sm:text-xs`}
     >
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>

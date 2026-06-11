@@ -201,15 +201,12 @@ export function FantasyModeBoard() {
 
         {(phase === "squadBuild" || phase === "season") && (
           <>
-            <FantasyBudgetPanel
-              squad={squad}
-              compact={phase === "season"}
-            />
+            <FantasyBudgetPanel squad={squad} />
 
             {phase === "squadBuild" && (
               <>
                 <p className={`mt-4 text-center ${TYPO.bodySm}`}>
-                  Tap a position to browse and sign players within budget (
+                  Tap a position to browse and sign players (
                   {filledCount}/{TOTAL_SLOTS} filled).
                 </p>
                 <div className={`${CARD.panel} mt-4 p-2 sm:p-4`}>
@@ -221,6 +218,7 @@ export function FantasyModeBoard() {
                     selectedSlot={selectedSlotIndex ?? undefined}
                     interactive
                     allowFilledSlotClick
+                    hideValueSummary
                     onSlotClick={handleSelectSlot}
                   />
                 </div>
