@@ -235,6 +235,24 @@ export function FantasyModeBoard() {
                   Tap a position to browse and sign players (
                   {filledCount}/{TOTAL_SLOTS} filled).
                 </p>
+
+                {!squadComplete && (
+                  <div className="mt-4 flex justify-center">
+                    <button
+                      type="button"
+                      onClick={handleAutofill}
+                      className={`${BTN.base} ${BTN.greenOutlineSm} px-6`}
+                    >
+                      Auto Fill Squad
+                    </button>
+                  </div>
+                )}
+                {autofillError && (
+                  <p className="mx-auto mt-2 max-w-md text-center text-xs font-medium text-accent-red sm:text-sm">
+                    {autofillError}
+                  </p>
+                )}
+
                 <div className={`${CARD.panel} mt-4 p-2 sm:p-4`}>
                   <RugbyPitch
                     squad={squad}
@@ -248,22 +266,9 @@ export function FantasyModeBoard() {
                     onSlotClick={handleSelectSlot}
                   />
                 </div>
-                <div className="mt-4 flex flex-col items-center gap-2">
-                  {!squadComplete && (
-                    <button
-                      type="button"
-                      onClick={handleAutofill}
-                      className={`${BTN.base} ${BTN.secondary} min-h-[40px] px-4 text-sm`}
-                    >
-                      Autofill
-                    </button>
-                  )}
-                  {autofillError && (
-                    <p className="max-w-md text-center text-xs font-medium text-accent-red sm:text-sm">
-                      {autofillError}
-                    </p>
-                  )}
-                  {squadComplete && budgetOk && (
+
+                {squadComplete && budgetOk && (
+                  <div className="mt-4 flex justify-center">
                     <button
                       type="button"
                       onClick={handleBeginSeason}
@@ -271,8 +276,8 @@ export function FantasyModeBoard() {
                     >
                       Begin Season →
                     </button>
-                  )}
-                </div>
+                  </div>
+                )}
               </>
             )}
 

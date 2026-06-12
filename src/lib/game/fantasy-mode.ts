@@ -160,48 +160,94 @@ export function getFantasySquadSummary(squad: SquadSlot[]) {
   };
 }
 
-function getMinReserveBudget(
+function percentileCost(costs: number[], ratio: number): number {
+  if (costs.length === 0) return Infinity;
+  const sorted = [...costs].sort((a, b) => a - b);
+  const index = Math.min(
+    sorted.length - 1,
+    Math.max(0, Math.floor(sorted.length * ratio))
+  );
+  return sorted[index];
+}
+
+/** Reserve a fair share per remaining slot — softer than absolute-cheapest only. */
+function getReserveBudget(
   squad: SquadSlot[],
   currentSlotIndex: number,
   emptySlots: SquadSlot[],
-  pool: Player[]
+  pool: Player[],
+  budget: number
 ): number {
+  const others = emptySlots.filter((slot) => slot.slotIndex !== currentSlotIndex);
+  if (others.length === 0) return 0;
+
   const signedIds = getSignedPlayerIds(squad);
+  const budgetRemaining = getFantasyBudgetRemaining(squad, budget);
+  const fairShare = budgetRemaining / (others.length + 1);
   let total = 0;
 
-  for (const slot of emptySlots) {
-    if (slot.slotIndex === currentSlotIndex) continue;
+  for (const slot of others) {
     const positions = getFantasyEligiblePositions(slot.position);
-    let cheapest = Infinity;
+    const costs: number[] = [];
 
     for (const player of pool) {
       if (signedIds.has(player.id)) continue;
       if (!positions.includes(player.position)) continue;
-      cheapest = Math.min(cheapest, player.value);
+      costs.push(player.value);
     }
 
-    if (cheapest === Infinity) return Infinity;
-    total += cheapest;
+    if (costs.length === 0) return Infinity;
+
+    const lowerQuartile = percentileCost(costs, 0.25);
+    total += Math.min(lowerQuartile, fairShare * 1.15);
   }
 
   return total;
 }
 
-function pickAutofillCandidate(candidates: Player[]): Player {
-  const scored = candidates.map((player) => ({
-    player,
-    score: (player.peakRating * player.peakRating) / player.value,
-  }));
-  scored.sort((a, b) => b.score - a.score);
+function pickAutofillCandidate(candidates: Player[], maxPay: number): Player {
+  if (candidates.length === 0) {
+    throw new Error("No autofill candidates");
+  }
+  if (candidates.length === 1) return candidates[0];
 
-  const pool = scored.slice(0, Math.min(10, scored.length));
-  const weights = pool.map(({ score }) => Math.max(score, 0.0001));
-  const total = weights.reduce((sum, weight) => sum + weight, 0);
+  const ratings = candidates.map((player) => player.peakRating);
+  const minRating = Math.min(...ratings);
+  const maxRating = Math.max(...ratings);
+
+  const weighted = candidates.map((player) => {
+    const ratingNorm =
+      maxRating === minRating
+        ? 1
+        : (player.peakRating - minRating) / (maxRating - minRating);
+
+    const spendRatio = maxPay > 0 ? player.value / maxPay : 1;
+    const budgetFit = 1 - Math.min(1, Math.abs(spendRatio - 0.6) * 0.9);
+    const valueEfficiency = player.peakRating / Math.max(player.value / 50_000, 1);
+    const jitter = 0.7 + Math.random() * 0.6;
+
+    const weight =
+      (Math.pow(ratingNorm, 0.75) * 4 +
+        (player.peakRating / 100) * 1.5 +
+        budgetFit * 1.2 +
+        Math.min(valueEfficiency, 3) * 0.35) *
+      jitter;
+
+    return { player, weight: Math.max(weight, 0.01) };
+  });
+
+  const sorted = [...weighted].sort((a, b) => b.weight - a.weight);
+  const poolSize = Math.min(
+    sorted.length,
+    Math.max(6, Math.ceil(sorted.length * 0.45))
+  );
+  const pool = sorted.slice(0, poolSize);
+  const total = pool.reduce((sum, entry) => sum + entry.weight, 0);
   let roll = Math.random() * total;
 
-  for (let i = 0; i < pool.length; i++) {
-    roll -= weights[i];
-    if (roll <= 0) return pool[i].player;
+  for (const entry of pool) {
+    roll -= entry.weight;
+    if (roll <= 0) return entry.player;
   }
 
   return pool[pool.length - 1].player;
@@ -228,24 +274,25 @@ export function autofillFantasySquad(
 
   for (const slot of orderedSlots) {
     const remainingEmpty = working.filter((s) => !s.player);
-    const reserve = getMinReserveBudget(
+    const reserve = getReserveBudget(
       working,
       slot.slotIndex,
       remainingEmpty,
-      pool
+      pool,
+      budget
     );
     const slotBudget = getFantasyBudgetForSlot(working, slot, budget);
-    const maxPay = slotBudget - reserve;
+    const maxPay = Math.max(0, slotBudget - reserve);
 
     const candidates = getFantasyCandidatesForSlot(working, slot, pool).filter(
       (player) => player.value <= maxPay
     );
 
-    if (candidates.length === 0) {
+    if (candidates.length === 0 || maxPay <= 0) {
       return { success: false, message: FANTASY_AUTOFILL_ERROR };
     }
 
-    const picked = pickAutofillCandidate(candidates);
+    const picked = pickAutofillCandidate(candidates, maxPay);
     working = signFantasyPlayerToSlot(working, picked, slot.slotIndex);
   }
 

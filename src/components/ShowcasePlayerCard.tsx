@@ -68,7 +68,9 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
 
   return (
     <div
-      className="showcase-player-card min-w-0 overflow-hidden rounded-lg border transition"
+      className={`showcase-player-card h-auto w-full min-w-0 self-start overflow-hidden rounded-lg border transition ${
+        expanded ? "showcase-player-card--expanded" : ""
+      }`}
       style={cardShellStyle}
     >
       <ClubColourBar club={player.club} />
@@ -101,7 +103,6 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
           <RugbyLeaguePlayerCard
             player={player}
             variant="default"
-            equalHeight
             compactMobile
             achievementDisplay="showcase"
           />

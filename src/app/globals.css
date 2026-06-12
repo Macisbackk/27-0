@@ -69,6 +69,12 @@ body {
   overflow: hidden;
 }
 
+.showcase-player-card--expanded {
+  content-visibility: visible;
+  contain: none;
+  contain-intrinsic-size: auto;
+}
+
 .showcase-compact-name {
   font-size: clamp(0.6875rem, 2.6vw, 0.875rem);
   overflow-wrap: anywhere;
@@ -79,6 +85,7 @@ body {
 .showcase-player-grid {
   overflow-anchor: none;
   max-width: 100%;
+  align-items: start;
 }
 
 @media (max-width: 639px) {

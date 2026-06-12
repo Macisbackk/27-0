@@ -669,15 +669,16 @@ export function PlayerShowcase() {
                 onPageChange={handlePageChange}
               />
 
-              <div className="showcase-player-grid grid gap-2 sm:grid-cols-2 sm:gap-2.5 xl:grid-cols-3">
+              <div className="showcase-player-grid grid items-start gap-2 sm:grid-cols-2 sm:gap-2.5 xl:grid-cols-3">
                 {pagePlayers.map((player) => (
-                  <ShowcasePlayerCard
-                    key={player.id}
-                    player={player}
-                    expanded={expandedPlayerId === player.id}
-                    onToggle={handleTogglePlayer}
-                    onOpenDetail={handleOpenDetail}
-                  />
+                  <div key={player.id} className="min-w-0 self-start">
+                    <ShowcasePlayerCard
+                      player={player}
+                      expanded={expandedPlayerId === player.id}
+                      onToggle={handleTogglePlayer}
+                      onOpenDetail={handleOpenDetail}
+                    />
+                  </div>
                 ))}
               </div>
 
