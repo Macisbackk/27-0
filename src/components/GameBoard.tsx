@@ -12,14 +12,12 @@ import type {
 } from "@/lib/types";
 import {
   autofillFromOffers,
-  collectRecentDraftPositions,
   collectUsedPlayerIds,
-  generateDraftOfferForPick,
+  generateDraftOfferForSlot,
   generateSlotOffers,
-  getOfferForPick,
   getOfferForSlot,
   getRoundPlayers,
-  rerollDraftOffer,
+  rerollDraftOfferForSlot,
   rerollSlotOffer,
   type RecruitmentRound,
 } from "@/lib/game/recruitment";
@@ -76,7 +74,6 @@ import { MatchdayScoreboard } from "./MatchdayScoreboard";
 import { HardModeBadge } from "./HardModeBadge";
 import { ClubHeaderBar } from "./ClubBadge";
 import { GuestNotice } from "./GuestNotice";
-import { DraftPlacementBanner } from "./DraftPlacementBanner";
 import { BTN, CARD, LINK, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -157,16 +154,10 @@ export function GameBoard({
   const [submittedOnline, setSubmittedOnline] = useState(false);
   const [choosing, setChoosing] = useState(false);
   const [rerolling, setRerolling] = useState(false);
-  const [draftPickIndex, setDraftPickIndex] = useState(0);
-  const [pendingPlayer, setPendingPlayer] = useState<Player | null>(null);
-  const [hoveredPlacementSlot, setHoveredPlacementSlot] = useState<
-    number | null
-  >(null);
   const recordedRef = useRef(false);
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
   const placementScrollRef = useRef<HTMLDivElement>(null);
-  const lastPlacementScrollKey = useRef<string | null>(null);
 
   const isHardMode = difficulty === "HARD";
   const recruitmentOptions = useMemo(
@@ -190,8 +181,6 @@ export function GameBoard({
     if (isChallengeCup && !cupClub) return;
     if (superSamHallasMode) {
       setSlotOffers(new Map());
-      setDraftPickIndex(0);
-      setPendingPlayer(null);
       setDiscardedPlayerIds(new Set());
       setRerollsRemaining(isHardMode ? 0 : MAX_REROLLS_PER_RUN);
       setRerollsThisRun(0);
@@ -199,7 +188,6 @@ export function GameBoard({
       return;
     }
 
-    const skipCount = joeMellorMode ? 1 : 0;
     const lockedIds = joeMellorMode ? [JOE_MELLOR_GOAT_ID] : [];
 
     setSlotOffers(
@@ -212,8 +200,6 @@ export function GameBoard({
             recruitmentOptions
           )
     );
-    setDraftPickIndex(0);
-    setPendingPlayer(null);
     setDiscardedPlayerIds(new Set());
     setRerollsRemaining(isHardMode ? 0 : MAX_REROLLS_PER_RUN);
     setRerollsThisRun(0);
@@ -245,13 +231,11 @@ export function GameBoard({
     }
   }, [superSamHallasMode, joeMellorMode, isChallengeCup, isDraftMode, difficulty]);
 
-  const activeOfferKey = isDraftMode ? draftPickIndex : selectedSlotIndex;
+  const activeOfferKey = selectedSlotIndex;
 
   const currentRound: RecruitmentRound | null =
     activeOfferKey !== null
-      ? isDraftMode
-        ? getOfferForPick(slotOffers, draftPickIndex)
-        : getOfferForSlot(slotOffers, selectedSlotIndex!)
+      ? getOfferForSlot(slotOffers, selectedSlotIndex!)
       : null;
 
   useEffect(() => {
@@ -264,76 +248,40 @@ export function GameBoard({
 
   useEffect(() => {
     if (!isDraftMode || superSamHallasMode || isChallengeCup) return;
-    const maxPicks = TOTAL_SLOTS - (joeMellorMode ? 1 : 0);
-    if (draftPickIndex >= maxPicks) return;
-    if (getOfferForPick(slotOffers, draftPickIndex)) return;
+    if (selectedSlotIndex === null) return;
+    if (getOfferForSlot(slotOffers, selectedSlotIndex)) return;
 
     const signedIds = squad
       .filter((slot) => slot.player)
       .map((slot) => slot.player!.id);
     const lockedIds = joeMellorMode ? [JOE_MELLOR_GOAT_ID] : [];
-    const recentPositions = collectRecentDraftPositions(
-      slotOffers,
-      draftPickIndex
-    );
-    const offer = generateDraftOfferForPick(
+    const offer = generateDraftOfferForSlot(
       seed,
-      draftPickIndex,
+      selectedSlotIndex,
       squad,
       signedIds,
       lockedIds,
-      recentPositions,
       recruitmentOptions
     );
     if (!offer) return;
 
     setSlotOffers((prev) => {
-      if (prev.get(draftPickIndex)) return prev;
+      if (prev.get(selectedSlotIndex)) return prev;
       const next = new Map(prev);
-      next.set(draftPickIndex, offer);
+      next.set(selectedSlotIndex, offer);
       return next;
     });
   }, [
     isDraftMode,
     superSamHallasMode,
     isChallengeCup,
-    draftPickIndex,
+    selectedSlotIndex,
     squad,
     seed,
     slotOffers,
     joeMellorMode,
     recruitmentOptions,
   ]);
-
-  useEffect(() => {
-    if (!isDraftMode || phase !== "pitch") return;
-    if (pendingPlayer) return;
-    if (getFilledCount(squad) >= TOTAL_SLOTS) return;
-    if (!getOfferForPick(slotOffers, draftPickIndex)) return;
-    setPhase("choice");
-  }, [
-    isDraftMode,
-    phase,
-    squad,
-    slotOffers,
-    draftPickIndex,
-    pendingPlayer,
-  ]);
-
-  useEffect(() => {
-    if (phase !== "placement" || !pendingPlayer) return;
-    const key = `${pendingPlayer.id}-placement`;
-    if (lastPlacementScrollKey.current === key) return;
-    lastPlacementScrollKey.current = key;
-
-    const frame = requestAnimationFrame(() => {
-      placementScrollRef.current?.scrollIntoView({
-        behavior: "auto",
-        block: "nearest",
-      });
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [phase, pendingPlayer]);
 
   const filledCount = getFilledCount(squad);
   const totalValue = getSquadValue(squad);
@@ -356,9 +304,6 @@ export function GameBoard({
     setSubmittedOnline(false);
     setChoosing(false);
     setRerolling(false);
-    setDraftPickIndex(0);
-    setPendingPlayer(null);
-    setHoveredPlacementSlot(null);
     recordedRef.current = false;
   }, [joeMellorMode, superSamHallasMode, isChallengeCup]);
 
@@ -438,55 +383,9 @@ export function GameBoard({
     ]
   );
 
-  const handlePlacementSlot = useCallback(
-    (slotIndex: number) => {
-      if (phase !== "placement" || !pendingPlayer || choosing) return;
-      const slot = squad.find((s) => s.slotIndex === slotIndex);
-      if (!slot || slot.player) return;
-      if (joeMellorMode && slotIndex === LOOSE_FORWARD_SLOT_INDEX) return;
-      if (superSamHallasMode) return;
-
-      const penalty = getPlacementPenalty(
-        pendingPlayer.position,
-        slot.position
-      );
-      const newSquad = signPlayerToSlot(
-        squad,
-        pendingPlayer,
-        slotIndex,
-        penalty
-      );
-      setSquad(newSquad);
-      setPendingPlayer(null);
-      setHoveredPlacementSlot(null);
-      playPositionComplete();
-
-      const filled = getFilledCount(newSquad);
-      if (filled >= TOTAL_SLOTS) {
-        startTournamentSimulation(newSquad);
-      } else {
-        setDraftPickIndex((i) => i + 1);
-        setPhase("choice");
-      }
-    },
-    [
-      phase,
-      pendingPlayer,
-      choosing,
-      squad,
-      joeMellorMode,
-      superSamHallasMode,
-      startTournamentSimulation,
-    ]
-  );
-
   const handleSelectSlot = useCallback(
     (slotIndex: number) => {
-      if (phase === "placement") {
-        handlePlacementSlot(slotIndex);
-        return;
-      }
-      if (phase !== "pitch" || isDraftMode) return;
+      if (phase !== "pitch") return;
       if (joeMellorMode && slotIndex === LOOSE_FORWARD_SLOT_INDEX) return;
       if (superSamHallasMode) return;
       const slot = squad.find((s) => s.slotIndex === slotIndex);
@@ -495,7 +394,7 @@ export function GameBoard({
       setSelectedSlotIndex(slotIndex);
       setPhase("choice");
     },
-    [phase, squad, joeMellorMode, superSamHallasMode, isDraftMode, handlePlacementSlot]
+    [phase, squad, joeMellorMode, superSamHallasMode]
   );
 
   const handleChoose = useCallback(
@@ -504,19 +403,14 @@ export function GameBoard({
       setChoosing(true);
       playPlayerSelect();
 
-      if (isDraftMode) {
-        setTimeout(() => {
-          setChoosing(false);
-          setPendingPlayer(player);
-          setPhase("placement");
-        }, 300);
-        return;
-      }
-
+      const penalty = isDraftMode
+        ? getPlacementPenalty(player.position, currentRound.position)
+        : 0;
       const newSquad = signPlayerToSlot(
         squad,
         player,
-        currentRound.slotIndex
+        currentRound.slotIndex,
+        penalty
       );
       setSquad(newSquad);
 
@@ -530,7 +424,6 @@ export function GameBoard({
           startTournamentSimulation(newSquad);
         } else {
           playPositionComplete();
-          setSelectedSlotIndex(null);
           setPhase("pitch");
         }
       }, 400);
@@ -546,7 +439,7 @@ export function GameBoard({
   );
 
   const handleReroll = useCallback(() => {
-    const rerollKey = isDraftMode ? draftPickIndex : selectedSlotIndex;
+    const rerollKey = selectedSlotIndex;
     if (
       isHardMode ||
       !currentRound ||
@@ -574,14 +467,13 @@ export function GameBoard({
     discarded.add(currentRound.optionB);
 
     const nextRound = isDraftMode
-      ? rerollDraftOffer(
+      ? rerollDraftOfferForSlot(
           seed,
           rerollKey!,
           currentRound,
           squad,
           usedIds,
           discarded,
-          collectRecentDraftPositions(slotOffers, rerollKey!),
           recruitmentOptions
         )
       : rerollSlotOffer(
@@ -613,7 +505,6 @@ export function GameBoard({
   }, [
     isHardMode,
     isDraftMode,
-    draftPickIndex,
     currentRound,
     selectedSlotIndex,
     rerolling,
@@ -633,7 +524,7 @@ export function GameBoard({
   }, []);
 
   const handleAutofill = useCallback(() => {
-    if (phase !== "pitch" || filledCount >= TOTAL_SLOTS) return;
+    if (phase !== "pitch" || filledCount >= TOTAL_SLOTS || isDraftMode) return;
 
     const skipSlots = joeMellorMode ? [LOOSE_FORWARD_SLOT_INDEX] : [];
     const choices = autofillFromOffers(seed, slotOffers, skipSlots);
@@ -649,7 +540,7 @@ export function GameBoard({
 
     setSquad(newSquad);
     playPositionComplete();
-  }, [phase, filledCount, joeMellorMode, seed, slotOffers, squad]);
+  }, [phase, filledCount, isDraftMode, joeMellorMode, seed, slotOffers, squad]);
 
   const handleSimulationComplete = useCallback(() => {
     setPhase("review");
@@ -732,11 +623,6 @@ export function GameBoard({
       ? `${runKey}-pick-${activeOfferKey}-${currentRound?.optionA}-${currentRound?.optionB}`
       : "";
 
-  const placementSlot =
-    hoveredPlacementSlot !== null
-      ? squad.find((s) => s.slotIndex === hoveredPlacementSlot)
-      : undefined;
-
   return (
     <div className="matchday-arena min-h-screen">
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
@@ -813,7 +699,10 @@ export function GameBoard({
           </motion.div>
         )}
 
-        {phase === "pitch" && filledCount < TOTAL_SLOTS && !superSamHallasMode && (
+        {phase === "pitch" &&
+          filledCount < TOTAL_SLOTS &&
+          !superSamHallasMode &&
+          !isDraftMode && (
           <div className="mt-4 flex justify-center">
             <button
               type="button"
@@ -845,9 +734,7 @@ export function GameBoard({
             />
           )}
 
-          {(phase === "pitch" ||
-            phase === "choice" ||
-            phase === "placement") && (
+          {(phase === "pitch" || phase === "choice") && (
             <div
               ref={placementScrollRef}
               className={`pb-2 sm:max-h-none sm:overflow-visible ${
@@ -856,42 +743,17 @@ export function GameBoard({
                   : "max-h-[min(88vh,900px)] overflow-x-hidden overflow-y-auto"
               }`}
             >
-              {phase === "placement" && pendingPlayer && (
-                <DraftPlacementBanner
-                  player={pendingPlayer}
-                  squad={squad}
-                  selectedSlotPosition={placementSlot?.position}
-                  hardMode={isHardMode}
-                  showRule={draftPickIndex === 0}
-                />
-              )}
               <RugbyPitch
                 squad={squad}
                 totalValue={totalValue}
                 filledCount={filledCount}
                 totalSlots={TOTAL_SLOTS}
                 selectedSlot={
-                  phase === "placement"
-                    ? hoveredPlacementSlot ?? undefined
-                    : phase === "pitch"
-                      ? selectedSlotIndex ?? undefined
-                      : undefined
+                  phase === "pitch" ? selectedSlotIndex ?? undefined : undefined
                 }
                 hardMode={isHardMode}
-                placementPlayer={
-                  phase === "placement" ? pendingPlayer : null
-                }
-                interactive={
-                  !superSamHallasMode &&
-                  (phase === "placement" ||
-                    (phase === "pitch" && !isDraftMode))
-                }
+                interactive={!superSamHallasMode && phase === "pitch"}
                 onSlotClick={handleSelectSlot}
-                onSlotHover={
-                  phase === "placement"
-                    ? (idx) => setHoveredPlacementSlot(idx)
-                    : undefined
-                }
                 dimmed={phase === "choice"}
                 lockedSlots={
                   superSamHallasMode
@@ -940,24 +802,18 @@ export function GameBoard({
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
                 >
-                  {!isDraftMode && (
-                    <button
-                      type="button"
-                      onClick={handleBackToPitch}
-                      disabled={choosing || rerolling}
-                      className={`mb-4 ${LINK.subtle} disabled:opacity-40`}
-                    >
-                      ← Back to team sheet
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    onClick={handleBackToPitch}
+                    disabled={choosing || rerolling}
+                    className={`mb-4 ${LINK.subtle} disabled:opacity-40`}
+                  >
+                    ← Back to team sheet
+                  </button>
                   <PlayerChoice
                     playerA={playerPair[0]}
                     playerB={playerPair[1]}
-                    positionLabel={
-                      isDraftMode
-                        ? `Pick ${draftPickIndex + 1}`
-                        : currentRound.slotLabel
-                    }
+                    positionLabel={currentRound.slotLabel}
                     onChoose={handleChoose}
                     onReroll={handleReroll}
                     rerollAvailable={rerollAvailable}
@@ -965,7 +821,7 @@ export function GameBoard({
                     disabled={choosing || rerolling}
                     hardMode={isHardMode}
                     draftMode={isDraftMode}
-                    showDraftRule={isDraftMode && draftPickIndex === 0}
+                    showDraftRule={isDraftMode && filledCount === 0}
                     draftSquad={isDraftMode ? squad : undefined}
                   />
                 </motion.div>

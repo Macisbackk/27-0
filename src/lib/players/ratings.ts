@@ -1,4 +1,4 @@
-import type { PlayerCategory } from "../types";
+import type { PlayerCategory, Position } from "../types";
 
 /**
  * Gameplay ratings are stored 75–99 in the database.
@@ -33,6 +33,44 @@ export function ratingToValue(rating: number): number {
   if (rating >= 85) return valueInBand(rating, 85, 89, 150_000, 280_000);
   if (rating >= 80) return valueInBand(rating, 80, 84, 90_000, 180_000);
   return valueInBand(rating, 75, 79, 45_000, 100_000);
+}
+
+/** Small position premiums — kept within ±5% so rating order is preserved. */
+const POSITION_VALUE_MODIFIER: Partial<Record<Position, number>> = {
+  STAND_OFF: 1.04,
+  SCRUM_HALF: 1.03,
+  FULLBACK: 1.02,
+  CENTRE: 1.01,
+  HOOKER: 0.99,
+  PROP: 0.98,
+  SECOND_ROW: 0.98,
+};
+
+const CATEGORY_VALUE_MODIFIER: Record<PlayerCategory, number> = {
+  current: 1.02,
+  historic: 0.99,
+  legend: 1.0,
+};
+
+/**
+ * Gameplay transfer value from peak rating with minor position/status variation.
+ * Higher rating always maps to a higher base band; modifiers cannot invert peers
+ * separated by three or more rating points.
+ */
+export function computePlayerValue(
+  peakRating: number,
+  position: Position,
+  category: PlayerCategory
+): number {
+  const base = ratingToValue(peakRating);
+  const positionMod = POSITION_VALUE_MODIFIER[position] ?? 1;
+  const categoryMod = CATEGORY_VALUE_MODIFIER[category] ?? 1;
+  const adjusted = base * positionMod * categoryMod;
+  const rounded = Math.round(adjusted / 1_000) * 1_000;
+
+  const floor = ratingToValue(Math.max(75, peakRating - 1));
+  const ceiling = ratingToValue(Math.min(99, peakRating + 1));
+  return Math.max(floor, Math.min(ceiling, rounded));
 }
 
 export function getValueTier(rating: number): string {

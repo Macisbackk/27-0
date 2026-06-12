@@ -1,7 +1,7 @@
 "use client";
 
 import type { Player } from "@/lib/types";
-import { formatValue } from "@/lib/players";
+import { formatPlayerDisplayName, formatValue } from "@/lib/players";
 import { getClubColors } from "@/lib/clubs";
 import { POSITION_LABELS } from "@/lib/positions";
 import { ClubLogoBox } from "./ClubBadge";
@@ -34,7 +34,9 @@ export function PlayerCard({
       <div className="flex items-center gap-2 rounded-lg border border-pitch-600/40 bg-pitch-800/40 px-2.5 py-1.5">
         <ClubLogoBox club={player.club} colors={colors} size="sm" />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold">{player.name}</p>
+          <p className="truncate text-sm font-semibold">
+            {formatPlayerDisplayName(player)}
+          </p>
           <p className="text-xs text-gray-500">
             {POSITION_LABELS[player.position]}
             {!hardMode && ` · ${formatValue(player.value)}`}

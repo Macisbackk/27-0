@@ -86,7 +86,7 @@ export function PlayerChoice({
         </h2>
         <p className="mt-1 hidden text-sm text-gray-400 sm:mt-2 sm:block">
           {draftMode
-            ? "Pick a player for this slot on the team sheet."
+            ? "Pick one signing for this position — the other walks away."
             : "Pick one signing — the other walks away forever"}
         </p>
         {showDraftRule && (

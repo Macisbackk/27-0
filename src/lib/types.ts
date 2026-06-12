@@ -48,6 +48,8 @@ export interface PlayerAchievements {
 
 export interface Player extends PlayerAchievements {
   id: string;
+  /** Base slug when this row is a year card (e.g. sam-burgess for sam-burgess-2009). */
+  baseId?: string;
   name: string;
   club: string;
   /** Resolved squad position (Utility players are mapped here) */
@@ -58,6 +60,8 @@ export interface Player extends PlayerAchievements {
   mappedFromUtility?: boolean;
   nationality: string;
   yearsActive: string;
+  /** Peak-era year shown on historic/legend cards — omitted for current players. */
+  primeYear?: number;
   category: PlayerCategory;
   peakRating: number;
   /** @deprecated use peakRating — kept for backward compatibility */

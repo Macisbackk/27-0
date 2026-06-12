@@ -1,4 +1,5 @@
 import type { Player, PlayerCategory, Position } from "../types";
+import { formatPlayerDisplayName } from "./prime-year";
 import { POSITION_LABELS } from "../positions";
 
 export type ShowcaseSortKey =
@@ -28,6 +29,8 @@ export const TIER_FILTER_LABELS: Record<Exclude<TierFilter, "all">, string> = {
   squad: "Squad Player",
 };
 
+export type ShowcaseBrowseMode = "all" | "teamYear";
+
 export interface ShowcaseFilters {
   search: string;
   status: PlayerCategory | "all";
@@ -36,6 +39,9 @@ export interface ShowcaseFilters {
   ratingMin: RatingFilter;
   tier: TierFilter;
   yearsActive: string;
+  browseMode: ShowcaseBrowseMode;
+  teamYearTeam: string;
+  teamYearYear: string;
 }
 
 /** Showcase tier for filter chips — legends are always Legend tier. */
@@ -108,21 +114,29 @@ function matchesSearch(player: Player, query: string): boolean {
 
   const positionLabel = POSITION_LABELS[player.position].toLowerCase();
 
+  const displayName = formatPlayerDisplayName(player).toLowerCase();
+
   return (
     player.name.toLowerCase().includes(q) ||
+    displayName.includes(q) ||
     player.club.toLowerCase().includes(q) ||
     positionLabel.includes(q) ||
-    player.position.toLowerCase().replace(/_/g, " ").includes(q)
+    player.position.toLowerCase().replace(/_/g, " ").includes(q) ||
+    (player.primeYear !== undefined && String(player.primeYear).includes(q))
   );
 }
 
 export function filterShowcasePlayers(
   players: Player[],
-  filters: ShowcaseFilters
+  filters: ShowcaseFilters,
+  teamYearIds?: Set<string> | null
 ): Player[] {
   const minRating = ratingThreshold(filters.ratingMin);
 
   return players.filter((player) => {
+    if (filters.browseMode === "teamYear") {
+      if (!teamYearIds || !teamYearIds.has(player.id)) return false;
+    }
     if (player.availableInGame === false) return false;
     if (!matchesSearch(player, filters.search)) return false;
     if (filters.status !== "all" && player.category !== filters.status) {

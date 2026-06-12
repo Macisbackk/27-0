@@ -71,6 +71,13 @@ body {
 
 .showcase-player-grid {
   overflow-anchor: none;
+  max-width: 100%;
+}
+
+@media (max-width: 639px) {
+  .showcase-player-card .rl-card-shell {
+    max-width: 100%;
+  }
 }
 
 /* Achievement chips — compact pills for honours (not player status) */

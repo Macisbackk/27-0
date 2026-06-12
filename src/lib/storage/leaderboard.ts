@@ -562,7 +562,7 @@ export async function getTrackerLeaderboardAsync(
   dbMode: LeaderboardDbMode = "super-league"
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
   if (tracker === "challenge_cup_team_wins") {
-    const result = await getCupTeamWinsLeaderboardAsync(limit);
+    const result = await getCupTeamWinsLeaderboardAsync();
     return {
       source: result.source,
       rows: result.rows.map((row) => ({

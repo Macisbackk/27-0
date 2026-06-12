@@ -48,6 +48,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
         player={player}
         variant="default"
         equalHeight
+        compactMobile
         achievementDisplay="showcase"
       />
     </div>

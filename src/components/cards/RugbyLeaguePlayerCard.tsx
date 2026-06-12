@@ -2,7 +2,11 @@
 
 import { memo, useMemo } from "react";
 import type { Player } from "@/lib/types";
-import { formatCareerTries, formatValue } from "@/lib/players";
+import {
+  formatCareerTries,
+  formatPlayerDisplayName,
+  formatValue,
+} from "@/lib/players";
 import { getPlayerInitials } from "@/lib/players/initials";
 import { getValueTier } from "@/lib/players/ratings";
 import type { AchievementDisplayMode } from "@/lib/players/achievements";
@@ -83,6 +87,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
     [player.id, achievementDisplay]
   );
   const tier = getValueTier(player.peakRating);
+  const displayName = formatPlayerDisplayName(player);
   const isRecruitment = variant === "recruitment";
   const isPitch = variant === "pitch";
   const maskValue = (value: string) => (hardMode ? "???" : value);
@@ -179,7 +184,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
                 : "text-[9px] sm:text-[10px]"
             }`}
           >
-            {player.name}
+            {displayName}
           </p>
           <span
             className={`pitch-card-rating font-display font-bold leading-none text-accent-green ${
@@ -216,7 +221,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
                   : TYPO.playerName
               }`}
             >
-              {player.name}
+              {displayName}
             </h2>
             {statusStrip}
             <PlayerIdentityLine
@@ -269,7 +274,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
               compact={mobileCompact}
             />
             <StatBox
-              label="Years"
+              label="Years Active"
               value={player.yearsActive}
               size="lg"
               light
@@ -313,7 +318,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
       <div className="flex flex-1 flex-col gap-2 p-3 sm:p-4">
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1 pr-1">
-            <h2 className={`truncate ${TYPO.playerNameSm}`}>{player.name}</h2>
+            <h2 className={`truncate ${TYPO.playerNameSm}`}>{displayName}</h2>
             {statusStrip}
             <PlayerIdentityLine
               player={player}
@@ -333,7 +338,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
           <StatBox label="Apps" value={appearancesValue} />
           <StatBox label="Tries" value={formatCareerTries(player.tries)} />
           <StatBox
-            label="Years"
+            label="Years Active"
             value={player.yearsActive}
             className="hidden sm:block"
           />

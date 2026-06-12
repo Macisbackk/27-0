@@ -1,6 +1,7 @@
 import type { Player } from "../types";
 import ratingOverrides from "../../../data/rating-overrides.json";
-import { compressPeakRating, ratingToValue } from "./ratings";
+import { compressPeakRating, computePlayerValue } from "./ratings";
+import { parsePlayerId, resolvePrimeYear } from "./prime-year";
 
 const RATING_OVERRIDES = ratingOverrides as Record<string, number>;
 import { resolvePosition } from "./position-utils";
@@ -13,6 +14,7 @@ import { getDreamTeamYears, getGoldenBootYears } from "./achievements";
 
 export function normalizePlayer(raw: Record<string, unknown>): Player {
   const id = raw.id as string;
+  const parsedId = parsePlayerId(id);
   const rawRating = (raw.peakRating ?? raw.rating) as number;
   const rawCategory = raw.category as Player["category"];
   const { position, originalPosition, mappedFromUtility } =
@@ -31,8 +33,16 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
   const rawClub = raw.club as string;
   const name = raw.name as string;
 
+  const primeYear = resolvePrimeYear(
+    id,
+    category,
+    yearsActive,
+    raw.primeYear as number | undefined
+  );
+
   return {
     id,
+    baseId: parsedId.baseId !== id ? parsedId.baseId : undefined,
     name,
     club: resolveDisplayClub(id, rawClub, name),
     position,
@@ -40,10 +50,11 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     mappedFromUtility,
     nationality: raw.nationality as string,
     yearsActive,
+    primeYear,
     category,
     peakRating,
     rating: peakRating,
-    value: ratingToValue(peakRating),
+    value: computePlayerValue(peakRating, position, category),
     appearances: raw.appearances as number | undefined,
     tries:
       (raw.tries as number | undefined) ?? resolveCareerTries(id, category),

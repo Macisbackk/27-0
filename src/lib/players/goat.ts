@@ -1,5 +1,5 @@
 import type { Player } from "../types";
-import { ratingToValue } from "./ratings";
+import { computePlayerValue } from "./ratings";
 import { resolveCareerTries } from "./career-tries";
 import { resolveYearsActive } from "./years-active";
 import { isSuperSamHallasId } from "./super-sam-hallas";
@@ -40,7 +40,7 @@ export function createJoeMellorGoatPlayer(): Player {
     category: "current",
     peakRating,
     rating: peakRating,
-    value: ratingToValue(peakRating),
+    value: computePlayerValue(peakRating, "LOOSE_FORWARD", "current"),
     tries: resolveCareerTries(JOE_MELLOR_NORMAL_ID, "current"),
     intlCaps: 0,
   };

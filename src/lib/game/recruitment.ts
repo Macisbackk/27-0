@@ -91,6 +91,113 @@ const CUP_CURRENT_RATIO = 0.28;
 const CUP_HISTORIC_RATIO = 0.42;
 const CUP_LEGEND_RATIO = 0.3;
 
+const RECENT_PLAYER_DECAY = 0.38;
+const RECENT_PAIR_DECAY = 0.22;
+const ELITE_RECENT_BAND_SCALE = 0.5;
+const MAX_OFFER_HISTORY = 40;
+
+interface OfferRecency {
+  playerCounts: Map<string, number>;
+  pairCounts: Map<string, number>;
+  eliteShown: number;
+}
+
+function emptyOfferRecency(): OfferRecency {
+  return {
+    playerCounts: new Map(),
+    pairCounts: new Map(),
+    eliteShown: 0,
+  };
+}
+
+function pairKey(idA: string, idB: string): string {
+  return idA < idB ? `${idA}|${idB}` : `${idB}|${idA}`;
+}
+
+function collectOfferRecency(
+  offers: Map<number, RecruitmentRound>
+): OfferRecency {
+  const recency = emptyOfferRecency();
+  for (const round of offers.values()) {
+    recordShownPair(recency, round.optionA, round.optionB);
+  }
+  return recency;
+}
+
+function recordShownPair(
+  recency: OfferRecency,
+  idA: string,
+  idB: string
+): void {
+  for (const id of [idA, idB]) {
+    recency.playerCounts.set(id, (recency.playerCounts.get(id) ?? 0) + 1);
+    const player = getPlayerById(id);
+    if ((player?.peakRating ?? 0) >= ELITE_RATING_THRESHOLD) {
+      recency.eliteShown += 1;
+    }
+  }
+  const key = pairKey(idA, idB);
+  recency.pairCounts.set(key, (recency.pairCounts.get(key) ?? 0) + 1);
+}
+
+function playerSelectionWeight(id: string, recency?: OfferRecency): number {
+  if (!recency) return 1;
+  const seen = recency.playerCounts.get(id) ?? 0;
+  return Math.pow(RECENT_PLAYER_DECAY, seen);
+}
+
+function pairSelectionWeight(
+  idA: string,
+  idB: string,
+  recency?: OfferRecency
+): number {
+  if (!recency) return 1;
+  const seen = recency.pairCounts.get(pairKey(idA, idB)) ?? 0;
+  return (
+    playerSelectionWeight(idA, recency) *
+    playerSelectionWeight(idB, recency) *
+    Math.pow(RECENT_PAIR_DECAY, seen)
+  );
+}
+
+function weightedPickPlayer(
+  candidates: Player[],
+  rng: () => number,
+  recency?: OfferRecency
+): Player | null {
+  if (candidates.length === 0) return null;
+  const weights = candidates.map((player) =>
+    playerSelectionWeight(player.id, recency)
+  );
+  const total = weights.reduce((sum, weight) => sum + weight, 0);
+  if (total <= 0) {
+    return candidates[Math.floor(rng() * candidates.length)];
+  }
+
+  let roll = rng() * total;
+  for (let i = 0; i < candidates.length; i++) {
+    roll -= weights[i];
+    if (roll <= 0) return candidates[i];
+  }
+  return candidates[candidates.length - 1];
+}
+
+function adjustBandWeightsForRecency(
+  weights: Record<RatingBand, number>,
+  recency?: OfferRecency
+): Record<RatingBand, number> {
+  if (!recency || recency.eliteShown < 2) return weights;
+  const scale = Math.pow(
+    ELITE_RECENT_BAND_SCALE,
+    Math.min(recency.eliteShown - 1, 4)
+  );
+  return {
+    ...weights,
+    b90_94: weights.b90_94 * scale,
+    b95_99: weights.b95_99 * scale,
+  };
+}
+
 function getBandWeights(
   options?: RecruitmentOptions,
   reroll = false
@@ -131,7 +238,8 @@ function playersInBand(players: Player[], band: RatingBand): Player[] {
 function pickFromBandWithFallback(
   candidates: Player[],
   band: RatingBand,
-  rng: () => number
+  rng: () => number,
+  recency?: OfferRecency
 ): Player | null {
   if (candidates.length === 0) return null;
 
@@ -150,11 +258,11 @@ function pickFromBandWithFallback(
     seen.add(b);
     const inBand = playersInBand(candidates, b);
     if (inBand.length > 0) {
-      return inBand[Math.floor(rng() * inBand.length)];
+      return weightedPickPlayer(inBand, rng, recency);
     }
   }
 
-  return candidates[Math.floor(rng() * candidates.length)];
+  return weightedPickPlayer(candidates, rng, recency);
 }
 
 export interface RecruitmentRound {
@@ -227,15 +335,16 @@ function playersForCategory(
 function pickBalancedPair(
   candidates: Player[],
   rng: () => number,
-  options?: RecruitmentOptions
+  options?: RecruitmentOptions,
+  recency?: OfferRecency
 ): [Player, Player] | null {
   if (candidates.length < 2) return null;
 
   const allowExtreme = rng() < EXTREME_PAIR_CHANCE;
   const maxGap = allowExtreme ? EXTREME_PAIR_RATING_GAP : TYPICAL_PAIR_RATING_GAP;
-  const weights = getBandWeights(options);
+  const weights = adjustBandWeightsForRecency(getBandWeights(options), recency);
   const targetBand = rollBand(rng, weights);
-  const anchor = pickFromBandWithFallback(candidates, targetBand, rng);
+  const anchor = pickFromBandWithFallback(candidates, targetBand, rng, recency);
   if (!anchor) return null;
 
   let partners = candidates.filter(
@@ -244,12 +353,6 @@ function pickBalancedPair(
       Math.abs(p.peakRating - anchor.peakRating) <= maxGap
   );
 
-  if (!allowExtreme && anchor.peakRating >= ELITE_RATING_THRESHOLD) {
-    partners = partners.filter(
-      (p) => p.peakRating >= anchor.peakRating - 8
-    );
-  }
-
   if (partners.length === 0) {
     partners = candidates.filter((p) => p.id !== anchor.id);
     partners.sort(
@@ -257,13 +360,26 @@ function pickBalancedPair(
         Math.abs(a.peakRating - anchor.peakRating) -
         Math.abs(b.peakRating - anchor.peakRating)
     );
-    partners = partners.slice(0, Math.min(6, partners.length));
+    partners = partners.slice(0, Math.min(8, partners.length));
   }
 
   if (partners.length === 0) return null;
 
-  const partner = partners[Math.floor(rng() * partners.length)];
-  return [anchor, partner];
+  const partnerWeights = partners.map((partner) =>
+    pairSelectionWeight(anchor.id, partner.id, recency)
+  );
+  const total = partnerWeights.reduce((sum, weight) => sum + weight, 0);
+  let roll = rng() * total;
+  let partner = partners[partners.length - 1];
+  for (let i = 0; i < partners.length; i++) {
+    roll -= partnerWeights[i];
+    if (roll <= 0) {
+      partner = partners[i];
+      break;
+    }
+  }
+
+  return rng() < 0.5 ? [anchor, partner] : [partner, anchor];
 }
 
 function sortCandidatesExactFirst(
@@ -295,7 +411,8 @@ function pickPairForPosition(
   rng: () => number,
   usedIds: Set<string>,
   categoryFilter?: PlayerCategory,
-  options?: RecruitmentOptions
+  options?: RecruitmentOptions,
+  recency?: OfferRecency
 ): [string, string] | null {
   const targetPositions = getDraftCandidatePositions(position);
   const allForPosition = playersMatchingSlotPosition(
@@ -337,7 +454,7 @@ function pickPairForPosition(
     if (exact.length >= 2) primaryPool = exact;
   }
 
-  const pair = pickBalancedPair(primaryPool, rng, options);
+  const pair = pickBalancedPair(primaryPool, rng, options, recency);
   if (!pair) return null;
   return [pair[0].id, pair[1].id];
 }
@@ -389,7 +506,8 @@ function pickPairWithEliteRating(
   rng: () => number,
   usedIds: Set<string>,
   minRating: number,
-  options?: RecruitmentOptions
+  options?: RecruitmentOptions,
+  recency?: OfferRecency
 ): [string, string] | null {
   const allForPosition = playersMatchingSlotPosition(
     position,
@@ -401,12 +519,13 @@ function pickPairWithEliteRating(
   sortCandidatesExactFirst(elite, position);
   if (elite.length === 0 || allForPosition.length < 2) return null;
 
-  const star = elite[Math.floor(rng() * elite.length)];
+  const star = weightedPickPlayer(elite, rng, recency);
+  if (!star) return null;
+
   let partners = allForPosition.filter(
     (p) =>
       p.id !== star.id &&
-      Math.abs(p.peakRating - star.peakRating) <= TYPICAL_PAIR_RATING_GAP &&
-      p.peakRating >= star.peakRating - 8
+      Math.abs(p.peakRating - star.peakRating) <= TYPICAL_PAIR_RATING_GAP
   );
   if (partners.length === 0) {
     partners = allForPosition.filter((p) => p.id !== star.id);
@@ -415,12 +534,16 @@ function pickPairWithEliteRating(
         Math.abs(a.peakRating - star.peakRating) -
         Math.abs(b.peakRating - star.peakRating)
     );
-    partners = partners.slice(0, Math.min(5, partners.length));
+    partners = partners.slice(0, Math.min(6, partners.length));
   }
   if (partners.length === 0) return null;
 
-  const partner = partners[Math.floor(rng() * partners.length)];
-  return [star.id, partner.id];
+  const partner = weightedPickPlayer(partners, rng, recency);
+  if (!partner) return null;
+
+  return rng() < 0.5
+    ? [star.id, partner.id]
+    : [partner.id, star.id];
 }
 
 function applyCategoryGuarantees(
@@ -454,7 +577,8 @@ function applyCategoryGuarantees(
         rng,
         usedIds,
         category,
-        options
+        options,
+        collectOfferRecency(offers)
       );
       if (pair) {
         offers.set(slotIndex, { ...round, optionA: pair[0], optionB: pair[1] });
@@ -484,7 +608,8 @@ function applyCategoryGuarantees(
       rng,
       usedIds,
       ELITE_RATING_THRESHOLD,
-      options
+      options,
+      collectOfferRecency(offers)
     );
     if (pair) {
       offers.set(slotIndex, { ...round, optionA: pair[0], optionB: pair[1] });
@@ -504,6 +629,8 @@ export function generateSlotOffers(
   const offers = new Map<number, RecruitmentRound>();
   const locked = new Set(lockedPlayerIds);
 
+  const recency = emptyOfferRecency();
+
   for (const slot of squad) {
     if (skipSlots.includes(slot.slotIndex)) continue;
 
@@ -518,9 +645,20 @@ export function generateSlotOffers(
       rng,
       usedIds,
       undefined,
-      options
+      options,
+      recency
     );
     if (!pair) continue;
+
+    recordShownPair(recency, pair[0], pair[1]);
+    if (recency.playerCounts.size > MAX_OFFER_HISTORY) {
+      recency.playerCounts.clear();
+      recency.pairCounts.clear();
+      recency.eliteShown = Math.floor(recency.eliteShown / 2);
+      for (const offer of offers.values()) {
+        recordShownPair(recency, offer.optionA, offer.optionB);
+      }
+    }
 
     offers.set(slot.slotIndex, {
       roundIndex: offers.size,
@@ -576,7 +714,8 @@ export function rerollSlotOffer(
     rng,
     blocked,
     undefined,
-    options
+    options,
+    emptyOfferRecency()
   );
   if (!pair) return null;
 
@@ -702,7 +841,10 @@ function pickSinglePlayerForPosition(
     if (close.length > 0) pool = close;
   }
 
-  const weights = getBandWeights(options);
+  const weights = adjustBandWeightsForRecency(
+    getBandWeights(options),
+    undefined
+  );
   const band = rollBand(rng, weights);
   return pickFromBandWithFallback(pool, band, rng);
 }
@@ -843,7 +985,10 @@ function pickFromDraftPool(
     return b.peakRating - a.peakRating;
   });
 
-  const weights = getBandWeights(options, reroll);
+  const weights = adjustBandWeightsForRecency(
+    getBandWeights(options, reroll),
+    undefined
+  );
   const band = rollBand(rng, weights);
   return pickFromBandWithFallback(pool, band, rng);
 }
@@ -872,7 +1017,7 @@ function pickSinglePlayerForDraftPosition(
       const elite = pool.filter((player) => player.peakRating >= ELITE_RATING_THRESHOLD);
       if (elite.length > 0) {
         sortCandidatesExactFirst(elite, slotPosition);
-        return elite[Math.floor(rng() * elite.length)];
+        return weightedPickPlayer(elite, rng);
       }
     }
   }
@@ -1054,13 +1199,14 @@ function pickPairForCategory(
   rng: () => number,
   usedIds: Set<string>,
   category: PlayerCategory,
-  options?: RecruitmentOptions
+  options?: RecruitmentOptions,
+  recency?: OfferRecency
 ): [string, string] | null {
   const filtered = playersForCategory(category, options).filter(
     (p) => !usedIds.has(p.id)
   );
   if (filtered.length < 2) return null;
-  const pair = pickBalancedPair(filtered, rng, options);
+  const pair = pickBalancedPair(filtered, rng, options, recency);
   if (!pair) return null;
   return [pair[0].id, pair[1].id];
 }
@@ -1091,7 +1237,13 @@ function applyDraftGuarantees(
         usedIds.add(offer.optionB);
       }
 
-      const pair = pickPairForCategory(rng, usedIds, category, options);
+      const pair = pickPairForCategory(
+        rng,
+        usedIds,
+        category,
+        options,
+        collectOfferRecency(offers)
+      );
       if (pair) {
         offers.set(pickIndex, { ...round, optionA: pair[0], optionB: pair[1] });
         count++;
@@ -1119,7 +1271,8 @@ function applyDraftGuarantees(
       (p) => !usedIds.has(p.id) && p.peakRating >= ELITE_RATING_THRESHOLD
     );
     if (pool.length === 0) continue;
-    const star = pool[Math.floor(rng() * pool.length)];
+    const star = weightedPickPlayer(pool, rng, collectOfferRecency(offers));
+    if (!star) continue;
     const partners = basePlayerPool(options).filter(
       (p) =>
         !usedIds.has(p.id) &&
@@ -1127,11 +1280,20 @@ function applyDraftGuarantees(
         Math.abs(p.peakRating - star.peakRating) <= TYPICAL_PAIR_RATING_GAP
     );
     if (partners.length === 0) continue;
-    const partner = partners[Math.floor(rng() * partners.length)];
+    const partner = weightedPickPlayer(
+      partners,
+      rng,
+      collectOfferRecency(offers)
+    );
+    if (!partner) continue;
+    const [optionA, optionB] =
+      rng() < 0.5
+        ? [star.id, partner.id]
+        : [partner.id, star.id];
     offers.set(pickIndex, {
       ...round,
-      optionA: star.id,
-      optionB: partner.id,
+      optionA,
+      optionB,
     });
     eliteCount++;
   }
@@ -1187,13 +1349,22 @@ export function generateDraftOfferForSlot(
   const usedWithA = new Set(usedIds);
   usedWithA.add(playerA.id);
 
-  const playerB = pickSinglePlayerForDraftPosition(
+  let playerB = pickSinglePlayerForDraftPosition(
     slot.position,
     rng,
     usedWithA,
     playerA.peakRating,
     options
   );
+  if (!playerB || playerA.id === playerB.id) {
+    playerB = pickSinglePlayerForDraftPosition(
+      slot.position,
+      rng,
+      usedWithA,
+      undefined,
+      options
+    );
+  }
   if (!playerB || playerA.id === playerB.id) return null;
 
   const [optionA, optionB] =
@@ -1222,7 +1393,9 @@ function tryDraftElitePair(
   );
   if (pool.length === 0) return null;
 
-  const star = pool[Math.floor(rng() * pool.length)];
+  const star = weightedPickPlayer(pool, rng);
+  if (!star) return null;
+
   let partners = basePlayerPool(options).filter(
     (player) =>
       !usedIds.has(player.id) &&
@@ -1236,7 +1409,9 @@ function tryDraftElitePair(
   }
   if (partners.length === 0) return null;
 
-  const partner = partners[Math.floor(rng() * partners.length)];
+  const partner = weightedPickPlayer(partners, rng);
+  if (!partner) return null;
+
   return rng() < 0.5
     ? [star.id, partner.id]
     : [partner.id, star.id];

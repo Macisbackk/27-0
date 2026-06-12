@@ -120,7 +120,17 @@ export function formatValue(value: number): string {
   return `£${value.toLocaleString()}`;
 }
 
-export { compressPeakRating, ratingToValue } from "./ratings";
+export {
+  compressPeakRating,
+  ratingToValue,
+  computePlayerValue,
+} from "./ratings";
+export {
+  formatPlayerDisplayName,
+  formatPrimeYearSuffix,
+  parsePlayerId,
+  resolvePrimeYear,
+} from "./prime-year";
 export {
   isGoatPlayer,
   isHiddenPlayer,
@@ -177,6 +187,13 @@ export {
   ACHIEVEMENT_CATEGORY_TITLES,
 } from "./achievements";
 export { formatCareerTries } from "./career-tries";
+export {
+  getTeamYearRosters,
+  getTeamsWithYearRosters,
+  getYearsForTeam,
+  getRosterPlayerIds,
+  hasTeamYearRoster,
+} from "./team-year-rosters";
 
 export const PLAYER_COUNTS = {
   total: PLAYER_POOL.length,

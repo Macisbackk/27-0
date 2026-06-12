@@ -1,7 +1,7 @@
 "use client";
 
 import type { Player } from "@/lib/types";
-import { formatValue } from "@/lib/players";
+import { formatPlayerDisplayName, formatValue } from "@/lib/players";
 import { getGoldenBootYears } from "@/lib/players/achievements";
 import { getCachedPlayerAchievements } from "@/lib/players/achievement-cache";
 import { AchievementChipList } from "./cards/AchievementChipList";
@@ -23,7 +23,7 @@ export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
       className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-3 backdrop-blur-sm sm:items-center sm:p-4"
       role="dialog"
       aria-modal="true"
-      aria-label={`${player.name} player details`}
+      aria-label={`${formatPlayerDisplayName(player)} player details`}
       onClick={onClose}
     >
       <div
@@ -73,6 +73,10 @@ export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
             <p className="mt-0.5 font-semibold text-accent-gold">
               {formatValue(player.value)}
             </p>
+          </div>
+          <div className={`${CARD.inset} col-span-2`}>
+            <p className={TYPO.statLabel}>Years Active</p>
+            <p className="mt-0.5 font-medium text-white">{player.yearsActive}</p>
           </div>
         </div>
       </div>

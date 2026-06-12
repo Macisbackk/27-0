@@ -59,6 +59,9 @@ export function FantasyPlayerPicker({
       ratingMin: "all" as const,
       tier: "all" as const,
       yearsActive: "",
+      browseMode: "all" as const,
+      teamYearTeam: "all",
+      teamYearYear: "",
     };
 
     let result = filterShowcasePlayers(POOL, filters).filter((p) =>

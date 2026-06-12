@@ -1,5 +1,5 @@
 import type { Player, Position } from "../types";
-import { ratingToValue } from "./ratings";
+import { computePlayerValue } from "./ratings";
 
 /** Super Sam Hallas Mode exclusive — never in public database. */
 export const SAM_HALLAS_ID_PREFIX = "ssh-sam-hallas-";
@@ -29,7 +29,7 @@ export function createSuperSamHallasPlayer(
     category: "current",
     peakRating,
     rating: peakRating,
-    value: ratingToValue(peakRating),
+    value: computePlayerValue(peakRating, slotPosition, "current"),
     tries: 0,
     intlCaps: 0,
   };
