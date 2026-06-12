@@ -75,7 +75,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
 
       <button
         type="button"
-        className={`flex w-full min-w-0 items-center justify-between gap-2 px-3 py-2.5 text-left transition ${
+        className={`flex w-full min-w-0 items-start gap-2 px-3 py-2 text-left transition sm:py-2.5 ${
           expanded
             ? "bg-accent-green/5"
             : "hover:bg-pitch-900/60"
@@ -83,13 +83,15 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
         onClick={handleToggle}
         aria-expanded={expanded}
       >
-        <span className="flex min-w-0 flex-1 items-center gap-2">
-          <ClubDualSwatch club={player.club} size="sm" className="shrink-0" />
-          <span className="truncate font-display text-sm font-bold text-white sm:text-base">
-            {displayName}
-          </span>
+        <ClubDualSwatch
+          club={player.club}
+          size="sm"
+          className="mt-0.5 shrink-0"
+        />
+        <span className="showcase-compact-name min-w-0 flex-1 font-display font-bold leading-snug text-white">
+          {displayName}
         </span>
-        <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+        <span className="shrink-0 self-start pt-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
           {expanded ? "Close" : "View"}
         </span>
       </button>

@@ -64,9 +64,16 @@ body {
 /* Player Showcase — skip layout/paint for off-screen cards (mobile scroll perf) */
 .showcase-player-card {
   content-visibility: auto;
-  contain-intrinsic-size: auto 300px;
+  contain-intrinsic-size: auto 72px;
   contain: layout style paint;
-  overflow: visible;
+  overflow: hidden;
+}
+
+.showcase-compact-name {
+  font-size: clamp(0.6875rem, 2.6vw, 0.875rem);
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: auto;
 }
 
 .showcase-player-grid {

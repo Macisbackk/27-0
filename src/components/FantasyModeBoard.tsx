@@ -9,9 +9,12 @@ import {
   FANTASY_BUDGET,
   FANTASY_SEASON_ROUNDS,
   FANTASY_SQUAD_SIZE,
+  DEFAULT_FANTASY_PICKER_FILTERS,
+  autofillFantasySquad,
   getFantasyBudgetRemaining,
   signFantasyPlayerToSlot,
   clearFantasySlot,
+  type FantasyPickerFilters,
 } from "@/lib/game/fantasy-mode";
 import { createFantasySeasonState } from "@/lib/game/fantasy-season";
 import {
@@ -23,7 +26,12 @@ import {
 } from "@/lib/positions";
 import { recordCompletedRun } from "@/lib/storage/run";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
-import { playModeClassicStart, playPositionSelect, playSeasonStart } from "@/lib/sound";
+import {
+  playModeClassicStart,
+  playPositionSelect,
+  playSeasonStart,
+  playUiClick,
+} from "@/lib/sound";
 import { formatValue } from "@/lib/players";
 import { FANTASY_MODE_INTRO } from "@/lib/mode-labels";
 import { RugbyPitch } from "./RugbyPitch";
@@ -54,6 +62,10 @@ export function FantasyModeBoard() {
   const [seasonResult, setSeasonResult] = useState<SeasonResult | null>(null);
   const [runRank, setRunRank] = useState<number | undefined>();
   const [submittedOnline, setSubmittedOnline] = useState(false);
+  const [pickerFilters, setPickerFilters] = useState<FantasyPickerFilters>(
+    DEFAULT_FANTASY_PICKER_FILTERS
+  );
+  const [autofillError, setAutofillError] = useState<string | null>(null);
   const recordedRef = useRef(false);
   const modeSoundPlayed = useRef(false);
 
@@ -85,6 +97,8 @@ export function FantasyModeBoard() {
     setSeasonResult(null);
     setRunRank(undefined);
     setSubmittedOnline(false);
+    setPickerFilters(DEFAULT_FANTASY_PICKER_FILTERS);
+    setAutofillError(null);
     recordedRef.current = false;
     modeSoundPlayed.current = false;
   }, []);
@@ -108,6 +122,18 @@ export function FantasyModeBoard() {
     if (selectedSlotIndex === null) return;
     setSquad((prev) => clearFantasySlot(prev, selectedSlotIndex));
     setSelectedSlotIndex(null);
+  };
+
+  const handleAutofill = () => {
+    playUiClick();
+    const result = autofillFantasySquad(squad);
+    if (result.success) {
+      setSquad(result.squad);
+      setAutofillError(null);
+      setSelectedSlotIndex(null);
+    } else {
+      setAutofillError(result.message);
+    }
   };
 
   const handleBeginSeason = () => {
@@ -222,8 +248,22 @@ export function FantasyModeBoard() {
                     onSlotClick={handleSelectSlot}
                   />
                 </div>
-                {squadComplete && budgetOk && (
-                  <div className="mt-6 text-center">
+                <div className="mt-4 flex flex-col items-center gap-2">
+                  {!squadComplete && (
+                    <button
+                      type="button"
+                      onClick={handleAutofill}
+                      className={`${BTN.base} ${BTN.secondary} min-h-[40px] px-4 text-sm`}
+                    >
+                      Autofill
+                    </button>
+                  )}
+                  {autofillError && (
+                    <p className="max-w-md text-center text-xs font-medium text-accent-red sm:text-sm">
+                      {autofillError}
+                    </p>
+                  )}
+                  {squadComplete && budgetOk && (
                     <button
                       type="button"
                       onClick={handleBeginSeason}
@@ -231,8 +271,8 @@ export function FantasyModeBoard() {
                     >
                       Begin Season →
                     </button>
-                  </div>
-                )}
+                  )}
+                </div>
               </>
             )}
 
@@ -267,6 +307,8 @@ export function FantasyModeBoard() {
             <FantasyPlayerPicker
               slot={selectedSlot}
               squad={squad}
+              filters={pickerFilters}
+              onFiltersChange={setPickerFilters}
               onSelect={handlePickPlayer}
               onRemove={selectedSlot.player ? handleRemovePlayer : undefined}
               onClose={() => setSelectedSlotIndex(null)}
