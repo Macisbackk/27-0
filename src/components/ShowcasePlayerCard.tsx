@@ -1,9 +1,12 @@
 "use client";
 
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import type { Player } from "@/lib/types";
 import { formatPlayerDisplayName } from "@/lib/players/prime-year";
+import { getClubColors, getClubTheme } from "@/lib/clubs";
 import { RugbyLeaguePlayerCard } from "./cards/RugbyLeaguePlayerCard";
+import { ClubColourBar } from "./ClubBadge";
+import { ClubDualSwatch } from "./ClubDualSwatch";
 import { playUiClick } from "@/lib/sound";
 
 interface ShowcasePlayerCardProps {
@@ -32,6 +35,21 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
   onOpenDetail,
 }: ShowcasePlayerCardProps) {
   const displayName = formatPlayerDisplayName(player);
+  const colors = getClubColors(player.club);
+  const theme = getClubTheme(player.club);
+
+  const cardShellStyle = useMemo(
+    () => ({
+      borderColor: expanded
+        ? `${colors.primary}99`
+        : `${theme.cardBorder}66`,
+      backgroundColor: theme.cardBackground,
+      boxShadow: expanded
+        ? `0 0 0 1px ${colors.primary}33, inset 3px 0 0 ${colors.primary}`
+        : `inset 3px 0 0 ${colors.primary}`,
+    }),
+    [colors.primary, expanded, theme.cardBackground, theme.cardBorder]
+  );
 
   const handleToggle = useCallback(() => {
     playUiClick();
@@ -49,19 +67,27 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
   );
 
   return (
-    <div className="showcase-player-card min-w-0">
+    <div
+      className="showcase-player-card min-w-0 overflow-hidden rounded-lg border transition"
+      style={cardShellStyle}
+    >
+      <ClubColourBar club={player.club} />
+
       <button
         type="button"
-        className={`flex w-full min-w-0 items-center justify-between gap-2 rounded-lg border px-3 py-2.5 text-left transition ${
+        className={`flex w-full min-w-0 items-center justify-between gap-2 px-3 py-2.5 text-left transition ${
           expanded
-            ? "border-accent-green/50 bg-accent-green/10"
-            : "border-pitch-700/60 bg-pitch-900/40 hover:border-accent-green/35 hover:bg-pitch-900/70"
+            ? "bg-accent-green/5"
+            : "hover:bg-pitch-900/60"
         }`}
         onClick={handleToggle}
         aria-expanded={expanded}
       >
-        <span className="truncate font-display text-sm font-bold text-white sm:text-base">
-          {displayName}
+        <span className="flex min-w-0 flex-1 items-center gap-2">
+          <ClubDualSwatch club={player.club} size="sm" className="shrink-0" />
+          <span className="truncate font-display text-sm font-bold text-white sm:text-base">
+            {displayName}
+          </span>
         </span>
         <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
           {expanded ? "Close" : "View"}
@@ -69,7 +95,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
       </button>
 
       {expanded && (
-        <div className="mt-2 min-w-0">
+        <div className="min-w-0 border-t border-pitch-700/40 px-2 pb-2 pt-1 sm:px-2.5">
           <RugbyLeaguePlayerCard
             player={player}
             variant="default"

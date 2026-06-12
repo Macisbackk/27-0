@@ -3,6 +3,7 @@
 import {
   useCallback,
   useDeferredValue,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -33,6 +34,10 @@ import {
 import type { Player } from "@/lib/types";
 import { PlayerDetailModal } from "./PlayerDetailModal";
 import { ShowcasePlayerCard } from "./ShowcasePlayerCard";
+import {
+  ShowcasePagination,
+  SHOWCASE_PAGE_SIZE,
+} from "./ShowcasePagination";
 import {
   RL_FILTER_CHIP_ACTIVE,
   RL_FILTER_CHIP_IDLE,
@@ -75,6 +80,7 @@ export function PlayerShowcase() {
   const [sortDir, setSortDir] = useState<ShowcaseSortDir>("desc");
   const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
   const [expandedPlayerId, setExpandedPlayerId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const clubs = useMemo(() => getUniqueClubs(ALL_PLAYERS), []);
@@ -117,6 +123,62 @@ export function PlayerShowcase() {
     );
     return sortShowcasePlayers(result, sortKey, sortDir);
   }, [activeFiltersState, sortKey, sortDir, teamYearRosterIds]);
+
+  const filterResultsKey = useMemo(
+    () =>
+      [
+        debouncedSearch,
+        filters.status,
+        filters.position,
+        filters.club,
+        filters.ratingMin,
+        filters.tier,
+        filters.yearsActive,
+        filters.browseMode,
+        filters.teamYearTeam,
+        filters.teamYearYear,
+        sortKey,
+        sortDir,
+      ].join("|"),
+    [
+      debouncedSearch,
+      filters.status,
+      filters.position,
+      filters.club,
+      filters.ratingMin,
+      filters.tier,
+      filters.yearsActive,
+      filters.browseMode,
+      filters.teamYearTeam,
+      filters.teamYearYear,
+      sortKey,
+      sortDir,
+    ]
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+    setExpandedPlayerId(null);
+  }, [filterResultsKey]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / SHOWCASE_PAGE_SIZE));
+  const effectivePage = Math.min(currentPage, totalPages);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  const pagePlayers = useMemo(() => {
+    const start = (effectivePage - 1) * SHOWCASE_PAGE_SIZE;
+    return filtered.slice(start, start + SHOWCASE_PAGE_SIZE);
+  }, [filtered, effectivePage]);
+
+  const handlePageChange = useCallback((page: number) => {
+    setCurrentPage(page);
+    setExpandedPlayerId(null);
+  }, []);
 
   const teamYearEmpty =
     activeFiltersState.browseMode === "teamYear" &&
@@ -230,6 +292,8 @@ export function PlayerShowcase() {
     setSearchInput("");
     setSortKey("rating");
     setSortDir("desc");
+    setCurrentPage(1);
+    setExpandedPlayerId(null);
   };
 
   const setAlphaSort = (dir: "asc" | "desc") => {
@@ -597,17 +661,35 @@ export function PlayerShowcase() {
               No players match your filters. Try adjusting or reset.
             </div>
           ) : (
-            <div className="showcase-player-grid grid gap-2 sm:grid-cols-2 sm:gap-2.5 xl:grid-cols-3">
-              {filtered.map((player) => (
-                <ShowcasePlayerCard
-                  key={player.id}
-                  player={player}
-                  expanded={expandedPlayerId === player.id}
-                  onToggle={handleTogglePlayer}
-                  onOpenDetail={handleOpenDetail}
+            <>
+              <ShowcasePagination
+                currentPage={effectivePage}
+                totalPages={totalPages}
+                totalItems={filtered.length}
+                onPageChange={handlePageChange}
+              />
+
+              <div className="showcase-player-grid grid gap-2 sm:grid-cols-2 sm:gap-2.5 xl:grid-cols-3">
+                {pagePlayers.map((player) => (
+                  <ShowcasePlayerCard
+                    key={player.id}
+                    player={player}
+                    expanded={expandedPlayerId === player.id}
+                    onToggle={handleTogglePlayer}
+                    onOpenDetail={handleOpenDetail}
+                  />
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <ShowcasePagination
+                  currentPage={effectivePage}
+                  totalPages={totalPages}
+                  totalItems={filtered.length}
+                  onPageChange={handlePageChange}
                 />
-              ))}
-            </div>
+              )}
+            </>
           )}
         </div>
       </div>
