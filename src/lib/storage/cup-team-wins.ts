@@ -167,19 +167,6 @@ function buildLeaderboardRows(
   }));
 }
 
-function attachLastWonDates(
-  rows: CupTeamWinsLeaderboardRow[],
-  entries: CupTeamWinEntry[]
-): CupTeamWinsLeaderboardRow[] {
-  const lastWonByTeam = new Map(
-    entries.map((entry) => [entry.teamName, entry.lastWonAt])
-  );
-  return rows.map((row) => ({
-    ...row,
-    lastWonAt: lastWonByTeam.get(row.teamName) ?? row.lastWonAt,
-  }));
-}
-
 export async function getCupTeamWinsLeaderboardAsync(): Promise<{
   rows: CupTeamWinsLeaderboardRow[];
   source: "remote" | "local";
@@ -222,7 +209,7 @@ export async function getCupTeamWinsLeaderboardAsync(): Promise<{
   }
 
   const merged = mergeWinCounts(recorded, profiles);
-  const rows = attachLastWonDates(buildLeaderboardRows(merged), entries);
+  const rows = buildLeaderboardRows(merged);
   const totalCups = Object.values(merged).reduce((sum, wins) => sum + wins, 0);
 
   return {

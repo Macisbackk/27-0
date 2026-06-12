@@ -14,7 +14,12 @@ import {
   getTrackerLeaderboardAsync,
   type LeaderboardDbMode,
 } from "@/lib/storage/leaderboard";
+import {
+  getCupTeamWinsLeaderboardAsync,
+  type CupTeamWinsLeaderboardRow,
+} from "@/lib/storage/cup-team-wins";
 import { playUiClick } from "@/lib/sound";
+import { CupTeamWinsBarGraph } from "./CupTeamWinsBarGraph";
 import { HardModeBadge } from "./HardModeBadge";
 import {
   BTN,
@@ -54,6 +59,10 @@ export function LeaderboardTable({
   const [difficulty, setDifficulty] =
     useState<GameDifficulty>(initialDifficulty);
   const [entries, setEntries] = useState<LeaderboardTrackerRow[]>([]);
+  const [teamWinsRows, setTeamWinsRows] = useState<CupTeamWinsLeaderboardRow[]>(
+    []
+  );
+  const [teamWinsTotal, setTeamWinsTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [usingFallback, setUsingFallback] = useState(false);
   const requestId = useRef(0);
@@ -62,6 +71,7 @@ export function LeaderboardTable({
   const activeTracker = isTrackerValidForDbMode(tracker, leaderboardMode)
     ? tracker
     : getDefaultTrackerForDbMode(leaderboardMode);
+  const isTeamWinsTracker = activeTracker === "challenge_cup_team_wins";
 
   const handleModeChange = (mode: LeaderboardDbMode) => {
     if (mode !== leaderboardMode) playUiClick();
@@ -77,6 +87,16 @@ export function LeaderboardTable({
     setLoading(true);
 
     try {
+      if (isTeamWinsTracker) {
+        const result = await getCupTeamWinsLeaderboardAsync();
+        if (currentRequest !== requestId.current) return;
+        setTeamWinsRows(result.rows);
+        setTeamWinsTotal(result.totalCups);
+        setEntries([]);
+        setUsingFallback(result.source === "local");
+        return;
+      }
+
       const result = await getTrackerLeaderboardAsync(
         activeTracker,
         period,
@@ -88,13 +108,15 @@ export function LeaderboardTable({
       if (currentRequest !== requestId.current) return;
 
       setEntries(result.rows);
+      setTeamWinsRows([]);
+      setTeamWinsTotal(0);
       setUsingFallback(result.source === "local");
     } finally {
       if (currentRequest === requestId.current) {
         setLoading(false);
       }
     }
-  }, [period, difficulty, leaderboardMode, activeTracker]);
+  }, [period, difficulty, leaderboardMode, activeTracker, isTeamWinsTracker]);
 
   useEffect(() => {
     if (!isTrackerValidForDbMode(tracker, leaderboardMode)) {
@@ -215,27 +237,44 @@ export function LeaderboardTable({
         </div>
       )}
 
-      <div className="mb-6 flex flex-wrap gap-2">
-        {PERIODS.map((p) => (
-          <button
-            key={p}
-            type="button"
-            onClick={() => {
-              if (period !== p) playUiClick();
-              setPeriod(p);
-            }}
-            className={`rounded-full px-3 py-1.5 text-xs font-medium transition ${
-              period === p
-                ? "bg-pitch-700 text-white"
-                : "bg-pitch-800/80 text-gray-500 hover:text-gray-300"
-            }`}
-          >
-            {formatPeriodLabel(p)}
-          </button>
-        ))}
-      </div>
+      {!isTeamWinsTracker && (
+        <div className="mb-6 flex flex-wrap gap-2">
+          {PERIODS.map((p) => (
+            <button
+              key={p}
+              type="button"
+              onClick={() => {
+                if (period !== p) playUiClick();
+                setPeriod(p);
+              }}
+              className={`rounded-full px-3 py-1.5 text-xs font-medium transition ${
+                period === p
+                  ? "bg-pitch-700 text-white"
+                  : "bg-pitch-800/80 text-gray-500 hover:text-gray-300"
+              }`}
+            >
+              {formatPeriodLabel(p)}
+            </button>
+          ))}
+        </div>
+      )}
 
-      {loading && entries.length === 0 ? (
+      {isTeamWinsTracker ? (
+        <div
+          className={`transition-opacity ${loading ? "opacity-60" : "opacity-100"}`}
+        >
+          {loading && teamWinsRows.length === 0 ? (
+            <div className="matchday-panel p-12 text-center text-gray-500">
+              Loading leaderboard…
+            </div>
+          ) : (
+            <CupTeamWinsBarGraph
+              entries={teamWinsRows}
+              totalCups={teamWinsTotal}
+            />
+          )}
+        </div>
+      ) : loading && entries.length === 0 ? (
         <div className="matchday-panel p-12 text-center text-gray-500">
           Loading leaderboard…
         </div>
@@ -254,11 +293,7 @@ export function LeaderboardTable({
             <thead>
               <tr className="border-b border-pitch-600/50 text-left text-xs uppercase tracking-wider text-gray-500">
                 <th className="px-4 py-3">#</th>
-                <th className="px-4 py-3">
-                  {activeTracker === "challenge_cup_team_wins"
-                    ? "Team"
-                    : "Coach"}
-                </th>
+                <th className="px-4 py-3">Coach</th>
                 <th className="px-4 py-3">
                   {STAT_COLUMN[activeTracker] ?? "Stat"}
                 </th>

@@ -569,9 +569,12 @@ export async function getTrackerLeaderboardAsync(
         rank: row.rank,
         username: row.teamName,
         statDisplay: String(row.tournamentWins),
-        achievedAt: row.lastWonAt ?? "",
+        achievedAt: "",
         difficulty: "NORMAL",
         mode: "CHALLENGE_CUP",
+        barPercent: row.barPercent,
+        isLeader: row.isLeader,
+        tournamentWins: row.tournamentWins,
       })),
     };
   }

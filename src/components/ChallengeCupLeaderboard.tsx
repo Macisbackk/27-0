@@ -21,6 +21,7 @@ import {
 } from "@/lib/storage/cup-team-wins";
 import { getAllStats } from "@/lib/storage/stats";
 import { getUsername } from "@/lib/storage/user";
+import { CupTeamWinsBarGraph } from "./CupTeamWinsBarGraph";
 
 const FEATURE_LIMIT = 10;
 const CATEGORY_LIMIT = 5;
@@ -120,75 +121,6 @@ function CategoryTable({
   );
 }
 
-function CupTeamWinsGraph({
-  entries,
-  totalCups,
-}: {
-  entries: CupTeamWinsLeaderboardRow[];
-  totalCups: number;
-}) {
-  const hasWins = entries.some((entry) => entry.tournamentWins > 0);
-
-  return (
-    <section className="matchday-panel overflow-hidden">
-      <div className="border-b border-pitch-600/50 px-4 py-3">
-        <h2 className="font-display text-sm font-bold uppercase tracking-wider text-accent-gold">
-          Challenge Cup Team Wins
-        </h2>
-        {totalCups > 0 && (
-          <p className="mt-1 text-xs text-gray-500">
-            {totalCups} cup{totalCups !== 1 ? "s" : ""} won across all teams
-          </p>
-        )}
-      </div>
-
-      {!hasWins ? (
-        <p className="px-4 py-8 text-center text-sm text-gray-500">
-          No team wins recorded yet. Win a Challenge Cup tournament to appear
-          here.
-        </p>
-      ) : (
-        <ul className="space-y-2 px-3 py-4 sm:px-4">
-          {entries.map((entry) => (
-            <li key={entry.teamName} className="grid grid-cols-[1.4rem_1fr_auto] items-center gap-2 sm:grid-cols-[2rem_7.5rem_1fr_auto] sm:gap-3">
-              <span
-                className={`text-right text-xs font-bold sm:text-sm ${
-                  entry.isLeader ? "text-accent-green" : "text-gray-500"
-                }`}
-              >
-                {entry.rank}
-              </span>
-              <span className="truncate text-xs font-medium text-white sm:text-sm">
-                {entry.teamName}
-              </span>
-              <div className="col-span-1 min-w-0 sm:col-span-1">
-                <div className="h-5 overflow-hidden rounded-md bg-pitch-900/80 sm:h-6">
-                  <div
-                    className={`flex h-full items-center rounded-md px-2 text-[10px] font-bold text-pitch-950 transition-all sm:text-xs ${
-                      entry.isLeader
-                        ? "bg-accent-green"
-                        : "bg-pitch-600/90 text-gray-200"
-                    }`}
-                    style={{
-                      width: `${Math.max(entry.barPercent, entry.tournamentWins > 0 ? 12 : 0)}%`,
-                      minWidth: entry.tournamentWins > 0 ? "2.25rem" : undefined,
-                    }}
-                  >
-                    {entry.tournamentWins > 0 ? entry.tournamentWins : ""}
-                  </div>
-                </div>
-              </div>
-              <span className="w-6 text-right text-xs font-semibold text-accent-gold sm:text-sm">
-                {entry.tournamentWins}
-              </span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
-  );
-}
-
 function OnlineCupWinsList({ entries }: { entries: CupWinsLeaderboardRow[] }) {
   if (entries.length === 0) return null;
 
@@ -266,7 +198,7 @@ export function ChallengeCupLeaderboard() {
         category stats also sync from your local career data.
       </p>
 
-      <CupTeamWinsGraph entries={teamWins} totalCups={teamWinsTotal} />
+      <CupTeamWinsBarGraph entries={teamWins} totalCups={teamWinsTotal} />
 
       <OnlineCupWinsList entries={onlineWins} />
 
