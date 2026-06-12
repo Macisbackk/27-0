@@ -76,6 +76,24 @@ export function MatchDetailsPanel({
             >
               {fixture.result === "W" ? "Victory" : "Defeat"}
             </p>
+            {fixture.matchBio && (
+              <p className={`mt-2 ${TYPO.bodySm}`}>{fixture.matchBio}</p>
+            )}
+            {fixture.manOfTheMatch && (
+              <p className="mt-2 text-sm text-gray-400">
+                <span className="font-medium text-accent-gold">
+                  Man of the Match:
+                </span>{" "}
+                {fixture.manOfTheMatch.playerName} —{" "}
+                {fixture.manOfTheMatch.teamName}
+                {fixture.manOfTheMatch.performanceSummary && (
+                  <span className="text-gray-500">
+                    {" "}
+                    · {fixture.manOfTheMatch.performanceSummary}
+                  </span>
+                )}
+              </p>
+            )}
           </div>
           <button type="button" onClick={onClose} className={BTN.closeSm}>
             Close

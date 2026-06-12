@@ -19,7 +19,6 @@ import {
   playMatchDefeat,
   playMatchNarrowWin,
   playMatchUpsetVictory,
-  playSeasonStart,
   playUiClick,
 } from "@/lib/sound";
 import { LeagueTable } from "./LeagueTable";
@@ -47,6 +46,7 @@ export function FantasySeasonPlay({
   );
   const [simulating, setSimulating] = useState(false);
 
+  const roundsPlayed = state.fixtures.length;
   const lastFixture = state.fixtures[state.fixtures.length - 1] ?? null;
   const partialResult = useMemo(
     () => getPartialSeasonResult(state),
@@ -56,6 +56,7 @@ export function FantasySeasonPlay({
     () => buildLeagueTable(partialResult, state.seed),
     [partialResult, state.seed]
   );
+  const dreamTeamRow = leagueTable.find((row) => row.isUserTeam);
 
   const playResultSound = (fixture: MatchFixture) => {
     if (fixture.result === "W") {
@@ -96,53 +97,37 @@ export function FantasySeasonPlay({
     finishIfDone(next);
   };
 
-  if (state.currentRound === 0) {
-    return (
-      <div className={`${CARD.panel} ${SPACING.cardPadding} text-center`}>
-        <p className={TYPO.sectionLabel}>Ready to kick off</p>
-        <h2 className="mt-2 font-display text-2xl font-black">
-          Super League Season
-        </h2>
-        <p className="mt-3 text-sm text-gray-400">
-          {FANTASY_SEASON_ROUNDS} rounds · Simulate one round at a time or play
-          out the full season.
-        </p>
-        <button
-          type="button"
-          onClick={() => {
-            playSeasonStart();
-            handleNextRound();
-          }}
-          className={`mt-6 ${BTN.base} ${BTN.primary}`}
-        >
-          Start Round 1 →
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-4">
       <div className={`${CARD.panel} ${SPACING.cardPadding}`}>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className={TYPO.sectionLabel}>
-              Round {Math.min(state.currentRound + 1, FANTASY_SEASON_ROUNDS)} of{" "}
-              {FANTASY_SEASON_ROUNDS}
+              {roundsPlayed === 0
+                ? `Round 0 of ${FANTASY_SEASON_ROUNDS}`
+                : state.isComplete
+                  ? `Season complete · ${FANTASY_SEASON_ROUNDS} rounds`
+                  : `Round ${roundsPlayed} of ${FANTASY_SEASON_ROUNDS} played`}
             </p>
-            <div className="mt-2 flex gap-6">
-              <div>
-                <p className="text-xs text-gray-500">Wins</p>
-                <p className="font-display text-2xl font-black text-accent-green">
-                  {state.wins}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500">Losses</p>
-                <p className="font-display text-2xl font-black text-red-400">
-                  {state.losses}
-                </p>
-              </div>
+            <div className="mt-2 flex flex-wrap gap-4 sm:gap-6">
+              <StatPill label="Played" value={String(roundsPlayed)} />
+              <StatPill
+                label="Wins"
+                value={String(state.wins)}
+                accent="text-accent-green"
+              />
+              <StatPill
+                label="Losses"
+                value={String(state.losses)}
+                accent="text-red-400"
+              />
+              <StatPill label="PF" value={String(state.pointsFor)} />
+              <StatPill label="PA" value={String(state.pointsAgainst)} />
+              <StatPill
+                label="Pts"
+                value={String(dreamTeamRow?.leaguePoints ?? 0)}
+                accent="text-accent-gold"
+              />
             </div>
           </div>
           {!state.isComplete && (
@@ -167,6 +152,13 @@ export function FantasySeasonPlay({
           )}
         </div>
 
+        {roundsPlayed === 0 && (
+          <p className="mt-4 text-sm text-gray-400">
+            No matches played yet. Simulate the next round to kick off your
+            season.
+          </p>
+        )}
+
         {lastFixture && (
           <div className="mt-4 rounded-lg border border-pitch-700/50 bg-pitch-950/60 px-4 py-3">
             <p className="text-xs uppercase tracking-wider text-gray-500">
@@ -179,6 +171,26 @@ export function FantasySeasonPlay({
             >
               {formatFantasyRoundResult(lastFixture)}
             </p>
+            {lastFixture.matchBio && (
+              <p className="mt-2 text-sm leading-relaxed text-gray-300">
+                {lastFixture.matchBio}
+              </p>
+            )}
+            {lastFixture.manOfTheMatch && (
+              <p className="mt-2 text-sm text-gray-400">
+                <span className="font-medium text-accent-gold">
+                  Man of the Match:
+                </span>{" "}
+                {lastFixture.manOfTheMatch.playerName} —{" "}
+                {lastFixture.manOfTheMatch.teamName}
+                {lastFixture.manOfTheMatch.performanceSummary && (
+                  <span className="text-gray-500">
+                    {" "}
+                    · {lastFixture.manOfTheMatch.performanceSummary}
+                  </span>
+                )}
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -205,18 +217,20 @@ export function FantasySeasonPlay({
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={() => {
-            playUiClick();
-            setShowFixtures((v) => !v);
-          }}
-          className={`${BTN.base} ${showFixtures ? BTN.primary : BTN.secondary}`}
-        >
-          {showFixtures ? "Hide" : "View"} Match Results
-        </button>
-      </div>
+      {roundsPlayed > 0 && (
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              playUiClick();
+              setShowFixtures((v) => !v);
+            }}
+            className={`${BTN.base} ${showFixtures ? BTN.primary : BTN.secondary}`}
+          >
+            {showFixtures ? "Hide" : "View"} Match Results
+          </button>
+        </div>
+      )}
 
       {showFixtures && state.fixtures.length > 0 && (
         <div className={`${CARD.panel} ${SPACING.cardPadding}`}>
@@ -233,6 +247,11 @@ export function FantasySeasonPlay({
                     )
                   }
                 />
+                {fixture.matchBio && selectedFixture?.round !== fixture.round && (
+                  <p className="mt-1 px-1 text-xs text-gray-500">
+                    {fixture.matchBio}
+                  </p>
+                )}
                 <AnimatePresence>
                   {selectedFixture?.round === fixture.round && (
                     <MatchDetailsPanel
@@ -248,6 +267,25 @@ export function FantasySeasonPlay({
           </ul>
         </div>
       )}
+    </div>
+  );
+}
+
+function StatPill({
+  label,
+  value,
+  accent = "text-white",
+}: {
+  label: string;
+  value: string;
+  accent?: string;
+}) {
+  return (
+    <div>
+      <p className="text-xs text-gray-500">{label}</p>
+      <p className={`font-display text-xl font-black sm:text-2xl ${accent}`}>
+        {value}
+      </p>
     </div>
   );
 }

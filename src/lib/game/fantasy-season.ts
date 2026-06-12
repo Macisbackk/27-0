@@ -18,6 +18,7 @@ import {
   distributeSeasonTries,
   enrichSingleFixtureScoring,
 } from "./season-tries";
+import { enrichFantasyFixtureSummary } from "./fantasy-match-summary";
 
 export type { ScheduledFixture };
 
@@ -118,6 +119,7 @@ function simulateRound(
   );
 
   enrichSingleFixtureScoring(state.squad, fixture, state.seed);
+  enrichFantasyFixtureSummary(fixture, state.squad, state.seed);
 
   const won = fixture.result === "W";
   return {

@@ -19,6 +19,7 @@ import {
 } from "./rl-scores";
 import { getOpponentMatchRating } from "./opponent-scorers";
 import { getSeasonCommentary } from "./season-commentary";
+import type { ManOfTheMatch } from "./fantasy-match-summary";
 import { getSeasonLeagueClubs } from "./league-replacement";
 import { getDreamTeamTablePosition } from "./league-table";
 
@@ -133,6 +134,9 @@ export interface MatchFixture {
   isUpset?: boolean;
   isThrashing?: boolean;
   scoringDetail?: FixtureScoringDetail;
+  /** Short post-match summary (Fantasy Mode). */
+  matchBio?: string;
+  manOfTheMatch?: ManOfTheMatch;
 }
 
 export interface SeasonResult {
