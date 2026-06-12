@@ -9,6 +9,7 @@ import {
   isPlayerInSquad,
 } from "@/lib/game/fantasy-mode";
 import { formatValue } from "@/lib/players";
+import { formatPlayerDisplayName } from "@/lib/players/prime-year";
 import { filterShowcasePlayers, getUniqueClubs } from "@/lib/players/showcase";
 import type { Player, SquadSlot } from "@/lib/types";
 import { PlayerCard } from "./PlayerCard";
@@ -45,6 +46,7 @@ export function FantasyPlayerPicker({
   const [club, setClub] = useState("all");
   const [sortKey, setSortKey] = useState<FantasySortKey>("rating-desc");
   const [affordableOnly, setAffordableOnly] = useState(false);
+  const [expandedPlayerId, setExpandedPlayerId] = useState<string | null>(null);
 
   const slotPositions = getFantasyEligiblePositions(slot.position);
   const slotBudget = getFantasyBudgetForSlot(squad, slot);
@@ -201,45 +203,71 @@ export function FantasyPlayerPicker({
             No players match your filters.
           </p>
         ) : (
-          <ul className="grid gap-2 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3">
+          <ul className="flex flex-col gap-2">
             {players.map((player) => {
               const signed = isPlayerInSquad(squad, player.id);
               const affordable = canAffordPlayerForSlot(squad, slot, player);
               const disabled =
                 (signed && player.id !== slot.player?.id) || !affordable;
+              const expanded = expandedPlayerId === player.id;
+              const displayName = formatPlayerDisplayName(player);
 
               return (
                 <li key={player.id}>
                   <div
-                    className={`${CARD.base} flex h-full flex-col overflow-hidden ${
-                      disabled
-                        ? "pointer-events-none border-red-900/40 opacity-50"
-                        : ""
+                    className={`${CARD.base} overflow-hidden ${
+                      disabled ? "border-red-900/40 opacity-60" : ""
                     } ${!affordable && !signed ? "border-red-900/30" : ""}`}
                   >
-                    <PlayerCard player={player} equalHeight compactMobile />
-                    <div className="border-t border-pitch-700/50 px-3 py-2">
-                      {!affordable && !signed && (
-                        <p className="text-xs font-medium text-red-400">
-                          Over budget ({formatValue(player.value)})
-                        </p>
-                      )}
-                      {signed && player.id !== slot.player?.id && (
-                        <p className="text-xs text-gray-500">Already signed</p>
-                      )}
-                    </div>
                     <button
                       type="button"
-                      disabled={disabled}
-                      onClick={() => handleSelect(player)}
-                      className={`mx-3 mb-3 mt-auto ${BTN.base} ${BTN.primary} disabled:cursor-not-allowed disabled:opacity-50`}
+                      className="flex w-full min-w-0 items-center justify-between gap-2 px-3 py-2.5 text-left"
+                      onClick={() => {
+                        playUiClick();
+                        setExpandedPlayerId((id) =>
+                          id === player.id ? null : player.id
+                        );
+                      }}
                     >
-                      {slot.player?.id === player.id
-                        ? "Keep"
-                        : changingPlayer
-                          ? "Change Player"
-                          : "Sign"}
+                      <span className="min-w-0 truncate font-display text-sm font-bold text-white">
+                        {displayName}
+                        <span className="ml-2 font-normal text-gray-400">
+                          {player.peakRating} OVR · {formatValue(player.value)}
+                        </span>
+                      </span>
+                      <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                        {expanded ? "Close" : "View"}
+                      </span>
                     </button>
+
+                    {!affordable && !signed && (
+                      <p className="border-t border-pitch-700/50 px-3 py-1 text-xs font-medium text-red-400">
+                        Over budget
+                      </p>
+                    )}
+                    {signed && player.id !== slot.player?.id && (
+                      <p className="border-t border-pitch-700/50 px-3 py-1 text-xs text-gray-500">
+                        Already signed
+                      </p>
+                    )}
+
+                    {expanded && (
+                      <div className="border-t border-pitch-700/50 px-2 pb-3 pt-2">
+                        <PlayerCard player={player} equalHeight compactMobile />
+                        <button
+                          type="button"
+                          disabled={disabled}
+                          onClick={() => handleSelect(player)}
+                          className={`mt-2 w-full ${BTN.base} ${BTN.primary} disabled:cursor-not-allowed disabled:opacity-50`}
+                        >
+                          {slot.player?.id === player.id
+                            ? "Keep"
+                            : changingPlayer
+                              ? "Change Player"
+                              : "Sign"}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </li>
               );

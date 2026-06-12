@@ -31,7 +31,7 @@ export const FANTASY_MODE_INTRO =
   "Build your dream squad under a budget, then take on randomised Super League teams across 27 rounds.";
 
 export const DRAFT_MODE_INTRO =
-  "Tap any empty position, pick between two players, and build your squad. Natural positions carry no penalty; out-of-position picks cost 5 OVR. Scrum Half and Stand Off share one pool.";
+  "Pick between two players, then choose where they play on your team sheet. Natural positions carry no penalty; out-of-position picks cost 5 OVR. Scrum Half and Stand Off share one pool.";
 
 export const DRAFT_MODE_RULE =
-  "Tap an empty slot on the team sheet, then choose one player from the pair offered. No penalty at natural position; −5 OVR if out of position (Stand Off/Scrum Half swaps are fine).";
+  "Choose one player from the pair offered, then pick their position. No penalty at natural position; −5 OVR if out of position (Stand Off/Scrum Half swaps are fine).";

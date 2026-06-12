@@ -74,6 +74,7 @@ export function PlayerShowcase() {
   const [sortKey, setSortKey] = useState<ShowcaseSortKey>("rating");
   const [sortDir, setSortDir] = useState<ShowcaseSortDir>("desc");
   const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
+  const [expandedPlayerId, setExpandedPlayerId] = useState<string | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const clubs = useMemo(() => getUniqueClubs(ALL_PLAYERS), []);
@@ -126,7 +127,13 @@ export function PlayerShowcase() {
       activeFiltersState.teamYearYear
     );
 
-  const handleSelectPlayer = useCallback((player: Player) => {
+  const handleTogglePlayer = useCallback((player: Player) => {
+    setExpandedPlayerId((current) =>
+      current === player.id ? null : player.id
+    );
+  }, []);
+
+  const handleOpenDetail = useCallback((player: Player) => {
     setDetailPlayer(player);
   }, []);
 
@@ -590,12 +597,14 @@ export function PlayerShowcase() {
               No players match your filters. Try adjusting or reset.
             </div>
           ) : (
-            <div className="showcase-player-grid grid gap-3 sm:grid-cols-2 sm:gap-4 xl:grid-cols-2">
+            <div className="showcase-player-grid grid gap-2 sm:grid-cols-2 sm:gap-2.5 xl:grid-cols-3">
               {filtered.map((player) => (
                 <ShowcasePlayerCard
                   key={player.id}
                   player={player}
-                  onSelect={handleSelectPlayer}
+                  expanded={expandedPlayerId === player.id}
+                  onToggle={handleTogglePlayer}
+                  onOpenDetail={handleOpenDetail}
                 />
               ))}
             </div>

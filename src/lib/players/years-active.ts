@@ -4,20 +4,48 @@ const OVERRIDE_MAP = new Map(
   Object.entries(corrections as Record<string, string>)
 );
 
-/** Apply verified career span overrides at load time. */
-export function resolveYearsActive(id: string, raw: string): string {
-  const override = OVERRIDE_MAP.get(id);
-  if (override) return override;
+function currentCalendarYear(): number {
+  return new Date().getFullYear();
+}
 
-  let years = (raw ?? "").trim();
-  if (!years) return years;
+function normalizeSeparators(years: string): string {
+  return years.replace(/-/g, "–").replace(/present/gi, "Present");
+}
 
-  years = years.replace(/-/g, "–");
-  years = years.replace(/present/i, "Present");
+/** Sanitize career span — no future end years unless marked Present. */
+function sanitizeYearsActiveSpan(years: string): string {
+  const normalized = normalizeSeparators(years.trim());
+  if (!normalized) return normalized;
 
-  if (years.includes("2026")) {
-    years = years.replace("2026", "Present");
+  if (/present/i.test(normalized)) {
+    const startMatch = normalized.match(/(\d{4})/);
+    return startMatch ? `${startMatch[1]}–Present` : "Present";
   }
 
-  return years;
+  const yearMatches = [...normalized.matchAll(/(\d{4})/g)].map((m) =>
+    Number.parseInt(m[1], 10)
+  );
+  if (yearMatches.length === 0) return normalized;
+
+  const start = yearMatches[0];
+  const end =
+    yearMatches.length > 1 ? yearMatches[yearMatches.length - 1] : undefined;
+  const now = currentCalendarYear();
+
+  if (end !== undefined && end > now) {
+    return `${start}–Unknown`;
+  }
+
+  if (end !== undefined && end !== start) {
+    return `${start}–${end}`;
+  }
+
+  return String(start);
+}
+
+/** Apply verified career span overrides and sanitize impossible future ranges. */
+export function resolveYearsActive(id: string, raw: string): string {
+  const override = OVERRIDE_MAP.get(id);
+  const source = override ?? raw ?? "";
+  return sanitizeYearsActiveSpan(source);
 }
