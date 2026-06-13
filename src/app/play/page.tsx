@@ -15,12 +15,14 @@ export default async function PlayPage({
     superSamHallas?: string;
     draft?: string;
     fantasy?: string;
+    eraCup?: string;
   }>;
 }) {
   const params = await searchParams;
   const wantsHard = params.difficulty === "hard";
   const wantsCup = params.cup === "1";
   const wantsFantasy = params.fantasy === "1";
+  const wantsEraCup = params.eraCup === "1";
   const wantsSuperSamHallas = params.superSamHallas === "1";
   const wantsJoeMellor = params.joeMellor === "1" && !wantsSuperSamHallas;
   const wantsDraft = params.draft === "1";
@@ -30,7 +32,9 @@ export default async function PlayPage({
   const difficulty: GameDifficulty = wantsHard ? "HARD" : "NORMAL";
 
   let mode: GameMode = "CLASSIC";
-  if (wantsCup) {
+  if (wantsEraCup) {
+    mode = "ERA_CHALLENGE_CUP";
+  } else if (wantsCup) {
     mode = "CHALLENGE_CUP";
   } else if (wantsFantasy && !joeMellorMode && !superSamHallasMode) {
     mode = "FANTASY";
@@ -45,7 +49,9 @@ export default async function PlayPage({
       : getPlayPageTitle(mode, difficulty);
 
   const subtitle =
-    mode === "CHALLENGE_CUP"
+    mode === "ERA_CHALLENGE_CUP"
+      ? undefined
+      : mode === "CHALLENGE_CUP"
       ? "Choose your club, draft club legends, and fight through a knockout tournament."
       : mode === "FANTASY"
         ? undefined

@@ -35,6 +35,8 @@ interface ChallengeCupBracketProps {
   seed: string;
   userClub: string;
   onComplete: (result: ChallengeCupResult) => void;
+  initialState?: ChallengeCupBracketState;
+  headerLabel?: string;
 }
 
 const ROUNDS = [1, 2, 3, 4] as const;
@@ -44,9 +46,11 @@ export function ChallengeCupBracket({
   seed,
   userClub,
   onComplete,
+  initialState,
+  headerLabel = "Challenge Cup",
 }: ChallengeCupBracketProps) {
-  const [state, setState] = useState<ChallengeCupBracketState>(() =>
-    createChallengeCupBracket(seed, userClub)
+  const [state, setState] = useState<ChallengeCupBracketState>(
+    () => initialState ?? createChallengeCupBracket(seed, userClub)
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const activeRound = getActiveRound(state);
@@ -122,7 +126,7 @@ export function ChallengeCupBracket({
     <div className="w-full px-2 py-4 sm:px-4">
       <div className="text-center">
         <p className="font-display text-xs font-bold uppercase tracking-[0.35em] text-accent-green">
-          Challenge Cup
+          {headerLabel}
         </p>
         <h2 className="mt-2 font-display text-2xl font-black sm:text-3xl">
           Knockout Bracket

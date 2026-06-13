@@ -193,6 +193,24 @@ export function HomeModeSelector() {
             Start Challenge Cup →
           </span>
         </Link>
+
+        <Link
+          href={buildPlayHref("eraCup")}
+          onClick={() => playUiClick()}
+          className={`${CARD.glass} ${CARD.panel} group block w-full ${SPACING.cardPaddingLg} transition hover:border-accent-green/30`}
+        >
+          <h2 className={`${TYPO.cardTitle} group-hover:text-accent-green`}>
+            Era Challenge Cup
+          </h2>
+          <p className={`mt-3 ${TYPO.body}`}>
+            Pick a club and historic season, then lead a pre-built era squad
+            through a knockout draw against random opponents from rugby league
+            history.
+          </p>
+          <span className={`mt-5 ${BTN.base} ${BTN.primary}`}>
+            Start Era Challenge Cup →
+          </span>
+        </Link>
       </div>
     </div>
   );

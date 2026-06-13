@@ -113,6 +113,8 @@ export interface SeasonLifetimeInput {
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
   challengeCupMode?: boolean;
+  eraChallengeCupMode?: boolean;
+  eraTeamUsed?: string;
   cupFinish?: string;
   cupWon?: boolean;
   averageSquadRating?: number;
@@ -136,11 +138,36 @@ export function applySeasonLifetimeUpdate(
     joeMellorMode,
     superSamHallasMode,
     challengeCupMode,
+    eraChallengeCupMode,
+    eraTeamUsed,
     cupFinish,
     cupWon,
     averageSquadRating,
     matchResults = [],
   } = input;
+
+  if (eraChallengeCupMode) {
+    const draftCounts = { ...existing.draftCounts };
+    for (const id of signedIds) {
+      draftCounts[id] = (draftCounts[id] ?? 0) + 1;
+    }
+
+    let bestEraTeamUsed = existing.bestEraTeamUsed;
+    if (cupWon && eraTeamUsed) {
+      bestEraTeamUsed = eraTeamUsed;
+    }
+
+    return {
+      ...existing,
+      draftCounts,
+      eraChallengeCupRuns: existing.eraChallengeCupRuns + 1,
+      eraChallengeCupWins: existing.eraChallengeCupWins + wins,
+      eraCupsWon: existing.eraCupsWon + (cupWon ? 1 : 0),
+      eraMatchWins: existing.eraMatchWins + wins,
+      eraMatchLosses: existing.eraMatchLosses + losses,
+      bestEraTeamUsed,
+    };
+  }
 
   if (challengeCupMode) {
     const draftCounts = { ...existing.draftCounts };

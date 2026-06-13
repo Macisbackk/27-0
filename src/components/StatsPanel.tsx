@@ -7,6 +7,7 @@ import { getAllStats } from "@/lib/storage/stats";
 import {
   STATS_TABS,
   getChallengeCupView,
+  getEraChallengeCupView,
   getDraftModeView,
   getHardChallengeCupView,
   getHardDraftModeView,
@@ -37,6 +38,7 @@ export function StatsPanel() {
     null
   );
   const [fantasyStats, setFantasyStats] = useState<UserStatsData | null>(null);
+  const [eraCupStats, setEraCupStats] = useState<UserStatsData | null>(null);
 
   const refresh = () => {
     const stored = getAllStats();
@@ -45,6 +47,7 @@ export function StatsPanel() {
     setDraftNormalStats(stored.draftNormal);
     setDraftHardStats(stored.draftHard);
     setFantasyStats(stored.fantasy);
+    setEraCupStats(stored.eraCup);
   };
 
   useEffect(() => {
@@ -59,7 +62,8 @@ export function StatsPanel() {
       !hardStats ||
       !draftNormalStats ||
       !draftHardStats ||
-      !fantasyStats
+      !fantasyStats ||
+      !eraCupStats
     ) {
       return;
     }
@@ -69,14 +73,15 @@ export function StatsPanel() {
       draftNormal: draftNormalStats,
       draftHard: draftHardStats,
     });
-  }, [normalStats, hardStats, draftNormalStats, draftHardStats, fantasyStats]);
+  }, [normalStats, hardStats, draftNormalStats, draftHardStats, fantasyStats, eraCupStats]);
 
   if (
     !normalStats ||
     !hardStats ||
     !draftNormalStats ||
     !draftHardStats ||
-    !fantasyStats
+    !fantasyStats ||
+    !eraCupStats
   ) {
     return (
       <div className="card-glass p-12 text-center text-gray-500">
@@ -90,7 +95,8 @@ export function StatsPanel() {
     hardStats.totalRuns > 0 ||
     draftNormalStats.totalSeasonsSimulated > 0 ||
     draftHardStats.totalSeasonsSimulated > 0 ||
-    fantasyStats.totalSeasonsSimulated > 0;
+    fantasyStats.totalSeasonsSimulated > 0 ||
+    eraCupStats.eraChallengeCupRuns > 0;
 
   return (
     <div className="space-y-6">
@@ -137,6 +143,9 @@ export function StatsPanel() {
       )}
       {activeTab === "challenge-cup" && (
         <ChallengeCupTab normal={normalStats} hard={hardStats} />
+      )}
+      {activeTab === "era-challenge-cup" && (
+        <EraChallengeCupTab stats={eraCupStats} />
       )}
 
       <p className="text-center text-xs text-gray-600">
@@ -700,6 +709,50 @@ function ChallengeCupTab({
         <StatCard
           label="Lowest Rated Cup Squad"
           value={formatRatingOrDash(view.lowestRatedSquad)}
+        />
+      </StatsSection>
+    </div>
+  );
+}
+
+function EraChallengeCupTab({ stats }: { stats: UserStatsData }) {
+  const view = getEraChallengeCupView(stats);
+
+  return (
+    <div className="space-y-8">
+      <StatsSection title="Career">
+        <StatCard
+          label="Era Cup Appearances"
+          value={String(view.runs)}
+        />
+        <StatCard
+          label="Total Record"
+          value={formatRecordOrDash(
+            view.wins + view.losses > 0 ? view.totalRecord : null
+          )}
+          highlight={view.totalRecord.wins >= 4}
+        />
+        <StatCard
+          label="Era Match Wins"
+          value={String(view.wins)}
+          highlight={view.wins > 0}
+        />
+        <StatCard
+          label="Era Match Losses"
+          value={String(view.losses)}
+        />
+      </StatsSection>
+
+      <StatsSection title="Achievements">
+        <StatCard
+          label="Era Cups Won"
+          value={String(view.cupsWon)}
+          highlight={view.cupsWon > 0}
+        />
+        <StatCard
+          label="Best Era Team Used"
+          value={view.bestTeamUsed ?? "—"}
+          highlight={view.bestTeamUsed !== null}
         />
       </StatsSection>
     </div>

@@ -27,6 +27,7 @@ import {
   type TeamScoringDetail,
 } from "./season-simulation";
 import type { ScoreBreakdown } from "./rl-scores";
+import type { EraTeam } from "../players/era-teams";
 
 export interface BracketScoringDetail {
   home: TeamScoringDetail;
@@ -61,6 +62,10 @@ export interface ChallengeCupBracketState {
   userEliminated: boolean;
   tournamentComplete: boolean;
   userWon: boolean;
+  /** Era mode: displayName → underlying club for opponent scorers. */
+  eraClubLookup?: Record<string, string>;
+  /** Era mode: displayName → average squad rating for AI strength. */
+  eraTeamRatings?: Record<string, number>;
 }
 
 function shuffle<T>(arr: T[], rng: () => number): T[] {
@@ -113,6 +118,165 @@ function createMatch(
     userFixture: null,
     scoringDetail: null,
     matchEvents: null,
+  };
+}
+
+function pickWeightedEraOpponents(
+  pool: EraTeam[],
+  count: number,
+  rng: () => number
+): EraTeam[] {
+  const available = [...pool];
+  const picked: EraTeam[] = [];
+
+  while (picked.length < count && available.length > 0) {
+    const totalWeight = available.reduce(
+      (sum, team) => sum + Math.max(1, 105 - team.teamRating),
+      0
+    );
+    let roll = rng() * totalWeight;
+    let index = available.length - 1;
+
+    for (let i = 0; i < available.length; i++) {
+      roll -= Math.max(1, 105 - available[i].teamRating);
+      if (roll <= 0) {
+        index = i;
+        break;
+      }
+    }
+
+    picked.push(available[index]);
+    available.splice(index, 1);
+  }
+
+  return picked;
+}
+
+export function createEraChallengeCupBracket(
+  seed: string,
+  userEraTeam: EraTeam,
+  allEraTeams: EraTeam[]
+): ChallengeCupBracketState {
+  const rng = seedrandom(`${seed}-era-opponents`);
+  const opponentPool = allEraTeams.filter(
+    (team) => team.displayName !== userEraTeam.displayName
+  );
+  const opponents = pickWeightedEraOpponents(opponentPool, 15, rng);
+  const bracketTeams = shuffle(
+    [userEraTeam.displayName, ...opponents.map((team) => team.displayName)],
+    rng
+  );
+
+  const eraClubLookup: Record<string, string> = {
+    [userEraTeam.displayName]: userEraTeam.clubName,
+  };
+  const eraTeamRatings: Record<string, number> = {
+    [userEraTeam.displayName]: userEraTeam.teamRating,
+  };
+
+  for (const opponent of opponents) {
+    eraClubLookup[opponent.displayName] = opponent.clubName;
+    eraTeamRatings[opponent.displayName] = opponent.teamRating;
+  }
+
+  const byeTeams = pickByeTeams(bracketTeams, seed);
+  const byeSet = new Set(byeTeams);
+  const r16Rng = seedrandom(`${seed}-r16`);
+  const r16Teams = shuffle(
+    bracketTeams.filter((team) => !byeSet.has(team)),
+    r16Rng
+  );
+  const matches: BracketMatch[] = [];
+
+  for (let i = 0; i < 6; i++) {
+    matches.push(
+      createMatch(
+        `1-${i}`,
+        1,
+        i,
+        r16Teams[i * 2],
+        r16Teams[i * 2 + 1],
+        null,
+        userEraTeam.displayName
+      )
+    );
+  }
+
+  matches.push(
+    createMatch(
+      "2-0",
+      2,
+      0,
+      null,
+      null,
+      ["1-0", "1-1"],
+      userEraTeam.displayName
+    ),
+    createMatch(
+      "2-1",
+      2,
+      1,
+      null,
+      null,
+      ["1-2", "1-3"],
+      userEraTeam.displayName
+    ),
+    createMatch(
+      "2-2",
+      2,
+      2,
+      byeTeams[0],
+      null,
+      ["1-4"],
+      userEraTeam.displayName
+    ),
+    createMatch(
+      "2-3",
+      2,
+      3,
+      byeTeams[1],
+      null,
+      ["1-5"],
+      userEraTeam.displayName
+    )
+  );
+
+  for (let i = 0; i < 2; i++) {
+    matches.push(
+      createMatch(
+        `3-${i}`,
+        3,
+        i,
+        null,
+        null,
+        [`2-${i * 2}`, `2-${i * 2 + 1}`],
+        userEraTeam.displayName
+      )
+    );
+  }
+  matches.push(
+    createMatch(
+      "4-0",
+      4,
+      0,
+      null,
+      null,
+      ["3-0", "3-1"],
+      userEraTeam.displayName
+    )
+  );
+
+  return {
+    seed,
+    userClub: userEraTeam.displayName,
+    byeTeams,
+    matches,
+    simState: { form: 0, seasonDropGoals: 0 },
+    userEliminated: false,
+    tournamentComplete: false,
+    userWon: false,
+    eraClubLookup,
+    eraTeamRatings,
   };
 }
 
@@ -211,17 +375,26 @@ export function canSimulateMatch(
   return match?.status === "ready";
 }
 
+function resolveBracketClub(
+  team: string,
+  state: ChallengeCupBracketState
+): string {
+  return state.eraClubLookup?.[team] ?? team;
+}
+
 function buildClubScoring(
   club: string,
   tries: number,
   scoring: ScoreBreakdown,
   seed: string,
   round: number,
-  matchId: string
+  matchId: string,
+  state: ChallengeCupBracketState
 ): TeamScoringDetail {
+  const resolvedClub = resolveBracketClub(club, state);
   const fakeFixture: MatchFixture = {
     round,
-    opponent: club,
+    opponent: resolvedClub,
     isHome: true,
     pointsFor: 0,
     pointsAgainst: 0,
@@ -243,12 +416,25 @@ function buildClubScoring(
   );
 }
 
+function getBracketTeamStrength(
+  team: string,
+  state: ChallengeCupBracketState,
+  rng: () => number
+): number {
+  const eraRating = state.eraTeamRatings?.[team];
+  if (eraRating !== undefined) {
+    return eraRating + (rng() - 0.5) * 6;
+  }
+  return getClubStrength(resolveBracketClub(team, state), rng);
+}
+
 function simulateClubVsClub(
   home: string,
   away: string,
   seed: string,
   matchId: string,
-  round: number
+  round: number,
+  state: ChallengeCupBracketState
 ): {
   homeScore: number;
   awayScore: number;
@@ -258,8 +444,8 @@ function simulateClubVsClub(
   loser: string;
 } {
   const rng = seedrandom(`${seed}-ai-${matchId}`);
-  const homeStr = getClubStrength(home, rng);
-  const awayStr = getClubStrength(away, rng);
+  const homeStr = getBracketTeamStrength(home, state, rng);
+  const awayStr = getBracketTeamStrength(away, state, rng);
   const homeAdvantage = 3;
   const homeWins =
     rng() <
@@ -434,6 +620,8 @@ function simulateUserMatch(
   const isHome = home === userClub;
   const opponent = isHome ? away : home;
 
+  const opponentRating = state.eraTeamRatings?.[opponent];
+
   const { fixture, state: nextSim } = simulateOneFixture(
     squad,
     opponent,
@@ -441,10 +629,30 @@ function simulateUserMatch(
     match.round,
     `${state.seed}-cup-${match.id}`,
     state.simState,
-    { cupMode: true }
+    {
+      cupMode: true,
+      opponentRatingOverride: opponentRating,
+    }
   );
 
   enrichSingleFixtureScoring(squad, fixture, state.seed);
+
+  if (state.eraClubLookup) {
+    const resolvedOpponent = resolveBracketClub(opponent, state);
+    if (resolvedOpponent !== opponent && fixture.scoringDetail) {
+      const oppDetail = buildOpponentScoringDetail(
+        {
+          ...fixture,
+          opponent: resolvedOpponent,
+        },
+        `${state.seed}-cup-${match.id}-era-opp`
+      );
+      fixture.scoringDetail = {
+        ...fixture.scoringDetail,
+        opponent: oppDetail,
+      };
+    }
+  }
 
   const homeScore = isHome ? fixture.pointsFor : fixture.pointsAgainst;
   const awayScore = isHome ? fixture.pointsAgainst : fixture.pointsFor;
@@ -488,7 +696,8 @@ function simulateAiMatch(
     away,
     state.seed,
     match.id,
-    match.round
+    match.round,
+    state
   );
 
   const scoringDetail: BracketScoringDetail = {
@@ -498,7 +707,8 @@ function simulateAiMatch(
       result.homeScoring,
       state.seed,
       match.round,
-      match.id
+      match.id,
+      state
     ),
     away: buildClubScoring(
       away,
@@ -506,7 +716,8 @@ function simulateAiMatch(
       result.awayScoring,
       state.seed,
       match.round,
-      match.id
+      match.id,
+      state
     ),
   };
 

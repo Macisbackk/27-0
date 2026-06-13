@@ -138,6 +138,18 @@ export const EMPTY_STATS: UserStatsData = {
 
   bestTeamRating: 0,
 
+  eraChallengeCupRuns: 0,
+
+  eraChallengeCupWins: 0,
+
+  eraCupsWon: 0,
+
+  eraMatchWins: 0,
+
+  eraMatchLosses: 0,
+
+  bestEraTeamUsed: null,
+
 };
 
 
@@ -153,6 +165,8 @@ interface StoredStats {
   draftHard: UserStatsData;
 
   fantasy: UserStatsData;
+
+  eraCup: UserStatsData;
 
 }
 
@@ -179,6 +193,12 @@ export function resolveStatsBucket(
   if (mode === "FANTASY") {
 
     return "fantasy";
+
+  }
+
+  if (mode === "ERA_CHALLENGE_CUP") {
+
+    return "eraCup";
 
   }
 
@@ -250,6 +270,18 @@ export function migrateUserStats(raw: Partial<UserStatsData>): UserStatsData {
 
   merged.bestTeamRating = merged.bestTeamRating ?? 0;
 
+  merged.eraChallengeCupRuns = merged.eraChallengeCupRuns ?? 0;
+
+  merged.eraChallengeCupWins = merged.eraChallengeCupWins ?? 0;
+
+  merged.eraCupsWon = merged.eraCupsWon ?? 0;
+
+  merged.eraMatchWins = merged.eraMatchWins ?? 0;
+
+  merged.eraMatchLosses = merged.eraMatchLosses ?? 0;
+
+  merged.bestEraTeamUsed = merged.bestEraTeamUsed ?? null;
+
   return merged;
 
 }
@@ -271,6 +303,8 @@ function loadStoredStats(): StoredStats {
       draftHard: { ...EMPTY_STATS },
 
       fantasy: { ...EMPTY_STATS },
+
+      eraCup: { ...EMPTY_STATS },
 
     };
 
@@ -294,6 +328,8 @@ function loadStoredStats(): StoredStats {
 
       fantasy: { ...EMPTY_STATS },
 
+      eraCup: { ...EMPTY_STATS },
+
     };
 
     }
@@ -316,6 +352,8 @@ function loadStoredStats(): StoredStats {
 
         fantasy: migrateUserStats(parsed.fantasy ?? {}),
 
+        eraCup: migrateUserStats(parsed.eraCup ?? {}),
+
       };
 
     }
@@ -334,6 +372,8 @@ function loadStoredStats(): StoredStats {
 
       fantasy: { ...EMPTY_STATS },
 
+      eraCup: { ...EMPTY_STATS },
+
     };
 
   } catch {
@@ -349,6 +389,8 @@ function loadStoredStats(): StoredStats {
       draftHard: { ...EMPTY_STATS },
 
       fantasy: { ...EMPTY_STATS },
+
+      eraCup: { ...EMPTY_STATS },
 
     };
 

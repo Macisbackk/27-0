@@ -8,6 +8,7 @@ import {
 } from "@/lib/storage/preferences";
 import { GameBoard } from "./GameBoard";
 import { FantasyModeBoard } from "./FantasyModeBoard";
+import { EraChallengeCupBoard } from "./EraChallengeCupBoard";
 
 interface GameStarterProps {
   mode: GameMode;
@@ -23,6 +24,7 @@ function resolvePlayModeKey(
   search: URLSearchParams
 ): PlayModeKey | null {
   if (mode === "CHALLENGE_CUP") return null;
+  if (mode === "ERA_CHALLENGE_CUP") return null;
   if (mode === "FANTASY") return null;
   if (mode === "DRAFT") return "draft";
   if (search.get("draft") === "1") return "draft";
@@ -69,6 +71,10 @@ export function GameStarter({
 
   if (mode === "FANTASY") {
     return <FantasyModeBoard />;
+  }
+
+  if (mode === "ERA_CHALLENGE_CUP") {
+    return <EraChallengeCupBoard />;
   }
 
   return (

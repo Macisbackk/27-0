@@ -20,6 +20,7 @@ export function getPlayPageTitle(
   difficulty: GameDifficulty
 ): string {
   if (mode === "CHALLENGE_CUP") return "Challenge Cup";
+  if (mode === "ERA_CHALLENGE_CUP") return "Era Challenge Cup";
   if (mode === "FANTASY") return "Fantasy Mode";
   if (mode === "DRAFT") {
     return difficulty === "HARD" ? "Hard Draft Mode" : "Draft Mode";
@@ -35,3 +36,6 @@ export const DRAFT_MODE_INTRO =
 
 export const DRAFT_MODE_RULE =
   "Choose one player from the pair offered, then pick their position. No penalty at natural position; −5 OVR if out of position (Stand Off/Scrum Half swaps are fine).";
+
+export const ERA_CHALLENGE_CUP_INTRO =
+  "Select a club and historic season, then lead a pre-built era squad through a knockout tournament against random opponents from rugby league history.";

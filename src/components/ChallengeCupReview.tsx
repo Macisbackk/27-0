@@ -51,6 +51,7 @@ interface ChallengeCupReviewProps {
   superSamHallasMode?: boolean;
   cupRankingResult?: CupRunRankingResult;
   submittedOnline?: boolean;
+  title?: string;
   onPlayAgain: () => void;
   onClose: () => void;
 }
@@ -70,6 +71,7 @@ export function ChallengeCupReview({
   superSamHallasMode = false,
   cupRankingResult,
   submittedOnline = false,
+  title = "Challenge Cup Review",
   onPlayAgain,
   onClose,
 }: ChallengeCupReviewProps) {
@@ -217,7 +219,7 @@ export function ChallengeCupReview({
           className="w-full max-w-xl text-center"
         >
           <p className="font-display text-xs font-semibold uppercase tracking-[0.3em] text-gray-500">
-            Challenge Cup Review
+            {title}
           </p>
 
           <ReviewSubmissionNotice submittedOnline={submittedOnline} />
@@ -229,7 +231,7 @@ export function ChallengeCupReview({
           )}
 
           <h1 className="mt-4 font-display text-3xl font-black uppercase tracking-tight text-accent-gold sm:text-5xl">
-            Challenge Cup Review
+            {title}
           </h1>
 
           <p className="mt-2 font-display text-xs font-bold uppercase tracking-[0.25em] text-accent-green">

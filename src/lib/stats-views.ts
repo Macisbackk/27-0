@@ -15,6 +15,7 @@ export type StatsTabId =
   | "hard-mode"
   | "draft-mode"
   | "challenge-cup"
+  | "era-challenge-cup"
   | "fantasy-mode";
 
 export const STATS_TABS: { id: StatsTabId; label: string }[] = [
@@ -24,6 +25,7 @@ export const STATS_TABS: { id: StatsTabId; label: string }[] = [
   { id: "draft-mode", label: "Draft Mode" },
   { id: "fantasy-mode", label: "Fantasy Mode" },
   { id: "challenge-cup", label: "Challenge Cup" },
+  { id: "era-challenge-cup", label: "Era Challenge Cup" },
 ];
 
 function mergeDraftCounts(
@@ -400,6 +402,20 @@ export function formatSeasonWinPercentageOrDash(
   losses: number
 ): string {
   return formatWinPercentageOrDash(formatWinPercentage(wins, losses));
+}
+
+export function getEraChallengeCupView(stats: UserStatsData) {
+  return {
+    runs: stats.eraChallengeCupRuns,
+    wins: stats.eraMatchWins,
+    losses: stats.eraMatchLosses,
+    totalRecord: {
+      wins: stats.eraMatchWins,
+      losses: stats.eraMatchLosses,
+    },
+    cupsWon: stats.eraCupsWon,
+    bestTeamUsed: stats.bestEraTeamUsed,
+  };
 }
 
 export function getChallengeCupPersonalBests(

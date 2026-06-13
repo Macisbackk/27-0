@@ -23,7 +23,7 @@ export type UtilityPositionHint = {
 
 export type PlayerCategory = "current" | "historic" | "legend";
 
-export type GameMode = "CLASSIC" | "CHALLENGE_CUP" | "DRAFT" | "FANTASY";
+export type GameMode = "CLASSIC" | "CHALLENGE_CUP" | "DRAFT" | "FANTASY" | "ERA_CHALLENGE_CUP";
 
 export type GameDifficulty = "NORMAL" | "HARD";
 
@@ -181,6 +181,12 @@ export interface UserStatsData {
   bestCupMatchWinsInTournament: number;
   /** Highest average squad rating across completed fantasy seasons. */
   bestTeamRating: number;
+  eraChallengeCupRuns: number;
+  eraChallengeCupWins: number;
+  eraCupsWon: number;
+  eraMatchWins: number;
+  eraMatchLosses: number;
+  bestEraTeamUsed: string | null;
 }
 
 export interface CupPersonalBests {

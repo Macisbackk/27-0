@@ -40,6 +40,8 @@ export async function recordCompletedRun(
     longestLosingStreak?: number;
     rerollsUsed?: number;
     challengeCupMode?: boolean;
+    eraChallengeCupMode?: boolean;
+    eraTeamUsed?: string;
     cupFinish?: string;
     cupWon?: boolean;
     averageSquadRating?: number;
@@ -48,6 +50,7 @@ export async function recordCompletedRun(
   }
 ): Promise<CompletedRunResult> {
   const totalValue = run.totalValue || getSquadValue(run.squad);
+  const isEraCupRun = options?.eraChallengeCupMode === true;
   const isCupRun = options?.challengeCupMode === true;
   const wins = options?.seasonWins ?? 0;
   const losses = options?.seasonLosses ?? 0;
@@ -66,13 +69,14 @@ export async function recordCompletedRun(
 
   const hasSeasonData =
     isCupRun ||
+    isEraCupRun ||
     (options?.seasonWins !== undefined &&
       options?.seasonLosses !== undefined &&
       options?.seasonLeaguePosition !== undefined);
 
   let nationalRank: number | undefined;
 
-  if (loggedIn && !isHiddenRun) {
+  if (loggedIn && !isHiddenRun && !isEraCupRun) {
     await addLeaderboardEntry(totalValue, run.mode, difficulty, {
       wins,
       losses,
@@ -80,7 +84,7 @@ export async function recordCompletedRun(
       cupWon: options?.cupWon,
       cupFinish: options?.cupFinish,
     });
-    if (!isCupRun) {
+    if (!isCupRun && !isEraCupRun) {
       const dbMode = gameModeToDbMode(run.mode);
       nationalRank = (
         await getLeaderboardAsync("ALL_TIME", difficulty, 50, dbMode)
@@ -89,6 +93,32 @@ export async function recordCompletedRun(
   }
 
   if (hasSeasonData) {
+    if (isEraCupRun) {
+      updateSeasonLifetimeStats(
+        {
+          wins,
+          losses,
+          leaguePosition: options.seasonLeaguePosition ?? 1,
+          isPerfect: options.isPerfectSeason ?? false,
+          longestWinStreak: options.longestWinStreak ?? 0,
+          longestLosingStreak: options.longestLosingStreak ?? 0,
+          signedIds,
+          totalValue,
+          nationalRank,
+          eraChallengeCupMode: true,
+          cupFinish: options.cupFinish,
+          cupWon: options.cupWon,
+          averageSquadRating: options.averageSquadRating,
+          matchResults: options.matchResults ?? [],
+          eraTeamUsed: options.eraTeamUsed,
+        },
+        difficulty,
+        statsBucket
+      );
+
+      return { submittedOnline: loggedIn && !isHiddenRun };
+    }
+
     if (isCupRun) {
       const username = getUsername() ?? "Guest";
       const storedBefore = getAllStats();
