@@ -70,9 +70,14 @@ const CLUB_ALIASES: Record<string, string> = {
 
 
 
+function stripEraYearSuffix(name: string): string {
+  const match = name.match(/^(.+?) '\d{2}$/);
+  return match ? match[1] : name;
+}
+
 export function getClubByName(name: string): Club | undefined {
 
-  const resolved = CLUB_ALIASES[name] ?? name;
+  const resolved = stripEraYearSuffix(CLUB_ALIASES[name] ?? name);
 
   return SUPER_LEAGUE_CLUBS.find(
 

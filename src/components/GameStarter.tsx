@@ -17,6 +17,7 @@ interface GameStarterProps {
   initialDifficulty?: GameDifficulty;
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
+  eraChallengeCup?: boolean;
 }
 
 function resolvePlayModeKey(
@@ -24,7 +25,6 @@ function resolvePlayModeKey(
   search: URLSearchParams
 ): PlayModeKey | null {
   if (mode === "CHALLENGE_CUP") return null;
-  if (mode === "ERA_CHALLENGE_CUP") return null;
   if (mode === "FANTASY") return null;
   if (mode === "DRAFT") return "draft";
   if (search.get("draft") === "1") return "draft";
@@ -38,6 +38,7 @@ export function GameStarter({
   initialDifficulty = "NORMAL",
   joeMellorMode = false,
   superSamHallasMode = false,
+  eraChallengeCup = false,
 }: GameStarterProps) {
   const [difficulty, setDifficultyState] =
     useState<GameDifficulty>(initialDifficulty);
@@ -73,7 +74,7 @@ export function GameStarter({
     return <FantasyModeBoard />;
   }
 
-  if (mode === "ERA_CHALLENGE_CUP") {
+  if (mode === "CHALLENGE_CUP" && eraChallengeCup) {
     return <EraChallengeCupBoard />;
   }
 

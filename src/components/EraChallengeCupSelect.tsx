@@ -18,6 +18,7 @@ import { RugbyPitch } from "./RugbyPitch";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 
 interface EraChallengeCupSelectProps {
   onConfirm: (team: EraTeam) => void;
@@ -55,12 +56,13 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
   return (
     <div className={`mx-auto w-full max-w-3xl ${SPACING.pageX} py-6`}>
       <div className="text-center">
-        <p className={TYPO.sectionLabel}>Era Challenge Cup</p>
+        <p className={TYPO.sectionLabel}>Challenge Cup</p>
         <h2 className={`mt-2 ${TYPO.pageTitle}`}>Choose Your Era</h2>
         <p className={`mx-auto mt-2 max-w-lg ${TYPO.body}`}>
           Pick a club and historic season to lead a pre-built squad through a
           knockout tournament against random era opponents.
         </p>
+        <ChallengeCupVariantToggle eraMode className="mx-auto mt-5 max-w-md" />
       </div>
 
       <div className={`${CARD.panel} mt-6 ${SPACING.cardPadding}`}>
@@ -69,15 +71,19 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
           {clubs.map((club) => {
             const colors = getClubColors(club);
             const active = selectedClub === club;
+            const hasSeasons = getEraYearsForClub(club).length > 0;
             return (
               <button
                 key={club}
                 type="button"
+                disabled={!hasSeasons}
                 onClick={() => handleClubSelect(club)}
                 className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-2.5 py-2 text-left ${TYPO.bodySm} transition ${
                   active
                     ? `${CARD.selected} border-accent-green/50 text-accent-green`
-                    : `${CARD.base} text-gray-300 hover:border-pitch-500/50`
+                    : hasSeasons
+                      ? `${CARD.base} text-gray-300 hover:border-pitch-500/50`
+                      : `${CARD.base} cursor-not-allowed opacity-40 text-gray-500`
                 }`}
               >
                 <ClubDualSwatch club={club} size="xs" />
@@ -117,9 +123,11 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
                   }`}
                 >
                   {year}
-                  {team && !team.complete && (
-                    <span className="ml-1 text-[10px] text-accent-gold">
-                      ({team.playerIds.length}/13)
+                  {team && (
+                    <span className="ml-1 text-[10px] text-gray-500">
+                      ({formatTeamRatingDisplay(team.teamRating, {
+                        includeTier: false,
+                      })})
                     </span>
                   )}
                 </button>
@@ -143,11 +151,6 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
             <h3 className={`${TYPO.cardTitle} text-accent-gold`}>
               {previewTeam.displayName}
             </h3>
-            {!previewTeam.complete && (
-              <span className="rounded-full border border-accent-gold/40 bg-accent-gold/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent-gold">
-                Incomplete Squad
-              </span>
-            )}
           </div>
 
           <div className="mt-3 grid gap-2 sm:grid-cols-3">
@@ -189,7 +192,7 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
 
       {selectedClub && years.length === 0 && (
         <p className={`mt-4 text-center ${TYPO.bodySm} text-gray-500`}>
-          No seasons with enough squad data for {selectedClub}.
+          No complete historic seasons available for {selectedClub}.
         </p>
       )}
     </div>

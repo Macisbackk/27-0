@@ -121,7 +121,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     cup: searchParams.get("cup"),
     draft: searchParams.get("draft"),
     fantasy: searchParams.get("fantasy"),
-    eraCup: searchParams.get("eraCup"),
+    era: searchParams.get("era"),
     difficulty: searchParams.get("difficulty"),
   };
 
@@ -289,24 +289,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       Challenge Cup
                       {isPlayModeActive(pathname, playSearch, "cup") && (
                         <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-gold" />
-                      )}
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link
-                      href={buildPlayHref("eraCup")}
-                      onClick={onClose}
-                      className={navLinkClass(
-                        isPlayModeActive(pathname, playSearch, "eraCup")
-                      )}
-                    >
-                      <span aria-hidden className={NAV.icon}>
-                        🕰️
-                      </span>
-                      Era Challenge Cup
-                      {isPlayModeActive(pathname, playSearch, "eraCup") && (
-                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-green" />
                       )}
                     </Link>
                   </li>

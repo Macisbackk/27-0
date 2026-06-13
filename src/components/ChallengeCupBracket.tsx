@@ -27,6 +27,7 @@ import {
 } from "@/lib/sound";
 import { getReadableTextColor } from "@/lib/ui/contrast";
 import { UI_SURFACES } from "@/lib/ui/surfaces";
+import { resolveEraTeamClubName } from "@/lib/players/era-teams";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { BracketMatchDetailsPanel } from "./BracketMatchDetailsPanel";
 
@@ -37,6 +38,7 @@ interface ChallengeCupBracketProps {
   onComplete: (result: ChallengeCupResult) => void;
   initialState?: ChallengeCupBracketState;
   headerLabel?: string;
+  eraClubLookup?: Record<string, string>;
 }
 
 const ROUNDS = [1, 2, 3, 4] as const;
@@ -48,11 +50,13 @@ export function ChallengeCupBracket({
   onComplete,
   initialState,
   headerLabel = "Challenge Cup",
+  eraClubLookup,
 }: ChallengeCupBracketProps) {
   const [state, setState] = useState<ChallengeCupBracketState>(
     () => initialState ?? createChallengeCupBracket(seed, userClub)
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const lookup = eraClubLookup ?? state.eraClubLookup;
   const activeRound = getActiveRound(state);
 
   const selectedMatch = selectedId
@@ -185,6 +189,7 @@ export function ChallengeCupBracket({
               selectedId={selectedId}
               userClub={userClub}
               byeTeams={state.byeTeams}
+              eraClubLookup={lookup}
               onSelect={(id) =>
                 setSelectedId((prev) => (prev === id ? null : id))
               }
@@ -213,6 +218,7 @@ function BracketRoundColumn({
   onSelect,
   userClub,
   byeTeams,
+  eraClubLookup,
   activeRound,
 }: {
   round: number;
@@ -220,6 +226,7 @@ function BracketRoundColumn({
   selectedId: string | null;
   userClub: string;
   byeTeams: [string, string];
+  eraClubLookup?: Record<string, string>;
   onSelect: (id: string) => void;
   activeRound: number;
 }) {
@@ -245,6 +252,7 @@ function BracketRoundColumn({
             isActiveRound={round === activeRound}
             userClub={userClub}
             byeTeams={byeTeams}
+            eraClubLookup={eraClubLookup}
           />
         ))}
       </div>
@@ -259,6 +267,7 @@ function BracketMatchCard({
   isActiveRound,
   userClub,
   byeTeams,
+  eraClubLookup,
 }: {
   match: BracketMatch;
   selected: boolean;
@@ -266,6 +275,7 @@ function BracketMatchCard({
   isActiveRound: boolean;
   userClub: string;
   byeTeams: [string, string];
+  eraClubLookup?: Record<string, string>;
 }) {
   const isComplete = match.status === "complete";
   const isReady = match.status === "ready";
@@ -290,6 +300,7 @@ function BracketMatchCard({
         isWinner={isComplete && match.winner === match.homeTeam}
         isLoser={isComplete && match.loser === match.homeTeam}
         isUser={match.homeTeam === userClub}
+        eraClubLookup={eraClubLookup}
         showByeAdvance={
           match.round === 2 &&
           match.status !== "complete" &&
@@ -304,6 +315,7 @@ function BracketMatchCard({
         isWinner={isComplete && match.winner === match.awayTeam}
         isLoser={isComplete && match.loser === match.awayTeam}
         isUser={match.awayTeam === userClub}
+        eraClubLookup={eraClubLookup}
         showByeAdvance={
           match.round === 2 &&
           match.status !== "complete" &&
@@ -326,6 +338,7 @@ function BracketTeamRow({
   isWinner,
   isLoser,
   isUser,
+  eraClubLookup,
   showByeAdvance,
 }: {
   team: string | null;
@@ -333,6 +346,7 @@ function BracketTeamRow({
   isWinner: boolean;
   isLoser: boolean;
   isUser: boolean;
+  eraClubLookup?: Record<string, string>;
   showByeAdvance?: boolean;
 }) {
   if (!team) {
@@ -351,6 +365,8 @@ function BracketTeamRow({
           isWinner ? UI_SURFACES.bracketWinner : UI_SURFACES.bracketRow
         );
 
+  const colorClub = resolveEraTeamClubName(team, eraClubLookup);
+
   return (
     <div
       className={`px-2 py-1.5 sm:px-2.5 ${
@@ -358,7 +374,7 @@ function BracketTeamRow({
       } ${isUser ? "font-semibold" : ""}`}
     >
       <div className="flex items-center gap-2">
-        <ClubDualSwatch club={team} size="xs" />
+        <ClubDualSwatch club={colorClub} size="xs" />
         <span
           className={`min-w-0 flex-1 break-words text-[10px] font-bold leading-snug sm:text-[11px] ${
             isUser ? "text-accent-gold" : ""

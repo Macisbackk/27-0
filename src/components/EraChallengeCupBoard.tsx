@@ -25,6 +25,7 @@ import { ERA_CHALLENGE_CUP_INTRO } from "@/lib/mode-labels";
 import { ChallengeCupBracket } from "./ChallengeCupBracket";
 import { ChallengeCupReview } from "./ChallengeCupReview";
 import { EraChallengeCupSelect } from "./EraChallengeCupSelect";
+import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { GuestNotice } from "./GuestNotice";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -92,6 +93,7 @@ export function EraChallengeCupBoard() {
           ? "Era Challenge Cup Winners"
           : result.resultLabel,
         userClub: eraTeam?.displayName ?? result.userClub,
+        eraMode: true,
       };
       setCupResult(eraResult);
       setPhase("review");
@@ -145,7 +147,7 @@ export function EraChallengeCupBoard() {
 
         <header className="mb-6 text-center">
           <h1 className="font-display text-3xl font-black sm:text-4xl">
-            Era Challenge Cup
+            Challenge Cup
           </h1>
           {(phase === "start" || phase === "select") && (
             <p className={`mx-auto mt-3 max-w-lg ${TYPO.body}`}>
@@ -158,10 +160,11 @@ export function EraChallengeCupBoard() {
           <div
             className={`mx-auto max-w-xl ${CARD.glass} ${CARD.panel} ${SPACING.cardPaddingLg}`}
           >
+            <ChallengeCupVariantToggle eraMode className="mb-5" />
             <h2 className={TYPO.cardTitle}>Era Challenge Cup</h2>
             <p className={`mt-3 ${TYPO.body}`}>{ERA_CHALLENGE_CUP_INTRO}</p>
             <ul className="mt-5 space-y-2 text-sm text-gray-400">
-              <li>15 historic clubs · era-accurate squads</li>
+              <li>17 historic clubs · era-accurate squads</li>
               <li>16-team knockout bracket vs random era opponents</li>
               <li>Win four matches to lift the Era Challenge Cup</li>
             </ul>
@@ -188,16 +191,9 @@ export function EraChallengeCupBoard() {
               {eraTeam.displayName}
             </h2>
             <p className={`mt-3 ${TYPO.body}`}>
-              Your {eraTeam.complete ? "full" : "partial"} era squad is locked
-              in. You&apos;ll face 15 random historic opponents in a knockout
-              draw.
+              Your era squad is locked in. You&apos;ll face 15 random historic
+              opponents in a knockout draw.
             </p>
-            {!eraTeam.complete && (
-              <p className="mt-2 text-sm font-medium text-accent-gold">
-                Incomplete roster ({getFilledCount(squad)}/13) — some positions
-                may be unfilled.
-              </p>
-            )}
             <div className="mt-5 flex flex-col gap-2 sm:flex-row">
               <button
                 type="button"
@@ -225,6 +221,7 @@ export function EraChallengeCupBoard() {
               userClub={eraTeam.displayName}
               initialState={bracketState}
               headerLabel="Era Challenge Cup"
+              eraClubLookup={bracketState.eraClubLookup}
               onComplete={handleCupComplete}
             />
           </div>

@@ -66,6 +66,10 @@ export interface ChallengeCupResult {
   userClub?: string;
   byeTeams?: [string, string];
   bracketMatches?: BracketMatch[];
+  eraMode?: boolean;
+  eraClubLookup?: Record<string, string>;
+  eraTeamRatings?: Record<string, number>;
+  eraTeamValues?: Record<string, number>;
 }
 
 function pickCupOpponent(roundIndex: number, rng: () => number): string {

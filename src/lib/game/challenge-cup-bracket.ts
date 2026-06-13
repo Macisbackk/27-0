@@ -66,6 +66,8 @@ export interface ChallengeCupBracketState {
   eraClubLookup?: Record<string, string>;
   /** Era mode: displayName → average squad rating for AI strength. */
   eraTeamRatings?: Record<string, number>;
+  /** Era mode: displayName → squad value for team comparison. */
+  eraTeamValues?: Record<string, number>;
 }
 
 function shuffle<T>(arr: T[], rng: () => number): T[] {
@@ -173,10 +175,14 @@ export function createEraChallengeCupBracket(
   const eraTeamRatings: Record<string, number> = {
     [userEraTeam.displayName]: userEraTeam.teamRating,
   };
+  const eraTeamValues: Record<string, number> = {
+    [userEraTeam.displayName]: userEraTeam.teamValue,
+  };
 
   for (const opponent of opponents) {
     eraClubLookup[opponent.displayName] = opponent.clubName;
     eraTeamRatings[opponent.displayName] = opponent.teamRating;
+    eraTeamValues[opponent.displayName] = opponent.teamValue;
   }
 
   const byeTeams = pickByeTeams(bracketTeams, seed);
@@ -277,6 +283,7 @@ export function createEraChallengeCupBracket(
     userWon: false,
     eraClubLookup,
     eraTeamRatings,
+    eraTeamValues,
   };
 }
 
@@ -921,6 +928,10 @@ export function buildChallengeCupResult(
     userClub: state.userClub,
     byeTeams: state.byeTeams,
     bracketMatches: finalized.matches,
+    eraMode: state.eraClubLookup !== undefined,
+    eraClubLookup: state.eraClubLookup,
+    eraTeamRatings: state.eraTeamRatings,
+    eraTeamValues: state.eraTeamValues,
   };
 }
 

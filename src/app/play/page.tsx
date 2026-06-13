@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { GameStarter } from "@/components/GameStarter";
 import {
   DRAFT_MODE_INTRO,
@@ -11,6 +12,7 @@ export default async function PlayPage({
   searchParams: Promise<{
     difficulty?: string;
     cup?: string;
+    era?: string;
     joeMellor?: string;
     superSamHallas?: string;
     draft?: string;
@@ -19,10 +21,15 @@ export default async function PlayPage({
   }>;
 }) {
   const params = await searchParams;
+
+  if (params.eraCup === "1") {
+    redirect("/play?cup=1&era=1");
+  }
+
   const wantsHard = params.difficulty === "hard";
   const wantsCup = params.cup === "1";
+  const wantsEraCup = wantsCup && params.era === "1";
   const wantsFantasy = params.fantasy === "1";
-  const wantsEraCup = params.eraCup === "1";
   const wantsSuperSamHallas = params.superSamHallas === "1";
   const wantsJoeMellor = params.joeMellor === "1" && !wantsSuperSamHallas;
   const wantsDraft = params.draft === "1";
@@ -32,9 +39,7 @@ export default async function PlayPage({
   const difficulty: GameDifficulty = wantsHard ? "HARD" : "NORMAL";
 
   let mode: GameMode = "CLASSIC";
-  if (wantsEraCup) {
-    mode = "ERA_CHALLENGE_CUP";
-  } else if (wantsCup) {
+  if (wantsCup) {
     mode = "CHALLENGE_CUP";
   } else if (wantsFantasy && !joeMellorMode && !superSamHallasMode) {
     mode = "FANTASY";
@@ -49,10 +54,10 @@ export default async function PlayPage({
       : getPlayPageTitle(mode, difficulty);
 
   const subtitle =
-    mode === "ERA_CHALLENGE_CUP"
-      ? undefined
-      : mode === "CHALLENGE_CUP"
-      ? "Choose your club, draft club legends, and fight through a knockout tournament."
+    mode === "CHALLENGE_CUP"
+      ? wantsEraCup
+        ? undefined
+        : "Choose your club, draft club legends, and fight through a knockout tournament."
       : mode === "FANTASY"
         ? undefined
         : mode === "DRAFT"
@@ -67,6 +72,7 @@ export default async function PlayPage({
       initialDifficulty={difficulty}
       joeMellorMode={joeMellorMode}
       superSamHallasMode={superSamHallasMode}
+      eraChallengeCup={wantsEraCup}
     />
   );
 }

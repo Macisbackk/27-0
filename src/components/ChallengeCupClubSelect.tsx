@@ -8,6 +8,7 @@ import { ClubDualSwatch } from "./ClubDualSwatch";
 import { ClubHeaderBar } from "./ClubBadge";
 import { getClubColors } from "@/lib/clubs";
 import { BTN, CARD, FILTER, SPACING } from "@/lib/ui/design-system";
+import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { TYPO } from "@/lib/ui/typography";
 
 interface ChallengeCupClubSelectProps {
@@ -47,6 +48,7 @@ export function ChallengeCupClubSelect({
           Draft players from one club only — build the greatest version of that
           team.
         </p>
+        <ChallengeCupVariantToggle eraMode={false} className="mx-auto mt-5 max-w-md" />
       </div>
 
       <AnimatePresence mode="wait">

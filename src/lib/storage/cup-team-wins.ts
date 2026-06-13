@@ -130,9 +130,17 @@ function mergeWinCounts(
   const expectedTotal = profiles.reduce((sum, profile) => sum + profile.cupsWon, 0);
   const missing = Math.max(0, expectedTotal - recordedTotal);
 
-  for (let i = 0; i < missing; i++) {
-    const team = hashAssignPlayableTeam(`legacy-cup-win-${i}`);
-    merged[team] = (merged[team] ?? 0) + 1;
+  let assigned = 0;
+  for (const profile of profiles) {
+    for (let cupIndex = 0; cupIndex < profile.cupsWon; cupIndex++) {
+      if (assigned >= missing) break;
+      const team = hashAssignPlayableTeam(
+        `${profile.username}-cup-win-${cupIndex}`
+      );
+      merged[team] = (merged[team] ?? 0) + 1;
+      assigned += 1;
+    }
+    if (assigned >= missing) break;
   }
 
   return merged;

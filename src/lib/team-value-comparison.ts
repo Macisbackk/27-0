@@ -14,6 +14,7 @@ import {
   selectClubMatchSquad,
 } from "./game/opponent-scorers";
 import { isPlayableClub } from "./clubs/super-league-display";
+import { resolveEraTeamClubName } from "./players/era-teams";
 import { getEffectivePeakRating } from "./squad-analysis";
 import { getTeamTier } from "./team-tiers";
 import type { BracketMatch } from "./game/challenge-cup-bracket";
@@ -69,8 +70,46 @@ export interface ExtendedTeamComparison {
   useTriesConceded?: boolean;
 }
 
-function playableFixtures(fixtures: MatchFixture[]): MatchFixture[] {
+function playableFixtures(
+  fixtures: MatchFixture[],
+  eraMode?: boolean
+): MatchFixture[] {
+  if (eraMode) return fixtures;
   return fixtures.filter((fixture) => isPlayableClub(fixture.opponent));
+}
+
+function getEraStrongestOpposition(
+  fixtures: MatchFixture[],
+  eraTeamRatings: Record<string, number>
+): TeamRatingEntry | null {
+  let best: TeamRatingEntry | null = null;
+
+  for (const fixture of fixtures) {
+    const rating = eraTeamRatings[fixture.opponent];
+    if (rating === undefined) continue;
+    if (!best || rating > best.rating) {
+      best = { name: fixture.opponent, rating, tier: getTeamTier(rating) };
+    }
+  }
+
+  return best;
+}
+
+function getEraMostExpensiveOpposition(
+  fixtures: MatchFixture[],
+  eraTeamValues: Record<string, number>
+): TeamValueEntry | null {
+  let best: TeamValueEntry | null = null;
+
+  for (const fixture of fixtures) {
+    const value = eraTeamValues[fixture.opponent];
+    if (value === undefined) continue;
+    if (!best || value > best.value) {
+      best = { name: fixture.opponent, value };
+    }
+  }
+
+  return best;
 }
 
 function getTopPlayerFromSquad(
@@ -170,14 +209,66 @@ export function formatWinPercentage(wins: number, losses: number): string {
   return `${Math.round((wins / total) * 100)}%`;
 }
 
+function getEraOpponentsFromFixtures(fixtures: MatchFixture[]): string[] {
+  const opponents = new Set<string>();
+  for (const fixture of fixtures) {
+    if (fixture.opponent) opponents.add(fixture.opponent);
+  }
+  return [...opponents];
+}
+
+function getStrongestEraOpposition(
+  fixtures: MatchFixture[],
+  eraTeamRatings: Record<string, number>
+): TeamRatingEntry | null {
+  const opponents = getEraOpponentsFromFixtures(fixtures);
+  let best: TeamRatingEntry | null = null;
+
+  for (const name of opponents) {
+    const rating = eraTeamRatings[name];
+    if (rating === undefined) continue;
+    if (!best || rating > best.rating) {
+      best = { name, rating, tier: getTeamTier(rating) };
+    }
+  }
+
+  return best;
+}
+
+function getMostExpensiveEraOpposition(
+  fixtures: MatchFixture[],
+  eraTeamValues: Record<string, number>
+): TeamValueEntry | null {
+  const opponents = getEraOpponentsFromFixtures(fixtures);
+  let best: TeamValueEntry | null = null;
+
+  for (const name of opponents) {
+    const value = eraTeamValues[name];
+    if (value === undefined) continue;
+    if (!best || value > best.value) {
+      best = { name, value };
+    }
+  }
+
+  return best;
+}
+
 /** Highest squad value among playable opposition clubs faced. */
 export function getMostExpensiveOpposition(
   fixtures: MatchFixture[],
-  seed: string
+  seed: string,
+  options?: {
+    eraMode?: boolean;
+    eraTeamValues?: Record<string, number>;
+  }
 ): TeamValueEntry | null {
+  if (options?.eraMode && options.eraTeamValues) {
+    return getEraMostExpensiveOpposition(fixtures, options.eraTeamValues);
+  }
+
   const teams = new Map<string, number>();
 
-  for (const fixture of playableFixtures(fixtures)) {
+  for (const fixture of playableFixtures(fixtures, options?.eraMode)) {
     const oppValue = getOpponentSquadValue(
       fixture.opponent,
       seed,
@@ -200,19 +291,32 @@ export function getMostExpensiveTeam(
   userTeamName: string,
   userValue: number,
   fixtures: MatchFixture[],
-  seed: string
+  seed: string,
+  options?: {
+    eraMode?: boolean;
+    eraTeamValues?: Record<string, number>;
+  }
 ): TeamValueEntry {
   const teams = new Map<string, number>();
   teams.set(userTeamName, userValue);
 
-  for (const fixture of playableFixtures(fixtures)) {
-    const oppValue = getOpponentSquadValue(
-      fixture.opponent,
-      seed,
-      fixture.round
-    );
-    const prev = teams.get(fixture.opponent) ?? 0;
-    teams.set(fixture.opponent, Math.max(prev, oppValue));
+  if (options?.eraMode && options.eraTeamValues) {
+    for (const fixture of fixtures) {
+      const oppValue = options.eraTeamValues[fixture.opponent];
+      if (oppValue === undefined) continue;
+      const prev = teams.get(fixture.opponent) ?? 0;
+      teams.set(fixture.opponent, Math.max(prev, oppValue));
+    }
+  } else {
+    for (const fixture of playableFixtures(fixtures, options?.eraMode)) {
+      const oppValue = getOpponentSquadValue(
+        fixture.opponent,
+        seed,
+        fixture.round
+      );
+      const prev = teams.get(fixture.opponent) ?? 0;
+      teams.set(fixture.opponent, Math.max(prev, oppValue));
+    }
   }
 
   let best: TeamValueEntry = { name: userTeamName, value: userValue };
@@ -225,19 +329,27 @@ export function getMostExpensiveTeam(
 /** Strongest average match-day rating among playable opposition clubs faced. */
 export function getStrongestOpposition(
   fixtures: MatchFixture[],
-  seed: string
+  seed: string,
+  options?: {
+    eraMode?: boolean;
+    eraTeamRatings?: Record<string, number>;
+  }
 ): TeamRatingEntry | null {
-  return getBestOppositionRatedTeam(fixtures, seed);
+  if (options?.eraMode && options.eraTeamRatings) {
+    return getEraStrongestOpposition(fixtures, options.eraTeamRatings);
+  }
+  return getBestOppositionRatedTeam(fixtures, seed, options);
 }
 
 /** Best average match-day rating among generated opposition clubs only. */
 export function getBestOppositionRatedTeam(
   fixtures: MatchFixture[],
-  seed: string
+  seed: string,
+  options?: { eraMode?: boolean }
 ): TeamRatingEntry | null {
   const teams = new Map<string, number>();
 
-  for (const fixture of playableFixtures(fixtures)) {
+  for (const fixture of playableFixtures(fixtures, options?.eraMode)) {
     const opp = getOpponentTeamSummary(
       fixture.opponent,
       seed,
@@ -262,19 +374,32 @@ export function getBestRatedTeam(
   userTeamName: string,
   userRating: number,
   fixtures: MatchFixture[],
-  seed: string
+  seed: string,
+  options?: {
+    eraMode?: boolean;
+    eraTeamRatings?: Record<string, number>;
+  }
 ): TeamRatingEntry {
   const teams = new Map<string, number>();
   teams.set(userTeamName, userRating);
 
-  for (const fixture of playableFixtures(fixtures)) {
-    const opp = getOpponentTeamSummary(
-      fixture.opponent,
-      seed,
-      fixture.round
-    );
-    const prev = teams.get(fixture.opponent) ?? 0;
-    teams.set(fixture.opponent, Math.max(prev, opp.averageRating));
+  if (options?.eraMode && options.eraTeamRatings) {
+    for (const fixture of fixtures) {
+      const rating = options.eraTeamRatings[fixture.opponent];
+      if (rating === undefined) continue;
+      const prev = teams.get(fixture.opponent) ?? 0;
+      teams.set(fixture.opponent, Math.max(prev, rating));
+    }
+  } else {
+    for (const fixture of playableFixtures(fixtures, options?.eraMode)) {
+      const opp = getOpponentTeamSummary(
+        fixture.opponent,
+        seed,
+        fixture.round
+      );
+      const prev = teams.get(fixture.opponent) ?? 0;
+      teams.set(fixture.opponent, Math.max(prev, opp.averageRating));
+    }
   }
 
   let best: TeamRatingEntry = {
@@ -295,7 +420,12 @@ export function getTeamComparisonSummary(
   userRating: number,
   userValue: number,
   fixtures: MatchFixture[],
-  seed: string
+  seed: string,
+  options?: {
+    eraMode?: boolean;
+    eraTeamRatings?: Record<string, number>;
+    eraTeamValues?: Record<string, number>;
+  }
 ): TeamComparisonSummary {
   return {
     myTeamRating: userRating,
@@ -305,13 +435,15 @@ export function getTeamComparisonSummary(
       userTeamName,
       userRating,
       fixtures,
-      seed
+      seed,
+      options
     ),
     mostExpensiveTeam: getMostExpensiveTeam(
       userTeamName,
       userValue,
       fixtures,
-      seed
+      seed,
+      options
     ),
   };
 }
@@ -329,18 +461,31 @@ export function getExtendedTeamComparison(
     seasonResult?: SeasonResult;
     cupMode?: boolean;
     bracketMatches?: BracketMatch[];
+    eraMode?: boolean;
+    eraClubLookup?: Record<string, string>;
+    eraTeamRatings?: Record<string, number>;
+    eraTeamValues?: Record<string, number>;
   }
 ): ExtendedTeamComparison {
+  const eraMode = options.eraMode === true;
+  const eraOpts = {
+    eraMode,
+    eraTeamRatings: options.eraTeamRatings,
+    eraTeamValues: options.eraTeamValues,
+    eraClubLookup: options.eraClubLookup,
+  };
+
   const summary = getTeamComparisonSummary(
     userTeamName,
     userRating,
     userValue,
     fixtures,
-    seed
+    seed,
+    eraOpts
   );
   const { mostExpensiveTeam } = summary;
   const strongestOpponent =
-    getStrongestOpposition(fixtures, seed) ?? {
+    getStrongestOpposition(fixtures, seed, eraOpts) ?? {
       name: "—",
       rating: 0,
       tier: "—",
@@ -393,11 +538,15 @@ export function getExtendedTeamComparison(
           ),
         };
 
-  const oppRound = findBestOpponentRound(strongestOpponent.name, fixtures, seed);
+  const oppRound = eraMode
+    ? fixtures.find((f) => f.opponent === strongestOpponent.name)?.round ?? 1
+    : findBestOpponentRound(strongestOpponent.name, fixtures, seed);
   const strongestOpponentValue =
     strongestOpponent.name === "—"
       ? 0
-      : getOpponentSquadValue(strongestOpponent.name, seed, oppRound);
+      : eraMode && options.eraTeamValues?.[strongestOpponent.name] !== undefined
+        ? options.eraTeamValues[strongestOpponent.name]
+        : getOpponentSquadValue(strongestOpponent.name, seed, oppRound);
 
   const ratingCompare =
     userRating > strongestOpponent.rating + 0.05
@@ -408,10 +557,15 @@ export function getExtendedTeamComparison(
   const ratingEdge: ExtendedTeamComparison["ratingEdge"] = ratingCompare;
 
   const mostExpensiveOpponent =
-    getMostExpensiveOpposition(fixtures, seed) ?? {
+    getMostExpensiveOpposition(fixtures, seed, eraOpts) ?? {
       name: "N/A",
       value: 0,
     };
+
+  const resolvedOppClub = resolveEraTeamClubName(
+    strongestOpponent.name,
+    options.eraClubLookup
+  );
 
   return {
     user: {
@@ -435,7 +589,7 @@ export function getExtendedTeamComparison(
       topPlayer:
         strongestOpponent.name === "—"
           ? { name: "—", rating: 0 }
-          : getTopPlayerFromSquad(strongestOpponent.name, seed, oppRound),
+          : getTopPlayerFromSquad(resolvedOppClub, seed, oppRound),
     },
     strongestOpponent,
     mostExpensiveTeam,

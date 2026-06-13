@@ -35,7 +35,7 @@ export function CupTeamWinsBarGraph({
         )}
       </div>
 
-      <ul className={`space-y-2.5 ${compact ? "px-3 py-3" : "px-3 py-4 sm:px-4"}`}>
+      <ul className={`space-y-3 ${compact ? "px-3 py-3" : "px-3 py-4 sm:px-4"}`}>
         {entries.map((entry) => {
           const widthPercent =
             maxWins > 0
@@ -43,46 +43,45 @@ export function CupTeamWinsBarGraph({
               : 0;
 
           return (
-            <li
-              key={entry.teamName}
-              className="grid min-w-0 grid-cols-[1.5rem_minmax(0,1fr)_auto] items-center gap-x-2 gap-y-1 sm:grid-cols-[2rem_7rem_1fr_2.5rem] sm:gap-x-3"
-            >
-              <span
-                className={`text-right text-xs font-bold sm:text-sm ${
-                  entry.isLeader ? "text-accent-green" : "text-gray-500"
-                }`}
-              >
-                {entry.rank}
-              </span>
-
-              <span className="col-span-1 truncate text-xs font-medium text-white sm:col-span-1 sm:text-sm">
-                {entry.teamName}
-              </span>
-
-              <div className="col-span-3 min-w-0 sm:col-span-1 sm:col-start-3">
-                <div className="h-5 overflow-hidden rounded-md bg-pitch-900/90 sm:h-6">
-                  <div
-                    className={`h-full rounded-md transition-all ${
-                      entry.isLeader
-                        ? "bg-accent-green"
-                        : entry.tournamentWins > 0
-                          ? "bg-pitch-600/80"
-                          : "bg-pitch-800/40"
+            <li key={entry.teamName} className="min-w-0">
+              <div className="flex items-baseline justify-between gap-3">
+                <span
+                  className={`min-w-0 flex-1 break-words text-xs font-medium leading-snug sm:text-sm ${
+                    entry.isLeader ? "text-accent-green" : "text-white"
+                  }`}
+                >
+                  <span
+                    className={`mr-2 text-[10px] font-bold sm:text-xs ${
+                      entry.isLeader ? "text-accent-green" : "text-gray-500"
                     }`}
-                    style={{
-                      width: `${entry.tournamentWins > 0 ? Math.max(widthPercent, 8) : 0}%`,
-                    }}
-                  />
-                </div>
+                  >
+                    {entry.rank}.
+                  </span>
+                  {entry.teamName}
+                </span>
+                <span
+                  className={`shrink-0 text-xs font-semibold sm:text-sm ${
+                    entry.isLeader ? "text-accent-green" : "text-gray-300"
+                  }`}
+                >
+                  {entry.tournamentWins}
+                </span>
               </div>
 
-              <span
-                className={`col-start-3 row-start-1 text-right text-xs font-semibold sm:col-start-4 sm:row-start-auto sm:text-sm ${
-                  entry.isLeader ? "text-accent-green" : "text-gray-300"
-                }`}
-              >
-                {entry.tournamentWins}
-              </span>
+              <div className="mt-1.5 h-4 overflow-hidden rounded-md bg-pitch-900/90 sm:h-5">
+                <div
+                  className={`h-full rounded-md transition-all ${
+                    entry.isLeader
+                      ? "bg-accent-green"
+                      : entry.tournamentWins > 0
+                        ? "bg-pitch-600/80"
+                        : "bg-pitch-800/40"
+                  }`}
+                  style={{
+                    width: `${entry.tournamentWins > 0 ? Math.max(widthPercent, entry.isLeader ? 12 : 4) : 0}%`,
+                  }}
+                />
+              </div>
             </li>
           );
         })}

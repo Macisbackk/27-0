@@ -132,6 +132,10 @@ export function ChallengeCupReview({
           losses: tournamentStats.losses,
           cupMode: true,
           bracketMatches: cupResult.bracketMatches,
+          eraMode: cupResult.eraMode,
+          eraClubLookup: cupResult.eraClubLookup,
+          eraTeamRatings: cupResult.eraTeamRatings,
+          eraTeamValues: cupResult.eraTeamValues,
         }
       ),
     [
@@ -140,6 +144,10 @@ export function ChallengeCupReview({
       totalValue,
       cupResult.fixtures,
       cupResult.bracketMatches,
+      cupResult.eraMode,
+      cupResult.eraClubLookup,
+      cupResult.eraTeamRatings,
+      cupResult.eraTeamValues,
       tournamentStats.wins,
       tournamentStats.losses,
       seed,

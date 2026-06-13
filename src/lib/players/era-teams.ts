@@ -2,11 +2,13 @@ import type { Player, Position, SquadSlot } from "../types";
 import {
   SQUAD_STRUCTURE,
   createEmptySquad,
+  getFilledCount,
   getSquadValue,
   signPlayerToSlot,
 } from "../positions";
 import { getAverageSquadRating } from "../squad-analysis";
 import { getTeamTier } from "../team-tiers";
+import { getClubByName } from "../clubs";
 import { getPlayerById, getPlayersByClub, PLAYER_POOL } from "./index";
 import {
   getRosterPlayerIds,
@@ -14,7 +16,7 @@ import {
   hasTeamYearRoster,
 } from "./team-year-rosters";
 
-export const MIN_ERA_ROSTER_PLAYERS = 10;
+export const MIN_ERA_ROSTER_PLAYERS = 13;
 export const FULL_ERA_SQUAD_SIZE = 13;
 
 /** Clubs playable in Era Challenge Cup — includes teams not in standard Challenge Cup. */
@@ -34,6 +36,8 @@ export const ERA_CHALLENGE_CLUBS = [
   "Widnes Vikings",
   "London Broncos",
   "Salford Red Devils",
+  "York Knights",
+  "Toulouse Olympique",
 ] as const;
 
 export type EraChallengeClub = (typeof ERA_CHALLENGE_CLUBS)[number];
@@ -74,7 +78,6 @@ export interface EraTeam {
   teamValue: number;
   tier: string;
   keyPlayers: string[];
-  complete: boolean;
 }
 
 function slugifyClub(club: string): string {
@@ -84,6 +87,16 @@ function slugifyClub(club: string): string {
 export function formatEraDisplayName(clubName: string, year: string): string {
   const shortYear = year.length >= 2 ? year.slice(-2) : year;
   return `${clubName} '${shortYear.padStart(2, "0")}`;
+}
+
+/** Strip era season suffix for club colour / lookup resolution. */
+export function resolveEraTeamClubName(
+  teamName: string,
+  eraClubLookup?: Record<string, string>
+): string {
+  if (eraClubLookup?.[teamName]) return eraClubLookup[teamName];
+  const match = teamName.match(/^(.+?) '\d{2}$/);
+  return match ? match[1] : teamName;
 }
 
 function parseYearsActiveRange(yearsActive: string): {
@@ -141,17 +154,22 @@ function getDerivedRosterPlayerIds(club: string, year: string): string[] {
 }
 
 export function getEraClubs(): EraChallengeClub[] {
-  return [...ERA_CHALLENGE_CLUBS];
+  return ERA_CHALLENGE_CLUBS.filter(
+    (club) => getEraYearsForClub(club).length > 0
+  );
 }
 
 export function getEraYearsForClub(clubName: string): string[] {
-  if (DERIVED_ROSTER_CLUBS.has(clubName)) {
-    return getDerivedYearsForClub(clubName);
-  }
+  const candidateYears = DERIVED_ROSTER_CLUBS.has(clubName)
+    ? getDerivedYearsForClub(clubName)
+    : getYearsForTeam(clubName).filter((year) => {
+        const count = getRosterPlayerIds(clubName, year).length;
+        return count >= MIN_ERA_ROSTER_PLAYERS;
+      });
 
-  return getYearsForTeam(clubName).filter((year) => {
-    const count = getRosterPlayerIds(clubName, year).length;
-    return count >= MIN_ERA_ROSTER_PLAYERS;
+  return candidateYears.filter((year) => {
+    const team = buildEraTeam(clubName, year);
+    return team !== null;
   });
 }
 
@@ -200,14 +218,86 @@ export function buildEraSquadFromRoster(playerIds: string[]): SquadSlot[] {
   return squad;
 }
 
+function validateEraTeam(
+  clubName: string,
+  year: string,
+  playerIds: string[],
+  squad: SquadSlot[],
+  teamRating: number,
+  teamValue: number,
+  displayName: string
+): string | null {
+  if (playerIds.length < MIN_ERA_ROSTER_PLAYERS) {
+    return `roster has ${playerIds.length}/${MIN_ERA_ROSTER_PLAYERS} players`;
+  }
+
+  const filled = getFilledCount(squad);
+  if (filled < FULL_ERA_SQUAD_SIZE) {
+    return `squad fills ${filled}/${FULL_ERA_SQUAD_SIZE} structure slots`;
+  }
+
+  for (const { position, count } of SQUAD_STRUCTURE) {
+    const positionFilled = squad.filter(
+      (slot) => slot.position === position && slot.player
+    ).length;
+    if (positionFilled < count) {
+      return `missing ${position} (${positionFilled}/${count})`;
+    }
+  }
+
+  if (!Number.isFinite(teamRating) || teamRating <= 0) {
+    return "invalid team rating";
+  }
+
+  if (!Number.isFinite(teamValue) || teamValue <= 0) {
+    return "invalid team value";
+  }
+
+  if (!getClubByName(clubName)) {
+    return "missing club colours";
+  }
+
+  if (displayName !== formatEraDisplayName(clubName, year)) {
+    return "invalid display name";
+  }
+
+  return null;
+}
+
+function logEraValidationWarning(
+  clubName: string,
+  year: string,
+  reason: string
+): void {
+  if (process.env.NODE_ENV === "development") {
+    console.warn(
+      `[era-teams] Skipping ${formatEraDisplayName(clubName, year)}: ${reason}`
+    );
+  }
+}
+
 export function buildEraTeam(clubName: string, year: string): EraTeam | null {
   const playerIds = getEraRosterPlayerIds(clubName, year);
-  if (playerIds.length < MIN_ERA_ROSTER_PLAYERS) return null;
-
+  const displayName = formatEraDisplayName(clubName, year);
   const squad = buildEraSquadFromRoster(playerIds);
-  const filled = squad.filter((s) => s.player);
   const teamRating = getAverageSquadRating(squad);
   const teamValue = getSquadValue(squad);
+
+  const validationError = validateEraTeam(
+    clubName,
+    year,
+    playerIds,
+    squad,
+    teamRating,
+    teamValue,
+    displayName
+  );
+  if (validationError) {
+    logEraValidationWarning(clubName, year, validationError);
+    return null;
+  }
+
+  const filled = squad.filter((s) => s.player);
   const keyPlayers = filled
     .map((s) => s.player!)
     .sort((a, b) => b.peakRating - a.peakRating)
@@ -218,13 +308,12 @@ export function buildEraTeam(clubName: string, year: string): EraTeam | null {
     id: `${slugifyClub(clubName)}-${year}`,
     clubName,
     year,
-    displayName: formatEraDisplayName(clubName, year),
+    displayName,
     playerIds,
     teamRating,
     teamValue,
     tier: getTeamTier(teamRating),
     keyPlayers,
-    complete: filled.length >= FULL_ERA_SQUAD_SIZE,
   };
 }
 
