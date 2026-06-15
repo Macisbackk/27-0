@@ -4,6 +4,7 @@
  */
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { PLAYER_RATING_OVERRIDES } from "../data/player-rating-overrides";
 
 const ROOT = join(__dirname, "..");
 const BATCH_PATH = join(ROOT, "data", "rating-rebalance-batch.json");
@@ -41,6 +42,7 @@ function normalizeName(name: string): string {
 
 function isExcluded(id: string): boolean {
   if (EXCLUDED_IDS.has(id)) return true;
+  if (PLAYER_RATING_OVERRIDES[id] !== undefined) return true;
   return EXCLUDED_PREFIXES.some((p) => id.startsWith(p));
 }
 

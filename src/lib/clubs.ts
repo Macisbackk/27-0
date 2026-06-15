@@ -71,8 +71,11 @@ const CLUB_ALIASES: Record<string, string> = {
 
 
 function stripEraYearSuffix(name: string): string {
-  const match = name.match(/^(.+?) '\d{2}$/);
-  return match ? match[1] : name;
+  const historic = name.match(/^(.+?) '\d{2}$/);
+  if (historic) return historic[1];
+  const modern = name.match(/^(.+?) 26$/);
+  if (modern) return modern[1];
+  return name;
 }
 
 export function getClubByName(name: string): Club | undefined {

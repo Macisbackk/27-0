@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-15T02:25:53.056Z",
+  "generatedAt": "2026-06-15T02:31:34.792Z",
   "summary": {
-    "totalPlayers": 1725,
+    "totalPlayers": 1726,
     "withBirthData": 1484,
-    "withoutBirthData": 241,
+    "withoutBirthData": 242,
     "errors": 0,
     "warnings": 9,
-    "informational": 143
+    "informational": 144
   },
   "issues": [
     {
@@ -828,6 +828,13 @@
     {
       "playerId": "wakefield-hist-jamie-rooney",
       "name": "Jamie Rooney",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-kieran-gill",
+      "name": "Kieran Gill",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"

@@ -161,6 +161,7 @@ function pickOnePerClubEraOpponents(
   rng: () => number
 ): EraTeam[] {
   const usedDisplayNames = new Set<string>([userEraTeam.displayName]);
+  const usedClubs = new Set<string>([userEraTeam.clubName]);
   const picked: EraTeam[] = [];
 
   const byClub = new Map<string, EraTeam[]>();
@@ -171,35 +172,30 @@ function pickOnePerClubEraOpponents(
     byClub.set(team.clubName, list);
   }
 
-  const uniqueClubNames = shuffle(
-    [...byClub.keys()].filter((club) => club !== userEraTeam.clubName),
+  const clubNames = shuffle(
+    [...byClub.keys()].filter((club) => !usedClubs.has(club)),
     rng
   );
 
-  for (const clubName of uniqueClubNames) {
+  for (const clubName of clubNames) {
     if (picked.length >= count) break;
-    const teams = byClub
-      .get(clubName)
-      ?.filter((team) => !usedDisplayNames.has(team.displayName));
+    const teams = byClub.get(clubName);
     if (!teams?.length) continue;
     const [selected] = pickWeightedEraOpponents(teams, 1, rng);
     if (!selected) continue;
     picked.push(selected);
     usedDisplayNames.add(selected.displayName);
-  }
-
-  if (picked.length < count) {
-    const remaining = pool.filter(
-      (team) => !usedDisplayNames.has(team.displayName)
-    );
-    const extra = pickWeightedEraOpponents(remaining, count - picked.length, rng);
-    for (const team of extra) {
-      picked.push(team);
-      usedDisplayNames.add(team.displayName);
-    }
+    usedClubs.add(selected.clubName);
   }
 
   return picked;
+}
+
+function assertOneTeamPerClub(teams: EraTeam[]): void {
+  const clubs = teams.map((team) => team.clubName);
+  if (new Set(clubs).size !== clubs.length) {
+    throw new EraBracketError(ERA_BRACKET_INSUFFICIENT_TEAMS);
+  }
 }
 
 export const ERA_BRACKET_TEAM_COUNT = 16;
@@ -239,6 +235,10 @@ export function createEraChallengeCupBracket(
 
   if (opponents.length < ERA_OPPONENT_COUNT) {
     throw new EraBracketError(ERA_BRACKET_INSUFFICIENT_TEAMS);
+  }
+
+  if (tournamentType === "onePerClub") {
+    assertOneTeamPerClub([userEraTeam, ...opponents]);
   }
 
   const bracketTeams = shuffle(

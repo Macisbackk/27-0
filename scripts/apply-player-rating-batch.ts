@@ -4,6 +4,7 @@
  */
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { PLAYER_RATING_OVERRIDES } from "../data/player-rating-overrides";
 
 const ROOT = join(__dirname, "..");
 
@@ -33,7 +34,7 @@ function save(path: string, data: unknown): void {
 
 function main() {
   const current = load<Record<string, unknown>[]>("data/current-squads.json");
-  const overrides = load<Record<string, number>>("data/rating-overrides.json");
+  const overrides = { ...PLAYER_RATING_OVERRIDES };
   const updated: string[] = [];
 
   for (const p of current) {
@@ -56,7 +57,6 @@ function main() {
   }
 
   save("data/current-squads.json", current);
-  save("data/rating-overrides.json", overrides);
   console.log(`Updated ${updated.length} players:`);
   updated.forEach((u) => console.log(`  ${u}`));
 }

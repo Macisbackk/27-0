@@ -4,6 +4,7 @@
  */
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { PLAYER_RATING_OVERRIDES } from "../data/player-rating-overrides";
 
 type RawPlayer = Record<string, unknown> & {
   id: string;
@@ -74,6 +75,7 @@ for (const file of FILES) {
   const players = JSON.parse(readFileSync(path, "utf-8")) as RawPlayer[];
 
   for (const p of players) {
+    if (PLAYER_RATING_OVERRIDES[p.id] !== undefined) continue;
     const raw = (p.peakRating ?? p.rating ?? 80) as number;
     const category = (p.category as string) ?? "current";
     let newRating = compress(raw, category);

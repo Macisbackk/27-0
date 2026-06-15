@@ -7,6 +7,7 @@ import { generateRunSeed } from "@/lib/game/generator";
 import {
   buildEraSquadFromRoster,
   getAllEraTeams,
+  getEraSquadYear,
   type EraTeam,
 } from "@/lib/players/era-teams";
 import {
@@ -85,7 +86,7 @@ export function EraChallengeCupBoard() {
         buildEraSquadFromRoster(
           team.playerIds,
           team.slotPositions,
-          Number(team.year)
+          getEraSquadYear(team)
         )
       );
       setBracketState(bracket);

@@ -2,12 +2,17 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import type { EraTeam } from "@/lib/players/era-teams";
+import type { EraTeam, EraTeamCategory } from "@/lib/players/era-teams";
 import {
+  buildEra26Team,
+  buildEraHistoricTeam,
   buildEraSquadFromRoster,
-  buildEraTeam,
-  getEraClubs,
-  getEraYearsForClub,
+  ERA_26_YEAR,
+  getEra26Clubs,
+  getEraHistoricClubs,
+  getEraHistoricYearsForClub,
+  getEraSquadYear,
+  isEra26Year,
 } from "@/lib/players/era-teams";
 import { formatValue } from "@/lib/players";
 import { getClubColors } from "@/lib/clubs";
@@ -21,7 +26,13 @@ import { ClubDualSwatch } from "./ClubDualSwatch";
 import { ClubHeaderBar } from "./ClubBadge";
 import { RugbyPitch } from "./RugbyPitch";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
-import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
+import {
+  BTN,
+  CARD,
+  SPACING,
+  tabGroupButtonClass,
+  tabGroupClass,
+} from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playUiClick } from "@/lib/sound";
 
@@ -38,36 +49,46 @@ const TOURNAMENT_OPTIONS: {
     value: "onePerClub",
     label: "One Of Each Club",
     description:
-      "Sixteen unique clubs — only one era team per club in the bracket.",
+      "Sixteen unique clubs — only one entry per club across 26 and historic teams.",
   },
   {
     value: "allTeams",
     label: "All Era Teams",
     description:
-      "Any historic squad can be drawn — multiple seasons of the same club allowed.",
+      "Any 26 or historic squad can be drawn — multiple seasons of the same club allowed.",
   },
 ];
 
 export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps) {
-  const clubs = useMemo(() => getEraClubs(), []);
+  const [teamCategory, setTeamCategory] = useState<EraTeamCategory>("26");
   const [selectedClub, setSelectedClub] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<string>("");
   const [tournamentType, setTournamentType] =
     useState<EraTournamentType>("allTeams");
 
+  const clubs26 = useMemo(() => getEra26Clubs(), []);
+  const clubsHistoric = useMemo(() => getEraHistoricClubs(), []);
+
   useEffect(() => {
     setTournamentType(getEraTournamentType());
   }, []);
 
+  const clubs = teamCategory === "26" ? clubs26 : clubsHistoric;
+
   const years = useMemo(
-    () => (selectedClub ? getEraYearsForClub(selectedClub) : []),
-    [selectedClub]
+    () =>
+      teamCategory === "historic" && selectedClub
+        ? getEraHistoricYearsForClub(selectedClub)
+        : [],
+    [teamCategory, selectedClub]
   );
 
   const previewTeam = useMemo(() => {
-    if (!selectedClub || !selectedYear) return null;
-    return buildEraTeam(selectedClub, selectedYear);
-  }, [selectedClub, selectedYear]);
+    if (!selectedClub) return null;
+    if (teamCategory === "26") return buildEra26Team(selectedClub);
+    if (!selectedYear) return null;
+    return buildEraHistoricTeam(selectedClub, selectedYear);
+  }, [teamCategory, selectedClub, selectedYear]);
 
   const previewSquad = useMemo(
     () =>
@@ -75,15 +96,26 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
         ? buildEraSquadFromRoster(
             previewTeam.playerIds,
             previewTeam.slotPositions,
-            Number(previewTeam.year)
+            getEraSquadYear(previewTeam)
           )
         : null,
     [previewTeam]
   );
 
+  const handleCategoryChange = (category: EraTeamCategory) => {
+    playUiClick();
+    setTeamCategory(category);
+    setSelectedClub("");
+    setSelectedYear("");
+  };
+
   const handleClubSelect = (club: string) => {
     setSelectedClub(club);
-    setSelectedYear("");
+    if (teamCategory === "26") {
+      setSelectedYear(ERA_26_YEAR);
+    } else {
+      setSelectedYear("");
+    }
   };
 
   const handleTournamentTypeChange = (type: EraTournamentType) => {
@@ -96,7 +128,10 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
     if (previewTeam) onConfirm(previewTeam, tournamentType);
   };
 
-  const showPreview = Boolean(selectedClub && selectedYear && previewTeam);
+  const showPreview = Boolean(previewTeam && previewSquad);
+  const showHistoricYears =
+    teamCategory === "historic" && selectedClub && years.length > 0;
+  const is26Preview = previewTeam && isEra26Year(previewTeam.year);
 
   return (
     <div className={`mx-auto w-full max-w-3xl ${SPACING.pageX} py-6`}>
@@ -104,8 +139,8 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
         <p className={TYPO.sectionLabel}>Challenge Cup</p>
         <h2 className={`mt-2 ${TYPO.pageTitle}`}>Choose Your Era</h2>
         <p className={`mx-auto mt-2 max-w-lg ${TYPO.body}`}>
-          Pick a tournament type, club, and historic season to lead a pre-built
-          squad through a knockout draw against era opponents.
+          Pick a tournament type, team category, and squad to lead through a
+          knockout draw against 26 and historic opponents.
         </p>
       </div>
 
@@ -150,12 +185,46 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
       </div>
 
       <div className={`${CARD.panel} mt-4 ${SPACING.cardPadding}`}>
-        <p className={TYPO.statLabel}>Select Club</p>
+        <p className={TYPO.statLabel}>Team Category</p>
+        <div className={`mt-3 ${tabGroupClass(false, teamCategory === "26", teamCategory === "historic")}`}>
+          <button
+            type="button"
+            onClick={() => handleCategoryChange("26")}
+            className={tabGroupButtonClass(teamCategory === "26", "normal")}
+          >
+            26 Teams
+          </button>
+          <button
+            type="button"
+            onClick={() => handleCategoryChange("historic")}
+            className={tabGroupButtonClass(teamCategory === "historic", "era")}
+          >
+            Historic Teams
+          </button>
+        </div>
+        <p className={`mt-2 ${TYPO.bodySm} text-gray-500`}>
+          {teamCategory === "26"
+            ? "Current Super League squads — displayed as Club 26."
+            : "Wikipedia-era squads — displayed as Club 'YY."}
+        </p>
+      </div>
+
+      <div className={`${CARD.panel} mt-4 ${SPACING.cardPadding}`}>
+        <p className={TYPO.statLabel}>
+          {teamCategory === "26" ? "Select 26 Team" : "Select Club"}
+        </p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {clubs.map((club) => {
             const colors = getClubColors(club);
             const active = selectedClub === club;
-            const hasSeasons = getEraYearsForClub(club).length > 0;
+            const team =
+              teamCategory === "26"
+                ? buildEra26Team(club)
+                : null;
+            const hasSeasons =
+              teamCategory === "26"
+                ? team !== null
+                : getEraHistoricYearsForClub(club).length > 0;
             return (
               <button
                 key={club}
@@ -164,7 +233,9 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
                 onClick={() => handleClubSelect(club)}
                 className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-2.5 py-2 text-left ${TYPO.bodySm} transition ${
                   active
-                    ? `${CARD.selected} border-accent-green/50 text-accent-green`
+                    ? teamCategory === "26"
+                      ? `${CARD.selected} border-accent-green/50 text-accent-green`
+                      : `${CARD.selected} border-accent-gold/50 text-accent-gold`
                     : hasSeasons
                       ? `${CARD.base} text-gray-300 hover:border-pitch-500/50`
                       : `${CARD.base} cursor-not-allowed opacity-40 text-gray-500`
@@ -172,8 +243,15 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
               >
                 <ClubDualSwatch club={club} size="xs" />
                 <span className="min-w-0 flex-1 break-words font-medium leading-snug">
-                  {club}
+                  {teamCategory === "26" ? `${club} 26` : club}
                 </span>
+                {teamCategory === "26" && team && (
+                  <span className="shrink-0 text-[10px] text-gray-500">
+                    {formatTeamRatingDisplay(team.teamRating, {
+                      includeTier: false,
+                    })}
+                  </span>
+                )}
                 <span
                   className="ml-auto hidden h-3 w-3 rounded-full sm:inline"
                   style={{ backgroundColor: colors.primary }}
@@ -184,7 +262,7 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
         </div>
       </div>
 
-      {selectedClub && years.length > 0 && (
+      {showHistoricYears && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -193,7 +271,7 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
           <p className={TYPO.statLabel}>Select Season</p>
           <div className="mt-3 flex flex-wrap gap-2">
             {years.map((year) => {
-              const team = buildEraTeam(selectedClub, year);
+              const team = buildEraHistoricTeam(selectedClub, year);
               const active = selectedYear === year;
               return (
                 <button
@@ -202,11 +280,11 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
                   onClick={() => setSelectedYear(year)}
                   className={`rounded-full border px-3 py-1.5 text-sm font-semibold transition ${
                     active
-                      ? "border-accent-green/50 bg-accent-green/15 text-accent-green"
+                      ? "border-accent-gold/50 bg-accent-gold/15 text-accent-gold"
                       : "border-pitch-600 bg-pitch-900/40 text-gray-300 hover:border-pitch-500"
                   }`}
                 >
-                  {year}
+                  &apos;{year.slice(-2).padStart(2, "0")}
                   {team && (
                     <span className="ml-1 text-[10px] text-gray-500">
                       ({formatTeamRatingDisplay(team.teamRating, {
@@ -232,9 +310,22 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
-            <h3 className={`${TYPO.cardTitle} text-accent-gold`}>
+            <h3
+              className={`${TYPO.cardTitle} ${
+                is26Preview ? "text-accent-green" : "text-accent-gold"
+              }`}
+            >
               {previewTeam.displayName}
             </h3>
+            <span
+              className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
+                is26Preview
+                  ? "border-accent-green/40 bg-accent-green/10 text-accent-green"
+                  : "border-accent-gold/40 bg-accent-gold/10 text-accent-gold"
+              }`}
+            >
+              {is26Preview ? "26 Team" : "Historic"}
+            </span>
           </div>
 
           <div className="mt-3 grid gap-2 sm:grid-cols-3">
@@ -275,7 +366,7 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
         </motion.div>
       )}
 
-      {selectedClub && years.length === 0 && (
+      {selectedClub && teamCategory === "historic" && years.length === 0 && (
         <p className={`mt-4 text-center ${TYPO.bodySm} text-gray-500`}>
           No complete historic seasons available for {selectedClub}.
         </p>

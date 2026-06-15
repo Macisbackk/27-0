@@ -27,7 +27,8 @@
     "build:era-wikipedia-squads": "tsx scripts/build-era-wikipedia-squads.ts",
     "enrich:wikipedia-birth": "tsx scripts/enrich-wikipedia-birth-years.ts",
     "enrich:wikipedia-birth:current": "tsx scripts/enrich-wikipedia-birth-years.ts --current-only",
-    "validate:ages": "tsx scripts/validate-ages.ts"
+    "validate:ages": "tsx scripts/validate-ages.ts",
+    "validate:rating-overrides": "tsx scripts/validate-rating-overrides.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.0",

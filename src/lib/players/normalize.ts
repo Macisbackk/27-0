@@ -1,11 +1,11 @@
 import type { Player } from "../types";
-import ratingOverrides from "../../../data/rating-overrides.json";
+import { PLAYER_RATING_OVERRIDES } from "../../../data/player-rating-overrides";
 import birthYearsData from "../../../data/birth-years.json";
 import { compressPeakRating, computePlayerValue } from "./ratings";
 import { parsePlayerId, resolvePrimeYear } from "./prime-year";
 import { resolveBirthYear, resolveCardYear } from "./player-age";
 
-const RATING_OVERRIDES = ratingOverrides as Record<string, number>;
+const RATING_OVERRIDES = PLAYER_RATING_OVERRIDES;
 const BIRTH_YEAR_OVERRIDES = birthYearsData as Record<string, number>;
 import { resolvePosition } from "./position-utils";
 import { resolveYearsActive } from "./years-active";
