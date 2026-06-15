@@ -91,6 +91,79 @@ export function recordCupTeamWin(teamName: string): void {
   void incrementCupTeamWinsRemote(teamName);
 }
 
+function loadEraLocalTeamWins(): Record<string, CupTeamWinEntry> {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.eraCupTeamWins);
+    if (!raw) return {};
+    return JSON.parse(raw) as Record<string, CupTeamWinEntry>;
+  } catch {
+    return {};
+  }
+}
+
+function saveEraLocalTeamWins(entries: Record<string, CupTeamWinEntry>): void {
+  localStorage.setItem(STORAGE_KEYS.eraCupTeamWins, JSON.stringify(entries));
+}
+
+export function getAllEraCupTeamWins(): CupTeamWinEntry[] {
+  return Object.values(loadEraLocalTeamWins()).sort(
+    (a, b) =>
+      b.tournamentWins - a.tournamentWins ||
+      b.lastWonAt.localeCompare(a.lastWonAt)
+  );
+}
+
+export function incrementEraCupTeamWinsLocal(teamName: string): CupTeamWinEntry {
+  const entries = loadEraLocalTeamWins();
+  const existing = entries[teamName];
+  const updated: CupTeamWinEntry = {
+    teamName,
+    tournamentWins: (existing?.tournamentWins ?? 0) + 1,
+    lastWonAt: new Date().toISOString(),
+  };
+  entries[teamName] = updated;
+  saveEraLocalTeamWins(entries);
+  return updated;
+}
+
+/** Record an Era Challenge Cup tournament win for the winning era squad. */
+export function recordEraCupTeamWin(teamName: string): void {
+  if (!teamName) return;
+  incrementEraCupTeamWinsLocal(teamName);
+}
+
+export function getEraCupTeamWinsLeaderboardRows(): CupTeamWinsLeaderboardRow[] {
+  const entries = getAllEraCupTeamWins();
+  const winCounts = Object.fromEntries(
+    entries.map((entry) => [entry.teamName, entry.tournamentWins])
+  );
+
+  const rows = entries.map((entry) => ({
+    teamName: entry.teamName,
+    tournamentWins: winCounts[entry.teamName] ?? 0,
+    lastWonAt: entry.lastWonAt,
+  }));
+
+  rows.sort(
+    (a, b) =>
+      b.tournamentWins - a.tournamentWins ||
+      a.teamName.localeCompare(b.teamName)
+  );
+
+  const maxWins = rows[0]?.tournamentWins ?? 0;
+
+  return rows.map((row, index) => ({
+    rank: index + 1,
+    teamName: row.teamName,
+    tournamentWins: row.tournamentWins,
+    lastWonAt: row.lastWonAt,
+    barPercent:
+      maxWins > 0 ? Math.round((row.tournamentWins / maxWins) * 100) : 0,
+    isLeader: index === 0 && row.tournamentWins > 0,
+  }));
+}
+
 export interface CupTeamWinsLeaderboardRow {
   rank: number;
   teamName: string;

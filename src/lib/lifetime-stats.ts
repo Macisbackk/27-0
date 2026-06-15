@@ -162,6 +162,7 @@ export function applySeasonLifetimeUpdate(
       draftCounts,
       eraChallengeCupRuns: existing.eraChallengeCupRuns + 1,
       eraChallengeCupWins: existing.eraChallengeCupWins + wins,
+      eraChallengeCupLosses: existing.eraChallengeCupLosses + losses,
       eraCupsWon: existing.eraCupsWon + (cupWon ? 1 : 0),
       eraMatchWins: existing.eraMatchWins + wins,
       eraMatchLosses: existing.eraMatchLosses + losses,

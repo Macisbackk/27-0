@@ -4,6 +4,8 @@ import { useEffect, useState, type ReactNode } from "react";
 import type { UserStatsData } from "@/lib/types";
 import { formatValue } from "@/lib/players";
 import { getAllStats } from "@/lib/storage/stats";
+import { ensureEraCupLeaderboardSynced } from "@/lib/storage/cup-leaderboard";
+import { getUsername } from "@/lib/storage/user";
 import {
   STATS_TABS,
   getChallengeCupView,
@@ -42,6 +44,10 @@ export function StatsPanel() {
 
   const refresh = () => {
     const stored = getAllStats();
+    const username = getUsername();
+    if (username) {
+      ensureEraCupLeaderboardSynced(username, stored.eraCup);
+    }
     setNormalStats(stored.normal);
     setHardStats(stored.hard);
     setDraftNormalStats(stored.draftNormal);

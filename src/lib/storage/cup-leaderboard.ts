@@ -174,3 +174,127 @@ export function ensureCupLeaderboardSynced(
   };
   saveProfiles(profiles);
 }
+
+export interface EraCupLeaderboardProfile {
+  username: string;
+  cupsWon: number;
+  cupMatchWins: number;
+  cupMatchLosses: number;
+  longestCupMatchWinStreak: number;
+  currentCupMatchWinStreak: number;
+  longestTournamentWinsInRow: number;
+  currentTournamentWinsInRow: number;
+  lastUpdated: string;
+}
+
+function emptyEraProfile(username: string): EraCupLeaderboardProfile {
+  return {
+    username,
+    cupsWon: 0,
+    cupMatchWins: 0,
+    cupMatchLosses: 0,
+    longestCupMatchWinStreak: 0,
+    currentCupMatchWinStreak: 0,
+    longestTournamentWinsInRow: 0,
+    currentTournamentWinsInRow: 0,
+    lastUpdated: new Date(0).toISOString(),
+  };
+}
+
+function loadEraProfiles(): Record<string, EraCupLeaderboardProfile> {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.eraCupLeaderboard);
+    if (!raw) return {};
+    return JSON.parse(raw) as Record<string, EraCupLeaderboardProfile>;
+  } catch {
+    return {};
+  }
+}
+
+function saveEraProfiles(profiles: Record<string, EraCupLeaderboardProfile>): void {
+  localStorage.setItem(
+    STORAGE_KEYS.eraCupLeaderboard,
+    JSON.stringify(profiles)
+  );
+}
+
+export function getAllEraCupLeaderboardProfiles(): EraCupLeaderboardProfile[] {
+  return Object.values(loadEraProfiles()).sort((a, b) =>
+    a.username.localeCompare(b.username)
+  );
+}
+
+export function updateEraCupLeaderboardProfile(
+  input: CupRunInput,
+  username?: string
+): EraCupLeaderboardProfile {
+  const name = username ?? getUsername() ?? "Unknown";
+  const profiles = loadEraProfiles();
+  const existing = profiles[name] ?? emptyEraProfile(name);
+
+  const streak = applyMatchResultsToStreak(
+    existing.currentCupMatchWinStreak,
+    existing.longestCupMatchWinStreak,
+    input.matchResults
+  );
+  const newTournamentRow = input.cupWon
+    ? existing.currentTournamentWinsInRow + 1
+    : 0;
+
+  const updated: EraCupLeaderboardProfile = {
+    ...existing,
+    username: name,
+    cupMatchWins: existing.cupMatchWins + input.wins,
+    cupMatchLosses: existing.cupMatchLosses + input.losses,
+    cupsWon: existing.cupsWon + (input.cupWon ? 1 : 0),
+    longestCupMatchWinStreak: streak.longestStreak,
+    currentCupMatchWinStreak: streak.currentStreak,
+    currentTournamentWinsInRow: newTournamentRow,
+    longestTournamentWinsInRow: Math.max(
+      existing.longestTournamentWinsInRow,
+      newTournamentRow
+    ),
+    lastUpdated: new Date().toISOString(),
+  };
+
+  profiles[name] = updated;
+  saveEraProfiles(profiles);
+  return updated;
+}
+
+/** Backfill era cup leaderboard from saved career stats when profiles are missing. */
+export function ensureEraCupLeaderboardSynced(
+  username: string,
+  eraCup: UserStatsData
+): void {
+  const profiles = loadEraProfiles();
+  const existing = profiles[username];
+  const statWins = eraCup.eraChallengeCupWins;
+  const statLosses = eraCup.eraChallengeCupLosses;
+
+  if (
+    existing &&
+    existing.cupMatchWins >= statWins &&
+    existing.cupsWon >= eraCup.eraCupsWon
+  ) {
+    return;
+  }
+
+  if (statWins === 0 && statLosses === 0 && eraCup.eraChallengeCupRuns === 0) {
+    return;
+  }
+
+  profiles[username] = {
+    username,
+    cupsWon: eraCup.eraCupsWon,
+    cupMatchWins: statWins,
+    cupMatchLosses: statLosses,
+    longestCupMatchWinStreak: 0,
+    currentCupMatchWinStreak: 0,
+    longestTournamentWinsInRow: 0,
+    currentTournamentWinsInRow: 0,
+    lastUpdated: new Date().toISOString(),
+  };
+  saveEraProfiles(profiles);
+}

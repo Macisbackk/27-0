@@ -191,6 +191,7 @@ export interface UserStatsData {
   bestTeamRating: number;
   eraChallengeCupRuns: number;
   eraChallengeCupWins: number;
+  eraChallengeCupLosses: number;
   eraCupsWon: number;
   eraMatchWins: number;
   eraMatchLosses: number;

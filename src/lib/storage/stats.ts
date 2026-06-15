@@ -142,6 +142,8 @@ export const EMPTY_STATS: UserStatsData = {
 
   eraChallengeCupWins: 0,
 
+  eraChallengeCupLosses: 0,
+
   eraCupsWon: 0,
 
   eraMatchWins: 0,
@@ -167,6 +169,92 @@ interface StoredStats {
   fantasy: UserStatsData;
 
   eraCup: UserStatsData;
+
+}
+
+
+
+export type { StoredStats };
+
+
+
+function pickMoreActiveBucket(
+
+  cloudBucket: UserStatsData,
+
+  localBucket: UserStatsData,
+
+  activityKey: keyof UserStatsData
+
+): UserStatsData {
+
+  const cloudVal = (cloudBucket[activityKey] as number) ?? 0;
+
+  const localVal = (localBucket[activityKey] as number) ?? 0;
+
+  return localVal > cloudVal ? localBucket : cloudBucket;
+
+}
+
+
+
+/** Merge cloud stats with local saves so era/draft/fantasy buckets are not wiped on login. */
+
+export function mergeCloudStatsWithLocal(
+
+  cloud: StoredStats,
+
+  local: StoredStats
+
+): StoredStats {
+
+  return {
+
+    normal: cloud.normal,
+
+    hard: cloud.hard,
+
+    draftNormal: pickMoreActiveBucket(
+
+      cloud.draftNormal,
+
+      local.draftNormal,
+
+      "totalSeasonsSimulated"
+
+    ),
+
+    draftHard: pickMoreActiveBucket(
+
+      cloud.draftHard,
+
+      local.draftHard,
+
+      "totalSeasonsSimulated"
+
+    ),
+
+    fantasy: pickMoreActiveBucket(
+
+      cloud.fantasy,
+
+      local.fantasy,
+
+      "totalSeasonsSimulated"
+
+    ),
+
+    eraCup: pickMoreActiveBucket(
+
+      cloud.eraCup,
+
+      local.eraCup,
+
+      "eraChallengeCupRuns"
+
+    ),
+
+  };
 
 }
 
@@ -272,7 +360,12 @@ export function migrateUserStats(raw: Partial<UserStatsData>): UserStatsData {
 
   merged.eraChallengeCupRuns = merged.eraChallengeCupRuns ?? 0;
 
-  merged.eraChallengeCupWins = merged.eraChallengeCupWins ?? 0;
+  merged.eraChallengeCupWins = merged.eraChallengeCupWins ?? merged.eraMatchWins ?? 0;
+
+  merged.eraChallengeCupLosses =
+    merged.eraChallengeCupLosses ?? merged.eraMatchLosses ?? 0;
+
+  merged.eraChallengeCupLosses = merged.eraChallengeCupLosses ?? 0;
 
   merged.eraCupsWon = merged.eraCupsWon ?? 0;
 

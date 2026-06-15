@@ -11,6 +11,8 @@ export const STORAGE_KEYS = {
   soundMuted: "27-0-sound-muted",
   cupLeaderboard: "27-0-cup-leaderboard",
   cupTeamWins: "27-0-cup-team-wins",
+  eraCupLeaderboard: "27-0-era-cup-leaderboard",
+  eraCupTeamWins: "27-0-era-cup-team-wins",
   recruitmentStyle: "27-0-recruitment-style",
   eraTournamentType: "27-0-era-tournament-type",
 } as const;

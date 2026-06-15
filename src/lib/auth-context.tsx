@@ -28,6 +28,7 @@ import {
 } from "./auth-callback";
 import { loadCloudStats } from "./storage/stats-cloud";
 import { STORAGE_KEYS } from "./storage/keys";
+import { getAllStats, mergeCloudStatsWithLocal } from "./storage/stats";
 import { isSupabaseConfigured } from "./supabase";
 
 interface AuthContextValue {
@@ -52,10 +53,9 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 async function hydrateStatsFromCloud(): Promise<void> {
   const cloud = await loadCloudStats();
   if (!cloud) return;
-  localStorage.setItem(
-    STORAGE_KEYS.stats,
-    JSON.stringify({ normal: cloud.normal, hard: cloud.hard })
-  );
+  const local = getAllStats();
+  const merged = mergeCloudStatsWithLocal(cloud, local);
+  localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(merged));
 }
 
 function applySession(session: Session | null, profile: UserProfile | null) {

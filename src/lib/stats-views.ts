@@ -407,11 +407,11 @@ export function formatSeasonWinPercentageOrDash(
 export function getEraChallengeCupView(stats: UserStatsData) {
   return {
     runs: stats.eraChallengeCupRuns,
-    wins: stats.eraMatchWins,
-    losses: stats.eraMatchLosses,
+    wins: stats.eraChallengeCupWins,
+    losses: stats.eraChallengeCupLosses,
     totalRecord: {
-      wins: stats.eraMatchWins,
-      losses: stats.eraMatchLosses,
+      wins: stats.eraChallengeCupWins,
+      losses: stats.eraChallengeCupLosses,
     },
     cupsWon: stats.eraCupsWon,
     bestTeamUsed: stats.bestEraTeamUsed,

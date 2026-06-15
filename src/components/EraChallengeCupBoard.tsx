@@ -13,6 +13,7 @@ import {
 import {
   createEraChallengeCupBracket,
   EraBracketError,
+  getBracketFinalWinner,
   type ChallengeCupBracketState,
 } from "@/lib/game/challenge-cup-bracket";
 import {
@@ -119,6 +120,10 @@ export function EraChallengeCupBoard() {
         .map((slot) => slot.player!.id);
       const value = getSquadValue(squad);
 
+      const bracketWinner = result.bracketMatches
+        ? getBracketFinalWinner(result.bracketMatches)
+        : null;
+
       void recordCompletedRun(
         {
           id: runId,
@@ -145,6 +150,7 @@ export function EraChallengeCupBoard() {
           averageSquadRating: getAverageSquadRating(squad),
           matchResults: result.fixtures.map((fixture) => fixture.result),
           eraTeamUsed: eraTeam.displayName,
+          eraCupWinner: bracketWinner ?? undefined,
         }
       ).then(({ submittedOnline: online }) => {
         setSubmittedOnline(online);

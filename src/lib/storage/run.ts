@@ -5,6 +5,7 @@ import { addLeaderboardEntry, getLeaderboardAsync } from "./leaderboard";
 import {
   getAllCupLeaderboardProfiles,
   updateCupLeaderboardProfile,
+  updateEraCupLeaderboardProfile,
 } from "./cup-leaderboard";
 import { getChallengeCupPersonalBests } from "../stats-views";
 import { isLoggedIn } from "../auth-session";
@@ -17,7 +18,7 @@ import {
   updateStats,
 } from "./stats";
 import { gameModeToDbMode } from "./leaderboard";
-import { recordCupTeamWin } from "./cup-team-wins";
+import { recordCupTeamWin, recordEraCupTeamWin } from "./cup-team-wins";
 
 export interface CompletedRunResult {
   cupRanking?: CupRunRankingResult;
@@ -47,6 +48,7 @@ export async function recordCompletedRun(
     averageSquadRating?: number;
     matchResults?: ("W" | "L")[];
     cupTeam?: string;
+    eraCupWinner?: string;
   }
 ): Promise<CompletedRunResult> {
   const totalValue = run.totalValue || getSquadValue(run.squad);
@@ -94,6 +96,8 @@ export async function recordCompletedRun(
 
   if (hasSeasonData) {
     if (isEraCupRun) {
+      const username = getUsername() ?? "Guest";
+
       updateSeasonLifetimeStats(
         {
           wins,
@@ -115,6 +119,21 @@ export async function recordCompletedRun(
         difficulty,
         statsBucket
       );
+
+      updateEraCupLeaderboardProfile(
+        {
+          wins,
+          losses,
+          cupWon: options.cupWon ?? false,
+          cupFinish: options.cupFinish,
+          matchResults: options.matchResults ?? [],
+        },
+        username
+      );
+
+      if (options.eraCupWinner) {
+        recordEraCupTeamWin(options.eraCupWinner);
+      }
 
       return { submittedOnline: loggedIn && !isHiddenRun };
     }
