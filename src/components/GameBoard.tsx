@@ -67,6 +67,7 @@ import {
   playSeasonStart,
 } from "@/lib/sound";
 import { PlayerChoice } from "./PlayerChoice";
+import { RecruitmentSlotReveal } from "./RecruitmentSlotReveal";
 import { RugbyPitch } from "./RugbyPitch";
 import { SeasonReview } from "./SeasonReview";
 import { SeasonSimulation } from "./SeasonSimulation";
@@ -255,7 +256,6 @@ export function GameBoard({
     const key = `${activeOfferKey ?? "x"}-${seed}`;
     if (revealSoundKey.current === key) return;
     revealSoundKey.current = key;
-    playRevealChoices();
   }, [phase, activeOfferKey, seed]);
 
   useEffect(() => {
@@ -434,10 +434,19 @@ export function GameBoard({
       if (!slot || slot.player) return;
       playPositionSelect();
       setSelectedSlotIndex(slotIndex);
-      setPhase("choice");
+      if (mode === "CLASSIC" && !isChallengeCup) {
+        setPhase("reveal");
+      } else {
+        setPhase("choice");
+        playRevealChoices();
+      }
     },
-    [phase, squad, joeMellorMode, superSamHallasMode, isDraftMode]
+    [phase, squad, joeMellorMode, superSamHallasMode, isDraftMode, mode, isChallengeCup]
   );
+
+  const handleRevealComplete = useCallback(() => {
+    setPhase("choice");
+  }, []);
 
   const handlePlaceDraftPlayer = useCallback(
     (slotIndex: number) => {
@@ -607,6 +616,7 @@ export function GameBoard({
   const handleBackToPitch = useCallback(() => {
     if (isDraftMode) return;
     setSelectedSlotIndex(null);
+    revealSoundKey.current = null;
     setPhase("pitch");
   }, [isDraftMode]);
 
@@ -701,7 +711,7 @@ export function GameBoard({
   );
 
   const playerPair =
-    phase === "choice" && currentRound
+    (phase === "choice" || phase === "reveal") && currentRound
       ? getRoundPlayers(currentRound)
       : null;
 
@@ -822,12 +832,13 @@ export function GameBoard({
           )}
 
           {(phase === "pitch" ||
+            phase === "reveal" ||
             phase === "choice" ||
             phase === "placement") && (
             <div
               ref={placementScrollRef}
               className={`pb-2 sm:max-h-none sm:overflow-visible ${
-                phase === "choice"
+                phase === "choice" || phase === "reveal"
                   ? "overflow-x-hidden overflow-y-visible"
                   : "max-h-[min(88vh,900px)] overflow-x-hidden overflow-y-auto"
               }`}
@@ -857,7 +868,7 @@ export function GameBoard({
                   !superSamHallasMode && phase === "pitch" && !isDraftMode
                 }
                 onSlotClick={handleSelectSlot}
-                dimmed={phase === "choice"}
+                dimmed={phase === "choice" || phase === "reveal"}
                 lockedSlots={
                   superSamHallasMode
                     ? ALL_SUPER_SAM_SLOT_INDICES
@@ -890,6 +901,14 @@ export function GameBoard({
           )}
 
           <AnimatePresence>
+            {phase === "reveal" && playerPair && currentRound && (
+              <RecruitmentSlotReveal
+                key={choiceKey}
+                players={playerPair}
+                positionLabel={currentRound.slotLabel}
+                onComplete={handleRevealComplete}
+              />
+            )}
             {phase === "choice" && currentRound && playerPair && (
               <motion.div
                 key={choiceKey}

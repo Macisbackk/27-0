@@ -4,7 +4,6 @@ import { useCallback, useDeferredValue, useMemo, useState } from "react";
 import {
   getFantasyEligiblePlayers,
   getFantasyEligiblePositions,
-  getFantasyBudgetForSlot,
   canAffordPlayerForSlot,
   isPlayerInSquad,
   DEFAULT_FANTASY_PICKER_FILTERS,
@@ -31,6 +30,8 @@ interface FantasyPlayerPickerProps {
   onSelect: (player: Player) => void;
   onRemove?: () => void;
   onClose: () => void;
+  /** Inline card layout (Fantasy squad build) vs full-screen overlay. */
+  inline?: boolean;
 }
 
 export function FantasyPlayerPicker({
@@ -41,13 +42,13 @@ export function FantasyPlayerPicker({
   onSelect,
   onRemove,
   onClose,
+  inline = false,
 }: FantasyPlayerPickerProps) {
   const debouncedSearch = useDeferredValue(filters.search);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [expandedPlayerId, setExpandedPlayerId] = useState<string | null>(null);
 
   const slotPositions = getFantasyEligiblePositions(slot.position);
-  const slotBudget = getFantasyBudgetForSlot(squad, slot);
   const changingPlayer = !!slot.player;
 
   const updateFilters = useCallback(
@@ -119,27 +120,42 @@ export function FantasyPlayerPicker({
     (filters.club !== "all" ? 1 : 0) +
     (filters.sortKey !== DEFAULT_FANTASY_PICKER_FILTERS.sortKey ? 1 : 0);
 
+  const shellClass = inline
+    ? `${CARD.panel} overflow-hidden border-accent-green/25`
+    : "fixed inset-0 z-50 flex flex-col bg-black/80 backdrop-blur-sm";
+
+  const headerClass = inline
+    ? "flex shrink-0 flex-wrap items-start justify-between gap-2 border-b border-pitch-700/50 px-3 py-3 sm:px-4"
+    : "flex shrink-0 items-center justify-between border-b border-pitch-700/60 px-3 py-2 sm:px-4";
+
+  const filtersClass = inline
+    ? "shrink-0 border-b border-pitch-700/50 px-3 py-3 sm:px-4"
+    : "shrink-0 border-b border-pitch-700/50 px-3 py-2 sm:px-4";
+
+  const listClass = inline
+    ? "max-h-[min(42vh,420px)] overflow-y-auto overflow-x-hidden px-3 py-3 sm:px-4"
+    : "min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-3 py-2 sm:px-4 sm:py-3";
+
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-black/80 backdrop-blur-sm">
-      <div className="flex shrink-0 items-center justify-between border-b border-pitch-700/60 px-3 py-2 sm:px-4">
-        <div className="min-w-0">
+    <div className={shellClass}>
+      <div className={headerClass}>
+        <div className="min-w-0 flex-1">
           <p className={TYPO.sectionLabel}>Select player</p>
           <h2 className="truncate font-display text-base font-bold text-white sm:text-lg">
             {slot.label}
           </h2>
-          <p className="mt-0.5 text-xs text-gray-500">
-            Slot budget {formatValue(slotBudget)}
-            {changingPlayer && slot.player && (
-              <> · Current {formatValue(slot.player.value)}</>
-            )}
-          </p>
+          {changingPlayer && slot.player && (
+            <p className="mt-0.5 text-xs text-gray-500">
+              Current signing · {formatValue(slot.player.value)}
+            </p>
+          )}
         </div>
         <button type="button" onClick={onClose} className={BTN.close}>
           Close
         </button>
       </div>
 
-      <div className="shrink-0 border-b border-pitch-700/50 px-3 py-2 sm:px-4">
+      <div className={filtersClass}>
         {changingPlayer && onRemove && (
           <button
             type="button"
@@ -147,52 +163,54 @@ export function FantasyPlayerPicker({
               playUiClick();
               onRemove();
             }}
-            className={`${BTN.base} ${BTN.secondary} mb-2 min-h-[32px] px-3 py-1.5 text-xs`}
+            className={`${BTN.base} ${BTN.secondary} mb-3 min-h-[36px] px-3 py-1.5 text-xs`}
           >
             Remove Player
           </button>
         )}
 
-        <div className="flex min-w-0 flex-wrap items-center gap-1.5 sm:gap-2">
+        <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
           <input
             type="search"
             placeholder="Search players"
             value={filters.search}
             onChange={(e) => updateFilters({ search: e.target.value })}
-            className={`${FILTER.input} min-w-0 flex-1 py-1.5 text-xs sm:py-2 sm:text-sm`}
+            className={`${FILTER.input} min-w-0 w-full py-2 text-xs sm:max-w-xs sm:flex-1 sm:text-sm`}
           />
-          <button
-            type="button"
-            aria-pressed={filters.affordableOnly}
-            onClick={() => {
-              playUiClick();
-              updateFilters({ affordableOnly: !filters.affordableOnly });
-            }}
-            className={`shrink-0 rounded-lg border px-2 py-1.5 text-[10px] font-medium transition sm:px-2.5 sm:text-xs ${
-              filters.affordableOnly ? FILTER.chipActive : FILTER.chipIdle
-            }`}
-          >
-            Affordable
-          </button>
-          <button
-            type="button"
-            aria-expanded={filtersOpen}
-            onClick={() => {
-              playUiClick();
-              setFiltersOpen((open) => !open);
-            }}
-            className={`shrink-0 rounded-lg border px-2 py-1.5 text-[10px] font-medium transition sm:px-2.5 sm:text-xs ${
-              filtersOpen || activeFilterCount > 0
-                ? FILTER.chipActive
-                : FILTER.chipIdle
-            }`}
-          >
-            Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
-          </button>
+          <div className="flex min-w-0 flex-wrap items-center gap-1.5 sm:gap-2">
+            <button
+              type="button"
+              aria-pressed={filters.affordableOnly}
+              onClick={() => {
+                playUiClick();
+                updateFilters({ affordableOnly: !filters.affordableOnly });
+              }}
+              className={`btn-press shrink-0 rounded-lg border px-2.5 py-2 text-[10px] font-medium transition sm:text-xs ${
+                filters.affordableOnly ? FILTER.chipActive : FILTER.chipIdle
+              }`}
+            >
+              Affordable
+            </button>
+            <button
+              type="button"
+              aria-expanded={filtersOpen}
+              onClick={() => {
+                playUiClick();
+                setFiltersOpen((open) => !open);
+              }}
+              className={`btn-press shrink-0 rounded-lg border px-2.5 py-2 text-[10px] font-medium transition sm:text-xs ${
+                filtersOpen || activeFilterCount > 0
+                  ? FILTER.chipActive
+                  : FILTER.chipIdle
+              }`}
+            >
+              Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
+            </button>
+          </div>
         </div>
 
         {filtersOpen && (
-          <div className="mt-2 flex min-w-0 flex-wrap items-center gap-1.5 border-t border-pitch-700/40 pt-2 sm:gap-2">
+          <div className="mt-3 flex min-w-0 flex-col gap-2 border-t border-pitch-700/40 pt-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
             <FilterSelect
               label="Team"
               value={filters.club}
@@ -222,25 +240,25 @@ export function FantasyPlayerPicker({
             <button
               type="button"
               onClick={resetFilters}
-              className={`${BTN.base} ${BTN.secondary} min-h-[32px] px-2.5 py-1.5 text-[10px] sm:text-xs`}
+              className={`${BTN.base} ${BTN.secondary} min-h-[36px] px-3 py-1.5 text-[10px] sm:text-xs`}
             >
               Reset Filters
             </button>
           </div>
         )}
 
-        <p className={`${TYPO.bodySm} mt-1.5`}>
+        <p className={`${TYPO.bodySm} mt-2`}>
           {players.length} eligible player{players.length !== 1 ? "s" : ""}
         </p>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-3 py-2 sm:px-4 sm:py-3">
+      <div className={listClass}>
         {players.length === 0 ? (
-          <p className="py-12 text-center text-gray-500">
+          <p className="py-8 text-center text-gray-500">
             No players match your filters.
           </p>
         ) : (
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-2.5 sm:gap-3">
             {players.map((player) => {
               const signed = isPlayerInSquad(squad, player.id);
               const affordable = canAffordPlayerForSlot(squad, slot, player);
@@ -258,7 +276,7 @@ export function FantasyPlayerPicker({
                   >
                     <button
                       type="button"
-                      className="flex w-full min-w-0 items-start gap-2 px-3 py-2 text-left sm:py-2.5"
+                      className="btn-press flex w-full min-w-0 items-start gap-2 px-3 py-3 text-left sm:py-3.5"
                       onClick={() => {
                         playUiClick();
                         setExpandedPlayerId((id) =>
@@ -281,24 +299,24 @@ export function FantasyPlayerPicker({
                     </button>
 
                     {!affordable && !signed && (
-                      <p className="border-t border-pitch-700/50 px-3 py-1 text-xs font-medium text-red-400">
+                      <p className="border-t border-pitch-700/50 px-3 py-1.5 text-xs font-medium text-red-400">
                         Over budget
                       </p>
                     )}
                     {signed && player.id !== slot.player?.id && (
-                      <p className="border-t border-pitch-700/50 px-3 py-1 text-xs text-gray-500">
+                      <p className="border-t border-pitch-700/50 px-3 py-1.5 text-xs text-gray-500">
                         Already signed
                       </p>
                     )}
 
                     {expanded && (
-                      <div className="border-t border-pitch-700/50 px-2 pb-3 pt-2">
+                      <div className="border-t border-pitch-700/50 px-2 pb-3 pt-2 sm:px-3">
                         <PlayerCard player={player} equalHeight compactMobile />
                         <button
                           type="button"
                           disabled={disabled}
                           onClick={() => handleSelect(player)}
-                          className={`mt-2 w-full ${BTN.base} ${BTN.primary} disabled:cursor-not-allowed disabled:opacity-50`}
+                          className={`mt-3 w-full ${BTN.base} ${BTN.primary} disabled:cursor-not-allowed disabled:opacity-50`}
                         >
                           {slot.player?.id === player.id
                             ? "Keep"
@@ -331,14 +349,14 @@ function FilterSelect({
   options: { value: string; label: string }[];
 }) {
   return (
-    <label className="flex min-w-0 items-center gap-1.5">
+    <label className="flex min-w-0 flex-1 items-center gap-1.5 sm:flex-none">
       <span className="shrink-0 text-[10px] font-medium uppercase tracking-wider text-gray-500">
         {label}
       </span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`${FILTER.input} max-w-[9rem] py-1 pl-2 pr-6 text-[10px] sm:max-w-none sm:py-1.5 sm:pl-2.5 sm:text-xs`}
+        className={`${FILTER.input} min-w-0 flex-1 py-1.5 pl-2 pr-6 text-[10px] sm:max-w-[11rem] sm:text-xs`}
       >
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>

@@ -35,7 +35,7 @@ export const CARD = {
   featuredHard:
     "border border-accent-red/30 shadow-[0_0_32px_rgba(239,68,68,0.14)]",
   interactive:
-    "cursor-pointer transition hover:border-accent-green/40 hover:bg-pitch-800/60",
+    "btn-press cursor-pointer transition hover:border-accent-green/40 hover:bg-pitch-800/60 active:border-accent-green/50 active:bg-pitch-800/75",
   selected: "border-accent-green/40 bg-pitch-800/40",
   /** Legacy global panel — aligned with design system surfaces */
   panel: "matchday-panel",
@@ -52,13 +52,16 @@ export const FILTER = {
     "inline-flex w-full rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto",
 } as const;
 
+/** Shared pressed-state utility — pair with BTN.base on interactive elements. */
+export const BTN_PRESS = "btn-press";
+
 /** Shared button classes. */
 export const BTN = {
-  base: `${TYPO.button} inline-flex min-h-[44px] items-center justify-center rounded-lg px-4 py-2.5 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-green`,
+  base: `${TYPO.button} btn-press inline-flex min-h-[44px] items-center justify-center rounded-lg px-4 py-2.5 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-green disabled:active:scale-100 disabled:active:brightness-100`,
   primary:
-    "border-2 border-accent-green/75 bg-accent-green text-pitch-950 shadow-[0_0_28px_rgba(34,197,94,0.35)] hover:bg-accent-green/90 hover:shadow-[0_0_36px_rgba(34,197,94,0.45)] disabled:cursor-not-allowed disabled:opacity-50",
+    "btn-press-glow border-2 border-accent-green/75 bg-accent-green text-pitch-950 shadow-[0_0_28px_rgba(34,197,94,0.35)] hover:bg-accent-green/90 hover:shadow-[0_0_36px_rgba(34,197,94,0.45)] disabled:cursor-not-allowed disabled:opacity-50",
   primaryHard:
-    "border-2 border-accent-red/85 bg-accent-red text-white shadow-[0_0_28px_rgba(239,68,68,0.45)] hover:bg-red-500 hover:shadow-[0_0_36px_rgba(239,68,68,0.55)] disabled:cursor-not-allowed disabled:opacity-50",
+    "btn-press-glow-hard border-2 border-accent-red/85 bg-accent-red text-white shadow-[0_0_28px_rgba(239,68,68,0.45)] hover:bg-red-500 hover:shadow-[0_0_36px_rgba(239,68,68,0.55)] disabled:cursor-not-allowed disabled:opacity-50",
   primaryLg:
     "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-accent-green to-emerald-400 py-4 font-display text-lg font-black uppercase tracking-wider text-pitch-950 shadow-[0_0_30px_rgba(34,197,94,0.35)] transition-all hover:from-emerald-400 hover:to-accent-green hover:shadow-[0_0_40px_rgba(34,197,94,0.5)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
   primaryLgHard:
@@ -128,7 +131,7 @@ export const HARD = {
 
 /** Navigation & links. */
 export const NAV = {
-  item: `${TYPO.nav} flex min-h-[36px] items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm transition`,
+  item: `${TYPO.nav} btn-press flex min-h-[44px] items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm transition sm:min-h-[36px]`,
   itemActive: "border border-accent-green/30 bg-accent-green/10 text-accent-green",
   itemIdle: "text-gray-300 hover:bg-pitch-800/60 hover:text-white",
   list: "space-y-1",
@@ -154,7 +157,7 @@ export const NAV = {
   footerLinks: "mt-1.5 flex items-center justify-center gap-1.5",
   supportRow: "flex items-center justify-center gap-1.5",
   supportLink:
-    "inline-flex h-8 w-8 items-center justify-center rounded-lg border border-pitch-600/60 text-gray-400 transition hover:border-accent-green/40 hover:text-white",
+    "btn-press inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-pitch-600/60 text-gray-400 transition hover:border-accent-green/40 hover:text-white sm:h-8 sm:w-8 sm:min-h-0 sm:min-w-0",
 } as const;
 
 export const LINK = {
@@ -176,7 +179,7 @@ export function tabGroupButtonClass(
   active: boolean,
   variant: "normal" | "hard" | "era" = "normal"
 ): string {
-  const base = `${TYPO.button} ${BTN.tabGroupInner} min-h-[48px] sm:min-h-[44px]`;
+  const base = `${TYPO.button} btn-press ${BTN.tabGroupInner} min-h-[48px] sm:min-h-[44px]`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.eraIdle}`;
@@ -216,7 +219,7 @@ export function nestedTabGroupButtonClass(
   active: boolean,
   variant: "normal" | "hard" | "era" = "normal"
 ): string {
-  const base = `${TYPO.button} flex-1 rounded-md px-1.5 py-1 min-h-[30px] text-[11px]`;
+  const base = `${TYPO.button} btn-press flex-1 rounded-md px-1.5 py-1 min-h-[36px] text-[11px] sm:min-h-[30px]`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.eraIdle}`;

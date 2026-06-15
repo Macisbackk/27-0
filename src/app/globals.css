@@ -25,6 +25,18 @@ body {
   font-family: var(--font-body);
 }
 
+@layer base {
+  button:not(:disabled),
+  a[role="button"]:not([aria-disabled="true"]) {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  button:not(:disabled):not(.no-btn-press) {
+    @apply btn-press;
+  }
+}
+
 .app-header {
   background: var(--header-bg);
   border-color: var(--border-subtle);
@@ -48,16 +60,31 @@ body {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color: rgba(34, 197, 94, 0.35) transparent;
+  scrollbar-color: rgba(34, 197, 94, 0.45) rgba(15, 24, 20, 0.6);
 }
 
 .sidebar-nav-scroll::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
+}
+
+.sidebar-nav-scroll::-webkit-scrollbar-track {
+  margin: 4px 0;
+  border-radius: 9999px;
+  background: rgba(15, 24, 20, 0.55);
 }
 
 .sidebar-nav-scroll::-webkit-scrollbar-thumb {
   border-radius: 9999px;
-  background: rgba(34, 197, 94, 0.35);
+  border: 1px solid rgba(34, 197, 94, 0.15);
+  background: linear-gradient(
+    180deg,
+    rgba(34, 197, 94, 0.55) 0%,
+    rgba(34, 197, 94, 0.28) 100%
+  );
+}
+
+.sidebar-nav-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 197, 94, 0.65);
 }
 
 .sidebar-header {
@@ -268,6 +295,39 @@ body {
 .font-display {
   font-family: var(--font-display);
   letter-spacing: 0.02em;
+}
+
+@layer components {
+  .btn-press {
+    @apply transition-transform duration-100 ease-out active:scale-[0.97] active:brightness-95;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .btn-press-glow:active:not(:disabled) {
+    box-shadow:
+      inset 0 2px 6px rgba(0, 0, 0, 0.35),
+      0 0 16px rgba(34, 197, 94, 0.25);
+  }
+
+  .btn-press-glow-hard:active:not(:disabled) {
+    box-shadow:
+      inset 0 2px 6px rgba(0, 0, 0, 0.35),
+      0 0 16px rgba(239, 68, 68, 0.3);
+  }
+
+  .btn-press-glow-gold:active:not(:disabled) {
+    box-shadow:
+      inset 0 2px 6px rgba(0, 0, 0, 0.35),
+      0 0 16px rgba(251, 191, 36, 0.28);
+  }
+
+  .slot-reveal-window {
+    min-height: 4.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 @layer utilities {

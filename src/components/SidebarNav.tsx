@@ -32,6 +32,7 @@ import {
   nestedTabGroupClass,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { SHOW_DRAFT_MODE } from "@/lib/feature-flags";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 
 interface SidebarNavProps {
@@ -48,7 +49,9 @@ const MAIN_NAV_ITEMS = [
 
 const PLAY_MODE_GROUPS = [
   { mode: "classic" as const, modeKey: "normal" as const, label: "Normal Mode", icon: "🏉" },
-  { mode: "draft" as const, modeKey: "draft" as const, label: "Draft Mode", icon: "📋" },
+  ...(SHOW_DRAFT_MODE
+    ? [{ mode: "draft" as const, modeKey: "draft" as const, label: "Draft Mode", icon: "📋" }]
+    : []),
 ] as const;
 
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";

@@ -100,6 +100,7 @@ export interface SquadSlot {
 export type GamePhase =
   | "clubSelect"
   | "pitch"
+  | "reveal"
   | "choice"
   | "placement"
   | "simulation"

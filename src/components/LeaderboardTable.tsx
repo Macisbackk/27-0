@@ -29,6 +29,7 @@ import {
   tabGroupClass,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { SHOW_DRAFT_MODE } from "@/lib/feature-flags";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
 
@@ -141,24 +142,28 @@ export function LeaderboardTable({
     availableTrackers.find((t) => t.id === activeTracker)?.label ??
     "Leaderboard";
 
+  const modeOptions = (
+    [
+      { id: "super-league" as const, label: "Normal Mode" },
+      ...(SHOW_DRAFT_MODE
+        ? [{ id: "draft" as const, label: "Draft Mode" }]
+        : []),
+      { id: "fantasy" as const, label: "Fantasy Mode" },
+      { id: "challenge-cup" as const, label: "Challenge Cup" },
+    ] as const
+  );
+
   return (
     <div>
       <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {(
-          [
-            { id: "super-league" as const, label: "Normal Mode" },
-            { id: "draft" as const, label: "Draft Mode" },
-            { id: "fantasy" as const, label: "Fantasy Mode" },
-            { id: "challenge-cup" as const, label: "Challenge Cup" },
-          ] as const
-        ).map((mode) => {
+        {modeOptions.map((mode) => {
           const selected = leaderboardMode === mode.id;
           return (
             <button
               key={mode.id}
               type="button"
               onClick={() => handleModeChange(mode.id)}
-              className={`min-h-[44px] rounded-xl border-2 px-4 py-4 text-left transition ${
+              className={`btn-press min-h-[44px] rounded-xl border-2 px-4 py-4 text-left transition active:scale-[0.98] ${
                 selected
                   ? `${CARD.featured} border-accent-green/60 bg-accent-green/10`
                   : `${CARD.base} hover:border-pitch-500/60 hover:bg-pitch-800/40`

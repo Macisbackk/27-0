@@ -3,7 +3,8 @@
 import { useEffect, useState, type ReactNode } from "react";
 import type { UserStatsData } from "@/lib/types";
 import { formatValue } from "@/lib/players";
-import { getAllStats } from "@/lib/storage/stats";
+import { EMPTY_STATS, getAllStats } from "@/lib/storage/stats";
+import { SHOW_DRAFT_MODE } from "@/lib/feature-flags";
 import { ensureEraCupLeaderboardSynced } from "@/lib/storage/cup-leaderboard";
 import { getUsername } from "@/lib/storage/user";
 import {
@@ -100,10 +101,13 @@ export function StatsPanel() {
   const hasAnyRuns =
     normalStats.totalRuns > 0 ||
     hardStats.totalRuns > 0 ||
-    draftNormalStats.totalSeasonsSimulated > 0 ||
-    draftHardStats.totalSeasonsSimulated > 0 ||
+    (SHOW_DRAFT_MODE && draftNormalStats.totalSeasonsSimulated > 0) ||
+    (SHOW_DRAFT_MODE && draftHardStats.totalSeasonsSimulated > 0) ||
     fantasyStats.totalSeasonsSimulated > 0 ||
     eraCupStats.eraChallengeCupRuns > 0;
+
+  const publicDraftNormal = SHOW_DRAFT_MODE ? draftNormalStats : EMPTY_STATS;
+  const publicDraftHard = SHOW_DRAFT_MODE ? draftHardStats : EMPTY_STATS;
 
   return (
     <div className="space-y-6">
@@ -117,7 +121,7 @@ export function StatsPanel() {
                 if (activeTab !== tab.id) playTabChange();
                 setActiveTab(tab.id);
               }}
-              className={`shrink-0 min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
+              className={`btn-press shrink-0 min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
                 activeTab === tab.id ? BTN.tabActive : BTN.tabIdle
               }`}
             >
@@ -137,15 +141,18 @@ export function StatsPanel() {
         <OverallTab
           normal={normalStats}
           hard={hardStats}
-          draftNormal={draftNormalStats}
-          draftHard={draftHardStats}
+          draftNormal={publicDraftNormal}
+          draftHard={publicDraftHard}
         />
       )}
       {activeTab === "super-league" && <SuperLeagueTab stats={normalStats} />}
       {activeTab === "hard-mode" && (
-        <HardModeTab stats={hardStats} draftHard={draftHardStats} />
+        <HardModeTab
+          stats={hardStats}
+          draftHard={SHOW_DRAFT_MODE ? draftHardStats : EMPTY_STATS}
+        />
       )}
-      {activeTab === "draft-mode" && (
+      {SHOW_DRAFT_MODE && activeTab === "draft-mode" && (
         <DraftModeTab draftNormal={draftNormalStats} />
       )}
       {activeTab === "fantasy-mode" && (
@@ -434,6 +441,7 @@ function HardModeTab({
         />
       </StatsSection>
 
+      {SHOW_DRAFT_MODE && (
       <StatsSection title="Hard Draft Mode" headerExtra={<HardModeBadge />}>
         <StatCard label="Runs" value={String(draftView.runs)} />
         <StatCard
@@ -478,6 +486,7 @@ function HardModeTab({
           value={String(draftView.winlessSeasons)}
         />
       </StatsSection>
+      )}
 
       <StatsSection title="Hard Challenge Cup" headerExtra={<HardModeBadge />}>
         <StatCard label="Appearances" value={String(cupView.appearances)} />

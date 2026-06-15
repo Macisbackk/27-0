@@ -436,7 +436,7 @@ export function PlayerShowcase() {
               {(
                 [
                   ["all", "All Players"],
-                  ["teamYear", "Team > Year"],
+                  ["teamYear", "Teams"],
                 ] as const
               ).map(([mode, label]) => (
                 <button
@@ -450,7 +450,7 @@ export function PlayerShowcase() {
                       teamYearYear: "",
                     }))
                   }
-                  className={`rounded-lg border px-2 py-2 text-[11px] font-medium transition ${
+                  className={`btn-press rounded-lg border px-2 py-2 text-[11px] font-medium transition ${
                     filters.browseMode === mode
                       ? RL_FILTER_CHIP_ACTIVE
                       : RL_FILTER_CHIP_IDLE
@@ -580,7 +580,7 @@ export function PlayerShowcase() {
               <button
                 type="button"
                 onClick={() => setAlphaSort("asc")}
-                className={`rounded-lg border px-3 py-2 text-xs font-medium transition ${
+                className={`btn-press rounded-lg border px-3 py-2 text-xs font-medium transition ${
                   sortKey === "name" && sortDir === "asc"
                     ? RL_FILTER_CHIP_ACTIVE
                     : RL_FILTER_CHIP_IDLE
@@ -591,7 +591,7 @@ export function PlayerShowcase() {
               <button
                 type="button"
                 onClick={() => setAlphaSort("desc")}
-                className={`rounded-lg border px-3 py-2 text-xs font-medium transition ${
+                className={`btn-press rounded-lg border px-3 py-2 text-xs font-medium transition ${
                   sortKey === "name" && sortDir === "desc"
                     ? RL_FILTER_CHIP_ACTIVE
                     : RL_FILTER_CHIP_IDLE

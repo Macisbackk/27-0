@@ -126,7 +126,7 @@ export function PlayerChoice({
             type="button"
             onClick={onReroll}
             disabled={disabled || !rerollAvailable || rerollsRemaining <= 0}
-            className={`rounded-lg border px-3 py-2 font-display text-[10px] font-bold uppercase tracking-[0.12em] transition sm:px-5 sm:py-2.5 sm:text-xs sm:tracking-[0.18em] ${
+            className={`rounded-lg border px-3 py-2 font-display text-[10px] font-bold uppercase tracking-[0.12em] transition sm:px-5 sm:py-2.5 sm:text-xs sm:tracking-[0.18em] btn-press ${
               rerollAvailable && rerollsRemaining > 0 && !disabled
                 ? "border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20"
                 : "cursor-not-allowed border-pitch-700/60 bg-pitch-900/50 text-gray-600"
@@ -186,7 +186,7 @@ function ChoiceCard({
       type="button"
       onClick={onChoose}
       disabled={disabled}
-      className="group flex h-full w-full min-w-0 flex-col text-left"
+      className="group btn-press flex h-full w-full min-w-0 flex-col text-left disabled:active:scale-100"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}

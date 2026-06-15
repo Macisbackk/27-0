@@ -368,7 +368,7 @@ const SquadMarker = memo(function SquadMarker({
           type="button"
           onClick={onClick}
           title={tooltip}
-          className={`${EMPTY_SLOT_BASE_CLASS} ${slotSizeClass} ${stateClass} outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50`}
+          className={`${EMPTY_SLOT_BASE_CLASS} btn-press ${slotSizeClass} ${stateClass} outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50`}
         >
           {inner}
         </button>
@@ -393,7 +393,7 @@ const SquadMarker = memo(function SquadMarker({
           type="button"
           onClick={onClick}
           title={`${slot.label}: change or remove player`}
-          className={`rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50 ${
+          className={`btn-press rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50 ${
             selected
               ? "ring-2 ring-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.45)]"
               : "hover:ring-2 hover:ring-accent-green/40"

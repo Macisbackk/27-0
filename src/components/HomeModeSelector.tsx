@@ -28,6 +28,7 @@ import {
   tabGroupClass,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { SHOW_DRAFT_MODE } from "@/lib/feature-flags";
 import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 
@@ -122,6 +123,7 @@ export function HomeModeSelector() {
           </Link>
         </ModePanel>
 
+        {SHOW_DRAFT_MODE && (
         <ModePanel title="Draft Mode" hardActive={draftHard}>
           <p className={TYPO.body}>
             Pick players from pairs, then place them in any empty slot. Natural
@@ -161,11 +163,12 @@ export function HomeModeSelector() {
             {draftHard ? "Start Hard Draft" : "Start Draft"} →
           </Link>
         </ModePanel>
+        )}
 
         <Link
           href={buildPlayHref("fantasy")}
           onClick={() => playUiClick()}
-          className={`${CARD.glass} ${CARD.panel} group block w-full ${SPACING.cardPaddingLg} transition hover:border-accent-green/30`}
+          className={`${CARD.glass} ${CARD.panel} group block w-full ${SPACING.cardPaddingLg} transition hover:border-accent-green/30 active:scale-[0.99]`}
         >
           <h2 className={`${TYPO.cardTitle} group-hover:text-accent-green`}>
             Fantasy Mode
@@ -177,7 +180,9 @@ export function HomeModeSelector() {
           <ul className={`mt-3 space-y-1 ${TYPO.bodySm} text-gray-500`}>
             <li>Budget £3M · Squad 13 · 27 rounds</li>
           </ul>
-          <span className={`mt-5 ${BTN.base} ${BTN.primary}`}>
+          <span
+            className={`pointer-events-none mt-5 inline-flex w-full ${BTN.base} ${BTN.primary}`}
+          >
             Start Fantasy Mode →
           </span>
         </Link>

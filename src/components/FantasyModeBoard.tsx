@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence } from "framer-motion";
 import type { Player, SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
 import { generateRunSeed } from "@/lib/game/generator";
@@ -70,6 +69,7 @@ export function FantasyModeBoard() {
   const [autofillError, setAutofillError] = useState<string | null>(null);
   const recordedRef = useRef(false);
   const modeSoundPlayed = useRef(false);
+  const pickerRef = useRef<HTMLDivElement>(null);
 
   const { seed, runId } = useMemo(() => {
     const s = createRunSeed(runKey);
@@ -89,6 +89,11 @@ export function FantasyModeBoard() {
     selectedSlotIndex !== null
       ? squad.find((s) => s.slotIndex === selectedSlotIndex) ?? null
       : null;
+
+  useEffect(() => {
+    if (phase !== "squadBuild" || selectedSlotIndex === null) return;
+    pickerRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [phase, selectedSlotIndex]);
 
   const resetRun = useCallback(() => {
     setRunKey((k) => k + 1);
@@ -111,7 +116,7 @@ export function FantasyModeBoard() {
 
   const handleSelectSlot = (slotIndex: number) => {
     playPositionSelect();
-    setSelectedSlotIndex(slotIndex);
+    setSelectedSlotIndex((current) => (current === slotIndex ? null : slotIndex));
   };
 
   const handlePickPlayer = (player: Player) => {
@@ -191,7 +196,6 @@ export function FantasyModeBoard() {
         setRunRank(nationalRank);
         setSubmittedOnline(online);
       });
-
     },
     [squad, runId, seed]
   );
@@ -206,12 +210,16 @@ export function FantasyModeBoard() {
             Fantasy Mode
           </h1>
           {phase === "start" && (
-            <p className={`mx-auto mt-3 max-w-lg ${TYPO.body}`}>{FANTASY_MODE_INTRO}</p>
+            <p className={`mx-auto mt-3 max-w-lg ${TYPO.body}`}>
+              {FANTASY_MODE_INTRO}
+            </p>
           )}
         </header>
 
         {phase === "start" && (
-          <div className={`mx-auto max-w-xl ${CARD.glass} ${CARD.panel} ${SPACING.cardPaddingLg}`}>
+          <div
+            className={`mx-auto max-w-xl ${CARD.glass} ${CARD.panel} ${SPACING.cardPaddingLg}`}
+          >
             <h2 className={TYPO.cardTitle}>Fantasy Mode</h2>
             <p className={`mt-3 ${TYPO.body}`}>{FANTASY_MODE_INTRO}</p>
             <ul className="mt-5 space-y-2 text-sm text-gray-400">
@@ -230,34 +238,59 @@ export function FantasyModeBoard() {
         )}
 
         {(phase === "squadBuild" || phase === "season") && (
-          <>
+          <div className="space-y-5">
             <FantasyBudgetPanel squad={squad} />
 
             {phase === "squadBuild" && (
               <>
-                <p className={`mt-4 text-center ${TYPO.bodySm}`}>
-                  Tap a position to browse and sign players (
-                  {filledCount}/{TOTAL_SLOTS} filled).
-                </p>
-
-                {!squadComplete && (
-                  <div className="mt-4 flex justify-center">
+                <div
+                  className={`${CARD.base} flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4`}
+                >
+                  <div className="min-w-0 text-center sm:text-left">
+                    <p className={TYPO.sectionLabel}>Squad progress</p>
+                    <p className={`mt-1 ${TYPO.bodySm}`}>
+                      Tap a position below to browse players ·{" "}
+                      <span className="font-semibold text-white">
+                        {filledCount}/{TOTAL_SLOTS}
+                      </span>{" "}
+                      filled
+                    </p>
+                  </div>
+                  {!squadComplete && (
                     <button
                       type="button"
                       onClick={handleAutofill}
-                      className={`${BTN.base} ${BTN.greenOutlineSm} px-6`}
+                      className={`${BTN.base} ${BTN.greenOutlineSm} w-full shrink-0 px-6 sm:w-auto`}
                     >
                       Auto Fill Squad
                     </button>
-                  </div>
-                )}
+                  )}
+                </div>
+
                 {autofillError && (
-                  <p className="mx-auto mt-2 max-w-md text-center text-xs font-medium text-accent-red sm:text-sm">
+                  <p className="text-center text-xs font-medium text-accent-red sm:text-sm">
                     {autofillError}
                   </p>
                 )}
 
-                <div className={`${CARD.panel} mt-4 p-2 sm:p-4`}>
+                {selectedSlot && (
+                  <div ref={pickerRef}>
+                    <FantasyPlayerPicker
+                      inline
+                      slot={selectedSlot}
+                      squad={squad}
+                      filters={pickerFilters}
+                      onFiltersChange={setPickerFilters}
+                      onSelect={handlePickPlayer}
+                      onRemove={
+                        selectedSlot.player ? handleRemovePlayer : undefined
+                      }
+                      onClose={() => setSelectedSlotIndex(null)}
+                    />
+                  </div>
+                )}
+
+                <div className={`${CARD.panel} p-2 sm:p-4`}>
                   <RugbyPitch
                     squad={squad}
                     totalValue={getSquadValue(squad)}
@@ -272,11 +305,11 @@ export function FantasyModeBoard() {
                 </div>
 
                 {squadComplete && budgetOk && (
-                  <div className="mt-4 flex justify-center">
+                  <div className="flex justify-center pt-1">
                     <button
                       type="button"
                       onClick={handleBeginSeason}
-                      className={`${BTN.base} ${BTN.primary}`}
+                      className={`${BTN.base} ${BTN.primary} w-full sm:w-auto`}
                     >
                       Begin Season →
                     </button>
@@ -286,15 +319,13 @@ export function FantasyModeBoard() {
             )}
 
             {phase === "season" && seasonState && (
-              <div className="mt-4">
-                <FantasySeasonPlay
-                  initialState={seasonState}
-                  squad={squad}
-                  onComplete={handleSeasonComplete}
-                />
-              </div>
+              <FantasySeasonPlay
+                initialState={seasonState}
+                squad={squad}
+                onComplete={handleSeasonComplete}
+              />
             )}
-          </>
+          </div>
         )}
 
         {phase === "review" && seasonResult && (
@@ -310,20 +341,6 @@ export function FantasyModeBoard() {
             onClose={() => {}}
           />
         )}
-
-        <AnimatePresence>
-          {phase === "squadBuild" && selectedSlot && (
-            <FantasyPlayerPicker
-              slot={selectedSlot}
-              squad={squad}
-              filters={pickerFilters}
-              onFiltersChange={setPickerFilters}
-              onSelect={handlePickPlayer}
-              onRemove={selectedSlot.player ? handleRemovePlayer : undefined}
-              onClose={() => setSelectedSlotIndex(null)}
-            />
-          )}
-        </AnimatePresence>
       </div>
     </div>
   );
