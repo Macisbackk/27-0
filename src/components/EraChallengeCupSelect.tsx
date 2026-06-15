@@ -21,6 +21,7 @@ import {
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { ClubHeaderBar } from "./ClubBadge";
 import { RugbyPitch } from "./RugbyPitch";
+import { EraChallengeCupBranding } from "./EraChallengeCupBranding";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -107,17 +108,26 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
   );
 
   return (
-    <div className={`mx-auto w-full max-w-xl ${SPACING.pageX} py-6`}>
+    <div className={`mx-auto w-full max-w-xl ${SPACING.pageX} py-4`}>
       <div
         className={`${CARD.glass} ${CARD.panel} w-full ${SPACING.cardPaddingLg} transition hover:border-accent-gold/30`}
       >
-        <h2 className={TYPO.cardTitle}>Challenge Cup</h2>
-        <p className={`mt-3 ${TYPO.body}`}>
-          Pick a historic club season and lead that era squad through a knockout
-          draw against opponents from across the decades.
-        </p>
+        {previewTeam ? (
+          <EraChallengeCupBranding
+            teamDisplayName={previewTeam.displayName}
+            clubName={previewTeam.clubName}
+            year={getEraSquadYear(previewTeam)}
+            compact
+            className="mb-4 border-0 bg-transparent p-0 shadow-none"
+          />
+        ) : (
+          <EraChallengeCupBranding
+            compact
+            className="mb-4 border-0 bg-transparent p-0 shadow-none"
+          />
+        )}
 
-        <p className={`mt-5 ${TYPO.statLabel}`}>Select Club</p>
+        <p className={`${TYPO.statLabel}`}>Select Club</p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {clubs.map((club) => {
             const colors = getClubColors(club);

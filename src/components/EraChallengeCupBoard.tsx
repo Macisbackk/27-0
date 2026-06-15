@@ -165,12 +165,6 @@ export function EraChallengeCupBoard() {
       <div className="mx-auto max-w-5xl px-4">
         <GuestNotice variant="play" />
 
-        <header className="mb-4 text-center">
-          <h1 className="font-display text-3xl font-black sm:text-4xl">
-            Challenge Cup
-          </h1>
-        </header>
-
         {phase === "select" && (
           <>
             {bracketError && (
@@ -193,6 +187,10 @@ export function EraChallengeCupBoard() {
               userClub={eraTeam.displayName}
               initialState={bracketState}
               headerLabel="Era Challenge Cup"
+              eraMode
+              eraTeamDisplayName={eraTeam.displayName}
+              eraTeamYear={getEraSquadYear(eraTeam)}
+              eraClubName={eraTeam.clubName}
               eraClubLookup={bracketState.eraClubLookup}
               onComplete={handleCupComplete}
             />

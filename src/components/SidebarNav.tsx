@@ -67,6 +67,10 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const [muted, setMuted] = useState(false);
   const [cupEraVariant, setCupEraVariantState] = useState(false);
 
+  useEffect(() => {
+    setCupEraVariantState(getCupEraVariant());
+  }, []);
+
   const syncDifficulties = useCallback(() => {
     setNormalDifficulty(getModeDifficulty("normal"));
     setDraftDifficulty(getModeDifficulty("draft"));
@@ -93,7 +97,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   useEffect(() => {
     if (isCupActive) {
       setCupEraVariantState(isEraCup);
-      setCupEraVariant(isEraCup);
     }
   }, [isCupActive, isEraCup]);
 
@@ -113,6 +116,12 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     if (pathname.startsWith("/play") && playSearch.cup === "1") {
       router.push(buildPlayHref("cup", "NORMAL", era));
     }
+  };
+
+  const handleChallengeCupNavigate = () => {
+    setCupEraVariant(cupEraVariant);
+    router.push(buildPlayHref("cup", "NORMAL", cupEraVariant));
+    onClose();
   };
 
   useEffect(() => {
@@ -292,10 +301,10 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   </li>
 
                   <li className={NAV.playModeGroup}>
-                    <Link
-                      href={buildPlayHref("cup", "NORMAL", cupEraVariant)}
-                      onClick={onClose}
-                      className={`${NAV.item} ${
+                    <button
+                      type="button"
+                      onClick={handleChallengeCupNavigate}
+                      className={`${NAV.item} w-full ${
                         isCupActive
                           ? isEraCup
                             ? "border border-accent-gold/40 bg-accent-gold text-pitch-950"
@@ -314,7 +323,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                           }`}
                         />
                       )}
-                    </Link>
+                    </button>
                     <div className={NAV.nestedBlock}>
                       <ChallengeCupVariantToggle
                         compact

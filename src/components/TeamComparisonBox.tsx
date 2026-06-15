@@ -24,6 +24,7 @@ import {
 interface TeamComparisonBoxProps {
   comparison: ExtendedTeamComparison;
   delay?: number;
+  eraMode?: boolean;
 }
 
 function formatTeamRating(rating: number): string {
@@ -42,6 +43,7 @@ function ratingEdgeForSide(
 export const TeamComparisonBox = memo(function TeamComparisonBox({
   comparison,
   delay = 0,
+  eraMode = false,
 }: TeamComparisonBoxProps) {
   const { user, opponent, ratingEdge, mostExpensiveOpponent, useTriesConceded } =
     comparison;
@@ -106,7 +108,9 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
 
   return (
     <motion.div
-      className={`overflow-hidden ${CARD.elevated}`}
+      className={`overflow-hidden ${CARD.elevated}${
+        eraMode ? " border border-accent-gold/35 ring-1 ring-accent-gold/15" : ""
+      }`}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}

@@ -71,6 +71,22 @@ export const FORMATION_SLOT_INDICES = [
   0, 1, 3, 4, 2, 5, 6, 7, 8, 9, 10, 12, 11,
 ] as const;
 
+/** Display label for a formation slot (matches team sheet / player selection). */
+export function getFormationSlotDisplayLabel(slotIndex: number): string {
+  const def = SLOT_DEFINITIONS[slotIndex];
+  if (!def) return "Unknown";
+  if (def.position === "FULLBACK") return "Full Back";
+  return POSITION_LABELS[def.position];
+}
+
+/** Sort key for rendering players in team-sheet order. */
+export function getFormationSlotSortOrder(slotIndex: number): number {
+  const order = FORMATION_SLOT_INDICES.indexOf(
+    slotIndex as (typeof FORMATION_SLOT_INDICES)[number]
+  );
+  return order >= 0 ? order : slotIndex + 100;
+}
+
 /**
  * Rugby League 13-player formation — percentage coords inside pitch container.
  * FB → back line (LW, LC, RC, RW) → halves → front row → second row → loose forward.

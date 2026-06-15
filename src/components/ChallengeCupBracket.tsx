@@ -30,6 +30,7 @@ import { UI_SURFACES } from "@/lib/ui/surfaces";
 import { resolveEraTeamClubName } from "@/lib/players/era-teams";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { BracketMatchDetailsPanel } from "./BracketMatchDetailsPanel";
+import { EraChallengeCupBranding } from "./EraChallengeCupBranding";
 
 interface ChallengeCupBracketProps {
   squad: SquadSlot[];
@@ -39,6 +40,10 @@ interface ChallengeCupBracketProps {
   initialState?: ChallengeCupBracketState;
   headerLabel?: string;
   eraClubLookup?: Record<string, string>;
+  eraMode?: boolean;
+  eraTeamDisplayName?: string;
+  eraTeamYear?: string | number;
+  eraClubName?: string;
 }
 
 const ROUNDS = [1, 2, 3, 4] as const;
@@ -51,6 +56,10 @@ export function ChallengeCupBracket({
   initialState,
   headerLabel = "Challenge Cup",
   eraClubLookup,
+  eraMode = false,
+  eraTeamDisplayName,
+  eraTeamYear,
+  eraClubName,
 }: ChallengeCupBracketProps) {
   const [state, setState] = useState<ChallengeCupBracketState>(
     () => initialState ?? createChallengeCupBracket(seed, userClub)
@@ -128,18 +137,36 @@ export function ChallengeCupBracket({
 
   return (
     <div className="w-full px-2 py-4 sm:px-4">
-      <div className="text-center">
-        <p className="font-display text-xs font-bold uppercase tracking-[0.35em] text-accent-green">
-          {headerLabel}
-        </p>
-        <h2 className="mt-2 font-display text-2xl font-black sm:text-3xl">
-          Knockout Bracket
-        </h2>
-        <p className="mt-2 text-sm text-gray-400">
-          {state.tournamentComplete
-            ? "Tournament complete"
-            : `${getCupRoundLabel(activeRound)} — simulate matches to advance`}
-        </p>
+      {eraMode ? (
+        <EraChallengeCupBranding
+          teamDisplayName={eraTeamDisplayName ?? userClub}
+          clubName={eraClubName}
+          year={eraTeamYear}
+          subtitle={
+            state.tournamentComplete
+              ? "Tournament complete"
+              : `${getCupRoundLabel(activeRound)} — simulate matches to advance`
+          }
+          compact
+          className="mb-4"
+        />
+      ) : (
+        <div className="text-center">
+          <p className="font-display text-xs font-bold uppercase tracking-[0.35em] text-accent-green">
+            {headerLabel}
+          </p>
+          <h2 className="mt-2 font-display text-2xl font-black sm:text-3xl">
+            Knockout Bracket
+          </h2>
+          <p className="mt-2 text-sm text-gray-400">
+            {state.tournamentComplete
+              ? "Tournament complete"
+              : `${getCupRoundLabel(activeRound)} — simulate matches to advance`}
+          </p>
+        </div>
+      )}
+
+      {!eraMode && (
         <div className="mx-auto mt-3 flex max-w-md flex-wrap items-center justify-center gap-2">
           {state.byeTeams.map((club) => (
             <span
@@ -150,7 +177,20 @@ export function ChallengeCupBracket({
             </span>
           ))}
         </div>
-      </div>
+      )}
+
+      {eraMode && state.byeTeams.length > 0 && (
+        <div className="mx-auto mt-2 flex max-w-md flex-wrap items-center justify-center gap-2">
+          {state.byeTeams.map((club) => (
+            <span
+              key={club}
+              className="rounded-full border border-accent-gold/30 bg-accent-gold/10 px-3 py-1 text-[10px] font-semibold text-accent-gold"
+            >
+              {club} — Quarter-Final Bye
+            </span>
+          ))}
+        </div>
+      )}
 
       <div className="mt-5 flex flex-wrap justify-center gap-2">
         <button

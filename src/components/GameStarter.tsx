@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { GameDifficulty, GameMode } from "@/lib/types";
 import {
   setModeDifficulty,
@@ -40,9 +41,14 @@ export function GameStarter({
   superSamHallasMode = false,
   eraChallengeCup = false,
 }: GameStarterProps) {
+  const searchParams = useSearchParams();
   const [difficulty, setDifficultyState] =
     useState<GameDifficulty>(initialDifficulty);
   const [ready, setReady] = useState(false);
+
+  const eraFromUrl = searchParams.get("era") === "1";
+  const isEraChallengeCup =
+    mode === "CHALLENGE_CUP" && (eraChallengeCup || eraFromUrl);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -74,7 +80,7 @@ export function GameStarter({
     return <FantasyModeBoard />;
   }
 
-  if (mode === "CHALLENGE_CUP" && eraChallengeCup) {
+  if (mode === "CHALLENGE_CUP" && isEraChallengeCup) {
     return <EraChallengeCupBoard />;
   }
 

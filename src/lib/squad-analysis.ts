@@ -22,6 +22,10 @@ export interface ClubPlayerEntry {
   naturalPosition: Position;
   playedPosition: Position;
   positionMismatch: boolean;
+  /** Squad slot index for team-sheet ordering. */
+  slotIndex: number;
+  /** Slot label from team sheet (e.g. Left Wing). */
+  slotLabel: string;
   category: PlayerCategory;
   displayCategory: ClubPlayerDisplayCategory;
   /** Effective OVR after run penalties. */
@@ -95,6 +99,8 @@ export function getClubBreakdown(
       naturalPosition: display.naturalPosition,
       playedPosition: display.playedPosition,
       positionMismatch: display.positionMismatch,
+      slotIndex: slot.slotIndex,
+      slotLabel: slot.label,
       category: player.category,
       displayCategory: getPlayerDisplayCategory(player, options),
       peakRating: display.adjustedRating,
@@ -136,6 +142,8 @@ export function getClubBreakdown(
             naturalPosition: entry.players[0]!.naturalPosition,
             playedPosition: entry.players[0]!.playedPosition,
             positionMismatch: false,
+            slotIndex: entry.players[0]!.slotIndex,
+            slotLabel: entry.players[0]!.slotLabel,
             category: entry.players[0]!.category,
             displayCategory: "superSam" as const,
             peakRating: rating,

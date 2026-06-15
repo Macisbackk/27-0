@@ -17,7 +17,8 @@ import {
 import { playPanelExpand } from "@/lib/sound";
 import { formatValue, formatPlayerAgeLabel, getPlayerById } from "@/lib/players";
 import { formatPositionReviewText } from "@/lib/squad-display";
-import { buildClubLineupGroups } from "@/lib/club-lineup";
+import { buildTeamSheetLineup } from "@/lib/club-lineup";
+import { getFormationSlotDisplayLabel } from "@/lib/positions";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubPillBackground } from "@/lib/ui/contrast";
@@ -53,44 +54,61 @@ function ClubPlayerStatusBadge({
   return <PlayerStatusBadge status={category as PlayerStatusType} />;
 }
 
-function LineupPlayerRow({
+function TeamSheetPlayerRow({
+  positionLabel,
   player,
   clubName,
+  accentPrimary,
 }: {
+  positionLabel: string;
   player: ClubPlayerEntry;
   clubName: string;
+  accentPrimary: string;
 }) {
   const poolPlayer = getPlayerById(player.playerId);
+  const positionNote =
+    player.playerId === "ssh-sam-hallas-group"
+      ? "All 13 positions"
+      : formatPositionReviewText(player);
 
   return (
-    <div className={`${CARD.inset} px-2.5 py-2 sm:px-3`}>
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0 flex-1">
-          <p className={TYPO.playerNameSm}>{player.name}</p>
+    <div
+      className={`flex items-center gap-2 rounded-lg border border-pitch-600/45 bg-pitch-900/55 px-2 py-1.5 sm:gap-3 sm:px-2.5 sm:py-2`}
+      style={{ borderLeftColor: `${accentPrimary}88`, borderLeftWidth: 3 }}
+    >
+      <div className="w-[4.5rem] shrink-0 sm:w-[5.5rem]">
+        <p className="font-display text-[9px] font-bold uppercase leading-tight tracking-wide text-gray-500 sm:text-[10px]">
+          {positionLabel}
+        </p>
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <p className={`truncate ${TYPO.playerNameSm}`}>{player.name}</p>
           <ClubPlayerStatusBadge category={player.displayCategory} />
-          <p className={`mt-0.5 ${TYPO.bodySm} text-gray-400`}>
-            {player.playerId === "ssh-sam-hallas-group"
-              ? "All 13 positions"
-              : formatPositionReviewText(player)}
-            {poolPlayer && (
-              <>
-                <span className="mx-1.5 text-gray-600">·</span>
-                <span>{formatPlayerAgeLabel(poolPlayer)}</span>
-              </>
-            )}
-          </p>
-          {player.displayClub && player.displayClub !== clubName && (
-            <p className={`mt-0.5 ${TYPO.bodySm} text-accent-gold/90`}>
-              {player.displayClub}
-            </p>
-          )}
         </div>
-        <div className="shrink-0 text-right">
-          <p className={`${TYPO.rating} text-sm`}>{formatRatingLine(player)}</p>
-          <p className="mt-0.5 text-xs font-semibold text-accent-gold">
-            {formatValue(player.value)}
+        {player.positionMismatch && (
+          <p className={`mt-0.5 ${TYPO.bodySm} text-amber-400/90`}>
+            {positionNote}
           </p>
-        </div>
+        )}
+        {player.displayClub && player.displayClub !== clubName && (
+          <p className={`mt-0.5 ${TYPO.bodySm} text-accent-gold/90`}>
+            {player.displayClub}
+          </p>
+        )}
+        {poolPlayer && !player.positionMismatch && (
+          <p className={`mt-0.5 hidden ${TYPO.bodySm} text-gray-500 sm:block`}>
+            {formatPlayerAgeLabel(poolPlayer)}
+          </p>
+        )}
+      </div>
+      <div className="shrink-0 text-right">
+        <p className={`${TYPO.rating} text-xs sm:text-sm`}>
+          {formatRatingLine(player)}
+        </p>
+        <p className="mt-0.5 text-[10px] font-semibold text-accent-gold sm:text-xs">
+          {formatValue(player.value)}
+        </p>
       </div>
     </div>
   );
@@ -118,7 +136,7 @@ export function ClubRepresentation({
         clubs.map((c) => {
           const isExpanded = expandedClub === c.club;
           const colors = getClubColors(clubColorOverride ?? c.club);
-          const lineupGroups = buildClubLineupGroups(c.players);
+          const lineupRows = buildTeamSheetLineup(c.players);
           return (
             <div key={c.club}>
               <RLClubRow
@@ -144,31 +162,21 @@ export function ClubRepresentation({
                         background: `linear-gradient(135deg, ${colors.primary}18 0%, rgba(15,23,42,0.9) 55%)`,
                       }}
                     >
-                      <div className={SPACING.stackSm}>
-                        {lineupGroups.map((group) => (
-                          <section key={group.label}>
-                            <p
-                              className={`mb-1.5 border-b border-white/10 pb-1 font-display text-[10px] font-bold uppercase tracking-[0.14em] text-gray-500`}
-                            >
-                              {group.label}
-                            </p>
-                            <div className="grid gap-1.5">
-                              {group.rows.map((row) => (
-                                <div key={`${row.positionLabel}-${row.players[0]?.playerId}`}>
-                                  <p className="mb-0.5 px-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-500">
-                                    {row.positionLabel}
-                                  </p>
-                                  {row.players.map((player) => (
-                                    <LineupPlayerRow
-                                      key={player.playerId}
-                                      player={player}
-                                      clubName={c.club}
-                                    />
-                                  ))}
-                                </div>
-                              ))}
-                            </div>
-                          </section>
+                      <p className="mb-2 font-display text-[10px] font-bold uppercase tracking-[0.14em] text-gray-500">
+                        Team Sheet
+                      </p>
+                      <div className="grid gap-1 sm:gap-1.5">
+                        {lineupRows.map((row) => (
+                          <TeamSheetPlayerRow
+                            key={row.player.playerId}
+                            positionLabel={
+                              row.positionLabel ||
+                              getFormationSlotDisplayLabel(row.player.slotIndex)
+                            }
+                            player={row.player}
+                            clubName={c.club}
+                            accentPrimary={colors.primary}
+                          />
                         ))}
                       </div>
                     </div>

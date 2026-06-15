@@ -33,6 +33,7 @@ import type { MatchFixture, SeasonResult } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { ClubRepresentation } from "./ClubRepresentation";
 import { Confetti } from "./Confetti";
+import { EraChallengeCupBranding } from "./EraChallengeCupBranding";
 import { HardModeBadge } from "./HardModeBadge";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { BracketRecap } from "./BracketRecap";
@@ -227,6 +228,21 @@ export function ChallengeCupReview({
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-8 sm:py-12">
+        {cupResult.eraMode && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-4 w-full max-w-xl"
+          >
+            <EraChallengeCupBranding
+              teamDisplayName={userTeamName}
+              clubName={userClubColorOverride}
+              compact
+              subtitle="Tournament review"
+            />
+          </motion.div>
+        )}
+
         <motion.header
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -443,7 +459,7 @@ export function ChallengeCupReview({
           variant="featured"
           delay={0.46}
         >
-          <TeamComparisonBox comparison={teamComparison} />
+          <TeamComparisonBox comparison={teamComparison} eraMode={cupResult.eraMode} />
         </CollapsibleReviewSection>
 
         <motion.footer
