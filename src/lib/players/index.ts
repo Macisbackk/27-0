@@ -188,6 +188,14 @@ export {
 } from "./achievements";
 export { formatCareerTries } from "./career-tries";
 export {
+  formatPlayerAge,
+  formatPlayerAgeLabel,
+  getPlayerAge,
+  resolveBirthYear,
+  resolveCardYear,
+  withEraYear,
+} from "./player-age";
+export {
   getTeamYearRosters,
   getTeamsWithYearRosters,
   getYearsForTeam,

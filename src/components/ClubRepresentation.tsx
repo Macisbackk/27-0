@@ -14,7 +14,7 @@ import {
   type PlayerStatusType,
 } from "./cards/PlayerStatusBadge";
 import { playPanelExpand } from "@/lib/sound";
-import { formatValue } from "@/lib/players";
+import { formatValue, formatPlayerAgeLabel, getPlayerById } from "@/lib/players";
 import { formatPositionReviewText } from "@/lib/squad-display";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -93,7 +93,9 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                         background: `linear-gradient(135deg, ${colors.primary}18 0%, rgba(15,23,42,0.9) 55%)`,
                       }}
                     >
-                      {c.players.map((player) => (
+                      {c.players.map((player) => {
+                        const poolPlayer = getPlayerById(player.playerId);
+                        return (
                         <li
                           key={player.playerId}
                           className={`${CARD.inset} px-3 py-2.5`}
@@ -109,6 +111,12 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                               {player.playerId === "ssh-sam-hallas-group"
                                 ? "All 13 positions"
                                 : formatPositionReviewText(player)}
+                              {poolPlayer && (
+                                <>
+                                  <span className="mx-2 text-gray-600">·</span>
+                                  <span>{formatPlayerAgeLabel(poolPlayer)}</span>
+                                </>
+                              )}
                             </p>
                           </div>
                           <div className={`mt-2 flex flex-wrap items-center gap-3 ${TYPO.bodySm}`}>
@@ -121,7 +129,8 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
                             </span>
                           </div>
                         </li>
-                      ))}
+                        );
+                      })}
                     </div>
                   </motion.ul>
                 )}

@@ -1,4 +1,9 @@
 import type { Player, Position, SquadSlot } from "../types";
+import { getAverageSquadRating } from "../squad-analysis";
+import { getTeamTier } from "../team-tiers";
+import { getClubByName } from "../clubs";
+import { getPlayerById, getPlayersByClub, PLAYER_POOL } from "./index";
+import { withEraYear } from "./player-age";
 import {
   SQUAD_STRUCTURE,
   createEmptySquad,
@@ -6,15 +11,12 @@ import {
   getSquadValue,
   signPlayerToSlot,
 } from "../positions";
-import { getAverageSquadRating } from "../squad-analysis";
-import { getTeamTier } from "../team-tiers";
-import { getClubByName } from "../clubs";
-import { getPlayerById, getPlayersByClub, PLAYER_POOL } from "./index";
 import {
-  getRosterPlayerIds,
-  getYearsForTeam,
-  hasTeamYearRoster,
-} from "./team-year-rosters";
+  getEraWikipediaSquadPlayerIds,
+  getEraWikipediaSquadPositions,
+  getEraWikipediaYearsForClub,
+  hasEraWikipediaSquad,
+} from "./era-wikipedia-squads";
 
 export const MIN_ERA_ROSTER_PLAYERS = 13;
 export const FULL_ERA_SQUAD_SIZE = 13;
@@ -74,6 +76,7 @@ export interface EraTeam {
   year: string;
   displayName: string;
   playerIds: string[];
+  slotPositions: Position[];
   teamRating: number;
   teamValue: number;
   tier: string;
@@ -160,27 +163,50 @@ export function getEraClubs(): EraChallengeClub[] {
 }
 
 export function getEraYearsForClub(clubName: string): string[] {
-  const candidateYears = DERIVED_ROSTER_CLUBS.has(clubName)
-    ? getDerivedYearsForClub(clubName)
-    : getYearsForTeam(clubName).filter((year) => {
-        const count = getRosterPlayerIds(clubName, year).length;
-        return count >= MIN_ERA_ROSTER_PLAYERS;
-      });
-
-  return candidateYears.filter((year) => {
+  return getEraWikipediaYearsForClub(clubName).filter((year) => {
     const team = buildEraTeam(clubName, year);
     return team !== null;
   });
 }
 
 export function getEraRosterPlayerIds(club: string, year: string): string[] {
-  if (DERIVED_ROSTER_CLUBS.has(club) || !hasTeamYearRoster(club, year)) {
-    return getDerivedRosterPlayerIds(club, year);
-  }
-  return getRosterPlayerIds(club, year);
+  return getEraWikipediaSquadPlayerIds(club, year) ?? [];
 }
 
-export function buildEraSquadFromRoster(playerIds: string[]): SquadSlot[] {
+export function buildEraSquadFromRoster(
+  playerIds: string[],
+  slotPositions?: Position[],
+  eraYear?: number
+): SquadSlot[] {
+  let squad = createEmptySquad();
+
+  const eraPlayer = (player: Player): Player =>
+    eraYear !== undefined ? withEraYear(player, eraYear) : player;
+
+  if (slotPositions && slotPositions.length === playerIds.length) {
+    const slotsByPosition = new Map<Position, SquadSlot[]>();
+    for (const slot of squad) {
+      const list = slotsByPosition.get(slot.position) ?? [];
+      list.push(slot);
+      slotsByPosition.set(slot.position, list);
+    }
+
+    const usedSlots = new Set<number>();
+    for (let i = 0; i < playerIds.length; i++) {
+      const player = getPlayerById(playerIds[i]);
+      const position = slotPositions[i];
+      if (!player || !position) continue;
+      const candidates = (slotsByPosition.get(position) ?? []).filter(
+        (slot) => !usedSlots.has(slot.slotIndex)
+      );
+      const slot = candidates[0];
+      if (!slot) continue;
+      usedSlots.add(slot.slotIndex);
+      squad = signPlayerToSlot(squad, eraPlayer(player), slot.slotIndex);
+    }
+    return squad;
+  }
+
   const rosterPlayers = playerIds
     .map((id) => getPlayerById(id))
     .filter((p): p is Player => p !== undefined);
@@ -196,7 +222,7 @@ export function buildEraSquadFromRoster(playerIds: string[]): SquadSlot[] {
     list.sort((a, b) => b.peakRating - a.peakRating);
   }
 
-  let squad = createEmptySquad();
+  squad = createEmptySquad();
   const used = new Set<string>();
 
   for (const { position, count } of SQUAD_STRUCTURE) {
@@ -211,7 +237,7 @@ export function buildEraSquadFromRoster(playerIds: string[]): SquadSlot[] {
       );
       if (!slot) break;
       used.add(pick.id);
-      squad = signPlayerToSlot(squad, pick, slot.slotIndex);
+      squad = signPlayerToSlot(squad, eraPlayer(pick), slot.slotIndex);
     }
   }
 
@@ -277,9 +303,18 @@ function logEraValidationWarning(
 }
 
 export function buildEraTeam(clubName: string, year: string): EraTeam | null {
+  if (!hasEraWikipediaSquad(clubName, year)) {
+    return null;
+  }
+
   const playerIds = getEraRosterPlayerIds(clubName, year);
+  const slotPositions = getEraWikipediaSquadPositions(clubName, year) ?? undefined;
   const displayName = formatEraDisplayName(clubName, year);
-  const squad = buildEraSquadFromRoster(playerIds);
+  const squad = buildEraSquadFromRoster(
+    playerIds,
+    slotPositions,
+    Number(year)
+  );
   const teamRating = getAverageSquadRating(squad);
   const teamValue = getSquadValue(squad);
 
@@ -310,6 +345,7 @@ export function buildEraTeam(clubName: string, year: string): EraTeam | null {
     year,
     displayName,
     playerIds,
+    slotPositions: slotPositions ?? [],
     teamRating,
     teamValue,
     tier: getTeamTier(teamRating),

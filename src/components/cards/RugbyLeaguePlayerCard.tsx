@@ -5,6 +5,7 @@ import type { Player } from "@/lib/types";
 import {
   formatCareerTries,
   formatPlayerDisplayName,
+  formatPlayerAge,
   formatValue,
 } from "@/lib/players";
 import { getPlayerInitials } from "@/lib/players/initials";
@@ -97,6 +98,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
     player.appearances !== undefined
       ? String(player.appearances)
       : "Unknown";
+  const ageValue = formatPlayerAge(player);
 
   const statusStrip =
     isSuperSam ? (
@@ -274,6 +276,13 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
               compact={mobileCompact}
             />
             <StatBox
+              label="Age"
+              value={ageValue}
+              size="lg"
+              light
+              compact={mobileCompact}
+            />
+            <StatBox
               label="Years Active"
               value={player.yearsActive}
               size="lg"
@@ -337,6 +346,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           <StatBox label="Apps" value={appearancesValue} />
           <StatBox label="Tries" value={formatCareerTries(player.tries)} />
+          <StatBox label="Age" value={ageValue} />
           <StatBox
             label="Years Active"
             value={player.yearsActive}

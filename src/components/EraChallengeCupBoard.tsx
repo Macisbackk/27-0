@@ -75,7 +75,13 @@ export function EraChallengeCupBoard() {
 
   const handleTeamConfirm = (team: EraTeam) => {
     setEraTeam(team);
-    setSquad(buildEraSquadFromRoster(team.playerIds));
+    setSquad(
+      buildEraSquadFromRoster(
+        team.playerIds,
+        team.slotPositions,
+        Number(team.year)
+      )
+    );
     setPhase("preview");
   };
 

@@ -40,7 +40,14 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
   }, [selectedClub, selectedYear]);
 
   const previewSquad = useMemo(
-    () => (previewTeam ? buildEraSquadFromRoster(previewTeam.playerIds) : null),
+    () =>
+      previewTeam
+        ? buildEraSquadFromRoster(
+            previewTeam.playerIds,
+            previewTeam.slotPositions,
+            Number(previewTeam.year)
+          )
+        : null,
     [previewTeam]
   );
 

@@ -2,7 +2,7 @@
 
 import type { SquadSlot } from "@/lib/types";
 import { formatPositionReviewText, getSlotDisplayInfo } from "@/lib/squad-display";
-import { formatValue } from "@/lib/players";
+import { formatValue, formatPlayerAgeLabel } from "@/lib/players";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
 
 interface SquadSummaryPanelProps {
@@ -38,6 +38,8 @@ export function SquadSummaryPanel({
             </div>
             <p className="mt-1 text-xs text-gray-400">
               {formatPositionReviewText(info)}
+              <span className="mx-2 text-gray-600">·</span>
+              <span>{formatPlayerAgeLabel(player)}</span>
             </p>
             {revealRatings && (
               <p className="mt-1 text-xs">

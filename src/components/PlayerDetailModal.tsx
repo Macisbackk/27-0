@@ -1,7 +1,7 @@
 "use client";
 
 import type { Player } from "@/lib/types";
-import { formatPlayerDisplayName, formatValue } from "@/lib/players";
+import { formatPlayerDisplayName, formatPlayerAge, formatValue } from "@/lib/players";
 import { getGoldenBootYears } from "@/lib/players/achievements";
 import { getCachedPlayerAchievements } from "@/lib/players/achievement-cache";
 import { AchievementChipList } from "./cards/AchievementChipList";
@@ -72,6 +72,12 @@ export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
             <p className={TYPO.statLabel}>Value</p>
             <p className="mt-0.5 font-semibold text-accent-gold">
               {formatValue(player.value)}
+            </p>
+          </div>
+          <div className={CARD.inset}>
+            <p className={TYPO.statLabel}>Age</p>
+            <p className="mt-0.5 font-medium text-white">
+              {formatPlayerAge(player)}
             </p>
           </div>
           <div className={`${CARD.inset} col-span-2`}>

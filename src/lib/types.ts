@@ -62,6 +62,14 @@ export interface Player extends PlayerAchievements {
   yearsActive: string;
   /** Peak-era year shown on historic/legend cards — omitted for current players. */
   primeYear?: number;
+  /** ISO or DD/MM/YYYY date of birth when known. */
+  dateOfBirth?: string;
+  /** Birth year — used for age when full DOB is unavailable. */
+  birthYear?: number;
+  /** Era-specific year for historic cards (e.g. era challenge cup). */
+  eraYear?: number;
+  /** Year encoded on year-card ids (e.g. sam-burgess-2009 → 2009). */
+  cardYear?: number;
   category: PlayerCategory;
   peakRating: number;
   /** @deprecated use peakRating — kept for backward compatibility */

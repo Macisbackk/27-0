@@ -1,9 +1,12 @@
 import type { Player } from "../types";
 import ratingOverrides from "../../../data/rating-overrides.json";
+import birthYearsData from "../../../data/birth-years.json";
 import { compressPeakRating, computePlayerValue } from "./ratings";
 import { parsePlayerId, resolvePrimeYear } from "./prime-year";
+import { resolveBirthYear, resolveCardYear } from "./player-age";
 
 const RATING_OVERRIDES = ratingOverrides as Record<string, number>;
+const BIRTH_YEAR_OVERRIDES = birthYearsData as Record<string, number>;
 import { resolvePosition } from "./position-utils";
 import { resolveYearsActive } from "./years-active";
 import { resolveIntlCaps } from "./intl-caps";
@@ -40,6 +43,19 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     raw.primeYear as number | undefined
   );
 
+  const rawDateOfBirth = raw.dateOfBirth as string | undefined;
+  const birthYearOverride =
+    BIRTH_YEAR_OVERRIDES[parsedId.baseId] ?? BIRTH_YEAR_OVERRIDES[id];
+  const birthYear = resolveBirthYear(
+    (raw.birthYear as number | undefined) ?? birthYearOverride,
+    rawDateOfBirth
+  );
+  const cardYear = resolveCardYear(
+    raw.cardYear as number | undefined,
+    parsedId.yearCardYear
+  );
+  const eraYear = raw.eraYear as number | undefined;
+
   return {
     id,
     baseId: parsedId.baseId !== id ? parsedId.baseId : undefined,
@@ -51,6 +67,10 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     nationality: raw.nationality as string,
     yearsActive,
     primeYear,
+    dateOfBirth: rawDateOfBirth,
+    birthYear,
+    eraYear,
+    cardYear,
     category,
     peakRating,
     rating: peakRating,
