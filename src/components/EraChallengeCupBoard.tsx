@@ -20,6 +20,7 @@ import {
 } from "@/lib/positions";
 import { recordCompletedRun } from "@/lib/storage/run";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
+import type { EraTournamentType } from "@/lib/storage/preferences";
 import { playModeChallengeCupStart } from "@/lib/sound";
 import { ERA_CHALLENGE_CUP_INTRO } from "@/lib/mode-labels";
 import { ChallengeCupBracket } from "./ChallengeCupBracket";
@@ -30,7 +31,7 @@ import { GuestNotice } from "./GuestNotice";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
-type EraPhase = "start" | "select" | "preview" | "bracket" | "review";
+type EraPhase = "start" | "select" | "bracket" | "review";
 
 function createRunSeed(runKey: number): string {
   return `${generateRunSeed()}-${runKey}`;
@@ -73,7 +74,7 @@ export function EraChallengeCupBoard() {
     modeSoundPlayed.current = false;
   }, []);
 
-  const handleTeamConfirm = (team: EraTeam) => {
+  const handleTeamConfirm = (team: EraTeam, type: EraTournamentType) => {
     setEraTeam(team);
     setSquad(
       buildEraSquadFromRoster(
@@ -82,12 +83,9 @@ export function EraChallengeCupBoard() {
         Number(team.year)
       )
     );
-    setPhase("preview");
-  };
-
-  const handleStartBracket = () => {
-    if (!eraTeam) return;
-    setBracketState(createEraChallengeCupBracket(seed, eraTeam, allEraTeams));
+    setBracketState(
+      createEraChallengeCupBracket(seed, team, allEraTeams, type)
+    );
     setPhase("bracket");
   };
 
@@ -171,7 +169,7 @@ export function EraChallengeCupBoard() {
             <p className={`mt-3 ${TYPO.body}`}>{ERA_CHALLENGE_CUP_INTRO}</p>
             <ul className="mt-5 space-y-2 text-sm text-gray-400">
               <li>17 historic clubs · era-accurate squads</li>
-              <li>16-team knockout bracket vs random era opponents</li>
+              <li>16-team knockout bracket vs era opponents</li>
               <li>Win four matches to lift the Era Challenge Cup</li>
             </ul>
             <button
@@ -188,37 +186,6 @@ export function EraChallengeCupBoard() {
           <EraChallengeCupSelect onConfirm={handleTeamConfirm} />
         )}
 
-        {phase === "preview" && eraTeam && (
-          <div
-            className={`mx-auto max-w-xl ${CARD.glass} ${CARD.panel} ${SPACING.cardPaddingLg}`}
-          >
-            <p className={TYPO.sectionLabel}>Squad Ready</p>
-            <h2 className={`mt-2 ${TYPO.cardTitle} text-accent-gold`}>
-              {eraTeam.displayName}
-            </h2>
-            <p className={`mt-3 ${TYPO.body}`}>
-              Your era squad is locked in. You&apos;ll face 15 random historic
-              opponents in a knockout draw.
-            </p>
-            <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-              <button
-                type="button"
-                onClick={() => setPhase("select")}
-                className={`${BTN.base} ${BTN.secondary} flex-1`}
-              >
-                ← Change Era
-              </button>
-              <button
-                type="button"
-                onClick={handleStartBracket}
-                className={`${BTN.base} ${BTN.primary} flex-1`}
-              >
-                Enter Draw →
-              </button>
-            </div>
-          </div>
-        )}
-
         {phase === "bracket" && eraTeam && bracketState && (
           <div className={`${CARD.panel} mt-4 p-2 sm:p-4`}>
             <ChallengeCupBracket
@@ -233,13 +200,14 @@ export function EraChallengeCupBoard() {
           </div>
         )}
 
-        {phase === "review" && cupResult && (
+        {phase === "review" && cupResult && eraTeam && (
           <ChallengeCupReview
             squad={squad}
             cupResult={cupResult}
             seed={seed}
             title="Era Challenge Cup Review"
             submittedOnline={submittedOnline}
+            userClubColorOverride={eraTeam.clubName}
             onPlayAgain={resetRun}
             onClose={() => {}}
           />

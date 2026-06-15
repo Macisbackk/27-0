@@ -98,3 +98,25 @@ export function getRecruitmentStyle(): RecruitmentStyle {
 export function setRecruitmentStyle(style: RecruitmentStyle): void {
   localStorage.setItem(STORAGE_KEYS.recruitmentStyle, style);
 }
+
+export type EraTournamentType = "onePerClub" | "allTeams";
+
+function parseEraTournamentType(raw: string | null): EraTournamentType | null {
+  if (raw === "onePerClub" || raw === "allTeams") return raw;
+  return null;
+}
+
+export function getEraTournamentType(): EraTournamentType {
+  if (typeof window === "undefined") return "allTeams";
+  try {
+    return parseEraTournamentType(
+      localStorage.getItem(STORAGE_KEYS.eraTournamentType)
+    ) ?? "allTeams";
+  } catch {
+    return "allTeams";
+  }
+}
+
+export function setEraTournamentType(type: EraTournamentType): void {
+  localStorage.setItem(STORAGE_KEYS.eraTournamentType, type);
+}

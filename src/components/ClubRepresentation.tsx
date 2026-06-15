@@ -33,6 +33,8 @@ function formatRatingLine(player: {
 
 interface ClubRepresentationProps {
   summary: ClubBreakdownSummary;
+  /** Era mode: apply era team colours to all club rows. */
+  clubColorOverride?: string;
 }
 
 function ClubPlayerStatusBadge({
@@ -49,7 +51,10 @@ function ClubPlayerStatusBadge({
   return <PlayerStatusBadge status={category as PlayerStatusType} />;
 }
 
-export function ClubRepresentation({ summary }: ClubRepresentationProps) {
+export function ClubRepresentation({
+  summary,
+  clubColorOverride,
+}: ClubRepresentationProps) {
   const { clubs, totalPlayers, expectedPlayers, isValid } = summary;
   const [expandedClub, setExpandedClub] = useState<string | null>(null);
 
@@ -67,11 +72,11 @@ export function ClubRepresentation({ summary }: ClubRepresentationProps) {
       ) : (
         clubs.map((c) => {
           const isExpanded = expandedClub === c.club;
-          const colors = getClubColors(c.club);
+          const colors = getClubColors(clubColorOverride ?? c.club);
           return (
             <div key={c.club}>
               <RLClubRow
-                club={c.club}
+                club={clubColorOverride ?? c.club}
                 count={c.count}
                 totalValue={c.totalValue}
                 expanded={isExpanded}

@@ -37,6 +37,7 @@ const MAIN_NAV_ITEMS = [
   { href: "/", label: "Home", icon: "🏠" },
   { href: "/stats", label: "Statistics", icon: "📊" },
   { href: "/showcase", label: "Player Showcase", icon: "⭐" },
+  { href: "/updates", label: "Updates", icon: "📰" },
   { href: "/leaderboard", label: "Leaderboard", icon: "🏆" },
 ] as const;
 

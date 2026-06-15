@@ -154,16 +154,52 @@ function pickWeightedEraOpponents(
   return picked;
 }
 
+function pickOnePerClubEraOpponents(
+  pool: EraTeam[],
+  userEraTeam: EraTeam,
+  count: number,
+  rng: () => number
+): EraTeam[] {
+  const byClub = new Map<string, EraTeam[]>();
+
+  for (const team of pool) {
+    if (team.displayName === userEraTeam.displayName) continue;
+    if (team.clubName === userEraTeam.clubName) continue;
+    const list = byClub.get(team.clubName) ?? [];
+    list.push(team);
+    byClub.set(team.clubName, list);
+  }
+
+  const clubNames = shuffle([...byClub.keys()], rng);
+  const picked: EraTeam[] = [];
+
+  for (const clubName of clubNames) {
+    if (picked.length >= count) break;
+    const teams = byClub.get(clubName);
+    if (!teams?.length) continue;
+    const [selected] = pickWeightedEraOpponents(teams, 1, rng);
+    if (selected) picked.push(selected);
+  }
+
+  return picked;
+}
+
+export type EraTournamentType = "onePerClub" | "allTeams";
+
 export function createEraChallengeCupBracket(
   seed: string,
   userEraTeam: EraTeam,
-  allEraTeams: EraTeam[]
+  allEraTeams: EraTeam[],
+  tournamentType: EraTournamentType = "allTeams"
 ): ChallengeCupBracketState {
   const rng = seedrandom(`${seed}-era-opponents`);
   const opponentPool = allEraTeams.filter(
     (team) => team.displayName !== userEraTeam.displayName
   );
-  const opponents = pickWeightedEraOpponents(opponentPool, 15, rng);
+  const opponents =
+    tournamentType === "onePerClub"
+      ? pickOnePerClubEraOpponents(opponentPool, userEraTeam, 15, rng)
+      : pickWeightedEraOpponents(opponentPool, 15, rng);
   const bracketTeams = shuffle(
     [userEraTeam.displayName, ...opponents.map((team) => team.displayName)],
     rng

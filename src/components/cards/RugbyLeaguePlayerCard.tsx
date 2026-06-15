@@ -46,6 +46,8 @@ interface RugbyLeaguePlayerCardProps {
   equalHeight?: boolean;
   compactMobile?: boolean;
   achievementDisplay?: AchievementDisplayMode;
+  /** Era mode: use era team club colours instead of the player's current club. */
+  clubColorOverride?: string;
   className?: string;
 }
 
@@ -64,6 +66,7 @@ function playerCardPropsEqual(
     prev.equalHeight === next.equalHeight &&
     prev.compactMobile === next.compactMobile &&
     prev.achievementDisplay === next.achievementDisplay &&
+    prev.clubColorOverride === next.clubColorOverride &&
     prev.className === next.className
   );
 }
@@ -76,9 +79,11 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
   equalHeight,
   compactMobile,
   achievementDisplay = "compact",
+  clubColorOverride,
   className = "",
 }: RugbyLeaguePlayerCardProps) {
-  const colors = getClubColors(player.club);
+  const colorClub = clubColorOverride ?? player.club;
+  const colors = getClubColors(colorClub);
   const isLegend = player.category === "legend";
   const isGoat = isGoatPlayer(player);
   const isSuperSam = isSuperSamHallasPlayer(player);
@@ -137,6 +142,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
     return (
       <RLCardShell
         club={player.club}
+        clubColorOverride={clubColorOverride}
         className={`shrink-0 ${PITCH_SIZE} ${className}`}
       >
         {isSuperSam && (
@@ -155,7 +161,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
             <PlayerSpecialBadge variant="goat" compact />
           </div>
         )}
-        <ClubHeaderBar club={player.club} size="pitch" thick />
+        <ClubHeaderBar club={colorClub} size="pitch" thick />
         <div
           className={`flex min-h-0 flex-1 flex-col items-center justify-center px-1 py-1.5 sm:px-1.5 sm:py-2 ${
             compact ? "gap-0.5" : "gap-1"
@@ -208,6 +214,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
     return (
       <RLCardShell
         club={player.club}
+        clubColorOverride={clubColorOverride}
         className={`${equalHeight ? "min-h-full" : ""} ${className}`}
       >
         <div
@@ -242,9 +249,9 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
           </div>
         </div>
 
-        <ClubColourBar club={player.club} />
+        <ClubColourBar club={colorClub} />
         <ClubNameStrip
-          club={player.club}
+          club={colorClub}
           colors={colors}
           compact={mobileCompact}
         />
@@ -317,12 +324,13 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
   return (
     <RLCardShell
       club={player.club}
+      clubColorOverride={clubColorOverride}
       className={`${equalHeight ? "min-h-full" : ""} ${
         isGoat ? "ring-2 ring-accent-gold" : isLegend ? "ring-2 ring-accent-gold/40" : ""
       } ${allowAchievementPopover ? "!overflow-visible" : ""} ${className}`}
     >
-      <ClubColourBar club={player.club} />
-      <ClubNameStrip club={player.club} colors={colors} />
+      <ClubColourBar club={colorClub} />
+      <ClubNameStrip club={colorClub} colors={colors} />
 
       <div className="flex flex-1 flex-col gap-2 p-3 sm:p-4">
         <div className="flex items-start gap-3">

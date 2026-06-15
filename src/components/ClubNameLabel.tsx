@@ -19,6 +19,8 @@ export interface ClubNameLabelProps {
   surface?: UiSurface;
   showAccent?: boolean;
   className?: string;
+  /** When set, swatch and accent colours use this club instead of `club`. */
+  colorClub?: string;
 }
 
 function resolveColors(club: string) {
@@ -40,8 +42,9 @@ export function ClubNameLabel({
   surface = "matchDetails",
   showAccent = true,
   className = "",
+  colorClub,
 }: ClubNameLabelProps) {
-  const colors = resolveColors(club);
+  const colors = resolveColors(colorClub ?? club);
   const isRight = align === "right";
 
   if (variant === "pill") {
@@ -100,7 +103,7 @@ export function ClubNameLabel({
       }
     >
       <ClubDualSwatch
-        club={club}
+        club={colorClub ?? club}
         primary={colors.primary}
         secondary={colors.secondary}
         size={swatchSize}

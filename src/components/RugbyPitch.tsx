@@ -35,6 +35,8 @@ interface RugbyPitchProps {
   placementPlayer?: Player | null;
   /** Hide squad value in the header (e.g. when budget is shown elsewhere). */
   hideValueSummary?: boolean;
+  /** Era mode: use era team club colours on filled slot cards. */
+  clubColorOverride?: string;
 }
 
 function RugbyPitchInner({
@@ -53,6 +55,7 @@ function RugbyPitchInner({
   lockedSlots,
   placementPlayer,
   hideValueSummary,
+  clubColorOverride,
 }: RugbyPitchProps) {
   const lockedSet = useMemo(() => new Set(lockedSlots ?? []), [lockedSlots]);
   const headerTitle = interactive
@@ -149,6 +152,7 @@ function RugbyPitchInner({
                       hardMode={hardMode}
                       interactive={canClick}
                       placementPlayer={placementPlayer}
+                      clubColorOverride={clubColorOverride}
                       onClick={
                         canClick ? () => onSlotClick!(slotIndex) : undefined
                       }
@@ -269,6 +273,7 @@ const SquadMarker = memo(function SquadMarker({
   hardMode,
   interactive,
   placementPlayer,
+  clubColorOverride,
   onClick,
 }: {
   slot: SquadSlot;
@@ -278,6 +283,7 @@ const SquadMarker = memo(function SquadMarker({
   hardMode?: boolean;
   interactive?: boolean;
   placementPlayer?: Player | null;
+  clubColorOverride?: string;
   onClick?: () => void;
 }) {
   const player = slot.player;
@@ -374,10 +380,10 @@ const SquadMarker = memo(function SquadMarker({
               : "hover:ring-2 hover:ring-accent-green/40"
           }`}
         >
-          <PitchSlotCard slot={slot} hardMode={hardMode} />
+          <PitchSlotCard slot={slot} hardMode={hardMode} clubColorOverride={clubColorOverride} />
         </button>
       ) : (
-        <PitchSlotCard slot={slot} hardMode={hardMode} />
+        <PitchSlotCard slot={slot} hardMode={hardMode} clubColorOverride={clubColorOverride} />
       )}
     </motion.div>
   );

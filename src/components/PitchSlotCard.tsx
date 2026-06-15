@@ -12,6 +12,8 @@ export const PITCH_SLOT_SIZE_CLASS =
 interface PitchSlotCardProps {
   slot: SquadSlot;
   hardMode?: boolean;
+  /** Era mode: use era team club colours instead of the player's current club. */
+  clubColorOverride?: string;
   className?: string;
 }
 
@@ -19,10 +21,11 @@ interface PitchSlotCardProps {
 export function PitchSlotCard({
   slot,
   hardMode,
+  clubColorOverride,
   className = "",
 }: PitchSlotCardProps) {
   const player = slot.player!;
-  const colors = getClubColors(player.club);
+  const colors = getClubColors(clubColorOverride ?? player.club);
   const positionLabel = POSITION_TILE_LABEL[slot.position];
   const effectiveRating = getEffectivePeakRating(slot);
   const baseRating = player.peakRating;

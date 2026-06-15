@@ -97,6 +97,8 @@ export const ACHIEVEMENT_BADGE_CLASSES: Record<
 
 interface RLCardShellProps {
   club: string;
+  /** When set, used for card border/background colours instead of `club`. */
+  clubColorOverride?: string;
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
@@ -104,14 +106,16 @@ interface RLCardShellProps {
 
 export function RLCardShell({
   club,
+  clubColorOverride,
   children,
   className = "",
   style,
 }: RLCardShellProps) {
+  const colorClub = clubColorOverride ?? club;
   return (
     <div
       className={`rl-player-card flex flex-col overflow-hidden ${RL_CARD_RADIUS} ${RL_CARD_BORDER} ${RL_CARD_SHADOW} ${CLUB_CHOICE_CARD_CLASS} ${className}`}
-      style={{ ...getClubChoiceCardStyle(club), ...style }}
+      style={{ ...getClubChoiceCardStyle(colorClub), ...style }}
     >
       {children}
     </div>

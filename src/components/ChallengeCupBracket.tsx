@@ -203,6 +203,7 @@ export function ChallengeCupBracket({
         {selectedMatch && selectedMatch.status === "complete" && (
           <BracketMatchDetailsPanel
             match={selectedMatch}
+            eraClubLookup={lookup}
             onClose={() => setSelectedId(null)}
           />
         )}

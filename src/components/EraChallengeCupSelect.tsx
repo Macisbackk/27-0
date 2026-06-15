@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import type { EraTeam } from "@/lib/players/era-teams";
 import {
@@ -12,6 +12,11 @@ import {
 import { formatValue } from "@/lib/players";
 import { getClubColors } from "@/lib/clubs";
 import { formatTeamRatingDisplay } from "@/lib/team-tiers";
+import type { EraTournamentType } from "@/lib/storage/preferences";
+import {
+  getEraTournamentType,
+  setEraTournamentType,
+} from "@/lib/storage/preferences";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { ClubHeaderBar } from "./ClubBadge";
 import { RugbyPitch } from "./RugbyPitch";
@@ -19,15 +24,41 @@ import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
+import { playUiClick } from "@/lib/sound";
 
 interface EraChallengeCupSelectProps {
-  onConfirm: (team: EraTeam) => void;
+  onConfirm: (team: EraTeam, tournamentType: EraTournamentType) => void;
 }
+
+const TOURNAMENT_OPTIONS: {
+  value: EraTournamentType;
+  label: string;
+  description: string;
+}[] = [
+  {
+    value: "onePerClub",
+    label: "One Of Each Club",
+    description:
+      "Sixteen unique clubs — only one era team per club in the bracket.",
+  },
+  {
+    value: "allTeams",
+    label: "All Era Teams",
+    description:
+      "Any historic squad can be drawn — multiple seasons of the same club allowed.",
+  },
+];
 
 export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps) {
   const clubs = useMemo(() => getEraClubs(), []);
   const [selectedClub, setSelectedClub] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<string>("");
+  const [tournamentType, setTournamentType] =
+    useState<EraTournamentType>("allTeams");
+
+  useEffect(() => {
+    setTournamentType(getEraTournamentType());
+  }, []);
 
   const years = useMemo(
     () => (selectedClub ? getEraYearsForClub(selectedClub) : []),
@@ -56,9 +87,18 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
     setSelectedYear("");
   };
 
-  const handleConfirm = () => {
-    if (previewTeam) onConfirm(previewTeam);
+  const handleTournamentTypeChange = (type: EraTournamentType) => {
+    playUiClick();
+    setTournamentType(type);
+    setEraTournamentType(type);
   };
+
+  const handleConfirm = () => {
+    if (previewTeam) onConfirm(previewTeam, tournamentType);
+  };
+
+  const showTournamentType = Boolean(selectedClub && selectedYear && previewTeam);
+  const showPreview = showTournamentType;
 
   return (
     <div className={`mx-auto w-full max-w-3xl ${SPACING.pageX} py-6`}>
@@ -67,7 +107,7 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
         <h2 className={`mt-2 ${TYPO.pageTitle}`}>Choose Your Era</h2>
         <p className={`mx-auto mt-2 max-w-lg ${TYPO.body}`}>
           Pick a club and historic season to lead a pre-built squad through a
-          knockout tournament against random era opponents.
+          knockout tournament against era opponents.
         </p>
         <ChallengeCupVariantToggle eraMode className="mx-auto mt-5 max-w-md" />
       </div>
@@ -144,7 +184,53 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
         </motion.div>
       )}
 
-      {previewTeam && previewSquad && (
+      {showTournamentType && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`${CARD.panel} mt-4 ${SPACING.cardPadding}`}
+        >
+          <p className={TYPO.statLabel}>Tournament Type</p>
+          <div className="mt-3 space-y-2">
+            {TOURNAMENT_OPTIONS.map((option) => {
+              const active = tournamentType === option.value;
+              return (
+                <label
+                  key={option.value}
+                  className={`flex cursor-pointer gap-3 rounded-lg border px-3 py-3 transition ${
+                    active
+                      ? "border-accent-green/50 bg-accent-green/10"
+                      : "border-pitch-700/60 bg-pitch-950/40 hover:border-pitch-500/50"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="era-tournament-type"
+                    value={option.value}
+                    checked={active}
+                    onChange={() => handleTournamentTypeChange(option.value)}
+                    className="mt-1 shrink-0 accent-accent-green"
+                  />
+                  <span className="min-w-0">
+                    <span
+                      className={`block font-semibold ${
+                        active ? "text-accent-green" : "text-white"
+                      }`}
+                    >
+                      {option.label}
+                    </span>
+                    <span className={`mt-0.5 block ${TYPO.bodySm}`}>
+                      {option.description}
+                    </span>
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        </motion.div>
+      )}
+
+      {showPreview && previewTeam && previewSquad && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -184,6 +270,7 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
               filledCount={getFilledCount(previewSquad)}
               totalSlots={TOTAL_SLOTS}
               hideValueSummary
+              clubColorOverride={previewTeam.clubName}
             />
           </div>
 

@@ -54,6 +54,8 @@ interface ChallengeCupReviewProps {
   title?: string;
   onPlayAgain: () => void;
   onClose: () => void;
+  /** Era mode: apply era team colours to user squad player cards. */
+  userClubColorOverride?: string;
 }
 
 const CUP_AWARD_TITLES: Record<string, string> = {
@@ -74,6 +76,7 @@ export function ChallengeCupReview({
   title = "Challenge Cup Review",
   onPlayAgain,
   onClose,
+  userClubColorOverride,
 }: ChallengeCupReviewProps) {
   const totalValue = getSquadValue(squad);
   const filledCount = squad.filter((s) => s.player).length;
@@ -363,6 +366,8 @@ export function ChallengeCupReview({
                         seed={seed}
                         userSquad={squad}
                         userTeamName={userTeamName}
+                        userClubColorOverride={userClubColorOverride}
+                        eraClubLookup={cupResult.eraClubLookup}
                         onClose={() => setSelectedFixture(null)}
                         roundLabel={getCupRoundLabel(fixture.round)}
                       />
@@ -417,7 +422,10 @@ export function ChallengeCupReview({
         )}
 
         <CollapsibleReviewSection title="Club Representation" delay={0.44}>
-          <ClubRepresentation summary={clubSummary} />
+          <ClubRepresentation
+            summary={clubSummary}
+            clubColorOverride={userClubColorOverride}
+          />
         </CollapsibleReviewSection>
 
         <CollapsibleReviewSection

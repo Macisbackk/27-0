@@ -18,6 +18,7 @@ import {
 } from "@/lib/squad-display";
 import { getSquadValue } from "@/lib/positions";
 import type { SquadSlot } from "@/lib/types";
+import { resolveEraTeamClubName } from "@/lib/players/era-teams";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { StatBox } from "./ui/StatBox";
@@ -32,6 +33,9 @@ interface MatchDetailsPanelProps {
   userSquad?: SquadSlot[];
   /** User's team name — defaults to Dream Team for season mode. */
   userTeamName?: string;
+  /** Era mode: club colours for the user's team label. */
+  userClubColorOverride?: string;
+  eraClubLookup?: Record<string, string>;
 }
 
 export function MatchDetailsPanel({
@@ -41,6 +45,8 @@ export function MatchDetailsPanel({
   seed,
   userSquad,
   userTeamName = DREAM_TEAM_NAME,
+  userClubColorOverride,
+  eraClubLookup,
 }: MatchDetailsPanelProps) {
   const detail = fixture.scoringDetail;
   const userValue = userSquad ? getSquadValue(userSquad) : 0;
@@ -104,6 +110,10 @@ export function MatchDetailsPanel({
           <div className={SPACING.stackLg}>
             <TeamScoringBlock
               teamName={userTeamName}
+              colorClub={
+                userClubColorOverride ??
+                resolveEraTeamClubName(userTeamName, eraClubLookup)
+              }
               scoring={detail.dreamTeam}
               totalValue={userValue}
               averageRating={userAvgRating}
@@ -114,6 +124,7 @@ export function MatchDetailsPanel({
             />
             <TeamScoringBlock
               teamName={fixture.opponent}
+              colorClub={resolveEraTeamClubName(fixture.opponent, eraClubLookup)}
               scoring={detail.opponent}
               totalValue={opponentSummary.totalValue}
               averageRating={opponentSummary.averageRating}
@@ -132,6 +143,7 @@ export function MatchDetailsPanel({
 
 function TeamScoringBlock({
   teamName,
+  colorClub,
   scoring,
   totalValue,
   averageRating,
@@ -141,6 +153,7 @@ function TeamScoringBlock({
   isUserTeam,
 }: {
   teamName: string;
+  colorClub: string;
   scoring: TeamScoringDetail;
   totalValue: number;
   averageRating: number;
@@ -157,7 +170,7 @@ function TeamScoringBlock({
 
   return (
     <div className={SPACING.stackSm}>
-      <ClubTeamLabel club={teamName} />
+      <ClubTeamLabel club={teamName} colorClub={colorClub} />
       <div className={`grid ${SPACING.cardGridGap} sm:grid-cols-2`}>
         <StatBox label="Squad Value" value={formatValue(totalValue)} size="sm" />
         <StatBox label="Team Tier" value={tier} size="sm" />

@@ -8,6 +8,7 @@ interface ClubTeamLabelProps {
   className?: string;
   surface?: UiSurface;
   compact?: boolean;
+  colorClub?: string;
 }
 
 /** Dual-colour swatch + team name for match details and results. */
@@ -16,10 +17,12 @@ export function ClubTeamLabel({
   className = "",
   surface = "matchDetails",
   compact = false,
+  colorClub,
 }: ClubTeamLabelProps) {
   return (
     <ClubNameLabel
       club={club}
+      colorClub={colorClub}
       variant="row"
       compact={compact}
       surface={surface}

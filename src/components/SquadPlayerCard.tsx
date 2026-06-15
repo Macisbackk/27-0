@@ -10,6 +10,7 @@ interface SquadPlayerCardProps {
   player: Player;
   compact?: boolean;
   hardMode?: boolean;
+  clubColorOverride?: string;
   className?: string;
 }
 
@@ -19,6 +20,7 @@ export function SquadPlayerCard({
   player,
   compact,
   hardMode,
+  clubColorOverride,
   className = "",
 }: SquadPlayerCardProps) {
   const defaultSizeClass = compact
@@ -31,6 +33,7 @@ export function SquadPlayerCard({
       variant="pitch"
       compact={compact}
       hardMode={hardMode}
+      clubColorOverride={clubColorOverride}
       className={className || defaultSizeClass}
     />
   );

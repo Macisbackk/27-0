@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import type { BracketMatch } from "@/lib/game/challenge-cup-bracket";
 import { getCupRoundLabel } from "@/lib/game/challenge-cup-bracket";
 import type { TeamScoringDetail } from "@/lib/game/season-simulation";
+import { resolveEraTeamClubName } from "@/lib/players/era-teams";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubNameLabel } from "./ClubNameLabel";
@@ -13,11 +14,13 @@ import { TryScorerChips, TryScorersEmptyNote } from "./TryScorerChips";
 
 interface BracketMatchDetailsPanelProps {
   match: BracketMatch;
+  eraClubLookup?: Record<string, string>;
   onClose: () => void;
 }
 
 export function BracketMatchDetailsPanel({
   match,
+  eraClubLookup,
   onClose,
 }: BracketMatchDetailsPanelProps) {
   if (
@@ -70,11 +73,13 @@ export function BracketMatchDetailsPanel({
           <div className={SPACING.stackLg}>
             <TeamScoringBlock
               teamName={match.homeTeam}
+              colorClub={resolveEraTeamClubName(match.homeTeam, eraClubLookup)}
               scoring={scoring.home}
               variant="user"
             />
             <TeamScoringBlock
               teamName={match.awayTeam}
+              colorClub={resolveEraTeamClubName(match.awayTeam, eraClubLookup)}
               scoring={scoring.away}
               variant="opponent"
             />
@@ -89,10 +94,12 @@ export function BracketMatchDetailsPanel({
 
 function TeamScoringBlock({
   teamName,
+  colorClub,
   scoring,
   variant,
 }: {
   teamName: string;
+  colorClub: string;
   scoring: TeamScoringDetail;
   variant: "user" | "opponent";
 }) {
@@ -104,7 +111,7 @@ function TeamScoringBlock({
 
   return (
     <div className={SPACING.stackSm}>
-      <ClubTeamLabel club={teamName} />
+      <ClubTeamLabel club={teamName} colorClub={colorClub} />
       {hasTries && (
         <ScoringSection title="Tries">
           <TryScorerChips
