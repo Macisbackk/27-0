@@ -28,8 +28,8 @@ export function ChallengeCupVariantToggle({
   hideLabel = false,
 }: ChallengeCupVariantToggleProps) {
   const currentClass = compact
-    ? nestedTabGroupButtonClass(!eraMode, "normal")
-    : tabGroupButtonClass(!eraMode, "normal");
+    ? nestedTabGroupButtonClass(!eraMode, "gold")
+    : tabGroupButtonClass(!eraMode, "gold");
   const eraClass = compact
     ? nestedTabGroupButtonClass(eraMode, "era")
     : tabGroupButtonClass(eraMode, "era");

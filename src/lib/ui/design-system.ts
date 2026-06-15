@@ -129,35 +129,45 @@ export const HARD = {
   dot: "bg-accent-red",
 } as const;
 
+/** Shared nav control dimensions (sidebar, footer icons, toggles). */
+export const NAV_SIZE = {
+  /** Primary sidebar nav row height */
+  control: "h-10 min-h-[40px]",
+  /** Square icon-only link buttons */
+  iconButton: "h-10 w-10 min-h-[40px] min-w-[40px]",
+  /** Nested Off/On and Current/Era toggles */
+  nestedToggle: "h-8 min-h-[32px]",
+  /** Home page mode card tab buttons */
+  modeTab: "h-10 min-h-[40px]",
+} as const;
+
 /** Navigation & links. */
 export const NAV = {
-  item: `${TYPO.nav} btn-press flex min-h-[44px] items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm transition sm:min-h-[36px]`,
+  item: `${TYPO.nav} btn-press flex ${NAV_SIZE.control} items-center gap-2 rounded-lg border border-transparent px-2.5 text-sm transition`,
   itemActive: "border border-accent-green/30 bg-accent-green/10 text-accent-green",
-  itemIdle: "text-gray-300 hover:bg-pitch-800/60 hover:text-white",
+  itemIdle: "text-gray-300 hover:border-pitch-600/50 hover:bg-pitch-800/60 hover:text-white",
   list: "space-y-1",
   sectionLabel:
     "mb-1 px-1.5 font-display text-[10px] font-bold uppercase tracking-[0.15em] text-accent-green",
   sectionGap: "mt-2",
-  icon: "shrink-0 text-sm leading-none",
-  menuItem: `block w-full min-h-[36px] rounded-lg px-2.5 py-1.5 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-white`,
-  menuItemDanger: `block w-full min-h-[36px] rounded-lg px-2.5 py-1.5 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-red-400`,
+  icon: "flex h-[18px] w-[18px] shrink-0 items-center justify-center text-sm leading-none",
+  menuItem: `block w-full ${NAV_SIZE.control} rounded-lg px-2.5 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-white`,
+  menuItemDanger: `block w-full ${NAV_SIZE.control} rounded-lg px-2.5 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-red-400`,
   menuActions: "space-y-0.5 px-1 py-1",
   playModeList: "space-y-1",
   playModeGroup: "space-y-1",
   playModeRow: "flex items-stretch gap-1",
-  hardToggle: "flex w-[4.75rem] shrink-0 flex-col justify-center",
+  hardToggle: "flex w-[4.5rem] shrink-0 flex-col justify-center",
   nestedBlock: "space-y-1 px-0",
   nestedLabel:
     "px-1 font-display text-[9px] font-bold uppercase tracking-wider text-gray-500",
-  soundToggle:
-    "flex min-h-[36px] w-full min-w-0 items-center gap-2 overflow-hidden rounded-lg border border-pitch-600 px-2.5 py-1.5 text-left transition hover:border-accent-green/40",
+  soundToggle: `btn-press flex ${NAV_SIZE.control} w-full min-w-0 items-center gap-2 overflow-hidden rounded-lg border border-pitch-600/60 bg-pitch-900/40 px-2.5 text-left text-sm transition hover:border-accent-green/40 hover:bg-pitch-800/60`,
   soundStatus:
-    "shrink-0 rounded border border-pitch-600/80 bg-pitch-900/60 px-1 py-0.5 font-display text-[9px] font-bold uppercase tracking-wider",
+    "shrink-0 rounded border border-pitch-600/80 bg-pitch-900/60 px-1.5 py-0.5 font-display text-[9px] font-bold uppercase tracking-wider",
   footer: "shrink-0 border-t border-pitch-700/50 px-2.5 py-2",
-  footerLinks: "mt-1.5 flex items-center justify-center gap-1.5",
-  supportRow: "flex items-center justify-center gap-1.5",
-  supportLink:
-    "btn-press inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-pitch-600/60 text-gray-400 transition hover:border-accent-green/40 hover:text-white sm:h-8 sm:w-8 sm:min-h-0 sm:min-w-0",
+  footerLinks: "mt-1.5 flex items-center justify-center gap-2",
+  supportRow: "flex items-center justify-center gap-2",
+  supportLink: `btn-press inline-flex ${NAV_SIZE.iconButton} shrink-0 items-center justify-center rounded-lg border border-pitch-600/60 bg-pitch-900/40 text-gray-400 transition hover:border-accent-green/40 hover:bg-pitch-800/60 hover:text-white`,
 } as const;
 
 export const LINK = {
@@ -177,16 +187,20 @@ export const STAT_HIGHLIGHT = {
 /** Tab toggle inside a tab group (Normal/Hard, Login/Signup). */
 export function tabGroupButtonClass(
   active: boolean,
-  variant: "normal" | "hard" | "era" = "normal"
+  variant: "normal" | "hard" | "era" | "gold" = "normal"
 ): string {
-  const base = `${TYPO.button} btn-press ${BTN.tabGroupInner} min-h-[48px] sm:min-h-[44px]`;
+  const base = `${TYPO.button} btn-press flex-1 ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.eraIdle}`;
+    if (variant === "gold") return `${base} ${BTN.eraIdle}`;
     return `${base} ${BTN.tabGroupIdle}`;
   }
   if (variant === "hard") return `${base} ${BTN.hardActive}`;
   if (variant === "era") return `${base} ${BTN.eraActive}`;
+  if (variant === "gold") {
+    return `${base} border-2 border-accent-gold/50 bg-accent-gold/10 text-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.2)]`;
+  }
   return `${base} ${BTN.tabGroupActive}`;
 }
 
@@ -217,15 +231,19 @@ export function nestedTabGroupClass(
 
 export function nestedTabGroupButtonClass(
   active: boolean,
-  variant: "normal" | "hard" | "era" = "normal"
+  variant: "normal" | "hard" | "era" | "gold" = "normal"
 ): string {
-  const base = `${TYPO.button} btn-press flex-1 rounded-md px-1.5 py-1 min-h-[36px] text-[11px] sm:min-h-[30px]`;
+  const base = `${TYPO.button} btn-press flex-1 rounded-md px-2 ${NAV_SIZE.nestedToggle} text-[10px] font-semibold uppercase tracking-wide`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.eraIdle}`;
+    if (variant === "gold") return `${base} ${BTN.eraIdle}`;
     return `${base} ${BTN.tabGroupIdle}`;
   }
   if (variant === "hard") return `${base} ${BTN.hardActive}`;
   if (variant === "era") return `${base} ${BTN.eraActive}`;
+  if (variant === "gold") {
+    return `${base} border border-accent-gold/50 bg-accent-gold/10 text-accent-gold`;
+  }
   return `${base} ${BTN.tabGroupActive}`;
 }
