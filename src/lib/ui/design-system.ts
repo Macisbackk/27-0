@@ -80,6 +80,10 @@ export const BTN = {
   hardActive:
     "border-2 border-accent-red/85 bg-accent-red text-white shadow-[0_0_28px_rgba(239,68,68,0.5),inset_0_1px_0_rgba(255,255,255,0.1)]",
   hardIdle: "text-gray-400 hover:border-accent-red/40 hover:bg-accent-red/10 hover:text-accent-red",
+  eraActive:
+    "border-2 border-accent-gold/85 bg-accent-gold text-pitch-950 shadow-[0_0_28px_rgba(251,191,36,0.45),inset_0_1px_0_rgba(255,255,255,0.2)] hover:brightness-105",
+  eraIdle:
+    "text-gray-400 hover:border-accent-gold/40 hover:bg-accent-gold/10 hover:text-accent-gold",
   accentOutline: `w-full border border-accent-green/40 bg-accent-green/10 text-accent-green hover:border-accent-green/55 hover:bg-accent-green/20 sm:w-auto`,
   hardAccentOutline: `w-full border border-accent-red/45 bg-accent-red/10 text-accent-red hover:border-accent-red/65 hover:bg-accent-red/20 hover:text-red-300 sm:w-auto`,
   goldOutline: `w-full border border-accent-gold/35 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/15 sm:w-auto`,
@@ -96,6 +100,12 @@ export const NORMAL = {
     "border-accent-green/40 shadow-[0_0_20px_rgba(34,197,94,0.15)]",
   modeCardHover: "hover:border-accent-green/30 group-hover:text-accent-green",
   reviewAccent: "text-gray-500",
+} as const;
+
+/** Era mode visual tokens — gold historic/retro accent. */
+export const ERA = {
+  tabGroupRing:
+    "border-accent-gold/50 shadow-[0_0_20px_rgba(251,191,36,0.22)]",
 } as const;
 
 /** Hard mode visual tokens — red mirror of normal green styling. */
@@ -152,20 +162,26 @@ export const STAT_HIGHLIGHT = {
 /** Tab toggle inside a tab group (Normal/Hard, Login/Signup). */
 export function tabGroupButtonClass(
   active: boolean,
-  variant: "normal" | "hard" = "normal"
+  variant: "normal" | "hard" | "era" = "normal"
 ): string {
   const base = `${TYPO.button} ${BTN.tabGroupInner} min-h-[48px] sm:min-h-[44px]`;
   if (!active) {
-    return `${base} ${variant === "hard" ? BTN.hardIdle : BTN.tabGroupIdle}`;
+    if (variant === "hard") return `${base} ${BTN.hardIdle}`;
+    if (variant === "era") return `${base} ${BTN.eraIdle}`;
+    return `${base} ${BTN.tabGroupIdle}`;
   }
-  return `${base} ${variant === "hard" ? BTN.hardActive : BTN.tabGroupActive}`;
+  if (variant === "hard") return `${base} ${BTN.hardActive}`;
+  if (variant === "era") return `${base} ${BTN.eraActive}`;
+  return `${base} ${BTN.tabGroupActive}`;
 }
 
-/** Tab group wrapper — green ring when normal active, red when hard active. */
+/** Tab group wrapper — green ring when normal active, red when hard, gold when era. */
 export function tabGroupClass(
   hardActive = false,
-  normalActive = false
+  normalActive = false,
+  eraActive = false
 ): string {
+  if (eraActive) return `${FILTER.tabGroup} ${ERA.tabGroupRing}`;
   if (hardActive) return `${FILTER.tabGroup} ${HARD.tabGroupRing}`;
   if (normalActive) return `${FILTER.tabGroup} ${NORMAL.tabGroupRing}`;
   return FILTER.tabGroup;

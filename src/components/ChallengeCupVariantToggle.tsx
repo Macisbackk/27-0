@@ -22,12 +22,12 @@ export function ChallengeCupVariantToggle({
   onEraModeChange,
 }: ChallengeCupVariantToggleProps) {
   const currentClass = tabGroupButtonClass(!eraMode, "normal");
-  const eraClass = tabGroupButtonClass(eraMode, "hard");
+  const eraClass = tabGroupButtonClass(eraMode, "era");
 
   return (
     <div className={className}>
       <p className={`mb-2 text-center ${TYPO.sectionLabel}`}>Cup Mode</p>
-      <div className={tabGroupClass(eraMode, !eraMode)}>
+      <div className={tabGroupClass(false, !eraMode, eraMode)}>
         {onEraModeChange ? (
           <>
             <button
