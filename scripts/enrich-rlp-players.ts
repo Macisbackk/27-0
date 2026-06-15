@@ -14,8 +14,10 @@ const FILES = ["current-squads.json", "historic-players.json", "legends.json"] a
 const CONCURRENCY = 12;
 
 const KNOWN_NATIONALITIES = new Set([
+  "Albania",
   "Australia",
   "Cook Islands",
+  "Democratic Republic of the Congo",
   "England",
   "Fiji",
   "France",
@@ -23,13 +25,16 @@ const KNOWN_NATIONALITIES = new Set([
   "Italy",
   "Jamaica",
   "Lebanon",
+  "Morocco",
   "New Zealand",
+  "Nigeria",
   "Papua New Guinea",
   "Samoa",
   "Scotland",
   "Serbia",
   "Tonga",
   "Wales",
+  "Zimbabwe",
 ]);
 
 type RawPlayer = {
@@ -101,6 +106,13 @@ function nationalityFromPlaceOfBirth(place: string): string | null {
   if (lower.includes("jamaica")) return "Jamaica";
   if (lower.includes("italy")) return "Italy";
   if (lower.includes("serbia")) return "Serbia";
+  if (lower.includes("nigeria")) return "Nigeria";
+  if (lower.includes("morocco")) return "Morocco";
+  if (lower.includes("albania")) return "Albania";
+  if (lower.includes("zimbabwe")) return "Zimbabwe";
+  if (lower.includes("democratic republic of the congo")) {
+    return "Democratic Republic of the Congo";
+  }
 
   const last = place.split(",").pop()?.trim();
   if (last && KNOWN_NATIONALITIES.has(last)) return last;
@@ -217,7 +229,6 @@ async function main() {
 
   let nationalityUpdated = 0;
   let yearsUpdated = 0;
-  let intlUpdated = 0;
   let missingRlp = 0;
   let fetchFailed = 0;
 
@@ -260,16 +271,6 @@ async function main() {
         yearsUpdated++;
         fileChanged = true;
       }
-
-      if (
-        data.intlCaps !== undefined &&
-        data.intlCaps > 0 &&
-        (player.intlCaps ?? 0) === 0
-      ) {
-        player.intlCaps = data.intlCaps;
-        intlUpdated++;
-        fileChanged = true;
-      }
     }
 
     writeFileSync(path, JSON.stringify(players, null, 2) + "\n");
@@ -281,7 +282,6 @@ async function main() {
   console.log("\nEnrichment complete:");
   console.log(`  Nationality updated: ${nationalityUpdated}`);
   console.log(`  Years active updated: ${yearsUpdated}`);
-  console.log(`  Intl caps updated: ${intlUpdated}`);
   console.log(`  No RLP ID match: ${missingRlp}`);
   console.log(`  Fetch failures: ${fetchFailed}`);
 }

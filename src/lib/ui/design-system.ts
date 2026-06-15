@@ -128,27 +128,33 @@ export const HARD = {
 
 /** Navigation & links. */
 export const NAV = {
-  item: `${TYPO.nav} flex min-h-[42px] items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition`,
+  item: `${TYPO.nav} flex min-h-[36px] items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm transition`,
   itemActive: "border border-accent-green/30 bg-accent-green/10 text-accent-green",
   itemIdle: "text-gray-300 hover:bg-pitch-800/60 hover:text-white",
-  list: SPACING.navItemGap,
-  sectionLabel: `${TYPO.sectionLabel} mb-2 px-2`,
-  sectionGap: SPACING.navSectionGap,
-  icon: "shrink-0 text-base leading-none",
-  menuItem: `block w-full min-h-[40px] rounded-lg px-3 py-2 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-white`,
-  menuItemDanger: `block w-full min-h-[40px] rounded-lg px-3 py-2 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-red-400`,
-  menuActions: "space-y-1 px-1.5 py-1",
-  playModeList: "space-y-2.5",
-  playModeGroup: "space-y-1.5",
-  nestedBlock: "space-y-1.5 px-1",
-  nestedLabel: "px-1 font-display text-[10px] font-bold uppercase tracking-wider text-gray-500",
+  list: "space-y-1",
+  sectionLabel:
+    "mb-1 px-1.5 font-display text-[10px] font-bold uppercase tracking-[0.15em] text-accent-green",
+  sectionGap: "mt-2",
+  icon: "shrink-0 text-sm leading-none",
+  menuItem: `block w-full min-h-[36px] rounded-lg px-2.5 py-1.5 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-white`,
+  menuItemDanger: `block w-full min-h-[36px] rounded-lg px-2.5 py-1.5 text-left ${TYPO.bodySm} transition hover:bg-pitch-800 hover:text-red-400`,
+  menuActions: "space-y-0.5 px-1 py-1",
+  playModeList: "space-y-1",
+  playModeGroup: "space-y-1",
+  playModeRow: "flex items-stretch gap-1",
+  hardToggle: "flex w-[4.75rem] shrink-0 flex-col justify-center",
+  nestedBlock: "space-y-1 px-0",
+  nestedLabel:
+    "px-1 font-display text-[9px] font-bold uppercase tracking-wider text-gray-500",
   soundToggle:
-    "flex min-h-[42px] w-full min-w-0 items-center gap-2.5 overflow-hidden rounded-xl border border-pitch-600 px-3 py-2 text-left transition hover:border-accent-green/40",
+    "flex min-h-[36px] w-full min-w-0 items-center gap-2 overflow-hidden rounded-lg border border-pitch-600 px-2.5 py-1.5 text-left transition hover:border-accent-green/40",
   soundStatus:
-    "shrink-0 rounded-md border border-pitch-600/80 bg-pitch-900/60 px-1.5 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider",
-  supportRow: "flex items-center justify-center gap-2 border-t border-pitch-700/50 px-3 py-2.5",
+    "shrink-0 rounded border border-pitch-600/80 bg-pitch-900/60 px-1 py-0.5 font-display text-[9px] font-bold uppercase tracking-wider",
+  footer: "shrink-0 border-t border-pitch-700/50 px-2.5 py-2",
+  footerLinks: "mt-1.5 flex items-center justify-center gap-1.5",
+  supportRow: "flex items-center justify-center gap-1.5",
   supportLink:
-    "inline-flex h-9 w-9 items-center justify-center rounded-lg border border-pitch-600/60 text-gray-400 transition hover:border-accent-green/40 hover:text-white",
+    "inline-flex h-8 w-8 items-center justify-center rounded-lg border border-pitch-600/60 text-gray-400 transition hover:border-accent-green/40 hover:text-white",
 } as const;
 
 export const LINK = {
@@ -210,7 +216,7 @@ export function nestedTabGroupButtonClass(
   active: boolean,
   variant: "normal" | "hard" | "era" = "normal"
 ): string {
-  const base = `${TYPO.button} flex-1 rounded-lg px-2.5 py-1.5 min-h-[34px] text-xs`;
+  const base = `${TYPO.button} flex-1 rounded-md px-1.5 py-1 min-h-[30px] text-[11px]`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.eraIdle}`;

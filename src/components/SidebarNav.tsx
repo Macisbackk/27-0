@@ -200,15 +200,15 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
             }}
           />
           <motion.aside
-            className="sidebar-panel fixed inset-y-0 left-0 z-[70] flex w-[min(300px,85vw)] flex-col shadow-2xl"
+            className="sidebar-panel fixed inset-y-0 left-0 z-[70] flex w-[min(280px,88vw)] max-h-[100dvh] flex-col shadow-2xl"
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", damping: 28, stiffness: 320 }}
           >
-            <div className="sidebar-header flex items-center justify-between border-b px-4 py-3">
+            <div className="sidebar-header flex shrink-0 items-center justify-between border-b px-3 py-2">
               <div>
-                <p className="font-display text-lg font-black tracking-tight">
+                <p className="font-display text-base font-black tracking-tight">
                   <span className="text-gradient">27</span>
                   <span className="text-white">-0</span>
                 </p>
@@ -219,13 +219,13 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   playMenuClose();
                   onClose();
                 }}
-                className={BTN.close}
+                className={`${BTN.close} px-2 py-1 text-xs`}
               >
                 Close
               </button>
             </div>
 
-            <nav className="flex flex-1 flex-col px-3 py-3">
+            <nav className="sidebar-nav-scroll flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overflow-x-hidden px-2.5 py-2">
               <section>
                 <p className={NAV.sectionLabel}>Play</p>
                 <ul className={NAV.playModeList}>
@@ -244,45 +244,59 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     const href = buildPlayHref(group.mode, difficulty);
 
                     return (
-                      <li key={group.mode} className={NAV.playModeGroup}>
-                        <Link
-                          href={href}
-                          onClick={handleNavClick}
-                          className={navLinkClass(active, isHard)}
-                        >
-                          <span aria-hidden className={NAV.icon}>
-                            {group.icon}
-                          </span>
-                          {group.label}
-                          {active && (
-                            <span
-                              className={`ml-auto h-1.5 w-1.5 rounded-full ${
-                                isHard ? HARD.dot : "bg-accent-green"
-                              }`}
-                            />
-                          )}
-                        </Link>
-                        <div className={NAV.nestedBlock}>
-                          <p className={NAV.nestedLabel}>Hard Mode</p>
-                          <div className={nestedTabGroupClass(isHard, !isHard)}>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                toggleModeDifficulty(group.modeKey, false)
-                              }
-                              className={nestedTabGroupButtonClass(!isHard, "normal")}
-                            >
-                              Off
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                toggleModeDifficulty(group.modeKey, true)
-                              }
-                              className={nestedTabGroupButtonClass(isHard, "hard")}
-                            >
-                              On
-                            </button>
+                      <li key={group.mode}>
+                        <div className={NAV.playModeRow}>
+                          <Link
+                            href={href}
+                            onClick={handleNavClick}
+                            className={`${navLinkClass(active, isHard)} min-w-0 flex-1`}
+                          >
+                            <span aria-hidden className={NAV.icon}>
+                              {group.icon}
+                            </span>
+                            <span className="truncate">{group.label}</span>
+                            {active && (
+                              <span
+                                className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
+                                  isHard ? HARD.dot : "bg-accent-green"
+                                }`}
+                              />
+                            )}
+                          </Link>
+                          <div
+                            className={NAV.hardToggle}
+                            aria-label={`${group.label} hard mode`}
+                          >
+                            <div className={nestedTabGroupClass(isHard, !isHard)}>
+                              <button
+                                type="button"
+                                aria-label={`${group.label} hard mode off`}
+                                aria-pressed={!isHard}
+                                onClick={() =>
+                                  toggleModeDifficulty(group.modeKey, false)
+                                }
+                                className={nestedTabGroupButtonClass(
+                                  !isHard,
+                                  "normal"
+                                )}
+                              >
+                                Off
+                              </button>
+                              <button
+                                type="button"
+                                aria-label={`${group.label} hard mode on`}
+                                aria-pressed={isHard}
+                                onClick={() =>
+                                  toggleModeDifficulty(group.modeKey, true)
+                                }
+                                className={nestedTabGroupButtonClass(
+                                  isHard,
+                                  "hard"
+                                )}
+                              >
+                                On
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </li>
@@ -331,20 +345,18 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         />
                       )}
                     </button>
-                    <div className={NAV.nestedBlock}>
-                      <ChallengeCupVariantToggle
-                        compact
-                        hideLabel
-                        eraMode={cupEraVariant}
-                        onEraModeChange={handleCupVariantChange}
-                      />
-                    </div>
+                    <ChallengeCupVariantToggle
+                      compact
+                      hideLabel
+                      eraMode={cupEraVariant}
+                      onEraModeChange={handleCupVariantChange}
+                    />
                   </li>
                 </ul>
               </section>
 
               <section className={NAV.sectionGap}>
-                <p className={NAV.sectionLabel}>Explore</p>
+                <p className={NAV.sectionLabel}>Game</p>
                 <ul className={NAV.list}>
                   {MAIN_NAV_ITEMS.map((item) => {
                     const active = isActive(item.href);
@@ -369,7 +381,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 </ul>
               </section>
 
-              <section className={`${NAV.sectionGap} mt-auto`}>
+              <section className={NAV.sectionGap}>
                 <p className={NAV.sectionLabel}>Account</p>
                 <ul className={NAV.list}>
                   <li>
@@ -410,69 +422,70 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       </Link>
                     )}
                   </li>
-                  <li>
-                    <button
-                      type="button"
-                      onClick={handleToggleSound}
-                      aria-label={
-                        muted
-                          ? "Sound off — click to enable"
-                          : "Sound on — click to mute"
-                      }
-                      className={NAV.soundToggle}
-                    >
-                      <span
-                        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border ${
-                          muted
-                            ? "border-pitch-600 bg-pitch-900/80 text-gray-500"
-                            : "border-accent-green/30 bg-accent-green/10 text-accent-green"
-                        }`}
-                        aria-hidden
-                      >
-                        {muted ? <SoundOffIcon /> : <SoundOnIcon />}
-                      </span>
-                      <span className={`min-w-0 flex-1 truncate ${TYPO.nav}`}>
-                        Sound
-                      </span>
-                      <span
-                        className={`${NAV.soundStatus} ${
-                          muted ? "text-gray-500" : "text-accent-green"
-                        }`}
-                      >
-                        {muted ? "OFF" : "ON"}
-                      </span>
-                    </button>
-                  </li>
                 </ul>
               </section>
             </nav>
 
-            <div className={NAV.supportRow}>
-              <a
-                href={COFFEE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Buy Me A Coffee — support 27-0"
-                className={NAV.supportLink}
+            <div className={NAV.footer}>
+              <p className={NAV.sectionLabel}>Settings</p>
+              <button
+                type="button"
+                onClick={handleToggleSound}
+                aria-label={
+                  muted
+                    ? "Sound off — click to enable"
+                    : "Sound on — click to mute"
+                }
+                className={NAV.soundToggle}
               >
-                <CoffeeIcon />
-              </a>
-              <a
-                href={SUGGESTIONS_MAIL}
-                aria-label="Send a suggestion"
-                className={NAV.supportLink}
-              >
-                <SuggestionsIcon />
-              </a>
-              <a
-                href={X_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Follow 27-0 on X"
-                className={NAV.supportLink}
-              >
-                <XIcon />
-              </a>
+                <span
+                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md border ${
+                    muted
+                      ? "border-pitch-600 bg-pitch-900/80 text-gray-500"
+                      : "border-accent-green/30 bg-accent-green/10 text-accent-green"
+                  }`}
+                  aria-hidden
+                >
+                  {muted ? <SoundOffIcon /> : <SoundOnIcon />}
+                </span>
+                <span className={`min-w-0 flex-1 truncate ${TYPO.nav}`}>
+                  Sound
+                </span>
+                <span
+                  className={`${NAV.soundStatus} ${
+                    muted ? "text-gray-500" : "text-accent-green"
+                  }`}
+                >
+                  {muted ? "OFF" : "ON"}
+                </span>
+              </button>
+              <div className={NAV.footerLinks}>
+                <a
+                  href={SUGGESTIONS_MAIL}
+                  aria-label="Send a suggestion"
+                  className={NAV.supportLink}
+                >
+                  <SuggestionsIcon />
+                </a>
+                <a
+                  href={COFFEE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Buy Me A Coffee — support 27-0"
+                  className={NAV.supportLink}
+                >
+                  <CoffeeIcon />
+                </a>
+                <a
+                  href={X_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow 27-0 on X"
+                  className={NAV.supportLink}
+                >
+                  <XIcon />
+                </a>
+              </div>
             </div>
           </motion.aside>
         </>
@@ -484,8 +497,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 function SoundOnIcon() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="12"
+      height="12"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -503,8 +516,8 @@ function SoundOnIcon() {
 function SoundOffIcon() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="12"
+      height="12"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -522,8 +535,8 @@ function SoundOffIcon() {
 function CoffeeIcon() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="12"
+      height="12"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -544,8 +557,8 @@ function CoffeeIcon() {
 function SuggestionsIcon() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="12"
+      height="12"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -562,8 +575,8 @@ function SuggestionsIcon() {
 function XIcon() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="12"
+      height="12"
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden

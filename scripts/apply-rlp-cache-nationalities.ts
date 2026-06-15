@@ -4,68 +4,15 @@
  */
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "fs";
 import { join } from "path";
+import {
+  nameKey,
+  nationalityFromPlaceOfBirth,
+  parsePlaceOfBirth,
+} from "./lib/rlp-parse";
 
 const DATA_DIR = join(__dirname, "..", "data");
 const CACHE_DIR = join(__dirname, "rlp-cache");
-const FILES = ["historic-players.json", "legends.json"] as const;
-
-const KNOWN_NATIONALITIES = new Set([
-  "Australia",
-  "Cook Islands",
-  "England",
-  "Fiji",
-  "France",
-  "Ireland",
-  "Italy",
-  "Jamaica",
-  "Lebanon",
-  "New Zealand",
-  "Papua New Guinea",
-  "Samoa",
-  "Scotland",
-  "Serbia",
-  "Tonga",
-  "Wales",
-]);
-
-function normalizeName(name: string): string {
-  return name
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9\s]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function nationalityFromPlaceOfBirth(place: string): string | null {
-  const lower = place.toLowerCase();
-  if (lower.includes("scotland")) return "Scotland";
-  if (lower.includes("wales")) return "Wales";
-  if (lower.includes("northern ireland")) return "Ireland";
-  if (lower.includes("england")) return "England";
-  if (lower.includes("ireland")) return "Ireland";
-  if (lower.includes("australia")) return "Australia";
-  if (lower.includes("new zealand")) return "New Zealand";
-  if (lower.includes("france")) return "France";
-  if (lower.includes("samoa")) return "Samoa";
-  if (lower.includes("tonga")) return "Tonga";
-  if (lower.includes("fiji")) return "Fiji";
-  if (lower.includes("papua")) return "Papua New Guinea";
-  if (lower.includes("cook islands")) return "Cook Islands";
-  if (lower.includes("lebanon")) return "Lebanon";
-  if (lower.includes("jamaica")) return "Jamaica";
-  if (lower.includes("italy")) return "Italy";
-  if (lower.includes("serbia")) return "Serbia";
-  const last = place.split(",").pop()?.trim();
-  if (last && KNOWN_NATIONALITIES.has(last)) return last;
-  return null;
-}
-
-function parsePlaceOfBirth(html: string): string | null {
-  const m = html.match(/<dt>Place Of Birth<\/dt>\s*<dd>([^<]+)<\/dd>/i);
-  return m?.[1]?.trim() ?? null;
-}
+const FILES = ["current-squads.json", "historic-players.json", "legends.json"] as const;
 
 function parsePlayerName(html: string): string | null {
   const m = html.match(/<title>([^<]+?)\s*-\s*RLP<\/title>/i);
@@ -83,9 +30,19 @@ function buildNameToNat(): Map<string, string> {
     const place = parsePlaceOfBirth(html);
     if (!name || !place) continue;
     const nat = nationalityFromPlaceOfBirth(place);
-    if (nat) map.set(normalizeName(name), nat);
+    if (nat) map.set(nameKey(name), nat);
   }
   return map;
+}
+
+function isSkipped(player: {
+  id: string;
+  availableInGame?: boolean;
+}): boolean {
+  if (player.availableInGame === false) return true;
+  if (player.id === "jm-goat-joe-mellor") return true;
+  if (player.id.startsWith("ssh-sam-hallas-")) return true;
+  return false;
 }
 
 function main() {
@@ -101,14 +58,16 @@ function main() {
   for (const file of FILES) {
     const path = join(DATA_DIR, file);
     const players = JSON.parse(readFileSync(path, "utf-8")) as {
+      id: string;
       name: string;
       nationality: string;
+      availableInGame?: boolean;
     }[];
     let changed = false;
 
     for (const player of players) {
-      if (player.nationality !== "Unknown") continue;
-      const nat = nameToNat.get(normalizeName(player.name));
+      if (isSkipped(player) || player.nationality !== "Unknown") continue;
+      const nat = nameToNat.get(nameKey(player.name));
       if (!nat) continue;
       player.nationality = nat;
       updated++;

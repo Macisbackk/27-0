@@ -18,9 +18,14 @@ function norm(n: string): string {
   return ALIASES[base] ?? base;
 }
 
-type P = (typeof current)[0];
+type P = {
+  name: string;
+  category: string;
+  peakRating?: number;
+  rating?: number;
+};
 const byName = new Map<string, P>();
-for (const p of [...current, ...historic]) {
+for (const p of [...current, ...historic] as P[]) {
   const k = norm(p.name);
   const existing = byName.get(k);
   if (!existing || p.category === "current") byName.set(k, p);

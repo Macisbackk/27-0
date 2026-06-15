@@ -32,6 +32,12 @@
     "validate:ratings": "tsx scripts/validate-rating-overrides.ts",
     "validate:era-teams": "tsx scripts/validate-era-teams.ts",
     "validate:years": "tsx scripts/validate-years.ts",
+    "download:rlp": "tsx scripts/download-rlp-cache.ts",
+    "enrich:rlp": "tsx scripts/enrich-all-from-rlp.ts",
+    "enrich:rlp:full": "tsx scripts/download-rlp-cache.ts && tsx scripts/enrich-all-from-rlp.ts",
+    "enrich:rlp:nationalities": "tsx scripts/apply-rlp-cache-nationalities.ts",
+    "enrich:rlp:backfill-birth": "tsx scripts/backfill-birth-years-from-dob.ts",
+    "enrich:rlp:report": "tsx scripts/finalize-rlp-report.ts",
     "validate:values": "tsx scripts/audit-player-values.ts",
     "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts"
   },

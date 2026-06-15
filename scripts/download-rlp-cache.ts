@@ -1,7 +1,7 @@
 /**
  * Bulk-download RLP player summary pages into scripts/rlp-cache/.
- * Validates each page before saving. Re-run safe — skips valid caches.
- * Run: npm run download:rlp && npm run enrich:rlp
+ * Downloads pages for any enrichable player missing cache (not only Unknown nationality).
+ * Run: npm run download:rlp
  */
 import {
   mkdirSync,
@@ -14,6 +14,7 @@ import {
 } from "fs";
 import { join } from "path";
 import { spawn } from "child_process";
+import { buildRlpIdMap, nameKey } from "./lib/rlp-parse";
 
 const DATA_DIR = join(__dirname, "..", "data");
 const HTML_PATH = join(__dirname, "rlp-players.html");
@@ -24,50 +25,46 @@ const MAX_TIME_SEC = 60;
 const RETRIES = 2;
 const DELAY_MS = 500;
 
-function normalizeName(name: string): string {
-  return name
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9\s]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
+type RawPlayer = {
+  id: string;
+  name: string;
+  nationality: string;
+  yearsActive?: string;
+  dateOfBirth?: string;
+  birthYear?: number;
+  appearances?: number;
+  tries?: number;
+  availableInGame?: boolean;
+};
+
+function isHiddenOrArchived(player: RawPlayer): boolean {
+  if (player.availableInGame === false) return true;
+  if (player.id === "jm-goat-joe-mellor") return true;
+  if (player.id.startsWith("ssh-sam-hallas-")) return true;
+  return false;
 }
 
-function formatName(rlpName: string): string {
-  const m = rlpName.match(/^(.+?),\s*(.+)$/);
-  if (!m) return rlpName;
-  const surname = m[1]
-    .split(/[\s-]+/)
-    .map((w) => w.charAt(0) + w.slice(1).toLowerCase())
-    .join("-");
-  const first = m[2]
-    .split(/[\s-]+/)
-    .map((w) => w.charAt(0) + w.slice(1).toLowerCase())
-    .join("-");
-  return `${first} ${surname}`;
-}
-
-function buildRlpIdMap(html: string): Map<string, string> {
-  const map = new Map<string, string>();
-  const tbodyStart = html.indexOf("<tbody>");
-  const tbodyEnd = html.indexOf("</tbody>", tbodyStart);
-  const tbody = html.slice(tbodyStart, tbodyEnd);
-  const parts = tbody.split(/<tr><td><a href="\/players\/(\d+)">/);
-  for (let i = 1; i < parts.length; i += 2) {
-    const rlpId = parts[i];
-    const chunk = parts[i + 1];
-    const nameMatch = chunk?.match(/^([^<]+)<\/a>/);
-    if (!nameMatch) continue;
-    map.set(normalizeName(formatName(nameMatch[1])), rlpId);
-  }
-  return map;
+function needsCache(player: RawPlayer): boolean {
+  return (
+    !player.nationality ||
+    player.nationality === "Unknown" ||
+    !player.yearsActive ||
+    player.yearsActive === "Unknown" ||
+    player.yearsActive.endsWith("–Unknown") ||
+    !player.dateOfBirth ||
+    !player.birthYear ||
+    player.appearances === undefined ||
+    player.appearances === null ||
+    player.tries === undefined ||
+    player.tries === null
+  );
 }
 
 function isValidCache(path: string): boolean {
   if (!existsSync(path)) return false;
   try {
-    return readFileSync(path, "utf-8").includes("Place Of Birth");
+    const html = readFileSync(path, "utf-8");
+    return html.includes("Place Of Birth") || html.includes("<dt>Born</dt>");
   } catch {
     return false;
   }
@@ -127,7 +124,10 @@ async function downloadPage(rlpId: string): Promise<boolean> {
 
     try {
       const html = readFileSync(tmp, "utf-8");
-      if (!html.includes("Place Of Birth")) {
+      if (
+        !html.includes("Place Of Birth") &&
+        !html.includes("<dt>Born</dt>")
+      ) {
         unlinkSync(tmp);
         await new Promise((r) => setTimeout(r, DELAY_MS * (attempt + 2)));
         continue;
@@ -176,10 +176,10 @@ async function main() {
   for (const file of FILES) {
     const players = JSON.parse(
       readFileSync(join(DATA_DIR, file), "utf-8")
-    ) as { name: string; nationality: string }[];
+    ) as RawPlayer[];
     for (const p of players) {
-      if (p.nationality !== "Unknown") continue;
-      const id = idMap.get(normalizeName(p.name));
+      if (isHiddenOrArchived(p) || !needsCache(p)) continue;
+      const id = idMap.get(nameKey(p.name));
       if (id) ids.add(id);
     }
   }
@@ -189,7 +189,7 @@ async function main() {
 
   let done = 0;
   let okCount = 0;
-  const results = await mapPool(list, CONCURRENCY, async (id) => {
+  await mapPool(list, CONCURRENCY, async (id) => {
     const ok = await downloadPage(id);
     done++;
     if (ok) okCount++;
@@ -199,9 +199,8 @@ async function main() {
     return ok;
   });
 
-  const ok = results.filter(Boolean).length;
-  console.log(`Downloaded ${ok}/${list.length} pages to ${CACHE_DIR}`);
-  if (list.length - ok > 0) console.log(`  Failed: ${list.length - ok}`);
+  console.log(`Downloaded ${okCount}/${list.length} pages to ${CACHE_DIR}`);
+  if (list.length - okCount > 0) console.log(`  Failed: ${list.length - okCount}`);
 }
 
 main().catch((e) => {

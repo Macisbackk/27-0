@@ -18,7 +18,9 @@
     "manOfSteel": true,
     "challengeCupWinner": true,
     "superLeagueWinner": true,
-    "rating": 93
+    "rating": 93,
+    "dateOfBirth": "1977-12-14",
+    "birthYear": 1977
   },
   {
     "id": "sam-burgess",
@@ -39,7 +41,9 @@
     "manOfSteel": false,
     "challengeCupWinner": false,
     "superLeagueWinner": false,
-    "rating": 95
+    "rating": 95,
+    "dateOfBirth": "1988-12-14",
+    "birthYear": 1988
   },
   {
     "id": "kevin-sinfield",
@@ -60,7 +64,9 @@
     "manOfSteel": true,
     "challengeCupWinner": true,
     "superLeagueWinner": true,
-    "rating": 95
+    "rating": 95,
+    "dateOfBirth": "1980-09-12",
+    "birthYear": 1980
   },
   {
     "id": "paul-sculthorpe",
@@ -81,7 +87,9 @@
     "manOfSteel": true,
     "challengeCupWinner": false,
     "superLeagueWinner": true,
-    "rating": 96
+    "rating": 96,
+    "dateOfBirth": "1977-09-22",
+    "birthYear": 1977
   },
   {
     "id": "ellery-hanley",
@@ -96,7 +104,6 @@
     "value": 4920000,
     "appearances": 495,
     "tries": 327,
-    "intlCaps": 36,
     "hallOfFame": true,
     "clubLegend": true,
     "manOfSteel": true,
@@ -117,13 +124,14 @@
     "value": 4920000,
     "appearances": 370,
     "tries": 142,
-    "intlCaps": 34,
     "hallOfFame": true,
     "clubLegend": true,
     "manOfSteel": true,
     "challengeCupWinner": false,
     "superLeagueWinner": true,
-    "rating": 95
+    "rating": 95,
+    "dateOfBirth": "1975-05-30",
+    "birthYear": 1975
   },
   {
     "id": "andrew-johns",
@@ -138,13 +146,14 @@
     "value": 563000,
     "appearances": 249,
     "tries": 71,
-    "intlCaps": 27,
     "hallOfFame": true,
     "clubLegend": true,
     "manOfSteel": false,
     "challengeCupWinner": false,
     "superLeagueWinner": false,
-    "rating": 96
+    "rating": 96,
+    "dateOfBirth": "1974-05-19",
+    "birthYear": 1974
   },
   {
     "id": "martin-offiah",
@@ -159,13 +168,14 @@
     "value": 4920000,
     "appearances": 501,
     "tries": 501,
-    "intlCaps": 33,
     "hallOfFame": true,
     "clubLegend": true,
     "manOfSteel": false,
     "challengeCupWinner": true,
     "superLeagueWinner": false,
-    "rating": 94
+    "rating": 94,
+    "dateOfBirth": "1965-12-29",
+    "birthYear": 1965
   },
   {
     "id": "rob-burrow",
@@ -180,13 +190,14 @@
     "value": 2655000,
     "appearances": 493,
     "tries": 157,
-    "intlCaps": 15,
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
     "challengeCupWinner": true,
     "superLeagueWinner": true,
-    "rating": 92
+    "rating": 92,
+    "dateOfBirth": "1982-09-26",
+    "birthYear": 1982
   },
   {
     "id": "paul-newlove",
@@ -201,13 +212,14 @@
     "value": 2655000,
     "appearances": 431,
     "tries": 191,
-    "intlCaps": 14,
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
     "challengeCupWinner": false,
     "superLeagueWinner": true,
-    "rating": 92
+    "rating": 92,
+    "dateOfBirth": "1971-08-10",
+    "birthYear": 1971
   },
   {
     "id": "jason-robinson",
@@ -222,13 +234,14 @@
     "value": 500000,
     "appearances": 387,
     "tries": 238,
-    "intlCaps": 20,
     "hallOfFame": true,
     "clubLegend": true,
     "manOfSteel": true,
     "challengeCupWinner": true,
     "superLeagueWinner": true,
-    "rating": 96
+    "rating": 96,
+    "dateOfBirth": "1974-07-30",
+    "birthYear": 1974
   },
   {
     "id": "garry-schofield",
@@ -243,13 +256,14 @@
     "value": 563000,
     "appearances": 457,
     "tries": 223,
-    "intlCaps": 46,
     "hallOfFame": true,
     "clubLegend": true,
     "manOfSteel": true,
     "challengeCupWinner": false,
     "superLeagueWinner": false,
-    "rating": 97
+    "rating": 97,
+    "dateOfBirth": "1965-07-01",
+    "birthYear": 1965
   },
   {
     "id": "bradford-leg-robbie-hunter-paul",
@@ -270,7 +284,9 @@
     "clubLegend": true,
     "manOfSteel": true,
     "challengeCupWinner": true,
-    "superLeagueWinner": true
+    "superLeagueWinner": true,
+    "dateOfBirth": "1976-02-03",
+    "birthYear": 1976
   },
   {
     "id": "wigan-hist-sam-tomkins",
@@ -286,12 +302,13 @@
     "rating": 94,
     "appearances": 429,
     "tries": 176,
-    "intlCaps": 30,
     "hallOfFame": false,
     "clubLegend": true,
     "manOfSteel": true,
     "challengeCupWinner": true,
     "superLeagueWinner": true,
-    "lanceToddTrophy": true
+    "lanceToddTrophy": true,
+    "dateOfBirth": "1989-03-23",
+    "birthYear": 1989
   }
 ]
