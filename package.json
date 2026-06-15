@@ -26,6 +26,7 @@
     "golden-boot:apply": "tsx scripts/apply-golden-boot-achievements.ts",
     "build:era-wikipedia-squads": "tsx scripts/build-era-wikipedia-squads.ts",
     "enrich:wikipedia-birth": "tsx scripts/enrich-wikipedia-birth-years.ts",
+    "enrich:wikipedia-birth:current": "tsx scripts/enrich-wikipedia-birth-years.ts --current-only",
     "validate:ages": "tsx scripts/validate-ages.ts"
   },
   "dependencies": {

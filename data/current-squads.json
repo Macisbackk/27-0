@@ -1929,6 +1929,8 @@
     "value": 135000,
     "intlCaps": 0,
     "rating": 81,
+    "dateOfBirth": "1996-10-18",
+    "birthYear": 1996,
     "appearances": 4
   },
   {
@@ -4185,10 +4187,12 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 90,
-    "value": 250000,
+    "peakRating": 86,
+    "value": 182000,
     "intlCaps": 14,
-    "rating": 90
+    "rating": 86,
+    "dateOfBirth": "1992-11-21",
+    "birthYear": 1992
   },
   {
     "id": "huddersfield-cur-asher-odonnell",
@@ -7284,20 +7288,6 @@
     "peakRating": 77,
     "rating": 77,
     "value": 73000,
-    "intlCaps": 0
-  },
-  {
-    "id": "bradford-cur-harvey-hallas",
-    "name": "Harvey Hallas",
-    "position": "LOOSE_FORWARD",
-    "club": "Bradford Bulls",
-    "nationality": "England",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
-    "category": "current",
-    "peakRating": 79,
-    "rating": 79,
-    "value": 100000,
     "intlCaps": 0
   },
   {

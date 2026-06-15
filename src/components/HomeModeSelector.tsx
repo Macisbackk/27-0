@@ -27,12 +27,14 @@ import {
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GuestNotice } from "./GuestNotice";
+import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 
 export function HomeModeSelector() {
   const [classicDifficulty, setClassicDifficulty] =
     useState<GameDifficulty>("NORMAL");
   const [draftDifficulty, setDraftDifficulty] =
     useState<GameDifficulty>("NORMAL");
+  const [cupEraMode, setCupEraMode] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -177,22 +179,29 @@ export function HomeModeSelector() {
           </span>
         </Link>
 
-        <Link
-          href={buildPlayHref("cup")}
-          onClick={() => playModeChallengeCupStart()}
-          className={`${CARD.glass} ${CARD.panel} group block w-full ${SPACING.cardPaddingLg} transition hover:border-accent-gold/30`}
+        <div
+          className={`${CARD.glass} ${CARD.panel} w-full ${SPACING.cardPaddingLg} transition hover:border-accent-gold/30`}
         >
-          <h2 className={`${TYPO.cardTitle} group-hover:text-accent-gold`}>
-            Challenge Cup
-          </h2>
+          <h2 className={TYPO.cardTitle}>Challenge Cup</h2>
           <p className={`mt-3 ${TYPO.body}`}>
-            Draft your squad and battle through a knockout tournament — or switch
-            to Era Mode and lead a historic season squad through the draw.
+            Draft your squad and battle through a knockout tournament — or pick
+            a historic club season and lead that era squad through the draw.
           </p>
-          <span className={`mt-5 ${BTN.base} ${BTN.goldOutline}`}>
-            Start Challenge Cup →
-          </span>
-        </Link>
+
+          <ChallengeCupVariantToggle
+            eraMode={cupEraMode}
+            onEraModeChange={setCupEraMode}
+            className="mt-5"
+          />
+
+          <Link
+            href={buildPlayHref("cup", "NORMAL", cupEraMode)}
+            onClick={() => playModeChallengeCupStart()}
+            className={`mt-5 w-full ${BTN.base} ${BTN.goldOutline}`}
+          >
+            {cupEraMode ? "Start Era Challenge Cup →" : "Start Challenge Cup →"}
+          </Link>
+        </div>
       </div>
     </div>
   );

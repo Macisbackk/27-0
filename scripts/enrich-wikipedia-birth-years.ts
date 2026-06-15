@@ -76,6 +76,8 @@ function hasBirthData(
   return false;
 }
 
+const CURRENT_ONLY = process.argv.includes("--current-only");
+
 function buildTargetList(overrides: Record<string, number>): RawPlayer[] {
   const legendIds = new Set(
     (legends as RawPlayer[]).map((p) => p.id)
@@ -91,6 +93,10 @@ function buildTargetList(overrides: Record<string, number>): RawPlayer[] {
     targets.push(raw);
   };
 
+  if (CURRENT_ONLY) {
+    for (const p of currentSquads as RawPlayer[]) add(p);
+    return targets;
+  }
   for (const p of legends as RawPlayer[]) add(p);
   for (const p of historicPlayers as RawPlayer[]) {
     if (!legendIds.has(p.id)) add(p);

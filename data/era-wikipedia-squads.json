@@ -47,7 +47,7 @@
         "Bernard Dwyer",
         "Steve McNamara"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "1998": {
       "playerIds": [
@@ -96,7 +96,7 @@
         "Paul Medley",
         "Steve McNamara"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "1999": {
       "playerIds": [
@@ -145,7 +145,7 @@
         "Mike Forshaw",
         "Steve McNamara"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2000": {
       "playerIds": [
@@ -194,7 +194,7 @@
         "Mike Forshaw",
         "Brad Mackay"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2001": {
       "playerIds": [
@@ -243,7 +243,7 @@
         "Daniel Gartner",
         "Mike Forshaw"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2002": {
       "playerIds": [
@@ -292,7 +292,7 @@
         "Daniel Gartner",
         "Mike Forshaw"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2003": {
       "playerIds": [
@@ -341,7 +341,7 @@
         "Daniel Gartner",
         "Mike Forshaw"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2004": {
       "playerIds": [
@@ -390,7 +390,7 @@
         "Brett Ferres",
         "Jamie Langley"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2005": {
       "playerIds": [
@@ -439,7 +439,7 @@
         "Paul Johnson",
         "Jamie Langley"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2006": {
       "playerIds": [
@@ -488,7 +488,7 @@
         "Paul Johnson",
         "Sam Burgess"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2009": {
       "playerIds": [
@@ -537,7 +537,7 @@
         "Glenn Morrison",
         "Jamie Langley"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2012": {
       "playerIds": [
@@ -586,7 +586,7 @@
         "Elliott Whitehead",
         "John Bateman"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2013": {
       "playerIds": [
@@ -635,7 +635,7 @@
         "John Bateman",
         "Jamie Langley"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2014": {
       "playerIds": [
@@ -684,7 +684,7 @@
         "Alex Mellor",
         "Danny Addy"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2024": {
       "playerIds": [
@@ -733,7 +733,7 @@
         "Harvey Wilson",
         "Sam Hallas"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     }
   },
   "Wigan Warriors": {
@@ -784,7 +784,7 @@
         "Liam Farrell",
         "Sean OLoughlin"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2016": {
       "playerIds": [
@@ -800,7 +800,7 @@
         "wigan-hist-michael-mcilorum",
         "wigan-hist-joel-tomkins",
         "wigan-cur-liam-farrell",
-        "wigan-hist-taulima-tautai"
+        "sean-oloughlin"
       ],
       "positions": [
         "FULLBACK",
@@ -831,9 +831,9 @@
         "Michael McIlorum",
         "Joel Tomkins",
         "Liam Farrell",
-        "Taulima Tautai"
+        "Sean OLoughlin"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     }
   },
   "Warrington Wolves": {
@@ -884,7 +884,7 @@
         "Roy Asotasi",
         "Ben Harrison"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2016": {
       "playerIds": [
@@ -895,8 +895,8 @@
         "warrington-cur-toby-king",
         "wakefield-leg-stefan-ratchford",
         "wakefield-hist-chris-sandow",
+        "wakefield-hist-chris-hill",
         "wakefield-hist-ashton-sims",
-        "leeds-hist-ryan-bailey",
         "st-helens-cur-daryl-clark",
         "huddersfield-cur-george-king",
         "warrington-cur-ben-currie",
@@ -926,14 +926,14 @@
         "Toby King",
         "Stefan Ratchford",
         "Chris Sandow",
+        "Chris Hill",
         "Ashton Sims",
-        "Ryan Bailey",
         "Daryl Clark",
         "George King",
         "Ben Currie",
         "Ben Westwood"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     }
   },
   "Catalans Dragons": {
@@ -984,7 +984,7 @@
         "Jason Croker",
         "Grégory Mounis"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2010": {
       "playerIds": [
@@ -1033,7 +1033,7 @@
         "Grégory Mounis",
         "Dane Carlaw"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2011": {
       "playerIds": [
@@ -1082,7 +1082,7 @@
         "Sébastien Raguin",
         "Jason Baitieri"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2012": {
       "playerIds": [
@@ -1131,7 +1131,7 @@
         "Steve Menzies",
         "Jason Baitieri"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2013": {
       "playerIds": [
@@ -1180,7 +1180,7 @@
         "Olivier Elima",
         "Jason Baitieri"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2015": {
       "playerIds": [
@@ -1229,7 +1229,7 @@
         "Elliott Whitehead",
         "Benjamin Garcia"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2016": {
       "playerIds": [
@@ -1278,7 +1278,7 @@
         "Antoni Maria",
         "Jason Baitieri"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     }
   },
   "Huddersfield Giants": {
@@ -1329,7 +1329,7 @@
         "Jamie Cording",
         "David Faiumu"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     }
   },
   "Castleford Tigers": {
@@ -1380,7 +1380,7 @@
         "Ryan Clayton",
         "Joe Westerman"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2016": {
       "playerIds": [
@@ -1429,7 +1429,7 @@
         "Frankie Mariano",
         "Nathan Massey"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     }
   },
   "Wakefield Trinity": {
@@ -1480,7 +1480,7 @@
         "Paul Johnson",
         "Jason Demetriou"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     }
   },
   "Widnes Vikings": {
@@ -1531,7 +1531,7 @@
         "Matt Whitley",
         "Paul Johnson"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     },
     "2016": {
       "playerIds": [
@@ -1580,7 +1580,7 @@
         "Matt Whitley",
         "Hep Cahill"
       ],
-      "verifiedAt": "2026-06-14"
+      "verifiedAt": "2026-06-15"
     }
   },
   "Leeds Rhinos": {

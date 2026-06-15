@@ -56,7 +56,7 @@ const TEAM_YEAR_TEAMS = getTeamsWithYearRosters();
 
 const DEFAULT_FILTERS: ShowcaseFilters = {
   search: "",
-  status: "all",
+  status: "current",
   position: "all",
   club: "all",
   ratingMin: "all",
@@ -71,6 +71,19 @@ const TIER_OPTIONS = Object.entries(TIER_FILTER_LABELS) as [
   Exclude<TierFilter, "all">,
   string,
 ][];
+
+function formatPlayerTypeLabel(status: PlayerCategory | "all"): string {
+  switch (status) {
+    case "current":
+      return "Current";
+    case "historic":
+      return "Historic";
+    case "legend":
+      return "Legend";
+    default:
+      return "All";
+  }
+}
 
 export function PlayerShowcase() {
   const [filters, setFilters] = useState<ShowcaseFilters>(DEFAULT_FILTERS);
@@ -217,11 +230,12 @@ export function PlayerShowcase() {
         clear: () => setSearchInput(""),
       });
     }
-    if (filters.status !== "all") {
+    if (filters.status !== DEFAULT_FILTERS.status) {
       chips.push({
         key: "status",
-        label: `Type: ${filters.status}`,
-        clear: () => updateFilters((f) => ({ ...f, status: "all" })),
+        label: `Type: ${formatPlayerTypeLabel(filters.status)}`,
+        clear: () =>
+          updateFilters((f) => ({ ...f, status: DEFAULT_FILTERS.status })),
       });
     }
     if (filters.position !== "all") {
@@ -514,10 +528,10 @@ export function PlayerShowcase() {
               }
               className={RL_FILTER_INPUT_CLASS}
             >
-              <option value="all">All Types</option>
               <option value="current">Current</option>
               <option value="historic">Historic</option>
               <option value="legend">Legend</option>
+              <option value="all">All</option>
             </select>
           </FilterField>
 
