@@ -8,6 +8,7 @@ import {
   pickRLScore,
   snapToRLScore,
 } from "./rl-scores";
+import { getWinnerLoserScoreBounds } from "./score-gap";
 import {
   buildChallengeCupTournamentStats,
   deriveCupTryScorersFromMatchEvents,
@@ -564,8 +565,12 @@ function simulateClubVsClub(
     rng() <
     0.5 + ((homeStr + homeAdvantage - awayStr) / 100) * 0.65;
 
-  const winScore = pickRLScore(14, 38, rng);
-  const lossScore = pickRLScore(0, 26, rng);
+  const winnerStrength = homeWins ? homeStr + homeAdvantage : awayStr;
+  const loserStrength = homeWins ? awayStr : homeStr + homeAdvantage;
+  const ratingGap = Math.abs(winnerStrength - loserStrength);
+  const bounds = getWinnerLoserScoreBounds(ratingGap, rng);
+  const winScore = pickRLScore(bounds.winnerMin, bounds.winnerMax, rng);
+  const lossScore = pickRLScore(bounds.loserMin, bounds.loserMax, rng);
   let homeScore = snapToRLScore(homeWins ? winScore : lossScore);
   let awayScore = snapToRLScore(homeWins ? lossScore : winScore);
   if (homeScore === awayScore) {

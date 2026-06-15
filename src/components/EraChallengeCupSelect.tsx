@@ -21,7 +21,6 @@ import {
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { ClubHeaderBar } from "./ClubBadge";
 import { RugbyPitch } from "./RugbyPitch";
-import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -117,8 +116,6 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
           Pick a historic club season and lead that era squad through a knockout
           draw against opponents from across the decades.
         </p>
-
-        <ChallengeCupVariantToggle eraMode className="mt-5" />
 
         <p className={`mt-5 ${TYPO.statLabel}`}>Select Club</p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">

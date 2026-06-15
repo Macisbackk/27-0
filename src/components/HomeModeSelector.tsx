@@ -6,6 +6,8 @@ import type { GameDifficulty } from "@/lib/types";
 import { buildPlayHref } from "@/lib/play-links";
 import {
   getModeDifficulty,
+  getCupEraVariant,
+  setCupEraVariant,
   MODE_DIFFICULTY_CHANGED_EVENT,
   setModeDifficulty,
   type PlayModeKey,
@@ -40,6 +42,7 @@ export function HomeModeSelector() {
   useEffect(() => {
     setClassicDifficulty(getModeDifficulty("normal"));
     setDraftDifficulty(getModeDifficulty("draft"));
+    setCupEraMode(getCupEraVariant());
     setMounted(true);
 
     const sync = (event: Event) => {
@@ -190,7 +193,10 @@ export function HomeModeSelector() {
 
           <ChallengeCupVariantToggle
             eraMode={cupEraMode}
-            onEraModeChange={setCupEraMode}
+            onEraModeChange={(era) => {
+              setCupEraMode(era);
+              setCupEraVariant(era);
+            }}
             className="mt-5"
           />
 

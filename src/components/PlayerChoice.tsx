@@ -77,7 +77,7 @@ export function PlayerChoice({
       transition={{ duration: 0.4, ease: "easeOut" }}
       className="w-full"
     >
-      <header className="mb-3 border-b border-pitch-600/40 pb-3 text-center sm:mb-6 sm:pb-5">
+      <header className="mb-2 border-b border-pitch-600/40 pb-2 text-center sm:mb-4 sm:pb-3">
         <p className={`${RL_SECTION_TITLE_CLASS} text-[10px] sm:text-xs`}>
           {draftMode ? "Draft Pick" : "Recruitment"}
         </p>
@@ -137,7 +137,7 @@ export function PlayerChoice({
         </div>
       )}
 
-      <div className="grid grid-cols-2 items-stretch gap-2 sm:gap-5 md:gap-6">
+      <div className="grid grid-cols-2 items-stretch gap-1.5 sm:gap-3 md:gap-4">
         <ChoiceCard
           player={playerA}
           label="A"
@@ -221,7 +221,7 @@ function ChoiceCard({
           </span>
         </span>
       </div>
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg transition sm:min-h-[400px] group-hover:opacity-95">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg transition sm:min-h-[320px] group-hover:opacity-95">
         <PlayerCard
           player={player}
           selectable

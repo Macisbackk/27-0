@@ -220,8 +220,8 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
         className={`${equalHeight ? "min-h-full" : ""} ${className}`}
       >
         <div
-          className={`flex items-start gap-1.5 px-2 pb-1 pt-2 sm:gap-3 sm:px-5 sm:pb-2 sm:pt-5 ${
-            mobileCompact ? "gap-1" : ""
+          className={`flex items-start gap-1 px-1.5 pb-1 pt-1.5 sm:gap-2 sm:px-3 sm:pb-1.5 sm:pt-3 ${
+            mobileCompact ? "gap-0.5" : ""
           }`}
         >
           <div className="min-w-0 flex-1 pr-1">
@@ -259,17 +259,17 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
         />
 
         <div
-          className={`flex flex-1 flex-col px-2 pb-2 sm:gap-3 sm:px-5 sm:pb-5 ${
-            mobileCompact ? "gap-1" : "gap-2.5"
+          className={`flex flex-1 flex-col px-1.5 pb-1.5 sm:gap-2 sm:px-3 sm:pb-3 ${
+            mobileCompact ? "gap-0.5" : "gap-2"
           }`}
         >
           {achievementBadges && (
-            <div className={`${mobileCompact ? "hidden sm:block" : ""} pt-0.5`}>
+            <div className={`${mobileCompact ? "hidden sm:block" : ""} pt-0`}>
               {achievementBadges}
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-2">
+          <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-1.5">
             <StatBox
               label="Apps"
               value={appearancesValue}

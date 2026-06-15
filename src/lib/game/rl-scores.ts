@@ -6,7 +6,7 @@ export interface ScorePickContext {
 /** Scores from tries, conversions, and penalties only (no drop goals — always even). */
 const SCORES_NO_DROP_GOAL: number[] = (() => {
   const scores = new Set<number>();
-  for (let tries = 0; tries <= 16; tries++) {
+  for (let tries = 0; tries <= 19; tries++) {
     for (let conversions = 0; conversions <= tries; conversions++) {
       for (let penalties = 0; penalties <= 8; penalties++) {
         scores.add(tries * 4 + conversions * 2 + penalties * 2);

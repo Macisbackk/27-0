@@ -9,7 +9,6 @@ import { ClubHeaderBar } from "./ClubBadge";
 import { getClubColors } from "@/lib/clubs";
 import { BTN, CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 
 interface ChallengeCupClubSelectProps {
   seed: string;
@@ -49,8 +48,6 @@ export function ChallengeCupClubSelect({
           Draft players from one club only — build the greatest version of that
           team and battle through a knockout tournament.
         </p>
-
-        <ChallengeCupVariantToggle eraMode={false} className="mt-5" />
 
         <AnimatePresence mode="wait">
         {revealing ? (

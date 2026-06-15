@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { buildPlayHref } from "@/lib/play-links";
 import {
   nestedTabGroupButtonClass,
   nestedTabGroupClass,
@@ -14,13 +12,12 @@ import { playUiClick } from "@/lib/sound";
 interface ChallengeCupVariantToggleProps {
   eraMode: boolean;
   className?: string;
-  /** Home page: buttons update state; play/sidebar: links navigate between variants. */
-  onEraModeChange?: (eraMode: boolean) => void;
+  /** Buttons update variant preference (sidebar, home). Required for toggle behaviour. */
+  onEraModeChange: (eraMode: boolean) => void;
   /** Sidebar: compact nested toggle with shorter labels. */
   compact?: boolean;
   /** Sidebar: omit the Cup Mode label to save vertical space. */
   hideLabel?: boolean;
-  onNavigate?: () => void;
 }
 
 export function ChallengeCupVariantToggle({
@@ -29,7 +26,6 @@ export function ChallengeCupVariantToggle({
   onEraModeChange,
   compact = false,
   hideLabel = false,
-  onNavigate,
 }: ChallengeCupVariantToggleProps) {
   const currentClass = compact
     ? nestedTabGroupButtonClass(!eraMode, "normal")
@@ -54,53 +50,26 @@ export function ChallengeCupVariantToggle({
         </p>
       )}
       <div className={groupClass}>
-        {onEraModeChange ? (
-          <>
-            <button
-              type="button"
-              onClick={() => {
-                playUiClick();
-                onEraModeChange(false);
-              }}
-              className={currentClass}
-            >
-              {currentLabel}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                playUiClick();
-                onEraModeChange(true);
-              }}
-              className={eraClass}
-            >
-              {eraLabel}
-            </button>
-          </>
-        ) : (
-          <>
-            <Link
-              href={buildPlayHref("cup", "NORMAL", false)}
-              onClick={() => {
-                playUiClick();
-                onNavigate?.();
-              }}
-              className={currentClass}
-            >
-              {currentLabel}
-            </Link>
-            <Link
-              href={buildPlayHref("cup", "NORMAL", true)}
-              onClick={() => {
-                playUiClick();
-                onNavigate?.();
-              }}
-              className={eraClass}
-            >
-              {eraLabel}
-            </Link>
-          </>
-        )}
+        <button
+          type="button"
+          onClick={() => {
+            playUiClick();
+            onEraModeChange(false);
+          }}
+          className={currentClass}
+        >
+          {currentLabel}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            playUiClick();
+            onEraModeChange(true);
+          }}
+          className={eraClass}
+        >
+          {eraLabel}
+        </button>
       </div>
     </div>
   );

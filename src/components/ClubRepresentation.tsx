@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import type {
   ClubBreakdownSummary,
   ClubPlayerDisplayCategory,
+  ClubPlayerEntry,
 } from "@/lib/squad-analysis";
 import { getClubColors } from "@/lib/clubs";
 import { RLClubRow } from "./cards/RLClubRow";
@@ -16,6 +17,7 @@ import {
 import { playPanelExpand } from "@/lib/sound";
 import { formatValue, formatPlayerAgeLabel, getPlayerById } from "@/lib/players";
 import { formatPositionReviewText } from "@/lib/squad-display";
+import { buildClubLineupGroups } from "@/lib/club-lineup";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubPillBackground } from "@/lib/ui/contrast";
@@ -51,6 +53,49 @@ function ClubPlayerStatusBadge({
   return <PlayerStatusBadge status={category as PlayerStatusType} />;
 }
 
+function LineupPlayerRow({
+  player,
+  clubName,
+}: {
+  player: ClubPlayerEntry;
+  clubName: string;
+}) {
+  const poolPlayer = getPlayerById(player.playerId);
+
+  return (
+    <div className={`${CARD.inset} px-2.5 py-2 sm:px-3`}>
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0 flex-1">
+          <p className={TYPO.playerNameSm}>{player.name}</p>
+          <ClubPlayerStatusBadge category={player.displayCategory} />
+          <p className={`mt-0.5 ${TYPO.bodySm} text-gray-400`}>
+            {player.playerId === "ssh-sam-hallas-group"
+              ? "All 13 positions"
+              : formatPositionReviewText(player)}
+            {poolPlayer && (
+              <>
+                <span className="mx-1.5 text-gray-600">·</span>
+                <span>{formatPlayerAgeLabel(poolPlayer)}</span>
+              </>
+            )}
+          </p>
+          {player.displayClub && player.displayClub !== clubName && (
+            <p className={`mt-0.5 ${TYPO.bodySm} text-accent-gold/90`}>
+              {player.displayClub}
+            </p>
+          )}
+        </div>
+        <div className="shrink-0 text-right">
+          <p className={`${TYPO.rating} text-sm`}>{formatRatingLine(player)}</p>
+          <p className="mt-0.5 text-xs font-semibold text-accent-gold">
+            {formatValue(player.value)}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ClubRepresentation({
   summary,
   clubColorOverride,
@@ -73,6 +118,7 @@ export function ClubRepresentation({
         clubs.map((c) => {
           const isExpanded = expandedClub === c.club;
           const colors = getClubColors(clubColorOverride ?? c.club);
+          const lineupGroups = buildClubLineupGroups(c.players);
           return (
             <div key={c.club}>
               <RLClubRow
@@ -84,7 +130,7 @@ export function ClubRepresentation({
               />
               <AnimatePresence initial={false}>
                 {isExpanded && (
-                  <motion.ul
+                  <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
@@ -92,57 +138,41 @@ export function ClubRepresentation({
                     className="overflow-hidden"
                   >
                     <div
-                      className={`mt-2 ${SPACING.stackSm} ${CARD.base} ${SPACING.cardPaddingSm}`}
+                      className={`mt-2 ${CARD.base} ${SPACING.cardPaddingSm}`}
                       style={{
                         borderColor: `${getClubPillBackground(colors.primary, colors.secondary, colors.accent)}55`,
                         background: `linear-gradient(135deg, ${colors.primary}18 0%, rgba(15,23,42,0.9) 55%)`,
                       }}
                     >
-                      {c.players.map((player) => {
-                        const poolPlayer = getPlayerById(player.playerId);
-                        return (
-                        <li
-                          key={player.playerId}
-                          className={`${CARD.inset} px-3 py-2.5`}
-                        >
-                          <div className="min-w-0">
-                            <p className={TYPO.playerNameSm}>
-                              {player.name}
+                      <div className={SPACING.stackSm}>
+                        {lineupGroups.map((group) => (
+                          <section key={group.label}>
+                            <p
+                              className={`mb-1.5 border-b border-white/10 pb-1 font-display text-[10px] font-bold uppercase tracking-[0.14em] text-gray-500`}
+                            >
+                              {group.label}
                             </p>
-                            <ClubPlayerStatusBadge
-                              category={player.displayCategory}
-                            />
-                            <p className={`mt-0 ${TYPO.bodySm}`}>
-                              {player.playerId === "ssh-sam-hallas-group"
-                                ? "All 13 positions"
-                                : formatPositionReviewText(player)}
-                              {poolPlayer && (
-                                <>
-                                  <span className="mx-2 text-gray-600">·</span>
-                                  <span>{formatPlayerAgeLabel(poolPlayer)}</span>
-                                </>
-                              )}
-                            </p>
-                            {player.displayClub && player.displayClub !== c.club && (
-                              <p className={`mt-0.5 ${TYPO.bodySm} text-accent-gold`}>
-                                {player.displayClub}
-                              </p>
-                            )}
-                          </div>
-                          <div className={`mt-2 flex flex-wrap items-center gap-3 ${TYPO.bodySm}`}>
-                            <span className={`${TYPO.rating} text-sm`}>
-                              {formatRatingLine(player)}
-                            </span>
-                            <span className="text-gray-500">·</span>
-                            <span className="font-semibold text-accent-gold">
-                              {formatValue(player.value)}
-                            </span>
-                          </div>
-                        </li>
-                        );
-                      })}
+                            <div className="grid gap-1.5">
+                              {group.rows.map((row) => (
+                                <div key={`${row.positionLabel}-${row.players[0]?.playerId}`}>
+                                  <p className="mb-0.5 px-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-500">
+                                    {row.positionLabel}
+                                  </p>
+                                  {row.players.map((player) => (
+                                    <LineupPlayerRow
+                                      key={player.playerId}
+                                      player={player}
+                                      clubName={c.club}
+                                    />
+                                  ))}
+                                </div>
+                              ))}
+                            </div>
+                          </section>
+                        ))}
+                      </div>
                     </div>
-                  </motion.ul>
+                  </motion.div>
                 )}
               </AnimatePresence>
             </div>
@@ -158,9 +188,7 @@ export function ClubRepresentation({
               : "border-accent-red/35 bg-accent-red/10 text-accent-red"
           }`}
         >
-          <span className={TYPO.sectionTitle}>
-            Total Players
-          </span>
+          <span className={TYPO.sectionTitle}>Total Players</span>
           <span>
             {totalPlayers}
             {!isValid && ` / ${expectedPlayers} expected`}

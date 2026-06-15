@@ -17,6 +17,10 @@ import {
   type ScoreBreakdown,
   type ScorePickContext,
 } from "./rl-scores";
+import {
+  getBlowoutLossCap,
+  getBlowoutWinRange,
+} from "./score-gap";
 import { getOpponentMatchRating } from "./opponent-scorers";
 import { getSeasonCommentary } from "./season-commentary";
 import type { ManOfTheMatch } from "./fantasy-match-summary";
@@ -91,6 +95,7 @@ type MatchType =
   | "normal"
   | "high"
   | "blowout"
+  | "elite_blowout"
   | "upset_loss"
   | "upset_win"
   | "grinding";
@@ -267,9 +272,10 @@ function pickMatchType(
   if (isUpset) return won ? "upset_win" : "upset_loss";
 
   const margin = squadStrength - opponentStrength;
-  const gap = Math.max(margin, ratingGap);
+  const gap = Math.max(Math.abs(margin), Math.abs(ratingGap));
 
-  if (won && gap >= 12 && rng() < 0.52) return "blowout";
+  if (won && gap >= 16 && rng() < 0.18) return "elite_blowout";
+  if (won && gap >= 11 && rng() < 0.45) return "blowout";
   if (won && gap >= 8 && rng() < 0.38) return "high";
   if (won && gap >= 5 && rng() < 0.24) return "high";
   if (!won && gap <= -8 && rng() < 0.28) return "high";
@@ -296,6 +302,7 @@ function generateScoreline(
   opponentStrength: number,
   won: boolean,
   matchType: MatchType,
+  ratingGap: number,
   rng: () => number,
   seasonDropGoals: number,
   form: number
@@ -320,21 +327,45 @@ function generateScoreline(
   const noDg: ScorePickContext = { allowDropGoal: false };
 
   switch (matchType) {
-    case "blowout":
+    case "elite_blowout": {
+      const winRange = getBlowoutWinRange(
+        ratingGap,
+        profile.winForMin,
+        profile.winForMax,
+        rng
+      );
+      pointsFor = pickTeamScore(winRange.min, winRange.max, rng, noDg);
+      pointsAgainst = pickTeamScore(
+        0,
+        getBlowoutLossCap(ratingGap, profile.winAgainstMax, rng),
+        rng,
+        noDg
+      );
+      isThrashing = pointsFor >= 50 && pointsAgainst <= 14;
+      break;
+    }
+    case "blowout": {
+      const winRange = getBlowoutWinRange(
+        ratingGap,
+        profile.winForMin,
+        profile.winForMax,
+        rng
+      );
       pointsFor = pickTeamScore(
-        Math.max(profile.winForMin, 38),
-        Math.min(profile.winForMax, 58),
+        winRange.min,
+        Math.min(winRange.max, profile.winForMax + 10),
         rng,
         noDg
       );
       pointsAgainst = pickTeamScore(
         0,
-        Math.min(14, profile.winAgainstMax),
+        getBlowoutLossCap(ratingGap, profile.winAgainstMax, rng),
         rng,
         noDg
       );
       isThrashing = pointsFor >= 40 && pointsAgainst <= 12;
       break;
+    }
     case "high":
       if (won) {
         pointsFor = pickTeamScore(
@@ -896,6 +927,7 @@ export function simulateOneFixture(
     opponentStrength,
     initialWon,
     matchType,
+    ratingGap,
     rng,
     state.seasonDropGoals,
     state.form

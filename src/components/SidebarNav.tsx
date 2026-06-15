@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { GameDifficulty } from "@/lib/types";
@@ -9,6 +9,9 @@ import { useAuth } from "@/lib/auth-context";
 import { buildPlayHref, isCupEraMode, isPlayModeActive } from "@/lib/play-links";
 import {
   getModeDifficulty,
+  getCupEraVariant,
+  setCupEraVariant,
+  CUP_ERA_VARIANT_CHANGED_EVENT,
   MODE_DIFFICULTY_CHANGED_EVENT,
   setModeDifficulty,
   type PlayModeKey,
@@ -54,6 +57,7 @@ const X_URL = "https://x.com/27and0";
 
 export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { loading, isLoggedIn } = useAuth();
   const [normalDifficulty, setNormalDifficulty] =
@@ -61,6 +65,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const [draftDifficulty, setDraftDifficulty] =
     useState<GameDifficulty>("NORMAL");
   const [muted, setMuted] = useState(false);
+  const [cupEraVariant, setCupEraVariantState] = useState(false);
 
   const syncDifficulties = useCallback(() => {
     setNormalDifficulty(getModeDifficulty("normal"));
@@ -71,7 +76,44 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     if (!open) return;
     syncDifficulties();
     setMuted(isSoundMuted());
+    setCupEraVariantState(getCupEraVariant());
   }, [open, syncDifficulties]);
+
+  const playSearch = {
+    cup: searchParams.get("cup"),
+    draft: searchParams.get("draft"),
+    fantasy: searchParams.get("fantasy"),
+    era: searchParams.get("era"),
+    difficulty: searchParams.get("difficulty"),
+  };
+
+  const isEraCup = isCupEraMode(playSearch);
+  const isCupActive = isPlayModeActive(pathname, playSearch, "cup");
+
+  useEffect(() => {
+    if (isCupActive) {
+      setCupEraVariantState(isEraCup);
+      setCupEraVariant(isEraCup);
+    }
+  }, [isCupActive, isEraCup]);
+
+  useEffect(() => {
+    const onVariantChanged = (event: Event) => {
+      const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
+      if (detail) setCupEraVariantState(detail.eraMode);
+    };
+    window.addEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onVariantChanged);
+    return () =>
+      window.removeEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onVariantChanged);
+  }, []);
+
+  const handleCupVariantChange = (era: boolean) => {
+    setCupEraVariant(era);
+    setCupEraVariantState(era);
+    if (pathname.startsWith("/play") && playSearch.cup === "1") {
+      router.push(buildPlayHref("cup", "NORMAL", era));
+    }
+  };
 
   useEffect(() => {
     const onDifficultyChanged = () => syncDifficulties();
@@ -124,17 +166,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
           : NAV.itemActive
         : NAV.itemIdle
     }`;
-
-  const playSearch = {
-    cup: searchParams.get("cup"),
-    draft: searchParams.get("draft"),
-    fantasy: searchParams.get("fantasy"),
-    era: searchParams.get("era"),
-    difficulty: searchParams.get("difficulty"),
-  };
-
-  const isEraCup = isCupEraMode(playSearch);
-  const isCupActive = isPlayModeActive(pathname, playSearch, "cup");
 
   return (
     <AnimatePresence>
@@ -262,7 +293,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 
                   <li className={NAV.playModeGroup}>
                     <Link
-                      href={buildPlayHref("cup", "NORMAL", isEraCup)}
+                      href={buildPlayHref("cup", "NORMAL", cupEraVariant)}
                       onClick={onClose}
                       className={`${NAV.item} ${
                         isCupActive
@@ -288,8 +319,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       <ChallengeCupVariantToggle
                         compact
                         hideLabel
-                        eraMode={isEraCup}
-                        onNavigate={onClose}
+                        eraMode={cupEraVariant}
+                        onEraModeChange={handleCupVariantChange}
                       />
                     </div>
                   </li>
