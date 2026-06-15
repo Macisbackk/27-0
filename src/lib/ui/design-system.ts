@@ -106,6 +106,9 @@ export const NORMAL = {
 export const ERA = {
   tabGroupRing:
     "border-accent-gold/50 shadow-[0_0_20px_rgba(251,191,36,0.22)]",
+  itemActive:
+    "border border-accent-gold/40 bg-accent-gold/15 text-accent-gold",
+  dot: "bg-accent-gold",
 } as const;
 
 /** Hard mode visual tokens — red mirror of normal green styling. */
@@ -193,9 +196,11 @@ export function tabGroupClass(
 /** Compact nested toggle for sidebar play modes. */
 export function nestedTabGroupClass(
   hardActive = false,
-  normalActive = false
+  normalActive = false,
+  eraActive = false
 ): string {
   const base = `${FILTER.tabGroup} w-full p-0.5`;
+  if (eraActive) return `${base} ${ERA.tabGroupRing}`;
   if (hardActive) return `${base} ${HARD.tabGroupRing}`;
   if (normalActive) return `${base} ${NORMAL.tabGroupRing}`;
   return base;
@@ -203,11 +208,15 @@ export function nestedTabGroupClass(
 
 export function nestedTabGroupButtonClass(
   active: boolean,
-  variant: "normal" | "hard" = "normal"
+  variant: "normal" | "hard" | "era" = "normal"
 ): string {
-  const base = `${TYPO.button} flex-1 rounded-lg px-2.5 py-1.5 min-h-[36px] text-xs`;
+  const base = `${TYPO.button} flex-1 rounded-lg px-2.5 py-1.5 min-h-[34px] text-xs`;
   if (!active) {
-    return `${base} ${variant === "hard" ? BTN.hardIdle : BTN.tabGroupIdle}`;
+    if (variant === "hard") return `${base} ${BTN.hardIdle}`;
+    if (variant === "era") return `${base} ${BTN.eraIdle}`;
+    return `${base} ${BTN.tabGroupIdle}`;
   }
-  return `${base} ${variant === "hard" ? BTN.hardActive : BTN.tabGroupActive}`;
+  if (variant === "hard") return `${base} ${BTN.hardActive}`;
+  if (variant === "era") return `${base} ${BTN.eraActive}`;
+  return `${base} ${BTN.tabGroupActive}`;
 }

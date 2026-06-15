@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { GameDifficulty } from "@/lib/types";
 import { useAuth } from "@/lib/auth-context";
-import { buildPlayHref, isPlayModeActive } from "@/lib/play-links";
+import { buildPlayHref, isCupEraMode, isPlayModeActive } from "@/lib/play-links";
 import {
   getModeDifficulty,
   MODE_DIFFICULTY_CHANGED_EVENT,
@@ -22,12 +22,14 @@ import {
 } from "@/lib/sound";
 import {
   BTN,
+  ERA,
   HARD,
   NAV,
   nestedTabGroupButtonClass,
   nestedTabGroupClass,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 
 interface SidebarNavProps {
   open: boolean;
@@ -131,6 +133,9 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     era: searchParams.get("era"),
     difficulty: searchParams.get("difficulty"),
   };
+
+  const isEraCup = isCupEraMode(playSearch);
+  const isCupActive = isPlayModeActive(pathname, playSearch, "cup");
 
   return (
     <AnimatePresence>
@@ -256,22 +261,35 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     </Link>
                   </li>
 
-                  <li>
-                    <Link
-                      href={buildPlayHref("cup")}
-                      onClick={onClose}
-                      className={navLinkClass(
-                        isPlayModeActive(pathname, playSearch, "cup")
-                      )}
+                  <li className={NAV.playModeGroup}>
+                    <div
+                      className={`${NAV.item} ${
+                        isCupActive
+                          ? isEraCup
+                            ? ERA.itemActive
+                            : "border border-accent-gold/30 bg-accent-gold/10 text-accent-gold"
+                          : NAV.itemIdle
+                      }`}
                     >
                       <span aria-hidden className={NAV.icon}>
                         🏆
                       </span>
                       Challenge Cup
-                      {isPlayModeActive(pathname, playSearch, "cup") && (
-                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-gold" />
+                      {isCupActive && (
+                        <span
+                          className={`ml-auto h-1.5 w-1.5 rounded-full ${
+                            isEraCup ? ERA.dot : "bg-accent-gold"
+                          }`}
+                        />
                       )}
-                    </Link>
+                    </div>
+                    <div className={NAV.nestedBlock}>
+                      <ChallengeCupVariantToggle
+                        compact
+                        eraMode={isEraCup}
+                        onNavigate={onClose}
+                      />
+                    </div>
                   </li>
                 </ul>
               </section>

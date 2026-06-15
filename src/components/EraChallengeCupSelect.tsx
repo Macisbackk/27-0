@@ -21,6 +21,7 @@ import {
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { ClubHeaderBar } from "./ClubBadge";
 import { RugbyPitch } from "./RugbyPitch";
+import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -39,7 +40,7 @@ const TOURNAMENT_OPTIONS: {
     value: "onePerClub",
     label: "One Of Each Club",
     description:
-      "Sixteen unique clubs — only one entry per club across all era squads.",
+      "Fourteen unique clubs — only one entry per club across all era squads.",
   },
   {
     value: "allTeams",
@@ -100,62 +101,25 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
     if (previewTeam) onConfirm(previewTeam, tournamentType);
   };
 
-  const showPreview = Boolean(previewTeam && previewSquad);
   const showYears = selectedClub && years.length > 0;
+  const showTournamentAndPreview = Boolean(
+    selectedClub && selectedYear && previewTeam && previewSquad
+  );
 
   return (
-    <div className={`mx-auto w-full max-w-3xl ${SPACING.pageX} py-6`}>
-      <div className="text-center">
-        <p className={TYPO.sectionLabel}>Challenge Cup</p>
-        <h2 className={`mt-2 ${TYPO.pageTitle}`}>Choose Your Era</h2>
-        <p className={`mx-auto mt-2 max-w-lg ${TYPO.body}`}>
-          Pick a tournament type, club, and season to lead through a knockout
-          draw against era opponents.
+    <div className={`mx-auto w-full max-w-xl ${SPACING.pageX} py-6`}>
+      <div
+        className={`${CARD.glass} ${CARD.panel} w-full ${SPACING.cardPaddingLg} transition hover:border-accent-gold/30`}
+      >
+        <h2 className={TYPO.cardTitle}>Challenge Cup</h2>
+        <p className={`mt-3 ${TYPO.body}`}>
+          Pick a historic club season and lead that era squad through a knockout
+          draw against opponents from across the decades.
         </p>
-      </div>
 
-      <div className={`${CARD.panel} mt-6 ${SPACING.cardPadding}`}>
-        <p className={TYPO.statLabel}>Tournament Type</p>
-        <div className="mt-3 space-y-2">
-          {TOURNAMENT_OPTIONS.map((option) => {
-            const active = tournamentType === option.value;
-            return (
-              <label
-                key={option.value}
-                className={`flex cursor-pointer gap-3 rounded-lg border px-3 py-3 transition ${
-                  active
-                    ? "border-accent-gold/50 bg-accent-gold/10"
-                    : "border-pitch-700/60 bg-pitch-950/40 hover:border-pitch-500/50"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="era-tournament-type"
-                  value={option.value}
-                  checked={active}
-                  onChange={() => handleTournamentTypeChange(option.value)}
-                  className="mt-1 shrink-0 accent-accent-gold"
-                />
-                <span className="min-w-0">
-                  <span
-                    className={`block font-semibold ${
-                      active ? "text-accent-gold" : "text-white"
-                    }`}
-                  >
-                    {option.label}
-                  </span>
-                  <span className={`mt-0.5 block ${TYPO.bodySm}`}>
-                    {option.description}
-                  </span>
-                </span>
-              </label>
-            );
-          })}
-        </div>
-      </div>
+        <ChallengeCupVariantToggle eraMode className="mt-5" />
 
-      <div className={`${CARD.panel} mt-4 ${SPACING.cardPadding}`}>
-        <p className={TYPO.statLabel}>Select Club</p>
+        <p className={`mt-5 ${TYPO.statLabel}`}>Select Club</p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {clubs.map((club) => {
             const colors = getClubColors(club);
@@ -180,114 +144,161 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
                   {club}
                 </span>
                 <span
-                  className="ml-auto hidden h-3 w-3 rounded-full sm:inline"
+                  className="ml-auto hidden h-3 w-3 shrink-0 rounded-full sm:inline"
                   style={{ backgroundColor: colors.primary }}
                 />
               </button>
             );
           })}
         </div>
-      </div>
 
-      {showYears && (
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className={`${CARD.panel} mt-4 ${SPACING.cardPadding}`}
-        >
-          <p className={TYPO.statLabel}>Select Season</p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {years.map((year) => {
-              const team = buildEraTeamForYear(selectedClub, year);
-              const active = selectedYear === year;
-              return (
-                <button
-                  key={year}
-                  type="button"
-                  onClick={() => {
-                    playUiClick();
-                    setSelectedYear(year);
-                  }}
-                  className={`rounded-full border px-3 py-1.5 text-sm font-semibold transition ${
-                    active
-                      ? "border-accent-gold/50 bg-accent-gold/15 text-accent-gold"
-                      : "border-pitch-600 bg-pitch-900/40 text-gray-300 hover:border-pitch-500"
-                  }`}
-                >
-                  &apos;{year.slice(-2).padStart(2, "0")}
-                  {team && (
-                    <span className="ml-1 text-[10px] text-gray-500">
-                      ({formatTeamRatingDisplay(team.teamRating, {
-                        includeTier: false,
-                      })})
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </motion.div>
-      )}
-
-      {showPreview && previewTeam && previewSquad && (
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className={`${CARD.panel} mt-4 ${SPACING.cardPaddingLg}`}
-        >
-          <div className="overflow-hidden rounded-xl border border-pitch-700/60">
-            <ClubHeaderBar club={previewTeam.clubName} size="md" thick />
-          </div>
-
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            <h3 className={`${TYPO.cardTitle} text-accent-gold`}>
-              {previewTeam.displayName}
-            </h3>
-          </div>
-
-          <div className="mt-3 grid gap-2 sm:grid-cols-3">
-            <StatPill
-              label="Rating"
-              value={formatTeamRatingDisplay(previewTeam.teamRating, {
-                includeTier: false,
-              })}
-            />
-            <StatPill label="Tier" value={previewTeam.tier} />
-            <StatPill label="Value" value={formatValue(previewTeam.teamValue)} />
-          </div>
-
-          {previewTeam.keyPlayers.length > 0 && (
-            <p className={`mt-3 ${TYPO.bodySm}`}>
-              Key players: {previewTeam.keyPlayers.join(", ")}
-            </p>
-          )}
-
-          <div className={`${CARD.inset} mt-4 p-2 sm:p-4`}>
-            <RugbyPitch
-              squad={previewSquad}
-              totalValue={getSquadValue(previewSquad)}
-              filledCount={getFilledCount(previewSquad)}
-              totalSlots={TOTAL_SLOTS}
-              hideValueSummary
-              clubColorOverride={previewTeam.clubName}
-            />
-          </div>
-
-          <button
-            type="button"
-            onClick={handleConfirm}
-            className={`mt-5 w-full ${BTN.base} ${BTN.goldOutline}`}
+        {showYears && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-5"
           >
-            Start Era Challenge Cup →
-          </button>
-        </motion.div>
-      )}
+            <p className={TYPO.statLabel}>Select Season</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {years.map((year) => {
+                const team = buildEraTeamForYear(selectedClub, year);
+                const active = selectedYear === year;
+                return (
+                  <button
+                    key={year}
+                    type="button"
+                    onClick={() => {
+                      playUiClick();
+                      setSelectedYear(year);
+                    }}
+                    className={`rounded-full border px-3 py-1.5 text-sm font-semibold transition ${
+                      active
+                        ? "border-accent-gold/50 bg-accent-gold text-pitch-950 shadow-[0_0_12px_rgba(251,191,36,0.3)]"
+                        : "border-pitch-600 bg-pitch-900/40 text-gray-300 hover:border-pitch-500"
+                    }`}
+                  >
+                    &apos;{year.slice(-2).padStart(2, "0")}
+                    {team && (
+                      <span
+                        className={`ml-1 text-[10px] ${
+                          active ? "text-pitch-800" : "text-gray-500"
+                        }`}
+                      >
+                        (
+                        {formatTeamRatingDisplay(team.teamRating, {
+                          includeTier: false,
+                        })}
+                        )
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
 
-      {selectedClub && years.length === 0 && (
-        <p className={`mt-4 text-center ${TYPO.bodySm} text-gray-500`}>
-          No complete era seasons available for {selectedClub}.
-        </p>
-      )}
+        {showTournamentAndPreview && previewTeam && previewSquad && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-5"
+          >
+            <div className="overflow-hidden rounded-xl border border-pitch-700/60">
+              <ClubHeaderBar club={previewTeam.clubName} size="md" thick />
+            </div>
+
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <h3 className={`${TYPO.cardTitle} text-accent-gold`}>
+                {previewTeam.displayName}
+              </h3>
+            </div>
+
+            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+              <StatPill
+                label="Rating"
+                value={formatTeamRatingDisplay(previewTeam.teamRating, {
+                  includeTier: false,
+                })}
+              />
+              <StatPill label="Tier" value={previewTeam.tier} />
+              <StatPill
+                label="Value"
+                value={formatValue(previewTeam.teamValue)}
+              />
+            </div>
+
+            {previewTeam.keyPlayers.length > 0 && (
+              <p className={`mt-3 ${TYPO.bodySm}`}>
+                Key players: {previewTeam.keyPlayers.join(", ")}
+              </p>
+            )}
+
+            <div className={`${CARD.inset} mt-4 overflow-x-hidden p-2 sm:p-4`}>
+              <RugbyPitch
+                squad={previewSquad}
+                totalValue={getSquadValue(previewSquad)}
+                filledCount={getFilledCount(previewSquad)}
+                totalSlots={TOTAL_SLOTS}
+                hideValueSummary
+                clubColorOverride={previewTeam.clubName}
+              />
+            </div>
+
+            <p className={`mt-5 ${TYPO.statLabel}`}>Tournament Type</p>
+            <div className="mt-3 space-y-2">
+              {TOURNAMENT_OPTIONS.map((option) => {
+                const active = tournamentType === option.value;
+                return (
+                  <label
+                    key={option.value}
+                    className={`flex cursor-pointer gap-3 rounded-lg border px-3 py-3 transition ${
+                      active
+                        ? "border-accent-gold/50 bg-accent-gold/10"
+                        : "border-pitch-700/60 bg-pitch-950/40 hover:border-pitch-500/50"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="era-tournament-type"
+                      value={option.value}
+                      checked={active}
+                      onChange={() => handleTournamentTypeChange(option.value)}
+                      className="mt-1 shrink-0 accent-accent-gold"
+                    />
+                    <span className="min-w-0">
+                      <span
+                        className={`block font-semibold ${
+                          active ? "text-accent-gold" : "text-white"
+                        }`}
+                      >
+                        {option.label}
+                      </span>
+                      <span className={`mt-0.5 block ${TYPO.bodySm}`}>
+                        {option.description}
+                      </span>
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleConfirm}
+              className={`mt-5 w-full ${BTN.base} ${BTN.goldOutline}`}
+            >
+              Start Era Challenge Cup →
+            </button>
+          </motion.div>
+        )}
+
+        {selectedClub && years.length === 0 && (
+          <p className={`mt-4 text-center ${TYPO.bodySm} text-gray-500`}>
+            No complete era seasons available for {selectedClub}.
+          </p>
+        )}
+      </div>
     </div>
   );
 }

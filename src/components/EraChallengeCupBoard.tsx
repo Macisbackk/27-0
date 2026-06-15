@@ -24,13 +24,11 @@ import { recordCompletedRun } from "@/lib/storage/run";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import type { EraTournamentType } from "@/lib/storage/preferences";
 import { playModeChallengeCupStart } from "@/lib/sound";
-import { ERA_CHALLENGE_CUP_INTRO } from "@/lib/mode-labels";
 import { ChallengeCupBracket } from "./ChallengeCupBracket";
 import { ChallengeCupReview } from "./ChallengeCupReview";
 import { EraChallengeCupSelect } from "./EraChallengeCupSelect";
 import { GuestNotice } from "./GuestNotice";
 import { CARD, SPACING } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
 
 type EraPhase = "select" | "bracket" | "review";
 
@@ -160,15 +158,10 @@ export function EraChallengeCupBoard() {
       <div className="mx-auto max-w-5xl px-4">
         <GuestNotice variant="play" />
 
-        <header className="mb-6 text-center">
+        <header className="mb-4 text-center">
           <h1 className="font-display text-3xl font-black sm:text-4xl">
             Challenge Cup
           </h1>
-          {(phase === "select") && (
-            <p className={`mx-auto mt-3 max-w-lg ${TYPO.body}`}>
-              {ERA_CHALLENGE_CUP_INTRO}
-            </p>
-          )}
         </header>
 
         {phase === "select" && (

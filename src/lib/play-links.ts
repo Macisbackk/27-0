@@ -22,6 +22,10 @@ export function buildPlayHref(
   return qs ? `/play?${qs}` : "/play";
 }
 
+export function isCupEraMode(search: { era?: string | null }): boolean {
+  return search.era === "1";
+}
+
 export function isPlayModeActive(
   pathname: string,
   search: {
@@ -32,7 +36,9 @@ export function isPlayModeActive(
     difficulty?: string | null;
   },
   mode: PublicPlayMode,
-  expectedDifficulty?: GameDifficulty
+  expectedDifficulty?: GameDifficulty,
+  /** When mode is cup, match Current (false) vs Era (true) variant. Omit to match any cup. */
+  cupEraMode?: boolean
 ): boolean {
   if (!pathname.startsWith("/play")) return false;
   const isCup = search.cup === "1";
@@ -47,6 +53,11 @@ export function isPlayModeActive(
   else matches = !isCup && !isDraft && !isFantasy;
 
   if (!matches) return false;
+
+  if (mode === "cup" && cupEraMode !== undefined) {
+    return isCupEraMode(search) === cupEraMode;
+  }
+
   if (
     expectedDifficulty === undefined ||
     mode === "cup" ||
