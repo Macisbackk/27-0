@@ -201,6 +201,8 @@ export {
   getYearsForTeam,
   getRosterPlayerIds,
   getRosterPlayerIdsForTeamAllYears,
+  getAllRosterPlayerIds,
+  buildTeamYearRosterIndex,
   hasTeamYearRoster,
   getCurrentCalendarYear,
 } from "./team-year-rosters";

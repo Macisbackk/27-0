@@ -19,7 +19,7 @@ export const PLAYER_RATING_OVERRIDES: Record<string, number> = {
   "martin-offiah": 94,
   "paul-newlove": 92,
   "paul-sculthorpe": 96,
-  "rob-burrow": 94,
+  "rob-burrow": 92,
   "sam-burgess": 95,
 
   // ── Historic manual corrections ────────────────────────────────────────
@@ -71,6 +71,7 @@ export const PLAYER_RATING_OVERRIDES: Record<string, number> = {
 
   // ── Current Super League manual corrections ────────────────────────────
   "bradford-cur-eribe-doro": 83,
+  "bradford-cur-esan-marsters": 86,
   "bradford-cur-joe-mellor": 86,
   "bradford-cur-waqa-blake": 87,
   "catalans-cur-benjamin-garcia": 88,

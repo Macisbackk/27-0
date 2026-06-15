@@ -13,6 +13,8 @@ import {
   formatValue,
   getRosterPlayerIds,
   getRosterPlayerIdsForTeamAllYears,
+  getAllRosterPlayerIds,
+  buildTeamYearRosterIndex,
   getTeamsWithYearRosters,
   getYearsForTeam,
   hasTeamYearRoster,
@@ -107,6 +109,8 @@ export function PlayerShowcase() {
     [filters, debouncedSearch]
   );
 
+  const teamYearIndex = useMemo(() => buildTeamYearRosterIndex(), []);
+
   const teamYearYears = useMemo(
     () =>
       filters.teamYearTeam !== "all"
@@ -117,12 +121,26 @@ export function PlayerShowcase() {
 
   const teamYearRosterIds = useMemo(() => {
     if (activeFiltersState.browseMode !== "teamYear") return null;
-    if (activeFiltersState.teamYearTeam === "all") return null;
+
+    if (activeFiltersState.teamYearTeam === "all") {
+      if (!activeFiltersState.teamYearYear) {
+        return getAllRosterPlayerIds();
+      }
+      const ids = new Set<string>();
+      for (const team of TEAM_YEAR_TEAMS) {
+        for (const id of getRosterPlayerIds(team, activeFiltersState.teamYearYear)) {
+          ids.add(id);
+        }
+      }
+      return ids;
+    }
+
     if (!activeFiltersState.teamYearYear) {
       return new Set(
         getRosterPlayerIdsForTeamAllYears(activeFiltersState.teamYearTeam)
       );
     }
+
     return new Set(
       getRosterPlayerIds(
         activeFiltersState.teamYearTeam,
@@ -138,9 +156,10 @@ export function PlayerShowcase() {
         activeFiltersState,
         sortKey,
         sortDir,
-        teamYearRosterIds
+        teamYearRosterIds,
+        activeFiltersState.browseMode === "teamYear" ? teamYearIndex : null
       ),
-    [activeFiltersState, sortKey, sortDir, teamYearRosterIds]
+    [activeFiltersState, sortKey, sortDir, teamYearRosterIds, teamYearIndex]
   );
 
   const filterResultsKey = useMemo(
@@ -499,6 +518,7 @@ export function PlayerShowcase() {
             />
           </FilterField>
 
+          {filters.browseMode !== "teamYear" && (
           <FilterField label="Team">
             <select
               value={filters.club}
@@ -515,6 +535,7 @@ export function PlayerShowcase() {
               ))}
             </select>
           </FilterField>
+          )}
 
           <FilterField label="Position">
             <select

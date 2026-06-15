@@ -47,3 +47,36 @@ export function getRosterPlayerIds(team: string, year: string): string[] {
 export function hasTeamYearRoster(team: string, year: string): boolean {
   return (TEAM_YEAR_ROSTERS[team]?.[year]?.length ?? 0) > 0;
 }
+
+export interface TeamYearRosterEntry {
+  team: string;
+  year: string;
+}
+
+/** All player IDs that appear in any team-year roster (display-layer capped years). */
+export function getAllRosterPlayerIds(): Set<string> {
+  const ids = new Set<string>();
+  for (const team of getTeamsWithYearRosters()) {
+    for (const year of getYearsForTeam(team)) {
+      for (const id of getRosterPlayerIds(team, year)) {
+        ids.add(id);
+      }
+    }
+  }
+  return ids;
+}
+
+/** playerId → roster appearances for Team > Year browse sorting. */
+export function buildTeamYearRosterIndex(): Map<string, TeamYearRosterEntry[]> {
+  const index = new Map<string, TeamYearRosterEntry[]>();
+  for (const team of getTeamsWithYearRosters()) {
+    for (const year of getYearsForTeam(team)) {
+      for (const id of getRosterPlayerIds(team, year)) {
+        const list = index.get(id) ?? [];
+        list.push({ team, year });
+        index.set(id, list);
+      }
+    }
+  }
+  return index;
+}

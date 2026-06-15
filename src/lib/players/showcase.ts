@@ -2,6 +2,7 @@ import type { Player, PlayerCategory, Position } from "../types";
 import { formatPlayerDisplayName } from "./prime-year";
 import { POSITION_LABELS } from "../positions";
 import { getPlayerAge } from "./player-age";
+import type { TeamYearRosterEntry } from "./team-year-rosters";
 
 export type ShowcaseSortKey =
   | "rating"
@@ -182,22 +183,68 @@ function passesTeamFilter(
   teamYearIds: Set<string> | null | undefined
 ): boolean {
   if (filters.browseMode === "teamYear") {
-    if (filters.teamYearTeam === "all") return true;
     return teamYearIds?.has(player.id) ?? false;
   }
   return filters.club === "all" || player.club === filters.club;
 }
 
-/** 3. Year — specific roster year or yearsActive text */
+/** 3. Year — yearsActive text (Team > Year uses roster membership instead) */
 function passesYearFilter(player: Player, filters: ShowcaseFilters): boolean {
-  if (filters.browseMode === "teamYear" && filters.teamYearYear) {
-    return true;
-  }
+  if (filters.browseMode === "teamYear") return true;
   const yearQuery = filters.yearsActive.trim();
   if (!yearQuery) return true;
   return player.yearsActive
     .toLowerCase()
     .includes(yearQuery.toLowerCase());
+}
+
+function resolveTeamYearEntry(
+  entries: TeamYearRosterEntry[] | undefined,
+  filterTeam: string,
+  filterYear: string
+): TeamYearRosterEntry | null {
+  if (!entries?.length) return null;
+  let matched = entries;
+  if (filterTeam !== "all") {
+    matched = matched.filter((e) => e.team === filterTeam);
+  }
+  if (filterYear) {
+    matched = matched.filter((e) => e.year === filterYear);
+  }
+  const pool = matched.length > 0 ? matched : entries;
+  return [...pool].sort(
+    (a, b) =>
+      a.team.localeCompare(b.team) || Number(b.year) - Number(a.year)
+  )[0];
+}
+
+/** Sort by team (A–Z), then year (newest first), then name. */
+export function sortShowcasePlayersByTeamYear(
+  players: Player[],
+  rosterIndex: Map<string, TeamYearRosterEntry[]>,
+  filterTeam: string,
+  filterYear: string
+): Player[] {
+  return [...players].sort((a, b) => {
+    const ea = resolveTeamYearEntry(
+      rosterIndex.get(a.id),
+      filterTeam,
+      filterYear
+    );
+    const eb = resolveTeamYearEntry(
+      rosterIndex.get(b.id),
+      filterTeam,
+      filterYear
+    );
+    if (!ea && !eb) return a.name.localeCompare(b.name);
+    if (!ea) return 1;
+    if (!eb) return -1;
+    const teamCmp = ea.team.localeCompare(eb.team);
+    if (teamCmp !== 0) return teamCmp;
+    const yearCmp = Number(eb.year) - Number(ea.year);
+    if (yearCmp !== 0) return yearCmp;
+    return a.name.localeCompare(b.name);
+  });
 }
 
 function passesSecondaryFilters(
@@ -242,13 +289,19 @@ export function applyShowcasePipeline(
   filters: ShowcaseFilters,
   sortKey: ShowcaseSortKey,
   sortDir: ShowcaseSortDir,
-  teamYearIds?: Set<string> | null
+  teamYearIds?: Set<string> | null,
+  teamYearIndex?: Map<string, TeamYearRosterEntry[]> | null
 ): Player[] {
-  return sortShowcasePlayers(
-    filterShowcasePlayers(players, filters, teamYearIds),
-    sortKey,
-    sortDir
-  );
+  const filtered = filterShowcasePlayers(players, filters, teamYearIds);
+  if (filters.browseMode === "teamYear" && teamYearIndex) {
+    return sortShowcasePlayersByTeamYear(
+      filtered,
+      teamYearIndex,
+      filters.teamYearTeam,
+      filters.teamYearYear
+    );
+  }
+  return sortShowcasePlayers(filtered, sortKey, sortDir);
 }
 
 function sortValue(player: Player, key: ShowcaseSortKey): string | number {

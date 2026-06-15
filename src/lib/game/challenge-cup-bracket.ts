@@ -28,6 +28,7 @@ import {
 } from "./season-simulation";
 import type { ScoreBreakdown } from "./rl-scores";
 import type { EraTeam } from "../players/era-teams";
+import { isEra26Year } from "../players/era-teams";
 
 export interface BracketScoringDetail {
   home: TeamScoringDetail;
@@ -123,6 +124,12 @@ function createMatch(
   };
 }
 
+/** Bracket pick weight — 2026 squads are lowest odds; historic teams weighted by rating spread. */
+function getEraTeamBracketWeight(team: EraTeam): number {
+  if (isEra26Year(team.year)) return 1;
+  return Math.max(4, 105 - team.teamRating);
+}
+
 function pickWeightedEraOpponents(
   pool: EraTeam[],
   count: number,
@@ -133,14 +140,14 @@ function pickWeightedEraOpponents(
 
   while (picked.length < count && available.length > 0) {
     const totalWeight = available.reduce(
-      (sum, team) => sum + Math.max(1, 105 - team.teamRating),
+      (sum, team) => sum + getEraTeamBracketWeight(team),
       0
     );
     let roll = rng() * totalWeight;
     let index = available.length - 1;
 
     for (let i = 0; i < available.length; i++) {
-      roll -= Math.max(1, 105 - available[i].teamRating);
+      roll -= getEraTeamBracketWeight(available[i]);
       if (roll <= 0) {
         index = i;
         break;

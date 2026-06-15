@@ -79,10 +79,43 @@ function getTeammateRelativeSaturation(
   return 1 / (1 + playerTotal * 0.06 + leadAboveAvg * 0.18);
 }
 
+function getDominantShareThreshold(seasonTries: number): number {
+  if (seasonTries < 45) return 0.14;
+  if (seasonTries < 65) return 0.17;
+  return 0.2;
+}
+
+function getSeasonAttackProfile(
+  seasonWins: number,
+  fixtureCount: number,
+  seasonTries: number
+): { winRate: number; triesPerGame: number; eliteAttack: boolean; weakAttack: boolean } {
+  const winRate = fixtureCount > 0 ? seasonWins / fixtureCount : 0;
+  const triesPerGame = fixtureCount > 0 ? seasonTries / fixtureCount : 0;
+  return {
+    winRate,
+    triesPerGame,
+    eliteAttack: winRate >= 0.62 && triesPerGame >= 4.2,
+    weakAttack: winRate < 0.32 || triesPerGame < 2.8,
+  };
+}
+
+function getBackTryModifier(
+  position: Position,
+  attack: ReturnType<typeof getSeasonAttackProfile>
+): number {
+  const tier = POSITION_TRY_WEIGHT[position];
+  if (tier < 10) return 1;
+  if (attack.weakAttack) return 0.78;
+  if (attack.eliteAttack) return 1.12;
+  return 1;
+}
+
 function getMatchWeights(
   entries: SquadEntry[],
   rng: () => number,
-  seasonTotalsSoFar: number[]
+  seasonTotalsSoFar: number[],
+  attack?: ReturnType<typeof getSeasonAttackProfile>
 ): number[] {
   return entries.map((e, i) => {
     const rating = getEffectivePeakRating(e.slot);
@@ -100,10 +133,13 @@ function getMatchWeights(
       e.playedPosition,
       seasonTotalsSoFar[i]
     );
+    const attackMod = attack
+      ? getBackTryModifier(e.playedPosition, attack)
+      : 1;
     const variance = 0.82 + rng() * 0.36;
     return Math.max(
       getMinMatchWeight(e.playedPosition),
-      base * saturation * positionPenalty * variance
+      base * saturation * positionPenalty * attackMod * variance
     );
   });
 }
@@ -272,6 +308,7 @@ function spreadSeasonConcentration(
 ): void {
   if (seasonTries < 12) return;
 
+  const dominantThreshold = getDominantShareThreshold(seasonTries);
   const maxIterations = Math.min(seasonTries, 40);
 
   for (let guard = 0; guard < maxIterations; guard++) {
@@ -280,7 +317,7 @@ function spreadSeasonConcentration(
     const dominantIdx = totals.indexOf(maxTotal);
     const dominantShare = maxTotal / seasonTries;
 
-    if (dominantShare < 0.2) break;
+    if (dominantShare < dominantThreshold) break;
 
     const underused = entries
       .map((e, i) => ({
@@ -389,9 +426,20 @@ function allocateSeasonTriesToFixtures(
   const rng = seedrandom(`${seed}-tries`);
   const perMatchAllocs: number[][] = [];
   const seasonTotalsSoFar = new Array(entries.length).fill(0);
+  const seasonTries = fixtures.reduce((sum, f) => sum + f.triesFor, 0);
+  const attack = getSeasonAttackProfile(
+    seasonWins,
+    fixtures.length,
+    seasonTries
+  );
 
   for (const fixture of fixtures) {
-    const weights = getMatchWeights(entries, rng, seasonTotalsSoFar);
+    const weights = getMatchWeights(
+      entries,
+      rng,
+      seasonTotalsSoFar,
+      attack
+    );
     const matchAlloc = allocateMatchTries(
       fixture.triesFor,
       weights,
@@ -404,7 +452,6 @@ function allocateSeasonTriesToFixtures(
     }
   }
 
-  const seasonTries = fixtures.reduce((sum, f) => sum + f.triesFor, 0);
   rebalanceTowardSoftTargets(entries, perMatchAllocs, seasonTries, rng);
   spreadSeasonConcentration(entries, perMatchAllocs, seasonTries, rng);
 
