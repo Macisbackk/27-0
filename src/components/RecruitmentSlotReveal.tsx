@@ -1,15 +1,25 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
-import { getSlotTeamYearSpinPools } from "@/lib/game/slot-team-year-pick";
+import {
+  getSlotRevealBio,
+  getSlotTeamYearSpinPools,
+} from "@/lib/game/slot-team-year-pick";
+import { getClubColors } from "@/lib/clubs";
 import { playRevealChoices } from "@/lib/sound";
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
-const TOTAL_TICKS = 26;
-const FINAL_HOLD_MS = 420;
+/** Per-tick delays — fast start, gradual slowdown (~2.1s spin). */
+const SPIN_DELAYS_MS = [
+  42, 44, 46, 48, 50, 54, 58, 64, 72, 82,
+  94, 108, 124, 142, 162, 186, 212, 240,
+  272, 308, 348, 392, 440,
+] as const;
+
+const BIO_HOLD_MS = 720;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
@@ -17,9 +27,11 @@ interface RecruitmentSlotRevealProps {
   onComplete: () => void;
 }
 
-function tickDelayMs(tick: number): number {
-  const progress = tick / TOTAL_TICKS;
-  return 24 + progress * progress * 200;
+function teamNameSizeClass(name: string): string {
+  if (name.length > 20) return "text-[0.62rem] leading-tight sm:text-[0.7rem]";
+  if (name.length > 16) return "text-[0.68rem] leading-tight sm:text-xs";
+  if (name.length > 12) return "text-xs leading-tight sm:text-sm";
+  return "text-sm leading-tight sm:text-base";
 }
 
 export function RecruitmentSlotReveal({
@@ -31,30 +43,50 @@ export function RecruitmentSlotReveal({
     () => getSlotTeamYearSpinPools(target),
     [target]
   );
+  const clubColors = useMemo(
+    () => getClubColors(target.team),
+    [target.team]
+  );
+  const bio = useMemo(
+    () => getSlotRevealBio(target.team, target.year),
+    [target.team, target.year]
+  );
 
   const [displayTeam, setDisplayTeam] = useState(teams[0] ?? target.team);
   const [displayYear, setDisplayYear] = useState(years[0] ?? target.year);
   const [locked, setLocked] = useState(false);
-  const [phaseLabel, setPhaseLabel] = useState("Spinning the draw…");
+  const [phaseLabel, setPhaseLabel] = useState("Recruitment draw spinning…");
 
   useEffect(() => {
     let tick = 0;
     let cancelled = false;
     let timeoutId: number | null = null;
+    const totalTicks = SPIN_DELAYS_MS.length;
 
     const runTick = () => {
       if (cancelled) return;
 
-      if (tick < TOTAL_TICKS - 1) {
-        const teamIdx = Math.floor(Math.random() * teams.length);
-        const yearIdx = Math.floor(Math.random() * years.length);
-        setDisplayTeam(teams[teamIdx] ?? target.team);
-        setDisplayYear(years[yearIdx] ?? target.year);
-        if (tick > TOTAL_TICKS * 0.65) {
-          setPhaseLabel("Slowing down…");
+      if (tick < totalTicks) {
+        const nearingEnd = tick >= totalTicks - 4;
+        if (nearingEnd) {
+          setDisplayTeam(target.team);
+          setDisplayYear(target.year);
+        } else {
+          const teamIdx = Math.floor(Math.random() * teams.length);
+          const yearIdx = Math.floor(Math.random() * years.length);
+          setDisplayTeam(teams[teamIdx] ?? target.team);
+          setDisplayYear(years[yearIdx] ?? target.year);
         }
+
+        if (tick > totalTicks * 0.55) {
+          setPhaseLabel("Slowing down…");
+        } else if (tick > totalTicks * 0.35) {
+          setPhaseLabel("Scanning squads…");
+        }
+
+        const delay = SPIN_DELAYS_MS[tick] ?? 440;
         tick += 1;
-        timeoutId = window.setTimeout(runTick, tickDelayMs(tick));
+        timeoutId = window.setTimeout(runTick, delay);
         return;
       }
 
@@ -65,7 +97,7 @@ export function RecruitmentSlotReveal({
       playRevealChoices();
       timeoutId = window.setTimeout(() => {
         if (!cancelled) onComplete();
-      }, FINAL_HOLD_MS);
+      }, BIO_HOLD_MS);
     };
 
     runTick();
@@ -78,64 +110,93 @@ export function RecruitmentSlotReveal({
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
       <motion.div
-        className={`${CARD.panel} w-full max-w-lg border-accent-green/30 px-5 py-6 text-center shadow-[0_0_40px_rgba(34,197,94,0.2)] sm:px-8 sm:py-8`}
-        initial={{ scale: 0.92, y: 16 }}
+        className={`${CARD.panel} card-glass w-full max-w-md overflow-hidden border border-accent-green/25 shadow-[0_0_48px_rgba(34,197,94,0.18)]`}
+        initial={{ scale: 0.94, y: 20 }}
         animate={{ scale: 1, y: 0 }}
-        transition={{ duration: 0.25, ease: "easeOut" }}
+        transition={{ duration: 0.28, ease: "easeOut" }}
       >
-        <p className={TYPO.sectionLabel}>{positionLabel}</p>
-        <p className="mt-2 text-xs font-medium uppercase tracking-[0.2em] text-gray-500">
-          {phaseLabel}
-        </p>
-
         <div
-          className="mx-auto mt-5 flex max-w-md items-stretch justify-center gap-2 sm:mt-6 sm:gap-3"
-          aria-live="polite"
+          className="border-b border-pitch-700/50 px-4 py-3 text-center sm:px-6 sm:py-4"
+          style={{
+            background: `linear-gradient(180deg, ${clubColors.primary}18 0%, transparent 100%)`,
+          }}
         >
-          <div
-            className={`slot-reveal-window min-w-0 flex-1 overflow-hidden rounded-xl border px-2 py-3 shadow-[inset_0_2px_12px_rgba(0,0,0,0.5)] sm:px-3 sm:py-4 ${
-              locked
-                ? "border-accent-green/50 bg-pitch-950/90 shadow-[0_0_20px_rgba(34,197,94,0.2)]"
-                : "border-accent-green/30 bg-pitch-950/80"
-            }`}
-          >
-            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500">
-              Team
-            </p>
-            <p className="mt-1 font-display text-sm font-black uppercase leading-tight text-accent-green sm:text-base">
-              {displayTeam}
-            </p>
-          </div>
-          <div
-            className={`slot-reveal-window w-[5.5rem] shrink-0 overflow-hidden rounded-xl border px-2 py-3 shadow-[inset_0_2px_12px_rgba(0,0,0,0.5)] sm:w-24 sm:px-3 sm:py-4 ${
-              locked
-                ? "border-accent-green/50 bg-pitch-950/90 shadow-[0_0_20px_rgba(34,197,94,0.2)]"
-                : "border-accent-green/30 bg-pitch-950/80"
-            }`}
-          >
-            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500">
-              Year
-            </p>
-            <p className="mt-1 font-display text-2xl font-black text-accent-green sm:text-3xl">
-              {displayYear}
-            </p>
-          </div>
+          <p className={TYPO.sectionLabel}>Recruitment draw</p>
+          <p className="mt-1 font-display text-base font-bold text-white sm:text-lg">
+            {positionLabel}
+          </p>
+          <p className="mt-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-gray-500">
+            {phaseLabel}
+          </p>
         </div>
 
-        <div className="mt-4 flex justify-center gap-1.5">
-          <span
-            className={`h-1.5 w-10 rounded-full transition ${
-              locked
-                ? "bg-accent-green shadow-[0_0_8px_rgba(34,197,94,0.5)]"
-                : "bg-accent-green/70 animate-pulse"
-            }`}
-          />
+        <div className="px-4 py-5 sm:px-6 sm:py-6">
+          <div
+            className="flex items-stretch justify-center gap-2 sm:gap-2.5"
+            aria-live="polite"
+          >
+            <div
+              className={`slot-reveal-reel min-w-0 flex-1 rounded-xl border-2 px-2 py-2.5 transition-all duration-300 sm:px-3 sm:py-3 ${
+                locked
+                  ? "border-accent-green/55 bg-pitch-950/95 shadow-[inset_0_0_24px_rgba(34,197,94,0.12),0_0_20px_rgba(34,197,94,0.15)]"
+                  : "border-pitch-600/70 bg-pitch-950/80 shadow-[inset_0_2px_16px_rgba(0,0,0,0.55)]"
+              }`}
+              style={{
+                borderTopColor: locked ? clubColors.primary : undefined,
+              }}
+            >
+              <p
+                className={`slot-reveal-team-name text-center font-display font-black uppercase text-accent-green ${teamNameSizeClass(displayTeam)} ${!locked ? "slot-reveal-blur" : ""}`}
+              >
+                {displayTeam}
+              </p>
+            </div>
+
+            <div
+              className={`slot-reveal-reel slot-reveal-year-reel shrink-0 rounded-xl border-2 px-2 py-2.5 transition-all duration-300 sm:px-3 sm:py-3 ${
+                locked
+                  ? "border-accent-green/55 bg-pitch-950/95 shadow-[inset_0_0_24px_rgba(34,197,94,0.12),0_0_20px_rgba(34,197,94,0.15)]"
+                  : "border-pitch-600/70 bg-pitch-950/80 shadow-[inset_0_2px_16px_rgba(0,0,0,0.55)]"
+              }`}
+            >
+              <p
+                className={`text-center font-display text-2xl font-black tabular-nums text-accent-green sm:text-3xl ${!locked ? "slot-reveal-blur" : ""}`}
+              >
+                {displayYear}
+              </p>
+            </div>
+          </div>
+
+          <AnimatePresence>
+            {locked && (
+              <motion.div
+                className="mt-4 rounded-lg border border-accent-green/20 bg-accent-green/5 px-3 py-2.5 text-center sm:px-4 sm:py-3"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+              >
+                <p className={`${TYPO.bodySm} leading-relaxed text-gray-300`}>
+                  {bio}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <div className="mt-4 flex justify-center">
+            <span
+              className={`h-1 rounded-full transition-all duration-500 ${
+                locked
+                  ? "w-16 bg-accent-green shadow-[0_0_10px_rgba(34,197,94,0.55)]"
+                  : "w-10 animate-pulse bg-accent-green/60"
+              }`}
+            />
+          </div>
         </div>
       </motion.div>
     </motion.div>

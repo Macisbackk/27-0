@@ -896,7 +896,8 @@ export function GameBoard({
         {phase === "pitch" &&
           filledCount < TOTAL_SLOTS &&
           !superSamHallasMode &&
-          !isDraftMode && (
+          !isDraftMode &&
+          !isSlotRecruitMode && (
           <div className="mt-4 flex justify-center">
             <button
               type="button"

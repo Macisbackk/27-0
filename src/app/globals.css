@@ -328,6 +328,41 @@ body {
     align-items: center;
     justify-content: center;
   }
+
+  .slot-reveal-reel {
+    min-height: 3.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .slot-reveal-year-reel {
+    width: 5.25rem;
+    min-width: 5.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .slot-reveal-year-reel {
+      width: 6rem;
+      min-width: 6rem;
+    }
+  }
+
+  .slot-reveal-team-name {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
+
+  .slot-reveal-blur {
+    filter: blur(0.3px);
+    opacity: 0.92;
+  }
 }
 
 @layer utilities {

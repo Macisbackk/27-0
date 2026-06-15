@@ -89,7 +89,7 @@ export const BTN = {
     "text-gray-400 hover:border-accent-gold/40 hover:bg-accent-gold/10 hover:text-accent-gold",
   accentOutline: `w-full border border-accent-green/40 bg-accent-green/10 text-accent-green hover:border-accent-green/55 hover:bg-accent-green/20 sm:w-auto`,
   hardAccentOutline: `w-full border border-accent-red/45 bg-accent-red/10 text-accent-red hover:border-accent-red/65 hover:bg-accent-red/20 hover:text-red-300 sm:w-auto`,
-  goldOutline: `w-full border-2 border-accent-gold/50 bg-accent-gold/10 text-accent-gold hover:border-accent-gold/65 hover:bg-accent-gold/20 sm:w-auto`,
+  goldOutline: `w-full border-2 border-accent-gold/50 bg-accent-gold/10 text-accent-gold hover:border-accent-gold/65 hover:bg-accent-gold/20`,
   goldOutlineSm: `border border-accent-gold/50 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/20`,
   greenOutlineSm: `border border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20`,
   close: `shrink-0 min-h-[36px] rounded-lg border border-pitch-600 px-2.5 py-1 text-gray-400 transition hover:text-white`,

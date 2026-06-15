@@ -170,5 +170,5 @@ export function getSlotRevealBio(team: string, year: string): string {
   else pool = BIO_SNIPPETS.default;
 
   const line = pool[hash % pool.length]!;
-  return `You've landed ${team} ${year} — ${line}.`;
+  return `${team} ${year} lands in the slot — ${line}.`;
 }
