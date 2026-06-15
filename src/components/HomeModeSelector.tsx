@@ -165,23 +165,6 @@ export function HomeModeSelector() {
         </ModePanel>
         )}
 
-        <ModePanel title="Fantasy Mode" hardActive={false}>
-          <p className={TYPO.body}>
-            Build your dream squad under a budget, then take on randomised Super
-            League teams across 27 rounds.
-          </p>
-          <ul className={`mt-3 space-y-1 ${TYPO.bodySm} text-gray-500`}>
-            <li>Budget £3M · Squad 13 · 27 rounds</li>
-          </ul>
-          <Link
-            href={buildPlayHref("fantasy")}
-            onClick={() => playUiClick()}
-            className={`mt-5 w-full btn-press ${BTN.base} ${BTN.primary}`}
-          >
-            Start Fantasy Mode →
-          </Link>
-        </ModePanel>
-
         <ModePanel
           title="Challenge Cup"
           hardActive={false}
@@ -207,6 +190,23 @@ export function HomeModeSelector() {
             className={`mt-5 w-full btn-press ${BTN.base} ${BTN.goldOutline}`}
           >
             {cupEraMode ? "Start Era Challenge Cup →" : "Start Challenge Cup →"}
+          </Link>
+        </ModePanel>
+
+        <ModePanel title="Fantasy Mode" hardActive={false}>
+          <p className={TYPO.body}>
+            Build your dream squad under a budget, then take on randomised Super
+            League teams across 27 rounds.
+          </p>
+          <ul className={`mt-3 space-y-1 ${TYPO.bodySm} text-gray-500`}>
+            <li>Budget £3M · Squad 13 · 27 rounds</li>
+          </ul>
+          <Link
+            href={buildPlayHref("fantasy")}
+            onClick={() => playUiClick()}
+            className={`mt-5 w-full btn-press ${BTN.base} ${BTN.primary}`}
+          >
+            Start Fantasy Mode →
           </Link>
         </ModePanel>
       </div>

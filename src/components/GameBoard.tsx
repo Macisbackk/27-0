@@ -68,6 +68,7 @@ import {
 } from "@/lib/sound";
 import { PlayerChoice } from "./PlayerChoice";
 import { RecruitmentSlotReveal } from "./RecruitmentSlotReveal";
+import { SlotTeamYearPicker } from "./SlotTeamYearPicker";
 import { RugbyPitch } from "./RugbyPitch";
 import { SeasonReview } from "./SeasonReview";
 import { SeasonSimulation } from "./SeasonSimulation";
@@ -79,8 +80,13 @@ import { HardModeBadge } from "./HardModeBadge";
 import { ClubHeaderBar } from "./ClubBadge";
 import { GuestNotice } from "./GuestNotice";
 import { DraftPositionPlacement } from "./DraftPositionPlacement";
-import { BTN, CARD, LINK, SPACING } from "@/lib/ui/design-system";
+import { LINK, BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
+import {
+  generateSlotTeamYearTarget,
+  prepareSlotTeamYearPlayers,
+} from "@/lib/game/slot-team-year-pick";
 
 interface GameBoardProps {
   mode: GameMode;
@@ -129,6 +135,7 @@ export function GameBoard({
 }: GameBoardProps) {
   const isChallengeCup = mode === "CHALLENGE_CUP";
   const isDraftMode = mode === "DRAFT";
+  const isSlotRecruitMode = mode === "CLASSIC" && !isChallengeCup;
   const [runKey, setRunKey] = useState(0);
   const [phase, setPhase] = useState<GamePhase>(
     isChallengeCup ? "clubSelect" : "pitch"
@@ -161,6 +168,8 @@ export function GameBoard({
   const [rerolling, setRerolling] = useState(false);
   const [draftPickIndex, setDraftPickIndex] = useState(0);
   const [pendingPlayer, setPendingPlayer] = useState<Player | null>(null);
+  const [slotRecruitTarget, setSlotRecruitTarget] =
+    useState<SlotRevealTarget | null>(null);
   const recordedRef = useRef(false);
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
@@ -325,8 +334,42 @@ export function GameBoard({
 
   const filledCount = getFilledCount(squad);
   const totalValue = getSquadValue(squad);
+  const selectedSlot =
+    selectedSlotIndex !== null
+      ? squad.find((s) => s.slotIndex === selectedSlotIndex) ?? null
+      : null;
+
+  const signedPlayerIds = useMemo(
+    () =>
+      new Set(
+        squad.filter((s) => s.player).map((s) => s.player!.id)
+      ),
+    [squad]
+  );
+
+  const slotRecruitEntries = useMemo(() => {
+    if (
+      !isSlotRecruitMode ||
+      !slotRecruitTarget ||
+      !selectedSlot
+    ) {
+      return [];
+    }
+    return prepareSlotTeamYearPlayers(
+      slotRecruitTarget,
+      selectedSlot.position,
+      signedPlayerIds
+    );
+  }, [
+    isSlotRecruitMode,
+    slotRecruitTarget,
+    selectedSlot,
+    signedPlayerIds,
+  ]);
+
   const rerollAvailable =
     !isHardMode &&
+    !isSlotRecruitMode &&
     activeOfferKey !== null &&
     rerollsRemaining > 0 &&
     phase === "choice";
@@ -336,6 +379,7 @@ export function GameBoard({
     setPhase(isChallengeCup ? "clubSelect" : "pitch");
     setCupClub(null);
     setSelectedSlotIndex(null);
+    setSlotRecruitTarget(null);
     setSquad(createStartingSquad({ joeMellorMode, superSamHallasMode }));
     setSeasonResult(null);
     setCupResult(null);
@@ -434,14 +478,62 @@ export function GameBoard({
       if (!slot || slot.player) return;
       playPositionSelect();
       setSelectedSlotIndex(slotIndex);
-      if (mode === "CLASSIC" && !isChallengeCup) {
+      if (isSlotRecruitMode) {
+        const target = generateSlotTeamYearTarget(
+          seed,
+          slotIndex,
+          slot.position,
+          signedPlayerIds
+        );
+        setSlotRecruitTarget(target);
         setPhase("reveal");
       } else {
         setPhase("choice");
         playRevealChoices();
       }
     },
-    [phase, squad, joeMellorMode, superSamHallasMode, isDraftMode, mode, isChallengeCup]
+    [phase, squad, joeMellorMode, superSamHallasMode, isDraftMode, isSlotRecruitMode, seed, signedPlayerIds]
+  );
+
+  const handleSlotTeamYearPick = useCallback(
+    (player: Player) => {
+      if (
+        selectedSlotIndex === null ||
+        choosing ||
+        phase !== "choice" ||
+        !isSlotRecruitMode
+      ) {
+        return;
+      }
+      setChoosing(true);
+      playPlayerSelect();
+
+      const newSquad = signPlayerToSlot(squad, player, selectedSlotIndex);
+      setSquad(newSquad);
+
+      setTimeout(() => {
+        setChoosing(false);
+        setSelectedSlotIndex(null);
+        setSlotRecruitTarget(null);
+
+        const filled = getFilledCount(newSquad);
+        if (filled >= TOTAL_SLOTS) {
+          playPositionComplete();
+          startTournamentSimulation(newSquad);
+        } else {
+          playPositionComplete();
+          setPhase("pitch");
+        }
+      }, 400);
+    },
+    [
+      selectedSlotIndex,
+      choosing,
+      phase,
+      isSlotRecruitMode,
+      squad,
+      startTournamentSimulation,
+    ]
   );
 
   const handleRevealComplete = useCallback(() => {
@@ -616,6 +708,7 @@ export function GameBoard({
   const handleBackToPitch = useCallback(() => {
     if (isDraftMode) return;
     setSelectedSlotIndex(null);
+    setSlotRecruitTarget(null);
     revealSoundKey.current = null;
     setPhase("pitch");
   }, [isDraftMode]);
@@ -711,14 +804,18 @@ export function GameBoard({
   );
 
   const playerPair =
-    (phase === "choice" || phase === "reveal") && currentRound
+    !isSlotRecruitMode &&
+    (phase === "choice" || phase === "reveal") &&
+    currentRound
       ? getRoundPlayers(currentRound)
       : null;
 
   const choiceKey =
-    activeOfferKey !== null
-      ? `${runKey}-pick-${activeOfferKey}-${currentRound?.optionA}-${currentRound?.optionB}`
-      : "";
+    isSlotRecruitMode && slotRecruitTarget && selectedSlotIndex !== null
+      ? `${runKey}-slot-${selectedSlotIndex}-${slotRecruitTarget.team}-${slotRecruitTarget.year}`
+      : activeOfferKey !== null
+        ? `${runKey}-pick-${activeOfferKey}-${currentRound?.optionA}-${currentRound?.optionB}`
+        : "";
 
   return (
     <div className="matchday-arena min-h-screen">
@@ -901,15 +998,52 @@ export function GameBoard({
           )}
 
           <AnimatePresence mode="wait">
-            {phase === "reveal" && playerPair && currentRound && (
+            {phase === "reveal" &&
+              isSlotRecruitMode &&
+              slotRecruitTarget &&
+              selectedSlot && (
               <RecruitmentSlotReveal
                 key={choiceKey}
-                players={playerPair}
-                positionLabel={currentRound.slotLabel}
+                target={slotRecruitTarget}
+                positionLabel={selectedSlot.label}
                 onComplete={handleRevealComplete}
               />
             )}
-            {phase === "choice" && currentRound && playerPair && (
+            {phase === "choice" &&
+              isSlotRecruitMode &&
+              slotRecruitTarget &&
+              selectedSlot && (
+              <motion.div
+                key={choiceKey}
+                className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <motion.div
+                  className={`${CARD.panel} max-h-[92vh] w-full max-w-3xl overflow-y-auto overflow-x-hidden p-3 sm:p-6`}
+                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                >
+                  <SlotTeamYearPicker
+                    target={slotRecruitTarget}
+                    slotLabel={selectedSlot.label}
+                    slotPosition={selectedSlot.position}
+                    entries={slotRecruitEntries}
+                    onSelect={handleSlotTeamYearPick}
+                    onBack={handleBackToPitch}
+                    disabled={choosing}
+                    hardMode={isHardMode}
+                  />
+                </motion.div>
+              </motion.div>
+            )}
+            {phase === "choice" &&
+              !isSlotRecruitMode &&
+              currentRound &&
+              playerPair && (
               <motion.div
                 key={choiceKey}
                 className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"

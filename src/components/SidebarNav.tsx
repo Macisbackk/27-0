@@ -278,21 +278,21 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                             <div className={nestedTabGroupClass(isHard, !isHard)}>
                               <button
                                 type="button"
-                                aria-label={`${group.label} hard mode off`}
+                                aria-label={`${group.label} standard difficulty`}
                                 aria-pressed={!isHard}
                                 onClick={() =>
                                   toggleModeDifficulty(group.modeKey, false)
                                 }
                                 className={nestedTabGroupButtonClass(
                                   !isHard,
-                                  "normal"
+                                  group.modeKey === "normal" ? "normal" : "normal"
                                 )}
                               >
-                                Off
+                                {group.modeKey === "normal" ? "Std" : "Off"}
                               </button>
                               <button
                                 type="button"
-                                aria-label={`${group.label} hard mode on`}
+                                aria-label={`${group.label} hard difficulty`}
                                 aria-pressed={isHard}
                                 onClick={() =>
                                   toggleModeDifficulty(group.modeKey, true)
@@ -302,7 +302,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                                   "hard"
                                 )}
                               >
-                                On
+                                Hard
                               </button>
                             </div>
                           </div>
@@ -310,24 +310,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       </li>
                     );
                   })}
-
-                  <li>
-                    <Link
-                      href={buildPlayHref("fantasy")}
-                      onClick={handleNavClick}
-                      className={navLinkClass(
-                        isPlayModeActive(pathname, playSearch, "fantasy")
-                      )}
-                    >
-                      <span aria-hidden className={NAV.icon}>
-                        ✨
-                      </span>
-                      Fantasy Mode
-                      {isPlayModeActive(pathname, playSearch, "fantasy") && (
-                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-green" />
-                      )}
-                    </Link>
-                  </li>
 
                   <li className={NAV.playModeGroup}>
                     <button
@@ -361,6 +343,24 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         onEraModeChange={handleCupVariantChange}
                       />
                     </div>
+                  </li>
+
+                  <li>
+                    <Link
+                      href={buildPlayHref("fantasy")}
+                      onClick={handleNavClick}
+                      className={navLinkClass(
+                        isPlayModeActive(pathname, playSearch, "fantasy")
+                      )}
+                    >
+                      <span aria-hidden className={NAV.icon}>
+                        ✨
+                      </span>
+                      Fantasy Mode
+                      {isPlayModeActive(pathname, playSearch, "fantasy") && (
+                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-green" />
+                      )}
+                    </Link>
                   </li>
                 </ul>
               </section>

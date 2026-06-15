@@ -89,7 +89,7 @@ export const BTN = {
     "text-gray-400 hover:border-accent-gold/40 hover:bg-accent-gold/10 hover:text-accent-gold",
   accentOutline: `w-full border border-accent-green/40 bg-accent-green/10 text-accent-green hover:border-accent-green/55 hover:bg-accent-green/20 sm:w-auto`,
   hardAccentOutline: `w-full border border-accent-red/45 bg-accent-red/10 text-accent-red hover:border-accent-red/65 hover:bg-accent-red/20 hover:text-red-300 sm:w-auto`,
-  goldOutline: `w-full border border-accent-gold/35 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/15 sm:w-auto`,
+  goldOutline: `w-full border-2 border-accent-gold/50 bg-accent-gold/10 text-accent-gold hover:border-accent-gold/65 hover:bg-accent-gold/20 sm:w-auto`,
   goldOutlineSm: `border border-accent-gold/50 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/20`,
   greenOutlineSm: `border border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20`,
   close: `shrink-0 min-h-[36px] rounded-lg border border-pitch-600 px-2.5 py-1 text-gray-400 transition hover:text-white`,
@@ -157,7 +157,7 @@ export const NAV = {
   playModeList: "space-y-1",
   playModeGroup: "space-y-1",
   playModeRow: "flex items-stretch gap-1",
-  hardToggle: "flex w-[4.5rem] shrink-0 flex-col justify-center",
+  hardToggle: "flex w-[6.25rem] shrink-0 flex-col justify-center",
   nestedBlock: "space-y-1 px-0",
   nestedLabel:
     "px-1 font-display text-[9px] font-bold uppercase tracking-wider text-gray-500",
