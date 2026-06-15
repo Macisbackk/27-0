@@ -1,63 +1,111 @@
 {
-  "generatedAt": "2026-06-15T01:31:44.543Z",
+  "generatedAt": "2026-06-15T02:25:53.056Z",
   "summary": {
-    "totalPlayers": 1724,
-    "withBirthData": 1123,
-    "withoutBirthData": 601,
-    "errors": 36,
-    "warnings": 2,
-    "informational": 115
+    "totalPlayers": 1725,
+    "withBirthData": 1484,
+    "withoutBirthData": 241,
+    "errors": 0,
+    "warnings": 9,
+    "informational": 143
   },
   "issues": [
+    {
+      "playerId": "wigan-cur-sam-walters",
+      "name": "Sam Walters",
+      "category": "current",
+      "birthYear": 1939,
+      "age": 87,
+      "severity": "warning",
+      "message": "Suspicious current player age: 87"
+    },
+    {
+      "playerId": "st-helens-cur-harry-robertson",
+      "name": "Harry Robertson",
+      "category": "current",
+      "birthYear": 1943,
+      "age": 83,
+      "severity": "warning",
+      "message": "Suspicious current player age: 83"
+    },
+    {
+      "playerId": "bradford-cur-dan-russell",
+      "name": "Dan Russell",
+      "category": "current",
+      "birthYear": 1932,
+      "age": 94,
+      "severity": "warning",
+      "message": "Suspicious current player age: 94"
+    },
+    {
+      "playerId": "wakefield-cur-harvey-smith",
+      "name": "Harvey Smith",
+      "category": "current",
+      "birthYear": 1945,
+      "age": 81,
+      "severity": "warning",
+      "message": "Suspicious current player age: 81"
+    },
+    {
+      "playerId": "york-cur-jack-smith",
+      "name": "Jack Smith",
+      "category": "current",
+      "birthYear": 1918,
+      "age": 108,
+      "severity": "warning",
+      "message": "Suspicious current player age: 108"
+    },
+    {
+      "playerId": "leeds-cur-corey-johnson",
+      "name": "Corey Johnson",
+      "category": "current",
+      "birthYear": 1961,
+      "age": 65,
+      "severity": "warning",
+      "message": "Suspicious current player age: 65"
+    },
+    {
+      "playerId": "london-cur-jacob-jones",
+      "name": "Jacob Jones",
+      "category": "current",
+      "birthYear": 1949,
+      "age": 77,
+      "severity": "warning",
+      "message": "Suspicious current player age: 77"
+    },
     {
       "playerId": "hull-kr-hist-michael-dobson",
       "name": "Michael Dobson",
       "category": "historic",
-      "birthYear": 1952,
-      "referenceYear": 2011,
-      "age": 59,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 59"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "castleford-hist-ben-roberts",
       "name": "Ben Roberts",
       "category": "historic",
-      "birthYear": 1956,
-      "referenceYear": 2013,
-      "age": 57,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 57"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "huddersfield-hist-keith-mason",
       "name": "Keith Mason",
       "category": "historic",
-      "birthYear": 1947,
-      "referenceYear": 2007,
-      "age": 60,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 60"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "huddersfield-hist-michael-lawrence",
       "name": "Michael Lawrence",
       "category": "historic",
-      "birthYear": 1943,
-      "referenceYear": 2015,
-      "age": 72,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 72"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "salford-hist-ian-watson",
       "name": "Ian Watson",
       "category": "historic",
-      "birthYear": 1947,
-      "referenceYear": 2001,
-      "age": 54,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 54"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "salford-hist-gareth-hock",
@@ -98,11 +146,8 @@
       "playerId": "crusaders-hist-gareth-thomas",
       "name": "Gareth Thomas",
       "category": "historic",
-      "birthYear": 1954,
-      "referenceYear": 2006,
-      "age": 52,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 52"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "psg-hist-frederic-banquet",
@@ -129,11 +174,8 @@
       "playerId": "warrington-hist-paul-wood",
       "name": "Paul Wood",
       "category": "historic",
-      "birthYear": 1964,
-      "referenceYear": 2012,
-      "age": 48,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 48"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "hullkr-hist-neil-maskell",
@@ -230,11 +272,8 @@
       "playerId": "leeds-hist-luke-burgess",
       "name": "Luke Burgess",
       "category": "historic",
-      "birthYear": 1999,
-      "referenceYear": 2012,
-      "age": 13,
-      "severity": "error",
-      "message": "Impossibly young at reference year: age 13"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "wakefield-hist-darryl-cardiss",
@@ -261,11 +300,8 @@
       "playerId": "sheffield-hist-paul-carr",
       "name": "Paul Carr",
       "category": "historic",
-      "birthYear": 1979,
-      "referenceYear": 1993,
-      "age": 14,
-      "severity": "error",
-      "message": "Impossibly young at reference year: age 14"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "wakefield-hist-gary-chambers",
@@ -292,11 +328,8 @@
       "playerId": "wakefield-hist-jason-clark",
       "name": "Jason Clark",
       "category": "historic",
-      "birthYear": 1969,
-      "referenceYear": 2020,
-      "age": 51,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 51"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "oldham-hist-john-clarke",
@@ -316,11 +349,8 @@
       "playerId": "hull-kr-hist-jordan-cox",
       "name": "Jordan Cox",
       "category": "historic",
-      "birthYear": 2000,
-      "referenceYear": 2010,
-      "age": 10,
-      "severity": "error",
-      "message": "Impossibly young at reference year: age 10"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "hull-fc-hist-steve-craven",
@@ -340,11 +370,8 @@
       "playerId": "castleford-hist-brad-davis",
       "name": "Brad Davis",
       "category": "historic",
-      "birthYear": 1982,
-      "referenceYear": 1994,
-      "age": 12,
-      "severity": "error",
-      "message": "Impossibly young at reference year: age 12"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "widnes-hist-paul-devlin",
@@ -380,21 +407,15 @@
       "playerId": "wakefield-hist-andy-fisher",
       "name": "Andy Fisher",
       "category": "historic",
-      "birthYear": 1979,
-      "referenceYear": 1993,
-      "age": 14,
-      "severity": "error",
-      "message": "Impossibly young at reference year: age 14"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "castleford-hist-alex-foster",
       "name": "Alex Foster",
       "category": "historic",
-      "birthYear": 1953,
-      "referenceYear": 2011,
-      "age": 58,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 58"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "huddersfield-hist-matt-gardner",
@@ -430,11 +451,8 @@
       "playerId": "hull-kr-hist-james-greenwood",
       "name": "James Greenwood",
       "category": "historic",
-      "birthYear": 1951,
-      "referenceYear": 2009,
-      "age": 58,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 58"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "huddersfield-hist-dean-hanger",
@@ -461,21 +479,15 @@
       "playerId": "castleford-hist-andrew-henderson",
       "name": "Andrew Henderson",
       "category": "historic",
-      "birthYear": 1941,
-      "referenceYear": 2005,
-      "age": 64,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 64"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "catalans-hist-ian-henderson",
       "name": "Ian Henderson",
       "category": "historic",
-      "birthYear": 1940,
-      "referenceYear": 2009,
-      "age": 69,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 69"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "widnes-hist-aaron-heremaia",
@@ -488,11 +500,8 @@
       "playerId": "castleford-hist-liam-higgins",
       "name": "Liam Higgins",
       "category": "historic",
-      "birthYear": 1942,
-      "referenceYear": 2009,
-      "age": 67,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 67"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "oldham-hist-howard-hill",
@@ -505,11 +514,8 @@
       "playerId": "wakefield-hist-andy-hodgson",
       "name": "Andy Hodgson",
       "category": "historic",
-      "birthYear": 1994,
-      "referenceYear": 2002,
-      "age": 8,
-      "severity": "error",
-      "message": "Impossibly young at reference year: age 8"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "st-helens-hist-jason-hooper",
@@ -522,11 +528,8 @@
       "playerId": "london-hist-david-howell",
       "name": "David Howell",
       "category": "historic",
-      "birthYear": 1936,
-      "referenceYear": 2009,
-      "age": 73,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 73"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "st-helens-hist-konrad-hurrell",
@@ -546,11 +549,8 @@
       "playerId": "leeds-hist-lee-jackson",
       "name": "Lee Jackson",
       "category": "historic",
-      "birthYear": 1943,
-      "referenceYear": 1995,
-      "age": 52,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 52"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "wigan-hist-phil-jones",
@@ -570,11 +570,8 @@
       "playerId": "st-helens-hist-john-kirkpatrick",
       "name": "John Kirkpatrick",
       "category": "historic",
-      "birthYear": 1947,
-      "referenceYear": 2005,
-      "age": 58,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 58"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "hull-kr-hist-sam-latus",
@@ -615,11 +612,8 @@
       "playerId": "oldham-hist-gary-lord",
       "name": "Gary Lord",
       "category": "historic",
-      "birthYear": 1952,
-      "referenceYear": 1999,
-      "age": 47,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 47"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "huddersfield-hist-shaun-lunt",
@@ -632,11 +626,8 @@
       "playerId": "catalans-hist-james-maloney",
       "name": "James Maloney",
       "category": "historic",
-      "birthYear": 1964,
-      "referenceYear": 2012,
-      "age": 48,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 48"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "widnes-hist-stefan-marsh",
@@ -670,11 +661,8 @@
       "playerId": "widnes-hist-david-mills",
       "name": "David Mills",
       "category": "historic",
-      "birthYear": 1959,
-      "referenceYear": 2007,
-      "age": 48,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 48"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "wakefield-hist-jon-molloy",
@@ -687,11 +675,8 @@
       "playerId": "huddersfield-hist-iain-morrison",
       "name": "Iain Morrison",
       "category": "historic",
-      "birthYear": 1954,
-      "referenceYear": 2009,
-      "age": 55,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 55"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "huddersfield-hist-mark-moxon",
@@ -823,11 +808,8 @@
       "playerId": "st-helens-hist-greg-richards",
       "name": "Greg Richards",
       "category": "historic",
-      "birthYear": 1956,
-      "referenceYear": 2013,
-      "age": 57,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 57"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "st-helens-hist-daniel-richardson",
@@ -840,11 +822,8 @@
       "playerId": "hull-fc-hist-robert-roberts",
       "name": "Robert Roberts",
       "category": "historic",
-      "birthYear": 1912,
-      "referenceYear": 2004,
-      "age": 92,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 92"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "wakefield-hist-jamie-rooney",
@@ -885,11 +864,8 @@
       "playerId": "st-helens-hist-chris-smith",
       "name": "Chris Smith",
       "category": "historic",
-      "birthYear": 1994,
-      "referenceYear": 2001,
-      "age": 7,
-      "severity": "error",
-      "message": "Impossibly young at reference year: age 7"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "bradford-hist-hudson-smith",
@@ -909,11 +885,8 @@
       "playerId": "salford-hist-jeremy-smith",
       "name": "Jeremy Smith",
       "category": "historic",
-      "birthYear": 1959,
-      "referenceYear": 2007,
-      "age": 48,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 48"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "london-hist-ady-spencer",
@@ -933,11 +906,8 @@
       "playerId": "leigh-hist-craig-stapleton",
       "name": "Craig Stapleton",
       "category": "historic",
-      "birthYear": 1945,
-      "referenceYear": 2004,
-      "age": 59,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 59"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "london-hist-francis-stephenson",
@@ -971,11 +941,8 @@
       "playerId": "london-hist-john-timu",
       "name": "John Timu",
       "category": "historic",
-      "birthYear": 1992,
-      "referenceYear": 1995,
-      "age": 3,
-      "severity": "error",
-      "message": "Impossibly young at reference year: age 3"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "castleford-hist-ian-tonks",
@@ -1065,11 +1032,8 @@
       "playerId": "wakefield-hist-paul-sykes",
       "name": "Paul Sykes",
       "category": "historic",
-      "birthYear": 1943,
-      "referenceYear": 2007,
-      "age": 64,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 64"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "wigan-hist-terry-newton",
@@ -1082,11 +1046,8 @@
       "playerId": "henry-paul",
       "name": "Henry Paul",
       "category": "historic",
-      "birthYear": 1949,
-      "referenceYear": 2001,
-      "age": 52,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 52"
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
       "playerId": "ali-lauitiiti",
@@ -1106,32 +1067,12 @@
       "playerId": "brian-carney",
       "name": "Brian Carney",
       "category": "historic",
-      "birthYear": 1931,
-      "referenceYear": 2003,
-      "age": 72,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 72"
-    },
-    {
-      "playerId": "andy-lynch",
-      "name": "Andy Lynch",
-      "category": "historic",
-      "birthYear": 1951,
-      "referenceYear": 2005,
-      "age": 54,
-      "severity": "error",
-      "message": "Impossibly old at reference year: age 54"
-    },
-    {
-      "playerId": "nick-fozzard",
-      "name": "Nick Fozzard",
-      "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "rangi-chase",
-      "name": "Rangi Chase",
+      "playerId": "andy-lynch",
+      "name": "Andy Lynch",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
@@ -1139,48 +1080,6 @@
     {
       "playerId": "alex-murphy",
       "name": "Alex Murphy",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "chris-joynt",
-      "name": "Chris Joynt",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "paul-anderson",
-      "name": "Paul Anderson",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "paul-clough",
-      "name": "Paul Clough",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "richard-swain",
-      "name": "Richard Swain",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wigan-hist-michael-mcilorum",
-      "name": "Michael McIlorum",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-leg-stefan-ratchford",
-      "name": "Stefan Ratchford",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"

@@ -15,7 +15,9 @@
     "intlCaps": 0,
     "rating": 90,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1997-09-06",
+    "birthYear": 1997
   },
   {
     "id": "wigan-cur-zach-eckersley",
@@ -33,7 +35,9 @@
     "appearances": 47,
     "tries": 33,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "2003-11-10",
+    "birthYear": 2003
   },
   {
     "id": "wigan-cur-adam-keighran",
@@ -51,7 +55,9 @@
     "appearances": 110,
     "tries": 39,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1997-04-24",
+    "birthYear": 1997
   },
   {
     "id": "wigan-cur-jake-wardle",
@@ -69,7 +75,9 @@
     "appearances": 89,
     "tries": 44,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1998-11-18",
+    "birthYear": 1998
   },
   {
     "id": "wigan-cur-liam-marshall",
@@ -87,7 +95,9 @@
     "appearances": 191,
     "tries": 150,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1996-05-09",
+    "birthYear": 1996
   },
   {
     "id": "wigan-cur-bevan-french",
@@ -105,7 +115,9 @@
     "appearances": 114,
     "tries": 99,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1996-01-04",
+    "birthYear": 1996
   },
   {
     "id": "wigan-cur-harry-smith",
@@ -116,14 +128,16 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2019–Present",
     "category": "current",
-    "peakRating": 88,
-    "value": 261000,
+    "peakRating": 90,
+    "value": 1665000,
     "intlCaps": 4,
-    "rating": 88,
+    "rating": 90,
     "appearances": 144,
     "tries": 22,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "2000-01-25",
+    "birthYear": 2000
   },
   {
     "id": "wigan-cur-ethan-havard",
@@ -141,7 +155,9 @@
     "appearances": 84,
     "tries": 8,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "2000-10-26",
+    "birthYear": 2000
   },
   {
     "id": "wigan-cur-brad-oneill",
@@ -159,7 +175,9 @@
     "appearances": 78,
     "tries": 7,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "2002-07-22",
+    "birthYear": 2002
   },
   {
     "id": "wigan-cur-luke-thompson",
@@ -177,7 +195,8 @@
     "appearances": 199,
     "tries": 29,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "birthYear": 1995
   },
   {
     "id": "wigan-cur-junior-nsemba",
@@ -213,7 +232,9 @@
     "appearances": 345,
     "tries": 125,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1990-07-02",
+    "birthYear": 1990
   },
   {
     "id": "wigan-cur-kaide-ellis",
@@ -224,14 +245,16 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 85,
-    "value": 180000,
+    "peakRating": 90,
+    "value": 750000,
     "intlCaps": 0,
-    "rating": 85,
+    "rating": 90,
     "appearances": 104,
     "tries": 4,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1996-08-04",
+    "birthYear": 1996
   },
   {
     "id": "wigan-cur-sam-walters",
@@ -265,7 +288,9 @@
     "appearances": 111,
     "tries": 7,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1994-12-04",
+    "birthYear": 1994
   },
   {
     "id": "wigan-cur-abbas-miski",
@@ -283,7 +308,9 @@
     "appearances": 78,
     "tries": 64,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1995-07-25",
+    "birthYear": 1995
   },
   {
     "id": "wigan-cur-kruise-leeming",
@@ -301,7 +328,9 @@
     "appearances": 228,
     "tries": 39,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1995-09-07",
+    "birthYear": 1995
   },
   {
     "id": "wigan-cur-jack-farrimond",
@@ -335,7 +364,9 @@
     "intlCaps": 0,
     "rating": 76,
     "appearances": 6,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "2003-06-30",
+    "birthYear": 2003
   },
   {
     "id": "wigan-cur-oliver-wilson",
@@ -351,7 +382,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 105,
-    "tries": 2
+    "tries": 2,
+    "dateOfBirth": "2000-03-22",
+    "birthYear": 2000
   },
   {
     "id": "wigan-cur-tom-forber",
@@ -384,7 +417,9 @@
     "value": 135000,
     "intlCaps": 0,
     "rating": 78,
-    "appearances": 2
+    "appearances": 2,
+    "dateOfBirth": "2006-02-14",
+    "birthYear": 2006
   },
   {
     "id": "wigan-cur-harvey-makin",
@@ -399,7 +434,9 @@
     "value": 135000,
     "intlCaps": 0,
     "rating": 80,
-    "appearances": 1
+    "appearances": 1,
+    "dateOfBirth": "2003-11-17",
+    "birthYear": 2003
   },
   {
     "id": "wigan-cur-taylor-kerr",
@@ -413,7 +450,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "dateOfBirth": "2006-08-01",
+    "birthYear": 2006
   },
   {
     "id": "wigan-cur-nathan-lowe",
@@ -438,14 +477,16 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 88,
-    "value": 258000,
+    "peakRating": 90,
+    "value": 1665000,
     "intlCaps": 11,
-    "rating": 88,
+    "rating": 90,
     "appearances": 166,
     "tries": 71,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "2001-03-17",
+    "birthYear": 2001
   },
   {
     "id": "st-helens-cur-kyle-feldt",
@@ -459,7 +500,9 @@
     "peakRating": 87,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 87
+    "rating": 87,
+    "dateOfBirth": "1992-02-09",
+    "birthYear": 1992
   },
   {
     "id": "st-helens-cur-harry-robertson",
@@ -491,7 +534,9 @@
     "appearances": 267,
     "tries": 129,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1994-04-29",
+    "birthYear": 1994
   },
   {
     "id": "st-helens-cur-deon-cross",
@@ -507,7 +552,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 197,
-    "tries": 88
+    "tries": 88,
+    "dateOfBirth": "1996-07-30",
+    "birthYear": 1996
   },
   {
     "id": "st-helens-cur-tristan-sailor",
@@ -523,7 +570,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 43,
-    "tries": 25
+    "tries": 25,
+    "dateOfBirth": "1998-06-23",
+    "birthYear": 1998
   },
   {
     "id": "st-helens-cur-jonny-lomax",
@@ -541,7 +590,9 @@
     "appearances": 329,
     "tries": 125,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1990-09-04",
+    "birthYear": 1990
   },
   {
     "id": "st-helens-cur-alex-walmsley",
@@ -559,7 +610,9 @@
     "appearances": 279,
     "tries": 55,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1990-04-10",
+    "birthYear": 1990
   },
   {
     "id": "st-helens-cur-daryl-clark",
@@ -575,7 +628,9 @@
     "intlCaps": 15,
     "rating": 89,
     "appearances": 347,
-    "tries": 93
+    "tries": 93,
+    "dateOfBirth": "1993-02-10",
+    "birthYear": 1993
   },
   {
     "id": "st-helens-cur-matty-lees",
@@ -593,7 +648,9 @@
     "appearances": 194,
     "tries": 6,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1998-02-04",
+    "birthYear": 1998
   },
   {
     "id": "st-helens-cur-curtis-sironen",
@@ -611,7 +668,9 @@
     "appearances": 81,
     "tries": 14,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1993-07-31",
+    "birthYear": 1993
   },
   {
     "id": "st-helens-cur-david-klemmer",
@@ -625,7 +684,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 32,
-    "rating": 83
+    "rating": 83,
+    "dateOfBirth": "1993-12-22",
+    "birthYear": 1993
   },
   {
     "id": "st-helens-cur-jacob-host",
@@ -639,7 +700,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "dateOfBirth": "1996-09-30",
+    "birthYear": 1996
   },
   {
     "id": "st-helens-cur-george-delaney",
@@ -655,7 +718,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 86,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2004-02-04",
+    "birthYear": 2004
   },
   {
     "id": "st-helens-cur-matt-whitley",
@@ -671,7 +736,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 52,
-    "tries": 9
+    "tries": 9,
+    "dateOfBirth": "1996-01-20",
+    "birthYear": 1996
   },
   {
     "id": "st-helens-cur-george-whitby",
@@ -685,7 +752,9 @@
     "peakRating": 82,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "dateOfBirth": "2006-05-17",
+    "birthYear": 2006
   },
   {
     "id": "st-helens-cur-jake-wingfield",
@@ -703,7 +772,9 @@
     "appearances": 65,
     "tries": 1,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "2001-08-01",
+    "birthYear": 2001
   },
   {
     "id": "st-helens-cur-agnatius-paasi",
@@ -721,7 +792,9 @@
     "appearances": 94,
     "tries": 9,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1991-11-30",
+    "birthYear": 1991
   },
   {
     "id": "st-helens-cur-lewis-murphy",
@@ -753,7 +826,9 @@
     "intlCaps": 0,
     "rating": 80,
     "appearances": 24,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "2004-10-03",
+    "birthYear": 2004
   },
   {
     "id": "st-helens-cur-jake-burns",
@@ -799,7 +874,9 @@
     "intlCaps": 18,
     "rating": 90,
     "appearances": 55,
-    "tries": 18
+    "tries": 18,
+    "dateOfBirth": "1994-05-11",
+    "birthYear": 1994
   },
   {
     "id": "leeds-cur-lachie-miller",
@@ -815,7 +892,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 50,
-    "tries": 16
+    "tries": 16,
+    "dateOfBirth": "1994-08-14",
+    "birthYear": 1994
   },
   {
     "id": "leeds-cur-maika-sivo",
@@ -831,7 +910,9 @@
     "intlCaps": 2,
     "rating": 83,
     "appearances": 13,
-    "tries": 22
+    "tries": 22,
+    "dateOfBirth": "1993-10-03",
+    "birthYear": 1993
   },
   {
     "id": "leeds-cur-harry-newman",
@@ -842,12 +923,13 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 87,
-    "value": 221000,
+    "peakRating": 90,
+    "value": 750000,
     "intlCaps": 0,
-    "rating": 87,
+    "rating": 90,
     "appearances": 127,
-    "tries": 38
+    "tries": 38,
+    "birthYear": 2000
   },
   {
     "id": "leeds-cur-ash-handley",
@@ -865,7 +947,9 @@
     "appearances": 212,
     "tries": 127,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1996-02-16",
+    "birthYear": 1996
   },
   {
     "id": "leeds-cur-ryan-hall",
@@ -883,7 +967,9 @@
     "appearances": 390,
     "tries": 259,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1987-11-27",
+    "birthYear": 1987
   },
   {
     "id": "leeds-cur-brodie-croft",
@@ -899,7 +985,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 110,
-    "tries": 41
+    "tries": 41,
+    "dateOfBirth": "1997-07-14",
+    "birthYear": 1997
   },
   {
     "id": "leeds-cur-jake-connor",
@@ -915,7 +1003,9 @@
     "intlCaps": 0,
     "rating": 91,
     "appearances": 249,
-    "tries": 64
+    "tries": 64,
+    "dateOfBirth": "1994-10-18",
+    "birthYear": 1994
   },
   {
     "id": "leeds-cur-mikolaj-oledzki",
@@ -931,7 +1021,9 @@
     "intlCaps": 0,
     "rating": 90,
     "appearances": 167,
-    "tries": 15
+    "tries": 15,
+    "dateOfBirth": "1998-11-08",
+    "birthYear": 1998
   },
   {
     "id": "leeds-cur-jarrod-oconnor",
@@ -947,7 +1039,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 129,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "2001-07-20",
+    "birthYear": 2001
   },
   {
     "id": "leeds-cur-tom-holroyd",
@@ -963,7 +1057,9 @@
     "intlCaps": 0,
     "rating": 86,
     "appearances": 79,
-    "tries": 11
+    "tries": 11,
+    "dateOfBirth": "2001-02-09",
+    "birthYear": 2001
   },
   {
     "id": "leeds-cur-kallum-watkins",
@@ -974,14 +1070,16 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2008–Present",
     "category": "current",
-    "peakRating": 87,
-    "value": 215000,
+    "peakRating": 90,
+    "value": 1665000,
     "intlCaps": 29,
-    "rating": 87,
+    "rating": 90,
     "appearances": 329,
     "tries": 135,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1991-03-12",
+    "birthYear": 1991
   },
   {
     "id": "leeds-cur-james-mcdonnell",
@@ -997,7 +1095,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 93,
-    "tries": 21
+    "tries": 21,
+    "dateOfBirth": "2000-01-12",
+    "birthYear": 2000
   },
   {
     "id": "leeds-cur-keenan-palasia",
@@ -1011,7 +1111,9 @@
     "peakRating": 87,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 87
+    "rating": 87,
+    "dateOfBirth": "1997-01-24",
+    "birthYear": 1997
   },
   {
     "id": "leeds-cur-chris-hankinson",
@@ -1027,7 +1129,9 @@
     "intlCaps": 0,
     "rating": 76,
     "appearances": 244,
-    "tries": 77
+    "tries": 77,
+    "dateOfBirth": "1993-11-30",
+    "birthYear": 1993
   },
   {
     "id": "leeds-cur-cooper-jenkins",
@@ -1043,7 +1147,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 31,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "2001-07-11",
+    "birthYear": 2001
   },
   {
     "id": "leeds-cur-ethan-oneill",
@@ -1058,7 +1164,9 @@
     "value": 135000,
     "intlCaps": 0,
     "rating": 87,
-    "appearances": 4
+    "appearances": 4,
+    "dateOfBirth": "1999-06-01",
+    "birthYear": 1999
   },
   {
     "id": "leeds-cur-cameron-smith",
@@ -1069,10 +1177,10 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 88,
-    "value": 253000,
+    "peakRating": 89,
+    "value": 610000,
     "intlCaps": 0,
-    "rating": 88
+    "rating": 89
   },
   {
     "id": "leeds-cur-max-simpson",
@@ -1087,7 +1195,9 @@
     "value": 135000,
     "intlCaps": 0,
     "rating": 80,
-    "appearances": 7
+    "appearances": 7,
+    "dateOfBirth": "2004-07-24",
+    "birthYear": 2004
   },
   {
     "id": "leeds-cur-jeremiah-matautia",
@@ -1117,7 +1227,9 @@
     "intlCaps": 0,
     "rating": 78,
     "appearances": 9,
-    "tries": 2
+    "tries": 2,
+    "dateOfBirth": "2006-10-06",
+    "birthYear": 2006
   },
   {
     "id": "leeds-cur-alfie-edgell",
@@ -1133,7 +1245,9 @@
     "intlCaps": 0,
     "rating": 81,
     "appearances": 25,
-    "tries": 10
+    "tries": 10,
+    "dateOfBirth": "2004-07-25",
+    "birthYear": 2004
   },
   {
     "id": "leeds-cur-riley-lumb",
@@ -1149,7 +1263,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 24,
-    "tries": 12
+    "tries": 12,
+    "dateOfBirth": "2004-12-18",
+    "birthYear": 2004
   },
   {
     "id": "leeds-cur-danny-levi",
@@ -1165,7 +1281,9 @@
     "intlCaps": 0,
     "rating": 77,
     "appearances": 38,
-    "tries": 5
+    "tries": 5,
+    "dateOfBirth": "1995-12-05",
+    "birthYear": 1995
   },
   {
     "id": "leeds-cur-ned-mccormack",
@@ -1212,7 +1330,9 @@
     "intlCaps": 0,
     "rating": 79,
     "appearances": 15,
-    "tries": 9
+    "tries": 9,
+    "dateOfBirth": "2006-02-24",
+    "birthYear": 2006
   },
   {
     "id": "warrington-cur-josh-thewlis",
@@ -1228,7 +1348,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 112,
-    "tries": 55
+    "tries": 55,
+    "dateOfBirth": "2002-04-30",
+    "birthYear": 2002
   },
   {
     "id": "warrington-cur-toby-king",
@@ -1246,7 +1368,8 @@
     "appearances": 205,
     "tries": 78,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "birthYear": 1996
   },
   {
     "id": "warrington-cur-albert-hopoate",
@@ -1276,7 +1399,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 143,
-    "tries": 137
+    "tries": 137,
+    "dateOfBirth": "1998-07-28",
+    "birthYear": 1998
   },
   {
     "id": "warrington-cur-george-williams",
@@ -1310,7 +1435,9 @@
     "intlCaps": 0,
     "rating": 89,
     "appearances": 316,
-    "tries": 39
+    "tries": 39,
+    "dateOfBirth": "1991-02-09",
+    "birthYear": 1991
   },
   {
     "id": "warrington-cur-luke-yates",
@@ -1326,7 +1453,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 202,
-    "tries": 19
+    "tries": 19,
+    "dateOfBirth": "1995-03-06",
+    "birthYear": 1995
   },
   {
     "id": "warrington-cur-danny-walker",
@@ -1337,12 +1466,14 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2018–Present",
     "category": "current",
-    "peakRating": 86,
-    "value": 185000,
+    "peakRating": 89,
+    "value": 750000,
     "intlCaps": 0,
-    "rating": 86,
+    "rating": 89,
     "appearances": 30,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "1999-06-29",
+    "birthYear": 1999
   },
   {
     "id": "warrington-cur-james-harrison",
@@ -1358,7 +1489,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 77,
-    "tries": 14
+    "tries": 14,
+    "dateOfBirth": "1996-06-15",
+    "birthYear": 1996
   },
   {
     "id": "warrington-cur-adam-holroyd",
@@ -1374,7 +1507,9 @@
     "intlCaps": 0,
     "rating": 76,
     "appearances": 47,
-    "tries": 7
+    "tries": 7,
+    "dateOfBirth": "2004-09-05",
+    "birthYear": 2004
   },
   {
     "id": "warrington-cur-sam-stone",
@@ -1390,7 +1525,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 60,
-    "tries": 16
+    "tries": 16,
+    "dateOfBirth": "1997-08-04",
+    "birthYear": 1997
   },
   {
     "id": "warrington-cur-ben-currie",
@@ -1406,7 +1543,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 278,
-    "tries": 100
+    "tries": 100,
+    "dateOfBirth": "1994-07-15",
+    "birthYear": 1994
   },
   {
     "id": "warrington-cur-sam-powell",
@@ -1424,7 +1563,9 @@
     "appearances": 291,
     "tries": 42,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1992-07-03",
+    "birthYear": 1992
   },
   {
     "id": "warrington-cur-toafofoa-sipley",
@@ -1438,7 +1579,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "dateOfBirth": "1995-01-05",
+    "birthYear": 1995
   },
   {
     "id": "warrington-cur-liam-byrne",
@@ -1456,7 +1599,9 @@
     "appearances": 149,
     "tries": 2,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1999-08-18",
+    "birthYear": 1999
   },
   {
     "id": "warrington-cur-jordy-crowther",
@@ -1486,7 +1631,9 @@
     "intlCaps": 0,
     "rating": 79,
     "appearances": 10,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "2008-02-07",
+    "birthYear": 2008
   },
   {
     "id": "warrington-cur-leon-hayes",
@@ -1501,7 +1648,9 @@
     "value": 135000,
     "intlCaps": 0,
     "rating": 82,
-    "appearances": 12
+    "appearances": 12,
+    "dateOfBirth": "2004-03-04",
+    "birthYear": 2004
   },
   {
     "id": "warrington-cur-james-bentley",
@@ -1551,7 +1700,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 212,
-    "tries": 16
+    "tries": 16,
+    "dateOfBirth": "1994-11-16",
+    "birthYear": 1994
   },
   {
     "id": "warrington-cur-arron-lindop",
@@ -1567,7 +1718,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 11,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "2006-03-17",
+    "birthYear": 2006
   },
   {
     "id": "warrington-cur-max-wood",
@@ -1583,7 +1736,9 @@
     "intlCaps": 0,
     "rating": 80,
     "appearances": 32,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2004-06-28",
+    "birthYear": 2004
   },
   {
     "id": "warrington-cur-josh-smith",
@@ -1613,7 +1768,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 147,
-    "tries": 66
+    "tries": 66,
+    "dateOfBirth": "1997-11-21",
+    "birthYear": 1997
   },
   {
     "id": "bradford-cur-jayden-okunbor",
@@ -1629,7 +1786,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 104,
-    "tries": 49
+    "tries": 49,
+    "dateOfBirth": "1997-03-02",
+    "birthYear": 1997
   },
   {
     "id": "bradford-cur-esan-marsters",
@@ -1645,7 +1804,9 @@
     "intlCaps": 4,
     "rating": 88,
     "appearances": 71,
-    "tries": 14
+    "tries": 14,
+    "dateOfBirth": "1996-08-17",
+    "birthYear": 1996
   },
   {
     "id": "bradford-cur-waqa-blake",
@@ -1656,12 +1817,14 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2015–Present",
     "category": "current",
-    "peakRating": 87,
-    "value": 221000,
+    "peakRating": 88,
+    "value": 750000,
     "intlCaps": 0,
-    "rating": 87,
+    "rating": 88,
     "appearances": 31,
-    "tries": 17
+    "tries": 17,
+    "dateOfBirth": "1994-10-26",
+    "birthYear": 1994
   },
   {
     "id": "bradford-cur-ethan-ryan",
@@ -1677,7 +1840,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 77,
-    "tries": 31
+    "tries": 31,
+    "dateOfBirth": "1996-05-12",
+    "birthYear": 1996
   },
   {
     "id": "bradford-cur-jayden-nikorima",
@@ -1693,7 +1858,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 37,
-    "tries": 11
+    "tries": 11,
+    "dateOfBirth": "1996-10-05",
+    "birthYear": 1996
   },
   {
     "id": "bradford-cur-rowan-milnes",
@@ -1709,7 +1876,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 117,
-    "tries": 23
+    "tries": 23,
+    "dateOfBirth": "1999-09-01",
+    "birthYear": 1999
   },
   {
     "id": "bradford-cur-ryan-sutton",
@@ -1727,7 +1896,9 @@
     "appearances": 214,
     "tries": 15,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1995-08-02",
+    "birthYear": 1995
   },
   {
     "id": "bradford-cur-andy-ackers",
@@ -1743,7 +1914,9 @@
     "intlCaps": 3,
     "rating": 88,
     "appearances": 113,
-    "tries": 10
+    "tries": 10,
+    "dateOfBirth": "1993-12-25",
+    "birthYear": 1993
   },
   {
     "id": "bradford-cur-loghan-lewis",
@@ -1758,7 +1931,9 @@
     "value": 170000,
     "intlCaps": 0,
     "rating": 82,
-    "appearances": 11
+    "appearances": 11,
+    "dateOfBirth": "2002-11-23",
+    "birthYear": 2002
   },
   {
     "id": "bradford-cur-dan-russell",
@@ -1786,7 +1961,9 @@
     "peakRating": 81,
     "value": 450000,
     "intlCaps": 0,
-    "rating": 81
+    "rating": 81,
+    "dateOfBirth": "2001-08-14",
+    "birthYear": 2001
   },
   {
     "id": "bradford-cur-joe-mellor",
@@ -1804,7 +1981,9 @@
     "appearances": 204,
     "tries": 60,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1990-11-28",
+    "birthYear": 1990
   },
   {
     "id": "bradford-cur-mitch-souter",
@@ -1829,14 +2008,16 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
-    "peakRating": 82,
-    "value": 135000,
+    "peakRating": 83,
+    "value": 158000,
     "intlCaps": 0,
-    "rating": 82,
+    "rating": 83,
     "appearances": 25,
     "tries": 2,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "2001-03-26",
+    "birthYear": 2001
   },
   {
     "id": "bradford-cur-ebon-scurr",
@@ -1868,7 +2049,9 @@
     "appearances": 5,
     "tries": 3,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1996-02-08",
+    "birthYear": 1996
   },
   {
     "id": "bradford-cur-joe-keyes",
@@ -1884,7 +2067,8 @@
     "intlCaps": 7,
     "rating": 84,
     "appearances": 152,
-    "tries": 55
+    "tries": 55,
+    "birthYear": 1995
   },
   {
     "id": "bradford-cur-will-gardiner",
@@ -1900,7 +2084,9 @@
     "intlCaps": 0,
     "rating": 80,
     "appearances": 47,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "2001-05-21",
+    "birthYear": 2001
   },
   {
     "id": "bradford-cur-brandon-douglas",
@@ -1914,7 +2100,9 @@
     "peakRating": 80,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 80
+    "rating": 80,
+    "dateOfBirth": "1997-08-17",
+    "birthYear": 1997
   },
   {
     "id": "bradford-cur-sam-hallas",
@@ -1929,9 +2117,9 @@
     "value": 135000,
     "intlCaps": 0,
     "rating": 81,
+    "appearances": 4,
     "dateOfBirth": "1996-10-18",
-    "birthYear": 1996,
-    "appearances": 4
+    "birthYear": 1996
   },
   {
     "id": "bradford-cur-luke-hooley",
@@ -1947,7 +2135,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 163,
-    "tries": 65
+    "tries": 65,
+    "dateOfBirth": "1998-08-01",
+    "birthYear": 1998
   },
   {
     "id": "bradford-cur-connor-wynne",
@@ -1963,7 +2153,9 @@
     "intlCaps": 0,
     "rating": 81,
     "appearances": 94,
-    "tries": 57
+    "tries": 57,
+    "dateOfBirth": "2001-01-15",
+    "birthYear": 2001
   },
   {
     "id": "bradford-cur-guy-armitage",
@@ -1979,7 +2171,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 88,
-    "tries": 62
+    "tries": 62,
+    "dateOfBirth": "1991-11-29",
+    "birthYear": 1991
   },
   {
     "id": "bradford-cur-eliot-peposhi",
@@ -2011,7 +2205,9 @@
     "appearances": 131,
     "tries": 36,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1999-05-02",
+    "birthYear": 1999
   },
   {
     "id": "hull-kr-cur-tom-davies",
@@ -2029,7 +2225,9 @@
     "appearances": 187,
     "tries": 106,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1997-01-11",
+    "birthYear": 1997
   },
   {
     "id": "hull-kr-cur-peta-hiku",
@@ -2040,14 +2238,16 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 88,
-    "value": 255000,
+    "peakRating": 90,
+    "value": 750000,
     "intlCaps": 15,
-    "rating": 88,
+    "rating": 90,
     "appearances": 82,
     "tries": 31,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1992-12-04",
+    "birthYear": 1992
   },
   {
     "id": "hull-kr-cur-oliver-gildart",
@@ -2065,7 +2265,9 @@
     "appearances": 160,
     "tries": 65,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1996-08-06",
+    "birthYear": 1996
   },
   {
     "id": "hull-kr-cur-joe-burgess",
@@ -2083,7 +2285,9 @@
     "appearances": 201,
     "tries": 147,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1994-10-14",
+    "birthYear": 1994
   },
   {
     "id": "hull-kr-cur-mikey-lewis",
@@ -2101,7 +2305,9 @@
     "appearances": 120,
     "tries": 81,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "2001-07-04",
+    "birthYear": 2001
   },
   {
     "id": "hull-kr-cur-tyrone-may",
@@ -2119,7 +2325,9 @@
     "appearances": 100,
     "tries": 21,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1996-06-21",
+    "birthYear": 1996
   },
   {
     "id": "hull-kr-cur-sauaso-sue",
@@ -2137,7 +2345,9 @@
     "appearances": 74,
     "tries": 13,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1992-04-20",
+    "birthYear": 1992
   },
   {
     "id": "hull-kr-cur-jez-litten",
@@ -2155,7 +2365,9 @@
     "appearances": 18,
     "tries": 1,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1998-03-10",
+    "birthYear": 1998
   },
   {
     "id": "hull-kr-cur-tom-amone",
@@ -2173,7 +2385,9 @@
     "appearances": 127,
     "tries": 20,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1996-12-19",
+    "birthYear": 1996
   },
   {
     "id": "hull-kr-cur-dean-hadley",
@@ -2191,7 +2405,9 @@
     "appearances": 225,
     "tries": 23,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1992-08-05",
+    "birthYear": 1992
   },
   {
     "id": "hull-kr-cur-james-batchelor",
@@ -2209,7 +2425,8 @@
     "appearances": 166,
     "tries": 29,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "birthYear": 1998
   },
   {
     "id": "hull-kr-cur-elliot-minchella",
@@ -2227,7 +2444,9 @@
     "appearances": 131,
     "tries": 17,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1996-01-28",
+    "birthYear": 1996
   },
   {
     "id": "hull-kr-cur-jack-broadbent",
@@ -2245,7 +2464,9 @@
     "appearances": 105,
     "tries": 38,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "2000-11-01",
+    "birthYear": 2000
   },
   {
     "id": "hull-kr-cur-sam-luckley",
@@ -2263,7 +2484,9 @@
     "appearances": 217,
     "tries": 15,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1995-11-29",
+    "birthYear": 1995
   },
   {
     "id": "hull-kr-cur-jai-whitbread",
@@ -2281,7 +2504,9 @@
     "appearances": 104,
     "tries": 19,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1998-01-16",
+    "birthYear": 1998
   },
   {
     "id": "hull-kr-cur-rhyse-martin",
@@ -2299,7 +2524,9 @@
     "appearances": 142,
     "tries": 42,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1993-03-01",
+    "birthYear": 1993
   },
   {
     "id": "hull-kr-cur-jack-brown",
@@ -2333,7 +2560,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 112,
-    "tries": 5
+    "tries": 5,
+    "dateOfBirth": "1996-11-06",
+    "birthYear": 1996
   },
   {
     "id": "hull-kr-cur-noah-booth",
@@ -2349,7 +2578,9 @@
     "intlCaps": 0,
     "rating": 80,
     "appearances": 10,
-    "tries": 9
+    "tries": 9,
+    "dateOfBirth": "2004-10-21",
+    "birthYear": 2004
   },
   {
     "id": "hull-kr-cur-bill-leyland",
@@ -2365,7 +2596,9 @@
     "intlCaps": 0,
     "rating": 81,
     "appearances": 57,
-    "tries": 18
+    "tries": 18,
+    "dateOfBirth": "2003-02-03",
+    "birthYear": 2003
   },
   {
     "id": "hull-kr-cur-lee-kershaw",
@@ -2381,7 +2614,9 @@
     "intlCaps": 0,
     "rating": 81,
     "appearances": 108,
-    "tries": 42
+    "tries": 42,
+    "dateOfBirth": "1999-05-02",
+    "birthYear": 1999
   },
   {
     "id": "hull-kr-cur-jack-charles",
@@ -2395,7 +2630,9 @@
     "peakRating": 81,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 81
+    "rating": 81,
+    "dateOfBirth": "2006-01-30",
+    "birthYear": 2006
   },
   {
     "id": "hull-kr-cur-louix-gorman",
@@ -2410,7 +2647,9 @@
     "value": 135000,
     "intlCaps": 0,
     "rating": 76,
-    "appearances": 1
+    "appearances": 1,
+    "dateOfBirth": "2005-04-25",
+    "birthYear": 2005
   },
   {
     "id": "hull-kr-cur-harvey-horne",
@@ -2440,7 +2679,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 45,
-    "tries": 17
+    "tries": 17,
+    "dateOfBirth": "2002-12-05",
+    "birthYear": 2002
   },
   {
     "id": "hull-fc-cur-harvey-barron",
@@ -2456,7 +2697,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 41,
-    "tries": 22
+    "tries": 22,
+    "dateOfBirth": "2003-05-13",
+    "birthYear": 2003
   },
   {
     "id": "hull-fc-cur-davy-litten",
@@ -2472,7 +2715,9 @@
     "intlCaps": 0,
     "rating": 86,
     "appearances": 30,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "2003-05-03",
+    "birthYear": 2003
   },
   {
     "id": "hull-fc-cur-zak-hardaker",
@@ -2490,7 +2735,9 @@
     "appearances": 313,
     "tries": 99,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1991-10-17",
+    "birthYear": 1991
   },
   {
     "id": "hull-fc-cur-lewis-martin",
@@ -2520,7 +2767,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "dateOfBirth": "2002-09-27",
+    "birthYear": 2002
   },
   {
     "id": "hull-fc-cur-aidan-sezer",
@@ -2536,7 +2785,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 91,
-    "tries": 16
+    "tries": 16,
+    "dateOfBirth": "1991-06-24",
+    "birthYear": 1991
   },
   {
     "id": "hull-fc-cur-herman-eseese",
@@ -2547,12 +2798,14 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2014–Present",
     "category": "current",
-    "peakRating": 88,
-    "value": 248000,
+    "peakRating": 90,
+    "value": 750000,
     "intlCaps": 4,
-    "rating": 88,
+    "rating": 90,
     "appearances": 49,
-    "tries": 10
+    "tries": 10,
+    "dateOfBirth": "1994-09-07",
+    "birthYear": 1994
   },
   {
     "id": "hull-fc-cur-amir-bourouh",
@@ -2568,7 +2821,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 83,
-    "tries": 7
+    "tries": 7,
+    "dateOfBirth": "2001-01-05",
+    "birthYear": 2001
   },
   {
     "id": "hull-fc-cur-harvie-hill",
@@ -2584,7 +2839,9 @@
     "intlCaps": 0,
     "rating": 76,
     "appearances": 71,
-    "tries": 5
+    "tries": 5,
+    "dateOfBirth": "2003-09-03",
+    "birthYear": 2003
   },
   {
     "id": "hull-fc-cur-joe-batchelor",
@@ -2602,7 +2859,9 @@
     "appearances": 171,
     "tries": 66,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1994-10-28",
+    "birthYear": 1994
   },
   {
     "id": "hull-fc-cur-jed-cartwright",
@@ -2616,7 +2875,9 @@
     "peakRating": 88,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 88
+    "rating": 88,
+    "dateOfBirth": "1996-10-24",
+    "birthYear": 1996
   },
   {
     "id": "hull-fc-cur-john-asiata",
@@ -2633,7 +2894,9 @@
     "rating": 87,
     "appearances": 19,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1993-04-19",
+    "birthYear": 1993
   },
   {
     "id": "hull-fc-cur-cade-cust",
@@ -2651,7 +2914,9 @@
     "appearances": 87,
     "tries": 14,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1998-09-14",
+    "birthYear": 1998
   },
   {
     "id": "hull-fc-cur-james-bell",
@@ -2667,7 +2932,9 @@
     "intlCaps": 10,
     "rating": 83,
     "appearances": 98,
-    "tries": 10
+    "tries": 10,
+    "dateOfBirth": "1994-05-02",
+    "birthYear": 1994
   },
   {
     "id": "hull-fc-cur-sam-lisone",
@@ -2683,7 +2950,9 @@
     "intlCaps": 5,
     "rating": 86,
     "appearances": 81,
-    "tries": 13
+    "tries": 13,
+    "dateOfBirth": "1994-02-19",
+    "birthYear": 1994
   },
   {
     "id": "hull-fc-cur-liam-knight",
@@ -2697,7 +2966,9 @@
     "peakRating": 87,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 87
+    "rating": 87,
+    "dateOfBirth": "1995-01-15",
+    "birthYear": 1995
   },
   {
     "id": "hull-fc-cur-ligi-sao",
@@ -2713,7 +2984,9 @@
     "intlCaps": 5,
     "rating": 86,
     "appearances": 102,
-    "tries": 5
+    "tries": 5,
+    "dateOfBirth": "1992-10-11",
+    "birthYear": 1992
   },
   {
     "id": "hull-fc-cur-tom-briscoe",
@@ -2731,7 +3004,9 @@
     "appearances": 427,
     "tries": 213,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1990-03-19",
+    "birthYear": 1990
   },
   {
     "id": "hull-fc-cur-yusuf-aydin",
@@ -2747,7 +3022,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 64,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2000-09-13",
+    "birthYear": 2000
   },
   {
     "id": "hull-fc-cur-arthur-romano",
@@ -2763,7 +3040,8 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 97,
-    "tries": 20
+    "tries": 20,
+    "birthYear": 1997
   },
   {
     "id": "hull-fc-cur-connor-bailey",
@@ -2779,7 +3057,9 @@
     "intlCaps": 0,
     "rating": 81,
     "appearances": 15,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "2000-10-10",
+    "birthYear": 2000
   },
   {
     "id": "hull-fc-cur-brad-fash",
@@ -2795,7 +3075,9 @@
     "intlCaps": 0,
     "rating": 77,
     "appearances": 185,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "1996-01-24",
+    "birthYear": 1996
   },
   {
     "id": "hull-fc-cur-logan-moy",
@@ -2811,7 +3093,9 @@
     "intlCaps": 0,
     "rating": 81,
     "appearances": 26,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2005-08-10",
+    "birthYear": 2005
   },
   {
     "id": "hull-fc-cur-matty-laidlaw",
@@ -2826,7 +3110,9 @@
     "value": 135000,
     "intlCaps": 0,
     "rating": 76,
-    "appearances": 10
+    "appearances": 10,
+    "dateOfBirth": "2004-01-22",
+    "birthYear": 2004
   },
   {
     "id": "hull-fc-cur-hugo-salabio",
@@ -2842,7 +3128,9 @@
     "intlCaps": 0,
     "rating": 76,
     "appearances": 87,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2000-07-27",
+    "birthYear": 2000
   },
   {
     "id": "leigh-cur-david-armstrong",
@@ -2856,7 +3144,9 @@
     "peakRating": 86,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 86
+    "rating": 86,
+    "dateOfBirth": "2001-04-09",
+    "birthYear": 2001
   },
   {
     "id": "leigh-cur-keanan-brand",
@@ -2872,7 +3162,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 109,
-    "tries": 45
+    "tries": 45,
+    "dateOfBirth": "1999-01-08",
+    "birthYear": 1999
   },
   {
     "id": "leigh-cur-tesi-niu",
@@ -2888,7 +3180,9 @@
     "intlCaps": 7,
     "rating": 89,
     "appearances": 34,
-    "tries": 12
+    "tries": 12,
+    "dateOfBirth": "2001-08-11",
+    "birthYear": 2001
   },
   {
     "id": "leigh-cur-umyla-hanley",
@@ -2904,7 +3198,9 @@
     "intlCaps": 0,
     "rating": 86,
     "appearances": 63,
-    "tries": 26
+    "tries": 26,
+    "dateOfBirth": "2002-03-05",
+    "birthYear": 2002
   },
   {
     "id": "leigh-cur-josh-charnley",
@@ -2922,7 +3218,9 @@
     "appearances": 318,
     "tries": 257,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1991-06-26",
+    "birthYear": 1991
   },
   {
     "id": "leigh-cur-adam-cook",
@@ -2954,7 +3252,9 @@
     "appearances": 93,
     "tries": 22,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1998-03-25",
+    "birthYear": 1998
   },
   {
     "id": "leigh-cur-joe-ofahengaue",
@@ -2968,7 +3268,9 @@
     "peakRating": 88,
     "value": 610000,
     "intlCaps": 10,
-    "rating": 88
+    "rating": 88,
+    "dateOfBirth": "1995-09-15",
+    "birthYear": 1995
   },
   {
     "id": "leigh-cur-edwin-ipape",
@@ -2986,7 +3288,9 @@
     "appearances": 114,
     "tries": 47,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1999-02-02",
+    "birthYear": 1999
   },
   {
     "id": "leigh-cur-robbie-mulhern",
@@ -3004,7 +3308,9 @@
     "appearances": 192,
     "tries": 10,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1994-10-18",
+    "birthYear": 1994
   },
   {
     "id": "leigh-cur-frankie-halton",
@@ -3020,7 +3326,9 @@
     "intlCaps": 0,
     "rating": 86,
     "appearances": 83,
-    "tries": 16
+    "tries": 16,
+    "dateOfBirth": "1996-06-18",
+    "birthYear": 1996
   },
   {
     "id": "leigh-cur-owen-trout",
@@ -3036,7 +3344,9 @@
     "intlCaps": 0,
     "rating": 86,
     "appearances": 61,
-    "tries": 7
+    "tries": 7,
+    "dateOfBirth": "1999-10-15",
+    "birthYear": 1999
   },
   {
     "id": "leigh-cur-isaac-liu",
@@ -3050,7 +3360,9 @@
     "peakRating": 88,
     "value": 750000,
     "intlCaps": 15,
-    "rating": 88
+    "rating": 88,
+    "dateOfBirth": "1991-04-26",
+    "birthYear": 1991
   },
   {
     "id": "leigh-cur-aaron-pene",
@@ -3064,7 +3376,9 @@
     "peakRating": 85,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 85
+    "rating": 85,
+    "dateOfBirth": "1995-09-26",
+    "birthYear": 1995
   },
   {
     "id": "leigh-cur-jacob-alick-wiencke",
@@ -3080,7 +3394,9 @@
     "intlCaps": 2,
     "rating": 76,
     "appearances": 16,
-    "tries": 4
+    "tries": 4,
+    "dateOfBirth": "1999-11-03",
+    "birthYear": 1999
   },
   {
     "id": "leigh-cur-matt-davis",
@@ -3112,7 +3428,9 @@
     "intlCaps": 8,
     "rating": 84,
     "appearances": 13,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "1998-02-03",
+    "birthYear": 1998
   },
   {
     "id": "leigh-cur-bailey-hodgson",
@@ -3128,7 +3446,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 34,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "2002-09-05",
+    "birthYear": 2002
   },
   {
     "id": "leigh-cur-innes-senior",
@@ -3144,7 +3464,9 @@
     "intlCaps": 1,
     "rating": 84,
     "appearances": 129,
-    "tries": 57
+    "tries": 57,
+    "dateOfBirth": "2000-05-30",
+    "birthYear": 2000
   },
   {
     "id": "leigh-cur-aj-towse",
@@ -3160,7 +3482,9 @@
     "intlCaps": 0,
     "rating": 80,
     "appearances": 83,
-    "tries": 44
+    "tries": 44,
+    "dateOfBirth": "2003-08-19",
+    "birthYear": 2003
   },
   {
     "id": "leigh-cur-gareth-obrien",
@@ -3178,7 +3502,9 @@
     "appearances": 215,
     "tries": 40,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1991-10-31",
+    "birthYear": 1991
   },
   {
     "id": "leigh-cur-jack-hughes",
@@ -3226,7 +3552,9 @@
     "intlCaps": 0,
     "rating": 81,
     "appearances": 67,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "2001-12-08",
+    "birthYear": 2001
   },
   {
     "id": "leigh-cur-louis-brogan",
@@ -3241,7 +3569,9 @@
     "value": 135000,
     "intlCaps": 0,
     "rating": 76,
-    "appearances": 12
+    "appearances": 12,
+    "dateOfBirth": "2000-05-06",
+    "birthYear": 2000
   },
   {
     "id": "leigh-cur-nathan-wilde",
@@ -3271,7 +3601,9 @@
     "intlCaps": 0,
     "rating": 88,
     "appearances": 136,
-    "tries": 46
+    "tries": 46,
+    "dateOfBirth": "1997-05-06",
+    "birthYear": 1997
   },
   {
     "id": "wakefield-cur-oliver-pratt",
@@ -3287,7 +3619,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 74,
-    "tries": 37
+    "tries": 37,
+    "dateOfBirth": "2004-09-04",
+    "birthYear": 2004
   },
   {
     "id": "wakefield-cur-cam-scott",
@@ -3317,7 +3651,9 @@
     "intlCaps": 0,
     "rating": 86,
     "appearances": 79,
-    "tries": 15
+    "tries": 15,
+    "dateOfBirth": "2002-08-07",
+    "birthYear": 2002
   },
   {
     "id": "wakefield-cur-tom-johnstone",
@@ -3333,7 +3669,9 @@
     "intlCaps": 5,
     "rating": 90,
     "appearances": 195,
-    "tries": 146
+    "tries": 146,
+    "dateOfBirth": "1995-08-13",
+    "birthYear": 1995
   },
   {
     "id": "wakefield-cur-jake-trueman",
@@ -3344,12 +3682,14 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2017–Present",
     "category": "current",
-    "peakRating": 87,
-    "value": 228000,
+    "peakRating": 89,
+    "value": 750000,
     "intlCaps": 0,
-    "rating": 87,
+    "rating": 89,
     "appearances": 156,
-    "tries": 40
+    "tries": 40,
+    "dateOfBirth": "1999-02-16",
+    "birthYear": 1999
   },
   {
     "id": "wakefield-cur-mason-lino",
@@ -3365,7 +3705,9 @@
     "intlCaps": 3,
     "rating": 88,
     "appearances": 99,
-    "tries": 13
+    "tries": 13,
+    "dateOfBirth": "1994-02-04",
+    "birthYear": 1994
   },
   {
     "id": "wakefield-cur-mike-mcmeeken",
@@ -3381,7 +3723,9 @@
     "intlCaps": 4,
     "rating": 88,
     "appearances": 301,
-    "tries": 63
+    "tries": 63,
+    "dateOfBirth": "1994-05-10",
+    "birthYear": 1994
   },
   {
     "id": "wakefield-cur-tyson-smoothy",
@@ -3395,7 +3739,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "dateOfBirth": "1999-07-07",
+    "birthYear": 1999
   },
   {
     "id": "wakefield-cur-ky-rodwell",
@@ -3409,7 +3755,9 @@
     "peakRating": 85,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 85
+    "rating": 85,
+    "dateOfBirth": "1999-06-21",
+    "birthYear": 1999
   },
   {
     "id": "wakefield-cur-seth-nikotemo",
@@ -3423,7 +3771,9 @@
     "peakRating": 82,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "dateOfBirth": "2004-03-29",
+    "birthYear": 2004
   },
   {
     "id": "wakefield-cur-matty-storton",
@@ -3439,7 +3789,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 122,
-    "tries": 11
+    "tries": 11,
+    "dateOfBirth": "1999-03-10",
+    "birthYear": 1999
   },
   {
     "id": "wakefield-cur-jazz-tevaga",
@@ -3453,7 +3805,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 10,
-    "rating": 83
+    "rating": 83,
+    "dateOfBirth": "1995-09-04",
+    "birthYear": 1995
   },
   {
     "id": "wakefield-cur-jay-pitts",
@@ -3469,7 +3823,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 215,
-    "tries": 22
+    "tries": 22,
+    "dateOfBirth": "1989-12-09",
+    "birthYear": 1989
   },
   {
     "id": "wakefield-cur-caleb-hamlin-uele",
@@ -3483,7 +3839,9 @@
     "peakRating": 87,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 87
+    "rating": 87,
+    "dateOfBirth": "1999-10-02",
+    "birthYear": 1999
   },
   {
     "id": "wakefield-cur-caius-faatili",
@@ -3497,7 +3855,9 @@
     "peakRating": 84,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 84
+    "rating": 84,
+    "dateOfBirth": "2001-11-09",
+    "birthYear": 2001
   },
   {
     "id": "wakefield-cur-harvey-smith",
@@ -3525,7 +3885,9 @@
     "peakRating": 84,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 84
+    "rating": 84,
+    "dateOfBirth": "2000-06-14",
+    "birthYear": 2000
   },
   {
     "id": "wakefield-cur-lachlan-walmsley",
@@ -3541,7 +3903,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 128,
-    "tries": 125
+    "tries": 125,
+    "dateOfBirth": "1998-06-12",
+    "birthYear": 1998
   },
   {
     "id": "wakefield-cur-jack-sinfield",
@@ -3557,7 +3921,9 @@
     "intlCaps": 0,
     "rating": 81,
     "appearances": 37,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "2004-09-21",
+    "birthYear": 2004
   },
   {
     "id": "wakefield-cur-jayden-myers",
@@ -3573,7 +3939,9 @@
     "intlCaps": 0,
     "rating": 78,
     "appearances": 16,
-    "tries": 8
+    "tries": 8,
+    "dateOfBirth": "2003-04-13",
+    "birthYear": 2003
   },
   {
     "id": "wakefield-cur-thomas-doyle",
@@ -3587,7 +3955,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "dateOfBirth": "1999-06-29",
+    "birthYear": 1999
   },
   {
     "id": "wakefield-cur-josh-rourke",
@@ -3603,7 +3973,9 @@
     "intlCaps": 0,
     "rating": 81,
     "appearances": 59,
-    "tries": 26
+    "tries": 26,
+    "dateOfBirth": "1999-10-27",
+    "birthYear": 1999
   },
   {
     "id": "wakefield-cur-tray-lolesio",
@@ -3647,7 +4019,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "dateOfBirth": "1999-04-21",
+    "birthYear": 1999
   },
   {
     "id": "castleford-cur-semi-valemei",
@@ -3661,7 +4035,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 5,
-    "rating": 82
+    "rating": 82,
+    "dateOfBirth": "1999-01-20",
+    "birthYear": 1999
   },
   {
     "id": "castleford-cur-zac-cini",
@@ -3675,7 +4051,9 @@
     "peakRating": 84,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 84
+    "rating": 84,
+    "dateOfBirth": "2000-05-24",
+    "birthYear": 2000
   },
   {
     "id": "castleford-cur-darnell-mcintosh",
@@ -3691,7 +4069,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 195,
-    "tries": 83
+    "tries": 83,
+    "dateOfBirth": "1997-07-05",
+    "birthYear": 1997
   },
   {
     "id": "castleford-cur-mikaele-ravalawa",
@@ -3707,7 +4087,9 @@
     "intlCaps": 1,
     "rating": 83,
     "appearances": 110,
-    "tries": 69
+    "tries": 69,
+    "dateOfBirth": "1997-11-09",
+    "birthYear": 1997
   },
   {
     "id": "castleford-cur-daejarn-asi",
@@ -3723,7 +4105,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 82,
-    "tries": 12
+    "tries": 12,
+    "dateOfBirth": "2000-08-15",
+    "birthYear": 2000
   },
   {
     "id": "castleford-cur-tom-weaver",
@@ -3737,7 +4121,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "dateOfBirth": "2003-02-20",
+    "birthYear": 2003
   },
   {
     "id": "castleford-cur-renouf-atoni",
@@ -3753,7 +4139,9 @@
     "intlCaps": 2,
     "rating": 84,
     "appearances": 121,
-    "tries": 15
+    "tries": 15,
+    "dateOfBirth": "1995-06-25",
+    "birthYear": 1995
   },
   {
     "id": "castleford-cur-liam-hood",
@@ -3769,7 +4157,9 @@
     "intlCaps": 7,
     "rating": 86,
     "appearances": 122,
-    "tries": 24
+    "tries": 24,
+    "dateOfBirth": "1992-01-06",
+    "birthYear": 1992
   },
   {
     "id": "castleford-cur-george-lawler",
@@ -3785,7 +4175,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 168,
-    "tries": 16
+    "tries": 16,
+    "dateOfBirth": "1995-09-01",
+    "birthYear": 1995
   },
   {
     "id": "castleford-cur-jordan-lane",
@@ -3801,7 +4193,8 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 163,
-    "tries": 17
+    "tries": 17,
+    "birthYear": 1997
   },
   {
     "id": "castleford-cur-alex-mellor",
@@ -3819,7 +4212,9 @@
     "appearances": 199,
     "tries": 37,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1994-09-24",
+    "birthYear": 1994
   },
   {
     "id": "castleford-cur-joe-stimson",
@@ -3833,7 +4228,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "dateOfBirth": "1995-12-02",
+    "birthYear": 1995
   },
   {
     "id": "castleford-cur-brock-greacen",
@@ -3847,7 +4244,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "dateOfBirth": "2002-06-18",
+    "birthYear": 2002
   },
   {
     "id": "castleford-cur-jack-ashworth",
@@ -3865,7 +4264,9 @@
     "appearances": 111,
     "tries": 7,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1995-07-03",
+    "birthYear": 1995
   },
   {
     "id": "castleford-cur-joe-westerman",
@@ -3881,7 +4282,9 @@
     "intlCaps": 2,
     "rating": 82,
     "appearances": 395,
-    "tries": 87
+    "tries": 87,
+    "dateOfBirth": "1989-11-15",
+    "birthYear": 1989
   },
   {
     "id": "castleford-cur-chris-atkin",
@@ -3897,7 +4300,9 @@
     "intlCaps": 0,
     "rating": 86,
     "appearances": 156,
-    "tries": 23
+    "tries": 23,
+    "dateOfBirth": "1993-02-07",
+    "birthYear": 1993
   },
   {
     "id": "castleford-cur-fletcher-rooney",
@@ -3913,7 +4318,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 15,
-    "tries": 4
+    "tries": 4,
+    "dateOfBirth": "2006-01-12",
+    "birthYear": 2006
   },
   {
     "id": "castleford-cur-brad-singleton",
@@ -3931,7 +4338,9 @@
     "appearances": 321,
     "tries": 30,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1992-10-29",
+    "birthYear": 1992
   },
   {
     "id": "castleford-cur-aiden-doolan",
@@ -3962,7 +4371,9 @@
     "intlCaps": 1,
     "rating": 76,
     "appearances": 69,
-    "tries": 41
+    "tries": 41,
+    "dateOfBirth": "2000-05-30",
+    "birthYear": 2000
   },
   {
     "id": "castleford-cur-jason-qareqare",
@@ -3978,7 +4389,9 @@
     "intlCaps": 2,
     "rating": 86,
     "appearances": 53,
-    "tries": 31
+    "tries": 31,
+    "dateOfBirth": "2004-01-26",
+    "birthYear": 2004
   },
   {
     "id": "castleford-cur-jimmy-beckett",
@@ -3993,7 +4406,9 @@
     "value": 135000,
     "intlCaps": 0,
     "rating": 76,
-    "appearances": 3
+    "appearances": 3,
+    "dateOfBirth": "1999-08-29",
+    "birthYear": 1999
   },
   {
     "id": "castleford-cur-jenson-windley",
@@ -4055,7 +4470,9 @@
     "intlCaps": 1,
     "rating": 83,
     "appearances": 194,
-    "tries": 106
+    "tries": 106,
+    "dateOfBirth": "1993-08-26",
+    "birthYear": 1993
   },
   {
     "id": "huddersfield-cur-adam-swift",
@@ -4073,7 +4490,9 @@
     "appearances": 203,
     "tries": 141,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1993-02-20",
+    "birthYear": 1993
   },
   {
     "id": "huddersfield-cur-jacob-gagai",
@@ -4087,7 +4506,9 @@
     "peakRating": 82,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "dateOfBirth": "1995-12-20",
+    "birthYear": 1995
   },
   {
     "id": "huddersfield-cur-taane-milne",
@@ -4101,7 +4522,9 @@
     "peakRating": 86,
     "value": 610000,
     "intlCaps": 5,
-    "rating": 86
+    "rating": 86,
+    "dateOfBirth": "1995-05-19",
+    "birthYear": 1995
   },
   {
     "id": "huddersfield-cur-sam-halsall",
@@ -4115,7 +4538,9 @@
     "peakRating": 82,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "dateOfBirth": "2001-08-18",
+    "birthYear": 2001
   },
   {
     "id": "huddersfield-cur-tui-lolohea",
@@ -4131,7 +4556,9 @@
     "intlCaps": 12,
     "rating": 89,
     "appearances": 153,
-    "tries": 38
+    "tries": 38,
+    "dateOfBirth": "1995-01-23",
+    "birthYear": 1995
   },
   {
     "id": "huddersfield-cur-adam-clune",
@@ -4147,7 +4574,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 34,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "1995-06-08",
+    "birthYear": 1995
   },
   {
     "id": "huddersfield-cur-tristan-powell",
@@ -4162,7 +4591,9 @@
     "value": 135000,
     "intlCaps": 0,
     "rating": 76,
-    "appearances": 15
+    "appearances": 15,
+    "dateOfBirth": "2001-02-09",
+    "birthYear": 2001
   },
   {
     "id": "huddersfield-cur-zac-woolford",
@@ -4176,7 +4607,9 @@
     "peakRating": 87,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 87
+    "rating": 87,
+    "dateOfBirth": "1996-08-09",
+    "birthYear": 1996
   },
   {
     "id": "huddersfield-cur-thomas-burgess",
@@ -4187,11 +4620,11 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2013–Present",
     "category": "current",
-    "peakRating": 86,
-    "value": 182000,
+    "peakRating": 90,
+    "value": 250000,
     "intlCaps": 14,
-    "rating": 86,
-    "dateOfBirth": "1992-11-21",
+    "rating": 90,
+    "dateOfBirth": "1992-04-21",
     "birthYear": 1992
   },
   {
@@ -4222,7 +4655,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 100,
-    "tries": 14
+    "tries": 14,
+    "dateOfBirth": "1999-04-29",
+    "birthYear": 1999
   },
   {
     "id": "huddersfield-cur-harry-rushton",
@@ -4238,7 +4673,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 61,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2001-11-13",
+    "birthYear": 2001
   },
   {
     "id": "huddersfield-cur-fenton-rogers",
@@ -4254,7 +4691,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 25,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "2003-08-04",
+    "birthYear": 2003
   },
   {
     "id": "huddersfield-cur-matty-english",
@@ -4270,7 +4709,9 @@
     "intlCaps": 0,
     "rating": 89,
     "appearances": 143,
-    "tries": 9
+    "tries": 9,
+    "dateOfBirth": "1997-11-14",
+    "birthYear": 1997
   },
   {
     "id": "huddersfield-cur-george-king",
@@ -4286,7 +4727,9 @@
     "intlCaps": 7,
     "rating": 87,
     "appearances": 221,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "1995-02-24",
+    "birthYear": 1995
   },
   {
     "id": "huddersfield-cur-joe-greenwood",
@@ -4304,7 +4747,9 @@
     "appearances": 200,
     "tries": 47,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1993-04-02",
+    "birthYear": 1993
   },
   {
     "id": "huddersfield-cur-kieran-rush",
@@ -4320,7 +4765,9 @@
     "intlCaps": 0,
     "rating": 80,
     "appearances": 34,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "2002-09-03",
+    "birthYear": 2002
   },
   {
     "id": "huddersfield-cur-liam-sutcliffe",
@@ -4338,7 +4785,9 @@
     "appearances": 271,
     "tries": 84,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1994-11-25",
+    "birthYear": 1994
   },
   {
     "id": "huddersfield-cur-mathieu-cozza",
@@ -4354,7 +4803,9 @@
     "intlCaps": 1,
     "rating": 81,
     "appearances": 67,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "2000-04-12",
+    "birthYear": 2000
   },
   {
     "id": "huddersfield-cur-george-flanagan-jr",
@@ -4368,7 +4819,9 @@
     "peakRating": 83,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "dateOfBirth": "2004-12-04",
+    "birthYear": 2004
   },
   {
     "id": "huddersfield-cur-jack-billington",
@@ -4398,7 +4851,9 @@
     "intlCaps": 0,
     "rating": 76,
     "appearances": 28,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "2001-07-23",
+    "birthYear": 2001
   },
   {
     "id": "huddersfield-cur-connor-carr",
@@ -4454,7 +4909,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "dateOfBirth": "2000-10-04",
+    "birthYear": 2000
   },
   {
     "id": "catalans-cur-tommy-makinson",
@@ -4472,7 +4929,9 @@
     "appearances": 381,
     "tries": 222,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1991-10-10",
+    "birthYear": 1991
   },
   {
     "id": "catalans-cur-nick-cotric",
@@ -4486,7 +4945,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 11,
-    "rating": 83
+    "rating": 83,
+    "dateOfBirth": "1998-11-18",
+    "birthYear": 1998
   },
   {
     "id": "catalans-cur-solomona-faataape",
@@ -4502,7 +4963,9 @@
     "intlCaps": 0,
     "rating": 76,
     "appearances": 34,
-    "tries": 12
+    "tries": 12,
+    "dateOfBirth": "2000-12-25",
+    "birthYear": 2000
   },
   {
     "id": "catalans-cur-manase-kaho",
@@ -4530,7 +4993,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "dateOfBirth": "2001-03-01",
+    "birthYear": 2001
   },
   {
     "id": "catalans-cur-lewis-dodd",
@@ -4548,7 +5013,9 @@
     "appearances": 9,
     "tries": 4,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "2002-01-27",
+    "birthYear": 2002
   },
   {
     "id": "catalans-cur-chris-satae",
@@ -4564,7 +5031,9 @@
     "intlCaps": 8,
     "rating": 82,
     "appearances": 146,
-    "tries": 18
+    "tries": 18,
+    "dateOfBirth": "1992-10-22",
+    "birthYear": 1992
   },
   {
     "id": "catalans-cur-alrix-da-costa",
@@ -4580,7 +5049,9 @@
     "intlCaps": 5,
     "rating": 85,
     "appearances": 153,
-    "tries": 11
+    "tries": 11,
+    "dateOfBirth": "1997-10-02",
+    "birthYear": 1997
   },
   {
     "id": "catalans-cur-julian-bousquet",
@@ -4598,7 +5069,9 @@
     "appearances": 272,
     "tries": 31,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1991-07-08",
+    "birthYear": 1991
   },
   {
     "id": "catalans-cur-franck-maria",
@@ -4614,7 +5087,9 @@
     "intlCaps": 10,
     "rating": 81,
     "appearances": 25,
-    "tries": 9
+    "tries": 9,
+    "dateOfBirth": "1997-07-31",
+    "birthYear": 1997
   },
   {
     "id": "catalans-cur-ben-condon",
@@ -4628,7 +5103,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "dateOfBirth": "2000-07-13",
+    "birthYear": 2000
   },
   {
     "id": "catalans-cur-benjamin-garcia",
@@ -4639,12 +5116,14 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2011–Present",
     "category": "current",
-    "peakRating": 88,
-    "value": 253000,
+    "peakRating": 89,
+    "value": 750000,
     "intlCaps": 28,
-    "rating": 88,
+    "rating": 89,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1993-04-05",
+    "birthYear": 1993
   },
   {
     "id": "catalans-cur-phoenix-laulu-togagae",
@@ -4660,7 +5139,9 @@
     "intlCaps": 8,
     "rating": 77,
     "appearances": 84,
-    "tries": 38
+    "tries": 38,
+    "dateOfBirth": "2003-04-16",
+    "birthYear": 2003
   },
   {
     "id": "catalans-cur-iszac-faasuamaleaui",
@@ -4674,7 +5155,9 @@
     "peakRating": 76,
     "value": 135000,
     "intlCaps": 0,
-    "rating": 76
+    "rating": 76,
+    "dateOfBirth": "2001-12-01",
+    "birthYear": 2001
   },
   {
     "id": "catalans-cur-josh-allen",
@@ -4748,7 +5231,9 @@
     "intlCaps": 4,
     "rating": 84,
     "appearances": 66,
-    "tries": 24
+    "tries": 24,
+    "dateOfBirth": "1999-02-03",
+    "birthYear": 1999
   },
   {
     "id": "catalans-cur-josh-simm",
@@ -4764,7 +5249,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 87,
-    "tries": 35
+    "tries": 35,
+    "dateOfBirth": "2001-02-27",
+    "birthYear": 2001
   },
   {
     "id": "catalans-cur-guillermo-aispuro-bichet",
@@ -4780,7 +5267,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 31,
-    "tries": 7
+    "tries": 7,
+    "dateOfBirth": "2005-07-12",
+    "birthYear": 2005
   },
   {
     "id": "catalans-cur-lenny-marc",
@@ -4810,7 +5299,9 @@
     "intlCaps": 0,
     "rating": 76,
     "appearances": 4,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2001-07-07",
+    "birthYear": 2001
   },
   {
     "id": "york-cur-toa-mata-afa",
@@ -4842,7 +5333,9 @@
     "appearances": 215,
     "tries": 126,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1988-08-24",
+    "birthYear": 1988
   },
   {
     "id": "york-cur-jordan-lipp",
@@ -4902,7 +5395,9 @@
     "intlCaps": 0,
     "rating": 87,
     "appearances": 10,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "1997-03-11",
+    "birthYear": 1997
   },
   {
     "id": "york-cur-liam-harris",
@@ -4959,12 +5454,14 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–Present",
     "category": "current",
-    "peakRating": 88,
-    "value": 248000,
+    "peakRating": 89,
+    "value": 750000,
     "intlCaps": 0,
-    "rating": 88,
+    "rating": 89,
     "appearances": 79,
-    "tries": 13
+    "tries": 13,
+    "dateOfBirth": "1991-04-23",
+    "birthYear": 1991
   },
   {
     "id": "york-cur-josh-griffin",
@@ -4980,7 +5477,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 235,
-    "tries": 85
+    "tries": 85,
+    "dateOfBirth": "1990-05-09",
+    "birthYear": 1990
   },
   {
     "id": "york-cur-jesse-dee",
@@ -5026,7 +5525,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 72,
-    "tries": 18
+    "tries": 18,
+    "dateOfBirth": "2003-10-01",
+    "birthYear": 2003
   },
   {
     "id": "york-cur-xavier-va-a",
@@ -5042,7 +5543,9 @@
     "intlCaps": 0,
     "rating": 76,
     "appearances": 15,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2003-11-17",
+    "birthYear": 2003
   },
   {
     "id": "york-cur-justin-sangare",
@@ -5058,7 +5561,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 175,
-    "tries": 32
+    "tries": 32,
+    "dateOfBirth": "1998-03-07",
+    "birthYear": 1998
   },
   {
     "id": "york-cur-kieran-hudson",
@@ -5089,7 +5594,8 @@
     "intlCaps": 0,
     "rating": 81,
     "appearances": 108,
-    "tries": 14
+    "tries": 14,
+    "birthYear": 1996
   },
   {
     "id": "york-cur-oli-field",
@@ -5119,7 +5625,9 @@
     "intlCaps": 0,
     "rating": 77,
     "appearances": 167,
-    "tries": 39
+    "tries": 39,
+    "dateOfBirth": "1999-01-26",
+    "birthYear": 1999
   },
   {
     "id": "york-cur-john-sagaga",
@@ -5151,7 +5659,9 @@
     "appearances": 84,
     "tries": 21,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "2002-12-01",
+    "birthYear": 2002
   },
   {
     "id": "york-cur-will-dagger",
@@ -5167,7 +5677,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 51,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "1999-02-21",
+    "birthYear": 1999
   },
   {
     "id": "york-cur-jack-smith",
@@ -5211,7 +5723,9 @@
     "intlCaps": 0,
     "rating": 79,
     "appearances": 52,
-    "tries": 4
+    "tries": 4,
+    "dateOfBirth": "2001-06-25",
+    "birthYear": 2001
   },
   {
     "id": "toulouse-cur-olly-ashall-bott",
@@ -5227,7 +5741,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 97,
-    "tries": 54
+    "tries": 54,
+    "dateOfBirth": "1997-11-24",
+    "birthYear": 1997
   },
   {
     "id": "toulouse-cur-paul-ulberg",
@@ -5243,7 +5759,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 104,
-    "tries": 56
+    "tries": 56,
+    "dateOfBirth": "1995-11-14",
+    "birthYear": 1995
   },
   {
     "id": "toulouse-cur-reubenn-rennie",
@@ -5259,7 +5777,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 57,
-    "tries": 29
+    "tries": 29,
+    "dateOfBirth": "1995-10-22",
+    "birthYear": 1995
   },
   {
     "id": "toulouse-cur-paul-marcon",
@@ -5275,7 +5795,9 @@
     "intlCaps": 0,
     "rating": 77,
     "appearances": 16,
-    "tries": 5
+    "tries": 5,
+    "dateOfBirth": "1995-07-10",
+    "birthYear": 1995
   },
   {
     "id": "toulouse-cur-benjamin-laguerre",
@@ -5291,7 +5813,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 61,
-    "tries": 41
+    "tries": 41,
+    "dateOfBirth": "2001-09-13",
+    "birthYear": 2001
   },
   {
     "id": "toulouse-cur-thomas-lacans",
@@ -5321,7 +5845,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 147,
-    "tries": 16
+    "tries": 16,
+    "dateOfBirth": "1995-10-26",
+    "birthYear": 1995
   },
   {
     "id": "toulouse-cur-lambert-belmas",
@@ -5337,7 +5863,9 @@
     "intlCaps": 0,
     "rating": 77,
     "appearances": 58,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "1997-08-11",
+    "birthYear": 1997
   },
   {
     "id": "toulouse-cur-brendan-hands",
@@ -5351,7 +5879,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "dateOfBirth": "1999-02-12",
+    "birthYear": 1999
   },
   {
     "id": "toulouse-cur-james-roumanos",
@@ -5365,7 +5895,9 @@
     "peakRating": 77,
     "value": 170000,
     "intlCaps": 0,
-    "rating": 77
+    "rating": 77,
+    "dateOfBirth": "1999-08-10",
+    "birthYear": 1999
   },
   {
     "id": "toulouse-cur-maxime-stefani",
@@ -5381,7 +5913,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 72,
-    "tries": 32
+    "tries": 32,
+    "dateOfBirth": "1998-03-10",
+    "birthYear": 1998
   },
   {
     "id": "toulouse-cur-mathieu-jussaume",
@@ -5397,7 +5931,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 24,
-    "tries": 10
+    "tries": 10,
+    "dateOfBirth": "1999-05-17",
+    "birthYear": 1999
   },
   {
     "id": "toulouse-cur-anthony-marion",
@@ -5413,7 +5949,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 33,
-    "tries": 2
+    "tries": 2,
+    "dateOfBirth": "1994-01-12",
+    "birthYear": 1994
   },
   {
     "id": "toulouse-cur-calum-gahan",
@@ -5429,7 +5967,9 @@
     "intlCaps": 0,
     "rating": 85,
     "appearances": 62,
-    "tries": 9
+    "tries": 9,
+    "dateOfBirth": "1997-04-23",
+    "birthYear": 1997
   },
   {
     "id": "toulouse-cur-joe-cator",
@@ -5445,7 +5985,9 @@
     "intlCaps": 0,
     "rating": 82,
     "appearances": 145,
-    "tries": 20
+    "tries": 20,
+    "dateOfBirth": "1998-06-15",
+    "birthYear": 1998
   },
   {
     "id": "toulouse-cur-joe-bretherton",
@@ -5461,7 +6003,9 @@
     "intlCaps": 0,
     "rating": 83,
     "appearances": 128,
-    "tries": 32
+    "tries": 32,
+    "dateOfBirth": "1995-10-05",
+    "birthYear": 1995
   },
   {
     "id": "toulouse-cur-rob-butler",
@@ -5477,7 +6021,9 @@
     "intlCaps": 0,
     "rating": 77,
     "appearances": 78,
-    "tries": 2
+    "tries": 2,
+    "dateOfBirth": "1998-05-15",
+    "birthYear": 1998
   },
   {
     "id": "toulouse-cur-baptiste-rodriguez",
@@ -5520,7 +6066,8 @@
     "value": 170000,
     "intlCaps": 0,
     "rating": 81,
-    "appearances": 12
+    "appearances": 12,
+    "birthYear": 2003
   },
   {
     "id": "toulouse-cur-ellis-gillam",
@@ -5550,7 +6097,9 @@
     "intlCaps": 0,
     "rating": 76,
     "appearances": 3,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "2002-04-05",
+    "birthYear": 2002
   },
   {
     "id": "toulouse-cur-tyler-dupree",
@@ -5568,7 +6117,9 @@
     "appearances": 137,
     "tries": 25,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "2000-02-08",
+    "birthYear": 2000
   },
   {
     "id": "toulouse-cur-pierre-jean-lima",
@@ -5598,7 +6149,9 @@
     "intlCaps": 0,
     "rating": 76,
     "appearances": 33,
-    "tries": 12
+    "tries": 12,
+    "dateOfBirth": "1998-08-06",
+    "birthYear": 1998
   },
   {
     "id": "toulouse-cur-trevor-chiffolleau",
@@ -5668,7 +6221,9 @@
     "peakRating": 83,
     "value": 750000,
     "intlCaps": 0,
-    "rating": 83
+    "rating": 83,
+    "dateOfBirth": "1992-01-30",
+    "birthYear": 1992
   },
   {
     "id": "salford-cur-joe-shorrocks",
@@ -5686,7 +6241,9 @@
     "appearances": 136,
     "tries": 7,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1999-11-25",
+    "birthYear": 1999
   },
   {
     "id": "salford-cur-tim-bergin",
@@ -5700,7 +6257,9 @@
     "peakRating": 82,
     "value": 610000,
     "intlCaps": 0,
-    "rating": 82
+    "rating": 82,
+    "dateOfBirth": "1985-07-29",
+    "birthYear": 1985
   },
   {
     "id": "salford-cur-logan-ewington",
@@ -5744,7 +6303,9 @@
     "intlCaps": 0,
     "rating": 84,
     "appearances": 67,
-    "tries": 11
+    "tries": 11,
+    "dateOfBirth": "1996-03-13",
+    "birthYear": 1996
   },
   {
     "id": "salford-cur-mitch-clark",
@@ -5874,7 +6435,9 @@
     "intlCaps": 0,
     "rating": 85,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1996-06-17",
+    "birthYear": 1996
   },
   {
     "id": "catalans-cur-lucas-albert",
@@ -5890,7 +6453,9 @@
     "rating": 84,
     "intlCaps": 6,
     "appearances": 66,
-    "tries": 8
+    "tries": 8,
+    "dateOfBirth": "1998-07-04",
+    "birthYear": 1998
   },
   {
     "id": "wakefield-cur-matthew-ashton",
@@ -5922,7 +6487,9 @@
     "rating": 76,
     "intlCaps": 3,
     "appearances": 30,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "1998-04-11",
+    "birthYear": 1998
   },
   {
     "id": "wakefield-cur-harry-bowes",
@@ -5937,7 +6504,9 @@
     "value": 135000,
     "rating": 76,
     "intlCaps": 0,
-    "appearances": 31
+    "appearances": 31,
+    "dateOfBirth": "2001-09-07",
+    "birthYear": 2001
   },
   {
     "id": "london-cur-robert-butler",
@@ -5969,7 +6538,9 @@
     "rating": 76,
     "intlCaps": 6,
     "appearances": 14,
-    "tries": 2
+    "tries": 2,
+    "dateOfBirth": "1998-06-15",
+    "birthYear": 1998
   },
   {
     "id": "catalans-cur-joe-chan",
@@ -6001,7 +6572,9 @@
     "rating": 82,
     "intlCaps": 0,
     "appearances": 57,
-    "tries": 4
+    "tries": 4,
+    "dateOfBirth": "2000-06-15",
+    "birthYear": 2000
   },
   {
     "id": "hull-fc-cur-jake-clifford",
@@ -6012,12 +6585,14 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2023–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 158000,
-    "rating": 84,
+    "peakRating": 90,
+    "value": 170000,
+    "rating": 90,
     "intlCaps": 0,
     "appearances": 25,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "1998-01-02",
+    "birthYear": 1998
   },
   {
     "id": "salford-cur-nathan-connell",
@@ -6065,7 +6640,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 38,
-    "tries": 4
+    "tries": 4,
+    "dateOfBirth": "2000-12-21",
+    "birthYear": 2000
   },
   {
     "id": "catalans-cur-leo-darrelatour",
@@ -6081,7 +6658,9 @@
     "rating": 79,
     "intlCaps": 0,
     "appearances": 14,
-    "tries": 8
+    "tries": 8,
+    "dateOfBirth": "2000-09-08",
+    "birthYear": 2000
   },
   {
     "id": "london-cur-sam-davis",
@@ -6097,7 +6676,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 34,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "1998-11-11",
+    "birthYear": 1998
   },
   {
     "id": "huddersfield-cur-thomas-deakin",
@@ -6127,7 +6708,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 14,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2001-08-10",
+    "birthYear": 2001
   },
   {
     "id": "wigan-cur-jacob-douglas",
@@ -6143,7 +6726,9 @@
     "rating": 80,
     "intlCaps": 0,
     "appearances": 12,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "2004-03-03",
+    "birthYear": 2004
   },
   {
     "id": "castleford-cur-elie-el-zakhem",
@@ -6175,7 +6760,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 11,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "1998-06-05",
+    "birthYear": 1998
   },
   {
     "id": "leeds-cur-morgan-gannon",
@@ -6191,7 +6778,9 @@
     "rating": 87,
     "intlCaps": 0,
     "appearances": 68,
-    "tries": 12
+    "tries": 12,
+    "dateOfBirth": "2003-12-02",
+    "birthYear": 2003
   },
   {
     "id": "castleford-cur-george-hill",
@@ -6206,7 +6795,9 @@
     "value": 135000,
     "rating": 83,
     "intlCaps": 0,
-    "appearances": 28
+    "appearances": 28,
+    "dateOfBirth": "2004-07-29",
+    "birthYear": 2004
   },
   {
     "id": "castleford-cur-daniel-hindmarsh-takyi",
@@ -6220,7 +6811,9 @@
     "peakRating": 76,
     "value": 135000,
     "rating": 76,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "dateOfBirth": "1998-10-08",
+    "birthYear": 1998
   },
   {
     "id": "castleford-cur-tex-hoy",
@@ -6236,7 +6829,9 @@
     "rating": 88,
     "intlCaps": 0,
     "appearances": 55,
-    "tries": 15
+    "tries": 15,
+    "dateOfBirth": "1999-11-04",
+    "birthYear": 1999
   },
   {
     "id": "leeds-cur-corey-johnson",
@@ -6268,7 +6863,9 @@
     "rating": 81,
     "intlCaps": 0,
     "appearances": 52,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "1999-02-20",
+    "birthYear": 1999
   },
   {
     "id": "london-cur-jacob-jones",
@@ -6300,7 +6897,9 @@
     "rating": 80,
     "intlCaps": 0,
     "appearances": 24,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "1999-06-08",
+    "birthYear": 1999
   },
   {
     "id": "london-cur-oliver-leyland",
@@ -6316,7 +6915,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 32,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2001-05-17",
+    "birthYear": 2001
   },
   {
     "id": "wakefield-cur-ellis-longstaff",
@@ -6332,7 +6933,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 31,
-    "tries": 8
+    "tries": 8,
+    "dateOfBirth": "2002-07-05",
+    "birthYear": 2002
   },
   {
     "id": "hull-fc-cur-joe-lovodua",
@@ -6348,7 +6951,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 42,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "1998-03-18",
+    "birthYear": 1998
   },
   {
     "id": "castleford-cur-krystian-mapapalangi",
@@ -6364,7 +6969,9 @@
     "rating": 82,
     "intlCaps": 0,
     "appearances": 11,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "2002-11-04",
+    "birthYear": 2002
   },
   {
     "id": "castleford-cur-bradley-martin",
@@ -6396,7 +7003,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 18,
-    "tries": 2
+    "tries": 2,
+    "dateOfBirth": "1999-05-15",
+    "birthYear": 1999
   },
   {
     "id": "wakefield-cur-thomas-mikaele",
@@ -6412,7 +7021,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 24,
-    "tries": 4
+    "tries": 4,
+    "dateOfBirth": "1998-01-11",
+    "birthYear": 1998
   },
   {
     "id": "salford-cur-kai-morgan",
@@ -6442,7 +7053,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 15,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "1998-01-15",
+    "birthYear": 1998
   },
   {
     "id": "castleford-cur-muizz-mustapha",
@@ -6458,7 +7071,9 @@
     "rating": 85,
     "intlCaps": 0,
     "appearances": 61,
-    "tries": 4
+    "tries": 4,
+    "dateOfBirth": "2000-04-03",
+    "birthYear": 2000
   },
   {
     "id": "huddersfield-cur-aidan-mcgowan",
@@ -6490,7 +7105,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 13,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "1999-09-16",
+    "birthYear": 1999
   },
   {
     "id": "castleford-cur-sylvester-namo",
@@ -6506,7 +7123,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 20,
-    "tries": 2
+    "tries": 2,
+    "dateOfBirth": "2000-08-26",
+    "birthYear": 2000
   },
   {
     "id": "wakefield-cur-matty-nicholson",
@@ -6522,7 +7141,9 @@
     "rating": 88,
     "intlCaps": 0,
     "appearances": 47,
-    "tries": 18
+    "tries": 18,
+    "dateOfBirth": "2003-07-18",
+    "birthYear": 2003
   },
   {
     "id": "leigh-cur-kai-o-donnell",
@@ -6540,7 +7161,9 @@
     "appearances": 49,
     "tries": 14,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1999-02-21",
+    "birthYear": 1999
   },
   {
     "id": "wigan-cur-bradley-o-neill",
@@ -6572,7 +7195,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 27,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "1999-05-08",
+    "birthYear": 1999
   },
   {
     "id": "hull-kr-cur-will-oakes",
@@ -6583,12 +7208,14 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–Present",
     "category": "current",
-    "peakRating": 82,
-    "value": 610000,
-    "rating": 82,
+    "peakRating": 80,
+    "value": 100000,
+    "rating": 80,
     "intlCaps": 6,
     "appearances": 12,
-    "tries": 5
+    "tries": 5,
+    "dateOfBirth": "1999-02-27",
+    "birthYear": 1999
   },
   {
     "id": "castleford-cur-lewis-peachey",
@@ -6603,7 +7230,9 @@
     "value": 135000,
     "rating": 76,
     "intlCaps": 0,
-    "appearances": 11
+    "appearances": 11,
+    "dateOfBirth": "2001-03-25",
+    "birthYear": 2001
   },
   {
     "id": "wigan-cur-kai-pearce-paul",
@@ -6621,7 +7250,9 @@
     "appearances": 59,
     "tries": 7,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "2001-02-19",
+    "birthYear": 2001
   },
   {
     "id": "castleford-cur-cain-robb",
@@ -6636,7 +7267,9 @@
     "value": 135000,
     "rating": 80,
     "intlCaps": 0,
-    "appearances": 60
+    "appearances": 60,
+    "dateOfBirth": "2003-01-05",
+    "birthYear": 2003
   },
   {
     "id": "leeds-cur-luis-roberts",
@@ -6652,7 +7285,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 25,
-    "tries": 5
+    "tries": 5,
+    "dateOfBirth": "2002-03-24",
+    "birthYear": 2002
   },
   {
     "id": "salford-cur-ellis-robson",
@@ -6668,7 +7303,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 14,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "1998-09-14",
+    "birthYear": 1998
   },
   {
     "id": "catalans-cur-cesar-rouge",
@@ -6684,7 +7321,9 @@
     "rating": 78,
     "intlCaps": 0,
     "appearances": 55,
-    "tries": 6
+    "tries": 6,
+    "dateOfBirth": "2002-10-03",
+    "birthYear": 2002
   },
   {
     "id": "st-helens-cur-sam-royle",
@@ -6700,7 +7339,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 30,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2000-02-12",
+    "birthYear": 2000
   },
   {
     "id": "leeds-cur-leon-ruan",
@@ -6716,7 +7357,9 @@
     "rating": 79,
     "intlCaps": 0,
     "appearances": 26,
-    "tries": 2
+    "tries": 2,
+    "dateOfBirth": "2003-05-14",
+    "birthYear": 2003
   },
   {
     "id": "huddersfield-cur-oliver-russell",
@@ -6732,7 +7375,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 119,
-    "tries": 7
+    "tries": 7,
+    "dateOfBirth": "1998-09-21",
+    "birthYear": 1998
   },
   {
     "id": "hull-kr-cur-brad-schneider",
@@ -6748,7 +7393,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 10,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2001-02-15",
+    "birthYear": 2001
   },
   {
     "id": "hull-fc-cur-cameron-scott",
@@ -6764,7 +7411,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 101,
-    "tries": 26
+    "tries": 26,
+    "dateOfBirth": "1999-10-07",
+    "birthYear": 1999
   },
   {
     "id": "castleford-cur-jeremiah-simbiken",
@@ -6780,7 +7429,9 @@
     "rating": 86,
     "intlCaps": 0,
     "appearances": 13,
-    "tries": 1
+    "tries": 1,
+    "dateOfBirth": "2000-08-17",
+    "birthYear": 2000
   },
   {
     "id": "hull-fc-cur-morgan-smith",
@@ -6814,7 +7465,9 @@
     "appearances": 105,
     "tries": 2,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "2000-11-07",
+    "birthYear": 2000
   },
   {
     "id": "london-cur-robbie-storey",
@@ -6830,7 +7483,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 16,
-    "tries": 4
+    "tries": 4,
+    "dateOfBirth": "1999-10-21",
+    "birthYear": 1999
   },
   {
     "id": "hull-kr-cur-matthew-storton",
@@ -6846,7 +7501,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 117,
-    "tries": 10
+    "tries": 10,
+    "dateOfBirth": "1999-03-10",
+    "birthYear": 1999
   },
   {
     "id": "castleford-cur-alex-sutcliffe",
@@ -6864,7 +7521,9 @@
     "appearances": 37,
     "tries": 4,
     "superLeagueWinner": false,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1999-01-21",
+    "birthYear": 1999
   },
   {
     "id": "wakefield-cur-rodrick-tai",
@@ -6896,7 +7555,8 @@
     "rating": 82,
     "intlCaps": 0,
     "appearances": 34,
-    "tries": 16
+    "tries": 16,
+    "birthYear": 2001
   },
   {
     "id": "wakefield-cur-jake-thewlis",
@@ -6912,7 +7572,9 @@
     "rating": 82,
     "intlCaps": 0,
     "appearances": 22,
-    "tries": 13
+    "tries": 13,
+    "dateOfBirth": "2005-05-24",
+    "birthYear": 2005
   },
   {
     "id": "leeds-cur-liam-tindall",
@@ -6928,7 +7590,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 23,
-    "tries": 2
+    "tries": 2,
+    "dateOfBirth": "2001-09-27",
+    "birthYear": 2001
   },
   {
     "id": "castleford-cur-jacob-trueman",
@@ -6944,7 +7608,9 @@
     "rating": 82,
     "intlCaps": 0,
     "appearances": 147,
-    "tries": 37
+    "tries": 37,
+    "dateOfBirth": "1999-02-16",
+    "birthYear": 1999
   },
   {
     "id": "leigh-cur-alec-tuitavake",
@@ -6976,7 +7642,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 13,
-    "tries": 4
+    "tries": 4,
+    "dateOfBirth": "1999-04-29",
+    "birthYear": 1999
   },
   {
     "id": "wakefield-cur-caleb-uele",
@@ -7008,7 +7676,9 @@
     "rating": 76,
     "intlCaps": 0,
     "appearances": 19,
-    "tries": 2
+    "tries": 2,
+    "dateOfBirth": "2005-02-12",
+    "birthYear": 2005
   },
   {
     "id": "wakefield-cur-brad-walker",
@@ -7040,7 +7710,9 @@
     "appearances": 98,
     "tries": 31,
     "superLeagueWinner": true,
-    "challengeCupWinner": false
+    "challengeCupWinner": false,
+    "dateOfBirth": "1999-08-08",
+    "birthYear": 1999
   },
   {
     "id": "castleford-cur-elliot-wallis",
@@ -7056,7 +7728,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 40,
-    "tries": 14
+    "tries": 14,
+    "dateOfBirth": "2000-05-10",
+    "birthYear": 2000
   },
   {
     "id": "salford-cur-toby-warren",
@@ -7118,7 +7792,9 @@
     "rating": 84,
     "intlCaps": 0,
     "appearances": 52,
-    "tries": 18
+    "tries": 18,
+    "dateOfBirth": "2001-10-04",
+    "birthYear": 2001
   },
   {
     "id": "huddersfield-cur-tanguy-zenon",
@@ -7134,7 +7810,9 @@
     "rating": 77,
     "intlCaps": 0,
     "appearances": 13,
-    "tries": 3
+    "tries": 3,
+    "dateOfBirth": "2002-05-08",
+    "birthYear": 2002
   },
   {
     "id": "bradford-cur-alfie-leake",
@@ -7162,7 +7840,9 @@
     "peakRating": 80,
     "rating": 80,
     "value": 90000,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "dateOfBirth": "2000-02-18",
+    "birthYear": 2000
   },
   {
     "id": "catalans-cur-bastien-ader",
@@ -7176,7 +7856,9 @@
     "peakRating": 82,
     "rating": 82,
     "value": 135000,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "dateOfBirth": "1991-06-06",
+    "birthYear": 1991
   },
   {
     "id": "huddersfield-cur-ben-houston",
@@ -7246,7 +7928,9 @@
     "peakRating": 79,
     "rating": 79,
     "value": 100000,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "dateOfBirth": "2006-10-22",
+    "birthYear": 2006
   },
   {
     "id": "wakefield-cur-finlay-aydin",
@@ -7288,6 +7972,20 @@
     "peakRating": 77,
     "rating": 77,
     "value": 73000,
+    "intlCaps": 0
+  },
+  {
+    "id": "bradford-cur-harvey-hallas",
+    "name": "Harvey Hallas",
+    "position": "LOOSE_FORWARD",
+    "club": "Bradford Bulls",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2024–Present",
+    "category": "current",
+    "peakRating": 79,
+    "rating": 79,
+    "value": 100000,
     "intlCaps": 0
   },
   {
@@ -7344,7 +8042,9 @@
     "peakRating": 83,
     "rating": 83,
     "value": 158000,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "dateOfBirth": "1996-05-14",
+    "birthYear": 1996
   },
   {
     "id": "hull-fc-cur-jacob-hookem",
@@ -7358,7 +8058,9 @@
     "peakRating": 79,
     "rating": 79,
     "value": 100000,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "dateOfBirth": "2002-10-04",
+    "birthYear": 2002
   },
   {
     "id": "bradford-cur-jamie-gill",
@@ -7388,7 +8090,9 @@
     "value": 280000,
     "intlCaps": 45,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "dateOfBirth": "1989-01-20",
+    "birthYear": 1989
   },
   {
     "id": "sheffield-cur-joe-brown",
@@ -7402,7 +8106,9 @@
     "peakRating": 82,
     "rating": 82,
     "value": 135000,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "dateOfBirth": "1999-01-14",
+    "birthYear": 1999
   },
   {
     "id": "york-cur-joe-porter",
@@ -7441,10 +8147,12 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–Present",
     "category": "current",
-    "peakRating": 86,
-    "rating": 86,
-    "value": 190000,
-    "intlCaps": 8
+    "peakRating": 90,
+    "rating": 90,
+    "value": 250000,
+    "intlCaps": 8,
+    "dateOfBirth": "1989-08-15",
+    "birthYear": 1989
   },
   {
     "id": "hull-kr-cur-josh-ralph",
@@ -7458,7 +8166,9 @@
     "peakRating": 82,
     "rating": 82,
     "value": 135000,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "dateOfBirth": "1997-07-21",
+    "birthYear": 1997
   },
   {
     "id": "wakefield-cur-jude-ferreira",
@@ -7528,7 +8238,9 @@
     "peakRating": 87,
     "rating": 87,
     "value": 313000,
-    "intlCaps": 12
+    "intlCaps": 12,
+    "dateOfBirth": "1992-02-03",
+    "birthYear": 1992
   },
   {
     "id": "sheffield-cur-matty-marsh",
@@ -7542,7 +8254,9 @@
     "peakRating": 82,
     "rating": 82,
     "value": 135000,
-    "intlCaps": 0
+    "intlCaps": 0,
+    "dateOfBirth": "1995-04-21",
+    "birthYear": 1995
   },
   {
     "id": "york-cur-matty-russell",
@@ -7558,7 +8272,9 @@
     "value": 180000,
     "intlCaps": 0,
     "appearances": 148,
-    "tries": 47
+    "tries": 47,
+    "dateOfBirth": "1993-06-06",
+    "birthYear": 1993
   },
   {
     "id": "wigan-cur-phoenix-steinwede",
@@ -7586,7 +8302,9 @@
     "peakRating": 87,
     "rating": 87,
     "value": 215000,
-    "intlCaps": 4
+    "intlCaps": 4,
+    "dateOfBirth": "1997-05-13",
+    "birthYear": 1997
   },
   {
     "id": "toulouse-cur-robin-brochon",
@@ -7614,7 +8332,9 @@
     "peakRating": 79,
     "rating": 79,
     "value": 100000,
-    "intlCaps": 2
+    "intlCaps": 2,
+    "dateOfBirth": "1996-01-07",
+    "birthYear": 1996
   },
   {
     "id": "catalans-cur-tevita-pangai-jr",
@@ -7625,10 +8345,12 @@
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–Present",
     "category": "current",
-    "peakRating": 86,
-    "rating": 86,
-    "value": 183000,
-    "intlCaps": 10
+    "peakRating": 90,
+    "rating": 90,
+    "value": 250000,
+    "intlCaps": 10,
+    "dateOfBirth": "1996-02-04",
+    "birthYear": 1996
   },
   {
     "id": "leigh-cur-will-kirby",

@@ -23,7 +23,6 @@ import { RugbyPitch } from "./RugbyPitch";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { playUiClick } from "@/lib/sound";
 
 interface EraChallengeCupSelectProps {
@@ -97,8 +96,7 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
     if (previewTeam) onConfirm(previewTeam, tournamentType);
   };
 
-  const showTournamentType = Boolean(selectedClub && selectedYear && previewTeam);
-  const showPreview = showTournamentType;
+  const showPreview = Boolean(selectedClub && selectedYear && previewTeam);
 
   return (
     <div className={`mx-auto w-full max-w-3xl ${SPACING.pageX} py-6`}>
@@ -106,13 +104,52 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
         <p className={TYPO.sectionLabel}>Challenge Cup</p>
         <h2 className={`mt-2 ${TYPO.pageTitle}`}>Choose Your Era</h2>
         <p className={`mx-auto mt-2 max-w-lg ${TYPO.body}`}>
-          Pick a club and historic season to lead a pre-built squad through a
-          knockout tournament against era opponents.
+          Pick a tournament type, club, and historic season to lead a pre-built
+          squad through a knockout draw against era opponents.
         </p>
-        <ChallengeCupVariantToggle eraMode className="mx-auto mt-5 max-w-md" />
       </div>
 
       <div className={`${CARD.panel} mt-6 ${SPACING.cardPadding}`}>
+        <p className={TYPO.statLabel}>Tournament Type</p>
+        <div className="mt-3 space-y-2">
+          {TOURNAMENT_OPTIONS.map((option) => {
+            const active = tournamentType === option.value;
+            return (
+              <label
+                key={option.value}
+                className={`flex cursor-pointer gap-3 rounded-lg border px-3 py-3 transition ${
+                  active
+                    ? "border-accent-gold/50 bg-accent-gold/10"
+                    : "border-pitch-700/60 bg-pitch-950/40 hover:border-pitch-500/50"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="era-tournament-type"
+                  value={option.value}
+                  checked={active}
+                  onChange={() => handleTournamentTypeChange(option.value)}
+                  className="mt-1 shrink-0 accent-accent-gold"
+                />
+                <span className="min-w-0">
+                  <span
+                    className={`block font-semibold ${
+                      active ? "text-accent-gold" : "text-white"
+                    }`}
+                  >
+                    {option.label}
+                  </span>
+                  <span className={`mt-0.5 block ${TYPO.bodySm}`}>
+                    {option.description}
+                  </span>
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className={`${CARD.panel} mt-4 ${SPACING.cardPadding}`}>
         <p className={TYPO.statLabel}>Select Club</p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {clubs.map((club) => {
@@ -178,52 +215,6 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
                     </span>
                   )}
                 </button>
-              );
-            })}
-          </div>
-        </motion.div>
-      )}
-
-      {showTournamentType && (
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className={`${CARD.panel} mt-4 ${SPACING.cardPadding}`}
-        >
-          <p className={TYPO.statLabel}>Tournament Type</p>
-          <div className="mt-3 space-y-2">
-            {TOURNAMENT_OPTIONS.map((option) => {
-              const active = tournamentType === option.value;
-              return (
-                <label
-                  key={option.value}
-                  className={`flex cursor-pointer gap-3 rounded-lg border px-3 py-3 transition ${
-                    active
-                      ? "border-accent-green/50 bg-accent-green/10"
-                      : "border-pitch-700/60 bg-pitch-950/40 hover:border-pitch-500/50"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="era-tournament-type"
-                    value={option.value}
-                    checked={active}
-                    onChange={() => handleTournamentTypeChange(option.value)}
-                    className="mt-1 shrink-0 accent-accent-green"
-                  />
-                  <span className="min-w-0">
-                    <span
-                      className={`block font-semibold ${
-                        active ? "text-accent-green" : "text-white"
-                      }`}
-                    >
-                      {option.label}
-                    </span>
-                    <span className={`mt-0.5 block ${TYPO.bodySm}`}>
-                      {option.description}
-                    </span>
-                  </span>
-                </label>
               );
             })}
           </div>

@@ -309,7 +309,14 @@ async function main(): Promise<void> {
         dateOfBirth: result.birth?.dateOfBirth,
         note: "Multiple Wikipedia pages with conflicting birth years",
       });
-      if (result.birth) overrides[baseId] = result.birth.birthYear;
+      if (
+        result.birth &&
+        isBirthPlausible(raw, result.birth)
+      ) {
+        overrides[baseId] = result.birth.birthYear;
+        updateRawPlayerFiles(raw.id, result.birth, fileMaps);
+        found++;
+      }
     } else {
       notFound++;
       audit.push({

@@ -160,28 +160,59 @@ function pickOnePerClubEraOpponents(
   count: number,
   rng: () => number
 ): EraTeam[] {
-  const byClub = new Map<string, EraTeam[]>();
+  const usedDisplayNames = new Set<string>([userEraTeam.displayName]);
+  const picked: EraTeam[] = [];
 
+  const byClub = new Map<string, EraTeam[]>();
   for (const team of pool) {
-    if (team.displayName === userEraTeam.displayName) continue;
-    if (team.clubName === userEraTeam.clubName) continue;
+    if (usedDisplayNames.has(team.displayName)) continue;
     const list = byClub.get(team.clubName) ?? [];
     list.push(team);
     byClub.set(team.clubName, list);
   }
 
-  const clubNames = shuffle([...byClub.keys()], rng);
-  const picked: EraTeam[] = [];
+  const uniqueClubNames = shuffle(
+    [...byClub.keys()].filter((club) => club !== userEraTeam.clubName),
+    rng
+  );
 
-  for (const clubName of clubNames) {
+  for (const clubName of uniqueClubNames) {
     if (picked.length >= count) break;
-    const teams = byClub.get(clubName);
+    const teams = byClub
+      .get(clubName)
+      ?.filter((team) => !usedDisplayNames.has(team.displayName));
     if (!teams?.length) continue;
     const [selected] = pickWeightedEraOpponents(teams, 1, rng);
-    if (selected) picked.push(selected);
+    if (!selected) continue;
+    picked.push(selected);
+    usedDisplayNames.add(selected.displayName);
+  }
+
+  if (picked.length < count) {
+    const remaining = pool.filter(
+      (team) => !usedDisplayNames.has(team.displayName)
+    );
+    const extra = pickWeightedEraOpponents(remaining, count - picked.length, rng);
+    for (const team of extra) {
+      picked.push(team);
+      usedDisplayNames.add(team.displayName);
+    }
   }
 
   return picked;
+}
+
+export const ERA_BRACKET_TEAM_COUNT = 16;
+export const ERA_OPPONENT_COUNT = ERA_BRACKET_TEAM_COUNT - 1;
+
+export const ERA_BRACKET_INSUFFICIENT_TEAMS =
+  "Not enough complete Era teams available to start this tournament.";
+
+export class EraBracketError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "EraBracketError";
+  }
 }
 
 export type EraTournamentType = "onePerClub" | "allTeams";
@@ -198,12 +229,30 @@ export function createEraChallengeCupBracket(
   );
   const opponents =
     tournamentType === "onePerClub"
-      ? pickOnePerClubEraOpponents(opponentPool, userEraTeam, 15, rng)
-      : pickWeightedEraOpponents(opponentPool, 15, rng);
+      ? pickOnePerClubEraOpponents(
+          opponentPool,
+          userEraTeam,
+          ERA_OPPONENT_COUNT,
+          rng
+        )
+      : pickWeightedEraOpponents(opponentPool, ERA_OPPONENT_COUNT, rng);
+
+  if (opponents.length < ERA_OPPONENT_COUNT) {
+    throw new EraBracketError(ERA_BRACKET_INSUFFICIENT_TEAMS);
+  }
+
   const bracketTeams = shuffle(
     [userEraTeam.displayName, ...opponents.map((team) => team.displayName)],
     rng
   );
+
+  if (bracketTeams.length !== ERA_BRACKET_TEAM_COUNT) {
+    throw new EraBracketError(ERA_BRACKET_INSUFFICIENT_TEAMS);
+  }
+
+  if (new Set(bracketTeams).size !== ERA_BRACKET_TEAM_COUNT) {
+    throw new EraBracketError(ERA_BRACKET_INSUFFICIENT_TEAMS);
+  }
 
   const eraClubLookup: Record<string, string> = {
     [userEraTeam.displayName]: userEraTeam.clubName,
