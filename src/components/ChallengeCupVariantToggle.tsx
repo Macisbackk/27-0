@@ -18,6 +18,8 @@ interface ChallengeCupVariantToggleProps {
   onEraModeChange?: (eraMode: boolean) => void;
   /** Sidebar: compact nested toggle with shorter labels. */
   compact?: boolean;
+  /** Sidebar: omit the Cup Mode label to save vertical space. */
+  hideLabel?: boolean;
   onNavigate?: () => void;
 }
 
@@ -26,6 +28,7 @@ export function ChallengeCupVariantToggle({
   className = "",
   onEraModeChange,
   compact = false,
+  hideLabel = false,
   onNavigate,
 }: ChallengeCupVariantToggleProps) {
   const currentClass = compact
@@ -43,11 +46,13 @@ export function ChallengeCupVariantToggle({
 
   return (
     <div className={className}>
-      <p
-        className={`mb-1.5 ${compact ? "px-1" : "text-center"} ${TYPO.sectionLabel}`}
-      >
-        Cup Mode
-      </p>
+      {!hideLabel && (
+        <p
+          className={`mb-1.5 ${compact ? "px-1" : "text-center"} ${TYPO.sectionLabel}`}
+        >
+          Cup Mode
+        </p>
+      )}
       <div className={groupClass}>
         {onEraModeChange ? (
           <>

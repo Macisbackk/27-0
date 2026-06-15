@@ -72,6 +72,72 @@ export function getClubBracketTriesScored(
   return total;
 }
 
+export interface BracketTeamTournamentStats {
+  name: string;
+  wins: number;
+  losses: number;
+  pointsFor: number;
+  pointsAgainst: number;
+  triesFor: number;
+  triesAgainst: number;
+}
+
+function emptyBracketTeamStats(name: string): BracketTeamTournamentStats {
+  return {
+    name,
+    wins: 0,
+    losses: 0,
+    pointsFor: 0,
+    pointsAgainst: 0,
+    triesFor: 0,
+    triesAgainst: 0,
+  };
+}
+
+/** Aggregate tournament performance for every team in a completed bracket. */
+export function getBracketTeamTournamentStats(
+  matches: BracketMatch[]
+): Map<string, BracketTeamTournamentStats> {
+  const stats = new Map<string, BracketTeamTournamentStats>();
+
+  const ensure = (name: string) => {
+    if (!stats.has(name)) stats.set(name, emptyBracketTeamStats(name));
+    return stats.get(name)!;
+  };
+
+  for (const match of matches) {
+    if (match.status !== "complete") continue;
+    const { homeTeam, awayTeam, homeScore, awayScore, winner, loser } = match;
+    if (!homeTeam || !awayTeam || homeScore === null || awayScore === null) {
+      continue;
+    }
+
+    const home = ensure(homeTeam);
+    const away = ensure(awayTeam);
+    home.pointsFor += homeScore;
+    home.pointsAgainst += awayScore;
+    away.pointsFor += awayScore;
+    away.pointsAgainst += homeScore;
+
+    if (match.scoringDetail) {
+      home.triesFor += sumTryScorers(match.scoringDetail.home.tryScorers);
+      home.triesAgainst += sumTryScorers(match.scoringDetail.away.tryScorers);
+      away.triesFor += sumTryScorers(match.scoringDetail.away.tryScorers);
+      away.triesAgainst += sumTryScorers(match.scoringDetail.home.tryScorers);
+    }
+
+    if (winner === homeTeam) {
+      home.wins++;
+      if (loser === awayTeam) away.losses++;
+    } else if (winner === awayTeam) {
+      away.wins++;
+      if (loser === homeTeam) home.losses++;
+    }
+  }
+
+  return stats;
+}
+
 /** User try totals derived only from recorded match events on fixtures. */
 export function deriveCupTryScorersFromMatchEvents(
   squad: SquadSlot[],

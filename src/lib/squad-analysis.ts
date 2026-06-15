@@ -1,6 +1,7 @@
 import type { Player, PlayerCategory, Position, SquadSlot } from "./types";
 import { TOTAL_SLOTS } from "./positions";
 import { resolveDisplayClub } from "./clubs/super-league-display";
+import { resolveEraTeamClubName } from "./players/era-teams";
 import { JOE_MELLOR_GOAT_ID } from "./players/goat";
 import { isSuperSamHallasId, isSuperSamHallasPlayer } from "./players/super-sam-hallas";
 import { getSlotDisplayInfo } from "./squad-display";
@@ -10,6 +11,10 @@ export type ClubPlayerDisplayCategory = PlayerCategory | "goat" | "superSam";
 export interface ClubBreakdownOptions {
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
+  /** Era mode: group all squad players under this club name. */
+  groupClubOverride?: string;
+  /** Era mode: merge era team display names to underlying clubs. */
+  eraClubLookup?: Record<string, string>;
 }
 
 export interface ClubPlayerEntry {
@@ -73,11 +78,12 @@ export function getClubBreakdown(
   for (const slot of squad) {
     if (!slot.player) continue;
     const player = slot.player;
-    const clubName = resolveDisplayClub(
-      player.id,
-      player.club,
-      player.name
-    ).trim();
+    const clubName = options?.groupClubOverride
+      ? options.groupClubOverride.trim()
+      : resolveEraTeamClubName(
+          resolveDisplayClub(player.id, player.club, player.name).trim(),
+          options?.eraClubLookup
+        );
     const existing = map.get(clubName) ?? {
       count: 0,
       totalValue: 0,

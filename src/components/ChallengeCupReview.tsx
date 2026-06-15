@@ -22,7 +22,14 @@ import {
 import { generateSeasonAwards } from "@/lib/season-awards";
 import { getExtendedTeamComparison } from "@/lib/team-value-comparison";
 import { formatValue } from "@/lib/players";
-import { buildChallengeCupTournamentStats } from "@/lib/game/challenge-cup-stats";
+import {
+  buildChallengeCupTournamentStats,
+  getBracketTeamTournamentStats,
+} from "@/lib/game/challenge-cup-stats";
+import {
+  buildEraTournamentClubGroups,
+  resolveEraTeamClubName,
+} from "@/lib/players/era-teams";
 import { playGradeSound, playPanelExpand } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { FixtureResultRow } from "./FixtureResultRow";
@@ -80,9 +87,14 @@ export function ChallengeCupReview({
 }: ChallengeCupReviewProps) {
   const totalValue = getSquadValue(squad);
   const filledCount = squad.filter((s) => s.player).length;
+  const userTeamName = cupResult.userClub ?? DREAM_TEAM_NAME;
   const clubSummary = getClubBreakdownSummary(squad, filledCount, {
     joeMellorMode,
     superSamHallasMode,
+    groupClubOverride: cupResult.eraMode
+      ? resolveEraTeamClubName(userTeamName, cupResult.eraClubLookup)
+      : undefined,
+    eraClubLookup: cupResult.eraClubLookup,
   });
   const isHardMode = difficulty === "HARD";
   const [selectedFixture, setSelectedFixture] = useState<MatchFixture | null>(
@@ -91,7 +103,19 @@ export function ChallengeCupReview({
   const selectedRowRef = useRef<HTMLDivElement>(null);
   const commentary = getChallengeCupCommentary(cupResult);
   const showCelebration = cupResult.isWinner;
-  const userTeamName = cupResult.userClub ?? DREAM_TEAM_NAME;
+
+  const eraTournamentGroups = useMemo(() => {
+    if (!cupResult.eraMode || !cupResult.bracketMatches?.length) return undefined;
+    return buildEraTournamentClubGroups(
+      cupResult.bracketMatches,
+      cupResult.eraClubLookup
+    );
+  }, [cupResult.eraMode, cupResult.bracketMatches, cupResult.eraClubLookup]);
+
+  const bracketTeamStats = useMemo(() => {
+    if (!cupResult.bracketMatches?.length) return undefined;
+    return getBracketTeamTournamentStats(cupResult.bracketMatches);
+  }, [cupResult.bracketMatches]);
 
   const tournamentStats = useMemo(
     () =>
@@ -425,12 +449,18 @@ export function ChallengeCupReview({
           <ClubRepresentation
             summary={clubSummary}
             clubColorOverride={userClubColorOverride}
+            eraTournamentGroups={eraTournamentGroups}
+            bracketTeamStats={bracketTeamStats}
           />
         </CollapsibleReviewSection>
 
         <CollapsibleReviewSection
-          title="Your Team vs Best Opposition"
-          helper="Squad OVR comparison — your Dream Team rating against the highest-rated opponent you faced in the cup."
+          title="Your Team vs Best Team of the Tournament"
+          helper={
+            cupResult.bracketMatches && cupResult.bracketMatches.length > 0
+              ? "Squad OVR comparison — your team against the best tournament performer by wins, points and tries."
+              : "Squad OVR comparison — your team rating against the highest-rated opponent you faced in the cup."
+          }
           variant="featured"
           delay={0.46}
         >

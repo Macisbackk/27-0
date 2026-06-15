@@ -10,6 +10,7 @@ interface RLClubRowProps {
   totalValue: number;
   expanded?: boolean;
   onClick?: () => void;
+  hideValue?: boolean;
 }
 
 export function RLClubRow({
@@ -18,6 +19,7 @@ export function RLClubRow({
   totalValue,
   expanded,
   onClick,
+  hideValue = false,
 }: RLClubRowProps) {
   const interactive = Boolean(onClick);
 
@@ -52,7 +54,7 @@ export function RLClubRow({
         )}
       </div>
       <span className={`shrink-0 ${TYPO.statValue} font-display text-accent-gold`}>
-        {formatValue(totalValue)}
+        {hideValue ? "—" : formatValue(totalValue)}
       </span>
     </button>
   );

@@ -6,6 +6,8 @@ import type {
   ClubBreakdownSummary,
   ClubPlayerDisplayCategory,
 } from "@/lib/squad-analysis";
+import type { BracketTeamTournamentStats } from "@/lib/game/challenge-cup-stats";
+import type { EraTournamentClubGroup } from "@/lib/players/era-teams";
 import { getClubColors } from "@/lib/clubs";
 import { RLClubRow } from "./cards/RLClubRow";
 import {
@@ -35,6 +37,9 @@ interface ClubRepresentationProps {
   summary: ClubBreakdownSummary;
   /** Era mode: apply era team colours to all club rows. */
   clubColorOverride?: string;
+  /** Era mode: tournament teams grouped by underlying club. */
+  eraTournamentGroups?: EraTournamentClubGroup[];
+  bracketTeamStats?: Map<string, BracketTeamTournamentStats>;
 }
 
 function ClubPlayerStatusBadge({
@@ -54,9 +59,14 @@ function ClubPlayerStatusBadge({
 export function ClubRepresentation({
   summary,
   clubColorOverride,
+  eraTournamentGroups,
+  bracketTeamStats,
 }: ClubRepresentationProps) {
   const { clubs, totalPlayers, expectedPlayers, isValid } = summary;
   const [expandedClub, setExpandedClub] = useState<string | null>(null);
+  const [expandedTournamentClub, setExpandedTournamentClub] = useState<
+    string | null
+  >(null);
 
   const toggleClub = (club: string) => {
     setExpandedClub((prev) => {
@@ -65,8 +75,76 @@ export function ClubRepresentation({
     });
   };
 
+  const toggleTournamentClub = (club: string) => {
+    setExpandedTournamentClub((prev) => {
+      if (prev !== club) playPanelExpand();
+      return prev === club ? null : club;
+    });
+  };
+
+  const formatTournamentRecord = (teamName: string) => {
+    const stats = bracketTeamStats?.get(teamName);
+    if (!stats) return "—";
+    const games = stats.wins + stats.losses;
+    if (games === 0) return "—";
+    return `${stats.wins}-${stats.losses} · ${stats.pointsFor} PF · ${stats.triesFor} tries`;
+  };
+
   return (
     <div className={SPACING.stackMd}>
+      {eraTournamentGroups && eraTournamentGroups.length > 0 && (
+        <div className={SPACING.stackSm}>
+          <p className={TYPO.sectionLabel}>Tournament Teams</p>
+          {eraTournamentGroups.map((group) => {
+            const isExpanded = expandedTournamentClub === group.club;
+            const colors = getClubColors(group.club);
+            return (
+              <div key={`tournament-${group.club}`}>
+                <RLClubRow
+                  club={group.club}
+                  count={group.teams.length}
+                  totalValue={0}
+                  expanded={isExpanded}
+                  onClick={() => toggleTournamentClub(group.club)}
+                  hideValue
+                />
+                <AnimatePresence initial={false}>
+                  {isExpanded && (
+                    <motion.ul
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div
+                        className={`mt-2 ${SPACING.stackSm} ${CARD.base} ${SPACING.cardPaddingSm}`}
+                        style={{
+                          borderColor: `${getClubPillBackground(colors.primary, colors.secondary, colors.accent)}55`,
+                          background: `linear-gradient(135deg, ${colors.primary}18 0%, rgba(15,23,42,0.9) 55%)`,
+                        }}
+                      >
+                        {group.teams.map((team) => (
+                          <li
+                            key={team.displayName}
+                            className={`${CARD.inset} px-3 py-2.5`}
+                          >
+                            <p className={TYPO.playerNameSm}>{team.displayName}</p>
+                            <p className={`mt-0.5 ${TYPO.bodySm}`}>
+                              {formatTournamentRecord(team.displayName)}
+                            </p>
+                          </li>
+                        ))}
+                      </div>
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
       {clubs.length === 0 ? (
         <p className={TYPO.bodySm}>No players signed</p>
       ) : (

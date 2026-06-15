@@ -19,6 +19,7 @@ import {
   getEraWikipediaYearsForClub,
   hasEraWikipediaSquad,
 } from "./era-wikipedia-squads";
+import type { BracketMatch } from "../game/challenge-cup-bracket";
 import { getCurrentCalendarYear } from "./team-year-rosters";
 
 export const MIN_ERA_ROSTER_PLAYERS = 13;
@@ -122,6 +123,41 @@ export function isPlayerActiveInYear(player: Player, year: number): boolean {
   if (year < start) return false;
   if (end !== null && year > end) return false;
   return true;
+}
+
+export interface EraTournamentClubGroup {
+  club: string;
+  teams: { displayName: string; yearLabel: string }[];
+}
+
+/** Group era tournament teams by underlying club (e.g. Bradford '03 + '26 → Bradford Bulls). */
+export function buildEraTournamentClubGroups(
+  matches: BracketMatch[],
+  eraClubLookup?: Record<string, string>
+): EraTournamentClubGroup[] {
+  const byClub = new Map<string, Set<string>>();
+
+  for (const match of matches) {
+    for (const team of [match.homeTeam, match.awayTeam]) {
+      if (!team) continue;
+      const club = resolveEraTeamClubName(team, eraClubLookup);
+      const set = byClub.get(club) ?? new Set();
+      set.add(team);
+      byClub.set(club, set);
+    }
+  }
+
+  return [...byClub.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([club, teamSet]) => ({
+      club,
+      teams: [...teamSet]
+        .sort((a, b) => a.localeCompare(b))
+        .map((displayName) => ({
+          displayName,
+          yearLabel: displayName,
+        })),
+    }));
 }
 
 export function getEraHistoricClubs(): EraChallengeClub[] {

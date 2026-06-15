@@ -112,8 +112,8 @@ function RugbyPitchInner({
           <div
             className={`relative w-full overflow-hidden rounded-2xl border-2 border-accent-green/40 shadow-[0_0_24px_rgba(34,197,94,0.15)] rugby-pitch-pro ${
               compact
-                ? "min-h-[540px]"
-                : "min-h-[660px] sm:min-h-[620px] md:min-h-[600px] lg:aspect-[5/8] lg:min-h-0"
+                ? "min-h-[580px]"
+                : "min-h-[700px] sm:min-h-[660px] md:min-h-[640px] lg:aspect-[5/8] lg:min-h-0"
             }`}
           >
             <PitchMarkings />
@@ -213,11 +213,11 @@ function PitchMarkings() {
 
       <div className="pitch-line-halfway absolute left-[6%] right-[6%] top-1/2 h-[2px] -translate-y-1/2" />
 
-      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[24%] h-px" />
-      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[42%] h-px" />
-      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[60%] h-px" />
-      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[77%] h-px" />
-      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[91%] h-px" />
+      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[22%] h-px" />
+      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[40%] h-px" />
+      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[58%] h-px" />
+      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[76%] h-px" />
+      <div className="pitch-guide-dashed absolute left-[6%] right-[6%] top-[92%] h-px" />
 
       <div
         className="pitch-touchline absolute bottom-[8%] top-[8%] w-px"

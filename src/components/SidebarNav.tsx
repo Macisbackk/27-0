@@ -22,7 +22,6 @@ import {
 } from "@/lib/sound";
 import {
   BTN,
-  ERA,
   HARD,
   NAV,
   nestedTabGroupButtonClass,
@@ -262,11 +261,13 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   </li>
 
                   <li className={NAV.playModeGroup}>
-                    <div
+                    <Link
+                      href={buildPlayHref("cup", "NORMAL", isEraCup)}
+                      onClick={onClose}
                       className={`${NAV.item} ${
                         isCupActive
                           ? isEraCup
-                            ? ERA.itemActive
+                            ? "border border-accent-gold/40 bg-accent-gold text-pitch-950"
                             : "border border-accent-gold/30 bg-accent-gold/10 text-accent-gold"
                           : NAV.itemIdle
                       }`}
@@ -278,14 +279,15 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       {isCupActive && (
                         <span
                           className={`ml-auto h-1.5 w-1.5 rounded-full ${
-                            isEraCup ? ERA.dot : "bg-accent-gold"
+                            isEraCup ? "bg-pitch-950" : "bg-accent-gold"
                           }`}
                         />
                       )}
-                    </div>
+                    </Link>
                     <div className={NAV.nestedBlock}>
                       <ChallengeCupVariantToggle
                         compact
+                        hideLabel
                         eraMode={isEraCup}
                         onNavigate={onClose}
                       />

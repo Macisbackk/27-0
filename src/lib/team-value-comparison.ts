@@ -21,6 +21,8 @@ import type { BracketMatch } from "./game/challenge-cup-bracket";
 import {
   getClubBracketTriesConceded,
   getClubBracketTriesScored,
+  getBracketTeamTournamentStats,
+  type BracketTeamTournamentStats,
 } from "./game/challenge-cup-stats";
 import type { SquadSlot } from "./types";
 
@@ -89,6 +91,48 @@ function getEraStrongestOpposition(
     if (rating === undefined) continue;
     if (!best || rating > best.rating) {
       best = { name: fixture.opponent, rating, tier: getTeamTier(rating) };
+    }
+  }
+
+  return best;
+}
+
+function scoreTournamentPerformance(stats: BracketTeamTournamentStats): number {
+  return (
+    stats.wins * 10_000 +
+    stats.pointsFor * 10 +
+    stats.triesFor * 5 -
+    stats.losses * 100 -
+    stats.pointsAgainst
+  );
+}
+
+/** Best team in the full tournament by bracket results (wins, points, tries). */
+export function getBestTournamentTeam(
+  bracketMatches: BracketMatch[],
+  userTeamName: string,
+  userRating: number,
+  userFixtureStats: BracketTeamTournamentStats,
+  eraTeamRatings?: Record<string, number>
+): TeamRatingEntry {
+  const bracketStats = getBracketTeamTournamentStats(bracketMatches);
+  if (!bracketStats.has(userTeamName)) {
+    bracketStats.set(userTeamName, userFixtureStats);
+  }
+
+  let best: TeamRatingEntry = {
+    name: userTeamName,
+    rating: userRating,
+    tier: getTeamTier(userRating),
+  };
+  let bestScore = scoreTournamentPerformance(userFixtureStats);
+
+  for (const [name, stats] of bracketStats) {
+    const rating = eraTeamRatings?.[name] ?? userRating;
+    const score = scoreTournamentPerformance(stats);
+    if (score > bestScore || (score === bestScore && rating > best.rating)) {
+      bestScore = score;
+      best = { name, rating, tier: getTeamTier(rating) };
     }
   }
 
@@ -484,16 +528,51 @@ export function getExtendedTeamComparison(
     eraOpts
   );
   const { mostExpensiveTeam } = summary;
-  const strongestOpponent =
-    getStrongestOpposition(fixtures, seed, eraOpts) ?? {
-      name: "—",
-      rating: 0,
-      tier: "—",
-    };
-  const useLeagueStats =
-    isFullLeagueSeason(fixtures) && options.seasonResult != null;
+
   const cupMode = options.cupMode === true;
   const bracketMatches = options.bracketMatches ?? [];
+
+  const userBracketStats: BracketTeamTournamentStats =
+    bracketMatches.length > 0
+      ? (getBracketTeamTournamentStats(bracketMatches).get(userTeamName) ?? {
+          name: userTeamName,
+          wins: options.wins,
+          losses: options.losses,
+          pointsFor: fixtures.reduce((sum, f) => sum + f.pointsFor, 0),
+          pointsAgainst: fixtures.reduce((sum, f) => sum + f.pointsAgainst, 0),
+          triesFor: fixtures.reduce((sum, f) => sum + f.triesFor, 0),
+          triesAgainst: fixtures.reduce((sum, f) => sum + f.triesAgainst, 0),
+        })
+      : {
+          name: userTeamName,
+          wins: options.wins,
+          losses: options.losses,
+          pointsFor: fixtures.reduce((sum, f) => sum + f.pointsFor, 0),
+          pointsAgainst: fixtures.reduce((sum, f) => sum + f.pointsAgainst, 0),
+          triesFor: fixtures.reduce((sum, f) => sum + f.triesFor, 0),
+          triesAgainst: fixtures.reduce((sum, f) => sum + f.triesAgainst, 0),
+        };
+
+  const bestTournamentTeam =
+    cupMode && bracketMatches.length > 0
+      ? getBestTournamentTeam(
+          bracketMatches,
+          userTeamName,
+          userRating,
+          userBracketStats,
+          options.eraTeamRatings
+        )
+      : null;
+
+  const strongestOpponent = bestTournamentTeam
+    ? bestTournamentTeam
+    : getStrongestOpposition(fixtures, seed, eraOpts) ?? {
+        name: "—",
+        rating: 0,
+        tier: "—",
+      };
+  const useLeagueStats =
+    isFullLeagueSeason(fixtures) && options.seasonResult != null;
 
   const comparisonStats = useLeagueStats
     ? getComparisonStatsFromSeason(
@@ -509,7 +588,18 @@ export function getExtendedTeamComparison(
             (sum, fixture) => sum + fixture.triesAgainst,
             0
           ),
-          oppWinPct: "—",
+          oppWinPct:
+            strongestOpponent.name === "—"
+              ? "—"
+              : bracketMatches.length > 0
+                ? (() => {
+                    const stats = getBracketTeamTournamentStats(bracketMatches).get(
+                      strongestOpponent.name
+                    );
+                    if (!stats) return "—";
+                    return formatWinPercentage(stats.wins, stats.losses);
+                  })()
+                : "—",
           oppTries:
             strongestOpponent.name === "—"
               ? 0
