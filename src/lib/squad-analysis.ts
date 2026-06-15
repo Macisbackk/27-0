@@ -1,7 +1,6 @@
 import type { Player, PlayerCategory, Position, SquadSlot } from "./types";
 import { TOTAL_SLOTS } from "./positions";
-import { resolveDisplayClub } from "./clubs/super-league-display";
-import { resolveEraTeamClubName } from "./players/era-teams";
+import { getPlayerDisplayClub } from "./players/run-club";
 import { JOE_MELLOR_GOAT_ID } from "./players/goat";
 import { isSuperSamHallasId, isSuperSamHallasPlayer } from "./players/super-sam-hallas";
 import { getSlotDisplayInfo } from "./squad-display";
@@ -11,10 +10,8 @@ export type ClubPlayerDisplayCategory = PlayerCategory | "goat" | "superSam";
 export interface ClubBreakdownOptions {
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
-  /** Era mode: group all squad players under this club name. */
+  /** Era mode: group all squad players under this era team display name. */
   groupClubOverride?: string;
-  /** Era mode: merge era team display names to underlying clubs. */
-  eraClubLookup?: Record<string, string>;
 }
 
 export interface ClubPlayerEntry {
@@ -33,6 +30,8 @@ export interface ClubPlayerEntry {
   adjustedRating: number;
   ratingAdjusted: boolean;
   value: number;
+  /** Run-context club label (era team display name). */
+  displayClub: string;
 }
 
 export interface ClubBreakdown {
@@ -80,10 +79,7 @@ export function getClubBreakdown(
     const player = slot.player;
     const clubName = options?.groupClubOverride
       ? options.groupClubOverride.trim()
-      : resolveEraTeamClubName(
-          resolveDisplayClub(player.id, player.club, player.name).trim(),
-          options?.eraClubLookup
-        );
+      : getPlayerDisplayClub(player).trim();
     const existing = map.get(clubName) ?? {
       count: 0,
       totalValue: 0,
@@ -106,6 +102,7 @@ export function getClubBreakdown(
       adjustedRating: display.adjustedRating,
       ratingAdjusted: display.ratingAdjusted,
       value: player.value,
+      displayClub: getPlayerDisplayClub(player),
     });
     map.set(clubName, existing);
   }
@@ -146,6 +143,7 @@ export function getClubBreakdown(
             adjustedRating: rating,
             ratingAdjusted: false,
             value: totalValue,
+            displayClub: entry.players[0]!.displayClub,
           },
         ],
       };

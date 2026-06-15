@@ -5,6 +5,7 @@ import { getPlayerTryWeight } from "./game/try-weights";
 import { isGoatPlayer, JOE_MELLOR_GOAT_ID } from "./players/goat";
 import { isSuperSamHallasPlayer } from "./players/super-sam-hallas";
 import { getEffectivePeakRating } from "./squad-analysis";
+import { getPlayerDisplayClub } from "./players/run-club";
 import {
   findSlotByPlayerId,
   formatPlayerLineExtras,
@@ -109,7 +110,7 @@ function buildPerformances(
     return {
       playerId: player.id,
       name: player.name,
-      club: player.club,
+      club: getPlayerDisplayClub(player),
       position: player.position,
       playedPosition: slot.position,
       positionNote: display?.positionCompact ?? null,

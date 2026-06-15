@@ -2,7 +2,7 @@ import seedrandom from "seedrandom";
 import type { SquadSlot } from "../types";
 import { getActiveSuperLeagueClubNames } from "../clubs/super-league-display";
 import { getClubStrength } from "./club-strength";
-import { buildOpponentScoringDetail } from "./opponent-scorers";
+import { buildOpponentScoringDetail, buildEraTeamScoringDetail } from "./opponent-scorers";
 import {
   decomposeRLScore,
   pickRLScore,
@@ -491,6 +491,19 @@ function buildClubScoring(
   matchId: string,
   state: ChallengeCupBracketState
 ): TeamScoringDetail {
+  if (state.eraClubLookup) {
+    const eraDetail = buildEraTeamScoringDetail(
+      club,
+      tries,
+      scoring,
+      `${seed}-${matchId}`,
+      matchId
+    );
+    if (eraDetail.tryScorers.length > 0 || eraDetail.kicking) {
+      return eraDetail;
+    }
+  }
+
   const resolvedClub = resolveBracketClub(club, state);
   const fakeFixture: MatchFixture = {
     round,
@@ -736,23 +749,6 @@ function simulateUserMatch(
   );
 
   enrichSingleFixtureScoring(squad, fixture, state.seed);
-
-  if (state.eraClubLookup) {
-    const resolvedOpponent = resolveBracketClub(opponent, state);
-    if (resolvedOpponent !== opponent && fixture.scoringDetail) {
-      const oppDetail = buildOpponentScoringDetail(
-        {
-          ...fixture,
-          opponent: resolvedOpponent,
-        },
-        `${state.seed}-cup-${match.id}-era-opp`
-      );
-      fixture.scoringDetail = {
-        ...fixture.scoringDetail,
-        opponent: oppDetail,
-      };
-    }
-  }
 
   const homeScore = isHome ? fixture.pointsFor : fixture.pointsAgainst;
   const awayScore = isHome ? fixture.pointsAgainst : fixture.pointsFor;

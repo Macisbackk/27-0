@@ -78,7 +78,8 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
         ? buildEraSquadFromRoster(
             previewTeam.playerIds,
             previewTeam.slotPositions,
-            getEraSquadYear(previewTeam)
+            getEraSquadYear(previewTeam),
+            previewTeam.displayName
           )
         : null,
     [previewTeam]

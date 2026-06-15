@@ -1,7 +1,9 @@
 import seedrandom from "seedrandom";
 import type { Position, SquadSlot } from "../types";
 import { getEffectivePeakRating } from "../squad-analysis";
-import { buildOpponentScoringDetail } from "./opponent-scorers";
+import { getPlayerDisplayClub } from "../players/run-club";
+import { buildOpponentScoringDetail, buildEraTeamScoringDetail } from "./opponent-scorers";
+import { getEraTeamByDisplayName } from "../players/era-teams";
 import type {
   FixtureScoringDetail,
   MatchFixture,
@@ -191,9 +193,18 @@ function applyScoringDetails(
   seed: string
 ): void {
   fixtures.forEach((fixture, fi) => {
+    const eraOpponent = getEraTeamByDisplayName(fixture.opponent);
     fixture.scoringDetail = {
       dreamTeam: buildDreamTeamScoring(entries, perMatchAllocs[fi], fixture),
-      opponent: buildOpponentScoringDetail(fixture, seed),
+      opponent: eraOpponent
+        ? buildEraTeamScoringDetail(
+            fixture.opponent,
+            fixture.triesAgainst,
+            fixture.scoringAgainst,
+            seed,
+            `round-${fixture.round}`
+          )
+        : buildOpponentScoringDetail(fixture, seed),
     };
   });
 }
@@ -367,7 +378,7 @@ export function aggregateTryTotalsFromFixtures(
       return {
         playerId: p.id,
         name: p.name,
-        club: p.club,
+        club: getPlayerDisplayClub(p),
         position: p.position,
         playedPosition:
           slot.position !== p.position ? slot.position : undefined,

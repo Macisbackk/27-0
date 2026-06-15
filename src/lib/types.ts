@@ -52,6 +52,12 @@ export interface Player extends PlayerAchievements {
   baseId?: string;
   name: string;
   club: string;
+  /** Original database club — preserved when runClub overrides display. */
+  baseClub?: string;
+  /** Era team display name for the active run, e.g. Bradford Bulls '03. */
+  runClub?: string;
+  /** UI club label for the active run. */
+  displayClub?: string;
   /** Resolved squad position (Utility players are mapped here) */
   position: Position;
   /** Set when loaded from a Utility raw position, e.g. "Utility" */

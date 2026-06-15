@@ -24,12 +24,7 @@ import { getExtendedTeamComparison } from "@/lib/team-value-comparison";
 import { formatValue } from "@/lib/players";
 import {
   buildChallengeCupTournamentStats,
-  getBracketTeamTournamentStats,
 } from "@/lib/game/challenge-cup-stats";
-import {
-  buildEraTournamentClubGroups,
-  resolveEraTeamClubName,
-} from "@/lib/players/era-teams";
 import { playGradeSound, playPanelExpand } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { FixtureResultRow } from "./FixtureResultRow";
@@ -91,10 +86,7 @@ export function ChallengeCupReview({
   const clubSummary = getClubBreakdownSummary(squad, filledCount, {
     joeMellorMode,
     superSamHallasMode,
-    groupClubOverride: cupResult.eraMode
-      ? resolveEraTeamClubName(userTeamName, cupResult.eraClubLookup)
-      : undefined,
-    eraClubLookup: cupResult.eraClubLookup,
+    groupClubOverride: cupResult.eraMode ? userTeamName : undefined,
   });
   const isHardMode = difficulty === "HARD";
   const [selectedFixture, setSelectedFixture] = useState<MatchFixture | null>(
@@ -103,19 +95,6 @@ export function ChallengeCupReview({
   const selectedRowRef = useRef<HTMLDivElement>(null);
   const commentary = getChallengeCupCommentary(cupResult);
   const showCelebration = cupResult.isWinner;
-
-  const eraTournamentGroups = useMemo(() => {
-    if (!cupResult.eraMode || !cupResult.bracketMatches?.length) return undefined;
-    return buildEraTournamentClubGroups(
-      cupResult.bracketMatches,
-      cupResult.eraClubLookup
-    );
-  }, [cupResult.eraMode, cupResult.bracketMatches, cupResult.eraClubLookup]);
-
-  const bracketTeamStats = useMemo(() => {
-    if (!cupResult.bracketMatches?.length) return undefined;
-    return getBracketTeamTournamentStats(cupResult.bracketMatches);
-  }, [cupResult.bracketMatches]);
 
   const tournamentStats = useMemo(
     () =>
@@ -392,6 +371,8 @@ export function ChallengeCupReview({
                         userTeamName={userTeamName}
                         userClubColorOverride={userClubColorOverride}
                         eraClubLookup={cupResult.eraClubLookup}
+                        eraTeamRatings={cupResult.eraTeamRatings}
+                        eraTeamValues={cupResult.eraTeamValues}
                         onClose={() => setSelectedFixture(null)}
                         roundLabel={getCupRoundLabel(fixture.round)}
                       />
@@ -449,8 +430,6 @@ export function ChallengeCupReview({
           <ClubRepresentation
             summary={clubSummary}
             clubColorOverride={userClubColorOverride}
-            eraTournamentGroups={eraTournamentGroups}
-            bracketTeamStats={bracketTeamStats}
           />
         </CollapsibleReviewSection>
 

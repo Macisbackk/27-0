@@ -85,7 +85,8 @@ export function EraChallengeCupBoard() {
         buildEraSquadFromRoster(
           team.playerIds,
           team.slotPositions,
-          getEraSquadYear(team)
+          getEraSquadYear(team),
+          team.displayName
         )
       );
       setBracketState(bracket);

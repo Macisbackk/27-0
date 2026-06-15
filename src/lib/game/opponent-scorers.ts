@@ -1,5 +1,6 @@
 import seedrandom from "seedrandom";
 import { getPlayersByClub } from "../players";
+import { getEraTeamByDisplayName, getEraTeamMatchSquad } from "../players/era-teams";
 import { getFantasyEligiblePlayers } from "./fantasy-mode";
 import { getClubBaseStrength } from "./club-strength";
 import { getTeamTier } from "../team-tiers";
@@ -10,6 +11,7 @@ import type {
   MatchFixture,
   TeamScoringDetail,
 } from "./season-simulation";
+import type { ScoreBreakdown } from "./rl-scores";
 import { allocateMatchTries } from "./try-allocation";
 import { getPlayerTryWeight } from "./try-weights";
 
@@ -125,6 +127,51 @@ export function selectClubMatchSquad(
   }
 
   return squad;
+}
+
+/** Build try scorers from a fixed era team roster (not random club pool). */
+export function buildEraTeamScoringDetail(
+  eraTeamDisplayName: string,
+  tries: number,
+  scoringBreakdown: ScoreBreakdown,
+  seed: string,
+  matchKey: string
+): TeamScoringDetail {
+  const eraTeam = getEraTeamByDisplayName(eraTeamDisplayName);
+  if (!eraTeam) {
+    return { tryScorers: [], kicking: null };
+  }
+
+  const squad = getEraTeamMatchSquad(eraTeam);
+  if (squad.length === 0) {
+    return { tryScorers: [], kicking: null };
+  }
+
+  const rng = seedrandom(`${seed}-era-scorers-${matchKey}`);
+  const weights = squad.map((p) => getPlayerTryWeight(p));
+  const alloc = allocateMatchTries(tries, weights, rng);
+
+  const tryScorers: FixtureTryScorer[] = squad
+    .map((p, i) => ({
+      playerId: p.id,
+      name: p.name,
+      tries: alloc[i],
+    }))
+    .filter((s) => s.tries > 0);
+
+  const kicker = pickKicker(squad);
+  const kicking: FixtureKicking | null = kicker
+    ? {
+        playerId: kicker.id,
+        name: kicker.name,
+        conversions: scoringBreakdown.conversions,
+        conversionAttempts: scoringBreakdown.tries,
+        penalties: scoringBreakdown.penalties,
+        dropGoals: scoringBreakdown.dropGoals,
+      }
+    : null;
+
+  return { tryScorers, kicking };
 }
 
 export function getOpponentMatchRating(

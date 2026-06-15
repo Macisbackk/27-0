@@ -1,10 +1,15 @@
 "use client";
 
 import type { Player } from "@/lib/types";
+import { formatPlayerAge } from "@/lib/players";
 import {
   formatPlayerIdentity,
   getNationalityAbbrev,
 } from "@/lib/players/nationality";
+import {
+  getPlayerDisplayClub,
+  playerHasRunClub,
+} from "@/lib/players/run-club";
 import { POSITION_LABELS } from "@/lib/positions";
 
 interface PlayerIdentityLineProps {
@@ -13,14 +18,46 @@ interface PlayerIdentityLineProps {
   compact?: boolean;
 }
 
-/** Nationality abbreviation + • position beneath player name. */
+/** Position + era team (or nationality) beneath player name. */
 export function PlayerIdentityLine({
   player,
   className = "",
   compact = false,
 }: PlayerIdentityLineProps) {
-  const abbrev = getNationalityAbbrev(player.nationality);
   const position = POSITION_LABELS[player.position];
+  const eraRun = playerHasRunClub(player);
+  const displayClub = getPlayerDisplayClub(player);
+  const ageLabel = formatPlayerAge(player);
+
+  if (eraRun) {
+    return (
+      <div
+        className={`player-identity-line ${compact ? "mt-0.5" : "mt-1.5"} ${className}`}
+      >
+        <p
+          className={`font-semibold text-white ${
+            compact ? "text-[10px]" : "text-base sm:text-[17px]"
+          }`}
+        >
+          {position}
+        </p>
+        <p
+          className={`font-display font-bold uppercase tracking-wide text-accent-gold ${
+            compact ? "text-[9px]" : "text-[10px] sm:text-xs"
+          }`}
+        >
+          {displayClub}
+        </p>
+        {ageLabel !== "Unknown" && (
+          <p className={`${compact ? "text-[9px]" : "text-xs"} text-gray-500`}>
+            Age {ageLabel}
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  const abbrev = getNationalityAbbrev(player.nationality);
 
   return (
     <p

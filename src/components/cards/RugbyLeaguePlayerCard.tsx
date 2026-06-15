@@ -16,6 +16,7 @@ import { AchievementChipList } from "./AchievementChipList";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
 import { getClubColors } from "@/lib/clubs";
+import { getPlayerColorClub, getPlayerDisplayClub } from "@/lib/players/run-club";
 import { POSITION_TILE_LABEL } from "@/lib/positions";
 import {
   ClubColourBar,
@@ -82,7 +83,8 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
   clubColorOverride,
   className = "",
 }: RugbyLeaguePlayerCardProps) {
-  const colorClub = clubColorOverride ?? player.club;
+  const displayClub = getPlayerDisplayClub(player);
+  const colorClub = getPlayerColorClub(player, clubColorOverride);
   const colors = getClubColors(colorClub);
   const isLegend = player.category === "legend";
   const isGoat = isGoatPlayer(player);
@@ -141,7 +143,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
     const positionLabel = POSITION_TILE_LABEL[player.position];
     return (
       <RLCardShell
-        club={player.club}
+        club={colorClub}
         clubColorOverride={clubColorOverride}
         className={`shrink-0 ${PITCH_SIZE} ${className}`}
       >
@@ -213,7 +215,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
 
     return (
       <RLCardShell
-        club={player.club}
+        club={colorClub}
         clubColorOverride={clubColorOverride}
         className={`${equalHeight ? "min-h-full" : ""} ${className}`}
       >
@@ -251,7 +253,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
 
         <ClubColourBar club={colorClub} />
         <ClubNameStrip
-          club={colorClub}
+          club={displayClub}
           colors={colors}
           compact={mobileCompact}
         />
@@ -323,14 +325,14 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
 
   return (
     <RLCardShell
-      club={player.club}
+      club={colorClub}
       clubColorOverride={clubColorOverride}
       className={`${equalHeight ? "min-h-full" : ""} ${
         isGoat ? "ring-2 ring-accent-gold" : isLegend ? "ring-2 ring-accent-gold/40" : ""
       } ${allowAchievementPopover ? "!overflow-visible" : ""} ${className}`}
     >
       <ClubColourBar club={colorClub} />
-      <ClubNameStrip club={colorClub} colors={colors} />
+      <ClubNameStrip club={displayClub} colors={colors} />
 
       <div className="flex flex-1 flex-col gap-2 p-3 sm:p-4">
         <div className="flex items-start gap-3">

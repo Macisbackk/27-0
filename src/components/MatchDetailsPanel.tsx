@@ -9,6 +9,7 @@ import {
   type TeamScoringDetail,
 } from "@/lib/game/season-simulation";
 import { getOpponentTeamSummary } from "@/lib/game/opponent-scorers";
+import { getEraTeamByDisplayName } from "@/lib/players/era-teams";
 import { formatValue } from "@/lib/players";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import { getTeamTier } from "@/lib/team-tiers";
@@ -36,6 +37,8 @@ interface MatchDetailsPanelProps {
   /** Era mode: club colours for the user's team label. */
   userClubColorOverride?: string;
   eraClubLookup?: Record<string, string>;
+  eraTeamRatings?: Record<string, number>;
+  eraTeamValues?: Record<string, number>;
 }
 
 export function MatchDetailsPanel({
@@ -47,16 +50,25 @@ export function MatchDetailsPanel({
   userTeamName = DREAM_TEAM_NAME,
   userClubColorOverride,
   eraClubLookup,
+  eraTeamRatings,
+  eraTeamValues,
 }: MatchDetailsPanelProps) {
   const detail = fixture.scoringDetail;
   const userValue = userSquad ? getSquadValue(userSquad) : 0;
   const userAvgRating = userSquad ? getAverageSquadRating(userSquad) : 0;
   const userTier = getTeamTier(userAvgRating);
-  const opponentSummary = getOpponentTeamSummary(
-    fixture.opponent,
-    seed,
-    fixture.round
-  );
+  const eraOpponent = eraClubLookup
+    ? getEraTeamByDisplayName(fixture.opponent)
+    : null;
+  const opponentSummary =
+    eraOpponent && eraTeamRatings?.[fixture.opponent] !== undefined
+      ? {
+          name: fixture.opponent,
+          totalValue: eraTeamValues?.[fixture.opponent] ?? 0,
+          averageRating: eraTeamRatings[fixture.opponent],
+          tier: getTeamTier(eraTeamRatings[fixture.opponent]),
+        }
+      : getOpponentTeamSummary(fixture.opponent, seed, fixture.round);
 
   return (
     <motion.div

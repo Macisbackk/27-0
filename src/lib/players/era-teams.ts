@@ -6,6 +6,7 @@ import { getPlayableClubNames } from "../clubs/super-league-display";
 import { getPlayerById, getPlayersByClub } from "./index";
 import { isHiddenPlayer } from "./goat";
 import { withEraYear } from "./player-age";
+import { withRunClub } from "./run-club";
 import {
   SQUAD_STRUCTURE,
   createEmptySquad,
@@ -247,15 +248,53 @@ export function getEraRosterPlayerIds(club: string, year: string): string[] {
   return getEraWikipediaSquadPlayerIds(club, year) ?? [];
 }
 
+const eraTeamByDisplayName = new Map<string, EraTeam>();
+
+function indexEraTeams(teams: EraTeam[]): void {
+  eraTeamByDisplayName.clear();
+  for (const team of teams) {
+    eraTeamByDisplayName.set(team.displayName, team);
+  }
+}
+
+/** Lookup a built era team by its display name (e.g. Bradford Bulls '03). */
+export function getEraTeamByDisplayName(
+  displayName: string,
+  teams?: EraTeam[]
+): EraTeam | null {
+  if (teams) {
+    return teams.find((team) => team.displayName === displayName) ?? null;
+  }
+  if (eraTeamByDisplayName.size === 0) {
+    indexEraTeams(getAllEraTeams());
+  }
+  return eraTeamByDisplayName.get(displayName) ?? null;
+}
+
+/** Era team XIII with run-context club stamped on each player. */
+export function getEraTeamMatchSquad(eraTeam: EraTeam): Player[] {
+  const eraYear = getEraSquadYear(eraTeam);
+  return eraTeam.playerIds
+    .map((id) => getPlayerById(id))
+    .filter((player): player is Player => player !== undefined)
+    .map((player) =>
+      withRunClub(player, eraTeam.displayName, { eraYear })
+    );
+}
+
 export function buildEraSquadFromRoster(
   playerIds: string[],
   slotPositions?: Position[],
-  eraYear?: number
+  eraYear?: number,
+  runClub?: string
 ): SquadSlot[] {
   let squad = createEmptySquad();
 
-  const eraPlayer = (player: Player): Player =>
-    eraYear !== undefined ? withEraYear(player, eraYear) : player;
+  const eraPlayer = (player: Player): Player => {
+    const withYear =
+      eraYear !== undefined ? withEraYear(player, eraYear) : player;
+    return runClub ? withRunClub(withYear, runClub, { eraYear }) : withYear;
+  };
 
   if (slotPositions && slotPositions.length === playerIds.length) {
     const slotsByPosition = new Map<Position, SquadSlot[]>();
@@ -501,5 +540,6 @@ export function getAllEraTeams(): EraTeam[] {
     }
   }
 
+  indexEraTeams(teams);
   return teams;
 }
