@@ -1,6 +1,7 @@
 /**
- * 27-0 sound API — centralised manager with file assets + synth fallback.
- * Assets: public/sounds/ (see README). Missing files fail silently.
+ * 27-0 sound API — centralised manager with optional file assets + synth fallback.
+ * All UI/game audio should go through these helpers (never raw Audio() in components).
+ * Assets: public/sounds/ (see README). Missing files use synthesized tones.
  */
 
 import type { GameDifficulty } from "./types";
@@ -20,10 +21,14 @@ export {
   unlockSound,
 };
 
-/* ── UI ── */
+/* ── Navigation ── */
 
 export function playUiClick(): void {
   playSound("click");
+}
+
+export function playTabChange(): void {
+  playSound("tabChange");
 }
 
 export function playMenuOpen(): void {
@@ -34,8 +39,20 @@ export function playMenuClose(): void {
   playSound("menuClose");
 }
 
+/* ── Panels ── */
+
 export function playPanelExpand(): void {
   playSound("expand");
+}
+
+export function playPanelClose(): void {
+  playSound("panelClose");
+}
+
+/* ── Toggles ── */
+
+export function playToggle(): void {
+  playSound("toggle");
 }
 
 export function playHardModeOn(): void {
@@ -46,7 +63,25 @@ export function playHardModeOff(): void {
   playSound("hardOff");
 }
 
-/* ── Recruitment ── */
+export function playEraModeOn(): void {
+  playSound("eraOn");
+}
+
+export function playEraModeOff(): void {
+  playSound("eraOff");
+}
+
+/* ── Feedback ── */
+
+export function playSuccess(): void {
+  playSound("success");
+}
+
+export function playWarning(): void {
+  playSound("warning");
+}
+
+/* ── Recruitment / selection ── */
 
 export function playPositionSelect(): void {
   playSound("select");
@@ -66,6 +101,18 @@ export function playReroll(): void {
 
 export function playPositionComplete(): void {
   playSound("positionComplete");
+}
+
+export function playDraftPlacement(): void {
+  playSound("draftPlace");
+}
+
+export function playRemovePlayer(): void {
+  playSound("remove");
+}
+
+export function playAutofill(): void {
+  playSound("autofill");
 }
 
 export function playHistoricPlayerAppears(): void {
@@ -102,10 +149,18 @@ export function playSuperSamHallasActivate(): void {
   playSound("superSamHallas");
 }
 
-/* ── Season simulation ── */
+/* ── Season / round simulation ── */
 
 export function playSeasonStart(): void {
   playSound("seasonStart");
+}
+
+export function playSimulateRound(): void {
+  playSound("simulateRound");
+}
+
+export function playSimulateAll(): void {
+  playSound("simulateAll");
 }
 
 export function playSeasonComplete(): void {

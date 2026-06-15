@@ -58,6 +58,7 @@ import {
   playModeChallengeCupStart,
   playModeClassicStart,
   playModeDraftStart,
+  playDraftPlacement,
   playPlayerSelect,
   playPositionComplete,
   playPositionSelect,
@@ -456,7 +457,7 @@ export function GameBoard({
       );
       setSquad(newSquad);
       setPendingPlayer(null);
-      playPositionComplete();
+      playDraftPlacement();
 
       const filled = getFilledCount(newSquad);
       if (filled >= TOTAL_SLOTS) {

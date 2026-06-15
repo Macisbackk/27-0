@@ -7,7 +7,7 @@ import {
   tabGroupClass,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { playUiClick } from "@/lib/sound";
+import { playEraModeOff, playEraModeOn } from "@/lib/sound";
 
 interface ChallengeCupVariantToggleProps {
   eraMode: boolean;
@@ -53,7 +53,8 @@ export function ChallengeCupVariantToggle({
         <button
           type="button"
           onClick={() => {
-            playUiClick();
+            if (!eraMode) return;
+            playEraModeOff();
             onEraModeChange(false);
           }}
           className={currentClass}
@@ -63,7 +64,8 @@ export function ChallengeCupVariantToggle({
         <button
           type="button"
           onClick={() => {
-            playUiClick();
+            if (eraMode) return;
+            playEraModeOn();
             onEraModeChange(true);
           }}
           className={eraClass}

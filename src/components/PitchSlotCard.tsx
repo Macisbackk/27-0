@@ -8,7 +8,10 @@ import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
 /** Shared footprint for empty and filled pitch slots — scales down on mobile. */
 export const PITCH_SLOT_SIZE_CLASS =
-  "h-[clamp(60px,14vw,96px)] w-[clamp(54px,12vw,88px)]";
+  "h-[clamp(50px,11.5vw,84px)] w-[clamp(46px,10.5vw,76px)]";
+
+export const PITCH_SLOT_COMPACT_CLASS =
+  "h-[clamp(44px,10vw,68px)] w-[clamp(40px,9vw,64px)]";
 
 interface PitchSlotCardProps {
   slot: SquadSlot;
@@ -16,6 +19,7 @@ interface PitchSlotCardProps {
   /** Era mode: use era team club colours instead of the player's current club. */
   clubColorOverride?: string;
   className?: string;
+  compact?: boolean;
 }
 
 /** Compact tactical-board marker — matches empty position box footprint. */
@@ -24,6 +28,7 @@ export function PitchSlotCard({
   hardMode,
   clubColorOverride,
   className = "",
+  compact = false,
 }: PitchSlotCardProps) {
   const player = slot.player!;
   const colors = getClubColors(getPlayerColorClub(player, clubColorOverride));
@@ -36,7 +41,9 @@ export function PitchSlotCard({
 
   return (
     <div
-      className={`pitch-slot-card flex shrink-0 flex-col overflow-hidden rounded-lg border-2 border-accent-green/50 bg-black/70 shadow-[0_0_10px_rgba(34,197,94,0.2)] ${PITCH_SLOT_SIZE_CLASS} ${className}`}
+      className={`pitch-slot-card flex shrink-0 flex-col overflow-hidden rounded-lg border-2 border-accent-green/50 bg-black/70 shadow-[0_0_10px_rgba(34,197,94,0.2)] ${
+        compact ? PITCH_SLOT_COMPACT_CLASS : PITCH_SLOT_SIZE_CLASS
+      } ${className}`}
       title={player.name}
     >
       <div className="flex h-1 w-full shrink-0">
@@ -45,9 +52,9 @@ export function PitchSlotCard({
       </div>
       <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-0 px-0.5 py-0.5">
         <span
-          className={`font-display text-sm font-black leading-none sm:text-base ${
-            hardMode ? "text-gray-500" : "text-accent-green"
-          }`}
+          className={`font-display font-black leading-none ${
+            compact ? "text-xs sm:text-sm" : "text-sm sm:text-base"
+          } ${hardMode ? "text-gray-500" : "text-accent-green"}`}
         >
           {ratingLabel}
         </span>
@@ -56,10 +63,10 @@ export function PitchSlotCard({
             {baseRating}→{Math.round(effectiveRating)}
           </span>
         )}
-        <span className="w-full text-center font-display text-[8px] font-bold uppercase leading-tight tracking-wide text-gray-300 sm:text-[9px]">
+        <span className="w-full text-center font-display text-[7px] font-bold uppercase leading-tight tracking-wide text-gray-300 sm:text-[8px]">
           {positionLabel}
         </span>
-        <p className="w-full truncate text-center font-display text-[7px] font-semibold leading-tight text-white sm:text-[8px]">
+        <p className="w-full line-clamp-2 text-center font-display text-[6px] font-semibold leading-tight text-white sm:text-[7px]">
           {player.name}
         </p>
       </div>

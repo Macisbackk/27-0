@@ -212,6 +212,56 @@ export const synth = {
   menuOpen: () => playTone(360, 0.06, { volume: 0.04, type: "triangle" }),
   menuClose: () => playTone(300, 0.06, { volume: 0.035, type: "triangle" }),
   expand: () => playTone(480, 0.05, { volume: 0.04 }),
+  panelClose: () => playTone(340, 0.04, { volume: 0.03, type: "triangle" }),
+  eraOn: () =>
+    playSequence(
+      [
+        { freq: 440, dur: 0.08, vol: 0.055, type: "triangle" },
+        { freq: 554, dur: 0.1, vol: 0.06, type: "triangle" },
+        { freq: 659, dur: 0.12, vol: 0.055, type: "triangle" },
+      ],
+      0.06
+    ),
+  eraOff: () => playTone(392, 0.06, { volume: 0.045, type: "triangle" }),
+  toggle: () => playTone(480, 0.04, { volume: 0.035 }),
+  success: () =>
+    playSequence(
+      [
+        { freq: 523, dur: 0.07, vol: 0.05 },
+        { freq: 659, dur: 0.08, vol: 0.045 },
+      ],
+      0.05
+    ),
+  warning: () =>
+    playSequence(
+      [
+        { freq: 330, dur: 0.1, vol: 0.045, type: "triangle" },
+        { freq: 277, dur: 0.12, vol: 0.04, type: "triangle" },
+      ],
+      0.08
+    ),
+  autofill: () =>
+    playSequence(
+      [
+        { freq: 392, dur: 0.07, vol: 0.05 },
+        { freq: 494, dur: 0.08, vol: 0.05 },
+        { freq: 587, dur: 0.09, vol: 0.045 },
+      ],
+      0.06
+    ),
+  tabChange: () => playTone(420, 0.04, { volume: 0.035, type: "triangle" }),
+  simulateRound: () =>
+    playTone(280, 0.09, { volume: 0.045, type: "triangle" }),
+  simulateAll: () =>
+    playSequence(
+      [
+        { freq: 280, dur: 0.08, vol: 0.045, type: "triangle" },
+        { freq: 350, dur: 0.1, vol: 0.05, type: "triangle" },
+      ],
+      0.07
+    ),
+  draftPlace: () => playTone(540, 0.06, { volume: 0.05 }),
+  remove: () => playTone(360, 0.05, { volume: 0.04, type: "triangle" }),
   grade: (grade: string) => {
     switch (grade) {
       case "S+":

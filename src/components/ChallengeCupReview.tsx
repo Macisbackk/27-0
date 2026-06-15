@@ -25,7 +25,7 @@ import { formatValue } from "@/lib/players";
 import {
   buildChallengeCupTournamentStats,
 } from "@/lib/game/challenge-cup-stats";
-import { playGradeSound, playPanelExpand } from "@/lib/sound";
+import { playGradeSound, playPanelClose, playPanelExpand } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { FixtureResultRow } from "./FixtureResultRow";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
@@ -373,6 +373,7 @@ export function ChallengeCupReview({
                     userTeamName={userTeamName}
                     onClick={() => {
                       if (!isSelected) playPanelExpand();
+                      else playPanelClose();
                       setSelectedFixture(isSelected ? null : fixture);
                     }}
                     selected={isSelected}
@@ -389,7 +390,10 @@ export function ChallengeCupReview({
                         eraClubLookup={cupResult.eraClubLookup}
                         eraTeamRatings={cupResult.eraTeamRatings}
                         eraTeamValues={cupResult.eraTeamValues}
-                        onClose={() => setSelectedFixture(null)}
+                        onClose={() => {
+                          playPanelClose();
+                          setSelectedFixture(null);
+                        }}
                         roundLabel={getCupRoundLabel(fixture.round)}
                       />
                     )}
@@ -445,16 +449,24 @@ export function ChallengeCupReview({
         <CollapsibleReviewSection title="Club Representation" delay={0.44}>
           <ClubRepresentation
             summary={clubSummary}
+            squad={squad}
             clubColorOverride={userClubColorOverride}
+            eraTeamLabel={cupResult.eraMode ? userTeamName : undefined}
           />
         </CollapsibleReviewSection>
 
         <CollapsibleReviewSection
-          title="Your Team vs Best Team of the Tournament"
+          title={
+            cupResult.eraMode
+              ? "Your Team vs Strongest Opponent"
+              : "Your Team vs Best Team of the Tournament"
+          }
           helper={
-            cupResult.bracketMatches && cupResult.bracketMatches.length > 0
-              ? "Squad OVR comparison — your team against the best tournament performer by wins, points and tries."
-              : "Squad OVR comparison — your team rating against the highest-rated opponent you faced in the cup."
+            cupResult.eraMode
+              ? "Squad OVR comparison — your era team against the highest-rated opponent you faced in the cup."
+              : cupResult.bracketMatches && cupResult.bracketMatches.length > 0
+                ? "Squad OVR comparison — your team against the best tournament performer by wins, points and tries."
+                : "Squad OVR comparison — your team rating against the highest-rated opponent you faced in the cup."
           }
           variant="featured"
           delay={0.46}

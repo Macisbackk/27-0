@@ -24,6 +24,10 @@ import {
   playMatchDefeat,
   playMatchNarrowWin,
   playMatchUpsetVictory,
+  playPanelClose,
+  playSimulateAll,
+  playSimulateRound,
+  playUiClick,
 } from "@/lib/sound";
 import { getReadableTextColor } from "@/lib/ui/contrast";
 import { UI_SURFACES } from "@/lib/ui/surfaces";
@@ -75,6 +79,7 @@ export function ChallengeCupBracket({
   const handleSimulateMatch = useCallback(
     (matchId: string) => {
       if (!canSimulateMatch(state, matchId)) return;
+      playSimulateRound();
       const next = simulateBracketMatch(state, matchId, squad);
       const match = state.matches.find((m) => m.id === matchId);
       const completed = next.matches.find((m) => m.id === matchId);
@@ -104,6 +109,7 @@ export function ChallengeCupBracket({
   );
 
   const handleSimulateRound = useCallback(() => {
+    playSimulateRound();
     const next = simulateBracketRound(state, activeRound, squad);
     setState(next);
     if (next.tournamentComplete) {
@@ -116,6 +122,7 @@ export function ChallengeCupBracket({
   }, [state, activeRound, squad, onComplete]);
 
   const handleSimulateTournament = useCallback(() => {
+    playSimulateAll();
     const next = simulateBracketTournament(state, squad);
     setState(next);
     const cupResult = buildChallengeCupResult(next, squad);
@@ -231,7 +238,11 @@ export function ChallengeCupBracket({
               byeTeams={state.byeTeams}
               eraClubLookup={lookup}
               onSelect={(id) =>
-                setSelectedId((prev) => (prev === id ? null : id))
+                setSelectedId((prev) => {
+                  const next = prev === id ? null : id;
+                  if (next !== null) playUiClick();
+                  return next;
+                })
               }
               activeRound={activeRound}
             />
@@ -244,7 +255,10 @@ export function ChallengeCupBracket({
           <BracketMatchDetailsPanel
             match={selectedMatch}
             eraClubLookup={lookup}
-            onClose={() => setSelectedId(null)}
+            onClose={() => {
+              playPanelClose();
+              setSelectedId(null);
+            }}
           />
         )}
       </AnimatePresence>

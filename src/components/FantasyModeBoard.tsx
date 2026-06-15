@@ -28,9 +28,11 @@ import { recordCompletedRun } from "@/lib/storage/run";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import {
   playModeClassicStart,
+  playAutofill,
   playPositionSelect,
+  playRemovePlayer,
   playSeasonStart,
-  playUiClick,
+  playWarning,
 } from "@/lib/sound";
 import { formatValue } from "@/lib/players";
 import { FANTASY_MODE_INTRO } from "@/lib/mode-labels";
@@ -120,18 +122,20 @@ export function FantasyModeBoard() {
 
   const handleRemovePlayer = () => {
     if (selectedSlotIndex === null) return;
+    playRemovePlayer();
     setSquad((prev) => clearFantasySlot(prev, selectedSlotIndex));
     setSelectedSlotIndex(null);
   };
 
   const handleAutofill = () => {
-    playUiClick();
     const result = autofillFantasySquad(squad);
     if (result.success) {
+      playAutofill();
       setSquad(result.squad);
       setAutofillError(null);
       setSelectedSlotIndex(null);
     } else {
+      playWarning();
       setAutofillError(result.message);
     }
   };

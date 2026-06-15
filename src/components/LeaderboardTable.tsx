@@ -18,7 +18,7 @@ import {
   getCupTeamWinsLeaderboardAsync,
   type CupTeamWinsLeaderboardRow,
 } from "@/lib/storage/cup-team-wins";
-import { playUiClick } from "@/lib/sound";
+import { playTabChange } from "@/lib/sound";
 import { CupTeamWinsBarGraph } from "./CupTeamWinsBarGraph";
 import { HardModeBadge } from "./HardModeBadge";
 import {
@@ -74,7 +74,7 @@ export function LeaderboardTable({
   const isTeamWinsTracker = activeTracker === "challenge_cup_team_wins";
 
   const handleModeChange = (mode: LeaderboardDbMode) => {
-    if (mode !== leaderboardMode) playUiClick();
+    if (mode !== leaderboardMode) playTabChange();
     setLeaderboardMode(mode);
     setTracker(getDefaultTrackerForDbMode(mode));
     if (mode === "challenge-cup" || mode === "fantasy") {
@@ -185,7 +185,7 @@ export function LeaderboardTable({
                 key={t.id}
                 type="button"
                 onClick={() => {
-                  if (activeTracker !== t.id) playUiClick();
+                  if (activeTracker !== t.id) playTabChange();
                   setTracker(t.id);
                 }}
                 className={`shrink-0 min-h-[40px] border-b-2 px-3 py-2 ${TYPO.button} transition sm:px-4 ${
@@ -211,7 +211,7 @@ export function LeaderboardTable({
           <button
             type="button"
             onClick={() => {
-              if (difficulty !== "NORMAL") playUiClick();
+              if (difficulty !== "NORMAL") playTabChange();
               setDifficulty("NORMAL");
             }}
             className={tabGroupButtonClass(difficulty === "NORMAL")}
@@ -221,7 +221,7 @@ export function LeaderboardTable({
           <button
             type="button"
             onClick={() => {
-              if (difficulty !== "HARD") playUiClick();
+              if (difficulty !== "HARD") playTabChange();
               setDifficulty("HARD");
             }}
             className={tabGroupButtonClass(difficulty === "HARD", "hard")}
@@ -244,7 +244,7 @@ export function LeaderboardTable({
               key={p}
               type="button"
               onClick={() => {
-                if (period !== p) playUiClick();
+                if (period !== p) playTabChange();
                 setPeriod(p);
               }}
               className={`rounded-full px-3 py-1.5 text-xs font-medium transition ${

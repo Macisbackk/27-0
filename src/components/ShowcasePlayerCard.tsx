@@ -7,7 +7,7 @@ import { getClubColors, getClubTheme } from "@/lib/clubs";
 import { RugbyLeaguePlayerCard } from "./cards/RugbyLeaguePlayerCard";
 import { ClubColourBar } from "./ClubBadge";
 import { ClubDualSwatch } from "./ClubDualSwatch";
-import { playUiClick } from "@/lib/sound";
+import { playPanelClose, playPanelExpand } from "@/lib/sound";
 
 interface ShowcasePlayerCardProps {
   player: Player;
@@ -52,9 +52,10 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
   );
 
   const handleToggle = useCallback(() => {
-    playUiClick();
+    if (expanded) playPanelClose();
+    else playPanelExpand();
     onToggle(player);
-  }, [player, onToggle]);
+  }, [expanded, player, onToggle]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
@@ -110,7 +111,6 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
             type="button"
             className="mt-2 w-full rounded-lg border border-pitch-600/50 px-3 py-2 text-xs font-medium text-gray-300 transition hover:border-accent-green/40 hover:text-accent-green"
             onClick={() => {
-              playUiClick();
               onOpenDetail(player);
             }}
           >

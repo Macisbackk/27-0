@@ -72,6 +72,28 @@ export interface ExtendedTeamComparison {
   useTriesConceded?: boolean;
 }
 
+function normalizeTeamKey(name: string): string {
+  return name.trim().toLowerCase();
+}
+
+function isUserTeamName(name: string, userTeamName: string): boolean {
+  return normalizeTeamKey(name) === normalizeTeamKey(userTeamName);
+}
+
+/** Unique opponents from completed user fixtures, excluding the user's own team. */
+function getFacedOpponents(
+  fixtures: MatchFixture[],
+  userTeamName: string
+): string[] {
+  const opponents = new Set<string>();
+  for (const fixture of fixtures) {
+    const opp = fixture.opponent?.trim();
+    if (!opp || isUserTeamName(opp, userTeamName)) continue;
+    opponents.add(opp);
+  }
+  return [...opponents];
+}
+
 function playableFixtures(
   fixtures: MatchFixture[],
   eraMode?: boolean
@@ -82,15 +104,34 @@ function playableFixtures(
 
 function getEraStrongestOpposition(
   fixtures: MatchFixture[],
-  eraTeamRatings: Record<string, number>
+  eraTeamRatings: Record<string, number>,
+  userTeamName: string
 ): TeamRatingEntry | null {
   let best: TeamRatingEntry | null = null;
 
-  for (const fixture of fixtures) {
-    const rating = eraTeamRatings[fixture.opponent];
+  for (const name of getFacedOpponents(fixtures, userTeamName)) {
+    const rating = eraTeamRatings[name];
     if (rating === undefined) continue;
     if (!best || rating > best.rating) {
-      best = { name: fixture.opponent, rating, tier: getTeamTier(rating) };
+      best = { name, rating, tier: getTeamTier(rating) };
+    }
+  }
+
+  return best;
+}
+
+function getEraMostExpensiveOpposition(
+  fixtures: MatchFixture[],
+  eraTeamValues: Record<string, number>,
+  userTeamName: string
+): TeamValueEntry | null {
+  let best: TeamValueEntry | null = null;
+
+  for (const name of getFacedOpponents(fixtures, userTeamName)) {
+    const value = eraTeamValues[name];
+    if (value === undefined) continue;
+    if (!best || value > best.value) {
+      best = { name, value };
     }
   }
 
@@ -133,23 +174,6 @@ export function getBestTournamentTeam(
     if (score > bestScore || (score === bestScore && rating > best.rating)) {
       bestScore = score;
       best = { name, rating, tier: getTeamTier(rating) };
-    }
-  }
-
-  return best;
-}
-
-function getEraMostExpensiveOpposition(
-  fixtures: MatchFixture[],
-  eraTeamValues: Record<string, number>
-): TeamValueEntry | null {
-  let best: TeamValueEntry | null = null;
-
-  for (const fixture of fixtures) {
-    const value = eraTeamValues[fixture.opponent];
-    if (value === undefined) continue;
-    if (!best || value > best.value) {
-      best = { name: fixture.opponent, value };
     }
   }
 
@@ -253,48 +277,8 @@ export function formatWinPercentage(wins: number, losses: number): string {
   return `${Math.round((wins / total) * 100)}%`;
 }
 
-function getEraOpponentsFromFixtures(fixtures: MatchFixture[]): string[] {
-  const opponents = new Set<string>();
-  for (const fixture of fixtures) {
-    if (fixture.opponent) opponents.add(fixture.opponent);
-  }
-  return [...opponents];
-}
-
-function getStrongestEraOpposition(
-  fixtures: MatchFixture[],
-  eraTeamRatings: Record<string, number>
-): TeamRatingEntry | null {
-  const opponents = getEraOpponentsFromFixtures(fixtures);
-  let best: TeamRatingEntry | null = null;
-
-  for (const name of opponents) {
-    const rating = eraTeamRatings[name];
-    if (rating === undefined) continue;
-    if (!best || rating > best.rating) {
-      best = { name, rating, tier: getTeamTier(rating) };
-    }
-  }
-
-  return best;
-}
-
-function getMostExpensiveEraOpposition(
-  fixtures: MatchFixture[],
-  eraTeamValues: Record<string, number>
-): TeamValueEntry | null {
-  const opponents = getEraOpponentsFromFixtures(fixtures);
-  let best: TeamValueEntry | null = null;
-
-  for (const name of opponents) {
-    const value = eraTeamValues[name];
-    if (value === undefined) continue;
-    if (!best || value > best.value) {
-      best = { name, value };
-    }
-  }
-
-  return best;
+function isInvalidOpponentName(name: string): boolean {
+  return name === "—" || name === "N/A" || !name.trim();
 }
 
 /** Highest squad value among playable opposition clubs faced. */
@@ -304,10 +288,15 @@ export function getMostExpensiveOpposition(
   options?: {
     eraMode?: boolean;
     eraTeamValues?: Record<string, number>;
+    userTeamName?: string;
   }
 ): TeamValueEntry | null {
-  if (options?.eraMode && options.eraTeamValues) {
-    return getEraMostExpensiveOpposition(fixtures, options.eraTeamValues);
+  if (options?.eraMode && options.eraTeamValues && options.userTeamName) {
+    return getEraMostExpensiveOpposition(
+      fixtures,
+      options.eraTeamValues,
+      options.userTeamName
+    );
   }
 
   const teams = new Map<string, number>();
@@ -345,11 +334,11 @@ export function getMostExpensiveTeam(
   teams.set(userTeamName, userValue);
 
   if (options?.eraMode && options.eraTeamValues) {
-    for (const fixture of fixtures) {
-      const oppValue = options.eraTeamValues[fixture.opponent];
+    for (const name of getFacedOpponents(fixtures, userTeamName)) {
+      const oppValue = options.eraTeamValues[name];
       if (oppValue === undefined) continue;
-      const prev = teams.get(fixture.opponent) ?? 0;
-      teams.set(fixture.opponent, Math.max(prev, oppValue));
+      const prev = teams.get(name) ?? 0;
+      teams.set(name, Math.max(prev, oppValue));
     }
   } else {
     for (const fixture of playableFixtures(fixtures, options?.eraMode)) {
@@ -377,10 +366,15 @@ export function getStrongestOpposition(
   options?: {
     eraMode?: boolean;
     eraTeamRatings?: Record<string, number>;
+    userTeamName?: string;
   }
 ): TeamRatingEntry | null {
-  if (options?.eraMode && options.eraTeamRatings) {
-    return getEraStrongestOpposition(fixtures, options.eraTeamRatings);
+  if (options?.eraMode && options.eraTeamRatings && options.userTeamName) {
+    return getEraStrongestOpposition(
+      fixtures,
+      options.eraTeamRatings,
+      options.userTeamName
+    );
   }
   return getBestOppositionRatedTeam(fixtures, seed, options);
 }
@@ -428,11 +422,11 @@ export function getBestRatedTeam(
   teams.set(userTeamName, userRating);
 
   if (options?.eraMode && options.eraTeamRatings) {
-    for (const fixture of fixtures) {
-      const rating = options.eraTeamRatings[fixture.opponent];
+    for (const name of getFacedOpponents(fixtures, userTeamName)) {
+      const rating = options.eraTeamRatings[name];
       if (rating === undefined) continue;
-      const prev = teams.get(fixture.opponent) ?? 0;
-      teams.set(fixture.opponent, Math.max(prev, rating));
+      const prev = teams.get(name) ?? 0;
+      teams.set(name, Math.max(prev, rating));
     }
   } else {
     for (const fixture of playableFixtures(fixtures, options?.eraMode)) {
@@ -517,6 +511,7 @@ export function getExtendedTeamComparison(
     eraTeamRatings: options.eraTeamRatings,
     eraTeamValues: options.eraTeamValues,
     eraClubLookup: options.eraClubLookup,
+    userTeamName,
   };
 
   const summary = getTeamComparisonSummary(
@@ -554,7 +549,7 @@ export function getExtendedTeamComparison(
         };
 
   const bestTournamentTeam =
-    cupMode && bracketMatches.length > 0
+    cupMode && !eraMode && bracketMatches.length > 0
       ? getBestTournamentTeam(
           bracketMatches,
           userTeamName,
@@ -564,13 +559,19 @@ export function getExtendedTeamComparison(
         )
       : null;
 
-  const strongestOpponent = bestTournamentTeam
-    ? bestTournamentTeam
-    : getStrongestOpposition(fixtures, seed, eraOpts) ?? {
-        name: "—",
-        rating: 0,
-        tier: "—",
-      };
+  const strongestOpponent = eraMode
+    ? getEraStrongestOpposition(
+        fixtures,
+        options.eraTeamRatings ?? {},
+        userTeamName
+      ) ?? { name: "N/A", rating: 0, tier: "—" }
+    : bestTournamentTeam
+      ? bestTournamentTeam
+      : getStrongestOpposition(fixtures, seed, eraOpts) ?? {
+          name: "—",
+          rating: 0,
+          tier: "—",
+        };
   const useLeagueStats =
     isFullLeagueSeason(fixtures) && options.seasonResult != null;
 
@@ -588,29 +589,32 @@ export function getExtendedTeamComparison(
             (sum, fixture) => sum + fixture.triesAgainst,
             0
           ),
-          oppWinPct:
-            strongestOpponent.name === "—"
+          oppWinPct: isInvalidOpponentName(strongestOpponent.name)
               ? "—"
-              : bracketMatches.length > 0
-                ? (() => {
-                    const stats = getBracketTeamTournamentStats(bracketMatches).get(
-                      strongestOpponent.name
-                    );
-                    if (!stats) return "—";
-                    return formatWinPercentage(stats.wins, stats.losses);
-                  })()
-                : "—",
-          oppTries:
-            strongestOpponent.name === "—"
+              : eraMode
+                ? getHeadToHeadWinPct(strongestOpponent.name, fixtures)
+                : bracketMatches.length > 0
+                  ? (() => {
+                      const stats = getBracketTeamTournamentStats(
+                        bracketMatches
+                      ).get(strongestOpponent.name);
+                      if (!stats) return "—";
+                      return formatWinPercentage(stats.wins, stats.losses);
+                    })()
+                  : "—",
+          oppTries: isInvalidOpponentName(strongestOpponent.name)
               ? 0
-              : getClubBracketTriesScored(strongestOpponent.name, bracketMatches),
-          oppTriesConceded:
-            strongestOpponent.name === "—"
+              : eraMode
+                ? getHeadToHeadTries(strongestOpponent.name, fixtures, "opponent")
+                : getClubBracketTriesScored(strongestOpponent.name, bracketMatches),
+          oppTriesConceded: isInvalidOpponentName(strongestOpponent.name)
               ? 0
-              : getClubBracketTriesConceded(
-                  strongestOpponent.name,
-                  bracketMatches
-                ),
+              : eraMode
+                ? getHeadToHeadTries(strongestOpponent.name, fixtures, "user")
+                : getClubBracketTriesConceded(
+                    strongestOpponent.name,
+                    bracketMatches
+                  ),
         }
       : {
           userWinPct: formatWinPercentage(options.wins, options.losses),
@@ -631,15 +635,15 @@ export function getExtendedTeamComparison(
   const oppRound = eraMode
     ? fixtures.find((f) => f.opponent === strongestOpponent.name)?.round ?? 1
     : findBestOpponentRound(strongestOpponent.name, fixtures, seed);
-  const strongestOpponentValue =
-    strongestOpponent.name === "—"
-      ? 0
-      : eraMode && options.eraTeamValues?.[strongestOpponent.name] !== undefined
-        ? options.eraTeamValues[strongestOpponent.name]
-        : getOpponentSquadValue(strongestOpponent.name, seed, oppRound);
+  const strongestOpponentValue = isInvalidOpponentName(strongestOpponent.name)
+    ? 0
+    : eraMode && options.eraTeamValues?.[strongestOpponent.name] !== undefined
+      ? options.eraTeamValues[strongestOpponent.name]
+      : getOpponentSquadValue(strongestOpponent.name, seed, oppRound);
 
-  const ratingCompare =
-    userRating > strongestOpponent.rating + 0.05
+  const ratingCompare = isInvalidOpponentName(strongestOpponent.name)
+    ? "user"
+    : userRating > strongestOpponent.rating + 0.05
       ? "user"
       : userRating < strongestOpponent.rating - 0.05
         ? "opponent"
@@ -676,9 +680,8 @@ export function getExtendedTeamComparison(
       winPct: comparisonStats.oppWinPct,
       totalTries: comparisonStats.oppTries,
       triesConceded: comparisonStats.oppTriesConceded,
-      topPlayer:
-        strongestOpponent.name === "—"
-          ? { name: "—", rating: 0 }
+      topPlayer: isInvalidOpponentName(strongestOpponent.name)
+          ? { name: "N/A", rating: 0 }
           : getTopPlayerFromSquad(resolvedOppClub, seed, oppRound),
     },
     strongestOpponent,

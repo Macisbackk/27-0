@@ -29,6 +29,7 @@ import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
 import { BTN } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { runStatsPageValidation } from "@/lib/validation/stats-page-validation";
+import { playTabChange } from "@/lib/sound";
 
 export function StatsPanel() {
   const [activeTab, setActiveTab] = useState<StatsTabId>("overall");
@@ -112,7 +113,10 @@ export function StatsPanel() {
             <button
               key={tab.id}
               type="button"
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => {
+                if (activeTab !== tab.id) playTabChange();
+                setActiveTab(tab.id);
+              }}
               className={`shrink-0 min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
                 activeTab === tab.id ? BTN.tabActive : BTN.tabIdle
               }`}

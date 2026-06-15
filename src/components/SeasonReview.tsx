@@ -18,7 +18,7 @@ import { getExtendedTeamComparison } from "@/lib/team-value-comparison";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { formatSeasonWinPercentageOrDash } from "@/lib/stats-views";
-import { playGradeSound, playPanelExpand } from "@/lib/sound";
+import { playGradeSound, playPanelClose, playPanelExpand } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { FixtureResultRow } from "./FixtureResultRow";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
@@ -319,6 +319,7 @@ export function SeasonReview({
                     fixture={fixture}
                     onClick={() => {
                       if (!isSelected) playPanelExpand();
+                      else playPanelClose();
                       setSelectedFixture(isSelected ? null : fixture);
                     }}
                     selected={isSelected}
@@ -330,7 +331,10 @@ export function SeasonReview({
                         fixture={fixture}
                         seed={seed}
                         userSquad={squad}
-                        onClose={() => setSelectedFixture(null)}
+                        onClose={() => {
+                          playPanelClose();
+                          setSelectedFixture(null);
+                        }}
                       />
                     )}
                   </AnimatePresence>
@@ -384,7 +388,7 @@ export function SeasonReview({
 
         <CollapsibleReviewSection title="Club Representation" delay={0.44}>
           <div className="text-left">
-            <ClubRepresentation summary={clubSummary} />
+            <ClubRepresentation summary={clubSummary} squad={squad} />
           </div>
         </CollapsibleReviewSection>
 

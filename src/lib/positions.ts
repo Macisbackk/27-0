@@ -95,19 +95,19 @@ export const FORMATION_COORDS: Record<
   number,
   { left: number; top: number }
 > = {
-  0: { left: 50, top: 6 },
-  1: { left: 8, top: 22 },
-  3: { left: 32, top: 22 },
-  4: { left: 68, top: 22 },
-  2: { left: 92, top: 22 },
+  0: { left: 50, top: 8 },
+  1: { left: 14, top: 24 },
+  3: { left: 34, top: 24 },
+  4: { left: 66, top: 24 },
+  2: { left: 86, top: 24 },
   5: { left: 36, top: 40 },
   6: { left: 64, top: 40 },
-  7: { left: 24, top: 58 },
+  7: { left: 26, top: 58 },
   8: { left: 50, top: 58 },
-  9: { left: 76, top: 58 },
+  9: { left: 74, top: 58 },
   10: { left: 34, top: 76 },
   12: { left: 66, top: 76 },
-  11: { left: 50, top: 92 },
+  11: { left: 50, top: 90 },
 };
 
 /** Standard RL shirt numbers 1–13 for pitch slot indices. */

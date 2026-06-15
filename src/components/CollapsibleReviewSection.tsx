@@ -4,6 +4,7 @@ import { memo, useCallback, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { playPanelClose, playPanelExpand } from "@/lib/sound";
 
 export interface CollapsibleReviewSectionProps {
   title: string;
@@ -23,7 +24,13 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
   children,
 }: CollapsibleReviewSectionProps) {
   const [open, setOpen] = useState(defaultOpen);
-  const toggle = useCallback(() => setOpen((v) => !v), []);
+  const toggle = useCallback(() => {
+    setOpen((v) => {
+      if (v) playPanelClose();
+      else playPanelExpand();
+      return !v;
+    });
+  }, []);
 
   const panelClass =
     variant === "featured"

@@ -2,6 +2,7 @@
 
 import { memo, useCallback, useState } from "react";
 import type { PlayerAchievement } from "@/lib/players/achievements";
+import { playPanelClose, playPanelExpand } from "@/lib/sound";
 import { ACHIEVEMENT_TAG_VARIANT, RLTag } from "./rl-card";
 
 interface AchievementChipListProps {
@@ -37,7 +38,11 @@ const DreamTeamCollapsibleChip = memo(function DreamTeamCollapsibleChip({
   const toggle = useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
-    setOpen((value) => !value);
+    setOpen((value) => {
+      if (value) playPanelClose();
+      else playPanelExpand();
+      return !value;
+    });
   }, []);
 
   return (

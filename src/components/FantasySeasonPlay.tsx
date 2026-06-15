@@ -19,7 +19,11 @@ import {
   playMatchDefeat,
   playMatchNarrowWin,
   playMatchUpsetVictory,
-  playUiClick,
+  playPanelClose,
+  playPanelExpand,
+  playSimulateAll,
+  playSimulateRound,
+  playTabChange,
 } from "@/lib/sound";
 import { LeagueTable } from "./LeagueTable";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
@@ -77,7 +81,7 @@ export function FantasySeasonPlay({
 
   const handleNextRound = () => {
     if (state.isComplete || simulating) return;
-    playUiClick();
+    playSimulateRound();
     setSimulating(true);
     const next = simulateNextFantasyRound(state);
     const fixture = next.fixtures[next.fixtures.length - 1];
@@ -89,7 +93,7 @@ export function FantasySeasonPlay({
 
   const handleSimulateAll = () => {
     if (state.isComplete || simulating) return;
-    playUiClick();
+    playSimulateAll();
     setSimulating(true);
     const next = simulateAllFantasyRounds(state);
     setState(next);
@@ -201,7 +205,7 @@ export function FantasySeasonPlay({
           <button
             type="button"
             onClick={() => {
-              playUiClick();
+              playTabChange();
               setShowTableMobile((v) => !v);
             }}
             className={`${BTN.base} ${BTN.secondary} px-2 py-1 text-xs`}
@@ -222,7 +226,7 @@ export function FantasySeasonPlay({
           <button
             type="button"
             onClick={() => {
-              playUiClick();
+              playTabChange();
               setShowFixtures((v) => !v);
             }}
             className={`${BTN.base} ${showFixtures ? BTN.primary : BTN.secondary}`}
@@ -242,9 +246,14 @@ export function FantasySeasonPlay({
                   fixture={fixture}
                   selected={selectedFixture?.round === fixture.round}
                   onClick={() =>
-                    setSelectedFixture((current) =>
-                      current?.round === fixture.round ? null : fixture
-                    )
+                    setSelectedFixture((current) => {
+                      if (current?.round === fixture.round) {
+                        playPanelClose();
+                        return null;
+                      }
+                      playPanelExpand();
+                      return fixture;
+                    })
                   }
                 />
                 {fixture.matchBio && selectedFixture?.round !== fixture.round && (
@@ -258,7 +267,10 @@ export function FantasySeasonPlay({
                       fixture={fixture}
                       seed={state.seed}
                       userSquad={squad}
-                      onClose={() => setSelectedFixture(null)}
+                      onClose={() => {
+                        playPanelClose();
+                        setSelectedFixture(null);
+                      }}
                     />
                   )}
                 </AnimatePresence>

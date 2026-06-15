@@ -12,7 +12,7 @@ import {
   POSITION_DESCRIPTIONS,
   POSITION_TILE_LABEL,
 } from "@/lib/positions";
-import { PitchSlotCard, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
+import { PitchSlotCard, PITCH_SLOT_COMPACT_CLASS, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
 
 interface RugbyPitchProps {
   squad: SquadSlot[];
@@ -37,6 +37,8 @@ interface RugbyPitchProps {
   hideValueSummary?: boolean;
   /** Era mode: use era team club colours on filled slot cards. */
   clubColorOverride?: string;
+  /** Read-only compact formation for Player Representation. */
+  formationOnly?: boolean;
 }
 
 function RugbyPitchInner({
@@ -56,13 +58,20 @@ function RugbyPitchInner({
   placementPlayer,
   hideValueSummary,
   clubColorOverride,
+  formationOnly = false,
 }: RugbyPitchProps) {
   const lockedSet = useMemo(() => new Set(lockedSlots ?? []), [lockedSlots]);
-  const headerTitle = interactive
-    ? "Squad Selection — Click to Recruit"
-    : compact
-      ? "Team Sheet"
-      : "Matchday Squad";
+  const headerTitle = formationOnly
+    ? "Team Sheet"
+    : interactive
+      ? "Squad Selection — Click to Recruit"
+      : compact
+        ? "Team Sheet"
+        : "Matchday Squad";
+
+  const slotSizeClass = formationOnly || compact
+    ? PITCH_SLOT_COMPACT_CLASS
+    : PITCH_SLOT_SIZE_CLASS;
 
   const slotByIndex = useMemo(
     () => new Map(squad.map((s) => [s.slotIndex, s])),
@@ -71,7 +80,7 @@ function RugbyPitchInner({
 
   return (
     <div className="relative w-full overflow-x-hidden">
-      {!compact && (
+      {!compact && !formationOnly && (
         <div className="matchday-panel mb-3 flex items-center justify-between px-4 py-2">
           <h3 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-green">
             {headerTitle}
@@ -99,21 +108,27 @@ function RugbyPitchInner({
 
       <div
         className={`mx-auto w-full ${
-          compact ? "max-w-[380px]" : "max-w-[480px] sm:max-w-[580px] md:max-w-[680px]"
+          formationOnly
+            ? "max-w-[min(100%,340px)]"
+            : compact
+              ? "max-w-[380px]"
+              : "max-w-[min(100%,360px)] sm:max-w-[520px] md:max-w-[600px]"
         } ${dimmed ? "opacity-60" : ""}`}
       >
         <div
           className={
-            compact
+            compact || formationOnly
               ? ""
               : "max-h-[min(85vh,820px)] overflow-x-hidden overflow-y-auto sm:max-h-none sm:overflow-visible"
           }
         >
           <div
             className={`relative w-full overflow-hidden rounded-2xl border-2 border-accent-green/40 shadow-[0_0_24px_rgba(34,197,94,0.15)] rugby-pitch-pro ${
-              compact
-                ? "min-h-[580px]"
-                : "min-h-[700px] sm:min-h-[660px] md:min-h-[640px] lg:aspect-[5/8] lg:min-h-0"
+              formationOnly
+                ? "min-h-[500px]"
+                : compact
+                  ? "min-h-[540px]"
+                  : "min-h-[580px] sm:min-h-[600px] md:min-h-[580px] lg:aspect-[5/8] lg:min-h-0"
             }`}
           >
             <PitchMarkings />
@@ -148,11 +163,12 @@ function RugbyPitchInner({
                       slot={slot}
                       highlighted={isHighlight}
                       selected={isSelected}
-                      compact={compact}
+                      compact={compact || formationOnly}
                       hardMode={hardMode}
                       interactive={canClick}
                       placementPlayer={placementPlayer}
                       clubColorOverride={clubColorOverride}
+                      slotSizeClass={slotSizeClass}
                       onClick={
                         canClick ? () => onSlotClick!(slotIndex) : undefined
                       }
@@ -165,7 +181,7 @@ function RugbyPitchInner({
         </div>
       </div>
 
-      {!compact && (
+      {!compact && !formationOnly && (
         <div className="mx-auto mt-2 h-1.5 max-w-[580px] overflow-hidden rounded-full bg-pitch-800">
           <motion.div
             className="h-full rounded-full bg-gradient-to-r from-accent-green to-emerald-400"
@@ -260,7 +276,8 @@ function GoalPosts({ end }: { end: "top" | "bottom" }) {
   );
 }
 
-const EMPTY_SLOT_BASE_CLASS = `squad-marker-empty flex shrink-0 flex-col items-center justify-center gap-0.5 rounded-lg border-2 px-1 py-1 box-border ${PITCH_SLOT_SIZE_CLASS}`;
+const EMPTY_SLOT_BASE_CLASS =
+  "squad-marker-empty flex shrink-0 flex-col items-center justify-center gap-0 rounded-lg border-2 px-0.5 py-0.5 box-border";
 
 const EMPTY_SLOT_INTERACTIVE_CLASS =
   "cursor-pointer border-accent-green/50 bg-black/60 hover:border-accent-green hover:bg-accent-green/10 hover:shadow-[0_0_12px_rgba(34,197,94,0.35)] focus-visible:border-accent-green focus-visible:bg-accent-green/10 focus-visible:shadow-[0_0_12px_rgba(34,197,94,0.35)]";
@@ -274,6 +291,7 @@ const SquadMarker = memo(function SquadMarker({
   interactive,
   placementPlayer,
   clubColorOverride,
+  slotSizeClass = PITCH_SLOT_SIZE_CLASS,
   onClick,
 }: {
   slot: SquadSlot;
@@ -284,6 +302,7 @@ const SquadMarker = memo(function SquadMarker({
   interactive?: boolean;
   placementPlayer?: Player | null;
   clubColorOverride?: string;
+  slotSizeClass?: string;
   onClick?: () => void;
 }) {
   const player = slot.player;
@@ -349,7 +368,7 @@ const SquadMarker = memo(function SquadMarker({
           type="button"
           onClick={onClick}
           title={tooltip}
-          className={`${EMPTY_SLOT_BASE_CLASS} ${stateClass} outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50`}
+          className={`${EMPTY_SLOT_BASE_CLASS} ${slotSizeClass} ${stateClass} outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50`}
         >
           {inner}
         </button>
@@ -357,7 +376,7 @@ const SquadMarker = memo(function SquadMarker({
     }
 
     return (
-      <div className={`${EMPTY_SLOT_BASE_CLASS} ${stateClass}`} title={tooltip}>
+      <div className={`${EMPTY_SLOT_BASE_CLASS} ${slotSizeClass} ${stateClass}`} title={tooltip}>
         {inner}
       </div>
     );
@@ -380,10 +399,20 @@ const SquadMarker = memo(function SquadMarker({
               : "hover:ring-2 hover:ring-accent-green/40"
           }`}
         >
-          <PitchSlotCard slot={slot} hardMode={hardMode} clubColorOverride={clubColorOverride} />
+          <PitchSlotCard
+            slot={slot}
+            hardMode={hardMode}
+            clubColorOverride={clubColorOverride}
+            compact={_compact}
+          />
         </button>
       ) : (
-        <PitchSlotCard slot={slot} hardMode={hardMode} clubColorOverride={clubColorOverride} />
+        <PitchSlotCard
+          slot={slot}
+          hardMode={hardMode}
+          clubColorOverride={clubColorOverride}
+          compact={_compact}
+        />
       )}
     </motion.div>
   );

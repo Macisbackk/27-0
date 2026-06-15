@@ -21,6 +21,7 @@ import {
   playHardModeOff,
   playHardModeOn,
   playMenuClose,
+  playUiClick,
   toggleSoundMuted,
 } from "@/lib/sound";
 import {
@@ -119,6 +120,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   };
 
   const handleChallengeCupNavigate = () => {
+    playUiClick();
     setCupEraVariant(cupEraVariant);
     router.push(buildPlayHref("cup", "NORMAL", cupEraVariant));
     onClose();
@@ -149,6 +151,11 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 
   const handleToggleSound = () => {
     setMuted(toggleSoundMuted());
+  };
+
+  const handleNavClick = () => {
+    playUiClick();
+    onClose();
   };
 
   const toggleModeDifficulty = (modeKey: PlayModeKey, enabled: boolean) => {
@@ -240,7 +247,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       <li key={group.mode} className={NAV.playModeGroup}>
                         <Link
                           href={href}
-                          onClick={onClose}
+                          onClick={handleNavClick}
                           className={navLinkClass(active, isHard)}
                         >
                           <span aria-hidden className={NAV.icon}>
@@ -285,7 +292,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   <li>
                     <Link
                       href={buildPlayHref("fantasy")}
-                      onClick={onClose}
+                      onClick={handleNavClick}
                       className={navLinkClass(
                         isPlayModeActive(pathname, playSearch, "fantasy")
                       )}
@@ -345,7 +352,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       <li key={item.href}>
                         <Link
                           href={item.href}
-                          onClick={onClose}
+                          onClick={handleNavClick}
                           className={navLinkClass(active)}
                         >
                           <span aria-hidden className={NAV.icon}>
@@ -376,7 +383,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     ) : isLoggedIn ? (
                       <Link
                         href="/profile"
-                        onClick={onClose}
+                        onClick={handleNavClick}
                         className={navLinkClass(pathname.startsWith("/profile"))}
                       >
                         <span aria-hidden className={NAV.icon}>
@@ -390,7 +397,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     ) : (
                       <Link
                         href="/login"
-                        onClick={onClose}
+                        onClick={handleNavClick}
                         className={navLinkClass(pathname.startsWith("/login"))}
                       >
                         <span aria-hidden className={NAV.icon}>

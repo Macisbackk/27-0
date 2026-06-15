@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
 import type { Player } from "@/lib/types";
 import { formatPlayerDisplayName, formatPlayerAge, formatValue } from "@/lib/players";
 import { getGoldenBootYears } from "@/lib/players/achievements";
 import { getCachedPlayerAchievements } from "@/lib/players/achievement-cache";
+import { playPanelClose, playPanelExpand } from "@/lib/sound";
 import { AchievementChipList } from "./cards/AchievementChipList";
 import { RugbyLeaguePlayerCard } from "./cards/RugbyLeaguePlayerCard";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
@@ -18,13 +20,22 @@ export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
   const achievements = getCachedPlayerAchievements(player, "expanded");
   const goldenBootYears = getGoldenBootYears(player.id);
 
+  useEffect(() => {
+    playPanelExpand();
+  }, []);
+
+  const handleClose = () => {
+    playPanelClose();
+    onClose();
+  };
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-3 backdrop-blur-sm sm:items-center sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-label={`${formatPlayerDisplayName(player)} player details`}
-      onClick={onClose}
+      onClick={handleClose}
     >
       <div
         className={`card-glass max-h-[92vh] w-full max-w-lg overflow-y-auto ${SPACING.cardPadding} animate-fade-up`}
@@ -32,7 +43,7 @@ export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
       >
         <div className="mb-3 flex items-start justify-between gap-2">
           <p className={TYPO.sectionLabel}>Player Details</p>
-          <button type="button" onClick={onClose} className={BTN.closeSm}>
+          <button type="button" onClick={handleClose} className={BTN.closeSm}>
             Close
           </button>
         </div>
