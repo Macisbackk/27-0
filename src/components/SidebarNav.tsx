@@ -328,12 +328,12 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     <button
                       type="button"
                       onClick={handleChallengeCupNavigate}
-                      className={`${NAV.item} w-full ${
-                        isCupActive
-                          ? isEraCup
-                            ? "border border-accent-gold/40 bg-accent-gold text-pitch-950"
-                            : "border border-accent-gold/30 bg-accent-gold/10 text-accent-gold"
-                          : NAV.itemIdle
+                      className={`${navLinkClass(isCupActive, false)} w-full ${
+                        isCupActive && isEraCup
+                          ? "border-accent-gold/40 bg-accent-gold text-pitch-950 hover:bg-accent-gold/90"
+                          : isCupActive
+                            ? "border-accent-gold/30 bg-accent-gold/10 text-accent-gold"
+                            : ""
                       }`}
                     >
                       <span aria-hidden className={NAV.icon}>
@@ -342,18 +342,20 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       Challenge Cup
                       {isCupActive && (
                         <span
-                          className={`ml-auto h-1.5 w-1.5 rounded-full ${
+                          className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
                             isEraCup ? "bg-pitch-950" : "bg-accent-gold"
                           }`}
                         />
                       )}
                     </button>
-                    <ChallengeCupVariantToggle
-                      compact
-                      hideLabel
-                      eraMode={cupEraVariant}
-                      onEraModeChange={handleCupVariantChange}
-                    />
+                    <div className="px-0.5">
+                      <ChallengeCupVariantToggle
+                        compact
+                        hideLabel
+                        eraMode={cupEraVariant}
+                        onEraModeChange={handleCupVariantChange}
+                      />
+                    </div>
                   </li>
                 </ul>
               </section>
@@ -439,7 +441,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     ? "Sound off — click to enable"
                     : "Sound on — click to mute"
                 }
-                className={NAV.soundToggle}
+                className={`${NAV.soundToggle} btn-press`}
               >
                 <span
                   className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md border ${
@@ -462,10 +464,12 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   {muted ? "OFF" : "ON"}
                 </span>
               </button>
+              <p className={`${NAV.sectionLabel} mt-2`}>Links</p>
               <div className={NAV.footerLinks}>
                 <a
                   href={SUGGESTIONS_MAIL}
                   aria-label="Send a suggestion"
+                  title="Suggestions"
                   className={NAV.supportLink}
                 >
                   <SuggestionsIcon />
@@ -475,6 +479,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Buy Me A Coffee — support 27-0"
+                  title="Buy Me A Coffee"
                   className={NAV.supportLink}
                 >
                   <CoffeeIcon />
@@ -484,6 +489,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Follow 27-0 on X"
+                  title="Follow on X"
                   className={NAV.supportLink}
                 >
                   <XIcon />
@@ -538,8 +544,8 @@ function SoundOffIcon() {
 function CoffeeIcon() {
   return (
     <svg
-      width="12"
-      height="12"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -560,8 +566,8 @@ function CoffeeIcon() {
 function SuggestionsIcon() {
   return (
     <svg
-      width="12"
-      height="12"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -578,8 +584,8 @@ function SuggestionsIcon() {
 function XIcon() {
   return (
     <svg
-      width="12"
-      height="12"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden

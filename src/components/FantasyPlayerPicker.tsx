@@ -12,7 +12,10 @@ import {
 } from "@/lib/game/fantasy-mode";
 import { formatValue } from "@/lib/players";
 import { formatPlayerDisplayName } from "@/lib/players/prime-year";
+import { getPlayerColorClub } from "@/lib/players/run-club";
 import { filterShowcasePlayers, getUniqueClubs } from "@/lib/players/showcase";
+import { getClubColors } from "@/lib/clubs";
+import { POSITION_LABELS } from "@/lib/positions";
 import type { Player, SquadSlot } from "@/lib/types";
 import { PlayerCard } from "./PlayerCard";
 import { playPlayerSelect, playUiClick } from "@/lib/sound";
@@ -136,10 +139,13 @@ export function FantasyPlayerPicker({
     ? "max-h-[min(42vh,420px)] overflow-y-auto overflow-x-hidden px-3 py-3 sm:px-4"
     : "min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-3 py-2 sm:px-4 sm:py-3";
 
+  const listInnerClass = "mx-auto w-full max-w-2xl";
+  const contentWrapClass = inline ? "mx-auto w-full max-w-2xl" : "";
+
   return (
     <div className={shellClass}>
       <div className={headerClass}>
-        <div className="min-w-0 flex-1">
+        <div className={`min-w-0 flex-1 ${contentWrapClass}`}>
           <p className={TYPO.sectionLabel}>Select player</p>
           <h2 className="truncate font-display text-base font-bold text-white sm:text-lg">
             {slot.label}
@@ -156,6 +162,7 @@ export function FantasyPlayerPicker({
       </div>
 
       <div className={filtersClass}>
+        <div className={contentWrapClass}>
         {changingPlayer && onRemove && (
           <button
             type="button"
@@ -250,9 +257,11 @@ export function FantasyPlayerPicker({
         <p className={`${TYPO.bodySm} mt-2`}>
           {players.length} eligible player{players.length !== 1 ? "s" : ""}
         </p>
+        </div>
       </div>
 
       <div className={listClass}>
+        <div className={listInnerClass}>
         {players.length === 0 ? (
           <p className="py-8 text-center text-gray-500">
             No players match your filters.
@@ -266,6 +275,9 @@ export function FantasyPlayerPicker({
                 (signed && player.id !== slot.player?.id) || !affordable;
               const expanded = expandedPlayerId === player.id;
               const displayName = formatPlayerDisplayName(player);
+              const colorClub = getPlayerColorClub(player);
+              const colors = getClubColors(colorClub);
+              const positionLabel = POSITION_LABELS[player.position];
 
               return (
                 <li key={player.id}>
@@ -273,10 +285,13 @@ export function FantasyPlayerPicker({
                     className={`${CARD.base} overflow-hidden ${
                       disabled ? "border-red-900/40 opacity-60" : ""
                     } ${!affordable && !signed ? "border-red-900/30" : ""}`}
+                    style={{
+                      boxShadow: `inset 3px 0 0 ${colors.primary}`,
+                    }}
                   >
                     <button
                       type="button"
-                      className="btn-press flex w-full min-w-0 items-start gap-2 px-3 py-3 text-left sm:py-3.5"
+                      className="btn-press flex w-full min-w-0 items-center gap-2 px-3 py-3 text-left sm:gap-3 sm:py-3.5"
                       onClick={() => {
                         playUiClick();
                         setExpandedPlayerId((id) =>
@@ -284,16 +299,29 @@ export function FantasyPlayerPicker({
                         );
                       }}
                     >
-                      <span className="showcase-compact-name min-w-0 flex-1 font-display font-bold leading-snug text-white">
-                        {displayName}
+                      <span
+                        className="h-2 w-2 shrink-0 rounded-full"
+                        style={{ backgroundColor: colors.primary }}
+                        aria-hidden
+                      />
+                      <span className="min-w-0 flex-1">
+                        <span className="showcase-compact-name block font-display font-bold leading-snug text-white">
+                          {displayName}
+                        </span>
+                        <span className="mt-0.5 block text-[10px] text-gray-500 sm:text-xs">
+                          {positionLabel}
+                        </span>
                       </span>
-                      <span className="shrink-0 text-[10px] font-semibold text-gray-400 sm:text-xs">
-                        {player.peakRating} OVR
+                      <span className="shrink-0 text-center text-[10px] font-semibold text-gray-300 sm:text-xs">
+                        {player.peakRating}
+                        <span className="block text-[9px] font-medium text-gray-500">
+                          OVR
+                        </span>
                       </span>
-                      <span className="hidden shrink-0 text-[10px] text-gray-500 sm:inline sm:text-xs">
+                      <span className="shrink-0 text-center text-[10px] font-semibold text-accent-green sm:text-xs">
                         {formatValue(player.value)}
                       </span>
-                      <span className="shrink-0 self-start text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                      <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
                         {expanded ? "Close" : "View"}
                       </span>
                     </button>
@@ -332,6 +360,7 @@ export function FantasyPlayerPicker({
             })}
           </ul>
         )}
+        </div>
       </div>
     </div>
   );

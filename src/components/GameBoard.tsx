@@ -900,7 +900,7 @@ export function GameBoard({
             </div>
           )}
 
-          <AnimatePresence>
+          <AnimatePresence mode="wait">
             {phase === "reveal" && playerPair && currentRound && (
               <RecruitmentSlotReveal
                 key={choiceKey}

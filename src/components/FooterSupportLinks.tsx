@@ -1,4 +1,4 @@
-import { LINK } from "@/lib/ui/design-system";
+import { NAV } from "@/lib/ui/design-system";
 
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
 const SUGGESTIONS_MAIL =
@@ -7,30 +7,34 @@ const X_URL = "https://x.com/27and0";
 
 export function FooterSupportLinks() {
   return (
-    <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5">
+    <div className="mt-4 flex items-center justify-center gap-2">
+      <a
+        href={SUGGESTIONS_MAIL}
+        aria-label="Send a suggestion"
+        title="Suggestions"
+        className={NAV.supportLink}
+      >
+        <SuggestionsIcon />
+      </a>
       <a
         href={COFFEE_URL}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Buy Me A Coffee — support 27-0"
-        className={LINK.footer}
+        title="Buy Me A Coffee"
+        className={NAV.supportLink}
       >
         <CoffeeIcon />
-        <span className="hidden sm:inline">Buy Me A Coffee</span>
-      </a>
-      <a href={SUGGESTIONS_MAIL} aria-label="Send a suggestion" className={LINK.footer}>
-        <SuggestionsIcon />
-        <span>Suggestions</span>
       </a>
       <a
         href={X_URL}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Follow 27-0 on X"
-        className={LINK.footer}
+        title="Follow on X"
+        className={NAV.supportLink}
       >
         <XIcon />
-        <span>X</span>
       </a>
     </div>
   );
@@ -39,8 +43,8 @@ export function FooterSupportLinks() {
 function CoffeeIcon() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -61,8 +65,8 @@ function CoffeeIcon() {
 function SuggestionsIcon() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -79,8 +83,8 @@ function SuggestionsIcon() {
 function XIcon() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden

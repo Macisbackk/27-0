@@ -33,7 +33,8 @@ export function RecruitmentSlotReveal({
   const teamPool = useMemo(() => getTeamSpinPool(target.team), [target.team]);
   const yearPool = useMemo(() => getYearSpinPool(target.year), [target.year]);
 
-  const [phase, setPhase] = useState<"team" | "year" | "done">("team");
+  const [phase, setPhase] = useState<"team" | "year">("team");
+  const [yearLocked, setYearLocked] = useState(false);
   const [displayValue, setDisplayValue] = useState("");
   const [phaseLabel, setPhaseLabel] = useState("Scanning clubs…");
 
@@ -68,6 +69,7 @@ export function RecruitmentSlotReveal({
 
     let tick = 0;
     let cancelled = false;
+    let completeTimer: number | null = null;
     setDisplayValue(yearPool[0] ?? target.year);
 
     const yearInterval = window.setInterval(() => {
@@ -78,10 +80,10 @@ export function RecruitmentSlotReveal({
       if (tick >= YEAR_TICKS) {
         window.clearInterval(yearInterval);
         setDisplayValue(target.year);
-        setPhase("done");
+        setYearLocked(true);
         setPhaseLabel("Offers incoming");
         playRevealChoices();
-        window.setTimeout(() => {
+        completeTimer = window.setTimeout(() => {
           if (!cancelled) onComplete();
         }, HOLD_MS);
       }
@@ -90,6 +92,7 @@ export function RecruitmentSlotReveal({
     return () => {
       cancelled = true;
       window.clearInterval(yearInterval);
+      if (completeTimer) window.clearTimeout(completeTimer);
     };
   }, [phase, yearPool, target.year, onComplete]);
 
@@ -131,7 +134,7 @@ export function RecruitmentSlotReveal({
             <span
               key={step}
               className={`h-1.5 w-8 rounded-full transition ${
-                phase === step || (phase === "done" && step === "year")
+                phase === step || (yearLocked && step === "year")
                   ? "bg-accent-green shadow-[0_0_8px_rgba(34,197,94,0.5)]"
                   : phase === "year" && step === "team"
                     ? "bg-accent-green/60"

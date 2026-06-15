@@ -117,7 +117,7 @@ export function HomeModeSelector() {
           <Link
             href={classicHref}
             onClick={() => playUiClick()}
-            className={`mt-5 w-full ${BTN.base} ${classicHard ? BTN.primaryHard : BTN.primary}`}
+            className={`mt-5 w-full btn-press ${BTN.base} ${classicHard ? BTN.primaryHard : BTN.primary}`}
           >
             {classicHard ? "Start Hard Season" : "Start Season"} →
           </Link>
@@ -168,7 +168,7 @@ export function HomeModeSelector() {
         <Link
           href={buildPlayHref("fantasy")}
           onClick={() => playUiClick()}
-          className={`${CARD.glass} ${CARD.panel} group block w-full ${SPACING.cardPaddingLg} transition hover:border-accent-green/30 active:scale-[0.99]`}
+          className={`${CARD.glass} ${CARD.panel} group btn-press block w-full ${SPACING.cardPaddingLg} transition hover:border-accent-green/30 active:scale-[0.99]`}
         >
           <h2 className={`${TYPO.cardTitle} group-hover:text-accent-green`}>
             Fantasy Mode
@@ -187,11 +187,12 @@ export function HomeModeSelector() {
           </span>
         </Link>
 
-        <div
-          className={`${CARD.glass} ${CARD.panel} w-full ${SPACING.cardPaddingLg} transition hover:border-accent-gold/30`}
+        <ModePanel
+          title="Challenge Cup"
+          hardActive={false}
+          eraActive={cupEraMode}
         >
-          <h2 className={TYPO.cardTitle}>Challenge Cup</h2>
-          <p className={`mt-3 ${TYPO.body}`}>
+          <p className={TYPO.body}>
             Draft your squad and battle through a knockout tournament — or pick
             a historic club season and lead that era squad through the draw.
           </p>
@@ -208,11 +209,13 @@ export function HomeModeSelector() {
           <Link
             href={buildPlayHref("cup", "NORMAL", cupEraMode)}
             onClick={() => playModeChallengeCupStart()}
-            className={`mt-5 w-full ${BTN.base} ${BTN.goldOutline}`}
+            className={`mt-5 w-full ${BTN.base} ${
+              cupEraMode ? BTN.goldOutline : BTN.goldOutline
+            }`}
           >
             {cupEraMode ? "Start Era Challenge Cup →" : "Start Challenge Cup →"}
           </Link>
-        </div>
+        </ModePanel>
       </div>
     </div>
   );
@@ -221,27 +224,31 @@ export function HomeModeSelector() {
 function ModePanel({
   title,
   hardActive,
+  eraActive = false,
   children,
 }: {
   title: string;
   hardActive: boolean;
+  eraActive?: boolean;
   children: ReactNode;
 }) {
   const cardAccent = hardActive
     ? `${HARD.modeCard} ${HARD.modeCardHover}`
-    : `${CARD.featured} ${NORMAL.modeCardHover}`;
+    : eraActive
+      ? "border border-accent-gold/25 shadow-[0_0_32px_rgba(251,191,36,0.08)] hover:border-accent-gold/35"
+      : `${CARD.featured} ${NORMAL.modeCardHover}`;
+
+  const titleClass = hardActive
+    ? "text-accent-red"
+    : eraActive
+      ? "text-accent-gold"
+      : "text-white";
 
   return (
     <div
       className={`${CARD.glass} ${CARD.panel} group w-full ${SPACING.cardPaddingLg} transition ${cardAccent}`}
     >
-      <h2
-        className={`${TYPO.cardTitle} ${
-          hardActive ? "text-accent-red" : "text-white"
-        }`}
-      >
-        {title}
-      </h2>
+      <h2 className={`${TYPO.cardTitle} ${titleClass}`}>{title}</h2>
       {children}
     </div>
   );
