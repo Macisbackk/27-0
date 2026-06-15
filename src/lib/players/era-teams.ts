@@ -3,7 +3,7 @@ import { getAverageSquadRating } from "../squad-analysis";
 import { getTeamTier } from "../team-tiers";
 import { getClubByName } from "../clubs";
 import { getPlayableClubNames } from "../clubs/super-league-display";
-import { getPlayerById, getPlayersByClub, PLAYER_POOL } from "./index";
+import { getPlayerById, getPlayersByClub } from "./index";
 import { isHiddenPlayer } from "./goat";
 import { withEraYear } from "./player-age";
 import {
@@ -19,10 +19,11 @@ import {
   getEraWikipediaYearsForClub,
   hasEraWikipediaSquad,
 } from "./era-wikipedia-squads";
+import { getCurrentCalendarYear } from "./team-year-rosters";
 
 export const MIN_ERA_ROSTER_PLAYERS = 13;
 export const FULL_ERA_SQUAD_SIZE = 13;
-export const ERA_26_YEAR = "26";
+export const ERA_26_YEAR = "2026";
 
 export type EraTeamCategory = "26" | "historic";
 
@@ -49,32 +50,6 @@ export const ERA_CHALLENGE_CLUBS = [
 
 export type EraChallengeClub = (typeof ERA_CHALLENGE_CLUBS)[number];
 
-const DERIVED_ROSTER_CLUBS = new Set<string>([
-  "Widnes Vikings",
-  "London Broncos",
-  "Salford Red Devils",
-]);
-
-const DERIVED_CLUB_PLAYER_FILTERS: Record<
-  string,
-  (player: Player) => boolean
-> = {
-  "Widnes Vikings": (player) => player.id.startsWith("widnes-hist-"),
-  "London Broncos": (player) =>
-    player.club === "London Broncos" || player.id.startsWith("london-hist-"),
-  "Salford Red Devils": (player) =>
-    player.club === "Salford Red Devils" ||
-    player.id.startsWith("salford-hist-"),
-};
-
-function getPlayersForEraClub(clubName: string): Player[] {
-  if (DERIVED_ROSTER_CLUBS.has(clubName)) {
-    const filter = DERIVED_CLUB_PLAYER_FILTERS[clubName];
-    return filter ? PLAYER_POOL.filter(filter) : [];
-  }
-  return getPlayersByClub(clubName);
-}
-
 export interface EraTeam {
   id: string;
   clubName: string;
@@ -98,8 +73,9 @@ export function formatEraDisplayName(clubName: string, year: string): string {
   return `${clubName} '${shortYear.padStart(2, "0")}`;
 }
 
+/** @deprecated Use formatEraDisplayName(clubName, ERA_26_YEAR) */
 export function formatEra26DisplayName(clubName: string): string {
-  return `${clubName} ${ERA_26_YEAR}`;
+  return formatEraDisplayName(clubName, ERA_26_YEAR);
 }
 
 export function isEra26Year(year: string): boolean {
@@ -118,8 +94,6 @@ export function resolveEraTeamClubName(
   if (eraClubLookup?.[teamName]) return eraClubLookup[teamName];
   const historicMatch = teamName.match(/^(.+?) '\d{2}$/);
   if (historicMatch) return historicMatch[1];
-  const modernMatch = teamName.match(/^(.+?) 26$/);
-  if (modernMatch) return modernMatch[1];
   return teamName;
 }
 
@@ -150,33 +124,6 @@ export function isPlayerActiveInYear(player: Player, year: number): boolean {
   return true;
 }
 
-function getDerivedYearsForClub(clubName: string): string[] {
-  const players = getPlayersForEraClub(clubName);
-  const yearCounts = new Map<number, number>();
-
-  for (const player of players) {
-    const { start, end } = parseYearsActiveRange(player.yearsActive);
-    if (start === 0) continue;
-    const last = end ?? new Date().getFullYear();
-    for (let y = start; y <= last; y++) {
-      yearCounts.set(y, (yearCounts.get(y) ?? 0) + 1);
-    }
-  }
-
-  return [...yearCounts.entries()]
-    .filter(([, count]) => count >= MIN_ERA_ROSTER_PLAYERS)
-    .map(([year]) => String(year))
-    .sort((a, b) => Number(b) - Number(a));
-}
-
-function getDerivedRosterPlayerIds(club: string, year: string): string[] {
-  const y = Number(year);
-  return getPlayersForEraClub(club)
-    .filter((p) => isPlayerActiveInYear(p, y))
-    .sort((a, b) => b.peakRating - a.peakRating)
-    .map((p) => p.id);
-}
-
 export function getEraHistoricClubs(): EraChallengeClub[] {
   return ERA_CHALLENGE_CLUBS.filter(
     (club) => getEraHistoricYearsForClub(club).length > 0
@@ -195,10 +142,45 @@ export function getEra26Clubs(): string[] {
 }
 
 export function getEraHistoricYearsForClub(clubName: string): string[] {
-  return getEraWikipediaYearsForClub(clubName).filter((year) => {
-    const team = buildEraHistoricTeam(clubName, year);
-    return team !== null;
-  });
+  const currentYear = getCurrentCalendarYear();
+  return getEraWikipediaYearsForClub(clubName)
+    .filter((year) => Number(year) <= currentYear)
+    .filter((year) => {
+      const team = buildEraHistoricTeam(clubName, year);
+      return team !== null;
+    });
+}
+
+export function getEraClubsWithTeams(): string[] {
+  const clubs = new Set<string>();
+
+  for (const club of ERA_CHALLENGE_CLUBS) {
+    if (getEraYearsForClubUnified(club).length > 0) {
+      clubs.add(club);
+    }
+  }
+
+  for (const club of getPlayableClubNames()) {
+    if (getEraYearsForClubUnified(club).length > 0) {
+      clubs.add(club);
+    }
+  }
+
+  return [...clubs].sort((a, b) => a.localeCompare(b));
+}
+
+export function getEraYearsForClubUnified(clubName: string): string[] {
+  const years = new Set<string>();
+
+  for (const year of getEraHistoricYearsForClub(clubName)) {
+    years.add(year);
+  }
+
+  if (canBuildEra26Team(clubName)) {
+    years.add(ERA_26_YEAR);
+  }
+
+  return [...years].sort((a, b) => Number(b) - Number(a));
 }
 
 /** @deprecated Use getEraHistoricYearsForClub */
@@ -301,9 +283,7 @@ export function buildEraSquadFromRoster(
 }
 
 function expectedEraDisplayName(clubName: string, year: string): string {
-  return isEra26Year(year)
-    ? formatEra26DisplayName(clubName)
-    : formatEraDisplayName(clubName, year);
+  return formatEraDisplayName(clubName, year);
 }
 
 function validateEraTeam(
@@ -457,6 +437,14 @@ export function buildEraTeam(clubName: string, year: string): EraTeam | null {
   return buildEraHistoricTeam(clubName, year);
 }
 
+export function buildEraTeamForYear(
+  clubName: string,
+  year: string
+): EraTeam | null {
+  if (isEra26Year(year)) return buildEra26Team(clubName);
+  return buildEraHistoricTeam(clubName, year);
+}
+
 export function buildEraTeamForCategory(
   clubName: string,
   category: EraTeamCategory,
@@ -470,14 +458,9 @@ export function buildEraTeamForCategory(
 export function getAllEraTeams(): EraTeam[] {
   const teams: EraTeam[] = [];
 
-  for (const club of getEra26Clubs()) {
-    const team = buildEra26Team(club);
-    if (team) teams.push(team);
-  }
-
-  for (const club of ERA_CHALLENGE_CLUBS) {
-    for (const year of getEraHistoricYearsForClub(club)) {
-      const team = buildEraHistoricTeam(club, year);
+  for (const club of getEraClubsWithTeams()) {
+    for (const year of getEraYearsForClubUnified(club)) {
+      const team = buildEraTeamForYear(club, year);
       if (team) teams.push(team);
     }
   }

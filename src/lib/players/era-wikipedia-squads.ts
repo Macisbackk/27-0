@@ -45,7 +45,9 @@ export function hasEraWikipediaSquad(club: string, year: string): boolean {
 export function getEraWikipediaYearsForClub(club: string): string[] {
   const years = ERA_WIKIPEDIA_SQUADS[club];
   if (!years) return [];
+  const currentYear = new Date().getFullYear();
   return Object.keys(years)
+    .filter((year) => Number(year) <= currentYear)
     .filter((year) => (years[year]?.playerIds?.length ?? 0) === 13)
     .sort((a, b) => Number(b) - Number(a));
 }

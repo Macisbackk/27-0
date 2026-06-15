@@ -1,0 +1,542 @@
+{
+  "generatedAt": "2026-06-15T15:26:21.674Z",
+  "currentYear": 2026,
+  "summary": {
+    "playerIssues": 0,
+    "rosterFutureYears": 66,
+    "eraFutureYears": 0,
+    "errors": 0,
+    "warnings": 66,
+    "exposedTeamYearCount": 598
+  },
+  "issues": [
+    {
+      "source": "team-year-rosters",
+      "id": "Wigan Warriors",
+      "field": "year",
+      "value": "2027",
+      "severity": "warning",
+      "message": "Future roster year 2027 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wigan Warriors",
+      "field": "year",
+      "value": "2028",
+      "severity": "warning",
+      "message": "Future roster year 2028 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wigan Warriors",
+      "field": "year",
+      "value": "2029",
+      "severity": "warning",
+      "message": "Future roster year 2029 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wigan Warriors",
+      "field": "year",
+      "value": "2030",
+      "severity": "warning",
+      "message": "Future roster year 2030 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wigan Warriors",
+      "field": "year",
+      "value": "2031",
+      "severity": "warning",
+      "message": "Future roster year 2031 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wigan Warriors",
+      "field": "year",
+      "value": "2032",
+      "severity": "warning",
+      "message": "Future roster year 2032 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wigan Warriors",
+      "field": "year",
+      "value": "2033",
+      "severity": "warning",
+      "message": "Future roster year 2033 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wigan Warriors",
+      "field": "year",
+      "value": "2034",
+      "severity": "warning",
+      "message": "Future roster year 2034 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "St Helens",
+      "field": "year",
+      "value": "2027",
+      "severity": "warning",
+      "message": "Future roster year 2027 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "St Helens",
+      "field": "year",
+      "value": "2028",
+      "severity": "warning",
+      "message": "Future roster year 2028 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "St Helens",
+      "field": "year",
+      "value": "2029",
+      "severity": "warning",
+      "message": "Future roster year 2029 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "St Helens",
+      "field": "year",
+      "value": "2030",
+      "severity": "warning",
+      "message": "Future roster year 2030 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "St Helens",
+      "field": "year",
+      "value": "2031",
+      "severity": "warning",
+      "message": "Future roster year 2031 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "St Helens",
+      "field": "year",
+      "value": "2032",
+      "severity": "warning",
+      "message": "Future roster year 2032 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "St Helens",
+      "field": "year",
+      "value": "2033",
+      "severity": "warning",
+      "message": "Future roster year 2033 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leeds Rhinos",
+      "field": "year",
+      "value": "2027",
+      "severity": "warning",
+      "message": "Future roster year 2027 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leeds Rhinos",
+      "field": "year",
+      "value": "2028",
+      "severity": "warning",
+      "message": "Future roster year 2028 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leeds Rhinos",
+      "field": "year",
+      "value": "2029",
+      "severity": "warning",
+      "message": "Future roster year 2029 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leeds Rhinos",
+      "field": "year",
+      "value": "2030",
+      "severity": "warning",
+      "message": "Future roster year 2030 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leeds Rhinos",
+      "field": "year",
+      "value": "2031",
+      "severity": "warning",
+      "message": "Future roster year 2031 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leeds Rhinos",
+      "field": "year",
+      "value": "2032",
+      "severity": "warning",
+      "message": "Future roster year 2032 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leeds Rhinos",
+      "field": "year",
+      "value": "2033",
+      "severity": "warning",
+      "message": "Future roster year 2033 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Bradford Bulls",
+      "field": "year",
+      "value": "2027",
+      "severity": "warning",
+      "message": "Future roster year 2027 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Hull KR",
+      "field": "year",
+      "value": "2027",
+      "severity": "warning",
+      "message": "Future roster year 2027 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Hull KR",
+      "field": "year",
+      "value": "2028",
+      "severity": "warning",
+      "message": "Future roster year 2028 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Hull KR",
+      "field": "year",
+      "value": "2029",
+      "severity": "warning",
+      "message": "Future roster year 2029 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Hull KR",
+      "field": "year",
+      "value": "2030",
+      "severity": "warning",
+      "message": "Future roster year 2030 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Hull KR",
+      "field": "year",
+      "value": "2031",
+      "severity": "warning",
+      "message": "Future roster year 2031 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Hull FC",
+      "field": "year",
+      "value": "2027",
+      "severity": "warning",
+      "message": "Future roster year 2027 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Hull FC",
+      "field": "year",
+      "value": "2028",
+      "severity": "warning",
+      "message": "Future roster year 2028 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Hull FC",
+      "field": "year",
+      "value": "2029",
+      "severity": "warning",
+      "message": "Future roster year 2029 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Hull FC",
+      "field": "year",
+      "value": "2030",
+      "severity": "warning",
+      "message": "Future roster year 2030 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Hull FC",
+      "field": "year",
+      "value": "2031",
+      "severity": "warning",
+      "message": "Future roster year 2031 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Hull FC",
+      "field": "year",
+      "value": "2032",
+      "severity": "warning",
+      "message": "Future roster year 2032 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Hull FC",
+      "field": "year",
+      "value": "2033",
+      "severity": "warning",
+      "message": "Future roster year 2033 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leigh Leopards",
+      "field": "year",
+      "value": "2027",
+      "severity": "warning",
+      "message": "Future roster year 2027 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leigh Leopards",
+      "field": "year",
+      "value": "2028",
+      "severity": "warning",
+      "message": "Future roster year 2028 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leigh Leopards",
+      "field": "year",
+      "value": "2029",
+      "severity": "warning",
+      "message": "Future roster year 2029 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leigh Leopards",
+      "field": "year",
+      "value": "2030",
+      "severity": "warning",
+      "message": "Future roster year 2030 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leigh Leopards",
+      "field": "year",
+      "value": "2031",
+      "severity": "warning",
+      "message": "Future roster year 2031 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Leigh Leopards",
+      "field": "year",
+      "value": "2032",
+      "severity": "warning",
+      "message": "Future roster year 2032 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wakefield Trinity",
+      "field": "year",
+      "value": "2027",
+      "severity": "warning",
+      "message": "Future roster year 2027 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wakefield Trinity",
+      "field": "year",
+      "value": "2028",
+      "severity": "warning",
+      "message": "Future roster year 2028 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wakefield Trinity",
+      "field": "year",
+      "value": "2029",
+      "severity": "warning",
+      "message": "Future roster year 2029 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wakefield Trinity",
+      "field": "year",
+      "value": "2030",
+      "severity": "warning",
+      "message": "Future roster year 2030 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wakefield Trinity",
+      "field": "year",
+      "value": "2031",
+      "severity": "warning",
+      "message": "Future roster year 2031 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wakefield Trinity",
+      "field": "year",
+      "value": "2032",
+      "severity": "warning",
+      "message": "Future roster year 2032 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Wakefield Trinity",
+      "field": "year",
+      "value": "2033",
+      "severity": "warning",
+      "message": "Future roster year 2033 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Castleford Tigers",
+      "field": "year",
+      "value": "2027",
+      "severity": "warning",
+      "message": "Future roster year 2027 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Castleford Tigers",
+      "field": "year",
+      "value": "2028",
+      "severity": "warning",
+      "message": "Future roster year 2028 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Castleford Tigers",
+      "field": "year",
+      "value": "2029",
+      "severity": "warning",
+      "message": "Future roster year 2029 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Castleford Tigers",
+      "field": "year",
+      "value": "2030",
+      "severity": "warning",
+      "message": "Future roster year 2030 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Castleford Tigers",
+      "field": "year",
+      "value": "2031",
+      "severity": "warning",
+      "message": "Future roster year 2031 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Huddersfield Giants",
+      "field": "year",
+      "value": "2027",
+      "severity": "warning",
+      "message": "Future roster year 2027 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Huddersfield Giants",
+      "field": "year",
+      "value": "2028",
+      "severity": "warning",
+      "message": "Future roster year 2028 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Huddersfield Giants",
+      "field": "year",
+      "value": "2029",
+      "severity": "warning",
+      "message": "Future roster year 2029 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Huddersfield Giants",
+      "field": "year",
+      "value": "2030",
+      "severity": "warning",
+      "message": "Future roster year 2030 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Huddersfield Giants",
+      "field": "year",
+      "value": "2031",
+      "severity": "warning",
+      "message": "Future roster year 2031 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Huddersfield Giants",
+      "field": "year",
+      "value": "2032",
+      "severity": "warning",
+      "message": "Future roster year 2032 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Catalans Dragons",
+      "field": "year",
+      "value": "2027",
+      "severity": "warning",
+      "message": "Future roster year 2027 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Catalans Dragons",
+      "field": "year",
+      "value": "2028",
+      "severity": "warning",
+      "message": "Future roster year 2028 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Catalans Dragons",
+      "field": "year",
+      "value": "2029",
+      "severity": "warning",
+      "message": "Future roster year 2029 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Catalans Dragons",
+      "field": "year",
+      "value": "2030",
+      "severity": "warning",
+      "message": "Future roster year 2030 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Catalans Dragons",
+      "field": "year",
+      "value": "2031",
+      "severity": "warning",
+      "message": "Future roster year 2031 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Catalans Dragons",
+      "field": "year",
+      "value": "2032",
+      "severity": "warning",
+      "message": "Future roster year 2032 in JSON (filtered at display)"
+    },
+    {
+      "source": "team-year-rosters",
+      "id": "Catalans Dragons",
+      "field": "year",
+      "value": "2033",
+      "severity": "warning",
+      "message": "Future roster year 2033 in JSON (filtered at display)"
+    }
+  ]
+}

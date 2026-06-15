@@ -150,7 +150,7 @@ export function ClubRepresentation({
           className={`flex items-center justify-between ${CARD.base} px-4 py-3 ${TYPO.statValue} ${
             isValid
               ? "border-accent-green/35 bg-accent-green/10 text-accent-green"
-              : "border-red-500/35 bg-red-500/10 text-red-400"
+              : "border-accent-red/35 bg-accent-red/10 text-accent-red"
           }`}
         >
           <span className={TYPO.sectionTitle}>

@@ -198,7 +198,8 @@ function assertOneTeamPerClub(teams: EraTeam[]): void {
   }
 }
 
-export const ERA_BRACKET_TEAM_COUNT = 16;
+/** Era Challenge Cup uses the same 14-team bracket as the standard cup (12 R16 + 2 byes). */
+export const ERA_BRACKET_TEAM_COUNT = 14;
 export const ERA_OPPONENT_COUNT = ERA_BRACKET_TEAM_COUNT - 1;
 
 export const ERA_BRACKET_INSUFFICIENT_TEAMS =

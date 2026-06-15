@@ -5,6 +5,10 @@ export type TeamYearRosters = Record<string, Record<string, string[]>>;
 
 const TEAM_YEAR_ROSTERS = teamYearRostersData as TeamYearRosters;
 
+export function getCurrentCalendarYear(): number {
+  return new Date().getFullYear();
+}
+
 export function getTeamYearRosters(): TeamYearRosters {
   return TEAM_YEAR_ROSTERS;
 }
@@ -19,7 +23,21 @@ export function getTeamsWithYearRosters(): string[] {
 export function getYearsForTeam(team: string): string[] {
   const years = TEAM_YEAR_ROSTERS[team];
   if (!years) return [];
-  return Object.keys(years).sort((a, b) => Number(b) - Number(a));
+  const currentYear = getCurrentCalendarYear();
+  return Object.keys(years)
+    .filter((year) => Number(year) <= currentYear)
+    .sort((a, b) => Number(b) - Number(a));
+}
+
+/** Union of all roster player IDs for a team across available years. */
+export function getRosterPlayerIdsForTeamAllYears(team: string): string[] {
+  const ids = new Set<string>();
+  for (const year of getYearsForTeam(team)) {
+    for (const id of getRosterPlayerIds(team, year)) {
+      ids.add(id);
+    }
+  }
+  return [...ids];
 }
 
 export function getRosterPlayerIds(team: string, year: string): string[] {

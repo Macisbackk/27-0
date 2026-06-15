@@ -1,0 +1,725 @@
+{
+  "generatedAt": "2026-06-15T15:26:22.492Z",
+  "summary": {
+    "playersAudited": 1725,
+    "mismatches": 0,
+    "invertedPeers": 0,
+    "outOfBand": 53
+  },
+  "topValue": [
+    {
+      "id": "garry-schofield",
+      "name": "Garry Schofield",
+      "rating": 97,
+      "value": 650000
+    },
+    {
+      "id": "ellery-hanley",
+      "name": "Ellery Hanley",
+      "rating": 97,
+      "value": 631000
+    },
+    {
+      "id": "andrew-johns",
+      "name": "Andrew Johns",
+      "rating": 96,
+      "value": 580000
+    },
+    {
+      "id": "paul-sculthorpe",
+      "name": "Paul Sculthorpe",
+      "rating": 96,
+      "value": 563000
+    },
+    {
+      "id": "jason-robinson",
+      "name": "Jason Robinson",
+      "rating": 96,
+      "value": 563000
+    },
+    {
+      "id": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "rating": 95,
+      "value": 515000
+    },
+    {
+      "id": "sam-burgess",
+      "name": "Sam Burgess",
+      "rating": 95,
+      "value": 500000
+    },
+    {
+      "id": "kevin-sinfield",
+      "name": "Kevin Sinfield",
+      "rating": 95,
+      "value": 500000
+    },
+    {
+      "id": "andy-farrell",
+      "name": "Andy Farrell",
+      "rating": 95,
+      "value": 500000
+    },
+    {
+      "id": "martin-offiah",
+      "name": "Martin Offiah",
+      "rating": 94,
+      "value": 500000
+    },
+    {
+      "id": "rob-burrow",
+      "name": "Rob Burrow",
+      "rating": 94,
+      "value": 500000
+    },
+    {
+      "id": "wigan-hist-sam-tomkins",
+      "name": "Sam Tomkins",
+      "rating": 94,
+      "value": 500000
+    },
+    {
+      "id": "wigan-cur-bevan-french",
+      "name": "Bevan French",
+      "rating": 93,
+      "value": 465000
+    },
+    {
+      "id": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "rating": 93,
+      "value": 429000
+    },
+    {
+      "id": "paul-newlove",
+      "name": "Paul Newlove",
+      "rating": 92,
+      "value": 379000
+    }
+  ],
+  "lowValue": [
+    {
+      "id": "wigan-cur-harvey-ward",
+      "name": "Harvey Ward",
+      "rating": 75,
+      "value": 46000
+    },
+    {
+      "id": "wigan-cur-phoenix-steinwede",
+      "name": "Phoenix Steinwede",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "bradford-cur-cameron-bate",
+      "name": "Cameron Bate",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "bradford-cur-alfie-leake",
+      "name": "Alfie Leake",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "wakefield-cur-tom-whitehead",
+      "name": "Tom Whitehead",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "wakefield-cur-caleb-uele",
+      "name": "Caleb Uele",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "st-helens-cur-sam-royle",
+      "name": "Sam Royle",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "salford-cur-ellis-robson",
+      "name": "Ellis Robson",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "castleford-cur-lewis-peachey",
+      "name": "Lewis Peachey",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "castleford-cur-sylvester-namo",
+      "name": "Sylvester Namo",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "castleford-cur-bradley-martin",
+      "name": "Bradley Martin",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "london-cur-jacob-jones",
+      "name": "Jacob Jones",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "castleford-cur-daniel-hindmarsh-takyi",
+      "name": "Daniel Hindmarsh-Takyi",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "castleford-cur-elie-el-zakhem",
+      "name": "Elie El-Zakhem",
+      "rating": 76,
+      "value": 59000
+    },
+    {
+      "id": "london-cur-robert-butler",
+      "name": "Robert Butler",
+      "rating": 76,
+      "value": 59000
+    }
+  ],
+  "anomalies": [
+    {
+      "playerId": "wigan-cur-sam-walters",
+      "name": "Sam Walters",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "st-helens-cur-george-delaney",
+      "name": "George Delaney",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "st-helens-cur-matt-whitley",
+      "name": "Matt Whitley",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "leeds-cur-cooper-jenkins",
+      "name": "Cooper Jenkins",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "warrington-cur-sam-stone",
+      "name": "Sam Stone",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "warrington-cur-sam-powell",
+      "name": "Sam Powell",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "warrington-cur-jordy-crowther",
+      "name": "Jordy Crowther",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "bradford-cur-ethan-ryan",
+      "name": "Ethan Ryan",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "bradford-cur-dan-russell",
+      "name": "Dan Russell",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "bradford-cur-joe-keyes",
+      "name": "Joe Keyes",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "hull-fc-cur-amir-bourouh",
+      "name": "Amir Bourouh",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "leigh-cur-keanan-brand",
+      "name": "Keanan Brand",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "leigh-cur-liam-horne",
+      "name": "Liam Horne",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "leigh-cur-innes-senior",
+      "name": "Innes Senior",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "wakefield-cur-oliver-pratt",
+      "name": "Oliver Pratt",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "wakefield-cur-matty-storton",
+      "name": "Matty Storton",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "wakefield-cur-jay-pitts",
+      "name": "Jay Pitts",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "wakefield-cur-caius-faatili",
+      "name": "Caius Faatili",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "wakefield-cur-isaiah-vagana",
+      "name": "Isaiah Vagana",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "wakefield-cur-lachlan-walmsley",
+      "name": "Lachlan Walmsley",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "castleford-cur-zac-cini",
+      "name": "Zac Cini",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "castleford-cur-renouf-atoni",
+      "name": "Renouf Atoni",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "castleford-cur-george-lawler",
+      "name": "George Lawler",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "castleford-cur-alex-mellor",
+      "name": "Alex Mellor",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "castleford-cur-brad-singleton",
+      "name": "Brad Singleton",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "huddersfield-cur-sam-hewitt",
+      "name": "Sam Hewitt",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "huddersfield-cur-harry-rushton",
+      "name": "Harry Rushton",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "huddersfield-cur-fenton-rogers",
+      "name": "Fenton Rogers",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "catalans-cur-matthieu-laguerre",
+      "name": "Matthieu Laguerre",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "york-cur-liam-harris",
+      "name": "Liam Harris",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "york-cur-josh-griffin",
+      "name": "Josh Griffin",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "york-cur-jesse-dee",
+      "name": "Jesse Dee",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "york-cur-justin-sangare",
+      "name": "Justin Sangare",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "toulouse-cur-anthony-marion",
+      "name": "Anthony Marion",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "salford-cur-shane-wright",
+      "name": "Shane Wright",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "catalans-cur-lucas-albert",
+      "name": "Lucas Albert",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "hull-fc-cur-jake-clifford",
+      "name": "Jake Clifford",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": true,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "wakefield-cur-connor-wrench",
+      "name": "Connor Wrench",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "york-cur-matty-russell",
+      "name": "Matty Russell",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "london-hist-sadiq-adebiyi",
+      "name": "Sadiq Adebiyi",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "st-helens-hist-jamie-foster",
+      "name": "Jamie Foster",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "leeds-hist-mitch-garbutt",
+      "name": "Mitch Garbutt",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "castleford-hist-george-griffin",
+      "name": "George Griffin",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "bradford-hist-ben-harris",
+      "name": "Ben Harris",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "wakefield-hist-chris-hill",
+      "name": "Chris Hill",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "castleford-hist-oliver-holmes",
+      "name": "Oliver Holmes",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "salford-hist-jack-ormondroyd",
+      "name": "Jack Ormondroyd",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "widnes-hist-jack-owens",
+      "name": "Jack Owens",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "catalans-hist-paul-seguier",
+      "name": "Paul Séguier",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "huddersfield-hist-aaron-murphy",
+      "name": "Aaron Murphy",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": true,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "wakefield-hist-ben-jeffries",
+      "name": "Ben Jeffries",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": true,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    },
+    {
+      "playerId": "st-helens-hist-dom-peyroux",
+      "name": "Dom Peyroux",
+      "peakRating": 84,
+      "expectedValue": 158000,
+      "actualValue": 158000,
+      "hasOverride": false,
+      "kind": "out_of_band",
+      "message": "Value 158000 outside band [158000, 150000]"
+    }
+  ]
+}

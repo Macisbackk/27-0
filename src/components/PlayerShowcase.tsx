@@ -12,6 +12,7 @@ import {
   getShowcasePlayers,
   formatValue,
   getRosterPlayerIds,
+  getRosterPlayerIdsForTeamAllYears,
   getTeamsWithYearRosters,
   getYearsForTeam,
   hasTeamYearRoster,
@@ -19,11 +20,12 @@ import {
 import type { PlayerCategory, Position } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
 import {
+  applyShowcasePipeline,
   computeShowcaseDbStats,
-  filterShowcasePlayers,
   getUniqueClubs,
-  sortShowcasePlayers,
+  AGE_FILTER_LABELS,
   TIER_FILTER_LABELS,
+  type AgeFilter,
   type RatingFilter,
   type ShowcaseBrowseMode,
   type ShowcaseFilters,
@@ -62,8 +64,9 @@ const DEFAULT_FILTERS: ShowcaseFilters = {
   ratingMin: "all",
   tier: "all",
   yearsActive: "",
+  age: "all",
   browseMode: "all",
-  teamYearTeam: TEAM_YEAR_TEAMS[0] ?? "all",
+  teamYearTeam: "all",
   teamYearYear: "",
 };
 
@@ -114,11 +117,11 @@ export function PlayerShowcase() {
 
   const teamYearRosterIds = useMemo(() => {
     if (activeFiltersState.browseMode !== "teamYear") return null;
-    if (
-      activeFiltersState.teamYearTeam === "all" ||
-      !activeFiltersState.teamYearYear
-    ) {
-      return new Set<string>();
+    if (activeFiltersState.teamYearTeam === "all") return null;
+    if (!activeFiltersState.teamYearYear) {
+      return new Set(
+        getRosterPlayerIdsForTeamAllYears(activeFiltersState.teamYearTeam)
+      );
     }
     return new Set(
       getRosterPlayerIds(
@@ -128,14 +131,17 @@ export function PlayerShowcase() {
     );
   }, [activeFiltersState]);
 
-  const filtered = useMemo(() => {
-    const result = filterShowcasePlayers(
-      ALL_PLAYERS,
-      activeFiltersState,
-      teamYearRosterIds
-    );
-    return sortShowcasePlayers(result, sortKey, sortDir);
-  }, [activeFiltersState, sortKey, sortDir, teamYearRosterIds]);
+  const filtered = useMemo(
+    () =>
+      applyShowcasePipeline(
+        ALL_PLAYERS,
+        activeFiltersState,
+        sortKey,
+        sortDir,
+        teamYearRosterIds
+      ),
+    [activeFiltersState, sortKey, sortDir, teamYearRosterIds]
+  );
 
   const filterResultsKey = useMemo(
     () =>
@@ -147,6 +153,7 @@ export function PlayerShowcase() {
         filters.ratingMin,
         filters.tier,
         filters.yearsActive,
+        filters.age,
         filters.browseMode,
         filters.teamYearTeam,
         filters.teamYearYear,
@@ -161,6 +168,7 @@ export function PlayerShowcase() {
       filters.ratingMin,
       filters.tier,
       filters.yearsActive,
+      filters.age,
       filters.browseMode,
       filters.teamYearTeam,
       filters.teamYearYear,
@@ -273,14 +281,28 @@ export function PlayerShowcase() {
         clear: () => updateFilters((f) => ({ ...f, yearsActive: "" })),
       });
     }
+    if (filters.age !== DEFAULT_FILTERS.age) {
+      chips.push({
+        key: "age",
+        label: `Age: ${AGE_FILTER_LABELS[filters.age]}`,
+        clear: () => updateFilters((f) => ({ ...f, age: "all" })),
+      });
+    }
     if (filters.browseMode === "teamYear") {
+      const squadLabel =
+        filters.teamYearTeam === "all"
+          ? "All Teams"
+          : filters.teamYearYear
+            ? `${filters.teamYearTeam} ${filters.teamYearYear}`
+            : `${filters.teamYearTeam} (all years)`;
       chips.push({
         key: "teamYear",
-        label: `Squad: ${filters.teamYearTeam} ${filters.teamYearYear || "—"}`,
+        label: `Squad: ${squadLabel}`,
         clear: () =>
           updateFilters((f) => ({
             ...f,
             browseMode: "all",
+            teamYearTeam: "all",
             teamYearYear: "",
           })),
       });
@@ -405,10 +427,8 @@ export function PlayerShowcase() {
                     updateFilters((f) => ({
                       ...f,
                       browseMode: mode as ShowcaseBrowseMode,
-                      teamYearYear:
-                        mode === "teamYear" && f.teamYearTeam !== "all"
-                          ? getYearsForTeam(f.teamYearTeam)[0] ?? ""
-                          : "",
+                      teamYearTeam: "all",
+                      teamYearYear: "",
                     }))
                   }
                   className={`rounded-lg border px-2 py-2 text-[11px] font-medium transition ${
@@ -430,15 +450,15 @@ export function PlayerShowcase() {
                   value={filters.teamYearTeam}
                   onChange={(e) => {
                     const team = e.target.value;
-                    const years = team !== "all" ? getYearsForTeam(team) : [];
                     updateFilters((f) => ({
                       ...f,
                       teamYearTeam: team,
-                      teamYearYear: years[0] ?? "",
+                      teamYearYear: "",
                     }));
                   }}
                   className={RL_FILTER_INPUT_CLASS}
                 >
+                  <option value="all">All Teams</option>
                   {TEAM_YEAR_TEAMS.map((team) => (
                     <option key={team} value={team}>
                       {team}
@@ -446,28 +466,27 @@ export function PlayerShowcase() {
                   ))}
                 </select>
               </FilterField>
-              <FilterField label="Year">
-                <select
-                  value={filters.teamYearYear}
-                  onChange={(e) =>
-                    updateFilters((f) => ({
-                      ...f,
-                      teamYearYear: e.target.value,
-                    }))
-                  }
-                  className={RL_FILTER_INPUT_CLASS}
-                >
-                  {teamYearYears.length === 0 ? (
-                    <option value="">No years</option>
-                  ) : (
-                    teamYearYears.map((year) => (
+              {filters.teamYearTeam !== "all" && (
+                <FilterField label="Year">
+                  <select
+                    value={filters.teamYearYear}
+                    onChange={(e) =>
+                      updateFilters((f) => ({
+                        ...f,
+                        teamYearYear: e.target.value,
+                      }))
+                    }
+                    className={RL_FILTER_INPUT_CLASS}
+                  >
+                    <option value="">All years</option>
+                    {teamYearYears.map((year) => (
                       <option key={year} value={year}>
                         {year}
                       </option>
-                    ))
-                  )}
-                </select>
-              </FilterField>
+                    ))}
+                  </select>
+                </FilterField>
+              )}
             </>
           )}
           <FilterField label="Search">
@@ -599,6 +618,25 @@ export function PlayerShowcase() {
                 </TierChip>
               ))}
             </div>
+          </FilterField>
+
+          <FilterField label="Age">
+            <select
+              value={filters.age}
+              onChange={(e) =>
+                updateFilters((f) => ({
+                  ...f,
+                  age: e.target.value as AgeFilter,
+                }))
+              }
+              className={RL_FILTER_INPUT_CLASS}
+            >
+              {(Object.keys(AGE_FILTER_LABELS) as AgeFilter[]).map((key) => (
+                <option key={key} value={key}>
+                  {AGE_FILTER_LABELS[key]}
+                </option>
+              ))}
+            </select>
           </FilterField>
 
           <FilterField label="Years Active">

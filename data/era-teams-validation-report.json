@@ -1,0 +1,545 @@
+{
+  "generatedAt": "2026-06-15T15:31:43.280Z",
+  "summary": {
+    "validTeams": 53,
+    "clubsRepresented": 16,
+    "onePerClubReady": true,
+    "skippedBuilds": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "validTeams": [
+    {
+      "id": "bradford-bulls-2026",
+      "displayName": "Bradford Bulls '26",
+      "clubName": "Bradford Bulls",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 85.2,
+      "teamValue": 2464000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "bradford-bulls-2024",
+      "displayName": "Bradford Bulls '24",
+      "clubName": "Bradford Bulls",
+      "year": "2024",
+      "category": "historic",
+      "teamRating": 81.6,
+      "teamValue": 1688000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "bradford-bulls-2014",
+      "displayName": "Bradford Bulls '14",
+      "clubName": "Bradford Bulls",
+      "year": "2014",
+      "category": "historic",
+      "teamRating": 84.5,
+      "teamValue": 2303000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "bradford-bulls-2013",
+      "displayName": "Bradford Bulls '13",
+      "clubName": "Bradford Bulls",
+      "year": "2013",
+      "category": "historic",
+      "teamRating": 85.8,
+      "teamValue": 2610000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "bradford-bulls-2012",
+      "displayName": "Bradford Bulls '12",
+      "clubName": "Bradford Bulls",
+      "year": "2012",
+      "category": "historic",
+      "teamRating": 87,
+      "teamValue": 2874000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "bradford-bulls-2009",
+      "displayName": "Bradford Bulls '09",
+      "clubName": "Bradford Bulls",
+      "year": "2009",
+      "category": "historic",
+      "teamRating": 88.2,
+      "teamValue": 3300000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "bradford-bulls-2006",
+      "displayName": "Bradford Bulls '06",
+      "clubName": "Bradford Bulls",
+      "year": "2006",
+      "category": "historic",
+      "teamRating": 89,
+      "teamValue": 3494000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "bradford-bulls-2005",
+      "displayName": "Bradford Bulls '05",
+      "clubName": "Bradford Bulls",
+      "year": "2005",
+      "category": "historic",
+      "teamRating": 87.6,
+      "teamValue": 3153000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "bradford-bulls-2004",
+      "displayName": "Bradford Bulls '04",
+      "clubName": "Bradford Bulls",
+      "year": "2004",
+      "category": "historic",
+      "teamRating": 89.5,
+      "teamValue": 3772000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "bradford-bulls-2003",
+      "displayName": "Bradford Bulls '03",
+      "clubName": "Bradford Bulls",
+      "year": "2003",
+      "category": "historic",
+      "teamRating": 89.2,
+      "teamValue": 3694000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "bradford-bulls-2002",
+      "displayName": "Bradford Bulls '02",
+      "clubName": "Bradford Bulls",
+      "year": "2002",
+      "category": "historic",
+      "teamRating": 89.8,
+      "teamValue": 3826000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "bradford-bulls-2001",
+      "displayName": "Bradford Bulls '01",
+      "clubName": "Bradford Bulls",
+      "year": "2001",
+      "category": "historic",
+      "teamRating": 89.7,
+      "teamValue": 3796000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "bradford-bulls-2000",
+      "displayName": "Bradford Bulls '00",
+      "clubName": "Bradford Bulls",
+      "year": "2000",
+      "category": "historic",
+      "teamRating": 89.2,
+      "teamValue": 3658000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "bradford-bulls-1999",
+      "displayName": "Bradford Bulls '99",
+      "clubName": "Bradford Bulls",
+      "year": "1999",
+      "category": "historic",
+      "teamRating": 89,
+      "teamValue": 3601000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "bradford-bulls-1998",
+      "displayName": "Bradford Bulls '98",
+      "clubName": "Bradford Bulls",
+      "year": "1998",
+      "category": "historic",
+      "teamRating": 87.8,
+      "teamValue": 3213000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "bradford-bulls-1997",
+      "displayName": "Bradford Bulls '97",
+      "clubName": "Bradford Bulls",
+      "year": "1997",
+      "category": "historic",
+      "teamRating": 85.4,
+      "teamValue": 2658000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "castleford-tigers-2026",
+      "displayName": "Castleford Tigers '26",
+      "clubName": "Castleford Tigers",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 84.8,
+      "teamValue": 2353000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "castleford-tigers-2016",
+      "displayName": "Castleford Tigers '16",
+      "clubName": "Castleford Tigers",
+      "year": "2016",
+      "category": "historic",
+      "teamRating": 87.2,
+      "teamValue": 2985000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "castleford-tigers-2009",
+      "displayName": "Castleford Tigers '09",
+      "clubName": "Castleford Tigers",
+      "year": "2009",
+      "category": "historic",
+      "teamRating": 84,
+      "teamValue": 2227000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "catalans-dragons-2026",
+      "displayName": "Catalans Dragons '26",
+      "clubName": "Catalans Dragons",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 84.5,
+      "teamValue": 2302000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "catalans-dragons-2016",
+      "displayName": "Catalans Dragons '16",
+      "clubName": "Catalans Dragons",
+      "year": "2016",
+      "category": "historic",
+      "teamRating": 85.5,
+      "teamValue": 2554000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "catalans-dragons-2015",
+      "displayName": "Catalans Dragons '15",
+      "clubName": "Catalans Dragons",
+      "year": "2015",
+      "category": "historic",
+      "teamRating": 86.3,
+      "teamValue": 2760000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "catalans-dragons-2013",
+      "displayName": "Catalans Dragons '13",
+      "clubName": "Catalans Dragons",
+      "year": "2013",
+      "category": "historic",
+      "teamRating": 85.2,
+      "teamValue": 2507000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "catalans-dragons-2012",
+      "displayName": "Catalans Dragons '12",
+      "clubName": "Catalans Dragons",
+      "year": "2012",
+      "category": "historic",
+      "teamRating": 86,
+      "teamValue": 2665000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "catalans-dragons-2011",
+      "displayName": "Catalans Dragons '11",
+      "clubName": "Catalans Dragons",
+      "year": "2011",
+      "category": "historic",
+      "teamRating": 85.2,
+      "teamValue": 2507000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "catalans-dragons-2010",
+      "displayName": "Catalans Dragons '10",
+      "clubName": "Catalans Dragons",
+      "year": "2010",
+      "category": "historic",
+      "teamRating": 84.3,
+      "teamValue": 2269000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "catalans-dragons-2007",
+      "displayName": "Catalans Dragons '07",
+      "clubName": "Catalans Dragons",
+      "year": "2007",
+      "category": "historic",
+      "teamRating": 83.6,
+      "teamValue": 2116000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "huddersfield-giants-2026",
+      "displayName": "Huddersfield Giants '26",
+      "clubName": "Huddersfield Giants",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 85.6,
+      "teamValue": 2490000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "huddersfield-giants-2013",
+      "displayName": "Huddersfield Giants '13",
+      "clubName": "Huddersfield Giants",
+      "year": "2013",
+      "category": "historic",
+      "teamRating": 86.1,
+      "teamValue": 2680000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "hull-fc-2026",
+      "displayName": "Hull FC '26",
+      "clubName": "Hull FC",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 86.6,
+      "teamValue": 2756000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "hull-fc-2013",
+      "displayName": "Hull FC '13",
+      "clubName": "Hull FC",
+      "year": "2013",
+      "category": "historic",
+      "teamRating": 87.6,
+      "teamValue": 3044000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "hull-fc-2012",
+      "displayName": "Hull FC '12",
+      "clubName": "Hull FC",
+      "year": "2012",
+      "category": "historic",
+      "teamRating": 87.2,
+      "teamValue": 2941000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "hull-fc-2009",
+      "displayName": "Hull FC '09",
+      "clubName": "Hull FC",
+      "year": "2009",
+      "category": "historic",
+      "teamRating": 85.8,
+      "teamValue": 2586000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "hull-kr-2026",
+      "displayName": "Hull KR '26",
+      "clubName": "Hull KR",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 87.9,
+      "teamValue": 3160000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "leeds-rhinos-2026",
+      "displayName": "Leeds Rhinos '26",
+      "clubName": "Leeds Rhinos",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 87.4,
+      "teamValue": 3028000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "leeds-rhinos-2013",
+      "displayName": "Leeds Rhinos '13",
+      "clubName": "Leeds Rhinos",
+      "year": "2013",
+      "category": "historic",
+      "teamRating": 88.5,
+      "teamValue": 3617000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "leeds-rhinos-2009",
+      "displayName": "Leeds Rhinos '09",
+      "clubName": "Leeds Rhinos",
+      "year": "2009",
+      "category": "historic",
+      "teamRating": 89.5,
+      "teamValue": 3848000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "leeds-rhinos-2008",
+      "displayName": "Leeds Rhinos '08",
+      "clubName": "Leeds Rhinos",
+      "year": "2008",
+      "category": "historic",
+      "teamRating": 89.4,
+      "teamValue": 3823000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "leigh-leopards-2026",
+      "displayName": "Leigh Leopards '26",
+      "clubName": "Leigh Leopards",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 86.6,
+      "teamValue": 2846000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "salford-red-devils-2014",
+      "displayName": "Salford Red Devils '14",
+      "clubName": "Salford Red Devils",
+      "year": "2014",
+      "category": "historic",
+      "teamRating": 86.5,
+      "teamValue": 2762000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "st-helens-2026",
+      "displayName": "St Helens '26",
+      "clubName": "St Helens",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 87.7,
+      "teamValue": 3056000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "toulouse-olympique-2026",
+      "displayName": "Toulouse Olympique '26",
+      "clubName": "Toulouse Olympique",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 83.3,
+      "teamValue": 2034000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "wakefield-trinity-2026",
+      "displayName": "Wakefield Trinity '26",
+      "clubName": "Wakefield Trinity",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 86.8,
+      "teamValue": 2907000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "wakefield-trinity-2010",
+      "displayName": "Wakefield Trinity '10",
+      "clubName": "Wakefield Trinity",
+      "year": "2010",
+      "category": "historic",
+      "teamRating": 83.7,
+      "teamValue": 2173000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "warrington-wolves-2026",
+      "displayName": "Warrington Wolves '26",
+      "clubName": "Warrington Wolves",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 85.8,
+      "teamValue": 2628000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "warrington-wolves-2016",
+      "displayName": "Warrington Wolves '16",
+      "clubName": "Warrington Wolves",
+      "year": "2016",
+      "category": "historic",
+      "teamRating": 86.5,
+      "teamValue": 2813000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "warrington-wolves-2015",
+      "displayName": "Warrington Wolves '15",
+      "clubName": "Warrington Wolves",
+      "year": "2015",
+      "category": "historic",
+      "teamRating": 86,
+      "teamValue": 2699000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "widnes-vikings-2016",
+      "displayName": "Widnes Vikings '16",
+      "clubName": "Widnes Vikings",
+      "year": "2016",
+      "category": "historic",
+      "teamRating": 84.3,
+      "teamValue": 2287000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "widnes-vikings-2015",
+      "displayName": "Widnes Vikings '15",
+      "clubName": "Widnes Vikings",
+      "year": "2015",
+      "category": "historic",
+      "teamRating": 85.1,
+      "teamValue": 2404000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "wigan-warriors-2026",
+      "displayName": "Wigan Warriors '26",
+      "clubName": "Wigan Warriors",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 88.5,
+      "teamValue": 3373000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "wigan-warriors-2016",
+      "displayName": "Wigan Warriors '16",
+      "clubName": "Wigan Warriors",
+      "year": "2016",
+      "category": "historic",
+      "teamRating": 88.3,
+      "teamValue": 3329000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "wigan-warriors-2015",
+      "displayName": "Wigan Warriors '15",
+      "clubName": "Wigan Warriors",
+      "year": "2015",
+      "category": "historic",
+      "teamRating": 87.8,
+      "teamValue": 3090000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "york-knights-2026",
+      "displayName": "York Knights '26",
+      "clubName": "York Knights",
+      "year": "2026",
+      "category": "26",
+      "teamRating": 83.2,
+      "teamValue": 2055000,
+      "tier": "Dangerous Underdogs"
+    }
+  ],
+  "skipped": [],
+  "issues": []
+}
