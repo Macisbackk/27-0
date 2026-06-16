@@ -322,6 +322,78 @@ body {
       0 0 16px rgba(251, 191, 36, 0.28);
   }
 
+  /**
+   * Opaque era gold surfaces — avoids backdrop-filter compositing bugs on
+   * ancestors (matchday-panel / card-glass) that leave gradient buttons blank.
+   */
+  .era-start-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 52px;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 2px solid #b45309;
+    background-color: #fbbf24;
+    background-image: linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%);
+    color: #0a0f0d !important;
+    font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+    font-size: 1.125rem;
+    font-weight: 900;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    text-decoration: none;
+    isolation: isolate;
+    position: relative;
+    z-index: 1;
+    box-shadow:
+      0 0 30px rgba(251, 191, 36, 0.45),
+      0 2px 0 rgba(0, 0, 0, 0.15);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transform: translateZ(0);
+  }
+
+  .era-start-btn:hover {
+    background-color: #fcd34d;
+    background-image: linear-gradient(90deg, #fcd34d 0%, #fbbf24 100%);
+  }
+
+  .era-start-btn:active:not(:disabled) {
+    transform: scale(0.98);
+    box-shadow:
+      inset 0 2px 6px rgba(0, 0, 0, 0.25),
+      0 0 20px rgba(251, 191, 36, 0.35);
+  }
+
+  .era-start-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .era-tab-btn-active {
+    border: 2px solid #b45309 !important;
+    background-color: #fbbf24 !important;
+    background-image: none !important;
+    color: #0a0f0d !important;
+    isolation: isolate;
+    position: relative;
+    z-index: 1;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transform: translateZ(0);
+    box-shadow:
+      0 0 28px rgba(251, 191, 36, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+  }
+
+  .era-tab-btn-active:hover {
+    filter: brightness(1.05);
+  }
+
   .slot-reveal-window {
     min-height: 4.5rem;
     display: flex;
@@ -374,6 +446,90 @@ body {
 
   .slot-reveal-spinning {
     opacity: 0.88;
+  }
+
+  .slot-reel-window {
+    position: relative;
+    height: 3rem;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+
+  .slot-reel-window::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(7, 11, 18, 0.92) 0%,
+      rgba(7, 11, 18, 0.08) 32%,
+      rgba(7, 11, 18, 0.08) 68%,
+      rgba(7, 11, 18, 0.92) 100%
+    );
+  }
+
+  .slot-reel-window::after {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 50%;
+    z-index: 3;
+    height: 2px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(34, 197, 94, 0.55) 20%,
+      rgba(34, 197, 94, 0.55) 80%,
+      transparent
+    );
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.35);
+  }
+
+  @media (min-width: 640px) {
+    .slot-reel-window {
+      height: 3.25rem;
+    }
+  }
+
+  .slot-reel-strip {
+    will-change: transform;
+  }
+
+  .slot-reel-item {
+    display: flex;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.25rem;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (min-width: 640px) {
+    .slot-reel-item {
+      height: 3.25rem;
+    }
+  }
+
+  .slot-reel-lock-flash {
+    animation: slotReelLockFlash 320ms ease-out;
+  }
+
+  @keyframes slotReelLockFlash {
+    0% {
+      box-shadow: inset 0 0 0 rgba(34, 197, 94, 0);
+    }
+    40% {
+      box-shadow: inset 0 0 28px rgba(34, 197, 94, 0.35);
+    }
+    100% {
+      box-shadow: inset 0 0 16px rgba(34, 197, 94, 0.12);
+    }
   }
 }
 
@@ -640,4 +796,29 @@ body {
       radial-gradient(ellipse at 90% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 40%),
       radial-gradient(ellipse at 50% 100%, rgba(34, 197, 94, 0.05) 0%, transparent 50%);
   }
+}
+
+/*
+ * Era gold surfaces (unlayered) — wins over Tailwind utilities and prevents
+ * backdrop-filter compositing from painting blank backgrounds on links/buttons.
+ */
+a .era-start-btn,
+span.era-start-btn,
+button.era-start-btn,
+.era-start-btn {
+  background-color: #fbbf24 !important;
+  background-image: linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%) !important;
+  color: #0a0f0d !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+button.era-tab-btn-active,
+.era-tab-btn-active {
+  background-color: #fbbf24 !important;
+  background-image: none !important;
+  color: #0a0f0d !important;
+  border-color: #b45309 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }

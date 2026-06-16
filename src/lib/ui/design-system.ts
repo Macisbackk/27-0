@@ -67,9 +67,8 @@ export const BTN = {
   primaryLgHard:
     "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-accent-red to-red-500 py-4 font-display text-lg font-black uppercase tracking-wider text-white shadow-[0_0_30px_rgba(239,68,68,0.4)] transition-all hover:from-red-500 hover:to-accent-red hover:shadow-[0_0_40px_rgba(239,68,68,0.55)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
   eraStart:
-    "btn-press-glow border-2 border-accent-gold/85 bg-accent-gold text-pitch-950 shadow-[0_0_28px_rgba(251,191,36,0.35)] hover:bg-accent-gold/90 hover:shadow-[0_0_36px_rgba(251,191,36,0.45)] disabled:cursor-not-allowed disabled:opacity-50",
-  eraStartLg:
-    "btn-press-glow-gold relative z-10 w-full min-h-[52px] shrink-0 rounded-xl border-2 border-pitch-950/35 bg-gradient-to-r from-accent-gold to-amber-300 py-4 font-display text-lg font-black uppercase tracking-wider text-pitch-950 shadow-[0_0_30px_rgba(251,191,36,0.45),0_2px_0_rgba(0,0,0,0.15)] transition-all hover:from-amber-300 hover:to-accent-gold hover:shadow-[0_0_40px_rgba(251,191,36,0.55)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
+    "era-start-btn btn-press-glow-gold !min-h-[44px] !rounded-lg !py-2.5 !text-base",
+  eraStartLg: "era-start-btn btn-press-glow-gold",
   secondary:
     "border border-pitch-600 text-gray-300 hover:border-pitch-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-50",
   secondaryLg: "btn-secondary text-center",
@@ -87,8 +86,7 @@ export const BTN = {
   hardActive:
     "border-2 border-accent-red/85 bg-accent-red text-white shadow-[0_0_28px_rgba(239,68,68,0.5),inset_0_1px_0_rgba(255,255,255,0.1)]",
   hardIdle: "text-gray-400 hover:border-accent-red/40 hover:bg-accent-red/10 hover:text-accent-red",
-  eraActive:
-    "border-2 border-accent-gold/85 bg-accent-gold text-pitch-950 shadow-[0_0_28px_rgba(251,191,36,0.45),inset_0_1px_0_rgba(255,255,255,0.2)] hover:brightness-105",
+  eraActive: "era-tab-btn-active",
   eraIdle:
     "text-gray-400 hover:border-accent-gold/40 hover:bg-accent-gold/10 hover:text-accent-gold",
   accentOutline: `w-full border border-accent-green/40 bg-accent-green/10 text-accent-green hover:border-accent-green/55 hover:bg-accent-green/20 sm:w-auto`,

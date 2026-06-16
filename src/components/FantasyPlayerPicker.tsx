@@ -11,11 +11,9 @@ import {
   type FantasySortKey,
 } from "@/lib/game/fantasy-mode";
 import { formatValue } from "@/lib/players";
-import { formatPlayerDisplayName } from "@/lib/players/prime-year";
 import { getPlayerColorClub } from "@/lib/players/run-club";
 import { filterShowcasePlayers, getUniqueClubs } from "@/lib/players/showcase";
 import { getClubColors } from "@/lib/clubs";
-import { POSITION_LABELS } from "@/lib/positions";
 import type { Player, SquadSlot } from "@/lib/types";
 import { PlayerCard } from "./PlayerCard";
 import { playPlayerSelect, playUiClick } from "@/lib/sound";
@@ -267,84 +265,89 @@ export function FantasyPlayerPicker({
             No players match your filters.
           </p>
         ) : (
-          <ul className="flex flex-col gap-2.5 sm:gap-3">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
             {players.map((player) => {
               const signed = isPlayerInSquad(squad, player.id);
               const affordable = canAffordPlayerForSlot(squad, slot, player);
               const disabled =
                 (signed && player.id !== slot.player?.id) || !affordable;
               const expanded = expandedPlayerId === player.id;
-              const displayName = formatPlayerDisplayName(player);
               const colorClub = getPlayerColorClub(player);
               const colors = getClubColors(colorClub);
-              const positionLabel = POSITION_LABELS[player.position];
 
               return (
-                <li key={player.id}>
+                <div
+                  key={player.id}
+                  className={`relative min-w-0 ${expanded ? "col-span-2 sm:col-span-3" : ""}`}
+                >
                   <div
-                    className={`${CARD.base} overflow-hidden ${
-                      disabled ? "border-red-900/40 opacity-60" : ""
-                    } ${!affordable && !signed ? "border-red-900/30" : ""}`}
+                    className={`${CARD.base} flex h-full flex-col overflow-hidden transition ${
+                      disabled ? "opacity-55" : "hover:border-accent-green/35"
+                    } ${!affordable && !signed ? "border-red-900/35" : ""}`}
                     style={{
                       boxShadow: `inset 3px 0 0 ${colors.primary}`,
                     }}
                   >
                     <button
                       type="button"
-                      className="btn-press flex w-full min-w-0 items-center gap-2 px-3 py-3 text-left sm:gap-3 sm:py-3.5"
+                      disabled={disabled}
+                      className="btn-press group flex min-w-0 flex-1 flex-col text-left disabled:cursor-not-allowed"
                       onClick={() => {
-                        playUiClick();
-                        setExpandedPlayerId((id) =>
-                          id === player.id ? null : player.id
-                        );
+                        if (disabled) return;
+                        handleSelect(player);
                       }}
                     >
-                      <span
-                        className="h-2 w-2 shrink-0 rounded-full"
-                        style={{ backgroundColor: colors.primary }}
-                        aria-hidden
-                      />
-                      <span className="min-w-0 flex-1">
-                        <span className="showcase-compact-name block font-display font-bold leading-snug text-white">
-                          {displayName}
+                      <div className="mb-1 flex items-center justify-between px-1 pt-1">
+                        <span className="font-display text-[8px] font-bold uppercase tracking-wider text-gray-500 sm:text-[10px]">
+                          {signed && player.id !== slot.player?.id
+                            ? "Signed"
+                            : !affordable
+                              ? "Over budget"
+                              : "Sign"}
                         </span>
-                        <span className="mt-0.5 block text-[10px] text-gray-500 sm:text-xs">
-                          {positionLabel}
+                        <span
+                          role="button"
+                          tabIndex={0}
+                          className="rounded-full border border-pitch-600/50 px-1.5 py-0.5 text-[8px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-accent-green/40 hover:text-accent-green sm:text-[9px]"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            playUiClick();
+                            setExpandedPlayerId((id) =>
+                              id === player.id ? null : player.id
+                            );
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              playUiClick();
+                              setExpandedPlayerId((id) =>
+                                id === player.id ? null : player.id
+                              );
+                            }
+                          }}
+                        >
+                          {expanded ? "Close" : "Info"}
                         </span>
-                      </span>
-                      <span className="shrink-0 text-center text-[10px] font-semibold text-gray-300 sm:text-xs">
-                        {player.peakRating}
-                        <span className="block text-[9px] font-medium text-gray-500">
-                          OVR
-                        </span>
-                      </span>
-                      <span className="shrink-0 text-center text-[10px] font-semibold text-accent-green sm:text-xs">
-                        {formatValue(player.value)}
-                      </span>
-                      <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
-                        {expanded ? "Close" : "View"}
-                      </span>
+                      </div>
+                      <div className="min-h-0 flex-1 overflow-hidden px-0.5 pb-1">
+                        <PlayerCard
+                          player={player}
+                          selectable
+                          equalHeight
+                          compactMobile
+                        />
+                      </div>
                     </button>
 
-                    {!affordable && !signed && (
-                      <p className="border-t border-pitch-700/50 px-3 py-1.5 text-xs font-medium text-red-400">
-                        Over budget
-                      </p>
-                    )}
-                    {signed && player.id !== slot.player?.id && (
-                      <p className="border-t border-pitch-700/50 px-3 py-1.5 text-xs text-gray-500">
-                        Already signed
-                      </p>
-                    )}
-
                     {expanded && (
-                      <div className="border-t border-pitch-700/50 px-2 pb-3 pt-2 sm:px-3">
+                      <div className="border-t border-pitch-700/50 px-2 pb-2 pt-2 sm:px-3">
                         <PlayerCard player={player} equalHeight compactMobile />
                         <button
                           type="button"
                           disabled={disabled}
                           onClick={() => handleSelect(player)}
-                          className={`mt-3 w-full ${BTN.base} ${BTN.primary} disabled:cursor-not-allowed disabled:opacity-50`}
+                          className={`mt-2 w-full ${BTN.base} ${BTN.primary} disabled:cursor-not-allowed disabled:opacity-50`}
                         >
                           {slot.player?.id === player.id
                             ? "Keep"
@@ -355,10 +358,10 @@ export function FantasyPlayerPicker({
                       </div>
                     )}
                   </div>
-                </li>
+                </div>
               );
             })}
-          </ul>
+          </div>
         )}
         </div>
       </div>

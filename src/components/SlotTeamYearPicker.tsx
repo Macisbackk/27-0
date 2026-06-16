@@ -3,12 +3,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { Player } from "@/lib/types";
-import { formatValue } from "@/lib/players";
-import {
-  formatPlayerDisplayName,
-  formatPrimeYearSuffix,
-} from "@/lib/players/prime-year";
-import { getPlayerColorClub } from "@/lib/players/run-club";
+import { formatShortYear } from "@/lib/players/prime-year";
 import { getClubColors } from "@/lib/clubs";
 import { POSITION_LABELS } from "@/lib/positions";
 import {
@@ -19,6 +14,7 @@ import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import { playPlayerSelect, playUiClick } from "@/lib/sound";
 import { CARD, LINK } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { PlayerCard } from "./PlayerCard";
 
 interface SlotTeamYearPickerProps {
   target: SlotRevealTarget;
@@ -45,6 +41,7 @@ export function SlotTeamYearPicker({
     () => getClubColors(target.team),
     [target.team]
   );
+  const shortYear = formatShortYear(target.year);
 
   return (
     <motion.div
@@ -81,7 +78,7 @@ export function SlotTeamYearPicker({
               <p className={TYPO.sectionLabel}>Choose your signing</p>
               <h2 className="mt-0.5 font-display text-base font-bold text-white sm:text-lg">
                 {target.team}{" "}
-                <span className="text-accent-green">{target.year}</span>
+                <span className="text-accent-green">{shortYear}</span>
               </h2>
             </div>
             <span className="shrink-0 rounded-md border border-accent-green/30 bg-accent-green/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-accent-green">
@@ -101,75 +98,50 @@ export function SlotTeamYearPicker({
               No players available from this squad.
             </p>
           ) : (
-            <ul className="mx-auto flex max-h-[min(48vh,440px)] max-w-2xl flex-col gap-2 overflow-y-auto overflow-x-hidden pr-0.5">
-              {entries.map(({ player }) => {
-                const colorClub = getPlayerColorClub(player);
-                const colors = getClubColors(colorClub);
-                const displayName = formatPlayerDisplayName(player);
-                const positionLabel = POSITION_LABELS[player.position];
-                const primeBadge =
-                  player.category !== "current" && player.primeYear !== undefined
-                    ? formatPrimeYearSuffix(player.primeYear)
-                    : null;
-
-                return (
-                  <li key={player.id}>
-                    <button
-                      type="button"
-                      disabled={disabled}
-                      onClick={() => {
-                        playUiClick();
-                        playPlayerSelect();
-                        onSelect(player);
-                      }}
-                      className={`btn-press group flex w-full min-w-0 items-center gap-2 rounded-xl border border-pitch-600/50 bg-pitch-900/50 px-3 py-2.5 text-left transition hover:border-accent-green/35 hover:bg-pitch-800/60 disabled:cursor-not-allowed disabled:opacity-50 sm:gap-3 sm:py-3`}
-                      style={{
-                        boxShadow: `inset 3px 0 0 ${colors.primary}`,
-                      }}
-                    >
-                      <span
-                        className="h-2.5 w-2.5 shrink-0 rounded-full ring-1 ring-white/10"
-                        style={{ backgroundColor: colors.primary }}
-                        aria-hidden
-                      />
-                      <span className="min-w-0 flex-1">
-                        <span className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
-                          <span className="font-display text-sm font-bold leading-snug text-white sm:text-base">
-                            {displayName}
-                          </span>
-                          {primeBadge && (
-                            <span className="text-[10px] font-semibold text-gray-500">
-                              {primeBadge}
-                            </span>
-                          )}
-                        </span>
-                        <span className="mt-0.5 block text-[10px] text-gray-500 sm:text-xs">
-                          {positionLabel}
-                        </span>
-                      </span>
-                      {!hardMode && (
-                        <>
-                          <span className="shrink-0 min-w-[2.25rem] text-center text-xs font-bold text-white">
-                            {player.peakRating}
-                            <span className="block text-[9px] font-medium text-gray-500">
-                              OVR
-                            </span>
-                          </span>
-                          <span className="hidden shrink-0 text-xs font-semibold text-accent-green sm:block">
-                            {formatValue(player.value)}
-                          </span>
-                        </>
-                      )}
-                      <span
-                        className={`shrink-0 rounded-md border border-accent-green/40 bg-accent-green/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-accent-green transition group-hover:bg-accent-green/20 sm:text-[11px]`}
-                      >
-                        Sign
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+            <div className="mx-auto grid max-h-[min(52vh,480px)] max-w-3xl grid-cols-2 gap-2 overflow-y-auto overflow-x-hidden pr-0.5 sm:grid-cols-3 sm:gap-3">
+              {entries.map(({ player }) => (
+                <motion.button
+                  key={player.id}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => {
+                    playUiClick();
+                    playPlayerSelect();
+                    onSelect(player);
+                  }}
+                  className="group btn-press flex min-w-0 flex-col rounded-lg text-left ring-1 ring-transparent transition hover:ring-accent-green/45 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.28 }}
+                >
+                  <div className="mb-1 flex min-h-[14px] items-center justify-between px-0.5 sm:min-h-[18px]">
+                    <span className="font-display text-[8px] font-bold uppercase tracking-wider text-gray-500 sm:text-[10px]">
+                      Sign
+                    </span>
+                    <span className="hidden rounded-full bg-accent-green/20 px-1.5 py-0.5 text-[9px] font-semibold text-accent-green opacity-0 transition group-hover:opacity-100 sm:inline">
+                      →
+                    </span>
+                  </div>
+                  <div
+                    className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg transition group-hover:opacity-95"
+                    style={{
+                      boxShadow: `inset 3px 0 0 ${clubColors.primary}`,
+                    }}
+                  >
+                    <PlayerCard
+                      player={player}
+                      selectable
+                      hardMode={hardMode}
+                      equalHeight
+                      compactMobile
+                    />
+                  </div>
+                  <p className="mt-1 truncate text-center text-[9px] text-gray-500 sm:text-[10px]">
+                    {POSITION_LABELS[player.position]}
+                  </p>
+                </motion.button>
+              ))}
+            </div>
           )}
         </div>
       </div>

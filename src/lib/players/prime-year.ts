@@ -64,10 +64,16 @@ export function resolvePrimeYear(
   return Math.round(start + (end - start) * 0.45);
 }
 
+/** Short year label for slot UI, e.g. 2004 → '04, 2026 → '26. */
+export function formatShortYear(year: string | number): string {
+  const parsed =
+    typeof year === "number" ? year : Number.parseInt(String(year), 10);
+  if (!Number.isFinite(parsed)) return String(year);
+  return `'${String(parsed % 100).padStart(2, "0")}`;
+}
 /** Short year suffix for card titles, e.g. 2009 → '09. */
 export function formatPrimeYearSuffix(primeYear: number): string {
-  const tail = primeYear % 100;
-  return `'${String(tail).padStart(2, "0")}`;
+  return formatShortYear(primeYear);
 }
 
 /** Display name with prime-year suffix for historic/legend players. */

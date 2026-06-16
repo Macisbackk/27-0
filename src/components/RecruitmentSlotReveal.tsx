@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import { getSlotTeamYearSpinPools } from "@/lib/game/slot-team-year-pick";
 import { getClubColors } from "@/lib/clubs";
+import { formatShortYear } from "@/lib/players/prime-year";
 import {
   playSlotLand,
   playSlotSpinStart,
@@ -20,10 +21,69 @@ const SPIN_DELAYS_MS = [
 ] as const;
 
 const LAND_HOLD_MS = 320;
+const REEL_ITEM_H = 48;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
   onComplete: () => void;
+}
+
+function buildReelStrip(items: string[]): string[] {
+  if (items.length === 0) return ["—"];
+  return [...items, ...items, ...items];
+}
+
+function finalReelIndex(items: string[], value: string): number {
+  const idx = items.indexOf(value);
+  const safe = idx >= 0 ? idx : 0;
+  return items.length + safe;
+}
+
+function SlotReel({
+  items,
+  scrollIndex,
+  locked,
+  formatItem,
+  className,
+  textClassName,
+}: {
+  items: string[];
+  scrollIndex: number;
+  locked: boolean;
+  formatItem: (item: string) => string;
+  className?: string;
+  textClassName?: string;
+}) {
+  const strip = useMemo(() => buildReelStrip(items), [items]);
+  const y = -scrollIndex * REEL_ITEM_H;
+
+  return (
+    <div className={`slot-reel-window ${className ?? ""}`}>
+      <motion.div
+        className="slot-reel-strip"
+        animate={{ y }}
+        transition={
+          locked
+            ? {
+                type: "spring",
+                stiffness: 520,
+                damping: 22,
+                mass: 0.68,
+              }
+            : { duration: 0.042, ease: "linear" }
+        }
+      >
+        {strip.map((item, i) => (
+          <div
+            key={`${item}-${i}`}
+            className={`slot-reel-item slot-reveal-display-text text-center font-display font-black uppercase text-accent-green ${textClassName ?? ""} ${!locked ? "slot-reveal-spinning" : ""}`}
+          >
+            {item === "—" ? "—" : formatItem(item)}
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  );
 }
 
 export function RecruitmentSlotReveal({
@@ -39,8 +99,21 @@ export function RecruitmentSlotReveal({
     [target.team]
   );
 
-  const [displayTeam, setDisplayTeam] = useState(teams[0] ?? target.team);
-  const [displayYear, setDisplayYear] = useState(years[0] ?? target.year);
+  const teamFinalIndex = useMemo(
+    () => finalReelIndex(teams, target.team),
+    [teams, target.team]
+  );
+  const yearFinalIndex = useMemo(
+    () => finalReelIndex(years, target.year),
+    [years, target.year]
+  );
+
+  const [teamIndex, setTeamIndex] = useState(() =>
+    teams.length > 0 ? teams.length : 0
+  );
+  const [yearIndex, setYearIndex] = useState(() =>
+    years.length > 0 ? years.length : 0
+  );
   const [locked, setLocked] = useState(false);
   const [phaseLabel, setPhaseLabel] = useState("Recruitment draw spinning…");
 
@@ -50,6 +123,11 @@ export function RecruitmentSlotReveal({
     let timeoutId: number | null = null;
     const totalTicks = SPIN_DELAYS_MS.length;
 
+    setTeamIndex(teams.length > 0 ? teams.length : 0);
+    setYearIndex(years.length > 0 ? years.length : 0);
+    setLocked(false);
+    setPhaseLabel("Recruitment draw spinning…");
+
     playSlotSpinStart();
 
     const runTick = () => {
@@ -58,14 +136,13 @@ export function RecruitmentSlotReveal({
       if (tick < totalTicks) {
         const progress = tick / totalTicks;
         const nearingEnd = tick >= totalTicks - 4;
+
         if (nearingEnd) {
-          setDisplayTeam(target.team);
-          setDisplayYear(target.year);
+          setTeamIndex(teamFinalIndex);
+          setYearIndex(yearFinalIndex);
         } else {
-          const teamIdx = Math.floor(Math.random() * teams.length);
-          const yearIdx = Math.floor(Math.random() * years.length);
-          setDisplayTeam(teams[teamIdx] ?? target.team);
-          setDisplayYear(years[yearIdx] ?? target.year);
+          setTeamIndex((prev) => prev + 1 + Math.floor(Math.random() * 2));
+          setYearIndex((prev) => prev + 1 + Math.floor(Math.random() * 2));
         }
 
         if (tick % 2 === 0) {
@@ -84,8 +161,8 @@ export function RecruitmentSlotReveal({
         return;
       }
 
-      setDisplayTeam(target.team);
-      setDisplayYear(target.year);
+      setTeamIndex(teamFinalIndex);
+      setYearIndex(yearFinalIndex);
       setLocked(true);
       setPhaseLabel("Draw locked");
       playSlotLand();
@@ -100,7 +177,21 @@ export function RecruitmentSlotReveal({
       cancelled = true;
       if (timeoutId) window.clearTimeout(timeoutId);
     };
-  }, [target, teams, years, onComplete]);
+  }, [
+    target,
+    teams,
+    years,
+    teamFinalIndex,
+    yearFinalIndex,
+    onComplete,
+  ]);
+
+  const reelShellClass = (isLocked: boolean) =>
+    `slot-reveal-reel min-w-0 flex-1 rounded-xl border-2 px-2 py-1 transition-colors duration-300 sm:px-3 sm:py-1.5 ${
+      isLocked
+        ? "slot-reel-lock-flash border-accent-green/55 bg-pitch-950/95 shadow-[inset_0_0_24px_rgba(34,197,94,0.12),0_0_20px_rgba(34,197,94,0.15)]"
+        : "border-pitch-600/70 bg-pitch-950/80 shadow-[inset_0_2px_16px_rgba(0,0,0,0.55)]"
+    }`;
 
   return (
     <motion.div
@@ -135,37 +226,67 @@ export function RecruitmentSlotReveal({
             className="flex items-stretch justify-center gap-2 sm:gap-2.5"
             aria-live="polite"
           >
-            <div
-              className={`slot-reveal-reel min-w-0 flex-1 rounded-xl border-2 px-2 py-2.5 transition-colors duration-300 sm:px-3 sm:py-3 ${
-                locked
-                  ? "border-accent-green/55 bg-pitch-950/95 shadow-[inset_0_0_24px_rgba(34,197,94,0.12),0_0_20px_rgba(34,197,94,0.15)]"
-                  : "border-pitch-600/70 bg-pitch-950/80 shadow-[inset_0_2px_16px_rgba(0,0,0,0.55)]"
-              }`}
+            <motion.div
+              className={reelShellClass(locked)}
               style={{
                 borderTopColor: locked ? clubColors.primary : undefined,
               }}
-            >
-              <p
-                className={`slot-reveal-display-text slot-reveal-team-name text-center font-display font-black uppercase text-accent-green ${!locked ? "slot-reveal-spinning" : ""}`}
-              >
-                {displayTeam}
-              </p>
-            </div>
-
-            <div
-              className={`slot-reveal-reel slot-reveal-year-reel shrink-0 rounded-xl border-2 px-2 py-2.5 transition-colors duration-300 sm:px-3 sm:py-3 ${
+              animate={
                 locked
-                  ? "border-accent-green/55 bg-pitch-950/95 shadow-[inset_0_0_24px_rgba(34,197,94,0.12),0_0_20px_rgba(34,197,94,0.15)]"
-                  : "border-pitch-600/70 bg-pitch-950/80 shadow-[inset_0_2px_16px_rgba(0,0,0,0.55)]"
-              }`}
+                  ? { scale: [1, 1.025, 0.995, 1] }
+                  : { scale: 1 }
+              }
+              transition={
+                locked
+                  ? { duration: 0.32, times: [0, 0.35, 0.65, 1], ease: "easeOut" }
+                  : { duration: 0.15 }
+              }
             >
-              <p
-                className={`slot-reveal-display-text slot-reveal-year-text text-center font-display font-black tabular-nums text-accent-green ${!locked ? "slot-reveal-spinning" : ""}`}
-              >
-                {displayYear}
-              </p>
-            </div>
+              <SlotReel
+                items={teams}
+                scrollIndex={teamIndex}
+                locked={locked}
+                formatItem={(team) => team}
+                textClassName="slot-reveal-team-name"
+              />
+            </motion.div>
+
+            <motion.div
+              className={`${reelShellClass(locked)} slot-reveal-year-reel shrink-0`}
+              animate={
+                locked
+                  ? { scale: [1, 1.025, 0.995, 1] }
+                  : { scale: 1 }
+              }
+              transition={
+                locked
+                  ? { duration: 0.32, times: [0, 0.35, 0.65, 1], ease: "easeOut", delay: 0.04 }
+                  : { duration: 0.15 }
+              }
+            >
+              <SlotReel
+                items={years}
+                scrollIndex={yearIndex}
+                locked={locked}
+                formatItem={formatShortYear}
+                textClassName="slot-reveal-year-text tabular-nums"
+              />
+            </motion.div>
           </div>
+
+          {locked && (
+            <motion.p
+              className="mt-3 text-center font-display text-sm font-bold text-white sm:text-base"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.08, duration: 0.25 }}
+            >
+              {target.team}{" "}
+              <span className="text-accent-green">
+                {formatShortYear(target.year)}
+              </span>
+            </motion.p>
+          )}
 
           <div className="mt-4 flex justify-center">
             <span

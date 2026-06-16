@@ -25,6 +25,7 @@ import { EraChallengeCupBranding } from "./EraChallengeCupBranding";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { EraStartButton } from "./EraStartLink";
 import { playUiClick } from "@/lib/sound";
 
 interface EraChallengeCupSelectProps {
@@ -291,13 +292,9 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
               })}
             </div>
 
-            <button
-              type="button"
-              onClick={handleConfirm}
-              className={`mt-5 block w-full btn-press text-center ${BTN.eraStartLg}`}
-            >
+            <EraStartButton onClick={handleConfirm} className="mt-5">
               Start Era Challenge Cup
-            </button>
+            </EraStartButton>
           </motion.div>
         )}
 

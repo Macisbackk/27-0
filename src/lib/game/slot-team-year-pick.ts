@@ -1,6 +1,7 @@
 import seedrandom from "seedrandom";
 import { getPlayerById } from "../players";
 import { formatEraDisplayName } from "../players/era-teams";
+import { formatShortYear } from "../players/prime-year";
 import { withRunClub } from "../players/run-club";
 import {
   getTeamsWithYearRosters,
@@ -161,5 +162,5 @@ export function getSlotRevealBio(team: string, year: string): string {
   else pool = BIO_SNIPPETS.default;
 
   const line = pool[hash % pool.length]!;
-  return `${team} ${year} lands in the slot — ${line}.`;
+  return `${team} ${formatShortYear(year)} lands in the slot — ${line}.`;
 }

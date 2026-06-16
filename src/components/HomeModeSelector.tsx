@@ -31,6 +31,7 @@ import { TYPO } from "@/lib/ui/typography";
 import { SHOW_DRAFT_MODE } from "@/lib/feature-flags";
 import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
+import { EraStartLink } from "./EraStartLink";
 
 export function HomeModeSelector() {
   const [classicDifficulty, setClassicDifficulty] =
@@ -187,15 +188,23 @@ export function HomeModeSelector() {
             className="mt-5"
           />
 
-          <Link
-            href={buildPlayHref("cup", "NORMAL", cupEraMode)}
-            onClick={() => playModeChallengeCupStart()}
-            className={`mt-5 block w-full btn-press text-center ${
-              cupEraMode ? BTN.eraStartLg : BTN.primaryLg
-            }`}
-          >
-            {cupEraMode ? "Start Era Challenge Cup" : "Start Challenge Cup"} →
-          </Link>
+          {cupEraMode ? (
+            <EraStartLink
+              href={buildPlayHref("cup", "NORMAL", true)}
+              onClick={() => playModeChallengeCupStart()}
+              className="mt-5"
+            >
+              Start Era Challenge Cup →
+            </EraStartLink>
+          ) : (
+            <Link
+              href={buildPlayHref("cup", "NORMAL", false)}
+              onClick={() => playModeChallengeCupStart()}
+              className={`mt-5 block w-full btn-press text-center ${BTN.primaryLg}`}
+            >
+              Start Challenge Cup →
+            </Link>
+          )}
         </ModePanel>
 
         <ModePanel title="Fantasy Mode" hardActive={false}>
@@ -248,7 +257,11 @@ function ModePanel({
 
   return (
     <div
-      className={`${CARD.glass} ${CARD.panel} group w-full ${SPACING.cardPaddingLg} transition ${cardAccent}`}
+      className={`group w-full ${SPACING.cardPaddingLg} transition ${cardAccent} ${
+        eraActive
+          ? `${CARD.base} border border-accent-gold/30 bg-pitch-900/95`
+          : `${CARD.glass} ${CARD.panel}`
+      }`}
     >
       <h2 className={`${TYPO.cardTitle} ${titleClass}`}>{title}</h2>
       {children}

@@ -128,6 +128,7 @@ export {
 export {
   formatPlayerDisplayName,
   formatPrimeYearSuffix,
+  formatShortYear,
   parsePlayerId,
   resolvePrimeYear,
 } from "./prime-year";
