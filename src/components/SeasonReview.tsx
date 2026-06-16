@@ -28,6 +28,8 @@ import { HardModeBadge } from "./HardModeBadge";
 import { ClubRepresentation } from "./ClubRepresentation";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
+import { ClubFundsEarned } from "./ClubFundsEarned";
+import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { TeamComparisonBox } from "./TeamComparisonBox";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { TryScorersSection } from "./TryScorersSection";
@@ -47,6 +49,7 @@ interface SeasonReviewProps {
   superSamHallasMode?: boolean;
   runRank?: number;
   submittedOnline?: boolean;
+  clubFundsPayout?: ClubFundsPayoutResult | null;
   onPlayAgain: () => void;
   onClose: () => void;
 }
@@ -61,6 +64,7 @@ export function SeasonReview({
   superSamHallasMode = false,
   runRank,
   submittedOnline = false,
+  clubFundsPayout = null,
   onPlayAgain,
   onClose,
 }: SeasonReviewProps) {
@@ -257,6 +261,7 @@ export function SeasonReview({
             hardMode={isHardMode}
             compact
           />
+          <ClubFundsEarned payout={clubFundsPayout} />
         </motion.div>
 
         <CollapsibleReviewSection title="Season Summary" delay={0.32}>

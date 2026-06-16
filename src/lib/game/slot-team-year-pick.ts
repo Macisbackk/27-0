@@ -8,7 +8,7 @@ import {
   getRosterPlayerIds,
   hasTeamYearRoster,
 } from "../players/team-year-rosters";
-import type { Player } from "../types";
+import type { Player, Position } from "../types";
 import {
   getTeamSpinPool,
   getYearSpinPool,
@@ -79,9 +79,36 @@ export function getSlotTeamYearSpinPools(target: SlotRevealTarget): {
   };
 }
 
+/** Positions eligible when recruiting for a given slot (SH/SO swap). */
+export function getEligibleRecruitPositions(
+  slotPosition: Position
+): Position[] {
+  if (slotPosition === "SCRUM_HALF") return ["SCRUM_HALF", "STAND_OFF"];
+  if (slotPosition === "STAND_OFF") return ["STAND_OFF", "SCRUM_HALF"];
+  return [slotPosition];
+}
+
+function sortPlayersForRecruitSlot(
+  entries: SlotTeamYearPlayer[],
+  slotPosition?: Position
+): SlotTeamYearPlayer[] {
+  if (!slotPosition) {
+    return entries.sort((a, b) => b.player.peakRating - a.player.peakRating);
+  }
+
+  const eligible = new Set(getEligibleRecruitPositions(slotPosition));
+  return entries.sort((a, b) => {
+    const aEligible = eligible.has(a.player.position);
+    const bEligible = eligible.has(b.player.position);
+    if (aEligible !== bEligible) return aEligible ? -1 : 1;
+    return b.player.peakRating - a.player.peakRating;
+  });
+}
+
 export function prepareSlotTeamYearPlayers(
   target: SlotRevealTarget,
-  usedIds: Set<string>
+  usedIds: Set<string>,
+  slotPosition?: Position
 ): SlotTeamYearPlayer[] {
   const eraYear = Number.parseInt(target.year, 10);
   const runClub = formatEraDisplayName(target.team, target.year);
@@ -95,7 +122,7 @@ export function prepareSlotTeamYearPlayers(
     }
   );
 
-  return entries.sort((a, b) => b.player.peakRating - a.player.peakRating);
+  return sortPlayersForRecruitSlot(entries, slotPosition);
 }
 
 const BIO_SNIPPETS = {

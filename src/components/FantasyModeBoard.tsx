@@ -24,6 +24,8 @@ import {
   TOTAL_SLOTS,
 } from "@/lib/positions";
 import { recordCompletedRun } from "@/lib/storage/run";
+import type { ClubFundsPayoutResult } from "@/lib/club-funds";
+import { awardClubFundsForRun } from "@/lib/storage/club-funds";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import {
   playModeClassicStart,
@@ -63,11 +65,14 @@ export function FantasyModeBoard() {
   const [seasonResult, setSeasonResult] = useState<SeasonResult | null>(null);
   const [runRank, setRunRank] = useState<number | undefined>();
   const [submittedOnline, setSubmittedOnline] = useState(false);
+  const [clubFundsPayout, setClubFundsPayout] =
+    useState<ClubFundsPayoutResult | null>(null);
   const [pickerFilters, setPickerFilters] = useState<FantasyPickerFilters>(
     DEFAULT_FANTASY_PICKER_FILTERS
   );
   const [autofillError, setAutofillError] = useState<string | null>(null);
   const recordedRef = useRef(false);
+  const fundsAwardedRef = useRef(false);
   const modeSoundPlayed = useRef(false);
   const pickerRef = useRef<HTMLDivElement>(null);
 
@@ -104,11 +109,25 @@ export function FantasyModeBoard() {
     setSeasonResult(null);
     setRunRank(undefined);
     setSubmittedOnline(false);
+    setClubFundsPayout(null);
     setPickerFilters(DEFAULT_FANTASY_PICKER_FILTERS);
     setAutofillError(null);
     recordedRef.current = false;
+    fundsAwardedRef.current = false;
     modeSoundPlayed.current = false;
   }, []);
+
+  useEffect(() => {
+    if (phase !== "review" || fundsAwardedRef.current || !seasonResult) return;
+    fundsAwardedRef.current = true;
+    setClubFundsPayout(
+      awardClubFundsForRun({
+        runId,
+        mode: "FANTASY",
+        seasonResult,
+      })
+    );
+  }, [phase, runId, seasonResult]);
 
   const handleStart = () => {
     setPhase("squadBuild");
@@ -337,6 +356,7 @@ export function FantasyModeBoard() {
             difficulty="NORMAL"
             runRank={runRank}
             submittedOnline={submittedOnline}
+            clubFundsPayout={clubFundsPayout}
             onPlayAgain={resetRun}
             onClose={() => {}}
           />

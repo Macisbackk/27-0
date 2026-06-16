@@ -27,6 +27,8 @@ import {
   markEmailConfirmPending,
 } from "./auth-callback";
 import { loadCloudStats } from "./storage/stats-cloud";
+import { loadCloudClubFunds } from "./storage/club-funds-cloud";
+import { mergeClubFundsFromCloud } from "./storage/club-funds";
 import { STORAGE_KEYS } from "./storage/keys";
 import { getAllStats, mergeCloudStatsWithLocal } from "./storage/stats";
 import { isSupabaseConfigured } from "./supabase";
@@ -56,6 +58,11 @@ async function hydrateStatsFromCloud(): Promise<void> {
   const local = getAllStats();
   const merged = mergeCloudStatsWithLocal(cloud, local);
   localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(merged));
+}
+
+async function hydrateClubFundsFromCloud(): Promise<void> {
+  const cloud = await loadCloudClubFunds();
+  mergeClubFundsFromCloud(cloud);
 }
 
 function applySession(session: Session | null, profile: UserProfile | null) {
@@ -95,6 +102,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(nextProfile);
     applySession(session, nextProfile);
     await hydrateStatsFromCloud();
+    await hydrateClubFundsFromCloud();
     window.dispatchEvent(new Event("auth-state-changed"));
   }, []);
 

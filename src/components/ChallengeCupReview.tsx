@@ -38,6 +38,8 @@ import { HardModeBadge } from "./HardModeBadge";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { BracketRecap } from "./BracketRecap";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
+import { ClubFundsEarned } from "./ClubFundsEarned";
+import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { TeamComparisonBox } from "./TeamComparisonBox";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { TryScorersSection } from "./TryScorersSection";
@@ -54,6 +56,7 @@ interface ChallengeCupReviewProps {
   superSamHallasMode?: boolean;
   cupRankingResult?: CupRunRankingResult;
   submittedOnline?: boolean;
+  clubFundsPayout?: ClubFundsPayoutResult | null;
   title?: string;
   onPlayAgain: () => void;
   onClose: () => void;
@@ -76,6 +79,7 @@ export function ChallengeCupReview({
   superSamHallasMode = false,
   cupRankingResult,
   submittedOnline = false,
+  clubFundsPayout = null,
   title = "Challenge Cup Review",
   onPlayAgain,
   onClose,
@@ -287,6 +291,7 @@ export function ChallengeCupReview({
             hardMode={isHardMode}
             compact
           />
+          <ClubFundsEarned payout={clubFundsPayout} />
         </motion.div>
 
         <CollapsibleReviewSection title="Challenge Cup Summary" delay={0.32}>

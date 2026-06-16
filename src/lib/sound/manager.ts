@@ -46,6 +46,9 @@ export const SOUND_FILES = {
   menuClose: "/sounds/menu-close.mp3",
   expand: "/sounds/expand.mp3",
   panelClose: "/sounds/panel-close.mp3",
+  slotSpinStart: "/sounds/slot-spin-start.mp3",
+  slotSpinTick: "/sounds/slot-spin-tick.mp3",
+  slotLand: "/sounds/slot-land.mp3",
 } as const;
 
 export type SoundId = keyof typeof SOUND_FILES;
@@ -66,6 +69,9 @@ const COOLDOWN_MS: Partial<Record<SoundId, number>> = {
   upset: 220,
   expand: 180,
   panelClose: 160,
+  slotSpinStart: 400,
+  slotSpinTick: 55,
+  slotLand: 350,
   menuOpen: 200,
   menuClose: 200,
   hardOn: 280,

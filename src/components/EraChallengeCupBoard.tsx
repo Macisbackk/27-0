@@ -22,6 +22,8 @@ import {
   TOTAL_SLOTS,
 } from "@/lib/positions";
 import { recordCompletedRun } from "@/lib/storage/run";
+import type { ClubFundsPayoutResult } from "@/lib/club-funds";
+import { awardClubFundsForRun } from "@/lib/storage/club-funds";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import type { EraTournamentType } from "@/lib/storage/preferences";
 import { playModeChallengeCupStart } from "@/lib/sound";
@@ -47,7 +49,10 @@ export function EraChallengeCupBoard() {
   const [bracketError, setBracketError] = useState<string | null>(null);
   const [cupResult, setCupResult] = useState<ChallengeCupResult | null>(null);
   const [submittedOnline, setSubmittedOnline] = useState(false);
+  const [clubFundsPayout, setClubFundsPayout] =
+    useState<ClubFundsPayoutResult | null>(null);
   const recordedRef = useRef(false);
+  const fundsAwardedRef = useRef(false);
   const modeSoundPlayed = useRef(false);
 
   const allEraTeams = useMemo(() => getAllEraTeams(), []);
@@ -72,9 +77,23 @@ export function EraChallengeCupBoard() {
     setBracketError(null);
     setCupResult(null);
     setSubmittedOnline(false);
+    setClubFundsPayout(null);
     recordedRef.current = false;
+    fundsAwardedRef.current = false;
     modeSoundPlayed.current = false;
   }, []);
+
+  useEffect(() => {
+    if (phase !== "review" || fundsAwardedRef.current || !cupResult) return;
+    fundsAwardedRef.current = true;
+    setClubFundsPayout(
+      awardClubFundsForRun({
+        runId,
+        mode: "CHALLENGE_CUP",
+        cupResult,
+      })
+    );
+  }, [phase, runId, cupResult]);
 
   const handleTeamConfirm = (team: EraTeam, type: EraTournamentType) => {
     try {
@@ -204,6 +223,7 @@ export function EraChallengeCupBoard() {
             seed={seed}
             title="Era Challenge Cup Review"
             submittedOnline={submittedOnline}
+            clubFundsPayout={clubFundsPayout}
             userClubColorOverride={eraTeam.clubName}
             onPlayAgain={resetRun}
             onClose={() => {}}

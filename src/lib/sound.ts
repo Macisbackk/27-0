@@ -8,11 +8,13 @@ import type { GameDifficulty } from "./types";
 import {
   initSoundUnlock,
   isSoundMuted,
+  isSoundInteractionUnlocked,
   playGradeSound as playGradeSoundInternal,
   playSound,
   toggleSoundMuted,
   unlockSound,
 } from "./sound/manager";
+import { synth } from "./sound/synth";
 
 export {
   initSoundUnlock,
@@ -89,6 +91,26 @@ export function playPositionSelect(): void {
 
 export function playRevealChoices(): void {
   playSound("reveal");
+}
+
+let lastSlotSpinTickAt = 0;
+
+export function playSlotSpinStart(): void {
+  playSound("slotSpinStart");
+}
+
+/** Tick during slot animation — spacing widens as progress approaches 1. */
+export function playSlotSpinTick(progress = 0): void {
+  if (isSoundMuted() || !isSoundInteractionUnlocked()) return;
+  const now = Date.now();
+  const minGap = 70 + progress * 140;
+  if (now - lastSlotSpinTickAt < minGap) return;
+  lastSlotSpinTickAt = now;
+  synth.slotSpinTick(progress);
+}
+
+export function playSlotLand(): void {
+  playSound("slotLand");
 }
 
 export function playPlayerSelect(): void {

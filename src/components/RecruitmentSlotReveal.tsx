@@ -8,7 +8,11 @@ import {
   getSlotTeamYearSpinPools,
 } from "@/lib/game/slot-team-year-pick";
 import { getClubColors } from "@/lib/clubs";
-import { playRevealChoices } from "@/lib/sound";
+import {
+  playSlotLand,
+  playSlotSpinStart,
+  playSlotSpinTick,
+} from "@/lib/sound";
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -24,13 +28,6 @@ const BIO_HOLD_MS = 720;
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
   onComplete: () => void;
-}
-
-function teamNameSizeClass(name: string): string {
-  if (name.length > 20) return "text-[0.62rem] leading-tight sm:text-[0.7rem]";
-  if (name.length > 16) return "text-[0.68rem] leading-tight sm:text-xs";
-  if (name.length > 12) return "text-xs leading-tight sm:text-sm";
-  return "text-sm leading-tight sm:text-base";
 }
 
 export function RecruitmentSlotReveal({
@@ -61,10 +58,13 @@ export function RecruitmentSlotReveal({
     let timeoutId: number | null = null;
     const totalTicks = SPIN_DELAYS_MS.length;
 
+    playSlotSpinStart();
+
     const runTick = () => {
       if (cancelled) return;
 
       if (tick < totalTicks) {
+        const progress = tick / totalTicks;
         const nearingEnd = tick >= totalTicks - 4;
         if (nearingEnd) {
           setDisplayTeam(target.team);
@@ -74,6 +74,10 @@ export function RecruitmentSlotReveal({
           const yearIdx = Math.floor(Math.random() * years.length);
           setDisplayTeam(teams[teamIdx] ?? target.team);
           setDisplayYear(years[yearIdx] ?? target.year);
+        }
+
+        if (tick % 2 === 0) {
+          playSlotSpinTick(progress);
         }
 
         if (tick > totalTicks * 0.55) {
@@ -92,7 +96,7 @@ export function RecruitmentSlotReveal({
       setDisplayYear(target.year);
       setLocked(true);
       setPhaseLabel("Draw locked");
-      playRevealChoices();
+      playSlotLand();
       timeoutId = window.setTimeout(() => {
         if (!cancelled) onComplete();
       }, BIO_HOLD_MS);
@@ -150,7 +154,7 @@ export function RecruitmentSlotReveal({
               }}
             >
               <p
-                className={`slot-reveal-team-name text-center font-display font-black uppercase text-accent-green ${teamNameSizeClass(displayTeam)} ${!locked ? "slot-reveal-blur" : ""}`}
+                className={`slot-reveal-display-text slot-reveal-team-name text-center font-display font-black uppercase text-accent-green ${!locked ? "slot-reveal-blur" : ""}`}
               >
                 {displayTeam}
               </p>
@@ -164,7 +168,7 @@ export function RecruitmentSlotReveal({
               }`}
             >
               <p
-                className={`text-center font-display text-2xl font-black tabular-nums text-accent-green sm:text-3xl ${!locked ? "slot-reveal-blur" : ""}`}
+                className={`slot-reveal-display-text slot-reveal-year-text text-center font-display font-black tabular-nums text-accent-green ${!locked ? "slot-reveal-blur" : ""}`}
               >
                 {displayYear}
               </p>

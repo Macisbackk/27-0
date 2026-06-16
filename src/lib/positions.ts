@@ -71,6 +71,15 @@ export const FORMATION_SLOT_INDICES = [
   0, 1, 3, 4, 2, 5, 6, 7, 8, 9, 10, 12, 11,
 ] as const;
 
+/** Fixed recruitment order for Normal Mode slot spins (matches formation sheet). */
+export const RECRUIT_SLOT_ORDER = FORMATION_SLOT_INDICES;
+
+/** Next slot index to fill during Normal Mode recruitment (by filled count). */
+export function getNextRecruitSlotIndex(filledCount: number): number | null {
+  if (filledCount >= TOTAL_SLOTS) return null;
+  return RECRUIT_SLOT_ORDER[filledCount] ?? null;
+}
+
 /** Display label for a formation slot (matches team sheet / player selection). */
 export function getFormationSlotDisplayLabel(slotIndex: number): string {
   const def = SLOT_DEFINITIONS[slotIndex];

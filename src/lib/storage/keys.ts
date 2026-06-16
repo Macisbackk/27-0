@@ -16,4 +16,5 @@ export const STORAGE_KEYS = {
   recruitmentStyle: "27-0-recruitment-style",
   eraTournamentType: "27-0-era-tournament-type",
   cupEraVariant: "27-0-cup-era-variant",
+  clubFunds: "27-0-club-funds",
 } as const;

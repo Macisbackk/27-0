@@ -337,15 +337,26 @@ body {
     overflow: hidden;
   }
 
+  .slot-reveal-display-text {
+    font-size: clamp(0.72rem, 2.4vw + 0.42rem, 1rem);
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+  }
+
+  .slot-reveal-year-text {
+    font-size: clamp(0.95rem, 3.2vw + 0.45rem, 1.35rem);
+    line-height: 1.1;
+  }
+
   .slot-reveal-year-reel {
-    width: 5.25rem;
-    min-width: 5.25rem;
+    width: 5.5rem;
+    min-width: 5.5rem;
   }
 
   @media (min-width: 640px) {
     .slot-reveal-year-reel {
-      width: 6rem;
-      min-width: 6rem;
+      width: 6.25rem;
+      min-width: 6.25rem;
     }
   }
 
