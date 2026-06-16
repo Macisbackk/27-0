@@ -205,7 +205,7 @@ export function RecruitmentSlotReveal({
       if (timeoutId) window.clearTimeout(timeoutId);
     };
   }, [
-    target.teamYearKey,
+    target.teamYearId,
     teamStartIndex,
     yearStartIndex,
     teamFinalIndex,

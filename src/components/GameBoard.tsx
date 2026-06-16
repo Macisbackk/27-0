@@ -65,6 +65,7 @@ import {
   playModeDraftStart,
   playDraftPlacement,
   playPlayerSelect,
+  playAutofill,
   playPositionComplete,
   playPositionSelect,
   playRevealChoices,
@@ -91,6 +92,7 @@ import { TYPO } from "@/lib/ui/typography";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import {
   generateSlotTeamYearTarget,
+  autofillSlotRecruitSquad,
   prepareSlotTeamYearPlayers,
 } from "@/lib/game/slot-team-year-pick";
 
@@ -566,20 +568,12 @@ export function GameBoard({
       return;
     }
     playPositionSelect();
-    const maxAttempts = 24;
-    let target: SlotRevealTarget | null = null;
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      const candidate = generateSlotTeamYearTarget(
-        seed,
-        spinPickIndex + attempt,
-        signedPlayerIds,
-        squad
-      );
-      if (candidate) {
-        target = candidate;
-        break;
-      }
-    }
+    const target = generateSlotTeamYearTarget(
+      seed,
+      spinPickIndex,
+      signedPlayerIds,
+      squad
+    );
     if (!target) return;
 
     setPendingPlayer(null);
@@ -843,6 +837,16 @@ export function GameBoard({
   const handleAutofill = useCallback(() => {
     if (phase !== "pitch" || filledCount >= TOTAL_SLOTS || isDraftMode) return;
 
+    if (isSlotRecruitMode) {
+      const result = autofillSlotRecruitSquad(seed, spinPickIndex, squad);
+      if (!result) return;
+      setSquad(result.squad);
+      setSpinPickIndex(result.nextSpinIndex);
+      playAutofill();
+      playPositionComplete();
+      return;
+    }
+
     const skipSlots = joeMellorMode ? [LOOSE_FORWARD_SLOT_INDEX] : [];
     const choices = autofillFromOffers(seed, slotOffers, skipSlots);
 
@@ -857,7 +861,17 @@ export function GameBoard({
 
     setSquad(newSquad);
     playPositionComplete();
-  }, [phase, filledCount, isDraftMode, joeMellorMode, seed, slotOffers, squad]);
+  }, [
+    phase,
+    filledCount,
+    isDraftMode,
+    isSlotRecruitMode,
+    joeMellorMode,
+    seed,
+    spinPickIndex,
+    slotOffers,
+    squad,
+  ]);
 
   const handleSimulationComplete = useCallback(() => {
     setPhase("review");
@@ -939,7 +953,7 @@ export function GameBoard({
 
   const choiceKey =
     isSlotRecruitMode && activeSpinTarget
-      ? `${runKey}-spin-${spinSessionId}-${activeSpinTarget.teamYearKey}`
+      ? `${runKey}-spin-${spinSessionId}-${activeSpinTarget.teamYearId}`
       : activeOfferKey !== null
         ? `${runKey}-pick-${activeOfferKey}-${currentRound?.optionA}-${currentRound?.optionB}`
         : "";
@@ -1023,7 +1037,7 @@ export function GameBoard({
         {phase === "pitch" &&
           isSlotRecruitMode &&
           filledCount < TOTAL_SLOTS && (
-          <div className="mt-4 flex justify-center">
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
             <button
               type="button"
               onClick={handleSpinForPlayer}
@@ -1031,6 +1045,14 @@ export function GameBoard({
               className={`${BTN.base} ${isHardMode ? BTN.primaryHard : BTN.primary} px-8`}
             >
               Spin For Player
+            </button>
+            <button
+              type="button"
+              onClick={handleAutofill}
+              disabled={choosing}
+              className={`${BTN.base} ${BTN.greenOutlineSm} px-6`}
+            >
+              Auto Fill Squad
             </button>
           </div>
         )}

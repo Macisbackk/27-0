@@ -75,15 +75,17 @@ export function ClubFundsDisplay() {
           else playPanelExpand();
           setOpen((value) => !value);
         }}
-        className="header-control-btn flex h-11 min-h-[44px] max-w-[4.25rem] items-center justify-center gap-1 rounded-lg border border-pitch-600 px-1.5 text-[11px] font-bold tabular-nums text-accent-green transition hover:border-accent-green/50 hover:bg-accent-green/10 sm:max-w-none sm:px-3 sm:text-sm"
+        className="header-control-btn flex h-11 min-h-[44px] w-[4.75rem] max-w-[4.75rem] shrink-0 items-center justify-center gap-0.5 overflow-hidden rounded-lg border border-pitch-600 px-1 text-accent-green transition hover:border-accent-green/50 hover:bg-accent-green/10 sm:w-auto sm:max-w-none sm:gap-1.5 sm:px-3"
         aria-expanded={open}
         aria-haspopup="dialog"
         title={`Club Funds: ${formatClubFunds(balance)}`}
       >
-        <span aria-hidden className="text-xs sm:hidden">
+        <span aria-hidden className="shrink-0 text-[11px] leading-none sm:text-xs">
           💷
         </span>
-        <span className="truncate">{formatClubFunds(balance)}</span>
+        <span className="min-w-0 truncate text-[10px] font-bold tabular-nums leading-none sm:text-sm">
+          {formatClubFunds(balance)}
+        </span>
       </button>
 
       <AnimatePresence>

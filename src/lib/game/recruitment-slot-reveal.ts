@@ -3,6 +3,7 @@ import {
   getTeamsWithYearRosters,
   getYearsForTeam,
 } from "../players/team-year-rosters";
+import { buildTeamYearId } from "./team-year-pools";
 
 const CURRENT_SEASON_YEAR = 2026;
 
@@ -11,10 +12,18 @@ export interface SlotRevealTarget {
   year: string;
   /** Canonical roster key — `${team}|${year}` */
   teamYearKey: string;
+  /** Unique pool id — e.g. leeds-rhinos-2011 */
+  teamYearId: string;
 }
 
 export function buildSlotRevealTarget(team: string, year: string): SlotRevealTarget {
-  return { team, year, teamYearKey: `${team}|${year}` };
+  const teamYearId = buildTeamYearId(team, year);
+  return {
+    team,
+    year,
+    teamYearKey: `${team}|${year}`,
+    teamYearId,
+  };
 }
 
 export function getPlayerDisplayClub(player: Player): string {
@@ -39,6 +48,10 @@ export function getSlotRevealTarget(players: [Player, Player]): SlotRevealTarget
     team: getPlayerDisplayClub(chosen),
     year: String(getPlayerDisplayYear(chosen)),
     teamYearKey: `${getPlayerDisplayClub(chosen)}|${String(getPlayerDisplayYear(chosen))}`,
+    teamYearId: buildTeamYearId(
+      getPlayerDisplayClub(chosen),
+      String(getPlayerDisplayYear(chosen))
+    ),
   };
 }
 

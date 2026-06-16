@@ -35,14 +35,17 @@ export interface ClubFundsRunInput {
   cupResult?: ChallengeCupResult | null;
 }
 
-/** Display Club Funds in compact header format (£100k, £1.2m). */
+/** Display Club Funds in compact header format (£850k, £1.2m, £12m, £100m). */
 export function formatClubFunds(amount: number): string {
   if (amount >= 1_000_000) {
     const millions = amount / 1_000_000;
-    const rounded =
-      millions >= 10
-        ? Math.round(millions)
-        : Math.round(millions * 10) / 10;
+    if (millions >= 100) {
+      return `£${Math.round(millions)}m`;
+    }
+    if (millions >= 10) {
+      return `£${Math.round(millions)}m`;
+    }
+    const rounded = Math.round(millions * 10) / 10;
     const text =
       rounded % 1 === 0 ? String(rounded) : rounded.toFixed(1).replace(/\.0$/, "");
     return `£${text}m`;

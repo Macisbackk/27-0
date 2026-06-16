@@ -97,7 +97,7 @@ export function SlotTeamYearPicker({
               No players available from this squad.
             </p>
           ) : (
-            <div className="mx-auto grid max-h-[min(52vh,480px)] max-w-4xl grid-cols-2 gap-1.5 overflow-y-auto overflow-x-hidden pr-0.5 sm:grid-cols-3 sm:gap-2 lg:grid-cols-4">
+            <div className="mx-auto grid max-h-[min(52vh,480px)] max-w-4xl grid-cols-2 gap-2 overflow-y-auto overflow-x-hidden pr-0.5 sm:grid-cols-3 sm:gap-3">
               {entries.map(({ player }) => (
                 <motion.button
                   key={player.id}
@@ -108,7 +108,7 @@ export function SlotTeamYearPicker({
                     playPlayerSelect();
                     onSelect(player);
                   }}
-                  className="group btn-press min-w-0 rounded-lg text-left ring-1 ring-transparent transition hover:ring-accent-green/50 active:scale-[0.97] active:ring-accent-green/70 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="group btn-press min-w-0 text-left disabled:cursor-not-allowed disabled:opacity-50"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.22 }}
