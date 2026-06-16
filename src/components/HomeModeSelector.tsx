@@ -169,6 +169,7 @@ export function HomeModeSelector() {
           title="Challenge Cup"
           hardActive={false}
           eraActive={cupEraMode}
+          cupCurrent={!cupEraMode}
         >
           <p className={TYPO.body}>
             Draft your squad and battle through a knockout tournament — or pick
@@ -187,7 +188,9 @@ export function HomeModeSelector() {
           <Link
             href={buildPlayHref("cup", "NORMAL", cupEraMode)}
             onClick={() => playModeChallengeCupStart()}
-            className={`mt-5 block w-full btn-press ${BTN.base} ${BTN.goldOutline}`}
+            className={`mt-5 block w-full btn-press ${BTN.base} ${
+              cupEraMode ? BTN.eraStartLg : BTN.primaryLg
+            }`}
           >
             {cupEraMode ? "Start Era Challenge Cup →" : "Start Challenge Cup →"}
           </Link>
@@ -218,18 +221,22 @@ function ModePanel({
   title,
   hardActive,
   eraActive = false,
+  cupCurrent = false,
   children,
 }: {
   title: string;
   hardActive: boolean;
   eraActive?: boolean;
+  cupCurrent?: boolean;
   children: ReactNode;
 }) {
   const cardAccent = hardActive
     ? `${HARD.modeCard} ${HARD.modeCardHover}`
     : eraActive
       ? "border border-accent-gold/25 shadow-[0_0_32px_rgba(251,191,36,0.08)] hover:border-accent-gold/35"
-      : `${CARD.featured} ${NORMAL.modeCardHover}`;
+      : cupCurrent
+        ? `${CARD.featured} ${NORMAL.modeCardHover}`
+        : `${CARD.featured} ${NORMAL.modeCardHover}`;
 
   const titleClass = hardActive
     ? "text-accent-red"

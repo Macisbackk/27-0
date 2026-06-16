@@ -66,6 +66,10 @@ export const BTN = {
     "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-accent-green to-emerald-400 py-4 font-display text-lg font-black uppercase tracking-wider text-pitch-950 shadow-[0_0_30px_rgba(34,197,94,0.35)] transition-all hover:from-emerald-400 hover:to-accent-green hover:shadow-[0_0_40px_rgba(34,197,94,0.5)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
   primaryLgHard:
     "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-accent-red to-red-500 py-4 font-display text-lg font-black uppercase tracking-wider text-white shadow-[0_0_30px_rgba(239,68,68,0.4)] transition-all hover:from-red-500 hover:to-accent-red hover:shadow-[0_0_40px_rgba(239,68,68,0.55)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
+  eraStart:
+    "btn-press-glow border-2 border-accent-gold/85 bg-accent-gold text-pitch-950 shadow-[0_0_28px_rgba(251,191,36,0.35)] hover:bg-accent-gold/90 hover:shadow-[0_0_36px_rgba(251,191,36,0.45)] disabled:cursor-not-allowed disabled:opacity-50",
+  eraStartLg:
+    "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-accent-gold to-amber-300 py-4 font-display text-lg font-black uppercase tracking-wider text-pitch-950 shadow-[0_0_30px_rgba(251,191,36,0.35)] transition-all hover:from-amber-300 hover:to-accent-gold hover:shadow-[0_0_40px_rgba(251,191,36,0.5)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
   secondary:
     "border border-pitch-600 text-gray-300 hover:border-pitch-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-50",
   secondaryLg: "btn-secondary text-center",

@@ -32,7 +32,6 @@ import {
   nestedTabGroupClass,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { SHOW_DRAFT_MODE } from "@/lib/feature-flags";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import {
   CoffeeIcon,
@@ -54,9 +53,6 @@ const MAIN_NAV_ITEMS = [
 
 const PLAY_MODE_GROUPS = [
   { mode: "classic" as const, modeKey: "normal" as const, label: "Normal Mode", icon: "🏉" },
-  ...(SHOW_DRAFT_MODE
-    ? [{ mode: "draft" as const, modeKey: "draft" as const, label: "Draft Mode", icon: "📋" }]
-    : []),
 ] as const;
 
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
@@ -238,10 +234,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 <p className={NAV.sectionLabel}>Play</p>
                 <ul className={NAV.playModeList}>
                   {PLAY_MODE_GROUPS.map((group) => {
-                    const difficulty =
-                      group.modeKey === "normal"
-                        ? normalDifficulty
-                        : draftDifficulty;
+                    const difficulty = normalDifficulty;
                     const isHard = difficulty === "HARD";
                     const active = isPlayModeActive(
                       pathname,
@@ -252,59 +245,51 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     const href = buildPlayHref(group.mode, difficulty);
 
                     return (
-                      <li key={group.mode}>
-                        <div className={NAV.playModeRow}>
-                          <Link
-                            href={href}
-                            onClick={handleNavClick}
-                            className={`${navLinkClass(active, isHard)} min-w-0 flex-1`}
-                          >
-                            <span aria-hidden className={NAV.icon}>
-                              {group.icon}
-                            </span>
-                            <span className="truncate">{group.label}</span>
-                            {active && (
-                              <span
-                                className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
-                                  isHard ? HARD.dot : "bg-accent-green"
-                                }`}
-                              />
-                            )}
-                          </Link>
+                      <li key={group.mode} className={NAV.playModeGroup}>
+                        <Link
+                          href={href}
+                          onClick={handleNavClick}
+                          className={`${navLinkClass(active, isHard)} w-full`}
+                        >
+                          <span aria-hidden className={NAV.icon}>
+                            {group.icon}
+                          </span>
+                          <span className="truncate">{group.label}</span>
+                          {active && (
+                            <span
+                              className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
+                                isHard ? HARD.dot : "bg-accent-green"
+                              }`}
+                            />
+                          )}
+                        </Link>
+                        <div className={NAV.nestedBlock}>
                           <div
-                            className={NAV.hardToggle}
-                            aria-label={`${group.label} hard mode`}
+                            className={nestedTabGroupClass(isHard, !isHard)}
+                            aria-label={`${group.label} difficulty`}
                           >
-                            <div className={nestedTabGroupClass(isHard, !isHard)}>
-                              <button
-                                type="button"
-                                aria-label={`${group.label} standard difficulty`}
-                                aria-pressed={!isHard}
-                                onClick={() =>
-                                  toggleModeDifficulty(group.modeKey, false)
-                                }
-                                className={nestedTabGroupButtonClass(
-                                  !isHard,
-                                  group.modeKey === "normal" ? "normal" : "normal"
-                                )}
-                              >
-                                {group.modeKey === "normal" ? "Std" : "Off"}
-                              </button>
-                              <button
-                                type="button"
-                                aria-label={`${group.label} hard difficulty`}
-                                aria-pressed={isHard}
-                                onClick={() =>
-                                  toggleModeDifficulty(group.modeKey, true)
-                                }
-                                className={nestedTabGroupButtonClass(
-                                  isHard,
-                                  "hard"
-                                )}
-                              >
-                                Hard
-                              </button>
-                            </div>
+                            <button
+                              type="button"
+                              aria-label={`${group.label} standard difficulty`}
+                              aria-pressed={!isHard}
+                              onClick={() =>
+                                toggleModeDifficulty(group.modeKey, false)
+                              }
+                              className={nestedTabGroupButtonClass(!isHard, "normal")}
+                            >
+                              Standard
+                            </button>
+                            <button
+                              type="button"
+                              aria-label={`${group.label} hard difficulty`}
+                              aria-pressed={isHard}
+                              onClick={() =>
+                                toggleModeDifficulty(group.modeKey, true)
+                              }
+                              className={nestedTabGroupButtonClass(isHard, "hard")}
+                            >
+                              Hard
+                            </button>
                           </div>
                         </div>
                       </li>
@@ -319,7 +304,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         isCupActive && isEraCup
                           ? "border-accent-gold/40 bg-accent-gold text-pitch-950 hover:bg-accent-gold/90"
                           : isCupActive
-                            ? "border-accent-gold/30 bg-accent-gold/10 text-accent-gold"
+                            ? NAV.itemActive
                             : ""
                       }`}
                     >
@@ -330,12 +315,12 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       {isCupActive && (
                         <span
                           className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
-                            isEraCup ? "bg-pitch-950" : "bg-accent-gold"
+                            isEraCup ? "bg-pitch-950" : "bg-accent-green"
                           }`}
                         />
                       )}
                     </button>
-                    <div className="px-0.5">
+                    <div className={NAV.nestedBlock}>
                       <ChallengeCupVariantToggle
                         compact
                         hideLabel

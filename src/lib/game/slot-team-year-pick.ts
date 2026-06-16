@@ -8,19 +8,15 @@ import {
   getRosterPlayerIds,
   hasTeamYearRoster,
 } from "../players/team-year-rosters";
-import type { Player, Position } from "../types";
-import { getDraftCandidatePositions } from "./draft-positions";
+import type { Player } from "../types";
 import {
   getTeamSpinPool,
   getYearSpinPool,
   type SlotRevealTarget,
 } from "./recruitment-slot-reveal";
 
-export type SlotPlayerTier = "exact" | "compatible" | "other";
-
 export interface SlotTeamYearPlayer {
   player: Player;
-  tier: SlotPlayerTier;
 }
 
 interface TeamYearPair {
@@ -50,40 +46,16 @@ function rosterPlayersForPair(
     .filter((p): p is Player => !!p && !usedIds.has(p.id));
 }
 
-function classifyPlayerTier(
-  player: Player,
-  slotPosition: Position
-): SlotPlayerTier {
-  if (player.position === slotPosition) return "exact";
-  const compatible = getDraftCandidatePositions(slotPosition);
-  if (compatible.includes(player.position)) return "compatible";
-  return "other";
-}
-
-function tierSortOrder(tier: SlotPlayerTier): number {
-  if (tier === "exact") return 0;
-  if (tier === "compatible") return 1;
-  return 2;
-}
-
-/** Deterministic team/year draw for a recruitment slot. */
+/** Deterministic team/year draw for a recruitment spin (position-agnostic). */
 export function generateSlotTeamYearTarget(
   seed: string,
-  slotIndex: number,
-  slotPosition: Position,
+  spinIndex: number,
   usedIds: Set<string>
 ): SlotRevealTarget {
-  const rng = seedrandom(`${seed}-slot-team-year-${slotIndex}`);
+  const rng = seedrandom(`${seed}-slot-team-year-spin-${spinIndex}`);
   const pairs = getAllTeamYearPairs();
 
-  const withCompatible = pairs.filter((pair) => {
-    const players = rosterPlayersForPair(pair.team, pair.year, usedIds);
-    return players.some(
-      (p) => classifyPlayerTier(p, slotPosition) !== "other"
-    );
-  });
-
-  const pool = withCompatible.length > 0 ? withCompatible : pairs.filter(
+  const pool = pairs.filter(
     (pair) => rosterPlayersForPair(pair.team, pair.year, usedIds).length > 0
   );
 
@@ -109,7 +81,6 @@ export function getSlotTeamYearSpinPools(target: SlotRevealTarget): {
 
 export function prepareSlotTeamYearPlayers(
   target: SlotRevealTarget,
-  slotPosition: Position,
   usedIds: Set<string>
 ): SlotTeamYearPlayer[] {
   const eraYear = Number.parseInt(target.year, 10);
@@ -117,19 +88,14 @@ export function prepareSlotTeamYearPlayers(
 
   const entries = rosterPlayersForPair(target.team, target.year, usedIds).map(
     (player) => {
-      const tier = classifyPlayerTier(player, slotPosition);
       const prepared = withRunClub(player, runClub, {
         eraYear: Number.isFinite(eraYear) ? eraYear : undefined,
       });
-      return { player: prepared, tier };
+      return { player: prepared };
     }
   );
 
-  return entries.sort((a, b) => {
-    const tierDiff = tierSortOrder(a.tier) - tierSortOrder(b.tier);
-    if (tierDiff !== 0) return tierDiff;
-    return b.player.peakRating - a.player.peakRating;
-  });
+  return entries.sort((a, b) => b.player.peakRating - a.player.peakRating);
 }
 
 const BIO_SNIPPETS = {

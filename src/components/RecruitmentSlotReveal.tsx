@@ -23,7 +23,6 @@ const BIO_HOLD_MS = 720;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
-  positionLabel: string;
   onComplete: () => void;
 }
 
@@ -36,7 +35,6 @@ function teamNameSizeClass(name: string): string {
 
 export function RecruitmentSlotReveal({
   target,
-  positionLabel,
   onComplete,
 }: RecruitmentSlotRevealProps) {
   const { teams, years } = useMemo(
@@ -129,7 +127,7 @@ export function RecruitmentSlotReveal({
         >
           <p className={TYPO.sectionLabel}>Recruitment draw</p>
           <p className="mt-1 font-display text-base font-bold text-white sm:text-lg">
-            {positionLabel}
+            Spin for your signing
           </p>
           <p className="mt-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-gray-500">
             {phaseLabel}

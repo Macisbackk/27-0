@@ -178,7 +178,7 @@ export function ChallengeCupBracket({
           {state.byeTeams.map((club) => (
             <span
               key={club}
-              className="rounded-full border border-accent-gold/30 bg-accent-gold/10 px-3 py-1 text-[10px] font-semibold text-accent-gold"
+              className="rounded-full border border-accent-green/30 bg-accent-green/10 px-3 py-1 text-[10px] font-semibold text-accent-green"
             >
               {club} — Quarter-Final Bye
             </span>
@@ -220,7 +220,11 @@ export function ChallengeCupBracket({
           type="button"
           disabled={state.tournamentComplete}
           onClick={handleSimulateTournament}
-          className="rounded-lg border border-accent-gold/40 bg-accent-gold/10 px-4 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-accent-gold transition hover:bg-accent-gold/20 disabled:cursor-not-allowed disabled:opacity-40 sm:text-xs"
+          className={`rounded-lg border px-4 py-2 font-display text-[10px] font-bold uppercase tracking-wider transition disabled:cursor-not-allowed disabled:opacity-40 sm:text-xs ${
+            eraMode
+              ? "border-accent-gold/40 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/20"
+              : "border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20"
+          }`}
         >
           Simulate Tournament
         </button>
@@ -237,6 +241,7 @@ export function ChallengeCupBracket({
               userClub={userClub}
               byeTeams={state.byeTeams}
               eraClubLookup={lookup}
+              eraMode={eraMode}
               onSelect={(id) =>
                 setSelectedId((prev) => {
                   const next = prev === id ? null : id;
@@ -274,6 +279,7 @@ function BracketRoundColumn({
   userClub,
   byeTeams,
   eraClubLookup,
+  eraMode,
   activeRound,
 }: {
   round: number;
@@ -282,6 +288,7 @@ function BracketRoundColumn({
   userClub: string;
   byeTeams: [string, string];
   eraClubLookup?: Record<string, string>;
+  eraMode: boolean;
   onSelect: (id: string) => void;
   activeRound: number;
 }) {
@@ -308,6 +315,7 @@ function BracketRoundColumn({
             userClub={userClub}
             byeTeams={byeTeams}
             eraClubLookup={eraClubLookup}
+            eraMode={eraMode}
           />
         ))}
       </div>
@@ -323,6 +331,7 @@ function BracketMatchCard({
   userClub,
   byeTeams,
   eraClubLookup,
+  eraMode,
 }: {
   match: BracketMatch;
   selected: boolean;
@@ -331,7 +340,9 @@ function BracketMatchCard({
   userClub: string;
   byeTeams: [string, string];
   eraClubLookup?: Record<string, string>;
+  eraMode: boolean;
 }) {
+  const userAccent = eraMode ? "text-accent-gold" : "text-accent-green";
   const isComplete = match.status === "complete";
   const isReady = match.status === "ready";
   const isPending = match.status === "pending";
@@ -356,6 +367,7 @@ function BracketMatchCard({
         isLoser={isComplete && match.loser === match.homeTeam}
         isUser={match.homeTeam === userClub}
         eraClubLookup={eraClubLookup}
+        eraMode={eraMode}
         showByeAdvance={
           match.round === 2 &&
           match.status !== "complete" &&
@@ -371,6 +383,7 @@ function BracketMatchCard({
         isLoser={isComplete && match.loser === match.awayTeam}
         isUser={match.awayTeam === userClub}
         eraClubLookup={eraClubLookup}
+        eraMode={eraMode}
         showByeAdvance={
           match.round === 2 &&
           match.status !== "complete" &&
@@ -379,7 +392,7 @@ function BracketMatchCard({
         }
       />
       {isReady && match.isUserMatch && (
-        <p className="border-t border-pitch-600/20 px-2 py-0.5 text-center text-[8px] font-bold uppercase tracking-wider text-accent-gold">
+        <p className={`border-t border-pitch-600/20 px-2 py-0.5 text-center text-[8px] font-bold uppercase tracking-wider ${userAccent}`}>
           Your Match
         </p>
       )}
@@ -394,6 +407,7 @@ function BracketTeamRow({
   isLoser,
   isUser,
   eraClubLookup,
+  eraMode,
   showByeAdvance,
 }: {
   team: string | null;
@@ -402,8 +416,11 @@ function BracketTeamRow({
   isLoser: boolean;
   isUser: boolean;
   eraClubLookup?: Record<string, string>;
+  eraMode: boolean;
   showByeAdvance?: boolean;
 }) {
+  const userAccent = eraMode ? "text-accent-gold" : "text-accent-green";
+  const byeAccent = eraMode ? "text-accent-gold/90" : "text-accent-green/90";
   if (!team) {
     return (
       <div className="flex items-center gap-2 px-2 py-1.5 sm:px-2.5">
@@ -432,7 +449,7 @@ function BracketTeamRow({
         <ClubDualSwatch club={colorClub} size="xs" />
         <span
           className={`min-w-0 flex-1 break-words text-[10px] font-bold leading-snug sm:text-[11px] ${
-            isUser ? "text-accent-gold" : ""
+            isUser ? userAccent : ""
           }`}
           style={teamTextColor ? { color: teamTextColor } : undefined}
         >
@@ -449,7 +466,7 @@ function BracketTeamRow({
         )}
       </div>
       {showByeAdvance && (
-        <p className="mt-0.5 pl-7 text-[8px] font-semibold uppercase tracking-wide text-accent-gold/90">
+        <p className={`mt-0.5 pl-7 text-[8px] font-semibold uppercase tracking-wide ${byeAccent}`}>
           Advanced to Quarter Finals
         </p>
       )}

@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import type { Player, Position } from "@/lib/types";
+import type { Player } from "@/lib/types";
 import { formatValue } from "@/lib/players";
 import {
   formatPlayerDisplayName,
@@ -22,8 +22,6 @@ import { TYPO } from "@/lib/ui/typography";
 
 interface SlotTeamYearPickerProps {
   target: SlotRevealTarget;
-  slotLabel: string;
-  slotPosition: Position;
   entries: SlotTeamYearPlayer[];
   onSelect: (player: Player) => void;
   onBack?: () => void;
@@ -33,7 +31,6 @@ interface SlotTeamYearPickerProps {
 
 export function SlotTeamYearPicker({
   target,
-  slotLabel,
   entries,
   onSelect,
   onBack,
@@ -81,7 +78,7 @@ export function SlotTeamYearPicker({
         >
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div className="min-w-0">
-              <p className={TYPO.sectionLabel}>Sign for {slotLabel}</p>
+              <p className={TYPO.sectionLabel}>Choose your signing</p>
               <h2 className="mt-0.5 font-display text-base font-bold text-white sm:text-lg">
                 {target.team}{" "}
                 <span className="text-accent-green">{target.year}</span>
@@ -105,7 +102,7 @@ export function SlotTeamYearPicker({
             </p>
           ) : (
             <ul className="mx-auto flex max-h-[min(48vh,440px)] max-w-2xl flex-col gap-2 overflow-y-auto overflow-x-hidden pr-0.5">
-              {entries.map(({ player, tier }) => {
+              {entries.map(({ player }) => {
                 const colorClub = getPlayerColorClub(player);
                 const colors = getClubColors(colorClub);
                 const displayName = formatPlayerDisplayName(player);
@@ -114,12 +111,6 @@ export function SlotTeamYearPicker({
                   player.category !== "current" && player.primeYear !== undefined
                     ? formatPrimeYearSuffix(player.primeYear)
                     : null;
-                const tierNote =
-                  tier === "exact"
-                    ? null
-                    : tier === "compatible"
-                      ? "Compatible"
-                      : "Out of position";
 
                 return (
                   <li key={player.id}>
@@ -154,7 +145,6 @@ export function SlotTeamYearPicker({
                         </span>
                         <span className="mt-0.5 block text-[10px] text-gray-500 sm:text-xs">
                           {positionLabel}
-                          {tierNote ? ` · ${tierNote}` : ""}
                         </span>
                       </span>
                       {!hardMode && (

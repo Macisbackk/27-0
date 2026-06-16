@@ -260,7 +260,11 @@ export function ChallengeCupReview({
             </div>
           )}
 
-          <h1 className="mt-4 font-display text-3xl font-black uppercase tracking-tight text-accent-gold sm:text-5xl">
+          <h1
+            className={`mt-4 font-display text-3xl font-black uppercase tracking-tight sm:text-5xl ${
+              cupResult.eraMode ? "text-accent-gold" : "text-accent-green"
+            }`}
+          >
             {title}
           </h1>
 

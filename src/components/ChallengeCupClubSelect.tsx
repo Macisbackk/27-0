@@ -41,7 +41,7 @@ export function ChallengeCupClubSelect({
   return (
     <div className={`mx-auto w-full max-w-xl ${SPACING.pageX} py-6`}>
       <div
-        className={`${CARD.glass} ${CARD.panel} w-full ${SPACING.cardPaddingLg} transition hover:border-accent-gold/30`}
+        className={`${CARD.glass} ${CARD.panel} w-full ${SPACING.cardPaddingLg} transition hover:border-accent-green/30`}
       >
         <h2 className={TYPO.cardTitle}>Challenge Cup</h2>
         <p className={`mt-3 ${TYPO.body}`}>
@@ -58,7 +58,7 @@ export function ChallengeCupClubSelect({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.05 }}
           >
-            <p className={`${TYPO.sectionTitle} text-accent-gold`}>
+            <p className={`${TYPO.sectionTitle} text-accent-green`}>
               Random Club
             </p>
             <motion.div
