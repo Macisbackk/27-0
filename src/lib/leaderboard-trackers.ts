@@ -12,7 +12,8 @@ export type LeaderboardTrackerType =
   | "cup_match_wins"
   | "cup_finals"
   | "cup_win_percentage"
-  | "challenge_cup_team_wins";
+  | "challenge_cup_team_wins"
+  | "total_winnings";
 
 export const MIN_GAMES_FOR_WIN_PERCENTAGE = 10;
 export const MIN_GAMES_FOR_CUP_WIN_PERCENTAGE = 4;
@@ -51,6 +52,7 @@ export const LEADERBOARD_TRACKERS: {
   label: string;
   shortLabel: string;
   cupOnly?: boolean;
+  clubFundsOnly?: boolean;
 }[] = [
   { id: "squad_value", label: "Top Squad Value", shortLabel: "Top Squad" },
   { id: "most_wins", label: "Most Wins", shortLabel: "Most Wins" },
@@ -95,28 +97,37 @@ export const LEADERBOARD_TRACKERS: {
     shortLabel: "Team Wins",
     cupOnly: true,
   },
+  {
+    id: "total_winnings",
+    label: "Total Winnings",
+    shortLabel: "Total Winnings",
+    clubFundsOnly: true,
+  },
 ];
 
 export function getTrackersForDbMode(
-  dbMode: "super-league" | "challenge-cup" | "draft" | "fantasy"
+  dbMode: "super-league" | "challenge-cup" | "draft" | "fantasy" | "club-funds"
 ) {
+  if (dbMode === "club-funds") {
+    return LEADERBOARD_TRACKERS.filter((t) => t.clubFundsOnly);
+  }
   if (dbMode === "challenge-cup") {
     return LEADERBOARD_TRACKERS.filter(
       (t) => t.cupOnly || t.id === "best_record"
     );
   }
-  return LEADERBOARD_TRACKERS.filter((t) => !t.cupOnly);
+  return LEADERBOARD_TRACKERS.filter((t) => !t.cupOnly && !t.clubFundsOnly);
 }
 
 export function getDefaultTrackerForDbMode(
-  dbMode: "super-league" | "challenge-cup" | "draft" | "fantasy"
+  dbMode: "super-league" | "challenge-cup" | "draft" | "fantasy" | "club-funds"
 ): LeaderboardTrackerType {
   return getTrackersForDbMode(dbMode)[0]?.id ?? "squad_value";
 }
 
 export function isTrackerValidForDbMode(
   tracker: LeaderboardTrackerType,
-  dbMode: "super-league" | "challenge-cup" | "draft" | "fantasy"
+  dbMode: "super-league" | "challenge-cup" | "draft" | "fantasy" | "club-funds"
 ): boolean {
   return getTrackersForDbMode(dbMode).some((t) => t.id === tracker);
 }

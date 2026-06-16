@@ -6,6 +6,7 @@ const STAT_KEY = "club_funds";
 
 interface ClubFundsState {
   balance: number;
+  totalEarned: number;
   paidRunIds: string[];
 }
 
@@ -29,6 +30,12 @@ export async function loadCloudClubFunds(): Promise<ClubFundsState | null> {
     return {
       balance:
         typeof json.balance === "number" && json.balance >= 0 ? json.balance : 0,
+      totalEarned:
+        typeof json.totalEarned === "number" && json.totalEarned >= 0
+          ? json.totalEarned
+          : typeof json.balance === "number"
+            ? json.balance
+            : 0,
       paidRunIds: Array.isArray(json.paidRunIds)
         ? json.paidRunIds.filter((id) => typeof id === "string")
         : [],
@@ -49,7 +56,7 @@ export async function saveCloudClubFunds(state: ClubFundsState): Promise<void> {
         user_id: userId,
         mode: STAT_MODE,
         stat_key: STAT_KEY,
-        stat_value: state.balance,
+        stat_value: state.totalEarned,
         stat_json: state,
         updated_at: new Date().toISOString(),
       },

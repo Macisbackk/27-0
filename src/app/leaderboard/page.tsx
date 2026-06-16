@@ -18,8 +18,8 @@ export default async function LeaderboardPage({
       <div className={`relative mx-auto max-w-4xl ${SPACING.pageX} py-8`}>
         <h1 className={TYPO.pageTitle}>Leaderboard</h1>
         <p className={`mb-4 ${TYPO.bodySm}`}>
-          Super League squad-value rankings and dedicated Challenge Cup records,
-          updated online across all players.
+          Super League squad-value rankings, Challenge Cup records, and total Club
+          Funds winnings, updated online across all players.
         </p>
         <LeaderboardGuestNotice />
         <LeaderboardTable initialDifficulty={difficulty} />

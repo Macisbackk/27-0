@@ -18,6 +18,7 @@ import {
   getCupTeamWinsLeaderboardAsync,
   type CupTeamWinsLeaderboardRow,
 } from "@/lib/storage/cup-team-wins";
+import { getClubFundsLeaderboardAsync } from "@/lib/storage/club-funds-leaderboard";
 import { playTabChange } from "@/lib/sound";
 import { CupTeamWinsBarGraph } from "./CupTeamWinsBarGraph";
 import { HardModeBadge } from "./HardModeBadge";
@@ -44,6 +45,7 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   cup_finals: "Finals",
   cup_win_percentage: "Total Win %",
   challenge_cup_team_wins: "Tournament Wins",
+  total_winnings: "Total Winnings",
 };
 
 interface LeaderboardTableProps {
@@ -73,12 +75,13 @@ export function LeaderboardTable({
     ? tracker
     : getDefaultTrackerForDbMode(leaderboardMode);
   const isTeamWinsTracker = activeTracker === "challenge_cup_team_wins";
+  const isClubFundsMode = leaderboardMode === "club-funds";
 
   const handleModeChange = (mode: LeaderboardDbMode) => {
     if (mode !== leaderboardMode) playTabChange();
     setLeaderboardMode(mode);
     setTracker(getDefaultTrackerForDbMode(mode));
-    if (mode === "challenge-cup" || mode === "fantasy") {
+    if (mode === "challenge-cup" || mode === "fantasy" || mode === "club-funds") {
       setDifficulty("NORMAL");
     }
   };
@@ -88,6 +91,16 @@ export function LeaderboardTable({
     setLoading(true);
 
     try {
+      if (isClubFundsMode) {
+        const result = await getClubFundsLeaderboardAsync();
+        if (currentRequest !== requestId.current) return;
+        setEntries(result.rows);
+        setTeamWinsRows([]);
+        setTeamWinsTotal(0);
+        setUsingFallback(result.source === "local");
+        return;
+      }
+
       if (isTeamWinsTracker) {
         const result = await getCupTeamWinsLeaderboardAsync();
         if (currentRequest !== requestId.current) return;
@@ -117,7 +130,7 @@ export function LeaderboardTable({
         setLoading(false);
       }
     }
-  }, [period, difficulty, leaderboardMode, activeTracker, isTeamWinsTracker]);
+  }, [period, difficulty, leaderboardMode, activeTracker, isTeamWinsTracker, isClubFundsMode]);
 
   useEffect(() => {
     if (!isTrackerValidForDbMode(tracker, leaderboardMode)) {
@@ -136,7 +149,9 @@ export function LeaderboardTable({
         ? "Challenge Cup"
         : leaderboardMode === "fantasy"
           ? "Fantasy Mode"
-          : "Normal Mode";
+          : leaderboardMode === "club-funds"
+            ? "Total Winnings"
+            : "Normal Mode";
 
   const trackerLabel =
     availableTrackers.find((t) => t.id === activeTracker)?.label ??
@@ -150,12 +165,13 @@ export function LeaderboardTable({
         : []),
       { id: "fantasy" as const, label: "Fantasy Mode" },
       { id: "challenge-cup" as const, label: "Challenge Cup" },
+      { id: "club-funds" as const, label: "Total Winnings" },
     ] as const
   );
 
   return (
     <div>
-      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {modeOptions.map((mode) => {
           const selected = leaderboardMode === mode.id;
           return (
@@ -206,7 +222,7 @@ export function LeaderboardTable({
         </div>
       </div>
 
-      {leaderboardMode !== "challenge-cup" && (
+      {leaderboardMode !== "challenge-cup" && leaderboardMode !== "club-funds" && (
         <div
           className={`mb-5 inline-flex flex-wrap ${tabGroupClass(
             difficulty === "HARD",
@@ -242,7 +258,7 @@ export function LeaderboardTable({
         </div>
       )}
 
-      {!isTeamWinsTracker && (
+      {!isTeamWinsTracker && !isClubFundsMode && (
         <div className="mb-6 flex flex-wrap gap-2">
           {PERIODS.map((p) => (
             <button
@@ -302,7 +318,9 @@ export function LeaderboardTable({
                 <th className="px-4 py-3">
                   {STAT_COLUMN[activeTracker] ?? "Stat"}
                 </th>
-                <th className="hidden px-4 py-3 sm:table-cell">Updated</th>
+                {!isClubFundsMode && (
+                  <th className="hidden px-4 py-3 sm:table-cell">Updated</th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -328,9 +346,11 @@ export function LeaderboardTable({
                   <td className="px-4 py-3 font-semibold text-accent-gold">
                     {entry.statDisplay}
                   </td>
-                  <td className="hidden px-4 py-3 text-sm text-gray-500 sm:table-cell">
-                    {new Date(entry.achievedAt).toLocaleDateString()}
-                  </td>
+                  {!isClubFundsMode && (
+                    <td className="hidden px-4 py-3 text-sm text-gray-500 sm:table-cell">
+                      {new Date(entry.achievedAt).toLocaleDateString()}
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

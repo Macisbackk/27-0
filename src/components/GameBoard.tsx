@@ -23,7 +23,7 @@ import {
   rerollSlotOffer,
   type RecruitmentRound,
 } from "@/lib/game/recruitment";
-import { getPlacementPenalty } from "@/lib/game/position-placement";
+import { getPlacementPenalty, findBestSlotForPlayer } from "@/lib/game/position-placement";
 import { getPlayerById } from "@/lib/players";
 import { getJoeMellorGoatPlayer } from "@/lib/players/goat";
 import {
@@ -45,8 +45,6 @@ import { JOE_MELLOR_GOAT_ID } from "@/lib/players/goat";
 import {
   createEmptySquad,
   getFilledCount,
-  getFormationSlotDisplayLabel,
-  getNextRecruitSlotIndex,
   getSquadValue,
   LOOSE_FORWARD_SLOT_INDEX,
   signPlayerToSlot,
@@ -176,6 +174,9 @@ export function GameBoard({
   const [spinPickIndex, setSpinPickIndex] = useState(0);
   const [pendingPlayer, setPendingPlayer] = useState<Player | null>(null);
   const [slotRecruitTarget, setSlotRecruitTarget] =
+    useState<SlotRevealTarget | null>(null);
+  /** Frozen team/year from spin — sole source of truth for the player picker. */
+  const [activeSpinTarget, setActiveSpinTarget] =
     useState<SlotRevealTarget | null>(null);
   const recordedRef = useRef(false);
   const fundsAwardedRef = useRef(false);
@@ -344,13 +345,6 @@ export function GameBoard({
 
   const filledCount = getFilledCount(squad);
   const totalValue = getSquadValue(squad);
-  const currentRecruitSlotIndex = isSlotRecruitMode
-    ? getNextRecruitSlotIndex(filledCount)
-    : null;
-  const currentRecruitSlot =
-    currentRecruitSlotIndex !== null
-      ? squad.find((s) => s.slotIndex === currentRecruitSlotIndex) ?? null
-      : null;
 
   const signedPlayerIds = useMemo(
     () =>
@@ -361,20 +355,11 @@ export function GameBoard({
   );
 
   const slotRecruitEntries = useMemo(() => {
-    if (!isSlotRecruitMode || !slotRecruitTarget) {
+    if (!isSlotRecruitMode || !activeSpinTarget) {
       return [];
     }
-    return prepareSlotTeamYearPlayers(
-      slotRecruitTarget,
-      signedPlayerIds,
-      currentRecruitSlot?.position
-    );
-  }, [
-    isSlotRecruitMode,
-    slotRecruitTarget,
-    signedPlayerIds,
-    currentRecruitSlot?.position,
-  ]);
+    return prepareSlotTeamYearPlayers(activeSpinTarget, signedPlayerIds);
+  }, [isSlotRecruitMode, activeSpinTarget, signedPlayerIds]);
 
   const rerollAvailable =
     !isHardMode &&
@@ -389,6 +374,7 @@ export function GameBoard({
     setCupClub(null);
     setSelectedSlotIndex(null);
     setSlotRecruitTarget(null);
+    setActiveSpinTarget(null);
     setSquad(createStartingSquad({ joeMellorMode, superSamHallasMode }));
     setSeasonResult(null);
     setCupResult(null);
@@ -483,27 +469,25 @@ export function GameBoard({
 
   const handleSlotTeamYearPick = useCallback(
     (player: Player) => {
-      if (choosing || phase !== "choice" || !isSlotRecruitMode) {
+      if (choosing || phase !== "choice" || !isSlotRecruitMode || !activeSpinTarget) {
         return;
       }
-      const slotIndex = getNextRecruitSlotIndex(filledCount);
-      if (slotIndex === null) return;
-      const slot = squad.find((s) => s.slotIndex === slotIndex);
-      if (!slot) return;
+      const placement = findBestSlotForPlayer(squad, player);
+      if (!placement) return;
 
       setChoosing(true);
       playPlayerSelect();
 
       setTimeout(() => {
-        const penalty = getPlacementPenalty(player.position, slot.position);
         const newSquad = signPlayerToSlot(
           squad,
           player,
-          slotIndex,
-          penalty
+          placement.slotIndex,
+          placement.penalty
         );
         setSquad(newSquad);
         setSlotRecruitTarget(null);
+        setActiveSpinTarget(null);
         setChoosing(false);
         playPositionComplete();
 
@@ -520,7 +504,7 @@ export function GameBoard({
       choosing,
       phase,
       isSlotRecruitMode,
-      filledCount,
+      activeSpinTarget,
       squad,
       startTournamentSimulation,
     ]
@@ -537,6 +521,7 @@ export function GameBoard({
     }
     playPositionSelect();
     const target = generateSlotTeamYearTarget(seed, spinPickIndex, signedPlayerIds);
+    setActiveSpinTarget(target);
     setSlotRecruitTarget(target);
     setPhase("reveal");
   }, [
@@ -766,6 +751,7 @@ export function GameBoard({
     if (isDraftMode) return;
     setSelectedSlotIndex(null);
     setSlotRecruitTarget(null);
+    setActiveSpinTarget(null);
     revealSoundKey.current = null;
     setPhase("pitch");
   }, [isDraftMode]);
@@ -868,8 +854,8 @@ export function GameBoard({
       : null;
 
   const choiceKey =
-    isSlotRecruitMode && slotRecruitTarget
-      ? `${runKey}-spin-${spinPickIndex}-${slotRecruitTarget.team}-${slotRecruitTarget.year}`
+    isSlotRecruitMode && activeSpinTarget
+      ? `${runKey}-spin-${spinPickIndex}-${activeSpinTarget.team}-${activeSpinTarget.year}`
       : activeOfferKey !== null
         ? `${runKey}-pick-${activeOfferKey}-${currentRound?.optionA}-${currentRound?.optionB}`
         : "";
@@ -953,19 +939,7 @@ export function GameBoard({
         {phase === "pitch" &&
           isSlotRecruitMode &&
           filledCount < TOTAL_SLOTS && (
-          <div className="mt-4 flex flex-col items-center gap-2">
-            {currentRecruitSlotIndex !== null && (
-              <p className={`${TYPO.bodySm} text-center text-gray-400`}>
-                Recruiting{" "}
-                <span className="font-semibold text-accent-green">
-                  {getFormationSlotDisplayLabel(currentRecruitSlotIndex)}
-                </span>
-                <span className="text-gray-500">
-                  {" "}
-                  · {filledCount + 1}/{TOTAL_SLOTS}
-                </span>
-              </p>
-            )}
+          <div className="mt-4 flex justify-center">
             <button
               type="button"
               onClick={handleSpinForPlayer}
@@ -1041,11 +1015,9 @@ export function GameBoard({
                 filledCount={filledCount}
                 totalSlots={TOTAL_SLOTS}
                 selectedSlot={
-                  isSlotRecruitMode && phase === "pitch"
-                    ? currentRecruitSlotIndex ?? undefined
-                    : phase === "pitch" && !isDraftMode
-                      ? selectedSlotIndex ?? undefined
-                      : undefined
+                  phase === "pitch" && !isDraftMode && !isSlotRecruitMode
+                    ? selectedSlotIndex ?? undefined
+                    : undefined
                 }
                 hardMode={isHardMode}
                 interactive={
@@ -1099,7 +1071,7 @@ export function GameBoard({
             )}
             {phase === "choice" &&
               isSlotRecruitMode &&
-              slotRecruitTarget && (
+              activeSpinTarget && (
               <motion.div
                 key={choiceKey}
                 className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
@@ -1115,13 +1087,8 @@ export function GameBoard({
                   transition={{ duration: 0.35, ease: "easeOut" }}
                 >
                   <SlotTeamYearPicker
-                    target={slotRecruitTarget}
+                    target={activeSpinTarget}
                     entries={slotRecruitEntries}
-                    recruitPositionLabel={
-                      currentRecruitSlotIndex !== null
-                        ? getFormationSlotDisplayLabel(currentRecruitSlotIndex)
-                        : undefined
-                    }
                     onSelect={handleSlotTeamYearPick}
                     onBack={handleBackToPitch}
                     disabled={choosing}

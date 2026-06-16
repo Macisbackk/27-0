@@ -32,6 +32,7 @@ import { MatchDetailsPanel } from "./MatchDetailsPanel";
 import type { MatchFixture, SeasonResult } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { ClubRepresentation } from "./ClubRepresentation";
+import { TeamSheet } from "./TeamSheet";
 import { Confetti } from "./Confetti";
 import { EraChallengeCupBranding } from "./EraChallengeCupBranding";
 import { HardModeBadge } from "./HardModeBadge";
@@ -446,8 +447,16 @@ export function ChallengeCupReview({
           </div>
         </CollapsibleReviewSection>
 
+        <CollapsibleReviewSection title="Team Sheet" delay={0.42}>
+          <TeamSheet
+            squad={squad}
+            hardMode={isHardMode}
+            clubColorOverride={userClubColorOverride}
+          />
+        </CollapsibleReviewSection>
+
         {cupResult.tryScorers.length > 0 && (
-          <CollapsibleReviewSection title="Try Scorers" delay={0.42}>
+          <CollapsibleReviewSection title="Try Scorers" delay={0.44}>
             <TryScorersSection
               tryScorers={cupResult.tryScorers}
               expectedTotalTries={expectedTries}
@@ -455,12 +464,10 @@ export function ChallengeCupReview({
           </CollapsibleReviewSection>
         )}
 
-        <CollapsibleReviewSection title="Club Representation" delay={0.44}>
+        <CollapsibleReviewSection title="Club Representation" delay={0.46}>
           <ClubRepresentation
             summary={clubSummary}
-            squad={squad}
             clubColorOverride={userClubColorOverride}
-            eraTeamLabel={cupResult.eraMode ? userTeamName : undefined}
           />
         </CollapsibleReviewSection>
 

@@ -188,7 +188,7 @@ export function HomeModeSelector() {
           <Link
             href={buildPlayHref("cup", "NORMAL", cupEraMode)}
             onClick={() => playModeChallengeCupStart()}
-            className={`mt-5 block w-full btn-press ${BTN.base} ${
+            className={`mt-5 block w-full btn-press ${
               cupEraMode ? BTN.eraStartLg : BTN.primaryLg
             }`}
           >

@@ -26,6 +26,7 @@ import type { MatchFixture } from "@/lib/game/season-simulation";
 import { Confetti } from "./Confetti";
 import { HardModeBadge } from "./HardModeBadge";
 import { ClubRepresentation } from "./ClubRepresentation";
+import { TeamSheet } from "./TeamSheet";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import { ClubFundsEarned } from "./ClubFundsEarned";
@@ -382,8 +383,12 @@ export function SeasonReview({
           </div>
         </CollapsibleReviewSection>
 
+        <CollapsibleReviewSection title="Team Sheet" delay={0.42}>
+          <TeamSheet squad={squad} hardMode={isHardMode} />
+        </CollapsibleReviewSection>
+
         {seasonResult.tryScorers.length > 0 && (
-          <CollapsibleReviewSection title="Try Scorers" delay={0.42}>
+          <CollapsibleReviewSection title="Try Scorers" delay={0.44}>
             <TryScorersSection
               tryScorers={seasonResult.tryScorers}
               expectedTotalTries={expectedTries}
@@ -391,9 +396,9 @@ export function SeasonReview({
           </CollapsibleReviewSection>
         )}
 
-        <CollapsibleReviewSection title="Club Representation" delay={0.44}>
+        <CollapsibleReviewSection title="Club Representation" delay={0.46}>
           <div className="text-left">
-            <ClubRepresentation summary={clubSummary} squad={squad} />
+            <ClubRepresentation summary={clubSummary} />
           </div>
         </CollapsibleReviewSection>
 

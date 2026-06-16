@@ -23,7 +23,6 @@ import { TYPO } from "@/lib/ui/typography";
 interface SlotTeamYearPickerProps {
   target: SlotRevealTarget;
   entries: SlotTeamYearPlayer[];
-  recruitPositionLabel?: string;
   onSelect: (player: Player) => void;
   onBack?: () => void;
   disabled?: boolean;
@@ -33,7 +32,6 @@ interface SlotTeamYearPickerProps {
 export function SlotTeamYearPicker({
   target,
   entries,
-  recruitPositionLabel,
   onSelect,
   onBack,
   disabled,
@@ -80,11 +78,7 @@ export function SlotTeamYearPicker({
         >
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div className="min-w-0">
-              <p className={TYPO.sectionLabel}>
-                {recruitPositionLabel
-                  ? `Signing for ${recruitPositionLabel}`
-                  : "Choose your signing"}
-              </p>
+              <p className={TYPO.sectionLabel}>Choose your signing</p>
               <h2 className="mt-0.5 font-display text-base font-bold text-white sm:text-lg">
                 {target.team}{" "}
                 <span className="text-accent-green">{target.year}</span>

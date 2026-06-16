@@ -64,7 +64,12 @@ export interface SupabaseLeaderboardRow {
   updated_at?: string | null;
 }
 
-export type LeaderboardDbMode = "super-league" | "challenge-cup" | "draft" | "fantasy";
+export type LeaderboardDbMode =
+  | "super-league"
+  | "challenge-cup"
+  | "draft"
+  | "fantasy"
+  | "club-funds";
 
 export function gameModeToDbMode(mode: GameMode): LeaderboardDbMode {
   if (mode === "CHALLENGE_CUP") return "challenge-cup";
