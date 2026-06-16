@@ -28,10 +28,11 @@ function loadState(): ClubFundsState {
       typeof parsed.balance === "number" && parsed.balance >= 0
         ? parsed.balance
         : 0;
-    const totalEarned =
+    const totalEarnedRaw =
       typeof parsed.totalEarned === "number" && parsed.totalEarned >= 0
         ? parsed.totalEarned
         : balance;
+    const totalEarned = Math.max(totalEarnedRaw, balance);
     return {
       balance,
       totalEarned,

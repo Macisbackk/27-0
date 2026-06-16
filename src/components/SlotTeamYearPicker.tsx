@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import type { Player } from "@/lib/types";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { getClubColors } from "@/lib/clubs";
-import { POSITION_LABELS } from "@/lib/positions";
 import {
   getSlotRevealBio,
   type SlotTeamYearPlayer,
@@ -14,7 +13,7 @@ import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import { playPlayerSelect, playUiClick } from "@/lib/sound";
 import { CARD, LINK } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { PlayerCard } from "./PlayerCard";
+import { SlotRecruitPlayerCard } from "./SlotRecruitPlayerCard";
 
 interface SlotTeamYearPickerProps {
   target: SlotRevealTarget;
@@ -92,13 +91,13 @@ export function SlotTeamYearPicker({
           </p>
         </div>
 
-        <div className="px-3 py-3 sm:px-4 sm:py-4">
+        <div className="px-2 py-2 sm:px-3 sm:py-3">
           {entries.length === 0 ? (
             <p className="py-8 text-center text-gray-500">
               No players available from this squad.
             </p>
           ) : (
-            <div className="mx-auto grid max-h-[min(52vh,480px)] max-w-3xl grid-cols-2 gap-2 overflow-y-auto overflow-x-hidden pr-0.5 sm:grid-cols-3 sm:gap-3">
+            <div className="mx-auto grid max-h-[min(52vh,480px)] max-w-4xl grid-cols-2 gap-1.5 overflow-y-auto overflow-x-hidden pr-0.5 sm:grid-cols-3 sm:gap-2 lg:grid-cols-4">
               {entries.map(({ player }) => (
                 <motion.button
                   key={player.id}
@@ -109,36 +108,16 @@ export function SlotTeamYearPicker({
                     playPlayerSelect();
                     onSelect(player);
                   }}
-                  className="group btn-press flex min-w-0 flex-col rounded-lg text-left ring-1 ring-transparent transition hover:ring-accent-green/45 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
-                  initial={{ opacity: 0, y: 10 }}
+                  className="group btn-press min-w-0 rounded-lg text-left ring-1 ring-transparent transition hover:ring-accent-green/50 active:scale-[0.97] active:ring-accent-green/70 disabled:cursor-not-allowed disabled:opacity-50"
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.28 }}
+                  transition={{ duration: 0.22 }}
                 >
-                  <div className="mb-1 flex min-h-[14px] items-center justify-between px-0.5 sm:min-h-[18px]">
-                    <span className="font-display text-[8px] font-bold uppercase tracking-wider text-gray-500 sm:text-[10px]">
-                      Sign
-                    </span>
-                    <span className="hidden rounded-full bg-accent-green/20 px-1.5 py-0.5 text-[9px] font-semibold text-accent-green opacity-0 transition group-hover:opacity-100 sm:inline">
-                      →
-                    </span>
-                  </div>
-                  <div
-                    className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg transition group-hover:opacity-95"
-                    style={{
-                      boxShadow: `inset 3px 0 0 ${clubColors.primary}`,
-                    }}
-                  >
-                    <PlayerCard
-                      player={player}
-                      selectable
-                      hardMode={hardMode}
-                      equalHeight
-                      compactMobile
-                    />
-                  </div>
-                  <p className="mt-1 truncate text-center text-[9px] text-gray-500 sm:text-[10px]">
-                    {POSITION_LABELS[player.position]}
-                  </p>
+                  <SlotRecruitPlayerCard
+                    player={player}
+                    hardMode={hardMode}
+                    clubColorOverride={target.team}
+                  />
                 </motion.button>
               ))}
             </div>
