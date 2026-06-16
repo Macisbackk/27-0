@@ -116,9 +116,9 @@ export function ChallengeCupClubSelect({
                 type="button"
                 disabled={!selected}
                 onClick={handleConfirm}
-                className={`${BTN.base} ${BTN.primary} w-full disabled:opacity-40`}
+                className={`${BTN.base} ${BTN.primaryLg} w-full disabled:opacity-40`}
               >
-                Confirm Team
+                Start Challenge Cup →
               </button>
               <button
                 type="button"

@@ -296,7 +296,7 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
               onClick={handleConfirm}
               className={`mt-5 block w-full btn-press ${BTN.eraStartLg}`}
             >
-              Start Era Challenge Cup →
+              Start Era Challenge Cup
             </button>
           </motion.div>
         )}

@@ -17,6 +17,49 @@ function isCompatible(a: Position, b: Position): boolean {
   );
 }
 
+/** Player positions that can fill a slot without an out-of-position penalty. */
+export function getCompatiblePlayerPositions(slotPosition: Position): Position[] {
+  const positions = new Set<Position>([slotPosition]);
+  for (const [a, b] of COMPATIBLE_PAIRS) {
+    if (a === slotPosition) positions.add(b);
+    if (b === slotPosition) positions.add(a);
+  }
+  return [...positions];
+}
+
+/** Union of player positions eligible for any remaining empty slot. */
+export function getRemainingRecruitPlayerPositions(
+  squad: SquadSlot[]
+): Set<Position> {
+  const eligible = new Set<Position>();
+  for (const slot of squad) {
+    if (!slot.player) {
+      for (const pos of getCompatiblePlayerPositions(slot.position)) {
+        eligible.add(pos);
+      }
+    }
+  }
+  return eligible;
+}
+
+export function canPlayerRecruitForRemainingSlots(
+  playerPosition: Position,
+  squad: SquadSlot[]
+): boolean {
+  return getRemainingRecruitPlayerPositions(squad).has(playerPosition);
+}
+
+/** Whether a player can fill at least one empty slot without penalty. */
+export function canPlayerFillAnyEmptySlot(
+  squad: SquadSlot[],
+  player: Player
+): boolean {
+  const emptySlots = squad.filter((slot) => !slot.player);
+  return emptySlots.some((slot) =>
+    isCompatible(player.position, slot.position)
+  );
+}
+
 export function getPlacementPenalty(
   naturalPosition: Position,
   slotPosition: Position

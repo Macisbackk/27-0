@@ -358,8 +358,8 @@ export function GameBoard({
     if (!isSlotRecruitMode || !activeSpinTarget) {
       return [];
     }
-    return prepareSlotTeamYearPlayers(activeSpinTarget, signedPlayerIds);
-  }, [isSlotRecruitMode, activeSpinTarget, signedPlayerIds]);
+    return prepareSlotTeamYearPlayers(activeSpinTarget, signedPlayerIds, squad);
+  }, [isSlotRecruitMode, activeSpinTarget, signedPlayerIds, squad]);
 
   const rerollAvailable =
     !isHardMode &&
@@ -520,7 +520,22 @@ export function GameBoard({
       return;
     }
     playPositionSelect();
-    const target = generateSlotTeamYearTarget(seed, spinPickIndex, signedPlayerIds);
+    const maxAttempts = 24;
+    let target: SlotRevealTarget | null = null;
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const candidate = generateSlotTeamYearTarget(
+        seed,
+        spinPickIndex + attempt,
+        signedPlayerIds,
+        squad
+      );
+      if (candidate) {
+        target = candidate;
+        break;
+      }
+    }
+    if (!target) return;
+
     setActiveSpinTarget(target);
     setSlotRecruitTarget(target);
     setPhase("reveal");
@@ -532,6 +547,7 @@ export function GameBoard({
     seed,
     spinPickIndex,
     signedPlayerIds,
+    squad,
   ]);
 
   const handleSelectSlot = useCallback(

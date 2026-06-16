@@ -8,7 +8,12 @@ import {
   getRosterPlayerIds,
   hasTeamYearRoster,
 } from "../players/team-year-rosters";
-import type { Player, Position } from "../types";
+import type { Player, Position, SquadSlot } from "../types";
+import {
+  canPlayerFillAnyEmptySlot,
+  getCompatiblePlayerPositions,
+  getRemainingRecruitPlayerPositions,
+} from "./position-placement";
 import {
   getTeamSpinPool,
   getYearSpinPool,
@@ -39,31 +44,30 @@ function getAllTeamYearPairs(): TeamYearPair[] {
 function rosterPlayersForPair(
   team: string,
   year: string,
-  usedIds: Set<string>
+  usedIds: Set<string>,
+  squad: SquadSlot[]
 ): Player[] {
   return getRosterPlayerIds(team, year)
     .map((id) => getPlayerById(id))
-    .filter((p): p is Player => !!p && !usedIds.has(p.id));
+    .filter((p): p is Player => !!p && !usedIds.has(p.id))
+    .filter((p) => canPlayerFillAnyEmptySlot(squad, p));
 }
 
 /** Deterministic team/year draw for a recruitment spin (position-agnostic). */
 export function generateSlotTeamYearTarget(
   seed: string,
   spinIndex: number,
-  usedIds: Set<string>
-): SlotRevealTarget {
+  usedIds: Set<string>,
+  squad: SquadSlot[]
+): SlotRevealTarget | null {
   const rng = seedrandom(`${seed}-slot-team-year-spin-${spinIndex}`);
   const pairs = getAllTeamYearPairs();
 
   const pool = pairs.filter(
-    (pair) => rosterPlayersForPair(pair.team, pair.year, usedIds).length > 0
+    (pair) => rosterPlayersForPair(pair.team, pair.year, usedIds, squad).length > 0
   );
 
-  if (pool.length === 0) {
-    const fallbackTeam = getTeamsWithYearRosters()[0] ?? "Wigan Warriors";
-    const fallbackYear = getYearsForTeam(fallbackTeam)[0] ?? "2026";
-    return { team: fallbackTeam, year: fallbackYear };
-  }
+  if (pool.length === 0) return null;
 
   const pick = pool[Math.floor(rng() * pool.length)]!;
   return { team: pick.team, year: pick.year };
@@ -79,27 +83,20 @@ export function getSlotTeamYearSpinPools(target: SlotRevealTarget): {
   };
 }
 
-/** Positions eligible when recruiting for a given slot (SH/SO swap). */
+/** Positions eligible when recruiting for a given slot (includes SH/SO and prop/SR compat). */
 export function getEligibleRecruitPositions(
   slotPosition: Position
 ): Position[] {
-  if (slotPosition === "SCRUM_HALF") return ["SCRUM_HALF", "STAND_OFF"];
-  if (slotPosition === "STAND_OFF") return ["STAND_OFF", "SCRUM_HALF"];
-  return [slotPosition];
+  return getCompatiblePlayerPositions(slotPosition);
 }
 
 function sortPlayersForRecruitSlot(
   entries: SlotTeamYearPlayer[],
-  slotPosition?: Position
+  remainingPositions: Set<Position>
 ): SlotTeamYearPlayer[] {
-  if (!slotPosition) {
-    return entries.sort((a, b) => b.player.peakRating - a.player.peakRating);
-  }
-
-  const eligible = new Set(getEligibleRecruitPositions(slotPosition));
   return entries.sort((a, b) => {
-    const aEligible = eligible.has(a.player.position);
-    const bEligible = eligible.has(b.player.position);
+    const aEligible = remainingPositions.has(a.player.position);
+    const bEligible = remainingPositions.has(b.player.position);
     if (aEligible !== bEligible) return aEligible ? -1 : 1;
     return b.player.peakRating - a.player.peakRating;
   });
@@ -108,12 +105,13 @@ function sortPlayersForRecruitSlot(
 export function prepareSlotTeamYearPlayers(
   target: SlotRevealTarget,
   usedIds: Set<string>,
-  slotPosition?: Position
+  squad: SquadSlot[]
 ): SlotTeamYearPlayer[] {
   const eraYear = Number.parseInt(target.year, 10);
   const runClub = formatEraDisplayName(target.team, target.year);
+  const remainingPositions = getRemainingRecruitPlayerPositions(squad);
 
-  const entries = rosterPlayersForPair(target.team, target.year, usedIds).map(
+  const entries = rosterPlayersForPair(target.team, target.year, usedIds, squad).map(
     (player) => {
       const prepared = withRunClub(player, runClub, {
         eraYear: Number.isFinite(eraYear) ? eraYear : undefined,
@@ -122,7 +120,7 @@ export function prepareSlotTeamYearPlayers(
     }
   );
 
-  return sortPlayersForRecruitSlot(entries, slotPosition);
+  return sortPlayersForRecruitSlot(entries, remainingPositions);
 }
 
 const BIO_SNIPPETS = {

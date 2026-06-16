@@ -9,6 +9,7 @@ import {
 import {
   CLUB_FUNDS_CHANGED_EVENT,
   getClubFundsBalance,
+  syncClubFundsLeaderboardOnLoad,
 } from "@/lib/storage/club-funds";
 import { playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { CARD } from "@/lib/ui/design-system";
@@ -23,6 +24,7 @@ export function ClubFundsDisplay() {
   useEffect(() => {
     setMounted(true);
     setBalance(getClubFundsBalance());
+    syncClubFundsLeaderboardOnLoad();
 
     const sync = () => setBalance(getClubFundsBalance());
     window.addEventListener(CLUB_FUNDS_CHANGED_EVENT, sync);
@@ -73,12 +75,15 @@ export function ClubFundsDisplay() {
           else playPanelExpand();
           setOpen((value) => !value);
         }}
-        className="header-control-btn flex h-11 min-h-[44px] items-center justify-center rounded-lg border border-pitch-600 px-2 text-xs font-bold tabular-nums text-accent-green transition hover:border-accent-green/50 hover:bg-accent-green/10 sm:px-3 sm:text-sm"
+        className="header-control-btn flex h-11 min-h-[44px] max-w-[4.25rem] items-center justify-center gap-1 rounded-lg border border-pitch-600 px-1.5 text-[11px] font-bold tabular-nums text-accent-green transition hover:border-accent-green/50 hover:bg-accent-green/10 sm:max-w-none sm:px-3 sm:text-sm"
         aria-expanded={open}
         aria-haspopup="dialog"
-        title="Club Funds"
+        title={`Club Funds: ${formatClubFunds(balance)}`}
       >
-        {formatClubFunds(balance)}
+        <span aria-hidden className="text-xs sm:hidden">
+          💷
+        </span>
+        <span className="truncate">{formatClubFunds(balance)}</span>
       </button>
 
       <AnimatePresence>

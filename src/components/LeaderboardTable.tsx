@@ -198,6 +198,7 @@ export function LeaderboardTable({
       </div>
 
       <div className="mb-5 border-b border-pitch-700/60">
+        {availableTrackers.length > 1 && (
         <div className="-mb-px flex gap-1 overflow-x-auto pb-px">
           {availableTrackers.map((t) => {
             const selected = activeTracker === t.id;
@@ -220,6 +221,7 @@ export function LeaderboardTable({
             );
           })}
         </div>
+        )}
       </div>
 
       {leaderboardMode !== "challenge-cup" && leaderboardMode !== "club-funds" && (

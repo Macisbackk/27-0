@@ -64,6 +64,14 @@ export function getClubFundsTotalEarned(): number {
   return loadState().totalEarned;
 }
 
+/** Sync leaderboard after load/backfill so existing balances appear on the board. */
+export function syncClubFundsLeaderboardOnLoad(): void {
+  const state = loadState();
+  if (state.totalEarned > 0) {
+    syncClubFundsLeaderboard(state.totalEarned);
+  }
+}
+
 export function setClubFundsBalance(balance: number): void {
   const state = loadState();
   state.balance = Math.max(0, balance);
@@ -80,6 +88,7 @@ export function mergeClubFundsFromCloud(cloud: ClubFundsState | null): void {
     paidRunIds: [...paidSet].slice(-MAX_PAID_RUN_IDS),
   };
   saveState(merged);
+  syncClubFundsLeaderboard(merged.totalEarned);
 }
 
 export function awardClubFundsForRun(

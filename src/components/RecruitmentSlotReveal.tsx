@@ -1,12 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
-import {
-  getSlotRevealBio,
-  getSlotTeamYearSpinPools,
-} from "@/lib/game/slot-team-year-pick";
+import { getSlotTeamYearSpinPools } from "@/lib/game/slot-team-year-pick";
 import { getClubColors } from "@/lib/clubs";
 import {
   playSlotLand,
@@ -23,7 +20,7 @@ const SPIN_DELAYS_MS = [
   272, 308, 348, 392, 440,
 ] as const;
 
-const BIO_HOLD_MS = 720;
+const LAND_HOLD_MS = 480;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
@@ -41,10 +38,6 @@ export function RecruitmentSlotReveal({
   const clubColors = useMemo(
     () => getClubColors(target.team),
     [target.team]
-  );
-  const bio = useMemo(
-    () => getSlotRevealBio(target.team, target.year),
-    [target.team, target.year]
   );
 
   const [displayTeam, setDisplayTeam] = useState(teams[0] ?? target.team);
@@ -99,7 +92,7 @@ export function RecruitmentSlotReveal({
       playSlotLand();
       timeoutId = window.setTimeout(() => {
         if (!cancelled) onComplete();
-      }, BIO_HOLD_MS);
+      }, LAND_HOLD_MS);
     };
 
     runTick();
@@ -119,8 +112,8 @@ export function RecruitmentSlotReveal({
     >
       <motion.div
         className={`${CARD.panel} card-glass w-full max-w-md overflow-hidden border border-accent-green/25 shadow-[0_0_48px_rgba(34,197,94,0.18)]`}
-        initial={{ scale: 0.94, y: 20 }}
-        animate={{ scale: 1, y: 0 }}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.28, ease: "easeOut" }}
       >
         <div
@@ -144,7 +137,7 @@ export function RecruitmentSlotReveal({
             aria-live="polite"
           >
             <div
-              className={`slot-reveal-reel min-w-0 flex-1 rounded-xl border-2 px-2 py-2.5 transition-all duration-300 sm:px-3 sm:py-3 ${
+              className={`slot-reveal-reel min-w-0 flex-1 rounded-xl border-2 px-2 py-2.5 transition-colors duration-300 sm:px-3 sm:py-3 ${
                 locked
                   ? "border-accent-green/55 bg-pitch-950/95 shadow-[inset_0_0_24px_rgba(34,197,94,0.12),0_0_20px_rgba(34,197,94,0.15)]"
                   : "border-pitch-600/70 bg-pitch-950/80 shadow-[inset_0_2px_16px_rgba(0,0,0,0.55)]"
@@ -154,41 +147,26 @@ export function RecruitmentSlotReveal({
               }}
             >
               <p
-                className={`slot-reveal-display-text slot-reveal-team-name text-center font-display font-black uppercase text-accent-green ${!locked ? "slot-reveal-blur" : ""}`}
+                className={`slot-reveal-display-text slot-reveal-team-name text-center font-display font-black uppercase text-accent-green ${!locked ? "slot-reveal-spinning" : ""}`}
               >
                 {displayTeam}
               </p>
             </div>
 
             <div
-              className={`slot-reveal-reel slot-reveal-year-reel shrink-0 rounded-xl border-2 px-2 py-2.5 transition-all duration-300 sm:px-3 sm:py-3 ${
+              className={`slot-reveal-reel slot-reveal-year-reel shrink-0 rounded-xl border-2 px-2 py-2.5 transition-colors duration-300 sm:px-3 sm:py-3 ${
                 locked
                   ? "border-accent-green/55 bg-pitch-950/95 shadow-[inset_0_0_24px_rgba(34,197,94,0.12),0_0_20px_rgba(34,197,94,0.15)]"
                   : "border-pitch-600/70 bg-pitch-950/80 shadow-[inset_0_2px_16px_rgba(0,0,0,0.55)]"
               }`}
             >
               <p
-                className={`slot-reveal-display-text slot-reveal-year-text text-center font-display font-black tabular-nums text-accent-green ${!locked ? "slot-reveal-blur" : ""}`}
+                className={`slot-reveal-display-text slot-reveal-year-text text-center font-display font-black tabular-nums text-accent-green ${!locked ? "slot-reveal-spinning" : ""}`}
               >
                 {displayYear}
               </p>
             </div>
           </div>
-
-          <AnimatePresence>
-            {locked && (
-              <motion.div
-                className="mt-4 rounded-lg border border-accent-green/20 bg-accent-green/5 px-3 py-2.5 text-center sm:px-4 sm:py-3"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-              >
-                <p className={`${TYPO.bodySm} leading-relaxed text-gray-300`}>
-                  {bio}
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
 
           <div className="mt-4 flex justify-center">
             <span

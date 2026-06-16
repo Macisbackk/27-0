@@ -28,7 +28,7 @@ import {
 } from "./auth-callback";
 import { loadCloudStats } from "./storage/stats-cloud";
 import { loadCloudClubFunds } from "./storage/club-funds-cloud";
-import { mergeClubFundsFromCloud } from "./storage/club-funds";
+import { mergeClubFundsFromCloud, syncClubFundsLeaderboardOnLoad } from "./storage/club-funds";
 import { STORAGE_KEYS } from "./storage/keys";
 import { getAllStats, mergeCloudStatsWithLocal } from "./storage/stats";
 import { isSupabaseConfigured } from "./supabase";
@@ -63,6 +63,7 @@ async function hydrateStatsFromCloud(): Promise<void> {
 async function hydrateClubFundsFromCloud(): Promise<void> {
   const cloud = await loadCloudClubFunds();
   mergeClubFundsFromCloud(cloud);
+  syncClubFundsLeaderboardOnLoad();
 }
 
 function applySession(session: Session | null, profile: UserProfile | null) {

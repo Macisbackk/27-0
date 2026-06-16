@@ -119,7 +119,7 @@ export function HomeModeSelector() {
             onClick={() => playUiClick()}
             className={`mt-5 block w-full btn-press ${BTN.base} ${classicHard ? BTN.primaryHard : BTN.primary}`}
           >
-            {classicHard ? "Start Hard Season" : "Start Season"} →
+            {classicHard ? "Start Hard Mode" : "Start Normal Mode"} →
           </Link>
         </ModePanel>
 
@@ -192,7 +192,7 @@ export function HomeModeSelector() {
               cupEraMode ? BTN.eraStartLg : BTN.primaryLg
             }`}
           >
-            {cupEraMode ? "Start Era Challenge Cup →" : "Start Challenge Cup →"}
+            {cupEraMode ? "Start Era Challenge Cup" : "Start Challenge Cup"} →
           </Link>
         </ModePanel>
 

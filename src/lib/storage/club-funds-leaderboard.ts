@@ -4,6 +4,7 @@ import { isSupabaseConfigured, supabase } from "../supabase";
 import { getAuthUserId } from "../auth-session";
 import { getUsername } from "./user";
 import { STORAGE_KEYS } from "./keys";
+import { getClubFundsTotalEarned } from "./club-funds";
 import type { LeaderboardTrackerRow } from "../leaderboard-trackers";
 
 const LEADERBOARD_MODE = "club-funds";
@@ -92,6 +93,22 @@ export function syncClubFundsLeaderboard(totalEarned: number): void {
   }
 }
 
+function mergeLeaderboardEntries(
+  ...sources: ClubFundsLeaderboardEntry[][]
+): ClubFundsLeaderboardEntry[] {
+  const merged = new Map<string, ClubFundsLeaderboardEntry>();
+  for (const source of sources) {
+    for (const entry of source) {
+      if (!entry.username || entry.totalEarned <= 0) continue;
+      const existing = merged.get(entry.username);
+      if (!existing || entry.totalEarned > existing.totalEarned) {
+        merged.set(entry.username, entry);
+      }
+    }
+  }
+  return [...merged.values()];
+}
+
 function mapEntriesToRows(
   entries: ClubFundsLeaderboardEntry[],
   currentUser: string,
@@ -142,18 +159,21 @@ export async function getClubFundsLeaderboardAsync(
   limit = 50
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
   const currentUser = getUsername() ?? "";
-  const remote = await fetchRemoteEntries();
+  const totalEarned = getClubFundsTotalEarned();
 
-  if (remote) {
-    return {
-      source: "remote",
-      rows: mapEntriesToRows(remote, currentUser, limit),
-    };
+  if (totalEarned > 0 && currentUser) {
+    updateLocalClubFundsLeaderboard(currentUser, totalEarned);
+    if (isLoggedIn()) {
+      void submitClubFundsLeaderboardOnline(totalEarned);
+    }
   }
 
   const local = Object.values(loadLocalEntries());
+  const remote = await fetchRemoteEntries();
+  const merged = mergeLeaderboardEntries(local, remote ?? []);
+
   return {
-    source: "local",
-    rows: mapEntriesToRows(local, currentUser, limit),
+    source: remote ? "remote" : "local",
+    rows: mapEntriesToRows(merged, currentUser, limit),
   };
 }
