@@ -1,11 +1,10 @@
-import { SUPER_LEAGUE_CLUBS } from "../clubs";
 import type { Player } from "../types";
+import {
+  getTeamsWithYearRosters,
+  getYearsForTeam,
+} from "../players/team-year-rosters";
 
 const CURRENT_SEASON_YEAR = 2026;
-
-const SPIN_YEARS = [
-  1970, 1985, 1992, 1996, 2003, 2008, 2012, 2014, 2018, 2020, 2024, 2026,
-];
 
 export interface SlotRevealTarget {
   team: string;
@@ -36,8 +35,9 @@ export function getSlotRevealTarget(players: [Player, Player]): SlotRevealTarget
   };
 }
 
-export function getTeamSpinPool(targetTeam: string): string[] {
-  const clubs = SUPER_LEAGUE_CLUBS.map((c) => c.name);
+/** Teams allowed in Normal Mode slot animation — roster-backed playable clubs only. */
+export function getSlotSpinTeamPool(targetTeam: string): string[] {
+  const clubs = getTeamsWithYearRosters();
   const shuffled = [...clubs].sort(() => Math.random() - 0.5);
   if (!shuffled.includes(targetTeam)) {
     shuffled.unshift(targetTeam);
@@ -45,10 +45,27 @@ export function getTeamSpinPool(targetTeam: string): string[] {
   return shuffled;
 }
 
-export function getYearSpinPool(targetYear: string): string[] {
-  const years = SPIN_YEARS.map(String);
+/** Years allowed in Normal Mode slot animation — roster years only. */
+export function getSlotSpinYearPool(targetYear: string): string[] {
+  const rosterYears = new Set<string>();
+  for (const team of getTeamsWithYearRosters()) {
+    for (const year of getYearsForTeam(team)) {
+      rosterYears.add(year);
+    }
+  }
+  const years = [...rosterYears].sort((a, b) => Number(b) - Number(a));
   if (!years.includes(targetYear)) {
     years.unshift(targetYear);
   }
   return years;
+}
+
+/** @deprecated Use getSlotSpinTeamPool */
+export function getTeamSpinPool(targetTeam: string): string[] {
+  return getSlotSpinTeamPool(targetTeam);
+}
+
+/** @deprecated Use getSlotSpinYearPool */
+export function getYearSpinPool(targetYear: string): string[] {
+  return getSlotSpinYearPool(targetYear);
 }

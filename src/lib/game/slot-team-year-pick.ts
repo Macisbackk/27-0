@@ -10,9 +10,9 @@ import {
 } from "../players/team-year-rosters";
 import type { Player, Position, SquadSlot } from "../types";
 import {
-  canPlayerFillAnyEmptySlot,
+  canPlayerRecruitForRemainingSlots,
   getCompatiblePlayerPositions,
-  getRemainingRecruitPlayerPositions,
+  getRemainingNaturalPlayerPositions,
 } from "./position-placement";
 import {
   getTeamSpinPool,
@@ -50,7 +50,7 @@ function rosterPlayersForPair(
   return getRosterPlayerIds(team, year)
     .map((id) => getPlayerById(id))
     .filter((p): p is Player => !!p && !usedIds.has(p.id))
-    .filter((p) => canPlayerFillAnyEmptySlot(squad, p));
+    .filter((p) => canPlayerRecruitForRemainingSlots(p, squad));
 }
 
 /** Deterministic team/year draw for a recruitment spin (position-agnostic). */
@@ -109,7 +109,7 @@ export function prepareSlotTeamYearPlayers(
 ): SlotTeamYearPlayer[] {
   const eraYear = Number.parseInt(target.year, 10);
   const runClub = formatEraDisplayName(target.team, target.year);
-  const remainingPositions = getRemainingRecruitPlayerPositions(squad);
+  const remainingPositions = getRemainingNaturalPlayerPositions(squad);
 
   const entries = rosterPlayersForPair(target.team, target.year, usedIds, squad).map(
     (player) => {

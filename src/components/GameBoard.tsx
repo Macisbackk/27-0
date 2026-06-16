@@ -23,7 +23,10 @@ import {
   rerollSlotOffer,
   type RecruitmentRound,
 } from "@/lib/game/recruitment";
-import { getPlacementPenalty, findBestSlotForPlayer } from "@/lib/game/position-placement";
+import {
+  getPlacementPenalty,
+  getNaturalPlacementSlots,
+} from "@/lib/game/position-placement";
 import { getPlayerById } from "@/lib/players";
 import { getJoeMellorGoatPlayer } from "@/lib/players/goat";
 import {
@@ -82,6 +85,7 @@ import { HardModeBadge } from "./HardModeBadge";
 import { ClubHeaderBar } from "./ClubBadge";
 import { GuestNotice } from "./GuestNotice";
 import { DraftPositionPlacement } from "./DraftPositionPlacement";
+import { SlotRecruitPlacementConfirm } from "./SlotRecruitPlacementConfirm";
 import { LINK, BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
@@ -472,33 +476,16 @@ export function GameBoard({
       if (choosing || phase !== "choice" || !isSlotRecruitMode || !activeSpinTarget) {
         return;
       }
-      const placement = findBestSlotForPlayer(squad, player);
-      if (!placement) return;
+      if (getNaturalPlacementSlots(squad, player).length === 0) return;
 
       setChoosing(true);
       playPlayerSelect();
 
       setTimeout(() => {
-        const newSquad = signPlayerToSlot(
-          squad,
-          player,
-          placement.slotIndex,
-          placement.penalty
-        );
-        setSquad(newSquad);
-        setSlotRecruitTarget(null);
-        setActiveSpinTarget(null);
         setChoosing(false);
-        playPositionComplete();
-
-        const filled = getFilledCount(newSquad);
-        if (filled >= TOTAL_SLOTS) {
-          startTournamentSimulation(newSquad);
-        } else {
-          setSpinPickIndex((i) => i + 1);
-          setPhase("pitch");
-        }
-      }, 300);
+        setPendingPlayer(player);
+        setPhase("placement");
+      }, 200);
     },
     [
       choosing,
@@ -506,9 +493,63 @@ export function GameBoard({
       isSlotRecruitMode,
       activeSpinTarget,
       squad,
+    ]
+  );
+
+  const handleSlotPlacementConfirm = useCallback(
+    (slotIndex: number) => {
+      if (
+        phase !== "placement" ||
+        !pendingPlayer ||
+        !isSlotRecruitMode ||
+        choosing
+      ) {
+        return;
+      }
+      const validSlots = getNaturalPlacementSlots(squad, pendingPlayer);
+      if (!validSlots.some((s) => s.slotIndex === slotIndex)) return;
+
+      setChoosing(true);
+      const penalty = getPlacementPenalty(
+        pendingPlayer.position,
+        squad.find((s) => s.slotIndex === slotIndex)!.position
+      );
+      const newSquad = signPlayerToSlot(
+        squad,
+        pendingPlayer,
+        slotIndex,
+        penalty
+      );
+      setSquad(newSquad);
+      setPendingPlayer(null);
+      setSlotRecruitTarget(null);
+      setActiveSpinTarget(null);
+      setChoosing(false);
+      playPositionComplete();
+
+      const filled = getFilledCount(newSquad);
+      if (filled >= TOTAL_SLOTS) {
+        startTournamentSimulation(newSquad);
+      } else {
+        setSpinPickIndex((i) => i + 1);
+        setPhase("pitch");
+      }
+    },
+    [
+      phase,
+      pendingPlayer,
+      isSlotRecruitMode,
+      choosing,
+      squad,
       startTournamentSimulation,
     ]
   );
+
+  const handleSlotPlacementBack = useCallback(() => {
+    if (phase !== "placement" || !isSlotRecruitMode) return;
+    setPendingPlayer(null);
+    setPhase("choice");
+  }, [phase, isSlotRecruitMode]);
 
   const handleSpinForPlayer = useCallback(() => {
     if (
@@ -1025,6 +1066,15 @@ export function GameBoard({
                   disabled={choosing}
                 />
               )}
+              {phase === "placement" && pendingPlayer && isSlotRecruitMode && (
+                <SlotRecruitPlacementConfirm
+                  player={pendingPlayer}
+                  squad={squad}
+                  onConfirm={handleSlotPlacementConfirm}
+                  onBack={handleSlotPlacementBack}
+                  disabled={choosing}
+                />
+              )}
               <RugbyPitch
                 squad={squad}
                 totalValue={totalValue}
@@ -1043,7 +1093,7 @@ export function GameBoard({
                   !isSlotRecruitMode
                 }
                 onSlotClick={handleSelectSlot}
-                dimmed={phase === "choice" || phase === "reveal"}
+                dimmed={phase === "choice" || phase === "reveal" || (phase === "placement" && isSlotRecruitMode)}
                 lockedSlots={
                   superSamHallasMode
                     ? ALL_SUPER_SAM_SLOT_INDICES

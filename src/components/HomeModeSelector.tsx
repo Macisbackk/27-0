@@ -117,7 +117,9 @@ export function HomeModeSelector() {
           <Link
             href={classicHref}
             onClick={() => playUiClick()}
-            className={`mt-5 block w-full btn-press ${BTN.base} ${classicHard ? BTN.primaryHard : BTN.primary}`}
+            className={`mt-5 block w-full btn-press text-center ${
+              classicHard ? BTN.primaryLgHard : BTN.primaryLg
+            }`}
           >
             {classicHard ? "Start Hard Mode" : "Start Normal Mode"} →
           </Link>
@@ -188,7 +190,7 @@ export function HomeModeSelector() {
           <Link
             href={buildPlayHref("cup", "NORMAL", cupEraMode)}
             onClick={() => playModeChallengeCupStart()}
-            className={`mt-5 block w-full btn-press ${
+            className={`mt-5 block w-full btn-press text-center ${
               cupEraMode ? BTN.eraStartLg : BTN.primaryLg
             }`}
           >
@@ -207,7 +209,7 @@ export function HomeModeSelector() {
           <Link
             href={buildPlayHref("fantasy")}
             onClick={() => playUiClick()}
-            className={`mt-5 block w-full btn-press ${BTN.base} ${BTN.primary}`}
+            className={`mt-5 block w-full btn-press text-center ${BTN.primaryLg}`}
           >
             Start Fantasy Mode →
           </Link>

@@ -8,11 +8,21 @@ import { getClubFundsTotalEarned } from "./club-funds";
 import type { LeaderboardTrackerRow } from "../leaderboard-trackers";
 
 const LEADERBOARD_MODE = "club-funds";
+const LOCAL_GUEST_KEY = "__local_guest__";
 
 export interface ClubFundsLeaderboardEntry {
   username: string;
   totalEarned: number;
   updatedAt: string;
+}
+
+function isGuestLeaderboardName(username: string): boolean {
+  const normalized = username.trim().toLowerCase();
+  return (
+    !normalized ||
+    normalized === "guest" ||
+    normalized === LOCAL_GUEST_KEY.toLowerCase()
+  );
 }
 
 function loadLocalEntries(): Record<string, ClubFundsLeaderboardEntry> {
@@ -53,7 +63,15 @@ export async function submitClubFundsLeaderboardOnline(
 ): Promise<void> {
   const userId = getAuthUserId();
   const coachName = getUsername();
-  if (!userId || !coachName || !isSupabaseConfigured || totalEarned <= 0) return;
+  if (
+    !userId ||
+    !coachName ||
+    isGuestLeaderboardName(coachName) ||
+    !isSupabaseConfigured ||
+    totalEarned <= 0
+  ) {
+    return;
+  }
 
   try {
     const { data: existing } = await supabase
@@ -86,27 +104,23 @@ export async function submitClubFundsLeaderboardOnline(
 }
 
 export function syncClubFundsLeaderboard(totalEarned: number): void {
-  const username = getUsername() ?? "Guest";
-  updateLocalClubFundsLeaderboard(username, totalEarned);
+  if (totalEarned <= 0) return;
+
   if (isLoggedIn()) {
+    const username = getUsername();
+    if (!username || isGuestLeaderboardName(username)) return;
+    updateLocalClubFundsLeaderboard(username, totalEarned);
     void submitClubFundsLeaderboardOnline(totalEarned);
+    return;
   }
+
+  updateLocalClubFundsLeaderboard(LOCAL_GUEST_KEY, totalEarned);
 }
 
-function mergeLeaderboardEntries(
-  ...sources: ClubFundsLeaderboardEntry[][]
+function filterPublicEntries(
+  entries: ClubFundsLeaderboardEntry[]
 ): ClubFundsLeaderboardEntry[] {
-  const merged = new Map<string, ClubFundsLeaderboardEntry>();
-  for (const source of sources) {
-    for (const entry of source) {
-      if (!entry.username || entry.totalEarned <= 0) continue;
-      const existing = merged.get(entry.username);
-      if (!existing || entry.totalEarned > existing.totalEarned) {
-        merged.set(entry.username, entry);
-      }
-    }
-  }
-  return [...merged.values()];
+  return entries.filter((entry) => !isGuestLeaderboardName(entry.username));
 }
 
 function mapEntriesToRows(
@@ -142,13 +156,15 @@ async function fetchRemoteEntries(): Promise<ClubFundsLeaderboardEntry[] | null>
     if (error) throw error;
     if (!data?.length) return [];
 
-    return data
-      .filter((row) => row.coach_name && typeof row.score === "number")
-      .map((row) => ({
-        username: row.coach_name as string,
-        totalEarned: row.score as number,
-        updatedAt: (row.updated_at as string) ?? "",
-      }));
+    return filterPublicEntries(
+      data
+        .filter((row) => row.coach_name && typeof row.score === "number")
+        .map((row) => ({
+          username: row.coach_name as string,
+          totalEarned: row.score as number,
+          updatedAt: (row.updated_at as string) ?? "",
+        }))
+    );
   } catch (err) {
     console.error("[club-funds-leaderboard] fetch failed:", err);
     return null;
@@ -161,19 +177,24 @@ export async function getClubFundsLeaderboardAsync(
   const currentUser = getUsername() ?? "";
   const totalEarned = getClubFundsTotalEarned();
 
-  if (totalEarned > 0 && currentUser) {
+  if (isLoggedIn() && totalEarned > 0 && currentUser) {
     updateLocalClubFundsLeaderboard(currentUser, totalEarned);
-    if (isLoggedIn()) {
-      void submitClubFundsLeaderboardOnline(totalEarned);
-    }
+    void submitClubFundsLeaderboardOnline(totalEarned);
+  } else if (!isLoggedIn() && totalEarned > 0) {
+    updateLocalClubFundsLeaderboard(LOCAL_GUEST_KEY, totalEarned);
   }
 
-  const local = Object.values(loadLocalEntries());
   const remote = await fetchRemoteEntries();
-  const merged = mergeLeaderboardEntries(local, remote ?? []);
+  if (remote) {
+    return {
+      source: "remote",
+      rows: mapEntriesToRows(remote, currentUser, limit),
+    };
+  }
 
+  const local = filterPublicEntries(Object.values(loadLocalEntries()));
   return {
-    source: remote ? "remote" : "local",
-    rows: mapEntriesToRows(merged, currentUser, limit),
+    source: "local",
+    rows: mapEntriesToRows(local, currentUser, limit),
   };
 }

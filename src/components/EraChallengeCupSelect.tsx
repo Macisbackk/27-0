@@ -294,7 +294,7 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
             <button
               type="button"
               onClick={handleConfirm}
-              className={`mt-5 block w-full btn-press ${BTN.eraStartLg}`}
+              className={`mt-5 block w-full btn-press text-center ${BTN.eraStartLg}`}
             >
               Start Era Challenge Cup
             </button>

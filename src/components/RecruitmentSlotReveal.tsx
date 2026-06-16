@@ -13,14 +13,13 @@ import {
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
-/** Per-tick delays — fast start, gradual slowdown (~2.1s spin). */
+/** Per-tick delays — fast start, smooth deceleration (~1.6s spin). */
 const SPIN_DELAYS_MS = [
-  42, 44, 46, 48, 50, 54, 58, 64, 72, 82,
-  94, 108, 124, 142, 162, 186, 212, 240,
-  272, 308, 348, 392, 440,
+  28, 30, 32, 34, 36, 40, 46, 54, 64, 76,
+  90, 106, 124, 144, 166, 190,
 ] as const;
 
-const LAND_HOLD_MS = 480;
+const LAND_HOLD_MS = 320;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;

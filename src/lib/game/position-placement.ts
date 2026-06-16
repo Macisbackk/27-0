@@ -42,22 +42,57 @@ export function getRemainingRecruitPlayerPositions(
   return eligible;
 }
 
-export function canPlayerRecruitForRemainingSlots(
-  playerPosition: Position,
+/** Player positions that can still be recruited given empty natural slots (+ halfback). */
+export function getRemainingNaturalPlayerPositions(
   squad: SquadSlot[]
-): boolean {
-  return getRemainingRecruitPlayerPositions(squad).has(playerPosition);
+): Set<Position> {
+  const eligible = new Set<Position>();
+  for (const slot of squad) {
+    if (!slot.player) {
+      eligible.add(slot.position);
+      if (slot.position === "SCRUM_HALF" || slot.position === "STAND_OFF") {
+        eligible.add("SCRUM_HALF");
+        eligible.add("STAND_OFF");
+      }
+    }
+  }
+  return eligible;
 }
 
-/** Whether a player can fill at least one empty slot without penalty. */
+/** Halfback positions that can fill each other's slots in Normal Mode recruitment. */
+export function getHalfbackCompatiblePositions(
+  playerPosition: Position
+): Position[] {
+  if (playerPosition === "SCRUM_HALF") return ["SCRUM_HALF", "STAND_OFF"];
+  if (playerPosition === "STAND_OFF") return ["STAND_OFF", "SCRUM_HALF"];
+  return [playerPosition];
+}
+
+/** Empty slots where a player may be placed (natural position only + halfback swap). */
+export function getNaturalPlacementSlots(
+  squad: SquadSlot[],
+  player: Player
+): SquadSlot[] {
+  const allowed = new Set(getHalfbackCompatiblePositions(player.position));
+  return squad
+    .filter((slot) => !slot.player && allowed.has(slot.position))
+    .sort((a, b) => a.slotIndex - b.slotIndex);
+}
+
+/** Whether a player's natural position (or halfback pair) has a remaining slot. */
+export function canPlayerRecruitForRemainingSlots(
+  player: Player,
+  squad: SquadSlot[]
+): boolean {
+  return getNaturalPlacementSlots(squad, player).length > 0;
+}
+
+/** @deprecated Use canPlayerRecruitForRemainingSlots — slot recruit uses natural positions only. */
 export function canPlayerFillAnyEmptySlot(
   squad: SquadSlot[],
   player: Player
 ): boolean {
-  const emptySlots = squad.filter((slot) => !slot.player);
-  return emptySlots.some((slot) =>
-    isCompatible(player.position, slot.position)
-  );
+  return canPlayerRecruitForRemainingSlots(player, squad);
 }
 
 export function getPlacementPenalty(
