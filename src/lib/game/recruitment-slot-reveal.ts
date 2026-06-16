@@ -9,6 +9,12 @@ const CURRENT_SEASON_YEAR = 2026;
 export interface SlotRevealTarget {
   team: string;
   year: string;
+  /** Canonical roster key — `${team}|${year}` */
+  teamYearKey: string;
+}
+
+export function buildSlotRevealTarget(team: string, year: string): SlotRevealTarget {
+  return { team, year, teamYearKey: `${team}|${year}` };
 }
 
 export function getPlayerDisplayClub(player: Player): string {
@@ -32,28 +38,38 @@ export function getSlotRevealTarget(players: [Player, Player]): SlotRevealTarget
   return {
     team: getPlayerDisplayClub(chosen),
     year: String(getPlayerDisplayYear(chosen)),
+    teamYearKey: `${getPlayerDisplayClub(chosen)}|${String(getPlayerDisplayYear(chosen))}`,
   };
 }
 
 /** Teams allowed in Normal Mode slot animation — roster-backed playable clubs only. */
-export function getSlotSpinTeamPool(targetTeam: string): string[] {
+export function getSlotSpinTeamPool(targetTeam: string, seedKey = targetTeam): string[] {
   const clubs = getTeamsWithYearRosters();
-  const shuffled = [...clubs].sort(() => Math.random() - 0.5);
+  let hash = 0;
+  for (let i = 0; i < seedKey.length; i++) {
+    hash = (hash * 31 + seedKey.charCodeAt(i)) >>> 0;
+  }
+  const shuffled = [...clubs].sort((a, b) => {
+    const ha = (hash + a.length * 17) % 997;
+    const hb = (hash + b.length * 23) % 997;
+    return ha - hb;
+  });
   if (!shuffled.includes(targetTeam)) {
     shuffled.unshift(targetTeam);
   }
   return shuffled;
 }
 
-/** Years allowed in Normal Mode slot animation — roster years only. */
-export function getSlotSpinYearPool(targetYear: string): string[] {
-  const rosterYears = new Set<string>();
-  for (const team of getTeamsWithYearRosters()) {
-    for (const year of getYearsForTeam(team)) {
-      rosterYears.add(year);
-    }
-  }
-  const years = [...rosterYears].sort((a, b) => Number(b) - Number(a));
+/** Years allowed in Normal Mode slot animation — roster years for the target team first. */
+export function getSlotSpinYearPool(targetTeam: string, targetYear: string): string[] {
+  const teamYears = getYearsForTeam(targetTeam);
+  const years =
+    teamYears.length > 0
+      ? [...teamYears]
+      : [...new Set<string>(
+          getTeamsWithYearRosters().flatMap((team) => getYearsForTeam(team))
+        )].sort((a, b) => Number(b) - Number(a));
+
   if (!years.includes(targetYear)) {
     years.unshift(targetYear);
   }
@@ -61,11 +77,11 @@ export function getSlotSpinYearPool(targetYear: string): string[] {
 }
 
 /** @deprecated Use getSlotSpinTeamPool */
-export function getTeamSpinPool(targetTeam: string): string[] {
-  return getSlotSpinTeamPool(targetTeam);
+export function getTeamSpinPool(targetTeam: string, seedKey?: string): string[] {
+  return getSlotSpinTeamPool(targetTeam, seedKey);
 }
 
 /** @deprecated Use getSlotSpinYearPool */
-export function getYearSpinPool(targetYear: string): string[] {
-  return getSlotSpinYearPool(targetYear);
+export function getYearSpinPool(targetTeam: string, targetYear: string): string[] {
+  return getSlotSpinYearPool(targetTeam, targetYear);
 }

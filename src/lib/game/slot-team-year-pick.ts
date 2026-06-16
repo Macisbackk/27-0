@@ -16,6 +16,7 @@ import {
   getRemainingNaturalPlayerPositions,
 } from "./position-placement";
 import {
+  buildSlotRevealTarget,
   getTeamSpinPool,
   getYearSpinPool,
   type SlotRevealTarget,
@@ -42,15 +43,33 @@ function getAllTeamYearPairs(): TeamYearPair[] {
   return pairs;
 }
 
+export function getSlotTeamYearSpinPools(target: SlotRevealTarget): {
+  teams: string[];
+  years: string[];
+} {
+  return {
+    teams: getTeamSpinPool(target.team, target.teamYearKey),
+    years: getYearSpinPool(target.team, target.year),
+  };
+}
+
+/** Exact roster player IDs for a team/year — sole source for recruitment pool. */
+export function getTeamYearRosterPlayerIds(team: string, year: string): string[] {
+  return getRosterPlayerIds(team, year);
+}
+
 function rosterPlayersForPair(
   team: string,
   year: string,
   usedIds: Set<string>,
   squad: SquadSlot[]
 ): Player[] {
-  return getRosterPlayerIds(team, year)
+  const rosterIds = new Set(getTeamYearRosterPlayerIds(team, year));
+  if (rosterIds.size === 0) return [];
+
+  return [...rosterIds]
     .map((id) => getPlayerById(id))
-    .filter((p): p is Player => !!p && !usedIds.has(p.id))
+    .filter((p): p is Player => !!p && rosterIds.has(p.id) && !usedIds.has(p.id))
     .filter((p) => canPlayerRecruitForRemainingSlots(p, squad));
 }
 
@@ -71,17 +90,7 @@ export function generateSlotTeamYearTarget(
   if (pool.length === 0) return null;
 
   const pick = pool[Math.floor(rng() * pool.length)]!;
-  return { team: pick.team, year: pick.year };
-}
-
-export function getSlotTeamYearSpinPools(target: SlotRevealTarget): {
-  teams: string[];
-  years: string[];
-} {
-  return {
-    teams: getTeamSpinPool(target.team),
-    years: getYearSpinPool(target.year),
-  };
+  return buildSlotRevealTarget(pick.team, pick.year);
 }
 
 /** Positions eligible when recruiting for a given slot (includes SH/SO and prop/SR compat). */
@@ -108,18 +117,20 @@ export function prepareSlotTeamYearPlayers(
   usedIds: Set<string>,
   squad: SquadSlot[]
 ): SlotTeamYearPlayer[] {
-  const eraYear = Number.parseInt(target.year, 10);
-  const runClub = formatEraDisplayName(target.team, target.year);
+  const { team, year } = target;
+  const eraYear = Number.parseInt(year, 10);
+  const runClub = formatEraDisplayName(team, year);
   const remainingPositions = getRemainingNaturalPlayerPositions(squad);
+  const rosterIds = new Set(getTeamYearRosterPlayerIds(team, year));
 
-  const entries = rosterPlayersForPair(target.team, target.year, usedIds, squad).map(
-    (player) => {
+  const entries = rosterPlayersForPair(team, year, usedIds, squad)
+    .filter((player) => rosterIds.has(player.id))
+    .map((player) => {
       const prepared = withRunClub(player, runClub, {
         eraYear: Number.isFinite(eraYear) ? eraYear : undefined,
       });
       return { player: prepared };
-    }
-  );
+    });
 
   return sortPlayersForRecruitSlot(entries, remainingPositions);
 }

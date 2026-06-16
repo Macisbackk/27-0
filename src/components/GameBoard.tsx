@@ -176,6 +176,7 @@ export function GameBoard({
   const [rerolling, setRerolling] = useState(false);
   const [draftPickIndex, setDraftPickIndex] = useState(0);
   const [spinPickIndex, setSpinPickIndex] = useState(0);
+  const [spinSessionId, setSpinSessionId] = useState(0);
   const [pendingPlayer, setPendingPlayer] = useState<Player | null>(null);
   const [slotRecruitTarget, setSlotRecruitTarget] =
     useState<SlotRevealTarget | null>(null);
@@ -187,6 +188,8 @@ export function GameBoard({
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
   const placementScrollRef = useRef<HTMLDivElement>(null);
+  const placementConfirmRef = useRef<HTMLDivElement>(null);
+  const lastScrolledPlayerIdRef = useRef<string | null>(null);
 
   const isHardMode = difficulty === "HARD";
   const recruitmentOptions = useMemo(
@@ -390,7 +393,9 @@ export function GameBoard({
     setRerolling(false);
     setDraftPickIndex(0);
     setSpinPickIndex(0);
+    setSpinSessionId(0);
     setPendingPlayer(null);
+    lastScrolledPlayerIdRef.current = null;
     recordedRef.current = false;
     fundsAwardedRef.current = false;
   }, [joeMellorMode, superSamHallasMode, isChallengeCup]);
@@ -577,6 +582,11 @@ export function GameBoard({
     }
     if (!target) return;
 
+    setPendingPlayer(null);
+    lastScrolledPlayerIdRef.current = null;
+    setActiveSpinTarget(null);
+    setSlotRecruitTarget(null);
+    setSpinSessionId((id) => id + 1);
     setActiveSpinTarget(target);
     setSlotRecruitTarget(target);
     setPhase("reveal");
@@ -636,8 +646,23 @@ export function GameBoard({
   ]);
 
   const handleRevealComplete = useCallback(() => {
+    setPendingPlayer(null);
     setPhase("choice");
   }, []);
+
+  useEffect(() => {
+    if (phase !== "placement" || !pendingPlayer || !isSlotRecruitMode) return;
+    if (lastScrolledPlayerIdRef.current === pendingPlayer.id) return;
+
+    lastScrolledPlayerIdRef.current = pendingPlayer.id;
+    const frame = window.requestAnimationFrame(() => {
+      placementConfirmRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [phase, pendingPlayer, isSlotRecruitMode]);
 
   const handlePlaceDraftPlayer = useCallback(
     (slotIndex: number) => {
@@ -809,6 +834,8 @@ export function GameBoard({
     setSelectedSlotIndex(null);
     setSlotRecruitTarget(null);
     setActiveSpinTarget(null);
+    setPendingPlayer(null);
+    lastScrolledPlayerIdRef.current = null;
     revealSoundKey.current = null;
     setPhase("pitch");
   }, [isDraftMode]);
@@ -912,7 +939,7 @@ export function GameBoard({
 
   const choiceKey =
     isSlotRecruitMode && activeSpinTarget
-      ? `${runKey}-spin-${spinPickIndex}-${activeSpinTarget.team}-${activeSpinTarget.year}`
+      ? `${runKey}-spin-${spinSessionId}-${activeSpinTarget.teamYearKey}`
       : activeOfferKey !== null
         ? `${runKey}-pick-${activeOfferKey}-${currentRound?.optionA}-${currentRound?.optionB}`
         : "";
@@ -1067,13 +1094,15 @@ export function GameBoard({
                 />
               )}
               {phase === "placement" && pendingPlayer && isSlotRecruitMode && (
-                <SlotRecruitPlacementConfirm
-                  player={pendingPlayer}
-                  squad={squad}
-                  onConfirm={handleSlotPlacementConfirm}
-                  onBack={handleSlotPlacementBack}
-                  disabled={choosing}
-                />
+                <div ref={placementConfirmRef}>
+                  <SlotRecruitPlacementConfirm
+                    player={pendingPlayer}
+                    squad={squad}
+                    onConfirm={handleSlotPlacementConfirm}
+                    onBack={handleSlotPlacementBack}
+                    disabled={choosing}
+                  />
+                </div>
               )}
               <RugbyPitch
                 squad={squad}

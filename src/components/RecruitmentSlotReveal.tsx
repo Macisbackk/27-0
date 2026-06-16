@@ -22,6 +22,7 @@ const SPIN_DELAYS_MS = [
 
 const LAND_HOLD_MS = 320;
 const REEL_ITEM_H = 48;
+const STRIP_COPIES = 6;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
@@ -30,13 +31,30 @@ interface RecruitmentSlotRevealProps {
 
 function buildReelStrip(items: string[]): string[] {
   if (items.length === 0) return ["—"];
-  return [...items, ...items, ...items];
+  return Array.from({ length: STRIP_COPIES }, () => items).flat();
 }
 
-function finalReelIndex(items: string[], value: string): number {
-  const idx = items.indexOf(value);
-  const safe = idx >= 0 ? idx : 0;
-  return items.length + safe;
+function computeFinalStripIndex(
+  items: string[],
+  strip: string[],
+  value: string
+): number {
+  const itemIdx = items.indexOf(value);
+  const safeIdx = itemIdx >= 0 ? itemIdx : 0;
+  const copyStart = items.length * (STRIP_COPIES - 1);
+  return copyStart + safeIdx;
+}
+
+function computeScrollIndexForTick(
+  tick: number,
+  totalTicks: number,
+  startIndex: number,
+  finalIndex: number
+): number {
+  if (tick >= totalTicks) return finalIndex;
+  const progress = tick / totalTicks;
+  const eased = 1 - Math.pow(1 - progress, 2.65);
+  return Math.round(startIndex + (finalIndex - startIndex) * eased);
 }
 
 function SlotReel({
@@ -70,7 +88,7 @@ function SlotReel({
                 damping: 22,
                 mass: 0.68,
               }
-            : { duration: 0.042, ease: "linear" }
+            : { duration: 0.05, ease: "linear" }
         }
       >
         {strip.map((item, i) => (
@@ -99,21 +117,22 @@ export function RecruitmentSlotReveal({
     [target.team]
   );
 
+  const teamStrip = useMemo(() => buildReelStrip(teams), [teams]);
+  const yearStrip = useMemo(() => buildReelStrip(years), [years]);
+
+  const teamStartIndex = teams.length > 0 ? teams.length : 0;
+  const yearStartIndex = years.length > 0 ? years.length : 0;
   const teamFinalIndex = useMemo(
-    () => finalReelIndex(teams, target.team),
-    [teams, target.team]
+    () => computeFinalStripIndex(teams, teamStrip, target.team),
+    [teams, teamStrip, target.team]
   );
   const yearFinalIndex = useMemo(
-    () => finalReelIndex(years, target.year),
-    [years, target.year]
+    () => computeFinalStripIndex(years, yearStrip, target.year),
+    [years, yearStrip, target.year]
   );
 
-  const [teamIndex, setTeamIndex] = useState(() =>
-    teams.length > 0 ? teams.length : 0
-  );
-  const [yearIndex, setYearIndex] = useState(() =>
-    years.length > 0 ? years.length : 0
-  );
+  const [teamIndex, setTeamIndex] = useState(teamStartIndex);
+  const [yearIndex, setYearIndex] = useState(yearStartIndex);
   const [locked, setLocked] = useState(false);
   const [phaseLabel, setPhaseLabel] = useState("Recruitment draw spinning…");
 
@@ -123,8 +142,8 @@ export function RecruitmentSlotReveal({
     let timeoutId: number | null = null;
     const totalTicks = SPIN_DELAYS_MS.length;
 
-    setTeamIndex(teams.length > 0 ? teams.length : 0);
-    setYearIndex(years.length > 0 ? years.length : 0);
+    setTeamIndex(teamStartIndex);
+    setYearIndex(yearStartIndex);
     setLocked(false);
     setPhaseLabel("Recruitment draw spinning…");
 
@@ -135,15 +154,23 @@ export function RecruitmentSlotReveal({
 
       if (tick < totalTicks) {
         const progress = tick / totalTicks;
-        const nearingEnd = tick >= totalTicks - 4;
 
-        if (nearingEnd) {
-          setTeamIndex(teamFinalIndex);
-          setYearIndex(yearFinalIndex);
-        } else {
-          setTeamIndex((prev) => prev + 1 + Math.floor(Math.random() * 2));
-          setYearIndex((prev) => prev + 1 + Math.floor(Math.random() * 2));
-        }
+        setTeamIndex(
+          computeScrollIndexForTick(
+            tick,
+            totalTicks,
+            teamStartIndex,
+            teamFinalIndex
+          )
+        );
+        setYearIndex(
+          computeScrollIndexForTick(
+            tick,
+            totalTicks,
+            yearStartIndex,
+            yearFinalIndex
+          )
+        );
 
         if (tick % 2 === 0) {
           playSlotSpinTick(progress);
@@ -155,7 +182,7 @@ export function RecruitmentSlotReveal({
           setPhaseLabel("Scanning squads…");
         }
 
-        const delay = SPIN_DELAYS_MS[tick] ?? 440;
+        const delay = SPIN_DELAYS_MS[tick] ?? 190;
         tick += 1;
         timeoutId = window.setTimeout(runTick, delay);
         return;
@@ -178,9 +205,9 @@ export function RecruitmentSlotReveal({
       if (timeoutId) window.clearTimeout(timeoutId);
     };
   }, [
-    target,
-    teams,
-    years,
+    target.teamYearKey,
+    teamStartIndex,
+    yearStartIndex,
     teamFinalIndex,
     yearFinalIndex,
     onComplete,
@@ -260,7 +287,12 @@ export function RecruitmentSlotReveal({
               }
               transition={
                 locked
-                  ? { duration: 0.32, times: [0, 0.35, 0.65, 1], ease: "easeOut", delay: 0.04 }
+                  ? {
+                      duration: 0.32,
+                      times: [0, 0.35, 0.65, 1],
+                      ease: "easeOut",
+                      delay: 0.04,
+                    }
                   : { duration: 0.15 }
               }
             >
