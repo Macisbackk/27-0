@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import type { Player } from "@/lib/types";
 import { formatShortYear } from "@/lib/players/prime-year";
@@ -32,6 +32,8 @@ export function SlotTeamYearPicker({
   disabled,
   hardMode,
 }: SlotTeamYearPickerProps) {
+  const [expandedPlayerId, setExpandedPlayerId] = useState<string | null>(null);
+
   const bio = useMemo(
     () => getSlotRevealBio(target.team, target.year),
     [target.team, target.year]
@@ -41,6 +43,7 @@ export function SlotTeamYearPicker({
     [target.team]
   );
   const shortYear = formatShortYear(target.year);
+  const teamYearLabel = `${target.team} ${shortYear}`;
 
   return (
     <motion.div
@@ -98,28 +101,43 @@ export function SlotTeamYearPicker({
             </p>
           ) : (
             <div className="mx-auto grid max-h-[min(52vh,480px)] max-w-4xl grid-cols-2 gap-2 overflow-y-auto overflow-x-hidden pr-0.5 sm:grid-cols-3 sm:gap-3">
-              {entries.map(({ player }) => (
-                <motion.button
-                  key={player.id}
-                  type="button"
-                  disabled={disabled}
-                  onClick={() => {
-                    playUiClick();
-                    playPlayerSelect();
-                    onSelect(player);
-                  }}
-                  className="group btn-press min-w-0 text-left disabled:cursor-not-allowed disabled:opacity-50"
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.22 }}
-                >
-                  <SlotRecruitPlayerCard
-                    player={player}
-                    hardMode={hardMode}
-                    clubColorOverride={target.team}
-                  />
-                </motion.button>
-              ))}
+              {entries.map(({ player }) => {
+                const expanded = expandedPlayerId === player.id;
+
+                return (
+                  <div
+                    key={player.id}
+                    className={`relative min-w-0 ${
+                      expanded ? "col-span-2 sm:col-span-3" : ""
+                    }`}
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.22 }}
+                    >
+                      <SlotRecruitPlayerCard
+                        player={player}
+                        teamYearLabel={teamYearLabel}
+                        hardMode={hardMode}
+                        clubColorOverride={target.team}
+                        expanded={expanded}
+                        disabled={disabled}
+                        onToggleExpand={() => {
+                          playUiClick();
+                          setExpandedPlayerId((id) =>
+                            id === player.id ? null : player.id
+                          );
+                        }}
+                        onSign={() => {
+                          playPlayerSelect();
+                          onSelect(player);
+                        }}
+                      />
+                    </motion.div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
