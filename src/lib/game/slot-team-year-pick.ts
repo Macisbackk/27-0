@@ -8,10 +8,8 @@ import { RECRUIT_SLOT_ORDER } from "../positions";
 import { signPlayerToSlot } from "../positions";
 import {
   getFirstNaturalPlacementSlot,
-  getNaturalPlacementSlots,
   getPlacementPenalty,
-  getCompatiblePlayerPositions,
-  getRemainingNaturalPlayerPositions,
+  getRecruitListPositionsForSlot,
 } from "./position-placement";
 import {
   buildSlotRevealTarget,
@@ -22,7 +20,9 @@ import {
 import {
   getAllTeamYearPools,
   getEligiblePlayersForTeamYearPool,
+  getRawPlayersForTeamYearPool,
   getTeamYearPoolFromTarget,
+  isPlayerInTeamYearPool,
   type TeamYearPool,
   warnTeamYearPoolLeak,
 } from "./team-year-pools";
@@ -41,7 +41,27 @@ export function getSlotTeamYearSpinPools(target: SlotRevealTarget): {
   };
 }
 
-/** Auto-place a Normal Mode signing into the first matching empty slot. */
+/** Place a Normal Mode signing into the user-selected slot. */
+export function placeSlotRecruitPlayerAtSlot(
+  squad: SquadSlot[],
+  player: Player,
+  target: SlotRevealTarget,
+  slotIndex: number
+): SquadSlot[] | null {
+  const slot = squad.find((s) => s.slotIndex === slotIndex);
+  if (!slot || slot.player) return null;
+
+  const prepared = preparePlayerForTeamYear(player, target);
+  warnTeamYearPoolLeak(prepared, target);
+
+  const allowed = new Set(getRecruitListPositionsForSlot(slot.position));
+  if (!allowed.has(prepared.position)) return null;
+
+  const penalty = getPlacementPenalty(prepared.position, slot.position);
+  return signPlayerToSlot(squad, prepared, slotIndex, penalty);
+}
+
+/** @deprecated Use placeSlotRecruitPlayerAtSlot for position-first Normal Mode. */
 export function autoPlaceSlotRecruitPlayer(
   squad: SquadSlot[],
   player: Player,
@@ -75,12 +95,12 @@ export function preparePlayerForTeamYear(
 
 function sortPlayersForRecruitSlot(
   entries: SlotTeamYearPlayer[],
-  remainingPositions: Set<Position>
+  slotPosition: Position
 ): SlotTeamYearPlayer[] {
   return entries.sort((a, b) => {
-    const aEligible = remainingPositions.has(a.player.position);
-    const bEligible = remainingPositions.has(b.player.position);
-    if (aEligible !== bEligible) return aEligible ? -1 : 1;
+    const aNatural = a.player.position === slotPosition;
+    const bNatural = b.player.position === slotPosition;
+    if (aNatural !== bNatural) return aNatural ? -1 : 1;
     return b.player.peakRating - a.player.peakRating;
   });
 }
@@ -88,21 +108,33 @@ function sortPlayersForRecruitSlot(
 export function prepareSlotTeamYearPlayers(
   target: SlotRevealTarget,
   usedIds: Set<string>,
-  squad: SquadSlot[]
+  squad: SquadSlot[],
+  slotIndex: number
 ): SlotTeamYearPlayer[] {
   const pool = getTeamYearPoolFromTarget(target);
   if (!pool) return [];
 
-  const remainingPositions = getRemainingNaturalPlayerPositions(squad);
-  const eligible = getEligiblePlayersForTeamYearPool(pool, usedIds, squad);
+  const slot = squad.find((s) => s.slotIndex === slotIndex);
+  if (!slot || slot.player) return [];
 
-  const entries = eligible.map((player) => {
-    const prepared = preparePlayerForTeamYear(player, target);
-    warnTeamYearPoolLeak(prepared, target);
-    return { player: prepared };
-  });
+  const allowedPositions = new Set(
+    getRecruitListPositionsForSlot(slot.position)
+  );
 
-  return sortPlayersForRecruitSlot(entries, remainingPositions);
+  const entries = getRawPlayersForTeamYearPool(pool)
+    .filter(
+      (player) =>
+        isPlayerInTeamYearPool(player.id, pool) &&
+        !usedIds.has(player.id) &&
+        allowedPositions.has(player.position)
+    )
+    .map((player) => {
+      const prepared = preparePlayerForTeamYear(player, target);
+      warnTeamYearPoolLeak(prepared, target);
+      return { player: prepared };
+    });
+
+  return sortPlayersForRecruitSlot(entries, slot.position);
 }
 
 function poolHasEligiblePlayers(
@@ -160,12 +192,31 @@ function eligiblePlayersForSlot(
   squad: SquadSlot[],
   slotIndex: number
 ): Player[] {
-  return getEligiblePlayersForTeamYearPool(pool, usedIds, squad).filter(
-    (player) =>
-      getNaturalPlacementSlots(squad, player).some(
-        (slot) => slot.slotIndex === slotIndex
-      )
+  const slot = squad.find((s) => s.slotIndex === slotIndex);
+  if (!slot || slot.player) return [];
+
+  const allowedPositions = new Set(
+    getRecruitListPositionsForSlot(slot.position)
   );
+
+  return getRawPlayersForTeamYearPool(pool).filter(
+    (player) =>
+      isPlayerInTeamYearPool(player.id, pool) &&
+      !usedIds.has(player.id) &&
+      allowedPositions.has(player.position)
+  );
+}
+
+/** Deterministic team/year draw for a selected slot — animation lands on this exact result. */
+export function generateSlotTeamYearTargetForSlot(
+  seed: string,
+  spinIndex: number,
+  usedIds: Set<string>,
+  squad: SquadSlot[],
+  slotIndex: number
+): SlotRevealTarget | null {
+  const picked = pickTeamYearForSlot(seed, spinIndex, usedIds, squad, slotIndex);
+  return picked?.target ?? null;
 }
 
 function pickTeamYearForSlot(
@@ -255,7 +306,7 @@ export function autofillSlotRecruitSquad(
 export function getEligibleRecruitPositions(
   slotPosition: Position
 ): Position[] {
-  return getCompatiblePlayerPositions(slotPosition);
+  return getRecruitListPositionsForSlot(slotPosition);
 }
 
 const BIO_SNIPPETS = {

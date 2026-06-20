@@ -15,11 +15,17 @@ import { playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
-export function ClubFundsDisplay() {
+interface ClubFundsDisplayProps {
+  /** desktop = beside auth on sm+; mobile = stacked under profile/login */
+  placement?: "desktop" | "mobile";
+}
+
+export function ClubFundsDisplay({ placement = "desktop" }: ClubFundsDisplayProps) {
   const [balance, setBalance] = useState(0);
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const isMobilePlacement = placement === "mobile";
 
   useEffect(() => {
     setMounted(true);
@@ -56,17 +62,28 @@ export function ClubFundsDisplay() {
     };
   }, [open]);
 
+  const visibilityClass = isMobilePlacement ? "sm:hidden" : "hidden sm:block";
+
   if (!mounted) {
     return (
       <div
-        className="flex h-11 min-h-[44px] min-w-[4.5rem] items-center justify-center sm:min-w-[5.25rem]"
+        className={`${visibilityClass} ${
+          isMobilePlacement
+            ? "h-4 w-[7.25rem]"
+            : "flex h-11 min-h-[44px] min-w-[4.5rem] items-center justify-center sm:min-w-[5.25rem]"
+        }`}
         aria-hidden
       />
     );
   }
 
   return (
-    <div ref={rootRef} className="relative shrink-0">
+    <div
+      ref={rootRef}
+      className={`relative shrink-0 ${visibilityClass} ${
+        isMobilePlacement ? "w-[7.25rem]" : ""
+      }`}
+    >
       <button
         type="button"
         onClick={() => {
@@ -75,15 +92,25 @@ export function ClubFundsDisplay() {
           else playPanelExpand();
           setOpen((value) => !value);
         }}
-        className="header-control-btn flex h-11 min-h-[44px] w-[4.75rem] max-w-[4.75rem] shrink-0 items-center justify-center gap-0.5 overflow-hidden rounded-lg border border-pitch-600 px-1 text-accent-green transition hover:border-accent-green/50 hover:bg-accent-green/10 sm:w-auto sm:max-w-none sm:gap-1.5 sm:px-3"
+        className={
+          isMobilePlacement
+            ? "header-control-btn flex h-5 w-full items-center justify-center gap-1 overflow-hidden rounded-md border border-pitch-600/80 px-1.5 text-accent-green transition hover:border-accent-green/50 hover:bg-accent-green/10"
+            : "header-control-btn flex h-11 min-h-[44px] w-[4.75rem] max-w-[4.75rem] shrink-0 items-center justify-center gap-0.5 overflow-hidden rounded-lg border border-pitch-600 px-1 text-accent-green transition hover:border-accent-green/50 hover:bg-accent-green/10 sm:w-auto sm:max-w-none sm:gap-1.5 sm:px-3"
+        }
         aria-expanded={open}
         aria-haspopup="dialog"
         title={`Club Funds: ${formatClubFunds(balance)}`}
       >
-        <span aria-hidden className="shrink-0 text-[11px] leading-none sm:text-xs">
-          💷
-        </span>
-        <span className="min-w-0 truncate text-[10px] font-bold tabular-nums leading-none sm:text-sm">
+        {!isMobilePlacement && (
+          <span aria-hidden className="shrink-0 text-[11px] leading-none sm:text-xs">
+            💷
+          </span>
+        )}
+        <span
+          className={`min-w-0 truncate font-bold tabular-nums leading-none ${
+            isMobilePlacement ? "text-[10px]" : "text-[10px] sm:text-sm"
+          }`}
+        >
           {formatClubFunds(balance)}
         </span>
       </button>

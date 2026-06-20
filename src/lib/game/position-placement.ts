@@ -68,6 +68,22 @@ export function getHalfbackCompatiblePositions(
   return [playerPosition];
 }
 
+/**
+ * Player positions shown when recruiting for a specific slot (Normal Mode list filter).
+ * SH/SO and Prop/SR pairs are cross-eligible; other slots are exact position only.
+ */
+export function getRecruitListPositionsForSlot(
+  slotPosition: Position
+): Position[] {
+  if (slotPosition === "SCRUM_HALF" || slotPosition === "STAND_OFF") {
+    return ["SCRUM_HALF", "STAND_OFF"];
+  }
+  if (slotPosition === "PROP" || slotPosition === "SECOND_ROW") {
+    return ["PROP", "SECOND_ROW"];
+  }
+  return [slotPosition];
+}
+
 /** Empty slots where a player may be placed (natural position only + halfback swap). */
 export function getNaturalPlacementSlots(
   squad: SquadSlot[],
