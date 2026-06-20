@@ -3,7 +3,6 @@ import {
   getRosterPlayerIds,
   getTeamsWithYearRosters,
   getYearsForTeam,
-  hasTeamYearRoster,
 } from "../players/team-year-rosters";
 import type { Player, SquadSlot } from "../types";
 import { canPlayerRecruitForRemainingSlots } from "./position-placement";
@@ -47,9 +46,7 @@ function ensurePoolsBuilt(): void {
   if (poolById.size > 0) return;
   for (const team of getTeamsWithYearRosters()) {
     for (const year of getYearsForTeam(team)) {
-      if (hasTeamYearRoster(team, year)) {
-        registerPool(team, year);
-      }
+      registerPool(team, year);
     }
   }
 }

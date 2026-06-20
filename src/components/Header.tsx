@@ -14,8 +14,8 @@ export function Header() {
   return (
     <>
       <header className="app-header sticky top-0 z-50 border-b backdrop-blur-md">
-        <div className="mx-auto grid min-h-14 max-w-6xl grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1 px-2 py-1 sm:h-[3.75rem] sm:gap-2 sm:px-4 sm:py-0">
-          <div className="flex min-h-[44px] min-w-0 items-center justify-start">
+        <div className="mx-auto grid min-h-14 max-w-6xl grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-start gap-x-1 gap-y-0 px-2 py-1.5 sm:h-[3.75rem] sm:items-center sm:gap-2 sm:px-4 sm:py-0">
+          <div className="flex min-h-[44px] min-w-0 items-center justify-start self-center">
             <button
               type="button"
               onClick={() => {
@@ -32,23 +32,23 @@ export function Header() {
             </button>
           </div>
 
-          <Link
-            href="/"
-            className="flex min-w-0 items-center justify-center px-1 sm:px-3"
-            aria-label="27-0 home"
-          >
-            <span className="whitespace-nowrap text-xl font-black tracking-tight sm:text-3xl">
-              <span className="text-gradient">27</span>
-              <span className="text-white">-0</span>
-            </span>
-          </Link>
+          <div className="flex min-w-0 flex-col items-center justify-center self-center">
+            <Link
+              href="/"
+              className="flex min-w-0 items-center justify-center px-1 sm:px-3"
+              aria-label="27-0 home"
+            >
+              <span className="whitespace-nowrap text-xl font-black tracking-tight sm:text-3xl">
+                <span className="text-gradient">27</span>
+                <span className="text-white">-0</span>
+              </span>
+            </Link>
+            <ClubFundsDisplay placement="mobile-under-logo" />
+          </div>
 
-          <div className="flex min-h-[44px] min-w-0 items-center justify-end gap-0.5 sm:gap-2">
+          <div className="flex min-h-[44px] min-w-0 items-center justify-end gap-0.5 self-center sm:gap-2">
             <ClubFundsDisplay placement="desktop" />
-            <div className="flex min-w-0 flex-col items-end gap-0.5">
-              <HeaderAuthControls />
-              <ClubFundsDisplay placement="mobile" />
-            </div>
+            <HeaderAuthControls />
           </div>
         </div>
       </header>

@@ -1,9 +1,15 @@
 import teamYearRostersData from "../../../data/team-year-rosters.json";
 import { getPlayableClubNames } from "../clubs/super-league-display";
+import {
+  isPlayableTeamYearRoster,
+  MIN_TEAM_YEAR_ROSTER_PLAYERS,
+} from "./team-year-roster-playable";
 
 export type TeamYearRosters = Record<string, Record<string, string[]>>;
 
 const TEAM_YEAR_ROSTERS = teamYearRostersData as TeamYearRosters;
+
+export { MIN_TEAM_YEAR_ROSTER_PLAYERS };
 
 export function getCurrentCalendarYear(): number {
   return new Date().getFullYear();
@@ -26,6 +32,7 @@ export function getYearsForTeam(team: string): string[] {
   const currentYear = getCurrentCalendarYear();
   return Object.keys(years)
     .filter((year) => Number(year) <= currentYear)
+    .filter((year) => hasTeamYearRoster(team, year))
     .sort((a, b) => Number(b) - Number(a));
 }
 
@@ -45,6 +52,13 @@ export function getRosterPlayerIds(team: string, year: string): string[] {
 }
 
 export function hasTeamYearRoster(team: string, year: string): boolean {
+  const ids = TEAM_YEAR_ROSTERS[team]?.[year] ?? [];
+  const { getPlayerById } = require("./index") as typeof import("./index");
+  return isPlayableTeamYearRoster(ids, getPlayerById);
+}
+
+/** Raw roster exists (any count) — for data tooling, not gameplay pools. */
+export function hasRawTeamYearRoster(team: string, year: string): boolean {
   return (TEAM_YEAR_ROSTERS[team]?.[year]?.length ?? 0) > 0;
 }
 
