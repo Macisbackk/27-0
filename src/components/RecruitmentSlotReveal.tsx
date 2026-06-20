@@ -4,6 +4,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import { getSlotTeamYearSpinPools } from "@/lib/game/slot-team-year-pick";
+import {
+  computeSlotReelFinalIndex,
+  buildSlotReelPool,
+  buildSlotReelStrip,
+  computeSlotReelScrollY,
+} from "@/lib/game/slot-reel";
 import { getClubColors } from "@/lib/clubs";
 import { formatShortYear } from "@/lib/players/prime-year";
 import {
@@ -21,27 +27,10 @@ const SPIN_DELAYS_MS = [
 ] as const;
 
 const LAND_HOLD_MS = 280;
-const REEL_ITEM_H = 48;
-const STRIP_COPIES = 6;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
   onComplete: () => void;
-}
-
-function buildReelStrip(items: string[]): string[] {
-  if (items.length === 0) return ["—"];
-  return Array.from({ length: STRIP_COPIES }, () => items).flat();
-}
-
-function computeFinalStripIndex(
-  items: string[],
-  value: string
-): number {
-  const itemIdx = items.indexOf(value);
-  const safeIdx = itemIdx >= 0 ? itemIdx : 0;
-  const copyStart = items.length * (STRIP_COPIES - 1);
-  return copyStart + safeIdx;
 }
 
 function computeScrollIndexForTick(
@@ -59,7 +48,7 @@ function computeScrollIndexForTick(
 }
 
 function SlotReel({
-  items,
+  pool,
   scrollIndex,
   locked,
   stepMs,
@@ -67,7 +56,7 @@ function SlotReel({
   className,
   textClassName,
 }: {
-  items: string[];
+  pool: string[];
   scrollIndex: number;
   locked: boolean;
   stepMs: number;
@@ -75,8 +64,8 @@ function SlotReel({
   className?: string;
   textClassName?: string;
 }) {
-  const strip = useMemo(() => buildReelStrip(items), [items]);
-  const y = -scrollIndex * REEL_ITEM_H;
+  const strip = useMemo(() => buildSlotReelStrip(pool), [pool]);
+  const y = computeSlotReelScrollY(scrollIndex);
 
   return (
     <div className={`slot-reel-window ${className ?? ""}`}>
@@ -85,7 +74,7 @@ function SlotReel({
         style={{
           transform: `translate3d(0, ${y}px, 0)`,
           transition: locked
-            ? "transform 280ms cubic-bezier(0.34, 1.45, 0.64, 1)"
+            ? "transform 260ms cubic-bezier(0.22, 1, 0.36, 1)"
             : `transform ${stepMs}ms linear`,
         }}
       >
@@ -94,7 +83,7 @@ function SlotReel({
             key={`${item}-${i}`}
             className={`slot-reel-item slot-reveal-display-text text-center font-display font-black uppercase text-accent-green ${textClassName ?? ""}`}
           >
-            {item === "—" ? "—" : formatItem(item)}
+            {formatItem(item)}
           </div>
         ))}
       </div>
@@ -115,15 +104,24 @@ export function RecruitmentSlotReveal({
     [target.team]
   );
 
-  const teamStartIndex = teams.length > 0 ? teams.length : 0;
-  const yearStartIndex = years.length > 0 ? years.length : 0;
-  const teamFinalIndex = useMemo(
-    () => computeFinalStripIndex(teams, target.team),
+  const teamPool = useMemo(
+    () => buildSlotReelPool(teams, target.team),
     [teams, target.team]
   );
-  const yearFinalIndex = useMemo(
-    () => computeFinalStripIndex(years, target.year),
+  const yearPool = useMemo(
+    () => buildSlotReelPool(years, target.year),
     [years, target.year]
+  );
+
+  const teamStartIndex = teamPool.length;
+  const yearStartIndex = yearPool.length;
+  const teamFinalIndex = useMemo(
+    () => computeSlotReelFinalIndex(teamPool, target.team),
+    [teamPool, target.team]
+  );
+  const yearFinalIndex = useMemo(
+    () => computeSlotReelFinalIndex(yearPool, target.year),
+    [yearPool, target.year]
   );
 
   const [teamIndex, setTeamIndex] = useState(teamStartIndex);
@@ -133,6 +131,23 @@ export function RecruitmentSlotReveal({
   const [phaseLabel, setPhaseLabel] = useState("Recruitment draw spinning…");
   const teamPrevRef = useRef(teamStartIndex);
   const yearPrevRef = useRef(yearStartIndex);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "production") {
+      if (!teamPool.includes(target.team)) {
+        console.warn("Spin reel missing final team", {
+          targetTeam: target.team,
+          teamPool,
+        });
+      }
+      if (!yearPool.includes(target.year)) {
+        console.warn("Spin reel missing final year", {
+          targetYear: target.year,
+          yearPool,
+        });
+      }
+    }
+  }, [teamPool, yearPool, target.team, target.year]);
 
   useEffect(() => {
     let tick = 0;
@@ -221,7 +236,7 @@ export function RecruitmentSlotReveal({
   ]);
 
   const reelShellClass = (isLocked: boolean) =>
-    `slot-reveal-reel min-w-0 flex-1 rounded-xl border-2 px-2 py-1 transition-colors duration-300 sm:px-3 sm:py-1.5 ${
+    `slot-reveal-reel min-w-0 flex-1 rounded-xl border-2 px-2 py-0 transition-colors duration-300 sm:px-3 ${
       isLocked
         ? "slot-reel-lock-flash border-accent-green/55 bg-pitch-950/95 shadow-[inset_0_0_24px_rgba(34,197,94,0.12),0_0_20px_rgba(34,197,94,0.15)]"
         : "border-pitch-600/70 bg-pitch-950/80 shadow-[inset_0_2px_16px_rgba(0,0,0,0.55)]"
@@ -260,55 +275,34 @@ export function RecruitmentSlotReveal({
             className="flex items-stretch justify-center gap-2 sm:gap-2.5"
             aria-live="polite"
           >
-            <motion.div
+            <div
               className={reelShellClass(locked)}
               style={{
                 borderTopColor: locked ? clubColors.primary : undefined,
               }}
-              animate={
-                locked ? { scale: [1, 1.025, 0.995, 1] } : { scale: 1 }
-              }
-              transition={
-                locked
-                  ? { duration: 0.32, times: [0, 0.35, 0.65, 1], ease: "easeOut" }
-                  : { duration: 0.15 }
-              }
             >
               <SlotReel
-                items={teams}
+                pool={teamPool}
                 scrollIndex={teamIndex}
                 locked={locked}
                 stepMs={stepMs}
                 formatItem={(team) => team}
                 textClassName="slot-reveal-team-name"
               />
-            </motion.div>
+            </div>
 
-            <motion.div
+            <div
               className={`${reelShellClass(locked)} slot-reveal-year-reel shrink-0`}
-              animate={
-                locked ? { scale: [1, 1.025, 0.995, 1] } : { scale: 1 }
-              }
-              transition={
-                locked
-                  ? {
-                      duration: 0.32,
-                      times: [0, 0.35, 0.65, 1],
-                      ease: "easeOut",
-                      delay: 0.04,
-                    }
-                  : { duration: 0.15 }
-              }
             >
               <SlotReel
-                items={years}
+                pool={yearPool}
                 scrollIndex={yearIndex}
                 locked={locked}
                 stepMs={stepMs}
                 formatItem={formatShortYear}
                 textClassName="slot-reveal-year-text tabular-nums"
               />
-            </motion.div>
+            </div>
           </div>
 
           {locked && (

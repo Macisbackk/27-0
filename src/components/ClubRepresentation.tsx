@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ClubBreakdownSummary } from "@/lib/squad-analysis";
+import { getFormationSlotSortOrder } from "@/lib/positions";
 import { getClubColors } from "@/lib/clubs";
 import { POSITION_SHORT } from "@/lib/positions";
 import { RLClubRow } from "./cards/RLClubRow";
 import { playPanelExpand } from "@/lib/sound";
-import { SPACING } from "@/lib/ui/design-system";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 interface ClubRepresentationProps {
@@ -40,6 +41,12 @@ export function ClubRepresentation({
         clubs.map((c) => {
           const isExpanded = expandedClub === c.club;
           const colors = getClubColors(clubColorOverride ?? c.club);
+          const players = [...c.players].sort(
+            (a, b) =>
+              getFormationSlotSortOrder(a.slotIndex) -
+              getFormationSlotSortOrder(b.slotIndex)
+          );
+
           return (
             <div key={c.club}>
               <RLClubRow
@@ -59,30 +66,33 @@ export function ClubRepresentation({
                     className="overflow-hidden"
                   >
                     <div
-                      className="mt-2 rounded-lg border border-pitch-600/50 px-3 py-2 text-sm text-gray-400"
+                      className={`${CARD.inset} mt-2 overflow-hidden`}
                       style={{
                         borderLeftColor: colors.primary,
                         borderLeftWidth: 3,
                       }}
                     >
-                      <p className="mb-2 text-xs text-gray-500">
-                        {c.count} player{c.count === 1 ? "" : "s"} · squad value included in team total
+                      <p className={`border-b border-pitch-700/40 px-2.5 py-1.5 ${TYPO.bodySm} text-gray-500`}>
+                        {c.count} player{c.count === 1 ? "" : "s"}
                       </p>
-                      <div className="space-y-1.5">
-                        {c.players.map((player) => (
-                          <div
+                      <ul className="divide-y divide-pitch-700/35">
+                        {players.map((player) => (
+                          <li
                             key={`${c.club}-${player.playerId}-${player.slotIndex}`}
-                            className="flex items-center justify-between gap-2 rounded-md border border-pitch-700/50 bg-pitch-950/40 px-2 py-1.5"
+                            className="flex min-w-0 items-center gap-2 px-2.5 py-1.5"
                           >
-                            <p className="min-w-0 flex-1 truncate text-xs text-gray-300">
+                            <span className="min-w-0 flex-1 truncate font-display text-xs font-semibold text-white sm:text-sm">
                               {player.name}
-                            </p>
-                            <p className="shrink-0 text-[11px] font-semibold text-gray-400">
-                              {POSITION_SHORT[player.naturalPosition]} · {player.adjustedRating}
-                            </p>
-                          </div>
+                            </span>
+                            <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-gray-500 sm:text-[11px]">
+                              {POSITION_SHORT[player.naturalPosition]}
+                            </span>
+                            <span className="shrink-0 font-display text-xs font-bold text-accent-green sm:text-sm">
+                              {player.adjustedRating}
+                            </span>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
                   </motion.div>
                 )}

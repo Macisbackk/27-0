@@ -372,25 +372,26 @@ export function GameBoard({
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;
     if (!isSlotRecruitMode || !activeSpinTarget || slotRecruitEntries.length === 0) return;
+
     const mismatched = slotRecruitEntries.find(
       ({ player }) => !getPlayerTeamYearIds(player.id).includes(activeSpinTarget.teamYearId)
     );
-    if (!mismatched) return;
-    console.warn("Spin target and picker pool mismatch detected", {
-      spinTarget: activeSpinTarget.teamYearId,
-      playerId: mismatched.player.id,
-      playerName: mismatched.player.name,
-      playerPoolIds: getPlayerTeamYearIds(mismatched.player.id),
-    });
+    if (mismatched) {
+      console.warn("Player pool leak", {
+        spinTeamYearId: activeSpinTarget.teamYearId,
+        playerId: mismatched.player.id,
+        playerTeamYearIds: getPlayerTeamYearIds(mismatched.player.id),
+      });
+    }
   }, [isSlotRecruitMode, activeSpinTarget, slotRecruitEntries]);
 
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;
     if (!slotRecruitTarget || !activeSpinTarget) return;
     if (slotRecruitTarget.teamYearId === activeSpinTarget.teamYearId) return;
-    console.warn("Reveal target and picker target diverged", {
-      revealTarget: slotRecruitTarget.teamYearId,
-      pickerTarget: activeSpinTarget.teamYearId,
+    console.warn("Spin mismatch", {
+      animationFinalResult: slotRecruitTarget,
+      playerPoolTeamYearId: activeSpinTarget.teamYearId,
     });
   }, [slotRecruitTarget, activeSpinTarget]);
 

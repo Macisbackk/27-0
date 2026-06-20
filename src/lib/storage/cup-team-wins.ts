@@ -46,12 +46,16 @@ export function incrementCupTeamWinsLocal(teamName: string): CupTeamWinEntry {
   return updated;
 }
 
-async function incrementCupTeamWinsRemote(
-  teamName: string
-): Promise<void> {
-  if (!isSupabaseConfigured || !isLoggedIn()) return;
+async function incrementCupTeamWinsRemote(teamName: string): Promise<boolean> {
+  if (!isSupabaseConfigured || !isLoggedIn()) return false;
 
   try {
+    const { error } = await supabase.rpc("increment_cup_team_win", {
+      p_team_name: teamName,
+    });
+    if (!error) return true;
+
+    // Fallback when RPC not yet deployed — read-modify-write upsert.
     const { data: existing, error: fetchError } = await supabase
       .from("cup_team_wins")
       .select("tournament_wins")
@@ -69,18 +73,20 @@ async function incrementCupTeamWinsRemote(
     };
 
     if (existing) {
-      const { error } = await supabase
+      const { error: updateError } = await supabase
         .from("cup_team_wins")
         .update(payload)
         .eq("team_name", teamName);
-      if (error) throw error;
-      return;
+      if (updateError) throw updateError;
+      return true;
     }
 
-    const { error } = await supabase.from("cup_team_wins").insert(payload);
-    if (error) throw error;
+    const { error: insertError } = await supabase.from("cup_team_wins").insert(payload);
+    if (insertError) throw insertError;
+    return true;
   } catch (error) {
-    console.error("[cup-team-wins] Supabase upsert failed:", error);
+    console.error("[cup-team-wins] Supabase increment failed:", error);
+    return false;
   }
 }
 
@@ -127,7 +133,7 @@ export function incrementEraCupTeamWinsLocal(teamName: string): CupTeamWinEntry 
   return updated;
 }
 
-/** Record an Era Challenge Cup tournament win for the winning era squad. */
+/** Record an Era Challenge Cup tournament win — local only (separate from current cup wins). */
 export function recordEraCupTeamWin(teamName: string): void {
   if (!teamName) return;
   incrementEraCupTeamWinsLocal(teamName);
@@ -186,18 +192,26 @@ export function hashAssignPlayableTeam(seed: string): string {
   return clubs[Math.abs(hash) % clubs.length];
 }
 
+function filterPlayableWinCounts(
+  recorded: Record<string, number>
+): Record<string, number> {
+  const playable = new Set(getPlayableClubNames());
+  const merged: Record<string, number> = {};
+
+  for (const [team, wins] of Object.entries(recorded)) {
+    if (playable.has(team) && wins > 0) {
+      merged[team] = wins;
+    }
+  }
+
+  return merged;
+}
+
 function mergeWinCounts(
   recorded: Record<string, number>,
   profiles: ReturnType<typeof getAllCupLeaderboardProfiles>
 ): Record<string, number> {
-  const merged: Record<string, number> = {};
-  const playable = new Set(getPlayableClubNames());
-
-  for (const [team, wins] of Object.entries(recorded)) {
-    if (playable.has(team) && wins > 0) {
-      merged[team] = (merged[team] ?? 0) + wins;
-    }
-  }
+  const merged = filterPlayableWinCounts(recorded);
 
   const recordedTotal = Object.values(merged).reduce((sum, wins) => sum + wins, 0);
   const expectedTotal = profiles.reduce((sum, profile) => sum + profile.cupsWon, 0);
@@ -257,7 +271,6 @@ export async function getCupTeamWinsLeaderboardAsync(): Promise<{
     typeof window !== "undefined" ? getAllCupLeaderboardProfiles() : [];
   const expectedTotal = profiles.reduce((sum, profile) => sum + profile.cupsWon, 0);
   let recorded: Record<string, number> = {};
-  let entries: CupTeamWinEntry[] = [];
   let source: "remote" | "local" = "local";
 
   if (isSupabaseConfigured) {
@@ -271,11 +284,6 @@ export async function getCupTeamWinsLeaderboardAsync(): Promise<{
         for (const row of data) {
           recorded[row.team_name] = row.tournament_wins ?? 0;
         }
-        entries = data.map((row) => ({
-          teamName: row.team_name,
-          tournamentWins: row.tournament_wins ?? 0,
-          lastWonAt: row.last_won_at ?? new Date(0).toISOString(),
-        }));
       }
     } catch (error) {
       console.error("[cup-team-wins] Supabase fetch failed:", error);
@@ -283,19 +291,22 @@ export async function getCupTeamWinsLeaderboardAsync(): Promise<{
   }
 
   if (source === "local") {
-    entries = getAllCupTeamWins();
+    const entries = getAllCupTeamWins();
     recorded = Object.fromEntries(
       entries.map((entry) => [entry.teamName, entry.tournamentWins])
     );
   }
 
-  const merged = mergeWinCounts(recorded, profiles);
+  const merged =
+    source === "remote"
+      ? filterPlayableWinCounts(recorded)
+      : mergeWinCounts(recorded, profiles);
   const rows = buildLeaderboardRows(merged);
   const totalCups = Object.values(merged).reduce((sum, wins) => sum + wins, 0);
 
   return {
     source,
     rows,
-    totalCups: Math.max(totalCups, expectedTotal),
+    totalCups: Math.max(totalCups, source === "local" ? expectedTotal : totalCups),
   };
 }
