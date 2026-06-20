@@ -7,7 +7,9 @@ import type { Player, Position, SquadSlot } from "../types";
 import { RECRUIT_SLOT_ORDER } from "../positions";
 import { signPlayerToSlot } from "../positions";
 import {
+  getFirstNaturalPlacementSlot,
   getNaturalPlacementSlots,
+  getPlacementPenalty,
   getCompatiblePlayerPositions,
   getRemainingNaturalPlayerPositions,
 } from "./position-placement";
@@ -37,6 +39,21 @@ export function getSlotTeamYearSpinPools(target: SlotRevealTarget): {
     teams: getTeamSpinPool(target.team, target.teamYearKey),
     years: getYearSpinPool(target.team, target.year),
   };
+}
+
+/** Auto-place a Normal Mode signing into the first matching empty slot. */
+export function autoPlaceSlotRecruitPlayer(
+  squad: SquadSlot[],
+  player: Player,
+  target: SlotRevealTarget
+): SquadSlot[] | null {
+  const slot = getFirstNaturalPlacementSlot(squad, player);
+  if (!slot) return null;
+
+  const prepared = preparePlayerForTeamYear(player, target);
+  warnTeamYearPoolLeak(prepared, target);
+  const penalty = getPlacementPenalty(prepared.position, slot.position);
+  return signPlayerToSlot(squad, prepared, slot.slotIndex, penalty);
 }
 
 export function preparePlayerForTeamYear(

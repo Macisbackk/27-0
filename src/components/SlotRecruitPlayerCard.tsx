@@ -16,6 +16,7 @@ import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
 import { getClubColors } from "@/lib/clubs";
 import { POSITION_LABELS } from "@/lib/positions";
+import { playUiClick } from "@/lib/sound";
 import { AchievementChipList } from "./cards/AchievementChipList";
 import {
   PlayerSpecialBadge,
@@ -23,29 +24,29 @@ import {
   resolvePlayerStatus,
 } from "./cards/PlayerStatusBadge";
 import { StatBox, TIER_STAT_SPAN_CLASS } from "./ui/StatBox";
-import { BTN, CARD } from "@/lib/ui/design-system";
+import { CARD } from "@/lib/ui/design-system";
 
 interface SlotRecruitPlayerCardProps {
   player: Player;
   teamYearLabel: string;
   hardMode?: boolean;
   clubColorOverride?: string;
-  expanded?: boolean;
+  statsExpanded?: boolean;
   disabled?: boolean;
-  onToggleExpand: () => void;
-  onSign: () => void;
+  onSelect: () => void;
+  onToggleStats: () => void;
 }
 
-/** Normal Mode pick card — compact name/rating/team-year; tap to expand for full stats. */
+/** Normal Mode pick card — tap to sign; View Stats for full details. */
 export function SlotRecruitPlayerCard({
   player,
   teamYearLabel,
   hardMode,
   clubColorOverride,
-  expanded = false,
+  statsExpanded = false,
   disabled,
-  onToggleExpand,
-  onSign,
+  onSelect,
+  onToggleStats,
 }: SlotRecruitPlayerCardProps) {
   const colors = getClubColors(clubColorOverride ?? player.club);
   const displayName = formatPlayerDisplayName(player);
@@ -74,9 +75,9 @@ export function SlotRecruitPlayerCard({
 
   return (
     <div
-      className={`${CARD.base} flex h-full min-w-0 flex-col overflow-hidden transition ${
-        expanded ? CARD.selected : "hover:border-accent-green/35"
-      } ${disabled ? "opacity-50" : ""}`}
+      className={`${CARD.base} flex h-full min-w-0 flex-col overflow-hidden transition hover:border-accent-green/35 ${
+        disabled ? "opacity-50" : ""
+      }`}
       style={{
         boxShadow: `inset 3px 0 0 ${colors.primary}`,
       }}
@@ -84,8 +85,7 @@ export function SlotRecruitPlayerCard({
       <button
         type="button"
         disabled={disabled}
-        aria-expanded={expanded}
-        onClick={onToggleExpand}
+        onClick={onSelect}
         className="btn-press group flex min-w-0 flex-col px-2.5 py-2 text-left disabled:cursor-not-allowed sm:px-3 sm:py-2.5"
       >
         <div className="flex min-w-0 items-start justify-between gap-2">
@@ -98,9 +98,7 @@ export function SlotRecruitPlayerCard({
             } text-sm sm:text-base`}
           >
             {hardMode ? "???" : player.peakRating}
-            {!hardMode && (
-              <span className="hidden sm:inline"> OVR</span>
-            )}
+            {!hardMode && <span className="hidden sm:inline"> OVR</span>}
           </span>
         </div>
         <p className="mt-1 min-w-0 line-clamp-2 break-words text-[10px] leading-snug text-gray-400 sm:text-xs">
@@ -108,22 +106,35 @@ export function SlotRecruitPlayerCard({
         </p>
       </button>
 
+      <div className="px-2.5 pb-2 sm:px-3">
+        <button
+          type="button"
+          disabled={disabled}
+          aria-expanded={statsExpanded}
+          onClick={(event) => {
+            event.stopPropagation();
+            playUiClick();
+            onToggleStats();
+          }}
+          className="rounded-md border border-pitch-600/60 bg-pitch-950/50 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-accent-green/35 hover:text-accent-green disabled:cursor-not-allowed sm:text-[10px]"
+        >
+          {statsExpanded ? "Close" : "View Stats"}
+        </button>
+      </div>
+
       <AnimatePresence initial={false}>
-        {expanded && (
+        {statsExpanded && (
           <motion.div
-            key="expanded"
+            key="stats"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
+            transition={{ duration: 0.22, ease: "easeInOut" }}
             className="overflow-hidden"
           >
             <div className="border-t border-pitch-700/50 px-2 pb-2.5 pt-2 sm:px-3">
               {statusBadge && (
-                <div
-                  className="mb-2"
-                  aria-hidden={hardMode || undefined}
-                >
+                <div className="mb-2" aria-hidden={hardMode || undefined}>
                   {statusBadge}
                 </div>
               )}
@@ -210,15 +221,6 @@ export function SlotRecruitPlayerCard({
                   className={TIER_STAT_SPAN_CLASS}
                 />
               </div>
-
-              <button
-                type="button"
-                disabled={disabled}
-                onClick={onSign}
-                className={`mt-2.5 w-full ${BTN.base} ${BTN.primary} disabled:cursor-not-allowed disabled:opacity-50`}
-              >
-                Sign player
-              </button>
             </div>
           </motion.div>
         )}

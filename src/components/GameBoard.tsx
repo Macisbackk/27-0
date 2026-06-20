@@ -25,7 +25,6 @@ import {
 } from "@/lib/game/recruitment";
 import {
   getPlacementPenalty,
-  getNaturalPlacementSlots,
 } from "@/lib/game/position-placement";
 import { getPlayerById } from "@/lib/players";
 import { getJoeMellorGoatPlayer } from "@/lib/players/goat";
@@ -86,13 +85,13 @@ import { HardModeBadge } from "./HardModeBadge";
 import { ClubHeaderBar } from "./ClubBadge";
 import { GuestNotice } from "./GuestNotice";
 import { DraftPositionPlacement } from "./DraftPositionPlacement";
-import { SlotRecruitPlacementConfirm } from "./SlotRecruitPlacementConfirm";
 import { LINK, BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import {
   generateSlotTeamYearTarget,
   autofillSlotRecruitSquad,
+  autoPlaceSlotRecruitPlayer,
   prepareSlotTeamYearPlayers,
 } from "@/lib/game/slot-team-year-pick";
 
@@ -190,7 +189,6 @@ export function GameBoard({
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
   const placementScrollRef = useRef<HTMLDivElement>(null);
-  const placementConfirmRef = useRef<HTMLDivElement>(null);
   const lastScrolledPlayerIdRef = useRef<string | null>(null);
 
   const isHardMode = difficulty === "HARD";
@@ -483,56 +481,22 @@ export function GameBoard({
       if (choosing || phase !== "choice" || !isSlotRecruitMode || !activeSpinTarget) {
         return;
       }
-      if (getNaturalPlacementSlots(squad, player).length === 0) return;
 
-      setChoosing(true);
-      playPlayerSelect();
-
-      setTimeout(() => {
-        setChoosing(false);
-        setPendingPlayer(player);
-        setPhase("placement");
-      }, 200);
-    },
-    [
-      choosing,
-      phase,
-      isSlotRecruitMode,
-      activeSpinTarget,
-      squad,
-    ]
-  );
-
-  const handleSlotPlacementConfirm = useCallback(
-    (slotIndex: number) => {
-      if (
-        phase !== "placement" ||
-        !pendingPlayer ||
-        !isSlotRecruitMode ||
-        choosing
-      ) {
-        return;
-      }
-      const validSlots = getNaturalPlacementSlots(squad, pendingPlayer);
-      if (!validSlots.some((s) => s.slotIndex === slotIndex)) return;
-
-      setChoosing(true);
-      const penalty = getPlacementPenalty(
-        pendingPlayer.position,
-        squad.find((s) => s.slotIndex === slotIndex)!.position
-      );
-      const newSquad = signPlayerToSlot(
+      const newSquad = autoPlaceSlotRecruitPlayer(
         squad,
-        pendingPlayer,
-        slotIndex,
-        penalty
+        player,
+        activeSpinTarget
       );
+      if (!newSquad) return;
+
+      setChoosing(true);
+      playPositionComplete();
+
       setSquad(newSquad);
       setPendingPlayer(null);
       setSlotRecruitTarget(null);
       setActiveSpinTarget(null);
       setChoosing(false);
-      playPositionComplete();
 
       const filled = getFilledCount(newSquad);
       if (filled >= TOTAL_SLOTS) {
@@ -543,20 +507,14 @@ export function GameBoard({
       }
     },
     [
-      phase,
-      pendingPlayer,
-      isSlotRecruitMode,
       choosing,
+      phase,
+      isSlotRecruitMode,
+      activeSpinTarget,
       squad,
       startTournamentSimulation,
     ]
   );
-
-  const handleSlotPlacementBack = useCallback(() => {
-    if (phase !== "placement" || !isSlotRecruitMode) return;
-    setPendingPlayer(null);
-    setPhase("choice");
-  }, [phase, isSlotRecruitMode]);
 
   const handleSpinForPlayer = useCallback(() => {
     if (
@@ -643,20 +601,6 @@ export function GameBoard({
     setPendingPlayer(null);
     setPhase("choice");
   }, []);
-
-  useEffect(() => {
-    if (phase !== "placement" || !pendingPlayer || !isSlotRecruitMode) return;
-    if (lastScrolledPlayerIdRef.current === pendingPlayer.id) return;
-
-    lastScrolledPlayerIdRef.current = pendingPlayer.id;
-    const frame = window.requestAnimationFrame(() => {
-      placementConfirmRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [phase, pendingPlayer, isSlotRecruitMode]);
 
   const handlePlaceDraftPlayer = useCallback(
     (slotIndex: number) => {
@@ -1115,17 +1059,6 @@ export function GameBoard({
                   disabled={choosing}
                 />
               )}
-              {phase === "placement" && pendingPlayer && isSlotRecruitMode && (
-                <div ref={placementConfirmRef}>
-                  <SlotRecruitPlacementConfirm
-                    player={pendingPlayer}
-                    squad={squad}
-                    onConfirm={handleSlotPlacementConfirm}
-                    onBack={handleSlotPlacementBack}
-                    disabled={choosing}
-                  />
-                </div>
-              )}
               <RugbyPitch
                 squad={squad}
                 totalValue={totalValue}
@@ -1144,7 +1077,7 @@ export function GameBoard({
                   !isSlotRecruitMode
                 }
                 onSlotClick={handleSelectSlot}
-                dimmed={phase === "choice" || phase === "reveal" || (phase === "placement" && isSlotRecruitMode)}
+                dimmed={phase === "choice" || phase === "reveal"}
                 lockedSlots={
                   superSamHallasMode
                     ? ALL_SUPER_SAM_SLOT_INDICES

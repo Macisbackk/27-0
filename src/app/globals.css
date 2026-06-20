@@ -477,7 +477,7 @@ body {
   }
 
   .slot-reveal-spinning {
-    opacity: 0.88;
+    opacity: 1;
   }
 
   .slot-reel-window {
@@ -530,6 +530,7 @@ body {
 
   .slot-reel-strip {
     will-change: transform;
+    backface-visibility: hidden;
   }
 
   .slot-reel-item {
@@ -539,7 +540,9 @@ body {
     justify-content: center;
     padding: 0 0.25rem;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+    transform: translateZ(0);
   }
 
   @media (min-width: 640px) {

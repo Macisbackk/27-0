@@ -79,6 +79,14 @@ export function getNaturalPlacementSlots(
     .sort((a, b) => a.slotIndex - b.slotIndex);
 }
 
+/** First available natural slot for Normal Mode auto-placement. */
+export function getFirstNaturalPlacementSlot(
+  squad: SquadSlot[],
+  player: Player
+): SquadSlot | null {
+  return getNaturalPlacementSlots(squad, player)[0] ?? null;
+}
+
 /** Whether a player's natural position (or halfback pair) has a remaining slot. */
 export function canPlayerRecruitForRemainingSlots(
   player: Player,

@@ -10,7 +10,7 @@ import {
   type SlotTeamYearPlayer,
 } from "@/lib/game/slot-team-year-pick";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
-import { playPlayerSelect, playUiClick } from "@/lib/sound";
+import { playPlayerSelect } from "@/lib/sound";
 import { CARD, LINK } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { SlotRecruitPlayerCard } from "./SlotRecruitPlayerCard";
@@ -32,7 +32,7 @@ export function SlotTeamYearPicker({
   disabled,
   hardMode,
 }: SlotTeamYearPickerProps) {
-  const [expandedPlayerId, setExpandedPlayerId] = useState<string | null>(null);
+  const [statsPlayerId, setStatsPlayerId] = useState<string | null>(null);
 
   const bio = useMemo(
     () => getSlotRevealBio(target.team, target.year),
@@ -102,13 +102,13 @@ export function SlotTeamYearPicker({
           ) : (
             <div className="mx-auto grid max-h-[min(52vh,480px)] max-w-4xl grid-cols-2 gap-2 overflow-y-auto overflow-x-hidden pr-0.5 sm:grid-cols-3 sm:gap-3">
               {entries.map(({ player }) => {
-                const expanded = expandedPlayerId === player.id;
+                const statsExpanded = statsPlayerId === player.id;
 
                 return (
                   <div
                     key={player.id}
                     className={`relative min-w-0 ${
-                      expanded ? "col-span-2 sm:col-span-3" : ""
+                      statsExpanded ? "col-span-2 sm:col-span-3" : ""
                     }`}
                   >
                     <motion.div
@@ -121,17 +121,16 @@ export function SlotTeamYearPicker({
                         teamYearLabel={teamYearLabel}
                         hardMode={hardMode}
                         clubColorOverride={target.team}
-                        expanded={expanded}
+                        statsExpanded={statsExpanded}
                         disabled={disabled}
-                        onToggleExpand={() => {
-                          playUiClick();
-                          setExpandedPlayerId((id) =>
-                            id === player.id ? null : player.id
-                          );
-                        }}
-                        onSign={() => {
+                        onSelect={() => {
                           playPlayerSelect();
                           onSelect(player);
+                        }}
+                        onToggleStats={() => {
+                          setStatsPlayerId((id) =>
+                            id === player.id ? null : player.id
+                          );
                         }}
                       />
                     </motion.div>
