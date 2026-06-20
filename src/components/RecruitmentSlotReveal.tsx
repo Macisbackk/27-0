@@ -11,6 +11,7 @@ import {
   computeSlotReelScrollY,
 } from "@/lib/game/slot-reel";
 import { getClubColors } from "@/lib/clubs";
+import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
 import { formatShortYear } from "@/lib/players/prime-year";
 import {
   playSlotLand,
@@ -286,7 +287,7 @@ export function RecruitmentSlotReveal({
                 scrollIndex={teamIndex}
                 locked={locked}
                 stepMs={stepMs}
-                formatItem={(team) => team}
+                formatItem={formatSpinReelTeamName}
                 textClassName="slot-reveal-team-name"
               />
             </div>

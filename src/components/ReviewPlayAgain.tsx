@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ModeStartButton } from "./ModeStartLink";
 import { BTN, SPACING } from "@/lib/ui/design-system";
 
 interface ReviewPlayAgainProps {
@@ -20,13 +21,9 @@ export function ReviewPlayAgain({
     <div
       className={`w-full max-w-xl ${SPACING.stackMd} ${compact ? "" : "mt-2"}`}
     >
-      <button
-        type="button"
-        onClick={onPlayAgain}
-        className={`${BTN.base} ${hardMode ? BTN.primaryLgHard : BTN.primaryLg}`}
-      >
+      <ModeStartButton hardMode={hardMode} onClick={onPlayAgain}>
         Play Again
-      </button>
+      </ModeStartButton>
       <div className={`grid grid-cols-2 ${SPACING.buttonGap}`}>
         <Link href="/" className={`${BTN.base} ${BTN.secondaryLg}`}>
           Return Home

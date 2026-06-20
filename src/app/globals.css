@@ -406,6 +406,78 @@ body {
     opacity: 0.5;
   }
 
+  /**
+   * Opaque Normal/Hard start surfaces — same backdrop-filter compositing fix as era-start-btn.
+   */
+  .mode-start-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 52px;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 2px solid #16a34a;
+    background-color: #22c55e;
+    background-image: linear-gradient(90deg, #22c55e 0%, #34d399 100%);
+    color: #0a0f0d !important;
+    font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+    font-size: 1.125rem;
+    font-weight: 900;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    text-decoration: none;
+    isolation: isolate;
+    position: relative;
+    z-index: 1;
+    box-shadow:
+      0 0 30px rgba(34, 197, 94, 0.35),
+      0 2px 0 rgba(0, 0, 0, 0.15);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transform: translateZ(0);
+  }
+
+  .mode-start-btn:hover {
+    background-color: #34d399;
+    background-image: linear-gradient(90deg, #34d399 0%, #22c55e 100%);
+  }
+
+  .mode-start-btn:active:not(:disabled) {
+    transform: scale(0.98);
+    box-shadow:
+      inset 0 2px 6px rgba(0, 0, 0, 0.25),
+      0 0 20px rgba(34, 197, 94, 0.35);
+  }
+
+  .mode-start-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .mode-start-btn-hard {
+    border-color: #dc2626;
+    background-color: #ef4444;
+    background-image: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
+    color: #ffffff !important;
+    box-shadow:
+      0 0 30px rgba(239, 68, 68, 0.4),
+      0 2px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .mode-start-btn-hard:hover {
+    background-color: #f87171;
+    background-image: linear-gradient(90deg, #f87171 0%, #ef4444 100%);
+  }
+
+  .mode-start-btn-hard:active:not(:disabled) {
+    box-shadow:
+      inset 0 2px 6px rgba(0, 0, 0, 0.25),
+      0 0 20px rgba(239, 68, 68, 0.45);
+  }
+
   .era-tab-btn-active {
     border: 2px solid #b45309 !important;
     background-color: #fbbf24 !important;
@@ -443,16 +515,16 @@ body {
   }
 
   .slot-reveal-display-text {
-    font-size: clamp(0.72rem, 2.4vw + 0.42rem, 1rem);
-    line-height: 1.15;
+    font-size: clamp(0.68rem, 2.1vw + 0.38rem, 0.92rem);
+    line-height: 1;
     letter-spacing: 0.02em;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+    text-rendering: geometricPrecision;
   }
 
   .slot-reveal-year-text {
-    font-size: clamp(0.95rem, 3.2vw + 0.45rem, 1.35rem);
-    line-height: 1.1;
+    font-size: clamp(0.88rem, 2.8vw + 0.4rem, 1.2rem);
+    line-height: 1;
   }
 
   .slot-reveal-year-reel {
@@ -474,6 +546,8 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding-inline: 0.15rem;
+    font-size: clamp(0.62rem, 1.9vw + 0.32rem, 0.8rem);
   }
 
   .slot-reveal-spinning {
@@ -848,6 +922,29 @@ button.era-tab-btn-active,
   background-image: none !important;
   color: #0a0f0d !important;
   border-color: #b45309 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+a .mode-start-btn,
+span.mode-start-btn,
+button.mode-start-btn,
+.mode-start-btn {
+  background-color: #22c55e !important;
+  background-image: linear-gradient(90deg, #22c55e 0%, #34d399 100%) !important;
+  color: #0a0f0d !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+a .mode-start-btn-hard,
+span.mode-start-btn-hard,
+button.mode-start-btn-hard,
+.mode-start-btn-hard {
+  background-color: #ef4444 !important;
+  background-image: linear-gradient(90deg, #ef4444 0%, #f87171 100%) !important;
+  color: #ffffff !important;
+  border-color: #dc2626 !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }

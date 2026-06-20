@@ -32,6 +32,7 @@ import { SHOW_DRAFT_MODE } from "@/lib/feature-flags";
 import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { EraStartLink } from "./EraStartLink";
+import { ModeStartLink } from "./ModeStartLink";
 
 export function HomeModeSelector() {
   const [classicDifficulty, setClassicDifficulty] =
@@ -115,15 +116,14 @@ export function HomeModeSelector() {
             )}
           </div>
 
-          <Link
+          <ModeStartLink
             href={classicHref}
+            hardMode={classicHard}
             onClick={() => playUiClick()}
-            className={`mt-5 block w-full btn-press text-center ${
-              classicHard ? BTN.primaryLgHard : BTN.primaryLg
-            }`}
+            className="mt-5"
           >
             {classicHard ? "Start Hard Mode" : "Start Normal Mode"} →
-          </Link>
+          </ModeStartLink>
         </ModePanel>
 
         {SHOW_DRAFT_MODE && (
@@ -158,13 +158,14 @@ export function HomeModeSelector() {
             )}
           </div>
 
-          <Link
+          <ModeStartLink
             href={draftHref}
+            hardMode={draftHard}
             onClick={() => playUiClick()}
-            className={`mt-5 w-full ${BTN.base} ${draftHard ? BTN.primaryHard : BTN.primary}`}
+            className="mt-5"
           >
             {draftHard ? "Start Hard Draft" : "Start Draft"} →
-          </Link>
+          </ModeStartLink>
         </ModePanel>
         )}
 
