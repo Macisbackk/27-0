@@ -94,6 +94,7 @@ import {
   autoPlaceSlotRecruitPlayer,
   prepareSlotTeamYearPlayers,
 } from "@/lib/game/slot-team-year-pick";
+import { getPlayerTeamYearIds } from "@/lib/game/team-year-pools";
 
 interface GameBoardProps {
   mode: GameMode;
@@ -367,6 +368,31 @@ export function GameBoard({
     }
     return prepareSlotTeamYearPlayers(activeSpinTarget, signedPlayerIds, squad);
   }, [isSlotRecruitMode, activeSpinTarget, signedPlayerIds, squad]);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    if (!isSlotRecruitMode || !activeSpinTarget || slotRecruitEntries.length === 0) return;
+    const mismatched = slotRecruitEntries.find(
+      ({ player }) => !getPlayerTeamYearIds(player.id).includes(activeSpinTarget.teamYearId)
+    );
+    if (!mismatched) return;
+    console.warn("Spin target and picker pool mismatch detected", {
+      spinTarget: activeSpinTarget.teamYearId,
+      playerId: mismatched.player.id,
+      playerName: mismatched.player.name,
+      playerPoolIds: getPlayerTeamYearIds(mismatched.player.id),
+    });
+  }, [isSlotRecruitMode, activeSpinTarget, slotRecruitEntries]);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    if (!slotRecruitTarget || !activeSpinTarget) return;
+    if (slotRecruitTarget.teamYearId === activeSpinTarget.teamYearId) return;
+    console.warn("Reveal target and picker target diverged", {
+      revealTarget: slotRecruitTarget.teamYearId,
+      pickerTarget: activeSpinTarget.teamYearId,
+    });
+  }, [slotRecruitTarget, activeSpinTarget]);
 
   const rerollAvailable =
     !isHardMode &&

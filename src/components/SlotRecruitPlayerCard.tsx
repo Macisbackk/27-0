@@ -15,7 +15,7 @@ import { getNationalityAbbrev } from "@/lib/players/nationality";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
 import { getClubColors } from "@/lib/clubs";
-import { POSITION_LABELS } from "@/lib/positions";
+import { POSITION_LABELS, POSITION_SHORT } from "@/lib/positions";
 import { playUiClick } from "@/lib/sound";
 import { AchievementChipList } from "./cards/AchievementChipList";
 import {
@@ -86,27 +86,32 @@ export function SlotRecruitPlayerCard({
         type="button"
         disabled={disabled}
         onClick={onSelect}
-        className="btn-press group flex min-w-0 flex-col px-2.5 py-2 text-left disabled:cursor-not-allowed sm:px-3 sm:py-2.5"
+        className="btn-press group flex min-w-0 flex-col px-2.5 pt-2 pb-1 text-left disabled:cursor-not-allowed sm:px-3 sm:pt-2.5 sm:pb-1.5"
       >
         <div className="flex min-w-0 items-start justify-between gap-2">
           <h3 className="min-w-0 flex-1 line-clamp-2 break-words font-display text-xs font-bold leading-tight text-white sm:text-sm">
             {displayName}
           </h3>
-          <span
-            className={`shrink-0 font-display font-bold leading-none text-accent-green ${
+          <div
+            className={`shrink-0 text-right font-display font-bold leading-none text-accent-green ${
               hardMode ? "text-gray-600" : ""
-            } text-sm sm:text-base`}
+            }`}
           >
-            {hardMode ? "???" : player.peakRating}
-            {!hardMode && <span className="hidden sm:inline"> OVR</span>}
-          </span>
+            <p className="text-sm sm:text-base">
+              {hardMode ? "???" : player.peakRating}
+              {!hardMode && <span className="hidden sm:inline"> OVR</span>}
+            </p>
+            <p className="mt-0.5 text-[10px] font-semibold tracking-wide text-accent-green/90 sm:text-[11px]">
+              {POSITION_SHORT[player.position]}
+            </p>
+          </div>
         </div>
         <p className="mt-1 min-w-0 line-clamp-2 break-words text-[10px] leading-snug text-gray-400 sm:text-xs">
           {teamYearLabel}
         </p>
       </button>
 
-      <div className="px-2.5 pb-2 sm:px-3">
+      <div className="px-2.5 pb-1.5 sm:px-3 sm:pb-2">
         <button
           type="button"
           disabled={disabled}
@@ -132,7 +137,7 @@ export function SlotRecruitPlayerCard({
             transition={{ duration: 0.22, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="border-t border-pitch-700/50 px-2 pb-2.5 pt-2 sm:px-3">
+            <div className="border-t border-pitch-700/50 px-2 pb-2 pt-1.5 sm:px-3 sm:pt-2">
               {statusBadge && (
                 <div className="mb-2" aria-hidden={hardMode || undefined}>
                   {statusBadge}

@@ -68,10 +68,15 @@ export function getTeamYearPoolFromTarget(
   target: Pick<SlotRevealTarget, "team" | "year" | "teamYearId">
 ): TeamYearPool | null {
   ensurePoolsBuilt();
-  return (
-    poolById.get(target.teamYearId) ??
-    getTeamYearPool(target.team, target.year)
-  );
+  const exact = poolById.get(target.teamYearId) ?? null;
+  if (!exact && process.env.NODE_ENV !== "production") {
+    console.warn("Missing exact team-year pool for spin target", {
+      teamYearId: target.teamYearId,
+      team: target.team,
+      year: target.year,
+    });
+  }
+  return exact;
 }
 
 export function getAllTeamYearPools(): TeamYearPool[] {

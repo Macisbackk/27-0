@@ -50,7 +50,7 @@ export default async function PlayPage({
   const title = superSamHallasMode
     ? "Super Sam Hallas Mode"
     : joeMellorMode
-      ? "Joe Mellor Mode"
+      ? "Joe Mellor GOAT Mode"
       : getPlayPageTitle(mode, difficulty);
 
   const subtitle =

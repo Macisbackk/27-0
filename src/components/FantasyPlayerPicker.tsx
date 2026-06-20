@@ -10,15 +10,32 @@ import {
   type FantasyPickerFilters,
   type FantasySortKey,
 } from "@/lib/game/fantasy-mode";
-import { formatValue } from "@/lib/players";
+import {
+  formatCareerTries,
+  formatPlayerAge,
+  formatPlayerDisplayName,
+  formatValue,
+} from "@/lib/players";
 import { getPlayerColorClub } from "@/lib/players/run-club";
 import { filterShowcasePlayers, getUniqueClubs } from "@/lib/players/showcase";
 import { getClubColors } from "@/lib/clubs";
 import type { Player, SquadSlot } from "@/lib/types";
-import { PlayerCard } from "./PlayerCard";
+import { POSITION_LABELS, POSITION_SHORT } from "@/lib/positions";
+import { getNationalityAbbrev } from "@/lib/players/nationality";
+import { getCachedPlayerAchievements } from "@/lib/players/achievement-cache";
+import { getValueTier } from "@/lib/players/ratings";
+import { isGoatPlayer } from "@/lib/players/goat";
+import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
 import { playPlayerSelect, playUiClick } from "@/lib/sound";
 import { BTN, CARD, FILTER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import {
+  PlayerSpecialBadge,
+  PlayerStatusBadge,
+  resolvePlayerStatus,
+} from "./cards/PlayerStatusBadge";
+import { AchievementChipList } from "./cards/AchievementChipList";
+import { StatBox, TIER_STAT_SPAN_CLASS } from "./ui/StatBox";
 
 const POOL = getFantasyEligiblePlayers();
 const CLUBS = getUniqueClubs(POOL);
@@ -297,64 +314,109 @@ export function FantasyPlayerPicker({
                         handleSelect(player);
                       }}
                     >
-                      <div className="mb-1 flex items-center justify-between px-1 pt-1">
-                        <span className="font-display text-[8px] font-bold uppercase tracking-wider text-gray-500 sm:text-[10px]">
-                          {signed && player.id !== slot.player?.id
-                            ? "Signed"
-                            : !affordable
-                              ? "Over budget"
-                              : "Sign"}
-                        </span>
-                        <span
-                          role="button"
-                          tabIndex={0}
-                          className="rounded-full border border-pitch-600/50 px-1.5 py-0.5 text-[8px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-accent-green/40 hover:text-accent-green sm:text-[9px]"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            playUiClick();
-                            setExpandedPlayerId((id) =>
-                              id === player.id ? null : player.id
-                            );
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              playUiClick();
-                              setExpandedPlayerId((id) =>
-                                id === player.id ? null : player.id
-                              );
-                            }
-                          }}
-                        >
-                          {expanded ? "Close" : "Info"}
-                        </span>
+                      <div className="flex min-w-0 items-start justify-between gap-2 px-2.5 pt-2 sm:px-3 sm:pt-2.5">
+                        <h3 className="min-w-0 flex-1 line-clamp-2 break-words font-display text-xs font-bold leading-tight text-white sm:text-sm">
+                          {formatPlayerDisplayName(player)}
+                        </h3>
+                        <div className="shrink-0 text-right">
+                          <p className="font-display text-sm font-bold leading-none text-accent-green sm:text-base">
+                            {player.peakRating}
+                            <span className="hidden sm:inline"> OVR</span>
+                          </p>
+                          <p className="mt-0.5 text-[10px] font-semibold tracking-wide text-accent-green/90 sm:text-[11px]">
+                            {POSITION_SHORT[player.position]}
+                          </p>
+                        </div>
                       </div>
-                      <div className="min-h-0 flex-1 overflow-hidden px-0.5 pb-1">
-                        <PlayerCard
-                          player={player}
-                          selectable
-                          equalHeight
-                          compactMobile
-                        />
+                      <div className="px-2.5 pb-1.5 pt-1 sm:px-3 sm:pb-2">
+                        <p className="line-clamp-2 break-words text-[10px] leading-snug text-gray-400 sm:text-xs">
+                          {player.runClub ?? player.displayClub ?? player.club}
+                        </p>
+                        <p className="mt-0.5 text-[10px] font-semibold text-gray-300 sm:text-xs">
+                          {formatValue(player.value)}
+                        </p>
                       </div>
                     </button>
-
+                    <div className="px-2.5 pb-1.5 sm:px-3 sm:pb-2">
+                      <button
+                        type="button"
+                        disabled={disabled}
+                        aria-expanded={expanded}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          playUiClick();
+                          setExpandedPlayerId((id) =>
+                            id === player.id ? null : player.id
+                          );
+                        }}
+                        className="rounded-md border border-pitch-600/60 bg-pitch-950/50 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-accent-green/35 hover:text-accent-green disabled:cursor-not-allowed sm:text-[10px]"
+                      >
+                        {expanded ? "Close" : "View Stats"}
+                      </button>
+                    </div>
                     {expanded && (
-                      <div className="border-t border-pitch-700/50 px-2 pb-2 pt-2 sm:px-3">
-                        <PlayerCard player={player} equalHeight compactMobile />
-                        <button
-                          type="button"
-                          disabled={disabled}
-                          onClick={() => handleSelect(player)}
-                          className={`mt-2 w-full ${BTN.base} ${BTN.primary} disabled:cursor-not-allowed disabled:opacity-50`}
-                        >
-                          {slot.player?.id === player.id
-                            ? "Keep"
-                            : changingPlayer
-                              ? "Change Player"
-                              : "Sign"}
-                        </button>
+                      <div className="border-t border-pitch-700/50 px-2 pb-2 pt-1.5 sm:px-3 sm:pt-2">
+                        {(() => {
+                          const status = resolvePlayerStatus(player);
+                          const achievements = getCachedPlayerAchievements(
+                            player,
+                            "compact"
+                          );
+                          const hiddenClass = "";
+                          const statusBadge =
+                            isSuperSamHallasPlayer(player) ? (
+                              <PlayerSpecialBadge variant="superSam" compact />
+                            ) : isGoatPlayer(player) ? (
+                              <PlayerSpecialBadge variant="goat" compact />
+                            ) : status ? (
+                              <PlayerStatusBadge status={status} compact />
+                            ) : null;
+                          return (
+                            <>
+                              {statusBadge && <div className="mb-2">{statusBadge}</div>}
+                              {achievements.length > 0 && (
+                                <div className={`mb-2 ${hiddenClass}`}>
+                                  <AchievementChipList
+                                    achievements={achievements}
+                                    compactMobile
+                                  />
+                                </div>
+                              )}
+                              <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-1.5">
+                                <StatBox label="Position" value={POSITION_LABELS[player.position]} size="lg" light compact />
+                                <StatBox label="Age" value={formatPlayerAge(player)} size="lg" light compact />
+                                <StatBox label="Value" value={formatValue(player.value)} size="lg" light compact />
+                                <StatBox label="Years Active" value={player.yearsActive} size="lg" light compact className="hidden sm:block" />
+                                <StatBox label="Apps" value={String(player.appearances ?? "Unknown")} size="lg" light compact />
+                                <StatBox label="Tries" value={formatCareerTries(player.tries)} size="lg" light compact />
+                                <StatBox
+                                  label="Nation"
+                                  value={`${getNationalityAbbrev(player.nationality)} · ${player.nationality}`}
+                                  size="lg"
+                                  light
+                                  compact
+                                  className="col-span-2 sm:col-span-1"
+                                />
+                                <StatBox
+                                  label="Club"
+                                  value={player.runClub ?? player.displayClub ?? player.club}
+                                  size="lg"
+                                  light
+                                  compact
+                                  className="col-span-2"
+                                />
+                                <StatBox
+                                  label="Tier"
+                                  value={getValueTier(player.peakRating)}
+                                  size="lg"
+                                  light
+                                  compact
+                                  className={TIER_STAT_SPAN_CLASS}
+                                />
+                              </div>
+                            </>
+                          );
+                        })()}
                       </div>
                     )}
                   </div>

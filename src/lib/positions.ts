@@ -31,7 +31,7 @@ export const POSITION_SHORT: Record<Position, string> = {
   CENTRE: "CE",
   STAND_OFF: "SO",
   SCRUM_HALF: "SH",
-  PROP: "PR",
+  PROP: "PF",
   HOOKER: "HK",
   SECOND_ROW: "SR",
   LOOSE_FORWARD: "LF",

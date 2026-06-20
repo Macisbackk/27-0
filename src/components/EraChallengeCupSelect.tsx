@@ -128,46 +128,15 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
           />
         )}
 
-        <p className={`${TYPO.statLabel}`}>Select Club</p>
-        <div className="mt-3 grid gap-2 sm:grid-cols-2">
-          {clubs.map((club) => {
-            const colors = getClubColors(club);
-            const active = selectedClub === club;
-            const hasSeasons = getEraYearsForClubUnified(club).length > 0;
-            return (
-              <button
-                key={club}
-                type="button"
-                disabled={!hasSeasons}
-                onClick={() => handleClubSelect(club)}
-                className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-2.5 py-2 text-left ${TYPO.bodySm} transition ${
-                  active
-                    ? `${CARD.selected} border-accent-gold/50 text-accent-gold`
-                    : hasSeasons
-                      ? `${CARD.base} text-gray-300 hover:border-pitch-500/50`
-                      : `${CARD.base} cursor-not-allowed opacity-40 text-gray-500`
-                }`}
-              >
-                <ClubDualSwatch club={club} size="xs" />
-                <span className="min-w-0 flex-1 break-words font-medium leading-snug">
-                  {club}
-                </span>
-                <span
-                  className="ml-auto hidden h-3 w-3 shrink-0 rounded-full sm:inline"
-                  style={{ backgroundColor: colors.primary }}
-                />
-              </button>
-            );
-          })}
-        </div>
-
         {showYears && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-5"
+            className="mb-5"
           >
-            <p className={TYPO.statLabel}>Select Season</p>
+            <p className={TYPO.statLabel}>
+              Select Season · <span className="text-accent-gold">{selectedClub}</span>
+            </p>
             <div className="mt-3 flex flex-wrap gap-2">
               {years.map((year) => {
                 const team = buildEraTeamForYear(selectedClub, year);
@@ -206,6 +175,39 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
             </div>
           </motion.div>
         )}
+
+        <p className={`${TYPO.statLabel}`}>Select Club</p>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          {clubs.map((club) => {
+            const colors = getClubColors(club);
+            const active = selectedClub === club;
+            const hasSeasons = getEraYearsForClubUnified(club).length > 0;
+            return (
+              <button
+                key={club}
+                type="button"
+                disabled={!hasSeasons}
+                onClick={() => handleClubSelect(club)}
+                className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-2.5 py-2 text-left ${TYPO.bodySm} transition ${
+                  active
+                    ? `${CARD.selected} border-accent-gold/60 bg-accent-gold/10 text-accent-gold`
+                    : hasSeasons
+                      ? `${CARD.base} text-gray-300 hover:border-pitch-500/50`
+                      : `${CARD.base} cursor-not-allowed opacity-40 text-gray-500`
+                }`}
+              >
+                <ClubDualSwatch club={club} size="xs" />
+                <span className="min-w-0 flex-1 break-words font-medium leading-snug">
+                  {club}
+                </span>
+                <span
+                  className="ml-auto hidden h-3 w-3 shrink-0 rounded-full sm:inline"
+                  style={{ backgroundColor: colors.primary }}
+                />
+              </button>
+            );
+          })}
+        </div>
 
         {showTournamentAndPreview && previewTeam && previewSquad && (
           <motion.div

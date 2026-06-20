@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ClubBreakdownSummary } from "@/lib/squad-analysis";
 import { getClubColors } from "@/lib/clubs";
+import { POSITION_SHORT } from "@/lib/positions";
 import { RLClubRow } from "./cards/RLClubRow";
 import { playPanelExpand } from "@/lib/sound";
 import { SPACING } from "@/lib/ui/design-system";
@@ -64,8 +65,24 @@ export function ClubRepresentation({
                         borderLeftWidth: 3,
                       }}
                     >
-                      {c.count} player{c.count === 1 ? "" : "s"} · squad value{" "}
-                      included in team total
+                      <p className="mb-2 text-xs text-gray-500">
+                        {c.count} player{c.count === 1 ? "" : "s"} · squad value included in team total
+                      </p>
+                      <div className="space-y-1.5">
+                        {c.players.map((player) => (
+                          <div
+                            key={`${c.club}-${player.playerId}-${player.slotIndex}`}
+                            className="flex items-center justify-between gap-2 rounded-md border border-pitch-700/50 bg-pitch-950/40 px-2 py-1.5"
+                          >
+                            <p className="min-w-0 flex-1 truncate text-xs text-gray-300">
+                              {player.name}
+                            </p>
+                            <p className="shrink-0 text-[11px] font-semibold text-gray-400">
+                              {POSITION_SHORT[player.naturalPosition]} · {player.adjustedRating}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </motion.div>
                 )}

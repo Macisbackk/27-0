@@ -113,6 +113,12 @@ export function SeasonReview({
   const isPerfect = seasonResult.isPerfect;
   const isSuperSquad = gradeInfo.grade === "S" || gradeInfo.grade === "S+";
   const isHardMode = difficulty === "HARD";
+  const isSpecialMode = joeMellorMode || superSamHallasMode;
+  const reviewLabel = superSamHallasMode
+    ? "Super Sam Hallas Mode Season Review"
+    : joeMellorMode
+      ? "Joe Mellor GOAT Mode Season Review"
+      : getSeasonReviewLabel(mode, difficulty);
   const [selectedFixture, setSelectedFixture] = useState<MatchFixture | null>(
     null
   );
@@ -192,10 +198,13 @@ export function SeasonReview({
               isHardMode ? HARD.reviewAccent : NORMAL.reviewAccent
             }`}
           >
-            {getSeasonReviewLabel(mode, difficulty)}
+            {reviewLabel}
           </p>
 
-          <ReviewSubmissionNotice submittedOnline={submittedOnline} />
+          <ReviewSubmissionNotice
+            submittedOnline={submittedOnline}
+            specialRun={isSpecialMode}
+          />
 
           {isHardMode && (
             <div className={`mt-3 flex justify-center ${HARD.banner} rounded-xl px-4 py-2`}>

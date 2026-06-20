@@ -95,6 +95,7 @@ export function ChallengeCupReview({
     groupClubOverride: cupResult.eraMode ? userTeamName : undefined,
   });
   const isHardMode = difficulty === "HARD";
+  const isSpecialMode = joeMellorMode || superSamHallasMode;
   const [selectedFixture, setSelectedFixture] = useState<MatchFixture | null>(
     null
   );
@@ -257,7 +258,10 @@ export function ChallengeCupReview({
             {title}
           </p>
 
-          <ReviewSubmissionNotice submittedOnline={submittedOnline} />
+          <ReviewSubmissionNotice
+            submittedOnline={submittedOnline}
+            specialRun={isSpecialMode}
+          />
 
           {isHardMode && (
             <div className={`mt-3 flex justify-center ${HARD.banner} rounded-xl px-4 py-2`}>
