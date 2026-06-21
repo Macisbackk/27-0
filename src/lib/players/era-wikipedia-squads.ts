@@ -55,3 +55,16 @@ export function getEraWikipediaYearsForClub(club: string): string[] {
 export function getEraWikipediaSource(club: string, year: string): string | null {
   return ERA_WIKIPEDIA_SQUADS[club]?.[year]?.source ?? null;
 }
+
+/** Wikipedia-verified slot position for a player in a team-year, if available. */
+export function getTeamYearWikipediaPosition(
+  club: string,
+  year: string,
+  playerId: string
+): Position | null {
+  const entry = ERA_WIKIPEDIA_SQUADS[club]?.[year];
+  if (!entry || entry.playerIds.length !== 13) return null;
+  const idx = entry.playerIds.indexOf(playerId);
+  if (idx < 0) return null;
+  return (entry.positions[idx] as Position) ?? null;
+}

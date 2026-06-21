@@ -5,8 +5,8 @@
         "bradford-leg-robbie-hunter-paul",
         "bradford-hist-abi-ekoku",
         "huddersfield-hist-jeff-wittenberg",
-        "bradford-hist-paul-loughlin",
         "bradford-hist-graeme-bradley",
+        "bradford-hist-matt-calland",
         "bradford-hist-danny-peacock",
         "bradford-hist-paul-cook",
         "paul-anderson",
@@ -36,8 +36,8 @@
         "Robbie Paul",
         "Abi Ekoku",
         "Jeff Wittenberg",
-        "Paul Loughlin",
         "Graeme Bradley",
+        "Matt Calland",
         "Danny Peacock",
         "Paul Cook",
         "Paul Anderson",
@@ -47,19 +47,19 @@
         "Bernard Dwyer",
         "Steve McNamara"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "1998": {
       "playerIds": [
         "bradford-leg-robbie-hunter-paul",
-        "tevita-vaikona",
         "leon-pryce",
+        "tevita-vaikona",
         "bradford-hist-graeme-bradley",
         "bradford-hist-matt-calland",
         "bradford-hist-danny-peacock",
         "shaun-edwards",
-        "stuart-fielden",
         "paul-anderson",
+        "stuart-fielden",
         "bradford-hist-james-lowes",
         "bradford-hist-jeremy-donougher",
         "bradford-hist-paul-medley",
@@ -83,28 +83,28 @@
       "source": "https://en.wikipedia.org/wiki/1998_Bradford_Bulls_season",
       "wikipediaPlayers": [
         "Robbie Paul",
-        "Tevita Vaikona",
         "Leon Pryce",
+        "Tevita Vaikona",
         "Graeme Bradley",
         "Matt Calland",
         "Danny Peacock",
         "Shaun Edwards",
-        "Stuart Fielden",
         "Paul Anderson",
+        "Stuart Fielden",
         "James Lowes",
         "Jeremy Donougher",
         "Paul Medley",
         "Steve McNamara"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "1999": {
       "playerIds": [
         "bradford-leg-robbie-hunter-paul",
         "leon-pryce",
-        "tevita-vaikona",
+        "hull-fc-leg-lee-radford",
+        "london-leg-paul-sykes",
         "bradford-hist-scott-naylor",
-        "bradford-hist-nathan-mcavoy",
         "henry-paul",
         "paul-deacon",
         "stuart-fielden",
@@ -133,9 +133,9 @@
       "wikipediaPlayers": [
         "Robbie Paul",
         "Leon Pryce",
-        "Tevita Vaikona",
+        "Lee Radford",
+        "Paul Sykes",
         "Scott Naylor",
-        "Nathan McAvoy",
         "Henry Paul",
         "Paul Deacon",
         "Stuart Fielden",
@@ -145,7 +145,7 @@
         "Mike Forshaw",
         "Steve McNamara"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2000": {
       "playerIds": [
@@ -153,10 +153,10 @@
         "tevita-vaikona",
         "bradford-hist-michael-withers",
         "leon-pryce",
-        "bradford-hist-scott-naylor",
+        "london-leg-paul-sykes",
         "henry-paul",
         "paul-deacon",
-        "stuart-fielden",
+        "hull-fc-leg-lee-radford",
         "paul-anderson",
         "bradford-hist-james-lowes",
         "jamie-peacock",
@@ -184,17 +184,17 @@
         "Tevita Vaikona",
         "Michael Withers",
         "Leon Pryce",
-        "Scott Naylor",
+        "Paul Sykes",
         "Henry Paul",
         "Paul Deacon",
-        "Stuart Fielden",
+        "Lee Radford",
         "Paul Anderson",
         "James Lowes",
         "Jamie Peacock",
         "Mike Forshaw",
         "Brad Mackay"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2001": {
       "playerIds": [
@@ -202,10 +202,10 @@
         "tevita-vaikona",
         "hull-fc-hist-graham-mackay",
         "leon-pryce",
-        "bradford-hist-scott-naylor",
+        "london-leg-paul-sykes",
         "henry-paul",
         "paul-deacon",
-        "stuart-fielden",
+        "hull-fc-leg-lee-radford",
         "paul-anderson",
         "bradford-hist-james-lowes",
         "jamie-peacock",
@@ -233,17 +233,17 @@
         "Tevita Vaikona",
         "Graham Mackay",
         "Leon Pryce",
-        "Scott Naylor",
+        "Paul Sykes",
         "Henry Paul",
         "Paul Deacon",
-        "Stuart Fielden",
+        "Lee Radford",
         "Paul Anderson",
         "James Lowes",
         "Jamie Peacock",
         "Daniel Gartner",
         "Mike Forshaw"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2002": {
       "playerIds": [
@@ -251,14 +251,14 @@
         "tevita-vaikona",
         "lesley-vainikolo",
         "leon-pryce",
-        "bradford-hist-scott-naylor",
+        "london-leg-paul-sykes",
         "huddersfield-hist-brandon-costin",
         "paul-deacon",
         "stuart-fielden",
         "paul-anderson",
         "bradford-hist-james-lowes",
         "jamie-peacock",
-        "bradford-hist-daniel-gartner",
+        "hull-fc-leg-lee-radford",
         "bradford-hist-mike-forshaw"
       ],
       "positions": [
@@ -282,17 +282,17 @@
         "Tevita Vaikona",
         "Lesley Vainikolo",
         "Leon Pryce",
-        "Scott Naylor",
+        "Paul Sykes",
         "Brandon Costin",
         "Paul Deacon",
         "Stuart Fielden",
         "Paul Anderson",
         "James Lowes",
         "Jamie Peacock",
-        "Daniel Gartner",
+        "Lee Radford",
         "Mike Forshaw"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2003": {
       "playerIds": [
@@ -303,7 +303,7 @@
         "bradford-hist-shontayne-hape",
         "bradford-hist-karl-pratt",
         "paul-deacon",
-        "stuart-fielden",
+        "hull-fc-leg-lee-radford",
         "paul-anderson",
         "bradford-hist-james-lowes",
         "jamie-peacock",
@@ -334,29 +334,29 @@
         "Shontayne Hape",
         "Karl Pratt",
         "Paul Deacon",
-        "Stuart Fielden",
+        "Lee Radford",
         "Paul Anderson",
         "James Lowes",
         "Jamie Peacock",
         "Daniel Gartner",
         "Mike Forshaw"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2004": {
       "playerIds": [
         "bradford-leg-robbie-hunter-paul",
         "lesley-vainikolo",
         "tevita-vaikona",
+        "wigan-leg-paul-johnson",
         "leon-pryce",
-        "bradford-hist-shontayne-hape",
         "iestyn-harris",
         "paul-deacon",
         "stuart-fielden",
         "paul-anderson",
         "st-helens-hist-aaron-smith",
         "jamie-peacock",
-        "castleford-hist-brett-ferres",
+        "hull-fc-leg-lee-radford",
         "bradford-hist-jamie-langley"
       ],
       "positions": [
@@ -379,18 +379,18 @@
         "Robbie Paul",
         "Lesley Vainikolo",
         "Tevita Vaikona",
+        "Paul Johnson",
         "Leon Pryce",
-        "Shontayne Hape",
         "Iestyn Harris",
         "Paul Deacon",
         "Stuart Fielden",
         "Paul Anderson",
         "Aaron Smith",
         "Jamie Peacock",
-        "Brett Ferres",
+        "Lee Radford",
         "Jamie Langley"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2005": {
       "playerIds": [
@@ -399,13 +399,13 @@
         "bradford-hist-karl-pryce",
         "bradford-hist-shontayne-hape",
         "bradford-hist-karl-pratt",
-        "iestyn-harris",
+        "bradford-leg-robbie-hunter-paul",
         "paul-deacon",
-        "stuart-fielden",
         "adrian-morley",
+        "stuart-fielden",
         "catalans-hist-ian-henderson",
         "jamie-peacock",
-        "wigan-hist-paul-johnson",
+        "wigan-leg-paul-johnson",
         "bradford-hist-jamie-langley"
       ],
       "positions": [
@@ -430,31 +430,31 @@
         "Karl Pryce",
         "Shontayne Hape",
         "Karl Pratt",
-        "Iestyn Harris",
+        "Robbie Paul",
         "Paul Deacon",
-        "Stuart Fielden",
         "Adrian Morley",
+        "Stuart Fielden",
         "Ian Henderson",
         "Jamie Peacock",
         "Paul Johnson",
         "Jamie Langley"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2006": {
       "playerIds": [
         "bradford-hist-michael-withers",
         "lesley-vainikolo",
-        "leeds-hist-marcus-bai",
+        "bradford-hist-karl-pryce",
         "bradford-hist-shontayne-hape",
         "warrington-hist-ryan-atkins",
         "iestyn-harris",
         "paul-deacon",
-        "stuart-fielden",
         "andy-lynch",
-        "wigan-hist-terry-newton",
-        "castleford-hist-brett-ferres",
-        "wigan-hist-paul-johnson",
+        "stuart-fielden",
+        "wigan-leg-terry-newton",
+        "castleford-leg-brett-ferres",
+        "wigan-leg-paul-johnson",
         "sam-burgess"
       ],
       "positions": [
@@ -476,32 +476,32 @@
       "wikipediaPlayers": [
         "Michael Withers",
         "Lesley Vainikolo",
-        "Marcus Bai",
+        "Karl Pryce",
         "Shontayne Hape",
         "Ryan Atkins",
         "Iestyn Harris",
         "Paul Deacon",
-        "Stuart Fielden",
         "Andy Lynch",
+        "Stuart Fielden",
         "Terry Newton",
         "Brett Ferres",
         "Paul Johnson",
         "Sam Burgess"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2009": {
       "playerIds": [
         "bradford-hist-michael-platt",
         "wakefield-hist-semi-tadulala",
         "bradford-hist-rikki-sheriffe",
-        "wakefield-hist-paul-sykes",
+        "london-leg-paul-sykes",
         "huddersfield-hist-chris-nero",
-        "wakefield-hist-ben-jeffries",
+        "wakefield-leg-ben-jeffries",
         "paul-deacon",
         "sam-burgess",
         "andy-lynch",
-        "wigan-hist-terry-newton",
+        "wigan-leg-terry-newton",
         "catalans-hist-steve-menzies",
         "bradford-hist-glenn-morrison",
         "bradford-hist-jamie-langley"
@@ -537,22 +537,71 @@
         "Glenn Morrison",
         "Jamie Langley"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
+    },
+    "2011": {
+      "playerIds": [
+        "bradford-hist-michael-platt",
+        "bradford-hist-shaun-ainscough",
+        "widnes-hist-patrick-ah-van",
+        "london-leg-paul-sykes",
+        "leeds-leg-chev-walker",
+        "wakefield-leg-ben-jeffries",
+        "bradford-hist-marc-herbert",
+        "andy-lynch",
+        "bradford-hist-craig-kopczak",
+        "leeds-leg-matt-diskin",
+        "bradford-hist-elliott-whitehead",
+        "wigan-hist-john-bateman",
+        "bradford-hist-jamie-langley"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "https://en.wikipedia.org/wiki/2011_Bradford_Bulls_season",
+      "wikipediaPlayers": [
+        "Michael Platt",
+        "Shaun Ainscough",
+        "Patrick Ah Van",
+        "Paul Sykes",
+        "Chev Walker",
+        "Ben Jeffries",
+        "Marc Herbert",
+        "Andy Lynch",
+        "Craig Kopczak",
+        "Matt Diskin",
+        "Elliott Whitehead",
+        "John Bateman",
+        "Jamie Langley"
+      ],
+      "verifiedAt": "2026-06-21"
     },
     "2012": {
       "playerIds": [
         "bradford-hist-brett-kearney",
-        "bradford-hist-karl-pryce",
         "bradford-hist-shaun-ainscough",
-        "bradford-hist-michael-platt",
-        "wakefield-hist-paul-sykes",
-        "wakefield-hist-ben-jeffries",
+        "bradford-hist-karl-pryce",
+        "london-leg-paul-sykes",
+        "leeds-leg-chev-walker",
+        "wakefield-leg-ben-jeffries",
         "luke-gale",
-        "huddersfield-cur-thomas-burgess",
         "bradford-hist-craig-kopczak",
-        "leeds-hist-matt-diskin",
-        "catalans-hist-olivier-elima",
+        "huddersfield-cur-thomas-burgess",
+        "leeds-leg-matt-diskin",
         "bradford-hist-elliott-whitehead",
+        "catalans-hist-olivier-elima",
         "wigan-hist-john-bateman"
       ],
       "positions": [
@@ -573,20 +622,20 @@
       "source": "https://en.wikipedia.org/wiki/2012_Bradford_Bulls_season",
       "wikipediaPlayers": [
         "Brett Kearney",
-        "Karl Pryce",
         "Shaun Ainscough",
-        "Michael Platt",
+        "Karl Pryce",
         "Paul Sykes",
+        "Chev Walker",
         "Ben Jeffries",
         "Luke Gale",
-        "Tom Burgess",
         "Craig Kopczak",
+        "Tom Burgess",
         "Matt Diskin",
-        "Olivier Elima",
         "Elliott Whitehead",
+        "Olivier Elima",
         "John Bateman"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2013": {
       "playerIds": [
@@ -599,9 +648,9 @@
         "luke-gale",
         "bradford-hist-nick-scruton",
         "salford-hist-adam-sidlow",
-        "leeds-hist-matt-diskin",
+        "leeds-leg-matt-diskin",
+        "leeds-leg-chev-walker",
         "bradford-hist-elliott-whitehead",
-        "wigan-hist-john-bateman",
         "bradford-hist-jamie-langley"
       ],
       "positions": [
@@ -631,25 +680,25 @@
         "Nick Scruton",
         "Adam Sidlow",
         "Matt Diskin",
+        "Chev Walker",
         "Elliott Whitehead",
-        "John Bateman",
         "Jamie Langley"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2014": {
       "playerIds": [
         "bradford-hist-brett-kearney",
         "st-helens-hist-jamie-foster",
-        "wakefield-hist-luke-george",
+        "salford-hist-danny-williams",
         "wakefield-hist-joe-arundel",
         "bradford-hist-adrian-purtell",
         "huddersfield-hist-lee-gaskell",
         "luke-gale",
         "wakefield-cur-jay-pitts",
         "bradford-hist-manase-manuokafoa",
-        "leeds-hist-matt-diskin",
-        "leeds-hist-chev-walker",
+        "leeds-leg-matt-diskin",
+        "leeds-leg-chev-walker",
         "castleford-cur-alex-mellor",
         "bradford-hist-danny-addy"
       ],
@@ -672,7 +721,7 @@
       "wikipediaPlayers": [
         "Brett Kearney",
         "Jamie Foster",
-        "Luke George",
+        "Danny Williams",
         "Joe Arundel",
         "Adrian Purtell",
         "Lee Gaskell",
@@ -684,16 +733,212 @@
         "Alex Mellor",
         "Danny Addy"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
+    },
+    "2019": {
+      "playerIds": [
+        "sheffield-cur-joe-brown",
+        "castleford-hist-jy-hitchcox",
+        "bradford-cur-ethan-ryan",
+        "wakefield-hist-rhys-evans",
+        "salford-hist-ashley-gibson",
+        "bradford-cur-joe-keyes",
+        "bradford-cur-rowan-milnes",
+        "wigan-cur-oliver-wilson",
+        "hull-kr-hist-james-green",
+        "bradford-cur-sam-hallas",
+        "hull-kr-cur-elliot-minchella",
+        "hull-kr-cur-matthew-storton",
+        "bradford-hist-mikey-wood"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "https://en.wikipedia.org/wiki/2019_Bradford_Bulls_season",
+      "wikipediaPlayers": [
+        "Joe Brown",
+        "Jy Hitchcox",
+        "Ethan Ryan",
+        "Rhys Evans",
+        "Ashley Gibson",
+        "Joe Keyes",
+        "Rowan Milnes",
+        "Oliver Wilson",
+        "James Green",
+        "Sam Hallas",
+        "Elliot Minchella",
+        "Matthew Storton",
+        "Mikey Wood"
+      ],
+      "verifiedAt": "2026-06-21"
+    },
+    "2021": {
+      "playerIds": [
+        "huddersfield-hist-ashton-golding",
+        "st-helens-hist-matty-dawson-jones",
+        "sheffield-cur-joe-brown",
+        "wakefield-hist-rhys-evans",
+        "bradford-hist-ross-oakes",
+        "bradford-cur-joe-keyes",
+        "danny-brough",
+        "wigan-cur-oliver-wilson",
+        "wakefield-hist-anthony-england",
+        "bradford-cur-sam-hallas",
+        "huddersfield-leg-aaron-murphy",
+        "bradford-hist-brad-england",
+        "salford-cur-ellis-robson"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "https://en.wikipedia.org/wiki/2021_Bradford_Bulls_season",
+      "wikipediaPlayers": [
+        "Ashton Golding",
+        "Matty Dawson-Jones",
+        "Joe Brown",
+        "Rhys Evans",
+        "Ross Oakes",
+        "Joe Keyes",
+        "Danny Brough",
+        "Oliver Wilson",
+        "Anthony England",
+        "Sam Hallas",
+        "Aaron Murphy",
+        "Brad England",
+        "Ellis Robson"
+      ],
+      "verifiedAt": "2026-06-21"
+    },
+    "2022": {
+      "playerIds": [
+        "bradford-hist-elliot-kear",
+        "st-helens-hist-matty-dawson-jones",
+        "leeds-cur-liam-tindall",
+        "wakefield-hist-rhys-evans",
+        "bradford-hist-kieran-gill",
+        "bradford-hist-billy-jowitt",
+        "leeds-hist-jordan-lilley",
+        "leeds-cur-tom-holroyd",
+        "castleford-cur-muizz-mustapha",
+        "hull-fc-cur-jacob-hookem",
+        "huddersfield-leg-aaron-murphy",
+        "wigan-cur-sam-walters",
+        "leeds-cur-jarrod-oconnor"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "https://en.wikipedia.org/wiki/2022_Bradford_Bulls_season",
+      "wikipediaPlayers": [
+        "Elliot Kear",
+        "Matty Dawson-Jones",
+        "Liam Tindall",
+        "Rhys Evans",
+        "Kieran Gill",
+        "Billy Jowitt",
+        "Jordan Lilley",
+        "Tom Holroyd",
+        "Muizz Mustapha",
+        "Jacob Hookem",
+        "Aaron Murphy",
+        "Sam Walters",
+        "Jarrod OConnor"
+      ],
+      "verifiedAt": "2026-06-21"
+    },
+    "2023": {
+      "playerIds": [
+        "huddersfield-cur-george-flanagan-jr",
+        "wakefield-cur-jayden-myers",
+        "leeds-cur-luis-roberts",
+        "wakefield-hist-joe-arundel",
+        "bradford-hist-kieran-gill",
+        "huddersfield-hist-lee-gaskell",
+        "leeds-hist-jordan-lilley",
+        "huddersfield-cur-fenton-rogers",
+        "bradford-cur-eribe-doro",
+        "leeds-cur-corey-johnson",
+        "wigan-cur-sam-walters",
+        "leeds-hist-james-donaldson",
+        "leeds-hist-bodene-thompson"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "https://en.wikipedia.org/wiki/2023_Bradford_Bulls_season",
+      "wikipediaPlayers": [
+        "George Flanagan Jr",
+        "Jayden Myers",
+        "Luis Roberts",
+        "Joe Arundel",
+        "Kieran Gill",
+        "Lee Gaskell",
+        "Jordan Lilley",
+        "Fenton Rogers",
+        "Eribe Doro",
+        "Corey Johnson",
+        "Sam Walters",
+        "James Donaldson",
+        "Bodene Thompson"
+      ],
+      "verifiedAt": "2026-06-21"
     },
     "2024": {
       "playerIds": [
         "huddersfield-hist-tom-holmes",
-        "hull-kr-cur-will-oakes",
         "bradford-cur-jayden-okunbor",
+        "wigan-cur-jacob-douglas",
+        "leigh-cur-keanan-brand",
         "wakefield-hist-joe-arundel",
-        "bradford-hist-kieran-gill",
-        "bradford-hist-jarrod-sammut",
+        "huddersfield-hist-lee-gaskell",
         "leeds-hist-jordan-lilley",
         "huddersfield-cur-fenton-rogers",
         "bradford-cur-eribe-doro",
@@ -720,11 +965,11 @@
       "source": "https://en.wikipedia.org/wiki/2024_Bradford_Bulls_season",
       "wikipediaPlayers": [
         "Tom Holmes",
-        "Will Oakes",
         "Jayden Okunbor",
+        "Jacob Douglas",
+        "Keanan Brand",
         "Joe Arundel",
-        "Kieran Gill",
-        "Jarrod Sammut",
+        "Lee Gaskell",
         "Jordan Lilley",
         "Fenton Rogers",
         "Eribe Doro",
@@ -733,7 +978,7 @@
         "Harvey Wilson",
         "Sam Hallas"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     }
   },
   "Wigan Warriors": {
@@ -749,7 +994,7 @@
         "bradford-cur-ryan-sutton",
         "wigan-hist-lee-mossop",
         "wigan-hist-michael-mcilorum",
-        "wigan-hist-joel-tomkins",
+        "wigan-leg-joel-tomkins",
         "wigan-cur-liam-farrell",
         "sean-oloughlin"
       ],
@@ -784,7 +1029,7 @@
         "Liam Farrell",
         "Sean OLoughlin"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2016": {
       "playerIds": [
@@ -798,7 +1043,7 @@
         "bradford-cur-ryan-sutton",
         "toulouse-cur-joe-bretherton",
         "wigan-hist-michael-mcilorum",
-        "wigan-hist-joel-tomkins",
+        "wigan-leg-joel-tomkins",
         "wigan-cur-liam-farrell",
         "sean-oloughlin"
       ],
@@ -833,7 +1078,7 @@
         "Liam Farrell",
         "Sean OLoughlin"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     }
   },
   "Warrington Wolves": {
@@ -850,7 +1095,7 @@
         "wakefield-hist-anthony-england",
         "st-helens-cur-daryl-clark",
         "ben-westwood",
-        "wakefield-hist-roy-asotasi",
+        "warrington-cur-ben-currie",
         "wakefield-hist-ben-harrison"
       ],
       "positions": [
@@ -881,10 +1126,10 @@
         "Anthony England",
         "Daryl Clark",
         "Ben Westwood",
-        "Roy Asotasi",
+        "Ben Currie",
         "Ben Harrison"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-20"
     },
     "2016": {
       "playerIds": [
@@ -898,8 +1143,8 @@
         "wakefield-hist-chris-hill",
         "wakefield-hist-ashton-sims",
         "st-helens-cur-daryl-clark",
-        "huddersfield-cur-george-king",
         "warrington-cur-ben-currie",
+        "huddersfield-cur-george-king",
         "ben-westwood"
       ],
       "positions": [
@@ -929,25 +1174,74 @@
         "Chris Hill",
         "Ashton Sims",
         "Daryl Clark",
-        "George King",
         "Ben Currie",
+        "George King",
         "Ben Westwood"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-20"
     }
   },
   "Catalans Dragons": {
+    "2006": {
+      "playerIds": [
+        "catalans-hist-renaud-guigue",
+        "catalans-hist-justin-murphy",
+        "catalans-hist-bruno-verges",
+        "catalans-hist-john-wilson",
+        "catalans-hist-mark-hughes",
+        "thomas-bosc",
+        "hull-kr-hist-michael-dobson",
+        "remi-casty",
+        "catalans-hist-jamal-fakir",
+        "toulouse-hist-julien-rinaldi",
+        "catalans-hist-cyrille-gossard",
+        "catalans-hist-ian-hindmarsh",
+        "catalans-hist-gregory-mounis"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "https://en.wikipedia.org/wiki/2006_Catalans_Dragons_season",
+      "wikipediaPlayers": [
+        "Renaud Guigue",
+        "Justin Murphy",
+        "Bruno Verges",
+        "John Wilson",
+        "Mark Hughes",
+        "Thomas Bosc",
+        "Michael Dobson",
+        "Rémi Casty",
+        "Jamal Fakir",
+        "Julien Rinaldi",
+        "Cyrille Gossard",
+        "Ian Hindmarsh",
+        "Grégory Mounis"
+      ],
+      "verifiedAt": "2026-06-21"
+    },
     "2007": {
       "playerIds": [
         "catalans-hist-clint-greenshields",
-        "catalans-hist-vincent-duport",
+        "catalans-hist-dimitri-pelo",
         "catalans-hist-justin-murphy",
         "catalans-hist-adam-mogg",
         "catalans-hist-john-wilson",
         "thomas-bosc",
         "catalans-hist-stacey-jones",
         "remi-casty",
-        "catalans-hist-jerome-guisset",
+        "catalans-hist-alex-chan",
         "catalans-hist-kane-bentley",
         "catalans-hist-cyrille-gossard",
         "catalans-hist-jason-croker",
@@ -971,20 +1265,69 @@
       "source": "https://en.wikipedia.org/wiki/2007_Catalans_Dragons_season",
       "wikipediaPlayers": [
         "Clint Greenshields",
-        "Vincent Duport",
+        "Dimitri Pelo",
         "Justin Murphy",
         "Adam Mogg",
         "John Wilson",
         "Thomas Bosc",
         "Stacey Jones",
         "Rémi Casty",
-        "Jérôme Guisset",
+        "Alex Chan",
         "Kane Bentley",
         "Cyrille Gossard",
         "Jason Croker",
         "Grégory Mounis"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
+    },
+    "2009": {
+      "playerIds": [
+        "catalans-hist-clint-greenshields",
+        "catalans-hist-dimitri-pelo",
+        "catalans-hist-vincent-duport",
+        "catalans-hist-adam-mogg",
+        "catalans-hist-jean-philippe-baile",
+        "thomas-bosc",
+        "catalans-hist-shane-perry",
+        "remi-casty",
+        "catalans-hist-jerome-guisset",
+        "catalans-hist-casey-mcguire",
+        "catalans-hist-olivier-elima",
+        "catalans-hist-cyrille-gossard",
+        "greg-bird"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "https://en.wikipedia.org/wiki/2009_Catalans_Dragons_season",
+      "wikipediaPlayers": [
+        "Clint Greenshields",
+        "Dimitri Pelo",
+        "Vincent Duport",
+        "Adam Mogg",
+        "Jean-Philippe Baile",
+        "Thomas Bosc",
+        "Shane Perry",
+        "Rémi Casty",
+        "Jérôme Guisset",
+        "Casey McGuire",
+        "Olivier Elima",
+        "Cyrille Gossard",
+        "Greg Bird"
+      ],
+      "verifiedAt": "2026-06-21"
     },
     "2010": {
       "playerIds": [
@@ -998,8 +1341,8 @@
         "remi-casty",
         "catalans-hist-jerome-guisset",
         "catalans-hist-casey-mcguire",
-        "catalans-hist-olivier-elima",
         "catalans-hist-gregory-mounis",
+        "catalans-hist-olivier-elima",
         "catalans-hist-dane-carlaw"
       ],
       "positions": [
@@ -1029,17 +1372,17 @@
         "Rémi Casty",
         "Jérôme Guisset",
         "Casey McGuire",
-        "Olivier Elima",
         "Grégory Mounis",
+        "Olivier Elima",
         "Dane Carlaw"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2011": {
       "playerIds": [
         "catalans-hist-clint-greenshields",
-        "catalans-hist-vincent-duport",
         "catalans-hist-cyril-stacul",
+        "catalans-hist-vincent-duport",
         "catalans-hist-daryl-millard",
         "catalans-hist-jean-philippe-baile",
         "thomas-bosc",
@@ -1049,7 +1392,7 @@
         "catalans-hist-eloi-pelissier",
         "catalans-hist-steve-menzies",
         "catalans-hist-sebastien-raguin",
-        "catalans-hist-jason-baitieri"
+        "catalans-hist-gregory-mounis"
       ],
       "positions": [
         "FULLBACK",
@@ -1069,8 +1412,8 @@
       "source": "https://en.wikipedia.org/wiki/2011_Catalans_Dragons_season",
       "wikipediaPlayers": [
         "Clint Greenshields",
-        "Vincent Duport",
         "Cyril Stacul",
+        "Vincent Duport",
         "Daryl Millard",
         "Jean-Philippe Baile",
         "Thomas Bosc",
@@ -1080,9 +1423,9 @@
         "Éloi Pélissier",
         "Steve Menzies",
         "Sébastien Raguin",
-        "Jason Baitieri"
+        "Grégory Mounis"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2012": {
       "playerIds": [
@@ -1091,13 +1434,13 @@
         "catalans-hist-cyril-stacul",
         "catalans-hist-daryl-millard",
         "catalans-hist-setaimata-sa",
-        "thomas-bosc",
+        "leon-pryce",
         "scott-durea",
         "remi-casty",
         "catalans-cur-julian-bousquet",
         "catalans-hist-eloi-pelissier",
-        "catalans-hist-louis-anderson",
         "catalans-hist-steve-menzies",
+        "catalans-hist-louis-anderson",
         "catalans-hist-jason-baitieri"
       ],
       "positions": [
@@ -1122,31 +1465,31 @@
         "Cyril Stacul",
         "Daryl Millard",
         "Setaimata Sa",
-        "Thomas Bosc",
+        "Leon Pryce",
         "Scott Dureau",
         "Rémi Casty",
         "Julian Bousquet",
         "Éloi Pélissier",
-        "Louis Anderson",
         "Steve Menzies",
+        "Louis Anderson",
         "Jason Baitieri"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2013": {
       "playerIds": [
         "catalans-hist-morgan-escare",
         "catalans-hist-vincent-duport",
-        "toulouse-hist-frederic-vaccari",
+        "wakefield-hist-damien-blanch",
         "catalans-hist-daryl-millard",
         "catalans-hist-jean-philippe-baile",
-        "thomas-bosc",
+        "leon-pryce",
         "scott-durea",
         "remi-casty",
         "catalans-cur-julian-bousquet",
         "catalans-hist-eloi-pelissier",
-        "catalans-hist-louis-anderson",
-        "catalans-hist-olivier-elima",
+        "catalans-hist-steve-menzies",
+        "st-helens-hist-zeb-taia",
         "catalans-hist-jason-baitieri"
       ],
       "positions": [
@@ -1168,34 +1511,34 @@
       "wikipediaPlayers": [
         "Morgan Escaré",
         "Vincent Duport",
-        "Frédéric Vaccari",
+        "Damien Blanch",
         "Daryl Millard",
         "Jean-Philippe Baile",
-        "Thomas Bosc",
+        "Leon Pryce",
         "Scott Dureau",
         "Rémi Casty",
         "Julian Bousquet",
         "Éloi Pélissier",
-        "Louis Anderson",
-        "Olivier Elima",
+        "Steve Menzies",
+        "Zeb Taia",
         "Jason Baitieri"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2015": {
       "playerIds": [
         "catalans-hist-morgan-escare",
-        "catalans-hist-vincent-duport",
         "catalans-hist-michael-oldfield",
+        "catalans-hist-fouad-yaha",
         "salford-hist-krisnan-inu",
         "catalans-hist-tony-gigot",
         "catalans-hist-todd-carney",
-        "thomas-bosc",
+        "scott-durea",
         "remi-casty",
-        "catalans-hist-olivier-elima",
+        "catalans-cur-julian-bousquet",
         "catalans-hist-eloi-pelissier",
-        "catalans-hist-louis-anderson",
         "bradford-hist-elliott-whitehead",
+        "st-helens-hist-zeb-taia",
         "catalans-cur-benjamin-garcia"
       ],
       "positions": [
@@ -1216,28 +1559,28 @@
       "source": "https://en.wikipedia.org/wiki/2015_Catalans_Dragons_season",
       "wikipediaPlayers": [
         "Morgan Escare",
-        "Vincent Duport",
         "Michael Oldfield",
+        "Fouad Yaha",
         "Krisnan Inu",
         "Tony Gigot",
         "Todd Carney",
-        "Thomas Bosc",
+        "Scott Dureau",
         "Rémi Casty",
-        "Olivier Elima",
+        "Julian Bousquet",
         "Éloi Pélissier",
-        "Louis Anderson",
         "Elliott Whitehead",
+        "Zeb Taia",
         "Benjamin Garcia"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2016": {
       "playerIds": [
         "catalans-hist-morgan-escare",
         "pat-richards",
         "salford-hist-jodie-broughton",
-        "catalans-hist-vincent-duport",
         "salford-hist-krisnan-inu",
+        "catalans-hist-vincent-duport",
         "catalans-hist-todd-carney",
         "thomas-bosc",
         "remi-casty",
@@ -1267,8 +1610,8 @@
         "Morgan Escare",
         "Pat Richards",
         "Jodie Broughton",
-        "Vincent Duport",
         "Krisnan Inu",
+        "Vincent Duport",
         "Todd Carney",
         "Thomas Bosc",
         "Rémi Casty",
@@ -1278,7 +1621,7 @@
         "Antoni Maria",
         "Jason Baitieri"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     }
   },
   "Huddersfield Giants": {
@@ -1286,13 +1629,13 @@
       "playerIds": [
         "wakefield-hist-scott-grix",
         "huddersfield-hist-jermaine-mcgillvary",
-        "wakefield-hist-luke-george",
+        "huddersfield-hist-aaron-murphy",
         "huddersfield-hist-leroy-cudjoe",
         "huddersfield-hist-joe-wardle",
         "danny-brough",
         "wakefield-hist-kyle-wood",
-        "stuart-fielden",
         "eorl-crabtree",
+        "stuart-fielden",
         "huddersfield-hist-shaun-lunt",
         "castleford-hist-brett-ferres",
         "huddersfield-hist-jamie-cording",
@@ -1317,19 +1660,19 @@
       "wikipediaPlayers": [
         "Scott Grix",
         "Jermaine McGillvary",
-        "Luke George",
+        "Aaron Murphy",
         "Leroy Cudjoe",
         "Joe Wardle",
         "Danny Brough",
         "Kyle Wood",
-        "Stuart Fielden",
         "Eorl Crabtree",
+        "Stuart Fielden",
         "Shaun Lunt",
         "Brett Ferres",
         "Jamie Cording",
         "David Faiumu"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-20"
     }
   },
   "Castleford Tigers": {
@@ -1338,14 +1681,14 @@
         "york-cur-jordan-thompson",
         "castleford-hist-kirk-dixon",
         "castleford-hist-michael-wainwright",
-        "castleford-hist-michael-shenton",
         "huddersfield-hist-james-evans",
+        "castleford-hist-michael-shenton",
         "rangi-chase",
         "castleford-hist-brent-sherwin",
         "castleford-hist-craig-huby",
         "castleford-hist-liam-higgins",
         "castleford-hist-kirk-netherton",
-        "castleford-hist-brett-ferres",
+        "castleford-leg-brett-ferres",
         "castleford-hist-ryan-clayton",
         "castleford-cur-joe-westerman"
       ],
@@ -1369,8 +1712,8 @@
         "Jordan Thompson",
         "Kirk Dixon",
         "Michael Wainwright",
-        "Michael Shenton",
         "James Evans",
+        "Michael Shenton",
         "Rangi Chase",
         "Brent Sherwin",
         "Craig Huby",
@@ -1380,7 +1723,56 @@
         "Ryan Clayton",
         "Joe Westerman"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
+    },
+    "2012": {
+      "playerIds": [
+        "castleford-hist-richard-owen",
+        "castleford-hist-james-clare",
+        "wakefield-hist-joe-arundel",
+        "castleford-hist-kirk-dixon",
+        "castleford-hist-james-grehan",
+        "rangi-chase",
+        "castleford-hist-danny-orr",
+        "castleford-hist-craig-huby",
+        "castleford-hist-oliver-holmes",
+        "st-helens-cur-daryl-clark",
+        "castleford-leg-brett-ferres",
+        "huddersfield-hist-stuart-jones",
+        "wakefield-hist-steve-snitch"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "https://en.wikipedia.org/wiki/2012_Castleford_Tigers_season",
+      "wikipediaPlayers": [
+        "Richard Owen",
+        "James Clare",
+        "Joe Arundel",
+        "Kirk Dixon",
+        "James Grehan",
+        "Rangi Chase",
+        "Danny Orr",
+        "Craig Huby",
+        "Oliver Holmes",
+        "Daryl Clark",
+        "Brett Ferres",
+        "Stuart Jones",
+        "Steve Snitch"
+      ],
+      "verifiedAt": "2026-06-21"
     },
     "2016": {
       "playerIds": [
@@ -1429,7 +1821,7 @@
         "Frankie Mariano",
         "Nathan Massey"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     }
   },
   "Wakefield Trinity": {
@@ -1438,15 +1830,15 @@
         "wakefield-hist-matt-blaymire",
         "wakefield-hist-luke-george",
         "wakefield-hist-damien-blanch",
-        "wakefield-hist-sean-gleeson",
+        "huddersfield-leg-aaron-murphy",
         "catalans-hist-daryl-millard",
-        "wakefield-hist-ben-jeffries",
+        "wakefield-leg-ben-jeffries",
         "hull-fc-hist-paul-cooke",
         "hull-fc-hist-paul-king",
         "wakefield-hist-michael-korkidas",
         "wakefield-hist-sam-obst",
+        "wigan-leg-paul-johnson",
         "bradford-hist-glenn-morrison",
-        "wigan-hist-paul-johnson",
         "wakefield-hist-jason-demetriou"
       ],
       "positions": [
@@ -1469,18 +1861,18 @@
         "Matt Blaymire",
         "Luke George",
         "Damien Blanch",
-        "Sean Gleeson",
+        "Aaron Murphy",
         "Daryl Millard",
         "Ben Jeffries",
         "Paul Cooke",
         "Paul King",
         "Michael Korkidas",
         "Sam Obst",
-        "Glenn Morrison",
         "Paul Johnson",
+        "Glenn Morrison",
         "Jason Demetriou"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     }
   },
   "Widnes Vikings": {
@@ -1531,7 +1923,7 @@
         "Matt Whitley",
         "Paul Johnson"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-20"
     },
     "2016": {
       "playerIds": [
@@ -1580,22 +1972,22 @@
         "Matt Whitley",
         "Hep Cahill"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-20"
     }
   },
   "Leeds Rhinos": {
     "2008": {
       "playerIds": [
         "leeds-hist-brent-webb",
-        "leeds-cur-ryan-hall",
         "leeds-hist-scott-donald",
+        "salford-hist-danny-williams",
         "keith-senior",
         "leeds-cur-kallum-watkins",
         "danny-mcguire",
         "rob-burrow",
         "jamie-peacock",
         "kylie-leuluai",
-        "leeds-hist-matt-diskin",
+        "leeds-leg-matt-diskin",
         "gareth-ellis",
         "ali-lauitiiti",
         "kevin-sinfield"
@@ -1618,8 +2010,8 @@
       "source": "https://en.wikipedia.org/wiki/2008_Leeds_Rhinos_season",
       "wikipediaPlayers": [
         "Brent Webb",
-        "Ryan Hall",
         "Scott Donald",
+        "Danny Williams",
         "Keith Senior",
         "Kallum Watkins",
         "Danny McGuire",
@@ -1631,20 +2023,20 @@
         "Ali Lauitiiti",
         "Kevin Sinfield"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2009": {
       "playerIds": [
         "york-cur-ben-jones-bishop",
-        "leeds-cur-ryan-hall",
         "leeds-hist-scott-donald",
+        "leeds-cur-ryan-hall",
         "keith-senior",
         "leeds-cur-kallum-watkins",
         "danny-mcguire",
         "rob-burrow",
         "jamie-peacock",
         "kylie-leuluai",
-        "leeds-hist-matt-diskin",
+        "leeds-leg-matt-diskin",
         "ali-lauitiiti",
         "jamie-jones-buchanan",
         "kevin-sinfield"
@@ -1667,8 +2059,8 @@
       "source": "https://en.wikipedia.org/wiki/2009_Leeds_Rhinos_season",
       "wikipediaPlayers": [
         "Ben Jones-Bishop",
-        "Ryan Hall",
         "Scott Donald",
+        "Ryan Hall",
         "Keith Senior",
         "Kallum Watkins",
         "Danny McGuire",
@@ -1680,7 +2072,7 @@
         "Jamie Jones-Buchanan",
         "Kevin Sinfield"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
     },
     "2013": {
       "playerIds": [
@@ -1729,7 +2121,56 @@
         "Ian Kirke",
         "Kevin Sinfield"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
+    },
+    "2016": {
+      "playerIds": [
+        "hull-fc-cur-zak-hardaker",
+        "leeds-cur-ash-handley",
+        "hull-fc-cur-tom-briscoe",
+        "leeds-cur-kallum-watkins",
+        "leeds-hist-jimmy-keinhorst",
+        "danny-mcguire",
+        "rob-burrow",
+        "castleford-cur-brad-singleton",
+        "leeds-hist-mitch-garbutt",
+        "leeds-hist-beau-falloon",
+        "castleford-leg-brett-ferres",
+        "jamie-jones-buchanan",
+        "leeds-hist-stevie-ward"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "https://en.wikipedia.org/wiki/2016_Leeds_Rhinos_season",
+      "wikipediaPlayers": [
+        "Zak Hardaker",
+        "Ash Handley",
+        "Tom Briscoe",
+        "Kallum Watkins",
+        "Jimmy Keinhorst",
+        "Danny McGuire",
+        "Rob Burrow",
+        "Brad Singleton",
+        "Mitch Garbutt",
+        "Beau Falloon",
+        "Brett Ferres",
+        "Jamie Jones-Buchanan",
+        "Stevie Ward"
+      ],
+      "verifiedAt": "2026-06-21"
     }
   },
   "Hull FC": {
@@ -1780,7 +2221,7 @@
         "Willie Manu",
         "Danny Washbrook"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-20"
     },
     "2012": {
       "playerIds": [
@@ -1829,7 +2270,7 @@
         "Willie Manu",
         "Joe Westerman"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-20"
     },
     "2013": {
       "playerIds": [
@@ -1837,11 +2278,11 @@
         "wakefield-hist-tom-lineham",
         "hull-fc-cur-tom-briscoe",
         "hull-kr-hist-ben-crooks",
-        "wakefield-hist-joe-arundel",
+        "hull-fc-hist-kirk-yeaman",
         "salford-hist-daniel-holdsworth",
         "wakefield-hist-jacob-miller",
-        "andy-lynch",
         "richard-horne",
+        "andy-lynch",
         "danny-houghton",
         "gareth-ellis",
         "hull-fc-hist-danny-tickle",
@@ -1868,32 +2309,81 @@
         "Tom Lineham",
         "Tom Briscoe",
         "Ben Crooks",
-        "Joe Arundel",
+        "Kirk Yeaman",
         "Daniel Holdsworth",
         "Jacob Miller",
-        "Andy Lynch",
         "Richard Horne",
+        "Andy Lynch",
         "Danny Houghton",
         "Gareth Ellis",
         "Danny Tickle",
         "Paul Johnson"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-20"
     }
   },
   "Salford Red Devils": {
+    "2009": {
+      "playerIds": [
+        "salford-hist-karl-fitzpatrick",
+        "huddersfield-hist-paul-white",
+        "salford-hist-john-wilshire",
+        "salford-hist-mark-henry",
+        "st-helens-hist-willie-talau",
+        "salford-hist-jeremy-smith",
+        "bradford-leg-robbie-hunter-paul",
+        "salford-hist-ray-cashmere",
+        "salford-hist-adam-sidlow",
+        "wakefield-leg-stefan-ratchford",
+        "bradford-hist-rob-parker",
+        "salford-hist-luke-adamson",
+        "st-helens-hist-jordan-turner"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "https://en.wikipedia.org/wiki/2009_Salford_City_Reds_season",
+      "wikipediaPlayers": [
+        "Karl Fitzpatrick",
+        "Paul White",
+        "John Wilshire",
+        "Mark Henry",
+        "Willie Talau",
+        "Jeremy Smith",
+        "Robbie Paul",
+        "Ray Cashmere",
+        "Adam Sidlow",
+        "Stefan Ratchford",
+        "Rob Parker",
+        "Luke Adamson",
+        "Jordan Turner"
+      ],
+      "verifiedAt": "2026-06-21"
+    },
     "2014": {
       "playerIds": [
         "castleford-hist-greg-eden",
-        "st-helens-hist-francis-meli",
         "salford-hist-danny-williams",
+        "st-helens-hist-francis-meli",
         "salford-hist-martin-gleeson",
         "salford-hist-junior-sa-u",
         "rangi-chase",
         "st-helens-hist-theo-fages",
         "adrian-morley",
         "huddersfield-hist-darrell-griffin",
-        "salford-hist-logan-tomkins",
+        "hull-fc-hist-tommy-lee",
         "st-helens-hist-tony-puletua",
         "salford-hist-gareth-hock",
         "st-helens-hist-andrew-dixon"
@@ -1916,20 +2406,71 @@
       "source": "https://en.wikipedia.org/wiki/2014_Salford_Red_Devils_season",
       "wikipediaPlayers": [
         "Greg Eden",
-        "Francis Meli",
         "Danny Williams",
+        "Francis Meli",
         "Martin Gleeson",
         "Junior Sau",
         "Rangi Chase",
         "Theo Fages",
         "Adrian Morley",
         "Darrell Griffin",
-        "Logan Tomkins",
+        "Tommy Lee",
         "Tony Puletua",
         "Gareth Hock",
         "Andrew Dixon"
       ],
-      "verifiedAt": "2026-06-15"
+      "verifiedAt": "2026-06-21"
+    }
+  },
+  "London Broncos": {
+    "2019": {
+      "playerIds": [
+        "london-hist-alex-walker",
+        "salford-hist-rhys-williams",
+        "london-hist-kieran-dixon",
+        "st-helens-hist-ryan-morgan",
+        "salford-cur-ben-hellewell",
+        "hull-fc-hist-jordan-abdull",
+        "hull-fc-cur-morgan-smith",
+        "wakefield-hist-eddie-battye",
+        "st-helens-hist-greg-richards",
+        "catalans-hist-eloi-pelissier",
+        "wakefield-cur-jay-pitts",
+        "london-hist-will-lovell",
+        "warrington-cur-luke-yates"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "https://en.wikipedia.org/wiki/2019_London_Broncos_season",
+      "wikipediaPlayers": [
+        "Alex Walker",
+        "Rhys Williams",
+        "Kieran Dixon",
+        "Ryan Morgan",
+        "Ben Hellewell",
+        "Jordan Abdull",
+        "Morgan Smith",
+        "Eddie Battye",
+        "Greg Richards",
+        "Éloi Pélissier",
+        "Jay Pitts",
+        "Will Lovell",
+        "Luke Yates"
+      ],
+      "verifiedAt": "2026-06-21"
     }
   }
 }

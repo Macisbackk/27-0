@@ -1,12 +1,22 @@
 {
-  "generatedAt": "2026-06-15T01:15:31.897Z",
+  "generatedAt": "2026-06-21T07:26:27.388Z",
   "source": "Wikipedia only — season pages, club pages, squad templates",
   "summary": {
-    "checkedThisRun": 544,
-    "completeThisRun": 39,
-    "removedThisRun": 505,
-    "totalCompleteInStore": 39,
-    "clubFilter": null
+    "checkedThisRun": 288,
+    "completeThisRun": 7,
+    "removedThisRun": 281,
+    "totalCompleteInStore": 50,
+    "clubFilter": [
+      "Castleford Tigers",
+      "Wakefield Trinity",
+      "Salford Red Devils",
+      "St Helens",
+      "Hull KR",
+      "Leigh Leopards",
+      "London Broncos",
+      "York Knights",
+      "Toulouse Olympique"
+    ]
   },
   "entries": [
     {
@@ -70,11 +80,11 @@
       "qualityScore": 741,
       "playersKept": [
         "Tom Holmes",
-        "Will Oakes",
         "Jayden Okunbor",
-        "Joe Arundel",
+        "Jacob Douglas",
         "Keanan Brand",
-        "Jarrod Sammut",
+        "Joe Arundel",
+        "Lee Gaskell",
         "Jordan Lilley",
         "Fenton Rogers",
         "Eribe Doro",
@@ -87,11 +97,11 @@
       "playersAdded": [],
       "wikipediaPlayers": [
         "Tom Holmes",
-        "Will Oakes",
         "Jayden Okunbor",
-        "Joe Arundel",
+        "Jacob Douglas",
         "Keanan Brand",
-        "Jarrod Sammut",
+        "Joe Arundel",
+        "Lee Gaskell",
         "Jordan Lilley",
         "Fenton Rogers",
         "Eribe Doro",
@@ -105,9 +115,9 @@
     {
       "club": "Bradford Bulls",
       "year": "2023",
-      "status": "removed",
-      "complete": false,
-      "removed": true,
+      "status": "complete",
+      "complete": true,
+      "removed": false,
       "source": "https://en.wikipedia.org/wiki/2023_Bradford_Bulls_season",
       "wikipediaPages": [
         "2023 Bradford Bulls season"
@@ -118,14 +128,15 @@
         "Jayden Myers",
         "Luis Roberts",
         "Joe Arundel",
+        "Kieran Gill",
         "Lee Gaskell",
         "Jordan Lilley",
         "Fenton Rogers",
-        "Ebon Scurr",
+        "Eribe Doro",
         "Corey Johnson",
         "Sam Walters",
         "James Donaldson",
-        "Jason Baitieri"
+        "Bodene Thompson"
       ],
       "playersRemoved": [],
       "playersAdded": [],
@@ -134,27 +145,24 @@
         "Jayden Myers",
         "Luis Roberts",
         "Joe Arundel",
+        "Kieran Gill",
         "Lee Gaskell",
         "Jordan Lilley",
         "Fenton Rogers",
-        "Ebon Scurr",
+        "Eribe Doro",
         "Corey Johnson",
         "Sam Walters",
         "James Donaldson",
-        "Jason Baitieri"
+        "Bodene Thompson"
       ],
-      "missingFromDatabase": [
-        "Kieran Gill",
-        "Max Clarke"
-      ],
-      "reason": "Could not map 13 database players (12/13)"
+      "missingFromDatabase": []
     },
     {
       "club": "Bradford Bulls",
       "year": "2022",
-      "status": "removed",
-      "complete": false,
-      "removed": true,
+      "status": "complete",
+      "complete": true,
+      "removed": false,
       "source": "https://en.wikipedia.org/wiki/2022_Bradford_Bulls_season",
       "wikipediaPages": [
         "2022 Bradford Bulls season"
@@ -165,6 +173,8 @@
         "Matty Dawson-Jones",
         "Liam Tindall",
         "Rhys Evans",
+        "Kieran Gill",
+        "Billy Jowitt",
         "Jordan Lilley",
         "Tom Holroyd",
         "Muizz Mustapha",
@@ -174,12 +184,28 @@
         "Jarrod O'Connor"
       ],
       "playersRemoved": [],
-      "playersAdded": [],
+      "playersAdded": [
+        "Elliot Kear",
+        "Matty Dawson-Jones",
+        "Liam Tindall",
+        "Rhys Evans",
+        "Kieran Gill",
+        "Billy Jowitt",
+        "Jordan Lilley",
+        "Tom Holroyd",
+        "Muizz Mustapha",
+        "Jacob Hookem",
+        "Aaron Murphy",
+        "Sam Walters",
+        "Jarrod O'Connor"
+      ],
       "wikipediaPlayers": [
         "Elliot Kear",
         "Matty Dawson-Jones",
         "Liam Tindall",
         "Rhys Evans",
+        "Kieran Gill",
+        "Billy Jowitt",
         "Jordan Lilley",
         "Tom Holroyd",
         "Muizz Mustapha",
@@ -188,20 +214,14 @@
         "Sam Walters",
         "Jarrod OConnor"
       ],
-      "missingFromDatabase": [
-        "Kieran Gill",
-        "Joe Burton",
-        "Eldon Myers",
-        "Billy Jowitt"
-      ],
-      "reason": "Could not map 13 database players (11/13)"
+      "missingFromDatabase": []
     },
     {
       "club": "Bradford Bulls",
       "year": "2021",
-      "status": "removed",
-      "complete": false,
-      "removed": true,
+      "status": "complete",
+      "complete": true,
+      "removed": false,
       "source": "https://en.wikipedia.org/wiki/2021_Bradford_Bulls_season",
       "wikipediaPages": [
         "2021 Bradford Bulls season"
@@ -212,40 +232,48 @@
         "Matty Dawson-Jones",
         "Joe Brown",
         "Rhys Evans",
+        "Ross Oakes",
         "Joe Keyes",
         "Danny Brough",
         "Oliver Wilson",
         "Anthony England",
         "Sam Hallas",
         "Aaron Murphy",
+        "Brad England",
         "Ellis Robson"
       ],
       "playersRemoved": [],
-      "playersAdded": [],
+      "playersAdded": [
+        "Ashton Golding",
+        "Matty Dawson-Jones",
+        "Joe Brown",
+        "Rhys Evans",
+        "Ross Oakes",
+        "Joe Keyes",
+        "Danny Brough",
+        "Oliver Wilson",
+        "Anthony England",
+        "Sam Hallas",
+        "Aaron Murphy",
+        "Brad England",
+        "Ellis Robson"
+      ],
       "wikipediaPlayers": [
         "Ashton Golding",
         "Matty Dawson-Jones",
         "Joe Brown",
         "Rhys Evans",
+        "Ross Oakes",
         "Joe Keyes",
         "Danny Brough",
         "Oliver Wilson",
         "Anthony England",
         "Sam Hallas",
         "Aaron Murphy",
+        "Brad England",
         "Ellis Robson"
       ],
-      "missingFromDatabase": [
-        "Ross Oakes",
-        "Joe Burton",
-        "Billy Jowitt",
-        "Eldon Myers",
-        "Sam Smith",
-        "Brad England",
-        "Adam Rooks",
-        "Brad Gallagher"
-      ],
-      "reason": "Could not map 13 database players (11/13)"
+      "missingFromDatabase": []
     },
     {
       "club": "Bradford Bulls",
@@ -260,42 +288,41 @@
       "qualityScore": 143,
       "playersKept": [
         "Joe Brown",
-        "Greg Johnson",
         "Matty Dawson-Jones",
+        "Greg Johnson",
         "Rhys Evans",
+        "Ross Oakes",
         "Rowan Milnes",
         "Anthony England",
         "Ebon Scurr",
-        "Sam Hallas"
+        "Sam Hallas",
+        "Adam Rooks",
+        "Brad Gallagher"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Joe Brown",
-        "Greg Johnson",
         "Matty Dawson-Jones",
+        "Greg Johnson",
         "Rhys Evans",
+        "Ross Oakes",
         "Rowan Milnes",
         "Anthony England",
         "Ebon Scurr",
-        "Sam Hallas"
-      ],
-      "missingFromDatabase": [
-        "Ross Oakes",
-        "Dan Waite-Pullan",
-        "Brad Gallagher",
+        "Sam Hallas",
         "Adam Rooks",
-        "Evan Hodgson",
-        "Connor Farrell"
+        "Brad Gallagher"
       ],
-      "reason": "Could not map 13 database players (8/13)"
+      "missingFromDatabase": [],
+      "reason": "Could not map 13 database players (11/13)"
     },
     {
       "club": "Bradford Bulls",
       "year": "2019",
-      "status": "removed",
-      "complete": false,
-      "removed": true,
+      "status": "complete",
+      "complete": true,
+      "removed": false,
       "source": "https://en.wikipedia.org/wiki/2019_Bradford_Bulls_season",
       "wikipediaPages": [
         "2019 Bradford Bulls season"
@@ -313,7 +340,8 @@
         "James Green",
         "Sam Hallas",
         "Elliot Minchella",
-        "Matthew Storton"
+        "Matthew Storton",
+        "Mikey Wood"
       ],
       "playersRemoved": [],
       "playersAdded": [],
@@ -329,13 +357,10 @@
         "James Green",
         "Sam Hallas",
         "Elliot Minchella",
-        "Matthew Storton"
+        "Matthew Storton",
+        "Mikey Wood"
       ],
-      "missingFromDatabase": [
-        "Mikey Wood",
-        "George Milton"
-      ],
-      "reason": "Could not map 13 database players (12/13)"
+      "missingFromDatabase": []
     },
     {
       "club": "Bradford Bulls",
@@ -353,13 +378,14 @@
         "Jy Hitchcox",
         "Ethan Ryan",
         "Ashley Gibson",
+        "Ross Oakes",
         "Joe Keyes",
         "Rowan Milnes",
         "Oliver Wilson",
         "James Green",
         "Sam Hallas",
         "Elliot Minchella",
-        "James Laithwaite"
+        "Mikey Wood"
       ],
       "playersRemoved": [],
       "playersAdded": [],
@@ -368,21 +394,17 @@
         "Jy Hitchcox",
         "Ethan Ryan",
         "Ashley Gibson",
+        "Ross Oakes",
         "Joe Keyes",
         "Rowan Milnes",
         "Oliver Wilson",
         "James Green",
         "Sam Hallas",
         "Elliot Minchella",
-        "James Laithwaite"
+        "Mikey Wood"
       ],
-      "missingFromDatabase": [
-        "Callum Bustin",
-        "Ross Oakes",
-        "Tuoyo Egodo",
-        "Jake Butler-Fleming"
-      ],
-      "reason": "Could not map 13 database players (11/13)"
+      "missingFromDatabase": [],
+      "reason": "Could not map 13 database players (12/13)"
     },
     {
       "club": "Bradford Bulls",
@@ -470,7 +492,7 @@
       "playersKept": [
         "Brett Kearney",
         "Jamie Foster",
-        "Luke George",
+        "Danny Williams",
         "Joe Arundel",
         "Adrian Purtell",
         "Lee Gaskell",
@@ -487,7 +509,7 @@
       "wikipediaPlayers": [
         "Brett Kearney",
         "Jamie Foster",
-        "Luke George",
+        "Danny Williams",
         "Joe Arundel",
         "Adrian Purtell",
         "Lee Gaskell",
@@ -523,8 +545,8 @@
         "Nick Scruton",
         "Adam Sidlow",
         "Matt Diskin",
+        "Chev Walker",
         "Elliott Whitehead",
-        "John Bateman",
         "Jamie Langley"
       ],
       "playersRemoved": [],
@@ -540,8 +562,8 @@
         "Nick Scruton",
         "Adam Sidlow",
         "Matt Diskin",
+        "Chev Walker",
         "Elliott Whitehead",
-        "John Bateman",
         "Jamie Langley"
       ],
       "missingFromDatabase": []
@@ -559,34 +581,34 @@
       "qualityScore": 726,
       "playersKept": [
         "Brett Kearney",
-        "Karl Pryce",
         "Shaun Ainscough",
-        "Michael Platt",
+        "Karl Pryce",
         "Paul Sykes",
+        "Chev Walker",
         "Ben Jeffries",
         "Luke Gale",
-        "Tom Burgess",
         "Craig Kopczak",
+        "Tom Burgess",
         "Matt Diskin",
-        "Olivier Elima",
         "Elliott Whitehead",
+        "Olivier Elima",
         "John Bateman"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Brett Kearney",
-        "Karl Pryce",
         "Shaun Ainscough",
-        "Michael Platt",
+        "Karl Pryce",
         "Paul Sykes",
+        "Chev Walker",
         "Ben Jeffries",
         "Luke Gale",
-        "Tom Burgess",
         "Craig Kopczak",
+        "Tom Burgess",
         "Matt Diskin",
-        "Olivier Elima",
         "Elliott Whitehead",
+        "Olivier Elima",
         "John Bateman"
       ],
       "missingFromDatabase": []
@@ -594,9 +616,9 @@
     {
       "club": "Bradford Bulls",
       "year": "2011",
-      "status": "removed",
-      "complete": false,
-      "removed": true,
+      "status": "complete",
+      "complete": true,
+      "removed": false,
       "source": "https://en.wikipedia.org/wiki/2011_Bradford_Bulls_season",
       "wikipediaPages": [
         "2011 Bradford Bulls season"
@@ -604,39 +626,37 @@
       "qualityScore": 701,
       "playersKept": [
         "Michael Platt",
+        "Shaun Ainscough",
         "Patrick Ah Van",
-        "Gareth Raynor",
         "Paul Sykes",
         "Chev Walker",
-        "Brett Kearney",
+        "Ben Jeffries",
+        "Marc Herbert",
         "Andy Lynch",
-        "Tom Burgess",
+        "Craig Kopczak",
         "Matt Diskin",
-        "Olivier Elima",
         "Elliott Whitehead",
+        "John Bateman",
         "Jamie Langley"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Michael Platt",
+        "Shaun Ainscough",
         "Patrick Ah Van",
-        "Gareth Raynor",
         "Paul Sykes",
         "Chev Walker",
-        "Brett Kearney",
+        "Ben Jeffries",
+        "Marc Herbert",
         "Andy Lynch",
-        "Tom Burgess",
+        "Craig Kopczak",
         "Matt Diskin",
-        "Olivier Elima",
         "Elliott Whitehead",
+        "John Bateman",
         "Jamie Langley"
       ],
-      "missingFromDatabase": [
-        "Marc Herbert",
-        "Cain Southernwood"
-      ],
-      "reason": "Could not map 13 database players (12/13)"
+      "missingFromDatabase": []
     },
     {
       "club": "Bradford Bulls",
@@ -745,13 +765,13 @@
       "playersKept": [
         "Michael Withers",
         "Lesley Vainikolo",
-        "Marcus Bai",
+        "Karl Pryce",
         "Shontayne Hape",
         "Ryan Atkins",
         "Iestyn Harris",
         "Paul Deacon",
-        "Stuart Fielden",
         "Andy Lynch",
+        "Stuart Fielden",
         "Terry Newton",
         "Brett Ferres",
         "Paul Johnson",
@@ -762,13 +782,13 @@
       "wikipediaPlayers": [
         "Michael Withers",
         "Lesley Vainikolo",
-        "Marcus Bai",
+        "Karl Pryce",
         "Shontayne Hape",
         "Ryan Atkins",
         "Iestyn Harris",
         "Paul Deacon",
-        "Stuart Fielden",
         "Andy Lynch",
+        "Stuart Fielden",
         "Terry Newton",
         "Brett Ferres",
         "Paul Johnson",
@@ -793,10 +813,10 @@
         "Karl Pryce",
         "Shontayne Hape",
         "Karl Pratt",
-        "Iestyn Harris",
+        "Robbie Hunter-Paul",
         "Paul Deacon",
-        "Stuart Fielden",
         "Adrian Morley",
+        "Stuart Fielden",
         "Ian Henderson",
         "Jamie Peacock",
         "Paul Johnson",
@@ -810,10 +830,10 @@
         "Karl Pryce",
         "Shontayne Hape",
         "Karl Pratt",
-        "Iestyn Harris",
+        "Robbie Paul",
         "Paul Deacon",
-        "Stuart Fielden",
         "Adrian Morley",
+        "Stuart Fielden",
         "Ian Henderson",
         "Jamie Peacock",
         "Paul Johnson",
@@ -836,15 +856,15 @@
         "Robbie Hunter-Paul",
         "Lesley Vainikolo",
         "Tevita Vaikona",
+        "Paul Johnson",
         "Leon Pryce",
-        "Shontayne Hape",
         "Iestyn Harris",
         "Paul Deacon",
         "Stuart Fielden",
         "Paul Anderson",
         "Aaron Smith",
         "Jamie Peacock",
-        "Brett Ferres",
+        "Lee Radford",
         "Jamie Langley"
       ],
       "playersRemoved": [],
@@ -853,15 +873,15 @@
         "Robbie Paul",
         "Lesley Vainikolo",
         "Tevita Vaikona",
+        "Paul Johnson",
         "Leon Pryce",
-        "Shontayne Hape",
         "Iestyn Harris",
         "Paul Deacon",
         "Stuart Fielden",
         "Paul Anderson",
         "Aaron Smith",
         "Jamie Peacock",
-        "Brett Ferres",
+        "Lee Radford",
         "Jamie Langley"
       ],
       "missingFromDatabase": []
@@ -885,7 +905,7 @@
         "Shontayne Hape",
         "Karl Pratt",
         "Paul Deacon",
-        "Stuart Fielden",
+        "Lee Radford",
         "Paul Anderson",
         "James Lowes",
         "Jamie Peacock",
@@ -902,7 +922,7 @@
         "Shontayne Hape",
         "Karl Pratt",
         "Paul Deacon",
-        "Stuart Fielden",
+        "Lee Radford",
         "Paul Anderson",
         "James Lowes",
         "Jamie Peacock",
@@ -927,14 +947,14 @@
         "Tevita Vaikona",
         "Lesley Vainikolo",
         "Leon Pryce",
-        "Scott Naylor",
+        "Paul Sykes",
         "Brandon Costin",
         "Paul Deacon",
         "Stuart Fielden",
         "Paul Anderson",
         "James Lowes",
         "Jamie Peacock",
-        "Daniel Gartner",
+        "Lee Radford",
         "Mike Forshaw"
       ],
       "playersRemoved": [],
@@ -944,14 +964,14 @@
         "Tevita Vaikona",
         "Lesley Vainikolo",
         "Leon Pryce",
-        "Scott Naylor",
+        "Paul Sykes",
         "Brandon Costin",
         "Paul Deacon",
         "Stuart Fielden",
         "Paul Anderson",
         "James Lowes",
         "Jamie Peacock",
-        "Daniel Gartner",
+        "Lee Radford",
         "Mike Forshaw"
       ],
       "missingFromDatabase": []
@@ -972,10 +992,10 @@
         "Tevita Vaikona",
         "Graham Mackay",
         "Leon Pryce",
-        "Scott Naylor",
+        "Paul Sykes",
         "Henry Paul",
         "Paul Deacon",
-        "Stuart Fielden",
+        "Lee Radford",
         "Paul Anderson",
         "James Lowes",
         "Jamie Peacock",
@@ -989,10 +1009,10 @@
         "Tevita Vaikona",
         "Graham Mackay",
         "Leon Pryce",
-        "Scott Naylor",
+        "Paul Sykes",
         "Henry Paul",
         "Paul Deacon",
-        "Stuart Fielden",
+        "Lee Radford",
         "Paul Anderson",
         "James Lowes",
         "Jamie Peacock",
@@ -1017,10 +1037,10 @@
         "Tevita Vaikona",
         "Michael Withers",
         "Leon Pryce",
-        "Scott Naylor",
+        "Paul Sykes",
         "Henry Paul",
         "Paul Deacon",
-        "Stuart Fielden",
+        "Lee Radford",
         "Paul Anderson",
         "James Lowes",
         "Jamie Peacock",
@@ -1034,10 +1054,10 @@
         "Tevita Vaikona",
         "Michael Withers",
         "Leon Pryce",
-        "Scott Naylor",
+        "Paul Sykes",
         "Henry Paul",
         "Paul Deacon",
-        "Stuart Fielden",
+        "Lee Radford",
         "Paul Anderson",
         "James Lowes",
         "Jamie Peacock",
@@ -1060,9 +1080,9 @@
       "playersKept": [
         "Robbie Hunter-Paul",
         "Leon Pryce",
-        "Tevita Vaikona",
+        "Lee Radford",
+        "Paul Sykes",
         "Scott Naylor",
-        "Nathan McAvoy",
         "Henry Paul",
         "Paul Deacon",
         "Stuart Fielden",
@@ -1077,9 +1097,9 @@
       "wikipediaPlayers": [
         "Robbie Paul",
         "Leon Pryce",
-        "Tevita Vaikona",
+        "Lee Radford",
+        "Paul Sykes",
         "Scott Naylor",
-        "Nathan McAvoy",
         "Henry Paul",
         "Paul Deacon",
         "Stuart Fielden",
@@ -1104,14 +1124,14 @@
       "qualityScore": 991,
       "playersKept": [
         "Robbie Hunter-Paul",
-        "Tevita Vaikona",
         "Leon Pryce",
+        "Tevita Vaikona",
         "Graeme Bradley",
         "Matt Calland",
         "Danny Peacock",
         "Shaun Edwards",
-        "Stuart Fielden",
         "Paul Anderson",
+        "Stuart Fielden",
         "James Lowes",
         "Jeremy Donougher",
         "Paul Medley",
@@ -1121,14 +1141,14 @@
       "playersAdded": [],
       "wikipediaPlayers": [
         "Robbie Paul",
-        "Tevita Vaikona",
         "Leon Pryce",
+        "Tevita Vaikona",
         "Graeme Bradley",
         "Matt Calland",
         "Danny Peacock",
         "Shaun Edwards",
-        "Stuart Fielden",
         "Paul Anderson",
+        "Stuart Fielden",
         "James Lowes",
         "Jeremy Donougher",
         "Paul Medley",
@@ -1151,8 +1171,8 @@
         "Robbie Hunter-Paul",
         "Abi Ekoku",
         "Jeff Wittenberg",
-        "Paul Loughlin",
         "Graeme Bradley",
+        "Matt Calland",
         "Danny Peacock",
         "Paul Cook",
         "Paul Anderson",
@@ -1168,8 +1188,8 @@
         "Robbie Paul",
         "Abi Ekoku",
         "Jeff Wittenberg",
-        "Paul Loughlin",
         "Graeme Bradley",
+        "Matt Calland",
         "Danny Peacock",
         "Paul Cook",
         "Paul Anderson",
@@ -1231,7 +1251,7 @@
         "Daejarn Asi",
         "Chris Atkin",
         "Liam Hood",
-        "Joe Westerman"
+        "George Hill"
       ],
       "playersRemoved": [],
       "playersAdded": [],
@@ -1242,7 +1262,7 @@
         "Daejarn Asi",
         "Chris Atkin",
         "Liam Hood",
-        "Joe Westerman"
+        "George Hill"
       ],
       "missingFromDatabase": [],
       "reason": "Could not map 13 database players (7/13)"
@@ -1261,28 +1281,25 @@
       "playersKept": [
         "Tex Hoy",
         "Zac Cini",
+        "Ben Davies",
         "Chris Atkin",
         "Daejarn Asi",
         "Liam Horne",
-        "Joe Westerman"
+        "George Hill"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Tex Hoy",
         "Zac Cini",
+        "Ben Davies",
         "Chris Atkin",
         "Daejarn Asi",
         "Liam Horne",
-        "Joe Westerman"
+        "George Hill"
       ],
-      "missingFromDatabase": [
-        "[[Sam Wood (rugby league, born 1997)",
-        "Josh Hodson",
-        "Will Tate",
-        "[[Ben Davies (rugby league, born 2000)"
-      ],
-      "reason": "Could not map 13 database players (6/13)"
+      "missingFromDatabase": [],
+      "reason": "Could not map 13 database players (7/13)"
     },
     {
       "club": "Castleford Tigers",
@@ -1297,28 +1314,26 @@
       "qualityScore": 0,
       "playersKept": [
         "Tex Hoy",
-        "Rowan Milnes",
-        "Jenson Windley",
+        "Jack Broadbent",
+        "Corey Hall",
+        "Jacob Miller",
+        "Danny Richardson",
         "Liam Horne",
-        "Joe Westerman"
+        "George Hill"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Tex Hoy",
-        "Rowan Milnes",
-        "Jenson Windley",
+        "Jack Broadbent",
+        "Corey Hall",
+        "Jacob Miller",
+        "Danny Richardson",
         "Liam Horne",
-        "Joe Westerman"
+        "George Hill"
       ],
-      "missingFromDatabase": [
-        "[[Jack Broadbent (rugby league)",
-        "[[Sam Wood (rugby league, born 1997)",
-        "Josh Hodson",
-        "Will Tate",
-        "[[Corey Hall (rugby league)"
-      ],
-      "reason": "Could not map 13 database players (5/13)"
+      "missingFromDatabase": [],
+      "reason": "Could not map 13 database players (7/13)"
     },
     {
       "club": "Castleford Tigers",
@@ -1334,9 +1349,9 @@
       "playersKept": [
         "Niall Evalds",
         "Mahe Fonua",
-        "Jordan Turner",
+        "Jake Mamo",
         "Blake Austin",
-        "Jacob Hookem",
+        "Jacob Miller",
         "Liam Horne",
         "Adam Milner"
       ],
@@ -1345,9 +1360,9 @@
       "wikipediaPlayers": [
         "Niall Evalds",
         "Mahe Fonua",
-        "Jordan Turner",
+        "Jake Mamo",
         "Blake Austin",
-        "Jacob Hookem",
+        "Jacob Miller",
         "Liam Horne",
         "Adam Milner"
       ],
@@ -1368,10 +1383,10 @@
       "playersKept": [
         "Ryan Hampshire",
         "Mahe Fonua",
-        "Jordan Turner",
+        "Jake Mamo",
         "Jake Trueman",
         "Gareth O'Brien",
-        "Cain Robb",
+        "Paul McShane",
         "Joe Westerman"
       ],
       "playersRemoved": [],
@@ -1379,10 +1394,10 @@
       "wikipediaPlayers": [
         "Ryan Hampshire",
         "Mahe Fonua",
-        "Jordan Turner",
+        "Jake Mamo",
         "Jake Trueman",
         "Gareth OBrien",
-        "Cain Robb",
+        "Paul McShane",
         "Joe Westerman"
       ],
       "missingFromDatabase": [],
@@ -1416,27 +1431,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
-        "Gareth O'Brien",
+        "Jordan Rankin",
         "Michael Shenton",
         "Peter Mata'utia",
         "Jake Trueman",
-        "Cain Robb",
+        "Danny Richardson",
+        "Paul McShane",
         "Adam Milner"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
-        "Gareth OBrien",
+        "Jordan Rankin",
         "Michael Shenton",
         "Peter Matautia",
         "Jake Trueman",
-        "Cain Robb",
+        "Danny Richardson",
+        "Paul McShane",
         "Adam Milner"
       ],
-      "missingFromDatabase": [
-        "[[Danny Richardson (rugby league)"
-      ],
-      "reason": "Could not map 13 database players (6/13)"
+      "missingFromDatabase": [],
+      "reason": "Could not map 13 database players (7/13)"
     },
     {
       "club": "Castleford Tigers",
@@ -1455,7 +1470,7 @@
         "Michael Shenton",
         "Jake Trueman",
         "Luke Gale",
-        "Jacques O'neill",
+        "Paul McShane",
         "Adam Milner"
       ],
       "playersRemoved": [],
@@ -1466,7 +1481,7 @@
         "Michael Shenton",
         "Jake Trueman",
         "Luke Gale",
-        "Jacques ONeill",
+        "Paul McShane",
         "Adam Milner"
       ],
       "missingFromDatabase": [],
@@ -1502,9 +1517,10 @@
       "playersKept": [
         "Zak Hardaker",
         "Michael Shenton",
-        "Jake Webster",
+        "Kieran Gill",
         "Rangi Chase",
         "Luke Gale",
+        "Paul McShane",
         "Adam Milner"
       ],
       "playersRemoved": [],
@@ -1512,16 +1528,14 @@
       "wikipediaPlayers": [
         "Zak Hardaker",
         "Michael Shenton",
-        "Jake Webster",
+        "Kieran Gill",
         "Rangi Chase",
         "Luke Gale",
+        "Paul McShane",
         "Adam Milner"
       ],
-      "missingFromDatabase": [
-        "[[Paul McShane (rugby league)",
-        "Luke Million"
-      ],
-      "reason": "Could not map 13 database players (6/13)"
+      "missingFromDatabase": [],
+      "reason": "Could not map 13 database players (7/13)"
     },
     {
       "club": "Castleford Tigers",
@@ -1533,7 +1547,7 @@
       "wikipediaPages": [
         "2016 Castleford Tigers season"
       ],
-      "qualityScore": 194,
+      "qualityScore": 0,
       "playersKept": [
         "Ryan Hampshire",
         "Joel Monaghan",
@@ -1581,27 +1595,26 @@
       "qualityScore": 0,
       "playersKept": [
         "Jordan Tansey",
-        "Michael Shenton",
         "Ashley Gibson",
+        "Michael Shenton",
+        "Ben Roberts",
         "Luke Gale",
-        "Adam Milner"
+        "Adam Milner",
+        "Nathan Massey"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Jordan Tansey",
-        "Michael Shenton",
         "Ashley Gibson",
+        "Michael Shenton",
+        "Ben Roberts",
         "Luke Gale",
-        "Adam Milner"
+        "Adam Milner",
+        "Nathan Massey"
       ],
-      "missingFromDatabase": [
-        "[[Ben Roberts (rugby league)",
-        "[[Liam Finn (rugby league)",
-        "Jordan Howden",
-        "[[Nathan Massey (rugby league, born 1989)"
-      ],
-      "reason": "Could not map 13 database players (5/13)"
+      "missingFromDatabase": [],
+      "reason": "Could not map 13 database players (7/13)"
     },
     {
       "club": "Castleford Tigers",
@@ -1616,23 +1629,23 @@
       "qualityScore": 0,
       "playersKept": [
         "Jordan Tansey",
-        "Michael Shenton",
         "Ashley Gibson",
+        "Michael Shenton",
         "Jamie Ellis",
         "Marc Sneyd",
         "Daryl Clark",
-        "Grant Millington"
+        "Nathan Massey"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Jordan Tansey",
-        "Michael Shenton",
         "Ashley Gibson",
+        "Michael Shenton",
         "Jamie Ellis",
         "Marc Sneyd",
         "Daryl Clark",
-        "Grant Millington"
+        "Nathan Massey"
       ],
       "missingFromDatabase": [],
       "reason": "Could not map 13 database players (7/13)"
@@ -1651,22 +1664,22 @@
       "playersKept": [
         "Jordan Tansey",
         "Michael Shenton",
-        "Michael Channing",
+        "Jordan Thompson",
         "Rangi Chase",
         "Jamie Ellis",
         "Daryl Clark",
-        "Grant Millington"
+        "Nathan Massey"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Jordan Tansey",
         "Michael Shenton",
-        "Michael Channing",
+        "Jordan Thompson",
         "Rangi Chase",
         "Jamie Ellis",
         "Daryl Clark",
-        "Grant Millington"
+        "Nathan Massey"
       ],
       "missingFromDatabase": [],
       "reason": "Could not map 13 database players (7/13)"
@@ -1674,46 +1687,61 @@
     {
       "club": "Castleford Tigers",
       "year": "2012",
-      "status": "removed",
-      "complete": false,
-      "removed": true,
+      "status": "complete",
+      "complete": true,
+      "removed": false,
       "source": "https://en.wikipedia.org/wiki/2012_Castleford_Tigers_season",
       "wikipediaPages": [
         "2012 Castleford Tigers season"
       ],
-      "qualityScore": 40605,
+      "qualityScore": 60186033,
       "playersKept": [
         "Richard Owen",
-        "Joe Arundel",
         "James Clare",
+        "Joe Arundel",
         "Kirk Dixon",
+        "James Grehan",
         "Rangi Chase",
         "Danny Orr",
         "Craig Huby",
         "Oliver Holmes",
         "Daryl Clark",
         "Brett Ferres",
-        "Stuart Jones"
+        "Stuart Jones",
+        "Steve Snitch"
       ],
       "playersRemoved": [],
-      "playersAdded": [],
-      "wikipediaPlayers": [
+      "playersAdded": [
         "Richard Owen",
-        "Joe Arundel",
         "James Clare",
+        "Joe Arundel",
         "Kirk Dixon",
+        "James Grehan",
         "Rangi Chase",
         "Danny Orr",
         "Craig Huby",
         "Oliver Holmes",
         "Daryl Clark",
         "Brett Ferres",
-        "Stuart Jones"
+        "Stuart Jones",
+        "Steve Snitch"
       ],
-      "missingFromDatabase": [
-        "James Grehan"
+      "wikipediaPlayers": [
+        "Richard Owen",
+        "James Clare",
+        "Joe Arundel",
+        "Kirk Dixon",
+        "James Grehan",
+        "Rangi Chase",
+        "Danny Orr",
+        "Craig Huby",
+        "Oliver Holmes",
+        "Daryl Clark",
+        "Brett Ferres",
+        "Stuart Jones",
+        "Steve Snitch"
       ],
-      "reason": "Could not map 13 database players (11/13)"
+      "missingFromDatabase": []
     },
     {
       "club": "Castleford Tigers",
@@ -1762,8 +1790,8 @@
         "Jordan Thompson",
         "Kirk Dixon",
         "Michael Wainwright",
-        "Michael Shenton",
         "James Evans",
+        "Michael Shenton",
         "Rangi Chase",
         "Brent Sherwin",
         "Craig Huby",
@@ -1779,8 +1807,8 @@
         "Jordan Thompson",
         "Kirk Dixon",
         "Michael Wainwright",
-        "Michael Shenton",
         "James Evans",
+        "Michael Shenton",
         "Rangi Chase",
         "Brent Sherwin",
         "Craig Huby",
@@ -2191,8 +2219,8 @@
         "Morgan Escaré",
         "Pat Richards",
         "Jodie Broughton",
-        "Vincent Duport",
         "Krisnan Inu",
+        "Vincent Duport",
         "Todd Carney",
         "Thomas Bosc",
         "Remi Casty",
@@ -2208,8 +2236,8 @@
         "Morgan Escare",
         "Pat Richards",
         "Jodie Broughton",
-        "Vincent Duport",
         "Krisnan Inu",
+        "Vincent Duport",
         "Todd Carney",
         "Thomas Bosc",
         "Rémi Casty",
@@ -2234,34 +2262,34 @@
       "qualityScore": 805,
       "playersKept": [
         "Morgan Escaré",
-        "Vincent Duport",
         "Michael Oldfield",
+        "Fouad Yaha",
         "Krisnan Inu",
         "Tony Gigot",
         "Todd Carney",
-        "Thomas Bosc",
+        "Scott Dureau",
         "Remi Casty",
-        "Olivier Elima",
+        "Julian Bousquet",
         "Éloi Pélissier",
-        "Louis Anderson",
         "Elliott Whitehead",
+        "Zeb Taia",
         "Benjamin Garcia"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Morgan Escare",
-        "Vincent Duport",
         "Michael Oldfield",
+        "Fouad Yaha",
         "Krisnan Inu",
         "Tony Gigot",
         "Todd Carney",
-        "Thomas Bosc",
+        "Scott Dureau",
         "Rémi Casty",
-        "Olivier Elima",
+        "Julian Bousquet",
         "Éloi Pélissier",
-        "Louis Anderson",
         "Elliott Whitehead",
+        "Zeb Taia",
         "Benjamin Garcia"
       ],
       "missingFromDatabase": []
@@ -2296,16 +2324,16 @@
       "playersKept": [
         "Morgan Escaré",
         "Vincent Duport",
-        "Frederic Vaccari",
+        "Damien Blanch",
         "Daryl Millard",
         "Jean-Philippe Baile",
-        "Thomas Bosc",
+        "Leon Pryce",
         "Scott Dureau",
         "Remi Casty",
         "Julian Bousquet",
         "Éloi Pélissier",
-        "Louis Anderson",
-        "Olivier Elima",
+        "Steve Menzies",
+        "Zeb Taia",
         "Jason Baitieri"
       ],
       "playersRemoved": [],
@@ -2313,16 +2341,16 @@
       "wikipediaPlayers": [
         "Morgan Escaré",
         "Vincent Duport",
-        "Frédéric Vaccari",
+        "Damien Blanch",
         "Daryl Millard",
         "Jean-Philippe Baile",
-        "Thomas Bosc",
+        "Leon Pryce",
         "Scott Dureau",
         "Rémi Casty",
         "Julian Bousquet",
         "Éloi Pélissier",
-        "Louis Anderson",
-        "Olivier Elima",
+        "Steve Menzies",
+        "Zeb Taia",
         "Jason Baitieri"
       ],
       "missingFromDatabase": []
@@ -2344,13 +2372,13 @@
         "Cyril Stacul",
         "Daryl Millard",
         "Setaimata Sa",
-        "Thomas Bosc",
+        "Leon Pryce",
         "Scott Dureau",
         "Remi Casty",
         "Julian Bousquet",
         "Éloi Pélissier",
-        "Louis Anderson",
         "Steve Menzies",
+        "Louis Anderson",
         "Jason Baitieri"
       ],
       "playersRemoved": [],
@@ -2361,13 +2389,13 @@
         "Cyril Stacul",
         "Daryl Millard",
         "Setaimata Sa",
-        "Thomas Bosc",
+        "Leon Pryce",
         "Scott Dureau",
         "Rémi Casty",
         "Julian Bousquet",
         "Éloi Pélissier",
-        "Louis Anderson",
         "Steve Menzies",
+        "Louis Anderson",
         "Jason Baitieri"
       ],
       "missingFromDatabase": []
@@ -2385,8 +2413,8 @@
       "qualityScore": 777,
       "playersKept": [
         "Clint Greenshields",
-        "Vincent Duport",
         "Cyril Stacul",
+        "Vincent Duport",
         "Daryl Millard",
         "Jean-Philippe Baile",
         "Thomas Bosc",
@@ -2396,14 +2424,14 @@
         "Éloi Pélissier",
         "Steve Menzies",
         "Sébastien Raguin",
-        "Jason Baitieri"
+        "Grégory Mounis"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Clint Greenshields",
-        "Vincent Duport",
         "Cyril Stacul",
+        "Vincent Duport",
         "Daryl Millard",
         "Jean-Philippe Baile",
         "Thomas Bosc",
@@ -2413,7 +2441,7 @@
         "Éloi Pélissier",
         "Steve Menzies",
         "Sébastien Raguin",
-        "Jason Baitieri"
+        "Grégory Mounis"
       ],
       "missingFromDatabase": []
     },
@@ -2439,8 +2467,8 @@
         "Remi Casty",
         "Jerome Guisset",
         "Casey Mcguire",
-        "Olivier Elima",
         "Grégory Mounis",
+        "Olivier Elima",
         "Dane Carlaw"
       ],
       "playersRemoved": [],
@@ -2456,8 +2484,8 @@
         "Rémi Casty",
         "Jérôme Guisset",
         "Casey McGuire",
-        "Olivier Elima",
         "Grégory Mounis",
+        "Olivier Elima",
         "Dane Carlaw"
       ],
       "missingFromDatabase": []
@@ -2465,9 +2493,9 @@
     {
       "club": "Catalans Dragons",
       "year": "2009",
-      "status": "removed",
-      "complete": false,
-      "removed": true,
+      "status": "complete",
+      "complete": true,
+      "removed": false,
       "source": "https://en.wikipedia.org/wiki/2009_Catalans_Dragons_season",
       "wikipediaPages": [
         "2009 Catalans Dragons season"
@@ -2475,11 +2503,12 @@
       "qualityScore": 773,
       "playersKept": [
         "Clint Greenshields",
-        "Vincent Duport",
         "Dimitri Pelo",
+        "Vincent Duport",
         "Adam Mogg",
         "Jean-Philippe Baile",
         "Thomas Bosc",
+        "Shane Perry",
         "Remi Casty",
         "Jerome Guisset",
         "Casey Mcguire",
@@ -2491,11 +2520,12 @@
       "playersAdded": [],
       "wikipediaPlayers": [
         "Clint Greenshields",
-        "Vincent Duport",
         "Dimitri Pelo",
+        "Vincent Duport",
         "Adam Mogg",
         "Jean-Philippe Baile",
         "Thomas Bosc",
+        "Shane Perry",
         "Rémi Casty",
         "Jérôme Guisset",
         "Casey McGuire",
@@ -2503,10 +2533,7 @@
         "Cyrille Gossard",
         "Greg Bird"
       ],
-      "missingFromDatabase": [
-        "Shane Perry"
-      ],
-      "reason": "Could not map 13 database players (12/13)"
+      "missingFromDatabase": []
     },
     {
       "club": "Catalans Dragons",
@@ -2521,32 +2548,32 @@
       "qualityScore": 791,
       "playersKept": [
         "Clint Greenshields",
-        "Vincent Duport",
+        "Dimitri Pelo",
         "Justin Murphy",
         "Adam Mogg",
         "John Wilson",
         "Thomas Bosc",
         "Remi Casty",
-        "Jerome Guisset",
+        "Alex Chan",
         "Kane Bentley",
-        "Olivier Elima",
         "Sébastien Raguin",
+        "Jason Croker",
         "Grégory Mounis"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Clint Greenshields",
-        "Vincent Duport",
+        "Dimitri Pelo",
         "Justin Murphy",
         "Adam Mogg",
         "John Wilson",
         "Thomas Bosc",
         "Rémi Casty",
-        "Jérôme Guisset",
+        "Alex Chan",
         "Kane Bentley",
-        "Olivier Elima",
         "Sébastien Raguin",
+        "Jason Croker",
         "Grégory Mounis"
       ],
       "missingFromDatabase": [],
@@ -2565,14 +2592,14 @@
       "qualityScore": 779,
       "playersKept": [
         "Clint Greenshields",
-        "Vincent Duport",
+        "Dimitri Pelo",
         "Justin Murphy",
         "Adam Mogg",
         "John Wilson",
         "Thomas Bosc",
         "Stacey Jones",
         "Remi Casty",
-        "Jerome Guisset",
+        "Alex Chan",
         "Kane Bentley",
         "Cyrille Gossard",
         "Jason Croker",
@@ -2582,14 +2609,14 @@
       "playersAdded": [],
       "wikipediaPlayers": [
         "Clint Greenshields",
-        "Vincent Duport",
+        "Dimitri Pelo",
         "Justin Murphy",
         "Adam Mogg",
         "John Wilson",
         "Thomas Bosc",
         "Stacey Jones",
         "Rémi Casty",
-        "Jérôme Guisset",
+        "Alex Chan",
         "Kane Bentley",
         "Cyrille Gossard",
         "Jason Croker",
@@ -2600,48 +2627,61 @@
     {
       "club": "Catalans Dragons",
       "year": "2006",
-      "status": "removed",
-      "complete": false,
-      "removed": true,
+      "status": "complete",
+      "complete": true,
+      "removed": false,
       "source": "https://en.wikipedia.org/wiki/2006_Catalans_Dragons_season",
       "wikipediaPages": [
         "2006 Catalans Dragons season"
       ],
       "qualityScore": 755,
       "playersKept": [
+        "Renaud Guigue",
         "Justin Murphy",
         "Bruno Verges",
         "John Wilson",
+        "Mark Hughes",
         "Thomas Bosc",
         "Michael Dobson",
         "Remi Casty",
-        "Jerome Guisset",
+        "Jamal Fakir",
         "Julien Rinaldi",
         "Cyrille Gossard",
         "Ian Hindmarsh",
         "Grégory Mounis"
       ],
       "playersRemoved": [],
-      "playersAdded": [],
-      "wikipediaPlayers": [
+      "playersAdded": [
+        "Renaud Guigue",
         "Justin Murphy",
         "Bruno Verges",
         "John Wilson",
+        "Mark Hughes",
         "Thomas Bosc",
         "Michael Dobson",
-        "Rémi Casty",
-        "Jérôme Guisset",
+        "Remi Casty",
+        "Jamal Fakir",
         "Julien Rinaldi",
         "Cyrille Gossard",
         "Ian Hindmarsh",
         "Grégory Mounis"
       ],
-      "missingFromDatabase": [
+      "wikipediaPlayers": [
         "Renaud Guigue",
+        "Justin Murphy",
+        "Bruno Verges",
+        "John Wilson",
         "Mark Hughes",
-        "Teddy Sadaoui"
+        "Thomas Bosc",
+        "Michael Dobson",
+        "Rémi Casty",
+        "Jamal Fakir",
+        "Julien Rinaldi",
+        "Cyrille Gossard",
+        "Ian Hindmarsh",
+        "Grégory Mounis"
       ],
-      "reason": "Could not map 13 database players (11/13)"
+      "missingFromDatabase": []
     },
     {
       "club": "Catalans Dragons",
@@ -3041,30 +3081,34 @@
       "playersKept": [
         "Scott Grix",
         "Jermaine McGillvary",
-        "Luke George",
+        "Aaron Murphy",
         "Leroy Cudjoe",
         "Joe Wardle",
         "Danny Brough",
         "Kyle Wood",
-        "Stuart Fielden",
         "Eorl Crabtree",
+        "Stuart Fielden",
         "Shaun Lunt",
         "Brett Ferres",
         "Jamie Cording",
         "David Faiumu"
       ],
-      "playersRemoved": [],
-      "playersAdded": [],
+      "playersRemoved": [
+        "Luke George"
+      ],
+      "playersAdded": [
+        "Aaron Murphy"
+      ],
       "wikipediaPlayers": [
         "Scott Grix",
         "Jermaine McGillvary",
-        "Luke George",
+        "Aaron Murphy",
         "Leroy Cudjoe",
         "Joe Wardle",
         "Danny Brough",
         "Kyle Wood",
-        "Stuart Fielden",
         "Eorl Crabtree",
+        "Stuart Fielden",
         "Shaun Lunt",
         "Brett Ferres",
         "Jamie Cording",
@@ -3584,42 +3628,32 @@
         "Tom Lineham",
         "Tom Briscoe",
         "Ben Crooks",
-        "Joe Arundel",
+        "Kirk Yeaman",
         "Daniel Holdsworth",
         "Jacob Miller",
-        "Andy Lynch",
         "Richard Horne",
+        "Andy Lynch",
         "Danny Houghton",
         "Gareth Ellis",
         "Danny Tickle",
         "Paul Johnson"
       ],
-      "playersRemoved": [],
+      "playersRemoved": [
+        "Joe Arundel"
+      ],
       "playersAdded": [
-        "Jamie Shaul",
-        "Tom Lineham",
-        "Tom Briscoe",
-        "Ben Crooks",
-        "Joe Arundel",
-        "Daniel Holdsworth",
-        "Jacob Miller",
-        "Andy Lynch",
-        "Richard Horne",
-        "Danny Houghton",
-        "Gareth Ellis",
-        "Danny Tickle",
-        "Paul Johnson"
+        "Kirk Yeaman"
       ],
       "wikipediaPlayers": [
         "Jamie Shaul",
         "Tom Lineham",
         "Tom Briscoe",
         "Ben Crooks",
-        "Joe Arundel",
+        "Kirk Yeaman",
         "Daniel Holdsworth",
         "Jacob Miller",
-        "Andy Lynch",
         "Richard Horne",
+        "Andy Lynch",
         "Danny Houghton",
         "Gareth Ellis",
         "Danny Tickle",
@@ -3654,21 +3688,7 @@
         "Joe Westerman"
       ],
       "playersRemoved": [],
-      "playersAdded": [
-        "Matty Russell",
-        "Tom Lineham",
-        "Reece Lyne",
-        "Ben Crooks",
-        "Jordan Turner",
-        "Richard Horne",
-        "Brett Seymour",
-        "Andy Lynch",
-        "Liam Watts",
-        "Danny Houghton",
-        "Danny Tickle",
-        "Willie Manu",
-        "Joe Westerman"
-      ],
+      "playersAdded": [],
       "wikipediaPlayers": [
         "Matty Russell",
         "Tom Lineham",
@@ -3745,21 +3765,7 @@
         "Danny Washbrook"
       ],
       "playersRemoved": [],
-      "playersAdded": [
-        "Motu Tony",
-        "Mark Calderwood",
-        "Gareth Raynor",
-        "Tom Briscoe",
-        "Craig Hall",
-        "Richard Horne",
-        "Tommy Lee",
-        "Jamie Thackray",
-        "Paul King",
-        "Danny Houghton",
-        "Danny Tickle",
-        "Willie Manu",
-        "Danny Washbrook"
-      ],
+      "playersAdded": [],
       "wikipediaPlayers": [
         "Motu Tony",
         "Mark Calderwood",
@@ -4676,9 +4682,9 @@
     {
       "club": "Leeds Rhinos",
       "year": "2016",
-      "status": "removed",
-      "complete": false,
-      "removed": true,
+      "status": "complete",
+      "complete": true,
+      "removed": false,
       "source": "https://en.wikipedia.org/wiki/2016_Leeds_Rhinos_season",
       "wikipediaPages": [
         "2016 Leeds Rhinos season"
@@ -4686,38 +4692,37 @@
       "qualityScore": 767,
       "playersKept": [
         "Zak Hardaker",
-        "Ryan Hall",
         "Ash Handley",
+        "Tom Briscoe",
         "Kallum Watkins",
         "Jimmy Keinhorst",
         "Danny McGuire",
         "Rob Burrow",
         "Brad Singleton",
         "Mitch Garbutt",
-        "Jamie Jones-Buchanan",
+        "Beau Falloon",
         "Brett Ferres",
+        "Jamie Jones-Buchanan",
         "Stevie Ward"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Zak Hardaker",
-        "Ryan Hall",
         "Ash Handley",
+        "Tom Briscoe",
         "Kallum Watkins",
         "Jimmy Keinhorst",
         "Danny McGuire",
         "Rob Burrow",
         "Brad Singleton",
         "Mitch Garbutt",
-        "Jamie Jones-Buchanan",
+        "Beau Falloon",
         "Brett Ferres",
+        "Jamie Jones-Buchanan",
         "Stevie Ward"
       ],
-      "missingFromDatabase": [
-        "Beau Falloon"
-      ],
-      "reason": "Could not map 13 database players (12/13)"
+      "missingFromDatabase": []
     },
     {
       "club": "Leeds Rhinos",
@@ -4732,8 +4737,8 @@
       "qualityScore": 689,
       "playersKept": [
         "Zak Hardaker",
-        "Ryan Hall",
         "Ash Handley",
+        "Tom Briscoe",
         "Kallum Watkins",
         "Joel Moon",
         "Danny McGuire",
@@ -4747,8 +4752,8 @@
       "playersAdded": [],
       "wikipediaPlayers": [
         "Zak Hardaker",
-        "Ryan Hall",
         "Ash Handley",
+        "Tom Briscoe",
         "Kallum Watkins",
         "Joel Moon",
         "Danny McGuire",
@@ -4804,21 +4809,7 @@
         "Kevin Sinfield"
       ],
       "playersRemoved": [],
-      "playersAdded": [
-        "Zak Hardaker",
-        "Ryan Hall",
-        "Ben Jones-Bishop",
-        "Kallum Watkins",
-        "Joel Moon",
-        "Danny McGuire",
-        "Rob Burrow",
-        "Jamie Peacock",
-        "Kylie Leuluai",
-        "Liam Hood",
-        "Jamie Jones-Buchanan",
-        "Ian Kirke",
-        "Kevin Sinfield"
-      ],
+      "playersAdded": [],
       "wikipediaPlayers": [
         "Zak Hardaker",
         "Ryan Hall",
@@ -4897,8 +4888,8 @@
       "qualityScore": 3,
       "playersKept": [
         "Ben Jones-Bishop",
-        "Ryan Hall",
         "Scott Donald",
+        "Ryan Hall",
         "Keith Senior",
         "Kallum Watkins",
         "Danny McGuire",
@@ -4911,25 +4902,11 @@
         "Kevin Sinfield"
       ],
       "playersRemoved": [],
-      "playersAdded": [
-        "Ben Jones-Bishop",
-        "Ryan Hall",
-        "Scott Donald",
-        "Keith Senior",
-        "Kallum Watkins",
-        "Danny McGuire",
-        "Rob Burrow",
-        "Jamie Peacock",
-        "Kylie Leuluai",
-        "Matt Diskin",
-        "Ali Lauitiiti",
-        "Jamie Jones-Buchanan",
-        "Kevin Sinfield"
-      ],
+      "playersAdded": [],
       "wikipediaPlayers": [
         "Ben Jones-Bishop",
-        "Ryan Hall",
         "Scott Donald",
+        "Ryan Hall",
         "Keith Senior",
         "Kallum Watkins",
         "Danny McGuire",
@@ -4956,8 +4933,8 @@
       "qualityScore": 1054,
       "playersKept": [
         "Brent Webb",
-        "Ryan Hall",
         "Scott Donald",
+        "Danny Williams",
         "Keith Senior",
         "Kallum Watkins",
         "Danny McGuire",
@@ -4970,25 +4947,11 @@
         "Kevin Sinfield"
       ],
       "playersRemoved": [],
-      "playersAdded": [
-        "Brent Webb",
-        "Ryan Hall",
-        "Scott Donald",
-        "Keith Senior",
-        "Kallum Watkins",
-        "Danny McGuire",
-        "Rob Burrow",
-        "Jamie Peacock",
-        "Kylie Leuluai",
-        "Matt Diskin",
-        "Gareth Ellis",
-        "Ali Lauitiiti",
-        "Kevin Sinfield"
-      ],
+      "playersAdded": [],
       "wikipediaPlayers": [
         "Brent Webb",
-        "Ryan Hall",
         "Scott Donald",
+        "Danny Williams",
         "Keith Senior",
         "Kallum Watkins",
         "Danny McGuire",
@@ -5718,29 +5681,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -5754,36 +5715,28 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "Charlie Randall",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
+        "Ted Davidson",
         "Luke Pheonix",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Will Randall (rugby league)",
-        "Oli Winterbottom",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter",
-        "Jasper McLachlan",
-        "Jake Tilford",
-        "Matt Tootill"
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -5798,29 +5751,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -5835,29 +5786,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -5872,29 +5821,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -5909,29 +5856,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -5946,29 +5891,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -5983,66 +5926,86 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
       "year": "2019",
-      "status": "removed",
-      "complete": false,
-      "removed": true,
+      "status": "complete",
+      "complete": true,
+      "removed": false,
       "source": "https://en.wikipedia.org/wiki/2019_London_Broncos_season",
       "wikipediaPages": [
-        "2019 London Broncos season",
-        "London Broncos"
+        "2019 London Broncos season"
       ],
       "qualityScore": 0,
       "playersKept": [
-        "Sadiq Adebiyi"
+        "Alex Walker",
+        "Rhys Williams",
+        "Kieran Dixon",
+        "Ryan Morgan",
+        "Ben Hellewell",
+        "Jordan Abdull",
+        "Morgan Smith",
+        "Eddie Battye",
+        "Greg Richards",
+        "Éloi Pélissier",
+        "Jay Pitts",
+        "Will Lovell",
+        "Luke Yates"
       ],
       "playersRemoved": [],
-      "playersAdded": [],
+      "playersAdded": [
+        "Alex Walker",
+        "Rhys Williams",
+        "Kieran Dixon",
+        "Ryan Morgan",
+        "Ben Hellewell",
+        "Jordan Abdull",
+        "Morgan Smith",
+        "Eddie Battye",
+        "Greg Richards",
+        "Éloi Pélissier",
+        "Jay Pitts",
+        "Will Lovell",
+        "Luke Yates"
+      ],
       "wikipediaPlayers": [
-        "Sadiq Adebiyi"
+        "Alex Walker",
+        "Rhys Williams",
+        "Kieran Dixon",
+        "Ryan Morgan",
+        "Ben Hellewell",
+        "Jordan Abdull",
+        "Morgan Smith",
+        "Eddie Battye",
+        "Greg Richards",
+        "Éloi Pélissier",
+        "Jay Pitts",
+        "Will Lovell",
+        "Luke Yates"
       ],
-      "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
-        "Alex Max",
-        "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
-      ],
-      "reason": "Could not map 13 database players (1/13)"
+      "missingFromDatabase": []
     },
     {
       "club": "London Broncos",
@@ -6052,37 +6015,44 @@
       "removed": true,
       "source": "https://en.wikipedia.org/wiki/2018_London_Broncos_season",
       "wikipediaPages": [
-        "2018 London Broncos season",
-        "London Broncos"
+        "2018 London Broncos season"
       ],
-      "qualityScore": 136,
+      "qualityScore": 0,
       "playersKept": [
-        "Lewis Bienek",
+        "Alex Walker",
+        "Rhys Williams",
+        "Kieran Dixon",
+        "Ben Hellewell",
+        "Elliot Kear",
+        "Jarrod Sammut",
+        "Eddie Battye",
+        "Mark Ioane",
+        "Éloi Pélissier",
+        "Jay Pitts",
+        "Will Lovell",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
-        "Lewis Bienek",
+        "Alex Walker",
+        "Rhys Williams",
+        "Kieran Dixon",
+        "Ben Hellewell",
+        "Elliot Kear",
+        "Jarrod Sammut",
+        "Eddie Battye",
+        "Mark Ioane",
+        "Éloi Pélissier",
+        "Jay Pitts",
+        "Will Lovell",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
-        "Alex Max",
-        "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "}}",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Api Pewhairangi",
+        "James Meadows"
       ],
-      "reason": "Could not map 13 database players (2/13)"
+      "reason": "Could not map 13 database players (12/13)"
     },
     {
       "club": "London Broncos",
@@ -6097,29 +6067,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6134,29 +6102,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6171,29 +6137,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6208,29 +6172,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6245,29 +6207,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6282,29 +6242,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6318,29 +6276,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6354,29 +6310,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6390,29 +6344,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6426,29 +6378,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6462,29 +6412,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6498,29 +6446,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6535,29 +6481,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6572,29 +6516,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6609,29 +6551,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6646,29 +6586,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6683,29 +6621,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6720,29 +6656,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6757,29 +6691,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6794,29 +6726,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6831,29 +6761,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "London Broncos",
@@ -6868,29 +6796,27 @@
       ],
       "qualityScore": 0,
       "playersKept": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
+        "Alex Walker",
+        "Jimmy Meadows",
+        "Sam Davis",
         "Sadiq Adebiyi"
       ],
       "missingFromDatabase": [
-        "Morea Morea",
-        "[[Alex Walker (rugby league)",
-        "[[Robert Mathias (rugby league)",
+        "Robert Mathias",
         "Alex Max",
         "Brandon Webster-Mansfield",
-        "[[Ted Davidson (rugby league)",
-        "Gairo Voro",
-        "Connor OBeirne",
-        "Dean Hawkins",
-        "[[Jimmy Meadows (rugby league)",
-        "[[Sam Davis (rugby league)",
-        "Finley Glare",
-        "Tommy Porter"
+        "Ted Davidson",
+        "Gairo Voro"
       ],
-      "reason": "Could not map 13 database players (1/13)"
+      "reason": "Could not map 13 database players (4/13)"
     },
     {
       "club": "Salford Red Devils",
@@ -7019,7 +6945,7 @@
         "Niall Evalds",
         "Krisnan Inu",
         "Dan Sarginson",
-        "Tui Lolohea",
+        "Kevin Brown",
         "Chris Atkin",
         "Joey Lussick",
         "Luke Yates"
@@ -7030,7 +6956,7 @@
         "Niall Evalds",
         "Krisnan Inu",
         "Dan Sarginson",
-        "Tui Lolohea",
+        "Kevin Brown",
         "Chris Atkin",
         "Joey Lussick",
         "Luke Yates"
@@ -7112,38 +7038,39 @@
       "wikipediaPages": [
         "2015 Salford Red Devils season"
       ],
-      "qualityScore": 252,
+      "qualityScore": 0,
       "playersKept": [
         "Niall Evalds",
-        "Greg Johnson",
         "Ben Jones-Bishop",
+        "Greg Johnson",
         "Oliver Gildart",
+        "Iain Thornley",
         "Rangi Chase",
         "Josh Wood",
         "Olsi Krasniqi",
         "Liam Hood",
         "Jake Bibby",
+        "Reni Maitua",
         "James Greenwood"
       ],
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
         "Niall Evalds",
-        "Greg Johnson",
         "Ben Jones-Bishop",
+        "Greg Johnson",
         "Oliver Gildart",
+        "Ian Thornley",
         "Rangi Chase",
         "Josh Wood",
         "Olsi Krasniqi",
         "Liam Hood",
         "Jake Bibby",
+        "Reni Maitua",
         "James Greenwood"
       ],
-      "missingFromDatabase": [
-        "Ian Thornley",
-        "Reni Maitua"
-      ],
-      "reason": "Could not map 13 database players (10/13)"
+      "missingFromDatabase": [],
+      "reason": "Could not map 13 database players (12/13)"
     },
     {
       "club": "Salford Red Devils",
@@ -7155,49 +7082,39 @@
       "wikipediaPages": [
         "2014 Salford Red Devils season"
       ],
-      "qualityScore": 66905,
+      "qualityScore": 0,
       "playersKept": [
         "Greg Eden",
-        "Francis Meli",
         "Danny Williams",
+        "Francis Meli",
         "Martin Gleeson",
         "Junior Sa'u",
         "Rangi Chase",
         "Théo Fages",
         "Adrian Morley",
         "Darrell Griffin",
-        "Logan Tomkins",
+        "Tommy Lee",
         "Tony Puletua",
         "Gareth Hock",
         "Andrew Dixon"
       ],
-      "playersRemoved": [],
+      "playersRemoved": [
+        "Logan Tomkins"
+      ],
       "playersAdded": [
-        "Greg Eden",
-        "Francis Meli",
-        "Danny Williams",
-        "Martin Gleeson",
-        "Junior Sa'u",
-        "Rangi Chase",
-        "Théo Fages",
-        "Adrian Morley",
-        "Darrell Griffin",
-        "Logan Tomkins",
-        "Tony Puletua",
-        "Gareth Hock",
-        "Andrew Dixon"
+        "Tommy Lee"
       ],
       "wikipediaPlayers": [
         "Greg Eden",
-        "Francis Meli",
         "Danny Williams",
+        "Francis Meli",
         "Martin Gleeson",
         "Junior Sau",
         "Rangi Chase",
         "Theo Fages",
         "Adrian Morley",
         "Darrell Griffin",
-        "Logan Tomkins",
+        "Tommy Lee",
         "Tony Puletua",
         "Gareth Hock",
         "Andrew Dixon"
@@ -7271,9 +7188,9 @@
     {
       "club": "Salford Red Devils",
       "year": "2009",
-      "status": "removed",
-      "complete": false,
-      "removed": true,
+      "status": "complete",
+      "complete": true,
+      "removed": false,
       "source": "https://en.wikipedia.org/wiki/2009_Salford_City_Reds_season",
       "wikipediaPages": [
         "2009 Salford City Reds season"
@@ -7282,8 +7199,9 @@
       "playersKept": [
         "Karl Fitzpatrick",
         "Paul White",
-        "Willie Talau",
+        "John Wilshire",
         "Mark Henry",
+        "Willie Talau",
         "Jeremy Smith",
         "Robbie Hunter-Paul",
         "Ray Cashmere",
@@ -7298,8 +7216,9 @@
       "wikipediaPlayers": [
         "Karl Fitzpatrick",
         "Paul White",
-        "Willie Talau",
+        "John Wilshire",
         "Mark Henry",
+        "Willie Talau",
         "Jeremy Smith",
         "Robbie Paul",
         "Ray Cashmere",
@@ -7309,11 +7228,7 @@
         "Luke Adamson",
         "Jordan Turner"
       ],
-      "missingFromDatabase": [
-        "John Wilshire",
-        "Andrew Thornley"
-      ],
-      "reason": "Could not map 13 database players (12/13)"
+      "missingFromDatabase": []
     },
     {
       "club": "Salford Red Devils",
@@ -9225,9 +9140,10 @@
         "Max Jowitt",
         "Bill Tupou",
         "Reece Lyne",
+        "Jacob Miller",
         "Mason Lino",
         "Liam Hood",
-        "Jordan Crowther"
+        "James Batchelor"
       ],
       "playersRemoved": [],
       "playersAdded": [],
@@ -9235,15 +9151,13 @@
         "Max Jowitt",
         "Bill Tupou",
         "Reece Lyne",
+        "Jacob Miller",
         "Mason Lino",
         "Liam Hood",
-        "Jordan Crowther"
+        "James Batchelor"
       ],
-      "missingFromDatabase": [
-        "[[Jacob Miller (rugby league)",
-        "[[Brad Walker (rugby league)"
-      ],
-      "reason": "Could not map 13 database players (6/13)"
+      "missingFromDatabase": [],
+      "reason": "Could not map 13 database players (7/13)"
     },
     {
       "club": "Wakefield Trinity",
@@ -9436,15 +9350,15 @@
         "Matt Blaymire",
         "Luke George",
         "Damien Blanch",
-        "Sean Gleeson",
+        "Aaron Murphy",
         "Daryl Millard",
         "Ben Jeffries",
         "Paul Cooke",
         "Paul King",
         "Michael Korkidas",
         "Sam Obst",
-        "Glenn Morrison",
         "Paul Johnson",
+        "Glenn Morrison",
         "Jason Demetriou"
       ],
       "playersRemoved": [],
@@ -9453,15 +9367,15 @@
         "Matt Blaymire",
         "Luke George",
         "Damien Blanch",
-        "Sean Gleeson",
+        "Aaron Murphy",
         "Daryl Millard",
         "Ben Jeffries",
         "Paul Cooke",
         "Paul King",
         "Michael Korkidas",
         "Sam Obst",
-        "Glenn Morrison",
         "Paul Johnson",
+        "Glenn Morrison",
         "Jason Demetriou"
       ],
       "missingFromDatabase": []
@@ -9481,13 +9395,14 @@
         "Matt Blaymire",
         "Luke George",
         "Damien Blanch",
+        "Aaron Murphy",
         "Ryan Atkins",
-        "Sean Gleeson",
         "Jamie Rooney",
         "Danny Brough",
         "Danny Sculthorpe",
         "Ricky Bibey",
         "Sam Obst",
+        "Steve Snitch",
         "Oliver Wilkes"
       ],
       "playersRemoved": [],
@@ -9496,19 +9411,18 @@
         "Matt Blaymire",
         "Luke George",
         "Damien Blanch",
+        "Aaron Murphy",
         "Ryan Atkins",
-        "Sean Gleeson",
         "Jamie Rooney",
         "Danny Brough",
         "Danny Sculthorpe",
         "Ricky Bibey",
         "Sam Obst",
+        "Stephen  Snitch",
         "Oliver Wilkes"
       ],
-      "missingFromDatabase": [
-        "Stephen \"Steve\" Snitch"
-      ],
-      "reason": "Could not map 13 database players (11/13)"
+      "missingFromDatabase": [],
+      "reason": "Could not map 13 database players (12/13)"
     },
     {
       "club": "Wakefield Trinity",
@@ -9916,16 +9830,12 @@
         "Chris Hill",
         "Ashton Sims",
         "Daryl Clark",
-        "George King",
         "Ben Currie",
+        "George King",
         "Ben Westwood"
       ],
-      "playersRemoved": [
-        "Ryan Bailey"
-      ],
-      "playersAdded": [
-        "Chris Hill"
-      ],
+      "playersRemoved": [],
+      "playersAdded": [],
       "wikipediaPlayers": [
         "Kurt Gidley",
         "Tom Lineham",
@@ -9937,8 +9847,8 @@
         "Chris Hill",
         "Ashton Sims",
         "Daryl Clark",
-        "George King",
         "Ben Currie",
+        "George King",
         "Ben Westwood"
       ],
       "missingFromDatabase": []
@@ -9966,11 +9876,15 @@
         "Anthony England",
         "Daryl Clark",
         "Ben Westwood",
-        "Roy Asotasi",
+        "Ben Currie",
         "Ben Harrison"
       ],
-      "playersRemoved": [],
-      "playersAdded": [],
+      "playersRemoved": [
+        "Roy Asotasi"
+      ],
+      "playersAdded": [
+        "Ben Currie"
+      ],
       "wikipediaPlayers": [
         "Matty Russell",
         "Joel Monaghan",
@@ -9983,7 +9897,7 @@
         "Anthony England",
         "Daryl Clark",
         "Ben Westwood",
-        "Roy Asotasi",
+        "Ben Currie",
         "Ben Harrison"
       ],
       "missingFromDatabase": []
@@ -10645,8 +10559,8 @@
       "qualityScore": 44261,
       "playersKept": [
         "Shaun Briscoe",
-        "Patrick Ah Van",
         "Dean Gaskell",
+        "Matt Gardner",
         "Chris Dean",
         "Willie Isa",
         "Lloyd White",
@@ -10659,8 +10573,8 @@
       "playersAdded": [],
       "wikipediaPlayers": [
         "Shaun Briscoe",
-        "Patrick Ah Van",
         "Dean Gaskell",
+        "Matt Gardner",
         "Chris Dean",
         "Willie Isa",
         "Lloyd White",
@@ -11043,9 +10957,9 @@
         "Bevan French",
         "Zak Hardaker",
         "Iain Thornley",
-        "Thomas Leuluai",
+        "Jai Field",
         "Cade Cust",
-        "Kaide Ellis"
+        "Matty Nicholson"
       ],
       "playersRemoved": [],
       "playersAdded": [],
@@ -11053,9 +10967,9 @@
         "Bevan French",
         "Zak Hardaker",
         "Iain Thornley",
-        "Thomas Leuluai",
+        "Jai Field",
         "Cade Cust",
-        "Kaide Ellis"
+        "Matty Nicholson"
       ],
       "missingFromDatabase": [],
       "reason": "Could not map 13 database players (6/13)"
@@ -11075,7 +10989,7 @@
         "Bevan French",
         "Oliver Gildart",
         "Zak Hardaker",
-        "Thomas Leuluai",
+        "Jai Field",
         "Jackson Hastings",
         "Sam Powell",
         "Joe Shorrocks"
@@ -11086,7 +11000,7 @@
         "Bevan French",
         "Oliver Gildart",
         "Zak Hardaker",
-        "Thomas Leuluai",
+        "Jai Field",
         "Jackson Hastings",
         "Sam Powell",
         "Joe Shorrocks"
@@ -11222,10 +11136,10 @@
         "Sean O'Loughlin"
       ],
       "playersRemoved": [
-        "Taulima Tautai"
+        "Joel Tomkins"
       ],
       "playersAdded": [
-        "Sean O'Loughlin"
+        "Joel Tomkins"
       ],
       "wikipediaPlayers": [
         "Sam Tomkins",
@@ -11270,8 +11184,12 @@
         "Liam Farrell",
         "Sean O'Loughlin"
       ],
-      "playersRemoved": [],
-      "playersAdded": [],
+      "playersRemoved": [
+        "Joel Tomkins"
+      ],
+      "playersAdded": [
+        "Joel Tomkins"
+      ],
       "wikipediaPlayers": [
         "Ryan Hampshire",
         "Josh Charnley",
@@ -11439,10 +11357,10 @@
       ],
       "qualityScore": 0,
       "playersKept": [
-        "Pat Richards",
         "Mark Calderwood",
-        "David Vaealiki",
+        "Pat Richards",
         "Phil Bailey",
+        "David Vaealiki",
         "Trent Barrett",
         "Thomas Leuluai",
         "Michael McIlorum",
@@ -11451,10 +11369,10 @@
       "playersRemoved": [],
       "playersAdded": [],
       "wikipediaPlayers": [
-        "Pat Richards",
         "Mark Calderwood",
-        "David Vaealiki",
+        "Pat Richards",
         "Phil Bailey",
+        "David Vaealiki",
         "Trent Barrett",
         "Thomas Leuluai",
         "Michael McIlorum",

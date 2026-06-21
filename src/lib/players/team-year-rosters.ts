@@ -54,7 +54,7 @@ export function getRosterPlayerIds(team: string, year: string): string[] {
 export function hasTeamYearRoster(team: string, year: string): boolean {
   const ids = TEAM_YEAR_ROSTERS[team]?.[year] ?? [];
   const { getPlayerById } = require("./index") as typeof import("./index");
-  return isPlayableTeamYearRoster(ids, getPlayerById);
+  return isPlayableTeamYearRoster(team, year, ids, getPlayerById);
 }
 
 /** Raw roster exists (any count) — for data tooling, not gameplay pools. */

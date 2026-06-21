@@ -59,6 +59,7 @@ const POSITION_MAP: Record<string, Position> = {
   lock: "SECOND_ROW",
   "loose forward": "LOOSE_FORWARD",
   "loose-forward": "LOOSE_FORWARD",
+  loose: "LOOSE_FORWARD",
   "back row": "LOOSE_FORWARD",
   utility: "CENTRE",
 };
@@ -101,6 +102,10 @@ const WIKI_NAME_ALIASES: Record<string, string> = {
   "dennis moran": "denis moran",
   "jamie jones buchanan": "jamie jones-buchanan",
   "jamie jones-buchanan": "jamie jones buchanan",
+  "ian thornley": "iain thornley",
+  "iain thornley": "ian thornley",
+  "stephen snitch": "steve snitch",
+  "stephen steve snitch": "steve snitch",
 };
 
 export function getPlayerNameLookupKeys(wikiName: string): string[] {
@@ -181,14 +186,22 @@ export function getSeasonPageTitleCandidates(
   return [...titles];
 }
 
+function stripWikiLinkArtifacts(name: string): string {
+  return name
+    .replace(/\{\{[^}]+\}\}/g, "")
+    .replace(/\[\[([^|\]#]+)(?:\|([^\]]+))?\]\]/g, (_, link, label) => label ?? link)
+    .replace(/^\[\[/, "")
+    .replace(/\]\]?$/, "")
+    .replace(/\([^)]*rugby league[^)]*\)/gi, "")
+    .replace(/[‡†]+/g, "")
+    .replace(/\d+$/g, "")
+    .replace(/"[^"]*"/g, "")
+    .replace(/<[^>]+>/g, "")
+    .trim();
+}
+
 function normalizeWikiName(name: string): string {
-  let key = normalizePlayerNameKey(
-    name
-      .replace(/\{\{[^}]+\}\}/g, "")
-      .replace(/\[\[([^|\]]+)(?:\|[^\]]+)?\]\]/g, "$1")
-      .replace(/<[^>]+>/g, "")
-      .trim()
-  );
+  const key = normalizePlayerNameKey(stripWikiLinkArtifacts(name));
   return WIKI_NAME_ALIASES[key] ?? key;
 }
 
@@ -208,14 +221,9 @@ function parseNumber(value: string | undefined): number {
 }
 
 function cleanCell(value: string): string {
-  return value
-    .replace(/align\s*=\s*(?:center|centre|left|right)\s*\|/gi, "")
-    .replace(/\{\{[^}]+\}\}/g, "")
-    .replace(/\[\[[^|\]]+\|([^\]]+)\]\]/g, "$1")
-    .replace(/\[\[([^|\]]+)\]\]/g, "$1")
-    .replace(/<[^>]+>/g, "")
-    .replace(/'/g, "")
-    .trim();
+  return stripWikiLinkArtifacts(
+    value.replace(/align\s*=\s*(?:center|centre|left|right)\s*\|/gi, "").replace(/'/g, "")
+  );
 }
 
 function extractWikiLinkName(raw: string): string {

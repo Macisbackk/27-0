@@ -15,6 +15,7 @@ import { normalizePlayer } from "../src/lib/players/normalize";
 import {
   isPlayableTeamYearRoster,
   MIN_TEAM_YEAR_ROSTER_PLAYERS,
+  getTeamYearRecruitPosition,
 } from "../src/lib/players/team-year-roster-playable";
 import { getRecruitListPositionsForSlot } from "../src/lib/game/position-placement";
 import { SQUAD_STRUCTURE } from "../src/lib/positions";
@@ -137,7 +138,7 @@ function auditRosters(
       (a, b) => Number(a) - Number(b)
     )) {
       const ids = rosters[team][year]!;
-      if (isPlayableTeamYearRoster(ids, resolve)) {
+      if (isPlayableTeamYearRoster(team, year, ids, resolve)) {
         playable.push({ team, year, count: ids.length });
         continue;
       }
@@ -151,7 +152,9 @@ function auditRosters(
           .filter((p): p is Player => !!p);
         for (const { position, count } of SQUAD_STRUCTURE) {
           const allowed = new Set(getRecruitListPositionsForSlot(position));
-          const matching = players.filter((p) => allowed.has(p.position)).length;
+          const matching = players.filter((p) =>
+            allowed.has(getTeamYearRecruitPosition(team, year, p))
+          ).length;
           if (matching < count) {
             reason = `missing ${position} coverage (${matching}/${count})`;
             break;

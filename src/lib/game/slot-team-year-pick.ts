@@ -11,6 +11,7 @@ import {
   getPlacementPenalty,
   getRecruitListPositionsForSlot,
 } from "./position-placement";
+import { getTeamYearRecruitPosition } from "../players/team-year-roster-playable";
 import {
   buildSlotRevealTarget,
   getTeamSpinPool,
@@ -55,7 +56,9 @@ export function placeSlotRecruitPlayerAtSlot(
   warnTeamYearPoolLeak(prepared, target);
 
   const allowed = new Set(getRecruitListPositionsForSlot(slot.position));
-  if (!allowed.has(prepared.position)) return null;
+  if (!allowed.has(getTeamYearRecruitPosition(target.team, target.year, prepared))) {
+    return null;
+  }
 
   const penalty = getPlacementPenalty(prepared.position, slot.position);
   return signPlayerToSlot(squad, prepared, slotIndex, penalty);
@@ -95,11 +98,15 @@ export function preparePlayerForTeamYear(
 
 function sortPlayersForRecruitSlot(
   entries: SlotTeamYearPlayer[],
-  slotPosition: Position
+  slotPosition: Position,
+  team: string,
+  year: string
 ): SlotTeamYearPlayer[] {
   return entries.sort((a, b) => {
-    const aNatural = a.player.position === slotPosition;
-    const bNatural = b.player.position === slotPosition;
+    const aPos = getTeamYearRecruitPosition(team, year, a.player);
+    const bPos = getTeamYearRecruitPosition(team, year, b.player);
+    const aNatural = aPos === slotPosition;
+    const bNatural = bPos === slotPosition;
     if (aNatural !== bNatural) return aNatural ? -1 : 1;
     return b.player.peakRating - a.player.peakRating;
   });
@@ -126,7 +133,9 @@ export function prepareSlotTeamYearPlayers(
       (player) =>
         isPlayerInTeamYearPool(player.id, pool) &&
         !usedIds.has(player.id) &&
-        allowedPositions.has(player.position)
+        allowedPositions.has(
+          getTeamYearRecruitPosition(target.team, target.year, player)
+        )
     )
     .map((player) => {
       const prepared = preparePlayerForTeamYear(player, target);
@@ -134,7 +143,7 @@ export function prepareSlotTeamYearPlayers(
       return { player: prepared };
     });
 
-  return sortPlayersForRecruitSlot(entries, slot.position);
+  return sortPlayersForRecruitSlot(entries, slot.position, target.team, target.year);
 }
 
 function poolHasEligiblePlayers(
@@ -203,7 +212,9 @@ function eligiblePlayersForSlot(
     (player) =>
       isPlayerInTeamYearPool(player.id, pool) &&
       !usedIds.has(player.id) &&
-      allowedPositions.has(player.position)
+      allowedPositions.has(
+        getTeamYearRecruitPosition(pool.team, pool.year, player)
+      )
   );
 }
 
