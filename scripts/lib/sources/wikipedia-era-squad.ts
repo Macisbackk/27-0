@@ -21,6 +21,8 @@ export interface WikipediaSquadMember {
   points: number;
   appearances: number;
   sourcePage?: string;
+  /** Wikipedia squad template jersey number (1–13 = typical starting XIII). */
+  squadNumber?: number;
 }
 
 export interface WikipediaEraSquadResult {
@@ -39,6 +41,8 @@ const POSITION_MAP: Record<string, Position> = {
   wing: "WING",
   winger: "WING",
   wings: "WING",
+  "outside back": "WING",
+  "outside backs": "WING",
   centre: "CENTRE",
   center: "CENTRE",
   centres: "CENTRE",
@@ -86,10 +90,13 @@ const SQUAD_TEMPLATE_POS: Record<string, Position> = {
   hooker: "HOOKER",
   sr1: "SECOND_ROW",
   sr2: "SECOND_ROW",
+  sr: "SECOND_ROW",
   "second row": "SECOND_ROW",
   lf: "LOOSE_FORWARD",
   lock: "LOOSE_FORWARD",
   "loose forward": "LOOSE_FORWARD",
+  wg: "WING",
+  pr: "PROP",
 };
 
 const WIKI_NAME_ALIASES: Record<string, string> = {
@@ -106,6 +113,11 @@ const WIKI_NAME_ALIASES: Record<string, string> = {
   "iain thornley": "ian thornley",
   "stephen snitch": "steve snitch",
   "stephen steve snitch": "steve snitch",
+  "thomas makinson": "tommy makinson",
+  "tom makinson": "tommy makinson",
+  "iosia soliola": "sia soliola",
+  "sia soliola": "iosia soliola",
+  "matty dawson": "matty dawson-jones",
 };
 
 export function getPlayerNameLookupKeys(wikiName: string): string[] {
@@ -140,8 +152,15 @@ export function getWikiClubNameCandidates(club: string, year: number): string[] 
       names.add("Hull F.C.");
       break;
     case "St Helens":
+      names.add("St Helens R.F.C.");
+      names.add("St Helens Saints");
       names.add("St Helens");
       names.add("St Helens RLFC");
+      break;
+    case "Hull KR":
+      names.add("Hull Kingston Rovers");
+      names.add("Hull K.R.");
+      names.add("Hull KR");
       break;
     case "Catalans Dragons":
       names.add("Catalans Dragons");
@@ -192,7 +211,8 @@ function stripWikiLinkArtifacts(name: string): string {
     .replace(/\[\[([^|\]#]+)(?:\|([^\]]+))?\]\]/g, (_, link, label) => label ?? link)
     .replace(/^\[\[/, "")
     .replace(/\]\]?$/, "")
-    .replace(/\([^)]*rugby league[^)]*\)/gi, "")
+    .replace(/\{\{flagicon[^}]*\}\}/gi, "")
+    .replace(/\d+px\s*/g, "")
     .replace(/[‡†]+/g, "")
     .replace(/\d+$/g, "")
     .replace(/"[^"]*"/g, "")
@@ -243,6 +263,8 @@ function isHeaderRow(cells: string[]): boolean {
 }
 
 function extractPositionLabel(raw: string): string {
+  const rlp = raw.match(/\{\{rlp\|([^}|]+)/i);
+  if (rlp) return rlp[1];
   const linkMatch = raw.match(/\[\[[^\]]*#([^|\]]+)\|([^\]]+)\]\]/i);
   if (linkMatch) return linkMatch[2];
   const simpleLink = raw.match(/\[\[([^|\]]+)(?:\|[^\]]+)?\]\]/);
@@ -275,6 +297,7 @@ function makeMember(
     points,
     appearances: stats.appearances ?? tries + goals + dropGoals,
     sourcePage,
+    squadNumber: stats.squadNumber,
   };
 }
 
@@ -350,7 +373,7 @@ function parseWikitableRows(section: string, sourcePage?: string): WikipediaSqua
       }
     }
 
-    if (!name || /squad|coach|staff|updated|source|width|align/i.test(name)) continue;
+    if (!name || /^[\s}]+$/i.test(name) || /squad|coach|staff|updated|source|width|align/i.test(name)) continue;
 
     const mappedPosition = mapWikiPosition(position);
     if (!mappedPosition) continue;
@@ -492,6 +515,32 @@ function parseSquadBulletLists(section: string, sourcePage?: string): WikipediaS
   return members;
 }
 
+function parseRlsPlayerTemplates(wikitext: string, sourcePage?: string): WikipediaSquadMember[] {
+  const members: WikipediaSquadMember[] = [];
+  const regex = /\{\{Rls player[^}]*\}\}/gi;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(wikitext)) !== null) {
+    const body = match[0];
+    const nameMatch = body.match(/\|name\s*=\s*([^\n|]+)/i);
+    const posMatch = body.match(/\|pos\s*=\s*([^\n|]+)/i);
+    const noMatch = body.match(/\|no\s*=\s*(\d+)/i);
+    if (!nameMatch || !posMatch) continue;
+
+    const name = extractWikiLinkName(nameMatch[1]);
+    const posLabel = posMatch[1].trim();
+    const mapped =
+      SQUAD_TEMPLATE_POS[posLabel.toLowerCase()] ?? mapWikiPosition(posLabel);
+    if (!name || !mapped) continue;
+    const squadNumber = noMatch ? Number.parseInt(noMatch[1], 10) : undefined;
+    members.push(
+      makeMember(name, posLabel, mapped, { squadNumber }, sourcePage)
+    );
+  }
+
+  return members;
+}
+
 function parsePlayerListTemplates(wikitext: string, sourcePage?: string): WikipediaSquadMember[] {
   const members: WikipediaSquadMember[] = [];
   const regex = /\{\{rugby\s+league\s+squad\s+player[^}]*\}\}/gi;
@@ -522,7 +571,14 @@ export function parseSquadFromWikitext(
   const fromTemplate = parseRugbyLeagueSquadTemplate(wikitext, sourcePage);
   const fromBullets = parseSquadBulletLists(section, sourcePage);
   const fromPlayerTemplates = parsePlayerListTemplates(wikitext, sourcePage);
-  return mergeSquadMembers([fromTable, fromTemplate, fromBullets, fromPlayerTemplates]);
+  const fromRlsTemplates = parseRlsPlayerTemplates(section, sourcePage);
+  return mergeSquadMembers([
+    fromTable,
+    fromTemplate,
+    fromBullets,
+    fromPlayerTemplates,
+    fromRlsTemplates,
+  ]);
 }
 
 function extractSquadSection(wikitext: string, year: number): string {

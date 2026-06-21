@@ -27,6 +27,7 @@
     "build:era-wikipedia-squads": "tsx scripts/build-era-wikipedia-squads.ts",
     "build:team-year-rosters": "tsx scripts/generate-team-year-rosters.ts",
     "add:era-near-miss-players": "tsx scripts/add-era-near-miss-players.ts",
+    "add:sl-era-year-cards": "tsx scripts/apply-sl-era-year-cards.ts",
     "enrich:wikipedia-birth": "tsx scripts/enrich-wikipedia-birth-years.ts",
     "enrich:wikipedia-birth:current": "tsx scripts/enrich-wikipedia-birth-years.ts --current-only",
     "validate:ages": "tsx scripts/validate-ages.ts",

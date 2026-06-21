@@ -107,25 +107,73 @@ export async function searchWikipediaTitles(
   return data?.[1] ?? [];
 }
 
+function extractRedirectTarget(wikitext: string): string | null {
+  const match = wikitext.match(/^#REDIRECT\s*\[\[([^\]|#]+)/i);
+  return match?.[1]?.trim() ?? null;
+}
+
+async function resolveWikiTitle(title: string): Promise<string> {
+  type QueryResult = {
+    query?: {
+      pages?: Record<string, { title?: string; missing?: string }>;
+    };
+  };
+  const data = await wikiGet<QueryResult>({
+    action: "query",
+    titles: title,
+    redirects: "1",
+  });
+  if (!data?.query?.pages) return title;
+  const page = Object.values(data.query.pages).find((p) => !p.missing);
+  return page?.title ?? title;
+}
+
 export async function fetchWikitext(
   title: string,
-  cacheDir?: string
+  cacheDir?: string,
+  redirectDepth = 0
 ): Promise<string | null> {
+  if (redirectDepth > 3) return null;
+
   const cacheKey = sanitizeCacheKey(title);
   if (cacheDir) {
-    const cached = readCache<{ wikitext: string }>(cacheDir, cacheKey);
-    if (cached?.wikitext) return cached.wikitext;
+    const cached = readCache<{ wikitext: string; resolvedTitle?: string }>(
+      cacheDir,
+      cacheKey
+    );
+    if (cached?.wikitext) {
+      const redirectTarget = extractRedirectTarget(cached.wikitext);
+      if (redirectTarget) {
+        return fetchWikitext(redirectTarget, cacheDir, redirectDepth + 1);
+      }
+      return cached.wikitext;
+    }
   }
+
+  const resolvedTitle = await resolveWikiTitle(title);
 
   type ParseResult = { parse?: { wikitext?: { "*": string } } };
   const data = await wikiGet<ParseResult>({
     action: "parse",
-    page: title,
+    page: resolvedTitle,
     prop: "wikitext",
+    redirects: "1",
   });
-  const wikitext = data?.parse?.wikitext?.["*"] ?? null;
-  if (wikitext && cacheDir) {
-    writeCache(cacheDir, cacheKey, { title, wikitext, fetchedAt: new Date().toISOString() });
+  let wikitext = data?.parse?.wikitext?.["*"] ?? null;
+  if (!wikitext) return null;
+
+  const redirectTarget = extractRedirectTarget(wikitext);
+  if (redirectTarget) {
+    return fetchWikitext(redirectTarget, cacheDir, redirectDepth + 1);
+  }
+
+  if (cacheDir) {
+    writeCache(cacheDir, cacheKey, {
+      title,
+      resolvedTitle,
+      wikitext,
+      fetchedAt: new Date().toISOString(),
+    });
   }
   return wikitext;
 }

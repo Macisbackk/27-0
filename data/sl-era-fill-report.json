@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-06-21T13:04:25.844Z",
+  "teamsCompleted": [
+    "Catalans Dragons 2008",
+    "Leeds Rhinos 2015",
+    "London Broncos 2018",
+    "Salford Red Devils 2015",
+    "Wakefield Trinity 2009",
+    "Wigan Warriors 2006",
+    "Wigan Warriors 2008"
+  ],
+  "playersAdded": [
+    "wakefield-hist-danny-sculthorpe-2009",
+    "wigan-hist-cameron-phelps-2008"
+  ],
+  "playersUpdated": [],
+  "positionsCorrected": [
+    "wigan-hist-cameron-phelps-2008: Centre → CENTRE"
+  ],
+  "teamsSkippedNotSuperLeague": [
+    "Bradford Bulls 2018",
+    "Bradford Bulls 2020"
+  ],
+  "teamsStillIncomplete": [],
+  "sourcesUsed": [
+    "Catalans Dragons 2008: https://en.wikipedia.org/wiki/2008_Catalans_Dragons_season",
+    "Leeds Rhinos 2015: https://en.wikipedia.org/wiki/2015_Leeds_Rhinos_season",
+    "London Broncos 2018: https://en.wikipedia.org/wiki/2018_London_Broncos_season",
+    "Salford Red Devils 2015: https://en.wikipedia.org/wiki/2015_Salford_Red_Devils_season",
+    "Wakefield Trinity 2009: https://en.wikipedia.org/wiki/2009_Wakefield_Trinity_Wildcats_season",
+    "Wigan Warriors 2006: https://en.wikipedia.org/wiki/2006_Wigan_Warriors_season",
+    "Wigan Warriors 2008: https://en.wikipedia.org/wiki/2008_Wigan_Warriors_season"
+  ]
+}

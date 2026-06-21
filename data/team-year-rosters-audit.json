@@ -1,33 +1,14 @@
 {
-  "generatedAt": "2026-06-21T07:26:38.529Z",
+  "generatedAt": "2026-06-21T16:33:16.042Z",
   "sources": [
-    "Player yearsActive spans (current-squads, historic-players, legends)",
-    "Wikipedia-verified Era squads (era-wikipedia-squads.json)"
+    "Player yearsActive spans (Super League 1996+, current-squads, historic-players, legends)",
+    "Wikipedia-verified Era squads (era-wikipedia-squads.json)",
+    "Manual SL verified squads (sl-era-verified-squads.json)"
   ],
   "minPlayers": 13,
-  "playableCount": 377,
-  "incompleteCount": 226,
+  "playableCount": 368,
+  "incompleteCount": 74,
   "playable": [
-    {
-      "team": "Bradford Bulls",
-      "year": "1992",
-      "count": 25
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1993",
-      "count": 25
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1994",
-      "count": 31
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1995",
-      "count": 33
-    },
     {
       "team": "Bradford Bulls",
       "year": "1996",
@@ -36,52 +17,52 @@
     {
       "team": "Bradford Bulls",
       "year": "1997",
-      "count": 40
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "1998",
-      "count": 47
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "1999",
-      "count": 52
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2000",
-      "count": 53
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2001",
-      "count": 57
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2002",
-      "count": 58
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2003",
-      "count": 59
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2004",
-      "count": 61
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2005",
-      "count": 59
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2006",
-      "count": 57
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
@@ -96,7 +77,7 @@
     {
       "team": "Bradford Bulls",
       "year": "2009",
-      "count": 53
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
@@ -106,22 +87,22 @@
     {
       "team": "Bradford Bulls",
       "year": "2011",
-      "count": 49
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2012",
-      "count": 47
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2013",
-      "count": 41
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2014",
-      "count": 43
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
@@ -146,7 +127,7 @@
     {
       "team": "Bradford Bulls",
       "year": "2019",
-      "count": 49
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
@@ -156,22 +137,22 @@
     {
       "team": "Bradford Bulls",
       "year": "2021",
-      "count": 54
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2022",
-      "count": 48
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2023",
-      "count": 44
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
       "year": "2024",
-      "count": 43
+      "count": 13
     },
     {
       "team": "Bradford Bulls",
@@ -182,31 +163,6 @@
       "team": "Bradford Bulls",
       "year": "2026",
       "count": 32
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1991",
-      "count": 20
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1992",
-      "count": 25
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1993",
-      "count": 27
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1994",
-      "count": 30
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1995",
-      "count": 30
     },
     {
       "team": "Castleford Tigers",
@@ -276,7 +232,7 @@
     {
       "team": "Castleford Tigers",
       "year": "2009",
-      "count": 62
+      "count": 13
     },
     {
       "team": "Castleford Tigers",
@@ -291,7 +247,7 @@
     {
       "team": "Castleford Tigers",
       "year": "2012",
-      "count": 58
+      "count": 13
     },
     {
       "team": "Castleford Tigers",
@@ -311,7 +267,7 @@
     {
       "team": "Castleford Tigers",
       "year": "2016",
-      "count": 50
+      "count": 13
     },
     {
       "team": "Castleford Tigers",
@@ -396,42 +352,42 @@
     {
       "team": "Catalans Dragons",
       "year": "2006",
-      "count": 58
+      "count": 13
     },
     {
       "team": "Catalans Dragons",
       "year": "2007",
-      "count": 54
+      "count": 13
     },
     {
       "team": "Catalans Dragons",
       "year": "2008",
-      "count": 61
+      "count": 13
     },
     {
       "team": "Catalans Dragons",
       "year": "2009",
-      "count": 61
+      "count": 13
     },
     {
       "team": "Catalans Dragons",
       "year": "2010",
-      "count": 59
+      "count": 13
     },
     {
       "team": "Catalans Dragons",
       "year": "2011",
-      "count": 61
+      "count": 13
     },
     {
       "team": "Catalans Dragons",
       "year": "2012",
-      "count": 60
+      "count": 13
     },
     {
       "team": "Catalans Dragons",
       "year": "2013",
-      "count": 60
+      "count": 13
     },
     {
       "team": "Catalans Dragons",
@@ -441,12 +397,12 @@
     {
       "team": "Catalans Dragons",
       "year": "2015",
-      "count": 60
+      "count": 13
     },
     {
       "team": "Catalans Dragons",
       "year": "2016",
-      "count": 55
+      "count": 13
     },
     {
       "team": "Catalans Dragons",
@@ -497,16 +453,6 @@
       "team": "Catalans Dragons",
       "year": "2026",
       "count": 43
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "1994",
-      "count": 24
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "1995",
-      "count": 28
     },
     {
       "team": "Huddersfield Giants",
@@ -596,7 +542,7 @@
     {
       "team": "Huddersfield Giants",
       "year": "2013",
-      "count": 60
+      "count": 13
     },
     {
       "team": "Huddersfield Giants",
@@ -662,31 +608,6 @@
       "team": "Huddersfield Giants",
       "year": "2026",
       "count": 36
-    },
-    {
-      "team": "Hull FC",
-      "year": "1991",
-      "count": 22
-    },
-    {
-      "team": "Hull FC",
-      "year": "1992",
-      "count": 28
-    },
-    {
-      "team": "Hull FC",
-      "year": "1993",
-      "count": 34
-    },
-    {
-      "team": "Hull FC",
-      "year": "1994",
-      "count": 38
-    },
-    {
-      "team": "Hull FC",
-      "year": "1995",
-      "count": 39
     },
     {
       "team": "Hull FC",
@@ -756,7 +677,7 @@
     {
       "team": "Hull FC",
       "year": "2009",
-      "count": 68
+      "count": 13
     },
     {
       "team": "Hull FC",
@@ -771,12 +692,12 @@
     {
       "team": "Hull FC",
       "year": "2012",
-      "count": 57
+      "count": 13
     },
     {
       "team": "Hull FC",
       "year": "2013",
-      "count": 56
+      "count": 13
     },
     {
       "team": "Hull FC",
@@ -911,7 +832,7 @@
     {
       "team": "Hull KR",
       "year": "2020",
-      "count": 44
+      "count": 13
     },
     {
       "team": "Hull KR",
@@ -942,51 +863,6 @@
       "team": "Hull KR",
       "year": "2026",
       "count": 36
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1987",
-      "count": 25
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1988",
-      "count": 28
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1989",
-      "count": 36
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1990",
-      "count": 43
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1991",
-      "count": 55
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1992",
-      "count": 64
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1993",
-      "count": 73
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1994",
-      "count": 80
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1995",
-      "count": 86
     },
     {
       "team": "Leeds Rhinos",
@@ -1051,12 +927,12 @@
     {
       "team": "Leeds Rhinos",
       "year": "2008",
-      "count": 124
+      "count": 13
     },
     {
       "team": "Leeds Rhinos",
       "year": "2009",
-      "count": 121
+      "count": 13
     },
     {
       "team": "Leeds Rhinos",
@@ -1076,7 +952,7 @@
     {
       "team": "Leeds Rhinos",
       "year": "2013",
-      "count": 81
+      "count": 13
     },
     {
       "team": "Leeds Rhinos",
@@ -1086,12 +962,12 @@
     {
       "team": "Leeds Rhinos",
       "year": "2015",
-      "count": 69
+      "count": 13
     },
     {
       "team": "Leeds Rhinos",
       "year": "2016",
-      "count": 75
+      "count": 13
     },
     {
       "team": "Leeds Rhinos",
@@ -1101,7 +977,7 @@
     {
       "team": "Leeds Rhinos",
       "year": "2018",
-      "count": 62
+      "count": 75
     },
     {
       "team": "Leeds Rhinos",
@@ -1142,31 +1018,6 @@
       "team": "Leeds Rhinos",
       "year": "2026",
       "count": 41
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1991",
-      "count": 29
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1992",
-      "count": 31
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1993",
-      "count": 33
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1994",
-      "count": 40
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1995",
-      "count": 46
     },
     {
       "team": "Leigh Leopards",
@@ -1266,7 +1117,7 @@
     {
       "team": "Leigh Leopards",
       "year": "2015",
-      "count": 67
+      "count": 80
     },
     {
       "team": "Leigh Leopards",
@@ -1310,6 +1161,11 @@
     },
     {
       "team": "London Broncos",
+      "year": "2018",
+      "count": 13
+    },
+    {
+      "team": "London Broncos",
       "year": "2019",
       "count": 13
     },
@@ -1321,6 +1177,11 @@
     {
       "team": "Salford Red Devils",
       "year": "2014",
+      "count": 13
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2015",
       "count": 13
     },
     {
@@ -1416,12 +1277,12 @@
     {
       "team": "St Helens",
       "year": "2014",
-      "count": 66
+      "count": 13
     },
     {
       "team": "St Helens",
       "year": "2015",
-      "count": 60
+      "count": 13
     },
     {
       "team": "St Helens",
@@ -1446,7 +1307,7 @@
     {
       "team": "St Helens",
       "year": "2020",
-      "count": 46
+      "count": 13
     },
     {
       "team": "St Helens",
@@ -1480,48 +1341,163 @@
     },
     {
       "team": "Toulouse Olympique",
+      "year": "1996",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "1997",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "1998",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "1999",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2000",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2001",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2002",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2003",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2004",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2005",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2006",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2007",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2008",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2009",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2010",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2011",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2012",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2013",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2014",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2015",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2016",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2017",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2018",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2019",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2020",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2021",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2022",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
+      "year": "2023",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
       "year": "2024",
-      "count": 30
+      "count": 13
     },
     {
       "team": "Toulouse Olympique",
       "year": "2025",
-      "count": 30
+      "count": 13
     },
     {
       "team": "Toulouse Olympique",
       "year": "2026",
-      "count": 30
+      "count": 13
     },
     {
-      "team": "Wakefield Trinity",
-      "year": "1990",
-      "count": 21
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1991",
-      "count": 25
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1992",
-      "count": 30
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1993",
-      "count": 35
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1994",
-      "count": 43
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1995",
-      "count": 53
+      "team": "Toulouse Olympique",
+      "year": "2027",
+      "count": 13
     },
     {
       "team": "Wakefield Trinity",
@@ -1591,12 +1567,12 @@
     {
       "team": "Wakefield Trinity",
       "year": "2009",
-      "count": 119
+      "count": 13
     },
     {
       "team": "Wakefield Trinity",
       "year": "2010",
-      "count": 122
+      "count": 13
     },
     {
       "team": "Wakefield Trinity",
@@ -1681,12 +1657,12 @@
     {
       "team": "Warrington Wolves",
       "year": "2015",
-      "count": 24
+      "count": 13
     },
     {
       "team": "Warrington Wolves",
       "year": "2016",
-      "count": 25
+      "count": 13
     },
     {
       "team": "Warrington Wolves",
@@ -1707,26 +1683,6 @@
       "team": "Widnes Vikings",
       "year": "2016",
       "count": 13
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "1992",
-      "count": 35
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "1993",
-      "count": 40
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "1994",
-      "count": 42
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "1995",
-      "count": 44
     },
     {
       "team": "Wigan Warriors",
@@ -1781,7 +1737,7 @@
     {
       "team": "Wigan Warriors",
       "year": "2006",
-      "count": 69
+      "count": 13
     },
     {
       "team": "Wigan Warriors",
@@ -1791,7 +1747,7 @@
     {
       "team": "Wigan Warriors",
       "year": "2008",
-      "count": 59
+      "count": 13
     },
     {
       "team": "Wigan Warriors",
@@ -1826,12 +1782,12 @@
     {
       "team": "Wigan Warriors",
       "year": "2015",
-      "count": 44
+      "count": 13
     },
     {
       "team": "Wigan Warriors",
       "year": "2016",
-      "count": 43
+      "count": 13
     },
     {
       "team": "Wigan Warriors",
@@ -1896,192 +1852,6 @@
   ],
   "incomplete": [
     {
-      "team": "Bradford Bulls",
-      "year": "1982",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1983",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1984",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1985",
-      "count": 4,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1986",
-      "count": 5,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1987",
-      "count": 9,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1988",
-      "count": 10,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1989",
-      "count": 15,
-      "reason": "missing WING coverage (1/2)"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1990",
-      "count": 22,
-      "reason": "missing WING coverage (1/2)"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1991",
-      "count": 22,
-      "reason": "missing WING coverage (1/2)"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1979",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1980",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1981",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1982",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1983",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1984",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1985",
-      "count": 4,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1986",
-      "count": 6,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1987",
-      "count": 10,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1988",
-      "count": 13,
-      "reason": "missing WING coverage (1/2)"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1989",
-      "count": 16,
-      "reason": "missing WING coverage (1/2)"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "1990",
-      "count": 17,
-      "reason": "missing CENTRE coverage (1/2)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "1987",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "1988",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "1989",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "1990",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "1991",
-      "count": 5,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "1992",
-      "count": 7,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "1993",
-      "count": 11,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "1994",
-      "count": 13,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "1995",
-      "count": 15,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
       "team": "Catalans Dragons",
       "year": "1996",
       "count": 18,
@@ -2106,148 +1876,10 @@
       "reason": "missing FULLBACK coverage (0/1)"
     },
     {
-      "team": "Huddersfield Giants",
-      "year": "1983",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "1984",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "1985",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "1986",
-      "count": 4,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "1987",
-      "count": 5,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "1988",
-      "count": 7,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "1989",
-      "count": 8,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "1990",
-      "count": 10,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "1991",
-      "count": 12,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "1992",
-      "count": 15,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "1993",
-      "count": 20,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "Hull FC",
-      "year": "1982",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Hull FC",
-      "year": "1983",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Hull FC",
-      "year": "1984",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Hull FC",
-      "year": "1985",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Hull FC",
-      "year": "1986",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Hull FC",
-      "year": "1987",
-      "count": 4,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Hull FC",
-      "year": "1988",
-      "count": 5,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Hull FC",
-      "year": "1989",
-      "count": 12,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Hull FC",
-      "year": "1990",
-      "count": 19,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
       "team": "Hull FC",
       "year": "2018",
       "count": 38,
       "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "Hull KR",
-      "year": "1993",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Hull KR",
-      "year": "1994",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Hull KR",
-      "year": "1995",
-      "count": 3,
-      "reason": "fewer than 13 players"
     },
     {
       "team": "Hull KR",
@@ -2310,96 +1942,6 @@
       "reason": "missing CENTRE coverage (1/2)"
     },
     {
-      "team": "Leeds Rhinos",
-      "year": "1981",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1982",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1983",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1984",
-      "count": 5,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1985",
-      "count": 8,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "1986",
-      "count": 13,
-      "reason": "missing HOOKER coverage (0/1)"
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1982",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1983",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1984",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1985",
-      "count": 4,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1986",
-      "count": 5,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1987",
-      "count": 10,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1988",
-      "count": 12,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1989",
-      "count": 17,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "Leigh Leopards",
-      "year": "1990",
-      "count": 22,
-      "reason": "missing CENTRE coverage (0/2)"
-    },
-    {
       "team": "Leigh Leopards",
       "year": "2017",
       "count": 63,
@@ -2416,408 +1958,6 @@
       "year": "2019",
       "count": 58,
       "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "St Helens",
-      "year": "1958",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1959",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1960",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1961",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1962",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1963",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1964",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1965",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1966",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1967",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1968",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1969",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1970",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1971",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1972",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1973",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1986",
-      "count": 4,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1987",
-      "count": 9,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1988",
-      "count": 12,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "St Helens",
-      "year": "1989",
-      "count": 15,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "St Helens",
-      "year": "1990",
-      "count": 19,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "St Helens",
-      "year": "1991",
-      "count": 21,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "St Helens",
-      "year": "1992",
-      "count": 22,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "St Helens",
-      "year": "1993",
-      "count": 24,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "St Helens",
-      "year": "1994",
-      "count": 28,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "St Helens",
-      "year": "1995",
-      "count": 33,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "1992",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "1993",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "1994",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "1995",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "1996",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "1997",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "1998",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "1999",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2000",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2001",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2002",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2003",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2004",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2005",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2006",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2007",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2008",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2009",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2010",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2011",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2012",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2013",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2014",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2015",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2016",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2017",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2018",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2021",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2022",
-      "count": 3,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2023",
-      "count": 4,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1982",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1983",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1984",
-      "count": 4,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1985",
-      "count": 6,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1986",
-      "count": 8,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1987",
-      "count": 12,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1988",
-      "count": 18,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "1989",
-      "count": 19,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "1993",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "1994",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "1995",
-      "count": 3,
-      "reason": "fewer than 13 players"
     },
     {
       "team": "Warrington Wolves",
@@ -2983,105 +2123,9 @@
     },
     {
       "team": "Wigan Warriors",
-      "year": "1983",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "1984",
-      "count": 2,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "1985",
-      "count": 5,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "1986",
-      "count": 7,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "1987",
-      "count": 10,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "1988",
-      "count": 16,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "1989",
-      "count": 24,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "1990",
-      "count": 25,
-      "reason": "missing FULLBACK coverage (0/1)"
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "1991",
-      "count": 31,
-      "reason": "missing HOOKER coverage (0/1)"
-    },
-    {
-      "team": "Wigan Warriors",
       "year": "2017",
       "count": 34,
       "reason": "missing CENTRE coverage (1/2)"
-    },
-    {
-      "team": "York Knights",
-      "year": "1989",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "York Knights",
-      "year": "1990",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "York Knights",
-      "year": "1991",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "York Knights",
-      "year": "1992",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "York Knights",
-      "year": "1993",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "York Knights",
-      "year": "1994",
-      "count": 1,
-      "reason": "fewer than 13 players"
-    },
-    {
-      "team": "York Knights",
-      "year": "1995",
-      "count": 3,
-      "reason": "fewer than 13 players"
     },
     {
       "team": "York Knights",

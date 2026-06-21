@@ -1,0 +1,1469 @@
+﻿{
+  "generatedAt": "2026-06-21T12:55:52.221Z",
+  "reports": [
+    {
+      "cacheFile": "2018-bradford-bulls-season.json",
+      "club": "Bradford Bulls",
+      "year": 2018,
+      "pageTitle": "2018 Bradford Bulls season",
+      "cacheExists": true,
+      "totalWithMappedPositions": 36,
+      "uniquePlayers": 36,
+      "positionCounts": {
+        "FULLBACK": 3,
+        "WING": 6,
+        "CENTRE": 5,
+        "STAND_OFF": 1,
+        "SCRUM_HALF": 3,
+        "PROP": 8,
+        "HOOKER": 4,
+        "SECOND_ROW": 6,
+        "LOOSE_FORWARD": 0
+      },
+      "missingForFullXiii": [
+        {
+          "position": "LOOSE_FORWARD",
+          "required": 1,
+          "have": 0,
+          "short": 1
+        }
+      ],
+      "notInDatabase": [
+        "Alex Brown",
+        "Brandon Pickersgill",
+        "Dalton Grant",
+        "Dane Chisholm",
+        "Evan Hodgson",
+        "George Flanagan",
+        "Gregg McNally",
+        "James Davies",
+        "Jonny Pownall",
+        "Jordan Andrade",
+        "Josh Rickett",
+        "Liam Johnson",
+        "Liam Kirk",
+        "Matt Garside",
+        "Reiss Butterworth",
+        "Ross Peltier",
+        "Steve Crossley",
+        "Vila Halafihi"
+      ],
+      "suggestedLineup": [
+        {
+          "position": "FULLBACK",
+          "wikiName": "Lee Smith",
+          "dbName": "Lee Smith",
+          "dbId": "leeds-hist-lee-smith",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Jy Hitchcox",
+          "dbName": "Jy Hitchcox",
+          "dbId": "castleford-hist-jy-hitchcox",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Ethan Ryan",
+          "dbName": "Ethan Ryan",
+          "dbId": "bradford-cur-ethan-ryan",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Ashley Gibson",
+          "dbName": "Ashley Gibson",
+          "dbId": "salford-hist-ashley-gibson",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Ross Oakes",
+          "dbName": "Ross Oakes",
+          "dbId": "bradford-hist-ross-oakes",
+          "inDatabase": true
+        },
+        {
+          "position": "STAND_OFF",
+          "wikiName": "Joe Keyes",
+          "dbName": "Joe Keyes",
+          "dbId": "bradford-cur-joe-keyes",
+          "inDatabase": true
+        },
+        {
+          "position": "SCRUM_HALF",
+          "wikiName": "Rowan Milnes",
+          "dbName": "Rowan Milnes",
+          "dbId": "bradford-cur-rowan-milnes",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Oliver Wilson",
+          "dbName": "Oliver Wilson",
+          "dbId": "wigan-cur-oliver-wilson",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "James Green",
+          "dbName": "James Green",
+          "dbId": "hull-kr-hist-james-green",
+          "inDatabase": true
+        },
+        {
+          "position": "HOOKER",
+          "wikiName": "Sam Hallas",
+          "dbName": "Sam Hallas",
+          "dbId": "bradford-cur-sam-hallas",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Elliot Minchella",
+          "dbName": "Elliot Minchella",
+          "dbId": "hull-kr-cur-elliot-minchella",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Mikey Wood",
+          "dbName": "Mikey Wood",
+          "dbId": "bradford-hist-mikey-wood",
+          "inDatabase": true
+        },
+        {
+          "position": "LOOSE_FORWARD",
+          "wikiName": "(none available)",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        }
+      ],
+      "dbMappedCount": 12,
+      "squadSample": [
+        {
+          "name": "Lee Smith",
+          "position": "Fullback",
+          "mappedPosition": "FULLBACK",
+          "points": 0
+        },
+        {
+          "name": "Ethan Ryan",
+          "position": "Wing",
+          "mappedPosition": "WING",
+          "points": 0
+        },
+        {
+          "name": "Ashley Gibson",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Ross Oakes",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Dalton Grant",
+          "position": "Wing",
+          "mappedPosition": "WING",
+          "points": 0
+        }
+      ]
+    },
+    {
+      "cacheFile": "2020-bradford-bulls-season.json",
+      "club": "Bradford Bulls",
+      "year": 2020,
+      "pageTitle": "2020 Bradford Bulls season",
+      "cacheExists": true,
+      "totalWithMappedPositions": 28,
+      "uniquePlayers": 28,
+      "positionCounts": {
+        "FULLBACK": 2,
+        "WING": 3,
+        "CENTRE": 3,
+        "STAND_OFF": 0,
+        "SCRUM_HALF": 4,
+        "PROP": 9,
+        "HOOKER": 3,
+        "SECOND_ROW": 4,
+        "LOOSE_FORWARD": 0
+      },
+      "missingForFullXiii": [
+        {
+          "position": "STAND_OFF",
+          "required": 1,
+          "have": 0,
+          "short": 1
+        },
+        {
+          "position": "LOOSE_FORWARD",
+          "required": 1,
+          "have": 0,
+          "short": 1
+        }
+      ],
+      "notInDatabase": [
+        "Brandon Pickersgill",
+        "Cobi Green",
+        "Connor Farrell",
+        "Dan Waite-Pullan",
+        "David Foggin-Johnston",
+        "Evan Hodgson",
+        "George Flanagan",
+        "Harry Shackleton",
+        "Keelan Foster",
+        "Levy Nzoungou",
+        "Liam Kirk",
+        "Sam Barlow",
+        "Steve Crossley"
+      ],
+      "suggestedLineup": [
+        {
+          "position": "FULLBACK",
+          "wikiName": "Joe Brown",
+          "dbName": "Joe Brown",
+          "dbId": "sheffield-cur-joe-brown",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Greg Johnson",
+          "dbName": "Greg Johnson",
+          "dbId": "salford-hist-greg-johnson",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Matty Dawson-Jones",
+          "dbName": "Matty Dawson-Jones",
+          "dbId": "st-helens-hist-matty-dawson-jones",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Rhys Evans",
+          "dbName": "Rhys Evans",
+          "dbId": "wakefield-hist-rhys-evans",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Ross Oakes",
+          "dbName": "Ross Oakes",
+          "dbId": "bradford-hist-ross-oakes",
+          "inDatabase": true
+        },
+        {
+          "position": "STAND_OFF",
+          "wikiName": "(none available)",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        },
+        {
+          "position": "SCRUM_HALF",
+          "wikiName": "Rowan Milnes",
+          "dbName": "Rowan Milnes",
+          "dbId": "bradford-cur-rowan-milnes",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Anthony England",
+          "dbName": "Anthony England",
+          "dbId": "wakefield-hist-anthony-england",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Ebon Scurr",
+          "dbName": "Ebon Scurr",
+          "dbId": "bradford-cur-ebon-scurr",
+          "inDatabase": true
+        },
+        {
+          "position": "HOOKER",
+          "wikiName": "Sam Hallas",
+          "dbName": "Sam Hallas",
+          "dbId": "bradford-cur-sam-hallas",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Adam Rooks",
+          "dbName": "Adam Rooks",
+          "dbId": "bradford-hist-adam-rooks",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Brad Gallagher",
+          "dbName": "Brad Gallagher",
+          "dbId": "bradford-hist-brad-gallagher",
+          "inDatabase": true
+        },
+        {
+          "position": "LOOSE_FORWARD",
+          "wikiName": "(none available)",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        }
+      ],
+      "dbMappedCount": 11,
+      "squadSample": [
+        {
+          "name": "Brandon Pickersgill",
+          "position": "Fullback",
+          "mappedPosition": "FULLBACK",
+          "points": 0
+        },
+        {
+          "name": "Greg Johnson",
+          "position": "Wing",
+          "mappedPosition": "WING",
+          "points": 0
+        },
+        {
+          "name": "Rhys Evans",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Ross Oakes",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Joe Brown",
+          "position": "Fullback",
+          "mappedPosition": "FULLBACK",
+          "points": 0
+        }
+      ]
+    },
+    {
+      "cacheFile": "2008-catalans-dragons-season.json",
+      "club": "Catalans Dragons",
+      "year": 2008,
+      "pageTitle": "2008 Catalans Dragons season",
+      "cacheExists": true,
+      "totalWithMappedPositions": 28,
+      "uniquePlayers": 28,
+      "positionCounts": {
+        "FULLBACK": 1,
+        "WING": 5,
+        "CENTRE": 3,
+        "STAND_OFF": 2,
+        "SCRUM_HALF": 0,
+        "PROP": 6,
+        "HOOKER": 2,
+        "SECOND_ROW": 7,
+        "LOOSE_FORWARD": 2
+      },
+      "missingForFullXiii": [
+        {
+          "position": "SCRUM_HALF",
+          "required": 1,
+          "have": 0,
+          "short": 1
+        }
+      ],
+      "notInDatabase": [
+        "Aaron Gorrell",
+        "Andrew Bentley",
+        "Florian Quintilla"
+      ],
+      "suggestedLineup": [
+        {
+          "position": "FULLBACK",
+          "wikiName": "Clint Greenshields",
+          "dbName": "Clint Greenshields",
+          "dbId": "catalans-hist-clint-greenshields",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Dimitri Pelo",
+          "dbName": "Dimitri Pelo",
+          "dbId": "catalans-hist-dimitri-pelo",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Justin Murphy",
+          "dbName": "Justin Murphy",
+          "dbId": "catalans-hist-justin-murphy",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Adam Mogg",
+          "dbName": "Adam Mogg",
+          "dbId": "catalans-hist-adam-mogg",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "John Wilson",
+          "dbName": "John Wilson",
+          "dbId": "catalans-hist-john-wilson",
+          "inDatabase": true
+        },
+        {
+          "position": "STAND_OFF",
+          "wikiName": "Thomas Bosc",
+          "dbName": "Thomas Bosc",
+          "dbId": "thomas-bosc",
+          "inDatabase": true
+        },
+        {
+          "position": "SCRUM_HALF",
+          "wikiName": "(none available)",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        },
+        {
+          "position": "PROP",
+          "wikiName": "R├⌐mi Casty",
+          "dbName": "Remi Casty",
+          "dbId": "remi-casty",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "David Ferriol",
+          "dbName": "David Ferriol",
+          "dbId": "catalans-hist-david-ferriol",
+          "inDatabase": true
+        },
+        {
+          "position": "HOOKER",
+          "wikiName": "Kane Bentley",
+          "dbName": "Kane Bentley",
+          "dbId": "catalans-hist-kane-bentley",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "S├⌐bastien Raguin",
+          "dbName": "S├⌐bastien Raguin",
+          "dbId": "catalans-hist-sebastien-raguin",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Jason Croker",
+          "dbName": "Jason Croker",
+          "dbId": "catalans-hist-jason-croker",
+          "inDatabase": true
+        },
+        {
+          "position": "LOOSE_FORWARD",
+          "wikiName": "Gr├⌐gory Mounis",
+          "dbName": "Gr├⌐gory Mounis",
+          "dbId": "catalans-hist-gregory-mounis",
+          "inDatabase": true
+        }
+      ],
+      "dbMappedCount": 12,
+      "squadSample": [
+        {
+          "name": "Clint Greenshields",
+          "position": "Fullback",
+          "mappedPosition": "FULLBACK",
+          "points": 0
+        },
+        {
+          "name": "Justin Murphy",
+          "position": "Wing",
+          "mappedPosition": "WING",
+          "points": 0
+        },
+        {
+          "name": "John Wilson",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Adam Mogg",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Dimitri Pelo",
+          "position": "Wing",
+          "mappedPosition": "WING",
+          "points": 0
+        }
+      ]
+    },
+    {
+      "cacheFile": "2015-leeds-rhinos-season.json",
+      "club": "Leeds Rhinos",
+      "year": 2015,
+      "pageTitle": "2015 Leeds Rhinos season",
+      "cacheExists": true,
+      "totalWithMappedPositions": 24,
+      "uniquePlayers": 24,
+      "positionCounts": {
+        "FULLBACK": 2,
+        "WING": 3,
+        "CENTRE": 3,
+        "STAND_OFF": 1,
+        "SCRUM_HALF": 0,
+        "PROP": 9,
+        "HOOKER": 2,
+        "SECOND_ROW": 4,
+        "LOOSE_FORWARD": 0
+      },
+      "missingForFullXiii": [
+        {
+          "position": "SCRUM_HALF",
+          "required": 1,
+          "have": 0,
+          "short": 1
+        },
+        {
+          "position": "LOOSE_FORWARD",
+          "required": 1,
+          "have": 0,
+          "short": 1
+        }
+      ],
+      "notInDatabase": [
+        "Andy Yates",
+        "Rob Mulhern",
+        "Robbie Ward"
+      ],
+      "suggestedLineup": [
+        {
+          "position": "FULLBACK",
+          "wikiName": "Zak Hardaker",
+          "dbName": "Zak Hardaker",
+          "dbId": "hull-fc-cur-zak-hardaker",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Ash Handley",
+          "dbName": "Ash Handley",
+          "dbId": "leeds-cur-ash-handley",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Tom Briscoe",
+          "dbName": "Tom Briscoe",
+          "dbId": "hull-fc-cur-tom-briscoe",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Kallum Watkins",
+          "dbName": "Kallum Watkins",
+          "dbId": "leeds-cur-kallum-watkins",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Joel Moon",
+          "dbName": "Joel Moon",
+          "dbId": "leeds-hist-joel-moon",
+          "inDatabase": true
+        },
+        {
+          "position": "STAND_OFF",
+          "wikiName": "Danny McGuire",
+          "dbName": "Danny McGuire",
+          "dbId": "danny-mcguire",
+          "inDatabase": true
+        },
+        {
+          "position": "SCRUM_HALF",
+          "wikiName": "(none available)",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Jamie Peacock",
+          "dbName": "Jamie Peacock",
+          "dbId": "jamie-peacock",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Kylie Leuluai",
+          "dbName": "Kylie Leuluai",
+          "dbId": "kylie-leuluai",
+          "inDatabase": true
+        },
+        {
+          "position": "HOOKER",
+          "wikiName": "Paul Aiton",
+          "dbName": "Paul Aiton",
+          "dbId": "wakefield-hist-paul-aiton",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Jamie Jones-Buchanan",
+          "dbName": "Jamie Jones-Buchanan",
+          "dbId": "jamie-jones-buchanan",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Brett Delaney",
+          "dbName": "Brett Delaney",
+          "dbId": "leeds-hist-brett-delaney",
+          "inDatabase": true
+        },
+        {
+          "position": "LOOSE_FORWARD",
+          "wikiName": "(none available)",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        }
+      ],
+      "dbMappedCount": 11,
+      "squadSample": [
+        {
+          "name": "Zak Hardaker",
+          "position": "Fullback",
+          "mappedPosition": "FULLBACK",
+          "points": 0
+        },
+        {
+          "name": "Tom Briscoe",
+          "position": "Winger",
+          "mappedPosition": "WING",
+          "points": 0
+        },
+        {
+          "name": "Kallum Watkins",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Joel Moon",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Ryan Hall",
+          "position": "Wing",
+          "mappedPosition": "WING",
+          "points": 0
+        }
+      ]
+    },
+    {
+      "cacheFile": "2018-london-broncos-season.json",
+      "club": "London Broncos",
+      "year": 2018,
+      "pageTitle": "2018 London Broncos season",
+      "cacheExists": true,
+      "totalWithMappedPositions": 29,
+      "uniquePlayers": 29,
+      "positionCounts": {
+        "FULLBACK": 1,
+        "WING": 2,
+        "CENTRE": 5,
+        "STAND_OFF": 2,
+        "SCRUM_HALF": 2,
+        "PROP": 6,
+        "HOOKER": 3,
+        "SECOND_ROW": 6,
+        "LOOSE_FORWARD": 2
+      },
+      "missingForFullXiii": [],
+      "notInDatabase": [
+        "}}",
+        "Api Pewhairangi",
+        "Daniel Harrison",
+        "Daniel Hindmarsh",
+        "Daymeric Pelo",
+        "Jacob Ogden",
+        "James Meadows",
+        "Matt Davies",
+        "Tom Spencer"
+      ],
+      "suggestedLineup": [
+        {
+          "position": "FULLBACK",
+          "wikiName": "Alex Walker",
+          "dbName": "Alex Walker",
+          "dbId": "london-hist-alex-walker",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Rhys Williams",
+          "dbName": "Rhys Williams",
+          "dbId": "salford-hist-rhys-williams",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Kieran Dixon",
+          "dbName": "Kieran Dixon",
+          "dbId": "london-hist-kieran-dixon",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Ben Hellewell",
+          "dbName": "Ben Hellewell",
+          "dbId": "salford-cur-ben-hellewell",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Elliot Kear",
+          "dbName": "Elliot Kear",
+          "dbId": "bradford-hist-elliot-kear",
+          "inDatabase": true
+        },
+        {
+          "position": "STAND_OFF",
+          "wikiName": "Api Pewhairangi",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        },
+        {
+          "position": "SCRUM_HALF",
+          "wikiName": "Jarrod Sammut",
+          "dbName": "Jarrod Sammut",
+          "dbId": "bradford-hist-jarrod-sammut",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Eddie Battye",
+          "dbName": "Eddie Battye",
+          "dbId": "wakefield-hist-eddie-battye",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Mark Ioane",
+          "dbName": "Mark Ioane",
+          "dbId": "london-hist-mark-ioane",
+          "inDatabase": true
+        },
+        {
+          "position": "HOOKER",
+          "wikiName": "├ëloi P├⌐lissier",
+          "dbName": "├ëloi P├⌐lissier",
+          "dbId": "catalans-hist-eloi-pelissier",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Jay Pitts",
+          "dbName": "Jay Pitts",
+          "dbId": "wakefield-cur-jay-pitts",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Will Lovell",
+          "dbName": "Will Lovell",
+          "dbId": "london-hist-will-lovell",
+          "inDatabase": true
+        },
+        {
+          "position": "LOOSE_FORWARD",
+          "wikiName": "Sadiq Adebiyi",
+          "dbName": "Sadiq Adebiyi",
+          "dbId": "london-hist-sadiq-adebiyi",
+          "inDatabase": true
+        }
+      ],
+      "dbMappedCount": 12,
+      "squadSample": [
+        {
+          "name": "Elliot Kear",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Rhys Williams",
+          "position": "Wing",
+          "mappedPosition": "WING",
+          "points": 0
+        },
+        {
+          "name": "Ben Hellewell",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Matty Fleming",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Kieran Dixon",
+          "position": "Wing",
+          "mappedPosition": "WING",
+          "points": 0
+        }
+      ]
+    },
+    {
+      "cacheFile": "2015-salford-red-devils-season.json",
+      "club": "Salford Red Devils",
+      "year": 2015,
+      "pageTitle": "2015 Salford Red Devils season",
+      "cacheExists": true,
+      "totalWithMappedPositions": 17,
+      "uniquePlayers": 17,
+      "positionCounts": {
+        "FULLBACK": 2,
+        "WING": 2,
+        "CENTRE": 2,
+        "STAND_OFF": 1,
+        "SCRUM_HALF": 1,
+        "PROP": 1,
+        "HOOKER": 5,
+        "SECOND_ROW": 2,
+        "LOOSE_FORWARD": 1
+      },
+      "missingForFullXiii": [
+        {
+          "position": "PROP",
+          "required": 2,
+          "have": 1,
+          "short": 1
+        }
+      ],
+      "notInDatabase": [
+        "Kevin Locke"
+      ],
+      "suggestedLineup": [
+        {
+          "position": "FULLBACK",
+          "wikiName": "Niall Evalds",
+          "dbName": "Niall Evalds",
+          "dbId": "huddersfield-cur-niall-evalds",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Ben Jones-Bishop",
+          "dbName": "Ben Jones-Bishop",
+          "dbId": "york-cur-ben-jones-bishop",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Greg Johnson",
+          "dbName": "Greg Johnson",
+          "dbId": "salford-hist-greg-johnson",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Oliver Gildart",
+          "dbName": "Oliver Gildart",
+          "dbId": "hull-kr-cur-oliver-gildart",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Ian Thornley",
+          "dbName": "Iain Thornley",
+          "dbId": "wigan-hist-iain-thornley",
+          "inDatabase": true
+        },
+        {
+          "position": "STAND_OFF",
+          "wikiName": "Rangi Chase",
+          "dbName": "Rangi Chase",
+          "dbId": "rangi-chase",
+          "inDatabase": true
+        },
+        {
+          "position": "SCRUM_HALF",
+          "wikiName": "Josh Wood",
+          "dbName": "Josh Wood",
+          "dbId": "salford-hist-josh-wood",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Olsi Krasniqi",
+          "dbName": "Olsi Krasniqi",
+          "dbId": "london-hist-olsi-krasniqi",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "(none available)",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        },
+        {
+          "position": "HOOKER",
+          "wikiName": "Liam Hood",
+          "dbName": "Liam Hood",
+          "dbId": "castleford-cur-liam-hood",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Jake Bibby",
+          "dbName": "Jake Bibby",
+          "dbId": "huddersfield-cur-jake-bibby",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Reni Maitua",
+          "dbName": "Reni Maitua",
+          "dbId": "salford-hist-reni-maitua",
+          "inDatabase": true
+        },
+        {
+          "position": "LOOSE_FORWARD",
+          "wikiName": "James Greenwood",
+          "dbName": "James Greenwood",
+          "dbId": "hull-kr-hist-james-greenwood",
+          "inDatabase": true
+        }
+      ],
+      "dbMappedCount": 12,
+      "squadSample": [
+        {
+          "name": "Kevin Locke",
+          "position": "Fullback",
+          "mappedPosition": "FULLBACK",
+          "points": 0
+        },
+        {
+          "name": "Ben Jones-Bishop",
+          "position": "Winger",
+          "mappedPosition": "WING",
+          "points": 0
+        },
+        {
+          "name": "Greg Johnson",
+          "position": "Wing",
+          "mappedPosition": "WING",
+          "points": 0
+        },
+        {
+          "name": "Rangi Chase",
+          "position": "Stand off",
+          "mappedPosition": "STAND_OFF",
+          "points": 0
+        },
+        {
+          "name": "Tommy Lee",
+          "position": "Hooker",
+          "mappedPosition": "HOOKER",
+          "points": 0
+        }
+      ]
+    },
+    {
+      "cacheFile": "2009-wakefield-trinity-wildcats-season.json",
+      "club": "Wakefield Trinity",
+      "year": 2009,
+      "pageTitle": "2009 Wakefield Trinity Wildcats season",
+      "cacheExists": true,
+      "totalWithMappedPositions": 24,
+      "uniquePlayers": 24,
+      "positionCounts": {
+        "FULLBACK": 1,
+        "WING": 3,
+        "CENTRE": 8,
+        "STAND_OFF": 1,
+        "SCRUM_HALF": 2,
+        "PROP": 4,
+        "HOOKER": 3,
+        "SECOND_ROW": 2,
+        "LOOSE_FORWARD": 0
+      },
+      "missingForFullXiii": [
+        {
+          "position": "LOOSE_FORWARD",
+          "required": 1,
+          "have": 0,
+          "short": 1
+        }
+      ],
+      "notInDatabase": [
+        "James Stosic",
+        "Matthew Petersen"
+      ],
+      "suggestedLineup": [
+        {
+          "position": "FULLBACK",
+          "wikiName": "Matt Blaymire",
+          "dbName": "Matt Blaymire",
+          "dbId": "wakefield-hist-matt-blaymire",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Luke George",
+          "dbName": "Luke George",
+          "dbId": "wakefield-hist-luke-george",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Damien Blanch",
+          "dbName": "Damien Blanch",
+          "dbId": "wakefield-hist-damien-blanch",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Aaron Murphy",
+          "dbName": "Aaron Murphy",
+          "dbId": "huddersfield-leg-aaron-murphy",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Ryan Atkins",
+          "dbName": "Ryan Atkins",
+          "dbId": "warrington-hist-ryan-atkins",
+          "inDatabase": true
+        },
+        {
+          "position": "STAND_OFF",
+          "wikiName": "Jamie Rooney",
+          "dbName": "Jamie Rooney",
+          "dbId": "wakefield-hist-jamie-rooney",
+          "inDatabase": true
+        },
+        {
+          "position": "SCRUM_HALF",
+          "wikiName": "Danny Brough",
+          "dbName": "Danny Brough",
+          "dbId": "danny-brough",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Danny Sculthorpe",
+          "dbName": "Danny Sculthorpe",
+          "dbId": "wigan-hist-danny-sculthorpe",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Ricky Bibey",
+          "dbName": "Ricky Bibey",
+          "dbId": "wakefield-hist-ricky-bibey",
+          "inDatabase": true
+        },
+        {
+          "position": "HOOKER",
+          "wikiName": "Sam Obst",
+          "dbName": "Sam Obst",
+          "dbId": "wakefield-hist-sam-obst",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Stephen  Snitch",
+          "dbName": "Steve Snitch",
+          "dbId": "wakefield-hist-steve-snitch",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Oliver Wilkes",
+          "dbName": "Oliver Wilkes",
+          "dbId": "wakefield-hist-oliver-wilkes",
+          "inDatabase": true
+        },
+        {
+          "position": "LOOSE_FORWARD",
+          "wikiName": "(none available)",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        }
+      ],
+      "dbMappedCount": 12,
+      "squadSample": [
+        {
+          "name": "Matt Blaymire",
+          "position": "Full back",
+          "mappedPosition": "FULLBACK",
+          "points": 0
+        },
+        {
+          "name": "Damien Blanch",
+          "position": "Wing",
+          "mappedPosition": "WING",
+          "points": 0
+        },
+        {
+          "name": "Tony Martin",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Ryan Atkins",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Matthew Petersen",
+          "position": "Wing",
+          "mappedPosition": "WING",
+          "points": 0
+        }
+      ]
+    },
+    {
+      "cacheFile": "2006-wigan-warriors-season.json",
+      "club": "Wigan Warriors",
+      "year": 2006,
+      "pageTitle": "2006 Wigan Warriors season",
+      "cacheExists": true,
+      "totalWithMappedPositions": 29,
+      "uniquePlayers": 29,
+      "positionCounts": {
+        "FULLBACK": 2,
+        "WING": 4,
+        "CENTRE": 6,
+        "STAND_OFF": 2,
+        "SCRUM_HALF": 3,
+        "PROP": 8,
+        "HOOKER": 3,
+        "SECOND_ROW": 0,
+        "LOOSE_FORWARD": 1
+      },
+      "missingForFullXiii": [
+        {
+          "position": "SECOND_ROW",
+          "required": 2,
+          "have": 0,
+          "short": 2
+        }
+      ],
+      "notInDatabase": [
+        "Jerry Seu Seu",
+        "John Walker",
+        "Thomas Coyle"
+      ],
+      "suggestedLineup": [
+        {
+          "position": "FULLBACK",
+          "wikiName": "Kris Radlinski",
+          "dbName": "Kris Radlinski",
+          "dbId": "kris-radlinski",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Mark Calderwood",
+          "dbName": "Mark Calderwood",
+          "dbId": "leeds-leg-mark-calderwood",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "Brett Dallas",
+          "dbName": "Brett Dallas",
+          "dbId": "wigan-hist-brett-dallas",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Pat Richards",
+          "dbName": "Pat Richards",
+          "dbId": "pat-richards",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Sean Gleeson",
+          "dbName": "Sean Gleeson",
+          "dbId": "wakefield-hist-sean-gleeson",
+          "inDatabase": true
+        },
+        {
+          "position": "STAND_OFF",
+          "wikiName": "Kevin Brown",
+          "dbName": "Kevin Brown",
+          "dbId": "kevin-brown",
+          "inDatabase": true
+        },
+        {
+          "position": "SCRUM_HALF",
+          "wikiName": "Denis Moran",
+          "dbName": "Dennis Moran",
+          "dbId": "london-hist-dennis-moran",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Stuart Fielden",
+          "dbName": "Stuart Fielden",
+          "dbId": "stuart-fielden",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Scott Logan",
+          "dbName": "Scott Logan",
+          "dbId": "hull-fc-hist-scott-logan",
+          "inDatabase": true
+        },
+        {
+          "position": "HOOKER",
+          "wikiName": "Michael McIlorum",
+          "dbName": "Michael McIlorum",
+          "dbId": "wigan-hist-michael-mcilorum",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "(none available)",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "(none available)",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        },
+        {
+          "position": "LOOSE_FORWARD",
+          "wikiName": "Sean OLoughlin",
+          "dbName": "Sean O'Loughlin",
+          "dbId": "sean-oloughlin",
+          "inDatabase": true
+        }
+      ],
+      "dbMappedCount": 11,
+      "squadSample": [
+        {
+          "name": "Kris Radlinski",
+          "position": "Full back",
+          "mappedPosition": "FULLBACK",
+          "points": 0
+        },
+        {
+          "name": "Mark Calderwood",
+          "position": "Winger",
+          "mappedPosition": "WING",
+          "points": 0
+        },
+        {
+          "name": "Pat Richards",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "David Vaealiki",
+          "position": "Centre",
+          "mappedPosition": "CENTRE",
+          "points": 0
+        },
+        {
+          "name": "Brett Dallas",
+          "position": "Winger",
+          "mappedPosition": "WING",
+          "points": 0
+        }
+      ]
+    },
+    {
+      "cacheFile": "2008-wigan-warriors-season.json",
+      "club": "Wigan Warriors",
+      "year": 2008,
+      "pageTitle": "2008 Wigan Warriors season",
+      "cacheExists": true,
+      "totalWithMappedPositions": 25,
+      "uniquePlayers": 25,
+      "positionCounts": {
+        "FULLBACK": 2,
+        "WING": 0,
+        "CENTRE": 2,
+        "STAND_OFF": 2,
+        "SCRUM_HALF": 3,
+        "PROP": 6,
+        "HOOKER": 2,
+        "SECOND_ROW": 6,
+        "LOOSE_FORWARD": 2
+      },
+      "missingForFullXiii": [
+        {
+          "position": "WING",
+          "required": 2,
+          "have": 0,
+          "short": 2
+        }
+      ],
+      "notInDatabase": [
+        "Ben Kavanagh (On loan To Widnes Vikings)",
+        "Sam Reay",
+        "Thomas Coyle (On loan to Halifax)"
+      ],
+      "suggestedLineup": [
+        {
+          "position": "FULLBACK",
+          "wikiName": "Richie Mathers",
+          "dbName": "Richie Mathers",
+          "dbId": "leeds-hist-richard-mathers",
+          "inDatabase": true
+        },
+        {
+          "position": "WING",
+          "wikiName": "(none available)",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        },
+        {
+          "position": "WING",
+          "wikiName": "(none available)",
+          "dbName": null,
+          "dbId": null,
+          "inDatabase": false
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Karl Pryce",
+          "dbName": "Karl Pryce",
+          "dbId": "bradford-hist-karl-pryce",
+          "inDatabase": true
+        },
+        {
+          "position": "CENTRE",
+          "wikiName": "Cameron Phelps",
+          "dbName": "Cameron Phelps",
+          "dbId": "widnes-hist-cameron-phelps",
+          "inDatabase": true
+        },
+        {
+          "position": "STAND_OFF",
+          "wikiName": "Sam Tomkins",
+          "dbName": "Sam Tomkins",
+          "dbId": "wigan-hist-sam-tomkins",
+          "inDatabase": true
+        },
+        {
+          "position": "SCRUM_HALF",
+          "wikiName": "Thomas Leuluai",
+          "dbName": "Thomas Leuluai",
+          "dbId": "wigan-hist-thomas-leuluai",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Stuart Fielden",
+          "dbName": "Stuart Fielden",
+          "dbId": "stuart-fielden",
+          "inDatabase": true
+        },
+        {
+          "position": "PROP",
+          "wikiName": "Lee Mossop",
+          "dbName": "Lee Mossop",
+          "dbId": "wigan-hist-lee-mossop",
+          "inDatabase": true
+        },
+        {
+          "position": "HOOKER",
+          "wikiName": "Michael McIlorum",
+          "dbName": "Michael McIlorum",
+          "dbId": "wigan-hist-michael-mcilorum",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Joel Tomkins",
+          "dbName": "Joel Tomkins",
+          "dbId": "wigan-leg-joel-tomkins",
+          "inDatabase": true
+        },
+        {
+          "position": "SECOND_ROW",
+          "wikiName": "Gareth Hock",
+          "dbName": "Gareth Hock",
+          "dbId": "salford-hist-gareth-hock",
+          "inDatabase": true
+        },
+        {
+          "position": "LOOSE_FORWARD",
+          "wikiName": "Sean OLoughlin",
+          "dbName": "Sean O'Loughlin",
+          "dbId": "sean-oloughlin",
+          "inDatabase": true
+        }
+      ],
+      "dbMappedCount": 11,
+      "squadSample": [
+        {
+          "name": "Richie Mathers",
+          "position": "Full back",
+          "mappedPosition": "FULLBACK",
+          "points": 0
+        },
+        {
+          "name": "Trent Barrett",
+          "position": "Stand off",
+          "mappedPosition": "STAND_OFF",
+          "points": 0
+        },
+        {
+          "name": "Thomas Leuluai",
+          "position": "Scrum half",
+          "mappedPosition": "SCRUM_HALF",
+          "points": 0
+        },
+        {
+          "name": "Stuart Fielden",
+          "position": "Prop",
+          "mappedPosition": "PROP",
+          "points": 0
+        },
+        {
+          "name": "Mickey Higham",
+          "position": "Hooker",
+          "mappedPosition": "HOOKER",
+          "points": 0
+        }
+      ]
+    }
+  ]
+}

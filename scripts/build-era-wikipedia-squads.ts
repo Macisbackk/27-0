@@ -131,6 +131,13 @@ function scoreWikiMember(
   if (player.clubLegend) score += 200;
   if ((player.dreamTeamYears?.length ?? 0) > 0) score += 150;
   if ((player.goldenBootYears?.length ?? 0) > 0) score += 150;
+  if (
+    member.squadNumber !== undefined &&
+    member.squadNumber >= 1 &&
+    member.squadNumber <= 13
+  ) {
+    score += 500_000 - member.squadNumber * 1_000;
+  }
   return score;
 }
 

@@ -1,12 +1,12 @@
 # Era Wikipedia Squad Audit
 
-Generated: 2026-06-21T07:26:27.388Z
+Generated: 2026-06-21T16:33:14.802Z
 
 Source: Wikipedia only — season pages, club pages, squad templates
 
-**50** complete teams in store
+**93** complete teams in store
 
-This run: **7** complete / **288** checked / **281** removed
+This run: **38** complete / **192** checked / **154** removed
 
 ## Complete Teams
 
@@ -48,6 +48,7 @@ This run: **7** complete / **288** checked / **281** removed
 | Hull FC | 2013 | 67153 | [Wikipedia](https://en.wikipedia.org/wiki/2013_Hull_FC_season) | Jamie Shaul, Tom Lineham, Tom Briscoe, Ben Crooks, Kirk Yeaman, Daniel Holdsworth, Jacob Miller, Richard Horne, Andy Lynch, Danny Houghton, Gareth Ellis, Danny Tickle, Paul Johnson |
 | Hull FC | 2012 | 69060 | [Wikipedia](https://en.wikipedia.org/wiki/2012_Hull_FC_season) | Matty Russell, Tom Lineham, Reece Lyne, Ben Crooks, Jordan Turner, Richard Horne, Brett Seymour, Andy Lynch, Liam Watts, Danny Houghton, Danny Tickle, Willie Manu, Joe Westerman |
 | Hull FC | 2009 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2009_Hull_FC_season) | Motu Tony, Mark Calderwood, Gareth Raynor, Tom Briscoe, Craig Hall, Richard Horne, Tommy Lee, Jamie Thackray, Paul King, Danny Houghton, Danny Tickle, Willie Manu, Danny Washbrook |
+| Hull KR | 2020 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2020_Hull_Kingston_Rovers_season) | Will Dagger, Ben Crooks, Greg Minikin, Kane Linnett, Shaun Kenny-Dowall, Jordan Abdull, Mikey Lewis, Robbie Mulhern, Mitch Garbutt, Jez Litten, Weller Hauraki, Harvey Livett, Dean Hadley |
 | Leeds Rhinos | 2016 | 767 | [Wikipedia](https://en.wikipedia.org/wiki/2016_Leeds_Rhinos_season) | Zak Hardaker, Ash Handley, Tom Briscoe, Kallum Watkins, Jimmy Keinhorst, Danny McGuire, Rob Burrow, Brad Singleton, Mitch Garbutt, Beau Falloon, Brett Ferres, Jamie Jones-Buchanan, Stevie Ward |
 | Leeds Rhinos | 2013 | 63102 | [Wikipedia](https://en.wikipedia.org/wiki/2013_Leeds_Rhinos_season) | Zak Hardaker, Ryan Hall, Ben Jones-Bishop, Kallum Watkins, Joel Moon, Danny McGuire, Rob Burrow, Jamie Peacock, Kylie Leuluai, Liam Hood, Jamie Jones-Buchanan, Ian Kirke, Kevin Sinfield |
 | Leeds Rhinos | 2009 | 3 | [Wikipedia](https://en.wikipedia.org/wiki/2009_Leeds_Rhinos_season) | Ben Jones-Bishop, Scott Donald, Ryan Hall, Keith Senior, Kallum Watkins, Danny McGuire, Rob Burrow, Jamie Peacock, Kylie Leuluai, Matt Diskin, Ali Lauitiiti, Jamie Jones-Buchanan, Kevin Sinfield |
@@ -55,9 +56,44 @@ This run: **7** complete / **288** checked / **281** removed
 | London Broncos | 2019 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2019_London_Broncos_season) | Alex Walker, Rhys Williams, Kieran Dixon, Ryan Morgan, Ben Hellewell, Jordan Abdull, Morgan Smith, Eddie Battye, Greg Richards, Éloi Pélissier, Jay Pitts, Will Lovell, Luke Yates |
 | Salford Red Devils | 2014 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2014_Salford_Red_Devils_season) | Greg Eden, Danny Williams, Francis Meli, Martin Gleeson, Junior Sa'u, Rangi Chase, Théo Fages, Adrian Morley, Darrell Griffin, Tommy Lee, Tony Puletua, Gareth Hock, Andrew Dixon |
 | Salford Red Devils | 2009 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2009_Salford_City_Reds_season) | Karl Fitzpatrick, Paul White, John Wilshire, Mark Henry, Willie Talau, Jeremy Smith, Robbie Hunter-Paul, Ray Cashmere, Adam Sidlow, Stefan Ratchford, Rob Parker, Luke Adamson, Jordan Turner |
+| St Helens | 2020 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2020_St_Helens_R.F.C._season) | Jonny Lomax, Tommy Makinson, Regan Grace, Mark Percival, Kevin Naiqama, Jack Welsby, Théo Fages, Alex Walmsley, Matty Lees, James Roby, Zeb Taia, Joe Batchelor, Louie McCarthy-Scarsbrook |
+| St Helens | 2015 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2015_St_Helens_R.F.C._season) | Paul Wellens, Tommy Makinson, Adam Swift, Mark Percival, Josh Jones, Travis Burns, Luke Walsh, Alex Walmsley, Luke Thompson, James Roby, Jack Ashworth, Atelea Vea, Louie McCarthy-Scarsbrook |
+| St Helens | 2014 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2014_St_Helens_R.F.C._season) | Jonny Lomax, Tommy Makinson, Ade Gardner, Jordan Turner, Mark Percival, Lance Hohaia, Luke Walsh, Mose Masoe, Louie McCarthy-Scarsbrook, James Roby, Sia Soliola, Jon Wilkin, Willie Manu |
+| Toulouse Olympique | 2027 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2026 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2025 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2024 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2023 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2022 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2021 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2021_Toulouse_Olympique_season) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2020 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2019 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2019_Toulouse_Olympique_season) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2018 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2018_Toulouse_Olympique_season) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2017 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2017_Toulouse_Olympique_season) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2016 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2016_Toulouse_Olympique_season) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2015 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2014 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2013 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2012 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2011 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2010 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2010_Toulouse_Olympique_season) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2009 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2009_Toulouse_Olympique_season) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2008 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2007 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2006 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2005 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2004 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2003 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2002 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2001 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 2000 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 1999 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 1998 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 1997 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
+| Toulouse Olympique | 1996 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/Toulouse_Olympique) | Olly Ashall-Bott, Paul Ulberg, Benjamin Laguerre, Reubenn Rennie, Mathieu Jussaume, Luke Polselli, Jake Shorrocks, Joe Bretherton, Tiaki Chan, Calum Gahan, Maxime Stefani, Henry O'Kane, Joe Cator |
 | Wakefield Trinity | 2010 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2010_Wakefield_Trinity_Wildcats_season) | Matt Blaymire, Luke George, Damien Blanch, Aaron Murphy, Daryl Millard, Ben Jeffries, Paul Cooke, Paul King, Michael Korkidas, Sam Obst, Paul Johnson, Glenn Morrison, Jason Demetriou |
-| Warrington Wolves | 2016 | 384 | [Wikipedia](https://en.wikipedia.org/wiki/2016_Warrington_Wolves_season) | Kurt Gidley, Tom Lineham, Kevin Penny, Ryan Atkins, Toby King, Stefan Ratchford, Chris Sandow, Chris Hill, Ashton Sims, Daryl Clark, Ben Currie, George King, Ben Westwood |
-| Warrington Wolves | 2015 | 838 | [Wikipedia](https://en.wikipedia.org/wiki/2015_Warrington_Wolves_season) | Matty Russell, Joel Monaghan, Kevin Penny, Ryan Atkins, Toby King, Stefan Ratchford, Gareth O'Brien, Chris Hill, Anthony England, Daryl Clark, Ben Westwood, Ben Currie, Ben Harrison |
+| Warrington Wolves | 2016 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2016_Warrington_Wolves_season) | Kurt Gidley, Tom Lineham, Kevin Penny, Ryan Atkins, Toby King, Stefan Ratchford, Chris Sandow, Chris Hill, Ashton Sims, Daryl Clark, Ben Currie, George King, Ben Westwood |
+| Warrington Wolves | 2015 | 0 | [Wikipedia](https://en.wikipedia.org/wiki/2015_Warrington_Wolves_season) | Matty Russell, Joel Monaghan, Kevin Penny, Ryan Atkins, Toby King, Stefan Ratchford, Gareth O'Brien, Chris Hill, Anthony England, Daryl Clark, Ben Westwood, Ben Currie, Ben Harrison |
 | Widnes Vikings | 2016 | 337 | [Wikipedia](https://en.wikipedia.org/wiki/2016_Widnes_Vikings_season) | Danny Craven, Paddy Flynn, Patrick Ah Van, Stefan Marsh, Chris Dean, Kevin Brown, Joe Mellor, Manase Manuokafoa, Macgraff Leuluai, Lloyd White, Danny Tickle, Matt Whitley, Hep Cahill |
 | Widnes Vikings | 2015 | 794 | [Wikipedia](https://en.wikipedia.org/wiki/2015_Widnes_Vikings_season) | Jack Owens, Paddy Flynn, Patrick Ah Van, Stefan Marsh, Chris Dean, Kevin Brown, Joe Mellor, Manase Manuokafoa, Alex Gerrard, Lloyd White, Danny Tickle, Matt Whitley, Paul Johnson |
 | Wigan Warriors | 2016 | 300 | [Wikipedia](https://en.wikipedia.org/wiki/2016_Wigan_Warriors_season) | Sam Tomkins, Josh Charnley, Dominic Manfredi, Oliver Gildart, Dan Sarginson, George Williams, Matty Smith, Ryan Sutton, Joe Bretherton, Michael McIlorum, Joel Tomkins, Liam Farrell, Sean O'Loughlin |
@@ -198,15 +234,14 @@ This run: **7** complete / **288** checked / **281** removed
 | Hull KR | 2023 | No credible Wikipedia squad data for 13 positions |
 | Hull KR | 2022 | No credible Wikipedia squad data for 13 positions |
 | Hull KR | 2021 | No credible Wikipedia squad data for 13 positions |
-| Hull KR | 2020 | No credible Wikipedia squad data for 13 positions |
 | Hull KR | 2019 | No credible Wikipedia squad data for 13 positions |
 | Hull KR | 2018 | No credible Wikipedia squad data for 13 positions |
 | Hull KR | 2017 | No credible Wikipedia squad data for 13 positions |
 | Hull KR | 2016 | No credible Wikipedia squad data for 13 positions |
-| Hull KR | 2015 | No credible Wikipedia squad data for 13 positions |
+| Hull KR | 2015 | Could not map 13 database players (11/13) |
 | Hull KR | 2014 | No credible Wikipedia squad data for 13 positions |
-| Hull KR | 2013 | No credible Wikipedia squad data for 13 positions |
-| Hull KR | 2012 | No credible Wikipedia squad data for 13 positions |
+| Hull KR | 2013 | Could not map 13 database players (10/13) |
+| Hull KR | 2012 | Could not map 13 database players (10/13) |
 | Hull KR | 2011 | No credible Wikipedia squad data for 13 positions |
 | Hull KR | 2010 | No credible Wikipedia squad data for 13 positions |
 | Hull KR | 2009 | No credible Wikipedia squad data for 13 positions |
@@ -344,70 +379,35 @@ This run: **7** complete / **288** checked / **281** removed
 | Salford Red Devils | 1998 | No credible Wikipedia squad data for 13 positions |
 | Salford Red Devils | 1997 | No credible Wikipedia squad data for 13 positions |
 | Salford Red Devils | 1996 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2027 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2026 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2025 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2024 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2023 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2022 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2021 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2020 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2019 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2018 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2017 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2016 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2015 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2014 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2013 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2012 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2011 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2010 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2009 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2008 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2007 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2006 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2005 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2004 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2003 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2002 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2001 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 2000 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 1999 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 1998 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 1997 | No credible Wikipedia squad data for 13 positions |
-| St Helens | 1996 | No credible Wikipedia squad data for 13 positions |
-| Toulouse Olympique | 2027 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2026 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2025 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2024 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2023 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2022 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2021 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2020 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2019 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2018 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2017 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2016 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2015 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2014 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2013 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2012 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2011 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2010 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2009 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2008 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2007 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2006 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2005 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2004 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2003 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2002 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2001 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 2000 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 1999 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 1998 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 1997 | Could not map 13 database players (7/13) |
-| Toulouse Olympique | 1996 | Could not map 13 database players (7/13) |
+| St Helens | 2027 | Could not map 13 database players (7/13) |
+| St Helens | 2026 | Could not map 13 database players (7/13) |
+| St Helens | 2025 | Could not map 13 database players (7/13) |
+| St Helens | 2024 | Could not map 13 database players (7/13) |
+| St Helens | 2023 | Could not map 13 database players (7/13) |
+| St Helens | 2022 | Could not map 13 database players (7/13) |
+| St Helens | 2021 | Could not map 13 database players (7/13) |
+| St Helens | 2019 | Could not map 13 database players (7/13) |
+| St Helens | 2018 | Could not map 13 database players (7/13) |
+| St Helens | 2017 | Could not map 13 database players (7/13) |
+| St Helens | 2016 | Could not map 13 database players (9/13) |
+| St Helens | 2013 | Could not map 13 database players (7/13) |
+| St Helens | 2012 | Could not map 13 database players (7/13) |
+| St Helens | 2011 | Could not map 13 database players (10/13) |
+| St Helens | 2010 | Could not map 13 database players (12/13) |
+| St Helens | 2009 | Could not map 13 database players (9/13) |
+| St Helens | 2008 | Could not map 13 database players (7/13) |
+| St Helens | 2007 | Could not map 13 database players (7/13) |
+| St Helens | 2006 | Could not map 13 database players (7/13) |
+| St Helens | 2005 | Could not map 13 database players (7/13) |
+| St Helens | 2004 | Could not map 13 database players (7/13) |
+| St Helens | 2003 | Could not map 13 database players (7/13) |
+| St Helens | 2002 | Could not map 13 database players (7/13) |
+| St Helens | 2001 | Could not map 13 database players (7/13) |
+| St Helens | 2000 | Could not map 13 database players (7/13) |
+| St Helens | 1999 | Could not map 13 database players (7/13) |
+| St Helens | 1998 | Could not map 13 database players (7/13) |
+| St Helens | 1997 | Could not map 13 database players (7/13) |
+| St Helens | 1996 | Could not map 13 database players (7/13) |
 | Wakefield Trinity | 2027 | No credible Wikipedia squad data for 13 positions |
 | Wakefield Trinity | 2026 | No credible Wikipedia squad data for 13 positions |
 | Wakefield Trinity | 2025 | No credible Wikipedia squad data for 13 positions |
@@ -452,10 +452,10 @@ This run: **7** complete / **288** checked / **281** removed
 | Warrington Wolves | 2017 | No credible Wikipedia squad data for 13 positions |
 | Warrington Wolves | 2014 | No credible Wikipedia squad data for 13 positions |
 | Warrington Wolves | 2013 | No credible Wikipedia squad data for 13 positions |
-| Warrington Wolves | 2012 | Could not map 13 database players (9/13) |
-| Warrington Wolves | 2011 | Could not map 13 database players (8/13) |
-| Warrington Wolves | 2010 | No credible Wikipedia squad data for 13 positions |
-| Warrington Wolves | 2009 | No credible Wikipedia squad data for 13 positions |
+| Warrington Wolves | 2012 | Could not map 13 database players (10/13) |
+| Warrington Wolves | 2011 | Could not map 13 database players (11/13) |
+| Warrington Wolves | 2010 | Could not map 13 database players (10/13) |
+| Warrington Wolves | 2009 | Could not map 13 database players (9/13) |
 | Warrington Wolves | 2008 | No credible Wikipedia squad data for 13 positions |
 | Warrington Wolves | 2007 | No credible Wikipedia squad data for 13 positions |
 | Warrington Wolves | 2006 | No credible Wikipedia squad data for 13 positions |
@@ -535,7 +535,7 @@ This run: **7** complete / **288** checked / **281** removed
 | York Knights | 2024 | No credible Wikipedia squad data for 13 positions |
 | York Knights | 2023 | No credible Wikipedia squad data for 13 positions |
 | York Knights | 2022 | No credible Wikipedia squad data for 13 positions |
-| York Knights | 2021 | No credible Wikipedia squad data for 13 positions |
+| York Knights | 2021 | Could not map 13 database players (9/13) |
 | York Knights | 2020 | No credible Wikipedia squad data for 13 positions |
 | York Knights | 2019 | No credible Wikipedia squad data for 13 positions |
 | York Knights | 2018 | No credible Wikipedia squad data for 13 positions |

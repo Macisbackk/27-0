@@ -1,0 +1,350 @@
+{
+  "Catalans Dragons": {
+    "2008": {
+      "source": "https://en.wikipedia.org/wiki/2008_Catalans_Dragons_season",
+      "playerIds": [
+        "catalans-hist-clint-greenshields",
+        "catalans-hist-dimitri-pelo",
+        "catalans-hist-justin-murphy",
+        "catalans-hist-adam-mogg",
+        "catalans-hist-john-wilson",
+        "catalans-hist-thomas-bosc-2008",
+        "catalans-hist-stacey-jones-2008",
+        "remi-casty",
+        "catalans-hist-david-ferriol",
+        "catalans-hist-kane-bentley",
+        "catalans-hist-sebastien-raguin",
+        "catalans-hist-jason-croker",
+        "catalans-hist-gregory-mounis-2008"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Clint Greenshields",
+        "Dimitri Pelo",
+        "Justin Murphy",
+        "Adam Mogg",
+        "John Wilson",
+        "Thomas Bosc",
+        "Stacey Jones",
+        "Rémi Casty",
+        "David Ferriol",
+        "Kane Bentley",
+        "Sébastien Raguin",
+        "Jason Croker",
+        "Grégory Mounis"
+      ]
+    }
+  },
+  "Leeds Rhinos": {
+    "2015": {
+      "source": "https://en.wikipedia.org/wiki/2015_Leeds_Rhinos_season",
+      "playerIds": [
+        "leeds-cur-zak-hardaker-2015",
+        "leeds-cur-ash-handley-2015",
+        "leeds-cur-tom-briscoe-2015",
+        "leeds-cur-kallum-watkins-2015",
+        "leeds-hist-joel-moon-2015",
+        "leeds-hist-danny-mcguire-2015",
+        "leeds-leg-rob-burrow-2015",
+        "leeds-leg-jamie-peacock-2015",
+        "leeds-hist-kylie-leuluai-2015",
+        "leeds-hist-paul-aiton-2015",
+        "leeds-leg-jamie-jones-buchanan-2015",
+        "leeds-hist-brett-delaney-2015",
+        "leeds-leg-kevin-sinfield-2015"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Zak Hardaker",
+        "Ash Handley",
+        "Tom Briscoe",
+        "Kallum Watkins",
+        "Joel Moon",
+        "Danny McGuire",
+        "Rob Burrow",
+        "Jamie Peacock",
+        "Kylie Leuluai",
+        "Paul Aiton",
+        "Jamie Jones-Buchanan",
+        "Brett Delaney",
+        "Kevin Sinfield"
+      ]
+    }
+  },
+  "London Broncos": {
+    "2018": {
+      "source": "https://en.wikipedia.org/wiki/2018_London_Broncos_season",
+      "playerIds": [
+        "london-hist-alex-walker-2018",
+        "london-hist-rhys-williams-2018",
+        "london-hist-kieran-dixon-2018",
+        "london-hist-ben-hellewell-2018",
+        "london-hist-elliot-kear-2018",
+        "london-hist-api-pewhairangi-2018",
+        "london-hist-jarrod-sammut-2018",
+        "london-hist-eddie-battye-2018",
+        "london-hist-mark-ioane-2018",
+        "london-hist-eloi-pelissier-2018",
+        "london-hist-jay-pitts-2018",
+        "london-hist-will-lovell-2018",
+        "london-hist-sadiq-adebiyi-2018"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Alex Walker",
+        "Rhys Williams",
+        "Kieran Dixon",
+        "Ben Hellewell",
+        "Elliot Kear",
+        "Api Pewhairangi",
+        "Jarrod Sammut",
+        "Eddie Battye",
+        "Mark Ioane",
+        "Éloi Pélissier",
+        "Jay Pitts",
+        "Will Lovell",
+        "Sadiq Adebiyi"
+      ]
+    }
+  },
+  "Salford Red Devils": {
+    "2015": {
+      "source": "https://en.wikipedia.org/wiki/2015_Salford_Red_Devils_season",
+      "playerIds": [
+        "salford-hist-niall-evalds-2015",
+        "salford-hist-ben-jones-bishop-2015",
+        "salford-hist-greg-johnson-2015",
+        "salford-hist-oliver-gildart-2015",
+        "salford-hist-iain-thornley-2015",
+        "salford-hist-rangi-chase-2015",
+        "salford-hist-josh-wood-2015",
+        "salford-hist-olsi-krasniqi-2015",
+        "salford-hist-adrian-morley-2015",
+        "salford-hist-liam-hood-2015",
+        "salford-hist-jake-bibby-2015",
+        "salford-hist-reni-maitua-2015",
+        "salford-hist-james-greenwood-2015"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Niall Evalds",
+        "Ben Jones-Bishop",
+        "Greg Johnson",
+        "Oliver Gildart",
+        "Ian Thornley",
+        "Rangi Chase",
+        "Josh Wood",
+        "Olsi Krasniqi",
+        "Adrian Morley",
+        "Liam Hood",
+        "Jake Bibby",
+        "Reni Maitua",
+        "James Greenwood"
+      ]
+    }
+  },
+  "Wakefield Trinity": {
+    "2009": {
+      "source": "https://en.wikipedia.org/wiki/2009_Wakefield_Trinity_Wildcats_season",
+      "playerIds": [
+        "wakefield-hist-matt-blaymire-2009",
+        "wakefield-hist-luke-george-2009",
+        "wakefield-hist-damien-blanch-2009",
+        "wakefield-hist-aaron-murphy-2009",
+        "wakefield-hist-ryan-atkins-2009",
+        "wakefield-hist-jamie-rooney-2009",
+        "wakefield-hist-danny-brough-2009",
+        "wakefield-hist-danny-sculthorpe-2009",
+        "wakefield-hist-ricky-bibey-2009",
+        "wakefield-hist-sam-obst-2009",
+        "wakefield-hist-steve-snitch-2009",
+        "wakefield-hist-oliver-wilkes-2009",
+        "wakefield-hist-matthew-petersen-2009"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Matt Blaymire",
+        "Luke George",
+        "Damien Blanch",
+        "Aaron Murphy",
+        "Ryan Atkins",
+        "Jamie Rooney",
+        "Danny Brough",
+        "Danny Sculthorpe",
+        "Ricky Bibey",
+        "Sam Obst",
+        "Steve Snitch",
+        "Oliver Wilkes",
+        "Matthew Petersen"
+      ]
+    }
+  },
+  "Wigan Warriors": {
+    "2006": {
+      "source": "https://en.wikipedia.org/wiki/2006_Wigan_Warriors_season",
+      "playerIds": [
+        "wigan-hist-kris-radlinski-2006",
+        "wigan-hist-mark-calderwood-2006",
+        "wigan-hist-brett-dallas-2006",
+        "wigan-hist-pat-richards-2006",
+        "wigan-hist-sean-gleeson-2006",
+        "wigan-hist-kevin-brown-2006",
+        "wigan-hist-dennis-moran-2006",
+        "wigan-hist-stuart-fielden-2006",
+        "wigan-hist-scott-logan-2006",
+        "wigan-hist-michael-mcilorum-2006",
+        "wigan-hist-mickey-higham-2006",
+        "wigan-hist-gareth-hock-2006",
+        "wigan-hist-sean-oloughlin-2006"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Kris Radlinski",
+        "Mark Calderwood",
+        "Brett Dallas",
+        "Pat Richards",
+        "Sean Gleeson",
+        "Kevin Brown",
+        "Dennis Moran",
+        "Stuart Fielden",
+        "Scott Logan",
+        "Michael McIlorum",
+        "Mickey Higham",
+        "Gareth Hock",
+        "Sean O'Loughlin"
+      ]
+    },
+    "2008": {
+      "source": "https://en.wikipedia.org/wiki/2008_Wigan_Warriors_season",
+      "playerIds": [
+        "wigan-hist-richie-mathers-2008",
+        "wigan-hist-pat-richards-2008",
+        "wigan-hist-trent-barrett-2008",
+        "wigan-hist-karl-pryce-2008",
+        "wigan-hist-cameron-phelps-2008",
+        "wigan-hist-sam-tomkins-2008",
+        "wigan-hist-thomas-leuluai-2008",
+        "wigan-hist-stuart-fielden-2008",
+        "wigan-hist-lee-mossop-2008",
+        "wigan-hist-michael-mcilorum-2008",
+        "wigan-hist-joel-tomkins-2008",
+        "wigan-hist-gareth-hock-2008",
+        "wigan-hist-sean-oloughlin-2008"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "PROP",
+        "HOOKER",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Richie Mathers",
+        "Pat Richards",
+        "Trent Barrett",
+        "Karl Pryce",
+        "Cameron Phelps",
+        "Sam Tomkins",
+        "Thomas Leuluai",
+        "Stuart Fielden",
+        "Lee Mossop",
+        "Michael McIlorum",
+        "Joel Tomkins",
+        "Gareth Hock",
+        "Sean O'Loughlin"
+      ]
+    }
+  }
+}
