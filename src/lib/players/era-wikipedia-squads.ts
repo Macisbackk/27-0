@@ -1,4 +1,6 @@
+import { isSuperLeagueSeason } from "./super-league-club-years";
 import eraWikipediaSquadsData from "../../../data/era-wikipedia-squads.json";
+import slVerifiedSquadsData from "../../../data/sl-era-verified-squads.json";
 import type { Position } from "../types";
 
 export interface EraWikipediaSquadEntry {
@@ -15,7 +17,39 @@ export type EraWikipediaSquads = Record<
   Record<string, EraWikipediaSquadEntry>
 >;
 
-const ERA_WIKIPEDIA_SQUADS = eraWikipediaSquadsData as EraWikipediaSquads;
+type VerifiedSquads = Record<
+  string,
+  Record<string, Partial<EraWikipediaSquadEntry> & { playerIds: string[] }>
+>;
+
+function mergeVerifiedSquads(
+  wiki: EraWikipediaSquads,
+  verified: VerifiedSquads
+): EraWikipediaSquads {
+  const merged: EraWikipediaSquads = {};
+  for (const [club, years] of Object.entries(wiki)) {
+    merged[club] = { ...years };
+  }
+  for (const [club, years] of Object.entries(verified)) {
+    if (!merged[club]) merged[club] = {};
+    for (const [year, entry] of Object.entries(years)) {
+      if (entry?.playerIds?.length !== 13) continue;
+      merged[club][year] = {
+        playerIds: entry.playerIds,
+        positions: entry.positions ?? [],
+        source: entry.source ?? "verified",
+        wikipediaPlayers: entry.wikipediaPlayers ?? [],
+        verifiedAt: entry.verifiedAt ?? "sl-era-verified-squads.json",
+      };
+    }
+  }
+  return merged;
+}
+
+const ERA_WIKIPEDIA_SQUADS = mergeVerifiedSquads(
+  eraWikipediaSquadsData as EraWikipediaSquads,
+  slVerifiedSquadsData as unknown as VerifiedSquads
+);
 
 export function getEraWikipediaSquads(): EraWikipediaSquads {
   return ERA_WIKIPEDIA_SQUADS;
@@ -39,6 +73,7 @@ export function getEraWikipediaSquadPositions(
 }
 
 export function hasEraWikipediaSquad(club: string, year: string): boolean {
+  if (!isSuperLeagueSeason(club, year)) return false;
   return getEraWikipediaSquadPlayerIds(club, year) !== null;
 }
 
@@ -48,6 +83,7 @@ export function getEraWikipediaYearsForClub(club: string): string[] {
   const currentYear = new Date().getFullYear();
   return Object.keys(years)
     .filter((year) => Number(year) <= currentYear)
+    .filter((year) => isSuperLeagueSeason(club, year))
     .filter((year) => (years[year]?.playerIds?.length ?? 0) === 13)
     .sort((a, b) => Number(b) - Number(a));
 }

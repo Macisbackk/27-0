@@ -127,13 +127,12 @@ export function warnTeamYearPoolLeak(
   const pool = getTeamYearPoolFromTarget(target);
   if (!pool || isPlayerInTeamYearPool(player.id, pool)) return;
 
-  console.warn(
-    "Invalid player pool leak: player does not belong to selected team-year",
-    {
-      selectedTeamYearId: target.teamYearId,
-      playerId: player.id,
-      playerName: player.name,
-      playerTeamYearIds: getPlayerTeamYearIds(player.id),
-    }
-  );
+  console.warn("Team-year pool leak", {
+    spinTeamYearId: target.teamYearId,
+    playerId: player.id,
+    playerName: player.name,
+    playerTeamYearIds: getPlayerTeamYearIds(player.id),
+    selectedClub: target.team,
+    selectedYear: target.year,
+  });
 }

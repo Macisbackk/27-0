@@ -1,9 +1,11 @@
+import { isSuperLeagueSeason } from "./super-league-club-years";
 import teamYearRostersData from "../../../data/team-year-rosters.json";
 import { getPlayableClubNames } from "../clubs/super-league-display";
 import {
   isPlayableTeamYearRoster,
   MIN_TEAM_YEAR_ROSTER_PLAYERS,
 } from "./team-year-roster-playable";
+import { isTeamYearPlayableInNormalSpin } from "./team-year-roster-meta";
 
 export type TeamYearRosters = Record<string, Record<string, string[]>>;
 
@@ -32,6 +34,7 @@ export function getYearsForTeam(team: string): string[] {
   const currentYear = getCurrentCalendarYear();
   return Object.keys(years)
     .filter((year) => Number(year) <= currentYear)
+    .filter((year) => isSuperLeagueSeason(team, year))
     .filter((year) => hasTeamYearRoster(team, year))
     .sort((a, b) => Number(b) - Number(a));
 }
@@ -52,6 +55,8 @@ export function getRosterPlayerIds(team: string, year: string): string[] {
 }
 
 export function hasTeamYearRoster(team: string, year: string): boolean {
+  if (!isSuperLeagueSeason(team, year)) return false;
+  if (!isTeamYearPlayableInNormalSpin(team, year)) return false;
   const ids = TEAM_YEAR_ROSTERS[team]?.[year] ?? [];
   const { getPlayerById } = require("./index") as typeof import("./index");
   return isPlayableTeamYearRoster(team, year, ids, getPlayerById);

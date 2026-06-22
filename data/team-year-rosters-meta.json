@@ -1,0 +1,171 @@
+{
+  "Bradford Bulls": {
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 30
+    }
+  },
+  "Wigan Warriors": {
+    "2006": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": false,
+      "playerCount": 1,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2006_Wigan_Warriors_season"
+    },
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 31
+    }
+  },
+  "Warrington Wolves": {
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 25
+    }
+  },
+  "Catalans Dragons": {
+    "2007": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2007_Catalans_Dragons_season"
+    },
+    "2008": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": false,
+      "playerCount": 10,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2008_Catalans_Dragons_season"
+    },
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 37
+    }
+  },
+  "Huddersfield Giants": {
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 33
+    }
+  },
+  "Castleford Tigers": {
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 43
+    }
+  },
+  "Wakefield Trinity": {
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 42
+    }
+  },
+  "Widnes Vikings": {},
+  "Leeds Rhinos": {
+    "2015": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": false,
+      "playerCount": 6,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2015_Leeds_Rhinos_season"
+    },
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 32
+    }
+  },
+  "Hull FC": {
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 34
+    }
+  },
+  "Salford Red Devils": {},
+  "London Broncos": {},
+  "St Helens": {
+    "2006": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final"
+    },
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 26
+    }
+  },
+  "Hull KR": {
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 33
+    }
+  },
+  "Toulouse Olympique": {
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 30
+    }
+  },
+  "Leigh Leopards": {
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 33
+    }
+  },
+  "York Knights": {
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 30
+    }
+  }
+}

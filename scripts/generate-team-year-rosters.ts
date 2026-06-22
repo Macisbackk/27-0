@@ -1,101 +1,64 @@
 /**
- * Build teamYearRosters from verified player career spans, merged with
- * Wikipedia-verified Era squads (data/era-wikipedia-squads.json).
+ * Build strict team-year roster pools — verified squads + current-year squads only.
+ * No career-span expansion. No clubsPlayedFor leakage.
  *
- * Run: npx tsx scripts/generate-team-year-rosters.ts
+ * Run: npm run build:team-year-rosters
  */
 import { writeFileSync } from "fs";
 import { join } from "path";
 import currentSquads from "../data/current-squads.json";
 import eraWikipediaSquads from "../data/era-wikipedia-squads.json";
 import slVerifiedSquads from "../data/sl-era-verified-squads.json";
-import clubCareerSpans from "../data/club-career-spans.json";
 import historicPlayers from "../data/historic-players.json";
 import legends from "../data/legends.json";
 import { getPlayableClubNames } from "../src/lib/clubs/super-league-display";
+import { getPlayerById } from "../src/lib/players";
+import { isSuperLeagueSeason } from "../src/lib/players/super-league-club-years";
 import { normalizePlayer } from "../src/lib/players/normalize";
 import {
   isPlayableTeamYearRoster,
   MIN_TEAM_YEAR_ROSTER_PLAYERS,
   getTeamYearRecruitPosition,
 } from "../src/lib/players/team-year-roster-playable";
+import { describeTeamYearMembershipMismatch, playerBelongsToTeamYear } from "../src/lib/players/team-year-membership";
 import { getRecruitListPositionsForSlot } from "../src/lib/game/position-placement";
 import { SQUAD_STRUCTURE } from "../src/lib/positions";
 import type { Player } from "../src/lib/types";
 
 export type TeamYearRosters = Record<string, Record<string, string[]>>;
 
-/** Super League competition started in 1996 — ignore earlier years for span pools. */
-const SUPER_LEAGUE_MIN_YEAR = 1996;
-
-/** Map RLP / short club labels to playable Super League club names. */
-const RLP_CLUB_ALIASES: Record<string, string> = {
-  "Hull KR": "Hull KR",
-  "Hull Kingston Rovers": "Hull KR",
-  Leigh: "Leigh Leopards",
-  "Leigh Centurions": "Leigh Leopards",
-  Salford: "Salford Red Devils",
-  "Salford City Reds": "Salford Red Devils",
-  York: "York Knights",
-  "York City Knights": "York Knights",
-  Huddersfield: "Huddersfield Giants",
-  Wakefield: "Wakefield Trinity",
-  "Wakefield Trinity Wildcats": "Wakefield Trinity",
-  Wigan: "Wigan Warriors",
-  Warrington: "Warrington Wolves",
-  Leeds: "Leeds Rhinos",
-  Bradford: "Bradford Bulls",
-  Castleford: "Castleford Tigers",
-  Catalans: "Catalans Dragons",
-  London: "London Broncos",
-  Widnes: "Widnes Vikings",
-  Toulouse: "Toulouse Olympique",
-  "St Helens": "St Helens",
-  "Hull FC": "Hull FC",
-  Oldham: "Oldham",
+export type TeamYearRosterMeta = {
+  source: "verified" | "current-squad";
+  isSuperLeagueSeason: boolean;
+  playableInNormalSpin: boolean;
+  playableInEra: boolean;
+  playerCount: number;
+  verifiedSource?: string;
 };
 
-const EXTRA_CLUB_SPANS = clubCareerSpans as Record<string, string[]>;
-
-type EraWikipediaSquads = Record<
+export type TeamYearRostersMetaFile = Record<
   string,
-  Record<string, { playerIds: string[]; source?: string }>
+  Record<string, TeamYearRosterMeta>
 >;
 
-function parseYearRange(yearsActive: string): { start: number; end: number } | null {
-  const normalized = yearsActive.replace(/–/g, "-");
-  const parts = normalized.split("-").map((part) => part.trim());
-  if (parts.length < 1 || !parts[0]) return null;
+const CURRENT_YEAR = new Date().getFullYear();
 
-  const startMatch = parts[0].match(/(\d{4})/);
-  if (!startMatch) return null;
-  const start = Number.parseInt(startMatch[1], 10);
+type VerifiedSquad = {
+  playerIds: string[];
+  source?: string;
+  positions?: string[];
+};
 
-  let end = start;
-  if (parts.length > 1) {
-    if (/present|unknown/i.test(parts[1])) {
-      end = new Date().getFullYear();
-    } else {
-      const endMatch = parts[1].match(/(\d{4})/);
-      if (endMatch) end = Number.parseInt(endMatch[1], 10);
-    }
-  }
+type VerifiedSquads = Record<string, Record<string, VerifiedSquad>>;
 
-  if (end < start) return null;
-  return { start, end };
-}
-
-function getRawPlayers(): Record<string, unknown>[] {
-  return [
+function buildPlayerIndex(): Map<string, Player> {
+  const rawPlayers = [
     ...(currentSquads as Record<string, unknown>[]),
     ...(historicPlayers as Record<string, unknown>[]),
     ...(legends as Record<string, unknown>[]),
   ];
-}
-
-function buildPlayerIndex(): Map<string, Player> {
   const byId = new Map<string, Player>();
-  for (const raw of getRawPlayers()) {
+  for (const raw of rawPlayers) {
     const player = normalizePlayer(raw);
     if (player.availableInGame === false) continue;
     byId.set(player.id, player);
@@ -103,110 +66,245 @@ function buildPlayerIndex(): Map<string, Player> {
   return byId;
 }
 
-function mergeVerifiedSquads(rosters: TeamYearRosters): number {
+function filterVerifiedPlayerIds(
+  team: string,
+  year: string,
+  playerIds: string[],
+  playerById: Map<string, Player>
+): { valid: string[]; rejected: Array<{ id: string; reason: string }> } {
+  const valid: string[] = [];
+  const rejected: Array<{ id: string; reason: string }> = [];
+
+  for (const id of playerIds) {
+    const player = playerById.get(id);
+    if (!player) {
+      rejected.push({ id, reason: "unknown player id" });
+      continue;
+    }
+    if (!playerBelongsToTeamYear(player, team, year)) {
+      rejected.push({
+        id,
+        reason:
+          describeTeamYearMembershipMismatch(player, team, year) ??
+          "membership mismatch",
+      });
+      continue;
+    }
+    valid.push(id);
+  }
+
+  return { valid, rejected };
+}
+
+function mergeVerifiedSquads(
+  rosters: TeamYearRosters,
+  meta: TeamYearRostersMetaFile,
+  playerById: Map<string, Player>
+): { merged: number; rejectedPlayers: Array<{ team: string; year: string; id: string; reason: string }> } {
   let merged = 0;
+  const rejectedPlayers: Array<{ team: string; year: string; id: string; reason: string }> = [];
   const sources = [
-    eraWikipediaSquads as EraWikipediaSquads,
-    slVerifiedSquads as EraWikipediaSquads,
+    eraWikipediaSquads as VerifiedSquads,
+    slVerifiedSquads as VerifiedSquads,
   ];
 
   for (const wiki of sources) {
     for (const [team, years] of Object.entries(wiki)) {
-      if (!rosters[team]) rosters[team] = {};
+      if (!meta[team]) meta[team] = {};
       for (const [year, entry] of Object.entries(years)) {
         if (!entry?.playerIds || entry.playerIds.length !== 13) continue;
-        // Exact verified XIII — replaces generic yearsActive pool for this team-year.
-        rosters[team][year] = [...entry.playerIds].sort((a, b) =>
-          a.localeCompare(b)
+        if (!isSuperLeagueSeason(team, year)) continue;
+
+        const { valid, rejected } = filterVerifiedPlayerIds(
+          team,
+          year,
+          entry.playerIds,
+          playerById
         );
+        for (const r of rejected) {
+          rejectedPlayers.push({ team, year, id: r.id, reason: r.reason });
+        }
+        if (valid.length !== 13) continue;
+
+        if (!rosters[team]) rosters[team] = {};
+        rosters[team][year] = [...valid].sort((a, b) => a.localeCompare(b));
+
+        meta[team][year] = {
+          source: "verified",
+          isSuperLeagueSeason: true,
+          playableInNormalSpin: false,
+          playableInEra: true,
+          playerCount: 13,
+          verifiedSource: entry.source,
+        };
         merged++;
       }
     }
   }
 
-  return merged;
+  return { merged, rejectedPlayers };
 }
 
-function resolvePlayableClubs(
-  raw: Record<string, unknown>,
-  primaryClub: string,
-  playable: Set<string>
-): string[] {
-  const clubs = new Set<string>();
-  if (playable.has(primaryClub)) clubs.add(primaryClub);
-
-  const playedFor = raw.clubsPlayedFor as string[] | undefined;
-  if (playedFor) {
-    for (const label of playedFor) {
-      const mapped =
-        RLP_CLUB_ALIASES[label] ??
-        (playable.has(label) ? label : undefined);
-      if (mapped) clubs.add(mapped);
-    }
-  }
-
-  const id = raw.id as string;
-  for (const team of EXTRA_CLUB_SPANS[id] ?? []) {
-    if (playable.has(team)) clubs.add(team);
-  }
-
-  return [...clubs];
-}
-
-function addPlayerToClubYears(
-  rosters: TeamYearRosters,
-  club: string,
-  playerId: string,
-  range: { start: number; end: number }
-): void {
-  if (!rosters[club]) rosters[club] = {};
-  for (let year = range.start; year <= range.end; year++) {
-    if (year < SUPER_LEAGUE_MIN_YEAR) continue;
-    const key = String(year);
-    if (!rosters[club][key]) rosters[club][key] = [];
-    if (!rosters[club][key].includes(playerId)) {
-      rosters[club][key].push(playerId);
-    }
-  }
-}
-
-function buildRosters(
-  playerById: Map<string, Player>,
-  rawPlayers: Record<string, unknown>[]
-): TeamYearRosters {
-  const playable = new Set(getPlayableClubNames());
-  const rosters: TeamYearRosters = {};
-
-  for (const raw of rawPlayers) {
-    const player = playerById.get(raw.id as string);
-    if (!player) continue;
-
-    const range = parseYearRange(player.yearsActive);
-    if (!range) continue;
-
-    for (const club of resolvePlayableClubs(raw, player.club, playable)) {
-      addPlayerToClubYears(rosters, club, player.id, range);
-    }
-  }
-
-  const wikiMerged = mergeVerifiedSquads(rosters);
-
+function scrubUnresolvedRosterIds(rosters: TeamYearRosters): void {
   for (const team of Object.keys(rosters)) {
     for (const year of Object.keys(rosters[team])) {
-      rosters[team][year].sort((a, b) => a.localeCompare(b));
+      rosters[team][year] = rosters[team][year]!.filter(
+        (id) => getPlayerById(id) !== undefined
+      );
+      if (rosters[team][year]!.length === 0) {
+        delete rosters[team][year];
+      }
+    }
+    if (Object.keys(rosters[team]).length === 0) {
+      delete rosters[team];
+    }
+  }
+}
+
+function buildCurrentYearSquads(
+  rosters: TeamYearRosters,
+  meta: TeamYearRostersMetaFile,
+  playerById: Map<string, Player>
+): number {
+  const year = String(CURRENT_YEAR);
+  let built = 0;
+  const playable = new Set(getPlayableClubNames());
+
+  for (const raw of currentSquads as Record<string, unknown>[]) {
+    const player = playerById.get(raw.id as string);
+    if (!player || player.category !== "current") continue;
+    if (!playable.has(player.club)) continue;
+
+    if (!isSuperLeagueSeason(player.club, year)) continue;
+
+    if (!rosters[player.club]) rosters[player.club] = {};
+    if (!rosters[player.club][year]) rosters[player.club][year] = [];
+
+    const ids = rosters[player.club][year]!;
+    if (!ids.includes(player.id)) ids.push(player.id);
+  }
+
+  for (const club of Object.keys(rosters)) {
+    const ids = rosters[club]?.[year];
+    if (!ids?.length) continue;
+
+    const knownIds = ids.filter((id) => playerById.has(id));
+    knownIds.sort((a, b) => a.localeCompare(b));
+    rosters[club]![year] = knownIds;
+
+    const playableRoster = isPlayableTeamYearRoster(
+      club,
+      year,
+      knownIds,
+      (id) => playerById.get(id)
+    );
+
+    if (!meta[club]) meta[club] = {};
+    meta[club][year] = {
+      source: "current-squad",
+      isSuperLeagueSeason: isSuperLeagueSeason(club, year),
+      playableInNormalSpin: playableRoster,
+      playableInEra: playableRoster,
+      playerCount: knownIds.length,
+    };
+
+    if (!playableRoster) {
+      delete rosters[club][year];
+      meta[club][year].playableInNormalSpin = false;
+      meta[club][year].playableInEra = false;
+    } else {
+      built++;
     }
   }
 
-  console.log(`Merged ${wikiMerged} Wikipedia-verified team-year squads`);
-  return rosters;
+  return built;
 }
 
-function auditRosters(
+function finalizePlayability(
+  rosters: TeamYearRosters,
+  meta: TeamYearRostersMetaFile,
+  playerById: Map<string, Player>
+): { playable: Array<{ team: string; year: string; count: number }>; hidden: Array<{ team: string; year: string; reason: string }> } {
+  const playable: Array<{ team: string; year: string; count: number }> = [];
+  const hidden: Array<{ team: string; year: string; reason: string }> = [];
+
+  for (const team of Object.keys(meta).sort()) {
+    for (const year of Object.keys(meta[team]).sort(
+      (a, b) => Number(a) - Number(b)
+    )) {
+      const entry = meta[team][year]!;
+      const ids = rosters[team]?.[year] ?? [];
+
+      if (!isSuperLeagueSeason(team, year)) {
+        entry.isSuperLeagueSeason = false;
+        entry.playableInNormalSpin = false;
+        entry.playableInEra = false;
+        delete rosters[team]?.[year];
+        hidden.push({ team, year, reason: "not a Super League season" });
+        continue;
+      }
+
+      if (entry.source === "verified") {
+        const ok = isPlayableTeamYearRoster(team, year, ids, (id) =>
+          playerById.get(id)
+        );
+        entry.playableInNormalSpin = ok;
+        entry.playableInEra = ok;
+        entry.playerCount = ids.length;
+
+        if (!ok) {
+          delete rosters[team]?.[year];
+          hidden.push({ team, year, reason: "verified squad failed playability gate" });
+        } else {
+          playable.push({ team, year, count: ids.length });
+        }
+        continue;
+      }
+
+      if (entry.playableInNormalSpin) {
+        playable.push({ team, year, count: ids.length });
+      } else {
+        hidden.push({ team, year, reason: "incomplete current squad pool" });
+      }
+    }
+  }
+
+  return { playable, hidden };
+}
+
+function auditMembership(
+  rosters: TeamYearRosters,
+  playerById: Map<string, Player>
+): Array<{ team: string; year: string; playerId: string; message: string }> {
+  const mismatches: Array<{
+    team: string;
+    year: string;
+    playerId: string;
+    message: string;
+  }> = [];
+
+  for (const team of Object.keys(rosters).sort()) {
+    for (const year of Object.keys(rosters[team]).sort(
+      (a, b) => Number(a) - Number(b)
+    )) {
+      for (const id of rosters[team][year]!) {
+        const player = playerById.get(id);
+        if (!player) continue;
+        const message = describeTeamYearMembershipMismatch(player, team, year);
+        if (message) {
+          mismatches.push({ team, year, playerId: id, message });
+        }
+      }
+    }
+  }
+
+  return mismatches;
+}
+
+function auditIncomplete(
   rosters: TeamYearRosters,
   playerById: Map<string, Player>
 ) {
-  const resolve = (id: string) => playerById.get(id);
-  const playable: Array<{ team: string; year: string; count: number }> = [];
   const incomplete: Array<{
     team: string;
     year: string;
@@ -219,8 +317,7 @@ function auditRosters(
       (a, b) => Number(a) - Number(b)
     )) {
       const ids = rosters[team][year]!;
-      if (isPlayableTeamYearRoster(team, year, ids, resolve)) {
-        playable.push({ team, year, count: ids.length });
+      if (isPlayableTeamYearRoster(team, year, ids, (id) => playerById.get(id))) {
         continue;
       }
 
@@ -229,7 +326,7 @@ function auditRosters(
         reason = `fewer than ${MIN_TEAM_YEAR_ROSTER_PLAYERS} players`;
       } else {
         const players = ids
-          .map((id) => resolve(id))
+          .map((id) => playerById.get(id))
           .filter((p): p is Player => !!p);
         for (const { position, count } of SQUAD_STRUCTURE) {
           const allowed = new Set(getRecruitListPositionsForSlot(position));
@@ -242,41 +339,52 @@ function auditRosters(
           }
         }
       }
-
       incomplete.push({ team, year, count: ids.length, reason });
     }
   }
 
-  return { playable, incomplete };
+  return incomplete;
 }
 
-const rawPlayers = getRawPlayers();
 const playerById = buildPlayerIndex();
-const rosters = buildRosters(playerById, rawPlayers);
-const { playable, incomplete } = auditRosters(rosters, playerById);
+const rosters: TeamYearRosters = {};
+const meta: TeamYearRostersMetaFile = {};
+
+const verifiedCount = mergeVerifiedSquads(rosters, meta, playerById);
+const currentCount = buildCurrentYearSquads(rosters, meta, playerById);
+scrubUnresolvedRosterIds(rosters);
+const { playable, hidden } = finalizePlayability(rosters, meta, playerById);
+const membershipMismatches = auditMembership(rosters, playerById);
 
 const dataDir = join(process.cwd(), "data");
 writeFileSync(
   join(dataDir, "team-year-rosters.json"),
   `${JSON.stringify(rosters, null, 2)}\n`
 );
-
+writeFileSync(
+  join(dataDir, "team-year-rosters-meta.json"),
+  `${JSON.stringify(meta, null, 2)}\n`
+);
 writeFileSync(
   join(dataDir, "team-year-rosters-audit.json"),
   `${JSON.stringify(
     {
       generatedAt: new Date().toISOString(),
       sources: [
-        "Player yearsActive spans (Super League 1996+, current-squads, historic-players, legends)",
-        "Secondary clubs via clubsPlayedFor + club-career-spans.json",
-        "Wikipedia-verified Era squads (era-wikipedia-squads.json)",
-        "Manual SL verified squads (sl-era-verified-squads.json)",
+        "Verified Wikipedia/manual XIII only (era-wikipedia-squads.json, sl-era-verified-squads.json)",
+        `Current squad for ${CURRENT_YEAR} only (current-squads.json)`,
+        "Super League season gate (super-league-club-years.json)",
       ],
       minPlayers: MIN_TEAM_YEAR_ROSTER_PLAYERS,
+      verifiedSquadsMerged: verifiedCount.merged,
+      verifiedPlayersRejected: verifiedCount.rejectedPlayers.length,
+      currentYearSquadsBuilt: currentCount,
       playableCount: playable.length,
-      incompleteCount: incomplete.length,
+      hiddenCount: hidden.length,
       playable,
-      incomplete,
+      hidden,
+      membershipMismatches,
+      incomplete: auditIncomplete(rosters, playerById),
     },
     null,
     2
@@ -284,6 +392,16 @@ writeFileSync(
 );
 
 console.log(`Wrote data/team-year-rosters.json`);
+console.log(`Wrote data/team-year-rosters-meta.json`);
+console.log(`Verified squads: ${verifiedCount.merged} | Current-year squads: ${currentCount}`);
 console.log(
-  `Playable team-years: ${playable.length} | Incomplete/hidden: ${incomplete.length}`
+  `Playable team-years: ${playable.length} | Hidden: ${hidden.length}`
 );
+if (membershipMismatches.length > 0) {
+  console.warn(
+    `Membership mismatches in playable rosters: ${membershipMismatches.length}`
+  );
+  for (const m of membershipMismatches.slice(0, 10)) {
+    console.warn(`  ${m.team} ${m.year} ${m.playerId}: ${m.message}`);
+  }
+}
