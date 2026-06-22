@@ -1,0 +1,1220 @@
+{
+  "Bradford Bulls": [
+    {
+      "name": "Caleb Aekins",
+      "positions": "FB",
+      "rating": 82
+    },
+    {
+      "name": "Ethan Ryan",
+      "positions": "WG",
+      "rating": 81
+    },
+    {
+      "name": "Waqa Blake",
+      "positions": "CE",
+      "rating": 87
+    },
+    {
+      "name": "Esan Marsters",
+      "positions": "CE",
+      "rating": 86
+    },
+    {
+      "name": "Jayden Okunbor",
+      "positions": "WG",
+      "rating": 83
+    },
+    {
+      "name": "Jayden Nikorima",
+      "positions": "SO",
+      "rating": 84
+    },
+    {
+      "name": "Rowan Milnes",
+      "positions": "SH",
+      "rating": 80
+    },
+    {
+      "name": "Ryan Sutton",
+      "positions": "PF",
+      "rating": 84
+    },
+    {
+      "name": "Andy Ackers",
+      "positions": "HK",
+      "rating": 86
+    },
+    {
+      "name": "Eribe Doro",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Dan Russell",
+      "positions": "SR",
+      "rating": 82
+    },
+    {
+      "name": "Zac Fulton",
+      "positions": "SR",
+      "rating": 81
+    },
+    {
+      "name": "Joe Mellor",
+      "positions": "LF",
+      "rating": 86
+    },
+    {
+      "name": "Mitch Souter",
+      "positions": "HK",
+      "rating": 78
+    },
+    {
+      "name": "Loghan Lewis",
+      "positions": "SR",
+      "rating": 79
+    },
+    {
+      "name": "Ebon Scurr",
+      "positions": "PF",
+      "rating": 78
+    },
+    {
+      "name": "Ed Chamberlain",
+      "positions": "CE/WG",
+      "rating": 82
+    }
+  ],
+  "Castleford Tigers": [
+    {
+      "name": "Blake Taaffe",
+      "positions": "FB",
+      "rating": 86
+    },
+    {
+      "name": "Jason Qareqare",
+      "positions": "WG",
+      "rating": 84
+    },
+    {
+      "name": "Zac Cini",
+      "positions": "CE",
+      "rating": 82
+    },
+    {
+      "name": "Darnell McIntosh",
+      "positions": "CE/WG",
+      "rating": 83
+    },
+    {
+      "name": "Semi Valemei",
+      "positions": "WG",
+      "rating": 85
+    },
+    {
+      "name": "Daejarn Asi",
+      "positions": "SO",
+      "rating": 84
+    },
+    {
+      "name": "Tom Weaver",
+      "positions": "SH",
+      "rating": 79
+    },
+    {
+      "name": "Renouf Atoni",
+      "positions": "PF",
+      "rating": 85
+    },
+    {
+      "name": "Liam Hood",
+      "positions": "HK",
+      "rating": 84
+    },
+    {
+      "name": "George Lawler",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Jordan Lane",
+      "positions": "SR",
+      "rating": 84
+    },
+    {
+      "name": "Alex Mellor",
+      "positions": "SR",
+      "rating": 83
+    },
+    {
+      "name": "Joe Stimson",
+      "positions": "LF",
+      "rating": 82
+    },
+    {
+      "name": "Cain Robb",
+      "positions": "HK",
+      "rating": 78
+    },
+    {
+      "name": "Jeremiah Simbiken",
+      "positions": "SR",
+      "rating": 80
+    },
+    {
+      "name": "Krystian Mapapalangi",
+      "positions": "CE/SR",
+      "rating": 81
+    },
+    {
+      "name": "Joe Westerman",
+      "positions": "LF",
+      "rating": 85
+    }
+  ],
+  "Catalans Dragons": [
+    {
+      "name": "Charlie Staines",
+      "positions": "FB",
+      "rating": 84
+    },
+    {
+      "name": "Tommy Makinson",
+      "positions": "WG",
+      "rating": 86
+    },
+    {
+      "name": "Nick Cotric",
+      "positions": "CE/WG",
+      "rating": 85
+    },
+    {
+      "name": "Solomona Faataape",
+      "positions": "CE",
+      "rating": 83
+    },
+    {
+      "name": "Manase Kaho",
+      "positions": "WG",
+      "rating": 82
+    },
+    {
+      "name": "Toby Sexton",
+      "positions": "SO",
+      "rating": 84
+    },
+    {
+      "name": "Lewis Dodd",
+      "positions": "SH",
+      "rating": 83
+    },
+    {
+      "name": "Chris Satae",
+      "positions": "PF",
+      "rating": 84
+    },
+    {
+      "name": "Alrix Da Costa",
+      "positions": "HK",
+      "rating": 85
+    },
+    {
+      "name": "Julian Bousquet",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Bayley Sironen",
+      "positions": "SR",
+      "rating": 84
+    },
+    {
+      "name": "Tariq Sims",
+      "positions": "SR",
+      "rating": 86
+    },
+    {
+      "name": "Benjamin Garcia",
+      "positions": "LF",
+      "rating": 88
+    },
+    {
+      "name": "Paul Seguier",
+      "positions": "SR/LF",
+      "rating": 82
+    },
+    {
+      "name": "Jordan Dezaria",
+      "positions": "PF",
+      "rating": 81
+    },
+    {
+      "name": "Arthur Romano",
+      "positions": "CE/WG",
+      "rating": 83
+    },
+    {
+      "name": "Cesar Rouge",
+      "positions": "HB",
+      "rating": 80
+    }
+  ],
+  "Huddersfield Giants": [
+    {
+      "name": "Niall Evalds",
+      "positions": "FB",
+      "rating": 85
+    },
+    {
+      "name": "Adam Swift",
+      "positions": "WG",
+      "rating": 84
+    },
+    {
+      "name": "Jacob Gagai",
+      "positions": "CE",
+      "rating": 83
+    },
+    {
+      "name": "Taane Milne",
+      "positions": "CE",
+      "rating": 82
+    },
+    {
+      "name": "Sam Halsall",
+      "positions": "WG",
+      "rating": 81
+    },
+    {
+      "name": "Tui Lolohea",
+      "positions": "SO",
+      "rating": 85
+    },
+    {
+      "name": "Adam Clune",
+      "positions": "SH",
+      "rating": 80
+    },
+    {
+      "name": "Matty English",
+      "positions": "PF",
+      "rating": 84
+    },
+    {
+      "name": "Zac Woolford",
+      "positions": "HK",
+      "rating": 82
+    },
+    {
+      "name": "Fenton Rogers",
+      "positions": "PF",
+      "rating": 81
+    },
+    {
+      "name": "Oliver Wilson",
+      "positions": "SR/PF",
+      "rating": 83
+    },
+    {
+      "name": "Joe Greenwood",
+      "positions": "SR",
+      "rating": 84
+    },
+    {
+      "name": "Harry Rushton",
+      "positions": "LF/SR",
+      "rating": 82
+    },
+    {
+      "name": "George Flanagan Jr",
+      "positions": "FB",
+      "rating": 78
+    },
+    {
+      "name": "Sam Hewitt",
+      "positions": "SR/PF",
+      "rating": 81
+    },
+    {
+      "name": "George King",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Jake Bibby",
+      "positions": "CE/WG",
+      "rating": 82
+    }
+  ],
+  "Hull FC": [
+    {
+      "name": "Will Pryce",
+      "positions": "FB",
+      "rating": 88
+    },
+    {
+      "name": "Harvey Barron",
+      "positions": "WG",
+      "rating": 81
+    },
+    {
+      "name": "Davy Litten",
+      "positions": "CE",
+      "rating": 82
+    },
+    {
+      "name": "Zak Hardaker",
+      "positions": "CE",
+      "rating": 86
+    },
+    {
+      "name": "Lewis Martin",
+      "positions": "WG",
+      "rating": 83
+    },
+    {
+      "name": "Jake Arthur",
+      "positions": "SO",
+      "rating": 84
+    },
+    {
+      "name": "Aidan Sezer",
+      "positions": "SH",
+      "rating": 87
+    },
+    {
+      "name": "Herman Eseese",
+      "positions": "PF",
+      "rating": 88
+    },
+    {
+      "name": "Amir Bourouh",
+      "positions": "HK",
+      "rating": 84
+    },
+    {
+      "name": "Harvie Hill",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Joe Batchelor",
+      "positions": "SR",
+      "rating": 84
+    },
+    {
+      "name": "Jed Cartwright",
+      "positions": "SR",
+      "rating": 83
+    },
+    {
+      "name": "John Asiata",
+      "positions": "LF",
+      "rating": 87
+    },
+    {
+      "name": "Cade Cust",
+      "positions": "HB/HK",
+      "rating": 82
+    },
+    {
+      "name": "Sam Lisone",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Ligi Sao",
+      "positions": "PF",
+      "rating": 81
+    },
+    {
+      "name": "James Bell",
+      "positions": "SR/LF",
+      "rating": 80
+    }
+  ],
+  "Hull KR": [
+    {
+      "name": "Arthur Mourgue",
+      "positions": "FB",
+      "rating": 88
+    },
+    {
+      "name": "Tom Davies",
+      "positions": "WG",
+      "rating": 83
+    },
+    {
+      "name": "Peta Hiku",
+      "positions": "CE",
+      "rating": 88
+    },
+    {
+      "name": "Oliver Gildart",
+      "positions": "CE",
+      "rating": 85
+    },
+    {
+      "name": "Joe Burgess",
+      "positions": "WG",
+      "rating": 84
+    },
+    {
+      "name": "Mikey Lewis",
+      "positions": "SO",
+      "rating": 91
+    },
+    {
+      "name": "Tyrone May",
+      "positions": "SH",
+      "rating": 85
+    },
+    {
+      "name": "Sauaso Sue",
+      "positions": "PF",
+      "rating": 84
+    },
+    {
+      "name": "Jez Litten",
+      "positions": "HK",
+      "rating": 86
+    },
+    {
+      "name": "Tom Amone",
+      "positions": "PF",
+      "rating": 85
+    },
+    {
+      "name": "Dean Hadley",
+      "positions": "SR",
+      "rating": 83
+    },
+    {
+      "name": "James Batchelor",
+      "positions": "SR",
+      "rating": 84
+    },
+    {
+      "name": "Elliot Minchella",
+      "positions": "LF",
+      "rating": 88
+    },
+    {
+      "name": "Danny Richardson",
+      "positions": "HB",
+      "rating": 82
+    },
+    {
+      "name": "Kelepi Tanginoa",
+      "positions": "SR/PF",
+      "rating": 83
+    },
+    {
+      "name": "Jai Whitbread",
+      "positions": "PF",
+      "rating": 81
+    },
+    {
+      "name": "Jack Brown",
+      "positions": "PF",
+      "rating": 79
+    }
+  ],
+  "Leeds Rhinos": [
+    {
+      "name": "Lachie Miller",
+      "positions": "FB",
+      "rating": 84
+    },
+    {
+      "name": "Maika Sivo",
+      "positions": "WG",
+      "rating": 87
+    },
+    {
+      "name": "Harry Newman",
+      "positions": "CE",
+      "rating": 87
+    },
+    {
+      "name": "Ash Handley",
+      "positions": "CE/WG",
+      "rating": 86
+    },
+    {
+      "name": "Riley Lumb",
+      "positions": "WG",
+      "rating": 82
+    },
+    {
+      "name": "Brodie Croft",
+      "positions": "SO",
+      "rating": 88
+    },
+    {
+      "name": "Jake Connor",
+      "positions": "SH",
+      "rating": 87
+    },
+    {
+      "name": "Mikolaj Oledzki",
+      "positions": "PF",
+      "rating": 86
+    },
+    {
+      "name": "Andy Ackers",
+      "positions": "HK",
+      "rating": 86
+    },
+    {
+      "name": "Tom Holroyd",
+      "positions": "PF",
+      "rating": 85
+    },
+    {
+      "name": "James McDonnell",
+      "positions": "SR",
+      "rating": 84
+    },
+    {
+      "name": "Morgan Gannon",
+      "positions": "SR",
+      "rating": 83
+    },
+    {
+      "name": "Cameron Smith",
+      "positions": "LF",
+      "rating": 88
+    },
+    {
+      "name": "Jarrod O Connor",
+      "positions": "HK/LF",
+      "rating": 84
+    },
+    {
+      "name": "Sam Lisone",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Cooper Jenkins",
+      "positions": "PF",
+      "rating": 79
+    },
+    {
+      "name": "James Bentley",
+      "positions": "SR",
+      "rating": 82
+    }
+  ],
+  "Leigh Leopards": [
+    {
+      "name": "David Armstrong",
+      "positions": "FB",
+      "rating": 86
+    },
+    {
+      "name": "Darnell McIntosh",
+      "positions": "WG",
+      "rating": 83
+    },
+    {
+      "name": "Tesi Niu",
+      "positions": "CE",
+      "rating": 84
+    },
+    {
+      "name": "Umyla Hanley",
+      "positions": "CE/WG",
+      "rating": 82
+    },
+    {
+      "name": "Keanan Brand",
+      "positions": "WG/CE",
+      "rating": 81
+    },
+    {
+      "name": "Gareth O Brien",
+      "positions": "SO",
+      "rating": 83
+    },
+    {
+      "name": "Lachlan Lam",
+      "positions": "SH",
+      "rating": 90
+    },
+    {
+      "name": "Robbie Mulhern",
+      "positions": "PF",
+      "rating": 85
+    },
+    {
+      "name": "Edwin Ipape",
+      "positions": "HK",
+      "rating": 88
+    },
+    {
+      "name": "Owen Trout",
+      "positions": "PF",
+      "rating": 84
+    },
+    {
+      "name": "Frankie Halton",
+      "positions": "SR",
+      "rating": 83
+    },
+    {
+      "name": "Ethan O Neill",
+      "positions": "SR",
+      "rating": 82
+    },
+    {
+      "name": "Isaac Liu",
+      "positions": "LF",
+      "rating": 85
+    },
+    {
+      "name": "Ben McNamara",
+      "positions": "HB",
+      "rating": 80
+    },
+    {
+      "name": "Aaron Pene",
+      "positions": "PF",
+      "rating": 81
+    },
+    {
+      "name": "Joe Ofahengaue",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Kai O Donnell",
+      "positions": "SR/LF",
+      "rating": 82
+    }
+  ],
+  "St Helens": [
+    {
+      "name": "Jack Welsby",
+      "positions": "FB",
+      "rating": 88
+    },
+    {
+      "name": "Lewis Murphy",
+      "positions": "WG",
+      "rating": 85
+    },
+    {
+      "name": "Mark Percival",
+      "positions": "CE",
+      "rating": 86
+    },
+    {
+      "name": "Harry Robertson",
+      "positions": "CE",
+      "rating": 82
+    },
+    {
+      "name": "Deon Cross",
+      "positions": "WG/CE",
+      "rating": 84
+    },
+    {
+      "name": "Tristan Sailor",
+      "positions": "SO",
+      "rating": 87
+    },
+    {
+      "name": "Jonny Lomax",
+      "positions": "SH",
+      "rating": 86
+    },
+    {
+      "name": "Alex Walmsley",
+      "positions": "PF",
+      "rating": 89
+    },
+    {
+      "name": "Daryl Clark",
+      "positions": "HK",
+      "rating": 87
+    },
+    {
+      "name": "Matty Lees",
+      "positions": "PF",
+      "rating": 85
+    },
+    {
+      "name": "Curtis Sironen",
+      "positions": "SR",
+      "rating": 86
+    },
+    {
+      "name": "Matt Whitley",
+      "positions": "SR",
+      "rating": 84
+    },
+    {
+      "name": "Morgan Knowles",
+      "positions": "LF",
+      "rating": 88
+    },
+    {
+      "name": "George Whitby",
+      "positions": "HB",
+      "rating": 81
+    },
+    {
+      "name": "David Klemmer",
+      "positions": "PF",
+      "rating": 86
+    },
+    {
+      "name": "George Delaney",
+      "positions": "PF",
+      "rating": 82
+    },
+    {
+      "name": "Jake Wingfield",
+      "positions": "SR/LF",
+      "rating": 80
+    }
+  ],
+  "Toulouse Olympique": [
+    {
+      "name": "Olly Ashall-Bott",
+      "positions": "FB",
+      "rating": 84
+    },
+    {
+      "name": "Paul Ulberg",
+      "positions": "WG",
+      "rating": 83
+    },
+    {
+      "name": "Reubenn Rennie",
+      "positions": "CE",
+      "rating": 82
+    },
+    {
+      "name": "Mathieu Jussaume",
+      "positions": "CE",
+      "rating": 84
+    },
+    {
+      "name": "Benjamin Laguerre",
+      "positions": "WG",
+      "rating": 81
+    },
+    {
+      "name": "Jake Shorrocks",
+      "positions": "SO",
+      "rating": 84
+    },
+    {
+      "name": "Thomas Lacans",
+      "positions": "SH",
+      "rating": 83
+    },
+    {
+      "name": "Lambert Belmas",
+      "positions": "PF",
+      "rating": 85
+    },
+    {
+      "name": "Brendan Hands",
+      "positions": "HK",
+      "rating": 84
+    },
+    {
+      "name": "James Roumanos",
+      "positions": "PF",
+      "rating": 82
+    },
+    {
+      "name": "Maxime Stefani",
+      "positions": "SR",
+      "rating": 83
+    },
+    {
+      "name": "Calum Gahan",
+      "positions": "SR",
+      "rating": 81
+    },
+    {
+      "name": "Anthony Marion",
+      "positions": "LF",
+      "rating": 84
+    },
+    {
+      "name": "Paul Marcon",
+      "positions": "WG",
+      "rating": 80
+    },
+    {
+      "name": "Justin Sangare",
+      "positions": "PF",
+      "rating": 85
+    },
+    {
+      "name": "John Toleafoa",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Eloi Pelissier",
+      "positions": "HK",
+      "rating": 79
+    }
+  ],
+  "Wakefield Trinity": [
+    {
+      "name": "Max Jowitt",
+      "positions": "FB",
+      "rating": 86
+    },
+    {
+      "name": "Tom Johnstone",
+      "positions": "WG",
+      "rating": 88
+    },
+    {
+      "name": "Oliver Pratt",
+      "positions": "CE",
+      "rating": 82
+    },
+    {
+      "name": "Cameron Scott",
+      "positions": "CE",
+      "rating": 83
+    },
+    {
+      "name": "Corey Hall",
+      "positions": "WG/CE",
+      "rating": 81
+    },
+    {
+      "name": "Jake Trueman",
+      "positions": "SO",
+      "rating": 87
+    },
+    {
+      "name": "Mason Lino",
+      "positions": "SH",
+      "rating": 85
+    },
+    {
+      "name": "Mike McMeeken",
+      "positions": "PF",
+      "rating": 88
+    },
+    {
+      "name": "Tyson Smoothy",
+      "positions": "HK",
+      "rating": 84
+    },
+    {
+      "name": "Ky Rodwell",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Seth Nikotemo",
+      "positions": "SR",
+      "rating": 82
+    },
+    {
+      "name": "Matty Storton",
+      "positions": "SR",
+      "rating": 83
+    },
+    {
+      "name": "Jazz Tevaga",
+      "positions": "LF",
+      "rating": 84
+    },
+    {
+      "name": "Liam Hood",
+      "positions": "HK",
+      "rating": 84
+    },
+    {
+      "name": "Renouf Atoni",
+      "positions": "PF",
+      "rating": 85
+    },
+    {
+      "name": "Caleb Hamlin-Uele",
+      "positions": "PF",
+      "rating": 81
+    },
+    {
+      "name": "Jay Pitts",
+      "positions": "SR/LF",
+      "rating": 82
+    }
+  ],
+  "Warrington Wolves": [
+    {
+      "name": "Cai Taylor-Wray",
+      "positions": "FB",
+      "rating": 82
+    },
+    {
+      "name": "Josh Thewlis",
+      "positions": "WG",
+      "rating": 84
+    },
+    {
+      "name": "Toby King",
+      "positions": "CE",
+      "rating": 85
+    },
+    {
+      "name": "Albert Hopoate",
+      "positions": "CE",
+      "rating": 84
+    },
+    {
+      "name": "Matty Ashton",
+      "positions": "WG",
+      "rating": 86
+    },
+    {
+      "name": "George Williams",
+      "positions": "SO",
+      "rating": 92
+    },
+    {
+      "name": "Marc Sneyd",
+      "positions": "SH",
+      "rating": 89
+    },
+    {
+      "name": "Luke Yates",
+      "positions": "PF",
+      "rating": 84
+    },
+    {
+      "name": "Danny Walker",
+      "positions": "HK",
+      "rating": 86
+    },
+    {
+      "name": "James Harrison",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Adam Holroyd",
+      "positions": "SR",
+      "rating": 82
+    },
+    {
+      "name": "Sam Stone",
+      "positions": "SR",
+      "rating": 84
+    },
+    {
+      "name": "Ben Currie",
+      "positions": "LF",
+      "rating": 87
+    },
+    {
+      "name": "Sam Powell",
+      "positions": "HK/HB",
+      "rating": 85
+    },
+    {
+      "name": "Joe Philbin",
+      "positions": "PF",
+      "rating": 81
+    },
+    {
+      "name": "Max Wood",
+      "positions": "PF",
+      "rating": 79
+    },
+    {
+      "name": "Matty Nicholson",
+      "positions": "SR",
+      "rating": 83
+    }
+  ],
+  "Wigan Warriors": [
+    {
+      "name": "Jai Field",
+      "positions": "FB",
+      "rating": 90
+    },
+    {
+      "name": "Zach Eckersley",
+      "positions": "WG/CE",
+      "rating": 83
+    },
+    {
+      "name": "Adam Keighran",
+      "positions": "CE",
+      "rating": 88
+    },
+    {
+      "name": "Jake Wardle",
+      "positions": "CE",
+      "rating": 90
+    },
+    {
+      "name": "Liam Marshall",
+      "positions": "WG",
+      "rating": 87
+    },
+    {
+      "name": "Bevan French",
+      "positions": "SO",
+      "rating": 93
+    },
+    {
+      "name": "Harry Smith",
+      "positions": "SH",
+      "rating": 88
+    },
+    {
+      "name": "Ethan Havard",
+      "positions": "PF",
+      "rating": 85
+    },
+    {
+      "name": "Brad O Neill",
+      "positions": "HK",
+      "rating": 86
+    },
+    {
+      "name": "Luke Thompson",
+      "positions": "PF",
+      "rating": 89
+    },
+    {
+      "name": "Junior Nsemba",
+      "positions": "SR",
+      "rating": 89
+    },
+    {
+      "name": "Liam Farrell",
+      "positions": "SR",
+      "rating": 88
+    },
+    {
+      "name": "Kaide Ellis",
+      "positions": "LF",
+      "rating": 85
+    },
+    {
+      "name": "Sam Walters",
+      "positions": "SR/PF",
+      "rating": 83
+    },
+    {
+      "name": "Patrick Mago",
+      "positions": "PF",
+      "rating": 82
+    },
+    {
+      "name": "Oliver Wilson",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Sam Eseh",
+      "positions": "PF/SR",
+      "rating": 80
+    }
+  ],
+  "York Knights": [
+    {
+      "name": "Toa Mataafa",
+      "positions": "FB",
+      "rating": 83
+    },
+    {
+      "name": "Ben Jones-Bishop",
+      "positions": "WG",
+      "rating": 85
+    },
+    {
+      "name": "Jordan Lipp",
+      "positions": "CE",
+      "rating": 82
+    },
+    {
+      "name": "Sam Wood",
+      "positions": "CE",
+      "rating": 81
+    },
+    {
+      "name": "Scott Galeano",
+      "positions": "WG",
+      "rating": 80
+    },
+    {
+      "name": "Ata Hingano",
+      "positions": "SO",
+      "rating": 84
+    },
+    {
+      "name": "Liam Harris",
+      "positions": "SH",
+      "rating": 82
+    },
+    {
+      "name": "Jack Martin",
+      "positions": "PF",
+      "rating": 83
+    },
+    {
+      "name": "Paul McShane",
+      "positions": "HK",
+      "rating": 86
+    },
+    {
+      "name": "Paul Vaughan",
+      "positions": "PF",
+      "rating": 88
+    },
+    {
+      "name": "Josh Griffin",
+      "positions": "SR/CE",
+      "rating": 84
+    },
+    {
+      "name": "Jesse Dee",
+      "positions": "SR",
+      "rating": 81
+    },
+    {
+      "name": "Jordan Thompson",
+      "positions": "LF/SR",
+      "rating": 83
+    },
+    {
+      "name": "Denive Balmforth",
+      "positions": "HK",
+      "rating": 79
+    },
+    {
+      "name": "Xavier Vaa",
+      "positions": "PF",
+      "rating": 80
+    },
+    {
+      "name": "Justin Sangare",
+      "positions": "PF/SR",
+      "rating": 85
+    },
+    {
+      "name": "Oliver Field",
+      "positions": "SR",
+      "rating": 80
+    }
+  ]
+}

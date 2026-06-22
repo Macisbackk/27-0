@@ -3,8 +3,10 @@ import teamYearRostersMetaData from "../../../data/team-year-rosters-meta.json";
 export type TeamYearRosterMeta = {
   source: "verified" | "current-squad";
   isSuperLeagueSeason: boolean;
+  isCurrentSeason?: boolean;
   playableInNormalSpin: boolean;
   playableInEra: boolean;
+  playableInEraChallengeCup?: boolean;
   playerCount: number;
   verifiedSource?: string;
 };

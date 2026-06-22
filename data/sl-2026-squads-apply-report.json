@@ -1,0 +1,1845 @@
+{
+  "generatedAt": "2026-06-22T16:05:38.266Z",
+  "added": [
+    "catalans-cur-bayley-sironen",
+    "catalans-cur-tariq-sims",
+    "catalans-cur-paul-seguier",
+    "catalans-cur-jordan-dezaria",
+    "catalans-cur-arthur-romano",
+    "huddersfield-cur-oliver-wilson",
+    "hull-kr-cur-danny-richardson",
+    "hull-kr-cur-kelepi-tanginoa",
+    "leeds-cur-andy-ackers",
+    "leeds-cur-sam-lisone",
+    "leeds-cur-james-bentley",
+    "leigh-cur-darnell-mcintosh",
+    "leigh-cur-ethan-o-neill",
+    "st-helens-cur-morgan-knowles",
+    "toulouse-cur-justin-sangare",
+    "toulouse-cur-john-toleafoa",
+    "toulouse-cur-eloi-pelissier",
+    "wakefield-cur-cameron-scott",
+    "wakefield-cur-liam-hood",
+    "wakefield-cur-renouf-atoni",
+    "warrington-cur-matty-nicholson",
+    "york-cur-oliver-field"
+  ],
+  "updated": [
+    "bradford-cur-caleb-aekins",
+    "bradford-cur-ethan-ryan",
+    "bradford-cur-waqa-blake",
+    "bradford-cur-esan-marsters",
+    "bradford-cur-jayden-okunbor",
+    "bradford-cur-jayden-nikorima",
+    "bradford-cur-rowan-milnes",
+    "bradford-cur-ryan-sutton",
+    "bradford-cur-andy-ackers",
+    "bradford-cur-eribe-doro",
+    "bradford-cur-dan-russell",
+    "bradford-cur-zac-fulton",
+    "bradford-cur-joe-mellor",
+    "bradford-cur-mitch-souter",
+    "bradford-cur-loghan-lewis",
+    "bradford-cur-ebon-scurr",
+    "bradford-cur-ed-chamberlain",
+    "castleford-cur-blake-taaffe",
+    "castleford-cur-jason-qareqare",
+    "castleford-cur-zac-cini",
+    "castleford-cur-darnell-mcintosh",
+    "castleford-cur-semi-valemei",
+    "castleford-cur-daejarn-asi",
+    "castleford-cur-tom-weaver",
+    "castleford-cur-renouf-atoni",
+    "castleford-cur-liam-hood",
+    "castleford-cur-george-lawler",
+    "castleford-cur-jordan-lane",
+    "castleford-cur-alex-mellor",
+    "castleford-cur-joe-stimson",
+    "castleford-cur-cain-robb",
+    "castleford-cur-jeremiah-simbiken",
+    "castleford-cur-krystian-mapapalangi",
+    "castleford-cur-joe-westerman",
+    "catalans-cur-charlie-staines",
+    "catalans-cur-tommy-makinson",
+    "catalans-cur-nick-cotric",
+    "catalans-cur-solomona-faataape",
+    "catalans-cur-manase-kaho",
+    "catalans-cur-toby-sexton",
+    "catalans-cur-lewis-dodd",
+    "catalans-cur-chris-satae",
+    "catalans-cur-alrix-da-costa",
+    "catalans-cur-julian-bousquet",
+    "catalans-cur-benjamin-garcia",
+    "catalans-cur-cesar-rouge",
+    "huddersfield-cur-niall-evalds",
+    "huddersfield-cur-adam-swift",
+    "huddersfield-cur-jacob-gagai",
+    "huddersfield-cur-taane-milne",
+    "huddersfield-cur-sam-halsall",
+    "huddersfield-cur-tui-lolohea",
+    "huddersfield-cur-adam-clune",
+    "huddersfield-cur-matty-english",
+    "huddersfield-cur-zac-woolford",
+    "huddersfield-cur-fenton-rogers",
+    "huddersfield-cur-joe-greenwood",
+    "huddersfield-cur-harry-rushton",
+    "huddersfield-cur-george-flanagan-jr",
+    "huddersfield-cur-sam-hewitt",
+    "huddersfield-cur-george-king",
+    "huddersfield-cur-jake-bibby",
+    "hull-fc-cur-will-pryce",
+    "hull-fc-cur-harvey-barron",
+    "hull-fc-cur-davy-litten",
+    "hull-fc-cur-zak-hardaker",
+    "hull-fc-cur-lewis-martin",
+    "hull-fc-cur-jake-arthur",
+    "hull-fc-cur-aidan-sezer",
+    "hull-fc-cur-herman-eseese",
+    "hull-fc-cur-amir-bourouh",
+    "hull-fc-cur-harvie-hill",
+    "hull-fc-cur-joe-batchelor",
+    "hull-fc-cur-jed-cartwright",
+    "hull-fc-cur-john-asiata",
+    "hull-fc-cur-cade-cust",
+    "hull-fc-cur-sam-lisone",
+    "hull-fc-cur-ligi-sao",
+    "hull-fc-cur-james-bell",
+    "hull-kr-cur-arthur-mourgue",
+    "hull-kr-cur-tom-davies",
+    "hull-kr-cur-peta-hiku",
+    "hull-kr-cur-oliver-gildart",
+    "hull-kr-cur-joe-burgess",
+    "hull-kr-cur-mikey-lewis",
+    "hull-kr-cur-tyrone-may",
+    "hull-kr-cur-sauaso-sue",
+    "hull-kr-cur-jez-litten",
+    "hull-kr-cur-tom-amone",
+    "hull-kr-cur-dean-hadley",
+    "hull-kr-cur-james-batchelor",
+    "hull-kr-cur-elliot-minchella",
+    "hull-kr-cur-jai-whitbread",
+    "hull-kr-cur-jack-brown",
+    "leeds-cur-lachie-miller",
+    "leeds-cur-maika-sivo",
+    "leeds-cur-harry-newman",
+    "leeds-cur-ash-handley",
+    "leeds-cur-riley-lumb",
+    "leeds-cur-brodie-croft",
+    "leeds-cur-jake-connor",
+    "leeds-cur-mikolaj-oledzki",
+    "leeds-cur-tom-holroyd",
+    "leeds-cur-james-mcdonnell",
+    "leeds-cur-morgan-gannon",
+    "leeds-cur-cameron-smith",
+    "leeds-cur-jarrod-o-connor",
+    "leeds-cur-cooper-jenkins",
+    "leigh-cur-david-armstrong",
+    "leigh-cur-tesi-niu",
+    "leigh-cur-umyla-hanley",
+    "leigh-cur-keanan-brand",
+    "leigh-cur-gareth-o-brien",
+    "leigh-cur-lachlan-lam",
+    "leigh-cur-robbie-mulhern",
+    "leigh-cur-edwin-ipape",
+    "leigh-cur-owen-trout",
+    "leigh-cur-frankie-halton",
+    "leigh-cur-isaac-liu",
+    "leigh-cur-ben-mcnamara",
+    "leigh-cur-aaron-pene",
+    "leigh-cur-joe-ofahengaue",
+    "leigh-cur-kai-o-donnell",
+    "st-helens-cur-jack-welsby",
+    "st-helens-cur-lewis-murphy",
+    "st-helens-cur-mark-percival",
+    "st-helens-cur-harry-robertson",
+    "st-helens-cur-deon-cross",
+    "st-helens-cur-tristan-sailor",
+    "st-helens-cur-jonny-lomax",
+    "st-helens-cur-alex-walmsley",
+    "st-helens-cur-daryl-clark",
+    "st-helens-cur-matty-lees",
+    "st-helens-cur-curtis-sironen",
+    "st-helens-cur-matt-whitley",
+    "st-helens-cur-george-whitby",
+    "st-helens-cur-david-klemmer",
+    "st-helens-cur-george-delaney",
+    "st-helens-cur-jake-wingfield",
+    "toulouse-cur-olly-ashall-bott",
+    "toulouse-cur-paul-ulberg",
+    "toulouse-cur-reubenn-rennie",
+    "toulouse-cur-mathieu-jussaume",
+    "toulouse-cur-benjamin-laguerre",
+    "toulouse-cur-jake-shorrocks",
+    "toulouse-cur-thomas-lacans",
+    "toulouse-cur-lambert-belmas",
+    "toulouse-cur-brendan-hands",
+    "toulouse-cur-james-roumanos",
+    "toulouse-cur-maxime-stefani",
+    "toulouse-cur-calum-gahan",
+    "toulouse-cur-anthony-marion",
+    "toulouse-cur-paul-marcon",
+    "wakefield-cur-max-jowitt",
+    "wakefield-cur-tom-johnstone",
+    "wakefield-cur-oliver-pratt",
+    "wakefield-cur-corey-hall",
+    "wakefield-cur-jake-trueman",
+    "wakefield-cur-mason-lino",
+    "wakefield-cur-mike-mcmeeken",
+    "wakefield-cur-tyson-smoothy",
+    "wakefield-cur-ky-rodwell",
+    "wakefield-cur-seth-nikotemo",
+    "wakefield-cur-matty-storton",
+    "wakefield-cur-jazz-tevaga",
+    "wakefield-cur-caleb-hamlin-uele",
+    "wakefield-cur-jay-pitts",
+    "warrington-cur-cai-taylor-wray",
+    "warrington-cur-josh-thewlis",
+    "warrington-cur-toby-king",
+    "warrington-cur-albert-hopoate",
+    "warrington-cur-matty-ashton",
+    "warrington-cur-george-williams",
+    "warrington-cur-marc-sneyd",
+    "warrington-cur-luke-yates",
+    "warrington-cur-danny-walker",
+    "warrington-cur-james-harrison",
+    "warrington-cur-adam-holroyd",
+    "warrington-cur-sam-stone",
+    "warrington-cur-ben-currie",
+    "warrington-cur-sam-powell",
+    "warrington-cur-joe-philbin",
+    "warrington-cur-max-wood",
+    "wigan-cur-jai-field",
+    "wigan-cur-zach-eckersley",
+    "wigan-cur-adam-keighran",
+    "wigan-cur-jake-wardle",
+    "wigan-cur-liam-marshall",
+    "wigan-cur-bevan-french",
+    "wigan-cur-harry-smith",
+    "wigan-cur-ethan-havard",
+    "wigan-cur-brad-o-neill",
+    "wigan-cur-luke-thompson",
+    "wigan-cur-junior-nsemba",
+    "wigan-cur-liam-farrell",
+    "wigan-cur-kaide-ellis",
+    "wigan-cur-sam-walters",
+    "wigan-cur-patrick-mago",
+    "wigan-cur-oliver-wilson",
+    "wigan-cur-sam-eseh",
+    "york-cur-toa-mataafa",
+    "york-cur-ben-jones-bishop",
+    "york-cur-jordan-lipp",
+    "york-cur-sam-wood",
+    "york-cur-scott-galeano",
+    "york-cur-ata-hingano",
+    "york-cur-liam-harris",
+    "york-cur-jack-martin",
+    "york-cur-paul-mcshane",
+    "york-cur-paul-vaughan",
+    "york-cur-josh-griffin",
+    "york-cur-jesse-dee",
+    "york-cur-jordan-thompson",
+    "york-cur-denive-balmforth",
+    "york-cur-xavier-vaa",
+    "york-cur-justin-sangare"
+  ],
+  "removed": [
+    "wigan-cur-brad-oneill (Brad O'Neill @ Wigan Warriors)",
+    "wigan-cur-abbas-miski (Abbas Miski @ Wigan Warriors)",
+    "wigan-cur-kruise-leeming (Kruise Leeming @ Wigan Warriors)",
+    "wigan-cur-jack-farrimond (Jack Farrimond @ Wigan Warriors)",
+    "wigan-cur-tom-forber (Tom Forber @ Wigan Warriors)",
+    "wigan-cur-kian-mcdermott (Kian McDermott @ Wigan Warriors)",
+    "wigan-cur-harvey-makin (Harvey Makin @ Wigan Warriors)",
+    "wigan-cur-taylor-kerr (Taylor Kerr @ Wigan Warriors)",
+    "wigan-cur-nathan-lowe (Nathan Lowe @ Wigan Warriors)",
+    "st-helens-cur-kyle-feldt (Kyle Feldt @ St Helens)",
+    "st-helens-cur-jacob-host (Jacob Host @ St Helens)",
+    "st-helens-cur-agnatius-paasi (Agnatius Paasi @ St Helens)",
+    "st-helens-cur-noah-stephens (Noah Stephens @ St Helens)",
+    "st-helens-cur-jake-burns (Jake Burns @ St Helens)",
+    "st-helens-cur-owen-dagnall (Owen Dagnall @ St Helens)",
+    "st-helens-cur-nene-macdonald (Nene Macdonald @ St Helens)",
+    "leeds-cur-ryan-hall (Ryan Hall @ Leeds Rhinos)",
+    "leeds-cur-jarrod-oconnor (Jarrod O'Connor @ Leeds Rhinos)",
+    "leeds-cur-kallum-watkins (Kallum Watkins @ Leeds Rhinos)",
+    "leeds-cur-keenan-palasia (Keenan Palasia @ Leeds Rhinos)",
+    "leeds-cur-chris-hankinson (Chris Hankinson @ Leeds Rhinos)",
+    "leeds-cur-ethan-oneill (Ethan O'Neill @ Leeds Rhinos)",
+    "leeds-cur-max-simpson (Max Simpson @ Leeds Rhinos)",
+    "leeds-cur-jeremiah-matautia (Jeremiah Mata'utia @ Leeds Rhinos)",
+    "leeds-cur-presley-cassell (Presley Cassell @ Leeds Rhinos)",
+    "leeds-cur-alfie-edgell (Alfie Edgell @ Leeds Rhinos)",
+    "leeds-cur-danny-levi (Danny Levi @ Leeds Rhinos)",
+    "leeds-cur-ned-mccormack (Ned McCormack @ Leeds Rhinos)",
+    "leeds-cur-ben-littlewood (Ben Littlewood @ Leeds Rhinos)",
+    "warrington-cur-toafofoa-sipley (Toafofoa Sipley @ Warrington Wolves)",
+    "warrington-cur-liam-byrne (Liam Byrne @ Warrington Wolves)",
+    "warrington-cur-jordy-crowther (Jordy Crowther @ Warrington Wolves)",
+    "warrington-cur-ewan-irwin (Ewan Irwin @ Warrington Wolves)",
+    "warrington-cur-leon-hayes (Leon Hayes @ Warrington Wolves)",
+    "warrington-cur-james-bentley (James Bentley @ Warrington Wolves)",
+    "warrington-cur-luke-thomas (Luke Thomas @ Warrington Wolves)",
+    "warrington-cur-arron-lindop (Arron Lindop @ Warrington Wolves)",
+    "warrington-cur-josh-smith (Josh Smith @ Warrington Wolves)",
+    "bradford-cur-joe-keyes (Joe Keyes @ Bradford Bulls)",
+    "bradford-cur-will-gardiner (Will Gardiner @ Bradford Bulls)",
+    "bradford-cur-brandon-douglas (Brandon Douglas @ Bradford Bulls)",
+    "bradford-cur-sam-hallas (Sam Hallas @ Bradford Bulls)",
+    "bradford-cur-luke-hooley (Luke Hooley @ Bradford Bulls)",
+    "bradford-cur-connor-wynne (Connor Wynne @ Bradford Bulls)",
+    "bradford-cur-guy-armitage (Guy Armitage @ Bradford Bulls)",
+    "bradford-cur-eliot-peposhi (Eliot Peposhi @ Bradford Bulls)",
+    "hull-kr-cur-jack-broadbent (Jack Broadbent @ Hull KR)",
+    "hull-kr-cur-sam-luckley (Sam Luckley @ Hull KR)",
+    "hull-kr-cur-rhyse-martin (Rhyse Martin @ Hull KR)",
+    "hull-kr-cur-jordan-dezaria (Jordan Dezaria @ Hull KR)",
+    "hull-kr-cur-noah-booth (Noah Booth @ Hull KR)",
+    "hull-kr-cur-bill-leyland (Bill Leyland @ Hull KR)",
+    "hull-kr-cur-lee-kershaw (Lee Kershaw @ Hull KR)",
+    "hull-kr-cur-jack-charles (Jack Charles @ Hull KR)",
+    "hull-kr-cur-louix-gorman (Louix Gorman @ Hull KR)",
+    "hull-kr-cur-harvey-horne (Harvey Horne @ Hull KR)",
+    "hull-fc-cur-liam-knight (Liam Knight @ Hull FC)",
+    "hull-fc-cur-tom-briscoe (Tom Briscoe @ Hull FC)",
+    "hull-fc-cur-yusuf-aydin (Yusuf Aydin @ Hull FC)",
+    "hull-fc-cur-arthur-romano (Arthur Romano @ Hull FC)",
+    "hull-fc-cur-connor-bailey (Connor Bailey @ Hull FC)",
+    "hull-fc-cur-brad-fash (Brad Fash @ Hull FC)",
+    "hull-fc-cur-logan-moy (Logan Moy @ Hull FC)",
+    "hull-fc-cur-matty-laidlaw (Matty Laidlaw @ Hull FC)",
+    "hull-fc-cur-hugo-salabio (Hugo Salabio @ Hull FC)",
+    "leigh-cur-josh-charnley (Josh Charnley @ Leigh Leopards)",
+    "leigh-cur-adam-cook (Adam Cook @ Leigh Leopards)",
+    "leigh-cur-jacob-alick-wiencke (Jacob Alick-Wiencke @ Leigh Leopards)",
+    "leigh-cur-matt-davis (Matt Davis @ Leigh Leopards)",
+    "leigh-cur-liam-horne (Liam Horne @ Leigh Leopards)",
+    "leigh-cur-bailey-hodgson (Bailey Hodgson @ Leigh Leopards)",
+    "leigh-cur-innes-senior (Innes Senior @ Leigh Leopards)",
+    "leigh-cur-aj-towse (AJ Towse @ Leigh Leopards)",
+    "leigh-cur-gareth-obrien (Gareth O'Brien @ Leigh Leopards)",
+    "leigh-cur-jack-hughes (Jack Hughes @ Leigh Leopards)",
+    "leigh-cur-andrew-badrock (Andrew Badrock @ Leigh Leopards)",
+    "leigh-cur-louis-brogan (Louis Brogan @ Leigh Leopards)",
+    "leigh-cur-nathan-wilde (Nathan Wilde @ Leigh Leopards)",
+    "wakefield-cur-cam-scott (Cam Scott @ Wakefield Trinity)",
+    "wakefield-cur-caius-faatili (Caius Faatili @ Wakefield Trinity)",
+    "wakefield-cur-harvey-smith (Harvey Smith @ Wakefield Trinity)",
+    "wakefield-cur-isaiah-vagana (Isaiah Vagana @ Wakefield Trinity)",
+    "wakefield-cur-lachlan-walmsley (Lachlan Walmsley @ Wakefield Trinity)",
+    "wakefield-cur-jack-sinfield (Jack Sinfield @ Wakefield Trinity)",
+    "wakefield-cur-jayden-myers (Jayden Myers @ Wakefield Trinity)",
+    "wakefield-cur-thomas-doyle (Thomas Doyle @ Wakefield Trinity)",
+    "wakefield-cur-josh-rourke (Josh Rourke @ Wakefield Trinity)",
+    "wakefield-cur-tray-lolesio (Tray Lolesio @ Wakefield Trinity)",
+    "wakefield-cur-jordan-williams (Jordan Williams @ Wakefield Trinity)",
+    "castleford-cur-mikaele-ravalawa (Mikaele Ravalawa @ Castleford Tigers)",
+    "castleford-cur-brock-greacen (Brock Greacen @ Castleford Tigers)",
+    "castleford-cur-jack-ashworth (Jack Ashworth @ Castleford Tigers)",
+    "castleford-cur-chris-atkin (Chris Atkin @ Castleford Tigers)",
+    "castleford-cur-fletcher-rooney (Fletcher Rooney @ Castleford Tigers)",
+    "castleford-cur-brad-singleton (Brad Singleton @ Castleford Tigers)",
+    "castleford-cur-aiden-doolan (Aiden Doolan @ Castleford Tigers)",
+    "castleford-cur-louis-senior (Louis Senior @ Castleford Tigers)",
+    "castleford-cur-jimmy-beckett (Jimmy Beckett @ Castleford Tigers)",
+    "castleford-cur-jenson-windley (Jenson Windley @ Castleford Tigers)",
+    "castleford-cur-sam-hall (Sam Hall @ Castleford Tigers)",
+    "castleford-cur-alfie-lindsey (Alfie Lindsey @ Castleford Tigers)",
+    "huddersfield-cur-tristan-powell (Tristan Powell @ Huddersfield Giants)",
+    "huddersfield-cur-thomas-burgess (Tom Burgess @ Huddersfield Giants)",
+    "huddersfield-cur-asher-odonnell (Asher O'Donnell @ Huddersfield Giants)",
+    "huddersfield-cur-kieran-rush (Kieran Rush @ Huddersfield Giants)",
+    "huddersfield-cur-liam-sutcliffe (Liam Sutcliffe @ Huddersfield Giants)",
+    "huddersfield-cur-mathieu-cozza (Mathieu Cozza @ Huddersfield Giants)",
+    "huddersfield-cur-jack-billington (Jack Billington @ Huddersfield Giants)",
+    "huddersfield-cur-chris-patolo (Chris Patolo @ Huddersfield Giants)",
+    "huddersfield-cur-connor-carr (Connor Carr @ Huddersfield Giants)",
+    "huddersfield-cur-jacob-algar (Jacob Algar @ Huddersfield Giants)",
+    "huddersfield-cur-archie-sykes (Archie Sykes @ Huddersfield Giants)",
+    "catalans-cur-franck-maria (Franck Maria @ Catalans Dragons)",
+    "catalans-cur-ben-condon (Ben Condon @ Catalans Dragons)",
+    "catalans-cur-phoenix-laulu-togagae (Phoenix Laulu-Togaga'e @ Catalans Dragons)",
+    "catalans-cur-iszac-faasuamaleaui (Iszac Fa'asuamaleaui @ Catalans Dragons)",
+    "catalans-cur-josh-allen (Josh Allen @ Catalans Dragons)",
+    "catalans-cur-romain-navarette (Romain Navarette @ Catalans Dragons)",
+    "catalans-cur-harvey-wilson (Harvey Wilson @ Catalans Dragons)",
+    "catalans-cur-zac-lipowicz (Zac Lipowicz @ Catalans Dragons)",
+    "catalans-cur-matthieu-laguerre (Matthieu Laguerre @ Catalans Dragons)",
+    "catalans-cur-josh-simm (Josh Simm @ Catalans Dragons)",
+    "catalans-cur-guillermo-aispuro-bichet (Guillermo Aispuro-Bichet @ Catalans Dragons)",
+    "catalans-cur-lenny-marc (Lenny Marc @ Catalans Dragons)",
+    "catalans-cur-ugo-tison (Ugo Tison @ Catalans Dragons)",
+    "york-cur-toa-mata-afa (Toa Mata'afa @ York Knights)",
+    "york-cur-xavier-va-a (Xavier Va'a @ York Knights)",
+    "york-cur-kieran-hudson (Kieran Hudson @ York Knights)",
+    "york-cur-danny-richardson (Danny Richardson @ York Knights)",
+    "york-cur-oli-field (Oli Field @ York Knights)",
+    "york-cur-kieran-buchanan (Kieran Buchanan @ York Knights)",
+    "york-cur-john-sagaga (John Sagaga @ York Knights)",
+    "york-cur-jon-bennison (Jon Bennison @ York Knights)",
+    "york-cur-will-dagger (Will Dagger @ York Knights)",
+    "york-cur-jack-smith (Jack Smith @ York Knights)",
+    "york-cur-nikau-williams (Nikau Williams @ York Knights)",
+    "york-cur-matty-foster (Matty Foster @ York Knights)",
+    "toulouse-cur-joe-cator (Joe Cator @ Toulouse Olympique)",
+    "toulouse-cur-joe-bretherton (Joe Bretherton @ Toulouse Olympique)",
+    "toulouse-cur-rob-butler (Rob Butler @ Toulouse Olympique)",
+    "toulouse-cur-baptiste-rodriguez (Baptiste Rodriguez @ Toulouse Olympique)",
+    "toulouse-cur-romeo-tropis (Romeo Tropis @ Toulouse Olympique)",
+    "toulouse-cur-aj-wallace (AJ Wallace @ Toulouse Olympique)",
+    "toulouse-cur-ellis-gillam (Ellis Gillam @ Toulouse Olympique)",
+    "toulouse-cur-henry-o-kane (Henry O'Kane @ Toulouse Olympique)",
+    "toulouse-cur-tyler-dupree (Tyler Dupree @ Toulouse Olympique)",
+    "toulouse-cur-pierre-jean-lima (Pierre-Jean Lima @ Toulouse Olympique)",
+    "toulouse-cur-luke-polselli (Luke Polselli @ Toulouse Olympique)",
+    "toulouse-cur-trevor-chiffolleau (Trevor Chiffolleau @ Toulouse Olympique)",
+    "york-cur-jesse-sebastian (Jesse Sebastian @ York Knights)",
+    "york-cur-ajy-karim (Ajy Karim @ York Knights)",
+    "toulouse-cur-stan-jury (Stan Jury @ Toulouse Olympique)",
+    "toulouse-cur-chris-knight (Chris Knight @ Toulouse Olympique)",
+    "leigh-cur-tom-amelia (Tom Amelia @ Leigh Leopards)",
+    "leigh-cur-edward-smith (Edward Smith @ Leigh Leopards)",
+    "catalans-cur-lucas-albert (Lucas Albert @ Catalans Dragons)",
+    "wakefield-cur-matthew-ashton (Matthew Ashton @ Wakefield Trinity)",
+    "wakefield-cur-harry-bowes (Harry Bowes @ Wakefield Trinity)",
+    "catalans-cur-joe-chan (Joe Chan @ Catalans Dragons)",
+    "catalans-cur-tiaki-chan (Tiaki Chan @ Catalans Dragons)",
+    "hull-fc-cur-jake-clifford (Jake Clifford @ Hull FC)",
+    "st-helens-cur-matthew-costello (Matthew Costello @ St Helens)",
+    "wakefield-cur-jack-croft (Jack Croft @ Wakefield Trinity)",
+    "catalans-cur-leo-darrelatour (Léo Darrélatour @ Catalans Dragons)",
+    "huddersfield-cur-thomas-deakin (Thomas Deakin @ Huddersfield Giants)",
+    "wakefield-cur-riley-dean (Riley Dean @ Wakefield Trinity)",
+    "wigan-cur-jacob-douglas (Jacob Douglas @ Wigan Warriors)",
+    "castleford-cur-elie-el-zakhem (Elie El-Zakhem @ Castleford Tigers)",
+    "catalans-cur-romain-franco (Romain Franco @ Catalans Dragons)",
+    "castleford-cur-george-hill (George Hill @ Castleford Tigers)",
+    "castleford-cur-daniel-hindmarsh-takyi (Daniel Hindmarsh-Takyi @ Castleford Tigers)",
+    "castleford-cur-tex-hoy (Tex Hoy @ Castleford Tigers)",
+    "leeds-cur-corey-johnson (Corey Johnson @ Leeds Rhinos)",
+    "hull-kr-cur-luis-johnson (Luis Johnson @ Hull KR)",
+    "catalans-cur-corentin-le-cam (Corentin Le Cam @ Catalans Dragons)",
+    "wakefield-cur-ellis-longstaff (Ellis Longstaff @ Wakefield Trinity)",
+    "hull-fc-cur-joe-lovodua (Joe Lovodua @ Hull FC)",
+    "castleford-cur-bradley-martin (Bradley Martin @ Castleford Tigers)",
+    "wakefield-cur-thomas-mikaele (Thomas Mikaele @ Wakefield Trinity)",
+    "leigh-cur-craig-mullen (Craig Mullen @ Leigh Leopards)",
+    "castleford-cur-muizz-mustapha (Muizz Mustapha @ Castleford Tigers)",
+    "huddersfield-cur-aidan-mcgowan (Aidan Mcgowan @ Huddersfield Giants)",
+    "leeds-cur-callum-mclelland (Callum Mclelland @ Leeds Rhinos)",
+    "castleford-cur-sylvester-namo (Sylvester Namo @ Castleford Tigers)",
+    "wakefield-cur-matty-nicholson (Matty Nicholson @ Wakefield Trinity)",
+    "wigan-cur-bradley-o-neill (Bradley O'neill @ Wigan Warriors)",
+    "castleford-cur-jacques-o-neill (Jacques O'neill @ Castleford Tigers)",
+    "hull-kr-cur-will-oakes (Will Oakes @ Hull KR)",
+    "castleford-cur-lewis-peachey (Lewis Peachey @ Castleford Tigers)",
+    "wigan-cur-kai-pearce-paul (Kai Pearce-Paul @ Wigan Warriors)",
+    "leeds-cur-luis-roberts (Luis Roberts @ Leeds Rhinos)",
+    "st-helens-cur-sam-royle (Sam Royle @ St Helens)",
+    "leeds-cur-leon-ruan (Leon Ruan @ Leeds Rhinos)",
+    "huddersfield-cur-oliver-russell (Oliver Russell @ Huddersfield Giants)",
+    "hull-kr-cur-brad-schneider (Brad Schneider @ Hull KR)",
+    "hull-fc-cur-cameron-scott (Cameron Scott @ Hull FC)",
+    "hull-fc-cur-morgan-smith (Morgan Smith @ Hull FC)",
+    "wigan-cur-morgan-smithies (Morgan Smithies @ Wigan Warriors)",
+    "hull-kr-cur-matthew-storton (Matthew Storton @ Hull KR)",
+    "castleford-cur-alex-sutcliffe (Alex Sutcliffe @ Castleford Tigers)",
+    "wakefield-cur-rodrick-tai (Rodrick Tai @ Wakefield Trinity)",
+    "hull-kr-cur-william-tate (William Tate @ Hull KR)",
+    "wakefield-cur-jake-thewlis (Jake Thewlis @ Wakefield Trinity)",
+    "leeds-cur-liam-tindall (Liam Tindall @ Leeds Rhinos)",
+    "castleford-cur-jacob-trueman (Jacob Trueman @ Castleford Tigers)",
+    "leigh-cur-alec-tuitavake (Alec Tuitavake @ Leigh Leopards)",
+    "castleford-cur-calum-turner (Calum Turner @ Castleford Tigers)",
+    "wakefield-cur-caleb-uele (Caleb Uele @ Wakefield Trinity)",
+    "wakefield-cur-brad-walker (Brad Walker @ Wakefield Trinity)",
+    "leeds-cur-jack-walker (Jack Walker @ Leeds Rhinos)",
+    "castleford-cur-elliot-wallis (Elliot Wallis @ Castleford Tigers)",
+    "castleford-cur-thomas-weaver (Thomas Weaver @ Castleford Tigers)",
+    "wakefield-cur-tom-whitehead (Tom Whitehead @ Wakefield Trinity)",
+    "wakefield-cur-connor-wrench (Connor Wrench @ Wakefield Trinity)",
+    "huddersfield-cur-tanguy-zenon (Tanguy Zenon @ Huddersfield Giants)",
+    "bradford-cur-alfie-leake (Alfie Leake @ Bradford Bulls)",
+    "wakefield-cur-bailey-antrobus (Bailey Antrobus @ Wakefield Trinity)",
+    "catalans-cur-bastien-ader (Bastien Ader @ Catalans Dragons)",
+    "huddersfield-cur-ben-houston (Ben Houston @ Huddersfield Giants)",
+    "bradford-cur-cameron-bate (Cameron Bate @ Bradford Bulls)",
+    "toulouse-cur-clement-martin (Clement Martin @ Toulouse Olympique)",
+    "huddersfield-cur-ellis-lingard (Ellis Lingard @ Huddersfield Giants)",
+    "wakefield-cur-finlay-aydin (Finlay Aydin @ Wakefield Trinity)",
+    "hull-fc-cur-finley-yates (Finley Yates @ Hull FC)",
+    "bradford-cur-harvey-hallas (Harvey Hallas @ Bradford Bulls)",
+    "wigan-cur-harvey-ward (Harvey Ward @ Wigan Warriors)",
+    "catalans-cur-hugo-pons (Hugo Pons @ Catalans Dragons)",
+    "hull-kr-cur-jack-potter (Jack Potter @ Hull KR)",
+    "hull-fc-cur-jack-teanby (Jack Teanby @ Hull FC)",
+    "hull-fc-cur-jacob-hookem (Jacob Hookem @ Hull FC)",
+    "bradford-cur-jamie-gill (Jamie Gill @ Bradford Bulls)",
+    "hull-kr-cur-jared-waerea-hargreaves (Jared Waerea-Hargreaves @ Hull KR)",
+    "york-cur-joe-porter (Joe Porter @ York Knights)",
+    "hull-fc-cur-jordan-rapana (Jordan Rapana @ Hull FC)",
+    "hull-kr-cur-josh-ralph (Josh Ralph @ Hull KR)",
+    "wakefield-cur-jude-ferreira (Jude Ferreira @ Wakefield Trinity)",
+    "wakefield-cur-leo-tennison (Leo Tennison @ Wakefield Trinity)",
+    "st-helens-cur-levi-edwards (Levi Edwards @ St Helens)",
+    "catalans-cur-loris-zarantonello (Loris Zarantonello @ Catalans Dragons)",
+    "catalans-cur-luke-keary (Luke Keary @ Catalans Dragons)",
+    "york-cur-matty-russell (Matty Russell @ York Knights)",
+    "wigan-cur-phoenix-steinwede (Phoenix Steinwede @ Wigan Warriors)",
+    "catalans-cur-reimis-smith (Reimis Smith @ Catalans Dragons)",
+    "toulouse-cur-robin-brochon (Robin Brochon @ Toulouse Olympique)",
+    "bradford-cur-tee-ritson (Tee Ritson @ Bradford Bulls)",
+    "catalans-cur-tevita-pangai-jr (Tevita Pangai Jr @ Catalans Dragons)",
+    "leigh-cur-will-kirby (Will Kirby @ Leigh Leopards)",
+    "leigh-cur-zac-bardsley (Zac Bardsley @ Leigh Leopards)"
+  ],
+  "ratingsChanged": [
+    {
+      "id": "bradford-cur-caleb-aekins",
+      "name": "Caleb Aekins",
+      "from": 85,
+      "to": 82
+    },
+    {
+      "id": "bradford-cur-ethan-ryan",
+      "name": "Ethan Ryan",
+      "from": 84,
+      "to": 81
+    },
+    {
+      "id": "bradford-cur-jayden-okunbor",
+      "name": "Jayden Okunbor",
+      "from": 82,
+      "to": 83
+    },
+    {
+      "id": "bradford-cur-jayden-nikorima",
+      "name": "Jayden Nikorima",
+      "from": 87,
+      "to": 84
+    },
+    {
+      "id": "bradford-cur-rowan-milnes",
+      "name": "Rowan Milnes",
+      "from": 83,
+      "to": 80
+    },
+    {
+      "id": "bradford-cur-ryan-sutton",
+      "name": "Ryan Sutton",
+      "from": 87,
+      "to": 84
+    },
+    {
+      "id": "bradford-cur-andy-ackers",
+      "name": "Andy Ackers",
+      "from": 88,
+      "to": 86
+    },
+    {
+      "id": "bradford-cur-dan-russell",
+      "name": "Dan Russell",
+      "from": 84,
+      "to": 82
+    },
+    {
+      "id": "bradford-cur-mitch-souter",
+      "name": "Mitch Souter",
+      "from": 81,
+      "to": 78
+    },
+    {
+      "id": "bradford-cur-loghan-lewis",
+      "name": "Loghan Lewis",
+      "from": 82,
+      "to": 79
+    },
+    {
+      "id": "bradford-cur-ebon-scurr",
+      "name": "Ebon Scurr",
+      "from": 82,
+      "to": 78
+    },
+    {
+      "id": "bradford-cur-ed-chamberlain",
+      "name": "Ed Chamberlain",
+      "from": 81,
+      "to": 82
+    },
+    {
+      "id": "castleford-cur-blake-taaffe",
+      "name": "Blake Taaffe",
+      "from": 82,
+      "to": 86
+    },
+    {
+      "id": "castleford-cur-jason-qareqare",
+      "name": "Jason Qareqare",
+      "from": 86,
+      "to": 84
+    },
+    {
+      "id": "castleford-cur-zac-cini",
+      "name": "Zac Cini",
+      "from": 84,
+      "to": 82
+    },
+    {
+      "id": "castleford-cur-darnell-mcintosh",
+      "name": "Darnell McIntosh",
+      "from": 85,
+      "to": 83
+    },
+    {
+      "id": "castleford-cur-semi-valemei",
+      "name": "Semi Valemei",
+      "from": 82,
+      "to": 85
+    },
+    {
+      "id": "castleford-cur-daejarn-asi",
+      "name": "Daejarn Asi",
+      "from": 87,
+      "to": 84
+    },
+    {
+      "id": "castleford-cur-tom-weaver",
+      "name": "Tom Weaver",
+      "from": 76,
+      "to": 79
+    },
+    {
+      "id": "castleford-cur-renouf-atoni",
+      "name": "Renouf Atoni",
+      "from": 84,
+      "to": 85
+    },
+    {
+      "id": "castleford-cur-liam-hood",
+      "name": "Liam Hood",
+      "from": 86,
+      "to": 84
+    },
+    {
+      "id": "castleford-cur-george-lawler",
+      "name": "George Lawler",
+      "from": 84,
+      "to": 83
+    },
+    {
+      "id": "castleford-cur-jordan-lane",
+      "name": "Jordan Lane",
+      "from": 87,
+      "to": 84
+    },
+    {
+      "id": "castleford-cur-alex-mellor",
+      "name": "Alex Mellor",
+      "from": 84,
+      "to": 83
+    },
+    {
+      "id": "castleford-cur-joe-stimson",
+      "name": "Joe Stimson",
+      "from": 77,
+      "to": 82
+    },
+    {
+      "id": "castleford-cur-cain-robb",
+      "name": "Cain Robb",
+      "from": 80,
+      "to": 78
+    },
+    {
+      "id": "castleford-cur-jeremiah-simbiken",
+      "name": "Jeremiah Simbiken",
+      "from": 86,
+      "to": 80
+    },
+    {
+      "id": "castleford-cur-krystian-mapapalangi",
+      "name": "Krystian Mapapalangi",
+      "from": 82,
+      "to": 81
+    },
+    {
+      "id": "castleford-cur-joe-westerman",
+      "name": "Joe Westerman",
+      "from": 82,
+      "to": 85
+    },
+    {
+      "id": "catalans-cur-charlie-staines",
+      "name": "Charlie Staines",
+      "from": 82,
+      "to": 84
+    },
+    {
+      "id": "catalans-cur-tommy-makinson",
+      "name": "Tommy Makinson",
+      "from": 89,
+      "to": 86
+    },
+    {
+      "id": "catalans-cur-nick-cotric",
+      "name": "Nick Čotrić",
+      "from": 83,
+      "to": 85
+    },
+    {
+      "id": "catalans-cur-solomona-faataape",
+      "name": "Solomona Faataape",
+      "from": 76,
+      "to": 83
+    },
+    {
+      "id": "catalans-cur-manase-kaho",
+      "name": "Manase Kaho",
+      "from": 76,
+      "to": 82
+    },
+    {
+      "id": "catalans-cur-toby-sexton",
+      "name": "Toby Sexton",
+      "from": 82,
+      "to": 84
+    },
+    {
+      "id": "catalans-cur-lewis-dodd",
+      "name": "Lewis Dodd",
+      "from": 82,
+      "to": 83
+    },
+    {
+      "id": "catalans-cur-chris-satae",
+      "name": "Chris Satae",
+      "from": 82,
+      "to": 84
+    },
+    {
+      "id": "catalans-cur-julian-bousquet",
+      "name": "Julian Bousquet",
+      "from": 86,
+      "to": 83
+    },
+    {
+      "id": "catalans-cur-cesar-rouge",
+      "name": "César Rougé",
+      "from": 78,
+      "to": 80
+    },
+    {
+      "id": "huddersfield-cur-niall-evalds",
+      "name": "Niall Evalds",
+      "from": 83,
+      "to": 85
+    },
+    {
+      "id": "huddersfield-cur-adam-swift",
+      "name": "Adam Swift",
+      "from": 86,
+      "to": 84
+    },
+    {
+      "id": "huddersfield-cur-jacob-gagai",
+      "name": "Jacob Gagai",
+      "from": 82,
+      "to": 83
+    },
+    {
+      "id": "huddersfield-cur-taane-milne",
+      "name": "Taane Milne",
+      "from": 86,
+      "to": 82
+    },
+    {
+      "id": "huddersfield-cur-sam-halsall",
+      "name": "Sam Halsall",
+      "from": 82,
+      "to": 81
+    },
+    {
+      "id": "huddersfield-cur-tui-lolohea",
+      "name": "Tui Lolohea",
+      "from": 89,
+      "to": 85
+    },
+    {
+      "id": "huddersfield-cur-adam-clune",
+      "name": "Adam Clune",
+      "from": 87,
+      "to": 80
+    },
+    {
+      "id": "huddersfield-cur-matty-english",
+      "name": "Matty English",
+      "from": 89,
+      "to": 84
+    },
+    {
+      "id": "huddersfield-cur-zac-woolford",
+      "name": "Zac Woolford",
+      "from": 87,
+      "to": 82
+    },
+    {
+      "id": "huddersfield-cur-fenton-rogers",
+      "name": "Fenton Rogers",
+      "from": 84,
+      "to": 81
+    },
+    {
+      "id": "huddersfield-cur-joe-greenwood",
+      "name": "Joe Greenwood",
+      "from": 83,
+      "to": 84
+    },
+    {
+      "id": "huddersfield-cur-harry-rushton",
+      "name": "Harry Rushton",
+      "from": 84,
+      "to": 82
+    },
+    {
+      "id": "huddersfield-cur-george-flanagan-jr",
+      "name": "George Flanagan Jr",
+      "from": 83,
+      "to": 78
+    },
+    {
+      "id": "huddersfield-cur-sam-hewitt",
+      "name": "Sam Hewitt",
+      "from": 84,
+      "to": 81
+    },
+    {
+      "id": "huddersfield-cur-george-king",
+      "name": "George King",
+      "from": 87,
+      "to": 83
+    },
+    {
+      "id": "huddersfield-cur-jake-bibby",
+      "name": "Jake Bibby",
+      "from": 85,
+      "to": 82
+    },
+    {
+      "id": "hull-fc-cur-will-pryce",
+      "name": "Will Pryce",
+      "from": 83,
+      "to": 88
+    },
+    {
+      "id": "hull-fc-cur-harvey-barron",
+      "name": "Harvey Barron",
+      "from": 83,
+      "to": 81
+    },
+    {
+      "id": "hull-fc-cur-davy-litten",
+      "name": "Davy Litten",
+      "from": 86,
+      "to": 82
+    },
+    {
+      "id": "hull-fc-cur-zak-hardaker",
+      "name": "Zak Hardaker",
+      "from": 87,
+      "to": 86
+    },
+    {
+      "id": "hull-fc-cur-lewis-martin",
+      "name": "Lewis Martin",
+      "from": 85,
+      "to": 83
+    },
+    {
+      "id": "hull-fc-cur-jake-arthur",
+      "name": "Jake Arthur",
+      "from": 77,
+      "to": 84
+    },
+    {
+      "id": "hull-fc-cur-harvie-hill",
+      "name": "Harvie Hill",
+      "from": 76,
+      "to": 83
+    },
+    {
+      "id": "hull-fc-cur-joe-batchelor",
+      "name": "Joe Batchelor",
+      "from": 87,
+      "to": 84
+    },
+    {
+      "id": "hull-fc-cur-jed-cartwright",
+      "name": "Jed Cartwright",
+      "from": 88,
+      "to": 83
+    },
+    {
+      "id": "hull-fc-cur-cade-cust",
+      "name": "Cade Cust",
+      "from": 87,
+      "to": 82
+    },
+    {
+      "id": "hull-fc-cur-sam-lisone",
+      "name": "Sam Lisone",
+      "from": 86,
+      "to": 83
+    },
+    {
+      "id": "hull-fc-cur-ligi-sao",
+      "name": "Ligi Sao",
+      "from": 86,
+      "to": 81
+    },
+    {
+      "id": "hull-fc-cur-james-bell",
+      "name": "James Bell",
+      "from": 83,
+      "to": 80
+    },
+    {
+      "id": "hull-kr-cur-arthur-mourgue",
+      "name": "Arthur Mourgue",
+      "from": 82,
+      "to": 88
+    },
+    {
+      "id": "hull-kr-cur-tom-davies",
+      "name": "Tom Davies",
+      "from": 88,
+      "to": 83
+    },
+    {
+      "id": "hull-kr-cur-oliver-gildart",
+      "name": "Oliver Gildart",
+      "from": 89,
+      "to": 85
+    },
+    {
+      "id": "hull-kr-cur-joe-burgess",
+      "name": "Joe Burgess",
+      "from": 87,
+      "to": 84
+    },
+    {
+      "id": "hull-kr-cur-tyrone-may",
+      "name": "Tyrone May",
+      "from": 90,
+      "to": 85
+    },
+    {
+      "id": "hull-kr-cur-sauaso-sue",
+      "name": "Sauaso Sue",
+      "from": 87,
+      "to": 84
+    },
+    {
+      "id": "hull-kr-cur-jez-litten",
+      "name": "Jez Litten",
+      "from": 89,
+      "to": 86
+    },
+    {
+      "id": "hull-kr-cur-tom-amone",
+      "name": "Tom Amone",
+      "from": 83,
+      "to": 85
+    },
+    {
+      "id": "hull-kr-cur-dean-hadley",
+      "name": "Dean Hadley",
+      "from": 87,
+      "to": 83
+    },
+    {
+      "id": "hull-kr-cur-james-batchelor",
+      "name": "James Batchelor",
+      "from": 88,
+      "to": 84
+    },
+    {
+      "id": "hull-kr-cur-jai-whitbread",
+      "name": "Jai Whitbread",
+      "from": 87,
+      "to": 81
+    },
+    {
+      "id": "hull-kr-cur-jack-brown",
+      "name": "Jack Brown",
+      "from": 82,
+      "to": 79
+    },
+    {
+      "id": "leeds-cur-lachie-miller",
+      "name": "Lachie Miller",
+      "from": 88,
+      "to": 84
+    },
+    {
+      "id": "leeds-cur-maika-sivo",
+      "name": "Maika Sivo",
+      "from": 83,
+      "to": 87
+    },
+    {
+      "id": "leeds-cur-ash-handley",
+      "name": "Ash Handley",
+      "from": 89,
+      "to": 86
+    },
+    {
+      "id": "leeds-cur-jake-connor",
+      "name": "Jake Connor",
+      "from": 91,
+      "to": 87
+    },
+    {
+      "id": "leeds-cur-mikolaj-oledzki",
+      "name": "Mikolaj Oledzki",
+      "from": 90,
+      "to": 86
+    },
+    {
+      "id": "leeds-cur-tom-holroyd",
+      "name": "Tom Holroyd",
+      "from": 86,
+      "to": 85
+    },
+    {
+      "id": "leeds-cur-james-mcdonnell",
+      "name": "James McDonnell",
+      "from": 88,
+      "to": 84
+    },
+    {
+      "id": "leeds-cur-morgan-gannon",
+      "name": "Morgan Gannon",
+      "from": 87,
+      "to": 83
+    },
+    {
+      "id": "leeds-cur-jarrod-o-connor",
+      "name": "Jarrod O'Connor",
+      "from": 85,
+      "to": 84
+    },
+    {
+      "id": "leeds-cur-cooper-jenkins",
+      "name": "Cooper Jenkins",
+      "from": 84,
+      "to": 79
+    },
+    {
+      "id": "leigh-cur-tesi-niu",
+      "name": "Tesi Niu",
+      "from": 89,
+      "to": 84
+    },
+    {
+      "id": "leigh-cur-umyla-hanley",
+      "name": "Umyla Hanley",
+      "from": 86,
+      "to": 82
+    },
+    {
+      "id": "leigh-cur-keanan-brand",
+      "name": "Keanan Brand",
+      "from": 84,
+      "to": 81
+    },
+    {
+      "id": "leigh-cur-gareth-o-brien",
+      "name": "Gareth O'Brien",
+      "from": 87,
+      "to": 83
+    },
+    {
+      "id": "leigh-cur-robbie-mulhern",
+      "name": "Robbie Mulhern",
+      "from": 88,
+      "to": 85
+    },
+    {
+      "id": "leigh-cur-owen-trout",
+      "name": "Owen Trout",
+      "from": 86,
+      "to": 84
+    },
+    {
+      "id": "leigh-cur-frankie-halton",
+      "name": "Frankie Halton",
+      "from": 86,
+      "to": 83
+    },
+    {
+      "id": "leigh-cur-isaac-liu",
+      "name": "Isaac Liu",
+      "from": 88,
+      "to": 85
+    },
+    {
+      "id": "leigh-cur-ben-mcnamara",
+      "name": "Ben McNamara",
+      "from": 81,
+      "to": 80
+    },
+    {
+      "id": "leigh-cur-aaron-pene",
+      "name": "Aaron Pene",
+      "from": 85,
+      "to": 81
+    },
+    {
+      "id": "leigh-cur-joe-ofahengaue",
+      "name": "Joe Ofahengaue",
+      "from": 88,
+      "to": 83
+    },
+    {
+      "id": "leigh-cur-kai-o-donnell",
+      "name": "Kai O'Donnell",
+      "from": 87,
+      "to": 82
+    },
+    {
+      "id": "st-helens-cur-lewis-murphy",
+      "name": "Lewis Murphy",
+      "from": 77,
+      "to": 85
+    },
+    {
+      "id": "st-helens-cur-mark-percival",
+      "name": "Mark Percival",
+      "from": 89,
+      "to": 86
+    },
+    {
+      "id": "st-helens-cur-harry-robertson",
+      "name": "Harry Robertson",
+      "from": 85,
+      "to": 82
+    },
+    {
+      "id": "st-helens-cur-deon-cross",
+      "name": "Deon Cross",
+      "from": 87,
+      "to": 84
+    },
+    {
+      "id": "st-helens-cur-tristan-sailor",
+      "name": "Tristan Sailor",
+      "from": 88,
+      "to": 87
+    },
+    {
+      "id": "st-helens-cur-jonny-lomax",
+      "name": "Jonny Lomax",
+      "from": 89,
+      "to": 86
+    },
+    {
+      "id": "st-helens-cur-daryl-clark",
+      "name": "Daryl Clark",
+      "from": 89,
+      "to": 87
+    },
+    {
+      "id": "st-helens-cur-matty-lees",
+      "name": "Matty Lees",
+      "from": 89,
+      "to": 85
+    },
+    {
+      "id": "st-helens-cur-curtis-sironen",
+      "name": "Curtis Sironen",
+      "from": 88,
+      "to": 86
+    },
+    {
+      "id": "st-helens-cur-george-whitby",
+      "name": "George Whitby",
+      "from": 82,
+      "to": 81
+    },
+    {
+      "id": "st-helens-cur-david-klemmer",
+      "name": "David Klemmer",
+      "from": 83,
+      "to": 86
+    },
+    {
+      "id": "st-helens-cur-george-delaney",
+      "name": "George Delaney",
+      "from": 84,
+      "to": 82
+    },
+    {
+      "id": "st-helens-cur-jake-wingfield",
+      "name": "Jake Wingfield",
+      "from": 83,
+      "to": 80
+    },
+    {
+      "id": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "from": 82,
+      "to": 83
+    },
+    {
+      "id": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "from": 85,
+      "to": 82
+    },
+    {
+      "id": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "from": 82,
+      "to": 84
+    },
+    {
+      "id": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "from": 82,
+      "to": 81
+    },
+    {
+      "id": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "from": 83,
+      "to": 84
+    },
+    {
+      "id": "toulouse-cur-thomas-lacans",
+      "name": "Thomas Lacans",
+      "from": 82,
+      "to": 83
+    },
+    {
+      "id": "toulouse-cur-lambert-belmas",
+      "name": "Lambert Belmas",
+      "from": 77,
+      "to": 85
+    },
+    {
+      "id": "toulouse-cur-brendan-hands",
+      "name": "Brendan Hands",
+      "from": 77,
+      "to": 84
+    },
+    {
+      "id": "toulouse-cur-james-roumanos",
+      "name": "James Roumanos",
+      "from": 77,
+      "to": 82
+    },
+    {
+      "id": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "from": 85,
+      "to": 81
+    },
+    {
+      "id": "toulouse-cur-paul-marcon",
+      "name": "Paul Marcon",
+      "from": 77,
+      "to": 80
+    },
+    {
+      "id": "wakefield-cur-max-jowitt",
+      "name": "Max Jowitt",
+      "from": 88,
+      "to": 86
+    },
+    {
+      "id": "wakefield-cur-tom-johnstone",
+      "name": "Tom Johnstone",
+      "from": 90,
+      "to": 88
+    },
+    {
+      "id": "wakefield-cur-oliver-pratt",
+      "name": "Oliver Pratt",
+      "from": 84,
+      "to": 82
+    },
+    {
+      "id": "wakefield-cur-corey-hall",
+      "name": "Corey Hall",
+      "from": 86,
+      "to": 81
+    },
+    {
+      "id": "wakefield-cur-mason-lino",
+      "name": "Mason Lino",
+      "from": 88,
+      "to": 85
+    },
+    {
+      "id": "wakefield-cur-tyson-smoothy",
+      "name": "Tyson Smoothy",
+      "from": 77,
+      "to": 84
+    },
+    {
+      "id": "wakefield-cur-ky-rodwell",
+      "name": "Ky Rodwell",
+      "from": 85,
+      "to": 83
+    },
+    {
+      "id": "wakefield-cur-matty-storton",
+      "name": "Matty Storton",
+      "from": 84,
+      "to": 83
+    },
+    {
+      "id": "wakefield-cur-jazz-tevaga",
+      "name": "Jazz Tevaga",
+      "from": 83,
+      "to": 84
+    },
+    {
+      "id": "wakefield-cur-caleb-hamlin-uele",
+      "name": "Caleb Hamlin-Uele",
+      "from": 87,
+      "to": 81
+    },
+    {
+      "id": "wakefield-cur-jay-pitts",
+      "name": "Jay Pitts",
+      "from": 84,
+      "to": 82
+    },
+    {
+      "id": "warrington-cur-cai-taylor-wray",
+      "name": "Cai Taylor-Wray",
+      "from": 79,
+      "to": 82
+    },
+    {
+      "id": "warrington-cur-josh-thewlis",
+      "name": "Josh Thewlis",
+      "from": 88,
+      "to": 84
+    },
+    {
+      "id": "warrington-cur-toby-king",
+      "name": "Toby King",
+      "from": 88,
+      "to": 85
+    },
+    {
+      "id": "warrington-cur-albert-hopoate",
+      "name": "Albert Hopoate",
+      "from": 77,
+      "to": 84
+    },
+    {
+      "id": "warrington-cur-matty-ashton",
+      "name": "Matty Ashton",
+      "from": 83,
+      "to": 86
+    },
+    {
+      "id": "warrington-cur-luke-yates",
+      "name": "Luke Yates",
+      "from": 87,
+      "to": 84
+    },
+    {
+      "id": "warrington-cur-james-harrison",
+      "name": "James Harrison",
+      "from": 87,
+      "to": 83
+    },
+    {
+      "id": "warrington-cur-adam-holroyd",
+      "name": "Adam Holroyd",
+      "from": 76,
+      "to": 82
+    },
+    {
+      "id": "warrington-cur-ben-currie",
+      "name": "Ben Currie",
+      "from": 88,
+      "to": 87
+    },
+    {
+      "id": "warrington-cur-sam-powell",
+      "name": "Sam Powell",
+      "from": 84,
+      "to": 85
+    },
+    {
+      "id": "warrington-cur-joe-philbin",
+      "name": "Joe Philbin",
+      "from": 85,
+      "to": 81
+    },
+    {
+      "id": "warrington-cur-max-wood",
+      "name": "Max Wood",
+      "from": 80,
+      "to": 79
+    },
+    {
+      "id": "wigan-cur-liam-marshall",
+      "name": "Liam Marshall",
+      "from": 89,
+      "to": 87
+    },
+    {
+      "id": "wigan-cur-ethan-havard",
+      "name": "Ethan Havard",
+      "from": 88,
+      "to": 85
+    },
+    {
+      "id": "wigan-cur-liam-farrell",
+      "name": "Liam Farrell",
+      "from": 89,
+      "to": 88
+    },
+    {
+      "id": "wigan-cur-sam-walters",
+      "name": "Sam Walters",
+      "from": 84,
+      "to": 83
+    },
+    {
+      "id": "wigan-cur-patrick-mago",
+      "name": "Patrick Mago",
+      "from": 86,
+      "to": 82
+    },
+    {
+      "id": "wigan-cur-oliver-wilson",
+      "name": "Oliver Wilson",
+      "from": 85,
+      "to": 83
+    },
+    {
+      "id": "wigan-cur-sam-eseh",
+      "name": "Sam Eseh",
+      "from": 76,
+      "to": 80
+    },
+    {
+      "id": "york-cur-ben-jones-bishop",
+      "name": "Ben Jones-Bishop",
+      "from": 83,
+      "to": 85
+    },
+    {
+      "id": "york-cur-jordan-lipp",
+      "name": "Jordan Lipp",
+      "from": 77,
+      "to": 82
+    },
+    {
+      "id": "york-cur-sam-wood",
+      "name": "Sam Wood",
+      "from": 77,
+      "to": 81
+    },
+    {
+      "id": "york-cur-scott-galeano",
+      "name": "Scott Galeano",
+      "from": 77,
+      "to": 80
+    },
+    {
+      "id": "york-cur-ata-hingano",
+      "name": "Ata Hingano",
+      "from": 87,
+      "to": 84
+    },
+    {
+      "id": "york-cur-liam-harris",
+      "name": "Liam Harris",
+      "from": 84,
+      "to": 82
+    },
+    {
+      "id": "york-cur-jack-martin",
+      "name": "Jack Martin",
+      "from": 82,
+      "to": 83
+    },
+    {
+      "id": "york-cur-paul-mcshane",
+      "name": "Paul McShane",
+      "from": 82,
+      "to": 86
+    },
+    {
+      "id": "york-cur-jesse-dee",
+      "name": "Jesse Dee",
+      "from": 84,
+      "to": 81
+    },
+    {
+      "id": "york-cur-jordan-thompson",
+      "name": "Jordan Thompson",
+      "from": 82,
+      "to": 83
+    },
+    {
+      "id": "york-cur-denive-balmforth",
+      "name": "Denive Balmforth",
+      "from": 83,
+      "to": 79
+    },
+    {
+      "id": "york-cur-xavier-vaa",
+      "name": "Xavier Va'a",
+      "from": 76,
+      "to": 80
+    },
+    {
+      "id": "york-cur-justin-sangare",
+      "name": "Justin Sangaré",
+      "from": 84,
+      "to": 85
+    }
+  ],
+  "missingNationality": [
+    "Bayley Sironen (Catalans Dragons)",
+    "Tariq Sims (Catalans Dragons)",
+    "Paul Séguier (Catalans Dragons)",
+    "Jordan Dezaria (Catalans Dragons)",
+    "Arthur Romano (Catalans Dragons)",
+    "Oliver Wilson (Huddersfield Giants)",
+    "Danny Richardson (Hull KR)",
+    "Kelepi Tanginoa (Hull KR)",
+    "Andy Ackers (Leeds Rhinos)",
+    "Sam Lisone (Leeds Rhinos)",
+    "James Bentley (Leeds Rhinos)",
+    "Darnell McIntosh (Leigh Leopards)",
+    "Ethan O'Neill (Leigh Leopards)",
+    "Morgan Knowles (St Helens)",
+    "Justin Sangaré (Toulouse Olympique)",
+    "John Toleafoa (Toulouse Olympique)",
+    "Eloi Pelissier (Toulouse Olympique)",
+    "Cameron Scott (Wakefield Trinity)",
+    "Liam Hood (Wakefield Trinity)",
+    "Renouf Atoni (Wakefield Trinity)",
+    "Matty Nicholson (Warrington Wolves)",
+    "Oliver Field (York Knights)"
+  ],
+  "teams": {
+    "Bradford Bulls": {
+      "playerIds": [
+        "bradford-cur-caleb-aekins",
+        "bradford-cur-ethan-ryan",
+        "bradford-cur-waqa-blake",
+        "bradford-cur-esan-marsters",
+        "bradford-cur-jayden-okunbor",
+        "bradford-cur-jayden-nikorima",
+        "bradford-cur-rowan-milnes",
+        "bradford-cur-ryan-sutton",
+        "bradford-cur-andy-ackers",
+        "bradford-cur-eribe-doro",
+        "bradford-cur-dan-russell",
+        "bradford-cur-zac-fulton",
+        "bradford-cur-joe-mellor",
+        "bradford-cur-mitch-souter",
+        "bradford-cur-loghan-lewis",
+        "bradford-cur-ebon-scurr",
+        "bradford-cur-ed-chamberlain"
+      ],
+      "count": 17
+    },
+    "Castleford Tigers": {
+      "playerIds": [
+        "castleford-cur-blake-taaffe",
+        "castleford-cur-jason-qareqare",
+        "castleford-cur-zac-cini",
+        "castleford-cur-darnell-mcintosh",
+        "castleford-cur-semi-valemei",
+        "castleford-cur-daejarn-asi",
+        "castleford-cur-tom-weaver",
+        "castleford-cur-renouf-atoni",
+        "castleford-cur-liam-hood",
+        "castleford-cur-george-lawler",
+        "castleford-cur-jordan-lane",
+        "castleford-cur-alex-mellor",
+        "castleford-cur-joe-stimson",
+        "castleford-cur-cain-robb",
+        "castleford-cur-jeremiah-simbiken",
+        "castleford-cur-krystian-mapapalangi",
+        "castleford-cur-joe-westerman"
+      ],
+      "count": 17
+    },
+    "Catalans Dragons": {
+      "playerIds": [
+        "catalans-cur-charlie-staines",
+        "catalans-cur-tommy-makinson",
+        "catalans-cur-nick-cotric",
+        "catalans-cur-solomona-faataape",
+        "catalans-cur-manase-kaho",
+        "catalans-cur-toby-sexton",
+        "catalans-cur-lewis-dodd",
+        "catalans-cur-chris-satae",
+        "catalans-cur-alrix-da-costa",
+        "catalans-cur-julian-bousquet",
+        "catalans-cur-bayley-sironen",
+        "catalans-cur-tariq-sims",
+        "catalans-cur-benjamin-garcia",
+        "catalans-cur-paul-seguier",
+        "catalans-cur-jordan-dezaria",
+        "catalans-cur-arthur-romano",
+        "catalans-cur-cesar-rouge"
+      ],
+      "count": 17
+    },
+    "Huddersfield Giants": {
+      "playerIds": [
+        "huddersfield-cur-niall-evalds",
+        "huddersfield-cur-adam-swift",
+        "huddersfield-cur-jacob-gagai",
+        "huddersfield-cur-taane-milne",
+        "huddersfield-cur-sam-halsall",
+        "huddersfield-cur-tui-lolohea",
+        "huddersfield-cur-adam-clune",
+        "huddersfield-cur-matty-english",
+        "huddersfield-cur-zac-woolford",
+        "huddersfield-cur-fenton-rogers",
+        "huddersfield-cur-oliver-wilson",
+        "huddersfield-cur-joe-greenwood",
+        "huddersfield-cur-harry-rushton",
+        "huddersfield-cur-george-flanagan-jr",
+        "huddersfield-cur-sam-hewitt",
+        "huddersfield-cur-george-king",
+        "huddersfield-cur-jake-bibby"
+      ],
+      "count": 17
+    },
+    "Hull FC": {
+      "playerIds": [
+        "hull-fc-cur-will-pryce",
+        "hull-fc-cur-harvey-barron",
+        "hull-fc-cur-davy-litten",
+        "hull-fc-cur-zak-hardaker",
+        "hull-fc-cur-lewis-martin",
+        "hull-fc-cur-jake-arthur",
+        "hull-fc-cur-aidan-sezer",
+        "hull-fc-cur-herman-eseese",
+        "hull-fc-cur-amir-bourouh",
+        "hull-fc-cur-harvie-hill",
+        "hull-fc-cur-joe-batchelor",
+        "hull-fc-cur-jed-cartwright",
+        "hull-fc-cur-john-asiata",
+        "hull-fc-cur-cade-cust",
+        "hull-fc-cur-sam-lisone",
+        "hull-fc-cur-ligi-sao",
+        "hull-fc-cur-james-bell"
+      ],
+      "count": 17
+    },
+    "Hull KR": {
+      "playerIds": [
+        "hull-kr-cur-arthur-mourgue",
+        "hull-kr-cur-tom-davies",
+        "hull-kr-cur-peta-hiku",
+        "hull-kr-cur-oliver-gildart",
+        "hull-kr-cur-joe-burgess",
+        "hull-kr-cur-mikey-lewis",
+        "hull-kr-cur-tyrone-may",
+        "hull-kr-cur-sauaso-sue",
+        "hull-kr-cur-jez-litten",
+        "hull-kr-cur-tom-amone",
+        "hull-kr-cur-dean-hadley",
+        "hull-kr-cur-james-batchelor",
+        "hull-kr-cur-elliot-minchella",
+        "hull-kr-cur-danny-richardson",
+        "hull-kr-cur-kelepi-tanginoa",
+        "hull-kr-cur-jai-whitbread",
+        "hull-kr-cur-jack-brown"
+      ],
+      "count": 17
+    },
+    "Leeds Rhinos": {
+      "playerIds": [
+        "leeds-cur-lachie-miller",
+        "leeds-cur-maika-sivo",
+        "leeds-cur-harry-newman",
+        "leeds-cur-ash-handley",
+        "leeds-cur-riley-lumb",
+        "leeds-cur-brodie-croft",
+        "leeds-cur-jake-connor",
+        "leeds-cur-mikolaj-oledzki",
+        "leeds-cur-andy-ackers",
+        "leeds-cur-tom-holroyd",
+        "leeds-cur-james-mcdonnell",
+        "leeds-cur-morgan-gannon",
+        "leeds-cur-cameron-smith",
+        "leeds-cur-jarrod-o-connor",
+        "leeds-cur-sam-lisone",
+        "leeds-cur-cooper-jenkins",
+        "leeds-cur-james-bentley"
+      ],
+      "count": 17
+    },
+    "Leigh Leopards": {
+      "playerIds": [
+        "leigh-cur-david-armstrong",
+        "leigh-cur-darnell-mcintosh",
+        "leigh-cur-tesi-niu",
+        "leigh-cur-umyla-hanley",
+        "leigh-cur-keanan-brand",
+        "leigh-cur-gareth-o-brien",
+        "leigh-cur-lachlan-lam",
+        "leigh-cur-robbie-mulhern",
+        "leigh-cur-edwin-ipape",
+        "leigh-cur-owen-trout",
+        "leigh-cur-frankie-halton",
+        "leigh-cur-ethan-o-neill",
+        "leigh-cur-isaac-liu",
+        "leigh-cur-ben-mcnamara",
+        "leigh-cur-aaron-pene",
+        "leigh-cur-joe-ofahengaue",
+        "leigh-cur-kai-o-donnell"
+      ],
+      "count": 17
+    },
+    "St Helens": {
+      "playerIds": [
+        "st-helens-cur-jack-welsby",
+        "st-helens-cur-lewis-murphy",
+        "st-helens-cur-mark-percival",
+        "st-helens-cur-harry-robertson",
+        "st-helens-cur-deon-cross",
+        "st-helens-cur-tristan-sailor",
+        "st-helens-cur-jonny-lomax",
+        "st-helens-cur-alex-walmsley",
+        "st-helens-cur-daryl-clark",
+        "st-helens-cur-matty-lees",
+        "st-helens-cur-curtis-sironen",
+        "st-helens-cur-matt-whitley",
+        "st-helens-cur-morgan-knowles",
+        "st-helens-cur-george-whitby",
+        "st-helens-cur-david-klemmer",
+        "st-helens-cur-george-delaney",
+        "st-helens-cur-jake-wingfield"
+      ],
+      "count": 17
+    },
+    "Toulouse Olympique": {
+      "playerIds": [
+        "toulouse-cur-olly-ashall-bott",
+        "toulouse-cur-paul-ulberg",
+        "toulouse-cur-reubenn-rennie",
+        "toulouse-cur-mathieu-jussaume",
+        "toulouse-cur-benjamin-laguerre",
+        "toulouse-cur-jake-shorrocks",
+        "toulouse-cur-thomas-lacans",
+        "toulouse-cur-lambert-belmas",
+        "toulouse-cur-brendan-hands",
+        "toulouse-cur-james-roumanos",
+        "toulouse-cur-maxime-stefani",
+        "toulouse-cur-calum-gahan",
+        "toulouse-cur-anthony-marion",
+        "toulouse-cur-paul-marcon",
+        "toulouse-cur-justin-sangare",
+        "toulouse-cur-john-toleafoa",
+        "toulouse-cur-eloi-pelissier"
+      ],
+      "count": 17
+    },
+    "Wakefield Trinity": {
+      "playerIds": [
+        "wakefield-cur-max-jowitt",
+        "wakefield-cur-tom-johnstone",
+        "wakefield-cur-oliver-pratt",
+        "wakefield-cur-cameron-scott",
+        "wakefield-cur-corey-hall",
+        "wakefield-cur-jake-trueman",
+        "wakefield-cur-mason-lino",
+        "wakefield-cur-mike-mcmeeken",
+        "wakefield-cur-tyson-smoothy",
+        "wakefield-cur-ky-rodwell",
+        "wakefield-cur-seth-nikotemo",
+        "wakefield-cur-matty-storton",
+        "wakefield-cur-jazz-tevaga",
+        "wakefield-cur-liam-hood",
+        "wakefield-cur-renouf-atoni",
+        "wakefield-cur-caleb-hamlin-uele",
+        "wakefield-cur-jay-pitts"
+      ],
+      "count": 17
+    },
+    "Warrington Wolves": {
+      "playerIds": [
+        "warrington-cur-cai-taylor-wray",
+        "warrington-cur-josh-thewlis",
+        "warrington-cur-toby-king",
+        "warrington-cur-albert-hopoate",
+        "warrington-cur-matty-ashton",
+        "warrington-cur-george-williams",
+        "warrington-cur-marc-sneyd",
+        "warrington-cur-luke-yates",
+        "warrington-cur-danny-walker",
+        "warrington-cur-james-harrison",
+        "warrington-cur-adam-holroyd",
+        "warrington-cur-sam-stone",
+        "warrington-cur-ben-currie",
+        "warrington-cur-sam-powell",
+        "warrington-cur-joe-philbin",
+        "warrington-cur-max-wood",
+        "warrington-cur-matty-nicholson"
+      ],
+      "count": 17
+    },
+    "Wigan Warriors": {
+      "playerIds": [
+        "wigan-cur-jai-field",
+        "wigan-cur-zach-eckersley",
+        "wigan-cur-adam-keighran",
+        "wigan-cur-jake-wardle",
+        "wigan-cur-liam-marshall",
+        "wigan-cur-bevan-french",
+        "wigan-cur-harry-smith",
+        "wigan-cur-ethan-havard",
+        "wigan-cur-brad-o-neill",
+        "wigan-cur-luke-thompson",
+        "wigan-cur-junior-nsemba",
+        "wigan-cur-liam-farrell",
+        "wigan-cur-kaide-ellis",
+        "wigan-cur-sam-walters",
+        "wigan-cur-patrick-mago",
+        "wigan-cur-oliver-wilson",
+        "wigan-cur-sam-eseh"
+      ],
+      "count": 17
+    },
+    "York Knights": {
+      "playerIds": [
+        "york-cur-toa-mataafa",
+        "york-cur-ben-jones-bishop",
+        "york-cur-jordan-lipp",
+        "york-cur-sam-wood",
+        "york-cur-scott-galeano",
+        "york-cur-ata-hingano",
+        "york-cur-liam-harris",
+        "york-cur-jack-martin",
+        "york-cur-paul-mcshane",
+        "york-cur-paul-vaughan",
+        "york-cur-josh-griffin",
+        "york-cur-jesse-dee",
+        "york-cur-jordan-thompson",
+        "york-cur-denive-balmforth",
+        "york-cur-xavier-vaa",
+        "york-cur-justin-sangare",
+        "york-cur-oliver-field"
+      ],
+      "count": 17
+    }
+  }
+}

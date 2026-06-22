@@ -20,7 +20,8 @@ import { getPlayerColorClub } from "@/lib/players/run-club";
 import { filterShowcasePlayers, getUniqueClubs } from "@/lib/players/showcase";
 import { getClubColors } from "@/lib/clubs";
 import type { Player, SquadSlot } from "@/lib/types";
-import { POSITION_LABELS, POSITION_SHORT } from "@/lib/positions";
+import { POSITION_LABELS } from "@/lib/positions";
+import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import { getNationalityAbbrev } from "@/lib/players/nationality";
 import { getCachedPlayerAchievements } from "@/lib/players/achievement-cache";
 import { getValueTier } from "@/lib/players/ratings";
@@ -324,7 +325,7 @@ export function FantasyPlayerPicker({
                             <span className="hidden sm:inline"> OVR</span>
                           </p>
                           <p className="mt-0.5 text-[10px] font-semibold tracking-wide text-accent-green/90 sm:text-[11px]">
-                            {POSITION_SHORT[player.position]}
+                            {formatPlayerPositionLabel(player)}
                           </p>
                         </div>
                       </div>
@@ -383,7 +384,7 @@ export function FantasyPlayerPicker({
                                 </div>
                               )}
                               <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-1.5">
-                                <StatBox label="Position" value={POSITION_LABELS[player.position]} size="lg" light compact />
+                                <StatBox label="Position" value={formatPlayerPositionLabel(player)} size="lg" light compact />
                                 <StatBox label="Age" value={formatPlayerAge(player)} size="lg" light compact />
                                 <StatBox label="Value" value={formatValue(player.value)} size="lg" light compact />
                                 <StatBox label="Years Active" value={player.yearsActive} size="lg" light compact className="hidden sm:block" />

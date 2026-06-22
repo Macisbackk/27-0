@@ -2,6 +2,7 @@ import { getRecruitablePlayers } from "../players";
 import type { Player, Position, SquadSlot } from "../types";
 import { getSquadValue, isSquadComplete } from "../positions";
 import { getAverageSquadRating } from "../squad-analysis";
+import { getPlayerEligiblePositions } from "../players/player-positions";
 import { getDraftCandidatePositions } from "./draft-positions";
 
 export type FantasySortKey =
@@ -51,6 +52,15 @@ export function getFantasyEligiblePositions(slotPosition: Position): Position[] 
 }
 
 export function isFantasyEligibleForSlot(
+  player: Player,
+  slotPosition: Position
+): boolean {
+  const positions = getFantasyEligiblePositions(slotPosition);
+  return getPlayerEligiblePositions(player).some((pos) => positions.includes(pos));
+}
+
+/** @deprecated Use isFantasyEligibleForSlot(player, slotPosition) */
+export function isFantasyEligibleForPlayerPosition(
   playerPosition: Position,
   slotPosition: Position
 ): boolean {
@@ -115,7 +125,7 @@ export function getFantasyCandidatesForSlot(
     if (signedIds.has(player.id) && player.id !== currentPlayer?.id) {
       return false;
     }
-    if (!positions.includes(player.position)) return false;
+    if (!isFantasyEligibleForSlot(player, slot.position)) return false;
     return player.value <= budgetRemaining;
   });
 }
@@ -127,7 +137,7 @@ export function signFantasyPlayerToSlot(
 ): SquadSlot[] {
   const slot = squad.find((s) => s.slotIndex === slotIndex);
   if (!slot) return squad;
-  if (!isFantasyEligibleForSlot(player.position, slot.position)) return squad;
+  if (!isFantasyEligibleForSlot(player, slot.position)) return squad;
 
   return squad.map((s) => {
     if (s.slotIndex === slotIndex) {
@@ -192,7 +202,7 @@ function getReserveBudget(
 
     for (const player of pool) {
       if (signedIds.has(player.id)) continue;
-      if (!positions.includes(player.position)) continue;
+      if (!isFantasyEligibleForSlot(player, slot.position)) continue;
       costs.push(player.value);
     }
 

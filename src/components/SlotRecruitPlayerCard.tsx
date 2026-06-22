@@ -15,7 +15,8 @@ import { getNationalityAbbrev } from "@/lib/players/nationality";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
 import { getClubColors } from "@/lib/clubs";
-import { POSITION_LABELS, POSITION_SHORT } from "@/lib/positions";
+import { POSITION_LABELS } from "@/lib/positions";
+import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import { playUiClick } from "@/lib/sound";
 import { AchievementChipList } from "./cards/AchievementChipList";
 import {
@@ -102,7 +103,7 @@ export function SlotRecruitPlayerCard({
               {!hardMode && <span className="hidden sm:inline"> OVR</span>}
             </p>
             <p className="mt-0.5 text-[10px] font-semibold tracking-wide text-accent-green/90 sm:text-[11px]">
-              {POSITION_SHORT[player.position]}
+              {formatPlayerPositionLabel(player)}
             </p>
           </div>
         </div>
@@ -156,7 +157,7 @@ export function SlotRecruitPlayerCard({
               <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-1.5">
                 <StatBox
                   label="Position"
-                  value={POSITION_LABELS[player.position]}
+                  value={formatPlayerPositionLabel(player)}
                   size="lg"
                   light
                   compact

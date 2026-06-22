@@ -32,10 +32,17 @@ function loadPlayers(): {
     c === "legend" ? 3 : c === "historic" ? 2 : 1;
 
   for (const p of [...current, ...historicRaw, ...legendPlayers]) {
-    if (isHiddenPlayer(p)) {
-      byId.set(p.id, p);
-      continue;
-    }
+    byId.set(p.id, p);
+  }
+
+  const pool: Player[] = [];
+
+  for (const p of current) {
+    if (!isHiddenPlayer(p)) pool.push(p);
+  }
+
+  for (const p of [...historicRaw, ...legendPlayers]) {
+    if (isHiddenPlayer(p)) continue;
     const nameKey = normalizePlayerNameKey(p.name);
     const existing = byName.get(nameKey);
     if (
@@ -47,14 +54,9 @@ function loadPlayers(): {
     }
   }
 
-  for (const p of byName.values()) {
-    byId.set(p.id, p);
-  }
-  for (const p of [...current, ...historicRaw, ...legendPlayers]) {
-    if (isHiddenPlayer(p)) byId.set(p.id, p);
-  }
+  pool.push(...byName.values());
 
-  const all = Array.from(byId.values());
+  const all = pool;
   const historic = all.filter((p) => p.category === "historic");
   const legendsOnly = all.filter((p) => p.category === "legend");
 

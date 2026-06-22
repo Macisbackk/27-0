@@ -1,18 +1,12 @@
 {
-  "generatedAt": "2026-06-22T15:04:39.543Z",
+  "generatedAt": "2026-06-22T16:07:30.660Z",
   "summary": {
-    "playableTeamYears": 15,
+    "playableTeamYears": 19,
     "errors": 0,
     "warnings": 0
   },
   "hiddenNonSuperLeagueSeasons": [],
-  "hiddenIncompleteRosters": [
-    {
-      "team": "Huddersfield Giants",
-      "year": "2026",
-      "reason": "raw roster has 31 players but failed playability gate"
-    }
-  ],
+  "hiddenIncompleteRosters": [],
   "currentPlayerLeaks": [],
   "playerYearMismatches": [],
   "unsupportedClubsInRosters": [],

@@ -2,6 +2,7 @@ import type { Player, PlayerCategory, Position } from "../types";
 import { formatPlayerDisplayName } from "./prime-year";
 import { POSITION_LABELS } from "../positions";
 import { getPlayerAge } from "./player-age";
+import { getPlayerEligiblePositions } from "./player-positions";
 import type { TeamYearRosterEntry } from "./team-year-rosters";
 
 export type ShowcaseSortKey =
@@ -252,8 +253,9 @@ function passesSecondaryFilters(
   filters: ShowcaseFilters
 ): boolean {
   const minRating = ratingThreshold(filters.ratingMin);
-  if (filters.position !== "all" && player.position !== filters.position) {
-    return false;
+  if (filters.position !== "all") {
+    const eligible = getPlayerEligiblePositions(player);
+    if (!eligible.includes(filters.position)) return false;
   }
   if (minRating > 0 && player.peakRating < minRating) return false;
   if (filters.tier !== "all" && getPlayerTier(player) !== filters.tier) {

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-22T15:04:38.497Z",
+  "generatedAt": "2026-06-22T16:07:18.963Z",
   "sources": [
     "Verified Wikipedia/manual XIII only (era-wikipedia-squads.json, sl-era-verified-squads.json)",
     "Current squad for 2026 only (current-squads.json)",
@@ -7,20 +7,20 @@
   ],
   "minPlayers": 13,
   "verifiedSquadsMerged": 9,
-  "verifiedPlayersRejected": 442,
+  "verifiedPlayersRejected": 446,
   "currentYearSquadsBuilt": 14,
-  "playableCount": 16,
-  "hiddenCount": 3,
+  "playableCount": 19,
+  "hiddenCount": 0,
   "playable": [
     {
       "team": "Bradford Bulls",
       "year": "2026",
-      "count": 30
+      "count": 17
     },
     {
       "team": "Castleford Tigers",
       "year": "2026",
-      "count": 42
+      "count": 17
     },
     {
       "team": "Catalans Dragons",
@@ -29,33 +29,43 @@
     },
     {
       "team": "Catalans Dragons",
+      "year": "2008",
+      "count": 13
+    },
+    {
+      "team": "Catalans Dragons",
       "year": "2026",
-      "count": 37
+      "count": 17
     },
     {
       "team": "Huddersfield Giants",
       "year": "2026",
-      "count": 31
+      "count": 17
     },
     {
       "team": "Hull FC",
       "year": "2026",
-      "count": 32
+      "count": 17
     },
     {
       "team": "Hull KR",
       "year": "2026",
-      "count": 32
+      "count": 17
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2015",
+      "count": 13
     },
     {
       "team": "Leeds Rhinos",
       "year": "2026",
-      "count": 30
+      "count": 17
     },
     {
       "team": "Leigh Leopards",
       "year": "2026",
-      "count": 33
+      "count": 17
     },
     {
       "team": "St Helens",
@@ -65,58 +75,40 @@
     {
       "team": "St Helens",
       "year": "2026",
-      "count": 26
+      "count": 17
     },
     {
       "team": "Toulouse Olympique",
       "year": "2026",
-      "count": 30
+      "count": 17
     },
     {
       "team": "Wakefield Trinity",
       "year": "2026",
-      "count": 41
+      "count": 17
     },
     {
       "team": "Warrington Wolves",
       "year": "2026",
-      "count": 25
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "2026",
-      "count": 31
-    },
-    {
-      "team": "York Knights",
-      "year": "2026",
-      "count": 29
-    }
-  ],
-  "hidden": [
-    {
-      "team": "Catalans Dragons",
-      "year": "2008",
-      "reason": "verified squad failed playability gate"
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "2015",
-      "reason": "verified squad failed playability gate"
+      "count": 17
     },
     {
       "team": "Wigan Warriors",
       "year": "2006",
-      "reason": "verified squad failed playability gate"
+      "count": 13
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2026",
+      "count": 17
+    },
+    {
+      "team": "York Knights",
+      "year": "2026",
+      "count": 17
     }
   ],
+  "hidden": [],
   "membershipMismatches": [],
-  "incomplete": [
-    {
-      "team": "Huddersfield Giants",
-      "year": "2026",
-      "count": 31,
-      "reason": "missing FULLBACK coverage (0/1)"
-    }
-  ]
+  "incomplete": []
 }

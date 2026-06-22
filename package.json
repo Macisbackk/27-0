@@ -26,6 +26,7 @@
     "golden-boot:apply": "tsx scripts/apply-golden-boot-achievements.ts",
     "build:era-wikipedia-squads": "tsx scripts/build-era-wikipedia-squads.ts",
     "build:team-year-rosters": "tsx scripts/generate-team-year-rosters.ts",
+    "apply:2026-squads": "tsx scripts/apply-2026-squads.ts",
     "validate:team-years": "tsx scripts/validate-team-years.ts",
     "add:era-near-miss-players": "tsx scripts/add-era-near-miss-players.ts",
     "add:sl-era-year-cards": "tsx scripts/apply-sl-era-year-cards.ts",

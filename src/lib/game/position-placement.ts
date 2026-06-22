@@ -1,5 +1,6 @@
 import type { Player, Position, SquadSlot } from "../types";
 import { RECRUIT_SLOT_ORDER } from "../positions";
+import { getPlayerEligiblePositions } from "../players/player-positions";
 
 export const OUT_OF_POSITION_PENALTY = 5;
 
@@ -89,9 +90,9 @@ export function getNaturalPlacementSlots(
   squad: SquadSlot[],
   player: Player
 ): SquadSlot[] {
-  const allowed = new Set(getHalfbackCompatiblePositions(player.position));
+  const eligible = new Set(getPlayerEligiblePositions(player));
   return squad
-    .filter((slot) => !slot.player && allowed.has(slot.position))
+    .filter((slot) => !slot.player && eligible.has(slot.position))
     .sort((a, b) => a.slotIndex - b.slotIndex);
 }
 
@@ -144,14 +145,17 @@ export function findBestSlotForPlayer(
   if (emptySlots.length === 0) return null;
 
   const scored = emptySlots.map((slot) => {
-    const penalty = getPlacementPenalty(player.position, slot.position);
+    const eligible = getPlayerEligiblePositions(player);
+    const penalty = Math.min(
+      ...eligible.map((pos) => getPlacementPenalty(pos, slot.position))
+    );
     const recruitOrder = RECRUIT_SLOT_ORDER.indexOf(
       slot.slotIndex as (typeof RECRUIT_SLOT_ORDER)[number]
     );
     return {
       slot,
       penalty,
-      isNatural: player.position === slot.position,
+      isNatural: eligible.includes(slot.position),
       recruitOrder: recruitOrder >= 0 ? recruitOrder : slot.slotIndex + 100,
     };
   });

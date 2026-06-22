@@ -22,6 +22,8 @@ import {
   hasTeamYearRoster,
   MIN_TEAM_YEAR_ROSTER_PLAYERS,
 } from "../src/lib/players/team-year-rosters";
+
+const CURRENT_YEAR_SQUAD_SIZE = 17;
 import { isPlayableTeamYearRoster } from "../src/lib/players/team-year-roster-playable";
 
 const ROOT = join(__dirname, "..");
@@ -112,13 +114,18 @@ function main(): void {
         continue;
       }
 
-      if (playerIds.length < MIN_TEAM_YEAR_ROSTER_PLAYERS) {
+      const requiredSize =
+        year === String(getCurrentCalendarYear())
+          ? CURRENT_YEAR_SQUAD_SIZE
+          : MIN_TEAM_YEAR_ROSTER_PLAYERS;
+
+      if (playerIds.length < requiredSize) {
         issues.push({
           severity: "error",
           code: "INVALID_ROSTER_SIZE",
           team,
           year,
-          message: `playable roster must have at least ${MIN_TEAM_YEAR_ROSTER_PLAYERS} players (has ${playerIds.length})`,
+          message: `playable roster must have at least ${requiredSize} players (has ${playerIds.length})`,
         });
       }
 

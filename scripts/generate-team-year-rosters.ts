@@ -7,6 +7,7 @@
 import { writeFileSync } from "fs";
 import { join } from "path";
 import currentSquads from "../data/current-squads.json";
+import currentTeamYearSquads2026 from "../data/current-team-year-squads-2026.json";
 import eraWikipediaSquads from "../data/era-wikipedia-squads.json";
 import slVerifiedSquads from "../data/sl-era-verified-squads.json";
 import historicPlayers from "../data/historic-players.json";
@@ -30,8 +31,10 @@ export type TeamYearRosters = Record<string, Record<string, string[]>>;
 export type TeamYearRosterMeta = {
   source: "verified" | "current-squad";
   isSuperLeagueSeason: boolean;
+  isCurrentSeason?: boolean;
   playableInNormalSpin: boolean;
   playableInEra: boolean;
+  playableInEraChallengeCup?: boolean;
   playerCount: number;
   verifiedSource?: string;
 };
@@ -161,6 +164,24 @@ function scrubUnresolvedRosterIds(rosters: TeamYearRosters): void {
   }
 }
 
+export const CURRENT_YEAR_SQUAD_SIZE = 17;
+
+type CurrentTeamYearSquads = Record<
+  string,
+  Record<
+    string,
+    {
+      playerIds: string[];
+      positions?: string[];
+      isCurrentSeason?: boolean;
+      playableInNormalSpin?: boolean;
+      playableInEra?: boolean;
+      playableInEraChallengeCup?: boolean;
+      source?: string;
+    }
+  >
+>;
+
 function buildCurrentYearSquads(
   rosters: TeamYearRosters,
   meta: TeamYearRostersMetaFile,
@@ -168,29 +189,29 @@ function buildCurrentYearSquads(
 ): number {
   const year = String(CURRENT_YEAR);
   let built = 0;
-  const playable = new Set(getPlayableClubNames());
+  const squads = currentTeamYearSquads2026 as CurrentTeamYearSquads;
 
-  for (const raw of currentSquads as Record<string, unknown>[]) {
-    const player = playerById.get(raw.id as string);
-    if (!player || player.category !== "current") continue;
-    if (!playable.has(player.club)) continue;
+  for (const [club, years] of Object.entries(squads)) {
+    const entry = years[year];
+    if (!entry?.playerIds?.length) continue;
+    if (!isSuperLeagueSeason(club, year)) continue;
 
-    if (!isSuperLeagueSeason(player.club, year)) continue;
+    const knownIds = entry.playerIds.filter((id) => {
+      const player = playerById.get(id);
+      return !!player && player.category === "current";
+    });
 
-    if (!rosters[player.club]) rosters[player.club] = {};
-    if (!rosters[player.club][year]) rosters[player.club][year] = [];
+    if (knownIds.length !== CURRENT_YEAR_SQUAD_SIZE) {
+      if (process.env.NODE_ENV !== "production") {
+        console.warn(
+          `${club} ${year}: expected ${CURRENT_YEAR_SQUAD_SIZE} players, got ${knownIds.length}`
+        );
+      }
+      continue;
+    }
 
-    const ids = rosters[player.club][year]!;
-    if (!ids.includes(player.id)) ids.push(player.id);
-  }
-
-  for (const club of Object.keys(rosters)) {
-    const ids = rosters[club]?.[year];
-    if (!ids?.length) continue;
-
-    const knownIds = ids.filter((id) => playerById.has(id));
-    knownIds.sort((a, b) => a.localeCompare(b));
-    rosters[club]![year] = knownIds;
+    if (!rosters[club]) rosters[club] = {};
+    rosters[club][year] = [...knownIds].sort((a, b) => a.localeCompare(b));
 
     const playableRoster = isPlayableTeamYearRoster(
       club,
@@ -202,9 +223,11 @@ function buildCurrentYearSquads(
     if (!meta[club]) meta[club] = {};
     meta[club][year] = {
       source: "current-squad",
-      isSuperLeagueSeason: isSuperLeagueSeason(club, year),
-      playableInNormalSpin: playableRoster,
-      playableInEra: playableRoster,
+      isSuperLeagueSeason: true,
+      isCurrentSeason: entry.isCurrentSeason ?? true,
+      playableInNormalSpin: playableRoster && (entry.playableInNormalSpin ?? true),
+      playableInEra: playableRoster && (entry.playableInEra ?? true),
+      playableInEraChallengeCup: entry.playableInEraChallengeCup ?? true,
       playerCount: knownIds.length,
     };
 

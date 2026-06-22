@@ -3,35 +3,41 @@
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 30
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "Wigan Warriors": {
     "2006": {
       "source": "verified",
       "isSuperLeagueSeason": true,
-      "playableInNormalSpin": false,
-      "playableInEra": false,
-      "playerCount": 1,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2006_Wigan_Warriors_season"
     },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 31
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "Warrington Wolves": {
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 25
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "Catalans Dragons": {
@@ -46,44 +52,52 @@
     "2008": {
       "source": "verified",
       "isSuperLeagueSeason": true,
-      "playableInNormalSpin": false,
-      "playableInEra": false,
-      "playerCount": 10,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2008_Catalans_Dragons_season"
     },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 37
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "Huddersfield Giants": {
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 33
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "Castleford Tigers": {
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 43
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "Wakefield Trinity": {
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 42
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "Widnes Vikings": {},
@@ -91,26 +105,30 @@
     "2015": {
       "source": "verified",
       "isSuperLeagueSeason": true,
-      "playableInNormalSpin": false,
-      "playableInEra": false,
-      "playerCount": 6,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2015_Leeds_Rhinos_season"
     },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 32
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "Hull FC": {
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 34
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "Salford Red Devils": {},
@@ -127,45 +145,55 @@
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 26
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "Hull KR": {
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 33
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "Toulouse Olympique": {
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 30
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "Leigh Leopards": {
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 33
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   },
   "York Knights": {
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
       "playableInNormalSpin": true,
       "playableInEra": true,
-      "playerCount": 30
+      "playableInEraChallengeCup": true,
+      "playerCount": 17
     }
   }
 }

@@ -60,6 +60,8 @@ export interface Player extends PlayerAchievements {
   displayClub?: string;
   /** Resolved squad position (Utility players are mapped here) */
   position: Position;
+  /** All positions this player may fill (dual-role current squads). */
+  positions?: Position[];
   /** Set when loaded from a Utility raw position, e.g. "Utility" */
   originalPosition?: string;
   /** True when position was inferred from a Utility raw value */

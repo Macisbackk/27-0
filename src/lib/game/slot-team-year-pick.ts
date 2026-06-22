@@ -11,7 +11,11 @@ import {
   getPlacementPenalty,
   getRecruitListPositionsForSlot,
 } from "./position-placement";
-import { getTeamYearRecruitPosition } from "../players/team-year-roster-playable";
+import { getPlayerEligiblePositions } from "../players/player-positions";
+import {
+  getTeamYearRecruitPosition,
+  canPlayerFillTeamYearSlot,
+} from "../players/team-year-roster-playable";
 import {
   buildSlotRevealTarget,
   getTeamSpinPool,
@@ -55,8 +59,7 @@ export function placeSlotRecruitPlayerAtSlot(
   const prepared = preparePlayerForTeamYear(player, target);
   warnTeamYearPoolLeak(prepared, target);
 
-  const allowed = new Set(getRecruitListPositionsForSlot(slot.position));
-  if (!allowed.has(getTeamYearRecruitPosition(target.team, target.year, prepared))) {
+  if (!canPlayerFillTeamYearSlot(target.team, target.year, prepared, slot.position)) {
     return null;
   }
 
@@ -133,9 +136,7 @@ export function prepareSlotTeamYearPlayers(
       (player) =>
         isPlayerInTeamYearPool(player.id, pool) &&
         !usedIds.has(player.id) &&
-        allowedPositions.has(
-          getTeamYearRecruitPosition(target.team, target.year, player)
-        )
+        canPlayerFillTeamYearSlot(target.team, target.year, player, slot.position)
     )
     .map((player) => {
       const prepared = preparePlayerForTeamYear(player, target);
@@ -212,9 +213,7 @@ function eligiblePlayersForSlot(
     (player) =>
       isPlayerInTeamYearPool(player.id, pool) &&
       !usedIds.has(player.id) &&
-      allowedPositions.has(
-        getTeamYearRecruitPosition(pool.team, pool.year, player)
-      )
+      canPlayerFillTeamYearSlot(pool.team, pool.year, player, slot.position)
   );
 }
 
