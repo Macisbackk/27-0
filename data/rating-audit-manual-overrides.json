@@ -1,0 +1,572 @@
+{
+  "generatedAt": "2026-06-22T06:47:00.685Z",
+  "overrideCount": 99,
+  "jsonSynced": [
+    {
+      "playerId": "wigan-cur-harry-smith",
+      "name": "Harry Smith",
+      "kind": "override_json_sync",
+      "message": "JSON rating 90 synced to override 88",
+      "before": 90,
+      "after": 88
+    },
+    {
+      "playerId": "wigan-cur-kaide-ellis",
+      "name": "Kaide Ellis",
+      "kind": "override_json_sync",
+      "message": "JSON rating 90 synced to override 85",
+      "before": 90,
+      "after": 85
+    },
+    {
+      "playerId": "st-helens-cur-jack-welsby",
+      "name": "Jack Welsby",
+      "kind": "override_json_sync",
+      "message": "JSON rating 90 synced to override 88",
+      "before": 90,
+      "after": 88
+    },
+    {
+      "playerId": "leeds-cur-harry-newman",
+      "name": "Harry Newman",
+      "kind": "override_json_sync",
+      "message": "JSON rating 90 synced to override 87",
+      "before": 90,
+      "after": 87
+    },
+    {
+      "playerId": "leeds-cur-kallum-watkins",
+      "name": "Kallum Watkins",
+      "kind": "override_json_sync",
+      "message": "JSON rating 90 synced to override 87",
+      "before": 90,
+      "after": 87
+    },
+    {
+      "playerId": "leeds-cur-cameron-smith",
+      "name": "Cameron Smith",
+      "kind": "override_json_sync",
+      "message": "JSON rating 89 synced to override 88",
+      "before": 89,
+      "after": 88
+    },
+    {
+      "playerId": "warrington-cur-danny-walker",
+      "name": "Danny Walker",
+      "kind": "override_json_sync",
+      "message": "JSON rating 89 synced to override 86",
+      "before": 89,
+      "after": 86
+    },
+    {
+      "playerId": "bradford-cur-esan-marsters",
+      "name": "Esan Marsters",
+      "kind": "override_json_sync",
+      "message": "JSON rating 88 synced to override 86",
+      "before": 88,
+      "after": 86
+    },
+    {
+      "playerId": "bradford-cur-waqa-blake",
+      "name": "Waqa Blake",
+      "kind": "override_json_sync",
+      "message": "JSON rating 88 synced to override 87",
+      "before": 88,
+      "after": 87
+    },
+    {
+      "playerId": "hull-kr-cur-peta-hiku",
+      "name": "Peta Hiku",
+      "kind": "override_json_sync",
+      "message": "JSON rating 90 synced to override 88",
+      "before": 90,
+      "after": 88
+    },
+    {
+      "playerId": "hull-fc-cur-herman-eseese",
+      "name": "Herman Ese'ese",
+      "kind": "override_json_sync",
+      "message": "JSON rating 90 synced to override 88",
+      "before": 90,
+      "after": 88
+    },
+    {
+      "playerId": "wakefield-cur-jake-trueman",
+      "name": "Jake Trueman",
+      "kind": "override_json_sync",
+      "message": "JSON rating 89 synced to override 87",
+      "before": 89,
+      "after": 87
+    },
+    {
+      "playerId": "huddersfield-cur-thomas-burgess",
+      "name": "Tom Burgess",
+      "kind": "override_json_sync",
+      "message": "JSON rating 90 synced to override 86",
+      "before": 90,
+      "after": 86
+    },
+    {
+      "playerId": "catalans-cur-benjamin-garcia",
+      "name": "Benjamin Garcia",
+      "kind": "override_json_sync",
+      "message": "JSON rating 89 synced to override 88",
+      "before": 89,
+      "after": 88
+    },
+    {
+      "playerId": "york-cur-paul-vaughan",
+      "name": "Paul Vaughan",
+      "kind": "override_json_sync",
+      "message": "JSON rating 89 synced to override 88",
+      "before": 89,
+      "after": 88
+    },
+    {
+      "playerId": "hull-fc-cur-jake-clifford",
+      "name": "Jake Clifford",
+      "kind": "override_json_sync",
+      "message": "JSON rating 90 synced to override 84",
+      "before": 90,
+      "after": 84
+    },
+    {
+      "playerId": "hull-fc-cur-jordan-rapana",
+      "name": "Jordan Rapana",
+      "kind": "override_json_sync",
+      "message": "JSON rating 90 synced to override 86",
+      "before": 90,
+      "after": 86
+    },
+    {
+      "playerId": "catalans-cur-tevita-pangai-jr",
+      "name": "Tevita Pangai Jr",
+      "kind": "override_json_sync",
+      "message": "JSON rating 90 synced to override 86",
+      "before": 90,
+      "after": 86
+    },
+    {
+      "playerId": "huddersfield-hist-leroy-cudjoe",
+      "name": "Leroy Cudjoe",
+      "kind": "override_json_sync",
+      "message": "JSON rating 84 synced to override 87",
+      "before": 84,
+      "after": 87
+    },
+    {
+      "playerId": "wakefield-leg-stefan-ratchford",
+      "name": "Stefan Ratchford",
+      "kind": "override_json_sync",
+      "message": "JSON rating 97 synced to override 88",
+      "before": 97,
+      "after": 88
+    }
+  ],
+  "highRatingSuggestions": [
+    {
+      "playerId": "leeds-leg-kevin-sinfield-2015",
+      "name": "Kevin Sinfield",
+      "kind": "high_rating_no_override",
+      "message": "Non-legend rated 93 — verify elite status"
+    }
+  ],
+  "protectedOverrides": [
+    {
+      "id": "andrew-johns",
+      "rating": 96
+    },
+    {
+      "id": "andy-farrell",
+      "rating": 95
+    },
+    {
+      "id": "bradford-leg-robbie-hunter-paul",
+      "rating": 95
+    },
+    {
+      "id": "ellery-hanley",
+      "rating": 97
+    },
+    {
+      "id": "garry-schofield",
+      "rating": 97
+    },
+    {
+      "id": "jason-robinson",
+      "rating": 96
+    },
+    {
+      "id": "jamie-jones-buchanan",
+      "rating": 90
+    },
+    {
+      "id": "jamie-peacock",
+      "rating": 93
+    },
+    {
+      "id": "kevin-sinfield",
+      "rating": 95
+    },
+    {
+      "id": "martin-offiah",
+      "rating": 94
+    },
+    {
+      "id": "paul-newlove",
+      "rating": 92
+    },
+    {
+      "id": "paul-sculthorpe",
+      "rating": 96
+    },
+    {
+      "id": "rob-burrow",
+      "rating": 92
+    },
+    {
+      "id": "sam-burgess",
+      "rating": 95
+    },
+    {
+      "id": "bradford-hist-karl-pryce",
+      "rating": 87
+    },
+    {
+      "id": "bradford-hist-shontayne-hape",
+      "rating": 90
+    },
+    {
+      "id": "castleford-hist-brett-ferres",
+      "rating": 88
+    },
+    {
+      "id": "castleford-hist-denny-solomona",
+      "rating": 88
+    },
+    {
+      "id": "castleford-hist-greg-eden",
+      "rating": 86
+    },
+    {
+      "id": "castleford-hist-jon-wells",
+      "rating": 85
+    },
+    {
+      "id": "catalans-hist-clint-greenshields",
+      "rating": 87
+    },
+    {
+      "id": "catalans-hist-justin-murphy",
+      "rating": 86
+    },
+    {
+      "id": "huddersfield-hist-aaron-murphy",
+      "rating": 84
+    },
+    {
+      "id": "huddersfield-hist-jermaine-mcgillvary",
+      "rating": 89
+    },
+    {
+      "id": "huddersfield-hist-leroy-cudjoe",
+      "rating": 87
+    },
+    {
+      "id": "huddersfield-hist-tom-holmes",
+      "rating": 83
+    },
+    {
+      "id": "hull-fc-hist-danny-tickle",
+      "rating": 89
+    },
+    {
+      "id": "hull-fc-hist-lee-radford",
+      "rating": 85
+    },
+    {
+      "id": "hull-kr-hist-craig-hall",
+      "rating": 88
+    },
+    {
+      "id": "leeds-hist-chev-walker",
+      "rating": 87
+    },
+    {
+      "id": "leeds-hist-francis-cummins",
+      "rating": 89
+    },
+    {
+      "id": "leeds-hist-mark-calderwood",
+      "rating": 87
+    },
+    {
+      "id": "leeds-hist-matt-diskin",
+      "rating": 88
+    },
+    {
+      "id": "leeds-hist-richard-mathers",
+      "rating": 89
+    },
+    {
+      "id": "luke-gale",
+      "rating": 88
+    },
+    {
+      "id": "paul-deacon",
+      "rating": 87
+    },
+    {
+      "id": "rangi-chase",
+      "rating": 89
+    },
+    {
+      "id": "salford-hist-jodie-broughton",
+      "rating": 86
+    },
+    {
+      "id": "salford-hist-ken-sio",
+      "rating": 87
+    },
+    {
+      "id": "scott-durea",
+      "rating": 90
+    },
+    {
+      "id": "st-helens-hist-anthony-sullivan",
+      "rating": 87
+    },
+    {
+      "id": "st-helens-hist-ben-barba",
+      "rating": 89
+    },
+    {
+      "id": "st-helens-hist-darren-albert",
+      "rating": 88
+    },
+    {
+      "id": "st-helens-hist-jordan-turner",
+      "rating": 87
+    },
+    {
+      "id": "wakefield-hist-ben-jeffries",
+      "rating": 84
+    },
+    {
+      "id": "wakefield-hist-chris-riley",
+      "rating": 87
+    },
+    {
+      "id": "wakefield-hist-henry-fa-afili",
+      "rating": 87
+    },
+    {
+      "id": "wakefield-hist-joe-arundel",
+      "rating": 83
+    },
+    {
+      "id": "wakefield-hist-luke-george",
+      "rating": 81
+    },
+    {
+      "id": "wakefield-hist-paul-sykes",
+      "rating": 87
+    },
+    {
+      "id": "wakefield-leg-stefan-ratchford",
+      "rating": 88
+    },
+    {
+      "id": "warrington-hist-mickey-higham",
+      "rating": 89
+    },
+    {
+      "id": "wigan-hist-garry-connolly",
+      "rating": 89
+    },
+    {
+      "id": "wigan-hist-joel-tomkins",
+      "rating": 88
+    },
+    {
+      "id": "wigan-hist-michael-mcilorum",
+      "rating": 89
+    },
+    {
+      "id": "wigan-hist-paul-johnson",
+      "rating": 86
+    },
+    {
+      "id": "wigan-hist-sam-tomkins",
+      "rating": 94
+    },
+    {
+      "id": "wigan-hist-terry-newton",
+      "rating": 88
+    },
+    {
+      "id": "bradford-hist-kieran-gill",
+      "rating": 79
+    },
+    {
+      "id": "bradford-cur-eribe-doro",
+      "rating": 83
+    },
+    {
+      "id": "bradford-cur-esan-marsters",
+      "rating": 86
+    },
+    {
+      "id": "bradford-cur-joe-mellor",
+      "rating": 86
+    },
+    {
+      "id": "bradford-cur-waqa-blake",
+      "rating": 87
+    },
+    {
+      "id": "catalans-cur-benjamin-garcia",
+      "rating": 88
+    },
+    {
+      "id": "catalans-cur-luke-keary",
+      "rating": 87
+    },
+    {
+      "id": "catalans-cur-tevita-pangai-jr",
+      "rating": 86
+    },
+    {
+      "id": "huddersfield-cur-thomas-burgess",
+      "rating": 86
+    },
+    {
+      "id": "hull-fc-cur-aidan-sezer",
+      "rating": 87
+    },
+    {
+      "id": "hull-fc-cur-herman-eseese",
+      "rating": 88
+    },
+    {
+      "id": "hull-fc-cur-jake-clifford",
+      "rating": 84
+    },
+    {
+      "id": "hull-fc-cur-john-asiata",
+      "rating": 87
+    },
+    {
+      "id": "hull-fc-cur-jordan-rapana",
+      "rating": 86
+    },
+    {
+      "id": "hull-kr-cur-elliot-minchella",
+      "rating": 88
+    },
+    {
+      "id": "hull-kr-cur-mikey-lewis",
+      "rating": 91
+    },
+    {
+      "id": "hull-kr-cur-peta-hiku",
+      "rating": 88
+    },
+    {
+      "id": "hull-kr-cur-will-oakes",
+      "rating": 80
+    },
+    {
+      "id": "leeds-cur-brodie-croft",
+      "rating": 88
+    },
+    {
+      "id": "leeds-cur-cameron-smith",
+      "rating": 88
+    },
+    {
+      "id": "leeds-cur-harry-newman",
+      "rating": 87
+    },
+    {
+      "id": "leeds-cur-kallum-watkins",
+      "rating": 87
+    },
+    {
+      "id": "leigh-cur-david-armstrong",
+      "rating": 86
+    },
+    {
+      "id": "leigh-cur-edwin-ipape",
+      "rating": 88
+    },
+    {
+      "id": "leigh-cur-lachlan-lam",
+      "rating": 90
+    },
+    {
+      "id": "st-helens-cur-alex-walmsley",
+      "rating": 89
+    },
+    {
+      "id": "st-helens-cur-jack-welsby",
+      "rating": 88
+    },
+    {
+      "id": "wakefield-cur-jake-trueman",
+      "rating": 87
+    },
+    {
+      "id": "wakefield-cur-mike-mcmeeken",
+      "rating": 88
+    },
+    {
+      "id": "warrington-cur-danny-walker",
+      "rating": 86
+    },
+    {
+      "id": "warrington-cur-george-williams",
+      "rating": 89
+    },
+    {
+      "id": "warrington-cur-marc-sneyd",
+      "rating": 89
+    },
+    {
+      "id": "wigan-cur-adam-keighran",
+      "rating": 88
+    },
+    {
+      "id": "wigan-cur-bevan-french",
+      "rating": 93
+    },
+    {
+      "id": "wigan-cur-harry-smith",
+      "rating": 88
+    },
+    {
+      "id": "wigan-cur-jai-field",
+      "rating": 90
+    },
+    {
+      "id": "wigan-cur-jake-wardle",
+      "rating": 90
+    },
+    {
+      "id": "wigan-cur-junior-nsemba",
+      "rating": 89
+    },
+    {
+      "id": "wigan-cur-kaide-ellis",
+      "rating": 85
+    },
+    {
+      "id": "wigan-cur-luke-thompson",
+      "rating": 89
+    },
+    {
+      "id": "york-cur-paul-vaughan",
+      "rating": 88
+    }
+  ]
+}

@@ -1,0 +1,4157 @@
+{
+  "generatedAt": "2026-06-22T06:47:00.685Z",
+  "clubYearMismatches": [
+    {
+      "playerId": "huddersfield-hist-jeff-wittenberg",
+      "name": "Jeff Wittenberg",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 1997 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "paul-anderson",
+      "name": "Paul Anderson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 1997 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "inactive_in_year",
+      "message": "1999–2017 does not cover 1998 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 1998 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "shaun-edwards",
+      "name": "Shaun Edwards",
+      "kind": "inactive_in_year",
+      "message": "1983–1997 does not cover 1998 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "shaun-edwards",
+      "name": "Shaun Edwards",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 1998 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "paul-anderson",
+      "name": "Paul Anderson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 1998 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 1999 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "hull-fc-leg-lee-radford",
+      "name": "Lee Radford",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 1999 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "london-leg-paul-sykes",
+      "name": "Paul Sykes",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 1999 squad but primary club is London Broncos"
+    },
+    {
+      "playerId": "paul-anderson",
+      "name": "Paul Anderson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 1999 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 1999 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2000 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "london-leg-paul-sykes",
+      "name": "Paul Sykes",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2000 squad but primary club is London Broncos"
+    },
+    {
+      "playerId": "hull-fc-leg-lee-radford",
+      "name": "Lee Radford",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2000 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "paul-anderson",
+      "name": "Paul Anderson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2000 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2000 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "hull-fc-hist-graham-mackay",
+      "name": "Graham Mackay",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2001 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2001 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "london-leg-paul-sykes",
+      "name": "Paul Sykes",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2001 squad but primary club is London Broncos"
+    },
+    {
+      "playerId": "hull-fc-leg-lee-radford",
+      "name": "Lee Radford",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2001 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "paul-anderson",
+      "name": "Paul Anderson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2001 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2001 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2002 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "london-leg-paul-sykes",
+      "name": "Paul Sykes",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2002 squad but primary club is London Broncos"
+    },
+    {
+      "playerId": "huddersfield-hist-brandon-costin",
+      "name": "Brandon Costin",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2002 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "paul-anderson",
+      "name": "Paul Anderson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2002 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2002 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "hull-fc-leg-lee-radford",
+      "name": "Lee Radford",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2002 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2003 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "bradford-hist-karl-pratt",
+      "name": "Karl Pratt",
+      "kind": "inactive_in_year",
+      "message": "2007–2014 does not cover 2003 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "hull-fc-leg-lee-radford",
+      "name": "Lee Radford",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2003 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "paul-anderson",
+      "name": "Paul Anderson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2003 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2003 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "tevita-vaikona",
+      "name": "Tevita Vaikona",
+      "kind": "inactive_in_year",
+      "message": "1992–2003 does not cover 2004 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "wigan-leg-paul-johnson",
+      "name": "Paul Johnson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2004 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2004 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "iestyn-harris",
+      "name": "Iestyn Harris",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2004 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "paul-anderson",
+      "name": "Paul Anderson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2004 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "st-helens-hist-aaron-smith",
+      "name": "Aaron Smith",
+      "kind": "inactive_in_year",
+      "message": "2014–Unknown does not cover 2004 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "st-helens-hist-aaron-smith",
+      "name": "Aaron Smith",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2004 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2004 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "hull-fc-leg-lee-radford",
+      "name": "Lee Radford",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2004 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "bradford-hist-karl-pratt",
+      "name": "Karl Pratt",
+      "kind": "inactive_in_year",
+      "message": "2007–2014 does not cover 2005 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "adrian-morley",
+      "name": "Adrian Morley",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2005 squad but primary club is Warrington Wolves"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2005 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "wigan-leg-paul-johnson",
+      "name": "Paul Johnson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2005 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "warrington-hist-ryan-atkins",
+      "name": "Ryan Atkins",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2006 squad but primary club is Warrington Wolves"
+    },
+    {
+      "playerId": "iestyn-harris",
+      "name": "Iestyn Harris",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2006 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "wigan-leg-terry-newton",
+      "name": "Terry Newton",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2006 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "castleford-leg-brett-ferres",
+      "name": "Brett Ferres",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2006 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "wigan-leg-paul-johnson",
+      "name": "Paul Johnson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2006 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "sam-burgess",
+      "name": "Sam Burgess",
+      "kind": "inactive_in_year",
+      "message": "2007–2020 does not cover 2006 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "wakefield-hist-semi-tadulala",
+      "name": "Semi Tadulala",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2009 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "london-leg-paul-sykes",
+      "name": "Paul Sykes",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2009 squad but primary club is London Broncos"
+    },
+    {
+      "playerId": "huddersfield-hist-chris-nero",
+      "name": "Chris Nero",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2009 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "wakefield-leg-ben-jeffries",
+      "name": "Ben Jeffries",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2009 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "wigan-leg-terry-newton",
+      "name": "Terry Newton",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2009 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "widnes-hist-patrick-ah-van",
+      "name": "Patrick Ah Van",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2011 squad but primary club is Widnes Vikings"
+    },
+    {
+      "playerId": "london-leg-paul-sykes",
+      "name": "Paul Sykes",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2011 squad but primary club is London Broncos"
+    },
+    {
+      "playerId": "leeds-leg-chev-walker",
+      "name": "Chev Walker",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2011 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "wakefield-leg-ben-jeffries",
+      "name": "Ben Jeffries",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2011 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "leeds-leg-matt-diskin",
+      "name": "Matt Diskin",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2011 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "london-leg-paul-sykes",
+      "name": "Paul Sykes",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2012 squad but primary club is London Broncos"
+    },
+    {
+      "playerId": "leeds-leg-chev-walker",
+      "name": "Chev Walker",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2012 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "wakefield-leg-ben-jeffries",
+      "name": "Ben Jeffries",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2012 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "luke-gale",
+      "name": "Luke Gale",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2012 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "huddersfield-cur-thomas-burgess",
+      "name": "Tom Burgess",
+      "kind": "inactive_in_year",
+      "message": "2013–Present does not cover 2012 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "huddersfield-cur-thomas-burgess",
+      "name": "Tom Burgess",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2012 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "leeds-leg-matt-diskin",
+      "name": "Matt Diskin",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2012 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "catalans-hist-olivier-elima",
+      "name": "Olivier Elima",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2012 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "wigan-hist-john-bateman",
+      "name": "John Bateman",
+      "kind": "inactive_in_year",
+      "message": "2011–Unknown does not cover 2012 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "luke-gale",
+      "name": "Luke Gale",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2013 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "salford-hist-adam-sidlow",
+      "name": "Adam Sidlow",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2013 squad but primary club is Salford Red Devils"
+    },
+    {
+      "playerId": "leeds-leg-matt-diskin",
+      "name": "Matt Diskin",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2013 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "leeds-leg-chev-walker",
+      "name": "Chev Walker",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2013 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "salford-hist-danny-williams",
+      "name": "Danny Williams",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2014 squad but primary club is Salford Red Devils"
+    },
+    {
+      "playerId": "huddersfield-hist-lee-gaskell",
+      "name": "Lee Gaskell",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2014 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "luke-gale",
+      "name": "Luke Gale",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2014 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "wakefield-cur-jay-pitts",
+      "name": "Jay Pitts",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2014 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "leeds-leg-matt-diskin",
+      "name": "Matt Diskin",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2014 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "leeds-leg-chev-walker",
+      "name": "Chev Walker",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2014 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "castleford-cur-alex-mellor",
+      "name": "Alex Mellor",
+      "kind": "inactive_in_year",
+      "message": "2018–Present does not cover 2014 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "castleford-cur-alex-mellor",
+      "name": "Alex Mellor",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2014 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "bradford-hist-danny-addy",
+      "name": "Danny Addy",
+      "kind": "inactive_in_year",
+      "message": "2009–Unknown does not cover 2014 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "sheffield-cur-joe-brown",
+      "name": "Joe Brown",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2019 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "sheffield-cur-joe-brown",
+      "name": "Joe Brown",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2019 squad but primary club is Sheffield Eagles"
+    },
+    {
+      "playerId": "wakefield-hist-rhys-evans",
+      "name": "Rhys Evans",
+      "kind": "inactive_in_year",
+      "message": "2010–Unknown does not cover 2019 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "salford-hist-ashley-gibson",
+      "name": "Ashley Gibson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2019 squad but primary club is Salford Red Devils"
+    },
+    {
+      "playerId": "wigan-cur-oliver-wilson",
+      "name": "Oliver Wilson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2019 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "hull-kr-cur-elliot-minchella",
+      "name": "Elliot Minchella",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2019 squad but primary club is Hull KR"
+    },
+    {
+      "playerId": "huddersfield-hist-ashton-golding",
+      "name": "Ashton Golding",
+      "kind": "inactive_in_year",
+      "message": "2014–Unknown does not cover 2021 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "huddersfield-hist-ashton-golding",
+      "name": "Ashton Golding",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2021 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "sheffield-cur-joe-brown",
+      "name": "Joe Brown",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2021 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "sheffield-cur-joe-brown",
+      "name": "Joe Brown",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2021 squad but primary club is Sheffield Eagles"
+    },
+    {
+      "playerId": "wakefield-hist-rhys-evans",
+      "name": "Rhys Evans",
+      "kind": "inactive_in_year",
+      "message": "2010–Unknown does not cover 2021 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "danny-brough",
+      "name": "Danny Brough",
+      "kind": "inactive_in_year",
+      "message": "2002–2019 does not cover 2021 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "danny-brough",
+      "name": "Danny Brough",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2021 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "wigan-cur-oliver-wilson",
+      "name": "Oliver Wilson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2021 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "wakefield-hist-anthony-england",
+      "name": "Anthony England",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2021 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "huddersfield-leg-aaron-murphy",
+      "name": "Aaron Murphy",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2021 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "salford-cur-ellis-robson",
+      "name": "Ellis Robson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2021 squad but primary club is Salford Red Devils"
+    },
+    {
+      "playerId": "wakefield-hist-rhys-evans",
+      "name": "Rhys Evans",
+      "kind": "inactive_in_year",
+      "message": "2010–Unknown does not cover 2022 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "leeds-cur-tom-holroyd",
+      "name": "Tom Holroyd",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2022 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "castleford-cur-muizz-mustapha",
+      "name": "Muizz Mustapha",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2022 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "huddersfield-leg-aaron-murphy",
+      "name": "Aaron Murphy",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2022 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "wigan-cur-sam-walters",
+      "name": "Sam Walters",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2022 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "leeds-cur-jarrod-oconnor",
+      "name": "Jarrod O'Connor",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2022 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "huddersfield-cur-george-flanagan-jr",
+      "name": "George Flanagan Jr",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "huddersfield-cur-george-flanagan-jr",
+      "name": "George Flanagan Jr",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2023 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "wakefield-cur-jayden-myers",
+      "name": "Jayden Myers",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2023 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "huddersfield-hist-lee-gaskell",
+      "name": "Lee Gaskell",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2023 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "huddersfield-cur-fenton-rogers",
+      "name": "Fenton Rogers",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2023 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "leeds-cur-corey-johnson",
+      "name": "Corey Johnson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2023 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "wigan-cur-sam-walters",
+      "name": "Sam Walters",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2023 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "leeds-hist-bodene-thompson",
+      "name": "Bodene Thompson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2023 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "huddersfield-hist-tom-holmes",
+      "name": "Tom Holmes",
+      "kind": "inactive_in_year",
+      "message": "2014–Unknown does not cover 2024 (Bradford Bulls squad)"
+    },
+    {
+      "playerId": "huddersfield-hist-tom-holmes",
+      "name": "Tom Holmes",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2024 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "wigan-cur-jacob-douglas",
+      "name": "Jacob Douglas",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2024 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "leigh-cur-keanan-brand",
+      "name": "Keanan Brand",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2024 squad but primary club is Leigh Leopards"
+    },
+    {
+      "playerId": "huddersfield-hist-lee-gaskell",
+      "name": "Lee Gaskell",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2024 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "huddersfield-cur-fenton-rogers",
+      "name": "Fenton Rogers",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2024 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "catalans-cur-harvey-wilson",
+      "name": "Harvey Wilson",
+      "kind": "club_year_mismatch",
+      "message": "In Bradford Bulls 2024 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "wakefield-hist-ryan-hampshire",
+      "name": "Ryan Hampshire",
+      "kind": "inactive_in_year",
+      "message": "2012–Unknown does not cover 2015 (Wigan Warriors squad)"
+    },
+    {
+      "playerId": "wakefield-hist-ryan-hampshire",
+      "name": "Ryan Hampshire",
+      "kind": "club_year_mismatch",
+      "message": "In Wigan Warriors 2015 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "leigh-cur-josh-charnley",
+      "name": "Josh Charnley",
+      "kind": "club_year_mismatch",
+      "message": "In Wigan Warriors 2015 squad but primary club is Leigh Leopards"
+    },
+    {
+      "playerId": "hull-kr-cur-joe-burgess",
+      "name": "Joe Burgess",
+      "kind": "club_year_mismatch",
+      "message": "In Wigan Warriors 2015 squad but primary club is Hull KR"
+    },
+    {
+      "playerId": "hull-kr-cur-oliver-gildart",
+      "name": "Oliver Gildart",
+      "kind": "club_year_mismatch",
+      "message": "In Wigan Warriors 2015 squad but primary club is Hull KR"
+    },
+    {
+      "playerId": "warrington-cur-george-williams",
+      "name": "George Williams",
+      "kind": "club_year_mismatch",
+      "message": "In Wigan Warriors 2015 squad but primary club is Warrington Wolves"
+    },
+    {
+      "playerId": "bradford-cur-ryan-sutton",
+      "name": "Ryan Sutton",
+      "kind": "club_year_mismatch",
+      "message": "In Wigan Warriors 2015 squad but primary club is Bradford Bulls"
+    },
+    {
+      "playerId": "leigh-cur-josh-charnley",
+      "name": "Josh Charnley",
+      "kind": "club_year_mismatch",
+      "message": "In Wigan Warriors 2016 squad but primary club is Leigh Leopards"
+    },
+    {
+      "playerId": "hull-kr-cur-oliver-gildart",
+      "name": "Oliver Gildart",
+      "kind": "club_year_mismatch",
+      "message": "In Wigan Warriors 2016 squad but primary club is Hull KR"
+    },
+    {
+      "playerId": "wigan-hist-dan-sarginson",
+      "name": "Dan Sarginson",
+      "kind": "inactive_in_year",
+      "message": "2011–Unknown does not cover 2016 (Wigan Warriors squad)"
+    },
+    {
+      "playerId": "warrington-cur-george-williams",
+      "name": "George Williams",
+      "kind": "club_year_mismatch",
+      "message": "In Wigan Warriors 2016 squad but primary club is Warrington Wolves"
+    },
+    {
+      "playerId": "bradford-cur-ryan-sutton",
+      "name": "Ryan Sutton",
+      "kind": "club_year_mismatch",
+      "message": "In Wigan Warriors 2016 squad but primary club is Bradford Bulls"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Wigan Warriors squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "club_year_mismatch",
+      "message": "In Wigan Warriors 2016 squad but primary club is Toulouse Olympique"
+    },
+    {
+      "playerId": "york-cur-matty-russell",
+      "name": "Matty Russell",
+      "kind": "club_year_mismatch",
+      "message": "In Warrington Wolves 2015 squad but primary club is York Knights"
+    },
+    {
+      "playerId": "wakefield-leg-stefan-ratchford",
+      "name": "Stefan Ratchford",
+      "kind": "club_year_mismatch",
+      "message": "In Warrington Wolves 2015 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "leigh-cur-gareth-obrien",
+      "name": "Gareth O'Brien",
+      "kind": "club_year_mismatch",
+      "message": "In Warrington Wolves 2015 squad but primary club is Leigh Leopards"
+    },
+    {
+      "playerId": "wakefield-hist-anthony-england",
+      "name": "Anthony England",
+      "kind": "club_year_mismatch",
+      "message": "In Warrington Wolves 2015 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "st-helens-cur-daryl-clark",
+      "name": "Daryl Clark",
+      "kind": "club_year_mismatch",
+      "message": "In Warrington Wolves 2015 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "wakefield-hist-ben-harrison",
+      "name": "Ben Harrison",
+      "kind": "club_year_mismatch",
+      "message": "In Warrington Wolves 2015 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "wakefield-hist-kurt-gidley",
+      "name": "Kurt Gidley",
+      "kind": "club_year_mismatch",
+      "message": "In Warrington Wolves 2016 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "wakefield-leg-stefan-ratchford",
+      "name": "Stefan Ratchford",
+      "kind": "club_year_mismatch",
+      "message": "In Warrington Wolves 2016 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "st-helens-cur-daryl-clark",
+      "name": "Daryl Clark",
+      "kind": "club_year_mismatch",
+      "message": "In Warrington Wolves 2016 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "huddersfield-cur-george-king",
+      "name": "George King",
+      "kind": "club_year_mismatch",
+      "message": "In Warrington Wolves 2016 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "hull-kr-hist-michael-dobson",
+      "name": "Michael Dobson",
+      "kind": "club_year_mismatch",
+      "message": "In Catalans Dragons 2006 squad but primary club is Hull KR"
+    },
+    {
+      "playerId": "toulouse-hist-julien-rinaldi",
+      "name": "Julien Rinaldi",
+      "kind": "club_year_mismatch",
+      "message": "In Catalans Dragons 2006 squad but primary club is Toulouse Olympique"
+    },
+    {
+      "playerId": "catalans-hist-jerome-guisset",
+      "name": "Jerome Guisset",
+      "kind": "inactive_in_year",
+      "message": "1992–2006 does not cover 2009 (Catalans Dragons squad)"
+    },
+    {
+      "playerId": "catalans-hist-jerome-guisset",
+      "name": "Jerome Guisset",
+      "kind": "inactive_in_year",
+      "message": "1992–2006 does not cover 2010 (Catalans Dragons squad)"
+    },
+    {
+      "playerId": "catalans-hist-steve-menzies",
+      "name": "Steve Menzies",
+      "kind": "inactive_in_year",
+      "message": "1991–2009 does not cover 2011 (Catalans Dragons squad)"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "club_year_mismatch",
+      "message": "In Catalans Dragons 2012 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "catalans-hist-steve-menzies",
+      "name": "Steve Menzies",
+      "kind": "inactive_in_year",
+      "message": "1991–2009 does not cover 2012 (Catalans Dragons squad)"
+    },
+    {
+      "playerId": "catalans-hist-morgan-escare",
+      "name": "Morgan Escaré",
+      "kind": "inactive_in_year",
+      "message": "2009–Unknown does not cover 2013 (Catalans Dragons squad)"
+    },
+    {
+      "playerId": "wakefield-hist-damien-blanch",
+      "name": "Damien Blanch",
+      "kind": "inactive_in_year",
+      "message": "2002–2011 does not cover 2013 (Catalans Dragons squad)"
+    },
+    {
+      "playerId": "wakefield-hist-damien-blanch",
+      "name": "Damien Blanch",
+      "kind": "club_year_mismatch",
+      "message": "In Catalans Dragons 2013 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "club_year_mismatch",
+      "message": "In Catalans Dragons 2013 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "catalans-hist-steve-menzies",
+      "name": "Steve Menzies",
+      "kind": "inactive_in_year",
+      "message": "1991–2009 does not cover 2013 (Catalans Dragons squad)"
+    },
+    {
+      "playerId": "catalans-hist-morgan-escare",
+      "name": "Morgan Escaré",
+      "kind": "inactive_in_year",
+      "message": "2009–Unknown does not cover 2015 (Catalans Dragons squad)"
+    },
+    {
+      "playerId": "catalans-hist-fouad-yaha",
+      "name": "Fouad Yaha",
+      "kind": "inactive_in_year",
+      "message": "2014–Unknown does not cover 2015 (Catalans Dragons squad)"
+    },
+    {
+      "playerId": "scott-durea",
+      "name": "Scott Dureau",
+      "kind": "inactive_in_year",
+      "message": "2007–2014 does not cover 2015 (Catalans Dragons squad)"
+    },
+    {
+      "playerId": "catalans-hist-morgan-escare",
+      "name": "Morgan Escaré",
+      "kind": "inactive_in_year",
+      "message": "2009–Unknown does not cover 2016 (Catalans Dragons squad)"
+    },
+    {
+      "playerId": "pat-richards",
+      "name": "Pat Richards",
+      "kind": "club_year_mismatch",
+      "message": "In Catalans Dragons 2016 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "wakefield-hist-scott-grix",
+      "name": "Scott Grix",
+      "kind": "club_year_mismatch",
+      "message": "In Huddersfield Giants 2013 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "huddersfield-hist-joe-wardle",
+      "name": "Joe Wardle",
+      "kind": "inactive_in_year",
+      "message": "2009–Unknown does not cover 2013 (Huddersfield Giants squad)"
+    },
+    {
+      "playerId": "stuart-fielden",
+      "name": "Stuart Fielden",
+      "kind": "club_year_mismatch",
+      "message": "In Huddersfield Giants 2013 squad but primary club is Bradford Bulls"
+    },
+    {
+      "playerId": "castleford-hist-brett-ferres",
+      "name": "Brett Ferres",
+      "kind": "club_year_mismatch",
+      "message": "In Huddersfield Giants 2013 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "york-cur-jordan-thompson",
+      "name": "Jordan Thompson",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Castleford Tigers squad)"
+    },
+    {
+      "playerId": "york-cur-jordan-thompson",
+      "name": "Jordan Thompson",
+      "kind": "club_year_mismatch",
+      "message": "In Castleford Tigers 2009 squad but primary club is York Knights"
+    },
+    {
+      "playerId": "castleford-hist-oliver-holmes",
+      "name": "Oliver Holmes",
+      "kind": "inactive_in_year",
+      "message": "2010–Unknown does not cover 2012 (Castleford Tigers squad)"
+    },
+    {
+      "playerId": "st-helens-cur-daryl-clark",
+      "name": "Daryl Clark",
+      "kind": "club_year_mismatch",
+      "message": "In Castleford Tigers 2012 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "wakefield-hist-ryan-hampshire",
+      "name": "Ryan Hampshire",
+      "kind": "inactive_in_year",
+      "message": "2012–Unknown does not cover 2016 (Castleford Tigers squad)"
+    },
+    {
+      "playerId": "wakefield-hist-ryan-hampshire",
+      "name": "Ryan Hampshire",
+      "kind": "club_year_mismatch",
+      "message": "In Castleford Tigers 2016 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "joel-monaghan",
+      "name": "Joel Monaghan",
+      "kind": "inactive_in_year",
+      "message": "2001–2015 does not cover 2016 (Castleford Tigers squad)"
+    },
+    {
+      "playerId": "joel-monaghan",
+      "name": "Joel Monaghan",
+      "kind": "club_year_mismatch",
+      "message": "In Castleford Tigers 2016 squad but primary club is Warrington Wolves"
+    },
+    {
+      "playerId": "hull-kr-hist-ben-crooks",
+      "name": "Ben Crooks",
+      "kind": "inactive_in_year",
+      "message": "2011–Unknown does not cover 2016 (Castleford Tigers squad)"
+    },
+    {
+      "playerId": "castleford-hist-greg-minikin",
+      "name": "Greg Minikin",
+      "kind": "inactive_in_year",
+      "message": "2013–Unknown does not cover 2016 (Castleford Tigers squad)"
+    },
+    {
+      "playerId": "andy-lynch",
+      "name": "Andy Lynch",
+      "kind": "inactive_in_year",
+      "message": "1998–2013 does not cover 2016 (Castleford Tigers squad)"
+    },
+    {
+      "playerId": "andy-lynch",
+      "name": "Andy Lynch",
+      "kind": "club_year_mismatch",
+      "message": "In Castleford Tigers 2016 squad but primary club is Bradford Bulls"
+    },
+    {
+      "playerId": "castleford-hist-adam-milner",
+      "name": "Adam Milner",
+      "kind": "inactive_in_year",
+      "message": "2009–Unknown does not cover 2016 (Castleford Tigers squad)"
+    },
+    {
+      "playerId": "wakefield-cur-mike-mcmeeken",
+      "name": "Mike McMeeken",
+      "kind": "club_year_mismatch",
+      "message": "In Castleford Tigers 2016 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "huddersfield-leg-aaron-murphy",
+      "name": "Aaron Murphy",
+      "kind": "club_year_mismatch",
+      "message": "In Wakefield Trinity 2010 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "wigan-leg-paul-johnson",
+      "name": "Paul Johnson",
+      "kind": "club_year_mismatch",
+      "message": "In Wakefield Trinity 2010 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "wakefield-hist-jason-demetriou",
+      "name": "Jason Demetriou",
+      "kind": "inactive_in_year",
+      "message": "1997–2004 does not cover 2010 (Wakefield Trinity squad)"
+    },
+    {
+      "playerId": "widnes-hist-jack-owens",
+      "name": "Jack Owens",
+      "kind": "inactive_in_year",
+      "message": "2012–Unknown does not cover 2015 (Widnes Vikings squad)"
+    },
+    {
+      "playerId": "widnes-hist-patrick-ah-van",
+      "name": "Patrick Ah Van",
+      "kind": "inactive_in_year",
+      "message": "2006–2014 does not cover 2015 (Widnes Vikings squad)"
+    },
+    {
+      "playerId": "bradford-cur-joe-mellor",
+      "name": "Joe Mellor",
+      "kind": "club_year_mismatch",
+      "message": "In Widnes Vikings 2015 squad but primary club is Bradford Bulls"
+    },
+    {
+      "playerId": "bradford-hist-manase-manuokafoa",
+      "name": "Manase Manuokafoa",
+      "kind": "club_year_mismatch",
+      "message": "In Widnes Vikings 2015 squad but primary club is Bradford Bulls"
+    },
+    {
+      "playerId": "widnes-hist-alex-gerrard",
+      "name": "Alex Gerrard",
+      "kind": "inactive_in_year",
+      "message": "2009–Unknown does not cover 2015 (Widnes Vikings squad)"
+    },
+    {
+      "playerId": "hull-fc-hist-danny-tickle",
+      "name": "Danny Tickle",
+      "kind": "club_year_mismatch",
+      "message": "In Widnes Vikings 2015 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "st-helens-cur-matt-whitley",
+      "name": "Matt Whitley",
+      "kind": "club_year_mismatch",
+      "message": "In Widnes Vikings 2015 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "wigan-hist-paul-johnson",
+      "name": "Paul Johnson",
+      "kind": "inactive_in_year",
+      "message": "1996–2014 does not cover 2015 (Widnes Vikings squad)"
+    },
+    {
+      "playerId": "wigan-hist-paul-johnson",
+      "name": "Paul Johnson",
+      "kind": "club_year_mismatch",
+      "message": "In Widnes Vikings 2015 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "widnes-hist-danny-craven",
+      "name": "Danny Craven",
+      "kind": "inactive_in_year",
+      "message": "2009–Unknown does not cover 2016 (Widnes Vikings squad)"
+    },
+    {
+      "playerId": "widnes-hist-patrick-ah-van",
+      "name": "Patrick Ah Van",
+      "kind": "inactive_in_year",
+      "message": "2006–2014 does not cover 2016 (Widnes Vikings squad)"
+    },
+    {
+      "playerId": "bradford-cur-joe-mellor",
+      "name": "Joe Mellor",
+      "kind": "club_year_mismatch",
+      "message": "In Widnes Vikings 2016 squad but primary club is Bradford Bulls"
+    },
+    {
+      "playerId": "bradford-hist-manase-manuokafoa",
+      "name": "Manase Manuokafoa",
+      "kind": "club_year_mismatch",
+      "message": "In Widnes Vikings 2016 squad but primary club is Bradford Bulls"
+    },
+    {
+      "playerId": "hull-fc-hist-danny-tickle",
+      "name": "Danny Tickle",
+      "kind": "club_year_mismatch",
+      "message": "In Widnes Vikings 2016 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "st-helens-cur-matt-whitley",
+      "name": "Matt Whitley",
+      "kind": "club_year_mismatch",
+      "message": "In Widnes Vikings 2016 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "salford-hist-danny-williams",
+      "name": "Danny Williams",
+      "kind": "club_year_mismatch",
+      "message": "In Leeds Rhinos 2008 squad but primary club is Salford Red Devils"
+    },
+    {
+      "playerId": "gareth-ellis",
+      "name": "Gareth Ellis",
+      "kind": "club_year_mismatch",
+      "message": "In Leeds Rhinos 2008 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "york-cur-ben-jones-bishop",
+      "name": "Ben Jones-Bishop",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Leeds Rhinos squad)"
+    },
+    {
+      "playerId": "york-cur-ben-jones-bishop",
+      "name": "Ben Jones-Bishop",
+      "kind": "club_year_mismatch",
+      "message": "In Leeds Rhinos 2009 squad but primary club is York Knights"
+    },
+    {
+      "playerId": "hull-fc-cur-zak-hardaker",
+      "name": "Zak Hardaker",
+      "kind": "club_year_mismatch",
+      "message": "In Leeds Rhinos 2013 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "york-cur-ben-jones-bishop",
+      "name": "Ben Jones-Bishop",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Leeds Rhinos squad)"
+    },
+    {
+      "playerId": "york-cur-ben-jones-bishop",
+      "name": "Ben Jones-Bishop",
+      "kind": "club_year_mismatch",
+      "message": "In Leeds Rhinos 2013 squad but primary club is York Knights"
+    },
+    {
+      "playerId": "castleford-cur-liam-hood",
+      "name": "Liam Hood",
+      "kind": "club_year_mismatch",
+      "message": "In Leeds Rhinos 2013 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "hull-fc-cur-zak-hardaker",
+      "name": "Zak Hardaker",
+      "kind": "club_year_mismatch",
+      "message": "In Leeds Rhinos 2016 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "hull-fc-cur-tom-briscoe",
+      "name": "Tom Briscoe",
+      "kind": "club_year_mismatch",
+      "message": "In Leeds Rhinos 2016 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "castleford-cur-brad-singleton",
+      "name": "Brad Singleton",
+      "kind": "club_year_mismatch",
+      "message": "In Leeds Rhinos 2016 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "castleford-leg-brett-ferres",
+      "name": "Brett Ferres",
+      "kind": "club_year_mismatch",
+      "message": "In Leeds Rhinos 2016 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "leeds-hist-stevie-ward",
+      "name": "Stevie Ward",
+      "kind": "inactive_in_year",
+      "message": "2011–Unknown does not cover 2016 (Leeds Rhinos squad)"
+    },
+    {
+      "playerId": "leeds-hist-mark-calderwood",
+      "name": "Mark Calderwood",
+      "kind": "club_year_mismatch",
+      "message": "In Hull FC 2009 squad but primary club is Leeds Rhinos"
+    },
+    {
+      "playerId": "hull-kr-hist-craig-hall",
+      "name": "Craig Hall",
+      "kind": "club_year_mismatch",
+      "message": "In Hull FC 2009 squad but primary club is Hull KR"
+    },
+    {
+      "playerId": "york-cur-matty-russell",
+      "name": "Matty Russell",
+      "kind": "inactive_in_year",
+      "message": "2013–Present does not cover 2012 (Hull FC squad)"
+    },
+    {
+      "playerId": "york-cur-matty-russell",
+      "name": "Matty Russell",
+      "kind": "club_year_mismatch",
+      "message": "In Hull FC 2012 squad but primary club is York Knights"
+    },
+    {
+      "playerId": "wakefield-hist-reece-lyne",
+      "name": "Reece Lyne",
+      "kind": "inactive_in_year",
+      "message": "2010–Unknown does not cover 2012 (Hull FC squad)"
+    },
+    {
+      "playerId": "hull-kr-hist-ben-crooks",
+      "name": "Ben Crooks",
+      "kind": "inactive_in_year",
+      "message": "2011–Unknown does not cover 2012 (Hull FC squad)"
+    },
+    {
+      "playerId": "richard-horne",
+      "name": "Richard Horne",
+      "kind": "inactive_in_year",
+      "message": "1999–2011 does not cover 2012 (Hull FC squad)"
+    },
+    {
+      "playerId": "andy-lynch",
+      "name": "Andy Lynch",
+      "kind": "club_year_mismatch",
+      "message": "In Hull FC 2012 squad but primary club is Bradford Bulls"
+    },
+    {
+      "playerId": "castleford-cur-joe-westerman",
+      "name": "Joe Westerman",
+      "kind": "club_year_mismatch",
+      "message": "In Hull FC 2012 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "hull-fc-hist-jamie-shaul",
+      "name": "Jamie Shaul",
+      "kind": "inactive_in_year",
+      "message": "2010–Unknown does not cover 2013 (Hull FC squad)"
+    },
+    {
+      "playerId": "hull-kr-hist-ben-crooks",
+      "name": "Ben Crooks",
+      "kind": "inactive_in_year",
+      "message": "2011–Unknown does not cover 2013 (Hull FC squad)"
+    },
+    {
+      "playerId": "wakefield-hist-jacob-miller",
+      "name": "Jacob Miller",
+      "kind": "inactive_in_year",
+      "message": "2010–Unknown does not cover 2013 (Hull FC squad)"
+    },
+    {
+      "playerId": "richard-horne",
+      "name": "Richard Horne",
+      "kind": "inactive_in_year",
+      "message": "1999–2011 does not cover 2013 (Hull FC squad)"
+    },
+    {
+      "playerId": "andy-lynch",
+      "name": "Andy Lynch",
+      "kind": "club_year_mismatch",
+      "message": "In Hull FC 2013 squad but primary club is Bradford Bulls"
+    },
+    {
+      "playerId": "wigan-hist-paul-johnson",
+      "name": "Paul Johnson",
+      "kind": "club_year_mismatch",
+      "message": "In Hull FC 2013 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "st-helens-hist-willie-talau",
+      "name": "Willie Talau",
+      "kind": "inactive_in_year",
+      "message": "1994–2006 does not cover 2009 (Salford Red Devils squad)"
+    },
+    {
+      "playerId": "st-helens-hist-willie-talau",
+      "name": "Willie Talau",
+      "kind": "club_year_mismatch",
+      "message": "In Salford Red Devils 2009 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "kind": "club_year_mismatch",
+      "message": "In Salford Red Devils 2009 squad but primary club is Bradford Bulls"
+    },
+    {
+      "playerId": "wakefield-leg-stefan-ratchford",
+      "name": "Stefan Ratchford",
+      "kind": "club_year_mismatch",
+      "message": "In Salford Red Devils 2009 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "castleford-hist-greg-eden",
+      "name": "Greg Eden",
+      "kind": "club_year_mismatch",
+      "message": "In Salford Red Devils 2014 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "st-helens-hist-francis-meli",
+      "name": "Francis Meli",
+      "kind": "inactive_in_year",
+      "message": "2000–2010 does not cover 2014 (Salford Red Devils squad)"
+    },
+    {
+      "playerId": "st-helens-hist-francis-meli",
+      "name": "Francis Meli",
+      "kind": "club_year_mismatch",
+      "message": "In Salford Red Devils 2014 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "salford-hist-martin-gleeson",
+      "name": "Martin Gleeson",
+      "kind": "club_year_mismatch",
+      "message": "In Salford Red Devils 2014 squad but primary club is Salford"
+    },
+    {
+      "playerId": "rangi-chase",
+      "name": "Rangi Chase",
+      "kind": "club_year_mismatch",
+      "message": "In Salford Red Devils 2014 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "st-helens-hist-theo-fages",
+      "name": "Théo Fages",
+      "kind": "inactive_in_year",
+      "message": "2012–Unknown does not cover 2014 (Salford Red Devils squad)"
+    },
+    {
+      "playerId": "adrian-morley",
+      "name": "Adrian Morley",
+      "kind": "club_year_mismatch",
+      "message": "In Salford Red Devils 2014 squad but primary club is Warrington Wolves"
+    },
+    {
+      "playerId": "huddersfield-hist-darrell-griffin",
+      "name": "Darrell Griffin",
+      "kind": "club_year_mismatch",
+      "message": "In Salford Red Devils 2014 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "salford-hist-gareth-hock",
+      "name": "Gareth Hock",
+      "kind": "club_year_mismatch",
+      "message": "In Salford Red Devils 2014 squad but primary club is Salford"
+    },
+    {
+      "playerId": "st-helens-hist-andrew-dixon",
+      "name": "Andrew Dixon",
+      "kind": "club_year_mismatch",
+      "message": "In Salford Red Devils 2014 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "london-hist-kieran-dixon",
+      "name": "Kieran Dixon",
+      "kind": "inactive_in_year",
+      "message": "2010–Unknown does not cover 2019 (London Broncos squad)"
+    },
+    {
+      "playerId": "salford-cur-ben-hellewell",
+      "name": "Ben Hellewell",
+      "kind": "club_year_mismatch",
+      "message": "In London Broncos 2019 squad but primary club is Salford Red Devils"
+    },
+    {
+      "playerId": "hull-fc-hist-jordan-abdull",
+      "name": "Jordan Abdull",
+      "kind": "inactive_in_year",
+      "message": "2014–Unknown does not cover 2019 (London Broncos squad)"
+    },
+    {
+      "playerId": "wakefield-hist-eddie-battye",
+      "name": "Eddie Battye",
+      "kind": "inactive_in_year",
+      "message": "2009–Unknown does not cover 2019 (London Broncos squad)"
+    },
+    {
+      "playerId": "wakefield-hist-eddie-battye",
+      "name": "Eddie Battye",
+      "kind": "club_year_mismatch",
+      "message": "In London Broncos 2019 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "st-helens-hist-greg-richards",
+      "name": "Greg Richards",
+      "kind": "inactive_in_year",
+      "message": "2013–Unknown does not cover 2019 (London Broncos squad)"
+    },
+    {
+      "playerId": "st-helens-hist-greg-richards",
+      "name": "Greg Richards",
+      "kind": "club_year_mismatch",
+      "message": "In London Broncos 2019 squad but primary club is St Helens"
+    },
+    {
+      "playerId": "wakefield-cur-jay-pitts",
+      "name": "Jay Pitts",
+      "kind": "club_year_mismatch",
+      "message": "In London Broncos 2019 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "warrington-cur-luke-yates",
+      "name": "Luke Yates",
+      "kind": "club_year_mismatch",
+      "message": "In London Broncos 2019 squad but primary club is Warrington Wolves"
+    },
+    {
+      "playerId": "widnes-hist-julian-o-neill",
+      "name": "Julian O'neill",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2000 squad but primary club is Widnes Vikings"
+    },
+    {
+      "playerId": "salford-hist-martin-gleeson",
+      "name": "Martin Gleeson",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2002 squad but primary club is Salford"
+    },
+    {
+      "playerId": "paul-newlove",
+      "name": "Paul Newlove",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2002 squad but primary club is Bradford Bulls"
+    },
+    {
+      "playerId": "catalans-cur-tommy-makinson",
+      "name": "Tommy Makinson",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2014 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "catalans-cur-tommy-makinson",
+      "name": "Tommy Makinson",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2015 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "huddersfield-cur-adam-swift",
+      "name": "Adam Swift",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2015 squad but primary club is Huddersfield Giants"
+    },
+    {
+      "playerId": "st-helens-hist-josh-jones",
+      "name": "Josh Jones",
+      "kind": "inactive_in_year",
+      "message": "2011–Unknown does not cover 2015 (St Helens squad)"
+    },
+    {
+      "playerId": "wigan-cur-luke-thompson",
+      "name": "Luke Thompson",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2015 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "castleford-cur-jack-ashworth",
+      "name": "Jack Ashworth",
+      "kind": "inactive_in_year",
+      "message": "2018–Present does not cover 2015 (St Helens squad)"
+    },
+    {
+      "playerId": "castleford-cur-jack-ashworth",
+      "name": "Jack Ashworth",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2015 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "st-helens-hist-thomas-makinson",
+      "name": "Thomas Makinson",
+      "kind": "inactive_in_year",
+      "message": "2009–Unknown does not cover 2019 (St Helens squad)"
+    },
+    {
+      "playerId": "st-helens-hist-regan-grace",
+      "name": "Regan Grace",
+      "kind": "inactive_in_year",
+      "message": "2014–Unknown does not cover 2019 (St Helens squad)"
+    },
+    {
+      "playerId": "st-helens-hist-theo-fages",
+      "name": "Théo Fages",
+      "kind": "inactive_in_year",
+      "message": "2012–Unknown does not cover 2019 (St Helens squad)"
+    },
+    {
+      "playerId": "wigan-cur-luke-thompson",
+      "name": "Luke Thompson",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2019 squad but primary club is Wigan Warriors"
+    },
+    {
+      "playerId": "st-helens-hist-morgan-knowles",
+      "name": "Morgan Knowles",
+      "kind": "inactive_in_year",
+      "message": "2014–Unknown does not cover 2019 (St Helens squad)"
+    },
+    {
+      "playerId": "catalans-cur-tommy-makinson",
+      "name": "Tommy Makinson",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2020 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "st-helens-hist-regan-grace",
+      "name": "Regan Grace",
+      "kind": "inactive_in_year",
+      "message": "2014–Unknown does not cover 2020 (St Helens squad)"
+    },
+    {
+      "playerId": "st-helens-hist-theo-fages",
+      "name": "Théo Fages",
+      "kind": "inactive_in_year",
+      "message": "2012–Unknown does not cover 2020 (St Helens squad)"
+    },
+    {
+      "playerId": "hull-fc-cur-joe-batchelor",
+      "name": "Joe Batchelor",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2020 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "st-helens-hist-thomas-makinson",
+      "name": "Thomas Makinson",
+      "kind": "inactive_in_year",
+      "message": "2009–Unknown does not cover 2021 (St Helens squad)"
+    },
+    {
+      "playerId": "st-helens-hist-regan-grace",
+      "name": "Regan Grace",
+      "kind": "inactive_in_year",
+      "message": "2014–Unknown does not cover 2021 (St Helens squad)"
+    },
+    {
+      "playerId": "catalans-cur-lewis-dodd",
+      "name": "Lewis Dodd",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2021 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "st-helens-hist-sione-mata-utia",
+      "name": "Sione Mata'utia",
+      "kind": "inactive_in_year",
+      "message": "2014–Unknown does not cover 2021 (St Helens squad)"
+    },
+    {
+      "playerId": "hull-fc-cur-joe-batchelor",
+      "name": "Joe Batchelor",
+      "kind": "club_year_mismatch",
+      "message": "In St Helens 2021 squad but primary club is Hull FC"
+    },
+    {
+      "playerId": "st-helens-hist-morgan-knowles",
+      "name": "Morgan Knowles",
+      "kind": "inactive_in_year",
+      "message": "2014–Unknown does not cover 2021 (St Helens squad)"
+    },
+    {
+      "playerId": "york-cur-will-dagger",
+      "name": "Will Dagger",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Hull KR squad)"
+    },
+    {
+      "playerId": "york-cur-will-dagger",
+      "name": "Will Dagger",
+      "kind": "club_year_mismatch",
+      "message": "In Hull KR 2020 squad but primary club is York Knights"
+    },
+    {
+      "playerId": "hull-kr-hist-ben-crooks",
+      "name": "Ben Crooks",
+      "kind": "inactive_in_year",
+      "message": "2011–Unknown does not cover 2020 (Hull KR squad)"
+    },
+    {
+      "playerId": "castleford-hist-greg-minikin",
+      "name": "Greg Minikin",
+      "kind": "inactive_in_year",
+      "message": "2013–Unknown does not cover 2020 (Hull KR squad)"
+    },
+    {
+      "playerId": "castleford-hist-greg-minikin",
+      "name": "Greg Minikin",
+      "kind": "club_year_mismatch",
+      "message": "In Hull KR 2020 squad but primary club is Castleford Tigers"
+    },
+    {
+      "playerId": "hull-fc-hist-jordan-abdull",
+      "name": "Jordan Abdull",
+      "kind": "inactive_in_year",
+      "message": "2014–Unknown does not cover 2020 (Hull KR squad)"
+    },
+    {
+      "playerId": "leigh-cur-robbie-mulhern",
+      "name": "Robbie Mulhern",
+      "kind": "club_year_mismatch",
+      "message": "In Hull KR 2020 squad but primary club is Leigh Leopards"
+    },
+    {
+      "playerId": "salford-hist-weller-hauraki",
+      "name": "Weller Hauraki",
+      "kind": "club_year_mismatch",
+      "message": "In Hull KR 2020 squad but primary club is Salford Red Devils"
+    },
+    {
+      "playerId": "wakefield-hist-harvey-livett",
+      "name": "Harvey Livett",
+      "kind": "club_year_mismatch",
+      "message": "In Hull KR 2020 squad but primary club is Wakefield Trinity"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 1996 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1996 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 1997 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1997 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 1998 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1998 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 1999 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 1999 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2000 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2000 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2001 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2001 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2002 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2002 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2003 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2003 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2004 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2004 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2005 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2005 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2006 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2006 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2007 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2007 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2008 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2008 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2009 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2009 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2010 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2010 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2011 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2011 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2012 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2012 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2013 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2013 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2014 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2014 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2015 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2015 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2016 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2016 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2017 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2017 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2018 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2018 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2019 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2019 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2020 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2020 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2021 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2021 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2022 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2022 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2022 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2022 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2022 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2022 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2022 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2022 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2022 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2022 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2022 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2022 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2022 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2023 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2023 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2024 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2025 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2026 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2027 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2027 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2027 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2027 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2027 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2027 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2027 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-bretherton",
+      "name": "Joe Bretherton",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2027 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "inactive_in_year",
+      "message": "2022–Present does not cover 2027 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "catalans-cur-tiaki-chan",
+      "name": "Tiaki Chan",
+      "kind": "club_year_mismatch",
+      "message": "In Toulouse Olympique 2027 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2027 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2027 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2027 (Toulouse Olympique squad)"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "inactive_in_year",
+      "message": "2024–Present does not cover 2027 (Toulouse Olympique squad)"
+    }
+  ]
+}

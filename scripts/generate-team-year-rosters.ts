@@ -9,6 +9,7 @@ import { join } from "path";
 import currentSquads from "../data/current-squads.json";
 import eraWikipediaSquads from "../data/era-wikipedia-squads.json";
 import slVerifiedSquads from "../data/sl-era-verified-squads.json";
+import clubCareerSpans from "../data/club-career-spans.json";
 import historicPlayers from "../data/historic-players.json";
 import legends from "../data/legends.json";
 import { getPlayableClubNames } from "../src/lib/clubs/super-league-display";
@@ -27,6 +28,35 @@ export type TeamYearRosters = Record<string, Record<string, string[]>>;
 /** Super League competition started in 1996 — ignore earlier years for span pools. */
 const SUPER_LEAGUE_MIN_YEAR = 1996;
 
+/** Map RLP / short club labels to playable Super League club names. */
+const RLP_CLUB_ALIASES: Record<string, string> = {
+  "Hull KR": "Hull KR",
+  "Hull Kingston Rovers": "Hull KR",
+  Leigh: "Leigh Leopards",
+  "Leigh Centurions": "Leigh Leopards",
+  Salford: "Salford Red Devils",
+  "Salford City Reds": "Salford Red Devils",
+  York: "York Knights",
+  "York City Knights": "York Knights",
+  Huddersfield: "Huddersfield Giants",
+  Wakefield: "Wakefield Trinity",
+  "Wakefield Trinity Wildcats": "Wakefield Trinity",
+  Wigan: "Wigan Warriors",
+  Warrington: "Warrington Wolves",
+  Leeds: "Leeds Rhinos",
+  Bradford: "Bradford Bulls",
+  Castleford: "Castleford Tigers",
+  Catalans: "Catalans Dragons",
+  London: "London Broncos",
+  Widnes: "Widnes Vikings",
+  Toulouse: "Toulouse Olympique",
+  "St Helens": "St Helens",
+  "Hull FC": "Hull FC",
+  Oldham: "Oldham",
+};
+
+const EXTRA_CLUB_SPANS = clubCareerSpans as Record<string, string[]>;
+
 type EraWikipediaSquads = Record<
   string,
   Record<string, { playerIds: string[]; source?: string }>
@@ -43,7 +73,7 @@ function parseYearRange(yearsActive: string): { start: number; end: number } | n
 
   let end = start;
   if (parts.length > 1) {
-    if (/present/i.test(parts[1])) {
+    if (/present|unknown/i.test(parts[1])) {
       end = new Date().getFullYear();
     } else {
       const endMatch = parts[1].match(/(\d{4})/);
@@ -55,15 +85,17 @@ function parseYearRange(yearsActive: string): { start: number; end: number } | n
   return { start, end };
 }
 
-function buildPlayerIndex(): Map<string, Player> {
-  const rawPlayers = [
+function getRawPlayers(): Record<string, unknown>[] {
+  return [
     ...(currentSquads as Record<string, unknown>[]),
     ...(historicPlayers as Record<string, unknown>[]),
     ...(legends as Record<string, unknown>[]),
   ];
+}
 
+function buildPlayerIndex(): Map<string, Player> {
   const byId = new Map<string, Player>();
-  for (const raw of rawPlayers) {
+  for (const raw of getRawPlayers()) {
     const player = normalizePlayer(raw);
     if (player.availableInGame === false) continue;
     byId.set(player.id, player);
@@ -95,25 +127,65 @@ function mergeVerifiedSquads(rosters: TeamYearRosters): number {
   return merged;
 }
 
-function buildRosters(playerById: Map<string, Player>): TeamYearRosters {
+function resolvePlayableClubs(
+  raw: Record<string, unknown>,
+  primaryClub: string,
+  playable: Set<string>
+): string[] {
+  const clubs = new Set<string>();
+  if (playable.has(primaryClub)) clubs.add(primaryClub);
+
+  const playedFor = raw.clubsPlayedFor as string[] | undefined;
+  if (playedFor) {
+    for (const label of playedFor) {
+      const mapped =
+        RLP_CLUB_ALIASES[label] ??
+        (playable.has(label) ? label : undefined);
+      if (mapped) clubs.add(mapped);
+    }
+  }
+
+  const id = raw.id as string;
+  for (const team of EXTRA_CLUB_SPANS[id] ?? []) {
+    if (playable.has(team)) clubs.add(team);
+  }
+
+  return [...clubs];
+}
+
+function addPlayerToClubYears(
+  rosters: TeamYearRosters,
+  club: string,
+  playerId: string,
+  range: { start: number; end: number }
+): void {
+  if (!rosters[club]) rosters[club] = {};
+  for (let year = range.start; year <= range.end; year++) {
+    if (year < SUPER_LEAGUE_MIN_YEAR) continue;
+    const key = String(year);
+    if (!rosters[club][key]) rosters[club][key] = [];
+    if (!rosters[club][key].includes(playerId)) {
+      rosters[club][key].push(playerId);
+    }
+  }
+}
+
+function buildRosters(
+  playerById: Map<string, Player>,
+  rawPlayers: Record<string, unknown>[]
+): TeamYearRosters {
   const playable = new Set(getPlayableClubNames());
   const rosters: TeamYearRosters = {};
 
-  for (const player of playerById.values()) {
-    if (!playable.has(player.club)) continue;
+  for (const raw of rawPlayers) {
+    const player = playerById.get(raw.id as string);
+    if (!player) continue;
 
     const range = parseYearRange(player.yearsActive);
     if (!range) continue;
 
-    if (!rosters[player.club]) rosters[player.club] = {};
-
-    for (let year = range.start; year <= range.end; year++) {
-      if (year < SUPER_LEAGUE_MIN_YEAR) continue;
-      const key = String(year);
-      if (!rosters[player.club][key]) rosters[player.club][key] = [];
-      if (!rosters[player.club][key].includes(player.id)) {
-        rosters[player.club][key].push(player.id);
-      }
+    for (const club of resolvePlayableClubs(raw, player.club, playable)) {
+      addPlayerToClubYears(rosters, club, player.id, range);
     }
   }
 
@@ -178,8 +250,9 @@ function auditRosters(
   return { playable, incomplete };
 }
 
+const rawPlayers = getRawPlayers();
 const playerById = buildPlayerIndex();
-const rosters = buildRosters(playerById);
+const rosters = buildRosters(playerById, rawPlayers);
 const { playable, incomplete } = auditRosters(rosters, playerById);
 
 const dataDir = join(process.cwd(), "data");
@@ -195,6 +268,7 @@ writeFileSync(
       generatedAt: new Date().toISOString(),
       sources: [
         "Player yearsActive spans (Super League 1996+, current-squads, historic-players, legends)",
+        "Secondary clubs via clubsPlayedFor + club-career-spans.json",
         "Wikipedia-verified Era squads (era-wikipedia-squads.json)",
         "Manual SL verified squads (sl-era-verified-squads.json)",
       ],

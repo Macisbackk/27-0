@@ -42,6 +42,8 @@
     "enrich:rlp:backfill-birth": "tsx scripts/backfill-birth-years-from-dob.ts",
     "enrich:rlp:report": "tsx scripts/finalize-rlp-report.ts",
     "validate:values": "tsx scripts/audit-player-values.ts",
+    "audit:ratings": "tsx scripts/audit-player-ratings-and-year-cards.ts --apply",
+    "audit:ratings:report": "tsx scripts/audit-player-ratings-and-year-cards.ts",
     "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts"
   },
   "dependencies": {

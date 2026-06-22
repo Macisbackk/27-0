@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-15T15:31:43.280Z",
+  "generatedAt": "2026-06-22T06:47:39.352Z",
   "summary": {
-    "validTeams": 53,
-    "clubsRepresented": 16,
+    "validTeams": 81,
+    "clubsRepresented": 14,
     "onePerClubReady": true,
-    "skippedBuilds": 0,
-    "errors": 0,
-    "warnings": 0
+    "skippedBuilds": 28,
+    "errors": 100,
+    "warnings": 29
   },
   "validTeams": [
     {
@@ -15,8 +15,8 @@
       "clubName": "Bradford Bulls",
       "year": "2026",
       "category": "26",
-      "teamRating": 85.2,
-      "teamValue": 2464000,
+      "teamRating": 85.1,
+      "teamValue": 2398000,
       "tier": "Competitive Outfit"
     },
     {
@@ -25,18 +25,48 @@
       "clubName": "Bradford Bulls",
       "year": "2024",
       "category": "historic",
-      "teamRating": 81.6,
-      "teamValue": 1688000,
+      "teamRating": 82,
+      "teamValue": 1756000,
       "tier": "Mid-Table Side"
     },
     {
-      "id": "bradford-bulls-2014",
-      "displayName": "Bradford Bulls '14",
+      "id": "bradford-bulls-2023",
+      "displayName": "Bradford Bulls '23",
       "clubName": "Bradford Bulls",
-      "year": "2014",
+      "year": "2023",
       "category": "historic",
-      "teamRating": 84.5,
-      "teamValue": 2303000,
+      "teamRating": 81.2,
+      "teamValue": 1665000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "bradford-bulls-2022",
+      "displayName": "Bradford Bulls '22",
+      "clubName": "Bradford Bulls",
+      "year": "2022",
+      "category": "historic",
+      "teamRating": 83,
+      "teamValue": 2269000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "bradford-bulls-2021",
+      "displayName": "Bradford Bulls '21",
+      "clubName": "Bradford Bulls",
+      "year": "2021",
+      "category": "historic",
+      "teamRating": 83.8,
+      "teamValue": 2418000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "bradford-bulls-2019",
+      "displayName": "Bradford Bulls '19",
+      "clubName": "Bradford Bulls",
+      "year": "2019",
+      "category": "historic",
+      "teamRating": 83.8,
+      "teamValue": 2206000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -45,9 +75,9 @@
       "clubName": "Bradford Bulls",
       "year": "2013",
       "category": "historic",
-      "teamRating": 85.8,
-      "teamValue": 2610000,
-      "tier": "Competitive Outfit"
+      "teamRating": 87.2,
+      "teamValue": 3376000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "bradford-bulls-2012",
@@ -55,9 +85,19 @@
       "clubName": "Bradford Bulls",
       "year": "2012",
       "category": "historic",
-      "teamRating": 87,
-      "teamValue": 2874000,
-      "tier": "Top Six Contender"
+      "teamRating": 90.2,
+      "teamValue": 4533000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "bradford-bulls-2011",
+      "displayName": "Bradford Bulls '11",
+      "clubName": "Bradford Bulls",
+      "year": "2011",
+      "category": "historic",
+      "teamRating": 89.6,
+      "teamValue": 4464000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "bradford-bulls-2009",
@@ -65,9 +105,9 @@
       "clubName": "Bradford Bulls",
       "year": "2009",
       "category": "historic",
-      "teamRating": 88.2,
-      "teamValue": 3300000,
-      "tier": "Top Six Contender"
+      "teamRating": 90.6,
+      "teamValue": 4578000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "bradford-bulls-2006",
@@ -75,9 +115,9 @@
       "clubName": "Bradford Bulls",
       "year": "2006",
       "category": "historic",
-      "teamRating": 89,
-      "teamValue": 3494000,
-      "tier": "Trophy Contenders"
+      "teamRating": 91.2,
+      "teamValue": 4690000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "bradford-bulls-2005",
@@ -85,8 +125,8 @@
       "clubName": "Bradford Bulls",
       "year": "2005",
       "category": "historic",
-      "teamRating": 87.6,
-      "teamValue": 3153000,
+      "teamRating": 88.8,
+      "teamValue": 3836000,
       "tier": "Top Six Contender"
     },
     {
@@ -95,8 +135,8 @@
       "clubName": "Bradford Bulls",
       "year": "2004",
       "category": "historic",
-      "teamRating": 89.5,
-      "teamValue": 3772000,
+      "teamRating": 90.8,
+      "teamValue": 4495000,
       "tier": "Trophy Contenders"
     },
     {
@@ -105,8 +145,8 @@
       "clubName": "Bradford Bulls",
       "year": "2003",
       "category": "historic",
-      "teamRating": 89.2,
-      "teamValue": 3694000,
+      "teamRating": 89.7,
+      "teamValue": 4027000,
       "tier": "Trophy Contenders"
     },
     {
@@ -115,9 +155,9 @@
       "clubName": "Bradford Bulls",
       "year": "2002",
       "category": "historic",
-      "teamRating": 89.8,
-      "teamValue": 3826000,
-      "tier": "Trophy Contenders"
+      "teamRating": 91.2,
+      "teamValue": 4581000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "bradford-bulls-2001",
@@ -125,8 +165,8 @@
       "clubName": "Bradford Bulls",
       "year": "2001",
       "category": "historic",
-      "teamRating": 89.7,
-      "teamValue": 3796000,
+      "teamRating": 90.9,
+      "teamValue": 4512000,
       "tier": "Trophy Contenders"
     },
     {
@@ -135,8 +175,8 @@
       "clubName": "Bradford Bulls",
       "year": "2000",
       "category": "historic",
-      "teamRating": 89.2,
-      "teamValue": 3658000,
+      "teamRating": 90.4,
+      "teamValue": 4374000,
       "tier": "Trophy Contenders"
     },
     {
@@ -145,8 +185,8 @@
       "clubName": "Bradford Bulls",
       "year": "1999",
       "category": "historic",
-      "teamRating": 89,
-      "teamValue": 3601000,
+      "teamRating": 90.8,
+      "teamValue": 4452000,
       "tier": "Trophy Contenders"
     },
     {
@@ -165,8 +205,8 @@
       "clubName": "Bradford Bulls",
       "year": "1997",
       "category": "historic",
-      "teamRating": 85.4,
-      "teamValue": 2658000,
+      "teamRating": 85.8,
+      "teamValue": 2738000,
       "tier": "Competitive Outfit"
     },
     {
@@ -190,13 +230,23 @@
       "tier": "Top Six Contender"
     },
     {
+      "id": "castleford-tigers-2012",
+      "displayName": "Castleford Tigers '12",
+      "clubName": "Castleford Tigers",
+      "year": "2012",
+      "category": "historic",
+      "teamRating": 85.1,
+      "teamValue": 2707000,
+      "tier": "Competitive Outfit"
+    },
+    {
       "id": "castleford-tigers-2009",
       "displayName": "Castleford Tigers '09",
       "clubName": "Castleford Tigers",
       "year": "2009",
       "category": "historic",
-      "teamRating": 84,
-      "teamValue": 2227000,
+      "teamRating": 84.7,
+      "teamValue": 2599000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -210,56 +260,6 @@
       "tier": "Dangerous Underdogs"
     },
     {
-      "id": "catalans-dragons-2016",
-      "displayName": "Catalans Dragons '16",
-      "clubName": "Catalans Dragons",
-      "year": "2016",
-      "category": "historic",
-      "teamRating": 85.5,
-      "teamValue": 2554000,
-      "tier": "Competitive Outfit"
-    },
-    {
-      "id": "catalans-dragons-2015",
-      "displayName": "Catalans Dragons '15",
-      "clubName": "Catalans Dragons",
-      "year": "2015",
-      "category": "historic",
-      "teamRating": 86.3,
-      "teamValue": 2760000,
-      "tier": "Competitive Outfit"
-    },
-    {
-      "id": "catalans-dragons-2013",
-      "displayName": "Catalans Dragons '13",
-      "clubName": "Catalans Dragons",
-      "year": "2013",
-      "category": "historic",
-      "teamRating": 85.2,
-      "teamValue": 2507000,
-      "tier": "Competitive Outfit"
-    },
-    {
-      "id": "catalans-dragons-2012",
-      "displayName": "Catalans Dragons '12",
-      "clubName": "Catalans Dragons",
-      "year": "2012",
-      "category": "historic",
-      "teamRating": 86,
-      "teamValue": 2665000,
-      "tier": "Competitive Outfit"
-    },
-    {
-      "id": "catalans-dragons-2011",
-      "displayName": "Catalans Dragons '11",
-      "clubName": "Catalans Dragons",
-      "year": "2011",
-      "category": "historic",
-      "teamRating": 85.2,
-      "teamValue": 2507000,
-      "tier": "Competitive Outfit"
-    },
-    {
       "id": "catalans-dragons-2010",
       "displayName": "Catalans Dragons '10",
       "clubName": "Catalans Dragons",
@@ -270,34 +270,34 @@
       "tier": "Dangerous Underdogs"
     },
     {
+      "id": "catalans-dragons-2009",
+      "displayName": "Catalans Dragons '09",
+      "clubName": "Catalans Dragons",
+      "year": "2009",
+      "category": "historic",
+      "teamRating": 84.2,
+      "teamValue": 2260000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
       "id": "catalans-dragons-2007",
       "displayName": "Catalans Dragons '07",
       "clubName": "Catalans Dragons",
       "year": "2007",
       "category": "historic",
-      "teamRating": 83.6,
-      "teamValue": 2116000,
+      "teamRating": 84.1,
+      "teamValue": 2227000,
       "tier": "Dangerous Underdogs"
     },
     {
-      "id": "huddersfield-giants-2026",
-      "displayName": "Huddersfield Giants '26",
-      "clubName": "Huddersfield Giants",
-      "year": "2026",
-      "category": "26",
-      "teamRating": 85.6,
-      "teamValue": 2490000,
-      "tier": "Competitive Outfit"
-    },
-    {
-      "id": "huddersfield-giants-2013",
-      "displayName": "Huddersfield Giants '13",
-      "clubName": "Huddersfield Giants",
-      "year": "2013",
+      "id": "catalans-dragons-2006",
+      "displayName": "Catalans Dragons '06",
+      "clubName": "Catalans Dragons",
+      "year": "2006",
       "category": "historic",
-      "teamRating": 86.1,
-      "teamValue": 2680000,
-      "tier": "Competitive Outfit"
+      "teamRating": 82.5,
+      "teamValue": 1898000,
+      "tier": "Mid-Table Side"
     },
     {
       "id": "hull-fc-2026",
@@ -305,38 +305,8 @@
       "clubName": "Hull FC",
       "year": "2026",
       "category": "26",
-      "teamRating": 86.6,
-      "teamValue": 2756000,
-      "tier": "Competitive Outfit"
-    },
-    {
-      "id": "hull-fc-2013",
-      "displayName": "Hull FC '13",
-      "clubName": "Hull FC",
-      "year": "2013",
-      "category": "historic",
-      "teamRating": 87.6,
-      "teamValue": 3044000,
-      "tier": "Top Six Contender"
-    },
-    {
-      "id": "hull-fc-2012",
-      "displayName": "Hull FC '12",
-      "clubName": "Hull FC",
-      "year": "2012",
-      "category": "historic",
-      "teamRating": 87.2,
-      "teamValue": 2941000,
-      "tier": "Top Six Contender"
-    },
-    {
-      "id": "hull-fc-2009",
-      "displayName": "Hull FC '09",
-      "clubName": "Hull FC",
-      "year": "2009",
-      "category": "historic",
-      "teamRating": 85.8,
-      "teamValue": 2586000,
+      "teamRating": 85.9,
+      "teamValue": 2616000,
       "tier": "Competitive Outfit"
     },
     {
@@ -345,9 +315,19 @@
       "clubName": "Hull KR",
       "year": "2026",
       "category": "26",
-      "teamRating": 87.9,
-      "teamValue": 3160000,
+      "teamRating": 87.8,
+      "teamValue": 3131000,
       "tier": "Top Six Contender"
+    },
+    {
+      "id": "hull-kr-2020",
+      "displayName": "Hull KR '20",
+      "clubName": "Hull KR",
+      "year": "2020",
+      "category": "historic",
+      "teamRating": 86.5,
+      "teamValue": 2777000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "leeds-rhinos-2026",
@@ -355,39 +335,9 @@
       "clubName": "Leeds Rhinos",
       "year": "2026",
       "category": "26",
-      "teamRating": 87.4,
-      "teamValue": 3028000,
-      "tier": "Top Six Contender"
-    },
-    {
-      "id": "leeds-rhinos-2013",
-      "displayName": "Leeds Rhinos '13",
-      "clubName": "Leeds Rhinos",
-      "year": "2013",
-      "category": "historic",
-      "teamRating": 88.5,
-      "teamValue": 3617000,
-      "tier": "Top Six Contender"
-    },
-    {
-      "id": "leeds-rhinos-2009",
-      "displayName": "Leeds Rhinos '09",
-      "clubName": "Leeds Rhinos",
-      "year": "2009",
-      "category": "historic",
-      "teamRating": 89.5,
-      "teamValue": 3848000,
-      "tier": "Trophy Contenders"
-    },
-    {
-      "id": "leeds-rhinos-2008",
-      "displayName": "Leeds Rhinos '08",
-      "clubName": "Leeds Rhinos",
-      "year": "2008",
-      "category": "historic",
-      "teamRating": 89.4,
-      "teamValue": 3823000,
-      "tier": "Trophy Contenders"
+      "teamRating": 86.7,
+      "teamValue": 2878000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "leigh-leopards-2026",
@@ -400,14 +350,14 @@
       "tier": "Competitive Outfit"
     },
     {
-      "id": "salford-red-devils-2014",
-      "displayName": "Salford Red Devils '14",
+      "id": "salford-red-devils-2009",
+      "displayName": "Salford Red Devils '09",
       "clubName": "Salford Red Devils",
-      "year": "2014",
+      "year": "2009",
       "category": "historic",
-      "teamRating": 86.5,
-      "teamValue": 2762000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84,
+      "teamValue": 2386000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "st-helens-2026",
@@ -417,6 +367,86 @@
       "category": "26",
       "teamRating": 87.7,
       "teamValue": 3056000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "st-helens-2021",
+      "displayName": "St Helens '21",
+      "clubName": "St Helens",
+      "year": "2021",
+      "category": "historic",
+      "teamRating": 87.2,
+      "teamValue": 2909000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "st-helens-2020",
+      "displayName": "St Helens '20",
+      "clubName": "St Helens",
+      "year": "2020",
+      "category": "historic",
+      "teamRating": 88.5,
+      "teamValue": 3204000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "st-helens-2019",
+      "displayName": "St Helens '19",
+      "clubName": "St Helens",
+      "year": "2019",
+      "category": "historic",
+      "teamRating": 87.7,
+      "teamValue": 3012000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "st-helens-2015",
+      "displayName": "St Helens '15",
+      "clubName": "St Helens",
+      "year": "2015",
+      "category": "historic",
+      "teamRating": 87,
+      "teamValue": 2856000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "st-helens-2014",
+      "displayName": "St Helens '14",
+      "clubName": "St Helens",
+      "year": "2014",
+      "category": "historic",
+      "teamRating": 86.2,
+      "teamValue": 2686000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "st-helens-2006",
+      "displayName": "St Helens '06",
+      "clubName": "St Helens",
+      "year": "2006",
+      "category": "historic",
+      "teamRating": 87.1,
+      "teamValue": 2953000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "st-helens-2002",
+      "displayName": "St Helens '02",
+      "clubName": "St Helens",
+      "year": "2002",
+      "category": "historic",
+      "teamRating": 87.1,
+      "teamValue": 3230000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "st-helens-2000",
+      "displayName": "St Helens '00",
+      "clubName": "St Helens",
+      "year": "2000",
+      "category": "historic",
+      "teamRating": 88.2,
+      "teamValue": 3364000,
       "tier": "Top Six Contender"
     },
     {
@@ -430,6 +460,306 @@
       "tier": "Dangerous Underdogs"
     },
     {
+      "id": "toulouse-olympique-2025",
+      "displayName": "Toulouse Olympique '25",
+      "clubName": "Toulouse Olympique",
+      "year": "2025",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2024",
+      "displayName": "Toulouse Olympique '24",
+      "clubName": "Toulouse Olympique",
+      "year": "2024",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2023",
+      "displayName": "Toulouse Olympique '23",
+      "clubName": "Toulouse Olympique",
+      "year": "2023",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2022",
+      "displayName": "Toulouse Olympique '22",
+      "clubName": "Toulouse Olympique",
+      "year": "2022",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2021",
+      "displayName": "Toulouse Olympique '21",
+      "clubName": "Toulouse Olympique",
+      "year": "2021",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2020",
+      "displayName": "Toulouse Olympique '20",
+      "clubName": "Toulouse Olympique",
+      "year": "2020",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2019",
+      "displayName": "Toulouse Olympique '19",
+      "clubName": "Toulouse Olympique",
+      "year": "2019",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2018",
+      "displayName": "Toulouse Olympique '18",
+      "clubName": "Toulouse Olympique",
+      "year": "2018",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2017",
+      "displayName": "Toulouse Olympique '17",
+      "clubName": "Toulouse Olympique",
+      "year": "2017",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2016",
+      "displayName": "Toulouse Olympique '16",
+      "clubName": "Toulouse Olympique",
+      "year": "2016",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2015",
+      "displayName": "Toulouse Olympique '15",
+      "clubName": "Toulouse Olympique",
+      "year": "2015",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2014",
+      "displayName": "Toulouse Olympique '14",
+      "clubName": "Toulouse Olympique",
+      "year": "2014",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2013",
+      "displayName": "Toulouse Olympique '13",
+      "clubName": "Toulouse Olympique",
+      "year": "2013",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2012",
+      "displayName": "Toulouse Olympique '12",
+      "clubName": "Toulouse Olympique",
+      "year": "2012",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2011",
+      "displayName": "Toulouse Olympique '11",
+      "clubName": "Toulouse Olympique",
+      "year": "2011",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2010",
+      "displayName": "Toulouse Olympique '10",
+      "clubName": "Toulouse Olympique",
+      "year": "2010",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2009",
+      "displayName": "Toulouse Olympique '09",
+      "clubName": "Toulouse Olympique",
+      "year": "2009",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2008",
+      "displayName": "Toulouse Olympique '08",
+      "clubName": "Toulouse Olympique",
+      "year": "2008",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2007",
+      "displayName": "Toulouse Olympique '07",
+      "clubName": "Toulouse Olympique",
+      "year": "2007",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2006",
+      "displayName": "Toulouse Olympique '06",
+      "clubName": "Toulouse Olympique",
+      "year": "2006",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2005",
+      "displayName": "Toulouse Olympique '05",
+      "clubName": "Toulouse Olympique",
+      "year": "2005",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2004",
+      "displayName": "Toulouse Olympique '04",
+      "clubName": "Toulouse Olympique",
+      "year": "2004",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2003",
+      "displayName": "Toulouse Olympique '03",
+      "clubName": "Toulouse Olympique",
+      "year": "2003",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2002",
+      "displayName": "Toulouse Olympique '02",
+      "clubName": "Toulouse Olympique",
+      "year": "2002",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2001",
+      "displayName": "Toulouse Olympique '01",
+      "clubName": "Toulouse Olympique",
+      "year": "2001",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2000",
+      "displayName": "Toulouse Olympique '00",
+      "clubName": "Toulouse Olympique",
+      "year": "2000",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-1999",
+      "displayName": "Toulouse Olympique '99",
+      "clubName": "Toulouse Olympique",
+      "year": "1999",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-1998",
+      "displayName": "Toulouse Olympique '98",
+      "clubName": "Toulouse Olympique",
+      "year": "1998",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-1997",
+      "displayName": "Toulouse Olympique '97",
+      "clubName": "Toulouse Olympique",
+      "year": "1997",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-1996",
+      "displayName": "Toulouse Olympique '96",
+      "clubName": "Toulouse Olympique",
+      "year": "1996",
+      "category": "historic",
+      "teamRating": 81.9,
+      "teamValue": 1801000,
+      "tier": "Mid-Table Side"
+    },
+    {
       "id": "wakefield-trinity-2026",
       "displayName": "Wakefield Trinity '26",
       "clubName": "Wakefield Trinity",
@@ -438,16 +768,6 @@
       "teamRating": 86.8,
       "teamValue": 2907000,
       "tier": "Competitive Outfit"
-    },
-    {
-      "id": "wakefield-trinity-2010",
-      "displayName": "Wakefield Trinity '10",
-      "clubName": "Wakefield Trinity",
-      "year": "2010",
-      "category": "historic",
-      "teamRating": 83.7,
-      "teamValue": 2173000,
-      "tier": "Dangerous Underdogs"
     },
     {
       "id": "warrington-wolves-2026",
@@ -466,7 +786,7 @@
       "year": "2016",
       "category": "historic",
       "teamRating": 86.5,
-      "teamValue": 2813000,
+      "teamValue": 2816000,
       "tier": "Competitive Outfit"
     },
     {
@@ -475,28 +795,8 @@
       "clubName": "Warrington Wolves",
       "year": "2015",
       "category": "historic",
-      "teamRating": 86,
-      "teamValue": 2699000,
-      "tier": "Competitive Outfit"
-    },
-    {
-      "id": "widnes-vikings-2016",
-      "displayName": "Widnes Vikings '16",
-      "clubName": "Widnes Vikings",
-      "year": "2016",
-      "category": "historic",
-      "teamRating": 84.3,
-      "teamValue": 2287000,
-      "tier": "Dangerous Underdogs"
-    },
-    {
-      "id": "widnes-vikings-2015",
-      "displayName": "Widnes Vikings '15",
-      "clubName": "Widnes Vikings",
-      "year": "2015",
-      "category": "historic",
-      "teamRating": 85.1,
-      "teamValue": 2404000,
+      "teamRating": 86.8,
+      "teamValue": 2872000,
       "tier": "Competitive Outfit"
     },
     {
@@ -510,36 +810,1033 @@
       "tier": "Top Six Contender"
     },
     {
-      "id": "wigan-warriors-2016",
-      "displayName": "Wigan Warriors '16",
-      "clubName": "Wigan Warriors",
-      "year": "2016",
-      "category": "historic",
-      "teamRating": 88.3,
-      "teamValue": 3329000,
-      "tier": "Top Six Contender"
-    },
-    {
-      "id": "wigan-warriors-2015",
-      "displayName": "Wigan Warriors '15",
-      "clubName": "Wigan Warriors",
-      "year": "2015",
-      "category": "historic",
-      "teamRating": 87.8,
-      "teamValue": 3090000,
-      "tier": "Top Six Contender"
-    },
-    {
       "id": "york-knights-2026",
       "displayName": "York Knights '26",
       "clubName": "York Knights",
       "year": "2026",
       "category": "26",
-      "teamRating": 83.2,
-      "teamValue": 2055000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 82.8,
+      "teamValue": 1968000,
+      "tier": "Mid-Table Side"
     }
   ],
-  "skipped": [],
-  "issues": []
+  "skipped": [
+    {
+      "club": "Bradford Bulls",
+      "year": "2014"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2016"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2015"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2008"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2016"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2015"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2013"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2009"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2008"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2013"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2012"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2009"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2016"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2015"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2013"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2012"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2011"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2008"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": "2013"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2010"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2009"
+    },
+    {
+      "club": "Widnes Vikings",
+      "year": "2016"
+    },
+    {
+      "club": "Widnes Vikings",
+      "year": "2015"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2019"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2018"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2015"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2014"
+    }
+  ],
+  "issues": [
+    {
+      "club": "Bradford Bulls",
+      "year": "2014",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-cur-jay-pitts"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-kris-radlinski-2006"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-mark-calderwood-2006"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-brett-dallas-2006"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-pat-richards-2006"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-sean-gleeson-2006"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-kevin-brown-2006"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-stuart-fielden-2006"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-scott-logan-2006"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-michael-mcilorum-2006"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-mickey-higham-2006"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-gareth-hock-2006"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-sean-oloughlin-2006"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-richie-mathers-2008"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-pat-richards-2008"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-karl-pryce-2008"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-sam-tomkins-2008"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-thomas-leuluai-2008"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-stuart-fielden-2008"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-lee-mossop-2008"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-michael-mcilorum-2008"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-joel-tomkins-2008"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: hull-kr-cur-oliver-gildart"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: sean-oloughlin"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2016",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: hull-kr-cur-oliver-gildart"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2016",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: sean-oloughlin"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: catalans-hist-thomas-bosc-2008"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: catalans-hist-stacey-jones-2008"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: catalans-hist-gregory-mounis-2008"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2011",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: catalans-hist-eloi-pelissier"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2012",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: catalans-hist-eloi-pelissier"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-hist-damien-blanch"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: catalans-hist-eloi-pelissier"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: catalans-hist-eloi-pelissier"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2016",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: catalans-hist-eloi-pelissier"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: huddersfield-hist-jermaine-mcgillvary"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: huddersfield-hist-aaron-murphy"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: huddersfield-hist-leroy-cudjoe"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: castleford-hist-brett-ferres"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-hist-luke-george-2009"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-hist-aaron-murphy-2009"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-hist-ryan-atkins-2009"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-hist-jamie-rooney-2009"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-hist-danny-brough-2009"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-hist-danny-sculthorpe-2009"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-hist-ricky-bibey-2009"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-hist-sam-obst-2009"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-hist-steve-snitch-2009"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2010",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-hist-matt-blaymire"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2010",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-hist-damien-blanch"
+    },
+    {
+      "club": "Widnes Vikings",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: hull-fc-hist-danny-tickle"
+    },
+    {
+      "club": "Widnes Vikings",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-paul-johnson"
+    },
+    {
+      "club": "Widnes Vikings",
+      "year": "2016",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: hull-fc-hist-danny-tickle"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: leeds-cur-kallum-watkins"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2008",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: danny-mcguire"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: york-cur-ben-jones-bishop"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: leeds-cur-kallum-watkins"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: danny-mcguire"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: hull-fc-cur-zak-hardaker"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: york-cur-ben-jones-bishop"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: leeds-cur-kallum-watkins"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: danny-mcguire"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: castleford-cur-liam-hood"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: leeds-hist-joel-moon-2015"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: leeds-leg-rob-burrow-2015"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: leeds-leg-jamie-peacock-2015"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: leeds-hist-kylie-leuluai-2015"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: leeds-leg-jamie-jones-buchanan-2015"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: leeds-leg-kevin-sinfield-2015"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2016",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: hull-fc-cur-zak-hardaker"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2016",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: leeds-cur-ash-handley"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2016",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: hull-fc-cur-tom-briscoe"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2016",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: leeds-cur-kallum-watkins"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2016",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: danny-mcguire"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: leeds-hist-mark-calderwood"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: hull-fc-cur-tom-briscoe"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2009",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: hull-fc-hist-danny-tickle"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2012",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: hull-fc-hist-danny-tickle"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: hull-fc-cur-tom-briscoe"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: hull-fc-hist-danny-tickle"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2013",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wigan-hist-paul-johnson"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2014",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: salford-hist-gareth-hock"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: salford-hist-greg-johnson-2015"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: salford-hist-iain-thornley-2015"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: salford-hist-rangi-chase-2015"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: salford-hist-josh-wood-2015"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: salford-hist-olsi-krasniqi-2015"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: salford-hist-adrian-morley-2015"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: salford-hist-reni-maitua-2015"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2015",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: salford-hist-james-greenwood-2015"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2018",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: london-hist-rhys-williams-2018"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2018",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: london-hist-kieran-dixon-2018"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2018",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: london-hist-elliot-kear-2018"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2018",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: london-hist-jarrod-sammut-2018"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2018",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: london-hist-eddie-battye-2018"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2019",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: london-hist-alex-walker"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2019",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: salford-cur-ben-hellewell"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2019",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: catalans-hist-eloi-pelissier"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2019",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: wakefield-cur-jay-pitts"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2019",
+      "severity": "error",
+      "code": "MISSING_PLAYER",
+      "message": "Player ID not found: london-hist-will-lovell"
+    },
+    {
+      "club": "Toulouse Olympique",
+      "year": "2027",
+      "severity": "warning",
+      "code": "FUTURE_YEAR",
+      "message": "Year 2027 is in the future (filtered at runtime)"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": "2014",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2016",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2015",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2008",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": "2006",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2016",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2015",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2013",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2009",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": "2008",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2013",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2012",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Hull FC",
+      "year": "2009",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2016",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2015",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2013",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2012",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2011",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": "2008",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": "2013",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2010",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": "2009",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Widnes Vikings",
+      "year": "2016",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Widnes Vikings",
+      "year": "2015",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2019",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "London Broncos",
+      "year": "2018",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2015",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": "2014",
+      "severity": "warning",
+      "code": "BUILD_FAILED",
+      "message": "Wikipedia squad exists but buildEraTeamForYear returned null"
+    }
+  ]
 }

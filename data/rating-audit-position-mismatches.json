@@ -1,0 +1,1823 @@
+{
+  "generatedAt": "2026-06-22T06:47:00.685Z",
+  "positionMismatches": [
+    {
+      "playerId": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1997: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "huddersfield-hist-jeff-wittenberg",
+      "name": "Jeff Wittenberg",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1997: natural PROP ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "bradford-hist-graeme-bradley",
+      "name": "Graeme Bradley",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1997: natural STAND_OFF ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "bradford-hist-danny-peacock",
+      "name": "Danny Peacock",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1997: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "bradford-hist-paul-cook",
+      "name": "Paul Cook",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1997: natural WING ≠ Wikipedia slot SCRUM_HALF"
+    },
+    {
+      "playerId": "bradford-hist-brian-mcdermott",
+      "name": "Brian McDermott",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1997: natural HOOKER ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "bradford-hist-mike-forshaw",
+      "name": "Mike Forshaw",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1997: natural LOOSE_FORWARD ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1998: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1998: natural STAND_OFF ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "tevita-vaikona",
+      "name": "Tevita Vaikona",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1998: natural SECOND_ROW ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "bradford-hist-graeme-bradley",
+      "name": "Graeme Bradley",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1998: natural STAND_OFF ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "bradford-hist-danny-peacock",
+      "name": "Danny Peacock",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1998: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1999: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1999: natural STAND_OFF ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "hull-fc-leg-lee-radford",
+      "name": "Lee Radford",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1999: natural SECOND_ROW ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1999: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "bradford-hist-mike-forshaw",
+      "name": "Mike Forshaw",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 1999: natural LOOSE_FORWARD ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2000: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "tevita-vaikona",
+      "name": "Tevita Vaikona",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2000: natural SECOND_ROW ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "bradford-hist-michael-withers",
+      "name": "Michael Withers",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2000: natural FULLBACK ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2000: natural STAND_OFF ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "hull-fc-leg-lee-radford",
+      "name": "Lee Radford",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2000: natural SECOND_ROW ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2000: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "bradford-hist-mike-forshaw",
+      "name": "Mike Forshaw",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2000: natural LOOSE_FORWARD ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2001: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "tevita-vaikona",
+      "name": "Tevita Vaikona",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2001: natural SECOND_ROW ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "hull-fc-hist-graham-mackay",
+      "name": "Graham Mackay",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2001: natural CENTRE ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2001: natural STAND_OFF ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "hull-fc-leg-lee-radford",
+      "name": "Lee Radford",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2001: natural SECOND_ROW ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2001: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2002: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "tevita-vaikona",
+      "name": "Tevita Vaikona",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2002: natural SECOND_ROW ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2002: natural STAND_OFF ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "huddersfield-hist-brandon-costin",
+      "name": "Brandon Costin",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2002: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2002: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2003: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "tevita-vaikona",
+      "name": "Tevita Vaikona",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2003: natural SECOND_ROW ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2003: natural STAND_OFF ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "bradford-hist-karl-pratt",
+      "name": "Karl Pratt",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2003: natural HOOKER ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "hull-fc-leg-lee-radford",
+      "name": "Lee Radford",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2003: natural SECOND_ROW ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2003: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2004: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "tevita-vaikona",
+      "name": "Tevita Vaikona",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2004: natural SECOND_ROW ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "leon-pryce",
+      "name": "Leon Pryce",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2004: natural STAND_OFF ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2004: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "bradford-hist-karl-pratt",
+      "name": "Karl Pratt",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2005: natural HOOKER ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2005: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2005: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "wigan-leg-paul-johnson",
+      "name": "Paul Johnson",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2005: natural CENTRE ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "wigan-leg-paul-johnson",
+      "name": "Paul Johnson",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2006: natural CENTRE ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "sam-burgess",
+      "name": "Sam Burgess",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2006: natural PROP ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "wakefield-leg-ben-jeffries",
+      "name": "Ben Jeffries",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2009: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "wakefield-leg-ben-jeffries",
+      "name": "Ben Jeffries",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2011: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "wakefield-leg-ben-jeffries",
+      "name": "Ben Jeffries",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2012: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "wigan-hist-john-bateman",
+      "name": "John Bateman",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2012: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "bradford-hist-michael-platt",
+      "name": "Michael Platt",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2013: natural FULLBACK ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "leeds-leg-chev-walker",
+      "name": "Chev Walker",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2013: natural CENTRE ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "wakefield-cur-jay-pitts",
+      "name": "Jay Pitts",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2014: natural SECOND_ROW ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "leeds-leg-chev-walker",
+      "name": "Chev Walker",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2014: natural CENTRE ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "bradford-hist-danny-addy",
+      "name": "Danny Addy",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2014: natural STAND_OFF ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "bradford-cur-joe-keyes",
+      "name": "Joe Keyes",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2019: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "bradford-cur-sam-hallas",
+      "name": "Sam Hallas",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2019: natural LOOSE_FORWARD ≠ Wikipedia slot HOOKER"
+    },
+    {
+      "playerId": "hull-kr-cur-elliot-minchella",
+      "name": "Elliot Minchella",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2019: natural LOOSE_FORWARD ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "sheffield-cur-joe-brown",
+      "name": "Joe Brown",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2021: natural FULLBACK ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "bradford-cur-joe-keyes",
+      "name": "Joe Keyes",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2021: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "bradford-cur-sam-hallas",
+      "name": "Sam Hallas",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2021: natural LOOSE_FORWARD ≠ Wikipedia slot HOOKER"
+    },
+    {
+      "playerId": "huddersfield-leg-aaron-murphy",
+      "name": "Aaron Murphy",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2021: natural WING ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "salford-cur-ellis-robson",
+      "name": "Ellis Robson",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2021: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "bradford-hist-elliot-kear",
+      "name": "Elliot Kear",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2022: natural WING ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "hull-fc-cur-jacob-hookem",
+      "name": "Jacob Hookem",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2022: natural PROP ≠ Wikipedia slot HOOKER"
+    },
+    {
+      "playerId": "huddersfield-leg-aaron-murphy",
+      "name": "Aaron Murphy",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2022: natural WING ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "leeds-cur-jarrod-oconnor",
+      "name": "Jarrod O'Connor",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2022: natural HOOKER ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "huddersfield-cur-george-flanagan-jr",
+      "name": "George Flanagan Jr",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2023: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "huddersfield-cur-fenton-rogers",
+      "name": "Fenton Rogers",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2023: natural SECOND_ROW ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "leeds-cur-corey-johnson",
+      "name": "Corey Johnson",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2023: natural STAND_OFF ≠ Wikipedia slot HOOKER"
+    },
+    {
+      "playerId": "leeds-hist-james-donaldson",
+      "name": "James Donaldson",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2023: natural LOOSE_FORWARD ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "leeds-hist-bodene-thompson",
+      "name": "Bodene Thompson",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2023: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "huddersfield-hist-tom-holmes",
+      "name": "Tom Holmes",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2024: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "leigh-cur-keanan-brand",
+      "name": "Keanan Brand",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2024: natural WING ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "huddersfield-cur-fenton-rogers",
+      "name": "Fenton Rogers",
+      "kind": "era_slot_vs_natural",
+      "message": "Bradford Bulls 2024: natural SECOND_ROW ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "york-cur-matty-russell",
+      "name": "Matty Russell",
+      "kind": "era_slot_vs_natural",
+      "message": "Warrington Wolves 2015: natural WING ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "wakefield-leg-stefan-ratchford",
+      "name": "Stefan Ratchford",
+      "kind": "era_slot_vs_natural",
+      "message": "Warrington Wolves 2015: natural FULLBACK ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "warrington-cur-ben-currie",
+      "name": "Ben Currie",
+      "kind": "era_slot_vs_natural",
+      "message": "Warrington Wolves 2015: natural LOOSE_FORWARD ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "wakefield-hist-kurt-gidley",
+      "name": "Kurt Gidley",
+      "kind": "era_slot_vs_natural",
+      "message": "Warrington Wolves 2016: natural STAND_OFF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "wakefield-leg-stefan-ratchford",
+      "name": "Stefan Ratchford",
+      "kind": "era_slot_vs_natural",
+      "message": "Warrington Wolves 2016: natural FULLBACK ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "warrington-cur-ben-currie",
+      "name": "Ben Currie",
+      "kind": "era_slot_vs_natural",
+      "message": "Warrington Wolves 2016: natural LOOSE_FORWARD ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "huddersfield-cur-george-king",
+      "name": "George King",
+      "kind": "era_slot_vs_natural",
+      "message": "Warrington Wolves 2016: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "ben-westwood",
+      "name": "Ben Westwood",
+      "kind": "era_slot_vs_natural",
+      "message": "Warrington Wolves 2016: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "catalans-hist-jamal-fakir",
+      "name": "Jamal Fakir",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2006: natural SECOND_ROW ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "catalans-hist-adam-mogg",
+      "name": "Adam Mogg",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2007: natural STAND_OFF ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "catalans-hist-adam-mogg",
+      "name": "Adam Mogg",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2008: natural STAND_OFF ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "catalans-hist-sebastien-raguin",
+      "name": "Sébastien Raguin",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2008: natural CENTRE ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "catalans-hist-vincent-duport",
+      "name": "Vincent Duport",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2009: natural CENTRE ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "catalans-hist-adam-mogg",
+      "name": "Adam Mogg",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2009: natural STAND_OFF ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "catalans-hist-tony-gigot",
+      "name": "Tony Gigot",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2010: natural FULLBACK ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "thomas-bosc",
+      "name": "Thomas Bosc",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2010: natural STAND_OFF ≠ Wikipedia slot SCRUM_HALF"
+    },
+    {
+      "playerId": "catalans-hist-gregory-mounis",
+      "name": "Grégory Mounis",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2010: natural LOOSE_FORWARD ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "catalans-hist-vincent-duport",
+      "name": "Vincent Duport",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2011: natural CENTRE ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "catalans-hist-sebastien-raguin",
+      "name": "Sébastien Raguin",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2011: natural CENTRE ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "catalans-hist-vincent-duport",
+      "name": "Vincent Duport",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2012: natural CENTRE ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "catalans-hist-jason-baitieri",
+      "name": "Jason Baitieri",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2012: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "catalans-hist-vincent-duport",
+      "name": "Vincent Duport",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2013: natural CENTRE ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "catalans-hist-jason-baitieri",
+      "name": "Jason Baitieri",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2013: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "catalans-hist-tony-gigot",
+      "name": "Tony Gigot",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2015: natural FULLBACK ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "thomas-bosc",
+      "name": "Thomas Bosc",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2016: natural STAND_OFF ≠ Wikipedia slot SCRUM_HALF"
+    },
+    {
+      "playerId": "catalans-hist-louis-anderson",
+      "name": "Louis Anderson",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2016: natural SECOND_ROW ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "catalans-hist-antoni-maria",
+      "name": "Antoni Maria",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2016: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "catalans-hist-jason-baitieri",
+      "name": "Jason Baitieri",
+      "kind": "era_slot_vs_natural",
+      "message": "Catalans Dragons 2016: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "danny-brough",
+      "name": "Danny Brough",
+      "kind": "era_slot_vs_natural",
+      "message": "Huddersfield Giants 2013: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "wakefield-hist-kyle-wood",
+      "name": "Kyle Wood",
+      "kind": "era_slot_vs_natural",
+      "message": "Huddersfield Giants 2013: natural HOOKER ≠ Wikipedia slot SCRUM_HALF"
+    },
+    {
+      "playerId": "york-cur-jordan-thompson",
+      "name": "Jordan Thompson",
+      "kind": "era_slot_vs_natural",
+      "message": "Castleford Tigers 2009: natural LOOSE_FORWARD ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "castleford-hist-ryan-clayton",
+      "name": "Ryan Clayton",
+      "kind": "era_slot_vs_natural",
+      "message": "Castleford Tigers 2009: natural CENTRE ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "castleford-hist-richard-owen",
+      "name": "Richard Owen",
+      "kind": "era_slot_vs_natural",
+      "message": "Castleford Tigers 2012: natural WING ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "wakefield-hist-joe-arundel",
+      "name": "Joe Arundel",
+      "kind": "era_slot_vs_natural",
+      "message": "Castleford Tigers 2012: natural CENTRE ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "castleford-hist-kirk-dixon",
+      "name": "Kirk Dixon",
+      "kind": "era_slot_vs_natural",
+      "message": "Castleford Tigers 2012: natural WING ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "castleford-hist-oliver-holmes",
+      "name": "Oliver Holmes",
+      "kind": "era_slot_vs_natural",
+      "message": "Castleford Tigers 2012: natural SECOND_ROW ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "wakefield-hist-steve-snitch",
+      "name": "Steve Snitch",
+      "kind": "era_slot_vs_natural",
+      "message": "Castleford Tigers 2012: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "castleford-hist-greg-minikin",
+      "name": "Greg Minikin",
+      "kind": "era_slot_vs_natural",
+      "message": "Castleford Tigers 2016: natural WING ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "castleford-hist-matt-cook",
+      "name": "Matt Cook",
+      "kind": "era_slot_vs_natural",
+      "message": "Castleford Tigers 2016: natural SECOND_ROW ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "wakefield-cur-mike-mcmeeken",
+      "name": "Mike McMeeken",
+      "kind": "era_slot_vs_natural",
+      "message": "Castleford Tigers 2016: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "huddersfield-leg-aaron-murphy",
+      "name": "Aaron Murphy",
+      "kind": "era_slot_vs_natural",
+      "message": "Wakefield Trinity 2010: natural WING ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "wakefield-leg-ben-jeffries",
+      "name": "Ben Jeffries",
+      "kind": "era_slot_vs_natural",
+      "message": "Wakefield Trinity 2010: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "hull-fc-hist-paul-cooke",
+      "name": "Paul Cooke",
+      "kind": "era_slot_vs_natural",
+      "message": "Wakefield Trinity 2010: natural STAND_OFF ≠ Wikipedia slot SCRUM_HALF"
+    },
+    {
+      "playerId": "wigan-leg-paul-johnson",
+      "name": "Paul Johnson",
+      "kind": "era_slot_vs_natural",
+      "message": "Wakefield Trinity 2010: natural CENTRE ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "wakefield-hist-jason-demetriou",
+      "name": "Jason Demetriou",
+      "kind": "era_slot_vs_natural",
+      "message": "Wakefield Trinity 2010: natural HOOKER ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "widnes-hist-jack-owens",
+      "name": "Jack Owens",
+      "kind": "era_slot_vs_natural",
+      "message": "Widnes Vikings 2015: natural WING ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "bradford-cur-joe-mellor",
+      "name": "Joe Mellor",
+      "kind": "era_slot_vs_natural",
+      "message": "Widnes Vikings 2015: natural LOOSE_FORWARD ≠ Wikipedia slot SCRUM_HALF"
+    },
+    {
+      "playerId": "wigan-hist-paul-johnson",
+      "name": "Paul Johnson",
+      "kind": "era_slot_vs_natural",
+      "message": "Widnes Vikings 2015: natural CENTRE ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "widnes-hist-danny-craven",
+      "name": "Danny Craven",
+      "kind": "era_slot_vs_natural",
+      "message": "Widnes Vikings 2016: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "bradford-cur-joe-mellor",
+      "name": "Joe Mellor",
+      "kind": "era_slot_vs_natural",
+      "message": "Widnes Vikings 2016: natural LOOSE_FORWARD ≠ Wikipedia slot SCRUM_HALF"
+    },
+    {
+      "playerId": "widnes-hist-macgraff-leuluai",
+      "name": "Macgraff Leuluai",
+      "kind": "era_slot_vs_natural",
+      "message": "Widnes Vikings 2016: natural LOOSE_FORWARD ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "widnes-hist-hep-cahill",
+      "name": "Hep Cahill",
+      "kind": "era_slot_vs_natural",
+      "message": "Widnes Vikings 2016: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "leeds-cur-kallum-watkins",
+      "name": "Kallum Watkins",
+      "kind": "era_slot_vs_natural",
+      "message": "Leeds Rhinos 2008: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "york-cur-ben-jones-bishop",
+      "name": "Ben Jones-Bishop",
+      "kind": "era_slot_vs_natural",
+      "message": "Leeds Rhinos 2009: natural WING ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "leeds-cur-kallum-watkins",
+      "name": "Kallum Watkins",
+      "kind": "era_slot_vs_natural",
+      "message": "Leeds Rhinos 2009: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "hull-fc-cur-zak-hardaker",
+      "name": "Zak Hardaker",
+      "kind": "era_slot_vs_natural",
+      "message": "Leeds Rhinos 2013: natural CENTRE ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "leeds-cur-kallum-watkins",
+      "name": "Kallum Watkins",
+      "kind": "era_slot_vs_natural",
+      "message": "Leeds Rhinos 2013: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "hull-fc-cur-zak-hardaker",
+      "name": "Zak Hardaker",
+      "kind": "era_slot_vs_natural",
+      "message": "Leeds Rhinos 2016: natural CENTRE ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "leeds-cur-ash-handley",
+      "name": "Ash Handley",
+      "kind": "era_slot_vs_natural",
+      "message": "Leeds Rhinos 2016: natural CENTRE ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "leeds-cur-kallum-watkins",
+      "name": "Kallum Watkins",
+      "kind": "era_slot_vs_natural",
+      "message": "Leeds Rhinos 2016: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "leeds-hist-stevie-ward",
+      "name": "Stevie Ward",
+      "kind": "era_slot_vs_natural",
+      "message": "Leeds Rhinos 2016: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "hull-fc-cur-tom-briscoe",
+      "name": "Tom Briscoe",
+      "kind": "era_slot_vs_natural",
+      "message": "Hull FC 2009: natural WING ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "hull-fc-hist-tommy-lee",
+      "name": "Tommy Lee",
+      "kind": "era_slot_vs_natural",
+      "message": "Hull FC 2009: natural HOOKER ≠ Wikipedia slot SCRUM_HALF"
+    },
+    {
+      "playerId": "york-cur-matty-russell",
+      "name": "Matty Russell",
+      "kind": "era_slot_vs_natural",
+      "message": "Hull FC 2012: natural WING ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "wakefield-hist-reece-lyne",
+      "name": "Reece Lyne",
+      "kind": "era_slot_vs_natural",
+      "message": "Hull FC 2012: natural CENTRE ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "wakefield-hist-jacob-miller",
+      "name": "Jacob Miller",
+      "kind": "era_slot_vs_natural",
+      "message": "Hull FC 2013: natural STAND_OFF ≠ Wikipedia slot SCRUM_HALF"
+    },
+    {
+      "playerId": "richard-horne",
+      "name": "Richard Horne",
+      "kind": "era_slot_vs_natural",
+      "message": "Hull FC 2013: natural STAND_OFF ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "wigan-hist-paul-johnson",
+      "name": "Paul Johnson",
+      "kind": "era_slot_vs_natural",
+      "message": "Hull FC 2013: natural CENTRE ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "salford-hist-mark-henry",
+      "name": "Mark Henry",
+      "kind": "era_slot_vs_natural",
+      "message": "Salford Red Devils 2009: natural WING ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "wakefield-leg-stefan-ratchford",
+      "name": "Stefan Ratchford",
+      "kind": "era_slot_vs_natural",
+      "message": "Salford Red Devils 2009: natural FULLBACK ≠ Wikipedia slot HOOKER"
+    },
+    {
+      "playerId": "st-helens-hist-jordan-turner",
+      "name": "Jordan Turner",
+      "kind": "era_slot_vs_natural",
+      "message": "Salford Red Devils 2009: natural CENTRE ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "castleford-hist-greg-eden",
+      "name": "Greg Eden",
+      "kind": "era_slot_vs_natural",
+      "message": "Salford Red Devils 2014: natural WING ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "st-helens-hist-tony-puletua",
+      "name": "Tony Puletua",
+      "kind": "era_slot_vs_natural",
+      "message": "Salford Red Devils 2014: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "st-helens-hist-andrew-dixon",
+      "name": "Andrew Dixon",
+      "kind": "era_slot_vs_natural",
+      "message": "Salford Red Devils 2014: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "salford-cur-ben-hellewell",
+      "name": "Ben Hellewell",
+      "kind": "era_slot_vs_natural",
+      "message": "London Broncos 2019: natural FULLBACK ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "hull-fc-cur-morgan-smith",
+      "name": "Morgan Smith",
+      "kind": "era_slot_vs_natural",
+      "message": "London Broncos 2019: natural STAND_OFF ≠ Wikipedia slot SCRUM_HALF"
+    },
+    {
+      "playerId": "warrington-cur-luke-yates",
+      "name": "Luke Yates",
+      "kind": "era_slot_vs_natural",
+      "message": "London Broncos 2019: natural PROP ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "widnes-hist-julian-o-neill",
+      "name": "Julian O'neill",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2000: natural STAND_OFF ≠ Wikipedia slot PROP"
+    },
+    {
+      "playerId": "paul-sculthorpe",
+      "name": "Paul Sculthorpe",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2002: natural LOOSE_FORWARD ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "chris-joynt",
+      "name": "Chris Joynt",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2002: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "st-helens-hist-jason-hooper",
+      "name": "Jason Hooper",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2006: natural STAND_OFF ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "st-helens-cur-jonny-lomax",
+      "name": "Jonny Lomax",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2014: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "hull-fc-hist-willie-manu",
+      "name": "Willie Manu",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2014: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "st-helens-hist-josh-jones",
+      "name": "Josh Jones",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2015: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "castleford-cur-jack-ashworth",
+      "name": "Jack Ashworth",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2015: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "louie-mccarthy-scarsbrook",
+      "name": "Louie McCarthy-Scarsbrook",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2015: natural PROP ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "st-helens-hist-theo-fages",
+      "name": "Théo Fages",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2019: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "st-helens-cur-jonny-lomax",
+      "name": "Jonny Lomax",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2020: natural SCRUM_HALF ≠ Wikipedia slot FULLBACK"
+    },
+    {
+      "playerId": "st-helens-cur-jack-welsby",
+      "name": "Jack Welsby",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2020: natural FULLBACK ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "louie-mccarthy-scarsbrook",
+      "name": "Louie McCarthy-Scarsbrook",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2020: natural PROP ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "st-helens-cur-jonny-lomax",
+      "name": "Jonny Lomax",
+      "kind": "era_slot_vs_natural",
+      "message": "St Helens 2021: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "hull-kr-hist-ben-crooks",
+      "name": "Ben Crooks",
+      "kind": "era_slot_vs_natural",
+      "message": "Hull KR 2020: natural CENTRE ≠ Wikipedia slot WING"
+    },
+    {
+      "playerId": "hull-kr-hist-kane-linnett",
+      "name": "Kane Linnett",
+      "kind": "era_slot_vs_natural",
+      "message": "Hull KR 2020: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "hull-kr-cur-mikey-lewis",
+      "name": "Mikey Lewis",
+      "kind": "era_slot_vs_natural",
+      "message": "Hull KR 2020: natural STAND_OFF ≠ Wikipedia slot SCRUM_HALF"
+    },
+    {
+      "playerId": "hull-kr-cur-dean-hadley",
+      "name": "Dean Hadley",
+      "kind": "era_slot_vs_natural",
+      "message": "Hull KR 2020: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1996: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1996: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1996: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1996: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1997: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1997: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1997: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1997: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1998: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1998: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1998: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1998: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1999: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1999: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1999: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 1999: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2000: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2000: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2000: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2000: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2001: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2001: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2001: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2001: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2002: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2002: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2002: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2002: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2003: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2003: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2003: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2003: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2004: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2004: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2004: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2004: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2005: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2005: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2005: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2005: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2006: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2006: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2006: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2006: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2007: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2007: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2007: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2007: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2008: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2008: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2008: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2008: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2009: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2009: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2009: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2009: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2010: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2010: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2010: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2010: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2011: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2011: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2011: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2011: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2012: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2012: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2012: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2012: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2013: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2013: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2013: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2013: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2014: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2014: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2014: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2014: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2015: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2015: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2015: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2015: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2016: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2016: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2016: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2016: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2017: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2017: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2017: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2017: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2018: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2018: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2018: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2018: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2019: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2019: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2019: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2019: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2020: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2020: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2020: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2020: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2021: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2021: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2021: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2021: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2022: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2022: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2022: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2022: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2023: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2023: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2023: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2023: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2024: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2024: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2024: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2024: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2025: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2025: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2025: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2025: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2026: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2026: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2026: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2026: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2027: natural SECOND_ROW ≠ Wikipedia slot CENTRE"
+    },
+    {
+      "playerId": "toulouse-cur-luke-polselli",
+      "name": "Luke Polselli",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2027: natural CENTRE ≠ Wikipedia slot STAND_OFF"
+    },
+    {
+      "playerId": "toulouse-cur-henry-o-kane",
+      "name": "Henry O'Kane",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2027: natural PROP ≠ Wikipedia slot SECOND_ROW"
+    },
+    {
+      "playerId": "toulouse-cur-joe-cator",
+      "name": "Joe Cator",
+      "kind": "era_slot_vs_natural",
+      "message": "Toulouse Olympique 2027: natural SECOND_ROW ≠ Wikipedia slot LOOSE_FORWARD"
+    }
+  ]
+}

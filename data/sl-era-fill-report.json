@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-21T13:04:25.844Z",
+  "generatedAt": "2026-06-21T20:35:30.686Z",
   "teamsCompleted": [
     "Catalans Dragons 2008",
     "Leeds Rhinos 2015",
@@ -7,16 +7,16 @@
     "Salford Red Devils 2015",
     "Wakefield Trinity 2009",
     "Wigan Warriors 2006",
-    "Wigan Warriors 2008"
+    "Wigan Warriors 2008",
+    "St Helens 2000",
+    "St Helens 2002",
+    "St Helens 2006",
+    "St Helens 2019",
+    "St Helens 2021"
   ],
-  "playersAdded": [
-    "wakefield-hist-danny-sculthorpe-2009",
-    "wigan-hist-cameron-phelps-2008"
-  ],
+  "playersAdded": [],
   "playersUpdated": [],
-  "positionsCorrected": [
-    "wigan-hist-cameron-phelps-2008: Centre → CENTRE"
-  ],
+  "positionsCorrected": [],
   "teamsSkippedNotSuperLeague": [
     "Bradford Bulls 2018",
     "Bradford Bulls 2020"
@@ -29,6 +29,11 @@
     "Salford Red Devils 2015: https://en.wikipedia.org/wiki/2015_Salford_Red_Devils_season",
     "Wakefield Trinity 2009: https://en.wikipedia.org/wiki/2009_Wakefield_Trinity_Wildcats_season",
     "Wigan Warriors 2006: https://en.wikipedia.org/wiki/2006_Wigan_Warriors_season",
-    "Wigan Warriors 2008: https://en.wikipedia.org/wiki/2008_Wigan_Warriors_season"
+    "Wigan Warriors 2008: https://en.wikipedia.org/wiki/2008_Wigan_Warriors_season",
+    "St Helens 2000: https://en.wikipedia.org/wiki/2000_Super_League_Grand_Final",
+    "St Helens 2002: https://en.wikipedia.org/wiki/2002_Super_League_Grand_Final",
+    "St Helens 2006: https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final",
+    "St Helens 2019: https://en.wikipedia.org/wiki/2019_Super_League_Grand_Final",
+    "St Helens 2021: https://en.wikipedia.org/wiki/2021_Super_League_Grand_Final"
   ]
 }

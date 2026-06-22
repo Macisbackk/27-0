@@ -1,0 +1,1765 @@
+{
+  "fetchedAt": "2026-06-21T19:11:59.252Z",
+  "results": [
+    {
+      "year": 2000,
+      "pageTitle": "2000 Super League Grand Final",
+      "sourceUrl": "https://en.wikipedia.org/wiki/2000_Super_League_Grand_Final",
+      "pageTitlesConsulted": [
+        "2000 St Helens R.F.C. season",
+        "2000 St Helens Saints season",
+        "2000 St Helens season",
+        "2000 St Helens RLFC season",
+        "2000 Super League Grand Final"
+      ],
+      "extractionMethod": "Super League Grand Final match team list (starting XIII)",
+      "players": [
+        {
+          "jersey": 1,
+          "name": "Paul Wellens",
+          "posCode": "FB",
+          "mappedPosition": "FULLBACK",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "paul-wellens",
+                "name": "Paul Wellens",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 2,
+          "name": "Steve Hall",
+          "posCode": "WG",
+          "mappedPosition": "WING",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-steve-hall",
+                "name": "Steve Hall",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 3,
+          "name": "Kevin Iro",
+          "posCode": "CE",
+          "mappedPosition": "CENTRE",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-kevin-iro",
+                "name": "Kevin Iro",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 4,
+          "name": "Sean Hoppe",
+          "posCode": "CE",
+          "mappedPosition": "CENTRE",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-sean-hoppe",
+                "name": "Sean Hoppe",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 5,
+          "name": "Anthony Sullivan",
+          "posCode": "WG",
+          "mappedPosition": "WING",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-anthony-sullivan",
+                "name": "Anthony Sullivan",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 6,
+          "name": "Tommy Martyn",
+          "posCode": "SO",
+          "mappedPosition": "STAND_OFF",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "tommy-martyn",
+                "name": "Tommy Martyn",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 7,
+          "name": "Sean Long",
+          "posCode": "SH",
+          "mappedPosition": "SCRUM_HALF",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "sean-long",
+                "name": "Sean Long",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 8,
+          "name": "Apollo Perelini",
+          "posCode": "PR",
+          "mappedPosition": "PROP",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-apollo-perelini",
+                "name": "Apollo Perelini",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 9,
+          "name": "Keiron Cunningham",
+          "posCode": "HK",
+          "mappedPosition": "HOOKER",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "keiron-cunningham",
+                "name": "Keiron Cunningham",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 10,
+          "name": "Julian O'Neill",
+          "posCode": "PR",
+          "mappedPosition": "PROP",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "widnes-hist-julian-o-neill",
+                "name": "Julian O'neill",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 11,
+          "name": "Tim Jonkers",
+          "posCode": "SR",
+          "mappedPosition": "SECOND_ROW",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-tim-jonkers",
+                "name": "Tim Jonkers",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 12,
+          "name": "Chris Joynt",
+          "posCode": "SR",
+          "mappedPosition": "SECOND_ROW",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "chris-joynt",
+                "name": "Chris Joynt",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 13,
+          "name": "Paul Sculthorpe",
+          "posCode": "LF",
+          "mappedPosition": "LOOSE_FORWARD",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "legends"
+            ],
+            "suggestedIds": [
+              {
+                "id": "paul-sculthorpe",
+                "name": "Paul Sculthorpe",
+                "source": "legends"
+              }
+            ]
+          }
+        }
+      ],
+      "auditNearMiss": {
+        "club": "St Helens",
+        "year": "2000",
+        "status": "removed",
+        "complete": false,
+        "removed": true,
+        "source": "https://en.wikipedia.org/wiki/St_Helens_R.F.C.",
+        "wikipediaPages": [
+          "St Helens R.F.C.",
+          "St Helens",
+          "St Helens RLFC"
+        ],
+        "qualityScore": 0,
+        "playersKept": [
+          "Paul Wellens",
+          "Darren Albert",
+          "Paul Newlove",
+          "Sean Long",
+          "Keiron Cunningham",
+          "Chris Joynt",
+          "Paul Sculthorpe"
+        ],
+        "playersRemoved": [],
+        "playersAdded": [],
+        "wikipediaPlayers": [
+          "Paul Wellens",
+          "Darren Albert",
+          "Paul Newlove",
+          "Sean Long",
+          "Keiron Cunningham",
+          "Chris Joynt",
+          "Paul Sculthorpe"
+        ],
+        "missingFromDatabase": [
+          "Tom van Vollenhoven",
+          "Doug Greenall",
+          "Les Fairclough",
+          "Alan Prescott",
+          "Cliff Watson",
+          "Dick Huddart"
+        ],
+        "reason": "Could not map 13 database players (7/13)"
+      },
+      "verifiedSquadEntry": {
+        "wikipediaPlayers": [
+          "Paul Wellens",
+          "Steve Hall",
+          "Kevin Iro",
+          "Sean Hoppe",
+          "Anthony Sullivan",
+          "Tommy Martyn",
+          "Sean Long",
+          "Apollo Perelini",
+          "Keiron Cunningham",
+          "Julian O'Neill",
+          "Tim Jonkers",
+          "Chris Joynt",
+          "Paul Sculthorpe"
+        ],
+        "positions": [
+          "FULLBACK",
+          "WING",
+          "CENTRE",
+          "CENTRE",
+          "WING",
+          "STAND_OFF",
+          "SCRUM_HALF",
+          "PROP",
+          "HOOKER",
+          "PROP",
+          "SECOND_ROW",
+          "SECOND_ROW",
+          "LOOSE_FORWARD"
+        ],
+        "playerIds": [
+          "paul-wellens",
+          "st-helens-hist-steve-hall",
+          "st-helens-hist-kevin-iro",
+          "st-helens-hist-sean-hoppe",
+          "st-helens-hist-anthony-sullivan",
+          "tommy-martyn",
+          "sean-long",
+          "st-helens-hist-apollo-perelini",
+          "keiron-cunningham",
+          "widnes-hist-julian-o-neill",
+          "st-helens-hist-tim-jonkers",
+          "chris-joynt",
+          "paul-sculthorpe"
+        ]
+      }
+    },
+    {
+      "year": 2002,
+      "pageTitle": "2002 Super League Grand Final",
+      "sourceUrl": "https://en.wikipedia.org/wiki/2002_Super_League_Grand_Final",
+      "pageTitlesConsulted": [
+        "2002 St Helens R.F.C. season",
+        "2002 St Helens Saints season",
+        "2002 St Helens season",
+        "2002 St Helens RLFC season",
+        "2002 Super League Grand Final"
+      ],
+      "extractionMethod": "Super League Grand Final match team list (starting XIII)",
+      "players": [
+        {
+          "jersey": 1,
+          "name": "Paul Wellens",
+          "posCode": "FB",
+          "mappedPosition": "FULLBACK",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "paul-wellens",
+                "name": "Paul Wellens",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 2,
+          "name": "Darren Albert",
+          "posCode": "WG",
+          "mappedPosition": "WING",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-darren-albert",
+                "name": "Darren Albert",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 3,
+          "name": "Martin Gleeson",
+          "posCode": "CE",
+          "mappedPosition": "CENTRE",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "salford-hist-martin-gleeson",
+                "name": "Martin Gleeson",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 4,
+          "name": "Paul Newlove",
+          "posCode": "CE",
+          "mappedPosition": "CENTRE",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "legends"
+            ],
+            "suggestedIds": [
+              {
+                "id": "paul-newlove",
+                "name": "Paul Newlove",
+                "source": "legends"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 5,
+          "name": "Anthony Stewart",
+          "posCode": "WG",
+          "mappedPosition": "WING",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-anthony-stewart",
+                "name": "Anthony Stewart",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 6,
+          "name": "Paul Sculthorpe",
+          "posCode": "SO",
+          "mappedPosition": "STAND_OFF",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "legends"
+            ],
+            "suggestedIds": [
+              {
+                "id": "paul-sculthorpe",
+                "name": "Paul Sculthorpe",
+                "source": "legends"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 7,
+          "name": "Sean Long",
+          "posCode": "SH",
+          "mappedPosition": "SCRUM_HALF",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "sean-long",
+                "name": "Sean Long",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 8,
+          "name": "Darren Britt",
+          "posCode": "PR",
+          "mappedPosition": "PROP",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-darren-britt",
+                "name": "Darren Britt",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 9,
+          "name": "Keiron Cunningham",
+          "posCode": "FB",
+          "mappedPosition": "FULLBACK",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "keiron-cunningham",
+                "name": "Keiron Cunningham",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 10,
+          "name": "Barry Ward",
+          "posCode": "PR",
+          "mappedPosition": "PROP",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-barry-ward",
+                "name": "Barry Ward",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 11,
+          "name": "Mike Bennett",
+          "posCode": "SR",
+          "mappedPosition": "SECOND_ROW",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-mike-bennett",
+                "name": "Mike Bennett",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 12,
+          "name": "Tim Jonkers",
+          "posCode": "SR",
+          "mappedPosition": "SECOND_ROW",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-tim-jonkers",
+                "name": "Tim Jonkers",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 13,
+          "name": "Chris Joynt",
+          "posCode": "LF",
+          "mappedPosition": "LOOSE_FORWARD",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "chris-joynt",
+                "name": "Chris Joynt",
+                "source": "historic-players"
+              }
+            ]
+          }
+        }
+      ],
+      "auditNearMiss": {
+        "club": "St Helens",
+        "year": "2002",
+        "status": "removed",
+        "complete": false,
+        "removed": true,
+        "source": "https://en.wikipedia.org/wiki/St_Helens_R.F.C.",
+        "wikipediaPages": [
+          "St Helens R.F.C.",
+          "St Helens",
+          "St Helens RLFC"
+        ],
+        "qualityScore": 0,
+        "playersKept": [
+          "Paul Wellens",
+          "Darren Albert",
+          "Paul Newlove",
+          "Sean Long",
+          "Keiron Cunningham",
+          "Chris Joynt",
+          "Paul Sculthorpe"
+        ],
+        "playersRemoved": [],
+        "playersAdded": [],
+        "wikipediaPlayers": [
+          "Paul Wellens",
+          "Darren Albert",
+          "Paul Newlove",
+          "Sean Long",
+          "Keiron Cunningham",
+          "Chris Joynt",
+          "Paul Sculthorpe"
+        ],
+        "missingFromDatabase": [
+          "Tom van Vollenhoven",
+          "Doug Greenall",
+          "Les Fairclough",
+          "Alan Prescott",
+          "Cliff Watson",
+          "Dick Huddart"
+        ],
+        "reason": "Could not map 13 database players (7/13)"
+      },
+      "verifiedSquadEntry": {
+        "wikipediaPlayers": [
+          "Paul Wellens",
+          "Darren Albert",
+          "Martin Gleeson",
+          "Paul Newlove",
+          "Anthony Stewart",
+          "Paul Sculthorpe",
+          "Sean Long",
+          "Darren Britt",
+          "Keiron Cunningham",
+          "Barry Ward",
+          "Mike Bennett",
+          "Tim Jonkers",
+          "Chris Joynt"
+        ],
+        "positions": [
+          "FULLBACK",
+          "WING",
+          "CENTRE",
+          "CENTRE",
+          "WING",
+          "STAND_OFF",
+          "SCRUM_HALF",
+          "PROP",
+          "FULLBACK",
+          "PROP",
+          "SECOND_ROW",
+          "SECOND_ROW",
+          "LOOSE_FORWARD"
+        ],
+        "playerIds": [
+          "paul-wellens",
+          "st-helens-hist-darren-albert",
+          "salford-hist-martin-gleeson",
+          "paul-newlove",
+          "st-helens-hist-anthony-stewart",
+          "paul-sculthorpe",
+          "sean-long",
+          "st-helens-hist-darren-britt",
+          "keiron-cunningham",
+          "st-helens-hist-barry-ward",
+          "st-helens-hist-mike-bennett",
+          "st-helens-hist-tim-jonkers",
+          "chris-joynt"
+        ]
+      }
+    },
+    {
+      "year": 2006,
+      "pageTitle": "2006 Super League Grand Final",
+      "sourceUrl": "https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final",
+      "pageTitlesConsulted": [
+        "2006 St Helens R.F.C. season",
+        "2006 St Helens Saints season",
+        "2006 St Helens season",
+        "2006 St Helens RLFC season",
+        "2006 Super League Grand Final"
+      ],
+      "extractionMethod": "Super League Grand Final match team list (starting XIII)",
+      "players": [
+        {
+          "jersey": 1,
+          "name": "Paul Wellens",
+          "posCode": "FB",
+          "mappedPosition": "FULLBACK",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "paul-wellens",
+                "name": "Paul Wellens",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 2,
+          "name": "Ade Gardner",
+          "posCode": "WG",
+          "mappedPosition": "WING",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-ade-gardner",
+                "name": "Ade Gardner",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 3,
+          "name": "Jamie Lyon",
+          "posCode": "CE",
+          "mappedPosition": "CENTRE",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "jamie-lyon",
+                "name": "Jamie Lyon",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 4,
+          "name": "Willie Talau",
+          "posCode": "CE",
+          "mappedPosition": "CENTRE",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-willie-talau",
+                "name": "Willie Talau",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 5,
+          "name": "Francis Meli",
+          "posCode": "WG",
+          "mappedPosition": "WING",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-francis-meli",
+                "name": "Francis Meli",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 6,
+          "name": "Leon Pryce",
+          "posCode": "SO",
+          "mappedPosition": "STAND_OFF",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "leon-pryce",
+                "name": "Leon Pryce",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 7,
+          "name": "Sean Long",
+          "posCode": "SH",
+          "mappedPosition": "SCRUM_HALF",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "sean-long",
+                "name": "Sean Long",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 8,
+          "name": "Paul Anderson",
+          "posCode": "PR",
+          "mappedPosition": "PROP",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "paul-anderson",
+                "name": "Paul Anderson",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 9,
+          "name": "Keiron Cunningham",
+          "posCode": "HK",
+          "mappedPosition": "HOOKER",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "keiron-cunningham",
+                "name": "Keiron Cunningham",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 10,
+          "name": "Jason Cayless",
+          "posCode": "PR",
+          "mappedPosition": "PROP",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-jason-cayless",
+                "name": "Jason Cayless",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 11,
+          "name": "Lee Gilmour",
+          "posCode": "SR",
+          "mappedPosition": "SECOND_ROW",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-lee-gilmour",
+                "name": "Lee Gilmour",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 12,
+          "name": "Jon Wilkin",
+          "posCode": "SR",
+          "mappedPosition": "SECOND_ROW",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-jon-wilkin",
+                "name": "Jon Wilkin",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 13,
+          "name": "Jason Hooper",
+          "posCode": "LF",
+          "mappedPosition": "LOOSE_FORWARD",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-jason-hooper",
+                "name": "Jason Hooper",
+                "source": "historic-players"
+              }
+            ]
+          }
+        }
+      ],
+      "auditNearMiss": {
+        "club": "St Helens",
+        "year": "2006",
+        "status": "removed",
+        "complete": false,
+        "removed": true,
+        "source": "https://en.wikipedia.org/wiki/St_Helens_R.F.C.",
+        "wikipediaPages": [
+          "St Helens R.F.C.",
+          "St Helens",
+          "St Helens RLFC"
+        ],
+        "qualityScore": 0,
+        "playersKept": [
+          "Paul Wellens",
+          "Darren Albert",
+          "Paul Newlove",
+          "Sean Long",
+          "Keiron Cunningham",
+          "Chris Joynt",
+          "Paul Sculthorpe"
+        ],
+        "playersRemoved": [],
+        "playersAdded": [],
+        "wikipediaPlayers": [
+          "Paul Wellens",
+          "Darren Albert",
+          "Paul Newlove",
+          "Sean Long",
+          "Keiron Cunningham",
+          "Chris Joynt",
+          "Paul Sculthorpe"
+        ],
+        "missingFromDatabase": [
+          "Tom van Vollenhoven",
+          "Doug Greenall",
+          "Les Fairclough",
+          "Alan Prescott",
+          "Cliff Watson",
+          "Dick Huddart"
+        ],
+        "reason": "Could not map 13 database players (7/13)"
+      },
+      "verifiedSquadEntry": {
+        "wikipediaPlayers": [
+          "Paul Wellens",
+          "Ade Gardner",
+          "Jamie Lyon",
+          "Willie Talau",
+          "Francis Meli",
+          "Leon Pryce",
+          "Sean Long",
+          "Paul Anderson",
+          "Keiron Cunningham",
+          "Jason Cayless",
+          "Lee Gilmour",
+          "Jon Wilkin",
+          "Jason Hooper"
+        ],
+        "positions": [
+          "FULLBACK",
+          "WING",
+          "CENTRE",
+          "CENTRE",
+          "WING",
+          "STAND_OFF",
+          "SCRUM_HALF",
+          "PROP",
+          "HOOKER",
+          "PROP",
+          "SECOND_ROW",
+          "SECOND_ROW",
+          "LOOSE_FORWARD"
+        ],
+        "playerIds": [
+          "paul-wellens",
+          "st-helens-hist-ade-gardner",
+          "jamie-lyon",
+          "st-helens-hist-willie-talau",
+          "st-helens-hist-francis-meli",
+          "leon-pryce",
+          "sean-long",
+          "paul-anderson",
+          "keiron-cunningham",
+          "st-helens-hist-jason-cayless",
+          "st-helens-hist-lee-gilmour",
+          "st-helens-hist-jon-wilkin",
+          "st-helens-hist-jason-hooper"
+        ]
+      }
+    },
+    {
+      "year": 2019,
+      "pageTitle": "2019 Super League Grand Final",
+      "sourceUrl": "https://en.wikipedia.org/wiki/2019_Super_League_Grand_Final",
+      "pageTitlesConsulted": [
+        "2019 St Helens R.F.C. season",
+        "2019 St Helens Saints season",
+        "2019 St Helens season",
+        "2019 St Helens RLFC season",
+        "2019 Super League Grand Final"
+      ],
+      "extractionMethod": "Super League Grand Final match team list (starting XIII)",
+      "players": [
+        {
+          "jersey": 1,
+          "name": "Lachlan Coote",
+          "posCode": "FB",
+          "mappedPosition": "FULLBACK",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-lachlan-coote",
+                "name": "Lachlan Coote",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 2,
+          "name": "Tommy Makinson",
+          "posCode": "WG",
+          "mappedPosition": "WING",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "current-squads"
+            ],
+            "suggestedIds": [
+              {
+                "id": "catalans-cur-tommy-makinson",
+                "name": "Tommy Makinson",
+                "source": "current-squads"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 3,
+          "name": "Kevin Naiqama",
+          "posCode": "CE",
+          "mappedPosition": "CENTRE",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-kevin-naiqama",
+                "name": "Kevin Naiqama",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 4,
+          "name": "Mark Percival",
+          "posCode": "CE",
+          "mappedPosition": "CENTRE",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "current-squads"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-cur-mark-percival",
+                "name": "Mark Percival",
+                "source": "current-squads"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 5,
+          "name": "Regan Grace",
+          "posCode": "WG",
+          "mappedPosition": "WING",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-regan-grace",
+                "name": "Regan Grace",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 6,
+          "name": "Theo Fages",
+          "posCode": "SO",
+          "mappedPosition": "STAND_OFF",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-theo-fages",
+                "name": "Théo Fages",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 7,
+          "name": "Jonny Lomax",
+          "posCode": "SH",
+          "mappedPosition": "SCRUM_HALF",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "current-squads"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-cur-jonny-lomax",
+                "name": "Jonny Lomax",
+                "source": "current-squads"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 8,
+          "name": "Alex Walmsley",
+          "posCode": "PR",
+          "mappedPosition": "PROP",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "current-squads"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-cur-alex-walmsley",
+                "name": "Alex Walmsley",
+                "source": "current-squads"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 9,
+          "name": "James Roby",
+          "posCode": "HK",
+          "mappedPosition": "HOOKER",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "james-roby",
+                "name": "James Roby",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 10,
+          "name": "Luke Thompson",
+          "posCode": "PR",
+          "mappedPosition": "PROP",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "current-squads"
+            ],
+            "suggestedIds": [
+              {
+                "id": "wigan-cur-luke-thompson",
+                "name": "Luke Thompson",
+                "source": "current-squads"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 11,
+          "name": "Zeb Taia",
+          "posCode": "SR",
+          "mappedPosition": "SECOND_ROW",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-zeb-taia",
+                "name": "Zeb Taia",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 12,
+          "name": "Dominique Peyroux",
+          "posCode": "SR",
+          "mappedPosition": "SECOND_ROW",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-dominique-peyroux",
+                "name": "Dominique Peyroux",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 13,
+          "name": "Morgan Knowles",
+          "posCode": "LF",
+          "mappedPosition": "LOOSE_FORWARD",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-morgan-knowles",
+                "name": "Morgan Knowles",
+                "source": "historic-players"
+              }
+            ]
+          }
+        }
+      ],
+      "auditNearMiss": {
+        "club": "St Helens",
+        "year": "2019",
+        "status": "removed",
+        "complete": false,
+        "removed": true,
+        "source": "https://en.wikipedia.org/wiki/St_Helens_R.F.C.",
+        "wikipediaPages": [
+          "St Helens R.F.C.",
+          "St Helens",
+          "St Helens RLFC"
+        ],
+        "qualityScore": 0,
+        "playersKept": [
+          "Paul Wellens",
+          "Darren Albert",
+          "Paul Newlove",
+          "Sean Long",
+          "Keiron Cunningham",
+          "Chris Joynt",
+          "Paul Sculthorpe"
+        ],
+        "playersRemoved": [],
+        "playersAdded": [],
+        "wikipediaPlayers": [
+          "Paul Wellens",
+          "Darren Albert",
+          "Paul Newlove",
+          "Sean Long",
+          "Keiron Cunningham",
+          "Chris Joynt",
+          "Paul Sculthorpe"
+        ],
+        "missingFromDatabase": [
+          "Tom van Vollenhoven",
+          "Doug Greenall",
+          "Les Fairclough",
+          "Alan Prescott",
+          "Cliff Watson",
+          "Dick Huddart"
+        ],
+        "reason": "Could not map 13 database players (7/13)"
+      },
+      "verifiedSquadEntry": {
+        "wikipediaPlayers": [
+          "Lachlan Coote",
+          "Tommy Makinson",
+          "Kevin Naiqama",
+          "Mark Percival",
+          "Regan Grace",
+          "Theo Fages",
+          "Jonny Lomax",
+          "Alex Walmsley",
+          "James Roby",
+          "Luke Thompson",
+          "Zeb Taia",
+          "Dominique Peyroux",
+          "Morgan Knowles"
+        ],
+        "positions": [
+          "FULLBACK",
+          "WING",
+          "CENTRE",
+          "CENTRE",
+          "WING",
+          "STAND_OFF",
+          "SCRUM_HALF",
+          "PROP",
+          "HOOKER",
+          "PROP",
+          "SECOND_ROW",
+          "SECOND_ROW",
+          "LOOSE_FORWARD"
+        ],
+        "playerIds": [
+          "st-helens-hist-lachlan-coote",
+          "catalans-cur-tommy-makinson",
+          "st-helens-hist-kevin-naiqama",
+          "st-helens-cur-mark-percival",
+          "st-helens-hist-regan-grace",
+          "st-helens-hist-theo-fages",
+          "st-helens-cur-jonny-lomax",
+          "st-helens-cur-alex-walmsley",
+          "james-roby",
+          "wigan-cur-luke-thompson",
+          "st-helens-hist-zeb-taia",
+          "st-helens-hist-dominique-peyroux",
+          "st-helens-hist-morgan-knowles"
+        ]
+      }
+    },
+    {
+      "year": 2021,
+      "pageTitle": "2021 Super League Grand Final",
+      "sourceUrl": "https://en.wikipedia.org/wiki/2021_Super_League_Grand_Final",
+      "pageTitlesConsulted": [
+        "2021 St Helens R.F.C. season",
+        "2021 St Helens Saints season",
+        "2021 St Helens season",
+        "2021 St Helens RLFC season",
+        "2021 Super League Grand Final"
+      ],
+      "extractionMethod": "Super League Grand Final match team list (starting XIII)",
+      "players": [
+        {
+          "jersey": 1,
+          "name": "Lachlan Coote",
+          "posCode": "FB",
+          "mappedPosition": "FULLBACK",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-lachlan-coote",
+                "name": "Lachlan Coote",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 2,
+          "name": "Tommy Makinson",
+          "posCode": "WG",
+          "mappedPosition": "WING",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "current-squads"
+            ],
+            "suggestedIds": [
+              {
+                "id": "catalans-cur-tommy-makinson",
+                "name": "Tommy Makinson",
+                "source": "current-squads"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 3,
+          "name": "Kevin Naiqama",
+          "posCode": "CE",
+          "mappedPosition": "CENTRE",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-kevin-naiqama",
+                "name": "Kevin Naiqama",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 4,
+          "name": "Mark Percival",
+          "posCode": "CE",
+          "mappedPosition": "CENTRE",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "current-squads"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-cur-mark-percival",
+                "name": "Mark Percival",
+                "source": "current-squads"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 5,
+          "name": "Regan Grace",
+          "posCode": "WG",
+          "mappedPosition": "WING",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-regan-grace",
+                "name": "Regan Grace",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 6,
+          "name": "Jonny Lomax",
+          "posCode": "SO",
+          "mappedPosition": "STAND_OFF",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "current-squads"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-cur-jonny-lomax",
+                "name": "Jonny Lomax",
+                "source": "current-squads"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 7,
+          "name": "Lewis Dodd",
+          "posCode": "SH",
+          "mappedPosition": "SCRUM_HALF",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "current-squads"
+            ],
+            "suggestedIds": [
+              {
+                "id": "catalans-cur-lewis-dodd",
+                "name": "Lewis Dodd",
+                "source": "current-squads"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 8,
+          "name": "Alex Walmsley",
+          "posCode": "PR",
+          "mappedPosition": "PROP",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "current-squads"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-cur-alex-walmsley",
+                "name": "Alex Walmsley",
+                "source": "current-squads"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 9,
+          "name": "James Roby",
+          "posCode": "HK",
+          "mappedPosition": "HOOKER",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "james-roby",
+                "name": "James Roby",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 10,
+          "name": "Matty Lees",
+          "posCode": "PR",
+          "mappedPosition": "PROP",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "current-squads"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-cur-matty-lees",
+                "name": "Matty Lees",
+                "source": "current-squads"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 11,
+          "name": "Sione Mata'utia",
+          "posCode": "SR",
+          "mappedPosition": "SECOND_ROW",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-sione-mata-utia",
+                "name": "Sione Mata'utia",
+                "source": "historic-players"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 12,
+          "name": "Joe Batchelor",
+          "posCode": "SR",
+          "mappedPosition": "SECOND_ROW",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "current-squads"
+            ],
+            "suggestedIds": [
+              {
+                "id": "hull-fc-cur-joe-batchelor",
+                "name": "Joe Batchelor",
+                "source": "current-squads"
+              }
+            ]
+          }
+        },
+        {
+          "jersey": 13,
+          "name": "Morgan Knowles",
+          "posCode": "PR",
+          "mappedPosition": "PROP",
+          "inDatabase": {
+            "found": true,
+            "sources": [
+              "historic-players"
+            ],
+            "suggestedIds": [
+              {
+                "id": "st-helens-hist-morgan-knowles",
+                "name": "Morgan Knowles",
+                "source": "historic-players"
+              }
+            ]
+          }
+        }
+      ],
+      "auditNearMiss": {
+        "club": "St Helens",
+        "year": "2021",
+        "status": "removed",
+        "complete": false,
+        "removed": true,
+        "source": "https://en.wikipedia.org/wiki/St_Helens_R.F.C.",
+        "wikipediaPages": [
+          "St Helens R.F.C.",
+          "St Helens",
+          "St Helens RLFC"
+        ],
+        "qualityScore": 0,
+        "playersKept": [
+          "Paul Wellens",
+          "Darren Albert",
+          "Paul Newlove",
+          "Sean Long",
+          "Keiron Cunningham",
+          "Chris Joynt",
+          "Paul Sculthorpe"
+        ],
+        "playersRemoved": [],
+        "playersAdded": [],
+        "wikipediaPlayers": [
+          "Paul Wellens",
+          "Darren Albert",
+          "Paul Newlove",
+          "Sean Long",
+          "Keiron Cunningham",
+          "Chris Joynt",
+          "Paul Sculthorpe"
+        ],
+        "missingFromDatabase": [
+          "Tom van Vollenhoven",
+          "Doug Greenall",
+          "Les Fairclough",
+          "Alan Prescott",
+          "Cliff Watson",
+          "Dick Huddart"
+        ],
+        "reason": "Could not map 13 database players (7/13)"
+      },
+      "verifiedSquadEntry": {
+        "wikipediaPlayers": [
+          "Lachlan Coote",
+          "Tommy Makinson",
+          "Kevin Naiqama",
+          "Mark Percival",
+          "Regan Grace",
+          "Jonny Lomax",
+          "Lewis Dodd",
+          "Alex Walmsley",
+          "James Roby",
+          "Matty Lees",
+          "Sione Mata'utia",
+          "Joe Batchelor",
+          "Morgan Knowles"
+        ],
+        "positions": [
+          "FULLBACK",
+          "WING",
+          "CENTRE",
+          "CENTRE",
+          "WING",
+          "STAND_OFF",
+          "SCRUM_HALF",
+          "PROP",
+          "HOOKER",
+          "PROP",
+          "SECOND_ROW",
+          "SECOND_ROW",
+          "PROP"
+        ],
+        "playerIds": [
+          "st-helens-hist-lachlan-coote",
+          "catalans-cur-tommy-makinson",
+          "st-helens-hist-kevin-naiqama",
+          "st-helens-cur-mark-percival",
+          "st-helens-hist-regan-grace",
+          "st-helens-cur-jonny-lomax",
+          "catalans-cur-lewis-dodd",
+          "st-helens-cur-alex-walmsley",
+          "james-roby",
+          "st-helens-cur-matty-lees",
+          "st-helens-hist-sione-mata-utia",
+          "hull-fc-cur-joe-batchelor",
+          "st-helens-hist-morgan-knowles"
+        ]
+      }
+    }
+  ]
+}
