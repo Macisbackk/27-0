@@ -1,0 +1,1050 @@
+{
+  "generatedAt": "2026-06-22T07:18:58.076Z",
+  "mode": "apply",
+  "summary": {
+    "legendsBefore": 33,
+    "legendsAfter": 18,
+    "retained": 14,
+    "downgraded": 19,
+    "promoted": 4,
+    "ratingsChanged": 2,
+    "achievementFixes": 6,
+    "eraIdSwaps": 40,
+    "dreamTeamDeduped": 0
+  },
+  "legendPlayersRetained": [
+    {
+      "id": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "sam-burgess",
+      "name": "Sam Burgess",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "kevin-sinfield",
+      "name": "Kevin Sinfield",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "paul-sculthorpe",
+      "name": "Paul Sculthorpe",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "ellery-hanley",
+      "name": "Ellery Hanley",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "andy-farrell",
+      "name": "Andy Farrell",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "andrew-johns",
+      "name": "Andrew Johns",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "martin-offiah",
+      "name": "Martin Offiah",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "rob-burrow",
+      "name": "Rob Burrow",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "paul-newlove",
+      "name": "Paul Newlove",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "jason-robinson",
+      "name": "Jason Robinson",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "garry-schofield",
+      "name": "Garry Schofield",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "reason": "Elite SL icon — permanent legend"
+    },
+    {
+      "id": "wigan-hist-sam-tomkins",
+      "name": "Sam Tomkins",
+      "reason": "Elite SL icon — permanent legend"
+    }
+  ],
+  "legendPlayersDowngraded": [
+    {
+      "id": "leeds-leg-mark-calderwood",
+      "name": "Mark Calderwood",
+      "toId": "leeds-hist-mark-calderwood",
+      "reason": "RLP misclassification at 97 — solid winger only"
+    },
+    {
+      "id": "wigan-leg-gary-connolly",
+      "name": "Gary Connolly",
+      "toId": "wigan-hist-garry-connolly",
+      "reason": "Strong centre, not SL icon"
+    },
+    {
+      "id": "huddersfield-leg-leroy-cudjoe",
+      "name": "Leroy Cudjoe",
+      "toId": "huddersfield-hist-leroy-cudjoe",
+      "reason": "One-club stalwart, not legend calibre"
+    },
+    {
+      "id": "leeds-leg-francis-cummins",
+      "name": "Francis Cummins",
+      "toId": "leeds-hist-francis-cummins",
+      "reason": "Good winger, below legend bar"
+    },
+    {
+      "id": "leeds-leg-matt-diskin",
+      "name": "Matt Diskin",
+      "toId": "leeds-hist-matt-diskin",
+      "reason": "Leeds hooker, below legend tier"
+    },
+    {
+      "id": "castleford-leg-brett-ferres",
+      "name": "Brett Ferres",
+      "toId": "castleford-hist-brett-ferres",
+      "reason": "Strong forward, not legend tier"
+    },
+    {
+      "id": "wakefield-leg-ben-jeffries",
+      "name": "Ben Jeffries",
+      "toId": "wakefield-hist-ben-jeffries",
+      "reason": "Good halfback, no major individual honours"
+    },
+    {
+      "id": "wigan-leg-paul-johnson",
+      "name": "Paul Johnson",
+      "toId": "wigan-hist-paul-johnson",
+      "reason": "Good centre, not SL icon"
+    },
+    {
+      "id": "leeds-leg-richard-mathers",
+      "name": "Richard Mathers",
+      "toId": "leeds-hist-richard-mathers",
+      "reason": "Duplicate of Richie Mathers historic card"
+    },
+    {
+      "id": "huddersfield-leg-aaron-murphy",
+      "name": "Aaron Murphy",
+      "toId": "huddersfield-hist-aaron-murphy",
+      "reason": "Solid winger, not SL all-time great"
+    },
+    {
+      "id": "huddersfield-leg-jermaine-mcgillvary",
+      "name": "Jermaine Mcgillvary",
+      "toId": "huddersfield-hist-jermaine-mcgillvary",
+      "reason": "Elite winger but not legend tier"
+    },
+    {
+      "id": "wigan-leg-terry-newton",
+      "name": "Terry Newton",
+      "toId": "wigan-hist-terry-newton",
+      "reason": "Good hooker, not legend tier"
+    },
+    {
+      "id": "hull-fc-leg-lee-radford",
+      "name": "Lee Radford",
+      "toId": "hull-fc-hist-lee-radford",
+      "reason": "Club hero, not SL legend"
+    },
+    {
+      "id": "wakefield-leg-stefan-ratchford",
+      "name": "Stefan Ratchford",
+      "toId": "wakefield-leg-stefan-ratchford",
+      "reason": "Strong fullback but not SL all-time great"
+    },
+    {
+      "id": "london-leg-paul-sykes",
+      "name": "Paul Sykes",
+      "toId": "wakefield-hist-paul-sykes",
+      "reason": "Solid kicker/centre, not legend"
+    },
+    {
+      "id": "hull-fc-leg-danny-tickle",
+      "name": "Danny Tickle",
+      "toId": "hull-fc-hist-danny-tickle",
+      "reason": "Long career, not legend calibre"
+    },
+    {
+      "id": "wigan-leg-joel-tomkins",
+      "name": "Joel Tomkins",
+      "toId": "wigan-hist-joel-tomkins",
+      "reason": "Good forward, not all-time great"
+    },
+    {
+      "id": "leeds-leg-chev-walker",
+      "name": "Chev Walker",
+      "toId": "leeds-hist-chev-walker",
+      "reason": "Leeds stalwart, not generational great"
+    },
+    {
+      "id": "castleford-leg-jon-wells",
+      "name": "Jon Wells",
+      "toId": "castleford-hist-jon-wells",
+      "reason": "Solid winger, not legend tier"
+    }
+  ],
+  "historicPlayersPromoted": [
+    {
+      "id": "sean-long",
+      "name": "Sean Long",
+      "reason": "Man of Steel 2000, Dream Team, St Helens dynasty halfback"
+    },
+    {
+      "id": "danny-mcguire",
+      "name": "Danny McGuire",
+      "reason": "Leeds Rhinos icon, 271 tries, multiple SL/CC titles, Dream Team"
+    },
+    {
+      "id": "adrian-morley",
+      "name": "Adrian Morley",
+      "reason": "4× Dream Team, SL/CC winner, 26 caps, long elite enforcer career"
+    },
+    {
+      "id": "stuart-fielden",
+      "name": "Stuart Fielden",
+      "reason": "3× Dream Team, Wigan/Bradford prop great, SL titles"
+    }
+  ],
+  "historicRecommendedForLegend": [
+    {
+      "id": "james-roby",
+      "name": "James Roby",
+      "score": 11,
+      "reason": "Honour score 11 — review for legend promotion"
+    },
+    {
+      "id": "paul-wellens",
+      "name": "Paul Wellens",
+      "score": 10,
+      "reason": "Honour score 10 — review for legend promotion"
+    },
+    {
+      "id": "james-graham",
+      "name": "James Graham",
+      "score": 9,
+      "reason": "Honour score 9 — review for legend promotion"
+    },
+    {
+      "id": "sean-oloughlin",
+      "name": "Sean O'Loughlin",
+      "score": 8,
+      "reason": "Honour score 8 — review for legend promotion"
+    },
+    {
+      "id": "iestyn-harris",
+      "name": "Iestyn Harris",
+      "score": 7,
+      "reason": "Honour score 7 — review for legend promotion"
+    },
+    {
+      "id": "keiron-cunningham",
+      "name": "Keiron Cunningham",
+      "score": 7,
+      "reason": "Honour score 7 — review for legend promotion"
+    },
+    {
+      "id": "keith-senior",
+      "name": "Keith Senior",
+      "score": 7,
+      "reason": "Honour score 7 — review for legend promotion"
+    },
+    {
+      "id": "gareth-ellis",
+      "name": "Gareth Ellis",
+      "score": 7,
+      "reason": "Honour score 7 — review for legend promotion"
+    },
+    {
+      "id": "jamie-lyon",
+      "name": "Jamie Lyon",
+      "score": 7,
+      "reason": "Honour score 7 — review for legend promotion"
+    },
+    {
+      "id": "pat-richards",
+      "name": "Pat Richards",
+      "score": 7,
+      "reason": "Honour score 7 — review for legend promotion"
+    }
+  ],
+  "ratingsChanged": [
+    {
+      "id": "sean-long",
+      "name": "Sean Long",
+      "before": 90,
+      "after": 91
+    },
+    {
+      "id": "danny-mcguire",
+      "name": "Danny McGuire",
+      "before": 90,
+      "after": 91
+    }
+  ],
+  "achievementCorrections": [
+    {
+      "id": "kevin-sinfield",
+      "fixes": [
+        "manOfSteel true → false"
+      ]
+    },
+    {
+      "id": "martin-offiah",
+      "fixes": [
+        "manOfSteel false → true"
+      ]
+    },
+    {
+      "id": "rob-burrow",
+      "fixes": [
+        "manOfSteel true → false"
+      ]
+    },
+    {
+      "id": "paul-newlove",
+      "fixes": [
+        "manOfSteel true → false"
+      ]
+    },
+    {
+      "id": "jason-robinson",
+      "fixes": [
+        "manOfSteel true → false"
+      ]
+    },
+    {
+      "id": "bradford-leg-robbie-hunter-paul",
+      "fixes": [
+        "manOfSteel true → false"
+      ]
+    }
+  ],
+  "statCorrections": [],
+  "specialAttention": {
+    "rated90Plus": [
+      {
+        "id": "ellery-hanley",
+        "name": "Ellery Hanley",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 19
+      },
+      {
+        "id": "garry-schofield",
+        "name": "Garry Schofield",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 10
+      },
+      {
+        "id": "leeds-leg-mark-calderwood",
+        "name": "Mark Calderwood",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "wigan-leg-gary-connolly",
+        "name": "Gary Connolly",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "huddersfield-leg-leroy-cudjoe",
+        "name": "Leroy Cudjoe",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "leeds-leg-francis-cummins",
+        "name": "Francis Cummins",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "leeds-leg-matt-diskin",
+        "name": "Matt Diskin",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "castleford-leg-brett-ferres",
+        "name": "Brett Ferres",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "wakefield-leg-ben-jeffries",
+        "name": "Ben Jeffries",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "wigan-leg-paul-johnson",
+        "name": "Paul Johnson",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "leeds-leg-richard-mathers",
+        "name": "Richard Mathers",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "huddersfield-leg-aaron-murphy",
+        "name": "Aaron Murphy",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "huddersfield-leg-jermaine-mcgillvary",
+        "name": "Jermaine Mcgillvary",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "wigan-leg-terry-newton",
+        "name": "Terry Newton",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "hull-fc-leg-lee-radford",
+        "name": "Lee Radford",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "london-leg-paul-sykes",
+        "name": "Paul Sykes",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "hull-fc-leg-danny-tickle",
+        "name": "Danny Tickle",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 1
+      },
+      {
+        "id": "wigan-leg-joel-tomkins",
+        "name": "Joel Tomkins",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "leeds-leg-chev-walker",
+        "name": "Chev Walker",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "castleford-leg-jon-wells",
+        "name": "Jon Wells",
+        "category": "legend",
+        "rating": 97,
+        "honourScore": 0
+      },
+      {
+        "id": "paul-sculthorpe",
+        "name": "Paul Sculthorpe",
+        "category": "legend",
+        "rating": 96,
+        "honourScore": 15
+      },
+      {
+        "id": "andrew-johns",
+        "name": "Andrew Johns",
+        "category": "legend",
+        "rating": 96,
+        "honourScore": 6
+      },
+      {
+        "id": "jason-robinson",
+        "name": "Jason Robinson",
+        "category": "legend",
+        "rating": 96,
+        "honourScore": 10
+      },
+      {
+        "id": "sam-burgess",
+        "name": "Sam Burgess",
+        "category": "legend",
+        "rating": 95,
+        "honourScore": 3
+      },
+      {
+        "id": "kevin-sinfield",
+        "name": "Kevin Sinfield",
+        "category": "legend",
+        "rating": 95,
+        "honourScore": 13
+      },
+      {
+        "id": "andy-farrell",
+        "name": "Andy Farrell",
+        "category": "legend",
+        "rating": 95,
+        "honourScore": 18
+      },
+      {
+        "id": "bradford-leg-robbie-hunter-paul",
+        "name": "Robbie Hunter-Paul",
+        "category": "legend",
+        "rating": 95,
+        "honourScore": 4
+      },
+      {
+        "id": "martin-offiah",
+        "name": "Martin Offiah",
+        "category": "legend",
+        "rating": 94,
+        "honourScore": 8
+      },
+      {
+        "id": "wigan-hist-sam-tomkins",
+        "name": "Sam Tomkins",
+        "category": "legend",
+        "rating": 94,
+        "honourScore": 14
+      },
+      {
+        "id": "jamie-peacock",
+        "name": "Jamie Peacock",
+        "category": "legend",
+        "rating": 93,
+        "honourScore": 13
+      },
+      {
+        "id": "leeds-leg-kevin-sinfield-2015",
+        "name": "Kevin Sinfield",
+        "category": "historic",
+        "rating": 93,
+        "honourScore": 6
+      },
+      {
+        "id": "rob-burrow",
+        "name": "Rob Burrow",
+        "category": "legend",
+        "rating": 92,
+        "honourScore": 7
+      },
+      {
+        "id": "paul-newlove",
+        "name": "Paul Newlove",
+        "category": "legend",
+        "rating": 92,
+        "honourScore": 5
+      },
+      {
+        "id": "lesley-vainikolo",
+        "name": "Lesley Vainikolo",
+        "category": "historic",
+        "rating": 91,
+        "honourScore": 5
+      },
+      {
+        "id": "leeds-hist-danny-mcguire-2015",
+        "name": "Danny McGuire",
+        "category": "historic",
+        "rating": 91,
+        "honourScore": 4
+      },
+      {
+        "id": "wigan-hist-sean-oloughlin-2008",
+        "name": "Sean O'Loughlin",
+        "category": "historic",
+        "rating": 91,
+        "honourScore": 4
+      },
+      {
+        "id": "bradford-hist-shontayne-hape",
+        "name": "Shontayne Hape",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 2
+      },
+      {
+        "id": "leon-pryce",
+        "name": "Leon Pryce",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 5
+      },
+      {
+        "id": "sean-long",
+        "name": "Sean Long",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 8
+      },
+      {
+        "id": "adrian-morley",
+        "name": "Adrian Morley",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 10
+      },
+      {
+        "id": "iestyn-harris",
+        "name": "Iestyn Harris",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 7
+      },
+      {
+        "id": "james-graham",
+        "name": "James Graham",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 9
+      },
+      {
+        "id": "kris-radlinski",
+        "name": "Kris Radlinski",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 6
+      },
+      {
+        "id": "paul-wellens",
+        "name": "Paul Wellens",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 10
+      },
+      {
+        "id": "keiron-cunningham",
+        "name": "Keiron Cunningham",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 7
+      },
+      {
+        "id": "james-roby",
+        "name": "James Roby",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 11
+      },
+      {
+        "id": "danny-mcguire",
+        "name": "Danny McGuire",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 6
+      },
+      {
+        "id": "jamie-jones-buchanan",
+        "name": "Jamie Jones-Buchanan",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 4
+      },
+      {
+        "id": "sean-oloughlin",
+        "name": "Sean O'Loughlin",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 8
+      },
+      {
+        "id": "lee-briers",
+        "name": "Lee Briers",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 2
+      },
+      {
+        "id": "ben-westwood",
+        "name": "Ben Westwood",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 6
+      },
+      {
+        "id": "brett-hodgson",
+        "name": "Brett Hodgson",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 5
+      },
+      {
+        "id": "michael-monaghan",
+        "name": "Michael Monaghan",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 1
+      },
+      {
+        "id": "joel-monaghan",
+        "name": "Joel Monaghan",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 2
+      },
+      {
+        "id": "tommy-martyn",
+        "name": "Tommy Martyn",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 3
+      },
+      {
+        "id": "keith-senior",
+        "name": "Keith Senior",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 7
+      },
+      {
+        "id": "stuart-fielden",
+        "name": "Stuart Fielden",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 5
+      },
+      {
+        "id": "henry-paul",
+        "name": "Henry Paul",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 3
+      },
+      {
+        "id": "tevita-vaikona",
+        "name": "Tevita Vaikona",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 4
+      },
+      {
+        "id": "gareth-ellis",
+        "name": "Gareth Ellis",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 7
+      },
+      {
+        "id": "richard-horne",
+        "name": "Richard Horne",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 2
+      },
+      {
+        "id": "eorl-crabtree",
+        "name": "Eorl Crabtree",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 2
+      },
+      {
+        "id": "danny-brough",
+        "name": "Danny Brough",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 6
+      },
+      {
+        "id": "kevin-brown",
+        "name": "Kevin Brown",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 1
+      },
+      {
+        "id": "barrie-mcdermott",
+        "name": "Barrie McDermott",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 3
+      },
+      {
+        "id": "kylie-leuluai",
+        "name": "Kylie Leuluai",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 3
+      },
+      {
+        "id": "ali-lauitiiti",
+        "name": "Ali Lauitiiti",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 4
+      },
+      {
+        "id": "matt-gidley",
+        "name": "Matt Gidley",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 0
+      },
+      {
+        "id": "jamie-lyon",
+        "name": "Jamie Lyon",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 7
+      },
+      {
+        "id": "steve-renouf",
+        "name": "Steve Renouf",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 5
+      },
+      {
+        "id": "vaaiga-tuigamala",
+        "name": "Va'aiga Tuigamala",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 2
+      },
+      {
+        "id": "shaun-edwards",
+        "name": "Shaun Edwards",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 5
+      },
+      {
+        "id": "remi-casty",
+        "name": "Remi Casty",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 3
+      },
+      {
+        "id": "thomas-bosc",
+        "name": "Thomas Bosc",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 0
+      },
+      {
+        "id": "danny-houghton",
+        "name": "Danny Houghton",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 6
+      },
+      {
+        "id": "pat-richards",
+        "name": "Pat Richards",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 7
+      },
+      {
+        "id": "brian-carney",
+        "name": "Brian Carney",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 1
+      },
+      {
+        "id": "andy-lynch",
+        "name": "Andy Lynch",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 2
+      },
+      {
+        "id": "scott-durea",
+        "name": "Scott Dureau",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 2
+      },
+      {
+        "id": "louie-mccarthy-scarsbrook",
+        "name": "Louie McCarthy-Scarsbrook",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 4
+      },
+      {
+        "id": "nick-fozzard",
+        "name": "Nick Fozzard",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 4
+      },
+      {
+        "id": "alex-murphy",
+        "name": "Alex Murphy",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 3
+      },
+      {
+        "id": "chris-joynt",
+        "name": "Chris Joynt",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 4
+      },
+      {
+        "id": "paul-anderson",
+        "name": "Paul Anderson",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 3
+      },
+      {
+        "id": "paul-clough",
+        "name": "Paul Clough",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 1
+      },
+      {
+        "id": "richard-swain",
+        "name": "Richard Swain",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 4
+      },
+      {
+        "id": "leeds-cur-kallum-watkins-2015",
+        "name": "Kallum Watkins",
+        "category": "current",
+        "rating": 90,
+        "honourScore": 3
+      },
+      {
+        "id": "leeds-leg-jamie-peacock-2015",
+        "name": "Jamie Peacock",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 6
+      },
+      {
+        "id": "wigan-hist-sean-oloughlin-2006",
+        "name": "Sean O'Loughlin",
+        "category": "historic",
+        "rating": 90,
+        "honourScore": 4
+      }
+    ],
+    "multiYearCards": [
+      "london-hist-api-pewhairangi-2018",
+      "wakefield-hist-matthew-petersen-2009",
+      "catalans-hist-thomas-bosc-2008",
+      "catalans-hist-stacey-jones-2008",
+      "catalans-hist-gregory-mounis-2008",
+      "leeds-cur-zak-hardaker-2015",
+      "leeds-cur-ash-handley-2015",
+      "leeds-cur-tom-briscoe-2015",
+      "leeds-cur-kallum-watkins-2015",
+      "leeds-hist-joel-moon-2015",
+      "leeds-hist-danny-mcguire-2015",
+      "leeds-leg-rob-burrow-2015",
+      "leeds-leg-jamie-peacock-2015",
+      "leeds-hist-kylie-leuluai-2015",
+      "leeds-hist-paul-aiton-2015",
+      "leeds-leg-jamie-jones-buchanan-2015",
+      "leeds-hist-brett-delaney-2015",
+      "leeds-leg-kevin-sinfield-2015",
+      "london-hist-alex-walker-2018",
+      "london-hist-rhys-williams-2018",
+      "london-hist-kieran-dixon-2018",
+      "london-hist-ben-hellewell-2018",
+      "london-hist-elliot-kear-2018",
+      "london-hist-jarrod-sammut-2018",
+      "london-hist-eddie-battye-2018",
+      "london-hist-mark-ioane-2018",
+      "london-hist-eloi-pelissier-2018",
+      "london-hist-jay-pitts-2018",
+      "london-hist-will-lovell-2018",
+      "london-hist-sadiq-adebiyi-2018",
+      "salford-hist-niall-evalds-2015",
+      "salford-hist-ben-jones-bishop-2015",
+      "salford-hist-greg-johnson-2015",
+      "salford-hist-oliver-gildart-2015",
+      "salford-hist-iain-thornley-2015",
+      "salford-hist-rangi-chase-2015",
+      "salford-hist-josh-wood-2015",
+      "salford-hist-olsi-krasniqi-2015",
+      "salford-hist-adrian-morley-2015",
+      "salford-hist-liam-hood-2015",
+      "salford-hist-jake-bibby-2015",
+      "salford-hist-reni-maitua-2015",
+      "salford-hist-james-greenwood-2015",
+      "wakefield-hist-matt-blaymire-2009",
+      "wakefield-hist-luke-george-2009",
+      "wakefield-hist-damien-blanch-2009",
+      "wakefield-hist-aaron-murphy-2009",
+      "wakefield-hist-ryan-atkins-2009",
+      "wakefield-hist-jamie-rooney-2009",
+      "wakefield-hist-danny-brough-2009",
+      "wakefield-hist-ricky-bibey-2009",
+      "wakefield-hist-sam-obst-2009",
+      "wakefield-hist-steve-snitch-2009",
+      "wakefield-hist-oliver-wilkes-2009",
+      "wigan-hist-kris-radlinski-2006",
+      "wigan-hist-mark-calderwood-2006",
+      "wigan-hist-brett-dallas-2006",
+      "wigan-hist-pat-richards-2006",
+      "wigan-hist-sean-gleeson-2006",
+      "wigan-hist-kevin-brown-2006",
+      "wigan-hist-dennis-moran-2006",
+      "wigan-hist-stuart-fielden-2006",
+      "wigan-hist-scott-logan-2006",
+      "wigan-hist-michael-mcilorum-2006",
+      "wigan-hist-mickey-higham-2006",
+      "wigan-hist-gareth-hock-2006",
+      "wigan-hist-sean-oloughlin-2006",
+      "wigan-hist-richie-mathers-2008",
+      "wigan-hist-pat-richards-2008",
+      "wigan-hist-trent-barrett-2008",
+      "wigan-hist-karl-pryce-2008",
+      "wigan-hist-sam-tomkins-2008",
+      "wigan-hist-thomas-leuluai-2008",
+      "wigan-hist-stuart-fielden-2008",
+      "wigan-hist-lee-mossop-2008",
+      "wigan-hist-michael-mcilorum-2008",
+      "wigan-hist-joel-tomkins-2008",
+      "wigan-hist-gareth-hock-2008",
+      "wigan-hist-sean-oloughlin-2008",
+      "wakefield-hist-danny-sculthorpe-2009",
+      "wigan-hist-cameron-phelps-2008"
+    ]
+  }
+}

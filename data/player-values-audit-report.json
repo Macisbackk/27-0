@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-06-22T06:47:37.691Z",
+  "generatedAt": "2026-06-22T07:19:04.687Z",
   "summary": {
-    "playersAudited": 1753,
+    "playersAudited": 1752,
     "mismatches": 0,
     "invertedPeers": 0,
     "outOfBand": 0
@@ -14,88 +14,88 @@
       "value": 650000
     },
     {
-      "id": "wakefield-leg-ben-jeffries",
-      "name": "Ben Jeffries",
-      "rating": 97,
-      "value": 644000
-    },
-    {
-      "id": "leeds-leg-richard-mathers",
-      "name": "Richard Mathers",
-      "rating": 97,
-      "value": 638000
-    },
-    {
-      "id": "leeds-leg-chev-walker",
-      "name": "Chev Walker",
-      "rating": 97,
-      "value": 631000
-    },
-    {
-      "id": "wigan-leg-gary-connolly",
-      "name": "Gary Connolly",
-      "rating": 97,
-      "value": 631000
-    },
-    {
-      "id": "huddersfield-leg-leroy-cudjoe",
-      "name": "Leroy Cudjoe",
-      "rating": 97,
-      "value": 631000
-    },
-    {
-      "id": "london-leg-paul-sykes",
-      "name": "Paul Sykes",
-      "rating": 97,
-      "value": 631000
-    },
-    {
-      "id": "wigan-leg-paul-johnson",
-      "name": "Paul Johnson",
-      "rating": 97,
-      "value": 631000
-    },
-    {
       "id": "ellery-hanley",
       "name": "Ellery Hanley",
       "rating": 97,
       "value": 631000
     },
     {
-      "id": "huddersfield-leg-aaron-murphy",
-      "name": "Aaron Murphy",
-      "rating": 97,
-      "value": 625000
+      "id": "andrew-johns",
+      "name": "Andrew Johns",
+      "rating": 96,
+      "value": 580000
     },
     {
-      "id": "leeds-leg-francis-cummins",
-      "name": "Francis Cummins",
-      "rating": 97,
-      "value": 625000
+      "id": "paul-sculthorpe",
+      "name": "Paul Sculthorpe",
+      "rating": 96,
+      "value": 563000
     },
     {
-      "id": "huddersfield-leg-jermaine-mcgillvary",
-      "name": "Jermaine Mcgillvary",
-      "rating": 97,
-      "value": 625000
+      "id": "jason-robinson",
+      "name": "Jason Robinson",
+      "rating": 96,
+      "value": 563000
     },
     {
-      "id": "leeds-leg-mark-calderwood",
-      "name": "Mark Calderwood",
-      "rating": 97,
-      "value": 625000
+      "id": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "rating": 95,
+      "value": 515000
     },
     {
-      "id": "castleford-leg-jon-wells",
-      "name": "Jon Wells",
-      "rating": 97,
-      "value": 625000
+      "id": "kevin-sinfield",
+      "name": "Kevin Sinfield",
+      "rating": 95,
+      "value": 500000
     },
     {
-      "id": "leeds-leg-matt-diskin",
-      "name": "Matt Diskin",
-      "rating": 97,
-      "value": 619000
+      "id": "wigan-hist-sam-tomkins",
+      "name": "Sam Tomkins",
+      "rating": 94,
+      "value": 500000
+    },
+    {
+      "id": "sam-burgess",
+      "name": "Sam Burgess",
+      "rating": 95,
+      "value": 500000
+    },
+    {
+      "id": "andy-farrell",
+      "name": "Andy Farrell",
+      "rating": 95,
+      "value": 500000
+    },
+    {
+      "id": "martin-offiah",
+      "name": "Martin Offiah",
+      "rating": 94,
+      "value": 500000
+    },
+    {
+      "id": "wigan-cur-bevan-french",
+      "name": "Bevan French",
+      "rating": 93,
+      "value": 465000
+    },
+    {
+      "id": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "rating": 93,
+      "value": 429000
+    },
+    {
+      "id": "rob-burrow",
+      "name": "Rob Burrow",
+      "rating": 92,
+      "value": 386000
+    },
+    {
+      "id": "paul-newlove",
+      "name": "Paul Newlove",
+      "rating": 92,
+      "value": 379000
     }
   ],
   "lowValue": [

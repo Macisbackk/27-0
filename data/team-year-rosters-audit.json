@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-21T21:19:47.018Z",
+  "generatedAt": "2026-06-22T07:19:02.873Z",
   "sources": [
     "Player yearsActive spans (Super League 1996+, current-squads, historic-players, legends)",
     "Secondary clubs via clubsPlayedFor + club-career-spans.json",
@@ -7,8 +7,8 @@
     "Manual SL verified squads (sl-era-verified-squads.json)"
   ],
   "minPlayers": 13,
-  "playableCount": 476,
-  "incompleteCount": 83,
+  "playableCount": 472,
+  "incompleteCount": 87,
   "playable": [
     {
       "team": "Bradford Bulls",
@@ -62,11 +62,6 @@
     },
     {
       "team": "Bradford Bulls",
-      "year": "2006",
-      "count": 13
-    },
-    {
-      "team": "Bradford Bulls",
       "year": "2007",
       "count": 80
     },
@@ -74,11 +69,6 @@
       "team": "Bradford Bulls",
       "year": "2008",
       "count": 80
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2009",
-      "count": 13
     },
     {
       "team": "Bradford Bulls",
@@ -168,67 +158,67 @@
     {
       "team": "Castleford Tigers",
       "year": "1996",
-      "count": 49
+      "count": 48
     },
     {
       "team": "Castleford Tigers",
       "year": "1997",
-      "count": 58
+      "count": 57
     },
     {
       "team": "Castleford Tigers",
       "year": "1998",
-      "count": 63
+      "count": 62
     },
     {
       "team": "Castleford Tigers",
       "year": "1999",
-      "count": 67
+      "count": 66
     },
     {
       "team": "Castleford Tigers",
       "year": "2000",
-      "count": 74
+      "count": 73
     },
     {
       "team": "Castleford Tigers",
       "year": "2001",
-      "count": 81
+      "count": 80
     },
     {
       "team": "Castleford Tigers",
       "year": "2002",
-      "count": 82
+      "count": 81
     },
     {
       "team": "Castleford Tigers",
       "year": "2003",
-      "count": 83
+      "count": 82
     },
     {
       "team": "Castleford Tigers",
       "year": "2004",
-      "count": 91
+      "count": 89
     },
     {
       "team": "Castleford Tigers",
       "year": "2005",
-      "count": 92
+      "count": 90
     },
     {
       "team": "Castleford Tigers",
       "year": "2006",
-      "count": 93
+      "count": 91
     },
     {
       "team": "Castleford Tigers",
       "year": "2007",
-      "count": 101
+      "count": 99
     },
     {
       "team": "Castleford Tigers",
       "year": "2008",
-      "count": 103
+      "count": 101
     },
     {
       "team": "Castleford Tigers",
@@ -238,12 +228,12 @@
     {
       "team": "Castleford Tigers",
       "year": "2010",
-      "count": 111
+      "count": 109
     },
     {
       "team": "Castleford Tigers",
       "year": "2011",
-      "count": 113
+      "count": 111
     },
     {
       "team": "Castleford Tigers",
@@ -253,17 +243,17 @@
     {
       "team": "Castleford Tigers",
       "year": "2013",
-      "count": 112
+      "count": 110
     },
     {
       "team": "Castleford Tigers",
       "year": "2014",
-      "count": 112
+      "count": 110
     },
     {
       "team": "Castleford Tigers",
       "year": "2015",
-      "count": 104
+      "count": 103
     },
     {
       "team": "Castleford Tigers",
@@ -273,32 +263,32 @@
     {
       "team": "Castleford Tigers",
       "year": "2017",
-      "count": 93
+      "count": 92
     },
     {
       "team": "Castleford Tigers",
       "year": "2018",
-      "count": 97
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2019",
       "count": 96
     },
     {
       "team": "Castleford Tigers",
+      "year": "2019",
+      "count": 95
+    },
+    {
+      "team": "Castleford Tigers",
       "year": "2020",
-      "count": 94
+      "count": 93
     },
     {
       "team": "Castleford Tigers",
       "year": "2021",
-      "count": 95
+      "count": 94
     },
     {
       "team": "Castleford Tigers",
       "year": "2022",
-      "count": 95
+      "count": 94
     },
     {
       "team": "Castleford Tigers",
@@ -508,37 +498,37 @@
     {
       "team": "Huddersfield Giants",
       "year": "2006",
-      "count": 94
+      "count": 91
     },
     {
       "team": "Huddersfield Giants",
       "year": "2007",
-      "count": 97
+      "count": 94
     },
     {
       "team": "Huddersfield Giants",
       "year": "2008",
-      "count": 103
+      "count": 100
     },
     {
       "team": "Huddersfield Giants",
       "year": "2009",
-      "count": 107
+      "count": 104
     },
     {
       "team": "Huddersfield Giants",
       "year": "2010",
-      "count": 108
+      "count": 105
     },
     {
       "team": "Huddersfield Giants",
       "year": "2011",
-      "count": 108
+      "count": 105
     },
     {
       "team": "Huddersfield Giants",
       "year": "2012",
-      "count": 105
+      "count": 102
     },
     {
       "team": "Huddersfield Giants",
@@ -548,57 +538,57 @@
     {
       "team": "Huddersfield Giants",
       "year": "2014",
-      "count": 103
+      "count": 100
     },
     {
       "team": "Huddersfield Giants",
       "year": "2015",
-      "count": 98
+      "count": 95
     },
     {
       "team": "Huddersfield Giants",
       "year": "2016",
-      "count": 91
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "2017",
       "count": 88
     },
     {
       "team": "Huddersfield Giants",
+      "year": "2017",
+      "count": 85
+    },
+    {
+      "team": "Huddersfield Giants",
       "year": "2018",
-      "count": 82
+      "count": 79
     },
     {
       "team": "Huddersfield Giants",
       "year": "2019",
-      "count": 79
+      "count": 76
     },
     {
       "team": "Huddersfield Giants",
       "year": "2020",
-      "count": 78
+      "count": 75
     },
     {
       "team": "Huddersfield Giants",
       "year": "2021",
-      "count": 75
+      "count": 72
     },
     {
       "team": "Huddersfield Giants",
       "year": "2022",
-      "count": 77
+      "count": 74
     },
     {
       "team": "Huddersfield Giants",
       "year": "2023",
-      "count": 75
+      "count": 72
     },
     {
       "team": "Huddersfield Giants",
       "year": "2024",
-      "count": 79
+      "count": 76
     },
     {
       "team": "Huddersfield Giants",
@@ -618,62 +608,62 @@
     {
       "team": "Hull FC",
       "year": "1997",
-      "count": 56
+      "count": 55
     },
     {
       "team": "Hull FC",
       "year": "1998",
-      "count": 59
+      "count": 58
     },
     {
       "team": "Hull FC",
       "year": "1999",
-      "count": 67
+      "count": 66
     },
     {
       "team": "Hull FC",
       "year": "2000",
-      "count": 70
+      "count": 69
     },
     {
       "team": "Hull FC",
       "year": "2001",
-      "count": 74
+      "count": 72
     },
     {
       "team": "Hull FC",
       "year": "2002",
-      "count": 79
+      "count": 77
     },
     {
       "team": "Hull FC",
       "year": "2003",
-      "count": 82
+      "count": 80
     },
     {
       "team": "Hull FC",
       "year": "2004",
-      "count": 87
+      "count": 85
     },
     {
       "team": "Hull FC",
       "year": "2005",
-      "count": 91
+      "count": 89
     },
     {
       "team": "Hull FC",
       "year": "2006",
-      "count": 95
+      "count": 93
     },
     {
       "team": "Hull FC",
       "year": "2007",
-      "count": 95
+      "count": 93
     },
     {
       "team": "Hull FC",
       "year": "2008",
-      "count": 94
+      "count": 92
     },
     {
       "team": "Hull FC",
@@ -683,12 +673,12 @@
     {
       "team": "Hull FC",
       "year": "2010",
-      "count": 97
+      "count": 95
     },
     {
       "team": "Hull FC",
       "year": "2011",
-      "count": 95
+      "count": 93
     },
     {
       "team": "Hull FC",
@@ -703,32 +693,32 @@
     {
       "team": "Hull FC",
       "year": "2014",
-      "count": 92
+      "count": 90
     },
     {
       "team": "Hull FC",
       "year": "2015",
-      "count": 87
-    },
-    {
-      "team": "Hull FC",
-      "year": "2016",
-      "count": 84
-    },
-    {
-      "team": "Hull FC",
-      "year": "2017",
       "count": 85
     },
     {
       "team": "Hull FC",
+      "year": "2016",
+      "count": 83
+    },
+    {
+      "team": "Hull FC",
+      "year": "2017",
+      "count": 84
+    },
+    {
+      "team": "Hull FC",
       "year": "2018",
-      "count": 79
+      "count": 78
     },
     {
       "team": "Hull FC",
       "year": "2019",
-      "count": 77
+      "count": 76
     },
     {
       "team": "Hull FC",
@@ -893,62 +883,62 @@
     {
       "team": "Leeds Rhinos",
       "year": "1996",
-      "count": 114
+      "count": 113
     },
     {
       "team": "Leeds Rhinos",
       "year": "1997",
-      "count": 116
+      "count": 115
     },
     {
       "team": "Leeds Rhinos",
       "year": "1998",
-      "count": 129
+      "count": 128
     },
     {
       "team": "Leeds Rhinos",
       "year": "1999",
-      "count": 137
+      "count": 135
     },
     {
       "team": "Leeds Rhinos",
       "year": "2000",
-      "count": 143
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "2001",
-      "count": 151
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "2002",
-      "count": 154
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "2003",
-      "count": 154
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "2004",
-      "count": 151
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "2005",
-      "count": 145
-    },
-    {
-      "team": "Leeds Rhinos",
-      "year": "2006",
       "count": 139
     },
     {
       "team": "Leeds Rhinos",
+      "year": "2001",
+      "count": 146
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2002",
+      "count": 149
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2003",
+      "count": 149
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2004",
+      "count": 146
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2005",
+      "count": 140
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2006",
+      "count": 134
+    },
+    {
+      "team": "Leeds Rhinos",
       "year": "2007",
-      "count": 138
+      "count": 133
     },
     {
       "team": "Leeds Rhinos",
@@ -963,17 +953,17 @@
     {
       "team": "Leeds Rhinos",
       "year": "2010",
-      "count": 128
+      "count": 123
     },
     {
       "team": "Leeds Rhinos",
       "year": "2011",
-      "count": 120
+      "count": 115
     },
     {
       "team": "Leeds Rhinos",
       "year": "2012",
-      "count": 121
+      "count": 116
     },
     {
       "team": "Leeds Rhinos",
@@ -983,7 +973,7 @@
     {
       "team": "Leeds Rhinos",
       "year": "2014",
-      "count": 106
+      "count": 102
     },
     {
       "team": "Leeds Rhinos",
@@ -998,17 +988,17 @@
     {
       "team": "Leeds Rhinos",
       "year": "2017",
-      "count": 97
+      "count": 93
     },
     {
       "team": "Leeds Rhinos",
       "year": "2018",
-      "count": 106
+      "count": 103
     },
     {
       "team": "Leeds Rhinos",
       "year": "2019",
-      "count": 85
+      "count": 84
     },
     {
       "team": "Leeds Rhinos",
@@ -1143,7 +1133,7 @@
     {
       "team": "Leigh Leopards",
       "year": "2015",
-      "count": 152
+      "count": 151
     },
     {
       "team": "Leigh Leopards",
@@ -1898,62 +1888,57 @@
     {
       "team": "Wakefield Trinity",
       "year": "1998",
-      "count": 93
+      "count": 92
     },
     {
       "team": "Wakefield Trinity",
       "year": "1999",
-      "count": 108
+      "count": 107
     },
     {
       "team": "Wakefield Trinity",
       "year": "2000",
-      "count": 114
+      "count": 113
     },
     {
       "team": "Wakefield Trinity",
       "year": "2001",
-      "count": 120
+      "count": 119
     },
     {
       "team": "Wakefield Trinity",
       "year": "2002",
-      "count": 125
+      "count": 124
     },
     {
       "team": "Wakefield Trinity",
       "year": "2003",
-      "count": 132
+      "count": 131
     },
     {
       "team": "Wakefield Trinity",
       "year": "2004",
-      "count": 136
+      "count": 135
     },
     {
       "team": "Wakefield Trinity",
       "year": "2005",
-      "count": 144
+      "count": 143
     },
     {
       "team": "Wakefield Trinity",
       "year": "2006",
-      "count": 153
+      "count": 152
     },
     {
       "team": "Wakefield Trinity",
       "year": "2007",
-      "count": 150
+      "count": 149
     },
     {
       "team": "Wakefield Trinity",
       "year": "2008",
-      "count": 153
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "2009",
-      "count": 13
+      "count": 152
     },
     {
       "team": "Wakefield Trinity",
@@ -1963,32 +1948,32 @@
     {
       "team": "Wakefield Trinity",
       "year": "2011",
-      "count": 163
+      "count": 162
     },
     {
       "team": "Wakefield Trinity",
       "year": "2012",
-      "count": 164
+      "count": 163
     },
     {
       "team": "Wakefield Trinity",
       "year": "2013",
-      "count": 159
+      "count": 158
     },
     {
       "team": "Wakefield Trinity",
       "year": "2014",
-      "count": 152
+      "count": 151
     },
     {
       "team": "Wakefield Trinity",
       "year": "2015",
-      "count": 150
+      "count": 149
     },
     {
       "team": "Wakefield Trinity",
       "year": "2016",
-      "count": 146
+      "count": 145
     },
     {
       "team": "Wakefield Trinity",
@@ -2223,52 +2208,52 @@
     {
       "team": "Wigan Warriors",
       "year": "1996",
-      "count": 62
+      "count": 59
     },
     {
       "team": "Wigan Warriors",
       "year": "1997",
-      "count": 64
+      "count": 61
     },
     {
       "team": "Wigan Warriors",
       "year": "1998",
-      "count": 67
+      "count": 64
     },
     {
       "team": "Wigan Warriors",
       "year": "1999",
-      "count": 75
+      "count": 72
     },
     {
       "team": "Wigan Warriors",
       "year": "2000",
-      "count": 77
+      "count": 74
     },
     {
       "team": "Wigan Warriors",
       "year": "2001",
-      "count": 77
+      "count": 74
     },
     {
       "team": "Wigan Warriors",
       "year": "2002",
-      "count": 79
+      "count": 76
     },
     {
       "team": "Wigan Warriors",
       "year": "2003",
-      "count": 83
+      "count": 80
     },
     {
       "team": "Wigan Warriors",
       "year": "2004",
-      "count": 83
+      "count": 80
     },
     {
       "team": "Wigan Warriors",
       "year": "2005",
-      "count": 89
+      "count": 85
     },
     {
       "team": "Wigan Warriors",
@@ -2278,42 +2263,37 @@
     {
       "team": "Wigan Warriors",
       "year": "2007",
-      "count": 88
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "2008",
-      "count": 13
+      "count": 84
     },
     {
       "team": "Wigan Warriors",
       "year": "2009",
-      "count": 88
+      "count": 85
     },
     {
       "team": "Wigan Warriors",
       "year": "2010",
-      "count": 83
+      "count": 80
     },
     {
       "team": "Wigan Warriors",
       "year": "2011",
-      "count": 81
+      "count": 78
     },
     {
       "team": "Wigan Warriors",
       "year": "2012",
-      "count": 79
+      "count": 76
     },
     {
       "team": "Wigan Warriors",
       "year": "2013",
-      "count": 77
+      "count": 74
     },
     {
       "team": "Wigan Warriors",
       "year": "2014",
-      "count": 73
+      "count": 70
     },
     {
       "team": "Wigan Warriors",
@@ -2328,37 +2308,37 @@
     {
       "team": "Wigan Warriors",
       "year": "2017",
-      "count": 61
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "2018",
-      "count": 57
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "2019",
-      "count": 57
-    },
-    {
-      "team": "Wigan Warriors",
-      "year": "2020",
       "count": 60
     },
     {
       "team": "Wigan Warriors",
+      "year": "2018",
+      "count": 56
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2019",
+      "count": 56
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2020",
+      "count": 59
+    },
+    {
+      "team": "Wigan Warriors",
       "year": "2021",
-      "count": 58
+      "count": 57
     },
     {
       "team": "Wigan Warriors",
       "year": "2022",
-      "count": 55
+      "count": 54
     },
     {
       "team": "Wigan Warriors",
       "year": "2023",
-      "count": 57
+      "count": 56
     },
     {
       "team": "Wigan Warriors",
@@ -2392,6 +2372,18 @@
     }
   ],
   "incomplete": [
+    {
+      "team": "Bradford Bulls",
+      "year": "2006",
+      "count": 13,
+      "reason": "missing HOOKER coverage (0/1)"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2009",
+      "count": 13,
+      "reason": "missing HOOKER coverage (0/1)"
+    },
     {
       "team": "Catalans Dragons",
       "year": "1996",
@@ -2567,6 +2559,12 @@
       "reason": "missing LOOSE_FORWARD coverage (0/1)"
     },
     {
+      "team": "Wakefield Trinity",
+      "year": "2009",
+      "count": 13,
+      "reason": "missing CENTRE coverage (1/2)"
+    },
+    {
       "team": "Warrington Wolves",
       "year": "2009",
       "count": 58,
@@ -2721,6 +2719,12 @@
       "year": "2026",
       "count": 35,
       "reason": "missing FULLBACK coverage (0/1)"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2008",
+      "count": 13,
+      "reason": "unknown"
     },
     {
       "team": "York Knights",

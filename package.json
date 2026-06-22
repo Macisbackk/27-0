@@ -44,6 +44,8 @@
     "validate:values": "tsx scripts/audit-player-values.ts",
     "audit:ratings": "tsx scripts/audit-player-ratings-and-year-cards.ts --apply",
     "audit:ratings:report": "tsx scripts/audit-player-ratings-and-year-cards.ts",
+    "audit:legends": "tsx scripts/audit-legend-tier.ts --apply",
+    "audit:legends:report": "tsx scripts/audit-legend-tier.ts",
     "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts"
   },
   "dependencies": {

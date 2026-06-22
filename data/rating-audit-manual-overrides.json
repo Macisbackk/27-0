@@ -1,166 +1,22 @@
 {
-  "generatedAt": "2026-06-22T06:47:00.685Z",
-  "overrideCount": 99,
+  "generatedAt": "2026-06-22T07:19:01.056Z",
+  "overrideCount": 103,
   "jsonSynced": [
     {
-      "playerId": "wigan-cur-harry-smith",
-      "name": "Harry Smith",
+      "playerId": "huddersfield-hist-jermaine-mcgillvary",
+      "name": "Jermaine McGillvary",
       "kind": "override_json_sync",
-      "message": "JSON rating 90 synced to override 88",
+      "message": "JSON rating 90 synced to override 89",
       "before": 90,
-      "after": 88
+      "after": 89
     },
     {
-      "playerId": "wigan-cur-kaide-ellis",
-      "name": "Kaide Ellis",
+      "playerId": "hull-fc-hist-lee-radford",
+      "name": "Lee Radford",
       "kind": "override_json_sync",
       "message": "JSON rating 90 synced to override 85",
       "before": 90,
       "after": 85
-    },
-    {
-      "playerId": "st-helens-cur-jack-welsby",
-      "name": "Jack Welsby",
-      "kind": "override_json_sync",
-      "message": "JSON rating 90 synced to override 88",
-      "before": 90,
-      "after": 88
-    },
-    {
-      "playerId": "leeds-cur-harry-newman",
-      "name": "Harry Newman",
-      "kind": "override_json_sync",
-      "message": "JSON rating 90 synced to override 87",
-      "before": 90,
-      "after": 87
-    },
-    {
-      "playerId": "leeds-cur-kallum-watkins",
-      "name": "Kallum Watkins",
-      "kind": "override_json_sync",
-      "message": "JSON rating 90 synced to override 87",
-      "before": 90,
-      "after": 87
-    },
-    {
-      "playerId": "leeds-cur-cameron-smith",
-      "name": "Cameron Smith",
-      "kind": "override_json_sync",
-      "message": "JSON rating 89 synced to override 88",
-      "before": 89,
-      "after": 88
-    },
-    {
-      "playerId": "warrington-cur-danny-walker",
-      "name": "Danny Walker",
-      "kind": "override_json_sync",
-      "message": "JSON rating 89 synced to override 86",
-      "before": 89,
-      "after": 86
-    },
-    {
-      "playerId": "bradford-cur-esan-marsters",
-      "name": "Esan Marsters",
-      "kind": "override_json_sync",
-      "message": "JSON rating 88 synced to override 86",
-      "before": 88,
-      "after": 86
-    },
-    {
-      "playerId": "bradford-cur-waqa-blake",
-      "name": "Waqa Blake",
-      "kind": "override_json_sync",
-      "message": "JSON rating 88 synced to override 87",
-      "before": 88,
-      "after": 87
-    },
-    {
-      "playerId": "hull-kr-cur-peta-hiku",
-      "name": "Peta Hiku",
-      "kind": "override_json_sync",
-      "message": "JSON rating 90 synced to override 88",
-      "before": 90,
-      "after": 88
-    },
-    {
-      "playerId": "hull-fc-cur-herman-eseese",
-      "name": "Herman Ese'ese",
-      "kind": "override_json_sync",
-      "message": "JSON rating 90 synced to override 88",
-      "before": 90,
-      "after": 88
-    },
-    {
-      "playerId": "wakefield-cur-jake-trueman",
-      "name": "Jake Trueman",
-      "kind": "override_json_sync",
-      "message": "JSON rating 89 synced to override 87",
-      "before": 89,
-      "after": 87
-    },
-    {
-      "playerId": "huddersfield-cur-thomas-burgess",
-      "name": "Tom Burgess",
-      "kind": "override_json_sync",
-      "message": "JSON rating 90 synced to override 86",
-      "before": 90,
-      "after": 86
-    },
-    {
-      "playerId": "catalans-cur-benjamin-garcia",
-      "name": "Benjamin Garcia",
-      "kind": "override_json_sync",
-      "message": "JSON rating 89 synced to override 88",
-      "before": 89,
-      "after": 88
-    },
-    {
-      "playerId": "york-cur-paul-vaughan",
-      "name": "Paul Vaughan",
-      "kind": "override_json_sync",
-      "message": "JSON rating 89 synced to override 88",
-      "before": 89,
-      "after": 88
-    },
-    {
-      "playerId": "hull-fc-cur-jake-clifford",
-      "name": "Jake Clifford",
-      "kind": "override_json_sync",
-      "message": "JSON rating 90 synced to override 84",
-      "before": 90,
-      "after": 84
-    },
-    {
-      "playerId": "hull-fc-cur-jordan-rapana",
-      "name": "Jordan Rapana",
-      "kind": "override_json_sync",
-      "message": "JSON rating 90 synced to override 86",
-      "before": 90,
-      "after": 86
-    },
-    {
-      "playerId": "catalans-cur-tevita-pangai-jr",
-      "name": "Tevita Pangai Jr",
-      "kind": "override_json_sync",
-      "message": "JSON rating 90 synced to override 86",
-      "before": 90,
-      "after": 86
-    },
-    {
-      "playerId": "huddersfield-hist-leroy-cudjoe",
-      "name": "Leroy Cudjoe",
-      "kind": "override_json_sync",
-      "message": "JSON rating 84 synced to override 87",
-      "before": 84,
-      "after": 87
-    },
-    {
-      "playerId": "wakefield-leg-stefan-ratchford",
-      "name": "Stefan Ratchford",
-      "kind": "override_json_sync",
-      "message": "JSON rating 97 synced to override 88",
-      "before": 97,
-      "after": 88
     }
   ],
   "highRatingSuggestions": [
@@ -227,6 +83,22 @@
     {
       "id": "sam-burgess",
       "rating": 95
+    },
+    {
+      "id": "sean-long",
+      "rating": 91
+    },
+    {
+      "id": "danny-mcguire",
+      "rating": 91
+    },
+    {
+      "id": "adrian-morley",
+      "rating": 90
+    },
+    {
+      "id": "stuart-fielden",
+      "rating": 90
     },
     {
       "id": "bradford-hist-karl-pryce",

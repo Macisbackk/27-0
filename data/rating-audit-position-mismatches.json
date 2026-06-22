@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-22T06:47:00.685Z",
+  "generatedAt": "2026-06-22T07:19:01.056Z",
   "positionMismatches": [
     {
       "playerId": "bradford-leg-robbie-hunter-paul",
@@ -86,7 +86,7 @@
       "message": "Bradford Bulls 1999: natural STAND_OFF ≠ Wikipedia slot WING"
     },
     {
-      "playerId": "hull-fc-leg-lee-radford",
+      "playerId": "hull-fc-hist-lee-radford",
       "name": "Lee Radford",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 1999: natural SECOND_ROW ≠ Wikipedia slot WING"
@@ -128,7 +128,7 @@
       "message": "Bradford Bulls 2000: natural STAND_OFF ≠ Wikipedia slot CENTRE"
     },
     {
-      "playerId": "hull-fc-leg-lee-radford",
+      "playerId": "hull-fc-hist-lee-radford",
       "name": "Lee Radford",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 2000: natural SECOND_ROW ≠ Wikipedia slot PROP"
@@ -170,7 +170,7 @@
       "message": "Bradford Bulls 2001: natural STAND_OFF ≠ Wikipedia slot CENTRE"
     },
     {
-      "playerId": "hull-fc-leg-lee-radford",
+      "playerId": "hull-fc-hist-lee-radford",
       "name": "Lee Radford",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 2001: natural SECOND_ROW ≠ Wikipedia slot PROP"
@@ -236,7 +236,7 @@
       "message": "Bradford Bulls 2003: natural HOOKER ≠ Wikipedia slot STAND_OFF"
     },
     {
-      "playerId": "hull-fc-leg-lee-radford",
+      "playerId": "hull-fc-hist-lee-radford",
       "name": "Lee Radford",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 2003: natural SECOND_ROW ≠ Wikipedia slot PROP"
@@ -290,13 +290,13 @@
       "message": "Bradford Bulls 2005: natural PROP ≠ Wikipedia slot SECOND_ROW"
     },
     {
-      "playerId": "wigan-leg-paul-johnson",
+      "playerId": "wigan-hist-paul-johnson",
       "name": "Paul Johnson",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 2005: natural CENTRE ≠ Wikipedia slot SECOND_ROW"
     },
     {
-      "playerId": "wigan-leg-paul-johnson",
+      "playerId": "wigan-hist-paul-johnson",
       "name": "Paul Johnson",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 2006: natural CENTRE ≠ Wikipedia slot SECOND_ROW"
@@ -308,19 +308,19 @@
       "message": "Bradford Bulls 2006: natural PROP ≠ Wikipedia slot LOOSE_FORWARD"
     },
     {
-      "playerId": "wakefield-leg-ben-jeffries",
+      "playerId": "wakefield-hist-ben-jeffries",
       "name": "Ben Jeffries",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 2009: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
     },
     {
-      "playerId": "wakefield-leg-ben-jeffries",
+      "playerId": "wakefield-hist-ben-jeffries",
       "name": "Ben Jeffries",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 2011: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
     },
     {
-      "playerId": "wakefield-leg-ben-jeffries",
+      "playerId": "wakefield-hist-ben-jeffries",
       "name": "Ben Jeffries",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 2012: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
@@ -338,7 +338,7 @@
       "message": "Bradford Bulls 2013: natural FULLBACK ≠ Wikipedia slot CENTRE"
     },
     {
-      "playerId": "leeds-leg-chev-walker",
+      "playerId": "leeds-hist-chev-walker",
       "name": "Chev Walker",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 2013: natural CENTRE ≠ Wikipedia slot SECOND_ROW"
@@ -350,7 +350,7 @@
       "message": "Bradford Bulls 2014: natural SECOND_ROW ≠ Wikipedia slot PROP"
     },
     {
-      "playerId": "leeds-leg-chev-walker",
+      "playerId": "leeds-hist-chev-walker",
       "name": "Chev Walker",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 2014: natural CENTRE ≠ Wikipedia slot SECOND_ROW"
@@ -398,7 +398,7 @@
       "message": "Bradford Bulls 2021: natural LOOSE_FORWARD ≠ Wikipedia slot HOOKER"
     },
     {
-      "playerId": "huddersfield-leg-aaron-murphy",
+      "playerId": "huddersfield-hist-aaron-murphy",
       "name": "Aaron Murphy",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 2021: natural WING ≠ Wikipedia slot SECOND_ROW"
@@ -422,7 +422,7 @@
       "message": "Bradford Bulls 2022: natural PROP ≠ Wikipedia slot HOOKER"
     },
     {
-      "playerId": "huddersfield-leg-aaron-murphy",
+      "playerId": "huddersfield-hist-aaron-murphy",
       "name": "Aaron Murphy",
       "kind": "era_slot_vs_natural",
       "message": "Bradford Bulls 2022: natural WING ≠ Wikipedia slot SECOND_ROW"
@@ -722,13 +722,13 @@
       "message": "Castleford Tigers 2016: natural PROP ≠ Wikipedia slot SECOND_ROW"
     },
     {
-      "playerId": "huddersfield-leg-aaron-murphy",
+      "playerId": "huddersfield-hist-aaron-murphy",
       "name": "Aaron Murphy",
       "kind": "era_slot_vs_natural",
       "message": "Wakefield Trinity 2010: natural WING ≠ Wikipedia slot CENTRE"
     },
     {
-      "playerId": "wakefield-leg-ben-jeffries",
+      "playerId": "wakefield-hist-ben-jeffries",
       "name": "Ben Jeffries",
       "kind": "era_slot_vs_natural",
       "message": "Wakefield Trinity 2010: natural SCRUM_HALF ≠ Wikipedia slot STAND_OFF"
@@ -740,7 +740,7 @@
       "message": "Wakefield Trinity 2010: natural STAND_OFF ≠ Wikipedia slot SCRUM_HALF"
     },
     {
-      "playerId": "wigan-leg-paul-johnson",
+      "playerId": "wigan-hist-paul-johnson",
       "name": "Paul Johnson",
       "kind": "era_slot_vs_natural",
       "message": "Wakefield Trinity 2010: natural CENTRE ≠ Wikipedia slot SECOND_ROW"

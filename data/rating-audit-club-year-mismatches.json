@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-22T06:47:00.685Z",
+  "generatedAt": "2026-06-22T07:19:01.056Z",
   "clubYearMismatches": [
     {
       "playerId": "huddersfield-hist-jeff-wittenberg",
@@ -50,13 +50,13 @@
       "message": "In Bradford Bulls 1999 squad but primary club is St Helens"
     },
     {
-      "playerId": "hull-fc-leg-lee-radford",
+      "playerId": "hull-fc-hist-lee-radford",
       "name": "Lee Radford",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 1999 squad but primary club is Hull FC"
     },
     {
-      "playerId": "london-leg-paul-sykes",
+      "playerId": "wakefield-hist-paul-sykes",
       "name": "Paul Sykes",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 1999 squad but primary club is London Broncos"
@@ -80,13 +80,13 @@
       "message": "In Bradford Bulls 2000 squad but primary club is St Helens"
     },
     {
-      "playerId": "london-leg-paul-sykes",
+      "playerId": "wakefield-hist-paul-sykes",
       "name": "Paul Sykes",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2000 squad but primary club is London Broncos"
     },
     {
-      "playerId": "hull-fc-leg-lee-radford",
+      "playerId": "hull-fc-hist-lee-radford",
       "name": "Lee Radford",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2000 squad but primary club is Hull FC"
@@ -116,13 +116,13 @@
       "message": "In Bradford Bulls 2001 squad but primary club is St Helens"
     },
     {
-      "playerId": "london-leg-paul-sykes",
+      "playerId": "wakefield-hist-paul-sykes",
       "name": "Paul Sykes",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2001 squad but primary club is London Broncos"
     },
     {
-      "playerId": "hull-fc-leg-lee-radford",
+      "playerId": "hull-fc-hist-lee-radford",
       "name": "Lee Radford",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2001 squad but primary club is Hull FC"
@@ -146,7 +146,7 @@
       "message": "In Bradford Bulls 2002 squad but primary club is St Helens"
     },
     {
-      "playerId": "london-leg-paul-sykes",
+      "playerId": "wakefield-hist-paul-sykes",
       "name": "Paul Sykes",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2002 squad but primary club is London Broncos"
@@ -170,7 +170,7 @@
       "message": "In Bradford Bulls 2002 squad but primary club is Leeds Rhinos"
     },
     {
-      "playerId": "hull-fc-leg-lee-radford",
+      "playerId": "hull-fc-hist-lee-radford",
       "name": "Lee Radford",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2002 squad but primary club is Hull FC"
@@ -188,7 +188,7 @@
       "message": "2007–2014 does not cover 2003 (Bradford Bulls squad)"
     },
     {
-      "playerId": "hull-fc-leg-lee-radford",
+      "playerId": "hull-fc-hist-lee-radford",
       "name": "Lee Radford",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2003 squad but primary club is Hull FC"
@@ -212,7 +212,7 @@
       "message": "1992–2003 does not cover 2004 (Bradford Bulls squad)"
     },
     {
-      "playerId": "wigan-leg-paul-johnson",
+      "playerId": "wigan-hist-paul-johnson",
       "name": "Paul Johnson",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2004 squad but primary club is Wigan Warriors"
@@ -254,7 +254,7 @@
       "message": "In Bradford Bulls 2004 squad but primary club is Leeds Rhinos"
     },
     {
-      "playerId": "hull-fc-leg-lee-radford",
+      "playerId": "hull-fc-hist-lee-radford",
       "name": "Lee Radford",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2004 squad but primary club is Hull FC"
@@ -278,7 +278,7 @@
       "message": "In Bradford Bulls 2005 squad but primary club is Leeds Rhinos"
     },
     {
-      "playerId": "wigan-leg-paul-johnson",
+      "playerId": "wigan-hist-paul-johnson",
       "name": "Paul Johnson",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2005 squad but primary club is Wigan Warriors"
@@ -297,18 +297,18 @@
     },
     {
       "playerId": "wigan-leg-terry-newton",
-      "name": "Terry Newton",
-      "kind": "club_year_mismatch",
-      "message": "In Bradford Bulls 2006 squad but primary club is Wigan Warriors"
+      "name": "wigan-leg-terry-newton",
+      "kind": "missing_player",
+      "message": "In Bradford Bulls 2006 squad but not in database"
     },
     {
-      "playerId": "castleford-leg-brett-ferres",
+      "playerId": "castleford-hist-brett-ferres",
       "name": "Brett Ferres",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2006 squad but primary club is Castleford Tigers"
     },
     {
-      "playerId": "wigan-leg-paul-johnson",
+      "playerId": "wigan-hist-paul-johnson",
       "name": "Paul Johnson",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2006 squad but primary club is Wigan Warriors"
@@ -326,7 +326,7 @@
       "message": "In Bradford Bulls 2009 squad but primary club is Wakefield Trinity"
     },
     {
-      "playerId": "london-leg-paul-sykes",
+      "playerId": "wakefield-hist-paul-sykes",
       "name": "Paul Sykes",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2009 squad but primary club is London Broncos"
@@ -338,16 +338,16 @@
       "message": "In Bradford Bulls 2009 squad but primary club is Huddersfield Giants"
     },
     {
-      "playerId": "wakefield-leg-ben-jeffries",
+      "playerId": "wakefield-hist-ben-jeffries",
       "name": "Ben Jeffries",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2009 squad but primary club is Wakefield Trinity"
     },
     {
       "playerId": "wigan-leg-terry-newton",
-      "name": "Terry Newton",
-      "kind": "club_year_mismatch",
-      "message": "In Bradford Bulls 2009 squad but primary club is Wigan Warriors"
+      "name": "wigan-leg-terry-newton",
+      "kind": "missing_player",
+      "message": "In Bradford Bulls 2009 squad but not in database"
     },
     {
       "playerId": "widnes-hist-patrick-ah-van",
@@ -356,43 +356,43 @@
       "message": "In Bradford Bulls 2011 squad but primary club is Widnes Vikings"
     },
     {
-      "playerId": "london-leg-paul-sykes",
+      "playerId": "wakefield-hist-paul-sykes",
       "name": "Paul Sykes",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2011 squad but primary club is London Broncos"
     },
     {
-      "playerId": "leeds-leg-chev-walker",
+      "playerId": "leeds-hist-chev-walker",
       "name": "Chev Walker",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2011 squad but primary club is Leeds Rhinos"
     },
     {
-      "playerId": "wakefield-leg-ben-jeffries",
+      "playerId": "wakefield-hist-ben-jeffries",
       "name": "Ben Jeffries",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2011 squad but primary club is Wakefield Trinity"
     },
     {
-      "playerId": "leeds-leg-matt-diskin",
+      "playerId": "leeds-hist-matt-diskin",
       "name": "Matt Diskin",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2011 squad but primary club is Leeds Rhinos"
     },
     {
-      "playerId": "london-leg-paul-sykes",
+      "playerId": "wakefield-hist-paul-sykes",
       "name": "Paul Sykes",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2012 squad but primary club is London Broncos"
     },
     {
-      "playerId": "leeds-leg-chev-walker",
+      "playerId": "leeds-hist-chev-walker",
       "name": "Chev Walker",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2012 squad but primary club is Leeds Rhinos"
     },
     {
-      "playerId": "wakefield-leg-ben-jeffries",
+      "playerId": "wakefield-hist-ben-jeffries",
       "name": "Ben Jeffries",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2012 squad but primary club is Wakefield Trinity"
@@ -416,7 +416,7 @@
       "message": "In Bradford Bulls 2012 squad but primary club is Huddersfield Giants"
     },
     {
-      "playerId": "leeds-leg-matt-diskin",
+      "playerId": "leeds-hist-matt-diskin",
       "name": "Matt Diskin",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2012 squad but primary club is Leeds Rhinos"
@@ -446,13 +446,13 @@
       "message": "In Bradford Bulls 2013 squad but primary club is Salford Red Devils"
     },
     {
-      "playerId": "leeds-leg-matt-diskin",
+      "playerId": "leeds-hist-matt-diskin",
       "name": "Matt Diskin",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2013 squad but primary club is Leeds Rhinos"
     },
     {
-      "playerId": "leeds-leg-chev-walker",
+      "playerId": "leeds-hist-chev-walker",
       "name": "Chev Walker",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2013 squad but primary club is Leeds Rhinos"
@@ -482,13 +482,13 @@
       "message": "In Bradford Bulls 2014 squad but primary club is Wakefield Trinity"
     },
     {
-      "playerId": "leeds-leg-matt-diskin",
+      "playerId": "leeds-hist-matt-diskin",
       "name": "Matt Diskin",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2014 squad but primary club is Leeds Rhinos"
     },
     {
-      "playerId": "leeds-leg-chev-walker",
+      "playerId": "leeds-hist-chev-walker",
       "name": "Chev Walker",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2014 squad but primary club is Leeds Rhinos"
@@ -602,7 +602,7 @@
       "message": "In Bradford Bulls 2021 squad but primary club is Wakefield Trinity"
     },
     {
-      "playerId": "huddersfield-leg-aaron-murphy",
+      "playerId": "huddersfield-hist-aaron-murphy",
       "name": "Aaron Murphy",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2021 squad but primary club is Huddersfield Giants"
@@ -632,7 +632,7 @@
       "message": "In Bradford Bulls 2022 squad but primary club is Castleford Tigers"
     },
     {
-      "playerId": "huddersfield-leg-aaron-murphy",
+      "playerId": "huddersfield-hist-aaron-murphy",
       "name": "Aaron Murphy",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2022 squad but primary club is Huddersfield Giants"
@@ -738,6 +738,12 @@
       "name": "Harvey Wilson",
       "kind": "club_year_mismatch",
       "message": "In Bradford Bulls 2024 squad but primary club is Catalans Dragons"
+    },
+    {
+      "playerId": "wigan-hist-joel-tomkins-2008",
+      "name": "wigan-hist-joel-tomkins-2008",
+      "kind": "missing_player",
+      "message": "In Wigan Warriors 2008 squad but not in database"
     },
     {
       "playerId": "wakefield-hist-ryan-hampshire",
@@ -1094,13 +1100,19 @@
       "message": "In Castleford Tigers 2016 squad but primary club is Wakefield Trinity"
     },
     {
-      "playerId": "huddersfield-leg-aaron-murphy",
+      "playerId": "wakefield-hist-aaron-murphy-2009",
+      "name": "wakefield-hist-aaron-murphy-2009",
+      "kind": "missing_player",
+      "message": "In Wakefield Trinity 2009 squad but not in database"
+    },
+    {
+      "playerId": "huddersfield-hist-aaron-murphy",
       "name": "Aaron Murphy",
       "kind": "club_year_mismatch",
       "message": "In Wakefield Trinity 2010 squad but primary club is Huddersfield Giants"
     },
     {
-      "playerId": "wigan-leg-paul-johnson",
+      "playerId": "wigan-hist-paul-johnson",
       "name": "Paul Johnson",
       "kind": "club_year_mismatch",
       "message": "In Wakefield Trinity 2010 squad but primary club is Wigan Warriors"
@@ -1268,7 +1280,7 @@
       "message": "In Leeds Rhinos 2016 squad but primary club is Castleford Tigers"
     },
     {
-      "playerId": "castleford-leg-brett-ferres",
+      "playerId": "castleford-hist-brett-ferres",
       "name": "Brett Ferres",
       "kind": "club_year_mismatch",
       "message": "In Leeds Rhinos 2016 squad but primary club is Castleford Tigers"

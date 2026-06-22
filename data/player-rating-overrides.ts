@@ -21,6 +21,10 @@ export const PLAYER_RATING_OVERRIDES: Record<string, number> = {
   "paul-sculthorpe": 96,
   "rob-burrow": 92,
   "sam-burgess": 95,
+  "sean-long": 91,
+  "danny-mcguire": 91,
+  "adrian-morley": 90,
+  "stuart-fielden": 90,
 
   // ── Historic manual corrections ────────────────────────────────────────
   "bradford-hist-karl-pryce": 87,
