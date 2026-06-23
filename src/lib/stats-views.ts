@@ -1,5 +1,6 @@
 import {
   formatRecord,
+  formatRecordWithPercentage,
   isWorseRecord,
   getMostSelectedPlayer,
   getMostSuccessfulPlayer,
@@ -172,10 +173,10 @@ export function getOverallView(
       hard.longestLosingStreak
     ),
     leagueTitles:
-      normal.leagueTitlesWon +
-      hard.leagueTitlesWon +
-      draftN.leagueTitlesWon +
-      draftH.leagueTitlesWon,
+      normal.superLeagueTitles +
+      hard.superLeagueTitles +
+      draftN.superLeagueTitles +
+      draftH.superLeagueTitles,
     challengeCups: normal.challengeCupsWon + hard.challengeCupsWon,
     perfectSeasons:
       normal.totalPerfectSeasons +
@@ -230,8 +231,15 @@ export function getSuperLeagueView(stats: UserStatsData) {
     runs: stats.totalSeasonsSimulated,
     wins: stats.seasonWins,
     losses: stats.seasonLosses,
-    winPercentage: formatWinPercentage(stats.seasonWins, stats.seasonLosses),
     hasSeasons: stats.totalSeasonsSimulated > 0,
+    regularRecord: {
+      wins: stats.regularSeasonWins,
+      losses: stats.regularSeasonLosses,
+    },
+    playoffRecord: {
+      wins: stats.playoffWins,
+      losses: stats.playoffLosses,
+    },
     totalRecord: {
       wins: stats.seasonWins,
       losses: stats.seasonLosses,
@@ -240,7 +248,17 @@ export function getSuperLeagueView(stats: UserStatsData) {
       wins: stats.worstRecordWins,
       losses: stats.worstRecordLosses,
     },
-    leagueTitles: stats.leagueTitlesWon,
+    bestOverallRecord: {
+      wins: stats.bestOverallSeasonWins,
+      losses: stats.bestOverallSeasonLosses,
+    },
+    leagueTitles: stats.superLeagueTitles,
+    topSixFinishes: stats.topSixFinishes,
+    playoffAppearances: stats.playoffAppearances,
+    playoffEliminatorWins: stats.playoffEliminatorWins,
+    playoffSemiFinalWins: stats.playoffSemiFinalWins,
+    grandFinalAppearances: stats.grandFinalAppearances,
+    superLeagueTitles: stats.superLeagueTitles,
     perfectSeasons: stats.totalPerfectSeasons,
     winlessSeasons: stats.totalWinlessSeasons,
     bestRanking: stats.bestNationalRanking,
@@ -330,9 +348,9 @@ export function getHardChallengeCupView(stats: UserStatsData) {
     appearances: stats.challengeCupRuns,
     wins,
     losses,
+    totalRecord: { wins, losses },
     cupsWon: stats.challengeCupsWon,
     finals: stats.challengeCupFinals,
-    winPercentage: formatWinPercentage(wins, losses),
     hasGames: wins + losses > 0,
   };
 }
@@ -373,7 +391,9 @@ export function getChallengeCupView(normal: UserStatsData, hard: UserStatsData) 
 export function formatRecordOrDash(
   record: { wins: number; losses: number } | null
 ): string {
-  return record ? formatRecord(record.wins, record.losses) : "—";
+  return record
+    ? formatRecordWithPercentage(record.wins, record.losses)
+    : "—";
 }
 
 export function formatRankingOrDash(rank: number | null): string {

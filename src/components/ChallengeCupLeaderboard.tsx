@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
 import {
   CUP_LEADERBOARD_CATEGORIES,
-  getCupWinPercentage,
   rankProfilesByCategory,
 } from "@/lib/cup-ranking";
 import type { CupLeaderboardProfile } from "@/lib/storage/cup-leaderboard";
@@ -179,7 +179,14 @@ export function ChallengeCupLeaderboard() {
 
   const matchWins = rankProfilesByCategory(profiles, "cupMatchWins");
   const cupsWon = rankProfilesByCategory(profiles, "cupsWon");
-  const winPct = rankProfilesByCategory(profiles, "winPercentage");
+  const cupRecord = [...profiles]
+    .filter((p) => p.cupMatchWins + p.cupMatchLosses > 0)
+    .sort((a, b) => {
+      if (b.cupMatchWins !== a.cupMatchWins) {
+        return b.cupMatchWins - a.cupMatchWins;
+      }
+      return a.cupMatchLosses - b.cupMatchLosses;
+    });
   const matchStreak = [...profiles]
     .filter((p) => p.longestCupMatchWinStreak > 0)
     .sort(
@@ -221,10 +228,10 @@ export function ChallengeCupLeaderboard() {
         </h2>
         <div className="grid gap-4 sm:grid-cols-3">
           <CategoryTable
-            title="Best Cup Win Percentage"
-            profiles={winPct}
+            title="Best Cup Record"
+            profiles={cupRecord}
             formatValue={(p) =>
-              `${getCupWinPercentage(p.cupMatchWins, p.cupMatchLosses)}%`
+              formatRecordWithPercentage(p.cupMatchWins, p.cupMatchLosses)
             }
           />
           <CategoryTable
@@ -245,7 +252,9 @@ export function ChallengeCupLeaderboard() {
           All Categories
         </h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          {CUP_LEADERBOARD_CATEGORIES.map((category) => (
+          {CUP_LEADERBOARD_CATEGORIES.filter(
+            (category) => category.id !== "winPercentage"
+          ).map((category) => (
             <CategoryTable
               key={category.id}
               title={category.label}

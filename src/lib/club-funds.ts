@@ -3,13 +3,19 @@ import type { SeasonResult } from "./game/season-simulation";
 import type { GameMode } from "./types";
 
 export const CLUB_FUNDS_REWARDS = {
-  leagueTitle: 100_000,
+  leagueLeaders: 15_000,
+  topSixFinish: 20_000,
+  playoffEliminatorWin: 15_000,
+  playoffSemiFinalWin: 30_000,
+  playoffFinalRunnerUp: 40_000,
+  superLeagueTitle: 100_000,
   challengeCupWin: 75_000,
   eraChallengeCupWin: 75_000,
   fantasyLeagueTitle: 100_000,
   perfectSeason: 250_000,
   cupFinal: 25_000,
   seasonComplete: 10_000,
+  regularSeasonWin: 500,
   twentyWins: 25_000,
 } as const;
 
@@ -71,12 +77,63 @@ export function computeClubFundsLines(
       amount: CLUB_FUNDS_REWARDS.seasonComplete,
     });
 
+    if (seasonResult.wins > 0) {
+      lines.push({
+        id: "regular-season-wins",
+        label: `Regular Season Wins (${seasonResult.wins})`,
+        amount: seasonResult.wins * CLUB_FUNDS_REWARDS.regularSeasonWin,
+      });
+    }
+
     if (seasonResult.leaguePosition === 1) {
       lines.push({
-        id: "league-title",
-        label: "League Title",
-        amount: CLUB_FUNDS_REWARDS.leagueTitle,
+        id: "league-leaders",
+        label: "League Leaders",
+        amount: CLUB_FUNDS_REWARDS.leagueLeaders,
       });
+    }
+
+    if (seasonResult.leaguePosition <= 6) {
+      lines.push({
+        id: "top-six",
+        label: "Top-Six Finish",
+        amount: CLUB_FUNDS_REWARDS.topSixFinish,
+      });
+    }
+
+    const playoff = seasonResult.playoffResult;
+    if (playoff?.qualified) {
+      for (const round of playoff.rounds) {
+        if (!round.userPlayed || round.userWon !== true) continue;
+        if (round.round === "Eliminator") {
+          lines.push({
+            id: "playoff-eliminator",
+            label: "Play-Off Eliminator Win",
+            amount: CLUB_FUNDS_REWARDS.playoffEliminatorWin,
+          });
+        }
+        if (round.round === "Semi Final") {
+          lines.push({
+            id: "playoff-semi",
+            label: "Play-Off Semi-Final Win",
+            amount: CLUB_FUNDS_REWARDS.playoffSemiFinalWin,
+          });
+        }
+      }
+      if (playoff.finish === "Grand Final Runner-Up") {
+        lines.push({
+          id: "playoff-final",
+          label: "Grand Final Runner-Up",
+          amount: CLUB_FUNDS_REWARDS.playoffFinalRunnerUp,
+        });
+      }
+      if (playoff.isChampion) {
+        lines.push({
+          id: "super-league-title",
+          label: "Super League Title",
+          amount: CLUB_FUNDS_REWARDS.superLeagueTitle,
+        });
+      }
     }
 
     if (seasonResult.isPerfect) {
@@ -170,7 +227,10 @@ export function computeClubFundsLines(
 }
 
 export const CLUB_FUNDS_INFO_LINES = [
-  { label: "League Title", amount: CLUB_FUNDS_REWARDS.leagueTitle },
+  { label: "Super League Title", amount: CLUB_FUNDS_REWARDS.superLeagueTitle },
+  { label: "League Leaders", amount: CLUB_FUNDS_REWARDS.leagueLeaders },
+  { label: "Top-Six Finish", amount: CLUB_FUNDS_REWARDS.topSixFinish },
+  { label: "Play-Off Semi-Final Win", amount: CLUB_FUNDS_REWARDS.playoffSemiFinalWin },
   { label: "Challenge Cup Win", amount: CLUB_FUNDS_REWARDS.challengeCupWin },
   { label: "Era Challenge Cup Win", amount: CLUB_FUNDS_REWARDS.eraChallengeCupWin },
   { label: "Fantasy League Title", amount: CLUB_FUNDS_REWARDS.fantasyLeagueTitle },

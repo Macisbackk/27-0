@@ -49,13 +49,22 @@ export async function recordCompletedRun(
     matchResults?: ("W" | "L")[];
     cupTeam?: string;
     eraCupWinner?: string;
+    playoffWins?: number;
+    playoffLosses?: number;
+    playoffFinish?: string;
+    superLeagueTitle?: boolean;
+    topSixFinish?: boolean;
   }
 ): Promise<CompletedRunResult> {
   const totalValue = run.totalValue || getSquadValue(run.squad);
   const isEraCupRun = options?.eraChallengeCupMode === true;
   const isCupRun = options?.challengeCupMode === true;
-  const wins = options?.seasonWins ?? 0;
-  const losses = options?.seasonLosses ?? 0;
+  const regularWins = options?.seasonWins ?? 0;
+  const regularLosses = options?.seasonLosses ?? 0;
+  const playoffWins = options?.playoffWins ?? 0;
+  const playoffLosses = options?.playoffLosses ?? 0;
+  const wins = regularWins + playoffWins;
+  const losses = regularLosses + playoffLosses;
   const loggedIn = isLoggedIn();
   const isHiddenRun =
     options?.joeMellorMode === true || options?.superSamHallasMode === true;
@@ -208,8 +217,8 @@ export async function recordCompletedRun(
 
     updateSeasonLifetimeStats(
       {
-        wins,
-        losses,
+        wins: regularWins,
+        losses: regularLosses,
         leaguePosition: options.seasonLeaguePosition ?? 1,
         isPerfect: options.isPerfectSeason ?? false,
         longestWinStreak: options.longestWinStreak ?? 0,
@@ -223,6 +232,11 @@ export async function recordCompletedRun(
         cupFinish: options.cupFinish,
         cupWon: options.cupWon,
         averageSquadRating: options.averageSquadRating,
+        playoffWins,
+        playoffLosses,
+        playoffFinish: options.playoffFinish,
+        superLeagueTitle: options.superLeagueTitle,
+        topSixFinish: options.topSixFinish,
       },
       difficulty,
       statsBucket

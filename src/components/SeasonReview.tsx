@@ -20,6 +20,7 @@ import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { formatSeasonWinPercentageOrDash } from "@/lib/stats-views";
 import { playGradeSound, playPanelClose, playPanelExpand } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
+import { PlayoffSimulation } from "./PlayoffSimulation";
 import { FixtureResultRow } from "./FixtureResultRow";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
 import type { MatchFixture } from "@/lib/game/season-simulation";
@@ -35,6 +36,8 @@ import { TeamComparisonBox } from "./TeamComparisonBox";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { TryScorersSection } from "./TryScorersSection";
 import { buildLeagueTable } from "@/lib/game/league-table";
+import { userQualifiedForPlayoffs } from "@/lib/game/playoff-simulation";
+import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
 import { LeagueTable } from "./LeagueTable";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
 import { HARD, NORMAL } from "@/lib/ui/design-system";
@@ -51,8 +54,12 @@ interface SeasonReviewProps {
   runRank?: number;
   submittedOnline?: boolean;
   clubFundsPayout?: ClubFundsPayoutResult | null;
+  reviewStage?: "regular" | "playoffs" | "final";
+  onContinuePlayoffs?: () => void;
+  onPlayoffsComplete?: () => void;
   onPlayAgain: () => void;
   onClose: () => void;
+  onFinalizeSeason?: () => void;
 }
 
 export function SeasonReview({
@@ -66,8 +73,12 @@ export function SeasonReview({
   runRank,
   submittedOnline = false,
   clubFundsPayout = null,
+  reviewStage = "final",
+  onContinuePlayoffs,
+  onPlayoffsComplete,
   onPlayAgain,
   onClose,
+  onFinalizeSeason,
 }: SeasonReviewProps) {
   const totalValue = getSquadValue(squad);
   const gradeInfo = getSeasonGradeFromSquad(squad, seasonResult, totalValue);
@@ -135,6 +146,7 @@ export function SeasonReview({
   const showCelebration = isPerfect || isSuperSquad;
 
   const handlePlayAgain = () => {
+    onFinalizeSeason?.();
     onClose();
     onPlayAgain();
   };
@@ -169,6 +181,27 @@ export function SeasonReview({
     seasonResultForReview
   );
   const expectedTries = getSeasonTryTotal(seasonResult.fixtures);
+
+  const qualifiedForPlayoffs = userQualifiedForPlayoffs(dreamTeamTablePosition);
+  const playoffResult = seasonResult.playoffResult;
+  const showPlayoffPrompt =
+    reviewStage === "regular" &&
+    qualifiedForPlayoffs &&
+    !playoffResult &&
+    mode === "CLASSIC" &&
+    !joeMellorMode &&
+    !superSamHallasMode;
+
+  if (reviewStage === "playoffs" && playoffResult) {
+    return (
+      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md">
+        <PlayoffSimulation
+          result={playoffResult}
+          onComplete={() => onPlayoffsComplete?.()}
+        />
+      </div>
+    );
+  }
 
   useEffect(() => {
     runSeasonReviewValidation({
@@ -277,20 +310,58 @@ export function SeasonReview({
         <CollapsibleReviewSection title="Season Summary" delay={0.32}>
           <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
             <p>
-              Record:{" "}
+              Regular Season:{" "}
               <span className="font-semibold text-white">
-                {seasonResult.wins}-{seasonResult.losses}
-              </span>
-            </p>
-            <p>
-              Win Rate:{" "}
-              <span className="font-semibold text-white">
-                {formatSeasonWinPercentageOrDash(
+                {formatRecordWithPercentage(
                   seasonResult.wins,
                   seasonResult.losses
                 )}
               </span>
             </p>
+            {playoffResult && (
+              <>
+                <p>
+                  Play-Offs:{" "}
+                  <span className="font-semibold text-white">
+                    {formatRecordWithPercentage(
+                      playoffResult.wins,
+                      playoffResult.losses
+                    )}
+                  </span>
+                </p>
+                <p>
+                  Overall:{" "}
+                  <span className="font-semibold text-accent-green">
+                    {formatRecordWithPercentage(
+                      seasonResult.wins + playoffResult.wins,
+                      seasonResult.losses + playoffResult.losses
+                    )}
+                  </span>
+                </p>
+                <p>
+                  Play-Off Result:{" "}
+                  <span className="font-semibold text-accent-gold">
+                    {playoffResult.finish}
+                  </span>
+                </p>
+              </>
+            )}
+            {showPlayoffPrompt && (
+              <button
+                type="button"
+                onClick={onContinuePlayoffs}
+                className="mt-3 w-full rounded-lg border border-accent-green/50 bg-accent-green/10 px-4 py-2.5 font-display text-sm font-bold uppercase tracking-wider text-accent-green transition hover:bg-accent-green/20"
+              >
+                Continue to Play-Offs
+              </button>
+            )}
+            {reviewStage !== "regular" &&
+              !qualifiedForPlayoffs &&
+              mode === "CLASSIC" &&
+              !joeMellorMode &&
+              !superSamHallasMode && (
+                <p className="font-semibold text-gray-500">Missed Play-Offs</p>
+              )}
             <p>
               League Position:{" "}
               <span className="font-semibold text-white">

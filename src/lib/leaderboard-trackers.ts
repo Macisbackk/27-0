@@ -1,17 +1,16 @@
-import { getCupFinishRank, getCupWinPercentage } from "./cup-ranking";
+import { getCupFinishRank } from "./cup-ranking";
 import { formatValue } from "./players";
+import { formatRecordWithPercentage } from "./lifetime-stats";
 import type { GameDifficulty, GameMode } from "./types";
 
 export type LeaderboardTrackerType =
   | "squad_value"
   | "most_wins"
   | "perfect_runs"
-  | "win_percentage"
   | "best_record"
   | "challenge_cup_wins"
   | "cup_match_wins"
   | "cup_finals"
-  | "cup_win_percentage"
   | "challenge_cup_team_wins"
   | "total_winnings";
 
@@ -61,11 +60,6 @@ export const LEADERBOARD_TRACKERS: {
     label: "Most 27-0 Seasons",
     shortLabel: "27-0 Seasons",
   },
-  {
-    id: "win_percentage",
-    label: "Total Win Percentage",
-    shortLabel: "Total Win %",
-  },
   { id: "best_record", label: "Total Record", shortLabel: "Total Record" },
   {
     id: "challenge_cup_wins",
@@ -83,12 +77,6 @@ export const LEADERBOARD_TRACKERS: {
     id: "cup_finals",
     label: "Finals Reached",
     shortLabel: "Finals",
-    cupOnly: true,
-  },
-  {
-    id: "cup_win_percentage",
-    label: "Total Cup Win Percentage",
-    shortLabel: "Total Win %",
     cupOnly: true,
   },
   {
@@ -155,15 +143,6 @@ export function rankByTracker(
         return b.totalWins - a.totalWins;
       case "perfect_runs":
         return b.perfectRuns - a.perfectRuns;
-      case "win_percentage": {
-        const gamesA = a.totalWins + a.totalLosses;
-        const gamesB = b.totalWins + b.totalLosses;
-        if (gamesA < MIN_GAMES_FOR_WIN_PERCENTAGE) return 1;
-        if (gamesB < MIN_GAMES_FOR_WIN_PERCENTAGE) return -1;
-        const pctA = gamesA > 0 ? a.totalWins / gamesA : 0;
-        const pctB = gamesB > 0 ? b.totalWins / gamesB : 0;
-        return pctB - pctA;
-      }
       case "best_record": {
         if (b.totalWins !== a.totalWins) {
           return b.totalWins - a.totalWins;
@@ -175,34 +154,12 @@ export function rankByTracker(
         return b.challengeCupWins - a.challengeCupWins;
       case "cup_finals":
         return b.cupFinals - a.cupFinals;
-      case "cup_win_percentage": {
-        const gamesA = a.totalWins + a.totalLosses;
-        const gamesB = b.totalWins + b.totalLosses;
-        if (gamesA < MIN_GAMES_FOR_CUP_WIN_PERCENTAGE) return 1;
-        if (gamesB < MIN_GAMES_FOR_CUP_WIN_PERCENTAGE) return -1;
-        return b.cupWinPercentage - a.cupWinPercentage;
-      }
       default:
         return 0;
     }
   });
 
-  const filtered = (() => {
-    if (tracker === "win_percentage") {
-      return sorted.filter(
-        (e) => e.totalWins + e.totalLosses >= MIN_GAMES_FOR_WIN_PERCENTAGE
-      );
-    }
-    if (tracker === "cup_win_percentage") {
-      return sorted.filter(
-        (e) =>
-          e.totalWins + e.totalLosses >= MIN_GAMES_FOR_CUP_WIN_PERCENTAGE
-      );
-    }
-    return sorted;
-  })();
-
-  return filtered.slice(0, limit).map((entry, index) => ({
+  return sorted.slice(0, limit).map((entry, index) => ({
     rank: index + 1,
     username: entry.username,
     achievedAt: entry.achievedAt,
@@ -225,23 +182,13 @@ export function getTrackerStatDisplay(
       return String(entry.totalWins);
     case "perfect_runs":
       return String(entry.perfectRuns);
-    case "win_percentage": {
-      const games = entry.totalWins + entry.totalLosses;
-      const pct = games > 0 ? (entry.totalWins / games) * 100 : 0;
-      return `${pct.toFixed(1)}%`;
-    }
     case "best_record":
-      return `${entry.totalWins}-${entry.totalLosses}`;
+      return formatRecordWithPercentage(entry.totalWins, entry.totalLosses);
     case "challenge_cup_wins":
     case "challenge_cup_team_wins":
       return String(entry.challengeCupWins);
     case "cup_finals":
       return String(entry.cupFinals);
-    case "cup_win_percentage": {
-      const games = entry.totalWins + entry.totalLosses;
-      const pct = games > 0 ? (entry.totalWins / games) * 100 : 0;
-      return `${pct.toFixed(1)}%`;
-    }
     default:
       return "—";
   }

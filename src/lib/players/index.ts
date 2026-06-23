@@ -5,6 +5,8 @@ import type { Player, PlayerCategory, Position } from "../types";
 import { normalizePlayer } from "./normalize";
 import { isHiddenPlayer } from "./goat";
 import { getValueTier as getValueTierFromRating } from "./ratings";
+import { getClubByName } from "../clubs";
+import { clubsMatch, resolveCanonicalClubName } from "../clubs/club-match";
 import { getActiveSuperLeagueClubNames } from "../clubs/super-league-display";
 import { normalizePlayerNameKey } from "../player-name-normalize";
 
@@ -104,12 +106,13 @@ export function getPlayersByCategory(category: PlayerCategory): Player[] {
 
 /** All database players assigned to a club (current, historic, legends). */
 export function getPlayersByClub(club: string): Player[] {
-  return PLAYER_POOL.filter((p) => p.club === club);
+  const canonical = getClubByName(club)?.name ?? club;
+  return PLAYER_POOL.filter((p) => clubsMatch(p.club, canonical));
 }
 
 /** Active Super League clubs that have at least one player in the database. */
 export function getClubsWithPlayers(): string[] {
-  const withPlayers = new Set(PLAYER_POOL.map((p) => p.club));
+  const withPlayers = new Set(PLAYER_POOL.map((p) => getClubByName(p.club)?.name ?? p.club));
   return getActiveSuperLeagueClubNames()
     .filter((c) => withPlayers.has(c))
     .sort((a, b) => a.localeCompare(b));

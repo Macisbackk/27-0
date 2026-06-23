@@ -1,0 +1,669 @@
+{
+  "generatedAt": "2026-06-23T13:57:53.528Z",
+  "summary": {
+    "normalModeGlobalTotal": 1542,
+    "normalModeTeamYearPools": 19,
+    "hardModePool": 1542,
+    "challengeCupPool": 1542,
+    "fantasyPool": 1542,
+    "draftPool": 1542,
+    "eraChallengeCupTeams": 17,
+    "eraOnlyExcludedFromGlobal": 218,
+    "errors": 0
+  },
+  "normalMode": {
+    "mode": "normal",
+    "totalPlayers": 274,
+    "byClub": {
+      "Bradford Bulls": 17,
+      "Castleford Tigers": 17,
+      "Catalans Dragons": 35,
+      "Huddersfield Giants": 17,
+      "Hull FC": 17,
+      "Hull KR": 17,
+      "Leeds Rhinos": 30,
+      "Leigh Leopards": 17,
+      "St Helens": 30,
+      "Toulouse Olympique": 17,
+      "Wakefield Trinity": 17,
+      "Warrington Wolves": 17,
+      "Wigan Warriors": 30,
+      "York Knights": 17
+    },
+    "byCategory": {
+      "current": 238,
+      "historic": 35,
+      "legend": 1
+    },
+    "missingClubs": [],
+    "lowCountClubs": [],
+    "eraOnlyExcluded": 218
+  },
+  "hardMode": {
+    "mode": "hard",
+    "totalPlayers": 1542,
+    "byClub": {
+      "Bradford Bulls": 112,
+      "Castleford Tigers": 107,
+      "Catalans Dragons": 100,
+      "Huddersfield Giants": 103,
+      "Hull FC": 116,
+      "Hull KR": 78,
+      "Leeds Rhinos": 217,
+      "Leigh Leopards": 167,
+      "St Helens": 126,
+      "Toulouse Olympique": 21,
+      "Wakefield Trinity": 190,
+      "Warrington Wolves": 35,
+      "Wigan Warriors": 118,
+      "York Knights": 21
+    },
+    "byCategory": {
+      "current": 280,
+      "historic": 1244,
+      "legend": 18
+    },
+    "missingClubs": [],
+    "lowCountClubs": [],
+    "eraOnlyExcluded": 218
+  },
+  "challengeCup": {
+    "mode": "challenge-cup",
+    "totalPlayers": 1542,
+    "byClub": {
+      "Bradford Bulls": 112,
+      "Castleford Tigers": 107,
+      "Catalans Dragons": 100,
+      "Huddersfield Giants": 103,
+      "Hull FC": 116,
+      "Hull KR": 78,
+      "Leeds Rhinos": 217,
+      "Leigh Leopards": 167,
+      "St Helens": 126,
+      "Toulouse Olympique": 21,
+      "Wakefield Trinity": 190,
+      "Warrington Wolves": 35,
+      "Wigan Warriors": 118,
+      "York Knights": 21
+    },
+    "byCategory": {
+      "current": 280,
+      "historic": 1244,
+      "legend": 18
+    },
+    "missingClubs": [],
+    "lowCountClubs": [],
+    "eraOnlyExcluded": 218
+  },
+  "fantasy": {
+    "mode": "fantasy",
+    "totalPlayers": 1542,
+    "byClub": {
+      "Bradford Bulls": 112,
+      "Castleford Tigers": 107,
+      "Catalans Dragons": 100,
+      "Huddersfield Giants": 103,
+      "Hull FC": 116,
+      "Hull KR": 78,
+      "Leeds Rhinos": 217,
+      "Leigh Leopards": 167,
+      "St Helens": 126,
+      "Toulouse Olympique": 21,
+      "Wakefield Trinity": 190,
+      "Warrington Wolves": 35,
+      "Wigan Warriors": 118,
+      "York Knights": 21
+    },
+    "byCategory": {
+      "current": 280,
+      "historic": 1244,
+      "legend": 18
+    },
+    "missingClubs": [],
+    "lowCountClubs": [],
+    "eraOnlyExcluded": 218
+  },
+  "draft": {
+    "mode": "draft",
+    "totalPlayers": 1542,
+    "byClub": {
+      "Bradford Bulls": 112,
+      "Castleford Tigers": 107,
+      "Catalans Dragons": 100,
+      "Huddersfield Giants": 103,
+      "Hull FC": 116,
+      "Hull KR": 78,
+      "Leeds Rhinos": 217,
+      "Leigh Leopards": 167,
+      "St Helens": 126,
+      "Toulouse Olympique": 21,
+      "Wakefield Trinity": 190,
+      "Warrington Wolves": 35,
+      "Wigan Warriors": 118,
+      "York Knights": 21
+    },
+    "byCategory": {
+      "current": 280,
+      "historic": 1244,
+      "legend": 18
+    },
+    "missingClubs": [],
+    "lowCountClubs": [],
+    "eraOnlyExcluded": 218
+  },
+  "missingNormalClubs": [],
+  "eraOnlyExcluded": [
+    {
+      "id": "huddersfield-hist-era-tristan-powell",
+      "name": "Tristan Powell",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "huddersfield-hist-era-thomas-burgess",
+      "name": "Thomas Burgess",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "huddersfield-hist-era-kieran-rush",
+      "name": "Kieran Rush",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "huddersfield-hist-era-innes-senior",
+      "name": "Innes Senior",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "huddersfield-hist-era-danny-levi",
+      "name": "Danny Levi",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "huddersfield-hist-era-louis-senior",
+      "name": "Louis Senior",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "huddersfield-hist-era-jack-cogger",
+      "name": "Jack Cogger",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "huddersfield-hist-era-james-gavet",
+      "name": "James Gavet",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-liam-knight",
+      "name": "Liam Knight",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-jack-ashworth",
+      "name": "Jack Ashworth",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-yusuf-aydin",
+      "name": "Yusuf Aydin",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-brad-fash",
+      "name": "Brad Fash",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-logan-moy",
+      "name": "Logan Moy",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-liam-sutcliffe",
+      "name": "Liam Sutcliffe",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-jack-charles",
+      "name": "Jack Charles",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-will-gardiner",
+      "name": "Will Gardiner",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-joe-cator",
+      "name": "Joe Cator",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-connor-wynne",
+      "name": "Connor Wynne",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-josh-reynolds",
+      "name": "Josh Reynolds",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-kane-evans",
+      "name": "Kane Evans",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-frank-pritchard",
+      "name": "Frank Pritchard",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-wade-mckinnon",
+      "name": "Wade McKinnon",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-adam-dykes",
+      "name": "Adam Dykes",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-hutch-maiava",
+      "name": "Hutch Maiava",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-stephen-kearney",
+      "name": "Stephen Kearney",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-dean-treister",
+      "name": "Dean Treister",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-fc-hist-era-hitro-okesene",
+      "name": "Hitro Okesene",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-kr-hist-era-chris-atkin",
+      "name": "Chris Atkin",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-kr-hist-era-kris-keating",
+      "name": "Kris Keating",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-kr-hist-era-michael-weyman",
+      "name": "Michael Weyman",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-kr-hist-era-neville-costigan",
+      "name": "Neville Costigan",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-kr-hist-era-alex-brown",
+      "name": "Alex Brown",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-kr-hist-era-evarn-tuimavave",
+      "name": "Evarn Tuimavave",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-kr-hist-era-byron-ford",
+      "name": "Byron Ford",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "hull-kr-hist-era-jonathon-goddard",
+      "name": "Jonathon Goddard",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-ryan-hall",
+      "name": "Ryan Hall",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-keenan-palasia",
+      "name": "Keenan Palasia",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-paul-momirovski",
+      "name": "Paul Momirovski",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-rhyse-martin",
+      "name": "Rhyse Martin",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-kruise-leeming",
+      "name": "Kruise Leeming",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-brad-singleton",
+      "name": "Brad Singleton",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-james-segeyaro",
+      "name": "James Segeyaro",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-greg-eastwood",
+      "name": "Greg Eastwood",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-ben-walker",
+      "name": "Ben Walker",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-anthony-gibbons",
+      "name": "Anthony Gibbons",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-jim-fallon",
+      "name": "Jim Fallon",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-carl-hall",
+      "name": "Carl Hall",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leeds-hist-era-mick-shaw",
+      "name": "Mick Shaw",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leigh-hist-era-bailey-hodgson",
+      "name": "Bailey Hodgson",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leigh-hist-era-josh-charnley",
+      "name": "Josh Charnley",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leigh-hist-era-matt-davis",
+      "name": "Matt Davis",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leigh-hist-era-jack-hughes",
+      "name": "Jack Hughes",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leigh-hist-era-gregg-mcnally",
+      "name": "Gregg McNally",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leigh-hist-era-adam-higson",
+      "name": "Adam Higson",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leigh-hist-era-jamie-acton",
+      "name": "Jamie Acton",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leigh-hist-era-lachlan-burr",
+      "name": "Lachlan Burr",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "leigh-hist-era-sam-hopkins",
+      "name": "Sam Hopkins",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-chad-robinson",
+      "name": "Chad Robinson",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-radney-bowker",
+      "name": "Radney Bowker",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-andrew-king",
+      "name": "Andrew King",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-bill-peden",
+      "name": "Bill Peden",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-damian-kennedy",
+      "name": "Damian Kennedy",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-wayne-evans",
+      "name": "Wayne Evans",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-frank-napoli",
+      "name": "Frank Napoli",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-grant-young",
+      "name": "Grant Young",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-mark-carroll",
+      "name": "Mark Carroll",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-darren-higgins",
+      "name": "Darren Higgins",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-damien-chapman",
+      "name": "Damien Chapman",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-john-minto",
+      "name": "John Minto",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-graham-strutton",
+      "name": "Graham Strutton",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-kevin-langer",
+      "name": "Kevin Langer",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-tony-rea",
+      "name": "Tony Rea",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-gavin-allen",
+      "name": "Gavin Allen",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-leo-dynevor",
+      "name": "Leo Dynevor",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-darryl-pitt",
+      "name": "Darryl Pitt",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "london-hist-era-justin-bryant",
+      "name": "Justin Bryant",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "wakefield-hist-era-lachlan-walmsley",
+      "name": "Lachlan Walmsley",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "wakefield-hist-era-caius-faatili",
+      "name": "Caius Faatili",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "wakefield-hist-era-harvey-smith",
+      "name": "Harvey Smith",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "wakefield-hist-era-isaiah-vagana",
+      "name": "Isaiah Vagana",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "wakefield-hist-era-lee-kershaw",
+      "name": "Lee Kershaw",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "wakefield-hist-era-kevin-proctor",
+      "name": "Kevin Proctor",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "warrington-hist-era-tom-o-reilly",
+      "name": "Tom O'Reilly",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "warrington-hist-era-adam-doyle",
+      "name": "Adam Doyle",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "warrington-hist-era-kris-watson",
+      "name": "Kris Watson",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "warrington-hist-era-paul-cullen",
+      "name": "Paul Cullen",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "warrington-hist-era-paul-hulme",
+      "name": "Paul Hulme",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "warrington-hist-era-mark-jones",
+      "name": "Mark Jones",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "widnes-hist-era-kurt-haggerty",
+      "name": "Kurt Haggerty",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "widnes-hist-era-tim-holmes",
+      "name": "Tim Holmes",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "widnes-hist-era-andrew-emelio",
+      "name": "Andrew Emelio",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "widnes-hist-era-jon-whittle",
+      "name": "Jon Whittle",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "widnes-hist-era-owen-craigie",
+      "name": "Owen Craigie",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "widnes-hist-era-sala-fa-alogo",
+      "name": "Sala Fa'Alogo",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "widnes-hist-era-stephen-rowlands",
+      "name": "Stephen Rowlands",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "widnes-hist-era-nicky-royle",
+      "name": "Nicky Royle",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "widnes-hist-era-troy-wozniak",
+      "name": "Troy Wozniak",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "widnes-hist-era-steve-carter",
+      "name": "Steve Carter",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "wigan-hist-era-liam-byrne",
+      "name": "Liam Byrne",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    },
+    {
+      "id": "wigan-hist-era-tyler-dupree",
+      "name": "Tyler Dupree",
+      "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
+    }
+  ],
+  "unsafeDuplicateNames": [
+    {
+      "name": "liam hood",
+      "ids": [
+        "castleford-cur-liam-hood",
+        "wakefield-cur-liam-hood",
+        "salford-hist-liam-hood-2015"
+      ]
+    }
+  ],
+  "duplicateIds": [],
+  "errors": []
+}

@@ -205,6 +205,23 @@ export interface UserStatsData {
   eraMatchWins: number;
   eraMatchLosses: number;
   bestEraTeamUsed: string | null;
+  /** Regular-season wins only (27-game campaign). */
+  regularSeasonWins: number;
+  /** Regular-season losses only. */
+  regularSeasonLosses: number;
+  /** Play-off match wins (knockout rounds). */
+  playoffWins: number;
+  /** Play-off match losses. */
+  playoffLosses: number;
+  topSixFinishes: number;
+  playoffAppearances: number;
+  playoffEliminatorWins: number;
+  playoffSemiFinalWins: number;
+  grandFinalAppearances: number;
+  /** Super League titles won via Grand Final. */
+  superLeagueTitles: number;
+  bestOverallSeasonWins: number;
+  bestOverallSeasonLosses: number;
 }
 
 export interface CupPersonalBests {

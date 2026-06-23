@@ -53,6 +53,8 @@
     "review:player-ratings:apply": "tsx scripts/review-player-ratings.ts --apply",
     "audit:legends": "tsx scripts/audit-legend-tier.ts --apply",
     "audit:legends:report": "tsx scripts/audit-legend-tier.ts",
+    "validate:player-pools": "tsx scripts/validate-player-pools.ts",
+    "test:playoffs": "tsx scripts/test-playoff-simulation.ts",
     "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts"
   },
   "dependencies": {

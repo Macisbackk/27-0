@@ -152,6 +152,19 @@ export const EMPTY_STATS: UserStatsData = {
 
   bestEraTeamUsed: null,
 
+  regularSeasonWins: 0,
+  regularSeasonLosses: 0,
+  playoffWins: 0,
+  playoffLosses: 0,
+  topSixFinishes: 0,
+  playoffAppearances: 0,
+  playoffEliminatorWins: 0,
+  playoffSemiFinalWins: 0,
+  grandFinalAppearances: 0,
+  superLeagueTitles: 0,
+  bestOverallSeasonWins: 0,
+  bestOverallSeasonLosses: 0,
+
 };
 
 

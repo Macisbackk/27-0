@@ -19,7 +19,6 @@ import {
   getOverallView,
   getSuperLeagueView,
   formatRankingOrDash,
-  formatWinPercentageOrDash,
   getChallengeCupPersonalBests,
   formatRatingOrDash,
   formatRecordOrDash,
@@ -339,12 +338,10 @@ function SuperLeagueTab({ stats }: { stats: UserStatsData }) {
         <StatCard label="Normal Mode Wins" value={String(view.wins)} />
         <StatCard label="Normal Mode Losses" value={String(view.losses)} />
         <StatCard
-          label="Win Rate"
-          value={formatWinPercentageOrDash(
-            view.winPercentage,
-            view.wins + view.losses > 0
+          label="Regular Season Record"
+          value={formatRecordOrDash(
+            view.hasSeasons ? view.regularRecord : null
           )}
-          highlight={(view.winPercentage ?? 0) >= 75}
         />
         <StatCard
           label="Total Record"
@@ -354,15 +351,53 @@ function SuperLeagueTab({ stats }: { stats: UserStatsData }) {
           highlight={view.totalRecord.wins >= 20}
         />
         <StatCard
+          label="Play-Off Record"
+          value={formatRecordOrDash(
+            view.playoffRecord.wins + view.playoffRecord.losses > 0
+              ? view.playoffRecord
+              : null
+          )}
+        />
+        <StatCard
           label="Worst Normal Mode Record"
           value={formatRecordOrDash(
             view.hasSeasons ? view.worstRecord : null
           )}
         />
         <StatCard
-          label="League Titles"
-          value={String(view.leagueTitles)}
-          highlight={view.leagueTitles > 0}
+          label="Best Overall Season"
+          value={formatRecordOrDash(
+            view.bestOverallRecord.wins + view.bestOverallRecord.losses > 0
+              ? view.bestOverallRecord
+              : null
+          )}
+        />
+        <StatCard
+          label="Super League Titles"
+          value={String(view.superLeagueTitles)}
+          highlight={view.superLeagueTitles > 0}
+        />
+        <StatCard
+          label="Top-Six Finishes"
+          value={String(view.topSixFinishes)}
+          highlight={view.topSixFinishes > 0}
+        />
+        <StatCard
+          label="Play-Off Appearances"
+          value={String(view.playoffAppearances)}
+        />
+        <StatCard
+          label="Eliminator Wins"
+          value={String(view.playoffEliminatorWins)}
+        />
+        <StatCard
+          label="Semi-Final Wins"
+          value={String(view.playoffSemiFinalWins)}
+        />
+        <StatCard
+          label="Grand Final Appearances"
+          value={String(view.grandFinalAppearances)}
+          highlight={view.grandFinalAppearances > 0}
         />
         <StatCard
           label="Normal Mode 27-0 Seasons"
@@ -405,14 +440,6 @@ function HardModeTab({
         />
         <StatCard label="Losses" value={String(normalView.losses)} />
         <StatCard
-          label="Win %"
-          value={formatWinPercentageOrDash(
-            normalView.winPercentage,
-            normalView.wins + normalView.losses > 0
-          )}
-          highlight={(normalView.winPercentage ?? 0) >= 75}
-        />
-        <StatCard
           label="Total Record"
           value={formatRecordOrDash(
             normalView.hasSeasons ? normalView.totalRecord : null
@@ -450,14 +477,6 @@ function HardModeTab({
           highlight={draftView.wins > 0}
         />
         <StatCard label="Losses" value={String(draftView.losses)} />
-        <StatCard
-          label="Win %"
-          value={formatWinPercentageOrDash(
-            draftView.winPercentage,
-            draftView.wins + draftView.losses > 0
-          )}
-          highlight={(draftView.winPercentage ?? 0) >= 75}
-        />
         <StatCard
           label="Total Record"
           value={formatRecordOrDash(
@@ -497,12 +516,10 @@ function HardModeTab({
         />
         <StatCard label="Cup Match Losses" value={String(cupView.losses)} />
         <StatCard
-          label="Win %"
-          value={formatWinPercentageOrDash(
-            cupView.winPercentage,
-            cupView.hasGames
+          label="Cup Record"
+          value={formatRecordOrDash(
+            cupView.hasGames ? cupView.totalRecord : null
           )}
-          highlight={(cupView.winPercentage ?? 0) >= 75}
         />
         <StatCard
           label="Cups Won"
@@ -528,13 +545,6 @@ function DraftModeTab({ draftNormal }: { draftNormal: UserStatsData }) {
         <StatCard label="Draft Mode Runs" value={String(view.runs)} />
         <StatCard label="Draft Mode Wins" value={String(view.wins)} />
         <StatCard label="Draft Mode Losses" value={String(view.losses)} />
-        <StatCard
-          label="Win Rate"
-          value={formatWinPercentageOrDash(
-            view.winPercentage,
-            view.wins + view.losses > 0
-          )}
-        />
         <StatCard
           label="Total Record"
           value={formatRecordOrDash(view.hasSeasons ? view.totalRecord : null)}
@@ -572,13 +582,6 @@ function FantasyModeTab({ stats }: { stats: UserStatsData }) {
         <StatCard label="Fantasy Mode Runs" value={String(view.runs)} />
         <StatCard label="Fantasy Mode Wins" value={String(view.wins)} />
         <StatCard label="Fantasy Mode Losses" value={String(view.losses)} />
-        <StatCard
-          label="Win Rate"
-          value={formatWinPercentageOrDash(
-            view.winPercentage,
-            view.wins + view.losses > 0
-          )}
-        />
         <StatCard
           label="Total Record"
           value={formatRecordOrDash(view.hasSeasons ? view.totalRecord : null)}
@@ -708,14 +711,6 @@ function ChallengeCupTab({
           label="Most Cups Won"
           value={String(personalBests.mostCupsWon)}
           highlight={personalBests.mostCupsWon > 0}
-        />
-        <StatCard
-          label="Best Cup Win Percentage"
-          value={formatWinPercentageOrDash(
-            personalBests.bestCupWinPercentage,
-            view.wins + view.losses > 0
-          )}
-          highlight={personalBests.bestCupWinPercentage >= 75}
         />
       </StatsSection>
 

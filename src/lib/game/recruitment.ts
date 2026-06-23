@@ -4,9 +4,12 @@ import {
   HISTORIC_PLAYERS,
   LEGEND_PLAYERS,
   getPlayerById,
-  getPlayersByClub,
   isAvailableInGame,
 } from "../players";
+import {
+  getGlobalRecruitmentPool,
+  getPlayersForClub,
+} from "./player-pool-eligibility";
 import type { Player, PlayerCategory, Position, SquadSlot } from "../types";
 import { SQUAD_STRUCTURE, TOTAL_SLOTS, createEmptySquad } from "../positions";
 import {
@@ -289,18 +292,14 @@ function recruitable(players: Player[]): Player[] {
 
 function basePlayerPool(options?: RecruitmentOptions): Player[] {
   if (options?.clubFilter) {
-    return recruitable(getPlayersByClub(options.clubFilter));
+    return recruitable(getPlayersForClub(options.clubFilter));
   }
-  return recruitable([
-    ...CURRENT_PLAYERS,
-    ...HISTORIC_PLAYERS,
-    ...LEGEND_PLAYERS,
-  ]);
+  return getGlobalRecruitmentPool();
 }
 
 function selectCategoryPool(rng: () => number, options?: RecruitmentOptions): Player[] {
   if (options?.clubFilter) {
-    const clubPlayers = getPlayersByClub(options.clubFilter);
+    const clubPlayers = getPlayersForClub(options.clubFilter);
     const legends = clubPlayers.filter((p) => p.category === "legend");
     const historic = clubPlayers.filter((p) => p.category === "historic");
     const current = clubPlayers.filter((p) => p.category === "current");

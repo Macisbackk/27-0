@@ -63,6 +63,16 @@ export function formatRecord(wins: number, losses: number): string {
   return `${wins}-${losses}`;
 }
 
+export function formatRecordWithPercentage(
+  wins: number,
+  losses: number
+): string {
+  const games = wins + losses;
+  if (games === 0) return "0-0";
+  const pct = ((wins / games) * 100).toFixed(1);
+  return `${wins}-${losses} (${pct}%)`;
+}
+
 export function formatLeagueFinish(position: number): string {
   const v = position % 100;
   const suffix =
@@ -119,6 +129,11 @@ export interface SeasonLifetimeInput {
   cupWon?: boolean;
   averageSquadRating?: number;
   matchResults?: ("W" | "L")[];
+  playoffWins?: number;
+  playoffLosses?: number;
+  playoffFinish?: string;
+  superLeagueTitle?: boolean;
+  topSixFinish?: boolean;
 }
 
 export function applySeasonLifetimeUpdate(
@@ -144,6 +159,11 @@ export function applySeasonLifetimeUpdate(
     cupWon,
     averageSquadRating,
     matchResults = [],
+    playoffWins = 0,
+    playoffLosses = 0,
+    playoffFinish,
+    superLeagueTitle = false,
+    topSixFinish = false,
   } = input;
 
   if (eraChallengeCupMode) {
@@ -283,8 +303,17 @@ export function applySeasonLifetimeUpdate(
   }
 
   const seasons = existing.totalSeasonsSimulated + 1;
-  const newSeasonWins = existing.seasonWins + wins;
-  const newSeasonLosses = existing.seasonLosses + losses;
+  const regularWins = wins;
+  const regularLosses = losses;
+  const overallWins = regularWins + playoffWins;
+  const overallLosses = regularLosses + playoffLosses;
+
+  const newRegularWins = existing.regularSeasonWins + regularWins;
+  const newRegularLosses = existing.regularSeasonLosses + regularLosses;
+  const newPlayoffWins = existing.playoffWins + playoffWins;
+  const newPlayoffLosses = existing.playoffLosses + playoffLosses;
+  const newSeasonWins = existing.seasonWins + overallWins;
+  const newSeasonLosses = existing.seasonLosses + overallLosses;
   const newAvgFinish = Math.round(
     (existing.averageSeasonFinish * existing.totalSeasonsSimulated +
       leaguePosition) /
@@ -297,22 +326,28 @@ export function applySeasonLifetimeUpdate(
 
   for (const id of signedIds) {
     draftCounts[id] = (draftCounts[id] ?? 0) + 1;
-    playerSeasonWins[id] = (playerSeasonWins[id] ?? 0) + wins;
-    playerSeasonLosses[id] = (playerSeasonLosses[id] ?? 0) + losses;
+    playerSeasonWins[id] = (playerSeasonWins[id] ?? 0) + overallWins;
+    playerSeasonLosses[id] = (playerSeasonLosses[id] ?? 0) + overallLosses;
   }
 
   const isFirstSeason = existing.totalSeasonsSimulated === 0;
   const betterRecord = isBetterRecord(
-    wins,
-    losses,
+    regularWins,
+    regularLosses,
     existing.bestRecordWins,
     existing.bestRecordLosses
+  );
+  const betterOverall = isBetterRecord(
+    overallWins,
+    overallLosses,
+    existing.bestOverallSeasonWins,
+    existing.bestOverallSeasonLosses
   );
   const worseRecord =
     !isFirstSeason &&
     isWorseRecord(
-      wins,
-      losses,
+      regularWins,
+      regularLosses,
       existing.worstRecordWins,
       existing.worstRecordLosses
     );
@@ -332,40 +367,78 @@ export function applySeasonLifetimeUpdate(
         : Math.min(bestNationalRanking, nationalRank);
   }
 
+  const eliminatorWin =
+    playoffFinish === "Super League Champions" ||
+    playoffFinish === "Grand Final Runner-Up" ||
+    playoffFinish === "Eliminated in Semi-Final";
+  const semiWin =
+    playoffFinish === "Super League Champions" ||
+    playoffFinish === "Grand Final Runner-Up";
+
   let updated: UserStatsData = {
     ...existing,
     totalSeasonsSimulated: seasons,
+    regularSeasonWins: newRegularWins,
+    regularSeasonLosses: newRegularLosses,
+    playoffWins: newPlayoffWins,
+    playoffLosses: newPlayoffLosses,
     seasonWins: newSeasonWins,
     seasonLosses: newSeasonLosses,
     totalWins: newSeasonWins,
     totalLosses: newSeasonLosses,
     bestRecordWins: isFirstSeason
-      ? wins
+      ? regularWins
       : betterRecord
-        ? wins
+        ? regularWins
         : existing.bestRecordWins,
     bestRecordLosses: isFirstSeason
-      ? losses
+      ? regularLosses
       : betterRecord
-        ? losses
+        ? regularLosses
         : existing.bestRecordLosses,
+    bestOverallSeasonWins: isFirstSeason
+      ? overallWins
+      : betterOverall
+        ? overallWins
+        : existing.bestOverallSeasonWins,
+    bestOverallSeasonLosses: isFirstSeason
+      ? overallLosses
+      : betterOverall
+        ? overallLosses
+        : existing.bestOverallSeasonLosses,
     worstRecordWins: isFirstSeason
-      ? wins
+      ? regularWins
       : worseRecord
-        ? wins
+        ? regularWins
         : existing.worstRecordWins,
     worstRecordLosses: isFirstSeason
-      ? losses
+      ? regularLosses
       : worseRecord
-        ? losses
+        ? regularLosses
         : existing.worstRecordLosses,
     longestUnbeatenRun: Math.max(existing.longestUnbeatenRun, longestWinStreak),
     longestLosingStreak: Math.max(
       existing.longestLosingStreak,
       longestLosingStreak
     ),
-    leagueTitlesWon:
-      existing.leagueTitlesWon + (leaguePosition === 1 ? 1 : 0),
+    leagueTitlesWon: existing.leagueTitlesWon,
+    superLeagueTitles:
+      existing.superLeagueTitles + (superLeagueTitle ? 1 : 0),
+    topSixFinishes:
+      existing.topSixFinishes + (topSixFinish ? 1 : 0),
+    playoffAppearances:
+      existing.playoffAppearances + (topSixFinish ? 1 : 0),
+    playoffEliminatorWins:
+      existing.playoffEliminatorWins +
+      (eliminatorWin && playoffWins > 0 ? 1 : 0),
+    playoffSemiFinalWins:
+      existing.playoffSemiFinalWins + (semiWin ? 1 : 0),
+    grandFinalAppearances:
+      existing.grandFinalAppearances +
+      (playoffFinish === "Super League Champions" ||
+      playoffFinish === "Grand Final Runner-Up"
+        ? 1
+        : 0),
     totalPerfectSeasons:
       existing.totalPerfectSeasons + (isPerfect ? 1 : 0),
     totalWinlessSeasons:

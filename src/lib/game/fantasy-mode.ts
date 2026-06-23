@@ -1,4 +1,4 @@
-import { getRecruitablePlayers } from "../players";
+import { getFantasyPool } from "@/lib/game/player-pool-eligibility";
 import type { Player, Position, SquadSlot } from "../types";
 import { getSquadValue, isSquadComplete } from "../positions";
 import { getAverageSquadRating } from "../squad-analysis";
@@ -40,7 +40,7 @@ const FANTASY_CROSS_POSITION: Partial<Record<Position, Position[]>> = {
 
 /** Eligible pool: current, historic, legends — excludes hidden/easter-egg/unavailable. */
 export function getFantasyEligiblePlayers(): Player[] {
-  return getRecruitablePlayers();
+  return getFantasyPool();
 }
 
 export function getFantasyEligiblePositions(slotPosition: Position): Position[] {

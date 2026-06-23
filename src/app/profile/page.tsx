@@ -9,8 +9,7 @@ import { getAllStats } from "@/lib/storage/stats";
 import { loadCloudStats } from "@/lib/storage/stats-cloud";
 import type { UserStatsData } from "@/lib/types";
 import {
-  formatWinPercentage,
-  formatWinPercentageOrDash,
+  formatRecordOrDash,
   getOverallView,
 } from "@/lib/stats-views";
 import { SectionCard } from "@/components/ui/SectionCard";
@@ -135,12 +134,8 @@ export default function ProfilePage() {
   const view =
     stats &&
     getOverallView(stats.normal, stats.hard, stats.draftNormal, stats.draftHard);
-  const totalGames = view ? view.totalWins + view.totalLosses : 0;
-  const winPct = view
-    ? formatWinPercentageOrDash(
-        formatWinPercentage(view.totalWins, view.totalLosses),
-        totalGames > 0
-      )
+  const totalRecord = view
+    ? formatRecordOrDash({ wins: view.totalWins, losses: view.totalLosses })
     : "—";
 
   return (
@@ -180,8 +175,7 @@ export default function ProfilePage() {
                 label="Total Losses"
                 value={String(view.totalLosses)}
               />
-              <ProfileStatCard label="Total Games" value={String(totalGames)} />
-              <ProfileStatCard label="Total Win %" value={winPct} />
+              <ProfileStatCard label="Total Record" value={totalRecord} />
               <ProfileStatCard label="Total Runs" value={String(view.totalRuns)} />
               <ProfileStatCard
                 label="League Titles"

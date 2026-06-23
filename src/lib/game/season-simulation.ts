@@ -161,6 +161,8 @@ export interface SeasonResult {
   insights: string[];
   /** Real club replaced by Dream Team this season (not in fixtures/table). */
   replacedTeam: string;
+  /** Super League play-offs after regular season (top six). */
+  playoffResult?: import("./playoff-simulation").PlayoffResult;
 }
 
 const FORWARD_POSITIONS = new Set([
