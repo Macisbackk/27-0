@@ -105,8 +105,7 @@ export function ChallengeCupClubSelect({
               <div className={`mt-4 overflow-hidden ${CARD.base}`}>
                 <ClubHeaderBar club={selected} size="md" thick />
                 <p className={`px-3 py-2 ${TYPO.bodySm}`}>
-                  Draft pool: {selected} players only (current, historic &
-                  legends).
+                  Draft pool: {selected} 2026 current squad only.
                 </p>
               </div>
             )}

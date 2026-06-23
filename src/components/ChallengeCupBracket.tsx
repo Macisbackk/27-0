@@ -230,8 +230,8 @@ export function ChallengeCupBracket({
         </button>
       </div>
 
-      <div className="mt-6 overflow-x-auto pb-4">
-        <div className="mx-auto flex min-w-[720px] max-w-5xl items-stretch justify-between gap-2 sm:gap-4">
+      <div className="mt-6 overflow-x-auto pb-4 md:overflow-x-visible md:pb-0">
+        <div className="mx-auto flex w-full min-w-[min(100%,720px)] max-w-5xl items-stretch justify-between gap-2 sm:gap-4 md:min-w-0 md:max-w-full">
           {ROUNDS.map((round) => (
             <BracketRoundColumn
               key={round}

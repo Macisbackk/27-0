@@ -13,6 +13,8 @@ import {
   getSquadValue,
   signPlayerToSlot,
 } from "../positions";
+import { getTeamYearPool } from "../game/team-year-pools";
+import { getPlayerEligiblePositions } from "./player-positions";
 import {
   ERA_BENCH_FROM_STARTING_17,
   ERA_STARTING_17_SIZE,
@@ -560,18 +562,107 @@ function logEraValidationWarning(
   }
 }
 
+function buildLineupFromPlayerIds(
+  playerIds: readonly string[]
+): {
+  xiiiIds: string[];
+  slotPositions: Position[];
+  benchIds: string[];
+} | null {
+  const players = playerIds
+    .map((id) => getPlayerById(id))
+    .filter((p): p is Player => !!p)
+    .sort((a, b) => b.peakRating - a.peakRating);
+
+  const lineup: Position[] = [];
+  for (const { position, count } of SQUAD_STRUCTURE) {
+    for (let i = 0; i < count; i++) lineup.push(position);
+  }
+
+  const used = new Set<string>();
+  const xiiiIds: string[] = [];
+  const slotPositions: Position[] = [];
+
+  for (const position of lineup) {
+    const pick = players.find(
+      (p) =>
+        !used.has(p.id) && getPlayerEligiblePositions(p).includes(position)
+    );
+    if (!pick) return null;
+    used.add(pick.id);
+    xiiiIds.push(pick.id);
+    slotPositions.push(position);
+  }
+
+  const benchIds = playerIds
+    .filter((id) => !used.has(id))
+    .slice(0, ERA_BENCH_FROM_STARTING_17);
+
+  return { xiiiIds, slotPositions, benchIds };
+}
+
 export function buildEra26Team(clubName: string): EraTeam | null {
   if (!isEraCurrentPlayableClub(clubName)) return null;
-  const playerIds = getCurrentSquadPlayerIds(clubName);
+
+  const resolved2026 = resolveEraStarting17Squad(clubName, ERA_26_YEAR);
+  if (
+    resolved2026 &&
+    resolved2026.xiiiPlayerIds.length === FULL_ERA_SQUAD_SIZE
+  ) {
+    return buildEraTeamInternal(
+      clubName,
+      ERA_26_YEAR,
+      "historic",
+      resolved2026.playerIds,
+      resolved2026.xiiiPlayerIds,
+      resolved2026.benchPlayerIds,
+      resolved2026.slotPositions,
+      Number(ERA_26_YEAR)
+    );
+  }
+
+  const pool = getTeamYearPool(clubName, ERA_26_YEAR);
+  const rosterIds = pool?.playerIds ?? getCurrentSquadPlayerIds(clubName);
+  const lineup = buildLineupFromPlayerIds(rosterIds);
+  if (!lineup) {
+    return buildEraTeamInternal(
+      clubName,
+      ERA_26_YEAR,
+      "26",
+      [...rosterIds],
+      [],
+      [],
+      undefined,
+      Number(ERA_26_YEAR)
+    );
+  }
+
+  const hasFullBench =
+    rosterIds.length >= ERA_HISTORIC_ROSTER_SIZE &&
+    lineup.benchIds.length === ERA_BENCH_FROM_STARTING_17;
+
+  if (hasFullBench) {
+    return buildEraTeamInternal(
+      clubName,
+      ERA_26_YEAR,
+      "historic",
+      [...rosterIds],
+      lineup.xiiiIds,
+      lineup.benchIds,
+      lineup.slotPositions,
+      Number(ERA_26_YEAR)
+    );
+  }
+
   return buildEraTeamInternal(
     clubName,
     ERA_26_YEAR,
     "26",
-    playerIds,
-    [],
-    [],
-    undefined,
-    undefined
+    lineup.xiiiIds,
+    lineup.xiiiIds,
+    lineup.benchIds,
+    lineup.slotPositions,
+    Number(ERA_26_YEAR)
   );
 }
 

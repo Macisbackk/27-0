@@ -1,10 +1,19 @@
 import seedrandom from "seedrandom";
 import { resolveCanonicalClubName } from "../clubs/club-match";
+import { CURRENT_SEASON_YEAR } from "../play-links";
 import { getPlayerById } from "../players";
 import { getCurrentSquadPlayerIds } from "../players/era-teams";
 import { getPlayersForClub } from "./player-pool-eligibility";
 import { getClubBaseStrength } from "./club-strength";
+import {
+  getRawPlayersForTeamYearPool,
+  getTeamYearPool,
+} from "./team-year-pools";
 import type { Player } from "../types";
+
+export interface OpponentPoolOptions {
+  currentSeasonOnly?: boolean;
+}
 
 const SQUAD_SIZE = 13;
 
@@ -24,8 +33,29 @@ function fisherYatesShuffle<T>(items: T[], rng: () => number): T[] {
   return copy;
 }
 
+/** 2026 team-year pool only — used in Current Mode and Current Challenge Cup. */
+export function getCurrentSeasonOpponentPool(club: string): Player[] {
+  const canonical = resolveCanonicalClubName(club);
+  const pool = getTeamYearPool(canonical, CURRENT_SEASON_YEAR);
+  if (pool) {
+    const roster = getRawPlayersForTeamYearPool(pool);
+    if (roster.length >= 13) return roster;
+  }
+
+  return getCurrentSquadPlayerIds(canonical)
+    .map((id) => getPlayerById(id))
+    .filter((p): p is Player => !!p);
+}
+
 /** Opponent pool: current squad first, then wider club history — not legends-only stacking. */
-export function getOpponentClubPool(club: string): Player[] {
+export function getOpponentClubPool(
+  club: string,
+  options: OpponentPoolOptions = {}
+): Player[] {
+  if (options.currentSeasonOnly) {
+    return getCurrentSeasonOpponentPool(club);
+  }
+
   const canonical = resolveCanonicalClubName(club);
   const full = getPlayersForClub(canonical);
   const currentIds = getCurrentSquadPlayerIds(canonical);
@@ -104,15 +134,16 @@ function averageRating(squad: Player[]): number {
 export function getGeneratedClubSquadStrength(
   club: string,
   seed: string,
-  salt = "season"
+  salt = "season",
+  options: OpponentPoolOptions = {}
 ): number {
-  const key = cacheKey(seed, club);
+  const key = `${cacheKey(seed, club)}::${options.currentSeasonOnly ? "current" : "all"}`;
   if (salt === "season" && seasonStrengthCache.has(key)) {
     return seasonStrengthCache.get(key)!;
   }
 
   const canonical = resolveCanonicalClubName(club);
-  const pool = getOpponentClubPool(canonical);
+  const pool = getOpponentClubPool(canonical, options);
   if (pool.length === 0) return getClubBaseStrength(canonical);
 
   const rng = seedrandom(`${seed}-${salt}-${canonical}`);
@@ -143,10 +174,11 @@ export function getGeneratedClubSquadStrength(
 export function getGeneratedClubSquadPlayers(
   club: string,
   seed: string,
-  salt = "season"
+  salt = "season",
+  options: OpponentPoolOptions = {}
 ): Player[] {
   const canonical = resolveCanonicalClubName(club);
-  const pool = getOpponentClubPool(canonical);
+  const pool = getOpponentClubPool(canonical, options);
   if (pool.length === 0) return [];
   const rng = seedrandom(`${seed}-${salt}-squad-${canonical}`);
   const styleRoll = rng();
@@ -165,9 +197,10 @@ export function getMatchClubStrength(
   club: string,
   seed: string,
   round: number,
-  home: boolean
+  home: boolean,
+  options: OpponentPoolOptions = {}
 ): number {
-  const base = getGeneratedClubSquadStrength(club, seed, "season");
+  const base = getGeneratedClubSquadStrength(club, seed, "season", options);
   const rng = seedrandom(`${seed}-match-${round}-${club}`);
   return base + (home ? 1.5 : 0) + (rng() - 0.5) * 4;
 }

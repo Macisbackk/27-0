@@ -1,6 +1,5 @@
 import seedrandom from "seedrandom";
 import { getPlayableClubNames } from "../clubs/super-league-display";
-import { getMatchClubStrength } from "./opponent-squad-strength";
 import type { SquadSlot } from "../types";
 import { getAverageSquadRating } from "../squad-analysis";
 import { getSquadValue } from "../positions";
@@ -21,6 +20,7 @@ import {
   getBlowoutLossCap,
   getBlowoutWinRange,
 } from "./score-gap";
+import { getMatchClubStrength } from "./opponent-squad-strength";
 import { getOpponentMatchRating } from "./opponent-scorers";
 import { getSeasonCommentary } from "./season-commentary";
 import type { ManOfTheMatch } from "./fantasy-match-summary";
@@ -179,9 +179,12 @@ function getOpponentStrength(
   opponent: string,
   seed: string,
   round: number,
-  userIsHome: boolean
+  userIsHome: boolean,
+  currentSeasonOnly = false
 ): number {
-  return getMatchClubStrength(opponent, seed, round, !userIsHome);
+  return getMatchClubStrength(opponent, seed, round, !userIsHome, {
+    currentSeasonOnly,
+  });
 }
 
 export function calculateSquadStrength(squad: SquadSlot[]): number {
@@ -565,10 +568,13 @@ export interface SimulateFixtureOptions {
   opponentRatingOverride?: number;
   /** Draft Mode — stronger teams rewarded, fewer unrealistic upsets. */
   draftMode?: boolean;
+  /** Current Mode — opponents use 2026 team-year pools only. */
+  currentSeasonOnly?: boolean;
 }
 
 export interface SimulateSeasonOptions {
   draftMode?: boolean;
+  currentSeasonOnly?: boolean;
 }
 
 export interface ScheduledFixture {
@@ -923,7 +929,13 @@ export function simulateOneFixture(
 
   const opponentStrength =
     options.opponentRatingOverride ??
-    getOpponentStrength(opponent, seed, round, isHome);
+    getOpponentStrength(
+      opponent,
+      seed,
+      round,
+      isHome,
+      options.currentSeasonOnly
+    );
   const { won: initialWon, isUpset: initialUpset, ratingGap } = resolveOutcome(
     squad,
     strength,
@@ -993,7 +1005,11 @@ export function simulateSeason(
   const strength = calculateSquadStrength(squad);
   const { schedule: opponents, replacedTeam } = buildSeasonSchedule(seed);
   const draftMode = options.draftMode ?? false;
-  const fixtureOptions: SimulateFixtureOptions = draftMode ? { draftMode: true } : {};
+  const currentSeasonOnly = options.currentSeasonOnly ?? false;
+  const fixtureOptions: SimulateFixtureOptions = {
+    ...(draftMode ? { draftMode: true } : {}),
+    ...(currentSeasonOnly ? { currentSeasonOnly: true } : {}),
+  };
 
   let wins = 0;
   let losses = 0;
@@ -1013,7 +1029,7 @@ export function simulateSeason(
             opponent,
             seed,
             round,
-            { draftMode: true }
+            { draftMode: true, currentSeasonOnly }
           ),
         }
       : fixtureOptions;
@@ -1043,7 +1059,9 @@ export function simulateSeason(
   }
 
   const pointsDifference = pointsFor - pointsAgainst;
-  const tryScorers = distributeSeasonTries(squad, fixtures, seed, wins);
+  const tryScorers = distributeSeasonTries(squad, fixtures, seed, wins, {
+    currentSeasonOnly,
+  });
 
   const winStreak = findLongestWinStreak(fixtures);
   const lossStreak = findLongestLosingStreak(fixtures);

@@ -526,7 +526,8 @@ function buildClubScoring(
   };
   return buildOpponentScoringDetail(
     fakeFixture,
-    `${seed}-${matchId}`
+    `${seed}-${matchId}`,
+    state.eraClubLookup ? undefined : { currentSeasonOnly: true }
   );
 }
 
@@ -750,10 +751,13 @@ function simulateUserMatch(
     {
       cupMode: true,
       opponentRatingOverride: opponentRating,
+      currentSeasonOnly: !state.eraClubLookup,
     }
   );
 
-  enrichSingleFixtureScoring(squad, fixture, state.seed);
+  enrichSingleFixtureScoring(squad, fixture, state.seed, {
+    currentSeasonOnly: !state.eraClubLookup,
+  });
 
   const homeScore = isHome ? fixture.pointsFor : fixture.pointsAgainst;
   const awayScore = isHome ? fixture.pointsAgainst : fixture.pointsFor;

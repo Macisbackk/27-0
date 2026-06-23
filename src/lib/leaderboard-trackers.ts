@@ -80,12 +80,6 @@ export const LEADERBOARD_TRACKERS: {
     cupOnly: true,
   },
   {
-    id: "cup_finals",
-    label: "Finals Reached",
-    shortLabel: "Finals",
-    cupOnly: true,
-  },
-  {
     id: "total_winnings",
     label: "Total Winnings",
     shortLabel: "Total Winnings",
@@ -108,7 +102,6 @@ export function getTrackersForDbMode(
       "challenge_cup_team_wins",
       "challenge_cup_wins",
       "cup_match_wins",
-      "cup_finals",
     ];
     return order
       .map((id) => cupTrackers.find((t) => t.id === id))

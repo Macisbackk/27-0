@@ -6,6 +6,7 @@ import type { ChallengeCupResult } from "@/lib/game/challenge-cup-simulation";
 import { generateRunSeed } from "@/lib/game/generator";
 import {
   buildEraSquadFromRoster,
+  FULL_ERA_SQUAD_SIZE,
   getAllEraTeams,
   getEraSquadYear,
   type EraTeam,
@@ -27,13 +28,14 @@ import { awardClubFundsForRun } from "@/lib/storage/club-funds";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import type { EraTournamentType } from "@/lib/storage/preferences";
 import { playModeChallengeCupStart } from "@/lib/sound";
+import { CupPreGameSubstitutions } from "./CupPreGameSubstitutions";
 import { ChallengeCupBracket } from "./ChallengeCupBracket";
 import { ChallengeCupReview } from "./ChallengeCupReview";
 import { EraChallengeCupSelect } from "./EraChallengeCupSelect";
 import { GuestNotice } from "./GuestNotice";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 
-type EraPhase = "select" | "bracket" | "review";
+type EraPhase = "select" | "substitutions" | "bracket" | "review";
 
 function createRunSeed(runKey: number): string {
   return `${generateRunSeed()}-${runKey}`;
@@ -100,16 +102,34 @@ export function EraChallengeCupBoard() {
       const bracket = createEraChallengeCupBracket(seed, team, allEraTeams, type);
       setBracketError(null);
       setEraTeam(team);
-      setSquad(
-        buildEraSquadFromRoster(
-          team.playerIds,
-          team.slotPositions,
-          getEraSquadYear(team),
-          team.displayName
-        )
+
+      const xiiiIds =
+        team.xiiiPlayerIds.length > 0
+          ? team.xiiiPlayerIds
+          : team.playerIds.slice(0, FULL_ERA_SQUAD_SIZE);
+      const xiiiPositions =
+        team.slotPositions && team.slotPositions.length >= xiiiIds.length
+          ? team.slotPositions.slice(0, xiiiIds.length)
+          : undefined;
+
+      const builtSquad = buildEraSquadFromRoster(
+        xiiiIds,
+        xiiiPositions,
+        getEraSquadYear(team),
+        team.displayName
       );
+
+      setSquad(builtSquad);
       setBracketState(bracket);
-      setPhase("bracket");
+
+      const hasBench = team.benchPlayerIds.some((id) => {
+        const used = new Set(
+          builtSquad.filter((s) => s.player).map((s) => s.player!.id)
+        );
+        return !used.has(id);
+      });
+
+      setPhase(hasBench ? "substitutions" : "bracket");
     } catch (error) {
       if (error instanceof EraBracketError) {
         setBracketError(error.message);
@@ -198,6 +218,17 @@ export function EraChallengeCupBoard() {
           </>
         )}
 
+        {phase === "substitutions" && eraTeam && (
+          <CupPreGameSubstitutions
+            eraTeam={eraTeam}
+            initialSquad={squad}
+            onConfirm={(confirmedSquad) => {
+              setSquad(confirmedSquad);
+              setPhase("bracket");
+            }}
+          />
+        )}
+
         {phase === "bracket" && eraTeam && bracketState && (
           <div className={`${CARD.panel} mt-4 p-2 sm:p-4`}>
             <ChallengeCupBracket
@@ -224,8 +255,7 @@ export function EraChallengeCupBoard() {
             title="Era Challenge Cup Review"
             submittedOnline={submittedOnline}
             clubFundsPayout={clubFundsPayout}
-            userClubColorOverride={eraTeam.clubName}
-            eraTeam={eraTeam}
+            userClubColorOverride={eraTeam.displayName}
             onPlayAgain={resetRun}
             onClose={() => {}}
             onReturnHome={resetRun}

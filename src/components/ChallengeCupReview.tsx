@@ -33,14 +33,11 @@ import { MatchDetailsPanel } from "./MatchDetailsPanel";
 import type { MatchFixture, SeasonResult } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { ClubRepresentation } from "./ClubRepresentation";
-import { TeamSheet } from "./TeamSheet";
-import { EraBenchRoster } from "./EraBenchRoster";
+import { SquadReviewSection } from "./SquadReviewSection";
 import type { EraTeam } from "@/lib/players/era-teams";
-import { getEraSquadYear } from "@/lib/players/era-teams";
 import { Confetti } from "./Confetti";
 import { EraChallengeCupBranding } from "./EraChallengeCupBranding";
 import { HardModeBadge } from "./HardModeBadge";
-import { RLAwardCard } from "./cards/RLAwardCard";
 import { BracketRecap } from "./BracketRecap";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import { ClubFundsEarned } from "./ClubFundsEarned";
@@ -443,38 +440,13 @@ export function ChallengeCupReview({
           </CollapsibleReviewSection>
         )}
 
-        <CollapsibleReviewSection title="Player Awards" delay={0.4}>
-          <div className="grid gap-3 text-left sm:grid-cols-2">
-            {awards.map((award) => (
-              <RLAwardCard
-                key={award.title}
-                title={award.title}
-                variant={award.variant}
-                playerName={award.playerName}
-                club={award.club}
-                detail={award.detail}
-                positionNote={award.positionNote}
-                ratingNote={award.ratingNote}
-                narrative={award.narrative}
-              />
-            ))}
-          </div>
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection title="Team Sheet" delay={0.42}>
-          <TeamSheet
+        <CollapsibleReviewSection title="Squad Review" delay={0.4}>
+          <SquadReviewSection
             squad={squad}
             hardMode={isHardMode}
             clubColorOverride={userClubColorOverride}
+            awards={awards}
           />
-          {cupResult.eraMode && eraTeam && eraTeam.benchPlayerIds.length > 0 && (
-            <EraBenchRoster
-              benchPlayerIds={eraTeam.benchPlayerIds}
-              eraYear={getEraSquadYear(eraTeam)}
-              runClub={eraTeam.displayName}
-              hardMode={isHardMode}
-            />
-          )}
         </CollapsibleReviewSection>
 
         {cupResult.tryScorers.length > 0 && (

@@ -7,6 +7,7 @@ import {
   getDefaultTrackerForDbMode,
   getTrackersForDbMode,
   isTrackerValidForDbMode,
+  rankByTracker,
   type LeaderboardTrackerRow,
   type LeaderboardTrackerType,
 } from "@/lib/leaderboard-trackers";
@@ -15,9 +16,22 @@ import {
   type LeaderboardDbMode,
 } from "@/lib/storage/leaderboard";
 import {
+  getAllCupLeaderboardProfiles,
+  getAllEraCupLeaderboardProfiles,
+  mapCupProfilesToTrackerEntries,
+} from "@/lib/storage/cup-leaderboard";
+import {
   getCupTeamWinsLeaderboardAsync,
+  getEraCupTeamWinsLeaderboardRows,
   type CupTeamWinsLeaderboardRow,
 } from "@/lib/storage/cup-team-wins";
+import { getUsername } from "@/lib/storage/user";
+import {
+  CUP_ERA_VARIANT_CHANGED_EVENT,
+  getCupEraVariant,
+  setCupEraVariant,
+} from "@/lib/storage/preferences";
+import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { getClubFundsLeaderboardAsync } from "@/lib/storage/club-funds-leaderboard";
 import { playTabChange } from "@/lib/sound";
 import { RecordWithPercentage } from "./RecordWithPercentage";
@@ -42,7 +56,6 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   best_record: "Total Record",
   challenge_cup_wins: "Cups Won",
   cup_match_wins: "Cup Wins",
-  cup_finals: "Finals",
   challenge_cup_team_wins: "Tournament Wins",
   total_winnings: "Total Winnings",
 };
@@ -67,7 +80,19 @@ export function LeaderboardTable({
   const [teamWinsTotal, setTeamWinsTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [usingFallback, setUsingFallback] = useState(false);
+  const [cupEraMode, setCupEraMode] = useState(false);
   const requestId = useRef(0);
+
+  useEffect(() => {
+    setCupEraMode(getCupEraVariant());
+    const onCupEra = (event: Event) => {
+      const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
+      if (detail) setCupEraMode(detail.eraMode);
+    };
+    window.addEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupEra);
+    return () =>
+      window.removeEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupEra);
+  }, []);
 
   const availableTrackers = getTrackersForDbMode(leaderboardMode);
   const activeTracker = isTrackerValidForDbMode(tracker, leaderboardMode)
@@ -85,6 +110,8 @@ export function LeaderboardTable({
     }
   };
 
+  const isChallengeCupMode = leaderboardMode === "challenge-cup";
+
   const loadEntries = useCallback(async () => {
     const currentRequest = ++requestId.current;
     setLoading(true);
@@ -101,6 +128,20 @@ export function LeaderboardTable({
       }
 
       if (isTeamWinsTracker) {
+        if (isChallengeCupMode && cupEraMode) {
+          const rows = getEraCupTeamWinsLeaderboardRows();
+          const totalCups = rows.reduce(
+            (sum, row) => sum + row.tournamentWins,
+            0
+          );
+          if (currentRequest !== requestId.current) return;
+          setTeamWinsRows(rows);
+          setTeamWinsTotal(totalCups);
+          setEntries([]);
+          setUsingFallback(true);
+          return;
+        }
+
         const result = await getCupTeamWinsLeaderboardAsync();
         if (currentRequest !== requestId.current) return;
         setTeamWinsRows(result.rows);
@@ -108,6 +149,41 @@ export function LeaderboardTable({
         setEntries([]);
         setUsingFallback(result.source === "local");
         return;
+      }
+
+      if (isChallengeCupMode && cupEraMode) {
+        const profiles = getAllEraCupLeaderboardProfiles();
+        const trackerEntries = mapCupProfilesToTrackerEntries(profiles);
+        const rows = rankByTracker(
+          trackerEntries,
+          activeTracker,
+          50,
+          getUsername() ?? ""
+        );
+        if (currentRequest !== requestId.current) return;
+        setEntries(rows);
+        setTeamWinsRows([]);
+        setTeamWinsTotal(0);
+        setUsingFallback(true);
+        return;
+      }
+
+      if (isChallengeCupMode && !cupEraMode && activeTracker !== "best_record") {
+        const profiles = getAllCupLeaderboardProfiles();
+        const localRows = rankByTracker(
+          mapCupProfilesToTrackerEntries(profiles),
+          activeTracker,
+          50,
+          getUsername() ?? ""
+        );
+        if (localRows.length > 0) {
+          if (currentRequest !== requestId.current) return;
+          setEntries(localRows);
+          setTeamWinsRows([]);
+          setTeamWinsTotal(0);
+          setUsingFallback(true);
+          return;
+        }
       }
 
       const result = await getTrackerLeaderboardAsync(
@@ -129,7 +205,16 @@ export function LeaderboardTable({
         setLoading(false);
       }
     }
-  }, [period, difficulty, leaderboardMode, activeTracker, isTeamWinsTracker, isClubFundsMode]);
+  }, [
+    period,
+    difficulty,
+    leaderboardMode,
+    activeTracker,
+    isTeamWinsTracker,
+    isClubFundsMode,
+    isChallengeCupMode,
+    cupEraMode,
+  ]);
 
   useEffect(() => {
     if (!isTrackerValidForDbMode(tracker, leaderboardMode)) {
@@ -191,6 +276,20 @@ export function LeaderboardTable({
           );
         })}
       </div>
+
+      {isChallengeCupMode && (
+        <div className="mb-5">
+          <ChallengeCupVariantToggle
+            sectionLabel="Cup Variant"
+            useShortLabels
+            eraMode={cupEraMode}
+            onEraModeChange={(era) => {
+              setCupEraMode(era);
+              setCupEraVariant(era);
+            }}
+          />
+        </div>
+      )}
 
       <div className="mb-5 border-b border-pitch-700/60">
         {availableTrackers.length > 1 && (

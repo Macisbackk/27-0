@@ -98,8 +98,10 @@ function deriveCupFinish(
 
 export function simulateChallengeCup(
   squad: SquadSlot[],
-  seed: string
+  seed: string,
+  options?: { currentSeasonOnly?: boolean }
 ): ChallengeCupResult {
+  const currentSeasonOnly = options?.currentSeasonOnly ?? true;
   const rng = seedrandom(`${seed}-cup`);
   const strength = calculateSquadStrength(squad);
   const fixtures: MatchFixture[] = [];
@@ -121,7 +123,7 @@ export function simulateChallengeCup(
       i + 1,
       `${seed}-cup`,
       state,
-      { cupMode: true }
+      { cupMode: true, currentSeasonOnly }
     );
     state = nextState;
 

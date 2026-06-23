@@ -27,8 +27,7 @@ import type { MatchFixture } from "@/lib/game/season-simulation";
 import { Confetti } from "./Confetti";
 import { HardModeBadge } from "./HardModeBadge";
 import { ClubRepresentation } from "./ClubRepresentation";
-import { TeamSheet } from "./TeamSheet";
-import { RLAwardCard } from "./cards/RLAwardCard";
+import { SquadReviewSection } from "./SquadReviewSection";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
@@ -373,8 +372,12 @@ export function SeasonReview({
           </CollapsibleReviewSection>
         )}
 
-        <CollapsibleReviewSection title="Team Sheet" delay={0.38} defaultOpen={false}>
-          <TeamSheet squad={squad} hardMode={isHardMode} />
+        <CollapsibleReviewSection title="Squad Review" delay={0.38} defaultOpen={false}>
+          <SquadReviewSection
+            squad={squad}
+            hardMode={isHardMode}
+            awards={playerAwards}
+          />
         </CollapsibleReviewSection>
 
         <CollapsibleReviewSection
@@ -417,24 +420,6 @@ export function SeasonReview({
                 </div>
               );
             })}
-          </div>
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection title="Player Awards" delay={0.42} defaultOpen={false}>
-          <div className="grid gap-3 text-left sm:grid-cols-2">
-            {playerAwards.map((award) => (
-              <RLAwardCard
-                key={award.title}
-                title={award.title}
-                variant={award.variant}
-                playerName={award.playerName}
-                club={award.club}
-                detail={award.detail}
-                positionNote={award.positionNote}
-                ratingNote={award.ratingNote}
-                narrative={award.narrative}
-              />
-            ))}
           </div>
         </CollapsibleReviewSection>
 

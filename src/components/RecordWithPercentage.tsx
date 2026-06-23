@@ -25,8 +25,8 @@ export function RecordWithPercentage({
     <span className={className}>
       <span className={recordClassName}>
         {wins}-{losses}
-      </span>{" "}
-      <span className={percentageClassName}>({pct}%)</span>
+      </span>
+      <span className={`ml-3 sm:ml-4 ${percentageClassName}`}>({pct}%)</span>
     </span>
   );
 }

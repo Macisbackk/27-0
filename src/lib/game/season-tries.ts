@@ -3,6 +3,7 @@ import type { Position, SquadSlot } from "../types";
 import { getEffectivePeakRating } from "../squad-analysis";
 import { getPlayerDisplayClub } from "../players/run-club";
 import { buildOpponentScoringDetail, buildEraTeamScoringDetail } from "./opponent-scorers";
+import type { OpponentPoolOptions } from "./opponent-squad-strength";
 import { getEraTeamByDisplayName } from "../players/era-teams";
 import type {
   FixtureScoringDetail,
@@ -190,7 +191,8 @@ function applyScoringDetails(
   entries: SquadEntry[],
   fixtures: MatchFixture[],
   perMatchAllocs: number[][],
-  seed: string
+  seed: string,
+  opponentOptions?: OpponentPoolOptions
 ): void {
   fixtures.forEach((fixture, fi) => {
     const eraOpponent = getEraTeamByDisplayName(fixture.opponent);
@@ -204,7 +206,7 @@ function applyScoringDetails(
             seed,
             `round-${fixture.round}`
           )
-        : buildOpponentScoringDetail(fixture, seed),
+        : buildOpponentScoringDetail(fixture, seed, opponentOptions),
     };
   });
 }
@@ -393,7 +395,8 @@ export function aggregateTryTotalsFromFixtures(
 export function enrichSingleFixtureScoring(
   squad: SquadSlot[],
   fixture: MatchFixture,
-  seed: string
+  seed: string,
+  opponentOptions?: OpponentPoolOptions
 ): void {
   const entries: SquadEntry[] = squad
     .filter((s) => s.player)
@@ -414,7 +417,7 @@ export function enrichSingleFixtureScoring(
     rng,
     buildAllocContext(entries, seasonZeros)
   );
-  applyScoringDetails(entries, [fixture], [matchAlloc], seed);
+  applyScoringDetails(entries, [fixture], [matchAlloc], seed, opponentOptions);
 }
 
 /** Core per-match try allocation — does not validate or reconcile totals. */
@@ -422,7 +425,8 @@ function allocateSeasonTriesToFixtures(
   squad: SquadSlot[],
   fixtures: MatchFixture[],
   seed: string,
-  seasonWins: number
+  seasonWins: number,
+  opponentOptions?: OpponentPoolOptions
 ): boolean {
   const entries: SquadEntry[] = squad
     .filter((s) => s.player)
@@ -466,7 +470,7 @@ function allocateSeasonTriesToFixtures(
   rebalanceTowardSoftTargets(entries, perMatchAllocs, seasonTries, rng);
   spreadSeasonConcentration(entries, perMatchAllocs, seasonTries, rng);
 
-  applyScoringDetails(entries, fixtures, perMatchAllocs, seed);
+  applyScoringDetails(entries, fixtures, perMatchAllocs, seed, opponentOptions);
   return true;
 }
 
@@ -478,10 +482,18 @@ export function distributeSeasonTries(
   squad: SquadSlot[],
   fixtures: MatchFixture[],
   seed: string,
-  seasonWins: number
+  seasonWins: number,
+  options?: OpponentPoolOptions
 ): PlayerTryTotal[] {
-  allocateSeasonTriesToFixtures(squad, fixtures, seed, seasonWins);
-  return validateAndReconcileSeasonTries(squad, fixtures, seed, seasonWins);
+  allocateSeasonTriesToFixtures(squad, fixtures, seed, seasonWins, options);
+  return validateAndReconcileSeasonTries(
+    squad,
+    fixtures,
+    seed,
+    seasonWins,
+    0,
+    options
+  );
 }
 
 /**
@@ -493,7 +505,8 @@ export function validateAndReconcileSeasonTries(
   fixtures: MatchFixture[],
   seed: string,
   seasonWins: number,
-  depth = 0
+  depth = 0,
+  opponentOptions?: OpponentPoolOptions
 ): PlayerTryTotal[] {
   const totalTeamTriesFromScores = fixtures.reduce(
     (sum, f) => sum + f.triesFor,
@@ -510,7 +523,7 @@ export function validateAndReconcileSeasonTries(
       console.error(
         `[season-tries] Fixture round ${fixture.round}: scoring events (${eventTries}) !== triesFor (${fixture.triesFor}) — rebuilding fixture scoring`
       );
-      enrichSingleFixtureScoring(squad, fixture, seed);
+      enrichSingleFixtureScoring(squad, fixture, seed, opponentOptions);
       fixtureMismatch = true;
     }
   }
@@ -526,26 +539,40 @@ export function validateAndReconcileSeasonTries(
       `[season-tries] Season mismatch: player event tries (${totalPlayerTriesFromEvents}) !== team triesFor total (${totalTeamTriesFromScores})`
     );
     if (depth < 1) {
-      allocateSeasonTriesToFixtures(squad, fixtures, seed, seasonWins);
+      allocateSeasonTriesToFixtures(
+        squad,
+        fixtures,
+        seed,
+        seasonWins,
+        opponentOptions
+      );
       return validateAndReconcileSeasonTries(
         squad,
         fixtures,
         seed,
         seasonWins,
-        depth + 1
+        depth + 1,
+        opponentOptions
       );
     }
   } else if (fixtureMismatch && depth < 1) {
     aggregated = aggregateTryTotalsFromFixtures(squad, fixtures);
     const recheckTotal = aggregated.reduce((sum, t) => sum + t.tries, 0);
     if (recheckTotal !== totalTeamTriesFromScores) {
-      allocateSeasonTriesToFixtures(squad, fixtures, seed, seasonWins);
+      allocateSeasonTriesToFixtures(
+        squad,
+        fixtures,
+        seed,
+        seasonWins,
+        opponentOptions
+      );
       return validateAndReconcileSeasonTries(
         squad,
         fixtures,
         seed,
         seasonWins,
-        depth + 1
+        depth + 1,
+        opponentOptions
       );
     }
   }

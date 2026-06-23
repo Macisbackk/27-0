@@ -75,6 +75,7 @@ export function HomeModeSelector() {
 
           <ChallengeCupVariantToggle
             sectionLabel="Mode"
+            useShortLabels
             eraMode={normalEraMode}
             onEraModeChange={(era) => {
               setNormalEraMode(era);
@@ -117,6 +118,7 @@ export function HomeModeSelector() {
           </p>
 
           <ChallengeCupVariantToggle
+            useShortLabels
             eraMode={cupEraMode}
             onEraModeChange={(era) => {
               setCupEraMode(era);

@@ -16,6 +16,8 @@ interface ChallengeCupVariantToggleProps {
   onEraModeChange: (eraMode: boolean) => void;
   /** Sidebar: compact nested toggle with shorter labels. */
   compact?: boolean;
+  /** Use "Current" / "Era" labels (matches Challenge Cup home toggle). */
+  useShortLabels?: boolean;
   /** Sidebar: omit the section label to save vertical space. */
   hideLabel?: boolean;
   /** Section label above toggle — e.g. "Mode" or "Cup Mode". */
@@ -27,6 +29,7 @@ export function ChallengeCupVariantToggle({
   className = "",
   onEraModeChange,
   compact = false,
+  useShortLabels = false,
   hideLabel = false,
   sectionLabel = "Cup Mode",
 }: ChallengeCupVariantToggleProps) {
@@ -40,8 +43,9 @@ export function ChallengeCupVariantToggle({
     ? nestedTabGroupClass(false, !eraMode, eraMode)
     : tabGroupClass(false, !eraMode, eraMode);
 
-  const currentLabel = compact ? "Current" : "Current Teams";
-  const eraLabel = compact ? "Era" : "Era Teams";
+  const currentLabel =
+    useShortLabels || compact ? "Current" : "Current Teams";
+  const eraLabel = useShortLabels || compact ? "Era" : "Era Teams";
 
   return (
     <div className={className}>

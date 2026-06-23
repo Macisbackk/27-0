@@ -227,6 +227,10 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
               </h3>
             </div>
 
+            <EraStartButton onClick={handleConfirm} className="mt-4">
+              Start Era Challenge Cup
+            </EraStartButton>
+
             <div className="mt-3 grid gap-2 sm:grid-cols-3">
               <StatPill
                 label="Rating"

@@ -13,6 +13,7 @@ import { ReturnHomeButton } from "./ReturnHomeButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { TryScorersSection } from "./TryScorersSection";
+import { SquadReviewSection } from "./SquadReviewSection";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { PlayoffBracketDisplay } from "./PlayoffBracketDisplay";
 import { Confetti } from "./Confetti";
@@ -175,44 +176,52 @@ export function PlayoffReview({
           </CollapsibleReviewSection>
         )}
 
-        {(bestScorer || worstScorer) && (
-          <CollapsibleReviewSection
-            title="Play-Off Performers"
-            delay={0.32}
-            defaultOpen={false}
-          >
-            <div className="grid gap-3 sm:grid-cols-2">
-              {bestScorer && (
-                <div className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 p-4 text-left">
-                  <p className="text-[10px] uppercase tracking-wider text-gray-500">
-                    Best Performer
-                  </p>
-                  <p className="mt-1 font-semibold text-white">
-                    {bestScorer.name}
-                  </p>
-                  <p className="text-sm text-gray-400">
-                    {bestScorer.tries} play-off{" "}
-                    {bestScorer.tries === 1 ? "try" : "tries"}
-                  </p>
+        <CollapsibleReviewSection
+          title="Squad Review"
+          delay={0.32}
+          defaultOpen={false}
+        >
+          <SquadReviewSection
+            squad={squad}
+            hardMode={isHardMode}
+            performanceTitle="Playoff Performance"
+            performance={
+              bestScorer || worstScorer ? (
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                  {bestScorer && (
+                    <div className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 p-4 text-left">
+                      <p className="text-[10px] uppercase tracking-wider text-gray-500">
+                        Best Performer
+                      </p>
+                      <p className="mt-1 font-semibold text-white">
+                        {bestScorer.name}
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        {bestScorer.tries} play-off{" "}
+                        {bestScorer.tries === 1 ? "try" : "tries"}
+                      </p>
+                    </div>
+                  )}
+                  {worstScorer &&
+                    worstScorer.playerId !== bestScorer?.playerId && (
+                      <div className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 p-4 text-left">
+                        <p className="text-[10px] uppercase tracking-wider text-gray-500">
+                          Quietest Performer
+                        </p>
+                        <p className="mt-1 font-semibold text-white">
+                          {worstScorer.name}
+                        </p>
+                        <p className="text-sm text-gray-400">
+                          {worstScorer.tries} play-off{" "}
+                          {worstScorer.tries === 1 ? "try" : "tries"}
+                        </p>
+                      </div>
+                    )}
                 </div>
-              )}
-              {worstScorer && worstScorer.playerId !== bestScorer?.playerId && (
-                <div className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 p-4 text-left">
-                  <p className="text-[10px] uppercase tracking-wider text-gray-500">
-                    Quietest Performer
-                  </p>
-                  <p className="mt-1 font-semibold text-white">
-                    {worstScorer.name}
-                  </p>
-                  <p className="text-sm text-gray-400">
-                    {worstScorer.tries} play-off{" "}
-                    {worstScorer.tries === 1 ? "try" : "tries"}
-                  </p>
-                </div>
-              )}
-            </div>
-          </CollapsibleReviewSection>
-        )}
+              ) : undefined
+            }
+          />
+        </CollapsibleReviewSection>
 
         <motion.footer
           className="mt-8 w-full max-w-xl space-y-3"

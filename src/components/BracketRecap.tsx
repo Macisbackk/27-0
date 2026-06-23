@@ -20,8 +20,8 @@ export function BracketRecap({
   byeTeams,
 }: BracketRecapProps) {
   return (
-    <div className="overflow-x-auto pb-2">
-      <div className="mx-auto flex min-w-[640px] max-w-4xl items-stretch justify-between gap-2">
+    <div className="overflow-x-auto pb-2 md:overflow-x-visible md:pb-0">
+      <div className="mx-auto flex w-full min-w-[min(100%,640px)] max-w-4xl items-stretch justify-between gap-2 md:min-w-0 md:max-w-full">
         {ROUNDS.map((round) => {
           const roundMatches = matches.filter((m) => m.round === round);
           return (

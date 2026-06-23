@@ -538,6 +538,7 @@ export function GameBoard({
       } else {
         const result = simulateSeason(finalSquad, seed, {
           draftMode: isDraftMode,
+          currentSeasonOnly: !normalEraMode,
         });
         setSeasonResult(result);
         setCupResult(null);
@@ -556,6 +557,7 @@ export function GameBoard({
       superSamHallasMode,
       isChallengeCup,
       isDraftMode,
+      normalEraMode,
     ]
   );
 

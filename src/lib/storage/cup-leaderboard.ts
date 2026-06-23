@@ -1,5 +1,6 @@
 import { applyMatchResultsToStreak, getCupFinishRank } from "../cup-ranking";
-import type { UserStatsData } from "../types";
+import type { LeaderboardTrackerEntry } from "../leaderboard-trackers";
+import type { GameDifficulty, UserStatsData } from "../types";
 import { STORAGE_KEYS } from "./keys";
 import { getUsername } from "./user";
 
@@ -297,4 +298,38 @@ export function ensureEraCupLeaderboardSynced(
     lastUpdated: new Date().toISOString(),
   };
   saveEraProfiles(profiles);
+}
+
+/** Map local cup profile storage into leaderboard tracker entries. */
+export function mapCupProfilesToTrackerEntries(
+  profiles: Array<{
+    username: string;
+    cupsWon: number;
+    cupMatchWins: number;
+    cupMatchLosses: number;
+    lastUpdated: string;
+  }>
+): LeaderboardTrackerEntry[] {
+  return profiles.map((profile) => {
+    const games = profile.cupMatchWins + profile.cupMatchLosses;
+    const winPct = games > 0 ? (profile.cupMatchWins / games) * 100 : 0;
+    return {
+      username: profile.username,
+      squadValue: 0,
+      achievedAt: profile.lastUpdated,
+      difficulty: "NORMAL" as GameDifficulty,
+      mode: "CHALLENGE_CUP",
+      totalWins: profile.cupMatchWins,
+      totalLosses: profile.cupMatchLosses,
+      perfectRuns: 0,
+      bestRecordWins: profile.cupMatchWins,
+      bestRecordLosses: profile.cupMatchLosses,
+      bestWinPercentage: winPct,
+      challengeCupWins: profile.cupsWon,
+      cupFinals: 0,
+      bestCupFinishRank: 0,
+      bestCupFinishLabel: "",
+      cupWinPercentage: winPct,
+    };
+  });
 }

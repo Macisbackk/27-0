@@ -1,8 +1,13 @@
 import seedrandom from "seedrandom";
 import { getPlayersByClub } from "../players";
+import { getPlayerEligiblePositions } from "../players/player-positions";
 import { getEraTeamByDisplayName, getEraTeamMatchSquad } from "../players/era-teams";
 import { getFantasyEligiblePlayers } from "./fantasy-mode";
 import { getClubBaseStrength } from "./club-strength";
+import {
+  getCurrentSeasonOpponentPool,
+  type OpponentPoolOptions,
+} from "./opponent-squad-strength";
 import { getTeamTier } from "../team-tiers";
 import type { Player, Position } from "../types";
 import type {
@@ -84,6 +89,8 @@ function pickWeighted(
   return inBand[Math.floor(rng() * inBand.length)] ?? null;
 }
 
+export type { OpponentPoolOptions };
+
 /**
  * Select a match-day XIII from the opponent club's database
  * using weighted randomness (mid-range favoured over elite-only).
@@ -92,9 +99,11 @@ export function selectClubMatchSquad(
   club: string,
   seed: string,
   round: number,
-  options?: { draftMode?: boolean }
+  options?: OpponentPoolOptions & { draftMode?: boolean }
 ): Player[] {
-  const pool = getPlayersByClub(club);
+  const pool = options?.currentSeasonOnly
+    ? getCurrentSeasonOpponentPool(club)
+    : getPlayersByClub(club);
   if (pool.length === 0) return [];
 
   const rng = seedrandom(`${seed}-opp-squad-${round}-${club}`);
@@ -104,14 +113,16 @@ export function selectClubMatchSquad(
 
   for (const position of OPPONENT_LINEUP) {
     let candidates = pool.filter(
-      (p) => p.position === position && !used.has(p.id)
+      (p) =>
+        getPlayerEligiblePositions(p).includes(position) && !used.has(p.id)
     );
     if (candidates.length === 0) {
       candidates = pool.filter((p) => !used.has(p.id));
     }
-    if (candidates.length === 0) {
+    if (candidates.length === 0 && !options?.currentSeasonOnly) {
       const fallback = getFantasyEligiblePlayers().filter(
-        (p) => p.position === position && !used.has(p.id)
+        (p) =>
+          getPlayerEligiblePositions(p).includes(position) && !used.has(p.id)
       );
       candidates =
         fallback.length > 0
@@ -178,7 +189,7 @@ export function getOpponentMatchRating(
   club: string,
   seed: string,
   round: number,
-  options?: { draftMode?: boolean }
+  options?: OpponentPoolOptions & { draftMode?: boolean }
 ): number {
   const squad = selectClubMatchSquad(club, seed, round, options);
   if (squad.length === 0) return getClubBaseStrength(club);
@@ -188,9 +199,10 @@ export function getOpponentMatchRating(
 export function getOpponentSquadValue(
   club: string,
   seed: string,
-  round: number
+  round: number,
+  options?: OpponentPoolOptions
 ): number {
-  return selectClubMatchSquad(club, seed, round).reduce(
+  return selectClubMatchSquad(club, seed, round, options).reduce(
     (sum, p) => sum + p.value,
     0
   );
@@ -199,14 +211,15 @@ export function getOpponentSquadValue(
 export function getOpponentTeamSummary(
   club: string,
   seed: string,
-  round: number
+  round: number,
+  options?: OpponentPoolOptions
 ): {
   name: string;
   totalValue: number;
   averageRating: number;
   tier: string;
 } {
-  const squad = selectClubMatchSquad(club, seed, round);
+  const squad = selectClubMatchSquad(club, seed, round, options);
   const totalValue = squad.reduce((s, p) => s + p.value, 0);
   const averageRating =
     squad.length > 0
@@ -233,9 +246,15 @@ function pickKicker(squad: Player[]): Player | null {
 /** Build opponent scoring from club player pool + simulated match breakdown. */
 export function buildOpponentScoringDetail(
   fixture: MatchFixture,
-  seed: string
+  seed: string,
+  options?: OpponentPoolOptions
 ): TeamScoringDetail {
-  const squad = selectClubMatchSquad(fixture.opponent, seed, fixture.round);
+  const squad = selectClubMatchSquad(
+    fixture.opponent,
+    seed,
+    fixture.round,
+    options
+  );
 
   if (squad.length === 0) {
     return { tryScorers: [], kicking: null };
