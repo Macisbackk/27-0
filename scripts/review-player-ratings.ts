@@ -87,8 +87,44 @@ function isEraOnlyPlayer(raw: RawPlayer): boolean {
   return (
     raw.id.includes("-hist-era-") ||
     raw.source === "era-starting-17s.json" ||
+    raw.source === "era-starting-17s-second-pass" ||
     raw.needsReview === true
   );
+}
+
+function qualifiesFor90Plus(raw: RawPlayer): boolean {
+  if (raw.hallOfFame) return true;
+  if (raw.manOfSteel) return true;
+  const apps = (raw.appearances as number) ?? 0;
+  const tries = (raw.tries as number) ?? 0;
+  const intl = (raw.intlCaps as number) ?? 0;
+  if (apps >= 450 && tries >= 150) return true;
+  if (intl >= 25 && apps >= 300) return true;
+  if (tries >= 250) return true;
+  return false;
+}
+
+/** Deflate inflated historic/current 90+ cards that lack elite honours. */
+function suggestHistoricPeakCap(raw: RawPlayer): number | null {
+  const current = (raw.peakRating ?? raw.rating) as number;
+  if (current < 90) return null;
+  if (PLAYER_RATING_OVERRIDES[raw.id] !== undefined) return null;
+  if (raw.category === "legend") return null;
+  if (isEraOnlyPlayer(raw)) return null;
+
+  if (qualifiesFor90Plus(raw)) {
+    if (current > 91) return 91;
+    return null;
+  }
+
+  const apps = (raw.appearances as number) ?? 0;
+  let target = 88;
+  if (apps >= 400) target = 89;
+  else if (apps >= 300) target = 88;
+  else target = 87;
+
+  if (current > target) return target;
+  return null;
 }
 
 function isActiveYears(yearsActive: string | undefined): boolean {
@@ -195,14 +231,51 @@ function main(): void {
     "95-99": 0,
   };
 
-  function bumpDist(r: number): void {
-    if (r >= 95) distribution["95-99"]++;
-    else if (r >= 90) distribution["90-94"]++;
-    else if (r >= 85) distribution["85-89"]++;
-    else if (r >= 80) distribution["80-84"]++;
-    else if (r >= 75) distribution["75-79"]++;
-    else if (r >= 70) distribution["70-74"]++;
-    else distribution["60-69"]++;
+  const emptyBands = (): Record<string, number> => ({
+    "60-69": 0,
+    "70-74": 0,
+    "75-79": 0,
+    "80-84": 0,
+    "85-89": 0,
+    "90-94": 0,
+    "95-99": 0,
+  });
+
+  const distributionByCategory: Record<string, Record<string, number>> = {
+    current: emptyBands(),
+    historic: emptyBands(),
+    legend: emptyBands(),
+    "era-only": emptyBands(),
+  };
+
+  const eraNeedsReviewBefore = allPlayers.filter(
+    (p) => isEraOnlyPlayer(p) && p.needsReview === true
+  ).length;
+
+  function bumpDist(r: number, categoryKey: string): void {
+    const band =
+      r >= 95
+        ? "95-99"
+        : r >= 90
+          ? "90-94"
+          : r >= 85
+            ? "85-89"
+            : r >= 80
+              ? "80-84"
+              : r >= 75
+                ? "75-79"
+                : r >= 70
+                  ? "70-74"
+                  : "60-69";
+    distribution[band]++;
+    distributionByCategory[categoryKey][band]++;
+  }
+
+  function categoryKeyFor(raw: RawPlayer): string {
+    if (isEraOnlyPlayer(raw)) return "era-only";
+    if (raw.category === "legend") return "legend";
+    if (raw.category === "current") return "current";
+    return "historic";
   }
 
   const byName = new Map<string, string[]>();
@@ -299,6 +372,39 @@ function main(): void {
       }
     }
 
+    if (isEraOnlyPlayer(raw) && raw.needsReview === true) {
+      if (APPLY) {
+        changes.push({
+          id: raw.id,
+          name: raw.name,
+          field: "needsReview",
+          before: true,
+          after: false,
+          reason: "era-only rating reviewed",
+        });
+        raw.needsReview = false;
+      }
+    }
+
+    if (!hasOverride) {
+      const historicCap = suggestHistoricPeakCap(raw);
+      if (historicCap !== null) {
+        const current = (raw.peakRating ?? raw.rating) as number;
+        changes.push({
+          id: raw.id,
+          name: raw.name,
+          field: "peakRating",
+          before: current,
+          after: historicCap,
+          reason: "deflate inflated 90+ without elite honours",
+        });
+        if (APPLY) {
+          raw.peakRating = historicCap;
+          raw.rating = historicCap;
+        }
+      }
+    }
+
     const norm = normalizePlayer(raw);
     const expectedValue = computePlayerValue(
       norm.peakRating,
@@ -317,7 +423,7 @@ function main(): void {
       if (APPLY) raw.value = expectedValue;
     }
 
-    bumpDist(norm.peakRating);
+    bumpDist(norm.peakRating, categoryKeyFor(raw));
     if (norm.peakRating >= 90) {
       elite90Plus.push({
         id: raw.id,
@@ -338,20 +444,36 @@ function main(): void {
 
   if (APPLY) saveFiles(byFile);
 
+  const ratingChanges = changes.filter((c) =>
+    ["peakRating", "category", "position"].includes(c.field)
+  );
+
   const report = {
     generatedAt: new Date().toISOString(),
     applied: APPLY,
     summary: {
       totalPlayersReviewed: allPlayers.filter((p) => p.availableInGame !== false)
         .length,
+      totalRatingsChanged: ratingChanges.length,
       playersChanged: changes.length,
       protectedByOverride: protectedOverrides.length,
       elite90PlusCount: elite90Plus.length,
       legendDemotions: legendDemotions.length,
-      eraNeedsReviewCount: eraNeedsReview.length,
+      eraNeedsReviewBefore,
+      eraNeedsReviewAfter: eraNeedsReview.length,
       suspiciousDuplicateNames: suspiciousDuplicates.length,
+      staleOverrideIdsFixed: [
+        "catalans-cur-luke-keary → catalans-hist-era-luke-keary",
+        "catalans-cur-tevita-pangai-jr → catalans-hist-era-tevita-pangai-junior",
+        "huddersfield-cur-thomas-burgess → huddersfield-hist-era-thomas-burgess",
+        "hull-fc-cur-jake-clifford → hull-fc-hist-era-jake-clifford",
+        "hull-fc-cur-jordan-rapana removed (player not in database)",
+        "hull-kr-cur-will-oakes → hull-kr-hist-era-will-oakes",
+        "leeds-cur-kallum-watkins → leeds-cur-kallum-watkins-2015",
+      ],
     },
     ratingDistribution: distribution,
+    ratingDistributionByCategory: distributionByCategory,
     changes,
     protectedByOverride: protectedOverrides.sort(),
     elite90Plus: elite90Plus.sort((a, b) => b.rating - a.rating),
@@ -370,7 +492,7 @@ function main(): void {
   console.log(`Protected overrides: ${protectedOverrides.length}`);
   console.log(`90+ players: ${elite90Plus.length}`);
   console.log(`Legend demotions: ${legendDemotions.length}`);
-  console.log(`Era needsReview: ${eraNeedsReview.length}`);
+  console.log(`Era needsReview: ${eraNeedsReviewBefore} → ${eraNeedsReview.length}`);
   console.log(`Report: ${REPORT_PATH}`);
 }
 

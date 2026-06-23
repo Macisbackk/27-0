@@ -218,7 +218,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
             mobileCompact ? "gap-0.5" : ""
           }`}
         >
-          <div className="min-w-0 flex-1 pr-1">
+          <div className="min-w-0 flex-1 overflow-hidden pr-1">
             <h2
               className={`truncate ${
                 mobileCompact
@@ -228,7 +228,9 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
             >
               {displayName}
             </h2>
-            {statusStrip}
+            {statusStrip && (
+              <div className="max-w-full min-w-0 overflow-hidden">{statusStrip}</div>
+            )}
             <PlayerIdentityLine
               player={player}
               compact={mobileCompact}
@@ -330,9 +332,11 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
 
       <div className="flex flex-1 flex-col gap-2 p-3 sm:p-4">
         <div className="flex items-start gap-3">
-          <div className="min-w-0 flex-1 pr-1">
+          <div className="min-w-0 flex-1 overflow-hidden pr-1">
             <h2 className={`truncate ${TYPO.playerNameSm}`}>{displayName}</h2>
-            {statusStrip}
+            {statusStrip && (
+              <div className="max-w-full min-w-0 overflow-hidden">{statusStrip}</div>
+            )}
             <PlayerIdentityLine
               player={player}
               className={statusStrip ? "!mt-0" : undefined}

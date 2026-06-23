@@ -31,10 +31,10 @@ export function StatBox({
   const valueClass = (() => {
     if (highlight) return "font-medium !text-accent-gold";
     if (light && isTier) {
-      return `font-normal text-gray-300 ${
+      return `font-normal text-gray-300 break-words leading-snug ${
         compact
-          ? "whitespace-nowrap text-[10px] leading-snug sm:text-sm"
-          : "whitespace-nowrap text-[11px] sm:text-sm"
+          ? "text-[9px] sm:text-[10px]"
+          : "text-[10px] sm:text-sm"
       }`;
     }
     if (light) {
@@ -60,7 +60,7 @@ export function StatBox({
   return (
     <div
       className={`${CARD.stat} flex min-h-0 flex-col ${
-        isTier ? "min-w-[5.5rem]" : "min-w-0"
+        isTier ? "min-w-0" : "min-w-0"
       } ${paddingClass} ${className}`}
     >
       <p

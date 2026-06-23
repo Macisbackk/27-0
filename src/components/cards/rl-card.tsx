@@ -136,8 +136,8 @@ export function RLInfoBox({
 
 function tierStatValueClass(compact?: boolean): string {
   return compact
-    ? "whitespace-nowrap text-[10px] leading-snug sm:text-sm"
-    : "whitespace-nowrap text-[11px] sm:text-sm";
+    ? "break-words text-[9px] leading-snug sm:text-[10px]"
+    : "break-words text-[10px] sm:text-sm";
 }
 
 export function RLStatBox({
@@ -164,7 +164,7 @@ export function RLStatBox({
   return (
     <div
       className={`${RL_INFO_BOX_CLASS} flex min-h-0 flex-col ${
-        isTier ? "min-w-[5.5rem]" : "min-w-0"
+        isTier ? "min-w-0" : "min-w-0"
       } ${compact ? SPACING.cardPaddingSm : large ? "px-2.5 py-2" : "px-2 py-1.5"} ${className}`}
     >
       <p

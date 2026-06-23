@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-23T12:47:18.496Z",
+  "generatedAt": "2026-06-23T13:19:31.735Z",
   "summary": {
     "validTeams": 351,
     "historicTeams": 337,
@@ -29,8 +29,8 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.5,
-      "teamValue": 2113000,
+      "teamRating": 83.3,
+      "teamValue": 2072000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -62,8 +62,8 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.7,
-      "teamValue": 2389000,
+      "teamRating": 84.4,
+      "teamValue": 2317000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -73,9 +73,9 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2516000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.8,
+      "teamValue": 2444000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "bradford-bulls-2009",
@@ -84,8 +84,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.7,
-      "teamValue": 2817000,
+      "teamRating": 86.6,
+      "teamValue": 2787000,
       "tier": "Competitive Outfit"
     },
     {
@@ -95,8 +95,8 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.9,
-      "teamValue": 3257000,
+      "teamRating": 87.8,
+      "teamValue": 3227000,
       "tier": "Top Six Contender"
     },
     {
@@ -106,9 +106,9 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.2,
-      "teamValue": 2978000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.8,
+      "teamValue": 2851000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "bradford-bulls-2006",
@@ -117,8 +117,8 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.4,
-      "teamValue": 2988000,
+      "teamRating": 87,
+      "teamValue": 2861000,
       "tier": "Top Six Contender"
     },
     {
@@ -128,8 +128,8 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.2,
-      "teamValue": 2833000,
+      "teamRating": 85.9,
+      "teamValue": 2736000,
       "tier": "Competitive Outfit"
     },
     {
@@ -139,8 +139,8 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.4,
-      "teamValue": 3241000,
+      "teamRating": 87,
+      "teamValue": 3114000,
       "tier": "Top Six Contender"
     },
     {
@@ -150,8 +150,8 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88,
-      "teamValue": 3280000,
+      "teamRating": 87.4,
+      "teamValue": 3082000,
       "tier": "Top Six Contender"
     },
     {
@@ -161,8 +161,8 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.2,
-      "teamValue": 3396000,
+      "teamRating": 87.6,
+      "teamValue": 3228000,
       "tier": "Top Six Contender"
     },
     {
@@ -172,8 +172,8 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.8,
-      "teamValue": 3544000,
+      "teamRating": 88.3,
+      "teamValue": 3418000,
       "tier": "Top Six Contender"
     },
     {
@@ -183,8 +183,8 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.1,
-      "teamValue": 3356000,
+      "teamRating": 87.5,
+      "teamValue": 3221000,
       "tier": "Top Six Contender"
     },
     {
@@ -194,9 +194,9 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.3,
-      "teamValue": 3053000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.7,
+      "teamValue": 2888000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "bradford-bulls-1998",
@@ -205,8 +205,8 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.4,
-      "teamValue": 2841000,
+      "teamRating": 86.2,
+      "teamValue": 2770000,
       "tier": "Competitive Outfit"
     },
     {
@@ -227,8 +227,8 @@
       "year": "1996",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.7,
-      "teamValue": 2479000,
+      "teamRating": 84.2,
+      "teamValue": 2401000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -238,8 +238,8 @@
       "year": "2026",
       "category": "26",
       "rosterSize": 21,
-      "teamRating": 83.8,
-      "teamValue": 2092000,
+      "teamRating": 83.9,
+      "teamValue": 2111000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -249,8 +249,8 @@
       "year": "2025",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 81.6,
-      "teamValue": 1672000,
+      "teamRating": 82.5,
+      "teamValue": 1858000,
       "tier": "Mid-Table Side"
     },
     {
@@ -260,8 +260,8 @@
       "year": "2024",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 82.3,
-      "teamValue": 1828000,
+      "teamRating": 82.9,
+      "teamValue": 1990000,
       "tier": "Mid-Table Side"
     },
     {
@@ -271,8 +271,8 @@
       "year": "2023",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.2,
-      "teamValue": 2078000,
+      "teamRating": 83.5,
+      "teamValue": 2134000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -282,8 +282,8 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.5,
-      "teamValue": 2326000,
+      "teamRating": 84.6,
+      "teamValue": 2339000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -304,8 +304,8 @@
       "year": "2020",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.4,
-      "teamValue": 2286000,
+      "teamRating": 84.5,
+      "teamValue": 2299000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -315,8 +315,8 @@
       "year": "2019",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.1,
-      "teamValue": 2227000,
+      "teamRating": 84.2,
+      "teamValue": 2240000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -337,8 +337,8 @@
       "year": "2017",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2460000,
+      "teamRating": 84.8,
+      "teamValue": 2430000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -348,8 +348,8 @@
       "year": "2016",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.1,
-      "teamValue": 2706000,
+      "teamRating": 85.8,
+      "teamValue": 2642000,
       "tier": "Competitive Outfit"
     },
     {
@@ -359,8 +359,8 @@
       "year": "2015",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.9,
-      "teamValue": 2236000,
+      "teamRating": 83.8,
+      "teamValue": 2206000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -370,9 +370,9 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85,
-      "teamValue": 2409000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.9,
+      "teamValue": 2379000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "castleford-tigers-2013",
@@ -436,8 +436,8 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 82.6,
-      "teamValue": 1943000,
+      "teamRating": 82.4,
+      "teamValue": 1905000,
       "tier": "Mid-Table Side"
     },
     {
@@ -459,7 +459,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 84.2,
-      "teamValue": 2320000,
+      "teamValue": 2290000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -469,8 +469,8 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.1,
-      "teamValue": 2251000,
+      "teamRating": 84,
+      "teamValue": 2221000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -480,8 +480,8 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.8,
-      "teamValue": 2409000,
+      "teamRating": 84.7,
+      "teamValue": 2379000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -535,8 +535,8 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 82.5,
-      "teamValue": 1931000,
+      "teamRating": 82,
+      "teamValue": 1853000,
       "tier": "Mid-Table Side"
     },
     {
@@ -546,8 +546,8 @@
       "year": "1996",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 81.7,
-      "teamValue": 1771000,
+      "teamRating": 81,
+      "teamValue": 1647000,
       "tier": "Mid-Table Side"
     },
     {
@@ -557,9 +557,9 @@
       "year": "2026",
       "category": "26",
       "rosterSize": 22,
-      "teamRating": 85.2,
-      "teamValue": 2472000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.6,
+      "teamValue": 2310000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "catalans-dragons-2025",
@@ -568,8 +568,8 @@
       "year": "2025",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.8,
-      "teamValue": 2442000,
+      "teamRating": 84.3,
+      "teamValue": 2239000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -601,8 +601,8 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.2,
-      "teamValue": 2395000,
+      "teamRating": 83.9,
+      "teamValue": 2357000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -623,9 +623,9 @@
       "year": "2020",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.3,
-      "teamValue": 2680000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.9,
+      "teamValue": 2600000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "catalans-dragons-2019",
@@ -634,8 +634,8 @@
       "year": "2019",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.6,
-      "teamValue": 2940000,
+      "teamRating": 86.5,
+      "teamValue": 2901000,
       "tier": "Competitive Outfit"
     },
     {
@@ -656,8 +656,8 @@
       "year": "2017",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.5,
-      "teamValue": 2498000,
+      "teamRating": 85.3,
+      "teamValue": 2459000,
       "tier": "Competitive Outfit"
     },
     {
@@ -667,8 +667,8 @@
       "year": "2016",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.2,
-      "teamValue": 2286000,
+      "teamRating": 83.6,
+      "teamValue": 2142000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -678,8 +678,8 @@
       "year": "2015",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.2,
-      "teamValue": 2684000,
+      "teamRating": 85.8,
+      "teamValue": 2586000,
       "tier": "Competitive Outfit"
     },
     {
@@ -689,8 +689,8 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.5,
-      "teamValue": 2557000,
+      "teamRating": 85.2,
+      "teamValue": 2468000,
       "tier": "Competitive Outfit"
     },
     {
@@ -700,9 +700,9 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2498000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.7,
+      "teamValue": 2370000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "catalans-dragons-2012",
@@ -711,9 +711,9 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2501000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.7,
+      "teamValue": 2392000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "catalans-dragons-2011",
@@ -722,8 +722,8 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.1,
-      "teamValue": 2254000,
+      "teamRating": 83.9,
+      "teamValue": 2215000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -733,8 +733,8 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 82.4,
-      "teamValue": 1869000,
+      "teamRating": 82.2,
+      "teamValue": 1810000,
       "tier": "Mid-Table Side"
     },
     {
@@ -744,9 +744,9 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.2,
-      "teamValue": 2028000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 82.7,
+      "teamValue": 1931000,
+      "tier": "Mid-Table Side"
     },
     {
       "id": "catalans-dragons-2006",
@@ -766,9 +766,9 @@
       "year": "2026",
       "category": "26",
       "rosterSize": 20,
-      "teamRating": 82.9,
-      "teamValue": 1941000,
-      "tier": "Mid-Table Side"
+      "teamRating": 83.2,
+      "teamValue": 1990000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "huddersfield-giants-2025",
@@ -788,8 +788,8 @@
       "year": "2024",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.9,
-      "teamValue": 2171000,
+      "teamRating": 84.1,
+      "teamValue": 2198000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -810,8 +810,8 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.4,
-      "teamValue": 2308000,
+      "teamRating": 84.5,
+      "teamValue": 2342000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -843,9 +843,9 @@
       "year": "2019",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.2,
-      "teamValue": 2045000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 82.9,
+      "teamValue": 2005000,
+      "tier": "Mid-Table Side"
     },
     {
       "id": "huddersfield-giants-2018",
@@ -854,8 +854,8 @@
       "year": "2018",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.4,
-      "teamValue": 2511000,
+      "teamRating": 85.2,
+      "teamValue": 2440000,
       "tier": "Competitive Outfit"
     },
     {
@@ -887,8 +887,8 @@
       "year": "2015",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.6,
-      "teamValue": 2600000,
+      "teamRating": 85.5,
+      "teamValue": 2570000,
       "tier": "Competitive Outfit"
     },
     {
@@ -898,8 +898,8 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.3,
-      "teamValue": 2536000,
+      "teamRating": 85.2,
+      "teamValue": 2506000,
       "tier": "Competitive Outfit"
     },
     {
@@ -909,8 +909,8 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.5,
-      "teamValue": 2561000,
+      "teamRating": 85.4,
+      "teamValue": 2531000,
       "tier": "Competitive Outfit"
     },
     {
@@ -920,8 +920,8 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.2,
-      "teamValue": 2318000,
+      "teamRating": 84,
+      "teamValue": 2263000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -931,8 +931,8 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.6,
-      "teamValue": 2204000,
+      "teamRating": 83.2,
+      "teamValue": 2109000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -942,9 +942,9 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.2,
-      "teamValue": 2065000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 82.8,
+      "teamValue": 2010000,
+      "tier": "Mid-Table Side"
     },
     {
       "id": "huddersfield-giants-2009",
@@ -953,8 +953,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.3,
-      "teamValue": 2135000,
+      "teamRating": 83,
+      "teamValue": 2080000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -964,8 +964,8 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84,
-      "teamValue": 2264000,
+      "teamRating": 83.8,
+      "teamValue": 2209000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -975,8 +975,8 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.3,
-      "teamValue": 2341000,
+      "teamRating": 84.2,
+      "teamValue": 2316000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1030,8 +1030,8 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 82.2,
-      "teamValue": 1833000,
+      "teamRating": 82,
+      "teamValue": 1793000,
       "tier": "Mid-Table Side"
     },
     {
@@ -1052,8 +1052,8 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 81.8,
-      "teamValue": 1811000,
+      "teamRating": 81.2,
+      "teamValue": 1659000,
       "tier": "Mid-Table Side"
     },
     {
@@ -1063,9 +1063,9 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 81.2,
-      "teamValue": 1659000,
-      "tier": "Mid-Table Side"
+      "teamRating": 80.8,
+      "teamValue": 1574000,
+      "tier": "Inconsistent Squad"
     },
     {
       "id": "hull-fc-2026",
@@ -1107,9 +1107,9 @@
       "year": "2023",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 82.9,
-      "teamValue": 2003000,
-      "tier": "Mid-Table Side"
+      "teamRating": 84,
+      "teamValue": 2224000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "hull-fc-2022",
@@ -1196,7 +1196,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 86.8,
-      "teamValue": 2835000,
+      "teamValue": 2805000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1206,8 +1206,8 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.7,
-      "teamValue": 2804000,
+      "teamRating": 86.5,
+      "teamValue": 2779000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1228,8 +1228,8 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.3,
-      "teamValue": 2539000,
+      "teamRating": 85.1,
+      "teamValue": 2484000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1239,9 +1239,9 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85,
-      "teamValue": 2425000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.8,
+      "teamValue": 2400000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "hull-fc-2010",
@@ -1261,8 +1261,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.5,
-      "teamValue": 2329000,
+      "teamRating": 84.3,
+      "teamValue": 2304000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1283,8 +1283,8 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.5,
-      "teamValue": 2329000,
+      "teamRating": 84.3,
+      "teamValue": 2274000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1294,9 +1294,9 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2478000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.9,
+      "teamValue": 2423000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "hull-fc-2005",
@@ -1305,8 +1305,8 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.2,
-      "teamValue": 2315000,
+      "teamRating": 83.9,
+      "teamValue": 2260000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1316,8 +1316,8 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84,
-      "teamValue": 2276000,
+      "teamRating": 83.8,
+      "teamValue": 2221000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1327,8 +1327,8 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.8,
-      "teamValue": 2441000,
+      "teamRating": 84.7,
+      "teamValue": 2416000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1338,8 +1338,8 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.8,
-      "teamValue": 2608000,
+      "teamRating": 85.6,
+      "teamValue": 2583000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1360,8 +1360,8 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.5,
-      "teamValue": 2158000,
+      "teamRating": 83.2,
+      "teamValue": 2066000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1393,8 +1393,8 @@
       "year": "2026",
       "category": "26",
       "rosterSize": 19,
-      "teamRating": 86.1,
-      "teamValue": 2708000,
+      "teamRating": 85.7,
+      "teamValue": 2616000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1404,8 +1404,8 @@
       "year": "2025",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86,
-      "teamValue": 2686000,
+      "teamRating": 85.3,
+      "teamValue": 2536000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1426,8 +1426,8 @@
       "year": "2023",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.1,
-      "teamValue": 2334000,
+      "teamRating": 83.9,
+      "teamValue": 2306000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1437,8 +1437,8 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.5,
-      "teamValue": 2413000,
+      "teamRating": 84.8,
+      "teamValue": 2458000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1448,8 +1448,8 @@
       "year": "2021",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2505000,
+      "teamRating": 85.1,
+      "teamValue": 2495000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1459,8 +1459,8 @@
       "year": "2020",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.1,
-      "teamValue": 2327000,
+      "teamRating": 84.5,
+      "teamValue": 2385000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1470,9 +1470,9 @@
       "year": "2019",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.7,
-      "teamValue": 2434000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 85.1,
+      "teamValue": 2489000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "hull-kr-2018",
@@ -1547,8 +1547,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.7,
-      "teamValue": 2177000,
+      "teamRating": 83.5,
+      "teamValue": 2106000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1591,8 +1591,8 @@
       "year": "2025",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2387000,
+      "teamRating": 84.7,
+      "teamValue": 2322000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1668,9 +1668,9 @@
       "year": "2018",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85,
-      "teamValue": 2434000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.8,
+      "teamValue": 2369000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "leeds-rhinos-2017",
@@ -1679,9 +1679,9 @@
       "year": "2017",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.1,
-      "teamValue": 2487000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.8,
+      "teamValue": 2422000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "leeds-rhinos-2016",
@@ -1690,8 +1690,8 @@
       "year": "2016",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2560000,
+      "teamRating": 84.7,
+      "teamValue": 2495000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1701,9 +1701,9 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.1,
-      "teamValue": 3181000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.8,
+      "teamValue": 3086000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "leeds-rhinos-2013",
@@ -1712,8 +1712,8 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.8,
-      "teamValue": 3653000,
+      "teamRating": 88.5,
+      "teamValue": 3558000,
       "tier": "Top Six Contender"
     },
     {
@@ -1723,9 +1723,9 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.2,
-      "teamValue": 3304000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.9,
+      "teamValue": 3209000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "leeds-rhinos-2011",
@@ -1734,8 +1734,8 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.9,
-      "teamValue": 3138000,
+      "teamRating": 86.8,
+      "teamValue": 3108000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1745,8 +1745,8 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.2,
-      "teamValue": 3135000,
+      "teamRating": 87.1,
+      "teamValue": 3105000,
       "tier": "Top Six Contender"
     },
     {
@@ -1756,8 +1756,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88,
-      "teamValue": 3473000,
+      "teamRating": 87.9,
+      "teamValue": 3443000,
       "tier": "Top Six Contender"
     },
     {
@@ -1767,8 +1767,8 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.3,
-      "teamValue": 3566000,
+      "teamRating": 88.2,
+      "teamValue": 3536000,
       "tier": "Top Six Contender"
     },
     {
@@ -1789,8 +1789,8 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90,
-      "teamValue": 3924000,
+      "teamRating": 89.8,
+      "teamValue": 3853000,
       "tier": "Trophy Contenders"
     },
     {
@@ -1811,8 +1811,8 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.9,
-      "teamValue": 3060000,
+      "teamRating": 86.7,
+      "teamValue": 2989000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1822,9 +1822,9 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.1,
-      "teamValue": 3125000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.9,
+      "teamValue": 3086000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "leeds-rhinos-2002",
@@ -1833,8 +1833,8 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.2,
-      "teamValue": 2900000,
+      "teamRating": 86,
+      "teamValue": 2861000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1844,8 +1844,8 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.5,
-      "teamValue": 3239000,
+      "teamRating": 87.4,
+      "teamValue": 3200000,
       "tier": "Top Six Contender"
     },
     {
@@ -1855,8 +1855,8 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.5,
-      "teamValue": 2836000,
+      "teamRating": 86.4,
+      "teamValue": 2797000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1866,8 +1866,8 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2471000,
+      "teamRating": 84.8,
+      "teamValue": 2432000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1888,8 +1888,8 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.7,
-      "teamValue": 2457000,
+      "teamRating": 84.5,
+      "teamValue": 2418000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1899,8 +1899,8 @@
       "year": "1996",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 81.7,
-      "teamValue": 1860000,
+      "teamRating": 81.5,
+      "teamValue": 1821000,
       "tier": "Mid-Table Side"
     },
     {
@@ -1932,9 +1932,9 @@
       "year": "2024",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85,
-      "teamValue": 2488000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.8,
+      "teamValue": 2446000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "leigh-leopards-2023",
@@ -2031,8 +2031,8 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.3,
-      "teamValue": 2039000,
+      "teamRating": 83.2,
+      "teamValue": 2014000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2042,9 +2042,9 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83,
-      "teamValue": 1994000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 82.8,
+      "teamValue": 1969000,
+      "tier": "Mid-Table Side"
     },
     {
       "id": "london-broncos-2006",
@@ -2152,9 +2152,9 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.2,
-      "teamValue": 2241000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 82.8,
+      "teamValue": 2158000,
+      "tier": "Mid-Table Side"
     },
     {
       "id": "london-broncos-1996",
@@ -2174,8 +2174,8 @@
       "year": "2024",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.2,
-      "teamValue": 2207000,
+      "teamRating": 84.1,
+      "teamValue": 2156000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2185,8 +2185,8 @@
       "year": "2023",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.3,
-      "teamValue": 2453000,
+      "teamRating": 85.1,
+      "teamValue": 2388000,
       "tier": "Competitive Outfit"
     },
     {
@@ -2196,9 +2196,9 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85,
-      "teamValue": 2397000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.8,
+      "teamValue": 2332000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "salford-red-devils-2021",
@@ -2207,8 +2207,8 @@
       "year": "2021",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.5,
-      "teamValue": 2314000,
+      "teamRating": 83.9,
+      "teamValue": 2196000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2218,8 +2218,8 @@
       "year": "2020",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.3,
-      "teamValue": 2294000,
+      "teamRating": 83.9,
+      "teamValue": 2204000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2240,8 +2240,8 @@
       "year": "2018",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.5,
-      "teamValue": 2172000,
+      "teamRating": 83.3,
+      "teamValue": 2130000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2284,8 +2284,8 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2522000,
+      "teamRating": 85,
+      "teamValue": 2480000,
       "tier": "Competitive Outfit"
     },
     {
@@ -2339,8 +2339,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 82.2,
-      "teamValue": 1881000,
+      "teamRating": 82,
+      "teamValue": 1841000,
       "tier": "Mid-Table Side"
     },
     {
@@ -2394,8 +2394,8 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.3,
-      "teamValue": 2123000,
+      "teamRating": 83.1,
+      "teamValue": 2085000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2405,8 +2405,8 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.6,
-      "teamValue": 2312000,
+      "teamRating": 83.4,
+      "teamValue": 2274000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2449,8 +2449,8 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 80.6,
-      "teamValue": 1572000,
+      "teamRating": 79.9,
+      "teamValue": 1456000,
       "tier": "Inconsistent Squad"
     },
     {
@@ -2493,8 +2493,8 @@
       "year": "2023",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.2,
-      "teamValue": 2680000,
+      "teamRating": 86,
+      "teamValue": 2668000,
       "tier": "Competitive Outfit"
     },
     {
@@ -2504,8 +2504,8 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.2,
-      "teamValue": 2672000,
+      "teamRating": 86.1,
+      "teamValue": 2660000,
       "tier": "Competitive Outfit"
     },
     {
@@ -2515,8 +2515,8 @@
       "year": "2021",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.4,
-      "teamValue": 2738000,
+      "teamRating": 86.2,
+      "teamValue": 2700000,
       "tier": "Competitive Outfit"
     },
     {
@@ -2570,8 +2570,8 @@
       "year": "2016",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.4,
-      "teamValue": 2479000,
+      "teamRating": 85.3,
+      "teamValue": 2449000,
       "tier": "Competitive Outfit"
     },
     {
@@ -2582,7 +2582,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 85.5,
-      "teamValue": 2532000,
+      "teamValue": 2502000,
       "tier": "Competitive Outfit"
     },
     {
@@ -2603,8 +2603,8 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.2,
-      "teamValue": 2912000,
+      "teamRating": 87.1,
+      "teamValue": 2882000,
       "tier": "Top Six Contender"
     },
     {
@@ -2625,9 +2625,9 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87,
-      "teamValue": 2864000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.9,
+      "teamValue": 2834000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "st-helens-2010",
@@ -2636,8 +2636,8 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.9,
-      "teamValue": 3141000,
+      "teamRating": 87.5,
+      "teamValue": 3008000,
       "tier": "Top Six Contender"
     },
     {
@@ -2647,8 +2647,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.8,
-      "teamValue": 3126000,
+      "teamRating": 87.3,
+      "teamValue": 2993000,
       "tier": "Top Six Contender"
     },
     {
@@ -2658,9 +2658,9 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.2,
-      "teamValue": 2981000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.9,
+      "teamValue": 2919000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "st-helens-2007",
@@ -2669,8 +2669,8 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.7,
-      "teamValue": 2871000,
+      "teamRating": 86.2,
+      "teamValue": 2738000,
       "tier": "Competitive Outfit"
     },
     {
@@ -2680,9 +2680,9 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.2,
-      "teamValue": 2995000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.8,
+      "teamValue": 2885000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "st-helens-2004",
@@ -2691,8 +2691,8 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.3,
-      "teamValue": 3237000,
+      "teamRating": 87,
+      "teamValue": 3136000,
       "tier": "Top Six Contender"
     },
     {
@@ -2713,8 +2713,8 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.5,
-      "teamValue": 3320000,
+      "teamRating": 87.4,
+      "teamValue": 3290000,
       "tier": "Top Six Contender"
     },
     {
@@ -2724,8 +2724,8 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.6,
-      "teamValue": 3302000,
+      "teamRating": 87.5,
+      "teamValue": 3272000,
       "tier": "Top Six Contender"
     },
     {
@@ -2735,9 +2735,9 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89.2,
-      "teamValue": 3685000,
-      "tier": "Trophy Contenders"
+      "teamRating": 88.9,
+      "teamValue": 3630000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "st-helens-1999",
@@ -2746,8 +2746,8 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.5,
-      "teamValue": 3540000,
+      "teamRating": 88.3,
+      "teamValue": 3485000,
       "tier": "Top Six Contender"
     },
     {
@@ -2757,9 +2757,9 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.4,
-      "teamValue": 3300000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.9,
+      "teamValue": 3204000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "st-helens-1997",
@@ -2768,9 +2768,9 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.2,
-      "teamValue": 3015000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.9,
+      "teamValue": 2960000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "st-helens-1996",
@@ -2779,9 +2779,9 @@
       "year": "1996",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2635000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.7,
+      "teamValue": 2526000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "toulouse-olympique-2026",
@@ -2801,9 +2801,9 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 81.7,
-      "teamValue": 1703000,
-      "tier": "Mid-Table Side"
+      "teamRating": 80.8,
+      "teamValue": 1554000,
+      "tier": "Inconsistent Squad"
     },
     {
       "id": "wakefield-trinity-2026",
@@ -2823,8 +2823,8 @@
       "year": "2025",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 82.5,
-      "teamValue": 1898000,
+      "teamRating": 82.9,
+      "teamValue": 1956000,
       "tier": "Mid-Table Side"
     },
     {
@@ -2856,8 +2856,8 @@
       "year": "2021",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.4,
-      "teamValue": 2319000,
+      "teamRating": 84.3,
+      "teamValue": 2306000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2933,8 +2933,8 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2429000,
+      "teamRating": 84.7,
+      "teamValue": 2358000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2944,8 +2944,8 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.7,
-      "teamValue": 2399000,
+      "teamRating": 84.5,
+      "teamValue": 2328000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2955,8 +2955,8 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.2,
-      "teamValue": 2286000,
+      "teamRating": 84,
+      "teamValue": 2215000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2966,8 +2966,8 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 82.8,
-      "teamValue": 1930000,
+      "teamRating": 82.5,
+      "teamValue": 1887000,
       "tier": "Mid-Table Side"
     },
     {
@@ -3043,8 +3043,8 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.1,
-      "teamValue": 2280000,
+      "teamRating": 83.8,
+      "teamValue": 2240000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -3054,8 +3054,8 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.4,
-      "teamValue": 2115000,
+      "teamRating": 83.2,
+      "teamValue": 2074000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -3076,8 +3076,8 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.2,
-      "teamValue": 2325000,
+      "teamRating": 83.9,
+      "teamValue": 2284000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -3087,8 +3087,8 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.5,
-      "teamValue": 2137000,
+      "teamRating": 83.3,
+      "teamValue": 2097000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -3098,8 +3098,8 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 82.8,
-      "teamValue": 1976000,
+      "teamRating": 82.5,
+      "teamValue": 1935000,
       "tier": "Mid-Table Side"
     },
     {
@@ -3197,8 +3197,8 @@
       "year": "2018",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.5,
-      "teamValue": 2521000,
+      "teamRating": 85.3,
+      "teamValue": 2466000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3230,8 +3230,8 @@
       "year": "2015",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.2,
-      "teamValue": 2716000,
+      "teamRating": 85.9,
+      "teamValue": 2652000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3241,8 +3241,8 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.8,
-      "teamValue": 2625000,
+      "teamRating": 85.7,
+      "teamValue": 2595000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3252,9 +3252,9 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87,
-      "teamValue": 2877000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.6,
+      "teamValue": 2783000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "warrington-wolves-2012",
@@ -3263,9 +3263,9 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.2,
-      "teamValue": 2919000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.8,
+      "teamValue": 2825000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "warrington-wolves-2011",
@@ -3274,9 +3274,9 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.5,
-      "teamValue": 3034000,
-      "tier": "Top Six Contender"
+      "teamRating": 86.9,
+      "teamValue": 2871000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "warrington-wolves-2010",
@@ -3285,8 +3285,8 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.5,
-      "teamValue": 2982000,
+      "teamRating": 87.2,
+      "teamValue": 2883000,
       "tier": "Top Six Contender"
     },
     {
@@ -3296,8 +3296,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.2,
-      "teamValue": 2703000,
+      "teamRating": 85.8,
+      "teamValue": 2604000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3307,8 +3307,8 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.7,
-      "teamValue": 2871000,
+      "teamRating": 86.4,
+      "teamValue": 2772000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3318,8 +3318,8 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2502000,
+      "teamRating": 85.1,
+      "teamValue": 2472000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3329,8 +3329,8 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2461000,
+      "teamRating": 84.8,
+      "teamValue": 2431000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -3341,7 +3341,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 85.2,
-      "teamValue": 2517000,
+      "teamValue": 2487000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3351,8 +3351,8 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.7,
-      "teamValue": 2658000,
+      "teamRating": 85.6,
+      "teamValue": 2628000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3362,8 +3362,8 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2550000,
+      "teamRating": 85,
+      "teamValue": 2479000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3373,8 +3373,8 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.5,
-      "teamValue": 2382000,
+      "teamRating": 84.4,
+      "teamValue": 2352000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -3428,8 +3428,8 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2670000,
+      "teamRating": 84.7,
+      "teamValue": 2629000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -3472,8 +3472,8 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 81.8,
-      "teamValue": 1840000,
+      "teamRating": 81.7,
+      "teamValue": 1815000,
       "tier": "Mid-Table Side"
     },
     {
@@ -3681,8 +3681,8 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.2,
-      "teamValue": 2894000,
+      "teamRating": 85.9,
+      "teamValue": 2827000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3692,8 +3692,8 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.3,
-      "teamValue": 2676000,
+      "teamRating": 85.1,
+      "teamValue": 2609000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3703,8 +3703,8 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.7,
-      "teamValue": 2761000,
+      "teamRating": 85.5,
+      "teamValue": 2694000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3714,9 +3714,9 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.1,
-      "teamValue": 2711000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.8,
+      "teamValue": 2644000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "wigan-warriors-2009",
@@ -3725,8 +3725,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.5,
-      "teamValue": 2586000,
+      "teamRating": 84.3,
+      "teamValue": 2519000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -3747,8 +3747,8 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.4,
-      "teamValue": 2543000,
+      "teamRating": 85.2,
+      "teamValue": 2476000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3780,8 +3780,8 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.4,
-      "teamValue": 3163000,
+      "teamRating": 87.2,
+      "teamValue": 3096000,
       "tier": "Top Six Contender"
     },
     {
@@ -3791,8 +3791,8 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.7,
-      "teamValue": 2987000,
+      "teamRating": 86.5,
+      "teamValue": 2920000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3802,8 +3802,8 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 3022000,
+      "teamRating": 86.6,
+      "teamValue": 2955000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3835,8 +3835,8 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.6,
-      "teamValue": 2951000,
+      "teamRating": 85.5,
+      "teamValue": 2926000,
       "tier": "Competitive Outfit"
     },
     {
@@ -3846,8 +3846,8 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.3,
-      "teamValue": 3304000,
+      "teamRating": 87.2,
+      "teamValue": 3279000,
       "tier": "Top Six Contender"
     },
     {
@@ -3857,8 +3857,8 @@
       "year": "1996",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.2,
-      "teamValue": 3509000,
+      "teamRating": 87.8,
+      "teamValue": 3419000,
       "tier": "Top Six Contender"
     },
     {

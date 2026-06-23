@@ -36,20 +36,26 @@ export function PlayerStatusBadge({
   compact,
   className = "",
 }: PlayerStatusBadgeProps) {
+  const sizeClass = compact
+    ? "rl-status-compact text-[7px] tracking-[0.05em] sm:text-[8px]"
+    : "text-[9px] tracking-[0.08em] sm:text-[10px]";
+
   return (
     <p
-      className={`${STATUS_CLASS[status]} ${
-        compact
-          ? "text-[8px] tracking-[0.07em] sm:text-[9px]"
-          : "text-[9px] tracking-[0.08em] sm:text-[10px]"
-      } ${className}`}
+      className={`${STATUS_CLASS[status]} ${sizeClass} ${className}`}
       aria-label={`Player status: ${STATUS_LABEL[status]}`}
     >
-      <span className="rl-status-prefix">STATUS</span>
-      <span className="rl-status-separator" aria-hidden>
-        ·
-      </span>
-      <span className="rl-status-value">{STATUS_LABEL[status]}</span>
+      {compact ? (
+        <span className="rl-status-value">{STATUS_LABEL[status]}</span>
+      ) : (
+        <>
+          <span className="rl-status-prefix">STATUS</span>
+          <span className="rl-status-separator" aria-hidden>
+            ·
+          </span>
+          <span className="rl-status-value">{STATUS_LABEL[status]}</span>
+        </>
+      )}
     </p>
   );
 }
@@ -78,19 +84,25 @@ export function PlayerSpecialBadge({
   compact,
   className = "",
 }: PlayerSpecialBadgeProps) {
+  const sizeClass = compact
+    ? "rl-status-compact text-[7px] tracking-[0.05em] sm:text-[8px]"
+    : "text-[9px] tracking-[0.08em] sm:text-[10px]";
+
   return (
     <p
-      className={`${SPECIAL_CLASS[variant]} ${
-        compact
-          ? "text-[8px] tracking-[0.07em] sm:text-[9px]"
-          : "text-[9px] tracking-[0.08em] sm:text-[10px]"
-      } ${className}`}
+      className={`${SPECIAL_CLASS[variant]} ${sizeClass} ${className}`}
     >
-      <span className="rl-status-prefix">MODE</span>
-      <span className="rl-status-separator" aria-hidden>
-        ·
-      </span>
-      <span className="rl-status-value">{SPECIAL_LABEL[variant]}</span>
+      {compact ? (
+        <span className="rl-status-value">{SPECIAL_LABEL[variant]}</span>
+      ) : (
+        <>
+          <span className="rl-status-prefix">MODE</span>
+          <span className="rl-status-separator" aria-hidden>
+            ·
+          </span>
+          <span className="rl-status-value">{SPECIAL_LABEL[variant]}</span>
+        </>
+      )}
     </p>
   );
 }
