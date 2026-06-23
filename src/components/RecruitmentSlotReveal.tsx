@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
-import { getSlotTeamYearSpinPools } from "@/lib/game/slot-team-year-pick";
 import {
-  computeSlotReelFinalIndex,
-  buildSlotReelPool,
-  buildSpinReelTickIndices,
-  buildSpinReelDelaysMs,
+  getAllNormalModeSpinTeams,
+  getAllNormalModeSpinYears,
+} from "@/lib/game/recruitment-slot-reveal";
+import {
+  buildSpinReelPlan,
   DEFAULT_SPIN_TICK_COUNT,
 } from "@/lib/game/slot-reel";
+import { spinTimingMark } from "@/lib/game/spin-timing";
 import { getClubColors } from "@/lib/clubs";
 import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
 import { formatShortYear } from "@/lib/players/prime-year";
@@ -21,101 +22,37 @@ import {
 } from "@/lib/sound";
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { SlotReel, useSlotReelStrip } from "./SlotReel";
+import { SlotReel, type SlotReelHandle } from "./SlotReel";
 
-const SPIN_DELAYS_MS = buildSpinReelDelaysMs(DEFAULT_SPIN_TICK_COUNT);
-const LAND_HOLD_MS = 320;
+const LAND_HOLD_MS = 280;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
   onComplete: () => void;
 }
 
-function computeScrollIndexForTick(
-  tick: number,
-  tickIndices: number[]
-): number {
-  return tickIndices[Math.min(tick, tickIndices.length - 1)] ?? 0;
-}
-
 export function RecruitmentSlotReveal({
   target,
   onComplete,
 }: RecruitmentSlotRevealProps) {
-  const { teams, years } = useMemo(
-    () => getSlotTeamYearSpinPools(target),
-    [target]
-  );
+  const teamReelRef = useRef<SlotReelHandle>(null);
+  const yearReelRef = useRef<SlotReelHandle>(null);
+  const [locked, setLocked] = useState(false);
+
   const clubColors = useMemo(
     () => getClubColors(target.team),
     [target.team]
   );
 
-  const teamPool = useMemo(
-    () => buildSlotReelPool(teams, target.team),
-    [teams, target.team]
-  );
-  const yearPool = useMemo(
-    () => buildSlotReelPool(years, target.year),
-    [years, target.year]
-  );
-
-  const teamStrip = useSlotReelStrip(teamPool);
-  const yearStrip = useSlotReelStrip(yearPool);
-
-  const teamStartIndex = teamPool.length * 2;
-  const yearStartIndex = yearPool.length * 2;
-  const teamFinalIndex = useMemo(
-    () => computeSlotReelFinalIndex(teamPool, target.team),
-    [teamPool, target.team]
-  );
-  const yearFinalIndex = useMemo(
-    () => computeSlotReelFinalIndex(yearPool, target.year),
-    [yearPool, target.year]
-  );
-
-  const teamTickIndices = useMemo(
-    () =>
-      buildSpinReelTickIndices(
-        teamPool,
-        target.team,
-        DEFAULT_SPIN_TICK_COUNT
-      ),
-    [teamPool, target.team]
-  );
-  const yearTickIndices = useMemo(
-    () =>
-      buildSpinReelTickIndices(
-        yearPool,
-        target.year,
-        DEFAULT_SPIN_TICK_COUNT
-      ),
-    [yearPool, target.year]
-  );
-
-  const [teamIndex, setTeamIndex] = useState(teamStartIndex);
-  const [yearIndex, setYearIndex] = useState(yearStartIndex);
-  const [stepMs, setStepMs] = useState<number>(SPIN_DELAYS_MS[0] ?? 18);
-  const [locked, setLocked] = useState(false);
-  const [spinning, setSpinning] = useState(true);
-  const [phaseLabel, setPhaseLabel] = useState("Recruitment draw spinning…");
-
-  useEffect(() => {
-    if (process.env.NODE_ENV !== "production") {
-      if (!teamPool.includes(target.team)) {
-        console.warn("Spin reel missing final team", {
-          targetTeam: target.team,
-          teamPool,
-        });
-      }
-      if (!yearPool.includes(target.year)) {
-        console.warn("Spin reel missing final year", {
-          targetYear: target.year,
-          yearPool,
-        });
-      }
-    }
-  }, [teamPool, yearPool, target.team, target.year]);
+  const { teamPlan, yearPlan } = useMemo(() => {
+    const t0 = spinTimingMark("reel-plan-start");
+    const teams = getAllNormalModeSpinTeams();
+    const years = getAllNormalModeSpinYears();
+    const teamPlan = buildSpinReelPlan(teams, target.team, DEFAULT_SPIN_TICK_COUNT);
+    const yearPlan = buildSpinReelPlan(years, target.year, DEFAULT_SPIN_TICK_COUNT);
+    spinTimingMark("reel-plan-ready", t0);
+    return { teamPlan, yearPlan };
+  }, [target.team, target.year, target.teamYearId]);
 
   useEffect(() => {
     const prefersReducedMotion =
@@ -123,104 +60,92 @@ export function RecruitmentSlotReveal({
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReducedMotion) {
-      setTeamIndex(teamFinalIndex);
-      setYearIndex(yearFinalIndex);
+      teamReelRef.current?.setScrollIndex(teamPlan.finalIndex, false);
+      yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, false);
       setLocked(true);
-      setSpinning(false);
-      setPhaseLabel("Draw locked");
       const timeoutId = window.setTimeout(() => onComplete(), 120);
       return () => window.clearTimeout(timeoutId);
     }
 
-    let tick = 0;
     let cancelled = false;
     let timeoutId: number | null = null;
-    const totalTicks = SPIN_DELAYS_MS.length;
+    const delays = teamPlan.delaysMs;
+    const totalTicks = delays.length;
+    const tAnimStart = spinTimingMark("animation-start");
 
-    setTeamIndex(teamStartIndex);
-    setYearIndex(yearStartIndex);
-    setStepMs(SPIN_DELAYS_MS[0] ?? 18);
-    setLocked(false);
-    setSpinning(true);
-    setPhaseLabel("Recruitment draw spinning…");
+    teamReelRef.current?.setScrollIndex(
+      teamPlan.tickIndices[0] ?? teamPlan.finalIndex,
+      false
+    );
+    yearReelRef.current?.setScrollIndex(
+      yearPlan.tickIndices[0] ?? yearPlan.finalIndex,
+      false
+    );
+
+    let tick = 0;
 
     const runTick = () => {
       if (cancelled) return;
 
       if (tick < totalTicks) {
-        const delay = SPIN_DELAYS_MS[tick] ?? 180;
+        const delay = delays[tick] ?? 80;
         const progress = tick / totalTicks;
-        setStepMs(delay);
 
-        setTeamIndex(computeScrollIndexForTick(tick, teamTickIndices));
-        setYearIndex(computeScrollIndexForTick(tick, yearTickIndices));
+        teamReelRef.current?.setScrollIndex(
+          teamPlan.tickIndices[tick] ?? teamPlan.finalIndex,
+          false
+        );
+        yearReelRef.current?.setScrollIndex(
+          yearPlan.tickIndices[tick] ?? yearPlan.finalIndex,
+          false
+        );
 
-        if (tick === 0) {
-          playSlotSpinStart();
-        }
+        if (tick === 0) playSlotSpinStart();
         playSlotSpinTick(progress, delay);
-
-        if (tick > totalTicks * 0.62) {
-          setPhaseLabel("Slowing down…");
-        } else if (tick > totalTicks * 0.28) {
-          setPhaseLabel("Scanning squads…");
-        }
 
         tick += 1;
         timeoutId = window.setTimeout(runTick, delay);
         return;
       }
 
-      setTeamIndex(teamFinalIndex);
-      setYearIndex(yearFinalIndex);
+      teamReelRef.current?.setScrollIndex(teamPlan.finalIndex, true);
+      yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, true);
       setLocked(true);
-      setSpinning(false);
-      setPhaseLabel("Draw locked");
       playSlotLand();
+      spinTimingMark("animation-end", tAnimStart);
+
       timeoutId = window.setTimeout(() => {
         if (!cancelled) onComplete();
       }, LAND_HOLD_MS);
     };
 
-    const startFrame = window.requestAnimationFrame(() => {
-      if (!cancelled) runTick();
-    });
+    timeoutId = window.setTimeout(runTick, 0);
 
     return () => {
       cancelled = true;
-      window.cancelAnimationFrame(startFrame);
       if (timeoutId) window.clearTimeout(timeoutId);
     };
-  }, [
-    target.teamYearId,
-    teamStartIndex,
-    yearStartIndex,
-    teamFinalIndex,
-    yearFinalIndex,
-    teamTickIndices,
-    yearTickIndices,
-    onComplete,
-  ]);
+  }, [teamPlan, yearPlan, onComplete, target.teamYearId]);
 
   const reelShellClass = (isLocked: boolean) =>
-    `slot-reveal-reel min-w-0 flex-1 rounded-xl border-2 px-1 py-0 transition-colors duration-300 sm:px-2 ${
+    `slot-reveal-reel min-w-0 flex-1 rounded-xl border-2 px-1 py-0 ${
       isLocked
-        ? "slot-reel-lock-flash border-accent-green/55 bg-pitch-950/95 shadow-[inset_0_0_24px_rgba(34,197,94,0.12),0_0_20px_rgba(34,197,94,0.15)]"
-        : "border-pitch-600/70 bg-pitch-950/80 shadow-[inset_0_2px_16px_rgba(0,0,0,0.55)]"
+        ? "slot-reel-lock-flash border-accent-green/55 bg-pitch-950/95"
+        : "border-pitch-600/70 bg-pitch-950/80"
     }`;
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-3 max-sm:backdrop-blur-none sm:p-4 sm:backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-3 sm:p-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
       <motion.div
-        className={`${CARD.panel} card-glass w-full max-w-md overflow-hidden border border-accent-green/25 shadow-[0_0_48px_rgba(34,197,94,0.18)]`}
-        initial={{ opacity: 0, y: 16 }}
+        className={`${CARD.panel} w-full max-w-md overflow-hidden border border-accent-green/25`}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.28, ease: "easeOut" }}
+        transition={{ duration: 0.22, ease: "easeOut" }}
       >
         <div
           className="border-b border-pitch-700/50 px-4 py-3 text-center sm:px-6 sm:py-4"
@@ -232,42 +157,25 @@ export function RecruitmentSlotReveal({
           <p className="mt-1 font-display text-base font-bold text-white sm:text-lg">
             Spin for your signing
           </p>
-          <p className="mt-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-gray-500">
-            {phaseLabel}
-          </p>
         </div>
 
         <div className="px-3 py-4 sm:px-6 sm:py-6">
-          <div
-            className="flex max-w-full items-stretch justify-center gap-1.5 sm:gap-2.5"
-            aria-live="polite"
-          >
+          <div className="flex max-w-full items-stretch justify-center gap-1.5 sm:gap-2.5">
             <div
               className={reelShellClass(locked)}
-              style={{
-                borderTopColor: locked ? clubColors.primary : undefined,
-              }}
+              style={{ borderTopColor: locked ? clubColors.primary : undefined }}
             >
               <SlotReel
-                strip={teamStrip}
-                scrollIndex={teamIndex}
-                locked={locked}
-                stepMs={stepMs}
-                spinning={spinning}
+                ref={teamReelRef}
+                strip={teamPlan.strip}
                 formatItem={formatSpinReelTeamName}
                 textClassName="slot-reveal-team-name"
               />
             </div>
-
-            <div
-              className={`${reelShellClass(locked)} slot-reveal-year-reel shrink-0`}
-            >
+            <div className={`${reelShellClass(locked)} slot-reveal-year-reel shrink-0`}>
               <SlotReel
-                strip={yearStrip}
-                scrollIndex={yearIndex}
-                locked={locked}
-                stepMs={stepMs}
-                spinning={spinning}
+                ref={yearReelRef}
+                strip={yearPlan.strip}
                 formatItem={formatShortYear}
                 textClassName="slot-reveal-year-text tabular-nums"
               />
@@ -275,28 +183,13 @@ export function RecruitmentSlotReveal({
           </div>
 
           {locked && (
-            <motion.p
-              className="mt-3 text-center font-display text-sm font-bold text-white sm:text-base"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.08, duration: 0.25 }}
-            >
+            <p className="mt-3 text-center font-display text-sm font-bold text-white sm:text-base">
               {target.team}{" "}
               <span className="text-accent-green">
                 {formatShortYear(target.year)}
               </span>
-            </motion.p>
+            </p>
           )}
-
-          <div className="mt-4 flex justify-center">
-            <span
-              className={`h-1 rounded-full transition-all duration-500 ${
-                locked
-                  ? "w-16 bg-accent-green shadow-[0_0_10px_rgba(34,197,94,0.55)]"
-                  : "w-10 animate-pulse bg-accent-green/60"
-              }`}
-            />
-          </div>
         </div>
       </motion.div>
     </motion.div>

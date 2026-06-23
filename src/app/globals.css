@@ -583,10 +583,6 @@ body {
     border-radius: inherit;
   }
 
-  .slot-reel-window--spinning .slot-reel-strip {
-    filter: blur(0.4px);
-  }
-
   .slot-reel-window:not(.slot-reel-window--spinning) .slot-reel-strip {
     filter: none;
   }

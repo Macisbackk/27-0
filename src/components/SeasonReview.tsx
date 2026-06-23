@@ -7,7 +7,8 @@ import type { SeasonResult } from "@/lib/game/season-simulation";
 import { getSeasonSummaryMessage } from "@/lib/game/season-simulation";
 import {
   getSeasonGradeFromSquad,
-  getValidatedGradeReviewBio,
+  getSeasonReviewStoryBio,
+  getSeasonStoryHeading,
 } from "@/lib/grades";
 import { getSeasonReviewLabel } from "@/lib/mode-labels";
 import { getClubBreakdownSummary } from "@/lib/squad-analysis";
@@ -248,11 +249,15 @@ export function SeasonReview({
             >
               {gradeInfo.grade} Grade
             </p>
-            <p className="mt-2 text-sm font-semibold text-gray-300">
+            <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-accent-gold">
+              {getSeasonStoryHeading(mode)}
+            </p>
+            <p className="mt-1 text-sm font-semibold text-gray-300">
               {gradeInfo.label}
             </p>
             <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-500">
-              {getValidatedGradeReviewBio(
+              {getSeasonReviewStoryBio(
+                mode,
                 gradeInfo.grade,
                 {
                   wins: seasonResult.wins,

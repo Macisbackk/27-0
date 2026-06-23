@@ -58,6 +58,7 @@
     "simulate:normal-difficulty-audit": "tsx scripts/simulate-normal-difficulty-audit.ts",
     "test:playoffs": "tsx scripts/test-playoff-simulation.ts",
     "merge:coachbeard-accounts": "tsx scripts/merge-coachbeard-accounts.ts",
+    "debug:spin-randomness": "tsx scripts/debug-spin-randomness.ts",
     "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts"
   },
   "dependencies": {

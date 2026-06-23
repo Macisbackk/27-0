@@ -420,78 +420,81 @@ async function main(): Promise<void> {
   });
 
   const emailUserId = await findUserIdByEmail(admin, TARGET_EMAIL);
-  const primaryProfileId = await findUserIdByCoachName(admin, PRIMARY_COACH);
-  const secondaryProfileId = await findUserIdByCoachName(admin, SECONDARY_COACH);
+  const legacyCoachbeardId = await findUserIdByCoachName(admin, PRIMARY_COACH);
+  const coachbeard2Id = await findUserIdByCoachName(admin, SECONDARY_COACH);
 
-  const primaryUserId = emailUserId ?? primaryProfileId;
-  if (!primaryUserId) {
-    console.error(`Primary account not found for ${TARGET_EMAIL} / ${PRIMARY_COACH}`);
+  /** Account to keep — coachbeard2 holds the live stats. */
+  const keeperUserId = coachbeard2Id ?? emailUserId ?? legacyCoachbeardId;
+  if (!keeperUserId) {
+    console.error(`Keeper account not found for ${SECONDARY_COACH} / ${TARGET_EMAIL}`);
     process.exit(1);
   }
 
-  if (existing?.primaryUserId === primaryUserId) {
+  const legacyUserId =
+    legacyCoachbeardId && legacyCoachbeardId !== keeperUserId
+      ? legacyCoachbeardId
+      : null;
+
+  if (existing?.primaryUserId === keeperUserId) {
     console.log("Merge already completed (idempotent skip).");
-    await validateMerge(admin, primaryUserId, existing);
+    await validateMerge(admin, keeperUserId, existing);
     process.exit(0);
   }
 
-  if (!secondaryProfileId) {
-    console.log(`No ${SECONDARY_COACH} profile found — nothing to merge.`);
-    const stats = await loadStatsBundle(admin, primaryUserId);
-    saveMergeFlag(primaryUserId, sumStatsModes(stats), sumStatsModes(stats));
-    await validateMerge(admin, primaryUserId, loadMergeFlag());
+  if (!legacyUserId) {
+    console.log(`No separate ${PRIMARY_COACH} account — ensuring coach name is ${PRIMARY_COACH}.`);
+    await admin
+      .from("profiles")
+      .update({ coach_name: PRIMARY_COACH, updated_at: new Date().toISOString() })
+      .eq("id", keeperUserId);
+    const stats = await loadStatsBundle(admin, keeperUserId);
+    saveMergeFlag(keeperUserId, sumStatsModes(stats), sumStatsModes(stats));
+    await validateMerge(admin, keeperUserId, loadMergeFlag());
     process.exit(0);
   }
 
-  if (secondaryProfileId === primaryUserId) {
-    console.log("Accounts already share the same user id.");
-    const stats = await loadStatsBundle(admin, primaryUserId);
-    saveMergeFlag(primaryUserId, sumStatsModes(stats), sumStatsModes(stats));
-    process.exit(0);
-  }
-
-  const [primaryStats, secondaryStats] = await Promise.all([
-    loadStatsBundle(admin, primaryUserId),
-    loadStatsBundle(admin, secondaryProfileId),
+  const [keeperStats, legacyStats] = await Promise.all([
+    loadStatsBundle(admin, keeperUserId),
+    loadStatsBundle(admin, legacyUserId),
   ]);
-  const statsBeforePrimary = sumStatsModes(primaryStats);
-  const statsBeforeSecondary = sumStatsModes(secondaryStats);
+  const statsBeforeKeeper = sumStatsModes(keeperStats);
+  const statsBeforeLegacy = sumStatsModes(legacyStats);
 
   for (const mode of STAT_MODES) {
     const merged = mergeUserStatsData(
-      primaryStats[mode] ?? { ...EMPTY_STATS },
-      secondaryStats[mode] ?? { ...EMPTY_STATS }
+      keeperStats[mode] ?? { ...EMPTY_STATS },
+      legacyStats[mode] ?? { ...EMPTY_STATS }
     );
-    await saveStatsBundle(admin, primaryUserId, mode, merged);
+    await saveStatsBundle(admin, keeperUserId, mode, merged);
   }
 
-  const [primaryFunds, secondaryFunds] = await Promise.all([
-    loadClubFunds(admin, primaryUserId),
-    loadClubFunds(admin, secondaryProfileId),
+  const [keeperFunds, legacyFunds] = await Promise.all([
+    loadClubFunds(admin, keeperUserId),
+    loadClubFunds(admin, legacyUserId),
   ]);
-  const mergedFunds = mergeClubFunds(primaryFunds, secondaryFunds);
-  await saveClubFunds(admin, primaryUserId, mergedFunds);
+  const mergedFunds = mergeClubFunds(keeperFunds, legacyFunds);
+  await saveClubFunds(admin, keeperUserId, mergedFunds);
   await admin
     .from("user_stats")
     .delete()
-    .eq("user_id", secondaryProfileId)
+    .eq("user_id", legacyUserId)
     .eq("mode", CLUB_FUNDS_MODE)
     .eq("stat_key", CLUB_FUNDS_KEY);
 
   const leaderboardMerged = await mergeLeaderboardRows(
     admin,
-    primaryUserId,
-    secondaryProfileId
+    keeperUserId,
+    legacyUserId
   );
 
   await admin
     .from("profiles")
     .update({ coach_name: PRIMARY_COACH, updated_at: new Date().toISOString() })
-    .eq("id", primaryUserId);
+    .eq("id", keeperUserId);
 
-  await admin.from("profiles").delete().eq("id", secondaryProfileId);
+  await admin.from("profiles").delete().eq("id", legacyUserId);
 
-  await admin.auth.admin.updateUserById(primaryUserId, {
+  await admin.auth.admin.updateUserById(keeperUserId, {
     email: TARGET_EMAIL,
     user_metadata: { coach_name: PRIMARY_COACH },
   });
@@ -499,26 +502,26 @@ async function main(): Promise<void> {
   await admin
     .from("user_stats")
     .delete()
-    .eq("user_id", secondaryProfileId)
+    .eq("user_id", legacyUserId)
     .eq("stat_key", BUNDLE_KEY);
 
-  const statsAfterBundle = await loadStatsBundle(admin, primaryUserId);
+  const statsAfterBundle = await loadStatsBundle(admin, keeperUserId);
   const statsAfter = sumStatsModes(statsAfterBundle);
-  saveMergeFlag(primaryUserId, {
-    primaryTotalRuns: statsBeforePrimary.totalRuns,
-    secondaryTotalRuns: statsBeforeSecondary.totalRuns,
+  saveMergeFlag(keeperUserId, {
+    primaryTotalRuns: statsBeforeKeeper.totalRuns,
+    secondaryTotalRuns: statsBeforeLegacy.totalRuns,
     mergedTotalRuns: statsAfter.totalRuns,
   }, statsAfter);
 
   console.log("Coachbeard account merge complete");
-  console.log(`  Primary user: ${primaryUserId}`);
+  console.log(`  Keeper user (was ${SECONDARY_COACH}): ${keeperUserId}`);
   console.log(`  Email: ${TARGET_EMAIL}`);
   console.log(`  Leaderboard rows merged: ${leaderboardMerged}`);
   console.log(`  Club funds totalEarned: ${mergedFunds.totalEarned}`);
-  console.log(`  ${SECONDARY_COACH} profile removed`);
+  console.log(`  Legacy ${PRIMARY_COACH} profile removed`);
   console.log("✓ Idempotent flag saved at data/coachbeard-merge-complete.json");
 
-  await validateMerge(admin, primaryUserId, loadMergeFlag());
+  await validateMerge(admin, keeperUserId, loadMergeFlag());
 }
 
 main().catch((err) => {

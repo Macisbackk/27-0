@@ -4,9 +4,10 @@ export const SLOT_REEL_ITEM_HEIGHT_PX = 44;
 /** Visible rows in the reel window (centre row is the selection line). */
 export const SLOT_REEL_VISIBLE_ROWS = 3;
 
-export const SLOT_REEL_STRIP_COPIES = 10;
+/** Strip repetitions — keep low for DOM performance (animation uses transform only). */
+export const SLOT_REEL_STRIP_COPIES = 4;
 
-export const DEFAULT_SPIN_TICK_COUNT = 56;
+export const DEFAULT_SPIN_TICK_COUNT = 32;
 
 /** Vertical offset so item `index` sits on the centre selection line. */
 export function computeSlotReelScrollY(index: number): number {
@@ -44,7 +45,7 @@ export function easeSlotReelProgress(linear: number): number {
   return 1 - Math.pow(1 - linear, 3.4);
 }
 
-/** Slot-machine tick indices — many visible steps, lands exactly on final index. */
+/** Slot-machine tick indices — lands exactly on final index. */
 export function buildSpinReelTickIndices(
   pool: string[],
   finalValue: string,
@@ -52,7 +53,7 @@ export function buildSpinReelTickIndices(
 ): number[] {
   if (pool.length === 0) return Array.from({ length: tickCount }, () => 0);
   const finalIndex = computeSlotReelFinalIndex(pool, finalValue);
-  const startIndex = pool.length * 2;
+  const startIndex = pool.length;
   const indices: number[] = [];
   let prev = startIndex;
 
@@ -76,15 +77,31 @@ export function buildSpinReelTickIndices(
 export function buildSpinReelDelaysMs(tickCount: number): number[] {
   return Array.from({ length: tickCount }, (_, i) => {
     const progress = i / tickCount;
-    if (progress < 0.25) return 16 + Math.floor(progress * 28);
-    if (progress < 0.55) return 28 + Math.floor((progress - 0.25) * 55);
-    if (progress < 0.78) return 52 + Math.floor((progress - 0.55) * 90);
-    return 95 + Math.floor((progress - 0.78) * 280);
+    if (progress < 0.25) return 14 + Math.floor(progress * 22);
+    if (progress < 0.55) return 24 + Math.floor((progress - 0.25) * 48);
+    if (progress < 0.78) return 48 + Math.floor((progress - 0.55) * 72);
+    return 80 + Math.floor((progress - 0.78) * 220);
   });
 }
 
-export function getStripItemAtIndex(strip: string[], index: number): string {
-  if (strip.length === 0) return "";
-  const safe = ((index % strip.length) + strip.length) % strip.length;
-  return strip[safe] ?? "";
+export interface SpinReelPlan {
+  strip: string[];
+  tickIndices: number[];
+  finalIndex: number;
+  delaysMs: number[];
+}
+
+/** Precompute reel animation plan once before spin starts. */
+export function buildSpinReelPlan(
+  poolItems: string[],
+  finalValue: string,
+  tickCount = DEFAULT_SPIN_TICK_COUNT
+): SpinReelPlan {
+  const pool = buildSlotReelPool(poolItems, finalValue);
+  return {
+    strip: buildSlotReelStrip(pool),
+    tickIndices: buildSpinReelTickIndices(pool, finalValue, tickCount),
+    finalIndex: computeSlotReelFinalIndex(pool, finalValue),
+    delaysMs: buildSpinReelDelaysMs(tickCount),
+  };
 }

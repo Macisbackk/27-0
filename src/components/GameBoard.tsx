@@ -761,6 +761,7 @@ export function GameBoard({
       if (!slot || slot.player) return;
 
       playPositionSelect();
+      const t0 = performance.now();
       const target = generateSlotTeamYearTargetForSlot(
         seed,
         spinPickIndex,
@@ -769,6 +770,12 @@ export function GameBoard({
         slotIndex,
         usedTeamYearKeys
       );
+      if (process.env.NODE_ENV === "development") {
+        console.debug(
+          `[spin-timing] target-selected: ${(performance.now() - t0).toFixed(1)}ms`,
+          target?.teamYearId
+        );
+      }
       if (!target) return;
 
       setPendingPlayer(null);

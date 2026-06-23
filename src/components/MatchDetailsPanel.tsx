@@ -69,43 +69,54 @@ export function MatchDetailsPanel({
       exit={{ height: 0, opacity: 0, marginTop: 0 }}
       transition={{ duration: 0.22, ease: "easeOut" }}
     >
-      <div className={SPACING.cardPadding}>
-        <div className={`${SPACING.headingMargin} flex items-start justify-between gap-2`}>
-          <div className="min-w-0">
+      <div className={`${SPACING.cardPadding} ${SPACING.stackLg}`}>
+        <div className="flex items-start justify-between gap-3">
+          <div className={`min-w-0 flex-1 ${SPACING.stackSm}`}>
             <p className={TYPO.sectionLabel}>
               {roundLabel ?? `Round ${fixture.round}`} · Match Details
             </p>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-gray-500">
+            <div
+              className={`${CARD.stat} ${SPACING.cardPaddingSm} flex flex-wrap items-center justify-center gap-2 sm:justify-start`}
+            >
+              <span
+                className={`${TYPO.cardTitle} whitespace-nowrap ${
+                  fixture.result === "W" ? "text-accent-green" : "text-red-400"
+                }`}
+              >
+                {fixture.pointsFor} – {fixture.pointsAgainst}
+              </span>
+              <span className={`${TYPO.bodySm} text-gray-400`}>vs</span>
+              <span className={`${TYPO.bodySm} break-words text-gray-300`}>
+                {fixture.opponent}
+              </span>
+            </div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
               {fixture.isNeutral
                 ? "Neutral"
                 : fixture.isHome
                   ? "Home"
                   : "Away"}
             </p>
-            <p
-              className={`mt-1 font-display text-sm font-bold ${
-                fixture.result === "W" ? "text-accent-green" : "text-red-400"
-              }`}
-            >
-              {fixture.result === "W" ? "Victory" : "Defeat"}
-            </p>
             {fixture.matchBio && (
-              <p className={`mt-2 ${TYPO.bodySm}`}>{fixture.matchBio}</p>
+              <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
+                <p className={TYPO.sectionTitle}>Match Bio</p>
+                <p className={`mt-2 ${TYPO.bodySm}`}>{fixture.matchBio}</p>
+              </div>
             )}
             {fixture.manOfTheMatch && (
-              <p className="mt-2 text-sm text-gray-400">
-                <span className="font-medium text-accent-gold">
-                  Man of the Match:
-                </span>{" "}
-                {fixture.manOfTheMatch.playerName} —{" "}
-                {fixture.manOfTheMatch.teamName}
-                {fixture.manOfTheMatch.performanceSummary && (
-                  <span className="text-gray-500">
-                    {" "}
-                    · {fixture.manOfTheMatch.performanceSummary}
-                  </span>
-                )}
-              </p>
+              <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
+                <p className={TYPO.sectionTitle}>Player of the Match</p>
+                <p className={`mt-2 ${TYPO.bodySm}`}>
+                  {fixture.manOfTheMatch.playerName} —{" "}
+                  {fixture.manOfTheMatch.teamName}
+                  {fixture.manOfTheMatch.performanceSummary && (
+                    <span className="text-gray-500">
+                      {" "}
+                      · {fixture.manOfTheMatch.performanceSummary}
+                    </span>
+                  )}
+                </p>
+              </div>
             )}
           </div>
           <button type="button" onClick={onClose} className={BTN.closeSm}>
@@ -164,7 +175,7 @@ function TeamScoringBlock({
   const hasDropGoals = (kicking?.dropGoals ?? 0) > 0;
 
   return (
-    <div className={SPACING.stackSm}>
+    <div className={SPACING.stackMd}>
       <ClubTeamLabel club={teamName} colorClub={colorClub} />
       <p className={`${TYPO.bodySm} text-gray-400`}>
         {averageRating > 0 ? `${averageRating.toFixed(1)} avg rating` : "—"}

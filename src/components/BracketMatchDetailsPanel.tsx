@@ -43,26 +43,25 @@ export function BracketMatchDetailsPanel({
       exit={{ height: 0, opacity: 0 }}
       transition={{ duration: 0.22, ease: "easeOut" }}
     >
-      <div className={SPACING.cardPadding}>
-        <div className={`${SPACING.headingMargin} flex items-start justify-between gap-2`}>
-          <div className="min-w-0">
+      <div className={`${SPACING.cardPadding} ${SPACING.stackLg}`}>
+        <div className="flex items-start justify-between gap-3">
+          <div className={`min-w-0 flex-1 ${SPACING.stackSm}`}>
             <p className={TYPO.sectionLabel}>
               {getCupRoundLabel(match.round)} · Match Details
             </p>
-            <div className={`mt-2 flex flex-wrap items-center justify-center ${SPACING.buttonGap} sm:justify-start`}>
+            <div
+              className={`${CARD.stat} ${SPACING.cardPaddingSm} flex flex-wrap items-center justify-center gap-2 sm:justify-start`}
+            >
               <ClubNameLabel club={match.homeTeam} variant="inline" />
-              <span className={`${TYPO.cardTitle} whitespace-nowrap`}>
+              <span
+                className={`${TYPO.cardTitle} whitespace-nowrap ${
+                  homeWon ? "text-accent-green" : "text-gray-200"
+                }`}
+              >
                 {match.homeScore} – {match.awayScore}
               </span>
               <ClubNameLabel club={match.awayTeam} variant="inline" />
             </div>
-            <p
-              className={`mt-1 font-display text-sm font-bold ${
-                homeWon ? "text-accent-green" : "text-red-400"
-              }`}
-            >
-              Winner: {match.winner ?? (homeWon ? match.homeTeam : match.awayTeam)}
-            </p>
           </div>
           <button type="button" onClick={onClose} className={BTN.closeSm}>
             Close
@@ -110,7 +109,7 @@ function TeamScoringBlock({
   const hasDropGoals = (kicking?.dropGoals ?? 0) > 0;
 
   return (
-    <div className={SPACING.stackSm}>
+    <div className={SPACING.stackMd}>
       <ClubTeamLabel club={teamName} colorClub={colorClub} />
       {hasTries && (
         <ScoringSection title="Tries">
@@ -126,21 +125,21 @@ function TeamScoringBlock({
       )}
       {hasConversions && kicking && (
         <ScoringSection title="Conversions">
-          <p className={TYPO.statValue}>
+          <p className={`${TYPO.statValue} break-words`}>
             {kicking.name} ({kicking.conversions}/{kicking.conversionAttempts})
           </p>
         </ScoringSection>
       )}
       {hasPenalties && kicking && (
         <ScoringSection title="Penalties">
-          <p className={TYPO.statValue}>
+          <p className={`${TYPO.statValue} break-words`}>
             {kicking.name} ({kicking.penalties})
           </p>
         </ScoringSection>
       )}
       {hasDropGoals && kicking && (
         <ScoringSection title="Drop Goals">
-          <p className={TYPO.statValue}>
+          <p className={`${TYPO.statValue} break-words`}>
             {kicking.name} ({kicking.dropGoals})
           </p>
         </ScoringSection>

@@ -103,29 +103,43 @@ export function getNormalModeTeamYearPools(): TeamYearPool[] {
   });
 }
 
+let cachedNormalModePools: TeamYearPool[] | null = null;
+
+/** Memoised validated Normal Mode pools — safe to call before each spin. */
+export function getNormalModeTeamYearPoolsCached(): TeamYearPool[] {
+  if (!cachedNormalModePools) {
+    cachedNormalModePools = getNormalModeTeamYearPools();
+  }
+  return cachedNormalModePools;
+}
+
+export function clearNormalModeTeamYearPoolsCache(): void {
+  cachedNormalModePools = null;
+}
+
 /** Uniform spin weight — every valid team-year pool has equal chance after filters. */
 export function getNormalModeSpinPoolWeight(_pool: TeamYearPool): number {
   return 1;
 }
 
-export function pickWeightedNormalModePool<T extends TeamYearPool>(
+/**
+ * Uniform random team-year pool — each eligible pool has equal probability.
+ * Do NOT pick year first (that over-weights lone team-years like Leeds 2015 / Catalans 2007).
+ */
+export function pickUniformTeamYearPool<T extends TeamYearPool>(
   pools: T[],
   rng: () => number
 ): T | null {
   if (pools.length === 0) return null;
+  return pools[Math.floor(rng() * pools.length)]!;
+}
 
-  const byYear = new Map<string, T[]>();
-  for (const pool of pools) {
-    const list = byYear.get(pool.year) ?? [];
-    list.push(pool);
-    byYear.set(pool.year, list);
-  }
-
-  const years = [...byYear.keys()];
-  const year = years[Math.floor(rng() * years.length)]!;
-  const yearPools = byYear.get(year) ?? [];
-  if (yearPools.length === 0) return null;
-  return yearPools[Math.floor(rng() * yearPools.length)]!;
+/** @deprecated Use pickUniformTeamYearPool — year-first weighting biases sparse years. */
+export function pickWeightedNormalModePool<T extends TeamYearPool>(
+  pools: T[],
+  rng: () => number
+): T | null {
+  return pickUniformTeamYearPool(pools, rng);
 }
 
 export function getEraChallengeCupTeamCount(): number {

@@ -345,28 +345,28 @@ function mergeLocalStatsIfNeeded(
 
   const merged: StoredStats = {
     normal: mergeUserStatsData(
-      migrateUserStats(local.normal ?? EMPTY_STATS),
-      migrateUserStats(secondary.normal ?? EMPTY_STATS)
+      migrateUserStats(secondary.normal ?? EMPTY_STATS),
+      migrateUserStats(local.normal ?? EMPTY_STATS)
     ),
     hard: mergeUserStatsData(
-      migrateUserStats(local.hard ?? EMPTY_STATS),
-      migrateUserStats(secondary.hard ?? EMPTY_STATS)
+      migrateUserStats(secondary.hard ?? EMPTY_STATS),
+      migrateUserStats(local.hard ?? EMPTY_STATS)
     ),
     draftNormal: mergeUserStatsData(
-      migrateUserStats(local.draftNormal ?? EMPTY_STATS),
-      migrateUserStats(secondary.draftNormal ?? EMPTY_STATS)
+      migrateUserStats(secondary.draftNormal ?? EMPTY_STATS),
+      migrateUserStats(local.draftNormal ?? EMPTY_STATS)
     ),
     draftHard: mergeUserStatsData(
-      migrateUserStats(local.draftHard ?? EMPTY_STATS),
-      migrateUserStats(secondary.draftHard ?? EMPTY_STATS)
+      migrateUserStats(secondary.draftHard ?? EMPTY_STATS),
+      migrateUserStats(local.draftHard ?? EMPTY_STATS)
     ),
     fantasy: mergeUserStatsData(
-      migrateUserStats(local.fantasy ?? EMPTY_STATS),
-      migrateUserStats(secondary.fantasy ?? EMPTY_STATS)
+      migrateUserStats(secondary.fantasy ?? EMPTY_STATS),
+      migrateUserStats(local.fantasy ?? EMPTY_STATS)
     ),
     eraCup: mergeUserStatsData(
-      migrateUserStats(local.eraCup ?? EMPTY_STATS),
-      migrateUserStats(secondary.eraCup ?? EMPTY_STATS)
+      migrateUserStats(secondary.eraCup ?? EMPTY_STATS),
+      migrateUserStats(local.eraCup ?? EMPTY_STATS)
     ),
   };
 

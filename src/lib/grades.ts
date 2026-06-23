@@ -1,4 +1,4 @@
-import type { SquadSlot } from "./types";
+import type { GameMode, SquadSlot } from "./types";
 import { getAverageSquadRating } from "./squad-analysis";
 
 export type SquadGrade = "S+" | "S" | "A" | "B" | "C" | "D" | "E" | "F";
@@ -52,8 +52,8 @@ const GRADE_META: Record<
     glow: "rgba(245, 158, 11, 0.5)",
   },
   A: {
-    label: "Grand Final Winner",
-    subtitle: "Grand Final Winner",
+    label: "Title Contender",
+    subtitle: "Title Contender",
     explanation: "A championship-calibre squad.",
     color: "#22c55e",
     glow: "rgba(34, 197, 94, 0.45)",
@@ -254,7 +254,7 @@ export function getGradeReviewBio(
     ],
     A: [
       "A genuine contender's season — strong, consistent and dangerous.",
-      "Grand final credentials with enough quality to trouble anyone.",
+      "Title-chasing form all season — this team meant business.",
       "A polished campaign that kept the pressure on at the top.",
     ],
     B: [
@@ -321,6 +321,110 @@ export function getGradeReviewBio(
   }
 
   return bio;
+}
+
+/** Section heading above the season narrative on the review screen. */
+export function getSeasonStoryHeading(mode: GameMode): string {
+  if (mode === "CHALLENGE_CUP") return "Cup Run Story";
+  if (mode === "ERA_CHALLENGE_CUP") return "Era Tournament Story";
+  return "Season Story";
+}
+
+function modeStoryBioPool(
+  mode: GameMode,
+  grade: SquadGrade,
+  ctx: GradeReviewContext
+): string[] | null {
+  const { wins, losses, isPerfect } = ctx;
+
+  if (mode === "CHALLENGE_CUP") {
+    if (isPerfect || grade === "S+" || grade === "S") {
+      return [
+        "A cup run for the ages — every round felt like destiny.",
+        "Wembley-bound form from the opening tie to the final whistle.",
+        "A knockout campaign that turned pressure into silverware.",
+      ];
+    }
+    if (grade === "A" || grade === "B") {
+      return [
+        "A deep cup run that kept the dream alive deep into the competition.",
+        "Statement wins in the knockouts — this side belonged in the latter stages.",
+        "Cup football at its best: tight games, big moments, real belief.",
+      ];
+    }
+    return [
+      "An early exit that left this squad hungry for another cup tilt.",
+      "Knockout football is cruel — one bad afternoon ended the run.",
+      "Cup hopes faded, but there were flashes of what this team could do.",
+    ];
+  }
+
+  if (mode === "ERA_CHALLENGE_CUP") {
+    if (isPerfect || grade === "S+" || grade === "S") {
+      return [
+        "An era-defining tournament — this side looked built for the occasion.",
+        "Historic opposition, modern pressure, and a squad that rose to it.",
+        "A golden era cup run that will be talked about for years.",
+      ];
+    }
+    if (grade === "A" || grade === "B") {
+      return [
+        "A strong era tournament showing against legendary opposition.",
+        "Big names, tight games — this run had real pedigree.",
+        "Survived the early rounds and made a genuine tilt at glory.",
+      ];
+    }
+    return [
+      "A tough era draw — experience gained against some of the greats.",
+      "Knocked out early, but the era tournament tested this squad properly.",
+      "Historic opposition exposed gaps this team will want to fix.",
+    ];
+  }
+
+  if (isPerfect || wins === 27) {
+    return [
+      "27-0 perfection — the perfect run watch became reality.",
+      "An immaculate league season where every week felt inevitable.",
+      "The unbeaten chase delivered rugby league folklore.",
+    ];
+  }
+
+  if (wins >= 20 && losses <= 4) {
+    return [
+      "A title-chasing season with real momentum and statement wins.",
+      "Top-of-the-table form — this squad kept the pressure on all year.",
+      "A defining run that only narrowly missed immortality.",
+    ];
+  }
+
+  if (losses >= 15) {
+    return [
+      "A season of setbacks — too many results slipped away when it mattered.",
+      "The unbeaten dream faded early; rebuilding the belief is the next job.",
+      "Inconsistent form derailed the chase — lessons to take into the next run.",
+    ];
+  }
+
+  return null;
+}
+
+/** Mode-aware season narrative — never references grand finals. */
+export function getSeasonReviewStoryBio(
+  mode: GameMode,
+  grade: SquadGrade,
+  ctx: GradeReviewContext,
+  tablePosition: number
+): string {
+  const modePool = modeStoryBioPool(mode, grade, ctx);
+  if (modePool) {
+    const seed =
+      ctx.wins * 31 +
+      ctx.losses * 17 +
+      tablePosition * 13 +
+      Math.round(ctx.pointsDifference);
+    return pickGradeBio(modePool, seed);
+  }
+  return getValidatedGradeReviewBio(grade, ctx, tablePosition);
 }
 
 const SAFE_POSITION_FALLBACK_BIO =
