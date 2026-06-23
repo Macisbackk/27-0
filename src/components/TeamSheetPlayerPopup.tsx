@@ -2,11 +2,14 @@
 
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { PlayerTryTotal } from "@/lib/game/season-tries";
+import { buildPlayerSeasonReviewStats } from "@/lib/player-season-review";
+import type { SeasonAward } from "@/lib/season-awards";
 import type { SquadSlot } from "@/lib/types";
 import { getClubColors } from "@/lib/clubs";
 import { getPlayerColorClub } from "@/lib/players/run-club";
-import { POSITION_LABELS } from "@/lib/positions";
-import { getEffectivePeakRating } from "@/lib/squad-analysis";
+import { POSITION_LABELS, POSITION_SHORT } from "@/lib/positions";
+import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubDualSwatch } from "./ClubDualSwatch";
@@ -15,6 +18,9 @@ interface TeamSheetPlayerPopupProps {
   slot: SquadSlot | null;
   hardMode?: boolean;
   clubColorOverride?: string;
+  tryScorers?: PlayerTryTotal[];
+  awards?: SeasonAward[];
+  totalMatches?: number;
   onClose: () => void;
 }
 
@@ -22,6 +28,9 @@ export function TeamSheetPlayerPopup({
   slot,
   hardMode = false,
   clubColorOverride,
+  tryScorers,
+  awards,
+  totalMatches,
   onClose,
 }: TeamSheetPlayerPopupProps) {
   const player = slot?.player ?? null;
@@ -37,7 +46,15 @@ export function TeamSheetPlayerPopup({
 
   const club = player ? getPlayerColorClub(player, clubColorOverride) : "";
   const colors = club ? getClubColors(club) : null;
-  const rating = player && slot ? getEffectivePeakRating(slot) : null;
+  const seasonStats =
+    slot && player
+      ? buildPlayerSeasonReviewStats(slot, {
+          tryScorers,
+          awards,
+          totalMatches,
+          hardMode,
+        })
+      : null;
 
   return (
     <AnimatePresence>
@@ -53,7 +70,7 @@ export function TeamSheetPlayerPopup({
             role="dialog"
             aria-modal="true"
             aria-label={`${player.name} details`}
-            className={`${CARD.panel} w-full max-w-sm overflow-hidden p-0`}
+            className={`${CARD.panel} max-h-[min(90vh,640px)] w-full max-w-sm overflow-y-auto p-0`}
             initial={{ opacity: 0, y: 24, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -80,7 +97,8 @@ export function TeamSheetPlayerPopup({
                     {player.name}
                   </h3>
                   <p className={`mt-1 ${TYPO.bodySm} text-gray-400`}>
-                    {POSITION_LABELS[slot.position]}
+                    {formatPlayerPositionLabel(player)} ·{" "}
+                    {POSITION_SHORT[slot.position]}
                   </p>
                 </div>
               </div>
@@ -94,15 +112,59 @@ export function TeamSheetPlayerPopup({
                     </dd>
                   </div>
                 )}
-                {!hardMode && rating !== null && (
+                <div className="flex justify-between gap-3">
+                  <dt className="text-gray-500">Played as</dt>
+                  <dd className="text-right font-medium text-gray-200">
+                    {POSITION_LABELS[slot.position]}
+                  </dd>
+                </div>
+                {!hardMode && seasonStats?.rating !== undefined && (
                   <div className="flex justify-between gap-3">
                     <dt className="text-gray-500">Rating</dt>
                     <dd className="font-semibold text-accent-green">
-                      {Math.round(rating)}
+                      {seasonStats.rating}
+                    </dd>
+                  </div>
+                )}
+                {!hardMode && seasonStats?.valueLabel && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-gray-500">Value</dt>
+                    <dd className="font-semibold text-accent-gold">
+                      {seasonStats.valueLabel}
+                    </dd>
+                  </div>
+                )}
+                {seasonStats?.matchesPlayed !== undefined && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-gray-500">Matches</dt>
+                    <dd className="font-medium text-gray-200">
+                      {seasonStats.matchesPlayed}
+                    </dd>
+                  </div>
+                )}
+                {seasonStats?.tries !== undefined && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-gray-500">Season tries</dt>
+                    <dd className="font-semibold text-accent-gold">
+                      {seasonStats.tries}
+                    </dd>
+                  </div>
+                )}
+                {seasonStats?.awardWon && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-gray-500">Award</dt>
+                    <dd className="text-right font-medium text-accent-green">
+                      {seasonStats.awardWon}
                     </dd>
                   </div>
                 )}
               </dl>
+
+              {seasonStats?.contributionSummary && (
+                <p className="mt-4 rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2 text-sm leading-relaxed text-gray-400">
+                  {seasonStats.contributionSummary}
+                </p>
+              )}
 
               <button
                 type="button"

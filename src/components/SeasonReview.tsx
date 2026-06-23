@@ -5,14 +5,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { GameDifficulty, GameMode, SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
 import { getSeasonSummaryMessage } from "@/lib/game/season-simulation";
+import { SquadReviewSection } from "./SquadReviewSection";
+import { generateSeasonAwards } from "@/lib/season-awards";
 import {
   getSeasonGradeFromSquad,
   getSeasonReviewStoryBio,
   getSeasonStoryHeading,
 } from "@/lib/grades";
 import { getSeasonReviewLabel } from "@/lib/mode-labels";
-import { getClubBreakdownSummary } from "@/lib/squad-analysis";
-import { generateSeasonAwards } from "@/lib/season-awards";
 import { getSquadValue } from "@/lib/positions";
 import { formatValue } from "@/lib/players";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
@@ -26,12 +26,9 @@ import { MatchDetailsPanel } from "./MatchDetailsPanel";
 import type { MatchFixture } from "@/lib/game/season-simulation";
 import { Confetti } from "./Confetti";
 import { HardModeBadge } from "./HardModeBadge";
-import { ClubRepresentation } from "./ClubRepresentation";
-import { SquadReviewSection } from "./SquadReviewSection";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
-import { TryScorersSection } from "./TryScorersSection";
 import { buildLeagueTable } from "@/lib/game/league-table";
 import { userQualifiedForPlayoffs } from "@/lib/game/playoff-simulation";
 import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
@@ -79,11 +76,6 @@ export function SeasonReview({
 }: SeasonReviewProps) {
   const totalValue = getSquadValue(squad);
   const gradeInfo = getSeasonGradeFromSquad(squad, seasonResult, totalValue);
-  const filledCount = squad.filter((s) => s.player).length;
-  const clubSummary = getClubBreakdownSummary(squad, filledCount, {
-    joeMellorMode,
-    superSamHallasMode,
-  });
   const awards = useMemo(
     () =>
       generateSeasonAwards(squad, seasonResult, {
@@ -340,15 +332,15 @@ export function SeasonReview({
             </p>
             <p className="pt-2 text-gray-500">{summaryMessage}</p>
             {seasonResult.insights.length > 0 && (
-              <div className="border-t border-pitch-700/40 pt-3 text-left">
-                <p className="text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
+              <div className="border-t border-pitch-700/40 pt-3 text-center">
+                <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
                   Season Highlights
                 </p>
-                <ul className="mt-2 space-y-1.5 text-sm text-gray-400">
+                <ul className="mx-auto mt-2 max-w-md space-y-1.5 text-sm text-gray-400">
                   {seasonResult.insights.map((insight) => (
                     <li
                       key={insight}
-                      className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2"
+                      className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2 text-center leading-relaxed"
                     >
                       {insight}
                     </li>
@@ -363,26 +355,9 @@ export function SeasonReview({
           <LeagueTable rows={leagueTable} />
         </CollapsibleReviewSection>
 
-        {seasonResult.tryScorers.length > 0 && (
-          <CollapsibleReviewSection title="Try Scorers" delay={0.36} defaultOpen={false}>
-            <TryScorersSection
-              tryScorers={seasonResult.tryScorers}
-              expectedTotalTries={expectedTries}
-            />
-          </CollapsibleReviewSection>
-        )}
-
-        <CollapsibleReviewSection title="Squad Review" delay={0.38} defaultOpen={false}>
-          <SquadReviewSection
-            squad={squad}
-            hardMode={isHardMode}
-            awards={playerAwards}
-          />
-        </CollapsibleReviewSection>
-
         <CollapsibleReviewSection
           title="Match Results"
-          delay={0.4}
+          delay={0.36}
           defaultOpen={false}
           helper="Click any result to view full match details."
         >
@@ -423,10 +398,15 @@ export function SeasonReview({
           </div>
         </CollapsibleReviewSection>
 
-        <CollapsibleReviewSection title="Club Representation" delay={0.44} defaultOpen={false}>
-          <div className="text-left">
-            <ClubRepresentation summary={clubSummary} />
-          </div>
+        <CollapsibleReviewSection title="Squad Review" delay={0.38} defaultOpen={false}>
+          <SquadReviewSection
+            squad={squad}
+            hardMode={isHardMode}
+            awards={playerAwards}
+            tryScorers={seasonResult.tryScorers}
+            expectedTotalTries={expectedTries}
+            totalMatches={seasonResult.fixtures.length}
+          />
         </CollapsibleReviewSection>
 
         <motion.footer

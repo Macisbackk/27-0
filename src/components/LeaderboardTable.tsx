@@ -7,7 +7,6 @@ import {
   getDefaultTrackerForDbMode,
   getTrackersForDbMode,
   isTrackerValidForDbMode,
-  rankByTracker,
   type LeaderboardTrackerRow,
   type LeaderboardTrackerType,
 } from "@/lib/leaderboard-trackers";
@@ -16,16 +15,10 @@ import {
   type LeaderboardDbMode,
 } from "@/lib/storage/leaderboard";
 import {
-  getAllCupLeaderboardProfiles,
-  getAllEraCupLeaderboardProfiles,
-  mapCupProfilesToTrackerEntries,
-} from "@/lib/storage/cup-leaderboard";
-import {
   getCupTeamWinsLeaderboardAsync,
   getEraCupTeamWinsLeaderboardRows,
   type CupTeamWinsLeaderboardRow,
 } from "@/lib/storage/cup-team-wins";
-import { getUsername } from "@/lib/storage/user";
 import {
   CUP_ERA_VARIANT_CHANGED_EVENT,
   getCupEraVariant,
@@ -165,40 +158,8 @@ export function LeaderboardTable({
         return;
       }
 
-      if (isChallengeCupMode && cupEraMode) {
-        const profiles = getAllEraCupLeaderboardProfiles();
-        const trackerEntries = mapCupProfilesToTrackerEntries(profiles);
-        const rows = rankByTracker(
-          trackerEntries,
-          activeTracker,
-          50,
-          getUsername() ?? ""
-        );
-        if (currentRequest !== requestId.current) return;
-        setEntries(rows);
-        setTeamWinsRows([]);
-        setTeamWinsTotal(0);
-        setUsingFallback(true);
-        return;
-      }
-
-      if (isChallengeCupMode && !cupEraMode && activeTracker !== "best_record") {
-        const profiles = getAllCupLeaderboardProfiles();
-        const localRows = rankByTracker(
-          mapCupProfilesToTrackerEntries(profiles),
-          activeTracker,
-          50,
-          getUsername() ?? ""
-        );
-        if (localRows.length > 0) {
-          if (currentRequest !== requestId.current) return;
-          setEntries(localRows);
-          setTeamWinsRows([]);
-          setTeamWinsTotal(0);
-          setUsingFallback(true);
-          return;
-        }
-      }
+      const cupModeVariant =
+        isChallengeCupMode && cupEraMode ? "era" : "current";
 
       const result = await getTrackerLeaderboardAsync(
         activeTracker,
@@ -206,7 +167,11 @@ export function LeaderboardTable({
         difficulty,
         50,
         leaderboardMode,
-        isSuperLeagueMode ? superLeagueModeVariant : "current"
+        isSuperLeagueMode
+          ? superLeagueModeVariant
+          : isChallengeCupMode
+            ? cupModeVariant
+            : "current"
       );
 
       if (currentRequest !== requestId.current) return;

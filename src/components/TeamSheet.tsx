@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import type { PlayerTryTotal } from "@/lib/game/season-tries";
+import type { SeasonAward } from "@/lib/season-awards";
 import type { SquadSlot } from "@/lib/types";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
 import { CARD, SPACING } from "@/lib/ui/design-system";
@@ -11,8 +13,10 @@ interface TeamSheetProps {
   squad: SquadSlot[];
   hardMode?: boolean;
   clubColorOverride?: string;
-  /** Enable tap-to-view player details popup. */
   interactive?: boolean;
+  tryScorers?: PlayerTryTotal[];
+  awards?: SeasonAward[];
+  totalMatches?: number;
 }
 
 export function TeamSheet({
@@ -20,6 +24,9 @@ export function TeamSheet({
   hardMode = false,
   clubColorOverride,
   interactive = false,
+  tryScorers,
+  awards,
+  totalMatches,
 }: TeamSheetProps) {
   const [popupSlot, setPopupSlot] = useState<SquadSlot | null>(null);
 
@@ -48,6 +55,9 @@ export function TeamSheet({
         slot={popupSlot}
         hardMode={hardMode}
         clubColorOverride={clubColorOverride}
+        tryScorers={tryScorers}
+        awards={awards}
+        totalMatches={totalMatches}
         onClose={() => setPopupSlot(null)}
       />
     </>

@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { PlayerTryTotal } from "@/lib/game/season-tries";
-import { POSITION_LABELS } from "@/lib/positions";
+import { formatTryScorerPosition } from "@/lib/player-season-review";
+import type { SquadSlot } from "@/lib/types";
 import { playPanelExpand } from "@/lib/sound";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -15,30 +16,29 @@ const RANK_STYLES = [
   "text-amber-700/90",
 ] as const;
 
-function formatScorerPosition(scorer: PlayerTryTotal): string {
-  if (scorer.playedPosition && scorer.playedPosition !== scorer.position) {
-    return `${POSITION_LABELS[scorer.position]} → ${POSITION_LABELS[scorer.playedPosition]}`;
-  }
-  return POSITION_LABELS[scorer.position];
-}
-
 interface TryScorersSectionProps {
   tryScorers: PlayerTryTotal[];
   expectedTotalTries: number;
+  squad?: SquadSlot[];
+  compact?: boolean;
 }
 
 export function TryScorersSection({
   tryScorers,
   expectedTotalTries,
+  squad,
+  compact = false,
 }: TryScorersSectionProps) {
   const [expanded, setExpanded] = useState(false);
-  const topThree = tryScorers.slice(0, 3);
+  const topThree = tryScorers.slice(0, compact ? 3 : 3);
   const listedTotal = tryScorers.reduce((sum, s) => sum + s.tries, 0);
 
   if (tryScorers.length === 0) return null;
 
   return (
-    <div className={`${CARD.base} ${SPACING.cardPaddingSm} text-left`}>
+    <div
+      className={`${compact ? "" : `${CARD.base} ${SPACING.cardPaddingSm}`} text-left`}
+    >
       <div className={SPACING.stackSm}>
         {topThree.map((scorer, index) => {
           const rankStyle = RANK_STYLES[index] ?? "text-gray-400";
@@ -54,14 +54,14 @@ export function TryScorersSection({
                   {index + 1}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className={`truncate ${TYPO.playerNameSm}`}>
+                  <p className={`break-words ${TYPO.playerNameSm}`}>
                     {scorer.name}
                   </p>
                   <div className="mt-1">
                     <TryScorerClubBadge club={scorer.club} />
                   </div>
                   <p className={`mt-1.5 ${TYPO.bodySm}`}>
-                    {formatScorerPosition(scorer)}
+                    {formatTryScorerPosition(scorer, squad)}
                   </p>
                 </div>
                 <div className="shrink-0 text-right">
@@ -114,13 +114,13 @@ export function TryScorersSection({
                           {index + 1}
                         </span>
                         <div className="min-w-0 flex-1">
-                          <p className={`truncate ${TYPO.statValue}`}>
+                          <p className={`break-words ${TYPO.statValue}`}>
                             {scorer.name}
                           </p>
                           <div className="mt-1 flex flex-wrap items-center gap-1.5">
                             <TryScorerClubBadge club={scorer.club} />
                             <span className={TYPO.bodySm}>
-                              {formatScorerPosition(scorer)}
+                              {formatTryScorerPosition(scorer, squad)}
                             </span>
                           </div>
                         </div>
@@ -137,15 +137,17 @@ export function TryScorersSection({
         </>
       )}
 
-      <div className={`mt-3 flex items-center justify-between ${CARD.inset} px-3 py-2 ${TYPO.statLabel}`}>
-        <span>Total tries</span>
-        <span className={`${TYPO.statValue} font-display`}>
-          {listedTotal}
-          {listedTotal !== expectedTotalTries && (
-            <span className="ml-1 text-red-400">/ {expectedTotalTries}</span>
-          )}
-        </span>
-      </div>
+      {!compact && (
+        <div className={`mt-3 flex items-center justify-between ${CARD.inset} px-3 py-2 ${TYPO.statLabel}`}>
+          <span>Total tries</span>
+          <span className={`${TYPO.statValue} font-display`}>
+            {listedTotal}
+            {listedTotal !== expectedTotalTries && (
+              <span className="ml-1 text-red-400">/ {expectedTotalTries}</span>
+            )}
+          </span>
+        </div>
+      )}
     </div>
   );
 }

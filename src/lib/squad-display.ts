@@ -1,6 +1,6 @@
 import type { Position, SquadSlot } from "./types";
 import { POSITION_LABELS } from "./positions";
-import { getPlayerEligiblePositions } from "./players/player-positions";
+import { isValidPlayerSlotPosition } from "./game/position-placement";
 import {
   getEffectivePeakRating,
   type ClubPlayerEntry,
@@ -43,8 +43,10 @@ export function getSlotDisplayInfo(slot: SquadSlot): SlotDisplayInfo | null {
 
   const naturalPosition = slot.player.position;
   const playedPosition = slot.position;
-  const eligible = getPlayerEligiblePositions(slot.player);
-  const positionMismatch = !eligible.includes(playedPosition);
+  const positionMismatch = !isValidPlayerSlotPosition(
+    slot.player,
+    playedPosition
+  );
   const originalRating = slot.player.peakRating;
   const adjustedRating = getEffectivePeakRating(slot);
   const ratingAdjusted = adjustedRating !== originalRating;

@@ -190,7 +190,20 @@ function resolveLeaderboardModeVariant(
   dbMode: LeaderboardDbMode,
   modeVariant: ModeVariant = "current"
 ): ModeVariant {
-  return dbMode === "super-league" ? normalizeModeVariant(modeVariant) : "current";
+  if (dbMode === "super-league" || dbMode === "challenge-cup") {
+    return normalizeModeVariant(modeVariant);
+  }
+  return "current";
+}
+
+export function isGuestLeaderboardName(username: string): boolean {
+  const normalized = username.trim().toLowerCase();
+  return (
+    !normalized ||
+    normalized === "guest" ||
+    normalized === "coach" ||
+    normalized === "__local_guest__"
+  );
 }
 
 function mapLocalToTrackerEntries(
@@ -231,6 +244,7 @@ function mapSupabaseToTrackerEntries(
   for (const row of rows) {
     if ((row.difficulty ?? "NORMAL") !== difficulty) continue;
     const username = row.coach_name ?? row.player_name ?? "Unknown";
+    if (isGuestLeaderboardName(username)) continue;
     const userKey = row.user_id ?? username;
     const existing = byUser.get(userKey);
 
@@ -308,7 +322,7 @@ async function fetchTrackerEntriesFromSupabase(
       .eq("difficulty", effectiveDifficulty)
       .limit(250);
 
-    if (dbMode === "super-league") {
+    if (dbMode === "super-league" || dbMode === "challenge-cup") {
       query = query.eq("mode_variant", effectiveVariant);
     }
 
@@ -364,7 +378,7 @@ async function insertToSupabase(
       .eq("mode", dbMode)
       .eq("difficulty", difficulty);
 
-    if (dbMode === "super-league") {
+    if (dbMode === "super-league" || dbMode === "challenge-cup") {
       existingQuery = existingQuery.eq("mode_variant", effectiveVariant);
     }
 
@@ -421,7 +435,9 @@ function saveLocalEntry(
   const periods: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
   let entries = loadLocalEntries();
   const effectiveVariant =
-    mode === "CLASSIC" ? normalizeModeVariant(modeVariant) : "current";
+    mode === "CLASSIC" || mode === "CHALLENGE_CUP"
+      ? normalizeModeVariant(modeVariant)
+      : "current";
 
   for (const period of periods) {
     const periodKey = getPeriodKey(period, achievedAt);
@@ -491,7 +507,9 @@ function getExistingLocalStats(
   modeVariant: ModeVariant = "current"
 ): Partial<LeaderboardTrackerEntry> | null {
   const effectiveVariant =
-    mode === "CLASSIC" ? normalizeModeVariant(modeVariant) : "current";
+    mode === "CLASSIC" || mode === "CHALLENGE_CUP"
+      ? normalizeModeVariant(modeVariant)
+      : "current";
   const allTime = loadLocalEntries().find(
     (e) =>
       e.username === username &&
@@ -523,7 +541,7 @@ async function getExistingRemoteStats(
       .eq("mode", dbMode)
       .eq("difficulty", difficulty);
 
-    if (dbMode === "super-league") {
+    if (dbMode === "super-league" || dbMode === "challenge-cup") {
       query = query.eq("mode_variant", effectiveVariant);
     }
 

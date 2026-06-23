@@ -12,7 +12,6 @@ import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { ReturnHomeButton } from "./ReturnHomeButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
-import { TryScorersSection } from "./TryScorersSection";
 import { SquadReviewSection } from "./SquadReviewSection";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { PlayoffBracketDisplay } from "./PlayoffBracketDisplay";
@@ -160,22 +159,6 @@ export function PlayoffReview({
           </CollapsibleReviewSection>
         )}
 
-        {topScorers.length > 0 && (
-          <CollapsibleReviewSection
-            title="Play-Off Try Scorers"
-            delay={0.3}
-            defaultOpen={false}
-          >
-            <TryScorersSection
-              tryScorers={playoffResult.tryScorers}
-              expectedTotalTries={playoffResult.tryScorers.reduce(
-                (sum, row) => sum + row.tries,
-                0
-              )}
-            />
-          </CollapsibleReviewSection>
-        )}
-
         <CollapsibleReviewSection
           title="Squad Review"
           delay={0.32}
@@ -185,6 +168,12 @@ export function PlayoffReview({
             squad={squad}
             hardMode={isHardMode}
             performanceTitle="Playoff Performance"
+            tryScorers={playoffResult.tryScorers}
+            expectedTotalTries={playoffResult.tryScorers.reduce(
+              (sum, row) => sum + row.tries,
+              0
+            )}
+            totalMatches={playoffResult.tryScorers.length > 0 ? 3 : undefined}
             performance={
               bestScorer || worstScorer ? (
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">

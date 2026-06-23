@@ -2629,27 +2629,6 @@
     "positionAbbrev": "SH"
   },
   {
-    "id": "leeds-cur-andy-ackers",
-    "name": "Andy Ackers",
-    "club": "Leeds Rhinos",
-    "currentClub": "Leeds Rhinos",
-    "teamYearId": "leeds-rhinos-2026",
-    "year": 2026,
-    "status": "Current",
-    "position": "HOOKER",
-    "positions": [
-      "HOOKER"
-    ],
-    "positionAbbrev": "HK",
-    "nationality": "England",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
-    "category": "current",
-    "peakRating": 86,
-    "rating": 86,
-    "value": 1650000
-  },
-  {
     "id": "leeds-cur-ash-handley",
     "name": "Ash Handley",
     "position": "CENTRE",

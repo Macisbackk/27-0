@@ -95,14 +95,14 @@ export async function recordCompletedRun(
 
   let nationalRank: number | undefined;
 
-  if (loggedIn && !isHiddenRun && !isEraCupRun) {
+  if (loggedIn && !isHiddenRun) {
     await addLeaderboardEntry(totalValue, run.mode, difficulty, {
       wins,
       losses,
       isPerfectSeason: options?.isPerfectSeason,
       cupWon: options?.cupWon,
       cupFinish: options?.cupFinish,
-      modeVariant,
+      modeVariant: isEraCupRun ? "era" : modeVariant,
     });
     if (!isCupRun && !isEraCupRun) {
       const dbMode = gameModeToDbMode(run.mode);

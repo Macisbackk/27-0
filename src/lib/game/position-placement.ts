@@ -120,13 +120,24 @@ export function canPlayerFillAnyEmptySlot(
   return canPlayerRecruitForRemainingSlots(player, squad);
 }
 
+/** True when the slot is one of the player's listed or eligible positions. */
+export function isValidPlayerSlotPosition(
+  player: Pick<Player, "position" | "positions">,
+  slotPosition: Position
+): boolean {
+  if (player.positions?.length) {
+    return player.positions.includes(slotPosition);
+  }
+  return getPlayerEligiblePositions(player as Player).includes(slotPosition);
+}
+
 export function getPlacementPenalty(
   naturalPosition: Position,
   slotPosition: Position,
   player?: Pick<Player, "position" | "positions">
 ): number {
   if (player) {
-    return getPlayerEligiblePositions(player as Player).includes(slotPosition)
+    return isValidPlayerSlotPosition(player, slotPosition)
       ? 0
       : OUT_OF_POSITION_PENALTY;
   }
@@ -140,8 +151,8 @@ export function isNaturalPlacement(
   slotPosition: Position,
   player?: Pick<Player, "position" | "positions">
 ): boolean {
-  if (player?.positions?.length) {
-    return getPlayerEligiblePositions(player as Player).includes(slotPosition);
+  if (player) {
+    return isValidPlayerSlotPosition(player, slotPosition);
   }
   return naturalPosition === slotPosition;
 }

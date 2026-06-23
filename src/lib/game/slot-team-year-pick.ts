@@ -366,7 +366,8 @@ export function autofillSlotRecruitSquad(
   seed: string,
   startSpinIndex: number,
   squad: SquadSlot[],
-  usedTeamYearKeys: ReadonlySet<string> = new Set()
+  usedTeamYearKeys: ReadonlySet<string> = new Set(),
+  spinVariant: SpinPoolVariant = "current"
 ): SlotAutofillResult | null {
   let newSquad = squad;
   let usedIds = new Set(
@@ -387,7 +388,8 @@ export function autofillSlotRecruitSquad(
       usedIds,
       newSquad,
       slotIndex,
-      teamYearsUsed
+      teamYearsUsed,
+      { spinVariant }
     );
     if (!picked) return null;
 
@@ -412,7 +414,12 @@ export function autofillSlotRecruitSquad(
     );
     warnTeamYearPoolLeak(player, target);
 
-    newSquad = signPlayerToSlot(newSquad, player, slotIndex);
+    const slot = newSquad.find((s) => s.slotIndex === slotIndex);
+    const penalty =
+      slot && player
+        ? getPlacementPenalty(player.position, slot.position, player)
+        : 0;
+    newSquad = signPlayerToSlot(newSquad, player, slotIndex, penalty);
     usedIds = new Set(
       newSquad.filter((slot) => slot.player).map((slot) => slot.player!.id)
     );

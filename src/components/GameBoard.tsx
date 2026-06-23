@@ -1137,7 +1137,8 @@ export function GameBoard({
         seed,
         spinPickIndex,
         squad,
-        usedTeamYearKeys
+        usedTeamYearKeys,
+        spinVariant
       );
       if (!result) return;
       setSquad(result.squad);
@@ -1170,6 +1171,8 @@ export function GameBoard({
     joeMellorMode,
     seed,
     spinPickIndex,
+    spinVariant,
+    usedTeamYearKeys,
     slotOffers,
     squad,
   ]);

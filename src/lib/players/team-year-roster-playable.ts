@@ -25,8 +25,11 @@ export function getTeamYearRecruitPositions(
   player: Player
 ): Position[] {
   const wiki = getTeamYearWikipediaPosition(team, year, player.id);
-  if (wiki) return [wiki];
-  return getPlayerEligiblePositions(player);
+  const eligible = getPlayerEligiblePositions(player);
+  if (wiki) {
+    return [...new Set([wiki, ...eligible])];
+  }
+  return eligible;
 }
 
 export function canPlayerFillTeamYearSlot(

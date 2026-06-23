@@ -113,7 +113,11 @@ export function getCurrentModeTeamYearPools(): TeamYearPool[] {
 export function getEraModeTeamYearPools(): TeamYearPool[] {
   return getAllTeamYearPools().filter((pool) => {
     const meta = getTeamYearRosterMeta(pool.team, pool.year);
-    return meta?.playableInNormalSpin === true;
+    return (
+      meta?.playableInNormalSpin === true &&
+      meta?.isCurrentSeason !== true &&
+      pool.year !== CURRENT_SEASON_YEAR
+    );
   });
 }
 
@@ -156,10 +160,8 @@ export function clearNormalModeTeamYearPoolsCache(): void {
   clearSpinTeamYearPoolsCache();
 }
 
-/** Era spin — reduce 2026/current team-year weight vs historic. */
-export function getEraSpinPoolWeight(pool: TeamYearPool): number {
-  const meta = getTeamYearRosterMeta(pool.team, pool.year);
-  if (meta?.isCurrentSeason || pool.year === CURRENT_SEASON_YEAR) return 0.08;
+/** Era spin — uniform weight (2026/current pools excluded from Era Mode). */
+export function getEraSpinPoolWeight(_pool: TeamYearPool): number {
   return 1;
 }
 

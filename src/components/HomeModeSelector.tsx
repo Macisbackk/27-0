@@ -86,8 +86,8 @@ export function HomeModeSelector() {
 
           {normalEraMode ? (
             <p className={`mt-3 ${TYPO.bodySm} text-gray-500`}>
-              Historic Super League team-years with club + year spins. Current
-              2026 squads appear less often.
+              Historic Super League team-years with club + year spins — no 2026
+              squads.
             </p>
           ) : (
             <p className={`mt-3 ${TYPO.bodySm} text-gray-500`}>
@@ -95,16 +95,29 @@ export function HomeModeSelector() {
             </p>
           )}
 
-          <ModeStartLink
-            href={normalHref}
-            onClick={() => {
-              playUiClick();
-              playModeClassicStart("NORMAL");
-            }}
-            className="mt-5"
-          >
-            {normalEraMode ? "Start Era Mode" : "Start Current Mode"} →
-          </ModeStartLink>
+          {normalEraMode ? (
+            <EraStartLink
+              href={normalHref}
+              onClick={() => {
+                playUiClick();
+                playModeClassicStart("NORMAL");
+              }}
+              className="mt-5"
+            >
+              Start Era Mode →
+            </EraStartLink>
+          ) : (
+            <ModeStartLink
+              href={normalHref}
+              onClick={() => {
+                playUiClick();
+                playModeClassicStart("NORMAL");
+              }}
+              className="mt-5"
+            >
+              Start Current Mode →
+            </ModeStartLink>
+          )}
         </ModePanel>
 
         <ModePanel

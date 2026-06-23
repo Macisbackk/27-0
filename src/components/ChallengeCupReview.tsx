@@ -17,7 +17,6 @@ import {
 import { getSquadValue } from "@/lib/positions";
 import {
   getAverageSquadRating,
-  getClubBreakdownSummary,
 } from "@/lib/squad-analysis";
 import { generateSeasonAwards } from "@/lib/season-awards";
 import { getExtendedTeamComparison } from "@/lib/team-value-comparison";
@@ -32,7 +31,6 @@ import { FixtureResultRow } from "./FixtureResultRow";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
 import type { MatchFixture, SeasonResult } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
-import { ClubRepresentation } from "./ClubRepresentation";
 import { SquadReviewSection } from "./SquadReviewSection";
 import type { EraTeam } from "@/lib/players/era-teams";
 import { Confetti } from "./Confetti";
@@ -44,7 +42,6 @@ import { ClubFundsEarned } from "./ClubFundsEarned";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { TeamComparisonBox } from "./TeamComparisonBox";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
-import { TryScorersSection } from "./TryScorersSection";
 import { runChallengeCupReviewValidation } from "@/lib/validation/challenge-cup-review-validation";
 import { HARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -93,13 +90,7 @@ export function ChallengeCupReview({
   eraTeam = null,
 }: ChallengeCupReviewProps) {
   const totalValue = getSquadValue(squad);
-  const filledCount = squad.filter((s) => s.player).length;
   const userTeamName = cupResult.userClub ?? DREAM_TEAM_NAME;
-  const clubSummary = getClubBreakdownSummary(squad, filledCount, {
-    joeMellorMode,
-    superSamHallasMode,
-    groupClubOverride: cupResult.eraMode ? userTeamName : undefined,
-  });
   const isHardMode = difficulty === "HARD";
   const isSpecialMode = joeMellorMode || superSamHallasMode;
   const [selectedFixture, setSelectedFixture] = useState<MatchFixture | null>(
@@ -446,22 +437,9 @@ export function ChallengeCupReview({
             hardMode={isHardMode}
             clubColorOverride={userClubColorOverride}
             awards={awards}
-          />
-        </CollapsibleReviewSection>
-
-        {cupResult.tryScorers.length > 0 && (
-          <CollapsibleReviewSection title="Try Scorers" delay={0.44}>
-            <TryScorersSection
-              tryScorers={cupResult.tryScorers}
-              expectedTotalTries={expectedTries}
-            />
-          </CollapsibleReviewSection>
-        )}
-
-        <CollapsibleReviewSection title="Club Representation" delay={0.46}>
-          <ClubRepresentation
-            summary={clubSummary}
-            clubColorOverride={userClubColorOverride}
+            tryScorers={cupResult.tryScorers}
+            expectedTotalTries={expectedTries}
+            totalMatches={cupResult.fixtures.length}
           />
         </CollapsibleReviewSection>
 

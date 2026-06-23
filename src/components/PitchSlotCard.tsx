@@ -3,7 +3,7 @@
 import type { SquadSlot } from "@/lib/types";
 import { getClubColors } from "@/lib/clubs";
 import { getPlayerColorClub } from "@/lib/players/run-club";
-import { POSITION_SHORT, POSITION_TILE_LABEL } from "@/lib/positions";
+import { POSITION_SHORT } from "@/lib/positions";
 import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
 /** Shared footprint for empty and filled pitch slots — scales down on mobile. */
@@ -16,7 +16,6 @@ export const PITCH_SLOT_COMPACT_CLASS =
 interface PitchSlotCardProps {
   slot: SquadSlot;
   hardMode?: boolean;
-  /** Era mode: use era team club colours instead of the player's current club. */
   clubColorOverride?: string;
   className?: string;
   compact?: boolean;
@@ -32,9 +31,7 @@ export function PitchSlotCard({
 }: PitchSlotCardProps) {
   const player = slot.player!;
   const colors = getClubColors(getPlayerColorClub(player, clubColorOverride));
-  const positionLabel = compact
-    ? POSITION_SHORT[slot.position]
-    : POSITION_TILE_LABEL[slot.position];
+  const positionLabel = POSITION_SHORT[slot.position];
   const effectiveRating = getEffectivePeakRating(slot);
   const baseRating = player.peakRating;
   const hasPenalty =
@@ -53,22 +50,24 @@ export function PitchSlotCard({
         <span className="h-full flex-1" style={{ backgroundColor: colors.secondary }} />
       </div>
       <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-0 px-0.5 py-0.5">
-        <span
-          className={`font-display font-black leading-none ${
-            compact ? "text-xs sm:text-sm" : "text-sm sm:text-base"
-          } ${hardMode ? "text-gray-500" : "text-accent-green"}`}
-        >
-          {ratingLabel}
-        </span>
+        {!hardMode && (
+          <span
+            className={`font-display font-black leading-none ${
+              compact ? "text-[10px] sm:text-xs" : "text-xs sm:text-sm"
+            } text-accent-green`}
+          >
+            {ratingLabel}
+          </span>
+        )}
         {!hardMode && hasPenalty && (
           <span className="font-display text-[6px] font-bold leading-none text-gray-500 sm:text-[7px]">
             {baseRating}→{Math.round(effectiveRating)}
           </span>
         )}
-        <span className="w-full text-center font-display text-[7px] font-bold uppercase leading-tight tracking-wide text-gray-300 sm:text-[8px]">
+        <span className="font-display text-[7px] font-bold uppercase leading-none tracking-wide text-gray-400 sm:text-[8px]">
           {positionLabel}
         </span>
-        <p className="w-full break-words text-center font-display text-[6px] font-semibold leading-tight text-white sm:text-[7px]">
+        <p className="line-clamp-2 w-full break-words text-center font-display text-[6px] font-semibold leading-tight text-white sm:text-[7px]">
           {player.name}
         </p>
       </div>
