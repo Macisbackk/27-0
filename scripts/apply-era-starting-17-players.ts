@@ -4,7 +4,7 @@
  *
  * Run: npm run apply:era-starting-17-players
  */
-import { readFileSync, writeFileSync } from "fs";
+import { readFileSync, writeFileSync, existsSync } from "fs";
 import { join } from "path";
 import eraStarting17s from "../data/era-starting-17s.json";
 import currentSquads from "../data/current-squads.json";
@@ -17,6 +17,7 @@ import type { Position } from "../src/lib/types";
 
 const DATA_DIR = join(process.cwd(), "data");
 const REPORT_PATH = join(DATA_DIR, "era-starting-17-players-apply-report.json");
+const SECOND_PASS_PATH = join(DATA_DIR, "era-starting-17s-second-pass.json");
 
 const STARTING_17_POSITION_MAP: Record<string, Position> = {
   FB: "FULLBACK",
@@ -32,12 +33,18 @@ const STARTING_17_POSITION_MAP: Record<string, Position> = {
 };
 
 const CLUB_ID_PREFIX: Record<string, string> = {
+  "Bradford Bulls": "bradford",
+  "Castleford Tigers": "castleford",
+  "Catalans Dragons": "catalans",
   "Huddersfield Giants": "huddersfield",
   "Hull FC": "hull-fc",
   "Hull KR": "hull-kr",
   "Leeds Rhinos": "leeds",
   "Leigh Leopards": "leigh",
   "London Broncos": "london",
+  "Salford Red Devils": "salford",
+  "St Helens": "st-helens",
+  "Toulouse Olympique": "toulouse",
   "Wakefield Trinity": "wakefield",
   "Warrington Wolves": "warrington",
   "Widnes Vikings": "widnes",
@@ -141,7 +148,11 @@ function buildPlayerId(club: string, name: string, existingIds: Set<string>): st
   return `${base}-${i}`;
 }
 
-function buildHistoricPlayer(ref: PlayerRef, existingIds: Set<string>): RawPlayer {
+function buildHistoricPlayer(
+  ref: PlayerRef,
+  existingIds: Set<string>,
+  source: string
+): RawPlayer {
   const position = pickPrimaryPosition(ref.positions);
   const peakRating = defaultRating(ref.occurrences);
   const id = buildPlayerId(ref.club, ref.name, existingIds);
@@ -162,7 +173,7 @@ function buildHistoricPlayer(ref: PlayerRef, existingIds: Set<string>): RawPlaye
     intlCaps: 0,
     clubLegend: false,
     needsReview: true,
-    source: "era-starting-17s.json",
+    source,
     availableInGame: true,
   };
 }
@@ -170,7 +181,8 @@ function buildHistoricPlayer(ref: PlayerRef, existingIds: Set<string>): RawPlaye
 function cloneAdditionForEra(
   addition: RawPlayer,
   ref: PlayerRef,
-  existingIds: Set<string>
+  existingIds: Set<string>,
+  source: string
 ): RawPlayer {
   const id = buildPlayerId(ref.club, ref.name, existingIds);
   return {
@@ -182,14 +194,42 @@ function cloneAdditionForEra(
     position: pickPrimaryPosition(ref.positions),
     yearsActive: formatYearsActive(ref.years),
     needsReview: true,
-    source: "era-starting-17s.json",
+    source,
     availableInGame: true,
   };
+}
+
+function loadSecondPassKeys(): Set<string> {
+  if (!existsSync(SECOND_PASS_PATH)) return new Set();
+  const rows = JSON.parse(readFileSync(SECOND_PASS_PATH, "utf8")) as EraStarting17Entry[];
+  return new Set(rows.map((entry) => `${entry.club}|${entry.year}`));
+}
+
+function buildPlayerSourceMap(entries: EraStarting17Entry[]): Map<string, string> {
+  const secondPassKeys = loadSecondPassKeys();
+  const sources = new Map<string, string>();
+
+  for (const entry of entries) {
+    const isSecondPass = secondPassKeys.has(`${entry.club}|${entry.year}`);
+    const source = isSecondPass
+      ? "era-starting-17s-second-pass"
+      : "era-starting-17s.json";
+
+    for (const member of entry.squad) {
+      const existing = sources.get(member.name);
+      if (!existing || existing === "era-starting-17s-second-pass") {
+        sources.set(member.name, source);
+      }
+    }
+  }
+
+  return sources;
 }
 
 function main(): void {
   const entries = eraStarting17s as EraStarting17Entry[];
   const refs = collectPlayerRefs(entries);
+  const playerSources = buildPlayerSourceMap(entries);
 
   const historic = [...(historicPlayers as RawPlayer[])];
   const additions = {
@@ -224,9 +264,12 @@ function main(): void {
       continue;
     }
 
+    const source =
+      playerSources.get(name) ?? "era-starting-17s.json";
+
     const addition = findPlayerByNameIndex(name, additionsIndex);
     if (addition) {
-      const player = cloneAdditionForEra(addition, ref, existingIds);
+      const player = cloneAdditionForEra(addition, ref, existingIds, source);
       historic.push(player);
       additions.historic.push(player);
       existingIds.add(player.id);
@@ -237,7 +280,7 @@ function main(): void {
       continue;
     }
 
-    const player = buildHistoricPlayer(ref, existingIds);
+    const player = buildHistoricPlayer(ref, existingIds, source);
     historic.push(player);
     additions.historic.push(player);
     existingIds.add(player.id);
@@ -278,7 +321,11 @@ function main(): void {
       club: p.club,
       position: p.position,
       peakRating: p.peakRating,
+      source: p.source,
     })),
+    secondPassPlayersCreated: created.filter(
+      (p) => p.source === "era-starting-17s-second-pass"
+    ).length,
   };
 
   writeFileSync(REPORT_PATH, `${JSON.stringify(report, null, 2)}\n`);

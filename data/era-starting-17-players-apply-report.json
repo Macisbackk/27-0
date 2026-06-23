@@ -1,10 +1,11 @@
 {
-  "generatedAt": "2026-06-23T07:32:44.884Z",
-  "totalUniqueNames": 883,
-  "resolvedFromLiveDatabase": 883,
+  "generatedAt": "2026-06-23T12:43:44.721Z",
+  "totalUniqueNames": 1499,
+  "resolvedFromLiveDatabase": 1499,
   "mergedFromPlayerAdditions": 0,
   "playersCreated": 0,
   "stillMissing": [],
   "mergedPlayers": [],
-  "createdPlayers": []
+  "createdPlayers": [],
+  "secondPassPlayersCreated": 0
 }

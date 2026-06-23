@@ -27,6 +27,7 @@
     "build:era-wikipedia-squads": "tsx scripts/build-era-wikipedia-squads.ts",
     "build:era-starting-17s": "tsx scripts/build-era-starting-17s.ts",
     "apply:era-starting-17-players": "tsx scripts/apply-era-starting-17-players.ts",
+    "fetch:era-starting-17-missing": "tsx scripts/fetch-era-starting-17-missing.ts",
     "build:team-year-rosters": "tsx scripts/generate-team-year-rosters.ts",
     "apply:2026-squads": "tsx scripts/apply-2026-squads.ts",
     "validate:team-years": "tsx scripts/validate-team-years.ts",

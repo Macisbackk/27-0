@@ -110,7 +110,7 @@ function auditEraStarting17s(): EraTeamIssue[] {
         year,
         severity: "error",
         code: "INCOMPLETE_STARTING_17",
-        message: "Squad is not a complete verified 1–17 roster",
+        message: "Squad is not a complete 1–17 roster",
       });
     }
 

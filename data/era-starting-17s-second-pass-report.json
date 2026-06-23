@@ -1,0 +1,1095 @@
+{
+  "generatedAt": "2026-06-23T12:43:43.714Z",
+  "unresolvedRequested": 206,
+  "skippedExisting": 179,
+  "skippedNotSuperLeague": 0,
+  "fetchedSuccessfully": 0,
+  "stillMissingCount": 27,
+  "byClub": {},
+  "rows": [
+    {
+      "club": "Bradford Bulls",
+      "year": 1996,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 1997,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 1998,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 1999,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2000,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2001,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2002,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2003,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2004,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2005,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2006,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2007,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2008,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2009,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2010,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2011,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2012,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2013,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2014,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Bradford Bulls",
+      "year": 2025,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2025 season page"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 1996,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 1997,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 1998,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 1999,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2000,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2001,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2002,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2003,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2004,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2005,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2005 season page"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2006,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2007,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2007 season page"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2008,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2009,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2010,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2011,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2012,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2013,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2014,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2015,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2016,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2017,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2018,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2019,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2020,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2021,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2022,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2023,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2024,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Castleford Tigers",
+      "year": 2025,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2006,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2009,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2010,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2011,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2012,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2013,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2014,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2015,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2016,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2017,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2018,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2019,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2020,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2021,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2022,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2023,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2024,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Catalans Dragons",
+      "year": 2025,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 1996,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-1996 season page"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 1997,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-ii-1997 season page"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 1998,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 1999,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2000,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2001,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2002,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2002 season page"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2003,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2004,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2005,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2006,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2007,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2008,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2009,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2010,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2011,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2012,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2013,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2014,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2015,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2016,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2017,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2018,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Huddersfield Giants",
+      "year": 2019,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Hull FC",
+      "year": 1996,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-1996 season page"
+    },
+    {
+      "club": "Hull FC",
+      "year": 1997,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-ii-1997 season page"
+    },
+    {
+      "club": "Hull KR",
+      "year": 1999,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-1999 season page"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2000,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2000 season page"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2001,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2001 season page"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2002,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2002 season page"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2003,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2003 season page"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2004,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2004 season page"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2005,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2005 season page"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2006,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2006 season page"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2017,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2017 season page"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2020,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2021,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2022,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2023,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2024,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Hull KR",
+      "year": 2025,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": 1997,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Leeds Rhinos",
+      "year": 1998,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Leigh Leopards",
+      "year": 2018,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2018 season page"
+    },
+    {
+      "club": "Leigh Leopards",
+      "year": 2022,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2022 season page"
+    },
+    {
+      "club": "Leigh Leopards",
+      "year": 2023,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Leigh Leopards",
+      "year": 2024,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "London Broncos",
+      "year": 1997,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "London Broncos",
+      "year": 2018,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2018 season page"
+    },
+    {
+      "club": "London Broncos",
+      "year": 2019,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "London Broncos",
+      "year": 2020,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2020 season page"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 1996,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-1996 season page"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 1997,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 1998,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 1999,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2000,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2001,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2002,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2003,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2003 season page"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2004,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2005,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2006,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2007,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2008,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-2008 season page"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2009,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2010,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2011,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2012,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2013,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2014,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2015,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2016,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2017,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2018,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2019,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2020,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2021,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2022,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2023,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Salford Red Devils",
+      "year": 2024,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 1996,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 1997,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 1998,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 1999,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2000,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2001,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2002,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2003,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2004,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2005,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2007,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2008,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2009,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2010,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2011,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2012,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2013,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2014,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2015,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2016,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2017,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2018,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2019,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2020,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2021,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2022,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2023,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2024,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "St Helens",
+      "year": 2025,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Toulouse Olympique",
+      "year": 2022,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 1996,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-1996 season page"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 1997,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-ii-1997 season page"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 1998,
+      "status": "failed",
+      "reason": "not found on Rugby League Project",
+      "detail": "Club not listed on super-league-1998 season page"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 1999,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2000,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2001,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2002,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2003,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2004,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2005,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2006,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2007,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2008,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2009,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2010,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2011,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2012,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2013,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2014,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2015,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2016,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2017,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2018,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2019,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2020,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wakefield Trinity",
+      "year": 2021,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Warrington Wolves",
+      "year": 1997,
+      "status": "skipped_existing"
+    },
+    {
+      "club": "Wigan Warriors",
+      "year": 1997,
+      "status": "skipped_existing"
+    }
+  ]
+}
