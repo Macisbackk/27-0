@@ -1,0 +1,3047 @@
+HISTORIC SUPER LEAGUE LIKELY STARTING 17 - CLEAN VERIFIED OUTPUT
+
+Only entries that the uploaded extractor successfully found and parsed are included here.
+Format: Club Year, then 1-17 with position abbreviations.
+Position map: 1 FB, 2 W, 3 C, 4 C, 5 W, 6 FE, 7 HB, 8 FR, 9 HK, 10 FR, 11 2R, 12 2R, 13 L, 14-17 B.
+
+======================================================================
+HUDDERSFIELD GIANTS
+======================================================================
+
+Huddersfield Giants 2020
+1. FB - Ashton Golding
+2. W - Jermaine McGillvary
+3. C - Jacob Wardle
+4. C - Leroy Cudjoe
+5. W - Darnell McIntosh
+6. FE - Lee Gaskell
+7. HB - Aidan Sezer
+8. FR - Suaia Matagi
+9. HK - Adam O'Brien
+10. FR - Matty English
+11. 2R - Joe Wardle
+12. 2R - Kenny Edwards
+13. L - Michael Lawrence
+14. B - James Gavet
+15. B - Sam Wood
+16. B - Jordan Turner
+17. B - Tom Holmes
+
+Huddersfield Giants 2021
+1. FB - Ashton Golding
+2. W - Jermaine McGillvary
+3. C - Jacob Wardle
+4. C - Ricky Leutele
+5. W - Louis Senior
+6. FE - Jack Cogger
+7. HB - Oliver Russell
+8. FR - Luke Yates
+9. HK - Nathan Peats
+10. FR - James Gavet
+11. 2R - Josh Jones
+12. 2R - Chris McQueen
+13. L - Michael Lawrence
+14. B - Joe Greenwood
+15. B - Matty English
+16. B - Owen Trout
+17. B - Sam Wood
+
+Huddersfield Giants 2022
+1. FB - Tui Lolohea
+2. W - Innes Senior
+3. C - Leroy Cudjoe
+4. C - Ricky Leutele
+5. W - Jermaine McGillvary
+6. FE - Oliver Russell
+7. HB - Théo Fages
+8. FR - Chris Hill
+9. HK - Danny Levi
+10. FR - Owen Trout
+11. 2R - Chris McQueen
+12. 2R - Josh Jones
+13. L - Luke Yates
+14. B - Joe Greenwood
+15. B - Oliver Wilson
+16. B - Ashton Golding
+17. B - Matty English
+
+Huddersfield Giants 2023
+1. FB - Will Pryce
+2. W - Sam Halsall
+3. C - Kevin Naiqama
+4. C - Esan Marsters
+5. W - Jermaine McGillvary
+6. FE - Jake Connor
+7. HB - Tui Lolohea
+8. FR - Chris Hill
+9. HK - Nathan Peats
+10. FR - Oliver Wilson
+11. 2R - Chris McQueen
+12. 2R - Leroy Cudjoe
+13. L - Luke Yates
+14. B - Sebastine Ikahihifo
+15. B - Matty English
+16. B - Joe Greenwood
+17. B - Sam Hewitt
+
+Huddersfield Giants 2024
+1. FB - Jake Connor
+2. W - Elliot Wallis
+3. C - Kevin Naiqama
+4. C - Esan Marsters
+5. W - Adam Swift
+6. FE - Tui Lolohea
+7. HB - Adam Clune
+8. FR - Chris Hill
+9. HK - Adam Milner
+10. FR - Joe Greenwood
+11. 2R - Sam Hewitt
+12. 2R - Harry Rushton
+13. L - Leroy Cudjoe
+14. B - Sebastine Ikahihifo
+15. B - Ashton Golding
+16. B - Oliver Wilson
+17. B - Oliver Russell
+
+Huddersfield Giants 2025
+1. FB - George Flanagan Jr
+2. W - Adam Swift
+3. C - Taane Milne
+4. C - Jake Bibby
+5. W - Sam Halsall
+6. FE - Tui Lolohea
+7. HB - Matt Frawley
+8. FR - Tristan Powell
+9. HK - Zac Woolford
+10. FR - Oliver Wilson
+11. 2R - Joe Greenwood
+12. 2R - Harry Rushton
+13. L - Leroy Cudjoe
+14. B - Ashton Golding
+15. B - Thomas Burgess
+16. B - Matty English
+17. B - Kieran Rush
+
+======================================================================
+HULL FC
+======================================================================
+
+Hull FC 1998
+1. FB - Steve Prescott
+2. W - Fili Seru
+3. C - Alan Hunte
+4. C - Graeme Hallas
+5. W - Mark Johnson
+6. FE - Gary Lester
+7. HB - Craig Murdock
+8. FR - Hitro Okesene
+9. HK - David Stephenson
+10. FR - Jason Temu
+11. 2R - Simon Booth
+12. 2R - Steve Craven
+13. L - Logan Campbell
+14. B - Andy Ireland
+15. B - David Baildon
+16. B - Matt Schultz
+17. B - Jim Leatham
+
+Hull FC 1999
+1. FB - Steve Prescott
+2. W - Fili Seru
+3. C - Logan Campbell
+4. C - Graeme Hallas
+5. W - David Baildon
+6. FE - Andrew Purcell
+7. HB - Gary Lester
+8. FR - Karl Harrison
+9. HK - Paul King
+10. FR - Steve Craven
+11. 2R - Jim Leatham
+12. 2R - Michael Smith
+13. L - Robert Roberts
+14. B - Andy Ireland
+15. B - Rob Nolan
+16. B - Steve Barrow
+17. B - Jamie Smith
+
+Hull FC 2000
+1. FB - Ben Sammut
+2. W - Matthew Daylight
+3. C - Steve Collins
+4. C - Craig Simon
+5. W - Brian Carney
+6. FE - Richard Horne
+7. HB - Will Robinson
+8. FR - Paul Broadbent
+9. HK - Mick Jenkins
+10. FR - Luke Felsch
+11. 2R - Adam Maher
+12. 2R - Tony Grimaldi
+13. L - David Maiden
+14. B - Paul King
+15. B - Craig Wilson
+16. B - Stanley Gene
+17. B - Deon Bird
+
+Hull FC 2001
+1. FB - Steve Prescott
+2. W - Gareth Raynor
+3. C - Deon Bird
+4. C - Logan Campbell
+5. W - Matt Crowther
+6. FE - Paul Cooke
+7. HB - Tony Smith
+8. FR - Paul Broadbent
+9. HK - Lee Jackson
+10. FR - Luke Felsch
+11. 2R - Tony Grimaldi
+12. 2R - Adam Maher
+13. L - Jason Smith
+14. B - Steve Craven
+15. B - David Maiden
+16. B - Paul King
+17. B - Garreth Carvell
+
+Hull FC 2002
+1. FB - Steve Prescott
+2. W - Gareth Raynor
+3. C - Graham Mackay
+4. C - Toa Kohe-Love
+5. W - Matt Crowther
+6. FE - Richard Horne
+7. HB - Tony Smith
+8. FR - Craig Greenhill
+9. HK - Lee Jackson
+10. FR - Paul King
+11. 2R - Adam Maher
+12. 2R - Sean Ryan
+13. L - Chris Chester
+14. B - Paul Cooke
+15. B - Scott Logan
+16. B - Garreth Carvell
+17. B - Paul Parker
+
+Hull FC 2003
+1. FB - Richard Horne
+2. W - Colin Best
+3. C - Richie Barnett
+4. C - Toa Kohe-Love
+5. W - Gareth Raynor
+6. FE - Paul Cooke
+7. HB - Jason Smith
+8. FR - Craig Greenhill
+9. HK - Dean Treister
+10. FR - Paul King
+11. 2R - Sean Ryan
+12. 2R - Adam Maher
+13. L - Chris Chester
+14. B - Kirk Yeaman
+15. B - Garreth Carvell
+16. B - Graeme Horne
+17. B - Ewan Dowes
+
+Hull FC 2004
+1. FB - Shaun Briscoe
+2. W - Colin Best
+3. C - Kirk Yeaman
+4. C - Richard Whiting
+5. W - Richie Barnett
+6. FE - Paul Cooke
+7. HB - Richard Horne
+8. FR - Ewan Dowes
+9. HK - Richard Swain
+10. FR - Paul King
+11. 2R - Shayne McMenemy
+12. 2R - Paul McNicholas
+13. L - Jason Smith
+14. B - Peter Lupton
+15. B - Nick Scruton
+16. B - Liam Higgins
+17. B - Chris Chester
+
+Hull FC 2005
+1. FB - Shaun Briscoe
+2. W - Nathan Blacklock
+3. C - Kirk Yeaman
+4. C - Richard Whiting
+5. W - Gareth Raynor
+6. FE - Paul Cooke
+7. HB - Richard Horne
+8. FR - Ewan Dowes
+9. HK - Richard Swain
+10. FR - Jamie Thackray
+11. 2R - Stephen Kearney
+12. 2R - Shayne McMenemy
+13. L - Chris Chester
+14. B - Tommy Saxton
+15. B - Danny Brough
+16. B - Motu Tony
+17. B - Garreth Carvell
+
+Hull FC 2006
+1. FB - Motu Tony
+2. W - Gareth Raynor
+3. C - Sid Domic
+4. C - Kirk Yeaman
+5. W - Nathan Blacklock
+6. FE - Paul Cooke
+7. HB - Richard Horne
+8. FR - Ewan Dowes
+9. HK - Richard Swain
+10. FR - Garreth Carvell
+11. 2R - Lee Radford
+12. 2R - Shayne McMenemy
+13. L - Danny Washbrook
+14. B - Paul King
+15. B - Shaun Briscoe
+16. B - Richard Whiting
+17. B - Scott Wheeldon
+
+Hull FC 2007
+1. FB - Shaun Briscoe
+2. W - Gareth Raynor
+3. C - Kirk Yeaman
+4. C - Richard Whiting
+5. W - Matt Sing
+6. FE - Richard Horne
+7. HB - Tommy Lee
+8. FR - Ewan Dowes
+9. HK - Richard Swain
+10. FR - Garreth Carvell
+11. 2R - Lee Radford
+12. 2R - Willie Manu
+13. L - Danny Tickle
+14. B - Motu Tony
+15. B - Danny Washbrook
+16. B - Paul King
+17. B - Hutch Maiava
+
+Hull FC 2008
+1. FB - Motu Tony
+2. W - Gareth Raynor
+3. C - Kirk Yeaman
+4. C - Craig Hall
+5. W - Matt Sing
+6. FE - Danny Washbrook
+7. HB - Adam Dykes
+8. FR - Ewan Dowes
+9. HK - Shaun Berrigan
+10. FR - Peter Cusack
+11. 2R - Willie Manu
+12. 2R - Danny Tickle
+13. L - Lee Radford
+14. B - Danny Houghton
+15. B - Tommy Lee
+16. B - Jamie Thackray
+17. B - Scott Wheeldon
+
+Hull FC 2009
+1. FB - Craig Hall
+2. W - Mark Calderwood
+3. C - Kirk Yeaman
+4. C - Graeme Horne
+5. W - Gareth Raynor
+6. FE - Richard Horne
+7. HB - Chris Thorman
+8. FR - Ewan Dowes
+9. HK - Shaun Berrigan
+10. FR - Jamie Thackray
+11. 2R - Danny Tickle
+12. 2R - Willie Manu
+13. L - Lee Radford
+14. B - Danny Houghton
+15. B - Tommy Lee
+16. B - Paul King
+17. B - Richard Whiting
+
+Hull FC 2010
+1. FB - Jordan Tansey
+2. W - Tom Briscoe
+3. C - Kirk Yeaman
+4. C - Jordan Turner
+5. W - Richard Whiting
+6. FE - Danny Washbrook
+7. HB - Sean Long
+8. FR - Mark O'Meley
+9. HK - Danny Houghton
+10. FR - Lee Radford
+11. 2R - Willie Manu
+12. 2R - Danny Tickle
+13. L - Craig Fitzgibbon
+14. B - Ewan Dowes
+15. B - Peter Cusack
+16. B - Epalahame Lauaki
+17. B - Shaun Berrigan
+
+Hull FC 2011
+1. FB - Cameron Phelps
+2. W - Tom Briscoe
+3. C - Kirk Yeaman
+4. C - Jordan Turner
+5. W - Will Sharp
+6. FE - Richard Horne
+7. HB - Sam Obst
+8. FR - Mark O'Meley
+9. HK - Danny Houghton
+10. FR - Sam Moa
+11. 2R - Danny Tickle
+12. 2R - Willie Manu
+13. L - Craig Fitzgibbon
+14. B - Epalahame Lauaki
+15. B - Richard Whiting
+16. B - Joe Westerman
+17. B - Lee Radford
+
+Hull FC 2012
+1. FB - Wade McKinnon
+2. W - Tom Briscoe
+3. C - Jordan Turner
+4. C - Kirk Yeaman
+5. W - Will Sharp
+6. FE - Richard Horne
+7. HB - Brett Seymour
+8. FR - Andy Lynch
+9. HK - Danny Houghton
+10. FR - Sam Moa
+11. 2R - Willie Manu
+12. 2R - Danny Tickle
+13. L - Martin Aspinwall
+14. B - Richard Whiting
+15. B - Jay Pitts
+16. B - Joe Westerman
+17. B - Ben Crooks
+
+Hull FC 2013
+1. FB - Shannon McDonnell
+2. W - Tom Briscoe
+3. C - Kirk Yeaman
+4. C - Ben Crooks
+5. W - Tom Lineham
+6. FE - Daniel Holdsworth
+7. HB - Jacob Miller
+8. FR - Mark O'Meley
+9. HK - Danny Houghton
+10. FR - Liam Watts
+11. 2R - Gareth Ellis
+12. 2R - Joe Westerman
+13. L - Jay Pitts
+14. B - Aaron Heremaia
+15. B - Richard Whiting
+16. B - Andy Lynch
+17. B - Chris Green
+
+Hull FC 2014
+1. FB - Jamie Shaul
+2. W - Fetuli Talanoa
+3. C - Kirk Yeaman
+4. C - Ben Crooks
+5. W - Tom Lineham
+6. FE - Jordan Rankin
+7. HB - Richard Horne
+8. FR - Mickey Paea
+9. HK - Danny Houghton
+10. FR - Liam Watts
+11. 2R - Gareth Ellis
+12. 2R - Chris Tuson
+13. L - Joe Westerman
+14. B - Aaron Heremaia
+15. B - Jordan Thompson
+16. B - Iafeta Palea'Aesina
+17. B - Josh Bowden
+
+Hull FC 2015
+1. FB - Jordan Rankin
+2. W - Tom Lineham
+3. C - Kirk Yeaman
+4. C - Fetuli Talanoa
+5. W - Steve Michaels
+6. FE - Leon Pryce
+7. HB - Marc Sneyd
+8. FR - Mickey Paea
+9. HK - Danny Houghton
+10. FR - Liam Watts
+11. 2R - Mark Minichiello
+12. 2R - Gareth Ellis
+13. L - Joe Westerman
+14. B - Jordan Thompson
+15. B - Iafeta Palea'Aesina
+16. B - Jordan Abdull
+17. B - Josh Bowden
+
+Hull FC 2016
+1. FB - Jamie Shaul
+2. W - Steve Michaels
+3. C - Kirk Yeaman
+4. C - Mahe Fonua
+5. W - Fetuli Talanoa
+6. FE - Carlos Tuimavave
+7. HB - Marc Sneyd
+8. FR - Scott Taylor
+9. HK - Danny Houghton
+10. FR - Liam Watts
+11. 2R - Sika Manu
+12. 2R - Mark Minichiello
+13. L - Gareth Ellis
+14. B - Josh Bowden
+15. B - Danny Washbrook
+16. B - Frank Pritchard
+17. B - Jordan Thompson
+
+Hull FC 2017
+1. FB - Jamie Shaul
+2. W - Mahe Fonua
+3. C - Carlos Tuimavave
+4. C - Josh Griffin
+5. W - Steve Michaels
+6. FE - Albert Kelly
+7. HB - Marc Sneyd
+8. FR - Scott Taylor
+9. HK - Danny Houghton
+10. FR - Liam Watts
+11. 2R - Mark Minichiello
+12. 2R - Sika Manu
+13. L - Gareth Ellis
+14. B - Danny Washbrook
+15. B - Jake Connor
+16. B - Jordan Thompson
+17. B - Josh Bowden
+
+Hull FC 2018
+1. FB - Jamie Shaul
+2. W - Bureta Faraimo
+3. C - Josh Griffin
+4. C - Carlos Tuimavave
+5. W - Fetuli Talanoa
+6. FE - Albert Kelly
+7. HB - Marc Sneyd
+8. FR - Scott Taylor
+9. HK - Danny Houghton
+10. FR - Mickey Paea
+11. 2R - Mark Minichiello
+12. 2R - Sika Manu
+13. L - Dean Hadley
+14. B - Jake Connor
+15. B - Danny Washbrook
+16. B - Masi Matongo
+17. B - Brad Fash
+
+Hull FC 2019
+1. FB - Jamie Shaul
+2. W - Bureta Faraimo
+3. C - Josh Griffin
+4. C - Carlos Tuimavave
+5. W - Ratu Naulago
+6. FE - Albert Kelly
+7. HB - Marc Sneyd
+8. FR - Mickey Paea
+9. HK - Danny Houghton
+10. FR - Scott Taylor
+11. 2R - Mark Minichiello
+12. 2R - Sika Manu
+13. L - Joe Westerman
+14. B - Jake Connor
+15. B - Gareth Ellis
+16. B - Brad Fash
+17. B - Masi Matongo
+
+Hull FC 2020
+1. FB - Jamie Shaul
+2. W - Bureta Faraimo
+3. C - Josh Griffin
+4. C - Carlos Tuimavave
+5. W - Ratu Naulago
+6. FE - Jake Connor
+7. HB - Marc Sneyd
+8. FR - Scott Taylor
+9. HK - Jordan Johnstone
+10. FR - Ligi Sao
+11. 2R - Manu Ma'U
+12. 2R - Jordan Lane
+13. L - Joe Cator
+14. B - Mahe Fonua
+15. B - Tevita Satae
+16. B - Danny Houghton
+17. B - Brad Fash
+
+Hull FC 2021
+1. FB - Jake Connor
+2. W - Adam Swift
+3. C - Carlos Tuimavave
+4. C - Josh Griffin
+5. W - Bureta Faraimo
+6. FE - Josh Reynolds
+7. HB - Marc Sneyd
+8. FR - Ligi Sao
+9. HK - Danny Houghton
+10. FR - Tevita Satae
+11. 2R - Manu Ma'U
+12. 2R - Andre Savelio
+13. L - Jordan Lane
+14. B - Brad Fash
+15. B - Mahe Fonua
+16. B - Cameron Scott
+17. B - Jordan Johnstone
+
+Hull FC 2022
+1. FB - Jake Connor
+2. W - Darnell McIntosh
+3. C - Connor Wynne
+4. C - Josh Griffin
+5. W - Adam Swift
+6. FE - Josh Reynolds
+7. HB - Luke Gale
+8. FR - Ligi Sao
+9. HK - Danny Houghton
+10. FR - Kane Evans
+11. 2R - Jordan Lane
+12. 2R - Manu Ma'U
+13. L - Brad Fash
+14. B - Tevita Satae
+15. B - Joe Lovodua
+16. B - Jack Brown
+17. B - Jordan Johnstone
+
+Hull FC 2023
+1. FB - Tex Hoy
+2. W - Adam Swift
+3. C - Liam Sutcliffe
+4. C - Carlos Tuimavave
+5. W - Darnell McIntosh
+6. FE - Jacob Trueman
+7. HB - Jake Clifford
+8. FR - Brad Fash
+9. HK - Danny Houghton
+10. FR - Scott Taylor
+11. 2R - Jordan Lane
+12. 2R - Josh Griffin
+13. L - Joe Cator
+14. B - Tevita Satae
+15. B - Brad Dwyer
+16. B - Cameron Scott
+17. B - Joe Lovodua
+
+Hull FC 2024
+1. FB - Logan Moy
+2. W - Lewis Martin
+3. C - Liam Sutcliffe
+4. C - Carlos Tuimavave
+5. W - Harvey Barron
+6. FE - Morgan Smith
+7. HB - Jack Charles
+8. FR - Herman Ese'Ese
+9. HK - Danny Houghton
+10. FR - Ligi Sao
+11. 2R - Jordan Lane
+12. 2R - Jayden Okunbor
+13. L - Yusuf Aydin
+14. B - Will Gardiner
+15. B - Denive Balmforth
+16. B - Jack Ashworth
+17. B - Brad Fash
+
+Hull FC 2025
+1. FB - Will Pryce
+2. W - Lewis Martin
+3. C - Davy Litten
+4. C - Tom Briscoe
+5. W - Harvey Barron
+6. FE - Cade Cust
+7. HB - Aidan Sezer
+8. FR - Herman Ese'Ese
+9. HK - Amir Bourouh
+10. FR - Liam Knight
+11. 2R - Ed Chamberlain
+12. 2R - Jordan Lane
+13. L - John Asiata
+14. B - Jack Ashworth
+15. B - Yusuf Aydin
+16. B - Brad Fash
+17. B - Sam Eseh
+
+======================================================================
+HULL KR
+======================================================================
+
+Hull KR 2007
+1. FB - Ben Cockayne
+2. W - Byron Ford
+3. C - Luke Dyer
+4. C - Jonathon Goddard
+5. W - Ian Hardman
+6. FE - Paul Cooke
+7. HB - James Webster
+8. FR - Michael Vella
+9. HK - Ben Fisher
+10. FR - Makali Aizue
+11. 2R - Jason Netherton
+12. 2R - Chris Chester
+13. L - Stanley Gene
+14. B - Jim Gannon
+15. B - Scott Murrell
+16. B - Danny Ward
+17. B - David Tangata-Toa
+
+Hull KR 2008
+1. FB - Shaun Briscoe
+2. W - Peter Fox
+3. C - Jake Webster
+4. C - Chev Walker
+5. W - Daniel Fitzhenry
+6. FE - Paul Cooke
+7. HB - Michael Dobson
+8. FR - Michael Vella
+9. HK - Ben Fisher
+10. FR - David Mills
+11. 2R - Clint Newton
+12. 2R - Stanley Gene
+13. L - Scott Murrell
+14. B - Garret Crossman
+15. B - Ben Cockayne
+16. B - Kirk Netherton
+17. B - Makali Aizue
+
+Hull KR 2009
+1. FB - Shaun Briscoe
+2. W - Peter Fox
+3. C - Kris Welham
+4. C - Jake Webster
+5. W - Liam Colbon
+6. FE - Paul Cooke
+7. HB - Michael Dobson
+8. FR - Nick Fozzard
+9. HK - Ben Fisher
+10. FR - Scott Wheeldon
+11. 2R - Clint Newton
+12. 2R - Ben Galea
+13. L - Scott Murrell
+14. B - Daniel Fitzhenry
+15. B - Jason Netherton
+16. B - Chev Walker
+17. B - Michael Vella
+
+Hull KR 2010
+1. FB - Shaun Briscoe
+2. W - Peter Fox
+3. C - Kris Welham
+4. C - Jake Webster
+5. W - Liam Colbon
+6. FE - Scott Murrell
+7. HB - Michael Dobson
+8. FR - Joel Clinton
+9. HK - Ben Fisher
+10. FR - Michael Vella
+11. 2R - Clint Newton
+12. 2R - Ben Galea
+13. L - Liam Watts
+14. B - Rhys Lovegrove
+15. B - Jason Netherton
+16. B - Ben Cockayne
+17. B - Scott Wheeldon
+
+Hull KR 2011
+1. FB - Shaun Briscoe
+2. W - Peter Fox
+3. C - Kris Welham
+4. C - Jake Webster
+5. W - Liam Colbon
+6. FE - Blake Green
+7. HB - Michael Dobson
+8. FR - Michael Vella
+9. HK - Josh Hodgson
+10. FR - Joel Clinton
+11. 2R - Ben Galea
+12. 2R - Clint Newton
+13. L - Scott Murrell
+14. B - Ben Fisher
+15. B - Rhys Lovegrove
+16. B - Jason Netherton
+17. B - Scott Taylor
+
+Hull KR 2012
+1. FB - Shannon McDonnell
+2. W - David Hodgson
+3. C - Kris Welham
+4. C - Graeme Horne
+5. W - Sam Latus
+6. FE - Blake Green
+7. HB - Michael Dobson
+8. FR - Mickey Paea
+9. HK - Lincoln Withers
+10. FR - Scott Taylor
+11. 2R - Constantine Mika
+12. 2R - Ben Galea
+13. L - Rhys Lovegrove
+14. B - Josh Hodgson
+15. B - Scott Murrell
+16. B - Joel Clinton
+17. B - Ryan O'Hara
+
+Hull KR 2013
+1. FB - Greg Eden
+2. W - David Hodgson
+3. C - Liam Salter
+4. C - Kris Welham
+5. W - Alex Brown
+6. FE - Travis Burns
+7. HB - Michael Dobson
+8. FR - Adam Walker
+9. HK - Josh Hodgson
+10. FR - Mickey Paea
+11. 2R - Cory Paterson
+12. 2R - Rhys Lovegrove
+13. L - Constantine Mika
+14. B - Evarn Tuimavave
+15. B - Jordan Cox
+16. B - Graeme Horne
+17. B - Keale Carlile
+
+Hull KR 2014
+1. FB - Greg Eden
+2. W - Ade Gardner
+3. C - Kris Welham
+4. C - Liam Salter
+5. W - Omari Caro
+6. FE - Travis Burns
+7. HB - Kris Keating
+8. FR - Michael Weyman
+9. HK - Josh Hodgson
+10. FR - Adam Walker
+11. 2R - Kevin Larroyer
+12. 2R - Graeme Horne
+13. L - Neville Costigan
+14. B - James Green
+15. B - Jason Netherton
+16. B - Craig Hall
+17. B - Jordan Cox
+
+Hull KR 2018
+1. FB - Adam Quinlan
+2. W - Ryan Shaw
+3. C - Junior Vaivai
+4. C - Liam Salter
+5. W - Justin Carney
+6. FE - Danny McGuire
+7. HB - Chris Atkin
+8. FR - Robbie Mulhern
+9. HK - Tommy Lee
+10. FR - Mose Masoe
+11. 2R - James Greenwood
+12. 2R - Danny Tickle
+13. L - Chris Clarkson
+14. B - Ben Kavanagh
+15. B - Maurice Blair
+16. B - Nick Scruton
+17. B - James Donaldson
+
+Hull KR 2019
+1. FB - Craig Hall
+2. W - Ryan Shaw
+3. C - Jimmy Keinhorst
+4. C - Ben Crooks
+5. W - Will Oakes
+6. FE - Danny McGuire
+7. HB - Josh Drinkwater
+8. FR - Mose Masoe
+9. HK - Tommy Lee
+10. FR - Robbie Mulhern
+11. 2R - Joel Tomkins
+12. 2R - Weller Hauraki
+13. L - George Lawler
+14. B - Chris Atkin
+15. B - Kane Linnett
+16. B - Danny Addy
+17. B - Mitch Garbutt
+
+======================================================================
+LEEDS RHINOS
+======================================================================
+
+Leeds Rhinos 1996
+1. FB - Anthony Gibbons
+2. W - Jim Fallon
+3. C - Kevin Iro
+4. C - Carl Hall
+5. W - Phil Hassan
+6. FE - Tony Kemp
+7. HB - Graham Holroyd
+8. FR - Barrie McDermott
+9. HK - Mick Shaw
+10. FR - Neil Harmon
+11. 2R - Adrian Morley
+12. 2R - George Mann
+13. L - Mike Forshaw
+14. B - Gary Mercer
+15. B - Nick Fozzard
+16. B - Marvin Golden
+17. B - Terry Newton
+
+Leeds Rhinos 1999
+1. FB - Iestyn Harris
+2. W - Leroy Rivett
+3. C - Brad Godden
+4. C - Marvin Golden
+5. W - Paul Sterling
+6. FE - Daryl Powell
+7. HB - Ryan Sheridan
+8. FR - Barrie McDermott
+9. HK - Terry Newton
+10. FR - Darren Fleary
+11. 2R - Adrian Morley
+12. 2R - Anthony Farrell
+13. L - Marc Glanville
+14. B - Francis Cummins
+15. B - Andy Hay
+16. B - Lee Jackson
+17. B - Jamie Mathiou
+
+Leeds Rhinos 2000
+1. FB - Francis Cummins
+2. W - Karl Pratt
+3. C - Keith Senior
+4. C - Richie Blackmore
+5. W - Paul Sterling
+6. FE - Iestyn Harris
+7. HB - Ryan Sheridan
+8. FR - Darren Fleary
+9. HK - Lee Jackson
+10. FR - Barrie McDermott
+11. 2R - Adrian Morley
+12. 2R - David Barnhill
+13. L - Andy Hay
+14. B - Daryl Powell
+15. B - Jamie Mathiou
+16. B - Anthony Farrell
+17. B - Kevin Sinfield
+
+Leeds Rhinos 2001
+1. FB - Francis Cummins
+2. W - Mark Calderwood
+3. C - Keith Senior
+4. C - Tonie Carroll
+5. W - Chev Walker
+6. FE - Iestyn Harris
+7. HB - Rob Burrow
+8. FR - Darren Fleary
+9. HK - Robert Mears
+10. FR - Barrie McDermott
+11. 2R - Anthony Farrell
+12. 2R - Andy Hay
+13. L - Kevin Sinfield
+14. B - Jamie Mathiou
+15. B - David Wrench
+16. B - Danny Ward
+17. B - Marcus St Hilaire
+
+Leeds Rhinos 2002
+1. FB - Francis Cummins
+2. W - Mark Calderwood
+3. C - Keith Senior
+4. C - Tonie Carroll
+5. W - Karl Pratt
+6. FE - Ben Walker
+7. HB - Ryan Sheridan
+8. FR - Barrie McDermott
+9. HK - Matt Diskin
+10. FR - Danny Ward
+11. 2R - Andy Hay
+12. 2R - Matt Adamson
+13. L - Kevin Sinfield
+14. B - Willie Poching
+15. B - Rob Burrow
+16. B - Wayne McDonald
+17. B - Chev Walker
+
+Leeds Rhinos 2003
+1. FB - Gary Connolly
+2. W - Francis Cummins
+3. C - Keith Senior
+4. C - Chris McKenna
+5. W - Mark Calderwood
+6. FE - Andrew Dunemann
+7. HB - Rob Burrow
+8. FR - Barrie McDermott
+9. HK - Matt Diskin
+10. FR - Wayne McDonald
+11. 2R - David Furner
+12. 2R - Matt Adamson
+13. L - Kevin Sinfield
+14. B - Danny McGuire
+15. B - Willie Poching
+16. B - Chris Feather
+17. B - Chev Walker
+
+Leeds Rhinos 2004
+1. FB - Richard Mathers
+2. W - Marcus Bai
+3. C - Keith Senior
+4. C - Chev Walker
+5. W - Mark Calderwood
+6. FE - Danny McGuire
+7. HB - Andrew Dunemann
+8. FR - Ryan Bailey
+9. HK - Matt Diskin
+10. FR - Wayne McDonald
+11. 2R - David Furner
+12. 2R - Ali Lauiti'Iti
+13. L - Kevin Sinfield
+14. B - Rob Burrow
+15. B - Barrie McDermott
+16. B - Willie Poching
+17. B - Danny Ward
+
+Leeds Rhinos 2005
+1. FB - Richard Mathers
+2. W - Mark Calderwood
+3. C - Chev Walker
+4. C - Keith Senior
+5. W - Marcus Bai
+6. FE - Kevin Sinfield
+7. HB - Rob Burrow
+8. FR - Ryan Bailey
+9. HK - Andrew Dunemann
+10. FR - Danny Ward
+11. 2R - Chris McKenna
+12. 2R - Jamie Jones-Buchanan
+13. L - Gareth Ellis
+14. B - Willie Poching
+15. B - Ali Lauiti'Iti
+16. B - Barrie McDermott
+17. B - Danny McGuire
+
+Leeds Rhinos 2006
+1. FB - Richard Mathers
+2. W - Scott Donald
+3. C - Keith Senior
+4. C - Chev Walker
+5. W - Danny Williams
+6. FE - Danny McGuire
+7. HB - Rob Burrow
+8. FR - Jamie Jones-Buchanan
+9. HK - Matt Diskin
+10. FR - Jamie Peacock
+11. 2R - Gareth Ellis
+12. 2R - Ali Lauiti'Iti
+13. L - Kevin Sinfield
+14. B - Ryan Bailey
+15. B - Shane Millard
+16. B - Willie Poching
+17. B - Nick Scruton
+
+Leeds Rhinos 2007
+1. FB - Brent Webb
+2. W - Scott Donald
+3. C - Keith Senior
+4. C - Clinton Toopi
+5. W - Lee Smith
+6. FE - Danny McGuire
+7. HB - Rob Burrow
+8. FR - Ryan Bailey
+9. HK - Matt Diskin
+10. FR - Jamie Peacock
+11. 2R - Jamie Jones-Buchanan
+12. 2R - Gareth Ellis
+13. L - Kevin Sinfield
+14. B - Kylie Leuluai
+15. B - Jamie Thackray
+16. B - Ian Kirke
+17. B - Ali Lauiti'Iti
+
+Leeds Rhinos 2008
+1. FB - Brent Webb
+2. W - Scott Donald
+3. C - Keith Senior
+4. C - Carl Ablett
+5. W - Lee Smith
+6. FE - Danny McGuire
+7. HB - Rob Burrow
+8. FR - Kylie Leuluai
+9. HK - Matt Diskin
+10. FR - Jamie Peacock
+11. 2R - Gareth Ellis
+12. 2R - Jamie Jones-Buchanan
+13. L - Kevin Sinfield
+14. B - Nick Scruton
+15. B - Ali Lauiti'Iti
+16. B - Ryan Bailey
+17. B - Jordan Tansey
+
+Leeds Rhinos 2009
+1. FB - Brent Webb
+2. W - Ryan Hall
+3. C - Keith Senior
+4. C - Lee Smith
+5. W - Scott Donald
+6. FE - Danny McGuire
+7. HB - Rob Burrow
+8. FR - Kylie Leuluai
+9. HK - Matt Diskin
+10. FR - Jamie Peacock
+11. 2R - Jamie Jones-Buchanan
+12. 2R - Carl Ablett
+13. L - Kevin Sinfield
+14. B - Luke Burgess
+15. B - Ali Lauiti'Iti
+16. B - Ryan Bailey
+17. B - Ian Kirke
+
+Leeds Rhinos 2010
+1. FB - Brent Webb
+2. W - Ryan Hall
+3. C - Keith Senior
+4. C - Brett Delaney
+5. W - Scott Donald
+6. FE - Danny McGuire
+7. HB - Rob Burrow
+8. FR - Kylie Leuluai
+9. HK - Danny Buderus
+10. FR - Ryan Bailey
+11. 2R - Jamie Jones-Buchanan
+12. 2R - Ian Kirke
+13. L - Kevin Sinfield
+14. B - Matt Diskin
+15. B - Jamie Peacock
+16. B - Greg Eastwood
+17. B - Ali Lauiti'Iti
+
+Leeds Rhinos 2011
+1. FB - Brent Webb
+2. W - Ryan Hall
+3. C - Brett Delaney
+4. C - Carl Ablett
+5. W - Ben Jones-Bishop
+6. FE - Kevin Sinfield
+7. HB - Rob Burrow
+8. FR - Kylie Leuluai
+9. HK - Danny Buderus
+10. FR - Jamie Peacock
+11. 2R - Jamie Jones-Buchanan
+12. 2R - Weller Hauraki
+13. L - Chris Clarkson
+14. B - Ian Kirke
+15. B - Ryan Bailey
+16. B - Danny McGuire
+17. B - Ali Lauiti'Iti
+
+Leeds Rhinos 2012
+1. FB - Brent Webb
+2. W - Ryan Hall
+3. C - Kallum Watkins
+4. C - Carl Ablett
+5. W - Ben Jones-Bishop
+6. FE - Kevin Sinfield
+7. HB - Danny McGuire
+8. FR - Jamie Peacock
+9. HK - Rob Burrow
+10. FR - Kylie Leuluai
+11. 2R - Brett Delaney
+12. 2R - Jamie Jones-Buchanan
+13. L - Ryan Bailey
+14. B - Darrell Griffin
+15. B - Chris Clarkson
+16. B - Ian Kirke
+17. B - Shaun Lunt
+
+Leeds Rhinos 2013
+1. FB - Zak Hardaker
+2. W - Ryan Hall
+3. C - Joel Moon
+4. C - Kallum Watkins
+5. W - Ben Jones-Bishop
+6. FE - Kevin Sinfield
+7. HB - Danny McGuire
+8. FR - Jamie Peacock
+9. HK - Rob Burrow
+10. FR - Kylie Leuluai
+11. 2R - Brett Delaney
+12. 2R - Jamie Jones-Buchanan
+13. L - Brad Singleton
+14. B - Ian Kirke
+15. B - Chris Clarkson
+16. B - Paul McShane
+17. B - Mitch Achurch
+
+Leeds Rhinos 2014
+1. FB - Zak Hardaker
+2. W - Tom Briscoe
+3. C - Kallum Watkins
+4. C - Joel Moon
+5. W - Ryan Hall
+6. FE - Danny McGuire
+7. HB - Kevin Sinfield
+8. FR - Jamie Peacock
+9. HK - Paul Aiton
+10. FR - Kylie Leuluai
+11. 2R - Carl Ablett
+12. 2R - Mitch Achurch
+13. L - Brett Delaney
+14. B - Liam Sutcliffe
+15. B - Brad Singleton
+16. B - Ryan Bailey
+17. B - Stevie Ward
+
+Leeds Rhinos 2016
+1. FB - Zak Hardaker
+2. W - Ash Handley
+3. C - Kallum Watkins
+4. C - Joel Moon
+5. W - Ryan Hall
+6. FE - Liam Sutcliffe
+7. HB - Rob Burrow
+8. FR - Keith Galloway
+9. HK - James Segeyaro
+10. FR - Brad Singleton
+11. 2R - Brett Ferres
+12. 2R - Carl Ablett
+13. L - Jamie Jones-Buchanan
+14. B - Jimmy Keinhorst
+15. B - Adam Cuthbertson
+16. B - Jordan Lilley
+17. B - Mitch Garbutt
+
+Leeds Rhinos 2017
+1. FB - Ashton Golding
+2. W - Tom Briscoe
+3. C - Kallum Watkins
+4. C - Liam Sutcliffe
+5. W - Ryan Hall
+6. FE - Danny McGuire
+7. HB - Joel Moon
+8. FR - Brad Singleton
+9. HK - Matt Parcell
+10. FR - Adam Cuthbertson
+11. 2R - Stevie Ward
+12. 2R - Carl Ablett
+13. L - Jamie Jones-Buchanan
+14. B - Anthony Mullally
+15. B - Mitch Garbutt
+16. B - Rob Burrow
+17. B - Brett Delaney
+
+Leeds Rhinos 2018
+1. FB - Jack Walker
+2. W - Tom Briscoe
+3. C - Ash Handley
+4. C - Kallum Watkins
+5. W - Ryan Hall
+6. FE - Joel Moon
+7. HB - Richard Myler
+8. FR - Brad Singleton
+9. HK - Matt Parcell
+10. FR - Adam Cuthbertson
+11. 2R - Jamie Jones-Buchanan
+12. 2R - Carl Ablett
+13. L - Brett Delaney
+14. B - Brad Dwyer
+15. B - Brett Ferres
+16. B - Ashton Golding
+17. B - Mikolaj Oledzki
+
+Leeds Rhinos 2019
+1. FB - Jack Walker
+2. W - Ash Handley
+3. C - Konrad Hurrell
+4. C - Harry Newman
+5. W - Tom Briscoe
+6. FE - Liam Sutcliffe
+7. HB - Richard Myler
+8. FR - Nathaniel Peteru
+9. HK - Brad Dwyer
+10. FR - Ava Seumanufagai
+11. 2R - Brett Ferres
+12. 2R - Cameron Smith
+13. L - Trent Merrin
+14. B - James Donaldson
+15. B - Brad Singleton
+16. B - Adam Cuthbertson
+17. B - Mikolaj Oledzki
+
+Leeds Rhinos 2020
+1. FB - Jack Walker
+2. W - Ash Handley
+3. C - Konrad Hurrell
+4. C - Liam Sutcliffe
+5. W - Luke Briscoe
+6. FE - Robert Lui
+7. HB - Luke Gale
+8. FR - Ava Seumanufagai
+9. HK - Kruise Leeming
+10. FR - Mikolaj Oledzki
+11. 2R - Rhyse Martin
+12. 2R - Alex Mellor
+13. L - Matt Prior
+14. B - Brad Dwyer
+15. B - James Donaldson
+16. B - Richard Myler
+17. B - Cameron Smith
+
+Leeds Rhinos 2021
+1. FB - Richard Myler
+2. W - Luke Briscoe
+3. C - Harry Newman
+4. C - Tom Briscoe
+5. W - Ash Handley
+6. FE - Liam Sutcliffe
+7. HB - Luke Gale
+8. FR - Matt Prior
+9. HK - Kruise Leeming
+10. FR - Mikolaj Oledzki
+11. 2R - Rhyse Martin
+12. 2R - Alex Mellor
+13. L - Zane Tetevano
+14. B - Brad Dwyer
+15. B - James Donaldson
+16. B - Cameron Smith
+17. B - Bodene Thompson
+
+Leeds Rhinos 2022
+1. FB - Richard Myler
+2. W - Ash Handley
+3. C - Liam Sutcliffe
+4. C - Zak Hardaker
+5. W - David Fusitu'A
+6. FE - Blake Austin
+7. HB - Aidan Sezer
+8. FR - Mikolaj Oledzki
+9. HK - Kruise Leeming
+10. FR - Matt Prior
+11. 2R - Rhyse Martin
+12. 2R - James Bentley
+13. L - Cameron Smith
+14. B - Jarrod O'Connor
+15. B - Brad Dwyer
+16. B - Morgan Gannon
+17. B - James Donaldson
+
+Leeds Rhinos 2023
+1. FB - Richard Myler
+2. W - David Fusitu'A
+3. C - Rhyse Martin
+4. C - Harry Newman
+5. W - Ash Handley
+6. FE - Blake Austin
+7. HB - Aidan Sezer
+8. FR - Mikolaj Oledzki
+9. HK - Jarrod O'Connor
+10. FR - Tom Holroyd
+11. 2R - James McDonnell
+12. 2R - James Bentley
+13. L - Cameron Smith
+14. B - Sam Lisone
+15. B - James Donaldson
+16. B - Justin Sangaré
+17. B - Corey Johnson
+
+Leeds Rhinos 2024
+1. FB - Lachlan Miller
+2. W - Ash Handley
+3. C - Harry Newman
+4. C - Paul Momirovski
+5. W - David Fusitu'A
+6. FE - Brodie Croft
+7. HB - Matt Frawley
+8. FR - Mikolaj Oledzki
+9. HK - Andy Ackers
+10. FR - Justin Sangaré
+11. 2R - James McDonnell
+12. 2R - Rhyse Martin
+13. L - Cameron Smith
+14. B - Jarrod O'Connor
+15. B - Sam Lisone
+16. B - Mickaël Goudemand
+17. B - James Bentley
+
+Leeds Rhinos 2025
+1. FB - Lachlan Miller
+2. W - Ryan Hall
+3. C - Harry Newman
+4. C - Ash Handley
+5. W - Riley Lumb
+6. FE - Brodie Croft
+7. HB - Jake Connor
+8. FR - Mikolaj Oledzki
+9. HK - Jarrod O'Connor
+10. FR - Cooper Jenkins
+11. 2R - James McDonnell
+12. 2R - Morgan Gannon
+13. L - Kallum Watkins
+14. B - Sam Lisone
+15. B - Keenan Palasia
+16. B - James Bentley
+17. B - Tom Holroyd
+
+======================================================================
+LEIGH LEOPARDS
+======================================================================
+
+Leigh Leopards 2017
+1. FB - Gregg McNally
+2. W - Matty Dawson-Jones
+3. C - Ben Crooks
+4. C - Mitch Brown
+5. W - Adam Higson
+6. FE - Ben Reynolds
+7. HB - Josh Drinkwater
+8. FR - Jamie Acton
+9. HK - Mick Higham
+10. FR - Gareth Hock
+11. 2R - Atelea Vea
+12. 2R - Cory Paterson
+13. L - Harrison Hansen
+14. B - Danny Tickle
+15. B - Lachlan Burr
+16. B - Sam Hopkins
+17. B - Glenn Stewart
+
+Leigh Leopards 2025
+1. FB - Bailey Hodgson
+2. W - Keanan Brand
+3. C - Tesi Niu
+4. C - Umyla Hanley
+5. W - Josh Charnley
+6. FE - Gareth O'Brien
+7. HB - Lachlan Lam
+8. FR - Robbie Mulhern
+9. HK - Edwin Ipape
+10. FR - Owen Trout
+11. 2R - Frankie Halton
+12. 2R - Ethan O'Neill
+13. L - Isaac Liu
+14. B - Matt Davis
+15. B - Jack Hughes
+16. B - Alec Tuitavake
+17. B - Joe Ofahengaue
+
+======================================================================
+LONDON BRONCOS
+======================================================================
+
+London Broncos 1996
+1. FB - Tony Martin
+2. W - John Minto
+3. C - Graham Strutton
+4. C - Greg Barwick
+5. W - Scott Roskell
+6. FE - Tulsen Tollett
+7. HB - Kevin Langer
+8. FR - Tony Mestrov
+9. HK - Tony Rea
+10. FR - Gavin Allen
+11. 2R - Darren Shaw
+12. 2R - Steve Rosolen
+13. L - Terry Matterson
+14. B - Russell Bawden
+15. B - Leo Dynevor
+16. B - Darryl Pitt
+17. B - Justin Bryant
+
+London Broncos 1998
+1. FB - Mat Toshack
+2. W - Rob Smyth
+3. C - Chris Ryan
+4. C - John Timu
+5. W - Martin Offiah
+6. FE - Tulsen Tollett
+7. HB - Glen Air
+8. FR - Grant Young
+9. HK - Robbie Beazley
+10. FR - Mark Carroll
+11. 2R - Steele Retchless
+12. 2R - Darren Higgins
+13. L - Peter Gill
+14. B - Matt Dunford
+15. B - Ady Spencer
+16. B - Matt Salter
+17. B - Damien Chapman
+
+London Broncos 1999
+1. FB - Greg Fleming
+2. W - Brett Warton
+3. C - John Timu
+4. C - Chris Ryan
+5. W - Rob Smyth
+6. FE - Karle Hammond
+7. HB - Glen Air
+8. FR - Anthony Seibold
+9. HK - Robbie Beazley
+10. FR - Scott Cram
+11. 2R - Steele Retchless
+12. 2R - Shane Millard
+13. L - Peter Gill
+14. B - Dean Callaway
+15. B - Mat Toshack
+16. B - Tulsen Tollett
+17. B - Dominic Peters
+
+London Broncos 2000
+1. FB - Greg Fleming
+2. W - Dominic Peters
+3. C - John Timu
+4. C - Mat Toshack
+5. W - Frank Napoli
+6. FE - Karle Hammond
+7. HB - Glen Air
+8. FR - Justin Dooley
+9. HK - Jon Clarke
+10. FR - Scott Cram
+11. 2R - Steele Retchless
+12. 2R - Shane Millard
+13. L - Andrew Wynyard
+14. B - Anthony Seibold
+15. B - Andy Johnson
+16. B - Dean Callaway
+17. B - Brett Warton
+
+London Broncos 2001
+1. FB - Richie Barnett
+2. W - Marvin Golden
+3. C - Nigel Roy
+4. C - Tony Martin
+5. W - Brett Warton
+6. FE - Jim Dymock
+7. HB - Dennis Moran
+8. FR - Scott Cram
+9. HK - Jason Hetherington
+10. FR - Tony Mestrov
+11. 2R - Steele Retchless
+12. 2R - Shane Millard
+13. L - Mat Toshack
+14. B - Justin Dooley
+15. B - Michael Gillett
+16. B - Greg Fleming
+17. B - Andy Johnson
+
+London Broncos 2002
+1. FB - Richie Barnett
+2. W - Steve Hall
+3. C - Tony Martin
+4. C - Nigel Roy
+5. W - Dominic Peters
+6. FE - Michael Gillett
+7. HB - Dennis Moran
+8. FR - Richard Marshall
+9. HK - Jason Hetherington
+10. FR - Scott Cram
+11. 2R - Steele Retchless
+12. 2R - Mat Toshack
+13. L - Jim Dymock
+14. B - Russell Bawden
+15. B - Francis Stephenson
+16. B - Sylvain Houles
+17. B - Wayne Evans
+
+London Broncos 2003
+1. FB - Dennis Moran
+2. W - Andrew King
+3. C - Tony Martin
+4. C - Nigel Roy
+5. W - Steve Hall
+6. FE - Robert Purdham
+7. HB - Chris Thorman
+8. FR - Russell Bawden
+9. HK - Neil Budworth
+10. FR - Francis Stephenson
+11. 2R - Mat Toshack
+12. 2R - Steele Retchless
+13. L - Jim Dymock
+14. B - Bill Peden
+15. B - Rob Jackson
+16. B - Richard Marshall
+17. B - Damian Kennedy
+
+London Broncos 2004
+1. FB - Paul Sykes
+2. W - Lee Greenwood
+3. C - Mark O'Halloran
+4. C - Nigel Roy
+5. W - John Kirkpatrick
+6. FE - Radney Bowker
+7. HB - Dennis Moran
+8. FR - Steve Trindall
+9. HK - Neil Budworth
+10. FR - Steele Retchless
+11. 2R - Joe Mbu
+12. 2R - Andrew Brocklehurst
+13. L - Jim Dymock
+14. B - Mitch Stringer
+15. B - Dave Highton
+16. B - Jon Wells
+17. B - Francis Stephenson
+
+London Broncos 2005
+1. FB - Zebastian Luisi
+2. W - Nick Bradley-Qalilawa
+3. C - Paul Sykes
+4. C - Tyrone Smith
+5. W - Jon Wells
+6. FE - Luke Dorn
+7. HB - Thomas Leuluai
+8. FR - Steve Trindall
+9. HK - Dave Highton
+10. FR - Mark Tookey
+11. 2R - Lee Hopkins
+12. 2R - Solomon Haumono
+13. L - Joe Mbu
+14. B - Mark McLinden
+15. B - Fili Lolohea
+16. B - Robert Purdham
+17. B - Danny Williams
+
+London Broncos 2006
+1. FB - Mark McLinden
+2. W - Nick Bradley-Qalilawa
+3. C - Tyrone Smith
+4. C - Zebastian Luisi
+5. W - Matt Gafa
+6. FE - Luke Dorn
+7. HB - Thomas Leuluai
+8. FR - Daniel Heckenberg
+9. HK - Chad Randall
+10. FR - Mark Tookey
+11. 2R - Lee Hopkins
+12. 2R - Robert Purdham
+13. L - Joe Mbu
+14. B - David Mills
+15. B - Danny Williams
+16. B - Neil Budworth
+17. B - Solomon Haumono
+
+London Broncos 2007
+1. FB - Chris Melling
+2. W - Jon Wells
+3. C - Paul Sykes
+4. C - Tyrone Smith
+5. W - Matt Gafa
+6. FE - Scott Hill
+7. HB - Danny Orr
+8. FR - Karl Te Mata
+9. HK - Chad Randall
+10. FR - Daniel Heckenberg
+11. 2R - Lee Hopkins
+12. 2R - Robert Purdham
+13. L - Henry Paul
+14. B - Julien Rinaldi
+15. B - Mark McLinden
+16. B - Jon Grayshon
+17. B - Louie McCarthy-Scarsbrook
+
+London Broncos 2008
+1. FB - Jon Wells
+2. W - Rikki Sheriffe
+3. C - David Howell
+4. C - Matt Gafa
+5. W - Will Sharp
+6. FE - Scott Hill
+7. HB - Danny Orr
+8. FR - Danny Ward
+9. HK - Chad Randall
+10. FR - Karl Te Mata
+11. 2R - Michael Worrincy
+12. 2R - Robert Purdham
+13. L - Henry Paul
+14. B - Gareth Haggerty
+15. B - Tony Clubb
+16. B - Joe Mbu
+17. B - Julien Rinaldi
+
+London Broncos 2009
+1. FB - Chris Melling
+2. W - Will Sharp
+3. C - Matt Gafa
+4. C - David Howell
+5. W - Jon Wells
+6. FE - Luke Dorn
+7. HB - Danny Orr
+8. FR - Danny Ward
+9. HK - Chad Randall
+10. FR - Karl Te Mata
+11. 2R - Luke Williamson
+12. 2R - Chad Robinson
+13. L - Robert Purdham
+14. B - Louie McCarthy-Scarsbrook
+15. B - Jason Golden
+16. B - Daniel Heckenberg
+17. B - Tony Clubb
+
+London Broncos 2010
+1. FB - Ben Jones-Bishop
+2. W - Will Sharp
+3. C - Tony Clubb
+4. C - David Howell
+5. W - Jamie O'Callaghan
+6. FE - Luke Gale
+7. HB - Chad Randall
+8. FR - Danny Ward
+9. HK - Danny Orr
+10. FR - Oliver Wilkes
+11. 2R - Luke Williamson
+12. 2R - Robert Purdham
+13. L - Jason Golden
+14. B - Chris Melling
+15. B - Louie McCarthy-Scarsbrook
+16. B - Luke Dorn
+17. B - Ben Bolger
+
+London Broncos 2011
+1. FB - Luke Dorn
+2. W - Chris Melling
+3. C - Tony Clubb
+4. C - David Howell
+5. W - Mark Calderwood
+6. FE - Luke Gale
+7. HB - Chad Randall
+8. FR - Danny Ward
+9. HK - Andy Ellis
+10. FR - Karl Te Mata
+11. 2R - Robert Purdham
+12. 2R - Mike Burnett
+13. L - Chris Bailey
+14. B - Oliver Wilkes
+15. B - Jamie O'Callaghan
+16. B - Luke Ambler
+17. B - Karl Pryce
+
+London Broncos 2012
+1. FB - Michael Robertson
+2. W - Kieran Dixon
+3. C - Jamie O'Callaghan
+4. C - David Howell
+5. W - Omari Caro
+6. FE - Michael Witt
+7. HB - Craig Gower
+8. FR - Antonio Kaufusi
+9. HK - Chad Randall
+10. FR - Scott Wheeldon
+11. 2R - Shane Rodney
+12. 2R - Chris Bailey
+13. L - Tony Clubb
+14. B - Mark Bryant
+15. B - Luke Dorn
+16. B - Chris Melling
+17. B - Julien Rinaldi
+
+London Broncos 2013
+1. FB - Luke Dorn
+2. W - Kieran Dixon
+3. C - Dan Sarginson
+4. C - Michael Channing
+5. W - Liam Colbon
+6. FE - Michael Witt
+7. HB - Craig Gower
+8. FR - Scott Wheeldon
+9. HK - Tommy Lee
+10. FR - Matt Cook
+11. 2R - Shane Rodney
+12. 2R - Chris Bailey
+13. L - Antonio Kaufusi
+14. B - Mark Bryant
+15. B - Ben Fisher
+16. B - Olsi Krasniqi
+17. B - Chris Melling
+
+======================================================================
+WAKEFIELD TRINITY
+======================================================================
+
+Wakefield Trinity 2022
+1. FB - Max Jowitt
+2. W - Lewis Murphy
+3. C - Corey Hall
+4. C - Reece Lyne
+5. W - Tom Johnstone
+6. FE - Jacob Miller
+7. HB - Mason Lino
+8. FR - Tinirau Arona
+9. HK - Liam Hood
+10. FR - Jai Whitbread
+11. 2R - Mat Ashurst
+12. 2R - Jay Pitts
+13. L - James Batchelor
+14. B - Jordan Crowther
+15. B - Kelepi Tanginoa
+16. B - Eddie Battye
+17. B - David Fifita
+
+Wakefield Trinity 2023
+1. FB - Max Jowitt
+2. W - Lee Kershaw
+3. C - Reece Lyne
+4. C - Samisoni Langi
+5. W - Tom Lineham
+6. FE - Morgan Smith
+7. HB - Mason Lino
+8. FR - Jai Whitbread
+9. HK - Liam Hood
+10. FR - Josh Bowden
+11. 2R - Mat Ashurst
+12. 2R - Jay Pitts
+13. L - Jordan Crowther
+14. B - Eddie Battye
+15. B - Liam Kay
+16. B - Renouf Atoni
+17. B - Kevin Proctor
+
+Wakefield Trinity 2025
+1. FB - Max Jowitt
+2. W - Tom Johnstone
+3. C - Oliver Pratt
+4. C - Corey Hall
+5. W - Lachlan Walmsley
+6. FE - Jacob Trueman
+7. HB - Mason Lino
+8. FR - Mike McMeeken
+9. HK - Liam Hood
+10. FR - Caius Faatili
+11. 2R - Josh Griffin
+12. 2R - Matthew Storton
+13. L - Jay Pitts
+14. B - Harvey Smith
+15. B - Cameron Scott
+16. B - Isaiah Vagana
+17. B - Renouf Atoni
+
+======================================================================
+WARRINGTON WOLVES
+======================================================================
+
+Warrington Wolves 1996
+1. FB - Lee Penny
+2. W - Mark Forster
+3. C - Toa Kohe-Love
+4. C - Jon Roper
+5. W - Richard Henare
+6. FE - Iestyn Harris
+7. HB - Willie Swann
+8. FR - Mark Hilton
+9. HK - Kris Watson
+10. FR - Gary Chambers
+11. 2R - Paul Cullen
+12. 2R - Paul Hulme
+13. L - Paul Sculthorpe
+14. B - Chris Rudd
+15. B - Mark Jones
+16. B - Ian Knott
+17. B - Salesi Finau
+
+Warrington Wolves 1998
+1. FB - Lee Penny
+2. W - Mark Forster
+3. C - Michael Eagar
+4. C - Toa Kohe-Love
+5. W - Jason Roach
+6. FE - Adam Doyle
+7. HB - Lee Briers
+8. FR - Danny Nutley
+9. HK - Danny Farrar
+10. FR - Gary Chambers
+11. 2R - Steve McCurrie
+12. 2R - Brendon Tuuta
+13. L - Mike Wainwright
+14. B - Ian Knott
+15. B - Chris Rudd
+16. B - Mark Hilton
+17. B - Vince Fawcett
+
+Warrington Wolves 1999
+1. FB - Lee Penny
+2. W - Mark Forster
+3. C - Toa Kohe-Love
+4. C - Alan Hunte
+5. W - Jason Roach
+6. FE - Scott Wilson
+7. HB - Lee Briers
+8. FR - Danny Nutley
+9. HK - Danny Farrar
+10. FR - Gary Chambers
+11. 2R - Simon Gillies
+12. 2R - Ian Knott
+13. L - Mike Wainwright
+14. B - Jon Roper
+15. B - Steve McCurrie
+16. B - Dean Hanger
+17. B - Dean Busby
+
+Warrington Wolves 2000
+1. FB - Lee Penny
+2. W - Alan Hunte
+3. C - Toa Kohe-Love
+4. C - Ian Sibbit
+5. W - Mark Forster
+6. FE - Lee Briers
+7. HB - Allan Langer
+8. FR - Andrew Gee
+9. HK - Danny Farrar
+10. FR - Danny Nutley
+11. 2R - Steve McCurrie
+12. 2R - Ian Knott
+13. L - Tawera Nikau
+14. B - Jérôme Guisset
+15. B - Mark Hilton
+16. B - Dean Busby
+17. B - Jon Roper
+
+Warrington Wolves 2001
+1. FB - Alan Hunte
+2. W - Rob Smyth
+3. C - Ian Sibbit
+4. C - Toa Kohe-Love
+5. W - Lee Penny
+6. FE - Lee Briers
+7. HB - Allan Langer
+8. FR - Danny Nutley
+9. HK - Jon Clarke
+10. FR - Jérôme Guisset
+11. 2R - Gary Mercer
+12. 2R - Steve McCurrie
+13. L - Tawera Nikau
+14. B - Martin Masella
+15. B - David Kidwell
+16. B - Paul Wood
+17. B - Dean Busby
+
+Warrington Wolves 2002
+1. FB - Lee Penny
+2. W - Rob Smyth
+3. C - Darren Burns
+4. C - Ben Westwood
+5. W - Leroy Rivett
+6. FE - Lee Briers
+7. HB - Nathan Wood
+8. FR - Mark Hilton
+9. HK - Jon Clarke
+10. FR - Dale Laughton
+11. 2R - Paul Marquet
+12. 2R - Jérôme Guisset
+13. L - Sid Domic
+14. B - Nick Fozzard
+15. B - Paul Wood
+16. B - Paul Noone
+17. B - Tom O'Reilly
+
+Warrington Wolves 2003
+1. FB - Lee Penny
+2. W - Dean Gaskell
+3. C - Brent Grose
+4. C - Ian Sibbit
+5. W - Rob Smyth
+6. FE - Lee Briers
+7. HB - Nathan Wood
+8. FR - Nick Fozzard
+9. HK - Jon Clarke
+10. FR - Mark Hilton
+11. 2R - Mike Wainwright
+12. 2R - Darren Burns
+13. L - Sid Domic
+14. B - Graham Appo
+15. B - Jérôme Guisset
+16. B - Paul Noone
+17. B - Paul Wood
+
+Warrington Wolves 2004
+1. FB - Darryl Cardiss
+2. W - Dean Gaskell
+3. C - Brent Grose
+4. C - Ben Westwood
+5. W - John Wilshere
+6. FE - Lee Briers
+7. HB - Nathan Wood
+8. FR - Mark Hilton
+9. HK - Jon Clarke
+10. FR - Danny Lima
+11. 2R - Mike Wainwright
+12. 2R - Paul Wood
+13. L - Mike Forshaw
+14. B - Mark Gleeson
+15. B - Jérôme Guisset
+16. B - Ian Sibbit
+17. B - Darren Burns
+
+Warrington Wolves 2005
+1. FB - Brent Grose
+2. W - Henry Fa'Afili
+3. C - Martin Gleeson
+4. C - Toa Kohe-Love
+5. W - Dean Gaskell
+6. FE - Lee Briers
+7. HB - Nathan Wood
+8. FR - Chris Leikvoll
+9. HK - Jon Clarke
+10. FR - Mark Hilton
+11. 2R - Logan Swann
+12. 2R - Mike Wainwright
+13. L - Ben Westwood
+14. B - Danny Lima
+15. B - Mark Gleeson
+16. B - Paul Wood
+17. B - Chris Bridge
+
+Warrington Wolves 2006
+1. FB - Stuart Reardon
+2. W - Henry Fa'Afili
+3. C - Martin Gleeson
+4. C - Toa Kohe-Love
+5. W - Richie Barnett
+6. FE - Lee Briers
+7. HB - Chris Bridge
+8. FR - Chris Leikvoll
+9. HK - Jon Clarke
+10. FR - Paul Wood
+11. 2R - Mike Wainwright
+12. 2R - Logan Swann
+13. L - Ben Westwood
+14. B - Brent Grose
+15. B - Michael Sullivan
+16. B - Mark Gleeson
+17. B - Rob Parker
+
+Warrington Wolves 2007
+1. FB - Stuart Reardon
+2. W - Henry Fa'Afili
+3. C - Martin Gleeson
+4. C - Paul Johnson
+5. W - Kevin Penny
+6. FE - Chris Bridge
+7. HB - Lee Briers
+8. FR - Paul Rauhihi
+9. HK - Mark Gleeson
+10. FR - Paul Wood
+11. 2R - Ben Westwood
+12. 2R - Mike Wainwright
+13. L - Vinnie Anderson
+14. B - Rob Parker
+15. B - Chris Leikvoll
+16. B - Andy Bracek
+17. B - Ben Harrison
+
+Warrington Wolves 2008
+1. FB - Chris Hicks
+2. W - Kevin Penny
+3. C - Martin Gleeson
+4. C - Matt King
+5. W - Chris Riley
+6. FE - Lee Briers
+7. HB - Michael Monaghan
+8. FR - Paul Rauhihi
+9. HK - Jon Clarke
+10. FR - Adrian Morley
+11. 2R - Ben Westwood
+12. 2R - Louis Anderson
+13. L - Vinnie Anderson
+14. B - Rob Parker
+15. B - Andy Bracek
+16. B - Mark Gleeson
+17. B - Simon Grix
+
+Warrington Wolves 2009
+1. FB - Richard Mathers
+2. W - Chris Hicks
+3. C - Matt King
+4. C - Chris Bridge
+5. W - Chris Riley
+6. FE - Lee Briers
+7. HB - Michael Monaghan
+8. FR - Adrian Morley
+9. HK - Jon Clarke
+10. FR - Garreth Carvell
+11. 2R - Louis Anderson
+12. 2R - Ben Westwood
+13. L - Ben Harrison
+14. B - Vinnie Anderson
+15. B - Paul Johnson
+16. B - Paul Wood
+17. B - Paul Rauhihi
+
+Warrington Wolves 2010
+1. FB - Richard Mathers
+2. W - Chris Riley
+3. C - Ryan Atkins
+4. C - Matt King
+5. W - Chris Hicks
+6. FE - Lee Briers
+7. HB - Richard Myler
+8. FR - Adrian Morley
+9. HK - Michael Monaghan
+10. FR - Garreth Carvell
+11. 2R - Louis Anderson
+12. 2R - Ben Westwood
+13. L - Ben Harrison
+14. B - David Solomona
+15. B - Paul Wood
+16. B - Mick Higham
+17. B - Simon Grix
+
+Warrington Wolves 2011
+1. FB - Brett Hodgson
+2. W - Joel Monaghan
+3. C - Ryan Atkins
+4. C - Chris Bridge
+5. W - Matt King
+6. FE - Lee Briers
+7. HB - Richard Myler
+8. FR - Garreth Carvell
+9. HK - Michael Monaghan
+10. FR - Adrian Morley
+11. 2R - Ben Westwood
+12. 2R - Louis Anderson
+13. L - Ben Harrison
+14. B - David Solomona
+15. B - Simon Grix
+16. B - Paul Wood
+17. B - Mike Cooper
+
+Warrington Wolves 2012
+1. FB - Brett Hodgson
+2. W - Chris Riley
+3. C - Ryan Atkins
+4. C - Chris Bridge
+5. W - Joel Monaghan
+6. FE - Lee Briers
+7. HB - Richard Myler
+8. FR - Chris Hill
+9. HK - Mick Higham
+10. FR - Adrian Morley
+11. 2R - Trent Waterhouse
+12. 2R - Ben Westwood
+13. L - Ben Harrison
+14. B - Paul Wood
+15. B - Mike Cooper
+16. B - Simon Grix
+17. B - Stefan Ratchford
+
+Warrington Wolves 2013
+1. FB - Brett Hodgson
+2. W - Chris Riley
+3. C - Ryan Atkins
+4. C - Chris Bridge
+5. W - Joel Monaghan
+6. FE - Lee Briers
+7. HB - Richard Myler
+8. FR - Chris Hill
+9. HK - Mick Higham
+10. FR - Paul Wood
+11. 2R - Ben Westwood
+12. 2R - Trent Waterhouse
+13. L - Mike Cooper
+14. B - Stefan Ratchford
+15. B - Garreth Carvell
+16. B - Michael Monaghan
+17. B - Ben Currie
+
+Warrington Wolves 2014
+1. FB - Matthew Russell
+2. W - Rhys Evans
+3. C - Ryan Atkins
+4. C - Chris Bridge
+5. W - Gene Ormsby
+6. FE - Gareth O'Brien
+7. HB - Richard Myler
+8. FR - Chris Hill
+9. HK - Mick Higham
+10. FR - Anthony England
+11. 2R - Trent Waterhouse
+12. 2R - Ben Westwood
+13. L - Ben Harrison
+14. B - Roy Asotasi
+15. B - Ben Currie
+16. B - Michael Monaghan
+17. B - James Laithwaite
+
+Warrington Wolves 2015
+1. FB - Stefan Ratchford
+2. W - Kevin Penny
+3. C - Ryan Atkins
+4. C - Chris Bridge
+5. W - Joel Monaghan
+6. FE - Gareth O'Brien
+7. HB - Richard Myler
+8. FR - Chris Hill
+9. HK - Daryl Clark
+10. FR - Ashton Sims
+11. 2R - Ben Currie
+12. 2R - Ben Westwood
+13. L - Ben Harrison
+14. B - Roy Asotasi
+15. B - James Laithwaite
+16. B - Brad Dwyer
+17. B - George King
+
+Warrington Wolves 2016
+1. FB - Stefan Ratchford
+2. W - Tom Lineham
+3. C - Ryan Atkins
+4. C - Rhys Evans
+5. W - Kevin Penny
+6. FE - Kurt Gidley
+7. HB - Chris Sandow
+8. FR - Chris Hill
+9. HK - Daryl Clark
+10. FR - Ashton Sims
+11. 2R - Jack Hughes
+12. 2R - Ben Currie
+13. L - Joe Westerman
+14. B - George King
+15. B - Ben Westwood
+16. B - Brad Dwyer
+17. B - Jordan Cox
+
+Warrington Wolves 2017
+1. FB - Stefan Ratchford
+2. W - Tom Lineham
+3. C - Ryan Atkins
+4. C - Peta Hiku
+5. W - Matthew Russell
+6. FE - Dec Patton
+7. HB - Kurt Gidley
+8. FR - Ashton Sims
+9. HK - Daryl Clark
+10. FR - Chris Hill
+11. 2R - Jack Hughes
+12. 2R - Benjamin Jullien
+13. L - Joe Westerman
+14. B - Joe Philbin
+15. B - Mike Cooper
+16. B - Andre Savelio
+17. B - Brad Dwyer
+
+Warrington Wolves 2018
+1. FB - Stefan Ratchford
+2. W - Tom Lineham
+3. C - Bryson Goodwin
+4. C - Toby King
+5. W - Josh Charnley
+6. FE - Kevin Brown
+7. HB - Tyrone Roberts
+8. FR - Chris Hill
+9. HK - Daryl Clark
+10. FR - Mike Cooper
+11. 2R - Jack Hughes
+12. 2R - Harvey Livett
+13. L - Ben Westwood
+14. B - Joe Philbin
+15. B - Dec Patton
+16. B - Ben Murdoch-Masila
+17. B - Sitaleki Akauola
+
+Warrington Wolves 2019
+1. FB - Stefan Ratchford
+2. W - Josh Charnley
+3. C - Bryson Goodwin
+4. C - Toby King
+5. W - Tom Lineham
+6. FE - Blake Austin
+7. HB - Dec Patton
+8. FR - Chris Hill
+9. HK - Daryl Clark
+10. FR - Mike Cooper
+11. 2R - Ben Currie
+12. 2R - Jack Hughes
+13. L - Jason Clark
+14. B - Joe Philbin
+15. B - Ben Murdoch-Masila
+16. B - Jake Mamo
+17. B - Sitaleki Akauola
+
+Warrington Wolves 2020
+1. FB - Stefan Ratchford
+2. W - Josh Charnley
+3. C - Toby King
+4. C - Anthony Gelling
+5. W - Tom Lineham
+6. FE - Blake Austin
+7. HB - Gareth Widdop
+8. FR - Mike Cooper
+9. HK - Daryl Clark
+10. FR - Chris Hill
+11. 2R - Ben Currie
+12. 2R - Jack Hughes
+13. L - Jason Clark
+14. B - Joe Philbin
+15. B - Danny Walker
+16. B - Ben Murdoch-Masila
+17. B - Matthew Ashton
+
+Warrington Wolves 2021
+1. FB - Stefan Ratchford
+2. W - Josh Charnley
+3. C - Jake Mamo
+4. C - Toby King
+5. W - Tom Lineham
+6. FE - Blake Austin
+7. HB - Gareth Widdop
+8. FR - Chris Hill
+9. HK - Daryl Clark
+10. FR - Mike Cooper
+11. 2R - Ben Currie
+12. 2R - Jack Hughes
+13. L - Matt Davis
+14. B - Robbie Mulhern
+15. B - Joe Philbin
+16. B - Jason Clark
+17. B - Danny Walker
+
+Warrington Wolves 2022
+1. FB - Josh Thewlis
+2. W - Matthew Ashton
+3. C - Peter Mata'Utia
+4. C - Toby King
+5. W - Josh Charnley
+6. FE - Stefan Ratchford
+7. HB - George Williams
+8. FR - Robbie Mulhern
+9. HK - Daryl Clark
+10. FR - Mike Cooper
+11. 2R - Ben Currie
+12. 2R - Oliver Holmes
+13. L - Jason Clark
+14. B - Joe Bullock
+15. B - Danny Walker
+16. B - Joe Philbin
+17. B - Connor Wrench
+
+Warrington Wolves 2023
+1. FB - Matt Dufty
+2. W - Matthew Ashton
+3. C - Stefan Ratchford
+4. C - Peter Mata'Utia
+5. W - Josh Thewlis
+6. FE - George Williams
+7. HB - Josh Drinkwater
+8. FR - Paul Vaughan
+9. HK - Danny Walker
+10. FR - Thomas Mikaele
+11. 2R - Ben Currie
+12. 2R - Matty Nicholson
+13. L - James Harrison
+14. B - Daryl Clark
+15. B - Sam Kasiano
+16. B - Joe Philbin
+17. B - Joe Bullock
+
+Warrington Wolves 2024
+1. FB - Matt Dufty
+2. W - Matthew Ashton
+3. C - Toby King
+4. C - Rodrick Tai
+5. W - Josh Thewlis
+6. FE - George Williams
+7. HB - Josh Drinkwater
+8. FR - Paul Vaughan
+9. HK - Danny Walker
+10. FR - James Harrison
+11. 2R - Matty Nicholson
+12. 2R - Lachlan Fitzgibbon
+13. L - Ben Currie
+14. B - Sam Powell
+15. B - Zane Musgrove
+16. B - Jordan Crowther
+17. B - Joe Philbin
+
+Warrington Wolves 2025
+1. FB - Matt Dufty
+2. W - Josh Thewlis
+3. C - Rodrick Tai
+4. C - Toby King
+5. W - Jake Thewlis
+6. FE - George Williams
+7. HB - Marc Sneyd
+8. FR - Luke Yates
+9. HK - Danny Walker
+10. FR - Paul Vaughan
+11. 2R - Lachlan Fitzgibbon
+12. 2R - Adam Holroyd
+13. L - Ben Currie
+14. B - Sam Powell
+15. B - Joe Philbin
+16. B - James Harrison
+17. B - Jordan Crowther
+
+======================================================================
+WIDNES VIKINGS
+======================================================================
+
+Widnes Vikings 2002
+1. FB - Stuart Spruce
+2. W - Chris Percival
+3. C - Adam Hughes
+4. C - Dan Potter
+5. W - Jason Demetriou
+6. FE - Steve Carter
+7. HB - Barry Eaton
+8. FR - Robert Relf
+9. HK - Phil Cantillon
+10. FR - Troy Stone
+11. 2R - Steve McCurrie
+12. 2R - Anthony Farrell
+13. L - Daniel Frame
+14. B - David Mills
+15. B - Julian O'Neill
+16. B - Paul Atcheson
+17. B - Craig Weston
+
+Widnes Vikings 2003
+1. FB - Stuart Spruce
+2. W - Paul Devlin
+3. C - Adam Hughes
+4. C - Jason Demetriou
+5. W - Chris Giles
+6. FE - Julian O'Neill
+7. HB - Ryan Sheridan
+8. FR - Robert Relf
+9. HK - Shane Millard
+10. FR - Julian O'Neill
+11. 2R - Andy Hay
+12. 2R - Steve McCurrie
+13. L - Daniel Frame
+14. B - Anthony Farrell
+15. B - Phil Cantillon
+16. B - David Mills
+17. B - Paul Atcheson
+
+Widnes Vikings 2004
+1. FB - Stephen Rowlands
+2. W - Chris Giles
+3. C - Adam Hughes
+4. C - Aaron Moule
+5. W - Nicky Royle
+6. FE - Julian O'Neill
+7. HB - Stephen Myler
+8. FR - Julian O'Neill
+9. HK - Shane Millard
+10. FR - Robert Relf
+11. 2R - Andy Hay
+12. 2R - Troy Wozniak
+13. L - Simon Finnigan
+14. B - Steve McCurrie
+15. B - David Mills
+16. B - Deon Bird
+17. B - Daniel Frame
+
+Widnes Vikings 2005
+1. FB - Tim Holmes
+2. W - Andrew Emelio
+3. C - Aaron Moule
+4. C - Jon Whittle
+5. W - Gray Viane
+6. FE - Owen Craigie
+7. HB - Gary Hulse
+8. FR - Terry O'Connor
+9. HK - Shane Millard
+10. FR - Julian O'Neill
+11. 2R - Mick Cassidy
+12. 2R - Daniel Frame
+13. L - Simon Finnigan
+14. B - Mark Smith
+15. B - Matthew Whitaker
+16. B - David Mills
+17. B - Sala Fa'Alogo
+
+Widnes Vikings 2012
+1. FB - Cameron Phelps
+2. W - Paddy Flynn
+3. C - Stefan Marsh
+4. C - Chris Dean
+5. W - Patrick Ah Van
+6. FE - Danny Craven
+7. HB - Rhys Hanbury
+8. FR - Ben Cross
+9. HK - Jon Clarke
+10. FR - Steve Pickersgill
+11. 2R - Frank Winterstein
+12. 2R - David Allen
+13. L - Hep Cahill
+14. B - Willie Isa
+15. B - Ben Davies
+16. B - Lloyd White
+17. B - Kurt Haggerty
+
+Widnes Vikings 2013
+1. FB - Rhys Hanbury
+2. W - Patrick Ah Van
+3. C - Cameron Phelps
+4. C - Stefan Marsh
+5. W - Paddy Flynn
+6. FE - Kevin Brown
+7. HB - Joe Mellor
+8. FR - Eamon O'Carroll
+9. HK - Jon Clarke
+10. FR - Steve Pickersgill
+11. 2R - David Allen
+12. 2R - Gareth Hock
+13. L - Hep Cahill
+14. B - Philip Joseph
+15. B - Ben Kavanagh
+16. B - Frank Winterstein
+17. B - Macgraff Leuluai
+
+Widnes Vikings 2017
+1. FB - Rhys Hanbury
+2. W - Stefan Marsh
+3. C - Charly Runciman
+4. C - Chris Bridge
+5. W - Corey Thompson
+6. FE - Joe Mellor
+7. HB - Tom Gilmore
+8. FR - Gil Dudson
+9. HK - Lloyd White
+10. FR - Jack Buchanan
+11. 2R - Chris Houston
+12. 2R - Matt Whitley
+13. L - Hep Cahill
+14. B - Tom Olbison
+15. B - Danny Craven
+16. B - Jordan Johnstone
+17. B - Aaron Heremaia
+
+Widnes Vikings 2018
+1. FB - Rhys Hanbury
+2. W - Patrick Ah Van
+3. C - Charly Runciman
+4. C - Krisnan Inu
+5. W - Stefan Marsh
+6. FE - Joe Mellor
+7. HB - Tom Gilmore
+8. FR - Jay Chapelhow
+9. HK - Aaron Heremaia
+10. FR - Greg Burke
+11. 2R - Matt Whitley
+12. 2R - Sam Wilde
+13. L - Chris Houston
+14. B - Tom Olbison
+15. B - Macgraff Leuluai
+16. B - Danny Craven
+17. B - Danny Walker
+
+======================================================================
+WIGAN WARRIORS
+======================================================================
+
+Wigan Warriors 1996
+1. FB - Kris Radlinski
+2. W - Jason Robinson
+3. C - Va'Aiga Tuigamala
+4. C - Gary Connolly
+5. W - Rob Smyth
+6. FE - Henry Paul
+7. HB - Shaun Edwards
+8. FR - Terry O'Connor
+9. HK - Martin Hall
+10. FR - Neil Cowie
+11. 2R - Mick Cassidy
+12. 2R - Simon Haughton
+13. L - Andy Farrell
+14. B - Craig Murdock
+15. B - Andy Johnson
+16. B - Kelvin Skerrett
+17. B - Danny Ellison
+
+Wigan Warriors 1998
+1. FB - Kris Radlinski
+2. W - Jason Robinson
+3. C - Gary Connolly
+4. C - Danny Moore
+5. W - Mark Bell
+6. FE - Henry Paul
+7. HB - Tony Smith
+8. FR - Tony Mestrov
+9. HK - Robbie McCormack
+10. FR - Neil Cowie
+11. 2R - Simon Haughton
+12. 2R - Denis Betts
+13. L - Andy Farrell
+14. B - Lee Gilmour
+15. B - Paul Johnson
+16. B - Mick Cassidy
+17. B - Terry O'Connor
+
+Wigan Warriors 1999
+1. FB - Kris Radlinski
+2. W - Jason Robinson
+3. C - Gary Connolly
+4. C - Danny Moore
+5. W - Paul Johnson
+6. FE - Greg Florimo
+7. HB - Tony Smith
+8. FR - Neil Cowie
+9. HK - Jon Clarke
+10. FR - Terry O'Connor
+11. 2R - Denis Betts
+12. 2R - Mick Cassidy
+13. L - Andy Farrell
+14. B - Lee Gilmour
+15. B - Tony Mestrov
+16. B - Brett Goldspink
+17. B - Simon Haughton
+
+Wigan Warriors 2000
+1. FB - Kris Radlinski
+2. W - Jason Robinson
+3. C - Steve Renouf
+4. C - Gary Connolly
+5. W - Brett Dallas
+6. FE - Andy Farrell
+7. HB - Willie Peters
+8. FR - Neil Cowie
+9. HK - Terry Newton
+10. FR - Terry O'Connor
+11. 2R - Mick Cassidy
+12. 2R - Denis Betts
+13. L - Lee Gilmour
+14. B - Brady Malam
+15. B - Tony Mestrov
+16. B - Chris Chester
+17. B - Wes Davies
+
+Wigan Warriors 2001
+1. FB - Kris Radlinski
+2. W - Brett Dallas
+3. C - Steve Renouf
+4. C - Paul Johnson
+5. W - Brian Carney
+6. FE - Matthew Johns
+7. HB - Adrian Lam
+8. FR - Terry O'Connor
+9. HK - Terry Newton
+10. FR - Neil Cowie
+11. 2R - David Furner
+12. 2R - Mick Cassidy
+13. L - Andy Farrell
+14. B - Denis Betts
+15. B - Harvey Howard
+16. B - David Hodgson
+17. B - Gary Connolly
+
+Wigan Warriors 2002
+1. FB - Kris Radlinski
+2. W - Brian Carney
+3. C - Gary Connolly
+4. C - David Hodgson
+5. W - Brett Dallas
+6. FE - Julian O'Neill
+7. HB - Adrian Lam
+8. FR - Terry O'Connor
+9. HK - Terry Newton
+10. FR - Craig Smith
+11. 2R - Mick Cassidy
+12. 2R - David Furner
+13. L - Andy Farrell
+14. B - Harvey Howard
+15. B - Mark Smith
+16. B - Jamie Ainscough
+17. B - Ricky Bibey
+
+Wigan Warriors 2003
+1. FB - Kris Radlinski
+2. W - Brian Carney
+3. C - David Hodgson
+4. C - Martin Aspinwall
+5. W - Brett Dallas
+6. FE - Sean O'Loughlin
+7. HB - Adrian Lam
+8. FR - Craig Smith
+9. HK - Terry Newton
+10. FR - Terry O'Connor
+11. 2R - Danny Tickle
+12. 2R - Mick Cassidy
+13. L - Andy Farrell
+14. B - Gareth Hock
+15. B - Paul Johnson
+16. B - Mark Smith
+17. B - Luke Robinson
+
+Wigan Warriors 2004
+1. FB - Kris Radlinski
+2. W - Brett Dallas
+3. C - Stephen Wild
+4. C - Martin Aspinwall
+5. W - David Hodgson
+6. FE - Danny Orr
+7. HB - Adrian Lam
+8. FR - Craig Smith
+9. HK - Terry Newton
+10. FR - Terry O'Connor
+11. 2R - Danny Tickle
+12. 2R - Gareth Hock
+13. L - Sean O'Loughlin
+14. B - Mark Smith
+15. B - Mick Cassidy
+16. B - Kevin Brown
+17. B - Danny Sculthorpe
+
+Wigan Warriors 2005
+1. FB - Kris Radlinski
+2. W - Brett Dallas
+3. C - David Vaealiki
+4. C - Stephen Wild
+5. W - Martin Aspinwall
+6. FE - Danny Orr
+7. HB - Dennis Moran
+8. FR - Jerry Seuseu
+9. HK - Terry Newton
+10. FR - Jérôme Guisset
+11. 2R - Danny Tickle
+12. 2R - Harrison Hansen
+13. L - Sean O'Loughlin
+14. B - Kevin Brown
+15. B - Wayne Godwin
+16. B - Danny Sculthorpe
+17. B - David Allen
+
+Wigan Warriors 2007
+1. FB - Chris Ashton
+2. W - Mark Calderwood
+3. C - Phil Bailey
+4. C - David Vaealiki
+5. W - Pat Richards
+6. FE - Trent Barrett
+7. HB - Thomas Leuluai
+8. FR - Iafeta Palea'Aesina
+9. HK - Shane Millard
+10. FR - Stuart Fielden
+11. 2R - Bryan Fletcher
+12. 2R - Gareth Hock
+13. L - Sean O'Loughlin
+14. B - Mick Higham
+15. B - Harrison Hansen
+16. B - Paul Prescott
+17. B - Darrell Goulding
+
+Wigan Warriors 2008
+1. FB - Richard Mathers
+2. W - Liam Colbon
+3. C - George Carmont
+4. C - Darrell Goulding
+5. W - Mark Calderwood
+6. FE - Trent Barrett
+7. HB - Thomas Leuluai
+8. FR - Andy Coley
+9. HK - Mick Higham
+10. FR - Stuart Fielden
+11. 2R - Harrison Hansen
+12. 2R - Phil Bailey
+13. L - Sean O'Loughlin
+14. B - Iafeta Palea'Aesina
+15. B - Joel Tomkins
+16. B - Eamon O'Carroll
+17. B - Mike McIlorum
+
+Wigan Warriors 2009
+1. FB - Cameron Phelps
+2. W - Amos Roberts
+3. C - George Carmont
+4. C - Martin Gleeson
+5. W - Pat Richards
+6. FE - Sam Tomkins
+7. HB - Thomas Leuluai
+8. FR - Andy Coley
+9. HK - Mark Riddell
+10. FR - Paul Prescott
+11. 2R - Harrison Hansen
+12. 2R - Gareth Hock
+13. L - Sean O'Loughlin
+14. B - Iafeta Palea'Aesina
+15. B - Joel Tomkins
+16. B - Stuart Fielden
+17. B - Mike McIlorum
+
+Wigan Warriors 2010
+1. FB - Cameron Phelps
+2. W - Pat Richards
+3. C - George Carmont
+4. C - Martin Gleeson
+5. W - Darrell Goulding
+6. FE - Sam Tomkins
+7. HB - Thomas Leuluai
+8. FR - Stuart Fielden
+9. HK - Mark Riddell
+10. FR - Andy Coley
+11. 2R - Joel Tomkins
+12. 2R - Phil Bailey
+13. L - Sean O'Loughlin
+14. B - Paul Prescott
+15. B - Liam Farrell
+16. B - Iafeta Palea'Aesina
+17. B - Paul Deacon
+
+Wigan Warriors 2011
+1. FB - Sam Tomkins
+2. W - Josh Charnley
+3. C - George Carmont
+4. C - Joel Tomkins
+5. W - Pat Richards
+6. FE - Brett Finch
+7. HB - Thomas Leuluai
+8. FR - Andy Coley
+9. HK - Mike McIlorum
+10. FR - Jeff Lima
+11. 2R - Ryan Hoffman
+12. 2R - Harrison Hansen
+13. L - Sean O'Loughlin
+14. B - Paul Deacon
+15. B - Paul Prescott
+16. B - Lee Mossop
+17. B - Liam Farrell
+
+Wigan Warriors 2012
+1. FB - Sam Tomkins
+2. W - Josh Charnley
+3. C - Darrell Goulding
+4. C - George Carmont
+5. W - Pat Richards
+6. FE - Brett Finch
+7. HB - Thomas Leuluai
+8. FR - Lee Mossop
+9. HK - Mike McIlorum
+10. FR - Epalahame Lauaki
+11. 2R - Gareth Hock
+12. 2R - Harrison Hansen
+13. L - Sean O'Loughlin
+14. B - Jeff Lima
+15. B - Liam Farrell
+16. B - Chris Tuson
+17. B - Jack Hughes
+
+Wigan Warriors 2013
+1. FB - Sam Tomkins
+2. W - Josh Charnley
+3. C - Iain Thornley
+4. C - Darrell Goulding
+5. W - Pat Richards
+6. FE - Blake Green
+7. HB - Matty Smith
+8. FR - Lee Mossop
+9. HK - Mike McIlorum
+10. FR - Ben Flower
+11. 2R - Liam Farrell
+12. 2R - Harrison Hansen
+13. L - Sean O'Loughlin
+14. B - Jack Hughes
+15. B - Scott Taylor
+16. B - Dominic Crosby
+17. B - Chris Tuson
+
+Wigan Warriors 2014
+1. FB - Matt Bowen
+2. W - Joe Burgess
+3. C - Dan Sarginson
+4. C - Anthony Gelling
+5. W - Josh Charnley
+6. FE - Blake Green
+7. HB - Matty Smith
+8. FR - Ben Flower
+9. HK - Mike McIlorum
+10. FR - Scott Taylor
+11. 2R - Liam Farrell
+12. 2R - John Bateman
+13. L - Sean O'Loughlin
+14. B - Dominic Crosby
+15. B - Tony Clubb
+16. B - Jack Hughes
+17. B - George Williams
+
+Wigan Warriors 2015
+1. FB - Matt Bowen
+2. W - Joe Burgess
+3. C - Dan Sarginson
+4. C - Anthony Gelling
+5. W - Josh Charnley
+6. FE - George Williams
+7. HB - Matty Smith
+8. FR - Dominic Crosby
+9. HK - Mike McIlorum
+10. FR - Lee Mossop
+11. 2R - Liam Farrell
+12. 2R - Joel Tomkins
+13. L - Sean O'Loughlin
+14. B - John Bateman
+15. B - Larne Patrick
+16. B - Taulima Tautai
+17. B - Tony Clubb
+
+Wigan Warriors 2016
+1. FB - Sam Tomkins
+2. W - Josh Charnley
+3. C - Oliver Gildart
+4. C - Anthony Gelling
+5. W - Dominic Manfredi
+6. FE - George Williams
+7. HB - Matty Smith
+8. FR - Ben Flower
+9. HK - Sam Powell
+10. FR - Dominic Crosby
+11. 2R - Willie Isa
+12. 2R - John Bateman
+13. L - Sean O'Loughlin
+14. B - Taulima Tautai
+15. B - Ryan Sutton
+16. B - Dan Sarginson
+17. B - Lee Mossop
+
+Wigan Warriors 2017
+1. FB - Sam Tomkins
+2. W - Liam Marshall
+3. C - Anthony Gelling
+4. C - Oliver Gildart
+5. W - Tom Davies
+6. FE - George Williams
+7. HB - Thomas Leuluai
+8. FR - Frank-Paul Nu'Uausala
+9. HK - Mike McIlorum
+10. FR - Ryan Sutton
+11. 2R - Liam Farrell
+12. 2R - Willie Isa
+13. L - Sean O'Loughlin
+14. B - Taulima Tautai
+15. B - Sam Powell
+16. B - Joel Tomkins
+17. B - Tony Clubb
+
+Wigan Warriors 2018
+1. FB - Sam Tomkins
+2. W - Tom Davies
+3. C - Oliver Gildart
+4. C - Dan Sarginson
+5. W - Liam Marshall
+6. FE - George Williams
+7. HB - Sam Powell
+8. FR - Ben Flower
+9. HK - Thomas Leuluai
+10. FR - Tony Clubb
+11. 2R - Willie Isa
+12. 2R - Liam Farrell
+13. L - Sean O'Loughlin
+14. B - Morgan Escaré
+15. B - Ryan Sutton
+16. B - Romain Navarrete
+17. B - Taulima Tautai
+
+Wigan Warriors 2019
+1. FB - Zak Hardaker
+2. W - Liam Marshall
+3. C - Oliver Gildart
+4. C - Dan Sarginson
+5. W - Joe Burgess
+6. FE - George Williams
+7. HB - Thomas Leuluai
+8. FR - Romain Navarrete
+9. HK - Sam Powell
+10. FR - Tony Clubb
+11. 2R - Willie Isa
+12. 2R - Liam Farrell
+13. L - Sean O'Loughlin
+14. B - Morgan Smithies
+15. B - Joe Bullock
+16. B - Oliver Partington
+17. B - Joe Greenwood
+
+Wigan Warriors 2020
+1. FB - Bevan French
+2. W - Joe Burgess
+3. C - Zak Hardaker
+4. C - Jake Bibby
+5. W - Dominic Manfredi
+6. FE - Thomas Leuluai
+7. HB - Jackson Hastings
+8. FR - Joe Bullock
+9. HK - Sam Powell
+10. FR - Oliver Partington
+11. 2R - Liam Farrell
+12. 2R - Willie Isa
+13. L - Sean O'Loughlin
+14. B - Harry Smith
+15. B - Morgan Smithies
+16. B - Ethan Havard
+17. B - Liam Byrne
+
+Wigan Warriors 2021
+1. FB - Zak Hardaker
+2. W - Jake Bibby
+3. C - Willie Isa
+4. C - Oliver Gildart
+5. W - Liam Marshall
+6. FE - Harry Smith
+7. HB - Jackson Hastings
+8. FR - Brad Singleton
+9. HK - Sam Powell
+10. FR - Tony Clubb
+11. 2R - Liam Farrell
+12. 2R - John Bateman
+13. L - Oliver Partington
+14. B - Joe Shorrocks
+15. B - Liam Byrne
+16. B - Ethan Havard
+17. B - Joe Bullock
+
+Wigan Warriors 2022
+1. FB - Jai Field
+2. W - Liam Marshall
+3. C - Jake Bibby
+4. C - Kai Pearce-Paul
+5. W - Bevan French
+6. FE - Cade Cust
+7. HB - Harry Smith
+8. FR - Brad Singleton
+9. HK - Sam Powell
+10. FR - Liam Byrne
+11. 2R - Liam Farrell
+12. 2R - John Bateman
+13. L - Morgan Smithies
+14. B - Patrick Mago
+15. B - Kaide Ellis
+16. B - Ethan Havard
+17. B - Oliver Partington
+
+Wigan Warriors 2023
+1. FB - Jai Field
+2. W - Liam Marshall
+3. C - Jacob Wardle
+4. C - Toby King
+5. W - Abbas Miski
+6. FE - Bevan French
+7. HB - Harry Smith
+8. FR - Liam Byrne
+9. HK - Sam Powell
+10. FR - Kaide Ellis
+11. 2R - Liam Farrell
+12. 2R - Kai Pearce-Paul
+13. L - Morgan Smithies
+14. B - Patrick Mago
+15. B - Bradley O'Neill
+16. B - Joe Shorrocks
+17. B - Ethan Havard
+
+Wigan Warriors 2024
+1. FB - Jai Field
+2. W - Liam Marshall
+3. C - Jacob Wardle
+4. C - Adam Keighran
+5. W - Abbas Miski
+6. FE - Bevan French
+7. HB - Harry Smith
+8. FR - Luke Thompson
+9. HK - Bradley O'Neill
+10. FR - Ethan Havard
+11. 2R - Liam Farrell
+12. 2R - Junior Nsemba
+13. L - Kaide Ellis
+14. B - Patrick Mago
+15. B - Tyler Dupree
+16. B - Kruise Leeming
+17. B - Liam Byrne
+
+Wigan Warriors 2025
+1. FB - Jai Field
+2. W - Liam Marshall
+3. C - Jacob Wardle
+4. C - Adam Keighran
+5. W - Zach Eckersley
+6. FE - Bevan French
+7. HB - Harry Smith
+8. FR - Liam Byrne
+9. HK - Bradley O'Neill
+10. FR - Luke Thompson
+11. 2R - Liam Farrell
+12. 2R - Junior Nsemba
+13. L - Kaide Ellis
+14. B - Kruise Leeming
+15. B - Patrick Mago
+16. B - Tyler Dupree
+17. B - Sam Walters

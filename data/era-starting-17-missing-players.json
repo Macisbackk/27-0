@@ -1,0 +1,1422 @@
+{
+  "generatedAt": "2026-06-23T06:59:30.611Z",
+  "total": 129,
+  "missing": [
+    {
+      "name": "Josh Charnley",
+      "occurrences": 12,
+      "clubYears": [
+        "Leigh Leopards 2025",
+        "Warrington Wolves 2022",
+        "Warrington Wolves 2021",
+        "Warrington Wolves 2020",
+        "Warrington Wolves 2019",
+        "Warrington Wolves 2018",
+        "Wigan Warriors 2016",
+        "Wigan Warriors 2015",
+        "Wigan Warriors 2014",
+        "Wigan Warriors 2013",
+        "Wigan Warriors 2012",
+        "Wigan Warriors 2011"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Ryan Hall",
+      "occurrences": 10,
+      "clubYears": [
+        "Leeds Rhinos 2025",
+        "Leeds Rhinos 2018",
+        "Leeds Rhinos 2017",
+        "Leeds Rhinos 2016",
+        "Leeds Rhinos 2014",
+        "Leeds Rhinos 2013",
+        "Leeds Rhinos 2012",
+        "Leeds Rhinos 2011",
+        "Leeds Rhinos 2010",
+        "Leeds Rhinos 2009"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Jack Hughes",
+      "occurrences": 10,
+      "clubYears": [
+        "Leigh Leopards 2025",
+        "Warrington Wolves 2021",
+        "Warrington Wolves 2020",
+        "Warrington Wolves 2019",
+        "Warrington Wolves 2018",
+        "Warrington Wolves 2017",
+        "Warrington Wolves 2016",
+        "Wigan Warriors 2014",
+        "Wigan Warriors 2013",
+        "Wigan Warriors 2012"
+      ],
+      "positions": [
+        "B",
+        "2R"
+      ]
+    },
+    {
+      "name": "Liam Sutcliffe",
+      "occurrences": 9,
+      "clubYears": [
+        "Hull FC 2024",
+        "Hull FC 2023",
+        "Leeds Rhinos 2022",
+        "Leeds Rhinos 2021",
+        "Leeds Rhinos 2020",
+        "Leeds Rhinos 2019",
+        "Leeds Rhinos 2017",
+        "Leeds Rhinos 2016",
+        "Leeds Rhinos 2014"
+      ],
+      "positions": [
+        "C",
+        "FE",
+        "B"
+      ]
+    },
+    {
+      "name": "Brad Fash",
+      "occurrences": 8,
+      "clubYears": [
+        "Hull FC 2025",
+        "Hull FC 2024",
+        "Hull FC 2023",
+        "Hull FC 2022",
+        "Hull FC 2021",
+        "Hull FC 2020",
+        "Hull FC 2019",
+        "Hull FC 2018"
+      ],
+      "positions": [
+        "B",
+        "FR",
+        "L"
+      ]
+    },
+    {
+      "name": "Brad Singleton",
+      "occurrences": 8,
+      "clubYears": [
+        "Leeds Rhinos 2019",
+        "Leeds Rhinos 2018",
+        "Leeds Rhinos 2017",
+        "Leeds Rhinos 2016",
+        "Leeds Rhinos 2014",
+        "Leeds Rhinos 2013",
+        "Wigan Warriors 2022",
+        "Wigan Warriors 2021"
+      ],
+      "positions": [
+        "B",
+        "FR",
+        "L"
+      ]
+    },
+    {
+      "name": "Mike McIlorum",
+      "occurrences": 8,
+      "clubYears": [
+        "Wigan Warriors 2017",
+        "Wigan Warriors 2015",
+        "Wigan Warriors 2014",
+        "Wigan Warriors 2013",
+        "Wigan Warriors 2012",
+        "Wigan Warriors 2011",
+        "Wigan Warriors 2009",
+        "Wigan Warriors 2008"
+      ],
+      "positions": [
+        "HK",
+        "B"
+      ]
+    },
+    {
+      "name": "Richard Mathers",
+      "occurrences": 6,
+      "clubYears": [
+        "Leeds Rhinos 2006",
+        "Leeds Rhinos 2005",
+        "Leeds Rhinos 2004",
+        "Warrington Wolves 2010",
+        "Warrington Wolves 2009",
+        "Wigan Warriors 2008"
+      ],
+      "positions": [
+        "FB"
+      ]
+    },
+    {
+      "name": "Liam Byrne",
+      "occurrences": 6,
+      "clubYears": [
+        "Wigan Warriors 2025",
+        "Wigan Warriors 2024",
+        "Wigan Warriors 2023",
+        "Wigan Warriors 2022",
+        "Wigan Warriors 2021",
+        "Wigan Warriors 2020"
+      ],
+      "positions": [
+        "FR",
+        "B"
+      ]
+    },
+    {
+      "name": "Rhyse Martin",
+      "occurrences": 5,
+      "clubYears": [
+        "Leeds Rhinos 2024",
+        "Leeds Rhinos 2023",
+        "Leeds Rhinos 2022",
+        "Leeds Rhinos 2021",
+        "Leeds Rhinos 2020"
+      ],
+      "positions": [
+        "2R",
+        "C"
+      ]
+    },
+    {
+      "name": "Kruise Leeming",
+      "occurrences": 5,
+      "clubYears": [
+        "Leeds Rhinos 2022",
+        "Leeds Rhinos 2021",
+        "Leeds Rhinos 2020",
+        "Wigan Warriors 2025",
+        "Wigan Warriors 2024"
+      ],
+      "positions": [
+        "HK",
+        "B"
+      ]
+    },
+    {
+      "name": "Karl Te Mata",
+      "occurrences": 4,
+      "clubYears": [
+        "London Broncos 2011",
+        "London Broncos 2009",
+        "London Broncos 2008",
+        "London Broncos 2007"
+      ],
+      "positions": [
+        "FR"
+      ]
+    },
+    {
+      "name": "Matthew Ashton",
+      "occurrences": 4,
+      "clubYears": [
+        "Warrington Wolves 2024",
+        "Warrington Wolves 2023",
+        "Warrington Wolves 2022",
+        "Warrington Wolves 2020"
+      ],
+      "positions": [
+        "W",
+        "B"
+      ]
+    },
+    {
+      "name": "Morgan Smithies",
+      "occurrences": 4,
+      "clubYears": [
+        "Wigan Warriors 2023",
+        "Wigan Warriors 2022",
+        "Wigan Warriors 2020",
+        "Wigan Warriors 2019"
+      ],
+      "positions": [
+        "L",
+        "B"
+      ]
+    },
+    {
+      "name": "Oliver Russell",
+      "occurrences": 3,
+      "clubYears": [
+        "Huddersfield Giants 2024",
+        "Huddersfield Giants 2022",
+        "Huddersfield Giants 2021"
+      ],
+      "positions": [
+        "B",
+        "FE",
+        "HB"
+      ]
+    },
+    {
+      "name": "Jack Walker",
+      "occurrences": 3,
+      "clubYears": [
+        "Leeds Rhinos 2020",
+        "Leeds Rhinos 2019",
+        "Leeds Rhinos 2018"
+      ],
+      "positions": [
+        "FB"
+      ]
+    },
+    {
+      "name": "Bradley O'Neill",
+      "occurrences": 3,
+      "clubYears": [
+        "Wigan Warriors 2025",
+        "Wigan Warriors 2024",
+        "Wigan Warriors 2023"
+      ],
+      "positions": [
+        "HK",
+        "B"
+      ]
+    },
+    {
+      "name": "James Gavet",
+      "occurrences": 2,
+      "clubYears": [
+        "Huddersfield Giants 2021",
+        "Huddersfield Giants 2020"
+      ],
+      "positions": [
+        "FR",
+        "B"
+      ]
+    },
+    {
+      "name": "Jack Ashworth",
+      "occurrences": 2,
+      "clubYears": [
+        "Hull FC 2025",
+        "Hull FC 2024"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Yusuf Aydin",
+      "occurrences": 2,
+      "clubYears": [
+        "Hull FC 2025",
+        "Hull FC 2024"
+      ],
+      "positions": [
+        "B",
+        "L"
+      ]
+    },
+    {
+      "name": "Morgan Smith",
+      "occurrences": 2,
+      "clubYears": [
+        "Hull FC 2024",
+        "Wakefield Trinity 2023"
+      ],
+      "positions": [
+        "FE"
+      ]
+    },
+    {
+      "name": "Jacob Trueman",
+      "occurrences": 2,
+      "clubYears": [
+        "Hull FC 2023",
+        "Wakefield Trinity 2025"
+      ],
+      "positions": [
+        "FE"
+      ]
+    },
+    {
+      "name": "Joe Cator",
+      "occurrences": 2,
+      "clubYears": [
+        "Hull FC 2023",
+        "Hull FC 2020"
+      ],
+      "positions": [
+        "L"
+      ]
+    },
+    {
+      "name": "Joe Lovodua",
+      "occurrences": 2,
+      "clubYears": [
+        "Hull FC 2023",
+        "Hull FC 2022"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Josh Reynolds",
+      "occurrences": 2,
+      "clubYears": [
+        "Hull FC 2022",
+        "Hull FC 2021"
+      ],
+      "positions": [
+        "FE"
+      ]
+    },
+    {
+      "name": "Chris Atkin",
+      "occurrences": 2,
+      "clubYears": [
+        "Hull KR 2019",
+        "Hull KR 2018"
+      ],
+      "positions": [
+        "B",
+        "HB"
+      ]
+    },
+    {
+      "name": "Matt Davis",
+      "occurrences": 2,
+      "clubYears": [
+        "Leigh Leopards 2025",
+        "Warrington Wolves 2021"
+      ],
+      "positions": [
+        "B",
+        "L"
+      ]
+    },
+    {
+      "name": "Rodrick Tai",
+      "occurrences": 2,
+      "clubYears": [
+        "Warrington Wolves 2025",
+        "Warrington Wolves 2024"
+      ],
+      "positions": [
+        "C"
+      ]
+    },
+    {
+      "name": "Tyler Dupree",
+      "occurrences": 2,
+      "clubYears": [
+        "Wigan Warriors 2025",
+        "Wigan Warriors 2024"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Abbas Miski",
+      "occurrences": 2,
+      "clubYears": [
+        "Wigan Warriors 2024",
+        "Wigan Warriors 2023"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Kai Pearce-Paul",
+      "occurrences": 2,
+      "clubYears": [
+        "Wigan Warriors 2023",
+        "Wigan Warriors 2022"
+      ],
+      "positions": [
+        "2R",
+        "C"
+      ]
+    },
+    {
+      "name": "Tristan Powell",
+      "occurrences": 1,
+      "clubYears": [
+        "Huddersfield Giants 2025"
+      ],
+      "positions": [
+        "FR"
+      ]
+    },
+    {
+      "name": "Thomas Burgess",
+      "occurrences": 1,
+      "clubYears": [
+        "Huddersfield Giants 2025"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Kieran Rush",
+      "occurrences": 1,
+      "clubYears": [
+        "Huddersfield Giants 2025"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Elliot Wallis",
+      "occurrences": 1,
+      "clubYears": [
+        "Huddersfield Giants 2024"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Innes Senior",
+      "occurrences": 1,
+      "clubYears": [
+        "Huddersfield Giants 2022"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Danny Levi",
+      "occurrences": 1,
+      "clubYears": [
+        "Huddersfield Giants 2022"
+      ],
+      "positions": [
+        "HK"
+      ]
+    },
+    {
+      "name": "Louis Senior",
+      "occurrences": 1,
+      "clubYears": [
+        "Huddersfield Giants 2021"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Jack Cogger",
+      "occurrences": 1,
+      "clubYears": [
+        "Huddersfield Giants 2021"
+      ],
+      "positions": [
+        "FE"
+      ]
+    },
+    {
+      "name": "Liam Knight",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2025"
+      ],
+      "positions": [
+        "FR"
+      ]
+    },
+    {
+      "name": "Logan Moy",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2024"
+      ],
+      "positions": [
+        "FB"
+      ]
+    },
+    {
+      "name": "Jack Charles",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2024"
+      ],
+      "positions": [
+        "HB"
+      ]
+    },
+    {
+      "name": "Will Gardiner",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2024"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Tex Hoy",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2023"
+      ],
+      "positions": [
+        "FB"
+      ]
+    },
+    {
+      "name": "Jake Clifford",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2023"
+      ],
+      "positions": [
+        "HB"
+      ]
+    },
+    {
+      "name": "Connor Wynne",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2022"
+      ],
+      "positions": [
+        "C"
+      ]
+    },
+    {
+      "name": "Kane Evans",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2022"
+      ],
+      "positions": [
+        "FR"
+      ]
+    },
+    {
+      "name": "Frank Pritchard",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2016"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Wade McKinnon",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2012"
+      ],
+      "positions": [
+        "FB"
+      ]
+    },
+    {
+      "name": "Adam Dykes",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2008"
+      ],
+      "positions": [
+        "HB"
+      ]
+    },
+    {
+      "name": "Hutch Maiava",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2007"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Stephen Kearney",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2005"
+      ],
+      "positions": [
+        "2R"
+      ]
+    },
+    {
+      "name": "Dean Treister",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 2003"
+      ],
+      "positions": [
+        "HK"
+      ]
+    },
+    {
+      "name": "Hitro Okesene",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull FC 1998"
+      ],
+      "positions": [
+        "FR"
+      ]
+    },
+    {
+      "name": "Will Oakes",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull KR 2019"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Kris Keating",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull KR 2014"
+      ],
+      "positions": [
+        "HB"
+      ]
+    },
+    {
+      "name": "Michael Weyman",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull KR 2014"
+      ],
+      "positions": [
+        "FR"
+      ]
+    },
+    {
+      "name": "Neville Costigan",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull KR 2014"
+      ],
+      "positions": [
+        "L"
+      ]
+    },
+    {
+      "name": "Alex Brown",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull KR 2013"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Evarn Tuimavave",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull KR 2013"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Byron Ford",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull KR 2007"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Jonathon Goddard",
+      "occurrences": 1,
+      "clubYears": [
+        "Hull KR 2007"
+      ],
+      "positions": [
+        "C"
+      ]
+    },
+    {
+      "name": "Keenan Palasia",
+      "occurrences": 1,
+      "clubYears": [
+        "Leeds Rhinos 2025"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Paul Momirovski",
+      "occurrences": 1,
+      "clubYears": [
+        "Leeds Rhinos 2024"
+      ],
+      "positions": [
+        "C"
+      ]
+    },
+    {
+      "name": "Corey Johnson",
+      "occurrences": 1,
+      "clubYears": [
+        "Leeds Rhinos 2023"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "James Segeyaro",
+      "occurrences": 1,
+      "clubYears": [
+        "Leeds Rhinos 2016"
+      ],
+      "positions": [
+        "HK"
+      ]
+    },
+    {
+      "name": "Greg Eastwood",
+      "occurrences": 1,
+      "clubYears": [
+        "Leeds Rhinos 2010"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Ben Walker",
+      "occurrences": 1,
+      "clubYears": [
+        "Leeds Rhinos 2002"
+      ],
+      "positions": [
+        "FE"
+      ]
+    },
+    {
+      "name": "Marcus St Hilaire",
+      "occurrences": 1,
+      "clubYears": [
+        "Leeds Rhinos 2001"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Anthony Gibbons",
+      "occurrences": 1,
+      "clubYears": [
+        "Leeds Rhinos 1996"
+      ],
+      "positions": [
+        "FB"
+      ]
+    },
+    {
+      "name": "Jim Fallon",
+      "occurrences": 1,
+      "clubYears": [
+        "Leeds Rhinos 1996"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Carl Hall",
+      "occurrences": 1,
+      "clubYears": [
+        "Leeds Rhinos 1996"
+      ],
+      "positions": [
+        "C"
+      ]
+    },
+    {
+      "name": "Mick Shaw",
+      "occurrences": 1,
+      "clubYears": [
+        "Leeds Rhinos 1996"
+      ],
+      "positions": [
+        "HK"
+      ]
+    },
+    {
+      "name": "Bailey Hodgson",
+      "occurrences": 1,
+      "clubYears": [
+        "Leigh Leopards 2025"
+      ],
+      "positions": [
+        "FB"
+      ]
+    },
+    {
+      "name": "Alec Tuitavake",
+      "occurrences": 1,
+      "clubYears": [
+        "Leigh Leopards 2025"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Gregg McNally",
+      "occurrences": 1,
+      "clubYears": [
+        "Leigh Leopards 2017"
+      ],
+      "positions": [
+        "FB"
+      ]
+    },
+    {
+      "name": "Adam Higson",
+      "occurrences": 1,
+      "clubYears": [
+        "Leigh Leopards 2017"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Jamie Acton",
+      "occurrences": 1,
+      "clubYears": [
+        "Leigh Leopards 2017"
+      ],
+      "positions": [
+        "FR"
+      ]
+    },
+    {
+      "name": "Lachlan Burr",
+      "occurrences": 1,
+      "clubYears": [
+        "Leigh Leopards 2017"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Sam Hopkins",
+      "occurrences": 1,
+      "clubYears": [
+        "Leigh Leopards 2017"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Chad Robinson",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 2009"
+      ],
+      "positions": [
+        "2R"
+      ]
+    },
+    {
+      "name": "Radney Bowker",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 2004"
+      ],
+      "positions": [
+        "FE"
+      ]
+    },
+    {
+      "name": "Andrew King",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 2003"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Bill Peden",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 2003"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Damian Kennedy",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 2003"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Wayne Evans",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 2002"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Frank Napoli",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 2000"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Grant Young",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 1998"
+      ],
+      "positions": [
+        "FR"
+      ]
+    },
+    {
+      "name": "Mark Carroll",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 1998"
+      ],
+      "positions": [
+        "FR"
+      ]
+    },
+    {
+      "name": "Darren Higgins",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 1998"
+      ],
+      "positions": [
+        "2R"
+      ]
+    },
+    {
+      "name": "Damien Chapman",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 1998"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "John Minto",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 1996"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Graham Strutton",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 1996"
+      ],
+      "positions": [
+        "C"
+      ]
+    },
+    {
+      "name": "Kevin Langer",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 1996"
+      ],
+      "positions": [
+        "HB"
+      ]
+    },
+    {
+      "name": "Tony Rea",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 1996"
+      ],
+      "positions": [
+        "HK"
+      ]
+    },
+    {
+      "name": "Gavin Allen",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 1996"
+      ],
+      "positions": [
+        "FR"
+      ]
+    },
+    {
+      "name": "Leo Dynevor",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 1996"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Darryl Pitt",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 1996"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Justin Bryant",
+      "occurrences": 1,
+      "clubYears": [
+        "London Broncos 1996"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Lachlan Walmsley",
+      "occurrences": 1,
+      "clubYears": [
+        "Wakefield Trinity 2025"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Caius Faatili",
+      "occurrences": 1,
+      "clubYears": [
+        "Wakefield Trinity 2025"
+      ],
+      "positions": [
+        "FR"
+      ]
+    },
+    {
+      "name": "Matthew Storton",
+      "occurrences": 1,
+      "clubYears": [
+        "Wakefield Trinity 2025"
+      ],
+      "positions": [
+        "2R"
+      ]
+    },
+    {
+      "name": "Harvey Smith",
+      "occurrences": 1,
+      "clubYears": [
+        "Wakefield Trinity 2025"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Isaiah Vagana",
+      "occurrences": 1,
+      "clubYears": [
+        "Wakefield Trinity 2025"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Lee Kershaw",
+      "occurrences": 1,
+      "clubYears": [
+        "Wakefield Trinity 2023"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Kevin Proctor",
+      "occurrences": 1,
+      "clubYears": [
+        "Wakefield Trinity 2023"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Jake Thewlis",
+      "occurrences": 1,
+      "clubYears": [
+        "Warrington Wolves 2025"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Thomas Mikaele",
+      "occurrences": 1,
+      "clubYears": [
+        "Warrington Wolves 2023"
+      ],
+      "positions": [
+        "FR"
+      ]
+    },
+    {
+      "name": "Connor Wrench",
+      "occurrences": 1,
+      "clubYears": [
+        "Warrington Wolves 2022"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Tom O'Reilly",
+      "occurrences": 1,
+      "clubYears": [
+        "Warrington Wolves 2002"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Adam Doyle",
+      "occurrences": 1,
+      "clubYears": [
+        "Warrington Wolves 1998"
+      ],
+      "positions": [
+        "FE"
+      ]
+    },
+    {
+      "name": "Kris Watson",
+      "occurrences": 1,
+      "clubYears": [
+        "Warrington Wolves 1996"
+      ],
+      "positions": [
+        "HK"
+      ]
+    },
+    {
+      "name": "Paul Cullen",
+      "occurrences": 1,
+      "clubYears": [
+        "Warrington Wolves 1996"
+      ],
+      "positions": [
+        "2R"
+      ]
+    },
+    {
+      "name": "Paul Hulme",
+      "occurrences": 1,
+      "clubYears": [
+        "Warrington Wolves 1996"
+      ],
+      "positions": [
+        "2R"
+      ]
+    },
+    {
+      "name": "Mark Jones",
+      "occurrences": 1,
+      "clubYears": [
+        "Warrington Wolves 1996"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Kurt Haggerty",
+      "occurrences": 1,
+      "clubYears": [
+        "Widnes Vikings 2012"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Tim Holmes",
+      "occurrences": 1,
+      "clubYears": [
+        "Widnes Vikings 2005"
+      ],
+      "positions": [
+        "FB"
+      ]
+    },
+    {
+      "name": "Andrew Emelio",
+      "occurrences": 1,
+      "clubYears": [
+        "Widnes Vikings 2005"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Jon Whittle",
+      "occurrences": 1,
+      "clubYears": [
+        "Widnes Vikings 2005"
+      ],
+      "positions": [
+        "C"
+      ]
+    },
+    {
+      "name": "Owen Craigie",
+      "occurrences": 1,
+      "clubYears": [
+        "Widnes Vikings 2005"
+      ],
+      "positions": [
+        "FE"
+      ]
+    },
+    {
+      "name": "Sala Fa'Alogo",
+      "occurrences": 1,
+      "clubYears": [
+        "Widnes Vikings 2005"
+      ],
+      "positions": [
+        "B"
+      ]
+    },
+    {
+      "name": "Stephen Rowlands",
+      "occurrences": 1,
+      "clubYears": [
+        "Widnes Vikings 2004"
+      ],
+      "positions": [
+        "FB"
+      ]
+    },
+    {
+      "name": "Nicky Royle",
+      "occurrences": 1,
+      "clubYears": [
+        "Widnes Vikings 2004"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Troy Wozniak",
+      "occurrences": 1,
+      "clubYears": [
+        "Widnes Vikings 2004"
+      ],
+      "positions": [
+        "2R"
+      ]
+    },
+    {
+      "name": "Steve Carter",
+      "occurrences": 1,
+      "clubYears": [
+        "Widnes Vikings 2002"
+      ],
+      "positions": [
+        "FE"
+      ]
+    },
+    {
+      "name": "Matthew Johns",
+      "occurrences": 1,
+      "clubYears": [
+        "Wigan Warriors 2001"
+      ],
+      "positions": [
+        "FE"
+      ]
+    },
+    {
+      "name": "Mark Bell",
+      "occurrences": 1,
+      "clubYears": [
+        "Wigan Warriors 1998"
+      ],
+      "positions": [
+        "W"
+      ]
+    },
+    {
+      "name": "Robbie McCormack",
+      "occurrences": 1,
+      "clubYears": [
+        "Wigan Warriors 1998"
+      ],
+      "positions": [
+        "HK"
+      ]
+    },
+    {
+      "name": "Kelvin Skerrett",
+      "occurrences": 1,
+      "clubYears": [
+        "Wigan Warriors 1996"
+      ],
+      "positions": [
+        "B"
+      ]
+    }
+  ]
+}

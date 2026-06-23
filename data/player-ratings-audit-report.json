@@ -1,0 +1,1210 @@
+{
+  "generatedAt": "2026-06-23T07:34:15.182Z",
+  "applied": true,
+  "summary": {
+    "totalPlayersReviewed": 1733,
+    "playersChanged": 242,
+    "playersChangedNote": "242 rating/value/position updates applied in initial review pass; re-run confirmed stable",
+    "protectedByOverride": 96,
+    "elite90PlusCount": 76,
+    "legendDemotions": 0,
+    "eraNeedsReviewCount": 125,
+    "suspiciousDuplicateNames": 0
+  },
+  "ratingDistribution": {
+    "60-69": 0,
+    "70-74": 0,
+    "75-79": 466,
+    "80-84": 802,
+    "85-89": 389,
+    "90-94": 67,
+    "95-99": 9
+  },
+  "changes": [],
+  "protectedByOverride": [
+    "adrian-morley",
+    "andrew-johns",
+    "andy-farrell",
+    "bradford-cur-eribe-doro",
+    "bradford-cur-esan-marsters",
+    "bradford-cur-joe-mellor",
+    "bradford-cur-waqa-blake",
+    "bradford-hist-karl-pryce",
+    "bradford-hist-kieran-gill",
+    "bradford-hist-shontayne-hape",
+    "bradford-leg-robbie-hunter-paul",
+    "castleford-hist-brett-ferres",
+    "castleford-hist-denny-solomona",
+    "castleford-hist-greg-eden",
+    "castleford-hist-jon-wells",
+    "catalans-cur-benjamin-garcia",
+    "catalans-hist-clint-greenshields",
+    "catalans-hist-justin-murphy",
+    "danny-mcguire",
+    "ellery-hanley",
+    "garry-schofield",
+    "huddersfield-hist-aaron-murphy",
+    "huddersfield-hist-jermaine-mcgillvary",
+    "huddersfield-hist-leroy-cudjoe",
+    "huddersfield-hist-tom-holmes",
+    "hull-fc-cur-aidan-sezer",
+    "hull-fc-cur-herman-eseese",
+    "hull-fc-cur-john-asiata",
+    "hull-fc-hist-danny-tickle",
+    "hull-fc-hist-lee-radford",
+    "hull-kr-cur-elliot-minchella",
+    "hull-kr-cur-mikey-lewis",
+    "hull-kr-cur-peta-hiku",
+    "hull-kr-hist-craig-hall",
+    "jamie-jones-buchanan",
+    "jamie-peacock",
+    "jason-robinson",
+    "kevin-sinfield",
+    "leeds-cur-brodie-croft",
+    "leeds-cur-cameron-smith",
+    "leeds-cur-harry-newman",
+    "leeds-hist-chev-walker",
+    "leeds-hist-francis-cummins",
+    "leeds-hist-mark-calderwood",
+    "leeds-hist-matt-diskin",
+    "leeds-hist-richard-mathers",
+    "leigh-cur-david-armstrong",
+    "leigh-cur-edwin-ipape",
+    "leigh-cur-lachlan-lam",
+    "luke-gale",
+    "martin-offiah",
+    "paul-deacon",
+    "paul-newlove",
+    "paul-sculthorpe",
+    "rangi-chase",
+    "rob-burrow",
+    "salford-hist-jodie-broughton",
+    "salford-hist-ken-sio",
+    "sam-burgess",
+    "scott-durea",
+    "sean-long",
+    "st-helens-cur-alex-walmsley",
+    "st-helens-cur-jack-welsby",
+    "st-helens-hist-anthony-sullivan",
+    "st-helens-hist-ben-barba",
+    "st-helens-hist-darren-albert",
+    "st-helens-hist-jordan-turner",
+    "stuart-fielden",
+    "wakefield-cur-jake-trueman",
+    "wakefield-cur-mike-mcmeeken",
+    "wakefield-hist-ben-jeffries",
+    "wakefield-hist-chris-riley",
+    "wakefield-hist-henry-fa-afili",
+    "wakefield-hist-joe-arundel",
+    "wakefield-hist-luke-george",
+    "wakefield-hist-paul-sykes",
+    "wakefield-leg-stefan-ratchford",
+    "warrington-cur-danny-walker",
+    "warrington-cur-george-williams",
+    "warrington-cur-marc-sneyd",
+    "warrington-hist-mickey-higham",
+    "wigan-cur-adam-keighran",
+    "wigan-cur-bevan-french",
+    "wigan-cur-harry-smith",
+    "wigan-cur-jai-field",
+    "wigan-cur-jake-wardle",
+    "wigan-cur-junior-nsemba",
+    "wigan-cur-kaide-ellis",
+    "wigan-cur-luke-thompson",
+    "wigan-hist-garry-connolly",
+    "wigan-hist-joel-tomkins",
+    "wigan-hist-michael-mcilorum",
+    "wigan-hist-paul-johnson",
+    "wigan-hist-sam-tomkins",
+    "wigan-hist-terry-newton",
+    "york-cur-paul-vaughan"
+  ],
+  "elite90Plus": [
+    {
+      "id": "ellery-hanley",
+      "name": "Ellery Hanley",
+      "rating": 97,
+      "category": "legend"
+    },
+    {
+      "id": "garry-schofield",
+      "name": "Garry Schofield",
+      "rating": 97,
+      "category": "legend"
+    },
+    {
+      "id": "paul-sculthorpe",
+      "name": "Paul Sculthorpe",
+      "rating": 96,
+      "category": "legend"
+    },
+    {
+      "id": "andrew-johns",
+      "name": "Andrew Johns",
+      "rating": 96,
+      "category": "legend"
+    },
+    {
+      "id": "jason-robinson",
+      "name": "Jason Robinson",
+      "rating": 96,
+      "category": "legend"
+    },
+    {
+      "id": "sam-burgess",
+      "name": "Sam Burgess",
+      "rating": 95,
+      "category": "legend"
+    },
+    {
+      "id": "kevin-sinfield",
+      "name": "Kevin Sinfield",
+      "rating": 95,
+      "category": "legend"
+    },
+    {
+      "id": "andy-farrell",
+      "name": "Andy Farrell",
+      "rating": 95,
+      "category": "legend"
+    },
+    {
+      "id": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "rating": 95,
+      "category": "legend"
+    },
+    {
+      "id": "martin-offiah",
+      "name": "Martin Offiah",
+      "rating": 94,
+      "category": "legend"
+    },
+    {
+      "id": "wigan-hist-sam-tomkins",
+      "name": "Sam Tomkins",
+      "rating": 94,
+      "category": "legend"
+    },
+    {
+      "id": "wigan-cur-bevan-french",
+      "name": "Bevan French",
+      "rating": 93,
+      "category": "current"
+    },
+    {
+      "id": "jamie-peacock",
+      "name": "Jamie Peacock",
+      "rating": 93,
+      "category": "legend"
+    },
+    {
+      "id": "rob-burrow",
+      "name": "Rob Burrow",
+      "rating": 92,
+      "category": "legend"
+    },
+    {
+      "id": "paul-newlove",
+      "name": "Paul Newlove",
+      "rating": 92,
+      "category": "legend"
+    },
+    {
+      "id": "hull-kr-cur-mikey-lewis",
+      "name": "Mikey Lewis",
+      "rating": 91,
+      "category": "current"
+    },
+    {
+      "id": "lesley-vainikolo",
+      "name": "Lesley Vainikolo",
+      "rating": 91,
+      "category": "historic"
+    },
+    {
+      "id": "leeds-hist-danny-mcguire-2015",
+      "name": "Danny McGuire",
+      "rating": 91,
+      "category": "historic"
+    },
+    {
+      "id": "leeds-leg-kevin-sinfield-2015",
+      "name": "Kevin Sinfield",
+      "rating": 91,
+      "category": "historic"
+    },
+    {
+      "id": "wigan-hist-sean-oloughlin-2008",
+      "name": "Sean O'Loughlin",
+      "rating": 91,
+      "category": "historic"
+    },
+    {
+      "id": "sean-long",
+      "name": "Sean Long",
+      "rating": 91,
+      "category": "legend"
+    },
+    {
+      "id": "danny-mcguire",
+      "name": "Danny McGuire",
+      "rating": 91,
+      "category": "legend"
+    },
+    {
+      "id": "leigh-cur-lachlan-lam",
+      "name": "Lachlan Lam",
+      "rating": 90,
+      "category": "current"
+    },
+    {
+      "id": "wigan-cur-jai-field",
+      "name": "Jai Field",
+      "rating": 90,
+      "category": "current"
+    },
+    {
+      "id": "wigan-cur-jake-wardle",
+      "name": "Jake Wardle",
+      "rating": 90,
+      "category": "current"
+    },
+    {
+      "id": "bradford-hist-shontayne-hape",
+      "name": "Shontayne Hape",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "leon-pryce",
+      "name": "Leon Pryce",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "iestyn-harris",
+      "name": "Iestyn Harris",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "james-graham",
+      "name": "James Graham",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "kris-radlinski",
+      "name": "Kris Radlinski",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "paul-wellens",
+      "name": "Paul Wellens",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "keiron-cunningham",
+      "name": "Keiron Cunningham",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "james-roby",
+      "name": "James Roby",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "jamie-jones-buchanan",
+      "name": "Jamie Jones-Buchanan",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "sean-oloughlin",
+      "name": "Sean O'Loughlin",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "lee-briers",
+      "name": "Lee Briers",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "ben-westwood",
+      "name": "Ben Westwood",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "brett-hodgson",
+      "name": "Brett Hodgson",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "michael-monaghan",
+      "name": "Michael Monaghan",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "joel-monaghan",
+      "name": "Joel Monaghan",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "tommy-martyn",
+      "name": "Tommy Martyn",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "keith-senior",
+      "name": "Keith Senior",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "henry-paul",
+      "name": "Henry Paul",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "tevita-vaikona",
+      "name": "Tevita Vaikona",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "gareth-ellis",
+      "name": "Gareth Ellis",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "richard-horne",
+      "name": "Richard Horne",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "eorl-crabtree",
+      "name": "Eorl Crabtree",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "danny-brough",
+      "name": "Danny Brough",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "kevin-brown",
+      "name": "Kevin Brown",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "barrie-mcdermott",
+      "name": "Barrie McDermott",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "kylie-leuluai",
+      "name": "Kylie Leuluai",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "ali-lauitiiti",
+      "name": "Ali Lauitiiti",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "matt-gidley",
+      "name": "Matt Gidley",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "jamie-lyon",
+      "name": "Jamie Lyon",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "steve-renouf",
+      "name": "Steve Renouf",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "vaaiga-tuigamala",
+      "name": "Va'aiga Tuigamala",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "shaun-edwards",
+      "name": "Shaun Edwards",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "remi-casty",
+      "name": "Remi Casty",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "thomas-bosc",
+      "name": "Thomas Bosc",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "danny-houghton",
+      "name": "Danny Houghton",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "pat-richards",
+      "name": "Pat Richards",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "brian-carney",
+      "name": "Brian Carney",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "andy-lynch",
+      "name": "Andy Lynch",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "scott-durea",
+      "name": "Scott Dureau",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "louie-mccarthy-scarsbrook",
+      "name": "Louie McCarthy-Scarsbrook",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "nick-fozzard",
+      "name": "Nick Fozzard",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "alex-murphy",
+      "name": "Alex Murphy",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "chris-joynt",
+      "name": "Chris Joynt",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "paul-anderson",
+      "name": "Paul Anderson",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "paul-clough",
+      "name": "Paul Clough",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "richard-swain",
+      "name": "Richard Swain",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "leeds-cur-kallum-watkins-2015",
+      "name": "Kallum Watkins",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "leeds-leg-jamie-peacock-2015",
+      "name": "Jamie Peacock",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "wigan-hist-sean-oloughlin-2006",
+      "name": "Sean O'Loughlin",
+      "rating": 90,
+      "category": "historic"
+    },
+    {
+      "id": "adrian-morley",
+      "name": "Adrian Morley",
+      "rating": 90,
+      "category": "legend"
+    },
+    {
+      "id": "stuart-fielden",
+      "name": "Stuart Fielden",
+      "rating": 90,
+      "category": "legend"
+    }
+  ],
+  "legendDemotions": [],
+  "eraNeedsReview": [
+    {
+      "id": "huddersfield-hist-era-tristan-powell",
+      "name": "Tristan Powell",
+      "rating": 75
+    },
+    {
+      "id": "huddersfield-hist-era-thomas-burgess",
+      "name": "Thomas Burgess",
+      "rating": 75
+    },
+    {
+      "id": "huddersfield-hist-era-kieran-rush",
+      "name": "Kieran Rush",
+      "rating": 78
+    },
+    {
+      "id": "huddersfield-hist-era-innes-senior",
+      "name": "Innes Senior",
+      "rating": 80
+    },
+    {
+      "id": "huddersfield-hist-era-danny-levi",
+      "name": "Danny Levi",
+      "rating": 76
+    },
+    {
+      "id": "huddersfield-hist-era-louis-senior",
+      "name": "Louis Senior",
+      "rating": 78
+    },
+    {
+      "id": "huddersfield-hist-era-jack-cogger",
+      "name": "Jack Cogger",
+      "rating": 75
+    },
+    {
+      "id": "huddersfield-hist-era-james-gavet",
+      "name": "James Gavet",
+      "rating": 77
+    },
+    {
+      "id": "hull-fc-hist-era-liam-knight",
+      "name": "Liam Knight",
+      "rating": 80
+    },
+    {
+      "id": "hull-fc-hist-era-jack-ashworth",
+      "name": "Jack Ashworth",
+      "rating": 82
+    },
+    {
+      "id": "hull-fc-hist-era-yusuf-aydin",
+      "name": "Yusuf Aydin",
+      "rating": 80
+    },
+    {
+      "id": "hull-fc-hist-era-brad-fash",
+      "name": "Brad Fash",
+      "rating": 80
+    },
+    {
+      "id": "hull-fc-hist-era-logan-moy",
+      "name": "Logan Moy",
+      "rating": 79
+    },
+    {
+      "id": "hull-fc-hist-era-liam-sutcliffe",
+      "name": "Liam Sutcliffe",
+      "rating": 82
+    },
+    {
+      "id": "hull-fc-hist-era-jack-charles",
+      "name": "Jack Charles",
+      "rating": 80
+    },
+    {
+      "id": "hull-fc-hist-era-will-gardiner",
+      "name": "Will Gardiner",
+      "rating": 78
+    },
+    {
+      "id": "hull-fc-hist-era-joe-cator",
+      "name": "Joe Cator",
+      "rating": 78
+    },
+    {
+      "id": "hull-fc-hist-era-connor-wynne",
+      "name": "Connor Wynne",
+      "rating": 79
+    },
+    {
+      "id": "hull-fc-hist-era-josh-reynolds",
+      "name": "Josh Reynolds",
+      "rating": 77
+    },
+    {
+      "id": "hull-fc-hist-era-kane-evans",
+      "name": "Kane Evans",
+      "rating": 75
+    },
+    {
+      "id": "hull-fc-hist-era-frank-pritchard",
+      "name": "Frank Pritchard",
+      "rating": 75
+    },
+    {
+      "id": "hull-fc-hist-era-wade-mckinnon",
+      "name": "Wade McKinnon",
+      "rating": 75
+    },
+    {
+      "id": "hull-fc-hist-era-adam-dykes",
+      "name": "Adam Dykes",
+      "rating": 75
+    },
+    {
+      "id": "hull-fc-hist-era-hutch-maiava",
+      "name": "Hutch Maiava",
+      "rating": 75
+    },
+    {
+      "id": "hull-fc-hist-era-stephen-kearney",
+      "name": "Stephen Kearney",
+      "rating": 75
+    },
+    {
+      "id": "hull-fc-hist-era-dean-treister",
+      "name": "Dean Treister",
+      "rating": 75
+    },
+    {
+      "id": "hull-fc-hist-era-hitro-okesene",
+      "name": "Hitro Okesene",
+      "rating": 75
+    },
+    {
+      "id": "hull-kr-hist-era-chris-atkin",
+      "name": "Chris Atkin",
+      "rating": 83
+    },
+    {
+      "id": "hull-kr-hist-era-kris-keating",
+      "name": "Kris Keating",
+      "rating": 75
+    },
+    {
+      "id": "hull-kr-hist-era-michael-weyman",
+      "name": "Michael Weyman",
+      "rating": 75
+    },
+    {
+      "id": "hull-kr-hist-era-neville-costigan",
+      "name": "Neville Costigan",
+      "rating": 75
+    },
+    {
+      "id": "hull-kr-hist-era-alex-brown",
+      "name": "Alex Brown",
+      "rating": 75
+    },
+    {
+      "id": "hull-kr-hist-era-evarn-tuimavave",
+      "name": "Evarn Tuimavave",
+      "rating": 75
+    },
+    {
+      "id": "hull-kr-hist-era-byron-ford",
+      "name": "Byron Ford",
+      "rating": 75
+    },
+    {
+      "id": "hull-kr-hist-era-jonathon-goddard",
+      "name": "Jonathon Goddard",
+      "rating": 75
+    },
+    {
+      "id": "leeds-hist-era-ryan-hall",
+      "name": "Ryan Hall",
+      "rating": 86
+    },
+    {
+      "id": "leeds-hist-era-keenan-palasia",
+      "name": "Keenan Palasia",
+      "rating": 80
+    },
+    {
+      "id": "leeds-hist-era-paul-momirovski",
+      "name": "Paul Momirovski",
+      "rating": 75
+    },
+    {
+      "id": "leeds-hist-era-rhyse-martin",
+      "name": "Rhyse Martin",
+      "rating": 80
+    },
+    {
+      "id": "leeds-hist-era-kruise-leeming",
+      "name": "Kruise Leeming",
+      "rating": 85
+    },
+    {
+      "id": "leeds-hist-era-brad-singleton",
+      "name": "Brad Singleton",
+      "rating": 83
+    },
+    {
+      "id": "leeds-hist-era-james-segeyaro",
+      "name": "James Segeyaro",
+      "rating": 75
+    },
+    {
+      "id": "leeds-hist-era-greg-eastwood",
+      "name": "Greg Eastwood",
+      "rating": 75
+    },
+    {
+      "id": "leeds-hist-era-ben-walker",
+      "name": "Ben Walker",
+      "rating": 75
+    },
+    {
+      "id": "leeds-hist-era-anthony-gibbons",
+      "name": "Anthony Gibbons",
+      "rating": 75
+    },
+    {
+      "id": "leeds-hist-era-jim-fallon",
+      "name": "Jim Fallon",
+      "rating": 75
+    },
+    {
+      "id": "leeds-hist-era-carl-hall",
+      "name": "Carl Hall",
+      "rating": 75
+    },
+    {
+      "id": "leeds-hist-era-mick-shaw",
+      "name": "Mick Shaw",
+      "rating": 75
+    },
+    {
+      "id": "leigh-hist-era-bailey-hodgson",
+      "name": "Bailey Hodgson",
+      "rating": 79
+    },
+    {
+      "id": "leigh-hist-era-josh-charnley",
+      "name": "Josh Charnley",
+      "rating": 86
+    },
+    {
+      "id": "leigh-hist-era-matt-davis",
+      "name": "Matt Davis",
+      "rating": 81
+    },
+    {
+      "id": "leigh-hist-era-jack-hughes",
+      "name": "Jack Hughes",
+      "rating": 85
+    },
+    {
+      "id": "leigh-hist-era-gregg-mcnally",
+      "name": "Gregg McNally",
+      "rating": 75
+    },
+    {
+      "id": "leigh-hist-era-adam-higson",
+      "name": "Adam Higson",
+      "rating": 75
+    },
+    {
+      "id": "leigh-hist-era-jamie-acton",
+      "name": "Jamie Acton",
+      "rating": 75
+    },
+    {
+      "id": "leigh-hist-era-lachlan-burr",
+      "name": "Lachlan Burr",
+      "rating": 75
+    },
+    {
+      "id": "leigh-hist-era-sam-hopkins",
+      "name": "Sam Hopkins",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-chad-robinson",
+      "name": "Chad Robinson",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-radney-bowker",
+      "name": "Radney Bowker",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-andrew-king",
+      "name": "Andrew King",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-bill-peden",
+      "name": "Bill Peden",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-damian-kennedy",
+      "name": "Damian Kennedy",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-wayne-evans",
+      "name": "Wayne Evans",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-frank-napoli",
+      "name": "Frank Napoli",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-grant-young",
+      "name": "Grant Young",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-mark-carroll",
+      "name": "Mark Carroll",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-darren-higgins",
+      "name": "Darren Higgins",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-damien-chapman",
+      "name": "Damien Chapman",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-john-minto",
+      "name": "John Minto",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-graham-strutton",
+      "name": "Graham Strutton",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-kevin-langer",
+      "name": "Kevin Langer",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-tony-rea",
+      "name": "Tony Rea",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-gavin-allen",
+      "name": "Gavin Allen",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-leo-dynevor",
+      "name": "Leo Dynevor",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-darryl-pitt",
+      "name": "Darryl Pitt",
+      "rating": 75
+    },
+    {
+      "id": "london-hist-era-justin-bryant",
+      "name": "Justin Bryant",
+      "rating": 75
+    },
+    {
+      "id": "wakefield-hist-era-lachlan-walmsley",
+      "name": "Lachlan Walmsley",
+      "rating": 80
+    },
+    {
+      "id": "wakefield-hist-era-caius-faatili",
+      "name": "Caius Faatili",
+      "rating": 80
+    },
+    {
+      "id": "wakefield-hist-era-harvey-smith",
+      "name": "Harvey Smith",
+      "rating": 80
+    },
+    {
+      "id": "wakefield-hist-era-isaiah-vagana",
+      "name": "Isaiah Vagana",
+      "rating": 80
+    },
+    {
+      "id": "wakefield-hist-era-lee-kershaw",
+      "name": "Lee Kershaw",
+      "rating": 80
+    },
+    {
+      "id": "wakefield-hist-era-kevin-proctor",
+      "name": "Kevin Proctor",
+      "rating": 75
+    },
+    {
+      "id": "warrington-hist-era-tom-o-reilly",
+      "name": "Tom O'Reilly",
+      "rating": 75
+    },
+    {
+      "id": "warrington-hist-era-adam-doyle",
+      "name": "Adam Doyle",
+      "rating": 75
+    },
+    {
+      "id": "warrington-hist-era-kris-watson",
+      "name": "Kris Watson",
+      "rating": 75
+    },
+    {
+      "id": "warrington-hist-era-paul-cullen",
+      "name": "Paul Cullen",
+      "rating": 75
+    },
+    {
+      "id": "warrington-hist-era-paul-hulme",
+      "name": "Paul Hulme",
+      "rating": 75
+    },
+    {
+      "id": "warrington-hist-era-mark-jones",
+      "name": "Mark Jones",
+      "rating": 75
+    },
+    {
+      "id": "widnes-hist-era-kurt-haggerty",
+      "name": "Kurt Haggerty",
+      "rating": 75
+    },
+    {
+      "id": "widnes-hist-era-tim-holmes",
+      "name": "Tim Holmes",
+      "rating": 75
+    },
+    {
+      "id": "widnes-hist-era-andrew-emelio",
+      "name": "Andrew Emelio",
+      "rating": 75
+    },
+    {
+      "id": "widnes-hist-era-jon-whittle",
+      "name": "Jon Whittle",
+      "rating": 75
+    },
+    {
+      "id": "widnes-hist-era-owen-craigie",
+      "name": "Owen Craigie",
+      "rating": 75
+    },
+    {
+      "id": "widnes-hist-era-sala-fa-alogo",
+      "name": "Sala Fa'Alogo",
+      "rating": 75
+    },
+    {
+      "id": "widnes-hist-era-stephen-rowlands",
+      "name": "Stephen Rowlands",
+      "rating": 75
+    },
+    {
+      "id": "widnes-hist-era-nicky-royle",
+      "name": "Nicky Royle",
+      "rating": 75
+    },
+    {
+      "id": "widnes-hist-era-troy-wozniak",
+      "name": "Troy Wozniak",
+      "rating": 75
+    },
+    {
+      "id": "widnes-hist-era-steve-carter",
+      "name": "Steve Carter",
+      "rating": 75
+    },
+    {
+      "id": "wigan-hist-era-liam-byrne",
+      "name": "Liam Byrne",
+      "rating": 80
+    },
+    {
+      "id": "wigan-hist-era-tyler-dupree",
+      "name": "Tyler Dupree",
+      "rating": 82
+    },
+    {
+      "id": "wigan-hist-era-abbas-miski",
+      "name": "Abbas Miski",
+      "rating": 83
+    },
+    {
+      "id": "wigan-hist-era-matthew-johns",
+      "name": "Matthew Johns",
+      "rating": 75
+    },
+    {
+      "id": "wigan-hist-era-mark-bell",
+      "name": "Mark Bell",
+      "rating": 75
+    },
+    {
+      "id": "wigan-hist-era-robbie-mccormack",
+      "name": "Robbie McCormack",
+      "rating": 75
+    },
+    {
+      "id": "wigan-hist-era-kelvin-skerrett",
+      "name": "Kelvin Skerrett",
+      "rating": 75
+    },
+    {
+      "id": "huddersfield-hist-era-elliot-wallis",
+      "name": "Elliot Wallis",
+      "rating": 75
+    },
+    {
+      "id": "huddersfield-hist-era-oliver-russell",
+      "name": "Oliver Russell",
+      "rating": 77
+    },
+    {
+      "id": "hull-fc-hist-era-morgan-smith",
+      "name": "Morgan Smith",
+      "rating": 77
+    },
+    {
+      "id": "hull-fc-hist-era-tex-hoy",
+      "name": "Tex Hoy",
+      "rating": 80
+    },
+    {
+      "id": "hull-fc-hist-era-jacob-trueman",
+      "name": "Jacob Trueman",
+      "rating": 77
+    },
+    {
+      "id": "hull-fc-hist-era-jake-clifford",
+      "name": "Jake Clifford",
+      "rating": 80
+    },
+    {
+      "id": "hull-fc-hist-era-joe-lovodua",
+      "name": "Joe Lovodua",
+      "rating": 77
+    },
+    {
+      "id": "hull-kr-hist-era-will-oakes",
+      "name": "Will Oakes",
+      "rating": 75
+    },
+    {
+      "id": "leeds-hist-era-corey-johnson",
+      "name": "Corey Johnson",
+      "rating": 75
+    },
+    {
+      "id": "leeds-hist-era-jack-walker",
+      "name": "Jack Walker",
+      "rating": 77
+    },
+    {
+      "id": "leigh-hist-era-alec-tuitavake",
+      "name": "Alec Tuitavake",
+      "rating": 80
+    },
+    {
+      "id": "wakefield-hist-era-matthew-storton",
+      "name": "Matthew Storton",
+      "rating": 75
+    },
+    {
+      "id": "warrington-hist-era-rodrick-tai",
+      "name": "Rodrick Tai",
+      "rating": 87
+    },
+    {
+      "id": "warrington-hist-era-jake-thewlis",
+      "name": "Jake Thewlis",
+      "rating": 75
+    },
+    {
+      "id": "warrington-hist-era-matthew-ashton",
+      "name": "Matthew Ashton",
+      "rating": 77
+    },
+    {
+      "id": "warrington-hist-era-thomas-mikaele",
+      "name": "Thomas Mikaele",
+      "rating": 75
+    },
+    {
+      "id": "warrington-hist-era-connor-wrench",
+      "name": "Connor Wrench",
+      "rating": 80
+    },
+    {
+      "id": "wigan-hist-era-bradley-o-neill",
+      "name": "Bradley O'Neill",
+      "rating": 77
+    },
+    {
+      "id": "wigan-hist-era-kai-pearce-paul",
+      "name": "Kai Pearce-Paul",
+      "rating": 77
+    },
+    {
+      "id": "wigan-hist-era-morgan-smithies",
+      "name": "Morgan Smithies",
+      "rating": 77
+    }
+  ],
+  "suspiciousDuplicates": [],
+  "verified17UiCheck": "No Verified 17 UI labels in src/ — era-starting-17 data is internal only"
+}

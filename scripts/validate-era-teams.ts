@@ -11,6 +11,7 @@ import { getSquadValue } from "../src/lib/positions";
 import {
   ERA_CHALLENGE_CLUBS,
   ERA_26_YEAR,
+  ERA_HISTORIC_ROSTER_SIZE,
   buildEraSquadFromRoster,
   buildEraTeamForYear,
   formatEraDisplayName,
@@ -21,9 +22,14 @@ import {
   FULL_ERA_SQUAD_SIZE,
 } from "../src/lib/players/era-teams";
 import {
-  getEraWikipediaSquads,
-  getEraWikipediaYearsForClub,
-} from "../src/lib/players/era-wikipedia-squads";
+  ERA_BENCH_FROM_STARTING_17,
+  ERA_STARTING_17_SIZE,
+  ERA_XIII_FROM_STARTING_17,
+  getEraStarting17Entries,
+  getEraStarting17YearsForClub,
+  hasCompleteEraStarting17Squad,
+  resolveEraStarting17Squad,
+} from "../src/lib/players/era-starting-17s";
 import { getCurrentCalendarYear } from "../src/lib/players/team-year-rosters";
 import { getPlayerById } from "../src/lib/players";
 import type { Position } from "../src/lib/types";
@@ -41,69 +47,131 @@ interface EraTeamIssue {
   message: string;
 }
 
-function auditRawSquads(): EraTeamIssue[] {
+function auditEraStarting17s(): EraTeamIssue[] {
   const issues: EraTeamIssue[] = [];
   const currentYear = getCurrentCalendarYear();
-  const squads = getEraWikipediaSquads();
+  const entries = getEraStarting17Entries();
   const seenClubYear = new Set<string>();
 
-  for (const [club, years] of Object.entries(squads)) {
-    for (const [year, entry] of Object.entries(years)) {
-      const key = `${club}|${year}`;
-      if (seenClubYear.has(key)) {
+  for (const entry of entries) {
+    const year = String(entry.year);
+    const { club } = entry;
+    const key = `${club}|${year}`;
+
+    if (seenClubYear.has(key)) {
+      issues.push({
+        club,
+        year,
+        severity: "error",
+        code: "DUPLICATE_CLUB_YEAR",
+        message: "Duplicate club-year record in era-starting-17s.json",
+      });
+    }
+    seenClubYear.add(key);
+
+    if (entry.year > currentYear) {
+      issues.push({
+        club,
+        year,
+        severity: "warning",
+        code: "FUTURE_YEAR",
+        message: `Year ${year} is in the future (filtered at runtime)`,
+      });
+    }
+
+    const squadSize = entry.squad?.length ?? 0;
+    if (squadSize !== ERA_STARTING_17_SIZE) {
+      issues.push({
+        club,
+        year,
+        severity: "error",
+        code: "INVALID_ROSTER_SIZE",
+        message: `Squad has ${squadSize}/${ERA_STARTING_17_SIZE} players`,
+      });
+      continue;
+    }
+
+    const numbers = entry.squad.map((m) => m.number).sort((a, b) => a - b);
+    for (let n = 1; n <= ERA_STARTING_17_SIZE; n++) {
+      if (numbers[n - 1] !== n) {
         issues.push({
           club,
           year,
           severity: "error",
-          code: "DUPLICATE_CLUB_YEAR",
-          message: "Duplicate club-year record in era-wikipedia-squads.json",
+          code: "MISSING_SQUAD_NUMBER",
+          message: `Missing jersey number ${n} in starting 17`,
         });
       }
-      seenClubYear.add(key);
+    }
 
-      if (Number(year) > currentYear) {
-        issues.push({
-          club,
-          year,
-          severity: "warning",
-          code: "FUTURE_YEAR",
-          message: `Year ${year} is in the future (filtered at runtime)`,
-        });
-      }
+    if (!hasCompleteEraStarting17Squad(entry)) {
+      issues.push({
+        club,
+        year,
+        severity: "error",
+        code: "INCOMPLETE_STARTING_17",
+        message: "Squad is not a complete verified 1–17 roster",
+      });
+    }
 
-      const playerCount = entry?.playerIds?.length ?? 0;
-      if (playerCount !== FULL_ERA_SQUAD_SIZE) {
+    for (const member of entry.squad) {
+      if (!member.name?.trim()) {
         issues.push({
           club,
           year,
           severity: "error",
-          code: "INVALID_ROSTER_SIZE",
-          message: `Roster has ${playerCount}/${FULL_ERA_SQUAD_SIZE} players`,
+          code: "MISSING_PLAYER_NAME",
+          message: `Jersey ${member.number} has no player name`,
         });
       }
+      if (/NOT_FOUND|INCOMPLETE|UNRESOLVED/i.test(member.name)) {
+        issues.push({
+          club,
+          year,
+          severity: "error",
+          code: "UNRESOLVED_PLAYER",
+          message: `Jersey ${member.number} is unresolved: ${member.name}`,
+        });
+      }
+    }
 
-      if (playerCount === FULL_ERA_SQUAD_SIZE) {
-        for (const id of entry.playerIds) {
-          if (!getPlayerById(id)) {
-            issues.push({
-              club,
-              year,
-              severity: "error",
-              code: "MISSING_PLAYER",
-              message: `Player ID not found: ${id}`,
-            });
-          }
-        }
+    const resolved = resolveEraStarting17Squad(club, year);
+    if (!resolved) continue;
 
-        if (entry.positions.length !== FULL_ERA_SQUAD_SIZE) {
-          issues.push({
-            club,
-            year,
-            severity: "error",
-            code: "INVALID_POSITIONS",
-            message: `Position list has ${entry.positions.length}/${FULL_ERA_SQUAD_SIZE} entries`,
-          });
-        }
+    if (resolved.playerIds.length !== ERA_STARTING_17_SIZE) {
+      issues.push({
+        club,
+        year,
+        severity: "error",
+        code: "UNRESOLVED_PLAYERS",
+        message: `Only ${resolved.playerIds.length}/${ERA_STARTING_17_SIZE} players resolved (${resolved.missingNames.join(", ")})`,
+      });
+    }
+
+    const uniqueIds = new Set(resolved.playerIds);
+    if (
+      uniqueIds.size !== resolved.playerIds.length &&
+      uniqueIds.size < ERA_STARTING_17_SIZE - 1
+    ) {
+      issues.push({
+        club,
+        year,
+        severity: "error",
+        code: "DUPLICATE_PLAYER_ID",
+        message: "Excessive duplicate player IDs in resolved roster",
+      });
+    }
+
+    for (const id of resolved.playerIds) {
+      const player = getPlayerById(id);
+      if (!player) {
+        issues.push({
+          club,
+          year,
+          severity: "error",
+          code: "MISSING_PLAYER_ID",
+          message: `Resolved player ID not found: ${id}`,
+        });
       }
     }
   }
@@ -121,17 +189,47 @@ function auditBuiltTeams(): {
   const currentYear = getCurrentCalendarYear();
 
   for (const club of ERA_CHALLENGE_CLUBS) {
-    const wikiYears = getEraWikipediaYearsForClub(club);
-    for (const year of wikiYears) {
+    const starting17Years = getEraStarting17YearsForClub(club);
+    for (const year of starting17Years) {
       const built = buildEraTeamForYear(club, year);
       if (!built) {
         skipped.push({ club, year });
         issues.push({
           club,
           year,
-          severity: "warning",
+          severity: "error",
           code: "BUILD_FAILED",
-          message: "Wikipedia squad exists but buildEraTeamForYear returned null",
+          message:
+            "Verified starting 17 exists but buildEraTeamForYear returned null",
+        });
+        continue;
+      }
+
+      if (built.playerIds.length !== ERA_HISTORIC_ROSTER_SIZE) {
+        issues.push({
+          club,
+          year,
+          severity: "error",
+          code: "HISTORIC_ROSTER_SIZE",
+          message: `Historic roster has ${built.playerIds.length}/${ERA_HISTORIC_ROSTER_SIZE} players`,
+        });
+      }
+      if (built.xiiiPlayerIds.length !== ERA_XIII_FROM_STARTING_17) {
+        issues.push({
+          club,
+          year,
+          severity: "error",
+          code: "XIII_SIZE",
+          message: `XIII has ${built.xiiiPlayerIds.length}/${ERA_XIII_FROM_STARTING_17} players`,
+        });
+      }
+      if (built.benchPlayerIds.length !== ERA_BENCH_FROM_STARTING_17) {
+        issues.push({
+          club,
+          year,
+          severity: "error",
+          code: "BENCH_SIZE",
+          message: `Bench has ${built.benchPlayerIds.length}/${ERA_BENCH_FROM_STARTING_17} players`,
         });
       }
     }
@@ -190,18 +288,62 @@ function auditBuiltTeams(): {
       });
     }
 
-    if (team.playerIds.length < MIN_ERA_ROSTER_PLAYERS) {
+    const minRoster = team.category === "historic" ? ERA_HISTORIC_ROSTER_SIZE : MIN_ERA_ROSTER_PLAYERS;
+    if (team.playerIds.length < minRoster) {
       issues.push({
         club: team.clubName,
         year: team.year,
         severity: "error",
         code: "ROSTER_TOO_SMALL",
-        message: `Only ${team.playerIds.length} players`,
+        message: `Only ${team.playerIds.length} players (need ${minRoster})`,
       });
     }
 
+    const uniqueIds = new Set(team.playerIds);
+    if (
+      team.category === "historic" &&
+      uniqueIds.size !== team.playerIds.length &&
+      uniqueIds.size < ERA_HISTORIC_ROSTER_SIZE - 1
+    ) {
+      issues.push({
+        club: team.clubName,
+        year: team.year,
+        severity: "error",
+        code: "DUPLICATE_PLAYER_ID",
+        message: "Excessive duplicate player IDs in built era team",
+      });
+    } else if (
+      team.category !== "historic" &&
+      uniqueIds.size !== team.playerIds.length
+    ) {
+      issues.push({
+        club: team.clubName,
+        year: team.year,
+        severity: "error",
+        code: "DUPLICATE_PLAYER_ID",
+        message: "Duplicate player IDs in built era team",
+      });
+    }
+
+    for (const id of team.playerIds) {
+      const player = getPlayerById(id);
+      if (!player) {
+        issues.push({
+          club: team.clubName,
+          year: team.year,
+          severity: "error",
+          code: "MISSING_PLAYER_ID",
+          message: `Player ID not found: ${id}`,
+        });
+      }
+    }
+
+    const matchIds =
+      team.xiiiPlayerIds.length > 0
+        ? team.xiiiPlayerIds
+        : team.playerIds.slice(0, FULL_ERA_SQUAD_SIZE);
     const squad = buildEraSquadFromRoster(
-      team.playerIds,
+      matchIds,
       team.slotPositions.length ? (team.slotPositions as Position[]) : undefined,
       getEraSquadYear(team)
     );
@@ -263,7 +405,7 @@ function auditBuiltTeams(): {
 }
 
 function main(): void {
-  const rawIssues = auditRawSquads();
+  const rawIssues = auditEraStarting17s();
   const { issues: builtIssues, validTeams, skipped } = auditBuiltTeams();
   const allIssues = [...rawIssues, ...builtIssues];
 
@@ -271,12 +413,16 @@ function main(): void {
   const warnings = allIssues.filter((i) => i.severity === "warning");
 
   const clubsRepresented = new Set(validTeams.map((t) => t.clubName));
+  const historicTeams = validTeams.filter((t) => t.category === "historic");
+  const era26Teams = validTeams.filter((t) => t.category === "26");
   const onePerClubReady = clubsRepresented.size >= 14;
 
   const report = {
     generatedAt: new Date().toISOString(),
     summary: {
       validTeams: validTeams.length,
+      historicTeams: historicTeams.length,
+      era26Teams: era26Teams.length,
       clubsRepresented: clubsRepresented.size,
       onePerClubReady,
       skippedBuilds: skipped.length,
@@ -289,6 +435,7 @@ function main(): void {
       clubName: t.clubName,
       year: t.year,
       category: t.category,
+      rosterSize: t.playerIds.length,
       teamRating: t.teamRating,
       teamValue: t.teamValue,
       tier: t.tier,
@@ -301,6 +448,8 @@ function main(): void {
 
   console.log("🏉 Era Teams Validation\n");
   console.log(`Valid teams: ${validTeams.length}`);
+  console.log(`Historic teams: ${historicTeams.length}`);
+  console.log(`2026 teams: ${era26Teams.length}`);
   console.log(`Clubs represented: ${clubsRepresented.size}`);
   console.log(`One-per-club ready (≥14 clubs): ${onePerClubReady ? "yes" : "no"}`);
   console.log(`Skipped builds: ${skipped.length}`);

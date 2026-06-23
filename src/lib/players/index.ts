@@ -76,6 +76,10 @@ export const CURRENT_PLAYERS = registry.current;
 export const HISTORIC_PLAYERS = registry.historic;
 export const LEGEND_PLAYERS = registry.legends;
 
+export function getAllDatabasePlayers(): Player[] {
+  return [...registry.byId.values()];
+}
+
 export function getPlayerById(id: string): Player | undefined {
   return registry.byId.get(id);
 }

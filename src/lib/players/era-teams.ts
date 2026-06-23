@@ -15,16 +15,19 @@ import {
   signPlayerToSlot,
 } from "../positions";
 import {
-  getEraWikipediaSquadPlayerIds,
-  getEraWikipediaSquadPositions,
-  getEraWikipediaYearsForClub,
-  hasEraWikipediaSquad,
-} from "./era-wikipedia-squads";
+  ERA_BENCH_FROM_STARTING_17,
+  ERA_STARTING_17_SIZE,
+  ERA_XIII_FROM_STARTING_17,
+  getEraStarting17YearsForClub,
+  hasEraStarting17Squad,
+  resolveEraStarting17Squad,
+} from "./era-starting-17s";
 import type { BracketMatch } from "../game/challenge-cup-bracket";
 import { getCurrentCalendarYear } from "./team-year-rosters";
 
 export const MIN_ERA_ROSTER_PLAYERS = 13;
 export const FULL_ERA_SQUAD_SIZE = 13;
+export const ERA_HISTORIC_ROSTER_SIZE = ERA_STARTING_17_SIZE;
 export const ERA_26_YEAR = "2026";
 
 export type EraTeamCategory = "26" | "historic";
@@ -58,7 +61,12 @@ export interface EraTeam {
   year: string;
   displayName: string;
   category: EraTeamCategory;
+  /** Full roster — 17 for historic era squads. */
   playerIds: string[];
+  /** Starting XIII player IDs (jerseys 1–13). */
+  xiiiPlayerIds: string[];
+  /** Bench player IDs (jerseys 14–17). */
+  benchPlayerIds: string[];
   slotPositions: Position[];
   teamRating: number;
   teamValue: number;
@@ -180,12 +188,9 @@ export function getEra26Clubs(): string[] {
 
 export function getEraHistoricYearsForClub(clubName: string): string[] {
   const currentYear = getCurrentCalendarYear();
-  return getEraWikipediaYearsForClub(clubName)
-    .filter((year) => Number(year) <= currentYear)
-    .filter((year) => {
-      const team = buildEraHistoricTeam(clubName, year);
-      return team !== null;
-    });
+  return getEraStarting17YearsForClub(clubName).filter(
+    (year) => Number(year) <= currentYear
+  );
 }
 
 export function getEraClubsWithTeams(): string[] {
@@ -245,7 +250,7 @@ function canBuildEra26Team(clubName: string): boolean {
 }
 
 export function getEraRosterPlayerIds(club: string, year: string): string[] {
-  return getEraWikipediaSquadPlayerIds(club, year) ?? [];
+  return resolveEraStarting17Squad(club, year)?.playerIds ?? [];
 }
 
 const eraTeamByDisplayName = new Map<string, EraTeam>();
@@ -274,7 +279,11 @@ export function getEraTeamByDisplayName(
 /** Era team XIII with run-context club stamped on each player. */
 export function getEraTeamMatchSquad(eraTeam: EraTeam): Player[] {
   const eraYear = getEraSquadYear(eraTeam);
-  return eraTeam.playerIds
+  const matchIds =
+    eraTeam.xiiiPlayerIds.length > 0
+      ? eraTeam.xiiiPlayerIds
+      : eraTeam.playerIds.slice(0, FULL_ERA_SQUAD_SIZE);
+  return matchIds
     .map((id) => getPlayerById(id))
     .filter((player): player is Player => player !== undefined)
     .map((player) =>
@@ -364,13 +373,33 @@ function expectedEraDisplayName(clubName: string, year: string): string {
 function validateEraTeam(
   clubName: string,
   year: string,
+  category: EraTeamCategory,
   playerIds: string[],
+  xiiiPlayerIds: string[],
+  benchPlayerIds: string[],
   squad: SquadSlot[],
   teamRating: number,
   teamValue: number,
   displayName: string
 ): string | null {
-  if (playerIds.length < MIN_ERA_ROSTER_PLAYERS) {
+  if (category === "historic") {
+    if (playerIds.length !== ERA_HISTORIC_ROSTER_SIZE) {
+      return `roster has ${playerIds.length}/${ERA_HISTORIC_ROSTER_SIZE} players`;
+    }
+    if (xiiiPlayerIds.length !== ERA_XIII_FROM_STARTING_17) {
+      return `XIII has ${xiiiPlayerIds.length}/${ERA_XIII_FROM_STARTING_17} players`;
+    }
+    if (benchPlayerIds.length !== ERA_BENCH_FROM_STARTING_17) {
+      return `bench has ${benchPlayerIds.length}/${ERA_BENCH_FROM_STARTING_17} players`;
+    }
+    const unique = new Set(playerIds);
+    if (
+      unique.size !== playerIds.length &&
+      unique.size < ERA_HISTORIC_ROSTER_SIZE - 1
+    ) {
+      return "excessive duplicate player IDs in roster";
+    }
+  } else if (playerIds.length < MIN_ERA_ROSTER_PLAYERS) {
     return `roster has ${playerIds.length}/${MIN_ERA_ROSTER_PLAYERS} players`;
   }
 
@@ -412,22 +441,48 @@ function buildEraTeamInternal(
   year: string,
   category: EraTeamCategory,
   playerIds: string[],
+  xiiiPlayerIds: string[],
+  benchPlayerIds: string[],
   slotPositions: Position[] | undefined,
   squadEraYear: number | undefined
 ): EraTeam | null {
   const displayName = expectedEraDisplayName(clubName, year);
+
+  const historicXiiiIds =
+    xiiiPlayerIds.length > 0
+      ? xiiiPlayerIds
+      : playerIds.slice(0, FULL_ERA_SQUAD_SIZE);
+  const xiiiPositions =
+    slotPositions && slotPositions.length >= FULL_ERA_SQUAD_SIZE
+      ? slotPositions.slice(0, FULL_ERA_SQUAD_SIZE)
+      : slotPositions;
+
   const squad = buildEraSquadFromRoster(
-    playerIds,
-    slotPositions,
+    category === "historic" ? historicXiiiIds : playerIds,
+    category === "historic" ? xiiiPositions : undefined,
     squadEraYear
   );
   const teamRating = getAverageSquadRating(squad);
   const teamValue = getSquadValue(squad);
 
+  const resolvedXiiiIds =
+    category === "historic"
+      ? historicXiiiIds
+      : squad
+          .filter((slot) => slot.player)
+          .map((slot) => slot.player!.id);
+  const resolvedBenchIds =
+    category === "historic"
+      ? benchPlayerIds
+      : playerIds.filter((id) => !resolvedXiiiIds.includes(id)).slice(0, ERA_BENCH_FROM_STARTING_17);
+
   const validationError = validateEraTeam(
     clubName,
     year,
+    category,
     playerIds,
+    resolvedXiiiIds,
+    resolvedBenchIds,
     squad,
     teamRating,
     teamValue,
@@ -452,7 +507,12 @@ function buildEraTeamInternal(
     displayName,
     category,
     playerIds,
-    slotPositions: slotPositions ?? [],
+    xiiiPlayerIds: resolvedXiiiIds,
+    benchPlayerIds: resolvedBenchIds,
+    slotPositions:
+      category === "historic"
+        ? (xiiiPositions ?? [])
+        : filled.map((slot) => slot.position),
     teamRating,
     teamValue,
     tier: getTeamTier(teamRating),
@@ -480,6 +540,8 @@ export function buildEra26Team(clubName: string): EraTeam | null {
     ERA_26_YEAR,
     "26",
     playerIds,
+    [],
+    [],
     undefined,
     undefined
   );
@@ -489,20 +551,28 @@ export function buildEraHistoricTeam(
   clubName: string,
   year: string
 ): EraTeam | null {
-  if (!hasEraWikipediaSquad(clubName, year)) {
+  if (!hasEraStarting17Squad(clubName, year)) {
     return null;
   }
 
-  const playerIds = getEraRosterPlayerIds(clubName, year);
-  const slotPositions =
-    getEraWikipediaSquadPositions(clubName, year) ?? undefined;
+  const resolved = resolveEraStarting17Squad(clubName, year);
+  if (
+    !resolved ||
+    resolved.playerIds.length !== ERA_HISTORIC_ROSTER_SIZE ||
+    resolved.xiiiPlayerIds.length !== ERA_XIII_FROM_STARTING_17 ||
+    resolved.benchPlayerIds.length !== ERA_BENCH_FROM_STARTING_17
+  ) {
+    return null;
+  }
 
   return buildEraTeamInternal(
     clubName,
     year,
     "historic",
-    playerIds,
-    slotPositions,
+    resolved.playerIds,
+    resolved.xiiiPlayerIds,
+    resolved.benchPlayerIds,
+    resolved.slotPositions,
     Number(year)
   );
 }

@@ -25,6 +25,8 @@
     "honours:apply": "tsx scripts/apply-honour-achievements.ts",
     "golden-boot:apply": "tsx scripts/apply-golden-boot-achievements.ts",
     "build:era-wikipedia-squads": "tsx scripts/build-era-wikipedia-squads.ts",
+    "build:era-starting-17s": "tsx scripts/build-era-starting-17s.ts",
+    "apply:era-starting-17-players": "tsx scripts/apply-era-starting-17-players.ts",
     "build:team-year-rosters": "tsx scripts/generate-team-year-rosters.ts",
     "apply:2026-squads": "tsx scripts/apply-2026-squads.ts",
     "validate:team-years": "tsx scripts/validate-team-years.ts",
@@ -46,6 +48,8 @@
     "validate:values": "tsx scripts/audit-player-values.ts",
     "audit:ratings": "tsx scripts/audit-player-ratings-and-year-cards.ts --apply",
     "audit:ratings:report": "tsx scripts/audit-player-ratings-and-year-cards.ts",
+    "review:player-ratings": "tsx scripts/review-player-ratings.ts",
+    "review:player-ratings:apply": "tsx scripts/review-player-ratings.ts --apply",
     "audit:legends": "tsx scripts/audit-legend-tier.ts --apply",
     "audit:legends:report": "tsx scripts/audit-legend-tier.ts",
     "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts"
