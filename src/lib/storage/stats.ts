@@ -11,11 +11,12 @@ import {
 
 import { computeClubStats, mergeClubStats } from "../stats-helpers";
 
-import type { GameDifficulty, UserStatsData } from "../types";
+import type { GameDifficulty, ModeVariant, UserStatsData } from "../types";
 
 import { isLoggedIn } from "../auth-session";
 
-import { STORAGE_KEYS } from "./keys";
+import { STORAGE_KEYS, STATS_SCHEMA_VERSION } from "./keys";
+import { normalizeModeVariant } from "../mode-variant";
 
 
 
@@ -182,6 +183,9 @@ interface StoredStats {
 
   eraCup: UserStatsData;
 
+  /** Normal Mode Era variant — separate from current `normal` bucket. */
+  eraNormal: UserStatsData;
+
 }
 
 
@@ -266,6 +270,16 @@ export function mergeCloudStatsWithLocal(
 
     ),
 
+    eraNormal: pickMoreActiveBucket(
+
+      cloud.eraNormal,
+
+      local.eraNormal,
+
+      "totalSeasonsSimulated"
+
+    ),
+
   };
 
 }
@@ -280,7 +294,9 @@ export function resolveStatsBucket(
 
   mode: import("../types").GameMode,
 
-  difficulty: GameDifficulty
+  difficulty: GameDifficulty,
+
+  modeVariant: ModeVariant = "current"
 
 ): StatsBucket {
 
@@ -299,6 +315,12 @@ export function resolveStatsBucket(
   if (mode === "ERA_CHALLENGE_CUP") {
 
     return "eraCup";
+
+  }
+
+  if (mode === "CLASSIC" && normalizeModeVariant(modeVariant) === "era") {
+
+    return "eraNormal";
 
   }
 
@@ -393,111 +415,74 @@ export function migrateUserStats(raw: Partial<UserStatsData>): UserStatsData {
 
 
 
+function emptyStoredStats(): StoredStats {
+  return {
+    normal: { ...EMPTY_STATS },
+    hard: { ...EMPTY_STATS },
+    draftNormal: { ...EMPTY_STATS },
+    draftHard: { ...EMPTY_STATS },
+    fantasy: { ...EMPTY_STATS },
+    eraCup: { ...EMPTY_STATS },
+    eraNormal: { ...EMPTY_STATS },
+  };
+}
+
+function hydrateStoredStats(raw: Partial<StoredStats>): StoredStats {
+  return {
+    normal: migrateUserStats(raw.normal ?? {}),
+    hard: migrateUserStats(raw.hard ?? {}),
+    draftNormal: migrateUserStats(raw.draftNormal ?? {}),
+    draftHard: migrateUserStats(raw.draftHard ?? {}),
+    fantasy: migrateUserStats(raw.fantasy ?? {}),
+    eraCup: migrateUserStats(raw.eraCup ?? {}),
+    eraNormal: migrateUserStats(raw.eraNormal ?? {}),
+  };
+}
+
+function ensureStatsSchemaVersion(): void {
+  if (typeof window === "undefined") return;
+  const version = Number.parseInt(
+    localStorage.getItem(STORAGE_KEYS.statsSchemaVersion) ?? "1",
+    10
+  );
+  if (version >= STATS_SCHEMA_VERSION) return;
+  // Legacy `normal` bucket remains Current Mode; eraNormal starts empty.
+  localStorage.setItem(
+    STORAGE_KEYS.statsSchemaVersion,
+    String(STATS_SCHEMA_VERSION)
+  );
+}
+
 function loadStoredStats(): StoredStats {
 
   if (typeof window === "undefined") {
-
-    return {
-
-      normal: { ...EMPTY_STATS },
-
-      hard: { ...EMPTY_STATS },
-
-      draftNormal: { ...EMPTY_STATS },
-
-      draftHard: { ...EMPTY_STATS },
-
-      fantasy: { ...EMPTY_STATS },
-
-      eraCup: { ...EMPTY_STATS },
-
-    };
-
+    return emptyStoredStats();
   }
+
+  ensureStatsSchemaVersion();
 
   try {
 
     const raw = localStorage.getItem(STORAGE_KEYS.stats);
 
     if (!raw) {
-
-      return {
-
-        normal: { ...EMPTY_STATS },
-
-        hard: { ...EMPTY_STATS },
-
-      draftNormal: { ...EMPTY_STATS },
-
-      draftHard: { ...EMPTY_STATS },
-
-      fantasy: { ...EMPTY_STATS },
-
-      eraCup: { ...EMPTY_STATS },
-
-    };
-
+      return emptyStoredStats();
     }
 
     const parsed = JSON.parse(raw) as Partial<StoredStats> & Partial<UserStatsData>;
 
-
-
     if (parsed.normal || parsed.hard) {
-
-      return {
-
-        normal: migrateUserStats(parsed.normal ?? {}),
-
-        hard: migrateUserStats(parsed.hard ?? {}),
-
-        draftNormal: migrateUserStats(parsed.draftNormal ?? {}),
-
-        draftHard: migrateUserStats(parsed.draftHard ?? {}),
-
-        fantasy: migrateUserStats(parsed.fantasy ?? {}),
-
-        eraCup: migrateUserStats(parsed.eraCup ?? {}),
-
-      };
-
+      return hydrateStoredStats(parsed);
     }
 
-
-
     return {
-
+      ...emptyStoredStats(),
       normal: migrateUserStats(parsed),
-
-      hard: { ...EMPTY_STATS },
-
-      draftNormal: { ...EMPTY_STATS },
-
-      draftHard: { ...EMPTY_STATS },
-
-      fantasy: { ...EMPTY_STATS },
-
-      eraCup: { ...EMPTY_STATS },
-
     };
 
   } catch {
 
-    return {
-
-      normal: { ...EMPTY_STATS },
-
-      hard: { ...EMPTY_STATS },
-
-      draftNormal: { ...EMPTY_STATS },
-
-      draftHard: { ...EMPTY_STATS },
-
-      fantasy: { ...EMPTY_STATS },
-
-      eraCup: { ...EMPTY_STATS },
-
-    };
+    return emptyStoredStats();
 
   }
 

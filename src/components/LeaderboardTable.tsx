@@ -29,7 +29,10 @@ import { getUsername } from "@/lib/storage/user";
 import {
   CUP_ERA_VARIANT_CHANGED_EVENT,
   getCupEraVariant,
+  getNormalEraVariant,
   setCupEraVariant,
+  setNormalEraVariant,
+  NORMAL_ERA_VARIANT_CHANGED_EVENT,
 } from "@/lib/storage/preferences";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { getClubFundsLeaderboardAsync } from "@/lib/storage/club-funds-leaderboard";
@@ -81,17 +84,26 @@ export function LeaderboardTable({
   const [loading, setLoading] = useState(true);
   const [usingFallback, setUsingFallback] = useState(false);
   const [cupEraMode, setCupEraMode] = useState(false);
+  const [normalEraMode, setNormalEraMode] = useState(false);
   const requestId = useRef(0);
 
   useEffect(() => {
     setCupEraMode(getCupEraVariant());
+    setNormalEraMode(getNormalEraVariant());
     const onCupEra = (event: Event) => {
       const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
       if (detail) setCupEraMode(detail.eraMode);
     };
+    const onNormalEra = (event: Event) => {
+      const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
+      if (detail) setNormalEraMode(detail.eraMode);
+    };
     window.addEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupEra);
-    return () =>
+    window.addEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalEra);
+    return () => {
       window.removeEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupEra);
+      window.removeEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalEra);
+    };
   }, []);
 
   const availableTrackers = getTrackersForDbMode(leaderboardMode);
@@ -111,6 +123,8 @@ export function LeaderboardTable({
   };
 
   const isChallengeCupMode = leaderboardMode === "challenge-cup";
+  const isSuperLeagueMode = leaderboardMode === "super-league";
+  const superLeagueModeVariant = normalEraMode ? "era" : "current";
 
   const loadEntries = useCallback(async () => {
     const currentRequest = ++requestId.current;
@@ -191,7 +205,8 @@ export function LeaderboardTable({
         period,
         difficulty,
         50,
-        leaderboardMode
+        leaderboardMode,
+        isSuperLeagueMode ? superLeagueModeVariant : "current"
       );
 
       if (currentRequest !== requestId.current) return;
@@ -214,6 +229,9 @@ export function LeaderboardTable({
     isClubFundsMode,
     isChallengeCupMode,
     cupEraMode,
+    isSuperLeagueMode,
+    superLeagueModeVariant,
+    normalEraMode,
   ]);
 
   useEffect(() => {
@@ -286,6 +304,20 @@ export function LeaderboardTable({
             onEraModeChange={(era) => {
               setCupEraMode(era);
               setCupEraVariant(era);
+            }}
+          />
+        </div>
+      )}
+
+      {isSuperLeagueMode && (
+        <div className="mb-5">
+          <ChallengeCupVariantToggle
+            sectionLabel="Mode Variant"
+            useShortLabels
+            eraMode={normalEraMode}
+            onEraModeChange={(era) => {
+              setNormalEraMode(era);
+              setNormalEraVariant(era);
             }}
           />
         </div>

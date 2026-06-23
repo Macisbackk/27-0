@@ -1,6 +1,7 @@
 import type { CupRunRankingResult, GameDifficulty, RunState } from "../types";
 import { computeCupRunRankingResult } from "../cup-run-ranking";
 import { getSquadValue } from "../positions";
+import { resolveClassicModeVariant } from "../mode-variant";
 import { addLeaderboardEntry, getLeaderboardAsync } from "./leaderboard";
 import {
   getAllCupLeaderboardProfiles,
@@ -34,6 +35,8 @@ export async function recordCompletedRun(
   options?: {
     joeMellorMode?: boolean;
     superSamHallasMode?: boolean;
+    normalEraMode?: boolean;
+    modeVariant?: import("../types").ModeVariant;
     seasonWins?: number;
     seasonLosses?: number;
     seasonLeaguePosition?: number;
@@ -69,7 +72,11 @@ export async function recordCompletedRun(
   const loggedIn = isLoggedIn();
   const isHiddenRun =
     options?.joeMellorMode === true || options?.superSamHallasMode === true;
-  const statsBucket = resolveStatsBucket(run.mode, difficulty);
+  const modeVariant = resolveClassicModeVariant({
+    modeVariant: run.modeVariant,
+    normalEraMode: options?.normalEraMode,
+  });
+  const statsBucket = resolveStatsBucket(run.mode, difficulty, modeVariant);
 
   if (!isHiddenRun) {
     updateStats(signedIds, totalValue, difficulty, new Date(), statsBucket);
@@ -95,11 +102,18 @@ export async function recordCompletedRun(
       isPerfectSeason: options?.isPerfectSeason,
       cupWon: options?.cupWon,
       cupFinish: options?.cupFinish,
+      modeVariant,
     });
     if (!isCupRun && !isEraCupRun) {
       const dbMode = gameModeToDbMode(run.mode);
       nationalRank = (
-        await getLeaderboardAsync("ALL_TIME", difficulty, 50, dbMode)
+        await getLeaderboardAsync(
+          "ALL_TIME",
+          difficulty,
+          50,
+          dbMode,
+          modeVariant
+        )
       ).rows.find((e) => e.isCurrentUser)?.rank;
     }
   }
@@ -263,7 +277,8 @@ export async function recordPlayoffCompletion(
 ): Promise<CompletedRunResult> {
   const totalValue = run.totalValue || getSquadValue(run.squad);
   const loggedIn = isLoggedIn();
-  const statsBucket = resolveStatsBucket(run.mode, difficulty);
+  const modeVariant = resolveClassicModeVariant({ modeVariant: run.modeVariant });
+  const statsBucket = resolveStatsBucket(run.mode, difficulty, modeVariant);
   const wins = options.regularWins + options.playoffWins;
   const losses = options.regularLosses + options.playoffLosses;
 
@@ -286,10 +301,17 @@ export async function recordPlayoffCompletion(
     await addLeaderboardEntry(totalValue, run.mode, difficulty, {
       wins,
       losses,
+      modeVariant,
     });
     const dbMode = gameModeToDbMode(run.mode);
     nationalRank = (
-      await getLeaderboardAsync("ALL_TIME", difficulty, 50, dbMode)
+      await getLeaderboardAsync(
+        "ALL_TIME",
+        difficulty,
+        50,
+        dbMode,
+        modeVariant
+      )
     ).rows.find((e) => e.isCurrentUser)?.rank;
   }
 

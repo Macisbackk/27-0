@@ -23,7 +23,7 @@ alter table public.leaderboard add column if not exists cup_finals integer;
 alter table public.leaderboard add column if not exists best_cup_finish text;
 alter table public.leaderboard add column if not exists best_cup_finish_rank integer;
 alter table public.leaderboard add column if not exists cup_win_percentage numeric;
-alter table public.leaderboard add column if not exists updated_at timestamptz;
+alter table public.leaderboard add column if not exists mode_variant text default 'current';
 
 update public.leaderboard set mode = 'super-league' where mode is null;
 -- Valid mode values: super-league, challenge-cup, draft
@@ -40,6 +40,8 @@ update public.leaderboard set best_cup_finish_rank = 0 where best_cup_finish_ran
 update public.leaderboard set cup_win_percentage = 0 where cup_win_percentage is null;
 update public.leaderboard set coach_name = player_name where coach_name is null;
 
+update public.leaderboard set mode_variant = 'current' where mode_variant is null;
+
 create index if not exists leaderboard_mode_difficulty_score_idx
   on public.leaderboard (mode, difficulty, score desc);
 
@@ -49,12 +51,22 @@ create index if not exists leaderboard_mode_difficulty_wins_idx
 create index if not exists leaderboard_mode_difficulty_perfect_idx
   on public.leaderboard (mode, difficulty, perfect_runs desc);
 
+create index if not exists leaderboard_mode_difficulty_variant_score_idx
+  on public.leaderboard (mode, difficulty, mode_variant, score desc);
+
+create index if not exists leaderboard_mode_difficulty_variant_wins_idx
+  on public.leaderboard (mode, difficulty, mode_variant, wins desc);
+
+create index if not exists leaderboard_mode_difficulty_variant_perfect_idx
+  on public.leaderboard (mode, difficulty, mode_variant, perfect_runs desc);
+
 create index if not exists leaderboard_created_at_idx
   on public.leaderboard (created_at desc);
 
--- One row per coach per mode + difficulty (stats merged on each submission)
-create unique index if not exists leaderboard_user_mode_difficulty_uidx
-  on public.leaderboard (user_id, mode, difficulty)
+-- One row per coach per mode + difficulty + variant (Current vs Era for Super League)
+drop index if exists leaderboard_user_mode_difficulty_uidx;
+create unique index if not exists leaderboard_user_mode_difficulty_variant_uidx
+  on public.leaderboard (user_id, mode, difficulty, mode_variant)
   where user_id is not null;
 
 alter table public.leaderboard enable row level security;

@@ -158,6 +158,7 @@ function mergeLocalLeaderboardEntries(): number {
     bestCupFinishRank: number;
     bestCupFinishLabel: string;
     cupWinPercentage: number;
+    modeVariant?: "current" | "era";
   };
 
   const entries = loadJson<LocalEntry[]>(STORAGE_KEYS.leaderboard, []);
@@ -175,7 +176,8 @@ function mergeLocalLeaderboardEntries(): number {
         e.mode === sec.mode &&
         e.difficulty === sec.difficulty &&
         e.period === sec.period &&
-        e.periodKey === sec.periodKey
+        e.periodKey === sec.periodKey &&
+        (e.modeVariant ?? "current") === (sec.modeVariant ?? "current")
     );
 
     if (matchIdx >= 0) {
@@ -367,6 +369,10 @@ function mergeLocalStatsIfNeeded(
     eraCup: mergeUserStatsData(
       migrateUserStats(secondary.eraCup ?? EMPTY_STATS),
       migrateUserStats(local.eraCup ?? EMPTY_STATS)
+    ),
+    eraNormal: mergeUserStatsData(
+      migrateUserStats(secondary.eraNormal ?? EMPTY_STATS),
+      migrateUserStats(local.eraNormal ?? EMPTY_STATS)
     ),
   };
 

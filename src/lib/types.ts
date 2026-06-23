@@ -25,6 +25,9 @@ export type PlayerCategory = "current" | "historic" | "legend";
 
 export type GameMode = "CLASSIC" | "CHALLENGE_CUP" | "DRAFT" | "FANTASY" | "ERA_CHALLENGE_CUP";
 
+/** Normal Mode spin variant — persisted on runs, stats, and leaderboard rows. */
+export type ModeVariant = "current" | "era";
+
 export type GameDifficulty = "NORMAL" | "HARD";
 
 export type RunStatus = "IN_PROGRESS" | "COMPLETED" | "ABANDONED";
@@ -113,6 +116,8 @@ export type GamePhase =
 export interface RunState {
   id: string;
   mode: GameMode;
+  /** Normal Mode variant at run start — defaults to current when omitted. */
+  modeVariant?: ModeVariant;
   status: RunStatus;
   currentPlayer: Player | null;
   currentIndex: number;

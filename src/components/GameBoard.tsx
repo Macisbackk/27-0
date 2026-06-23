@@ -579,6 +579,7 @@ export function GameBoard({
         {
           id: runId,
           mode,
+          modeVariant: normalEraMode ? "era" : "current",
           status: "COMPLETED",
           currentPlayer: null,
           currentIndex: TOTAL_SLOTS,
@@ -605,6 +606,7 @@ export function GameBoard({
           longestLosingStreak: result.longestLosingStreak,
           rerollsUsed: rerollsThisRunRef.current,
           topSixFinish: tablePosition <= 6,
+          normalEraMode,
         }
       ).then((completed) => {
         setSubmittedOnline(completed.submittedOnline);
@@ -624,7 +626,7 @@ export function GameBoard({
         setClubFundsPayout(payout);
       }
     },
-    [runId, mode, seed, difficulty, joeMellorMode, superSamHallasMode]
+    [runId, mode, seed, difficulty, joeMellorMode, superSamHallasMode, normalEraMode]
   );
 
   const finalizePlayoffRun = useCallback(
@@ -646,6 +648,7 @@ export function GameBoard({
         {
           id: runId,
           mode,
+          modeVariant: normalEraMode ? "era" : "current",
           status: "COMPLETED",
           currentPlayer: null,
           currentIndex: TOTAL_SLOTS,
@@ -686,7 +689,7 @@ export function GameBoard({
         setPlayoffFundsPayout(payout);
       }
     },
-    [runId, mode, seed, difficulty, joeMellorMode, superSamHallasMode]
+    [runId, mode, seed, difficulty, joeMellorMode, superSamHallasMode, normalEraMode]
   );
 
   useEffect(() => {

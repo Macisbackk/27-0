@@ -31,6 +31,12 @@ import { BTN, tabGroupButtonClass, tabGroupClass } from "@/lib/ui/design-system"
 import { TYPO } from "@/lib/ui/typography";
 import { runStatsPageValidation } from "@/lib/validation/stats-page-validation";
 import { playTabChange } from "@/lib/sound";
+import {
+  getNormalEraVariant,
+  NORMAL_ERA_VARIANT_CHANGED_EVENT,
+  setNormalEraVariant,
+} from "@/lib/storage/preferences";
+import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 
 export function StatsPanel() {
   const [activeTab, setActiveTab] = useState<StatsTabId>("overall");
@@ -43,6 +49,10 @@ export function StatsPanel() {
   );
   const [fantasyStats, setFantasyStats] = useState<UserStatsData | null>(null);
   const [eraCupStats, setEraCupStats] = useState<UserStatsData | null>(null);
+  const [eraNormalStats, setEraNormalStats] = useState<UserStatsData | null>(
+    null
+  );
+  const [normalEraMode, setNormalEraMode] = useState(false);
 
   const refresh = () => {
     const stored = getAllStats();
@@ -56,7 +66,19 @@ export function StatsPanel() {
     setDraftHardStats(stored.draftHard);
     setFantasyStats(stored.fantasy);
     setEraCupStats(stored.eraCup);
+    setEraNormalStats(stored.eraNormal);
   };
+
+  useEffect(() => {
+    setNormalEraMode(getNormalEraVariant());
+    const onNormalEra = (event: Event) => {
+      const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
+      if (detail) setNormalEraMode(detail.eraMode);
+    };
+    window.addEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalEra);
+    return () =>
+      window.removeEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalEra);
+  }, []);
 
   useEffect(() => {
     refresh();
@@ -71,7 +93,8 @@ export function StatsPanel() {
       !draftNormalStats ||
       !draftHardStats ||
       !fantasyStats ||
-      !eraCupStats
+      !eraCupStats ||
+      !eraNormalStats
     ) {
       return;
     }
@@ -81,7 +104,7 @@ export function StatsPanel() {
       draftNormal: draftNormalStats,
       draftHard: draftHardStats,
     });
-  }, [normalStats, hardStats, draftNormalStats, draftHardStats, fantasyStats, eraCupStats]);
+  }, [normalStats, hardStats, draftNormalStats, draftHardStats, fantasyStats, eraCupStats, eraNormalStats]);
 
   if (
     !normalStats ||
@@ -89,7 +112,8 @@ export function StatsPanel() {
     !draftNormalStats ||
     !draftHardStats ||
     !fantasyStats ||
-    !eraCupStats
+    !eraCupStats ||
+    !eraNormalStats
   ) {
     return (
       <div className="card-glass p-12 text-center text-gray-500">
@@ -100,6 +124,7 @@ export function StatsPanel() {
 
   const hasAnyRuns =
     normalStats.totalRuns > 0 ||
+    eraNormalStats.totalRuns > 0 ||
     hardStats.totalRuns > 0 ||
     (SHOW_DRAFT_MODE && draftNormalStats.totalSeasonsSimulated > 0) ||
     (SHOW_DRAFT_MODE && draftHardStats.totalSeasonsSimulated > 0) ||
@@ -146,7 +171,16 @@ export function StatsPanel() {
         />
       )}
       {activeTab === "super-league" && (
-        <SuperLeagueTab normal={normalStats} hard={hardStats} />
+        <SuperLeagueTab
+          normal={normalStats}
+          eraNormal={eraNormalStats}
+          hard={hardStats}
+          eraMode={normalEraMode}
+          onEraModeChange={(era) => {
+            setNormalEraMode(era);
+            setNormalEraVariant(era);
+          }}
+        />
       )}
       {activeTab === "challenge-cup" && (
         <ChallengeCupTab
@@ -350,15 +384,30 @@ function ModeVariantToggle<T extends string>({
 
 function SuperLeagueTab({
   normal,
+  eraNormal,
+  eraMode,
+  onEraModeChange,
 }: {
   normal: UserStatsData;
+  eraNormal: UserStatsData;
   hard: UserStatsData;
+  eraMode: boolean;
+  onEraModeChange: (eraMode: boolean) => void;
 }) {
-  const view = getSuperLeagueView(normal);
+  const activeStats = eraMode ? eraNormal : normal;
+  const view = getSuperLeagueView(activeStats);
+  const modeLabel = eraMode ? "Era Normal Mode" : "Current Normal Mode";
 
   return (
     <div className="space-y-8">
-      <StatsSection title="Normal Mode">
+      <ChallengeCupVariantToggle
+        sectionLabel="Mode Variant"
+        useShortLabels
+        eraMode={eraMode}
+        onEraModeChange={onEraModeChange}
+      />
+
+      <StatsSection title={modeLabel}>
         <StatCard label="Normal Mode Runs" value={String(view.runs)} />
         <StatCard label="Normal Mode Wins" value={String(view.wins)} />
         <StatCard label="Normal Mode Losses" value={String(view.losses)} />

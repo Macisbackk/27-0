@@ -20,4 +20,8 @@ export const STORAGE_KEYS = {
   clubFunds: "27-0-club-funds",
   clubFundsLeaderboard: "27-0-club-funds-leaderboard",
   coachbeardMergeComplete: "27-0-coachbeard-merge-v1",
+  statsSchemaVersion: "27-0-stats-schema-version",
 } as const;
+
+/** Bump when StoredStats shape changes — triggers one-time local migration. */
+export const STATS_SCHEMA_VERSION = 2;
