@@ -27,6 +27,7 @@ import {
   pickWeightedNormalModePool,
 } from "./player-pool-eligibility";
 import {
+  buildTeamYearId,
   getEligiblePlayersForTeamYearPool,
   getRawPlayersForTeamYearPool,
   getTeamYearPoolFromTarget,
@@ -40,6 +41,18 @@ function filterSpinPools(
   predicate: (pool: TeamYearPool) => boolean
 ): TeamYearPool[] {
   return pools.filter(predicate);
+}
+
+/** Prefer team-years not yet used this run; fall back if pool exhausted. */
+function preferUnusedTeamYearPools(
+  pools: TeamYearPool[],
+  usedTeamYearKeys: ReadonlySet<string>
+): TeamYearPool[] {
+  if (usedTeamYearKeys.size === 0) return pools;
+  const unused = pools.filter(
+    (pool) => !usedTeamYearKeys.has(buildTeamYearId(pool.team, pool.year))
+  );
+  return unused.length > 0 ? unused : pools;
 }
 
 function pickPoolFromCandidates(
@@ -123,12 +136,14 @@ function sortPlayersForRecruitSlot(
   year: string
 ): SlotTeamYearPlayer[] {
   return entries.sort((a, b) => {
+    const ratingDiff = b.player.peakRating - a.player.peakRating;
+    if (ratingDiff !== 0) return ratingDiff;
     const aPos = getTeamYearRecruitPosition(team, year, a.player);
     const bPos = getTeamYearRecruitPosition(team, year, b.player);
     const aNatural = aPos === slotPosition;
     const bNatural = bPos === slotPosition;
     if (aNatural !== bNatural) return aNatural ? -1 : 1;
-    return b.player.peakRating - a.player.peakRating;
+    return a.player.name.localeCompare(b.player.name);
   });
 }
 
@@ -241,9 +256,17 @@ export function generateSlotTeamYearTargetForSlot(
   spinIndex: number,
   usedIds: Set<string>,
   squad: SquadSlot[],
-  slotIndex: number
+  slotIndex: number,
+  usedTeamYearKeys: ReadonlySet<string> = new Set()
 ): SlotRevealTarget | null {
-  const picked = pickTeamYearForSlot(seed, spinIndex, usedIds, squad, slotIndex);
+  const picked = pickTeamYearForSlot(
+    seed,
+    spinIndex,
+    usedIds,
+    squad,
+    slotIndex,
+    usedTeamYearKeys
+  );
   return picked?.target ?? null;
 }
 
@@ -253,14 +276,16 @@ function pickTeamYearForSlot(
   usedIds: Set<string>,
   squad: SquadSlot[],
   slotIndex: number,
+  usedTeamYearKeys: ReadonlySet<string> = new Set(),
   maxAttempts = 64
 ): { target: SlotRevealTarget; nextSpinIndex: number } | null {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     const idx = spinIndex + attempt;
     const rng = seedrandom(`${seed}-slot-autofill-${slotIndex}-${idx}`);
-    const pools = filterSpinPools(getNormalModeTeamYearPools(), (pool) =>
+    const eligible = filterSpinPools(getNormalModeTeamYearPools(), (pool) =>
       eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).length > 0
     );
+    const pools = preferUnusedTeamYearPools(eligible, usedTeamYearKeys);
     if (pools.length === 0) continue;
     const pick = pickPoolFromCandidates(pools, rng);
     if (!pick) continue;
@@ -273,19 +298,22 @@ function pickTeamYearForSlot(
 export interface SlotAutofillResult {
   squad: SquadSlot[];
   nextSpinIndex: number;
+  usedTeamYearKeys: string[];
 }
 
 /** Fill all remaining Normal Mode slots using valid team-year pools per pick. */
 export function autofillSlotRecruitSquad(
   seed: string,
   startSpinIndex: number,
-  squad: SquadSlot[]
+  squad: SquadSlot[],
+  usedTeamYearKeys: ReadonlySet<string> = new Set()
 ): SlotAutofillResult | null {
   let newSquad = squad;
   let usedIds = new Set(
     squad.filter((slot) => slot.player).map((slot) => slot.player!.id)
   );
   let spinIndex = startSpinIndex;
+  const teamYearsUsed = new Set(usedTeamYearKeys);
 
   const emptySlotIndices = RECRUIT_SLOT_ORDER.filter((slotIndex) => {
     const slot = newSquad.find((s) => s.slotIndex === slotIndex);
@@ -298,12 +326,14 @@ export function autofillSlotRecruitSquad(
       spinIndex,
       usedIds,
       newSquad,
-      slotIndex
+      slotIndex,
+      teamYearsUsed
     );
     if (!picked) return null;
 
     const { target, nextSpinIndex } = picked;
     spinIndex = nextSpinIndex;
+    teamYearsUsed.add(target.teamYearKey);
     const pool = getTeamYearPoolFromTarget(target);
     if (!pool) return null;
 
@@ -328,7 +358,11 @@ export function autofillSlotRecruitSquad(
     );
   }
 
-  return { squad: newSquad, nextSpinIndex: spinIndex };
+  return {
+    squad: newSquad,
+    nextSpinIndex: spinIndex,
+    usedTeamYearKeys: [...teamYearsUsed],
+  };
 }
 
 /** Positions eligible when recruiting for a given slot (includes SH/SO and prop/SR compat). */

@@ -263,16 +263,16 @@ export const synth = {
   draftPlace: () => playTone(540, 0.06, { volume: 0.05 }),
   remove: () => playTone(360, 0.05, { volume: 0.04, type: "triangle" }),
   slotSpinStart: () => {
-    playTone(196, 0.07, { volume: 0.035, type: "square" });
+    playTone(180, 0.05, { volume: 0.032, type: "square" });
     setTimeout(
-      () => playTone(247, 0.06, { volume: 0.03, type: "square" }),
-      45
+      () => playTone(220, 0.04, { volume: 0.028, type: "square" }),
+      35
     );
   },
   slotSpinTick: (progress = 0) => {
-    const freq = 240 + progress * 220 + Math.random() * 24;
-    playTone(freq, 0.028, {
-      volume: 0.022 + progress * 0.018,
+    const freq = 280 + progress * 180 + (Math.random() * 16 - 8);
+    playTone(freq, 0.022, {
+      volume: 0.018 + progress * 0.014,
       type: "square",
       ramp: false,
     });
@@ -280,11 +280,11 @@ export const synth = {
   slotLand: () =>
     playSequence(
       [
-        { freq: 392, dur: 0.07, vol: 0.055, type: "triangle" },
-        { freq: 523, dur: 0.09, vol: 0.05, type: "triangle" },
-        { freq: 659, dur: 0.12, vol: 0.048, type: "triangle" },
+        { freq: 330, dur: 0.055, vol: 0.048, type: "triangle" },
+        { freq: 440, dur: 0.075, vol: 0.045, type: "triangle" },
+        { freq: 554, dur: 0.1, vol: 0.04, type: "triangle" },
       ],
-      0.05
+      0.04
     ),
   grade: (grade: string) => {
     switch (grade) {

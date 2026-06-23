@@ -18,4 +18,5 @@ export const STORAGE_KEYS = {
   cupEraVariant: "27-0-cup-era-variant",
   clubFunds: "27-0-club-funds",
   clubFundsLeaderboard: "27-0-club-funds-leaderboard",
+  coachbeardMergeComplete: "27-0-coachbeard-merge-v1",
 } as const;

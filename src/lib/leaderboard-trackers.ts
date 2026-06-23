@@ -284,3 +284,42 @@ export function mergeLeaderboardStats(
     cupWinPercentage,
   };
 }
+
+/** Combine two cumulative leaderboard tracker snapshots (e.g. account merge). */
+export function combineLeaderboardTrackerStats(
+  a: Partial<LeaderboardTrackerEntry>,
+  b: Partial<LeaderboardTrackerEntry>
+): Omit<
+  LeaderboardTrackerEntry,
+  "username" | "achievedAt" | "difficulty" | "mode"
+> {
+  const rankA = a.bestCupFinishRank ?? 0;
+  const rankB = b.bestCupFinishRank ?? 0;
+  const totalWins = (a.totalWins ?? 0) + (b.totalWins ?? 0);
+  const totalLosses = (a.totalLosses ?? 0) + (b.totalLosses ?? 0);
+  const cupGames = totalWins + totalLosses;
+
+  return {
+    squadValue: Math.max(a.squadValue ?? 0, b.squadValue ?? 0),
+    totalWins,
+    totalLosses,
+    perfectRuns: (a.perfectRuns ?? 0) + (b.perfectRuns ?? 0),
+    bestRecordWins: totalWins,
+    bestRecordLosses: totalLosses,
+    bestWinPercentage:
+      cupGames > 0
+        ? Math.max(a.bestWinPercentage ?? 0, b.bestWinPercentage ?? 0)
+        : totalWins + totalLosses > 0
+          ? (totalWins / (totalWins + totalLosses)) * 100
+          : 0,
+    challengeCupWins: (a.challengeCupWins ?? 0) + (b.challengeCupWins ?? 0),
+    cupFinals: (a.cupFinals ?? 0) + (b.cupFinals ?? 0),
+    bestCupFinishRank: Math.max(rankA, rankB),
+    bestCupFinishLabel:
+      rankB > rankA ? (b.bestCupFinishLabel ?? "") : (a.bestCupFinishLabel ?? ""),
+    cupWinPercentage:
+      cupGames > 0
+        ? (totalWins / cupGames) * 100
+        : Math.max(a.cupWinPercentage ?? 0, b.cupWinPercentage ?? 0),
+  };
+}

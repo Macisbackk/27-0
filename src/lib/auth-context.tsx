@@ -31,6 +31,7 @@ import { loadCloudClubFunds } from "./storage/club-funds-cloud";
 import { mergeClubFundsFromCloud, syncClubFundsLeaderboardOnLoad } from "./storage/club-funds";
 import { STORAGE_KEYS } from "./storage/keys";
 import { getAllStats, mergeCloudStatsWithLocal } from "./storage/stats";
+import { runCoachbeardAccountMergeLocal } from "./storage/coachbeard-account-merge";
 import { isSupabaseConfigured } from "./supabase";
 
 interface AuthContextValue {
@@ -102,6 +103,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setProfile(nextProfile);
     applySession(session, nextProfile);
+
+    runCoachbeardAccountMergeLocal({
+      coachName: nextProfile?.coach_name ?? null,
+      email: nextUser.email ?? null,
+    });
+
     await hydrateStatsFromCloud();
     await hydrateClubFundsFromCloud();
     window.dispatchEvent(new Event("auth-state-changed"));

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { Player, SquadSlot } from "@/lib/types";
 import { DraftPositionsRemaining } from "./DraftPositionsRemaining";
@@ -47,6 +47,11 @@ export function PlayerChoice({
 }: PlayerChoiceProps) {
   const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
   const appearSoundPlayed = useRef(false);
+  const [displayA, displayB] = useMemo(() => {
+    return playerA.peakRating >= playerB.peakRating
+      ? [playerA, playerB]
+      : [playerB, playerA];
+  }, [playerA, playerB]);
 
   useEffect(() => {
     appearSoundPlayed.current = false;
@@ -139,18 +144,18 @@ export function PlayerChoice({
 
       <div className="grid grid-cols-2 items-stretch gap-1.5 sm:gap-3 md:gap-4">
         <ChoiceCard
-          player={playerA}
+          player={displayA}
           label="A"
-          onChoose={() => onChoose(playerA)}
-          onViewDetails={() => setDetailPlayer(playerA)}
+          onChoose={() => onChoose(displayA)}
+          onViewDetails={() => setDetailPlayer(displayA)}
           disabled={disabled}
           hardMode={hardMode}
         />
         <ChoiceCard
-          player={playerB}
+          player={displayB}
           label="B"
-          onChoose={() => onChoose(playerB)}
-          onViewDetails={() => setDetailPlayer(playerB)}
+          onChoose={() => onChoose(displayB)}
+          onViewDetails={() => setDetailPlayer(displayB)}
           disabled={disabled}
           hardMode={hardMode}
         />

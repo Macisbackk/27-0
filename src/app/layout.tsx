@@ -3,6 +3,7 @@ import { Anton } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
+import { CoachbeardMergeRunner } from "@/components/CoachbeardMergeRunner";
 import { Header } from "@/components/Header";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SoundUnlock } from "@/components/SoundUnlock";
@@ -33,6 +34,7 @@ export default function RootLayout({
     <html lang="en" className={anton.variable} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
         <AuthProvider>
+          <CoachbeardMergeRunner />
           <SoundUnlock />
           <Header />
           <main className="flex-1">{children}</main>

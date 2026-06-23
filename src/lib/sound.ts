@@ -99,11 +99,13 @@ export function playSlotSpinStart(): void {
   playSound("slotSpinStart");
 }
 
-/** Tick during slot animation — spacing widens as progress approaches 1. */
-export function playSlotSpinTick(progress = 0): void {
+/** Tick during slot animation — paced to reel step delay when provided. */
+export function playSlotSpinTick(progress = 0, stepMs?: number): void {
   if (isSoundMuted() || !isSoundInteractionUnlocked()) return;
   const now = Date.now();
-  const minGap = 70 + progress * 140;
+  const minGap = stepMs
+    ? Math.max(28, stepMs * 0.55)
+    : 48 + progress * 120;
   if (now - lastSlotSpinTickAt < minGap) return;
   lastSlotSpinTickAt = now;
   synth.slotSpinTick(progress);

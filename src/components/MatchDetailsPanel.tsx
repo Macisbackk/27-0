@@ -5,24 +5,19 @@ import { motion } from "framer-motion";
 import type { MatchFixture } from "@/lib/game/season-simulation";
 import {
   DREAM_TEAM_NAME,
-  formatFixtureScore,
   type TeamScoringDetail,
 } from "@/lib/game/season-simulation";
 import { getOpponentTeamSummary } from "@/lib/game/opponent-scorers";
 import { getEraTeamByDisplayName } from "@/lib/players/era-teams";
-import { formatValue } from "@/lib/players";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
-import { getTeamTier } from "@/lib/team-tiers";
 import {
   findSlotByPlayerId,
   formatPlayerLineExtras,
 } from "@/lib/squad-display";
-import { getSquadValue } from "@/lib/positions";
 import type { SquadSlot } from "@/lib/types";
 import { resolveEraTeamClubName } from "@/lib/players/era-teams";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { StatBox } from "./ui/StatBox";
 import { ClubTeamLabel } from "./ClubTeamLabel";
 import { TryScorerChips, TryScorersEmptyNote } from "./TryScorerChips";
 
@@ -54,9 +49,7 @@ export function MatchDetailsPanel({
   eraTeamValues,
 }: MatchDetailsPanelProps) {
   const detail = fixture.scoringDetail;
-  const userValue = userSquad ? getSquadValue(userSquad) : 0;
   const userAvgRating = userSquad ? getAverageSquadRating(userSquad) : 0;
-  const userTier = getTeamTier(userAvgRating);
   const eraOpponent = eraClubLookup
     ? getEraTeamByDisplayName(fixture.opponent)
     : null;
@@ -64,9 +57,7 @@ export function MatchDetailsPanel({
     eraOpponent && eraTeamRatings?.[fixture.opponent] !== undefined
       ? {
           name: fixture.opponent,
-          totalValue: eraTeamValues?.[fixture.opponent] ?? 0,
           averageRating: eraTeamRatings[fixture.opponent],
-          tier: getTeamTier(eraTeamRatings[fixture.opponent]),
         }
       : getOpponentTeamSummary(fixture.opponent, seed, fixture.round);
 
@@ -83,9 +74,6 @@ export function MatchDetailsPanel({
           <div className="min-w-0">
             <p className={TYPO.sectionLabel}>
               {roundLabel ?? `Round ${fixture.round}`} · Match Details
-            </p>
-            <p className={`mt-1 ${TYPO.cardTitle}`}>
-              {formatFixtureScore(fixture)}
             </p>
             <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-gray-500">
               {fixture.isNeutral
@@ -134,10 +122,7 @@ export function MatchDetailsPanel({
                 resolveEraTeamClubName(userTeamName, eraClubLookup)
               }
               scoring={detail.dreamTeam}
-              totalValue={userValue}
               averageRating={userAvgRating}
-              tier={userTier}
-              finalScore={fixture.pointsFor}
               userSquad={userSquad}
               isUserTeam
             />
@@ -145,10 +130,7 @@ export function MatchDetailsPanel({
               teamName={fixture.opponent}
               colorClub={resolveEraTeamClubName(fixture.opponent, eraClubLookup)}
               scoring={detail.opponent}
-              totalValue={opponentSummary.totalValue}
               averageRating={opponentSummary.averageRating}
-              tier={opponentSummary.tier}
-              finalScore={fixture.pointsAgainst}
               isUserTeam={false}
             />
           </div>
@@ -164,20 +146,14 @@ function TeamScoringBlock({
   teamName,
   colorClub,
   scoring,
-  totalValue,
   averageRating,
-  tier,
-  finalScore,
   userSquad,
   isUserTeam,
 }: {
   teamName: string;
   colorClub: string;
   scoring: TeamScoringDetail;
-  totalValue: number;
   averageRating: number;
-  tier: string;
-  finalScore: number;
   userSquad?: SquadSlot[];
   isUserTeam: boolean;
 }) {
@@ -190,17 +166,9 @@ function TeamScoringBlock({
   return (
     <div className={SPACING.stackSm}>
       <ClubTeamLabel club={teamName} colorClub={colorClub} />
-      <div className={`grid ${SPACING.cardGridGap} sm:grid-cols-2`}>
-        <StatBox label="Squad Value" value={formatValue(totalValue)} size="sm" />
-        <StatBox label="Team Tier" value={tier} size="sm" />
-        <StatBox label="Avg Rating" value={averageRating.toFixed(1)} size="sm" />
-        <StatBox
-          label="Final Score"
-          value={String(finalScore)}
-          size="lg"
-          className="border-accent-green/20"
-        />
-      </div>
+      <p className={`${TYPO.bodySm} text-gray-400`}>
+        {averageRating > 0 ? `${averageRating.toFixed(1)} avg rating` : "—"}
+      </p>
       {hasTries && (
         <ScoringSection title="Tries">
           <TryScorerChips

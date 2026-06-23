@@ -609,6 +609,14 @@ function getDraftWinProbabilityFloor(ratingGap: number): number | null {
   return null;
 }
 
+function getNormalWinProbabilityFloor(ratingGap: number): number | null {
+  if (ratingGap >= 10) return 0.86;
+  if (ratingGap >= 7) return 0.8;
+  if (ratingGap >= 4) return 0.74;
+  if (ratingGap >= 2) return 0.6;
+  return null;
+}
+
 function resolveOutcome(
   squad: SquadSlot[],
   strength: number,
@@ -625,11 +633,11 @@ function resolveOutcome(
   const valueBonus = getValueConsistencyBonus(totalValue, draftMode);
   const cupMode = options.cupMode ?? false;
 
-  const homeAdvantage = isHome ? 2 : -2;
-  const formEffect = form * 0.45;
+  const homeAdvantage = isHome ? 1.5 : -1;
+  const formEffect = form * 0.4;
   const draftRatingBonus = draftMode ? getDraftTeamRatingBonus(avgRating) : 0;
 
-  let noiseScale = draftMode ? 8 : 9;
+  let noiseScale = draftMode ? 8 : 7;
   const absGap = Math.abs(ratingGap);
   if (absGap >= 10) noiseScale = draftMode ? 2 : 2.5;
   else if (absGap >= 8) noiseScale = draftMode ? 2.8 : 3.5;
@@ -640,7 +648,7 @@ function resolveOutcome(
 
   const noise = (rng() - 0.5) * noiseScale;
   const strengthGap = strength - opponentStrength;
-  const ratingWeight = draftMode ? 1.55 : 1.35;
+  const ratingWeight = draftMode ? 1.55 : 1.28;
   const valueWeight = draftMode ? 0.85 : 0.75;
   const diff =
     ratingGap * ratingWeight +
@@ -659,9 +667,9 @@ function resolveOutcome(
     if (floor !== null) winProbability = Math.max(winProbability, floor);
     else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.74);
   } else {
-    if (ratingGap >= 10) winProbability = Math.max(winProbability, 0.9);
-    else if (ratingGap >= 8) winProbability = Math.max(winProbability, 0.82);
-    else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.72);
+    const floor = getNormalWinProbabilityFloor(ratingGap);
+    if (floor !== null) winProbability = Math.max(winProbability, floor);
+    else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.68);
   }
 
   if (ratingGap <= -10) winProbability = Math.min(winProbability, 0.1);
@@ -669,6 +677,10 @@ function resolveOutcome(
   else if (ratingGap <= -5) winProbability = Math.min(winProbability, 0.26);
 
   winProbability = Math.max(0.04, Math.min(0.96, winProbability));
+
+  if (!draftMode && ratingGap >= -4 && ratingGap <= 1) {
+    winProbability = Math.min(0.96, winProbability + 0.05);
+  }
 
   let won = rng() < winProbability;
   let isUpset = false;
@@ -946,7 +958,7 @@ export function simulateOneFixture(
   if (initialWon) {
     form = Math.min(10, form + 2);
   } else {
-    form = Math.max(-10, form - 3);
+    form = Math.max(-10, form - 2);
   }
 
   const fixture: MatchFixture = {

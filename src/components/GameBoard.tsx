@@ -192,6 +192,11 @@ export function GameBoard({
   const [draftPickIndex, setDraftPickIndex] = useState(0);
   const [spinPickIndex, setSpinPickIndex] = useState(0);
   const [spinSessionId, setSpinSessionId] = useState(0);
+  const MAX_RESPINS_PER_RUN = 3;
+  const [respinsRemaining, setRespinsRemaining] = useState(MAX_RESPINS_PER_RUN);
+  const [usedTeamYearKeys, setUsedTeamYearKeys] = useState<Set<string>>(
+    () => new Set()
+  );
   const [pendingPlayer, setPendingPlayer] = useState<Player | null>(null);
   const [slotRecruitTarget, setSlotRecruitTarget] =
     useState<SlotRevealTarget | null>(null);
@@ -455,6 +460,8 @@ export function GameBoard({
     setDraftPickIndex(0);
     setSpinPickIndex(0);
     setSpinSessionId(0);
+    setRespinsRemaining(MAX_RESPINS_PER_RUN);
+    setUsedTeamYearKeys(new Set());
     setPendingPlayer(null);
     lastScrolledPlayerIdRef.current = null;
     recordedRef.current = false;
@@ -714,6 +721,11 @@ export function GameBoard({
       setSlotRecruitTarget(null);
       setActiveSpinTarget(null);
       setChoosing(false);
+      setUsedTeamYearKeys((prev) => {
+        const next = new Set(prev);
+        next.add(activeSpinTarget.teamYearKey);
+        return next;
+      });
 
       const filled = getFilledCount(newSquad);
       if (filled >= TOTAL_SLOTS) {
@@ -754,7 +766,8 @@ export function GameBoard({
         spinPickIndex,
         signedPlayerIds,
         squad,
-        slotIndex
+        slotIndex,
+        usedTeamYearKeys
       );
       if (!target) return;
 
@@ -775,8 +788,53 @@ export function GameBoard({
       seed,
       spinPickIndex,
       signedPlayerIds,
+      usedTeamYearKeys,
     ]
   );
+
+  const handleSlotRespin = useCallback(() => {
+    if (
+      isHardMode ||
+      !isSlotRecruitMode ||
+      respinsRemaining <= 0 ||
+      phase !== "choice" ||
+      selectedSlotIndex === null ||
+      choosing
+    ) {
+      return;
+    }
+
+    const nextSpinIndex = spinPickIndex + 1;
+    const target = generateSlotTeamYearTargetForSlot(
+      seed,
+      nextSpinIndex,
+      signedPlayerIds,
+      squad,
+      selectedSlotIndex,
+      usedTeamYearKeys
+    );
+    if (!target) return;
+
+    playReroll();
+    setRespinsRemaining((n) => n - 1);
+    setSpinPickIndex(nextSpinIndex);
+    setActiveSpinTarget(target);
+    setSlotRecruitTarget(target);
+    setSpinSessionId((id) => id + 1);
+    setPhase("reveal");
+  }, [
+    isHardMode,
+    isSlotRecruitMode,
+    respinsRemaining,
+    phase,
+    selectedSlotIndex,
+    choosing,
+    spinPickIndex,
+    seed,
+    signedPlayerIds,
+    squad,
+    usedTeamYearKeys,
+  ]);
 
   const handleSelectSlot = useCallback(
     (slotIndex: number) => {
@@ -990,10 +1048,16 @@ export function GameBoard({
     if (phase !== "pitch" || filledCount >= TOTAL_SLOTS || isDraftMode) return;
 
     if (isSlotRecruitMode) {
-      const result = autofillSlotRecruitSquad(seed, spinPickIndex, squad);
+      const result = autofillSlotRecruitSquad(
+        seed,
+        spinPickIndex,
+        squad,
+        usedTeamYearKeys
+      );
       if (!result) return;
       setSquad(result.squad);
       setSpinPickIndex(result.nextSpinIndex);
+      setUsedTeamYearKeys(new Set(result.usedTeamYearKeys));
       playAutofill();
       playPositionComplete();
       return;
@@ -1344,6 +1408,9 @@ export function GameBoard({
                     entries={slotRecruitEntries}
                     onSelect={handleSlotTeamYearPick}
                     onBack={handleBackToPitch}
+                    onRespin={!isHardMode ? handleSlotRespin : undefined}
+                    respinsRemaining={!isHardMode ? respinsRemaining : 0}
+                    maxRespins={MAX_RESPINS_PER_RUN}
                     disabled={choosing}
                     hardMode={isHardMode}
                   />

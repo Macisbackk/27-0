@@ -20,6 +20,9 @@ interface SlotTeamYearPickerProps {
   entries: SlotTeamYearPlayer[];
   onSelect: (player: Player) => void;
   onBack?: () => void;
+  onRespin?: () => void;
+  respinsRemaining?: number;
+  maxRespins?: number;
   disabled?: boolean;
   hardMode?: boolean;
 }
@@ -29,6 +32,9 @@ export function SlotTeamYearPicker({
   entries,
   onSelect,
   onBack,
+  onRespin,
+  respinsRemaining = 0,
+  maxRespins = 3,
   disabled,
   hardMode,
 }: SlotTeamYearPickerProps) {
@@ -83,9 +89,23 @@ export function SlotTeamYearPicker({
                 <span className="text-accent-green">{shortYear}</span>
               </h2>
             </div>
-            <span className="shrink-0 rounded-md border border-accent-green/30 bg-accent-green/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-accent-green">
-              {entries.length} available
-            </span>
+            <div className="flex shrink-0 flex-col items-end gap-1.5">
+              <span className="rounded-md border border-accent-green/30 bg-accent-green/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-accent-green">
+                {entries.length} available
+              </span>
+              {onRespin && (
+                <button
+                  type="button"
+                  onClick={onRespin}
+                  disabled={disabled || respinsRemaining <= 0}
+                  className="rounded-md border border-pitch-600 bg-pitch-900/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-gray-300 transition-colors hover:border-accent-green/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  {respinsRemaining > 0
+                    ? `Respin · ${respinsRemaining}/${maxRespins}`
+                    : "No respins left"}
+                </button>
+              )}
+            </div>
           </div>
           <p
             className={`mt-2 rounded-md border border-accent-green/15 bg-pitch-950/60 px-2.5 py-2 ${TYPO.bodySm} leading-relaxed text-gray-400`}

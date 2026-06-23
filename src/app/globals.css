@@ -528,8 +528,8 @@ body {
   }
 
   .slot-reveal-reel {
-    --slot-reel-item-h: 48px;
-    min-height: var(--slot-reel-item-h);
+    --slot-reel-item-h: 44px;
+    min-height: calc(var(--slot-reel-item-h) * 3);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -578,9 +578,17 @@ body {
 
   .slot-reel-window {
     position: relative;
-    height: var(--slot-reel-item-h, 48px);
+    width: 100%;
     overflow: hidden;
     border-radius: inherit;
+  }
+
+  .slot-reel-window--spinning .slot-reel-strip {
+    filter: blur(0.4px);
+  }
+
+  .slot-reel-window:not(.slot-reel-window--spinning) .slot-reel-strip {
+    filter: none;
   }
 
   .slot-reel-window::before {
@@ -626,9 +634,9 @@ body {
   .slot-reel-item {
     display: flex;
     box-sizing: border-box;
-    height: var(--slot-reel-item-h, 48px);
-    min-height: var(--slot-reel-item-h, 48px);
-    max-height: var(--slot-reel-item-h, 48px);
+    height: var(--slot-reel-item-h, 44px);
+    min-height: var(--slot-reel-item-h, 44px);
+    max-height: var(--slot-reel-item-h, 44px);
     align-items: center;
     justify-content: center;
     padding: 0 0.35rem;
