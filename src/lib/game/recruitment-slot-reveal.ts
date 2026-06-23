@@ -1,9 +1,6 @@
 import type { Player } from "../types";
-import {
-  getTeamsWithYearRosters,
-  getYearsForTeam,
-} from "../players/team-year-rosters";
 import { buildTeamYearId } from "./team-year-pools";
+import { getNormalModeTeamYearPools } from "./player-pool-eligibility";
 
 const CURRENT_SEASON_YEAR = 2026;
 
@@ -55,38 +52,39 @@ export function getSlotRevealTarget(players: [Player, Player]): SlotRevealTarget
   };
 }
 
-/** Teams allowed in Normal Mode slot animation — roster-backed playable clubs only. */
-export function getSlotSpinTeamPool(targetTeam: string, seedKey = targetTeam): string[] {
-  const clubs = getTeamsWithYearRosters();
-  let hash = 0;
-  for (let i = 0; i < seedKey.length; i++) {
-    hash = (hash * 31 + seedKey.charCodeAt(i)) >>> 0;
+/** All teams that can appear in Normal Mode spin animation reels. */
+export function getAllNormalModeSpinTeams(): string[] {
+  const teams = new Set<string>();
+  for (const pool of getNormalModeTeamYearPools()) {
+    teams.add(pool.team);
   }
-  const shuffled = [...clubs].sort((a, b) => {
-    const ha = (hash + a.length * 17) % 997;
-    const hb = (hash + b.length * 23) % 997;
-    return ha - hb;
-  });
-  if (!shuffled.includes(targetTeam)) {
-    shuffled.unshift(targetTeam);
-  }
-  return shuffled;
+  return [...teams].sort((a, b) => a.localeCompare(b));
 }
 
-/** Years allowed in Normal Mode slot animation — roster years for the target team first. */
-export function getSlotSpinYearPool(targetTeam: string, targetYear: string): string[] {
-  const teamYears = getYearsForTeam(targetTeam);
-  const years =
-    teamYears.length > 0
-      ? [...teamYears]
-      : [...new Set<string>(
-          getTeamsWithYearRosters().flatMap((team) => getYearsForTeam(team))
-        )].sort((a, b) => Number(b) - Number(a));
-
-  if (!years.includes(targetYear)) {
-    years.unshift(targetYear);
+/** All years that can appear in Normal Mode spin animation reels. */
+export function getAllNormalModeSpinYears(): string[] {
+  const years = new Set<string>();
+  for (const pool of getNormalModeTeamYearPools()) {
+    years.add(pool.year);
   }
-  return years;
+  return [...years].sort((a, b) => Number(b) - Number(a));
+}
+
+/** Years for reel display — target team years plus global pool years for variety. */
+export function getSlotSpinYearPool(targetTeam: string, targetYear: string): string[] {
+  const years = new Set<string>(getAllNormalModeSpinYears());
+  for (const pool of getNormalModeTeamYearPools()) {
+    if (pool.team === targetTeam) years.add(pool.year);
+  }
+  years.add(targetYear);
+  return [...years].sort((a, b) => Number(b) - Number(a));
+}
+
+/** Teams for reel display — full Normal Mode pool so every option can cycle through. */
+export function getSlotSpinTeamPool(targetTeam: string, _seedKey = targetTeam): string[] {
+  const teams = new Set<string>(getAllNormalModeSpinTeams());
+  teams.add(targetTeam);
+  return [...teams].sort((a, b) => a.localeCompare(b));
 }
 
 /** @deprecated Use getSlotSpinTeamPool */

@@ -1,6 +1,7 @@
 import seedrandom from "seedrandom";
 import { resolveCanonicalClubName } from "../clubs/club-match";
 import { getPlayersForClub } from "./player-pool-eligibility";
+import type { Player } from "../types";
 
 const SQUAD_SIZE = 13;
 
@@ -11,9 +12,51 @@ function cacheKey(seed: string, club: string): string {
   return `${seed}::${resolveCanonicalClubName(club)}`;
 }
 
+function fisherYatesShuffle<T>(items: T[], rng: () => number): T[] {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
+  }
+  return copy;
+}
+
 /**
- * Build a realistic opponent strength from a random Super League player pool
- * (current + historic + legend) — not fixed 2026 base ratings.
+ * Random squad from eligible club pool with mild rating weighting (not top-player stacking).
+ */
+export function pickRandomClubSquad(
+  pool: Player[],
+  rng: () => number,
+  size = SQUAD_SIZE
+): Player[] {
+  if (pool.length === 0) return [];
+  const target = Math.min(size, pool.length);
+  const picks: Player[] = [];
+  const remaining = [...pool];
+
+  while (picks.length < target && remaining.length > 0) {
+    const totalWeight = remaining.reduce(
+      (sum, player) => sum + 1 + Math.max(0, (player.peakRating - 72) * 0.02),
+      0
+    );
+    let roll = rng() * totalWeight;
+    let index = remaining.length - 1;
+    for (let i = 0; i < remaining.length; i++) {
+      roll -= 1 + Math.max(0, (remaining[i]!.peakRating - 72) * 0.02);
+      if (roll <= 0) {
+        index = i;
+        break;
+      }
+    }
+    picks.push(remaining[index]!);
+    remaining.splice(index, 1);
+  }
+
+  return picks;
+}
+
+/**
+ * Build opponent strength from a randomly selected squad — not fixed 2026 base ratings.
  */
 export function getGeneratedClubSquadStrength(
   club: string,
@@ -30,31 +73,28 @@ export function getGeneratedClubSquadStrength(
   if (pool.length === 0) return 72;
 
   const rng = seedrandom(`${seed}-${salt}-${canonical}`);
-  const byRating = [...pool].sort((a, b) => b.peakRating - a.peakRating);
-  const picks = new Set<string>();
-
-  while (picks.size < Math.min(SQUAD_SIZE, pool.length)) {
-    const roll = rng();
-    const index =
-      roll < 0.55
-        ? Math.floor(rng() * Math.min(24, byRating.length))
-        : Math.floor(rng() * byRating.length);
-    const player = byRating[Math.min(index, byRating.length - 1)];
-    if (player) picks.add(player.id);
-  }
-
-  const squad = [...picks]
-    .map((id) => pool.find((p) => p.id === id))
-    .filter((p): p is NonNullable<typeof p> => !!p);
+  const squad = pickRandomClubSquad(pool, rng, SQUAD_SIZE);
 
   const avg =
     squad.reduce((sum, p) => sum + p.peakRating, 0) / Math.max(squad.length, 1);
-  const strength = Math.round((avg + (rng() - 0.5) * 3) * 10) / 10;
+  const strength = Math.round((avg + (rng() - 0.5) * 4) * 10) / 10;
 
   if (salt === "season") {
     seasonStrengthCache.set(key, strength);
   }
   return strength;
+}
+
+export function getGeneratedClubSquadPlayers(
+  club: string,
+  seed: string,
+  salt = "season"
+): Player[] {
+  const canonical = resolveCanonicalClubName(club);
+  const pool = getPlayersForClub(canonical);
+  if (pool.length === 0) return [];
+  const rng = seedrandom(`${seed}-${salt}-squad-${canonical}`);
+  return pickRandomClubSquad(pool, rng, SQUAD_SIZE);
 }
 
 export function clearSeasonSquadStrengthCache(): void {
@@ -71,4 +111,18 @@ export function getMatchClubStrength(
   const base = getGeneratedClubSquadStrength(club, seed, "season");
   const rng = seedrandom(`${seed}-match-${round}-${club}`);
   return base + (home ? 2 : 0) + (rng() - 0.5) * 5;
+}
+
+/** Sample report: average generated squad rating per club for a season seed. */
+export function sampleOpponentSquadRatingsByClub(
+  clubs: string[],
+  seed: string
+): Record<string, number> {
+  clearSeasonSquadStrengthCache();
+  const report: Record<string, number> = {};
+  for (const club of clubs) {
+    report[club] = getGeneratedClubSquadStrength(club, seed, "season");
+  }
+  clearSeasonSquadStrengthCache();
+  return report;
 }

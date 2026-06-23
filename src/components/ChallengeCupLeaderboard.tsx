@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
+import { RecordWithPercentage } from "./RecordWithPercentage";
 import {
   CUP_LEADERBOARD_CATEGORIES,
   rankProfilesByCategory,
@@ -33,7 +34,7 @@ function FeaturedList({
 }: {
   title: string;
   profiles: CupLeaderboardProfile[];
-  formatValue: (profile: CupLeaderboardProfile) => string;
+  formatValue: (profile: CupLeaderboardProfile) => ReactNode;
 }) {
   const currentUser = getUsername() ?? "";
 
@@ -83,7 +84,7 @@ function CategoryTable({
 }: {
   title: string;
   profiles: CupLeaderboardProfile[];
-  formatValue: (profile: CupLeaderboardProfile) => string;
+  formatValue: (profile: CupLeaderboardProfile) => ReactNode;
 }) {
   const currentUser = getUsername() ?? "";
   const ranked = profiles.slice(0, CATEGORY_LIMIT);
@@ -208,9 +209,12 @@ export function ChallengeCupLeaderboard() {
       <FeaturedList
         title="Total Record"
         profiles={cupRecord}
-        formatValue={(p) =>
-          formatRecordWithPercentage(p.cupMatchWins, p.cupMatchLosses)
-        }
+        formatValue={(p) => (
+          <RecordWithPercentage
+            wins={p.cupMatchWins}
+            losses={p.cupMatchLosses}
+          />
+        )}
       />
 
       <CupTeamWinsBarGraph entries={teamWins} totalCups={teamWinsTotal} />

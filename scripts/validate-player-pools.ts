@@ -22,6 +22,9 @@ import {
   isPreSuperLeagueOnlyPlayer,
 } from "../src/lib/players/super-league-eligibility";
 import { getEraClubsWithTeams } from "../src/lib/players/era-teams";
+import { generateSlotTeamYearTarget } from "../src/lib/game/slot-team-year-pick";
+import { createEmptySquad } from "../src/lib/positions";
+import { sampleOpponentSquadRatingsByClub } from "../src/lib/game/opponent-squad-strength";
 import { normalizePlayerNameKey } from "../src/lib/player-name-normalize";
 
 const ROOT = join(__dirname, "..");
@@ -110,6 +113,39 @@ function main(): void {
     errors.push(`Matt Bowen override expected 87, got ${mattBowenRating ?? "missing"}`);
   }
 
+  const spinSamples = 1000;
+  const spinYearCounts: Record<string, number> = {};
+  const spinTeamCounts: Record<string, number> = {};
+  const spinSeed = "validate-spin-distribution";
+  const emptySquad = createEmptySquad();
+  const usedIds = new Set<string>();
+  let spin2026Only = 0;
+  for (let i = 0; i < spinSamples; i++) {
+    const target = generateSlotTeamYearTarget(spinSeed, i, usedIds, emptySquad);
+    if (!target) continue;
+    spinYearCounts[target.year] = (spinYearCounts[target.year] ?? 0) + 1;
+    spinTeamCounts[target.team] = (spinTeamCounts[target.team] ?? 0) + 1;
+    if (target.year === "2026") spin2026Only++;
+  }
+  const spinYearsSeen = Object.keys(spinYearCounts).length;
+  const spin2026Rate = spin2026Only / spinSamples;
+  if (spinYearsSeen <= 1) {
+    errors.push("Normal Mode spin sample only returns a single year");
+  }
+  if (spin2026Rate > 0.45) {
+    errors.push(
+      `Normal Mode spin favours 2026 (${(spin2026Rate * 100).toFixed(1)}% of ${spinSamples} samples) — expected closer to uniform year distribution`
+    );
+  }
+  if ((spinYearCounts["2026"] ?? 0) > 0 && non2026Pools.length === 0) {
+    errors.push("Normal Mode spin only returns 2026/current options");
+  }
+
+  const opponentSample = sampleOpponentSquadRatingsByClub(
+    [...CURRENT_PLAYABLE_CLUBS],
+    "validate-opponent-sample"
+  );
+
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     const count = hard.byClub[club] ?? 0;
     if (count === 0) {
@@ -148,6 +184,13 @@ function main(): void {
       teamYearByCategory,
       teamYearByYear,
       spinPoolCount: teamYearPools.length,
+      spinSample: {
+        samples: spinSamples,
+        yearCounts: spinYearCounts,
+        teamCounts: spinTeamCounts,
+        year2026Rate: spin2026Rate,
+      },
+      opponentSquadSample: opponentSample,
     },
     hardMode: hard,
     challengeCup: cup,
@@ -174,6 +217,9 @@ function main(): void {
     `Normal team-year by status: Current ${teamYearByCategory.current}, Historic ${teamYearByCategory.historic}, Legend ${teamYearByCategory.legend}`
   );
   console.log(`Matt Bowen rating: ${mattBowenRating ?? "missing"}`);
+  console.log(
+    `Spin sample (${spinSamples}): ${spinYearsSeen} years, 2026 rate ${(spin2026Rate * 100).toFixed(1)}%`
+  );
   console.log("\nNormal Mode players by club (team-year unique IDs):");
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     console.log(`  ${club}: ${normal.byClub[club] ?? 0}`);

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-23T15:20:56.182Z",
+  "generatedAt": "2026-06-23T16:35:12.020Z",
   "summary": {
     "normalModeGlobalTotal": 1435,
     "normalModeTeamYearPools": 19,
@@ -54,7 +54,50 @@
       "2015": 1,
       "2026": 14
     },
-    "spinPoolCount": 19
+    "spinPoolCount": 19,
+    "spinSample": {
+      "samples": 1000,
+      "yearCounts": {
+        "2006": 199,
+        "2007": 201,
+        "2008": 193,
+        "2015": 209,
+        "2026": 198
+      },
+      "teamCounts": {
+        "Catalans Dragons": 409,
+        "Leeds Rhinos": 221,
+        "St Helens": 103,
+        "Leigh Leopards": 10,
+        "Hull FC": 16,
+        "Wigan Warriors": 126,
+        "Bradford Bulls": 19,
+        "York Knights": 20,
+        "Castleford Tigers": 16,
+        "Hull KR": 17,
+        "Wakefield Trinity": 11,
+        "Huddersfield Giants": 9,
+        "Toulouse Olympique": 12,
+        "Warrington Wolves": 11
+      },
+      "year2026Rate": 0.198
+    },
+    "opponentSquadSample": {
+      "Bradford Bulls": 81.4,
+      "Castleford Tigers": 83.3,
+      "Catalans Dragons": 79.7,
+      "Huddersfield Giants": 84,
+      "Hull FC": 82.3,
+      "Hull KR": 80.1,
+      "Leeds Rhinos": 80.4,
+      "Leigh Leopards": 80.1,
+      "St Helens": 83.6,
+      "Toulouse Olympique": 80.7,
+      "Wakefield Trinity": 83.6,
+      "Warrington Wolves": 85,
+      "Wigan Warriors": 86.5,
+      "York Knights": 83.3
+    }
   },
   "hardMode": {
     "mode": "hard",

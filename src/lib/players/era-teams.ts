@@ -2,7 +2,6 @@ import type { Player, Position, SquadSlot } from "../types";
 import { getAverageSquadRating } from "../squad-analysis";
 import { getTeamTier } from "../team-tiers";
 import { getClubByName } from "../clubs";
-import { getPlayableClubNames } from "../clubs/super-league-display";
 import { getPlayerById, getPlayersByClub } from "./index";
 import { isHiddenPlayer } from "./goat";
 import { withEraYear } from "./player-age";
@@ -53,7 +52,35 @@ export const ERA_CHALLENGE_CLUBS = [
   "Toulouse Olympique",
 ] as const;
 
+/** Approved 2026/current Super League clubs — excludes historic-only clubs. */
+export const ERA_26_CURRENT_CLUBS = [
+  "Bradford Bulls",
+  "Castleford Tigers",
+  "Catalans Dragons",
+  "Huddersfield Giants",
+  "Hull FC",
+  "Hull KR",
+  "Leeds Rhinos",
+  "Leigh Leopards",
+  "St Helens",
+  "Toulouse Olympique",
+  "Wakefield Trinity",
+  "Warrington Wolves",
+  "Wigan Warriors",
+  "York Knights",
+] as const;
+
 export type EraChallengeClub = (typeof ERA_CHALLENGE_CLUBS)[number];
+
+export const ERA_HISTORIC_ONLY_CLUBS = [
+  "Salford Red Devils",
+  "London Broncos",
+  "Widnes Vikings",
+] as const;
+
+export function isEraCurrentPlayableClub(clubName: string): boolean {
+  return (ERA_26_CURRENT_CLUBS as readonly string[]).includes(clubName);
+}
 
 export interface EraTeam {
   id: string;
@@ -181,9 +208,9 @@ export function getEraClubs(): EraChallengeClub[] {
 }
 
 export function getEra26Clubs(): string[] {
-  return getPlayableClubNames()
-    .filter((club) => canBuildEra26Team(club))
-    .sort((a, b) => a.localeCompare(b));
+  return ERA_26_CURRENT_CLUBS.filter((club) => canBuildEra26Team(club)).sort(
+    (a, b) => a.localeCompare(b)
+  );
 }
 
 export function getEraHistoricYearsForClub(clubName: string): string[] {
@@ -202,7 +229,7 @@ export function getEraClubsWithTeams(): string[] {
     }
   }
 
-  for (const club of getPlayableClubNames()) {
+  for (const club of ERA_26_CURRENT_CLUBS) {
     if (getEraYearsForClubUnified(club).length > 0) {
       clubs.add(club);
     }
@@ -218,7 +245,7 @@ export function getEraYearsForClubUnified(clubName: string): string[] {
     years.add(year);
   }
 
-  if (canBuildEra26Team(clubName)) {
+  if (isEraCurrentPlayableClub(clubName) && canBuildEra26Team(clubName)) {
     years.add(ERA_26_YEAR);
   }
 
@@ -243,6 +270,7 @@ export function getCurrentSquadPlayerIds(clubName: string): string[] {
 }
 
 function canBuildEra26Team(clubName: string): boolean {
+  if (!isEraCurrentPlayableClub(clubName)) return false;
   const playerIds = getCurrentSquadPlayerIds(clubName);
   if (playerIds.length < MIN_ERA_ROSTER_PLAYERS) return false;
   const squad = buildEraSquadFromRoster(playerIds);
@@ -533,7 +561,7 @@ function logEraValidationWarning(
 }
 
 export function buildEra26Team(clubName: string): EraTeam | null {
-  if (!getPlayableClubNames().includes(clubName)) return null;
+  if (!isEraCurrentPlayableClub(clubName)) return null;
   const playerIds = getCurrentSquadPlayerIds(clubName);
   return buildEraTeamInternal(
     clubName,

@@ -22,22 +22,27 @@ export function TryScorerChips({ scorers }: TryScorerChipsProps) {
   if (grouped.length === 0) return null;
 
   return (
-    <div className="space-y-1">
-      {grouped.map((scorer) => {
+    <p className={`${TYPO.statValue} flex flex-wrap gap-x-1 gap-y-0.5`}>
+      {grouped.map((scorer, index) => {
         const label =
           scorer.tries > 1 ? `${scorer.name} x${scorer.tries}` : scorer.name;
 
         return (
-          <p
+          <span
             key={scorer.playerId}
-            className={TYPO.statValue}
+            className="inline-flex max-w-full items-center"
             title={scorer.positionNote ?? undefined}
           >
-            {label}
-          </p>
+            {index > 0 && (
+              <span className="mr-1 text-gray-600" aria-hidden>
+                ·
+              </span>
+            )}
+            <span className="break-words">{label}</span>
+          </span>
         );
       })}
-    </div>
+    </p>
   );
 }
 

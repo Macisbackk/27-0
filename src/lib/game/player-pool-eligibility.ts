@@ -103,12 +103,9 @@ export function getNormalModeTeamYearPools(): TeamYearPool[] {
   });
 }
 
-/** Weighted spin pools — historic Super League years favoured over 2026-only bias. */
-export function getNormalModeSpinPoolWeight(pool: TeamYearPool): number {
-  const meta = getTeamYearRosterMeta(pool.team, pool.year);
-  if (pool.year === "2026") return 1;
-  if (meta?.source === "verified") return 6;
-  return 3;
+/** Uniform spin weight — every valid team-year pool has equal chance after filters. */
+export function getNormalModeSpinPoolWeight(_pool: TeamYearPool): number {
+  return 1;
 }
 
 export function pickWeightedNormalModePool<T extends TeamYearPool>(
@@ -116,14 +113,19 @@ export function pickWeightedNormalModePool<T extends TeamYearPool>(
   rng: () => number
 ): T | null {
   if (pools.length === 0) return null;
-  const weights = pools.map((pool) => getNormalModeSpinPoolWeight(pool));
-  const total = weights.reduce((sum, w) => sum + w, 0);
-  let roll = rng() * total;
-  for (let i = 0; i < pools.length; i++) {
-    roll -= weights[i]!;
-    if (roll <= 0) return pools[i]!;
+
+  const byYear = new Map<string, T[]>();
+  for (const pool of pools) {
+    const list = byYear.get(pool.year) ?? [];
+    list.push(pool);
+    byYear.set(pool.year, list);
   }
-  return pools[pools.length - 1]!;
+
+  const years = [...byYear.keys()];
+  const year = years[Math.floor(rng() * years.length)]!;
+  const yearPools = byYear.get(year) ?? [];
+  if (yearPools.length === 0) return null;
+  return yearPools[Math.floor(rng() * yearPools.length)]!;
 }
 
 export function getEraChallengeCupTeamCount(): number {

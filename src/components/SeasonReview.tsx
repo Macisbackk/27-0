@@ -189,7 +189,7 @@ export function SeasonReview({
     !joeMellorMode &&
     !superSamHallasMode;
 
-  const hideEndOfRunNav = showPlayoffPrompt || missedPlayoffs;
+  const hideEndOfRunNav = showPlayoffPrompt;
 
   useEffect(() => {
     runSeasonReviewValidation({

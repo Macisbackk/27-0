@@ -11,6 +11,8 @@ import { getSquadValue } from "../src/lib/positions";
 import {
   ERA_CHALLENGE_CLUBS,
   ERA_26_YEAR,
+  ERA_26_CURRENT_CLUBS,
+  ERA_HISTORIC_ONLY_CLUBS,
   ERA_HISTORIC_ROSTER_SIZE,
   buildEraSquadFromRoster,
   buildEraTeamForYear,
@@ -416,6 +418,41 @@ function main(): void {
   const historicTeams = validTeams.filter((t) => t.category === "historic");
   const era26Teams = validTeams.filter((t) => t.category === "26");
   const onePerClubReady = clubsRepresented.size >= 14;
+
+  for (const club of ERA_HISTORIC_ONLY_CLUBS) {
+    const invalid26 = era26Teams.find((t) => t.clubName === club);
+    if (invalid26) {
+      errors.push({
+        club,
+        year: ERA_26_YEAR,
+        severity: "error" as const,
+        code: "HISTORIC_ONLY_AS_CURRENT",
+        message: `${club} must not appear as a 2026/current Era team`,
+      });
+    }
+  }
+
+  if (era26Teams.length !== ERA_26_CURRENT_CLUBS.length) {
+    errors.push({
+      club: "*",
+      year: ERA_26_YEAR,
+      severity: "error" as const,
+      code: "ERA_26_COUNT",
+      message: `Expected ${ERA_26_CURRENT_CLUBS.length} current Era teams, found ${era26Teams.length}`,
+    });
+  }
+
+  for (const club of ERA_26_CURRENT_CLUBS) {
+    if (!era26Teams.some((t) => t.clubName === club)) {
+      errors.push({
+        club,
+        year: ERA_26_YEAR,
+        severity: "error" as const,
+        code: "MISSING_ERA_26_TEAM",
+        message: `Missing approved 2026/current Era team for ${club}`,
+      });
+    }
+  }
 
   const report = {
     generatedAt: new Date().toISOString(),

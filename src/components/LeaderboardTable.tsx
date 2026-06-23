@@ -20,6 +20,7 @@ import {
 } from "@/lib/storage/cup-team-wins";
 import { getClubFundsLeaderboardAsync } from "@/lib/storage/club-funds-leaderboard";
 import { playTabChange } from "@/lib/sound";
+import { RecordWithPercentage } from "./RecordWithPercentage";
 import { CupTeamWinsBarGraph } from "./CupTeamWinsBarGraph";
 import { HardModeBadge } from "./HardModeBadge";
 import {
@@ -55,7 +56,7 @@ export function LeaderboardTable({
 }: LeaderboardTableProps) {
   const [leaderboardMode, setLeaderboardMode] =
     useState<LeaderboardDbMode>("super-league");
-  const [tracker, setTracker] = useState<LeaderboardTrackerType>("squad_value");
+  const [tracker, setTracker] = useState<LeaderboardTrackerType>("best_record");
   const [period, setPeriod] = useState<LeaderboardPeriod>("ALL_TIME");
   const [difficulty, setDifficulty] =
     useState<GameDifficulty>(initialDifficulty);
@@ -344,7 +345,22 @@ export function LeaderboardTable({
                     <span className="font-medium">{entry.username}</span>
                   </td>
                   <td className="px-4 py-3 font-semibold text-accent-gold">
-                    {entry.statDisplay}
+                    {activeTracker === "best_record" ? (
+                      (() => {
+                        const match = entry.statDisplay.match(
+                          /^(\d+)-(\d+)\s+\(([\d.]+)%\)$/
+                        );
+                        if (!match) return entry.statDisplay;
+                        return (
+                          <RecordWithPercentage
+                            wins={Number.parseInt(match[1]!, 10)}
+                            losses={Number.parseInt(match[2]!, 10)}
+                          />
+                        );
+                      })()
+                    ) : (
+                      entry.statDisplay
+                    )}
                   </td>
                   {!isClubFundsMode && (
                     <td className="hidden px-4 py-3 text-sm text-gray-500 sm:table-cell">

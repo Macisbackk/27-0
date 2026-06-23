@@ -25,8 +25,9 @@ import {
   type StatsTabId,
 } from "@/lib/stats-views";
 import { HardModeBadge } from "./HardModeBadge";
+import { RecordWithPercentage } from "./RecordWithPercentage";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
-import { BTN } from "@/lib/ui/design-system";
+import { BTN, tabGroupButtonClass, tabGroupClass } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { runStatsPageValidation } from "@/lib/validation/stats-page-validation";
 import { playTabChange } from "@/lib/sound";
@@ -144,12 +145,8 @@ export function StatsPanel() {
           draftHard={publicDraftHard}
         />
       )}
-      {activeTab === "super-league" && <SuperLeagueTab stats={normalStats} />}
-      {activeTab === "hard-mode" && (
-        <HardModeTab
-          stats={hardStats}
-          draftHard={SHOW_DRAFT_MODE ? draftHardStats : EMPTY_STATS}
-        />
+      {activeTab === "super-league" && (
+        <SuperLeagueTab normal={normalStats} hard={hardStats} />
       )}
       {SHOW_DRAFT_MODE && activeTab === "draft-mode" && (
         <DraftModeTab draftNormal={draftNormalStats} />
@@ -158,10 +155,11 @@ export function StatsPanel() {
         <FantasyModeTab stats={fantasyStats} />
       )}
       {activeTab === "challenge-cup" && (
-        <ChallengeCupTab normal={normalStats} hard={hardStats} />
-      )}
-      {activeTab === "era-challenge-cup" && (
-        <EraChallengeCupTab stats={eraCupStats} />
+        <ChallengeCupTab
+          normal={normalStats}
+          hard={hardStats}
+          eraCup={eraCupStats}
+        />
       )}
 
       <p className="text-center text-xs text-gray-600">
@@ -328,15 +326,76 @@ function OverallTab({
   );
 }
 
-function SuperLeagueTab({ stats }: { stats: UserStatsData }) {
+function ModeVariantToggle<T extends string>({
+  value,
+  options,
+  onChange,
+}: {
+  value: T;
+  options: { id: T; label: string }[];
+  onChange: (id: T) => void;
+}) {
+  return (
+    <div className={`${tabGroupClass} flex-wrap`}>
+      {options.map((option) => (
+        <button
+          key={option.id}
+          type="button"
+          onClick={() => {
+            if (value !== option.id) playTabChange();
+            onChange(option.id);
+          }}
+          className={tabGroupButtonClass(value === option.id)}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function SuperLeagueTab({
+  normal,
+  hard,
+}: {
+  normal: UserStatsData;
+  hard: UserStatsData;
+}) {
+  const [variant, setVariant] = useState<"normal" | "hard">("normal");
+  const stats = variant === "hard" ? hard : normal;
   const view = getSuperLeagueView(stats);
+  const isHard = variant === "hard";
 
   return (
     <div className="space-y-8">
-      <StatsSection title="Normal Mode">
-        <StatCard label="Normal Mode Runs" value={String(view.runs)} />
-        <StatCard label="Normal Mode Wins" value={String(view.wins)} />
-        <StatCard label="Normal Mode Losses" value={String(view.losses)} />
+      <StatsSection
+        title={isHard ? "Hard Mode" : "Normal Mode"}
+        headerExtra={
+          <div className="flex flex-wrap items-center gap-2">
+            <ModeVariantToggle
+              value={variant}
+              options={[
+                { id: "normal", label: "Normal" },
+                { id: "hard", label: "Hard" },
+              ]}
+              onChange={setVariant}
+            />
+            {isHard && <HardModeBadge />}
+          </div>
+        }
+      >
+        <StatCard
+          label={isHard ? "Hard Mode Runs" : "Normal Mode Runs"}
+          value={String(view.runs)}
+        />
+        <StatCard
+          label={isHard ? "Hard Mode Wins" : "Normal Mode Wins"}
+          value={String(view.wins)}
+        />
+        <StatCard
+          label={isHard ? "Hard Mode Losses" : "Normal Mode Losses"}
+          value={String(view.losses)}
+        />
         <StatCard
           label="Regular Season Record"
           value={formatRecordOrDash(
@@ -345,9 +404,16 @@ function SuperLeagueTab({ stats }: { stats: UserStatsData }) {
         />
         <StatCard
           label="Total Record"
-          value={formatRecordOrDash(
-            view.hasSeasons ? view.totalRecord : null
-          )}
+          value={
+            view.hasSeasons ? (
+              <RecordWithPercentage
+                wins={view.totalRecord.wins}
+                losses={view.totalRecord.losses}
+              />
+            ) : (
+              "—"
+            )
+          }
           highlight={view.totalRecord.wins >= 20}
         />
         <StatCard
@@ -359,7 +425,7 @@ function SuperLeagueTab({ stats }: { stats: UserStatsData }) {
           )}
         />
         <StatCard
-          label="Worst Normal Mode Record"
+          label={isHard ? "Worst Hard Mode Record" : "Worst Normal Mode Record"}
           value={formatRecordOrDash(
             view.hasSeasons ? view.worstRecord : null
           )}
@@ -625,25 +691,101 @@ function FantasyModeTab({ stats }: { stats: UserStatsData }) {
 function ChallengeCupTab({
   normal,
   hard,
+  eraCup,
 }: {
   normal: UserStatsData;
   hard: UserStatsData;
+  eraCup: UserStatsData;
 }) {
+  const [variant, setVariant] = useState<"standard" | "era">("standard");
+
+  if (variant === "era") {
+  const view = getEraChallengeCupView(eraCup);
+  return (
+    <div className="space-y-8">
+      <StatsSection
+        title="Era Challenge Cup"
+        headerExtra={
+          <ModeVariantToggle
+            value={variant}
+            options={[
+              { id: "standard", label: "Challenge Cup" },
+              { id: "era", label: "Era Challenge Cup" },
+            ]}
+            onChange={setVariant}
+          />
+        }
+      >
+        <StatCard label="Era Cup Appearances" value={String(view.runs)} />
+        <StatCard
+          label="Total Record"
+          value={
+            view.wins + view.losses > 0 ? (
+              <RecordWithPercentage wins={view.wins} losses={view.losses} />
+            ) : (
+              "—"
+            )
+          }
+          highlight={view.totalRecord.wins >= 4}
+        />
+        <StatCard
+          label="Era Match Wins"
+          value={String(view.wins)}
+          highlight={view.wins > 0}
+        />
+        <StatCard label="Era Match Losses" value={String(view.losses)} />
+      </StatsSection>
+
+      <StatsSection title="Achievements">
+        <StatCard
+          label="Era Cups Won"
+          value={String(view.cupsWon)}
+          highlight={view.cupsWon > 0}
+        />
+        <StatCard
+          label="Best Era Team Used"
+          value={view.bestTeamUsed ?? "—"}
+          highlight={view.bestTeamUsed !== null}
+        />
+      </StatsSection>
+    </div>
+  );
+  }
+
   const view = getChallengeCupView(normal, hard);
   const personalBests = getChallengeCupPersonalBests(normal, hard);
 
   return (
     <div className="space-y-8">
-      <StatsSection title="Career">
+      <StatsSection
+        title="Challenge Cup"
+        headerExtra={
+          <ModeVariantToggle
+            value={variant}
+            options={[
+              { id: "standard", label: "Challenge Cup" },
+              { id: "era", label: "Era Challenge Cup" },
+            ]}
+            onChange={setVariant}
+          />
+        }
+      >
         <StatCard
           label="Challenge Cup Appearances"
           value={String(view.runs)}
         />
         <StatCard
           label="Total Record"
-          value={formatRecordOrDash(
-            view.wins + view.losses > 0 ? view.totalRecord : null
-          )}
+          value={
+            view.wins + view.losses > 0 ? (
+              <RecordWithPercentage
+                wins={view.totalRecord.wins}
+                losses={view.totalRecord.losses}
+              />
+            ) : (
+              "—"
+            )
+          }
           highlight={view.totalRecord.wins >= 10}
         />
         <StatCard
@@ -802,7 +944,7 @@ function StatCard({
   highlight,
 }: {
   label: string;
-  value: string;
+  value: ReactNode;
   sub?: string;
   highlight?: boolean;
 }) {

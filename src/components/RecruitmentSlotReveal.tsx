@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import { getSlotTeamYearSpinPools } from "@/lib/game/slot-team-year-pick";
@@ -8,7 +8,9 @@ import {
   computeSlotReelFinalIndex,
   buildSlotReelPool,
   buildSlotReelStrip,
+  buildSpinReelTickIndices,
   computeSlotReelScrollY,
+  DEFAULT_SPIN_TICK_COUNT,
 } from "@/lib/game/slot-reel";
 import { getClubColors } from "@/lib/clubs";
 import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
@@ -21,11 +23,13 @@ import {
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
-/** Per-tick delays — fast start, smooth deceleration (~1.55s spin). */
-const SPIN_DELAYS_MS = [
-  24, 26, 28, 30, 32, 34, 38, 42, 48, 54,
-  62, 72, 84, 98, 114, 132, 152, 174, 198,
-] as const;
+/** Per-tick delays — fast start, smooth deceleration. */
+const SPIN_DELAYS_MS = Array.from({ length: DEFAULT_SPIN_TICK_COUNT }, (_, i) => {
+  const progress = i / DEFAULT_SPIN_TICK_COUNT;
+  if (progress < 0.35) return 22 + Math.floor(progress * 20);
+  if (progress < 0.7) return 38 + Math.floor((progress - 0.35) * 80);
+  return 90 + Math.floor((progress - 0.7) * 220);
+});
 
 const LAND_HOLD_MS = 280;
 
@@ -36,16 +40,9 @@ interface RecruitmentSlotRevealProps {
 
 function computeScrollIndexForTick(
   tick: number,
-  totalTicks: number,
-  startIndex: number,
-  finalIndex: number,
-  prevIndex: number
+  tickIndices: number[]
 ): number {
-  if (tick >= totalTicks) return finalIndex;
-  const progress = (tick + 1) / totalTicks;
-  const eased = 1 - Math.pow(1 - progress, 2.35);
-  const raw = startIndex + Math.floor(eased * (finalIndex - startIndex));
-  return Math.min(finalIndex, Math.max(prevIndex + 1, raw));
+  return tickIndices[Math.min(tick, tickIndices.length - 1)] ?? 0;
 }
 
 function SlotReel({
@@ -125,14 +122,30 @@ export function RecruitmentSlotReveal({
     [yearPool, target.year]
   );
 
+  const teamTickIndices = useMemo(
+    () =>
+      buildSpinReelTickIndices(
+        teamPool,
+        target.team,
+        DEFAULT_SPIN_TICK_COUNT
+      ),
+    [teamPool, target.team]
+  );
+  const yearTickIndices = useMemo(
+    () =>
+      buildSpinReelTickIndices(
+        yearPool,
+        target.year,
+        DEFAULT_SPIN_TICK_COUNT
+      ),
+    [yearPool, target.year]
+  );
+
   const [teamIndex, setTeamIndex] = useState(teamStartIndex);
   const [yearIndex, setYearIndex] = useState(yearStartIndex);
   const [stepMs, setStepMs] = useState<number>(SPIN_DELAYS_MS[0]);
   const [locked, setLocked] = useState(false);
   const [phaseLabel, setPhaseLabel] = useState("Recruitment draw spinning…");
-  const teamPrevRef = useRef(teamStartIndex);
-  const yearPrevRef = useRef(yearStartIndex);
-
   useEffect(() => {
     if (process.env.NODE_ENV !== "production") {
       if (!teamPool.includes(target.team)) {
@@ -151,16 +164,27 @@ export function RecruitmentSlotReveal({
   }, [teamPool, yearPool, target.team, target.year]);
 
   useEffect(() => {
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      setTeamIndex(teamFinalIndex);
+      setYearIndex(yearFinalIndex);
+      setLocked(true);
+      setPhaseLabel("Draw locked");
+      const timeoutId = window.setTimeout(() => onComplete(), 120);
+      return () => window.clearTimeout(timeoutId);
+    }
+
     let tick = 0;
     let cancelled = false;
     let timeoutId: number | null = null;
     const totalTicks = SPIN_DELAYS_MS.length;
 
-    teamPrevRef.current = teamStartIndex;
-    yearPrevRef.current = yearStartIndex;
     setTeamIndex(teamStartIndex);
     setYearIndex(yearStartIndex);
-    setStepMs(SPIN_DELAYS_MS[0]);
+    setStepMs(SPIN_DELAYS_MS[0] ?? 24);
     setLocked(false);
     setPhaseLabel("Recruitment draw spinning…");
 
@@ -171,24 +195,8 @@ export function RecruitmentSlotReveal({
         const delay = SPIN_DELAYS_MS[tick] ?? 198;
         setStepMs(delay);
 
-        const nextTeam = computeScrollIndexForTick(
-          tick,
-          totalTicks,
-          teamStartIndex,
-          teamFinalIndex,
-          teamPrevRef.current
-        );
-        const nextYear = computeScrollIndexForTick(
-          tick,
-          totalTicks,
-          yearStartIndex,
-          yearFinalIndex,
-          yearPrevRef.current
-        );
-        teamPrevRef.current = nextTeam;
-        yearPrevRef.current = nextYear;
-        setTeamIndex(nextTeam);
-        setYearIndex(nextYear);
+        setTeamIndex(computeScrollIndexForTick(tick, teamTickIndices));
+        setYearIndex(computeScrollIndexForTick(tick, yearTickIndices));
 
         if (tick === 0) {
           playSlotSpinStart();
@@ -233,6 +241,8 @@ export function RecruitmentSlotReveal({
     yearStartIndex,
     teamFinalIndex,
     yearFinalIndex,
+    teamTickIndices,
+    yearTickIndices,
     onComplete,
   ]);
 

@@ -55,6 +55,7 @@
     "audit:legends:report": "tsx scripts/audit-legend-tier.ts",
     "validate:player-pools": "tsx scripts/validate-player-pools.ts",
     "test:playoffs": "tsx scripts/test-playoff-simulation.ts",
+    "merge:coachbeard-accounts": "tsx scripts/merge-coachbeard-accounts.ts",
     "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts"
   },
   "dependencies": {
