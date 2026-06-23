@@ -3,7 +3,7 @@
 import type { SquadSlot } from "@/lib/types";
 import { getClubColors } from "@/lib/clubs";
 import { getPlayerColorClub } from "@/lib/players/run-club";
-import { POSITION_TILE_LABEL } from "@/lib/positions";
+import { POSITION_SHORT, POSITION_TILE_LABEL } from "@/lib/positions";
 import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
 /** Shared footprint for empty and filled pitch slots — scales down on mobile. */
@@ -32,7 +32,9 @@ export function PitchSlotCard({
 }: PitchSlotCardProps) {
   const player = slot.player!;
   const colors = getClubColors(getPlayerColorClub(player, clubColorOverride));
-  const positionLabel = POSITION_TILE_LABEL[slot.position];
+  const positionLabel = compact
+    ? POSITION_SHORT[slot.position]
+    : POSITION_TILE_LABEL[slot.position];
   const effectiveRating = getEffectivePeakRating(slot);
   const baseRating = player.peakRating;
   const hasPenalty =
@@ -41,8 +43,8 @@ export function PitchSlotCard({
 
   return (
     <div
-      className={`pitch-slot-card flex shrink-0 flex-col overflow-hidden rounded-lg border-2 border-accent-green/50 bg-black/70 shadow-[0_0_10px_rgba(34,197,94,0.2)] ${
-        compact ? PITCH_SLOT_COMPACT_CLASS : PITCH_SLOT_SIZE_CLASS
+      className={`pitch-slot-card flex shrink-0 flex-col rounded-lg border-2 border-accent-green/50 bg-black/70 shadow-[0_0_10px_rgba(34,197,94,0.2)] ${
+        compact ? `${PITCH_SLOT_COMPACT_CLASS} overflow-visible` : `${PITCH_SLOT_SIZE_CLASS} overflow-hidden`
       } ${className}`}
       title={player.name}
     >
@@ -66,7 +68,7 @@ export function PitchSlotCard({
         <span className="w-full text-center font-display text-[7px] font-bold uppercase leading-tight tracking-wide text-gray-300 sm:text-[8px]">
           {positionLabel}
         </span>
-        <p className="w-full line-clamp-2 text-center font-display text-[6px] font-semibold leading-tight text-white sm:text-[7px]">
+        <p className="w-full break-words text-center font-display text-[6px] font-semibold leading-tight text-white sm:text-[7px]">
           {player.name}
         </p>
       </div>

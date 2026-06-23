@@ -1,5 +1,6 @@
 /**
- * Rebalance peakRating and value across all player JSON files (75–99 scale).
+ * Rebalance peakRating and value across all player JSON files (70–94 scale).
+ * Elite (91+) stays rare; manual overrides are preserved.
  * Run: npm run rebalance:ratings
  */
 import { readFileSync, writeFileSync } from "fs";
@@ -17,13 +18,25 @@ type RawPlayer = Record<string, unknown> & {
 const DATA_DIR = join(__dirname, "..", "data");
 const FILES = ["current-squads.json", "historic-players.json", "legends.json"];
 
-type RatingBand = "lower" | "regular" | "strong" | "elite" | "legendary";
+type RatingBand =
+  | "filler"
+  | "fringe"
+  | "rotation"
+  | "reliable"
+  | "strong"
+  | "top"
+  | "elite"
+  | "legendary";
 
+/** Target bands aligned with Super League tier spread. */
 const OUTPUT_RANGES: Record<RatingBand, [number, number]> = {
-  lower: [75, 79],
-  regular: [80, 84],
-  strong: [85, 89],
-  elite: [90, 94],
+  filler: [70, 73],
+  fringe: [74, 77],
+  rotation: [78, 81],
+  reliable: [82, 84],
+  strong: [85, 87],
+  top: [88, 90],
+  elite: [91, 94],
   legendary: [95, 99],
 };
 
@@ -31,12 +44,16 @@ function getBand(category: string, raw: number): RatingBand {
   if (category === "legend") {
     if (raw >= 97) return "legendary";
     if (raw >= 93) return "elite";
+    if (raw >= 88) return "top";
     return "strong";
   }
   if (raw >= 92) return "elite";
-  if (raw >= 86) return "strong";
-  if (raw >= 80) return "regular";
-  return "lower";
+  if (raw >= 88) return "top";
+  if (raw >= 85) return "strong";
+  if (raw >= 82) return "reliable";
+  if (raw >= 78) return "rotation";
+  if (raw >= 74) return "fringe";
+  return "filler";
 }
 
 function compress(raw: number, category: string): number {
@@ -54,19 +71,19 @@ function compress(raw: number, category: string): number {
   let result = Math.round(outMin + t * (outMax - outMin));
 
   if (category === "legend") {
-    result = Math.max(92, Math.min(99, result));
+    result = Math.max(88, Math.min(99, result));
   } else if (category === "historic") {
-    result = Math.max(78, Math.min(94, result));
+    result = Math.max(74, Math.min(94, result));
   } else {
-    result = Math.max(75, Math.min(88, result));
+    result = Math.max(70, Math.min(90, result));
   }
 
-  return Math.max(75, Math.min(99, result));
+  return Math.max(70, Math.min(99, result));
 }
 
 function ratingToValue(rating: number): number {
-  const normalized = (rating - 75) / 24;
-  const value = Math.pow(normalized, 1.85) * 4_800_000 + 120_000;
+  const normalized = (rating - 70) / 29;
+  const value = Math.pow(Math.max(0, normalized), 1.9) * 4_800_000 + 100_000;
   return Math.round(value / 5_000) * 5_000;
 }
 
@@ -89,4 +106,4 @@ for (const file of FILES) {
   console.log(`Updated ${players.length} players in ${file}`);
 }
 
-console.log("Rating rebalance complete (75–99 scale).");
+console.log("Rating rebalance complete (70–94 tier scale, 90+ rare).");

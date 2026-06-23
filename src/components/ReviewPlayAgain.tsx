@@ -9,6 +9,8 @@ interface ReviewPlayAgainProps {
   leaderboardHref?: string;
   compact?: boolean;
   hardMode?: boolean;
+  /** When true, omit Return Home (caller provides a single footer button). */
+  hideReturnHome?: boolean;
 }
 
 export function ReviewPlayAgain({
@@ -16,6 +18,7 @@ export function ReviewPlayAgain({
   leaderboardHref = "/leaderboard",
   compact = false,
   hardMode = false,
+  hideReturnHome = false,
 }: ReviewPlayAgainProps) {
   return (
     <div
@@ -24,10 +27,14 @@ export function ReviewPlayAgain({
       <ModeStartButton hardMode={hardMode} onClick={onPlayAgain}>
         Play Again
       </ModeStartButton>
-      <div className={`grid grid-cols-2 ${SPACING.buttonGap}`}>
-        <Link href="/" className={`${BTN.base} ${BTN.secondaryLg}`}>
-          Return Home
-        </Link>
+      <div
+        className={`grid ${hideReturnHome ? "grid-cols-1" : "grid-cols-2"} ${SPACING.buttonGap}`}
+      >
+        {!hideReturnHome && (
+          <Link href="/" className={`${BTN.base} ${BTN.secondaryLg}`}>
+            Return Home
+          </Link>
+        )}
         <Link href={leaderboardHref} className={`${BTN.base} ${BTN.secondaryLg}`}>
           Leaderboard
         </Link>

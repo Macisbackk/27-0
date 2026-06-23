@@ -15,8 +15,6 @@ import { getClubBreakdownSummary } from "@/lib/squad-analysis";
 import { generateSeasonAwards } from "@/lib/season-awards";
 import { getSquadValue } from "@/lib/positions";
 import { formatValue } from "@/lib/players";
-import { getExtendedTeamComparison } from "@/lib/team-value-comparison";
-import { getAverageSquadRating } from "@/lib/squad-analysis";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { formatSeasonWinPercentageOrDash } from "@/lib/stats-views";
 import { playGradeSound, playPanelClose, playPanelExpand } from "@/lib/sound";
@@ -33,7 +31,6 @@ import { TeamSheet } from "./TeamSheet";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
-import { TeamComparisonBox } from "./TeamComparisonBox";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { TryScorersSection } from "./TryScorersSection";
 import { buildLeagueTable } from "@/lib/game/league-table";
@@ -93,23 +90,6 @@ export function SeasonReview({
         superSamHallasMode,
       }),
     [squad, seasonResult, joeMellorMode, superSamHallasMode]
-  );
-  const teamComparison = useMemo(
-    () =>
-      getExtendedTeamComparison(
-        "Dream Team",
-        getAverageSquadRating(squad),
-        totalValue,
-        seasonResult.fixtures,
-        seed,
-        {
-          squad,
-          wins: seasonResult.wins,
-          losses: seasonResult.losses,
-          seasonResult,
-        }
-      ),
-    [squad, totalValue, seasonResult, seed]
   );
   const playerAwards = useMemo(
     () =>
@@ -300,6 +280,7 @@ export function SeasonReview({
               leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
               hardMode={isHardMode}
               compact
+              hideReturnHome
             />
             <ClubFundsEarned payout={clubFundsPayout} />
           </motion.div>
@@ -357,6 +338,23 @@ export function SeasonReview({
               </span>
             </p>
             <p className="pt-2 text-gray-500">{summaryMessage}</p>
+            {seasonResult.insights.length > 0 && (
+              <div className="border-t border-pitch-700/40 pt-3 text-left">
+                <p className="text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  Season Highlights
+                </p>
+                <ul className="mt-2 space-y-1.5 text-sm text-gray-400">
+                  {seasonResult.insights.map((insight) => (
+                    <li
+                      key={insight}
+                      className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2"
+                    >
+                      {insight}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </CollapsibleReviewSection>
 
@@ -420,22 +418,7 @@ export function SeasonReview({
           </div>
         </CollapsibleReviewSection>
 
-        {seasonResult.insights.length > 0 && (
-          <CollapsibleReviewSection title="Records" delay={0.42} defaultOpen={false}>
-            <ul className="space-y-2 text-left text-sm text-gray-400">
-              {seasonResult.insights.map((insight) => (
-                <li
-                  key={insight}
-                  className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2"
-                >
-                  {insight}
-                </li>
-              ))}
-            </ul>
-          </CollapsibleReviewSection>
-        )}
-
-        <CollapsibleReviewSection title="Player Awards" delay={0.44} defaultOpen={false}>
+        <CollapsibleReviewSection title="Player Awards" delay={0.42} defaultOpen={false}>
           <div className="grid gap-3 text-left sm:grid-cols-2">
             {playerAwards.map((award) => (
               <RLAwardCard
@@ -453,37 +436,28 @@ export function SeasonReview({
           </div>
         </CollapsibleReviewSection>
 
-        <CollapsibleReviewSection title="Club Representation" delay={0.46} defaultOpen={false}>
+        <CollapsibleReviewSection title="Club Representation" delay={0.44} defaultOpen={false}>
           <div className="text-left">
             <ClubRepresentation summary={clubSummary} />
           </div>
         </CollapsibleReviewSection>
 
-        <CollapsibleReviewSection
-          title="Your Team vs Best Opposition"
-          helper="Squad OVR comparison — your Dream Team rating against the highest-rated opponent you faced this season."
-          variant="featured"
-          delay={0.48}
-          defaultOpen={false}
+        <motion.footer
+          className="mt-8 w-full max-w-xl space-y-3"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.65 }}
         >
-          <TeamComparisonBox comparison={teamComparison} />
-        </CollapsibleReviewSection>
-
-        {!hideEndOfRunNav && (
-          <motion.footer
-            className="mt-8 w-full max-w-xl space-y-3"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.65 }}
-          >
+          {!hideEndOfRunNav && (
             <ReviewPlayAgain
               onPlayAgain={handlePlayAgain}
               leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
               hardMode={isHardMode}
+              hideReturnHome
             />
-            <ReturnHomeButton onBeforeNavigate={onReturnHome} />
-          </motion.footer>
-        )}
+          )}
+          <ReturnHomeButton onBeforeNavigate={onReturnHome} />
+        </motion.footer>
       </div>
     </div>
   );

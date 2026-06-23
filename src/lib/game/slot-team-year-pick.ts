@@ -26,6 +26,7 @@ import {
   getNormalModeTeamYearPoolsCached,
 } from "./player-pool-eligibility";
 import { pickClubUniformTeamYearPool } from "./spin-club-pick";
+import { pickLegendTeamYearForSlot } from "./legend-spin";
 import { spinTimingMark } from "./spin-timing";
 import {
   buildTeamYearId,
@@ -62,6 +63,14 @@ function pickPoolFromCandidates(
   validate: (pool: TeamYearPool) => boolean
 ): TeamYearPool | null {
   return pickClubUniformTeamYearPool(candidates, rng, validate).pool;
+}
+
+export interface SlotSpinPickOptions {
+  requireLegendPlayer?: boolean;
+}
+
+export interface SlotPlayerPrepareOptions {
+  legendOnly?: boolean;
 }
 
 export interface SlotTeamYearPlayer {
@@ -153,7 +162,8 @@ export function prepareSlotTeamYearPlayers(
   target: SlotRevealTarget,
   usedIds: Set<string>,
   squad: SquadSlot[],
-  slotIndex: number
+  slotIndex: number,
+  options: SlotPlayerPrepareOptions = {}
 ): SlotTeamYearPlayer[] {
   const pool = getTeamYearPoolFromTarget(target);
   if (!pool) return [];
@@ -161,16 +171,13 @@ export function prepareSlotTeamYearPlayers(
   const slot = squad.find((s) => s.slotIndex === slotIndex);
   if (!slot || slot.player) return [];
 
-  const allowedPositions = new Set(
-    getRecruitListPositionsForSlot(slot.position)
-  );
-
   const entries = getRawPlayersForTeamYearPool(pool)
     .filter(
       (player) =>
         isPlayerInTeamYearPool(player.id, pool) &&
         !usedIds.has(player.id) &&
-        canPlayerFillTeamYearSlot(target.team, target.year, player, slot.position)
+        canPlayerFillTeamYearSlot(target.team, target.year, player, slot.position) &&
+        (!options.legendOnly || player.category === "legend")
     )
     .map((player) => {
       const prepared = preparePlayerForTeamYear(player, target);
@@ -254,6 +261,17 @@ function eligiblePlayersForSlot(
   );
 }
 
+function eligibleLegendPlayersForSlot(
+  pool: TeamYearPool,
+  usedIds: Set<string>,
+  squad: SquadSlot[],
+  slotIndex: number
+): Player[] {
+  return eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).filter(
+    (player) => player.category === "legend"
+  );
+}
+
 /** Deterministic team/year draw for a selected slot — animation lands on this exact result. */
 export function generateSlotTeamYearTargetForSlot(
   seed: string,
@@ -261,8 +279,22 @@ export function generateSlotTeamYearTargetForSlot(
   usedIds: Set<string>,
   squad: SquadSlot[],
   slotIndex: number,
-  usedTeamYearKeys: ReadonlySet<string> = new Set()
+  usedTeamYearKeys: ReadonlySet<string> = new Set(),
+  options: SlotSpinPickOptions = {}
 ): SlotRevealTarget | null {
+  if (options.requireLegendPlayer) {
+    const legendPick = pickLegendTeamYearForSlot(
+      seed,
+      spinIndex,
+      usedIds,
+      squad,
+      slotIndex,
+      usedTeamYearKeys
+    );
+    if (!legendPick) return null;
+    return buildSlotRevealTarget(legendPick.team, legendPick.year);
+  }
+
   const picked = pickTeamYearForSlot(
     seed,
     spinIndex,
@@ -280,13 +312,17 @@ function pickTeamYearForSlot(
   usedIds: Set<string>,
   squad: SquadSlot[],
   slotIndex: number,
-  usedTeamYearKeys: ReadonlySet<string> = new Set()
+  usedTeamYearKeys: ReadonlySet<string> = new Set(),
+  options: SlotSpinPickOptions = {}
 ): { target: SlotRevealTarget; nextSpinIndex: number } | null {
   const t0 = spinTimingMark("pick-team-year-start");
+  const validatePool = (pool: TeamYearPool) =>
+    options.requireLegendPlayer
+      ? eligibleLegendPlayersForSlot(pool, usedIds, squad, slotIndex).length > 0
+      : eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).length > 0;
+
   const rng = seedrandom(`${seed}-slot-autofill-${slotIndex}-${spinIndex}`);
-  const eligible = filterSpinPools(getNormalModeTeamYearPoolsCached(), (pool) =>
-    eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).length > 0
-  );
+  const eligible = filterSpinPools(getNormalModeTeamYearPoolsCached(), validatePool);
   const pools = preferUnusedTeamYearPools(eligible, usedTeamYearKeys);
   if (pools.length === 0) {
     spinTimingMark("pick-team-year-empty", t0);
@@ -296,7 +332,7 @@ function pickTeamYearForSlot(
   const { pool: pick, rerollCount } = pickClubUniformTeamYearPool(
     pools,
     rng,
-    (pool) => eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).length > 0
+    validatePool
   );
 
   if (!pick) {

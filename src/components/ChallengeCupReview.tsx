@@ -304,6 +304,7 @@ export function ChallengeCupReview({
             onPlayAgain={handlePlayAgain}
             hardMode={isHardMode}
             compact
+            hideReturnHome
           />
           <ClubFundsEarned payout={clubFundsPayout} />
         </motion.div>
@@ -516,6 +517,7 @@ export function ChallengeCupReview({
           <ReviewPlayAgain
             onPlayAgain={handlePlayAgain}
             hardMode={isHardMode}
+            hideReturnHome
           />
           <ReturnHomeButton onBeforeNavigate={onReturnHome} />
         </motion.footer>

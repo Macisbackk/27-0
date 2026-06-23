@@ -10,6 +10,7 @@ import {
   FORMATION_SLOT_INDICES,
   FORMATION_SLOT_NUMBER,
   POSITION_DESCRIPTIONS,
+  POSITION_SHORT,
   POSITION_TILE_LABEL,
 } from "@/lib/positions";
 import { PitchSlotCard, PITCH_SLOT_COMPACT_CLASS, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
@@ -309,7 +310,9 @@ const SquadMarker = memo(function SquadMarker({
   const description = POSITION_DESCRIPTIONS[slot.position];
 
   if (!player) {
-    const positionLabel = POSITION_TILE_LABEL[slot.position];
+    const positionLabel = _compact
+      ? POSITION_SHORT[slot.position]
+      : POSITION_TILE_LABEL[slot.position];
     const shirtNumber = FORMATION_SLOT_NUMBER[slot.slotIndex];
 
     let stateClass =

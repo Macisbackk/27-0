@@ -8,6 +8,7 @@ import type { TeamScoringDetail } from "@/lib/game/season-simulation";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubTeamLabel } from "./ClubTeamLabel";
+import { KickingSummarySection } from "./KickingSummarySection";
 import { TryScorerChips, TryScorersEmptyNote } from "./TryScorerChips";
 
 interface PlayoffMatchDetailsPanelProps {
@@ -110,9 +111,10 @@ function TeamScoringBlock({
 }) {
   const hasTries = scoring.tryScorers.length > 0;
   const kicking = scoring.kicking;
-  const hasConversions = (kicking?.conversions ?? 0) > 0;
-  const hasPenalties = (kicking?.penalties ?? 0) > 0;
-  const hasDropGoals = (kicking?.dropGoals ?? 0) > 0;
+  const hasKicking =
+    (kicking?.conversions ?? 0) > 0 ||
+    (kicking?.penalties ?? 0) > 0 ||
+    (kicking?.dropGoals ?? 0) > 0;
 
   return (
     <div className={SPACING.stackMd}>
@@ -128,28 +130,8 @@ function TeamScoringBlock({
           />
         </ScoringSection>
       )}
-      {hasConversions && kicking && (
-        <ScoringSection title="Goals / Conversions">
-          <p className={`${TYPO.statValue} break-words`}>
-            {kicking.name} ({kicking.conversions}/{kicking.conversionAttempts})
-          </p>
-        </ScoringSection>
-      )}
-      {hasPenalties && kicking && (
-        <ScoringSection title="Penalties">
-          <p className={`${TYPO.statValue} break-words`}>
-            {kicking.name} ({kicking.penalties})
-          </p>
-        </ScoringSection>
-      )}
-      {hasDropGoals && kicking && (
-        <ScoringSection title="Drop Goals">
-          <p className={`${TYPO.statValue} break-words`}>
-            {kicking.name} ({kicking.dropGoals})
-          </p>
-        </ScoringSection>
-      )}
-      {!hasTries && !hasConversions && !hasPenalties && !hasDropGoals && (
+      {hasKicking && <KickingSummarySection kicking={kicking} />}
+      {!hasTries && !hasKicking && (
         <TryScorersEmptyNote />
       )}
     </div>

@@ -102,6 +102,7 @@ import {
   placeSlotRecruitPlayerAtSlot,
   prepareSlotTeamYearPlayers,
 } from "@/lib/game/slot-team-year-pick";
+import { pickLegendSpinSlotIndex } from "@/lib/game/legend-spin";
 import { getPlayerTeamYearIds } from "@/lib/game/team-year-pools";
 
 interface GameBoardProps {
@@ -210,6 +211,12 @@ export function GameBoard({
   const playoffResultRef = useRef<PlayoffResult | null>(null);
   const [playoffBracketState, setPlayoffBracketState] =
     useState<PlayoffBracketState | null>(null);
+  const [completedPlayoffBracketState, setCompletedPlayoffBracketState] =
+    useState<PlayoffBracketState | null>(null);
+  const [legendSpinSlotIndex, setLegendSpinSlotIndex] = useState<number | null>(
+    null
+  );
+  const [legendSpinUsed, setLegendSpinUsed] = useState(false);
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
   const placementScrollRef = useRef<HTMLDivElement>(null);
@@ -232,6 +239,30 @@ export function GameBoard({
       runId: `run-${Date.now()}-${runKey}`,
     };
   }, [runKey]);
+
+  useEffect(() => {
+    if (
+      !isSlotRecruitMode ||
+      isHardMode ||
+      joeMellorMode ||
+      superSamHallasMode
+    ) {
+      setLegendSpinSlotIndex(null);
+      setLegendSpinUsed(false);
+      return;
+    }
+    setLegendSpinSlotIndex(
+      pickLegendSpinSlotIndex(seed, createEmptySquad())
+    );
+    setLegendSpinUsed(false);
+  }, [
+    runKey,
+    seed,
+    isSlotRecruitMode,
+    isHardMode,
+    joeMellorMode,
+    superSamHallasMode,
+  ]);
 
   useEffect(() => {
     if (isChallengeCup && !cupClub) return;
@@ -397,7 +428,13 @@ export function GameBoard({
       activeSpinTarget,
       signedPlayerIds,
       squad,
-      selectedSlotIndex
+      selectedSlotIndex,
+      {
+        legendOnly:
+          !isHardMode &&
+          !legendSpinUsed &&
+          legendSpinSlotIndex === selectedSlotIndex,
+      }
     );
   }, [
     isSlotRecruitMode,
@@ -405,6 +442,9 @@ export function GameBoard({
     signedPlayerIds,
     squad,
     selectedSlotIndex,
+    legendSpinUsed,
+    legendSpinSlotIndex,
+    isHardMode,
   ]);
 
   useEffect(() => {
@@ -470,6 +510,9 @@ export function GameBoard({
     playoffFundsAwardedRef.current = false;
     playoffResultRef.current = null;
     setPlayoffBracketState(null);
+    setCompletedPlayoffBracketState(null);
+    setLegendSpinSlotIndex(null);
+    setLegendSpinUsed(false);
     setReviewStage("regular");
   }, [joeMellorMode, superSamHallasMode, isChallengeCup]);
 
@@ -667,8 +710,9 @@ export function GameBoard({
   }, [seasonResult, seed, squad, finalizeRegularSeason]);
 
   const handlePlayoffBracketComplete = useCallback(
-    (playoffResult: PlayoffResult) => {
+    (playoffResult: PlayoffResult, finalState: PlayoffBracketState) => {
       playoffResultRef.current = playoffResult;
+      setCompletedPlayoffBracketState(finalState);
       setSeasonResult((prev) =>
         prev ? { ...prev, playoffResult } : prev
       );
@@ -726,6 +770,12 @@ export function GameBoard({
         next.add(activeSpinTarget.teamYearKey);
         return next;
       });
+      if (
+        legendSpinSlotIndex === selectedSlotIndex &&
+        !legendSpinUsed
+      ) {
+        setLegendSpinUsed(true);
+      }
 
       const filled = getFilledCount(newSquad);
       if (filled >= TOTAL_SLOTS) {
@@ -762,13 +812,18 @@ export function GameBoard({
 
       playPositionSelect();
       const t0 = performance.now();
+      const requireLegendPlayer =
+        !isHardMode &&
+        !legendSpinUsed &&
+        legendSpinSlotIndex === slotIndex;
       const target = generateSlotTeamYearTargetForSlot(
         seed,
         spinPickIndex,
         signedPlayerIds,
         squad,
         slotIndex,
-        usedTeamYearKeys
+        usedTeamYearKeys,
+        { requireLegendPlayer }
       );
       if (process.env.NODE_ENV === "development") {
         console.debug(
@@ -796,6 +851,9 @@ export function GameBoard({
       spinPickIndex,
       signedPlayerIds,
       usedTeamYearKeys,
+      legendSpinUsed,
+      legendSpinSlotIndex,
+      isHardMode,
     ]
   );
 
@@ -812,13 +870,18 @@ export function GameBoard({
     }
 
     const nextSpinIndex = spinPickIndex + 1;
+    const requireLegendPlayer =
+      !isHardMode &&
+      !legendSpinUsed &&
+      legendSpinSlotIndex === selectedSlotIndex;
     const target = generateSlotTeamYearTargetForSlot(
       seed,
       nextSpinIndex,
       signedPlayerIds,
       squad,
       selectedSlotIndex,
-      usedTeamYearKeys
+      usedTeamYearKeys,
+      { requireLegendPlayer }
     );
     if (!target) return;
 
@@ -841,6 +904,9 @@ export function GameBoard({
     signedPlayerIds,
     squad,
     usedTeamYearKeys,
+    legendSpinUsed,
+    legendSpinSlotIndex,
+    isHardMode,
   ]);
 
   const handleSelectSlot = useCallback(
@@ -1543,6 +1609,7 @@ export function GameBoard({
           squad={squad}
           seasonResult={seasonResult}
           playoffResult={seasonResult.playoffResult}
+          playoffBracketState={completedPlayoffBracketState}
           playoffFundsPayout={playoffFundsPayout}
           isHardMode={isHardMode}
           onPlayAgain={handlePlayoffReviewDone}

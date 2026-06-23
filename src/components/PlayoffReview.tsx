@@ -1,22 +1,20 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useMemo } from "react";
+import { motion } from "framer-motion";
 import type { SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
 import type { PlayoffResult } from "@/lib/game/playoff-simulation";
-import { playoffRoundResultToBracketMatch } from "@/lib/game/playoff-bracket";
+import type { PlayoffBracketState } from "@/lib/game/playoff-bracket";
 import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
-import { formatFixtureScore } from "@/lib/game/season-simulation";
 import { getPlayoffReviewBio } from "@/lib/playoff-review-bio";
-import { playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { ReturnHomeButton } from "./ReturnHomeButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { TryScorersSection } from "./TryScorersSection";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
-import { PlayoffMatchDetailsPanel } from "./PlayoffMatchDetailsPanel";
+import { PlayoffBracketDisplay } from "./PlayoffBracketDisplay";
 import { Confetti } from "./Confetti";
 import { TYPO } from "@/lib/ui/typography";
 import { NORMAL } from "@/lib/ui/design-system";
@@ -25,6 +23,7 @@ interface PlayoffReviewProps {
   squad: SquadSlot[];
   seasonResult: SeasonResult;
   playoffResult: PlayoffResult;
+  playoffBracketState?: PlayoffBracketState | null;
   playoffFundsPayout?: ClubFundsPayoutResult | null;
   isHardMode?: boolean;
   onPlayAgain: () => void;
@@ -36,6 +35,7 @@ export function PlayoffReview({
   squad,
   seasonResult,
   playoffResult,
+  playoffBracketState = null,
   playoffFundsPayout = null,
   isHardMode = false,
   onPlayAgain,
@@ -46,19 +46,6 @@ export function PlayoffReview({
     () => getPlayoffReviewBio(playoffResult, seasonResult.wins),
     [playoffResult, seasonResult.wins]
   );
-  const [selectedRoundId, setSelectedRoundId] = useState<string | null>(null);
-
-  const selectedMatch = useMemo(() => {
-    if (!selectedRoundId) return null;
-    const idx = playoffResult.rounds.findIndex(
-      (r) => `playoff-round-${r.roundIndex}` === selectedRoundId
-    );
-    if (idx < 0) return null;
-    return playoffRoundResultToBracketMatch(
-      playoffResult.rounds[idx]!,
-      selectedRoundId
-    );
-  }, [selectedRoundId, playoffResult.rounds]);
 
   const topScorers = useMemo(
     () =>
@@ -109,6 +96,7 @@ export function PlayoffReview({
             leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
             hardMode={isHardMode}
             compact
+            hideReturnHome
           />
           <ClubFundsEarned payout={playoffFundsPayout} />
         </motion.div>
@@ -151,86 +139,21 @@ export function PlayoffReview({
           </div>
         </CollapsibleReviewSection>
 
-        <CollapsibleReviewSection
-          title="Play-Off Bracket"
-          delay={0.25}
-          defaultOpen={false}
-          helper="Tap a result to view scorers, goals, and match story."
-        >
-          <div className="space-y-3 text-left text-sm">
-            {playoffResult.rounds.map((round) => {
-              const roundId = `playoff-round-${round.roundIndex}`;
-              const isSelected = selectedRoundId === roundId;
-              return (
-                <div key={roundId}>
-                  <button
-                    type="button"
-                    disabled={!round.userPlayed}
-                    onClick={() => {
-                      if (!round.userPlayed) return;
-                      playUiClick();
-                      if (isSelected) {
-                        playPanelClose();
-                        setSelectedRoundId(null);
-                      } else {
-                        playPanelExpand();
-                        setSelectedRoundId(roundId);
-                      }
-                    }}
-                    className={`w-full rounded-lg border px-3 py-2 text-left transition ${
-                      round.userPlayed
-                        ? isSelected
-                          ? "border-accent-green/50 bg-accent-green/10 ring-1 ring-accent-green/30"
-                          : "border-pitch-700/40 bg-pitch-950/50 hover:border-accent-green/35 hover:bg-pitch-900/60"
-                        : "cursor-default border-pitch-700/40 bg-pitch-950/50 opacity-70"
-                    }`}
-                  >
-                    <p className="font-display text-xs font-bold uppercase tracking-wider text-accent-green">
-                      {round.round}
-                    </p>
-                    {round.userPlayed ? (
-                      <>
-                        <p className="mt-1 break-words text-gray-300">
-                          vs {round.opponent}{" "}
-                          {round.isNeutral
-                            ? "(Neutral)"
-                            : round.isHome
-                              ? "(Home)"
-                              : "(Away)"}
-                        </p>
-                        <p className="mt-1 font-semibold text-white">
-                          {formatFixtureScore(round.fixture)} —{" "}
-                          <span
-                            className={
-                              round.userWon ? "text-accent-green" : "text-red-400"
-                            }
-                          >
-                            {round.userWon ? "Progress" : "Eliminated"}
-                          </span>
-                        </p>
-                      </>
-                    ) : (
-                      <p className="mt-1 text-gray-500">
-                        Bye — straight to semi-finals
-                      </p>
-                    )}
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {isSelected && selectedMatch && (
-                      <PlayoffMatchDetailsPanel
-                        match={selectedMatch}
-                        onClose={() => {
-                          playPanelClose();
-                          setSelectedRoundId(null);
-                        }}
-                      />
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
-          </div>
-        </CollapsibleReviewSection>
+        {playoffBracketState && (
+          <CollapsibleReviewSection
+            title="Play-Off Bracket"
+            delay={0.25}
+            defaultOpen
+            helper="Tap a completed match for scorers and match story."
+          >
+            <PlayoffBracketDisplay
+              state={playoffBracketState}
+              championLabel={
+                playoffResult.isChampion ? "Dream Team" : playoffResult.finish
+              }
+            />
+          </CollapsibleReviewSection>
+        )}
 
         {topScorers.length > 0 && (
           <CollapsibleReviewSection
@@ -297,6 +220,7 @@ export function PlayoffReview({
             onPlayAgain={onPlayAgain}
             leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
             hardMode={isHardMode}
+            hideReturnHome
           />
           <ReturnHomeButton onBeforeNavigate={onReturnHome} />
         </motion.footer>

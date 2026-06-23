@@ -33,7 +33,7 @@ interface PlayoffBracketProps {
   seed: string;
   leagueTable: import("@/lib/game/league-table").LeagueTableRow[];
   leaguePosition: number;
-  onComplete: (result: PlayoffResult) => void;
+  onComplete: (result: PlayoffResult, finalState: PlayoffBracketState) => void;
   initialState?: PlayoffBracketState;
 }
 
@@ -62,7 +62,7 @@ export function PlayoffBracket({
   const finishIfComplete = useCallback(
     (next: PlayoffBracketState) => {
       if (next.tournamentComplete) {
-        onComplete(buildPlayoffResult(next, squad));
+        onComplete(buildPlayoffResult(next, squad), next);
       }
     },
     [onComplete, squad]
