@@ -21,6 +21,7 @@ import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { formatSeasonWinPercentageOrDash } from "@/lib/stats-views";
 import { playGradeSound, playPanelClose, playPanelExpand } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
+import { ReturnHomeButton } from "./ReturnHomeButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
 import { FixtureResultRow } from "./FixtureResultRow";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
@@ -58,6 +59,7 @@ interface SeasonReviewProps {
   onPlayAgain: () => void;
   onClose: () => void;
   onFinalizeSeason?: () => void;
+  onReturnHome?: () => void;
 }
 
 export function SeasonReview({
@@ -75,6 +77,7 @@ export function SeasonReview({
   onPlayAgain,
   onClose,
   onFinalizeSeason,
+  onReturnHome,
 }: SeasonReviewProps) {
   const totalValue = getSquadValue(squad);
   const gradeInfo = getSeasonGradeFromSquad(squad, seasonResult, totalValue);
@@ -312,7 +315,7 @@ export function SeasonReview({
           </motion.div>
         )}
 
-        <CollapsibleReviewSection title="Season Summary" delay={0.32}>
+        <CollapsibleReviewSection title="Season Summary" delay={0.32} defaultOpen>
           <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
             <p>
               Regular Season Record:{" "}
@@ -357,13 +360,27 @@ export function SeasonReview({
           </div>
         </CollapsibleReviewSection>
 
-        <CollapsibleReviewSection title="League Table" delay={0.34}>
+        <CollapsibleReviewSection title="League Table" delay={0.34} defaultOpen>
           <LeagueTable rows={leagueTable} />
         </CollapsibleReviewSection>
 
+        {seasonResult.tryScorers.length > 0 && (
+          <CollapsibleReviewSection title="Try Scorers" delay={0.36} defaultOpen={false}>
+            <TryScorersSection
+              tryScorers={seasonResult.tryScorers}
+              expectedTotalTries={expectedTries}
+            />
+          </CollapsibleReviewSection>
+        )}
+
+        <CollapsibleReviewSection title="Team Sheet" delay={0.38} defaultOpen={false}>
+          <TeamSheet squad={squad} hardMode={isHardMode} />
+        </CollapsibleReviewSection>
+
         <CollapsibleReviewSection
-          title="Match History"
-          delay={0.36}
+          title="Match Results"
+          delay={0.4}
+          defaultOpen={false}
           helper="Click any result to view full match details."
         >
           <div className="max-h-[28rem] space-y-2 overflow-y-auto overflow-x-hidden pr-1 text-left">
@@ -404,7 +421,7 @@ export function SeasonReview({
         </CollapsibleReviewSection>
 
         {seasonResult.insights.length > 0 && (
-          <CollapsibleReviewSection title="Records" delay={0.38}>
+          <CollapsibleReviewSection title="Records" delay={0.42} defaultOpen={false}>
             <ul className="space-y-2 text-left text-sm text-gray-400">
               {seasonResult.insights.map((insight) => (
                 <li
@@ -418,7 +435,7 @@ export function SeasonReview({
           </CollapsibleReviewSection>
         )}
 
-        <CollapsibleReviewSection title="Player Awards" delay={0.4}>
+        <CollapsibleReviewSection title="Player Awards" delay={0.44} defaultOpen={false}>
           <div className="grid gap-3 text-left sm:grid-cols-2">
             {playerAwards.map((award) => (
               <RLAwardCard
@@ -436,20 +453,7 @@ export function SeasonReview({
           </div>
         </CollapsibleReviewSection>
 
-        <CollapsibleReviewSection title="Team Sheet" delay={0.42}>
-          <TeamSheet squad={squad} hardMode={isHardMode} />
-        </CollapsibleReviewSection>
-
-        {seasonResult.tryScorers.length > 0 && (
-          <CollapsibleReviewSection title="Try Scorers" delay={0.44}>
-            <TryScorersSection
-              tryScorers={seasonResult.tryScorers}
-              expectedTotalTries={expectedTries}
-            />
-          </CollapsibleReviewSection>
-        )}
-
-        <CollapsibleReviewSection title="Club Representation" delay={0.46}>
+        <CollapsibleReviewSection title="Club Representation" delay={0.46} defaultOpen={false}>
           <div className="text-left">
             <ClubRepresentation summary={clubSummary} />
           </div>
@@ -459,14 +463,15 @@ export function SeasonReview({
           title="Your Team vs Best Opposition"
           helper="Squad OVR comparison — your Dream Team rating against the highest-rated opponent you faced this season."
           variant="featured"
-          delay={0.46}
+          delay={0.48}
+          defaultOpen={false}
         >
           <TeamComparisonBox comparison={teamComparison} />
         </CollapsibleReviewSection>
 
         {!hideEndOfRunNav && (
           <motion.footer
-            className="mt-8 w-full max-w-xl"
+            className="mt-8 w-full max-w-xl space-y-3"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.65 }}
@@ -476,6 +481,7 @@ export function SeasonReview({
               leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
               hardMode={isHardMode}
             />
+            <ReturnHomeButton onBeforeNavigate={onReturnHome} />
           </motion.footer>
         )}
       </div>

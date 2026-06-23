@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useRef } from "react";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import {
   getAllNormalModeSpinTeams,
@@ -15,16 +14,13 @@ import { spinTimingMark } from "@/lib/game/spin-timing";
 import { getClubColors } from "@/lib/clubs";
 import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
 import { formatShortYear } from "@/lib/players/prime-year";
-import {
-  playSlotLand,
-  playSlotSpinStart,
-  playSlotSpinTick,
-} from "@/lib/sound";
+import { playSlotLand, playSlotSpinStart, playSlotSpinTick } from "@/lib/sound";
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { SlotReel, type SlotReelHandle } from "./SlotReel";
 
-const LAND_HOLD_MS = 280;
+const LAND_HOLD_MS = 240;
+const TICK_SOUND_INTERVAL = 4;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
@@ -37,7 +33,8 @@ export function RecruitmentSlotReveal({
 }: RecruitmentSlotRevealProps) {
   const teamReelRef = useRef<SlotReelHandle>(null);
   const yearReelRef = useRef<SlotReelHandle>(null);
-  const [locked, setLocked] = useState(false);
+  const shellRef = useRef<HTMLDivElement>(null);
+  const resultRef = useRef<HTMLParagraphElement>(null);
 
   const clubColors = useMemo(
     () => getClubColors(target.team),
@@ -59,10 +56,23 @@ export function RecruitmentSlotReveal({
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    const lockReels = () => {
+      for (const shell of shellRef.current?.querySelectorAll(".slot-reveal-reel") ??
+        []) {
+        shell.classList.add("slot-reel-lock-flash");
+        shell.classList.remove("border-pitch-600/70", "bg-pitch-950/80");
+        shell.classList.add("border-accent-green/55", "bg-pitch-950/95");
+        (shell as HTMLElement).style.borderTopColor = clubColors.primary;
+      }
+      if (resultRef.current) {
+        resultRef.current.hidden = false;
+      }
+    };
+
     if (prefersReducedMotion) {
       teamReelRef.current?.setScrollIndex(teamPlan.finalIndex, false);
       yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, false);
-      setLocked(true);
+      lockReels();
       const timeoutId = window.setTimeout(() => onComplete(), 120);
       return () => window.clearTimeout(timeoutId);
     }
@@ -101,7 +111,9 @@ export function RecruitmentSlotReveal({
         );
 
         if (tick === 0) playSlotSpinStart();
-        playSlotSpinTick(progress, delay);
+        else if (tick % TICK_SOUND_INTERVAL === 0) {
+          playSlotSpinTick(progress, delay);
+        }
 
         tick += 1;
         timeoutId = window.setTimeout(runTick, delay);
@@ -110,7 +122,7 @@ export function RecruitmentSlotReveal({
 
       teamReelRef.current?.setScrollIndex(teamPlan.finalIndex, true);
       yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, true);
-      setLocked(true);
+      lockReels();
       playSlotLand();
       spinTimingMark("animation-end", tAnimStart);
 
@@ -125,27 +137,12 @@ export function RecruitmentSlotReveal({
       cancelled = true;
       if (timeoutId) window.clearTimeout(timeoutId);
     };
-  }, [teamPlan, yearPlan, onComplete, target.teamYearId]);
-
-  const reelShellClass = (isLocked: boolean) =>
-    `slot-reveal-reel min-w-0 flex-1 rounded-xl border-2 px-1 py-0 ${
-      isLocked
-        ? "slot-reel-lock-flash border-accent-green/55 bg-pitch-950/95"
-        : "border-pitch-600/70 bg-pitch-950/80"
-    }`;
+  }, [teamPlan, yearPlan, onComplete, clubColors.primary]);
 
   return (
-    <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-3 sm:p-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
-      <motion.div
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-3 sm:p-4">
+      <div
         className={`${CARD.panel} w-full max-w-md overflow-hidden border border-accent-green/25`}
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.22, ease: "easeOut" }}
       >
         <div
           className="border-b border-pitch-700/50 px-4 py-3 text-center sm:px-6 sm:py-4"
@@ -159,12 +156,9 @@ export function RecruitmentSlotReveal({
           </p>
         </div>
 
-        <div className="px-3 py-4 sm:px-6 sm:py-6">
+        <div ref={shellRef} className="px-3 py-4 sm:px-6 sm:py-6">
           <div className="flex max-w-full items-stretch justify-center gap-1.5 sm:gap-2.5">
-            <div
-              className={reelShellClass(locked)}
-              style={{ borderTopColor: locked ? clubColors.primary : undefined }}
-            >
+            <div className="slot-reveal-reel min-w-0 flex-1 rounded-xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1 py-0">
               <SlotReel
                 ref={teamReelRef}
                 strip={teamPlan.strip}
@@ -172,7 +166,7 @@ export function RecruitmentSlotReveal({
                 textClassName="slot-reveal-team-name"
               />
             </div>
-            <div className={`${reelShellClass(locked)} slot-reveal-year-reel shrink-0`}>
+            <div className="slot-reveal-reel slot-reveal-year-reel min-w-0 shrink-0 flex-1 rounded-xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1 py-0">
               <SlotReel
                 ref={yearReelRef}
                 strip={yearPlan.strip}
@@ -182,16 +176,18 @@ export function RecruitmentSlotReveal({
             </div>
           </div>
 
-          {locked && (
-            <p className="mt-3 text-center font-display text-sm font-bold text-white sm:text-base">
-              {target.team}{" "}
-              <span className="text-accent-green">
-                {formatShortYear(target.year)}
-              </span>
-            </p>
-          )}
+          <p
+            ref={resultRef}
+            hidden
+            className="mt-3 text-center font-display text-sm font-bold text-white sm:text-base"
+          >
+            {target.team}{" "}
+            <span className="text-accent-green">
+              {formatShortYear(target.year)}
+            </span>
+          </p>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }

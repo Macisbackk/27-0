@@ -7,7 +7,6 @@ import { getPlayoffRoundLabel } from "@/lib/game/playoff-bracket";
 import type { TeamScoringDetail } from "@/lib/game/season-simulation";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { ClubNameLabel } from "./ClubNameLabel";
 import { ClubTeamLabel } from "./ClubTeamLabel";
 import { TryScorerChips, TryScorersEmptyNote } from "./TryScorerChips";
 
@@ -30,7 +29,6 @@ export function PlayoffMatchDetailsPanel({
   }
 
   const scoring = match.scoringDetail;
-  const homeWon = match.homeScore > match.awayScore;
   const venueLabel = match.isNeutral
     ? "Neutral"
     : match.userFixture?.isHome
@@ -49,31 +47,32 @@ export function PlayoffMatchDetailsPanel({
     >
       <div className={`${SPACING.cardPadding} ${SPACING.stackLg}`}>
         <div className="flex items-start justify-between gap-3">
-          <div className={`min-w-0 flex-1 ${SPACING.stackSm}`}>
+          <div className={`min-w-0 flex-1 ${SPACING.stackMd}`}>
             <p className={TYPO.sectionLabel}>
               {getPlayoffRoundLabel(match.round)} · Match Details
             </p>
-            <div
-              className={`${CARD.stat} ${SPACING.cardPaddingSm} flex flex-wrap items-center justify-center gap-2 sm:justify-start`}
-            >
-              <ClubNameLabel club={match.homeTeam} variant="inline" />
-              <span
-                className={`${TYPO.cardTitle} whitespace-nowrap ${
-                  homeWon ? "text-accent-green" : "text-gray-200"
-                }`}
-              >
-                {match.homeScore} – {match.awayScore}
-              </span>
-              <ClubNameLabel club={match.awayTeam} variant="inline" />
-            </div>
             <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-              {venueLabel}
+              {venueLabel} · {match.homeTeam} vs {match.awayTeam}
             </p>
+            {match.userFixture?.matchBio && (
+              <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
+                <p className={TYPO.sectionTitle}>Match Story</p>
+                <p className={`mt-2 ${TYPO.bodySm}`}>
+                  {match.userFixture.matchBio}
+                </p>
+              </div>
+            )}
             {match.userFixture?.manOfTheMatch && (
               <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
                 <p className={TYPO.sectionTitle}>Player of the Match</p>
-                <p className={`mt-2 ${TYPO.bodySm}`}>
+                <p className={`mt-2 break-words ${TYPO.bodySm}`}>
                   {match.userFixture.manOfTheMatch.playerName}
+                  {match.userFixture.manOfTheMatch.performanceSummary && (
+                    <span className="text-gray-500">
+                      {" "}
+                      · {match.userFixture.manOfTheMatch.performanceSummary}
+                    </span>
+                  )}
                 </p>
               </div>
             )}
@@ -85,8 +84,14 @@ export function PlayoffMatchDetailsPanel({
 
         {scoring ? (
           <div className={SPACING.stackLg}>
-            <TeamScoringBlock teamName={match.homeTeam} scoring={scoring.home} />
-            <TeamScoringBlock teamName={match.awayTeam} scoring={scoring.away} />
+            <TeamScoringBlock
+              teamName={match.homeTeam}
+              scoring={scoring.home}
+            />
+            <TeamScoringBlock
+              teamName={match.awayTeam}
+              scoring={scoring.away}
+            />
           </div>
         ) : (
           <p className={TYPO.body}>Scoring data unavailable.</p>

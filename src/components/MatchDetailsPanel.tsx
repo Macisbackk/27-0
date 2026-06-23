@@ -27,9 +27,7 @@ interface MatchDetailsPanelProps {
   roundLabel?: string;
   seed: string;
   userSquad?: SquadSlot[];
-  /** User's team name — defaults to Dream Team for season mode. */
   userTeamName?: string;
-  /** Era mode: club colours for the user's team label. */
   userClubColorOverride?: string;
   eraClubLookup?: Record<string, string>;
   eraTeamRatings?: Record<string, number>;
@@ -46,7 +44,6 @@ export function MatchDetailsPanel({
   userClubColorOverride,
   eraClubLookup,
   eraTeamRatings,
-  eraTeamValues,
 }: MatchDetailsPanelProps) {
   const detail = fixture.scoringDetail;
   const userAvgRating = userSquad ? getAverageSquadRating(userSquad) : 0;
@@ -71,42 +68,29 @@ export function MatchDetailsPanel({
     >
       <div className={`${SPACING.cardPadding} ${SPACING.stackLg}`}>
         <div className="flex items-start justify-between gap-3">
-          <div className={`min-w-0 flex-1 ${SPACING.stackSm}`}>
+          <div className={`min-w-0 flex-1 ${SPACING.stackMd}`}>
             <p className={TYPO.sectionLabel}>
               {roundLabel ?? `Round ${fixture.round}`} · Match Details
             </p>
-            <div
-              className={`${CARD.stat} ${SPACING.cardPaddingSm} flex flex-wrap items-center justify-center gap-2 sm:justify-start`}
-            >
-              <span
-                className={`${TYPO.cardTitle} whitespace-nowrap ${
-                  fixture.result === "W" ? "text-accent-green" : "text-red-400"
-                }`}
-              >
-                {fixture.pointsFor} – {fixture.pointsAgainst}
-              </span>
-              <span className={`${TYPO.bodySm} text-gray-400`}>vs</span>
-              <span className={`${TYPO.bodySm} break-words text-gray-300`}>
-                {fixture.opponent}
-              </span>
-            </div>
             <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
               {fixture.isNeutral
                 ? "Neutral"
                 : fixture.isHome
                   ? "Home"
                   : "Away"}
+              {" · "}
+              vs {fixture.opponent}
             </p>
             {fixture.matchBio && (
               <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
-                <p className={TYPO.sectionTitle}>Match Bio</p>
+                <p className={TYPO.sectionTitle}>Match Story</p>
                 <p className={`mt-2 ${TYPO.bodySm}`}>{fixture.matchBio}</p>
               </div>
             )}
             {fixture.manOfTheMatch && (
               <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
                 <p className={TYPO.sectionTitle}>Player of the Match</p>
-                <p className={`mt-2 ${TYPO.bodySm}`}>
+                <p className={`mt-2 break-words ${TYPO.bodySm}`}>
                   {fixture.manOfTheMatch.playerName} —{" "}
                   {fixture.manOfTheMatch.teamName}
                   {fixture.manOfTheMatch.performanceSummary && (
@@ -177,9 +161,6 @@ function TeamScoringBlock({
   return (
     <div className={SPACING.stackMd}>
       <ClubTeamLabel club={teamName} colorClub={colorClub} />
-      <p className={`${TYPO.bodySm} text-gray-400`}>
-        {averageRating > 0 ? `${averageRating.toFixed(1)} avg rating` : "—"}
-      </p>
       {hasTries && (
         <ScoringSection title="Tries">
           <TryScorerChips
@@ -201,21 +182,21 @@ function TeamScoringBlock({
       )}
       {hasConversions && kicking && (
         <ScoringSection title="Conversions">
-          <p className={TYPO.statValue}>
+          <p className={`${TYPO.statValue} break-words`}>
             {kicking.name} ({kicking.conversions}/{kicking.conversionAttempts})
           </p>
         </ScoringSection>
       )}
       {hasPenalties && kicking && (
         <ScoringSection title="Penalties">
-          <p className={TYPO.statValue}>
+          <p className={`${TYPO.statValue} break-words`}>
             {kicking.name} ({kicking.penalties})
           </p>
         </ScoringSection>
       )}
       {hasDropGoals && kicking && (
         <ScoringSection title="Drop Goals">
-          <p className={TYPO.statValue}>
+          <p className={`${TYPO.statValue} break-words`}>
             {kicking.name} ({kicking.dropGoals})
           </p>
         </ScoringSection>

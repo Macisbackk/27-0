@@ -359,6 +359,7 @@ export function FantasyModeBoard() {
             clubFundsPayout={clubFundsPayout}
             onPlayAgain={resetRun}
             onClose={() => {}}
+            onReturnHome={resetRun}
           />
         )}
       </div>

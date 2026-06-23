@@ -611,3 +611,46 @@ export function buildPlayoffResult(
     tryScorers,
   };
 }
+
+/** Build a bracket match view from a stored playoff round (review page). */
+export function playoffRoundResultToBracketMatch(
+  round: PlayoffRoundResult,
+  id: string
+): PlayoffBracketMatch | null {
+  if (!round.userPlayed) return null;
+
+  const f = round.fixture;
+  const homeTeam = f.isHome ? DREAM_TEAM_NAME : round.opponent;
+  const awayTeam = f.isHome ? round.opponent : DREAM_TEAM_NAME;
+  const homeScore = f.isHome ? f.pointsFor : f.pointsAgainst;
+  const awayScore = f.isHome ? f.pointsAgainst : f.pointsFor;
+  const userWon = f.result === "W";
+  const winner = userWon ? DREAM_TEAM_NAME : round.opponent;
+  const loser = userWon ? round.opponent : DREAM_TEAM_NAME;
+
+  const sd = f.scoringDetail;
+  const scoringDetail: PlayoffBracketScoringDetail | null = sd
+    ? {
+        home: f.isHome ? sd.dreamTeam : sd.opponent,
+        away: f.isHome ? sd.opponent : sd.dreamTeam,
+      }
+    : null;
+
+  return {
+    id,
+    round: round.roundIndex as 1 | 2 | 3,
+    slot: 0,
+    homeTeam,
+    awayTeam,
+    homeScore,
+    awayScore,
+    winner,
+    loser,
+    status: "complete",
+    isNeutral: round.isNeutral,
+    isUserMatch: true,
+    feederIds: null,
+    userFixture: f,
+    scoringDetail,
+  };
+}

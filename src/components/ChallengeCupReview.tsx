@@ -27,6 +27,7 @@ import {
 } from "@/lib/game/challenge-cup-stats";
 import { playGradeSound, playPanelClose, playPanelExpand } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
+import { ReturnHomeButton } from "./ReturnHomeButton";
 import { FixtureResultRow } from "./FixtureResultRow";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
 import type { MatchFixture, SeasonResult } from "@/lib/game/season-simulation";
@@ -64,6 +65,7 @@ interface ChallengeCupReviewProps {
   title?: string;
   onPlayAgain: () => void;
   onClose: () => void;
+  onReturnHome?: () => void;
   /** Era mode: apply era team colours to user squad player cards. */
   userClubColorOverride?: string;
   /** Era mode: full era team for bench roster display. */
@@ -89,6 +91,7 @@ export function ChallengeCupReview({
   title = "Challenge Cup Review",
   onPlayAgain,
   onClose,
+  onReturnHome,
   userClubColorOverride,
   eraTeam = null,
 }: ChallengeCupReviewProps) {
@@ -305,7 +308,7 @@ export function ChallengeCupReview({
           <ClubFundsEarned payout={clubFundsPayout} />
         </motion.div>
 
-        <CollapsibleReviewSection title="Challenge Cup Summary" delay={0.32}>
+        <CollapsibleReviewSection title="Challenge Cup Summary" delay={0.32} defaultOpen>
           <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
             <p>
               Record:{" "}
@@ -505,7 +508,7 @@ export function ChallengeCupReview({
         </CollapsibleReviewSection>
 
         <motion.footer
-          className="mt-8 w-full max-w-xl"
+          className="mt-8 w-full max-w-xl space-y-3"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65 }}
@@ -514,6 +517,7 @@ export function ChallengeCupReview({
             onPlayAgain={handlePlayAgain}
             hardMode={isHardMode}
           />
+          <ReturnHomeButton onBeforeNavigate={onReturnHome} />
         </motion.footer>
       </div>
     </div>

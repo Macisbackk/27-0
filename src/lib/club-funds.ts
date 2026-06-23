@@ -104,6 +104,11 @@ export function formatClubFunds(amount: number): string {
   return `£${amount}`;
 }
 
+/** Full exact value for expanded currency panel (no rounding). */
+export function formatClubFundsExact(amount: number): string {
+  return `£${Math.round(amount).toLocaleString("en-GB")}`;
+}
+
 export function computeClubFundsLines(
   input: ClubFundsRunInput
 ): ClubFundsEarnedLine[] {

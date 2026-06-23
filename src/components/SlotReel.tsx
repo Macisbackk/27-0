@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, memo, useImperativeHandle, useRef } from "react";
 import {
   SLOT_REEL_ITEM_HEIGHT_PX,
   SLOT_REEL_VISIBLE_ROWS,
@@ -18,8 +18,11 @@ export interface SlotReelProps {
   textClassName?: string;
 }
 
-export const SlotReel = forwardRef<SlotReelHandle, SlotReelProps>(
-  function SlotReel({ strip, formatItem, className, textClassName }, ref) {
+export const SlotReel = memo(
+  forwardRef<SlotReelHandle, SlotReelProps>(function SlotReel(
+    { strip, formatItem, className, textClassName },
+    ref
+  ) {
     const stripRef = useRef<HTMLDivElement>(null);
     const viewportHeight = SLOT_REEL_ITEM_HEIGHT_PX * SLOT_REEL_VISIBLE_ROWS;
 
@@ -29,7 +32,7 @@ export const SlotReel = forwardRef<SlotReelHandle, SlotReelProps>(
         if (!el) return;
         const y = computeSlotReelScrollY(index);
         el.style.transition = animate
-          ? "transform 300ms cubic-bezier(0.22, 1, 0.36, 1)"
+          ? "transform 280ms cubic-bezier(0.22, 1, 0.36, 1)"
           : "none";
         el.style.transform = `translate3d(0, ${y}px, 0)`;
       },
@@ -53,5 +56,5 @@ export const SlotReel = forwardRef<SlotReelHandle, SlotReelProps>(
         </div>
       </div>
     );
-  }
+  })
 );

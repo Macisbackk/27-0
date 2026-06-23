@@ -883,7 +883,8 @@ export function GameBoard({
 
       const penalty = getPlacementPenalty(
         pendingPlayer.position,
-        slot.position
+        slot.position,
+        pendingPlayer
       );
       const newSquad = signPlayerToSlot(
         squad,
@@ -1490,6 +1491,7 @@ export function GameBoard({
           clubFundsPayout={clubFundsPayout}
           onPlayAgain={resetRun}
           onClose={() => setPhase(isChallengeCup ? "clubSelect" : "pitch")}
+          onReturnHome={resetRun}
         />
       )}
 
@@ -1512,6 +1514,7 @@ export function GameBoard({
           onFinalizeSeason={handleFinalizeSeason}
           onPlayAgain={resetRun}
           onClose={() => setPhase("pitch")}
+          onReturnHome={resetRun}
         />
       )}
 
@@ -1544,6 +1547,7 @@ export function GameBoard({
           isHardMode={isHardMode}
           onPlayAgain={handlePlayoffReviewDone}
           onClose={() => setPhase("pitch")}
+          onReturnHome={resetRun}
         />
       )}
     </div>

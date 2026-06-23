@@ -328,7 +328,8 @@ const SquadMarker = memo(function SquadMarker({
     if (interactive && placementPlayer) {
       const penalty = getPlacementPenalty(
         placementPlayer.position,
-        slot.position
+        slot.position,
+        placementPlayer
       );
       tooltip =
         penalty === 0

@@ -5,10 +5,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   CLUB_FUNDS_INFO_LINES,
   formatClubFunds,
+  formatClubFundsExact,
 } from "@/lib/club-funds";
 import {
   CLUB_FUNDS_CHANGED_EVENT,
   getClubFundsBalance,
+  getClubFundsTotalEarned,
   syncClubFundsLeaderboardOnLoad,
 } from "@/lib/storage/club-funds";
 import { playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
@@ -24,6 +26,7 @@ export function ClubFundsDisplay({
   placement = "desktop",
 }: ClubFundsDisplayProps) {
   const [balance, setBalance] = useState(0);
+  const [totalEarned, setTotalEarned] = useState(0);
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -32,9 +35,13 @@ export function ClubFundsDisplay({
   useEffect(() => {
     setMounted(true);
     setBalance(getClubFundsBalance());
+    setTotalEarned(getClubFundsTotalEarned());
     syncClubFundsLeaderboardOnLoad();
 
-    const sync = () => setBalance(getClubFundsBalance());
+    const sync = () => {
+      setBalance(getClubFundsBalance());
+      setTotalEarned(getClubFundsTotalEarned());
+    };
     window.addEventListener(CLUB_FUNDS_CHANGED_EVENT, sync);
     return () => window.removeEventListener(CLUB_FUNDS_CHANGED_EVENT, sync);
   }, []);
@@ -140,7 +147,21 @@ export function ClubFundsDisplay({
             transition={{ duration: 0.18 }}
           >
             <p className={TYPO.sectionLabel}>Earn Club Funds</p>
-            <ul className={`mt-2 space-y-1.5 ${TYPO.bodySm}`}>
+            <div className={`mt-2 space-y-1 ${TYPO.bodySm}`}>
+              <p className="flex items-center justify-between gap-2 text-gray-300">
+                <span>Current balance</span>
+                <span className="shrink-0 font-semibold tabular-nums text-accent-green">
+                  {formatClubFundsExact(balance)}
+                </span>
+              </p>
+              <p className="flex items-center justify-between gap-2 text-gray-400">
+                <span>Lifetime earned</span>
+                <span className="shrink-0 font-medium tabular-nums text-gray-300">
+                  {formatClubFundsExact(totalEarned)}
+                </span>
+              </p>
+            </div>
+            <ul className={`mt-3 space-y-1.5 border-t border-pitch-700/50 pt-3 ${TYPO.bodySm}`}>
               {CLUB_FUNDS_INFO_LINES.map((line) => (
                 <li
                   key={line.label}
@@ -148,7 +169,7 @@ export function ClubFundsDisplay({
                 >
                   <span className="min-w-0 truncate">{line.label}</span>
                   <span className="shrink-0 font-semibold text-accent-green">
-                    {formatClubFunds(line.amount)}
+                    {formatClubFundsExact(line.amount)}
                   </span>
                 </li>
               ))}

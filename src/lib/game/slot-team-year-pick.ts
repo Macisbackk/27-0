@@ -24,8 +24,8 @@ import {
 } from "./recruitment-slot-reveal";
 import {
   getNormalModeTeamYearPoolsCached,
-  pickUniformTeamYearPool,
 } from "./player-pool-eligibility";
+import { pickClubUniformTeamYearPool } from "./spin-club-pick";
 import { spinTimingMark } from "./spin-timing";
 import {
   buildTeamYearId,
@@ -58,18 +58,10 @@ function preferUnusedTeamYearPools(
 
 function pickPoolFromCandidates(
   candidates: TeamYearPool[],
-  rng: () => number
+  rng: () => number,
+  validate: (pool: TeamYearPool) => boolean
 ): TeamYearPool | null {
-  return pickUniformTeamYearPool(candidates, rng);
-}
-
-function shufflePools<T>(pools: T[], rng: () => number): T[] {
-  const copy = [...pools];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
-  }
-  return copy;
+  return pickClubUniformTeamYearPool(candidates, rng, validate).pool;
 }
 
 export interface SlotTeamYearPlayer {
@@ -103,7 +95,7 @@ export function placeSlotRecruitPlayerAtSlot(
     return null;
   }
 
-  const penalty = getPlacementPenalty(prepared.position, slot.position);
+  const penalty = getPlacementPenalty(prepared.position, slot.position, prepared);
   return signPlayerToSlot(squad, prepared, slotIndex, penalty);
 }
 
@@ -118,7 +110,7 @@ export function autoPlaceSlotRecruitPlayer(
 
   const prepared = preparePlayerForTeamYear(player, target);
   warnTeamYearPoolLeak(prepared, target);
-  const penalty = getPlacementPenalty(prepared.position, slot.position);
+  const penalty = getPlacementPenalty(prepared.position, slot.position, prepared);
   return signPlayerToSlot(squad, prepared, slot.slotIndex, penalty);
 }
 
@@ -208,7 +200,9 @@ function pickSlotTeamYearTargetOnce(
     poolHasEligiblePlayers(pool, usedIds, squad)
   );
   if (pools.length === 0) return null;
-  const pick = pickPoolFromCandidates(pools, rng);
+  const pick = pickPoolFromCandidates(pools, rng, (pool) =>
+    poolHasEligiblePlayers(pool, usedIds, squad)
+  );
   if (!pick) return null;
   return buildSlotRevealTarget(pick.team, pick.year);
 }
@@ -299,17 +293,20 @@ function pickTeamYearForSlot(
     return null;
   }
 
-  const shuffled = shufflePools(pools, rng);
-  for (const pick of shuffled) {
-    const players = eligiblePlayersForSlot(pick, usedIds, squad, slotIndex);
-    if (players.length === 0) continue;
-    const target = buildSlotRevealTarget(pick.team, pick.year);
-    spinTimingMark(`pick-team-year-${target.teamYearId}`, t0);
-    return { target, nextSpinIndex: spinIndex + 1 };
+  const { pool: pick, rerollCount } = pickClubUniformTeamYearPool(
+    pools,
+    rng,
+    (pool) => eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).length > 0
+  );
+
+  if (!pick) {
+    spinTimingMark(`pick-team-year-no-match-rerolls-${rerollCount}`, t0);
+    return null;
   }
 
-  spinTimingMark("pick-team-year-no-match", t0);
-  return null;
+  const target = buildSlotRevealTarget(pick.team, pick.year);
+  spinTimingMark(`pick-team-year-${target.teamYearId}`, t0);
+  return { target, nextSpinIndex: spinIndex + 1 };
 }
 
 export interface SlotAutofillResult {

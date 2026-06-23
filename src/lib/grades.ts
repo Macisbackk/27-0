@@ -335,7 +335,16 @@ function modeStoryBioPool(
   grade: SquadGrade,
   ctx: GradeReviewContext
 ): string[] | null {
-  const { wins, losses, isPerfect } = ctx;
+  const { wins, losses, isPerfect, leaguePosition } = ctx;
+
+  if (mode === "CLASSIC" && leaguePosition === 1 && !isPerfect && wins < 27) {
+    return [
+      "League winners after a dominant campaign.",
+      "Top of the table and deserved league winners.",
+      "They set the standard across the regular season.",
+      "A league-winning season built on consistency.",
+    ];
+  }
 
   if (mode === "CHALLENGE_CUP") {
     if (isPerfect || grade === "S+" || grade === "S") {

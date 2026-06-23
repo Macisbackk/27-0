@@ -228,6 +228,7 @@ export function EraChallengeCupBoard() {
             eraTeam={eraTeam}
             onPlayAgain={resetRun}
             onClose={() => {}}
+            onReturnHome={resetRun}
           />
         )}
       </div>

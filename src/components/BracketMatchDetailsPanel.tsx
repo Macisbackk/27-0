@@ -8,7 +8,6 @@ import type { TeamScoringDetail } from "@/lib/game/season-simulation";
 import { resolveEraTeamClubName } from "@/lib/players/era-teams";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { ClubNameLabel } from "./ClubNameLabel";
 import { ClubTeamLabel } from "./ClubTeamLabel";
 import { TryScorerChips, TryScorersEmptyNote } from "./TryScorerChips";
 
@@ -33,7 +32,6 @@ export function BracketMatchDetailsPanel({
   }
 
   const scoring = match.scoringDetail;
-  const homeWon = match.homeScore > match.awayScore;
 
   return (
     <motion.div
@@ -45,23 +43,13 @@ export function BracketMatchDetailsPanel({
     >
       <div className={`${SPACING.cardPadding} ${SPACING.stackLg}`}>
         <div className="flex items-start justify-between gap-3">
-          <div className={`min-w-0 flex-1 ${SPACING.stackSm}`}>
+          <div className={`min-w-0 flex-1 ${SPACING.stackMd}`}>
             <p className={TYPO.sectionLabel}>
               {getCupRoundLabel(match.round)} · Match Details
             </p>
-            <div
-              className={`${CARD.stat} ${SPACING.cardPaddingSm} flex flex-wrap items-center justify-center gap-2 sm:justify-start`}
-            >
-              <ClubNameLabel club={match.homeTeam} variant="inline" />
-              <span
-                className={`${TYPO.cardTitle} whitespace-nowrap ${
-                  homeWon ? "text-accent-green" : "text-gray-200"
-                }`}
-              >
-                {match.homeScore} – {match.awayScore}
-              </span>
-              <ClubNameLabel club={match.awayTeam} variant="inline" />
-            </div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+              {match.homeTeam} vs {match.awayTeam}
+            </p>
           </div>
           <button type="button" onClick={onClose} className={BTN.closeSm}>
             Close

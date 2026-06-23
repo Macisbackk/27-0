@@ -61,7 +61,11 @@ export function DraftPositionPlacement({
       <p className={`mt-4 text-center ${TYPO.statLabel}`}>Choose Position</p>
       <div className="mt-2 flex flex-wrap justify-center gap-2">
         {emptySlots.map((slot) => {
-          const penalty = getPlacementPenalty(player.position, slot.position);
+          const penalty = getPlacementPenalty(
+            player.position,
+            slot.position,
+            player
+          );
           const natural = penalty === 0 && player.position === slot.position;
           const compatible = penalty === 0 && !natural;
 

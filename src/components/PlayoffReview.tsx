@@ -1,17 +1,22 @@
 "use client";
 
-import { useMemo } from "react";
-import { motion } from "framer-motion";
+import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import type { SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
 import type { PlayoffResult } from "@/lib/game/playoff-simulation";
+import { playoffRoundResultToBracketMatch } from "@/lib/game/playoff-bracket";
 import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
 import { formatFixtureScore } from "@/lib/game/season-simulation";
+import { getPlayoffReviewBio } from "@/lib/playoff-review-bio";
+import { playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
+import { ReturnHomeButton } from "./ReturnHomeButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { TryScorersSection } from "./TryScorersSection";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
+import { PlayoffMatchDetailsPanel } from "./PlayoffMatchDetailsPanel";
 import { Confetti } from "./Confetti";
 import { TYPO } from "@/lib/ui/typography";
 import { NORMAL } from "@/lib/ui/design-system";
@@ -24,6 +29,7 @@ interface PlayoffReviewProps {
   isHardMode?: boolean;
   onPlayAgain: () => void;
   onClose: () => void;
+  onReturnHome?: () => void;
 }
 
 export function PlayoffReview({
@@ -33,9 +39,27 @@ export function PlayoffReview({
   playoffFundsPayout = null,
   isHardMode = false,
   onPlayAgain,
-  onClose,
+  onReturnHome,
 }: PlayoffReviewProps) {
   const isChampion = playoffResult.isChampion;
+  const titleBio = useMemo(
+    () => getPlayoffReviewBio(playoffResult, seasonResult.wins),
+    [playoffResult, seasonResult.wins]
+  );
+  const [selectedRoundId, setSelectedRoundId] = useState<string | null>(null);
+
+  const selectedMatch = useMemo(() => {
+    if (!selectedRoundId) return null;
+    const idx = playoffResult.rounds.findIndex(
+      (r) => `playoff-round-${r.roundIndex}` === selectedRoundId
+    );
+    if (idx < 0) return null;
+    return playoffRoundResultToBracketMatch(
+      playoffResult.rounds[idx]!,
+      selectedRoundId
+    );
+  }, [selectedRoundId, playoffResult.rounds]);
+
   const topScorers = useMemo(
     () =>
       [...playoffResult.tryScorers]
@@ -46,10 +70,6 @@ export function PlayoffReview({
   const bestScorer = topScorers[0];
   const worstScorer =
     topScorers.length > 1 ? topScorers[topScorers.length - 1] : null;
-
-  const handlePlayAgain = () => {
-    onPlayAgain();
-  };
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md">
@@ -69,6 +89,9 @@ export function PlayoffReview({
           <h1 className="mt-4 font-display text-3xl font-black text-accent-gold sm:text-4xl">
             {playoffResult.finish}
           </h1>
+          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-500">
+            {titleBio}
+          </p>
           {isChampion && (
             <p className="mt-2 text-sm font-semibold text-accent-green">
               Super League Champions — your squad lifted the trophy.
@@ -82,7 +105,7 @@ export function PlayoffReview({
           animate={{ opacity: 1, y: 0 }}
         >
           <ReviewPlayAgain
-            onPlayAgain={handlePlayAgain}
+            onPlayAgain={onPlayAgain}
             leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
             hardMode={isHardMode}
             compact
@@ -90,7 +113,7 @@ export function PlayoffReview({
           <ClubFundsEarned payout={playoffFundsPayout} />
         </motion.div>
 
-        <CollapsibleReviewSection title="Play-Off Summary" delay={0.2}>
+        <CollapsibleReviewSection title="Play-Off Summary" delay={0.2} defaultOpen>
           <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
             <p>
               Play-Off Record:{" "}
@@ -128,47 +151,93 @@ export function PlayoffReview({
           </div>
         </CollapsibleReviewSection>
 
-        <CollapsibleReviewSection title="Play-Off Bracket" delay={0.25}>
+        <CollapsibleReviewSection
+          title="Play-Off Bracket"
+          delay={0.25}
+          defaultOpen={false}
+          helper="Tap a result to view scorers, goals, and match story."
+        >
           <div className="space-y-3 text-left text-sm">
-            {playoffResult.rounds.map((round) => (
-              <div
-                key={`${round.round}-${round.roundIndex}`}
-                className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2"
-              >
-                <p className="font-display text-xs font-bold uppercase tracking-wider text-accent-green">
-                  {round.round}
-                </p>
-                {round.userPlayed ? (
-                  <>
-                    <p className="mt-1 text-gray-300">
-                      vs {round.opponent}{" "}
-                      {round.isNeutral
-                        ? "(Neutral)"
-                        : round.isHome
-                          ? "(Home)"
-                          : "(Away)"}
+            {playoffResult.rounds.map((round) => {
+              const roundId = `playoff-round-${round.roundIndex}`;
+              const isSelected = selectedRoundId === roundId;
+              return (
+                <div key={roundId}>
+                  <button
+                    type="button"
+                    disabled={!round.userPlayed}
+                    onClick={() => {
+                      if (!round.userPlayed) return;
+                      playUiClick();
+                      if (isSelected) {
+                        playPanelClose();
+                        setSelectedRoundId(null);
+                      } else {
+                        playPanelExpand();
+                        setSelectedRoundId(roundId);
+                      }
+                    }}
+                    className={`w-full rounded-lg border px-3 py-2 text-left transition ${
+                      round.userPlayed
+                        ? isSelected
+                          ? "border-accent-green/50 bg-accent-green/10 ring-1 ring-accent-green/30"
+                          : "border-pitch-700/40 bg-pitch-950/50 hover:border-accent-green/35 hover:bg-pitch-900/60"
+                        : "cursor-default border-pitch-700/40 bg-pitch-950/50 opacity-70"
+                    }`}
+                  >
+                    <p className="font-display text-xs font-bold uppercase tracking-wider text-accent-green">
+                      {round.round}
                     </p>
-                    <p className="mt-1 font-semibold text-white">
-                      {formatFixtureScore(round.fixture)} —{" "}
-                      <span
-                        className={
-                          round.userWon ? "text-accent-green" : "text-red-400"
-                        }
-                      >
-                        {round.userWon ? "Progress" : "Eliminated"}
-                      </span>
-                    </p>
-                  </>
-                ) : (
-                  <p className="mt-1 text-gray-500">Bye — straight to semi-finals</p>
-                )}
-              </div>
-            ))}
+                    {round.userPlayed ? (
+                      <>
+                        <p className="mt-1 break-words text-gray-300">
+                          vs {round.opponent}{" "}
+                          {round.isNeutral
+                            ? "(Neutral)"
+                            : round.isHome
+                              ? "(Home)"
+                              : "(Away)"}
+                        </p>
+                        <p className="mt-1 font-semibold text-white">
+                          {formatFixtureScore(round.fixture)} —{" "}
+                          <span
+                            className={
+                              round.userWon ? "text-accent-green" : "text-red-400"
+                            }
+                          >
+                            {round.userWon ? "Progress" : "Eliminated"}
+                          </span>
+                        </p>
+                      </>
+                    ) : (
+                      <p className="mt-1 text-gray-500">
+                        Bye — straight to semi-finals
+                      </p>
+                    )}
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isSelected && selectedMatch && (
+                      <PlayoffMatchDetailsPanel
+                        match={selectedMatch}
+                        onClose={() => {
+                          playPanelClose();
+                          setSelectedRoundId(null);
+                        }}
+                      />
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
           </div>
         </CollapsibleReviewSection>
 
         {topScorers.length > 0 && (
-          <CollapsibleReviewSection title="Play-Off Try Scorers" delay={0.3}>
+          <CollapsibleReviewSection
+            title="Play-Off Try Scorers"
+            delay={0.3}
+            defaultOpen={false}
+          >
             <TryScorersSection
               tryScorers={playoffResult.tryScorers}
               expectedTotalTries={playoffResult.tryScorers.reduce(
@@ -180,7 +249,11 @@ export function PlayoffReview({
         )}
 
         {(bestScorer || worstScorer) && (
-          <CollapsibleReviewSection title="Play-Off Performers" delay={0.32}>
+          <CollapsibleReviewSection
+            title="Play-Off Performers"
+            delay={0.32}
+            defaultOpen={false}
+          >
             <div className="grid gap-3 sm:grid-cols-2">
               {bestScorer && (
                 <div className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 p-4 text-left">
@@ -191,7 +264,8 @@ export function PlayoffReview({
                     {bestScorer.name}
                   </p>
                   <p className="text-sm text-gray-400">
-                    {bestScorer.tries} play-off {bestScorer.tries === 1 ? "try" : "tries"}
+                    {bestScorer.tries} play-off{" "}
+                    {bestScorer.tries === 1 ? "try" : "tries"}
                   </p>
                 </div>
               )}
@@ -204,13 +278,28 @@ export function PlayoffReview({
                     {worstScorer.name}
                   </p>
                   <p className="text-sm text-gray-400">
-                    {worstScorer.tries} play-off {worstScorer.tries === 1 ? "try" : "tries"}
+                    {worstScorer.tries} play-off{" "}
+                    {worstScorer.tries === 1 ? "try" : "tries"}
                   </p>
                 </div>
               )}
             </div>
           </CollapsibleReviewSection>
         )}
+
+        <motion.footer
+          className="mt-8 w-full max-w-xl space-y-3"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <ReviewPlayAgain
+            onPlayAgain={onPlayAgain}
+            leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
+            hardMode={isHardMode}
+          />
+          <ReturnHomeButton onBeforeNavigate={onReturnHome} />
+        </motion.footer>
       </div>
     </div>
   );

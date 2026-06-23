@@ -122,8 +122,14 @@ export function canPlayerFillAnyEmptySlot(
 
 export function getPlacementPenalty(
   naturalPosition: Position,
-  slotPosition: Position
+  slotPosition: Position,
+  player?: Pick<Player, "position" | "positions">
 ): number {
+  if (player) {
+    return getPlayerEligiblePositions(player as Player).includes(slotPosition)
+      ? 0
+      : OUT_OF_POSITION_PENALTY;
+  }
   return isCompatible(naturalPosition, slotPosition)
     ? 0
     : OUT_OF_POSITION_PENALTY;
@@ -131,8 +137,12 @@ export function getPlacementPenalty(
 
 export function isNaturalPlacement(
   naturalPosition: Position,
-  slotPosition: Position
+  slotPosition: Position,
+  player?: Pick<Player, "position" | "positions">
 ): boolean {
+  if (player?.positions?.length) {
+    return getPlayerEligiblePositions(player as Player).includes(slotPosition);
+  }
   return naturalPosition === slotPosition;
 }
 
@@ -146,9 +156,7 @@ export function findBestSlotForPlayer(
 
   const scored = emptySlots.map((slot) => {
     const eligible = getPlayerEligiblePositions(player);
-    const penalty = Math.min(
-      ...eligible.map((pos) => getPlacementPenalty(pos, slot.position))
-    );
+    const penalty = getPlacementPenalty(player.position, slot.position, player);
     const recruitOrder = RECRUIT_SLOT_ORDER.indexOf(
       slot.slotIndex as (typeof RECRUIT_SLOT_ORDER)[number]
     );

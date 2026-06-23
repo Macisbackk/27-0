@@ -4,10 +4,10 @@ export const SLOT_REEL_ITEM_HEIGHT_PX = 44;
 /** Visible rows in the reel window (centre row is the selection line). */
 export const SLOT_REEL_VISIBLE_ROWS = 3;
 
-/** Strip repetitions — keep low for DOM performance (animation uses transform only). */
-export const SLOT_REEL_STRIP_COPIES = 4;
+/** Strip repetitions — keep minimal for DOM performance. */
+export const SLOT_REEL_STRIP_COPIES = 3;
 
-export const DEFAULT_SPIN_TICK_COUNT = 32;
+export const DEFAULT_SPIN_TICK_COUNT = 20;
 
 /** Vertical offset so item `index` sits on the centre selection line. */
 export function computeSlotReelScrollY(index: number): number {

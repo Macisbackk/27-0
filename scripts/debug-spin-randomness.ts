@@ -1,108 +1,154 @@
 /**
- * Simulate Normal Mode team-year spin distribution (uniform pick audit).
+ * Club-uniform spin distribution audit (10,000 spins per recruit position).
  * Run: npm run debug:spin-randomness
  */
 import seedrandom from "seedrandom";
-import {
-  getNormalModeTeamYearPools,
-  pickUniformTeamYearPool,
-} from "../src/lib/game/player-pool-eligibility";
-import { buildTeamYearId } from "../src/lib/game/team-year-pools";
+import { RECRUIT_SLOT_ORDER, createEmptySquad } from "../src/lib/positions";
+import { getNormalModeTeamYearPoolsCached } from "../src/lib/game/player-pool-eligibility";
+import { groupPoolsByClub } from "../src/lib/game/spin-club-pick";
+import { generateSlotTeamYearTargetForSlot } from "../src/lib/game/slot-team-year-pick";
+import type { Position } from "../src/lib/types";
 
-const SPIN_COUNT = 1000;
+const SPINS_PER_POSITION = 10_000;
 
-interface SpinAuditResult {
-  counts: Map<string, number>;
-  eligiblePoolSize: number;
-  invalidPoolCount: number;
+interface PositionAudit {
+  position: Position;
+  slotIndex: number;
+  totalSpins: number;
+  eligibleClubs: number;
+  clubCounts: Map<string, number>;
   fallbackCount: number;
-  noPlayerRerollCount: number;
+  setupMsTotal: number;
 }
 
-function simulateSpins(spinCount: number): SpinAuditResult {
-  const allPools = getNormalModeTeamYearPools();
-  const eligible = allPools;
-  const counts = new Map<string, number>();
+function auditPosition(
+  slotIndex: number,
+  spinCount: number,
+  seed: string
+): PositionAudit {
+  const squad = createEmptySquad();
+  const slot = squad.find((s) => s.slotIndex === slotIndex);
+  const position = slot?.position ?? "FULLBACK";
+  const usedIds = new Set<string>();
+  const usedTeamYearKeys = new Set<string>();
+  const clubCounts = new Map<string, number>();
   let fallbackCount = 0;
-  let noPlayerRerollCount = 0;
+  let setupMsTotal = 0;
+
+  const pools = getNormalModeTeamYearPoolsCached();
+  const eligibleClubs = groupPoolsByClub(pools).size;
 
   for (let i = 0; i < spinCount; i++) {
-    const rng = seedrandom(`debug-spin-${i}`);
-    const pick = pickUniformTeamYearPool(eligible, rng);
-    if (!pick) {
-      fallbackCount++;
+    const t0 = performance.now();
+    const target = generateSlotTeamYearTargetForSlot(
+      `${seed}-${slotIndex}-${i}`,
+      i,
+      usedIds,
+      squad,
+      slotIndex,
+      usedTeamYearKeys
+    );
+    setupMsTotal += performance.now() - t0;
+
+    if (!target) {
+      fallbackCount += 1;
       continue;
     }
-    const id = buildTeamYearId(pick.team, pick.year);
-    counts.set(id, (counts.get(id) ?? 0) + 1);
+
+    clubCounts.set(target.team, (clubCounts.get(target.team) ?? 0) + 1);
   }
 
   return {
-    counts,
-    eligiblePoolSize: eligible.length,
-    invalidPoolCount: 0,
+    position,
+    slotIndex,
+    totalSpins: spinCount,
+    eligibleClubs,
+    clubCounts,
     fallbackCount,
-    noPlayerRerollCount,
+    setupMsTotal,
   };
 }
 
-function formatRow(rank: number, id: string, count: number, pct: number): string {
-  return `${String(rank).padStart(3)}. ${id.padEnd(28)} ${String(count).padStart(5)} (${pct.toFixed(1)}%)`;
-}
+function printPositionReport(audit: PositionAudit): void {
+  const entries = [...audit.clubCounts.entries()].sort((a, b) => b[1] - a[1]);
+  const totalPicks = entries.reduce((s, [, c]) => s + c, 0);
+  const expected = totalPicks / Math.max(1, audit.eligibleClubs);
 
-function main(): void {
-  console.log("=== Spin Randomness Debug Report ===\n");
-  console.log(`Simulating ${SPIN_COUNT} uniform team-year picks (no slot/position filters).\n`);
-
-  const result = simulateSpins(SPIN_COUNT);
-  const entries = [...result.counts.entries()].sort((a, b) => b[1] - a[1]);
-  const totalPicks = entries.reduce((sum, [, c]) => sum + c, 0);
-  const expected = totalPicks / Math.max(1, result.eligiblePoolSize);
-
-  console.log(`Total eligible team-years: ${result.eligiblePoolSize}`);
-  console.log(`Invalid/filtered team-years: ${result.invalidPoolCount}`);
+  console.log(`\n=== Position: ${audit.position} (slot ${audit.slotIndex}) ===`);
+  console.log(`Total spins: ${audit.totalSpins}`);
+  console.log(`Eligible clubs: ${audit.eligibleClubs}`);
   console.log(`Successful picks: ${totalPicks}`);
-  console.log(`Fallback count: ${result.fallbackCount}`);
-  console.log(`No-player-for-position reroll count: ${result.noPlayerRerollCount}`);
-  console.log(`Expected ~${expected.toFixed(1)} picks per pool if uniform\n`);
+  console.log(`Fallback count: ${audit.fallbackCount}`);
+  console.log(
+    `Avg spin setup: ${(audit.setupMsTotal / audit.totalSpins).toFixed(3)}ms`
+  );
+  console.log(`Expected ~${expected.toFixed(1)} picks per club if uniform\n`);
 
-  console.log("--- All team-year counts ---");
-  for (const [id, count] of [...entries].sort((a, b) => a[0].localeCompare(b[0]))) {
-    const pct = (count / totalPicks) * 100;
-    console.log(`  ${id.padEnd(28)} ${String(count).padStart(5)} (${pct.toFixed(1)}%)`);
-  }
-
-  console.log("\n--- Top 10 most selected ---");
-  entries.slice(0, 10).forEach(([id, count], i) => {
-    console.log(formatRow(i + 1, id, count, (count / totalPicks) * 100));
-  });
-
-  console.log("\n--- Bottom 10 least selected ---");
-  const bottom = [...entries].reverse().slice(0, 10).reverse();
-  bottom.forEach(([id, count], i) => {
+  console.log("Club selection counts:");
+  for (const [club, count] of [...entries].sort((a, b) =>
+    a[0].localeCompare(b[0])
+  )) {
+    const pct = totalPicks > 0 ? (count / totalPicks) * 100 : 0;
     console.log(
-      formatRow(entries.length - bottom.length + i + 1, id, count, (count / totalPicks) * 100)
+      `  ${club.padEnd(28)} ${String(count).padStart(5)} (${pct.toFixed(2)}%)`
     );
+  }
+
+  console.log("\nTop 5 most selected:");
+  entries.slice(0, 5).forEach(([club, count], i) => {
+    const pct = totalPicks > 0 ? (count / totalPicks) * 100 : 0;
+    console.log(`  ${i + 1}. ${club}: ${count} (${pct.toFixed(2)}%)`);
   });
 
-  const leeds15 = entries.find(([id]) => id.includes("Leeds") && id.includes("2015"));
-  const catalans = entries.filter(([id]) => id.toLowerCase().includes("catalans"));
-  console.log("\n--- Bias watch ---");
-  if (leeds15) {
-    console.log(`Leeds 2015: ${leeds15[1]} (${((leeds15[1] / totalPicks) * 100).toFixed(1)}%) — expected ~${((1 / result.eligiblePoolSize) * 100).toFixed(1)}%`);
-  }
-  for (const [id, count] of catalans) {
-    console.log(`${id}: ${count} (${((count / totalPicks) * 100).toFixed(1)}%)`);
-  }
+  console.log("\nBottom 5 least selected:");
+  const bottom = [...entries].reverse().slice(0, 5).reverse();
+  bottom.forEach(([club, count]) => {
+    const pct = totalPicks > 0 ? (count / totalPicks) * 100 : 0;
+    console.log(`  ${club}: ${count} (${pct.toFixed(2)}%)`);
+  });
+
+  const catalans = entries
+    .filter(([c]) => c.toLowerCase().includes("catalans"))
+    .reduce((s, [, c]) => s + c, 0);
+  const castleford = entries
+    .filter(([c]) => c.toLowerCase().includes("castleford"))
+    .reduce((s, [, c]) => s + c, 0);
+  console.log(
+    `\nCatalans total: ${catalans} (${totalPicks ? ((catalans / totalPicks) * 100).toFixed(2) : 0}%)`
+  );
+  console.log(
+    `Castleford total: ${castleford} (${totalPicks ? ((castleford / totalPicks) * 100).toFixed(2) : 0}%)`
+  );
 
   const maxCount = entries[0]?.[1] ?? 0;
   const ratio = expected > 0 ? maxCount / expected : 0;
-  if (ratio > 2.5) {
-    console.error(`\nWARN: top pick is ${ratio.toFixed(1)}× expected — investigate bias`);
+  if (ratio > 2.2) {
+    console.error(`WARN: top club is ${ratio.toFixed(2)}× expected — bias suspected`);
+    process.exitCode = 1;
+  }
+}
+
+function main(): void {
+  console.log("=== Spin Randomness Debug Report (club-uniform) ===\n");
+  console.log(`${SPINS_PER_POSITION} spins per recruit slot position.\n`);
+
+  const uniqueSlots = [...new Set(RECRUIT_SLOT_ORDER)];
+
+  for (const slotIndex of uniqueSlots) {
+    const audit = auditPosition(
+      slotIndex,
+      SPINS_PER_POSITION,
+      "debug-spin-club-uniform"
+    );
+    printPositionReport(audit);
+  }
+
+  if (process.exitCode === 1) {
+    console.error("\nFAILED: club distribution outlier detected");
     process.exit(1);
   }
 
-  console.log("\nOK: distribution within expected uniform range");
+  console.log("\nOK: club distributions within expected uniform range");
 }
 
 main();
