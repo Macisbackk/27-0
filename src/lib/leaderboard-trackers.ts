@@ -53,6 +53,7 @@ export const LEADERBOARD_TRACKERS: {
   cupOnly?: boolean;
   clubFundsOnly?: boolean;
 }[] = [
+  { id: "best_record", label: "Total Record", shortLabel: "Total Record" },
   { id: "squad_value", label: "Top Squad Value", shortLabel: "Top Squad" },
   { id: "most_wins", label: "Most Wins", shortLabel: "Most Wins" },
   {
@@ -60,7 +61,12 @@ export const LEADERBOARD_TRACKERS: {
     label: "Most 27-0 Seasons",
     shortLabel: "27-0 Seasons",
   },
-  { id: "best_record", label: "Total Record", shortLabel: "Total Record" },
+  {
+    id: "challenge_cup_team_wins",
+    label: "Challenge Cup Team Wins",
+    shortLabel: "Team Wins",
+    cupOnly: true,
+  },
   {
     id: "challenge_cup_wins",
     label: "Challenge Cups Won",
@@ -80,12 +86,6 @@ export const LEADERBOARD_TRACKERS: {
     cupOnly: true,
   },
   {
-    id: "challenge_cup_team_wins",
-    label: "Challenge Cup Team Wins",
-    shortLabel: "Team Wins",
-    cupOnly: true,
-  },
-  {
     id: "total_winnings",
     label: "Total Winnings",
     shortLabel: "Total Winnings",
@@ -100,9 +100,19 @@ export function getTrackersForDbMode(
     return LEADERBOARD_TRACKERS.filter((t) => t.clubFundsOnly);
   }
   if (dbMode === "challenge-cup") {
-    return LEADERBOARD_TRACKERS.filter(
+    const cupTrackers = LEADERBOARD_TRACKERS.filter(
       (t) => t.cupOnly || t.id === "best_record"
     );
+    const order: LeaderboardTrackerType[] = [
+      "best_record",
+      "challenge_cup_team_wins",
+      "challenge_cup_wins",
+      "cup_match_wins",
+      "cup_finals",
+    ];
+    return order
+      .map((id) => cupTrackers.find((t) => t.id === id))
+      .filter((t): t is NonNullable<typeof t> => !!t);
   }
   return LEADERBOARD_TRACKERS.filter((t) => !t.cupOnly && !t.clubFundsOnly);
 }

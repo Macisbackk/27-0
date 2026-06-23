@@ -38,7 +38,11 @@ import {
   type SeasonResult,
 } from "@/lib/game/season-simulation";
 import { buildLeagueTable } from "@/lib/game/league-table";
-import { simulatePlayoffs, type PlayoffResult } from "@/lib/game/playoff-simulation";
+import type { PlayoffResult } from "@/lib/game/playoff-simulation";
+import {
+  createPlayoffBracket,
+  type PlayoffBracketState,
+} from "@/lib/game/playoff-bracket";
 import type { ChallengeCupResult } from "@/lib/game/challenge-cup-simulation";
 import { createJoeMellorStartingSquad } from "@/lib/game/joe-mellor-mode";
 import {
@@ -78,7 +82,7 @@ import { RecruitmentSlotReveal } from "./RecruitmentSlotReveal";
 import { SlotTeamYearPicker } from "./SlotTeamYearPicker";
 import { RugbyPitch } from "./RugbyPitch";
 import { PlayoffReview } from "./PlayoffReview";
-import { PlayoffSimulation } from "./PlayoffSimulation";
+import { PlayoffBracket } from "./PlayoffBracket";
 import { SeasonReview } from "./SeasonReview";
 import { SeasonSimulation } from "./SeasonSimulation";
 import { ChallengeCupReview } from "./ChallengeCupReview";
@@ -199,6 +203,8 @@ export function GameBoard({
   const fundsAwardedRef = useRef(false);
   const playoffFundsAwardedRef = useRef(false);
   const playoffResultRef = useRef<PlayoffResult | null>(null);
+  const [playoffBracketState, setPlayoffBracketState] =
+    useState<PlayoffBracketState | null>(null);
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
   const placementScrollRef = useRef<HTMLDivElement>(null);
@@ -456,6 +462,7 @@ export function GameBoard({
     fundsAwardedRef.current = false;
     playoffFundsAwardedRef.current = false;
     playoffResultRef.current = null;
+    setPlayoffBracketState(null);
     setReviewStage("regular");
   }, [joeMellorMode, superSamHallasMode, isChallengeCup]);
 
@@ -646,20 +653,22 @@ export function GameBoard({
     const tablePosition =
       leagueTable.find((row) => row.isUserTeam)?.position ??
       seasonResult.leaguePosition;
-    const playoffResult = simulatePlayoffs(
-      squad,
-      seed,
-      tablePosition,
-      leagueTable
+    setPlayoffBracketState(
+      createPlayoffBracket(seed, leagueTable, tablePosition)
     );
-    playoffResultRef.current = playoffResult;
-    setSeasonResult({ ...seasonResult, playoffResult });
     setReviewStage("playoffs");
   }, [seasonResult, seed, squad, finalizeRegularSeason]);
 
-  const handlePlayoffsComplete = useCallback(() => {
-    setReviewStage("playoffFinal");
-  }, []);
+  const handlePlayoffBracketComplete = useCallback(
+    (playoffResult: PlayoffResult) => {
+      playoffResultRef.current = playoffResult;
+      setSeasonResult((prev) =>
+        prev ? { ...prev, playoffResult } : prev
+      );
+      setReviewStage("playoffFinal");
+    },
+    []
+  );
 
   const handlePlayoffReviewDone = useCallback(() => {
     if (!seasonResult) return;
@@ -1433,11 +1442,19 @@ export function GameBoard({
       )}
 
       {phase === "review" &&
-        seasonResult?.playoffResult &&
-        reviewStage === "playoffs" && (
-        <PlayoffSimulation
-          result={seasonResult.playoffResult}
-          onComplete={handlePlayoffsComplete}
+        reviewStage === "playoffs" &&
+        playoffBracketState &&
+        seasonResult && (
+        <PlayoffBracket
+          squad={squad}
+          seed={seed}
+          leagueTable={buildLeagueTable(seasonResult, seed)}
+          leaguePosition={
+            playoffBracketState.leaguePosition ??
+            seasonResult.leaguePosition
+          }
+          initialState={playoffBracketState}
+          onComplete={handlePlayoffBracketComplete}
         />
       )}
 

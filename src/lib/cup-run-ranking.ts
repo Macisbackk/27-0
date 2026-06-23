@@ -8,6 +8,7 @@ import type { CupLeaderboardProfile } from "./storage/cup-leaderboard";
 import type { CupPersonalBests, CupRunRankingResult } from "./types";
 
 const RECORD_CATEGORIES: CupLeaderboardCategory[] = [
+  "cupRecord",
   "cupsWon",
   "cupMatchWins",
   "winPercentage",
@@ -19,6 +20,7 @@ const RECORD_CATEGORIES: CupLeaderboardCategory[] = [
 ];
 
 const CATEGORY_LABELS: Record<CupLeaderboardCategory, string> = {
+  cupRecord: "Total Record",
   cupsWon: "Most Challenge Cups Won",
   cupMatchWins: "Most Challenge Cup Match Wins",
   winPercentage: "Best Cup Win Percentage",

@@ -1,6 +1,6 @@
 import seedrandom from "seedrandom";
 import { getPlayableClubNames } from "../clubs/super-league-display";
-import { getClubStrength } from "./club-strength";
+import { getMatchClubStrength } from "./opponent-squad-strength";
 import type { SquadSlot } from "../types";
 import { getAverageSquadRating } from "../squad-analysis";
 import { getSquadValue } from "../positions";
@@ -129,6 +129,7 @@ export interface MatchFixture {
   round: number;
   opponent: string;
   isHome: boolean;
+  isNeutral?: boolean;
   pointsFor: number;
   pointsAgainst: number;
   triesFor: number;
@@ -174,8 +175,13 @@ const FORWARD_POSITIONS = new Set([
 
 const OPPONENT_CLUBS = getPlayableClubNames();
 
-function getOpponentStrength(opponent: string, rng: () => number): number {
-  return getClubStrength(opponent, rng);
+function getOpponentStrength(
+  opponent: string,
+  seed: string,
+  round: number,
+  userIsHome: boolean
+): number {
+  return getMatchClubStrength(opponent, seed, round, !userIsHome);
 }
 
 export function calculateSquadStrength(squad: SquadSlot[]): number {
@@ -904,7 +910,8 @@ export function simulateOneFixture(
   const rng = seedrandom(`${seed}-match-${round}`);
 
   const opponentStrength =
-    options.opponentRatingOverride ?? getOpponentStrength(opponent, rng);
+    options.opponentRatingOverride ??
+    getOpponentStrength(opponent, seed, round, isHome);
   const { won: initialWon, isUpset: initialUpset, ratingGap } = resolveOutcome(
     squad,
     strength,

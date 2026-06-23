@@ -11,7 +11,7 @@ import {
   type SeasonResult,
 } from "./season-simulation";
 import { getSeasonLeagueClubs } from "./league-replacement";
-import { getClubBaseStrength } from "./club-strength";
+import { getMatchClubStrength } from "./opponent-squad-strength";
 import { getSeasonTryTotal } from "./season-tries";
 import { devWarnMany } from "../validation/dev-warn";
 
@@ -123,9 +123,9 @@ function simulateClubFixture(
   seed: string
 ): { homeScore: number; awayScore: number; homeTries: number; awayTries: number } {
   const rng = seedrandom(`${seed}-league-club-r${round}-${home}-${away}`);
-  const homeStr = getClubBaseStrength(home) + 2;
-  const awayStr = getClubBaseStrength(away);
-  const diff = homeStr - awayStr + (rng() - 0.5) * 10;
+  const homeStr = getMatchClubStrength(home, seed, round, true);
+  const awayStr = getMatchClubStrength(away, seed, round, false);
+  const diff = homeStr - awayStr + (rng() - 0.5) * 8;
   const homeWins = rng() < 1 / (1 + Math.exp(-diff / 4.2));
 
   const winnerMin = 14;

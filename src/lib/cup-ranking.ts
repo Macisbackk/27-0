@@ -1,4 +1,5 @@
 import type { CupLeaderboardProfile } from "./storage/cup-leaderboard";
+import { formatRecordWithPercentage } from "./lifetime-stats";
 
 export function applyMatchResultsToStreak(
   currentStreak: number,
@@ -45,6 +46,7 @@ export function getCupFinishRank(finish: string | null | undefined): number {
 }
 
 export type CupLeaderboardCategory =
+  | "cupRecord"
   | "cupsWon"
   | "cupMatchWins"
   | "winPercentage"
@@ -60,6 +62,16 @@ export const CUP_LEADERBOARD_CATEGORIES: {
   format: (p: CupLeaderboardProfile) => string;
   sortValue: (p: CupLeaderboardProfile) => number;
 }[] = [
+  {
+    id: "cupRecord",
+    label: "Total Record",
+    format: (p) =>
+      formatRecordWithPercentage(p.cupMatchWins, p.cupMatchLosses),
+    sortValue: (p) => {
+      if (p.cupMatchWins + p.cupMatchLosses === 0) return 0;
+      return p.cupMatchWins * 1000 - p.cupMatchLosses;
+    },
+  },
   {
     id: "cupsWon",
     label: "Most Challenge Cups Won",

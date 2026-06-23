@@ -205,6 +205,14 @@ export function ChallengeCupLeaderboard() {
         category stats also sync from your local career data.
       </p>
 
+      <FeaturedList
+        title="Total Record"
+        profiles={cupRecord}
+        formatValue={(p) =>
+          formatRecordWithPercentage(p.cupMatchWins, p.cupMatchLosses)
+        }
+      />
+
       <CupTeamWinsBarGraph entries={teamWins} totalCups={teamWinsTotal} />
 
       <OnlineCupWinsList entries={onlineWins} />

@@ -87,6 +87,13 @@ export function MatchDetailsPanel({
             <p className={`mt-1 ${TYPO.cardTitle}`}>
               {formatFixtureScore(fixture)}
             </p>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-gray-500">
+              {fixture.isNeutral
+                ? "Neutral"
+                : fixture.isHome
+                  ? "Home"
+                  : "Away"}
+            </p>
             <p
               className={`mt-1 font-display text-sm font-bold ${
                 fixture.result === "W" ? "text-accent-green" : "text-red-400"

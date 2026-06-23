@@ -1,5 +1,5 @@
 import seedrandom from "seedrandom";
-import { getClubStrength } from "./club-strength";
+import { getGeneratedClubSquadStrength } from "./opponent-squad-strength";
 import type { LeagueTableRow } from "./league-table";
 import {
   DREAM_TEAM_NAME,
@@ -72,8 +72,8 @@ function simulateAiKnockout(
   homeAdvantage = 3
 ): { winner: string; loser: string; fixture: MatchFixture } {
   const rng = seedrandom(`${seed}-playoff-ai-${matchKey}`);
-  const homeStr = getClubStrength(home, rng) + homeAdvantage;
-  const awayStr = getClubStrength(away, rng);
+  const homeStr = getGeneratedClubSquadStrength(home, seed, "season") + homeAdvantage;
+  const awayStr = getGeneratedClubSquadStrength(away, seed, "season");
   const homeWins = rng() < 0.5 + ((homeStr - awayStr) / 100) * 0.7;
 
   const winMin = 14;
@@ -127,7 +127,7 @@ function simulateUserKnockout(
   const strength = calculateSquadStrength(squad);
   const rng = seedrandom(`${seed}-playoff-user-${matchKey}`);
   const opponentStrength =
-    getClubStrength(opponent, rng) + (isHome ? 0 : 3);
+    getGeneratedClubSquadStrength(opponent, seed, "season") + (isHome ? 0 : 3);
 
   const { fixture } = simulateOneFixture(
     squad,

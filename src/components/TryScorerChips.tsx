@@ -1,6 +1,7 @@
 "use client";
 
 import { TYPO } from "@/lib/ui/typography";
+import { groupTryScorersForDisplay } from "@/lib/game/try-scorer-display";
 
 export interface TryScorerChipEntry {
   playerId: string;
@@ -17,11 +18,12 @@ interface TryScorerChipsProps {
 
 /** Try scorers rendered like conversions/penalties — stacked stat lines in a scoring section. */
 export function TryScorerChips({ scorers }: TryScorerChipsProps) {
-  if (scorers.length === 0) return null;
+  const grouped = groupTryScorersForDisplay(scorers);
+  if (grouped.length === 0) return null;
 
   return (
     <div className="space-y-1">
-      {scorers.map((scorer) => {
+      {grouped.map((scorer) => {
         const label =
           scorer.tries > 1 ? `${scorer.name} x${scorer.tries}` : scorer.name;
 

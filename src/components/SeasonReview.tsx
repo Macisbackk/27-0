@@ -189,6 +189,8 @@ export function SeasonReview({
     !joeMellorMode &&
     !superSamHallasMode;
 
+  const hideEndOfRunNav = showPlayoffPrompt || missedPlayoffs;
+
   useEffect(() => {
     runSeasonReviewValidation({
       squad,
@@ -278,20 +280,32 @@ export function SeasonReview({
           )}
         </motion.header>
 
-        <motion.div
-          className="mt-6 w-full max-w-xl"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <ReviewPlayAgain
-            onPlayAgain={handlePlayAgain}
-            leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
-            hardMode={isHardMode}
-            compact
-          />
-          <ClubFundsEarned payout={clubFundsPayout} />
-        </motion.div>
+        {!hideEndOfRunNav && (
+          <motion.div
+            className="mt-6 w-full max-w-xl"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <ReviewPlayAgain
+              onPlayAgain={handlePlayAgain}
+              leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
+              hardMode={isHardMode}
+              compact
+            />
+            <ClubFundsEarned payout={clubFundsPayout} />
+          </motion.div>
+        )}
+        {hideEndOfRunNav && clubFundsPayout && (
+          <motion.div
+            className="mt-6 w-full max-w-xl"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <ClubFundsEarned payout={clubFundsPayout} />
+          </motion.div>
+        )}
 
         <CollapsibleReviewSection title="Season Summary" delay={0.32}>
           <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
@@ -445,18 +459,20 @@ export function SeasonReview({
           <TeamComparisonBox comparison={teamComparison} />
         </CollapsibleReviewSection>
 
-        <motion.footer
-          className="mt-8 w-full max-w-xl"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.65 }}
-        >
-          <ReviewPlayAgain
-            onPlayAgain={handlePlayAgain}
-            leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
-            hardMode={isHardMode}
-          />
-        </motion.footer>
+        {!hideEndOfRunNav && (
+          <motion.footer
+            className="mt-8 w-full max-w-xl"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65 }}
+          >
+            <ReviewPlayAgain
+              onPlayAgain={handlePlayAgain}
+              leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
+              hardMode={isHardMode}
+            />
+          </motion.footer>
+        )}
       </div>
     </div>
   );
