@@ -1,7 +1,10 @@
 import seedrandom from "seedrandom";
 import type { SquadSlot } from "../types";
 import { RECRUIT_SLOT_ORDER } from "../positions";
-import { getNormalModeTeamYearPoolsCached } from "./player-pool-eligibility";
+import {
+  getSpinTeamYearPoolsCached,
+  type SpinPoolVariant,
+} from "./player-pool-eligibility";
 import { pickClubUniformTeamYearPool } from "./spin-club-pick";
 import { buildTeamYearId } from "./team-year-pools";
 import {
@@ -33,9 +36,10 @@ function eligibleLegendPlayersForSlot(
 export function slotHasLegendSpinOption(
   squad: SquadSlot[],
   slotIndex: number,
-  usedIds: Set<string> = new Set()
+  usedIds: Set<string> = new Set(),
+  variant: SpinPoolVariant = "current"
 ): boolean {
-  const pools = getNormalModeTeamYearPoolsCached();
+  const pools = getSpinTeamYearPoolsCached(variant);
   return pools.some((pool) =>
     eligibleLegendPlayersForSlot(pool, usedIds, squad, slotIndex)
   );
@@ -45,12 +49,17 @@ export function slotHasLegendSpinOption(
 export function pickLegendSpinSlotIndex(
   seed: string,
   squad: SquadSlot[],
-  usedIds: Set<string> = new Set()
+  usedIds: Set<string> = new Set(),
+  variant: SpinPoolVariant = "current"
 ): number | null {
   const rng = seedrandom(`${seed}-legend-spin-slot`);
   const candidates = RECRUIT_SLOT_ORDER.filter((slotIndex) => {
     const slot = squad.find((s) => s.slotIndex === slotIndex);
-    return slot && !slot.player && slotHasLegendSpinOption(squad, slotIndex, usedIds);
+    return (
+      slot &&
+      !slot.player &&
+      slotHasLegendSpinOption(squad, slotIndex, usedIds, variant)
+    );
   });
   if (candidates.length === 0) return null;
   return candidates[Math.floor(rng() * candidates.length)]!;
@@ -63,10 +72,11 @@ export function pickLegendTeamYearForSlot(
   usedIds: Set<string>,
   squad: SquadSlot[],
   slotIndex: number,
-  usedTeamYearKeys: ReadonlySet<string>
+  usedTeamYearKeys: ReadonlySet<string>,
+  variant: SpinPoolVariant = "current"
 ): { team: string; year: string; teamYearKey: string; teamYearId: string } | null {
   const rng = seedrandom(`${seed}-legend-spin-${slotIndex}-${spinIndex}`);
-  let pools = getNormalModeTeamYearPoolsCached().filter((pool) =>
+  let pools = getSpinTeamYearPoolsCached(variant).filter((pool) =>
     eligibleLegendPlayersForSlot(pool, usedIds, squad, slotIndex)
   );
   if (usedTeamYearKeys.size > 0) {
@@ -78,7 +88,8 @@ export function pickLegendTeamYearForSlot(
   if (pools.length === 0) return null;
 
   const { pool } = pickClubUniformTeamYearPool(pools, rng, (p) =>
-    eligibleLegendPlayersForSlot(p, usedIds, squad, slotIndex)
+    eligibleLegendPlayersForSlot(p, usedIds, squad, slotIndex),
+    variant
   );
   if (!pool) return null;
 

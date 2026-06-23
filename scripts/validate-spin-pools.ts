@@ -27,11 +27,11 @@ function main(): void {
   for (const pool of pools.slice(0, 12)) {
     const target = buildSlotRevealTarget(pool.team, pool.year);
     const teamPool = buildSlotReelPool(
-      getSlotSpinTeamPool(target.team, target.teamYearKey),
+      getSlotSpinTeamPool(target.team, "era", target.teamYearKey),
       target.team
     );
     const yearPool = buildSlotReelPool(
-      getSlotSpinYearPool(target.team, target.year),
+      getSlotSpinYearPool(target.team, target.year, "era"),
       target.year
     );
 

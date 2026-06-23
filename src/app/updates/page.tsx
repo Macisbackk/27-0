@@ -1,39 +1,75 @@
-import { MAJOR_UPDATES } from "../../../data/updates";
-import { SPACING } from "@/lib/ui/design-system";
+"use client";
+
+import { useState } from "react";
+import { GAME_UPDATES } from "../../../data/updates";
+import { playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 export default function UpdatesPage() {
+  const [openId, setOpenId] = useState<string | null>(GAME_UPDATES[0]?.id ?? null);
+
   return (
     <div className="matchday-arena min-h-screen">
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
-      <div
-        className={`relative mx-auto max-w-2xl ${SPACING.pageX} py-8 sm:py-12`}
-      >
-        <header className="mb-8 text-center">
+      <div className="relative mx-auto max-w-2xl px-4 py-10 sm:py-14">
+        <header className="text-center">
           <p className={TYPO.sectionLabel}>Changelog</p>
-          <h1 className={`mt-2 ${TYPO.pageTitle}`}>Updates</h1>
-          <p className={`mx-auto mt-3 max-w-md ${TYPO.body}`}>
-            Major features shipped in 27-0, from first launch to the latest
-            modes.
+          <h1 className="mt-2 font-display text-3xl font-black text-white sm:text-4xl">
+            Updates
+          </h1>
+          <p className="mx-auto mt-3 max-w-md text-sm text-gray-500">
+            What&apos;s new in 27-0 — latest changes first.
           </p>
         </header>
 
-        <ol className="space-y-3">
-          {MAJOR_UPDATES.map((title, index) => (
-            <li
-              key={title}
-              className="flex min-w-0 items-start gap-3 rounded-xl border border-pitch-700/60 bg-pitch-950/70 px-4 py-3"
-            >
-              <span
-                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-accent-green/40 bg-pitch-900 text-[11px] font-bold text-accent-green"
-                aria-hidden
-              >
-                {index + 1}
-              </span>
-              <p className={`min-w-0 ${TYPO.cardTitle} text-white`}>{title}</p>
-            </li>
-          ))}
-        </ol>
+        <ul className={`mt-8 space-y-3 ${SPACING.stackMd}`}>
+          {GAME_UPDATES.map((update) => {
+            const isOpen = openId === update.id;
+            return (
+              <li key={update.id}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    playUiClick();
+                    if (isOpen) {
+                      playPanelClose();
+                      setOpenId(null);
+                    } else {
+                      playPanelExpand();
+                      setOpenId(update.id);
+                    }
+                  }}
+                  className={`${CARD.base} ${CARD.panel} w-full rounded-xl border text-left transition ${
+                    isOpen
+                      ? "border-accent-green/40 bg-pitch-900/80"
+                      : "border-pitch-700/50 hover:border-pitch-600/60"
+                  } ${SPACING.cardPaddingSm}`}
+                  aria-expanded={isOpen}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="font-display text-sm font-bold text-white sm:text-base">
+                      {update.title}
+                    </span>
+                    <span
+                      className={`shrink-0 text-accent-green transition ${
+                        isOpen ? "rotate-180" : ""
+                      }`}
+                      aria-hidden
+                    >
+                      ▾
+                    </span>
+                  </div>
+                  {isOpen && (
+                    <p className={`mt-3 ${TYPO.bodySm} leading-relaxed text-gray-400`}>
+                      {update.summary}
+                    </p>
+                  )}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );

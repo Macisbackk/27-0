@@ -9,6 +9,7 @@ import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubTeamLabel } from "./ClubTeamLabel";
 import { KickingSummarySection } from "./KickingSummarySection";
+import { TeamColouredScoringSection } from "./TeamColouredScoringSection";
 import { TryScorerChips, TryScorersEmptyNote } from "./TryScorerChips";
 
 interface PlayoffMatchDetailsPanelProps {
@@ -120,17 +121,24 @@ function TeamScoringBlock({
     <div className={SPACING.stackMd}>
       <ClubTeamLabel club={teamName} colorClub={teamName} />
       {hasTries && (
-        <ScoringSection title="Tries">
-          <TryScorerChips
-            scorers={scoring.tryScorers.map((s) => ({
-              playerId: s.playerId,
-              name: s.name,
-              tries: s.tries,
-            }))}
-          />
-        </ScoringSection>
+        <TeamColouredScoringSection colorClub={teamName}>
+          <p className={TYPO.sectionTitle}>Tries</p>
+          <div className="mt-2">
+            <TryScorerChips
+              scorers={scoring.tryScorers.map((s) => ({
+                playerId: s.playerId,
+                name: s.name,
+                tries: s.tries,
+              }))}
+            />
+          </div>
+        </TeamColouredScoringSection>
       )}
-      {hasKicking && <KickingSummarySection kicking={kicking} />}
+      {hasKicking && (
+        <TeamColouredScoringSection colorClub={teamName}>
+          <KickingSummarySection kicking={kicking} bare />
+        </TeamColouredScoringSection>
+      )}
       {!hasTries && !hasKicking && (
         <TryScorersEmptyNote />
       )}

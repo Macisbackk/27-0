@@ -141,3 +141,25 @@ export function setCupEraVariant(eraMode: boolean): void {
     })
   );
 }
+
+export const NORMAL_ERA_VARIANT_CHANGED_EVENT =
+  "27-0-normal-era-variant-changed";
+
+export function getNormalEraVariant(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return localStorage.getItem(STORAGE_KEYS.normalEraVariant) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function setNormalEraVariant(eraMode: boolean): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(STORAGE_KEYS.normalEraVariant, eraMode ? "1" : "0");
+  window.dispatchEvent(
+    new CustomEvent(NORMAL_ERA_VARIANT_CHANGED_EVENT, {
+      detail: { eraMode },
+    })
+  );
+}

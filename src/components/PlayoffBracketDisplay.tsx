@@ -43,8 +43,8 @@ export function PlayoffBracketDisplay({
           Champion: {champion}
         </p>
       )}
-      <div className="overflow-x-auto pb-2">
-        <div className="mx-auto flex min-w-[640px] max-w-4xl items-stretch justify-between gap-2 sm:gap-4">
+      <div className="overflow-x-auto pb-2 md:overflow-x-visible md:pb-0">
+        <div className="mx-auto flex w-full min-w-[min(100%,640px)] max-w-4xl items-stretch justify-between gap-2 sm:gap-3 md:min-w-0 md:max-w-full md:gap-4">
           {ROUNDS.map((round) => (
             <div key={round} className="cup-bracket-column relative flex flex-1 flex-col px-1">
               <p className="mb-3 text-center font-display text-[10px] font-bold uppercase tracking-wider text-gray-400 sm:text-xs">

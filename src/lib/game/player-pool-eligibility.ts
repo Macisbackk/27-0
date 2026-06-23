@@ -18,6 +18,9 @@ import { getTeamYearRosterMeta } from "../players/team-year-roster-meta";
 import { isSuperLeagueEligiblePlayer } from "../players/super-league-eligibility";
 import { getEraClubsWithTeams } from "../players/era-teams";
 import type { Player } from "../types";
+import { CURRENT_SEASON_YEAR } from "../play-links";
+
+export type SpinPoolVariant = "current" | "era";
 
 /** Current Super League clubs in Normal / Hard / Cup / Fantasy / Draft pools. */
 export const CURRENT_PLAYABLE_CLUBS = [
@@ -96,30 +99,82 @@ export function getDraftPool(): Player[] {
   return getGlobalRecruitmentPool();
 }
 
-export function getNormalModeTeamYearPools(): TeamYearPool[] {
+export function getCurrentModeTeamYearPools(): TeamYearPool[] {
+  return getAllTeamYearPools().filter((pool) => {
+    const meta = getTeamYearRosterMeta(pool.team, pool.year);
+    return (
+      meta?.playableInNormalSpin === true &&
+      meta?.isCurrentSeason === true &&
+      pool.year === CURRENT_SEASON_YEAR
+    );
+  });
+}
+
+export function getEraModeTeamYearPools(): TeamYearPool[] {
   return getAllTeamYearPools().filter((pool) => {
     const meta = getTeamYearRosterMeta(pool.team, pool.year);
     return meta?.playableInNormalSpin === true;
   });
 }
 
-let cachedNormalModePools: TeamYearPool[] | null = null;
+export function getTeamYearPoolsForSpinVariant(
+  variant: SpinPoolVariant
+): TeamYearPool[] {
+  return variant === "current"
+    ? getCurrentModeTeamYearPools()
+    : getEraModeTeamYearPools();
+}
 
-/** Memoised validated Normal Mode pools — safe to call before each spin. */
-export function getNormalModeTeamYearPoolsCached(): TeamYearPool[] {
-  if (!cachedNormalModePools) {
-    cachedNormalModePools = getNormalModeTeamYearPools();
+/** @deprecated Use getTeamYearPoolsForSpinVariant — historic + 2026 mixed pools. */
+export function getNormalModeTeamYearPools(): TeamYearPool[] {
+  return getEraModeTeamYearPools();
+}
+
+let cachedSpinPools: Partial<Record<SpinPoolVariant, TeamYearPool[]>> = {};
+
+/** Memoised validated spin pools — safe to call before each spin. */
+export function getSpinTeamYearPoolsCached(
+  variant: SpinPoolVariant = "era"
+): TeamYearPool[] {
+  if (!cachedSpinPools[variant]) {
+    cachedSpinPools[variant] = getTeamYearPoolsForSpinVariant(variant);
   }
-  return cachedNormalModePools;
+  return cachedSpinPools[variant]!;
 }
 
+/** @deprecated Use getSpinTeamYearPoolsCached(variant) */
+export function getNormalModeTeamYearPoolsCached(): TeamYearPool[] {
+  return getSpinTeamYearPoolsCached("era");
+}
+
+export function clearSpinTeamYearPoolsCache(): void {
+  cachedSpinPools = {};
+}
+
+/** @deprecated Use clearSpinTeamYearPoolsCache */
 export function clearNormalModeTeamYearPoolsCache(): void {
-  cachedNormalModePools = null;
+  clearSpinTeamYearPoolsCache();
 }
 
-/** Uniform spin weight — every valid team-year pool has equal chance after filters. */
-export function getNormalModeSpinPoolWeight(_pool: TeamYearPool): number {
+/** Era spin — reduce 2026/current team-year weight vs historic. */
+export function getEraSpinPoolWeight(pool: TeamYearPool): number {
+  const meta = getTeamYearRosterMeta(pool.team, pool.year);
+  if (meta?.isCurrentSeason || pool.year === CURRENT_SEASON_YEAR) return 0.08;
   return 1;
+}
+
+/** Uniform spin weight for Current Mode (one pool per club). */
+export function getCurrentSpinPoolWeight(_pool: TeamYearPool): number {
+  return 1;
+}
+
+export function getSpinPoolWeight(
+  pool: TeamYearPool,
+  variant: SpinPoolVariant
+): number {
+  return variant === "current"
+    ? getCurrentSpinPoolWeight(pool)
+    : getEraSpinPoolWeight(pool);
 }
 
 /**

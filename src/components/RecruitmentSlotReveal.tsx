@@ -3,9 +3,10 @@
 import { useEffect, useMemo, useRef } from "react";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import {
-  getAllNormalModeSpinTeams,
-  getAllNormalModeSpinYears,
+  getSpinTeamsForVariant,
+  getSpinYearsForVariant,
 } from "@/lib/game/recruitment-slot-reveal";
+import type { SpinPoolVariant } from "@/lib/game/player-pool-eligibility";
 import {
   buildSpinReelPlan,
   DEFAULT_SPIN_TICK_COUNT,
@@ -24,13 +25,16 @@ const TICK_SOUND_INTERVAL = 4;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
+  spinVariant?: SpinPoolVariant;
   onComplete: () => void;
 }
 
 export function RecruitmentSlotReveal({
   target,
+  spinVariant = "current",
   onComplete,
 }: RecruitmentSlotRevealProps) {
+  const isEraSpin = spinVariant === "era";
   const teamReelRef = useRef<SlotReelHandle>(null);
   const yearReelRef = useRef<SlotReelHandle>(null);
   const shellRef = useRef<HTMLDivElement>(null);
@@ -43,13 +47,18 @@ export function RecruitmentSlotReveal({
 
   const { teamPlan, yearPlan } = useMemo(() => {
     const t0 = spinTimingMark("reel-plan-start");
-    const teams = getAllNormalModeSpinTeams();
-    const years = getAllNormalModeSpinYears();
+    const teams = getSpinTeamsForVariant(spinVariant);
     const teamPlan = buildSpinReelPlan(teams, target.team, DEFAULT_SPIN_TICK_COUNT);
-    const yearPlan = buildSpinReelPlan(years, target.year, DEFAULT_SPIN_TICK_COUNT);
+    const yearPlan = isEraSpin
+      ? buildSpinReelPlan(
+          getSpinYearsForVariant(spinVariant),
+          target.year,
+          DEFAULT_SPIN_TICK_COUNT
+        )
+      : null;
     spinTimingMark("reel-plan-ready", t0);
     return { teamPlan, yearPlan };
-  }, [target.team, target.year, target.teamYearId]);
+  }, [target.team, target.year, target.teamYearId, spinVariant, isEraSpin]);
 
   useEffect(() => {
     const prefersReducedMotion =
@@ -71,7 +80,9 @@ export function RecruitmentSlotReveal({
 
     if (prefersReducedMotion) {
       teamReelRef.current?.setScrollIndex(teamPlan.finalIndex, false);
-      yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, false);
+      if (isEraSpin && yearPlan) {
+        yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, false);
+      }
       lockReels();
       const timeoutId = window.setTimeout(() => onComplete(), 120);
       return () => window.clearTimeout(timeoutId);
@@ -87,10 +98,12 @@ export function RecruitmentSlotReveal({
       teamPlan.tickIndices[0] ?? teamPlan.finalIndex,
       false
     );
-    yearReelRef.current?.setScrollIndex(
-      yearPlan.tickIndices[0] ?? yearPlan.finalIndex,
-      false
-    );
+    if (isEraSpin && yearPlan) {
+      yearReelRef.current?.setScrollIndex(
+        yearPlan.tickIndices[0] ?? yearPlan.finalIndex,
+        false
+      );
+    }
 
     let tick = 0;
 
@@ -105,10 +118,12 @@ export function RecruitmentSlotReveal({
           teamPlan.tickIndices[tick] ?? teamPlan.finalIndex,
           false
         );
-        yearReelRef.current?.setScrollIndex(
-          yearPlan.tickIndices[tick] ?? yearPlan.finalIndex,
-          false
-        );
+        if (isEraSpin && yearPlan) {
+          yearReelRef.current?.setScrollIndex(
+            yearPlan.tickIndices[tick] ?? yearPlan.finalIndex,
+            false
+          );
+        }
 
         if (tick === 0) playSlotSpinStart();
         else if (tick % TICK_SOUND_INTERVAL === 0) {
@@ -121,7 +136,9 @@ export function RecruitmentSlotReveal({
       }
 
       teamReelRef.current?.setScrollIndex(teamPlan.finalIndex, true);
-      yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, true);
+      if (isEraSpin && yearPlan) {
+        yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, true);
+      }
       lockReels();
       playSlotLand();
       spinTimingMark("animation-end", tAnimStart);
@@ -137,7 +154,7 @@ export function RecruitmentSlotReveal({
       cancelled = true;
       if (timeoutId) window.clearTimeout(timeoutId);
     };
-  }, [teamPlan, yearPlan, onComplete, clubColors.primary]);
+  }, [teamPlan, yearPlan, onComplete, clubColors.primary, isEraSpin]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-3 sm:p-4">
@@ -157,23 +174,35 @@ export function RecruitmentSlotReveal({
         </div>
 
         <div ref={shellRef} className="px-3 py-4 sm:px-6 sm:py-6">
-          <div className="flex max-w-full items-stretch justify-center gap-1.5 sm:gap-2.5">
-            <div className="slot-reveal-reel min-w-0 flex-1 rounded-xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1 py-0">
+          <div
+            className={`flex max-w-full items-stretch justify-center ${
+              isEraSpin ? "gap-1.5 sm:gap-2.5" : ""
+            }`}
+          >
+            <div
+              className={`slot-reveal-reel min-w-0 rounded-xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1 py-0 ${
+                isEraSpin ? "flex-1" : "w-full max-w-sm"
+              }`}
+            >
               <SlotReel
                 ref={teamReelRef}
                 strip={teamPlan.strip}
-                formatItem={formatSpinReelTeamName}
+                formatItem={(team) =>
+                  isEraSpin ? formatSpinReelTeamName(team) : team
+                }
                 textClassName="slot-reveal-team-name"
               />
             </div>
-            <div className="slot-reveal-reel slot-reveal-year-reel min-w-0 shrink-0 flex-1 rounded-xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1 py-0">
-              <SlotReel
-                ref={yearReelRef}
-                strip={yearPlan.strip}
-                formatItem={formatShortYear}
-                textClassName="slot-reveal-year-text tabular-nums"
-              />
-            </div>
+            {isEraSpin && yearPlan && (
+              <div className="slot-reveal-reel slot-reveal-year-reel min-w-0 shrink-0 flex-1 rounded-xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1 py-0">
+                <SlotReel
+                  ref={yearReelRef}
+                  strip={yearPlan.strip}
+                  formatItem={formatShortYear}
+                  textClassName="slot-reveal-year-text tabular-nums"
+                />
+              </div>
+            )}
           </div>
 
           <p
@@ -181,10 +210,15 @@ export function RecruitmentSlotReveal({
             hidden
             className="mt-3 text-center font-display text-sm font-bold text-white sm:text-base"
           >
-            {target.team}{" "}
-            <span className="text-accent-green">
-              {formatShortYear(target.year)}
-            </span>
+            {target.team}
+            {isEraSpin && (
+              <>
+                {" "}
+                <span className="text-accent-green">
+                  {formatShortYear(target.year)}
+                </span>
+              </>
+            )}
           </p>
         </div>
       </div>

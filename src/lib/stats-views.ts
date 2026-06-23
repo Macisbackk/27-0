@@ -21,8 +21,6 @@ export type StatsTabId =
 export const STATS_TABS: { id: StatsTabId; label: string }[] = [
   { id: "overall", label: "Overall" },
   { id: "super-league", label: "Normal Mode" },
-  ...(SHOW_DRAFT_MODE ? [{ id: "draft-mode" as const, label: "Draft Mode" }] : []),
-  { id: "fantasy-mode", label: "Fantasy Mode" },
   { id: "challenge-cup", label: "Challenge Cup" },
 ];
 

@@ -159,10 +159,6 @@ export function LeaderboardTable({
   const modeOptions = (
     [
       { id: "super-league" as const, label: "Normal Mode" },
-      ...(SHOW_DRAFT_MODE
-        ? [{ id: "draft" as const, label: "Draft Mode" }]
-        : []),
-      { id: "fantasy" as const, label: "Fantasy Mode" },
       { id: "challenge-cup" as const, label: "Challenge Cup" },
       { id: "club-funds" as const, label: "Total Winnings" },
     ] as const
@@ -222,42 +218,6 @@ export function LeaderboardTable({
         </div>
         )}
       </div>
-
-      {leaderboardMode !== "challenge-cup" && leaderboardMode !== "club-funds" && (
-        <div
-          className={`mb-5 inline-flex flex-wrap ${tabGroupClass(
-            difficulty === "HARD",
-            difficulty === "NORMAL"
-          )}`}
-        >
-          <button
-            type="button"
-            onClick={() => {
-              if (difficulty !== "NORMAL") playTabChange();
-              setDifficulty("NORMAL");
-            }}
-            className={tabGroupButtonClass(difficulty === "NORMAL")}
-          >
-            {leaderboardMode === "draft" ? "Standard Draft" : "Normal"}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              if (difficulty !== "HARD") playTabChange();
-              setDifficulty("HARD");
-            }}
-            className={tabGroupButtonClass(difficulty === "HARD", "hard")}
-          >
-            {leaderboardMode === "draft" ? "Hard Draft" : "Hard"}
-          </button>
-        </div>
-      )}
-
-      {difficulty === "HARD" && leaderboardMode !== "challenge-cup" && (
-        <div className="mb-4">
-          <HardModeBadge />
-        </div>
-      )}
 
       {!isTeamWinsTracker && !isClubFundsMode && (
         <div className="mb-6 flex flex-wrap gap-2">

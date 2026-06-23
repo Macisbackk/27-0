@@ -148,12 +148,6 @@ export function StatsPanel() {
       {activeTab === "super-league" && (
         <SuperLeagueTab normal={normalStats} hard={hardStats} />
       )}
-      {SHOW_DRAFT_MODE && activeTab === "draft-mode" && (
-        <DraftModeTab draftNormal={draftNormalStats} />
-      )}
-      {activeTab === "fantasy-mode" && (
-        <FantasyModeTab stats={fantasyStats} />
-      )}
       {activeTab === "challenge-cup" && (
         <ChallengeCupTab
           normal={normalStats}
@@ -356,46 +350,18 @@ function ModeVariantToggle<T extends string>({
 
 function SuperLeagueTab({
   normal,
-  hard,
 }: {
   normal: UserStatsData;
   hard: UserStatsData;
 }) {
-  const [variant, setVariant] = useState<"normal" | "hard">("normal");
-  const stats = variant === "hard" ? hard : normal;
-  const view = getSuperLeagueView(stats);
-  const isHard = variant === "hard";
+  const view = getSuperLeagueView(normal);
 
   return (
     <div className="space-y-8">
-      <StatsSection
-        title={isHard ? "Hard Mode" : "Normal Mode"}
-        headerExtra={
-          <div className="flex flex-wrap items-center gap-2">
-            <ModeVariantToggle
-              value={variant}
-              options={[
-                { id: "normal", label: "Normal" },
-                { id: "hard", label: "Hard" },
-              ]}
-              onChange={setVariant}
-            />
-            {isHard && <HardModeBadge />}
-          </div>
-        }
-      >
-        <StatCard
-          label={isHard ? "Hard Mode Runs" : "Normal Mode Runs"}
-          value={String(view.runs)}
-        />
-        <StatCard
-          label={isHard ? "Hard Mode Wins" : "Normal Mode Wins"}
-          value={String(view.wins)}
-        />
-        <StatCard
-          label={isHard ? "Hard Mode Losses" : "Normal Mode Losses"}
-          value={String(view.losses)}
-        />
+      <StatsSection title="Normal Mode">
+        <StatCard label="Normal Mode Runs" value={String(view.runs)} />
+        <StatCard label="Normal Mode Wins" value={String(view.wins)} />
+        <StatCard label="Normal Mode Losses" value={String(view.losses)} />
         <StatCard
           label="Regular Season Record"
           value={formatRecordOrDash(
@@ -425,7 +391,7 @@ function SuperLeagueTab({
           )}
         />
         <StatCard
-          label={isHard ? "Worst Hard Mode Record" : "Worst Normal Mode Record"}
+          label="Worst Normal Mode Record"
           value={formatRecordOrDash(
             view.hasSeasons ? view.worstRecord : null
           )}

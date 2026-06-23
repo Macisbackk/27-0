@@ -2,71 +2,43 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import type { GameDifficulty, GameMode } from "@/lib/types";
-import {
-  setModeDifficulty,
-  type PlayModeKey,
-} from "@/lib/storage/preferences";
+import type { GameMode } from "@/lib/types";
+import { isNormalEraMode } from "@/lib/play-links";
 import { GameBoard } from "./GameBoard";
-import { FantasyModeBoard } from "./FantasyModeBoard";
 import { EraChallengeCupBoard } from "./EraChallengeCupBoard";
 
 interface GameStarterProps {
   mode: GameMode;
   title: string;
   subtitle?: string;
-  initialDifficulty?: GameDifficulty;
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
   eraChallengeCup?: boolean;
-}
-
-function resolvePlayModeKey(
-  mode: GameMode,
-  search: URLSearchParams
-): PlayModeKey | null {
-  if (mode === "CHALLENGE_CUP") return null;
-  if (mode === "FANTASY") return null;
-  if (mode === "DRAFT") return "draft";
-  if (search.get("draft") === "1") return "draft";
-  return "normal";
+  normalEraMode?: boolean;
 }
 
 export function GameStarter({
   mode,
   title,
   subtitle,
-  initialDifficulty = "NORMAL",
   joeMellorMode = false,
   superSamHallasMode = false,
   eraChallengeCup = false,
+  normalEraMode = false,
 }: GameStarterProps) {
   const searchParams = useSearchParams();
-  const [difficulty, setDifficultyState] =
-    useState<GameDifficulty>(initialDifficulty);
   const [ready, setReady] = useState(false);
 
   const eraFromUrl = searchParams.get("era") === "1";
   const isEraChallengeCup =
     mode === "CHALLENGE_CUP" && (eraChallengeCup || eraFromUrl);
+  const isNormalEra =
+    mode === "CLASSIC" &&
+    (normalEraMode || isNormalEraMode({ era: searchParams.get("era"), cup: searchParams.get("cup") }));
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    let resolved: GameDifficulty = initialDifficulty;
-    const difficultyParam = params.get("difficulty");
-
-    if (difficultyParam === "hard") resolved = "HARD";
-    else if (difficultyParam === "normal") resolved = "NORMAL";
-
-    setDifficultyState(resolved);
-
-    const modeKey = resolvePlayModeKey(mode, params);
-    if (modeKey && difficultyParam) {
-      setModeDifficulty(modeKey, resolved);
-    }
-
     setReady(true);
-  }, [initialDifficulty, mode]);
+  }, []);
 
   if (!ready) {
     return (
@@ -74,10 +46,6 @@ export function GameStarter({
         <p className="text-sm text-gray-500">Loading run…</p>
       </div>
     );
-  }
-
-  if (mode === "FANTASY") {
-    return <FantasyModeBoard />;
   }
 
   if (mode === "CHALLENGE_CUP" && isEraChallengeCup) {
@@ -89,9 +57,10 @@ export function GameStarter({
       mode={mode}
       title={title}
       subtitle={subtitle}
-      difficulty={difficulty}
+      difficulty="NORMAL"
       joeMellorMode={joeMellorMode}
       superSamHallasMode={superSamHallasMode}
+      normalEraMode={isNormalEra}
     />
   );
 }

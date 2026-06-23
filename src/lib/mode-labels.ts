@@ -2,7 +2,8 @@ import type { GameDifficulty, GameMode } from "./types";
 
 export function getSeasonReviewLabel(
   mode: GameMode,
-  difficulty: GameDifficulty
+  difficulty: GameDifficulty,
+  normalEraMode = false
 ): string {
   if (mode === "DRAFT") {
     return difficulty === "HARD"
@@ -10,14 +11,14 @@ export function getSeasonReviewLabel(
       : "Draft Mode Season Review";
   }
   if (mode === "FANTASY") return "Fantasy Mode Season Review";
-  return difficulty === "HARD"
-    ? "Hard Mode Season Review"
-    : "Normal Mode Season Review";
+  if (difficulty === "HARD") return "Hard Mode Season Review";
+  return normalEraMode ? "Era Mode Season Review" : "Current Mode Season Review";
 }
 
 export function getPlayPageTitle(
   mode: GameMode,
-  difficulty: GameDifficulty
+  difficulty: GameDifficulty,
+  normalEraMode = false
 ): string {
   if (mode === "CHALLENGE_CUP") return "Challenge Cup";
   if (mode === "ERA_CHALLENGE_CUP") return "Era Challenge Cup";
@@ -25,7 +26,8 @@ export function getPlayPageTitle(
   if (mode === "DRAFT") {
     return difficulty === "HARD" ? "Hard Draft Mode" : "Draft Mode";
   }
-  return difficulty === "HARD" ? "Hard Mode" : "Normal Mode";
+  if (difficulty === "HARD") return "Hard Mode";
+  return normalEraMode ? "Era Mode" : "Current Mode";
 }
 
 export const FANTASY_MODE_INTRO =

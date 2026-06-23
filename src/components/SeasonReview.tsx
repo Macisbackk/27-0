@@ -49,6 +49,7 @@ interface SeasonReviewProps {
   difficulty?: GameDifficulty;
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
+  normalEraMode?: boolean;
   runRank?: number;
   submittedOnline?: boolean;
   clubFundsPayout?: ClubFundsPayoutResult | null;
@@ -67,6 +68,7 @@ export function SeasonReview({
   difficulty = "NORMAL",
   joeMellorMode = false,
   superSamHallasMode = false,
+  normalEraMode = false,
   runRank,
   submittedOnline = false,
   clubFundsPayout = null,
@@ -108,7 +110,7 @@ export function SeasonReview({
     ? "Super Sam Hallas Mode Season Review"
     : joeMellorMode
       ? "Joe Mellor GOAT Mode Season Review"
-      : getSeasonReviewLabel(mode, difficulty);
+      : getSeasonReviewLabel(mode, difficulty, normalEraMode);
   const [selectedFixture, setSelectedFixture] = useState<MatchFixture | null>(
     null
   );

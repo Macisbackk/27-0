@@ -2,34 +2,27 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { GameDifficulty } from "@/lib/types";
 import { useAuth } from "@/lib/auth-context";
 import { buildPlayHref, isCupEraMode, isPlayModeActive } from "@/lib/play-links";
 import {
-  getModeDifficulty,
   getCupEraVariant,
+  getNormalEraVariant,
   setCupEraVariant,
+  setNormalEraVariant,
   CUP_ERA_VARIANT_CHANGED_EVENT,
-  MODE_DIFFICULTY_CHANGED_EVENT,
-  setModeDifficulty,
-  type PlayModeKey,
+  NORMAL_ERA_VARIANT_CHANGED_EVENT,
 } from "@/lib/storage/preferences";
 import {
   isSoundMuted,
-  playHardModeOff,
-  playHardModeOn,
   playMenuClose,
   playUiClick,
   toggleSoundMuted,
 } from "@/lib/sound";
 import {
   BTN,
-  HARD,
   NAV,
-  nestedTabGroupButtonClass,
-  nestedTabGroupClass,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
@@ -51,10 +44,6 @@ const MAIN_NAV_ITEMS = [
   { href: "/updates", label: "Updates", icon: "📰" },
 ] as const;
 
-const PLAY_MODE_GROUPS = [
-  { mode: "classic" as const, modeKey: "normal" as const, label: "Normal Mode", icon: "🏉" },
-] as const;
-
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
 const SUGGESTIONS_MAIL =
   "mailto:twentysevenzero@yahoo.com?subject=27-0%20Suggestion";
@@ -65,28 +54,21 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { loading, isLoggedIn } = useAuth();
-  const [normalDifficulty, setNormalDifficulty] =
-    useState<GameDifficulty>("NORMAL");
-  const [draftDifficulty, setDraftDifficulty] =
-    useState<GameDifficulty>("NORMAL");
+  const [normalEraVariant, setNormalEraVariantState] = useState(false);
   const [muted, setMuted] = useState(false);
   const [cupEraVariant, setCupEraVariantState] = useState(false);
 
   useEffect(() => {
+    setNormalEraVariantState(getNormalEraVariant());
     setCupEraVariantState(getCupEraVariant());
-  }, []);
-
-  const syncDifficulties = useCallback(() => {
-    setNormalDifficulty(getModeDifficulty("normal"));
-    setDraftDifficulty(getModeDifficulty("draft"));
   }, []);
 
   useEffect(() => {
     if (!open) return;
-    syncDifficulties();
     setMuted(isSoundMuted());
+    setNormalEraVariantState(getNormalEraVariant());
     setCupEraVariantState(getCupEraVariant());
-  }, [open, syncDifficulties]);
+  }, [open]);
 
   const playSearch = {
     cup: searchParams.get("cup"),
@@ -98,47 +80,73 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 
   const isEraCup = isCupEraMode(playSearch);
   const isCupActive = isPlayModeActive(pathname, playSearch, "cup");
+  const isNormalEra = isPlayModeActive(pathname, playSearch, "classic", true);
+  const isNormalCurrent = isPlayModeActive(pathname, playSearch, "classic", false);
+  const isNormalActive = isNormalEra || isNormalCurrent;
 
   useEffect(() => {
     if (isCupActive) {
       setCupEraVariantState(isEraCup);
     }
-  }, [isCupActive, isEraCup]);
+    if (isNormalActive) {
+      setNormalEraVariantState(isNormalEra);
+    }
+  }, [isCupActive, isEraCup, isNormalActive, isNormalEra]);
 
   useEffect(() => {
-    const onVariantChanged = (event: Event) => {
+    const onCupVariant = (event: Event) => {
       const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
       if (detail) setCupEraVariantState(detail.eraMode);
     };
-    window.addEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onVariantChanged);
-    return () =>
-      window.removeEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onVariantChanged);
+    const onNormalVariant = (event: Event) => {
+      const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
+      if (detail) setNormalEraVariantState(detail.eraMode);
+    };
+    window.addEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupVariant);
+    window.addEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalVariant);
+    return () => {
+      window.removeEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupVariant);
+      window.removeEventListener(
+        NORMAL_ERA_VARIANT_CHANGED_EVENT,
+        onNormalVariant
+      );
+    };
   }, []);
 
   const handleCupVariantChange = (era: boolean) => {
     setCupEraVariant(era);
     setCupEraVariantState(era);
     if (pathname.startsWith("/play") && playSearch.cup === "1") {
-      router.push(buildPlayHref("cup", "NORMAL", era));
+      router.push(buildPlayHref("cup", era));
+    }
+  };
+
+  const handleNormalVariantChange = (era: boolean) => {
+    setNormalEraVariant(era);
+    setNormalEraVariantState(era);
+    if (
+      pathname.startsWith("/play") &&
+      playSearch.cup !== "1" &&
+      playSearch.fantasy !== "1" &&
+      playSearch.draft !== "1"
+    ) {
+      router.push(buildPlayHref("classic", era));
     }
   };
 
   const handleChallengeCupNavigate = () => {
     playUiClick();
     setCupEraVariant(cupEraVariant);
-    router.push(buildPlayHref("cup", "NORMAL", cupEraVariant));
+    router.push(buildPlayHref("cup", cupEraVariant));
     onClose();
   };
 
-  useEffect(() => {
-    const onDifficultyChanged = () => syncDifficulties();
-    window.addEventListener(MODE_DIFFICULTY_CHANGED_EVENT, onDifficultyChanged);
-    return () =>
-      window.removeEventListener(
-        MODE_DIFFICULTY_CHANGED_EVENT,
-        onDifficultyChanged
-      );
-  }, [syncDifficulties]);
+  const handleNormalNavigate = () => {
+    playUiClick();
+    setNormalEraVariant(normalEraVariant);
+    router.push(buildPlayHref("classic", normalEraVariant));
+    onClose();
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -162,30 +170,19 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     onClose();
   };
 
-  const toggleModeDifficulty = (modeKey: PlayModeKey, enabled: boolean) => {
-    const next: GameDifficulty = enabled ? "HARD" : "NORMAL";
-    const current =
-      modeKey === "normal" ? normalDifficulty : draftDifficulty;
-    if (enabled && current !== "HARD") playHardModeOn();
-    if (!enabled && current === "HARD") playHardModeOff();
-    if (modeKey === "normal") setNormalDifficulty(next);
-    else setDraftDifficulty(next);
-    setModeDifficulty(modeKey, next);
-  };
+  const navLinkClass = (active: boolean, eraAccent = false) =>
+    `${NAV.item} ${
+      active
+        ? eraAccent
+          ? "border-accent-gold/40 bg-accent-gold/10 text-accent-gold"
+          : NAV.itemActive
+        : NAV.itemIdle
+    }`;
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
   };
-
-  const navLinkClass = (active: boolean, hardAccent = false) =>
-    `${NAV.item} ${
-      active
-        ? hardAccent
-          ? HARD.itemActive
-          : NAV.itemActive
-        : NAV.itemIdle
-    }`;
 
   return (
     <AnimatePresence>
@@ -233,68 +230,34 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
               <section>
                 <p className={NAV.sectionLabel}>Play</p>
                 <ul className={NAV.playModeList}>
-                  {PLAY_MODE_GROUPS.map((group) => {
-                    const difficulty = normalDifficulty;
-                    const isHard = difficulty === "HARD";
-                    const active = isPlayModeActive(
-                      pathname,
-                      playSearch,
-                      group.mode,
-                      difficulty
-                    );
-                    const href = buildPlayHref(group.mode, difficulty);
-
-                    return (
-                      <li key={group.mode} className={NAV.playModeGroup}>
-                        <Link
-                          href={href}
-                          onClick={handleNavClick}
-                          className={`${navLinkClass(active, isHard)} w-full`}
-                        >
-                          <span aria-hidden className={NAV.icon}>
-                            {group.icon}
-                          </span>
-                          <span className="truncate">{group.label}</span>
-                          {active && (
-                            <span
-                              className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
-                                isHard ? HARD.dot : "bg-accent-green"
-                              }`}
-                            />
-                          )}
-                        </Link>
-                        <div className={NAV.nestedBlock}>
-                          <div
-                            className={nestedTabGroupClass(isHard, !isHard)}
-                            aria-label={`${group.label} difficulty`}
-                          >
-                            <button
-                              type="button"
-                              aria-label={`${group.label} standard difficulty`}
-                              aria-pressed={!isHard}
-                              onClick={() =>
-                                toggleModeDifficulty(group.modeKey, false)
-                              }
-                              className={nestedTabGroupButtonClass(!isHard, "normal")}
-                            >
-                              Standard
-                            </button>
-                            <button
-                              type="button"
-                              aria-label={`${group.label} hard difficulty`}
-                              aria-pressed={isHard}
-                              onClick={() =>
-                                toggleModeDifficulty(group.modeKey, true)
-                              }
-                              className={nestedTabGroupButtonClass(isHard, "hard")}
-                            >
-                              Hard
-                            </button>
-                          </div>
-                        </div>
-                      </li>
-                    );
-                  })}
+                  <li className={NAV.playModeGroup}>
+                    <button
+                      type="button"
+                      onClick={handleNormalNavigate}
+                      className={`${navLinkClass(isNormalActive, isNormalEra)} w-full`}
+                    >
+                      <span aria-hidden className={NAV.icon}>
+                        🏉
+                      </span>
+                      Normal Mode
+                      {isNormalActive && (
+                        <span
+                          className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
+                            isNormalEra ? "bg-accent-gold" : "bg-accent-green"
+                          }`}
+                        />
+                      )}
+                    </button>
+                    <div className={NAV.nestedBlock}>
+                      <ChallengeCupVariantToggle
+                        compact
+                        hideLabel
+                        sectionLabel="Mode"
+                        eraMode={normalEraVariant}
+                        onEraModeChange={handleNormalVariantChange}
+                      />
+                    </div>
+                  </li>
 
                   <li className={NAV.playModeGroup}>
                     <button
@@ -328,24 +291,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         onEraModeChange={handleCupVariantChange}
                       />
                     </div>
-                  </li>
-
-                  <li>
-                    <Link
-                      href={buildPlayHref("fantasy")}
-                      onClick={handleNavClick}
-                      className={navLinkClass(
-                        isPlayModeActive(pathname, playSearch, "fantasy")
-                      )}
-                    >
-                      <span aria-hidden className={NAV.icon}>
-                        ✨
-                      </span>
-                      Fantasy Mode
-                      {isPlayModeActive(pathname, playSearch, "fantasy") && (
-                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-green" />
-                      )}
-                    </Link>
                   </li>
                 </ul>
               </section>

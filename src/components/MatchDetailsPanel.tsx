@@ -20,6 +20,7 @@ import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubTeamLabel } from "./ClubTeamLabel";
 import { KickingSummarySection } from "./KickingSummarySection";
+import { TeamColouredScoringSection } from "./TeamColouredScoringSection";
 import { TryScorerChips, TryScorersEmptyNote } from "./TryScorerChips";
 
 interface MatchDetailsPanelProps {
@@ -164,25 +165,32 @@ function TeamScoringBlock({
     <div className={SPACING.stackMd}>
       <ClubTeamLabel club={teamName} colorClub={colorClub} />
       {hasTries && (
-        <ScoringSection title="Tries">
-          <TryScorerChips
-            scorers={scoring.tryScorers.map((s) => {
-              const slot = userSquad
-                ? findSlotByPlayerId(userSquad, s.playerId)
-                : undefined;
-              const extras = formatPlayerLineExtras(slot);
-              return {
-                playerId: s.playerId,
-                name: s.name,
-                tries: s.tries,
-                positionNote: extras.positionNote,
-              };
-            })}
-            variant={isUserTeam ? "user" : "opponent"}
-          />
-        </ScoringSection>
+        <TeamColouredScoringSection colorClub={colorClub}>
+          <p className={TYPO.sectionTitle}>Tries</p>
+          <div className="mt-2">
+            <TryScorerChips
+              scorers={scoring.tryScorers.map((s) => {
+                const slot = userSquad
+                  ? findSlotByPlayerId(userSquad, s.playerId)
+                  : undefined;
+                const extras = formatPlayerLineExtras(slot);
+                return {
+                  playerId: s.playerId,
+                  name: s.name,
+                  tries: s.tries,
+                  positionNote: extras.positionNote,
+                };
+              })}
+              variant={isUserTeam ? "user" : "opponent"}
+            />
+          </div>
+        </TeamColouredScoringSection>
       )}
-      {hasKicking && <KickingSummarySection kicking={kicking} />}
+      {hasKicking && (
+        <TeamColouredScoringSection colorClub={colorClub}>
+          <KickingSummarySection kicking={kicking} bare />
+        </TeamColouredScoringSection>
+      )}
       {!hasTries && !hasKicking && (
         <TryScorersEmptyNote />
       )}

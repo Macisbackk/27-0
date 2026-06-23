@@ -133,14 +133,29 @@ export function ClubFundsDisplay({
 
       <AnimatePresence>
         {open && (
-          <motion.div
-            role="dialog"
-            aria-label="Earn Club Funds"
-            className={`absolute z-[80] w-[min(17rem,calc(100vw-1.5rem))] ${CARD.panel} border border-accent-green/25 p-3 shadow-xl ${
-              isMobileUnderLogo
-                ? "left-1/2 top-[calc(100%+0.35rem)] -translate-x-1/2"
-                : "right-0 top-[calc(100%+0.5rem)]"
-            }`}
+          <>
+            {isMobileUnderLogo && (
+              <motion.button
+                type="button"
+                aria-label="Close Club Funds panel"
+                className="fixed inset-0 z-[79] bg-black/50 sm:hidden"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => {
+                  playPanelClose();
+                  setOpen(false);
+                }}
+              />
+            )}
+            <motion.div
+              role="dialog"
+              aria-label="Earn Club Funds"
+              className={`z-[80] w-[min(17rem,calc(100vw-1.5rem))] max-w-[calc(100vw-env(safe-area-inset-left,0px)-env(safe-area-inset-right,0px)-1.5rem)] ${CARD.panel} border border-accent-green/25 p-3 shadow-xl ${
+                isMobileUnderLogo
+                  ? "fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] sm:absolute sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-[calc(100%+0.35rem)] sm:-translate-x-1/2"
+                  : "absolute right-0 top-[calc(100%+0.5rem)]"
+              }`}
             initial={{ opacity: 0, y: -6, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.98 }}
@@ -175,6 +190,7 @@ export function ClubFundsDisplay({
               ))}
             </ul>
           </motion.div>
+          </>
         )}
       </AnimatePresence>
     </div>

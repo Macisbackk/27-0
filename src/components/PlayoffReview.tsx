@@ -86,6 +86,10 @@ export function PlayoffReview({
           )}
         </motion.header>
 
+        <div className="mt-4 w-full max-w-xl">
+          <ReturnHomeButton onBeforeNavigate={onReturnHome} />
+        </div>
+
         <motion.div
           className="mt-6 w-full max-w-xl"
           initial={{ opacity: 0, y: 12 }}

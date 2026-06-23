@@ -104,6 +104,7 @@ import {
 } from "@/lib/game/slot-team-year-pick";
 import { pickLegendSpinSlotIndex } from "@/lib/game/legend-spin";
 import { getPlayerTeamYearIds } from "@/lib/game/team-year-pools";
+import type { SpinPoolVariant } from "@/lib/game/player-pool-eligibility";
 
 interface GameBoardProps {
   mode: GameMode;
@@ -112,6 +113,8 @@ interface GameBoardProps {
   subtitle?: string;
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
+  /** Normal Mode: false = Current (2026 only), true = Era team-year pools. */
+  normalEraMode?: boolean;
 }
 
 function createRunSeed(runKey: number): string {
@@ -149,7 +152,9 @@ export function GameBoard({
   subtitle,
   joeMellorMode = false,
   superSamHallasMode = false,
+  normalEraMode = false,
 }: GameBoardProps) {
+  const spinVariant: SpinPoolVariant = normalEraMode ? "era" : "current";
   const isChallengeCup = mode === "CHALLENGE_CUP";
   const isDraftMode = mode === "DRAFT";
   const isSlotRecruitMode = mode === "CLASSIC" && !isChallengeCup;
@@ -252,7 +257,7 @@ export function GameBoard({
       return;
     }
     setLegendSpinSlotIndex(
-      pickLegendSpinSlotIndex(seed, createEmptySquad())
+      pickLegendSpinSlotIndex(seed, createEmptySquad(), new Set(), spinVariant)
     );
     setLegendSpinUsed(false);
   }, [
@@ -262,6 +267,7 @@ export function GameBoard({
     isHardMode,
     joeMellorMode,
     superSamHallasMode,
+    spinVariant,
   ]);
 
   useEffect(() => {
@@ -823,7 +829,7 @@ export function GameBoard({
         squad,
         slotIndex,
         usedTeamYearKeys,
-        { requireLegendPlayer }
+        { requireLegendPlayer, spinVariant }
       );
       if (process.env.NODE_ENV === "development") {
         console.debug(
@@ -881,7 +887,7 @@ export function GameBoard({
       squad,
       selectedSlotIndex,
       usedTeamYearKeys,
-      { requireLegendPlayer }
+      { requireLegendPlayer, spinVariant }
     );
     if (!target) return;
 
@@ -1457,6 +1463,7 @@ export function GameBoard({
               <RecruitmentSlotReveal
                 key={choiceKey}
                 target={slotRecruitTarget}
+                spinVariant={spinVariant}
                 onComplete={handleRevealComplete}
               />
             )}
@@ -1572,6 +1579,7 @@ export function GameBoard({
           difficulty={difficulty}
           joeMellorMode={joeMellorMode}
           superSamHallasMode={superSamHallasMode}
+          normalEraMode={normalEraMode}
           seasonResult={seasonResult}
           runRank={runRank}
           submittedOnline={submittedOnline}
