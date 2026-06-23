@@ -549,7 +549,7 @@ export function getExtendedTeamComparison(
         };
 
   const bestTournamentTeam =
-    cupMode && !eraMode && bracketMatches.length > 0
+    cupMode && bracketMatches.length > 0
       ? getBestTournamentTeam(
           bracketMatches,
           userTeamName,
@@ -559,14 +559,14 @@ export function getExtendedTeamComparison(
         )
       : null;
 
-  const strongestOpponent = eraMode
-    ? getEraStrongestOpposition(
-        fixtures,
-        options.eraTeamRatings ?? {},
-        userTeamName
-      ) ?? { name: "N/A", rating: 0, tier: "—" }
-    : bestTournamentTeam
-      ? bestTournamentTeam
+  const strongestOpponent = bestTournamentTeam
+    ? bestTournamentTeam
+    : eraMode
+      ? getEraStrongestOpposition(
+          fixtures,
+          options.eraTeamRatings ?? {},
+          userTeamName
+        ) ?? { name: "N/A", rating: 0, tier: "—" }
       : getStrongestOpposition(fixtures, seed, eraOpts) ?? {
           name: "—",
           rating: 0,
@@ -591,30 +591,41 @@ export function getExtendedTeamComparison(
           ),
           oppWinPct: isInvalidOpponentName(strongestOpponent.name)
               ? "—"
-              : eraMode
-                ? getHeadToHeadWinPct(strongestOpponent.name, fixtures)
-                : bracketMatches.length > 0
-                  ? (() => {
-                      const stats = getBracketTeamTournamentStats(
-                        bracketMatches
-                      ).get(strongestOpponent.name);
-                      if (!stats) return "—";
-                      return formatWinPercentage(stats.wins, stats.losses);
-                    })()
+              : bracketMatches.length > 0
+                ? (() => {
+                    const stats = getBracketTeamTournamentStats(
+                      bracketMatches
+                    ).get(strongestOpponent.name);
+                    if (!stats) return "—";
+                    return formatWinPercentage(stats.wins, stats.losses);
+                  })()
+                : eraMode
+                  ? getHeadToHeadWinPct(strongestOpponent.name, fixtures)
                   : "—",
           oppTries: isInvalidOpponentName(strongestOpponent.name)
               ? 0
-              : eraMode
-                ? getHeadToHeadTries(strongestOpponent.name, fixtures, "opponent")
-                : getClubBracketTriesScored(strongestOpponent.name, bracketMatches),
-          oppTriesConceded: isInvalidOpponentName(strongestOpponent.name)
-              ? 0
-              : eraMode
-                ? getHeadToHeadTries(strongestOpponent.name, fixtures, "user")
-                : getClubBracketTriesConceded(
+              : bracketMatches.length > 0
+                ? getClubBracketTriesScored(
                     strongestOpponent.name,
                     bracketMatches
-                  ),
+                  )
+                : eraMode
+                  ? getHeadToHeadTries(
+                      strongestOpponent.name,
+                      fixtures,
+                      "opponent"
+                    )
+                  : 0,
+          oppTriesConceded: isInvalidOpponentName(strongestOpponent.name)
+              ? 0
+              : bracketMatches.length > 0
+                ? getClubBracketTriesConceded(
+                    strongestOpponent.name,
+                    bracketMatches
+                  )
+                : eraMode
+                  ? getHeadToHeadTries(strongestOpponent.name, fixtures, "user")
+                  : 0,
         }
       : {
           userWinPct: formatWinPercentage(options.wins, options.losses),

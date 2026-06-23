@@ -33,6 +33,9 @@ import type { MatchFixture, SeasonResult } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { ClubRepresentation } from "./ClubRepresentation";
 import { TeamSheet } from "./TeamSheet";
+import { EraBenchRoster } from "./EraBenchRoster";
+import type { EraTeam } from "@/lib/players/era-teams";
+import { getEraSquadYear } from "@/lib/players/era-teams";
 import { Confetti } from "./Confetti";
 import { EraChallengeCupBranding } from "./EraChallengeCupBranding";
 import { HardModeBadge } from "./HardModeBadge";
@@ -63,6 +66,8 @@ interface ChallengeCupReviewProps {
   onClose: () => void;
   /** Era mode: apply era team colours to user squad player cards. */
   userClubColorOverride?: string;
+  /** Era mode: full era team for bench roster display. */
+  eraTeam?: EraTeam | null;
 }
 
 const CUP_AWARD_TITLES: Record<string, string> = {
@@ -85,6 +90,7 @@ export function ChallengeCupReview({
   onPlayAgain,
   onClose,
   userClubColorOverride,
+  eraTeam = null,
 }: ChallengeCupReviewProps) {
   const totalValue = getSquadValue(squad);
   const filledCount = squad.filter((s) => s.player).length;
@@ -457,6 +463,14 @@ export function ChallengeCupReview({
             hardMode={isHardMode}
             clubColorOverride={userClubColorOverride}
           />
+          {cupResult.eraMode && eraTeam && eraTeam.benchPlayerIds.length > 0 && (
+            <EraBenchRoster
+              benchPlayerIds={eraTeam.benchPlayerIds}
+              eraYear={getEraSquadYear(eraTeam)}
+              runClub={eraTeam.displayName}
+              hardMode={isHardMode}
+            />
+          )}
         </CollapsibleReviewSection>
 
         {cupResult.tryScorers.length > 0 && (
@@ -476,16 +490,12 @@ export function ChallengeCupReview({
         </CollapsibleReviewSection>
 
         <CollapsibleReviewSection
-          title={
-            cupResult.eraMode
-              ? "Your Team vs Strongest Opponent"
-              : "Your Team vs Best Team of the Tournament"
-          }
+          title="Your Team vs Best Team of the Tournament"
           helper={
-            cupResult.eraMode
-              ? "Squad OVR comparison — your era team against the highest-rated opponent you faced in the cup."
-              : cupResult.bracketMatches && cupResult.bracketMatches.length > 0
-                ? "Squad OVR comparison — your team against the best tournament performer by wins, points and tries."
+            cupResult.bracketMatches && cupResult.bracketMatches.length > 0
+              ? "Squad OVR comparison — your team against the best tournament performer by wins, points and tries."
+              : cupResult.eraMode
+                ? "Squad OVR comparison — your era team against the highest-rated opponent you faced in the cup."
                 : "Squad OVR comparison — your team rating against the highest-rated opponent you faced in the cup."
           }
           variant="featured"

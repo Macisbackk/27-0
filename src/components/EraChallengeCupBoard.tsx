@@ -225,6 +225,7 @@ export function EraChallengeCupBoard() {
             submittedOnline={submittedOnline}
             clubFundsPayout={clubFundsPayout}
             userClubColorOverride={eraTeam.clubName}
+            eraTeam={eraTeam}
             onPlayAgain={resetRun}
             onClose={() => {}}
           />
