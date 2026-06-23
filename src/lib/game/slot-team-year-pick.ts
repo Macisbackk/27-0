@@ -23,7 +23,10 @@ import {
   type SlotRevealTarget,
 } from "./recruitment-slot-reveal";
 import {
-  getAllTeamYearPools,
+  getNormalModeTeamYearPools,
+  pickWeightedNormalModePool,
+} from "./player-pool-eligibility";
+import {
   getEligiblePlayersForTeamYearPool,
   getRawPlayersForTeamYearPool,
   getTeamYearPoolFromTarget,
@@ -31,6 +34,20 @@ import {
   type TeamYearPool,
   warnTeamYearPoolLeak,
 } from "./team-year-pools";
+
+function filterSpinPools(
+  pools: TeamYearPool[],
+  predicate: (pool: TeamYearPool) => boolean
+): TeamYearPool[] {
+  return pools.filter(predicate);
+}
+
+function pickPoolFromCandidates(
+  candidates: TeamYearPool[],
+  rng: () => number
+): TeamYearPool | null {
+  return pickWeightedNormalModePool(candidates, rng);
+}
 
 export interface SlotTeamYearPlayer {
   player: Player;
@@ -162,11 +179,12 @@ function pickSlotTeamYearTargetOnce(
   squad: SquadSlot[]
 ): SlotRevealTarget | null {
   const rng = seedrandom(`${seed}-slot-team-year-spin-${spinIndex}`);
-  const pools = getAllTeamYearPools().filter((pool) =>
+  const pools = filterSpinPools(getNormalModeTeamYearPools(), (pool) =>
     poolHasEligiblePlayers(pool, usedIds, squad)
   );
   if (pools.length === 0) return null;
-  const pick = pools[Math.floor(rng() * pools.length)]!;
+  const pick = pickPoolFromCandidates(pools, rng);
+  if (!pick) return null;
   return buildSlotRevealTarget(pick.team, pick.year);
 }
 
@@ -240,11 +258,12 @@ function pickTeamYearForSlot(
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     const idx = spinIndex + attempt;
     const rng = seedrandom(`${seed}-slot-autofill-${slotIndex}-${idx}`);
-    const pools = getAllTeamYearPools().filter(
-      (pool) => eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).length > 0
+    const pools = filterSpinPools(getNormalModeTeamYearPools(), (pool) =>
+      eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).length > 0
     );
     if (pools.length === 0) continue;
-    const pick = pools[Math.floor(rng() * pools.length)]!;
+    const pick = pickPoolFromCandidates(pools, rng);
+    if (!pick) continue;
     const target = buildSlotRevealTarget(pick.team, pick.year);
     return { target, nextSpinIndex: idx + 1 };
   }

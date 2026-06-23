@@ -88,6 +88,8 @@ export interface Player extends PlayerAchievements {
   intlCaps: number;
   /** When false, excluded from recruitment, showcase, and selectable pools. */
   availableInGame?: boolean;
+  /** When false, hidden from Super League gameplay pools (pre-1996-only careers). */
+  superLeagueEligible?: boolean;
 }
 
 export interface SquadSlot {

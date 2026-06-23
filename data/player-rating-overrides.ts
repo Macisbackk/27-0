@@ -69,6 +69,7 @@ export const PLAYER_RATING_OVERRIDES: Record<string, number> = {
   "wigan-hist-joel-tomkins": 88,
   "wigan-hist-michael-mcilorum": 89,
   "wigan-hist-paul-johnson": 86,
+  "wigan-hist-matt-bowen": 87,
   "wigan-hist-sam-tomkins": 94,
   "wigan-hist-terry-newton": 88,
   "bradford-hist-kieran-gill": 79,

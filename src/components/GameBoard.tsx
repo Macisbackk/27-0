@@ -56,7 +56,7 @@ import {
 } from "@/lib/positions";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { awardClubFundsForRun } from "@/lib/storage/club-funds";
-import { recordCompletedRun } from "@/lib/storage/run";
+import { recordCompletedRun, recordPlayoffCompletion } from "@/lib/storage/run";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import {
   playJoeMellorActivate,
@@ -77,6 +77,8 @@ import { PlayerChoice } from "./PlayerChoice";
 import { RecruitmentSlotReveal } from "./RecruitmentSlotReveal";
 import { SlotTeamYearPicker } from "./SlotTeamYearPicker";
 import { RugbyPitch } from "./RugbyPitch";
+import { PlayoffReview } from "./PlayoffReview";
+import { PlayoffSimulation } from "./PlayoffSimulation";
 import { SeasonReview } from "./SeasonReview";
 import { SeasonSimulation } from "./SeasonSimulation";
 import { ChallengeCupReview } from "./ChallengeCupReview";
@@ -176,8 +178,10 @@ export function GameBoard({
   const [submittedOnline, setSubmittedOnline] = useState(false);
   const [clubFundsPayout, setClubFundsPayout] =
     useState<ClubFundsPayoutResult | null>(null);
+  const [playoffFundsPayout, setPlayoffFundsPayout] =
+    useState<ClubFundsPayoutResult | null>(null);
   const [reviewStage, setReviewStage] = useState<
-    "regular" | "playoffs" | "final"
+    "regular" | "playoffs" | "playoffFinal"
   >("regular");
   const [choosing, setChoosing] = useState(false);
   const [rerolling, setRerolling] = useState(false);
@@ -191,7 +195,9 @@ export function GameBoard({
   const [activeSpinTarget, setActiveSpinTarget] =
     useState<SlotRevealTarget | null>(null);
   const recordedRef = useRef(false);
+  const playoffRecordedRef = useRef(false);
   const fundsAwardedRef = useRef(false);
+  const playoffFundsAwardedRef = useRef(false);
   const playoffResultRef = useRef<PlayoffResult | null>(null);
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
@@ -437,6 +443,7 @@ export function GameBoard({
     setCupRankingResult(undefined);
     setSubmittedOnline(false);
     setClubFundsPayout(null);
+    setPlayoffFundsPayout(null);
     setChoosing(false);
     setRerolling(false);
     setDraftPickIndex(0);
@@ -445,7 +452,10 @@ export function GameBoard({
     setPendingPlayer(null);
     lastScrolledPlayerIdRef.current = null;
     recordedRef.current = false;
+    playoffRecordedRef.current = false;
     fundsAwardedRef.current = false;
+    playoffFundsAwardedRef.current = false;
+    playoffResultRef.current = null;
     setReviewStage("regular");
   }, [joeMellorMode, superSamHallasMode, isChallengeCup]);
 
@@ -486,7 +496,7 @@ export function GameBoard({
     ]
   );
 
-  const finalizeSeasonRun = useCallback(
+  const finalizeRegularSeason = useCallback(
     (result: SeasonResult, finalSquad: SquadSlot[]) => {
       if (recordedRef.current) return;
       recordedRef.current = true;
@@ -495,7 +505,6 @@ export function GameBoard({
         .filter((s) => s.player)
         .map((s) => s.player!.id);
       const value = getSquadValue(finalSquad);
-      const playoff = result.playoffResult;
       const leagueTable = buildLeagueTable(result, seed);
       const tablePosition =
         leagueTable.find((row) => row.isUserTeam)?.position ??
@@ -523,15 +532,13 @@ export function GameBoard({
           superSamHallasMode,
           seasonWins: result.wins,
           seasonLosses: result.losses,
-          playoffWins: playoff?.wins ?? 0,
-          playoffLosses: playoff?.losses ?? 0,
+          playoffWins: 0,
+          playoffLosses: 0,
           seasonLeaguePosition: tablePosition,
           isPerfectSeason: result.isPerfect,
           longestWinStreak: result.longestWinStreak,
           longestLosingStreak: result.longestLosingStreak,
           rerollsUsed: rerollsThisRunRef.current,
-          playoffFinish: playoff?.finish,
-          superLeagueTitle: playoff?.isChampion ?? false,
           topSixFinish: tablePosition <= 6,
         }
       ).then((completed) => {
@@ -547,22 +554,94 @@ export function GameBoard({
           isHiddenRun: joeMellorMode || superSamHallasMode,
           seasonResult: result,
           cupResult: null,
+          fundsPhase: "regular",
         });
         setClubFundsPayout(payout);
       }
     },
-    [
-      runId,
-      mode,
-      seed,
-      difficulty,
-      joeMellorMode,
-      superSamHallasMode,
-    ]
+    [runId, mode, seed, difficulty, joeMellorMode, superSamHallasMode]
   );
+
+  const finalizePlayoffRun = useCallback(
+    (result: SeasonResult, finalSquad: SquadSlot[]) => {
+      const playoff = result.playoffResult ?? playoffResultRef.current;
+      if (!playoff || playoffRecordedRef.current) return;
+      playoffRecordedRef.current = true;
+
+      const signedIds = finalSquad
+        .filter((s) => s.player)
+        .map((s) => s.player!.id);
+      const value = getSquadValue(finalSquad);
+      const leagueTable = buildLeagueTable(result, seed);
+      const tablePosition =
+        leagueTable.find((row) => row.isUserTeam)?.position ??
+        result.leaguePosition;
+
+      void recordPlayoffCompletion(
+        {
+          id: runId,
+          mode,
+          status: "COMPLETED",
+          currentPlayer: null,
+          currentIndex: TOTAL_SLOTS,
+          totalOffers: TOTAL_SLOTS,
+          squad: finalSquad,
+          totalValue: value,
+          filledCount: getFilledCount(finalSquad),
+          totalSlots: TOTAL_SLOTS,
+          canSign: false,
+          seed,
+        },
+        signedIds,
+        difficulty,
+        {
+          regularWins: result.wins,
+          regularLosses: result.losses,
+          playoffWins: playoff.wins,
+          playoffLosses: playoff.losses,
+          seasonLeaguePosition: tablePosition,
+          playoffFinish: playoff.finish,
+          superLeagueTitle: playoff.isChampion,
+        }
+      ).then((completed) => {
+        setSubmittedOnline(completed.submittedOnline);
+        if (completed.nationalRank) setRunRank(completed.nationalRank);
+      });
+
+      if (!playoffFundsAwardedRef.current) {
+        playoffFundsAwardedRef.current = true;
+        const payout = awardClubFundsForRun({
+          runId,
+          mode,
+          isHiddenRun: joeMellorMode || superSamHallasMode,
+          seasonResult: { ...result, playoffResult: playoff },
+          cupResult: null,
+          fundsPhase: "playoff",
+        });
+        setPlayoffFundsPayout(payout);
+      }
+    },
+    [runId, mode, seed, difficulty, joeMellorMode, superSamHallasMode]
+  );
+
+  useEffect(() => {
+    if (phase !== "review" || reviewStage !== "regular" || !seasonResult) return;
+    if (isChallengeCup || joeMellorMode || superSamHallasMode) return;
+    finalizeRegularSeason(seasonResult, squad);
+  }, [
+    phase,
+    reviewStage,
+    seasonResult,
+    squad,
+    isChallengeCup,
+    joeMellorMode,
+    superSamHallasMode,
+    finalizeRegularSeason,
+  ]);
 
   const handleContinuePlayoffs = useCallback(() => {
     if (!seasonResult) return;
+    finalizeRegularSeason(seasonResult, squad);
     const leagueTable = buildLeagueTable(seasonResult, seed);
     const tablePosition =
       leagueTable.find((row) => row.isUserTeam)?.position ??
@@ -576,22 +655,26 @@ export function GameBoard({
     playoffResultRef.current = playoffResult;
     setSeasonResult({ ...seasonResult, playoffResult });
     setReviewStage("playoffs");
-  }, [seasonResult, seed, squad]);
+  }, [seasonResult, seed, squad, finalizeRegularSeason]);
 
   const handlePlayoffsComplete = useCallback(() => {
+    setReviewStage("playoffFinal");
+  }, []);
+
+  const handlePlayoffReviewDone = useCallback(() => {
     if (!seasonResult) return;
-    setReviewStage("final");
     const playoff = playoffResultRef.current ?? seasonResult.playoffResult;
     const result = playoff
       ? { ...seasonResult, playoffResult: playoff }
       : seasonResult;
-    finalizeSeasonRun(result, squad);
-  }, [seasonResult, squad, finalizeSeasonRun]);
+    finalizePlayoffRun(result, squad);
+    resetRun();
+  }, [seasonResult, squad, finalizePlayoffRun, resetRun]);
 
   const handleFinalizeSeason = useCallback(() => {
     if (!seasonResult) return;
-    finalizeSeasonRun(seasonResult, squad);
-  }, [seasonResult, squad, finalizeSeasonRun]);
+    finalizeRegularSeason(seasonResult, squad);
+  }, [seasonResult, squad, finalizeRegularSeason]);
 
   const handleSlotTeamYearPick = useCallback(
     (player: Player) => {
@@ -1327,7 +1410,10 @@ export function GameBoard({
         />
       )}
 
-      {phase === "review" && seasonResult && !isChallengeCup && (
+      {phase === "review" &&
+        seasonResult &&
+        !isChallengeCup &&
+        reviewStage === "regular" && (
         <SeasonReview
           squad={squad}
           mode={mode}
@@ -1339,11 +1425,33 @@ export function GameBoard({
           runRank={runRank}
           submittedOnline={submittedOnline}
           clubFundsPayout={clubFundsPayout}
-          reviewStage={reviewStage}
           onContinuePlayoffs={handleContinuePlayoffs}
-          onPlayoffsComplete={handlePlayoffsComplete}
           onFinalizeSeason={handleFinalizeSeason}
           onPlayAgain={resetRun}
+          onClose={() => setPhase("pitch")}
+        />
+      )}
+
+      {phase === "review" &&
+        seasonResult?.playoffResult &&
+        reviewStage === "playoffs" && (
+        <PlayoffSimulation
+          result={seasonResult.playoffResult}
+          onComplete={handlePlayoffsComplete}
+        />
+      )}
+
+      {phase === "review" &&
+        seasonResult &&
+        seasonResult.playoffResult &&
+        reviewStage === "playoffFinal" && (
+        <PlayoffReview
+          squad={squad}
+          seasonResult={seasonResult}
+          playoffResult={seasonResult.playoffResult}
+          playoffFundsPayout={playoffFundsPayout}
+          isHardMode={isHardMode}
+          onPlayAgain={handlePlayoffReviewDone}
           onClose={() => setPhase("pitch")}
         />
       )}

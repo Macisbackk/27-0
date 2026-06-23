@@ -457,3 +457,85 @@ export function applySeasonLifetimeUpdate(
 
   return updated;
 }
+
+export interface PlayoffLifetimeInput {
+  regularWins: number;
+  regularLosses: number;
+  playoffWins: number;
+  playoffLosses: number;
+  playoffFinish?: string;
+  superLeagueTitle?: boolean;
+  signedIds: string[];
+}
+
+/** Apply play-off stats without starting a new season row. */
+export function applyPlayoffLifetimeUpdate(
+  existing: UserStatsData,
+  input: PlayoffLifetimeInput
+): UserStatsData {
+  const {
+    regularWins,
+    regularLosses,
+    playoffWins,
+    playoffLosses,
+    playoffFinish,
+    superLeagueTitle = false,
+    signedIds,
+  } = input;
+
+  const overallWins = regularWins + playoffWins;
+  const overallLosses = regularLosses + playoffLosses;
+
+  const playerSeasonWins = { ...existing.playerSeasonWins };
+  const playerSeasonLosses = { ...existing.playerSeasonLosses };
+  for (const id of signedIds) {
+    playerSeasonWins[id] = (playerSeasonWins[id] ?? 0) + playoffWins;
+    playerSeasonLosses[id] = (playerSeasonLosses[id] ?? 0) + playoffLosses;
+  }
+
+  const eliminatorWin =
+    playoffFinish === "Super League Champions" ||
+    playoffFinish === "Grand Final Runner-Up" ||
+    playoffFinish === "Eliminated in Semi-Final";
+  const semiWin =
+    playoffFinish === "Super League Champions" ||
+    playoffFinish === "Grand Final Runner-Up";
+
+  const betterOverall = isBetterRecord(
+    overallWins,
+    overallLosses,
+    existing.bestOverallSeasonWins,
+    existing.bestOverallSeasonLosses
+  );
+
+  return {
+    ...existing,
+    playoffWins: existing.playoffWins + playoffWins,
+    playoffLosses: existing.playoffLosses + playoffLosses,
+    seasonWins: existing.seasonWins + playoffWins,
+    seasonLosses: existing.seasonLosses + playoffLosses,
+    totalWins: existing.totalWins + playoffWins,
+    totalLosses: existing.totalLosses + playoffLosses,
+    bestOverallSeasonWins: betterOverall
+      ? overallWins
+      : existing.bestOverallSeasonWins,
+    bestOverallSeasonLosses: betterOverall
+      ? overallLosses
+      : existing.bestOverallSeasonLosses,
+    superLeagueTitles:
+      existing.superLeagueTitles + (superLeagueTitle ? 1 : 0),
+    playoffEliminatorWins:
+      existing.playoffEliminatorWins +
+      (eliminatorWin && playoffWins > 0 ? 1 : 0),
+    playoffSemiFinalWins:
+      existing.playoffSemiFinalWins + (semiWin ? 1 : 0),
+    grandFinalAppearances:
+      existing.grandFinalAppearances +
+      (playoffFinish === "Super League Champions" ||
+      playoffFinish === "Grand Final Runner-Up"
+        ? 1
+        : 0),
+    playerSeasonWins,
+    playerSeasonLosses,
+  };
+}

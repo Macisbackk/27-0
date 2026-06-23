@@ -1,14 +1,18 @@
 {
-  "generatedAt": "2026-06-23T13:57:53.528Z",
+  "generatedAt": "2026-06-23T14:49:01.544Z",
   "summary": {
-    "normalModeGlobalTotal": 1542,
+    "normalModeGlobalTotal": 1435,
     "normalModeTeamYearPools": 19,
-    "hardModePool": 1542,
-    "challengeCupPool": 1542,
-    "fantasyPool": 1542,
-    "draftPool": 1542,
+    "hardModePool": 1435,
+    "challengeCupPool": 1435,
+    "fantasyPool": 1435,
+    "draftPool": 1435,
     "eraChallengeCupTeams": 17,
     "eraOnlyExcludedFromGlobal": 218,
+    "preSuperLeagueExcluded": 114,
+    "preSuperLeagueHiddenFromPools": 114,
+    "non2026SpinPools": 5,
+    "mattBowenRating": 87,
     "errors": 0
   },
   "normalMode": {
@@ -37,31 +41,44 @@
     },
     "missingClubs": [],
     "lowCountClubs": [],
-    "eraOnlyExcluded": 218
+    "eraOnlyExcluded": 218,
+    "teamYearByCategory": {
+      "current": 238,
+      "historic": 56,
+      "legend": 1
+    },
+    "teamYearByYear": {
+      "2006": 2,
+      "2007": 1,
+      "2008": 1,
+      "2015": 1,
+      "2026": 14
+    },
+    "spinPoolCount": 19
   },
   "hardMode": {
     "mode": "hard",
-    "totalPlayers": 1542,
+    "totalPlayers": 1435,
     "byClub": {
-      "Bradford Bulls": 112,
-      "Castleford Tigers": 107,
-      "Catalans Dragons": 100,
-      "Huddersfield Giants": 103,
-      "Hull FC": 116,
+      "Bradford Bulls": 102,
+      "Castleford Tigers": 97,
+      "Catalans Dragons": 99,
+      "Huddersfield Giants": 98,
+      "Hull FC": 112,
       "Hull KR": 78,
-      "Leeds Rhinos": 217,
-      "Leigh Leopards": 167,
-      "St Helens": 126,
+      "Leeds Rhinos": 191,
+      "Leigh Leopards": 152,
+      "St Helens": 115,
       "Toulouse Olympique": 21,
-      "Wakefield Trinity": 190,
+      "Wakefield Trinity": 178,
       "Warrington Wolves": 35,
-      "Wigan Warriors": 118,
-      "York Knights": 21
+      "Wigan Warriors": 106,
+      "York Knights": 20
     },
     "byCategory": {
       "current": 280,
-      "historic": 1244,
-      "legend": 18
+      "historic": 1140,
+      "legend": 15
     },
     "missingClubs": [],
     "lowCountClubs": [],
@@ -69,27 +86,27 @@
   },
   "challengeCup": {
     "mode": "challenge-cup",
-    "totalPlayers": 1542,
+    "totalPlayers": 1435,
     "byClub": {
-      "Bradford Bulls": 112,
-      "Castleford Tigers": 107,
-      "Catalans Dragons": 100,
-      "Huddersfield Giants": 103,
-      "Hull FC": 116,
+      "Bradford Bulls": 102,
+      "Castleford Tigers": 97,
+      "Catalans Dragons": 99,
+      "Huddersfield Giants": 98,
+      "Hull FC": 112,
       "Hull KR": 78,
-      "Leeds Rhinos": 217,
-      "Leigh Leopards": 167,
-      "St Helens": 126,
+      "Leeds Rhinos": 191,
+      "Leigh Leopards": 152,
+      "St Helens": 115,
       "Toulouse Olympique": 21,
-      "Wakefield Trinity": 190,
+      "Wakefield Trinity": 178,
       "Warrington Wolves": 35,
-      "Wigan Warriors": 118,
-      "York Knights": 21
+      "Wigan Warriors": 106,
+      "York Knights": 20
     },
     "byCategory": {
       "current": 280,
-      "historic": 1244,
-      "legend": 18
+      "historic": 1140,
+      "legend": 15
     },
     "missingClubs": [],
     "lowCountClubs": [],
@@ -97,27 +114,27 @@
   },
   "fantasy": {
     "mode": "fantasy",
-    "totalPlayers": 1542,
+    "totalPlayers": 1435,
     "byClub": {
-      "Bradford Bulls": 112,
-      "Castleford Tigers": 107,
-      "Catalans Dragons": 100,
-      "Huddersfield Giants": 103,
-      "Hull FC": 116,
+      "Bradford Bulls": 102,
+      "Castleford Tigers": 97,
+      "Catalans Dragons": 99,
+      "Huddersfield Giants": 98,
+      "Hull FC": 112,
       "Hull KR": 78,
-      "Leeds Rhinos": 217,
-      "Leigh Leopards": 167,
-      "St Helens": 126,
+      "Leeds Rhinos": 191,
+      "Leigh Leopards": 152,
+      "St Helens": 115,
       "Toulouse Olympique": 21,
-      "Wakefield Trinity": 190,
+      "Wakefield Trinity": 178,
       "Warrington Wolves": 35,
-      "Wigan Warriors": 118,
-      "York Knights": 21
+      "Wigan Warriors": 106,
+      "York Knights": 20
     },
     "byCategory": {
       "current": 280,
-      "historic": 1244,
-      "legend": 18
+      "historic": 1140,
+      "legend": 15
     },
     "missingClubs": [],
     "lowCountClubs": [],
@@ -125,27 +142,27 @@
   },
   "draft": {
     "mode": "draft",
-    "totalPlayers": 1542,
+    "totalPlayers": 1435,
     "byClub": {
-      "Bradford Bulls": 112,
-      "Castleford Tigers": 107,
-      "Catalans Dragons": 100,
-      "Huddersfield Giants": 103,
-      "Hull FC": 116,
+      "Bradford Bulls": 102,
+      "Castleford Tigers": 97,
+      "Catalans Dragons": 99,
+      "Huddersfield Giants": 98,
+      "Hull FC": 112,
       "Hull KR": 78,
-      "Leeds Rhinos": 217,
-      "Leigh Leopards": 167,
-      "St Helens": 126,
+      "Leeds Rhinos": 191,
+      "Leigh Leopards": 152,
+      "St Helens": 115,
       "Toulouse Olympique": 21,
-      "Wakefield Trinity": 190,
+      "Wakefield Trinity": 178,
       "Warrington Wolves": 35,
-      "Wigan Warriors": 118,
-      "York Knights": 21
+      "Wigan Warriors": 106,
+      "York Knights": 20
     },
     "byCategory": {
       "current": 280,
-      "historic": 1244,
-      "legend": 18
+      "historic": 1140,
+      "legend": 15
     },
     "missingClubs": [],
     "lowCountClubs": [],
@@ -654,16 +671,7 @@
       "reason": "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools"
     }
   ],
-  "unsafeDuplicateNames": [
-    {
-      "name": "liam hood",
-      "ids": [
-        "castleford-cur-liam-hood",
-        "wakefield-cur-liam-hood",
-        "salford-hist-liam-hood-2015"
-      ]
-    }
-  ],
+  "unsafeDuplicateNames": [],
   "duplicateIds": [],
   "errors": []
 }

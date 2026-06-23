@@ -98,8 +98,11 @@ export function awardClubFundsForRun(
   const state = loadState();
   const lines = computeClubFundsLines(input);
   const total = lines.reduce((sum, line) => sum + line.amount, 0);
+  const payoutRunId = input.fundsPhase
+    ? `${input.runId}-${input.fundsPhase}`
+    : input.runId;
 
-  if (state.paidRunIds.includes(input.runId) || total <= 0) {
+  if (state.paidRunIds.includes(payoutRunId) || total <= 0) {
     return {
       runId: input.runId,
       lines,
@@ -111,7 +114,7 @@ export function awardClubFundsForRun(
 
   state.balance += total;
   state.totalEarned += total;
-  state.paidRunIds.push(input.runId);
+  state.paidRunIds.push(payoutRunId);
   saveState(state);
   syncClubFundsLeaderboard(state.totalEarned);
 

@@ -14,6 +14,8 @@ import {
   type TeamYearPool,
 } from "./team-year-pools";
 import { getTeamsWithYearRosters, getYearsForTeam } from "../players/team-year-rosters";
+import { getTeamYearRosterMeta } from "../players/team-year-roster-meta";
+import { isSuperLeagueEligiblePlayer } from "../players/super-league-eligibility";
 import { getEraClubsWithTeams } from "../players/era-teams";
 import type { Player } from "../types";
 
@@ -52,7 +54,8 @@ function isGlobalRecruitmentEligible(player: Player): boolean {
   return (
     !isHiddenPlayer(player) &&
     isAvailableInGame(player) &&
-    !isEraOnlyGeneratedPlayer(player)
+    !isEraOnlyGeneratedPlayer(player) &&
+    isSuperLeagueEligiblePlayer(player)
   );
 }
 
@@ -94,7 +97,33 @@ export function getDraftPool(): Player[] {
 }
 
 export function getNormalModeTeamYearPools(): TeamYearPool[] {
-  return getAllTeamYearPools();
+  return getAllTeamYearPools().filter((pool) => {
+    const meta = getTeamYearRosterMeta(pool.team, pool.year);
+    return meta?.playableInNormalSpin === true;
+  });
+}
+
+/** Weighted spin pools — historic Super League years favoured over 2026-only bias. */
+export function getNormalModeSpinPoolWeight(pool: TeamYearPool): number {
+  const meta = getTeamYearRosterMeta(pool.team, pool.year);
+  if (pool.year === "2026") return 1;
+  if (meta?.source === "verified") return 6;
+  return 3;
+}
+
+export function pickWeightedNormalModePool<T extends TeamYearPool>(
+  pools: T[],
+  rng: () => number
+): T | null {
+  if (pools.length === 0) return null;
+  const weights = pools.map((pool) => getNormalModeSpinPoolWeight(pool));
+  const total = weights.reduce((sum, w) => sum + w, 0);
+  let roll = rng() * total;
+  for (let i = 0; i < pools.length; i++) {
+    roll -= weights[i]!;
+    if (roll <= 0) return pools[i]!;
+  }
+  return pools[pools.length - 1]!;
 }
 
 export function getEraChallengeCupTeamCount(): number {

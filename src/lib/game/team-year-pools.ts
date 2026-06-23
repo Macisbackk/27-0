@@ -1,4 +1,5 @@
 import { getPlayerById } from "../players";
+import { isSuperLeagueEligiblePlayer } from "../players/super-league-eligibility";
 import {
   getRosterPlayerIds,
   getTeamsWithYearRosters,
@@ -7,6 +8,7 @@ import {
 import type { Player, SquadSlot } from "../types";
 import { canPlayerRecruitForRemainingSlots } from "./position-placement";
 import type { SlotRevealTarget } from "./recruitment-slot-reveal";
+import { isEraOnlyGeneratedPlayer } from "./player-pool-eligibility";
 
 export interface TeamYearPool {
   teamYearId: string;
@@ -92,7 +94,12 @@ export function isPlayerInTeamYearPool(
 export function getRawPlayersForTeamYearPool(pool: TeamYearPool): Player[] {
   return pool.playerIds
     .map((id) => getPlayerById(id))
-    .filter((player): player is Player => !!player);
+    .filter(
+      (player): player is Player =>
+        !!player &&
+        isSuperLeagueEligiblePlayer(player) &&
+        !isEraOnlyGeneratedPlayer(player)
+    );
 }
 
 /**

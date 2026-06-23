@@ -3,11 +3,10 @@ import { findBestPosition, buildSquadFromIds } from "../game/engine";
 import { getPeriodKey } from "../leaderboard";
 
 import {
-
+  applyPlayoffLifetimeUpdate,
   applySeasonLifetimeUpdate,
-
+  type PlayoffLifetimeInput,
   type SeasonLifetimeInput,
-
 } from "../lifetime-stats";
 
 import { computeClubStats, mergeClubStats } from "../stats-helpers";
@@ -755,6 +754,19 @@ export function updateStats(
 }
 
 
+
+export function updatePlayoffLifetimeStats(
+  input: PlayoffLifetimeInput,
+  difficulty: GameDifficulty = "NORMAL",
+  bucket: StatsBucket = "normal"
+): UserStatsData {
+  const stored = loadStoredStats();
+  const existing = stored[bucket];
+  const updated = applyPlayoffLifetimeUpdate(existing, input);
+  stored[bucket] = updated;
+  saveStoredStats(stored);
+  return updated;
+}
 
 export function updateSeasonLifetimeStats(
 

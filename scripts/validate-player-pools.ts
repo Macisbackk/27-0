@@ -16,7 +16,11 @@ import {
   getNormalModeTeamYearPools,
   isEraOnlyGeneratedPlayer,
 } from "../src/lib/game/player-pool-eligibility";
-import { getRecruitablePlayers } from "../src/lib/players";
+import { getRecruitablePlayers, getPlayerById, getAllDatabasePlayers } from "../src/lib/players";
+import { PLAYER_RATING_OVERRIDES } from "../data/player-rating-overrides";
+import {
+  isPreSuperLeagueOnlyPlayer,
+} from "../src/lib/players/super-league-eligibility";
 import { getEraClubsWithTeams } from "../src/lib/players/era-teams";
 import { normalizePlayerNameKey } from "../src/lib/player-name-normalize";
 
@@ -64,7 +68,47 @@ function main(): void {
       reason: "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools",
     }));
 
+  const preSlExcluded = getAllDatabasePlayers()
+    .filter((p) => isPreSuperLeagueOnlyPlayer(p))
+    .length;
+  const preSlHiddenFromPools = getAllDatabasePlayers()
+    .filter(
+      (p) =>
+        isPreSuperLeagueOnlyPlayer(p) &&
+        !getGlobalRecruitmentPool().some((eligible) => eligible.id === p.id)
+    )
+    .length;
+
+  const teamYearPools = getNormalModeTeamYearPools();
+  const non2026Pools = teamYearPools.filter((p) => p.year !== "2026");
+  const teamYearByYear: Record<string, number> = {};
+  const teamYearPlayerIds = new Set<string>();
+  for (const pool of teamYearPools) {
+    teamYearByYear[pool.year] = (teamYearByYear[pool.year] ?? 0) + 1;
+    for (const id of pool.playerIds) teamYearPlayerIds.add(id);
+  }
+  const teamYearPlayers = [...teamYearPlayerIds]
+    .map((id) => getPlayerById(id))
+    .filter((p): p is NonNullable<typeof p> => !!p);
+  const teamYearByCategory = {
+    current: teamYearPlayers.filter((p) => p.category === "current").length,
+    historic: teamYearPlayers.filter((p) => p.category === "historic").length,
+    legend: teamYearPlayers.filter((p) => p.category === "legend").length,
+  };
+
+  const mattBowenRating = PLAYER_RATING_OVERRIDES["wigan-hist-matt-bowen"];
+
   const errors: string[] = [];
+
+  if (non2026Pools.length === 0) {
+    errors.push("Normal Mode spin pools are 2026-only — historic years missing");
+  }
+  if (teamYearByCategory.historic === 0 && teamYearByCategory.legend === 0) {
+    errors.push("Normal Mode team-year pools have no Historic or Legend players");
+  }
+  if (mattBowenRating !== 87) {
+    errors.push(`Matt Bowen override expected 87, got ${mattBowenRating ?? "missing"}`);
+  }
 
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     const count = hard.byClub[club] ?? 0;
@@ -93,9 +137,18 @@ function main(): void {
       draftPool: getDraftPool().length,
       eraChallengeCupTeams: getEraClubsWithTeams().length,
       eraOnlyExcludedFromGlobal: eraExcluded.length,
+      preSuperLeagueExcluded: preSlExcluded,
+      preSuperLeagueHiddenFromPools: preSlHiddenFromPools,
+      non2026SpinPools: non2026Pools.length,
+      mattBowenRating: mattBowenRating ?? null,
       errors: errors.length,
     },
-    normalMode: normal,
+    normalMode: {
+      ...normal,
+      teamYearByCategory,
+      teamYearByYear,
+      spinPoolCount: teamYearPools.length,
+    },
     hardMode: hard,
     challengeCup: cup,
     fantasy,
@@ -114,7 +167,13 @@ function main(): void {
   console.log(`Normal team-year pools: ${report.summary.normalModeTeamYearPools}`);
   console.log(`Hard / Cup / Fantasy / Draft: ${hard.totalPlayers} / ${cup.totalPlayers} / ${fantasy.totalPlayers} / ${draft.totalPlayers}`);
   console.log(`Era Cup teams: ${report.summary.eraChallengeCupTeams}`);
-  console.log(`Era-only excluded: ${eraExcluded.length}`);
+  console.log(`Pre-SL-only in database: ${preSlExcluded}`);
+  console.log(`Pre-SL-only hidden from pools: ${preSlHiddenFromPools}`);
+  console.log(`Non-2026 spin pools: ${non2026Pools.length}`);
+  console.log(
+    `Normal team-year by status: Current ${teamYearByCategory.current}, Historic ${teamYearByCategory.historic}, Legend ${teamYearByCategory.legend}`
+  );
+  console.log(`Matt Bowen rating: ${mattBowenRating ?? "missing"}`);
   console.log("\nNormal Mode players by club (team-year unique IDs):");
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     console.log(`  ${club}: ${normal.byClub[club] ?? 0}`);

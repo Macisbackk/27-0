@@ -11,6 +11,7 @@ import { resolveIntlCaps } from "./intl-caps";
 import { resolveDisplayClub } from "../clubs/super-league-display";
 import { resolveCareerTries } from "./career-tries";
 import { resolveCategory } from "./active";
+import { resolveSuperLeagueEligible } from "./super-league-eligibility";
 import { getDreamTeamYears, getGoldenBootYears } from "./achievements";
 
 const RATING_OVERRIDES = PLAYER_RATING_OVERRIDES;
@@ -88,7 +89,7 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
   );
   const eraYear = raw.eraYear as number | undefined;
 
-  return {
+  const player: Player = {
     id,
     baseId: parsedId.baseId !== id ? parsedId.baseId : undefined,
     name,
@@ -121,7 +122,17 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     goldenBootYears: getGoldenBootYears(id),
     availableInGame:
       raw.availableInGame === false ? false : undefined,
+    superLeagueEligible:
+      raw.superLeagueEligible === false
+        ? false
+        : raw.superLeagueEligible === true
+          ? true
+          : undefined,
   };
+
+  player.superLeagueEligible = resolveSuperLeagueEligible(player);
+
+  return player;
 }
 
 // Re-export for consumers

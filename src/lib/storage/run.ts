@@ -13,6 +13,7 @@ import { getUsername } from "./user";
 import {
   getAllStats,
   resolveStatsBucket,
+  updatePlayoffLifetimeStats,
   updateRerollStats,
   updateSeasonLifetimeStats,
   updateStats,
@@ -244,4 +245,53 @@ export async function recordCompletedRun(
   }
 
   return { nationalRank, submittedOnline: loggedIn && !isHiddenRun };
+}
+
+export async function recordPlayoffCompletion(
+  run: RunState,
+  signedIds: string[],
+  difficulty: GameDifficulty = "NORMAL",
+  options: {
+    regularWins: number;
+    regularLosses: number;
+    playoffWins: number;
+    playoffLosses: number;
+    seasonLeaguePosition: number;
+    playoffFinish?: string;
+    superLeagueTitle?: boolean;
+  }
+): Promise<CompletedRunResult> {
+  const totalValue = run.totalValue || getSquadValue(run.squad);
+  const loggedIn = isLoggedIn();
+  const statsBucket = resolveStatsBucket(run.mode, difficulty);
+  const wins = options.regularWins + options.playoffWins;
+  const losses = options.regularLosses + options.playoffLosses;
+
+  updatePlayoffLifetimeStats(
+    {
+      regularWins: options.regularWins,
+      regularLosses: options.regularLosses,
+      playoffWins: options.playoffWins,
+      playoffLosses: options.playoffLosses,
+      playoffFinish: options.playoffFinish,
+      superLeagueTitle: options.superLeagueTitle,
+      signedIds,
+    },
+    difficulty,
+    statsBucket
+  );
+
+  let nationalRank: number | undefined;
+  if (loggedIn && run.mode === "CLASSIC") {
+    await addLeaderboardEntry(totalValue, run.mode, difficulty, {
+      wins,
+      losses,
+    });
+    const dbMode = gameModeToDbMode(run.mode);
+    nationalRank = (
+      await getLeaderboardAsync("ALL_TIME", difficulty, 50, dbMode)
+    ).rows.find((e) => e.isCurrentUser)?.rank;
+  }
+
+  return { nationalRank, submittedOnline: loggedIn };
 }

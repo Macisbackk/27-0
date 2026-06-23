@@ -8,6 +8,7 @@ import { getValueTier as getValueTierFromRating } from "./ratings";
 import { getClubByName } from "../clubs";
 import { clubsMatch, resolveCanonicalClubName } from "../clubs/club-match";
 import { getActiveSuperLeagueClubNames } from "../clubs/super-league-display";
+import { isSuperLeagueEligiblePlayer } from "./super-league-eligibility";
 import { normalizePlayerNameKey } from "../player-name-normalize";
 
 function loadPlayers(): {
@@ -167,7 +168,12 @@ export function getShowcasePlayers(): Player[] {
 
 /** Players eligible for recruitment / draft offers. */
 export function getRecruitablePlayers(): Player[] {
-  return PLAYER_POOL.filter((p) => !isHiddenPlayer(p) && isAvailableInGame(p));
+  return PLAYER_POOL.filter(
+    (p) =>
+      !isHiddenPlayer(p) &&
+      isAvailableInGame(p) &&
+      isSuperLeagueEligiblePlayer(p)
+  );
 }
 
 export function getValueTier(value: number): string {
