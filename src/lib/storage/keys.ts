@@ -13,6 +13,8 @@ export const STORAGE_KEYS = {
   cupTeamWins: "27-0-cup-team-wins",
   eraCupLeaderboard: "27-0-era-cup-leaderboard",
   eraCupTeamWins: "27-0-era-cup-team-wins",
+  eraCupTeamWinRuns: "27-0-era-cup-team-win-runs",
+  cupTeamWinRuns: "27-0-cup-team-win-runs",
   recruitmentStyle: "27-0-recruitment-style",
   eraTournamentType: "27-0-era-tournament-type",
   cupEraVariant: "27-0-cup-era-variant",

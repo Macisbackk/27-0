@@ -116,13 +116,20 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
         className={`${CARD.glass} ${CARD.panel} w-full ${SPACING.cardPaddingLg} transition hover:border-accent-gold/30`}
       >
         {previewTeam ? (
-          <EraChallengeCupBranding
-            teamDisplayName={previewTeam.displayName}
-            clubName={previewTeam.clubName}
-            year={getEraSquadYear(previewTeam)}
-            compact
-            className="mb-4 border-0 bg-transparent p-0 shadow-none"
-          />
+          <>
+            <EraChallengeCupBranding
+              teamDisplayName={previewTeam.displayName}
+              clubName={previewTeam.clubName}
+              year={getEraSquadYear(previewTeam)}
+              compact
+              className="mb-4 border-0 bg-transparent p-0 shadow-none"
+            />
+            {showTournamentAndPreview && (
+              <EraStartButton onClick={handleConfirm} className="mb-4">
+                Start Era Challenge Cup
+              </EraStartButton>
+            )}
+          </>
         ) : (
           <EraChallengeCupBranding
             compact
@@ -226,10 +233,6 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
                 {previewTeam.displayName}
               </h3>
             </div>
-
-            <EraStartButton onClick={handleConfirm} className="mt-4">
-              Start Era Challenge Cup
-            </EraStartButton>
 
             <div className="mt-3 grid gap-2 sm:grid-cols-3">
               <StatPill

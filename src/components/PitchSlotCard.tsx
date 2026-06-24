@@ -8,10 +8,10 @@ import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
 /** Shared footprint for empty and filled pitch slots — scales down on mobile. */
 export const PITCH_SLOT_SIZE_CLASS =
-  "h-[clamp(50px,11.5vw,84px)] w-[clamp(46px,10.5vw,76px)]";
+  "h-[clamp(46px,10.5vw,76px)] w-[clamp(42px,9.5vw,70px)]";
 
 export const PITCH_SLOT_COMPACT_CLASS =
-  "h-[clamp(44px,10vw,68px)] w-[clamp(40px,9vw,64px)]";
+  "h-[clamp(38px,8.5vw,58px)] w-[clamp(34px,7.5vw,54px)]";
 
 interface PitchSlotCardProps {
   slot: SquadSlot;
@@ -50,10 +50,13 @@ export function PitchSlotCard({
         <span className="h-full flex-1" style={{ backgroundColor: colors.secondary }} />
       </div>
       <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-0 px-0.5 py-0.5">
+        <span className="font-display text-[7px] font-bold uppercase leading-none tracking-wide text-gray-400 sm:text-[8px]">
+          {positionLabel}
+        </span>
         {!hardMode && (
           <span
             className={`font-display font-black leading-none ${
-              compact ? "text-[10px] sm:text-xs" : "text-xs sm:text-sm"
+              compact ? "text-[9px] sm:text-[10px]" : "text-[10px] sm:text-xs"
             } text-accent-green`}
           >
             {ratingLabel}
@@ -64,10 +67,7 @@ export function PitchSlotCard({
             {baseRating}→{Math.round(effectiveRating)}
           </span>
         )}
-        <span className="font-display text-[7px] font-bold uppercase leading-none tracking-wide text-gray-400 sm:text-[8px]">
-          {positionLabel}
-        </span>
-        <p className="line-clamp-2 w-full break-words text-center font-display text-[6px] font-semibold leading-tight text-white sm:text-[7px]">
+        <p className="line-clamp-2 w-full break-words text-center font-display text-[7px] font-semibold leading-tight text-white sm:text-[8px]">
           {player.name}
         </p>
       </div>

@@ -40,23 +40,67 @@ export default function HomePage() {
         </div>
 
         <div className={`mt-8 ${CARD.panel} ${SPACING.cardPaddingLg}`}>
-          <h3 className={TYPO.sectionTitle}>How It Works</h3>
-          <div className={`mt-4 grid ${SPACING.cardGridGap} sm:grid-cols-3`}>
-            <Step
-              num="1"
-              title="Click the Pitch"
-              desc="Recruit directly from the team sheet — click any open position."
+          <h3 className={TYPO.sectionTitle}>How To Play</h3>
+          <div className={`mt-5 space-y-6 ${TYPO.bodySm}`}>
+            <HowToPlayBlock
+              title="Normal Mode"
+              items={[
+                "Pick a position on the team sheet.",
+                "Spin for a club or era team-year.",
+                "Choose from the players offered.",
+                "Build a full rugby league squad.",
+                "Simulate the season and try to go 27-0.",
+              ]}
             />
-            <Step
-              num="2"
-              title="Choose One of Two"
-              desc="Pick between two real players with tight ratings — the other walks away."
+            <div className="grid gap-4 sm:grid-cols-2">
+              <HowToPlayBlock
+                title="Current"
+                items={[
+                  "Uses 2026 Super League squads.",
+                  "Spins show clubs only.",
+                  "All opponent teams are current 2026 teams.",
+                ]}
+                compact
+              />
+              <HowToPlayBlock
+                title="Era"
+                items={[
+                  "Uses historic Super League team-year squads.",
+                  "Spins show club + year.",
+                  "Exact team-year pools — no 2026 teams.",
+                ]}
+                compact
+                era
+              />
+            </div>
+            <HowToPlayBlock
+              title="Challenge Cup"
+              items={[
+                "Pick or randomise a team.",
+                "Build or select your squad.",
+                "Play through the cup bracket.",
+                "Try to win the trophy.",
+              ]}
             />
-            <Step
-              num="3"
-              title="Quest for 27-0"
-              desc="Simulate a full Super League season. Can your squad win every game?"
-            />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <HowToPlayBlock
+                title="Current Challenge Cup"
+                items={[
+                  "2026 Super League clubs.",
+                  "Current squads and opponents.",
+                ]}
+                compact
+              />
+              <HowToPlayBlock
+                title="Era Challenge Cup"
+                items={[
+                  "Pick a historic team-year squad.",
+                  "Era teams across the full bracket.",
+                ]}
+                compact
+                era
+              />
+            </div>
           </div>
         </div>
 
@@ -76,22 +120,41 @@ export default function HomePage() {
   );
 }
 
-function Step({
-  num,
+function HowToPlayBlock({
   title,
-  desc,
+  items,
+  compact = false,
+  era = false,
 }: {
-  num: string;
   title: string;
-  desc: string;
+  items: string[];
+  compact?: boolean;
+  era?: boolean;
 }) {
   return (
-    <div>
-      <span className="font-display text-2xl font-black text-pitch-600/80">
-        {num}
-      </span>
-      <h4 className={`mt-1 font-display font-bold ${TYPO.statValue}`}>{title}</h4>
-      <p className={`mt-1 ${TYPO.bodySm}`}>{desc}</p>
+    <div
+      className={
+        compact
+          ? `rounded-lg border px-3 py-3 ${
+              era
+                ? "border-accent-gold/30 bg-accent-gold/5"
+                : "border-pitch-700/50 bg-pitch-950/40"
+            }`
+          : ""
+      }
+    >
+      <h4
+        className={`font-display font-bold ${
+          era ? "text-accent-gold" : "text-white"
+        } ${compact ? TYPO.bodySm : TYPO.statValue}`}
+      >
+        {title}
+      </h4>
+      <ul className={`mt-2 space-y-1 ${TYPO.bodySm} text-gray-400`}>
+        {items.map((item) => (
+          <li key={item}>• {item}</li>
+        ))}
+      </ul>
     </div>
   );
 }

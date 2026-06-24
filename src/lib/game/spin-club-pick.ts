@@ -1,8 +1,4 @@
-import {
-  getSpinPoolWeight,
-  pickUniformTeamYearPool,
-  type SpinPoolVariant,
-} from "./player-pool-eligibility";
+import type { SpinPoolVariant } from "./player-pool-eligibility";
 import type { TeamYearPool } from "./team-year-pools";
 
 export function groupPoolsByClub(
@@ -33,35 +29,25 @@ export interface ClubUniformPickResult {
   rejectedIncomplete: number;
 }
 
-function pickWeightedTeamYearPool(
-  pools: TeamYearPool[],
+function pickUniformTeamYearFromClubPools(
+  clubPools: TeamYearPool[],
   rng: () => number,
-  variant: SpinPoolVariant
+  hasEligiblePlayers: (pool: TeamYearPool) => boolean
 ): TeamYearPool | null {
-  if (pools.length === 0) return null;
-  if (variant === "current") return pickUniformTeamYearPool(pools, rng);
-
-  const weights = pools.map((p) => getSpinPoolWeight(p, variant));
-  const total = weights.reduce((sum, w) => sum + w, 0);
-  if (total <= 0) return pickUniformTeamYearPool(pools, rng);
-
-  let roll = rng() * total;
-  for (let i = 0; i < pools.length; i++) {
-    roll -= weights[i]!;
-    if (roll <= 0) return pools[i]!;
-  }
-  return pools[pools.length - 1]!;
+  const eligible = clubPools.filter((pool) => hasEligiblePlayers(pool));
+  if (eligible.length === 0) return null;
+  return eligible[Math.floor(rng() * eligible.length)]!;
 }
 
 /**
- * Uniform club pick, then team-year within club (weighted in Era Mode).
+ * Uniform club pick, then uniform team-year within that club.
  * If the draw cannot supply players, remove that club and reroll.
  */
 export function pickClubUniformTeamYearPool(
   eligiblePools: TeamYearPool[],
   rng: () => number,
   hasEligiblePlayers: (pool: TeamYearPool) => boolean,
-  variant: SpinPoolVariant = "era"
+  _variant: SpinPoolVariant = "era"
 ): ClubUniformPickResult {
   if (eligiblePools.length === 0) {
     return { pool: null, club: null, rerollCount: 0, rejectedIncomplete: 0 };
@@ -76,11 +62,15 @@ export function pickClubUniformTeamYearPool(
     const clubIndex = Math.floor(rng() * remainingClubs.length);
     const club = remainingClubs[clubIndex]!;
     const clubPools = byClub.get(club) ?? [];
-    const pick = pickWeightedTeamYearPool(clubPools, rng, variant);
+    const pick = pickUniformTeamYearFromClubPools(
+      clubPools,
+      rng,
+      hasEligiblePlayers
+    );
 
-    if (!pick || !hasEligiblePlayers(pick)) {
+    if (!pick) {
       rerollCount += 1;
-      if (pick && !hasEligiblePlayers(pick)) rejectedIncomplete += 1;
+      rejectedIncomplete += clubPools.length;
       remainingClubs = remainingClubs.filter((c) => c !== club);
       continue;
     }

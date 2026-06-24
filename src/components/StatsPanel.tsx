@@ -27,13 +27,16 @@ import {
 import { HardModeBadge } from "./HardModeBadge";
 import { RecordWithPercentage } from "./RecordWithPercentage";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
-import { BTN, tabGroupButtonClass, tabGroupClass } from "@/lib/ui/design-system";
+import { BTN } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { runStatsPageValidation } from "@/lib/validation/stats-page-validation";
 import { playTabChange } from "@/lib/sound";
 import {
+  getCupEraVariant,
   getNormalEraVariant,
+  CUP_ERA_VARIANT_CHANGED_EVENT,
   NORMAL_ERA_VARIANT_CHANGED_EVENT,
+  setCupEraVariant,
   setNormalEraVariant,
 } from "@/lib/storage/preferences";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
@@ -53,6 +56,7 @@ export function StatsPanel() {
     null
   );
   const [normalEraMode, setNormalEraMode] = useState(false);
+  const [cupEraMode, setCupEraMode] = useState(false);
 
   const refresh = () => {
     const stored = getAllStats();
@@ -71,13 +75,21 @@ export function StatsPanel() {
 
   useEffect(() => {
     setNormalEraMode(getNormalEraVariant());
+    setCupEraMode(getCupEraVariant());
     const onNormalEra = (event: Event) => {
       const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
       if (detail) setNormalEraMode(detail.eraMode);
     };
+    const onCupEra = (event: Event) => {
+      const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
+      if (detail) setCupEraMode(detail.eraMode);
+    };
     window.addEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalEra);
-    return () =>
+    window.addEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupEra);
+    return () => {
       window.removeEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalEra);
+      window.removeEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupEra);
+    };
   }, []);
 
   useEffect(() => {
@@ -187,6 +199,11 @@ export function StatsPanel() {
           normal={normalStats}
           hard={hardStats}
           eraCup={eraCupStats}
+          eraMode={cupEraMode}
+          onEraModeChange={(era) => {
+            setCupEraMode(era);
+            setCupEraVariant(era);
+          }}
         />
       )}
 
@@ -350,34 +367,6 @@ function OverallTab({
           />
         </StatsSection>
       )}
-    </div>
-  );
-}
-
-function ModeVariantToggle<T extends string>({
-  value,
-  options,
-  onChange,
-}: {
-  value: T;
-  options: { id: T; label: string }[];
-  onChange: (id: T) => void;
-}) {
-  return (
-    <div className={`${tabGroupClass} flex-wrap`}>
-      {options.map((option) => (
-        <button
-          key={option.id}
-          type="button"
-          onClick={() => {
-            if (value !== option.id) playTabChange();
-            onChange(option.id);
-          }}
-          className={tabGroupButtonClass(value === option.id)}
-        >
-          {option.label}
-        </button>
-      ))}
     </div>
   );
 }
@@ -707,64 +696,61 @@ function ChallengeCupTab({
   normal,
   hard,
   eraCup,
+  eraMode,
+  onEraModeChange,
 }: {
   normal: UserStatsData;
   hard: UserStatsData;
   eraCup: UserStatsData;
+  eraMode: boolean;
+  onEraModeChange: (eraMode: boolean) => void;
 }) {
-  const [variant, setVariant] = useState<"standard" | "era">("standard");
+  if (eraMode) {
+    const view = getEraChallengeCupView(eraCup);
+    return (
+      <div className="space-y-8">
+        <ChallengeCupVariantToggle
+          sectionLabel="Mode Variant"
+          useShortLabels
+          eraMode={eraMode}
+          onEraModeChange={onEraModeChange}
+        />
 
-  if (variant === "era") {
-  const view = getEraChallengeCupView(eraCup);
-  return (
-    <div className="space-y-8">
-      <StatsSection
-        title="Era Challenge Cup"
-        headerExtra={
-          <ModeVariantToggle
-            value={variant}
-            options={[
-              { id: "standard", label: "Challenge Cup" },
-              { id: "era", label: "Era Challenge Cup" },
-            ]}
-            onChange={setVariant}
+        <StatsSection title="Era Challenge Cup">
+          <StatCard label="Era Cup Appearances" value={String(view.runs)} />
+          <StatCard
+            label="Total Record"
+            value={
+              view.wins + view.losses > 0 ? (
+                <RecordWithPercentage wins={view.wins} losses={view.losses} />
+              ) : (
+                "—"
+              )
+            }
+            highlight={view.totalRecord.wins >= 4}
           />
-        }
-      >
-        <StatCard label="Era Cup Appearances" value={String(view.runs)} />
-        <StatCard
-          label="Total Record"
-          value={
-            view.wins + view.losses > 0 ? (
-              <RecordWithPercentage wins={view.wins} losses={view.losses} />
-            ) : (
-              "—"
-            )
-          }
-          highlight={view.totalRecord.wins >= 4}
-        />
-        <StatCard
-          label="Era Match Wins"
-          value={String(view.wins)}
-          highlight={view.wins > 0}
-        />
-        <StatCard label="Era Match Losses" value={String(view.losses)} />
-      </StatsSection>
+          <StatCard
+            label="Era Match Wins"
+            value={String(view.wins)}
+            highlight={view.wins > 0}
+          />
+          <StatCard label="Era Match Losses" value={String(view.losses)} />
+        </StatsSection>
 
-      <StatsSection title="Achievements">
-        <StatCard
-          label="Era Cups Won"
-          value={String(view.cupsWon)}
-          highlight={view.cupsWon > 0}
-        />
-        <StatCard
-          label="Best Era Team Used"
-          value={view.bestTeamUsed ?? "—"}
-          highlight={view.bestTeamUsed !== null}
-        />
-      </StatsSection>
-    </div>
-  );
+        <StatsSection title="Achievements">
+          <StatCard
+            label="Era Cups Won"
+            value={String(view.cupsWon)}
+            highlight={view.cupsWon > 0}
+          />
+          <StatCard
+            label="Best Era Team Used"
+            value={view.bestTeamUsed ?? "—"}
+            highlight={view.bestTeamUsed !== null}
+          />
+        </StatsSection>
+      </div>
+    );
   }
 
   const view = getChallengeCupView(normal, hard);
@@ -772,19 +758,14 @@ function ChallengeCupTab({
 
   return (
     <div className="space-y-8">
-      <StatsSection
-        title="Challenge Cup"
-        headerExtra={
-          <ModeVariantToggle
-            value={variant}
-            options={[
-              { id: "standard", label: "Challenge Cup" },
-              { id: "era", label: "Era Challenge Cup" },
-            ]}
-            onChange={setVariant}
-          />
-        }
-      >
+      <ChallengeCupVariantToggle
+        sectionLabel="Mode Variant"
+        useShortLabels
+        eraMode={eraMode}
+        onEraModeChange={onEraModeChange}
+      />
+
+      <StatsSection title="Challenge Cup">
         <StatCard
           label="Challenge Cup Appearances"
           value={String(view.runs)}

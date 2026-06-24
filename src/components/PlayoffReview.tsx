@@ -8,6 +8,7 @@ import type { PlayoffResult } from "@/lib/game/playoff-simulation";
 import type { PlayoffBracketState } from "@/lib/game/playoff-bracket";
 import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
 import { getPlayoffReviewBio } from "@/lib/playoff-review-bio";
+import { generateSeasonAwards } from "@/lib/season-awards";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { ReturnHomeButton } from "./ReturnHomeButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
@@ -47,16 +48,19 @@ export function PlayoffReview({
     [playoffResult, seasonResult.wins]
   );
 
-  const topScorers = useMemo(
-    () =>
-      [...playoffResult.tryScorers]
-        .sort((a, b) => b.tries - a.tries)
-        .slice(0, 5),
-    [playoffResult.tryScorers]
-  );
-  const bestScorer = topScorers[0];
-  const worstScorer =
-    topScorers.length > 1 ? topScorers[topScorers.length - 1] : null;
+  const playerAwards = useMemo(() => {
+    const awards = generateSeasonAwards(squad, seasonResult);
+    return awards.filter(
+      (award) =>
+        award.title !== "Top 3 Try Scorers" &&
+        award.title !== "Top Try Scorers"
+    );
+  }, [squad, seasonResult]);
+
+  const bracketChampion = useMemo(() => {
+    const final = playoffBracketState?.matches.find((m) => m.id === "gf");
+    return final?.status === "complete" ? final.winner : null;
+  }, [playoffBracketState]);
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md">
@@ -85,10 +89,6 @@ export function PlayoffReview({
             </p>
           )}
         </motion.header>
-
-        <div className="mt-4 w-full max-w-xl">
-          <ReturnHomeButton onBeforeNavigate={onReturnHome} />
-        </div>
 
         <motion.div
           className="mt-6 w-full max-w-xl"
@@ -153,7 +153,8 @@ export function PlayoffReview({
             <PlayoffBracketDisplay
               state={playoffBracketState}
               championLabel={
-                playoffResult.isChampion ? "Dream Team" : playoffResult.finish
+                bracketChampion ??
+                (playoffResult.isChampion ? "Dream Team" : playoffResult.finish)
               }
             />
           </CollapsibleReviewSection>
@@ -167,48 +168,13 @@ export function PlayoffReview({
           <SquadReviewSection
             squad={squad}
             hardMode={isHardMode}
-            performanceTitle="Playoff Performance"
+            awards={playerAwards}
             tryScorers={playoffResult.tryScorers}
             expectedTotalTries={playoffResult.tryScorers.reduce(
               (sum, row) => sum + row.tries,
               0
             )}
             totalMatches={playoffResult.tryScorers.length > 0 ? 3 : undefined}
-            performance={
-              bestScorer || worstScorer ? (
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                  {bestScorer && (
-                    <div className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 p-4 text-left">
-                      <p className="text-[10px] uppercase tracking-wider text-gray-500">
-                        Best Performer
-                      </p>
-                      <p className="mt-1 font-semibold text-white">
-                        {bestScorer.name}
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        {bestScorer.tries} play-off{" "}
-                        {bestScorer.tries === 1 ? "try" : "tries"}
-                      </p>
-                    </div>
-                  )}
-                  {worstScorer &&
-                    worstScorer.playerId !== bestScorer?.playerId && (
-                      <div className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 p-4 text-left">
-                        <p className="text-[10px] uppercase tracking-wider text-gray-500">
-                          Quietest Performer
-                        </p>
-                        <p className="mt-1 font-semibold text-white">
-                          {worstScorer.name}
-                        </p>
-                        <p className="text-sm text-gray-400">
-                          {worstScorer.tries} play-off{" "}
-                          {worstScorer.tries === 1 ? "try" : "tries"}
-                        </p>
-                      </div>
-                    )}
-                </div>
-              ) : undefined
-            }
           />
         </CollapsibleReviewSection>
 

@@ -156,7 +156,7 @@ export async function recordCompletedRun(
       );
 
       if (options.eraCupWinner) {
-        recordEraCupTeamWin(options.eraCupWinner);
+        recordEraCupTeamWin(options.eraCupWinner, run.id);
       }
 
       return { submittedOnline: loggedIn && !isHiddenRun };
@@ -206,7 +206,7 @@ export async function recordCompletedRun(
       );
 
       if (options.cupWon && options.cupTeam) {
-        recordCupTeamWin(options.cupTeam);
+        recordCupTeamWin(options.cupTeam, run.id);
       }
 
       const storedAfter = getAllStats();

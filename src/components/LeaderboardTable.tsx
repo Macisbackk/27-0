@@ -16,7 +16,7 @@ import {
 } from "@/lib/storage/leaderboard";
 import {
   getCupTeamWinsLeaderboardAsync,
-  getEraCupTeamWinsLeaderboardRows,
+  getEraCupTeamWinsLeaderboardAsync,
   type CupTeamWinsLeaderboardRow,
 } from "@/lib/storage/cup-team-wins";
 import {
@@ -136,16 +136,12 @@ export function LeaderboardTable({
 
       if (isTeamWinsTracker) {
         if (isChallengeCupMode && cupEraMode) {
-          const rows = getEraCupTeamWinsLeaderboardRows();
-          const totalCups = rows.reduce(
-            (sum, row) => sum + row.tournamentWins,
-            0
-          );
+          const result = await getEraCupTeamWinsLeaderboardAsync();
           if (currentRequest !== requestId.current) return;
-          setTeamWinsRows(rows);
-          setTeamWinsTotal(totalCups);
+          setTeamWinsRows(result.rows);
+          setTeamWinsTotal(result.totalCups);
           setEntries([]);
-          setUsingFallback(true);
+          setUsingFallback(result.source === "local");
           return;
         }
 

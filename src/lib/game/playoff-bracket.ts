@@ -166,9 +166,11 @@ export function canSimulatePlayoffMatch(
   state: PlayoffBracketState,
   matchId: string
 ): boolean {
-  if (state.userEliminated || state.tournamentComplete) return false;
+  if (state.tournamentComplete) return false;
   const match = getMatchById(state, matchId);
-  return match?.status === "ready";
+  if (!match || match.status !== "ready") return false;
+  if (state.userEliminated && match.isUserMatch) return false;
+  return true;
 }
 
 function rebuildBracketFromWinners(matches: PlayoffBracketMatch[]): void {
@@ -328,7 +330,6 @@ function syncAfterMatch(
 
   if (match.isUserMatch && userWon === false) {
     userEliminated = true;
-    tournamentComplete = true;
     finish = resolveFinish({ ...state, finish }, match, false);
   } else if (match.isUserMatch && userWon === true && match.round === 3) {
     tournamentComplete = true;
@@ -337,6 +338,14 @@ function syncAfterMatch(
     const gf = matches.find((m) => m.id === "gf");
     if (gf?.status === "ready" && gf.isUserMatch) {
       // user won semi, GF ready — not complete yet
+    }
+  }
+
+  const gf = matches.find((m) => m.id === "gf");
+  if (gf?.status === "complete") {
+    tournamentComplete = true;
+    if (!finish && gf.winner !== DREAM_TEAM_NAME) {
+      finish = state.finish ?? "Grand Final Runner-Up";
     }
   }
 
@@ -411,7 +420,7 @@ function simulateUserMatch(
   }
 
   if (!userWon) {
-    return synced;
+    return simulateRemainingPlayoffBracket(synced, squad);
   }
 
   const gf = synced.matches.find((x) => x.id === "gf");
@@ -496,6 +505,30 @@ export function simulatePlayoffBracketMatch(
   return runMatch(state, matchId, squad);
 }
 
+export function simulateRemainingPlayoffBracket(
+  state: PlayoffBracketState,
+  squad: SquadSlot[]
+): PlayoffBracketState {
+  let next = state;
+  const maxSteps = 12;
+
+  for (let step = 0; step < maxSteps; step++) {
+    if (next.tournamentComplete) break;
+
+    const ready = next.matches.filter((m) => m.status === "ready");
+    if (ready.length === 0) break;
+
+    const match =
+      ready.find((m) => !m.isUserMatch) ??
+      (next.userEliminated ? null : ready.find((m) => m.isUserMatch));
+
+    if (!match) break;
+    next = runMatch(next, match.id, squad);
+  }
+
+  return next;
+}
+
 export function simulatePlayoffBracketRound(
   state: PlayoffBracketState,
   round: number,
@@ -506,7 +539,8 @@ export function simulatePlayoffBracketRound(
     (m) => m.status === "ready"
   );
   for (const match of roundMatches) {
-    if (next.userEliminated || next.tournamentComplete) break;
+    if (next.tournamentComplete) break;
+    if (next.userEliminated && match.isUserMatch) continue;
     next = runMatch(next, match.id, squad);
   }
   return next;
