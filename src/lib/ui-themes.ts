@@ -1,12 +1,14 @@
-import { getClubColors } from "./clubs";
 import {
   CURRENT_PLAYABLE_CLUBS,
   ERA_HISTORIC_ONLY_CLUBS,
 } from "./clubs/super-league-display";
+import { isBlackLike } from "./ui/theme-accent-colors";
 import {
-  isBlackLike,
-  resolveThemeAccentColors,
-} from "./ui/theme-accent-colors";
+  getTeamUiThemeByClubName,
+  listTeamUiThemes,
+  slugifyTeamThemeId,
+  type TeamUiThemeColors,
+} from "./ui/team-ui-themes";
 
 export const DEFAULT_UI_THEME_ID = "default";
 export const UI_THEME_PURCHASE_PRICE = 2_500_000;
@@ -15,53 +17,58 @@ export interface UiThemeDefinition {
   id: string;
   label: string;
   clubName?: string;
+  primary: string;
+  secondary: string;
+  tertiary: string;
+  textOnPrimary: string;
+  textOnSecondary: string;
+  /** @deprecated Use primary — kept for gradual migration */
   accent: string;
+  /** @deprecated Use secondary */
   accent2: string;
+  /** @deprecated Use tertiary */
+  accent3: string;
   accentText: string;
   glow: string;
 }
 
-function clubTheme(clubName: string): UiThemeDefinition {
-  const colors = getClubColors(clubName);
-  const { accent, accent2 } = resolveThemeAccentColors(colors);
-  return {
-    id: slugifyThemeId(clubName),
-    label: clubName,
-    clubName,
-    accent,
-    accent2,
-    accentText: pickReadableText(accent),
-    glow: hexToRgba(accent, 0.35),
-  };
-}
-
-function slugifyThemeId(clubName: string): string {
-  return clubName
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-function pickReadableText(hex: string): string {
-  const r = Number.parseInt(hex.slice(1, 3), 16);
-  const g = Number.parseInt(hex.slice(3, 5), 16);
-  const b = Number.parseInt(hex.slice(5, 7), 16);
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  return luminance > 0.62 ? "#0a0f0d" : "#ffffff";
-}
-
 function hexToRgba(hex: string, alpha: number): string {
-  const r = Number.parseInt(hex.slice(1, 3), 16);
-  const g = Number.parseInt(hex.slice(3, 5), 16);
-  const b = Number.parseInt(hex.slice(5, 7), 16);
+  const normalized = hex.replace("#", "");
+  const r = Number.parseInt(normalized.slice(0, 2), 16);
+  const g = Number.parseInt(normalized.slice(2, 4), 16);
+  const b = Number.parseInt(normalized.slice(4, 6), 16);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+function fromTeamColors(team: TeamUiThemeColors): UiThemeDefinition {
+  return {
+    id: team.id,
+    label: team.name,
+    clubName: team.name,
+    primary: team.primary,
+    secondary: team.secondary,
+    tertiary: team.tertiary,
+    textOnPrimary: team.textOnPrimary,
+    textOnSecondary: team.textOnSecondary,
+    accent: team.primary,
+    accent2: team.secondary,
+    accent3: team.tertiary,
+    accentText: team.textOnPrimary,
+    glow: hexToRgba(team.primary, 0.35),
+  };
 }
 
 export const DEFAULT_UI_THEME: UiThemeDefinition = {
   id: DEFAULT_UI_THEME_ID,
   label: "Default",
+  primary: "#22c55e",
+  secondary: "#34d399",
+  tertiary: "#16a34a",
+  textOnPrimary: "#0a0f0d",
+  textOnSecondary: "#0a0f0d",
   accent: "#22c55e",
   accent2: "#34d399",
+  accent3: "#16a34a",
   accentText: "#0a0f0d",
   glow: "rgba(34, 197, 94, 0.35)",
 };
@@ -71,26 +78,41 @@ const CLUB_THEME_NAMES = [
   ...ERA_HISTORIC_ONLY_CLUBS,
 ] as const;
 
+function clubTheme(clubName: string): UiThemeDefinition {
+  const team = getTeamUiThemeByClubName(clubName);
+  if (!team) {
+    throw new Error(`Missing Store UI theme config for club: ${clubName}`);
+  }
+  return fromTeamColors(team);
+}
+
 export const UI_THEMES: UiThemeDefinition[] = [
   DEFAULT_UI_THEME,
   ...CLUB_THEME_NAMES.map(clubTheme),
 ];
 
 export function getUiThemeById(id: string): UiThemeDefinition {
-  return UI_THEMES.find((theme) => theme.id === id) ?? DEFAULT_UI_THEME;
+  if (id === DEFAULT_UI_THEME_ID) return DEFAULT_UI_THEME;
+  const team = listTeamUiThemes().find((t) => t.id === id);
+  if (team) return fromTeamColors(team);
+  return DEFAULT_UI_THEME;
+}
+
+export function getUiThemeByClubName(clubName: string): UiThemeDefinition | null {
+  const team = getTeamUiThemeByClubName(clubName);
+  return team ? fromTeamColors(team) : null;
 }
 
 export function isDefaultUiTheme(id: string): boolean {
   return id === DEFAULT_UI_THEME_ID;
 }
 
-/** Dev/build guard — store themes must never use black as the visible primary accent. */
 export function assertNoBlackPrimaryUiThemes(): void {
   for (const theme of UI_THEMES) {
     if (theme.id === DEFAULT_UI_THEME_ID) continue;
-    if (isBlackLike(theme.accent)) {
+    if (isBlackLike(theme.primary)) {
       throw new Error(
-        `UI theme "${theme.label}" uses black-like primary accent: ${theme.accent}`
+        `UI theme "${theme.label}" uses black-like primary: ${theme.primary}`
       );
     }
   }
@@ -99,3 +121,5 @@ export function assertNoBlackPrimaryUiThemes(): void {
 if (process.env.NODE_ENV !== "production") {
   assertNoBlackPrimaryUiThemes();
 }
+
+export { slugifyTeamThemeId };

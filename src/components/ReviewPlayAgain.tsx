@@ -23,7 +23,7 @@ export function ReviewPlayAgain({
     <div
       className={`w-full max-w-xl ${SPACING.stackMd} ${compact ? "" : "mt-2"}`}
     >
-      <ActionButton variant="current" hardMode={hardMode} onClick={onPlayAgain}>
+      <ActionButton variant="primary" hardMode={hardMode} onClick={onPlayAgain}>
         Play Again
       </ActionButton>
       <div

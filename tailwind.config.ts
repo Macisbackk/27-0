@@ -17,11 +17,13 @@ const config: Config = {
           600: "#2a4539",
         },
         accent: {
-          green: "rgb(var(--ui-accent-rgb) / <alpha-value>)",
-          "green-2": "rgb(var(--ui-accent-2-rgb) / <alpha-value>)",
+          green: "rgb(var(--theme-primary-rgb) / <alpha-value>)",
+          "green-2": "rgb(var(--theme-secondary-rgb) / <alpha-value>)",
           gold: "#fbbf24",
           red: "#ef4444",
         },
+        "mode-current": "rgb(var(--mode-current-rgb) / <alpha-value>)",
+        "mode-era": "rgb(var(--mode-era-rgb) / <alpha-value>)",
       },
       fontFamily: {
         display: ["Arial Black", "Impact", "var(--font-display)", "sans-serif"],
@@ -43,8 +45,8 @@ const config: Config = {
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         pulseGlow: {
-          "0%, 100%": { boxShadow: "0 0 0 0 rgba(34, 197, 94, 0)" },
-          "50%": { boxShadow: "0 0 20px 2px rgba(34, 197, 94, 0.15)" },
+          "0%, 100%": { boxShadow: "0 0 0 0 transparent" },
+          "50%": { boxShadow: "0 0 20px 2px var(--theme-glow-soft)" },
         },
       },
     },

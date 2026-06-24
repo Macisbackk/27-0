@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { playUiClick } from "@/lib/sound";
-import { BTN } from "@/lib/ui/design-system";
 import { ActionButton } from "./ui/ActionButton";
 
 interface ReturnHomeButtonProps {
@@ -18,8 +17,8 @@ export function ReturnHomeButton({
 
   return (
     <ActionButton
-      variant="secondary"
-      className={`${BTN.secondaryLg} ${className}`}
+      variant="primary"
+      className={className}
       onClick={() => {
         playUiClick();
         onBeforeNavigate?.();

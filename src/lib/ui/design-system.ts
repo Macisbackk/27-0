@@ -31,7 +31,7 @@ export const CARD = {
   hover:
     "transition hover:border-pitch-500/60 hover:bg-pitch-900/70",
   featured:
-    "border border-accent-green/15 shadow-[0_0_32px_rgba(34,197,94,0.06)]",
+    "border border-accent-green/15 shadow-[0_0_32px_var(--theme-glow-soft)]",
   featuredHard:
     "border border-accent-red/30 shadow-[0_0_32px_rgba(239,68,68,0.14)]",
   interactive:
@@ -59,7 +59,7 @@ export const BTN_PRESS = "btn-press";
 export const BTN = {
   base: `${TYPO.button} btn-press inline-flex min-h-[44px] items-center justify-center rounded-lg px-4 py-2.5 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-green disabled:active:scale-100 disabled:active:brightness-100`,
   primary:
-    "btn-press-glow border-2 border-accent-green/75 bg-accent-green text-pitch-950 shadow-[0_0_28px_rgba(34,197,94,0.35)] hover:bg-accent-green/90 hover:shadow-[0_0_36px_rgba(34,197,94,0.45)] disabled:cursor-not-allowed disabled:opacity-50",
+    "btn-press-glow border-2 border-accent-green/75 bg-accent-green text-[var(--theme-text-on-primary)] shadow-[0_0_28px_var(--theme-glow)] hover:bg-accent-green/90 hover:shadow-[0_0_36px_var(--theme-glow)] disabled:cursor-not-allowed disabled:opacity-50",
   primaryHard:
     "btn-press-glow-hard border-2 border-accent-red/85 bg-accent-red text-white shadow-[0_0_28px_rgba(239,68,68,0.45)] hover:bg-red-500 hover:shadow-[0_0_36px_rgba(239,68,68,0.55)] disabled:cursor-not-allowed disabled:opacity-50",
   primaryLg:
@@ -85,13 +85,17 @@ export const BTN = {
   secondaryLg: "btn-secondary text-center",
   danger:
     "border border-red-600/50 bg-red-950/30 text-red-300 hover:border-red-500 hover:bg-red-950/50 disabled:cursor-not-allowed disabled:opacity-50",
-  tabActive: "bg-accent-green text-pitch-950",
+  tabActive: "bg-accent-green text-[var(--theme-text-on-primary)]",
   tabIdle:
     "border border-pitch-600 text-gray-400 hover:border-pitch-500 hover:text-white",
   tabGroupInner:
     "flex-1 rounded-lg px-4 py-2.5 sm:flex-none sm:px-5",
   tabGroupActive:
-    "border-2 border-accent-green/75 bg-accent-green text-pitch-950 shadow-[0_0_28px_rgba(34,197,94,0.45),inset_0_1px_0_rgba(255,255,255,0.08)]",
+    "border-2 border-accent-green/75 bg-accent-green text-[var(--theme-text-on-primary)] shadow-[0_0_28px_var(--theme-glow),inset_0_1px_0_rgba(255,255,255,0.08)]",
+  modeCurrentActive:
+    "border-2 border-mode-current/75 bg-mode-current text-pitch-950 shadow-[0_0_28px_var(--mode-current-glow),inset_0_1px_0_rgba(255,255,255,0.08)]",
+  modeCurrentIdle:
+    "text-gray-400 hover:border-mode-current/30 hover:bg-mode-current/10 hover:text-mode-current",
   tabGroupIdle:
     "text-gray-400 hover:border-accent-green/30 hover:bg-accent-green/10 hover:text-accent-green",
   hardActive:
@@ -110,11 +114,17 @@ export const BTN = {
   header: `header-control-btn flex h-11 min-h-[44px] min-w-[5.75rem] items-center justify-center gap-2 rounded-lg border border-pitch-600 px-4 text-sm font-medium text-gray-300 transition hover:border-accent-green hover:text-white`,
 } as const;
 
-/** Normal mode visual tokens — green mirror of HARD. */
-export const NORMAL = {
+/** Normal / Current mode visual tokens — green only for mode-state controls. */
+export const MODE_CURRENT = {
   tabGroupRing:
-    "border-accent-green/40 shadow-[0_0_20px_rgba(34,197,94,0.15)]",
-  modeCardHover: "hover:border-accent-green/30 group-hover:text-accent-green",
+    "border-mode-current/40 shadow-[0_0_20px_var(--mode-current-glow)]",
+  modeCardHover: "hover:border-mode-current/30 group-hover:text-mode-current",
+} as const;
+
+/** @deprecated Use MODE_CURRENT for mode-state green. */
+export const NORMAL = {
+  tabGroupRing: MODE_CURRENT.tabGroupRing,
+  modeCardHover: MODE_CURRENT.modeCardHover,
   reviewAccent: "text-gray-500",
 } as const;
 
@@ -194,19 +204,20 @@ export const STAT_HIGHLIGHT = {
   win: "text-accent-green",
   tie: "text-gray-300",
   neutral: "text-white",
-  winGlow: "shadow-[0_0_8px_rgba(34,197,94,0.25)]",
+  winGlow: "shadow-[0_0_8px_var(--theme-glow-soft)]",
 } as const;
 
 /** Tab toggle inside a tab group (Normal/Hard, Login/Signup). */
 export function tabGroupButtonClass(
   active: boolean,
-  variant: "normal" | "hard" | "era" | "gold" = "normal"
+  variant: "normal" | "current" | "hard" | "era" | "gold" = "normal"
 ): string {
   const base = `${TYPO.button} btn-press flex-1 ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.eraIdle}`;
     if (variant === "gold") return `${base} ${BTN.eraIdle}`;
+    if (variant === "current") return `${base} ${BTN.modeCurrentIdle}`;
     return `${base} ${BTN.tabGroupIdle}`;
   }
   if (variant === "hard") return `${base} ${BTN.hardActive}`;
@@ -214,43 +225,45 @@ export function tabGroupButtonClass(
   if (variant === "gold") {
     return `${base} border-2 border-accent-gold/50 bg-accent-gold/10 text-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.2)]`;
   }
+  if (variant === "current") return `${base} ${BTN.modeCurrentActive}`;
   return `${base} ${BTN.tabGroupActive}`;
 }
 
 /** Tab group wrapper — green ring when normal active, red when hard, gold when era. */
 export function tabGroupClass(
   hardActive = false,
-  normalActive = false,
+  currentModeActive = false,
   eraActive = false
 ): string {
   if (eraActive) return `${FILTER.tabGroup} ${ERA.tabGroupRing}`;
   if (hardActive) return `${FILTER.tabGroup} ${HARD.tabGroupRing}`;
-  if (normalActive) return `${FILTER.tabGroup} ${NORMAL.tabGroupRing}`;
+  if (currentModeActive) return `${FILTER.tabGroup} ${MODE_CURRENT.tabGroupRing}`;
   return FILTER.tabGroup;
 }
 
 /** Compact nested toggle for sidebar play modes. */
 export function nestedTabGroupClass(
   hardActive = false,
-  normalActive = false,
+  currentModeActive = false,
   eraActive = false
 ): string {
   const base = `${FILTER.tabGroup} w-full p-0.5`;
   if (eraActive) return `${base} ${ERA.tabGroupRing}`;
   if (hardActive) return `${base} ${HARD.tabGroupRing}`;
-  if (normalActive) return `${base} ${NORMAL.tabGroupRing}`;
+  if (currentModeActive) return `${base} ${MODE_CURRENT.tabGroupRing}`;
   return base;
 }
 
 export function nestedTabGroupButtonClass(
   active: boolean,
-  variant: "normal" | "hard" | "era" | "gold" = "normal"
+  variant: "normal" | "current" | "hard" | "era" | "gold" = "normal"
 ): string {
   const base = `${TYPO.button} btn-press flex-1 rounded-md px-2 ${NAV_SIZE.nestedToggle} text-[10px] font-semibold uppercase tracking-wide`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.eraIdle}`;
     if (variant === "gold") return `${base} ${BTN.eraIdle}`;
+    if (variant === "current") return `${base} ${BTN.modeCurrentIdle}`;
     return `${base} ${BTN.tabGroupIdle}`;
   }
   if (variant === "hard") return `${base} ${BTN.hardActive}`;
@@ -258,5 +271,6 @@ export function nestedTabGroupButtonClass(
   if (variant === "gold") {
     return `${base} border border-accent-gold/50 bg-accent-gold/10 text-accent-gold`;
   }
+  if (variant === "current") return `${base} ${BTN.modeCurrentActive}`;
   return `${base} ${BTN.tabGroupActive}`;
 }

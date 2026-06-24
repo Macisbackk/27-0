@@ -32,6 +32,49 @@ import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
 
+function ThemeColourStrip({ theme }: { theme: UiThemeDefinition }) {
+  return (
+    <div className="flex h-2.5 w-full overflow-hidden rounded-t-xl">
+      <span
+        className="flex-1"
+        style={{ backgroundColor: theme.primary }}
+        title="Primary"
+      />
+      <span
+        className="flex-1"
+        style={{ backgroundColor: theme.secondary }}
+        title="Secondary"
+      />
+      <span
+        className="flex-1"
+        style={{ backgroundColor: theme.tertiary }}
+        title="Tertiary"
+      />
+    </div>
+  );
+}
+
+function ThemeSwatches({ theme }: { theme: UiThemeDefinition }) {
+  const colours = [
+    { label: "Primary", colour: theme.primary },
+    { label: "Secondary", colour: theme.secondary },
+    { label: "Tertiary", colour: theme.tertiary },
+  ];
+
+  return (
+    <div className="flex shrink-0 gap-1" aria-hidden>
+      {colours.map((swatch) => (
+        <span
+          key={swatch.label}
+          className="h-7 w-7 rounded-full border border-white/15"
+          style={{ backgroundColor: swatch.colour }}
+          title={swatch.label}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function StorePanel() {
   const [balance, setBalance] = useState(0);
   const [selectedId, setSelectedId] = useState("default");
@@ -133,16 +176,11 @@ export function StorePanel() {
               key={theme.id}
               className={`${CARD.base} ${CARD.panel} overflow-hidden rounded-xl border transition ${
                 isSelected
-                  ? "border-[var(--ui-accent)] shadow-[0_0_24px_var(--ui-accent-glow)]"
+                  ? "border-[var(--theme-primary)] shadow-[0_0_24px_var(--theme-glow)]"
                   : "border-pitch-700/50"
               }`}
             >
-              <div
-                className="h-2 w-full"
-                style={{
-                  background: `linear-gradient(90deg, ${theme.accent}, ${theme.accent2})`,
-                }}
-              />
+              <ThemeColourStrip theme={theme} />
               <div className={SPACING.cardPaddingSm}>
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
@@ -157,13 +195,7 @@ export function StorePanel() {
                         : formatClubFundsExact(UI_THEME_PURCHASE_PRICE)}
                     </p>
                   </div>
-                  <span
-                    className="h-8 w-8 shrink-0 rounded-full border border-white/10"
-                    style={{
-                      background: `linear-gradient(135deg, ${theme.accent}, ${theme.accent2})`,
-                    }}
-                    aria-hidden
-                  />
+                  <ThemeSwatches theme={theme} />
                 </div>
 
                 <div className="mt-4">
