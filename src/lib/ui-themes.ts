@@ -3,6 +3,10 @@ import {
   CURRENT_PLAYABLE_CLUBS,
   ERA_HISTORIC_ONLY_CLUBS,
 } from "./clubs/super-league-display";
+import {
+  isBlackLike,
+  resolveThemeAccentColors,
+} from "./ui/theme-accent-colors";
 
 export const DEFAULT_UI_THEME_ID = "default";
 export const UI_THEME_PURCHASE_PRICE = 2_500_000;
@@ -19,8 +23,7 @@ export interface UiThemeDefinition {
 
 function clubTheme(clubName: string): UiThemeDefinition {
   const colors = getClubColors(clubName);
-  const accent = colors.primary;
-  const accent2 = colors.secondary;
+  const { accent, accent2 } = resolveThemeAccentColors(colors);
   return {
     id: slugifyThemeId(clubName),
     label: clubName,
@@ -79,4 +82,20 @@ export function getUiThemeById(id: string): UiThemeDefinition {
 
 export function isDefaultUiTheme(id: string): boolean {
   return id === DEFAULT_UI_THEME_ID;
+}
+
+/** Dev/build guard — store themes must never use black as the visible primary accent. */
+export function assertNoBlackPrimaryUiThemes(): void {
+  for (const theme of UI_THEMES) {
+    if (theme.id === DEFAULT_UI_THEME_ID) continue;
+    if (isBlackLike(theme.accent)) {
+      throw new Error(
+        `UI theme "${theme.label}" uses black-like primary accent: ${theme.accent}`
+      );
+    }
+  }
+}
+
+if (process.env.NODE_ENV !== "production") {
+  assertNoBlackPrimaryUiThemes();
 }
