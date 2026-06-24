@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { applyUiThemeById } from "@/lib/ui/apply-ui-theme";
 import {
   getSelectedUiThemeId,
   UI_THEME_CHANGED_EVENT,
 } from "@/lib/storage/ui-theme-store";
 
+const useThemeLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 /** Applies selected store theme CSS variables on load and when the user changes theme. */
 export function UiThemeProvider() {
-  useEffect(() => {
+  useThemeLayoutEffect(() => {
     applyUiThemeById(getSelectedUiThemeId());
 
     const onThemeChange = () => {

@@ -436,6 +436,7 @@ export function GameBoard({
       squad,
       selectedSlotIndex,
       {
+        seed,
         legendOnly:
           !isHardMode &&
           !legendSpinUsed &&
@@ -448,6 +449,7 @@ export function GameBoard({
     signedPlayerIds,
     squad,
     selectedSlotIndex,
+    seed,
     legendSpinUsed,
     legendSpinSlotIndex,
     isHardMode,

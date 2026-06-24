@@ -37,6 +37,7 @@ export function StorePanel() {
   const [selectedId, setSelectedId] = useState("default");
   const [unlocked, setUnlocked] = useState<string[]>(["default"]);
   const [purchaseError, setPurchaseError] = useState<string | null>(null);
+  const [purchasingId, setPurchasingId] = useState<string | null>(null);
 
   const refresh = useCallback(() => {
     const state = getUiThemeStoreState();
@@ -71,11 +72,15 @@ export function StorePanel() {
   };
 
   const handlePurchase = (theme: UiThemeDefinition) => {
+    if (purchasingId) return;
     playUiClick();
     setPurchaseError(null);
+    setPurchasingId(theme.id);
+
     const result = purchaseUiTheme(theme.id);
-    setBalance(result.newBalance);
+    setBalance(getClubFundsBalance());
     refresh();
+    setPurchasingId(null);
 
     if (result.success) {
       playThemePurchaseSuccess();
@@ -175,7 +180,7 @@ export function StorePanel() {
                     <GameButton
                       variant="primary"
                       size="sm"
-                      disabled={!canAfford}
+                      disabled={!canAfford || purchasingId === theme.id}
                       onClick={() => handlePurchase(theme)}
                     >
                       Buy — {formatClubFunds(UI_THEME_PURCHASE_PRICE)}

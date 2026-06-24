@@ -7,6 +7,7 @@ import {
 import { STORAGE_KEYS } from "./keys";
 import { getClubFundsBalance, spendClubFunds } from "./club-funds";
 import { loadCloudUiThemeStore, saveCloudUiThemeStore } from "./ui-theme-store-cloud";
+import { applyUiThemeById } from "../ui/apply-ui-theme";
 
 export const UI_THEME_CHANGED_EVENT = "27-0-ui-theme-changed";
 
@@ -63,6 +64,7 @@ function loadState(): UiThemeStoreState {
 function saveState(state: UiThemeStoreState): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(STORAGE_KEYS.uiThemeStore, JSON.stringify(state));
+  applyUiThemeById(state.selectedThemeId);
   window.dispatchEvent(new CustomEvent(UI_THEME_CHANGED_EVENT));
   void saveCloudUiThemeStore(state);
 }

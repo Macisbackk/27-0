@@ -74,7 +74,11 @@ export interface SlotSpinPickOptions {
 
 export interface SlotPlayerPrepareOptions {
   legendOnly?: boolean;
+  /** Run seed — shuffles eligible recruits deterministically before capping choices. */
+  seed?: string;
 }
+
+export const MAX_SLOT_RECRUIT_CHOICES = 3;
 
 export interface SlotTeamYearPlayer {
   player: Player;
@@ -161,6 +165,15 @@ function sortPlayersForRecruitSlot(
   });
 }
 
+function shuffleSlotRecruitEntries<T>(items: T[], rng: () => number): T[] {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
+  }
+  return copy;
+}
+
 export function prepareSlotTeamYearPlayers(
   target: SlotRevealTarget,
   usedIds: Set<string>,
@@ -188,7 +201,15 @@ export function prepareSlotTeamYearPlayers(
       return { player: prepared };
     });
 
-  return sortPlayersForRecruitSlot(entries, slot.position, target.team, target.year);
+  const sorted = sortPlayersForRecruitSlot(
+    entries,
+    slot.position,
+    target.team,
+    target.year
+  );
+  const seed = options.seed ?? `${target.teamYearKey}-${slotIndex}`;
+  const rng = seedrandom(`${seed}-slot-recruit-choices-${slotIndex}-${target.teamYearKey}`);
+  return shuffleSlotRecruitEntries(sorted, rng).slice(0, MAX_SLOT_RECRUIT_CHOICES);
 }
 
 function poolHasEligiblePlayers(

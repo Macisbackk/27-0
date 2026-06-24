@@ -17,7 +17,8 @@ const config: Config = {
           600: "#2a4539",
         },
         accent: {
-          green: "#22c55e",
+          green: "rgb(var(--ui-accent-rgb) / <alpha-value>)",
+          "green-2": "rgb(var(--ui-accent-2-rgb) / <alpha-value>)",
           gold: "#fbbf24",
           red: "#ef4444",
         },

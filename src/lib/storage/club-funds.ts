@@ -13,6 +13,7 @@ export interface ClubFundsState {
 }
 
 const MAX_PAID_RUN_IDS = 200;
+const pendingSpendIds = new Set<string>();
 
 function emptyState(): ClubFundsState {
   return { balance: 0, totalEarned: 0, paidRunIds: [] };
@@ -83,9 +84,33 @@ export function mergeClubFundsFromCloud(cloud: ClubFundsState | null): void {
   if (!cloud) return;
   const local = loadState();
   const paidSet = new Set([...local.paidRunIds, ...cloud.paidRunIds]);
+  const localExclusiveIds = local.paidRunIds.filter((id) => !cloud.paidRunIds.includes(id));
+  const cloudExclusiveIds = cloud.paidRunIds.filter((id) => !local.paidRunIds.includes(id));
+  const totalEarned = Math.max(
+    local.totalEarned,
+    cloud.totalEarned ?? cloud.balance
+  );
+
+  let balance: number;
+  if (localExclusiveIds.some((id) => id.startsWith("theme-"))) {
+    // Local store spend not yet on cloud — never restore a higher stale cloud balance.
+    balance = local.balance;
+  } else if (
+    cloudExclusiveIds.some((id) => id.startsWith("theme-")) &&
+    cloud.balance < local.balance
+  ) {
+    balance = cloud.balance;
+  } else if (localExclusiveIds.length > 0 || cloudExclusiveIds.length > 0) {
+    balance = Math.min(local.balance, cloud.balance);
+  } else {
+    balance = Math.max(local.balance, cloud.balance);
+  }
+
+  balance = Math.max(0, Math.min(balance, totalEarned));
+
   const merged: ClubFundsState = {
-    balance: Math.max(local.balance, cloud.balance),
-    totalEarned: Math.max(local.totalEarned, cloud.totalEarned ?? cloud.balance),
+    balance,
+    totalEarned,
     paidRunIds: [...paidSet].slice(-MAX_PAID_RUN_IDS),
   };
   saveState(merged);
@@ -109,10 +134,19 @@ export function spendClubFunds(
   if (state.paidRunIds.includes(purchaseId)) {
     return { success: true, newBalance: state.balance };
   }
-  state.balance = Math.max(0, state.balance - amount);
-  state.paidRunIds.push(purchaseId);
-  saveState(state);
-  return { success: true, newBalance: state.balance };
+  if (pendingSpendIds.has(purchaseId)) {
+    return { success: false, newBalance: state.balance };
+  }
+
+  pendingSpendIds.add(purchaseId);
+  try {
+    state.balance = Math.max(0, state.balance - amount);
+    state.paidRunIds.push(purchaseId);
+    saveState(state);
+    return { success: true, newBalance: state.balance };
+  } finally {
+    pendingSpendIds.delete(purchaseId);
+  }
 }
 
 export function awardClubFundsForRun(

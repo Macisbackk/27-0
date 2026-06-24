@@ -120,7 +120,7 @@ export function SlotTeamYearPicker({
               No players available from this squad.
             </p>
           ) : (
-            <div className="mx-auto grid max-h-[min(52vh,480px)] max-w-4xl grid-cols-2 gap-2 overflow-y-auto overflow-x-hidden pr-0.5 sm:grid-cols-3 sm:gap-3">
+            <div className="mx-auto grid max-h-[min(52vh,480px)] max-w-4xl grid-cols-1 gap-2 overflow-y-auto overflow-x-hidden pr-0.5 min-[480px]:grid-cols-3 sm:gap-3">
               {entries.map(({ player }) => {
                 const statsExpanded = statsPlayerId === player.id;
 
