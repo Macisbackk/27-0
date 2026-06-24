@@ -1,4 +1,8 @@
 import type { Position, SquadSlot } from "./types";
+import {
+  canPlayPosition,
+  OUT_OF_POSITION_PENALTY,
+} from "./players/player-positions";
 
 export const POSITION_LABELS: Record<Position, string> = {
   FULLBACK: "Fullback",
@@ -203,11 +207,13 @@ export function signPlayerToSlot(
   slotIndex: number,
   runRatingPenalty = 0
 ): SquadSlot[] {
-  return squad.map((s) =>
-    s.slotIndex === slotIndex
-      ? { ...s, player, runRatingPenalty: runRatingPenalty || undefined }
-      : s
-  );
+  return squad.map((s) => {
+    if (s.slotIndex !== slotIndex) return s;
+    const penalty = canPlayPosition(player, s.position)
+      ? undefined
+      : runRatingPenalty || OUT_OF_POSITION_PENALTY;
+    return { ...s, player, runRatingPenalty: penalty };
+  });
 }
 
 export function getSquadValue(squad: SquadSlot[]): number {

@@ -27,6 +27,12 @@ function resolvePlayerPositions(
   raw: Record<string, unknown>,
   primary: Player["position"]
 ): Position[] {
+  const collected = new Set<Position>();
+
+  const addPositions = (positions: Position[]) => {
+    for (const pos of positions) collected.add(pos);
+  };
+
   const rawPositions = raw.positions as string[] | string | undefined;
   if (Array.isArray(rawPositions) && rawPositions.length > 0) {
     const parsed = rawPositions.flatMap((entry) => {
@@ -36,23 +42,31 @@ function resolvePlayerPositions(
       }
       return [normalizePosition(entry, raw)];
     });
-    if (parsed.length > 0) {
-      return [...new Set(parsed)];
-    }
-  }
-
-  if (typeof rawPositions === "string" && rawPositions.trim()) {
-    return parsePositionAbbreviations(rawPositions);
+    addPositions(parsed);
+  } else if (typeof rawPositions === "string" && rawPositions.trim()) {
+    addPositions(parsePositionAbbreviations(rawPositions));
   }
 
   const abbrev = raw.positionAbbrev as string | undefined;
   if (abbrev?.trim()) {
-    return parsePositionAbbreviations(abbrev);
+    try {
+      addPositions(parsePositionAbbreviations(abbrev));
+    } catch {
+      // ignore invalid abbrev
+    }
   }
 
   const primaryAbbrev = raw.primaryPosition as string | undefined;
-  if (primaryAbbrev?.trim() && primaryAbbrev.includes("/")) {
-    return parsePositionAbbreviations(primaryAbbrev);
+  if (primaryAbbrev?.trim()) {
+    try {
+      addPositions(parsePositionAbbreviations(primaryAbbrev));
+    } catch {
+      // ignore invalid abbrev
+    }
+  }
+
+  if (collected.size > 0) {
+    return [...collected];
   }
 
   return [primary];

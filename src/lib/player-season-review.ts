@@ -3,7 +3,7 @@ import type { SeasonAward } from "./season-awards";
 import type { SquadSlot } from "./types";
 import { formatValue } from "./players";
 import { POSITION_LABELS } from "./positions";
-import { isValidPlayerSlotPosition } from "./game/position-placement";
+import { canPlayPosition } from "./players/player-positions";
 import { getEffectivePeakRating } from "./squad-analysis";
 
 export interface PlayerSeasonReviewStats {
@@ -72,7 +72,7 @@ export function formatTryScorerPosition(
   const slot = squad?.find((s) => s.player?.id === scorer.playerId);
   if (
     slot?.player &&
-    isValidPlayerSlotPosition(slot.player, scorer.playedPosition)
+    canPlayPosition(slot.player, scorer.playedPosition)
   ) {
     return POSITION_LABELS[scorer.playedPosition];
   }

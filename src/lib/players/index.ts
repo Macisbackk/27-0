@@ -12,22 +12,31 @@ import { getActiveSuperLeagueClubNames } from "../clubs/super-league-display";
 import { isSuperLeagueEligiblePlayer } from "./super-league-eligibility";
 import { isGameplayYearCard, isYearPinnedPlayer } from "./year-card";
 
-/** Year cards often store only a single primary position — inherit richer dual roles from the base card. */
+/** Year cards often store only a single primary position — inherit richer dual roles from related cards. */
 function inheritPositionsFromBasePlayers(byId: Map<string, Player>): void {
   const richestByBase = new Map<string, Position[]>();
+  const richestByName = new Map<string, Position[]>();
 
   for (const player of byId.values()) {
     const baseId = player.basePlayerId ?? player.id;
     const eligible = getEligiblePositions(player);
-    const existing = richestByBase.get(baseId);
-    if (!existing || eligible.length > existing.length) {
+    const nameKey = player.name.toLowerCase().trim();
+
+    const existingBase = richestByBase.get(baseId);
+    if (!existingBase || eligible.length > existingBase.length) {
       richestByBase.set(baseId, eligible);
+    }
+
+    const existingName = richestByName.get(nameKey);
+    if (!existingName || eligible.length > existingName.length) {
+      richestByName.set(nameKey, eligible);
     }
   }
 
   for (const player of byId.values()) {
     const baseId = player.basePlayerId ?? player.id;
-    const richest = richestByBase.get(baseId);
+    const nameKey = player.name.toLowerCase().trim();
+    const richest = richestByBase.get(baseId) ?? richestByName.get(nameKey);
     if (!richest) continue;
 
     const current = getEligiblePositions(player);

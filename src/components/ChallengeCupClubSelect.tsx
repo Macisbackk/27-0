@@ -7,7 +7,8 @@ import { getClubsWithPlayers } from "@/lib/players";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { ClubHeaderBar } from "./ClubBadge";
 import { getClubColors } from "@/lib/clubs";
-import { BTN, CARD, FILTER, SPACING } from "@/lib/ui/design-system";
+import { GameButton } from "./ui/GameButton";
+import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 interface ChallengeCupClubSelectProps {
@@ -111,21 +112,21 @@ export function ChallengeCupClubSelect({
             )}
 
             <div className={`mt-6 grid ${SPACING.buttonGap} sm:grid-cols-2`}>
-              <button
-                type="button"
+              <GameButton
+                variant="current"
+                size="lg"
                 disabled={!selected}
                 onClick={handleConfirm}
-                className={`${BTN.base} ${BTN.primaryLg} w-full disabled:opacity-40`}
               >
                 Start Challenge Cup →
-              </button>
-              <button
-                type="button"
+              </GameButton>
+              <GameButton
+                variant="secondary"
+                size="md"
                 onClick={handleRandom}
-                className={`${BTN.base} ${BTN.secondary} w-full`}
               >
                 Random Club
-              </button>
+              </GameButton>
             </div>
 
             <div className={`mt-5 max-h-48 overflow-y-auto ${CARD.inset} p-3`}>

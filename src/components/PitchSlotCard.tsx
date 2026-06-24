@@ -3,6 +3,7 @@
 import type { SquadSlot } from "@/lib/types";
 import { getClubColors } from "@/lib/clubs";
 import { getPlayerColorClub } from "@/lib/players/run-club";
+import { canPlayPosition } from "@/lib/players/player-positions";
 import { POSITION_SHORT } from "@/lib/positions";
 import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
@@ -32,7 +33,9 @@ export function PitchSlotCard({
   const player = slot.player!;
   const colors = getClubColors(getPlayerColorClub(player, clubColorOverride));
   const positionLabel = POSITION_SHORT[slot.position];
-  const effectiveRating = getEffectivePeakRating(slot);
+  const effectiveRating = canPlayPosition(player, slot.position)
+    ? player.peakRating
+    : getEffectivePeakRating(slot);
   const ratingLabel = hardMode ? "??" : String(Math.round(effectiveRating));
 
   return (

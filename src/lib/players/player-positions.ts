@@ -101,7 +101,7 @@ export function getPlayerRatingForPosition(
   }
   return applyOutOfPositionPenalty(
     player.peakRating,
-    slotPenalty ?? OUT_OF_POSITION_PENALTY
+    slotPenalty && slotPenalty > 0 ? slotPenalty : OUT_OF_POSITION_PENALTY
   );
 }
 
