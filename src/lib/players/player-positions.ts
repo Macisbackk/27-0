@@ -34,10 +34,35 @@ export function parsePositionAbbreviations(abbrev: string): Position[] {
   return [...positions];
 }
 
-/** All squad slots a player may fill (dual positions + legacy halfback pair). */
-export function getPlayerEligiblePositions(player: Player): Position[] {
-  if (player.positions?.length) {
-    return [...new Set(player.positions)];
+export const OUT_OF_POSITION_PENALTY = 5;
+
+type PositionEligibilityPlayer = Pick<
+  Player,
+  "position" | "positions" | "primaryPosition"
+>;
+
+function parsePrimaryPositionAbbrev(
+  abbrev: string | undefined
+): Position[] {
+  if (!abbrev?.trim()) return [];
+  try {
+    return parsePositionAbbreviations(abbrev);
+  } catch {
+    return [];
+  }
+}
+
+/** All positions a player may fill — dual roles, primaryPosition abbrev, legacy halfback pair. */
+export function getEligiblePositions(
+  player: PositionEligibilityPlayer
+): Position[] {
+  const fromArray = player.positions?.length
+    ? [...new Set(player.positions)]
+    : [];
+  const fromPrimary = parsePrimaryPositionAbbrev(player.primaryPosition);
+
+  if (fromArray.length > 0 || fromPrimary.length > 0) {
+    return [...new Set([...fromArray, ...fromPrimary])];
   }
 
   if (player.position === "SCRUM_HALF" || player.position === "STAND_OFF") {
@@ -45,6 +70,39 @@ export function getPlayerEligiblePositions(player: Player): Position[] {
   }
 
   return [player.position];
+}
+
+/** @deprecated Use getEligiblePositions — kept for existing imports. */
+export function getPlayerEligiblePositions(player: Player): Position[] {
+  return getEligiblePositions(player);
+}
+
+export function canPlayPosition(
+  player: PositionEligibilityPlayer,
+  selectedPosition: Position
+): boolean {
+  return getEligiblePositions(player).includes(selectedPosition);
+}
+
+export function applyOutOfPositionPenalty(
+  rating: number,
+  penalty = OUT_OF_POSITION_PENALTY
+): number {
+  return Math.max(75, rating - penalty);
+}
+
+export function getPlayerRatingForPosition(
+  player: Player,
+  selectedPosition: Position,
+  slotPenalty?: number
+): number {
+  if (canPlayPosition(player, selectedPosition)) {
+    return player.peakRating;
+  }
+  return applyOutOfPositionPenalty(
+    player.peakRating,
+    slotPenalty ?? OUT_OF_POSITION_PENALTY
+  );
 }
 
 export function playerEligibleForSlot(

@@ -62,6 +62,7 @@
     "merge:coachbeard-accounts": "tsx scripts/merge-coachbeard-accounts.ts",
     "debug:spin-randomness": "tsx scripts/debug-spin-randomness.ts",
     "debug:era-data-gaps": "tsx scripts/debug-era-data-gaps.ts",
+    "debug:dual-positions": "tsx scripts/debug-dual-positions.ts",
     "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts"
   },
   "dependencies": {

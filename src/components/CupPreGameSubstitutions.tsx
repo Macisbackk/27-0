@@ -4,13 +4,14 @@ import { useMemo, useState } from "react";
 import type { EraTeam } from "@/lib/players/era-teams";
 import { getPlayerById } from "@/lib/players";
 import type { SquadSlot } from "@/lib/types";
-import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
+import { canPlayPosition, getEligiblePositions } from "@/lib/players/player-positions";
 import { POSITION_SHORT } from "@/lib/positions";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import { formatTeamRatingDisplay } from "@/lib/team-tiers";
-import { swapCupSquadPlayers } from "@/lib/game/cup-squad-swap";
-import { BTN, CARD } from "@/lib/ui/design-system";
+import { canBenchPlayerFillSlot, swapCupSquadPlayers } from "@/lib/game/cup-squad-swap";
+import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { GameButton } from "./ui/GameButton";
 import { RugbyPitch } from "./RugbyPitch";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
 import { playUiClick } from "@/lib/sound";
@@ -21,41 +22,66 @@ interface CupPreGameSubstitutionsProps {
   onConfirm: (squad: SquadSlot[]) => void;
 }
 
+function initialBenchIds(eraTeam: EraTeam, squad: SquadSlot[]): string[] {
+  const starterIds = new Set(
+    squad.filter((s) => s.player).map((s) => s.player!.id)
+  );
+  return eraTeam.benchPlayerIds.filter((id) => !starterIds.has(id));
+}
+
 export function CupPreGameSubstitutions({
   eraTeam,
   initialSquad,
   onConfirm,
 }: CupPreGameSubstitutionsProps) {
-  const [squad, setSquad] = useState<SquadSlot[]>(initialSquad);
+  const [draftSquad, setDraftSquad] = useState<SquadSlot[]>(initialSquad);
+  const [benchIds, setBenchIds] = useState<string[]>(() =>
+    initialBenchIds(eraTeam, initialSquad)
+  );
   const [selectedStarter, setSelectedStarter] = useState<number | null>(null);
+  const [swapMessage, setSwapMessage] = useState<string | null>(null);
 
-  const benchPlayers = useMemo(() => {
-    const usedIds = new Set(
-      squad.filter((s) => s.player).map((s) => s.player!.id)
-    );
-    return eraTeam.benchPlayerIds
-      .map((id) => getPlayerById(id))
-      .filter((p): p is NonNullable<typeof p> => !!p && !usedIds.has(p.id));
-  }, [eraTeam.benchPlayerIds, squad]);
+  const benchPlayers = useMemo(
+    () =>
+      benchIds
+        .map((id) => getPlayerById(id))
+        .filter((p): p is NonNullable<typeof p> => !!p),
+    [benchIds]
+  );
 
-  const teamRating = getAverageSquadRating(squad);
+  const teamRating = getAverageSquadRating(draftSquad);
 
   const handleStarterClick = (slotIndex: number) => {
     playUiClick();
+    setSwapMessage(null);
     setSelectedStarter((prev) => (prev === slotIndex ? null : slotIndex));
   };
 
   const handleBenchClick = (playerId: string) => {
     if (selectedStarter === null) return;
     const player = getPlayerById(playerId);
-    if (!player) return;
+    const starterSlot = draftSquad.find((s) => s.slotIndex === selectedStarter);
+    if (!player || !starterSlot?.player) return;
 
-    const next = swapCupSquadPlayers(squad, selectedStarter, player);
+    if (!canBenchPlayerFillSlot(player, starterSlot.position)) {
+      setSwapMessage(
+        `${player.name} can't play ${POSITION_SHORT[starterSlot.position]}`
+      );
+      return;
+    }
+
+    const displacedId = starterSlot.player.id;
+    const next = swapCupSquadPlayers(draftSquad, selectedStarter, player);
     if (!next) return;
 
     playUiClick();
-    setSquad(next);
+    setDraftSquad(next);
+    setBenchIds((prev) => [
+      ...prev.filter((id) => id !== playerId),
+      displacedId,
+    ]);
     setSelectedStarter(null);
+    setSwapMessage(null);
   };
 
   if (benchPlayers.length === 0) {
@@ -66,7 +92,8 @@ export function CupPreGameSubstitutions({
     <div className={`${CARD.panel} mx-auto max-w-3xl p-4 sm:p-6`}>
       <h2 className={`${TYPO.cardTitle} text-center`}>Matchday Squad</h2>
       <p className={`mt-2 text-center ${TYPO.bodySm}`}>
-        Tap a starter, then a bench player to swap — position rules apply.
+        Tap a starter, then a bench player to swap. Change your mind freely
+        until you confirm the squad.
       </p>
 
       <div className="mt-3 flex flex-wrap justify-center gap-3 text-sm">
@@ -78,11 +105,20 @@ export function CupPreGameSubstitutions({
         </span>
       </div>
 
+      {swapMessage && (
+        <p
+          className="mt-3 text-center text-xs font-medium text-amber-400"
+          role="status"
+        >
+          {swapMessage}
+        </p>
+      )}
+
       <div className={`${CARD.inset} mt-4 overflow-x-hidden p-2 sm:p-4`}>
         <RugbyPitch
-          squad={squad}
-          totalValue={getSquadValue(squad)}
-          filledCount={getFilledCount(squad)}
+          squad={draftSquad}
+          totalValue={getSquadValue(draftSquad)}
+          filledCount={getFilledCount(draftSquad)}
           totalSlots={TOTAL_SLOTS}
           hideValueSummary
           formationOnly
@@ -100,11 +136,11 @@ export function CupPreGameSubstitutions({
         {benchPlayers.map((player) => {
           const starterSlot =
             selectedStarter !== null
-              ? squad.find((s) => s.slotIndex === selectedStarter)
+              ? draftSquad.find((s) => s.slotIndex === selectedStarter)
               : null;
           const canSwap =
             starterSlot &&
-            getPlayerEligiblePositions(player).includes(starterSlot.position);
+            canPlayPosition(player, starterSlot.position);
 
           return (
             <button
@@ -120,7 +156,7 @@ export function CupPreGameSubstitutions({
             >
               <span className="block font-semibold text-white">{player.name}</span>
               <span className="mt-0.5 block text-xs text-gray-500">
-                {getPlayerEligiblePositions(player)
+                {getEligiblePositions(player)
                   .map((p) => POSITION_SHORT[p])
                   .join(" / ")}
               </span>
@@ -129,13 +165,14 @@ export function CupPreGameSubstitutions({
         })}
       </div>
 
-      <button
-        type="button"
-        onClick={() => onConfirm(squad)}
-        className={`${BTN.base} ${BTN.primaryLg} mt-6 w-full`}
+      <GameButton
+        variant="era"
+        size="lg"
+        className="mt-6"
+        onClick={() => onConfirm(draftSquad)}
       >
         Confirm Squad & Start Tournament
-      </button>
+      </GameButton>
     </div>
   );
 }

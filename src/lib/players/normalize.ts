@@ -50,6 +50,11 @@ function resolvePlayerPositions(
     return parsePositionAbbreviations(abbrev);
   }
 
+  const primaryAbbrev = raw.primaryPosition as string | undefined;
+  if (primaryAbbrev?.trim() && primaryAbbrev.includes("/")) {
+    return parsePositionAbbreviations(primaryAbbrev);
+  }
+
   return [primary];
 }
 

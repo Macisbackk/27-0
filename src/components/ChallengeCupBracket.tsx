@@ -34,6 +34,8 @@ import { UI_SURFACES } from "@/lib/ui/surfaces";
 import { resolveEraTeamClubName } from "@/lib/players/era-teams";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { BracketMatchDetailsPanel } from "./BracketMatchDetailsPanel";
+import { BTN } from "@/lib/ui/design-system";
+import { GameButton } from "./ui/GameButton";
 import { EraChallengeCupBranding } from "./EraChallengeCupBranding";
 
 interface ChallengeCupBracketProps {
@@ -200,34 +202,40 @@ export function ChallengeCupBracket({
       )}
 
       <div className="mt-5 flex flex-wrap justify-center gap-2">
-        <button
-          type="button"
+        <GameButton
+          variant="current"
+          size="md"
+          fullWidth={false}
           disabled={!canSimSelected}
           onClick={() => selectedId && handleSimulateMatch(selectedId)}
-          className="rounded-lg border border-accent-green/50 bg-accent-green/10 px-4 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-accent-green transition hover:bg-accent-green/20 disabled:cursor-not-allowed disabled:opacity-40 sm:text-xs"
+          className={`${BTN.base} border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20 disabled:opacity-40`}
         >
           Simulate Selected Match
-        </button>
-        <button
-          type="button"
+        </GameButton>
+        <GameButton
+          variant="secondary"
+          size="md"
+          fullWidth={false}
           disabled={!canSimRound}
           onClick={handleSimulateRound}
-          className="rounded-lg border border-pitch-600 px-4 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-gray-300 transition hover:border-accent-green/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:text-xs"
+          className="disabled:opacity-40"
         >
           Simulate Round
-        </button>
-        <button
-          type="button"
+        </GameButton>
+        <GameButton
+          variant={eraMode ? "era" : "current"}
+          size="md"
+          fullWidth={false}
           disabled={state.tournamentComplete}
           onClick={handleSimulateTournament}
-          className={`rounded-lg border px-4 py-2 font-display text-[10px] font-bold uppercase tracking-wider transition disabled:cursor-not-allowed disabled:opacity-40 sm:text-xs ${
+          className={
             eraMode
-              ? "border-accent-gold/40 bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/20"
-              : "border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20"
-          }`}
+              ? "disabled:opacity-40"
+              : `${BTN.base} border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20 disabled:opacity-40`
+          }
         >
           Simulate Tournament
-        </button>
+        </GameButton>
       </div>
 
       <div className="mt-6 overflow-x-auto pb-4 md:overflow-x-visible md:pb-0">

@@ -3,6 +3,7 @@ import historicPlayers from "../../../data/historic-players.json";
 import legends from "../../../data/legends.json";
 import type { Player, PlayerCategory, Position } from "../types";
 import { normalizePlayer } from "./normalize";
+import { getEligiblePositions } from "./player-positions";
 import { isHiddenPlayer } from "./goat";
 import { getValueTier as getValueTierFromRating } from "./ratings";
 import { getClubByName } from "../clubs";
@@ -10,6 +11,31 @@ import { clubsMatch, resolveCanonicalClubName } from "../clubs/club-match";
 import { getActiveSuperLeagueClubNames } from "../clubs/super-league-display";
 import { isSuperLeagueEligiblePlayer } from "./super-league-eligibility";
 import { isGameplayYearCard, isYearPinnedPlayer } from "./year-card";
+
+/** Year cards often store only a single primary position — inherit richer dual roles from the base card. */
+function inheritPositionsFromBasePlayers(byId: Map<string, Player>): void {
+  const richestByBase = new Map<string, Position[]>();
+
+  for (const player of byId.values()) {
+    const baseId = player.basePlayerId ?? player.id;
+    const eligible = getEligiblePositions(player);
+    const existing = richestByBase.get(baseId);
+    if (!existing || eligible.length > existing.length) {
+      richestByBase.set(baseId, eligible);
+    }
+  }
+
+  for (const player of byId.values()) {
+    const baseId = player.basePlayerId ?? player.id;
+    const richest = richestByBase.get(baseId);
+    if (!richest) continue;
+
+    const current = getEligiblePositions(player);
+    if (richest.length <= current.length) continue;
+
+    player.positions = [...new Set([...current, ...richest])];
+  }
+}
 
 function loadPlayers(): {
   all: Player[];
@@ -34,6 +60,8 @@ function loadPlayers(): {
   for (const p of [...current, ...historicRaw, ...legendPlayers]) {
     byId.set(p.id, p);
   }
+
+  inheritPositionsFromBasePlayers(byId);
 
   for (const p of current) {
     if (!isHiddenPlayer(p) && isGameplayYearCard(p)) pool.push(p);
@@ -198,6 +226,18 @@ export {
   ACHIEVEMENT_CATEGORY_TITLES,
 } from "./achievements";
 export { formatCareerTries } from "./career-tries";
+export {
+  parsePositionAbbreviations,
+  formatPositionAbbreviations,
+  formatPlayerPositionLabel,
+  getEligiblePositions,
+  getPlayerEligiblePositions,
+  canPlayPosition,
+  getPlayerRatingForPosition,
+  applyOutOfPositionPenalty,
+  OUT_OF_POSITION_PENALTY,
+  playerEligibleForSlot,
+} from "./player-positions";
 export {
   buildPlayerTeamYearId,
   formatShowcaseClubYear,

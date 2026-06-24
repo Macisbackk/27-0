@@ -1,5 +1,5 @@
 import type { Player, Position, SquadSlot } from "../types";
-import { getPlayerEligiblePositions } from "../players/player-positions";
+import { canPlayPosition } from "../players/player-positions";
 import { getPlacementPenalty } from "./position-placement";
 import { signPlayerToSlot } from "../positions";
 
@@ -7,7 +7,7 @@ export function canBenchPlayerFillSlot(
   player: Player,
   slotPosition: Position
 ): boolean {
-  return getPlayerEligiblePositions(player).includes(slotPosition);
+  return canPlayPosition(player, slotPosition);
 }
 
 export function swapCupSquadPlayers(

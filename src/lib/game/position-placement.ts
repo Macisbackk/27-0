@@ -1,8 +1,12 @@
 import type { Player, Position, SquadSlot } from "../types";
 import { RECRUIT_SLOT_ORDER } from "../positions";
-import { getPlayerEligiblePositions } from "../players/player-positions";
+import {
+  canPlayPosition,
+  getEligiblePositions,
+  OUT_OF_POSITION_PENALTY,
+} from "../players/player-positions";
 
-export const OUT_OF_POSITION_PENALTY = 5;
+export { OUT_OF_POSITION_PENALTY } from "../players/player-positions";
 
 /** Pairs that may swap without a run penalty. */
 const COMPATIBLE_PAIRS: [Position, Position][] = [
@@ -90,7 +94,7 @@ export function getNaturalPlacementSlots(
   squad: SquadSlot[],
   player: Player
 ): SquadSlot[] {
-  const eligible = new Set(getPlayerEligiblePositions(player));
+  const eligible = new Set(getEligiblePositions(player));
   return squad
     .filter((slot) => !slot.player && eligible.has(slot.position))
     .sort((a, b) => a.slotIndex - b.slotIndex);
@@ -122,24 +126,19 @@ export function canPlayerFillAnyEmptySlot(
 
 /** True when the slot is one of the player's listed or eligible positions. */
 export function isValidPlayerSlotPosition(
-  player: Pick<Player, "position" | "positions">,
+  player: Pick<Player, "position" | "positions" | "primaryPosition">,
   slotPosition: Position
 ): boolean {
-  if (player.positions?.length) {
-    return player.positions.includes(slotPosition);
-  }
-  return getPlayerEligiblePositions(player as Player).includes(slotPosition);
+  return canPlayPosition(player, slotPosition);
 }
 
 export function getPlacementPenalty(
   naturalPosition: Position,
   slotPosition: Position,
-  player?: Pick<Player, "position" | "positions">
+  player?: Pick<Player, "position" | "positions" | "primaryPosition">
 ): number {
   if (player) {
-    return isValidPlayerSlotPosition(player, slotPosition)
-      ? 0
-      : OUT_OF_POSITION_PENALTY;
+    return canPlayPosition(player, slotPosition) ? 0 : OUT_OF_POSITION_PENALTY;
   }
   return isCompatible(naturalPosition, slotPosition)
     ? 0
@@ -149,10 +148,10 @@ export function getPlacementPenalty(
 export function isNaturalPlacement(
   naturalPosition: Position,
   slotPosition: Position,
-  player?: Pick<Player, "position" | "positions">
+  player?: Pick<Player, "position" | "positions" | "primaryPosition">
 ): boolean {
   if (player) {
-    return isValidPlayerSlotPosition(player, slotPosition);
+    return canPlayPosition(player, slotPosition);
   }
   return naturalPosition === slotPosition;
 }
@@ -166,7 +165,7 @@ export function findBestSlotForPlayer(
   if (emptySlots.length === 0) return null;
 
   const scored = emptySlots.map((slot) => {
-    const eligible = getPlayerEligiblePositions(player);
+    const eligible = getEligiblePositions(player);
     const penalty = getPlacementPenalty(player.position, slot.position, player);
     const recruitOrder = RECRUIT_SLOT_ORDER.indexOf(
       slot.slotIndex as (typeof RECRUIT_SLOT_ORDER)[number]

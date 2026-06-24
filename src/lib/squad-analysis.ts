@@ -1,7 +1,7 @@
 import type { Player, PlayerCategory, Position, SquadSlot } from "./types";
 import { TOTAL_SLOTS } from "./positions";
 import { getPlayerDisplayClub } from "./players/run-club";
-import { isValidPlayerSlotPosition } from "./game/position-placement";
+import { getPlayerRatingForPosition } from "./players/player-positions";
 import { JOE_MELLOR_GOAT_ID } from "./players/goat";
 import { isSuperSamHallasId, isSuperSamHallasPlayer } from "./players/super-sam-hallas";
 import { getSlotDisplayInfo } from "./squad-display";
@@ -185,11 +185,11 @@ export function getClubBreakdownSummary(
 
 export function getEffectivePeakRating(slot: SquadSlot): number {
   if (!slot.player) return 0;
-  if (isValidPlayerSlotPosition(slot.player, slot.position)) {
-    return slot.player.peakRating;
-  }
-  const penalty = slot.runRatingPenalty ?? 0;
-  return Math.max(75, slot.player.peakRating - penalty);
+  return getPlayerRatingForPosition(
+    slot.player,
+    slot.position,
+    slot.runRatingPenalty
+  );
 }
 
 export function getAverageSquadRating(squad: SquadSlot[]): number {
