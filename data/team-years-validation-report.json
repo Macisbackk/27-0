@@ -1,14 +1,60 @@
 {
-  "generatedAt": "2026-06-22T16:07:30.660Z",
+  "generatedAt": "2026-06-24T03:01:21.352Z",
   "summary": {
-    "playableTeamYears": 19,
-    "errors": 0,
+    "playableTeamYears": 72,
+    "errors": 4,
     "warnings": 0
   },
   "hiddenNonSuperLeagueSeasons": [],
   "hiddenIncompleteRosters": [],
   "currentPlayerLeaks": [],
   "playerYearMismatches": [],
-  "unsupportedClubsInRosters": [],
-  "issues": []
+  "unsupportedClubsInRosters": [
+    {
+      "team": "Salford Red Devils",
+      "year": "2014"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2015"
+    },
+    {
+      "team": "London Broncos",
+      "year": "2018"
+    },
+    {
+      "team": "London Broncos",
+      "year": "2019"
+    }
+  ],
+  "issues": [
+    {
+      "severity": "error",
+      "code": "UNSUPPORTED_CLUB_IN_ROSTERS",
+      "team": "Salford Red Devils",
+      "year": "2014",
+      "message": "Salford Red Devils must not appear in team-year rosters"
+    },
+    {
+      "severity": "error",
+      "code": "UNSUPPORTED_CLUB_IN_ROSTERS",
+      "team": "Salford Red Devils",
+      "year": "2015",
+      "message": "Salford Red Devils must not appear in team-year rosters"
+    },
+    {
+      "severity": "error",
+      "code": "UNSUPPORTED_CLUB_IN_ROSTERS",
+      "team": "London Broncos",
+      "year": "2018",
+      "message": "London Broncos must not appear in team-year rosters"
+    },
+    {
+      "severity": "error",
+      "code": "UNSUPPORTED_CLUB_IN_ROSTERS",
+      "team": "London Broncos",
+      "year": "2019",
+      "message": "London Broncos must not appear in team-year rosters"
+    }
+  ]
 }

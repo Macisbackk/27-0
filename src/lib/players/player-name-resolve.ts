@@ -1,42 +1,10 @@
 import { normalizePlayerNameKey } from "../player-name-normalize";
+import { PLAYER_NAME_ALIASES } from "./player-name-aliases";
+import { playerBelongsToTeamYear } from "./team-year-membership";
 import { getAllDatabasePlayers } from "./index";
 import type { Player } from "../types";
 
-const WIKI_NAME_ALIASES: Record<string, string> = {
-  "robbie hunter paul": "robbie hunterpaul",
-  "robbie hunterpaul": "robbie hunter paul",
-  "robbie paul": "robbie hunterpaul",
-  "leslie vainikolo": "lesley vainikolo",
-  "lesley vainikolo": "leslie vainikolo",
-  "denis moran": "dennis moran",
-  "dennis moran": "denis moran",
-  "jamie jones buchanan": "jamie jones-buchanan",
-  "jamie jones-buchanan": "jamie jones buchanan",
-  "ian thornley": "iain thornley",
-  "iain thornley": "ian thornley",
-  "stephen snitch": "steve snitch",
-  "stephen steve snitch": "steve snitch",
-  "thomas makinson": "tommy makinson",
-  "tom makinson": "tommy makinson",
-  "iosia soliola": "sia soliola",
-  "sia soliola": "iosia soliola",
-  "matty dawson": "matty dawson-jones",
-  "richard mathers": "richie mathers",
-  "richie mathers": "richard mathers",
-  "mike mcilorum": "michael mcilorum",
-  "michael mcilorum": "mike mcilorum",
-  "george flanagan jr": "george flanagan",
-  "george flanagan junior": "george flanagan",
-  "jonathon goddard": "jonathan goddard",
-  "jonathan goddard": "jonathon goddard",
-  "bradley oneill": "bradley o neill",
-  "bradley o neill": "bradley oneill",
-  "bradley o'neill": "bradley oneill",
-  "sala faalogo": "sala fa alogo",
-  "sala fa alogo": "sala faalogo",
-  "marcus st hilaire": "marcus saint hilaire",
-  "marcus saint hilaire": "marcus st hilaire",
-};
+const WIKI_NAME_ALIASES = PLAYER_NAME_ALIASES;
 
 const FIRST_NAME_VARIANTS: Record<string, string[]> = {
   mike: ["michael"],
@@ -205,4 +173,56 @@ export function findPlayerByName(name: string): Player | null {
 /** Era squad resolution — includes players marked unavailable elsewhere. */
 export function findEraPlayerByName(name: string): Player | null {
   return findPlayerByNameInternal(name, true);
+}
+
+/** Resolve a Wikipedia squad name to a player belonging to an exact team-year. */
+export function findPlayerForTeamYearSquad(
+  wikiName: string,
+  team: string,
+  year: string | number,
+  options?: {
+    excludeIds?: Set<string>;
+    players?: Player[];
+  }
+): Player | null {
+  const exclude = options?.excludeIds ?? new Set<string>();
+  const index =
+    options?.players != null
+      ? buildPlayerNameIndexFromPlayers(options.players, true)
+      : getEraPlayerNameIndex();
+
+  const candidates: Player[] = [];
+  const seen = new Set<string>();
+
+  for (const key of expandNameLookupKeys(wikiName)) {
+    for (const player of index.get(key) ?? []) {
+      if (seen.has(player.id)) continue;
+      seen.add(player.id);
+      candidates.push(player);
+    }
+  }
+
+  const eligible = candidates.filter(
+    (player) =>
+      !exclude.has(player.id) &&
+      playerBelongsToTeamYear(player, team, year)
+  );
+
+  return pickBestCandidate(eligible);
+}
+
+function buildPlayerNameIndexFromPlayers(
+  players: Player[],
+  includeUnavailable: boolean
+): Map<string, Player[]> {
+  const index = new Map<string, Player[]>();
+  for (const player of players) {
+    if (!includeUnavailable && player.availableInGame === false) continue;
+    for (const key of expandNameLookupKeys(player.name)) {
+      const list = index.get(key) ?? [];
+      list.push(player);
+      index.set(key, list);
+    }
+  }
+  return index;
 }

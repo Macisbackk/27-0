@@ -9,7 +9,7 @@ import { getClubByName } from "../clubs";
 import { clubsMatch, resolveCanonicalClubName } from "../clubs/club-match";
 import { getActiveSuperLeagueClubNames } from "../clubs/super-league-display";
 import { isSuperLeagueEligiblePlayer } from "./super-league-eligibility";
-import { normalizePlayerNameKey } from "../player-name-normalize";
+import { isGameplayYearCard, isYearPinnedPlayer } from "./year-card";
 
 function loadPlayers(): {
   all: Player[];
@@ -29,35 +29,22 @@ function loadPlayers(): {
   const legendPlayers = (legends as Record<string, unknown>[]).map(normalizePlayer);
 
   const byId = new Map<string, Player>();
-  const byName = new Map<string, Player>();
-
-  const categoryRank = (c: Player["category"]) =>
-    c === "legend" ? 3 : c === "historic" ? 2 : 1;
+  const pool: Player[] = [];
 
   for (const p of [...current, ...historicRaw, ...legendPlayers]) {
     byId.set(p.id, p);
   }
 
-  const pool: Player[] = [];
-
   for (const p of current) {
-    if (!isHiddenPlayer(p)) pool.push(p);
+    if (!isHiddenPlayer(p) && isGameplayYearCard(p)) pool.push(p);
   }
 
   for (const p of [...historicRaw, ...legendPlayers]) {
     if (isHiddenPlayer(p)) continue;
-    const nameKey = normalizePlayerNameKey(p.name);
-    const existing = byName.get(nameKey);
-    if (
-      !existing ||
-      categoryRank(p.category) > categoryRank(existing.category) ||
-      (p.peakRating ?? 0) > (existing.peakRating ?? 0)
-    ) {
-      byName.set(nameKey, p);
-    }
+    if (p.availableInGame === false) continue;
+    if (!isGameplayYearCard(p)) continue;
+    pool.push(p);
   }
-
-  pool.push(...byName.values());
 
   const all = pool;
   const historic = all.filter((p) => p.category === "historic");
@@ -161,17 +148,25 @@ export function isAvailableInGame(player: Player): boolean {
   return player.availableInGame !== false;
 }
 
-/** Public player pool — excludes hidden and archived entries. */
+/** Public player pool — year-pinned cards only, excludes hidden/archived. */
 export function getShowcasePlayers(): Player[] {
-  return PLAYER_POOL.filter((p) => !isHiddenPlayer(p) && isAvailableInGame(p));
+  return PLAYER_POOL.filter(
+    (p) =>
+      !isHiddenPlayer(p) &&
+      isAvailableInGame(p) &&
+      isYearPinnedPlayer(p) &&
+      isGameplayYearCard(p)
+  );
 }
 
-/** Players eligible for recruitment / draft offers. */
+/** Players eligible for recruitment / draft offers — year-pinned only. */
 export function getRecruitablePlayers(): Player[] {
   return PLAYER_POOL.filter(
     (p) =>
       !isHiddenPlayer(p) &&
       isAvailableInGame(p) &&
+      isYearPinnedPlayer(p) &&
+      isGameplayYearCard(p) &&
       isSuperLeagueEligiblePlayer(p)
   );
 }
@@ -204,6 +199,13 @@ export {
 } from "./achievements";
 export { formatCareerTries } from "./career-tries";
 export {
+  buildPlayerTeamYearId,
+  formatShowcaseClubYear,
+  isGameplayYearCard,
+  isYearPinnedPlayer,
+  categoryToCardStatus,
+} from "./year-card";
+export {
   formatPlayerAge,
   formatPlayerAgeLabel,
   getPlayerAge,
@@ -214,7 +216,9 @@ export {
 export {
   getTeamYearRosters,
   getTeamsWithYearRosters,
+  getEraTeamsWithYearRosters,
   getYearsForTeam,
+  getEraYearsForTeam,
   getRosterPlayerIds,
   getRosterPlayerIdsForTeamAllYears,
   getAllRosterPlayerIds,

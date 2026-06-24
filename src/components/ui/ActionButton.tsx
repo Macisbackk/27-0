@@ -40,6 +40,8 @@ type ButtonProps = SharedProps &
 type LinkProps = SharedProps &
   Omit<ComponentPropsWithoutRef<typeof Link>, "href"> & { href: string };
 
+const START_VARIANTS = new Set<ActionButtonVariant>(["era", "current"]);
+
 export function ActionButton({
   variant = "secondary",
   hardMode = false,
@@ -48,7 +50,8 @@ export function ActionButton({
   fullWidth = true,
   ...rest
 }: ButtonProps | LinkProps) {
-  const classes = `${BTN.base} ${variantClass(variant, hardMode)} ${
+  const startVariant = START_VARIANTS.has(variant);
+  const classes = `${startVariant ? "" : `${BTN.base} `}${variantClass(variant, hardMode)} ${
     fullWidth ? "w-full" : ""
   } ${className}`;
 

@@ -6,7 +6,7 @@
     "club": "Bradford Bulls",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -22,7 +22,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-andy-ackers",
+    "primaryPosition": "HK"
   },
   {
     "id": "bradford-cur-caleb-aekins",
@@ -31,7 +36,7 @@
     "club": "Bradford Bulls",
     "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -47,7 +52,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-caleb-aekins",
+    "primaryPosition": "FB"
   },
   {
     "id": "bradford-cur-dan-russell",
@@ -56,7 +66,7 @@
     "club": "Bradford Bulls",
     "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2015–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -68,7 +78,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-dan-russell",
+    "primaryPosition": "SR"
   },
   {
     "id": "bradford-cur-ebon-scurr",
@@ -77,7 +92,7 @@
     "club": "Bradford Bulls",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "value": 620000,
@@ -95,7 +110,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-ebon-scurr",
+    "primaryPosition": "PF"
   },
   {
     "id": "bradford-cur-ed-chamberlain",
@@ -104,7 +124,7 @@
     "club": "Bradford Bulls",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -123,7 +143,12 @@
       "CENTRE",
       "WING"
     ],
-    "positionAbbrev": "CE/WG"
+    "positionAbbrev": "CE/WG",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-ed-chamberlain",
+    "primaryPosition": "CE/WG"
   },
   {
     "id": "bradford-cur-eribe-doro",
@@ -132,7 +157,7 @@
     "club": "Bradford Bulls",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 158000,
@@ -150,7 +175,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-eribe-doro",
+    "primaryPosition": "PF"
   },
   {
     "id": "bradford-cur-esan-marsters",
@@ -159,7 +189,7 @@
     "club": "Bradford Bulls",
     "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 189000,
@@ -175,7 +205,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-esan-marsters",
+    "primaryPosition": "CE"
   },
   {
     "id": "bradford-cur-ethan-ryan",
@@ -184,7 +219,7 @@
     "club": "Bradford Bulls",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -200,7 +235,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-ethan-ryan",
+    "primaryPosition": "WG"
   },
   {
     "id": "bradford-cur-jayden-nikorima",
@@ -209,7 +249,7 @@
     "club": "Bradford Bulls",
     "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -225,7 +265,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-jayden-nikorima",
+    "primaryPosition": "SO"
   },
   {
     "id": "bradford-cur-jayden-okunbor",
@@ -234,7 +279,7 @@
     "club": "Bradford Bulls",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -250,7 +295,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-jayden-okunbor",
+    "primaryPosition": "WG"
   },
   {
     "id": "bradford-cur-joe-mellor",
@@ -259,7 +309,7 @@
     "club": "Bradford Bulls",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2011–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 187000,
@@ -277,7 +327,12 @@
     "positions": [
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "LF"
+    "positionAbbrev": "LF",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-joe-mellor",
+    "primaryPosition": "LF"
   },
   {
     "id": "bradford-cur-loghan-lewis",
@@ -286,7 +341,7 @@
     "club": "Bradford Bulls",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "value": 620000,
@@ -305,7 +360,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-loghan-lewis",
+    "primaryPosition": "SR"
   },
   {
     "id": "bradford-cur-mitch-souter",
@@ -314,7 +374,7 @@
     "club": "Bradford Bulls",
     "nationality": "Scotland",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "value": 620000,
@@ -326,7 +386,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-mitch-souter",
+    "primaryPosition": "HK"
   },
   {
     "id": "bradford-cur-rowan-milnes",
@@ -335,7 +400,7 @@
     "club": "Bradford Bulls",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -351,7 +416,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-rowan-milnes",
+    "primaryPosition": "SH"
   },
   {
     "id": "bradford-cur-ryan-sutton",
@@ -360,7 +430,7 @@
     "club": "Bradford Bulls",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2015–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -378,7 +448,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-ryan-sutton",
+    "primaryPosition": "PF"
   },
   {
     "id": "bradford-cur-waqa-blake",
@@ -387,7 +462,7 @@
     "club": "Bradford Bulls",
     "nationality": "Fiji",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2015–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 87,
     "value": 221000,
@@ -403,7 +478,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-waqa-blake",
+    "primaryPosition": "CE"
   },
   {
     "id": "bradford-cur-zac-fulton",
@@ -412,7 +492,7 @@
     "club": "Bradford Bulls",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -428,7 +508,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "basePlayerId": "bradford-cur-zac-fulton",
+    "primaryPosition": "SR"
   },
   {
     "id": "castleford-cur-alex-mellor",
@@ -437,7 +522,7 @@
     "club": "Castleford Tigers",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -455,7 +540,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-alex-mellor",
+    "primaryPosition": "SR"
   },
   {
     "id": "castleford-cur-blake-taaffe",
@@ -464,7 +554,7 @@
     "club": "Castleford Tigers",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -482,7 +572,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-blake-taaffe",
+    "primaryPosition": "FB"
   },
   {
     "id": "castleford-cur-cain-robb",
@@ -491,7 +586,7 @@
     "club": "Castleford Tigers",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "value": 620000,
@@ -513,7 +608,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-cain-robb",
+    "primaryPosition": "HK"
   },
   {
     "id": "castleford-cur-daejarn-asi",
@@ -522,7 +622,7 @@
     "club": "Castleford Tigers",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -538,7 +638,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-daejarn-asi",
+    "primaryPosition": "SO"
   },
   {
     "id": "castleford-cur-darnell-mcintosh",
@@ -547,7 +652,7 @@
     "club": "Castleford Tigers",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -564,7 +669,12 @@
       "CENTRE",
       "WING"
     ],
-    "positionAbbrev": "CE/WG"
+    "positionAbbrev": "CE/WG",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-darnell-mcintosh",
+    "primaryPosition": "CE/WG"
   },
   {
     "id": "castleford-cur-george-lawler",
@@ -573,7 +683,7 @@
     "club": "Castleford Tigers",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2014–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -589,7 +699,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-george-lawler",
+    "primaryPosition": "PF"
   },
   {
     "id": "castleford-cur-jason-qareqare",
@@ -598,7 +713,7 @@
     "club": "Castleford Tigers",
     "nationality": "Fiji",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -614,7 +729,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-jason-qareqare",
+    "primaryPosition": "WG"
   },
   {
     "id": "castleford-cur-jeremiah-simbiken",
@@ -623,7 +743,7 @@
     "club": "Castleford Tigers",
     "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -657,7 +777,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-jeremiah-simbiken",
+    "primaryPosition": "SR"
   },
   {
     "id": "castleford-cur-joe-stimson",
@@ -666,7 +791,7 @@
     "club": "Castleford Tigers",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -684,7 +809,12 @@
     "positions": [
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "LF"
+    "positionAbbrev": "LF",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-joe-stimson",
+    "primaryPosition": "LF"
   },
   {
     "id": "castleford-cur-joe-westerman",
@@ -693,7 +823,7 @@
     "club": "Castleford Tigers",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2007–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -709,7 +839,12 @@
     "positions": [
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "LF"
+    "positionAbbrev": "LF",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-joe-westerman",
+    "primaryPosition": "LF"
   },
   {
     "id": "castleford-cur-jordan-lane",
@@ -718,7 +853,7 @@
     "club": "Castleford Tigers",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -734,7 +869,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-jordan-lane",
+    "primaryPosition": "SR"
   },
   {
     "id": "castleford-cur-krystian-mapapalangi",
@@ -743,7 +883,7 @@
     "club": "Castleford Tigers",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -763,7 +903,12 @@
       "CENTRE",
       "SECOND_ROW"
     ],
-    "positionAbbrev": "CE/SR"
+    "positionAbbrev": "CE/SR",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-krystian-mapapalangi",
+    "primaryPosition": "CE/SR"
   },
   {
     "id": "castleford-cur-liam-hood",
@@ -772,7 +917,7 @@
     "club": "Castleford Tigers",
     "nationality": "Scotland",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2012–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -788,7 +933,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-liam-hood",
+    "primaryPosition": "HK"
   },
   {
     "id": "castleford-cur-renouf-atoni",
@@ -797,7 +947,7 @@
     "club": "Castleford Tigers",
     "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -813,7 +963,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-renouf-atoni",
+    "primaryPosition": "PF"
   },
   {
     "id": "castleford-cur-semi-valemei",
@@ -822,7 +977,7 @@
     "club": "Castleford Tigers",
     "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -838,7 +993,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-semi-valemei",
+    "primaryPosition": "WG"
   },
   {
     "id": "castleford-cur-tom-weaver",
@@ -847,7 +1007,7 @@
     "club": "Castleford Tigers",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "value": 620000,
@@ -861,7 +1021,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-tom-weaver",
+    "primaryPosition": "SH"
   },
   {
     "id": "castleford-cur-zac-cini",
@@ -870,7 +1035,7 @@
     "club": "Castleford Tigers",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -886,7 +1051,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "basePlayerId": "castleford-cur-zac-cini",
+    "primaryPosition": "CE"
   },
   {
     "id": "catalans-cur-alrix-da-costa",
@@ -895,7 +1065,7 @@
     "club": "Catalans Dragons",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -911,7 +1081,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-alrix-da-costa",
+    "primaryPosition": "HK"
   },
   {
     "id": "catalans-cur-arthur-romano",
@@ -929,11 +1104,16 @@
     "positionAbbrev": "CE/WG",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-arthur-romano",
+    "primaryPosition": "CE/WG"
   },
   {
     "id": "catalans-cur-bayley-sironen",
@@ -950,11 +1130,16 @@
     "positionAbbrev": "SR",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-bayley-sironen",
+    "primaryPosition": "SR"
   },
   {
     "id": "catalans-cur-benjamin-garcia",
@@ -963,7 +1148,7 @@
     "club": "Catalans Dragons",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2011–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 88,
     "value": 253000,
@@ -981,7 +1166,12 @@
     "positions": [
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "LF"
+    "positionAbbrev": "LF",
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-benjamin-garcia",
+    "primaryPosition": "LF"
   },
   {
     "id": "catalans-cur-cesar-rouge",
@@ -990,7 +1180,7 @@
     "club": "Catalans Dragons",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -1022,7 +1212,12 @@
       "STAND_OFF",
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "HB"
+    "positionAbbrev": "HB",
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-cesar-rouge",
+    "primaryPosition": "HB"
   },
   {
     "id": "catalans-cur-charlie-staines",
@@ -1031,7 +1226,7 @@
     "club": "Catalans Dragons",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1047,7 +1242,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-charlie-staines",
+    "primaryPosition": "FB"
   },
   {
     "id": "catalans-cur-chris-satae",
@@ -1056,7 +1256,7 @@
     "club": "Catalans Dragons",
     "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1072,7 +1272,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-chris-satae",
+    "primaryPosition": "PF"
   },
   {
     "id": "catalans-cur-jordan-dezaria",
@@ -1089,11 +1294,16 @@
     "positionAbbrev": "PF",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "rating": 80,
-    "value": 735000
+    "value": 735000,
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-jordan-dezaria",
+    "primaryPosition": "PF"
   },
   {
     "id": "catalans-cur-julian-bousquet",
@@ -1102,7 +1312,7 @@
     "club": "Catalans Dragons",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2012–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1120,7 +1330,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-julian-bousquet",
+    "primaryPosition": "PF"
   },
   {
     "id": "catalans-cur-lewis-dodd",
@@ -1129,7 +1344,7 @@
     "club": "Catalans Dragons",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1147,7 +1362,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-lewis-dodd",
+    "primaryPosition": "SH"
   },
   {
     "id": "catalans-cur-manase-kaho",
@@ -1156,7 +1376,7 @@
     "club": "Catalans Dragons",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1168,7 +1388,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-manase-kaho",
+    "primaryPosition": "WG"
   },
   {
     "id": "catalans-cur-nick-cotric",
@@ -1177,7 +1402,7 @@
     "club": "Catalans Dragons",
     "nationality": "Serbia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -1194,7 +1419,12 @@
       "CENTRE",
       "WING"
     ],
-    "positionAbbrev": "CE/WG"
+    "positionAbbrev": "CE/WG",
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-nick-cotric",
+    "primaryPosition": "CE/WG"
   },
   {
     "id": "catalans-cur-paul-seguier",
@@ -1212,11 +1442,16 @@
     "positionAbbrev": "SR/LF",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-paul-seguier",
+    "primaryPosition": "SR/LF"
   },
   {
     "id": "catalans-cur-solomona-faataape",
@@ -1225,7 +1460,7 @@
     "club": "Catalans Dragons",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2023–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1241,7 +1476,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-solomona-faataape",
+    "primaryPosition": "CE"
   },
   {
     "id": "catalans-cur-tariq-sims",
@@ -1258,11 +1498,16 @@
     "positionAbbrev": "SR",
     "nationality": "Fiji",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "rating": 86,
-    "value": 1650000
+    "value": 1650000,
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-tariq-sims",
+    "primaryPosition": "SR"
   },
   {
     "id": "catalans-cur-toby-sexton",
@@ -1271,7 +1516,7 @@
     "club": "Catalans Dragons",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1287,7 +1532,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-toby-sexton",
+    "primaryPosition": "SO"
   },
   {
     "id": "catalans-cur-tommy-makinson",
@@ -1296,7 +1546,7 @@
     "club": "Catalans Dragons",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2011–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -1314,7 +1564,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-tommy-makinson",
+    "primaryPosition": "WG"
   },
   {
     "id": "huddersfield-cur-adam-clune",
@@ -1323,7 +1578,7 @@
     "club": "Huddersfield Giants",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -1339,7 +1594,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-adam-clune",
+    "primaryPosition": "SH"
   },
   {
     "id": "huddersfield-cur-adam-swift",
@@ -1348,7 +1608,7 @@
     "club": "Huddersfield Giants",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2012–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1366,7 +1626,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-adam-swift",
+    "primaryPosition": "WG"
   },
   {
     "id": "huddersfield-cur-fenton-rogers",
@@ -1375,7 +1640,7 @@
     "club": "Huddersfield Giants",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -1391,7 +1656,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-fenton-rogers",
+    "primaryPosition": "PF"
   },
   {
     "id": "huddersfield-cur-george-flanagan-jr",
@@ -1400,7 +1670,7 @@
     "club": "Huddersfield Giants",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "value": 620000,
@@ -1414,7 +1684,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-george-flanagan-jr",
+    "primaryPosition": "FB"
   },
   {
     "id": "huddersfield-cur-george-king",
@@ -1423,7 +1698,7 @@
     "club": "Huddersfield Giants",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2014–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1439,7 +1714,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-george-king",
+    "primaryPosition": "PF"
   },
   {
     "id": "huddersfield-cur-harry-rushton",
@@ -1448,7 +1728,7 @@
     "club": "Huddersfield Giants",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1465,7 +1745,12 @@
       "LOOSE_FORWARD",
       "SECOND_ROW"
     ],
-    "positionAbbrev": "LF/SR"
+    "positionAbbrev": "LF/SR",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-harry-rushton",
+    "primaryPosition": "LF/SR"
   },
   {
     "id": "huddersfield-cur-jacob-gagai",
@@ -1474,7 +1759,7 @@
     "club": "Huddersfield Giants",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2023–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1490,7 +1775,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-jacob-gagai",
+    "primaryPosition": "CE"
   },
   {
     "id": "huddersfield-cur-jake-bibby",
@@ -1499,7 +1789,7 @@
     "club": "Huddersfield Giants",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1518,7 +1808,12 @@
       "CENTRE",
       "WING"
     ],
-    "positionAbbrev": "CE/WG"
+    "positionAbbrev": "CE/WG",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-jake-bibby",
+    "primaryPosition": "CE/WG"
   },
   {
     "id": "huddersfield-cur-joe-greenwood",
@@ -1527,7 +1822,7 @@
     "club": "Huddersfield Giants",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2011–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1545,7 +1840,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-joe-greenwood",
+    "primaryPosition": "SR"
   },
   {
     "id": "huddersfield-cur-matty-english",
@@ -1554,7 +1854,7 @@
     "club": "Huddersfield Giants",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2015–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1570,7 +1870,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-matty-english",
+    "primaryPosition": "PF"
   },
   {
     "id": "huddersfield-cur-niall-evalds",
@@ -1579,7 +1884,7 @@
     "club": "Huddersfield Giants",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -1595,7 +1900,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-niall-evalds",
+    "primaryPosition": "FB"
   },
   {
     "id": "huddersfield-cur-oliver-wilson",
@@ -1613,11 +1923,16 @@
     "positionAbbrev": "SR/PF",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-oliver-wilson",
+    "primaryPosition": "SR/PF"
   },
   {
     "id": "huddersfield-cur-sam-halsall",
@@ -1626,7 +1941,7 @@
     "club": "Huddersfield Giants",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2023–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -1642,7 +1957,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-sam-halsall",
+    "primaryPosition": "WG"
   },
   {
     "id": "huddersfield-cur-sam-hewitt",
@@ -1651,7 +1971,7 @@
     "club": "Huddersfield Giants",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -1668,7 +1988,12 @@
       "SECOND_ROW",
       "PROP"
     ],
-    "positionAbbrev": "SR/PF"
+    "positionAbbrev": "SR/PF",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-sam-hewitt",
+    "primaryPosition": "SR/PF"
   },
   {
     "id": "huddersfield-cur-taane-milne",
@@ -1677,7 +2002,7 @@
     "club": "Huddersfield Giants",
     "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1693,7 +2018,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-taane-milne",
+    "primaryPosition": "CE"
   },
   {
     "id": "huddersfield-cur-tui-lolohea",
@@ -1702,7 +2032,7 @@
     "club": "Huddersfield Giants",
     "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2014–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -1718,7 +2048,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-tui-lolohea",
+    "primaryPosition": "SO"
   },
   {
     "id": "huddersfield-cur-zac-woolford",
@@ -1727,7 +2062,7 @@
     "club": "Huddersfield Giants",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1743,7 +2078,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "basePlayerId": "huddersfield-cur-zac-woolford",
+    "primaryPosition": "HK"
   },
   {
     "id": "hull-fc-cur-aidan-sezer",
@@ -1752,7 +2092,7 @@
     "club": "Hull FC",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2011–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 87,
     "value": 226000,
@@ -1768,7 +2108,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-aidan-sezer",
+    "primaryPosition": "SH"
   },
   {
     "id": "hull-fc-cur-amir-bourouh",
@@ -1777,7 +2122,7 @@
     "club": "Hull FC",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1793,7 +2138,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-amir-bourouh",
+    "primaryPosition": "HK"
   },
   {
     "id": "hull-fc-cur-cade-cust",
@@ -1802,7 +2152,7 @@
     "club": "Hull FC",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1822,7 +2172,12 @@
       "SCRUM_HALF",
       "HOOKER"
     ],
-    "positionAbbrev": "HB/HK"
+    "positionAbbrev": "HB/HK",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-cade-cust",
+    "primaryPosition": "HB/HK"
   },
   {
     "id": "hull-fc-cur-davy-litten",
@@ -1831,7 +2186,7 @@
     "club": "Hull FC",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1847,7 +2202,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-davy-litten",
+    "primaryPosition": "CE"
   },
   {
     "id": "hull-fc-cur-harvey-barron",
@@ -1856,7 +2216,7 @@
     "club": "Hull FC",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -1872,7 +2232,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-harvey-barron",
+    "primaryPosition": "WG"
   },
   {
     "id": "hull-fc-cur-harvie-hill",
@@ -1881,7 +2246,7 @@
     "club": "Hull FC",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1897,7 +2262,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-harvie-hill",
+    "primaryPosition": "PF"
   },
   {
     "id": "hull-fc-cur-herman-eseese",
@@ -1906,7 +2276,7 @@
     "club": "Hull FC",
     "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2014–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 88,
     "value": 248000,
@@ -1922,7 +2292,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-herman-eseese",
+    "primaryPosition": "PF"
   },
   {
     "id": "hull-fc-cur-jake-arthur",
@@ -1931,7 +2306,7 @@
     "club": "Hull FC",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1945,7 +2320,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-jake-arthur",
+    "primaryPosition": "SO"
   },
   {
     "id": "hull-fc-cur-james-bell",
@@ -1954,7 +2334,7 @@
     "club": "Hull FC",
     "nationality": "Scotland",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -1971,7 +2351,12 @@
       "SECOND_ROW",
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "SR/LF"
+    "positionAbbrev": "SR/LF",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-james-bell",
+    "primaryPosition": "SR/LF"
   },
   {
     "id": "hull-fc-cur-jed-cartwright",
@@ -1980,7 +2365,7 @@
     "club": "Hull FC",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -1996,7 +2381,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-jed-cartwright",
+    "primaryPosition": "SR"
   },
   {
     "id": "hull-fc-cur-joe-batchelor",
@@ -2005,7 +2395,7 @@
     "club": "Hull FC",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2023,7 +2413,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-joe-batchelor",
+    "primaryPosition": "SR"
   },
   {
     "id": "hull-fc-cur-john-asiata",
@@ -2032,7 +2427,7 @@
     "club": "Hull FC",
     "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2012–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 87,
     "value": 219000,
@@ -2050,7 +2445,12 @@
     "positions": [
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "LF"
+    "positionAbbrev": "LF",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-john-asiata",
+    "primaryPosition": "LF"
   },
   {
     "id": "hull-fc-cur-lewis-martin",
@@ -2059,7 +2459,7 @@
     "club": "Hull FC",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2023–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2075,7 +2475,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-lewis-martin",
+    "primaryPosition": "WG"
   },
   {
     "id": "hull-fc-cur-ligi-sao",
@@ -2084,7 +2489,7 @@
     "club": "Hull FC",
     "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2014–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -2100,7 +2505,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-ligi-sao",
+    "primaryPosition": "PF"
   },
   {
     "id": "hull-fc-cur-sam-lisone",
@@ -2109,7 +2519,7 @@
     "club": "Hull FC",
     "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2015–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2125,7 +2535,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-sam-lisone",
+    "primaryPosition": "PF"
   },
   {
     "id": "hull-fc-cur-will-pryce",
@@ -2134,7 +2549,7 @@
     "club": "Hull FC",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 90,
     "value": 2470000,
@@ -2150,7 +2565,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-will-pryce",
+    "primaryPosition": "FB"
   },
   {
     "id": "hull-fc-cur-zak-hardaker",
@@ -2159,7 +2579,7 @@
     "club": "Hull FC",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2010–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -2177,7 +2597,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "hull-fc-cur-zak-hardaker",
+    "primaryPosition": "CE"
   },
   {
     "id": "hull-kr-cur-arthur-mourgue",
@@ -2186,7 +2611,7 @@
     "club": "Hull KR",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 90,
     "value": 2470000,
@@ -2204,7 +2629,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-arthur-mourgue",
+    "primaryPosition": "FB"
   },
   {
     "id": "hull-kr-cur-danny-richardson",
@@ -2222,11 +2652,16 @@
     "positionAbbrev": "HB",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-danny-richardson",
+    "primaryPosition": "HB"
   },
   {
     "id": "hull-kr-cur-dean-hadley",
@@ -2235,7 +2670,7 @@
     "club": "Hull KR",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2253,7 +2688,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-dean-hadley",
+    "primaryPosition": "SR"
   },
   {
     "id": "hull-kr-cur-elliot-minchella",
@@ -2262,7 +2702,7 @@
     "club": "Hull KR",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2014–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 88,
     "value": 253000,
@@ -2280,7 +2720,12 @@
     "positions": [
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "LF"
+    "positionAbbrev": "LF",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-elliot-minchella",
+    "primaryPosition": "LF"
   },
   {
     "id": "hull-kr-cur-jack-brown",
@@ -2289,7 +2734,7 @@
     "club": "Hull KR",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2023–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "value": 620000,
@@ -2307,7 +2752,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-jack-brown",
+    "primaryPosition": "PF"
   },
   {
     "id": "hull-kr-cur-jai-whitbread",
@@ -2316,7 +2766,7 @@
     "club": "Hull KR",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -2334,7 +2784,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-jai-whitbread",
+    "primaryPosition": "PF"
   },
   {
     "id": "hull-kr-cur-james-batchelor",
@@ -2343,7 +2798,7 @@
     "club": "Hull KR",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2016–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2361,7 +2816,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-james-batchelor",
+    "primaryPosition": "SR"
   },
   {
     "id": "hull-kr-cur-jez-litten",
@@ -2370,7 +2830,7 @@
     "club": "Hull KR",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -2388,7 +2848,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-jez-litten",
+    "primaryPosition": "HK"
   },
   {
     "id": "hull-kr-cur-joe-burgess",
@@ -2397,7 +2862,7 @@
     "club": "Hull KR",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2415,7 +2880,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-joe-burgess",
+    "primaryPosition": "WG"
   },
   {
     "id": "hull-kr-cur-kelepi-tanginoa",
@@ -2433,11 +2903,16 @@
     "positionAbbrev": "SR/PF",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-kelepi-tanginoa",
+    "primaryPosition": "SR/PF"
   },
   {
     "id": "hull-kr-cur-mikey-lewis",
@@ -2446,7 +2921,7 @@
     "club": "Hull KR",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 91,
     "value": 332000,
@@ -2464,7 +2939,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-mikey-lewis",
+    "primaryPosition": "SO"
   },
   {
     "id": "hull-kr-cur-oliver-gildart",
@@ -2473,7 +2953,7 @@
     "club": "Hull KR",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2015–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -2491,7 +2971,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-oliver-gildart",
+    "primaryPosition": "CE"
   },
   {
     "id": "hull-kr-cur-peta-hiku",
@@ -2500,7 +2985,7 @@
     "club": "Hull KR",
     "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 88,
     "value": 255000,
@@ -2518,7 +3003,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-peta-hiku",
+    "primaryPosition": "CE"
   },
   {
     "id": "hull-kr-cur-sauaso-sue",
@@ -2527,7 +3017,7 @@
     "club": "Hull KR",
     "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2545,7 +3035,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-sauaso-sue",
+    "primaryPosition": "PF"
   },
   {
     "id": "hull-kr-cur-tom-amone",
@@ -2554,7 +3049,7 @@
     "club": "Hull KR",
     "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -2572,7 +3067,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-tom-amone",
+    "primaryPosition": "PF"
   },
   {
     "id": "hull-kr-cur-tom-davies",
@@ -2581,7 +3081,7 @@
     "club": "Hull KR",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2015–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2599,7 +3099,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-tom-davies",
+    "primaryPosition": "WG"
   },
   {
     "id": "hull-kr-cur-tyrone-may",
@@ -2608,7 +3113,7 @@
     "club": "Hull KR",
     "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -2626,7 +3131,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "Hull KR",
+    "displayClub": "Hull KR",
+    "basePlayerId": "hull-kr-cur-tyrone-may",
+    "primaryPosition": "SH"
   },
   {
     "id": "leeds-cur-ash-handley",
@@ -2635,7 +3145,7 @@
     "club": "Leeds Rhinos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2014–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -2654,7 +3164,12 @@
       "CENTRE",
       "WING"
     ],
-    "positionAbbrev": "CE/WG"
+    "positionAbbrev": "CE/WG",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-ash-handley",
+    "primaryPosition": "CE/WG"
   },
   {
     "id": "leeds-cur-brodie-croft",
@@ -2663,7 +3178,7 @@
     "club": "Leeds Rhinos",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2016–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 88,
     "value": 263000,
@@ -2679,7 +3194,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-brodie-croft",
+    "primaryPosition": "SO"
   },
   {
     "id": "leeds-cur-cameron-smith",
@@ -2688,7 +3208,7 @@
     "club": "Leeds Rhinos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 88,
     "value": 253000,
@@ -2704,7 +3224,12 @@
     "positions": [
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "LF"
+    "positionAbbrev": "LF",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-cameron-smith",
+    "primaryPosition": "LF"
   },
   {
     "id": "leeds-cur-cooper-jenkins",
@@ -2713,7 +3238,7 @@
     "club": "Leeds Rhinos",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "value": 620000,
@@ -2729,7 +3254,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-cooper-jenkins",
+    "primaryPosition": "PF"
   },
   {
     "id": "leeds-cur-harry-newman",
@@ -2738,7 +3268,7 @@
     "club": "Leeds Rhinos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 87,
     "value": 221000,
@@ -2754,7 +3284,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-harry-newman",
+    "primaryPosition": "CE"
   },
   {
     "id": "leeds-cur-jake-connor",
@@ -2763,7 +3298,7 @@
     "club": "Leeds Rhinos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2016–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 87,
     "value": 1840000,
@@ -2779,7 +3314,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-jake-connor",
+    "primaryPosition": "SH"
   },
   {
     "id": "leeds-cur-james-bentley",
@@ -2796,11 +3336,16 @@
     "positionAbbrev": "SR",
     "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-james-bentley",
+    "primaryPosition": "SR"
   },
   {
     "id": "leeds-cur-james-mcdonnell",
@@ -2809,7 +3354,7 @@
     "club": "Leeds Rhinos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2825,7 +3370,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-james-mcdonnell",
+    "primaryPosition": "SR"
   },
   {
     "id": "leeds-cur-jarrod-o-connor",
@@ -2834,7 +3384,7 @@
     "club": "Leeds Rhinos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2851,7 +3401,12 @@
       "HOOKER",
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "HK/LF"
+    "positionAbbrev": "HK/LF",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-jarrod-o-connor",
+    "primaryPosition": "HK/LF"
   },
   {
     "id": "leeds-cur-lachie-miller",
@@ -2860,7 +3415,7 @@
     "club": "Leeds Rhinos",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2876,7 +3431,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-lachie-miller",
+    "primaryPosition": "FB"
   },
   {
     "id": "leeds-cur-maika-sivo",
@@ -2885,7 +3445,7 @@
     "club": "Leeds Rhinos",
     "nationality": "Fiji",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2015–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 87,
     "value": 1840000,
@@ -2901,7 +3461,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-maika-sivo",
+    "primaryPosition": "WG"
   },
   {
     "id": "leeds-cur-mikolaj-oledzki",
@@ -2910,7 +3475,7 @@
     "club": "Leeds Rhinos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -2926,7 +3491,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-mikolaj-oledzki",
+    "primaryPosition": "PF"
   },
   {
     "id": "leeds-cur-morgan-gannon",
@@ -2935,7 +3505,7 @@
     "club": "Leeds Rhinos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2951,7 +3521,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-morgan-gannon",
+    "primaryPosition": "SR"
   },
   {
     "id": "leeds-cur-riley-lumb",
@@ -2960,7 +3535,7 @@
     "club": "Leeds Rhinos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2023–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -2976,7 +3551,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-riley-lumb",
+    "primaryPosition": "WG"
   },
   {
     "id": "leeds-cur-sam-lisone",
@@ -2993,11 +3573,16 @@
     "positionAbbrev": "PF",
     "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-sam-lisone",
+    "primaryPosition": "PF"
   },
   {
     "id": "leeds-cur-tom-holroyd",
@@ -3006,7 +3591,7 @@
     "club": "Leeds Rhinos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -3022,7 +3607,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-tom-holroyd",
+    "primaryPosition": "PF"
   },
   {
     "id": "leigh-cur-aaron-pene",
@@ -3031,7 +3621,7 @@
     "club": "Leigh Leopards",
     "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -3047,7 +3637,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-aaron-pene",
+    "primaryPosition": "PF"
   },
   {
     "id": "leigh-cur-ben-mcnamara",
@@ -3056,7 +3651,7 @@
     "club": "Leigh Leopards",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -3073,7 +3668,12 @@
       "STAND_OFF",
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "HB"
+    "positionAbbrev": "HB",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-ben-mcnamara",
+    "primaryPosition": "HB"
   },
   {
     "id": "leigh-cur-darnell-mcintosh",
@@ -3090,11 +3690,16 @@
     "positionAbbrev": "WG",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-darnell-mcintosh",
+    "primaryPosition": "WG"
   },
   {
     "id": "leigh-cur-david-armstrong",
@@ -3103,7 +3708,7 @@
     "club": "Leigh Leopards",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 190000,
@@ -3119,7 +3724,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-david-armstrong",
+    "primaryPosition": "FB"
   },
   {
     "id": "leigh-cur-edwin-ipape",
@@ -3128,7 +3738,7 @@
     "club": "Leigh Leopards",
     "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 88,
     "value": 250000,
@@ -3146,7 +3756,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-edwin-ipape",
+    "primaryPosition": "HK"
   },
   {
     "id": "leigh-cur-ethan-o-neill",
@@ -3163,11 +3778,16 @@
     "positionAbbrev": "SR",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-ethan-o-neill",
+    "primaryPosition": "SR"
   },
   {
     "id": "leigh-cur-frankie-halton",
@@ -3176,7 +3796,7 @@
     "club": "Leigh Leopards",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -3192,7 +3812,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-frankie-halton",
+    "primaryPosition": "SR"
   },
   {
     "id": "leigh-cur-gareth-o-brien",
@@ -3201,7 +3826,7 @@
     "club": "Leigh Leopards",
     "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2011–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -3219,7 +3844,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-gareth-o-brien",
+    "primaryPosition": "SO"
   },
   {
     "id": "leigh-cur-isaac-liu",
@@ -3228,7 +3858,7 @@
     "club": "Leigh Leopards",
     "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -3244,7 +3874,12 @@
     "positions": [
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "LF"
+    "positionAbbrev": "LF",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-isaac-liu",
+    "primaryPosition": "LF"
   },
   {
     "id": "leigh-cur-joe-ofahengaue",
@@ -3253,7 +3888,7 @@
     "club": "Leigh Leopards",
     "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2015–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -3269,7 +3904,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-joe-ofahengaue",
+    "primaryPosition": "PF"
   },
   {
     "id": "leigh-cur-kai-o-donnell",
@@ -3278,7 +3918,7 @@
     "club": "Leigh Leopards",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -3300,7 +3940,12 @@
       "SECOND_ROW",
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "SR/LF"
+    "positionAbbrev": "SR/LF",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-kai-o-donnell",
+    "primaryPosition": "SR/LF"
   },
   {
     "id": "leigh-cur-keanan-brand",
@@ -3309,7 +3954,7 @@
     "club": "Leigh Leopards",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -3326,7 +3971,12 @@
       "WING",
       "CENTRE"
     ],
-    "positionAbbrev": "WG/CE"
+    "positionAbbrev": "WG/CE",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-keanan-brand",
+    "primaryPosition": "WG/CE"
   },
   {
     "id": "leigh-cur-lachlan-lam",
@@ -3335,7 +3985,7 @@
     "club": "Leigh Leopards",
     "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 90,
     "value": 280000,
@@ -3353,7 +4003,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-lachlan-lam",
+    "primaryPosition": "SH"
   },
   {
     "id": "leigh-cur-owen-trout",
@@ -3362,7 +4017,7 @@
     "club": "Leigh Leopards",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -3378,7 +4033,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-owen-trout",
+    "primaryPosition": "PF"
   },
   {
     "id": "leigh-cur-robbie-mulhern",
@@ -3387,7 +4047,7 @@
     "club": "Leigh Leopards",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2016–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -3405,7 +4065,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-robbie-mulhern",
+    "primaryPosition": "PF"
   },
   {
     "id": "leigh-cur-tesi-niu",
@@ -3414,7 +4079,7 @@
     "club": "Leigh Leopards",
     "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -3430,7 +4095,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-tesi-niu",
+    "primaryPosition": "CE"
   },
   {
     "id": "leigh-cur-umyla-hanley",
@@ -3439,7 +4109,7 @@
     "club": "Leigh Leopards",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -3456,7 +4126,12 @@
       "CENTRE",
       "WING"
     ],
-    "positionAbbrev": "CE/WG"
+    "positionAbbrev": "CE/WG",
+    "cardYear": 2026,
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "basePlayerId": "leigh-cur-umyla-hanley",
+    "primaryPosition": "CE/WG"
   },
   {
     "id": "london-cur-dayon-sambou",
@@ -3465,7 +4140,7 @@
     "club": "London Broncos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "rating": 79,
@@ -3473,7 +4148,15 @@
     "appearances": 6,
     "tries": 2,
     "dateOfBirth": "2005-05-14",
-    "birthYear": 2005
+    "birthYear": 2005,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "london-broncos-2026",
+    "team": "London Broncos",
+    "displayClub": "London Broncos",
+    "basePlayerId": "london-cur-dayon-sambou",
+    "status": "Current",
+    "primaryPosition": "HOOKER"
   },
   {
     "id": "london-cur-harry-aldous",
@@ -3482,11 +4165,19 @@
     "club": "London Broncos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2023–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "rating": 75,
-    "value": 270000
+    "value": 270000,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "london-broncos-2026",
+    "team": "London Broncos",
+    "displayClub": "London Broncos",
+    "basePlayerId": "london-cur-harry-aldous",
+    "status": "Current",
+    "primaryPosition": "PROP"
   },
   {
     "id": "london-cur-jack-campagnolo",
@@ -3495,7 +4186,7 @@
     "club": "London Broncos",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "value": 270000,
@@ -3515,7 +4206,15 @@
       "QRL",
       "NSW Reserve Grade",
       "First Class"
-    ]
+    ],
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "london-broncos-2026",
+    "team": "London Broncos",
+    "displayClub": "London Broncos",
+    "basePlayerId": "london-cur-jack-campagnolo",
+    "status": "Current",
+    "primaryPosition": "SCRUM_HALF"
   },
   {
     "id": "london-cur-jacob-jones",
@@ -3524,7 +4223,7 @@
     "club": "London Broncos",
     "nationality": "Unknown",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "value": 270000,
@@ -3540,7 +4239,15 @@
       "Rochdale",
       "Widnes",
       "Doncaster"
-    ]
+    ],
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "london-broncos-2026",
+    "team": "London Broncos",
+    "displayClub": "London Broncos",
+    "basePlayerId": "london-cur-jacob-jones",
+    "status": "Current",
+    "primaryPosition": "SECOND_ROW"
   },
   {
     "id": "london-cur-jimmy-meadows",
@@ -3549,7 +4256,7 @@
     "club": "London Broncos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "value": 270000,
@@ -3557,7 +4264,15 @@
     "appearances": 18,
     "tries": 2,
     "dateOfBirth": "1999-05-15",
-    "birthYear": 1999
+    "birthYear": 1999,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "london-broncos-2026",
+    "team": "London Broncos",
+    "displayClub": "London Broncos",
+    "basePlayerId": "london-cur-jimmy-meadows",
+    "status": "Current",
+    "primaryPosition": "SCRUM_HALF"
   },
   {
     "id": "london-cur-lewis-bienek",
@@ -3566,7 +4281,7 @@
     "club": "London Broncos",
     "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2016–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "value": 270000,
@@ -3574,7 +4289,15 @@
     "appearances": 30,
     "tries": 3,
     "dateOfBirth": "1998-04-11",
-    "birthYear": 1998
+    "birthYear": 1998,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "london-broncos-2026",
+    "team": "London Broncos",
+    "displayClub": "London Broncos",
+    "basePlayerId": "london-cur-lewis-bienek",
+    "status": "Current",
+    "primaryPosition": "PROP"
   },
   {
     "id": "london-cur-oliver-leyland",
@@ -3583,7 +4306,7 @@
     "club": "London Broncos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "value": 270000,
@@ -3591,7 +4314,15 @@
     "appearances": 32,
     "tries": 3,
     "dateOfBirth": "2001-05-17",
-    "birthYear": 2001
+    "birthYear": 2001,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "london-broncos-2026",
+    "team": "London Broncos",
+    "displayClub": "London Broncos",
+    "basePlayerId": "london-cur-oliver-leyland",
+    "status": "Current",
+    "primaryPosition": "STAND_OFF"
   },
   {
     "id": "london-cur-robbie-storey",
@@ -3600,7 +4331,7 @@
     "club": "London Broncos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "value": 270000,
@@ -3608,7 +4339,15 @@
     "appearances": 16,
     "tries": 4,
     "dateOfBirth": "1999-10-21",
-    "birthYear": 1999
+    "birthYear": 1999,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "london-broncos-2026",
+    "team": "London Broncos",
+    "displayClub": "London Broncos",
+    "basePlayerId": "london-cur-robbie-storey",
+    "status": "Current",
+    "primaryPosition": "CENTRE"
   },
   {
     "id": "london-cur-robert-butler",
@@ -3617,7 +4356,7 @@
     "club": "London Broncos",
     "nationality": "Unknown",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "value": 270000,
@@ -3634,7 +4373,15 @@
       "Wakefield Trinity",
       "Bradford",
       "Toulouse"
-    ]
+    ],
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "london-broncos-2026",
+    "team": "London Broncos",
+    "displayClub": "London Broncos",
+    "basePlayerId": "london-cur-robert-butler",
+    "status": "Current",
+    "primaryPosition": "PROP"
   },
   {
     "id": "london-cur-sam-davis",
@@ -3643,7 +4390,7 @@
     "club": "London Broncos",
     "nationality": "Unknown",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "value": 270000,
@@ -3657,7 +4404,15 @@
       "London",
       "York City",
       "Salford"
-    ]
+    ],
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "london-broncos-2026",
+    "team": "London Broncos",
+    "displayClub": "London Broncos",
+    "basePlayerId": "london-cur-sam-davis",
+    "status": "Current",
+    "primaryPosition": "HOOKER"
   },
   {
     "id": "oldham-cur-jonty-gorley",
@@ -3666,11 +4421,19 @@
     "club": "Oldham RLFC",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "rating": 79,
-    "value": 620000
+    "value": 620000,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "oldham-rlfc-2026",
+    "team": "Oldham RLFC",
+    "displayClub": "Oldham RLFC",
+    "basePlayerId": "oldham-cur-jonty-gorley",
+    "status": "Current",
+    "primaryPosition": "STAND_OFF"
   },
   {
     "id": "oldham-cur-zach-jebson",
@@ -3679,7 +4442,7 @@
     "club": "Oldham RLFC",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2025–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "rating": 80,
@@ -3687,7 +4450,15 @@
     "appearances": 11,
     "tries": 1,
     "dateOfBirth": "2004-05-09",
-    "birthYear": 2004
+    "birthYear": 2004,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "oldham-rlfc-2026",
+    "team": "Oldham RLFC",
+    "displayClub": "Oldham RLFC",
+    "basePlayerId": "oldham-cur-zach-jebson",
+    "status": "Current",
+    "primaryPosition": "CENTRE"
   },
   {
     "id": "salford-cur-ben-hellewell",
@@ -3696,7 +4467,7 @@
     "club": "Salford Red Devils",
     "nationality": "Scotland",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2015–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -3704,7 +4475,15 @@
     "dateOfBirth": "1992-01-30",
     "birthYear": 1992,
     "appearances": 53,
-    "tries": 8
+    "tries": 8,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-ben-hellewell",
+    "status": "Current",
+    "primaryPosition": "FULLBACK"
   },
   {
     "id": "salford-cur-brodie-shields",
@@ -3713,11 +4492,19 @@
     "club": "Salford Red Devils",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
-    "rating": 83
+    "rating": 83,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-brodie-shields",
+    "status": "Current",
+    "primaryPosition": "PROP"
   },
   {
     "id": "salford-cur-chris-savelio",
@@ -3726,11 +4513,19 @@
     "club": "Salford Red Devils",
     "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
-    "rating": 83
+    "rating": 83,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-chris-savelio",
+    "status": "Current",
+    "primaryPosition": "HOOKER"
   },
   {
     "id": "salford-cur-dele-sule",
@@ -3739,11 +4534,19 @@
     "club": "Salford Red Devils",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
-    "rating": 83
+    "rating": 83,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-dele-sule",
+    "status": "Current",
+    "primaryPosition": "WING"
   },
   {
     "id": "salford-cur-ellis-robson",
@@ -3752,7 +4555,7 @@
     "club": "Salford Red Devils",
     "nationality": "Unknown",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2016–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "value": 270000,
@@ -3760,7 +4563,15 @@
     "appearances": 14,
     "tries": 1,
     "dateOfBirth": "1998-09-14",
-    "birthYear": 1998
+    "birthYear": 1998,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-ellis-robson",
+    "status": "Current",
+    "primaryPosition": "SECOND_ROW"
   },
   {
     "id": "salford-cur-joe-shorrocks",
@@ -3769,7 +4580,7 @@
     "club": "Salford Red Devils",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -3779,7 +4590,15 @@
     "superLeagueWinner": true,
     "challengeCupWinner": false,
     "dateOfBirth": "1999-11-25",
-    "birthYear": 1999
+    "birthYear": 1999,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-joe-shorrocks",
+    "status": "Current",
+    "primaryPosition": "STAND_OFF"
   },
   {
     "id": "salford-cur-jonny-vaughan",
@@ -3788,7 +4607,7 @@
     "club": "Salford Red Devils",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "value": 270000,
@@ -3796,7 +4615,15 @@
     "appearances": 19,
     "tries": 2,
     "dateOfBirth": "2005-02-12",
-    "birthYear": 2005
+    "birthYear": 2005,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-jonny-vaughan",
+    "status": "Current",
+    "primaryPosition": "CENTRE"
   },
   {
     "id": "salford-cur-kai-morgan",
@@ -3805,7 +4632,7 @@
     "club": "Salford Red Devils",
     "nationality": "Unknown",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -3819,7 +4646,15 @@
       "Halifax",
       "Salford",
       "Sheffield"
-    ]
+    ],
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-kai-morgan",
+    "status": "Current",
+    "primaryPosition": "SCRUM_HALF"
   },
   {
     "id": "salford-cur-logan-ewington",
@@ -3828,11 +4663,19 @@
     "club": "Salford Red Devils",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
-    "rating": 83
+    "rating": 83,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-logan-ewington",
+    "status": "Current",
+    "primaryPosition": "SCRUM_HALF"
   },
   {
     "id": "salford-cur-mitch-clark",
@@ -3841,7 +4684,7 @@
     "club": "Salford Red Devils",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2012–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -3849,7 +4692,15 @@
     "appearances": 39,
     "tries": 5,
     "dateOfBirth": "1993-03-13",
-    "birthYear": 1993
+    "birthYear": 1993,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-mitch-clark",
+    "status": "Current",
+    "primaryPosition": "PROP"
   },
   {
     "id": "salford-cur-nathan-connell",
@@ -3858,7 +4709,7 @@
     "club": "Salford Red Devils",
     "nationality": "Unknown",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "value": 620000,
@@ -3866,7 +4717,15 @@
     "appearances": 24,
     "tries": 2,
     "dateOfBirth": "2003-01-05",
-    "birthYear": 2003
+    "birthYear": 2003,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-nathan-connell",
+    "status": "Current",
+    "primaryPosition": "WING"
   },
   {
     "id": "salford-cur-ryan-kingston",
@@ -3875,11 +4734,19 @@
     "club": "Salford Red Devils",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "value": 270000,
-    "rating": 75
+    "rating": 75,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-ryan-kingston",
+    "status": "Current",
+    "primaryPosition": "WING"
   },
   {
     "id": "salford-cur-shane-wright",
@@ -3888,7 +4755,7 @@
     "club": "Salford Red Devils",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -3896,7 +4763,15 @@
     "appearances": 67,
     "tries": 11,
     "dateOfBirth": "1996-03-13",
-    "birthYear": 1996
+    "birthYear": 1996,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-shane-wright",
+    "status": "Current",
+    "primaryPosition": "LOOSE_FORWARD"
   },
   {
     "id": "salford-cur-sitili-ngahe",
@@ -3905,11 +4780,19 @@
     "club": "Salford Red Devils",
     "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2023–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
-    "rating": 83
+    "rating": 83,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-sitili-ngahe",
+    "status": "Current",
+    "primaryPosition": "SECOND_ROW"
   },
   {
     "id": "salford-cur-tim-bergin",
@@ -3918,13 +4801,21 @@
     "club": "Salford Red Devils",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2023–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
     "rating": 83,
     "dateOfBirth": "1985-07-29",
-    "birthYear": 1985
+    "birthYear": 1985,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-tim-bergin",
+    "status": "Current",
+    "primaryPosition": "CENTRE"
   },
   {
     "id": "salford-cur-toby-warren",
@@ -3933,7 +4824,7 @@
     "club": "Salford Red Devils",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 75,
     "value": 270000,
@@ -3947,7 +4838,15 @@
       "Featherstone",
       "Salford",
       "Midlands"
-    ]
+    ],
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-cur-toby-warren",
+    "status": "Current",
+    "primaryPosition": "CENTRE"
   },
   {
     "id": "sheffield-cur-joe-brown",
@@ -3956,13 +4855,21 @@
     "club": "Sheffield Eagles",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
     "value": 1145000,
     "dateOfBirth": "1999-01-14",
-    "birthYear": 1999
+    "birthYear": 1999,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "sheffield-eagles-2026",
+    "team": "Sheffield Eagles",
+    "displayClub": "Sheffield Eagles",
+    "basePlayerId": "sheffield-cur-joe-brown",
+    "status": "Current",
+    "primaryPosition": "FULLBACK"
   },
   {
     "id": "sheffield-cur-matty-marsh",
@@ -3971,7 +4878,7 @@
     "club": "Sheffield Eagles",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
@@ -3979,7 +4886,15 @@
     "dateOfBirth": "1995-04-21",
     "birthYear": 1995,
     "appearances": 22,
-    "tries": 3
+    "tries": 3,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "sheffield-eagles-2026",
+    "team": "Sheffield Eagles",
+    "displayClub": "Sheffield Eagles",
+    "basePlayerId": "sheffield-cur-matty-marsh",
+    "status": "Current",
+    "primaryPosition": "FULLBACK"
   },
   {
     "id": "st-helens-cur-alex-walmsley",
@@ -3988,7 +4903,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2012–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 89,
     "value": 250000,
@@ -4006,7 +4921,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-alex-walmsley",
+    "primaryPosition": "PF"
   },
   {
     "id": "st-helens-cur-curtis-sironen",
@@ -4015,7 +4935,7 @@
     "club": "St Helens",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2012–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -4033,7 +4953,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-curtis-sironen",
+    "primaryPosition": "SR"
   },
   {
     "id": "st-helens-cur-daryl-clark",
@@ -4042,7 +4967,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2011–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 87,
     "value": 1840000,
@@ -4058,7 +4983,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-daryl-clark",
+    "primaryPosition": "HK"
   },
   {
     "id": "st-helens-cur-david-klemmer",
@@ -4067,7 +4997,7 @@
     "club": "St Helens",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -4083,7 +5013,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-david-klemmer",
+    "primaryPosition": "PF"
   },
   {
     "id": "st-helens-cur-deon-cross",
@@ -4092,7 +5027,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4109,7 +5044,12 @@
       "WING",
       "CENTRE"
     ],
-    "positionAbbrev": "WG/CE"
+    "positionAbbrev": "WG/CE",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-deon-cross",
+    "primaryPosition": "WG/CE"
   },
   {
     "id": "st-helens-cur-george-delaney",
@@ -4118,7 +5058,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4134,7 +5074,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-george-delaney",
+    "primaryPosition": "PF"
   },
   {
     "id": "st-helens-cur-george-whitby",
@@ -4143,7 +5088,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -4160,7 +5105,12 @@
       "STAND_OFF",
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "HB"
+    "positionAbbrev": "HB",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-george-whitby",
+    "primaryPosition": "HB"
   },
   {
     "id": "st-helens-cur-harry-robertson",
@@ -4169,7 +5119,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4185,7 +5135,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-harry-robertson",
+    "primaryPosition": "CE"
   },
   {
     "id": "st-helens-cur-jack-welsby",
@@ -4194,7 +5149,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 88,
     "value": 258000,
@@ -4212,7 +5167,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-jack-welsby",
+    "primaryPosition": "FB"
   },
   {
     "id": "st-helens-cur-jake-wingfield",
@@ -4221,7 +5181,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -4240,7 +5200,12 @@
       "SECOND_ROW",
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "SR/LF"
+    "positionAbbrev": "SR/LF",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-jake-wingfield",
+    "primaryPosition": "SR/LF"
   },
   {
     "id": "st-helens-cur-jonny-lomax",
@@ -4249,7 +5214,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2009–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -4267,7 +5232,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-jonny-lomax",
+    "primaryPosition": "SH"
   },
   {
     "id": "st-helens-cur-lewis-murphy",
@@ -4276,7 +5246,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -4292,7 +5262,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-lewis-murphy",
+    "primaryPosition": "WG"
   },
   {
     "id": "st-helens-cur-mark-percival",
@@ -4301,7 +5276,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -4319,7 +5294,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-mark-percival",
+    "primaryPosition": "CE"
   },
   {
     "id": "st-helens-cur-matt-whitley",
@@ -4328,7 +5308,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2015–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4344,7 +5324,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-matt-whitley",
+    "primaryPosition": "SR"
   },
   {
     "id": "st-helens-cur-matty-lees",
@@ -4353,7 +5338,7 @@
     "club": "St Helens",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -4371,7 +5356,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-matty-lees",
+    "primaryPosition": "PF"
   },
   {
     "id": "st-helens-cur-morgan-knowles",
@@ -4388,11 +5378,16 @@
     "positionAbbrev": "LF",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 90,
     "rating": 90,
-    "value": 2470000
+    "value": 2470000,
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-morgan-knowles",
+    "primaryPosition": "LF"
   },
   {
     "id": "st-helens-cur-tristan-sailor",
@@ -4401,7 +5396,7 @@
     "club": "St Helens",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 87,
     "value": 1840000,
@@ -4417,7 +5412,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "basePlayerId": "st-helens-cur-tristan-sailor",
+    "primaryPosition": "SO"
   },
   {
     "id": "toulouse-cur-anthony-marion",
@@ -4426,7 +5426,7 @@
     "club": "Toulouse Olympique",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4442,7 +5442,12 @@
     "positions": [
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "LF"
+    "positionAbbrev": "LF",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-anthony-marion",
+    "primaryPosition": "LF"
   },
   {
     "id": "toulouse-cur-benjamin-laguerre",
@@ -4451,7 +5456,7 @@
     "club": "Toulouse Olympique",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -4467,7 +5472,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-benjamin-laguerre",
+    "primaryPosition": "WG"
   },
   {
     "id": "toulouse-cur-brendan-hands",
@@ -4476,7 +5486,7 @@
     "club": "Toulouse Olympique",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4494,7 +5504,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-brendan-hands",
+    "primaryPosition": "HK"
   },
   {
     "id": "toulouse-cur-calum-gahan",
@@ -4503,7 +5518,7 @@
     "club": "Toulouse Olympique",
     "nationality": "Scotland",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -4519,7 +5534,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-calum-gahan",
+    "primaryPosition": "SR"
   },
   {
     "id": "toulouse-cur-eloi-pelissier",
@@ -4536,11 +5556,16 @@
     "positionAbbrev": "HK",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "rating": 79,
-    "value": 620000
+    "value": 620000,
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-eloi-pelissier",
+    "primaryPosition": "HK"
   },
   {
     "id": "toulouse-cur-jake-shorrocks",
@@ -4549,7 +5574,7 @@
     "club": "Toulouse Olympique",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4565,7 +5590,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-jake-shorrocks",
+    "primaryPosition": "SO"
   },
   {
     "id": "toulouse-cur-james-roumanos",
@@ -4574,7 +5604,7 @@
     "club": "Toulouse Olympique",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4590,7 +5620,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-james-roumanos",
+    "primaryPosition": "PF"
   },
   {
     "id": "toulouse-cur-john-toleafoa",
@@ -4607,11 +5642,16 @@
     "positionAbbrev": "PF",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-john-toleafoa",
+    "primaryPosition": "PF"
   },
   {
     "id": "toulouse-cur-justin-sangare",
@@ -4628,11 +5668,16 @@
     "positionAbbrev": "PF",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "rating": 86,
-    "value": 1650000
+    "value": 1650000,
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-justin-sangare",
+    "primaryPosition": "PF"
   },
   {
     "id": "toulouse-cur-lambert-belmas",
@@ -4641,7 +5686,7 @@
     "club": "Toulouse Olympique",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -4657,7 +5702,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-lambert-belmas",
+    "primaryPosition": "PF"
   },
   {
     "id": "toulouse-cur-mathieu-jussaume",
@@ -4666,7 +5716,7 @@
     "club": "Toulouse Olympique",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4682,7 +5732,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-mathieu-jussaume",
+    "primaryPosition": "CE"
   },
   {
     "id": "toulouse-cur-maxime-stefani",
@@ -4691,7 +5746,7 @@
     "club": "Toulouse Olympique",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4707,7 +5762,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-maxime-stefani",
+    "primaryPosition": "SR"
   },
   {
     "id": "toulouse-cur-olly-ashall-bott",
@@ -4716,7 +5776,7 @@
     "club": "Toulouse Olympique",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4732,7 +5792,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-olly-ashall-bott",
+    "primaryPosition": "FB"
   },
   {
     "id": "toulouse-cur-paul-marcon",
@@ -4741,7 +5806,7 @@
     "club": "Toulouse Olympique",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -4757,7 +5822,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-paul-marcon",
+    "primaryPosition": "WG"
   },
   {
     "id": "toulouse-cur-paul-ulberg",
@@ -4766,7 +5836,7 @@
     "club": "Toulouse Olympique",
     "nationality": "Cook Islands",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4782,7 +5852,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-paul-ulberg",
+    "primaryPosition": "WG"
   },
   {
     "id": "toulouse-cur-reubenn-rennie",
@@ -4791,7 +5866,7 @@
     "club": "Toulouse Olympique",
     "nationality": "Cook Islands",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4807,7 +5882,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-reubenn-rennie",
+    "primaryPosition": "CE"
   },
   {
     "id": "toulouse-cur-thomas-lacans",
@@ -4816,7 +5896,7 @@
     "club": "Toulouse Olympique",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4832,7 +5912,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "toulouse-cur-thomas-lacans",
+    "primaryPosition": "SH"
   },
   {
     "id": "wakefield-cur-caleb-hamlin-uele",
@@ -4841,7 +5926,7 @@
     "club": "Wakefield Trinity",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2016–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -4855,7 +5940,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-caleb-hamlin-uele",
+    "primaryPosition": "PF"
   },
   {
     "id": "wakefield-cur-cameron-scott",
@@ -4872,11 +5962,16 @@
     "positionAbbrev": "CE",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-cameron-scott",
+    "primaryPosition": "CE"
   },
   {
     "id": "wakefield-cur-corey-hall",
@@ -4885,7 +5980,7 @@
     "club": "Wakefield Trinity",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -4902,7 +5997,12 @@
       "WING",
       "CENTRE"
     ],
-    "positionAbbrev": "WG/CE"
+    "positionAbbrev": "WG/CE",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-corey-hall",
+    "primaryPosition": "WG/CE"
   },
   {
     "id": "wakefield-cur-jake-trueman",
@@ -4911,7 +6011,7 @@
     "club": "Wakefield Trinity",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 87,
     "value": 228000,
@@ -4927,7 +6027,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-jake-trueman",
+    "primaryPosition": "SO"
   },
   {
     "id": "wakefield-cur-jay-pitts",
@@ -4936,7 +6041,7 @@
     "club": "Wakefield Trinity",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2010–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4953,7 +6058,12 @@
       "SECOND_ROW",
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "SR/LF"
+    "positionAbbrev": "SR/LF",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-jay-pitts",
+    "primaryPosition": "SR/LF"
   },
   {
     "id": "wakefield-cur-jazz-tevaga",
@@ -4962,7 +6072,7 @@
     "club": "Wakefield Trinity",
     "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2016–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -4978,7 +6088,12 @@
     "positions": [
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "LF"
+    "positionAbbrev": "LF",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-jazz-tevaga",
+    "primaryPosition": "LF"
   },
   {
     "id": "wakefield-cur-ky-rodwell",
@@ -4987,7 +6102,7 @@
     "club": "Wakefield Trinity",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -5003,7 +6118,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-ky-rodwell",
+    "primaryPosition": "PF"
   },
   {
     "id": "wakefield-cur-liam-hood",
@@ -5020,11 +6140,16 @@
     "positionAbbrev": "HK",
     "nationality": "Scotland",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-liam-hood",
+    "primaryPosition": "HK"
   },
   {
     "id": "wakefield-cur-mason-lino",
@@ -5033,7 +6158,7 @@
     "club": "Wakefield Trinity",
     "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2014–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -5049,7 +6174,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-mason-lino",
+    "primaryPosition": "SH"
   },
   {
     "id": "wakefield-cur-matty-storton",
@@ -5058,7 +6188,7 @@
     "club": "Wakefield Trinity",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -5074,7 +6204,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-matty-storton",
+    "primaryPosition": "SR"
   },
   {
     "id": "wakefield-cur-max-jowitt",
@@ -5083,7 +6218,7 @@
     "club": "Wakefield Trinity",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2016–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -5099,7 +6234,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-max-jowitt",
+    "primaryPosition": "FB"
   },
   {
     "id": "wakefield-cur-mike-mcmeeken",
@@ -5108,7 +6248,7 @@
     "club": "Wakefield Trinity",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2014–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 88,
     "value": 248000,
@@ -5124,7 +6264,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-mike-mcmeeken",
+    "primaryPosition": "PF"
   },
   {
     "id": "wakefield-cur-oliver-pratt",
@@ -5133,7 +6278,7 @@
     "club": "Wakefield Trinity",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -5149,7 +6294,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-oliver-pratt",
+    "primaryPosition": "CE"
   },
   {
     "id": "wakefield-cur-renouf-atoni",
@@ -5166,11 +6316,16 @@
     "positionAbbrev": "PF",
     "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "rating": 86,
-    "value": 1650000
+    "value": 1650000,
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-renouf-atoni",
+    "primaryPosition": "PF"
   },
   {
     "id": "wakefield-cur-seth-nikotemo",
@@ -5179,7 +6334,7 @@
     "club": "Wakefield Trinity",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2023–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -5195,7 +6350,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-seth-nikotemo",
+    "primaryPosition": "SR"
   },
   {
     "id": "wakefield-cur-tom-johnstone",
@@ -5204,7 +6364,7 @@
     "club": "Wakefield Trinity",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 90,
     "value": 2470000,
@@ -5220,7 +6380,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-tom-johnstone",
+    "primaryPosition": "WG"
   },
   {
     "id": "wakefield-cur-tyson-smoothy",
@@ -5229,7 +6394,7 @@
     "club": "Wakefield Trinity",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -5245,7 +6410,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Wakefield Trinity",
+    "displayClub": "Wakefield Trinity",
+    "basePlayerId": "wakefield-cur-tyson-smoothy",
+    "primaryPosition": "HK"
   },
   {
     "id": "warrington-cur-adam-holroyd",
@@ -5254,7 +6424,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -5270,7 +6440,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-adam-holroyd",
+    "primaryPosition": "SR"
   },
   {
     "id": "warrington-cur-albert-hopoate",
@@ -5279,7 +6454,7 @@
     "club": "Warrington Wolves",
     "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -5295,7 +6470,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-albert-hopoate",
+    "primaryPosition": "CE"
   },
   {
     "id": "warrington-cur-ben-currie",
@@ -5304,7 +6484,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 87,
     "value": 1840000,
@@ -5320,7 +6500,12 @@
     "positions": [
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "LF"
+    "positionAbbrev": "LF",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-ben-currie",
+    "primaryPosition": "LF"
   },
   {
     "id": "warrington-cur-cai-taylor-wray",
@@ -5329,7 +6514,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2025–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -5345,7 +6530,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-cai-taylor-wray",
+    "primaryPosition": "FB"
   },
   {
     "id": "warrington-cur-danny-walker",
@@ -5354,7 +6544,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 185000,
@@ -5370,7 +6560,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-danny-walker",
+    "primaryPosition": "HK"
   },
   {
     "id": "warrington-cur-george-williams",
@@ -5379,7 +6574,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 89,
     "value": 250000,
@@ -5397,7 +6592,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-george-williams",
+    "primaryPosition": "SO"
   },
   {
     "id": "warrington-cur-james-harrison",
@@ -5406,7 +6606,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -5422,7 +6622,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-james-harrison",
+    "primaryPosition": "PF"
   },
   {
     "id": "warrington-cur-joe-philbin",
@@ -5431,7 +6636,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2016–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -5447,7 +6652,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-joe-philbin",
+    "primaryPosition": "PF"
   },
   {
     "id": "warrington-cur-josh-thewlis",
@@ -5456,7 +6666,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -5472,7 +6682,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-josh-thewlis",
+    "primaryPosition": "WG"
   },
   {
     "id": "warrington-cur-luke-yates",
@@ -5481,7 +6696,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -5497,7 +6712,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-luke-yates",
+    "primaryPosition": "PF"
   },
   {
     "id": "warrington-cur-marc-sneyd",
@@ -5506,7 +6726,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2010–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 89,
     "value": 250000,
@@ -5522,7 +6742,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-marc-sneyd",
+    "primaryPosition": "SH"
   },
   {
     "id": "warrington-cur-matty-ashton",
@@ -5531,7 +6756,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -5547,7 +6772,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-matty-ashton",
+    "primaryPosition": "WG"
   },
   {
     "id": "warrington-cur-matty-nicholson",
@@ -5564,11 +6794,16 @@
     "positionAbbrev": "SR",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "rating": 83,
-    "value": 1145000
+    "value": 1145000,
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-matty-nicholson",
+    "primaryPosition": "SR"
   },
   {
     "id": "warrington-cur-max-wood",
@@ -5577,7 +6812,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "value": 620000,
@@ -5593,7 +6828,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-max-wood",
+    "primaryPosition": "PF"
   },
   {
     "id": "warrington-cur-sam-powell",
@@ -5602,7 +6842,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2013–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -5622,7 +6862,12 @@
       "STAND_OFF",
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "HK/HB"
+    "positionAbbrev": "HK/HB",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-sam-powell",
+    "primaryPosition": "HK/HB"
   },
   {
     "id": "warrington-cur-sam-stone",
@@ -5631,7 +6876,7 @@
     "club": "Warrington Wolves",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -5647,7 +6892,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-sam-stone",
+    "primaryPosition": "SR"
   },
   {
     "id": "warrington-cur-toby-king",
@@ -5656,7 +6906,7 @@
     "club": "Warrington Wolves",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2014–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -5674,7 +6924,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-toby-king",
+    "primaryPosition": "CE"
   },
   {
     "id": "wigan-cur-adam-keighran",
@@ -5683,7 +6938,7 @@
     "club": "Wigan Warriors",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 88,
     "value": 255000,
@@ -5701,7 +6956,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-adam-keighran",
+    "primaryPosition": "CE"
   },
   {
     "id": "wigan-cur-bevan-french",
@@ -5710,7 +6970,7 @@
     "club": "Wigan Warriors",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2016–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 93,
     "value": 465000,
@@ -5728,7 +6988,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-bevan-french",
+    "primaryPosition": "SO"
   },
   {
     "id": "wigan-cur-brad-o-neill",
@@ -5737,7 +7002,7 @@
     "club": "Wigan Warriors",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -5755,7 +7020,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-brad-o-neill",
+    "primaryPosition": "HK"
   },
   {
     "id": "wigan-cur-ethan-havard",
@@ -5764,7 +7034,7 @@
     "club": "Wigan Warriors",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -5782,7 +7052,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-ethan-havard",
+    "primaryPosition": "PF"
   },
   {
     "id": "wigan-cur-harry-smith",
@@ -5791,7 +7066,7 @@
     "club": "Wigan Warriors",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 88,
     "value": 261000,
@@ -5810,7 +7085,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-harry-smith",
+    "primaryPosition": "SH"
   },
   {
     "id": "wigan-cur-jai-field",
@@ -5819,7 +7099,7 @@
     "club": "Wigan Warriors",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 90,
     "value": 280000,
@@ -5837,7 +7117,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-jai-field",
+    "primaryPosition": "FB"
   },
   {
     "id": "wigan-cur-jake-wardle",
@@ -5846,7 +7131,7 @@
     "club": "Wigan Warriors",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2018–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 90,
     "value": 280000,
@@ -5864,7 +7149,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-jake-wardle",
+    "primaryPosition": "CE"
   },
   {
     "id": "wigan-cur-junior-nsemba",
@@ -5873,7 +7163,7 @@
     "club": "Wigan Warriors",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 89,
     "value": 250000,
@@ -5891,7 +7181,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-junior-nsemba",
+    "primaryPosition": "SR"
   },
   {
     "id": "wigan-cur-kaide-ellis",
@@ -5900,7 +7195,7 @@
     "club": "Wigan Warriors",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 85,
     "value": 180000,
@@ -5918,7 +7213,12 @@
     "positions": [
       "LOOSE_FORWARD"
     ],
-    "positionAbbrev": "LF"
+    "positionAbbrev": "LF",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-kaide-ellis",
+    "primaryPosition": "LF"
   },
   {
     "id": "wigan-cur-liam-farrell",
@@ -5927,7 +7227,7 @@
     "club": "Wigan Warriors",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2010–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 90,
     "value": 2470000,
@@ -5945,7 +7245,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-liam-farrell",
+    "primaryPosition": "SR"
   },
   {
     "id": "wigan-cur-liam-marshall",
@@ -5954,7 +7259,7 @@
     "club": "Wigan Warriors",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 87,
     "value": 1840000,
@@ -5972,7 +7277,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-liam-marshall",
+    "primaryPosition": "WG"
   },
   {
     "id": "wigan-cur-luke-thompson",
@@ -5981,7 +7291,7 @@
     "club": "Wigan Warriors",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2014–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 89,
     "value": 250000,
@@ -5999,7 +7309,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-luke-thompson",
+    "primaryPosition": "PF"
   },
   {
     "id": "wigan-cur-oliver-wilson",
@@ -6008,7 +7323,7 @@
     "club": "Wigan Warriors",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2019–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -6024,7 +7339,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-oliver-wilson",
+    "primaryPosition": "PF"
   },
   {
     "id": "wigan-cur-patrick-mago",
@@ -6033,7 +7353,7 @@
     "club": "Wigan Warriors",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2017–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -6051,7 +7371,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-patrick-mago",
+    "primaryPosition": "PF"
   },
   {
     "id": "wigan-cur-sam-eseh",
@@ -6060,7 +7385,7 @@
     "club": "Wigan Warriors",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2023–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -6077,7 +7402,12 @@
       "PROP",
       "SECOND_ROW"
     ],
-    "positionAbbrev": "PF/SR"
+    "positionAbbrev": "PF/SR",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-sam-eseh",
+    "primaryPosition": "PF/SR"
   },
   {
     "id": "wigan-cur-sam-walters",
@@ -6086,7 +7416,7 @@
     "club": "Wigan Warriors",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2021–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -6103,7 +7433,12 @@
       "SECOND_ROW",
       "PROP"
     ],
-    "positionAbbrev": "SR/PF"
+    "positionAbbrev": "SR/PF",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-sam-walters",
+    "primaryPosition": "SR/PF"
   },
   {
     "id": "wigan-cur-zach-eckersley",
@@ -6112,7 +7447,7 @@
     "club": "Wigan Warriors",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2022–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -6131,7 +7466,12 @@
       "WING",
       "CENTRE"
     ],
-    "positionAbbrev": "WG/CE"
+    "positionAbbrev": "WG/CE",
+    "cardYear": 2026,
+    "team": "Wigan Warriors",
+    "displayClub": "Wigan Warriors",
+    "basePlayerId": "wigan-cur-zach-eckersley",
+    "primaryPosition": "WG/CE"
   },
   {
     "id": "york-cur-ata-hingano",
@@ -6140,7 +7480,7 @@
     "club": "York Knights",
     "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -6156,7 +7496,12 @@
     "positions": [
       "STAND_OFF"
     ],
-    "positionAbbrev": "SO"
+    "positionAbbrev": "SO",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-ata-hingano",
+    "primaryPosition": "SO"
   },
   {
     "id": "york-cur-ben-jones-bishop",
@@ -6165,7 +7510,7 @@
     "club": "York Knights",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -6183,7 +7528,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-ben-jones-bishop",
+    "primaryPosition": "WG"
   },
   {
     "id": "york-cur-denive-balmforth",
@@ -6192,7 +7542,7 @@
     "club": "York Knights",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 79,
     "value": 620000,
@@ -6208,7 +7558,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-denive-balmforth",
+    "primaryPosition": "HK"
   },
   {
     "id": "york-cur-jack-martin",
@@ -6217,7 +7572,7 @@
     "club": "York Knights",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -6235,7 +7590,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-jack-martin",
+    "primaryPosition": "PF"
   },
   {
     "id": "york-cur-jesse-dee",
@@ -6244,7 +7604,7 @@
     "club": "York Knights",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -6260,7 +7620,12 @@
     "positions": [
       "SECOND_ROW"
     ],
-    "positionAbbrev": "SR"
+    "positionAbbrev": "SR",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-jesse-dee",
+    "primaryPosition": "SR"
   },
   {
     "id": "york-cur-jordan-lipp",
@@ -6269,7 +7634,7 @@
     "club": "York Knights",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -6281,7 +7646,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-jordan-lipp",
+    "primaryPosition": "CE"
   },
   {
     "id": "york-cur-jordan-thompson",
@@ -6290,7 +7660,7 @@
     "club": "York Knights",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -6307,7 +7677,12 @@
       "LOOSE_FORWARD",
       "SECOND_ROW"
     ],
-    "positionAbbrev": "LF/SR"
+    "positionAbbrev": "LF/SR",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-jordan-thompson",
+    "primaryPosition": "LF/SR"
   },
   {
     "id": "york-cur-josh-griffin",
@@ -6316,7 +7691,7 @@
     "club": "York Knights",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -6333,7 +7708,12 @@
       "SECOND_ROW",
       "CENTRE"
     ],
-    "positionAbbrev": "SR/CE"
+    "positionAbbrev": "SR/CE",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-josh-griffin",
+    "primaryPosition": "SR/CE"
   },
   {
     "id": "york-cur-justin-sangare",
@@ -6342,7 +7722,7 @@
     "club": "York Knights",
     "nationality": "France",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -6359,7 +7739,12 @@
       "PROP",
       "SECOND_ROW"
     ],
-    "positionAbbrev": "PF/SR"
+    "positionAbbrev": "PF/SR",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-justin-sangare",
+    "primaryPosition": "PF/SR"
   },
   {
     "id": "york-cur-liam-harris",
@@ -6368,7 +7753,7 @@
     "club": "York Knights",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -6384,7 +7769,12 @@
     "positions": [
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH"
+    "positionAbbrev": "SH",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-liam-harris",
+    "primaryPosition": "SH"
   },
   {
     "id": "york-cur-oliver-field",
@@ -6401,11 +7791,16 @@
     "positionAbbrev": "SR",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "rating": 80,
-    "value": 735000
+    "value": 735000,
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-oliver-field",
+    "primaryPosition": "SR"
   },
   {
     "id": "york-cur-paul-mcshane",
@@ -6414,7 +7809,7 @@
     "club": "York Knights",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 86,
     "value": 1650000,
@@ -6430,7 +7825,12 @@
     "positions": [
       "HOOKER"
     ],
-    "positionAbbrev": "HK"
+    "positionAbbrev": "HK",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-paul-mcshane",
+    "primaryPosition": "HK"
   },
   {
     "id": "york-cur-paul-vaughan",
@@ -6439,7 +7839,7 @@
     "club": "York Knights",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 88,
     "value": 248000,
@@ -6455,7 +7855,12 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-paul-vaughan",
+    "primaryPosition": "PF"
   },
   {
     "id": "york-cur-sam-wood",
@@ -6464,7 +7869,7 @@
     "club": "York Knights",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -6480,7 +7885,12 @@
     "positions": [
       "CENTRE"
     ],
-    "positionAbbrev": "CE"
+    "positionAbbrev": "CE",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-sam-wood",
+    "primaryPosition": "CE"
   },
   {
     "id": "york-cur-scott-galeano",
@@ -6489,7 +7899,7 @@
     "club": "York Knights",
     "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -6505,7 +7915,12 @@
     "positions": [
       "WING"
     ],
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-scott-galeano",
+    "primaryPosition": "WG"
   },
   {
     "id": "york-cur-toa-mataafa",
@@ -6514,7 +7929,7 @@
     "club": "York Knights",
     "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 1145000,
@@ -6530,7 +7945,12 @@
     "positions": [
       "FULLBACK"
     ],
-    "positionAbbrev": "FB"
+    "positionAbbrev": "FB",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-toa-mataafa",
+    "primaryPosition": "FB"
   },
   {
     "id": "york-cur-xavier-vaa",
@@ -6539,7 +7959,7 @@
     "club": "York Knights",
     "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2024–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 80,
     "value": 735000,
@@ -6555,6 +7975,11 @@
     "positions": [
       "PROP"
     ],
-    "positionAbbrev": "PF"
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-xavier-vaa",
+    "primaryPosition": "PF"
   }
 ]

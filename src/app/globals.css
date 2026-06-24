@@ -385,27 +385,28 @@ body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 52px;
-    padding: 1rem 1.25rem;
-    border-radius: 0.75rem;
-    border: 2px solid #b45309;
+    min-height: 44px;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid rgba(180, 83, 9, 0.75);
     background-color: #fbbf24;
     background-image: linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%);
     color: #0a0f0d !important;
     font-family: var(--font-display), "Arial Black", Impact, sans-serif;
-    font-size: 1.125rem;
-    font-weight: 900;
+    font-size: 0.75rem;
+    font-weight: 700;
     line-height: 1.2;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.15em;
     text-align: center;
     text-decoration: none;
     isolation: isolate;
     position: relative;
     z-index: 1;
     box-shadow:
-      0 0 30px rgba(251, 191, 36, 0.45),
-      0 2px 0 rgba(0, 0, 0, 0.15);
+      0 0 28px rgba(251, 191, 36, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
     transform: translateZ(0);
@@ -436,27 +437,28 @@ body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 52px;
-    padding: 1rem 1.25rem;
-    border-radius: 0.75rem;
-    border: 2px solid #16a34a;
+    min-height: 44px;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid rgba(22, 163, 74, 0.75);
     background-color: #22c55e;
     background-image: linear-gradient(90deg, #22c55e 0%, #34d399 100%);
     color: #0a0f0d !important;
     font-family: var(--font-display), "Arial Black", Impact, sans-serif;
-    font-size: 1.125rem;
-    font-weight: 900;
+    font-size: 0.75rem;
+    font-weight: 700;
     line-height: 1.2;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.15em;
     text-align: center;
     text-decoration: none;
     isolation: isolate;
     position: relative;
     z-index: 1;
     box-shadow:
-      0 0 30px rgba(34, 197, 94, 0.35),
-      0 2px 0 rgba(0, 0, 0, 0.15);
+      0 0 28px rgba(34, 197, 94, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
     transform: translateZ(0);
@@ -480,13 +482,13 @@ body {
   }
 
   .mode-start-btn-hard {
-    border-color: #dc2626;
+    border-color: rgba(220, 38, 38, 0.85);
     background-color: #ef4444;
     background-image: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
     color: #ffffff !important;
     box-shadow:
-      0 0 30px rgba(239, 68, 68, 0.4),
-      0 2px 0 rgba(0, 0, 0, 0.15);
+      0 0 28px rgba(239, 68, 68, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
   .mode-start-btn-hard:hover {

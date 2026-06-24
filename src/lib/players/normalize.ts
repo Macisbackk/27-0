@@ -1,4 +1,4 @@
-import type { Player, Position } from "../types";
+import type { Player, PlayerCategory, Position } from "../types";
 import { PLAYER_RATING_OVERRIDES } from "../../../data/player-rating-overrides";
 import birthYearsData from "../../../data/birth-years.json";
 import { compressPeakRating, computePlayerValue } from "./ratings";
@@ -13,6 +13,12 @@ import { resolveCareerTries } from "./career-tries";
 import { resolveCategory } from "./active";
 import { resolveSuperLeagueEligible } from "./super-league-eligibility";
 import { getDreamTeamYears, getGoldenBootYears } from "./achievements";
+import {
+  buildPlayerTeamYearId,
+  categoryToCardStatus,
+  resolveBasePlayerId,
+  resolveRawCardYear,
+} from "./year-card";
 
 const RATING_OVERRIDES = PLAYER_RATING_OVERRIDES;
 const BIRTH_YEAR_OVERRIDES = birthYearsData as Record<string, number>;
@@ -88,12 +94,38 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     parsedId.yearCardYear
   );
   const eraYear = raw.eraYear as number | undefined;
+  const year =
+    (raw.year as number | undefined) ??
+    resolveRawCardYear(raw) ??
+    cardYear;
+  const teamYearId =
+    (raw.teamYearId as string | undefined) ??
+    (year !== undefined && rawClub
+      ? buildPlayerTeamYearId(rawClub, year)
+      : undefined);
+  const basePlayerId = resolveBasePlayerId(
+    id,
+    raw.basePlayerId as string | undefined
+  );
+  const status =
+    (raw.status as Player["status"]) ?? categoryToCardStatus(category);
+  const displayClub =
+    (raw.displayClub as string | undefined) ??
+    (raw.team as string | undefined) ??
+    resolveDisplayClub(id, rawClub, name);
 
   const player: Player = {
     id,
     baseId: parsedId.baseId !== id ? parsedId.baseId : undefined,
+    basePlayerId,
     name,
+    team: (raw.team as string | undefined) ?? rawClub,
     club: resolveDisplayClub(id, rawClub, name),
+    displayClub,
+    year,
+    teamYearId,
+    status,
+    primaryPosition: raw.primaryPosition as string | undefined,
     position,
     positions: positions.length > 0 ? positions : [position],
     originalPosition: mappedFromUtility ? originalPosition : undefined,

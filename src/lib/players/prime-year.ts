@@ -76,10 +76,10 @@ export function formatPrimeYearSuffix(primeYear: number): string {
   return formatShortYear(primeYear);
 }
 
-/** Display name with prime-year suffix for historic/legend players. */
+/** Display name with year suffix for historic/legend year cards. */
 export function formatPlayerDisplayName(player: Player): string {
-  if (player.category === "current" || player.primeYear === undefined) {
-    return player.name;
-  }
-  return `${player.name} ${formatPrimeYearSuffix(player.primeYear)}`;
+  if (player.category === "current") return player.name;
+  const year = player.year ?? player.primeYear ?? player.cardYear;
+  if (year === undefined) return player.name;
+  return `${player.name} ${formatPrimeYearSuffix(year)}`;
 }

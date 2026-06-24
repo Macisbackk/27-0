@@ -194,6 +194,10 @@ function passesYearFilter(player: Player, filters: ShowcaseFilters): boolean {
   if (filters.browseMode === "teamYear") return true;
   const yearQuery = filters.yearsActive.trim();
   if (!yearQuery) return true;
+  const cardYear = player.year ?? player.cardYear ?? player.primeYear;
+  if (cardYear !== undefined && String(cardYear).includes(yearQuery)) {
+    return true;
+  }
   return player.yearsActive
     .toLowerCase()
     .includes(yearQuery.toLowerCase());

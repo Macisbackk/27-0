@@ -26,9 +26,59 @@ const legendClubByName = new Map<string, string>(
   ])
 );
 
-/** Clubs that may appear as opponents, in league tables, and in recruitment pools. */
+/** Current Super League clubs — Current Mode, Current Challenge Cup, league opponents. */
+export const CURRENT_PLAYABLE_CLUBS = [
+  "Bradford Bulls",
+  "Castleford Tigers",
+  "Catalans Dragons",
+  "Huddersfield Giants",
+  "Hull FC",
+  "Hull KR",
+  "Leeds Rhinos",
+  "Leigh Leopards",
+  "St Helens",
+  "Toulouse Olympique",
+  "Wakefield Trinity",
+  "Warrington Wolves",
+  "Wigan Warriors",
+  "York Knights",
+] as const;
+
+/** Historic-only Super League clubs — Era Normal + Era Challenge Cup only. */
+export const ERA_HISTORIC_ONLY_CLUBS = [
+  "London Broncos",
+  "Salford Red Devils",
+  "Widnes Vikings",
+] as const;
+
+/** All clubs valid in Era Normal Mode / Era Challenge Cup historic pools. */
+export const ERA_PLAYABLE_CLUBS = [
+  ...CURRENT_PLAYABLE_CLUBS,
+  ...ERA_HISTORIC_ONLY_CLUBS,
+] as const;
+
+const CURRENT_PLAYABLE_SET = new Set<string>(CURRENT_PLAYABLE_CLUBS);
+const ERA_PLAYABLE_SET = new Set<string>(ERA_PLAYABLE_CLUBS);
+
+export function isCurrentPlayableClub(clubName: string): boolean {
+  return CURRENT_PLAYABLE_SET.has(clubName);
+}
+
+export function isEraPlayableClub(clubName: string): boolean {
+  return ERA_PLAYABLE_SET.has(clubName);
+}
+
+export function getEraPlayableClubNames(): readonly string[] {
+  return ERA_PLAYABLE_CLUBS;
+}
+
+/** Clubs that may appear as opponents, in league tables, and in current recruitment pools. */
 export function isPlayableClub(clubName: string): boolean {
   return PLAYABLE_CLUB_NAMES.has(clubName);
+}
+
+export function getCurrentPlayableClubNames(): string[] {
+  return [...CURRENT_PLAYABLE_CLUBS];
 }
 
 export function getPlayableClubNames(): string[] {
@@ -54,7 +104,7 @@ export function resolveDisplayClub(
   rawClub: string,
   playerName: string
 ): string {
-  if (isPlayableClub(rawClub)) {
+  if (isPlayableClub(rawClub) || isEraPlayableClub(rawClub)) {
     return rawClub;
   }
 

@@ -23,6 +23,8 @@ export type UtilityPositionHint = {
 
 export type PlayerCategory = "current" | "historic" | "legend";
 
+export type PlayerCardStatus = "Current" | "Historic" | "Legend";
+
 export type GameMode = "CLASSIC" | "CHALLENGE_CUP" | "DRAFT" | "FANTASY" | "ERA_CHALLENGE_CUP";
 
 /** Normal Mode spin variant — persisted on runs, stats, and leaderboard rows. */
@@ -53,14 +55,26 @@ export interface Player extends PlayerAchievements {
   id: string;
   /** Base slug when this row is a year card (e.g. sam-burgess for sam-burgess-2009). */
   baseId?: string;
+  /** Grouping id for the same real-world player across year cards. */
+  basePlayerId?: string;
   name: string;
+  /** Canonical club on this year card — same as club/displayClub. */
+  team?: string;
   club: string;
+  /** UI club label for this card. */
+  displayClub?: string;
+  /** Card year — every gameplay card must be pinned to one season. */
+  year?: number;
+  /** Exact roster pool key, e.g. bradford-bulls-2006. */
+  teamYearId?: string;
+  /** Card status for showcase/filtering. */
+  status?: PlayerCardStatus;
+  /** Primary squad position abbreviation source (HK, FB, etc.) when stored in data. */
+  primaryPosition?: string;
   /** Original database club — preserved when runClub overrides display. */
   baseClub?: string;
   /** Era team display name for the active run, e.g. Bradford Bulls '03. */
   runClub?: string;
-  /** UI club label for the active run. */
-  displayClub?: string;
   /** Resolved squad position (Utility players are mapped here) */
   position: Position;
   /** All positions this player may fill (dual-role current squads). */

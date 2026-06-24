@@ -3,6 +3,7 @@
 import { memo, useCallback, useMemo } from "react";
 import type { Player } from "@/lib/types";
 import { formatPlayerDisplayName } from "@/lib/players/prime-year";
+import { formatShowcaseClubYear } from "@/lib/players/year-card";
 import { getClubColors, getClubTheme } from "@/lib/clubs";
 import { RugbyLeaguePlayerCard } from "./cards/RugbyLeaguePlayerCard";
 import { ClubColourBar } from "./ClubBadge";
@@ -35,6 +36,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
   onOpenDetail,
 }: ShowcasePlayerCardProps) {
   const displayName = formatPlayerDisplayName(player);
+  const clubYearLabel = formatShowcaseClubYear(player);
   const colors = getClubColors(player.club);
   const theme = getClubTheme(player.club);
 
@@ -92,7 +94,10 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
           className="mt-0.5 shrink-0"
         />
         <span className="showcase-compact-name min-w-0 flex-1 font-display font-bold leading-snug text-white">
-          {displayName}
+          <span className="block truncate">{displayName}</span>
+          <span className="mt-0.5 block truncate text-[11px] font-medium text-gray-400">
+            {clubYearLabel}
+          </span>
         </span>
         <span className="shrink-0 self-start pt-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
           {expanded ? "Close" : "View"}

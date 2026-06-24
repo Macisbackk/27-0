@@ -1,9 +1,9 @@
 import { getPlayerById } from "../players";
 import { isSuperLeagueEligiblePlayer } from "../players/super-league-eligibility";
 import {
+  getAllTeamsInYearRosters,
   getRosterPlayerIds,
-  getTeamsWithYearRosters,
-  getYearsForTeam,
+  getTeamYearRosters,
 } from "../players/team-year-rosters";
 import type { Player, SquadSlot } from "../types";
 import { canPlayerRecruitForRemainingSlots } from "./position-placement";
@@ -46,8 +46,10 @@ function registerPool(team: string, year: string): TeamYearPool {
 
 function ensurePoolsBuilt(): void {
   if (poolById.size > 0) return;
-  for (const team of getTeamsWithYearRosters()) {
-    for (const year of getYearsForTeam(team)) {
+  for (const team of getAllTeamsInYearRosters()) {
+    const years = getTeamYearRosters()[team];
+    if (!years) continue;
+    for (const year of Object.keys(years)) {
       registerPool(team, year);
     }
   }

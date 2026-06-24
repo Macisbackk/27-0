@@ -12,6 +12,11 @@ import {
   isUtilityPosition,
   resolvePosition,
 } from "../src/lib/players/position-utils";
+import {
+  buildPlayerTeamYearId,
+  isGenericCareerRaw,
+  resolveRawCardYear,
+} from "../src/lib/players/year-card";
 
 interface RawPlayer {
   id: string;
@@ -23,18 +28,21 @@ interface RawPlayer {
   category: string;
   peakRating: number;
   value: number;
+  year?: number;
+  teamYearId?: string;
+  status?: string;
   primaryPosition?: string;
-  appearances?: number;
-  tries?: number;
+  availableInGame?: boolean;
 }
 
 function validatePlayers(
   players: RawPlayer[],
   source: string,
   clubNames: Set<string>
-): { utilityMapped: number } {
+): { utilityMapped: number; yearPinFailures: string[] } {
   const ids = new Set<string>();
   let utilityMapped = 0;
+  const yearPinFailures: string[] = [];
 
   for (const p of players) {
     if (ids.has(p.id)) throw new Error(`Duplicate ID in ${source}: ${p.id}`);
@@ -69,9 +77,38 @@ function validatePlayers(
     if (isUtilityPosition(p.position) && !resolved.mappedFromUtility) {
       throw new Error(`Utility mapping failed for ${p.name}`);
     }
+
+    if (p.availableInGame === false) continue;
+
+    const year = resolveRawCardYear(p as unknown as Record<string, unknown>);
+    if (year === undefined) {
+      yearPinFailures.push(`${p.id}: missing year`);
+      continue;
+    }
+
+    if (p.category === "current" && year !== 2026) {
+      yearPinFailures.push(`${p.id}: current player must be year 2026`);
+    }
+
+    const expectedTeamYearId = buildPlayerTeamYearId(p.club, year);
+    if (!p.teamYearId?.trim()) {
+      yearPinFailures.push(`${p.id}: missing teamYearId`);
+    } else if (p.teamYearId !== expectedTeamYearId) {
+      yearPinFailures.push(
+        `${p.id}: teamYearId ${p.teamYearId} !== ${expectedTeamYearId}`
+      );
+    }
+
+    if (!p.status?.trim()) {
+      yearPinFailures.push(`${p.id}: missing status`);
+    }
+
+    if (isGenericCareerRaw(p as unknown as Record<string, unknown>)) {
+      yearPinFailures.push(`${p.id}: generic multi-year career card`);
+    }
   }
 
-  return { utilityMapped };
+  return { utilityMapped, yearPinFailures };
 }
 
 async function main() {
@@ -81,6 +118,7 @@ async function main() {
   console.log(`Clubs: ${clubs.length}`);
 
   let totalUtility = 0;
+  const allYearPinFailures: string[] = [];
 
   const currentResult = validatePlayers(
     currentSquads as RawPlayer[],
@@ -88,6 +126,7 @@ async function main() {
     clubNames
   );
   totalUtility += currentResult.utilityMapped;
+  allYearPinFailures.push(...currentResult.yearPinFailures);
   console.log(`✓ Current squads: ${currentSquads.length} players`);
 
   const historicResult = validatePlayers(
@@ -96,6 +135,7 @@ async function main() {
     clubNames
   );
   totalUtility += historicResult.utilityMapped;
+  allYearPinFailures.push(...historicResult.yearPinFailures);
   console.log(`✓ Historic players: ${historicPlayers.length} players`);
 
   const legendsResult = validatePlayers(
@@ -104,6 +144,7 @@ async function main() {
     clubNames
   );
   totalUtility += legendsResult.utilityMapped;
+  allYearPinFailures.push(...legendsResult.yearPinFailures);
   console.log(`✓ Legends: ${legends.length} players`);
 
   const legendIds = new Set((legends as RawPlayer[]).map((p) => p.id));
@@ -121,6 +162,17 @@ async function main() {
     historicPlayers.length +
     legends.length -
     historicDupes.length;
+
+  if (allYearPinFailures.length > 0) {
+    console.error(`\n❌ Year-pin validation failures: ${allYearPinFailures.length}`);
+    for (const msg of allYearPinFailures.slice(0, 40)) {
+      console.error(`  - ${msg}`);
+    }
+    if (allYearPinFailures.length > 40) {
+      console.error(`  ... and ${allYearPinFailures.length - 40} more`);
+    }
+    process.exit(1);
+  }
 
   console.log(`\n✅ Database valid — ${total} unique players ready`);
   if (totalUtility > 0) {

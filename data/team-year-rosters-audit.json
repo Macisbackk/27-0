@@ -1,16 +1,29 @@
 {
-  "generatedAt": "2026-06-24T00:30:45.398Z",
+  "generatedAt": "2026-06-24T03:06:59.683Z",
   "sources": [
     "Verified Wikipedia/manual XIII only (era-wikipedia-squads.json, sl-era-verified-squads.json)",
     "Current squad for 2026 only (current-squads.json)",
     "Super League season gate (super-league-club-years.json)"
   ],
   "minPlayers": 13,
-  "verifiedSquadsMerged": 51,
-  "verifiedPlayersRejected": 446,
+  "verifiedSquadsMerged": 72,
+  "verifiedPlayersRejected": 198,
+  "unresolvedSquads": [
+    {
+      "team": "Toulouse Olympique",
+      "year": "2026",
+      "names": [
+        "Luke Polselli",
+        "Joe Bretherton",
+        "Tiaki Chan",
+        "Henry OKane",
+        "Joe Cator"
+      ]
+    }
+  ],
   "currentYearSquadsBuilt": 13,
-  "playableCount": 54,
-  "hiddenCount": 0,
+  "playableCount": 69,
+  "hiddenCount": 4,
   "playable": [
     {
       "team": "Bradford Bulls",
@@ -59,7 +72,22 @@
     },
     {
       "team": "Bradford Bulls",
+      "year": "2006",
+      "count": 13
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2009",
+      "count": 13
+    },
+    {
+      "team": "Bradford Bulls",
       "year": "2011",
+      "count": 13
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2012",
       "count": 13
     },
     {
@@ -76,11 +104,6 @@
       "team": "Bradford Bulls",
       "year": "2026",
       "count": 17
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2009",
-      "count": 13
     },
     {
       "team": "Castleford Tigers",
@@ -164,8 +187,28 @@
     },
     {
       "team": "Hull FC",
+      "year": "2009",
+      "count": 13
+    },
+    {
+      "team": "Hull FC",
+      "year": "2012",
+      "count": 13
+    },
+    {
+      "team": "Hull FC",
+      "year": "2013",
+      "count": 13
+    },
+    {
+      "team": "Hull FC",
       "year": "2026",
       "count": 17
+    },
+    {
+      "team": "Hull KR",
+      "year": "2020",
+      "count": 13
     },
     {
       "team": "Hull KR",
@@ -174,7 +217,27 @@
     },
     {
       "team": "Leeds Rhinos",
+      "year": "2008",
+      "count": 13
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2009",
+      "count": 13
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2013",
+      "count": 13
+    },
+    {
+      "team": "Leeds Rhinos",
       "year": "2015",
+      "count": 13
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2016",
       "count": 13
     },
     {
@@ -188,8 +251,8 @@
       "count": 13
     },
     {
-      "team": "Salford Red Devils",
-      "year": "2009",
+      "team": "London Broncos",
+      "year": "2019",
       "count": 13
     },
     {
@@ -214,12 +277,7 @@
     },
     {
       "team": "St Helens",
-      "year": "2006",
-      "count": 13
-    },
-    {
-      "team": "St Helens",
-      "year": "2014",
+      "year": "2015",
       "count": 13
     },
     {
@@ -244,8 +302,18 @@
     },
     {
       "team": "Toulouse Olympique",
+      "year": "2022",
+      "count": 13
+    },
+    {
+      "team": "Toulouse Olympique",
       "year": "2026",
       "count": 17
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2009",
+      "count": 13
     },
     {
       "team": "Wakefield Trinity",
@@ -256,6 +324,11 @@
       "team": "Wakefield Trinity",
       "year": "2026",
       "count": 17
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2015",
+      "count": 13
     },
     {
       "team": "Warrington Wolves",
@@ -270,6 +343,21 @@
     {
       "team": "Wigan Warriors",
       "year": "2006",
+      "count": 13
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2008",
+      "count": 13
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2015",
+      "count": 13
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2016",
       "count": 13
     },
     {
@@ -283,1352 +371,28 @@
       "count": 17
     }
   ],
-  "hidden": [],
-  "membershipMismatches": [
-    {
-      "team": "Bradford Bulls",
-      "year": "1997",
-      "playerId": "huddersfield-hist-jeff-wittenberg",
-      "message": "player club Huddersfield Giants does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1997",
-      "playerId": "paul-anderson",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1998",
-      "playerId": "leon-pryce",
-      "message": "player not active in 1998 (1999–2017)"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1998",
-      "playerId": "paul-anderson",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1998",
-      "playerId": "shaun-edwards",
-      "message": "player not active in 1998 (1983–1997)"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1999",
-      "playerId": "hull-fc-hist-lee-radford",
-      "message": "player club Hull FC does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1999",
-      "playerId": "jamie-peacock",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1999",
-      "playerId": "leon-pryce",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1999",
-      "playerId": "paul-anderson",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "1999",
-      "playerId": "wakefield-hist-paul-sykes",
-      "message": "player club London Broncos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2000",
-      "playerId": "hull-fc-hist-lee-radford",
-      "message": "player club Hull FC does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2000",
-      "playerId": "jamie-peacock",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2000",
-      "playerId": "leon-pryce",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2000",
-      "playerId": "paul-anderson",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2000",
-      "playerId": "wakefield-hist-paul-sykes",
-      "message": "player club London Broncos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2001",
-      "playerId": "hull-fc-hist-graham-mackay",
-      "message": "player club Hull FC does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2001",
-      "playerId": "hull-fc-hist-lee-radford",
-      "message": "player club Hull FC does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2001",
-      "playerId": "jamie-peacock",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2001",
-      "playerId": "leon-pryce",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2001",
-      "playerId": "paul-anderson",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2001",
-      "playerId": "wakefield-hist-paul-sykes",
-      "message": "player club London Broncos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2002",
-      "playerId": "huddersfield-hist-brandon-costin",
-      "message": "player club Huddersfield Giants does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2002",
-      "playerId": "hull-fc-hist-lee-radford",
-      "message": "player club Hull FC does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2002",
-      "playerId": "jamie-peacock",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2002",
-      "playerId": "leon-pryce",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2002",
-      "playerId": "paul-anderson",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2002",
-      "playerId": "wakefield-hist-paul-sykes",
-      "message": "player club London Broncos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2003",
-      "playerId": "bradford-hist-karl-pratt",
-      "message": "player not active in 2003 (2007–2014)"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2003",
-      "playerId": "hull-fc-hist-lee-radford",
-      "message": "player club Hull FC does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2003",
-      "playerId": "jamie-peacock",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2003",
-      "playerId": "leon-pryce",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2003",
-      "playerId": "paul-anderson",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2004",
-      "playerId": "hull-fc-hist-lee-radford",
-      "message": "player club Hull FC does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2004",
-      "playerId": "iestyn-harris",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2004",
-      "playerId": "jamie-peacock",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2004",
-      "playerId": "leon-pryce",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2004",
-      "playerId": "paul-anderson",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2004",
-      "playerId": "st-helens-hist-aaron-smith",
-      "message": "player not active in 2004 (2014–Unknown)"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2004",
-      "playerId": "tevita-vaikona",
-      "message": "player not active in 2004 (1992–2003)"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2004",
-      "playerId": "wigan-hist-paul-johnson",
-      "message": "player club Wigan Warriors does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2005",
-      "playerId": "adrian-morley",
-      "message": "player club Warrington Wolves does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2005",
-      "playerId": "bradford-hist-karl-pratt",
-      "message": "player not active in 2005 (2007–2014)"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2005",
-      "playerId": "catalans-hist-ian-henderson",
-      "message": "player club Catalans Dragons does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2005",
-      "playerId": "jamie-peacock",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2005",
-      "playerId": "wigan-hist-paul-johnson",
-      "message": "player club Wigan Warriors does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2011",
-      "playerId": "leeds-hist-chev-walker",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2011",
-      "playerId": "leeds-hist-matt-diskin",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2011",
-      "playerId": "wakefield-hist-ben-jeffries",
-      "message": "player club Wakefield Trinity does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2011",
-      "playerId": "wakefield-hist-paul-sykes",
-      "message": "player club London Broncos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2011",
-      "playerId": "widnes-hist-patrick-ah-van",
-      "message": "player club Leigh Leopards does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2011",
-      "playerId": "wigan-hist-john-bateman",
-      "message": "player club Wigan Warriors does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2013",
-      "playerId": "leeds-hist-chev-walker",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2013",
-      "playerId": "leeds-hist-matt-diskin",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2013",
-      "playerId": "luke-gale",
-      "message": "player club Castleford Tigers does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2013",
-      "playerId": "salford-hist-adam-sidlow",
-      "message": "player club Leigh Leopards does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2013",
-      "playerId": "st-helens-hist-jamie-foster",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2014",
-      "playerId": "bradford-hist-danny-addy",
-      "message": "player not active in 2014 (2009–Unknown)"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2014",
-      "playerId": "castleford-cur-alex-mellor",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2014",
-      "playerId": "huddersfield-hist-lee-gaskell",
-      "message": "player club Huddersfield Giants does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2014",
-      "playerId": "leeds-hist-chev-walker",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2014",
-      "playerId": "leeds-hist-matt-diskin",
-      "message": "player club Leeds Rhinos does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2014",
-      "playerId": "luke-gale",
-      "message": "player club Castleford Tigers does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2014",
-      "playerId": "salford-hist-danny-williams",
-      "message": "player club Leigh Leopards does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2014",
-      "playerId": "st-helens-hist-jamie-foster",
-      "message": "player club St Helens does not match Bradford Bulls"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2014",
-      "playerId": "wakefield-cur-jay-pitts",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Bradford Bulls",
-      "year": "2014",
-      "playerId": "wakefield-hist-joe-arundel",
-      "message": "current player leaked into historic team-year pool"
-    },
+  "hidden": [
     {
       "team": "Castleford Tigers",
       "year": "2009",
-      "playerId": "castleford-cur-joe-westerman",
-      "message": "current player leaked into historic team-year pool"
+      "reason": "verified squad failed playability gate"
     },
     {
-      "team": "Castleford Tigers",
+      "team": "Salford Red Devils",
       "year": "2009",
-      "playerId": "huddersfield-hist-james-evans",
-      "message": "player club Huddersfield Giants does not match Castleford Tigers"
+      "reason": "verified squad failed playability gate"
     },
     {
-      "team": "Castleford Tigers",
-      "year": "2009",
-      "playerId": "york-cur-jordan-thompson",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2012",
-      "playerId": "castleford-hist-oliver-holmes",
-      "message": "player not active in 2012 (2010–Unknown)"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2012",
-      "playerId": "huddersfield-hist-stuart-jones",
-      "message": "player club Huddersfield Giants does not match Castleford Tigers"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2012",
-      "playerId": "st-helens-cur-daryl-clark",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2012",
-      "playerId": "wakefield-hist-joe-arundel",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2012",
-      "playerId": "wakefield-hist-steve-snitch",
-      "message": "player club Wakefield Trinity does not match Castleford Tigers"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2016",
-      "playerId": "andy-lynch",
-      "message": "player not active in 2016 (1998–2013)"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2016",
-      "playerId": "castleford-hist-adam-milner",
-      "message": "player not active in 2016 (2009–Unknown)"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2016",
-      "playerId": "castleford-hist-greg-minikin",
-      "message": "player not active in 2016 (2013–Unknown)"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2016",
-      "playerId": "hull-kr-hist-ben-crooks",
-      "message": "player not active in 2016 (2011–Unknown)"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2016",
-      "playerId": "joel-monaghan",
-      "message": "player not active in 2016 (2001–2015)"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2016",
-      "playerId": "wakefield-cur-mike-mcmeeken",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2016",
-      "playerId": "wakefield-hist-frankie-mariano",
-      "message": "player club Wakefield Trinity does not match Castleford Tigers"
-    },
-    {
-      "team": "Castleford Tigers",
-      "year": "2016",
-      "playerId": "wakefield-hist-ryan-hampshire",
-      "message": "player not active in 2016 (2012–Unknown)"
-    },
-    {
-      "team": "Catalans Dragons",
+      "team": "St Helens",
       "year": "2006",
-      "playerId": "hull-kr-hist-michael-dobson",
-      "message": "player club Hull KR does not match Catalans Dragons"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2006",
-      "playerId": "toulouse-hist-julien-rinaldi",
-      "message": "player club Toulouse Olympique does not match Catalans Dragons"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2009",
-      "playerId": "catalans-hist-jerome-guisset",
-      "message": "player not active in 2009 (1992–2006)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2010",
-      "playerId": "catalans-hist-jerome-guisset",
-      "message": "player not active in 2010 (1992–2006)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2011",
-      "playerId": "catalans-hist-eloi-pelissier",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2011",
-      "playerId": "catalans-hist-steve-menzies",
-      "message": "player not active in 2011 (1991–2009)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2012",
-      "playerId": "catalans-cur-julian-bousquet",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2012",
-      "playerId": "catalans-hist-eloi-pelissier",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2012",
-      "playerId": "catalans-hist-steve-menzies",
-      "message": "player not active in 2012 (1991–2009)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2012",
-      "playerId": "leon-pryce",
-      "message": "player club St Helens does not match Catalans Dragons"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2013",
-      "playerId": "catalans-cur-julian-bousquet",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2013",
-      "playerId": "catalans-hist-eloi-pelissier",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2013",
-      "playerId": "catalans-hist-morgan-escare",
-      "message": "player not active in 2013 (2009–Unknown)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2013",
-      "playerId": "catalans-hist-steve-menzies",
-      "message": "player not active in 2013 (1991–2009)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2013",
-      "playerId": "leon-pryce",
-      "message": "player club St Helens does not match Catalans Dragons"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2013",
-      "playerId": "st-helens-hist-zeb-taia",
-      "message": "player club St Helens does not match Catalans Dragons"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2013",
-      "playerId": "wakefield-hist-damien-blanch",
-      "message": "player not active in 2013 (2002–2011)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2015",
-      "playerId": "bradford-hist-elliott-whitehead",
-      "message": "player club Bradford Bulls does not match Catalans Dragons"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2015",
-      "playerId": "catalans-cur-benjamin-garcia",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2015",
-      "playerId": "catalans-cur-julian-bousquet",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2015",
-      "playerId": "catalans-hist-eloi-pelissier",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2015",
-      "playerId": "catalans-hist-fouad-yaha",
-      "message": "player not active in 2015 (2014–Unknown)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2015",
-      "playerId": "catalans-hist-morgan-escare",
-      "message": "player not active in 2015 (2009–Unknown)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2015",
-      "playerId": "salford-hist-krisnan-inu",
-      "message": "player club Leigh Leopards does not match Catalans Dragons"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2015",
-      "playerId": "scott-durea",
-      "message": "player not active in 2015 (2007–2014)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2015",
-      "playerId": "st-helens-hist-zeb-taia",
-      "message": "player club St Helens does not match Catalans Dragons"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2016",
-      "playerId": "catalans-hist-eloi-pelissier",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2016",
-      "playerId": "catalans-hist-morgan-escare",
-      "message": "player not active in 2016 (2009–Unknown)"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2016",
-      "playerId": "pat-richards",
-      "message": "player club Wigan Warriors does not match Catalans Dragons"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2016",
-      "playerId": "salford-hist-jodie-broughton",
-      "message": "player club Leigh Leopards does not match Catalans Dragons"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2016",
-      "playerId": "salford-hist-krisnan-inu",
-      "message": "player club Leigh Leopards does not match Catalans Dragons"
-    },
-    {
-      "team": "Catalans Dragons",
-      "year": "2016",
-      "playerId": "wakefield-hist-justin-horo",
-      "message": "player club Wakefield Trinity does not match Catalans Dragons"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "2013",
-      "playerId": "castleford-hist-brett-ferres",
-      "message": "player club Castleford Tigers does not match Huddersfield Giants"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "2013",
-      "playerId": "huddersfield-hist-joe-wardle",
-      "message": "player not active in 2013 (2009–Unknown)"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "2013",
-      "playerId": "stuart-fielden",
-      "message": "player club Bradford Bulls does not match Huddersfield Giants"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "2013",
-      "playerId": "wakefield-hist-kyle-wood",
-      "message": "player club Wakefield Trinity does not match Huddersfield Giants"
-    },
-    {
-      "team": "Huddersfield Giants",
-      "year": "2013",
-      "playerId": "wakefield-hist-scott-grix",
-      "message": "player club Wakefield Trinity does not match Huddersfield Giants"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-alex-walker-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-api-pewhairangi-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-ben-hellewell-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-eddie-battye-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-elliot-kear-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-eloi-pelissier-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-jarrod-sammut-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-jay-pitts-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-kieran-dixon-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-mark-ioane-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-rhys-williams-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-sadiq-adebiyi-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "London Broncos",
-      "year": "2018",
-      "playerId": "london-hist-will-lovell-2018",
-      "message": "player club Leeds Rhinos does not match London Broncos"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "bradford-hist-rob-parker",
-      "message": "player club Bradford Bulls does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "bradford-leg-robbie-hunter-paul",
-      "message": "player club Bradford Bulls does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "huddersfield-hist-paul-white",
-      "message": "player club Huddersfield Giants does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "salford-hist-adam-sidlow",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "salford-hist-jeremy-smith",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "salford-hist-john-wilshire",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "salford-hist-karl-fitzpatrick",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "salford-hist-luke-adamson",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "salford-hist-mark-henry",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "salford-hist-ray-cashmere",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "st-helens-hist-jordan-turner",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "st-helens-hist-willie-talau",
-      "message": "player not active in 2009 (1994–2006)"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "playerId": "wakefield-leg-stefan-ratchford",
-      "message": "player club Wakefield Trinity does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "adrian-morley",
-      "message": "player club Warrington Wolves does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "castleford-hist-greg-eden",
-      "message": "player club Castleford Tigers does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "huddersfield-hist-darrell-griffin",
-      "message": "player club Huddersfield Giants does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "hull-fc-hist-tommy-lee",
-      "message": "player club Hull FC does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "rangi-chase",
-      "message": "player club Castleford Tigers does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "salford-hist-danny-williams",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "salford-hist-gareth-hock",
-      "message": "player club Wigan Warriors does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "salford-hist-junior-sa-u",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "salford-hist-martin-gleeson",
-      "message": "player club Wigan Warriors does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "st-helens-hist-andrew-dixon",
-      "message": "player club St Helens does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "st-helens-hist-francis-meli",
-      "message": "player not active in 2014 (2000–2010)"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "st-helens-hist-theo-fages",
-      "message": "player not active in 2014 (2012–Unknown)"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2014",
-      "playerId": "st-helens-hist-tony-puletua",
-      "message": "player club St Helens does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-adrian-morley-2015",
-      "message": "player club Warrington Wolves does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-ben-jones-bishop-2015",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-greg-johnson-2015",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-iain-thornley-2015",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-jake-bibby-2015",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-james-greenwood-2015",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-josh-wood-2015",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-liam-hood-2015",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-niall-evalds-2015",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-oliver-gildart-2015",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-olsi-krasniqi-2015",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-rangi-chase-2015",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2015",
-      "playerId": "salford-hist-reni-maitua-2015",
-      "message": "player club Leigh Leopards does not match Salford Red Devils"
-    },
-    {
-      "team": "St Helens",
-      "year": "2000",
-      "playerId": "widnes-hist-julian-o-neill",
-      "message": "player club Leigh Leopards does not match St Helens"
-    },
-    {
-      "team": "St Helens",
-      "year": "2002",
-      "playerId": "paul-newlove",
-      "message": "player club Bradford Bulls does not match St Helens"
-    },
-    {
-      "team": "St Helens",
-      "year": "2002",
-      "playerId": "salford-hist-martin-gleeson",
-      "message": "player club Wigan Warriors does not match St Helens"
+      "reason": "verified squad failed playability gate"
     },
     {
       "team": "St Helens",
       "year": "2014",
-      "playerId": "catalans-cur-tommy-makinson",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2014",
-      "playerId": "hull-fc-hist-willie-manu",
-      "message": "player club Hull FC does not match St Helens"
-    },
-    {
-      "team": "St Helens",
-      "year": "2014",
-      "playerId": "st-helens-cur-jonny-lomax",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2014",
-      "playerId": "st-helens-cur-mark-percival",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2014",
-      "playerId": "st-helens-hist-jordan-turner",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2019",
-      "playerId": "st-helens-cur-alex-walmsley",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2019",
-      "playerId": "st-helens-cur-jonny-lomax",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2019",
-      "playerId": "st-helens-cur-mark-percival",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2019",
-      "playerId": "st-helens-hist-morgan-knowles",
-      "message": "player not active in 2019 (2014–Unknown)"
-    },
-    {
-      "team": "St Helens",
-      "year": "2019",
-      "playerId": "st-helens-hist-regan-grace",
-      "message": "player not active in 2019 (2014–Unknown)"
-    },
-    {
-      "team": "St Helens",
-      "year": "2019",
-      "playerId": "st-helens-hist-theo-fages",
-      "message": "player not active in 2019 (2012–Unknown)"
-    },
-    {
-      "team": "St Helens",
-      "year": "2019",
-      "playerId": "st-helens-hist-thomas-makinson",
-      "message": "player not active in 2019 (2009–Unknown)"
-    },
-    {
-      "team": "St Helens",
-      "year": "2019",
-      "playerId": "wigan-cur-luke-thompson",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2020",
-      "playerId": "catalans-cur-tommy-makinson",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2020",
-      "playerId": "hull-fc-cur-joe-batchelor",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2020",
-      "playerId": "st-helens-cur-alex-walmsley",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2020",
-      "playerId": "st-helens-cur-jack-welsby",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2020",
-      "playerId": "st-helens-cur-jonny-lomax",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2020",
-      "playerId": "st-helens-cur-mark-percival",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2020",
-      "playerId": "st-helens-cur-matty-lees",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2020",
-      "playerId": "st-helens-hist-regan-grace",
-      "message": "player not active in 2020 (2014–Unknown)"
-    },
-    {
-      "team": "St Helens",
-      "year": "2020",
-      "playerId": "st-helens-hist-theo-fages",
-      "message": "player not active in 2020 (2012–Unknown)"
-    },
-    {
-      "team": "St Helens",
-      "year": "2021",
-      "playerId": "catalans-cur-lewis-dodd",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2021",
-      "playerId": "hull-fc-cur-joe-batchelor",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2021",
-      "playerId": "st-helens-cur-alex-walmsley",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2021",
-      "playerId": "st-helens-cur-jonny-lomax",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2021",
-      "playerId": "st-helens-cur-mark-percival",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2021",
-      "playerId": "st-helens-cur-matty-lees",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "St Helens",
-      "year": "2021",
-      "playerId": "st-helens-hist-morgan-knowles",
-      "message": "player not active in 2021 (2014–Unknown)"
-    },
-    {
-      "team": "St Helens",
-      "year": "2021",
-      "playerId": "st-helens-hist-regan-grace",
-      "message": "player not active in 2021 (2014–Unknown)"
-    },
-    {
-      "team": "St Helens",
-      "year": "2021",
-      "playerId": "st-helens-hist-sione-mata-utia",
-      "message": "player not active in 2021 (2014–Unknown)"
-    },
-    {
-      "team": "St Helens",
-      "year": "2021",
-      "playerId": "st-helens-hist-thomas-makinson",
-      "message": "player not active in 2021 (2009–Unknown)"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "2010",
-      "playerId": "bradford-hist-glenn-morrison",
-      "message": "player club Bradford Bulls does not match Wakefield Trinity"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "2010",
-      "playerId": "catalans-hist-daryl-millard",
-      "message": "player club Catalans Dragons does not match Wakefield Trinity"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "2010",
-      "playerId": "huddersfield-hist-aaron-murphy",
-      "message": "player club Huddersfield Giants does not match Wakefield Trinity"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "2010",
-      "playerId": "hull-fc-hist-paul-cooke",
-      "message": "player club Hull FC does not match Wakefield Trinity"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "2010",
-      "playerId": "hull-fc-hist-paul-king",
-      "message": "player club Hull FC does not match Wakefield Trinity"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "2010",
-      "playerId": "wakefield-hist-jason-demetriou",
-      "message": "player not active in 2010 (1997–2004)"
-    },
-    {
-      "team": "Wakefield Trinity",
-      "year": "2010",
-      "playerId": "wigan-hist-paul-johnson",
-      "message": "player club Wigan Warriors does not match Wakefield Trinity"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "2016",
-      "playerId": "huddersfield-cur-george-king",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "2016",
-      "playerId": "st-helens-cur-daryl-clark",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "2016",
-      "playerId": "wakefield-hist-ashton-sims",
-      "message": "player club Wakefield Trinity does not match Warrington Wolves"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "2016",
-      "playerId": "wakefield-hist-chris-hill",
-      "message": "player club Wakefield Trinity does not match Warrington Wolves"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "2016",
-      "playerId": "wakefield-hist-chris-sandow",
-      "message": "player club Wakefield Trinity does not match Warrington Wolves"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "2016",
-      "playerId": "wakefield-hist-kevin-penny",
-      "message": "player club Wakefield Trinity does not match Warrington Wolves"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "2016",
-      "playerId": "wakefield-hist-kurt-gidley",
-      "message": "player club Wakefield Trinity does not match Warrington Wolves"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "2016",
-      "playerId": "wakefield-hist-tom-lineham",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "2016",
-      "playerId": "wakefield-leg-stefan-ratchford",
-      "message": "player club Wakefield Trinity does not match Warrington Wolves"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "2016",
-      "playerId": "warrington-cur-ben-currie",
-      "message": "current player leaked into historic team-year pool"
-    },
-    {
-      "team": "Warrington Wolves",
-      "year": "2016",
-      "playerId": "warrington-cur-toby-king",
-      "message": "current player leaked into historic team-year pool"
+      "reason": "verified squad failed playability gate"
     }
   ],
+  "membershipMismatches": [],
   "incomplete": []
 }

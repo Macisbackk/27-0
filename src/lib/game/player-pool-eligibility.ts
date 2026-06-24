@@ -1,5 +1,10 @@
 import { clubsMatch, resolveCanonicalClubName } from "../clubs/club-match";
-import { getPlayableClubNames } from "../clubs/super-league-display";
+import {
+  getCurrentPlayableClubNames,
+  getEraPlayableClubNames,
+  isCurrentPlayableClub,
+  isEraPlayableClub,
+} from "../clubs/super-league-display";
 import {
   CURRENT_PLAYERS,
   HISTORIC_PLAYERS,
@@ -23,22 +28,10 @@ import { CURRENT_SEASON_YEAR } from "../play-links";
 export type SpinPoolVariant = "current" | "era";
 
 /** Current Super League clubs in Normal / Hard / Cup / Fantasy / Draft pools. */
-export const CURRENT_PLAYABLE_CLUBS = [
-  "Bradford Bulls",
-  "Castleford Tigers",
-  "Catalans Dragons",
-  "Huddersfield Giants",
-  "Hull FC",
-  "Hull KR",
-  "Leeds Rhinos",
-  "Leigh Leopards",
-  "St Helens",
-  "Toulouse Olympique",
-  "Wakefield Trinity",
-  "Warrington Wolves",
-  "Wigan Warriors",
-  "York Knights",
-] as const;
+export const CURRENT_PLAYABLE_CLUBS = getCurrentPlayableClubNames() as unknown as readonly [
+  string,
+  ...string[],
+];
 
 export type PlayerPoolMode =
   | "normal"
@@ -103,6 +96,7 @@ export function getCurrentModeTeamYearPools(): TeamYearPool[] {
   return getAllTeamYearPools().filter((pool) => {
     const meta = getTeamYearRosterMeta(pool.team, pool.year);
     return (
+      isCurrentPlayableClub(pool.team) &&
       meta?.playableInNormalSpin === true &&
       meta?.isCurrentSeason === true &&
       pool.year === CURRENT_SEASON_YEAR
@@ -114,7 +108,8 @@ export function getEraModeTeamYearPools(): TeamYearPool[] {
   return getAllTeamYearPools().filter((pool) => {
     const meta = getTeamYearRosterMeta(pool.team, pool.year);
     return (
-      meta?.playableInNormalSpin === true &&
+      isEraPlayableClub(pool.team) &&
+      meta?.playableInEra === true &&
       meta?.isCurrentSeason !== true &&
       pool.year !== CURRENT_SEASON_YEAR
     );
@@ -345,7 +340,9 @@ export const NORMAL_MODE_CATEGORY_POOLS = {
 };
 
 export function getPlayableClubNamesForPools(): string[] {
-  return getPlayableClubNames();
+  return [...getCurrentPlayableClubNames()];
 }
+
+export { getEraPlayableClubNames, isEraPlayableClub, isCurrentPlayableClub };
 
 export { clubsMatch, resolveCanonicalClubName } from "../clubs/club-match";

@@ -1,0 +1,2751 @@
+{
+  "generatedAt": "2026-06-24T02:59:44.513Z",
+  "playersBefore": 2142,
+  "playersAfter": 2533,
+  "cardsCreated": 391,
+  "rosterIdReplacements": 360,
+  "genericCardsHiddenFromGameplay": 0,
+  "unresolved": [
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "playerId": "huddersfield-cur-george-king",
+      "reason": "created warrington-cur-george-king-2016 still fails team-year membership"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "playerId": "st-helens-cur-daryl-clark",
+      "reason": "created warrington-cur-daryl-clark-2016 still fails team-year membership"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "playerId": "wakefield-hist-tom-lineham",
+      "reason": "created warrington-cur-tom-lineham-2016 still fails team-year membership"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "playerId": "warrington-cur-ben-currie",
+      "reason": "created warrington-cur-ben-currie-2016 still fails team-year membership"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "playerId": "warrington-cur-toby-king",
+      "reason": "created warrington-cur-toby-king-2016 still fails team-year membership"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "playerId": "catalans-hist-eloi-pelissier",
+      "reason": "created catalans-cur-eloi-pelissier-2011 still fails team-year membership"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "playerId": "catalans-cur-julian-bousquet",
+      "reason": "created catalans-cur-julian-bousquet-2012 still fails team-year membership"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "playerId": "catalans-hist-eloi-pelissier",
+      "reason": "created catalans-cur-eloi-pelissier-2012 still fails team-year membership"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "playerId": "catalans-cur-julian-bousquet",
+      "reason": "created catalans-cur-julian-bousquet-2013 still fails team-year membership"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "playerId": "catalans-hist-eloi-pelissier",
+      "reason": "created catalans-cur-eloi-pelissier-2013 still fails team-year membership"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "playerId": "catalans-cur-benjamin-garcia",
+      "reason": "created catalans-cur-benjamin-garcia-2015 still fails team-year membership"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "playerId": "catalans-cur-julian-bousquet",
+      "reason": "created catalans-cur-julian-bousquet-2015 still fails team-year membership"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "playerId": "catalans-hist-eloi-pelissier",
+      "reason": "created catalans-cur-eloi-pelissier-2015 still fails team-year membership"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "playerId": "catalans-hist-eloi-pelissier",
+      "reason": "created catalans-cur-eloi-pelissier-2016 still fails team-year membership"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2009",
+      "playerId": "castleford-cur-joe-westerman",
+      "reason": "created castleford-cur-joe-westerman-2009 still fails team-year membership"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2009",
+      "playerId": "york-cur-jordan-thompson",
+      "reason": "created castleford-cur-jordan-thompson-2009 still fails team-year membership"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2012",
+      "playerId": "st-helens-cur-daryl-clark",
+      "reason": "created castleford-cur-daryl-clark-2012 still fails team-year membership"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2012",
+      "playerId": "wakefield-hist-joe-arundel",
+      "reason": "created castleford-cur-joe-arundel-2012 still fails team-year membership"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "playerId": "wakefield-cur-mike-mcmeeken",
+      "reason": "created castleford-cur-mike-mcmeeken-2016 still fails team-year membership"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2009",
+      "playerId": "st-helens-hist-jordan-turner",
+      "reason": "created salford-cur-jordan-turner-2009 still fails team-year membership"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "playerId": "catalans-cur-tommy-makinson",
+      "reason": "created st-helens-cur-tommy-makinson-2014 still fails team-year membership"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "playerId": "st-helens-cur-jonny-lomax",
+      "reason": "created st-helens-cur-jonny-lomax-2014 still fails team-year membership"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "playerId": "st-helens-cur-mark-percival",
+      "reason": "created st-helens-cur-mark-percival-2014 still fails team-year membership"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "playerId": "st-helens-hist-jordan-turner",
+      "reason": "created st-helens-cur-jordan-turner-2014 still fails team-year membership"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "playerId": "catalans-cur-tommy-makinson",
+      "reason": "created st-helens-cur-tommy-makinson-2020 still fails team-year membership"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "playerId": "hull-fc-cur-joe-batchelor",
+      "reason": "created st-helens-cur-joe-batchelor-2020 still fails team-year membership"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "playerId": "st-helens-cur-alex-walmsley",
+      "reason": "created st-helens-cur-alex-walmsley-2020 still fails team-year membership"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "playerId": "st-helens-cur-jack-welsby",
+      "reason": "created st-helens-cur-jack-welsby-2020 still fails team-year membership"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "playerId": "st-helens-cur-jonny-lomax",
+      "reason": "created st-helens-cur-jonny-lomax-2020 still fails team-year membership"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "playerId": "st-helens-cur-mark-percival",
+      "reason": "created st-helens-cur-mark-percival-2020 still fails team-year membership"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "playerId": "st-helens-cur-matty-lees",
+      "reason": "created st-helens-cur-matty-lees-2020 still fails team-year membership"
+    }
+  ],
+  "createdCardIds": [
+    "bradford-hist-abi-ekoku-1997",
+    "bradford-hist-bernard-dwyer-1997",
+    "bradford-hist-brian-mcdermott-1997",
+    "bradford-hist-danny-peacock-1997",
+    "bradford-hist-graeme-bradley-1997",
+    "bradford-hist-james-lowes-1997",
+    "bradford-hist-matt-calland-1997",
+    "bradford-hist-mike-forshaw-1997",
+    "bradford-hist-paul-cook-1997",
+    "bradford-hist-steve-mcnamara-1997",
+    "bradford-leg-robbie-hunter-paul-1997",
+    "bradford-hist-jeff-wittenberg-1997",
+    "bradford-hist-paul-anderson-1997",
+    "bradford-hist-danny-peacock-1998",
+    "bradford-hist-graeme-bradley-1998",
+    "bradford-hist-james-lowes-1998",
+    "bradford-hist-jeremy-donougher-1998",
+    "bradford-hist-matt-calland-1998",
+    "bradford-hist-paul-medley-1998",
+    "bradford-hist-steve-mcnamara-1998",
+    "bradford-leg-robbie-hunter-paul-1998",
+    "bradford-hist-leon-pryce-1998",
+    "bradford-hist-paul-anderson-1998",
+    "bradford-hist-shaun-edwards-1998",
+    "bradford-hist-tevita-vaikona-1998",
+    "bradford-hist-james-lowes-1999",
+    "bradford-hist-mike-forshaw-1999",
+    "bradford-hist-scott-naylor-1999",
+    "bradford-hist-steve-mcnamara-1999",
+    "bradford-leg-robbie-hunter-paul-1999",
+    "bradford-hist-henry-paul-1999",
+    "bradford-hist-lee-radford-1999",
+    "bradford-leg-jamie-peacock-1999",
+    "bradford-hist-paul-anderson-1999",
+    "bradford-hist-paul-deacon-1999",
+    "bradford-leg-stuart-fielden-1999",
+    "bradford-hist-brad-mackay-2000",
+    "bradford-hist-james-lowes-2000",
+    "bradford-hist-michael-withers-2000",
+    "bradford-hist-mike-forshaw-2000",
+    "bradford-leg-robbie-hunter-paul-2000",
+    "bradford-hist-henry-paul-2000",
+    "bradford-hist-lee-radford-2000",
+    "bradford-leg-jamie-peacock-2000",
+    "bradford-hist-leon-pryce-2000",
+    "bradford-hist-paul-anderson-2000",
+    "bradford-hist-paul-deacon-2000",
+    "bradford-hist-tevita-vaikona-2000",
+    "bradford-hist-paul-sykes-2000",
+    "bradford-hist-daniel-gartner-2001",
+    "bradford-hist-james-lowes-2001",
+    "bradford-hist-mike-forshaw-2001",
+    "bradford-leg-robbie-hunter-paul-2001",
+    "bradford-hist-henry-paul-2001",
+    "bradford-hist-graham-mackay-2001",
+    "bradford-hist-lee-radford-2001",
+    "bradford-leg-jamie-peacock-2001",
+    "bradford-hist-leon-pryce-2001",
+    "bradford-hist-paul-anderson-2001",
+    "bradford-hist-paul-deacon-2001",
+    "bradford-hist-tevita-vaikona-2001",
+    "bradford-hist-paul-sykes-2001",
+    "bradford-hist-james-lowes-2002",
+    "bradford-hist-mike-forshaw-2002",
+    "bradford-leg-robbie-hunter-paul-2002",
+    "bradford-hist-brandon-costin-2002",
+    "bradford-hist-lee-radford-2002",
+    "bradford-leg-jamie-peacock-2002",
+    "bradford-hist-leon-pryce-2002",
+    "bradford-hist-lesley-vainikolo-2002",
+    "bradford-hist-paul-anderson-2002",
+    "bradford-hist-paul-deacon-2002",
+    "bradford-leg-stuart-fielden-2002",
+    "bradford-hist-tevita-vaikona-2002",
+    "bradford-hist-paul-sykes-2002",
+    "bradford-hist-daniel-gartner-2003",
+    "bradford-hist-james-lowes-2003",
+    "bradford-hist-karl-pratt-2003",
+    "bradford-hist-mike-forshaw-2003",
+    "bradford-hist-shontayne-hape-2003",
+    "bradford-leg-robbie-hunter-paul-2003",
+    "bradford-hist-lee-radford-2003",
+    "bradford-hist-leon-pryce-2003",
+    "bradford-hist-lesley-vainikolo-2003",
+    "bradford-hist-paul-anderson-2003",
+    "bradford-hist-paul-deacon-2003",
+    "bradford-hist-tevita-vaikona-2003",
+    "bradford-hist-jamie-langley-2004",
+    "bradford-leg-robbie-hunter-paul-2004",
+    "bradford-hist-lee-radford-2004",
+    "bradford-hist-iestyn-harris-2004",
+    "bradford-leg-jamie-peacock-2004",
+    "bradford-hist-leon-pryce-2004",
+    "bradford-hist-lesley-vainikolo-2004",
+    "bradford-hist-paul-anderson-2004",
+    "bradford-hist-paul-deacon-2004",
+    "bradford-hist-aaron-smith-2004",
+    "bradford-leg-stuart-fielden-2004",
+    "bradford-hist-tevita-vaikona-2004",
+    "bradford-hist-paul-johnson-2004",
+    "wigan-hist-sean-o-loughlin-2015",
+    "wigan-hist-anthony-gelling-2015",
+    "wigan-hist-joel-tomkins-2015",
+    "wigan-hist-lee-mossop-2015",
+    "wigan-hist-matty-smith-2015",
+    "wigan-hist-michael-mcilorum-2015",
+    "wigan-hist-sean-o-loughlin-2016",
+    "wigan-hist-dominic-manfredi-2016",
+    "wigan-hist-joel-tomkins-2016",
+    "wigan-hist-matty-smith-2016",
+    "wigan-hist-michael-mcilorum-2016",
+    "wigan-leg-sam-tomkins-2016",
+    "warrington-hist-ben-westwood-2015",
+    "warrington-hist-joel-monaghan-2015",
+    "warrington-hist-ryan-atkins-2015",
+    "warrington-hist-ben-westwood-2016",
+    "warrington-cur-george-king-2016",
+    "warrington-cur-daryl-clark-2016",
+    "warrington-hist-ashton-sims-2016",
+    "warrington-hist-chris-hill-2016",
+    "warrington-hist-chris-sandow-2016",
+    "warrington-hist-kevin-penny-2016",
+    "warrington-hist-kurt-gidley-2016",
+    "warrington-cur-tom-lineham-2016",
+    "warrington-hist-stefan-ratchford-2016",
+    "warrington-cur-ben-currie-2016",
+    "warrington-cur-toby-king-2016",
+    "warrington-hist-ryan-atkins-2016",
+    "catalans-hist-bruno-verges-2006",
+    "catalans-hist-cyrille-gossard-2006",
+    "catalans-hist-gregory-mounis-2006",
+    "catalans-hist-ian-hindmarsh-2006",
+    "catalans-hist-jamal-fakir-2006",
+    "catalans-hist-john-wilson-2006",
+    "catalans-hist-justin-murphy-2006",
+    "catalans-hist-michael-dobson-2006",
+    "catalans-hist-julien-rinaldi-2006",
+    "catalans-hist-adam-mogg-2007",
+    "catalans-hist-alex-chan-2007",
+    "catalans-hist-clint-greenshields-2007",
+    "catalans-hist-cyrille-gossard-2007",
+    "catalans-hist-dimitri-pelo-2007",
+    "catalans-hist-gregory-mounis-2007",
+    "catalans-hist-jason-croker-2007",
+    "catalans-hist-john-wilson-2007",
+    "catalans-hist-justin-murphy-2007",
+    "catalans-hist-kane-bentley-2007",
+    "catalans-hist-stacey-jones-2007",
+    "catalans-hist-remi-casty-2007",
+    "catalans-hist-thomas-bosc-2007",
+    "catalans-hist-adam-mogg-2009",
+    "catalans-hist-casey-mcguire-2009",
+    "catalans-hist-clint-greenshields-2009",
+    "catalans-hist-cyrille-gossard-2009",
+    "catalans-hist-dimitri-pelo-2009",
+    "catalans-hist-jean-philippe-baile-2009",
+    "catalans-hist-jerome-guisset-2009",
+    "catalans-hist-olivier-elima-2009",
+    "catalans-hist-shane-perry-2009",
+    "catalans-hist-vincent-duport-2009",
+    "catalans-hist-greg-bird-2009",
+    "catalans-hist-remi-casty-2009",
+    "catalans-hist-thomas-bosc-2009",
+    "catalans-hist-casey-mcguire-2010",
+    "catalans-hist-clint-greenshields-2010",
+    "catalans-hist-cyril-stacul-2010",
+    "catalans-hist-dane-carlaw-2010",
+    "catalans-hist-dimitri-pelo-2010",
+    "catalans-hist-gregory-mounis-2010",
+    "catalans-hist-jerome-guisset-2010",
+    "catalans-hist-olivier-elima-2010",
+    "catalans-hist-sebastien-raguin-2010",
+    "catalans-hist-setaimata-sa-2010",
+    "catalans-hist-tony-gigot-2010",
+    "catalans-hist-remi-casty-2010",
+    "catalans-hist-thomas-bosc-2010",
+    "catalans-hist-clint-greenshields-2011",
+    "catalans-hist-cyril-stacul-2011",
+    "catalans-hist-daryl-millard-2011",
+    "catalans-hist-david-ferriol-2011",
+    "catalans-cur-eloi-pelissier-2011",
+    "catalans-hist-gregory-mounis-2011",
+    "catalans-hist-jean-philippe-baile-2011",
+    "catalans-hist-sebastien-raguin-2011",
+    "catalans-hist-steve-menzies-2011",
+    "catalans-hist-vincent-duport-2011",
+    "catalans-hist-remi-casty-2011",
+    "catalans-hist-scott-dureau-2011",
+    "catalans-hist-thomas-bosc-2011",
+    "catalans-cur-julian-bousquet-2012",
+    "catalans-hist-clint-greenshields-2012",
+    "catalans-hist-cyril-stacul-2012",
+    "catalans-hist-daryl-millard-2012",
+    "catalans-cur-eloi-pelissier-2012",
+    "catalans-hist-jason-baitieri-2012",
+    "catalans-hist-louis-anderson-2012",
+    "catalans-hist-setaimata-sa-2012",
+    "catalans-hist-steve-menzies-2012",
+    "catalans-hist-vincent-duport-2012",
+    "catalans-hist-leon-pryce-2012",
+    "catalans-hist-remi-casty-2012",
+    "catalans-hist-scott-dureau-2012",
+    "catalans-cur-julian-bousquet-2013",
+    "catalans-hist-daryl-millard-2013",
+    "catalans-cur-eloi-pelissier-2013",
+    "catalans-hist-jason-baitieri-2013",
+    "catalans-hist-jean-philippe-baile-2013",
+    "catalans-hist-morgan-escare-2013",
+    "catalans-hist-steve-menzies-2013",
+    "catalans-hist-vincent-duport-2013",
+    "catalans-hist-leon-pryce-2013",
+    "catalans-hist-remi-casty-2013",
+    "catalans-hist-scott-dureau-2013",
+    "catalans-hist-zeb-taia-2013",
+    "catalans-hist-damien-blanch-2013",
+    "catalans-hist-elliott-whitehead-2015",
+    "catalans-cur-benjamin-garcia-2015",
+    "catalans-cur-julian-bousquet-2015",
+    "catalans-cur-eloi-pelissier-2015",
+    "catalans-hist-fouad-yaha-2015",
+    "catalans-hist-michael-oldfield-2015",
+    "catalans-hist-morgan-escare-2015",
+    "catalans-hist-todd-carney-2015",
+    "catalans-hist-tony-gigot-2015",
+    "catalans-hist-remi-casty-2015",
+    "catalans-hist-krisnan-inu-2015",
+    "catalans-hist-scott-dureau-2015",
+    "catalans-hist-zeb-taia-2015",
+    "catalans-hist-antoni-maria-2016",
+    "catalans-cur-eloi-pelissier-2016",
+    "catalans-hist-jason-baitieri-2016",
+    "catalans-hist-louis-anderson-2016",
+    "catalans-hist-morgan-escare-2016",
+    "catalans-hist-todd-carney-2016",
+    "catalans-hist-vincent-duport-2016",
+    "catalans-hist-pat-richards-2016",
+    "catalans-hist-remi-casty-2016",
+    "catalans-hist-jodie-broughton-2016",
+    "catalans-hist-krisnan-inu-2016",
+    "catalans-hist-thomas-bosc-2016",
+    "catalans-hist-justin-horo-2016",
+    "huddersfield-hist-brett-ferres-2013",
+    "huddersfield-hist-danny-brough-2013",
+    "huddersfield-hist-eorl-crabtree-2013",
+    "huddersfield-hist-aaron-murphy-2013",
+    "huddersfield-hist-david-faiumu-2013",
+    "huddersfield-hist-jamie-cording-2013",
+    "huddersfield-hist-jermaine-mcgillvary-2013",
+    "huddersfield-hist-joe-wardle-2013",
+    "huddersfield-hist-leroy-cudjoe-2013",
+    "huddersfield-hist-shaun-lunt-2013",
+    "huddersfield-leg-stuart-fielden-2013",
+    "huddersfield-hist-kyle-wood-2013",
+    "huddersfield-hist-scott-grix-2013",
+    "castleford-cur-joe-westerman-2009",
+    "castleford-hist-brent-sherwin-2009",
+    "castleford-hist-brett-ferres-2009",
+    "castleford-hist-craig-huby-2009",
+    "castleford-hist-kirk-dixon-2009",
+    "castleford-hist-kirk-netherton-2009",
+    "castleford-hist-liam-higgins-2009",
+    "castleford-hist-michael-shenton-2009",
+    "castleford-hist-michael-wainwright-2009",
+    "castleford-hist-ryan-clayton-2009",
+    "castleford-hist-james-evans-2009",
+    "castleford-cur-jordan-thompson-2009",
+    "castleford-hist-brett-ferres-2012",
+    "castleford-hist-craig-huby-2012",
+    "castleford-hist-danny-orr-2012",
+    "castleford-hist-kirk-dixon-2012",
+    "castleford-hist-oliver-holmes-2012",
+    "castleford-hist-richard-owen-2012",
+    "castleford-hist-stuart-jones-2012",
+    "castleford-hist-rangi-chase-2012",
+    "castleford-cur-daryl-clark-2012",
+    "castleford-cur-joe-arundel-2012",
+    "castleford-hist-steve-snitch-2012",
+    "castleford-hist-andy-lynch-2016",
+    "castleford-hist-adam-milner-2016",
+    "castleford-hist-ben-roberts-2016",
+    "castleford-hist-denny-solomona-2016",
+    "castleford-hist-greg-minikin-2016",
+    "castleford-hist-matt-cook-2016",
+    "castleford-hist-nathan-massey-2016",
+    "castleford-hist-ben-crooks-2016",
+    "castleford-hist-joel-monaghan-2016",
+    "castleford-hist-luke-gale-2016",
+    "castleford-cur-mike-mcmeeken-2016",
+    "castleford-hist-frankie-mariano-2016",
+    "castleford-hist-ryan-hampshire-2016",
+    "wakefield-hist-glenn-morrison-2010",
+    "wakefield-hist-daryl-millard-2010",
+    "wakefield-hist-aaron-murphy-2010",
+    "wakefield-hist-paul-cooke-2010",
+    "wakefield-hist-paul-king-2010",
+    "wakefield-hist-ben-jeffries-2010",
+    "wakefield-hist-damien-blanch-2010",
+    "wakefield-hist-jason-demetriou-2010",
+    "wakefield-hist-luke-george-2010",
+    "wakefield-hist-matt-blaymire-2010",
+    "wakefield-hist-michael-korkidas-2010",
+    "wakefield-hist-sam-obst-2010",
+    "wakefield-hist-paul-johnson-2010",
+    "leeds-hist-ali-lauitiiti-2008",
+    "leeds-leg-danny-mcguire-2008",
+    "leeds-leg-jamie-peacock-2008",
+    "leeds-hist-keith-senior-2008",
+    "leeds-leg-kevin-sinfield-2008",
+    "leeds-hist-kylie-leuluai-2008",
+    "leeds-hist-brent-webb-2008",
+    "leeds-hist-matt-diskin-2008",
+    "leeds-hist-scott-donald-2008",
+    "leeds-hist-ali-lauitiiti-2009",
+    "leeds-leg-danny-mcguire-2009",
+    "leeds-hist-jamie-jones-buchanan-2009",
+    "leeds-leg-jamie-peacock-2009",
+    "leeds-hist-keith-senior-2009",
+    "leeds-leg-kevin-sinfield-2009",
+    "leeds-hist-kylie-leuluai-2009",
+    "leeds-hist-matt-diskin-2009",
+    "leeds-hist-scott-donald-2009",
+    "leeds-leg-rob-burrow-2009",
+    "leeds-leg-danny-mcguire-2013",
+    "leeds-hist-jamie-jones-buchanan-2013",
+    "leeds-leg-jamie-peacock-2013",
+    "leeds-leg-kevin-sinfield-2013",
+    "leeds-hist-kylie-leuluai-2013",
+    "leeds-hist-ian-kirke-2013",
+    "leeds-hist-joel-moon-2013",
+    "leeds-leg-rob-burrow-2013",
+    "hull-fc-hist-danny-houghton-2009",
+    "hull-fc-hist-danny-tickle-2009",
+    "hull-fc-hist-danny-washbrook-2009",
+    "hull-fc-hist-gareth-raynor-2009",
+    "hull-fc-hist-jamie-thackray-2009",
+    "hull-fc-hist-motu-tony-2009",
+    "hull-fc-hist-paul-king-2009",
+    "hull-fc-hist-tommy-lee-2009",
+    "hull-fc-hist-willie-manu-2009",
+    "hull-fc-hist-richard-horne-2009",
+    "hull-fc-hist-danny-houghton-2012",
+    "hull-fc-hist-brett-seymour-2012",
+    "hull-fc-hist-danny-tickle-2012",
+    "hull-fc-hist-liam-watts-2012",
+    "hull-fc-hist-willie-manu-2012",
+    "hull-fc-hist-danny-houghton-2013",
+    "hull-fc-hist-danny-tickle-2013",
+    "hull-fc-hist-kirk-yeaman-2013",
+    "salford-hist-rob-parker-2009",
+    "salford-leg-robbie-hunter-paul-2009",
+    "salford-hist-paul-white-2009",
+    "salford-hist-adam-sidlow-2009",
+    "salford-hist-jeremy-smith-2009",
+    "salford-hist-karl-fitzpatrick-2009",
+    "salford-hist-luke-adamson-2009",
+    "salford-hist-mark-henry-2009",
+    "salford-hist-ray-cashmere-2009",
+    "salford-cur-jordan-turner-2009",
+    "salford-hist-willie-talau-2009",
+    "salford-hist-stefan-ratchford-2009",
+    "st-helens-cur-tommy-makinson-2014",
+    "st-helens-hist-willie-manu-2014",
+    "st-helens-hist-james-roby-2014",
+    "st-helens-hist-louie-mccarthy-scarsbrook-2014",
+    "st-helens-cur-jonny-lomax-2014",
+    "st-helens-cur-mark-percival-2014",
+    "st-helens-hist-ade-gardner-2014",
+    "st-helens-hist-jon-wilkin-2014",
+    "st-helens-cur-jordan-turner-2014",
+    "st-helens-hist-lance-hohaia-2014",
+    "st-helens-hist-luke-walsh-2014",
+    "st-helens-hist-mose-masoe-2014",
+    "st-helens-hist-sia-soliola-2014",
+    "st-helens-hist-james-roby-2015",
+    "st-helens-hist-louie-mccarthy-scarsbrook-2015",
+    "st-helens-hist-paul-wellens-2015",
+    "st-helens-hist-atelea-vea-2015",
+    "st-helens-hist-luke-walsh-2015",
+    "st-helens-cur-tommy-makinson-2020",
+    "st-helens-cur-joe-batchelor-2020",
+    "st-helens-hist-james-roby-2020",
+    "st-helens-hist-louie-mccarthy-scarsbrook-2020",
+    "st-helens-cur-alex-walmsley-2020",
+    "st-helens-cur-jack-welsby-2020",
+    "st-helens-cur-jonny-lomax-2020",
+    "st-helens-cur-mark-percival-2020",
+    "st-helens-cur-matty-lees-2020",
+    "st-helens-hist-kevin-naiqama-2020",
+    "st-helens-hist-regan-grace-2020",
+    "st-helens-hist-theo-fages-2020",
+    "st-helens-hist-zeb-taia-2020"
+  ],
+  "rosterReplacements": [
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "bradford-hist-abi-ekoku",
+      "to": "bradford-hist-abi-ekoku-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "bradford-hist-bernard-dwyer",
+      "to": "bradford-hist-bernard-dwyer-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "bradford-hist-brian-mcdermott",
+      "to": "bradford-hist-brian-mcdermott-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "bradford-hist-danny-peacock",
+      "to": "bradford-hist-danny-peacock-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "bradford-hist-graeme-bradley",
+      "to": "bradford-hist-graeme-bradley-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "bradford-hist-james-lowes",
+      "to": "bradford-hist-james-lowes-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "bradford-hist-matt-calland",
+      "to": "bradford-hist-matt-calland-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "bradford-hist-mike-forshaw",
+      "to": "bradford-hist-mike-forshaw-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "bradford-hist-paul-cook",
+      "to": "bradford-hist-paul-cook-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "bradford-hist-steve-mcnamara",
+      "to": "bradford-hist-steve-mcnamara-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "bradford-leg-robbie-hunter-paul",
+      "to": "bradford-leg-robbie-hunter-paul-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "huddersfield-hist-jeff-wittenberg",
+      "to": "bradford-hist-jeff-wittenberg-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1997",
+      "from": "paul-anderson",
+      "to": "bradford-hist-paul-anderson-1997"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1998",
+      "from": "bradford-hist-danny-peacock",
+      "to": "bradford-hist-danny-peacock-1998"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1998",
+      "from": "bradford-hist-graeme-bradley",
+      "to": "bradford-hist-graeme-bradley-1998"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1998",
+      "from": "bradford-hist-james-lowes",
+      "to": "bradford-hist-james-lowes-1998"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1998",
+      "from": "bradford-hist-jeremy-donougher",
+      "to": "bradford-hist-jeremy-donougher-1998"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1998",
+      "from": "bradford-hist-matt-calland",
+      "to": "bradford-hist-matt-calland-1998"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1998",
+      "from": "bradford-hist-paul-medley",
+      "to": "bradford-hist-paul-medley-1998"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1998",
+      "from": "bradford-hist-steve-mcnamara",
+      "to": "bradford-hist-steve-mcnamara-1998"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1998",
+      "from": "bradford-leg-robbie-hunter-paul",
+      "to": "bradford-leg-robbie-hunter-paul-1998"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1998",
+      "from": "leon-pryce",
+      "to": "bradford-hist-leon-pryce-1998"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1998",
+      "from": "paul-anderson",
+      "to": "bradford-hist-paul-anderson-1998"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1998",
+      "from": "shaun-edwards",
+      "to": "bradford-hist-shaun-edwards-1998"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1998",
+      "from": "tevita-vaikona",
+      "to": "bradford-hist-tevita-vaikona-1998"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1999",
+      "from": "bradford-hist-james-lowes",
+      "to": "bradford-hist-james-lowes-1999"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1999",
+      "from": "bradford-hist-mike-forshaw",
+      "to": "bradford-hist-mike-forshaw-1999"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1999",
+      "from": "bradford-hist-scott-naylor",
+      "to": "bradford-hist-scott-naylor-1999"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1999",
+      "from": "bradford-hist-steve-mcnamara",
+      "to": "bradford-hist-steve-mcnamara-1999"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1999",
+      "from": "bradford-leg-robbie-hunter-paul",
+      "to": "bradford-leg-robbie-hunter-paul-1999"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1999",
+      "from": "henry-paul",
+      "to": "bradford-hist-henry-paul-1999"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1999",
+      "from": "hull-fc-hist-lee-radford",
+      "to": "bradford-hist-lee-radford-1999"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1999",
+      "from": "jamie-peacock",
+      "to": "bradford-leg-jamie-peacock-1999"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1999",
+      "from": "paul-anderson",
+      "to": "bradford-hist-paul-anderson-1999"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1999",
+      "from": "paul-deacon",
+      "to": "bradford-hist-paul-deacon-1999"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "1999",
+      "from": "stuart-fielden",
+      "to": "bradford-leg-stuart-fielden-1999"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "bradford-hist-brad-mackay",
+      "to": "bradford-hist-brad-mackay-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "bradford-hist-james-lowes",
+      "to": "bradford-hist-james-lowes-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "bradford-hist-michael-withers",
+      "to": "bradford-hist-michael-withers-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "bradford-hist-mike-forshaw",
+      "to": "bradford-hist-mike-forshaw-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "bradford-leg-robbie-hunter-paul",
+      "to": "bradford-leg-robbie-hunter-paul-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "henry-paul",
+      "to": "bradford-hist-henry-paul-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "hull-fc-hist-lee-radford",
+      "to": "bradford-hist-lee-radford-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "jamie-peacock",
+      "to": "bradford-leg-jamie-peacock-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "leon-pryce",
+      "to": "bradford-hist-leon-pryce-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "paul-anderson",
+      "to": "bradford-hist-paul-anderson-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "paul-deacon",
+      "to": "bradford-hist-paul-deacon-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "tevita-vaikona",
+      "to": "bradford-hist-tevita-vaikona-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2000",
+      "from": "wakefield-hist-paul-sykes",
+      "to": "bradford-hist-paul-sykes-2000"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "bradford-hist-daniel-gartner",
+      "to": "bradford-hist-daniel-gartner-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "bradford-hist-james-lowes",
+      "to": "bradford-hist-james-lowes-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "bradford-hist-mike-forshaw",
+      "to": "bradford-hist-mike-forshaw-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "bradford-leg-robbie-hunter-paul",
+      "to": "bradford-leg-robbie-hunter-paul-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "henry-paul",
+      "to": "bradford-hist-henry-paul-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "hull-fc-hist-graham-mackay",
+      "to": "bradford-hist-graham-mackay-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "hull-fc-hist-lee-radford",
+      "to": "bradford-hist-lee-radford-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "jamie-peacock",
+      "to": "bradford-leg-jamie-peacock-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "leon-pryce",
+      "to": "bradford-hist-leon-pryce-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "paul-anderson",
+      "to": "bradford-hist-paul-anderson-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "paul-deacon",
+      "to": "bradford-hist-paul-deacon-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "tevita-vaikona",
+      "to": "bradford-hist-tevita-vaikona-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2001",
+      "from": "wakefield-hist-paul-sykes",
+      "to": "bradford-hist-paul-sykes-2001"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "bradford-hist-james-lowes",
+      "to": "bradford-hist-james-lowes-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "bradford-hist-mike-forshaw",
+      "to": "bradford-hist-mike-forshaw-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "bradford-leg-robbie-hunter-paul",
+      "to": "bradford-leg-robbie-hunter-paul-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "huddersfield-hist-brandon-costin",
+      "to": "bradford-hist-brandon-costin-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "hull-fc-hist-lee-radford",
+      "to": "bradford-hist-lee-radford-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "jamie-peacock",
+      "to": "bradford-leg-jamie-peacock-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "leon-pryce",
+      "to": "bradford-hist-leon-pryce-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "lesley-vainikolo",
+      "to": "bradford-hist-lesley-vainikolo-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "paul-anderson",
+      "to": "bradford-hist-paul-anderson-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "paul-deacon",
+      "to": "bradford-hist-paul-deacon-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "stuart-fielden",
+      "to": "bradford-leg-stuart-fielden-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "tevita-vaikona",
+      "to": "bradford-hist-tevita-vaikona-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2002",
+      "from": "wakefield-hist-paul-sykes",
+      "to": "bradford-hist-paul-sykes-2002"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2003",
+      "from": "bradford-hist-daniel-gartner",
+      "to": "bradford-hist-daniel-gartner-2003"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2003",
+      "from": "bradford-hist-james-lowes",
+      "to": "bradford-hist-james-lowes-2003"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2003",
+      "from": "bradford-hist-karl-pratt",
+      "to": "bradford-hist-karl-pratt-2003"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2003",
+      "from": "bradford-hist-mike-forshaw",
+      "to": "bradford-hist-mike-forshaw-2003"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2003",
+      "from": "bradford-hist-shontayne-hape",
+      "to": "bradford-hist-shontayne-hape-2003"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2003",
+      "from": "bradford-leg-robbie-hunter-paul",
+      "to": "bradford-leg-robbie-hunter-paul-2003"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2003",
+      "from": "hull-fc-hist-lee-radford",
+      "to": "bradford-hist-lee-radford-2003"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2003",
+      "from": "leon-pryce",
+      "to": "bradford-hist-leon-pryce-2003"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2003",
+      "from": "lesley-vainikolo",
+      "to": "bradford-hist-lesley-vainikolo-2003"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2003",
+      "from": "paul-anderson",
+      "to": "bradford-hist-paul-anderson-2003"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2003",
+      "from": "paul-deacon",
+      "to": "bradford-hist-paul-deacon-2003"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2003",
+      "from": "tevita-vaikona",
+      "to": "bradford-hist-tevita-vaikona-2003"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "bradford-hist-jamie-langley",
+      "to": "bradford-hist-jamie-langley-2004"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "bradford-leg-robbie-hunter-paul",
+      "to": "bradford-leg-robbie-hunter-paul-2004"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "hull-fc-hist-lee-radford",
+      "to": "bradford-hist-lee-radford-2004"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "iestyn-harris",
+      "to": "bradford-hist-iestyn-harris-2004"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "jamie-peacock",
+      "to": "bradford-leg-jamie-peacock-2004"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "leon-pryce",
+      "to": "bradford-hist-leon-pryce-2004"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "lesley-vainikolo",
+      "to": "bradford-hist-lesley-vainikolo-2004"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "paul-anderson",
+      "to": "bradford-hist-paul-anderson-2004"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "paul-deacon",
+      "to": "bradford-hist-paul-deacon-2004"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "st-helens-hist-aaron-smith",
+      "to": "bradford-hist-aaron-smith-2004"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "stuart-fielden",
+      "to": "bradford-leg-stuart-fielden-2004"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "tevita-vaikona",
+      "to": "bradford-hist-tevita-vaikona-2004"
+    },
+    {
+      "team": "Bradford Bulls",
+      "year": "2004",
+      "from": "wigan-hist-paul-johnson",
+      "to": "bradford-hist-paul-johnson-2004"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2015",
+      "from": "sean-oloughlin",
+      "to": "wigan-hist-sean-o-loughlin-2015"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2015",
+      "from": "wigan-hist-anthony-gelling",
+      "to": "wigan-hist-anthony-gelling-2015"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2015",
+      "from": "wigan-hist-joel-tomkins",
+      "to": "wigan-hist-joel-tomkins-2015"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2015",
+      "from": "wigan-hist-lee-mossop",
+      "to": "wigan-hist-lee-mossop-2015"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2015",
+      "from": "wigan-hist-matty-smith",
+      "to": "wigan-hist-matty-smith-2015"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2015",
+      "from": "wigan-hist-michael-mcilorum",
+      "to": "wigan-hist-michael-mcilorum-2015"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2016",
+      "from": "sean-oloughlin",
+      "to": "wigan-hist-sean-o-loughlin-2016"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2016",
+      "from": "wigan-hist-dominic-manfredi",
+      "to": "wigan-hist-dominic-manfredi-2016"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2016",
+      "from": "wigan-hist-joel-tomkins",
+      "to": "wigan-hist-joel-tomkins-2016"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2016",
+      "from": "wigan-hist-matty-smith",
+      "to": "wigan-hist-matty-smith-2016"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2016",
+      "from": "wigan-hist-michael-mcilorum",
+      "to": "wigan-hist-michael-mcilorum-2016"
+    },
+    {
+      "team": "Wigan Warriors",
+      "year": "2016",
+      "from": "wigan-hist-sam-tomkins",
+      "to": "wigan-leg-sam-tomkins-2016"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2015",
+      "from": "ben-westwood",
+      "to": "warrington-hist-ben-westwood-2015"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2015",
+      "from": "joel-monaghan",
+      "to": "warrington-hist-joel-monaghan-2015"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2015",
+      "from": "warrington-hist-ryan-atkins",
+      "to": "warrington-hist-ryan-atkins-2015"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "from": "ben-westwood",
+      "to": "warrington-hist-ben-westwood-2016"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "from": "wakefield-hist-ashton-sims",
+      "to": "warrington-hist-ashton-sims-2016"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "from": "wakefield-hist-chris-hill",
+      "to": "warrington-hist-chris-hill-2016"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "from": "wakefield-hist-chris-sandow",
+      "to": "warrington-hist-chris-sandow-2016"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "from": "wakefield-hist-kevin-penny",
+      "to": "warrington-hist-kevin-penny-2016"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "from": "wakefield-hist-kurt-gidley",
+      "to": "warrington-hist-kurt-gidley-2016"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "from": "wakefield-leg-stefan-ratchford",
+      "to": "warrington-hist-stefan-ratchford-2016"
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2016",
+      "from": "warrington-hist-ryan-atkins",
+      "to": "warrington-hist-ryan-atkins-2016"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2006",
+      "from": "catalans-hist-bruno-verges",
+      "to": "catalans-hist-bruno-verges-2006"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2006",
+      "from": "catalans-hist-cyrille-gossard",
+      "to": "catalans-hist-cyrille-gossard-2006"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2006",
+      "from": "catalans-hist-gregory-mounis",
+      "to": "catalans-hist-gregory-mounis-2006"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2006",
+      "from": "catalans-hist-ian-hindmarsh",
+      "to": "catalans-hist-ian-hindmarsh-2006"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2006",
+      "from": "catalans-hist-jamal-fakir",
+      "to": "catalans-hist-jamal-fakir-2006"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2006",
+      "from": "catalans-hist-john-wilson",
+      "to": "catalans-hist-john-wilson-2006"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2006",
+      "from": "catalans-hist-justin-murphy",
+      "to": "catalans-hist-justin-murphy-2006"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2006",
+      "from": "hull-kr-hist-michael-dobson",
+      "to": "catalans-hist-michael-dobson-2006"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2006",
+      "from": "toulouse-hist-julien-rinaldi",
+      "to": "catalans-hist-julien-rinaldi-2006"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "catalans-hist-adam-mogg",
+      "to": "catalans-hist-adam-mogg-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "catalans-hist-alex-chan",
+      "to": "catalans-hist-alex-chan-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "catalans-hist-clint-greenshields",
+      "to": "catalans-hist-clint-greenshields-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "catalans-hist-cyrille-gossard",
+      "to": "catalans-hist-cyrille-gossard-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "catalans-hist-dimitri-pelo",
+      "to": "catalans-hist-dimitri-pelo-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "catalans-hist-gregory-mounis",
+      "to": "catalans-hist-gregory-mounis-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "catalans-hist-jason-croker",
+      "to": "catalans-hist-jason-croker-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "catalans-hist-john-wilson",
+      "to": "catalans-hist-john-wilson-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "catalans-hist-justin-murphy",
+      "to": "catalans-hist-justin-murphy-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "catalans-hist-kane-bentley",
+      "to": "catalans-hist-kane-bentley-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "catalans-hist-stacey-jones",
+      "to": "catalans-hist-stacey-jones-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "remi-casty",
+      "to": "catalans-hist-remi-casty-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2007",
+      "from": "thomas-bosc",
+      "to": "catalans-hist-thomas-bosc-2007"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "catalans-hist-adam-mogg",
+      "to": "catalans-hist-adam-mogg-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "catalans-hist-casey-mcguire",
+      "to": "catalans-hist-casey-mcguire-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "catalans-hist-clint-greenshields",
+      "to": "catalans-hist-clint-greenshields-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "catalans-hist-cyrille-gossard",
+      "to": "catalans-hist-cyrille-gossard-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "catalans-hist-dimitri-pelo",
+      "to": "catalans-hist-dimitri-pelo-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "catalans-hist-jean-philippe-baile",
+      "to": "catalans-hist-jean-philippe-baile-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "catalans-hist-jerome-guisset",
+      "to": "catalans-hist-jerome-guisset-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "catalans-hist-olivier-elima",
+      "to": "catalans-hist-olivier-elima-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "catalans-hist-shane-perry",
+      "to": "catalans-hist-shane-perry-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "catalans-hist-vincent-duport",
+      "to": "catalans-hist-vincent-duport-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "greg-bird",
+      "to": "catalans-hist-greg-bird-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "remi-casty",
+      "to": "catalans-hist-remi-casty-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2009",
+      "from": "thomas-bosc",
+      "to": "catalans-hist-thomas-bosc-2009"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "catalans-hist-casey-mcguire",
+      "to": "catalans-hist-casey-mcguire-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "catalans-hist-clint-greenshields",
+      "to": "catalans-hist-clint-greenshields-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "catalans-hist-cyril-stacul",
+      "to": "catalans-hist-cyril-stacul-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "catalans-hist-dane-carlaw",
+      "to": "catalans-hist-dane-carlaw-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "catalans-hist-dimitri-pelo",
+      "to": "catalans-hist-dimitri-pelo-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "catalans-hist-gregory-mounis",
+      "to": "catalans-hist-gregory-mounis-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "catalans-hist-jerome-guisset",
+      "to": "catalans-hist-jerome-guisset-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "catalans-hist-olivier-elima",
+      "to": "catalans-hist-olivier-elima-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "catalans-hist-sebastien-raguin",
+      "to": "catalans-hist-sebastien-raguin-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "catalans-hist-setaimata-sa",
+      "to": "catalans-hist-setaimata-sa-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "catalans-hist-tony-gigot",
+      "to": "catalans-hist-tony-gigot-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "remi-casty",
+      "to": "catalans-hist-remi-casty-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2010",
+      "from": "thomas-bosc",
+      "to": "catalans-hist-thomas-bosc-2010"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "from": "catalans-hist-clint-greenshields",
+      "to": "catalans-hist-clint-greenshields-2011"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "from": "catalans-hist-cyril-stacul",
+      "to": "catalans-hist-cyril-stacul-2011"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "from": "catalans-hist-daryl-millard",
+      "to": "catalans-hist-daryl-millard-2011"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "from": "catalans-hist-david-ferriol",
+      "to": "catalans-hist-david-ferriol-2011"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "from": "catalans-hist-gregory-mounis",
+      "to": "catalans-hist-gregory-mounis-2011"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "from": "catalans-hist-jean-philippe-baile",
+      "to": "catalans-hist-jean-philippe-baile-2011"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "from": "catalans-hist-sebastien-raguin",
+      "to": "catalans-hist-sebastien-raguin-2011"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "from": "catalans-hist-steve-menzies",
+      "to": "catalans-hist-steve-menzies-2011"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "from": "catalans-hist-vincent-duport",
+      "to": "catalans-hist-vincent-duport-2011"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "from": "remi-casty",
+      "to": "catalans-hist-remi-casty-2011"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "from": "scott-durea",
+      "to": "catalans-hist-scott-dureau-2011"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2011",
+      "from": "thomas-bosc",
+      "to": "catalans-hist-thomas-bosc-2011"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "from": "catalans-hist-clint-greenshields",
+      "to": "catalans-hist-clint-greenshields-2012"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "from": "catalans-hist-cyril-stacul",
+      "to": "catalans-hist-cyril-stacul-2012"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "from": "catalans-hist-daryl-millard",
+      "to": "catalans-hist-daryl-millard-2012"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "from": "catalans-hist-jason-baitieri",
+      "to": "catalans-hist-jason-baitieri-2012"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "from": "catalans-hist-louis-anderson",
+      "to": "catalans-hist-louis-anderson-2012"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "from": "catalans-hist-setaimata-sa",
+      "to": "catalans-hist-setaimata-sa-2012"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "from": "catalans-hist-steve-menzies",
+      "to": "catalans-hist-steve-menzies-2012"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "from": "catalans-hist-vincent-duport",
+      "to": "catalans-hist-vincent-duport-2012"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "from": "leon-pryce",
+      "to": "catalans-hist-leon-pryce-2012"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "from": "remi-casty",
+      "to": "catalans-hist-remi-casty-2012"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2012",
+      "from": "scott-durea",
+      "to": "catalans-hist-scott-dureau-2012"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "from": "catalans-hist-daryl-millard",
+      "to": "catalans-hist-daryl-millard-2013"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "from": "catalans-hist-jason-baitieri",
+      "to": "catalans-hist-jason-baitieri-2013"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "from": "catalans-hist-jean-philippe-baile",
+      "to": "catalans-hist-jean-philippe-baile-2013"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "from": "catalans-hist-morgan-escare",
+      "to": "catalans-hist-morgan-escare-2013"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "from": "catalans-hist-steve-menzies",
+      "to": "catalans-hist-steve-menzies-2013"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "from": "catalans-hist-vincent-duport",
+      "to": "catalans-hist-vincent-duport-2013"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "from": "leon-pryce",
+      "to": "catalans-hist-leon-pryce-2013"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "from": "remi-casty",
+      "to": "catalans-hist-remi-casty-2013"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "from": "scott-durea",
+      "to": "catalans-hist-scott-dureau-2013"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "from": "st-helens-hist-zeb-taia",
+      "to": "catalans-hist-zeb-taia-2013"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2013",
+      "from": "wakefield-hist-damien-blanch",
+      "to": "catalans-hist-damien-blanch-2013"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "from": "bradford-hist-elliott-whitehead",
+      "to": "catalans-hist-elliott-whitehead-2015"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "from": "catalans-hist-fouad-yaha",
+      "to": "catalans-hist-fouad-yaha-2015"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "from": "catalans-hist-michael-oldfield",
+      "to": "catalans-hist-michael-oldfield-2015"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "from": "catalans-hist-morgan-escare",
+      "to": "catalans-hist-morgan-escare-2015"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "from": "catalans-hist-todd-carney",
+      "to": "catalans-hist-todd-carney-2015"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "from": "catalans-hist-tony-gigot",
+      "to": "catalans-hist-tony-gigot-2015"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "from": "remi-casty",
+      "to": "catalans-hist-remi-casty-2015"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "from": "salford-hist-krisnan-inu",
+      "to": "catalans-hist-krisnan-inu-2015"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "from": "scott-durea",
+      "to": "catalans-hist-scott-dureau-2015"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2015",
+      "from": "st-helens-hist-zeb-taia",
+      "to": "catalans-hist-zeb-taia-2015"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "from": "catalans-hist-antoni-maria",
+      "to": "catalans-hist-antoni-maria-2016"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "from": "catalans-hist-jason-baitieri",
+      "to": "catalans-hist-jason-baitieri-2016"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "from": "catalans-hist-louis-anderson",
+      "to": "catalans-hist-louis-anderson-2016"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "from": "catalans-hist-morgan-escare",
+      "to": "catalans-hist-morgan-escare-2016"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "from": "catalans-hist-todd-carney",
+      "to": "catalans-hist-todd-carney-2016"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "from": "catalans-hist-vincent-duport",
+      "to": "catalans-hist-vincent-duport-2016"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "from": "pat-richards",
+      "to": "catalans-hist-pat-richards-2016"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "from": "remi-casty",
+      "to": "catalans-hist-remi-casty-2016"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "from": "salford-hist-jodie-broughton",
+      "to": "catalans-hist-jodie-broughton-2016"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "from": "salford-hist-krisnan-inu",
+      "to": "catalans-hist-krisnan-inu-2016"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "from": "thomas-bosc",
+      "to": "catalans-hist-thomas-bosc-2016"
+    },
+    {
+      "team": "Catalans Dragons",
+      "year": "2016",
+      "from": "wakefield-hist-justin-horo",
+      "to": "catalans-hist-justin-horo-2016"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "castleford-hist-brett-ferres",
+      "to": "huddersfield-hist-brett-ferres-2013"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "danny-brough",
+      "to": "huddersfield-hist-danny-brough-2013"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "eorl-crabtree",
+      "to": "huddersfield-hist-eorl-crabtree-2013"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "huddersfield-hist-aaron-murphy",
+      "to": "huddersfield-hist-aaron-murphy-2013"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "huddersfield-hist-david-faiumu",
+      "to": "huddersfield-hist-david-faiumu-2013"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "huddersfield-hist-jamie-cording",
+      "to": "huddersfield-hist-jamie-cording-2013"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "huddersfield-hist-jermaine-mcgillvary",
+      "to": "huddersfield-hist-jermaine-mcgillvary-2013"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "huddersfield-hist-joe-wardle",
+      "to": "huddersfield-hist-joe-wardle-2013"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "huddersfield-hist-leroy-cudjoe",
+      "to": "huddersfield-hist-leroy-cudjoe-2013"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "huddersfield-hist-shaun-lunt",
+      "to": "huddersfield-hist-shaun-lunt-2013"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "stuart-fielden",
+      "to": "huddersfield-leg-stuart-fielden-2013"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "wakefield-hist-kyle-wood",
+      "to": "huddersfield-hist-kyle-wood-2013"
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2013",
+      "from": "wakefield-hist-scott-grix",
+      "to": "huddersfield-hist-scott-grix-2013"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2009",
+      "from": "castleford-hist-brent-sherwin",
+      "to": "castleford-hist-brent-sherwin-2009"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2009",
+      "from": "castleford-hist-brett-ferres",
+      "to": "castleford-hist-brett-ferres-2009"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2009",
+      "from": "castleford-hist-craig-huby",
+      "to": "castleford-hist-craig-huby-2009"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2009",
+      "from": "castleford-hist-kirk-dixon",
+      "to": "castleford-hist-kirk-dixon-2009"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2009",
+      "from": "castleford-hist-kirk-netherton",
+      "to": "castleford-hist-kirk-netherton-2009"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2009",
+      "from": "castleford-hist-liam-higgins",
+      "to": "castleford-hist-liam-higgins-2009"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2009",
+      "from": "castleford-hist-michael-shenton",
+      "to": "castleford-hist-michael-shenton-2009"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2009",
+      "from": "castleford-hist-michael-wainwright",
+      "to": "castleford-hist-michael-wainwright-2009"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2009",
+      "from": "castleford-hist-ryan-clayton",
+      "to": "castleford-hist-ryan-clayton-2009"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2009",
+      "from": "huddersfield-hist-james-evans",
+      "to": "castleford-hist-james-evans-2009"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2012",
+      "from": "castleford-hist-brett-ferres",
+      "to": "castleford-hist-brett-ferres-2012"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2012",
+      "from": "castleford-hist-craig-huby",
+      "to": "castleford-hist-craig-huby-2012"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2012",
+      "from": "castleford-hist-danny-orr",
+      "to": "castleford-hist-danny-orr-2012"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2012",
+      "from": "castleford-hist-kirk-dixon",
+      "to": "castleford-hist-kirk-dixon-2012"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2012",
+      "from": "castleford-hist-oliver-holmes",
+      "to": "castleford-hist-oliver-holmes-2012"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2012",
+      "from": "castleford-hist-richard-owen",
+      "to": "castleford-hist-richard-owen-2012"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2012",
+      "from": "huddersfield-hist-stuart-jones",
+      "to": "castleford-hist-stuart-jones-2012"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2012",
+      "from": "rangi-chase",
+      "to": "castleford-hist-rangi-chase-2012"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2012",
+      "from": "wakefield-hist-steve-snitch",
+      "to": "castleford-hist-steve-snitch-2012"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "from": "andy-lynch",
+      "to": "castleford-hist-andy-lynch-2016"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "from": "castleford-hist-adam-milner",
+      "to": "castleford-hist-adam-milner-2016"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "from": "castleford-hist-ben-roberts",
+      "to": "castleford-hist-ben-roberts-2016"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "from": "castleford-hist-denny-solomona",
+      "to": "castleford-hist-denny-solomona-2016"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "from": "castleford-hist-greg-minikin",
+      "to": "castleford-hist-greg-minikin-2016"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "from": "castleford-hist-matt-cook",
+      "to": "castleford-hist-matt-cook-2016"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "from": "castleford-hist-nathan-massey",
+      "to": "castleford-hist-nathan-massey-2016"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "from": "hull-kr-hist-ben-crooks",
+      "to": "castleford-hist-ben-crooks-2016"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "from": "joel-monaghan",
+      "to": "castleford-hist-joel-monaghan-2016"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "from": "luke-gale",
+      "to": "castleford-hist-luke-gale-2016"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "from": "wakefield-hist-frankie-mariano",
+      "to": "castleford-hist-frankie-mariano-2016"
+    },
+    {
+      "team": "Castleford Tigers",
+      "year": "2016",
+      "from": "wakefield-hist-ryan-hampshire",
+      "to": "castleford-hist-ryan-hampshire-2016"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "bradford-hist-glenn-morrison",
+      "to": "wakefield-hist-glenn-morrison-2010"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "catalans-hist-daryl-millard",
+      "to": "wakefield-hist-daryl-millard-2010"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "huddersfield-hist-aaron-murphy",
+      "to": "wakefield-hist-aaron-murphy-2010"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "hull-fc-hist-paul-cooke",
+      "to": "wakefield-hist-paul-cooke-2010"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "hull-fc-hist-paul-king",
+      "to": "wakefield-hist-paul-king-2010"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "wakefield-hist-ben-jeffries",
+      "to": "wakefield-hist-ben-jeffries-2010"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "wakefield-hist-damien-blanch",
+      "to": "wakefield-hist-damien-blanch-2010"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "wakefield-hist-jason-demetriou",
+      "to": "wakefield-hist-jason-demetriou-2010"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "wakefield-hist-luke-george",
+      "to": "wakefield-hist-luke-george-2010"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "wakefield-hist-matt-blaymire",
+      "to": "wakefield-hist-matt-blaymire-2010"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "wakefield-hist-michael-korkidas",
+      "to": "wakefield-hist-michael-korkidas-2010"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "wakefield-hist-sam-obst",
+      "to": "wakefield-hist-sam-obst-2010"
+    },
+    {
+      "team": "Wakefield Trinity",
+      "year": "2010",
+      "from": "wigan-hist-paul-johnson",
+      "to": "wakefield-hist-paul-johnson-2010"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2008",
+      "from": "ali-lauitiiti",
+      "to": "leeds-hist-ali-lauitiiti-2008"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2008",
+      "from": "danny-mcguire",
+      "to": "leeds-leg-danny-mcguire-2008"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2008",
+      "from": "jamie-peacock",
+      "to": "leeds-leg-jamie-peacock-2008"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2008",
+      "from": "keith-senior",
+      "to": "leeds-hist-keith-senior-2008"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2008",
+      "from": "kevin-sinfield",
+      "to": "leeds-leg-kevin-sinfield-2008"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2008",
+      "from": "kylie-leuluai",
+      "to": "leeds-hist-kylie-leuluai-2008"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2008",
+      "from": "leeds-hist-brent-webb",
+      "to": "leeds-hist-brent-webb-2008"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2008",
+      "from": "leeds-hist-matt-diskin",
+      "to": "leeds-hist-matt-diskin-2008"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2008",
+      "from": "leeds-hist-scott-donald",
+      "to": "leeds-hist-scott-donald-2008"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2009",
+      "from": "ali-lauitiiti",
+      "to": "leeds-hist-ali-lauitiiti-2009"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2009",
+      "from": "danny-mcguire",
+      "to": "leeds-leg-danny-mcguire-2009"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2009",
+      "from": "jamie-jones-buchanan",
+      "to": "leeds-hist-jamie-jones-buchanan-2009"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2009",
+      "from": "jamie-peacock",
+      "to": "leeds-leg-jamie-peacock-2009"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2009",
+      "from": "keith-senior",
+      "to": "leeds-hist-keith-senior-2009"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2009",
+      "from": "kevin-sinfield",
+      "to": "leeds-leg-kevin-sinfield-2009"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2009",
+      "from": "kylie-leuluai",
+      "to": "leeds-hist-kylie-leuluai-2009"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2009",
+      "from": "leeds-hist-matt-diskin",
+      "to": "leeds-hist-matt-diskin-2009"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2009",
+      "from": "leeds-hist-scott-donald",
+      "to": "leeds-hist-scott-donald-2009"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2009",
+      "from": "rob-burrow",
+      "to": "leeds-leg-rob-burrow-2009"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2013",
+      "from": "danny-mcguire",
+      "to": "leeds-leg-danny-mcguire-2013"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2013",
+      "from": "jamie-jones-buchanan",
+      "to": "leeds-hist-jamie-jones-buchanan-2013"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2013",
+      "from": "jamie-peacock",
+      "to": "leeds-leg-jamie-peacock-2013"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2013",
+      "from": "kevin-sinfield",
+      "to": "leeds-leg-kevin-sinfield-2013"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2013",
+      "from": "kylie-leuluai",
+      "to": "leeds-hist-kylie-leuluai-2013"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2013",
+      "from": "leeds-hist-ian-kirke",
+      "to": "leeds-hist-ian-kirke-2013"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2013",
+      "from": "leeds-hist-joel-moon",
+      "to": "leeds-hist-joel-moon-2013"
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2013",
+      "from": "rob-burrow",
+      "to": "leeds-leg-rob-burrow-2013"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2009",
+      "from": "danny-houghton",
+      "to": "hull-fc-hist-danny-houghton-2009"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2009",
+      "from": "hull-fc-hist-danny-tickle",
+      "to": "hull-fc-hist-danny-tickle-2009"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2009",
+      "from": "hull-fc-hist-danny-washbrook",
+      "to": "hull-fc-hist-danny-washbrook-2009"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2009",
+      "from": "hull-fc-hist-gareth-raynor",
+      "to": "hull-fc-hist-gareth-raynor-2009"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2009",
+      "from": "hull-fc-hist-jamie-thackray",
+      "to": "hull-fc-hist-jamie-thackray-2009"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2009",
+      "from": "hull-fc-hist-motu-tony",
+      "to": "hull-fc-hist-motu-tony-2009"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2009",
+      "from": "hull-fc-hist-paul-king",
+      "to": "hull-fc-hist-paul-king-2009"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2009",
+      "from": "hull-fc-hist-tommy-lee",
+      "to": "hull-fc-hist-tommy-lee-2009"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2009",
+      "from": "hull-fc-hist-willie-manu",
+      "to": "hull-fc-hist-willie-manu-2009"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2009",
+      "from": "richard-horne",
+      "to": "hull-fc-hist-richard-horne-2009"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2012",
+      "from": "danny-houghton",
+      "to": "hull-fc-hist-danny-houghton-2012"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2012",
+      "from": "hull-fc-hist-brett-seymour",
+      "to": "hull-fc-hist-brett-seymour-2012"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2012",
+      "from": "hull-fc-hist-danny-tickle",
+      "to": "hull-fc-hist-danny-tickle-2012"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2012",
+      "from": "hull-fc-hist-liam-watts",
+      "to": "hull-fc-hist-liam-watts-2012"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2012",
+      "from": "hull-fc-hist-willie-manu",
+      "to": "hull-fc-hist-willie-manu-2012"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2013",
+      "from": "danny-houghton",
+      "to": "hull-fc-hist-danny-houghton-2013"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2013",
+      "from": "hull-fc-hist-danny-tickle",
+      "to": "hull-fc-hist-danny-tickle-2013"
+    },
+    {
+      "team": "Hull FC",
+      "year": "2013",
+      "from": "hull-fc-hist-kirk-yeaman",
+      "to": "hull-fc-hist-kirk-yeaman-2013"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2009",
+      "from": "bradford-hist-rob-parker",
+      "to": "salford-hist-rob-parker-2009"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2009",
+      "from": "bradford-leg-robbie-hunter-paul",
+      "to": "salford-leg-robbie-hunter-paul-2009"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2009",
+      "from": "huddersfield-hist-paul-white",
+      "to": "salford-hist-paul-white-2009"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2009",
+      "from": "salford-hist-adam-sidlow",
+      "to": "salford-hist-adam-sidlow-2009"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2009",
+      "from": "salford-hist-jeremy-smith",
+      "to": "salford-hist-jeremy-smith-2009"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2009",
+      "from": "salford-hist-karl-fitzpatrick",
+      "to": "salford-hist-karl-fitzpatrick-2009"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2009",
+      "from": "salford-hist-luke-adamson",
+      "to": "salford-hist-luke-adamson-2009"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2009",
+      "from": "salford-hist-mark-henry",
+      "to": "salford-hist-mark-henry-2009"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2009",
+      "from": "salford-hist-ray-cashmere",
+      "to": "salford-hist-ray-cashmere-2009"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2009",
+      "from": "st-helens-hist-willie-talau",
+      "to": "salford-hist-willie-talau-2009"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2009",
+      "from": "wakefield-leg-stefan-ratchford",
+      "to": "salford-hist-stefan-ratchford-2009"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "from": "hull-fc-hist-willie-manu",
+      "to": "st-helens-hist-willie-manu-2014"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "from": "james-roby",
+      "to": "st-helens-hist-james-roby-2014"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "from": "louie-mccarthy-scarsbrook",
+      "to": "st-helens-hist-louie-mccarthy-scarsbrook-2014"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "from": "st-helens-hist-ade-gardner",
+      "to": "st-helens-hist-ade-gardner-2014"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "from": "st-helens-hist-jon-wilkin",
+      "to": "st-helens-hist-jon-wilkin-2014"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "from": "st-helens-hist-lance-hohaia",
+      "to": "st-helens-hist-lance-hohaia-2014"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "from": "st-helens-hist-luke-walsh",
+      "to": "st-helens-hist-luke-walsh-2014"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "from": "st-helens-hist-mose-masoe",
+      "to": "st-helens-hist-mose-masoe-2014"
+    },
+    {
+      "team": "St Helens",
+      "year": "2014",
+      "from": "st-helens-hist-sia-soliola",
+      "to": "st-helens-hist-sia-soliola-2014"
+    },
+    {
+      "team": "St Helens",
+      "year": "2015",
+      "from": "james-roby",
+      "to": "st-helens-hist-james-roby-2015"
+    },
+    {
+      "team": "St Helens",
+      "year": "2015",
+      "from": "louie-mccarthy-scarsbrook",
+      "to": "st-helens-hist-louie-mccarthy-scarsbrook-2015"
+    },
+    {
+      "team": "St Helens",
+      "year": "2015",
+      "from": "paul-wellens",
+      "to": "st-helens-hist-paul-wellens-2015"
+    },
+    {
+      "team": "St Helens",
+      "year": "2015",
+      "from": "st-helens-hist-atelea-vea",
+      "to": "st-helens-hist-atelea-vea-2015"
+    },
+    {
+      "team": "St Helens",
+      "year": "2015",
+      "from": "st-helens-hist-luke-walsh",
+      "to": "st-helens-hist-luke-walsh-2015"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "from": "james-roby",
+      "to": "st-helens-hist-james-roby-2020"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "from": "louie-mccarthy-scarsbrook",
+      "to": "st-helens-hist-louie-mccarthy-scarsbrook-2020"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "from": "st-helens-hist-kevin-naiqama",
+      "to": "st-helens-hist-kevin-naiqama-2020"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "from": "st-helens-hist-regan-grace",
+      "to": "st-helens-hist-regan-grace-2020"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "from": "st-helens-hist-theo-fages",
+      "to": "st-helens-hist-theo-fages-2020"
+    },
+    {
+      "team": "St Helens",
+      "year": "2020",
+      "from": "st-helens-hist-zeb-taia",
+      "to": "st-helens-hist-zeb-taia-2020"
+    }
+  ]
+}

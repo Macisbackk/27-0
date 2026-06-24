@@ -11,5 +11,6 @@ export function resolveCategory(
   yearsActive: string
 ): PlayerCategory {
   if (rawCategory === "legend") return "legend";
+  if (rawCategory === "current") return "current";
   return yearsActive.includes("Present") ? "current" : "historic";
 }

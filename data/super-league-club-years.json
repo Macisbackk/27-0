@@ -10,7 +10,7 @@
   "London Broncos": { "ranges": [[1996, 2013], [2018, 2020]] },
   "Salford Red Devils": { "ranges": [[1996, 2024]] },
   "St Helens": { "ranges": [[1996, 2026]] },
-  "Toulouse Olympique": { "ranges": [[2022, 2026]] },
+  "Toulouse Olympique": { "ranges": [[2022, 2022], [2026, 2026]] },
   "Wakefield Trinity": { "ranges": [[1996, 2023], [2025, 2026]] },
   "Warrington Wolves": { "ranges": [[1996, 2026]] },
   "Widnes Vikings": { "ranges": [[2002, 2005], [2012, 2013], [2017, 2018]] },

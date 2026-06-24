@@ -31,9 +31,10 @@ export function getPlayerDisplayClub(player: Player): string {
 }
 
 export function getPlayerDisplayYear(player: Player): number {
+  if (player.year !== undefined) return player.year;
   if (player.category === "current") return CURRENT_SEASON_YEAR;
-  if (player.primeYear !== undefined) return player.primeYear;
   if (player.cardYear !== undefined) return player.cardYear;
+  if (player.primeYear !== undefined) return player.primeYear;
   const match = player.id.match(/-(\d{4})$/);
   if (match) return Number.parseInt(match[1], 10);
   return CURRENT_SEASON_YEAR;

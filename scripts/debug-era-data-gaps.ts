@@ -2,6 +2,9 @@
  * Era Normal Mode data-gap report — eligible pools per position.
  * Run: npm run debug:era-data-gaps
  */
+import eraWikipediaSquads from "../data/era-wikipedia-squads.json";
+import slVerifiedSquads from "../data/sl-era-verified-squads.json";
+import teamYearRostersAudit from "../data/team-year-rosters-audit.json";
 import { RECRUIT_SLOT_ORDER, createEmptySquad, SQUAD_STRUCTURE } from "../src/lib/positions";
 import {
   getEraModeTeamYearPools,
@@ -13,8 +16,11 @@ import {
   isPlayerInTeamYearPool,
 } from "../src/lib/game/team-year-pools";
 import { canPlayerFillTeamYearSlot } from "../src/lib/players/team-year-roster-playable";
-import { getPlayableClubNames } from "../src/lib/clubs/super-league-display";
-import { getEraWikipediaSquadPlayerIds } from "../src/lib/players/era-wikipedia-squads";
+import {
+  getCurrentPlayableClubNames,
+  getEraPlayableClubNames,
+} from "../src/lib/clubs/super-league-display";
+import { isSuperLeagueSeason } from "../src/lib/players/super-league-club-years";
 import { isPlayableTeamYearRoster } from "../src/lib/players/team-year-roster-playable";
 import { getPlayerById } from "../src/lib/players";
 import type { Position } from "../src/lib/types";
@@ -30,6 +36,41 @@ const POSITION_LABEL: Record<Position, string> = {
   SECOND_ROW: "SR",
   LOOSE_FORWARD: "LF",
 };
+
+type SquadStore = Record<
+  string,
+  Record<string, { playerIds?: string[]; wikipediaPlayers?: string[] }>
+>;
+
+function countStoredSquads(): {
+  stored: number;
+  storedSuperLeague: number;
+  storedByClub: Map<string, number>;
+} {
+  const sources = [eraWikipediaSquads, slVerifiedSquads] as SquadStore[];
+  const seen = new Set<string>();
+  const storedByClub = new Map<string, number>();
+  let stored = 0;
+  let storedSuperLeague = 0;
+
+  for (const store of sources) {
+    for (const [club, years] of Object.entries(store)) {
+      for (const [year, entry] of Object.entries(years)) {
+        if (!entry?.playerIds || entry.playerIds.length !== 13) continue;
+        const key = `${club}|${year}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        stored++;
+        if (isSuperLeagueSeason(club, year)) {
+          storedSuperLeague++;
+          storedByClub.set(club, (storedByClub.get(club) ?? 0) + 1);
+        }
+      }
+    }
+  }
+
+  return { stored, storedSuperLeague, storedByClub };
+}
 
 function auditPosition(slotIndex: number) {
   const squad = createEmptySquad();
@@ -57,37 +98,8 @@ function auditPosition(slotIndex: number) {
     );
   }
 
-  const allEraPools = getEraModeTeamYearPools();
-  const hiddenIncomplete: Array<{ team: string; year: string; reason: string }> =
-    [];
-  const playableClubs = new Set(getPlayableClubNames());
-
-  for (const pool of allEraPools) {
-    const ids = getEraWikipediaSquadPlayerIds(pool.team, pool.year);
-    if (!ids || ids.length !== 13) {
-      hiddenIncomplete.push({
-        team: pool.team,
-        year: pool.year,
-        reason: `roster size ${ids?.length ?? 0}`,
-      });
-      continue;
-    }
-    if (
-      !isPlayableTeamYearRoster(pool.team, pool.year, ids, (id) =>
-        getPlayerById(id)
-      )
-    ) {
-      hiddenIncomplete.push({
-        team: pool.team,
-        year: pool.year,
-        reason: "failed playability gate",
-      });
-    }
-  }
-
-  const clubsMissingPosition = [...playableClubs].filter(
-    (club) => !byClub.has(club)
-  );
+  const eraClubs = new Set(getEraPlayableClubNames());
+  const clubsMissingPosition = [...eraClubs].filter((club) => !byClub.has(club));
 
   return {
     position,
@@ -99,57 +111,110 @@ function auditPosition(slotIndex: number) {
       [...clubYears.entries()].sort((a, b) => a[0].localeCompare(b[0]))
     ),
     clubsMissingPosition: clubsMissingPosition.sort(),
-    hiddenIncompleteCount: hiddenIncomplete.length,
-    hiddenIncomplete: hiddenIncomplete.slice(0, 8),
   };
 }
 
 function main(): void {
   console.log("=== Era Normal Mode Data Gap Report ===\n");
 
+  const stored = countStoredSquads();
+  const audit = teamYearRostersAudit as {
+    playableCount: number;
+    hiddenCount: number;
+    hidden: Array<{ team: string; year: string; reason: string }>;
+    unresolvedSquads?: Array<{ team: string; year: string; names: string[] }>;
+    verifiedSquadsMerged?: number;
+  };
+
   const eraPools = getEraModeTeamYearPools();
   const eraClubs = new Set(eraPools.map((p) => p.team));
+  const playableByClub = new Map<string, number>();
+  for (const pool of eraPools) {
+    playableByClub.set(pool.team, (playableByClub.get(pool.team) ?? 0) + 1);
+  }
+
+  console.log(`Stored squads (Wikipedia + verified): ${stored.stored}`);
+  console.log(`Stored Super League squads: ${stored.storedSuperLeague}`);
+  console.log(`Resolved squads merged: ${audit.verifiedSquadsMerged ?? "—"}`);
+  console.log(`Playable era squads (excl. 2026): ${eraPools.length}`);
+  console.log(`Hidden incomplete squads: ${audit.hiddenCount}`);
   console.log(
-    `Total era team-years (excl. 2026): ${eraPools.length} across ${eraClubs.size} clubs\n`
+    `Unresolved player names (squads): ${audit.unresolvedSquads?.length ?? 0}`
+  );
+
+  const hiddenNonSl = audit.hidden.filter(
+    (h) => h.reason === "not a Super League season"
+  ).length;
+  if (hiddenNonSl > 0) {
+    console.log(`Hidden non-Super-League squads: ${hiddenNonSl}`);
+  }
+
+  console.log("\nPlayable clubs (era team-year counts):");
+  for (const club of getEraPlayableClubNames()) {
+    const count = playableByClub.get(club) ?? 0;
+    const storedCount = stored.storedByClub.get(club) ?? 0;
+    const suffix =
+      count === 0 && storedCount > 0 ? ` (${storedCount} stored, not playable)` : "";
+    console.log(`  ${club}: ${count}${suffix}`);
+  }
+
+  const historicOnly = ["London Broncos", "Salford Red Devils", "Widnes Vikings"];
+  for (const club of historicOnly) {
+    const inEra = eraClubs.has(club);
+    console.log(
+      `  ${club} in era spin pools: ${inEra ? "yes" : "no"} (${playableByClub.get(club) ?? 0} team-years)`
+    );
+  }
+
+  if (audit.unresolvedSquads && audit.unresolvedSquads.length > 0) {
+    console.log("\nUnresolved Wikipedia names (sample):");
+    for (const row of audit.unresolvedSquads.slice(0, 12)) {
+      console.log(`  ${row.team} ${row.year}: ${row.names.join(", ")}`);
+    }
+    if (audit.unresolvedSquads.length > 12) {
+      console.log(`  ... and ${audit.unresolvedSquads.length - 12} more squads`);
+    }
+  }
+
+  if (audit.hidden.length > 0) {
+    console.log("\nHidden squads (sample):");
+    for (const row of audit.hidden.slice(0, 12)) {
+      console.log(`  ${row.team} ${row.year}: ${row.reason}`);
+    }
+  }
+
+  console.log(
+    `\nCurrent-only clubs (excluded from era): ${getCurrentPlayableClubNames().length}`
+  );
+  console.log(
+    `Total era team-years in spin: ${eraPools.length} across ${eraClubs.size} clubs\n`
   );
 
   const summaries = RECRUIT_SLOT_ORDER.map((slotIndex) =>
     auditPosition(slotIndex)
   );
 
-  for (const row of summaries) {
-    console.log(`Position: ${row.label} (${row.position})`);
-    console.log(`  Eligible clubs: ${row.eligibleClubs}`);
-    console.log(`  Eligible team-years: ${row.eligibleTeamYears}`);
-    if (row.clubsMissingPosition.length > 0) {
-      console.log(
-        `  Clubs missing this position: ${row.clubsMissingPosition.join(", ")}`
-      );
-    }
-    console.log(`  Hidden incomplete pools: ${row.hiddenIncompleteCount}`);
-    if (row.hiddenIncomplete.length > 0) {
-      for (const hidden of row.hiddenIncomplete) {
-        console.log(
-          `    - ${hidden.team} ${hidden.year}: ${hidden.reason}`
-        );
-      }
-    }
-    const clubLines = Object.entries(row.clubYears);
-    if (clubLines.length > 0) {
-      console.log("  Team-years per club:");
-      for (const [club, years] of clubLines) {
-        console.log(`    ${club}: ${years.join(", ")}`);
-      }
-    }
-    console.log("");
+  const fb = summaries.find((s) => s.slotIndex === 0)!;
+  console.log(`Position: ${fb.label} (${fb.position})`);
+  console.log(`  Eligible clubs: ${fb.eligibleClubs}`);
+  console.log(`  Eligible team-years: ${fb.eligibleTeamYears}`);
+  if (fb.clubsMissingPosition.length > 0) {
+    console.log(
+      `  Clubs missing this position: ${fb.clubsMissingPosition.join(", ")}`
+    );
   }
+  console.log("  Team-years per club:");
+  for (const [club, years] of Object.entries(fb.clubYears)) {
+    console.log(`    ${club}: ${years.join(", ")}`);
+  }
+  console.log("");
 
   const weakest = [...summaries].sort(
     (a, b) => a.eligibleClubs - b.eligibleClubs
   )[0];
-  if (weakest && weakest.eligibleClubs <= 4) {
+  if (weakest) {
     console.log(
-      `NOTE: Weakest coverage is ${weakest.label} with only ${weakest.eligibleClubs} eligible clubs — add verified historic team-years with position coverage.`
+      `Weakest position coverage: ${weakest.label} — ${weakest.eligibleClubs} clubs, ${weakest.eligibleTeamYears} team-years`
     );
   }
 
