@@ -5,6 +5,7 @@ import { EmailConfirmedBanner } from "@/components/EmailConfirmedBanner";
 import { HomeModeSelector } from "@/components/HomeModeSelector";
 import { HowToPlaySection } from "@/components/HowToPlaySection";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
+import { LogoMark } from "@/components/LogoMark";
 import { CARD, LINK, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -15,9 +16,8 @@ export default function HomePage() {
       <div className={`relative mx-auto max-w-4xl ${SPACING.pageX} py-12 sm:py-20`}>
         <div className="text-center">
           <p className={TYPO.sectionLabel}>Rugby League Squad Builder</p>
-          <h1 className="mt-3 text-5xl font-black tracking-tight sm:text-7xl">
-            <span className="text-gradient">27</span>
-            <span className="text-white">-0</span>
+          <h1 className="mt-3">
+            <LogoMark size="lg" className="justify-center" />
           </h1>
           <p className={`mt-4 ${TYPO.pageSubtitle}`}>
             Build the most valuable Super League team through strategic

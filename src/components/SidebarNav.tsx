@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { LogoMark } from "@/components/LogoMark";
 import { useAuth } from "@/lib/auth-context";
 import { buildPlayHref, isCupEraMode, isPlayModeActive } from "@/lib/play-links";
 import {
@@ -210,10 +211,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
           >
             <div className="sidebar-header flex shrink-0 items-center justify-between border-b px-3 py-2">
               <div>
-                <p className="font-display text-base font-black tracking-tight">
-                  <span className="text-gradient">27</span>
-                  <span className="text-white">-0</span>
-                </p>
+                <LogoMark />
               </div>
               <button
                 type="button"
@@ -244,7 +242,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       {isNormalActive && (
                         <span
                           className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
-                            isNormalEra ? "bg-accent-gold" : "bg-accent-green"
+                            isNormalEra ? "bg-accent-gold" : "bg-mode-current"
                           }`}
                         />
                       )}
@@ -279,7 +277,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       {isCupActive && (
                         <span
                           className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
-                            isEraCup ? "bg-pitch-950" : "bg-accent-green"
+                            isEraCup ? "bg-accent-gold" : "bg-mode-current"
                           }`}
                         />
                       )}
@@ -313,7 +311,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                           </span>
                           {item.label}
                           {active && (
-                            <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-green" />
+                            <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
                           )}
                         </Link>
                       </li>
@@ -344,7 +342,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         </span>
                         Coach Profile
                         {pathname.startsWith("/profile") && (
-                          <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-green" />
+                          <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
                         )}
                       </Link>
                     ) : (
@@ -358,7 +356,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         </span>
                         Log In
                         {pathname.startsWith("/login") && (
-                          <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-green" />
+                          <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
                         )}
                       </Link>
                     )}
@@ -383,7 +381,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-md border ${
                     muted
                       ? "border-pitch-600 bg-pitch-900/80 text-gray-500"
-                      : "border-accent-green/30 bg-accent-green/10 text-accent-green"
+                      : "border-theme-primary/30 bg-theme-primary/10 text-theme-primary"
                   }`}
                   aria-hidden
                 >
@@ -394,7 +392,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 </span>
                 <span
                   className={`${NAV.soundStatus} ${
-                    muted ? "text-gray-500" : "text-accent-green"
+                    muted ? "text-gray-500" : "text-theme-primary"
                   }`}
                 >
                   {muted ? "OFF" : "ON"}

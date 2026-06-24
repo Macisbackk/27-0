@@ -107,8 +107,8 @@ export function ClubFundsDisplay({
         }}
         className={
           isMobileUnderLogo
-            ? "mx-auto flex w-full min-w-0 items-center justify-center bg-transparent p-0 text-accent-green transition hover:text-accent-green/85 focus:outline-none focus-visible:ring-1 focus-visible:ring-accent-green/50"
-            : "header-control-btn flex h-11 min-h-[44px] w-[4.75rem] max-w-[4.75rem] shrink-0 items-center justify-center gap-0.5 overflow-hidden rounded-lg border border-pitch-600 px-1 text-accent-green transition hover:border-accent-green/50 hover:bg-accent-green/10 sm:w-auto sm:max-w-none sm:gap-1.5 sm:px-3"
+            ? "mx-auto flex w-full min-w-0 items-center justify-center bg-transparent p-0 text-theme-primary transition hover:text-theme-primary/85 focus:outline-none focus-visible:ring-1 focus-visible:ring-theme-primary/50"
+            : "header-control-btn flex h-11 min-h-[44px] w-[4.75rem] max-w-[4.75rem] shrink-0 items-center justify-center gap-0.5 overflow-hidden rounded-lg border border-pitch-600 px-1 text-theme-primary transition hover:border-theme-primary/50 hover:bg-theme-primary/10 sm:w-auto sm:max-w-none sm:gap-1.5 sm:px-3"
         }
         aria-expanded={open}
         aria-haspopup="dialog"

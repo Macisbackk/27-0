@@ -1,6 +1,6 @@
 "use client";
 
-import type { ComponentProps, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { BTN } from "@/lib/ui/design-system";
 import {
   ActionButton,
@@ -44,14 +44,9 @@ export function GameButton({
 }: GameButtonProps) {
   const startVariant = variant === "era" || variant === "current";
   const sizeClass = startVariant && size === "lg" ? "" : SIZE_CLASS[size];
-  const lgProgression =
-    !startVariant && size === "lg"
-      ? variant === "primary"
-        ? BTN.primaryLg
-        : BTN.secondaryLg
-      : "";
+  const lgTheme = !startVariant && size === "lg" ? BTN.themeLg : "";
 
-  const classes = `${sizeClass} ${lgProgression} ${className}`;
+  const classes = `${sizeClass} ${lgTheme} ${className}`;
 
   if (href) {
     return (

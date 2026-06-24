@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Suspense, useState } from "react";
 import { ClubFundsDisplay } from "./ClubFundsDisplay";
 import { HeaderAuthControls } from "./HeaderAuthControls";
+import { LogoMark } from "./LogoMark";
 import { SidebarNav } from "./SidebarNav";
 import { playMenuOpen } from "@/lib/sound";
 import { BTN } from "@/lib/ui/design-system";
@@ -38,10 +39,7 @@ export function Header() {
               className="flex min-w-0 items-center justify-center px-1 sm:px-3"
               aria-label="27-0 home"
             >
-              <span className="whitespace-nowrap text-xl font-black tracking-tight sm:text-3xl">
-                <span className="text-gradient">27</span>
-                <span className="text-white">-0</span>
-              </span>
+              <LogoMark />
             </Link>
             <ClubFundsDisplay placement="mobile-under-logo" />
           </div>

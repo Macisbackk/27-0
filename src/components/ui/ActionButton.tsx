@@ -5,20 +5,24 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { BTN } from "@/lib/ui/design-system";
 
 export type ActionButtonVariant =
+  | "theme"
   | "primary"
   | "secondary"
   | "current"
   | "era"
   | "danger"
+  | "success"
   | "ghost";
 
 const VARIANT_CLASS: Record<ActionButtonVariant, string> = {
-  primary: BTN.primary,
-  secondary: BTN.secondary,
+  theme: BTN.theme,
+  primary: BTN.theme,
+  secondary: BTN.secondaryThemed,
   current: BTN.currentStart,
   era: BTN.eraStart,
   danger: BTN.danger,
-  ghost: `${BTN.secondary} border-transparent bg-transparent hover:bg-pitch-900/40`,
+  success: BTN.success,
+  ghost: `${BTN.secondaryThemed} border-transparent bg-transparent hover:bg-pitch-900/40`,
 };
 
 function variantClass(variant: ActionButtonVariant, hardMode = false): string {

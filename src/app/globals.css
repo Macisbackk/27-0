@@ -42,10 +42,20 @@
   --mode-current: #22c55e;
   --mode-current-2: #34d399;
   --mode-current-rgb: 34 197 94;
+  --mode-current-border: rgba(34, 197, 94, 0.75);
   --mode-current-glow: rgba(34, 197, 94, 0.35);
   --mode-era: #f6c400;
   --mode-era-rgb: 246 196 0;
   --mode-era-glow: rgba(246, 196, 0, 0.35);
+
+  --success: #22c55e;
+  --success-2: #34d399;
+  --success-rgb: 34 197 94;
+  --rating: #22c55e;
+  --rating-rgb: 34 197 94;
+  --danger: #ef4444;
+  --danger-rgb: 239 68 68;
+  --theme-soft: var(--theme-primary-soft);
 }
 
 body {
@@ -260,8 +270,8 @@ body {
   gap: 0.15rem;
   max-width: 100%;
   border-radius: 3px;
-  border: 1px solid rgba(34, 197, 94, 0.35);
-  background: rgba(20, 83, 45, 0.2);
+  border: 1px solid color-mix(in srgb, var(--success) 35%, transparent);
+  background: color-mix(in srgb, var(--success) 12%, transparent);
   padding: 0 4px;
 }
 
@@ -406,6 +416,105 @@ body {
       0 0 16px rgba(251, 191, 36, 0.28);
   }
 
+  /* Store-themed generic buttons */
+  .game-button--theme {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid var(--theme-border);
+    background-color: var(--theme-primary);
+    color: var(--theme-text-on-primary);
+    font-weight: 600;
+    box-shadow: 0 0 28px var(--theme-glow-soft);
+    transition:
+      background-color 0.15s ease,
+      box-shadow 0.15s ease,
+      filter 0.15s ease;
+  }
+
+  .game-button--theme:hover:not(:disabled) {
+    filter: brightness(1.05);
+    box-shadow: 0 0 36px var(--theme-glow);
+  }
+
+  .game-button--theme-lg {
+    min-height: 52px;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+    font-size: 1.125rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .game-button--secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgb(42 69 57 / 1);
+    background: transparent;
+    color: #d1d5db;
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .game-button--secondary:hover:not(:disabled) {
+    border-color: color-mix(in srgb, var(--theme-primary) 40%, transparent);
+    color: #ffffff;
+    background: rgb(22 36 32 / 0.6);
+  }
+
+  .game-button--success {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid color-mix(in srgb, var(--success) 75%, transparent);
+    background-color: var(--success);
+    color: #07130a;
+    font-weight: 600;
+  }
+
+  .game-button--success:hover:not(:disabled) {
+    filter: brightness(1.05);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--success) 35%, transparent);
+  }
+
+  /* 27-0 logo — default keeps green gradient; team themes use solid accent */
+  .logo-mark-rest {
+    color: #ffffff;
+  }
+
+  [data-ui-theme="default"] .logo-mark-accent {
+    background: linear-gradient(
+      90deg,
+      var(--mode-current) 0%,
+      var(--mode-current-2) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  [data-ui-theme]:not([data-ui-theme="default"]) .logo-mark-accent {
+    color: var(--theme-primary);
+    text-shadow: 0 0 18px var(--theme-glow-soft);
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+  }
+
   /**
    * Opaque era gold surfaces — avoids backdrop-filter compositing bugs on
    * ancestors (matchday-panel / card-glass) that leave gradient buttons blank.
@@ -418,9 +527,13 @@ body {
     min-height: 52px;
     padding: 1rem 1.25rem;
     border-radius: 0.75rem;
-    border: 2px solid rgba(180, 83, 9, 0.75);
-    background-color: #fbbf24;
-    background-image: linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%);
+    border: 2px solid color-mix(in srgb, var(--mode-era) 75%, #000);
+    background-color: var(--mode-era);
+    background-image: linear-gradient(
+      90deg,
+      var(--mode-era) 0%,
+      color-mix(in srgb, var(--mode-era) 70%, #fff) 100%
+    );
     color: #0a0f0d !important;
     font-family: var(--font-display), "Arial Black", Impact, sans-serif;
     font-size: 1.125rem;
@@ -443,8 +556,14 @@ body {
   }
 
   .era-start-btn:hover {
-    background-color: #fcd34d;
-    background-image: linear-gradient(90deg, #fcd34d 0%, #fbbf24 100%);
+    filter: brightness(1.05);
+  }
+
+  .era-start-btn-compact {
+    min-height: 44px;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
   }
 
   .era-start-btn:active:not(:disabled) {
@@ -470,10 +589,14 @@ body {
     min-height: 52px;
     padding: 1rem 1.25rem;
     border-radius: 0.75rem;
-    border: 2px solid rgba(22, 163, 74, 0.75);
-    background-color: #22c55e;
-    background-image: linear-gradient(90deg, #22c55e 0%, #34d399 100%);
-    color: #0a0f0d !important;
+    border: 2px solid var(--mode-current-border);
+    background-color: var(--mode-current);
+    background-image: linear-gradient(
+      90deg,
+      var(--mode-current) 0%,
+      var(--mode-current-2) 100%
+    );
+    color: #07130a !important;
     font-family: var(--font-display), "Arial Black", Impact, sans-serif;
     font-size: 1.125rem;
     font-weight: 900;
@@ -495,8 +618,17 @@ body {
   }
 
   .mode-start-btn:hover {
-    background-color: #34d399;
-    background-image: linear-gradient(90deg, #34d399 0%, #22c55e 100%);
+    filter: brightness(1.05);
+    box-shadow:
+      0 0 36px var(--mode-current-glow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .mode-start-btn-compact {
+    min-height: 44px;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
   }
 
   .mode-start-btn:active:not(:disabled) {
@@ -748,10 +880,10 @@ body {
     font-size: 11px;
     font-weight: 400;
     line-height: 1;
-    color: #22c55e;
+    color: var(--rating);
     letter-spacing: 0.06em;
     text-shadow:
-      0 0 8px rgba(34, 197, 94, 0.55),
+      0 0 8px color-mix(in srgb, var(--rating) 55%, transparent),
       1px 0 0 #000,
       -1px 0 0 #000,
       0 1px 0 #000,
@@ -759,7 +891,20 @@ body {
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-accent-green to-accent-green-2 bg-clip-text text-transparent;
+    color: var(--theme-primary);
+    text-shadow: 0 0 18px var(--theme-glow-soft);
+  }
+
+  [data-ui-theme="default"] .text-gradient {
+    background: linear-gradient(
+      90deg,
+      var(--mode-current) 0%,
+      var(--mode-current-2) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
   }
 
   .card-glass {
@@ -767,7 +912,9 @@ body {
   }
 
   .btn-primary {
-    @apply rounded-xl bg-accent-green px-6 py-3 font-semibold text-[var(--theme-text-on-primary)] transition-all hover:opacity-90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40;
+    @apply rounded-xl px-6 py-3 font-semibold transition-all hover:opacity-90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40;
+    background-color: var(--theme-primary);
+    color: var(--theme-text-on-primary);
   }
 
   .btn-secondary {
@@ -779,7 +926,14 @@ body {
   }
 
   .btn-play-again {
-    @apply rounded-xl bg-gradient-to-r from-accent-green to-accent-green-2 font-display text-xl font-black uppercase tracking-wider text-[var(--theme-text-on-primary)] shadow-[0_0_30px_var(--theme-glow)] transition-all hover:opacity-95 hover:shadow-[0_0_40px_var(--theme-glow)] active:scale-[0.98];
+    @apply rounded-xl font-display text-xl font-black uppercase tracking-wider transition-all hover:opacity-95 active:scale-[0.98];
+    background: var(--theme-primary);
+    color: var(--theme-text-on-primary);
+    box-shadow: 0 0 30px var(--theme-glow);
+  }
+
+  .btn-play-again:hover {
+    box-shadow: 0 0 40px var(--theme-glow);
   }
 
   .game-arena,
@@ -988,9 +1142,14 @@ a .mode-start-btn,
 span.mode-start-btn,
 button.mode-start-btn,
 .mode-start-btn {
-  background-color: #22c55e !important;
-  background-image: linear-gradient(90deg, #22c55e 0%, #34d399 100%) !important;
-  color: #0a0f0d !important;
+  background-color: var(--mode-current) !important;
+  background-image: linear-gradient(
+    90deg,
+    var(--mode-current) 0%,
+    var(--mode-current-2) 100%
+  ) !important;
+  border-color: var(--mode-current-border) !important;
+  color: #07130a !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }

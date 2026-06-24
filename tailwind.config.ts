@@ -16,7 +16,14 @@ const config: Config = {
           700: "#1e3029",
           600: "#2a4539",
         },
+        "theme-primary": "rgb(var(--theme-primary-rgb) / <alpha-value>)",
+        "theme-secondary": "rgb(var(--theme-secondary-rgb) / <alpha-value>)",
+        "theme-tertiary": "rgb(var(--theme-tertiary-rgb) / <alpha-value>)",
+        success: "rgb(var(--success-rgb) / <alpha-value>)",
+        rating: "rgb(var(--rating-rgb) / <alpha-value>)",
+        danger: "rgb(var(--danger-rgb) / <alpha-value>)",
         accent: {
+          /** @deprecated Use theme-primary — kept for gradual migration */
           green: "rgb(var(--theme-primary-rgb) / <alpha-value>)",
           "green-2": "rgb(var(--theme-secondary-rgb) / <alpha-value>)",
           gold: "#fbbf24",

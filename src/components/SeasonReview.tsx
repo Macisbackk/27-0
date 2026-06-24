@@ -313,7 +313,7 @@ export function SeasonReview({
               <button
                 type="button"
                 onClick={onContinuePlayoffs}
-                className="mt-3 w-full rounded-lg border border-accent-green/50 bg-accent-green/10 px-4 py-2.5 font-display text-sm font-bold uppercase tracking-wider text-accent-green transition hover:bg-accent-green/20"
+                className="mt-3 w-full rounded-lg border border-theme-primary/50 bg-theme-primary/10 px-4 py-2.5 font-display text-sm font-bold uppercase tracking-wider text-theme-primary transition hover:bg-theme-primary/20"
               >
                 Continue to Play-Offs
               </button>

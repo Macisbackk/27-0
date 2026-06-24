@@ -41,7 +41,7 @@ export function ResultsModal({ run, mode, onClose }: ResultsModalProps) {
         </div>
 
         <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-          <ActionButton variant="current" href="/play" className="sm:flex-1">
+          <ActionButton variant="theme" href="/play" className="sm:flex-1">
             Play Again
           </ActionButton>
           <ActionButton variant="secondary" href="/leaderboard" className="sm:flex-1">

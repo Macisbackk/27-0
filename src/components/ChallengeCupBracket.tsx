@@ -161,7 +161,7 @@ export function ChallengeCupBracket({
         />
       ) : (
         <div className="text-center">
-          <p className="font-display text-xs font-bold uppercase tracking-[0.35em] text-accent-green">
+          <p className="font-display text-xs font-bold uppercase tracking-[0.35em] text-theme-primary">
             {headerLabel}
           </p>
           <h2 className="mt-2 font-display text-2xl font-black sm:text-3xl">
@@ -180,7 +180,7 @@ export function ChallengeCupBracket({
           {state.byeTeams.map((club) => (
             <span
               key={club}
-              className="rounded-full border border-accent-green/30 bg-accent-green/10 px-3 py-1 text-[10px] font-semibold text-accent-green"
+              className="rounded-full border border-theme-primary/30 bg-theme-primary/10 px-3 py-1 text-[10px] font-semibold text-theme-primary"
             >
               {club} — Quarter-Final Bye
             </span>
@@ -203,12 +203,12 @@ export function ChallengeCupBracket({
 
       <div className="mt-5 flex flex-wrap justify-center gap-2">
         <GameButton
-          variant="current"
+          variant="theme"
           size="md"
           fullWidth={false}
           disabled={!canSimSelected}
           onClick={() => selectedId && handleSimulateMatch(selectedId)}
-          className={`${BTN.base} border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20 disabled:opacity-40`}
+          className="disabled:opacity-40"
         >
           Simulate Selected Match
         </GameButton>
@@ -228,11 +228,7 @@ export function ChallengeCupBracket({
           fullWidth={false}
           disabled={state.tournamentComplete}
           onClick={handleSimulateTournament}
-          className={
-            eraMode
-              ? "disabled:opacity-40"
-              : `${BTN.base} border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20 disabled:opacity-40`
-          }
+          className="disabled:opacity-40"
         >
           Simulate Tournament
         </GameButton>
@@ -304,7 +300,7 @@ function BracketRoundColumn({
     <div className="cup-bracket-column relative flex flex-1 flex-col px-1">
       <p
         className={`mb-3 text-center font-display text-[10px] font-bold uppercase tracking-wider sm:text-xs ${
-          round === activeRound ? "text-accent-green" : "text-gray-500"
+          round === activeRound ? "text-theme-primary" : "text-gray-500"
         }`}
       >
         {getCupRoundLabel(round)}
@@ -350,7 +346,7 @@ function BracketMatchCard({
   eraClubLookup?: Record<string, string>;
   eraMode: boolean;
 }) {
-  const userAccent = eraMode ? "text-accent-gold" : "text-accent-green";
+  const userAccent = eraMode ? "text-accent-gold" : "text-mode-current";
   const isComplete = match.status === "complete";
   const isReady = match.status === "ready";
   const isPending = match.status === "pending";
@@ -362,9 +358,9 @@ function BracketMatchCard({
       disabled={isPending}
       className={`cup-bracket-match w-full rounded-lg border text-left transition ${
         selected
-          ? "border-accent-green/50 bg-accent-green/10 ring-1 ring-accent-green/30"
+          ? "border-mode-current/50 bg-mode-current/10 ring-1 ring-mode-current/30"
           : isReady && isActiveRound
-            ? "border-accent-green/30 bg-pitch-900/60 hover:border-accent-green/50"
+            ? "border-mode-current/30 bg-pitch-900/60 hover:border-mode-current/50"
             : "border-pitch-600/40 bg-pitch-900/40 hover:border-pitch-500/50"
       } ${isPending ? "cursor-default opacity-50" : "cursor-pointer"}`}
     >
@@ -427,8 +423,8 @@ function BracketTeamRow({
   eraMode: boolean;
   showByeAdvance?: boolean;
 }) {
-  const userAccent = eraMode ? "text-accent-gold" : "text-accent-green";
-  const byeAccent = eraMode ? "text-accent-gold/90" : "text-accent-green/90";
+  const userAccent = eraMode ? "text-accent-gold" : "text-mode-current";
+  const byeAccent = eraMode ? "text-accent-gold/90" : "text-mode-current/90";
   if (!team) {
     return (
       <div className="flex items-center gap-2 px-2 py-1.5 sm:px-2.5">
@@ -450,7 +446,7 @@ function BracketTeamRow({
   return (
     <div
       className={`px-2 py-1.5 sm:px-2.5 ${
-        isWinner ? "bg-accent-green/10" : isLoser ? "opacity-45" : ""
+        isWinner ? "bg-success/10" : isLoser ? "opacity-45" : ""
       } ${isUser ? "font-semibold" : ""}`}
     >
       <div className="flex items-center gap-2">
@@ -466,7 +462,7 @@ function BracketTeamRow({
         {score !== null && (
           <span
             className={`shrink-0 font-display text-xs font-bold ${
-              isWinner ? "text-accent-green" : "text-gray-400"
+              isWinner ? "text-success" : "text-gray-400"
             }`}
           >
             {score}

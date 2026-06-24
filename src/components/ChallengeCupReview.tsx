@@ -270,13 +270,13 @@ export function ChallengeCupReview({
 
           <h1
             className={`mt-4 font-display text-3xl font-black uppercase tracking-tight sm:text-5xl ${
-              cupResult.eraMode ? "text-accent-gold" : "text-accent-green"
+              cupResult.eraMode ? "text-accent-gold" : "text-mode-current"
             }`}
           >
             {title}
           </h1>
 
-          <p className="mt-2 font-display text-xs font-bold uppercase tracking-[0.25em] text-accent-green">
+          <p className="mt-2 font-display text-xs font-bold uppercase tracking-[0.25em] text-theme-primary">
             {cupResult.isWinner ? "Winner" : "Tournament Finish"}
           </p>
           <p className="mt-2 font-display text-2xl font-bold text-white sm:text-3xl">
@@ -343,7 +343,7 @@ export function ChallengeCupReview({
               </span>
             </p>
             {(cupRankingResult?.newPersonalBests.length ?? 0) > 0 && (
-              <p className="font-display text-xs font-bold uppercase tracking-wider text-accent-green">
+              <p className="font-display text-xs font-bold uppercase tracking-wider text-theme-primary">
                 ▲ New Personal Best
                 {cupRankingResult!.newPersonalBests.length > 1 ? "s" : ""}
               </p>
@@ -387,7 +387,7 @@ export function ChallengeCupReview({
                   key={fixture.round}
                   ref={isSelected ? selectedRowRef : undefined}
                 >
-                  <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-accent-green/80">
+                  <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-theme-primary/80">
                     {getCupRoundLabel(fixture.round)}
                   </p>
                   <FixtureResultRow

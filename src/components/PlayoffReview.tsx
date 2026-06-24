@@ -84,7 +84,7 @@ export function PlayoffReview({
             {titleBio}
           </p>
           {isChampion && (
-            <p className="mt-2 text-sm font-semibold text-accent-green">
+            <p className="mt-2 text-sm font-semibold text-theme-primary">
               Super League Champions — your squad lifted the trophy.
             </p>
           )}
@@ -128,7 +128,7 @@ export function PlayoffReview({
             </p>
             <p>
               Overall Season:{" "}
-              <span className="font-semibold text-accent-green">
+              <span className="font-semibold text-theme-primary">
                 {formatRecordWithPercentage(
                   seasonResult.wins + playoffResult.wins,
                   seasonResult.losses + playoffResult.losses
