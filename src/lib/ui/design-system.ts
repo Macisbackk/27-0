@@ -31,12 +31,12 @@ export const CARD = {
   hover:
     "transition hover:border-pitch-500/60 hover:bg-pitch-900/70",
   featured:
-    "border border-theme-primary/15 shadow-[0_0_32px_var(--theme-glow-soft)]",
+    "border border-theme-tertiary/35 shadow-[0_0_32px_var(--theme-glow-soft)] ring-1 ring-theme-tertiary/20",
   featuredHard:
     "border border-accent-red/30 shadow-[0_0_32px_rgba(239,68,68,0.14)]",
   interactive:
     "btn-press cursor-pointer transition hover:border-theme-primary/40 hover:bg-pitch-800/60 active:border-theme-primary/50 active:bg-pitch-800/75",
-  selected: "border-theme-primary/40 bg-pitch-800/40",
+  selected: "border-theme-tertiary/55 bg-pitch-800/40 ring-1 ring-theme-tertiary/25",
   /** Legacy global panel — aligned with design system surfaces */
   panel: "matchday-panel",
   glass: "card-glass",
@@ -46,7 +46,8 @@ export const CARD = {
 export const FILTER = {
   input:
     "w-full rounded-lg border border-pitch-600 bg-pitch-900/60 px-3 py-2.5 text-sm text-white outline-none transition focus:border-theme-primary sm:px-4 sm:py-3",
-  chipActive: "border-theme-primary/50 bg-theme-primary/10 text-theme-primary",
+  chipActive:
+    "border-theme-tertiary/60 bg-theme-primary/10 text-theme-primary ring-1 ring-theme-tertiary/30",
   chipIdle: "border-pitch-600 text-gray-400 hover:text-white",
   tabGroup:
     "inline-flex w-full rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto",
@@ -58,48 +59,50 @@ export const BTN_PRESS = "btn-press";
 /** Shared button classes. */
 export const BTN = {
   base: `${TYPO.button} btn-press inline-flex min-h-[44px] items-center justify-center rounded-lg px-4 py-2.5 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-primary disabled:active:scale-100 disabled:active:brightness-100`,
-  theme: "game-button--theme btn-press-glow disabled:cursor-not-allowed disabled:opacity-50",
+  theme:
+    "game-button game-button--theme btn-press-glow game-button--md disabled:cursor-not-allowed disabled:opacity-50",
   themeLg:
-    "game-button--theme game-button--theme-lg btn-press-glow w-full disabled:cursor-not-allowed disabled:opacity-50",
-  /** @deprecated Use BTN.theme */
-  primary: "game-button--theme btn-press-glow disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--theme btn-press-glow game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
+  /** @deprecated Alias for BTN.theme — never Current green */
+  primary:
+    "game-button game-button--theme btn-press-glow game-button--md disabled:cursor-not-allowed disabled:opacity-50",
   primaryHard:
     "btn-press-glow-hard border-2 border-accent-red/85 bg-accent-red text-white shadow-[0_0_28px_rgba(239,68,68,0.45)] hover:bg-red-500 hover:shadow-[0_0_36px_rgba(239,68,68,0.55)] disabled:cursor-not-allowed disabled:opacity-50",
   /** @deprecated Use BTN.themeLg */
   primaryLg:
-    "game-button--theme game-button--theme-lg btn-press-glow w-full disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--theme btn-press-glow game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
   primaryLgHard:
-    "mode-start-btn mode-start-btn-hard btn-press btn-press-glow-hard w-full disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--current mode-start-btn-hard btn-press btn-press-glow-hard game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
   eraStart:
-    "era-start-btn btn-press btn-press-glow-gold flex w-full items-center justify-center disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--era btn-press-glow-gold game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
   eraStartLg:
-    "era-start-btn btn-press btn-press-glow-gold flex w-full items-center justify-center disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--era btn-press-glow-gold game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
   eraStartCompact:
-    "era-start-btn era-start-btn-compact btn-press btn-press-glow-gold flex w-full items-center justify-center disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--era btn-press-glow-gold game-button--sm w-full disabled:cursor-not-allowed disabled:opacity-50",
   currentStart:
-    "mode-start-btn btn-press btn-press-glow flex w-full items-center justify-center disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--current btn-press-glow game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
   currentStartHard:
-    "mode-start-btn mode-start-btn-hard btn-press btn-press-glow-hard flex w-full items-center justify-center disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--current mode-start-btn-hard btn-press btn-press-glow-hard game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
   currentStartCompact:
-    "mode-start-btn mode-start-btn-compact btn-press btn-press-glow flex w-full items-center justify-center disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--current btn-press-glow game-button--sm w-full disabled:cursor-not-allowed disabled:opacity-50",
   currentStartCompactHard:
-    "mode-start-btn mode-start-btn-compact mode-start-btn-hard btn-press btn-press-glow-hard flex w-full items-center justify-center disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--current mode-start-btn-hard btn-press btn-press-glow-hard game-button--sm w-full disabled:cursor-not-allowed disabled:opacity-50",
   secondary:
-    "border border-pitch-600 text-gray-300 hover:border-pitch-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-50",
+    "border border-pitch-600 text-gray-300 hover:border-theme-tertiary/50 hover:text-white disabled:cursor-not-allowed disabled:opacity-50",
   secondaryThemed:
-    "game-button--secondary btn-press disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--secondary btn-press game-button--md disabled:cursor-not-allowed disabled:opacity-50",
   secondaryLg: "btn-secondary text-center",
   danger:
     "border border-red-600/50 bg-red-950/30 text-red-300 hover:border-red-500 hover:bg-red-950/50 disabled:cursor-not-allowed disabled:opacity-50",
   success:
-    "game-button--success btn-press disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--success btn-press game-button--md disabled:cursor-not-allowed disabled:opacity-50",
   tabActive: "bg-theme-primary text-[var(--theme-text-on-primary)]",
   tabIdle:
     "border border-pitch-600 text-gray-400 hover:border-pitch-500 hover:text-white",
   tabGroupInner:
     "flex-1 rounded-lg px-4 py-2.5 sm:flex-none sm:px-5",
   tabGroupActive:
-    "border-2 border-theme-primary/75 bg-theme-primary text-[var(--theme-text-on-primary)] shadow-[0_0_28px_var(--theme-glow),inset_0_1px_0_rgba(255,255,255,0.08)]",
+    "border-2 border-theme-tertiary/80 bg-theme-primary text-[var(--theme-text-on-primary)] shadow-[0_0_28px_var(--theme-glow),inset_0_1px_0_rgba(255,255,255,0.08)] ring-1 ring-theme-tertiary/40",
   modeCurrentActive:
     "border-2 border-mode-current/75 bg-mode-current text-pitch-950 shadow-[0_0_28px_var(--mode-current-glow),inset_0_1px_0_rgba(255,255,255,0.08)]",
   modeCurrentIdle:
@@ -177,7 +180,8 @@ export const NAV_SIZE = {
 /** Navigation & links. */
 export const NAV = {
   item: `${TYPO.nav} btn-press flex ${NAV_SIZE.control} items-center gap-2 rounded-lg border border-transparent px-2.5 text-sm transition`,
-  itemActive: "border border-theme-primary/30 bg-theme-primary/10 text-theme-primary",
+  itemActive:
+    "border border-theme-tertiary/45 bg-theme-primary/10 text-theme-primary ring-1 ring-theme-tertiary/30",
   itemIdle: "text-gray-300 hover:border-pitch-600/50 hover:bg-pitch-800/60 hover:text-white",
   list: "space-y-1",
   sectionLabel:

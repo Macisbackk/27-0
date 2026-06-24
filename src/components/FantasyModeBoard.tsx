@@ -249,7 +249,7 @@ export function FantasyModeBoard() {
             <button
               type="button"
               onClick={handleStart}
-              className={`mt-6 w-full ${BTN.base} ${BTN.primary}`}
+              className={`mt-6 w-full ${BTN.theme}`}
             >
               Start Fantasy Mode →
             </button>
@@ -328,7 +328,7 @@ export function FantasyModeBoard() {
                     <button
                       type="button"
                       onClick={handleBeginSeason}
-                      className={`${BTN.base} ${BTN.primary} w-full sm:w-auto`}
+                      className={`${BTN.theme} w-full sm:w-auto`}
                     >
                       Begin Season →
                     </button>

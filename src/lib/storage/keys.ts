@@ -22,6 +22,8 @@ export const STORAGE_KEYS = {
   clubFunds: "27-0-club-funds",
   clubFundsLeaderboard: "27-0-club-funds-leaderboard",
   uiThemeStore: "27-0-ui-theme-store",
+  /** Cached CSS vars for pre-hydration theme bootstrap */
+  uiThemeCssCache: "27-0-ui-theme-css-cache",
   coachbeardMergeComplete: "27-0-coachbeard-merge-v1",
   statsSchemaVersion: "27-0-stats-schema-version",
 } as const;

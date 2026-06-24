@@ -1,11 +1,11 @@
-interface LogoMarkProps {
-  className?: string;
-  /** Header uses md; home hero can use lg */
-  size?: "md" | "lg";
-}
-
 /** 27-0 wordmark — theme-aware; no black gradient on team themes. */
-export function LogoMark({ className = "", size = "md" }: LogoMarkProps) {
+export function LogoMark({
+  className = "",
+  size = "md",
+}: {
+  className?: string;
+  size?: "md" | "lg";
+}) {
   const sizeClass =
     size === "lg"
       ? "text-5xl sm:text-7xl"

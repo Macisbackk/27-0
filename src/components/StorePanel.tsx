@@ -176,7 +176,7 @@ export function StorePanel() {
               key={theme.id}
               className={`${CARD.base} ${CARD.panel} overflow-hidden rounded-xl border transition ${
                 isSelected
-                  ? "border-[var(--theme-primary)] shadow-[0_0_24px_var(--theme-glow)]"
+                  ? "border-[var(--theme-tertiary)] shadow-[0_0_24px_var(--theme-glow)] ring-1 ring-[var(--theme-tertiary)]"
                   : "border-pitch-700/50"
               }`}
             >
@@ -201,7 +201,7 @@ export function StorePanel() {
                 <div className="mt-4">
                   {isUnlocked ? (
                     <GameButton
-                      variant={isSelected ? "primary" : "secondary"}
+                      variant={isSelected ? "theme" : "secondary"}
                       size="sm"
                       onClick={() => handleSelect(theme.id)}
                       disabled={isSelected}
@@ -210,7 +210,7 @@ export function StorePanel() {
                     </GameButton>
                   ) : (
                     <GameButton
-                      variant="primary"
+                      variant="theme"
                       size="sm"
                       disabled={!canAfford || purchasingId === theme.id}
                       onClick={() => handlePurchase(theme)}

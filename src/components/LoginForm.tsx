@@ -213,7 +213,7 @@ export function LoginForm() {
         type="button"
         disabled={busy || signupBlocked}
         onClick={() => void handleSubmit()}
-        className={`mt-5 w-full ${BTN.base} ${BTN.primary}`}
+        className={`mt-5 w-full ${BTN.theme}`}
       >
         {mode === "signup"
           ? signupBlocked

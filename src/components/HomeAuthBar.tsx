@@ -16,7 +16,7 @@ export function HomeAuthBar() {
     <section className={`${CARD.panel} mx-auto max-w-md ${SPACING.cardPadding} text-center`}>
       <p className={TYPO.sectionTitle}>Get Started</p>
       <div className={`mt-4 flex flex-col ${SPACING.buttonGap} sm:flex-row sm:justify-center`}>
-        <Link href="#play-modes" className={`${BTN.base} ${BTN.primary}`}>
+        <Link href="#play-modes" className={`${BTN.theme} text-center`}>
           Play as Guest
         </Link>
         <Link href="/login" className={`${BTN.base} ${BTN.accentOutline}`}>

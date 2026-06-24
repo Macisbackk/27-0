@@ -3,7 +3,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { BTN } from "@/lib/ui/design-system";
 
-type ButtonVariant = "primary" | "secondary" | "danger";
+type ButtonVariant = "theme" | "primary" | "secondary" | "danger";
 
 interface GameButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -13,14 +13,16 @@ interface GameButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 function variantClass(variant: ButtonVariant): string {
   switch (variant) {
     case "primary":
-      return BTN.primary;
+    case "theme":
+      return BTN.theme;
     case "danger":
       return BTN.danger;
     default:
-      return BTN.secondary;
+      return `${BTN.base} ${BTN.secondary}`;
   }
 }
 
+/** @deprecated Use `GameButton` from `./GameButton` */
 export function PrimaryButton({
   className = "",
   ...props
@@ -28,12 +30,13 @@ export function PrimaryButton({
   return (
     <button
       type="button"
-      className={`${BTN.base} ${BTN.primary} ${className}`}
+      className={`${BTN.theme} ${className}`}
       {...props}
     />
   );
 }
 
+/** @deprecated Use `GameButton` from `./GameButton` */
 export function SecondaryButton({
   className = "",
   ...props
@@ -47,7 +50,8 @@ export function SecondaryButton({
   );
 }
 
-export function GameButton({
+/** @deprecated Use `GameButton` from `./GameButton` */
+export function GameButtonLegacy({
   variant = "secondary",
   className = "",
   ...props
@@ -55,7 +59,7 @@ export function GameButton({
   return (
     <button
       type="button"
-      className={`${BTN.base} ${variantClass(variant)} ${className}`}
+      className={`${variantClass(variant)} ${className}`}
       {...props}
     />
   );

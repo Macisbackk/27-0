@@ -76,7 +76,7 @@ export function SlotRecruitPlacementConfirm({
           playUiClick();
           onConfirm(targetSlot.slotIndex);
         }}
-        className={`mt-4 w-full btn-press ${BTN.base} ${BTN.primary}`}
+        className={`mt-4 w-full ${BTN.theme}`}
       >
         Confirm Placement
       </button>

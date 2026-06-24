@@ -63,7 +63,8 @@
     "debug:spin-randomness": "tsx scripts/debug-spin-randomness.ts",
     "debug:era-data-gaps": "tsx scripts/debug-era-data-gaps.ts",
     "debug:dual-positions": "tsx scripts/debug-dual-positions.ts",
-    "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts"
+    "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts",
+    "audit:button-colours": "tsx scripts/audit-button-colours.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.0",

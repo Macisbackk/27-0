@@ -1,16 +1,13 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { BTN } from "@/lib/ui/design-system";
-import {
-  ActionButton,
-  type ActionButtonVariant,
-} from "./ActionButton";
+import type { GameButtonSize, GameButtonVariant } from "@/lib/ui/game-button-variants";
+import { ActionButton } from "./ActionButton";
 
-export type GameButtonVariant = ActionButtonVariant;
-export type GameButtonSize = "sm" | "md" | "lg";
+export type { GameButtonSize, GameButtonVariant };
 
 type GameButtonProps = {
+  /** Generic UI uses `theme` (Store colours). Only use `current`/`era` for mode actions. */
   variant?: GameButtonVariant;
   size?: GameButtonSize;
   hardMode?: boolean;
@@ -23,15 +20,12 @@ type GameButtonProps = {
   type?: "button" | "submit";
 };
 
-const SIZE_CLASS: Record<GameButtonSize, string> = {
-  sm: "min-h-[40px] px-3 py-2 text-xs",
-  md: "",
-  lg: "",
-};
-
-/** Shared progression CTA — wraps ActionButton with optional size tokens. */
+/**
+ * Shared 27-0 button — all generic CTAs must use `variant="theme"`.
+ * Do not map generic/primary buttons to Current green.
+ */
 export function GameButton({
-  variant = "secondary",
+  variant = "theme",
   size = "md",
   hardMode = false,
   className = "",
@@ -42,33 +36,14 @@ export function GameButton({
   onClick,
   type = "button",
 }: GameButtonProps) {
-  const startVariant = variant === "era" || variant === "current";
-  const sizeClass = startVariant && size === "lg" ? "" : SIZE_CLASS[size];
-  const lgTheme = !startVariant && size === "lg" ? BTN.themeLg : "";
-
-  const classes = `${sizeClass} ${lgTheme} ${className}`;
-
-  if (href) {
-    return (
-      <ActionButton
-        href={href}
-        variant={variant}
-        hardMode={hardMode}
-        fullWidth={fullWidth}
-        className={classes}
-        onClick={onClick}
-      >
-        {children}
-      </ActionButton>
-    );
-  }
-
   return (
     <ActionButton
       variant={variant}
+      size={size}
       hardMode={hardMode}
       fullWidth={fullWidth}
-      className={classes}
+      className={className}
+      href={href}
       disabled={disabled}
       onClick={onClick}
       type={type}

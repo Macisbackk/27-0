@@ -3,6 +3,7 @@ import {
   UI_THEME_PURCHASE_PRICE,
   getUiThemeById,
   isDefaultUiTheme,
+  type UiThemeDefinition,
 } from "../ui-themes";
 import { STORAGE_KEYS } from "./keys";
 import { getClubFundsBalance, spendClubFunds } from "./club-funds";
@@ -75,6 +76,11 @@ export function getUiThemeStoreState(): UiThemeStoreState {
 
 export function getSelectedUiThemeId(): string {
   return loadState().selectedThemeId;
+}
+
+/** Resolved Store theme definition for the current selection. */
+export function getActiveTheme(): UiThemeDefinition {
+  return getUiThemeById(getSelectedUiThemeId());
 }
 
 export function isUiThemeUnlocked(themeId: string): boolean {

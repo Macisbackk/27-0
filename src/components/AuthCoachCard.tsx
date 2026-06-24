@@ -117,7 +117,7 @@ export function AuthCoachCard() {
           </p>
         </div>
         <div className={`mt-5 flex flex-col ${SPACING.buttonGap} sm:flex-row sm:justify-center`}>
-          <Link href="/profile" className={`${BTN.base} ${BTN.primary} text-center`}>
+          <Link href="/profile" className={`${BTN.theme} text-center`}>
             View Profile
           </Link>
           <button
@@ -234,7 +234,7 @@ export function AuthCoachCard() {
         type="button"
         disabled={busy || signupBlocked}
         onClick={() => void handleSubmit()}
-        className={`mt-5 w-full ${BTN.base} ${BTN.primary}`}
+        className={`mt-5 w-full ${BTN.theme}`}
       >
         {mode === "signup"
           ? signupBlocked

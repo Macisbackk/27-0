@@ -159,7 +159,7 @@ export function ResetPasswordForm() {
         type="button"
         disabled={busy || !password || !confirmPassword}
         onClick={() => void handleSubmit()}
-        className={`mt-4 w-full ${BTN.base} ${BTN.primary}`}
+        className={`mt-4 w-full ${BTN.theme}`}
       >
         Save New Password
       </button>

@@ -17,7 +17,7 @@ export function ReturnHomeButton({
 
   return (
     <ActionButton
-      variant="primary"
+      variant="theme"
       className={className}
       onClick={() => {
         playUiClick();

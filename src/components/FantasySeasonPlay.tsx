@@ -140,7 +140,7 @@ export function FantasySeasonPlay({
                 type="button"
                 disabled={simulating}
                 onClick={handleNextRound}
-                className={`${BTN.base} ${BTN.primary}`}
+                className={BTN.theme}
               >
                 Simulate Next Round
               </button>
@@ -229,7 +229,7 @@ export function FantasySeasonPlay({
               playTabChange();
               setShowFixtures((v) => !v);
             }}
-            className={`${BTN.base} ${showFixtures ? BTN.primary : BTN.secondary}`}
+            className={showFixtures ? BTN.theme : `${BTN.base} ${BTN.secondary}`}
           >
             {showFixtures ? "Hide" : "View"} Match Results
           </button>

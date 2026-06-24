@@ -2,37 +2,25 @@
 
 import Link from "next/link";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
-import { BTN } from "@/lib/ui/design-system";
+import {
+  GAME_BUTTON_SIZE_CLASS,
+  getGameButtonClass,
+  type GameButtonSize,
+  type GameButtonVariant,
+} from "@/lib/ui/game-button-variants";
 
-export type ActionButtonVariant =
-  | "theme"
-  | "primary"
-  | "secondary"
-  | "current"
-  | "era"
-  | "danger"
-  | "success"
-  | "ghost";
+export type ActionButtonVariant = GameButtonVariant | "primary";
 
-const VARIANT_CLASS: Record<ActionButtonVariant, string> = {
-  theme: BTN.theme,
-  primary: BTN.theme,
-  secondary: BTN.secondaryThemed,
-  current: BTN.currentStart,
-  era: BTN.eraStart,
-  danger: BTN.danger,
-  success: BTN.success,
-  ghost: `${BTN.secondaryThemed} border-transparent bg-transparent hover:bg-pitch-900/40`,
-};
+type ResolvedVariant = GameButtonVariant;
 
-function variantClass(variant: ActionButtonVariant, hardMode = false): string {
-  if (variant === "current" && hardMode) return BTN.currentStartHard;
-  return VARIANT_CLASS[variant];
+function resolveVariant(variant: ActionButtonVariant): ResolvedVariant {
+  return variant === "primary" ? "theme" : variant;
 }
 
 type SharedProps = {
   variant?: ActionButtonVariant;
   hardMode?: boolean;
+  size?: GameButtonSize;
   className?: string;
   children: ReactNode;
   fullWidth?: boolean;
@@ -44,33 +32,42 @@ type ButtonProps = SharedProps &
 type LinkProps = SharedProps &
   Omit<ComponentPropsWithoutRef<typeof Link>, "href"> & { href: string };
 
-const START_VARIANTS = new Set<ActionButtonVariant>(["era", "current"]);
-
 export function ActionButton({
   variant = "secondary",
   hardMode = false,
+  size = "md",
   className = "",
   children,
   fullWidth = true,
   ...rest
 }: ButtonProps | LinkProps) {
-  const startVariant = START_VARIANTS.has(variant);
-  const classes = `${startVariant ? "" : `${BTN.base} `}${variantClass(variant, hardMode)} ${
+  const resolved = resolveVariant(variant);
+  const classes = `${getGameButtonClass(resolved, { hardMode, size })} ${
     fullWidth ? "w-full" : ""
-  } ${className}`;
+  } ${className}`.trim();
 
   if ("href" in rest && rest.href) {
     const { href, ...linkRest } = rest;
     return (
-      <Link href={href} className={classes} {...linkRest}>
+      <Link
+        href={href}
+        className={classes}
+        data-game-button-variant={resolved}
+        {...linkRest}
+      >
         {children}
       </Link>
     );
   }
 
-  const { ...buttonRest } = rest as ButtonProps;
+  const { type = "button", ...buttonRest } = rest as ButtonProps;
   return (
-    <button type="button" className={classes} {...buttonRest}>
+    <button
+      type={type}
+      className={classes}
+      data-game-button-variant={resolved}
+      {...buttonRest}
+    >
       {children}
     </button>
   );

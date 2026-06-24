@@ -25,7 +25,9 @@
   --theme-tertiary-rgb: 22 163 74;
   --theme-primary-soft: rgba(34, 197, 94, 0.12);
   --theme-secondary-soft: rgba(52, 211, 153, 0.14);
-  --theme-border: rgba(34, 197, 94, 0.42);
+  --theme-tertiary-soft: rgba(22, 163, 74, 0.18);
+  --theme-border: rgba(22, 163, 74, 0.55);
+  --theme-tertiary-border: rgba(22, 163, 74, 0.65);
   --theme-glow: rgba(34, 197, 94, 0.35);
   --theme-glow-soft: rgba(34, 197, 94, 0.22);
   --theme-text-on-primary: #0a0f0d;
@@ -44,9 +46,12 @@
   --mode-current-rgb: 34 197 94;
   --mode-current-border: rgba(34, 197, 94, 0.75);
   --mode-current-glow: rgba(34, 197, 94, 0.35);
+  --mode-current-text: #07130a;
   --mode-era: #f6c400;
   --mode-era-rgb: 246 196 0;
+  --mode-era-border: rgba(246, 196, 0, 0.75);
   --mode-era-glow: rgba(246, 196, 0, 0.35);
+  --mode-era-text: #0a0f0d;
 
   --success: #22c55e;
   --success-2: #34d399;
@@ -416,31 +421,46 @@ body {
       0 0 16px rgba(251, 191, 36, 0.28);
   }
 
-  /* Store-themed generic buttons */
-  .game-button--theme {
+  /* ── 27-0 shared game buttons (Store theme / mode / semantic) ── */
+  .game-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: auto;
+    max-width: 100%;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    isolation: isolate;
+    position: relative;
+    z-index: 1;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transform: translateZ(0);
+    transition:
+      filter 0.15s ease,
+      box-shadow 0.15s ease,
+      transform 0.1s ease,
+      border-color 0.15s ease,
+      background 0.15s ease;
+  }
+
+  .game-button--sm {
+    min-height: 40px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+  }
+
+  .game-button--md {
     min-height: 44px;
     padding: 0.625rem 1rem;
-    border-radius: 0.5rem;
-    border: 2px solid var(--theme-border);
-    background-color: var(--theme-primary);
-    color: var(--theme-text-on-primary);
-    font-weight: 600;
-    box-shadow: 0 0 28px var(--theme-glow-soft);
-    transition:
-      background-color 0.15s ease,
-      box-shadow 0.15s ease,
-      filter 0.15s ease;
+    font-size: 0.875rem;
   }
 
-  .game-button--theme:hover:not(:disabled) {
-    filter: brightness(1.05);
-    box-shadow: 0 0 36px var(--theme-glow);
-  }
-
-  .game-button--theme-lg {
+  .game-button--lg {
     min-height: 52px;
     padding: 1rem 1.25rem;
     border-radius: 0.75rem;
@@ -451,44 +471,151 @@ body {
     letter-spacing: 0.08em;
   }
 
+  /* Store-themed generic button */
+  .game-button--theme {
+    border: 2px solid var(--theme-tertiary);
+    background: linear-gradient(
+      135deg,
+      var(--theme-primary) 0%,
+      var(--theme-secondary) 100%
+    );
+    color: var(--theme-text-on-primary);
+    box-shadow:
+      0 0 0 1px var(--theme-tertiary),
+      0 0 18px var(--theme-glow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .game-button--theme:hover:not(:disabled) {
+    filter: brightness(1.06);
+    box-shadow:
+      0 0 0 1px var(--theme-tertiary),
+      0 0 28px var(--theme-glow);
+  }
+
+  /* Current Mode — fixed green, never Store theme */
+  .game-button--current {
+    border: 2px solid var(--mode-current-border);
+    background: linear-gradient(
+      90deg,
+      var(--mode-current) 0%,
+      var(--mode-current-2) 100%
+    );
+    color: var(--mode-current-text) !important;
+    box-shadow:
+      0 0 28px var(--mode-current-glow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .game-button--current:hover:not(:disabled) {
+    filter: brightness(1.05);
+    box-shadow:
+      0 0 36px var(--mode-current-glow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  /* Era Mode — fixed gold */
+  .game-button--era {
+    border: 2px solid var(--mode-era-border);
+    background: linear-gradient(
+      90deg,
+      var(--mode-era) 0%,
+      color-mix(in srgb, var(--mode-era) 70%, #fff) 100%
+    );
+    color: var(--mode-era-text) !important;
+    box-shadow:
+      0 0 28px var(--mode-era-glow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .game-button--era:hover:not(:disabled) {
+    filter: brightness(1.05);
+  }
+
   .game-button--secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0.625rem 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid rgb(42 69 57 / 1);
-    background: transparent;
-    color: #d1d5db;
-    transition:
-      border-color 0.15s ease,
-      color 0.15s ease,
-      background-color 0.15s ease;
+    border: 2px solid var(--theme-tertiary);
+    background: rgba(15, 24, 20, 0.92);
+    color: var(--theme-primary);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-tertiary) 35%, transparent);
   }
 
   .game-button--secondary:hover:not(:disabled) {
-    border-color: color-mix(in srgb, var(--theme-primary) 40%, transparent);
+    border-color: var(--theme-tertiary);
     color: #ffffff;
-    background: rgb(22 36 32 / 0.6);
+    background: rgba(22, 36, 32, 0.95);
+    box-shadow:
+      0 0 0 1px var(--theme-tertiary),
+      0 0 14px var(--theme-glow-soft);
+  }
+
+  .game-button--ghost {
+    border: 2px solid transparent;
+    background: transparent;
+    color: #d1d5db;
+  }
+
+  .game-button--ghost:hover:not(:disabled) {
+    border-color: var(--theme-tertiary);
+    color: var(--theme-primary);
+    background: var(--theme-tertiary-soft);
+  }
+
+  .game-button--danger {
+    border: 2px solid color-mix(in srgb, var(--danger) 75%, transparent);
+    background: color-mix(in srgb, var(--danger) 88%, #000);
+    color: #ffffff;
+  }
+
+  .game-button--danger:hover:not(:disabled) {
+    filter: brightness(1.05);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--danger) 35%, transparent);
   }
 
   .game-button--success {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0.625rem 1rem;
-    border-radius: 0.5rem;
     border: 2px solid color-mix(in srgb, var(--success) 75%, transparent);
-    background-color: var(--success);
+    background: var(--success);
     color: #07130a;
-    font-weight: 600;
   }
 
   .game-button--success:hover:not(:disabled) {
     filter: brightness(1.05);
     box-shadow: 0 0 18px color-mix(in srgb, var(--success) 35%, transparent);
+  }
+
+  .game-button:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  /* Legacy hooks — mode start buttons delegate to game-button classes */
+  .mode-start-btn,
+  .era-start-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    isolation: isolate;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .mode-start-btn-compact,
+  .era-start-btn-compact {
+    min-height: 40px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  /* @deprecated — use .game-button--theme */
+  .game-button--theme-lg {
+    min-height: 52px;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+    font-size: 1.125rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 
   /* 27-0 logo — default keeps green gradient; team themes use solid accent */
@@ -513,6 +640,7 @@ body {
     background: none;
     -webkit-background-clip: unset;
     background-clip: unset;
+    box-shadow: inset 0 -3px 0 var(--theme-tertiary);
   }
 
   /**
@@ -913,8 +1041,16 @@ body {
 
   .btn-primary {
     @apply rounded-xl px-6 py-3 font-semibold transition-all hover:opacity-90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40;
-    background-color: var(--theme-primary);
+    border: 2px solid var(--theme-tertiary);
+    background: linear-gradient(
+      135deg,
+      var(--theme-primary) 0%,
+      var(--theme-secondary) 100%
+    );
     color: var(--theme-text-on-primary);
+    box-shadow:
+      0 0 0 1px var(--theme-tertiary),
+      0 0 18px var(--theme-glow);
   }
 
   .btn-secondary {
@@ -927,9 +1063,16 @@ body {
 
   .btn-play-again {
     @apply rounded-xl font-display text-xl font-black uppercase tracking-wider transition-all hover:opacity-95 active:scale-[0.98];
-    background: var(--theme-primary);
+    border: 2px solid var(--theme-tertiary);
+    background: linear-gradient(
+      135deg,
+      var(--theme-primary) 0%,
+      var(--theme-secondary) 100%
+    );
     color: var(--theme-text-on-primary);
-    box-shadow: 0 0 30px var(--theme-glow);
+    box-shadow:
+      0 0 0 1px var(--theme-tertiary),
+      0 0 30px var(--theme-glow);
   }
 
   .btn-play-again:hover {
@@ -1134,6 +1277,36 @@ button.era-tab-btn-active,
   background-image: none !important;
   color: #0a0f0d !important;
   border-color: #b45309 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+a .game-button--current,
+button.game-button--current,
+.game-button--current {
+  background-color: var(--mode-current) !important;
+  background-image: linear-gradient(
+    90deg,
+    var(--mode-current) 0%,
+    var(--mode-current-2) 100%
+  ) !important;
+  border-color: var(--mode-current-border) !important;
+  color: var(--mode-current-text) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+a .game-button--era,
+button.game-button--era,
+.game-button--era {
+  background-color: var(--mode-era) !important;
+  background-image: linear-gradient(
+    90deg,
+    var(--mode-era) 0%,
+    color-mix(in srgb, var(--mode-era) 70%, #fff) 100%
+  ) !important;
+  border-color: var(--mode-era-border) !important;
+  color: var(--mode-era-text) !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
