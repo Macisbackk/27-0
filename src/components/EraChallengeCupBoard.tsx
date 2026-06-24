@@ -147,6 +147,9 @@ export function EraChallengeCupBoard() {
           ? "Era Challenge Cup Winners"
           : result.resultLabel,
         userClub: eraTeam?.displayName ?? result.userClub,
+        userTeamYearId: eraTeam
+          ? `${eraTeam.clubName}|${getEraSquadYear(eraTeam)}`
+          : undefined,
         eraMode: true,
       };
       setCupResult(eraResult);

@@ -89,16 +89,16 @@ export function playerBelongsToTeamYear(
     return false;
   }
 
-  if (!isPlayerActiveInYear(player, y)) {
-    return false;
-  }
-
   if (hasExplicitYear) {
     if (playerClubMatchesTeam(player, team)) return true;
     for (const spanClub of EXTRA_CLUB_SPANS[player.id] ?? []) {
       const mapped = RLP_CLUB_ALIASES[spanClub] ?? spanClub;
       if (mapped === team) return true;
     }
+    return false;
+  }
+
+  if (!isPlayerActiveInYear(player, y)) {
     return false;
   }
 

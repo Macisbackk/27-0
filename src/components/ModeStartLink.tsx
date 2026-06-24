@@ -2,6 +2,12 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { BTN } from "@/lib/ui/design-system";
+import { ActionButton } from "./ui/ActionButton";
+
+function currentStartClasses(hardMode: boolean): string {
+  return hardMode ? BTN.currentStartHard : BTN.currentStart;
+}
 
 interface ModeStartLinkProps {
   href: string;
@@ -28,13 +34,7 @@ export function ModeStartLink({
       onClick={onClick}
       className={`block w-full no-underline ${className}`}
     >
-      <span
-        className={`mode-start-btn ${hardMode ? "mode-start-btn-hard" : ""} btn-press ${
-          hardMode ? "btn-press-glow-hard" : "btn-press-glow"
-        }`}
-      >
-        {children}
-      </span>
+      <span className={currentStartClasses(hardMode)}>{children}</span>
     </Link>
   );
 }
@@ -57,15 +57,15 @@ export function ModeStartButton({
   type = "button",
 }: ModeStartButtonProps) {
   return (
-    <button
-      type={type}
+    <ActionButton
+      variant="current"
+      hardMode={hardMode}
+      className={className}
       onClick={onClick}
       disabled={disabled}
-      className={`mode-start-btn ${hardMode ? "mode-start-btn-hard" : ""} btn-press w-full ${
-        hardMode ? "btn-press-glow-hard" : "btn-press-glow"
-      } ${className}`}
+      type={type}
     >
       {children}
-    </button>
+    </ActionButton>
   );
 }

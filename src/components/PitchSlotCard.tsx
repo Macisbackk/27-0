@@ -33,9 +33,6 @@ export function PitchSlotCard({
   const colors = getClubColors(getPlayerColorClub(player, clubColorOverride));
   const positionLabel = POSITION_SHORT[slot.position];
   const effectiveRating = getEffectivePeakRating(slot);
-  const baseRating = player.peakRating;
-  const hasPenalty =
-    (slot.runRatingPenalty ?? 0) > 0 && effectiveRating < baseRating;
   const ratingLabel = hardMode ? "??" : String(Math.round(effectiveRating));
 
   return (
@@ -60,11 +57,6 @@ export function PitchSlotCard({
             } text-accent-green`}
           >
             {ratingLabel}
-          </span>
-        )}
-        {!hardMode && hasPenalty && (
-          <span className="font-display text-[6px] font-bold leading-none text-gray-500 sm:text-[7px]">
-            {baseRating}→{Math.round(effectiveRating)}
           </span>
         )}
         <p className="line-clamp-2 w-full break-words text-center font-display text-[7px] font-semibold leading-tight text-white sm:text-[8px]">

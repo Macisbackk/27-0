@@ -334,10 +334,9 @@ const SquadMarker = memo(function SquadMarker({
         slot.position,
         placementPlayer
       );
-      tooltip =
-        penalty === 0
-          ? `${slot.label} — no penalty`
-          : `${slot.label} — -${penalty} OVR`;
+      if (penalty > 0) {
+        tooltip = `${slot.label} — out of position`;
+      }
     }
 
     const inner = (

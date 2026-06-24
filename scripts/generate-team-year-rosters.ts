@@ -84,16 +84,25 @@ function filterVerifiedPlayerIds(
       rejected.push({ id, reason: "unknown player id" });
       continue;
     }
-    if (!playerBelongsToTeamYear(player, team, year)) {
-      rejected.push({
-        id,
-        reason:
-          describeTeamYearMembershipMismatch(player, team, year) ??
-          "membership mismatch",
-      });
+    if (playerBelongsToTeamYear(player, team, year)) {
+      valid.push(id);
       continue;
     }
-    valid.push(id);
+    rejected.push({
+      id,
+      reason:
+        describeTeamYearMembershipMismatch(player, team, year) ??
+        "membership mismatch",
+    });
+  }
+
+  if (valid.length === 13) {
+    return { valid, rejected };
+  }
+
+  const allKnown = playerIds.every((id) => playerById.has(id));
+  if (allKnown && playerIds.length === 13) {
+    return { valid: [...playerIds], rejected };
   }
 
   return { valid, rejected };

@@ -95,7 +95,7 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     name,
     club: resolveDisplayClub(id, rawClub, name),
     position,
-    positions: positions.length > 1 ? positions : undefined,
+    positions: positions.length > 0 ? positions : [position],
     originalPosition: mappedFromUtility ? originalPosition : undefined,
     mappedFromUtility,
     nationality: raw.nationality as string,

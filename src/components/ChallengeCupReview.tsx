@@ -146,6 +146,7 @@ export function ChallengeCupReview({
           eraClubLookup: cupResult.eraClubLookup,
           eraTeamRatings: cupResult.eraTeamRatings,
           eraTeamValues: cupResult.eraTeamValues,
+          userTeamYearId: cupResult.userTeamYearId,
         }
       ),
     [
@@ -158,6 +159,7 @@ export function ChallengeCupReview({
       cupResult.eraClubLookup,
       cupResult.eraTeamRatings,
       cupResult.eraTeamValues,
+      cupResult.userTeamYearId,
       tournamentStats.wins,
       tournamentStats.losses,
       seed,
@@ -444,18 +446,22 @@ export function ChallengeCupReview({
         </CollapsibleReviewSection>
 
         <CollapsibleReviewSection
-          title="Your Team vs Best Team of the Tournament"
+          title="Your Team vs Best Opposition"
           helper={
-            cupResult.bracketMatches && cupResult.bracketMatches.length > 0
-              ? "Squad OVR comparison — your team against the best tournament performer by wins, points and tries."
+            teamComparison.opponent.name === "N/A"
+              ? "No valid opposition available for comparison."
               : cupResult.eraMode
-                ? "Squad OVR comparison — your era team against the highest-rated opponent you faced in the cup."
-                : "Squad OVR comparison — your team rating against the highest-rated opponent you faced in the cup."
+                ? "Squad OVR comparison — your era team against the strongest opponent you faced in the cup."
+                : "Squad OVR comparison — your team against the strongest opponent you faced in the cup."
           }
           variant="featured"
           delay={0.46}
         >
-          <TeamComparisonBox comparison={teamComparison} eraMode={cupResult.eraMode} />
+          {teamComparison.opponent.name === "N/A" ? (
+            <p className={`text-center ${TYPO.bodySm} text-gray-500`}>N/A</p>
+          ) : (
+            <TeamComparisonBox comparison={teamComparison} eraMode={cupResult.eraMode} />
+          )}
         </CollapsibleReviewSection>
 
         <motion.footer

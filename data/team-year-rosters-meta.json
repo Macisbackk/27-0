@@ -1,5 +1,101 @@
 {
   "Bradford Bulls": {
+    "1997": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/1997_Bradford_Bulls_season"
+    },
+    "1998": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/1998_Bradford_Bulls_season"
+    },
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/1999_Bradford_Bulls_season"
+    },
+    "2000": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2000_Bradford_Bulls_season"
+    },
+    "2001": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2001_Bradford_Bulls_season"
+    },
+    "2002": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2002_Bradford_Bulls_season"
+    },
+    "2003": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2003_Bradford_Bulls_season"
+    },
+    "2004": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2004_Bradford_Bulls_season"
+    },
+    "2005": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2005_Bradford_Bulls_season"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2011_Bradford_Bulls_season"
+    },
+    "2013": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2013_Bradford_Bulls_season"
+    },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2014_Bradford_Bulls_season"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -30,6 +126,14 @@
     }
   },
   "Warrington Wolves": {
+    "2016": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2016_Warrington_Wolves_season"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -41,6 +145,14 @@
     }
   },
   "Catalans Dragons": {
+    "2006": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2006_Catalans_Dragons_season"
+    },
     "2007": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -57,6 +169,62 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2008_Catalans_Dragons_season"
     },
+    "2009": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2009_Catalans_Dragons_season"
+    },
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2010_Catalans_Dragons_season"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2011_Catalans_Dragons_season"
+    },
+    "2012": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2012_Catalans_Dragons_season"
+    },
+    "2013": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2013_Catalans_Dragons_season"
+    },
+    "2015": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2015_Catalans_Dragons_season"
+    },
+    "2016": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2016_Catalans_Dragons_season"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -68,6 +236,14 @@
     }
   },
   "Huddersfield Giants": {
+    "2013": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2013_Huddersfield_Giants_season"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -79,6 +255,30 @@
     }
   },
   "Castleford Tigers": {
+    "2009": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2009_Castleford_Tigers_season"
+    },
+    "2012": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2012_Castleford_Tigers_season"
+    },
+    "2016": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2016_Castleford_Tigers_season"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -90,6 +290,14 @@
     }
   },
   "Wakefield Trinity": {
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2010_Wakefield_Trinity_Wildcats_season"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -109,15 +317,6 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2015_Leeds_Rhinos_season"
-    },
-    "2026": {
-      "source": "current-squad",
-      "isSuperLeagueSeason": true,
-      "isCurrentSeason": true,
-      "playableInNormalSpin": true,
-      "playableInEra": true,
-      "playableInEraChallengeCup": true,
-      "playerCount": 17
     }
   },
   "Hull FC": {
@@ -131,9 +330,59 @@
       "playerCount": 17
     }
   },
-  "Salford Red Devils": {},
-  "London Broncos": {},
+  "Salford Red Devils": {
+    "2009": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2009_Salford_City_Reds_season"
+    },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2014_Salford_Red_Devils_season"
+    },
+    "2015": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2015_Salford_Red_Devils_season"
+    }
+  },
+  "London Broncos": {
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2018_London_Broncos_season"
+    }
+  },
   "St Helens": {
+    "2000": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2000_Super_League_Grand_Final"
+    },
+    "2002": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2002_Super_League_Grand_Final"
+    },
     "2006": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -141,6 +390,38 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final"
+    },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2014_St_Helens_R.F.C._season"
+    },
+    "2019": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2019_Super_League_Grand_Final"
+    },
+    "2020": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2020_St_Helens_R.F.C._season"
+    },
+    "2021": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2021_Super_League_Grand_Final"
     },
     "2026": {
       "source": "current-squad",

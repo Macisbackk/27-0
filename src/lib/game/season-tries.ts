@@ -1,6 +1,7 @@
 import seedrandom from "seedrandom";
 import type { Position, SquadSlot } from "../types";
 import { getEffectivePeakRating } from "../squad-analysis";
+import { isValidPlayerSlotPosition } from "./position-placement";
 import { getPlayerDisplayClub } from "../players/run-club";
 import { buildOpponentScoringDetail, buildEraTeamScoringDetail } from "./opponent-scorers";
 import type { OpponentPoolOptions } from "./opponent-squad-strength";
@@ -122,8 +123,9 @@ function getMatchWeights(
 ): number[] {
   return entries.map((e, i) => {
     const rating = getEffectivePeakRating(e.slot);
+    const outOfPosition = !isValidPlayerSlotPosition(e.player, e.playedPosition);
     const ratingFactor =
-      e.slot.runRatingPenalty
+      outOfPosition && e.player.peakRating > 0
         ? Math.max(0.75, rating / e.player.peakRating)
         : 1;
     const base =

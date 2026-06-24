@@ -59,6 +59,7 @@
     "test:playoffs": "tsx scripts/test-playoff-simulation.ts",
     "merge:coachbeard-accounts": "tsx scripts/merge-coachbeard-accounts.ts",
     "debug:spin-randomness": "tsx scripts/debug-spin-randomness.ts",
+    "debug:era-data-gaps": "tsx scripts/debug-era-data-gaps.ts",
     "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts"
   },
   "dependencies": {

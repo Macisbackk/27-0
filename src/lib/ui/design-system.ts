@@ -67,8 +67,10 @@ export const BTN = {
   primaryLgHard:
     "w-full min-h-[52px] rounded-xl bg-gradient-to-r from-accent-red to-red-500 py-4 font-display text-lg font-black uppercase tracking-wider text-white shadow-[0_0_30px_rgba(239,68,68,0.4)] transition-all hover:from-red-500 hover:to-accent-red hover:shadow-[0_0_40px_rgba(239,68,68,0.55)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50",
   eraStart:
-    "era-start-btn btn-press-glow-gold !min-h-[44px] !rounded-lg !py-2.5 !text-base",
+    "era-start-btn btn-press-glow-gold",
   eraStartLg: "era-start-btn btn-press-glow-gold",
+  currentStart: "mode-start-btn btn-press btn-press-glow",
+  currentStartHard: "mode-start-btn mode-start-btn-hard btn-press btn-press-glow-hard",
   secondary:
     "border border-pitch-600 text-gray-300 hover:border-pitch-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-50",
   secondaryLg: "btn-secondary text-center",

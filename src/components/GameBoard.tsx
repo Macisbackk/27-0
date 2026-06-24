@@ -1184,7 +1184,10 @@ export function GameBoard({
 
   const handleCupComplete = useCallback(
     (result: ChallengeCupResult) => {
-      setCupResult(result);
+      setCupResult({
+        ...result,
+        userTeamYearId: cupClub ?? result.userClub,
+      });
 
       if (recordedRef.current) {
         setPhase("review");

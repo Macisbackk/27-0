@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { ModeStartButton } from "./ModeStartLink";
-import { BTN, SPACING } from "@/lib/ui/design-system";
+import { ActionButton } from "./ui/ActionButton";
+import { SPACING } from "@/lib/ui/design-system";
 
 interface ReviewPlayAgainProps {
   onPlayAgain: () => void;
@@ -24,20 +23,20 @@ export function ReviewPlayAgain({
     <div
       className={`w-full max-w-xl ${SPACING.stackMd} ${compact ? "" : "mt-2"}`}
     >
-      <ModeStartButton hardMode={hardMode} onClick={onPlayAgain}>
+      <ActionButton variant="current" hardMode={hardMode} onClick={onPlayAgain}>
         Play Again
-      </ModeStartButton>
+      </ActionButton>
       <div
         className={`grid ${hideReturnHome ? "grid-cols-1" : "grid-cols-2"} ${SPACING.buttonGap}`}
       >
         {!hideReturnHome && (
-          <Link href="/" className={`${BTN.base} ${BTN.secondaryLg}`}>
+          <ActionButton variant="secondary" href="/">
             Return Home
-          </Link>
+          </ActionButton>
         )}
-        <Link href={leaderboardHref} className={`${BTN.base} ${BTN.secondaryLg}`}>
+        <ActionButton variant="secondary" href={leaderboardHref}>
           Leaderboard
-        </Link>
+        </ActionButton>
       </div>
     </div>
   );

@@ -70,6 +70,8 @@ export interface ChallengeCupResult {
   eraClubLookup?: Record<string, string>;
   eraTeamRatings?: Record<string, number>;
   eraTeamValues?: Record<string, number>;
+  /** Era/current team-year key for comparison exclusion (e.g. Leeds Rhinos|2015). */
+  userTeamYearId?: string;
 }
 
 function pickCupOpponent(roundIndex: number, rng: () => number): string {

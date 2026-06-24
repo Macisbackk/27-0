@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { BTN } from "@/lib/ui/design-system";
+import { ActionButton } from "./ui/ActionButton";
 
 interface EraStartLinkProps {
   href: string;
@@ -23,9 +25,7 @@ export function EraStartLink({
       onClick={onClick}
       className={`block w-full no-underline ${className}`}
     >
-      <span className="era-start-btn btn-press btn-press-glow-gold">
-        {children}
-      </span>
+      <span className={BTN.eraStart}>{children}</span>
     </Link>
   );
 }
@@ -46,13 +46,14 @@ export function EraStartButton({
   type = "button",
 }: EraStartButtonProps) {
   return (
-    <button
-      type={type}
+    <ActionButton
+      variant="era"
+      className={className}
       onClick={onClick}
       disabled={disabled}
-      className={`era-start-btn btn-press btn-press-glow-gold ${className}`}
+      type={type}
     >
       {children}
-    </button>
+    </ActionButton>
   );
 }

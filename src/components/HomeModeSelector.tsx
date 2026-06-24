@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import { buildPlayHref } from "@/lib/play-links";
 import {
@@ -17,7 +16,6 @@ import {
   playUiClick,
 } from "@/lib/sound";
 import {
-  BTN,
   CARD,
   NORMAL,
   SPACING,
@@ -149,13 +147,13 @@ export function HomeModeSelector() {
               Start Era Challenge Cup →
             </EraStartLink>
           ) : (
-            <Link
+            <ModeStartLink
               href={cupHref}
               onClick={() => playModeChallengeCupStart()}
-              className={`mt-5 block w-full btn-press text-center ${BTN.primaryLg}`}
+              className="mt-5"
             >
               Start Challenge Cup →
-            </Link>
+            </ModeStartLink>
           )}
         </ModePanel>
       </div>
