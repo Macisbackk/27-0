@@ -29,6 +29,7 @@ import {
 import { loadCloudStats } from "./storage/stats-cloud";
 import { loadCloudClubFunds } from "./storage/club-funds-cloud";
 import { mergeClubFundsFromCloud, syncClubFundsLeaderboardOnLoad } from "./storage/club-funds";
+import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
 import { STORAGE_KEYS } from "./storage/keys";
 import { getAllStats, mergeCloudStatsWithLocal } from "./storage/stats";
 import { runCoachbeardAccountMergeLocal } from "./storage/coachbeard-account-merge";
@@ -65,6 +66,10 @@ async function hydrateClubFundsFromCloud(): Promise<void> {
   const cloud = await loadCloudClubFunds();
   mergeClubFundsFromCloud(cloud);
   syncClubFundsLeaderboardOnLoad();
+}
+
+async function hydrateUiThemeFromCloud(): Promise<void> {
+  await mergeUiThemeStoreFromCloud();
 }
 
 function applySession(session: Session | null, profile: UserProfile | null) {
@@ -111,6 +116,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     await hydrateStatsFromCloud();
     await hydrateClubFundsFromCloud();
+    await hydrateUiThemeFromCloud();
     window.dispatchEvent(new Event("auth-state-changed"));
   }, []);
 

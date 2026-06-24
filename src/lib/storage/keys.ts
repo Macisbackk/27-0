@@ -21,6 +21,7 @@ export const STORAGE_KEYS = {
   normalEraVariant: "27-0-normal-era-variant",
   clubFunds: "27-0-club-funds",
   clubFundsLeaderboard: "27-0-club-funds-leaderboard",
+  uiThemeStore: "27-0-ui-theme-store",
   coachbeardMergeComplete: "27-0-coachbeard-merge-v1",
   statsSchemaVersion: "27-0-stats-schema-version",
 } as const;

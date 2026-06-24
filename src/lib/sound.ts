@@ -242,3 +242,21 @@ export function playGradeCelebration(): void {
 export function playGradeSound(grade: string): void {
   playGradeSoundInternal(grade);
 }
+
+/* ── Store ── */
+
+export function playStoreOpen(): void {
+  playSound("menuOpen");
+}
+
+export function playThemePurchaseSuccess(): void {
+  playSound("success");
+}
+
+export function playThemePurchaseFail(): void {
+  playSound("fail");
+}
+
+export function playThemeSelect(): void {
+  playSound("select");
+}

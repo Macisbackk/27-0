@@ -95,13 +95,6 @@ export function PlayoffReview({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <ReviewPlayAgain
-            onPlayAgain={onPlayAgain}
-            leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
-            hardMode={isHardMode}
-            compact
-            hideReturnHome
-          />
           <ClubFundsEarned payout={playoffFundsPayout} />
         </motion.div>
 

@@ -38,6 +38,7 @@ interface SidebarNavProps {
 }
 
 const MAIN_NAV_ITEMS = [
+  { href: "/store", label: "Store", icon: "🛒" },
   { href: "/showcase", label: "Player Showcase", icon: "⭐" },
   { href: "/stats", label: "Statistics", icon: "📊" },
   { href: "/leaderboard", label: "Leaderboard", icon: "🏆" },

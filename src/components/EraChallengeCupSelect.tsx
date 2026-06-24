@@ -25,7 +25,7 @@ import { EraChallengeCupBranding } from "./EraChallengeCupBranding";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { EraStartButton } from "./EraStartLink";
+import { ModeStartButton } from "./ModeStartLink";
 import { playUiClick } from "@/lib/sound";
 
 interface EraChallengeCupSelectProps {
@@ -125,9 +125,13 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
               className="mb-4 border-0 bg-transparent p-0 shadow-none"
             />
             {showTournamentAndPreview && (
-              <EraStartButton onClick={handleConfirm} className="mb-4">
+              <ModeStartButton
+                modeVariant="era"
+                onClick={handleConfirm}
+                className="mb-4"
+              >
                 Start Era Challenge Cup
-              </EraStartButton>
+              </ModeStartButton>
             )}
           </>
         ) : (
@@ -303,9 +307,9 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
               })}
             </div>
 
-            <EraStartButton onClick={handleConfirm} className="mt-5">
+            <ModeStartButton modeVariant="era" onClick={handleConfirm} className="mt-5">
               Start Era Challenge Cup
-            </EraStartButton>
+            </ModeStartButton>
           </motion.div>
         )}
 

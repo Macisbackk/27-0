@@ -23,7 +23,6 @@ import {
 import { TYPO } from "@/lib/ui/typography";
 import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
-import { EraStartLink } from "./EraStartLink";
 import { ModeStartLink } from "./ModeStartLink";
 
 export function HomeModeSelector() {
@@ -93,29 +92,17 @@ export function HomeModeSelector() {
             </p>
           )}
 
-          {normalEraMode ? (
-            <EraStartLink
-              href={normalHref}
-              onClick={() => {
-                playUiClick();
-                playModeClassicStart("NORMAL");
-              }}
-              className="mt-5"
-            >
-              Start Era Mode →
-            </EraStartLink>
-          ) : (
-            <ModeStartLink
-              href={normalHref}
-              onClick={() => {
-                playUiClick();
-                playModeClassicStart("NORMAL");
-              }}
-              className="mt-5"
-            >
-              Start Current Mode →
-            </ModeStartLink>
-          )}
+          <ModeStartLink
+            href={normalHref}
+            modeVariant={normalEraMode}
+            onClick={() => {
+              playUiClick();
+              playModeClassicStart("NORMAL");
+            }}
+            className="mt-5"
+          >
+            {normalEraMode ? "Start Era Mode →" : "Start Current Mode →"}
+          </ModeStartLink>
         </ModePanel>
 
         <ModePanel
@@ -138,23 +125,16 @@ export function HomeModeSelector() {
             className="mt-5"
           />
 
-          {cupEraMode ? (
-            <EraStartLink
-              href={cupHref}
-              onClick={() => playModeChallengeCupStart()}
-              className="mt-5"
-            >
-              Start Era Challenge Cup →
-            </EraStartLink>
-          ) : (
-            <ModeStartLink
-              href={cupHref}
-              onClick={() => playModeChallengeCupStart()}
-              className="mt-5"
-            >
-              Start Challenge Cup →
-            </ModeStartLink>
-          )}
+          <ModeStartLink
+            href={cupHref}
+            modeVariant={cupEraMode}
+            onClick={() => playModeChallengeCupStart()}
+            className="mt-5"
+          >
+            {cupEraMode
+              ? "Start Era Challenge Cup →"
+              : "Start Challenge Cup →"}
+          </ModeStartLink>
         </ModePanel>
       </div>
     </div>

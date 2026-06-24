@@ -92,6 +92,29 @@ export function mergeClubFundsFromCloud(cloud: ClubFundsState | null): void {
   syncClubFundsLeaderboard(merged.totalEarned);
 }
 
+export interface SpendClubFundsResult {
+  success: boolean;
+  newBalance: number;
+}
+
+/** Deduct club funds for store purchases — does not reduce lifetime earned. */
+export function spendClubFunds(
+  amount: number,
+  purchaseId: string
+): SpendClubFundsResult {
+  const state = loadState();
+  if (amount <= 0 || state.balance < amount) {
+    return { success: false, newBalance: state.balance };
+  }
+  if (state.paidRunIds.includes(purchaseId)) {
+    return { success: true, newBalance: state.balance };
+  }
+  state.balance = Math.max(0, state.balance - amount);
+  state.paidRunIds.push(purchaseId);
+  saveState(state);
+  return { success: true, newBalance: state.balance };
+}
+
 export function awardClubFundsForRun(
   input: ClubFundsRunInput
 ): ClubFundsPayoutResult {

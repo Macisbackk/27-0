@@ -2,45 +2,52 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { BTN } from "@/lib/ui/design-system";
+import type { ModeVariant } from "@/lib/types";
+import {
+  getModeButtonVariant,
+  getModeStartButtonClass,
+  type ModeStartButtonSize,
+} from "@/lib/ui/mode-button-variant";
 import { ActionButton } from "./ui/ActionButton";
-
-function currentStartClasses(hardMode: boolean): string {
-  return hardMode ? BTN.currentStartHard : BTN.currentStart;
-}
 
 interface ModeStartLinkProps {
   href: string;
+  modeVariant?: ModeVariant | boolean;
   hardMode?: boolean;
+  size?: ModeStartButtonSize;
   onClick?: () => void;
   children: ReactNode;
   className?: string;
 }
 
-/**
- * Normal/Hard mode start CTA — opaque surface on inner span so card-glass
- * backdrop-filter does not blank gradient backgrounds on the anchor.
- */
+/** Mode-aware start CTA link — gold for Era, green for Current. */
 export function ModeStartLink({
   href,
+  modeVariant = "current",
   hardMode = false,
+  size = "home",
   onClick,
   children,
   className = "",
 }: ModeStartLinkProps) {
+  const variant = getModeButtonVariant(modeVariant);
+  const classes = getModeStartButtonClass(variant, size, hardMode);
+
   return (
     <Link
       href={href}
       onClick={onClick}
       className={`block w-full no-underline ${className}`}
     >
-      <span className={currentStartClasses(hardMode)}>{children}</span>
+      <span className={classes}>{children}</span>
     </Link>
   );
 }
 
 interface ModeStartButtonProps {
+  modeVariant?: ModeVariant | boolean;
   hardMode?: boolean;
+  size?: ModeStartButtonSize;
   onClick?: () => void;
   children: ReactNode;
   className?: string;
@@ -49,16 +56,34 @@ interface ModeStartButtonProps {
 }
 
 export function ModeStartButton({
+  modeVariant = "current",
   hardMode = false,
+  size = "home",
   onClick,
   children,
   className = "",
   disabled,
   type = "button",
 }: ModeStartButtonProps) {
+  const variant = getModeButtonVariant(modeVariant);
+  const classes = `${getModeStartButtonClass(variant, size, hardMode)} ${className}`;
+
+  if (size === "compact") {
+    return (
+      <button
+        type={type}
+        disabled={disabled}
+        onClick={onClick}
+        className={classes}
+      >
+        {children}
+      </button>
+    );
+  }
+
   return (
     <ActionButton
-      variant="current"
+      variant={variant}
       hardMode={hardMode}
       className={className}
       onClick={onClick}
@@ -68,4 +93,18 @@ export function ModeStartButton({
       {children}
     </ActionButton>
   );
+}
+
+/** @deprecated Use ModeStartLink with modeVariant="era" */
+export function EraStartLink(
+  props: Omit<ModeStartLinkProps, "modeVariant"> & { modeVariant?: never }
+) {
+  return <ModeStartLink {...props} modeVariant="era" />;
+}
+
+/** @deprecated Use ModeStartButton with modeVariant="era" */
+export function EraStartButton(
+  props: Omit<ModeStartButtonProps, "modeVariant"> & { modeVariant?: never }
+) {
+  return <ModeStartButton {...props} modeVariant="era" />;
 }

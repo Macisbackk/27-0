@@ -3,8 +3,7 @@ import type { SeasonAward } from "./season-awards";
 import type { SquadSlot } from "./types";
 import { formatValue } from "./players";
 import { POSITION_LABELS } from "./positions";
-import { canPlayPosition } from "./players/player-positions";
-import { getEffectivePeakRating } from "./squad-analysis";
+import { canPlayPosition, getPlayerRatingForPosition } from "./players/player-positions";
 
 export interface PlayerSeasonReviewStats {
   tries?: number;
@@ -38,7 +37,9 @@ export function buildPlayerSeasonReviewStats(
   }
 
   if (!options?.hardMode) {
-    stats.rating = Math.round(getEffectivePeakRating(slot));
+    stats.rating = Math.round(
+      getPlayerRatingForPosition(player, slot.position, slot.runRatingPenalty)
+    );
     stats.valueLabel = formatValue(player.value);
   }
 

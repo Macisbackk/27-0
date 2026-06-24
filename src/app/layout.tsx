@@ -7,6 +7,7 @@ import { CoachbeardMergeRunner } from "@/components/CoachbeardMergeRunner";
 import { Header } from "@/components/Header";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SoundUnlock } from "@/components/SoundUnlock";
+import { UiThemeProvider } from "@/components/UiThemeProvider";
 
 const anton = Anton({
   weight: "400",
@@ -35,6 +36,7 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col">
         <AuthProvider>
           <CoachbeardMergeRunner />
+          <UiThemeProvider />
           <SoundUnlock />
           <Header />
           <main className="flex-1">{children}</main>

@@ -7,6 +7,7 @@ import { getClubsWithPlayers } from "@/lib/players";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { ClubHeaderBar } from "./ClubBadge";
 import { getClubColors } from "@/lib/clubs";
+import { ModeStartButton } from "./ModeStartLink";
 import { GameButton } from "./ui/GameButton";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -112,14 +113,14 @@ export function ChallengeCupClubSelect({
             )}
 
             <div className={`mt-6 grid ${SPACING.buttonGap} sm:grid-cols-2`}>
-              <GameButton
-                variant="current"
-                size="lg"
+              <ModeStartButton
+                modeVariant="current"
+                size="compact"
                 disabled={!selected}
                 onClick={handleConfirm}
               >
                 Start Challenge Cup →
-              </GameButton>
+              </ModeStartButton>
               <GameButton
                 variant="secondary"
                 size="md"
