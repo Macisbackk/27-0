@@ -17,7 +17,6 @@ import {
 } from "@/lib/sound";
 import {
   CARD,
-  NORMAL,
   SPACING,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -105,11 +104,7 @@ export function HomeModeSelector() {
           </ModeStartLink>
         </ModePanel>
 
-        <ModePanel
-          title="Challenge Cup"
-          eraActive={cupEraMode}
-          cupCurrent={!cupEraMode}
-        >
+        <ModePanel title="Challenge Cup" eraActive={cupEraMode}>
           <p className={TYPO.body}>
             Draft your squad and battle through a knockout tournament — or pick
             a historic club season and lead that era squad through the draw.
@@ -144,19 +139,15 @@ export function HomeModeSelector() {
 function ModePanel({
   title,
   eraActive = false,
-  cupCurrent = false,
   children,
 }: {
   title: string;
   eraActive?: boolean;
-  cupCurrent?: boolean;
   children: ReactNode;
 }) {
   const cardAccent = eraActive
     ? "border border-accent-gold/25 shadow-[0_0_32px_rgba(251,191,36,0.08)] hover:border-accent-gold/35"
-    : cupCurrent
-      ? `${CARD.featured} ${NORMAL.modeCardHover}`
-      : `${CARD.featured} ${NORMAL.modeCardHover}`;
+    : `${CARD.featured} hover:border-theme-tertiary/50`;
 
   const titleClass = eraActive ? "text-accent-gold" : "text-white";
 

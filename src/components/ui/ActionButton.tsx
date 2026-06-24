@@ -3,7 +3,6 @@
 import Link from "next/link";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import {
-  GAME_BUTTON_SIZE_CLASS,
   getGameButtonClass,
   type GameButtonSize,
   type GameButtonVariant,

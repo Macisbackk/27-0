@@ -30,7 +30,7 @@ export function ReviewPlayAgain({
         className={`grid ${hideReturnHome ? "grid-cols-1" : "grid-cols-2"} ${SPACING.buttonGap}`}
       >
         {!hideReturnHome && (
-          <ActionButton variant="secondary" href="/">
+          <ActionButton variant="theme" href="/">
             Return Home
           </ActionButton>
         )}

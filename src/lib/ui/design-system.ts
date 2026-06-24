@@ -56,14 +56,20 @@ export const FILTER = {
 /** Shared pressed-state utility — pair with BTN.base on interactive elements. */
 export const BTN_PRESS = "btn-press";
 
-/** Shared button classes. */
+/** Store theme trim for toggle groups / panels */
+export const THEME = {
+  tabGroupRing:
+    "border-theme-tertiary/45 shadow-[0_0_14px_var(--theme-glow-soft)] ring-1 ring-theme-tertiary/25",
+} as const;
+
+/** Shared button classes — prefer GameButton / getGameButtonClass for new code. */
 export const BTN = {
-  base: `${TYPO.button} btn-press inline-flex min-h-[44px] items-center justify-center rounded-lg px-4 py-2.5 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-primary disabled:active:scale-100 disabled:active:brightness-100`,
+  base: `${TYPO.button} btn-press inline-flex min-h-[44px] items-center justify-center rounded-lg px-4 py-2.5 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-tertiary disabled:active:scale-100 disabled:active:brightness-100`,
   theme:
     "game-button game-button--theme btn-press-glow game-button--md disabled:cursor-not-allowed disabled:opacity-50",
   themeLg:
     "game-button game-button--theme btn-press-glow game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
-  /** @deprecated Alias for BTN.theme — never Current green */
+  /** @deprecated Alias for BTN.theme */
   primary:
     "game-button game-button--theme btn-press-glow game-button--md disabled:cursor-not-allowed disabled:opacity-50",
   primaryHard:
@@ -72,7 +78,7 @@ export const BTN = {
   primaryLg:
     "game-button game-button--theme btn-press-glow game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
   primaryLgHard:
-    "game-button game-button--current mode-start-btn-hard btn-press btn-press-glow-hard game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--current game-button--current-hard btn-press-glow-hard game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
   eraStart:
     "game-button game-button--era btn-press-glow-gold game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
   eraStartLg:
@@ -82,11 +88,11 @@ export const BTN = {
   currentStart:
     "game-button game-button--current btn-press-glow game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
   currentStartHard:
-    "game-button game-button--current mode-start-btn-hard btn-press btn-press-glow-hard game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--current game-button--current-hard btn-press-glow-hard game-button--lg w-full disabled:cursor-not-allowed disabled:opacity-50",
   currentStartCompact:
     "game-button game-button--current btn-press-glow game-button--sm w-full disabled:cursor-not-allowed disabled:opacity-50",
   currentStartCompactHard:
-    "game-button game-button--current mode-start-btn-hard btn-press btn-press-glow-hard game-button--sm w-full disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--current game-button--current-hard btn-press-glow-hard game-button--sm w-full disabled:cursor-not-allowed disabled:opacity-50",
   secondary:
     "border border-pitch-600 text-gray-300 hover:border-theme-tertiary/50 hover:text-white disabled:cursor-not-allowed disabled:opacity-50",
   secondaryThemed:
@@ -106,15 +112,17 @@ export const BTN = {
   modeCurrentActive:
     "border-2 border-mode-current/75 bg-mode-current text-pitch-950 shadow-[0_0_28px_var(--mode-current-glow),inset_0_1px_0_rgba(255,255,255,0.08)]",
   modeCurrentIdle:
-    "text-gray-400 hover:border-mode-current/30 hover:bg-mode-current/10 hover:text-mode-current",
+    "border border-theme-tertiary/25 bg-pitch-900/90 text-gray-400 hover:border-theme-tertiary/50 hover:text-white",
   tabGroupIdle:
-    "text-gray-400 hover:border-theme-primary/30 hover:bg-theme-primary/10 hover:text-theme-primary",
+    "border border-theme-tertiary/25 bg-pitch-900/90 text-gray-400 hover:border-theme-tertiary/50 hover:text-white",
+  toggleIdle:
+    "border border-theme-tertiary/30 bg-pitch-900/90 text-gray-400 hover:border-theme-tertiary/55 hover:text-white",
   hardActive:
     "border-2 border-accent-red/85 bg-accent-red text-white shadow-[0_0_28px_rgba(239,68,68,0.5),inset_0_1px_0_rgba(255,255,255,0.1)]",
   hardIdle: "text-gray-400 hover:border-accent-red/40 hover:bg-accent-red/10 hover:text-accent-red",
   eraActive: "era-tab-btn-active",
   eraIdle:
-    "text-gray-400 hover:border-accent-gold/40 hover:bg-accent-gold/10 hover:text-accent-gold",
+    "border border-theme-tertiary/30 bg-pitch-900/90 text-gray-400 hover:border-accent-gold/40 hover:text-accent-gold",
   accentOutline: `w-full border border-theme-primary/40 bg-theme-primary/10 text-theme-primary hover:border-theme-primary/55 hover:bg-theme-primary/20 sm:w-auto`,
   hardAccentOutline: `w-full border border-accent-red/45 bg-accent-red/10 text-accent-red hover:border-accent-red/65 hover:bg-accent-red/20 hover:text-red-300 sm:w-auto`,
   goldOutline: `w-full border-2 border-accent-gold/50 bg-accent-gold/10 text-accent-gold hover:border-accent-gold/65 hover:bg-accent-gold/20`,
@@ -229,9 +237,9 @@ export function tabGroupButtonClass(
   const base = `${TYPO.button} btn-press flex-1 ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
-    if (variant === "era") return `${base} ${BTN.eraIdle}`;
+    if (variant === "era") return `${base} ${BTN.toggleIdle}`;
     if (variant === "gold") return `${base} ${BTN.eraIdle}`;
-    if (variant === "current") return `${base} ${BTN.modeCurrentIdle}`;
+    if (variant === "current") return `${base} ${BTN.toggleIdle}`;
     return `${base} ${BTN.tabGroupIdle}`;
   }
   if (variant === "hard") return `${base} ${BTN.hardActive}`;
@@ -243,29 +251,22 @@ export function tabGroupButtonClass(
   return `${base} ${BTN.tabGroupActive}`;
 }
 
-/** Tab group wrapper — green ring when normal active, red when hard, gold when era. */
+/** Tab group wrapper — theme tertiary ring; mode colour only on active tab button. */
 export function tabGroupClass(
-  hardActive = false,
-  currentModeActive = false,
-  eraActive = false
+  _hardActive = false,
+  _currentModeActive = false,
+  _eraActive = false
 ): string {
-  if (eraActive) return `${FILTER.tabGroup} ${ERA.tabGroupRing}`;
-  if (hardActive) return `${FILTER.tabGroup} ${HARD.tabGroupRing}`;
-  if (currentModeActive) return `${FILTER.tabGroup} ${MODE_CURRENT.tabGroupRing}`;
-  return FILTER.tabGroup;
+  return `${FILTER.tabGroup} ${THEME.tabGroupRing}`;
 }
 
 /** Compact nested toggle for sidebar play modes. */
 export function nestedTabGroupClass(
-  hardActive = false,
-  currentModeActive = false,
-  eraActive = false
+  _hardActive = false,
+  _currentModeActive = false,
+  _eraActive = false
 ): string {
-  const base = `${FILTER.tabGroup} w-full p-0.5`;
-  if (eraActive) return `${base} ${ERA.tabGroupRing}`;
-  if (hardActive) return `${base} ${HARD.tabGroupRing}`;
-  if (currentModeActive) return `${base} ${MODE_CURRENT.tabGroupRing}`;
-  return base;
+  return `${FILTER.tabGroup} w-full p-0.5 ${THEME.tabGroupRing}`;
 }
 
 export function nestedTabGroupButtonClass(
@@ -275,9 +276,9 @@ export function nestedTabGroupButtonClass(
   const base = `${TYPO.button} btn-press flex-1 rounded-md px-2 ${NAV_SIZE.nestedToggle} text-[10px] font-semibold uppercase tracking-wide`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
-    if (variant === "era") return `${base} ${BTN.eraIdle}`;
+    if (variant === "era") return `${base} ${BTN.toggleIdle}`;
     if (variant === "gold") return `${base} ${BTN.eraIdle}`;
-    if (variant === "current") return `${base} ${BTN.modeCurrentIdle}`;
+    if (variant === "current") return `${base} ${BTN.toggleIdle}`;
     return `${base} ${BTN.tabGroupIdle}`;
   }
   if (variant === "hard") return `${base} ${BTN.hardActive}`;

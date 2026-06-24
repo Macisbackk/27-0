@@ -4,11 +4,14 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { ModeVariant } from "@/lib/types";
 import {
+  getGameButtonClass,
+  type GameButtonSize,
+} from "@/lib/ui/game-button-variants";
+import {
   getModeButtonVariant,
-  getModeStartButtonClass,
   type ModeStartButtonSize,
 } from "@/lib/ui/mode-button-variant";
-import { ActionButton } from "./ui/ActionButton";
+import { GameButton } from "./ui/GameButton";
 
 interface ModeStartLinkProps {
   href: string;
@@ -20,7 +23,12 @@ interface ModeStartLinkProps {
   className?: string;
 }
 
-/** Mode-aware start CTA link — gold for Era, green for Current. */
+const SIZE_MAP: Record<ModeStartButtonSize, GameButtonSize> = {
+  home: "lg",
+  compact: "sm",
+};
+
+/** Mode-aware start CTA link — premium button on the anchor, not a text link. */
 export function ModeStartLink({
   href,
   modeVariant = "current",
@@ -31,15 +39,14 @@ export function ModeStartLink({
   className = "",
 }: ModeStartLinkProps) {
   const variant = getModeButtonVariant(modeVariant);
-  const classes = getModeStartButtonClass(variant, size, hardMode);
+  const classes = `${getGameButtonClass(variant, {
+    hardMode,
+    size: SIZE_MAP[size],
+  })} w-full no-underline ${className}`;
 
   return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className={`block w-full no-underline ${className}`}
-    >
-      <span className={classes}>{children}</span>
+    <Link href={href} onClick={onClick} className={classes}>
+      {children}
     </Link>
   );
 }
@@ -66,32 +73,19 @@ export function ModeStartButton({
   type = "button",
 }: ModeStartButtonProps) {
   const variant = getModeButtonVariant(modeVariant);
-  const classes = `${getModeStartButtonClass(variant, size, hardMode)} ${className}`;
-
-  if (size === "compact") {
-    return (
-      <button
-        type={type}
-        disabled={disabled}
-        onClick={onClick}
-        className={classes}
-      >
-        {children}
-      </button>
-    );
-  }
 
   return (
-    <ActionButton
+    <GameButton
       variant={variant}
       hardMode={hardMode}
+      size={SIZE_MAP[size]}
       className={className}
       onClick={onClick}
       disabled={disabled}
       type={type}
     >
       {children}
-    </ActionButton>
+    </GameButton>
   );
 }
 

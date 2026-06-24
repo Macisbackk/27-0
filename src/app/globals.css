@@ -1257,6 +1257,110 @@ body {
 }
 
 /*
+ * Opaque game buttons (unlayered) — required inside card-glass / matchday-panel.
+ * Backdrop-filter ancestors otherwise paint gradient backgrounds invisible
+ * (buttons look like plain coloured text links).
+ */
+a.game-button,
+button.game-button,
+.game-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  max-width: 100%;
+  border-radius: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none !important;
+  isolation: isolate !important;
+  position: relative !important;
+  z-index: 1 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  transform: translateZ(0);
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    border-color 120ms ease,
+    filter 120ms ease;
+  cursor: pointer;
+}
+
+.game-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.game-button:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.game-button:disabled {
+  cursor: not-allowed !important;
+  opacity: 0.45 !important;
+  transform: none !important;
+  filter: grayscale(0.15);
+}
+
+.game-button--sm {
+  min-height: 40px;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.75rem;
+}
+
+.game-button--md {
+  min-height: 44px;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+}
+
+.game-button--lg {
+  min-height: 48px;
+  padding: 0.75rem 1.125rem;
+  font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+a.game-button--theme,
+button.game-button--theme,
+.game-button--theme {
+  background-color: var(--theme-primary) !important;
+  background-image: linear-gradient(
+    135deg,
+    var(--theme-primary) 0%,
+    var(--theme-secondary) 100%
+  ) !important;
+  border: 2px solid var(--theme-tertiary) !important;
+  color: var(--theme-text-on-primary) !important;
+  box-shadow:
+    0 0 0 1px var(--theme-tertiary),
+    0 0 18px var(--theme-glow) !important;
+}
+
+a.game-button--secondary,
+button.game-button--secondary,
+.game-button--secondary {
+  background-color: rgb(15 24 20 / 0.98) !important;
+  background-image: none !important;
+  border: 2px solid var(--theme-tertiary) !important;
+  color: var(--theme-primary) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-tertiary) 40%, transparent) !important;
+}
+
+a.game-button--ghost,
+button.game-button--ghost,
+.game-button--ghost {
+  background-color: rgb(15 24 20 / 0.65) !important;
+  background-image: none !important;
+  border: 2px solid color-mix(in srgb, var(--theme-tertiary) 35%, transparent) !important;
+  color: #e5e7eb !important;
+}
+
+/*
  * Era gold surfaces (unlayered) — wins over Tailwind utilities and prevents
  * backdrop-filter compositing from painting blank backgrounds on links/buttons.
  */
@@ -1309,6 +1413,13 @@ button.game-button--era,
   color: var(--mode-era-text) !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
+}
+
+.game-button--current-hard {
+  background-color: #ef4444 !important;
+  background-image: linear-gradient(90deg, #ef4444 0%, #f87171 100%) !important;
+  border-color: #dc2626 !important;
+  color: #ffffff !important;
 }
 
 a .mode-start-btn,

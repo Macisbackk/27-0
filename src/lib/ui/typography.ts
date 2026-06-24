@@ -3,8 +3,8 @@
 export const TYPO = {
   pageTitle: "font-display text-3xl font-black tracking-tight text-white sm:text-4xl",
   pageSubtitle: "text-base text-gray-400 sm:text-lg leading-relaxed",
-  sectionLabel: "font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-green",
-  sectionTitle: "font-display text-sm font-bold uppercase tracking-wider text-accent-green",
+  sectionLabel: "font-display text-xs font-bold uppercase tracking-[0.2em] text-theme-primary",
+  sectionTitle: "font-display text-sm font-bold uppercase tracking-wider text-theme-primary",
   cardTitle: "font-display text-lg font-bold text-white sm:text-xl",
   playerName: "font-display text-xl font-semibold leading-tight text-white sm:text-2xl",
   playerNameSm: "font-display text-lg font-semibold leading-tight text-white",

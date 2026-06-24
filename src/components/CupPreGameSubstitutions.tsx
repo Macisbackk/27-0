@@ -167,8 +167,8 @@ export function CupPreGameSubstitutions({
 
       <GameButton
         variant="era"
-        size="lg"
-        className="mt-6"
+        size="md"
+        className="mx-auto mt-6 max-w-md"
         onClick={() => onConfirm(draftSquad)}
       >
         Confirm Squad & Start Tournament

@@ -142,7 +142,7 @@ export function ChallengeCupClubSelect({
                       onClick={() => setSelected(club)}
                       className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-2.5 py-2 text-left ${TYPO.bodySm} transition ${
                         selected === club
-                          ? `${CARD.selected} border-accent-green/50 text-accent-green`
+                          ? `${CARD.selected} text-theme-primary`
                           : `${CARD.base} text-gray-300 hover:border-pitch-500/50`
                       }`}
                     >
