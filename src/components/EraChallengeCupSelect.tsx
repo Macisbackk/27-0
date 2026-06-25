@@ -126,7 +126,6 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
             />
             {showTournamentAndPreview && (
               <ModeStartButton
-                modeVariant="era"
                 onClick={handleConfirm}
                 className="mb-4"
               >
@@ -307,7 +306,7 @@ export function EraChallengeCupSelect({ onConfirm }: EraChallengeCupSelectProps)
               })}
             </div>
 
-            <ModeStartButton modeVariant="era" onClick={handleConfirm} className="mt-5">
+            <ModeStartButton onClick={handleConfirm} className="mt-5">
               Start Era Challenge Cup
             </ModeStartButton>
           </motion.div>

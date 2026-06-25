@@ -114,7 +114,6 @@ export function ChallengeCupClubSelect({
 
             <div className={`mt-6 grid ${SPACING.buttonGap} sm:grid-cols-2`}>
               <ModeStartButton
-                modeVariant="current"
                 size="compact"
                 disabled={!selected}
                 onClick={handleConfirm}

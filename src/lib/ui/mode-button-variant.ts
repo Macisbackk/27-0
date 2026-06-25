@@ -2,7 +2,10 @@ import type { ModeVariant } from "../types";
 
 export type ModeButtonVariant = "era" | "current";
 
-/** Map era flag or mode variant to button variant. */
+/**
+ * Maps game mode flags to button variant for Current/Era **toggle tabs only**.
+ * Start/progression CTAs use `theme` (Store colours) via ModeStartLink / GameButton.
+ */
 export function getModeButtonVariant(
   modeVariant: ModeVariant | boolean | undefined
 ): ModeButtonVariant {

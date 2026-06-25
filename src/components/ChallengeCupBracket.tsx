@@ -223,7 +223,7 @@ export function ChallengeCupBracket({
           Simulate Round
         </GameButton>
         <GameButton
-          variant={eraMode ? "era" : "current"}
+          variant="theme"
           size="md"
           fullWidth={false}
           disabled={state.tournamentComplete}

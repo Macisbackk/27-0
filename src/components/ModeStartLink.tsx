@@ -2,20 +2,18 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { ModeVariant } from "@/lib/types";
 import {
   getGameButtonClass,
   type GameButtonSize,
 } from "@/lib/ui/game-button-variants";
-import {
-  getModeButtonVariant,
-  type ModeStartButtonSize,
-} from "@/lib/ui/mode-button-variant";
+import type { ModeStartButtonSize } from "@/lib/ui/mode-button-variant";
 import { GameButton } from "./ui/GameButton";
 
 interface ModeStartLinkProps {
   href: string;
-  modeVariant?: ModeVariant | boolean;
+  /** @deprecated No longer affects button colour — start CTAs always use Store theme. */
+  modeVariant?: unknown;
+  /** @deprecated Use danger variant via GameButton if needed. */
   hardMode?: boolean;
   size?: ModeStartButtonSize;
   onClick?: () => void;
@@ -28,31 +26,31 @@ const SIZE_MAP: Record<ModeStartButtonSize, GameButtonSize> = {
   compact: "sm",
 };
 
-/** Mode-aware start CTA link — premium button on the anchor, not a text link. */
+/**
+ * Primary “start mode” CTA — always uses selected Store UI theme.
+ * Current green / Era gold appear only on the Current/Era toggle, not here.
+ */
 export function ModeStartLink({
   href,
-  modeVariant = "current",
-  hardMode = false,
-  size = "home",
   onClick,
   children,
   className = "",
+  size = "home",
 }: ModeStartLinkProps) {
-  const variant = getModeButtonVariant(modeVariant);
-  const classes = `${getGameButtonClass(variant, {
-    hardMode,
+  const classes = `${getGameButtonClass("theme", {
     size: SIZE_MAP[size],
   })} w-full no-underline ${className}`;
 
   return (
-    <Link href={href} onClick={onClick} className={classes}>
+    <Link href={href} onClick={onClick} className={classes} data-game-button-variant="theme">
       {children}
     </Link>
   );
 }
 
 interface ModeStartButtonProps {
-  modeVariant?: ModeVariant | boolean;
+  /** @deprecated No longer affects button colour */
+  modeVariant?: unknown;
   hardMode?: boolean;
   size?: ModeStartButtonSize;
   onClick?: () => void;
@@ -62,9 +60,8 @@ interface ModeStartButtonProps {
   type?: "button" | "submit";
 }
 
+/** In-flow start CTA — Store theme colours (not Current green / Era gold). */
 export function ModeStartButton({
-  modeVariant = "current",
-  hardMode = false,
   size = "home",
   onClick,
   children,
@@ -72,12 +69,9 @@ export function ModeStartButton({
   disabled,
   type = "button",
 }: ModeStartButtonProps) {
-  const variant = getModeButtonVariant(modeVariant);
-
   return (
     <GameButton
-      variant={variant}
-      hardMode={hardMode}
+      variant="theme"
       size={SIZE_MAP[size]}
       className={className}
       onClick={onClick}
@@ -89,16 +83,16 @@ export function ModeStartButton({
   );
 }
 
-/** @deprecated Use ModeStartLink with modeVariant="era" */
+/** @deprecated EraStartLink — use ModeStartLink (all starts use Store theme). */
 export function EraStartLink(
-  props: Omit<ModeStartLinkProps, "modeVariant"> & { modeVariant?: never }
+  props: Omit<ModeStartLinkProps, "modeVariant">
 ) {
-  return <ModeStartLink {...props} modeVariant="era" />;
+  return <ModeStartLink {...props} />;
 }
 
-/** @deprecated Use ModeStartButton with modeVariant="era" */
+/** @deprecated EraStartButton — use ModeStartButton */
 export function EraStartButton(
-  props: Omit<ModeStartButtonProps, "modeVariant"> & { modeVariant?: never }
+  props: Omit<ModeStartButtonProps, "modeVariant">
 ) {
-  return <ModeStartButton {...props} modeVariant="era" />;
+  return <ModeStartButton {...props} />;
 }
