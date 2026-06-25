@@ -1,33 +1,31 @@
 import type { Player, Position, SquadSlot } from "../types";
 import { RECRUIT_SLOT_ORDER } from "../positions";
 import {
+  arePositionsCompatible,
   canPlayPosition,
   getEligiblePositions,
+  isPenaltyFreePlacement,
   OUT_OF_POSITION_PENALTY,
 } from "../players/player-positions";
 
 export { OUT_OF_POSITION_PENALTY } from "../players/player-positions";
 
-/** Pairs that may swap without a run penalty. */
-const COMPATIBLE_PAIRS: [Position, Position][] = [
-  ["WING", "FULLBACK"],
-  ["STAND_OFF", "SCRUM_HALF"],
-  ["PROP", "SECOND_ROW"],
-];
-
-function isCompatible(a: Position, b: Position): boolean {
-  if (a === b) return true;
-  return COMPATIBLE_PAIRS.some(
-    ([x, y]) => (x === a && y === b) || (x === b && y === a)
-  );
-}
-
 /** Player positions that can fill a slot without an out-of-position penalty. */
 export function getCompatiblePlayerPositions(slotPosition: Position): Position[] {
   const positions = new Set<Position>([slotPosition]);
-  for (const [a, b] of COMPATIBLE_PAIRS) {
-    if (a === slotPosition) positions.add(b);
-    if (b === slotPosition) positions.add(a);
+  const all: Position[] = [
+    "FULLBACK",
+    "WING",
+    "CENTRE",
+    "STAND_OFF",
+    "SCRUM_HALF",
+    "PROP",
+    "HOOKER",
+    "SECOND_ROW",
+    "LOOSE_FORWARD",
+  ];
+  for (const pos of all) {
+    if (arePositionsCompatible(slotPosition, pos)) positions.add(pos);
   }
   return [...positions];
 }
@@ -129,7 +127,7 @@ export function isValidPlayerSlotPosition(
   player: Pick<Player, "position" | "positions" | "primaryPosition">,
   slotPosition: Position
 ): boolean {
-  return canPlayPosition(player, slotPosition);
+  return isPenaltyFreePlacement(player, slotPosition);
 }
 
 export function getPlacementPenalty(
@@ -138,9 +136,11 @@ export function getPlacementPenalty(
   player?: Pick<Player, "position" | "positions" | "primaryPosition">
 ): number {
   if (player) {
-    return canPlayPosition(player, slotPosition) ? 0 : OUT_OF_POSITION_PENALTY;
+    return isPenaltyFreePlacement(player, slotPosition)
+      ? 0
+      : OUT_OF_POSITION_PENALTY;
   }
-  return isCompatible(naturalPosition, slotPosition)
+  return arePositionsCompatible(naturalPosition, slotPosition)
     ? 0
     : OUT_OF_POSITION_PENALTY;
 }

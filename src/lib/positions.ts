@@ -1,6 +1,6 @@
 import type { Position, SquadSlot } from "./types";
 import {
-  canPlayPosition,
+  isPenaltyFreePlacement,
   OUT_OF_POSITION_PENALTY,
 } from "./players/player-positions";
 
@@ -209,7 +209,7 @@ export function signPlayerToSlot(
 ): SquadSlot[] {
   return squad.map((s) => {
     if (s.slotIndex !== slotIndex) return s;
-    const penalty = canPlayPosition(player, s.position)
+    const penalty = isPenaltyFreePlacement(player, s.position)
       ? undefined
       : runRatingPenalty || OUT_OF_POSITION_PENALTY;
     return { ...s, player, runRatingPenalty: penalty };

@@ -44,7 +44,7 @@ export function ResultsModal({ run, mode, onClose }: ResultsModalProps) {
           <ActionButton variant="theme" href="/play" className="sm:flex-1">
             Play Again
           </ActionButton>
-          <ActionButton variant="secondary" href="/leaderboard" className="sm:flex-1">
+          <ActionButton variant="theme" href="/leaderboard" className="sm:flex-1">
             Leaderboard
           </ActionButton>
           <ActionButton variant="secondary" onClick={onClose} className="sm:flex-1">

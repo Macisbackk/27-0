@@ -36,6 +36,20 @@ export function parsePositionAbbreviations(abbrev: string): Position[] {
 
 export const OUT_OF_POSITION_PENALTY = 5;
 
+/** Pairs that may fill each other's slots without an OVR penalty. */
+const COMPATIBLE_PAIRS: [Position, Position][] = [
+  ["WING", "FULLBACK"],
+  ["STAND_OFF", "SCRUM_HALF"],
+  ["PROP", "SECOND_ROW"],
+];
+
+export function arePositionsCompatible(a: Position, b: Position): boolean {
+  if (a === b) return true;
+  return COMPATIBLE_PAIRS.some(
+    ([x, y]) => (x === a && y === b) || (x === b && y === a)
+  );
+}
+
 type PositionEligibilityPlayer = Pick<
   Player,
   "position" | "positions" | "primaryPosition"
@@ -84,6 +98,19 @@ export function canPlayPosition(
   return getEligiblePositions(player).includes(selectedPosition);
 }
 
+/** True when a player may occupy a slot at full OVR (listed role or cross-slot pair). */
+export function isPenaltyFreePlacement(
+  player: PositionEligibilityPlayer,
+  slotPosition: Position
+): boolean {
+  if (canPlayPosition(player, slotPosition)) return true;
+  if (arePositionsCompatible(player.position, slotPosition)) return true;
+  return getEligiblePositions(player).some(
+    (pos) =>
+      pos === slotPosition || arePositionsCompatible(pos, slotPosition)
+  );
+}
+
 export function applyOutOfPositionPenalty(
   rating: number,
   penalty = OUT_OF_POSITION_PENALTY
@@ -96,7 +123,7 @@ export function getPlayerRatingForPosition(
   selectedPosition: Position,
   slotPenalty?: number
 ): number {
-  if (canPlayPosition(player, selectedPosition)) {
+  if (isPenaltyFreePlacement(player, selectedPosition)) {
     return player.peakRating;
   }
   return applyOutOfPositionPenalty(

@@ -34,7 +34,7 @@ export function ReviewPlayAgain({
             Return Home
           </ActionButton>
         )}
-        <ActionButton variant="secondary" href={leaderboardHref}>
+        <ActionButton variant="theme" href={leaderboardHref}>
           Leaderboard
         </ActionButton>
       </div>
