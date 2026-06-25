@@ -166,7 +166,7 @@ export function CupPreGameSubstitutions({
       </div>
 
       <GameButton
-        variant="theme"
+        variant="era"
         size="md"
         className="mx-auto mt-6 max-w-md"
         onClick={() => onConfirm(draftSquad)}

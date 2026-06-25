@@ -93,6 +93,7 @@ export function HomeModeSelector() {
 
           <ModeStartLink
             href={normalHref}
+            eraMode={normalEraMode}
             onClick={() => {
               playUiClick();
               playModeClassicStart("NORMAL");
@@ -121,6 +122,7 @@ export function HomeModeSelector() {
 
           <ModeStartLink
             href={cupHref}
+            eraMode={cupEraMode}
             onClick={() => playModeChallengeCupStart()}
             className="mt-5"
           >
