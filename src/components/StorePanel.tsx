@@ -32,7 +32,7 @@ import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
 
-function ThemeColourStrip({ theme }: { theme: UiThemeDefinition }) {
+function ThemePalette({ theme }: { theme: UiThemeDefinition }) {
   const swatches = [
     { label: "Primary", colour: theme.primary },
     { label: "Secondary", colour: theme.secondary },
@@ -40,68 +40,21 @@ function ThemeColourStrip({ theme }: { theme: UiThemeDefinition }) {
   ];
 
   return (
-    <div className="border-b border-pitch-700/40 bg-pitch-950/80">
-      <div className="flex h-3 w-full overflow-hidden">
-        {swatches.map((swatch) => (
+    <div
+      className="grid grid-cols-3 gap-1.5 border-b border-pitch-700/40 bg-pitch-950/80 px-2 py-2"
+      aria-label={`${theme.label} colour palette`}
+    >
+      {swatches.map((swatch) => (
+        <div key={swatch.label} className="min-w-0 text-center">
           <span
-            key={swatch.label}
-            className="flex-1"
+            className="mb-0.5 block h-6 w-full rounded border border-white/20"
             style={{ backgroundColor: swatch.colour }}
             title={swatch.label}
           />
-        ))}
-      </div>
-      <div className="grid grid-cols-3 gap-1 px-2 py-1.5">
-        {swatches.map((swatch) => (
-          <div key={swatch.label} className="min-w-0 text-center">
-            <span
-              className="mx-auto mb-0.5 block h-5 w-full rounded border border-white/20"
-              style={{ backgroundColor: swatch.colour }}
-            />
-            <span className="block truncate text-[9px] font-semibold uppercase tracking-wide text-gray-400">
-              {swatch.label}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ThemePreviewButton({ theme }: { theme: UiThemeDefinition }) {
-  return (
-    <div
-      className="mt-3 rounded-lg border-2 p-2"
-      style={{
-        borderColor: theme.tertiary,
-        background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.secondary} 100%)`,
-        color: theme.textOnPrimary,
-        boxShadow: `0 0 12px ${theme.glow}`,
-      }}
-    >
-      <span className="block text-center font-display text-[10px] font-black uppercase tracking-wider">
-        Button preview
-      </span>
-    </div>
-  );
-}
-
-function ThemeSwatches({ theme }: { theme: UiThemeDefinition }) {
-  const colours = [
-    { label: "Primary", colour: theme.primary },
-    { label: "Secondary", colour: theme.secondary },
-    { label: "Tertiary", colour: theme.tertiary },
-  ];
-
-  return (
-    <div className="flex shrink-0 gap-1" aria-hidden>
-      {colours.map((swatch) => (
-        <span
-          key={swatch.label}
-          className="h-7 w-7 rounded-full border border-white/15"
-          style={{ backgroundColor: swatch.colour }}
-          title={swatch.label}
-        />
+          <span className="block truncate text-[9px] font-semibold uppercase tracking-wide text-gray-400">
+            {swatch.label}
+          </span>
+        </div>
       ))}
     </div>
   );
@@ -212,25 +165,20 @@ export function StorePanel() {
                   : "border-pitch-700/50"
               }`}
             >
-              <ThemeColourStrip theme={theme} />
+              <ThemePalette theme={theme} />
               <div className={SPACING.cardPaddingSm}>
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <p className="truncate font-display text-sm font-bold text-white sm:text-base">
-                      {theme.label}
-                    </p>
-                    <p className={`mt-0.5 ${TYPO.bodySm} text-gray-500`}>
-                      {isUnlocked
-                        ? isSelected
-                          ? "Selected"
-                          : "Unlocked"
-                        : formatClubFundsExact(UI_THEME_PURCHASE_PRICE)}
-                    </p>
-                  </div>
-                  <ThemeSwatches theme={theme} />
+                <div className="min-w-0">
+                  <p className="truncate font-display text-sm font-bold text-white sm:text-base">
+                    {theme.label}
+                  </p>
+                  <p className={`mt-0.5 ${TYPO.bodySm} text-gray-500`}>
+                    {isUnlocked
+                      ? isSelected
+                        ? "Selected"
+                        : "Unlocked"
+                      : formatClubFundsExact(UI_THEME_PURCHASE_PRICE)}
+                  </p>
                 </div>
-
-                <ThemePreviewButton theme={theme} />
 
                 <div className="mt-4">
                   {isUnlocked ? (
