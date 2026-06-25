@@ -812,6 +812,30 @@ body {
     filter: brightness(1.05);
   }
 
+  .tab-group-btn-active {
+    border: 2px solid color-mix(in srgb, var(--theme-tertiary) 80%, transparent) !important;
+    background-color: var(--theme-primary) !important;
+    background-image: linear-gradient(
+      135deg,
+      var(--theme-primary) 0%,
+      var(--theme-secondary) 100%
+    ) !important;
+    color: var(--theme-text-on-primary) !important;
+    isolation: isolate;
+    position: relative;
+    z-index: 1;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transform: translateZ(0);
+    box-shadow:
+      0 0 28px var(--theme-glow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .tab-group-btn-active:hover {
+    filter: brightness(1.05);
+  }
+
   .slot-reveal-window {
     min-height: 4.5rem;
     display: flex;
@@ -1381,6 +1405,20 @@ button.era-tab-btn-active,
   background-image: none !important;
   color: #0a0f0d !important;
   border-color: #b45309 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+button.tab-group-btn-active,
+.tab-group-btn-active {
+  background-color: var(--theme-primary) !important;
+  background-image: linear-gradient(
+    135deg,
+    var(--theme-primary) 0%,
+    var(--theme-secondary) 100%
+  ) !important;
+  border-color: color-mix(in srgb, var(--theme-tertiary) 80%, transparent) !important;
+  color: var(--theme-text-on-primary) !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }

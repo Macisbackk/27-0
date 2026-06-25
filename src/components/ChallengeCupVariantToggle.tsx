@@ -34,8 +34,8 @@ export function ChallengeCupVariantToggle({
   sectionLabel = "Cup Mode",
 }: ChallengeCupVariantToggleProps) {
   const currentClass = compact
-    ? nestedTabGroupButtonClass(!eraMode, "current")
-    : tabGroupButtonClass(!eraMode, "current");
+    ? nestedTabGroupButtonClass(!eraMode, "normal")
+    : tabGroupButtonClass(!eraMode, "normal");
   const eraClass = compact
     ? nestedTabGroupButtonClass(eraMode, "era")
     : tabGroupButtonClass(eraMode, "era");

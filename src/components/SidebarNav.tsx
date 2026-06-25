@@ -242,7 +242,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       {isNormalActive && (
                         <span
                           className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
-                            isNormalEra ? "bg-accent-gold" : "bg-mode-current"
+                            isNormalEra ? "bg-accent-gold" : "bg-theme-primary"
                           }`}
                         />
                       )}
@@ -277,7 +277,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       {isCupActive && (
                         <span
                           className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
-                            isEraCup ? "bg-accent-gold" : "bg-mode-current"
+                            isEraCup ? "bg-accent-gold" : "bg-theme-primary"
                           }`}
                         />
                       )}

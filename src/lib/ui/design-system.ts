@@ -108,7 +108,7 @@ export const BTN = {
   tabGroupInner:
     "flex-1 rounded-lg px-4 py-2.5 sm:flex-none sm:px-5",
   tabGroupActive:
-    "border-2 border-theme-tertiary/80 bg-theme-primary text-[var(--theme-text-on-primary)] shadow-[0_0_28px_var(--theme-glow),inset_0_1px_0_rgba(255,255,255,0.08)] ring-1 ring-theme-tertiary/40",
+    "tab-group-btn-active ring-1 ring-theme-tertiary/40",
   modeCurrentActive:
     "border-2 border-mode-current/75 bg-mode-current text-pitch-950 shadow-[0_0_28px_var(--mode-current-glow),inset_0_1px_0_rgba(255,255,255,0.08)]",
   modeCurrentIdle:
@@ -247,7 +247,8 @@ export function tabGroupButtonClass(
   if (variant === "gold") {
     return `${base} border-2 border-accent-gold/50 bg-accent-gold/10 text-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.2)]`;
   }
-  if (variant === "current") return `${base} ${BTN.modeCurrentActive}`;
+  /* "current" and "normal" — selected tab uses Store theme, not fixed mode green */
+  if (variant === "current" || variant === "normal") return `${base} ${BTN.tabGroupActive}`;
   return `${base} ${BTN.tabGroupActive}`;
 }
 
@@ -286,6 +287,6 @@ export function nestedTabGroupButtonClass(
   if (variant === "gold") {
     return `${base} border border-accent-gold/50 bg-accent-gold/10 text-accent-gold`;
   }
-  if (variant === "current") return `${base} ${BTN.modeCurrentActive}`;
+  if (variant === "current" || variant === "normal") return `${base} ${BTN.tabGroupActive}`;
   return `${base} ${BTN.tabGroupActive}`;
 }
