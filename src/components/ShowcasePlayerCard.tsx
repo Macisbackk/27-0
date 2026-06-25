@@ -94,7 +94,9 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
           className="mt-0.5 shrink-0"
         />
         <span className="showcase-compact-name min-w-0 flex-1 font-display font-bold leading-snug text-white">
-          <span className="block truncate">{displayName}</span>
+          <span className="block break-words [overflow-wrap:anywhere] line-clamp-3">
+            {displayName}
+          </span>
           <span className="mt-0.5 block truncate text-[11px] font-medium text-gray-400">
             {clubYearLabel}
           </span>
@@ -105,12 +107,13 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
       </button>
 
       {expanded && (
-        <div className="min-w-0 border-t border-pitch-700/40 px-2 pb-2 pt-1 sm:px-2.5">
+        <div className="min-w-0 overflow-visible border-t border-pitch-700/40 px-2 pb-2 pt-1 sm:px-2.5">
           <RugbyLeaguePlayerCard
             player={player}
             variant="default"
             compactMobile
             achievementDisplay="showcase"
+            allowLongName
           />
           <button
             type="button"

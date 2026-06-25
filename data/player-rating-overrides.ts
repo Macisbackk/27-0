@@ -98,6 +98,7 @@ export const PLAYER_RATING_OVERRIDES: Record<string, number> = {
   "leigh-cur-david-armstrong": 86,
   "leigh-cur-edwin-ipape": 88,
   "leigh-cur-lachlan-lam": 90,
+  "bradford-cur-ryan-sutton": 85,
   "st-helens-cur-alex-walmsley": 89,
   "st-helens-cur-jack-welsby": 88,
   "wakefield-cur-jake-trueman": 87,

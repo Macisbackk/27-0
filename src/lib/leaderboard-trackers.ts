@@ -147,10 +147,14 @@ export function rankByTracker(
       case "perfect_runs":
         return b.perfectRuns - a.perfectRuns;
       case "best_record": {
-        if (b.totalWins !== a.totalWins) {
-          return b.totalWins - a.totalWins;
+        const aWins = a.bestRecordWins ?? a.totalWins;
+        const bWins = b.bestRecordWins ?? b.totalWins;
+        const aLosses = a.bestRecordLosses ?? a.totalLosses;
+        const bLosses = b.bestRecordLosses ?? b.totalLosses;
+        if (bWins !== aWins) {
+          return bWins - aWins;
         }
-        return a.totalLosses - b.totalLosses;
+        return aLosses - bLosses;
       }
       case "challenge_cup_wins":
       case "challenge_cup_team_wins":
@@ -162,7 +166,7 @@ export function rankByTracker(
     }
   });
 
-  return sorted.slice(0, limit).map((entry, index) => ({
+  const rows = sorted.slice(0, limit).map((entry, index) => ({
     rank: index + 1,
     username: entry.username,
     achievedAt: entry.achievedAt,
@@ -171,6 +175,24 @@ export function rankByTracker(
     isCurrentUser: !!currentUser && entry.username === currentUser,
     statDisplay: getTrackerStatDisplay(entry, tracker),
   }));
+
+  if (currentUser && !rows.some((row) => row.isCurrentUser)) {
+    const userIndex = sorted.findIndex((entry) => entry.username === currentUser);
+    const userEntry = userIndex >= 0 ? sorted[userIndex] : undefined;
+    if (userEntry) {
+      rows.push({
+        rank: userIndex + 1,
+        username: userEntry.username,
+        achievedAt: userEntry.achievedAt,
+        difficulty: userEntry.difficulty,
+        mode: userEntry.mode,
+        isCurrentUser: true,
+        statDisplay: getTrackerStatDisplay(userEntry, tracker),
+      });
+    }
+  }
+
+  return rows;
 }
 
 export function getTrackerStatDisplay(
@@ -186,7 +208,10 @@ export function getTrackerStatDisplay(
     case "perfect_runs":
       return String(entry.perfectRuns);
     case "best_record":
-      return formatRecordWithPercentage(entry.totalWins, entry.totalLosses);
+      return formatRecordWithPercentage(
+        entry.bestRecordWins ?? entry.totalWins,
+        entry.bestRecordLosses ?? entry.totalLosses
+      );
     case "challenge_cup_wins":
     case "challenge_cup_team_wins":
       return String(entry.challengeCupWins);
@@ -213,20 +238,34 @@ export function mergeLeaderboardStats(
   "username" | "achievedAt" | "difficulty" | "mode"
 > {
   const isCupRun = update.isCupRun === true;
-  const seasonGames = update.wins + update.losses;
+  const runWins = update.wins;
+  const runLosses = update.losses;
+  const seasonGames = runWins + runLosses;
   const seasonWinPct =
-    seasonGames > 0 ? (update.wins / seasonGames) * 100 : 0;
+    seasonGames > 0 ? (runWins / seasonGames) * 100 : 0;
   const finishRank = getCupFinishRank(update.cupFinish);
 
   const squadValue = Math.max(existing?.squadValue ?? 0, update.squadValue);
-  const totalWins = (existing?.totalWins ?? 0) + update.wins;
-  const totalLosses = (existing?.totalLosses ?? 0) + update.losses;
+  const totalWins = (existing?.totalWins ?? 0) + runWins;
+  const totalLosses = (existing?.totalLosses ?? 0) + runLosses;
   const perfectRuns = isCupRun
     ? (existing?.perfectRuns ?? 0)
     : (existing?.perfectRuns ?? 0) + (update.isPerfectSeason ? 1 : 0);
   const challengeCupWins = isCupRun
     ? (existing?.challengeCupWins ?? 0) + (update.cupWon ? 1 : 0)
     : (existing?.challengeCupWins ?? 0);
+
+  let bestRecordWins = existing?.bestRecordWins ?? 0;
+  let bestRecordLosses = existing?.bestRecordLosses ?? 0;
+  if (!isCupRun && seasonGames > 0) {
+    const better =
+      runWins > bestRecordWins ||
+      (runWins === bestRecordWins && runLosses < bestRecordLosses);
+    if (better || bestRecordWins + bestRecordLosses === 0) {
+      bestRecordWins = runWins;
+      bestRecordLosses = runLosses;
+    }
+  }
 
   let cupFinals = existing?.cupFinals ?? 0;
   let bestCupFinishRank = existing?.bestCupFinishRank ?? 0;
@@ -251,15 +290,10 @@ export function mergeLeaderboardStats(
     }
   }
 
-  const bestRecordWins = totalWins;
-  const bestRecordLosses = totalLosses;
-
   let bestWinPercentage = existing?.bestWinPercentage ?? 0;
-  if (!isCupRun) {
-    const totalGames = totalWins + totalLosses;
-    if (totalGames >= MIN_GAMES_FOR_WIN_PERCENTAGE) {
-      bestWinPercentage = (totalWins / totalGames) * 100;
-    }
+  if (!isCupRun && seasonGames > 0) {
+    const runPct = (runWins / seasonGames) * 100;
+    if (runPct > bestWinPercentage) bestWinPercentage = runPct;
   }
 
   return {

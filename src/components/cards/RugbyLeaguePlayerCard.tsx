@@ -47,6 +47,8 @@ interface RugbyLeaguePlayerCardProps {
   equalHeight?: boolean;
   compactMobile?: boolean;
   achievementDisplay?: AchievementDisplayMode;
+  /** Showcase expanded cards — wrap long names instead of truncating. */
+  allowLongName?: boolean;
   /** Era mode: use era team club colours instead of the player's current club. */
   clubColorOverride?: string;
   className?: string;
@@ -67,6 +69,7 @@ function playerCardPropsEqual(
     prev.equalHeight === next.equalHeight &&
     prev.compactMobile === next.compactMobile &&
     prev.achievementDisplay === next.achievementDisplay &&
+    prev.allowLongName === next.allowLongName &&
     prev.clubColorOverride === next.clubColorOverride &&
     prev.className === next.className
   );
@@ -80,6 +83,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
   equalHeight,
   compactMobile,
   achievementDisplay = "compact",
+  allowLongName = false,
   clubColorOverride,
   className = "",
 }: RugbyLeaguePlayerCardProps) {
@@ -333,7 +337,15 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
       <div className="flex flex-1 flex-col gap-2 p-3 sm:p-4">
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1 overflow-hidden pr-1">
-            <h2 className={`truncate ${TYPO.playerNameSm}`}>{displayName}</h2>
+            <h2
+              className={`${
+                allowLongName
+                  ? "break-words [overflow-wrap:anywhere] leading-snug line-clamp-3"
+                  : "truncate"
+              } ${TYPO.playerNameSm}`}
+            >
+              {displayName}
+            </h2>
             {statusStrip && (
               <div className="max-w-full min-w-0 overflow-hidden">{statusStrip}</div>
             )}

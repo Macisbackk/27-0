@@ -236,13 +236,19 @@ function mapLocalToTrackerEntries(
 function mapSupabaseToTrackerEntries(
   rows: SupabaseLeaderboardRow[],
   difficulty: GameDifficulty,
-  dbMode: LeaderboardDbMode
+  dbMode: LeaderboardDbMode,
+  modeVariant: ModeVariant = "current"
 ): LeaderboardTrackerEntry[] {
   const gameMode = dbModeToGameMode(dbMode);
+  const effectiveVariant = resolveLeaderboardModeVariant(dbMode, modeVariant);
   const byUser = new Map<string, LeaderboardTrackerEntry>();
 
   for (const row of rows) {
     if ((row.difficulty ?? "NORMAL") !== difficulty) continue;
+    if (dbMode === "super-league" || dbMode === "challenge-cup") {
+      const rowVariant = normalizeModeVariant(row.mode_variant ?? "current");
+      if (rowVariant !== effectiveVariant) continue;
+    }
     const username = row.coach_name ?? row.player_name ?? "Unknown";
     if (isGuestLeaderboardName(username)) continue;
     const userKey = row.user_id ?? username;
@@ -256,8 +262,8 @@ function mapSupabaseToTrackerEntries(
       totalWins: row.wins ?? 0,
       totalLosses: row.losses ?? 0,
       perfectRuns: row.perfect_runs ?? 0,
-      bestRecordWins: row.best_record_wins ?? 0,
-      bestRecordLosses: row.best_record_losses ?? 0,
+      bestRecordWins: row.best_record_wins ?? row.wins ?? 0,
+      bestRecordLosses: row.best_record_losses ?? row.losses ?? 0,
       bestWinPercentage: row.best_win_percentage ?? 0,
       challengeCupWins: row.challenge_cup_wins ?? 0,
       cupFinals: row.cup_finals ?? 0,
@@ -348,7 +354,8 @@ async function fetchTrackerEntriesFromSupabase(
     return mapSupabaseToTrackerEntries(
       (result.data ?? []) as unknown as SupabaseLeaderboardRow[],
       effectiveDifficulty,
-      dbMode
+      dbMode,
+      modeVariant
     );
   } catch (error) {
     console.error("[leaderboard] Supabase fetch failed, using local fallback:", error);

@@ -33,23 +33,55 @@ import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
 
 function ThemeColourStrip({ theme }: { theme: UiThemeDefinition }) {
+  const swatches = [
+    { label: "Primary", colour: theme.primary },
+    { label: "Secondary", colour: theme.secondary },
+    { label: "Tertiary", colour: theme.tertiary },
+  ];
+
   return (
-    <div className="flex h-2.5 w-full overflow-hidden rounded-t-xl">
-      <span
-        className="flex-1"
-        style={{ backgroundColor: theme.primary }}
-        title="Primary"
-      />
-      <span
-        className="flex-1"
-        style={{ backgroundColor: theme.secondary }}
-        title="Secondary"
-      />
-      <span
-        className="flex-1"
-        style={{ backgroundColor: theme.tertiary }}
-        title="Tertiary"
-      />
+    <div className="border-b border-pitch-700/40 bg-pitch-950/80">
+      <div className="flex h-3 w-full overflow-hidden">
+        {swatches.map((swatch) => (
+          <span
+            key={swatch.label}
+            className="flex-1"
+            style={{ backgroundColor: swatch.colour }}
+            title={swatch.label}
+          />
+        ))}
+      </div>
+      <div className="grid grid-cols-3 gap-1 px-2 py-1.5">
+        {swatches.map((swatch) => (
+          <div key={swatch.label} className="min-w-0 text-center">
+            <span
+              className="mx-auto mb-0.5 block h-5 w-full rounded border border-white/20"
+              style={{ backgroundColor: swatch.colour }}
+            />
+            <span className="block truncate text-[9px] font-semibold uppercase tracking-wide text-gray-400">
+              {swatch.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ThemePreviewButton({ theme }: { theme: UiThemeDefinition }) {
+  return (
+    <div
+      className="mt-3 rounded-lg border-2 p-2"
+      style={{
+        borderColor: theme.tertiary,
+        background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.secondary} 100%)`,
+        color: theme.textOnPrimary,
+        boxShadow: `0 0 12px ${theme.glow}`,
+      }}
+    >
+      <span className="block text-center font-display text-[10px] font-black uppercase tracking-wider">
+        Button preview
+      </span>
     </div>
   );
 }
@@ -197,6 +229,8 @@ export function StorePanel() {
                   </div>
                   <ThemeSwatches theme={theme} />
                 </div>
+
+                <ThemePreviewButton theme={theme} />
 
                 <div className="mt-4">
                   {isUnlocked ? (

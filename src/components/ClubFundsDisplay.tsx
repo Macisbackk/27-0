@@ -151,9 +151,9 @@ export function ClubFundsDisplay({
             <motion.div
               role="dialog"
               aria-label="Earn Club Funds"
-              className={`z-[80] w-[min(17rem,calc(100vw-1.5rem))] max-w-[calc(100vw-env(safe-area-inset-left,0px)-env(safe-area-inset-right,0px)-1.5rem)] ${CARD.panel} border border-theme-tertiary/35 p-3 shadow-xl ${
+              className={`z-[80] w-[min(18rem,calc(100vw-2rem))] max-h-[min(70vh,24rem)] overflow-y-auto ${CARD.panel} border border-theme-tertiary/35 p-3 shadow-xl ${
                 isMobileUnderLogo
-                  ? "fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] sm:absolute sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-[calc(100%+0.35rem)] sm:-translate-x-1/2"
+                  ? "fixed left-1/2 top-1/2 max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 sm:absolute sm:left-1/2 sm:top-[calc(100%+0.35rem)] sm:max-h-none sm:-translate-x-1/2 sm:translate-y-0"
                   : "absolute right-0 top-[calc(100%+0.5rem)]"
               }`}
             initial={{ opacity: 0, y: -6, scale: 0.98 }}

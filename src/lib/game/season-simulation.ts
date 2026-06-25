@@ -616,10 +616,11 @@ function getDraftWinProbabilityFloor(ratingGap: number): number | null {
 }
 
 function getNormalWinProbabilityFloor(ratingGap: number): number | null {
-  if (ratingGap >= 10) return 0.86;
-  if (ratingGap >= 7) return 0.8;
-  if (ratingGap >= 4) return 0.74;
-  if (ratingGap >= 2) return 0.6;
+  if (ratingGap >= 10) return 0.9;
+  if (ratingGap >= 7) return 0.84;
+  if (ratingGap >= 4) return 0.78;
+  if (ratingGap >= 2) return 0.65;
+  if (ratingGap >= 0) return 0.54;
   return null;
 }
 
@@ -654,8 +655,8 @@ function resolveOutcome(
 
   const noise = (rng() - 0.5) * noiseScale;
   const strengthGap = strength - opponentStrength;
-  const ratingWeight = draftMode ? 1.55 : 1.28;
-  const valueWeight = draftMode ? 0.85 : 0.75;
+  const ratingWeight = draftMode ? 1.55 : 1.34;
+  const valueWeight = draftMode ? 0.85 : 0.8;
   const diff =
     ratingGap * ratingWeight +
     strengthGap * 0.35 +
@@ -675,7 +676,7 @@ function resolveOutcome(
   } else {
     const floor = getNormalWinProbabilityFloor(ratingGap);
     if (floor !== null) winProbability = Math.max(winProbability, floor);
-    else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.68);
+    else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.72);
   }
 
   if (ratingGap <= -10) winProbability = Math.min(winProbability, 0.1);
@@ -684,8 +685,8 @@ function resolveOutcome(
 
   winProbability = Math.max(0.04, Math.min(0.96, winProbability));
 
-  if (!draftMode && ratingGap >= -4 && ratingGap <= 1) {
-    winProbability = Math.min(0.96, winProbability + 0.05);
+  if (!draftMode && ratingGap >= -3 && ratingGap <= 2) {
+    winProbability = Math.min(0.96, winProbability + 0.07);
   }
 
   let won = rng() < winProbability;
@@ -697,16 +698,16 @@ function resolveOutcome(
       ? getDraftFavoriteUpsetChance(ratingGap, cupMode)
       : ratingGap >= 10
         ? cupMode
-          ? 0.035
-          : 0.02
+          ? 0.028
+          : 0.015
         : ratingGap >= 8
           ? cupMode
-            ? 0.06
-            : 0.04
+            ? 0.05
+            : 0.03
           : ratingGap >= 5
             ? cupMode
-              ? 0.1
-              : 0.07
+              ? 0.085
+              : 0.055
             : 0;
     if (upsetChance > 0 && rng() < upsetChance) {
       won = false;

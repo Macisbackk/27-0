@@ -162,6 +162,19 @@ body {
   content-visibility: visible;
   contain: none;
   contain-intrinsic-size: auto;
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 640px) {
+  .showcase-player-card--expanded {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .showcase-player-card--expanded {
+    grid-column: span 3;
+  }
 }
 
 .showcase-compact-name {
