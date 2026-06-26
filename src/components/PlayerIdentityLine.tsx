@@ -10,7 +10,7 @@ import {
   getPlayerDisplayClub,
   playerHasRunClub,
 } from "@/lib/players/run-club";
-import { POSITION_LABELS } from "@/lib/positions";
+import { formatPositionFullNames } from "@/lib/players/player-positions";
 
 interface PlayerIdentityLineProps {
   player: Player;
@@ -24,7 +24,7 @@ export function PlayerIdentityLine({
   className = "",
   compact = false,
 }: PlayerIdentityLineProps) {
-  const position = POSITION_LABELS[player.position];
+  const position = formatPositionFullNames(player);
   const eraRun = playerHasRunClub(player);
   const displayClub = getPlayerDisplayClub(player);
   const ageLabel = formatPlayerAge(player);

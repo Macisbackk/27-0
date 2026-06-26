@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { Player, SquadSlot } from "@/lib/types";
 import { DraftPositionsRemaining } from "./DraftPositionsRemaining";
-import { POSITION_LABELS } from "@/lib/positions";
+import { formatPositionFullNames } from "@/lib/players/player-positions";
 import {
   playGoatAppears,
   playHistoricPlayerAppears,
@@ -236,9 +236,7 @@ function ChoiceCard({
         />
       </div>
       <p className="mt-1 min-h-[16px] text-center text-[10px] text-gray-500 sm:text-[11px]">
-        <span className="hidden sm:inline">
-          {POSITION_LABELS[player.position]} · Tap to sign
-        </span>
+        {formatPositionFullNames(player)} · Tap to sign
       </p>
     </motion.button>
   );

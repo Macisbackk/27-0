@@ -15,7 +15,6 @@ import { getNationalityAbbrev } from "@/lib/players/nationality";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
 import { getClubColors } from "@/lib/clubs";
-import { POSITION_LABELS } from "@/lib/positions";
 import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import { playUiClick } from "@/lib/sound";
 import { AchievementChipList } from "./cards/AchievementChipList";
@@ -93,22 +92,17 @@ export function SlotRecruitPlayerCard({
           <h3 className="min-w-0 flex-1 line-clamp-2 break-words font-display text-xs font-bold leading-tight text-white sm:text-sm">
             {displayName}
           </h3>
-          <div
-            className={`shrink-0 text-right font-display font-bold leading-none text-accent-green ${
-              hardMode ? "text-gray-600" : ""
-            }`}
-          >
-            <p className="text-sm sm:text-base">
+          <div className="flex max-w-[44%] shrink-0 flex-col items-end min-[480px]:max-w-[48%]">
+            <p
+              className={`text-right font-display font-bold leading-none text-accent-green ${
+                hardMode ? "text-gray-600" : ""
+              } text-sm sm:text-base`}
+            >
               {hardMode ? "???" : player.peakRating}
               {!hardMode && <span className="hidden sm:inline"> OVR</span>}
             </p>
-            <p className="mt-0.5 text-[10px] font-semibold tracking-wide text-accent-green/90 sm:text-[11px]">
-              <span className="sm:hidden">
-                {formatPlayerPositionLabel(player)}
-              </span>
-              <span className="hidden sm:inline">
-                {formatPlayerPositionLabel(player, { short: false })}
-              </span>
+            <p className="mt-0.5 line-clamp-2 text-right text-[10px] font-semibold leading-snug text-accent-green/90 sm:text-[11px]">
+              {formatPlayerPositionLabel(player, { short: false })}
             </p>
           </div>
         </div>
@@ -162,16 +156,7 @@ export function SlotRecruitPlayerCard({
               <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-1.5">
                 <StatBox
                   label="Position"
-                  value={
-                    <>
-                      <span className="sm:hidden">
-                        {formatPlayerPositionLabel(player)}
-                      </span>
-                      <span className="hidden sm:inline">
-                        {formatPlayerPositionLabel(player, { short: false })}
-                      </span>
-                    </>
-                  }
+                  value={formatPlayerPositionLabel(player, { short: false })}
                   size="lg"
                   light
                   compact

@@ -319,13 +319,8 @@ export function FantasyPlayerPicker({
                             {player.peakRating}
                             <span className="hidden sm:inline"> OVR</span>
                           </p>
-                          <p className="mt-0.5 text-[10px] font-semibold tracking-wide text-accent-green/90 sm:text-[11px]">
-                            <span className="sm:hidden">
-                              {formatPlayerPositionLabel(player)}
-                            </span>
-                            <span className="hidden sm:inline">
-                              {formatPlayerPositionLabel(player, { short: false })}
-                            </span>
+                          <p className="mt-0.5 line-clamp-2 text-right text-[10px] font-semibold leading-snug text-accent-green/90 sm:text-[11px]">
+                            {formatPlayerPositionLabel(player, { short: false })}
                           </p>
                         </div>
                       </div>
@@ -386,18 +381,9 @@ export function FantasyPlayerPicker({
                               <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-1.5">
                                 <StatBox
                                   label="Position"
-                                  value={
-                                    <>
-                                      <span className="sm:hidden">
-                                        {formatPlayerPositionLabel(player)}
-                                      </span>
-                                      <span className="hidden sm:inline">
-                                        {formatPlayerPositionLabel(player, {
-                                          short: false,
-                                        })}
-                                      </span>
-                                    </>
-                                  }
+                                  value={formatPlayerPositionLabel(player, {
+                                    short: false,
+                                  })}
                                   size="lg"
                                   light
                                   compact
