@@ -130,6 +130,13 @@ export function SeasonReview({
     playGradeSound(gradeInfo.grade);
   }, [gradeInfo.grade]);
 
+  const seasonFinalizedRef = useRef(false);
+  useEffect(() => {
+    if (seasonFinalizedRef.current) return;
+    seasonFinalizedRef.current = true;
+    onFinalizeSeason?.();
+  }, [onFinalizeSeason]);
+
   const leagueTable = useMemo(
     () => buildLeagueTable(seasonResult, seed),
     [seasonResult, seed]
@@ -394,6 +401,7 @@ export function SeasonReview({
                         fixture={fixture}
                         seed={seed}
                         userSquad={squad}
+                        currentSeasonOnly={!normalEraMode}
                         onClose={() => {
                           playPanelClose();
                           setSelectedFixture(null);

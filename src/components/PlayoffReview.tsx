@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import type { SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
@@ -38,6 +38,7 @@ interface PlayoffReviewProps {
   playoffFundsPayout?: ClubFundsPayoutResult | null;
   clubFundsPayout?: ClubFundsPayoutResult | null;
   isHardMode?: boolean;
+  onFinalizeRun?: () => void;
   onPlayAgain: () => void;
   onClose: () => void;
   onReturnHome?: () => void;
@@ -51,9 +52,17 @@ export function PlayoffReview({
   playoffFundsPayout = null,
   clubFundsPayout = null,
   isHardMode = false,
+  onFinalizeRun,
   onPlayAgain,
   onReturnHome,
 }: PlayoffReviewProps) {
+  const playoffFinalizedRef = useRef(false);
+  useEffect(() => {
+    if (playoffFinalizedRef.current) return;
+    playoffFinalizedRef.current = true;
+    onFinalizeRun?.();
+  }, [onFinalizeRun]);
+
   const isChampion = playoffResult.isChampion;
   const titleBio = useMemo(
     () => getPlayoffReviewBio(playoffResult, seasonResult.wins),

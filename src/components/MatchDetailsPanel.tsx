@@ -34,6 +34,8 @@ interface MatchDetailsPanelProps {
   eraClubLookup?: Record<string, string>;
   eraTeamRatings?: Record<string, number>;
   eraTeamValues?: Record<string, number>;
+  /** Current Mode — opponent summary uses 2026 squad pool only. */
+  currentSeasonOnly?: boolean;
 }
 
 export function MatchDetailsPanel({
@@ -46,6 +48,7 @@ export function MatchDetailsPanel({
   userClubColorOverride,
   eraClubLookup,
   eraTeamRatings,
+  currentSeasonOnly = false,
 }: MatchDetailsPanelProps) {
   const detail = fixture.scoringDetail;
   const userAvgRating = userSquad ? getAverageSquadRating(userSquad) : 0;
@@ -58,7 +61,12 @@ export function MatchDetailsPanel({
           name: fixture.opponent,
           averageRating: eraTeamRatings[fixture.opponent],
         }
-      : getOpponentTeamSummary(fixture.opponent, seed, fixture.round);
+      : getOpponentTeamSummary(
+          fixture.opponent,
+          seed,
+          fixture.round,
+          currentSeasonOnly ? { currentSeasonOnly: true } : undefined
+        );
 
   return (
     <motion.div

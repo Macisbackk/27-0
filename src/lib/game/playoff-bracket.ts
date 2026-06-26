@@ -17,7 +17,10 @@ import {
   type MatchSimState,
   type TeamScoringDetail,
 } from "./season-simulation";
-import { getGeneratedClubSquadStrength } from "./opponent-squad-strength";
+import {
+  getGeneratedClubSquadStrength,
+  type OpponentPoolOptions,
+} from "./opponent-squad-strength";
 import { distributeSeasonTries } from "./season-tries";
 import type {
   PlayoffFinish,
@@ -56,6 +59,14 @@ export interface PlayoffBracketState {
   userEliminated: boolean;
   tournamentComplete: boolean;
   finish: PlayoffFinish | null;
+  /** Current Mode — opponent squads use 2026 team-year rosters only. */
+  currentSeasonOnly?: boolean;
+}
+
+function opponentPoolOptions(
+  state: PlayoffBracketState
+): OpponentPoolOptions | undefined {
+  return state.currentSeasonOnly ? { currentSeasonOnly: true } : undefined;
 }
 
 function teamAtPosition(table: LeagueTableRow[], position: number): string {
@@ -99,7 +110,8 @@ function createMatch(
 export function createPlayoffBracket(
   seed: string,
   leagueTable: LeagueTableRow[],
-  leaguePosition: number
+  leaguePosition: number,
+  options?: { currentSeasonOnly?: boolean }
 ): PlayoffBracketState {
   const first = teamAtPosition(leagueTable, 1);
   const second = teamAtPosition(leagueTable, 2);
@@ -124,6 +136,7 @@ export function createPlayoffBracket(
     userEliminated: false,
     tournamentComplete: false,
     finish: null,
+    currentSeasonOnly: options?.currentSeasonOnly ?? false,
   };
 }
 
@@ -202,10 +215,14 @@ function getPlayoffTeamStrength(
   team: string,
   seed: string,
   matchId: string,
-  rng: () => number
+  rng: () => number,
+  options?: OpponentPoolOptions
 ): number {
   if (team === DREAM_TEAM_NAME) return 80;
-  return getGeneratedClubSquadStrength(team, seed, "season") + (rng() - 0.5) * 5;
+  return (
+    getGeneratedClubSquadStrength(team, seed, "season", options ?? {}) +
+    (rng() - 0.5) * 5
+  );
 }
 
 function buildClubScoring(
@@ -214,7 +231,8 @@ function buildClubScoring(
   scoring: ScoreBreakdown,
   seed: string,
   round: number,
-  matchId: string
+  matchId: string,
+  options?: OpponentPoolOptions
 ): TeamScoringDetail {
   const fakeFixture: MatchFixture = {
     round,
@@ -234,7 +252,7 @@ function buildClubScoring(
     scoringAgainst: scoring,
     result: "W",
   };
-  return buildOpponentScoringDetail(fakeFixture, `${seed}-${matchId}`);
+  return buildOpponentScoringDetail(fakeFixture, `${seed}-${matchId}`, options);
 }
 
 function simulateClubVsClub(
@@ -243,7 +261,8 @@ function simulateClubVsClub(
   seed: string,
   matchId: string,
   round: number,
-  isNeutral: boolean
+  isNeutral: boolean,
+  options?: OpponentPoolOptions
 ): {
   homeScore: number;
   awayScore: number;
@@ -253,8 +272,8 @@ function simulateClubVsClub(
   loser: string;
 } {
   const rng = seedrandom(`${seed}-playoff-ai-${matchId}`);
-  const homeStr = getPlayoffTeamStrength(home, seed, matchId, rng);
-  const awayStr = getPlayoffTeamStrength(away, seed, matchId, rng);
+  const homeStr = getPlayoffTeamStrength(home, seed, matchId, rng, options);
+  const awayStr = getPlayoffTeamStrength(away, seed, matchId, rng, options);
   const homeAdvantage = isNeutral ? 0 : 3;
   const homeWins =
     rng() < 0.5 + ((homeStr + homeAdvantage - awayStr) / 100) * 0.65;
@@ -367,7 +386,13 @@ function simulateUserMatch(
   const away = match.awayTeam!;
   const isHome = home === DREAM_TEAM_NAME;
   const opponent = isHome ? away : home;
-  const opponentStrength = getGeneratedClubSquadStrength(opponent, state.seed, "season");
+  const poolOptions = opponentPoolOptions(state);
+  const opponentStrength = getGeneratedClubSquadStrength(
+    opponent,
+    state.seed,
+    "season",
+    poolOptions ?? {}
+  );
 
   const { fixture, state: nextSim } = simulateOneFixture(
     squad,
@@ -380,10 +405,11 @@ function simulateUserMatch(
       cupMode: true,
       opponentRatingOverride: opponentStrength + (isHome ? 0 : 3),
       draftMode: false,
+      ...(poolOptions ?? {}),
     }
   );
 
-  enrichSingleFixtureScoring(squad, fixture, state.seed);
+  enrichSingleFixtureScoring(squad, fixture, state.seed, poolOptions);
 
   const homeScore = isHome ? fixture.pointsFor : fixture.pointsAgainst;
   const awayScore = isHome ? fixture.pointsAgainst : fixture.pointsFor;
@@ -442,13 +468,15 @@ function simulateAiMatch(
 ): PlayoffBracketState {
   const home = match.homeTeam!;
   const away = match.awayTeam!;
+  const poolOptions = opponentPoolOptions(state);
   const result = simulateClubVsClub(
     home,
     away,
     state.seed,
     match.id,
     match.round,
-    match.isNeutral
+    match.isNeutral,
+    poolOptions
   );
 
   const scoringDetail: PlayoffBracketScoringDetail = {
@@ -458,7 +486,8 @@ function simulateAiMatch(
       result.homeScoring,
       state.seed,
       match.round,
-      match.id
+      match.id,
+      poolOptions
     ),
     away: buildClubScoring(
       away,
@@ -466,7 +495,8 @@ function simulateAiMatch(
       result.awayScoring,
       state.seed,
       match.round,
-      match.id
+      match.id,
+      poolOptions
     ),
   };
 
@@ -630,7 +660,13 @@ export function buildPlayoffResult(
 
   const tryScorers =
     userFixtures.length > 0
-      ? distributeSeasonTries(squad, userFixtures, state.seed, wins)
+      ? distributeSeasonTries(
+          squad,
+          userFixtures,
+          state.seed,
+          wins,
+          opponentPoolOptions(state)
+        )
       : [];
 
   return {

@@ -13,7 +13,7 @@ import {
   POSITION_SHORT,
   POSITION_TILE_LABEL,
 } from "@/lib/positions";
-import { PitchSlotCard, PITCH_SLOT_COMPACT_CLASS, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
+import { PitchSlotCard, PITCH_SLOT_COMPACT_CLASS, PITCH_SLOT_REVIEW_CLASS, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
 
 interface RugbyPitchProps {
   squad: SquadSlot[];
@@ -70,9 +70,11 @@ function RugbyPitchInner({
         ? "Team Sheet"
         : "Matchday Squad";
 
-  const slotSizeClass = formationOnly || compact
-    ? PITCH_SLOT_COMPACT_CLASS
-    : PITCH_SLOT_SIZE_CLASS;
+  const slotSizeClass = formationOnly
+    ? PITCH_SLOT_REVIEW_CLASS
+    : compact
+      ? PITCH_SLOT_COMPACT_CLASS
+      : PITCH_SLOT_SIZE_CLASS;
 
   const slotByIndex = useMemo(
     () => new Map(squad.map((s) => [s.slotIndex, s])),
@@ -165,6 +167,7 @@ function RugbyPitchInner({
                       highlighted={isHighlight}
                       selected={isSelected}
                       compact={compact || formationOnly}
+                      fullPlayerNames={formationOnly}
                       hardMode={hardMode}
                       interactive={canClick}
                       placementPlayer={placementPlayer}
@@ -288,6 +291,7 @@ const SquadMarker = memo(function SquadMarker({
   highlighted,
   selected,
   compact: _compact,
+  fullPlayerNames = false,
   hardMode,
   interactive,
   placementPlayer,
@@ -299,6 +303,7 @@ const SquadMarker = memo(function SquadMarker({
   highlighted?: boolean;
   selected?: boolean;
   compact?: boolean;
+  fullPlayerNames?: boolean;
   hardMode?: boolean;
   interactive?: boolean;
   placementPlayer?: Player | null;
@@ -407,6 +412,7 @@ const SquadMarker = memo(function SquadMarker({
             hardMode={hardMode}
             clubColorOverride={clubColorOverride}
             compact={_compact}
+            fullPlayerNames={fullPlayerNames}
           />
         </button>
       ) : (
@@ -415,6 +421,7 @@ const SquadMarker = memo(function SquadMarker({
           hardMode={hardMode}
           clubColorOverride={clubColorOverride}
           compact={_compact}
+          fullPlayerNames={fullPlayerNames}
         />
       )}
     </motion.div>

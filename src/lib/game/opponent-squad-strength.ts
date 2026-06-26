@@ -1,14 +1,12 @@
 import seedrandom from "seedrandom";
 import { resolveCanonicalClubName } from "../clubs/club-match";
-import { CURRENT_SEASON_YEAR } from "../play-links";
 import { getPlayerById } from "../players";
 import { getCurrentSquadPlayerIds } from "../players/era-teams";
-import { getPlayersForClub } from "./player-pool-eligibility";
-import { getClubBaseStrength } from "./club-strength";
 import {
-  getRawPlayersForTeamYearPool,
-  getTeamYearPool,
-} from "./team-year-pools";
+  getChallengeCupClubPool,
+  getPlayersForClub,
+} from "./player-pool-eligibility";
+import { getClubBaseStrength } from "./club-strength";
 import type { Player } from "../types";
 
 export interface OpponentPoolOptions {
@@ -35,16 +33,7 @@ function fisherYatesShuffle<T>(items: T[], rng: () => number): T[] {
 
 /** 2026 team-year pool only — used in Current Mode and Current Challenge Cup. */
 export function getCurrentSeasonOpponentPool(club: string): Player[] {
-  const canonical = resolveCanonicalClubName(club);
-  const pool = getTeamYearPool(canonical, CURRENT_SEASON_YEAR);
-  if (pool) {
-    const roster = getRawPlayersForTeamYearPool(pool);
-    if (roster.length >= 13) return roster;
-  }
-
-  return getCurrentSquadPlayerIds(canonical)
-    .map((id) => getPlayerById(id))
-    .filter((p): p is Player => !!p);
+  return getChallengeCupClubPool(resolveCanonicalClubName(club));
 }
 
 /** Opponent pool: current squad first, then wider club history — not legends-only stacking. */

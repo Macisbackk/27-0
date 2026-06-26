@@ -61,6 +61,14 @@ interface ChallengeCupBracketProps {
 
 const ROUNDS = [1, 2, 3, 4] as const;
 
+function isCupRoundComplete(
+  state: ChallengeCupBracketState,
+  round: number
+): boolean {
+  const matches = getMatchesForRound(state, round);
+  return matches.length > 0 && matches.every((m) => m.status === "complete");
+}
+
 export function ChallengeCupBracket({
   squad,
   seed,
@@ -82,10 +90,6 @@ export function ChallengeCupBracket({
   const matchDetailsRef = useRef<HTMLDivElement>(null);
   const lookup = eraClubLookup ?? state.eraClubLookup;
   const activeRound = getActiveRound(state);
-
-  useEffect(() => {
-    setMobileViewRound(activeRound);
-  }, [activeRound]);
 
   const selectedMatch = selectedId
     ? state.matches.find((m) => m.id === selectedId)
@@ -127,6 +131,17 @@ export function ChallengeCupBracket({
         else if (cupResult.finish === "Runners-Up") playCupFinalLoss();
         else playMatchDefeat();
         onComplete(cupResult);
+        return;
+      }
+
+      const simulatedRound = match?.round;
+      if (
+        simulatedRound !== undefined &&
+        isCupRoundComplete(next, simulatedRound) &&
+        getActiveRound(next) > simulatedRound &&
+        window.matchMedia("(max-width: 767px)").matches
+      ) {
+        setMobileViewRound(simulatedRound);
       }
     },
     [state, squad, onComplete]
@@ -163,8 +178,31 @@ export function ChallengeCupBracket({
       else if (cupResult.finish === "Runners-Up") playCupFinalLoss();
       else playMatchDefeat();
       onComplete(cupResult);
+      return;
+    }
+
+    if (
+      isCupRoundComplete(next, activeRound) &&
+      getActiveRound(next) > activeRound &&
+      window.matchMedia("(max-width: 767px)").matches
+    ) {
+      setMobileViewRound(activeRound);
     }
   }, [state, activeRound, squad, onComplete]);
+
+  const showProceedToNextRound = useMemo(
+    () =>
+      !state.tournamentComplete &&
+      activeRound > mobileViewRound &&
+      isCupRoundComplete(state, mobileViewRound),
+    [state, activeRound, mobileViewRound]
+  );
+
+  const handleProceedToNextRound = useCallback(() => {
+    playUiClick();
+    setSelectedId(null);
+    setMobileViewRound(activeRound);
+  }, [activeRound]);
 
   const handleSimulateTournament = useCallback(() => {
     playSimulateAll();
@@ -185,7 +223,11 @@ export function ChallengeCupBracket({
   );
 
   return (
-    <div className="w-full px-2 py-4 sm:px-4">
+    <div
+      className={`w-full px-2 py-4 sm:px-4 ${
+        showProceedToNextRound ? "pb-28 md:pb-4" : ""
+      }`}
+    >
       <div className="bracket-header-panel mx-auto max-w-3xl rounded-xl border border-pitch-600/45 bg-pitch-900/55 px-4 py-4 backdrop-blur-sm sm:py-5">
         {eraMode ? (
           <EraChallengeCupBranding
@@ -265,7 +307,9 @@ export function ChallengeCupBracket({
             size="md"
             disabled={!canSimRound}
             onClick={handleSimulateRound}
-            className="w-full sm:w-auto disabled:opacity-40"
+            className={`w-full sm:w-auto disabled:opacity-40 ${
+              showProceedToNextRound ? "hidden md:inline-flex" : ""
+            }`}
           >
             Simulate Round
           </GameButton>
@@ -334,6 +378,19 @@ export function ChallengeCupBracket({
           </div>
         )}
       </AnimatePresence>
+
+      {showProceedToNextRound && (
+        <div className="bracket-sticky-actions mx-auto mt-4 max-w-3xl md:hidden">
+          <GameButton
+            variant={eraMode ? "theme" : "current"}
+            size="md"
+            onClick={handleProceedToNextRound}
+            className="w-full"
+          >
+            Proceed to {getCupRoundLabel(activeRound)}
+          </GameButton>
+        </div>
+      )}
     </div>
   );
 }

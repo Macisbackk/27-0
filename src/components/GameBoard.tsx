@@ -704,10 +704,12 @@ export function GameBoard({
       leagueTable.find((row) => row.isUserTeam)?.position ??
       seasonResult.leaguePosition;
     setPlayoffBracketState(
-      createPlayoffBracket(seed, leagueTable, tablePosition)
+      createPlayoffBracket(seed, leagueTable, tablePosition, {
+        currentSeasonOnly: !normalEraMode,
+      })
     );
     setReviewStage("playoffs");
-  }, [seasonResult, seed, squad, finalizeRegularSeason]);
+  }, [seasonResult, seed, squad, finalizeRegularSeason, normalEraMode]);
 
   const handlePlayoffBracketComplete = useCallback(
     (playoffResult: PlayoffResult, finalState: PlayoffBracketState) => {
@@ -735,15 +737,17 @@ export function GameBoard({
     [runId, mode, joeMellorMode, superSamHallasMode]
   );
 
-  const handlePlayoffReviewDone = useCallback(() => {
+  const handleFinalizePlayoffRun = useCallback(() => {
     if (!seasonResult) return;
     const playoff = playoffResultRef.current ?? seasonResult.playoffResult;
-    const result = playoff
-      ? { ...seasonResult, playoffResult: playoff }
-      : seasonResult;
-    finalizePlayoffRun(result, squad);
+    if (!playoff) return;
+    finalizePlayoffRun({ ...seasonResult, playoffResult: playoff }, squad);
+  }, [seasonResult, squad, finalizePlayoffRun]);
+
+  const handlePlayoffReviewDone = useCallback(() => {
+    handleFinalizePlayoffRun();
     resetRun();
-  }, [seasonResult, squad, finalizePlayoffRun, resetRun]);
+  }, [handleFinalizePlayoffRun, resetRun]);
 
   const handleFinalizeSeason = useCallback(() => {
     if (!seasonResult) return;
@@ -1636,6 +1640,7 @@ export function GameBoard({
           playoffFundsPayout={playoffFundsPayout}
           clubFundsPayout={clubFundsPayout}
           isHardMode={isHardMode}
+          onFinalizeRun={handleFinalizePlayoffRun}
           onPlayAgain={handlePlayoffReviewDone}
           onClose={() => setPhase("pitch")}
           onReturnHome={resetRun}

@@ -273,7 +273,7 @@ export function computeClubFundsLines(
   return lines;
 }
 
-export const CLUB_FUNDS_INFO_LINES = [
+const CLUB_FUNDS_INFO_LINES_SOURCE = [
   { label: "Super League Title", amount: CLUB_FUNDS_REWARDS.superLeagueTitle },
   { label: "Grand Final Runner-Up", amount: CLUB_FUNDS_REWARDS.playoffFinalRunnerUp },
   { label: "League Leaders", amount: CLUB_FUNDS_REWARDS.leagueLeaders },
@@ -288,3 +288,8 @@ export const CLUB_FUNDS_INFO_LINES = [
   { label: "Season Completed", amount: CLUB_FUNDS_REWARDS.seasonComplete },
   { label: "20+ Wins in a Season", amount: CLUB_FUNDS_REWARDS.twentyWins },
 ] as const;
+
+/** Earn Club Funds panel — highest payouts first. */
+export const CLUB_FUNDS_INFO_LINES = [...CLUB_FUNDS_INFO_LINES_SOURCE].sort(
+  (a, b) => b.amount - a.amount
+);

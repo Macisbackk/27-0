@@ -147,31 +147,44 @@ async function submitTrophyOnline(
   const mode = TRACKER_TO_MODE[tracker];
 
   try {
-    const { data: existing } = await supabase
+    const { data: existing, error: selectError } = await supabase
       .from("leaderboard")
-      .select("score")
+      .select("id, score")
       .eq("user_id", userId)
       .eq("mode", mode)
       .eq("difficulty", "NORMAL")
+      .eq("mode_variant", "current")
       .maybeSingle();
+
+    if (selectError) throw selectError;
 
     const currentScore =
       typeof existing?.score === "number" ? existing.score : 0;
     if (trophyCount < currentScore) return;
 
-    await supabase.from("leaderboard").upsert(
-      {
-        user_id: userId,
-        coach_name: coachName,
-        player_name: coachName,
-        mode,
-        difficulty: "NORMAL",
-        mode_variant: "current",
-        score: trophyCount,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "user_id,mode,difficulty,mode_variant" }
-    );
+    const payload = {
+      coach_name: coachName,
+      player_name: coachName,
+      score: trophyCount,
+      mode_variant: "current",
+    };
+
+    if (existing?.id) {
+      const { error } = await supabase
+        .from("leaderboard")
+        .update(payload)
+        .eq("id", existing.id);
+      if (error) throw error;
+      return;
+    }
+
+    const { error } = await supabase.from("leaderboard").insert({
+      ...payload,
+      user_id: userId,
+      mode,
+      difficulty: "NORMAL",
+    });
+    if (error) throw error;
   } catch (err) {
     console.error("[trophy-cabinet-leaderboard] submit failed:", err);
   }
@@ -244,23 +257,81 @@ function mergeEntries(
   return [...byKey.values()];
 }
 
+function isCurrentUserEntry(
+  entry: TrophyCabinetLeaderboardEntry,
+  currentUser: string,
+  userId?: string
+): boolean {
+  if (userId && entry.userId === userId) return true;
+  if (currentUser && entry.username === currentUser) return true;
+  if (entry.username === "You" && !userId && !currentUser) return true;
+  return false;
+}
+
+function buildLiveUserEntry(
+  currentUser: string,
+  currentCount: number,
+  userId?: string
+): TrophyCabinetLeaderboardEntry | null {
+  if (currentCount <= 0) return null;
+
+  if (currentUser && !isGuestLeaderboardName(currentUser)) {
+    return {
+      username: currentUser,
+      trophyCount: currentCount,
+      updatedAt: new Date().toISOString(),
+      userId,
+    };
+  }
+
+  if (userId || currentCount > 0) {
+    return {
+      username: "You",
+      trophyCount: currentCount,
+      updatedAt: new Date().toISOString(),
+      userId,
+    };
+  }
+
+  return null;
+}
+
 function mapEntriesToRows(
   entries: TrophyCabinetLeaderboardEntry[],
   currentUser: string,
+  userId: string | undefined,
   limit: number
 ): LeaderboardTrackerRow[] {
-  return [...entries]
-    .sort((a, b) => b.trophyCount - a.trophyCount)
-    .slice(0, limit)
-    .map((entry, index) => ({
-      rank: index + 1,
-      username: entry.username,
-      statDisplay: String(entry.trophyCount),
-      achievedAt: entry.updatedAt,
-      difficulty: "NORMAL",
-      mode: "CLASSIC",
-      isCurrentUser: entry.username === currentUser,
-    }));
+  const sorted = [...entries].sort((a, b) => b.trophyCount - a.trophyCount);
+  const rows = sorted.slice(0, limit).map((entry, index) => ({
+    rank: index + 1,
+    username: entry.username,
+    statDisplay: String(entry.trophyCount),
+    achievedAt: entry.updatedAt,
+    difficulty: "NORMAL" as const,
+    mode: "CLASSIC" as const,
+    isCurrentUser: isCurrentUserEntry(entry, currentUser, userId),
+  }));
+
+  if (!rows.some((row) => row.isCurrentUser)) {
+    const userIndex = sorted.findIndex((entry) =>
+      isCurrentUserEntry(entry, currentUser, userId)
+    );
+    if (userIndex >= 0) {
+      const entry = sorted[userIndex]!;
+      rows.push({
+        rank: userIndex + 1,
+        username: entry.username,
+        statDisplay: String(entry.trophyCount),
+        achievedAt: entry.updatedAt,
+        difficulty: "NORMAL",
+        mode: "CLASSIC",
+        isCurrentUser: true,
+      });
+    }
+  }
+
+  return rows;
 }
 
 async function fetchRemoteEntries(
@@ -272,7 +343,7 @@ async function fetchRemoteEntries(
   try {
     const { data, error } = await supabase
       .from("leaderboard")
-      .select("user_id, coach_name, score, updated_at")
+      .select("user_id, coach_name, score, updated_at, created_at")
       .eq("mode", mode)
       .eq("difficulty", "NORMAL")
       .gt("score", 0)
@@ -288,7 +359,8 @@ async function fetchRemoteEntries(
         userId: (row.user_id as string | null) ?? undefined,
         username: row.coach_name as string,
         trophyCount: row.score as number,
-        updatedAt: (row.updated_at as string) ?? "",
+        updatedAt:
+          (row.updated_at as string) ?? (row.created_at as string) ?? "",
       }));
   } catch (err) {
     console.error("[trophy-cabinet-leaderboard] fetch failed:", err);
@@ -306,24 +378,8 @@ function buildLocalFallback(
     userMap[tracker] ? [userMap[tracker]!] : []
   );
   const merged = mergeEntries(filterPublicEntries(local));
-
-  if (
-    isLoggedIn() &&
-    currentUser &&
-    !isGuestLeaderboardName(currentUser) &&
-    currentCount > 0
-  ) {
-    return mergeEntries(merged, [
-      {
-        username: currentUser,
-        trophyCount: currentCount,
-        updatedAt: new Date().toISOString(),
-        userId,
-      },
-    ]);
-  }
-
-  return merged;
+  const liveEntry = buildLiveUserEntry(currentUser, currentCount, userId);
+  return liveEntry ? mergeEntries(merged, [liveEntry]) : merged;
 }
 
 export async function getTrophyCabinetLeaderboardAsync(
@@ -341,28 +397,20 @@ export async function getTrophyCabinetLeaderboardAsync(
 
   syncTrophyCabinetLeaderboard();
 
+  const liveEntry = buildLiveUserEntry(currentUser, currentCount, userId);
+
   const remote = await fetchRemoteEntries(trophyTracker);
   if (remote !== null) {
-    const merged = mergeEntries(
-      remote,
-      isLoggedIn() &&
-        currentUser &&
-        !isGuestLeaderboardName(currentUser) &&
-        currentCount > 0
-        ? [
-            {
-              username: currentUser,
-              trophyCount: currentCount,
-              updatedAt: new Date().toISOString(),
-              userId,
-            },
-          ]
-        : []
-    );
+    const merged = mergeEntries(remote, liveEntry ? [liveEntry] : []);
 
     return {
       source: "remote",
-      rows: mapEntriesToRows(filterPublicEntries(merged), currentUser, limit),
+      rows: mapEntriesToRows(
+        filterPublicEntries(merged),
+        currentUser,
+        userId,
+        limit
+      ),
     };
   }
 
@@ -374,6 +422,6 @@ export async function getTrophyCabinetLeaderboardAsync(
   );
   return {
     source: "local",
-    rows: mapEntriesToRows(local, currentUser, limit),
+    rows: mapEntriesToRows(local, currentUser, userId, limit),
   };
 }

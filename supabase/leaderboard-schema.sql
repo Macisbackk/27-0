@@ -24,6 +24,7 @@ alter table public.leaderboard add column if not exists best_cup_finish text;
 alter table public.leaderboard add column if not exists best_cup_finish_rank integer;
 alter table public.leaderboard add column if not exists cup_win_percentage numeric;
 alter table public.leaderboard add column if not exists mode_variant text default 'current';
+alter table public.leaderboard add column if not exists updated_at timestamptz;
 
 update public.leaderboard set mode = 'super-league' where mode is null;
 -- Valid mode values: super-league, challenge-cup, draft
