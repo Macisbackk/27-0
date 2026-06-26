@@ -320,7 +320,12 @@ export function FantasyPlayerPicker({
                             <span className="hidden sm:inline"> OVR</span>
                           </p>
                           <p className="mt-0.5 text-[10px] font-semibold tracking-wide text-accent-green/90 sm:text-[11px]">
-                            {formatPlayerPositionLabel(player)}
+                            <span className="sm:hidden">
+                              {formatPlayerPositionLabel(player)}
+                            </span>
+                            <span className="hidden sm:inline">
+                              {formatPlayerPositionLabel(player, { short: false })}
+                            </span>
                           </p>
                         </div>
                       </div>
@@ -379,7 +384,24 @@ export function FantasyPlayerPicker({
                                 </div>
                               )}
                               <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-1.5">
-                                <StatBox label="Position" value={formatPlayerPositionLabel(player)} size="lg" light compact />
+                                <StatBox
+                                  label="Position"
+                                  value={
+                                    <>
+                                      <span className="sm:hidden">
+                                        {formatPlayerPositionLabel(player)}
+                                      </span>
+                                      <span className="hidden sm:inline">
+                                        {formatPlayerPositionLabel(player, {
+                                          short: false,
+                                        })}
+                                      </span>
+                                    </>
+                                  }
+                                  size="lg"
+                                  light
+                                  compact
+                                />
                                 <StatBox label="Age" value={formatPlayerAge(player)} size="lg" light compact />
                                 <StatBox label="Value" value={formatValue(player.value)} size="lg" light compact />
                                 <StatBox label="Years Active" value={player.yearsActive} size="lg" light compact className="hidden sm:block" />

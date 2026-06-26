@@ -285,6 +285,10 @@ export async function recordPlayoffCompletion(
   const wins = options.regularWins + options.playoffWins;
   const losses = options.regularLosses + options.playoffLosses;
 
+  const superLeagueTitle =
+    options.superLeagueTitle ??
+    options.playoffFinish === "Super League Champions";
+
   updatePlayoffLifetimeStats(
     {
       regularWins: options.regularWins,
@@ -292,7 +296,7 @@ export async function recordPlayoffCompletion(
       playoffWins: options.playoffWins,
       playoffLosses: options.playoffLosses,
       playoffFinish: options.playoffFinish,
-      superLeagueTitle: options.superLeagueTitle,
+      superLeagueTitle,
       signedIds,
     },
     difficulty,

@@ -103,7 +103,12 @@ export function SlotRecruitPlayerCard({
               {!hardMode && <span className="hidden sm:inline"> OVR</span>}
             </p>
             <p className="mt-0.5 text-[10px] font-semibold tracking-wide text-accent-green/90 sm:text-[11px]">
-              {formatPlayerPositionLabel(player)}
+              <span className="sm:hidden">
+                {formatPlayerPositionLabel(player)}
+              </span>
+              <span className="hidden sm:inline">
+                {formatPlayerPositionLabel(player, { short: false })}
+              </span>
             </p>
           </div>
         </div>
@@ -157,7 +162,16 @@ export function SlotRecruitPlayerCard({
               <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-1.5">
                 <StatBox
                   label="Position"
-                  value={formatPlayerPositionLabel(player)}
+                  value={
+                    <>
+                      <span className="sm:hidden">
+                        {formatPlayerPositionLabel(player)}
+                      </span>
+                      <span className="hidden sm:inline">
+                        {formatPlayerPositionLabel(player, { short: false })}
+                      </span>
+                    </>
+                  }
                   size="lg"
                   light
                   compact

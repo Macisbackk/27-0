@@ -671,7 +671,9 @@ export function GameBoard({
           playoffLosses: playoff.losses,
           seasonLeaguePosition: tablePosition,
           playoffFinish: playoff.finish,
-          superLeagueTitle: playoff.isChampion,
+          superLeagueTitle:
+            playoff.isChampion ||
+            playoff.finish === "Super League Champions",
         }
       ).then((completed) => {
         setSubmittedOnline(completed.submittedOnline);
@@ -696,6 +698,25 @@ export function GameBoard({
     finalizeRegularSeason,
   ]);
 
+  useEffect(() => {
+    if (phase !== "review" || reviewStage !== "playoffFinal" || !seasonResult) {
+      return;
+    }
+    if (isChallengeCup || joeMellorMode || superSamHallasMode) return;
+    const playoff = playoffResultRef.current ?? seasonResult.playoffResult;
+    if (!playoff) return;
+    finalizePlayoffRun({ ...seasonResult, playoffResult: playoff }, squad);
+  }, [
+    phase,
+    reviewStage,
+    seasonResult,
+    squad,
+    isChallengeCup,
+    joeMellorMode,
+    superSamHallasMode,
+    finalizePlayoffRun,
+  ]);
+
   const handleContinuePlayoffs = useCallback(() => {
     if (!seasonResult) return;
     finalizeRegularSeason(seasonResult, squad);
@@ -715,9 +736,8 @@ export function GameBoard({
     (playoffResult: PlayoffResult, finalState: PlayoffBracketState) => {
       playoffResultRef.current = playoffResult;
       setCompletedPlayoffBracketState(finalState);
-      setSeasonResult((prev) => {
-        if (!prev) return prev;
-        const updated = { ...prev, playoffResult };
+      if (seasonResult) {
+        const updated = { ...seasonResult, playoffResult };
         if (!playoffFundsAwardedRef.current) {
           playoffFundsAwardedRef.current = true;
           const payout = awardClubFundsForRun({
@@ -730,11 +750,22 @@ export function GameBoard({
           });
           setPlayoffFundsPayout(payout);
         }
-        return updated;
-      });
+        finalizePlayoffRun(updated, squad);
+        setSeasonResult(updated);
+      } else {
+        setSeasonResult((prev) => (prev ? { ...prev, playoffResult } : prev));
+      }
       setReviewStage("playoffFinal");
     },
-    [runId, mode, joeMellorMode, superSamHallasMode]
+    [
+      seasonResult,
+      runId,
+      mode,
+      squad,
+      joeMellorMode,
+      superSamHallasMode,
+      finalizePlayoffRun,
+    ]
   );
 
   const handleFinalizePlayoffRun = useCallback(() => {

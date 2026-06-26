@@ -1,5 +1,5 @@
 import type { Player, Position } from "../types";
-import { POSITION_SHORT } from "../positions";
+import { POSITION_LABELS, POSITION_SHORT } from "../positions";
 import { normalizePosition } from "./position-utils";
 
 const ABBREV_TO_POSITION: Record<string, Position> = {
@@ -282,7 +282,29 @@ export function formatPositionAbbreviations(player: Player): string {
   return labels.join("/");
 }
 
-export function formatPlayerPositionLabel(player: Player): string {
+export function formatPositionFullNames(player: Player): string {
+  const positions = getPlayerEligiblePositions(player);
+  if (
+    positions.length === 2 &&
+    positions.includes("STAND_OFF") &&
+    positions.includes("SCRUM_HALF")
+  ) {
+    return "Half Back";
+  }
+  if (positions.length <= 1) {
+    return POSITION_LABELS[player.position];
+  }
+  return positions.map((pos) => POSITION_LABELS[pos]).join(" / ");
+}
+
+export function formatPlayerPositionLabel(
+  player: Player,
+  options?: { short?: boolean }
+): string {
+  const short = options?.short ?? true;
+  if (!short) {
+    return formatPositionFullNames(player);
+  }
   const positions = getPlayerEligiblePositions(player);
   if (positions.length <= 1) {
     return POSITION_SHORT[player.position];

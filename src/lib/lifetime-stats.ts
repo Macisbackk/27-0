@@ -522,7 +522,8 @@ export function applyPlayoffLifetimeUpdate(
       ? overallLosses
       : existing.bestOverallSeasonLosses,
     superLeagueTitles:
-      existing.superLeagueTitles + (superLeagueTitle ? 1 : 0),
+      existing.superLeagueTitles +
+      (superLeagueTitle || playoffFinish === "Super League Champions" ? 1 : 0),
     playoffEliminatorWins:
       existing.playoffEliminatorWins +
       (eliminatorWin && playoffWins > 0 ? 1 : 0),
