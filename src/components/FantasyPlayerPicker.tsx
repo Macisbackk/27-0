@@ -90,7 +90,6 @@ export function FantasyPlayerPicker({
       club: filters.club,
       ratingMin: "all" as const,
       tier: "all" as const,
-      age: "all" as const,
     };
 
     let result = filterShowcasePlayers(POOL, showcaseFilters).filter((p) =>

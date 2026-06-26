@@ -412,6 +412,395 @@ body {
   }
 }
 
+/* —— Play-off bracket visuals —— */
+.playoff-bracket-header {
+  position: relative;
+  border-color: color-mix(in srgb, var(--mode-current-rgb) 28%, transparent) !important;
+}
+
+.playoff-bracket-header__shine {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(34, 197, 94, 0.14) 0%, transparent 55%),
+    radial-gradient(ellipse at 0% 100%, rgba(234, 179, 8, 0.06) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+.playoff-bracket-progress {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+}
+
+.playoff-bracket-progress__step {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.playoff-bracket-progress__line {
+  position: absolute;
+  top: 14px;
+  right: 50%;
+  width: 100%;
+  height: 2px;
+  background: color-mix(in srgb, var(--pitch-600) 80%, transparent);
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.playoff-bracket-progress__line--done {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--mode-current-rgb) 55%, transparent),
+    color-mix(in srgb, var(--mode-current-rgb) 35%, transparent)
+  );
+}
+
+.playoff-bracket-progress__node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 28px;
+  width: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 2px solid color-mix(in srgb, var(--pitch-600) 90%, transparent);
+  background: color-mix(in srgb, var(--pitch-950) 92%, transparent);
+  color: #6b7280;
+}
+
+.playoff-bracket-progress__node--done {
+  border-color: color-mix(in srgb, var(--mode-current-rgb) 45%, transparent);
+  background: color-mix(in srgb, var(--mode-current-rgb) 12%, transparent);
+  color: var(--mode-current);
+}
+
+.playoff-bracket-progress__node--live {
+  border-color: color-mix(in srgb, var(--mode-current-rgb) 65%, transparent);
+  background: color-mix(in srgb, var(--mode-current-rgb) 18%, transparent);
+  color: var(--mode-current);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--mode-current-rgb) 35%, transparent);
+}
+
+.playoff-bracket-progress__node--final.playoff-bracket-progress__node--live,
+.playoff-bracket-progress__node--final.playoff-bracket-progress__node--done {
+  border-color: color-mix(in srgb, var(--accent-gold) 55%, transparent);
+  background: color-mix(in srgb, var(--accent-gold) 14%, transparent);
+  color: var(--accent-gold);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent-gold) 28%, transparent);
+}
+
+.playoff-bracket-tag {
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--mode-current-rgb) 28%, transparent);
+  background: color-mix(in srgb, var(--mode-current-rgb) 8%, transparent);
+  padding: 0.35rem 0.75rem;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--mode-current);
+}
+
+.playoff-bracket-panel {
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--pitch-600) 55%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--pitch-900) 88%, transparent) 0%,
+      color-mix(in srgb, var(--pitch-950) 96%, transparent) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 40px rgba(0, 0, 0, 0.28);
+}
+
+.playoff-champion-banner {
+  border-radius: 0.875rem;
+  border: 1px solid color-mix(in srgb, var(--accent-gold) 35%, transparent);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent-gold) 12%, transparent),
+      color-mix(in srgb, var(--pitch-950) 94%, transparent) 55%
+    );
+  box-shadow: 0 0 28px color-mix(in srgb, var(--accent-gold) 12%, transparent);
+}
+
+.playoff-bracket-round-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  text-align: center;
+}
+
+.playoff-bracket-round-title__short {
+  display: inline-flex;
+  min-width: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  border: 1px solid color-mix(in srgb, var(--pitch-600) 70%, transparent);
+  background: color-mix(in srgb, var(--pitch-950) 80%, transparent);
+  padding: 0.15rem 0.45rem;
+  font-family: var(--font-display), sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+}
+
+.playoff-bracket-round-title__label {
+  font-family: var(--font-display), sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.playoff-bracket-round-title--live .playoff-bracket-round-title__short {
+  border-color: color-mix(in srgb, var(--mode-current-rgb) 45%, transparent);
+  background: color-mix(in srgb, var(--mode-current-rgb) 12%, transparent);
+  color: var(--mode-current);
+}
+
+.playoff-bracket-round-title--live .playoff-bracket-round-title__label {
+  color: var(--mode-current);
+}
+
+.playoff-bracket-round-title--final .playoff-bracket-round-title__short {
+  border-color: color-mix(in srgb, var(--accent-gold) 35%, transparent);
+}
+
+.playoff-bracket-round-title--final.playoff-bracket-round-title--live .playoff-bracket-round-title__short {
+  border-color: color-mix(in srgb, var(--accent-gold) 50%, transparent);
+  background: color-mix(in srgb, var(--accent-gold) 12%, transparent);
+  color: var(--accent-gold);
+}
+
+.playoff-bracket-round-title--final.playoff-bracket-round-title--live .playoff-bracket-round-title__label {
+  color: var(--accent-gold);
+}
+
+.playoff-bracket-column--live.cup-bracket-column:not(:last-child)::after {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--mode-current-rgb) 40%, transparent) 25%,
+    color-mix(in srgb, var(--mode-current-rgb) 40%, transparent) 75%,
+    transparent
+  );
+}
+
+.playoff-bracket-column--final.cup-bracket-column:not(:last-child)::after {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--accent-gold) 35%, transparent) 30%,
+    color-mix(in srgb, var(--accent-gold) 35%, transparent) 70%,
+    transparent
+  );
+}
+
+.playoff-bracket-match {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.875rem;
+  border: 1px solid color-mix(in srgb, var(--pitch-600) 65%, transparent);
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--pitch-900) 92%, transparent),
+      color-mix(in srgb, var(--pitch-950) 98%, transparent)
+    );
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.playoff-bracket-match--mobile {
+  min-height: 5.75rem;
+}
+
+.playoff-bracket-match--final {
+  border-color: color-mix(in srgb, var(--accent-gold) 22%, transparent);
+}
+
+.playoff-bracket-match--selected {
+  border-color: color-mix(in srgb, var(--mode-current-rgb) 55%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--mode-current-rgb) 25%, transparent),
+    0 8px 24px color-mix(in srgb, var(--mode-current-rgb) 12%, transparent);
+}
+
+.playoff-bracket-match--ready {
+  border-color: color-mix(in srgb, var(--mode-current-rgb) 42%, transparent);
+  animation: playoff-match-ready 2.4s ease-in-out infinite;
+}
+
+.playoff-bracket-match--pending {
+  opacity: 0.62;
+}
+
+.playoff-bracket-match__ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  border-bottom-left-radius: 0.5rem;
+  background: color-mix(in srgb, var(--mode-current-rgb) 88%, #052e16);
+  padding: 0.2rem 0.55rem;
+  font-family: var(--font-display), sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ecfdf5;
+}
+
+.playoff-bracket-match--final .playoff-bracket-match__ribbon {
+  background: color-mix(in srgb, var(--accent-gold) 85%, #422006);
+  color: #fffbeb;
+}
+
+.playoff-bracket-team {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.65rem;
+}
+
+.playoff-bracket-team--mobile {
+  padding: 0.65rem 0.75rem;
+}
+
+.playoff-bracket-team--winner {
+  background: color-mix(in srgb, var(--mode-current-rgb) 10%, transparent);
+  box-shadow: inset 3px 0 0 var(--mode-current);
+}
+
+.playoff-bracket-match--final .playoff-bracket-team--winner {
+  background: color-mix(in srgb, var(--accent-gold) 10%, transparent);
+  box-shadow: inset 3px 0 0 var(--accent-gold);
+}
+
+.playoff-bracket-team--loser {
+  opacity: 0.58;
+}
+
+.playoff-bracket-vs {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.1rem 0.75rem;
+  background: color-mix(in srgb, var(--pitch-950) 88%, transparent);
+}
+
+.playoff-bracket-vs__line {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--pitch-600) 80%, transparent),
+    transparent
+  );
+}
+
+.playoff-bracket-vs span:nth-child(2) {
+  font-family: var(--font-display), sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: #6b7280;
+}
+
+.playoff-bracket-score {
+  min-width: 1.85rem;
+  border-radius: 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--pitch-600) 70%, transparent);
+  background: color-mix(in srgb, var(--pitch-950) 90%, transparent);
+  padding: 0.1rem 0.35rem;
+  text-align: center;
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #9ca3af;
+}
+
+.playoff-bracket-score--winner {
+  border-color: color-mix(in srgb, var(--mode-current-rgb) 35%, transparent);
+  background: color-mix(in srgb, var(--mode-current-rgb) 12%, transparent);
+  color: var(--mode-current);
+}
+
+.playoff-bracket-match--final .playoff-bracket-score--winner {
+  border-color: color-mix(in srgb, var(--accent-gold) 35%, transparent);
+  background: color-mix(in srgb, var(--accent-gold) 12%, transparent);
+  color: var(--accent-gold);
+}
+
+.playoff-bracket-score--empty {
+  opacity: 0.45;
+}
+
+.playoff-bracket-match__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--pitch-600) 35%, transparent);
+  padding: 0.3rem 0.5rem;
+  min-height: 1.35rem;
+}
+
+.playoff-bracket-match__badge {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.playoff-bracket-match__badge--live {
+  color: var(--mode-current);
+}
+
+.playoff-bracket-match__badge--muted {
+  color: #6b7280;
+}
+
+.playoff-bracket-match__badge--neutral {
+  color: #9ca3af;
+}
+
+@keyframes playoff-match-ready {
+  0%,
+  100% {
+    box-shadow:
+      0 6px 18px rgba(0, 0, 0, 0.28),
+      0 0 0 0 color-mix(in srgb, var(--mode-current-rgb) 0%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 8px 22px rgba(0, 0, 0, 0.32),
+      0 0 0 3px color-mix(in srgb, var(--mode-current-rgb) 14%, transparent);
+  }
+}
+
 @media (max-width: 767px) {
   .bracket-sticky-actions {
     position: fixed;
@@ -1168,6 +1557,24 @@ body {
 
   .matchday-panel {
     @apply rounded-2xl border border-white/10 bg-gradient-to-br from-pitch-900/90 via-pitch-950/95 to-pitch-900/80 shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md;
+  }
+
+  /* Opaque mobile currency sheet — avoids backdrop-filter compositing glitches */
+  .club-funds-mobile-sheet {
+    isolation: isolate;
+    position: relative;
+    z-index: 1;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: linear-gradient(
+      145deg,
+      rgb(14, 32, 24) 0%,
+      rgb(8, 16, 13) 48%,
+      rgb(11, 24, 18) 100%
+    );
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 
   .matchday-scoreboard {

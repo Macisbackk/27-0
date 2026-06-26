@@ -443,6 +443,11 @@ function SuperLeagueTab({
           )}
         />
         <StatCard
+          label="League Titles"
+          value={String(view.leagueTitles)}
+          highlight={view.leagueTitles > 0}
+        />
+        <StatCard
           label="Super League Titles"
           value={String(view.superLeagueTitles)}
           highlight={view.superLeagueTitles > 0}

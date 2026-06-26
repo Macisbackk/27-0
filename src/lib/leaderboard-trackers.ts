@@ -15,7 +15,10 @@ export type LeaderboardTrackerType =
   | "challenge_cup_trophy"
   | "era_cup_trophy"
   | "era_league_title"
+  | "era_league_champions"
   | "total_winnings";
+
+export type TrophyCabinetSection = "current" | "era";
 
 export const MIN_GAMES_FOR_WIN_PERCENTAGE = 10;
 export const MIN_GAMES_FOR_CUP_WIN_PERCENTAGE = 4;
@@ -50,6 +53,31 @@ export interface LeaderboardTrackerRow {
   isCurrentUser?: boolean;
 }
 
+export const TROPHY_CABINET_SECTIONS: {
+  id: TrophyCabinetSection;
+  label: string;
+  trackerIds: LeaderboardTrackerType[];
+}[] = [
+  {
+    id: "current",
+    label: "Current Mode",
+    trackerIds: [
+      "league_titles",
+      "super_league_champions",
+      "challenge_cup_trophy",
+    ],
+  },
+  {
+    id: "era",
+    label: "Era Mode",
+    trackerIds: [
+      "era_league_title",
+      "era_league_champions",
+      "era_cup_trophy",
+    ],
+  },
+];
+
 export const LEADERBOARD_TRACKERS: {
   id: LeaderboardTrackerType;
   label: string;
@@ -57,6 +85,7 @@ export const LEADERBOARD_TRACKERS: {
   cupOnly?: boolean;
   clubFundsOnly?: boolean;
   trophyCabinetOnly?: boolean;
+  trophySection?: TrophyCabinetSection;
 }[] = [
   { id: "best_record", label: "Total Record", shortLabel: "Total Record" },
   { id: "squad_value", label: "Top Squad Value", shortLabel: "Top Squad" },
@@ -82,30 +111,42 @@ export const LEADERBOARD_TRACKERS: {
     label: "League Titles",
     shortLabel: "League Titles",
     trophyCabinetOnly: true,
+    trophySection: "current",
   },
   {
     id: "super_league_champions",
     label: "Super League Champions",
     shortLabel: "SL Champions",
     trophyCabinetOnly: true,
+    trophySection: "current",
   },
   {
     id: "challenge_cup_trophy",
     label: "Challenge Cup Trophy",
     shortLabel: "Challenge Cup",
     trophyCabinetOnly: true,
+    trophySection: "current",
+  },
+  {
+    id: "era_league_title",
+    label: "Era League Titles",
+    shortLabel: "Era League",
+    trophyCabinetOnly: true,
+    trophySection: "era",
+  },
+  {
+    id: "era_league_champions",
+    label: "Era League Champions",
+    shortLabel: "Era Champions",
+    trophyCabinetOnly: true,
+    trophySection: "era",
   },
   {
     id: "era_cup_trophy",
     label: "Era Cup Trophy",
     shortLabel: "Era Cup",
     trophyCabinetOnly: true,
-  },
-  {
-    id: "era_league_title",
-    label: "Era League Title",
-    shortLabel: "Era League",
-    trophyCabinetOnly: true,
+    trophySection: "era",
   },
   {
     id: "total_winnings",
@@ -128,7 +169,10 @@ export function getTrackersForDbMode(
     return LEADERBOARD_TRACKERS.filter((t) => t.clubFundsOnly);
   }
   if (dbMode === "trophy-cabinet") {
-    return LEADERBOARD_TRACKERS.filter((t) => t.trophyCabinetOnly);
+    const order = TROPHY_CABINET_SECTIONS.flatMap((section) => section.trackerIds);
+    return order
+      .map((id) => LEADERBOARD_TRACKERS.find((t) => t.id === id))
+      .filter((t): t is NonNullable<typeof t> => !!t);
   }
   if (dbMode === "challenge-cup") {
     const cupTrackers = LEADERBOARD_TRACKERS.filter(

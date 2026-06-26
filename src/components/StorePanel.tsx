@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   formatClubFunds,
   formatClubFundsExact,
@@ -25,6 +25,7 @@ import {
 } from "@/lib/sound";
 import {
   UI_THEME_PURCHASE_PRICE,
+  sortUiThemesForStore,
   UI_THEMES,
   type UiThemeDefinition,
 } from "@/lib/ui-themes";
@@ -89,6 +90,11 @@ export function StorePanel() {
     };
   }, [refresh]);
 
+  const displayThemes = useMemo(
+    () => sortUiThemesForStore(UI_THEMES, unlocked),
+    [unlocked]
+  );
+
   const handleSelect = (themeId: string) => {
     playUiClick();
     if (!isUiThemeUnlocked(themeId)) return;
@@ -151,7 +157,7 @@ export function StorePanel() {
       )}
 
       <ul className={`mt-6 grid gap-3 sm:grid-cols-2 ${SPACING.stackMd}`}>
-        {UI_THEMES.map((theme) => {
+        {displayThemes.map((theme) => {
           const isUnlocked = unlocked.includes(theme.id);
           const isSelected = selectedId === theme.id;
           const canAfford = balance >= UI_THEME_PURCHASE_PRICE;

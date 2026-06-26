@@ -7,6 +7,7 @@ import {
   getDefaultTrackerForDbMode,
   getTrackersForDbMode,
   isTrackerValidForDbMode,
+  TROPHY_CABINET_SECTIONS,
   type LeaderboardTrackerRow,
   type LeaderboardTrackerType,
 } from "@/lib/leaderboard-trackers";
@@ -55,8 +56,9 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   league_titles: "League Titles",
   super_league_champions: "SL Champions",
   challenge_cup_trophy: "Challenge Cup",
+  era_league_title: "Era League Titles",
+  era_league_champions: "Era Champions",
   era_cup_trophy: "Era Cup",
-  era_league_title: "Era League",
   total_winnings: "Total Winnings",
 };
 
@@ -302,29 +304,70 @@ export function LeaderboardTable({
       )}
 
       <div className="mb-5 border-b border-pitch-700/60">
-        {availableTrackers.length > 1 && (
-        <div className="-mb-px flex gap-1 overflow-x-auto pb-px">
-          {availableTrackers.map((t) => {
-            const selected = activeTracker === t.id;
-            return (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => {
-                  if (activeTracker !== t.id) playTabChange();
-                  setTracker(t.id);
-                }}
-                className={`shrink-0 min-h-[40px] border-b-2 px-3 py-2 ${TYPO.button} transition sm:px-4 ${
-                  selected
-                    ? "border-accent-green text-accent-green"
-                    : "border-transparent text-gray-500 hover:border-pitch-600 hover:text-gray-300"
-                }`}
-              >
-                {t.shortLabel}
-              </button>
-            );
-          })}
-        </div>
+        {isTrophyCabinetMode ? (
+          <div className="space-y-4 pb-1">
+            {TROPHY_CABINET_SECTIONS.map((section) => {
+              const sectionTrackers = availableTrackers.filter((t) =>
+                section.trackerIds.includes(t.id)
+              );
+              if (sectionTrackers.length === 0) return null;
+
+              return (
+                <div key={section.id}>
+                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                    {section.label}
+                  </p>
+                  <div className="-mb-px flex gap-1 overflow-x-auto pb-px">
+                    {sectionTrackers.map((t) => {
+                      const selected = activeTracker === t.id;
+                      return (
+                        <button
+                          key={t.id}
+                          type="button"
+                          onClick={() => {
+                            if (activeTracker !== t.id) playTabChange();
+                            setTracker(t.id);
+                          }}
+                          className={`shrink-0 min-h-[40px] border-b-2 px-3 py-2 ${TYPO.button} transition sm:px-4 ${
+                            selected
+                              ? "border-accent-green text-accent-green"
+                              : "border-transparent text-gray-500 hover:border-pitch-600 hover:text-gray-300"
+                          }`}
+                        >
+                          {t.shortLabel}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          availableTrackers.length > 1 && (
+            <div className="-mb-px flex gap-1 overflow-x-auto pb-px">
+              {availableTrackers.map((t) => {
+                const selected = activeTracker === t.id;
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => {
+                      if (activeTracker !== t.id) playTabChange();
+                      setTracker(t.id);
+                    }}
+                    className={`shrink-0 min-h-[40px] border-b-2 px-3 py-2 ${TYPO.button} transition sm:px-4 ${
+                      selected
+                        ? "border-accent-green text-accent-green"
+                        : "border-transparent text-gray-500 hover:border-pitch-600 hover:text-gray-300"
+                    }`}
+                  >
+                    {t.shortLabel}
+                  </button>
+                );
+              })}
+            </div>
+          )
         )}
       </div>
 

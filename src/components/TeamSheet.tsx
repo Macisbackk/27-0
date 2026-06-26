@@ -17,6 +17,7 @@ interface TeamSheetProps {
   tryScorers?: PlayerTryTotal[];
   awards?: SeasonAward[];
   totalMatches?: number;
+  statsScope?: "season" | "playoff";
 }
 
 export function TeamSheet({
@@ -27,6 +28,7 @@ export function TeamSheet({
   tryScorers,
   awards,
   totalMatches,
+  statsScope = "season",
 }: TeamSheetProps) {
   const [popupSlot, setPopupSlot] = useState<SquadSlot | null>(null);
 
@@ -58,6 +60,7 @@ export function TeamSheet({
         tryScorers={tryScorers}
         awards={awards}
         totalMatches={totalMatches}
+        statsScope={statsScope}
         onClose={() => setPopupSlot(null)}
       />
     </>

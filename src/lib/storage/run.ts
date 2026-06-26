@@ -253,7 +253,6 @@ export async function recordCompletedRun(
         playoffWins,
         playoffLosses,
         playoffFinish: options.playoffFinish,
-        superLeagueTitle: options.superLeagueTitle,
         topSixFinish: options.topSixFinish,
       },
       difficulty,

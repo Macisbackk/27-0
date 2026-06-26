@@ -167,10 +167,10 @@ export function getOverallView(
       hard.longestLosingStreak
     ),
     leagueTitles:
-      normal.superLeagueTitles +
-      hard.superLeagueTitles +
-      draftN.superLeagueTitles +
-      draftH.superLeagueTitles,
+      normal.leagueTitlesWon +
+      hard.leagueTitlesWon +
+      draftN.leagueTitlesWon +
+      draftH.leagueTitlesWon,
     challengeCups: normal.challengeCupsWon + hard.challengeCupsWon,
     perfectSeasons:
       normal.totalPerfectSeasons +
@@ -246,7 +246,7 @@ export function getSuperLeagueView(stats: UserStatsData) {
       wins: stats.bestOverallSeasonWins,
       losses: stats.bestOverallSeasonLosses,
     },
-    leagueTitles: stats.superLeagueTitles,
+    leagueTitles: stats.leagueTitlesWon,
     topSixFinishes: stats.topSixFinishes,
     playoffAppearances: stats.playoffAppearances,
     playoffEliminatorWins: stats.playoffEliminatorWins,

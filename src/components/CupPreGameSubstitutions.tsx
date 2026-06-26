@@ -3,12 +3,16 @@
 import { useMemo, useState } from "react";
 import type { EraTeam } from "@/lib/players/era-teams";
 import { getPlayerById } from "@/lib/players";
-import type { SquadSlot } from "@/lib/types";
-import { canPlayPosition, getEligiblePositions } from "@/lib/players/player-positions";
+import type { Position, SquadSlot } from "@/lib/types";
 import { POSITION_SHORT } from "@/lib/positions";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import { formatTeamRatingDisplay } from "@/lib/team-tiers";
-import { canBenchPlayerFillSlot, swapCupSquadPlayers } from "@/lib/game/cup-squad-swap";
+import {
+  canBenchPlayerFillSlot,
+  getCupBenchEligiblePositions,
+  swapCupSquadPlayers,
+  type CupBenchSwapContext,
+} from "@/lib/game/cup-squad-swap";
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
@@ -22,11 +26,34 @@ interface CupPreGameSubstitutionsProps {
   onConfirm: (squad: SquadSlot[]) => void;
 }
 
-function initialBenchIds(eraTeam: EraTeam, squad: SquadSlot[]): string[] {
+function initialBenchEntries(
+  eraTeam: EraTeam,
+  squad: SquadSlot[]
+): { id: string; listedPosition?: Position }[] {
   const starterIds = new Set(
     squad.filter((s) => s.player).map((s) => s.player!.id)
   );
-  return eraTeam.benchPlayerIds.filter((id) => !starterIds.has(id));
+
+  return eraTeam.benchPlayerIds
+    .filter((id) => !starterIds.has(id))
+    .map((id) => {
+      const index = eraTeam.benchPlayerIds.indexOf(id);
+      return {
+        id,
+        listedPosition: eraTeam.benchPositions?.[index],
+      };
+    });
+}
+
+function toBenchContext(
+  eraTeam: EraTeam,
+  listedPosition?: Position
+): CupBenchSwapContext {
+  return {
+    club: eraTeam.clubName,
+    year: eraTeam.year,
+    benchListedPosition: listedPosition,
+  };
 }
 
 export function CupPreGameSubstitutions({
@@ -35,18 +62,18 @@ export function CupPreGameSubstitutions({
   onConfirm,
 }: CupPreGameSubstitutionsProps) {
   const [draftSquad, setDraftSquad] = useState<SquadSlot[]>(initialSquad);
-  const [benchIds, setBenchIds] = useState<string[]>(() =>
-    initialBenchIds(eraTeam, initialSquad)
+  const [benchEntries, setBenchEntries] = useState(() =>
+    initialBenchEntries(eraTeam, initialSquad)
   );
   const [selectedStarter, setSelectedStarter] = useState<number | null>(null);
   const [swapMessage, setSwapMessage] = useState<string | null>(null);
 
   const benchPlayers = useMemo(
     () =>
-      benchIds
-        .map((id) => getPlayerById(id))
+      benchEntries
+        .map((entry) => getPlayerById(entry.id))
         .filter((p): p is NonNullable<typeof p> => !!p),
-    [benchIds]
+    [benchEntries]
   );
 
   const teamRating = getAverageSquadRating(draftSquad);
@@ -59,11 +86,15 @@ export function CupPreGameSubstitutions({
 
   const handleBenchClick = (playerId: string) => {
     if (selectedStarter === null) return;
+    const benchEntry = benchEntries.find((entry) => entry.id === playerId);
     const player = getPlayerById(playerId);
     const starterSlot = draftSquad.find((s) => s.slotIndex === selectedStarter);
-    if (!player || !starterSlot?.player) return;
+    const benchContext = benchEntry
+      ? toBenchContext(eraTeam, benchEntry.listedPosition)
+      : toBenchContext(eraTeam);
+    if (!player || !starterSlot?.player || !benchEntry) return;
 
-    if (!canBenchPlayerFillSlot(player, starterSlot.position)) {
+    if (!canBenchPlayerFillSlot(player, starterSlot.position, benchContext)) {
       setSwapMessage(
         `${player.name} can't play ${POSITION_SHORT[starterSlot.position]}`
       );
@@ -71,14 +102,19 @@ export function CupPreGameSubstitutions({
     }
 
     const displacedId = starterSlot.player.id;
-    const next = swapCupSquadPlayers(draftSquad, selectedStarter, player);
+    const next = swapCupSquadPlayers(
+      draftSquad,
+      selectedStarter,
+      player,
+      benchContext
+    );
     if (!next) return;
 
     playUiClick();
     setDraftSquad(next);
-    setBenchIds((prev) => [
-      ...prev.filter((id) => id !== playerId),
-      displacedId,
+    setBenchEntries((prev) => [
+      ...prev.filter((entry) => entry.id !== playerId),
+      { id: displacedId, listedPosition: starterSlot.position },
     ]);
     setSelectedStarter(null);
     setSwapMessage(null);
@@ -133,21 +169,35 @@ export function CupPreGameSubstitutions({
 
       <p className={`mt-4 ${TYPO.statLabel}`}>Bench</p>
       <div className="mt-2 grid gap-2 sm:grid-cols-2">
-        {benchPlayers.map((player) => {
+        {benchEntries.map((benchEntry) => {
+          const player = getPlayerById(benchEntry.id);
+          if (!player) return null;
+          const benchContext = toBenchContext(
+            eraTeam,
+            benchEntry.listedPosition
+          );
           const starterSlot =
             selectedStarter !== null
               ? draftSquad.find((s) => s.slotIndex === selectedStarter)
               : null;
           const canSwap =
             starterSlot &&
-            canPlayPosition(player, starterSlot.position);
+            canBenchPlayerFillSlot(
+              player,
+              starterSlot.position,
+              benchContext
+            );
+          const eligiblePositions = getCupBenchEligiblePositions(
+            player,
+            benchContext
+          );
 
           return (
             <button
-              key={player.id}
+              key={benchEntry.id}
               type="button"
               disabled={selectedStarter === null || !canSwap}
-              onClick={() => handleBenchClick(player.id)}
+              onClick={() => handleBenchClick(benchEntry.id)}
               className={`rounded-lg border px-3 py-2.5 text-left transition ${
                 canSwap && selectedStarter !== null
                   ? "border-accent-gold/50 bg-accent-gold/10 hover:bg-accent-gold/15"
@@ -156,8 +206,8 @@ export function CupPreGameSubstitutions({
             >
               <span className="block font-semibold text-white">{player.name}</span>
               <span className="mt-0.5 block text-xs text-gray-500">
-                {getEligiblePositions(player)
-                  .map((p) => POSITION_SHORT[p])
+                {eligiblePositions
+                  .map((p: Position) => POSITION_SHORT[p])
                   .join(" / ")}
               </span>
             </button>

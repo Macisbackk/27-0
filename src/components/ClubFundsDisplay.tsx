@@ -47,21 +47,22 @@ export function ClubFundsDisplay({
     return () => window.removeEventListener(CLUB_FUNDS_CHANGED_EVENT, sync);
   }, []);
 
+  const closePanel = () => {
+    playPanelClose();
+    setOpen(false);
+  };
+
   useEffect(() => {
     if (!open || isMobileUnderLogo) return;
 
     const onPointerDown = (event: MouseEvent) => {
       if (!rootRef.current?.contains(event.target as Node)) {
-        playPanelClose();
-        setOpen(false);
+        closePanel();
       }
     };
 
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        playPanelClose();
-        setOpen(false);
-      }
+      if (event.key === "Escape") closePanel();
     };
 
     document.addEventListener("mousedown", onPointerDown);
@@ -74,10 +75,17 @@ export function ClubFundsDisplay({
 
   useEffect(() => {
     if (!open || !isMobileUnderLogo) return;
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closePanel();
+    };
+
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKey);
     };
   }, [open, isMobileUnderLogo]);
 
@@ -141,41 +149,38 @@ export function ClubFundsDisplay({
         </span>
       </button>
 
-      {open && isMobileUnderLogo && (
+      {isMobileUnderLogo && (
         <BodyPortal>
           <AnimatePresence>
-            <motion.div
-              key="club-funds-mobile"
-              className="fixed inset-0 z-[120]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <button
-                type="button"
-                aria-label="Close Club Funds panel"
-                className="absolute inset-0 bg-black/50"
-                onClick={() => {
-                  playPanelClose();
-                  setOpen(false);
-                }}
-              />
+            {open && (
               <motion.div
-                role="dialog"
-                aria-label="Earn Club Funds"
-                className={`absolute left-1/2 top-1/2 w-[min(18rem,calc(100vw-1.5rem))] max-h-[min(70dvh,24rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto overscroll-contain ${CARD.panel} border border-theme-tertiary/35 p-3 shadow-xl`}
-                initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 4, scale: 0.98 }}
-                transition={{ duration: 0.18 }}
-                onClick={(event) => event.stopPropagation()}
+                key="club-funds-mobile"
+                className="fixed inset-0 z-[200] flex items-end justify-center bg-black/65 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-[max(3.5rem,env(safe-area-inset-top))]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={closePanel}
               >
-                <ClubFundsPanelContent
-                  balance={balance}
-                  totalEarned={totalEarned}
-                />
+                <motion.div
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Earn Club Funds"
+                  className="club-funds-mobile-sheet w-full max-w-md max-h-[min(85dvh,28rem)] overflow-y-auto overscroll-contain rounded-2xl border border-theme-tertiary/35 p-4 shadow-2xl"
+                  initial={{ opacity: 0, y: 28, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20, scale: 0.98 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <ClubFundsPanelContent
+                    balance={balance}
+                    totalEarned={totalEarned}
+                    onClose={closePanel}
+                    mobile
+                  />
+                </motion.div>
               </motion.div>
-            </motion.div>
+            )}
           </AnimatePresence>
         </BodyPortal>
       )}
@@ -206,23 +211,38 @@ export function ClubFundsDisplay({
 function ClubFundsPanelContent({
   balance,
   totalEarned,
+  onClose,
+  mobile = false,
 }: {
   balance: number;
   totalEarned: number;
+  onClose?: () => void;
+  mobile?: boolean;
 }) {
   return (
     <>
-      <p className={TYPO.sectionLabel}>Earn Club Funds</p>
-      <div className={`mt-2 space-y-1 ${TYPO.bodySm}`}>
-        <p className="flex items-center justify-between gap-2 text-gray-300">
-          <span>Current balance</span>
-          <span className="shrink-0 font-semibold tabular-nums text-accent-green">
+      <div className="flex items-start justify-between gap-3">
+        <p className={TYPO.sectionLabel}>Earn Club Funds</p>
+        {mobile && onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="shrink-0 rounded-lg border border-pitch-600/80 px-2.5 py-1 text-xs font-medium text-gray-300 transition hover:border-pitch-500 hover:text-white"
+          >
+            Close
+          </button>
+        )}
+      </div>
+      <div className={`mt-2 space-y-1 ${mobile ? "text-xs" : TYPO.bodySm}`}>
+        <p className="flex items-start justify-between gap-3 text-gray-300">
+          <span className="shrink-0">Current balance</span>
+          <span className="min-w-0 text-right font-semibold tabular-nums text-accent-green">
             {formatClubFundsExact(balance)}
           </span>
         </p>
-        <p className="flex items-center justify-between gap-2 text-gray-400">
-          <span>Lifetime earned</span>
-          <span className="shrink-0 font-medium tabular-nums text-gray-300">
+        <p className="flex items-start justify-between gap-3 text-gray-400">
+          <span className="shrink-0">Lifetime earned</span>
+          <span className="min-w-0 text-right font-medium tabular-nums text-gray-300">
             {formatClubFundsExact(totalEarned)}
           </span>
         </p>
@@ -231,10 +251,12 @@ function ClubFundsPanelContent({
         {CLUB_FUNDS_INFO_LINES.map((line) => (
           <li
             key={line.label}
-            className="flex items-center justify-between gap-2 text-gray-300"
+            className={`flex items-start justify-between gap-3 text-gray-300 ${
+              mobile ? "text-xs leading-snug" : ""
+            }`}
           >
-            <span className="min-w-0">{line.label}</span>
-            <span className="shrink-0 font-semibold text-accent-green">
+            <span className="min-w-0 flex-1">{line.label}</span>
+            <span className="shrink-0 font-semibold tabular-nums text-accent-green">
               {formatClubFundsExact(line.amount)}
             </span>
           </li>

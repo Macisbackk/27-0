@@ -107,6 +107,20 @@ export function isDefaultUiTheme(id: string): boolean {
   return id === DEFAULT_UI_THEME_ID;
 }
 
+/** Default first, then unlocked club themes, then locked (original order within each group). */
+export function sortUiThemesForStore(
+  themes: UiThemeDefinition[],
+  unlockedThemeIds: string[]
+): UiThemeDefinition[] {
+  const unlocked = new Set(unlockedThemeIds);
+  const defaultTheme =
+    themes.find((theme) => theme.id === DEFAULT_UI_THEME_ID) ?? DEFAULT_UI_THEME;
+  const others = themes.filter((theme) => theme.id !== DEFAULT_UI_THEME_ID);
+  const purchased = others.filter((theme) => unlocked.has(theme.id));
+  const locked = others.filter((theme) => !unlocked.has(theme.id));
+  return [defaultTheme, ...purchased, ...locked];
+}
+
 export function assertNoBlackPrimaryUiThemes(): void {
   for (const theme of UI_THEMES) {
     if (theme.id === DEFAULT_UI_THEME_ID) continue;

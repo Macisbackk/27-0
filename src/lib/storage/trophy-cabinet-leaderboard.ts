@@ -16,22 +16,25 @@ export type TrophyCabinetTracker = Extract<
   | "challenge_cup_trophy"
   | "era_cup_trophy"
   | "era_league_title"
+  | "era_league_champions"
 >;
 
 const TROPHY_TRACKERS: TrophyCabinetTracker[] = [
   "league_titles",
   "super_league_champions",
   "challenge_cup_trophy",
-  "era_cup_trophy",
   "era_league_title",
+  "era_league_champions",
+  "era_cup_trophy",
 ];
 
 const TRACKER_TO_MODE: Record<TrophyCabinetTracker, string> = {
   league_titles: "trophy-league-titles",
   super_league_champions: "trophy-super-league",
   challenge_cup_trophy: "trophy-challenge-cup",
-  era_cup_trophy: "trophy-era-cup",
   era_league_title: "trophy-era-league",
+  era_league_champions: "trophy-era-league-champions",
+  era_cup_trophy: "trophy-era-cup",
 };
 
 export interface TrophyCabinetLeaderboardEntry {
@@ -63,10 +66,12 @@ export function getTrophyCountFromStats(
       return normal.superLeagueTitles + hard.superLeagueTitles;
     case "challenge_cup_trophy":
       return normal.challengeCupsWon + hard.challengeCupsWon;
+    case "era_league_title":
+      return eraNormal.leagueTitlesWon;
+    case "era_league_champions":
+      return eraNormal.superLeagueTitles;
     case "era_cup_trophy":
       return eraCup.eraCupsWon;
-    case "era_league_title":
-      return eraNormal.leagueTitlesWon + eraNormal.superLeagueTitles;
     default:
       return 0;
   }

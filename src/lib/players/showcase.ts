@@ -1,7 +1,6 @@
 import type { Player, PlayerCategory, Position } from "../types";
 import { formatPlayerDisplayName } from "./prime-year";
 import { POSITION_LABELS } from "../positions";
-import { getPlayerAge } from "./player-age";
 import { getPlayerEligiblePositions } from "./player-positions";
 
 export type ShowcaseSortKey =
@@ -31,25 +30,6 @@ export const TIER_FILTER_LABELS: Record<Exclude<TierFilter, "all">, string> = {
   squad: "Squad Player",
 };
 
-export type AgeFilter =
-  | "all"
-  | "under21"
-  | "21-24"
-  | "25-29"
-  | "30-34"
-  | "35plus"
-  | "unknown";
-
-export const AGE_FILTER_LABELS: Record<AgeFilter, string> = {
-  all: "Any Age",
-  under21: "Under 21",
-  "21-24": "21–24",
-  "25-29": "25–29",
-  "30-34": "30–34",
-  "35plus": "35+",
-  unknown: "Unknown",
-};
-
 export interface ShowcaseFilters {
   search: string;
   status: PlayerCategory | "all";
@@ -57,7 +37,6 @@ export interface ShowcaseFilters {
   club: string;
   ratingMin: RatingFilter;
   tier: TierFilter;
-  age: AgeFilter;
 }
 
 /** Showcase tier for filter chips — legends are always Legend tier. */
@@ -142,26 +121,6 @@ function matchesSearch(player: Player, query: string): boolean {
   );
 }
 
-function matchesAgeFilter(player: Player, filter: AgeFilter): boolean {
-  const age = getPlayerAge(player);
-  switch (filter) {
-    case "all":
-      return true;
-    case "unknown":
-      return age === undefined;
-    case "under21":
-      return age !== undefined && age < 21;
-    case "21-24":
-      return age !== undefined && age >= 21 && age <= 24;
-    case "25-29":
-      return age !== undefined && age >= 25 && age <= 29;
-    case "30-34":
-      return age !== undefined && age >= 30 && age <= 34;
-    case "35plus":
-      return age !== undefined && age >= 35;
-  }
-}
-
 /** 1. Status */
 function passesStatusFilter(
   player: Player,
@@ -190,7 +149,7 @@ function passesSecondaryFilters(
   return true;
 }
 
-/** Status → Team → Age → Search → (position/rating/tier refinements) */
+/** Status → Team → Search → (position/rating/tier refinements) */
 export function filterShowcasePlayers(
   players: Player[],
   filters: ShowcaseFilters
@@ -199,7 +158,6 @@ export function filterShowcasePlayers(
     if (player.availableInGame === false) return false;
     if (!passesStatusFilter(player, filters.status)) return false;
     if (!passesTeamFilter(player, filters)) return false;
-    if (!matchesAgeFilter(player, filters.age)) return false;
     if (!matchesSearch(player, filters.search)) return false;
     if (!passesSecondaryFilters(player, filters)) return false;
     return true;

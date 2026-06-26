@@ -423,8 +423,6 @@ export function applySeasonLifetimeUpdate(
     ),
     leagueTitlesWon:
       existing.leagueTitlesWon + (leaguePosition === 1 ? 1 : 0),
-    superLeagueTitles:
-      existing.superLeagueTitles + (superLeagueTitle ? 1 : 0),
     topSixFinishes:
       existing.topSixFinishes + (topSixFinish ? 1 : 0),
     playoffAppearances:

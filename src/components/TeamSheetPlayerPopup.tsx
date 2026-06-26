@@ -22,6 +22,7 @@ interface TeamSheetPlayerPopupProps {
   tryScorers?: PlayerTryTotal[];
   awards?: SeasonAward[];
   totalMatches?: number;
+  statsScope?: "season" | "playoff";
   onClose: () => void;
 }
 
@@ -32,6 +33,7 @@ export function TeamSheetPlayerPopup({
   tryScorers,
   awards,
   totalMatches,
+  statsScope = "season",
   onClose,
 }: TeamSheetPlayerPopupProps) {
   const player = slot?.player ?? null;
@@ -63,6 +65,7 @@ export function TeamSheetPlayerPopup({
           awards,
           totalMatches,
           hardMode,
+          statsScope,
         })
       : null;
 
@@ -155,7 +158,9 @@ export function TeamSheetPlayerPopup({
                   )}
                   {seasonStats?.tries !== undefined && (
                     <div className="flex justify-between gap-3">
-                      <dt className="text-gray-500">Season tries</dt>
+                      <dt className="text-gray-500">
+                        {statsScope === "playoff" ? "Play-off tries" : "Season tries"}
+                      </dt>
                       <dd className="font-semibold text-accent-gold">
                         {seasonStats.tries}
                       </dd>

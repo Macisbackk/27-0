@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import type { SquadSlot } from "@/lib/types";
 import {
   buildChallengeCupResult,
@@ -34,7 +34,6 @@ import { UI_SURFACES } from "@/lib/ui/surfaces";
 import { resolveEraTeamClubName } from "@/lib/players/era-teams";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { BracketMatchDetailsPanel } from "./BracketMatchDetailsPanel";
-import { BTN } from "@/lib/ui/design-system";
 import { GameButton } from "./ui/GameButton";
 import { EraChallengeCupBranding } from "./EraChallengeCupBranding";
 import { BracketMobileRoundNav } from "./BracketMobileRoundNav";
@@ -80,6 +79,7 @@ export function ChallengeCupBracket({
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mobileViewRound, setMobileViewRound] = useState(() => getActiveRound(state));
+  const matchDetailsRef = useRef<HTMLDivElement>(null);
   const lookup = eraClubLookup ?? state.eraClubLookup;
   const activeRound = getActiveRound(state);
 
@@ -90,6 +90,14 @@ export function ChallengeCupBracket({
   const selectedMatch = selectedId
     ? state.matches.find((m) => m.id === selectedId)
     : null;
+
+  useEffect(() => {
+    if (!selectedId) return;
+    const match = state.matches.find((m) => m.id === selectedId);
+    if (match?.status !== "complete") return;
+    if (!window.matchMedia("(max-width: 767px)").matches) return;
+    matchDetailsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [selectedId, state.matches]);
 
   const handleSimulateMatch = useCallback(
     (matchId: string) => {
@@ -112,6 +120,7 @@ export function ChallengeCupBracket({
       }
 
       setState(next);
+      setSelectedId(matchId);
       if (next.tournamentComplete) {
         const cupResult = buildChallengeCupResult(next, squad);
         if (cupResult.isWinner) playCupFinalWin();
@@ -121,6 +130,27 @@ export function ChallengeCupBracket({
       }
     },
     [state, squad, onComplete]
+  );
+
+  const handleMatchPress = useCallback(
+    (matchId: string) => {
+      const match = state.matches.find((m) => m.id === matchId);
+      if (!match) return;
+
+      if (match.status === "ready" && canSimulateMatch(state, matchId)) {
+        handleSimulateMatch(matchId);
+        return;
+      }
+
+      if (match.status === "complete") {
+        setSelectedId((prev) => {
+          const next = prev === matchId ? null : matchId;
+          if (next !== null) playUiClick();
+          return next;
+        });
+      }
+    },
+    [state, handleSimulateMatch]
   );
 
   const handleSimulateRound = useCallback(() => {
@@ -153,9 +183,6 @@ export function ChallengeCupBracket({
       getMatchesForRound(state, activeRound).some((m) => m.status === "ready"),
     [state, activeRound]
   );
-
-  const canSimSelected =
-    selectedId !== null && canSimulateMatch(state, selectedId);
 
   return (
     <div className="w-full px-2 py-4 pb-28 sm:px-4 md:pb-6">
@@ -240,13 +267,7 @@ export function ChallengeCupBracket({
             key={match.id}
             match={match}
             selected={selectedId === match.id}
-            onSelect={() =>
-              setSelectedId((prev) => {
-                const next = prev === match.id ? null : match.id;
-                if (next !== null) playUiClick();
-                return next;
-              })
-            }
+            onSelect={() => handleMatchPress(match.id)}
             isActiveRound={mobileViewRound === activeRound}
             userClub={userClub}
             byeTeams={state.byeTeams}
@@ -269,13 +290,7 @@ export function ChallengeCupBracket({
               byeTeams={state.byeTeams}
               eraClubLookup={lookup}
               eraMode={eraMode}
-              onSelect={(id) =>
-                setSelectedId((prev) => {
-                  const next = prev === id ? null : id;
-                  if (next !== null) playUiClick();
-                  return next;
-                })
-              }
+              onSelect={handleMatchPress}
               activeRound={activeRound}
             />
           ))}
@@ -284,29 +299,21 @@ export function ChallengeCupBracket({
 
       <AnimatePresence>
         {selectedMatch && selectedMatch.status === "complete" && (
-          <BracketMatchDetailsPanel
-            match={selectedMatch}
-            eraClubLookup={lookup}
-            onClose={() => {
-              playPanelClose();
-              setSelectedId(null);
-            }}
-            className="max-md:mb-4"
-          />
+          <div ref={matchDetailsRef} className="max-md:mb-4">
+            <BracketMatchDetailsPanel
+              match={selectedMatch}
+              eraClubLookup={lookup}
+              onClose={() => {
+                playPanelClose();
+                setSelectedId(null);
+              }}
+            />
+          </div>
         )}
       </AnimatePresence>
 
       <div className="bracket-sticky-actions mx-auto max-w-3xl md:mt-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
-          <GameButton
-            variant="theme"
-            size="md"
-            disabled={!canSimSelected}
-            onClick={() => selectedId && handleSimulateMatch(selectedId)}
-            className="w-full sm:w-auto disabled:opacity-40"
-          >
-            Simulate Selected Match
-          </GameButton>
           <GameButton
             variant="secondary"
             size="md"
@@ -460,6 +467,16 @@ function BracketMatchCard({
       {isReady && match.isUserMatch && (
         <p className={`border-t border-pitch-600/20 px-2 py-0.5 text-center text-[8px] font-bold uppercase tracking-wider ${userAccent}`}>
           Your Match
+        </p>
+      )}
+      {isReady && isActiveRound && (
+        <p className={`border-t border-pitch-600/20 px-2 py-0.5 text-center text-[8px] font-bold uppercase tracking-wider ${userAccent}`}>
+          Tap to simulate
+        </p>
+      )}
+      {isComplete && !selected && (
+        <p className="border-t border-pitch-600/20 px-2 py-0.5 text-center text-[8px] font-bold uppercase tracking-wider text-gray-500">
+          View details
         </p>
       )}
     </button>

@@ -9,6 +9,10 @@ import type { PlayoffBracketState } from "@/lib/game/playoff-bracket";
 import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
 import { getPlayoffReviewBio } from "@/lib/playoff-review-bio";
 import { generateSeasonAwards } from "@/lib/season-awards";
+import {
+  getPlayoffPotyNarrative,
+  getPlayoffWorstNarrative,
+} from "@/lib/game/tournament-awards";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { ReturnHomeButton } from "./ReturnHomeButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
@@ -20,6 +24,11 @@ import { PlayoffBracketDisplay } from "./PlayoffBracketDisplay";
 import { Confetti } from "./Confetti";
 import { TYPO } from "@/lib/ui/typography";
 import { NORMAL } from "@/lib/ui/design-system";
+
+const PLAYOFF_AWARD_TITLES: Record<string, string> = {
+  "Player of the Season": "Best Player of the Play-Offs",
+  "Worst Player of the Season": "Worst Player of the Play-Offs",
+};
 
 interface PlayoffReviewProps {
   squad: SquadSlot[];
@@ -56,14 +65,53 @@ export function PlayoffReview({
     [clubFundsPayout, playoffFundsPayout]
   );
 
-  const playerAwards = useMemo(() => {
-    const awards = generateSeasonAwards(squad, seasonResult);
-    return awards.filter(
-      (award) =>
-        award.title !== "Top 3 Try Scorers" &&
-        award.title !== "Top Try Scorers"
+  const playoffLikeResult: SeasonResult = useMemo(() => {
+    const pointsFor = playoffResult.userFixtures.reduce(
+      (sum, fixture) => sum + fixture.pointsFor,
+      0
     );
-  }, [squad, seasonResult]);
+    const pointsAgainst = playoffResult.userFixtures.reduce(
+      (sum, fixture) => sum + fixture.pointsAgainst,
+      0
+    );
+
+    return {
+      wins: playoffResult.wins,
+      losses: playoffResult.losses,
+      tryScorers: playoffResult.tryScorers,
+      fixtures: playoffResult.userFixtures,
+      squadStrength: seasonResult.squadStrength,
+      pointsFor,
+      pointsAgainst,
+      pointsDifference: pointsFor - pointsAgainst,
+      leaguePosition: playoffResult.leaguePosition,
+      isPerfect: playoffResult.losses === 0 && playoffResult.wins > 0,
+      longestWinStreak: playoffResult.wins,
+      longestLosingStreak: playoffResult.losses > 0 ? 1 : 0,
+      gameResults: playoffResult.userFixtures.map((fixture) => fixture.result),
+      insights: [],
+      replacedTeam: seasonResult.replacedTeam,
+    };
+  }, [playoffResult, seasonResult]);
+
+  const playoffMatchCount = playoffResult.userFixtures.length;
+
+  const playerAwards = useMemo(() => {
+    if (playoffMatchCount === 0) return [];
+
+    return generateSeasonAwards(squad, playoffLikeResult)
+      .filter((award) => award.title in PLAYOFF_AWARD_TITLES)
+      .map((award) => {
+        const title = PLAYOFF_AWARD_TITLES[award.title] ?? award.title;
+        let narrative = award.narrative;
+        if (award.title === "Player of the Season") {
+          narrative = getPlayoffPotyNarrative(playoffResult, award.playerName);
+        } else if (award.title === "Worst Player of the Season") {
+          narrative = getPlayoffWorstNarrative(playoffResult, award.playerName);
+        }
+        return { ...award, title, narrative };
+      });
+  }, [squad, playoffLikeResult, playoffResult, playoffMatchCount]);
 
   const bracketChampion = useMemo(() => {
     const final = playoffBracketState?.matches.find((m) => m.id === "gf");
@@ -170,7 +218,7 @@ export function PlayoffReview({
         )}
 
         <CollapsibleReviewSection
-          title="Squad Review"
+          title="Playoff Squad Review"
           delay={0.32}
           defaultOpen={false}
         >
@@ -183,7 +231,10 @@ export function PlayoffReview({
               (sum, row) => sum + row.tries,
               0
             )}
-            totalMatches={playoffResult.tryScorers.length > 0 ? 3 : undefined}
+            totalMatches={
+              playoffMatchCount > 0 ? playoffMatchCount : undefined
+            }
+            statsScope="playoff"
           />
         </CollapsibleReviewSection>
 

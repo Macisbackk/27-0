@@ -16,6 +16,7 @@ interface SquadReviewSectionProps {
   tryScorers?: PlayerTryTotal[];
   expectedTotalTries?: number;
   totalMatches?: number;
+  statsScope?: "season" | "playoff";
   performance?: ReactNode;
   performanceTitle?: string;
   sectionTitle?: string;
@@ -29,6 +30,7 @@ export function SquadReviewSection({
   tryScorers,
   expectedTotalTries,
   totalMatches,
+  statsScope = "season",
   performance,
   performanceTitle = "Performance",
   sectionTitle,
@@ -58,6 +60,7 @@ export function SquadReviewSection({
             tryScorers={tryScorers}
             awards={awards}
             totalMatches={totalMatches}
+            statsScope={statsScope}
           />
         </div>
 

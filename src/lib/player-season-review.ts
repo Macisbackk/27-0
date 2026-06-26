@@ -21,6 +21,7 @@ export function buildPlayerSeasonReviewStats(
     awards?: SeasonAward[];
     totalMatches?: number;
     hardMode?: boolean;
+    statsScope?: "season" | "playoff";
   }
 ): PlayerSeasonReviewStats {
   const player = slot.player;
@@ -53,9 +54,11 @@ export function buildPlayerSeasonReviewStats(
 
   if (!stats.contributionSummary && tryRow && tryRow.tries > 0) {
     const playedLabel = POSITION_LABELS[slot.position];
+    const period =
+      options?.statsScope === "playoff" ? "the play-offs" : "this season";
     stats.contributionSummary = `${tryRow.tries} ${
       tryRow.tries === 1 ? "try" : "tries"
-    } from ${playedLabel} this season.`;
+    } from ${playedLabel} in ${period}.`;
   }
 
   return stats;

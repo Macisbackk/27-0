@@ -96,6 +96,8 @@ export interface EraTeam {
   xiiiPlayerIds: string[];
   /** Bench player IDs (jerseys 14–17). */
   benchPlayerIds: string[];
+  /** Listed bench jersey positions (14–17), when known from starting 17. */
+  benchPositions?: Position[];
   slotPositions: Position[];
   teamRating: number;
   teamValue: number;
@@ -474,7 +476,8 @@ function buildEraTeamInternal(
   xiiiPlayerIds: string[],
   benchPlayerIds: string[],
   slotPositions: Position[] | undefined,
-  squadEraYear: number | undefined
+  squadEraYear: number | undefined,
+  benchPositions?: Position[]
 ): EraTeam | null {
   const displayName = expectedEraDisplayName(clubName, year);
 
@@ -539,6 +542,10 @@ function buildEraTeamInternal(
     playerIds,
     xiiiPlayerIds: resolvedXiiiIds,
     benchPlayerIds: resolvedBenchIds,
+    benchPositions:
+      benchPositions && benchPositions.length === resolvedBenchIds.length
+        ? benchPositions
+        : undefined,
     slotPositions:
       category === "historic"
         ? (xiiiPositions ?? [])
@@ -601,6 +608,14 @@ function buildLineupFromPlayerIds(
   return { xiiiIds, slotPositions, benchIds };
 }
 
+function resolveBenchListedPositions(benchIds: readonly string[]): Position[] {
+  return benchIds.map((id) => {
+    const player = getPlayerById(id);
+    if (!player) return "CENTRE";
+    return getPlayerEligiblePositions(player)[0] ?? player.position;
+  });
+}
+
 export function buildEra26Team(clubName: string): EraTeam | null {
   if (!isEraCurrentPlayableClub(clubName)) return null;
 
@@ -617,7 +632,8 @@ export function buildEra26Team(clubName: string): EraTeam | null {
       resolved2026.xiiiPlayerIds,
       resolved2026.benchPlayerIds,
       resolved2026.slotPositions,
-      Number(ERA_26_YEAR)
+      Number(ERA_26_YEAR),
+      resolved2026.benchPositions
     );
   }
 
@@ -650,7 +666,8 @@ export function buildEra26Team(clubName: string): EraTeam | null {
       lineup.xiiiIds,
       lineup.benchIds,
       lineup.slotPositions,
-      Number(ERA_26_YEAR)
+      Number(ERA_26_YEAR),
+      resolveBenchListedPositions(lineup.benchIds)
     );
   }
 
@@ -662,7 +679,10 @@ export function buildEra26Team(clubName: string): EraTeam | null {
     lineup.xiiiIds,
     lineup.benchIds,
     lineup.slotPositions,
-    Number(ERA_26_YEAR)
+    Number(ERA_26_YEAR),
+    lineup.benchIds.length > 0
+      ? resolveBenchListedPositions(lineup.benchIds)
+      : undefined
   );
 }
 
@@ -692,7 +712,8 @@ export function buildEraHistoricTeam(
     resolved.xiiiPlayerIds,
     resolved.benchPlayerIds,
     resolved.slotPositions,
-    Number(year)
+    Number(year),
+    resolved.benchPositions
   );
 }
 

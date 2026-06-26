@@ -18,9 +18,7 @@ import {
   applyShowcasePipeline,
   computeShowcaseDbStats,
   getUniqueClubs,
-  AGE_FILTER_LABELS,
   TIER_FILTER_LABELS,
-  type AgeFilter,
   type RatingFilter,
   type ShowcaseFilters,
   type ShowcaseSortDir,
@@ -55,7 +53,6 @@ const DEFAULT_FILTERS: ShowcaseFilters = {
   club: "all",
   ratingMin: "all",
   tier: "all",
-  age: "all",
 };
 
 const TIER_OPTIONS = Object.entries(TIER_FILTER_LABELS) as [
@@ -115,7 +112,6 @@ export function PlayerShowcase() {
         filters.club,
         filters.ratingMin,
         filters.tier,
-        filters.age,
         sortKey,
         sortDir,
       ].join("|"),
@@ -126,7 +122,6 @@ export function PlayerShowcase() {
       filters.club,
       filters.ratingMin,
       filters.tier,
-      filters.age,
       sortKey,
       sortDir,
     ]
@@ -218,13 +213,6 @@ export function PlayerShowcase() {
         key: "tier",
         label: `Tier: ${TIER_FILTER_LABELS[filters.tier]}`,
         clear: () => updateFilters((f) => ({ ...f, tier: "all" })),
-      });
-    }
-    if (filters.age !== DEFAULT_FILTERS.age) {
-      chips.push({
-        key: "age",
-        label: `Age: ${AGE_FILTER_LABELS[filters.age]}`,
-        clear: () => updateFilters((f) => ({ ...f, age: "all" })),
       });
     }
 
@@ -417,25 +405,6 @@ export function PlayerShowcase() {
                 </TierChip>
               ))}
             </div>
-          </FilterField>
-
-          <FilterField label="Age">
-            <select
-              value={filters.age}
-              onChange={(e) =>
-                updateFilters((f) => ({
-                  ...f,
-                  age: e.target.value as AgeFilter,
-                }))
-              }
-              className={RL_FILTER_INPUT_CLASS}
-            >
-              {(Object.keys(AGE_FILTER_LABELS) as AgeFilter[]).map((key) => (
-                <option key={key} value={key}>
-                  {AGE_FILTER_LABELS[key]}
-                </option>
-              ))}
-            </select>
           </FilterField>
 
           <FilterField label="Sort By">
