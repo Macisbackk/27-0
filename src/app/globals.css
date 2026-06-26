@@ -657,11 +657,6 @@ body {
     background-clip: text;
     color: transparent;
     text-shadow: none;
-    box-shadow: inset 0 -3px 0 var(--theme-tertiary);
-  }
-
-  [data-ui-theme]:not([data-ui-theme="default"]) .logo-mark-rest {
-    color: var(--theme-tertiary);
   }
 
   /**
@@ -1067,8 +1062,7 @@ body {
     background: linear-gradient(
       90deg,
       var(--theme-primary) 0%,
-      var(--theme-secondary) 55%,
-      var(--theme-tertiary) 100%
+      var(--theme-secondary) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;

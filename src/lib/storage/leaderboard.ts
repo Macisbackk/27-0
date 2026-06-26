@@ -20,6 +20,13 @@ import { STORAGE_KEYS } from "./keys";
 import { getAuthUserId, isLoggedIn } from "../auth-session";
 import { getUsername } from "./user";
 import { getCupTeamWinsLeaderboardAsync } from "./cup-team-wins";
+import {
+  ensureEraCupLeaderboardSynced,
+  getAllEraCupLeaderboardProfiles,
+  mapCupProfilesToTrackerEntries,
+} from "./cup-leaderboard";
+import { getAllStats } from "./stats";
+import type { UserStatsData } from "../types";
 
 export interface StoredLeaderboardEntry {
   id: string;
@@ -76,10 +83,16 @@ export type LeaderboardDbMode =
   | "fantasy"
   | "club-funds";
 
+/** Era Challenge Cup shares the challenge-cup leaderboard bucket. */
+export function normalizeLeaderboardGameMode(mode: GameMode): GameMode {
+  return mode === "ERA_CHALLENGE_CUP" ? "CHALLENGE_CUP" : mode;
+}
+
 export function gameModeToDbMode(mode: GameMode): LeaderboardDbMode {
-  if (mode === "CHALLENGE_CUP") return "challenge-cup";
-  if (mode === "DRAFT") return "draft";
-  if (mode === "FANTASY") return "fantasy";
+  const normalized = normalizeLeaderboardGameMode(mode);
+  if (normalized === "CHALLENGE_CUP") return "challenge-cup";
+  if (normalized === "DRAFT") return "draft";
+  if (normalized === "FANTASY") return "fantasy";
   return "super-league";
 }
 
@@ -102,7 +115,7 @@ const SUPABASE_SELECT_EXTENDED =
   "id, player_name, coach_name, user_id, score, mode, difficulty, mode_variant, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage, created_at, updated_at";
 
 const SUPABASE_SELECT_BASE =
-  "id, player_name, coach_name, user_id, score, mode, difficulty, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, created_at, updated_at";
+  "id, player_name, coach_name, user_id, score, mode, difficulty, mode_variant, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, created_at, updated_at";
 
 function loadLocalEntries(): StoredLeaderboardEntry[] {
   if (typeof window === "undefined") return [];
@@ -222,7 +235,7 @@ function mapLocalToTrackerEntries(
       e.period === period &&
       e.periodKey === periodKey &&
       (e.difficulty ?? "NORMAL") === effectiveDifficulty &&
-      (e.mode ?? "CLASSIC") === gameMode &&
+      normalizeLeaderboardGameMode(e.mode ?? "CLASSIC") === gameMode &&
       normalizeModeVariant(e.modeVariant) === effectiveVariant
   );
 
@@ -246,7 +259,9 @@ function mapSupabaseToTrackerEntries(
   for (const row of rows) {
     if ((row.difficulty ?? "NORMAL") !== difficulty) continue;
     if (dbMode === "super-league" || dbMode === "challenge-cup") {
-      const rowVariant = normalizeModeVariant(row.mode_variant ?? "current");
+      const rowVariant = normalizeModeVariant(
+        row.mode_variant != null ? row.mode_variant : effectiveVariant
+      );
       if (rowVariant !== effectiveVariant) continue;
     }
     const username = row.coach_name ?? row.player_name ?? "Unknown";
@@ -431,6 +446,129 @@ async function insertToSupabase(
   }
 }
 
+function isRicherTrackerEntry(
+  candidate: LeaderboardTrackerEntry,
+  existing: LeaderboardTrackerEntry
+): boolean {
+  if (candidate.squadValue > existing.squadValue) return true;
+  if (candidate.totalWins > existing.totalWins) return true;
+  if (candidate.challengeCupWins > existing.challengeCupWins) return true;
+  if ((candidate.bestCupFinishRank ?? 0) > (existing.bestCupFinishRank ?? 0)) {
+    return true;
+  }
+  const cWins = candidate.bestRecordWins ?? candidate.totalWins;
+  const eWins = existing.bestRecordWins ?? existing.totalWins;
+  const cLosses = candidate.bestRecordLosses ?? candidate.totalLosses;
+  const eLosses = existing.bestRecordLosses ?? existing.totalLosses;
+  return cWins > eWins || (cWins === eWins && cLosses < eLosses);
+}
+
+function mergeTrackerEntryLists(
+  ...lists: LeaderboardTrackerEntry[][]
+): LeaderboardTrackerEntry[] {
+  const byUser = new Map<string, LeaderboardTrackerEntry>();
+  for (const list of lists) {
+    for (const entry of list) {
+      const existing = byUser.get(entry.username);
+      if (!existing || isRicherTrackerEntry(entry, existing)) {
+        byUser.set(entry.username, entry);
+      }
+    }
+  }
+  return [...byUser.values()];
+}
+
+function hasTrackerActivity(entry: LeaderboardTrackerEntry): boolean {
+  return (
+    entry.squadValue > 0 ||
+    entry.totalWins > 0 ||
+    entry.totalLosses > 0 ||
+    entry.perfectRuns > 0 ||
+    entry.challengeCupWins > 0
+  );
+}
+
+function userStatsToClassicTrackerEntry(
+  username: string,
+  stats: UserStatsData,
+  difficulty: GameDifficulty
+): LeaderboardTrackerEntry {
+  const wins = stats.seasonWins + stats.playoffWins;
+  const losses = stats.seasonLosses + stats.playoffLosses;
+  const games = wins + losses;
+  const bestWins = stats.bestRecordWins || stats.bestOverallSeasonWins || wins;
+  const bestLosses =
+    stats.bestRecordLosses || stats.bestOverallSeasonLosses || losses;
+
+  return {
+    username,
+    squadValue: stats.highestSquadValue,
+    achievedAt: new Date().toISOString(),
+    difficulty,
+    mode: "CLASSIC",
+    totalWins: wins,
+    totalLosses: losses,
+    perfectRuns: stats.totalPerfectSeasons,
+    bestRecordWins: bestWins,
+    bestRecordLosses: bestLosses,
+    bestWinPercentage: games > 0 ? (wins / games) * 100 : 0,
+    challengeCupWins: 0,
+    cupFinals: 0,
+    bestCupFinishRank: 0,
+    bestCupFinishLabel: "",
+    cupWinPercentage: 0,
+  };
+}
+
+function getSupplementalEraCupEntries(): LeaderboardTrackerEntry[] {
+  const username = getUsername();
+  if (username) {
+    ensureEraCupLeaderboardSynced(username, getAllStats().eraCup);
+  }
+  return mapCupProfilesToTrackerEntries(getAllEraCupLeaderboardProfiles()).filter(
+    hasTrackerActivity
+  );
+}
+
+function getSupplementalEraNormalEntries(
+  difficulty: GameDifficulty
+): LeaderboardTrackerEntry[] {
+  const username = getUsername();
+  if (!username) return [];
+
+  const entry = userStatsToClassicTrackerEntry(
+    username,
+    getAllStats().eraNormal,
+    difficulty
+  );
+  return hasTrackerActivity(entry) ? [entry] : [];
+}
+
+function buildTrackerEntries(
+  period: LeaderboardPeriod,
+  difficulty: GameDifficulty,
+  dbMode: LeaderboardDbMode,
+  modeVariant: ModeVariant,
+  remote: LeaderboardTrackerEntry[] | null
+): LeaderboardTrackerEntry[] {
+  const local = mapLocalToTrackerEntries(period, difficulty, dbMode, modeVariant);
+  let entries =
+    remote !== null ? mergeTrackerEntryLists(remote, local) : local;
+
+  if (period !== "ALL_TIME") return entries;
+
+  if (dbMode === "challenge-cup" && modeVariant === "era") {
+    entries = mergeTrackerEntryLists(entries, getSupplementalEraCupEntries());
+  } else if (dbMode === "super-league" && modeVariant === "era") {
+    entries = mergeTrackerEntryLists(
+      entries,
+      getSupplementalEraNormalEntries(difficulty)
+    );
+  }
+
+  return entries;
+}
+
 function saveLocalEntry(
   username: string,
   mode: GameMode,
@@ -441,8 +579,9 @@ function saveLocalEntry(
 ): void {
   const periods: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
   let entries = loadLocalEntries();
+  const storageMode = normalizeLeaderboardGameMode(mode);
   const effectiveVariant =
-    mode === "CLASSIC" || mode === "CHALLENGE_CUP"
+    storageMode === "CLASSIC" || storageMode === "CHALLENGE_CUP"
       ? normalizeModeVariant(modeVariant)
       : "current";
 
@@ -451,7 +590,7 @@ function saveLocalEntry(
     const existingIndex = entries.findIndex(
       (e) =>
         e.username === username &&
-        e.mode === mode &&
+        normalizeLeaderboardGameMode(e.mode) === storageMode &&
         (e.difficulty ?? "NORMAL") === difficulty &&
         e.period === period &&
         e.periodKey === periodKey &&
@@ -487,7 +626,7 @@ function saveLocalEntry(
       achievedAt: achievedAt.toISOString(),
       period,
       periodKey,
-      mode,
+      mode: storageMode,
       difficulty,
       totalWins: stats.totalWins,
       totalLosses: stats.totalLosses,
@@ -513,14 +652,15 @@ function getExistingLocalStats(
   difficulty: GameDifficulty,
   modeVariant: ModeVariant = "current"
 ): Partial<LeaderboardTrackerEntry> | null {
+  const storageMode = normalizeLeaderboardGameMode(mode);
   const effectiveVariant =
-    mode === "CLASSIC" || mode === "CHALLENGE_CUP"
+    storageMode === "CLASSIC" || storageMode === "CHALLENGE_CUP"
       ? normalizeModeVariant(modeVariant)
       : "current";
   const allTime = loadLocalEntries().find(
     (e) =>
       e.username === username &&
-      e.mode === mode &&
+      normalizeLeaderboardGameMode(e.mode) === storageMode &&
       e.difficulty === difficulty &&
       e.period === "ALL_TIME" &&
       normalizeModeVariant(e.modeVariant) === effectiveVariant
@@ -600,13 +740,14 @@ export async function addLeaderboardEntry(
   const achievedAt = options?.achievedAt ?? new Date();
   const wins = options?.wins ?? 0;
   const losses = options?.losses ?? 0;
-  const dbMode = gameModeToDbMode(mode);
+  const storageMode = normalizeLeaderboardGameMode(mode);
+  const dbMode = gameModeToDbMode(storageMode);
   const effectiveDifficulty = resolveLeaderboardDifficulty(dbMode, difficulty);
   const modeVariant = normalizeModeVariant(options?.modeVariant);
 
   const localExisting = getExistingLocalStats(
     username,
-    mode,
+    storageMode,
     effectiveDifficulty,
     modeVariant
   );
@@ -616,7 +757,7 @@ export async function addLeaderboardEntry(
     effectiveDifficulty,
     modeVariant
   );
-  const isCupRun = mode === "CHALLENGE_CUP";
+  const isCupRun = storageMode === "CHALLENGE_CUP";
   const merged = mergeLeaderboardStats(remoteExisting ?? localExisting, {
     squadValue,
     wins,
@@ -629,7 +770,7 @@ export async function addLeaderboardEntry(
 
   saveLocalEntry(
     username,
-    mode,
+    storageMode,
     effectiveDifficulty,
     merged,
     achievedAt,
@@ -679,14 +820,13 @@ export async function getTrackerLeaderboardAsync(
     dbMode,
     modeVariant
   );
-  const entries =
-    remote ??
-    mapLocalToTrackerEntries(
-      period,
-      effectiveDifficulty,
-      dbMode,
-      modeVariant
-    );
+  const entries = buildTrackerEntries(
+    period,
+    effectiveDifficulty,
+    dbMode,
+    modeVariant,
+    remote
+  );
 
   return {
     rows: rankByTracker(entries, tracker, limit, currentUser),
@@ -723,8 +863,13 @@ export async function getLeaderboardAsync(
     dbMode,
     modeVariant
   );
-  const entries =
-    remote ?? mapLocalToTrackerEntries(period, difficulty, dbMode, modeVariant);
+  const entries = buildTrackerEntries(
+    period,
+    difficulty,
+    dbMode,
+    modeVariant,
+    remote
+  );
   const rows = rankByTracker(
     entries,
     "squad_value",
