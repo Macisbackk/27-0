@@ -20,6 +20,8 @@
   --theme-primary: #22c55e;
   --theme-secondary: #34d399;
   --theme-tertiary: #16a34a;
+  --theme-gradient-from: var(--theme-primary);
+  --theme-gradient-to: var(--theme-secondary);
   --theme-primary-rgb: 34 197 94;
   --theme-secondary-rgb: 52 211 153;
   --theme-tertiary-rgb: 22 163 74;
@@ -397,11 +399,56 @@ body {
   background: linear-gradient(
     180deg,
     transparent,
-    rgba(34, 197, 94, 0.35) 20%,
-    rgba(34, 197, 94, 0.35) 80%,
+    color-mix(in srgb, var(--theme-tertiary) 35%, transparent) 20%,
+    color-mix(in srgb, var(--theme-tertiary) 35%, transparent) 80%,
     transparent
   );
   pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .cup-bracket-column:not(:last-child)::after {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .bracket-sticky-actions {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    margin-left: 0;
+    margin-right: 0;
+    border-top: 1px solid color-mix(in srgb, var(--theme-tertiary) 22%, transparent);
+    background: color-mix(in srgb, var(--bg-primary) 94%, transparent);
+    padding: 0.75rem 0.75rem max(0.75rem, env(safe-area-inset-bottom));
+    backdrop-filter: blur(14px);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
+  }
+}
+
+.bracket-sticky-actions {
+  position: static;
+  z-index: auto;
+  margin-left: 0;
+  margin-right: 0;
+  border-top: 0;
+  background: transparent;
+  padding: 0;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+@media (min-width: 768px) {
+  .bracket-sticky-actions {
+    margin-top: 1rem;
+  }
+
+  .bracket-sticky-actions .flex {
+    justify-content: center;
+  }
 }
 
 .font-display {
@@ -489,8 +536,8 @@ body {
     border: 2px solid var(--theme-tertiary);
     background: linear-gradient(
       135deg,
-      var(--theme-primary) 0%,
-      var(--theme-secondary) 100%
+      var(--theme-gradient-from) 0%,
+      color-mix(in srgb, var(--theme-gradient-to) 72%, var(--theme-tertiary)) 100%
     );
     color: var(--theme-text-on-primary);
     box-shadow:
@@ -650,13 +697,22 @@ body {
   [data-ui-theme]:not([data-ui-theme="default"]) .logo-mark-accent {
     background: linear-gradient(
       90deg,
-      var(--theme-primary) 0%,
-      var(--theme-secondary) 100%
+      var(--theme-gradient-from) 0%,
+      var(--theme-gradient-to) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     text-shadow: none;
+  }
+
+  [data-theme-logo-glow="true"] .logo-mark-accent {
+    filter: drop-shadow(0 0 10px var(--theme-glow))
+      drop-shadow(0 0 2px rgba(255, 255, 255, 0.45));
+  }
+
+  [data-theme-logo-glow="true"] .logo-mark-rest {
+    text-shadow: 0 0 14px var(--theme-glow-soft);
   }
 
   /**
@@ -830,11 +886,11 @@ body {
 
   .tab-group-btn-active {
     border: 2px solid color-mix(in srgb, var(--theme-tertiary) 80%, transparent) !important;
-    background-color: var(--theme-primary) !important;
+    background-color: var(--theme-gradient-from) !important;
     background-image: linear-gradient(
       135deg,
-      var(--theme-primary) 0%,
-      var(--theme-secondary) 100%
+      var(--theme-gradient-from) 0%,
+      color-mix(in srgb, var(--theme-gradient-to) 72%, var(--theme-tertiary)) 100%
     ) !important;
     color: var(--theme-text-on-primary) !important;
     isolation: isolate;
@@ -1061,8 +1117,8 @@ body {
   .text-gradient {
     background: linear-gradient(
       90deg,
-      var(--theme-primary) 0%,
-      var(--theme-secondary) 100%
+      var(--theme-gradient-from) 0%,
+      var(--theme-gradient-to) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -1091,8 +1147,8 @@ body {
     border: 2px solid var(--theme-tertiary);
     background: linear-gradient(
       135deg,
-      var(--theme-primary) 0%,
-      var(--theme-secondary) 100%
+      var(--theme-gradient-from) 0%,
+      color-mix(in srgb, var(--theme-gradient-to) 72%, var(--theme-tertiary)) 100%
     );
     color: var(--theme-text-on-primary);
     box-shadow:
@@ -1375,11 +1431,11 @@ button.game-button,
 a.game-button--theme,
 button.game-button--theme,
 .game-button--theme {
-  background-color: var(--theme-primary) !important;
+  background-color: var(--theme-gradient-from) !important;
   background-image: linear-gradient(
     135deg,
-    var(--theme-primary) 0%,
-    var(--theme-secondary) 100%
+    var(--theme-gradient-from) 0%,
+    color-mix(in srgb, var(--theme-gradient-to) 72%, var(--theme-tertiary)) 100%
   ) !important;
   border: 2px solid var(--theme-tertiary) !important;
   color: var(--theme-text-on-primary) !important;

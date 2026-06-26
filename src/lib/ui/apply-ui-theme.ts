@@ -1,5 +1,6 @@
 import { getUiThemeById, type UiThemeDefinition } from "../ui-themes";
 import { STORAGE_KEYS } from "../storage/keys";
+import { resolveThemeGradientColors } from "./theme-accent-colors";
 import {
   applyThemeCssVarsToRoot,
   buildThemeCssVars,
@@ -11,10 +12,16 @@ export function applyUiThemeToDocument(theme: UiThemeDefinition): void {
   applyThemeCssVarsToRoot(theme);
 
   try {
+    const gradient = resolveThemeGradientColors({
+      primary: theme.primary,
+      secondary: theme.secondary,
+      tertiary: theme.tertiary,
+    });
     localStorage.setItem(
       STORAGE_KEYS.uiThemeCssCache,
       JSON.stringify({
         themeId: theme.id,
+        logoGlow: gradient.logoGlow,
         vars: buildThemeCssVars(theme),
       })
     );

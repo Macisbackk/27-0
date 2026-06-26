@@ -1,4 +1,5 @@
 import type { UiThemeDefinition } from "../ui-themes";
+import { resolveThemeGradientColors } from "./theme-accent-colors";
 
 /** Fixed semantic colours — never change with Store theme. */
 export const SEMANTIC_COLOURS = {
@@ -31,10 +32,18 @@ export function hexToRgba(hex: string, alpha: number): string {
 
 /** All CSS custom properties for a Store UI theme + fixed mode/semantic tokens. */
 export function buildThemeCssVars(theme: UiThemeDefinition): Record<string, string> {
+  const gradient = resolveThemeGradientColors({
+    primary: theme.primary,
+    secondary: theme.secondary,
+    tertiary: theme.tertiary,
+  });
+
   return {
     "--theme-primary": theme.primary,
     "--theme-secondary": theme.secondary,
     "--theme-tertiary": theme.tertiary,
+    "--theme-gradient-from": gradient.gradientFrom,
+    "--theme-gradient-to": gradient.gradientTo,
     "--theme-primary-rgb": hexToRgbParts(theme.primary),
     "--theme-secondary-rgb": hexToRgbParts(theme.secondary),
     "--theme-tertiary-rgb": hexToRgbParts(theme.tertiary),
@@ -81,6 +90,12 @@ export function applyThemeCssVarsToRoot(
   root: HTMLElement = document.documentElement
 ): void {
   root.dataset.uiTheme = theme.id;
+  const gradient = resolveThemeGradientColors({
+    primary: theme.primary,
+    secondary: theme.secondary,
+    tertiary: theme.tertiary,
+  });
+  root.dataset.themeLogoGlow = gradient.logoGlow ? "true" : "false";
   const vars = buildThemeCssVars(theme);
   for (const [key, value] of Object.entries(vars)) {
     root.style.setProperty(key, value);

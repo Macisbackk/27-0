@@ -17,12 +17,14 @@ interface BracketMatchDetailsPanelProps {
   match: BracketMatch;
   eraClubLookup?: Record<string, string>;
   onClose: () => void;
+  className?: string;
 }
 
 export function BracketMatchDetailsPanel({
   match,
   eraClubLookup,
   onClose,
+  className = "",
 }: BracketMatchDetailsPanelProps) {
   if (
     !match.homeTeam ||
@@ -37,7 +39,7 @@ export function BracketMatchDetailsPanel({
 
   return (
     <motion.div
-      className={`match-details-expand mt-4 overflow-hidden ${CARD.base} border-accent-green/30 shadow-lg`}
+      className={`match-details-expand mt-4 overflow-hidden ${CARD.base} border-accent-green/30 shadow-lg ${className}`}
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: "auto", opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}

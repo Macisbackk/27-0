@@ -88,6 +88,70 @@ function normalizeHex(color: string): string {
   return trimmed.startsWith("#") ? trimmed.toLowerCase() : `#${trimmed.toLowerCase()}`;
 }
 
+function relativeLuminance(color: string): number {
+  const rgb = parseHexRgb(color);
+  if (!rgb) return 0.5;
+  const channels = [rgb.r, rgb.g, rgb.b].map((v) => {
+    const s = v / 255;
+    return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+/** True when two kit colours are too close to read as a distinct gradient. */
+export function colorsTooSimilar(a: string, b: string): boolean {
+  const rgbA = parseHexRgb(a);
+  const rgbB = parseHexRgb(b);
+  if (!rgbA || !rgbB) return false;
+  const dr = rgbA.r - rgbB.r;
+  const dg = rgbA.g - rgbB.g;
+  const db = rgbA.b - rgbB.b;
+  return Math.sqrt(dr * dr + dg * dg + db * db) < 80;
+}
+
+/**
+ * Gradient stops for logos, headings, and theme buttons.
+ * Uses tertiary when secondary is black or too close to primary.
+ */
+export function resolveThemeGradientColors(colors: {
+  primary: string;
+  secondary: string;
+  tertiary: string;
+}): {
+  gradientFrom: string;
+  gradientTo: string;
+  logoGlow: boolean;
+} {
+  let gradientFrom = softenWhiteAccent(colors.primary);
+  let gradientTo = colors.secondary;
+
+  if (
+    isBlackLike(colors.secondary) ||
+    colorsTooSimilar(colors.primary, colors.secondary)
+  ) {
+    gradientTo = softenWhiteAccent(colors.tertiary);
+  }
+
+  if (isBlackLike(gradientFrom)) {
+    gradientFrom = softenWhiteAccent(colors.tertiary);
+    gradientTo = colors.primary;
+  }
+
+  if (normalizeHex(gradientFrom) === normalizeHex(gradientTo)) {
+    gradientTo = softenWhiteAccent(colors.tertiary);
+  }
+  if (normalizeHex(gradientFrom) === normalizeHex(gradientTo)) {
+    gradientTo = "#9CA3AF";
+  }
+
+  const lumFrom = relativeLuminance(gradientFrom);
+  const lumTo = relativeLuminance(gradientTo);
+  const logoGlow =
+    lumFrom < 0.12 || lumTo < 0.12 || (lumFrom > 0.82 && lumTo > 0.82);
+
+  return { gradientFrom, gradientTo, logoGlow };
+}
+
 /**
  * Pick store theme accent colours — never black as primary.
  * Chromatic team colours beat white; black stays secondary/trim when present.

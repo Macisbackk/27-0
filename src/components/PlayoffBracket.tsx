@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { SquadSlot } from "@/lib/types";
 import {
@@ -27,6 +27,14 @@ import {
 } from "@/lib/sound";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { PlayoffMatchDetailsPanel } from "./PlayoffMatchDetailsPanel";
+import { BracketMobileRoundNav } from "./BracketMobileRoundNav";
+import { GameButton } from "./ui/GameButton";
+
+const PLAYOFF_ROUND_SHORT: Record<number, string> = {
+  1: "EF",
+  2: "SF",
+  3: "GF",
+};
 
 interface PlayoffBracketProps {
   squad: SquadSlot[];
@@ -53,7 +61,12 @@ export function PlayoffBracket({
       createPlayoffBracket(seed, leagueTable, leaguePosition)
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [mobileViewRound, setMobileViewRound] = useState(() => getActiveRound(state));
   const activeRound = getActiveRound(state);
+
+  useEffect(() => {
+    setMobileViewRound(activeRound);
+  }, [activeRound]);
 
   const selectedMatch = selectedId
     ? state.matches.find((m) => m.id === selectedId)
@@ -112,8 +125,8 @@ export function PlayoffBracket({
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md">
       <div className="stadium-lights pointer-events-none fixed inset-0" />
-      <div className="relative mx-auto w-full max-w-5xl px-2 py-6 sm:px-4 sm:py-8">
-        <div className="text-center">
+      <div className="relative mx-auto w-full max-w-5xl px-2 py-5 pb-28 sm:px-4 sm:py-8 md:pb-8">
+        <div className="bracket-header-panel rounded-xl border border-pitch-600/45 bg-pitch-900/55 px-4 py-4 text-center backdrop-blur-sm sm:py-5">
           <p className="font-display text-xs font-bold uppercase tracking-[0.35em] text-accent-green">
             Super League Play-Offs
           </p>
@@ -125,35 +138,60 @@ export function PlayoffBracket({
               ? "Play-offs complete"
               : `${getPlayoffRoundLabel(activeRound)} — simulate matches to advance`}
           </p>
+          <div className="mx-auto mt-3 flex max-w-lg flex-wrap items-center justify-center gap-2">
+            <span className="rounded-full border border-accent-green/30 bg-accent-green/10 px-3 py-1 text-[10px] font-semibold text-accent-green">
+              1st & 2nd — Semi-Final Bye
+            </span>
+          </div>
         </div>
 
-        <div className="mx-auto mt-3 flex max-w-lg flex-wrap items-center justify-center gap-2">
-          <span className="rounded-full border border-accent-green/30 bg-accent-green/10 px-3 py-1 text-[10px] font-semibold text-accent-green">
-            1st & 2nd — Semi-Final Bye
-          </span>
+        <div className="mx-auto mt-4 max-w-3xl">
+          <BracketMobileRoundNav
+            rounds={ROUNDS}
+            viewRound={mobileViewRound}
+            activeRound={activeRound}
+            onViewRoundChange={setMobileViewRound}
+            getLabel={getPlayoffRoundLabel}
+            getShortLabel={(round) =>
+              PLAYOFF_ROUND_SHORT[round] ?? getPlayoffRoundLabel(round)
+            }
+            activeClassName="border-accent-green/55 bg-accent-green/12 text-accent-green"
+          />
         </div>
 
-        <div className="mt-5 flex flex-wrap justify-center gap-2">
-          <button
-            type="button"
-            disabled={!canSimSelected}
-            onClick={() => selectedId && handleSimulateMatch(selectedId)}
-            className="rounded-lg border border-accent-green/50 bg-accent-green/10 px-4 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-accent-green transition hover:bg-accent-green/20 disabled:cursor-not-allowed disabled:opacity-40 sm:text-xs"
-          >
-            Simulate Selected Match
-          </button>
-          <button
-            type="button"
-            disabled={!canSimRound}
-            onClick={handleSimulateRound}
-            className="rounded-lg border border-pitch-600 px-4 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-gray-300 transition hover:border-accent-green/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:text-xs"
-          >
-            Simulate Round
-          </button>
+        <div className="mx-auto mt-5 max-w-3xl space-y-3 md:hidden">
+          <p className="text-center font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
+            {getPlayoffRoundLabel(mobileViewRound)}
+          </p>
+          {getMatchesForRound(state, mobileViewRound).map((match) => (
+            <BracketMatchCard
+              key={match.id}
+              match={match}
+              selected={selectedId === match.id}
+              onSelect={() => {
+                if (
+                  match.status === "ready" &&
+                  canSimulatePlayoffMatch(state, match.id)
+                ) {
+                  handleSimulateMatch(match.id);
+                  return;
+                }
+                if (match.status === "complete") {
+                  setSelectedId((prev) => {
+                    const next = prev === match.id ? null : match.id;
+                    if (next !== null) playUiClick();
+                    return next;
+                  });
+                }
+              }}
+              isActiveRound={mobileViewRound === activeRound}
+              mobile
+            />
+          ))}
         </div>
 
-        <div className="mt-6 overflow-x-auto pb-4">
-          <div className="mx-auto flex min-w-[640px] max-w-4xl items-stretch justify-between gap-2 sm:gap-4">
+        <div className="mt-6 hidden overflow-x-auto pb-4 md:block">
+          <div className="mx-auto flex min-w-0 max-w-4xl items-stretch justify-between gap-2 sm:gap-4">
             {ROUNDS.map((round) => (
               <BracketRoundColumn
                 key={round}
@@ -183,9 +221,33 @@ export function PlayoffBracket({
                 playPanelClose();
                 setSelectedId(null);
               }}
+              className="max-md:mb-4"
             />
           )}
         </AnimatePresence>
+
+        <div className="bracket-sticky-actions mx-auto max-w-3xl md:mt-4">
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
+            <GameButton
+              variant="current"
+              size="md"
+              disabled={!canSimSelected}
+              onClick={() => selectedId && handleSimulateMatch(selectedId)}
+              className="w-full sm:w-auto disabled:opacity-40"
+            >
+              Simulate Selected Match
+            </GameButton>
+            <GameButton
+              variant="secondary"
+              size="md"
+              disabled={!canSimRound}
+              onClick={handleSimulateRound}
+              className="w-full sm:w-auto disabled:opacity-40"
+            >
+              Simulate Round
+            </GameButton>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -251,11 +313,13 @@ function BracketMatchCard({
   selected,
   onSelect,
   isActiveRound,
+  mobile = false,
 }: {
   match: PlayoffBracketMatch;
   selected: boolean;
   onSelect: () => void;
   isActiveRound: boolean;
+  mobile?: boolean;
 }) {
   const isComplete = match.status === "complete";
   const isReady = match.status === "ready";
@@ -266,7 +330,9 @@ function BracketMatchCard({
       type="button"
       onClick={onSelect}
       disabled={isPending}
-      className={`cup-bracket-match w-full rounded-lg border text-left transition ${
+      className={`cup-bracket-match w-full rounded-xl border text-left transition ${
+        mobile ? "min-h-[88px] shadow-sm" : "rounded-lg"
+      } ${
         selected
           ? "border-accent-green/50 bg-accent-green/10 ring-1 ring-accent-green/30"
           : isReady && isActiveRound
@@ -281,6 +347,7 @@ function BracketMatchCard({
         isLoser={isComplete && match.loser === match.homeTeam}
         isUser={match.homeTeam === DREAM_TEAM_NAME}
         isPending={isPending && !match.homeTeam}
+        mobile={mobile}
       />
       <div className="border-t border-pitch-600/30" />
       <BracketTeamRow
@@ -290,6 +357,7 @@ function BracketMatchCard({
         isLoser={isComplete && match.loser === match.awayTeam}
         isUser={match.awayTeam === DREAM_TEAM_NAME}
         isPending={isPending && !match.awayTeam}
+        mobile={mobile}
       />
       {isPending && (
         <p className="border-t border-pitch-600/20 px-2 py-0.5 text-center text-[8px] font-bold uppercase tracking-wider text-gray-500">
@@ -317,6 +385,7 @@ function BracketTeamRow({
   isLoser,
   isUser,
   isPending,
+  mobile = false,
 }: {
   team: string | null;
   score: number | null;
@@ -324,24 +393,25 @@ function BracketTeamRow({
   isLoser: boolean;
   isUser: boolean;
   isPending: boolean;
+  mobile?: boolean;
 }) {
   const label = isPending ? "TBD" : (team ?? "TBD");
   const swatchClub = team && team !== DREAM_TEAM_NAME ? team : "Wigan Warriors";
 
   return (
     <div
-      className={`flex items-center justify-between gap-2 px-2 py-1.5 sm:px-3 sm:py-2 ${
-        isWinner ? "bg-accent-green/10" : isLoser ? "opacity-60" : ""
-      }`}
+      className={`flex items-center justify-between gap-2 ${
+        mobile ? "px-3 py-2.5" : "px-2 py-1.5 sm:px-3 sm:py-2"
+      } ${isWinner ? "bg-accent-green/10" : isLoser ? "opacity-60" : ""}`}
     >
-      <div className="flex min-w-0 items-center gap-1.5">
+      <div className="flex min-w-0 flex-1 items-center gap-2">
         {!isPending && team && (
           <ClubDualSwatch club={swatchClub} size="xs" />
         )}
         <span
-          className={`truncate text-[10px] font-semibold sm:text-xs ${
-            isUser ? "text-accent-green" : isPending ? "text-gray-500" : "text-gray-200"
-          }`}
+          className={`min-w-0 break-words font-semibold leading-snug ${
+            mobile ? "text-xs" : "truncate text-[10px] sm:text-xs"
+          } ${isUser ? "text-accent-green" : isPending ? "text-gray-500" : "text-gray-200"}`}
         >
           {label}
         </span>

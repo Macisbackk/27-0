@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { SquadSlot } from "@/lib/types";
 import {
@@ -37,6 +37,14 @@ import { BracketMatchDetailsPanel } from "./BracketMatchDetailsPanel";
 import { BTN } from "@/lib/ui/design-system";
 import { GameButton } from "./ui/GameButton";
 import { EraChallengeCupBranding } from "./EraChallengeCupBranding";
+import { BracketMobileRoundNav } from "./BracketMobileRoundNav";
+
+const CUP_ROUND_SHORT: Record<number, string> = {
+  1: "R16",
+  2: "QF",
+  3: "SF",
+  4: "Final",
+};
 
 interface ChallengeCupBracketProps {
   squad: SquadSlot[];
@@ -71,8 +79,13 @@ export function ChallengeCupBracket({
     () => initialState ?? createChallengeCupBracket(seed, userClub)
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [mobileViewRound, setMobileViewRound] = useState(() => getActiveRound(state));
   const lookup = eraClubLookup ?? state.eraClubLookup;
   const activeRound = getActiveRound(state);
+
+  useEffect(() => {
+    setMobileViewRound(activeRound);
+  }, [activeRound]);
 
   const selectedMatch = selectedId
     ? state.matches.find((m) => m.id === selectedId)
@@ -145,97 +158,107 @@ export function ChallengeCupBracket({
     selectedId !== null && canSimulateMatch(state, selectedId);
 
   return (
-    <div className="w-full px-2 py-4 sm:px-4">
-      {eraMode ? (
-        <EraChallengeCupBranding
-          teamDisplayName={eraTeamDisplayName ?? userClub}
-          clubName={eraClubName}
-          year={eraTeamYear}
-          subtitle={
-            state.tournamentComplete
-              ? "Tournament complete"
-              : `${getCupRoundLabel(activeRound)} — simulate matches to advance`
-          }
-          compact
-          className="mb-4"
-        />
-      ) : (
-        <div className="text-center">
-          <p className="font-display text-xs font-bold uppercase tracking-[0.35em] text-theme-primary">
-            {headerLabel}
-          </p>
-          <h2 className="mt-2 font-display text-2xl font-black sm:text-3xl">
-            Knockout Bracket
-          </h2>
-          <p className="mt-2 text-sm text-gray-400">
-            {state.tournamentComplete
-              ? "Tournament complete"
-              : `${getCupRoundLabel(activeRound)} — simulate matches to advance`}
-          </p>
-        </div>
-      )}
+    <div className="w-full px-2 py-4 pb-28 sm:px-4 md:pb-6">
+      <div className="bracket-header-panel mx-auto max-w-3xl rounded-xl border border-pitch-600/45 bg-pitch-900/55 px-4 py-4 backdrop-blur-sm sm:py-5">
+        {eraMode ? (
+          <EraChallengeCupBranding
+            teamDisplayName={eraTeamDisplayName ?? userClub}
+            clubName={eraClubName}
+            year={eraTeamYear}
+            subtitle={
+              state.tournamentComplete
+                ? "Tournament complete"
+                : `${getCupRoundLabel(activeRound)} — simulate matches to advance`
+            }
+            compact
+          />
+        ) : (
+          <div className="text-center">
+            <p className="font-display text-xs font-bold uppercase tracking-[0.35em] text-theme-primary">
+              {headerLabel}
+            </p>
+            <h2 className="mt-2 font-display text-2xl font-black sm:text-3xl">
+              Knockout Bracket
+            </h2>
+            <p className="mt-2 text-sm text-gray-400">
+              {state.tournamentComplete
+                ? "Tournament complete"
+                : `${getCupRoundLabel(activeRound)} — simulate matches to advance`}
+            </p>
+          </div>
+        )}
 
-      {!eraMode && (
-        <div className="mx-auto mt-3 flex max-w-md flex-wrap items-center justify-center gap-2">
-          {state.byeTeams.map((club) => (
-            <span
-              key={club}
-              className="rounded-full border border-theme-primary/30 bg-theme-primary/10 px-3 py-1 text-[10px] font-semibold text-theme-primary"
-            >
-              {club} — Quarter-Final Bye
-            </span>
-          ))}
-        </div>
-      )}
+        {!eraMode && state.byeTeams.length > 0 && (
+          <div className="mx-auto mt-3 flex max-w-md flex-wrap items-center justify-center gap-2">
+            {state.byeTeams.map((club) => (
+              <span
+                key={club}
+                className="rounded-full border border-theme-primary/30 bg-theme-primary/10 px-3 py-1 text-[10px] font-semibold text-theme-primary"
+              >
+                {club} — Quarter-Final Bye
+              </span>
+            ))}
+          </div>
+        )}
 
-      {eraMode && state.byeTeams.length > 0 && (
-        <div className="mx-auto mt-2 flex max-w-md flex-wrap items-center justify-center gap-2">
-          {state.byeTeams.map((club) => (
-            <span
-              key={club}
-              className="rounded-full border border-accent-gold/30 bg-accent-gold/10 px-3 py-1 text-[10px] font-semibold text-accent-gold"
-            >
-              {club} — Quarter-Final Bye
-            </span>
-          ))}
-        </div>
-      )}
-
-      <div className="mt-5 flex flex-wrap justify-center gap-2">
-        <GameButton
-          variant="theme"
-          size="md"
-          fullWidth={false}
-          disabled={!canSimSelected}
-          onClick={() => selectedId && handleSimulateMatch(selectedId)}
-          className="disabled:opacity-40"
-        >
-          Simulate Selected Match
-        </GameButton>
-        <GameButton
-          variant="secondary"
-          size="md"
-          fullWidth={false}
-          disabled={!canSimRound}
-          onClick={handleSimulateRound}
-          className="disabled:opacity-40"
-        >
-          Simulate Round
-        </GameButton>
-        <GameButton
-          variant="theme"
-          size="md"
-          fullWidth={false}
-          disabled={state.tournamentComplete}
-          onClick={handleSimulateTournament}
-          className="disabled:opacity-40"
-        >
-          Simulate Tournament
-        </GameButton>
+        {eraMode && state.byeTeams.length > 0 && (
+          <div className="mx-auto mt-3 flex max-w-md flex-wrap items-center justify-center gap-2">
+            {state.byeTeams.map((club) => (
+              <span
+                key={club}
+                className="rounded-full border border-accent-gold/30 bg-accent-gold/10 px-3 py-1 text-[10px] font-semibold text-accent-gold"
+              >
+                {club} — Quarter-Final Bye
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
-      <div className="mt-6 overflow-x-auto pb-4 md:overflow-x-visible md:pb-0">
-        <div className="mx-auto flex w-full min-w-[min(100%,720px)] max-w-5xl items-stretch justify-between gap-2 sm:gap-4 md:min-w-0 md:max-w-full">
+      <div className="mx-auto mt-4 max-w-3xl">
+        <BracketMobileRoundNav
+          rounds={ROUNDS}
+          viewRound={mobileViewRound}
+          activeRound={activeRound}
+          onViewRoundChange={setMobileViewRound}
+          getLabel={getCupRoundLabel}
+          getShortLabel={(round) => CUP_ROUND_SHORT[round] ?? getCupRoundLabel(round)}
+          activeClassName={
+            eraMode
+              ? "border-accent-gold/55 bg-accent-gold/12 text-accent-gold"
+              : undefined
+          }
+        />
+      </div>
+
+      <div className="mx-auto mt-5 max-w-3xl space-y-3 md:hidden">
+        <p className="text-center font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
+          {getCupRoundLabel(mobileViewRound)}
+        </p>
+        {getMatchesForRound(state, mobileViewRound).map((match) => (
+          <BracketMatchCard
+            key={match.id}
+            match={match}
+            selected={selectedId === match.id}
+            onSelect={() =>
+              setSelectedId((prev) => {
+                const next = prev === match.id ? null : match.id;
+                if (next !== null) playUiClick();
+                return next;
+              })
+            }
+            isActiveRound={mobileViewRound === activeRound}
+            userClub={userClub}
+            byeTeams={state.byeTeams}
+            eraClubLookup={lookup}
+            eraMode={eraMode}
+            mobile
+          />
+        ))}
+      </div>
+
+      <div className="mt-6 hidden overflow-x-auto pb-4 md:block md:overflow-x-visible md:pb-0">
+        <div className="mx-auto flex w-full min-w-0 max-w-5xl items-stretch justify-between gap-2 sm:gap-4">
           {ROUNDS.map((round) => (
             <BracketRoundColumn
               key={round}
@@ -268,9 +291,42 @@ export function ChallengeCupBracket({
               playPanelClose();
               setSelectedId(null);
             }}
+            className="max-md:mb-4"
           />
         )}
       </AnimatePresence>
+
+      <div className="bracket-sticky-actions mx-auto max-w-3xl md:mt-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
+          <GameButton
+            variant="theme"
+            size="md"
+            disabled={!canSimSelected}
+            onClick={() => selectedId && handleSimulateMatch(selectedId)}
+            className="w-full sm:w-auto disabled:opacity-40"
+          >
+            Simulate Selected Match
+          </GameButton>
+          <GameButton
+            variant="secondary"
+            size="md"
+            disabled={!canSimRound}
+            onClick={handleSimulateRound}
+            className="w-full sm:w-auto disabled:opacity-40"
+          >
+            Simulate Round
+          </GameButton>
+          <GameButton
+            variant="theme"
+            size="md"
+            disabled={state.tournamentComplete}
+            onClick={handleSimulateTournament}
+            className="w-full sm:w-auto disabled:opacity-40"
+          >
+            Simulate Tournament
+          </GameButton>
+        </div>
+      </div>
     </div>
   );
 }
@@ -336,6 +392,7 @@ function BracketMatchCard({
   byeTeams,
   eraClubLookup,
   eraMode,
+  mobile = false,
 }: {
   match: BracketMatch;
   selected: boolean;
@@ -345,6 +402,7 @@ function BracketMatchCard({
   byeTeams: [string, string];
   eraClubLookup?: Record<string, string>;
   eraMode: boolean;
+  mobile?: boolean;
 }) {
   const userAccent = eraMode ? "text-accent-gold" : "text-mode-current";
   const isComplete = match.status === "complete";
@@ -356,7 +414,9 @@ function BracketMatchCard({
       type="button"
       onClick={onSelect}
       disabled={isPending}
-      className={`cup-bracket-match w-full rounded-lg border text-left transition ${
+      className={`cup-bracket-match w-full rounded-xl border text-left transition ${
+        mobile ? "min-h-[88px] shadow-sm" : "rounded-lg"
+      } ${
         selected
           ? "border-mode-current/50 bg-mode-current/10 ring-1 ring-mode-current/30"
           : isReady && isActiveRound
@@ -372,6 +432,7 @@ function BracketMatchCard({
         isUser={match.homeTeam === userClub}
         eraClubLookup={eraClubLookup}
         eraMode={eraMode}
+        mobile={mobile}
         showByeAdvance={
           match.round === 2 &&
           match.status !== "complete" &&
@@ -388,6 +449,7 @@ function BracketMatchCard({
         isUser={match.awayTeam === userClub}
         eraClubLookup={eraClubLookup}
         eraMode={eraMode}
+        mobile={mobile}
         showByeAdvance={
           match.round === 2 &&
           match.status !== "complete" &&
@@ -413,6 +475,7 @@ function BracketTeamRow({
   eraClubLookup,
   eraMode,
   showByeAdvance,
+  mobile = false,
 }: {
   team: string | null;
   score: number | null;
@@ -422,6 +485,7 @@ function BracketTeamRow({
   eraClubLookup?: Record<string, string>;
   eraMode: boolean;
   showByeAdvance?: boolean;
+  mobile?: boolean;
 }) {
   const userAccent = eraMode ? "text-accent-gold" : "text-mode-current";
   const byeAccent = eraMode ? "text-accent-gold/90" : "text-mode-current/90";
@@ -445,16 +509,16 @@ function BracketTeamRow({
 
   return (
     <div
-      className={`px-2 py-1.5 sm:px-2.5 ${
+      className={`${mobile ? "px-3 py-2" : "px-2 py-1.5 sm:px-2.5"} ${
         isWinner ? "bg-success/10" : isLoser ? "opacity-45" : ""
       } ${isUser ? "font-semibold" : ""}`}
     >
       <div className="flex items-center gap-2">
         <ClubDualSwatch club={colorClub} size="xs" />
         <span
-          className={`min-w-0 flex-1 break-words text-[10px] font-bold leading-snug sm:text-[11px] ${
-            isUser ? userAccent : ""
-          }`}
+          className={`min-w-0 flex-1 break-words font-bold leading-snug ${
+            mobile ? "text-xs" : "text-[10px] sm:text-[11px]"
+          } ${isUser ? userAccent : ""}`}
           style={teamTextColor ? { color: teamTextColor } : undefined}
         >
           {team}
