@@ -2,6 +2,7 @@
 
 import type { SquadSlot } from "@/lib/types";
 import { getClubColors } from "@/lib/clubs";
+import { formatPitchSlotPlayerName } from "@/lib/players/display-name";
 import { getPlayerColorClub } from "@/lib/players/run-club";
 import { isPenaltyFreePlacement } from "@/lib/players/player-positions";
 import { POSITION_SHORT } from "@/lib/positions";
@@ -12,7 +13,7 @@ export const PITCH_SLOT_SIZE_CLASS =
   "h-[clamp(46px,10.5vw,76px)] w-[clamp(42px,9.5vw,70px)]";
 
 export const PITCH_SLOT_COMPACT_CLASS =
-  "h-[clamp(38px,8.5vw,58px)] w-[clamp(34px,7.5vw,54px)]";
+  "h-[clamp(40px,9vw,60px)] w-[clamp(38px,8.5vw,56px)]";
 
 interface PitchSlotCardProps {
   slot: SquadSlot;
@@ -41,8 +42,8 @@ export function PitchSlotCard({
   return (
     <div
       className={`pitch-slot-card flex shrink-0 flex-col rounded-lg border-2 border-accent-green/50 bg-black/70 shadow-[0_0_10px_rgba(34,197,94,0.2)] ${
-        compact ? `${PITCH_SLOT_COMPACT_CLASS} overflow-visible` : `${PITCH_SLOT_SIZE_CLASS} overflow-hidden`
-      } ${className}`}
+        compact ? PITCH_SLOT_COMPACT_CLASS : PITCH_SLOT_SIZE_CLASS
+      } overflow-hidden ${className}`}
       title={player.name}
     >
       <div className="flex h-1 w-full shrink-0">
@@ -62,8 +63,14 @@ export function PitchSlotCard({
             {ratingLabel}
           </span>
         )}
-        <p className="line-clamp-2 w-full break-words text-center font-display text-[7px] font-semibold leading-tight text-white sm:text-[8px]">
-          {player.name}
+        <p
+          className={`w-full text-center font-display font-semibold leading-tight text-white ${
+            compact
+              ? "truncate px-0.5 text-[8px] sm:text-[9px]"
+              : "line-clamp-2 break-words text-[7px] sm:text-[8px]"
+          }`}
+        >
+          {formatPitchSlotPlayerName(player.name, compact)}
         </p>
       </div>
     </div>

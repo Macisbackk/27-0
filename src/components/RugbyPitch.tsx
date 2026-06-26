@@ -110,7 +110,7 @@ function RugbyPitchInner({
       <div
         className={`mx-auto w-full ${
           formationOnly
-            ? "max-w-[min(100%,340px)]"
+            ? "max-w-[min(100%,360px)]"
             : compact
               ? "max-w-[380px]"
               : "max-w-[min(100%,360px)] sm:max-w-[520px] md:max-w-[600px]"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { SquadSlot } from "@/lib/types";
 import {
@@ -47,6 +47,29 @@ interface PlayoffBracketProps {
 
 const ROUNDS = [1, 2, 3] as const;
 
+function isPlayoffRoundComplete(
+  state: PlayoffBracketState,
+  round: number
+): boolean {
+  const matches = getMatchesForRound(state, round);
+  return matches.length > 0 && matches.every((m) => m.status === "complete");
+}
+
+function pickMatchForDetails(
+  state: PlayoffBracketState,
+  round: number
+): string | null {
+  const roundMatches = getMatchesForRound(state, round);
+  const userMatch = roundMatches.find(
+    (m) => m.isUserMatch && m.status === "complete"
+  );
+  if (userMatch) return userMatch.id;
+  const lastCompleted = [...roundMatches]
+    .reverse()
+    .find((m) => m.status === "complete");
+  return lastCompleted?.id ?? null;
+}
+
 export function PlayoffBracket({
   squad,
   seed,
@@ -62,11 +85,8 @@ export function PlayoffBracket({
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mobileViewRound, setMobileViewRound] = useState(() => getActiveRound(state));
+  const matchDetailsRef = useRef<HTMLDivElement>(null);
   const activeRound = getActiveRound(state);
-
-  useEffect(() => {
-    setMobileViewRound(activeRound);
-  }, [activeRound]);
 
   const selectedMatch = selectedId
     ? state.matches.find((m) => m.id === selectedId)
@@ -81,10 +101,33 @@ export function PlayoffBracket({
     [onComplete, squad]
   );
 
+  const showProceedToNextRound = useMemo(
+    () =>
+      !state.tournamentComplete &&
+      activeRound > mobileViewRound &&
+      isPlayoffRoundComplete(state, mobileViewRound),
+    [state, activeRound, mobileViewRound]
+  );
+
+  const handleProceedToNextRound = useCallback(() => {
+    playUiClick();
+    setSelectedId(null);
+    setMobileViewRound(activeRound);
+  }, [activeRound]);
+
+  useEffect(() => {
+    if (!selectedId) return;
+    const match = state.matches.find((m) => m.id === selectedId);
+    if (match?.status !== "complete") return;
+    if (!window.matchMedia("(max-width: 767px)").matches) return;
+    matchDetailsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [selectedId, state.matches]);
+
   const handleSimulateMatch = useCallback(
     (matchId: string) => {
       if (!canSimulatePlayoffMatch(state, matchId)) return;
       playSimulateRound();
+      const simulatedRound = state.matches.find((m) => m.id === matchId)?.round;
       const next = simulatePlayoffBracketMatch(state, matchId, squad);
       const completed = next.matches.find((m) => m.id === matchId);
 
@@ -100,7 +143,18 @@ export function PlayoffBracket({
       }
 
       setState(next);
+      setSelectedId(matchId);
       finishIfComplete(next);
+
+      if (
+        simulatedRound !== undefined &&
+        isPlayoffRoundComplete(next, simulatedRound) &&
+        getActiveRound(next) > simulatedRound &&
+        window.matchMedia("(max-width: 767px)").matches
+      ) {
+        // Keep mobile on the finished round until the player taps Proceed.
+        setMobileViewRound(simulatedRound);
+      }
     },
     [state, squad, finishIfComplete]
   );
@@ -108,8 +162,18 @@ export function PlayoffBracket({
   const handleSimulateRound = useCallback(() => {
     playSimulateRound();
     const next = simulatePlayoffBracketRound(state, activeRound, squad);
+    const detailsId = pickMatchForDetails(next, activeRound);
     setState(next);
+    if (detailsId) setSelectedId(detailsId);
     finishIfComplete(next);
+
+    if (
+      isPlayoffRoundComplete(next, activeRound) &&
+      getActiveRound(next) > activeRound &&
+      window.matchMedia("(max-width: 767px)").matches
+    ) {
+      setMobileViewRound(activeRound);
+    }
   }, [state, activeRound, squad, finishIfComplete]);
 
   const canSimRound = useMemo(
@@ -215,25 +279,38 @@ export function PlayoffBracket({
 
         <AnimatePresence>
           {selectedMatch && selectedMatch.status === "complete" && (
-            <PlayoffMatchDetailsPanel
-              match={selectedMatch}
-              onClose={() => {
-                playPanelClose();
-                setSelectedId(null);
-              }}
-              className="max-md:mb-4"
-            />
+            <div ref={matchDetailsRef} className="max-md:mb-4">
+              <PlayoffMatchDetailsPanel
+                match={selectedMatch}
+                onClose={() => {
+                  playPanelClose();
+                  setSelectedId(null);
+                }}
+              />
+            </div>
           )}
         </AnimatePresence>
 
         <div className="bracket-sticky-actions mx-auto max-w-3xl md:mt-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
+            {showProceedToNextRound && (
+              <GameButton
+                variant="current"
+                size="md"
+                onClick={handleProceedToNextRound}
+                className="w-full sm:w-auto md:hidden"
+              >
+                Proceed to {getPlayoffRoundLabel(activeRound)}
+              </GameButton>
+            )}
             <GameButton
               variant="current"
               size="md"
               disabled={!canSimSelected}
               onClick={() => selectedId && handleSimulateMatch(selectedId)}
-              className="w-full sm:w-auto disabled:opacity-40"
+              className={`w-full sm:w-auto disabled:opacity-40 ${
+                showProceedToNextRound ? "hidden md:inline-flex" : ""
+              }`}
             >
               Simulate Selected Match
             </GameButton>
@@ -242,7 +319,9 @@ export function PlayoffBracket({
               size="md"
               disabled={!canSimRound}
               onClick={handleSimulateRound}
-              className="w-full sm:w-auto disabled:opacity-40"
+              className={`w-full sm:w-auto disabled:opacity-40 ${
+                showProceedToNextRound ? "hidden md:inline-flex" : ""
+              }`}
             >
               Simulate Round
             </GameButton>

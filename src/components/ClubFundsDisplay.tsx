@@ -16,6 +16,7 @@ import {
 import { playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { BodyPortal } from "./ui/BodyPortal";
 
 interface ClubFundsDisplayProps {
   /** desktop = beside auth on sm+; mobile-under-logo = centred plain text under logo */
@@ -47,7 +48,7 @@ export function ClubFundsDisplay({
   }, []);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || isMobileUnderLogo) return;
 
     const onPointerDown = (event: MouseEvent) => {
       if (!rootRef.current?.contains(event.target as Node)) {
@@ -69,7 +70,16 @@ export function ClubFundsDisplay({
       document.removeEventListener("mousedown", onPointerDown);
       document.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+  }, [open, isMobileUnderLogo]);
+
+  useEffect(() => {
+    if (!open || !isMobileUnderLogo) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open, isMobileUnderLogo]);
 
   const visibilityClass = isMobileUnderLogo
     ? "sm:hidden"
@@ -131,68 +141,105 @@ export function ClubFundsDisplay({
         </span>
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <>
-            {isMobileUnderLogo && (
-              <motion.button
+      {open && isMobileUnderLogo && (
+        <BodyPortal>
+          <AnimatePresence>
+            <motion.div
+              key="club-funds-mobile"
+              className="fixed inset-0 z-[120]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <button
                 type="button"
                 aria-label="Close Club Funds panel"
-                className="fixed inset-0 z-[79] bg-black/50 sm:hidden"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                className="absolute inset-0 bg-black/50"
                 onClick={() => {
                   playPanelClose();
                   setOpen(false);
                 }}
               />
-            )}
-            <motion.div
-              role="dialog"
-              aria-label="Earn Club Funds"
-              className={`z-[80] w-[min(18rem,calc(100vw-2rem))] max-h-[min(70vh,24rem)] overflow-y-auto ${CARD.panel} border border-theme-tertiary/35 p-3 shadow-xl ${
-                isMobileUnderLogo
-                  ? "fixed left-1/2 top-1/2 max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 sm:absolute sm:left-1/2 sm:top-[calc(100%+0.35rem)] sm:max-h-none sm:-translate-x-1/2 sm:translate-y-0"
-                  : "absolute right-0 top-[calc(100%+0.5rem)]"
-              }`}
+              <motion.div
+                role="dialog"
+                aria-label="Earn Club Funds"
+                className={`absolute left-1/2 top-1/2 w-[min(18rem,calc(100vw-1.5rem))] max-h-[min(70dvh,24rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto overscroll-contain ${CARD.panel} border border-theme-tertiary/35 p-3 shadow-xl`}
+                initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 4, scale: 0.98 }}
+                transition={{ duration: 0.18 }}
+                onClick={(event) => event.stopPropagation()}
+              >
+                <ClubFundsPanelContent
+                  balance={balance}
+                  totalEarned={totalEarned}
+                />
+              </motion.div>
+            </motion.div>
+          </AnimatePresence>
+        </BodyPortal>
+      )}
+
+      <AnimatePresence>
+        {open && !isMobileUnderLogo && (
+          <motion.div
+            key="club-funds-desktop"
+            role="dialog"
+            aria-label="Earn Club Funds"
+            className={`absolute right-0 top-[calc(100%+0.5rem)] z-[80] w-[min(18rem,calc(100vw-2rem))] max-h-[min(70vh,24rem)] overflow-y-auto ${CARD.panel} border border-theme-tertiary/35 p-3 shadow-xl`}
             initial={{ opacity: 0, y: -6, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.98 }}
             transition={{ duration: 0.18 }}
           >
-            <p className={TYPO.sectionLabel}>Earn Club Funds</p>
-            <div className={`mt-2 space-y-1 ${TYPO.bodySm}`}>
-              <p className="flex items-center justify-between gap-2 text-gray-300">
-                <span>Current balance</span>
-                <span className="shrink-0 font-semibold tabular-nums text-accent-green">
-                  {formatClubFundsExact(balance)}
-                </span>
-              </p>
-              <p className="flex items-center justify-between gap-2 text-gray-400">
-                <span>Lifetime earned</span>
-                <span className="shrink-0 font-medium tabular-nums text-gray-300">
-                  {formatClubFundsExact(totalEarned)}
-                </span>
-              </p>
-            </div>
-            <ul className={`mt-3 space-y-1.5 border-t border-pitch-700/50 pt-3 ${TYPO.bodySm}`}>
-              {CLUB_FUNDS_INFO_LINES.map((line) => (
-                <li
-                  key={line.label}
-                  className="flex items-center justify-between gap-2 text-gray-300"
-                >
-                  <span className="min-w-0 truncate">{line.label}</span>
-                  <span className="shrink-0 font-semibold text-accent-green">
-                    {formatClubFundsExact(line.amount)}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <ClubFundsPanelContent
+              balance={balance}
+              totalEarned={totalEarned}
+            />
           </motion.div>
-          </>
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+function ClubFundsPanelContent({
+  balance,
+  totalEarned,
+}: {
+  balance: number;
+  totalEarned: number;
+}) {
+  return (
+    <>
+      <p className={TYPO.sectionLabel}>Earn Club Funds</p>
+      <div className={`mt-2 space-y-1 ${TYPO.bodySm}`}>
+        <p className="flex items-center justify-between gap-2 text-gray-300">
+          <span>Current balance</span>
+          <span className="shrink-0 font-semibold tabular-nums text-accent-green">
+            {formatClubFundsExact(balance)}
+          </span>
+        </p>
+        <p className="flex items-center justify-between gap-2 text-gray-400">
+          <span>Lifetime earned</span>
+          <span className="shrink-0 font-medium tabular-nums text-gray-300">
+            {formatClubFundsExact(totalEarned)}
+          </span>
+        </p>
+      </div>
+      <ul className={`mt-3 space-y-1.5 border-t border-pitch-700/50 pt-3 ${TYPO.bodySm}`}>
+        {CLUB_FUNDS_INFO_LINES.map((line) => (
+          <li
+            key={line.label}
+            className="flex items-center justify-between gap-2 text-gray-300"
+          >
+            <span className="min-w-0">{line.label}</span>
+            <span className="shrink-0 font-semibold text-accent-green">
+              {formatClubFundsExact(line.amount)}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }

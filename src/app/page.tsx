@@ -6,7 +6,7 @@ import { HomeModeSelector } from "@/components/HomeModeSelector";
 import { HowToPlaySection } from "@/components/HowToPlaySection";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
 import { LogoMark } from "@/components/LogoMark";
-import { CARD, LINK, SPACING } from "@/lib/ui/design-system";
+import { LINK, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 export default function HomePage() {
@@ -40,7 +40,7 @@ export default function HomePage() {
           <HomeModeSelector />
         </div>
 
-        <div className={`mt-8 ${CARD.panel} ${SPACING.cardPaddingLg}`}>
+        <div className="mt-8">
           <HowToPlaySection />
         </div>
 

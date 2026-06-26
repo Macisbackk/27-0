@@ -3,7 +3,6 @@ import { formatPlayerDisplayName } from "./prime-year";
 import { POSITION_LABELS } from "../positions";
 import { getPlayerAge } from "./player-age";
 import { getPlayerEligiblePositions } from "./player-positions";
-import type { TeamYearRosterEntry } from "./team-year-rosters";
 
 export type ShowcaseSortKey =
   | "rating"
@@ -32,8 +31,6 @@ export const TIER_FILTER_LABELS: Record<Exclude<TierFilter, "all">, string> = {
   squad: "Squad Player",
 };
 
-export type ShowcaseBrowseMode = "all" | "teamYear";
-
 export type AgeFilter =
   | "all"
   | "under21"
@@ -60,11 +57,7 @@ export interface ShowcaseFilters {
   club: string;
   ratingMin: RatingFilter;
   tier: TierFilter;
-  yearsActive: string;
   age: AgeFilter;
-  browseMode: ShowcaseBrowseMode;
-  teamYearTeam: string;
-  teamYearYear: string;
 }
 
 /** Showcase tier for filter chips — legends are always Legend tier. */
@@ -177,79 +170,8 @@ function passesStatusFilter(
   return status === "all" || player.category === status;
 }
 
-/** 2. Team — roster membership (Team > Year mode) or club name */
-function passesTeamFilter(
-  player: Player,
-  filters: ShowcaseFilters,
-  teamYearIds: Set<string> | null | undefined
-): boolean {
-  if (filters.browseMode === "teamYear") {
-    return teamYearIds?.has(player.id) ?? false;
-  }
+function passesTeamFilter(player: Player, filters: ShowcaseFilters): boolean {
   return filters.club === "all" || player.club === filters.club;
-}
-
-/** 3. Year — yearsActive text (Team > Year uses roster membership instead) */
-function passesYearFilter(player: Player, filters: ShowcaseFilters): boolean {
-  if (filters.browseMode === "teamYear") return true;
-  const yearQuery = filters.yearsActive.trim();
-  if (!yearQuery) return true;
-  const cardYear = player.year ?? player.cardYear ?? player.primeYear;
-  if (cardYear !== undefined && String(cardYear).includes(yearQuery)) {
-    return true;
-  }
-  return player.yearsActive
-    .toLowerCase()
-    .includes(yearQuery.toLowerCase());
-}
-
-function resolveTeamYearEntry(
-  entries: TeamYearRosterEntry[] | undefined,
-  filterTeam: string,
-  filterYear: string
-): TeamYearRosterEntry | null {
-  if (!entries?.length) return null;
-  let matched = entries;
-  if (filterTeam !== "all") {
-    matched = matched.filter((e) => e.team === filterTeam);
-  }
-  if (filterYear) {
-    matched = matched.filter((e) => e.year === filterYear);
-  }
-  const pool = matched.length > 0 ? matched : entries;
-  return [...pool].sort(
-    (a, b) =>
-      a.team.localeCompare(b.team) || Number(b.year) - Number(a.year)
-  )[0];
-}
-
-/** Sort by team (A–Z), then year (newest first), then name. */
-export function sortShowcasePlayersByTeamYear(
-  players: Player[],
-  rosterIndex: Map<string, TeamYearRosterEntry[]>,
-  filterTeam: string,
-  filterYear: string
-): Player[] {
-  return [...players].sort((a, b) => {
-    const ea = resolveTeamYearEntry(
-      rosterIndex.get(a.id),
-      filterTeam,
-      filterYear
-    );
-    const eb = resolveTeamYearEntry(
-      rosterIndex.get(b.id),
-      filterTeam,
-      filterYear
-    );
-    if (!ea && !eb) return a.name.localeCompare(b.name);
-    if (!ea) return 1;
-    if (!eb) return -1;
-    const teamCmp = ea.team.localeCompare(eb.team);
-    if (teamCmp !== 0) return teamCmp;
-    const yearCmp = Number(eb.year) - Number(ea.year);
-    if (yearCmp !== 0) return yearCmp;
-    return a.name.localeCompare(b.name);
-  });
 }
 
 function passesSecondaryFilters(
@@ -268,20 +190,15 @@ function passesSecondaryFilters(
   return true;
 }
 
-/**
- * Single showcase filter pipeline:
- * Status → Team → Year → Age → Search → (position/rating/tier refinements)
- */
+/** Status → Team → Age → Search → (position/rating/tier refinements) */
 export function filterShowcasePlayers(
   players: Player[],
-  filters: ShowcaseFilters,
-  teamYearIds?: Set<string> | null
+  filters: ShowcaseFilters
 ): Player[] {
   return players.filter((player) => {
     if (player.availableInGame === false) return false;
     if (!passesStatusFilter(player, filters.status)) return false;
-    if (!passesTeamFilter(player, filters, teamYearIds)) return false;
-    if (!passesYearFilter(player, filters)) return false;
+    if (!passesTeamFilter(player, filters)) return false;
     if (!matchesAgeFilter(player, filters.age)) return false;
     if (!matchesSearch(player, filters.search)) return false;
     if (!passesSecondaryFilters(player, filters)) return false;
@@ -294,19 +211,9 @@ export function applyShowcasePipeline(
   players: Player[],
   filters: ShowcaseFilters,
   sortKey: ShowcaseSortKey,
-  sortDir: ShowcaseSortDir,
-  teamYearIds?: Set<string> | null,
-  teamYearIndex?: Map<string, TeamYearRosterEntry[]> | null
+  sortDir: ShowcaseSortDir
 ): Player[] {
-  const filtered = filterShowcasePlayers(players, filters, teamYearIds);
-  if (filters.browseMode === "teamYear" && teamYearIndex) {
-    return sortShowcasePlayersByTeamYear(
-      filtered,
-      teamYearIndex,
-      filters.teamYearTeam,
-      filters.teamYearYear
-    );
-  }
+  const filtered = filterShowcasePlayers(players, filters);
   return sortShowcasePlayers(filtered, sortKey, sortDir);
 }
 

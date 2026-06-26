@@ -11,13 +11,6 @@ import {
 import {
   getShowcasePlayers,
   formatValue,
-  getRosterPlayerIds,
-  getRosterPlayerIdsForTeamAllYears,
-  getAllRosterPlayerIds,
-  buildTeamYearRosterIndex,
-  getTeamsWithYearRosters,
-  getYearsForTeam,
-  hasTeamYearRoster,
 } from "@/lib/players";
 import type { PlayerCategory, Position } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
@@ -29,7 +22,6 @@ import {
   TIER_FILTER_LABELS,
   type AgeFilter,
   type RatingFilter,
-  type ShowcaseBrowseMode,
   type ShowcaseFilters,
   type ShowcaseSortDir,
   type ShowcaseSortKey,
@@ -56,8 +48,6 @@ import { TYPO } from "@/lib/ui/typography";
 const ALL_PLAYERS = getShowcasePlayers();
 const POSITIONS = Object.keys(POSITION_LABELS) as Position[];
 
-const TEAM_YEAR_TEAMS = getTeamsWithYearRosters();
-
 const DEFAULT_FILTERS: ShowcaseFilters = {
   search: "",
   status: "current",
@@ -65,11 +55,7 @@ const DEFAULT_FILTERS: ShowcaseFilters = {
   club: "all",
   ratingMin: "all",
   tier: "all",
-  yearsActive: "",
   age: "all",
-  browseMode: "all",
-  teamYearTeam: "all",
-  teamYearYear: "",
 };
 
 const TIER_OPTIONS = Object.entries(TIER_FILTER_LABELS) as [
@@ -109,57 +95,15 @@ export function PlayerShowcase() {
     [filters, debouncedSearch]
   );
 
-  const teamYearIndex = useMemo(() => buildTeamYearRosterIndex(), []);
-
-  const teamYearYears = useMemo(
-    () =>
-      filters.teamYearTeam !== "all"
-        ? getYearsForTeam(filters.teamYearTeam)
-        : [],
-    [filters.teamYearTeam]
-  );
-
-  const teamYearRosterIds = useMemo(() => {
-    if (activeFiltersState.browseMode !== "teamYear") return null;
-
-    if (activeFiltersState.teamYearTeam === "all") {
-      if (!activeFiltersState.teamYearYear) {
-        return getAllRosterPlayerIds();
-      }
-      const ids = new Set<string>();
-      for (const team of TEAM_YEAR_TEAMS) {
-        for (const id of getRosterPlayerIds(team, activeFiltersState.teamYearYear)) {
-          ids.add(id);
-        }
-      }
-      return ids;
-    }
-
-    if (!activeFiltersState.teamYearYear) {
-      return new Set(
-        getRosterPlayerIdsForTeamAllYears(activeFiltersState.teamYearTeam)
-      );
-    }
-
-    return new Set(
-      getRosterPlayerIds(
-        activeFiltersState.teamYearTeam,
-        activeFiltersState.teamYearYear
-      )
-    );
-  }, [activeFiltersState]);
-
   const filtered = useMemo(
     () =>
       applyShowcasePipeline(
         ALL_PLAYERS,
         activeFiltersState,
         sortKey,
-        sortDir,
-        teamYearRosterIds,
-        activeFiltersState.browseMode === "teamYear" ? teamYearIndex : null
+        sortDir
       ),
-    [activeFiltersState, sortKey, sortDir, teamYearRosterIds, teamYearIndex]
+    [activeFiltersState, sortKey, sortDir]
   );
 
   const filterResultsKey = useMemo(
@@ -171,11 +115,7 @@ export function PlayerShowcase() {
         filters.club,
         filters.ratingMin,
         filters.tier,
-        filters.yearsActive,
         filters.age,
-        filters.browseMode,
-        filters.teamYearTeam,
-        filters.teamYearYear,
         sortKey,
         sortDir,
       ].join("|"),
@@ -186,11 +126,7 @@ export function PlayerShowcase() {
       filters.club,
       filters.ratingMin,
       filters.tier,
-      filters.yearsActive,
       filters.age,
-      filters.browseMode,
-      filters.teamYearTeam,
-      filters.teamYearYear,
       sortKey,
       sortDir,
     ]
@@ -219,15 +155,6 @@ export function PlayerShowcase() {
     setCurrentPage(page);
     setExpandedPlayerId(null);
   }, []);
-
-  const teamYearEmpty =
-    activeFiltersState.browseMode === "teamYear" &&
-    activeFiltersState.teamYearTeam !== "all" &&
-    activeFiltersState.teamYearYear !== "" &&
-    !hasTeamYearRoster(
-      activeFiltersState.teamYearTeam,
-      activeFiltersState.teamYearYear
-    );
 
   const handleTogglePlayer = useCallback((player: Player) => {
     setExpandedPlayerId((current) =>
@@ -293,13 +220,6 @@ export function PlayerShowcase() {
         clear: () => updateFilters((f) => ({ ...f, tier: "all" })),
       });
     }
-    if (filters.yearsActive.trim()) {
-      chips.push({
-        key: "years",
-        label: `Years Active: ${filters.yearsActive.trim()}`,
-        clear: () => updateFilters((f) => ({ ...f, yearsActive: "" })),
-      });
-    }
     if (filters.age !== DEFAULT_FILTERS.age) {
       chips.push({
         key: "age",
@@ -307,39 +227,9 @@ export function PlayerShowcase() {
         clear: () => updateFilters((f) => ({ ...f, age: "all" })),
       });
     }
-    if (filters.browseMode === "teamYear") {
-      const squadLabel =
-        filters.teamYearTeam === "all"
-          ? "All Teams"
-          : filters.teamYearYear
-            ? `${filters.teamYearTeam} ${filters.teamYearYear}`
-            : `${filters.teamYearTeam} (all years)`;
-      chips.push({
-        key: "teamYear",
-        label: `Squad: ${squadLabel}`,
-        clear: () =>
-          updateFilters((f) => ({
-            ...f,
-            browseMode: "all",
-            teamYearTeam: "all",
-            teamYearYear: "",
-          })),
-      });
-    }
-    if (sortKey === "name") {
-      chips.push({
-        key: "alpha",
-        label: `A–Z: ${sortDir === "asc" ? "A→Z" : "Z→A"}`,
-        clear: () => {
-          playUiClick();
-          setSortKey("rating");
-          setSortDir("desc");
-        },
-      });
-    }
 
     return chips;
-  }, [filters, debouncedSearch, sortKey, sortDir, updateFilters]);
+  }, [filters, debouncedSearch, updateFilters]);
 
   const resetFilters = () => {
     playUiClick();
@@ -349,12 +239,6 @@ export function PlayerShowcase() {
     setSortDir("desc");
     setCurrentPage(1);
     setExpandedPlayerId(null);
-  };
-
-  const setAlphaSort = (dir: "asc" | "desc") => {
-    playUiClick();
-    setSortKey("name");
-    setSortDir(dir);
   };
 
   return (
@@ -406,7 +290,7 @@ export function PlayerShowcase() {
           }}
           className={`${CARD.panel} flex w-full items-center justify-between px-4 py-3 lg:hidden`}
         >
-          <span className={TYPO.sectionTitle}>Filters & Browse</span>
+          <span className={TYPO.sectionTitle}>Filters</span>
           <span className="text-xs text-gray-500">
             {filtersOpen ? "Hide" : "Show"}
           </span>
@@ -431,83 +315,6 @@ export function PlayerShowcase() {
           </div>
 
           <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overflow-x-hidden p-4 sm:p-5">
-          <FilterField label="Browse">
-            <div className="grid grid-cols-2 gap-2">
-              {(
-                [
-                  ["all", "All Players"],
-                  ["teamYear", "Teams"],
-                ] as const
-              ).map(([mode, label]) => (
-                <button
-                  key={mode}
-                  type="button"
-                  onClick={() =>
-                    updateFilters((f) => ({
-                      ...f,
-                      browseMode: mode as ShowcaseBrowseMode,
-                      teamYearTeam: "all",
-                      teamYearYear: "",
-                    }))
-                  }
-                  className={`btn-press rounded-lg border px-2 py-2 text-[11px] font-medium transition ${
-                    filters.browseMode === mode
-                      ? RL_FILTER_CHIP_ACTIVE
-                      : RL_FILTER_CHIP_IDLE
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </FilterField>
-
-          {filters.browseMode === "teamYear" && (
-            <>
-              <FilterField label="Team">
-                <select
-                  value={filters.teamYearTeam}
-                  onChange={(e) => {
-                    const team = e.target.value;
-                    updateFilters((f) => ({
-                      ...f,
-                      teamYearTeam: team,
-                      teamYearYear: "",
-                    }));
-                  }}
-                  className={RL_FILTER_INPUT_CLASS}
-                >
-                  <option value="all">All Teams</option>
-                  {TEAM_YEAR_TEAMS.map((team) => (
-                    <option key={team} value={team}>
-                      {team}
-                    </option>
-                  ))}
-                </select>
-              </FilterField>
-              {filters.teamYearTeam !== "all" && (
-                <FilterField label="Year">
-                  <select
-                    value={filters.teamYearYear}
-                    onChange={(e) =>
-                      updateFilters((f) => ({
-                        ...f,
-                        teamYearYear: e.target.value,
-                      }))
-                    }
-                    className={RL_FILTER_INPUT_CLASS}
-                  >
-                    <option value="">All years</option>
-                    {teamYearYears.map((year) => (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-                </FilterField>
-              )}
-            </>
-          )}
           <FilterField label="Search">
             <input
               type="search"
@@ -518,7 +325,6 @@ export function PlayerShowcase() {
             />
           </FilterField>
 
-          {filters.browseMode !== "teamYear" && (
           <FilterField label="Team">
             <select
               value={filters.club}
@@ -535,7 +341,6 @@ export function PlayerShowcase() {
               ))}
             </select>
           </FilterField>
-          )}
 
           <FilterField label="Position">
             <select
@@ -573,33 +378,6 @@ export function PlayerShowcase() {
               <option value="legend">Legend</option>
               <option value="all">All</option>
             </select>
-          </FilterField>
-
-          <FilterField label="Alphabetical">
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => setAlphaSort("asc")}
-                className={`btn-press rounded-lg border px-3 py-2 text-xs font-medium transition ${
-                  sortKey === "name" && sortDir === "asc"
-                    ? RL_FILTER_CHIP_ACTIVE
-                    : RL_FILTER_CHIP_IDLE
-                }`}
-              >
-                A → Z
-              </button>
-              <button
-                type="button"
-                onClick={() => setAlphaSort("desc")}
-                className={`btn-press rounded-lg border px-3 py-2 text-xs font-medium transition ${
-                  sortKey === "name" && sortDir === "desc"
-                    ? RL_FILTER_CHIP_ACTIVE
-                    : RL_FILTER_CHIP_IDLE
-                }`}
-              >
-                Z → A
-              </button>
-            </div>
           </FilterField>
 
           <FilterField label="Rating">
@@ -660,18 +438,6 @@ export function PlayerShowcase() {
             </select>
           </FilterField>
 
-          <FilterField label="Years Active">
-            <input
-              type="text"
-              value={filters.yearsActive}
-              onChange={(e) =>
-                setFilters((f) => ({ ...f, yearsActive: e.target.value }))
-              }
-              placeholder="e.g. 2010, Present"
-              className={RL_FILTER_INPUT_CLASS}
-            />
-          </FilterField>
-
           <FilterField label="Sort By">
             <div className="flex flex-wrap gap-2">
               {(
@@ -725,11 +491,7 @@ export function PlayerShowcase() {
             )}
           </div>
 
-          {teamYearEmpty ? (
-            <div className="card-glass px-4 py-10 text-center text-gray-500 sm:p-12">
-              No squad data available for this team/year yet.
-            </div>
-          ) : filtered.length === 0 ? (
+          {filtered.length === 0 ? (
             <div className="card-glass px-4 py-10 text-center text-gray-500 sm:p-12">
               No players match your filters. Try adjusting or reset.
             </div>

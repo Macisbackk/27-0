@@ -669,7 +669,7 @@ body {
     letter-spacing: 0.08em;
   }
 
-  /* 27-0 logo — default keeps green gradient; team themes use solid accent */
+  /* 27-0 logo — gradient text on "27" only; "-0" stays solid white */
   .logo-mark-rest {
     color: #ffffff;
   }
@@ -708,7 +708,7 @@ body {
 
   /**
    * Opaque era gold surfaces — avoids backdrop-filter compositing bugs on
-   * ancestors (matchday-panel / card-glass) that leave gradient buttons blank.
+   * ancestors (matchday-panel / card-glass) that leave buttons blank.
    */
   .era-start-btn {
     display: flex;
@@ -720,11 +720,7 @@ body {
     border-radius: 0.75rem;
     border: 2px solid color-mix(in srgb, var(--mode-era) 75%, #000);
     background-color: var(--mode-era);
-    background-image: linear-gradient(
-      90deg,
-      var(--mode-era) 0%,
-      color-mix(in srgb, var(--mode-era) 70%, #fff) 100%
-    );
+    background-image: none;
     color: #0a0f0d !important;
     font-family: var(--font-display), "Arial Black", Impact, sans-serif;
     font-size: 1.125rem;
@@ -747,7 +743,7 @@ body {
   }
 
   .era-start-btn:hover {
-    filter: brightness(1.05);
+    background-color: color-mix(in srgb, var(--mode-era) 90%, #ffffff);
   }
 
   .era-start-btn-compact {
@@ -782,11 +778,7 @@ body {
     border-radius: 0.75rem;
     border: 2px solid var(--mode-current-border);
     background-color: var(--mode-current);
-    background-image: linear-gradient(
-      90deg,
-      var(--mode-current) 0%,
-      var(--mode-current-2) 100%
-    );
+    background-image: none;
     color: #07130a !important;
     font-family: var(--font-display), "Arial Black", Impact, sans-serif;
     font-size: 1.125rem;
@@ -809,7 +801,7 @@ body {
   }
 
   .mode-start-btn:hover {
-    filter: brightness(1.05);
+    background-color: color-mix(in srgb, var(--mode-current) 90%, #ffffff);
     box-shadow:
       0 0 36px var(--mode-current-glow),
       inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -837,7 +829,7 @@ body {
   .mode-start-btn-hard {
     border-color: rgba(220, 38, 38, 0.85);
     background-color: #ef4444;
-    background-image: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
+    background-image: none;
     color: #ffffff !important;
     box-shadow:
       0 0 28px rgba(239, 68, 68, 0.45),
@@ -846,7 +838,7 @@ body {
 
   .mode-start-btn-hard:hover {
     background-color: #f87171;
-    background-image: linear-gradient(90deg, #f87171 0%, #ef4444 100%);
+    background-image: none;
   }
 
   .mode-start-btn-hard:active:not(:disabled) {
@@ -877,12 +869,8 @@ body {
 
   .tab-group-btn-active {
     border: 2px solid color-mix(in srgb, var(--theme-tertiary) 80%, transparent) !important;
-    background-color: var(--theme-gradient-from) !important;
-    background-image: linear-gradient(
-      135deg,
-      var(--theme-gradient-from) 0%,
-      color-mix(in srgb, var(--theme-gradient-to) 72%, var(--theme-tertiary)) 100%
-    ) !important;
+    background-color: var(--theme-primary) !important;
+    background-image: none !important;
     color: var(--theme-text-on-primary) !important;
     isolation: isolate;
     position: relative;
@@ -896,7 +884,7 @@ body {
   }
 
   .tab-group-btn-active:hover {
-    filter: brightness(1.05);
+    background-color: color-mix(in srgb, var(--theme-primary) 86%, var(--theme-tertiary)) !important;
   }
 
   .slot-reveal-window {
@@ -1106,27 +1094,18 @@ body {
   }
 
   .text-gradient {
-    background: linear-gradient(
-      90deg,
-      var(--theme-gradient-from) 0%,
-      var(--theme-gradient-to) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--theme-primary);
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
     text-shadow: none;
   }
 
   [data-ui-theme="default"] .text-gradient {
-    background: linear-gradient(
-      90deg,
-      var(--mode-current) 0%,
-      var(--mode-current-2) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: none;
+    color: var(--mode-current);
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
   }
 
   .card-glass {
@@ -1136,15 +1115,16 @@ body {
   .btn-primary {
     @apply rounded-xl px-6 py-3 font-semibold transition-all hover:opacity-90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40;
     border: 2px solid var(--theme-tertiary);
-    background: linear-gradient(
-      135deg,
-      var(--theme-gradient-from) 0%,
-      color-mix(in srgb, var(--theme-gradient-to) 72%, var(--theme-tertiary)) 100%
-    );
+    background-color: var(--theme-primary);
+    background-image: none;
     color: var(--theme-text-on-primary);
     box-shadow:
       0 0 0 1px var(--theme-tertiary),
       0 0 18px var(--theme-glow);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--theme-primary) 86%, var(--theme-tertiary));
   }
 
   .btn-secondary {
@@ -1158,18 +1138,16 @@ body {
   .btn-play-again {
     @apply rounded-xl font-display text-xl font-black uppercase tracking-wider transition-all hover:opacity-95 active:scale-[0.98];
     border: 2px solid var(--theme-tertiary);
-    background: linear-gradient(
-      135deg,
-      var(--theme-primary) 0%,
-      var(--theme-secondary) 100%
-    );
+    background-color: var(--theme-primary);
+    background-image: none;
     color: var(--theme-text-on-primary);
     box-shadow:
       0 0 0 1px var(--theme-tertiary),
       0 0 30px var(--theme-glow);
   }
 
-  .btn-play-again:hover {
+  .btn-play-again:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--theme-primary) 86%, var(--theme-tertiary));
     box-shadow: 0 0 40px var(--theme-glow);
   }
 
@@ -1422,17 +1400,19 @@ button.game-button,
 a.game-button--theme,
 button.game-button--theme,
 .game-button--theme {
-  background-color: var(--theme-gradient-from) !important;
-  background-image: linear-gradient(
-    135deg,
-    var(--theme-gradient-from) 0%,
-    color-mix(in srgb, var(--theme-gradient-to) 72%, var(--theme-tertiary)) 100%
-  ) !important;
+  background-color: var(--theme-primary) !important;
+  background-image: none !important;
   border: 2px solid var(--theme-tertiary) !important;
   color: var(--theme-text-on-primary) !important;
   box-shadow:
     0 0 0 1px var(--theme-tertiary),
     0 0 18px var(--theme-glow) !important;
+}
+
+a.game-button--theme:hover:not(:disabled),
+button.game-button--theme:hover:not(:disabled),
+.game-button--theme:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--theme-primary) 86%, var(--theme-tertiary)) !important;
 }
 
 a.game-button--secondary,
@@ -1471,7 +1451,7 @@ span.era-start-btn,
 button.era-start-btn,
 .era-start-btn {
   background-color: #fbbf24 !important;
-  background-image: linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%) !important;
+  background-image: none !important;
   color: #0a0f0d !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
@@ -1490,11 +1470,7 @@ button.era-tab-btn-active,
 button.tab-group-btn-active,
 .tab-group-btn-active {
   background-color: var(--theme-primary) !important;
-  background-image: linear-gradient(
-    135deg,
-    var(--theme-primary) 0%,
-    var(--theme-secondary) 100%
-  ) !important;
+  background-image: none !important;
   border-color: color-mix(in srgb, var(--theme-tertiary) 80%, transparent) !important;
   color: var(--theme-text-on-primary) !important;
   -webkit-backdrop-filter: none !important;
@@ -1505,11 +1481,7 @@ a .game-button--current,
 button.game-button--current,
 .game-button--current {
   background-color: var(--mode-current) !important;
-  background-image: linear-gradient(
-    90deg,
-    var(--mode-current) 0%,
-    var(--mode-current-2) 100%
-  ) !important;
+  background-image: none !important;
   border-color: var(--mode-current-border) !important;
   color: var(--mode-current-text) !important;
   -webkit-backdrop-filter: none !important;
@@ -1520,11 +1492,7 @@ a .game-button--era,
 button.game-button--era,
 .game-button--era {
   background-color: var(--mode-era) !important;
-  background-image: linear-gradient(
-    90deg,
-    var(--mode-era) 0%,
-    color-mix(in srgb, var(--mode-era) 70%, #fff) 100%
-  ) !important;
+  background-image: none !important;
   border-color: var(--mode-era-border) !important;
   color: var(--mode-era-text) !important;
   -webkit-backdrop-filter: none !important;
@@ -1533,7 +1501,7 @@ button.game-button--era,
 
 .game-button--current-hard {
   background-color: #ef4444 !important;
-  background-image: linear-gradient(90deg, #ef4444 0%, #f87171 100%) !important;
+  background-image: none !important;
   border-color: #dc2626 !important;
   color: #ffffff !important;
 }
@@ -1543,11 +1511,7 @@ span.mode-start-btn,
 button.mode-start-btn,
 .mode-start-btn {
   background-color: var(--mode-current) !important;
-  background-image: linear-gradient(
-    90deg,
-    var(--mode-current) 0%,
-    var(--mode-current-2) 100%
-  ) !important;
+  background-image: none !important;
   border-color: var(--mode-current-border) !important;
   color: #07130a !important;
   -webkit-backdrop-filter: none !important;
@@ -1559,7 +1523,7 @@ span.mode-start-btn-hard,
 button.mode-start-btn-hard,
 .mode-start-btn-hard {
   background-color: #ef4444 !important;
-  background-image: linear-gradient(90deg, #ef4444 0%, #f87171 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   border-color: #dc2626 !important;
   -webkit-backdrop-filter: none !important;

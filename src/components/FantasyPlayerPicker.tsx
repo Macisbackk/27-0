@@ -90,11 +90,7 @@ export function FantasyPlayerPicker({
       club: filters.club,
       ratingMin: "all" as const,
       tier: "all" as const,
-      yearsActive: "",
       age: "all" as const,
-      browseMode: "all" as const,
-      teamYearTeam: "all",
-      teamYearYear: "",
     };
 
     let result = filterShowcasePlayers(POOL, showcaseFilters).filter((p) =>
