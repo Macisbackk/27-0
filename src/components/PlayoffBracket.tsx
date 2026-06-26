@@ -28,7 +28,7 @@ import { BracketMobileRoundNav } from "./BracketMobileRoundNav";
 import { GameButton } from "./ui/GameButton";
 import {
   PLAYOFF_ROUND_SHORT,
-  PlayoffBracketColumnShell,
+  PlayoffBracketDesktop,
   PlayoffBracketHeader,
   PlayoffMatchCard,
 } from "./PlayoffBracketVisuals";
@@ -232,47 +232,35 @@ export function PlayoffBracket({
           ))}
         </div>
 
-        <div className="mt-6 hidden overflow-x-auto pb-2 md:block">
-          <div className="mx-auto flex min-w-0 max-w-4xl items-stretch justify-between gap-3 sm:gap-5">
-            {ROUNDS.map((round) => (
-              <PlayoffBracketColumnShell
-                key={round}
-                round={round}
-                activeRound={activeRound}
-              >
-                <div
-                  className="flex flex-1 flex-col justify-around gap-4"
-                  style={{ minHeight: `${Math.max(6, 8 - round) * 60}px` }}
-                >
-                  {getMatchesForRound(state, round).map((match) => (
-                    <PlayoffMatchCard
-                      key={match.id}
-                      match={match}
-                      selected={selectedId === match.id}
-                      onSelect={() => {
-                        if (
-                          match.status === "ready" &&
-                          canSimulatePlayoffMatch(state, match.id)
-                        ) {
-                          handleSimulateMatch(match.id);
-                          return;
-                        }
-                        if (match.status === "complete") {
-                          setSelectedId((prev) => {
-                            const next = prev === match.id ? null : match.id;
-                            if (next !== null) playUiClick();
-                            return next;
-                          });
-                        }
-                      }}
-                      isActiveRound={round === activeRound}
-                    />
-                  ))}
-                </div>
-              </PlayoffBracketColumnShell>
-            ))}
-          </div>
-        </div>
+        <PlayoffBracketDesktop
+          rounds={ROUNDS}
+          activeRound={activeRound}
+          getMatches={(round) => getMatchesForRound(state, round)}
+          renderMatch={(match, round) => (
+            <PlayoffMatchCard
+              key={match.id}
+              match={match}
+              selected={selectedId === match.id}
+              onSelect={() => {
+                if (
+                  match.status === "ready" &&
+                  canSimulatePlayoffMatch(state, match.id)
+                ) {
+                  handleSimulateMatch(match.id);
+                  return;
+                }
+                if (match.status === "complete") {
+                  setSelectedId((prev) => {
+                    const next = prev === match.id ? null : match.id;
+                    if (next !== null) playUiClick();
+                    return next;
+                  });
+                }
+              }}
+              isActiveRound={round === activeRound}
+            />
+          )}
+        />
         </div>
 
         <AnimatePresence>

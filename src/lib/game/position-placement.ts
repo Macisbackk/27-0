@@ -6,6 +6,7 @@ import {
   getEligiblePositions,
   isPenaltyFreePlacement,
   OUT_OF_POSITION_PENALTY,
+  resolvePlacementPlayer,
 } from "../players/player-positions";
 
 export { OUT_OF_POSITION_PENALTY } from "../players/player-positions";
@@ -92,9 +93,11 @@ export function getNaturalPlacementSlots(
   squad: SquadSlot[],
   player: Player
 ): SquadSlot[] {
-  const eligible = new Set(getEligiblePositions(player));
+  const profile = resolvePlacementPlayer(player);
   return squad
-    .filter((slot) => !slot.player && eligible.has(slot.position))
+    .filter(
+      (slot) => !slot.player && isPenaltyFreePlacement(profile, slot.position)
+    )
     .sort((a, b) => a.slotIndex - b.slotIndex);
 }
 

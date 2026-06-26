@@ -677,19 +677,6 @@ export function GameBoard({
         setSubmittedOnline(completed.submittedOnline);
         if (completed.nationalRank) setRunRank(completed.nationalRank);
       });
-
-      if (!playoffFundsAwardedRef.current) {
-        playoffFundsAwardedRef.current = true;
-        const payout = awardClubFundsForRun({
-          runId,
-          mode,
-          isHiddenRun: joeMellorMode || superSamHallasMode,
-          seasonResult: { ...result, playoffResult: playoff },
-          cupResult: null,
-          fundsPhase: "playoff",
-        });
-        setPlayoffFundsPayout(payout);
-      }
     },
     [runId, mode, seed, difficulty, joeMellorMode, superSamHallasMode, normalEraMode]
   );
@@ -726,12 +713,26 @@ export function GameBoard({
     (playoffResult: PlayoffResult, finalState: PlayoffBracketState) => {
       playoffResultRef.current = playoffResult;
       setCompletedPlayoffBracketState(finalState);
-      setSeasonResult((prev) =>
-        prev ? { ...prev, playoffResult } : prev
-      );
+      setSeasonResult((prev) => {
+        if (!prev) return prev;
+        const updated = { ...prev, playoffResult };
+        if (!playoffFundsAwardedRef.current) {
+          playoffFundsAwardedRef.current = true;
+          const payout = awardClubFundsForRun({
+            runId,
+            mode,
+            isHiddenRun: joeMellorMode || superSamHallasMode,
+            seasonResult: updated,
+            cupResult: null,
+            fundsPhase: "playoff",
+          });
+          setPlayoffFundsPayout(payout);
+        }
+        return updated;
+      });
       setReviewStage("playoffFinal");
     },
-    []
+    [runId, mode, joeMellorMode, superSamHallasMode]
   );
 
   const handlePlayoffReviewDone = useCallback(() => {
@@ -1060,7 +1061,8 @@ export function GameBoard({
     const usedIds = collectUsedPlayerIds(
       slotOffers,
       signedIds,
-      rerollKey
+      rerollKey,
+      recruitmentOptions
     );
     const discarded = new Set(discardedPlayerIds);
     discarded.add(currentRound.optionA);

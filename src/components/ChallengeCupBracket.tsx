@@ -185,7 +185,7 @@ export function ChallengeCupBracket({
   );
 
   return (
-    <div className="w-full px-2 py-4 pb-28 sm:px-4 md:pb-6">
+    <div className="w-full px-2 py-4 sm:px-4">
       <div className="bracket-header-panel mx-auto max-w-3xl rounded-xl border border-pitch-600/45 bg-pitch-900/55 px-4 py-4 backdrop-blur-sm sm:py-5">
         {eraMode ? (
           <EraChallengeCupBranding
@@ -258,6 +258,29 @@ export function ChallengeCupBracket({
         />
       </div>
 
+      <div className="bracket-actions-center mx-auto mt-5 max-w-3xl">
+        <div className="flex flex-col items-stretch justify-center gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+          <GameButton
+            variant="secondary"
+            size="md"
+            disabled={!canSimRound}
+            onClick={handleSimulateRound}
+            className="w-full sm:w-auto disabled:opacity-40"
+          >
+            Simulate Round
+          </GameButton>
+          <GameButton
+            variant="theme"
+            size="md"
+            disabled={state.tournamentComplete}
+            onClick={handleSimulateTournament}
+            className="w-full sm:w-auto disabled:opacity-40"
+          >
+            Simulate Tournament
+          </GameButton>
+        </div>
+      </div>
+
       <div className="mx-auto mt-5 max-w-3xl space-y-3 md:hidden">
         <p className="text-center font-display text-[10px] font-bold uppercase tracking-wider text-gray-500">
           {getCupRoundLabel(mobileViewRound)}
@@ -311,29 +334,6 @@ export function ChallengeCupBracket({
           </div>
         )}
       </AnimatePresence>
-
-      <div className="bracket-sticky-actions mx-auto max-w-3xl md:mt-4">
-        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
-          <GameButton
-            variant="secondary"
-            size="md"
-            disabled={!canSimRound}
-            onClick={handleSimulateRound}
-            className="w-full sm:w-auto disabled:opacity-40"
-          >
-            Simulate Round
-          </GameButton>
-          <GameButton
-            variant="theme"
-            size="md"
-            disabled={state.tournamentComplete}
-            onClick={handleSimulateTournament}
-            className="w-full sm:w-auto disabled:opacity-40"
-          >
-            Simulate Tournament
-          </GameButton>
-        </div>
-      </div>
     </div>
   );
 }

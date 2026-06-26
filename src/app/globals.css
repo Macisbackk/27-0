@@ -590,6 +590,62 @@ body {
   color: var(--accent-gold);
 }
 
+.playoff-bracket-desktop {
+  display: none;
+  margin-top: 1.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem 1.25rem;
+  align-items: stretch;
+}
+
+@media (min-width: 768px) {
+  .playoff-bracket-desktop {
+    display: grid;
+  }
+}
+
+.playoff-bracket-column {
+  min-width: 0;
+  padding-inline: 0.15rem;
+}
+
+.playoff-bracket-track {
+  display: grid;
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  min-height: 16.5rem;
+  flex: 1;
+}
+
+.playoff-bracket-slot {
+  min-width: 0;
+}
+
+.playoff-bracket-slot[data-round="1"][data-slot="0"] {
+  grid-row: 1;
+  align-self: start;
+}
+
+.playoff-bracket-slot[data-round="1"][data-slot="1"] {
+  grid-row: 4;
+  align-self: end;
+}
+
+.playoff-bracket-slot[data-round="2"][data-slot="0"] {
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+.playoff-bracket-slot[data-round="2"][data-slot="1"] {
+  grid-row: 3 / span 2;
+  align-self: center;
+}
+
+.playoff-bracket-slot[data-round="3"][data-slot="0"] {
+  grid-row: 1 / span 4;
+  align-self: center;
+}
+
 .playoff-bracket-column--live.cup-bracket-column:not(:last-child)::after {
   background: linear-gradient(
     180deg,
@@ -631,7 +687,7 @@ body {
 }
 
 .playoff-bracket-match--mobile {
-  min-height: 5.75rem;
+  min-height: 0;
 }
 
 .playoff-bracket-match--final {
@@ -680,11 +736,11 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: 0.55rem 0.65rem;
+  padding: 0.5rem 0.6rem;
 }
 
 .playoff-bracket-team--mobile {
-  padding: 0.65rem 0.75rem;
+  padding: 0.6rem 0.7rem;
 }
 
 .playoff-bracket-team--winner {
@@ -701,31 +757,9 @@ body {
   opacity: 0.58;
 }
 
-.playoff-bracket-vs {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.1rem 0.75rem;
-  background: color-mix(in srgb, var(--pitch-950) 88%, transparent);
-}
-
-.playoff-bracket-vs__line {
+.playoff-bracket-divider {
   height: 1px;
-  flex: 1;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    color-mix(in srgb, var(--pitch-600) 80%, transparent),
-    transparent
-  );
-}
-
-.playoff-bracket-vs span:nth-child(2) {
-  font-family: var(--font-display), sans-serif;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.22em;
-  color: #6b7280;
+  background: color-mix(in srgb, var(--pitch-600) 42%, transparent);
 }
 
 .playoff-bracket-score {
@@ -764,8 +798,7 @@ body {
   justify-content: center;
   gap: 0.25rem;
   border-top: 1px solid color-mix(in srgb, var(--pitch-600) 35%, transparent);
-  padding: 0.3rem 0.5rem;
-  min-height: 1.35rem;
+  padding: 0.28rem 0.5rem 0.32rem;
 }
 
 .playoff-bracket-match__badge {
@@ -781,10 +814,6 @@ body {
 
 .playoff-bracket-match__badge--muted {
   color: #6b7280;
-}
-
-.playoff-bracket-match__badge--neutral {
-  color: #9ca3af;
 }
 
 @keyframes playoff-match-ready {
@@ -816,6 +845,17 @@ body {
     backdrop-filter: blur(14px);
     box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
   }
+}
+
+.bracket-actions-center {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.bracket-actions-center .flex {
+  width: 100%;
+  justify-content: center;
 }
 
 .bracket-sticky-actions {
@@ -1058,41 +1098,42 @@ body {
     letter-spacing: 0.08em;
   }
 
-  /* 27-0 logo — gradient text on "27" only; "-0" stays solid white */
+  /* 27-0 logo — solid two-tone "27" (crisper than background-clip gradients) */
+  .logo-mark {
+    isolation: isolate;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+  }
+
   .logo-mark-rest {
     color: #ffffff;
   }
 
-  [data-ui-theme="default"] .logo-mark-accent {
-    background: linear-gradient(
-      90deg,
-      var(--mode-current) 0%,
-      var(--mode-current-2) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  [data-ui-theme="default"] .logo-mark-accent-from {
+    color: var(--mode-current);
   }
 
-  [data-ui-theme]:not([data-ui-theme="default"]) .logo-mark-accent {
-    background: linear-gradient(
-      90deg,
-      var(--theme-gradient-from) 0%,
-      var(--theme-gradient-to) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: none;
+  [data-ui-theme="default"] .logo-mark-accent-to {
+    color: var(--mode-current-2);
+  }
+
+  [data-ui-theme]:not([data-ui-theme="default"]) .logo-mark-accent-from {
+    color: var(--theme-gradient-from);
+  }
+
+  [data-ui-theme]:not([data-ui-theme="default"]) .logo-mark-accent-to {
+    color: var(--theme-gradient-to);
   }
 
   [data-theme-logo-glow="true"] .logo-mark-accent {
-    filter: drop-shadow(0 0 10px var(--theme-glow))
-      drop-shadow(0 0 2px rgba(255, 255, 255, 0.45));
+    text-shadow:
+      0 0 10px var(--theme-glow),
+      0 0 2px rgba(255, 255, 255, 0.35);
   }
 
   [data-theme-logo-glow="true"] .logo-mark-rest {
-    text-shadow: 0 0 14px var(--theme-glow-soft);
+    text-shadow: 0 0 10px var(--theme-glow-soft);
   }
 
   /**

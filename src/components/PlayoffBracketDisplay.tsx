@@ -10,9 +10,10 @@ import {
 import { playPanelClose, playUiClick } from "@/lib/sound";
 import { PlayoffMatchDetailsPanel } from "./PlayoffMatchDetailsPanel";
 import {
-  PlayoffBracketColumnShell,
+  PlayoffBracketDesktop,
   PlayoffChampionBanner,
   PlayoffMatchCard,
+  PlayoffRoundTitle,
 } from "./PlayoffBracketVisuals";
 
 const ROUNDS = [1, 2, 3] as const;
@@ -40,44 +41,45 @@ export function PlayoffBracketDisplay({
 
   const activeRound = getActiveRound(state);
 
+  const renderMatchCard = (match: (typeof state.matches)[number]) => (
+    <PlayoffMatchCard
+      match={match}
+      selected={selectedId === match.id}
+      onSelect={() => {
+        if (match.status !== "complete") return;
+        playUiClick();
+        setSelectedId((prev) => (prev === match.id ? null : match.id));
+      }}
+      isActiveRound={false}
+      interactive
+      mobile
+    />
+  );
+
   return (
     <div className="w-full">
       {champion && <PlayoffChampionBanner champion={champion} />}
 
       <div className="playoff-bracket-panel p-3 sm:p-4">
-        <div className="overflow-x-auto pb-2 md:overflow-x-visible md:pb-0">
-          <div className="mx-auto flex w-full min-w-[min(100%,640px)] max-w-4xl items-stretch justify-between gap-3 sm:gap-4 md:min-w-0 md:max-w-full md:gap-5">
-            {ROUNDS.map((round) => (
-              <PlayoffBracketColumnShell
-                key={round}
-                round={round}
-                activeRound={activeRound}
-              >
-                <div
-                  className="flex flex-1 flex-col justify-around gap-4"
-                  style={{ minHeight: `${Math.max(6, 8 - round) * 60}px` }}
-                >
-                  {getMatchesForRound(state, round).map((match) => (
-                    <PlayoffMatchCard
-                      key={match.id}
-                      match={match}
-                      selected={selectedId === match.id}
-                      onSelect={() => {
-                        if (match.status !== "complete") return;
-                        playUiClick();
-                        setSelectedId((prev) =>
-                          prev === match.id ? null : match.id
-                        );
-                      }}
-                      isActiveRound={false}
-                      interactive
-                    />
-                  ))}
-                </div>
-              </PlayoffBracketColumnShell>
-            ))}
-          </div>
+        <div className="space-y-5 md:hidden">
+          {ROUNDS.map((round) => (
+            <section key={round}>
+              <PlayoffRoundTitle round={round} activeRound={activeRound} />
+              <div className="mt-3 space-y-3">
+                {getMatchesForRound(state, round).map((match) => (
+                  <div key={match.id}>{renderMatchCard(match)}</div>
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
+
+        <PlayoffBracketDesktop
+          rounds={ROUNDS}
+          activeRound={activeRound}
+          getMatches={(round) => getMatchesForRound(state, round)}
+          renderMatch={(match) => renderMatchCard(match)}
+        />
       </div>
 
       <AnimatePresence initial={false}>

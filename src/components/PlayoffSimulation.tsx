@@ -96,10 +96,10 @@ export function PlayoffSimulation({
             <>
               <p className="text-sm text-gray-500">
                 {currentFixture.isHome
-                  ? "Home"
+                  ? "Home "
                   : currentRound?.isNeutral
-                    ? "Neutral"
-                    : "Away"}{" "}
+                    ? ""
+                    : "Away "}
                 vs {currentFixture.opponent}
               </p>
               <p className="mt-3 font-display text-3xl font-black text-white">

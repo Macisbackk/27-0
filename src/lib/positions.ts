@@ -2,6 +2,7 @@ import type { Position, SquadSlot } from "./types";
 import {
   isPenaltyFreePlacement,
   OUT_OF_POSITION_PENALTY,
+  resolvePlacementPlayer,
 } from "./players/player-positions";
 
 export const POSITION_LABELS: Record<Position, string> = {
@@ -209,10 +210,23 @@ export function signPlayerToSlot(
 ): SquadSlot[] {
   return squad.map((s) => {
     if (s.slotIndex !== slotIndex) return s;
-    const penalty = isPenaltyFreePlacement(player, s.position)
+    const profile = resolvePlacementPlayer(player);
+    const penalty = isPenaltyFreePlacement(profile, s.position)
       ? undefined
       : runRatingPenalty || OUT_OF_POSITION_PENALTY;
-    return { ...s, player, runRatingPenalty: penalty };
+    return { ...s, player: profile, runRatingPenalty: penalty };
+  });
+}
+
+/** Re-enrich squad snapshots and clear stale OVR penalties for dual-position players. */
+export function refreshSquadSlots(squad: SquadSlot[]): SquadSlot[] {
+  return squad.map((slot) => {
+    if (!slot.player) return slot;
+    const profile = resolvePlacementPlayer(slot.player);
+    const penalty = isPenaltyFreePlacement(profile, slot.position)
+      ? undefined
+      : slot.runRatingPenalty;
+    return { ...slot, player: profile, runRatingPenalty: penalty };
   });
 }
 

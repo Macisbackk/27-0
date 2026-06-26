@@ -15,6 +15,7 @@ import {
 import { isHiddenPlayer } from "../players/goat";
 import {
   getAllTeamYearPools,
+  getRawPlayersForTeamYearPool,
   getTeamYearPool,
   type TeamYearPool,
 } from "./team-year-pools";
@@ -69,6 +70,20 @@ export function getPlayersForClub(club: string): Player[] {
   );
 }
 
+/** Current-season club squad for Challenge Cup drafting (2026 team-year roster). */
+export function getChallengeCupClubPool(club: string): Player[] {
+  const canonical = resolveCanonicalClubName(club);
+  const pool = getTeamYearPool(canonical, CURRENT_SEASON_YEAR);
+  if (pool) {
+    const roster = getRawPlayersForTeamYearPool(pool);
+    if (roster.length > 0) return roster;
+  }
+
+  return getPlayersForClub(canonical).filter(
+    (player) => player.category === "current"
+  );
+}
+
 export function getNormalModeGlobalPool(): Player[] {
   return getGlobalRecruitmentPool();
 }
@@ -79,7 +94,7 @@ export function getHardModeGlobalPool(): Player[] {
 
 export function getChallengeCupPool(clubFilter?: string): Player[] {
   if (clubFilter) {
-    return getPlayersForClub(clubFilter);
+    return getChallengeCupClubPool(clubFilter);
   }
   return getGlobalRecruitmentPool();
 }

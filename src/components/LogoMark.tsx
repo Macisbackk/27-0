@@ -13,9 +13,12 @@ export function LogoMark({
 
   return (
     <span
-      className={`logo-mark whitespace-nowrap font-black tracking-tight ${sizeClass} ${className}`}
+      className={`logo-mark inline-flex items-baseline whitespace-nowrap font-black tracking-tight ${sizeClass} ${className}`}
     >
-      <span className="logo-mark-accent">27</span>
+      <span className="logo-mark-accent">
+        <span className="logo-mark-accent-from">2</span>
+        <span className="logo-mark-accent-to">7</span>
+      </span>
       <span className="logo-mark-rest">-0</span>
     </span>
   );

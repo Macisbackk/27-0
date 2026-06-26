@@ -34,7 +34,7 @@ export function PlayoffMatchDetailsPanel({
 
   const scoring = match.scoringDetail;
   const venueLabel = match.isNeutral
-    ? "Neutral"
+    ? null
     : match.userFixture?.isHome
       ? "Home"
       : match.isUserMatch
@@ -56,7 +56,8 @@ export function PlayoffMatchDetailsPanel({
               {getPlayoffRoundLabel(match.round)} · Match Details
             </p>
             <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-              {venueLabel} · {match.homeTeam} vs {match.awayTeam}
+              {venueLabel ? `${venueLabel} · ` : ""}
+              {match.homeTeam} vs {match.awayTeam}
             </p>
             {match.userFixture?.matchBio && (
               <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>

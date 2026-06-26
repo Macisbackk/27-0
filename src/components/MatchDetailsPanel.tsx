@@ -75,12 +75,9 @@ export function MatchDetailsPanel({
               {roundLabel ?? `Round ${fixture.round}`} · Match Details
             </p>
             <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-              {fixture.isNeutral
-                ? "Neutral"
-                : fixture.isHome
-                  ? "Home"
-                  : "Away"}
-              {" · "}
+              {!fixture.isNeutral && (
+                <>{fixture.isHome ? "Home" : "Away"} · </>
+              )}
               vs {fixture.opponent}
             </p>
             {fixture.matchBio && (

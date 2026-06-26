@@ -7,11 +7,12 @@ import {
   isAvailableInGame,
 } from "../players";
 import {
+  getChallengeCupClubPool,
   getGlobalRecruitmentPool,
-  getPlayersForClub,
 } from "./player-pool-eligibility";
 import type { Player, PlayerCategory, Position, SquadSlot } from "../types";
 import { SQUAD_STRUCTURE, TOTAL_SLOTS, createEmptySquad } from "../positions";
+import { getPlayerEligiblePositions } from "../players/player-positions";
 import {
   getRemainingPositionCounts,
   getDraftBalanceGroup,
@@ -290,28 +291,21 @@ function recruitable(players: Player[]): Player[] {
   return players.filter(isAvailableInGame);
 }
 
+function playerMatchesSlotPosition(player: Player, position: Position): boolean {
+  const targets = new Set(getDraftCandidatePositions(position));
+  return getPlayerEligiblePositions(player).some((pos) => targets.has(pos));
+}
+
 function basePlayerPool(options?: RecruitmentOptions): Player[] {
   if (options?.clubFilter) {
-    return recruitable(getPlayersForClub(options.clubFilter));
+    return recruitable(getChallengeCupClubPool(options.clubFilter));
   }
   return getGlobalRecruitmentPool();
 }
 
 function selectCategoryPool(rng: () => number, options?: RecruitmentOptions): Player[] {
   if (options?.clubFilter) {
-    const clubPlayers = getPlayersForClub(options.clubFilter);
-    const legends = clubPlayers.filter((p) => p.category === "legend");
-    const historic = clubPlayers.filter((p) => p.category === "historic");
-    const current = clubPlayers.filter((p) => p.category === "current");
-    const roll = rng();
-    if (roll < CUP_CURRENT_RATIO && current.length > 0) return current;
-    if (roll < CUP_CURRENT_RATIO + CUP_HISTORIC_RATIO && historic.length > 0) {
-      return historic;
-    }
-    if (legends.length > 0) return legends;
-    if (historic.length > 0) return historic;
-    if (current.length > 0) return current;
-    return clubPlayers;
+    return basePlayerPool(options);
   }
   const current = recruitable(CURRENT_PLAYERS);
   const historic = recruitable(HISTORIC_PLAYERS);
@@ -398,11 +392,34 @@ function playersMatchingSlotPosition(
   usedIds: Set<string>,
   options?: RecruitmentOptions
 ): Player[] {
-  const targetPositions = getDraftCandidatePositions(position);
   return basePlayerPool(options).filter(
     (player) =>
-      targetPositions.includes(player.position) && !usedIds.has(player.id)
+      !usedIds.has(player.id) && playerMatchesSlotPosition(player, position)
   );
+}
+
+function pickCupClubFallbackPartner(
+  anchor: Player,
+  position: Position,
+  usedIds: Set<string>,
+  options?: RecruitmentOptions
+): Player | null {
+  const pool = basePlayerPool(options).filter(
+    (player) => !usedIds.has(player.id) && player.id !== anchor.id
+  );
+  if (pool.length === 0) return null;
+
+  const exact = pool.filter((player) => player.position === position);
+  if (exact.length > 0) {
+    return exact.sort((a, b) => b.peakRating - a.peakRating)[0]!;
+  }
+
+  const dual = pool.filter((player) => playerMatchesSlotPosition(player, position));
+  if (dual.length > 0) {
+    return dual.sort((a, b) => b.peakRating - a.peakRating)[0]!;
+  }
+
+  return pool.sort((a, b) => b.peakRating - a.peakRating)[0]!;
 }
 
 function pickPairForPosition(
@@ -413,20 +430,30 @@ function pickPairForPosition(
   options?: RecruitmentOptions,
   recency?: OfferRecency
 ): [string, string] | null {
-  const targetPositions = getDraftCandidatePositions(position);
   const allForPosition = playersMatchingSlotPosition(
     position,
     usedIds,
     options
   );
 
-  if (allForPosition.length < 2) return null;
+  if (allForPosition.length < 2) {
+    if (options?.clubFilter && allForPosition.length === 1) {
+      const partner = pickCupClubFallbackPartner(
+        allForPosition[0]!,
+        position,
+        usedIds,
+        options
+      );
+      if (partner) return [allForPosition[0]!.id, partner.id];
+    }
+    return null;
+  }
 
   let primaryPool = allForPosition;
   if (categoryFilter) {
     const filtered = playersForCategory(categoryFilter, options).filter(
       (player) =>
-        targetPositions.includes(player.position) && !usedIds.has(player.id)
+        !usedIds.has(player.id) && playerMatchesSlotPosition(player, position)
     );
     if (filtered.length >= 2) {
       primaryPool = filtered;
@@ -441,7 +468,7 @@ function pickPairForPosition(
   } else {
     const categoryPool = selectCategoryPool(rng, options).filter(
       (player) =>
-        targetPositions.includes(player.position) && !usedIds.has(player.id)
+        !usedIds.has(player.id) && playerMatchesSlotPosition(player, position)
     );
     if (categoryPool.length >= 2) primaryPool = categoryPool;
   }
@@ -634,9 +661,11 @@ export function generateSlotOffers(
     if (skipSlots.includes(slot.slotIndex)) continue;
 
     const usedIds = new Set(locked);
-    for (const offer of offers.values()) {
-      usedIds.add(offer.optionA);
-      usedIds.add(offer.optionB);
+    if (!options?.clubFilter) {
+      for (const offer of offers.values()) {
+        usedIds.add(offer.optionA);
+        usedIds.add(offer.optionB);
+      }
     }
 
     const pair = pickPairForPosition(
@@ -686,9 +715,11 @@ export function getOfferForSlot(
 export function collectUsedPlayerIds(
   offers: Map<number, RecruitmentRound>,
   signedIds: string[],
-  excludeSlot?: number
+  excludeSlot?: number,
+  options?: RecruitmentOptions
 ): Set<string> {
   const used = new Set(signedIds);
+  if (options?.clubFilter) return used;
   for (const [idx, offer] of offers) {
     if (idx === excludeSlot) continue;
     used.add(offer.optionA);
@@ -734,10 +765,9 @@ function positionHasAvailablePlayers(
   usedIds: Set<string>,
   options?: RecruitmentOptions
 ): boolean {
-  const targets = draftCandidatePositions(position);
   return basePlayerPool(options).some(
     (player) =>
-      targets.includes(player.position) && !usedIds.has(player.id)
+      !usedIds.has(player.id) && playerMatchesSlotPosition(player, position)
   );
 }
 

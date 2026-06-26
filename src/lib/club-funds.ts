@@ -51,35 +51,40 @@ function appendPlayoffFundsLines(
   if (!playoff?.qualified) return;
 
   for (const round of playoff.rounds) {
-    if (!round.userPlayed || round.userWon !== true) continue;
-    if (round.round === "Eliminator") {
+    if (!round.userPlayed) continue;
+
+    if (round.userWon === true) {
+      if (round.round === "Eliminator") {
+        lines.push({
+          id: "playoff-eliminator",
+          label: "Play-Off Eliminator Win",
+          amount: CLUB_FUNDS_REWARDS.playoffEliminatorWin,
+        });
+      }
+      if (round.round === "Semi Final") {
+        lines.push({
+          id: "playoff-semi",
+          label: "Play-Off Semi-Final Win",
+          amount: CLUB_FUNDS_REWARDS.playoffSemiFinalWin,
+        });
+      }
+      if (round.round === "Grand Final") {
+        lines.push({
+          id: "super-league-title",
+          label: "Super League Title",
+          amount: CLUB_FUNDS_REWARDS.superLeagueTitle,
+        });
+      }
+      continue;
+    }
+
+    if (round.userWon === false && round.round === "Grand Final") {
       lines.push({
-        id: "playoff-eliminator",
-        label: "Play-Off Eliminator Win",
-        amount: CLUB_FUNDS_REWARDS.playoffEliminatorWin,
+        id: "playoff-final",
+        label: "Grand Final Runner-Up",
+        amount: CLUB_FUNDS_REWARDS.playoffFinalRunnerUp,
       });
     }
-    if (round.round === "Semi Final") {
-      lines.push({
-        id: "playoff-semi",
-        label: "Play-Off Semi-Final Win",
-        amount: CLUB_FUNDS_REWARDS.playoffSemiFinalWin,
-      });
-    }
-  }
-  if (playoff.finish === "Grand Final Runner-Up") {
-    lines.push({
-      id: "playoff-final",
-      label: "Grand Final Runner-Up",
-      amount: CLUB_FUNDS_REWARDS.playoffFinalRunnerUp,
-    });
-  }
-  if (playoff.isChampion) {
-    lines.push({
-      id: "super-league-title",
-      label: "Super League Title",
-      amount: CLUB_FUNDS_REWARDS.superLeagueTitle,
-    });
   }
 }
 
@@ -270,9 +275,11 @@ export function computeClubFundsLines(
 
 export const CLUB_FUNDS_INFO_LINES = [
   { label: "Super League Title", amount: CLUB_FUNDS_REWARDS.superLeagueTitle },
+  { label: "Grand Final Runner-Up", amount: CLUB_FUNDS_REWARDS.playoffFinalRunnerUp },
   { label: "League Leaders", amount: CLUB_FUNDS_REWARDS.leagueLeaders },
   { label: "Top-Six Finish", amount: CLUB_FUNDS_REWARDS.topSixFinish },
   { label: "Play-Off Semi-Final Win", amount: CLUB_FUNDS_REWARDS.playoffSemiFinalWin },
+  { label: "Play-Off Eliminator Win", amount: CLUB_FUNDS_REWARDS.playoffEliminatorWin },
   { label: "Challenge Cup Win", amount: CLUB_FUNDS_REWARDS.challengeCupWin },
   { label: "Era Challenge Cup Win", amount: CLUB_FUNDS_REWARDS.eraChallengeCupWin },
   { label: "Fantasy League Title", amount: CLUB_FUNDS_REWARDS.fantasyLeagueTitle },

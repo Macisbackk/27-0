@@ -159,6 +159,14 @@ export function PlayoffMatchCard({
   const isFinal = match.round === 3;
   const canInteract = interactive && !isPending;
 
+  const footerBadge = isPending
+    ? { text: "Awaiting teams", tone: "muted" as const }
+    : isReady && isActiveRound && interactive
+      ? { text: "Tap to simulate", tone: "live" as const }
+      : isComplete && !selected && interactive
+        ? { text: "View details", tone: "muted" as const }
+        : null;
+
   return (
     <motion.button
       type="button"
@@ -188,11 +196,7 @@ export function PlayoffMatchCard({
         mobile={mobile}
       />
 
-      <div className="playoff-bracket-vs" aria-hidden>
-        <span className="playoff-bracket-vs__line" />
-        <span>VS</span>
-        <span className="playoff-bracket-vs__line" />
-      </div>
+      <div className="playoff-bracket-divider" aria-hidden />
 
       <PlayoffTeamRow
         team={match.awayTeam}
@@ -204,28 +208,15 @@ export function PlayoffMatchCard({
         mobile={mobile}
       />
 
-      <div className="playoff-bracket-match__footer">
-        {isPending && (
-          <span className="playoff-bracket-match__badge playoff-bracket-match__badge--muted">
-            Awaiting teams
+      {footerBadge && (
+        <div className="playoff-bracket-match__footer">
+          <span
+            className={`playoff-bracket-match__badge playoff-bracket-match__badge--${footerBadge.tone}`}
+          >
+            {footerBadge.text}
           </span>
-        )}
-        {isReady && isActiveRound && interactive && (
-          <span className="playoff-bracket-match__badge playoff-bracket-match__badge--live">
-            Tap to simulate
-          </span>
-        )}
-        {isComplete && !selected && interactive && (
-          <span className="playoff-bracket-match__badge playoff-bracket-match__badge--muted">
-            View details
-          </span>
-        )}
-        {match.isNeutral && isComplete && (
-          <span className="playoff-bracket-match__badge playoff-bracket-match__badge--neutral">
-            Neutral venue
-          </span>
-        )}
-      </div>
+        </div>
+      )}
     </motion.button>
   );
 }
@@ -265,9 +256,9 @@ function PlayoffTeamRow({
           <span className="h-3 w-3 shrink-0 rounded-full bg-pitch-700/80 ring-1 ring-pitch-600/50" />
         )}
         <span
-          className={`min-w-0 break-words font-semibold leading-snug ${
-            mobile ? "text-xs" : "text-[11px] sm:text-xs"
-          } ${
+          className={`min-w-0 font-semibold leading-snug ${
+            mobile ? "break-words" : "truncate"
+          } ${mobile ? "text-xs" : "text-[11px] sm:text-xs"} ${
             isUser
               ? "text-mode-current"
               : isPending
@@ -304,12 +295,47 @@ export function PlayoffBracketColumnShell({
 
   return (
     <div
-      className={`playoff-bracket-column cup-bracket-column relative flex flex-1 flex-col px-1 ${
+      className={`playoff-bracket-column cup-bracket-column relative flex min-h-0 flex-col ${
         isFinal ? "playoff-bracket-column--final" : ""
       } ${round === activeRound ? "playoff-bracket-column--live" : ""}`}
     >
       <PlayoffRoundTitle round={round} activeRound={activeRound} />
-      {children}
+      <div className="playoff-bracket-track">{children}</div>
+    </div>
+  );
+}
+
+export function PlayoffBracketDesktop({
+  rounds,
+  activeRound,
+  getMatches,
+  renderMatch,
+}: {
+  rounds: readonly number[];
+  activeRound: number;
+  getMatches: (round: number) => PlayoffBracketMatch[];
+  renderMatch: (match: PlayoffBracketMatch, round: number) => ReactNode;
+}) {
+  return (
+    <div className="playoff-bracket-desktop">
+      {rounds.map((round) => (
+        <PlayoffBracketColumnShell
+          key={round}
+          round={round}
+          activeRound={activeRound}
+        >
+          {getMatches(round).map((match) => (
+            <div
+              key={match.id}
+              className="playoff-bracket-slot"
+              data-round={round}
+              data-slot={match.slot}
+            >
+              {renderMatch(match, round)}
+            </div>
+          ))}
+        </PlayoffBracketColumnShell>
+      ))}
     </div>
   );
 }

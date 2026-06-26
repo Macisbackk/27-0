@@ -1,5 +1,6 @@
 import type { Player, Position } from "../types";
 import { POSITION_SHORT } from "../positions";
+import { normalizePosition } from "./position-utils";
 
 const ABBREV_TO_POSITION: Record<string, Position> = {
   FB: "FULLBACK",
@@ -52,38 +53,131 @@ export function arePositionsCompatible(a: Position, b: Position): boolean {
 
 type PositionEligibilityPlayer = Pick<
   Player,
-  "position" | "positions" | "primaryPosition"
->;
+  "position" | "positions" | "primaryPosition" | "teamYearId" | "runClub"
+> & {
+  id?: string;
+};
 
 function parsePrimaryPositionAbbrev(
   abbrev: string | undefined
 ): Position[] {
   if (!abbrev?.trim()) return [];
-  try {
-    return parsePositionAbbreviations(abbrev);
-  } catch {
-    return [];
+  const parts = abbrev.split("/").map((s) => s.trim()).filter(Boolean);
+  const positions = new Set<Position>();
+
+  for (const part of parts) {
+    try {
+      if (/^(HB|HK|[A-Z]{2,3})$/i.test(part)) {
+        for (const pos of parsePositionAbbreviations(part.toUpperCase())) {
+          positions.add(pos);
+        }
+      } else {
+        positions.add(normalizePosition(part));
+      }
+    } catch {
+      // ignore invalid segment
+    }
   }
+
+  return [...positions];
+}
+
+function collectEligiblePositions(
+  player: PositionEligibilityPlayer
+): Set<Position> {
+  const collected = new Set<Position>();
+  collected.add(player.position);
+
+  for (const pos of player.positions ?? []) {
+    collected.add(pos);
+  }
+
+  for (const pos of parsePrimaryPositionAbbrev(player.primaryPosition)) {
+    collected.add(pos);
+  }
+
+  if (
+    collected.size <= 1 &&
+    (player.position === "SCRUM_HALF" || player.position === "STAND_OFF")
+  ) {
+    collected.add("SCRUM_HALF");
+    collected.add("STAND_OFF");
+  }
+
+  return collected;
+}
+
+function parseRunClubTeamYear(
+  runClub: string
+): { team: string; year: string } | null {
+  const match = runClub.match(/^(.+?)\s+'(\d{2})$/);
+  if (!match) return null;
+  return { team: match[1]!.trim(), year: `20${match[2]}` };
+}
+
+function resolveTeamYearContext(
+  player: PositionEligibilityPlayer
+): { team: string; year: string } | null {
+  if (player.teamYearId) {
+    const { getTeamYearPoolById } =
+      require("../game/team-year-pools") as typeof import("../game/team-year-pools");
+    const pool = getTeamYearPoolById(player.teamYearId);
+    if (pool) return { team: pool.team, year: pool.year };
+  }
+
+  if (player.runClub) {
+    return parseRunClubTeamYear(player.runClub);
+  }
+
+  return null;
+}
+
+/** Merge registry + team-year wiki roles so squad snapshots keep full dual eligibility. */
+export function resolvePlacementPlayer(player: Player): Player {
+  let merged = { ...player };
+  const collected = collectEligiblePositions(player);
+
+  if (player.id) {
+    const { getPlayerById } =
+      require("./index") as typeof import("./index");
+    const registry = getPlayerById(player.id);
+    if (registry) {
+      for (const pos of collectEligiblePositions(registry)) {
+        collected.add(pos);
+      }
+      merged = {
+        ...registry,
+        ...player,
+        position: player.position ?? registry.position,
+        primaryPosition: player.primaryPosition ?? registry.primaryPosition,
+      };
+    }
+  }
+
+  const teamYear = resolveTeamYearContext(merged);
+  if (teamYear) {
+    const { getTeamYearRecruitPositions } =
+      require("./team-year-roster-playable") as typeof import("./team-year-roster-playable");
+    for (const pos of getTeamYearRecruitPositions(
+      teamYear.team,
+      teamYear.year,
+      merged
+    )) {
+      collected.add(pos);
+    }
+  }
+
+  return {
+    ...merged,
+    positions: [...collected],
+  };
 }
 
 /** All positions a player may fill — dual roles, primaryPosition abbrev, legacy halfback pair. */
 export function getEligiblePositions(
   player: PositionEligibilityPlayer
 ): Position[] {
-  const fromArray = player.positions?.length
-    ? [...new Set(player.positions)]
-    : [];
-  const fromPrimary = parsePrimaryPositionAbbrev(player.primaryPosition);
-
-  if (fromArray.length > 0 || fromPrimary.length > 0) {
-    return [...new Set([...fromArray, ...fromPrimary])];
-  }
-
-  if (player.position === "SCRUM_HALF" || player.position === "STAND_OFF") {
-    return ["SCRUM_HALF", "STAND_OFF"];
-  }
-
-  return [player.position];
+  return [...collectEligiblePositions(player)];
 }
 
 /** @deprecated Use getEligiblePositions — kept for existing imports. */
@@ -98,17 +192,30 @@ export function canPlayPosition(
   return getEligiblePositions(player).includes(selectedPosition);
 }
 
+function isPenaltyFreePlacementInternal(
+  profile: PositionEligibilityPlayer,
+  slotPosition: Position
+): boolean {
+  const eligible = getEligiblePositions(profile);
+
+  if (eligible.includes(slotPosition)) return true;
+  if (arePositionsCompatible(profile.position, slotPosition)) return true;
+  return eligible.some(
+    (pos) =>
+      pos === slotPosition || arePositionsCompatible(pos, slotPosition)
+  );
+}
+
 /** True when a player may occupy a slot at full OVR (listed role or cross-slot pair). */
 export function isPenaltyFreePlacement(
   player: PositionEligibilityPlayer,
   slotPosition: Position
 ): boolean {
-  if (canPlayPosition(player, slotPosition)) return true;
-  if (arePositionsCompatible(player.position, slotPosition)) return true;
-  return getEligiblePositions(player).some(
-    (pos) =>
-      pos === slotPosition || arePositionsCompatible(pos, slotPosition)
-  );
+  const profile =
+    "id" in player && player.id
+      ? resolvePlacementPlayer(player as Player)
+      : player;
+  return isPenaltyFreePlacementInternal(profile, slotPosition);
 }
 
 export function applyOutOfPositionPenalty(
@@ -121,15 +228,13 @@ export function applyOutOfPositionPenalty(
 export function getPlayerRatingForPosition(
   player: Player,
   selectedPosition: Position,
-  slotPenalty?: number
+  _slotPenalty?: number
 ): number {
-  if (isPenaltyFreePlacement(player, selectedPosition)) {
+  const profile = resolvePlacementPlayer(player);
+  if (isPenaltyFreePlacementInternal(profile, selectedPosition)) {
     return player.peakRating;
   }
-  return applyOutOfPositionPenalty(
-    player.peakRating,
-    slotPenalty && slotPenalty > 0 ? slotPenalty : OUT_OF_POSITION_PENALTY
-  );
+  return applyOutOfPositionPenalty(player.peakRating, OUT_OF_POSITION_PENALTY);
 }
 
 export function playerEligibleForSlot(

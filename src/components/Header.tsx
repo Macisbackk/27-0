@@ -14,7 +14,7 @@ export function Header() {
 
   return (
     <>
-      <header className="app-header sticky top-0 z-50 border-b backdrop-blur-md">
+      <header className="app-header sticky top-0 z-50 border-b">
         <div className="mx-auto grid min-h-14 max-w-6xl grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-start gap-x-1 gap-y-0 px-2 py-1.5 sm:h-[3.75rem] sm:items-center sm:gap-2 sm:px-4 sm:py-0">
           <div className="flex min-h-[44px] min-w-0 items-center justify-start self-center">
             <button
