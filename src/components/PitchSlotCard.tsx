@@ -9,7 +9,7 @@ import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
 /** Shared footprint for empty and filled pitch slots — scales down on mobile. */
 export const PITCH_SLOT_SIZE_CLASS =
-  "h-[clamp(46px,10.5vw,76px)] w-[clamp(42px,9.5vw,70px)]";
+  "h-[clamp(46px,10.5vw,76px)] w-[clamp(42px,9.5vw,70px)] md:h-[clamp(58px,12.5vw,96px)] md:w-[clamp(52px,11.5vw,88px)]";
 
 export const PITCH_SLOT_COMPACT_CLASS =
   "h-[clamp(40px,9vw,60px)] w-[clamp(38px,8.5vw,56px)]";
@@ -39,6 +39,7 @@ export function PitchSlotCard({
 }: PitchSlotCardProps) {
   const player = slot.player!;
   const colors = getClubColors(getPlayerColorClub(player, clubColorOverride));
+  const isMatchdayPitch = !compact && !fullPlayerNames;
   const positionLabel =
     compact && !fullPlayerNames
       ? POSITION_SHORT[slot.position]
@@ -59,32 +60,48 @@ export function PitchSlotCard({
       className={`pitch-slot-card flex shrink-0 flex-col rounded-lg border-2 border-accent-green/50 bg-black/70 shadow-[0_0_10px_rgba(34,197,94,0.2)] ${sizeClass} overflow-hidden ${className}`}
       title={player.name}
     >
-      <div className="flex h-1 w-full shrink-0">
+      <div
+        className={`flex w-full shrink-0 ${isMatchdayPitch ? "h-1 md:h-1.5" : "h-1"}`}
+      >
         <span className="h-full flex-1" style={{ backgroundColor: colors.primary }} />
         <span className="h-full flex-1" style={{ backgroundColor: colors.secondary }} />
       </div>
-      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-0 px-0.5 py-0.5">
-        <span className="line-clamp-2 w-full shrink-0 text-center font-display text-[7px] font-bold leading-tight text-gray-400 sm:text-[8px]">
+      <div
+        className={`flex min-h-0 flex-1 flex-col items-center px-0.5 py-0.5 ${
+          isMatchdayPitch
+            ? "justify-between gap-0.5 md:gap-1 md:px-1.5 md:py-1.5"
+            : "justify-center gap-0"
+        }`}
+      >
+        <span
+          className={`line-clamp-2 w-full shrink-0 text-center font-display font-bold leading-tight text-gray-400 ${
+            isMatchdayPitch
+              ? "text-[7px] sm:text-[8px] md:text-[9px]"
+              : "text-[7px] sm:text-[8px]"
+          }`}
+        >
           {positionLabel}
         </span>
         <p
-          className={`min-h-0 w-full flex-1 text-center font-display font-semibold leading-[1.15] text-white ${
+          className={`min-h-0 w-full text-center font-display font-semibold text-white ${
             fullPlayerNames
-              ? "line-clamp-2 break-words [overflow-wrap:anywhere] px-0.5 text-[7px] sm:text-[8px]"
+              ? "line-clamp-2 flex-1 break-words [overflow-wrap:anywhere] px-0.5 text-[7px] leading-[1.15] sm:text-[8px]"
               : compact
-                ? "truncate px-0.5 text-[8px] sm:text-[9px]"
-                : "line-clamp-2 break-words text-[7px] sm:text-[8px]"
+                ? "truncate px-0.5 text-[8px] leading-[1.15] sm:text-[9px]"
+                : isMatchdayPitch
+                  ? "line-clamp-2 flex-1 break-words leading-snug text-[7px] sm:text-[8px] md:text-[10px] md:leading-tight"
+                  : "line-clamp-2 break-words text-[7px] leading-[1.15] sm:text-[8px]"
           }`}
         >
           {displayName}
         </p>
         {!hardMode && (
           <span
-            className={`shrink-0 font-display font-black leading-none ${
+            className={`shrink-0 font-display font-black leading-none text-accent-green ${
               compact || fullPlayerNames
                 ? "text-[9px] sm:text-[10px]"
-                : "text-[10px] sm:text-xs"
-            } text-accent-green`}
+                : "text-[11px] sm:text-xs md:text-lg md:leading-none lg:text-xl"
+            }`}
           >
             {ratingLabel}
           </span>

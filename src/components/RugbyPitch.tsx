@@ -356,14 +356,14 @@ const SquadMarker = memo(function SquadMarker({
           </span>
         )}
         <span
-          className={`w-full text-center font-display text-[8px] font-bold uppercase leading-tight tracking-wide sm:text-[9px] ${
+          className={`w-full text-center font-display font-bold uppercase leading-tight tracking-wide ${
             interactive ? "text-white" : "text-white/40"
-          }`}
+          } text-[8px] sm:text-[9px] md:text-[10px]`}
         >
           {positionLabel}
         </span>
         {interactive && (
-          <span className="text-[9px] font-semibold uppercase tracking-wider text-accent-green sm:text-[10px]">
+          <span className="text-[9px] font-semibold uppercase tracking-wider text-accent-green sm:text-[10px] md:text-xs">
             +
           </span>
         )}
