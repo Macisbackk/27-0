@@ -8,7 +8,7 @@ import type { SeasonAward } from "@/lib/season-awards";
 import type { SquadSlot } from "@/lib/types";
 import { getClubColors } from "@/lib/clubs";
 import { getPlayerColorClub } from "@/lib/players/run-club";
-import { POSITION_LABELS, POSITION_SHORT } from "@/lib/positions";
+import { getFormationSlotDisplayLabel } from "@/lib/positions";
 import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -111,8 +111,8 @@ export function TeamSheetPlayerPopup({
                       {player.name}
                     </h3>
                     <p className={`mt-1 ${TYPO.bodySm} text-gray-400`}>
-                      {formatPlayerPositionLabel(player)} ·{" "}
-                      {POSITION_SHORT[slot.position]}
+                      {formatPlayerPositionLabel(player, { short: false })} ·{" "}
+                      {getFormationSlotDisplayLabel(slot.slotIndex)}
                     </p>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ export function TeamSheetPlayerPopup({
                   <div className="flex justify-between gap-3">
                     <dt className="shrink-0 text-gray-500">Played as</dt>
                     <dd className="min-w-0 text-right font-medium text-gray-200 break-words">
-                      {POSITION_LABELS[slot.position]}
+                      {getFormationSlotDisplayLabel(slot.slotIndex)}
                     </dd>
                   </div>
                   {!hardMode && seasonStats?.rating !== undefined && (

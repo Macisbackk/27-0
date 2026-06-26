@@ -4,7 +4,7 @@ import type { SquadSlot } from "@/lib/types";
 import { getClubColors } from "@/lib/clubs";
 import { formatPitchSlotPlayerName } from "@/lib/players/display-name";
 import { getPlayerColorClub } from "@/lib/players/run-club";
-import { POSITION_SHORT } from "@/lib/positions";
+import { getFormationSlotDisplayLabel, POSITION_SHORT } from "@/lib/positions";
 import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
 /** Shared footprint for empty and filled pitch slots — scales down on mobile. */
@@ -39,7 +39,10 @@ export function PitchSlotCard({
 }: PitchSlotCardProps) {
   const player = slot.player!;
   const colors = getClubColors(getPlayerColorClub(player, clubColorOverride));
-  const positionLabel = POSITION_SHORT[slot.position];
+  const positionLabel =
+    compact && !fullPlayerNames
+      ? POSITION_SHORT[slot.position]
+      : getFormationSlotDisplayLabel(slot.slotIndex);
   const effectiveRating = getEffectivePeakRating(slot);
   const ratingLabel = hardMode ? "??" : String(Math.round(effectiveRating));
   const sizeClass = fullPlayerNames
@@ -61,7 +64,7 @@ export function PitchSlotCard({
         <span className="h-full flex-1" style={{ backgroundColor: colors.secondary }} />
       </div>
       <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-0 px-0.5 py-0.5">
-        <span className="shrink-0 font-display text-[7px] font-bold uppercase leading-none tracking-wide text-gray-400 sm:text-[8px]">
+        <span className="line-clamp-2 w-full shrink-0 text-center font-display text-[7px] font-bold leading-tight text-gray-400 sm:text-[8px]">
           {positionLabel}
         </span>
         <p
