@@ -21,6 +21,9 @@ export const STORAGE_KEYS = {
   normalEraVariant: "27-0-normal-era-variant",
   clubFunds: "27-0-club-funds",
   clubFundsLeaderboard: "27-0-club-funds-leaderboard",
+  trophyCabinetLeaderboard: "27-0-trophy-cabinet-leaderboard",
+  /** One-time local reset marker for squad value leaderboard wipe. */
+  squadValueLeaderboardReset: "27-0-squad-value-lb-reset-v1",
   uiThemeStore: "27-0-ui-theme-store",
   /** Cached CSS vars for pre-hydration theme bootstrap */
   uiThemeCssCache: "27-0-ui-theme-css-cache",

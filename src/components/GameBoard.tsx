@@ -1632,6 +1632,7 @@ export function GameBoard({
           playoffResult={seasonResult.playoffResult}
           playoffBracketState={completedPlayoffBracketState}
           playoffFundsPayout={playoffFundsPayout}
+          clubFundsPayout={clubFundsPayout}
           isHardMode={isHardMode}
           onPlayAgain={handlePlayoffReviewDone}
           onClose={() => setPhase("pitch")}

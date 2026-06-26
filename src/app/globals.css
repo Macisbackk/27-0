@@ -531,14 +531,11 @@ body {
     letter-spacing: 0.08em;
   }
 
-  /* Store-themed generic button */
+  /* Store-themed generic button — solid kit primary (gradients reserved for logo) */
   .game-button--theme {
     border: 2px solid var(--theme-tertiary);
-    background: linear-gradient(
-      135deg,
-      var(--theme-gradient-from) 0%,
-      color-mix(in srgb, var(--theme-gradient-to) 72%, var(--theme-tertiary)) 100%
-    );
+    background-color: var(--theme-primary);
+    background-image: none;
     color: var(--theme-text-on-primary);
     box-shadow:
       0 0 0 1px var(--theme-tertiary),
@@ -547,7 +544,7 @@ body {
   }
 
   .game-button--theme:hover:not(:disabled) {
-    filter: brightness(1.06);
+    background-color: color-mix(in srgb, var(--theme-primary) 86%, var(--theme-tertiary));
     box-shadow:
       0 0 0 1px var(--theme-tertiary),
       0 0 28px var(--theme-glow);
@@ -556,11 +553,8 @@ body {
   /* Current Mode — fixed green, never Store theme */
   .game-button--current {
     border: 2px solid var(--mode-current-border);
-    background: linear-gradient(
-      90deg,
-      var(--mode-current) 0%,
-      var(--mode-current-2) 100%
-    );
+    background-color: var(--mode-current);
+    background-image: none;
     color: var(--mode-current-text) !important;
     box-shadow:
       0 0 28px var(--mode-current-glow),
@@ -568,7 +562,7 @@ body {
   }
 
   .game-button--current:hover:not(:disabled) {
-    filter: brightness(1.05);
+    background-color: color-mix(in srgb, var(--mode-current) 90%, #ffffff);
     box-shadow:
       0 0 36px var(--mode-current-glow),
       inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -577,11 +571,8 @@ body {
   /* Era Mode — fixed gold */
   .game-button--era {
     border: 2px solid var(--mode-era-border);
-    background: linear-gradient(
-      90deg,
-      var(--mode-era) 0%,
-      color-mix(in srgb, var(--mode-era) 70%, #fff) 100%
-    );
+    background-color: var(--mode-era);
+    background-image: none;
     color: var(--mode-era-text) !important;
     box-shadow:
       0 0 28px var(--mode-era-glow),
@@ -589,7 +580,7 @@ body {
   }
 
   .game-button--era:hover:not(:disabled) {
-    filter: brightness(1.05);
+    background-color: color-mix(in srgb, var(--mode-era) 90%, #ffffff);
   }
 
   .game-button--secondary {

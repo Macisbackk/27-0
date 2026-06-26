@@ -322,6 +322,7 @@ export function mapCupProfilesToTrackerEntries(
       totalWins: profile.cupMatchWins,
       totalLosses: profile.cupMatchLosses,
       perfectRuns: 0,
+      winlessSeasons: 0,
       bestRecordWins: profile.cupMatchWins,
       bestRecordLosses: profile.cupMatchLosses,
       bestWinPercentage: winPct,

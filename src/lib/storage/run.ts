@@ -20,6 +20,7 @@ import {
   updateStats,
 } from "./stats";
 import { gameModeToDbMode } from "./leaderboard";
+import { syncTrophyCabinetLeaderboard } from "./trophy-cabinet-leaderboard";
 import { recordCupTeamWin, recordEraCupTeamWin } from "./cup-team-wins";
 
 export interface CompletedRunResult {
@@ -159,6 +160,7 @@ export async function recordCompletedRun(
         recordEraCupTeamWin(options.eraCupWinner, run.id);
       }
 
+      if (!isHiddenRun) syncTrophyCabinetLeaderboard();
       return { submittedOnline: loggedIn && !isHiddenRun };
     }
 
@@ -216,6 +218,7 @@ export async function recordCompletedRun(
       );
       const profilesAfter = getAllCupLeaderboardProfiles();
 
+      if (!isHiddenRun) syncTrophyCabinetLeaderboard();
       return {
         submittedOnline: loggedIn && !isHiddenRun,
         cupRanking: loggedIn && !isHiddenRun
@@ -258,6 +261,7 @@ export async function recordCompletedRun(
     );
   }
 
+  if (!isHiddenRun && hasSeasonData) syncTrophyCabinetLeaderboard();
   return { nationalRank, submittedOnline: loggedIn && !isHiddenRun };
 }
 
@@ -315,5 +319,6 @@ export async function recordPlayoffCompletion(
     ).rows.find((e) => e.isCurrentUser)?.rank;
   }
 
+  syncTrophyCabinetLeaderboard();
   return { nationalRank, submittedOnline: loggedIn };
 }

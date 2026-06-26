@@ -49,10 +49,14 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   squad_value: "Squad Value",
   most_wins: "Wins",
   perfect_runs: "27-0 Seasons",
+  winless_seasons: "0-27 Seasons",
   best_record: "Total Record",
-  challenge_cup_wins: "Cups Won",
-  cup_match_wins: "Cup Wins",
   challenge_cup_team_wins: "Tournament Wins",
+  league_titles: "League Titles",
+  super_league_champions: "SL Champions",
+  challenge_cup_trophy: "Challenge Cup",
+  era_cup_trophy: "Era Cup",
+  era_league_title: "Era League",
   total_winnings: "Total Winnings",
 };
 
@@ -105,12 +109,13 @@ export function LeaderboardTable({
     : getDefaultTrackerForDbMode(leaderboardMode);
   const isTeamWinsTracker = activeTracker === "challenge_cup_team_wins";
   const isClubFundsMode = leaderboardMode === "club-funds";
+  const isTrophyCabinetMode = leaderboardMode === "trophy-cabinet";
 
   const handleModeChange = (mode: LeaderboardDbMode) => {
     if (mode !== leaderboardMode) playTabChange();
     setLeaderboardMode(mode);
     setTracker(getDefaultTrackerForDbMode(mode));
-    if (mode === "challenge-cup" || mode === "fantasy" || mode === "club-funds") {
+    if (mode === "challenge-cup" || mode === "fantasy" || mode === "club-funds" || mode === "trophy-cabinet") {
       setDifficulty("NORMAL");
     }
   };
@@ -124,8 +129,16 @@ export function LeaderboardTable({
     setLoading(true);
 
     try {
-      if (isClubFundsMode) {
-        const result = await getClubFundsLeaderboardAsync();
+      if (isClubFundsMode || isTrophyCabinetMode) {
+        const result = isClubFundsMode
+          ? await getClubFundsLeaderboardAsync()
+          : await getTrackerLeaderboardAsync(
+              activeTracker,
+              period,
+              difficulty,
+              50,
+              "trophy-cabinet"
+            );
         if (currentRequest !== requestId.current) return;
         setEntries(result.rows);
         setTeamWinsRows([]);
@@ -188,6 +201,7 @@ export function LeaderboardTable({
     activeTracker,
     isTeamWinsTracker,
     isClubFundsMode,
+    isTrophyCabinetMode,
     isChallengeCupMode,
     cupEraMode,
     isSuperLeagueMode,
@@ -214,7 +228,9 @@ export function LeaderboardTable({
           ? "Fantasy Mode"
           : leaderboardMode === "club-funds"
             ? "Total Winnings"
-            : "Normal Mode";
+            : leaderboardMode === "trophy-cabinet"
+              ? "Trophy Cabinet"
+              : "Normal Mode";
 
   const trackerLabel =
     availableTrackers.find((t) => t.id === activeTracker)?.label ??
@@ -224,13 +240,14 @@ export function LeaderboardTable({
     [
       { id: "super-league" as const, label: "Normal Mode" },
       { id: "challenge-cup" as const, label: "Challenge Cup" },
+      { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
       { id: "club-funds" as const, label: "Total Winnings" },
     ] as const
   );
 
   return (
     <div>
-      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {modeOptions.map((mode) => {
           const selected = leaderboardMode === mode.id;
           return (
@@ -311,7 +328,7 @@ export function LeaderboardTable({
         )}
       </div>
 
-      {!isTeamWinsTracker && !isClubFundsMode && (
+      {!isTeamWinsTracker && !isClubFundsMode && !isTrophyCabinetMode && (
         <div className="mb-6 flex flex-wrap gap-2">
           {PERIODS.map((p) => (
             <button
@@ -371,7 +388,7 @@ export function LeaderboardTable({
                 <th className="px-4 py-3">
                   {STAT_COLUMN[activeTracker] ?? "Stat"}
                 </th>
-                {!isClubFundsMode && (
+                {!isClubFundsMode && !isTrophyCabinetMode && (
                   <th className="hidden px-4 py-3 sm:table-cell">Updated</th>
                 )}
               </tr>
@@ -414,7 +431,7 @@ export function LeaderboardTable({
                       entry.statDisplay
                     )}
                   </td>
-                  {!isClubFundsMode && (
+                  {!isClubFundsMode && !isTrophyCabinetMode && (
                     <td className="hidden px-4 py-3 text-sm text-gray-500 sm:table-cell">
                       {new Date(entry.achievedAt).toLocaleDateString()}
                     </td>

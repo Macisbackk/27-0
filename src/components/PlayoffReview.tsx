@@ -12,6 +12,7 @@ import { generateSeasonAwards } from "@/lib/season-awards";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { ReturnHomeButton } from "./ReturnHomeButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
+import { mergeClubFundsPayouts } from "@/lib/club-funds";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { SquadReviewSection } from "./SquadReviewSection";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
@@ -26,6 +27,7 @@ interface PlayoffReviewProps {
   playoffResult: PlayoffResult;
   playoffBracketState?: PlayoffBracketState | null;
   playoffFundsPayout?: ClubFundsPayoutResult | null;
+  clubFundsPayout?: ClubFundsPayoutResult | null;
   isHardMode?: boolean;
   onPlayAgain: () => void;
   onClose: () => void;
@@ -38,6 +40,7 @@ export function PlayoffReview({
   playoffResult,
   playoffBracketState = null,
   playoffFundsPayout = null,
+  clubFundsPayout = null,
   isHardMode = false,
   onPlayAgain,
   onReturnHome,
@@ -46,6 +49,11 @@ export function PlayoffReview({
   const titleBio = useMemo(
     () => getPlayoffReviewBio(playoffResult, seasonResult.wins),
     [playoffResult, seasonResult.wins]
+  );
+
+  const fundsPayout = useMemo(
+    () => mergeClubFundsPayouts(clubFundsPayout, playoffFundsPayout),
+    [clubFundsPayout, playoffFundsPayout]
   );
 
   const playerAwards = useMemo(() => {
@@ -103,7 +111,7 @@ export function PlayoffReview({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <ClubFundsEarned payout={playoffFundsPayout} />
+          <ClubFundsEarned payout={fundsPayout} />
         </motion.div>
 
         <CollapsibleReviewSection title="Play-Off Summary" delay={0.2} defaultOpen>

@@ -29,6 +29,7 @@ import {
 import { loadCloudStats } from "./storage/stats-cloud";
 import { loadCloudClubFunds } from "./storage/club-funds-cloud";
 import { mergeClubFundsFromCloud, syncClubFundsLeaderboardOnLoad } from "./storage/club-funds";
+import { syncTrophyCabinetLeaderboardOnLoad } from "./storage/trophy-cabinet-leaderboard";
 import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
 import { STORAGE_KEYS } from "./storage/keys";
 import { getAllStats, mergeCloudStatsWithLocal } from "./storage/stats";
@@ -66,6 +67,7 @@ async function hydrateClubFundsFromCloud(): Promise<void> {
   const cloud = await loadCloudClubFunds();
   mergeClubFundsFromCloud(cloud);
   syncClubFundsLeaderboardOnLoad();
+  syncTrophyCabinetLeaderboardOnLoad();
 }
 
 async function hydrateUiThemeFromCloud(): Promise<void> {

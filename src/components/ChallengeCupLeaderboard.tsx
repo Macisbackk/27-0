@@ -13,10 +13,6 @@ import {
   getAllCupLeaderboardProfiles,
 } from "@/lib/storage/cup-leaderboard";
 import {
-  getCupWinsLeaderboardAsync,
-  type CupWinsLeaderboardRow,
-} from "@/lib/storage/leaderboard";
-import {
   getCupTeamWinsLeaderboardAsync,
   type CupTeamWinsLeaderboardRow,
 } from "@/lib/storage/cup-team-wins";
@@ -122,45 +118,8 @@ function CategoryTable({
   );
 }
 
-function OnlineCupWinsList({ entries }: { entries: CupWinsLeaderboardRow[] }) {
-  if (entries.length === 0) return null;
-
-  return (
-    <section className="matchday-panel overflow-hidden">
-      <h2 className="border-b border-pitch-600/50 px-4 py-3 font-display text-sm font-bold uppercase tracking-wider text-accent-gold">
-        Online Challenge Cup Wins
-      </h2>
-      <ol className="divide-y divide-pitch-700/30">
-        {entries.slice(0, 10).map((entry, index) => (
-          <li
-            key={entry.username}
-            className={`flex items-center justify-between px-4 py-3 ${
-              entry.isCurrentUser ? "bg-accent-green/5" : ""
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <span
-                className={`w-6 font-bold ${
-                  index < 3 ? "text-accent-gold" : "text-gray-400"
-                }`}
-              >
-                {entry.rank}.
-              </span>
-              <span className="font-medium">{entry.username}</span>
-            </div>
-            <span className="font-semibold text-accent-gold">
-              {entry.totalWins}
-            </span>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
-}
-
 export function ChallengeCupLeaderboard() {
   const [profiles, setProfiles] = useState<CupLeaderboardProfile[]>([]);
-  const [onlineWins, setOnlineWins] = useState<CupWinsLeaderboardRow[]>([]);
   const [teamWins, setTeamWins] = useState<CupTeamWinsLeaderboardRow[]>([]);
   const [teamWinsTotal, setTeamWinsTotal] = useState(0);
 
@@ -171,15 +130,12 @@ export function ChallengeCupLeaderboard() {
       ensureCupLeaderboardSynced(username, stored.normal, stored.hard);
     }
     setProfiles(getAllCupLeaderboardProfiles());
-    void getCupWinsLeaderboardAsync().then(setOnlineWins);
     void getCupTeamWinsLeaderboardAsync().then((result) => {
       setTeamWins(result.rows);
       setTeamWinsTotal(result.totalCups);
     });
   }, []);
 
-  const matchWins = rankProfilesByCategory(profiles, "cupMatchWins");
-  const cupsWon = rankProfilesByCategory(profiles, "cupsWon");
   const cupRecord = [...profiles]
     .filter((p) => p.cupMatchWins + p.cupMatchLosses > 0)
     .sort((a, b) => {
@@ -219,21 +175,6 @@ export function ChallengeCupLeaderboard() {
 
       <CupTeamWinsBarGraph entries={teamWins} totalCups={teamWinsTotal} />
 
-      <OnlineCupWinsList entries={onlineWins} />
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <FeaturedList
-          title="Challenge Cup Wins"
-          profiles={matchWins}
-          formatValue={(p) => String(p.cupMatchWins)}
-        />
-        <FeaturedList
-          title="Most Challenge Cups Won"
-          profiles={cupsWon}
-          formatValue={(p) => String(p.cupsWon)}
-        />
-      </div>
-
       <section>
         <h2 className="mb-3 font-display text-sm font-bold uppercase tracking-wider text-accent-green">
           Performance
@@ -265,7 +206,10 @@ export function ChallengeCupLeaderboard() {
         </h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {CUP_LEADERBOARD_CATEGORIES.filter(
-            (category) => category.id !== "winPercentage"
+            (category) =>
+              category.id !== "winPercentage" &&
+              category.id !== "cupMatchWins" &&
+              category.id !== "cupsWon"
           ).map((category) => (
             <CategoryTable
               key={category.id}

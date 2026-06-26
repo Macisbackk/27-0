@@ -421,7 +421,8 @@ export function applySeasonLifetimeUpdate(
       existing.longestLosingStreak,
       longestLosingStreak
     ),
-    leagueTitlesWon: existing.leagueTitlesWon,
+    leagueTitlesWon:
+      existing.leagueTitlesWon + (leaguePosition === 1 ? 1 : 0),
     superLeagueTitles:
       existing.superLeagueTitles + (superLeagueTitle ? 1 : 0),
     topSixFinishes:

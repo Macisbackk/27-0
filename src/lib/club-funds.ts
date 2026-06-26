@@ -109,6 +109,27 @@ export function formatClubFundsExact(amount: number): string {
   return `£${Math.round(amount).toLocaleString("en-GB")}`;
 }
 
+export function mergeClubFundsPayouts(
+  ...payouts: (ClubFundsPayoutResult | null | undefined)[]
+): ClubFundsPayoutResult | null {
+  const valid = payouts.filter(
+    (payout): payout is ClubFundsPayoutResult =>
+      !!payout && payout.lines.length > 0
+  );
+  if (valid.length === 0) return null;
+
+  const lines = valid.flatMap((payout) => payout.lines);
+  const total = lines.reduce((sum, line) => sum + line.amount, 0);
+
+  return {
+    runId: valid[0].runId,
+    lines,
+    total,
+    awarded: valid.some((payout) => payout.awarded),
+    newBalance: valid[valid.length - 1]?.newBalance ?? 0,
+  };
+}
+
 export function computeClubFundsLines(
   input: ClubFundsRunInput
 ): ClubFundsEarnedLine[] {

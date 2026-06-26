@@ -3,22 +3,25 @@ type AwardVariant = "positive" | "negative" | "neutral";
 
 const VARIANT_STYLES: Record<
   AwardVariant,
-  { border: string; bg: string; title: string }
+  { border: string; bg: string; title: string; rating: string }
 > = {
   positive: {
-    border: "border-accent-green/30",
-    bg: "bg-accent-green/5",
-    title: "text-accent-green",
+    border: "border-[#22c55e]/30",
+    bg: "bg-[#22c55e]/8",
+    title: "text-[#22c55e]",
+    rating: "text-[#22c55e]",
   },
   negative: {
     border: "border-red-500/30",
     bg: "bg-red-500/5",
     title: "text-red-400",
+    rating: "text-red-400",
   },
   neutral: {
     border: "border-pitch-600/40",
     bg: "bg-pitch-900/50",
-    title: "text-accent-gold",
+    title: "text-[#fbbf24]",
+    rating: "text-[#22c55e]",
   },
 };
 
@@ -83,7 +86,9 @@ export function RLAwardCard({
             <p className="mt-1 text-xs text-amber-300/90">{positionNote}</p>
           )}
           {ratingNote && (
-            <p className="mt-0.5 font-display text-xs font-bold text-accent-green">
+            <p
+              className={`mt-0.5 font-display text-xs font-bold ${styles.rating}`}
+            >
               {ratingNote}
             </p>
           )}

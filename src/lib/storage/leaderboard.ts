@@ -25,6 +25,7 @@ import {
   getAllEraCupLeaderboardProfiles,
   mapCupProfilesToTrackerEntries,
 } from "./cup-leaderboard";
+import { getTrophyCabinetLeaderboardAsync } from "./trophy-cabinet-leaderboard";
 import { getAllStats } from "./stats";
 import type { UserStatsData } from "../types";
 
@@ -40,6 +41,7 @@ export interface StoredLeaderboardEntry {
   totalWins: number;
   totalLosses: number;
   perfectRuns: number;
+  winlessSeasons: number;
   bestRecordWins: number;
   bestRecordLosses: number;
   bestWinPercentage: number;
@@ -63,6 +65,7 @@ export interface SupabaseLeaderboardRow {
   wins: number | null;
   losses: number | null;
   perfect_runs: number | null;
+  winless_seasons: number | null;
   best_record_wins: number | null;
   best_record_losses: number | null;
   best_win_percentage: number | null;
@@ -81,7 +84,8 @@ export type LeaderboardDbMode =
   | "challenge-cup"
   | "draft"
   | "fantasy"
-  | "club-funds";
+  | "club-funds"
+  | "trophy-cabinet";
 
 /** Era Challenge Cup shares the challenge-cup leaderboard bucket. */
 export function normalizeLeaderboardGameMode(mode: GameMode): GameMode {
@@ -112,12 +116,24 @@ function resolveLeaderboardDifficulty(
 }
 
 const SUPABASE_SELECT_EXTENDED =
-  "id, player_name, coach_name, user_id, score, mode, difficulty, mode_variant, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage, created_at, updated_at";
+  "id, player_name, coach_name, user_id, score, mode, difficulty, mode_variant, wins, losses, perfect_runs, winless_seasons, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage, created_at, updated_at";
 
 const SUPABASE_SELECT_BASE =
   "id, player_name, coach_name, user_id, score, mode, difficulty, mode_variant, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, created_at, updated_at";
 
-function loadLocalEntries(): StoredLeaderboardEntry[] {
+function applySquadValueLeaderboardReset(): void {
+  if (typeof window === "undefined") return;
+  if (localStorage.getItem(STORAGE_KEYS.squadValueLeaderboardReset)) return;
+
+  const entries = loadLocalEntriesRaw().map((entry) => ({
+    ...entry,
+    squadValue: 0,
+  }));
+  saveLocalEntries(entries);
+  localStorage.setItem(STORAGE_KEYS.squadValueLeaderboardReset, "1");
+}
+
+function loadLocalEntriesRaw(): StoredLeaderboardEntry[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.leaderboard);
@@ -130,6 +146,7 @@ function loadLocalEntries(): StoredLeaderboardEntry[] {
       totalWins: entry.totalWins ?? entry.wins ?? 0,
       totalLosses: entry.totalLosses ?? entry.losses ?? 0,
       perfectRuns: entry.perfectRuns ?? 0,
+      winlessSeasons: entry.winlessSeasons ?? 0,
       bestRecordWins: entry.bestRecordWins ?? entry.wins ?? 0,
       bestRecordLosses: entry.bestRecordLosses ?? entry.losses ?? 0,
       bestWinPercentage: entry.bestWinPercentage ?? 0,
@@ -143,6 +160,11 @@ function loadLocalEntries(): StoredLeaderboardEntry[] {
   } catch {
     return [];
   }
+}
+
+function loadLocalEntries(): StoredLeaderboardEntry[] {
+  applySquadValueLeaderboardReset();
+  return loadLocalEntriesRaw();
 }
 
 function saveLocalEntries(entries: StoredLeaderboardEntry[]): void {
@@ -188,6 +210,7 @@ function toTrackerEntry(
     totalWins: row.totalWins ?? 0,
     totalLosses: row.totalLosses ?? 0,
     perfectRuns: row.perfectRuns ?? 0,
+    winlessSeasons: row.winlessSeasons ?? 0,
     bestRecordWins: row.bestRecordWins ?? 0,
     bestRecordLosses: row.bestRecordLosses ?? 0,
     bestWinPercentage: row.bestWinPercentage ?? 0,
@@ -277,6 +300,7 @@ function mapSupabaseToTrackerEntries(
       totalWins: row.wins ?? 0,
       totalLosses: row.losses ?? 0,
       perfectRuns: row.perfect_runs ?? 0,
+      winlessSeasons: row.winless_seasons ?? 0,
       bestRecordWins: row.best_record_wins ?? row.wins ?? 0,
       bestRecordLosses: row.best_record_losses ?? row.losses ?? 0,
       bestWinPercentage: row.best_win_percentage ?? 0,
@@ -394,7 +418,7 @@ async function insertToSupabase(
     let existingQuery = supabase
       .from("leaderboard")
       .select(
-        "id, score, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage"
+        "id, score, wins, losses, perfect_runs, winless_seasons, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage"
       )
       .eq("user_id", userId)
       .eq("mode", dbMode)
@@ -411,6 +435,7 @@ async function insertToSupabase(
       wins: stats.totalWins,
       losses: stats.totalLosses,
       perfect_runs: stats.perfectRuns,
+      winless_seasons: stats.winlessSeasons,
       best_record_wins: stats.bestRecordWins,
       best_record_losses: stats.bestRecordLosses,
       best_win_percentage: stats.bestWinPercentage,
@@ -484,6 +509,7 @@ function hasTrackerActivity(entry: LeaderboardTrackerEntry): boolean {
     entry.totalWins > 0 ||
     entry.totalLosses > 0 ||
     entry.perfectRuns > 0 ||
+    entry.winlessSeasons > 0 ||
     entry.challengeCupWins > 0
   );
 }
@@ -509,6 +535,7 @@ function userStatsToClassicTrackerEntry(
     totalWins: wins,
     totalLosses: losses,
     perfectRuns: stats.totalPerfectSeasons,
+    winlessSeasons: stats.totalWinlessSeasons,
     bestRecordWins: bestWins,
     bestRecordLosses: bestLosses,
     bestWinPercentage: games > 0 ? (wins / games) * 100 : 0,
@@ -544,6 +571,21 @@ function getSupplementalEraNormalEntries(
   return hasTrackerActivity(entry) ? [entry] : [];
 }
 
+function getSupplementalNormalCurrentEntries(
+  difficulty: GameDifficulty
+): LeaderboardTrackerEntry[] {
+  const username = getUsername();
+  if (!username) return [];
+
+  const bucket = difficulty === "HARD" ? "hard" : "normal";
+  const entry = userStatsToClassicTrackerEntry(
+    username,
+    getAllStats()[bucket],
+    difficulty
+  );
+  return hasTrackerActivity(entry) ? [entry] : [];
+}
+
 function buildTrackerEntries(
   period: LeaderboardPeriod,
   difficulty: GameDifficulty,
@@ -563,6 +605,15 @@ function buildTrackerEntries(
     entries = mergeTrackerEntryLists(
       entries,
       getSupplementalEraNormalEntries(difficulty)
+    );
+  } else if (
+    dbMode === "super-league" &&
+    modeVariant === "current" &&
+    period === "ALL_TIME"
+  ) {
+    entries = mergeTrackerEntryLists(
+      entries,
+      getSupplementalNormalCurrentEntries(difficulty)
     );
   }
 
@@ -605,6 +656,7 @@ function saveLocalEntry(
         totalWins: stats.totalWins,
         totalLosses: stats.totalLosses,
         perfectRuns: stats.perfectRuns,
+        winlessSeasons: stats.winlessSeasons,
         bestRecordWins: stats.bestRecordWins,
         bestRecordLosses: stats.bestRecordLosses,
         bestWinPercentage: stats.bestWinPercentage,
@@ -631,6 +683,7 @@ function saveLocalEntry(
       totalWins: stats.totalWins,
       totalLosses: stats.totalLosses,
       perfectRuns: stats.perfectRuns,
+      winlessSeasons: stats.winlessSeasons,
       bestRecordWins: stats.bestRecordWins,
       bestRecordLosses: stats.bestRecordLosses,
       bestWinPercentage: stats.bestWinPercentage,
@@ -682,7 +735,7 @@ async function getExistingRemoteStats(
     let query = supabase
       .from("leaderboard")
       .select(
-        "score, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage"
+        "score, wins, losses, perfect_runs, winless_seasons, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage"
       )
       .eq("user_id", userId)
       .eq("mode", dbMode)
@@ -701,6 +754,7 @@ async function getExistingRemoteStats(
       totalWins: data.wins ?? 0,
       totalLosses: data.losses ?? 0,
       perfectRuns: data.perfect_runs ?? 0,
+      winlessSeasons: data.winless_seasons ?? 0,
       bestRecordWins: data.best_record_wins ?? 0,
       bestRecordLosses: data.best_record_losses ?? 0,
       bestWinPercentage: data.best_win_percentage ?? 0,
@@ -794,6 +848,10 @@ export async function getTrackerLeaderboardAsync(
   dbMode: LeaderboardDbMode = "super-league",
   modeVariant: ModeVariant = "current"
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
+  if (dbMode === "trophy-cabinet") {
+    return getTrophyCabinetLeaderboardAsync(tracker, limit);
+  }
+
   if (tracker === "challenge_cup_team_wins") {
     const result = await getCupTeamWinsLeaderboardAsync();
     return {
@@ -880,32 +938,4 @@ export async function getLeaderboardAsync(
     rows: mapTrackerRowsToLegacy(rows, entries),
     source: remote ? "remote" : "local",
   };
-}
-
-export interface CupWinsLeaderboardRow {
-  rank: number;
-  username: string;
-  totalWins: number;
-  totalLosses: number;
-  isCurrentUser?: boolean;
-}
-
-export async function getCupWinsLeaderboardAsync(
-  limit = 50
-): Promise<CupWinsLeaderboardRow[]> {
-  const result = await getTrackerLeaderboardAsync(
-    "challenge_cup_wins",
-    "ALL_TIME",
-    "NORMAL",
-    limit,
-    "challenge-cup"
-  );
-
-  return result.rows.map((row) => ({
-    rank: row.rank,
-    username: row.username,
-    totalWins: Number(row.statDisplay) || 0,
-    totalLosses: 0,
-    isCurrentUser: row.isCurrentUser,
-  }));
 }

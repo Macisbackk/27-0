@@ -53,8 +53,8 @@ export function buildPlayerSeasonReviewStats(
 
   if (!stats.contributionSummary && tryRow && tryRow.tries > 0) {
     const playedLabel = POSITION_LABELS[slot.position];
-    stats.contributionSummary = `${tryRow.tries} try${
-      tryRow.tries === 1 ? "" : "ies"
+    stats.contributionSummary = `${tryRow.tries} ${
+      tryRow.tries === 1 ? "try" : "tries"
     } from ${playedLabel} this season.`;
   }
 
