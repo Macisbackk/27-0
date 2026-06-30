@@ -1,8 +1,7 @@
+import { getPlayerById } from "../players";
 import { getOpponentMatchRating } from "../game/opponent-scorers";
 import { simulateOneFixture } from "../game/season-simulation";
-import { getPlayerById } from "../players";
 import type { ManagerCareer, ManagerFixtureRecord } from "./types";
-import { MANAGER_SEASON_GAMES } from "./types";
 import {
   buildSquadSlotsFromMatchday,
   tickInjuries,
@@ -23,6 +22,13 @@ import {
 } from "./managerTacticsScoring";
 import { updateStatsAfterMatch } from "./managerCareerStats";
 import type { MatchFixture } from "../game/season-simulation";
+import { processHomeMatchAttendance } from "./managerAttendance";
+import {
+  applyCupMatchToBracket,
+  getNextManagerFixture,
+  isManagerSeasonComplete,
+} from "./managerChallengeCup";
+import { countExpiringContracts } from "./managerContracts";
 
 interface TacticModifiers {
   strengthBonus: number;
@@ -147,12 +153,14 @@ function computePlayerModifiers(
 export function applyManagerMatchResult(
   career: ManagerCareer,
   fixture: MatchFixture,
-  options: { playedLive?: boolean } = {}
+  options: { playedLive?: boolean; schedOverride?: ReturnType<typeof getNextManagerFixture> } = {}
 ): ManagerCareer {
-  const sched = career.schedule.find((s) => s.round === fixture.round);
+  const sched =
+    options.schedOverride ?? getNextManagerFixture(career);
   if (!sched) return career;
 
-  const round = fixture.round;
+  const isCup = sched.competition === "challenge_cup";
+  const round = sched.round;
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
     career.xiiiSlotPositions
@@ -180,23 +188,33 @@ export function applyManagerMatchResult(
   );
 
   const won = fixture.result === "W";
-  const userMatch = {
-    round,
-    homeTeam: sched.isHome ? career.club : sched.opponent,
-    awayTeam: sched.isHome ? sched.opponent : career.club,
-    homeScore: sched.isHome ? fixture.pointsFor : fixture.pointsAgainst,
-    awayScore: sched.isHome ? fixture.pointsAgainst : fixture.pointsFor,
-    homeTries: sched.isHome ? fixture.triesFor : fixture.triesAgainst,
-    awayTries: sched.isHome ? fixture.triesAgainst : fixture.triesFor,
-  };
 
-  const roundResults = simulateRoundOtherMatches(
-    career.club,
-    sched.opponent,
-    round,
-    career.seed,
-    userMatch
-  );
+  let roundResults = career.roundMatches;
+  let leagueTable = career.leagueTable;
+
+  if (!isCup) {
+    const userMatch = {
+      round,
+      homeTeam: sched.isHome ? career.club : sched.opponent,
+      awayTeam: sched.isHome ? sched.opponent : career.club,
+      homeScore: sched.isHome ? fixture.pointsFor : fixture.pointsAgainst,
+      awayScore: sched.isHome ? fixture.pointsAgainst : fixture.pointsFor,
+      homeTries: sched.isHome ? fixture.triesFor : fixture.triesAgainst,
+      awayTries: sched.isHome ? fixture.triesAgainst : fixture.triesFor,
+    };
+
+    roundResults = [
+      ...career.roundMatches,
+      ...simulateRoundOtherMatches(
+        career.club,
+        sched.opponent,
+        round,
+        career.seed,
+        userMatch
+      ),
+    ];
+    leagueTable = buildLeagueTableFromMatches(roundResults, career.club);
+  }
 
   const aggressiveDefence =
     career.tactics.defenceFocus === "aggressive_contact";
@@ -252,9 +270,27 @@ export function applyManagerMatchResult(
     motmId
   );
 
+  let working: ManagerCareer = { ...career, squad: nextSquad };
+
+  const { career: withAttendance, meta: attendanceMeta } =
+    processHomeMatchAttendance(working, sched, fixture);
+  working = withAttendance;
+
+  let challengeCup = working.challengeCup;
+  if (isCup && sched.cupMatchId) {
+    challengeCup = applyCupMatchToBracket(
+      working,
+      sched.cupMatchId,
+      fixture
+    );
+    working = { ...working, challengeCup };
+  }
+
   const record: ManagerFixtureRecord = {
     ...fixture,
     userClub: career.club,
+    fixtureId: sched.id,
+    competition: sched.competition,
     meta: {
       tacticImpactLine: mods.tacticLine,
       tacticEffectivenessLine: effectivenessLine,
@@ -264,11 +300,12 @@ export function applyManagerMatchResult(
       })),
       playerOfMatchId: motmId,
       playedLive: options.playedLive ?? false,
+      attendance: attendanceMeta ?? undefined,
+      competition: sched.competition,
+      cupRound: sched.cupRound,
     },
   };
 
-  const allMatches = [...career.roundMatches, ...roundResults];
-  const leagueTable = buildLeagueTableFromMatches(allMatches, career.club);
   const position = leagueTable.find((r) => r.isUserTeam)?.position ?? 14;
 
   let boardConfidence = career.boardConfidence;
@@ -276,40 +313,54 @@ export function applyManagerMatchResult(
   else boardConfidence = Math.max(0, boardConfidence - 4);
   if (position <= 4) boardConfidence = Math.min(100, boardConfidence + 1);
   if (position >= 12) boardConfidence = Math.max(0, boardConfidence - 2);
+  if (isCup && won) boardConfidence = Math.min(100, boardConfidence + 5);
+  if (isCup && !won) boardConfidence = Math.max(0, boardConfidence - 3);
+
+  if (career.wageBill > career.wageBudget) {
+    boardConfidence = Math.max(0, boardConfidence - 2);
+  }
+  const expiring = countExpiringContracts(career.contracts);
+  if (expiring >= 4) boardConfidence = Math.max(0, boardConfidence - 3);
 
   const matchIncome = won ? 25_000 : 10_000;
-  const isComplete = round >= MANAGER_SEASON_GAMES;
+  const cupBonus = isCup && won ? 50_000 : 0;
 
-  return {
-    ...career,
-    squad: nextSquad,
+  const nextFixtureIndex = isCup
+    ? career.currentFixtureIndex
+    : career.currentFixtureIndex + 1;
+
+  const nextCareer: ManagerCareer = {
+    ...working,
     fixtures: [...career.fixtures, record],
-    roundMatches: allMatches,
+    roundMatches: roundResults,
     leagueTable,
     currentRound: round,
-    gameWeek: round,
-    currentFixtureIndex: round,
-    matchSimState: career.matchSimState,
+    gameWeek: isCup ? career.gameWeek : round,
+    currentFixtureIndex: nextFixtureIndex,
     wins: career.wins + (won ? 1 : 0),
     losses: career.losses + (won ? 0 : 1),
-    budget: career.budget + matchIncome,
-    clubFundsEarned: career.clubFundsEarned + matchIncome,
+    budget: working.budget + matchIncome + cupBonus,
+    clubFundsEarned: working.clubFundsEarned + matchIncome + cupBonus,
     boardConfidence,
     teamSeasonStats: statsUpdate.teamSeasonStats,
     playerSeasonStats: statsUpdate.playerSeasonStats,
     recentForm: statsUpdate.recentForm,
-    isSeasonComplete: isComplete,
+    isSeasonComplete: false,
     lastMatchFixture: record,
+    challengeCup,
     updatedAt: new Date().toISOString(),
+  };
+
+  return {
+    ...nextCareer,
+    isSeasonComplete: isManagerSeasonComplete(nextCareer),
   };
 }
 
 export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
-  if (career.isSeasonComplete || career.currentRound >= MANAGER_SEASON_GAMES) {
-    return career;
-  }
+  if (career.isSeasonComplete) return career;
 
-  const sched = career.schedule[career.currentRound];
+  const sched = getNextManagerFixture(career);
   if (!sched) return career;
 
   const round = sched.round;
@@ -355,7 +406,7 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
     }
   );
 
-  const next = applyManagerMatchResult(career, fixture);
+  const next = applyManagerMatchResult(career, fixture, { schedOverride: sched });
   return {
     ...next,
     matchSimState: nextSimState,
@@ -369,3 +420,5 @@ export function getSquadStrengthPreview(career: ManagerCareer): number {
     career.xiiiSlotPositions
   );
 }
+
+export { getNextManagerFixture };

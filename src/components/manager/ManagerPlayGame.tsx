@@ -12,7 +12,10 @@ import {
   liveMatchToFixture,
   type LiveMatchState,
 } from "@/lib/manager/managerLiveMatch";
-import { applyManagerMatchResult } from "@/lib/manager/managerSimulation";
+import {
+  applyManagerMatchResult,
+  getNextManagerFixture,
+} from "@/lib/manager/managerSimulation";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
 
 const COMMANDS: LiveMatchCommand[] = [
@@ -36,7 +39,7 @@ export function ManagerPlayGame({
   onComplete,
   onCancel,
 }: ManagerPlayGameProps) {
-  const sched = career.schedule[career.currentFixtureIndex];
+  const sched = getNextManagerFixture(career);
   const [live, setLive] = useState<LiveMatchState | null>(null);
 
   useEffect(() => {
@@ -56,7 +59,10 @@ export function ManagerPlayGame({
   const finishMatch = useCallback(() => {
     if (!live) return;
     const fixture = liveMatchToFixture(live, career);
-    const next = applyManagerMatchResult(career, fixture, { playedLive: true });
+    const next = applyManagerMatchResult(career, fixture, {
+      playedLive: true,
+      schedOverride: sched ?? undefined,
+    });
     onComplete(next);
   }, [live, career, onComplete]);
 

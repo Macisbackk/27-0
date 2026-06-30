@@ -9,6 +9,7 @@ const TABS: { id: ManagerView; label: string }[] = [
   { id: "hub", label: "Hub" },
   { id: "squad", label: "Squad" },
   { id: "tactics", label: "Tactics" },
+  { id: "contracts", label: "Contracts" },
   { id: "transfers", label: "Transfers" },
   { id: "fixtures", label: "Fixtures" },
   { id: "table", label: "Table" },

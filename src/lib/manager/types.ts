@@ -1,5 +1,6 @@
 import type { Position } from "../types";
 import type { MatchFixture } from "../game/season-simulation";
+import type { ChallengeCupBracketState } from "../game/challenge-cup-bracket";
 
 export type PlayingStyle =
   | "balanced"
@@ -217,7 +218,8 @@ export interface ManagerSeasonSummary {
   seasonVerdict: string;
 }
 
-import type { ChallengeCupBracketState } from "../game/challenge-cup-bracket";
+
+export type ManagerView =
   | "landing"
   | "club-select"
   | "hub"

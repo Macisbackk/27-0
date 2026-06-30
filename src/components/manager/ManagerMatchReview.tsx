@@ -8,19 +8,22 @@ import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSquadSlotsFromMatchday } from "@/lib/manager/managerSquad";
 import { getClubByName } from "@/lib/clubs";
+import { formatWage } from "@/lib/manager/managerContracts";
 
 interface ManagerMatchReviewProps {
   career: ManagerCareer;
-  round: number;
+  fixtureId: string;
   onClose: () => void;
 }
 
 export function ManagerMatchReview({
   career,
-  round,
+  fixtureId,
   onClose,
 }: ManagerMatchReviewProps) {
-  const fixture = career.fixtures.find((f) => f.round === round);
+  const fixture =
+    career.fixtures.find((f) => f.fixtureId === fixtureId) ??
+    career.fixtures.find((f) => `round-${f.round}` === fixtureId);
   if (!fixture) return null;
 
   const squad = buildSquadSlotsFromMatchday(
@@ -28,6 +31,11 @@ export function ManagerMatchReview({
     career.xiiiSlotPositions
   );
   const club = getClubByName(career.club);
+  const attendance = fixture.meta?.attendance;
+  const roundLabel =
+    fixture.competition === "challenge_cup"
+      ? fixture.meta?.cupRound?.replace(/_/g, " ") ?? "Challenge Cup"
+      : `Round ${fixture.round} — League`;
 
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
@@ -37,6 +45,20 @@ export function ManagerMatchReview({
           Close
         </GameButton>
       </div>
+
+      {attendance && (
+        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+          <p className={TYPO.sectionLabel}>Gate & Fans</p>
+          <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
+            <span>Attendance: {attendance.attendance.toLocaleString()}</span>
+            <span>Gate Income: {formatWage(attendance.gateIncome)}</span>
+            <span>
+              Fan Mood: {attendance.fanMoodChange >= 0 ? "+" : ""}
+              {attendance.fanMoodChange}
+            </span>
+          </div>
+        </div>
+      )}
 
       {fixture.meta?.tacticEffectivenessLine && (
         <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
@@ -58,7 +80,7 @@ export function ManagerMatchReview({
         <MatchDetailsPanel
           fixture={fixture}
           onClose={onClose}
-          roundLabel={`Round ${round}`}
+          roundLabel={roundLabel}
           seed={career.seed}
           userSquad={squad}
           userTeamName={career.club}

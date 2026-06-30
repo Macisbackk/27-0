@@ -6,6 +6,14 @@ import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { ManagerCareer } from "./types";
 import type { ManagerInjury, InjuryType } from "./types";
 import { createInitialPlayerState } from "./managerSquad";
+import {
+  calculateWageForPlayer,
+  computeWageBill,
+  generateInitialContract,
+  inferSquadRole,
+} from "./managerContracts";
+import { getManagerClubTeamRating } from "./managerRating";
+import { getPlayerAge } from "../players/player-age";
 
 const INJURY_POOL: { type: InjuryType; min: number; max: number; serious: boolean }[] = [
   { type: "knock", min: 1, max: 1, serious: false },
@@ -15,6 +23,32 @@ const INJURY_POOL: { type: InjuryType; min: number; max: number; serious: boolea
   { type: "concussion", min: 2, max: 4, serious: true },
   { type: "knee", min: 4, max: 8, serious: true },
 ];
+
+export interface TransferDemand {
+  wagePerYear: number;
+  yearsRequested: number;
+  squadRole: ReturnType<typeof inferSquadRole>;
+}
+
+export function getTransferDemand(
+  playerId: string,
+  club: string
+): TransferDemand {
+  const player = getPlayerById(playerId);
+  const rating = player?.rating ?? player?.peakRating ?? 70;
+  const age = player ? getPlayerAge(player) : undefined;
+  const role = inferSquadRole(rating, false, age);
+  const wage = calculateWageForPlayer(
+    playerId,
+    role,
+    getManagerClubTeamRating(club)
+  );
+  return {
+    wagePerYear: wage,
+    yearsRequested: rating >= 82 ? 2 : 1,
+    squadRole: role,
+  };
+}
 
 export function generateTransferMarket(
   userClub: string,
@@ -51,6 +85,11 @@ export function canAffordPlayer(budget: number, playerId: string): boolean {
   return budget >= player.value;
 }
 
+export function canAffordWage(career: ManagerCareer, wage: number): boolean {
+  const projected = career.wageBill + wage;
+  return projected <= career.wageBudget * 1.05;
+}
+
 export function signPlayer(
   career: ManagerCareer,
   playerId: string
@@ -61,16 +100,38 @@ export function signPlayer(
     return { ok: false, error: "Already in your squad" };
   }
   if (career.budget < player.value) {
-    return { ok: false, error: "Insufficient budget" };
+    return { ok: false, error: "Insufficient transfer budget" };
+  }
+
+  const demand = getTransferDemand(playerId, career.club);
+  if (!canAffordWage(career, demand.wagePerYear)) {
+    return {
+      ok: false,
+      error: `Wage bill would exceed budget (${Math.round(demand.wagePerYear / 1000)}k/yr demand)`,
+    };
   }
   if (career.squad.length >= 35) {
     return { ok: false, error: "Squad is full — release a player first" };
   }
 
+  const rep = getManagerClubTeamRating(career.club);
+  const contract = generateInitialContract(playerId, false, rep);
+  contract.wagePerYear = demand.wagePerYear;
+  contract.yearsRemaining = demand.yearsRequested;
+  contract.squadRole = demand.squadRole;
+  contract.expiresAtSeasonEnd = demand.yearsRequested <= 1;
+
+  const nextContracts = {
+    ...career.contracts,
+    [playerId]: contract,
+  };
+
   const next: ManagerCareer = {
     ...career,
     budget: career.budget - player.value,
     squad: [...career.squad, createInitialPlayerState(playerId)],
+    contracts: nextContracts,
+    wageBill: computeWageBill(nextContracts),
     transferMarket: career.transferMarket.filter((id) => id !== playerId),
     updatedAt: new Date().toISOString(),
   };
@@ -83,9 +144,14 @@ export function releasePlayer(
 ): ManagerCareer {
   const xiii = career.matchdayXiii.filter((id) => id !== playerId);
   const interchange = career.matchdayInterchange.filter((id) => id !== playerId);
+  const nextContracts = { ...career.contracts };
+  delete nextContracts[playerId];
+
   return {
     ...career,
     squad: career.squad.filter((p) => p.playerId !== playerId),
+    contracts: nextContracts,
+    wageBill: computeWageBill(nextContracts),
     matchdayXiii: xiii,
     matchdayInterchange: interchange,
     updatedAt: new Date().toISOString(),

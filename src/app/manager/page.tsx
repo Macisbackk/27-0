@@ -8,6 +8,7 @@ import { ManagerNav } from "@/components/manager/ManagerNav";
 import { ManagerHub } from "@/components/manager/ManagerHub";
 import { ManagerSquad } from "@/components/manager/ManagerSquad";
 import { ManagerTactics } from "@/components/manager/ManagerTactics";
+import { ManagerContracts } from "@/components/manager/ManagerContracts";
 import { ManagerTransfers } from "@/components/manager/ManagerTransfers";
 import { ManagerFixtures } from "@/components/manager/ManagerFixtures";
 import { ManagerTable } from "@/components/manager/ManagerTable";
@@ -44,6 +45,7 @@ const NAV_VIEWS: ManagerView[] = [
   "hub",
   "squad",
   "tactics",
+  "contracts",
   "transfers",
   "fixtures",
   "table",
@@ -55,7 +57,7 @@ export default function ManagerPage() {
   const [view, setView] = useState<ManagerView>("landing");
   const [career, setCareer] = useState<ManagerCareer | null>(null);
   const [hasSave, setHasSave] = useState(false);
-  const [reviewRound, setReviewRound] = useState<number | null>(null);
+  const [reviewFixtureId, setReviewFixtureId] = useState<string | null>(null);
 
   useEffect(() => {
     setHasSave(hasManagerCareer());
@@ -118,7 +120,7 @@ export default function ManagerPage() {
       recordSeasonComplete(next);
       setView("season-review");
     } else if (fixture) {
-      setReviewRound(fixture.round);
+      setReviewFixtureId(fixture.fixtureId ?? `round-${fixture.round}`);
       setView("match-review");
     }
   };
@@ -186,14 +188,17 @@ export default function ManagerPage() {
               onChange={(tactics) => persist({ ...career, tactics })}
             />
           )}
+          {view === "contracts" && (
+            <ManagerContracts career={career} onUpdate={persist} />
+          )}
           {view === "transfers" && (
             <ManagerTransfers career={career} onUpdate={persist} />
           )}
           {view === "fixtures" && (
             <ManagerFixtures
               career={career}
-              onSelectFixture={(round) => {
-                setReviewRound(round);
+              onSelectFixture={(fixtureId) => {
+                setReviewFixtureId(fixtureId);
                 setView("match-review");
               }}
             />
@@ -218,7 +223,7 @@ export default function ManagerPage() {
         </div>
       )}
 
-      {career && view === "match-review" && reviewRound !== null && (
+      {career && view === "match-review" && reviewFixtureId !== null && (
         <div className={SPACING.stackLg}>
           <ManagerNav
             active="fixtures"
@@ -227,7 +232,7 @@ export default function ManagerPage() {
           />
           <ManagerMatchReview
             career={career}
-            round={reviewRound}
+            fixtureId={reviewFixtureId}
             onClose={() => setView("hub")}
           />
         </div>

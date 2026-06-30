@@ -278,6 +278,23 @@ export function ensureRenewalDemands(career: ManagerCareer): ManagerCareer {
   return changed ? { ...career, contracts } : career;
 }
 
+export function previewPlayersLeaving(
+  career: ManagerCareer
+): string[] {
+  const leaving: string[] = [];
+  for (const ps of career.squad) {
+    const c = career.contracts[ps.playerId];
+    if (!c) continue;
+    if (
+      c.yearsRemaining <= 0 ||
+      (c.expiresAtSeasonEnd && c.status !== "renewed")
+    ) {
+      leaving.push(ps.playerId);
+    }
+  }
+  return leaving;
+}
+
 export function buildContractsForSquad(
   playerIds: string[],
   startingIds: Set<string>,

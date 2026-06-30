@@ -7,7 +7,6 @@ import {
   getMatchById,
   getMatchesForRound,
   simulateBracketMatch,
-  simulateAiMatch,
 } from "../game/challenge-cup-bracket";
 import type { MatchFixture } from "../game/season-simulation";
 import { buildSquadSlotsFromMatchday } from "./managerSquad";
@@ -218,37 +217,70 @@ export function applyCupMatchToBracket(
   cupMatchId: string,
   fixture: MatchFixture
 ): ChallengeCupBracketState {
-  const squad = buildSquadSlotsFromMatchday(
-    career.matchdayXiii,
-    career.xiiiSlotPositions
-  );
-  let bracket = career.challengeCup;
+  const bracket = career.challengeCup;
   const match = getMatchById(bracket, cupMatchId);
-  if (!match || match.status !== "ready") return bracket;
-
-  bracket = simulateBracketMatch(bracket, cupMatchId, squad);
-  const updated = getMatchById(bracket, cupMatchId);
-  if (updated?.userFixture) {
-    updated.userFixture = { ...fixture, ...updated.userFixture, ...fixture };
+  if (!match || match.status !== "ready" || !match.homeTeam || !match.awayTeam) {
+    return bracket;
   }
 
-  if (fixture.result === "L") {
-    bracket = { ...bracket, userEliminated: true };
-  }
-  if (fixture.result === "W" && match.round === 4) {
-    bracket = {
-      ...bracket,
-      tournamentComplete: true,
-      userWon: true,
-    };
+  const userClub = bracket.userClub;
+  const isHome = match.homeTeam === userClub;
+  const opponent = isHome ? match.awayTeam : match.homeTeam;
+  const homeScore = isHome ? fixture.pointsFor : fixture.pointsAgainst;
+  const awayScore = isHome ? fixture.pointsAgainst : fixture.pointsFor;
+  const winner = fixture.result === "W" ? userClub : opponent;
+  const loser = fixture.result === "W" ? opponent : userClub;
+
+  const detail = fixture.scoringDetail;
+  const scoringDetail = detail
+    ? {
+        home: isHome ? detail.dreamTeam : detail.opponent,
+        away: isHome ? detail.opponent : detail.dreamTeam,
+      }
+    : null;
+
+  const matches = bracket.matches.map((m) => ({ ...m }));
+  const m = matches.find((x) => x.id === cupMatchId)!;
+  m.homeScore = homeScore;
+  m.awayScore = awayScore;
+  m.winner = winner;
+  m.loser = loser;
+  m.status = "complete";
+  m.scoringDetail = scoringDetail;
+  m.userFixture = fixture;
+  m.matchEvents = [`${winner} def. ${loser} ${homeScore}-${awayScore}`];
+
+  // Rebuild child matches from winners (inline sync)
+  for (const child of matches) {
+    if (!child.feederIds?.length || child.status === "complete") continue;
+    const feederWinners = child.feederIds.map((feederId) => {
+      const feeder = matches.find((fm) => fm.id === feederId);
+      return feeder?.status === "complete" ? feeder.winner : null;
+    });
+    if (child.feederIds.length === 1) {
+      child.awayTeam = feederWinners[0] ?? null;
+    } else {
+      child.homeTeam = feederWinners[0] ?? null;
+      child.awayTeam = feederWinners[1] ?? null;
+    }
+    const ready = child.homeTeam !== null && child.awayTeam !== null;
+    child.status = ready ? "ready" : "pending";
+    if (ready) {
+      child.isUserMatch =
+        child.homeTeam === userClub || child.awayTeam === userClub;
+    }
   }
 
-  const outcome = deriveCupOutcomeFromBracket(bracket);
-  if (bracket.tournamentComplete && !outcome.isWinner && !bracket.userEliminated) {
-    bracket = { ...bracket, userEliminated: true };
-  }
+  const userLost = fixture.result === "L";
+  const userWonFinal = match.round === 4 && fixture.result === "W";
 
-  return bracket;
+  return {
+    ...bracket,
+    matches,
+    userEliminated: userLost,
+    tournamentComplete: userLost || userWonFinal,
+    userWon: userWonFinal,
+  };
 }
 
 export function isManagerSeasonComplete(career: ManagerCareer): boolean {

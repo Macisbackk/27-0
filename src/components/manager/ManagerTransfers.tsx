@@ -13,7 +13,9 @@ import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
 import {
   signPlayer,
   releasePlayer,
+  getTransferDemand,
 } from "@/lib/manager/managerTransfers";
+import { formatWage } from "@/lib/manager/managerContracts";
 import { playUiClick } from "@/lib/sound";
 
 interface ManagerTransfersProps {
@@ -59,7 +61,8 @@ export function ManagerTransfers({
       <div>
         <h1 className={TYPO.pageTitle}>Transfers</h1>
         <p className={`${TYPO.bodySm} text-pitch-400`}>
-          Budget: £{(career.budget / 1000).toFixed(0)}k
+          Transfer budget: £{(career.budget / 1000).toFixed(0)}k · Wage bill:{" "}
+          {formatWage(career.wageBill)} / {formatWage(career.wageBudget)}
         </p>
       </div>
 
@@ -97,7 +100,9 @@ export function ManagerTransfers({
       <section>
         <h2 className={`${TYPO.sectionLabel} mb-2`}>Available Players</h2>
         <div className={`grid gap-2 sm:grid-cols-2`}>
-          {marketPlayers.map((player) => (
+          {marketPlayers.map((player) => {
+            const demand = getTransferDemand(player.id, career.club);
+            return (
             <div
               key={player.id}
               className={`${CARD.base} ${SPACING.cardPaddingSm}`}
@@ -107,6 +112,10 @@ export function ManagerTransfers({
                   <p className="font-medium text-white">{player.name}</p>
                   <p className={`${TYPO.bodySm} text-pitch-400`}>
                     {player.club} · {player.peakRating} rated
+                  </p>
+                  <p className={`${TYPO.bodySm} text-pitch-500`}>
+                    Wage demand: {formatWage(demand.wagePerYear)}/yr ·{" "}
+                    {demand.yearsRequested}yr · {demand.squadRole}
                   </p>
                 </div>
                 <span className="text-sm text-accent-gold">
@@ -126,7 +135,8 @@ export function ManagerTransfers({
                 Sign
               </GameButton>
             </div>
-          ))}
+          );
+          })}
           {marketPlayers.length === 0 && (
             <p className={`${TYPO.bodySm} text-pitch-400`}>No players available</p>
           )}

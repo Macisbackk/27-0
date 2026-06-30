@@ -8,6 +8,7 @@ import { EMPTY_TEAM_SEASON_STATS } from "./managerCareerStats";
 import {
   countExpiringContracts,
   formatWage,
+  previewPlayersLeaving,
   tickContractsForNewSeason,
 } from "./managerContracts";
 import { createManagerChallengeCup } from "./managerChallengeCup";
@@ -65,7 +66,7 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
     sa.count > 0 ? Math.round(sa.total / sa.count) : career.attendanceData.currentAverageAttendance;
 
   const expiring = countExpiringContracts(career.contracts);
-  const { leaving } = tickContractsForNewSeason(career);
+  const leaving = previewPlayersLeaving(career);
 
   let biggestWin = 0;
   let biggestDefeat = 0;

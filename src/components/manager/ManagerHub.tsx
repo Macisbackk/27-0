@@ -5,6 +5,16 @@ import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
+import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
+import { getCupHubStatus } from "@/lib/manager/managerChallengeCup";
+import {
+  countExpiringContracts,
+  formatWage,
+} from "@/lib/manager/managerContracts";
+import {
+  fanMoodTrend,
+  getLastHomeGate,
+} from "@/lib/manager/managerAttendance";
 import { getClubByName } from "@/lib/clubs";
 import { getPlayerById } from "@/lib/players";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
@@ -40,7 +50,7 @@ function formatFunds(budget: number): string {
 
 export function ManagerHub({ career, onPlayGame, onSimulate }: ManagerHubProps) {
   const club = getClubByName(career.club);
-  const nextFixture = career.schedule[career.currentFixtureIndex];
+  const nextFixture = getNextManagerFixture(career);
   const position = getUserLeaguePosition(career.leagueTable, career.club);
   const teamRating = computeManagerTeamRating(
     career.matchdayXiii,
@@ -90,6 +100,17 @@ export function ManagerHub({ career, onPlayGame, onSimulate }: ManagerHubProps) 
       ? career.recentForm.slice(-5).join(" ")
       : "—";
 
+  const expiringCount = countExpiringContracts(career.contracts);
+  const highestEarner = Object.entries(career.contracts).sort(
+    (a, b) => b[1].wagePerYear - a[1].wagePerYear
+  )[0];
+  const highestEarnerName = highestEarner
+    ? getPlayerById(highestEarner[0])?.name
+    : null;
+  const lastGate = getLastHomeGate(career.gateIncomeHistory);
+  const cupStatus = getCupHubStatus(career);
+  const overBudget = career.wageBill > career.wageBudget;
+
   return (
     <div className={SPACING.stackLg}>
       <div
@@ -122,6 +143,70 @@ export function ManagerHub({ career, onPlayGame, onSimulate }: ManagerHubProps) 
         </div>
       </div>
 
+      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+        <p className={`${TYPO.sectionLabel} mb-2`}>Wages & Contracts</p>
+        <div className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+          <div>
+            <p className="text-pitch-500 text-xs">Wage Bill</p>
+            <p className={overBudget ? "text-red-300" : "text-white"}>
+              {formatWage(career.wageBill)}
+            </p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Wage Budget</p>
+            <p>{formatWage(career.wageBudget)}</p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Remaining</p>
+            <p>{formatWage(Math.max(0, career.wageBudget - career.wageBill))}</p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Expiring</p>
+            <p className={expiringCount >= 3 ? "text-accent-gold" : ""}>
+              {expiringCount} players
+            </p>
+          </div>
+        </div>
+        {highestEarnerName && (
+          <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+            Highest earner: {highestEarnerName} (
+            {formatWage(highestEarner![1].wagePerYear)})
+          </p>
+        )}
+        {expiringCount > 0 && (
+          <p className={`mt-1 ${TYPO.bodySm} text-accent-gold`}>
+            {expiringCount} contract{expiringCount > 1 ? "s" : ""} need attention
+          </p>
+        )}
+      </div>
+
+      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+        <p className={`${TYPO.sectionLabel} mb-2`}>Fans & Attendance</p>
+        <div className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+          <div>
+            <p className="text-pitch-500 text-xs">Avg Attendance</p>
+            <p>{career.attendanceData.currentAverageAttendance.toLocaleString()}</p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Last Home Gate</p>
+            <p>{lastGate ? lastGate.attendance.toLocaleString() : "—"}</p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Fan Mood</p>
+            <p>{fanMoodTrend(career.attendanceData.fanMood)}</p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Capacity</p>
+            <p>{career.attendanceData.stadiumCapacity.toLocaleString()}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+        <p className={TYPO.sectionLabel}>Challenge Cup</p>
+        <p className={`mt-1 ${TYPO.bodySm} text-white`}>{cupStatus}</p>
+      </div>
+
       {nextFixture && !career.isSeasonComplete && (
         <div className={`${CARD.base} ${CARD.featured} ${SPACING.cardPadding}`}>
           <p className={TYPO.sectionLabel}>Next Fixture</p>
@@ -130,7 +215,7 @@ export function ManagerHub({ career, onPlayGame, onSimulate }: ManagerHubProps) 
             {nextFixture.opponent}
           </p>
           <p className={`${TYPO.bodySm} text-pitch-400`}>
-            Game Week {nextFixture.round} ·{" "}
+            {nextFixture.label ?? `Round ${nextFixture.round}`} ·{" "}
             {nextFixture.isHome ? "Home" : "Away"}
             {oppRating !== null && ` · Opponent Rating: ${oppRating}`}
           </p>
