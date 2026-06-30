@@ -7,6 +7,7 @@ import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSeasonSummary } from "@/lib/manager/managerState";
+import { resolveInboxMessage } from "@/lib/manager/managerInbox";
 import {
   claimManagerSeasonRewards,
   computeManagerSeasonRewardLines,
@@ -51,9 +52,11 @@ export function ManagerSeasonRewards({
   const handleClaim = () => {
     playUiClick();
     const result = claimManagerSeasonRewards(career, summary);
+    const msgId = `season-reward-s${career.seasonYear}`;
+    const nextCareer = resolveInboxMessage(result.career, msgId);
     setPayout(result.payout);
     setClaimed(true);
-    onClaimed(result.career);
+    onClaimed(nextCareer);
     playSeasonComplete();
   };
 

@@ -40,6 +40,7 @@ import {
   generateIncomingTransferOffers,
   generateLeagueListedPlayers,
 } from "./managerTransferLeague";
+import { syncManagerInboxMessages } from "./managerInbox";
 
 interface TacticModifiers {
   strengthBonus: number;
@@ -373,6 +374,7 @@ export function applyManagerMatchResult(
   finalCareer = applyReserveMatchDevelopment(finalCareer, reserveResult);
   finalCareer = clearReserveCallUps(finalCareer);
   finalCareer = generateIncomingTransferOffers(finalCareer);
+  finalCareer = syncManagerInboxMessages(finalCareer);
   if (finalCareer.gameWeek % 3 === 0) {
     finalCareer = {
       ...finalCareer,

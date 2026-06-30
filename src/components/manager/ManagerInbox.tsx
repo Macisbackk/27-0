@@ -1,32 +1,73 @@
 "use client";
 
+import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import type { ManagerCareer } from "@/lib/manager/types";
+import type { InboxMessage, ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
   acceptIncomingOffer,
+  negotiateIncomingOffer,
   rejectIncomingOffer,
 } from "@/lib/manager/managerTransferLeague";
+import { resolveInboxMessage } from "@/lib/manager/managerInbox";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { playUiClick } from "@/lib/sound";
 
 interface ManagerInboxProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
+  onNavigate?: (view: ManagerView) => void;
 }
 
-export function ManagerInbox({ career, onUpdate }: ManagerInboxProps) {
+function defaultCounterAmount(msg: InboxMessage): number {
+  const offer = msg.offerAmount ?? 0;
+  const asking = msg.askingPrice ?? offer;
+  return Math.round((offer + asking) / 2);
+}
+
+export function ManagerInbox({
+  career,
+  onUpdate,
+  onNavigate,
+}: ManagerInboxProps) {
+  const [feedback, setFeedback] = useState<string | null>(null);
+  const [negotiatingId, setNegotiatingId] = useState<string | null>(null);
+  const [counterAmount, setCounterAmount] = useState(0);
+
   const messages = career.inboxMessages.filter((m) => !m.resolved);
   const resolved = career.inboxMessages.filter((m) => m.resolved).slice(0, 10);
 
   const handleAccept = (id: string) => {
     const result = acceptIncomingOffer(career, id);
-    if (result.ok && result.career) onUpdate(result.career);
+    if (result.ok && result.career) {
+      setFeedback(null);
+      onUpdate(result.career);
+    }
   };
 
   const handleReject = (id: string) => {
     onUpdate(rejectIncomingOffer(career, id));
+    setNegotiatingId(null);
+    setFeedback(null);
+  };
+
+  const handleNegotiate = (msg: InboxMessage) => {
+    const result = negotiateIncomingOffer(career, msg.id, counterAmount);
+    setFeedback(result.feedback);
+    if (result.career) onUpdate(result.career);
+    setNegotiatingId(null);
+  };
+
+  const startNegotiate = (msg: InboxMessage) => {
+    playUiClick();
+    setNegotiatingId(msg.id);
+    setCounterAmount(defaultCounterAmount(msg));
+    setFeedback(null);
+  };
+
+  const dismiss = (id: string) => {
+    onUpdate(resolveInboxMessage(career, id));
   };
 
   return (
@@ -38,6 +79,10 @@ export function ManagerInbox({ career, onUpdate }: ManagerInboxProps) {
         </p>
       </div>
 
+      {feedback && (
+        <p className={`${TYPO.bodySm} text-theme-primary`}>{feedback}</p>
+      )}
+
       {messages.length === 0 && (
         <p className={`${TYPO.bodySm} text-pitch-500`}>
           No new messages. List players for transfer to attract offers.
@@ -48,32 +93,125 @@ export function ManagerInbox({ career, onUpdate }: ManagerInboxProps) {
         <div key={msg.id} className={`${CARD.base} ${SPACING.cardPadding}`}>
           <p className={TYPO.sectionLabel}>{msg.title}</p>
           <p className={`mt-1 ${TYPO.bodySm} text-white`}>{msg.body}</p>
-          <p className={`mt-1 text-xs text-pitch-500`}>
-            Week {msg.gameWeek}
-          </p>
+          <p className={`mt-1 text-xs text-pitch-500`}>Week {msg.gameWeek}</p>
+
           {msg.type === "transfer_offer_in" && (
-            <div className="mt-3 grid gap-2 sm:grid-cols-2">
-              <GameButton
-                variant="theme"
-                size="sm"
-                onClick={() => {
-                  playUiClick();
-                  handleAccept(msg.id);
-                }}
-              >
-                Accept {msg.offerAmount ? formatWage(msg.offerAmount) : ""}
-              </GameButton>
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={() => {
-                  playUiClick();
-                  handleReject(msg.id);
-                }}
-              >
-                Reject
-              </GameButton>
+            <div className="mt-3 space-y-2">
+              {negotiatingId === msg.id ? (
+                <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+                  <label className={TYPO.bodySm}>
+                    <span className="text-pitch-400">Your counter</span>
+                    <input
+                      type="number"
+                      step={5000}
+                      value={counterAmount}
+                      onChange={(e) =>
+                        setCounterAmount(Number(e.target.value))
+                      }
+                      className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1 text-white"
+                    />
+                  </label>
+                  <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                    <GameButton
+                      variant="theme"
+                      size="sm"
+                      onClick={() => {
+                        playUiClick();
+                        handleNegotiate(msg);
+                      }}
+                    >
+                      Submit Counter
+                    </GameButton>
+                    <GameButton
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => setNegotiatingId(null)}
+                    >
+                      Cancel
+                    </GameButton>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid gap-2 sm:grid-cols-3">
+                  <GameButton
+                    variant="theme"
+                    size="sm"
+                    onClick={() => {
+                      playUiClick();
+                      handleAccept(msg.id);
+                    }}
+                  >
+                    Accept{" "}
+                    {msg.offerAmount ? formatWage(msg.offerAmount) : ""}
+                  </GameButton>
+                  <GameButton
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => startNegotiate(msg)}
+                  >
+                    Negotiate
+                  </GameButton>
+                  <GameButton
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => {
+                      playUiClick();
+                      handleReject(msg.id);
+                    }}
+                  >
+                    Reject
+                  </GameButton>
+                </div>
+              )}
             </div>
+          )}
+
+          {msg.type === "cup_draw" && onNavigate && (
+            <GameButton
+              variant="theme"
+              size="sm"
+              className="mt-3"
+              onClick={() => {
+                playUiClick();
+                dismiss(msg.id);
+                onNavigate("fixtures");
+              }}
+            >
+              View Fixture
+            </GameButton>
+          )}
+
+          {msg.type === "season_reward" && onNavigate && (
+            <GameButton
+              variant="theme"
+              size="sm"
+              className="mt-3"
+              onClick={() => {
+                playUiClick();
+                dismiss(msg.id);
+                onNavigate("season-rewards");
+              }}
+            >
+              View Rewards
+            </GameButton>
+          )}
+
+          {(msg.type === "release" ||
+            msg.type === "board" ||
+            msg.type === "contract" ||
+            msg.type === "injury" ||
+            msg.type === "general") && (
+            <GameButton
+              variant="secondary"
+              size="sm"
+              className="mt-3"
+              onClick={() => {
+                playUiClick();
+                dismiss(msg.id);
+              }}
+            >
+              Dismiss
+            </GameButton>
           )}
         </div>
       ))}

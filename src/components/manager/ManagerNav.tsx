@@ -3,6 +3,7 @@
 import { BTN } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerView } from "@/lib/manager/types";
+import { countUnreadInbox } from "@/lib/manager/managerInbox";
 import { playTabChange, playUiClick } from "@/lib/sound";
 
 const TABS: { id: ManagerView; label: string }[] = [
@@ -21,9 +22,10 @@ interface ManagerNavProps {
   club: string;
   onNavigate: (view: ManagerView) => void;
   disabled?: boolean;
+  unreadInbox?: number;
 }
 
-export function ManagerNav({ active, club, onNavigate, disabled }: ManagerNavProps) {
+export function ManagerNav({ active, club, onNavigate, disabled, unreadInbox = 0 }: ManagerNavProps) {
   return (
     <header className="space-y-3">
       <div>
@@ -49,6 +51,11 @@ export function ManagerNav({ active, club, onNavigate, disabled }: ManagerNavPro
               } ${disabled ? "pointer-events-none opacity-40" : ""}`}
             >
               {tab.label}
+              {tab.id === "inbox" && unreadInbox > 0 && (
+                <span className="ml-1.5 inline-flex min-w-[18px] items-center justify-center rounded-full bg-accent-gold px-1 text-[10px] font-bold text-pitch-950">
+                  {unreadInbox > 9 ? "9+" : unreadInbox}
+                </span>
+              )}
             </button>
           ))}
         </div>

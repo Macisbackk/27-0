@@ -379,6 +379,96 @@ export function rejectIncomingOffer(
   };
 }
 
+/** Counter a transfer offer — buyer may raise their bid or walk away. */
+export function negotiateIncomingOffer(
+  career: ManagerCareer,
+  messageId: string,
+  counterAmount: number
+): { ok: boolean; career?: ManagerCareer; feedback: string } {
+  const msg = career.inboxMessages.find((m) => m.id === messageId);
+  if (!msg || msg.resolved || msg.type !== "transfer_offer_in") {
+    return { ok: false, feedback: "Offer not found." };
+  }
+  if (!msg.offerAmount || !msg.askingPrice) {
+    return { ok: false, feedback: "Offer details missing." };
+  }
+
+  const current = msg.offerAmount;
+  const asking = msg.askingPrice;
+
+  if (counterAmount <= current) {
+    return {
+      ok: false,
+      feedback: `Counter must exceed the current offer (${formatWage(current)}).`,
+    };
+  }
+  if (counterAmount > asking * 1.15) {
+    return {
+      ok: false,
+      feedback: "That price is above what any club will pay right now.",
+    };
+  }
+
+  const rng = seedrandom(
+    `${career.seed}-nego-${messageId}-${counterAmount}-${career.gameWeek}`
+  );
+  const ratio = counterAmount / asking;
+  let acceptChance = 0.15;
+  if (ratio >= 0.98) acceptChance = 0.75;
+  else if (ratio >= 0.92) acceptChance = 0.5;
+  else if (ratio >= 0.85) acceptChance = 0.3;
+
+  const buyer = msg.offerClub ?? "The club";
+
+  if (rng() < acceptChance) {
+    const newOffer = Math.min(asking, Math.round(counterAmount));
+    const nextMessages = career.inboxMessages.map((m) =>
+      m.id === messageId
+        ? {
+            ...m,
+            offerAmount: newOffer,
+            body: `${buyer} have agreed to raise their offer to ${formatWage(newOffer)} for ${msg.playerName ?? "the player"}. Asking price: ${formatWage(asking)}.`,
+          }
+        : m
+    );
+    return {
+      ok: true,
+      career: { ...career, inboxMessages: nextMessages },
+      feedback: `${buyer} accepted your counter — new offer ${formatWage(newOffer)}.`,
+    };
+  }
+
+  const bump = Math.round(
+    current + (counterAmount - current) * (0.25 + rng() * 0.35)
+  );
+  if (bump <= current || rng() < 0.2) {
+    const nextMessages = career.inboxMessages.map((m) =>
+      m.id === messageId ? { ...m, resolved: true } : m
+    );
+    return {
+      ok: true,
+      career: { ...career, inboxMessages: nextMessages },
+      feedback: `${buyer} ended negotiations.`,
+    };
+  }
+
+  const nextMessages = career.inboxMessages.map((m) =>
+    m.id === messageId
+      ? {
+          ...m,
+          offerAmount: bump,
+          body: `${buyer} countered with ${formatWage(bump)} for ${msg.playerName ?? "the player"}. Your asking price: ${formatWage(asking)}.`,
+        }
+      : m
+  );
+
+  return {
+    ok: true,
+    career: { ...career, inboxMessages: nextMessages },
+    feedback: `${buyer} countered at ${formatWage(bump)}.`,
+  };
+}
+
 export function getAllLeaguePlayers(userClub: string): {
   playerId: string;
   club: string;

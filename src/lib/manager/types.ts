@@ -299,6 +299,8 @@ export type InboxMessageType =
   | "board"
   | "injury"
   | "release"
+  | "cup_draw"
+  | "season_reward"
   | "general";
 
 export interface InboxMessage {

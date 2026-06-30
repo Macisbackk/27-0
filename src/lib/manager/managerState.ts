@@ -24,6 +24,7 @@ import {
   generateLeagueListedPlayers,
   initClubFunds,
 } from "./managerTransferLeague";
+import { syncManagerInboxMessages } from "./managerInbox";
 
 const CAREER_KEY = "27-0-manager-career";
 
@@ -121,7 +122,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   };
 
   career = ensureRenewalDemands(career);
-  return career;
+  return syncManagerInboxMessages(career);
 }
 
 export function loadManagerCareer(): ManagerCareer | null {

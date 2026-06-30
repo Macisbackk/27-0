@@ -42,6 +42,7 @@ import {
   playUiClick,
 } from "@/lib/sound";
 import { SPACING } from "@/lib/ui/design-system";
+import { countUnreadInbox } from "@/lib/manager/managerInbox";
 
 const NAV_VIEWS: ManagerView[] = [
   "hub",
@@ -189,6 +190,7 @@ export default function ManagerPage() {
             club={career.club}
             onNavigate={setView}
             disabled={playGameOpen}
+            unreadInbox={countUnreadInbox(career)}
           />
 
           {view === "hub" && (
@@ -215,7 +217,14 @@ export default function ManagerPage() {
             <ManagerReserves career={career} onUpdate={persist} />
           )}
           {view === "inbox" && (
-            <ManagerInbox career={career} onUpdate={persist} />
+            <ManagerInbox
+              career={career}
+              onUpdate={persist}
+              onNavigate={(v) => {
+                if (v === "season-rewards") setView("season-rewards");
+                else setView(v);
+              }}
+            />
           )}
           {view === "transfers" && (
             <ManagerTransfers career={career} onUpdate={persist} />
