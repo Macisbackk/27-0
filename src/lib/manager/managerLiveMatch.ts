@@ -2,7 +2,6 @@ import seedrandom from "seedrandom";
 import type { MatchFixture } from "../game/season-simulation";
 import { snapToRLScore, decomposeRLScore } from "../game/rl-scores";
 import { getOpponentMatchRating } from "../game/opponent-scorers";
-import { getPlayerById } from "../players";
 import type { Position } from "../types";
 import type {
   LiveMatchCommand,
@@ -12,8 +11,12 @@ import type {
   LiveMatchEvent,
 } from "./types";
 import { computeManagerTeamRating } from "./managerRating";
+import { getManagerPlayer } from "./managerPlayers";
 
 export type { LiveMatchEvent };
+
+export const REAL_TICK_MS = 1000;
+export const GAME_MINUTES_PER_TICK = 2;
 
 export interface LiveMatchState {
   minute: number;
@@ -26,6 +29,7 @@ export interface LiveMatchState {
   events: LiveMatchEvent[];
   effectivenessLine: string;
   isComplete: boolean;
+  isPlaying: boolean;
   opponent: string;
   isHome: boolean;
   round: number;
@@ -38,10 +42,8 @@ const COMMAND_LABELS: Record<LiveMatchCommand, string> = {
   attack: "Attack",
   defend: "Defend",
   balanced: "Balanced",
-  kick_early: "Kick Early",
   use_forwards: "Use Forwards",
   spread_wide: "Spread Wide",
-  calm_down: "Calm Down",
 };
 
 export function getLiveCommandLabel(cmd: LiveMatchCommand): string {
@@ -50,6 +52,33 @@ export function getLiveCommandLabel(cmd: LiveMatchCommand): string {
 
 export function formatLiveClock(minute: number): string {
   return `${Math.min(80, Math.max(0, minute))}:00`;
+}
+
+export function getMatchStatusLabel(
+  userScore: number,
+  oppScore: number,
+  isHome: boolean
+): { pill: string; line: string; tone: "win" | "loss" | "level" } {
+  const margin = userScore - oppScore;
+  if (margin > 0) {
+    return {
+      pill: "Winning",
+      line: `Winning by ${margin}`,
+      tone: "win",
+    };
+  }
+  if (margin < 0) {
+    return {
+      pill: "Losing",
+      line: `Losing by ${Math.abs(margin)}`,
+      tone: "loss",
+    };
+  }
+  return {
+    pill: "Level",
+    line: `Level at ${userScore}-${oppScore}`,
+    tone: "level",
+  };
 }
 
 function commandAttackMod(cmd: LiveMatchCommand): {
@@ -63,14 +92,10 @@ function commandAttackMod(cmd: LiveMatchCommand): {
       return { userChance: 1.35, oppChance: 1.1, errorRisk: 1.15, momentumShift: 3 };
     case "defend":
       return { userChance: 0.75, oppChance: 0.85, errorRisk: 0.8, momentumShift: -2 };
-    case "kick_early":
-      return { userChance: 0.95, oppChance: 0.9, errorRisk: 0.75, momentumShift: 1 };
     case "use_forwards":
       return { userChance: 1.2, oppChance: 1.0, errorRisk: 1.05, momentumShift: 2 };
     case "spread_wide":
       return { userChance: 1.15, oppChance: 1.05, errorRisk: 1.1, momentumShift: 2 };
-    case "calm_down":
-      return { userChance: 0.88, oppChance: 0.92, errorRisk: 0.65, momentumShift: 0 };
     default:
       return { userChance: 1, oppChance: 1, errorRisk: 1, momentumShift: 0 };
   }
@@ -126,7 +151,7 @@ function pickScorer(
     else pool.push(id);
   }
   const pick = pool[Math.floor(rng() * pool.length)] ?? career.matchdayXiii[0];
-  return getPlayerById(pick ?? "")?.name ?? career.club;
+  return getManagerPlayer(career, pick ?? "")?.name ?? career.club;
 }
 
 function pickKicker(career: ManagerCareer, rng: () => number): string {
@@ -135,7 +160,7 @@ function pickKicker(career: ManagerCareer, rng: () => number): string {
     return pos === "SCRUM_HALF" || pos === "STAND_OFF";
   });
   const id = halves[Math.floor(rng() * halves.length)] ?? career.matchdayXiii[6];
-  return getPlayerById(id ?? "")?.name ?? "Kicker";
+  return getManagerPlayer(career, id ?? "")?.name ?? "Kicker";
 }
 
 function effectivenessFromCommand(
@@ -153,12 +178,6 @@ function effectivenessFromCommand(
   }
   if (cmd === "attack" && momentum > 20) {
     return "Dangerous — attack is flowing.";
-  }
-  if (cmd === "calm_down") {
-    return "Settled — fewer errors, less risk.";
-  }
-  if (cmd === "kick_early") {
-    return "Territory game — kicking for position.";
   }
   return "Even contest — keep adjusting.";
 }
@@ -192,6 +211,7 @@ export function createLiveMatch(
     events: [],
     effectivenessLine: "Kick-off — the clock is running.",
     isComplete: false,
+    isPlaying: true,
     opponent: sched.opponent,
     isHome: sched.isHome,
     round: sched.round,
@@ -201,8 +221,8 @@ export function createLiveMatch(
   };
 }
 
-/** Advance the live match by one game minute. */
-export function advanceLiveMinute(
+/** Advance the live match by GAME_MINUTES_PER_TICK game minutes. */
+export function advanceLiveTick(
   state: LiveMatchState,
   career: ManagerCareer,
   command: LiveMatchCommand
@@ -211,7 +231,14 @@ export function advanceLiveMinute(
     return finalizeLiveMatch(state);
   }
 
-  const minute = state.minute + 1;
+  let minute = state.minute;
+  let momentum = state.momentum;
+  let userScore = state.userScore;
+  let oppScore = state.oppScore;
+  let userTries = state.userTries;
+  let oppTries = state.oppTries;
+  const events = [...state.events];
+
   const userRating = computeManagerTeamRating(
     career.matchdayXiii,
     career.matchdayInterchange,
@@ -224,103 +251,93 @@ export function advanceLiveMinute(
     { currentSeasonOnly: true }
   );
 
-  const rng = seedrandom(
-    `${state.seed}-live-${state.fixtureId}-m${minute}-${command}`
-  );
   const mods = commandAttackMod(command);
   const tacticBias = tacticCommandBias(career, command);
-  let momentum = state.momentum + mods.momentumShift;
-  let userScore = state.userScore;
-  let oppScore = state.oppScore;
-  let userTries = state.userTries;
-  let oppTries = state.oppTries;
-  const events = [...state.events];
 
-  const userTry = rollTryChance(
-    userRating,
-    oppRating,
-    state.isHome,
-    momentum,
-    mods.userChance * tacticBias.userChance,
-    rng
-  );
-  const oppTry =
-    !userTry &&
-    rollTryChance(
-      oppRating,
+  for (let step = 0; step < GAME_MINUTES_PER_TICK; step++) {
+    minute++;
+    if (minute > 80) break;
+
+    const rng = seedrandom(
+      `${state.seed}-live-${state.fixtureId}-m${minute}-${command}`
+    );
+    momentum += mods.momentumShift * 0.5;
+
+    const userTry = rollTryChance(
       userRating,
-      !state.isHome,
-      -momentum,
-      mods.oppChance * tacticBias.oppChance,
+      oppRating,
+      state.isHome,
+      momentum,
+      mods.userChance * tacticBias.userChance,
       rng
     );
+    const oppTry =
+      !userTry &&
+      rollTryChance(
+        oppRating,
+        userRating,
+        !state.isHome,
+        -momentum,
+        mods.oppChance * tacticBias.oppChance,
+        rng
+      );
 
-  if (userTry) {
-    userTries++;
-    userScore += 4;
-    const scorer = pickScorer(career, command, rng);
-    events.push({
-      minute,
-      type: "try",
-      team: "user",
-      playerName: scorer,
-      description: `${minute}' Try — ${scorer}`,
-      points: 4,
-    });
-    const goal = rng() < 0.82;
-    if (goal) {
-      userScore += 2;
-      const kicker = pickKicker(career, rng);
+    if (userTry) {
+      userTries++;
+      userScore += 4;
+      const scorer = pickScorer(career, command, rng);
       events.push({
         minute,
-        type: "goal",
+        type: "try",
         team: "user",
-        playerName: kicker,
-        description: `${minute}' Goal — ${kicker}`,
-        points: 2,
+        playerName: scorer,
+        description: `${minute}' Try — ${scorer}`,
+        points: 4,
       });
-    }
-    momentum += 8;
-  } else if (oppTry) {
-    oppTries++;
-    oppScore += 4;
-    events.push({
-      minute,
-      type: "try",
-      team: "opponent",
-      description: `${minute}' Try — ${state.opponent}`,
-      points: 4,
-    });
-    const goal = rng() < 0.8;
-    if (goal) {
-      oppScore += 2;
+      if (rng() < 0.82) {
+        userScore += 2;
+        const kicker = pickKicker(career, rng);
+        events.push({
+          minute,
+          type: "goal",
+          team: "user",
+          playerName: kicker,
+          description: `${minute}' Goal — ${kicker}`,
+          points: 2,
+        });
+      }
+      momentum += 8;
+    } else if (oppTry) {
+      oppTries++;
+      oppScore += 4;
       events.push({
         minute,
-        type: "goal",
+        type: "try",
         team: "opponent",
-        description: `${minute}' Goal — ${state.opponent}`,
-        points: 2,
+        description: `${minute}' Try — ${state.opponent}`,
+        points: 4,
       });
+      if (rng() < 0.8) {
+        oppScore += 2;
+        events.push({
+          minute,
+          type: "goal",
+          team: "opponent",
+          description: `${minute}' Goal — ${state.opponent}`,
+          points: 2,
+        });
+      }
+      momentum -= 8;
+    } else if (rng() < 0.018 * mods.errorRisk) {
+      events.push({
+        minute,
+        type: "note",
+        team: "user",
+        description: `${minute}' Error under pressure`,
+        points: 0,
+      });
+      momentum -= 3;
     }
-    momentum -= 8;
-  } else if (rng() < 0.018 * mods.errorRisk) {
-    events.push({
-      minute,
-      type: "note",
-      team: "user",
-      description: `${minute}' Error under pressure`,
-      points: 0,
-    });
-    momentum -= 3;
-  } else if (command === "kick_early" && rng() < 0.04) {
-    events.push({
-      minute,
-      type: "note",
-      team: "user",
-      description: `${minute}' Good kick — strong field position`,
-      points: 0,
-    });
-    momentum += 2;
   }
 
   const isComplete = minute >= 80;
@@ -328,6 +345,7 @@ export function advanceLiveMinute(
   let finalOpp = oppScore;
   if (isComplete && finalUser === finalOpp) {
     finalUser += 2;
+    const rng = seedrandom(`${state.seed}-live-ft-${state.fixtureId}`);
     const kicker = pickKicker(career, rng);
     events.push({
       minute: 80,
@@ -341,17 +359,26 @@ export function advanceLiveMinute(
 
   return {
     ...state,
-    minute,
+    minute: Math.min(80, minute),
     userScore: finalUser,
     oppScore: finalOpp,
     userTries,
     oppTries,
     command,
     momentum: Math.max(-50, Math.min(50, momentum)),
-    events: events.slice(-20),
+    events: events.slice(-24),
     effectivenessLine: effectivenessFromCommand(command, momentum),
     isComplete,
+    isPlaying: !isComplete,
   };
+}
+
+export function advanceLiveMinute(
+  state: LiveMatchState,
+  career: ManagerCareer,
+  command: LiveMatchCommand
+): LiveMatchState {
+  return advanceLiveTick(state, career, command);
 }
 
 export function advanceLiveToFullTime(
@@ -361,8 +388,8 @@ export function advanceLiveToFullTime(
 ): LiveMatchState {
   let next = state;
   let guard = 0;
-  while (!next.isComplete && guard < 85) {
-    next = advanceLiveMinute(next, career, command);
+  while (!next.isComplete && guard < 45) {
+    next = advanceLiveTick(next, career, command);
     guard++;
   }
   return finalizeLiveMatch(next);
@@ -378,6 +405,7 @@ function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
     userScore,
     oppScore,
     isComplete: true,
+    isPlaying: false,
     effectivenessLine: "Full time — the hooter has gone.",
   };
 }
@@ -388,7 +416,7 @@ export function liveMatchToFixture(
 ): MatchFixture {
   const pf = snapToRLScore(state.userScore, false);
   const pa = snapToRLScore(state.oppScore, false);
-  const finalPf = pf <= pa && state.isComplete ? pf + (pf === pa ? 2 : 0) : pf;
+  const finalPf = pf <= pa ? pf + (pf === pa ? 2 : 0) : pf;
   const won = finalPf > pa;
   const scoringFor = decomposeRLScore(finalPf);
   const scoringAgainst = decomposeRLScore(pa);

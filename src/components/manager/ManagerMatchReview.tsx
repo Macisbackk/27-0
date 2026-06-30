@@ -28,10 +28,18 @@ export function ManagerMatchReview({
 
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
-    career.xiiiSlotPositions
+    career.xiiiSlotPositions,
+    career
   );
   const club = getClubByName(career.club);
   const attendance = fixture.meta?.attendance;
+  const won = fixture.result === "W";
+  const lost = fixture.result === "L";
+  const resultBadgeClass = won
+    ? "bg-theme-primary/20 text-theme-primary border-theme-primary/40"
+    : lost
+      ? "bg-red-500/20 text-red-300 border-red-500/40"
+      : "bg-pitch-700/50 text-pitch-200 border-pitch-600";
   const roundLabel =
     fixture.competition === "challenge_cup"
       ? fixture.meta?.cupRound?.replace(/_/g, " ") ?? "Challenge Cup"
@@ -39,11 +47,33 @@ export function ManagerMatchReview({
 
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
-      <div className="flex items-center justify-between gap-3">
-        <h1 className={TYPO.pageTitle}>Match Review</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className={TYPO.pageTitle}>Match Review</h1>
+          <span
+            className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${resultBadgeClass}`}
+          >
+            {won ? "Win" : lost ? "Loss" : "Draw"}
+          </span>
+        </div>
         <GameButton variant="secondary" fullWidth={false} size="sm" onClick={onClose}>
           Close
         </GameButton>
+      </div>
+
+      <div className={`${CARD.elevated} ${SPACING.cardPadding} text-center`}>
+        <p className={`text-xl font-bold text-white sm:text-2xl`}>
+          <span className={fixture.isHome ? "text-theme-primary" : ""}>
+            {fixture.isHome ? career.club : fixture.opponent}
+          </span>{" "}
+          <span className="text-theme-primary">{fixture.isHome ? fixture.pointsFor : fixture.pointsAgainst}</span>
+          <span className="mx-2 text-pitch-500">-</span>
+          <span className="text-theme-primary">{fixture.isHome ? fixture.pointsAgainst : fixture.pointsFor}</span>{" "}
+          <span className={!fixture.isHome ? "text-theme-primary" : ""}>
+            {!fixture.isHome ? career.club : fixture.opponent}
+          </span>
+        </p>
+        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{roundLabel}</p>
       </div>
 
       {attendance && (

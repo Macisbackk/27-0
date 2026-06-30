@@ -16,10 +16,7 @@ import {
   playModeClassicStart,
   playUiClick,
 } from "@/lib/sound";
-import {
-  CARD,
-  SPACING,
-} from "@/lib/ui/design-system";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
@@ -64,79 +61,16 @@ export function HomeModeSelector() {
       <GuestNotice variant="home" />
 
       <div className={`mx-auto flex max-w-xl flex-col gap-5`}>
-        <ModePanel title="Normal Mode" eraActive={normalEraMode}>
-          <p className={TYPO.body}>
-            Draft your XIII position by position and simulate a full Super League
-            campaign. Can you go 27-0?
-          </p>
-
-          <ChallengeCupVariantToggle
-            sectionLabel="Mode"
-            useShortLabels
-            eraMode={normalEraMode}
-            onEraModeChange={(era) => {
-              setNormalEraMode(era);
-              setNormalEraVariant(era);
-            }}
-            className="mt-5"
-          />
-
-          {normalEraMode ? (
-            <p className={`mt-3 ${TYPO.bodySm} text-gray-500`}>
-              Historic Super League team-years with club + year spins — no 2026
-              squads.
-            </p>
-          ) : (
-            <p className={`mt-3 ${TYPO.bodySm} text-gray-500`}>
-              2026 current squads only — club spins with no year label.
-            </p>
-          )}
-
-          <ModeStartLink
-            href={normalHref}
-            eraMode={normalEraMode}
-            onClick={() => {
-              playUiClick();
-              playModeClassicStart("NORMAL");
-            }}
-            className="mt-5"
-          >
-            {normalEraMode ? "Start Era Mode →" : "Start Current Mode →"}
-          </ModeStartLink>
-        </ModePanel>
-
-        <ModePanel title="Challenge Cup" eraActive={cupEraMode}>
-          <p className={TYPO.body}>
-            Draft your squad and battle through a knockout tournament — or pick
-            a historic club season and lead that era squad through the draw.
-          </p>
-
-          <ChallengeCupVariantToggle
-            useShortLabels
-            eraMode={cupEraMode}
-            onEraModeChange={(era) => {
-              setCupEraMode(era);
-              setCupEraVariant(era);
-            }}
-            className="mt-5"
-          />
-
-          <ModeStartLink
-            href={cupHref}
-            eraMode={cupEraMode}
-            onClick={() => playModeChallengeCupStart()}
-            className="mt-5"
-          >
-            {cupEraMode
-              ? "Start Era Challenge Cup →"
-              : "Start Challenge Cup →"}
-          </ModeStartLink>
-        </ModePanel>
-
-        <ModePanel title="Manager Mode">
-          <p className={TYPO.body}>
-            Take charge of a Super League club, manage your squad, set tactics,
-            sign players and play through the season week by week.
+        <div
+          className={`group w-full ${SPACING.cardPaddingLg} transition ${CARD.featured} ${CARD.glass} ${CARD.panel} border-theme-primary/30 hover:border-theme-primary/50`}
+        >
+          <p className={TYPO.sectionLabel}>Main Mode</p>
+          <h2 className={`${TYPO.cardTitle} mt-1 text-2xl text-white`}>
+            Manager Mode
+          </h2>
+          <p className={`mt-3 ${TYPO.body}`}>
+            Take charge of a Super League club, manage contracts, develop
+            reserves, set tactics and play through the season.
           </p>
           <GameButton
             variant="theme"
@@ -146,7 +80,82 @@ export function HomeModeSelector() {
           >
             Start Manager Mode
           </GameButton>
-        </ModePanel>
+        </div>
+
+        <div>
+          <h2 className={`${TYPO.sectionLabel} mb-3 px-1`}>Quick Modes</h2>
+          <div className="flex flex-col gap-5">
+            <ModePanel title="Normal Mode" eraActive={normalEraMode}>
+              <p className={TYPO.body}>
+                Draft your XIII position by position and simulate a full Super
+                League campaign. Can you go 27-0?
+              </p>
+
+              <ChallengeCupVariantToggle
+                sectionLabel="Mode"
+                useShortLabels
+                eraMode={normalEraMode}
+                onEraModeChange={(era) => {
+                  setNormalEraMode(era);
+                  setNormalEraVariant(era);
+                }}
+                className="mt-5"
+              />
+
+              {normalEraMode ? (
+                <p className={`mt-3 ${TYPO.bodySm} text-gray-500`}>
+                  Historic Super League team-years with club + year spins — no
+                  2026 squads.
+                </p>
+              ) : (
+                <p className={`mt-3 ${TYPO.bodySm} text-gray-500`}>
+                  2026 current squads only — club spins with no year label.
+                </p>
+              )}
+
+              <ModeStartLink
+                href={normalHref}
+                eraMode={normalEraMode}
+                onClick={() => {
+                  playUiClick();
+                  playModeClassicStart("NORMAL");
+                }}
+                className="mt-5"
+              >
+                {normalEraMode ? "Start Era Mode →" : "Start Current Mode →"}
+              </ModeStartLink>
+            </ModePanel>
+
+            <ModePanel title="Challenge Cup" eraActive={cupEraMode}>
+              <p className={TYPO.body}>
+                Draft your squad and battle through a knockout tournament — or
+                pick a historic club season and lead that era squad through the
+                draw.
+              </p>
+
+              <ChallengeCupVariantToggle
+                useShortLabels
+                eraMode={cupEraMode}
+                onEraModeChange={(era) => {
+                  setCupEraMode(era);
+                  setCupEraVariant(era);
+                }}
+                className="mt-5"
+              />
+
+              <ModeStartLink
+                href={cupHref}
+                eraMode={cupEraMode}
+                onClick={() => playModeChallengeCupStart()}
+                className="mt-5"
+              >
+                {cupEraMode
+                  ? "Start Era Challenge Cup →"
+                  : "Start Challenge Cup →"}
+              </ModeStartLink>
+            </ModePanel>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -175,7 +184,7 @@ function ModePanel({
           : `${CARD.glass} ${CARD.panel}`
       }`}
     >
-      <h2 className={`${TYPO.cardTitle} ${titleClass}`}>{title}</h2>
+      <h3 className={`${TYPO.cardTitle} ${titleClass}`}>{title}</h3>
       {children}
     </div>
   );

@@ -29,6 +29,13 @@ import {
   isManagerSeasonComplete,
 } from "./managerChallengeCup";
 import { countExpiringContracts } from "./managerContracts";
+import { ensureManagerFixtureScoring } from "./managerFixtureScoring";
+import {
+  applyReserveMatchDevelopment,
+  clearReserveCallUps,
+  getReserveOpponent,
+  simulateReserveFixture,
+} from "./managerReserves";
 
 interface TacticModifiers {
   strengthBonus: number;
@@ -126,7 +133,7 @@ function computePlayerModifiers(
     formSum += ps.form;
     count++;
     if (ps.fitness < 70) fitnessPenalty += (70 - ps.fitness) * 0.04;
-    if (ps.morale < 40) fitnessPenalty += 0.5;
+    if (ps.form < 35) fitnessPenalty += 0.3;
     if (ps.injury && !ps.injury.serious) fitnessPenalty += 1.5;
   }
   return {
@@ -153,13 +160,15 @@ export function applyManagerMatchResult(
   const round = sched.round;
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
-    career.xiiiSlotPositions
+    career.xiiiSlotPositions,
+    career
   );
   const mods = getTacticModifiers(career.tactics);
 
   enrichManagerFixtureScoring(squad, fixture, career.seed, career.tactics, {
     currentSeasonOnly: true,
   });
+  ensureManagerFixtureScoring(career, fixture, squad);
 
   const motmId = pickMotmPlayerId(fixture, career.matchdayXiii);
   const userScorers = fixture.scoringDetail?.dreamTeam.tryScorers ?? [];
@@ -224,17 +233,14 @@ export function applyManagerMatchResult(
       )?.tries ?? 0;
 
     let form = ps.form;
-    let morale = ps.morale;
     let fitness = ps.fitness;
 
     if (played) {
       fitness = Math.max(40, fitness - 8 * mods.fatigueFactor);
       if (won) {
         form = Math.min(99, form + 3);
-        morale = Math.min(99, morale + 2);
       } else {
         form = Math.max(1, form - 2);
-        morale = Math.max(1, morale - 3);
       }
     } else {
       fitness = Math.min(100, fitness + 5);
@@ -244,7 +250,6 @@ export function applyManagerMatchResult(
     return {
       ...ps,
       form,
-      morale,
       fitness,
       injury: inj?.injury ?? ps.injury,
       seasonAppearances: played ? ps.seasonAppearances + 1 : ps.seasonAppearances,
@@ -342,10 +347,17 @@ export function applyManagerMatchResult(
     updatedAt: new Date().toISOString(),
   };
 
-  return {
+  let finalCareer: ManagerCareer = {
     ...nextCareer,
     isSeasonComplete: isManagerSeasonComplete(nextCareer),
   };
+
+  const reserveOpp = getReserveOpponent(sched.opponent, round, career.seed);
+  const reserveResult = simulateReserveFixture(finalCareer, round, reserveOpp);
+  finalCareer = applyReserveMatchDevelopment(finalCareer, reserveResult);
+  finalCareer = clearReserveCallUps(finalCareer);
+
+  return finalCareer;
 }
 
 export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
@@ -357,7 +369,8 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
   const round = sched.round;
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
-    career.xiiiSlotPositions
+    career.xiiiSlotPositions,
+    career
   );
   const mods = getTacticModifiers(career.tactics);
   const { avgForm, fitnessPenalty } = computePlayerModifiers(career, [

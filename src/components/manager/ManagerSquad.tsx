@@ -5,9 +5,8 @@ import { TYPO } from "@/lib/ui/typography";
 import { POSITION_SHORT, SQUAD_STRUCTURE } from "@/lib/positions";
 import type { Position } from "@/lib/types";
 import type { ManagerCareer } from "@/lib/manager/types";
-import { getPlayerById } from "@/lib/players";
+import { getManagerPlayer, getManagerPlayerEligiblePositions } from "@/lib/manager/managerPlayers";
 import { getPlayerAge } from "@/lib/players/player-age";
-import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
 import { formatValue } from "@/lib/players";
 import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
 import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
@@ -25,9 +24,9 @@ export function ManagerSquad({ career }: ManagerSquadProps) {
   for (const pos of POSITION_ORDER) byPosition.set(pos, []);
 
   for (const ps of career.squad) {
-    const player = getPlayerById(ps.playerId);
+    const player = getManagerPlayer(career, ps.playerId);
     if (!player) continue;
-    const positions = getPlayerEligiblePositions(player);
+    const positions = getManagerPlayerEligiblePositions(career, ps.playerId);
     const primary = positions[0] ?? player.position;
     const list = byPosition.get(primary) ?? [];
     list.push(ps);
@@ -67,7 +66,7 @@ export function ManagerSquad({ career }: ManagerSquadProps) {
             </h2>
             <div className={`grid gap-2 sm:grid-cols-2`}>
               {players.map((ps) => {
-                const player = getPlayerById(ps.playerId);
+                const player = getManagerPlayer(career, ps.playerId);
                 if (!player) return null;
                 const age = getPlayerAge(player);
                 const inXiii = career.matchdayXiii.includes(ps.playerId);
@@ -94,9 +93,8 @@ export function ManagerSquad({ career }: ManagerSquadProps) {
                         {player.rating ?? player.peakRating}
                       </span>
                     </div>
-                    <div className="mt-2 grid grid-cols-3 gap-1 text-[10px] text-pitch-300">
+                    <div className="mt-2 grid grid-cols-2 gap-1 text-[10px] text-pitch-300">
                       <span>Form {ps.form}</span>
-                      <span>Morale {ps.morale}</span>
                       <span>Fitness {ps.fitness}</span>
                     </div>
                     <div className="mt-1 flex flex-wrap gap-2 text-[10px] text-pitch-400">

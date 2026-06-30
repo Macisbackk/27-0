@@ -43,9 +43,9 @@ export function buildRecentForm(
   return fixtures.slice(-limit).map((f) => f.result);
 }
 
-export function computeSquadMorale(career: ManagerCareer): number {
+export function computeSquadForm(career: ManagerCareer): number {
   if (career.squad.length === 0) return 50;
-  const sum = career.squad.reduce((a, p) => a + p.morale, 0);
+  const sum = career.squad.reduce((a, p) => a + p.form, 0);
   return Math.round(sum / career.squad.length);
 }
 
@@ -55,12 +55,12 @@ export function computeSquadFitness(career: ManagerCareer): number {
   return Math.round(sum / career.squad.length);
 }
 
-export function moraleLabel(score: number): string {
-  if (score >= 75) return "Excellent";
+export function formLabel(score: number): string {
+  if (score >= 75) return "In form";
   if (score >= 60) return "Good";
-  if (score >= 45) return "Okay";
-  if (score >= 30) return "Low";
-  return "Poor";
+  if (score >= 45) return "Average";
+  if (score >= 30) return "Struggling";
+  return "Out of form";
 }
 
 export function updateStatsAfterMatch(

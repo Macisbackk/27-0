@@ -4,6 +4,8 @@ import { getPlayerById } from "../players";
 import { getPlayerRatingForPosition } from "../players/player-positions";
 import type { Position } from "../types";
 import { buildDefaultLineup } from "./club-config";
+import { getManagerPlayer } from "./managerPlayers";
+import type { ManagerCareer } from "./types";
 
 const ERA_26_YEAR = "2026";
 
@@ -29,8 +31,8 @@ const SPINE_POSITIONS = new Set<Position>([
   "LOOSE_FORWARD",
 ]);
 
-function playerBaseRating(playerId: string): number {
-  const p = getPlayerById(playerId);
+function playerBaseRating(playerId: string, career?: ManagerCareer): number {
+  const p = career ? getManagerPlayer(career, playerId) : getPlayerById(playerId);
   if (!p) return 0;
   return p.rating ?? p.peakRating;
 }
@@ -42,16 +44,17 @@ function playerBaseRating(playerId: string): number {
 export function computeManagerTeamRating(
   xiiiIds: string[],
   interchangeIds: string[],
-  slotPositions: Position[]
+  slotPositions: Position[],
+  career?: ManagerCareer
 ): number {
   const starterRatings = xiiiIds.map((id, i) => {
     const pos = slotPositions[i];
-    const p = getPlayerById(id);
-    if (!p || !pos) return playerBaseRating(id);
+    const p = career ? getManagerPlayer(career, id) : getPlayerById(id);
+    if (!p || !pos) return playerBaseRating(id, career);
     return getPlayerRatingForPosition(p, pos);
   });
 
-  const benchRatings = interchangeIds.map((id) => playerBaseRating(id));
+  const benchRatings = interchangeIds.map((id) => playerBaseRating(id, career));
 
   const spineRatings: number[] = [];
   for (let i = 0; i < xiiiIds.length; i++) {

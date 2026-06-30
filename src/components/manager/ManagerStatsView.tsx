@@ -3,13 +3,13 @@
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
-import { getPlayerById } from "@/lib/players";
+import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import {
   computeSquadFitness,
-  computeSquadMorale,
+  computeSquadForm,
+  formLabel,
   getTopGoalScorer,
   getTopTryScorer,
-  moraleLabel,
 } from "@/lib/manager/managerCareerStats";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 
@@ -44,7 +44,7 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
           <Stat label="Tries for" value={String(ts.triesFor)} />
           <Stat label="Tries against" value={String(ts.triesAgainst)} />
           <Stat label="League points" value={String(ts.leaguePoints)} />
-          <Stat label="Morale" value={moraleLabel(computeSquadMorale(career))} />
+          <Stat label="Squad form" value={formLabel(computeSquadForm(career))} />
           <Stat label="Fitness" value={`${computeSquadFitness(career)}%`} />
         </div>
       </div>
@@ -54,13 +54,13 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
           <p className={TYPO.sectionLabel}>Leaders</p>
           {topScorer && (
             <p className={`mt-1 ${TYPO.bodySm}`}>
-              Top try scorer: {getPlayerById(topScorer.playerId)?.name} (
+              Top try scorer: {getManagerPlayer(career, topScorer.playerId)?.name} (
               {topScorer.tries})
             </p>
           )}
           {topKicker && (
             <p className={TYPO.bodySm}>
-              Top goal scorer: {getPlayerById(topKicker.playerId)?.name} (
+              Top goal scorer: {getManagerPlayer(career, topKicker.playerId)?.name} (
               {topKicker.goals})
             </p>
           )}
@@ -86,7 +86,7 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
                   className="border-b border-pitch-800/40"
                 >
                   <td className="px-3 py-2">
-                    {getPlayerById(row.playerId)?.name ?? row.playerId}
+                    {getManagerPlayer(career, row.playerId)?.name ?? row.playerId}
                   </td>
                   <td className="px-3 py-2 text-center">{row.appearances}</td>
                   <td className="px-3 py-2 text-center">{row.tries}</td>

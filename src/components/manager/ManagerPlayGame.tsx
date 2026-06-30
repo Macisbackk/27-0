@@ -6,13 +6,15 @@ import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { LiveMatchCommand, ManagerCareer } from "@/lib/manager/types";
 import {
-  advanceLiveMinute,
+  advanceLiveTick,
   advanceLiveToFullTime,
   createLiveMatch,
   formatLiveClock,
   getLiveCommandLabel,
   getLiveMatchEvents,
+  getMatchStatusLabel,
   liveMatchToFixture,
+  REAL_TICK_MS,
   type LiveMatchState,
 } from "@/lib/manager/managerLiveMatch";
 import {
@@ -25,13 +27,15 @@ const COMMANDS: LiveMatchCommand[] = [
   "balanced",
   "attack",
   "defend",
-  "kick_early",
   "use_forwards",
   "spread_wide",
-  "calm_down",
 ];
 
-const TICK_MS = 900;
+const STATUS_PILL_CLASS = {
+  win: "bg-theme-primary/20 text-theme-primary border-theme-primary/40",
+  loss: "bg-red-500/20 text-red-300 border-red-500/40",
+  level: "bg-pitch-700/50 text-pitch-200 border-pitch-600",
+};
 
 interface ManagerPlayGameProps {
   career: ManagerCareer;
@@ -78,10 +82,9 @@ export function ManagerPlayGame({
     const timer = window.setInterval(() => {
       setLive((prev) => {
         if (!prev || prev.isComplete) return prev;
-        const next = advanceLiveMinute(prev, career, command);
-        return next;
+        return advanceLiveTick(prev, career, command);
       });
-    }, TICK_MS);
+    }, REAL_TICK_MS);
 
     return () => window.clearInterval(timer);
   }, [live, live?.isComplete, isPaused, command, career]);
@@ -96,8 +99,7 @@ export function ManagerPlayGame({
   const handleSimulateToFullTime = () => {
     if (!live || live.isComplete) return;
     playSimulateRound();
-    const next = advanceLiveToFullTime(live, career, command);
-    setLive(next);
+    setLive(advanceLiveToFullTime(live, career, command));
   };
 
   if (!sched || !live) return null;
@@ -108,6 +110,7 @@ export function ManagerPlayGame({
   const awayName = live.isHome ? oppName : userName;
   const homeScore = live.isHome ? live.userScore : live.oppScore;
   const awayScore = live.isHome ? live.oppScore : live.userScore;
+  const status = getMatchStatusLabel(live.userScore, live.oppScore, live.isHome);
 
   return (
     <div className={SPACING.stackLg}>
@@ -126,6 +129,18 @@ export function ManagerPlayGame({
         <p className={`mt-1 font-mono text-xl text-accent-gold`}>
           {formatLiveClock(live.minute)}
           {live.isComplete ? " · Full Time" : isPaused ? " · Paused" : ""}
+        </p>
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+          <span
+            className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${STATUS_PILL_CLASS[status.tone]}`}
+          >
+            {status.pill}
+          </span>
+          <span className={`${TYPO.bodySm} text-pitch-300`}>{status.line}</span>
+        </div>
+        <p className={`mt-1 text-xs text-pitch-500`}>
+          Momentum: {live.momentum > 0 ? "+" : ""}
+          {live.momentum}
         </p>
       </div>
 
@@ -170,10 +185,7 @@ export function ManagerPlayGame({
             >
               {isPaused ? "Resume" : "Pause"}
             </GameButton>
-            <GameButton
-              variant="theme"
-              onClick={handleSimulateToFullTime}
-            >
+            <GameButton variant="theme" onClick={handleSimulateToFullTime}>
               Simulate to Full Time
             </GameButton>
             <GameButton
@@ -212,10 +224,7 @@ export function ManagerPlayGame({
       </div>
 
       {live.isComplete && (
-        <GameButton
-          variant="theme"
-          onClick={() => finishMatch(live)}
-        >
+        <GameButton variant="theme" onClick={() => finishMatch(live)}>
           View Match Review
         </GameButton>
       )}

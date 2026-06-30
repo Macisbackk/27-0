@@ -88,11 +88,39 @@ export interface ManagerInjury {
 export interface ManagerPlayerState {
   playerId: string;
   form: number;
-  morale: number;
   fitness: number;
   injury: ManagerInjury | null;
   seasonAppearances: number;
   seasonTries: number;
+}
+
+export interface ManagerReservePlayer {
+  id: string;
+  name: string;
+  age: number;
+  nationality: string;
+  position: Position;
+  eligiblePositions: Position[];
+  rating: number;
+  baseRating: number;
+  potentialRating: number;
+  developmentRate: number;
+  form: number;
+  fitness: number;
+  reserveAppearances: number;
+  reserveTries: number;
+  calledUpForNextMatch: boolean;
+}
+
+export interface ReserveFixtureResult {
+  round: number;
+  opponent: string;
+  opponentClub: string;
+  userScore: number;
+  oppScore: number;
+  userWon: boolean;
+  topPerformer?: string;
+  userTries: number;
 }
 
 export interface ManagerPlayerSeasonStats {
@@ -233,6 +261,7 @@ export type ManagerView =
   | "squad"
   | "tactics"
   | "contracts"
+  | "reserves"
   | "transfers"
   | "fixtures"
   | "table"
@@ -246,10 +275,8 @@ export type LiveMatchCommand =
   | "attack"
   | "defend"
   | "balanced"
-  | "kick_early"
   | "use_forwards"
-  | "spread_wide"
-  | "calm_down";
+  | "spread_wide";
 
 export interface ManagerCareer {
   id: string;
@@ -291,6 +318,12 @@ export interface ManagerCareer {
   lastMatchFixture: ManagerFixtureRecord | null;
   seasonAttendance: { total: number; count: number; high: number; low: number };
   seasonRewardClaimedForYear?: number | null;
+  reserves: ManagerReservePlayer[];
+  reserveResults: ReserveFixtureResult[];
+  lastReserveResult: ReserveFixtureResult | null;
+  calledUpReserveIds: string[];
+  playerRegistry: Record<string, import("../types").Player>;
+  hubResultsExpanded?: boolean;
   createdAt: string;
   updatedAt: string;
 }

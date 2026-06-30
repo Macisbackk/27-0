@@ -19,6 +19,7 @@ import {
 } from "./managerContracts";
 import { createClubAttendanceData } from "./managerAttendance";
 import { createManagerChallengeCup } from "./managerChallengeCup";
+import { generateReserveSquad } from "./managerReserves";
 
 const CAREER_KEY = "27-0-manager-career";
 
@@ -80,6 +81,26 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
       low: 0,
     },
     schedule,
+    squad: (raw.squad ?? []).map((p) => ({
+      playerId: p.playerId,
+      form: p.form ?? 50,
+      fitness: p.fitness ?? 85,
+      injury: p.injury ?? null,
+      seasonAppearances: p.seasonAppearances ?? 0,
+      seasonTries: p.seasonTries ?? 0,
+    })),
+    reserves:
+      raw.reserves?.length
+        ? raw.reserves.map((r) => ({
+            ...r,
+            baseRating: r.baseRating ?? r.rating,
+          }))
+        : generateReserveSquad(raw.seed ?? "migrate"),
+    reserveResults: raw.reserveResults ?? [],
+    lastReserveResult: raw.lastReserveResult ?? null,
+    calledUpReserveIds: raw.calledUpReserveIds ?? [],
+    playerRegistry: raw.playerRegistry ?? {},
+    hubResultsExpanded: raw.hubResultsExpanded ?? false,
   };
 
   career = ensureRenewalDemands(career);
@@ -167,6 +188,12 @@ export function createNewCareer(club: string): ManagerCareer {
     matchSimState: { form: 0, seasonDropGoals: 0 },
     lastMatchFixture: null,
     seasonAttendance: { total: 0, count: 0, high: 0, low: 0 },
+    reserves: generateReserveSquad(seed),
+    reserveResults: [],
+    lastReserveResult: null,
+    calledUpReserveIds: [],
+    playerRegistry: {},
+    hubResultsExpanded: false,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

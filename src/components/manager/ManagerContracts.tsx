@@ -1,21 +1,23 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, SquadRole } from "@/lib/manager/types";
-import { getPlayerById } from "@/lib/players";
+import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Position } from "@/lib/types";
-import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
+import { getManagerPlayerEligiblePositions } from "@/lib/manager/managerPlayers";
+import { getPlayerAge } from "@/lib/players/player-age";
 import {
   applyRenewal,
   evaluateRenewalOffer,
   formatWage,
   getContractStatus,
 } from "@/lib/manager/managerContracts";
-import { playUiClick } from "@/lib/sound";
+import { releasePlayer } from "@/lib/manager/managerTransfers";
+import { playPanelClose, playUiClick } from "@/lib/sound";
 
 type ContractFilter =
   | "all"
@@ -52,7 +54,6 @@ export function ManagerContracts({
   const [offerWage, setOfferWage] = useState(0);
   const [offerYears, setOfferYears] = useState(2);
   const [offerRole, setOfferRole] = useState<SquadRole>("Starter");
-  const [message, setMessage] = useState<string | null>(null);
   const [lastResponse, setLastResponse] = useState<{
     accepted: boolean;
     reason: string;
@@ -61,7 +62,7 @@ export function ManagerContracts({
   const rows = useMemo(() => {
     let list = career.squad
       .map((ps) => {
-        const player = getPlayerById(ps.playerId);
+        const player = getManagerPlayer(career, ps.playerId);
         const contract = career.contracts[ps.playerId];
         if (!player || !contract) return null;
         const status = getContractStatus(contract);
@@ -93,7 +94,9 @@ export function ManagerContracts({
     }
     if (positionFilter !== "all") {
       list = list.filter((r) =>
-        getPlayerEligiblePositions(r.player).includes(positionFilter)
+        getManagerPlayerEligiblePositions(career, r.player.id).includes(
+          positionFilter
+        )
       );
     }
     if (roleFilter !== "all") {
@@ -114,9 +117,23 @@ export function ManagerContracts({
     setOfferWage(demand?.wagePerYear ?? contract?.wagePerYear ?? 50_000);
     setOfferYears(demand?.yearsRequested ?? 2);
     setOfferRole(demand?.squadRole ?? contract?.squadRole ?? "Starter");
-    setMessage(null);
     setLastResponse(null);
   };
+
+  const closeModal = () => {
+    playPanelClose();
+    setSelectedId(null);
+    setLastResponse(null);
+  };
+
+  useEffect(() => {
+    if (!selectedId) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeModal();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedId]);
 
   const submitOffer = () => {
     if (!selectedId) return;
@@ -130,14 +147,23 @@ export function ManagerContracts({
     };
     const result = evaluateRenewalOffer(selectedId, contract, offer, career);
     setLastResponse(result);
-    if (!result.accepted) {
-      setMessage(result.reason);
-      return;
+    if (result.accepted) {
+      onUpdate(applyRenewal(career, selectedId, offer));
     }
-    onUpdate(applyRenewal(career, selectedId, offer));
-    setMessage(result.reason);
-    setSelectedId(null);
   };
+
+  const handleRelease = () => {
+    if (!selectedId) return;
+    if (!window.confirm("Release this player from the squad?")) return;
+    onUpdate(releasePlayer(career, selectedId));
+    closeModal();
+  };
+
+  const selectedPositions = selected
+    ? getManagerPlayerEligiblePositions(career, selected.player.id)
+    : [];
+  const primaryPosition = selectedPositions[0];
+  const selectedAge = selected ? getPlayerAge(selected.player) : null;
 
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
@@ -148,10 +174,6 @@ export function ManagerContracts({
           {formatWage(career.wageBudget)}
         </p>
       </div>
-
-      {message && (
-        <p className={`${TYPO.bodySm} text-theme-primary`}>{message}</p>
-      )}
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-2`}>Filters</p>
@@ -262,97 +284,152 @@ export function ManagerContracts({
       </div>
 
       {selected && (
-        <div className={`${CARD.elevated} ${SPACING.cardPadding} ${SPACING.stackMd}`}>
-          <h2 className={TYPO.cardTitle}>{selected.player.name}</h2>
-          <p className={`${TYPO.bodySm} text-pitch-400`}>
-            Current: {formatWage(selected.contract.wagePerYear)}/yr ·{" "}
-            {selected.contract.yearsRemaining} years · Happiness{" "}
-            {selected.contract.happiness}
-          </p>
-          {selected.contract.renewalDemand && (
-            <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-              <p className={TYPO.sectionLabel}>Player demand</p>
-              <p className={`${TYPO.bodySm} text-white`}>
-                {formatWage(selected.contract.renewalDemand.wagePerYear)}/yr ·{" "}
-                {selected.contract.renewalDemand.yearsRequested} years ·{" "}
-                {selected.contract.renewalDemand.squadRole}
-              </p>
-            </div>
-          )}
-          <div className="grid gap-3 sm:grid-cols-3">
-            <label className={TYPO.bodySm}>
-              <span className="text-pitch-400">Wage (£/yr)</span>
-              <input
-                type="number"
-                step={1000}
-                value={offerWage}
-                onChange={(e) => setOfferWage(Number(e.target.value))}
-                className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1 text-white"
-              />
-            </label>
-            <label className={TYPO.bodySm}>
-              <span className="text-pitch-400">Years</span>
-              <input
-                type="number"
-                min={1}
-                max={4}
-                value={offerYears}
-                onChange={(e) => setOfferYears(Number(e.target.value))}
-                className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1 text-white"
-              />
-            </label>
-            <label className={TYPO.bodySm}>
-              <span className="text-pitch-400">Role</span>
-              <select
-                value={offerRole}
-                onChange={(e) => setOfferRole(e.target.value as SquadRole)}
-                className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1 text-white"
-              >
-                {(["Star", "Starter", "Rotation", "Prospect", "Depth"] as const).map(
-                  (r) => (
-                    <option key={r} value={r}>
-                      {r}
-                    </option>
-                  )
-                )}
-              </select>
-            </label>
-          </div>
-          <GameButton
-            variant="theme"
-            onClick={() => {
-              playUiClick();
-              submitOffer();
-            }}
+        <div
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/75 p-3 backdrop-blur-sm sm:items-center sm:p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Contract renewal for ${selected.player.name}`}
+          onClick={closeModal}
+        >
+          <div
+            className={`card-glass max-h-[min(92vh,720px)] w-full max-w-lg overflow-y-auto ${SPACING.cardPadding} animate-fade-up`}
+            onClick={(e) => e.stopPropagation()}
           >
-            Offer Contract
-          </GameButton>
-          {lastResponse && (
-            <div
-              className={`rounded-lg border px-3 py-2 ${
-                lastResponse.accepted
-                  ? "border-theme-primary/40 bg-theme-primary/10"
-                  : "border-red-500/40 bg-red-500/10"
-              }`}
-            >
-              <p
-                className={`font-semibold ${
-                  lastResponse.accepted ? "text-theme-primary" : "text-red-300"
+            <h2 className={TYPO.cardTitle}>{selected.player.name}</h2>
+            <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <p className="text-pitch-500 text-xs">Position</p>
+                <p className="text-white">
+                  {primaryPosition ? POSITION_SHORT[primaryPosition] : "—"}
+                </p>
+              </div>
+              <div>
+                <p className="text-pitch-500 text-xs">Rating</p>
+                <p className="text-theme-primary">{selected.rating}</p>
+              </div>
+              {selectedAge && (
+                <div>
+                  <p className="text-pitch-500 text-xs">Age</p>
+                  <p>{selectedAge}</p>
+                </div>
+              )}
+              <div>
+                <p className="text-pitch-500 text-xs">Current wage</p>
+                <p>{formatWage(selected.contract.wagePerYear)}/yr</p>
+              </div>
+              <div>
+                <p className="text-pitch-500 text-xs">Years remaining</p>
+                <p>{selected.contract.yearsRemaining}</p>
+              </div>
+              <div>
+                <p className="text-pitch-500 text-xs">Squad role</p>
+                <p>{selected.contract.squadRole}</p>
+              </div>
+              <div>
+                <p className="text-pitch-500 text-xs">Contract status</p>
+                <p>{STATUS_LABELS[selected.status] ?? selected.status}</p>
+              </div>
+              <div>
+                <p className="text-pitch-500 text-xs">Happiness</p>
+                <p>{selected.contract.happiness}%</p>
+              </div>
+            </div>
+
+            {selected.contract.renewalDemand && (
+              <div className={`mt-4 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
+                <p className={TYPO.sectionLabel}>Current demand</p>
+                <p className={`${TYPO.bodySm} text-white`}>
+                  {formatWage(selected.contract.renewalDemand.wagePerYear)}/yr ·{" "}
+                  {selected.contract.renewalDemand.yearsRequested} years ·{" "}
+                  {selected.contract.renewalDemand.squadRole}
+                </p>
+              </div>
+            )}
+
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              <label className={TYPO.bodySm}>
+                <span className="text-pitch-400">Offer wage (£/yr)</span>
+                <input
+                  type="number"
+                  step={1000}
+                  value={offerWage}
+                  onChange={(e) => setOfferWage(Number(e.target.value))}
+                  className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1 text-white"
+                />
+              </label>
+              <label className={TYPO.bodySm}>
+                <span className="text-pitch-400">Offer years</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={4}
+                  value={offerYears}
+                  onChange={(e) => setOfferYears(Number(e.target.value))}
+                  className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1 text-white"
+                />
+              </label>
+              <label className={TYPO.bodySm}>
+                <span className="text-pitch-400">Offer squad role</span>
+                <select
+                  value={offerRole}
+                  onChange={(e) => setOfferRole(e.target.value as SquadRole)}
+                  className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1 text-white"
+                >
+                  {(["Star", "Starter", "Rotation", "Prospect", "Depth"] as const).map(
+                    (r) => (
+                      <option key={r} value={r}>
+                        {r}
+                      </option>
+                    )
+                  )}
+                </select>
+              </label>
+            </div>
+
+            {lastResponse && (
+              <div
+                className={`mt-4 rounded-lg border px-3 py-2 ${
+                  lastResponse.accepted
+                    ? "border-theme-primary/40 bg-theme-primary/10"
+                    : "border-red-500/40 bg-red-500/10"
                 }`}
               >
-                {lastResponse.accepted ? "Accepted" : "Declined"}
-              </p>
-              <p className={`${TYPO.bodySm} mt-1 text-pitch-200`}>
-                {lastResponse.reason}
-              </p>
+                <p
+                  className={`font-semibold ${
+                    lastResponse.accepted ? "text-theme-primary" : "text-red-300"
+                  }`}
+                >
+                  {lastResponse.accepted ? "Accepted" : "Declined"} —{" "}
+                  {lastResponse.reason}
+                </p>
+              </div>
+            )}
+
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              <GameButton
+                variant="theme"
+                onClick={() => {
+                  playUiClick();
+                  submitOffer();
+                }}
+              >
+                Offer Contract
+              </GameButton>
+              <GameButton variant="secondary" onClick={closeModal}>
+                Close
+              </GameButton>
+              <GameButton
+                variant="secondary"
+                className="sm:col-span-2"
+                onClick={() => {
+                  playUiClick();
+                  handleRelease();
+                }}
+              >
+                Release Player
+              </GameButton>
             </div>
-          )}
-          <GameButton
-            variant="secondary"
-            onClick={() => setSelectedId(null)}
-          >
-            Cancel
-          </GameButton>
+          </div>
         </div>
       )}
     </div>

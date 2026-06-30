@@ -1,4 +1,4 @@
-import { getPlayerById } from "../players";
+import { getManagerPlayer, getManagerPlayerEligiblePositions } from "./managerPlayers";
 import { POSITION_LABELS, POSITION_SHORT, SQUAD_STRUCTURE } from "../positions";
 import type { Position } from "../types";
 import type { ManagerCareer } from "./types";
@@ -7,11 +7,7 @@ import {
   ERA_STARTING_17_SIZE,
   ERA_XIII_FROM_STARTING_17,
 } from "../players/era-starting-17s";
-import {
-  canPlayPosition,
-  isPlayerUnavailable,
-  validateMatchdaySquad,
-} from "./managerSquad";
+import { isPlayerUnavailable, validateMatchdaySquad } from "./managerSquad";
 
 export interface MatchdayValidationResult {
   valid: boolean;
@@ -21,6 +17,16 @@ export interface MatchdayValidationResult {
 
 function countFilled(ids: string[]): number {
   return ids.filter((id) => id && id.length > 0).length;
+}
+
+function canPlayPositionForCareer(
+  career: ManagerCareer,
+  playerId: string,
+  position: Position
+): boolean {
+  return getManagerPlayerEligiblePositions(career, playerId).includes(
+    position
+  );
 }
 
 export function validateFitMatchdaySquad(
@@ -50,13 +56,29 @@ export function validateFitMatchdaySquad(
 
   for (const id of allIds) {
     const ps = squadById.get(id);
-    const player = getPlayerById(id);
-    if (!ps || !player) {
+    const reserve = career.reserves.find((r) => r.id === id);
+    const player = getManagerPlayer(career, id);
+    if (!player) {
       missing.push("invalid squad selection");
       continue;
     }
-    if (isPlayerUnavailable(ps)) {
+    if (ps && isPlayerUnavailable(ps)) {
       missing.push(`${player.name} (unavailable)`);
+    }
+    if (reserve && reserve.fitness < 50) {
+      missing.push(`${player.name} (not fit)`);
+    }
+  }
+
+  for (let i = 0; i < career.matchdayXiii.length; i++) {
+    const id = career.matchdayXiii[i];
+    const pos = career.xiiiSlotPositions[i];
+    if (!id || !pos) continue;
+    if (!canPlayPositionForCareer(career, id, pos)) {
+      const player = getManagerPlayer(career, id);
+      missing.push(
+        `${player?.name ?? "Player"} cannot play ${POSITION_SHORT[pos]}`
+      );
     }
   }
 
@@ -65,22 +87,10 @@ export function validateFitMatchdaySquad(
     required[position] = count;
   }
   const filled: Partial<Record<Position, number>> = {};
-  for (let i = 0; i < career.matchdayXiii.length; i++) {
-    const id = career.matchdayXiii[i];
-    const pos = career.xiiiSlotPositions[i];
-    if (!id || !pos) continue;
-    if (!canPlayPosition(id, pos)) {
-      const player = getPlayerById(id);
-      missing.push(
-        `${player?.name ?? "Player"} cannot play ${POSITION_SHORT[pos]}`
-      );
-      continue;
-    }
-  }
   for (let i = 0; i < career.xiiiSlotPositions.length; i++) {
     const id = career.matchdayXiii[i];
     const pos = career.xiiiSlotPositions[i];
-    if (!id || !pos || !canPlayPosition(id, pos)) continue;
+    if (!id || !pos || !canPlayPositionForCareer(career, id, pos)) continue;
     filled[pos] = (filled[pos] ?? 0) + 1;
   }
   for (const [pos, need] of Object.entries(required)) {
@@ -103,6 +113,8 @@ export function validateFitMatchdaySquad(
   }
 
   const unique = [...new Set(missing)];
+  const hasCallUps = career.calledUpReserveIds.length > 0;
+
   if (
     xiiiFilled === ERA_XIII_FROM_STARTING_17 &&
     benchFilled === ERA_BENCH_FROM_STARTING_17 &&
@@ -113,10 +125,13 @@ export function validateFitMatchdaySquad(
     return { valid: true, message: "", missing: [] };
   }
 
-  const message =
-    unique.length > 0
-      ? `You cannot play this match yet. Your matchday squad needs 17 fit players.\nMissing: ${unique.join(", ")}.`
-      : "You cannot play this match yet. Your matchday squad needs 17 fit players.";
+  let message = `You cannot play this match yet. Your matchday squad needs 17 fit players.`;
+  if (unique.length > 0) {
+    message += `\nMissing: ${unique.join(", ")}.`;
+  }
+  if (!hasCallUps && unique.length > 0) {
+    message += "\nCall up reserves or change your squad before playing.";
+  }
 
   return { valid: false, message, missing: unique };
 }

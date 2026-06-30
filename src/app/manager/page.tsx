@@ -9,6 +9,7 @@ import { ManagerHub } from "@/components/manager/ManagerHub";
 import { ManagerSquad } from "@/components/manager/ManagerSquad";
 import { ManagerTactics } from "@/components/manager/ManagerTactics";
 import { ManagerContracts } from "@/components/manager/ManagerContracts";
+import { ManagerReserves } from "@/components/manager/ManagerReserves";
 import { ManagerTransfers } from "@/components/manager/ManagerTransfers";
 import { ManagerFixtures } from "@/components/manager/ManagerFixtures";
 import { ManagerTable } from "@/components/manager/ManagerTable";
@@ -48,6 +49,7 @@ const NAV_VIEWS: ManagerView[] = [
   "squad",
   "tactics",
   "contracts",
+  "reserves",
   "transfers",
   "fixtures",
   "table",
@@ -193,6 +195,12 @@ export default function ManagerPage() {
               career={career}
               onPlayGame={handlePlayGame}
               onSimulate={handleSimulate}
+              onSelectFixture={(fixtureId) => {
+                setReviewFixtureId(fixtureId);
+                setView("match-review");
+              }}
+              onUpdate={persist}
+              onNavigate={setView}
             />
           )}
 
@@ -205,6 +213,9 @@ export default function ManagerPage() {
           )}
           {view === "contracts" && (
             <ManagerContracts career={career} onUpdate={persist} />
+          )}
+          {view === "reserves" && (
+            <ManagerReserves career={career} onUpdate={persist} />
           )}
           {view === "transfers" && (
             <ManagerTransfers career={career} onUpdate={persist} />

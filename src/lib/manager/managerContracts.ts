@@ -86,11 +86,11 @@ export function generateRenewalDemand(
   const player = getPlayerById(playerId);
   const rating = player?.rating ?? player?.peakRating ?? 70;
   const ps = career.squad.find((p) => p.playerId === playerId);
-  const morale = ps?.morale ?? 50;
+  const happiness = contract.happiness;
   const appearances = ps?.seasonAppearances ?? 0;
 
   let wageBump = 1.05;
-  if (morale >= 70) wageBump += 0.05;
+  if (happiness >= 70) wageBump += 0.05;
   if (appearances >= 10) wageBump += 0.04;
   if (career.boardConfidence >= 70) wageBump += 0.03;
   if (rating >= 85) wageBump += 0.08;
@@ -143,8 +143,9 @@ export function evaluateRenewalOffer(
   const player = getPlayerById(playerId);
   const rating = player?.rating ?? player?.peakRating ?? 70;
   const ps = career.squad.find((p) => p.playerId === playerId);
-  const morale = ps?.morale ?? 50;
+  const happiness = contract.happiness;
   const appearances = ps?.seasonAppearances ?? 0;
+  const form = ps?.form ?? 50;
   const position = career.leagueTable.find((r) => r.isUserTeam)?.position ?? 10;
 
   if (offer.wagePerYear < demand.wagePerYear * 0.9) {
@@ -178,13 +179,13 @@ export function evaluateRenewalOffer(
       reason: "Declined — unhappy with game time.",
     };
   }
-  if (position >= 10 && morale < 45) {
+  if (position >= 10 && happiness < 45) {
     return {
       accepted: false,
       reason: "Declined — club performance is below expectations.",
     };
   }
-  if (morale < 30 && career.boardConfidence < 40) {
+  if (happiness < 30 && career.boardConfidence < 40) {
     return {
       accepted: false,
       reason: "Declined — wants to leave the club.",
@@ -201,7 +202,7 @@ export function evaluateRenewalOffer(
   }
 
   if (offer.wagePerYear >= demand.wagePerYear && roleRank[offer.squadRole] >= roleRank[demand.squadRole]) {
-    if (appearances >= 10 && morale >= 60) {
+    if (appearances >= 10 && form >= 60) {
       return {
         accepted: true,
         reason: "Accepted — wanted to stay after a strong season.",
@@ -213,7 +214,7 @@ export function evaluateRenewalOffer(
     };
   }
 
-  if (offer.wagePerYear >= demand.wagePerYear * 0.95 && morale >= 50) {
+  if (offer.wagePerYear >= demand.wagePerYear * 0.95 && happiness >= 50) {
     return {
       accepted: true,
       reason: "Accepted — happy with wage and squad role.",

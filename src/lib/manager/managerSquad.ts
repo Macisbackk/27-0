@@ -7,7 +7,8 @@ import {
   SQUAD_STRUCTURE,
   POSITION_SHORT,
 } from "../positions";
-import type { ManagerPlayerState } from "./types";
+import type { ManagerCareer, ManagerPlayerState } from "./types";
+import { getManagerPlayer } from "./managerPlayers";
 import {
   ERA_BENCH_FROM_STARTING_17,
   ERA_STARTING_17_SIZE,
@@ -18,7 +19,6 @@ export function createInitialPlayerState(playerId: string): ManagerPlayerState {
   return {
     playerId,
     form: 50 + Math.floor(Math.random() * 20),
-    morale: 55 + Math.floor(Math.random() * 25),
     fitness: 85 + Math.floor(Math.random() * 15),
     injury: null,
     seasonAppearances: 0,
@@ -93,11 +93,13 @@ export function validateMatchdaySquad(
 
 export function buildSquadSlotsFromMatchday(
   xiiiIds: string[],
-  slotPositions: Position[]
+  slotPositions: Position[],
+  career?: ManagerCareer
 ): SquadSlot[] {
   const squad = createEmptySquad();
   for (let i = 0; i < xiiiIds.length; i++) {
-    const player = getPlayerById(xiiiIds[i]!);
+    const id = xiiiIds[i]!;
+    const player = career ? getManagerPlayer(career, id) : getPlayerById(id);
     if (player) signPlayerToSlot(squad, player, i);
   }
   return squad;
