@@ -23,8 +23,6 @@ export type DefenceFocus =
   | "edge_defence"
   | "goal_line";
 
-export type RiskLevel = "low" | "normal" | "high";
-
 export type SquadRole =
   | "Star"
   | "Starter"
@@ -70,7 +68,6 @@ export interface ManagerTactics {
   playingStyle: PlayingStyle;
   attackFocus: AttackFocus;
   defenceFocus: DefenceFocus;
-  riskLevel: RiskLevel;
 }
 
 export type InjuryType =
@@ -183,6 +180,16 @@ export interface ManagerMatchMeta {
   attendance?: MatchAttendanceMeta;
   competition?: ManagerCompetition;
   cupRound?: CupRoundKey;
+  liveEvents?: LiveMatchEvent[];
+}
+
+export interface LiveMatchEvent {
+  minute: number;
+  type: "try" | "goal" | "penalty" | "drop_goal" | "note";
+  team: "user" | "opponent";
+  playerName?: string;
+  description: string;
+  points: number;
 }
 
 export interface ManagerFixtureRecord extends MatchFixture {
@@ -232,7 +239,8 @@ export type ManagerView =
   | "stats"
   | "play-game"
   | "match-review"
-  | "season-review";
+  | "season-review"
+  | "season-rewards";
 
 export type LiveMatchCommand =
   | "attack"
@@ -282,6 +290,7 @@ export interface ManagerCareer {
   matchSimState: { form: number; seasonDropGoals: number };
   lastMatchFixture: ManagerFixtureRecord | null;
   seasonAttendance: { total: number; count: number; high: number; low: number };
+  seasonRewardClaimedForYear?: number | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -306,7 +315,6 @@ export const DEFAULT_TACTICS: ManagerTactics = {
   playingStyle: "balanced",
   attackFocus: "middle",
   defenceFocus: "line_speed",
-  riskLevel: "normal",
 };
 
 export const MANAGER_SEASON_GAMES = 27;

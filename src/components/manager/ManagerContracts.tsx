@@ -53,6 +53,10 @@ export function ManagerContracts({
   const [offerYears, setOfferYears] = useState(2);
   const [offerRole, setOfferRole] = useState<SquadRole>("Starter");
   const [message, setMessage] = useState<string | null>(null);
+  const [lastResponse, setLastResponse] = useState<{
+    accepted: boolean;
+    reason: string;
+  } | null>(null);
 
   const rows = useMemo(() => {
     let list = career.squad
@@ -111,6 +115,7 @@ export function ManagerContracts({
     setOfferYears(demand?.yearsRequested ?? 2);
     setOfferRole(demand?.squadRole ?? contract?.squadRole ?? "Starter");
     setMessage(null);
+    setLastResponse(null);
   };
 
   const submitOffer = () => {
@@ -124,12 +129,13 @@ export function ManagerContracts({
       squadRole: offerRole,
     };
     const result = evaluateRenewalOffer(selectedId, contract, offer, career);
+    setLastResponse(result);
     if (!result.accepted) {
       setMessage(result.reason);
       return;
     }
     onUpdate(applyRenewal(career, selectedId, offer));
-    setMessage("Contract renewed!");
+    setMessage(result.reason);
     setSelectedId(null);
   };
 
@@ -321,6 +327,26 @@ export function ManagerContracts({
           >
             Offer Contract
           </GameButton>
+          {lastResponse && (
+            <div
+              className={`rounded-lg border px-3 py-2 ${
+                lastResponse.accepted
+                  ? "border-theme-primary/40 bg-theme-primary/10"
+                  : "border-red-500/40 bg-red-500/10"
+              }`}
+            >
+              <p
+                className={`font-semibold ${
+                  lastResponse.accepted ? "text-theme-primary" : "text-red-300"
+                }`}
+              >
+                {lastResponse.accepted ? "Accepted" : "Declined"}
+              </p>
+              <p className={`${TYPO.bodySm} mt-1 text-pitch-200`}>
+                {lastResponse.reason}
+              </p>
+            </div>
+          )}
           <GameButton
             variant="secondary"
             onClick={() => setSelectedId(null)}

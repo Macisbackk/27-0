@@ -8,7 +8,6 @@ import type {
   PlayingStyle,
   AttackFocus,
   DefenceFocus,
-  RiskLevel,
 } from "@/lib/manager/types";
 import { playUiClick } from "@/lib/sound";
 
@@ -76,12 +75,6 @@ const DEFENCE_FOCUS: { value: DefenceFocus; label: string }[] = [
   { value: "goal_line", label: "Goal-Line Defence" },
 ];
 
-const RISK: { value: RiskLevel; label: string }[] = [
-  { value: "low", label: "Low" },
-  { value: "normal", label: "Normal" },
-  { value: "high", label: "High" },
-];
-
 export function ManagerTactics({
   career,
   onChange,
@@ -114,12 +107,6 @@ export function ManagerTactics({
           options={DEFENCE_FOCUS}
           value={t.defenceFocus}
           onChange={(v) => update({ defenceFocus: v })}
-        />
-        <OptionGroup
-          label="Risk Level"
-          options={RISK}
-          value={t.riskLevel}
-          onChange={(v) => update({ riskLevel: v })}
         />
       </div>
     </div>

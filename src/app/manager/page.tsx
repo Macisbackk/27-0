@@ -16,6 +16,8 @@ import { ManagerStatsView } from "@/components/manager/ManagerStatsView";
 import { ManagerPlayGame } from "@/components/manager/ManagerPlayGame";
 import { ManagerMatchReview } from "@/components/manager/ManagerMatchReview";
 import { ManagerSeasonReview } from "@/components/manager/ManagerSeasonReview";
+import { ManagerSeasonRewards } from "@/components/manager/ManagerSeasonRewards";
+import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
   loadManagerCareer,
@@ -79,7 +81,11 @@ export default function ManagerPage() {
     if (!saved) return;
     const hydrated = hydrateManagerCareer(saved);
     setCareer(hydrated);
-    setView(hydrated.isSeasonComplete ? "season-review" : "hub");
+    setView(hydrated.isSeasonComplete
+      ? hydrated.seasonRewardClaimedForYear === hydrated.seasonYear
+        ? "season-rewards"
+        : "season-review"
+      : "hub");
   };
 
   const handleDelete = () => {
@@ -127,7 +133,16 @@ export default function ManagerPage() {
 
   const handleSimulate = () => {
     if (!career) return;
+    const check = validateFitMatchdaySquad(career);
+    if (!check.valid) return;
     afterMatch(simulateManagerNextMatch(career));
+  };
+
+  const handlePlayGame = () => {
+    if (!career) return;
+    const check = validateFitMatchdaySquad(career);
+    if (!check.valid) return;
+    setView("play-game");
   };
 
   const handlePlayComplete = (next: ManagerCareer) => {
@@ -176,7 +191,7 @@ export default function ManagerPage() {
           {view === "hub" && (
             <ManagerHub
               career={career}
-              onPlayGame={() => setView("play-game")}
+              onPlayGame={handlePlayGame}
               onSimulate={handleSimulate}
             />
           )}
@@ -241,6 +256,18 @@ export default function ManagerPage() {
       {career && view === "season-review" && (
         <ManagerSeasonReview
           career={career}
+          onViewRewards={() => setView("season-rewards")}
+          onHome={() => {
+            playUiClick();
+            router.push("/");
+          }}
+        />
+      )}
+
+      {career && view === "season-rewards" && (
+        <ManagerSeasonRewards
+          career={career}
+          onClaimed={(next) => persist(next)}
           onContinue={handleContinueSeason}
           onHome={() => {
             playUiClick();

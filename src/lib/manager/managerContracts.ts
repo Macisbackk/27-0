@@ -144,12 +144,20 @@ export function evaluateRenewalOffer(
   const rating = player?.rating ?? player?.peakRating ?? 70;
   const ps = career.squad.find((p) => p.playerId === playerId);
   const morale = ps?.morale ?? 50;
+  const appearances = ps?.seasonAppearances ?? 0;
+  const position = career.leagueTable.find((r) => r.isUserTeam)?.position ?? 10;
 
   if (offer.wagePerYear < demand.wagePerYear * 0.9) {
-    return { accepted: false, reason: "Wage offer too low" };
+    return {
+      accepted: false,
+      reason: "Declined — wage offer too low.",
+    };
   }
   if (offer.yearsRequested < demand.yearsRequested && rating >= 82) {
-    return { accepted: false, reason: "Wants a longer deal" };
+    return {
+      accepted: false,
+      reason: "Declined — wants a longer deal.",
+    };
   }
   const roleRank: Record<SquadRole, number> = {
     Star: 5,
@@ -159,24 +167,63 @@ export function evaluateRenewalOffer(
     Depth: 1,
   };
   if (roleRank[offer.squadRole] < roleRank[demand.squadRole]) {
-    return { accepted: false, reason: "Unhappy with squad role offered" };
+    return {
+      accepted: false,
+      reason: "Declined — wants a bigger squad role.",
+    };
+  }
+  if (appearances < 5 && rating >= 78) {
+    return {
+      accepted: false,
+      reason: "Declined — unhappy with game time.",
+    };
+  }
+  if (position >= 10 && morale < 45) {
+    return {
+      accepted: false,
+      reason: "Declined — club performance is below expectations.",
+    };
   }
   if (morale < 30 && career.boardConfidence < 40) {
-    return { accepted: false, reason: "Wants to leave the club" };
+    return {
+      accepted: false,
+      reason: "Declined — wants to leave the club.",
+    };
   }
-  if (career.wageBill - contract.wagePerYear + offer.wagePerYear > career.wageBudget * 1.05) {
-    return { accepted: false, reason: "Club cannot afford this deal" };
+  if (
+    career.wageBill - contract.wagePerYear + offer.wagePerYear >
+    career.wageBudget * 1.05
+  ) {
+    return {
+      accepted: false,
+      reason: "Declined — club cannot afford this deal.",
+    };
   }
 
-  const acceptChance =
-    0.5 +
-    (offer.wagePerYear >= demand.wagePerYear ? 0.25 : 0) +
-    (morale >= 60 ? 0.1 : 0) +
-    (career.boardConfidence >= 60 ? 0.1 : 0);
-  if (Math.random() > acceptChance) {
-    return { accepted: false, reason: "Player rejected the offer" };
+  if (offer.wagePerYear >= demand.wagePerYear && roleRank[offer.squadRole] >= roleRank[demand.squadRole]) {
+    if (appearances >= 10 && morale >= 60) {
+      return {
+        accepted: true,
+        reason: "Accepted — wanted to stay after a strong season.",
+      };
+    }
+    return {
+      accepted: true,
+      reason: "Accepted — happy with wage and squad role.",
+    };
   }
-  return { accepted: true, reason: "Deal agreed" };
+
+  if (offer.wagePerYear >= demand.wagePerYear * 0.95 && morale >= 50) {
+    return {
+      accepted: true,
+      reason: "Accepted — happy with wage and squad role.",
+    };
+  }
+
+  return {
+    accepted: false,
+    reason: "Declined — player rejected the offer.",
+  };
 }
 
 export function applyRenewal(

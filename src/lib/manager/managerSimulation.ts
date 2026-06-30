@@ -99,20 +99,6 @@ export function getTacticModifiers(
       break;
   }
 
-  switch (tactics.riskLevel) {
-    case "low":
-      errorRisk -= 0.12;
-      strengthBonus -= 0.5;
-      break;
-    case "high":
-      errorRisk += 0.2;
-      strengthBonus += 1.5;
-      opponentPenalty += 1;
-      break;
-    default:
-      break;
-  }
-
   const tacticLine =
     lines.length > 0
       ? `Your ${lines[0]}${errorRisk > 0.1 ? ", but errors crept in" : fatigueFactor > 1.2 ? ", though fatigue showed late on" : "."}`
@@ -153,7 +139,11 @@ function computePlayerModifiers(
 export function applyManagerMatchResult(
   career: ManagerCareer,
   fixture: MatchFixture,
-  options: { playedLive?: boolean; schedOverride?: ReturnType<typeof getNextManagerFixture> } = {}
+  options: {
+    playedLive?: boolean;
+    schedOverride?: ReturnType<typeof getNextManagerFixture>;
+    liveEvents?: import("./types").LiveMatchEvent[];
+  } = {}
 ): ManagerCareer {
   const sched =
     options.schedOverride ?? getNextManagerFixture(career);
@@ -303,6 +293,7 @@ export function applyManagerMatchResult(
       attendance: attendanceMeta ?? undefined,
       competition: sched.competition,
       cupRound: sched.cupRound,
+      liveEvents: options.liveEvents,
     },
   };
 

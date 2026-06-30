@@ -1,4 +1,8 @@
-import type { ClubFundsPayoutResult, ClubFundsRunInput } from "../club-funds";
+import type {
+  ClubFundsEarnedLine,
+  ClubFundsPayoutResult,
+  ClubFundsRunInput,
+} from "../club-funds";
 import { computeClubFundsLines } from "../club-funds";
 import { STORAGE_KEYS } from "./keys";
 import { saveCloudClubFunds } from "./club-funds-cloud";
@@ -177,6 +181,39 @@ export function awardClubFundsForRun(
 
   return {
     runId: input.runId,
+    lines,
+    total,
+    awarded: true,
+    newBalance: state.balance,
+  };
+}
+
+/** Award explicit Club Funds lines (e.g. Manager Mode season rewards). */
+export function awardClubFundsLines(
+  runId: string,
+  lines: ClubFundsEarnedLine[]
+): ClubFundsPayoutResult {
+  const state = loadState();
+  const total = lines.reduce((sum, line) => sum + line.amount, 0);
+
+  if (state.paidRunIds.includes(runId) || total <= 0) {
+    return {
+      runId,
+      lines,
+      total,
+      awarded: false,
+      newBalance: state.balance,
+    };
+  }
+
+  state.balance += total;
+  state.totalEarned += total;
+  state.paidRunIds.push(runId);
+  saveState(state);
+  syncClubFundsLeaderboard(state.totalEarned);
+
+  return {
+    runId,
     lines,
     total,
     awarded: true,

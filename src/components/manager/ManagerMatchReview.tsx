@@ -60,6 +60,19 @@ export function ManagerMatchReview({
         </div>
       )}
 
+      {fixture.meta?.liveEvents && fixture.meta.liveEvents.length > 0 && (
+        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+          <p className={TYPO.sectionLabel}>Match Events</p>
+          <ul className={`mt-2 max-h-48 overflow-y-auto ${SPACING.stackSm}`}>
+            {[...fixture.meta.liveEvents].reverse().map((ev, i) => (
+              <li key={`${ev.minute}-${i}`} className={`${TYPO.bodySm}`}>
+                {ev.description}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {fixture.meta?.tacticEffectivenessLine && (
         <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
           <p className={`${TYPO.bodySm} italic text-pitch-300`}>

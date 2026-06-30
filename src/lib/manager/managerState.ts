@@ -60,7 +60,13 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     teamSeasonStats: raw.teamSeasonStats ?? { ...EMPTY_TEAM_SEASON_STATS },
     playerSeasonStats: raw.playerSeasonStats ?? {},
     recentForm: raw.recentForm ?? raw.fixtures?.map((f) => f.result) ?? [],
-    tactics: raw.tactics ?? { ...DEFAULT_TACTICS },
+    tactics: raw.tactics
+      ? {
+          playingStyle: raw.tactics.playingStyle ?? DEFAULT_TACTICS.playingStyle,
+          attackFocus: raw.tactics.attackFocus ?? DEFAULT_TACTICS.attackFocus,
+          defenceFocus: raw.tactics.defenceFocus ?? DEFAULT_TACTICS.defenceFocus,
+        }
+      : { ...DEFAULT_TACTICS },
     contracts,
     wageBudget,
     wageBill,

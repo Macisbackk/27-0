@@ -11,13 +11,13 @@ import { playSeasonComplete, playUiClick } from "@/lib/sound";
 
 interface ManagerSeasonReviewProps {
   career: ManagerCareer;
-  onContinue: () => void;
+  onViewRewards: () => void;
   onHome: () => void;
 }
 
 export function ManagerSeasonReview({
   career,
-  onContinue,
+  onViewRewards,
   onHome,
 }: ManagerSeasonReviewProps) {
   const summary = buildSeasonSummary(career);
@@ -124,10 +124,10 @@ export function ManagerSeasonReview({
         onClick={() => {
           playSeasonComplete();
           playUiClick();
-          onContinue();
+          onViewRewards();
         }}
       >
-        Continue to Next Season
+        View End of Season Rewards
       </GameButton>
       <GameButton
         variant="secondary"
