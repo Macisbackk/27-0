@@ -1,6 +1,5 @@
 "use client";
 
-import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -8,18 +7,12 @@ import { getClubByName } from "@/lib/clubs";
 
 interface ManagerTableProps {
   career: ManagerCareer;
-  onBack: () => void;
 }
 
-export function ManagerTable({ career, onBack }: ManagerTableProps) {
+export function ManagerTable({ career }: ManagerTableProps) {
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
-      <div className="flex items-center justify-between gap-3">
-        <h1 className={TYPO.pageTitle}>League Table</h1>
-        <GameButton variant="secondary" fullWidth={false} size="sm" onClick={onBack}>
-          Hub
-        </GameButton>
-      </div>
+      <h1 className={TYPO.pageTitle}>League Table</h1>
 
       <div className={`${CARD.base} overflow-x-auto`}>
         <table className="w-full min-w-[520px] text-left text-sm">

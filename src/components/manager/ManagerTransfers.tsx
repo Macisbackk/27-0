@@ -19,13 +19,11 @@ import { playUiClick } from "@/lib/sound";
 interface ManagerTransfersProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
-  onBack: () => void;
 }
 
 export function ManagerTransfers({
   career,
   onUpdate,
-  onBack,
 }: ManagerTransfersProps) {
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
   const [message, setMessage] = useState<string | null>(null);
@@ -58,16 +56,11 @@ export function ManagerTransfers({
 
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
-      <div className="flex items-center justify-between gap-3">
-        <div>
-          <h1 className={TYPO.pageTitle}>Transfers</h1>
-          <p className={`${TYPO.bodySm} text-pitch-400`}>
-            Budget: £{(career.budget / 1000).toFixed(0)}k
-          </p>
-        </div>
-        <GameButton variant="secondary" fullWidth={false} size="sm" onClick={onBack}>
-          Hub
-        </GameButton>
+      <div>
+        <h1 className={TYPO.pageTitle}>Transfers</h1>
+        <p className={`${TYPO.bodySm} text-pitch-400`}>
+          Budget: £{(career.budget / 1000).toFixed(0)}k
+        </p>
       </div>
 
       {message && (

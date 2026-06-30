@@ -1,6 +1,5 @@
 "use client";
 
-import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -10,22 +9,15 @@ import { playUiClick } from "@/lib/sound";
 interface ManagerFixturesProps {
   career: ManagerCareer;
   onSelectFixture: (round: number) => void;
-  onBack: () => void;
 }
 
 export function ManagerFixtures({
   career,
   onSelectFixture,
-  onBack,
 }: ManagerFixturesProps) {
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
-      <div className="flex items-center justify-between gap-3">
-        <h1 className={TYPO.pageTitle}>Fixtures</h1>
-        <GameButton variant="secondary" fullWidth={false} size="sm" onClick={onBack}>
-          Hub
-        </GameButton>
-      </div>
+      <h1 className={TYPO.pageTitle}>Fixtures</h1>
 
       <div className={`${CARD.base} ${SPACING.cardPadding} ${SPACING.stackSm}`}>
         {career.schedule.map((sched) => {

@@ -38,6 +38,14 @@ export function ManagerMatchReview({
         </GameButton>
       </div>
 
+      {fixture.meta?.tacticEffectivenessLine && (
+        <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+          <p className={`${TYPO.bodySm} italic text-pitch-300`}>
+            {fixture.meta.tacticEffectivenessLine}
+          </p>
+        </div>
+      )}
+
       {fixture.meta?.tacticImpactLine && (
         <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
           <p className={`${TYPO.bodySm} italic text-pitch-300`}>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
+import { GameButton } from "@/components/ui/GameButton";
 import { buildPlayHref } from "@/lib/play-links";
 import {
   getCupEraVariant,
@@ -130,6 +131,21 @@ export function HomeModeSelector() {
               ? "Start Era Challenge Cup →"
               : "Start Challenge Cup →"}
           </ModeStartLink>
+        </ModePanel>
+
+        <ModePanel title="Manager Mode">
+          <p className={TYPO.body}>
+            Take charge of a Super League club, manage your squad, set tactics,
+            sign players and play through the season week by week.
+          </p>
+          <GameButton
+            variant="theme"
+            href="/manager"
+            className="mt-5"
+            onClick={() => playUiClick()}
+          >
+            Start Manager Mode
+          </GameButton>
         </ModePanel>
       </div>
     </div>

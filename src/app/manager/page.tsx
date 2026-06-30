@@ -4,12 +4,15 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ManagerLanding } from "@/components/manager/ManagerLanding";
 import { ManagerClubSelect } from "@/components/manager/ManagerClubSelect";
+import { ManagerNav } from "@/components/manager/ManagerNav";
 import { ManagerHub } from "@/components/manager/ManagerHub";
 import { ManagerSquad } from "@/components/manager/ManagerSquad";
 import { ManagerTactics } from "@/components/manager/ManagerTactics";
 import { ManagerTransfers } from "@/components/manager/ManagerTransfers";
 import { ManagerFixtures } from "@/components/manager/ManagerFixtures";
 import { ManagerTable } from "@/components/manager/ManagerTable";
+import { ManagerStatsView } from "@/components/manager/ManagerStatsView";
+import { ManagerPlayGame } from "@/components/manager/ManagerPlayGame";
 import { ManagerMatchReview } from "@/components/manager/ManagerMatchReview";
 import { ManagerSeasonReview } from "@/components/manager/ManagerSeasonReview";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
@@ -20,6 +23,7 @@ import {
   createNewCareer,
   advanceToNextSeason,
   hasManagerCareer,
+  hydrateManagerCareer,
 } from "@/lib/manager/managerState";
 import { simulateManagerNextMatch } from "@/lib/manager/managerSimulation";
 import {
@@ -36,6 +40,16 @@ import {
 } from "@/lib/sound";
 import { SPACING } from "@/lib/ui/design-system";
 
+const NAV_VIEWS: ManagerView[] = [
+  "hub",
+  "squad",
+  "tactics",
+  "transfers",
+  "fixtures",
+  "table",
+  "stats",
+];
+
 export default function ManagerPage() {
   const router = useRouter();
   const [view, setView] = useState<ManagerView>("landing");
@@ -46,12 +60,13 @@ export default function ManagerPage() {
   useEffect(() => {
     setHasSave(hasManagerCareer());
     const saved = loadManagerCareer();
-    if (saved) setCareer(saved);
+    if (saved) setCareer(hydrateManagerCareer(saved));
   }, []);
 
   const persist = useCallback((next: ManagerCareer) => {
-    setCareer(next);
-    saveManagerCareer(next);
+    const hydrated = hydrateManagerCareer(next);
+    setCareer(hydrated);
+    saveManagerCareer(hydrated);
     setHasSave(true);
   }, []);
 
@@ -60,8 +75,9 @@ export default function ManagerPage() {
   const handleContinue = () => {
     const saved = loadManagerCareer();
     if (!saved) return;
-    setCareer(saved);
-    setView(saved.isSeasonComplete ? "season-review" : "hub");
+    const hydrated = hydrateManagerCareer(saved);
+    setCareer(hydrated);
+    setView(hydrated.isSeasonComplete ? "season-review" : "hub");
   };
 
   const handleDelete = () => {
@@ -89,10 +105,8 @@ export default function ManagerPage() {
     }
   };
 
-  const handleSimulate = () => {
-    if (!career) return;
-    const next = simulateManagerNextMatch(career);
-    const fixture = next.fixtures[next.fixtures.length - 1];
+  const afterMatch = (next: ManagerCareer) => {
+    const fixture = next.lastMatchFixture;
     if (fixture) {
       const won = fixture.result === "W";
       const margin = Math.abs(fixture.pointsFor - fixture.pointsAgainst);
@@ -109,12 +123,24 @@ export default function ManagerPage() {
     }
   };
 
+  const handleSimulate = () => {
+    if (!career) return;
+    afterMatch(simulateManagerNextMatch(career));
+  };
+
+  const handlePlayComplete = (next: ManagerCareer) => {
+    afterMatch(next);
+  };
+
   const handleContinueSeason = () => {
     if (!career) return;
     const next = advanceToNextSeason(career);
-    setCareer(next);
+    setCareer(hydrateManagerCareer(next));
     setView("hub");
   };
+
+  const showNav =
+    career && NAV_VIEWS.includes(view as (typeof NAV_VIEWS)[number]);
 
   return (
     <div className={`mx-auto max-w-4xl ${SPACING.pageX} py-6 sm:py-8`}>
@@ -137,79 +163,74 @@ export default function ManagerPage() {
         />
       )}
 
-      {career && view === "hub" && (
-        <ManagerHub
-          career={career}
-          onNavigate={setView}
-          onSimulate={handleSimulate}
-        />
+      {showNav && career && (
+        <div className={SPACING.stackLg}>
+          <ManagerNav
+            active={view}
+            club={career.club}
+            onNavigate={setView}
+          />
+
+          {view === "hub" && (
+            <ManagerHub
+              career={career}
+              onPlayGame={() => setView("play-game")}
+              onSimulate={handleSimulate}
+            />
+          )}
+
+          {view === "squad" && <ManagerSquad career={career} />}
+          {view === "tactics" && (
+            <ManagerTactics
+              career={career}
+              onChange={(tactics) => persist({ ...career, tactics })}
+            />
+          )}
+          {view === "transfers" && (
+            <ManagerTransfers career={career} onUpdate={persist} />
+          )}
+          {view === "fixtures" && (
+            <ManagerFixtures
+              career={career}
+              onSelectFixture={(round) => {
+                setReviewRound(round);
+                setView("match-review");
+              }}
+            />
+          )}
+          {view === "table" && <ManagerTable career={career} />}
+          {view === "stats" && <ManagerStatsView career={career} />}
+        </div>
       )}
 
-      {career && view === "squad" && (
-        <ManagerSquad
-          career={career}
-          onBack={() => {
-            playUiClick();
-            setView("hub");
-          }}
-        />
-      )}
-
-      {career && view === "tactics" && (
-        <ManagerTactics
-          career={career}
-          onChange={(tactics) => persist({ ...career, tactics })}
-          onBack={() => {
-            playUiClick();
-            setView("hub");
-          }}
-        />
-      )}
-
-      {career && view === "transfers" && (
-        <ManagerTransfers
-          career={career}
-          onUpdate={persist}
-          onBack={() => {
-            playUiClick();
-            setView("hub");
-          }}
-        />
-      )}
-
-      {career && view === "fixtures" && (
-        <ManagerFixtures
-          career={career}
-          onSelectFixture={(round) => {
-            setReviewRound(round);
-            setView("match-review");
-          }}
-          onBack={() => {
-            playUiClick();
-            setView("hub");
-          }}
-        />
-      )}
-
-      {career && view === "table" && (
-        <ManagerTable
-          career={career}
-          onBack={() => {
-            playUiClick();
-            setView("hub");
-          }}
-        />
+      {career && view === "play-game" && (
+        <div className={SPACING.stackLg}>
+          <ManagerNav
+            active="hub"
+            club={career.club}
+            onNavigate={setView}
+          />
+          <ManagerPlayGame
+            career={career}
+            onComplete={handlePlayComplete}
+            onCancel={() => setView("hub")}
+          />
+        </div>
       )}
 
       {career && view === "match-review" && reviewRound !== null && (
-        <ManagerMatchReview
-          career={career}
-          round={reviewRound}
-          onClose={() => {
-            playUiClick();
-            setView("hub");
-          }}
-        />
+        <div className={SPACING.stackLg}>
+          <ManagerNav
+            active="fixtures"
+            club={career.club}
+            onNavigate={setView}
+          />
+          <ManagerMatchReview
+            career={career}
+            round={reviewRound}
+            onClose={() => setView("hub")}
+          />
+        </div>
       )}
 
       {career && view === "season-review" && (

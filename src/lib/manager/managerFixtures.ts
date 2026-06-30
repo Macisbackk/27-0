@@ -18,7 +18,10 @@ export function buildManagerSchedule(
   seed: string
 ): ManagerScheduledFixture[] {
   const opponents = CURRENT_PLAYABLE_CLUBS.filter((c) => c !== club);
-  const fixtures: Omit<ManagerScheduledFixture, "round">[] = [];
+  const fixtures: Omit<
+    ManagerScheduledFixture,
+    "round" | "id" | "competition" | "label"
+  >[] = [];
 
   for (const opp of opponents) {
     fixtures.push({ opponent: opp, isHome: true });
@@ -36,7 +39,10 @@ export function buildManagerSchedule(
 
   return shuffled.slice(0, MANAGER_SEASON_GAMES).map((f, i) => ({
     ...f,
+    id: `league-r${i + 1}-${seed}`,
     round: i + 1,
+    competition: "league" as const,
+    label: `Round ${i + 1} — League`,
   }));
 }
 

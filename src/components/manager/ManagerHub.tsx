@@ -3,166 +3,249 @@
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
-import { getSquadStrengthPreview } from "@/lib/manager/managerSimulation";
+import type { ManagerCareer } from "@/lib/manager/types";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getClubByName } from "@/lib/clubs";
-import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
 import { getPlayerById } from "@/lib/players";
-import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
+import { computeManagerTeamRating } from "@/lib/manager/managerRating";
+import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
+import { getMatchPrediction } from "@/lib/manager/managerScoring";
 import {
-  playSimulateRound,
-  playUiClick,
-} from "@/lib/sound";
+  computeSquadFitness,
+  computeSquadMorale,
+  getTopGoalScorer,
+  getTopTryScorer,
+  moraleLabel,
+} from "@/lib/manager/managerCareerStats";
+import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
+import { playSimulateRound, playUiClick } from "@/lib/sound";
 
 interface ManagerHubProps {
   career: ManagerCareer;
-  onNavigate: (view: ManagerView) => void;
+  onPlayGame: () => void;
   onSimulate: () => void;
 }
 
-function StatCard({
-  label,
-  value,
-  sub,
-}: {
-  label: string;
-  value: string;
-  sub?: string;
-}) {
-  return (
-    <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
-      <p className={TYPO.bodySm}>{label}</p>
-      <p className={`mt-0.5 text-lg font-semibold text-white`}>{value}</p>
-      {sub && <p className={`${TYPO.bodySm} text-pitch-400`}>{sub}</p>}
-    </div>
-  );
+function ordinal(n: number): string {
+  if (n === 1) return "1st";
+  if (n === 2) return "2nd";
+  if (n === 3) return "3rd";
+  return `${n}th`;
 }
 
-export function ManagerHub({ career, onNavigate, onSimulate }: ManagerHubProps) {
-  const club = getClubByName(career.club);
-  const nextFixture = career.schedule[career.currentRound];
-  const position = getUserLeaguePosition(career.leagueTable, career.club);
-  const strength = getSquadStrengthPreview(career);
-  const injured = career.squad.filter(
-    (p) => p.injury && isPlayerUnavailable(p)
-  );
-  const recentForm = career.fixtures
-    .slice(-5)
-    .map((f) => f.result)
-    .join(" ") || "—";
+function formatFunds(budget: number): string {
+  if (budget >= 1_000_000) return `£${(budget / 1_000_000).toFixed(1)}m`;
+  return `£${(budget / 1000).toFixed(0)}k`;
+}
 
-  const quickActions: { label: string; view: ManagerView }[] = [
-    { label: "Squad", view: "squad" },
-    { label: "Tactics", view: "tactics" },
-    { label: "Transfers", view: "transfers" },
-    { label: "Fixtures", view: "fixtures" },
-    { label: "League Table", view: "table" },
-  ];
+export function ManagerHub({ career, onPlayGame, onSimulate }: ManagerHubProps) {
+  const club = getClubByName(career.club);
+  const nextFixture = career.schedule[career.currentFixtureIndex];
+  const position = getUserLeaguePosition(career.leagueTable, career.club);
+  const teamRating = computeManagerTeamRating(
+    career.matchdayXiii,
+    career.matchdayInterchange,
+    career.xiiiSlotPositions
+  );
+  const morale = computeSquadMorale(career);
+  const fitness = computeSquadFitness(career);
+  const injuryCount = career.squad.filter(
+    (p) => p.injury && isPlayerUnavailable(p)
+  ).length;
+  const topScorer = getTopTryScorer(career.playerSeasonStats);
+  const topKicker = getTopGoalScorer(career.playerSeasonStats);
+  const last = career.lastMatchFixture;
+  const ts = career.teamSeasonStats;
+
+  const oppRating =
+    nextFixture && !career.isSeasonComplete
+      ? Math.round(
+          getOpponentMatchRating(
+            nextFixture.opponent,
+            career.seed,
+            nextFixture.round,
+            { currentSeasonOnly: true }
+          )
+        )
+      : null;
+
+  const prediction =
+    nextFixture && !career.isSeasonComplete
+      ? getMatchPrediction(teamRating, oppRating ?? 70, nextFixture.isHome)
+      : null;
+
+  const tablePreview = (() => {
+    const rows = career.leagueTable;
+    if (rows.length === 0) return [];
+    const top5 = rows.slice(0, 5);
+    const userRow = rows.find((r) => r.isUserTeam);
+    if (userRow && userRow.position > 5) {
+      return [...top5, userRow];
+    }
+    return top5;
+  })();
+
+  const formDisplay =
+    career.recentForm.length > 0
+      ? career.recentForm.slice(-5).join(" ")
+      : "—";
 
   return (
-    <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
+    <div className={SPACING.stackLg}>
       <div
         className={`${CARD.elevated} ${SPACING.cardPadding} border-l-4`}
         style={{ borderLeftColor: club?.primaryColor ?? "var(--theme-primary)" }}
       >
-        <p className={TYPO.sectionLabel}>Manager Hub</p>
-        <h1 className={`mt-1 ${TYPO.pageTitle}`}>{career.club}</h1>
+        <p className={TYPO.sectionLabel}>Club Summary</p>
+        <h2 className={`mt-1 ${TYPO.cardTitle}`}>{career.club}</h2>
         <p className={`${TYPO.bodySm} text-pitch-400`}>
-          Season {career.seasonYear} · Round {career.currentRound}/
+          Season {career.seasonYear} · Game Week {career.gameWeek}/
           {career.schedule.length}
         </p>
-      </div>
-
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-        <StatCard
-          label="League Position"
-          value={`${position}${position === 1 ? "st" : position === 2 ? "nd" : position === 3 ? "rd" : "th"}`}
-        />
-        <StatCard
-          label="Record"
-          value={`${career.wins}W-${career.losses}L`}
-        />
-        <StatCard label="Squad Rating" value={String(strength)} />
-        <StatCard
-          label="Club Funds"
-          value={`£${(career.budget / 1000).toFixed(0)}k`}
-        />
-        <StatCard
-          label="Board Confidence"
-          value={`${career.boardConfidence}%`}
-          sub={career.boardConfidence < 30 ? "Warning: board unhappy" : undefined}
-        />
-        <StatCard label="Team Morale" value="—" sub="See squad" />
+        <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+          <div>
+            <p className="text-pitch-500 text-xs">League Position</p>
+            <p className="font-semibold text-white">{ordinal(position)}</p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Board Confidence</p>
+            <p className="font-semibold text-white">{career.boardConfidence}%</p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Budget</p>
+            <p className="font-semibold text-accent-gold">{formatFunds(career.budget)}</p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Squad Rating</p>
+            <p className="font-semibold text-theme-primary">{teamRating}</p>
+          </div>
+        </div>
       </div>
 
       {nextFixture && !career.isSeasonComplete && (
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+        <div className={`${CARD.base} ${CARD.featured} ${SPACING.cardPadding}`}>
           <p className={TYPO.sectionLabel}>Next Fixture</p>
           <p className={`mt-1 ${TYPO.cardTitle}`}>
-            {nextFixture.isHome ? "vs" : "@"} {nextFixture.opponent}
+            {career.club} {nextFixture.isHome ? "vs" : "@"}{" "}
+            {nextFixture.opponent}
           </p>
           <p className={`${TYPO.bodySm} text-pitch-400`}>
-            Round {nextFixture.round} · {nextFixture.isHome ? "Home" : "Away"}
+            Game Week {nextFixture.round} ·{" "}
+            {nextFixture.isHome ? "Home" : "Away"}
+            {oppRating !== null && ` · Opponent Rating: ${oppRating}`}
           </p>
-          <div className="mt-3">
+          {prediction && (
+            <p className={`mt-1 text-sm text-theme-tertiary`}>
+              Prediction: {prediction}
+            </p>
+          )}
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
             <GameButton
               variant="theme"
+              onClick={() => {
+                playUiClick();
+                onPlayGame();
+              }}
+            >
+              Play Game
+            </GameButton>
+            <GameButton
+              variant="secondary"
               onClick={() => {
                 playSimulateRound();
                 playUiClick();
                 onSimulate();
               }}
             >
-              Simulate Next Match
+              Simulate Match
             </GameButton>
           </div>
         </div>
       )}
 
-      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-        <p className={TYPO.sectionLabel}>Recent Form</p>
-        <p className={`mt-1 font-mono text-sm tracking-widest ${TYPO.body}`}>
-          {recentForm}
-        </p>
-      </div>
-
-      {injured.length > 0 && (
+      {tablePreview.length > 0 && (
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <p className={TYPO.sectionLabel}>Injuries</p>
-          <ul className={`mt-2 ${SPACING.stackSm}`}>
-            {injured.map((p) => {
-              const player = getPlayerById(p.playerId);
-              return (
-                <li key={p.playerId} className={`${TYPO.bodySm} text-red-300`}>
-                  {player?.name} —{" "}
-                  {p.injury ? formatInjuryLabel(p.injury) : ""}
-                </li>
-              );
-            })}
+          <p className={`${TYPO.sectionLabel} mb-2`}>League Table Preview</p>
+          <ul className={SPACING.stackSm}>
+            {tablePreview.map((row) => (
+              <li
+                key={row.team}
+                className={`flex items-center justify-between text-sm ${
+                  row.isUserTeam ? "text-theme-primary font-semibold" : "text-pitch-300"
+                }`}
+              >
+                <span>
+                  {row.position}. {row.team}
+                </span>
+                <span className="text-pitch-500">{row.leaguePoints} pts</span>
+              </li>
+            ))}
           </ul>
         </div>
       )}
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-        <p className={`${TYPO.sectionLabel} mb-3`}>Quick Actions</p>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-          {quickActions.map((a) => (
-            <GameButton
-              key={a.view}
-              variant="secondary"
-              size="sm"
-              fullWidth
-              onClick={() => {
-                playUiClick();
-                onNavigate(a.view);
-              }}
-            >
-              {a.label}
-            </GameButton>
-          ))}
+        <p className={`${TYPO.sectionLabel} mb-2`}>Team Status</p>
+        <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+          <div>
+            <p className="text-pitch-500 text-xs">Morale</p>
+            <p>{moraleLabel(morale)} ({morale})</p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Fitness</p>
+            <p>{fitness}%</p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Injuries</p>
+            <p>{injuryCount}</p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Recent Form</p>
+            <p className="font-mono tracking-widest">{formDisplay}</p>
+          </div>
         </div>
       </div>
+
+      {ts.played > 0 && (
+        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+          <p className={`${TYPO.sectionLabel} mb-2`}>Season Scoring</p>
+          <div className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
+            <span>Record: {ts.wins}W-{ts.losses}L</span>
+            <span>PF: {ts.pointsFor}</span>
+            <span>PA: {ts.pointsAgainst}</span>
+            <span>+/-: {ts.pointsDifference > 0 ? "+" : ""}{ts.pointsDifference}</span>
+            <span>Tries: {ts.triesFor} / {ts.triesAgainst}</span>
+            <span>League Pts: {ts.leaguePoints}</span>
+          </div>
+          {topScorer && (
+            <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+              Top try scorer:{" "}
+              {getPlayerById(topScorer.playerId)?.name ?? "—"} ({topScorer.tries})
+            </p>
+          )}
+          {topKicker && (
+            <p className={`${TYPO.bodySm} text-pitch-400`}>
+              Top goal scorer:{" "}
+              {getPlayerById(topKicker.playerId)?.name ?? "—"} ({topKicker.goals})
+            </p>
+          )}
+        </div>
+      )}
+
+      {last && (
+        <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+          <p className={TYPO.sectionLabel}>Latest Result</p>
+          <p className={`mt-1 font-semibold text-white`}>
+            {last.isHome ? "vs" : "@"} {last.opponent}: {last.pointsFor}-
+            {last.pointsAgainst} ({last.result})
+          </p>
+          {last.meta?.tacticEffectivenessLine && (
+            <p className={`mt-1 ${TYPO.bodySm} italic text-pitch-400`}>
+              {last.meta.tacticEffectivenessLine}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

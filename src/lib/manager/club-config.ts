@@ -1,17 +1,19 @@
 import { getClubBaseStrength } from "../game/club-strength";
-import { getAverageSquadRating } from "../squad-analysis";
-import { getCurrentSquadPlayerIds } from "../players/era-teams";
-import { getPlayerById } from "../players";
 import { getClubByName } from "../clubs";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
-import { createEmptySquad, signPlayerToSlot } from "../positions";
 import type { Position } from "../types";
+import { SQUAD_STRUCTURE } from "../positions";
+import { getPlayerById } from "../players";
 import { getPlayerEligiblePositions } from "../players/player-positions";
 import {
   ERA_BENCH_FROM_STARTING_17,
   ERA_XIII_FROM_STARTING_17,
 } from "../players/era-starting-17s";
-import { SQUAD_STRUCTURE } from "../positions";
+import {
+  computeManagerTeamRating,
+  getManagerClubTeamRating,
+  getManagerRosterIds,
+} from "./managerRating";
 
 export interface ManagerClubConfig {
   name: string;
@@ -66,37 +68,7 @@ function difficultyFromStrength(strength: number): number {
 }
 
 export function getManagerClubRating(clubName: string): number {
-  const ids = getCurrentSquadPlayerIds(clubName);
-  const squad = createEmptySquad();
-  const lineup: Position[] = [];
-  for (const { position, count } of SQUAD_STRUCTURE) {
-    for (let i = 0; i < count; i++) lineup.push(position);
-  }
-  const used = new Set<string>();
-  let slotIdx = 0;
-  const players = ids
-    .map((id) => getPlayerById(id))
-    .filter((p): p is NonNullable<typeof p> => !!p)
-    .sort((a, b) => b.peakRating - a.peakRating);
-
-  for (const position of lineup) {
-    const pick = players.find(
-      (p) =>
-        !used.has(p.id) && getPlayerEligiblePositions(p).includes(position)
-    );
-    if (!pick) break;
-    used.add(pick.id);
-    signPlayerToSlot(squad, pick, slotIdx);
-    slotIdx++;
-  }
-  const filled = squad.filter((s) => s.player).length;
-  if (filled < ERA_XIII_FROM_STARTING_17) {
-    const ratings = players.slice(0, ERA_XIII_FROM_STARTING_17).map((p) => p.peakRating);
-    return ratings.length
-      ? Math.round(ratings.reduce((a, b) => a + b, 0) / ratings.length)
-      : getClubBaseStrength(clubName);
-  }
-  return Math.round(getAverageSquadRating(squad));
+  return getManagerClubTeamRating(clubName);
 }
 
 export function getManagerClubConfig(clubName: string): ManagerClubConfig {
@@ -125,7 +97,7 @@ export function buildDefaultLineup(playerIds: readonly string[]): {
   const players = playerIds
     .map((id) => getPlayerById(id))
     .filter((p): p is NonNullable<typeof p> => !!p)
-    .sort((a, b) => b.peakRating - a.peakRating);
+    .sort((a, b) => (b.rating ?? b.peakRating) - (a.rating ?? a.peakRating));
 
   const lineup: Position[] = [];
   for (const { position, count } of SQUAD_STRUCTURE) {

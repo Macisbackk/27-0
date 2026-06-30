@@ -1,6 +1,5 @@
 "use client";
 
-import { GameButton } from "@/components/ui/GameButton";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type {
@@ -16,7 +15,6 @@ import { playUiClick } from "@/lib/sound";
 interface ManagerTacticsProps {
   career: ManagerCareer;
   onChange: (tactics: ManagerTactics) => void;
-  onBack: () => void;
 }
 
 function OptionGroup<T extends string>({
@@ -87,7 +85,6 @@ const RISK: { value: RiskLevel; label: string }[] = [
 export function ManagerTactics({
   career,
   onChange,
-  onBack,
 }: ManagerTacticsProps) {
   const t = career.tactics;
 
@@ -97,12 +94,7 @@ export function ManagerTactics({
 
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
-      <div className="flex items-center justify-between gap-3">
-        <h1 className={TYPO.pageTitle}>Tactics</h1>
-        <GameButton variant="secondary" fullWidth={false} size="sm" onClick={onBack}>
-          Hub
-        </GameButton>
-      </div>
+      <h1 className={TYPO.pageTitle}>Tactics</h1>
 
       <div className={`${CARD.base} ${SPACING.cardPadding} ${SPACING.stackLg}`}>
         <OptionGroup

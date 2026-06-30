@@ -1,11 +1,7 @@
-import seedrandom from "seedrandom";
 import { getOpponentMatchRating } from "../game/opponent-scorers";
 import { simulateOneFixture } from "../game/season-simulation";
-import { enrichSingleFixtureScoring } from "../game/season-tries";
-import { enrichFantasyFixtureSummary } from "../game/fantasy-match-summary";
-import { getAverageSquadRating } from "../squad-analysis";
 import { getPlayerById } from "../players";
-import type { ManagerCareer, ManagerFixtureRecord, ManagerTactics } from "./types";
+import type { ManagerCareer, ManagerFixtureRecord } from "./types";
 import { MANAGER_SEASON_GAMES } from "./types";
 import {
   buildSquadSlotsFromMatchday,
@@ -16,6 +12,17 @@ import {
   buildLeagueTableFromMatches,
 } from "./managerFixtures";
 import { rollPostMatchInjuries } from "./managerTransfers";
+import { computeManagerTeamRating } from "./managerRating";
+import {
+  enrichManagerFixtureScoring,
+  pickMotmPlayerId,
+} from "./managerScoring";
+import {
+  buildTacticEffectivenessLine,
+  countTriesByPositionGroup,
+} from "./managerTacticsScoring";
+import { updateStatsAfterMatch } from "./managerCareerStats";
+import type { MatchFixture } from "../game/season-simulation";
 
 interface TacticModifiers {
   strengthBonus: number;
@@ -25,7 +32,9 @@ interface TacticModifiers {
   tacticLine: string;
 }
 
-export function getTacticModifiers(tactics: ManagerTactics): TacticModifiers {
+export function getTacticModifiers(
+  tactics: ManagerCareer["tactics"]
+): TacticModifiers {
   let strengthBonus = 0;
   let opponentPenalty = 0;
   let errorRisk = 0;
@@ -60,10 +69,6 @@ export function getTacticModifiers(tactics: ManagerTactics): TacticModifiers {
   switch (tactics.attackFocus) {
     case "kicking_game":
       strengthBonus += 1;
-      lines.push("kicking game from the halves");
-      break;
-    case "edges":
-      strengthBonus += 0.5;
       break;
     case "safe_sets":
       errorRisk -= 0.1;
@@ -138,61 +143,41 @@ function computePlayerModifiers(
   };
 }
 
-export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
-  if (career.isSeasonComplete || career.currentRound >= MANAGER_SEASON_GAMES) {
-    return career;
-  }
-
-  const sched = career.schedule[career.currentRound];
+/** Apply a completed fixture to career state (simulate or live). */
+export function applyManagerMatchResult(
+  career: ManagerCareer,
+  fixture: MatchFixture,
+  options: { playedLive?: boolean } = {}
+): ManagerCareer {
+  const sched = career.schedule.find((s) => s.round === fixture.round);
   if (!sched) return career;
 
-  const round = sched.round;
+  const round = fixture.round;
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
     career.xiiiSlotPositions
   );
   const mods = getTacticModifiers(career.tactics);
-  const { avgForm, fitnessPenalty } = computePlayerModifiers(career, [
-    ...career.matchdayXiii,
-    ...career.matchdayInterchange,
-  ]);
 
-  const teamForm = Math.max(-10, Math.min(10, (avgForm - 50) / 5));
-  const baseOppRating = getOpponentMatchRating(
-    sched.opponent,
-    career.seed,
-    round,
-    { currentSeasonOnly: true }
-  );
-  const opponentRating =
-    baseOppRating + mods.opponentPenalty + fitnessPenalty * 0.3;
-  const userRatingBoost = mods.strengthBonus - fitnessPenalty * 0.2;
-
-  const combinedForm = Math.max(
-    -10,
-    Math.min(10, teamForm + career.matchSimState.form * 0.4)
-  );
-
-  const { fixture, state: nextSimState } = simulateOneFixture(
-    squad,
-    sched.opponent,
-    sched.isHome,
-    round,
-    career.seed,
-    {
-      form: combinedForm,
-      seasonDropGoals: career.matchSimState.seasonDropGoals,
-    },
-    {
-      currentSeasonOnly: true,
-      opponentRatingOverride: opponentRating - userRatingBoost,
-    }
-  );
-
-  enrichSingleFixtureScoring(squad, fixture, career.seed, {
+  enrichManagerFixtureScoring(squad, fixture, career.seed, career.tactics, {
     currentSeasonOnly: true,
   });
-  enrichFantasyFixtureSummary(fixture, squad, career.seed);
+
+  const motmId = pickMotmPlayerId(fixture, career.matchdayXiii);
+  const userScorers = fixture.scoringDetail?.dreamTeam.tryScorers ?? [];
+  const { forward, back } = countTriesByPositionGroup(
+    userScorers,
+    career.xiiiSlotPositions,
+    career.matchdayXiii
+  );
+  const effectivenessLine = buildTacticEffectivenessLine(
+    career.tactics,
+    fixture.result === "W",
+    fixture.triesFor,
+    fixture.triesAgainst,
+    forward,
+    back
+  );
 
   const won = fixture.result === "W";
   const userMatch = {
@@ -259,15 +244,26 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
     };
   });
 
+  const statsUpdate = updateStatsAfterMatch(
+    career,
+    fixture,
+    squad,
+    career.matchdayXiii,
+    motmId
+  );
+
   const record: ManagerFixtureRecord = {
     ...fixture,
     userClub: career.club,
     meta: {
       tacticImpactLine: mods.tacticLine,
+      tacticEffectivenessLine: effectivenessLine,
       injuries: injuries.map((i) => ({
         ...i,
         name: getPlayerById(i.playerId)?.name ?? "Player",
       })),
+      playerOfMatchId: motmId,
+      playedLive: options.playedLive ?? false,
     },
   };
 
@@ -291,22 +287,85 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
     roundMatches: allMatches,
     leagueTable,
     currentRound: round,
-    matchSimState: nextSimState,
+    gameWeek: round,
+    currentFixtureIndex: round,
+    matchSimState: career.matchSimState,
     wins: career.wins + (won ? 1 : 0),
     losses: career.losses + (won ? 0 : 1),
     budget: career.budget + matchIncome,
     clubFundsEarned: career.clubFundsEarned + matchIncome,
     boardConfidence,
+    teamSeasonStats: statsUpdate.teamSeasonStats,
+    playerSeasonStats: statsUpdate.playerSeasonStats,
+    recentForm: statsUpdate.recentForm,
     isSeasonComplete: isComplete,
     lastMatchFixture: record,
     updatedAt: new Date().toISOString(),
   };
 }
 
-export function getSquadStrengthPreview(career: ManagerCareer): number {
+export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
+  if (career.isSeasonComplete || career.currentRound >= MANAGER_SEASON_GAMES) {
+    return career;
+  }
+
+  const sched = career.schedule[career.currentRound];
+  if (!sched) return career;
+
+  const round = sched.round;
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
     career.xiiiSlotPositions
   );
-  return Math.round(getAverageSquadRating(squad) * 10) / 10;
+  const mods = getTacticModifiers(career.tactics);
+  const { avgForm, fitnessPenalty } = computePlayerModifiers(career, [
+    ...career.matchdayXiii,
+    ...career.matchdayInterchange,
+  ]);
+
+  const teamForm = Math.max(-10, Math.min(10, (avgForm - 50) / 5));
+  const baseOppRating = getOpponentMatchRating(
+    sched.opponent,
+    career.seed,
+    round,
+    { currentSeasonOnly: true }
+  );
+  const opponentRating =
+    baseOppRating + mods.opponentPenalty + fitnessPenalty * 0.3;
+  const userRatingBoost = mods.strengthBonus - fitnessPenalty * 0.2;
+
+  const combinedForm = Math.max(
+    -10,
+    Math.min(10, teamForm + career.matchSimState.form * 0.4)
+  );
+
+  const { fixture, state: nextSimState } = simulateOneFixture(
+    squad,
+    sched.opponent,
+    sched.isHome,
+    round,
+    career.seed,
+    {
+      form: combinedForm,
+      seasonDropGoals: career.matchSimState.seasonDropGoals,
+    },
+    {
+      currentSeasonOnly: true,
+      opponentRatingOverride: opponentRating - userRatingBoost,
+    }
+  );
+
+  const next = applyManagerMatchResult(career, fixture);
+  return {
+    ...next,
+    matchSimState: nextSimState,
+  };
+}
+
+export function getSquadStrengthPreview(career: ManagerCareer): number {
+  return computeManagerTeamRating(
+    career.matchdayXiii,
+    career.matchdayInterchange,
+    career.xiiiSlotPositions
+  );
 }

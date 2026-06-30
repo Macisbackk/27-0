@@ -1,6 +1,5 @@
 "use client";
 
-import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { POSITION_SHORT, SQUAD_STRUCTURE } from "@/lib/positions";
@@ -15,14 +14,13 @@ import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
 
 interface ManagerSquadProps {
   career: ManagerCareer;
-  onBack: () => void;
 }
 
 const POSITION_ORDER: Position[] = SQUAD_STRUCTURE.map((s) => s.position).filter(
   (p, i, arr) => arr.indexOf(p) === i
 );
 
-export function ManagerSquad({ career, onBack }: ManagerSquadProps) {
+export function ManagerSquad({ career }: ManagerSquadProps) {
   const byPosition = new Map<Position, typeof career.squad>();
   for (const pos of POSITION_ORDER) byPosition.set(pos, []);
 
@@ -38,16 +36,11 @@ export function ManagerSquad({ career, onBack }: ManagerSquadProps) {
 
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
-      <div className="flex items-center justify-between gap-3">
-        <div>
-          <h1 className={TYPO.pageTitle}>Squad</h1>
-          <p className={`${TYPO.bodySm} text-pitch-400`}>
-            Matchday squad · {career.squad.length} players
-          </p>
-        </div>
-        <GameButton variant="secondary" fullWidth={false} size="sm" onClick={onBack}>
-          Hub
-        </GameButton>
+      <div>
+        <h1 className={TYPO.pageTitle}>Squad</h1>
+        <p className={`${TYPO.bodySm} text-pitch-400`}>
+          Matchday squad · {career.squad.length} players
+        </p>
       </div>
 
       <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
@@ -98,7 +91,7 @@ export function ManagerSquad({ career, onBack }: ManagerSquadProps) {
                         </p>
                       </div>
                       <span className="shrink-0 text-lg font-bold text-theme-primary">
-                        {player.peakRating}
+                        {player.rating ?? player.peakRating}
                       </span>
                     </div>
                     <div className="mt-2 grid grid-cols-3 gap-1 text-[10px] text-pitch-300">
@@ -109,7 +102,12 @@ export function ManagerSquad({ career, onBack }: ManagerSquadProps) {
                     <div className="mt-1 flex flex-wrap gap-2 text-[10px] text-pitch-400">
                       <span>{formatValue(player.value)}</span>
                       <span>
-                        {ps.seasonTries} tries / {ps.seasonAppearances} apps
+                        {career.playerSeasonStats[ps.playerId]?.tries ??
+                          ps.seasonTries}{" "}
+                        tries /{" "}
+                        {career.playerSeasonStats[ps.playerId]?.appearances ??
+                          ps.seasonAppearances}{" "}
+                        apps
                       </span>
                     </div>
                     {ps.injury && (
