@@ -291,6 +291,22 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       />
                     </div>
                   </li>
+
+                  <li className={NAV.playModeGroup}>
+                    <Link
+                      href="/manager"
+                      onClick={handleNavClick}
+                      className={`${navLinkClass(pathname.startsWith("/manager"))} w-full`}
+                    >
+                      <span aria-hidden className={NAV.icon}>
+                        📋
+                      </span>
+                      Manager Mode
+                      {pathname.startsWith("/manager") && (
+                        <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-theme-primary" />
+                      )}
+                    </Link>
+                  </li>
                 </ul>
               </section>
 

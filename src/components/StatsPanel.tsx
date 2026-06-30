@@ -32,6 +32,10 @@ import { TYPO } from "@/lib/ui/typography";
 import { runStatsPageValidation } from "@/lib/validation/stats-page-validation";
 import { playTabChange } from "@/lib/sound";
 import {
+  loadManagerStats,
+  EMPTY_MANAGER_STATS,
+} from "@/lib/manager/managerStats";
+import {
   getCupEraVariant,
   getNormalEraVariant,
   CUP_ERA_VARIANT_CHANGED_EVENT,
@@ -57,6 +61,7 @@ export function StatsPanel() {
   );
   const [normalEraMode, setNormalEraMode] = useState(false);
   const [cupEraMode, setCupEraMode] = useState(false);
+  const [managerStats, setManagerStats] = useState(EMPTY_MANAGER_STATS);
 
   const refresh = () => {
     const stored = getAllStats();
@@ -71,6 +76,7 @@ export function StatsPanel() {
     setFantasyStats(stored.fantasy);
     setEraCupStats(stored.eraCup);
     setEraNormalStats(stored.eraNormal);
+    setManagerStats(loadManagerStats());
   };
 
   useEffect(() => {
@@ -206,6 +212,38 @@ export function StatsPanel() {
           }}
         />
       )}
+
+      <StatsSection title="Manager Mode">
+        <StatCard
+          label="Careers Started"
+          value={String(managerStats.careersStarted)}
+        />
+        <StatCard
+          label="Seasons Completed"
+          value={String(managerStats.seasonsCompleted)}
+        />
+        <StatCard
+          label="Wins / Losses"
+          value={`${managerStats.wins} / ${managerStats.losses}`}
+        />
+        <StatCard
+          label="League Titles"
+          value={String(managerStats.leagueTitles)}
+          highlight={managerStats.leagueTitles > 0}
+        />
+        <StatCard
+          label="Best Finish"
+          value={
+            managerStats.bestFinish
+              ? `${managerStats.bestFinish}${managerStats.bestFinish === 1 ? "st" : managerStats.bestFinish === 2 ? "nd" : managerStats.bestFinish === 3 ? "rd" : "th"}`
+              : "—"
+          }
+        />
+        <StatCard
+          label="Favourite Club"
+          value={managerStats.favouriteClub ?? "—"}
+        />
+      </StatsSection>
 
       <p className="text-center text-xs text-gray-600">
         Statistics saved locally in this browser

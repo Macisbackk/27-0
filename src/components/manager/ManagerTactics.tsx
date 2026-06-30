@@ -1,0 +1,135 @@
+"use client";
+
+import { GameButton } from "@/components/ui/GameButton";
+import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
+import type {
+  ManagerCareer,
+  ManagerTactics,
+  PlayingStyle,
+  AttackFocus,
+  DefenceFocus,
+  RiskLevel,
+} from "@/lib/manager/types";
+import { playUiClick } from "@/lib/sound";
+
+interface ManagerTacticsProps {
+  career: ManagerCareer;
+  onChange: (tactics: ManagerTactics) => void;
+  onBack: () => void;
+}
+
+function OptionGroup<T extends string>({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: { value: T; label: string }[];
+  value: T;
+  onChange: (v: T) => void;
+}) {
+  return (
+    <div>
+      <p className={`${TYPO.sectionLabel} mb-2`}>{label}</p>
+      <div className="flex flex-wrap gap-2">
+        {options.map((opt) => (
+          <button
+            key={opt.value}
+            type="button"
+            onClick={() => {
+              playUiClick();
+              onChange(opt.value);
+            }}
+            className={`rounded-lg border px-3 py-2 text-xs transition ${
+              value === opt.value ? FILTER.chipActive : FILTER.chipIdle
+            }`}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const PLAYING_STYLES: { value: PlayingStyle; label: string }[] = [
+  { value: "balanced", label: "Balanced" },
+  { value: "expansive", label: "Expansive" },
+  { value: "direct", label: "Direct" },
+  { value: "defensive", label: "Defensive" },
+  { value: "high_tempo", label: "High Tempo" },
+];
+
+const ATTACK_FOCUS: { value: AttackFocus; label: string }[] = [
+  { value: "middle", label: "Middle" },
+  { value: "edges", label: "Edges" },
+  { value: "kicking_game", label: "Kicking Game" },
+  { value: "offloads", label: "Offloads" },
+  { value: "safe_sets", label: "Safe Sets" },
+];
+
+const DEFENCE_FOCUS: { value: DefenceFocus; label: string }[] = [
+  { value: "line_speed", label: "Line Speed" },
+  { value: "conservative", label: "Conservative" },
+  { value: "aggressive_contact", label: "Aggressive Contact" },
+  { value: "edge_defence", label: "Edge Defence" },
+  { value: "goal_line", label: "Goal-Line Defence" },
+];
+
+const RISK: { value: RiskLevel; label: string }[] = [
+  { value: "low", label: "Low" },
+  { value: "normal", label: "Normal" },
+  { value: "high", label: "High" },
+];
+
+export function ManagerTactics({
+  career,
+  onChange,
+  onBack,
+}: ManagerTacticsProps) {
+  const t = career.tactics;
+
+  const update = (patch: Partial<ManagerTactics>) => {
+    onChange({ ...t, ...patch });
+  };
+
+  return (
+    <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
+      <div className="flex items-center justify-between gap-3">
+        <h1 className={TYPO.pageTitle}>Tactics</h1>
+        <GameButton variant="secondary" fullWidth={false} size="sm" onClick={onBack}>
+          Hub
+        </GameButton>
+      </div>
+
+      <div className={`${CARD.base} ${SPACING.cardPadding} ${SPACING.stackLg}`}>
+        <OptionGroup
+          label="Playing Style"
+          options={PLAYING_STYLES}
+          value={t.playingStyle}
+          onChange={(v) => update({ playingStyle: v })}
+        />
+        <OptionGroup
+          label="Attack Focus"
+          options={ATTACK_FOCUS}
+          value={t.attackFocus}
+          onChange={(v) => update({ attackFocus: v })}
+        />
+        <OptionGroup
+          label="Defence Focus"
+          options={DEFENCE_FOCUS}
+          value={t.defenceFocus}
+          onChange={(v) => update({ defenceFocus: v })}
+        />
+        <OptionGroup
+          label="Risk Level"
+          options={RISK}
+          value={t.riskLevel}
+          onChange={(v) => update({ riskLevel: v })}
+        />
+      </div>
+    </div>
+  );
+}

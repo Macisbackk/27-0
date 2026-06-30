@@ -29,6 +29,8 @@ export const STORAGE_KEYS = {
   uiThemeCssCache: "27-0-ui-theme-css-cache",
   coachbeardMergeComplete: "27-0-coachbeard-merge-v1",
   statsSchemaVersion: "27-0-stats-schema-version",
+  managerCareer: "27-0-manager-career",
+  managerStats: "27-0-manager-stats",
 } as const;
 
 /** Bump when StoredStats shape changes — triggers one-time local migration. */
