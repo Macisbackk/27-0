@@ -47,8 +47,6 @@ import { SHOW_DRAFT_MODE } from "@/lib/feature-flags";
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
 
 const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
-  squad_value: "Squad Value",
-  most_wins: "Wins",
   perfect_runs: "27-0 Seasons",
   winless_seasons: "0-27 Seasons",
   best_record: "Total Record",

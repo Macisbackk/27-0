@@ -7,12 +7,10 @@ import { ManagerClubSelect } from "@/components/manager/ManagerClubSelect";
 import { ManagerNav } from "@/components/manager/ManagerNav";
 import { ManagerHub } from "@/components/manager/ManagerHub";
 import { ManagerSquad } from "@/components/manager/ManagerSquad";
-import { ManagerTactics } from "@/components/manager/ManagerTactics";
 import { ManagerContracts } from "@/components/manager/ManagerContracts";
 import { ManagerReserves } from "@/components/manager/ManagerReserves";
 import { ManagerTransfers } from "@/components/manager/ManagerTransfers";
 import { ManagerFixtures } from "@/components/manager/ManagerFixtures";
-import { ManagerTable } from "@/components/manager/ManagerTable";
 import { ManagerStatsView } from "@/components/manager/ManagerStatsView";
 import { ManagerPlayGame } from "@/components/manager/ManagerPlayGame";
 import { ManagerMatchReview } from "@/components/manager/ManagerMatchReview";
@@ -47,12 +45,10 @@ import { SPACING } from "@/lib/ui/design-system";
 const NAV_VIEWS: ManagerView[] = [
   "hub",
   "squad",
-  "tactics",
   "contracts",
   "reserves",
   "transfers",
   "fixtures",
-  "table",
   "stats",
 ];
 
@@ -204,12 +200,8 @@ export default function ManagerPage() {
             />
           )}
 
-          {view === "squad" && <ManagerSquad career={career} />}
-          {view === "tactics" && (
-            <ManagerTactics
-              career={career}
-              onChange={(tactics) => persist({ ...career, tactics })}
-            />
+          {view === "squad" && (
+            <ManagerSquad career={career} onUpdate={persist} />
           )}
           {view === "contracts" && (
             <ManagerContracts career={career} onUpdate={persist} />
@@ -229,7 +221,6 @@ export default function ManagerPage() {
               }}
             />
           )}
-          {view === "table" && <ManagerTable career={career} />}
           {view === "stats" && <ManagerStatsView career={career} />}
         </div>
       )}

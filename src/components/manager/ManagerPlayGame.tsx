@@ -49,57 +49,72 @@ export function ManagerPlayGame({
   onCancel,
 }: ManagerPlayGameProps) {
   const sched = getNextManagerFixture(career);
+  const fixtureKey = sched?.id ?? "none";
   const [live, setLive] = useState<LiveMatchState | null>(null);
   const [command, setCommand] = useState<LiveMatchCommand>("balanced");
   const [isPaused, setIsPaused] = useState(false);
   const finishedRef = useRef(false);
+  const careerRef = useRef(career);
+  const commandRef = useRef(command);
+  const liveRef = useRef(live);
+
+  careerRef.current = career;
+  commandRef.current = command;
+  liveRef.current = live;
 
   useEffect(() => {
-    if (sched) {
-      setLive(createLiveMatch(career, sched));
-      finishedRef.current = false;
-    }
-  }, [career, sched]);
+    if (!sched) return;
+    setLive(createLiveMatch(careerRef.current, sched));
+    setCommand("balanced");
+    setIsPaused(false);
+    finishedRef.current = false;
+  }, [fixtureKey]);
 
   const finishMatch = useCallback(
     (finalState: LiveMatchState) => {
       if (finishedRef.current) return;
       finishedRef.current = true;
-      const fixture = liveMatchToFixture(finalState, career);
-      const next = applyManagerMatchResult(career, fixture, {
+      const fixture = liveMatchToFixture(finalState, careerRef.current);
+      const next = applyManagerMatchResult(careerRef.current, fixture, {
         playedLive: true,
         schedOverride: sched ?? undefined,
         liveEvents: getLiveMatchEvents(finalState),
       });
       onComplete(next);
     },
-    [career, sched, onComplete]
+    [sched, onComplete]
   );
 
   useEffect(() => {
-    if (!live || live.isComplete || isPaused) return;
+    if (!sched || isPaused) return;
 
     const timer = window.setInterval(() => {
       setLive((prev) => {
         if (!prev || prev.isComplete) return prev;
-        return advanceLiveTick(prev, career, command);
+        return advanceLiveTick(
+          prev,
+          careerRef.current,
+          commandRef.current
+        );
       });
     }, REAL_TICK_MS);
 
     return () => window.clearInterval(timer);
-  }, [live, live?.isComplete, isPaused, command, career]);
+  }, [fixtureKey, isPaused, sched]);
 
   useEffect(() => {
     if (live?.isComplete && !finishedRef.current) {
-      const timeout = window.setTimeout(() => finishMatch(live), 1200);
+      const timeout = window.setTimeout(() => {
+        if (liveRef.current) finishMatch(liveRef.current);
+      }, 1200);
       return () => window.clearTimeout(timeout);
     }
-  }, [live, finishMatch]);
+  }, [live?.isComplete, finishMatch]);
 
   const handleSimulateToFullTime = () => {
     if (!live || live.isComplete) return;
     playSimulateRound();
-    setLive(advanceLiveToFullTime(live, career, command));
+    setLive(advanceLiveToFullTime(live, careerRef.current, commandRef.current));
   };
 
   if (!sched || !live) return null;
@@ -224,7 +239,10 @@ export function ManagerPlayGame({
       </div>
 
       {live.isComplete && (
-        <GameButton variant="theme" onClick={() => finishMatch(live)}>
+        <GameButton
+          variant="theme"
+          onClick={() => finishMatch(live)}
+        >
           View Match Review
         </GameButton>
       )}

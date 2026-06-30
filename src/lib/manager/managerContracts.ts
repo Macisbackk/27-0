@@ -1,6 +1,7 @@
 import { getPlayerById } from "../players";
 import { getPlayerAge } from "../players/player-age";
 import { getManagerClubTeamRating } from "./managerRating";
+import { getManagerPlayer } from "./managerPlayers";
 import type {
   ContractStatus,
   ManagerCareer,
@@ -12,6 +13,16 @@ import type {
 export function formatWage(amount: number): string {
   if (amount >= 1_000_000) return `£${(amount / 1_000_000).toFixed(2)}m`;
   return `£${Math.round(amount / 1000)}k`;
+}
+
+export function getPlayerSeasonAppearances(
+  career: ManagerCareer,
+  playerId: string
+): number {
+  const fromStats = career.playerSeasonStats[playerId]?.appearances;
+  if (fromStats !== undefined && fromStats > 0) return fromStats;
+  const ps = career.squad.find((p) => p.playerId === playerId);
+  return ps?.seasonAppearances ?? 0;
 }
 
 export function inferSquadRole(
@@ -83,11 +94,10 @@ export function generateRenewalDemand(
   contract: PlayerContract,
   career: ManagerCareer
 ): RenewalDemand {
-  const player = getPlayerById(playerId);
+  const player = getManagerPlayer(career, playerId);
   const rating = player?.rating ?? player?.peakRating ?? 70;
-  const ps = career.squad.find((p) => p.playerId === playerId);
+  const appearances = getPlayerSeasonAppearances(career, playerId);
   const happiness = contract.happiness;
-  const appearances = ps?.seasonAppearances ?? 0;
 
   let wageBump = 1.05;
   if (happiness >= 70) wageBump += 0.05;
@@ -133,6 +143,21 @@ export function getWageBudgetForClub(club: string): number {
   return Math.round(1_200_000 + rating * 12_000);
 }
 
+function roleRank(role: SquadRole): number {
+  const ranks: Record<SquadRole, number> = {
+    Star: 5,
+    Starter: 4,
+    Rotation: 3,
+    Prospect: 2,
+    Depth: 1,
+  };
+  return ranks[role];
+}
+
+function caresAboutGameTime(role: SquadRole): boolean {
+  return role === "Star" || role === "Starter";
+}
+
 export function evaluateRenewalOffer(
   playerId: string,
   contract: PlayerContract,
@@ -140,13 +165,17 @@ export function evaluateRenewalOffer(
   career: ManagerCareer
 ): { accepted: boolean; reason: string } {
   const demand = contract.renewalDemand ?? generateRenewalDemand(playerId, contract, career);
-  const player = getPlayerById(playerId);
+  const player = getManagerPlayer(career, playerId);
   const rating = player?.rating ?? player?.peakRating ?? 70;
-  const ps = career.squad.find((p) => p.playerId === playerId);
   const happiness = contract.happiness;
-  const appearances = ps?.seasonAppearances ?? 0;
-  const form = ps?.form ?? 50;
+  const appearances = getPlayerSeasonAppearances(career, playerId);
+  const form = career.squad.find((p) => p.playerId === playerId)?.form ?? 50;
   const position = career.leagueTable.find((r) => r.isUserTeam)?.position ?? 10;
+  const totalMatchesPlayed = career.teamSeasonStats.played;
+  const appearanceRate =
+    totalMatchesPlayed > 0 ? appearances / totalMatchesPlayed : null;
+  const hasReliableGameTimeData =
+    appearanceRate !== null && Number.isFinite(appearanceRate);
 
   if (offer.wagePerYear < demand.wagePerYear * 0.9) {
     return {
@@ -160,25 +189,26 @@ export function evaluateRenewalOffer(
       reason: "Declined — wants a longer deal.",
     };
   }
-  const roleRank: Record<SquadRole, number> = {
-    Star: 5,
-    Starter: 4,
-    Rotation: 3,
-    Prospect: 2,
-    Depth: 1,
-  };
-  if (roleRank[offer.squadRole] < roleRank[demand.squadRole]) {
+  if (roleRank(offer.squadRole) < roleRank(demand.squadRole)) {
     return {
       accepted: false,
       reason: "Declined — wants a bigger squad role.",
     };
   }
-  if (appearances < 5 && rating >= 78) {
+
+  if (
+    hasReliableGameTimeData &&
+    totalMatchesPlayed >= 5 &&
+    caresAboutGameTime(contract.squadRole) &&
+    appearanceRate! < 0.35 &&
+    rating >= 80
+  ) {
     return {
       accepted: false,
       reason: "Declined — unhappy with game time.",
     };
   }
+
   if (position >= 10 && happiness < 45) {
     return {
       accepted: false,
@@ -201,7 +231,7 @@ export function evaluateRenewalOffer(
     };
   }
 
-  if (offer.wagePerYear >= demand.wagePerYear && roleRank[offer.squadRole] >= roleRank[demand.squadRole]) {
+  if (offer.wagePerYear >= demand.wagePerYear && roleRank(offer.squadRole) >= roleRank(demand.squadRole)) {
     if (appearances >= 10 && form >= 60) {
       return {
         accepted: true,

@@ -8,12 +8,10 @@ import { playTabChange, playUiClick } from "@/lib/sound";
 const TABS: { id: ManagerView; label: string }[] = [
   { id: "hub", label: "Hub" },
   { id: "squad", label: "Squad" },
-  { id: "tactics", label: "Tactics" },
   { id: "contracts", label: "Contracts" },
   { id: "reserves", label: "Reserves" },
   { id: "transfers", label: "Transfers" },
   { id: "fixtures", label: "Fixtures" },
-  { id: "table", label: "Table" },
   { id: "stats", label: "Stats" },
 ];
 

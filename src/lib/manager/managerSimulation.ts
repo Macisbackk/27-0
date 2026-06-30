@@ -29,7 +29,7 @@ import {
   isManagerSeasonComplete,
 } from "./managerChallengeCup";
 import { countExpiringContracts } from "./managerContracts";
-import { ensureManagerFixtureScoring } from "./managerFixtureScoring";
+import { ensureManagerFixtureScoring, applyLiveEventsToFixtureScoring } from "./managerFixtureScoring";
 import {
   applyReserveMatchDevelopment,
   clearReserveCallUps,
@@ -165,9 +165,13 @@ export function applyManagerMatchResult(
   );
   const mods = getTacticModifiers(career.tactics);
 
-  enrichManagerFixtureScoring(squad, fixture, career.seed, career.tactics, {
-    currentSeasonOnly: true,
-  });
+  if (options.liveEvents?.length) {
+    applyLiveEventsToFixtureScoring(career, fixture, options.liveEvents);
+  } else {
+    enrichManagerFixtureScoring(squad, fixture, career.seed, career.tactics, {
+      currentSeasonOnly: true,
+    });
+  }
   ensureManagerFixtureScoring(career, fixture, squad);
 
   const motmId = pickMotmPlayerId(fixture, career.matchdayXiii);
@@ -226,7 +230,11 @@ export function applyManagerMatchResult(
   );
 
   let nextSquad = tickInjuries(career.squad).map((ps) => {
-    const played = career.matchdayXiii.includes(ps.playerId);
+    const matchdayIds = new Set([
+      ...career.matchdayXiii.filter(Boolean),
+      ...career.matchdayInterchange.filter(Boolean),
+    ]);
+    const played = matchdayIds.has(ps.playerId);
     const tryCount =
       fixture.scoringDetail?.dreamTeam.tryScorers.find(
         (t) => t.playerId === ps.playerId
@@ -257,11 +265,15 @@ export function applyManagerMatchResult(
     };
   });
 
+  const matchdayIds = [
+    ...career.matchdayXiii.filter(Boolean),
+    ...career.matchdayInterchange.filter(Boolean),
+  ];
   const statsUpdate = updateStatsAfterMatch(
     career,
     fixture,
     squad,
-    career.matchdayXiii,
+    matchdayIds,
     motmId
   );
 

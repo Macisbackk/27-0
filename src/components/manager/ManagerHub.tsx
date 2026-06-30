@@ -412,33 +412,30 @@ export function ManagerHub({
       {ts.played > 0 && (
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>
           <p className={`${TYPO.sectionLabel} mb-2`}>Scoring Leaders</p>
-          <div className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
+          <div className="grid gap-2 text-sm sm:grid-cols-2">
             <span>
               Record: {ts.wins}W-{ts.losses}L
             </span>
-            <span>PF: {ts.pointsFor}</span>
-            <span>PA: {ts.pointsAgainst}</span>
             <span>
-              +/-: {ts.pointsDifference > 0 ? "+" : ""}
-              {ts.pointsDifference}
+              Tries: {ts.triesFor} scored / {ts.triesAgainst} conceded
             </span>
-            <span>
-              Tries: {ts.triesFor} / {ts.triesAgainst}
-            </span>
-            <span>League Pts: {ts.leaguePoints}</span>
           </div>
           {topScorer && (
-            <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+            <p className={`mt-2 ${TYPO.bodySm} text-pitch-200`}>
               Top try scorer:{" "}
-              {getManagerPlayer(career, topScorer.playerId)?.name ?? "—"} (
-              {topScorer.tries})
+              <span className="font-semibold text-white">
+                {getManagerPlayer(career, topScorer.playerId)?.name ?? "—"}
+              </span>{" "}
+              ({topScorer.tries})
             </p>
           )}
-          {topKicker && (
-            <p className={`${TYPO.bodySm} text-pitch-400`}>
+          {topKicker && topKicker.goals > 0 && (
+            <p className={`${TYPO.bodySm} text-pitch-200`}>
               Top goal scorer:{" "}
-              {getManagerPlayer(career, topKicker.playerId)?.name ?? "—"} (
-              {topKicker.goals})
+              <span className="font-semibold text-white">
+                {getManagerPlayer(career, topKicker.playerId)?.name ?? "—"}
+              </span>{" "}
+              ({topKicker.goals})
             </p>
           )}
         </div>
@@ -510,14 +507,7 @@ export function ManagerHub({
               size="sm"
               onClick={() => onNavigate("squad")}
             >
-              Squad
-            </GameButton>
-            <GameButton
-              variant="secondary"
-              size="sm"
-              onClick={() => onNavigate("tactics")}
-            >
-              Tactics
+              Squad & Tactics
             </GameButton>
             <GameButton
               variant="secondary"
@@ -532,6 +522,13 @@ export function ManagerHub({
               onClick={() => onNavigate("fixtures")}
             >
               Fixtures
+            </GameButton>
+            <GameButton
+              variant="secondary"
+              size="sm"
+              onClick={() => onNavigate("contracts")}
+            >
+              Contracts
             </GameButton>
           </div>
         </div>

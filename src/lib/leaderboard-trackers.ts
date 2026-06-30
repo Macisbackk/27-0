@@ -4,8 +4,6 @@ import { formatRecordWithPercentage } from "./lifetime-stats";
 import type { GameDifficulty, GameMode } from "./types";
 
 export type LeaderboardTrackerType =
-  | "squad_value"
-  | "most_wins"
   | "perfect_runs"
   | "winless_seasons"
   | "best_record"
@@ -88,8 +86,6 @@ export const LEADERBOARD_TRACKERS: {
   trophySection?: TrophyCabinetSection;
 }[] = [
   { id: "best_record", label: "Total Record", shortLabel: "Total Record" },
-  { id: "squad_value", label: "Top Squad Value", shortLabel: "Top Squad" },
-  { id: "most_wins", label: "Most Wins", shortLabel: "Most Wins" },
   {
     id: "perfect_runs",
     label: "Most 27-0 Seasons",
@@ -200,7 +196,7 @@ export function getDefaultTrackerForDbMode(
     | "club-funds"
     | "trophy-cabinet"
 ): LeaderboardTrackerType {
-  return getTrackersForDbMode(dbMode)[0]?.id ?? "squad_value";
+  return getTrackersForDbMode(dbMode)[0]?.id ?? "best_record";
 }
 
 export function isTrackerValidForDbMode(
@@ -240,10 +236,6 @@ export function rankByTracker(
 ): LeaderboardTrackerRow[] {
   const sorted = [...entries].sort((a, b) => {
     switch (tracker) {
-      case "squad_value":
-        return b.squadValue - a.squadValue;
-      case "most_wins":
-        return b.totalWins - a.totalWins;
       case "perfect_runs":
         return b.perfectRuns - a.perfectRuns;
       case "winless_seasons":
@@ -299,10 +291,6 @@ export function getTrackerStatDisplay(
   tracker: LeaderboardTrackerType
 ): string {
   switch (tracker) {
-    case "squad_value":
-      return formatValue(entry.squadValue);
-    case "most_wins":
-      return String(entry.totalWins);
     case "perfect_runs":
       return String(entry.perfectRuns);
     case "winless_seasons":

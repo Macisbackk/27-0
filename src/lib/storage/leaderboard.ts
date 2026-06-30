@@ -904,7 +904,7 @@ export function getLeaderboard(
     "super-league",
     modeVariant
   );
-  const rows = rankByTracker(entries, "squad_value", limit, getUsername() ?? "");
+  const rows = rankByTracker(entries, "best_record", limit, getUsername() ?? "");
   return mapTrackerRowsToLegacy(rows, entries);
 }
 
@@ -930,7 +930,7 @@ export async function getLeaderboardAsync(
   );
   const rows = rankByTracker(
     entries,
-    "squad_value",
+    "best_record",
     limit,
     getUsername() ?? ""
   );

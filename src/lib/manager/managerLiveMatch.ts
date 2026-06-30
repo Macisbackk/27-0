@@ -134,7 +134,7 @@ function pickScorer(
   career: ManagerCareer,
   command: LiveMatchCommand,
   rng: () => number
-): string {
+): { id: string; name: string } {
   const pool: string[] = [];
   for (let i = 0; i < career.matchdayXiii.length; i++) {
     const id = career.matchdayXiii[i]!;
@@ -151,7 +151,11 @@ function pickScorer(
     else pool.push(id);
   }
   const pick = pool[Math.floor(rng() * pool.length)] ?? career.matchdayXiii[0];
-  return getManagerPlayer(career, pick ?? "")?.name ?? career.club;
+  const player = getManagerPlayer(career, pick ?? "");
+  return {
+    id: pick ?? "",
+    name: player?.name ?? career.club,
+  };
 }
 
 function pickKicker(career: ManagerCareer, rng: () => number): string {
@@ -242,7 +246,8 @@ export function advanceLiveTick(
   const userRating = computeManagerTeamRating(
     career.matchdayXiii,
     career.matchdayInterchange,
-    career.xiiiSlotPositions
+    career.xiiiSlotPositions,
+    career
   );
   const oppRating = getOpponentMatchRating(
     state.opponent,
@@ -290,8 +295,8 @@ export function advanceLiveTick(
         minute,
         type: "try",
         team: "user",
-        playerName: scorer,
-        description: `${minute}' Try — ${scorer}`,
+        playerName: scorer.name,
+        description: `${minute}' Try — ${scorer.name}`,
         points: 4,
       });
       if (rng() < 0.82) {
