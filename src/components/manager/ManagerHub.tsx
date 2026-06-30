@@ -31,6 +31,8 @@ import {
 } from "@/lib/manager/managerCareerStats";
 import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
+import { autoFixMatchdaySquad } from "@/lib/manager/managerAutoFix";
+import { getHubNewsItems } from "@/lib/manager/managerNews";
 
 interface ManagerHubProps {
   career: ManagerCareer;
@@ -54,6 +56,7 @@ function formatFunds(budget: number): string {
 }
 
 function fixtureRoundLabel(f: ManagerCareer["fixtures"][0]): string {
+  if (f.competition === "friendly") return "Friendly";
   if (f.competition === "challenge_cup" && f.meta?.cupRound) {
     return CUP_ROUND_LABELS[f.meta.cupRound] ?? "Challenge Cup";
   }
@@ -260,14 +263,17 @@ export function ManagerHub({
 
   const oppRating =
     nextFixture && !career.isSeasonComplete
-      ? Math.round(
-          getOpponentMatchRating(
-            nextFixture.opponent,
-            career.seed,
-            nextFixture.round,
-            { currentSeasonOnly: true }
+      ? nextFixture.competition === "friendly" &&
+        career.preSeason.activeFriendly
+        ? career.preSeason.activeFriendly.teamRating
+        : Math.round(
+            getOpponentMatchRating(
+              nextFixture.opponent,
+              career.seed,
+              nextFixture.round,
+              { currentSeasonOnly: nextFixture.competition !== "friendly" }
+            )
           )
-        )
       : null;
 
   const prediction =
@@ -284,6 +290,14 @@ export function ManagerHub({
   const lastGate = getLastHomeGate(career.gateIncomeHistory);
   const cupStatus = getCupHubStatus(career);
   const overBudget = career.wageBill > career.wageBudget;
+  const newsItems = getHubNewsItems(career);
+  const transferBudget = career.managerFinance?.transferBudget ?? career.budget;
+
+  const handleAutoFix = () => {
+    const result = autoFixMatchdaySquad(career);
+    onUpdate?.(result.career);
+    if (!result.ok) window.alert(result.message);
+  };
 
   return (
     <div className={SPACING.stackLg}>
@@ -298,7 +312,9 @@ export function ManagerHub({
             {nextFixture.label ?? `Round ${nextFixture.round}`} ·{" "}
             {nextFixture.competition === "challenge_cup"
               ? "Challenge Cup"
-              : "League"}{" "}
+              : nextFixture.competition === "friendly"
+                ? "Friendly"
+                : "League"}{" "}
             · {nextFixture.isHome ? "Home" : "Away"}
           </p>
           <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
@@ -330,6 +346,19 @@ export function ManagerHub({
               className={`mt-3 rounded-lg border border-accent-gold/40 bg-accent-gold/10 px-3 py-2 ${TYPO.bodySm} text-accent-gold whitespace-pre-line`}
             >
               {squadCheck.message}
+              {onUpdate && (
+                <GameButton
+                  variant="theme"
+                  size="sm"
+                  className="mt-2"
+                  onClick={() => {
+                    playUiClick();
+                    handleAutoFix();
+                  }}
+                >
+                  Auto Fix Squad
+                </GameButton>
+              )}
             </div>
           )}
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -359,6 +388,22 @@ export function ManagerHub({
       )}
 
       <HubLeagueTable career={career} />
+
+      {newsItems.length > 0 && (
+        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+          <p className={TYPO.sectionLabel}>Latest News</p>
+          <ul className={`mt-2 ${SPACING.stackSm}`}>
+            {newsItems.map((item) => (
+              <li
+                key={item.id}
+                className={`${TYPO.bodySm} text-pitch-200 before:mr-2 before:text-theme-primary before:content-['•']`}
+              >
+                {item.text}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={TYPO.sectionLabel}>Season Progress</p>
@@ -469,8 +514,14 @@ export function ManagerHub({
             <p className="font-semibold text-white">{career.boardConfidence}%</p>
           </div>
           <div>
-            <p className="text-pitch-500 text-xs">Budget</p>
+            <p className="text-pitch-500 text-xs">Transfer Budget</p>
             <p className="font-semibold text-accent-gold">
+              {formatFunds(transferBudget)}
+            </p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Club Funds</p>
+            <p className="font-semibold text-pitch-200">
               {formatFunds(career.budget)}
             </p>
           </div>

@@ -1,4 +1,3 @@
-import seedrandom from "seedrandom";
 import {
   deriveCupOutcomeFromBracket,
   getCupRoundLabel,
@@ -17,16 +16,47 @@ import { buildSeasonSummary } from "./managerState";
 import { formatWage } from "./managerContracts";
 import { getUserLeaguePosition } from "./managerFixtures";
 
+export function normalizeInboxMessage(
+  raw: Partial<InboxMessage> & { id: string; title: string; body: string },
+  career: ManagerCareer
+): InboxMessage {
+  const week = raw.week ?? raw.gameWeek ?? career.gameWeek;
+  const read =
+    raw.read ?? (raw.resolved === true ? true : false);
+  let type = raw.type ?? "general";
+  if (type === "transfer_offer_in") type = "transfer";
+  if (type === "cup_draw") type = "fixture";
+
+  return {
+    id: raw.id,
+    type,
+    title: raw.title,
+    body: raw.body,
+    week,
+    season: raw.season ?? career.seasonYear,
+    gameWeek: week,
+    createdAt: raw.createdAt ?? new Date().toISOString(),
+    read,
+    resolved: raw.resolved,
+    playerId: raw.playerId,
+    playerName: raw.playerName,
+    offerClub: raw.offerClub,
+    offerAmount: raw.offerAmount,
+    askingPrice: raw.askingPrice,
+  };
+}
+
 export function pushInboxMessage(
   career: ManagerCareer,
   message: InboxMessage
 ): ManagerCareer {
-  if (career.inboxMessages.some((m) => m.id === message.id)) {
+  const normalized = normalizeInboxMessage(message, career);
+  if (career.inboxMessages.some((m) => m.id === normalized.id)) {
     return career;
   }
   return {
     ...career,
-    inboxMessages: [message, ...career.inboxMessages],
+    inboxMessages: [normalized, ...career.inboxMessages],
     updatedAt: new Date().toISOString(),
   };
 }
@@ -38,13 +68,43 @@ export function resolveInboxMessage(
   return {
     ...career,
     inboxMessages: career.inboxMessages.map((m) =>
-      m.id === messageId ? { ...m, resolved: true } : m
+      m.id === messageId ? { ...m, resolved: true, read: true } : m
     ),
     updatedAt: new Date().toISOString(),
   };
 }
 
-/** Add Challenge Cup draw message when a new user tie becomes available. */
+export function markInboxMessagesRead(career: ManagerCareer): ManagerCareer {
+  const hasUnread = career.inboxMessages.some((m) => !m.read);
+  if (!hasUnread) return career;
+  return {
+    ...career,
+    inboxMessages: career.inboxMessages.map((m) =>
+      m.read ? m : { ...m, read: true }
+    ),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+export function createPlayerSaleMessage(
+  career: ManagerCareer,
+  playerName: string,
+  buyerClub: string,
+  fee: number
+): InboxMessage {
+  return normalizeInboxMessage(
+    {
+      id: `sale-${playerName}-${career.gameWeek}-${Date.now()}`,
+      type: "sale",
+      title: "Transfer Completed",
+      body: `${playerName} has joined ${buyerClub} for ${formatWage(fee)}.\nThe fee has been added to your transfer budget.`,
+      read: false,
+      resolved: false,
+    },
+    career
+  );
+}
+
 export function syncCupDrawInboxMessages(career: ManagerCareer): ManagerCareer {
   if (career.isSeasonComplete) return career;
 
@@ -63,17 +123,19 @@ export function syncCupDrawInboxMessages(career: ManagerCareer): ManagerCareer {
 
   return pushInboxMessage(career, {
     id: msgId,
-    type: "cup_draw",
+    type: "fixture",
     title: "Challenge Cup Draw",
     body: `${roundLabel}: ${career.club} vs ${cupMatch.opponent} (${venue}). Check Fixtures when you're ready to play.`,
+    week: career.gameWeek,
+    season: career.seasonYear,
     gameWeek: career.gameWeek,
     createdAt: new Date().toISOString(),
+    read: false,
     resolved: false,
     offerClub: cupMatch.opponent,
   });
 }
 
-/** Season-end reward summary for the inbox. */
 export function addSeasonRewardInboxMessage(
   career: ManagerCareer
 ): ManagerCareer {
@@ -93,8 +155,11 @@ export function addSeasonRewardInboxMessage(
     type: "season_reward",
     title: "Season Complete",
     body: `${career.seasonYear} season finished — ${position}${getOrdinal(position)} in the league, Challenge Cup: ${cupOutcome.label}. Club Funds rewards available: ${total}.`,
+    week: career.gameWeek,
+    season: career.seasonYear,
     gameWeek: career.gameWeek,
     createdAt: new Date().toISOString(),
+    read: false,
     resolved: false,
   });
 }
@@ -109,7 +174,6 @@ function getOrdinal(n: number): string {
   return "th";
 }
 
-/** Sync cup draws and season messages after career state changes. */
 export function syncManagerInboxMessages(career: ManagerCareer): ManagerCareer {
   let next = syncCupDrawInboxMessages(career);
   if (next.isSeasonComplete) {
@@ -119,5 +183,14 @@ export function syncManagerInboxMessages(career: ManagerCareer): ManagerCareer {
 }
 
 export function countUnreadInbox(career: ManagerCareer): number {
-  return career.inboxMessages.filter((m) => !m.resolved).length;
+  return career.inboxMessages.filter((m) => !m.read).length;
+}
+
+export function hydrateInboxMessages(career: ManagerCareer): ManagerCareer {
+  return {
+    ...career,
+    inboxMessages: (career.inboxMessages ?? []).map((m) =>
+      normalizeInboxMessage(m, career)
+    ),
+  };
 }

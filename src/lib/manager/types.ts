@@ -39,7 +39,7 @@ export type ContractStatus =
   | "renewed"
   | "leaving";
 
-export type ManagerCompetition = "league" | "challenge_cup";
+export type ManagerCompetition = "league" | "challenge_cup" | "friendly";
 
 export type CupRoundKey =
   | "round_one"
@@ -292,15 +292,61 @@ export interface LeagueListedPlayer {
   listedAtWeek: number;
 }
 
+export interface FriendlyOpponentChoice {
+  id: string;
+  club: string;
+  year: string;
+  displayName: string;
+  difficulty: "easy" | "balanced" | "hard";
+  teamRating: number;
+  description: string;
+  attendanceInterest: "low" | "medium" | "high";
+}
+
+export interface PreSeasonState {
+  friendliesPlayed: number;
+  awaitingChoice: boolean;
+  currentChoices: FriendlyOpponentChoice[];
+  activeFriendly: {
+    displayName: string;
+    club: string;
+    year: string;
+    teamRating: number;
+    isHome: boolean;
+    friendlyIndex: number;
+  } | null;
+}
+
+export interface ManagerFinance {
+  transferBudget: number;
+  wageBudget: number;
+  wageBill: number;
+  clubFunds: number;
+  seasonIncome: number;
+  seasonSpending: number;
+}
+
+export interface LatestNewsItem {
+  id: string;
+  week: number;
+  type: "transfer" | "result" | "fixture" | "reserve" | "cup" | "board";
+  text: string;
+}
+
 export type InboxMessageType =
+  | "transfer"
   | "transfer_offer_in"
   | "transfer_offer_out"
   | "contract"
+  | "reserve_report"
+  | "sale"
   | "board"
+  | "fixture"
+  | "cup_draw"
   | "injury"
   | "release"
-  | "cup_draw"
   | "season_reward"
+  | "news"
   | "general";
 
 export interface InboxMessage {
@@ -308,9 +354,12 @@ export interface InboxMessage {
   type: InboxMessageType;
   title: string;
   body: string;
+  week: number;
+  season: number;
   gameWeek: number;
   createdAt: string;
-  resolved: boolean;
+  read: boolean;
+  resolved?: boolean;
   playerId?: string;
   playerName?: string;
   offerClub?: string;
@@ -375,6 +424,10 @@ export interface ManagerCareer {
   calledUpReserveIds: string[];
   playerRegistry: Record<string, import("../types").Player>;
   hubResultsExpanded?: boolean;
+  preSeason: PreSeasonState;
+  managerFinance: ManagerFinance;
+  latestNews: LatestNewsItem[];
+  lastReserveReportWeek?: number;
   createdAt: string;
   updatedAt: string;
 }

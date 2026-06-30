@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -10,7 +10,7 @@ import {
   negotiateIncomingOffer,
   rejectIncomingOffer,
 } from "@/lib/manager/managerTransferLeague";
-import { resolveInboxMessage } from "@/lib/manager/managerInbox";
+import { resolveInboxMessage, markInboxMessagesRead, countUnreadInbox } from "@/lib/manager/managerInbox";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { playUiClick } from "@/lib/sound";
 
@@ -36,6 +36,14 @@ export function ManagerInbox({
   const [counterAmount, setCounterAmount] = useState(0);
 
   const messages = career.inboxMessages.filter((m) => !m.resolved);
+
+  useEffect(() => {
+    if (countUnreadInbox(career) > 0) {
+      onUpdate(markInboxMessagesRead(career));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const resolved = career.inboxMessages.filter((m) => m.resolved).slice(0, 10);
 
   const handleAccept = (id: string) => {
@@ -75,7 +83,7 @@ export function ManagerInbox({
       <div>
         <h1 className={TYPO.pageTitle}>Inbox</h1>
         <p className={`${TYPO.bodySm} text-pitch-400`}>
-          {messages.length} unread message{messages.length === 1 ? "" : "s"}
+          {messages.length} open message{messages.length === 1 ? "" : "s"}
         </p>
       </div>
 
@@ -95,7 +103,7 @@ export function ManagerInbox({
           <p className={`mt-1 ${TYPO.bodySm} text-white`}>{msg.body}</p>
           <p className={`mt-1 text-xs text-pitch-500`}>Week {msg.gameWeek}</p>
 
-          {msg.type === "transfer_offer_in" && (
+          {(msg.type === "transfer" || msg.type === "transfer_offer_in") && (
             <div className="mt-3 space-y-2">
               {negotiatingId === msg.id ? (
                 <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
@@ -200,6 +208,9 @@ export function ManagerInbox({
             msg.type === "board" ||
             msg.type === "contract" ||
             msg.type === "injury" ||
+            msg.type === "sale" ||
+            msg.type === "reserve_report" ||
+            msg.type === "news" ||
             msg.type === "general") && (
             <GameButton
               variant="secondary"

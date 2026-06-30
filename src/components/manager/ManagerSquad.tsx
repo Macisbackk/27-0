@@ -21,6 +21,9 @@ import {
   type MatchdaySlotTarget,
 } from "@/lib/manager/managerMatchdaySquad";
 import { ManagerSquadPlayerModal } from "@/components/manager/ManagerSquadPlayerModal";
+import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
+import { autoFixMatchdaySquad } from "@/lib/manager/managerAutoFix";
+import { GameButton } from "@/components/ui/GameButton";
 import { ManagerTacticsPanel } from "@/components/manager/ManagerTactics";
 import { playUiClick } from "@/lib/sound";
 
@@ -145,6 +148,8 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     setModalPlayerId(null);
   };
 
+  const squadCheck = validateFitMatchdaySquad(career);
+
   return (
     <div className={`mx-auto max-w-5xl ${SPACING.stackLg}`}>
       <div>
@@ -153,6 +158,29 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
           Team sheet & matchday 17 · click a slot, then pick a player
         </p>
       </div>
+
+      {!squadCheck.valid && (
+        <div
+          className={`${CARD.inset} ${SPACING.cardPaddingSm} border border-accent-gold/40`}
+        >
+          <p className={`${TYPO.bodySm} text-accent-gold whitespace-pre-line`}>
+            {squadCheck.message}
+          </p>
+          <GameButton
+            variant="theme"
+            size="sm"
+            className="mt-2"
+            onClick={() => {
+              playUiClick();
+              const result = autoFixMatchdaySquad(career);
+              onUpdate(result.career);
+              if (!result.ok) window.alert(result.message);
+            }}
+          >
+            Auto Fix Squad
+          </GameButton>
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
         <div className={SPACING.stackMd}>

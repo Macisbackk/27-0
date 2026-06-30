@@ -17,6 +17,7 @@ import { ManagerPlayGame } from "@/components/manager/ManagerPlayGame";
 import { ManagerMatchReview } from "@/components/manager/ManagerMatchReview";
 import { ManagerSeasonReview } from "@/components/manager/ManagerSeasonReview";
 import { ManagerSeasonRewards } from "@/components/manager/ManagerSeasonRewards";
+import { ManagerFriendlySelect } from "@/components/manager/ManagerFriendlySelect";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
@@ -42,14 +43,19 @@ import {
   playUiClick,
 } from "@/lib/sound";
 import { SPACING } from "@/lib/ui/design-system";
+import {
+  ensureFriendlyChoices,
+  isAwaitingFriendlyChoice,
+  selectFriendlyOpponent,
+} from "@/lib/manager/managerFriendlies";
 import { countUnreadInbox } from "@/lib/manager/managerInbox";
 
 const NAV_VIEWS: ManagerView[] = [
   "hub",
-  "squad",
-  "contracts",
-  "reserves",
   "inbox",
+  "squad",
+  "reserves",
+  "contracts",
   "transfers",
   "fixtures",
   "stats",
@@ -194,28 +200,36 @@ export default function ManagerPage() {
           />
 
           {view === "hub" && (
-            <ManagerHub
-              career={career}
-              onPlayGame={handlePlayGame}
-              onSimulate={handleSimulate}
-              onSelectFixture={(fixtureId) => {
-                setReviewFixtureId(fixtureId);
-                setView("match-review");
-              }}
-              onUpdate={persist}
-              onNavigate={setView}
-            />
+            <>
+              {isAwaitingFriendlyChoice(career) ? (
+                <ManagerFriendlySelect
+                  career={career}
+                  friendlyNumber={career.preSeason.friendliesPlayed + 1}
+                  choices={career.preSeason.currentChoices}
+                  onSelect={(choiceId) => {
+                    persist(
+                      ensureFriendlyChoices(
+                        selectFriendlyOpponent(career, choiceId)
+                      )
+                    );
+                  }}
+                />
+              ) : (
+                <ManagerHub
+                  career={career}
+                  onPlayGame={handlePlayGame}
+                  onSimulate={handleSimulate}
+                  onSelectFixture={(fixtureId) => {
+                    setReviewFixtureId(fixtureId);
+                    setView("match-review");
+                  }}
+                  onUpdate={persist}
+                  onNavigate={setView}
+                />
+              )}
+            </>
           )}
 
-          {view === "squad" && (
-            <ManagerSquad career={career} onUpdate={persist} />
-          )}
-          {view === "contracts" && (
-            <ManagerContracts career={career} onUpdate={persist} />
-          )}
-          {view === "reserves" && (
-            <ManagerReserves career={career} onUpdate={persist} />
-          )}
           {view === "inbox" && (
             <ManagerInbox
               career={career}
@@ -225,6 +239,15 @@ export default function ManagerPage() {
                 else setView(v);
               }}
             />
+          )}
+          {view === "squad" && (
+            <ManagerSquad career={career} onUpdate={persist} />
+          )}
+          {view === "reserves" && (
+            <ManagerReserves career={career} onUpdate={persist} />
+          )}
+          {view === "contracts" && (
+            <ManagerContracts career={career} onUpdate={persist} />
           )}
           {view === "transfers" && (
             <ManagerTransfers career={career} onUpdate={persist} />

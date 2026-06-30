@@ -20,11 +20,18 @@ import {
 import { createClubAttendanceData } from "./managerAttendance";
 import { createManagerChallengeCup } from "./managerChallengeCup";
 import { generateReserveSquad } from "./managerReserves";
+import { generateLeagueListedPlayers } from "./managerTransferLeague";
 import {
-  generateLeagueListedPlayers,
-  initClubFunds,
-} from "./managerTransferLeague";
-import { syncManagerInboxMessages } from "./managerInbox";
+  hydrateInboxMessages,
+  syncManagerInboxMessages,
+} from "./managerInbox";
+import { initPreSeasonState, ensureFriendlyChoices } from "./managerFriendlies";
+import {
+  initManagerFinance,
+  computeFirstSeasonTransferBudget,
+  syncManagerFinance,
+  initClubTransferBudgets,
+} from "./managerFinance";
 
 const CAREER_KEY = "27-0-manager-career";
 
@@ -115,13 +122,20 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
       ),
     playerTransferStatus: raw.playerTransferStatus ?? {},
     inboxMessages: raw.inboxMessages ?? [],
-    clubFunds: raw.clubFunds ?? initClubFunds(raw.club),
+    clubFunds: raw.clubFunds ?? initClubTransferBudgets(raw.club, raw.seed ?? "migrate"),
     transferMarket:
       raw.transferMarket ??
       (raw.leagueListedPlayers ?? []).map((l) => l.playerId),
+    preSeason: initPreSeasonState(raw),
+    managerFinance: initManagerFinance(raw),
+    latestNews: raw.latestNews ?? [],
+    lastReserveReportWeek: raw.lastReserveReportWeek,
   };
 
   career = ensureRenewalDemands(career);
+  career = hydrateInboxMessages(career);
+  career = syncManagerFinance(career);
+  career = ensureFriendlyChoices(career);
   return syncManagerInboxMessages(career);
 }
 
@@ -168,12 +182,14 @@ export function createNewCareer(club: string): ManagerCareer {
   const squadIdSet = new Set(squad.map((p) => p.playerId));
   const leagueListed = generateLeagueListedPlayers(club, seed, 0);
 
+  const transferBudget = computeFirstSeasonTransferBudget(club, seed);
+
   const career: ManagerCareer = {
     id: seed,
     club,
     seasonYear: new Date().getFullYear(),
     seed,
-    budget: config.budget,
+    budget: transferBudget,
     clubFundsEarned: 0,
     boardConfidence: 65,
     boardExpectation: config.expectation,
@@ -200,7 +216,17 @@ export function createNewCareer(club: string): ManagerCareer {
     leagueListedPlayers: leagueListed,
     playerTransferStatus: {},
     inboxMessages: [],
-    clubFunds: initClubFunds(club),
+    clubFunds: initClubTransferBudgets(club, seed),
+    preSeason: initPreSeasonState({}),
+    managerFinance: {
+      transferBudget,
+      wageBudget,
+      wageBill,
+      clubFunds: transferBudget,
+      seasonIncome: 0,
+      seasonSpending: 0,
+    },
+    latestNews: [],
     wins: 0,
     losses: 0,
     teamSeasonStats: { ...EMPTY_TEAM_SEASON_STATS },
@@ -221,8 +247,9 @@ export function createNewCareer(club: string): ManagerCareer {
     updatedAt: new Date().toISOString(),
   };
 
-  saveManagerCareer(career);
-  return career;
+  const hydrated = hydrateManagerCareer(career);
+  saveManagerCareer(hydrated);
+  return hydrated;
 }
 
 export { buildSeasonSummary, advanceToNextSeason } from "./managerStateSeason";

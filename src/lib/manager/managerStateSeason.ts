@@ -12,6 +12,12 @@ import {
   tickContractsForNewSeason,
 } from "./managerContracts";
 import { createManagerChallengeCup } from "./managerChallengeCup";
+import { initPreSeasonState } from "./managerFriendlies";
+import {
+  computeSeasonTransferBudget,
+  initManagerFinance,
+  refreshClubFundsForSeason,
+} from "./managerFinance";
 import { createClubAttendanceData } from "./managerAttendance";
 
 const CAREER_KEY = "27-0-manager-career";
@@ -122,11 +128,18 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const newSeed = `${career.seed}-s${career.seasonYear + 1}`;
   const squadIdSet = new Set(afterContracts.squad.map((p) => p.playerId));
 
+  const transferBudget = computeSeasonTransferBudget(
+    career.club,
+    newSeed,
+    career.seasonYear + 1,
+    summary
+  );
+
   const next: ManagerCareer = {
     ...afterContracts,
     seasonYear: career.seasonYear + 1,
     seed: newSeed,
-    budget: afterContracts.budget + summary.budgetChange,
+    budget: transferBudget,
     clubFundsEarned: afterContracts.clubFundsEarned + summary.budgetChange,
     boardConfidence: Math.min(85, boardConfidence + 10),
     schedule: buildManagerSchedule(career.club, newSeed),
@@ -161,6 +174,18 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
       fitness: Math.min(100, p.fitness + 20),
     })),
     leagueTable: buildLeagueTableFromMatches([], career.club),
+    preSeason: initPreSeasonState({}),
+    managerFinance: {
+      transferBudget,
+      wageBudget: afterContracts.wageBudget,
+      wageBill: afterContracts.wageBill,
+      clubFunds: transferBudget,
+      seasonIncome: 0,
+      seasonSpending: 0,
+    },
+    latestNews: [],
+    lastReserveReportWeek: undefined,
+    clubFunds: refreshClubFundsForSeason(afterContracts, summary),
     updatedAt: new Date().toISOString(),
   };
 

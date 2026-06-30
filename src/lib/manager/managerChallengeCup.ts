@@ -16,6 +16,9 @@ import type {
   ManagerScheduledFixture,
 } from "./types";
 import { CUP_ROUND_LABELS } from "./types";
+import {
+  needsPreSeasonFriendlies,
+} from "./managerFriendlies";
 
 const CUP_TRIGGERS_LEAGUE_GAMES = [5, 12, 19, 24];
 const CUP_KEY_TO_BRACKET_ROUND: Record<CupRoundKey, number> = {
@@ -144,6 +147,22 @@ export function getNextManagerFixture(
   career: ManagerCareer
 ): ManagerScheduledFixture | null {
   if (career.isSeasonComplete) return null;
+
+  if (needsPreSeasonFriendlies(career) && career.preSeason.activeFriendly) {
+    const f = career.preSeason.activeFriendly;
+    return {
+      id: `friendly-${f.friendlyIndex}-${f.club}-${f.year}`,
+      round: 0,
+      opponent: f.displayName,
+      isHome: f.isHome,
+      competition: "friendly",
+      label: `Friendly ${f.friendlyIndex + 1}`,
+    };
+  }
+
+  if (needsPreSeasonFriendlies(career)) {
+    return null;
+  }
 
   const cupRound = getPendingCupBracketRound(career);
   if (cupRound !== null) {

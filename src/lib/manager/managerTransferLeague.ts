@@ -21,6 +21,12 @@ import { getManagerClubTeamRating } from "./managerRating";
 import { createInitialPlayerState } from "./managerSquad";
 import { getPlayerAge } from "../players/player-age";
 import { getTransferDemand } from "./managerTransfers";
+import { syncManagerFinance, deductTransferFee, addTransferIncome } from "./managerFinance";
+import {
+  createPlayerSaleMessage,
+  pushInboxMessage,
+  normalizeInboxMessage,
+} from "./managerInbox";
 
 export function initClubFunds(userClub: string): Record<string, number> {
   const funds: Record<string, number> = {};
@@ -154,17 +160,19 @@ export function releasePlayerWithCost(
   const nextTransfer = { ...career.playerTransferStatus };
   delete nextTransfer[playerId];
 
-  const msg: InboxMessage = {
-    id: `release-${playerId}-${Date.now()}`,
-    type: "release",
-    title: "Player Released",
-    body: `${player?.name ?? "Player"} released. Settlement paid: ${formatWage(cost)}.`,
-    gameWeek: career.gameWeek,
-    createdAt: new Date().toISOString(),
-    resolved: true,
-    playerId,
-    playerName: player?.name,
-  };
+  const msg = normalizeInboxMessage(
+    {
+      id: `release-${playerId}-${Date.now()}`,
+      type: "release",
+      title: "Player Released",
+      body: `${player?.name ?? "Player"} released. Settlement paid: ${formatWage(cost)}.`,
+      read: true,
+      resolved: true,
+      playerId,
+      playerName: player?.name,
+    },
+    career
+  );
 
   return {
     ok: true,
@@ -257,9 +265,8 @@ export function completePlayerPurchase(
   const sellerFunds = { ...career.clubFunds };
   sellerFunds[club] = (sellerFunds[club] ?? 0) + offer.transferFee;
 
-  return {
+  const purchased: ManagerCareer = {
     ...career,
-    budget: career.budget - offer.transferFee,
     clubFunds: sellerFunds,
     squad: [...career.squad, createInitialPlayerState(playerId)],
     contracts: nextContracts,
@@ -268,6 +275,8 @@ export function completePlayerPurchase(
     transferMarket: nextListed.map((l) => l.playerId),
     updatedAt: new Date().toISOString(),
   };
+
+  return deductTransferFee(syncManagerFinance(purchased), offer.transferFee);
 }
 
 export function generateIncomingTransferOffers(
@@ -305,11 +314,14 @@ export function generateIncomingTransferOffers(
 
     messages.unshift({
       id: `offer-${playerId}-${career.gameWeek}-${Math.floor(rng() * 10000)}`,
-      type: "transfer_offer_in",
+      type: "transfer",
       title: "Transfer Offer",
       body: `${buyer} have offered ${formatWage(offerAmount)} for ${player.name}. Your asking price: ${formatWage(status.askingPrice)}.`,
+      week: career.gameWeek,
+      season: career.seasonYear,
       gameWeek: career.gameWeek,
       createdAt: new Date().toISOString(),
+      read: false,
       resolved: false,
       playerId,
       playerName: player.name,
@@ -346,24 +358,34 @@ export function acceptIncomingOffer(
   clubFunds[buyer] = Math.max(0, (clubFunds[buyer] ?? 0) - msg.offerAmount);
 
   const nextMessages = career.inboxMessages.map((m) =>
-    m.id === messageId ? { ...m, resolved: true } : m
+    m.id === messageId ? { ...m, resolved: true, read: true } : m
   );
+
+  let nextCareer: ManagerCareer = {
+    ...career,
+    clubFunds,
+    squad: career.squad.filter((p) => p.playerId !== playerId),
+    contracts: nextContracts,
+    wageBill: computeWageBill(nextContracts),
+    matchdayXiii: xiii,
+    matchdayInterchange: interchange,
+    playerTransferStatus: nextTransfer,
+    inboxMessages: nextMessages,
+    updatedAt: new Date().toISOString(),
+  };
+
+  nextCareer = addTransferIncome(nextCareer, msg.offerAmount);
+  const saleMsg = createPlayerSaleMessage(
+    nextCareer,
+    msg.playerName ?? getPlayerById(playerId)?.name ?? "Player",
+    buyer,
+    msg.offerAmount
+  );
+  nextCareer = pushInboxMessage(nextCareer, saleMsg);
 
   return {
     ok: true,
-    career: {
-      ...career,
-      budget: career.budget + msg.offerAmount,
-      clubFunds,
-      squad: career.squad.filter((p) => p.playerId !== playerId),
-      contracts: nextContracts,
-      wageBill: computeWageBill(nextContracts),
-      matchdayXiii: xiii,
-      matchdayInterchange: interchange,
-      playerTransferStatus: nextTransfer,
-      inboxMessages: nextMessages,
-      updatedAt: new Date().toISOString(),
-    },
+    career: nextCareer,
   };
 }
 
@@ -386,7 +408,7 @@ export function negotiateIncomingOffer(
   counterAmount: number
 ): { ok: boolean; career?: ManagerCareer; feedback: string } {
   const msg = career.inboxMessages.find((m) => m.id === messageId);
-  if (!msg || msg.resolved || msg.type !== "transfer_offer_in") {
+  if (!msg || msg.resolved || (msg.type !== "transfer" && msg.type !== "transfer_offer_in")) {
     return { ok: false, feedback: "Offer not found." };
   }
   if (!msg.offerAmount || !msg.askingPrice) {

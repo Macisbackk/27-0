@@ -41,6 +41,10 @@ import {
   generateLeagueListedPlayers,
 } from "./managerTransferLeague";
 import { syncManagerInboxMessages } from "./managerInbox";
+import { completeFriendlyMatch } from "./managerFriendlies";
+import { maybeAddReserveReport } from "./managerReserveReports";
+import { rotateLatestNews } from "./managerNews";
+import { syncManagerFinance } from "./managerFinance";
 
 interface TacticModifiers {
   strengthBonus: number;
@@ -162,6 +166,7 @@ export function applyManagerMatchResult(
   if (!sched) return career;
 
   const isCup = sched.competition === "challenge_cup";
+  const isFriendly = sched.competition === "friendly";
   const round = sched.round;
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
@@ -200,7 +205,7 @@ export function applyManagerMatchResult(
   let roundResults = career.roundMatches;
   let leagueTable = career.leagueTable;
 
-  if (!isCup) {
+  if (!isCup && !isFriendly) {
     const userMatch = {
       round,
       homeTeam: sched.isHome ? career.club : sched.opponent,
@@ -281,6 +286,10 @@ export function applyManagerMatchResult(
     matchdayIds,
     motmId
   );
+  const teamSeasonStats = isFriendly
+    ? career.teamSeasonStats
+    : statsUpdate.teamSeasonStats;
+  const recentForm = statsUpdate.recentForm;
 
   let working: ManagerCareer = { ...career, squad: nextSquad };
 
@@ -335,29 +344,37 @@ export function applyManagerMatchResult(
   const expiring = countExpiringContracts(career.contracts);
   if (expiring >= 4) boardConfidence = Math.max(0, boardConfidence - 3);
 
-  const matchIncome = won ? 25_000 : 10_000;
+  const matchIncome = isFriendly
+    ? won
+      ? 8_000
+      : 4_000
+    : won
+      ? 25_000
+      : 10_000;
   const cupBonus = isCup && won ? 50_000 : 0;
 
-  const nextFixtureIndex = isCup
-    ? career.currentFixtureIndex
-    : career.currentFixtureIndex + 1;
+  const nextFixtureIndex =
+    isCup || isFriendly
+      ? career.currentFixtureIndex
+      : career.currentFixtureIndex + 1;
 
   const nextCareer: ManagerCareer = {
     ...working,
     fixtures: [...career.fixtures, record],
     roundMatches: roundResults,
     leagueTable,
-    currentRound: round,
-    gameWeek: isCup ? career.gameWeek : round,
+    currentRound: isFriendly ? career.currentRound : round,
+    gameWeek: isCup || isFriendly ? career.gameWeek : round,
     currentFixtureIndex: nextFixtureIndex,
-    wins: career.wins + (won ? 1 : 0),
-    losses: career.losses + (won ? 0 : 1),
+    wins: isFriendly || isCup ? career.wins : career.wins + (won ? 1 : 0),
+    losses:
+      isFriendly || isCup ? career.losses : career.losses + (won ? 0 : 1),
     budget: working.budget + matchIncome + cupBonus,
     clubFundsEarned: working.clubFundsEarned + matchIncome + cupBonus,
     boardConfidence,
-    teamSeasonStats: statsUpdate.teamSeasonStats,
+    teamSeasonStats,
     playerSeasonStats: statsUpdate.playerSeasonStats,
-    recentForm: statsUpdate.recentForm,
+    recentForm,
     isSeasonComplete: false,
     lastMatchFixture: record,
     challengeCup,
@@ -375,6 +392,12 @@ export function applyManagerMatchResult(
   finalCareer = clearReserveCallUps(finalCareer);
   finalCareer = generateIncomingTransferOffers(finalCareer);
   finalCareer = syncManagerInboxMessages(finalCareer);
+  finalCareer = maybeAddReserveReport(finalCareer);
+  finalCareer = rotateLatestNews(finalCareer);
+  if (isFriendly) {
+    finalCareer = completeFriendlyMatch(finalCareer);
+  }
+  finalCareer = syncManagerFinance(finalCareer);
   if (finalCareer.gameWeek % 3 === 0) {
     finalCareer = {
       ...finalCareer,
@@ -400,6 +423,7 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
   const sched = getNextManagerFixture(career);
   if (!sched) return career;
 
+  const isFriendly = sched.competition === "friendly";
   const round = sched.round;
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
@@ -419,12 +443,16 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
     career.xiiiSlotPositions,
     career
   );
-  const baseOppRating = getOpponentMatchRating(
-    sched.opponent,
-    career.seed,
-    round,
-    { currentSeasonOnly: true }
-  );
+  const friendlyRating = career.preSeason.activeFriendly?.teamRating;
+  const baseOppRating =
+    isFriendly && friendlyRating
+      ? friendlyRating
+      : getOpponentMatchRating(
+          sched.opponent,
+          career.seed,
+          round,
+          { currentSeasonOnly: !isFriendly }
+        );
   const ratingDiff = userRating - baseOppRating;
   const opponentRating =
     baseOppRating +

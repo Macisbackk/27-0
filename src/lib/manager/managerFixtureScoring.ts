@@ -154,10 +154,16 @@ export function applyLiveEventsToFixtureScoring(
 
   const userTryScorers = [...userTryMap.values()];
   const userTryTotal = userTryScorers.reduce((sum, t) => sum + t.tries, 0);
-  if (userTryTotal < fixture.triesFor && userTryScorers[0]) {
-    userTryScorers[0] = {
-      ...userTryScorers[0],
-      tries: userTryScorers[0].tries + (fixture.triesFor - userTryTotal),
+
+  fixture.triesFor = userTryTotal;
+  fixture.triesAgainst = oppTryCount;
+  if (fixture.scoringFor) {
+    fixture.scoringFor = { ...fixture.scoringFor, tries: userTryTotal };
+  }
+  if (fixture.scoringAgainst) {
+    fixture.scoringAgainst = {
+      ...fixture.scoringAgainst,
+      tries: oppTryCount,
     };
   }
 

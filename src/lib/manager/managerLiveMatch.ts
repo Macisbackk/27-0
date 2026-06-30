@@ -456,26 +456,82 @@ export function liveMatchToFixture(
   state: LiveMatchState,
   career: ManagerCareer
 ): MatchFixture {
-  const pf = snapToRLScore(state.userScore, false);
-  const pa = snapToRLScore(state.oppScore, false);
-  const finalPf = pf <= pa ? pf + (pf === pa ? 2 : 0) : pf;
-  const won = finalPf > pa;
-  const scoringFor = decomposeRLScore(finalPf);
-  const scoringAgainst = decomposeRLScore(pa);
+  const userTryEvents = state.events.filter(
+    (e) => e.type === "try" && e.team === "user"
+  );
+  const oppTryEvents = state.events.filter(
+    (e) => e.type === "try" && e.team === "opponent"
+  );
+  const userGoals = state.events.filter(
+    (e) => e.type === "goal" && e.team === "user"
+  ).length;
+  const oppGoals = state.events.filter(
+    (e) => e.type === "goal" && e.team === "opponent"
+  ).length;
+  const userPenalties = state.events.filter(
+    (e) => e.type === "penalty" && e.team === "user"
+  ).length;
+  const oppPenalties = state.events.filter(
+    (e) => e.type === "penalty" && e.team === "opponent"
+  ).length;
+  const userDrops = state.events.filter(
+    (e) => e.type === "drop_goal" && e.team === "user"
+  ).length;
+  const oppDrops = state.events.filter(
+    (e) => e.type === "drop_goal" && e.team === "opponent"
+  ).length;
+
+  const triesFor = userTryEvents.length;
+  const triesAgainst = oppTryEvents.length;
+
+  let pointsFor =
+    triesFor * 4 +
+    userGoals * 2 +
+    userPenalties * 2 +
+    userDrops;
+  let pointsAgainst =
+    triesAgainst * 4 +
+    oppGoals * 2 +
+    oppPenalties * 2 +
+    oppDrops;
+
+  pointsFor = snapToRLScore(pointsFor, false);
+  pointsAgainst = snapToRLScore(pointsAgainst, false);
+
+  if (pointsFor === pointsAgainst) {
+    pointsFor += 2;
+  }
+
+  const won = pointsFor > pointsAgainst;
+
+  const scoringFor = {
+    tries: triesFor,
+    conversions: userGoals,
+    penalties: userPenalties,
+    dropGoals: userDrops,
+    points: pointsFor,
+  };
+  const scoringAgainst = {
+    tries: triesAgainst,
+    conversions: oppGoals,
+    penalties: oppPenalties,
+    dropGoals: oppDrops,
+    points: pointsAgainst,
+  };
 
   return {
     round: state.round,
     opponent: state.opponent,
     isHome: state.isHome,
-    pointsFor: finalPf,
-    pointsAgainst: pa,
-    triesFor: scoringFor.tries,
-    triesAgainst: scoringAgainst.tries,
+    pointsFor,
+    pointsAgainst,
+    triesFor,
+    triesAgainst,
     scoringFor,
     scoringAgainst,
     result: won ? "W" : "L",
     isUpset: false,
-    isThrashing: Math.abs(finalPf - pa) >= 20,
+    isThrashing: Math.abs(pointsFor - pointsAgainst) >= 20,
   };
 }
 
