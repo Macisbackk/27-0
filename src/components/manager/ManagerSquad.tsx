@@ -38,6 +38,7 @@ function TeamSheetSlot({
   playerId,
   career,
   selected,
+  replaceHighlight,
   onSelect,
   onPlayerClick,
 }: {
@@ -46,6 +47,7 @@ function TeamSheetSlot({
   playerId: string;
   career: ManagerCareer;
   selected: boolean;
+  replaceHighlight?: boolean;
   onSelect: () => void;
   onPlayerClick: (playerId: string) => void;
 }) {
@@ -63,7 +65,9 @@ function TeamSheetSlot({
         else onSelect();
       }}
       className={`min-h-[52px] w-full rounded-lg border px-2 py-1.5 text-left transition ${
-        selected
+        replaceHighlight
+          ? "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50"
+          : selected
           ? "border-theme-primary bg-theme-primary/10 ring-1 ring-theme-primary/40"
           : "border-pitch-700/60 bg-pitch-900/50 hover:border-pitch-500"
       } ${unavailable ? "opacity-60" : ""}`}
@@ -99,11 +103,24 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
   const [modalPlayerId, setModalPlayerId] = useState<string | null>(null);
   const [pendingAssignId, setPendingAssignId] = useState<string | null>(null);
+  const [replaceSourcePlayerId, setReplaceSourcePlayerId] = useState<
+    string | null
+  >(null);
+
+  const replaceSlot = replaceSourcePlayerId
+    ? findPlayerMatchdaySlot(career, replaceSourcePlayerId)
+    : null;
 
   const replacementCandidates = useMemo(() => {
+    if (replaceSlot) return getReplacementCandidates(career, replaceSlot);
     if (!selectedTarget) return [];
     return getReplacementCandidates(career, selectedTarget);
-  }, [career, selectedTarget]);
+  }, [career, selectedTarget, replaceSlot]);
+
+  const replaceCandidateIds = useMemo(
+    () => new Set(replacementCandidates.map((c) => c.playerId)),
+    [replacementCandidates]
+  );
 
   const filteredCandidates = useMemo(() => {
     if (positionFilter === "all") return replacementCandidates;
@@ -127,6 +144,11 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
   };
 
   const handlePickPlayer = (playerId: string) => {
+    if (replaceSlot) {
+      onUpdate(assignPlayerToMatchday(career, replaceSlot, playerId));
+      setReplaceSourcePlayerId(null);
+      return;
+    }
     if (!selectedTarget) return;
     onUpdate(assignPlayerToMatchday(career, selectedTarget, playerId));
     setSelectedTarget(null);
@@ -135,12 +157,22 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
   const handleReplacePlayer = (playerId: string) => {
     const slot = findPlayerMatchdaySlot(career, playerId);
     if (slot) {
-      setSelectedTarget(slot);
+      setReplaceSourcePlayerId(playerId);
+      setSelectedTarget(null);
       setPendingAssignId(null);
     } else {
       setPendingAssignId(playerId);
+      setReplaceSourcePlayerId(null);
       setSelectedTarget(null);
     }
+  };
+
+  const handlePlayerClick = (playerId: string) => {
+    if (replaceSourcePlayerId && replaceCandidateIds.has(playerId)) {
+      handlePickPlayer(playerId);
+      return;
+    }
+    setModalPlayerId(playerId);
   };
 
   const persistAndClose = (next: ManagerCareer) => {
@@ -207,6 +239,8 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     const isSelected =
                       selectedTarget?.kind === "xiii" &&
                       selectedTarget.index === slotIndex;
+                    const isReplaceTarget =
+                      !!playerId && replaceCandidateIds.has(playerId);
                     return (
                       <TeamSheetSlot
                         key={slotIndex}
@@ -215,10 +249,11 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                         playerId={playerId}
                         career={career}
                         selected={isSelected}
+                        replaceHighlight={isReplaceTarget}
                         onSelect={() =>
                           handleSelectSlot({ kind: "xiii", index: slotIndex })
                         }
-                        onPlayerClick={setModalPlayerId}
+                        onPlayerClick={handlePlayerClick}
                       />
                     );
                   })}
@@ -237,17 +272,21 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                 const player = playerId
                   ? getManagerPlayer(career, playerId)
                   : null;
+                const isReplaceTarget =
+                  !!playerId && replaceCandidateIds.has(playerId);
                 return (
                   <button
                     key={i}
                     type="button"
                     onClick={() => {
                       playUiClick();
-                      if (playerId) setModalPlayerId(playerId);
+                      if (playerId) handlePlayerClick(playerId);
                       else handleSelectSlot({ kind: "bench", index: i });
                     }}
                     className={`rounded-lg border px-2 py-2 text-left ${
-                      isSelected
+                      isReplaceTarget
+                        ? "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50"
+                        : isSelected
                         ? "border-theme-primary bg-theme-primary/10"
                         : "border-pitch-700/60 bg-pitch-900/40"
                     }`}
@@ -273,6 +312,11 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
           {pendingAssignId ? (
             <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>
               Select a starter or interchange slot for this player
+            </p>
+          ) : replaceSourcePlayerId ? (
+            <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>
+              Tap a highlighted player to replace{" "}
+              {getManagerPlayer(career, replaceSourcePlayerId)?.name}
             </p>
           ) : selectedTarget ? (
             <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>
@@ -332,13 +376,15 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                   <li key={playerId}>
                     <button
                       type="button"
-                      disabled={!selectedTarget}
+                      disabled={!selectedTarget && !replaceSourcePlayerId}
                       onClick={() => {
                         playUiClick();
                         handlePickPlayer(playerId);
                       }}
                       className={`w-full rounded-lg border px-2 py-2 text-left transition ${
-                        selectedTarget
+                        replaceCandidateIds.has(playerId)
+                          ? "border-accent-gold bg-accent-gold/10 hover:border-accent-gold"
+                          : selectedTarget
                           ? "border-pitch-600 hover:border-theme-primary/50"
                           : "border-pitch-800/40 opacity-70"
                       }`}
@@ -365,7 +411,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                 );
               }
             )}
-            {!selectedTarget && !pendingAssignId && (
+            {!selectedTarget && !pendingAssignId && !replaceSourcePlayerId && (
               <p className={`${TYPO.bodySm} text-pitch-500`}>
                 Select a slot to see replacement options
               </p>

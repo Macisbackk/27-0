@@ -19,6 +19,10 @@ import {
 } from "@/lib/manager/managerTransferLeague";
 import { getTransferDemand } from "@/lib/manager/managerTransfers";
 import { playUiClick } from "@/lib/sound";
+import {
+  ManagerTransferResultModal,
+  type TransferResultDetails,
+} from "@/components/manager/ManagerTransferResultModal";
 
 interface ManagerTransfersProps {
   career: ManagerCareer;
@@ -31,7 +35,8 @@ export function ManagerTransfers({
 }: ManagerTransfersProps) {
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
   const [search, setSearch] = useState("");
-  const [message, setMessage] = useState<string | null>(null);
+  const [transferResult, setTransferResult] =
+    useState<TransferResultDetails | null>(null);
   const [offerPlayerId, setOfferPlayerId] = useState<string | null>(null);
   const [offerFee, setOfferFee] = useState(0);
 
@@ -77,7 +82,14 @@ export function ManagerTransfers({
       .slice(0, 24);
   }, [career, search, positionFilter]);
 
-  const handleBuyListed = (playerId: string, club: string, listed: boolean) => {
+  const leagueTransfers = career.leagueTransfers ?? [];
+
+  const submitTransferOffer = (
+    playerId: string,
+    club: string,
+    listed: boolean
+  ) => {
+    const player = getPlayerById(playerId);
     const demand = getTransferDemand(playerId, career.club);
     const fee =
       offerPlayerId === playerId && offerFee > 0
@@ -92,14 +104,20 @@ export function ManagerTransfers({
     };
 
     const result = evaluateBuyOffer(career, playerId, club, offer, listed);
-    if (!result.accepted) {
-      setMessage(result.reason);
-      return;
-    }
+    setTransferResult({
+      playerName: player?.name ?? "Player",
+      club,
+      fee,
+      wagePerYear: demand.wagePerYear,
+      years: demand.yearsRequested,
+      accepted: result.accepted,
+      reason: result.reason,
+    });
 
-    onUpdate(completePlayerPurchase(career, playerId, club, offer, listed));
-    setMessage(`${getPlayerById(playerId)?.name} signed!`);
-    setOfferPlayerId(null);
+    if (result.accepted) {
+      onUpdate(completePlayerPurchase(career, playerId, club, offer, listed));
+      setOfferPlayerId(null);
+    }
   };
 
   return (
@@ -112,8 +130,27 @@ export function ManagerTransfers({
         </p>
       </div>
 
-      {message && (
-        <p className={`${TYPO.bodySm} text-theme-primary`}>{message}</p>
+      {leagueTransfers.length > 0 && (
+        <section className={`${CARD.base} ${SPACING.cardPadding}`}>
+          <h2 className={`${TYPO.sectionLabel} mb-2`}>League Transfers</h2>
+          <ul className={`max-h-48 overflow-y-auto ${SPACING.stackSm}`}>
+            {leagueTransfers.slice(0, 12).map((tx) => (
+              <li
+                key={tx.id}
+                className={`${TYPO.bodySm} border-b border-pitch-800/60 pb-2 last:border-0`}
+              >
+                <span className="font-medium text-white">{tx.playerName}</span>
+                <span className="text-pitch-400">
+                  {" "}
+                  — {tx.fromClub} → {tx.toClub}
+                </span>
+                <span className="block text-pitch-500">
+                  {formatWage(tx.fee)} · Week {tx.week}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
@@ -178,7 +215,7 @@ export function ManagerTransfers({
                   disabled={career.budget < askingPrice}
                   onClick={() => {
                     playUiClick();
-                    handleBuyListed(player.id, club, true);
+                    submitTransferOffer(player.id, club, true);
                   }}
                 >
                   Sign — {formatWage(askingPrice)}
@@ -214,7 +251,6 @@ export function ManagerTransfers({
               career.seed,
               career.gameWeek
             );
-            const demand = getTransferDemand(player.id, career.club);
             const isOffering = offerPlayerId === player.id;
             return (
               <div
@@ -241,9 +277,7 @@ export function ManagerTransfers({
                       variant="theme"
                       size="sm"
                       className="mt-2"
-                      onClick={() =>
-                        handleBuyListed(player.id, club, false)
-                      }
+                      onClick={() => submitTransferOffer(player.id, club, false)}
                     >
                       Submit Offer
                     </GameButton>
@@ -267,6 +301,13 @@ export function ManagerTransfers({
           })}
         </div>
       </section>
+
+      {transferResult && (
+        <ManagerTransferResultModal
+          result={transferResult}
+          onClose={() => setTransferResult(null)}
+        />
+      )}
     </div>
   );
 }

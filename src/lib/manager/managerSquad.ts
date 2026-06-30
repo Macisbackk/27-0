@@ -8,7 +8,7 @@ import {
   POSITION_SHORT,
 } from "../positions";
 import type { ManagerCareer, ManagerPlayerState } from "./types";
-import { getManagerPlayer } from "./managerPlayers";
+import { getManagerPlayer, getManagerPlayerEligiblePositions } from "./managerPlayers";
 import {
   ERA_BENCH_FROM_STARTING_17,
   ERA_STARTING_17_SIZE,
@@ -42,7 +42,8 @@ export function canPlayPosition(
 export function validateMatchdaySquad(
   xiiiIds: string[],
   interchangeIds: string[],
-  slotPositions: Position[]
+  slotPositions: Position[],
+  career?: ManagerCareer
 ): { valid: boolean; error?: string } {
   if (xiiiIds.length !== ERA_XIII_FROM_STARTING_17) {
     return { valid: false, error: `Need ${ERA_XIII_FROM_STARTING_17} starters` };
@@ -65,8 +66,11 @@ export function validateMatchdaySquad(
   for (let i = 0; i < xiiiIds.length; i++) {
     const id = xiiiIds[i]!;
     const pos = slotPositions[i]!;
-    if (!canPlayPosition(id, pos)) {
-      const player = getPlayerById(id);
+    const eligible = career
+      ? getManagerPlayerEligiblePositions(career, id).includes(pos)
+      : canPlayPosition(id, pos);
+    if (!eligible) {
+      const player = career ? getManagerPlayer(career, id) : getPlayerById(id);
       return {
         valid: false,
         error: `${player?.name ?? "Player"} cannot play ${POSITION_SHORT[pos]}`,

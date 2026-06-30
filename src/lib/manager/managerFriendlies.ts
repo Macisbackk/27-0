@@ -1,10 +1,6 @@
 import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
-import {
-  buildEraTeam,
-  ERA_HISTORIC_ONLY_CLUBS,
-  formatEraDisplayName,
-} from "../players/era-teams";
+import { getManagerClubTeamRating } from "./managerRating";
 import type {
   FriendlyOpponentChoice,
   ManagerCareer,
@@ -16,6 +12,8 @@ const ATTENDANCE_LABELS = {
   medium: "Good pre-season interest",
   high: "Strong turnout expected",
 } as const;
+
+const CURRENT_SEASON = "2026";
 
 function defaultPreSeason(): PreSeasonState {
   return {
@@ -57,37 +55,22 @@ function buildFriendlyCandidates(
   friendlyIndex: number
 ): FriendlyOpponentChoice[] {
   const rng = seedrandom(`${seed}-friendly-${friendlyIndex}`);
-  const pool: FriendlyOpponentChoice[] = [];
-
-  const clubs = [
-    ...ERA_HISTORIC_ONLY_CLUBS,
-    ...CURRENT_PLAYABLE_CLUBS.filter((c) => c !== userClub),
-  ];
-
-  for (const club of clubs) {
-    if (club === userClub) continue;
-    const years = club === userClub ? [] : getYearsForClub(club);
-    for (const year of years) {
-      const team = buildEraTeam(club, year);
-      if (!team || team.playerIds.length < 13) continue;
-      const displayName = formatEraDisplayName(club, year);
-      pool.push({
-        id: `${club}-${year}`,
-        club,
-        year,
-        displayName,
-        difficulty: "balanced",
-        teamRating: Math.round(team.teamRating),
-        description: `A pre-season run-out against ${displayName}.`,
-        attendanceInterest:
-          team.teamRating >= 82
-            ? "high"
-            : team.teamRating >= 74
-              ? "medium"
-              : "low",
-      });
-    }
-  }
+  const pool: FriendlyOpponentChoice[] = CURRENT_PLAYABLE_CLUBS.filter(
+    (club) => club !== userClub
+  ).map((club) => {
+    const teamRating = Math.round(getManagerClubTeamRating(club));
+    return {
+      id: `${club}-${CURRENT_SEASON}`,
+      club,
+      year: CURRENT_SEASON,
+      displayName: club,
+      difficulty: "balanced" as const,
+      teamRating,
+      description: `A pre-season run-out against ${club}.`,
+      attendanceInterest:
+        teamRating >= 82 ? "high" : teamRating >= 74 ? "medium" : "low",
+    };
+  });
 
   const shuffled = [...pool].sort(() => rng() - 0.5);
   const unique: FriendlyOpponentChoice[] = [];
@@ -106,19 +89,16 @@ function buildFriendlyCandidates(
   const balanced = unique[Math.floor(unique.length * 0.5)]!;
   const hard = unique[Math.floor(unique.length * 0.85)]!;
 
-  const describe = (c: FriendlyOpponentChoice, tier: "easy" | "balanced" | "hard") => {
+  const describe = (
+    c: FriendlyOpponentChoice,
+    tier: "easy" | "balanced" | "hard"
+  ) => {
     if (tier === "easy") {
-      if (c.club.includes("Widnes"))
-        return "A useful warm-up against a historic Widnes side.";
       return `A useful warm-up against ${c.displayName}.`;
     }
     if (tier === "hard") {
-      if (c.club.includes("Wigan"))
-        return "A tough test against an elite Wigan squad.";
       return `A tough test against ${c.displayName}.`;
     }
-    if (c.club.includes("Salford"))
-      return "A balanced pre-season run-out against Salford.";
     return `A balanced pre-season run-out against ${c.displayName}.`;
   };
 
@@ -131,17 +111,6 @@ function buildFriendlyCandidates(
     },
     { ...hard, difficulty: "hard", description: describe(hard, "hard") },
   ];
-}
-
-function getYearsForClub(club: string): string[] {
-  const years: string[] = [];
-  for (let y = 2026; y >= 2003; y--) {
-    const year = String(y);
-    const team = buildEraTeam(club, year);
-    if (team && team.playerIds.length >= 13) years.push(year);
-    if (years.length >= 4) break;
-  }
-  return years;
 }
 
 export function ensureFriendlyChoices(career: ManagerCareer): ManagerCareer {
@@ -174,7 +143,9 @@ export function selectFriendlyOpponent(
   const choice = career.preSeason.currentChoices.find((c) => c.id === choiceId);
   if (!choice) return career;
 
-  const rng = seedrandom(`${career.seed}-friendly-home-${career.preSeason.friendliesPlayed}`);
+  const rng = seedrandom(
+    `${career.seed}-friendly-home-${career.preSeason.friendliesPlayed}`
+  );
   const isHome = rng() > 0.35;
 
   return {
@@ -184,7 +155,7 @@ export function selectFriendlyOpponent(
       awaitingChoice: false,
       currentChoices: [],
       activeFriendly: {
-        displayName: choice.displayName,
+        displayName: choice.club,
         club: choice.club,
         year: choice.year,
         teamRating: choice.teamRating,

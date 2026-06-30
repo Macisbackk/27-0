@@ -386,7 +386,7 @@ export function advanceLiveTick(
     oppTries,
     command,
     momentum: Math.max(-50, Math.min(50, momentum)),
-    events: events.slice(-24),
+    events,
     effectivenessLine: atHalftime
       ? "Half time — review the first half and set your command."
       : effectivenessFromCommand(command, momentum),
@@ -454,68 +454,65 @@ function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
 
 export function liveMatchToFixture(
   state: LiveMatchState,
-  career: ManagerCareer
+  _career: ManagerCareer
 ): MatchFixture {
-  const userTryEvents = state.events.filter(
-    (e) => e.type === "try" && e.team === "user"
-  );
-  const oppTryEvents = state.events.filter(
-    (e) => e.type === "try" && e.team === "opponent"
-  );
-  const userGoals = state.events.filter(
+  const finalized = state.isComplete ? state : finalizeLiveMatch(state);
+
+  const pointsFor = finalized.userScore;
+  const pointsAgainst = finalized.oppScore;
+  const triesFor = finalized.userTries;
+  const triesAgainst = finalized.oppTries;
+
+  const userGoals = finalized.events.filter(
     (e) => e.type === "goal" && e.team === "user"
   ).length;
-  const oppGoals = state.events.filter(
+  const oppGoals = finalized.events.filter(
     (e) => e.type === "goal" && e.team === "opponent"
   ).length;
-  const userPenalties = state.events.filter(
+  const userPenalties = finalized.events.filter(
     (e) => e.type === "penalty" && e.team === "user"
   ).length;
-  const oppPenalties = state.events.filter(
+  const oppPenalties = finalized.events.filter(
     (e) => e.type === "penalty" && e.team === "opponent"
   ).length;
-  const userDrops = state.events.filter(
+  const userDrops = finalized.events.filter(
     (e) => e.type === "drop_goal" && e.team === "user"
   ).length;
-  const oppDrops = state.events.filter(
+  const oppDrops = finalized.events.filter(
     (e) => e.type === "drop_goal" && e.team === "opponent"
   ).length;
 
-  const triesFor = userTryEvents.length;
-  const triesAgainst = oppTryEvents.length;
-
-  let pointsFor =
-    triesFor * 4 +
-    userGoals * 2 +
-    userPenalties * 2 +
-    userDrops;
-  let pointsAgainst =
-    triesAgainst * 4 +
-    oppGoals * 2 +
-    oppPenalties * 2 +
-    oppDrops;
-
-  pointsFor = snapToRLScore(pointsFor, false);
-  pointsAgainst = snapToRLScore(pointsAgainst, false);
-
-  if (pointsFor === pointsAgainst) {
-    pointsFor += 2;
-  }
+  const userKicking =
+    userGoals + userPenalties + userDrops > 0
+      ? {
+          conversions: userGoals,
+          penalties: userPenalties,
+          dropGoals: userDrops,
+        }
+      : decomposeRLScore(pointsFor);
+  const oppKicking =
+    oppGoals + oppPenalties + oppDrops > 0
+      ? {
+          conversions: oppGoals,
+          penalties: oppPenalties,
+          dropGoals: oppDrops,
+        }
+      : decomposeRLScore(pointsAgainst);
 
   const won = pointsFor > pointsAgainst;
 
   const scoringFor = {
     tries: triesFor,
-    conversions: userGoals,
-    penalties: userPenalties,
-    dropGoals: userDrops,
+    conversions: userKicking.conversions,
+    penalties: userKicking.penalties,
+    dropGoals: userKicking.dropGoals,
     points: pointsFor,
   };
   const scoringAgainst = {
     tries: triesAgainst,
-    conversions: oppGoals,
-    penalties: oppPenalties,
-    dropGoals: oppDrops,
+    conversions: oppKicking.conversions,
+    penalties: oppKicking.penalties,
+    dropGoals: oppKicking.dropGoals,
     points: pointsAgainst,
   };
 

@@ -36,7 +36,7 @@ export function getManagerPlayerEligiblePositions(
   playerId: string
 ): Position[] {
   const reserve = career.reserves.find((r) => r.id === playerId);
-  if (reserve) return reserve.eligiblePositions;
+  if (reserve) return getPlayerEligiblePositions(reserveToPlayer(reserve));
   const player = getManagerPlayer(career, playerId);
   if (!player) return [];
   return getPlayerEligiblePositions(player);

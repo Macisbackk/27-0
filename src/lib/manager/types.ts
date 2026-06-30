@@ -292,6 +292,16 @@ export interface LeagueListedPlayer {
   listedAtWeek: number;
 }
 
+export interface LeagueTransferActivity {
+  id: string;
+  week: number;
+  fromClub: string;
+  toClub: string;
+  playerId: string;
+  playerName: string;
+  fee: number;
+}
+
 export interface FriendlyOpponentChoice {
   id: string;
   club: string;
@@ -339,6 +349,8 @@ export type InboxMessageType =
   | "transfer_offer_out"
   | "contract"
   | "reserve_report"
+  | "reserve_callup"
+  | "reserve_return"
   | "sale"
   | "board"
   | "fixture"
@@ -427,6 +439,7 @@ export interface ManagerCareer {
   preSeason: PreSeasonState;
   managerFinance: ManagerFinance;
   latestNews: LatestNewsItem[];
+  leagueTransfers: LeagueTransferActivity[];
   lastReserveReportWeek?: number;
   createdAt: string;
   updatedAt: string;

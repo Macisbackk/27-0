@@ -49,7 +49,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   }
 
   const wageBill = raw.wageBill ?? computeWageBill(contracts);
-  const wageBudget = raw.wageBudget ?? getWageBudgetForClub(raw.club);
+  const wageBudget = getWageBudgetForClub(raw.club);
 
   let challengeCup = raw.challengeCup as ChallengeCupBracketState | undefined;
   if (!challengeCup?.matches?.length) {
@@ -129,6 +129,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     preSeason: initPreSeasonState(raw),
     managerFinance: initManagerFinance(raw),
     latestNews: raw.latestNews ?? [],
+    leagueTransfers: raw.leagueTransfers ?? [],
     lastReserveReportWeek: raw.lastReserveReportWeek,
   };
 
@@ -227,6 +228,7 @@ export function createNewCareer(club: string): ManagerCareer {
       seasonSpending: 0,
     },
     latestNews: [],
+    leagueTransfers: [],
     wins: 0,
     losses: 0,
     teamSeasonStats: { ...EMPTY_TEAM_SEASON_STATS },

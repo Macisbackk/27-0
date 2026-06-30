@@ -8,6 +8,10 @@ import type {
   ManagerReservePlayer,
   ReserveFixtureResult,
 } from "./types";
+import {
+  addReserveCallUpInboxMessage,
+  addReserveReturnInboxMessage,
+} from "./managerInbox";
 import { createInitialPlayerState } from "./managerSquad";
 import {
   buildContractsForSquad,
@@ -197,6 +201,8 @@ export function callUpReserveForNextMatch(
   const reserve = career.reserves.find((r) => r.id === reserveId);
   if (!reserve) return career;
 
+  const alreadyCalled = career.calledUpReserveIds.includes(reserveId);
+
   const interchange = [...career.matchdayInterchange];
   if (!interchange.includes(reserveId)) {
     const emptyIdx = interchange.findIndex((id) => !id);
@@ -208,17 +214,34 @@ export function callUpReserveForNextMatch(
     r.id === reserveId ? { ...r, calledUpForNextMatch: true } : r
   );
 
-  return {
+  let next: ManagerCareer = {
     ...career,
     reserves,
     matchdayInterchange: interchange,
     calledUpReserveIds: [...new Set([...career.calledUpReserveIds, reserveId])],
   };
+
+  if (!alreadyCalled) {
+    next = addReserveCallUpInboxMessage(
+      next,
+      reserve.id,
+      reserve.name,
+      POSITION_SHORT[reserve.position]
+    );
+  }
+
+  return next;
 }
 
 export function clearReserveCallUps(career: ManagerCareer): ManagerCareer {
   const calledSet = new Set(career.calledUpReserveIds);
-  return {
+  if (calledSet.size === 0) return career;
+
+  const returned = career.reserves
+    .filter((r) => calledSet.has(r.id))
+    .map((r) => ({ id: r.id, name: r.name }));
+
+  let next: ManagerCareer = {
     ...career,
     calledUpReserveIds: [],
     matchdayInterchange: career.matchdayInterchange.filter(
@@ -229,6 +252,10 @@ export function clearReserveCallUps(career: ManagerCareer): ManagerCareer {
       calledUpForNextMatch: false,
     })),
   };
+
+  next = addReserveReturnInboxMessage(next, returned);
+
+  return next;
 }
 
 export function promoteReserveToSquad(

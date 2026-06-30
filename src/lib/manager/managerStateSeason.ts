@@ -184,6 +184,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
       seasonSpending: 0,
     },
     latestNews: [],
+    leagueTransfers: [],
     lastReserveReportWeek: undefined,
     clubFunds: refreshClubFundsForSeason(afterContracts, summary),
     updatedAt: new Date().toISOString(),

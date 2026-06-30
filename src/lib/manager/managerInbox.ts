@@ -194,3 +194,52 @@ export function hydrateInboxMessages(career: ManagerCareer): ManagerCareer {
     ),
   };
 }
+
+export function addReserveCallUpInboxMessage(
+  career: ManagerCareer,
+  playerId: string,
+  playerName: string,
+  positionLabel: string
+): ManagerCareer {
+  return pushInboxMessage(career, {
+    id: `reserve-callup-${playerId}-w${career.gameWeek}-${Date.now()}`,
+    type: "reserve_callup",
+    title: "Reserve Called Up",
+    body: `${playerName} (${positionLabel}) has been called up to the matchday squad for the next fixture.`,
+    week: career.gameWeek,
+    season: career.seasonYear,
+    gameWeek: career.gameWeek,
+    createdAt: new Date().toISOString(),
+    read: false,
+    resolved: false,
+    playerId,
+    playerName,
+  });
+}
+
+export function addReserveReturnInboxMessage(
+  career: ManagerCareer,
+  players: { id: string; name: string }[]
+): ManagerCareer {
+  if (players.length === 0) return career;
+
+  const names = players.map((p) => p.name);
+  const body =
+    players.length === 1
+      ? `${names[0]} has returned to the reserve squad after the match.`
+      : `${names.join(", ")} have returned to the reserve squad after the match.`;
+
+  return pushInboxMessage(career, {
+    id: `reserve-return-w${career.gameWeek}-${players.map((p) => p.id).sort().join("-")}`,
+    type: "reserve_return",
+    title: "Returned To Reserves",
+    body,
+    week: career.gameWeek,
+    season: career.seasonYear,
+    gameWeek: career.gameWeek,
+    createdAt: new Date().toISOString(),
+    read: false,
+    resolved: false,
+    playerName: names.join(", "),
+  });
+}

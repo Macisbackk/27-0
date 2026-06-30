@@ -153,7 +153,7 @@ export function getNextManagerFixture(
     return {
       id: `friendly-${f.friendlyIndex}-${f.club}-${f.year}`,
       round: 0,
-      opponent: f.displayName,
+      opponent: f.club,
       isHome: f.isHome,
       competition: "friendly",
       label: `Friendly ${f.friendlyIndex + 1}`,

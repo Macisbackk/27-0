@@ -210,6 +210,8 @@ export function ManagerInbox({
             msg.type === "injury" ||
             msg.type === "sale" ||
             msg.type === "reserve_report" ||
+            msg.type === "reserve_callup" ||
+            msg.type === "reserve_return" ||
             msg.type === "news" ||
             msg.type === "general") && (
             <GameButton

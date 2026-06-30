@@ -106,7 +106,8 @@ export function validateFitMatchdaySquad(
   const formation = validateMatchdaySquad(
     career.matchdayXiii,
     career.matchdayInterchange,
-    career.xiiiSlotPositions
+    career.xiiiSlotPositions,
+    career
   );
   if (!formation.valid && formation.error) {
     missing.push(formation.error);

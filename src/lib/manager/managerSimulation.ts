@@ -29,7 +29,11 @@ import {
   isManagerSeasonComplete,
 } from "./managerChallengeCup";
 import { countExpiringContracts } from "./managerContracts";
-import { ensureManagerFixtureScoring, applyLiveEventsToFixtureScoring } from "./managerFixtureScoring";
+import { maybeGenerateAiTransfers } from "./managerAiTransfers";
+import {
+  ensureManagerFixtureScoring,
+  applyLiveEventsToFixtureScoring,
+} from "./managerFixtureScoring";
 import {
   applyReserveMatchDevelopment,
   clearReserveCallUps,
@@ -394,6 +398,7 @@ export function applyManagerMatchResult(
   finalCareer = syncManagerInboxMessages(finalCareer);
   finalCareer = maybeAddReserveReport(finalCareer);
   finalCareer = rotateLatestNews(finalCareer);
+  finalCareer = maybeGenerateAiTransfers(finalCareer);
   if (isFriendly) {
     finalCareer = completeFriendlyMatch(finalCareer);
   }

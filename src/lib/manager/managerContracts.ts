@@ -161,7 +161,7 @@ export function computeWageBill(
 
 export function getWageBudgetForClub(club: string): number {
   const rating = getManagerClubTeamRating(club);
-  return Math.round(1_200_000 + rating * 12_000);
+  return Math.round(2_200_000 + rating * 11_000);
 }
 
 function roleRank(role: SquadRole): number {
