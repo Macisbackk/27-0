@@ -14,13 +14,13 @@ import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
 import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import {
   assignPlayerToMatchday,
-  canAssignPlayerToXiiiSlot,
-  getAvailableSquadPlayers,
-  getMatchdayPlayerIds,
+  findPlayerMatchdaySlot,
+  getReplacementCandidates,
   slotAbbrev,
   TEAM_SHEET_ROWS,
   type MatchdaySlotTarget,
 } from "@/lib/manager/managerMatchdaySquad";
+import { ManagerSquadPlayerModal } from "@/components/manager/ManagerSquadPlayerModal";
 import { ManagerTacticsPanel } from "@/components/manager/ManagerTactics";
 import { playUiClick } from "@/lib/sound";
 
@@ -36,6 +36,7 @@ function TeamSheetSlot({
   career,
   selected,
   onSelect,
+  onPlayerClick,
 }: {
   slotIndex: number;
   position: Position;
@@ -43,6 +44,7 @@ function TeamSheetSlot({
   career: ManagerCareer;
   selected: boolean;
   onSelect: () => void;
+  onPlayerClick: (playerId: string) => void;
 }) {
   const player = playerId ? getManagerPlayer(career, playerId) : null;
   const ps = career.squad.find((p) => p.playerId === playerId);
@@ -54,7 +56,8 @@ function TeamSheetSlot({
       type="button"
       onClick={() => {
         playUiClick();
-        onSelect();
+        if (playerId) onPlayerClick(playerId);
+        else onSelect();
       }}
       className={`min-h-[52px] w-full rounded-lg border px-2 py-1.5 text-left transition ${
         selected
@@ -91,20 +94,30 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     null
   );
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
+  const [modalPlayerId, setModalPlayerId] = useState<string | null>(null);
+  const [pendingAssignId, setPendingAssignId] = useState<string | null>(null);
 
-  const inLineup = getMatchdayPlayerIds(career);
-  const available = useMemo(() => getAvailableSquadPlayers(career), [career]);
+  const replacementCandidates = useMemo(() => {
+    if (!selectedTarget) return [];
+    return getReplacementCandidates(career, selectedTarget);
+  }, [career, selectedTarget]);
 
-  const filteredAvailable = useMemo(() => {
-    if (positionFilter === "all") return available;
-    return available.filter(({ playerId }) =>
+  const filteredCandidates = useMemo(() => {
+    if (positionFilter === "all") return replacementCandidates;
+    return replacementCandidates.filter(({ playerId }) =>
       getManagerPlayerEligiblePositions(career, playerId).includes(
         positionFilter
       )
     );
-  }, [available, career, positionFilter]);
+  }, [replacementCandidates, career, positionFilter]);
 
   const handleSelectSlot = (target: MatchdaySlotTarget) => {
+    if (pendingAssignId) {
+      onUpdate(assignPlayerToMatchday(career, target, pendingAssignId));
+      setPendingAssignId(null);
+      setSelectedTarget(null);
+      return;
+    }
     setSelectedTarget((prev) =>
       prev?.kind === target.kind && prev.index === target.index ? null : target
     );
@@ -112,14 +125,24 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
 
   const handlePickPlayer = (playerId: string) => {
     if (!selectedTarget) return;
-    if (
-      selectedTarget.kind === "xiii" &&
-      !canAssignPlayerToXiiiSlot(career, selectedTarget.index, playerId)
-    ) {
-      return;
-    }
     onUpdate(assignPlayerToMatchday(career, selectedTarget, playerId));
     setSelectedTarget(null);
+  };
+
+  const handleReplacePlayer = (playerId: string) => {
+    const slot = findPlayerMatchdaySlot(career, playerId);
+    if (slot) {
+      setSelectedTarget(slot);
+      setPendingAssignId(null);
+    } else {
+      setPendingAssignId(playerId);
+      setSelectedTarget(null);
+    }
+  };
+
+  const persistAndClose = (next: ManagerCareer) => {
+    onUpdate(next);
+    setModalPlayerId(null);
   };
 
   return (
@@ -167,6 +190,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                         onSelect={() =>
                           handleSelectSlot({ kind: "xiii", index: slotIndex })
                         }
+                        onPlayerClick={setModalPlayerId}
                       />
                     );
                   })}
@@ -191,7 +215,8 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     type="button"
                     onClick={() => {
                       playUiClick();
-                      handleSelectSlot({ kind: "bench", index: i });
+                      if (playerId) setModalPlayerId(playerId);
+                      else handleSelectSlot({ kind: "bench", index: i });
                     }}
                     className={`rounded-lg border px-2 py-2 text-left ${
                       isSelected
@@ -217,13 +242,17 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
 
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>
           <p className={`${TYPO.sectionLabel} mb-2`}>Available Players</p>
-          {selectedTarget ? (
+          {pendingAssignId ? (
             <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>
-              Tap a player to assign to selected slot
+              Select a starter or interchange slot for this player
+            </p>
+          ) : selectedTarget ? (
+            <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>
+              Tap a replacement — interchange, starters, or available squad
             </p>
           ) : (
             <p className={`mb-2 ${TYPO.bodySm} text-pitch-500`}>
-              Select a team sheet or interchange slot first
+              Click a slot to swap, or a player for actions
             </p>
           )}
           <div className="mb-2 flex flex-wrap gap-1">
@@ -254,65 +283,65 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
             ))}
           </div>
           <ul className={`max-h-[420px] overflow-y-auto ${SPACING.stackSm}`}>
-            {filteredAvailable.map(({ playerId, isReserveCallUp }) => {
-              const player = getManagerPlayer(career, playerId);
-              if (!player) return null;
-              const positions = getManagerPlayerEligiblePositions(
-                career,
-                playerId
-              );
-              const ps = career.squad.find((p) => p.playerId === playerId);
-              const canAssign =
-                !selectedTarget ||
-                selectedTarget.kind === "bench" ||
-                canAssignPlayerToXiiiSlot(
+            {filteredCandidates.map(
+              ({ playerId, source, isReserveCallUp }) => {
+                const player = getManagerPlayer(career, playerId);
+                if (!player) return null;
+                const positions = getManagerPlayerEligiblePositions(
                   career,
-                  selectedTarget.index,
                   playerId
                 );
-              return (
-                <li key={playerId}>
-                  <button
-                    type="button"
-                    disabled={!selectedTarget || !canAssign}
-                    onClick={() => {
-                      playUiClick();
-                      handlePickPlayer(playerId);
-                    }}
-                    className={`w-full rounded-lg border px-2 py-2 text-left transition ${
-                      canAssign && selectedTarget
-                        ? "border-pitch-600 hover:border-theme-primary/50"
-                        : "border-pitch-800/40 opacity-70"
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-medium text-white">
-                          {player.name}
-                          {isReserveCallUp && (
-                            <span className="ml-1 text-[10px] text-theme-tertiary">
-                              (Call-up)
-                            </span>
-                          )}
-                          {inLineup.has(playerId) && (
+                const ps = career.squad.find((p) => p.playerId === playerId);
+                const sourceLabel =
+                  source === "bench"
+                    ? "INT"
+                    : source === "xiii"
+                      ? "XIII"
+                      : isReserveCallUp
+                        ? "Call-up"
+                        : "Squad";
+                return (
+                  <li key={playerId}>
+                    <button
+                      type="button"
+                      disabled={!selectedTarget}
+                      onClick={() => {
+                        playUiClick();
+                        handlePickPlayer(playerId);
+                      }}
+                      className={`w-full rounded-lg border px-2 py-2 text-left transition ${
+                        selectedTarget
+                          ? "border-pitch-600 hover:border-theme-primary/50"
+                          : "border-pitch-800/40 opacity-70"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-medium text-white">
+                            {player.name}
                             <span className="ml-1 text-[10px] text-pitch-500">
-                              (Selected)
+                              ({sourceLabel})
                             </span>
-                          )}
-                        </p>
-                        <p className="text-[10px] text-pitch-400">
-                          {positions.map((p) => POSITION_SHORT[p]).join(" · ")}
-                          {ps && ` · Fit ${ps.fitness}`}
-                        </p>
+                          </p>
+                          <p className="text-[10px] text-pitch-400">
+                            {positions.map((p) => POSITION_SHORT[p]).join(" · ")}
+                            {ps && ` · Fit ${ps.fitness}`}
+                          </p>
+                        </div>
+                        <span className="shrink-0 font-bold text-theme-primary">
+                          {player.rating ?? player.peakRating}
+                        </span>
                       </div>
-                      <span className="shrink-0 font-bold text-theme-primary">
-                        {player.rating ?? player.peakRating}
-                      </span>
-                    </div>
-                  </button>
-                </li>
-              );
-            })}
+                    </button>
+                  </li>
+                );
+              }
+            )}
+            {!selectedTarget && !pendingAssignId && (
+              <p className={`${TYPO.bodySm} text-pitch-500`}>
+                Select a slot to see replacement options
+              </p>
+            )}
           </ul>
         </div>
       </div>
@@ -324,6 +353,16 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
           onChange={(tactics) => onUpdate({ ...career, tactics })}
         />
       </div>
+
+      {modalPlayerId && (
+        <ManagerSquadPlayerModal
+          career={career}
+          playerId={modalPlayerId}
+          onClose={() => setModalPlayerId(null)}
+          onUpdate={persistAndClose}
+          onReplace={handleReplacePlayer}
+        />
+      )}
     </div>
   );
 }

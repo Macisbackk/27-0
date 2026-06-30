@@ -38,34 +38,45 @@ export function inferSquadRole(
   return "Depth";
 }
 
+const MAX_DEMAND_BY_ROLE: Record<SquadRole, number> = {
+  Star: 350_000,
+  Starter: 180_000,
+  Rotation: 90_000,
+  Prospect: 60_000,
+  Depth: 45_000,
+};
+
+function baseWageFromRating(rating: number, age?: number): number {
+  if (rating >= 90) return 250_000 + (rating - 90) * 20_000;
+  if (rating >= 86) return 180_000 + (rating - 86) * 15_000;
+  if (rating >= 82) return 120_000 + (rating - 82) * 12_000;
+  if (rating >= 78) return 80_000 + (rating - 78) * 8_000;
+  if (rating >= 74) return 45_000 + (rating - 74) * 5_000;
+  if (age !== undefined && age <= 22) return 20_000 + rating * 350;
+  return 15_000 + rating * 300;
+}
+
 export function calculateWageForPlayer(
   playerId: string,
   role: SquadRole,
-  clubReputation: number
+  _clubReputation: number
 ): number {
   const player = getPlayerById(playerId);
   if (!player) return 25_000;
   const rating = player.rating ?? player.peakRating;
   const age = getPlayerAge(player);
-
-  let base: number;
-  if (rating >= 88) base = 180_000 + (rating - 88) * 25_000;
-  else if (rating >= 85) base = 120_000 + (rating - 85) * 20_000;
-  else if (rating >= 80) base = 80_000 + (rating - 80) * 8_000;
-  else if (rating >= 74) base = 45_000 + (rating - 74) * 5_000;
-  else if (age !== undefined && age <= 22) base = 20_000 + rating * 400;
-  else base = 15_000 + rating * 350;
+  const base = baseWageFromRating(rating, age);
 
   const roleMult: Record<SquadRole, number> = {
-    Star: 1.25,
-    Starter: 1.1,
+    Star: 1.08,
+    Starter: 1.04,
     Rotation: 1.0,
-    Prospect: 0.85,
-    Depth: 0.75,
+    Prospect: 0.9,
+    Depth: 0.82,
   };
 
-  const repBonus = (clubReputation - 70) * 500;
-  return Math.round(Math.max(15_000, base * roleMult[role] + repBonus));
+  const wage = Math.round(base * roleMult[role]);
+  return Math.min(MAX_DEMAND_BY_ROLE[role], Math.max(15_000, wage));
 }
 
 export function generateInitialContract(
@@ -96,23 +107,33 @@ export function generateRenewalDemand(
 ): RenewalDemand {
   const player = getManagerPlayer(career, playerId);
   const rating = player?.rating ?? player?.peakRating ?? 70;
+  const age = player ? getPlayerAge(player) : undefined;
   const appearances = getPlayerSeasonAppearances(career, playerId);
   const happiness = contract.happiness;
 
-  let wageBump = 1.05;
-  if (happiness >= 70) wageBump += 0.05;
-  if (appearances >= 10) wageBump += 0.04;
-  if (career.boardConfidence >= 70) wageBump += 0.03;
-  if (rating >= 85) wageBump += 0.08;
+  let wageBump = 1.03;
+  if (happiness >= 70) wageBump += 0.03;
+  if (appearances >= 10) wageBump += 0.03;
+  if (career.boardConfidence >= 70) wageBump += 0.02;
+  if (rating >= 85) wageBump += 0.04;
 
-  const yearsRequested = rating >= 85 ? 2 : 1 + Math.floor(Math.random() * 2);
+  const yearsRequested =
+    rating >= 85 && (age === undefined || age <= 30) ? 2 : 1;
   const role =
     appearances >= 8 && rating >= 80
       ? "Starter"
       : contract.squadRole;
 
+  const rawDemand = Math.round(contract.wagePerYear * wageBump);
+  const cap = MAX_DEMAND_BY_ROLE[role];
+  const fairBase = calculateWageForPlayer(
+    playerId,
+    role,
+    getManagerClubTeamRating(career.club)
+  );
+
   return {
-    wagePerYear: Math.round(contract.wagePerYear * wageBump),
+    wagePerYear: Math.min(cap, Math.max(fairBase, rawDemand)),
     yearsRequested,
     squadRole: role,
   };

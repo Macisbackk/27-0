@@ -5,6 +5,7 @@ import { getOpponentMatchRating } from "../game/opponent-scorers";
 import type { Position } from "../types";
 import type {
   LiveMatchCommand,
+  LiveMatchPhase,
   ManagerCareer,
   ManagerCompetition,
   ManagerScheduledFixture,
@@ -15,8 +16,9 @@ import { getManagerPlayer } from "./managerPlayers";
 
 export type { LiveMatchEvent };
 
-export const REAL_TICK_MS = 1000;
+export const REAL_TICK_MS = 500;
 export const GAME_MINUTES_PER_TICK = 2;
+export const HALFTIME_MINUTE = 40;
 
 export interface LiveMatchState {
   minute: number;
@@ -30,6 +32,7 @@ export interface LiveMatchState {
   effectivenessLine: string;
   isComplete: boolean;
   isPlaying: boolean;
+  phase: LiveMatchPhase;
   opponent: string;
   isHome: boolean;
   round: number;
@@ -194,10 +197,16 @@ function rollTryChance(
   mod: number,
   rng: () => number
 ): boolean {
-  const diff = rating - oppRating + (isHome ? 2 : 0) + momentum * 0.08;
-  const base = 0.055 + mod * 0.035;
-  const prob = base + diff * 0.004;
-  return rng() < Math.max(0.015, Math.min(0.2, prob));
+  const ratingDiff = rating - oppRating;
+  const diff =
+    ratingDiff + (isHome ? 3 : 0) + momentum * 0.06;
+  const base = 0.038 + mod * 0.028;
+  let prob = base + diff * 0.007;
+  if (ratingDiff >= 12) prob += 0.025;
+  else if (ratingDiff >= 6) prob += 0.012;
+  else if (ratingDiff <= -12) prob -= 0.025;
+  else if (ratingDiff <= -6) prob -= 0.012;
+  return rng() < Math.max(0.01, Math.min(0.22, prob));
 }
 
 export function createLiveMatch(
@@ -213,9 +222,10 @@ export function createLiveMatch(
     command: "balanced",
     momentum: 0,
     events: [],
-    effectivenessLine: "Kick-off — the clock is running.",
+    effectivenessLine: "Ready for kick-off — press Start Game when you're set.",
     isComplete: false,
-    isPlaying: true,
+    isPlaying: false,
+    phase: "preview",
     opponent: sched.opponent,
     isHome: sched.isHome,
     round: sched.round,
@@ -225,14 +235,18 @@ export function createLiveMatch(
   };
 }
 
-/** Advance the live match by GAME_MINUTES_PER_TICK game minutes. */
+/** Advance live match; stops at maxMinute (40 for half-time, 80 for full time). */
 export function advanceLiveTick(
   state: LiveMatchState,
   career: ManagerCareer,
-  command: LiveMatchCommand
+  command: LiveMatchCommand,
+  maxMinute = 80
 ): LiveMatchState {
-  if (state.isComplete || state.minute >= 80) {
-    return finalizeLiveMatch(state);
+  if (state.isComplete || state.minute >= maxMinute) {
+    if (maxMinute >= 80 && state.minute >= 80) {
+      return finalizeLiveMatch(state);
+    }
+    return { ...state, minute: Math.min(state.minute, maxMinute), isPlaying: false };
   }
 
   let minute = state.minute;
@@ -261,7 +275,7 @@ export function advanceLiveTick(
 
   for (let step = 0; step < GAME_MINUTES_PER_TICK; step++) {
     minute++;
-    if (minute > 80) break;
+    if (minute > maxMinute) break;
 
     const rng = seedrandom(
       `${state.seed}-live-${state.fixtureId}-m${minute}-${command}`
@@ -346,6 +360,7 @@ export function advanceLiveTick(
   }
 
   const isComplete = minute >= 80;
+  const atHalftime = minute >= HALFTIME_MINUTE && maxMinute <= HALFTIME_MINUTE;
   let finalUser = userScore;
   let finalOpp = oppScore;
   if (isComplete && finalUser === finalOpp) {
@@ -364,7 +379,7 @@ export function advanceLiveTick(
 
   return {
     ...state,
-    minute: Math.min(80, minute),
+    minute: Math.min(maxMinute, minute),
     userScore: finalUser,
     oppScore: finalOpp,
     userTries,
@@ -372,9 +387,20 @@ export function advanceLiveTick(
     command,
     momentum: Math.max(-50, Math.min(50, momentum)),
     events: events.slice(-24),
-    effectivenessLine: effectivenessFromCommand(command, momentum),
+    effectivenessLine: atHalftime
+      ? "Half time — review the first half and set your command."
+      : effectivenessFromCommand(command, momentum),
     isComplete,
-    isPlaying: !isComplete,
+    isPlaying: !isComplete && !atHalftime,
+    phase: isComplete
+      ? "full_time"
+      : atHalftime
+        ? "halftime"
+        : minute > 0
+          ? minute < HALFTIME_MINUTE
+            ? "first_half"
+            : "second_half"
+          : state.phase,
   };
 }
 
@@ -391,10 +417,20 @@ export function advanceLiveToFullTime(
   career: ManagerCareer,
   command: LiveMatchCommand
 ): LiveMatchState {
-  let next = state;
+  let next =
+    state.phase === "halftime"
+      ? { ...state, phase: "second_half" as const, isPlaying: true }
+      : state;
   let guard = 0;
   while (!next.isComplete && guard < 45) {
-    next = advanceLiveTick(next, career, command);
+    const maxMinute =
+      next.minute < HALFTIME_MINUTE || next.phase === "first_half"
+        ? HALFTIME_MINUTE
+        : 80;
+    next = advanceLiveTick(next, career, command, maxMinute);
+    if (next.phase === "halftime") {
+      next = { ...next, phase: "second_half", isPlaying: true };
+    }
     guard++;
   }
   return finalizeLiveMatch(next);
@@ -411,6 +447,7 @@ function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
     oppScore,
     isComplete: true,
     isPlaying: false,
+    phase: "full_time",
     effectivenessLine: "Full time — the hooter has gone.",
   };
 }

@@ -36,6 +36,10 @@ import {
   getReserveOpponent,
   simulateReserveFixture,
 } from "./managerReserves";
+import {
+  generateIncomingTransferOffers,
+  generateLeagueListedPlayers,
+} from "./managerTransferLeague";
 
 interface TacticModifiers {
   strengthBonus: number;
@@ -368,6 +372,22 @@ export function applyManagerMatchResult(
   const reserveResult = simulateReserveFixture(finalCareer, round, reserveOpp);
   finalCareer = applyReserveMatchDevelopment(finalCareer, reserveResult);
   finalCareer = clearReserveCallUps(finalCareer);
+  finalCareer = generateIncomingTransferOffers(finalCareer);
+  if (finalCareer.gameWeek % 3 === 0) {
+    finalCareer = {
+      ...finalCareer,
+      leagueListedPlayers: generateLeagueListedPlayers(
+        finalCareer.club,
+        finalCareer.seed,
+        finalCareer.gameWeek
+      ),
+      transferMarket: generateLeagueListedPlayers(
+        finalCareer.club,
+        finalCareer.seed,
+        finalCareer.gameWeek
+      ).map((l) => l.playerId),
+    };
+  }
 
   return finalCareer;
 }
@@ -391,14 +411,24 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
   ]);
 
   const teamForm = Math.max(-10, Math.min(10, (avgForm - 50) / 5));
+  const userRating = computeManagerTeamRating(
+    career.matchdayXiii,
+    career.matchdayInterchange,
+    career.xiiiSlotPositions,
+    career
+  );
   const baseOppRating = getOpponentMatchRating(
     sched.opponent,
     career.seed,
     round,
     { currentSeasonOnly: true }
   );
+  const ratingDiff = userRating - baseOppRating;
   const opponentRating =
-    baseOppRating + mods.opponentPenalty + fitnessPenalty * 0.3;
+    baseOppRating +
+    mods.opponentPenalty +
+    fitnessPenalty * 0.3 -
+    ratingDiff * 0.28;
   const userRatingBoost = mods.strengthBonus - fitnessPenalty * 0.2;
 
   const combinedForm = Math.max(

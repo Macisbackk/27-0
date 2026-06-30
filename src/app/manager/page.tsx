@@ -9,6 +9,7 @@ import { ManagerHub } from "@/components/manager/ManagerHub";
 import { ManagerSquad } from "@/components/manager/ManagerSquad";
 import { ManagerContracts } from "@/components/manager/ManagerContracts";
 import { ManagerReserves } from "@/components/manager/ManagerReserves";
+import { ManagerInbox } from "@/components/manager/ManagerInbox";
 import { ManagerTransfers } from "@/components/manager/ManagerTransfers";
 import { ManagerFixtures } from "@/components/manager/ManagerFixtures";
 import { ManagerStatsView } from "@/components/manager/ManagerStatsView";
@@ -47,6 +48,7 @@ const NAV_VIEWS: ManagerView[] = [
   "squad",
   "contracts",
   "reserves",
+  "inbox",
   "transfers",
   "fixtures",
   "stats",
@@ -58,6 +60,7 @@ export default function ManagerPage() {
   const [career, setCareer] = useState<ManagerCareer | null>(null);
   const [hasSave, setHasSave] = useState(false);
   const [reviewFixtureId, setReviewFixtureId] = useState<string | null>(null);
+  const [playGameOpen, setPlayGameOpen] = useState(false);
 
   useEffect(() => {
     setHasSave(hasManagerCareer());
@@ -140,10 +143,11 @@ export default function ManagerPage() {
     if (!career) return;
     const check = validateFitMatchdaySquad(career);
     if (!check.valid) return;
-    setView("play-game");
+    setPlayGameOpen(true);
   };
 
   const handlePlayComplete = (next: ManagerCareer) => {
+    setPlayGameOpen(false);
     afterMatch(next);
   };
 
@@ -184,6 +188,7 @@ export default function ManagerPage() {
             active={view}
             club={career.club}
             onNavigate={setView}
+            disabled={playGameOpen}
           />
 
           {view === "hub" && (
@@ -209,6 +214,9 @@ export default function ManagerPage() {
           {view === "reserves" && (
             <ManagerReserves career={career} onUpdate={persist} />
           )}
+          {view === "inbox" && (
+            <ManagerInbox career={career} onUpdate={persist} />
+          )}
           {view === "transfers" && (
             <ManagerTransfers career={career} onUpdate={persist} />
           )}
@@ -225,19 +233,12 @@ export default function ManagerPage() {
         </div>
       )}
 
-      {career && view === "play-game" && (
-        <div className={SPACING.stackLg}>
-          <ManagerNav
-            active="hub"
-            club={career.club}
-            onNavigate={setView}
-          />
-          <ManagerPlayGame
-            career={career}
-            onComplete={handlePlayComplete}
-            onCancel={() => setView("hub")}
-          />
-        </div>
+      {career && playGameOpen && (
+        <ManagerPlayGame
+          career={career}
+          onComplete={handlePlayComplete}
+          onCancel={() => setPlayGameOpen(false)}
+        />
       )}
 
       {career && view === "match-review" && reviewFixtureId !== null && (

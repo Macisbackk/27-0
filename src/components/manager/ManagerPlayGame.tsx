@@ -13,6 +13,7 @@ import {
   getLiveCommandLabel,
   getLiveMatchEvents,
   getMatchStatusLabel,
+  HALFTIME_MINUTE,
   liveMatchToFixture,
   REAL_TICK_MS,
   type LiveMatchState,
@@ -21,6 +22,8 @@ import {
   applyManagerMatchResult,
   getNextManagerFixture,
 } from "@/lib/manager/managerSimulation";
+import { computeManagerTeamRating } from "@/lib/manager/managerRating";
+import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
 
 const COMMANDS: LiveMatchCommand[] = [
@@ -52,7 +55,8 @@ export function ManagerPlayGame({
   const fixtureKey = sched?.id ?? "none";
   const [live, setLive] = useState<LiveMatchState | null>(null);
   const [command, setCommand] = useState<LiveMatchCommand>("balanced");
-  const [isPaused, setIsPaused] = useState(false);
+  const [clockRunning, setClockRunning] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const finishedRef = useRef(false);
   const careerRef = useRef(career);
   const commandRef = useRef(command);
@@ -66,7 +70,8 @@ export function ManagerPlayGame({
     if (!sched) return;
     setLive(createLiveMatch(careerRef.current, sched));
     setCommand("balanced");
-    setIsPaused(false);
+    setClockRunning(false);
+    setHasStarted(false);
     finishedRef.current = false;
   }, [fixtureKey]);
 
@@ -86,166 +91,278 @@ export function ManagerPlayGame({
   );
 
   useEffect(() => {
-    if (!sched || isPaused) return;
+    if (!sched || !clockRunning || !live) return;
+    if (live.phase !== "first_half" && live.phase !== "second_half") return;
+
+    const maxMinute = live.phase === "first_half" ? HALFTIME_MINUTE : 80;
 
     const timer = window.setInterval(() => {
       setLive((prev) => {
         if (!prev || prev.isComplete) return prev;
-        return advanceLiveTick(
+        const next = advanceLiveTick(
           prev,
           careerRef.current,
-          commandRef.current
+          commandRef.current,
+          maxMinute
         );
+        if (next.phase === "halftime") {
+          setClockRunning(false);
+        }
+        if (next.isComplete) {
+          setClockRunning(false);
+        }
+        return next;
       });
     }, REAL_TICK_MS);
 
     return () => window.clearInterval(timer);
-  }, [fixtureKey, isPaused, sched]);
+  }, [fixtureKey, clockRunning, live?.phase, sched]);
 
-  useEffect(() => {
-    if (live?.isComplete && !finishedRef.current) {
-      const timeout = window.setTimeout(() => {
-        if (liveRef.current) finishMatch(liveRef.current);
-      }, 1200);
-      return () => window.clearTimeout(timeout);
+  const handleStartGame = () => {
+    playUiClick();
+    setHasStarted(true);
+    setClockRunning(true);
+    setLive((prev) =>
+      prev
+        ? {
+            ...prev,
+            phase: "first_half",
+            isPlaying: true,
+            effectivenessLine: "Kick-off — first half underway.",
+          }
+        : prev
+    );
+  };
+
+  const handleStartSecondHalf = () => {
+    playUiClick();
+    setClockRunning(true);
+    setLive((prev) =>
+      prev
+        ? {
+            ...prev,
+            phase: "second_half",
+            isPlaying: true,
+            effectivenessLine: "Second half — play resumes.",
+          }
+        : prev
+    );
+  };
+
+  const handleAbandon = () => {
+    if (
+      hasStarted &&
+      !window.confirm("Abandon this match? Progress will be lost.")
+    ) {
+      return;
     }
-  }, [live?.isComplete, finishMatch]);
+    onCancel();
+  };
 
   const handleSimulateToFullTime = () => {
     if (!live || live.isComplete) return;
     playSimulateRound();
+    setClockRunning(false);
     setLive(advanceLiveToFullTime(live, careerRef.current, commandRef.current));
+    setHasStarted(true);
   };
 
   if (!sched || !live) return null;
 
-  const userName = career.club;
-  const oppName = sched.opponent;
-  const homeName = live.isHome ? userName : oppName;
-  const awayName = live.isHome ? oppName : userName;
+  const userRating = computeManagerTeamRating(
+    career.matchdayXiii,
+    career.matchdayInterchange,
+    career.xiiiSlotPositions,
+    career
+  );
+  const oppRating = Math.round(
+    getOpponentMatchRating(sched.opponent, career.seed, sched.round, {
+      currentSeasonOnly: true,
+    })
+  );
+
+  const homeName = live.isHome ? career.club : sched.opponent;
+  const awayName = live.isHome ? sched.opponent : career.club;
   const homeScore = live.isHome ? live.userScore : live.oppScore;
   const awayScore = live.isHome ? live.oppScore : live.userScore;
   const status = getMatchStatusLabel(live.userScore, live.oppScore, live.isHome);
+  const isPreview = live.phase === "preview";
+  const isHalftime = live.phase === "halftime";
+  const canClose = !hasStarted || live.isComplete;
 
   return (
-    <div className={SPACING.stackLg}>
-      <div className={`${CARD.elevated} ${SPACING.cardPadding} text-center`}>
-        <p className={TYPO.sectionLabel}>
-          {sched.label ?? `Round ${sched.round}`} ·{" "}
-          {sched.isHome ? "Home" : "Away"}
-        </p>
-        <p className={`mt-2 text-2xl font-bold text-white sm:text-3xl`}>
-          {homeName}{" "}
-          <span className="text-theme-primary">{homeScore}</span>
-          <span className="mx-2 text-pitch-500">-</span>
-          <span className="text-theme-primary">{awayScore}</span>{" "}
-          {awayName}
-        </p>
-        <p className={`mt-1 font-mono text-xl text-accent-gold`}>
-          {formatLiveClock(live.minute)}
-          {live.isComplete ? " · Full Time" : isPaused ? " · Paused" : ""}
-        </p>
-        <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-          <span
-            className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${STATUS_PILL_CLASS[status.tone]}`}
-          >
-            {status.pill}
-          </span>
-          <span className={`${TYPO.bodySm} text-pitch-300`}>{status.line}</span>
-        </div>
-        <p className={`mt-1 text-xs text-pitch-500`}>
-          Momentum: {live.momentum > 0 ? "+" : ""}
-          {live.momentum}
-        </p>
-      </div>
+    <div
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/80 p-3 backdrop-blur-sm sm:items-center sm:p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Live match"
+      onClick={canClose ? handleAbandon : undefined}
+    >
+      <div
+        className={`card-glass max-h-[92vh] w-full max-w-lg overflow-y-auto ${SPACING.cardPadding}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className={SPACING.stackLg}>
+          <div className="text-center">
+            <p className={TYPO.sectionLabel}>
+              {sched.label ?? `Round ${sched.round}`} ·{" "}
+              {sched.isHome ? "Home" : "Away"}
+            </p>
+            <p className={`mt-2 text-2xl font-bold text-white`}>
+              {homeName}{" "}
+              <span className="text-theme-primary">{homeScore}</span>
+              <span className="mx-2 text-pitch-500">-</span>
+              <span className="text-theme-primary">{awayScore}</span>{" "}
+              {awayName}
+            </p>
+            {!isPreview && (
+              <>
+                <p className={`mt-1 font-mono text-xl text-accent-gold`}>
+                  {formatLiveClock(live.minute)}
+                  {live.isComplete
+                    ? " · Full Time"
+                    : isHalftime
+                      ? " · Half Time"
+                      : ""}
+                </p>
+                <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+                  <span
+                    className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${STATUS_PILL_CLASS[status.tone]}`}
+                  >
+                    {status.pill}
+                  </span>
+                  <span className={`${TYPO.bodySm} text-pitch-300`}>
+                    {status.line}
+                  </span>
+                </div>
+              </>
+            )}
+          </div>
 
-      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-        <p className={TYPO.sectionLabel}>Current Command</p>
-        <p className="mt-1 font-medium text-white">
-          {getLiveCommandLabel(command)}
-        </p>
-        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-          {live.effectivenessLine}
-        </p>
-      </div>
-
-      {!live.isComplete && (
-        <>
-          <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-            <p className={`${TYPO.sectionLabel} mb-2`}>Match Commands</p>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {COMMANDS.map((cmd) => (
-                <GameButton
-                  key={cmd}
-                  variant={command === cmd ? "theme" : "secondary"}
-                  size="sm"
-                  onClick={() => {
-                    playUiClick();
-                    setCommand(cmd);
-                  }}
-                >
-                  {getLiveCommandLabel(cmd)}
+          {isPreview && (
+            <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+              <p className={TYPO.sectionLabel}>Match Preview</p>
+              <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+                <span>{career.club}: {userRating}</span>
+                <span>{sched.opponent}: {oppRating}</span>
+              </div>
+              <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+                Tactics: {career.tactics.playingStyle.replace("_", " ")} ·{" "}
+                {career.tactics.attackFocus.replace("_", " ")} ·{" "}
+                {career.tactics.defenceFocus.replace("_", " ")}
+              </p>
+              <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                <GameButton variant="theme" onClick={handleStartGame}>
+                  Start Game
                 </GameButton>
-              ))}
+                <GameButton variant="secondary" onClick={handleAbandon}>
+                  Close
+                </GameButton>
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className="grid gap-2 sm:grid-cols-3">
-            <GameButton
-              variant="secondary"
-              onClick={() => {
-                playUiClick();
-                setIsPaused((p) => !p);
-              }}
-            >
-              {isPaused ? "Resume" : "Pause"}
-            </GameButton>
-            <GameButton variant="theme" onClick={handleSimulateToFullTime}>
-              Simulate to Full Time
-            </GameButton>
-            <GameButton
-              variant="secondary"
-              onClick={() => {
-                playUiClick();
-                onCancel();
-              }}
-            >
-              Leave Match
-            </GameButton>
-          </div>
-        </>
-      )}
-
-      <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-        <p className={TYPO.sectionLabel}>Recent Events</p>
-        {live.events.length === 0 ? (
-          <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
-            Waiting for the opening exchanges…
-          </p>
-        ) : (
-          <ul className={`mt-2 max-h-48 overflow-y-auto ${SPACING.stackSm}`}>
-            {[...live.events].reverse().map((ev, i) => (
-              <li
-                key={`${ev.minute}-${ev.type}-${i}`}
-                className={`${TYPO.bodySm} ${
-                  ev.team === "user" ? "text-white" : "text-pitch-400"
-                }`}
+          {isHalftime && (
+            <div className={`${CARD.elevated} ${SPACING.cardPadding}`}>
+              <p className={TYPO.sectionLabel}>Half Time</p>
+              <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+                {live.effectivenessLine}
+              </p>
+              <p className={`${TYPO.sectionLabel} mt-3 mb-2`}>
+                Command for second half
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                {COMMANDS.map((cmd) => (
+                  <GameButton
+                    key={cmd}
+                    variant={command === cmd ? "theme" : "secondary"}
+                    size="sm"
+                    onClick={() => {
+                      playUiClick();
+                      setCommand(cmd);
+                    }}
+                  >
+                    {getLiveCommandLabel(cmd)}
+                  </GameButton>
+                ))}
+              </div>
+              <GameButton
+                variant="theme"
+                className="mt-4"
+                onClick={handleStartSecondHalf}
               >
-                {ev.description}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+                Start Second Half
+              </GameButton>
+            </div>
+          )}
 
-      {live.isComplete && (
-        <GameButton
-          variant="theme"
-          onClick={() => finishMatch(live)}
-        >
-          View Match Review
-        </GameButton>
-      )}
+          {!isPreview && !isHalftime && !live.isComplete && (
+            <>
+              <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+                <p className={TYPO.sectionLabel}>Current Command</p>
+                <p className="mt-1 font-medium text-white">
+                  {getLiveCommandLabel(command)}
+                </p>
+                <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+                  {live.effectivenessLine}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {COMMANDS.map((cmd) => (
+                  <GameButton
+                    key={cmd}
+                    variant={command === cmd ? "theme" : "secondary"}
+                    size="sm"
+                    onClick={() => {
+                      playUiClick();
+                      setCommand(cmd);
+                    }}
+                  >
+                    {getLiveCommandLabel(cmd)}
+                  </GameButton>
+                ))}
+              </div>
+              <GameButton variant="secondary" onClick={handleSimulateToFullTime}>
+                Simulate to Full Time
+              </GameButton>
+            </>
+          )}
+
+          <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+            <p className={TYPO.sectionLabel}>Match Events</p>
+            {live.events.length === 0 ? (
+              <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+                {isPreview ? "Events will appear once the match starts." : "Waiting for action…"}
+              </p>
+            ) : (
+              <ul className={`mt-2 max-h-40 overflow-y-auto ${SPACING.stackSm}`}>
+                {[...live.events].reverse().map((ev, i) => (
+                  <li
+                    key={`${ev.minute}-${ev.type}-${i}`}
+                    className={`${TYPO.bodySm} ${
+                      ev.team === "user" ? "text-white" : "text-pitch-400"
+                    }`}
+                  >
+                    {ev.description}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {live.isComplete && (
+            <GameButton variant="theme" onClick={() => finishMatch(live)}>
+              View Match Review
+            </GameButton>
+          )}
+
+          {hasStarted && !live.isComplete && (
+            <GameButton variant="secondary" onClick={handleAbandon}>
+              Abandon Match
+            </GameButton>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

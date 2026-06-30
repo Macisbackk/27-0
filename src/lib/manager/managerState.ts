@@ -20,6 +20,10 @@ import {
 import { createClubAttendanceData } from "./managerAttendance";
 import { createManagerChallengeCup } from "./managerChallengeCup";
 import { generateReserveSquad } from "./managerReserves";
+import {
+  generateLeagueListedPlayers,
+  initClubFunds,
+} from "./managerTransferLeague";
 
 const CAREER_KEY = "27-0-manager-career";
 
@@ -101,6 +105,19 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     calledUpReserveIds: raw.calledUpReserveIds ?? [],
     playerRegistry: raw.playerRegistry ?? {},
     hubResultsExpanded: raw.hubResultsExpanded ?? false,
+    leagueListedPlayers:
+      raw.leagueListedPlayers ??
+      generateLeagueListedPlayers(
+        raw.club,
+        raw.seed ?? "migrate",
+        raw.gameWeek ?? 0
+      ),
+    playerTransferStatus: raw.playerTransferStatus ?? {},
+    inboxMessages: raw.inboxMessages ?? [],
+    clubFunds: raw.clubFunds ?? initClubFunds(raw.club),
+    transferMarket:
+      raw.transferMarket ??
+      (raw.leagueListedPlayers ?? []).map((l) => l.playerId),
   };
 
   career = ensureRenewalDemands(career);
@@ -148,6 +165,7 @@ export function createNewCareer(club: string): ManagerCareer {
 
   const schedule = buildManagerSchedule(club, seed);
   const squadIdSet = new Set(squad.map((p) => p.playerId));
+  const leagueListed = generateLeagueListedPlayers(club, seed, 0);
 
   const career: ManagerCareer = {
     id: seed,
@@ -177,7 +195,11 @@ export function createNewCareer(club: string): ManagerCareer {
     currentFixtureIndex: 0,
     currentRound: 0,
     leagueTable: buildLeagueTableFromMatches([], club),
-    transferMarket: generateTransferMarket(club, squadIdSet, seed, 0),
+    transferMarket: leagueListed.map((l) => l.playerId),
+    leagueListedPlayers: leagueListed,
+    playerTransferStatus: {},
+    inboxMessages: [],
+    clubFunds: initClubFunds(club),
     wins: 0,
     losses: 0,
     teamSeasonStats: { ...EMPTY_TEAM_SEASON_STATS },

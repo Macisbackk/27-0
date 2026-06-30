@@ -262,6 +262,7 @@ export type ManagerView =
   | "tactics"
   | "contracts"
   | "reserves"
+  | "inbox"
   | "transfers"
   | "fixtures"
   | "table"
@@ -270,6 +271,50 @@ export type ManagerView =
   | "match-review"
   | "season-review"
   | "season-rewards";
+
+export type LiveMatchPhase =
+  | "preview"
+  | "first_half"
+  | "halftime"
+  | "second_half"
+  | "full_time";
+
+export interface PlayerTransferStatus {
+  listed: boolean;
+  askingPrice: number;
+  listedAtGameWeek: number;
+}
+
+export interface LeagueListedPlayer {
+  playerId: string;
+  club: string;
+  askingPrice: number;
+  listedAtWeek: number;
+}
+
+export type InboxMessageType =
+  | "transfer_offer_in"
+  | "transfer_offer_out"
+  | "contract"
+  | "board"
+  | "injury"
+  | "release"
+  | "general";
+
+export interface InboxMessage {
+  id: string;
+  type: InboxMessageType;
+  title: string;
+  body: string;
+  gameWeek: number;
+  createdAt: string;
+  resolved: boolean;
+  playerId?: string;
+  playerName?: string;
+  offerClub?: string;
+  offerAmount?: number;
+  askingPrice?: number;
+}
 
 export type LiveMatchCommand =
   | "attack"
@@ -307,6 +352,10 @@ export interface ManagerCareer {
   currentRound: number;
   leagueTable: ManagerLeagueRow[];
   transferMarket: string[];
+  leagueListedPlayers: LeagueListedPlayer[];
+  playerTransferStatus: Record<string, PlayerTransferStatus>;
+  inboxMessages: InboxMessage[];
+  clubFunds: Record<string, number>;
   wins: number;
   losses: number;
   teamSeasonStats: ManagerTeamSeasonStats;

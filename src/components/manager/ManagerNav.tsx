@@ -10,6 +10,7 @@ const TABS: { id: ManagerView; label: string }[] = [
   { id: "squad", label: "Squad" },
   { id: "contracts", label: "Contracts" },
   { id: "reserves", label: "Reserves" },
+  { id: "inbox", label: "Inbox" },
   { id: "transfers", label: "Transfers" },
   { id: "fixtures", label: "Fixtures" },
   { id: "stats", label: "Stats" },
@@ -19,9 +20,10 @@ interface ManagerNavProps {
   active: ManagerView;
   club: string;
   onNavigate: (view: ManagerView) => void;
+  disabled?: boolean;
 }
 
-export function ManagerNav({ active, club, onNavigate }: ManagerNavProps) {
+export function ManagerNav({ active, club, onNavigate, disabled }: ManagerNavProps) {
   return (
     <header className="space-y-3">
       <div>
@@ -36,13 +38,15 @@ export function ManagerNav({ active, club, onNavigate }: ManagerNavProps) {
               key={tab.id}
               type="button"
               onClick={() => {
+                if (disabled) return;
                 if (active !== tab.id) playTabChange();
                 playUiClick();
                 onNavigate(tab.id);
               }}
+              disabled={disabled}
               className={`btn-press shrink-0 min-h-[40px] rounded-lg px-3 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-4 sm:text-sm ${
                 active === tab.id ? BTN.tabActive : BTN.tabIdle
-              }`}
+              } ${disabled ? "pointer-events-none opacity-40" : ""}`}
             >
               {tab.label}
             </button>

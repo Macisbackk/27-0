@@ -9,6 +9,16 @@ export type MatchdaySlotTarget =
   | { kind: "xiii"; index: number }
   | { kind: "bench"; index: number };
 
+export type ReplacementSource = "bench" | "xiii" | "available";
+
+export interface ReplacementCandidate {
+  playerId: string;
+  source: ReplacementSource;
+  benchIndex?: number;
+  xiiiIndex?: number;
+  isReserveCallUp?: boolean;
+}
+
 export function canAssignPlayerToXiiiSlot(
   career: ManagerCareer,
   slotIndex: number,
@@ -27,6 +37,12 @@ export function canAssignPlayerToXiiiSlot(
   return canPlayPosition(player, position);
 }
 
+function normalizeBench(career: ManagerCareer): string[] {
+  const bench = [...career.matchdayInterchange];
+  while (bench.length < ERA_BENCH_FROM_STARTING_17) bench.push("");
+  return bench.slice(0, ERA_BENCH_FROM_STARTING_17);
+}
+
 export function assignPlayerToMatchday(
   career: ManagerCareer,
   target: MatchdaySlotTarget,
@@ -37,8 +53,10 @@ export function assignPlayerToMatchday(
   }
 
   const xiii = [...career.matchdayXiii];
-  const bench = [...career.matchdayInterchange];
-  while (bench.length < ERA_BENCH_FROM_STARTING_17) bench.push("");
+  const bench = normalizeBench(career);
+
+  const fromBenchIdx = bench.findIndex((id) => id === playerId);
+  const fromXiiiIdx = xiii.findIndex((id) => id === playerId);
 
   const clearFromLineup = (id: string) => {
     for (let i = 0; i < xiii.length; i++) {
@@ -54,18 +72,32 @@ export function assignPlayerToMatchday(
   if (target.kind === "xiii") {
     const displaced = xiii[target.index] ?? "";
     xiii[target.index] = playerId;
+
     if (displaced && displaced !== playerId) {
-      const emptyBench = bench.findIndex((id) => !id);
-      if (emptyBench >= 0) bench[emptyBench] = displaced;
+      if (fromBenchIdx >= 0) {
+        bench[fromBenchIdx] = displaced;
+      } else {
+        const emptyBench = bench.findIndex((id) => !id);
+        if (emptyBench >= 0) bench[emptyBench] = displaced;
+      }
     }
   } else {
+    const displaced = bench[target.index] ?? "";
     bench[target.index] = playerId;
+
+    if (fromXiiiIdx >= 0) {
+      if (displaced && displaced !== playerId) {
+        xiii[fromXiiiIdx] = displaced;
+      } else {
+        xiii[fromXiiiIdx] = "";
+      }
+    }
   }
 
   return {
     ...career,
     matchdayXiii: xiii,
-    matchdayInterchange: bench.slice(0, ERA_BENCH_FROM_STARTING_17),
+    matchdayInterchange: bench,
   };
 }
 
@@ -101,7 +133,45 @@ export function getAvailableSquadPlayers(career: ManagerCareer): {
   return list;
 }
 
-/** Team sheet row layout — slot indices into matchdayXiii. */
+/** Players eligible to replace a selected slot (includes interchange ↔ starter swaps). */
+export function getReplacementCandidates(
+  career: ManagerCareer,
+  target: MatchdaySlotTarget
+): ReplacementCandidate[] {
+  const inTarget = new Set<string>();
+  const candidates: ReplacementCandidate[] = [];
+  const seen = new Set<string>();
+
+  const add = (c: ReplacementCandidate) => {
+    if (seen.has(c.playerId)) return;
+    seen.add(c.playerId);
+    candidates.push(c);
+  };
+
+  if (target.kind === "xiii") {
+    career.matchdayInterchange.forEach((id, benchIndex) => {
+      if (!id) return;
+      add({ playerId: id, source: "bench", benchIndex });
+    });
+  } else {
+    career.matchdayXiii.forEach((id, xiiiIndex) => {
+      if (!id) return;
+      add({ playerId: id, source: "xiii", xiiiIndex });
+    });
+  }
+
+  for (const { playerId, isReserveCallUp } of getAvailableSquadPlayers(career)) {
+    add({ playerId, source: "available", isReserveCallUp });
+  }
+
+  return candidates.filter((c) => {
+    if (target.kind === "xiii") {
+      return canAssignPlayerToXiiiSlot(career, target.index, c.playerId);
+    }
+    return true;
+  });
+}
+
 export const TEAM_SHEET_ROWS: { slots: number[] }[] = [
   { slots: [0] },
   { slots: [1, 3, 4, 2] },
@@ -124,4 +194,15 @@ export function slotAbbrev(position: Position): string {
     LOOSE_FORWARD: "LF",
   };
   return map[position];
+}
+
+export function findPlayerMatchdaySlot(
+  career: ManagerCareer,
+  playerId: string
+): MatchdaySlotTarget | null {
+  const xiiiIdx = career.matchdayXiii.findIndex((id) => id === playerId);
+  if (xiiiIdx >= 0) return { kind: "xiii", index: xiiiIdx };
+  const benchIdx = career.matchdayInterchange.findIndex((id) => id === playerId);
+  if (benchIdx >= 0) return { kind: "bench", index: benchIdx };
+  return null;
 }
