@@ -115,7 +115,7 @@ function RugbyPitchInner({
             ? "max-w-[min(100%,360px)]"
             : compact
               ? "max-w-[380px]"
-              : "max-w-[min(100%,360px)] sm:max-w-[520px] md:max-w-[600px]"
+              : "max-w-[min(100%,400px)] sm:max-w-[540px] md:max-w-[640px]"
         } ${dimmed ? "opacity-60" : ""}`}
       >
         <div
@@ -186,7 +186,7 @@ function RugbyPitchInner({
       </div>
 
       {!compact && !formationOnly && (
-        <div className="mx-auto mt-2 h-1.5 max-w-[580px] overflow-hidden rounded-full bg-pitch-800">
+        <div className="mx-auto mt-2 h-1.5 max-w-[640px] overflow-hidden rounded-full bg-pitch-800">
           <motion.div
             className="h-full rounded-full bg-gradient-to-r from-accent-green to-emerald-400"
             initial={false}
@@ -348,9 +348,9 @@ const SquadMarker = memo(function SquadMarker({
       <>
         {shirtNumber !== undefined && (
           <span
-            className={`font-display text-[11px] font-black leading-none sm:text-xs ${
+            className={`font-display font-black leading-none ${
               interactive ? "text-accent-green" : "text-accent-green/50"
-            }`}
+            } text-[11px] sm:text-xs md:text-sm`}
           >
             {shirtNumber}
           </span>

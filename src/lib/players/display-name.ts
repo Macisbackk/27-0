@@ -10,9 +10,9 @@ export function formatPitchSlotPlayerName(
   if (parts.length <= 1) return trimmed;
 
   const surname = parts[parts.length - 1]!;
-  if (surname.length <= 11) return surname;
+  if (surname.length <= 12) return surname;
 
   const initial = parts[0]![0] ?? "";
-  const clipped = surname.length > 9 ? `${surname.slice(0, 8)}…` : surname;
+  const clipped = surname.length > 10 ? `${surname.slice(0, 9)}…` : surname;
   return initial ? `${initial}. ${clipped}` : clipped;
 }

@@ -7,16 +7,16 @@ import { getPlayerColorClub } from "@/lib/players/run-club";
 import { getFormationSlotDisplayLabel, POSITION_SHORT } from "@/lib/positions";
 import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
-/** Shared footprint for empty and filled pitch slots — scales down on mobile. */
+/** Shared footprint for empty and filled pitch slots — scales with pitch width. */
 export const PITCH_SLOT_SIZE_CLASS =
-  "h-[clamp(46px,10.5vw,76px)] w-[clamp(42px,9.5vw,70px)] md:h-[clamp(58px,12.5vw,96px)] md:w-[clamp(52px,11.5vw,88px)]";
+  "h-[clamp(54px,13vw,88px)] w-[clamp(50px,12vw,82px)] sm:h-[clamp(60px,13.5vw,96px)] sm:w-[clamp(54px,12.5vw,88px)] md:h-[clamp(68px,14vw,108px)] md:w-[clamp(62px,13vw,100px)]";
 
 export const PITCH_SLOT_COMPACT_CLASS =
-  "h-[clamp(40px,9vw,60px)] w-[clamp(38px,8.5vw,56px)]";
+  "h-[clamp(42px,9.5vw,64px)] w-[clamp(40px,9vw,60px)]";
 
-/** Season review team sheet — room for two-line full names on mobile. */
+/** Season review team sheet — room for two-line full names. */
 export const PITCH_SLOT_REVIEW_CLASS =
-  "h-[clamp(54px,12vw,70px)] w-[clamp(40px,9vw,58px)]";
+  "h-[clamp(58px,13vw,78px)] w-[clamp(44px,10vw,64px)] sm:h-[clamp(64px,14vw,86px)] sm:w-[clamp(48px,11vw,72px)]";
 
 interface PitchSlotCardProps {
   slot: SquadSlot;
@@ -51,56 +51,67 @@ export function PitchSlotCard({
     : compact
       ? PITCH_SLOT_COMPACT_CLASS
       : PITCH_SLOT_SIZE_CLASS;
+  const fullName = formatPitchSlotPlayerName(player.name, false);
+  const compactName = formatPitchSlotPlayerName(player.name, true);
   const displayName = fullPlayerNames
     ? player.name
     : formatPitchSlotPlayerName(player.name, compact);
 
   return (
     <div
-      className={`pitch-slot-card flex shrink-0 flex-col rounded-lg border-2 border-accent-green/50 bg-black/70 shadow-[0_0_10px_rgba(34,197,94,0.2)] ${sizeClass} overflow-hidden ${className}`}
+      className={`pitch-slot-card flex shrink-0 flex-col rounded-lg border-2 border-accent-green/50 bg-black/75 shadow-[0_0_10px_rgba(34,197,94,0.2)] ${sizeClass} overflow-hidden ${className}`}
       title={player.name}
     >
       <div
-        className={`flex w-full shrink-0 ${isMatchdayPitch ? "h-1 md:h-1.5" : "h-1"}`}
+        className={`flex w-full shrink-0 ${isMatchdayPitch ? "h-1 sm:h-1.5" : "h-1"}`}
       >
         <span className="h-full flex-1" style={{ backgroundColor: colors.primary }} />
         <span className="h-full flex-1" style={{ backgroundColor: colors.secondary }} />
       </div>
       <div
-        className={`flex min-h-0 flex-1 flex-col items-center px-0.5 py-0.5 ${
+        className={`flex min-h-0 flex-1 flex-col items-stretch px-1 py-0.5 ${
           isMatchdayPitch
-            ? "justify-between gap-0.5 md:gap-1 md:px-1.5 md:py-1.5"
-            : "justify-center gap-0"
+            ? "justify-between gap-0.5 sm:gap-1 sm:px-1.5 sm:py-1 md:px-2 md:py-1.5"
+            : "items-center justify-center gap-0"
         }`}
       >
         <span
           className={`line-clamp-2 w-full shrink-0 text-center font-display font-bold leading-tight text-gray-400 ${
             isMatchdayPitch
-              ? "text-[7px] sm:text-[8px] md:text-[9px]"
+              ? "text-[8px] sm:text-[9px] md:text-[10px]"
               : "text-[7px] sm:text-[8px]"
           }`}
         >
           {positionLabel}
         </span>
-        <p
-          className={`min-h-0 w-full text-center font-display font-semibold text-white ${
-            fullPlayerNames
-              ? "line-clamp-2 flex-1 break-words [overflow-wrap:anywhere] px-0.5 text-[7px] leading-[1.15] sm:text-[8px]"
-              : compact
-                ? "truncate px-0.5 text-[8px] leading-[1.15] sm:text-[9px]"
-                : isMatchdayPitch
-                  ? "line-clamp-2 flex-1 break-words leading-snug text-[7px] sm:text-[8px] md:text-[10px] md:leading-tight"
+        {isMatchdayPitch ? (
+          <p className="min-h-0 w-full flex-1 text-center font-display font-semibold leading-snug text-white">
+            <span className="line-clamp-2 break-words text-[8px] sm:hidden">
+              {compactName}
+            </span>
+            <span className="line-clamp-2 hidden break-words sm:inline md:text-[11px]">
+              {fullName}
+            </span>
+          </p>
+        ) : (
+          <p
+            className={`min-h-0 w-full text-center font-display font-semibold text-white ${
+              fullPlayerNames
+                ? "line-clamp-2 flex-1 break-words [overflow-wrap:anywhere] px-0.5 text-[7px] leading-[1.15] sm:text-[9px]"
+                : compact
+                  ? "truncate px-0.5 text-[8px] leading-[1.15] sm:text-[9px]"
                   : "line-clamp-2 break-words text-[7px] leading-[1.15] sm:text-[8px]"
-          }`}
-        >
-          {displayName}
-        </p>
+            }`}
+          >
+            {displayName}
+          </p>
+        )}
         {!hardMode && (
           <span
-            className={`shrink-0 font-display font-black leading-none text-accent-green ${
+            className={`w-full shrink-0 text-center font-display font-black leading-none text-accent-green ${
               compact || fullPlayerNames
-                ? "text-[9px] sm:text-[10px]"
-                : "text-[11px] sm:text-xs md:text-lg md:leading-none lg:text-xl"
+                ? "text-[10px] sm:text-[11px]"
+                : "text-sm sm:text-base md:text-xl lg:text-2xl"
             }`}
           >
             {ratingLabel}
