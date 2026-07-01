@@ -647,7 +647,7 @@ function resolveOutcome(
   const formEffect = form * (managerMode ? 0.55 : 0.4);
   const draftRatingBonus = draftMode ? getDraftTeamRatingBonus(avgRating) : 0;
 
-  let noiseScale = draftMode ? 8 : managerMode ? 4.5 : 7;
+  let noiseScale = draftMode ? 8 : managerMode ? 3.2 : 7;
   const absGap = Math.abs(ratingGap);
   if (absGap >= 10) noiseScale = draftMode ? 2 : 2.5;
   else if (absGap >= 8) noiseScale = draftMode ? 2.8 : 3.5;
@@ -679,9 +679,10 @@ function resolveOutcome(
   } else {
     const floor = getNormalWinProbabilityFloor(ratingGap);
     if (floor !== null) winProbability = Math.max(winProbability, floor);
-    else if (ratingGap >= 5) winProbability = Math.max(winProbability, managerMode ? 0.78 : 0.72);
-    else if (managerMode && ratingGap >= 3) winProbability = Math.max(winProbability, 0.65);
-    else if (managerMode && ratingGap >= 1) winProbability = Math.max(winProbability, 0.56);
+    else if (ratingGap >= 5) winProbability = Math.max(winProbability, managerMode ? 0.84 : 0.72);
+    else if (managerMode && ratingGap >= 3) winProbability = Math.max(winProbability, 0.72);
+    else if (managerMode && ratingGap >= 1) winProbability = Math.max(winProbability, 0.62);
+    else if (managerMode && ratingGap >= 0) winProbability = Math.max(winProbability, 0.54);
   }
 
   if (ratingGap <= -10) winProbability = Math.min(winProbability, 0.1);

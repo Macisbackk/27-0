@@ -5,7 +5,6 @@ import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
-import { CUP_ROUND_LABELS } from "@/lib/manager/types";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import { ensureCupBracketReady, getCupHubStatus } from "@/lib/manager/managerChallengeCup";
@@ -60,12 +59,68 @@ function formatFunds(budget: number): string {
   return `£${(budget / 1000).toFixed(0)}k`;
 }
 
-function fixtureRoundLabel(f: ManagerCareer["fixtures"][0]): string {
-  if (f.competition === "friendly") return "Friendly";
-  if (f.competition === "challenge_cup" && f.meta?.cupRound) {
-    return CUP_ROUND_LABELS[f.meta.cupRound] ?? "Challenge Cup";
-  }
-  return `Round ${f.round} · League`;
+function HubBoardBudgetAttendance({
+  career,
+  club,
+  transferBudget,
+  lastGate,
+}: {
+  career: ManagerCareer;
+  club: ReturnType<typeof getClubByName>;
+  transferBudget: number;
+  lastGate: ReturnType<typeof getLastHomeGate>;
+}) {
+  return (
+    <div
+      className={`${CARD.elevated} ${SPACING.cardPadding} border-l-4`}
+      style={{ borderLeftColor: club?.primaryColor ?? "var(--theme-primary)" }}
+    >
+      <p className={TYPO.sectionLabel}>Board · Budget · Attendance</p>
+      <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
+        <div>
+          <p className="text-pitch-500 text-xs">Board Confidence</p>
+          <p className="font-semibold text-white">{career.boardConfidence}%</p>
+        </div>
+        <div>
+          <p className="text-pitch-500 text-xs">Transfer Budget</p>
+          <p className="font-semibold text-accent-gold">
+            {formatFunds(transferBudget)}
+          </p>
+        </div>
+        <div>
+          <p className="text-pitch-500 text-xs">Club Funds</p>
+          <p className="font-semibold text-pitch-200">
+            {formatFunds(career.budget)}
+          </p>
+        </div>
+        <div>
+          <p className="text-pitch-500 text-xs">Wage Bill</p>
+          <p className="font-semibold text-pitch-200">
+            {formatWage(career.wageBill)}
+            <span className="text-pitch-500 font-normal">
+              {" "}
+              / {formatWage(career.wageBudget)}
+            </span>
+          </p>
+        </div>
+        <div>
+          <p className="text-pitch-500 text-xs">Avg Attendance</p>
+          <p>
+            {career.attendanceData.currentAverageAttendance.toLocaleString()}
+          </p>
+        </div>
+        <div>
+          <p className="text-pitch-500 text-xs">Fan Mood</p>
+          <p>{fanMoodTrend(career.attendanceData.fanMood)}</p>
+        </div>
+      </div>
+      {lastGate && (
+        <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+          Last home gate: {lastGate.attendance.toLocaleString()}
+        </p>
+      )}
+    </div>
+  );
 }
 
 function HubLeagueTable({ career }: { career: ManagerCareer }) {
@@ -171,93 +226,10 @@ function HubLeagueTable({ career }: { career: ManagerCareer }) {
   );
 }
 
-function HubResults({
-  career,
-  onSelectFixture,
-  onUpdate,
-}: {
-  career: ManagerCareer;
-  onSelectFixture?: (fixtureId: string) => void;
-  onUpdate?: (career: ManagerCareer) => void;
-}) {
-  const expanded = career.hubResultsExpanded ?? false;
-  const results = [...career.fixtures].sort(
-    (a, b) => b.round - a.round || b.pointsFor - a.pointsFor
-  );
-  const lastFive = career.recentForm.slice(-5).join(" ");
-  const toggle = () => {
-    onUpdate?.({ ...career, hubResultsExpanded: !expanded });
-  };
-
-  if (results.length === 0) return null;
-
-  return (
-    <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div>
-          <p className={TYPO.sectionLabel}>Results</p>
-          <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
-            Last 5: {lastFive || "—"}
-          </p>
-        </div>
-        <GameButton variant="secondary" size="sm" onClick={toggle}>
-          {expanded ? "Collapse" : "Expand"}
-        </GameButton>
-      </div>
-
-      {expanded && (
-        <ul className={`mt-3 ${SPACING.stackSm}`}>
-          {results.map((f) => {
-            const homeTeam = f.isHome ? career.club : f.opponent;
-            const awayTeam = f.isHome ? f.opponent : career.club;
-            const homeScore = f.isHome ? f.pointsFor : f.pointsAgainst;
-            const awayScore = f.isHome ? f.pointsAgainst : f.pointsFor;
-            const badgeClass =
-              f.result === "W"
-                ? "text-theme-primary"
-                : f.result === "L"
-                  ? "text-red-300"
-                  : "text-pitch-300";
-            const fixtureId = f.fixtureId ?? `round-${f.round}`;
-            const attendance = f.meta?.attendance?.attendance;
-
-            return (
-              <li key={fixtureId}>
-                <button
-                  type="button"
-                  onClick={() => onSelectFixture?.(fixtureId)}
-                  className={`${CARD.inset} w-full px-3 py-2 text-left transition hover:border-theme-primary/30`}
-                >
-                  <p className={`${TYPO.bodySm} text-pitch-400`}>
-                    {fixtureRoundLabel(f)}
-                  </p>
-                  <p className="mt-0.5 font-medium text-white">
-                    {homeTeam} {homeScore} - {awayScore} {awayTeam}
-                  </p>
-                  <p className={`mt-0.5 ${TYPO.bodySm}`}>
-                    <span className={`font-bold ${badgeClass}`}>{f.result}</span>
-                    {attendance != null && (
-                      <span className="text-pitch-400">
-                        {" "}
-                        · Attendance: {attendance.toLocaleString()}
-                      </span>
-                    )}
-                  </p>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </div>
-  );
-}
-
 export function ManagerHub({
   career,
   onPlayGame,
   onSimulate,
-  onSelectFixture,
   onUpdate,
   onNavigate,
 }: ManagerHubProps) {
@@ -339,7 +311,7 @@ export function ManagerHub({
         <div
           className={`${CARD.elevated} ${CARD.featured} ${SPACING.cardPadding} ${
             isChallengeCupFixture(nextFixture.competition)
-              ? "border border-accent-gold/35 ring-1 ring-accent-gold/20"
+              ? "border-2 border-accent-gold/55 bg-accent-gold/12 ring-2 ring-accent-gold/30"
               : ""
           }`}
         >
@@ -433,23 +405,12 @@ export function ManagerHub({
         </div>
       )}
 
-      <HubLeagueTable career={career} />
-
-      {newsItems.length > 0 && (
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <p className={TYPO.sectionLabel}>Latest News</p>
-          <ul className={`mt-2 ${SPACING.stackSm}`}>
-            {newsItems.map((item) => (
-              <li
-                key={item.id}
-                className={`${TYPO.bodySm} text-pitch-200 before:mr-2 before:text-theme-primary before:content-['•']`}
-              >
-                {item.text}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <HubBoardBudgetAttendance
+        career={career}
+        club={club}
+        transferBudget={transferBudget}
+        lastGate={lastGate}
+      />
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={TYPO.sectionLabel}>Season Progress</p>
@@ -477,6 +438,24 @@ export function ManagerHub({
           />
         </div>
       </div>
+
+      <HubLeagueTable career={career} />
+
+      {newsItems.length > 0 && (
+        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+          <p className={TYPO.sectionLabel}>Latest News</p>
+          <ul className={`mt-2 ${SPACING.stackSm}`}>
+            {newsItems.map((item) => (
+              <li
+                key={item.id}
+                className={`${TYPO.bodySm} text-pitch-200 before:mr-2 before:text-theme-primary before:content-['•']`}
+              >
+                {item.text}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-2`}>Team Status</p>
@@ -512,12 +491,6 @@ export function ManagerHub({
           </div>
         </div>
       )}
-
-      <HubResults
-        career={career}
-        onSelectFixture={onSelectFixture}
-        onUpdate={onUpdate}
-      />
 
       {ts.played > 0 && (
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>
@@ -567,56 +540,6 @@ export function ManagerHub({
           )}
         </div>
       )}
-
-      <div
-        className={`${CARD.base} ${SPACING.cardPadding} border-l-4`}
-        style={{ borderLeftColor: club?.primaryColor ?? "var(--theme-primary)" }}
-      >
-        <p className={TYPO.sectionLabel}>Board · Budget · Attendance</p>
-        <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
-          <div>
-            <p className="text-pitch-500 text-xs">Board Confidence</p>
-            <p className="font-semibold text-white">{career.boardConfidence}%</p>
-          </div>
-          <div>
-            <p className="text-pitch-500 text-xs">Transfer Budget</p>
-            <p className="font-semibold text-accent-gold">
-              {formatFunds(transferBudget)}
-            </p>
-          </div>
-          <div>
-            <p className="text-pitch-500 text-xs">Club Funds</p>
-            <p className="font-semibold text-pitch-200">
-              {formatFunds(career.budget)}
-            </p>
-          </div>
-          <div>
-            <p className="text-pitch-500 text-xs">Wage Bill</p>
-            <p className="font-semibold text-pitch-200">
-              {formatWage(career.wageBill)}
-              <span className="text-pitch-500 font-normal">
-                {" "}
-                / {formatWage(career.wageBudget)}
-              </span>
-            </p>
-          </div>
-          <div>
-            <p className="text-pitch-500 text-xs">Avg Attendance</p>
-            <p>
-              {career.attendanceData.currentAverageAttendance.toLocaleString()}
-            </p>
-          </div>
-          <div>
-            <p className="text-pitch-500 text-xs">Fan Mood</p>
-            <p>{fanMoodTrend(career.attendanceData.fanMood)}</p>
-          </div>
-        </div>
-        {lastGate && (
-          <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
-            Last home gate: {lastGate.attendance.toLocaleString()}
-          </p>
-        )}
-      </div>
 
       {onNavigate && (
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>

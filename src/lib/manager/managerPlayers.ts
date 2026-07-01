@@ -36,7 +36,7 @@ export function getManagerPlayer(
   const dev = career.playerDevelopment?.[playerId];
   if (base && dev) {
     return {
-      ...base,
+      ...applyManagerModeRatingToPlayer(base),
       rating: dev.rating,
       peakRating: dev.peakRating,
     };

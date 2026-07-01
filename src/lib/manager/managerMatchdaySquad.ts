@@ -89,10 +89,28 @@ export function assignPlayerToMatchday(
 
     if (fromXiiiIdx >= 0) {
       if (displaced && displaced !== playerId) {
-        if (!canAssignPlayerToXiiiSlot(career, fromXiiiIdx, displaced)) {
-          return career;
+        if (canAssignPlayerToXiiiSlot(career, fromXiiiIdx, displaced)) {
+          xiii[fromXiiiIdx] = displaced;
+        } else {
+          let placed = false;
+          for (let i = 0; i < xiii.length; i++) {
+            if (!xiii[i] && canAssignPlayerToXiiiSlot(career, i, displaced)) {
+              xiii[i] = displaced;
+              placed = true;
+              break;
+            }
+          }
+          if (!placed) {
+            const emptyBench = bench.findIndex(
+              (id, idx) => !id && idx !== target.index
+            );
+            if (emptyBench >= 0) {
+              bench[emptyBench] = displaced;
+            } else {
+              return career;
+            }
+          }
         }
-        xiii[fromXiiiIdx] = displaced;
       } else {
         xiii[fromXiiiIdx] = "";
       }

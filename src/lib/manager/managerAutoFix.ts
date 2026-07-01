@@ -230,6 +230,105 @@ export function autoFixMatchdaySquad(career: ManagerCareer): {
   return { ok: true, career: working, message };
 }
 
+/** Pick the strongest available XI + bench regardless of current lineup. */
+export function autoSortMatchdaySquad(career: ManagerCareer): {
+  ok: boolean;
+  career: ManagerCareer;
+  message: string;
+} {
+  let working: ManagerCareer = {
+    ...career,
+    matchdayXiii: career.xiiiSlotPositions.map(() => ""),
+    matchdayInterchange: Array(ERA_BENCH_FROM_STARTING_17).fill(""),
+    calledUpReserveIds: [],
+    reserves: career.reserves.map((r) => ({
+      ...r,
+      calledUpForNextMatch: false,
+    })),
+  };
+
+  const used = new Set<string>();
+  const actions: string[] = [];
+
+  for (let i = 0; i < working.matchdayXiii.length; i++) {
+    const pos = working.xiiiSlotPositions[i];
+    if (!pos) continue;
+    const pick = bestPlayerForPosition(working, pos, used);
+    if (!pick) {
+      return {
+        ok: false,
+        career: working,
+        message: `Auto Sort could not fill ${POSITION_SHORT[pos]}.`,
+      };
+    }
+    if (pick.isReserve) {
+      working = callUpReserveForNextMatch(working, pick.id);
+    }
+    working = assignPlayerToMatchday(
+      working,
+      { kind: "xiii", index: i },
+      pick.id
+    );
+    used.add(pick.id);
+    const name = getManagerPlayer(working, pick.id)?.name ?? "Player";
+    actions.push(`${name} (${POSITION_SHORT[pos]})`);
+  }
+
+  for (let i = 0; i < ERA_BENCH_FROM_STARTING_17; i++) {
+    const squadBench = [...working.squad]
+      .filter((ps) => !used.has(ps.playerId))
+      .filter((ps) => !isPlayerUnavailable(ps))
+      .map((ps) => {
+        const player = getManagerPlayer(working, ps.playerId);
+        if (!player) return null;
+        return {
+          id: ps.playerId,
+          rating: player.rating ?? player.peakRating,
+          isReserve: false,
+        };
+      })
+      .filter((c): c is NonNullable<typeof c> => c !== null);
+
+    const reserveBench = [...working.reserves]
+      .filter((r) => !used.has(r.id))
+      .map((r) => ({ id: r.id, rating: r.rating, isReserve: true }));
+
+    const pick = [...squadBench, ...reserveBench].sort(
+      (a, b) => b.rating - a.rating
+    )[0];
+
+    if (!pick) break;
+
+    if (pick.isReserve) {
+      working = callUpReserveForNextMatch(working, pick.id);
+    }
+    working = assignPlayerToMatchday(
+      working,
+      { kind: "bench", index: i },
+      pick.id
+    );
+    used.add(pick.id);
+  }
+
+  const finalCheck = validateFitMatchdaySquad(working);
+  if (!finalCheck.valid) {
+    return {
+      ok: false,
+      career: working,
+      message: `Auto Sort incomplete: ${finalCheck.missing.join(", ")}.`,
+    };
+  }
+
+  return {
+    ok: true,
+    career: working,
+    message:
+      actions.length > 0
+        ? `Best XI selected: ${actions.slice(0, 5).join(", ")}${actions.length > 5 ? "…" : ""}.`
+        : "Lineup sorted.",
+  };
+}
+
 /** Best available matchday lineup for simulation (auto-replaces injured/unavailable). */
 export function resolveCareerForMatchSimulation(career: ManagerCareer): ManagerCareer {
   const result = autoFixMatchdaySquad(career);

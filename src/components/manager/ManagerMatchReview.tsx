@@ -16,6 +16,11 @@ import {
   getManagerCupRoundLabel,
   isChallengeCupFixture,
 } from "@/lib/manager/managerFixtureDisplay";
+import { BracketRecap } from "@/components/BracketRecap";
+import {
+  cupRoundKeyToBracketRound,
+  snapshotCupBracketAtRound,
+} from "@/lib/manager/managerChallengeCup";
 
 interface ManagerMatchReviewProps {
   career: ManagerCareer;
@@ -61,6 +66,16 @@ export function ManagerMatchReview({
         ? "Play-Offs"
         : `Round ${fixture.round} — League`;
 
+  const cupBracketSnapshot =
+    isChallengeCupFixture(fixture.competition) &&
+    career.challengeCup &&
+    fixture.meta?.cupRound
+      ? snapshotCupBracketAtRound(
+          career.challengeCup,
+          cupRoundKeyToBracketRound(fixture.meta.cupRound)
+        )
+      : null;
+
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -84,7 +99,13 @@ export function ManagerMatchReview({
         </GameButton>
       </div>
 
-      <div className={`${CARD.elevated} ${SPACING.cardPadding} text-center`}>
+      <div
+        className={`${CARD.elevated} ${SPACING.cardPadding} text-center ${
+          isChallengeCupFixture(fixture.competition)
+            ? "border-2 border-accent-gold/50 bg-accent-gold/10 ring-1 ring-accent-gold/25"
+            : ""
+        }`}
+      >
         <p className={`text-xl font-bold text-white sm:text-2xl`}>
           <span className={fixture.isHome ? "text-theme-primary" : ""}>
             {fixture.isHome ? career.club : fixture.opponent}
@@ -98,6 +119,24 @@ export function ManagerMatchReview({
         </p>
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{roundLabel}</p>
       </div>
+
+      {cupBracketSnapshot && (
+        <div
+          className={`${CARD.base} ${SPACING.cardPadding} border-2 border-accent-gold/40 bg-accent-gold/5`}
+        >
+          <p className={`${TYPO.sectionLabel} text-accent-gold`}>
+            Challenge Cup Bracket · {roundLabel}
+          </p>
+          <p className={`mt-1 mb-3 ${TYPO.bodySm} text-pitch-400`}>
+            Bracket as it stood after this tie
+          </p>
+          <BracketRecap
+            matches={cupBracketSnapshot.matches}
+            userClub={career.club}
+            byeTeams={cupBracketSnapshot.byeTeams}
+          />
+        </div>
+      )}
 
       {attendance && (
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>

@@ -83,7 +83,8 @@ export function ManagerInbox({
       <div>
         <h1 className={TYPO.pageTitle}>Inbox</h1>
         <p className={`${TYPO.bodySm} text-pitch-400`}>
-          {messages.length} open message{messages.length === 1 ? "" : "s"}
+          {messages.length} open message{messages.length === 1 ? "" : "s"} ·
+          messages auto-delete after 7 weeks
         </p>
       </div>
 

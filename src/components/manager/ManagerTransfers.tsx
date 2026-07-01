@@ -34,6 +34,12 @@ function withManagerRating(player: Player): Player {
   return applyManagerModeRatingToPlayer(player);
 }
 
+function formatPositions(player: Player): string {
+  return getPlayerEligiblePositions(player)
+    .map((p) => POSITION_SHORT[p])
+    .join(" · ");
+}
+
 export function ManagerTransfers({
   career,
   onUpdate,
@@ -215,7 +221,8 @@ export function ManagerTransfers({
                   <div>
                     <p className="font-medium text-white">{player.name}</p>
                     <p className={`${TYPO.bodySm} text-pitch-400`}>
-                      {club} · {player.peakRating} rated
+                      {club} · {formatPositions(player)} · {player.peakRating}{" "}
+                      rated
                     </p>
                     <p className={`${TYPO.bodySm} text-pitch-500`}>
                       Ask: {formatWage(askingPrice)} · Wage:{" "}
@@ -297,7 +304,8 @@ export function ManagerTransfers({
               >
                 <p className="font-medium text-white">{player.name}</p>
                 <p className={`${TYPO.bodySm} text-pitch-400`}>
-                  {club} · {player.peakRating} · {formatValue(player.value)}
+                  {club} · {formatPositions(player)} · {player.peakRating} ·{" "}
+                  {formatValue(player.value)}
                 </p>
                 <p className={`${TYPO.bodySm} text-pitch-500`}>
                   Est. fee: {formatWage(fee)}+ (unlisted)

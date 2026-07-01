@@ -591,7 +591,7 @@ export function previewManagerMatchScoreline(
           round,
           { currentSeasonOnly: !isFriendly }
         );
-  const homeAdj = sched.isHome ? 4 : -2;
+  const homeAdj = sched.isHome ? 5 : -1;
   const ratingGap = userRating - baseOppRating + homeAdj;
   const formFromRatings = Math.max(-3, Math.min(7, ratingGap * 0.4));
   const combinedForm = Math.max(
@@ -602,10 +602,16 @@ export function previewManagerMatchScoreline(
     )
   );
 
+  const strengthBias =
+    userRating > baseOppRating
+      ? Math.min(5, (userRating - baseOppRating) * 0.2)
+      : 0;
+
   const opponentRating =
     baseOppRating +
-    mods.opponentPenalty * 0.15 -
-    mods.strengthBonus * 0.2;
+    mods.opponentPenalty * 0.12 -
+    mods.strengthBonus * 0.25 -
+    strengthBias;
 
   const { fixture } = simulateOneFixture(
     squad,

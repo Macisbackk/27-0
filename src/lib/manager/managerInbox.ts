@@ -366,6 +366,21 @@ export function bulkRenewExpiringContractsWithInbox(career: ManagerCareer): {
   return { career: working, renewed, declined };
 }
 
+export const INBOX_MAX_AGE_WEEKS = 7;
+
+/** Remove inbox messages older than maxAgeWeeks (by game week). */
+export function purgeStaleInboxMessages(
+  career: ManagerCareer,
+  maxAgeWeeks = INBOX_MAX_AGE_WEEKS
+): ManagerCareer {
+  const inboxMessages = career.inboxMessages.filter((m) => {
+    const week = m.gameWeek ?? m.week ?? 0;
+    return career.gameWeek - week <= maxAgeWeeks;
+  });
+  if (inboxMessages.length === career.inboxMessages.length) return career;
+  return { ...career, inboxMessages, updatedAt: new Date().toISOString() };
+}
+
 export function syncManagerInboxMessages(career: ManagerCareer): ManagerCareer {
   let next = syncCupDrawInboxMessages(career);
   next = syncContractExpiryInboxMessages(next);
@@ -373,7 +388,7 @@ export function syncManagerInboxMessages(career: ManagerCareer): ManagerCareer {
   if (next.isSeasonComplete) {
     next = addSeasonRewardInboxMessage(next);
   }
-  return next;
+  return purgeStaleInboxMessages(next);
 }
 
 export function countUnreadInbox(career: ManagerCareer): number {
@@ -381,12 +396,13 @@ export function countUnreadInbox(career: ManagerCareer): number {
 }
 
 export function hydrateInboxMessages(career: ManagerCareer): ManagerCareer {
-  return {
+  const hydrated = {
     ...career,
     inboxMessages: (career.inboxMessages ?? []).map((m) =>
       normalizeInboxMessage(m, career)
     ),
   };
+  return purgeStaleInboxMessages(hydrated);
 }
 
 export function addReserveCallUpInboxMessage(

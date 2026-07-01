@@ -448,3 +448,25 @@ function resolveCupDisplayFixture(
 export function cupRoundKeyToBracketRound(key: CupRoundKey): number {
   return CUP_KEY_TO_BRACKET_ROUND[key];
 }
+
+/** Bracket view as it stood after a given cup round (hides later-round results). */
+export function snapshotCupBracketAtRound(
+  bracket: ChallengeCupBracketState,
+  atRound: number
+): ChallengeCupBracketState {
+  const matches = bracket.matches.map((m) => {
+    if (m.round <= atRound) return m;
+    return {
+      ...m,
+      status: "pending" as const,
+      homeScore: null,
+      awayScore: null,
+      winner: null,
+      loser: null,
+      userFixture: null,
+      scoringDetail: null,
+      matchEvents: null,
+    };
+  });
+  return { ...bracket, matches };
+}

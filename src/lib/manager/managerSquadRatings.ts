@@ -1,5 +1,6 @@
 import sl2026Squads from "../../../data/sl-2026-squads.json";
 import sl2026ApplyReport from "../../../data/sl-2026-squads-apply-report.json";
+import { PLAYER_RATING_OVERRIDES } from "../../../data/player-rating-overrides";
 
 type Sl2026Entry = { name: string; positions: string; rating: number };
 type RatingsChangedEntry = {
@@ -34,6 +35,10 @@ function buildManagerRatingMap(): void {
       }
     }
   }
+
+  for (const [id, rating] of Object.entries(PLAYER_RATING_OVERRIDES)) {
+    MANAGER_RATING_BY_PLAYER_ID.set(id, rating);
+  }
 }
 
 buildManagerRatingMap();
@@ -58,15 +63,10 @@ export function applyManagerModeRatingToPlayer<
 >(player: T): T {
   if (!hasManagerModeRating(player.id)) return player;
   const mgrRating = MANAGER_RATING_BY_PLAYER_ID.get(player.id)!;
-  const displayRating = player.rating ?? mgrRating;
-  const displayPeak =
-    player.rating !== undefined
-      ? Math.max(displayRating, mgrRating)
-      : mgrRating;
   return {
     ...player,
-    rating: displayRating,
-    peakRating: displayPeak,
+    rating: mgrRating,
+    peakRating: Math.max(mgrRating, player.peakRating ?? mgrRating),
   };
 }
 

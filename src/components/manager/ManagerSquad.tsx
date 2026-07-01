@@ -24,7 +24,7 @@ import {
 } from "@/lib/manager/managerMatchdaySquad";
 import { ManagerSquadPlayerModal } from "@/components/manager/ManagerSquadPlayerModal";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
-import { autoFixMatchdaySquad } from "@/lib/manager/managerAutoFix";
+import { autoFixMatchdaySquad, autoSortMatchdaySquad } from "@/lib/manager/managerAutoFix";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerTacticsPanel } from "@/components/manager/ManagerTactics";
 import { playUiClick } from "@/lib/sound";
@@ -42,6 +42,7 @@ function TeamSheetSlot({
   selected,
   replaceHighlight,
   assignMode,
+  pendingAssign,
   onSelect,
   onPlayerClick,
 }: {
@@ -52,6 +53,7 @@ function TeamSheetSlot({
   selected: boolean;
   replaceHighlight?: boolean;
   assignMode?: boolean;
+  pendingAssign?: boolean;
   onSelect: () => void;
   onPlayerClick: (playerId: string) => void;
 }) {
@@ -65,6 +67,14 @@ function TeamSheetSlot({
       type="button"
       onClick={() => {
         playUiClick();
+        if (pendingAssign && (assignMode || !playerId)) {
+          onSelect();
+          return;
+        }
+        if (replaceHighlight && playerId) {
+          onPlayerClick(playerId);
+          return;
+        }
         if (playerId) onPlayerClick(playerId);
         else onSelect();
       }}
@@ -212,11 +222,28 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
 
   return (
     <div className={`mx-auto max-w-5xl ${SPACING.stackLg}`}>
-      <div>
-        <h1 className={TYPO.pageTitle}>Squad</h1>
-        <p className={`${TYPO.bodySm} text-pitch-400`}>
-          Team sheet & matchday 17 · click a slot, then pick a player
-        </p>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h1 className={TYPO.pageTitle}>Squad</h1>
+          <p className={`${TYPO.bodySm} text-pitch-400`}>
+            Team sheet & matchday 17 · pick a player, then tap a slot
+          </p>
+        </div>
+        <GameButton
+          variant="theme"
+          size="sm"
+          onClick={() => {
+            playUiClick();
+            const result = autoSortMatchdaySquad(career);
+            onUpdate(result.career);
+            setPendingAssignId(null);
+            setSelectedTarget(null);
+            setReplaceSourcePlayerId(null);
+            if (!result.ok) window.alert(result.message);
+          }}
+        >
+          Auto Sort Best XI
+        </GameButton>
       </div>
 
       {!squadCheck.valid && (
@@ -286,6 +313,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                         selected={isSelected}
                         replaceHighlight={isReplaceTarget}
                         assignMode={isAssignTarget}
+                        pendingAssign={!!pendingAssignId}
                         onSelect={() =>
                           handleSelectSlot({ kind: "xiii", index: slotIndex })
                         }
@@ -317,6 +345,18 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     type="button"
                     onClick={() => {
                       playUiClick();
+                      if (pendingAssignId) {
+                        handleSelectSlot({ kind: "bench", index: i });
+                        return;
+                      }
+                      if (isReplaceTarget && playerId) {
+                        handlePickPlayer(playerId);
+                        return;
+                      }
+                      if (isSelected) {
+                        setSelectedTarget(null);
+                        return;
+                      }
                       if (playerId) handlePlayerClick(playerId);
                       else handleSelectSlot({ kind: "bench", index: i });
                     }}

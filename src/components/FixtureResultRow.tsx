@@ -18,6 +18,8 @@ interface FixtureResultRowProps {
   roundLabel?: string;
   /** User's team name — defaults to Dream Team for season mode. */
   userTeamName?: string;
+  /** Gold styling for Challenge Cup results. */
+  cupHighlight?: boolean;
 }
 
 export function FixtureResultRow({
@@ -28,6 +30,7 @@ export function FixtureResultRow({
   selected,
   roundLabel,
   userTeamName = DREAM_TEAM_NAME,
+  cupHighlight,
 }: FixtureResultRowProps) {
   const opponentColors = getClubColors(fixture.opponent);
   const userColors =
@@ -51,7 +54,9 @@ export function FixtureResultRow({
       className={`fixture-result-row w-full text-left transition ${
         selected
           ? "fixture-result-row--selected border-accent-green/50 bg-accent-green/10"
-          : `${CARD.base} bg-pitch-900/40`
+          : cupHighlight
+            ? `${CARD.base} border-2 border-accent-gold/50 bg-accent-gold/10 ring-1 ring-accent-gold/25`
+            : `${CARD.base} bg-pitch-900/40`
       } ${onClick ? CARD.interactive : ""} ${
         compact ? "px-2 py-1.5" : "px-3 py-2.5"
       }`}

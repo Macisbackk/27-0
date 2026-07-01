@@ -38,8 +38,7 @@ export function ManagerNav({
         <h1 className={`${TYPO.pageTitle} text-xl sm:text-2xl`}>{club}</h1>
       </div>
 
-      <nav className="-mx-1 overflow-x-auto px-1 pb-1">
-        <div className="flex min-w-max gap-2">
+      <nav className="grid grid-cols-4 gap-1.5 sm:grid-cols-8 sm:gap-2">
           {TABS.map((tab) => {
             const label =
               tab.id === "inbox" && unreadInbox > 0
@@ -56,7 +55,7 @@ export function ManagerNav({
                   onNavigate(tab.id);
                 }}
                 disabled={disabled}
-                className={`btn-press shrink-0 min-h-[40px] rounded-lg px-3 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-4 sm:text-sm ${
+                className={`btn-press min-h-[36px] rounded-lg px-1.5 py-1.5 font-display text-[10px] font-bold uppercase tracking-wide transition sm:min-h-[40px] sm:px-3 sm:text-xs ${
                   active === tab.id ? BTN.tabActive : BTN.tabIdle
                 } ${disabled ? "pointer-events-none opacity-40" : ""}`}
               >
@@ -64,7 +63,6 @@ export function ManagerNav({
               </button>
             );
           })}
-        </div>
       </nav>
     </header>
   );

@@ -510,6 +510,7 @@ export function ManagerFixtures({
                         fixture={fixture}
                         userTeamName={career.club}
                         roundLabel={getManagerPlayedFixtureLabel(fixture)}
+                        cupHighlight={isChallengeCupFixture(fixture.competition)}
                         onClick={() => {
                           playUiClick();
                           onSelectFixture(fixtureId);
