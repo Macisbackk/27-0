@@ -1,6 +1,8 @@
 import type { Position } from "../types";
 import type { MatchFixture } from "../game/season-simulation";
 import type { ChallengeCupBracketState } from "../game/challenge-cup-bracket";
+import type { PlayoffBracketState } from "../game/playoff-bracket";
+import type { PlayoffFinish } from "../game/playoff-simulation";
 
 export type PlayingStyle =
   | "balanced"
@@ -39,7 +41,7 @@ export type ContractStatus =
   | "renewed"
   | "leaving";
 
-export type ManagerCompetition = "league" | "challenge_cup" | "friendly";
+export type ManagerCompetition = "league" | "challenge_cup" | "friendly" | "playoffs";
 
 export type CupRoundKey =
   | "round_one"
@@ -60,6 +62,8 @@ export interface PlayerContract {
   expiresAtSeasonEnd: boolean;
   squadRole: SquadRole;
   happiness: number;
+  /** Transfer fee paid when signing this player in the current save. */
+  purchaseFee?: number;
   renewalDemand?: RenewalDemand;
   status?: ContractStatus;
 }
@@ -166,6 +170,8 @@ export interface ManagerScheduledFixture {
   competition: ManagerCompetition;
   cupRound?: CupRoundKey;
   cupMatchId?: string;
+  playoffRound?: number;
+  playoffMatchId?: string;
   label: string;
 }
 
@@ -252,6 +258,7 @@ export interface ManagerSeasonSummary {
   bestPlayerId: string | null;
   topTryScorerId: string | null;
   challengeCupResult: string;
+  playoffFinish?: PlayoffFinish | null;
   biggestWin: SeasonHighlightResult | null;
   biggestDefeat: SeasonHighlightResult | null;
   averageAttendance: number;
@@ -431,6 +438,9 @@ export interface ManagerCareer {
   attendanceData: ClubAttendanceData;
   gateIncomeHistory: GateIncomeRecord[];
   challengeCup: ChallengeCupBracketState;
+  playoffs?: PlayoffBracketState;
+  /** Consecutive weeks wage bill exceeded budget — triggers board pressure. */
+  wagePressureWeeks?: number;
   matchdayXiii: string[];
   matchdayInterchange: string[];
   xiiiSlotPositions: Position[];

@@ -1,6 +1,6 @@
 import seedrandom from "seedrandom";
 import type { LatestNewsItem, ManagerCareer } from "./types";
-import { getNextManagerFixture } from "./managerChallengeCup";
+import { getNextManagerFixture } from "./managerSimulation";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { formatWage } from "./managerContracts";
 

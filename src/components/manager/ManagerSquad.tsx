@@ -40,6 +40,7 @@ function TeamSheetSlot({
   career,
   selected,
   replaceHighlight,
+  assignMode,
   onSelect,
   onPlayerClick,
 }: {
@@ -49,6 +50,7 @@ function TeamSheetSlot({
   career: ManagerCareer;
   selected: boolean;
   replaceHighlight?: boolean;
+  assignMode?: boolean;
   onSelect: () => void;
   onPlayerClick: (playerId: string) => void;
 }) {
@@ -70,6 +72,8 @@ function TeamSheetSlot({
           ? "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50"
           : selected
           ? "border-theme-primary bg-theme-primary/10 ring-1 ring-theme-primary/40"
+          : assignMode
+          ? "border-theme-primary/60 bg-theme-primary/5 hover:border-theme-primary"
           : "border-pitch-700/60 bg-pitch-900/50 hover:border-pitch-500"
       } ${unavailable ? "opacity-60" : ""}`}
     >
@@ -176,6 +180,16 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     }
   };
 
+  const handlePoolPlayerClick = (playerId: string) => {
+    if (pendingAssignId) return;
+    if (selectedTarget || replaceSourcePlayerId) {
+      handlePickPlayer(playerId);
+      return;
+    }
+    setPendingAssignId(playerId);
+    setModalPlayerId(null);
+  };
+
   const handlePlayerClick = (playerId: string) => {
     if (selectedTarget && replaceCandidateIds.has(playerId)) {
       handlePickPlayer(playerId);
@@ -263,6 +277,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                         career={career}
                         selected={isSelected}
                         replaceHighlight={isReplaceTarget}
+                        assignMode={!!pendingAssignId}
                         onSelect={() =>
                           handleSelectSlot({ kind: "xiii", index: slotIndex })
                         }
@@ -287,6 +302,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                   : null;
                 const isReplaceTarget =
                   !!playerId && replaceCandidateIds.has(playerId);
+                const isAssignTarget = !!pendingAssignId;
                 return (
                   <button
                     key={i}
@@ -299,7 +315,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     className={`rounded-lg border px-2 py-2 text-left ${
                       isReplaceTarget
                         ? "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50"
-                        : isSelected
+                        : isSelected || isAssignTarget
                         ? "border-theme-primary bg-theme-primary/10"
                         : "border-pitch-700/60 bg-pitch-900/40"
                     }`}
@@ -337,8 +353,8 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
             </p>
           ) : (
             <p className={`mb-2 ${TYPO.bodySm} text-pitch-500`}>
-              All players outside the matchday 17 — click for actions or select a
-              slot to swap
+              Click a player to assign, or a slot then a player · double-click a
+              player for details
             </p>
           )}
           <div className="mb-2 flex flex-wrap gap-1">
@@ -385,14 +401,16 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     type="button"
                     onClick={() => {
                       playUiClick();
-                      if (selectedTarget || replaceSourcePlayerId) {
-                        handlePickPlayer(playerId);
-                        return;
-                      }
+                      handlePoolPlayerClick(playerId);
+                    }}
+                    onDoubleClick={() => {
+                      playUiClick();
                       setModalPlayerId(playerId);
                     }}
-                    className={`w-full rounded-lg border px-2 py-2 text-left transition ${
-                      isHighlighted
+                    className={`rounded-lg border px-2 py-2 text-left transition ${
+                      pendingAssignId === playerId
+                        ? "border-theme-primary bg-theme-primary/10 ring-1 ring-theme-primary/40"
+                        : isHighlighted
                         ? "border-accent-gold bg-accent-gold/10 hover:border-accent-gold"
                         : "border-pitch-700/50 hover:border-pitch-500"
                     }`}

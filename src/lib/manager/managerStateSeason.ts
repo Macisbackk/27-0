@@ -12,6 +12,7 @@ import {
   tickContractsForNewSeason,
 } from "./managerContracts";
 import { createManagerChallengeCup } from "./managerChallengeCup";
+import { userQualifiedForManagerPlayoffs } from "./managerPlayoffs";
 import { initPreSeasonState } from "./managerFriendlies";
 import {
   computeSeasonTransferBudget,
@@ -51,21 +52,37 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
   }
 
   const trophies: string[] = [];
-  if (position === 1) trophies.push("Super League Champions");
+  const playoffFinish = career.playoffs?.finish ?? null;
+  if (playoffFinish === "Super League Champions") {
+    trophies.push("Super League Champions");
+  } else if (position === 1) {
+    trophies.push("League Leaders");
+  }
   const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
   if (cupOutcome.isWinner) trophies.push("Challenge Cup");
+  if (playoffFinish === "Grand Final Runner-Up") {
+    trophies.push("Grand Final Runner-Up");
+  }
 
   let budgetChange = 0;
-  if (position === 1) budgetChange = 400_000;
+  if (playoffFinish === "Super League Champions") budgetChange = 600_000;
+  else if (position === 1) budgetChange = 350_000;
   else if (position <= 4) budgetChange = 200_000;
   else if (position <= 8) budgetChange = 75_000;
   else budgetChange = 25_000;
   if (cupOutcome.isWinner) budgetChange += 150_000;
+  if (playoffFinish === "Grand Final Runner-Up") budgetChange += 120_000;
 
   let boardVerdict = "A steady season — the board want more next year.";
-  if (position === 1) boardVerdict = "Outstanding — you delivered the title.";
-  else if (position <= 4) boardVerdict = "Playoff football achieved. Well done.";
-  else if (position >= 12) boardVerdict = "Disappointing — improvements required.";
+  if (playoffFinish === "Super League Champions") {
+    boardVerdict = "Outstanding — you delivered the title.";
+  } else if (playoffFinish === "Grand Final Runner-Up") {
+    boardVerdict = "So close — runners-up in the Grand Final.";
+  } else if (userQualifiedForManagerPlayoffs(career) && position <= 6) {
+    boardVerdict = "Playoff football achieved. Well done.";
+  } else if (position >= 12) {
+    boardVerdict = "Disappointing — improvements required.";
+  }
 
   const sa = career.seasonAttendance;
   const avgAttendance =
@@ -116,6 +133,7 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
     bestPlayerId,
     topTryScorerId,
     challengeCupResult: cupOutcome.label,
+    playoffFinish,
     biggestWin,
     biggestDefeat,
     averageAttendance: avgAttendance,
@@ -175,6 +193,8 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     attendanceData: createClubAttendanceData(career.club),
     seasonAttendance: { total: 0, count: 0, high: 0, low: 0 },
     challengeCup: createManagerChallengeCup(newSeed, career.club),
+    playoffs: undefined,
+    wagePressureWeeks: 0,
     transferMarket: generateTransferMarket(
       career.club,
       squadIdSet,

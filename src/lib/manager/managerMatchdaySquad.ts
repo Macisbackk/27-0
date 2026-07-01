@@ -192,7 +192,7 @@ export function getReplacementCandidates(
     });
   }
 
-  for (const { playerId, isReserveCallUp } of getAvailableSquadPlayers(career)) {
+  for (const { playerId, isReserveCallUp } of getSquadPoolPlayers(career)) {
     add({ playerId, source: "available", isReserveCallUp });
   }
 

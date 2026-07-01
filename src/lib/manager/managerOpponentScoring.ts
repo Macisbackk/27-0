@@ -31,7 +31,8 @@ export function buildOpponentTryScoringDetail(
   tries: number,
   seed: string,
   round: number,
-  tactics?: ManagerTactics
+  _tactics?: ManagerTactics,
+  fixtureKey?: string
 ): TeamScoringDetail["tryScorers"] {
   if (tries <= 0) return [];
 
@@ -42,7 +43,9 @@ export function buildOpponentTryScoringDetail(
     return [];
   }
 
-  const rng = seedrandom(`${seed}-opp-tries-r${round}-${opponent}`);
+  const rng = seedrandom(
+    `${seed}-opp-tries-${fixtureKey ?? `r${round}`}-${opponent}`
+  );
   const weights = oppSquad.map((p) => {
     const rating = p.rating ?? p.peakRating;
     const variance = 0.85 + rng() * 0.3;
@@ -72,7 +75,8 @@ export function opponentScoringUsesClubLump(
 export function repairOpponentTryScorers(
   fixture: MatchFixture,
   seed: string,
-  tactics?: ManagerTactics
+  tactics?: ManagerTactics,
+  fixtureKey?: string
 ): void {
   if (fixture.triesAgainst <= 0) return;
   const tryScorers = buildOpponentTryScoringDetail(
@@ -80,7 +84,8 @@ export function repairOpponentTryScorers(
     fixture.triesAgainst,
     seed,
     fixture.round,
-    tactics
+    tactics,
+    fixtureKey
   );
   if (tryScorers.length === 0) return;
 

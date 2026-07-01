@@ -257,6 +257,7 @@ export function completePlayerPurchase(
   contract.yearsRemaining = offer.yearsRequested;
   contract.squadRole = offer.squadRole;
   contract.expiresAtSeasonEnd = offer.yearsRequested <= 1;
+  contract.purchaseFee = offer.transferFee;
 
   const nextContracts = { ...career.contracts, [playerId]: contract };
   const nextListed = career.leagueListedPlayers.filter(
@@ -393,7 +394,8 @@ export function acceptIncomingOffer(
     nextCareer,
     msg.playerName ?? getPlayerById(playerId)?.name ?? "Player",
     buyer,
-    msg.offerAmount
+    msg.offerAmount,
+    playerId
   );
   nextCareer = pushInboxMessage(nextCareer, saleMsg);
 

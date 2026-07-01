@@ -12,6 +12,7 @@ import { getManagerPlayerEligiblePositions } from "@/lib/manager/managerPlayers"
 import { getPlayerAge } from "@/lib/players/player-age";
 import {
   applyRenewal,
+  bulkRenewExpiringContracts,
   evaluateRenewalOffer,
   formatWage,
   getContractStatus,
@@ -57,6 +58,31 @@ export function ManagerContracts({
     accepted: boolean;
     reason: string;
   } | null>(null);
+
+  const [bulkResult, setBulkResult] = useState<string | null>(null);
+
+  const expiringCount = useMemo(
+    () =>
+      career.squad.filter((ps) => {
+        const c = career.contracts[ps.playerId];
+        if (!c) return false;
+        const s = getContractStatus(c);
+        return s === "expires_this_season" || s === "wants_renewal";
+      }).length,
+    [career]
+  );
+
+  const handleBulkRenew = () => {
+    const { career: next, renewed, declined } = bulkRenewExpiringContracts(career);
+    onUpdate(next);
+    setBulkResult(
+      renewed > 0
+        ? `Renewed ${renewed} player${renewed === 1 ? "" : "s"}${declined > 0 ? ` · ${declined} declined` : ""}.`
+        : declined > 0
+          ? `No renewals accepted (${declined} declined).`
+          : "No expiring contracts to renew."
+    );
+  };
 
   const rows = useMemo(() => {
     let list = career.squad
@@ -167,7 +193,23 @@ export function ManagerContracts({
         <p className={`${TYPO.bodySm} text-pitch-400`}>
           Wage bill {formatWage(career.wageBill)} of{" "}
           {formatWage(career.wageBudget)} budget
+          {career.wageBill > career.wageBudget ? " · over budget" : ""}
         </p>
+        {expiringCount > 0 && (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <GameButton
+              variant="secondary"
+              fullWidth={false}
+              size="sm"
+              onClick={handleBulkRenew}
+            >
+              Renew all expiring ({expiringCount})
+            </GameButton>
+            {bulkResult && (
+              <p className={`${TYPO.bodySm} text-pitch-300`}>{bulkResult}</p>
+            )}
+          </div>
+        )}
       </div>
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>

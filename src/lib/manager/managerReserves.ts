@@ -275,6 +275,7 @@ export function promoteReserveToSquad(
   const rep = getManagerClubTeamRating(career.club);
   const contract = generateInitialContract(reserveId, false, rep);
   contract.squadRole = "Prospect";
+  contract.purchaseFee = 0;
 
   const next: ManagerCareer = {
     ...career,

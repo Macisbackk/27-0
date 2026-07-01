@@ -59,8 +59,14 @@ export interface PlayoffBracketState {
   userEliminated: boolean;
   tournamentComplete: boolean;
   finish: PlayoffFinish | null;
+  /** User club name (defaults to Dream Team in quick mode). */
+  userClub?: string;
   /** Current Mode — opponent squads use 2026 team-year rosters only. */
   currentSeasonOnly?: boolean;
+}
+
+function userClubOf(state: PlayoffBracketState): string {
+  return state.userClub ?? DREAM_TEAM_NAME;
 }
 
 function opponentPoolOptions(
@@ -73,8 +79,8 @@ function teamAtPosition(table: LeagueTableRow[], position: number): string {
   return table.find((row) => row.position === position)?.team ?? `Team ${position}`;
 }
 
-function isUserTeam(team: string | null): boolean {
-  return team === DREAM_TEAM_NAME;
+function isUserTeam(team: string | null, userClub: string): boolean {
+  return team === userClub;
 }
 
 function createMatch(
@@ -84,7 +90,8 @@ function createMatch(
   homeTeam: string | null,
   awayTeam: string | null,
   feederIds: string[] | null,
-  isNeutral: boolean
+  isNeutral: boolean,
+  userClub: string
 ): PlayoffBracketMatch {
   const ready = homeTeam !== null && awayTeam !== null;
   return {
@@ -100,7 +107,7 @@ function createMatch(
     status: ready ? "ready" : "pending",
     isNeutral,
     isUserMatch:
-      isUserTeam(homeTeam) || isUserTeam(awayTeam),
+      isUserTeam(homeTeam, userClub) || isUserTeam(awayTeam, userClub),
     feederIds,
     userFixture: null,
     scoringDetail: null,
@@ -111,8 +118,9 @@ export function createPlayoffBracket(
   seed: string,
   leagueTable: LeagueTableRow[],
   leaguePosition: number,
-  options?: { currentSeasonOnly?: boolean }
+  options?: { currentSeasonOnly?: boolean; userClub?: string }
 ): PlayoffBracketState {
+  const userClub = options?.userClub ?? DREAM_TEAM_NAME;
   const first = teamAtPosition(leagueTable, 1);
   const second = teamAtPosition(leagueTable, 2);
   const third = teamAtPosition(leagueTable, 3);
@@ -121,11 +129,11 @@ export function createPlayoffBracket(
   const sixth = teamAtPosition(leagueTable, 6);
 
   const matches: PlayoffBracketMatch[] = [
-    createMatch("elim-low", 1, 0, third, sixth, null, false),
-    createMatch("elim-high", 1, 1, fourth, fifth, null, false),
-    createMatch("semi-low", 2, 0, first, null, ["elim-low"], false),
-    createMatch("semi-high", 2, 1, second, null, ["elim-high"], false),
-    createMatch("gf", 3, 0, null, null, ["semi-low", "semi-high"], true),
+    createMatch("elim-low", 1, 0, third, sixth, null, false, userClub),
+    createMatch("elim-high", 1, 1, fourth, fifth, null, false, userClub),
+    createMatch("semi-low", 2, 0, first, null, ["elim-low"], false, userClub),
+    createMatch("semi-high", 2, 1, second, null, ["elim-high"], false, userClub),
+    createMatch("gf", 3, 0, null, null, ["semi-low", "semi-high"], true, userClub),
   ];
 
   return {
@@ -136,6 +144,7 @@ export function createPlayoffBracket(
     userEliminated: false,
     tournamentComplete: false,
     finish: null,
+    userClub,
     currentSeasonOnly: options?.currentSeasonOnly ?? false,
   };
 }
@@ -186,7 +195,10 @@ export function canSimulatePlayoffMatch(
   return true;
 }
 
-function rebuildBracketFromWinners(matches: PlayoffBracketMatch[]): void {
+function rebuildBracketFromWinners(
+  matches: PlayoffBracketMatch[],
+  userClub: string
+): void {
   for (const child of matches) {
     if (!child.feederIds?.length || child.status === "complete") continue;
 
@@ -206,7 +218,8 @@ function rebuildBracketFromWinners(matches: PlayoffBracketMatch[]): void {
     child.status = ready ? "ready" : "pending";
     if (ready) {
       child.isUserMatch =
-        isUserTeam(child.homeTeam) || isUserTeam(child.awayTeam);
+        isUserTeam(child.homeTeam, userClub) ||
+        isUserTeam(child.awayTeam, userClub);
     }
   }
 }
@@ -216,9 +229,10 @@ function getPlayoffTeamStrength(
   seed: string,
   matchId: string,
   rng: () => number,
+  userClub: string,
   options?: OpponentPoolOptions
 ): number {
-  if (team === DREAM_TEAM_NAME) return 80;
+  if (team === userClub) return 80;
   return (
     getGeneratedClubSquadStrength(team, seed, "season", options ?? {}) +
     (rng() - 0.5) * 5
@@ -262,6 +276,7 @@ function simulateClubVsClub(
   matchId: string,
   round: number,
   isNeutral: boolean,
+  userClub: string,
   options?: OpponentPoolOptions
 ): {
   homeScore: number;
@@ -272,8 +287,22 @@ function simulateClubVsClub(
   loser: string;
 } {
   const rng = seedrandom(`${seed}-playoff-ai-${matchId}`);
-  const homeStr = getPlayoffTeamStrength(home, seed, matchId, rng, options);
-  const awayStr = getPlayoffTeamStrength(away, seed, matchId, rng, options);
+  const homeStr = getPlayoffTeamStrength(
+    home,
+    seed,
+    matchId,
+    rng,
+    userClub,
+    options
+  );
+  const awayStr = getPlayoffTeamStrength(
+    away,
+    seed,
+    matchId,
+    rng,
+    userClub,
+    options
+  );
   const homeAdvantage = isNeutral ? 0 : 3;
   const homeWins =
     rng() < 0.5 + ((homeStr + homeAdvantage - awayStr) / 100) * 0.65;
@@ -340,8 +369,9 @@ function syncAfterMatch(
   match: PlayoffBracketMatch,
   userWon: boolean | null
 ): PlayoffBracketState {
+  const userClub = userClubOf(state);
   const matches = state.matches.map((m) => ({ ...m }));
-  rebuildBracketFromWinners(matches);
+  rebuildBracketFromWinners(matches, userClub);
 
   let userEliminated = state.userEliminated;
   let tournamentComplete = state.tournamentComplete;
@@ -363,7 +393,7 @@ function syncAfterMatch(
   const gf = matches.find((m) => m.id === "gf");
   if (gf?.status === "complete") {
     tournamentComplete = true;
-    if (!finish && gf.winner !== DREAM_TEAM_NAME) {
+    if (!finish && gf.winner !== userClub) {
       finish = state.finish ?? "Grand Final Runner-Up";
     }
   }
@@ -382,9 +412,10 @@ function simulateUserMatch(
   match: PlayoffBracketMatch,
   squad: SquadSlot[]
 ): PlayoffBracketState {
+  const userClub = userClubOf(state);
   const home = match.homeTeam!;
   const away = match.awayTeam!;
-  const isHome = home === DREAM_TEAM_NAME;
+  const isHome = home === userClub;
   const opponent = isHome ? away : home;
   const poolOptions = opponentPoolOptions(state);
   const opponentStrength = getGeneratedClubSquadStrength(
@@ -414,8 +445,8 @@ function simulateUserMatch(
   const homeScore = isHome ? fixture.pointsFor : fixture.pointsAgainst;
   const awayScore = isHome ? fixture.pointsAgainst : fixture.pointsFor;
   const userWon = fixture.result === "W";
-  const winner = userWon ? DREAM_TEAM_NAME : opponent;
-  const loser = userWon ? opponent : DREAM_TEAM_NAME;
+  const winner = userWon ? userClub : opponent;
+  const loser = userWon ? opponent : userClub;
 
   const detail = fixture.scoringDetail!;
   const scoringDetail: PlayoffBracketScoringDetail = {
@@ -451,7 +482,7 @@ function simulateUserMatch(
 
   const gf = synced.matches.find((x) => x.id === "gf");
   if (gf?.status === "complete" && gf.isUserMatch) {
-    const gfWon = gf.winner === DREAM_TEAM_NAME;
+    const gfWon = gf.winner === userClub;
     return {
       ...synced,
       tournamentComplete: true,
@@ -476,6 +507,7 @@ function simulateAiMatch(
     match.id,
     match.round,
     match.isNeutral,
+    userClubOf(state),
     poolOptions
   );
 
@@ -588,7 +620,10 @@ export function simulatePlayoffBracketTournament(
   return next;
 }
 
-function matchToRoundResult(match: PlayoffBracketMatch): PlayoffRoundResult {
+function matchToRoundResult(
+  match: PlayoffBracketMatch,
+  userClub: string
+): PlayoffRoundResult {
   const roundName =
     match.round === 1
       ? "Eliminator"
@@ -597,9 +632,7 @@ function matchToRoundResult(match: PlayoffBracketMatch): PlayoffRoundResult {
         : "Grand Final";
 
   const userPlayed = match.isUserMatch;
-  const userWon = userPlayed
-    ? match.winner === DREAM_TEAM_NAME
-    : null;
+  const userWon = userPlayed ? match.winner === userClub : null;
 
   const backgroundFixtures = match.userFixture ? [] : [];
 
@@ -636,6 +669,7 @@ export function buildPlayoffResult(
   state: PlayoffBracketState,
   squad: SquadSlot[]
 ): PlayoffResult {
+  const userClub = userClubOf(state);
   const userMatches = state.matches
     .filter((m) => m.isUserMatch && m.status === "complete" && m.userFixture)
     .sort((a, b) => a.round - b.round);
@@ -647,16 +681,16 @@ export function buildPlayoffResult(
   let finish: PlayoffFinish = state.finish ?? "Super League Champions";
   if (state.userEliminated && userMatches.length > 0) {
     const last = userMatches[userMatches.length - 1];
-    finish = resolveFinish(state, last, last.winner === DREAM_TEAM_NAME);
+    finish = resolveFinish(state, last, last.winner === userClub);
   } else if (userMatches.some((m) => m.round === 3)) {
     const gf = userMatches.find((m) => m.round === 3)!;
     finish =
-      gf.winner === DREAM_TEAM_NAME
+      gf.winner === userClub
         ? "Super League Champions"
         : "Grand Final Runner-Up";
   }
 
-  const rounds = userMatches.map(matchToRoundResult);
+  const rounds = userMatches.map((m) => matchToRoundResult(m, userClub));
 
   const tryScorers =
     userFixtures.length > 0
@@ -685,18 +719,19 @@ export function buildPlayoffResult(
 /** Build a bracket match view from a stored playoff round (review page). */
 export function playoffRoundResultToBracketMatch(
   round: PlayoffRoundResult,
-  id: string
+  id: string,
+  userClub: string = DREAM_TEAM_NAME
 ): PlayoffBracketMatch | null {
   if (!round.userPlayed) return null;
 
   const f = round.fixture;
-  const homeTeam = f.isHome ? DREAM_TEAM_NAME : round.opponent;
-  const awayTeam = f.isHome ? round.opponent : DREAM_TEAM_NAME;
+  const homeTeam = f.isHome ? userClub : round.opponent;
+  const awayTeam = f.isHome ? round.opponent : userClub;
   const homeScore = f.isHome ? f.pointsFor : f.pointsAgainst;
   const awayScore = f.isHome ? f.pointsAgainst : f.pointsFor;
   const userWon = f.result === "W";
-  const winner = userWon ? DREAM_TEAM_NAME : round.opponent;
-  const loser = userWon ? round.opponent : DREAM_TEAM_NAME;
+  const winner = userWon ? userClub : round.opponent;
+  const loser = userWon ? round.opponent : userClub;
 
   const sd = f.scoringDetail;
   const scoringDetail: PlayoffBracketScoringDetail | null = sd

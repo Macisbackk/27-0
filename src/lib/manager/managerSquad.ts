@@ -9,6 +9,7 @@ import {
 } from "../positions";
 import type { ManagerCareer, ManagerPlayerState } from "./types";
 import { getManagerPlayer, getManagerPlayerEligiblePositions } from "./managerPlayers";
+import { getMatchdayTryWeight } from "./managerTryScoring";
 import {
   ERA_BENCH_FROM_STARTING_17,
   ERA_STARTING_17_SIZE,
@@ -107,6 +108,53 @@ export function buildSquadSlotsFromMatchday(
     if (player) signPlayerToSlot(squad, player, i);
   }
   return squad;
+}
+
+/** @deprecated Use getMatchdayTryWeight(position, true) — kept for imports that expect a scalar. */
+export const MATCHDAY_INTERCHANGE_TRY_WEIGHT = 0.35;
+
+export interface MatchdayScoringEntry {
+  player: NonNullable<SquadSlot["player"]>;
+  playedPosition: Position;
+  tryWeightMultiplier: number;
+}
+
+/** Starting XIII plus interchange for tactic-weighted try allocation. */
+export function buildMatchdayScoringEntries(
+  career: ManagerCareer,
+  xiiiIds: string[] = career.matchdayXiii,
+  slotPositions: Position[] = career.xiiiSlotPositions,
+  interchangeIds: string[] = career.matchdayInterchange
+): MatchdayScoringEntry[] {
+  const entries: MatchdayScoringEntry[] = [];
+
+  for (let i = 0; i < xiiiIds.length; i++) {
+    const id = xiiiIds[i];
+    const pos = slotPositions[i];
+    if (!id || !pos) continue;
+    const player = getManagerPlayer(career, id);
+    if (!player) continue;
+    entries.push({
+      player,
+      playedPosition: pos,
+      tryWeightMultiplier: getMatchdayTryWeight(pos, false),
+    });
+  }
+
+  for (const id of interchangeIds) {
+    if (!id) continue;
+    const player = getManagerPlayer(career, id);
+    if (!player) continue;
+    const positions = getManagerPlayerEligiblePositions(career, id);
+    const pos = positions[0] ?? player.position;
+    entries.push({
+      player,
+      playedPosition: pos,
+      tryWeightMultiplier: getMatchdayTryWeight(pos, true),
+    });
+  }
+
+  return entries;
 }
 
 export function groupPlayersByPosition(

@@ -115,16 +115,30 @@ export function createPlayerSaleMessage(
   career: ManagerCareer,
   playerName: string,
   buyerClub: string,
-  fee: number
+  fee: number,
+  playerId?: string
 ): InboxMessage {
+  const purchaseFee =
+    playerId != null ? career.contracts[playerId]?.purchaseFee : undefined;
+  let profitLine = "";
+  if (purchaseFee != null && purchaseFee > 0) {
+    const profit = fee - purchaseFee;
+    profitLine =
+      profit >= 0
+        ? `\nProfit on transfer: ${formatWage(profit)} (bought for ${formatWage(purchaseFee)}).`
+        : `\nLoss on transfer: ${formatWage(Math.abs(profit))} (bought for ${formatWage(purchaseFee)}).`;
+  }
+
   return normalizeInboxMessage(
     {
       id: `sale-${playerName}-${career.gameWeek}-${Date.now()}`,
       type: "sale",
       title: "Transfer Completed",
-      body: `${playerName} has joined ${buyerClub} for ${formatWage(fee)}.\nThe fee has been added to your transfer budget.`,
+      body: `${playerName} has joined ${buyerClub} for ${formatWage(fee)}.\nThe fee has been added to your transfer budget.${profitLine}`,
       read: false,
       resolved: false,
+      playerId,
+      playerName,
     },
     career
   );

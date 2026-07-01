@@ -307,6 +307,39 @@ export function applyRenewal(
   };
 }
 
+/** Renew all expiring players at their current demand (or a fair default). */
+export function bulkRenewExpiringContracts(career: ManagerCareer): {
+  career: ManagerCareer;
+  renewed: number;
+  declined: number;
+} {
+  let working = ensureRenewalDemands(career);
+  let renewed = 0;
+  let declined = 0;
+
+  for (const ps of working.squad) {
+    const contract = working.contracts[ps.playerId];
+    if (!contract) continue;
+    const status = getContractStatus(contract);
+    if (status !== "expires_this_season" && status !== "wants_renewal") {
+      continue;
+    }
+
+    const demand =
+      contract.renewalDemand ??
+      generateRenewalDemand(ps.playerId, contract, working);
+    const result = evaluateRenewalOffer(ps.playerId, contract, demand, working);
+    if (result.accepted) {
+      working = applyRenewal(working, ps.playerId, demand);
+      renewed++;
+    } else {
+      declined++;
+    }
+  }
+
+  return { career: working, renewed, declined };
+}
+
 export function tickContractsForNewSeason(
   career: ManagerCareer
 ): { career: ManagerCareer; leaving: string[] } {

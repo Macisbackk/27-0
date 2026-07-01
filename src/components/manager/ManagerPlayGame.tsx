@@ -8,6 +8,7 @@ import type { LiveMatchCommand, ManagerCareer } from "@/lib/manager/types";
 import {
   advanceLiveTick,
   advanceLiveToFullTime,
+  commandFromTactics,
   createLiveMatch,
   formatLiveClock,
   getLiveCommandLabel,
@@ -23,6 +24,7 @@ import {
   getNextManagerFixture,
 } from "@/lib/manager/managerSimulation";
 import { ensureCupBracketReady } from "@/lib/manager/managerChallengeCup";
+import { ensurePlayoffsReady } from "@/lib/manager/managerPlayoffs";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
@@ -52,7 +54,7 @@ export function ManagerPlayGame({
   onComplete,
   onCancel,
 }: ManagerPlayGameProps) {
-  const readyCareer = ensureCupBracketReady(career);
+  const readyCareer = ensurePlayoffsReady(ensureCupBracketReady(career));
   const sched = getNextManagerFixture(readyCareer);
   const fixtureKey = sched?.id ?? "none";
   const [live, setLive] = useState<LiveMatchState | null>(null);
@@ -70,8 +72,10 @@ export function ManagerPlayGame({
 
   useEffect(() => {
     if (!sched) return;
+    const tacticCommand = commandFromTactics(readyCareer);
     setLive(createLiveMatch(readyCareer, sched));
-    setCommand("balanced");
+    setCommand(tacticCommand);
+    commandRef.current = tacticCommand;
     setClockRunning(false);
     setHasStarted(false);
     finishedRef.current = false;
@@ -169,7 +173,12 @@ export function ManagerPlayGame({
     if (!live || live.isComplete) return;
     playSimulateRound();
     setClockRunning(false);
-    setLive(advanceLiveToFullTime(live, careerRef.current, commandRef.current));
+    const tacticCommand = commandFromTactics(careerRef.current);
+    commandRef.current = tacticCommand;
+    setCommand(tacticCommand);
+    setLive(
+      advanceLiveToFullTime(live, careerRef.current, tacticCommand)
+    );
     setHasStarted(true);
   };
 

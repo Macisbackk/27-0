@@ -12,7 +12,8 @@ import type {
   LiveMatchEvent,
 } from "./types";
 import { computeManagerTeamRating } from "./managerRating";
-import { getManagerPlayer } from "./managerPlayers";
+import { getManagerPlayer, getManagerPlayerEligiblePositions } from "./managerPlayers";
+import { getMatchdayTryWeight } from "./managerTryScoring";
 import { previewManagerMatchScoreline } from "./managerSimulation";
 
 export type { LiveMatchEvent };
@@ -56,6 +57,33 @@ const COMMAND_LABELS: Record<LiveMatchCommand, string> = {
 
 export function getLiveCommandLabel(cmd: LiveMatchCommand): string {
   return COMMAND_LABELS[cmd];
+}
+
+/** Map saved tactics to the live command used when simulating from the hub. */
+export function commandFromTactics(career: ManagerCareer): LiveMatchCommand {
+  const { playingStyle, attackFocus, defenceFocus } = career.tactics;
+
+  if (
+    playingStyle === "defensive" ||
+    defenceFocus === "conservative" ||
+    defenceFocus === "goal_line"
+  ) {
+    return "defend";
+  }
+  if (attackFocus === "middle" || playingStyle === "direct") {
+    return "use_forwards";
+  }
+  if (attackFocus === "edges" || playingStyle === "expansive") {
+    return "spread_wide";
+  }
+  if (
+    playingStyle === "high_tempo" ||
+    attackFocus === "offloads" ||
+    defenceFocus === "aggressive_contact"
+  ) {
+    return "attack";
+  }
+  return "balanced";
 }
 
 export function formatLiveClock(minute: number): string {
@@ -113,14 +141,23 @@ function tacticCommandBias(
   career: ManagerCareer,
   cmd: LiveMatchCommand
 ): { userChance: number; oppChance: number } {
-  if (cmd !== "balanced") return { userChance: 1, oppChance: 1 };
   const t = career.tactics;
+  const scale = cmd === "balanced" ? 1 : 0.45;
   let userChance = 1;
   let oppChance = 1;
-  if (t.playingStyle === "expansive") userChance += 0.08;
-  if (t.playingStyle === "defensive") oppChance -= 0.06;
-  if (t.playingStyle === "direct") userChance += 0.05;
-  if (t.defenceFocus === "conservative") oppChance -= 0.05;
+  if (t.playingStyle === "expansive") userChance += 0.08 * scale;
+  if (t.playingStyle === "defensive") oppChance -= 0.06 * scale;
+  if (t.playingStyle === "direct") userChance += 0.05 * scale;
+  if (t.defenceFocus === "conservative") oppChance -= 0.05 * scale;
+  if (cmd === "use_forwards" && t.attackFocus === "middle") {
+    userChance += 0.06;
+  }
+  if (cmd === "spread_wide" && t.attackFocus === "edges") {
+    userChance += 0.06;
+  }
+  if (cmd === "defend" && t.defenceFocus === "goal_line") {
+    oppChance -= 0.05;
+  }
   return { userChance, oppChance };
 }
 
@@ -138,27 +175,70 @@ const BACK_POSITIONS: Position[] = [
   "SCRUM_HALF",
 ];
 
+function scorerPositionBias(
+  pos: Position,
+  command: LiveMatchCommand,
+  attackFocus: ManagerCareer["tactics"]["attackFocus"]
+): number {
+  const preferForward =
+    command === "use_forwards" ||
+    (command === "balanced" && attackFocus === "middle");
+  const preferBack =
+    command === "spread_wide" ||
+    (command === "balanced" && attackFocus === "edges");
+  if (preferForward && FORWARD_POSITIONS.includes(pos)) return 1.12;
+  if (preferBack && BACK_POSITIONS.includes(pos)) return 1.12;
+  return 1;
+}
+
+function pickWeightedId(
+  weighted: { id: string; weight: number }[],
+  rng: () => number
+): string | undefined {
+  const sum = weighted.reduce((acc, entry) => acc + entry.weight, 0);
+  if (sum <= 0) return weighted[0]?.id;
+  let roll = rng() * sum;
+  for (const entry of weighted) {
+    roll -= entry.weight;
+    if (roll <= 0) return entry.id;
+  }
+  return weighted[weighted.length - 1]?.id;
+}
+
 function pickScorer(
   career: ManagerCareer,
   command: LiveMatchCommand,
   rng: () => number
 ): { id: string; name: string } {
-  const pool: string[] = [];
+  const weighted: { id: string; weight: number }[] = [];
+
   for (let i = 0; i < career.matchdayXiii.length; i++) {
-    const id = career.matchdayXiii[i]!;
+    const id = career.matchdayXiii[i];
     const pos = career.xiiiSlotPositions[i];
     if (!id || !pos) continue;
-    const preferForward =
-      command === "use_forwards" ||
-      (command === "balanced" && career.tactics.attackFocus === "middle");
-    const preferBack =
-      command === "spread_wide" ||
-      (command === "balanced" && career.tactics.attackFocus === "edges");
-    if (preferForward && FORWARD_POSITIONS.includes(pos)) pool.push(id);
-    else if (preferBack && BACK_POSITIONS.includes(pos)) pool.push(id);
-    else pool.push(id);
+    weighted.push({
+      id,
+      weight:
+        getMatchdayTryWeight(pos, false) *
+        scorerPositionBias(pos, command, career.tactics.attackFocus),
+    });
   }
-  const pick = pool[Math.floor(rng() * pool.length)] ?? career.matchdayXiii[0];
+
+  for (const id of career.matchdayInterchange) {
+    if (!id) continue;
+    const positions = getManagerPlayerEligiblePositions(career, id);
+    const pos = positions[0];
+    if (!pos) continue;
+    weighted.push({
+      id,
+      weight:
+        getMatchdayTryWeight(pos, true) *
+        scorerPositionBias(pos, command, career.tactics.attackFocus),
+    });
+  }
+
+  const pick =
+    pickWeightedId(weighted, rng) ?? career.matchdayXiii[0] ?? career.matchdayInterchange[0];
   const player = getManagerPlayer(career, pick ?? "");
   return {
     id: pick ?? "",
@@ -167,11 +247,32 @@ function pickScorer(
 }
 
 function pickKicker(career: ManagerCareer, rng: () => number): string {
-  const halves = career.matchdayXiii.filter((id, i) => {
+  const halves: { id: string; weight: number }[] = [];
+
+  for (let i = 0; i < career.matchdayXiii.length; i++) {
+    const id = career.matchdayXiii[i];
     const pos = career.xiiiSlotPositions[i];
-    return pos === "SCRUM_HALF" || pos === "STAND_OFF";
-  });
-  const id = halves[Math.floor(rng() * halves.length)] ?? career.matchdayXiii[6];
+    if (!id || !pos) continue;
+    if (pos === "SCRUM_HALF" || pos === "STAND_OFF") {
+      halves.push({ id, weight: getMatchdayTryWeight(pos, false) });
+    }
+  }
+
+  for (const id of career.matchdayInterchange) {
+    if (!id) continue;
+    const positions = getManagerPlayerEligiblePositions(career, id);
+    const halfPos = positions.find(
+      (p) => p === "SCRUM_HALF" || p === "STAND_OFF"
+    );
+    if (halfPos) {
+      halves.push({ id, weight: getMatchdayTryWeight(halfPos, true) });
+    }
+  }
+
+  const id =
+    pickWeightedId(halves, rng) ??
+    career.matchdayXiii[6] ??
+    career.matchdayInterchange[0];
   return getManagerPlayer(career, id ?? "")?.name ?? "Kicker";
 }
 

@@ -4,7 +4,8 @@ import type { MatchFixture } from "../game/season-simulation";
 import { enrichFantasyFixtureSummary } from "../game/fantasy-match-summary";
 import { getOpponentMatchRating } from "../game/opponent-scorers";
 import { selectClubMatchSquad } from "../game/opponent-scorers";
-import type { ManagerTactics } from "./types";
+import type { ManagerCareer, ManagerTactics } from "./types";
+import { buildMatchdayScoringEntries } from "./managerSquad";
 import {
   getAttackFocusTryMultiplier,
   getDefenceConcedeMultiplier,
@@ -16,7 +17,7 @@ import type { Position } from "../types";
 interface SquadEntry {
   player: NonNullable<SquadSlot["player"]>;
   playedPosition: Position;
-  slot: SquadSlot;
+  tryWeightMultiplier: number;
 }
 
 function pickKicker(entries: SquadEntry[]): SquadEntry | null {
@@ -65,7 +66,10 @@ function buildUserWeights(
     );
     const rating = e.player.rating ?? e.player.peakRating;
     const variance = 0.85 + rng() * 0.3;
-    return Math.max(0.1, rating * style * attack * variance);
+    return Math.max(
+      0.1,
+      rating * style * attack * variance * e.tryWeightMultiplier
+    );
   });
 }
 
@@ -87,19 +91,41 @@ export function enrichManagerFixtureScoring(
   fixture: MatchFixture,
   seed: string,
   tactics: ManagerTactics,
-  opponentOptions?: { currentSeasonOnly?: boolean }
+  opponentOptions?: {
+    currentSeasonOnly?: boolean;
+    fixtureKey?: string;
+    career?: ManagerCareer;
+    matchdayXiii?: string[];
+    xiiiSlotPositions?: Position[];
+    matchdayInterchange?: string[];
+  }
 ): void {
-  const entries: SquadEntry[] = squad
-    .filter((s) => s.player)
-    .map((s) => ({
-      player: s.player!,
-      playedPosition: s.position,
-      slot: s,
-    }));
+  const entries: SquadEntry[] = opponentOptions?.career
+    ? buildMatchdayScoringEntries(
+        opponentOptions.career,
+        opponentOptions.matchdayXiii ?? opponentOptions.career.matchdayXiii,
+        opponentOptions.xiiiSlotPositions ??
+          opponentOptions.career.xiiiSlotPositions,
+        opponentOptions.matchdayInterchange ??
+          opponentOptions.career.matchdayInterchange
+      ).map((e) => ({
+        player: e.player,
+        playedPosition: e.playedPosition,
+        tryWeightMultiplier: e.tryWeightMultiplier,
+      }))
+    : squad
+        .filter((s) => s.player)
+        .map((s) => ({
+          player: s.player!,
+          playedPosition: s.position,
+          tryWeightMultiplier: 1,
+        }));
 
   if (entries.length === 0) return;
 
-  const rng = seedrandom(`${seed}-mgr-tries-r${fixture.round}`);
+  const rng = seedrandom(
+    `${seed}-mgr-tries-${opponentOptions?.fixtureKey ?? `r${fixture.round}`}`
+  );
   const userWeights = buildUserWeights(entries, tactics, rng);
   const userAlloc = allocateTries(fixture.triesFor, userWeights, rng);
 
@@ -119,8 +145,20 @@ export function enrichManagerFixtureScoring(
   const oppAlloc = allocateTries(fixture.triesAgainst, oppWeights, rng);
 
   const userKicker = pickKicker(entries);
-  const scoringFor = fixture.scoringFor;
-  const scoringAgainst = fixture.scoringAgainst;
+  const scoringFor = fixture.scoringFor ?? {
+    tries: fixture.triesFor,
+    conversions: 0,
+    penalties: 0,
+    dropGoals: 0,
+    points: fixture.pointsFor,
+  };
+  const scoringAgainst = fixture.scoringAgainst ?? {
+    tries: fixture.triesAgainst,
+    conversions: 0,
+    penalties: 0,
+    dropGoals: 0,
+    points: fixture.pointsAgainst,
+  };
 
   fixture.scoringDetail = {
     dreamTeam: {
@@ -183,11 +221,13 @@ export function getMatchPrediction(
 
 export function pickMotmPlayerId(
   fixture: MatchFixture,
-  xiiiIds: string[]
+  matchdayIds: string[]
 ): string | null {
+  const pool = new Set(matchdayIds.filter(Boolean));
   const scorers = fixture.scoringDetail?.dreamTeam.tryScorers ?? [];
-  const multi = scorers.find((s) => s.tries >= 2);
+  const multi = scorers.find((s) => s.tries >= 2 && pool.has(s.playerId));
   if (multi) return multi.playerId;
-  if (scorers[0]) return scorers[0].playerId;
-  return xiiiIds[0] ?? null;
+  const scorer = scorers.find((s) => pool.has(s.playerId));
+  if (scorer) return scorer.playerId;
+  return matchdayIds.find(Boolean) ?? null;
 }

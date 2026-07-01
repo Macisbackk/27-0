@@ -1,56 +1,97 @@
+import seedrandom from "seedrandom";
 import type { MatchFixture } from "../game/season-simulation";
 import type { SquadSlot } from "../types";
 import { getManagerPlayer } from "./managerPlayers";
-import type { LiveMatchEvent, ManagerCareer } from "./types";
+import type { LiveMatchEvent, ManagerCareer, ManagerFixtureRecord } from "./types";
 import { enrichManagerFixtureScoring } from "./managerScoring";
+import { buildMatchdayScoringEntries } from "./managerSquad";
+import { allocateWeightedTries } from "./managerTryScoring";
 import { buildOpponentTryScoringDetail } from "./managerOpponentScoring";
 import {
   opponentScoringUsesClubLump,
   repairOpponentTryScorers,
 } from "./managerOpponentScoring";
 
-/** Ensure fixture always has scoring detail for match review UI. */
+function userTryTotal(fixture: MatchFixture): number {
+  return (
+    fixture.scoringDetail?.dreamTeam.tryScorers.reduce(
+      (sum, s) => sum + s.tries,
+      0
+    ) ?? 0
+  );
+}
+
+function scoringDetailMatchesFixture(fixture: MatchFixture): boolean {
+  if (!fixture.scoringDetail) return false;
+  if (userTryTotal(fixture) !== fixture.triesFor) return false;
+  if (opponentScoringUsesClubLump(fixture)) return false;
+
+  const oppTryTotal = fixture.scoringDetail.opponent.tryScorers.reduce(
+    (sum, s) => sum + s.tries,
+    0
+  );
+  if (fixture.triesAgainst > 0 && oppTryTotal !== fixture.triesAgainst) {
+    return false;
+  }
+  return true;
+}
+
+/** Ensure fixture scoring detail matches the final scoreline for match review. */
 export function ensureManagerFixtureScoring(
-  career: { seed: string; tactics: ManagerCareer["tactics"] },
+  career: ManagerCareer,
   fixture: MatchFixture,
-  squad: SquadSlot[]
+  squad: SquadSlot[],
+  fixtureKey?: string
 ): void {
-  if (!fixture.scoringDetail) {
+  const record = fixture as ManagerFixtureRecord;
+  const matchdayXiii = record.meta?.matchdayXiii ?? career.matchdayXiii;
+  const xiiiSlotPositions =
+    record.meta?.xiiiSlotPositions ?? career.xiiiSlotPositions;
+  const matchdayInterchange =
+    record.meta?.matchdayInterchange ?? career.matchdayInterchange;
+
+  if (!scoringDetailMatchesFixture(fixture)) {
+    fixture.scoringDetail = undefined;
     enrichManagerFixtureScoring(
       squad,
       fixture,
       career.seed,
       career.tactics,
-      { currentSeasonOnly: true }
+      {
+        currentSeasonOnly: true,
+        fixtureKey,
+        career,
+        matchdayXiii,
+        xiiiSlotPositions,
+        matchdayInterchange,
+      }
     );
   }
 
   if (opponentScoringUsesClubLump(fixture)) {
-    repairOpponentTryScorers(fixture, career.seed, career.tactics);
+    repairOpponentTryScorers(fixture, career.seed, career.tactics, fixtureKey);
   }
 
   if (fixture.scoringDetail) return;
 
-  const xiiiPlayers = squad
-    .filter((s) => s.player)
-    .map((s) => s.player!);
-
-  const userTryScorers = [];
-  let triesLeft = fixture.triesFor;
-  for (const p of xiiiPlayers) {
-    if (triesLeft <= 0) break;
-    const t = Math.min(triesLeft, triesLeft > 1 ? 1 : triesLeft);
-    if (t > 0) {
-      userTryScorers.push({ playerId: p.id, name: p.name, tries: t });
-      triesLeft -= t;
-    }
-  }
-  if (triesLeft > 0 && userTryScorers[0]) {
-    userTryScorers[0] = {
-      ...userTryScorers[0],
-      tries: userTryScorers[0].tries + triesLeft,
-    };
-  }
+  const entries = buildMatchdayScoringEntries(
+    career,
+    matchdayXiii,
+    xiiiSlotPositions,
+    matchdayInterchange
+  );
+  const rng = seedrandom(
+    `${career.seed}-mgr-fallback-${fixtureKey ?? `r${fixture.round}`}`
+  );
+  const weights = entries.map((e) => e.tryWeightMultiplier * (0.9 + rng() * 0.2));
+  const alloc = allocateWeightedTries(fixture.triesFor, weights, rng);
+  const userTryScorers = entries
+    .map((e, i) => ({
+      playerId: e.player.id,
+      name: e.player.name,
+      tries: alloc[i] ?? 0,
+    }))
+    .filter((s) => s.tries > 0);
 
   const oppName = fixture.opponent;
 
@@ -75,7 +116,9 @@ export function ensureManagerFixtureScoring(
               oppName,
               fixture.triesAgainst,
               career.seed,
-              fixture.round
+              fixture.round,
+              career.tactics,
+              fixtureKey
             )
           : [],
       kicking: fixture.scoringAgainst
@@ -115,7 +158,8 @@ function resolvePlayerIdByName(
 export function applyLiveEventsToFixtureScoring(
   career: ManagerCareer,
   fixture: MatchFixture,
-  events: LiveMatchEvent[]
+  events: LiveMatchEvent[],
+  fixtureKey?: string
 ): void {
   const userTryMap = new Map<string, { playerId: string; name: string; tries: number }>();
   const oppTryCountEvents = events.filter(
@@ -194,7 +238,8 @@ export function applyLiveEventsToFixtureScoring(
       oppTryCount,
       career.seed,
       fixture.round,
-      career.tactics
+      career.tactics,
+      fixtureKey
     );
     if (fromSquad.length > 0) {
       oppTryScorers.push(...fromSquad);

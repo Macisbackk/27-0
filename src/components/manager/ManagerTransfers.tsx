@@ -34,6 +34,9 @@ export function ManagerTransfers({
   onUpdate,
 }: ManagerTransfersProps) {
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
+  const [leagueSort, setLeagueSort] = useState<"rating" | "team" | "name">(
+    "rating"
+  );
   const [search, setSearch] = useState("");
   const [transferResult, setTransferResult] =
     useState<TransferResultDetails | null>(null);
@@ -79,8 +82,17 @@ export function ManagerTransfers({
         if (positionFilter === "all") return true;
         return getPlayerEligiblePositions(r.player).includes(positionFilter);
       })
+      .sort((a, b) => {
+        if (leagueSort === "team") {
+          return a.club.localeCompare(b.club) || b.player.peakRating - a.player.peakRating;
+        }
+        if (leagueSort === "name") {
+          return a.player.name.localeCompare(b.player.name);
+        }
+        return b.player.peakRating - a.player.peakRating;
+      })
       .slice(0, 24);
-  }, [career, search, positionFilter]);
+  }, [career, search, positionFilter, leagueSort]);
 
   const leagueTransfers = career.leagueTransfers ?? [];
 
@@ -243,6 +255,26 @@ export function ManagerTransfers({
           onChange={(e) => setSearch(e.target.value)}
           className="mb-3 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-3 py-2 text-white"
         />
+        <div className="mb-3 flex flex-wrap gap-2">
+          {(
+            [
+              ["rating", "Highest rating"],
+              ["team", "Sort by team"],
+              ["name", "Sort by name"],
+            ] as const
+          ).map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setLeagueSort(id)}
+              className={`rounded-lg border px-2 py-1 text-xs ${
+                leagueSort === id ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
         <div className={`grid gap-2 sm:grid-cols-2`}>
           {leagueSearch.map(({ player, club }) => {
             const fee = getAskingPrice(

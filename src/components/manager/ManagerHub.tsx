@@ -9,6 +9,7 @@ import { CUP_ROUND_LABELS } from "@/lib/manager/types";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import { ensureCupBracketReady, getCupHubStatus } from "@/lib/manager/managerChallengeCup";
+import { ensurePlayoffsReady, getPlayoffHubStatus } from "@/lib/manager/managerPlayoffs";
 import {
   countExpiringContracts,
 } from "@/lib/manager/managerContracts";
@@ -255,7 +256,9 @@ export function ManagerHub({
   onNavigate,
 }: ManagerHubProps) {
   const club = getClubByName(career.club);
-  const nextFixture = getNextManagerFixture(ensureCupBracketReady(career));
+  const nextFixture = getNextManagerFixture(
+    ensurePlayoffsReady(ensureCupBracketReady(career))
+  );
   const position = getUserLeaguePosition(career.leagueTable, career.club);
   const teamRating = computeManagerTeamRating(
     career.matchdayXiii,
@@ -300,6 +303,9 @@ export function ManagerHub({
   const expiringCount = countExpiringContracts(career.contracts);
   const lastGate = getLastHomeGate(career.gateIncomeHistory);
   const cupStatus = getCupHubStatus(career);
+  const playoffStatus = getPlayoffHubStatus(career);
+  const wageOverBudget = career.wageBill > career.wageBudget;
+  const wagePressure = career.wagePressureWeeks ?? 0;
   const newsItems = getHubNewsItems(career);
   const transferBudget = career.managerFinance?.transferBudget ?? career.budget;
 
@@ -322,6 +328,8 @@ export function ManagerHub({
             {nextFixture.label ?? `Round ${nextFixture.round}`} ·{" "}
             {nextFixture.competition === "challenge_cup"
               ? "Challenge Cup"
+              : nextFixture.competition === "playoffs"
+                ? "Play-Offs"
               : nextFixture.competition === "friendly"
                 ? "Friendly"
                 : "League"}{" "}
@@ -422,8 +430,16 @@ export function ManagerHub({
         </p>
         <p className={`${TYPO.bodySm} text-pitch-400`}>
           Season {career.seasonYear} · {ordinal(position)} in the table ·{" "}
-          {cupStatus}
+          {cupStatus} · {playoffStatus}
         </p>
+        {wageOverBudget && (
+          <p className={`mt-1 ${TYPO.bodySm} text-amber-300`}>
+            Wage bill over budget
+            {wagePressure >= 4
+              ? " — board demanding sales or renewals at lower wages"
+              : ""}
+          </p>
+        )}
         <div className="mt-2 h-2 overflow-hidden rounded-full bg-pitch-800">
           <div
             className="h-full bg-theme-primary transition-all"

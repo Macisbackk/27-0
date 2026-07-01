@@ -155,7 +155,31 @@ export function buildCupScheduledFixture(
   };
 }
 
-export function getNextManagerFixture(
+export function isLeagueAndCupPhaseComplete(career: ManagerCareer): boolean {
+  const leaguePlayed = countLeagueFixturesPlayed(career);
+  const leagueDone =
+    leaguePlayed >= 27 ||
+    career.currentFixtureIndex >= career.schedule.length;
+  if (!leagueDone) return false;
+
+  const cup = career.challengeCup;
+  if (!cup) return true;
+  if (cup.tournamentComplete || cup.userEliminated) return true;
+
+  const pendingRound = getPendingCupBracketRound(career);
+  if (pendingRound === null) return true;
+
+  const prepared = prepareCupRound(career);
+  const cupMatch = getUserCupMatch(prepared);
+  if (cupMatch) return false;
+
+  if (prepared.userEliminated || prepared.tournamentComplete) return true;
+
+  const cupPlayed = countCupFixturesPlayed(career);
+  return cupPlayed >= 4;
+}
+
+export function getNextLeagueOrCupFixture(
   career: ManagerCareer
 ): ManagerScheduledFixture | null {
   if (career.isSeasonComplete) return null;
@@ -187,7 +211,7 @@ export function getNextManagerFixture(
       );
     }
     if (prepared.userEliminated || prepared.tournamentComplete) {
-      // bye or already resolved — fall through to league
+      // bye or already resolved — fall through
     } else {
       const squad = buildSquadSlotsFromMatchday(
         career.matchdayXiii,
@@ -312,17 +336,6 @@ export function applyCupMatchToBracket(
     tournamentComplete: userLost || userWonFinal,
     userWon: userWonFinal,
   };
-}
-
-export function isManagerSeasonComplete(career: ManagerCareer): boolean {
-  const leagueDone = countLeagueFixturesPlayed(career) >= 27;
-  if (!leagueDone) return false;
-
-  const cup = career.challengeCup;
-  if (!cup) return true;
-  if (cup.tournamentComplete || cup.userEliminated) return true;
-
-  return getPendingCupBracketRound(career) === null;
 }
 
 export function buildMergedDisplaySchedule(

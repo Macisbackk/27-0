@@ -44,11 +44,39 @@ export function computeManagerSeasonRewardLines(
     });
   }
 
-  if (position === 1) {
+  if (position === 1 && !summary?.playoffFinish) {
     lines.push({
       id: "mgr-league-leaders",
       label: "League Leaders",
       amount: 1_250_000,
+    });
+  }
+
+  const playoffFinish =
+    summary?.playoffFinish ?? career.playoffs?.finish ?? null;
+  if (playoffFinish === "Super League Champions") {
+    lines.push({
+      id: "mgr-playoff-champions",
+      label: "Super League Champions",
+      amount: 2_000_000,
+    });
+  } else if (playoffFinish === "Grand Final Runner-Up") {
+    lines.push({
+      id: "mgr-playoff-gf-runner-up",
+      label: "Grand Final Runner-Up",
+      amount: 900_000,
+    });
+  } else if (playoffFinish === "Eliminated in Semi-Final") {
+    lines.push({
+      id: "mgr-playoff-semi",
+      label: "Play-Off Semi-Final",
+      amount: 400_000,
+    });
+  } else if (playoffFinish === "Eliminated in Eliminator") {
+    lines.push({
+      id: "mgr-playoff-elim",
+      label: "Play-Off Eliminator",
+      amount: 200_000,
     });
   }
 
@@ -80,7 +108,8 @@ export function computeManagerSeasonRewardLines(
   }
 
   const objectiveMet =
-    (config.expectation.includes("title") && position === 1) ||
+    (config.expectation.includes("title") &&
+      playoffFinish === "Super League Champions") ||
     (config.expectation.includes("playoff") && position <= 6) ||
     (config.expectation.includes("Mid-table") && position <= 10) ||
     (config.expectation.includes("Avoid bottom") && position <= 12) ||

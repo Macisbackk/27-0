@@ -27,6 +27,7 @@ import {
 } from "./managerInbox";
 import { initPreSeasonState, ensureFriendlyChoices } from "./managerFriendlies";
 import { ensureCupBracketReady } from "./managerChallengeCup";
+import { ensurePlayoffsReady } from "./managerPlayoffs";
 import {
   initManagerFinance,
   computeFirstSeasonTransferBudget,
@@ -35,6 +36,19 @@ import {
 } from "./managerFinance";
 
 const CAREER_KEY = "27-0-manager-career";
+
+/** Backfill missing contract fields on older saves. */
+function hydrateLegacyContracts(
+  contracts: ManagerCareer["contracts"]
+): ManagerCareer["contracts"] {
+  const next = { ...contracts };
+  for (const [playerId, contract] of Object.entries(next)) {
+    if (contract.purchaseFee === undefined) {
+      next[playerId] = { ...contract, purchaseFee: 0 };
+    }
+  }
+  return next;
+}
 
 export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   const gameWeek = raw.gameWeek ?? raw.currentRound ?? 0;
@@ -48,6 +62,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
       raw.club
     );
   }
+  contracts = hydrateLegacyContracts(contracts);
 
   const wageBill = raw.wageBill ?? computeWageBill(contracts);
   const wageBudget = getWageBudgetForClub(raw.club);
@@ -131,7 +146,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     managerFinance: initManagerFinance(raw),
     latestNews: raw.latestNews ?? [],
     leagueTransfers: raw.leagueTransfers ?? [],
-    playerDevelopment: raw.playerDevelopment ?? {},
+    wagePressureWeeks: raw.wagePressureWeeks ?? 0,
     lastReserveReportWeek: raw.lastReserveReportWeek,
   };
 
@@ -140,6 +155,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = syncManagerFinance(career);
   career = ensureFriendlyChoices(career);
   career = ensureCupBracketReady(career);
+  career = ensurePlayoffsReady(career);
   return syncManagerInboxMessages(career);
 }
 
