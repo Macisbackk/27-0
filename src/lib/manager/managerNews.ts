@@ -46,6 +46,30 @@ export function generateWeeklyNews(career: ManagerCareer): LatestNewsItem[] {
     }
   }
 
+  const recentPurchase = career.inboxMessages.find(
+    (m) =>
+      m.type === "transfer" &&
+      m.title === "Transfer Completed" &&
+      m.week >= week - 1
+  );
+  if (recentPurchase) {
+    items.push({
+      id: `news-purchase-${recentPurchase.id}`,
+      week,
+      type: "transfer",
+      text: recentPurchase.body.split("\n")[0] ?? recentPurchase.title,
+    });
+  }
+
+  for (const tx of career.leagueTransfers.slice(0, 2)) {
+    items.push({
+      id: `news-league-tx-${tx.id}`,
+      week: tx.week,
+      type: "transfer",
+      text: `${tx.playerName} joined ${tx.toClub} from ${tx.fromClub}.`,
+    });
+  }
+
   const recentSale = career.inboxMessages.find(
     (m) => m.type === "sale" && m.week >= week - 1
   );

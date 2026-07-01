@@ -16,6 +16,7 @@ import { ManagerStatsView } from "@/components/manager/ManagerStatsView";
 import { ManagerPlayGame } from "@/components/manager/ManagerPlayGame";
 import { ManagerMatchReview } from "@/components/manager/ManagerMatchReview";
 import { ManagerSeasonReview } from "@/components/manager/ManagerSeasonReview";
+import { ManagerDevelopmentReview } from "@/components/manager/ManagerDevelopmentReview";
 import { ManagerSeasonRewards } from "@/components/manager/ManagerSeasonRewards";
 import { ManagerFriendlySelect } from "@/components/manager/ManagerFriendlySelect";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
@@ -30,6 +31,7 @@ import {
   hydrateManagerCareer,
 } from "@/lib/manager/managerState";
 import { simulateManagerNextMatch } from "@/lib/manager/managerSimulation";
+import { ensureCupBracketReady } from "@/lib/manager/managerChallengeCup";
 import {
   recordCareerStarted,
   recordMatchResult,
@@ -143,13 +145,17 @@ export default function ManagerPage() {
     if (!career) return;
     const check = validateFitMatchdaySquad(career);
     if (!check.valid) return;
-    afterMatch(simulateManagerNextMatch(career));
+    const ready = ensureCupBracketReady(career);
+    if (ready !== career) persist(ready);
+    afterMatch(simulateManagerNextMatch(ready));
   };
 
   const handlePlayGame = () => {
     if (!career) return;
     const check = validateFitMatchdaySquad(career);
     if (!check.valid) return;
+    const ready = ensureCupBracketReady(career);
+    if (ready !== career) persist(ready);
     setPlayGameOpen(true);
   };
 
@@ -291,11 +297,18 @@ export default function ManagerPage() {
       {career && view === "season-review" && (
         <ManagerSeasonReview
           career={career}
-          onViewRewards={() => setView("season-rewards")}
+          onViewRewards={() => setView("development-review")}
           onHome={() => {
             playUiClick();
             router.push("/");
           }}
+        />
+      )}
+
+      {career && view === "development-review" && (
+        <ManagerDevelopmentReview
+          career={career}
+          onContinue={() => setView("season-rewards")}
         />
       )}
 

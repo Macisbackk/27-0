@@ -1,7 +1,6 @@
 import type { ManagerCareer } from "./types";
 import type { InboxMessage } from "./types";
 import { getPotentialTier } from "./managerReserves";
-import { POSITION_SHORT } from "../positions";
 import { pushInboxMessage } from "./managerInbox";
 
 const REPORT_INTERVAL_WEEKS = 4;
@@ -16,96 +15,32 @@ export function generateReserveReportMessage(
   career: ManagerCareer
 ): InboxMessage {
   const month = Math.max(1, Math.floor(career.gameWeek / REPORT_INTERVAL_WEEKS));
-  const progressing: string[] = [];
-  const stalled: string[] = [];
-  const contractRecs: string[] = [];
-  const releaseRecs: string[] = [];
-
+  const sorted = [...career.reserves].sort((a, b) => b.rating - a.rating);
+  const top = sorted[0];
+  const improver = sorted.find((r) => r.rating > r.baseRating + 1);
   const recentResults = career.reserveResults.slice(-4);
   const formWins = recentResults.filter((r) => r.userWon).length;
 
-  const sorted = [...career.reserves].sort((a, b) => b.rating - a.rating);
+  const lines: string[] = [`Reserve update — month ${month}`];
 
-  for (const r of sorted.slice(0, 8)) {
-    const growth = r.rating - r.baseRating;
-    const tier = getPotentialTier(r.potentialRating);
-    const pos = POSITION_SHORT[r.position];
-
-    if (growth >= 2 || (r.reserveTries >= 3 && r.form >= 60)) {
-      progressing.push(
-        `- ${r.name} has improved to ${r.rating} (${tier.toLowerCase()}).`
-      );
-    } else if (growth <= 0 && r.form < 45 && r.reserveAppearances >= 3) {
-      stalled.push(`- ${r.name} has stalled at ${r.rating} rated.`);
-    }
-
-    const squadAtPos = career.squad.filter((ps) => {
-      const p = career.playerRegistry[ps.playerId];
-      return p?.position === r.position;
-    }).length;
-
-    if (
-      r.rating >= 72 &&
-      r.potentialRating >= 78 &&
-      r.form >= 55 &&
-      squadAtPos <= 3
-    ) {
-      contractRecs.push(
-        `- Consider a full-time contract for ${r.name} (${pos}, ${r.rating} rated).`
-      );
-    }
-
-    if (
-      r.potentialRating < 72 &&
-      r.rating <= r.baseRating &&
-      r.form < 40 &&
-      r.reserveAppearances >= 6
-    ) {
-      releaseRecs.push(
-        `- ${r.name} may be surplus at ${pos} with limited upside.`
-      );
-    }
-  }
-
-  const standout = [...career.reserves]
-    .filter((r) => r.reserveTries > 0)
-    .sort((a, b) => b.reserveTries - a.reserveTries)[0];
-
-  const lines: string[] = [
-    `Reserve Development Report — Month ${month}`,
-    "",
-  ];
-
-  if (progressing.length) {
-    lines.push("Progressing well:", ...progressing.slice(0, 3), "");
-  } else {
-    lines.push("Progressing well:", "- No major breakthroughs this month.", "");
-  }
-
-  if (stalled.length) {
-    lines.push("Needs attention:", ...stalled.slice(0, 2), "");
-  }
-
-  if (standout) {
+  if (improver) {
     lines.push(
-      `Standout: ${standout.name} — ${standout.reserveTries} reserve tries.`,
-      ""
+      `${improver.name} is up to ${improver.rating} rated (${getPotentialTier(improver.potentialRating).toLowerCase()} potential).`
     );
+  } else if (top) {
+    lines.push(`${top.name} leads the reserves at ${top.rating} rated.`);
   }
 
-  lines.push(`Reserve form: ${formWins} wins from last ${recentResults.length || 0} fixtures.`);
-
-  if (contractRecs.length) {
-    lines.push("", "Recommendation:", ...contractRecs.slice(0, 2));
-  }
-  if (releaseRecs.length) {
-    lines.push("", "Release consideration:", ...releaseRecs.slice(0, 1));
+  if (recentResults.length > 0) {
+    lines.push(
+      `Reserve team: ${formWins} win${formWins === 1 ? "" : "s"} from last ${recentResults.length} games.`
+    );
   }
 
   return {
     id: `reserve-report-w${career.gameWeek}`,
     type: "reserve_report",
-    title: "Reserve Development Report",
+    title: "Reserve Update",
     body: lines.join("\n"),
     week: career.gameWeek,
     season: career.seasonYear,

@@ -66,51 +66,14 @@ function buildFriendlyCandidates(
       displayName: club,
       difficulty: "balanced" as const,
       teamRating,
-      description: `A pre-season run-out against ${club}.`,
+      description: `Pre-season friendly against ${club}.`,
       attendanceInterest:
         teamRating >= 82 ? "high" : teamRating >= 74 ? "medium" : "low",
     };
   });
 
   const shuffled = [...pool].sort(() => rng() - 0.5);
-  const unique: FriendlyOpponentChoice[] = [];
-  const seen = new Set<string>();
-  for (const c of shuffled) {
-    if (seen.has(c.club)) continue;
-    seen.add(c.club);
-    unique.push(c);
-    if (unique.length >= 12) break;
-  }
-
-  unique.sort((a, b) => a.teamRating - b.teamRating);
-  if (unique.length < 3) return unique;
-
-  const easy = unique[Math.floor(unique.length * 0.2)]!;
-  const balanced = unique[Math.floor(unique.length * 0.5)]!;
-  const hard = unique[Math.floor(unique.length * 0.85)]!;
-
-  const describe = (
-    c: FriendlyOpponentChoice,
-    tier: "easy" | "balanced" | "hard"
-  ) => {
-    if (tier === "easy") {
-      return `A useful warm-up against ${c.displayName}.`;
-    }
-    if (tier === "hard") {
-      return `A tough test against ${c.displayName}.`;
-    }
-    return `A balanced pre-season run-out against ${c.displayName}.`;
-  };
-
-  return [
-    { ...easy, difficulty: "easy", description: describe(easy, "easy") },
-    {
-      ...balanced,
-      difficulty: "balanced",
-      description: describe(balanced, "balanced"),
-    },
-    { ...hard, difficulty: "hard", description: describe(hard, "hard") },
-  ];
+  return shuffled.slice(0, 3);
 }
 
 export function ensureFriendlyChoices(career: ManagerCareer): ManagerCareer {

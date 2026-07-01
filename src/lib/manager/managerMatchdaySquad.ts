@@ -148,6 +148,12 @@ export function getSquadPoolPlayers(career: ManagerCareer): {
 
   for (const r of career.reserves) {
     if (inLineup.has(r.id) || r.fitness < 50) continue;
+    if (
+      !r.calledUpForNextMatch &&
+      !career.calledUpReserveIds.includes(r.id)
+    ) {
+      continue;
+    }
     list.push({ playerId: r.id, isReserveCallUp: true });
   }
 

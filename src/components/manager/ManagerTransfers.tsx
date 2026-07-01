@@ -125,7 +125,8 @@ export function ManagerTransfers({
       <div>
         <h1 className={TYPO.pageTitle}>Transfers</h1>
         <p className={`${TYPO.bodySm} text-pitch-400`}>
-          Budget: {formatWage(career.budget)}
+          Budget: {formatWage(career.budget)} · Wage bill{" "}
+          {formatWage(career.wageBill)} / {formatWage(career.wageBudget)}
         </p>
       </div>
 

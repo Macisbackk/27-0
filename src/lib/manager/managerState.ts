@@ -26,6 +26,7 @@ import {
   syncManagerInboxMessages,
 } from "./managerInbox";
 import { initPreSeasonState, ensureFriendlyChoices } from "./managerFriendlies";
+import { ensureCupBracketReady } from "./managerChallengeCup";
 import {
   initManagerFinance,
   computeFirstSeasonTransferBudget,
@@ -138,6 +139,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = hydrateInboxMessages(career);
   career = syncManagerFinance(career);
   career = ensureFriendlyChoices(career);
+  career = ensureCupBracketReady(career);
   return syncManagerInboxMessages(career);
 }
 

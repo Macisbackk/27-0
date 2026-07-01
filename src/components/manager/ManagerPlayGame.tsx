@@ -22,6 +22,7 @@ import {
   applyManagerMatchResult,
   getNextManagerFixture,
 } from "@/lib/manager/managerSimulation";
+import { ensureCupBracketReady } from "@/lib/manager/managerChallengeCup";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
@@ -51,7 +52,8 @@ export function ManagerPlayGame({
   onComplete,
   onCancel,
 }: ManagerPlayGameProps) {
-  const sched = getNextManagerFixture(career);
+  const readyCareer = ensureCupBracketReady(career);
+  const sched = getNextManagerFixture(readyCareer);
   const fixtureKey = sched?.id ?? "none";
   const [live, setLive] = useState<LiveMatchState | null>(null);
   const [command, setCommand] = useState<LiveMatchCommand>("balanced");
@@ -68,7 +70,7 @@ export function ManagerPlayGame({
 
   useEffect(() => {
     if (!sched) return;
-    setLive(createLiveMatch(careerRef.current, sched));
+    setLive(createLiveMatch(readyCareer, sched));
     setCommand("balanced");
     setClockRunning(false);
     setHasStarted(false);
@@ -80,11 +82,15 @@ export function ManagerPlayGame({
       if (finishedRef.current) return;
       finishedRef.current = true;
       const fixture = liveMatchToFixture(finalState, careerRef.current);
-      const next = applyManagerMatchResult(careerRef.current, fixture, {
-        playedLive: true,
-        schedOverride: sched ?? undefined,
-        liveEvents: getLiveMatchEvents(finalState),
-      });
+      const next = applyManagerMatchResult(
+        ensureCupBracketReady(careerRef.current),
+        fixture,
+        {
+          playedLive: true,
+          schedOverride: sched ?? undefined,
+          liveEvents: getLiveMatchEvents(finalState),
+        }
+      );
       onComplete(next);
     },
     [sched, onComplete]

@@ -194,18 +194,6 @@ function effectivenessFromCommand(
   return "Even contest — keep adjusting.";
 }
 
-function scorePressureBoost(
-  current: number,
-  target: number,
-  minute: number
-): number {
-  const remaining = Math.max(1, 80 - minute);
-  const gap = target - current;
-  if (gap === 0) return 0;
-  if (gap < 0) return Math.max(-0.03, gap * 0.004);
-  return Math.min(0.05, gap * 0.01 * (40 / remaining));
-}
-
 function dominanceNote(
   userRating: number,
   oppRating: number,
@@ -342,23 +330,12 @@ export function advanceLiveTick(
     );
     momentum += mods.momentumShift * 0.5;
 
-    const userPressure = scorePressureBoost(
-      userScore,
-      state.targetPointsFor,
-      minute
-    );
-    const oppPressure = scorePressureBoost(
-      oppScore,
-      state.targetPointsAgainst,
-      minute
-    );
-
     const userTry = rollTryChance(
       userRating,
       oppRating,
       state.isHome,
       momentum,
-      mods.userChance * tacticBias.userChance + userPressure,
+      mods.userChance * tacticBias.userChance,
       rng
     );
     const oppTry =
@@ -368,36 +345,12 @@ export function advanceLiveTick(
         userRating,
         !state.isHome,
         -momentum,
-        mods.oppChance * tacticBias.oppChance + oppPressure,
+        mods.oppChance * tacticBias.oppChance,
         rng
       );
 
     const note = dominanceNote(userRating, oppRating, momentum, minute, rng);
     if (note) events.push(note);
-
-    if (!userTry && !oppTry && rng() < 0.04) {
-      if (rng() < 0.5 && userScore < state.targetPointsFor) {
-        userScore += 2;
-        const kicker = pickKicker(career, rng);
-        events.push({
-          minute,
-          type: "penalty",
-          team: "user",
-          playerName: kicker,
-          description: `${minute}' Penalty Goal — ${kicker}`,
-          points: 2,
-        });
-      } else if (oppScore < state.targetPointsAgainst && rng() < 0.6) {
-        oppScore += 2;
-        events.push({
-          minute,
-          type: "penalty",
-          team: "opponent",
-          description: `${minute}' Penalty Goal — ${state.opponent}`,
-          points: 2,
-        });
-      }
-    }
 
     if (userTry) {
       userTries++;
@@ -537,23 +490,22 @@ export function advanceLiveToFullTime(
 function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
   let userScore = snapToRLScore(state.userScore, false);
   let oppScore = snapToRLScore(state.oppScore, false);
-
-  const targetUser = snapToRLScore(state.targetPointsFor, false);
-  const targetOpp = snapToRLScore(state.targetPointsAgainst, false);
-  if (Math.abs(userScore - targetUser) + Math.abs(oppScore - targetOpp) > 6) {
-    userScore = targetUser;
-    oppScore = targetOpp;
-  }
-
   if (userScore === oppScore) userScore += 2;
+
+  const userTries = state.events.filter(
+    (e) => e.type === "try" && e.team === "user"
+  ).length;
+  const oppTries = state.events.filter(
+    (e) => e.type === "try" && e.team === "opponent"
+  ).length;
 
   return {
     ...state,
     minute: 80,
     userScore,
     oppScore,
-    userTries: state.targetTriesFor,
-    oppTries: state.targetTriesAgainst,
+    userTries: userTries > 0 ? userTries : state.userTries,
+    oppTries: oppTries > 0 ? oppTries : state.oppTries,
     isComplete: true,
     isPlaying: false,
     phase: "full_time",

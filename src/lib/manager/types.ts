@@ -274,6 +274,7 @@ export type ManagerView =
   | "play-game"
   | "match-review"
   | "season-review"
+  | "development-review"
   | "season-rewards";
 
 export type LiveMatchPhase =
@@ -396,6 +397,15 @@ export interface PlayerDevelopmentState {
   potential: number;
 }
 
+export interface PlayerDevelopmentChange {
+  playerId: string;
+  playerName: string;
+  before: number;
+  after: number;
+  potential: number;
+  delta: number;
+}
+
 export interface ManagerCareer {
   id: string;
   club: string;
@@ -451,6 +461,7 @@ export interface ManagerCareer {
   latestNews: LatestNewsItem[];
   leagueTransfers: LeagueTransferActivity[];
   playerDevelopment?: Record<string, PlayerDevelopmentState>;
+  lastSeasonDevelopmentReview?: PlayerDevelopmentChange[];
   lastReserveReportWeek?: number;
   createdAt: string;
   updatedAt: string;

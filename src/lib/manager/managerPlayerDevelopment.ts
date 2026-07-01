@@ -1,6 +1,6 @@
 import { getPlayerById } from "../players";
 import { getPlayerAge } from "../players/player-age";
-import type { ManagerCareer, PlayerDevelopmentState } from "./types";
+import type { ManagerCareer, PlayerDevelopmentChange, PlayerDevelopmentState } from "./types";
 import { getManagerPlayer } from "./managerPlayers";
 
 function computePotential(
@@ -14,10 +14,14 @@ function computePotential(
   return Math.max(65, peakRating - 3);
 }
 
-export function developSquadAtSeasonEnd(career: ManagerCareer): ManagerCareer {
+export function developSquadAtSeasonEnd(career: ManagerCareer): {
+  career: ManagerCareer;
+  changes: PlayerDevelopmentChange[];
+} {
   const playerDevelopment: Record<string, PlayerDevelopmentState> = {
     ...(career.playerDevelopment ?? {}),
   };
+  const changes: PlayerDevelopmentChange[] = [];
 
   for (const ps of career.squad) {
     const base = getPlayerById(ps.playerId);
@@ -25,7 +29,7 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): ManagerCareer {
 
     const age = getPlayerAge(base) ?? 25;
     const existing = playerDevelopment[ps.playerId];
-    const currentRating =
+    const before =
       existing?.rating ?? base.rating ?? base.peakRating;
     const potential =
       existing?.potential ?? computePotential(base.peakRating, age);
@@ -47,24 +51,40 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): ManagerCareer {
     else if (ps.form < 42) delta -= 1;
 
     const rounded = Math.round(delta);
-    const newRating = Math.max(
+    const after = Math.max(
       55,
-      Math.min(potential, currentRating + rounded)
+      Math.min(potential, before + rounded)
     );
     const newPeak = Math.max(
       existing?.peakRating ?? base.peakRating,
-      newRating,
+      after,
       base.peakRating
     );
 
     playerDevelopment[ps.playerId] = {
-      rating: newRating,
+      rating: after,
       peakRating: newPeak,
       potential,
     };
+
+    if (rounded !== 0) {
+      changes.push({
+        playerId: ps.playerId,
+        playerName: base.name,
+        before,
+        after,
+        potential,
+        delta: rounded,
+      });
+    }
   }
 
-  return { ...career, playerDevelopment };
+  changes.sort((a, b) => b.delta - a.delta);
+
+  return {
+    career: { ...career, playerDevelopment },
+    changes,
+  };
 }
 
 export function getPlayerPotential(

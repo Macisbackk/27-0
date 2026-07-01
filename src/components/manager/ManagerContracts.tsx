@@ -165,7 +165,8 @@ export function ManagerContracts({
       <div>
         <h1 className={TYPO.pageTitle}>Contracts</h1>
         <p className={`${TYPO.bodySm} text-pitch-400`}>
-          Wage budget {formatWage(career.wageBudget)}
+          Wage bill {formatWage(career.wageBill)} of{" "}
+          {formatWage(career.wageBudget)} budget
         </p>
       </div>
 

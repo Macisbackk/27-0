@@ -126,13 +126,17 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
   const squadPool = useMemo(() => getSquadPoolPlayers(career), [career]);
 
   const filteredPool = useMemo(() => {
+    if (selectedTarget || replaceSlot) {
+      const eligibleIds = new Set(replacementCandidates.map((c) => c.playerId));
+      return squadPool.filter(({ playerId }) => eligibleIds.has(playerId));
+    }
     if (positionFilter === "all") return squadPool;
     return squadPool.filter(({ playerId }) =>
       getManagerPlayerEligiblePositions(career, playerId).includes(
         positionFilter
       )
     );
-  }, [squadPool, career, positionFilter]);
+  }, [squadPool, career, positionFilter, selectedTarget, replaceSlot, replacementCandidates]);
 
   const handleSelectSlot = (target: MatchdaySlotTarget) => {
     if (pendingAssignId) {
@@ -140,6 +144,10 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
       setPendingAssignId(null);
       setSelectedTarget(null);
       return;
+    }
+    if (target.kind === "xiii") {
+      const pos = career.xiiiSlotPositions[target.index];
+      if (pos) setPositionFilter(pos);
     }
     setSelectedTarget((prev) =>
       prev?.kind === target.kind && prev.index === target.index ? null : target
@@ -323,7 +331,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
             </p>
           ) : selectedTarget ? (
             <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>
-              Tap a highlighted player to fill this slot
+              Tap a player below to fill this slot
             </p>
           ) : (
             <p className={`mb-2 ${TYPO.bodySm} text-pitch-500`}>
@@ -367,27 +375,19 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                 playerId
               );
               const ps = career.squad.find((p) => p.playerId === playerId);
-              const isPickable =
-                !!selectedTarget ||
-                !!replaceSourcePlayerId ||
-                !!pendingAssignId;
               const isHighlighted = replaceCandidateIds.has(playerId);
               const sourceLabel = isReserveCallUp ? "Reserve" : "Squad";
               return (
                 <li key={playerId}>
                   <button
                     type="button"
-                    disabled={isPickable && !isHighlighted && !pendingAssignId}
                     onClick={() => {
                       playUiClick();
-                      if (
-                        (selectedTarget || replaceSourcePlayerId) &&
-                        replaceCandidateIds.has(playerId)
-                      ) {
+                      if (selectedTarget || replaceSourcePlayerId) {
                         handlePickPlayer(playerId);
                         return;
                       }
-                      if (!pendingAssignId) setModalPlayerId(playerId);
+                      setModalPlayerId(playerId);
                     }}
                     className={`w-full rounded-lg border px-2 py-2 text-left transition ${
                       isHighlighted
@@ -418,7 +418,9 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
             })}
             {filteredPool.length === 0 && (
               <p className={`${TYPO.bodySm} text-pitch-500`}>
-                No squad players available — all are in the matchday 17.
+                {selectedTarget || replaceSourcePlayerId
+                  ? "No eligible players for this slot."
+                  : "No squad players available — all are in the matchday 17."}
               </p>
             )}
           </ul>

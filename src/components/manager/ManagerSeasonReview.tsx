@@ -126,7 +126,7 @@ export function ManagerSeasonReview({
           onViewRewards();
         }}
       >
-        View End of Season Rewards
+        View Potential Review
       </GameButton>
       <GameButton
         variant="secondary"

@@ -25,11 +25,13 @@ import type { MatchFixture } from "../game/season-simulation";
 import { processHomeMatchAttendance } from "./managerAttendance";
 import {
   applyCupMatchToBracket,
+  ensureCupBracketReady,
   getNextManagerFixture,
   isManagerSeasonComplete,
 } from "./managerChallengeCup";
 import { countExpiringContracts } from "./managerContracts";
 import { maybeGenerateAiTransfers } from "./managerAiTransfers";
+import { developSquadAtSeasonEnd } from "./managerPlayerDevelopment";
 import {
   ensureManagerFixtureScoring,
   applyLiveEventsToFixtureScoring,
@@ -403,6 +405,15 @@ export function applyManagerMatchResult(
     isSeasonComplete: isManagerSeasonComplete(nextCareer),
   };
 
+  if (finalCareer.isSeasonComplete && !finalCareer.lastSeasonDevelopmentReview) {
+    const developed = developSquadAtSeasonEnd(finalCareer);
+    finalCareer = {
+      ...developed.career,
+      isSeasonComplete: true,
+      lastSeasonDevelopmentReview: developed.changes,
+    };
+  }
+
   const reserveOpp = getReserveOpponent(sched.opponent, round, career.seed);
   const reserveResult = simulateReserveFixture(finalCareer, round, reserveOpp);
   finalCareer = applyReserveMatchDevelopment(finalCareer, reserveResult);
@@ -453,12 +464,6 @@ export function previewManagerMatchScoreline(
   ]);
 
   const teamForm = Math.max(-10, Math.min(10, (avgForm - 50) / 5));
-  const userRating = computeManagerTeamRating(
-    career.matchdayXiii,
-    career.matchdayInterchange,
-    career.xiiiSlotPositions,
-    career
-  );
   const friendlyRating = career.preSeason.activeFriendly?.teamRating;
   const baseOppRating =
     isFriendly && friendlyRating
@@ -469,17 +474,15 @@ export function previewManagerMatchScoreline(
           round,
           { currentSeasonOnly: !isFriendly }
         );
-  const ratingDiff = userRating - baseOppRating;
   const opponentRating =
     baseOppRating +
-    mods.opponentPenalty +
-    fitnessPenalty * 0.3 -
-    ratingDiff * 0.28;
-  const userRatingBoost = mods.strengthBonus - fitnessPenalty * 0.2;
+    mods.opponentPenalty * 0.35 +
+    fitnessPenalty * 0.12 -
+    mods.strengthBonus * 0.3;
 
   const combinedForm = Math.max(
-    -10,
-    Math.min(10, teamForm + career.matchSimState.form * 0.4)
+    -4,
+    Math.min(8, teamForm + career.matchSimState.form * 0.2)
   );
 
   const { fixture } = simulateOneFixture(
@@ -494,7 +497,8 @@ export function previewManagerMatchScoreline(
     },
     {
       currentSeasonOnly: !isFriendly,
-      opponentRatingOverride: opponentRating - userRatingBoost,
+      opponentRatingOverride: opponentRating,
+      cupMode: sched.competition === "challenge_cup",
     }
   );
 
@@ -504,31 +508,32 @@ export function previewManagerMatchScoreline(
 export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
   if (career.isSeasonComplete) return career;
 
-  const sched = getNextManagerFixture(career);
+  const ready = ensureCupBracketReady(career);
+  const sched = getNextManagerFixture(ready);
   if (!sched) return career;
 
-  const fixture = previewManagerMatchScoreline(career, sched);
-  const { avgForm } = computePlayerModifiers(career, [
+  const fixture = previewManagerMatchScoreline(ready, sched);
+  const { avgForm } = computePlayerModifiers(ready, [
     ...career.matchdayXiii,
     ...career.matchdayInterchange,
   ]);
   const teamForm = Math.max(-10, Math.min(10, (avgForm - 50) / 5));
   const combinedForm = Math.max(
-    -10,
-    Math.min(10, teamForm + career.matchSimState.form * 0.4)
+    -4,
+    Math.min(8, teamForm + ready.matchSimState.form * 0.2)
   );
   const nextSimState = {
     form:
       fixture.result === "W"
-        ? Math.min(10, combinedForm + 2)
-        : Math.max(-10, combinedForm - 2),
+        ? Math.min(8, combinedForm + 1.5)
+        : Math.max(-4, combinedForm - 1.5),
     seasonDropGoals:
       career.matchSimState.seasonDropGoals +
       (fixture.scoringFor?.dropGoals ?? 0) +
       (fixture.scoringAgainst?.dropGoals ?? 0),
   };
 
-  const next = applyManagerMatchResult(career, fixture, { schedOverride: sched });
+  const next = applyManagerMatchResult(ready, fixture, { schedOverride: sched });
   return {
     ...next,
     matchSimState: nextSimState,

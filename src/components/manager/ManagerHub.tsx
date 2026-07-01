@@ -31,6 +31,7 @@ import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
 import { autoFixMatchdaySquad } from "@/lib/manager/managerAutoFix";
 import { getHubNewsItems } from "@/lib/manager/managerNews";
+import { formatWage } from "@/lib/manager/managerContracts";
 
 interface ManagerHubProps {
   career: ManagerCareer;
@@ -528,6 +529,16 @@ export function ManagerHub({
             <p className="text-pitch-500 text-xs">Club Funds</p>
             <p className="font-semibold text-pitch-200">
               {formatFunds(career.budget)}
+            </p>
+          </div>
+          <div>
+            <p className="text-pitch-500 text-xs">Wage Bill</p>
+            <p className="font-semibold text-pitch-200">
+              {formatWage(career.wageBill)}
+              <span className="text-pitch-500 font-normal">
+                {" "}
+                / {formatWage(career.wageBudget)}
+              </span>
             </p>
           </div>
           <div>

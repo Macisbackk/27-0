@@ -14,12 +14,6 @@ interface ManagerFriendlySelectProps {
   onSelect: (choiceId: string) => void;
 }
 
-const DIFFICULTY_LABEL: Record<FriendlyOpponentChoice["difficulty"], string> = {
-  easy: "Easy",
-  balanced: "Balanced",
-  hard: "Hard",
-};
-
 export function ManagerFriendlySelect({
   career,
   friendlyNumber,
@@ -31,7 +25,8 @@ export function ManagerFriendlySelect({
       <div>
         <h1 className={TYPO.pageTitle}>Choose Friendly Opponent</h1>
         <p className={`${TYPO.bodySm} text-pitch-400`}>
-          Pre-season Friendly {friendlyNumber} of 2 — {career.club}
+          Pre-season Friendly {friendlyNumber} of 2 — pick any club from your
+          save · {career.club}
         </p>
       </div>
 
@@ -41,9 +36,6 @@ export function ManagerFriendlySelect({
             key={choice.id}
             className={`${CARD.elevated} ${SPACING.cardPadding}`}
           >
-            <p className={TYPO.sectionLabel}>
-              {DIFFICULTY_LABEL[choice.difficulty]}
-            </p>
             <p className={`mt-1 font-medium text-white`}>{choice.displayName}</p>
             <p className={`mt-1 text-sm text-theme-primary`}>
               {choice.teamRating} rated

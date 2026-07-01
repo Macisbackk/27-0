@@ -13,8 +13,10 @@ import {
   formatRewardTotal,
 } from "./managerSeasonRewards";
 import { buildSeasonSummary } from "./managerState";
-import { formatWage } from "./managerContracts";
+import { getPlayerById } from "../players";
+import { formatWage, getContractStatus } from "./managerContracts";
 import { getUserLeaguePosition } from "./managerFixtures";
+import { getManagerPlayer } from "./managerPlayers";
 
 export function normalizeInboxMessage(
   raw: Partial<InboxMessage> & { id: string; title: string; body: string },
@@ -197,8 +199,51 @@ function getOrdinal(n: number): string {
   return "th";
 }
 
+export function syncContractExpiryInboxMessages(
+  career: ManagerCareer
+): ManagerCareer {
+  let next = career;
+  for (const ps of career.squad) {
+    const contract = career.contracts[ps.playerId];
+    const player = getManagerPlayer(career, ps.playerId);
+    if (!contract || !player) continue;
+
+    const status = getContractStatus(contract);
+    const expiresSoon =
+      status === "expires_this_season" ||
+      (status === "one_year_left" && career.gameWeek >= 14);
+
+    if (!expiresSoon) continue;
+
+    const msgId = `contract-expiry-${ps.playerId}-s${career.seasonYear}`;
+    if (next.inboxMessages.some((m) => m.id === msgId)) continue;
+
+    const timeLeft =
+      status === "expires_this_season"
+        ? "at the end of this season"
+        : "within six months";
+
+    next = pushInboxMessage(next, {
+      id: msgId,
+      type: "contract",
+      title: "Contract Expiring",
+      body: `${player.name}'s contract expires ${timeLeft}. Open Contracts to negotiate a renewal.`,
+      week: career.gameWeek,
+      season: career.seasonYear,
+      gameWeek: career.gameWeek,
+      createdAt: new Date().toISOString(),
+      read: false,
+      resolved: false,
+      playerId: ps.playerId,
+      playerName: player.name,
+    });
+  }
+  return next;
+}
+
 export function syncManagerInboxMessages(career: ManagerCareer): ManagerCareer {
   let next = syncCupDrawInboxMessages(career);
+  next = syncContractExpiryInboxMessages(next);
   if (next.isSeasonComplete) {
     next = addSeasonRewardInboxMessage(next);
   }
