@@ -49,7 +49,6 @@ export function ManagerContracts({
 }: ManagerContractsProps) {
   const [filter, setFilter] = useState<ContractFilter>("all");
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
-  const [roleFilter, setRoleFilter] = useState<SquadRole | "all">("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [offerWage, setOfferWage] = useState(0);
   const [offerYears, setOfferYears] = useState(2);
@@ -99,12 +98,8 @@ export function ManagerContracts({
         )
       );
     }
-    if (roleFilter !== "all") {
-      list = list.filter((r) => r.contract.squadRole === roleFilter);
-    }
-
     return list;
-  }, [career, filter, positionFilter, roleFilter]);
+  }, [career, filter, positionFilter]);
 
   const selected = selectedId
     ? rows.find((r) => r.player.id === selectedId)
@@ -170,8 +165,7 @@ export function ManagerContracts({
       <div>
         <h1 className={TYPO.pageTitle}>Contracts</h1>
         <p className={`${TYPO.bodySm} text-pitch-400`}>
-          Wage bill {formatWage(career.wageBill)} / budget{" "}
-          {formatWage(career.wageBudget)}
+          Wage budget {formatWage(career.wageBudget)}
         </p>
       </div>
 
@@ -198,24 +192,6 @@ export function ManagerContracts({
               {label}
             </button>
           ))}
-        </div>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {(["all", "Star", "Starter", "Rotation", "Prospect", "Depth"] as const).map(
-            (role) => (
-              <button
-                key={role}
-                type="button"
-                onClick={() => setRoleFilter(role)}
-                className={`rounded-lg border px-2 py-1 text-xs ${
-                  roleFilter === role
-                    ? FILTER.chipActive
-                    : "border-pitch-600 text-pitch-300"
-                }`}
-              >
-                {role === "all" ? "All roles" : role}
-              </button>
-            )
-          )}
         </div>
         <div className="mt-2 flex flex-wrap gap-2">
           <button

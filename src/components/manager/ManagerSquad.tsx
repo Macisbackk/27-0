@@ -16,6 +16,7 @@ import {
   assignPlayerToMatchday,
   findPlayerMatchdaySlot,
   getReplacementCandidates,
+  getSquadPoolPlayers,
   slotAbbrev,
   TEAM_SHEET_ROWS,
   type MatchdaySlotTarget,
@@ -64,7 +65,7 @@ function TeamSheetSlot({
         if (playerId) onPlayerClick(playerId);
         else onSelect();
       }}
-      className={`min-h-[52px] w-full rounded-lg border px-2 py-1.5 text-left transition ${
+      className={`min-h-[44px] w-full rounded-md border px-1.5 py-1 text-left transition ${
         replaceHighlight
           ? "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50"
           : selected
@@ -122,14 +123,16 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     [replacementCandidates]
   );
 
-  const filteredCandidates = useMemo(() => {
-    if (positionFilter === "all") return replacementCandidates;
-    return replacementCandidates.filter(({ playerId }) =>
+  const squadPool = useMemo(() => getSquadPoolPlayers(career), [career]);
+
+  const filteredPool = useMemo(() => {
+    if (positionFilter === "all") return squadPool;
+    return squadPool.filter(({ playerId }) =>
       getManagerPlayerEligiblePositions(career, playerId).includes(
         positionFilter
       )
     );
-  }, [replacementCandidates, career, positionFilter]);
+  }, [squadPool, career, positionFilter]);
 
   const handleSelectSlot = (target: MatchdaySlotTarget) => {
     if (pendingAssignId) {
@@ -216,17 +219,17 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
         <div className={SPACING.stackMd}>
-          <div className={`${CARD.elevated} ${SPACING.cardPadding}`}>
-            <p className={`${TYPO.sectionLabel} mb-3`}>Starting XIII</p>
-            <div className={`${SPACING.stackSm}`}>
+          <div className="rounded-xl border border-pitch-700/40 bg-gradient-to-b from-pitch-800/20 to-pitch-950/60 p-4">
+            <p className={`${TYPO.sectionLabel} mb-3 text-center`}>Starting XIII</p>
+            <div className="mx-auto max-w-lg space-y-2">
               {TEAM_SHEET_ROWS.map((row, rowIdx) => (
                 <div
                   key={rowIdx}
-                  className={`grid gap-2 ${
+                  className={`grid gap-1.5 ${
                     row.slots.length === 1
-                      ? "grid-cols-1 max-w-[200px] mx-auto"
+                      ? "grid-cols-1 max-w-[140px] mx-auto"
                       : row.slots.length === 2
-                        ? "grid-cols-2 max-w-md mx-auto"
+                        ? "grid-cols-2 max-w-xs mx-auto"
                         : row.slots.length === 3
                           ? "grid-cols-3"
                           : "grid-cols-4"
@@ -308,7 +311,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
         </div>
 
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <p className={`${TYPO.sectionLabel} mb-2`}>Available Players</p>
+          <p className={`${TYPO.sectionLabel} mb-2`}>Squad Players</p>
           {pendingAssignId ? (
             <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>
               Select a starter or interchange slot for this player
@@ -320,11 +323,12 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
             </p>
           ) : selectedTarget ? (
             <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>
-              Tap a replacement — interchange, starters, or available squad
+              Tap a highlighted player to fill this slot
             </p>
           ) : (
             <p className={`mb-2 ${TYPO.bodySm} text-pitch-500`}>
-              Click a slot to swap, or a player for actions
+              All players outside the matchday 17 — click for actions or select a
+              slot to swap
             </p>
           )}
           <div className="mb-2 flex flex-wrap gap-1">
@@ -355,65 +359,66 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
             ))}
           </div>
           <ul className={`max-h-[420px] overflow-y-auto ${SPACING.stackSm}`}>
-            {filteredCandidates.map(
-              ({ playerId, source, isReserveCallUp }) => {
-                const player = getManagerPlayer(career, playerId);
-                if (!player) return null;
-                const positions = getManagerPlayerEligiblePositions(
-                  career,
-                  playerId
-                );
-                const ps = career.squad.find((p) => p.playerId === playerId);
-                const sourceLabel =
-                  source === "bench"
-                    ? "INT"
-                    : source === "xiii"
-                      ? "XIII"
-                      : isReserveCallUp
-                        ? "Call-up"
-                        : "Squad";
-                return (
-                  <li key={playerId}>
-                    <button
-                      type="button"
-                      disabled={!selectedTarget && !replaceSourcePlayerId}
-                      onClick={() => {
-                        playUiClick();
-                        handlePickPlayer(playerId);
-                      }}
-                      className={`w-full rounded-lg border px-2 py-2 text-left transition ${
+            {filteredPool.map(({ playerId, isReserveCallUp }) => {
+              const player = getManagerPlayer(career, playerId);
+              if (!player) return null;
+              const positions = getManagerPlayerEligiblePositions(
+                career,
+                playerId
+              );
+              const ps = career.squad.find((p) => p.playerId === playerId);
+              const isPickable =
+                !!selectedTarget ||
+                !!replaceSourcePlayerId ||
+                !!pendingAssignId;
+              const isHighlighted = replaceCandidateIds.has(playerId);
+              const sourceLabel = isReserveCallUp ? "Reserve" : "Squad";
+              return (
+                <li key={playerId}>
+                  <button
+                    type="button"
+                    disabled={isPickable && !isHighlighted && !pendingAssignId}
+                    onClick={() => {
+                      playUiClick();
+                      if (
+                        (selectedTarget || replaceSourcePlayerId) &&
                         replaceCandidateIds.has(playerId)
-                          ? "border-accent-gold bg-accent-gold/10 hover:border-accent-gold"
-                          : selectedTarget
-                          ? "border-pitch-600 hover:border-theme-primary/50"
-                          : "border-pitch-800/40 opacity-70"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-medium text-white">
-                            {player.name}
-                            <span className="ml-1 text-[10px] text-pitch-500">
-                              ({sourceLabel})
-                            </span>
-                          </p>
-                          <p className="text-[10px] text-pitch-400">
-                            {positions.map((p) => POSITION_SHORT[p]).join(" · ")}
-                            {ps && ` · Fit ${ps.fitness}`}
-                          </p>
-                        </div>
-                        <span className="shrink-0 font-bold text-theme-primary">
-                          {player.rating ?? player.peakRating}
-                        </span>
+                      ) {
+                        handlePickPlayer(playerId);
+                        return;
+                      }
+                      if (!pendingAssignId) setModalPlayerId(playerId);
+                    }}
+                    className={`w-full rounded-lg border px-2 py-2 text-left transition ${
+                      isHighlighted
+                        ? "border-accent-gold bg-accent-gold/10 hover:border-accent-gold"
+                        : "border-pitch-700/50 hover:border-pitch-500"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium text-white">
+                          {player.name}
+                          <span className="ml-1 text-[10px] text-pitch-500">
+                            ({sourceLabel})
+                          </span>
+                        </p>
+                        <p className="text-[10px] text-pitch-400">
+                          {positions.map((p) => POSITION_SHORT[p]).join(" · ")}
+                          {ps && ` · Fit ${ps.fitness}`}
+                        </p>
                       </div>
-                    </button>
-                  </li>
-                );
-              }
-            )}
-            {!selectedTarget && !pendingAssignId && !replaceSourcePlayerId && (
+                      <span className="shrink-0 font-bold text-theme-primary">
+                        {player.rating ?? player.peakRating}
+                      </span>
+                    </div>
+                  </button>
+                </li>
+              );
+            })}
+            {filteredPool.length === 0 && (
               <p className={`${TYPO.bodySm} text-pitch-500`}>
-                Select a slot to see replacement options
+                No squad players available — all are in the matchday 17.
               </p>
             )}
           </ul>

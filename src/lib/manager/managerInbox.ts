@@ -86,6 +86,29 @@ export function markInboxMessagesRead(career: ManagerCareer): ManagerCareer {
   };
 }
 
+export function createPlayerPurchaseMessage(
+  career: ManagerCareer,
+  playerName: string,
+  fromClub: string,
+  fee: number,
+  wagePerYear: number
+): InboxMessage {
+  return normalizeInboxMessage(
+    {
+      id: `purchase-${playerName}-${career.gameWeek}-${Date.now()}`,
+      type: "transfer",
+      title: "Transfer Completed",
+      body: `${playerName} has joined from ${fromClub} for ${formatWage(fee)} on ${formatWage(wagePerYear)}/yr.`,
+      read: false,
+      resolved: true,
+      playerName,
+      offerClub: fromClub,
+      offerAmount: fee,
+    },
+    career
+  );
+}
+
 export function createPlayerSaleMessage(
   career: ManagerCareer,
   playerName: string,

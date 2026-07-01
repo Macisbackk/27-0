@@ -24,6 +24,7 @@ import { getTransferDemand } from "./managerTransfers";
 import { syncManagerFinance, deductTransferFee, addTransferIncome } from "./managerFinance";
 import {
   createPlayerSaleMessage,
+  createPlayerPurchaseMessage,
   pushInboxMessage,
   normalizeInboxMessage,
 } from "./managerInbox";
@@ -265,18 +266,31 @@ export function completePlayerPurchase(
   const sellerFunds = { ...career.clubFunds };
   sellerFunds[club] = (sellerFunds[club] ?? 0) + offer.transferFee;
 
-  const purchased: ManagerCareer = {
-    ...career,
-    clubFunds: sellerFunds,
-    squad: [...career.squad, createInitialPlayerState(playerId)],
-    contracts: nextContracts,
-    wageBill: computeWageBill(nextContracts),
-    leagueListedPlayers: nextListed,
-    transferMarket: nextListed.map((l) => l.playerId),
-    updatedAt: new Date().toISOString(),
-  };
+  const purchased: ManagerCareer = deductTransferFee(
+    syncManagerFinance({
+      ...career,
+      clubFunds: sellerFunds,
+      squad: [...career.squad, createInitialPlayerState(playerId)],
+      contracts: nextContracts,
+      wageBill: computeWageBill(nextContracts),
+      leagueListedPlayers: nextListed,
+      transferMarket: nextListed.map((l) => l.playerId),
+      updatedAt: new Date().toISOString(),
+    }),
+    offer.transferFee
+  );
 
-  return deductTransferFee(syncManagerFinance(purchased), offer.transferFee);
+  const player = getPlayerById(playerId);
+  return pushInboxMessage(
+    purchased,
+    createPlayerPurchaseMessage(
+      purchased,
+      player?.name ?? "Player",
+      club,
+      offer.transferFee,
+      offer.wagePerYear
+    )
+  );
 }
 
 export function generateIncomingTransferOffers(

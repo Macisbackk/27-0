@@ -133,6 +133,31 @@ export function getAvailableSquadPlayers(career: ManagerCareer): {
   return list;
 }
 
+/** All squad players not in the starting 17 or interchange. */
+export function getSquadPoolPlayers(career: ManagerCareer): {
+  playerId: string;
+  isReserveCallUp: boolean;
+}[] {
+  const inLineup = getMatchdayPlayerIds(career);
+  const list: { playerId: string; isReserveCallUp: boolean }[] = [];
+
+  for (const ps of career.squad) {
+    if (inLineup.has(ps.playerId) || isPlayerUnavailable(ps)) continue;
+    list.push({ playerId: ps.playerId, isReserveCallUp: false });
+  }
+
+  for (const r of career.reserves) {
+    if (inLineup.has(r.id) || r.fitness < 50) continue;
+    list.push({ playerId: r.id, isReserveCallUp: true });
+  }
+
+  return list.sort((a, b) => {
+    const ra = getManagerPlayer(career, a.playerId)?.rating ?? 0;
+    const rb = getManagerPlayer(career, b.playerId)?.rating ?? 0;
+    return rb - ra;
+  });
+}
+
 /** Players eligible to replace a selected slot (includes interchange ↔ starter swaps). */
 export function getReplacementCandidates(
   career: ManagerCareer,

@@ -19,6 +19,7 @@ import {
   refreshClubFundsForSeason,
 } from "./managerFinance";
 import { createClubAttendanceData } from "./managerAttendance";
+import { developSquadAtSeasonEnd } from "./managerPlayerDevelopment";
 
 const CAREER_KEY = "27-0-manager-career";
 
@@ -118,8 +119,9 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
 }
 
 export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
-  const summary = buildSeasonSummary(career);
-  const { career: afterContracts, leaving } = tickContractsForNewSeason(career);
+  const developed = developSquadAtSeasonEnd(career);
+  const summary = buildSeasonSummary(developed);
+  const { career: afterContracts, leaving } = tickContractsForNewSeason(developed);
 
   let boardConfidence = afterContracts.boardConfidence;
   if (leaving.length >= 3) boardConfidence = Math.max(0, boardConfidence - 10);
@@ -185,6 +187,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     },
     latestNews: [],
     leagueTransfers: [],
+    playerDevelopment: developed.playerDevelopment,
     lastReserveReportWeek: undefined,
     clubFunds: refreshClubFundsForSeason(afterContracts, summary),
     updatedAt: new Date().toISOString(),

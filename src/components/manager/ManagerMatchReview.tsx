@@ -27,8 +27,8 @@ export function ManagerMatchReview({
   if (!fixture) return null;
 
   const squad = buildSquadSlotsFromMatchday(
-    career.matchdayXiii,
-    career.xiiiSlotPositions,
+    fixture.meta?.matchdayXiii ?? career.matchdayXiii,
+    fixture.meta?.xiiiSlotPositions ?? career.xiiiSlotPositions,
     career
   );
   const club = getClubByName(career.club);

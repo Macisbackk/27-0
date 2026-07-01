@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -10,7 +11,6 @@ import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import { getCupHubStatus } from "@/lib/manager/managerChallengeCup";
 import {
   countExpiringContracts,
-  formatWage,
 } from "@/lib/manager/managerContracts";
 import {
   fanMoodTrend,
@@ -24,8 +24,6 @@ import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { getMatchPrediction } from "@/lib/manager/managerScoring";
 import {
   computeSquadFitness,
-  computeSquadForm,
-  formLabel,
   getTopGoalScorer,
   getTopTryScorer,
 } from "@/lib/manager/managerCareerStats";
@@ -64,19 +62,34 @@ function fixtureRoundLabel(f: ManagerCareer["fixtures"][0]): string {
 }
 
 function HubLeagueTable({ career }: { career: ManagerCareer }) {
+  const [expanded, setExpanded] = useState(false);
   const rows = career.leagueTable;
   if (rows.length === 0) return null;
 
   const userRow = rows.find((r) => r.isUserTeam);
   const showCompact =
-    rows.length > 8 && userRow && userRow.position > 5;
+    !expanded && rows.length > 8 && userRow && userRow.position > 5;
   const displayRows = showCompact
     ? [...rows.slice(0, 5), ...(userRow.position > 5 ? [userRow] : [])]
     : rows;
 
   return (
     <div className={`${CARD.elevated} ${SPACING.cardPadding}`}>
-      <p className={TYPO.sectionLabel}>League Table</p>
+      <div className="flex items-center justify-between gap-2">
+        <p className={TYPO.sectionLabel}>League Table</p>
+        {rows.length > 6 && (
+          <button
+            type="button"
+            onClick={() => {
+              playUiClick();
+              setExpanded((e) => !e);
+            }}
+            className="text-xs text-theme-primary hover:underline"
+          >
+            {expanded ? "Show less" : "Show full table"}
+          </button>
+        )}
+      </div>
       {userRow && (
         <p className={`mt-1 ${TYPO.cardTitle}`}>
           {ordinal(userRow.position)} · {career.club}
@@ -250,7 +263,6 @@ export function ManagerHub({
     career.xiiiSlotPositions,
     career
   );
-  const squadForm = computeSquadForm(career);
   const fitness = computeSquadFitness(career);
   const injuryCount = career.squad.filter(
     (p) => p.injury && isPlayerUnavailable(p)
@@ -289,7 +301,6 @@ export function ManagerHub({
   const expiringCount = countExpiringContracts(career.contracts);
   const lastGate = getLastHomeGate(career.gateIncomeHistory);
   const cupStatus = getCupHubStatus(career);
-  const overBudget = career.wageBill > career.wageBudget;
   const newsItems = getHubNewsItems(career);
   const transferBudget = career.managerFinance?.transferBudget ?? career.budget;
 
@@ -426,13 +437,7 @@ export function ManagerHub({
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-2`}>Team Status</p>
-        <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
-          <div>
-            <p className="text-pitch-500 text-xs">Squad form</p>
-            <p>
-              {formLabel(squadForm)} ({squadForm})
-            </p>
-          </div>
+        <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
           <div>
             <p className="text-pitch-500 text-xs">Fitness</p>
             <p>{fitness}%</p>
@@ -508,7 +513,7 @@ export function ManagerHub({
         style={{ borderLeftColor: club?.primaryColor ?? "var(--theme-primary)" }}
       >
         <p className={TYPO.sectionLabel}>Board · Budget · Attendance</p>
-        <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+        <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
           <div>
             <p className="text-pitch-500 text-xs">Board Confidence</p>
             <p className="font-semibold text-white">{career.boardConfidence}%</p>
@@ -523,12 +528,6 @@ export function ManagerHub({
             <p className="text-pitch-500 text-xs">Club Funds</p>
             <p className="font-semibold text-pitch-200">
               {formatFunds(career.budget)}
-            </p>
-          </div>
-          <div>
-            <p className="text-pitch-500 text-xs">Wage Bill</p>
-            <p className={overBudget ? "text-red-300" : ""}>
-              {formatWage(career.wageBill)}
             </p>
           </div>
           <div>

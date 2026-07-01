@@ -28,7 +28,16 @@ export function getManagerPlayer(
   if (reserve) return reserveToPlayer(reserve);
   const generated = career.playerRegistry[playerId];
   if (generated) return generated;
-  return getPlayerById(playerId);
+  const base = getPlayerById(playerId);
+  const dev = career.playerDevelopment?.[playerId];
+  if (base && dev) {
+    return {
+      ...base,
+      rating: dev.rating,
+      peakRating: Math.max(base.peakRating, dev.peakRating),
+    };
+  }
+  return base;
 }
 
 export function getManagerPlayerEligiblePositions(

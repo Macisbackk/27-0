@@ -181,6 +181,16 @@ export function applyManagerMatchResult(
 
   if (options.liveEvents?.length) {
     applyLiveEventsToFixtureScoring(career, fixture, options.liveEvents);
+    const eventTryTotal =
+      fixture.scoringDetail?.dreamTeam.tryScorers.reduce(
+        (sum, t) => sum + t.tries,
+        0
+      ) ?? 0;
+    if (eventTryTotal !== fixture.triesFor) {
+      enrichManagerFixtureScoring(squad, fixture, career.seed, career.tactics, {
+        currentSeasonOnly: true,
+      });
+    }
   } else {
     enrichManagerFixtureScoring(squad, fixture, career.seed, career.tactics, {
       currentSeasonOnly: true,
@@ -329,6 +339,9 @@ export function applyManagerMatchResult(
       competition: sched.competition,
       cupRound: sched.cupRound,
       liveEvents: options.liveEvents,
+      matchdayXiii: [...career.matchdayXiii],
+      matchdayInterchange: [...career.matchdayInterchange],
+      xiiiSlotPositions: [...career.xiiiSlotPositions],
     },
   };
 
@@ -422,12 +435,10 @@ export function applyManagerMatchResult(
   return finalCareer;
 }
 
-export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
-  if (career.isSeasonComplete) return career;
-
-  const sched = getNextManagerFixture(career);
-  if (!sched) return career;
-
+export function previewManagerMatchScoreline(
+  career: ManagerCareer,
+  sched: NonNullable<ReturnType<typeof getNextManagerFixture>>
+): MatchFixture {
   const isFriendly = sched.competition === "friendly";
   const round = sched.round;
   const squad = buildSquadSlotsFromMatchday(
@@ -471,7 +482,7 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
     Math.min(10, teamForm + career.matchSimState.form * 0.4)
   );
 
-  const { fixture, state: nextSimState } = simulateOneFixture(
+  const { fixture } = simulateOneFixture(
     squad,
     sched.opponent,
     sched.isHome,
@@ -482,10 +493,40 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
       seasonDropGoals: career.matchSimState.seasonDropGoals,
     },
     {
-      currentSeasonOnly: true,
+      currentSeasonOnly: !isFriendly,
       opponentRatingOverride: opponentRating - userRatingBoost,
     }
   );
+
+  return fixture;
+}
+
+export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
+  if (career.isSeasonComplete) return career;
+
+  const sched = getNextManagerFixture(career);
+  if (!sched) return career;
+
+  const fixture = previewManagerMatchScoreline(career, sched);
+  const { avgForm } = computePlayerModifiers(career, [
+    ...career.matchdayXiii,
+    ...career.matchdayInterchange,
+  ]);
+  const teamForm = Math.max(-10, Math.min(10, (avgForm - 50) / 5));
+  const combinedForm = Math.max(
+    -10,
+    Math.min(10, teamForm + career.matchSimState.form * 0.4)
+  );
+  const nextSimState = {
+    form:
+      fixture.result === "W"
+        ? Math.min(10, combinedForm + 2)
+        : Math.max(-10, combinedForm - 2),
+    seasonDropGoals:
+      career.matchSimState.seasonDropGoals +
+      (fixture.scoringFor?.dropGoals ?? 0) +
+      (fixture.scoringAgainst?.dropGoals ?? 0),
+  };
 
   const next = applyManagerMatchResult(career, fixture, { schedOverride: sched });
   return {

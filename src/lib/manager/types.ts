@@ -209,6 +209,10 @@ export interface ManagerMatchMeta {
   competition?: ManagerCompetition;
   cupRound?: CupRoundKey;
   liveEvents?: LiveMatchEvent[];
+  /** Snapshot of matchday squad at kick-off for accurate match review. */
+  matchdayXiii?: string[];
+  matchdayInterchange?: string[];
+  xiiiSlotPositions?: Position[];
 }
 
 export interface LiveMatchEvent {
@@ -386,6 +390,12 @@ export type LiveMatchCommand =
   | "use_forwards"
   | "spread_wide";
 
+export interface PlayerDevelopmentState {
+  rating: number;
+  peakRating: number;
+  potential: number;
+}
+
 export interface ManagerCareer {
   id: string;
   club: string;
@@ -440,6 +450,7 @@ export interface ManagerCareer {
   managerFinance: ManagerFinance;
   latestNews: LatestNewsItem[];
   leagueTransfers: LeagueTransferActivity[];
+  playerDevelopment?: Record<string, PlayerDevelopmentState>;
   lastReserveReportWeek?: number;
   createdAt: string;
   updatedAt: string;

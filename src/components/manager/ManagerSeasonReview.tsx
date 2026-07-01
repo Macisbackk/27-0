@@ -97,7 +97,6 @@ export function ManagerSeasonReview({
 
       <div className={`${CARD.base} ${SPACING.cardPadding} ${SPACING.stackMd}`}>
         <p className={TYPO.sectionLabel}>Contracts & Board</p>
-        <Row label="Wage Bill" value={formatWage(summary.wageBill)} />
         <Row
           label="Expiring Contracts"
           value={`${summary.expiringContracts}`}

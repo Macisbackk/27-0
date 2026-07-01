@@ -130,6 +130,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     managerFinance: initManagerFinance(raw),
     latestNews: raw.latestNews ?? [],
     leagueTransfers: raw.leagueTransfers ?? [],
+    playerDevelopment: raw.playerDevelopment ?? {},
     lastReserveReportWeek: raw.lastReserveReportWeek,
   };
 

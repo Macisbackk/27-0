@@ -35,6 +35,24 @@ const DEFENCE_FOCUS: { value: DefenceFocus; label: string }[] = [
   { value: "goal_line", label: "Goal-Line Defence" },
 ];
 
+const TACTIC_BIOS: Record<string, string> = {
+  balanced: "Even risk and reward — reliable in most match-ups.",
+  expansive: "Spread the ball wide for more try chances; slightly more errors.",
+  direct: "Run hard through the middle — good for wearing down packs.",
+  defensive: "Tighter shape, fewer points conceded; harder to score yourself.",
+  high_tempo: "Fast sets and quick play-the-balls; opens the game but tires players.",
+  middle: "Target the forwards and short-ball running lanes.",
+  edges: "Use width and wingers to create line breaks.",
+  kicking_game: "Territory through kicks; can pin opponents deep.",
+  offloads: "Keep the ball alive in contact for broken-field chances.",
+  safe_sets: "Lower error rate on possession; fewer flashy plays.",
+  line_speed: "Rush up in defence to shut down their attack early.",
+  conservative: "Hold your line and wait for mistakes.",
+  aggressive_contact: "Big hits and dominant tackles; higher injury risk.",
+  edge_defence: "Shut down their wide threats.",
+  goal_line: "Protect your try line when under sustained pressure.",
+};
+
 function OptionGroup<T extends string>({
   label,
   options,
@@ -66,6 +84,9 @@ function OptionGroup<T extends string>({
           </button>
         ))}
       </div>
+      <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+        {TACTIC_BIOS[value] ?? ""}
+      </p>
     </div>
   );
 }
