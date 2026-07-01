@@ -567,25 +567,33 @@ export function advanceLiveMinute(
 export function advanceLiveToFullTime(
   state: LiveMatchState,
   career: ManagerCareer,
-  command: LiveMatchCommand
+  _command: LiveMatchCommand
 ): LiveMatchState {
-  let next =
-    state.phase === "halftime"
-      ? { ...state, phase: "second_half" as const, isPlaying: true }
-      : state;
-  let guard = 0;
-  while (!next.isComplete && guard < 45) {
-    const maxMinute =
-      next.minute < HALFTIME_MINUTE || next.phase === "first_half"
-        ? HALFTIME_MINUTE
-        : 80;
-    next = advanceLiveTick(next, career, command, maxMinute);
-    if (next.phase === "halftime") {
-      next = { ...next, phase: "second_half", isPlaying: true };
-    }
-    guard++;
-  }
-  return finalizeLiveMatch(next);
+  const sched: ManagerScheduledFixture = {
+    id: state.fixtureId,
+    round: state.round,
+    opponent: state.opponent,
+    isHome: state.isHome,
+    competition: state.competition ?? "league",
+    label: `Round ${state.round}`,
+  };
+  const preview = previewManagerMatchScoreline(career, sched);
+  return {
+    ...state,
+    minute: 80,
+    userScore: preview.pointsFor,
+    oppScore: preview.pointsAgainst,
+    userTries: preview.triesFor,
+    oppTries: preview.triesAgainst,
+    targetPointsFor: preview.pointsFor,
+    targetPointsAgainst: preview.pointsAgainst,
+    targetTriesFor: preview.triesFor,
+    targetTriesAgainst: preview.triesAgainst,
+    isComplete: true,
+    isPlaying: false,
+    phase: "full_time",
+    effectivenessLine: "Full time — match simulated to the final whistle.",
+  };
 }
 
 function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {

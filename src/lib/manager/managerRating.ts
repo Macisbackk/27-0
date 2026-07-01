@@ -5,6 +5,7 @@ import { getPlayerRatingForPosition } from "../players/player-positions";
 import type { Position } from "../types";
 import { buildDefaultLineup } from "./club-config";
 import { getManagerPlayer } from "./managerPlayers";
+import { getManagerModePlayerRating } from "./managerSquadRatings";
 import type { ManagerCareer } from "./types";
 
 const ERA_26_YEAR = "2026";
@@ -34,7 +35,8 @@ const SPINE_POSITIONS = new Set<Position>([
 function playerBaseRating(playerId: string, career?: ManagerCareer): number {
   const p = career ? getManagerPlayer(career, playerId) : getPlayerById(playerId);
   if (!p) return 0;
-  return p.rating ?? p.peakRating;
+  const base = p.rating ?? p.peakRating;
+  return career ? base : getManagerModePlayerRating(p.name, base);
 }
 
 /**

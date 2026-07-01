@@ -614,18 +614,13 @@ export function previewManagerMatchScoreline(
   return fixture;
 }
 
-/** Run the same live match engine used by Play Game (instant full time). */
+/** Run instant full-time simulation using the same score engine as other modes. */
 export function simulateManagerMatchLive(
   career: ManagerCareer,
   sched: NonNullable<ReturnType<typeof getNextManagerFixture>>
 ): { fixture: MatchFixture; liveEvents: import("./types").LiveMatchEvent[] } {
-  const live = createLiveMatch(career, sched);
-  const command = commandFromTactics(career);
-  const final = advanceLiveToFullTime(live, career, command);
-  return {
-    fixture: liveMatchToFixture(final, career),
-    liveEvents: getLiveMatchEvents(final),
-  };
+  const fixture = previewManagerMatchScoreline(career, sched);
+  return { fixture, liveEvents: [] };
 }
 
 export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {

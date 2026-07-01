@@ -3,6 +3,8 @@ import type { ManagerCareer, ManagerReservePlayer } from "./types";
 import { getPlayerById } from "../players";
 import { getPlayerEligiblePositions } from "../players/player-positions";
 
+import { getManagerModePlayerRating } from "./managerSquadRatings";
+
 export function reserveToPlayer(reserve: ManagerReservePlayer): Player {
   return {
     id: reserve.id,
@@ -30,14 +32,27 @@ export function getManagerPlayer(
   if (generated) return generated;
   const base = getPlayerById(playerId);
   const dev = career.playerDevelopment?.[playerId];
+  let player: Player | undefined;
   if (base && dev) {
-    return {
+    player = {
       ...base,
       rating: dev.rating,
       peakRating: Math.max(base.peakRating, dev.peakRating),
     };
+  } else {
+    player = base;
   }
-  return base;
+  if (!player) return undefined;
+  const mgrRating = getManagerModePlayerRating(
+    player.name,
+    player.rating ?? player.peakRating
+  );
+  if (mgrRating === (player.rating ?? player.peakRating)) return player;
+  return {
+    ...player,
+    rating: mgrRating,
+    peakRating: Math.max(player.peakRating, mgrRating),
+  };
 }
 
 export function getManagerPlayerEligiblePositions(

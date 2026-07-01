@@ -19,6 +19,7 @@ import {
   initManagerFinance,
   refreshClubFundsForSeason,
 } from "./managerFinance";
+import { addContractLeavingInboxMessage } from "./managerInbox";
 import { createClubAttendanceData } from "./managerAttendance";
 
 const CAREER_KEY = "27-0-manager-career";
@@ -153,12 +154,18 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const summary = buildSeasonSummary(career);
   const { career: afterContracts, leaving } = tickContractsForNewSeason(career);
 
-  let boardConfidence = afterContracts.boardConfidence;
+  let withInbox = afterContracts;
+  for (const playerId of leaving) {
+    const name = getPlayerById(playerId)?.name ?? playerId;
+    withInbox = addContractLeavingInboxMessage(withInbox, playerId, name);
+  }
+
+  let boardConfidence = withInbox.boardConfidence;
   if (leaving.length >= 3) boardConfidence = Math.max(0, boardConfidence - 10);
   else if (leaving.length > 0) boardConfidence = Math.max(0, boardConfidence - 4);
 
   const newSeed = `${career.seed}-s${career.seasonYear + 1}`;
-  const squadIdSet = new Set(afterContracts.squad.map((p) => p.playerId));
+  const squadIdSet = new Set(withInbox.squad.map((p) => p.playerId));
 
   const transferBudget = computeSeasonTransferBudget(
     career.club,
@@ -168,7 +175,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   );
 
   const next: ManagerCareer = {
-    ...afterContracts,
+    ...withInbox,
     seasonYear: career.seasonYear + 1,
     seed: newSeed,
     budget: transferBudget,
@@ -201,7 +208,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
       newSeed,
       0
     ),
-    squad: afterContracts.squad.map((p) => ({
+    squad: withInbox.squad.map((p) => ({
       ...p,
       seasonAppearances: 0,
       seasonTries: 0,

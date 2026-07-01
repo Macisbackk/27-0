@@ -14,6 +14,7 @@ import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
 import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import {
   assignPlayerToMatchday,
+  canAssignPlayerToXiiiSlot,
   findPlayerMatchdaySlot,
   getReplacementCandidates,
   getSquadPoolPlayers,
@@ -268,6 +269,13 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                       selectedTarget.index === slotIndex;
                     const isReplaceTarget =
                       !!playerId && replaceCandidateIds.has(playerId);
+                    const isAssignTarget =
+                      !!pendingAssignId &&
+                      canAssignPlayerToXiiiSlot(
+                        career,
+                        slotIndex,
+                        pendingAssignId
+                      );
                     return (
                       <TeamSheetSlot
                         key={slotIndex}
@@ -277,7 +285,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                         career={career}
                         selected={isSelected}
                         replaceHighlight={isReplaceTarget}
-                        assignMode={!!pendingAssignId}
+                        assignMode={isAssignTarget}
                         onSelect={() =>
                           handleSelectSlot({ kind: "xiii", index: slotIndex })
                         }
@@ -340,7 +348,8 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
           <p className={`${TYPO.sectionLabel} mb-2`}>Squad Players</p>
           {pendingAssignId ? (
             <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>
-              Select a starter or interchange slot for this player
+              Select a highlighted starter slot (by position) or interchange
+              bench
             </p>
           ) : replaceSourcePlayerId ? (
             <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>

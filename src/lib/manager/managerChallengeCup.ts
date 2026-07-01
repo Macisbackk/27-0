@@ -58,9 +58,7 @@ export function ensureCupBracketReady(career: ManagerCareer): ManagerCareer {
   if (pending === null || !career.challengeCup) return career;
 
   const prepared = prepareCupRound(career);
-  const userMatch = getUserCupMatch(prepared);
-  if (!userMatch) return { ...career, challengeCup: prepared };
-
+  const userMatch = getUserCupMatch(prepared, pending);
   return { ...career, challengeCup: prepared };
 }
 
@@ -124,10 +122,11 @@ export function prepareCupRound(
 }
 
 export function getUserCupMatch(
-  bracket: ChallengeCupBracketState
+  bracket: ChallengeCupBracketState,
+  preferredRound?: number
 ): { matchId: string; opponent: string; isHome: boolean; round: number } | null {
   if (bracket.userEliminated || bracket.tournamentComplete) return null;
-  const round = getActiveRound(bracket);
+  const round = preferredRound ?? getActiveRound(bracket);
   const match = getMatchesForRound(bracket, round).find(
     (m) => m.isUserMatch && m.status === "ready"
   );
@@ -170,7 +169,7 @@ export function isLeagueAndCupPhaseComplete(career: ManagerCareer): boolean {
   if (pendingRound === null) return true;
 
   const prepared = prepareCupRound(career);
-  const cupMatch = getUserCupMatch(prepared);
+  const cupMatch = getUserCupMatch(prepared, pendingRound);
   if (cupMatch) return false;
 
   if (prepared.userEliminated || prepared.tournamentComplete) return true;
@@ -203,7 +202,7 @@ export function getNextLeagueOrCupFixture(
   const cupRound = getPendingCupBracketRound(career);
   if (cupRound !== null) {
     const prepared = prepareCupRound(career);
-    const cupMatch = getUserCupMatch(prepared);
+    const cupMatch = getUserCupMatch(prepared, cupRound);
     if (cupMatch) {
       return buildCupScheduledFixture(
         { ...career, challengeCup: prepared },
@@ -224,8 +223,10 @@ export function getNextLeagueOrCupFixture(
           next = simulateBracketMatch(next, m.id, squad);
         }
       }
-      const retry = getUserCupMatch(next);
-      if (retry) return buildCupScheduledFixture({ ...career, challengeCup: next }, retry);
+      const retry = getUserCupMatch(next, cupRound);
+      if (retry) {
+        return buildCupScheduledFixture({ ...career, challengeCup: next }, retry);
+      }
     }
   }
 
@@ -257,7 +258,7 @@ export function getCupHubStatus(career: ManagerCareer): string {
   const pending = getPendingCupBracketRound(career);
   if (pending !== null) {
     const prepared = prepareCupRound(career);
-    const match = getUserCupMatch(prepared);
+    const match = getUserCupMatch(prepared, pending);
     if (match) {
       return `Challenge Cup: ${getCupRoundLabel(pending)} vs ${match.opponent}`;
     }
@@ -396,7 +397,7 @@ function resolveCupDisplayFixture(
   const pending = getPendingCupBracketRound(career);
   if (pending === bracketRound) {
     const prepared = prepareCupRound(career);
-    const match = getUserCupMatch(prepared);
+    const match = getUserCupMatch(prepared, pending);
     if (match) {
       return {
         id: `cup-${match.matchId}`,

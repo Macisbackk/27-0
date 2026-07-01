@@ -11,12 +11,11 @@ import type { Position } from "@/lib/types";
 import { getManagerPlayerEligiblePositions } from "@/lib/manager/managerPlayers";
 import { getPlayerAge } from "@/lib/players/player-age";
 import {
-  applyRenewal,
-  bulkRenewExpiringContracts,
   evaluateRenewalOffer,
   formatWage,
   getContractStatus,
 } from "@/lib/manager/managerContracts";
+import { bulkRenewExpiringContractsWithInbox, renewManagerContract } from "@/lib/manager/managerInbox";
 import { releasePlayer } from "@/lib/manager/managerTransfers";
 import { playPanelClose, playUiClick } from "@/lib/sound";
 
@@ -73,7 +72,8 @@ export function ManagerContracts({
   );
 
   const handleBulkRenew = () => {
-    const { career: next, renewed, declined } = bulkRenewExpiringContracts(career);
+    const { career: next, renewed, declined } =
+      bulkRenewExpiringContractsWithInbox(career);
     onUpdate(next);
     setBulkResult(
       renewed > 0
@@ -169,7 +169,7 @@ export function ManagerContracts({
     const result = evaluateRenewalOffer(selectedId, contract, offer, career);
     setLastResponse(result);
     if (result.accepted) {
-      onUpdate(applyRenewal(career, selectedId, offer));
+      onUpdate(renewManagerContract(career, selectedId, offer));
     }
   };
 
@@ -186,29 +186,70 @@ export function ManagerContracts({
   const primaryPosition = selectedPositions[0];
   const selectedAge = selected ? getPlayerAge(selected.player) : null;
 
+  const wagePct = Math.min(
+    100,
+    Math.round((career.wageBill / Math.max(1, career.wageBudget)) * 100)
+  );
+  const overBudget = career.wageBill > career.wageBudget;
+
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
-      <div>
-        <h1 className={TYPO.pageTitle}>Contracts</h1>
-        <p className={`${TYPO.bodySm} text-pitch-400`}>
-          Wage bill {formatWage(career.wageBill)} of{" "}
-          {formatWage(career.wageBudget)} budget
-          {career.wageBill > career.wageBudget ? " · over budget" : ""}
-        </p>
+      <div className={`${CARD.elevated} ${CARD.featured} ${SPACING.cardPadding}`}>
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h1 className={TYPO.pageTitle}>Contracts</h1>
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+              Manage wages, renewals, and squad roles
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-xs uppercase tracking-wider text-pitch-500">
+              Wage bill
+            </p>
+            <p
+              className={`text-xl font-bold ${
+                overBudget ? "text-amber-300" : "text-white"
+              }`}
+            >
+              {formatWage(career.wageBill)}
+            </p>
+            <p className={`${TYPO.bodySm} text-pitch-400`}>
+              of {formatWage(career.wageBudget)} budget
+            </p>
+          </div>
+        </div>
+        <div className="mt-4">
+          <div className="mb-1 flex justify-between text-xs text-pitch-400">
+            <span>Budget used</span>
+            <span>{wagePct}%</span>
+          </div>
+          <div className="h-2.5 overflow-hidden rounded-full bg-pitch-800">
+            <div
+              className={`h-full transition-all ${
+                overBudget ? "bg-amber-400" : "bg-theme-primary"
+              }`}
+              style={{ width: `${Math.min(100, wagePct)}%` }}
+            />
+          </div>
+        </div>
         {expiringCount > 0 && (
-          <div className="mt-3 flex flex-wrap items-center gap-2">
+          <div className="mt-4 flex flex-wrap items-center gap-2 rounded-lg border border-accent-gold/30 bg-accent-gold/5 px-3 py-2">
+            <p className={`flex-1 ${TYPO.bodySm} text-accent-gold`}>
+              {expiringCount} contract{expiringCount === 1 ? "" : "s"} expiring
+              soon
+            </p>
             <GameButton
               variant="secondary"
               fullWidth={false}
               size="sm"
               onClick={handleBulkRenew}
             >
-              Renew all expiring ({expiringCount})
+              Renew all
             </GameButton>
-            {bulkResult && (
-              <p className={`${TYPO.bodySm} text-pitch-300`}>{bulkResult}</p>
-            )}
           </div>
+        )}
+        {bulkResult && (
+          <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>{bulkResult}</p>
         )}
       </div>
 
@@ -265,10 +306,20 @@ export function ManagerContracts({
         </div>
       </div>
 
-      <div className={`${CARD.base} ${SPACING.cardPadding} ${SPACING.stackSm}`}>
+      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+        <p className={`${TYPO.sectionLabel} mb-2`}>Squad Contracts</p>
+        <div className={`${SPACING.stackSm}`}>
         {rows.map(({ player, contract, status, rating }) => {
           const urgent =
             contract.yearsRemaining <= 1 || contract.expiresAtSeasonEnd;
+          const statusColor =
+            status === "unhappy"
+              ? "text-red-300 bg-red-500/10 border-red-500/30"
+              : status === "expires_this_season" || status === "wants_renewal"
+                ? "text-accent-gold bg-accent-gold/10 border-accent-gold/30"
+                : status === "renewed"
+                  ? "text-theme-primary bg-theme-primary/10 border-theme-primary/30"
+                  : "text-pitch-300 bg-pitch-800/50 border-pitch-600/40";
           return (
             <button
               key={player.id}
@@ -277,22 +328,27 @@ export function ManagerContracts({
                 playUiClick();
                 openRenewal(player.id);
               }}
-              className={`${CARD.inset} w-full text-left px-3 py-2 transition ${
+              className={`${CARD.inset} w-full text-left px-3 py-3 transition hover:border-theme-primary/40 ${
                 urgent ? "border-l-4 border-accent-gold" : ""
               }`}
             >
-              <div className="flex flex-wrap items-start justify-between gap-2">
-                <div>
-                  <p className="font-medium text-white">{player.name}</p>
-                  <p className={`${TYPO.bodySm} text-pitch-400`}>
-                    {rating} rated · {formatWage(contract.wagePerYear)}/yr ·{" "}
-                    {contract.yearsRemaining}yr left · {contract.squadRole}
-                  </p>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-theme-primary/15 text-sm font-bold text-theme-primary">
+                    {rating}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="truncate font-medium text-white">
+                      {player.name}
+                    </p>
+                    <p className={`${TYPO.bodySm} text-pitch-400`}>
+                      {formatWage(contract.wagePerYear)}/yr ·{" "}
+                      {contract.yearsRemaining}yr · {contract.squadRole}
+                    </p>
+                  </div>
                 </div>
                 <span
-                  className={`${TYPO.bodySm} ${
-                    status === "unhappy" ? "text-red-300" : "text-pitch-300"
-                  }`}
+                  className={`shrink-0 rounded-full border px-2 py-0.5 text-xs ${statusColor}`}
                 >
                   {STATUS_LABELS[status] ?? status}
                 </span>
@@ -300,6 +356,7 @@ export function ManagerContracts({
             </button>
           );
         })}
+        </div>
       </div>
 
       {selected && (

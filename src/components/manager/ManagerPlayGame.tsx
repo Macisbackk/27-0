@@ -270,7 +270,14 @@ export function ManagerPlayGame({
                 <GameButton variant="theme" onClick={handleStartGame}>
                   Start Game
                 </GameButton>
-                <GameButton variant="secondary" onClick={handleAbandon}>
+                <GameButton variant="secondary" onClick={handleSimulateToFullTime}>
+                  Simulate to Full Time
+                </GameButton>
+                <GameButton
+                  variant="secondary"
+                  className="sm:col-span-2"
+                  onClick={handleAbandon}
+                >
                   Close
                 </GameButton>
               </div>

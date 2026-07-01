@@ -1,9 +1,16 @@
 "use client";
 
+import { useMemo } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { getAllManagerClubConfigs } from "@/lib/manager/club-config";
+import { getManagerRosterIds } from "@/lib/manager/managerRating";
+import {
+  getManagerClubKeyPlayers,
+  getManagerModePlayerRating,
+} from "@/lib/manager/managerSquadRatings";
+import { getPlayerById } from "@/lib/players";
 import { playUiClick } from "@/lib/sound";
 
 interface ManagerClubSelectProps {
@@ -20,8 +27,25 @@ function DifficultyStars({ level }: { level: number }) {
   );
 }
 
+function clubKeyPlayers(clubName: string) {
+  return getManagerClubKeyPlayers(
+    getManagerRosterIds(clubName),
+    (id) => {
+      const p = getPlayerById(id);
+      if (!p) return 0;
+      return getManagerModePlayerRating(p.name, p.rating ?? p.peakRating);
+    },
+    (id) => getPlayerById(id)?.name ?? "",
+    4
+  );
+}
+
 export function ManagerClubSelect({ onSelect, onBack }: ManagerClubSelectProps) {
   const clubs = getAllManagerClubConfigs();
+  const starsByClub = useMemo(
+    () => new Map(clubs.map((c) => [c.name, clubKeyPlayers(c.name)])),
+    [clubs]
+  );
 
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
@@ -60,6 +84,14 @@ export function ManagerClubSelect({ onSelect, onBack }: ManagerClubSelectProps) 
                   <span>Budget £{(club.budget / 1000).toFixed(0)}k</span>
                   <DifficultyStars level={club.difficulty} />
                 </div>
+                {(starsByClub.get(club.name) ?? []).length > 0 && (
+                  <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+                    <span className="text-accent-gold">★</span>{" "}
+                    {(starsByClub.get(club.name) ?? [])
+                      .map((p) => `${p.name} (${p.rating})`)
+                      .join(" · ")}
+                  </p>
+                )}
               </div>
             </div>
           </button>

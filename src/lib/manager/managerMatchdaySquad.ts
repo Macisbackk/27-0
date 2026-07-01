@@ -89,6 +89,9 @@ export function assignPlayerToMatchday(
 
     if (fromXiiiIdx >= 0) {
       if (displaced && displaced !== playerId) {
+        if (!canAssignPlayerToXiiiSlot(career, fromXiiiIdx, displaced)) {
+          return career;
+        }
         xiii[fromXiiiIdx] = displaced;
       } else {
         xiii[fromXiiiIdx] = "";
@@ -186,9 +189,15 @@ export function getReplacementCandidates(
       add({ playerId: id, source: "bench", benchIndex });
     });
   } else {
+    const benchPlayerId = career.matchdayInterchange[target.index] ?? "";
     career.matchdayXiii.forEach((id, xiiiIndex) => {
       if (!id) return;
-      add({ playerId: id, source: "xiii", xiiiIndex });
+      if (
+        !benchPlayerId ||
+        canAssignPlayerToXiiiSlot(career, xiiiIndex, benchPlayerId)
+      ) {
+        add({ playerId: id, source: "xiii", xiiiIndex });
+      }
     });
   }
 

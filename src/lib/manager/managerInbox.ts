@@ -14,7 +14,7 @@ import {
 } from "./managerSeasonRewards";
 import { buildSeasonSummary } from "./managerState";
 import { getPlayerById } from "../players";
-import { formatWage, getContractStatus } from "./managerContracts";
+import { formatWage, getContractStatus, applyRenewal, ensureRenewalDemands, generateRenewalDemand, evaluateRenewalOffer } from "./managerContracts";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { getManagerPlayer } from "./managerPlayers";
 
@@ -151,7 +151,7 @@ export function syncCupDrawInboxMessages(career: ManagerCareer): ManagerCareer {
   if (cupRound === null) return career;
 
   const prepared = prepareCupRound(career);
-  const cupMatch = getUserCupMatch(prepared);
+  const cupMatch = getUserCupMatch(prepared, cupRound);
   if (!cupMatch) return career;
 
   const msgId = `cup-draw-${cupMatch.matchId}`;
@@ -253,6 +253,107 @@ export function syncContractExpiryInboxMessages(
     });
   }
   return next;
+}
+
+export function addContractRenewalInboxMessage(
+  career: ManagerCareer,
+  playerId: string,
+  playerName: string,
+  wagePerYear: number,
+  years: number,
+  squadRole: string
+): ManagerCareer {
+  const msgId = `contract-renewed-${playerId}-s${career.seasonYear}-w${career.gameWeek}`;
+  if (career.inboxMessages.some((m) => m.id === msgId)) return career;
+
+  return pushInboxMessage(career, {
+    id: msgId,
+    type: "contract",
+    title: "Contract Renewed",
+    body: `${playerName} signed a ${years}-year deal at ${formatWage(wagePerYear)}/yr (${squadRole}).`,
+    week: career.gameWeek,
+    season: career.seasonYear,
+    gameWeek: career.gameWeek,
+    createdAt: new Date().toISOString(),
+    read: false,
+    resolved: false,
+    playerId,
+    playerName,
+  });
+}
+
+export function addContractLeavingInboxMessage(
+  career: ManagerCareer,
+  playerId: string,
+  playerName: string
+): ManagerCareer {
+  const msgId = `contract-left-${playerId}-s${career.seasonYear}`;
+  if (career.inboxMessages.some((m) => m.id === msgId)) return career;
+
+  return pushInboxMessage(career, {
+    id: msgId,
+    type: "contract",
+    title: "Player Released",
+    body: `${playerName} has left the club — no new contract was agreed.`,
+    week: career.gameWeek,
+    season: career.seasonYear,
+    gameWeek: career.gameWeek,
+    createdAt: new Date().toISOString(),
+    read: false,
+    resolved: false,
+    playerId,
+    playerName,
+  });
+}
+
+export function renewManagerContract(
+  career: ManagerCareer,
+  playerId: string,
+  offer: import("./types").RenewalDemand
+): ManagerCareer {
+  const player = getManagerPlayer(career, playerId);
+  const next = applyRenewal(career, playerId, offer);
+  if (!player) return next;
+  return addContractRenewalInboxMessage(
+    next,
+    playerId,
+    player.name,
+    offer.wagePerYear,
+    offer.yearsRequested,
+    offer.squadRole
+  );
+}
+
+export function bulkRenewExpiringContractsWithInbox(career: ManagerCareer): {
+  career: ManagerCareer;
+  renewed: number;
+  declined: number;
+} {
+  let working = ensureRenewalDemands(career);
+  let renewed = 0;
+  let declined = 0;
+
+  for (const ps of working.squad) {
+    const contract = working.contracts[ps.playerId];
+    if (!contract) continue;
+    const status = getContractStatus(contract);
+    if (status !== "expires_this_season" && status !== "wants_renewal") {
+      continue;
+    }
+
+    const demand =
+      contract.renewalDemand ??
+      generateRenewalDemand(ps.playerId, contract, working);
+    const result = evaluateRenewalOffer(ps.playerId, contract, demand, working);
+    if (result.accepted) {
+      working = renewManagerContract(working, ps.playerId, demand);
+      renewed++;
+    } else {
+      declined++;
+    }
+  }
+
+  return { career: working, renewed, declined };
 }
 
 export function syncManagerInboxMessages(career: ManagerCareer): ManagerCareer {
