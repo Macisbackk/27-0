@@ -1,17 +1,107 @@
+import seedrandom from "seedrandom";
+import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
+import { getCurrentSeasonOpponentPool } from "../game/opponent-squad-strength";
 import { getPlayerById } from "../players";
 import { getPlayerAge } from "../players/player-age";
-import type { ManagerCareer, PlayerDevelopmentChange, PlayerDevelopmentState } from "./types";
+import type {
+  ManagerCareer,
+  PlayerDevelopmentChange,
+  PlayerDevelopmentState,
+} from "./types";
 import { getManagerPlayer } from "./managerPlayers";
 
-function computePotential(
-  peakRating: number,
-  age: number
-): number {
+function computePotential(peakRating: number, age: number): number {
   if (age <= 21) return Math.min(95, peakRating + 8);
   if (age <= 24) return Math.min(92, peakRating + 5);
   if (age <= 27) return Math.min(90, peakRating + 2);
   if (age <= 30) return peakRating;
   return Math.max(65, peakRating - 3);
+}
+
+function developOnePlayer(
+  playerId: string,
+  career: ManagerCareer,
+  playerDevelopment: Record<string, PlayerDevelopmentState>,
+  extras?: { appearances?: number; tries?: number; form?: number }
+): PlayerDevelopmentState | null {
+  const base = getPlayerById(playerId);
+  if (!base) return null;
+
+  const age = getPlayerAge(base) ?? 25;
+  const existing = playerDevelopment[playerId];
+  const before = existing?.rating ?? base.rating ?? base.peakRating;
+  const potential = existing?.potential ?? computePotential(base.peakRating, age);
+
+  let delta = 0;
+  if (age <= 22) delta += 1;
+  else if (age >= 33) delta -= 1;
+  else if (age >= 30) delta -= 0.5;
+
+  const appearances = extras?.appearances ?? 0;
+  const tries = extras?.tries ?? 0;
+  const form = extras?.form ?? 50;
+
+  if (appearances >= 18) delta += 1.5;
+  else if (appearances >= 10) delta += 0.5;
+  else if (appearances < 4 && extras) delta -= 0.5;
+
+  if (tries >= 12) delta += 1;
+  else if (tries >= 6) delta += 0.5;
+
+  if (form >= 70) delta += 1;
+  else if (form >= 58) delta += 0.5;
+  else if (form < 42 && extras) delta -= 0.5;
+
+  const rounded = Math.round(delta);
+  const after = Math.max(55, Math.min(potential, before + rounded));
+  const newPeak = Math.max(
+    existing?.peakRating ?? base.peakRating,
+    after,
+    base.peakRating
+  );
+
+  return {
+    rating: after,
+    peakRating: newPeak,
+    potential,
+  };
+}
+
+function developLeaguePlayersAtSeasonEnd(
+  career: ManagerCareer,
+  playerDevelopment: Record<string, PlayerDevelopmentState>
+): Record<string, PlayerDevelopmentState> {
+  const rng = seedrandom(`${career.seed}-league-dev-${career.seasonYear}`);
+  const userIds = new Set(career.squad.map((p) => p.playerId));
+  const next = { ...playerDevelopment };
+
+  for (const club of CURRENT_PLAYABLE_CLUBS) {
+    if (club === career.club) continue;
+    const pool = getCurrentSeasonOpponentPool(club).slice(0, 22);
+    for (const player of pool) {
+      if (userIds.has(player.id)) continue;
+      if (rng() > 0.55) continue;
+
+      const age = getPlayerAge(player) ?? 25;
+      const before = player.rating ?? player.peakRating;
+      const potential = computePotential(player.peakRating, age);
+      let delta = 0;
+      if (age <= 23) delta += rng() < 0.6 ? 1 : 0;
+      else if (age >= 32) delta -= rng() < 0.55 ? 1 : 0;
+      else delta += rng() < 0.35 ? 1 : rng() < 0.2 ? -1 : 0;
+
+      const after = Math.max(55, Math.min(potential, before + delta));
+      if (after === before) continue;
+
+      next[player.id] = {
+        rating: after,
+        peakRating: Math.max(player.peakRating, after),
+        potential,
+      };
+    }
+  }
+
+  return next;
 }
 
 export function developSquadAtSeasonEnd(career: ManagerCareer): {
@@ -27,62 +117,41 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
     const base = getPlayerById(ps.playerId);
     if (!base) continue;
 
-    const age = getPlayerAge(base) ?? 25;
-    const existing = playerDevelopment[ps.playerId];
     const before =
-      existing?.rating ?? base.rating ?? base.peakRating;
-    const potential =
-      existing?.potential ?? computePotential(base.peakRating, age);
+      playerDevelopment[ps.playerId]?.rating ??
+      base.rating ??
+      base.peakRating;
 
-    let delta = 0;
-    if (age <= 22) delta += 1;
-    else if (age >= 33) delta -= 1;
-    else if (age >= 30) delta -= 0.5;
+    const developed = developOnePlayer(ps.playerId, career, playerDevelopment, {
+      appearances: ps.seasonAppearances,
+      tries: ps.seasonTries,
+      form: ps.form,
+    });
+    if (!developed) continue;
 
-    if (ps.seasonAppearances >= 18) delta += 1.5;
-    else if (ps.seasonAppearances >= 10) delta += 0.5;
-    else if (ps.seasonAppearances < 4) delta -= 1;
+    playerDevelopment[ps.playerId] = developed;
 
-    if (ps.seasonTries >= 12) delta += 1;
-    else if (ps.seasonTries >= 6) delta += 0.5;
-
-    if (ps.form >= 70) delta += 1;
-    else if (ps.form >= 58) delta += 0.5;
-    else if (ps.form < 42) delta -= 1;
-
-    const rounded = Math.round(delta);
-    const after = Math.max(
-      55,
-      Math.min(potential, before + rounded)
-    );
-    const newPeak = Math.max(
-      existing?.peakRating ?? base.peakRating,
-      after,
-      base.peakRating
-    );
-
-    playerDevelopment[ps.playerId] = {
-      rating: after,
-      peakRating: newPeak,
-      potential,
-    };
-
-    if (rounded !== 0) {
+    const actualDelta = developed.rating - before;
+    if (actualDelta !== 0) {
       changes.push({
         playerId: ps.playerId,
         playerName: base.name,
         before,
-        after,
-        potential,
-        delta: rounded,
+        after: developed.rating,
+        potential: developed.potential,
+        delta: actualDelta,
       });
     }
   }
 
-  changes.sort((a, b) => b.delta - a.delta);
+  const withLeague = developLeaguePlayersAtSeasonEnd(career, playerDevelopment);
+
+  changes.sort(
+    (a, b) => Math.abs(b.delta) - Math.abs(a.delta) || b.delta - a.delta
+  );
 
   return {
-    career: { ...career, playerDevelopment },
+    career: { ...career, playerDevelopment: withLeague },
     changes,
   };
 }

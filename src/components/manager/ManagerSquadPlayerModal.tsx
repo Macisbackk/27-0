@@ -113,7 +113,6 @@ export function ManagerSquadPlayerModal({
           <span>{formatValue(player.value)}</span>
           {contract && <span>{formatWage(contract.wagePerYear)}/yr</span>}
           {contract && <span>{contract.yearsRemaining}yr left</span>}
-          {ps && <span>Fitness {ps.fitness}</span>}
           {slot && (
             <span>{slot.kind === "xiii" ? "Starter" : "Interchange"}</span>
           )}

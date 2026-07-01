@@ -570,6 +570,8 @@ export interface SimulateFixtureOptions {
   draftMode?: boolean;
   /** Current Mode — opponents use 2026 team-year pools only. */
   currentSeasonOnly?: boolean;
+  /** Manager career — outcomes track team rating and form more closely. */
+  managerCareerMode?: boolean;
 }
 
 export interface SimulateSeasonOptions {
@@ -639,12 +641,13 @@ function resolveOutcome(
   const draftMode = options.draftMode ?? false;
   const valueBonus = getValueConsistencyBonus(totalValue, draftMode);
   const cupMode = options.cupMode ?? false;
+  const managerMode = options.managerCareerMode ?? false;
 
   const homeAdvantage = isHome ? 1.5 : -1;
-  const formEffect = form * 0.4;
+  const formEffect = form * (managerMode ? 0.55 : 0.4);
   const draftRatingBonus = draftMode ? getDraftTeamRatingBonus(avgRating) : 0;
 
-  let noiseScale = draftMode ? 8 : 7;
+  let noiseScale = draftMode ? 8 : managerMode ? 4.5 : 7;
   const absGap = Math.abs(ratingGap);
   if (absGap >= 10) noiseScale = draftMode ? 2 : 2.5;
   else if (absGap >= 8) noiseScale = draftMode ? 2.8 : 3.5;
@@ -655,18 +658,18 @@ function resolveOutcome(
 
   const noise = (rng() - 0.5) * noiseScale;
   const strengthGap = strength - opponentStrength;
-  const ratingWeight = draftMode ? 1.55 : 1.34;
-  const valueWeight = draftMode ? 0.85 : 0.8;
+  const ratingWeight = draftMode ? 1.55 : managerMode ? 1.48 : 1.34;
+  const valueWeight = draftMode ? 0.85 : managerMode ? 0.65 : 0.8;
   const diff =
     ratingGap * ratingWeight +
-    strengthGap * 0.35 +
+    strengthGap * (managerMode ? 0.42 : 0.35) +
     valueBonus * valueWeight +
     homeAdvantage +
     formEffect +
     draftRatingBonus +
     noise;
 
-  const logisticDivisor = draftMode ? 3.9 : 4.2;
+  const logisticDivisor = draftMode ? 3.9 : managerMode ? 3.6 : 4.2;
   let winProbability = 1 / (1 + Math.exp(-diff / logisticDivisor));
 
   if (draftMode) {
@@ -676,7 +679,9 @@ function resolveOutcome(
   } else {
     const floor = getNormalWinProbabilityFloor(ratingGap);
     if (floor !== null) winProbability = Math.max(winProbability, floor);
-    else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.72);
+    else if (ratingGap >= 5) winProbability = Math.max(winProbability, managerMode ? 0.78 : 0.72);
+    else if (managerMode && ratingGap >= 3) winProbability = Math.max(winProbability, 0.65);
+    else if (managerMode && ratingGap >= 1) winProbability = Math.max(winProbability, 0.56);
   }
 
   if (ratingGap <= -10) winProbability = Math.min(winProbability, 0.1);

@@ -46,9 +46,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     } else if (filter === "age") {
       list.sort((a, b) => a.age - b.age);
     } else if (filter === "callup") {
-      list = list.filter(
-        (r) => r.fitness >= 50 && !r.calledUpForNextMatch
-      );
+      list = list.filter((r) => !r.calledUpForNextMatch);
     }
     return list;
   }, [career.reserves, filter, positionFilter]);
@@ -202,7 +200,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             <div className="mt-2 grid grid-cols-2 gap-1 text-[10px] text-pitch-300 sm:grid-cols-4">
               <span>{getPotentialTier(r.potentialRating)}</span>
               <span>Form {r.form}</span>
-              <span>Fitness {r.fitness}</span>
               <span>
                 {r.reserveAppearances} apps · {r.reserveTries} tries
               </span>
@@ -222,7 +219,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
               <GameButton
                 variant="secondary"
                 size="sm"
-                disabled={r.fitness < 50 || r.calledUpForNextMatch}
+                disabled={r.calledUpForNextMatch}
                 onClick={() => {
                   playUiClick();
                   handleCallUp(r.id);

@@ -8,7 +8,7 @@ import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import { CUP_ROUND_LABELS } from "@/lib/manager/types";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
-import { getCupHubStatus } from "@/lib/manager/managerChallengeCup";
+import { ensureCupBracketReady, getCupHubStatus } from "@/lib/manager/managerChallengeCup";
 import {
   countExpiringContracts,
 } from "@/lib/manager/managerContracts";
@@ -23,7 +23,6 @@ import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { getMatchPrediction } from "@/lib/manager/managerScoring";
 import {
-  computeSquadFitness,
   getTopGoalScorer,
   getTopTryScorer,
 } from "@/lib/manager/managerCareerStats";
@@ -256,7 +255,7 @@ export function ManagerHub({
   onNavigate,
 }: ManagerHubProps) {
   const club = getClubByName(career.club);
-  const nextFixture = getNextManagerFixture(career);
+  const nextFixture = getNextManagerFixture(ensureCupBracketReady(career));
   const position = getUserLeaguePosition(career.leagueTable, career.club);
   const teamRating = computeManagerTeamRating(
     career.matchdayXiii,
@@ -264,7 +263,6 @@ export function ManagerHub({
     career.xiiiSlotPositions,
     career
   );
-  const fitness = computeSquadFitness(career);
   const injuryCount = career.squad.filter(
     (p) => p.injury && isPlayerUnavailable(p)
   ).length;
@@ -438,11 +436,7 @@ export function ManagerHub({
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-2`}>Team Status</p>
-        <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
-          <div>
-            <p className="text-pitch-500 text-xs">Fitness</p>
-            <p>{fitness}%</p>
-          </div>
+        <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-2">
           <div>
             <p className="text-pitch-500 text-xs">Injuries</p>
             <p>{injuryCount}</p>

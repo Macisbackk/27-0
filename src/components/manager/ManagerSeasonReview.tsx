@@ -66,11 +66,19 @@ export function ManagerSeasonReview({
         {topScorer && <Row label="Top Try Scorer" value={topScorer.name} />}
         <Row
           label="Biggest Win"
-          value={summary.biggestWin > 0 ? `+${summary.biggestWin}` : "—"}
+          value={
+            summary.biggestWin
+              ? `${summary.biggestWin.pointsFor}-${summary.biggestWin.pointsAgainst} vs ${summary.biggestWin.opponent}`
+              : "—"
+          }
         />
         <Row
           label="Biggest Defeat"
-          value={summary.biggestDefeat < 0 ? `${summary.biggestDefeat}` : "—"}
+          value={
+            summary.biggestDefeat
+              ? `${summary.biggestDefeat.pointsFor}-${summary.biggestDefeat.pointsAgainst} vs ${summary.biggestDefeat.opponent}`
+              : "—"
+          }
         />
       </div>
 

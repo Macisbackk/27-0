@@ -48,7 +48,8 @@ export function ManagerDevelopmentReview({
                     <span className="font-medium text-white">{c.playerName}</span>
                     <span className="text-pitch-400">
                       {" "}
-                      {c.before} → {c.after} (+{c.delta}) · POT {c.potential}
+                      {c.before} → {c.after} ({c.delta > 0 ? "+" : ""}
+                      {c.delta}) · POT {c.potential}
                     </span>
                   </li>
                 ))}

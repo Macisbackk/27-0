@@ -81,8 +81,6 @@ function TeamSheetSlot({
           <p className="truncate text-sm font-medium text-white">{player.name}</p>
           <p className="text-[10px] text-theme-primary">
             {player.rating ?? player.peakRating}
-            {ps && ` · Fit ${ps.fitness}`}
-            {reserve && ` · Fit ${reserve.fitness}`}
           </p>
           {ps?.injury && (
             <p className="text-[10px] text-red-300">
@@ -179,6 +177,10 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
   };
 
   const handlePlayerClick = (playerId: string) => {
+    if (selectedTarget && replaceCandidateIds.has(playerId)) {
+      handlePickPlayer(playerId);
+      return;
+    }
     if (replaceSourcePlayerId && replaceCandidateIds.has(playerId)) {
       handlePickPlayer(playerId);
       return;
@@ -405,7 +407,6 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                         </p>
                         <p className="text-[10px] text-pitch-400">
                           {positions.map((p) => POSITION_SHORT[p]).join(" · ")}
-                          {ps && ` · Fit ${ps.fitness}`}
                         </p>
                       </div>
                       <span className="shrink-0 font-bold text-theme-primary">

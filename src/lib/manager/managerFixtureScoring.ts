@@ -1,10 +1,13 @@
 import type { MatchFixture } from "../game/season-simulation";
 import type { SquadSlot } from "../types";
-import { selectClubMatchSquad } from "../game/opponent-scorers";
-import { getPlayerEligiblePositions } from "../players/player-positions";
 import { getManagerPlayer } from "./managerPlayers";
 import type { LiveMatchEvent, ManagerCareer } from "./types";
 import { enrichManagerFixtureScoring } from "./managerScoring";
+import { buildOpponentTryScoringDetail } from "./managerOpponentScoring";
+import {
+  opponentScoringUsesClubLump,
+  repairOpponentTryScorers,
+} from "./managerOpponentScoring";
 
 /** Ensure fixture always has scoring detail for match review UI. */
 export function ensureManagerFixtureScoring(
@@ -12,15 +15,19 @@ export function ensureManagerFixtureScoring(
   fixture: MatchFixture,
   squad: SquadSlot[]
 ): void {
-  if (fixture.scoringDetail) return;
+  if (!fixture.scoringDetail) {
+    enrichManagerFixtureScoring(
+      squad,
+      fixture,
+      career.seed,
+      career.tactics,
+      { currentSeasonOnly: true }
+    );
+  }
 
-  enrichManagerFixtureScoring(
-    squad,
-    fixture,
-    career.seed,
-    career.tactics,
-    { currentSeasonOnly: true }
-  );
+  if (opponentScoringUsesClubLump(fixture)) {
+    repairOpponentTryScorers(fixture, career.seed, career.tactics);
+  }
 
   if (fixture.scoringDetail) return;
 
@@ -64,13 +71,12 @@ export function ensureManagerFixtureScoring(
     opponent: {
       tryScorers:
         fixture.triesAgainst > 0
-          ? [
-              {
-                playerId: oppName,
-                name: oppName,
-                tries: fixture.triesAgainst,
-              },
-            ]
+          ? buildOpponentTryScoringDetail(
+              oppName,
+              fixture.triesAgainst,
+              career.seed,
+              fixture.round
+            )
           : [],
       kicking: fixture.scoringAgainst
         ? {
@@ -181,39 +187,17 @@ export function applyLiveEventsToFixtureScoring(
     };
   }
 
-  const oppSquad = selectClubMatchSquad(
-    fixture.opponent,
-    career.seed,
-    fixture.round,
-    { currentSeasonOnly: true }
-  );
-  const oppEntries = oppSquad.slice(0, Math.max(1, oppTryCount)).map((p) => ({
-    id: p.id,
-    name: p.name,
-    position: getPlayerEligiblePositions(p)[0] ?? p.position,
-    rating: p.rating ?? p.peakRating,
-  }));
-
   const oppTryScorers: { playerId: string; name: string; tries: number }[] = [];
   if (oppTryCount > 0) {
-    let left = oppTryCount;
-    for (const p of oppEntries) {
-      if (left <= 0) break;
-      const t = Math.min(left, 1);
-      oppTryScorers.push({ playerId: p.id, name: p.name, tries: t });
-      left -= t;
-    }
-    if (left > 0 && oppTryScorers[0]) {
-      oppTryScorers[0] = {
-        ...oppTryScorers[0],
-        tries: oppTryScorers[0].tries + left,
-      };
-    } else if (oppTryScorers.length === 0) {
-      oppTryScorers.push({
-        playerId: fixture.opponent,
-        name: fixture.opponent,
-        tries: oppTryCount,
-      });
+    const fromSquad = buildOpponentTryScoringDetail(
+      fixture.opponent,
+      oppTryCount,
+      career.seed,
+      fixture.round,
+      career.tactics
+    );
+    if (fromSquad.length > 0) {
+      oppTryScorers.push(...fromSquad);
     }
   }
 

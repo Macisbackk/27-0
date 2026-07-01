@@ -65,9 +65,6 @@ export function validateFitMatchdaySquad(
     if (ps && isPlayerUnavailable(ps)) {
       missing.push(`${player.name} (unavailable)`);
     }
-    if (reserve && reserve.fitness < 50) {
-      missing.push(`${player.name} (not fit)`);
-    }
   }
 
   for (let i = 0; i < career.matchdayXiii.length; i++) {

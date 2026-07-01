@@ -32,7 +32,9 @@ export function canAssignPlayerToXiiiSlot(
   if (ps && isPlayerUnavailable(ps)) return false;
 
   const reserve = career.reserves.find((r) => r.id === playerId);
-  if (reserve && reserve.fitness < 50) return false;
+  if (reserve) {
+    return canPlayPosition(player, position);
+  }
 
   return canPlayPosition(player, position);
 }
@@ -124,7 +126,6 @@ export function getAvailableSquadPlayers(career: ManagerCareer): {
 
   for (const r of career.reserves) {
     if (inLineup.has(r.id)) continue;
-    if (r.fitness < 50) continue;
     if (r.calledUpForNextMatch || career.calledUpReserveIds.includes(r.id)) {
       list.push({ playerId: r.id, isReserveCallUp: true });
     }
@@ -147,7 +148,7 @@ export function getSquadPoolPlayers(career: ManagerCareer): {
   }
 
   for (const r of career.reserves) {
-    if (inLineup.has(r.id) || r.fitness < 50) continue;
+    if (inLineup.has(r.id)) continue;
     if (
       !r.calledUpForNextMatch &&
       !career.calledUpReserveIds.includes(r.id)

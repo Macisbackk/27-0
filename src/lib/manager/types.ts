@@ -231,6 +231,13 @@ export interface ManagerFixtureRecord extends MatchFixture {
   meta?: ManagerMatchMeta;
 }
 
+export interface SeasonHighlightResult {
+  opponent: string;
+  pointsFor: number;
+  pointsAgainst: number;
+  margin: number;
+}
+
 export interface ManagerSeasonSummary {
   seasonYear: number;
   position: number;
@@ -245,8 +252,8 @@ export interface ManagerSeasonSummary {
   bestPlayerId: string | null;
   topTryScorerId: string | null;
   challengeCupResult: string;
-  biggestWin: number;
-  biggestDefeat: number;
+  biggestWin: SeasonHighlightResult | null;
+  biggestDefeat: SeasonHighlightResult | null;
   averageAttendance: number;
   highestAttendance: number;
   lowestAttendance: number;

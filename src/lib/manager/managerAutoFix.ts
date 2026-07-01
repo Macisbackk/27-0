@@ -50,7 +50,6 @@ function bestReserveForPosition(
 ): string | null {
   const candidates = career.reserves
     .filter((r) => !exclude.has(r.id))
-    .filter((r) => r.fitness >= 50)
     .filter(
       (r) =>
         !r.calledUpForNextMatch || career.calledUpReserveIds.includes(r.id)
@@ -105,21 +104,12 @@ export function autoFixMatchdaySquad(career: ManagerCareer): {
         xiii[i] = "";
         used.delete(id);
       }
-      if (reserve && reserve.fitness < 50) {
-        xiii[i] = "";
-        used.delete(id);
-      }
     }
     for (let i = 0; i < bench.length; i++) {
       const id = bench[i];
       if (!id) continue;
       const ps = working.squad.find((p) => p.playerId === id);
-      const reserve = working.reserves.find((r) => r.id === id);
       if (ps && isPlayerUnavailable(ps)) {
-        bench[i] = "";
-        used.delete(id);
-      }
-      if (reserve && reserve.fitness < 50) {
         bench[i] = "";
         used.delete(id);
       }
@@ -186,7 +176,6 @@ export function autoFixMatchdaySquad(career: ManagerCareer): {
 
     const reserveBench = [...working.reserves]
       .filter((r) => !used.has(r.id))
-      .filter((r) => r.fitness >= 50)
       .map((r) => ({
         id: r.id,
         rating: r.rating,

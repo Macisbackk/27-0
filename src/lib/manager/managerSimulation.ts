@@ -138,22 +138,17 @@ export function getTacticModifiers(
 function computePlayerModifiers(
   career: ManagerCareer,
   playerIds: string[]
-): { avgForm: number; fitnessPenalty: number } {
+): { avgForm: number } {
   let formSum = 0;
-  let fitnessPenalty = 0;
   let count = 0;
   for (const id of playerIds) {
     const ps = career.squad.find((p) => p.playerId === id);
     if (!ps) continue;
     formSum += ps.form;
     count++;
-    if (ps.fitness < 70) fitnessPenalty += (70 - ps.fitness) * 0.04;
-    if (ps.form < 35) fitnessPenalty += 0.3;
-    if (ps.injury && !ps.injury.serious) fitnessPenalty += 1.5;
   }
   return {
     avgForm: count ? formSum / count : 50,
-    fitnessPenalty,
   };
 }
 
@@ -267,24 +262,19 @@ export function applyManagerMatchResult(
       )?.tries ?? 0;
 
     let form = ps.form;
-    let fitness = ps.fitness;
 
     if (played) {
-      fitness = Math.max(40, fitness - 8 * mods.fatigueFactor);
       if (won) {
         form = Math.min(99, form + 3);
       } else {
         form = Math.max(1, form - 2);
       }
-    } else {
-      fitness = Math.min(100, fitness + 5);
     }
 
     const inj = injuries.find((i) => i.playerId === ps.playerId);
     return {
       ...ps,
       form,
-      fitness,
       injury: inj?.injury ?? ps.injury,
       seasonAppearances: played ? ps.seasonAppearances + 1 : ps.seasonAppearances,
       seasonTries: ps.seasonTries + tryCount,
@@ -458,12 +448,18 @@ export function previewManagerMatchScoreline(
     career
   );
   const mods = getTacticModifiers(career.tactics);
-  const { avgForm, fitnessPenalty } = computePlayerModifiers(career, [
+  const { avgForm } = computePlayerModifiers(career, [
     ...career.matchdayXiii,
     ...career.matchdayInterchange,
   ]);
 
   const teamForm = Math.max(-10, Math.min(10, (avgForm - 50) / 5));
+  const userRating = computeManagerTeamRating(
+    career.matchdayXiii,
+    career.matchdayInterchange,
+    career.xiiiSlotPositions,
+    career
+  );
   const friendlyRating = career.preSeason.activeFriendly?.teamRating;
   const baseOppRating =
     isFriendly && friendlyRating
@@ -474,16 +470,21 @@ export function previewManagerMatchScoreline(
           round,
           { currentSeasonOnly: !isFriendly }
         );
+  const homeAdj = sched.isHome ? 4 : -2;
+  const ratingGap = userRating - baseOppRating + homeAdj;
+  const formFromRatings = Math.max(-3, Math.min(7, ratingGap * 0.4));
+  const combinedForm = Math.max(
+    -2,
+    Math.min(
+      8,
+      teamForm + career.matchSimState.form * 0.12 + formFromRatings
+    )
+  );
+
   const opponentRating =
     baseOppRating +
-    mods.opponentPenalty * 0.35 +
-    fitnessPenalty * 0.12 -
-    mods.strengthBonus * 0.3;
-
-  const combinedForm = Math.max(
-    -4,
-    Math.min(8, teamForm + career.matchSimState.form * 0.2)
-  );
+    mods.opponentPenalty * 0.15 -
+    mods.strengthBonus * 0.2;
 
   const { fixture } = simulateOneFixture(
     squad,
@@ -499,6 +500,7 @@ export function previewManagerMatchScoreline(
       currentSeasonOnly: !isFriendly,
       opponentRatingOverride: opponentRating,
       cupMode: sched.competition === "challenge_cup",
+      managerCareerMode: true,
     }
   );
 

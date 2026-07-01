@@ -1,6 +1,6 @@
 import { getPlayerById } from "../players";
 import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
-import type { ManagerCareer, ManagerSeasonSummary } from "./types";
+import type { ManagerCareer, ManagerSeasonSummary, SeasonHighlightResult } from "./types";
 import { buildManagerSchedule, buildLeagueTableFromMatches } from "./managerFixtures";
 import { generateTransferMarket } from "./managerTransfers";
 import { getUserLeaguePosition } from "./managerFixtures";
@@ -74,12 +74,26 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
   const expiring = countExpiringContracts(career.contracts);
   const leaving = previewPlayersLeaving(career);
 
-  let biggestWin = 0;
-  let biggestDefeat = 0;
+  let biggestWin: SeasonHighlightResult | null = null;
+  let biggestDefeat: SeasonHighlightResult | null = null;
   for (const f of career.fixtures) {
     const margin = f.pointsFor - f.pointsAgainst;
-    if (f.result === "W" && margin > biggestWin) biggestWin = margin;
-    if (f.result === "L" && margin < biggestDefeat) biggestDefeat = margin;
+    if (f.result === "W" && (!biggestWin || margin > biggestWin.margin)) {
+      biggestWin = {
+        opponent: f.opponent,
+        pointsFor: f.pointsFor,
+        pointsAgainst: f.pointsAgainst,
+        margin,
+      };
+    }
+    if (f.result === "L" && (!biggestDefeat || margin < biggestDefeat.margin)) {
+      biggestDefeat = {
+        opponent: f.opponent,
+        pointsFor: f.pointsFor,
+        pointsAgainst: f.pointsAgainst,
+        margin,
+      };
+    }
   }
 
   let seasonVerdict = boardVerdict;
