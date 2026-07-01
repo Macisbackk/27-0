@@ -229,3 +229,21 @@ export function autoFixMatchdaySquad(career: ManagerCareer): {
 
   return { ok: true, career: working, message };
 }
+
+/** Best available matchday lineup for simulation (auto-replaces injured/unavailable). */
+export function resolveCareerForMatchSimulation(career: ManagerCareer): ManagerCareer {
+  const result = autoFixMatchdaySquad(career);
+  return result.ok ? result.career : career;
+}
+
+export function hasUnavailablePlayersInLineup(career: ManagerCareer): boolean {
+  for (const id of [
+    ...career.matchdayXiii,
+    ...career.matchdayInterchange,
+  ]) {
+    if (!id) continue;
+    const ps = career.squad.find((p) => p.playerId === id);
+    if (ps && isPlayerUnavailable(ps)) return true;
+  }
+  return false;
+}

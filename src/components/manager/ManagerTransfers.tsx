@@ -8,8 +8,9 @@ import type { ManagerCareer } from "@/lib/manager/types";
 import { getPlayerById } from "@/lib/players";
 import { formatValue } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
-import type { Position } from "@/lib/types";
+import type { Player, Position } from "@/lib/types";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
+import { applyManagerModeRatingToPlayer } from "@/lib/manager/managerSquadRatings";
 import { formatWage } from "@/lib/manager/managerContracts";
 import {
   completePlayerPurchase,
@@ -29,6 +30,10 @@ interface ManagerTransfersProps {
   onUpdate: (career: ManagerCareer) => void;
 }
 
+function withManagerRating(player: Player): Player {
+  return applyManagerModeRatingToPlayer(player);
+}
+
 export function ManagerTransfers({
   career,
   onUpdate,
@@ -46,9 +51,9 @@ export function ManagerTransfers({
   const listedPlayers = useMemo(() => {
     return career.leagueListedPlayers
       .map((entry) => {
-        const player = getPlayerById(entry.playerId);
-        if (!player) return null;
-        return { ...entry, player };
+        const raw = getPlayerById(entry.playerId);
+        if (!raw) return null;
+        return { ...entry, player: withManagerRating(raw) };
       })
       .filter((r): r is NonNullable<typeof r> => r !== null)
       .filter((r) => {
@@ -62,8 +67,9 @@ export function ManagerTransfers({
     const q = search.trim().toLowerCase();
     return getAllLeaguePlayers(career.club)
       .map(({ playerId, club }) => {
-        const player = getPlayerById(playerId);
-        if (!player) return null;
+        const raw = getPlayerById(playerId);
+        if (!raw) return null;
+        const player = withManagerRating(raw);
         const listed = career.leagueListedPlayers.some(
           (l) => l.playerId === playerId
         );

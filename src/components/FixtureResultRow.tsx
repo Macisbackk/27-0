@@ -14,6 +14,8 @@ interface FixtureResultRowProps {
   compact?: boolean;
   onClick?: () => void;
   selected?: boolean;
+  /** Override for the round / competition line above the score. */
+  roundLabel?: string;
   /** User's team name — defaults to Dream Team for season mode. */
   userTeamName?: string;
 }
@@ -24,6 +26,7 @@ export function FixtureResultRow({
   compact,
   onClick,
   selected,
+  roundLabel,
   userTeamName = DREAM_TEAM_NAME,
 }: FixtureResultRowProps) {
   const opponentColors = getClubColors(fixture.opponent);
@@ -55,8 +58,8 @@ export function FixtureResultRow({
     >
       {showRound && (
         <p className={`mb-2 text-center ${TYPO.statLabel}`}>
-          Round {fixture.round}
-          {!compact && (
+          {roundLabel ?? `Round ${fixture.round}`}
+          {!compact && !roundLabel && (
             <span className="ml-2 text-gray-600">
               · {fixture.isHome ? "Home" : "Away"}
             </span>

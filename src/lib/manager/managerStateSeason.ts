@@ -21,6 +21,10 @@ import {
 } from "./managerFinance";
 import { addContractLeavingInboxMessage } from "./managerInbox";
 import { createClubAttendanceData } from "./managerAttendance";
+import {
+  applyYearlyYouthIntake,
+  tickReserveContractsForNewSeason,
+} from "./managerReserveContracts";
 
 const CAREER_KEY = "27-0-manager-career";
 
@@ -152,13 +156,23 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
 
 export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const summary = buildSeasonSummary(career);
-  const { career: afterContracts, leaving } = tickContractsForNewSeason(career);
+  const { career: afterSquadContracts, leaving: squadLeaving } =
+    tickContractsForNewSeason(career);
+  const { career: afterReserveContracts, leaving: reserveLeaving } =
+    tickReserveContractsForNewSeason(afterSquadContracts);
 
-  let withInbox = afterContracts;
-  for (const playerId of leaving) {
+  let withInbox = afterReserveContracts;
+  for (const playerId of squadLeaving) {
     const name = getPlayerById(playerId)?.name ?? playerId;
     withInbox = addContractLeavingInboxMessage(withInbox, playerId, name);
   }
+  for (const reserveId of reserveLeaving) {
+    const name =
+      career.reserves.find((r) => r.id === reserveId)?.name ?? reserveId;
+    withInbox = addContractLeavingInboxMessage(withInbox, reserveId, name);
+  }
+
+  const leaving = [...squadLeaving, ...reserveLeaving];
 
   let boardConfidence = withInbox.boardConfidence;
   if (leaving.length >= 3) boardConfidence = Math.max(0, boardConfidence - 10);
@@ -179,7 +193,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     seasonYear: career.seasonYear + 1,
     seed: newSeed,
     budget: transferBudget,
-    clubFundsEarned: afterContracts.clubFundsEarned + summary.budgetChange,
+    clubFundsEarned: afterReserveContracts.clubFundsEarned + summary.budgetChange,
     boardConfidence: Math.min(85, boardConfidence + 10),
     schedule: buildManagerSchedule(career.club, newSeed),
     fixtures: [],
@@ -218,21 +232,22 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     preSeason: initPreSeasonState({}),
     managerFinance: {
       transferBudget,
-      wageBudget: afterContracts.wageBudget,
-      wageBill: afterContracts.wageBill,
+      wageBudget: afterReserveContracts.wageBudget,
+      wageBill: afterReserveContracts.wageBill,
       clubFunds: transferBudget,
       seasonIncome: 0,
       seasonSpending: 0,
     },
     latestNews: [],
     leagueTransfers: [],
-    playerDevelopment: afterContracts.playerDevelopment,
+    playerDevelopment: afterReserveContracts.playerDevelopment,
     lastSeasonDevelopmentReview: undefined,
     lastReserveReportWeek: undefined,
-    clubFunds: refreshClubFundsForSeason(afterContracts, summary),
+    clubFunds: refreshClubFundsForSeason(afterReserveContracts, summary),
     updatedAt: new Date().toISOString(),
   };
 
-  persistCareer(next);
-  return next;
+  const withIntake = applyYearlyYouthIntake(next);
+  persistCareer(withIntake);
+  return withIntake;
 }

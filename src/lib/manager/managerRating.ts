@@ -36,7 +36,7 @@ function playerBaseRating(playerId: string, career?: ManagerCareer): number {
   const p = career ? getManagerPlayer(career, playerId) : getPlayerById(playerId);
   if (!p) return 0;
   const base = p.rating ?? p.peakRating;
-  return career ? base : getManagerModePlayerRating(p.name, base);
+  return career ? base : getManagerModePlayerRating(playerId, p.name, base);
 }
 
 /**

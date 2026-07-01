@@ -20,6 +20,12 @@ import {
 import { createClubAttendanceData } from "./managerAttendance";
 import { createManagerChallengeCup } from "./managerChallengeCup";
 import { generateReserveSquad } from "./managerReserves";
+import {
+  applyYearlyYouthIntake,
+  buildReserveContractsForReserves,
+  computeCareerWageBill,
+  ensureReserveRenewalDemands,
+} from "./managerReserveContracts";
 import { generateLeagueListedPlayers } from "./managerTransferLeague";
 import {
   hydrateInboxMessages,
@@ -28,6 +34,7 @@ import {
 import { initPreSeasonState, ensureFriendlyChoices } from "./managerFriendlies";
 import { ensureCupBracketReady } from "./managerChallengeCup";
 import { ensurePlayoffsReady } from "./managerPlayoffs";
+import { ensureSeasonEndPlayerDevelopment } from "./managerPlayerDevelopment";
 import {
   initManagerFinance,
   computeFirstSeasonTransferBudget,
@@ -64,7 +71,13 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   }
   contracts = hydrateLegacyContracts(contracts);
 
-  const wageBill = raw.wageBill ?? computeWageBill(contracts);
+  const wageBill =
+    raw.wageBill ??
+    computeCareerWageBill({
+      ...raw,
+      contracts,
+      reserveContracts: raw.reserveContracts,
+    } as ManagerCareer);
   const wageBudget = getWageBudgetForClub(raw.club);
 
   let challengeCup = raw.challengeCup as ChallengeCupBracketState | undefined;
@@ -124,6 +137,14 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
             baseRating: r.baseRating ?? r.rating,
           }))
         : generateReserveSquad(raw.seed ?? "migrate"),
+    reserveContracts:
+      raw.reserveContracts ??
+      buildReserveContractsForReserves(
+        raw.reserves?.length
+          ? raw.reserves
+          : generateReserveSquad(raw.seed ?? "migrate")
+      ),
+    youthProspects: raw.youthProspects ?? [],
     reserveResults: raw.reserveResults ?? [],
     lastReserveResult: raw.lastReserveResult ?? null,
     calledUpReserveIds: raw.calledUpReserveIds ?? [],
@@ -148,14 +169,18 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     leagueTransfers: raw.leagueTransfers ?? [],
     wagePressureWeeks: raw.wagePressureWeeks ?? 0,
     lastReserveReportWeek: raw.lastReserveReportWeek,
+    playerDevelopment: raw.playerDevelopment ?? {},
+    lastSeasonDevelopmentReview: raw.lastSeasonDevelopmentReview,
   };
 
   career = ensureRenewalDemands(career);
+  career = ensureReserveRenewalDemands(career);
   career = hydrateInboxMessages(career);
   career = syncManagerFinance(career);
   career = ensureFriendlyChoices(career);
   career = ensureCupBracketReady(career);
   career = ensurePlayoffsReady(career);
+  career = ensureSeasonEndPlayerDevelopment(career);
   return syncManagerInboxMessages(career);
 }
 
@@ -195,7 +220,6 @@ export function createNewCareer(club: string): ManagerCareer {
   const squad = rosterIds.map((id) => createInitialPlayerState(id));
   const startingIds = new Set(lineup.xiiiIds);
   const contracts = buildContractsForSquad(rosterIds, startingIds, club);
-  const wageBill = computeWageBill(contracts);
   const wageBudget = getWageBudgetForClub(club);
 
   const schedule = buildManagerSchedule(club, seed);
@@ -203,6 +227,13 @@ export function createNewCareer(club: string): ManagerCareer {
   const leagueListed = generateLeagueListedPlayers(club, seed, 0);
 
   const transferBudget = computeFirstSeasonTransferBudget(club, seed);
+
+  const reserves = generateReserveSquad(seed);
+  const reserveContracts = buildReserveContractsForReserves(reserves);
+  const wageBill = computeCareerWageBill({
+    contracts,
+    reserveContracts,
+  } as ManagerCareer);
 
   const career: ManagerCareer = {
     id: seed,
@@ -258,7 +289,9 @@ export function createNewCareer(club: string): ManagerCareer {
     matchSimState: { form: 0, seasonDropGoals: 0 },
     lastMatchFixture: null,
     seasonAttendance: { total: 0, count: 0, high: 0, low: 0 },
-    reserves: generateReserveSquad(seed),
+    reserves,
+    reserveContracts,
+    youthProspects: [],
     reserveResults: [],
     lastReserveResult: null,
     calledUpReserveIds: [],
@@ -268,7 +301,8 @@ export function createNewCareer(club: string): ManagerCareer {
     updatedAt: new Date().toISOString(),
   };
 
-  const hydrated = hydrateManagerCareer(career);
+  let hydrated = hydrateManagerCareer(career);
+  hydrated = applyYearlyYouthIntake(hydrated);
   saveManagerCareer(hydrated);
   return hydrated;
 }

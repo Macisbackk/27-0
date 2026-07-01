@@ -364,6 +364,7 @@ export interface LatestNewsItem {
 
 export type InboxMessageType =
   | "transfer"
+  | "transfer_complete"
   | "transfer_offer_in"
   | "transfer_offer_out"
   | "contract"
@@ -377,6 +378,7 @@ export type InboxMessageType =
   | "injury"
   | "release"
   | "season_reward"
+  | "youth_intake"
   | "news"
   | "general";
 
@@ -468,6 +470,8 @@ export interface ManagerCareer {
   seasonAttendance: { total: number; count: number; high: number; low: number };
   seasonRewardClaimedForYear?: number | null;
   reserves: ManagerReservePlayer[];
+  reserveContracts?: Record<string, PlayerContract>;
+  youthProspects?: ManagerReservePlayer[];
   reserveResults: ReserveFixtureResult[];
   lastReserveResult: ReserveFixtureResult | null;
   calledUpReserveIds: string[];

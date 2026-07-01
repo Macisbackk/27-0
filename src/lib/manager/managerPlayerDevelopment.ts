@@ -8,6 +8,7 @@ import type {
   PlayerDevelopmentChange,
   PlayerDevelopmentState,
 } from "./types";
+import { getManagerModePlayerRating } from "./managerSquadRatings";
 import { getManagerPlayer } from "./managerPlayers";
 
 function computePotential(peakRating: number, age: number): number {
@@ -29,8 +30,13 @@ function developOnePlayer(
 
   const age = getPlayerAge(base) ?? 25;
   const existing = playerDevelopment[playerId];
-  const before = existing?.rating ?? base.rating ?? base.peakRating;
-  const potential = existing?.potential ?? computePotential(base.peakRating, age);
+  const baseline = getManagerModePlayerRating(
+    playerId,
+    base.name,
+    base.rating ?? base.peakRating
+  );
+  const before = existing?.rating ?? baseline;
+  const potential = existing?.potential ?? computePotential(baseline, age);
 
   let delta = 0;
   if (age <= 22) delta += 1;
@@ -54,11 +60,7 @@ function developOnePlayer(
 
   const rounded = Math.round(delta);
   const after = Math.max(55, Math.min(potential, before + rounded));
-  const newPeak = Math.max(
-    existing?.peakRating ?? base.peakRating,
-    after,
-    base.peakRating
-  );
+  const newPeak = Math.max(existing?.peakRating ?? baseline, after, baseline);
 
   return {
     rating: after,
@@ -83,8 +85,14 @@ function developLeaguePlayersAtSeasonEnd(
       if (rng() > 0.55) continue;
 
       const age = getPlayerAge(player) ?? 25;
-      const before = player.rating ?? player.peakRating;
-      const potential = computePotential(player.peakRating, age);
+      const baseline = getManagerModePlayerRating(
+        player.id,
+        player.name,
+        player.rating ?? player.peakRating
+      );
+      const existing = next[player.id];
+      const before = existing?.rating ?? baseline;
+      const potential = existing?.potential ?? computePotential(baseline, age);
       let delta = 0;
       if (age <= 23) delta += rng() < 0.6 ? 1 : 0;
       else if (age >= 32) delta -= rng() < 0.55 ? 1 : 0;
@@ -95,7 +103,7 @@ function developLeaguePlayersAtSeasonEnd(
 
       next[player.id] = {
         rating: after,
-        peakRating: Math.max(player.peakRating, after),
+        peakRating: Math.max(existing?.peakRating ?? baseline, after, baseline),
         potential,
       };
     }
@@ -117,10 +125,12 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
     const base = getPlayerById(ps.playerId);
     if (!base) continue;
 
-    const before =
-      playerDevelopment[ps.playerId]?.rating ??
-      base.rating ??
-      base.peakRating;
+    const baseline = getManagerModePlayerRating(
+      ps.playerId,
+      base.name,
+      base.rating ?? base.peakRating
+    );
+    const before = playerDevelopment[ps.playerId]?.rating ?? baseline;
 
     const developed = developOnePlayer(ps.playerId, career, playerDevelopment, {
       appearances: ps.seasonAppearances,
@@ -153,6 +163,20 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
   return {
     career: { ...career, playerDevelopment: withLeague },
     changes,
+  };
+}
+
+export function ensureSeasonEndPlayerDevelopment(
+  career: ManagerCareer
+): ManagerCareer {
+  if (!career.isSeasonComplete || career.lastSeasonDevelopmentReview) {
+    return career;
+  }
+  const developed = developSquadAtSeasonEnd(career);
+  return {
+    ...developed.career,
+    isSeasonComplete: true,
+    lastSeasonDevelopmentReview: developed.changes,
   };
 }
 

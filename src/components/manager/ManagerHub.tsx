@@ -30,9 +30,14 @@ import {
 } from "@/lib/manager/managerCareerStats";
 import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
-import { autoFixMatchdaySquad } from "@/lib/manager/managerAutoFix";
+import { autoFixMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { getHubNewsItems } from "@/lib/manager/managerNews";
 import { formatWage } from "@/lib/manager/managerContracts";
+import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
+import {
+  getManagerScheduledFixtureHeadline,
+  isChallengeCupFixture,
+} from "@/lib/manager/managerFixtureDisplay";
 
 interface ManagerHubProps {
   career: ManagerCareer;
@@ -261,11 +266,12 @@ export function ManagerHub({
     ensurePlayoffsReady(ensureCupBracketReady(career))
   );
   const position = getUserLeaguePosition(career.leagueTable, career.club);
+  const simCareer = resolveCareerForMatchSimulation(career);
   const teamRating = computeManagerTeamRating(
-    career.matchdayXiii,
-    career.matchdayInterchange,
-    career.xiiiSlotPositions,
-    career
+    simCareer.matchdayXiii,
+    simCareer.matchdayInterchange,
+    simCareer.xiiiSlotPositions,
+    simCareer
   );
   const injuryCount = career.squad.filter(
     (p) => p.injury && isPlayerUnavailable(p)
@@ -273,7 +279,7 @@ export function ManagerHub({
   const topScorer = getTopTryScorer(career.playerSeasonStats);
   const topKicker = getTopGoalScorer(career.playerSeasonStats);
   const ts = career.teamSeasonStats;
-  const squadCheck = validateFitMatchdaySquad(career);
+  const squadCheck = validateFitMatchdaySquad(simCareer);
   const canPlay = squadCheck.valid && !career.isSeasonComplete;
 
   const oppRating =
@@ -330,22 +336,32 @@ export function ManagerHub({
   return (
     <div className={SPACING.stackLg}>
       {nextFixture && !career.isSeasonComplete && (
-        <div className={`${CARD.elevated} ${CARD.featured} ${SPACING.cardPadding}`}>
-          <p className={TYPO.sectionLabel}>Next Fixture</p>
+        <div
+          className={`${CARD.elevated} ${CARD.featured} ${SPACING.cardPadding} ${
+            isChallengeCupFixture(nextFixture.competition)
+              ? "border border-accent-gold/35 ring-1 ring-accent-gold/20"
+              : ""
+          }`}
+        >
+          <div className="flex flex-wrap items-center gap-2">
+            <p className={TYPO.sectionLabel}>Next Fixture</p>
+            <ManagerCompetitionBadge
+              competition={nextFixture.competition}
+              cupRound={nextFixture.cupRound}
+            />
+          </div>
+          {isChallengeCupFixture(nextFixture.competition) && (
+            <p className={`mt-1 text-sm font-semibold text-accent-gold`}>
+              {getManagerScheduledFixtureHeadline(nextFixture)}
+            </p>
+          )}
           <p className={`mt-1 text-xl font-bold text-white sm:text-2xl`}>
             {career.club} {nextFixture.isHome ? "vs" : "@"}{" "}
             {nextFixture.opponent}
           </p>
           <p className={`${TYPO.bodySm} text-pitch-400`}>
-            {nextFixture.label ?? `Round ${nextFixture.round}`} ·{" "}
-            {nextFixture.competition === "challenge_cup"
-              ? "Challenge Cup"
-              : nextFixture.competition === "playoffs"
-                ? "Play-Offs"
-              : nextFixture.competition === "friendly"
-                ? "Friendly"
-                : "League"}{" "}
-            · {nextFixture.isHome ? "Home" : "Away"}
+            {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
+            {nextFixture.isHome ? "Home" : "Away"}
           </p>
           <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
             <div>

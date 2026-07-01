@@ -103,7 +103,8 @@ export function ManagerInbox({
           <p className={`mt-1 ${TYPO.bodySm} text-white`}>{msg.body}</p>
           <p className={`mt-1 text-xs text-pitch-500`}>Week {msg.gameWeek}</p>
 
-          {(msg.type === "transfer" || msg.type === "transfer_offer_in") && (
+          {(msg.type === "transfer" || msg.type === "transfer_offer_in") &&
+            msg.askingPrice != null && (
             <div className="mt-3 space-y-2">
               {negotiatingId === msg.id ? (
                 <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
@@ -204,11 +205,27 @@ export function ManagerInbox({
             </GameButton>
           )}
 
+          {msg.type === "youth_intake" && onNavigate && (
+            <GameButton
+              variant="theme"
+              size="sm"
+              className="mt-3"
+              onClick={() => {
+                playUiClick();
+                dismiss(msg.id);
+                onNavigate("reserves");
+              }}
+            >
+              View youth intake
+            </GameButton>
+          )}
+
           {(msg.type === "release" ||
             msg.type === "board" ||
             msg.type === "contract" ||
             msg.type === "injury" ||
             msg.type === "sale" ||
+            msg.type === "transfer_complete" ||
             msg.type === "reserve_report" ||
             msg.type === "reserve_callup" ||
             msg.type === "reserve_return" ||

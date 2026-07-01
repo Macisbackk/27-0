@@ -5,8 +5,10 @@ import { simulateOneFixture } from "../game/season-simulation";
 import type { ManagerCareer, ManagerFixtureRecord } from "./types";
 import {
   buildSquadSlotsFromMatchday,
+  isPlayerUnavailable,
   tickInjuries,
 } from "./managerSquad";
+import { resolveCareerForMatchSimulation } from "./managerAutoFix";
 import {
   simulateRoundOtherMatches,
   buildLeagueTableFromMatches,
@@ -186,10 +188,21 @@ function computePlayerModifiers(
   let formSum = 0;
   let count = 0;
   for (const id of playerIds) {
+    if (!id) continue;
     const ps = career.squad.find((p) => p.playerId === id);
-    if (!ps) continue;
-    formSum += ps.form;
-    count++;
+    if (ps) {
+      if (isPlayerUnavailable(ps)) continue;
+      const fitnessWeight = Math.max(0.8, ps.fitness / 100);
+      formSum += ps.form * fitnessWeight;
+      count++;
+      continue;
+    }
+    const reserve = career.reserves.find((r) => r.id === id);
+    if (reserve) {
+      const fitnessWeight = Math.max(0.8, reserve.fitness / 100);
+      formSum += reserve.form * fitnessWeight;
+      count++;
+    }
   }
   return {
     avgForm: count ? formSum / count : 50,
@@ -547,33 +560,34 @@ export function previewManagerMatchScoreline(
   career: ManagerCareer,
   sched: NonNullable<ReturnType<typeof getNextManagerFixture>>
 ): MatchFixture {
+  const simCareer = resolveCareerForMatchSimulation(career);
   const isFriendly = sched.competition === "friendly";
   const round = sched.round;
   const squad = buildSquadSlotsFromMatchday(
-    career.matchdayXiii,
-    career.xiiiSlotPositions,
-    career
+    simCareer.matchdayXiii,
+    simCareer.xiiiSlotPositions,
+    simCareer
   );
-  const mods = getTacticModifiers(career.tactics);
-  const { avgForm } = computePlayerModifiers(career, [
-    ...career.matchdayXiii,
-    ...career.matchdayInterchange,
+  const mods = getTacticModifiers(simCareer.tactics);
+  const { avgForm } = computePlayerModifiers(simCareer, [
+    ...simCareer.matchdayXiii,
+    ...simCareer.matchdayInterchange,
   ]);
 
   const teamForm = Math.max(-10, Math.min(10, (avgForm - 50) / 5));
   const userRating = computeManagerTeamRating(
-    career.matchdayXiii,
-    career.matchdayInterchange,
-    career.xiiiSlotPositions,
-    career
+    simCareer.matchdayXiii,
+    simCareer.matchdayInterchange,
+    simCareer.xiiiSlotPositions,
+    simCareer
   );
-  const friendlyRating = career.preSeason.activeFriendly?.teamRating;
+  const friendlyRating = simCareer.preSeason.activeFriendly?.teamRating;
   const baseOppRating =
     isFriendly && friendlyRating
       ? friendlyRating
       : getOpponentMatchRating(
           sched.opponent,
-          career.seed,
+          simCareer.seed,
           round,
           { currentSeasonOnly: !isFriendly }
         );
@@ -584,7 +598,7 @@ export function previewManagerMatchScoreline(
     -2,
     Math.min(
       8,
-      teamForm + career.matchSimState.form * 0.12 + formFromRatings
+      teamForm + simCareer.matchSimState.form * 0.12 + formFromRatings
     )
   );
 
@@ -598,10 +612,10 @@ export function previewManagerMatchScoreline(
     sched.opponent,
     sched.isHome,
     round,
-    career.seed,
+    simCareer.seed,
     {
       form: combinedForm,
-      seasonDropGoals: career.matchSimState.seasonDropGoals,
+      seasonDropGoals: simCareer.matchSimState.seasonDropGoals,
     },
     {
       currentSeasonOnly: !isFriendly,
@@ -626,14 +640,15 @@ export function simulateManagerMatchLive(
 export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
   if (career.isSeasonComplete) return career;
 
-  const ready = ensureCupBracketReady(career);
+  const simCareer = resolveCareerForMatchSimulation(career);
+  const ready = ensureCupBracketReady(simCareer);
   const sched = getNextManagerFixture(ready);
   if (!sched) return career;
 
   const { fixture, liveEvents } = simulateManagerMatchLive(ready, sched);
   const { avgForm } = computePlayerModifiers(ready, [
-    ...career.matchdayXiii,
-    ...career.matchdayInterchange,
+    ...ready.matchdayXiii,
+    ...ready.matchdayInterchange,
   ]);
   const teamForm = Math.max(-10, Math.min(10, (avgForm - 50) / 5));
   const combinedForm = Math.max(
@@ -646,7 +661,7 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
         ? Math.min(8, combinedForm + 1.5)
         : Math.max(-4, combinedForm - 1.5),
     seasonDropGoals:
-      career.matchSimState.seasonDropGoals +
+      ready.matchSimState.seasonDropGoals +
       (fixture.scoringFor?.dropGoals ?? 0) +
       (fixture.scoringAgainst?.dropGoals ?? 0),
   };

@@ -370,7 +370,9 @@ export function tickContractsForNewSeason(
   }
 
   const squad = nextSquad.filter((p) => !leaving.includes(p.playerId));
-  const wageBill = computeWageBill(nextContracts);
+  const wageBill =
+    computeWageBill(nextContracts) +
+    computeWageBill(career.reserveContracts ?? {});
 
   return {
     leaving,

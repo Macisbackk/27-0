@@ -28,7 +28,7 @@ export function createInitialPlayerState(playerId: string): ManagerPlayerState {
 }
 
 export function isPlayerUnavailable(player: ManagerPlayerState): boolean {
-  return !!player.injury?.serious && player.injury.matchesRemaining > 0;
+  return !!(player.injury && player.injury.matchesRemaining > 0);
 }
 
 export function canPlayPosition(
@@ -104,10 +104,27 @@ export function buildSquadSlotsFromMatchday(
   const squad = createEmptySquad();
   for (let i = 0; i < xiiiIds.length; i++) {
     const id = xiiiIds[i]!;
+    if (!id) continue;
     const player = career ? getManagerPlayer(career, id) : getPlayerById(id);
-    if (player) signPlayerToSlot(squad, player, i);
+    if (!player) continue;
+    const penalty = career ? getManagerFitnessRatingPenalty(career, id) : 0;
+    signPlayerToSlot(squad, player, i, penalty);
   }
   return squad;
+}
+
+/** Mild OOP-style penalty when fitness is low after injury / heavy minutes. */
+export function getManagerFitnessRatingPenalty(
+  career: ManagerCareer,
+  playerId: string
+): number {
+  const ps = career.squad.find((p) => p.playerId === playerId);
+  const fitness =
+    ps?.fitness ??
+    career.reserves.find((r) => r.id === playerId)?.fitness ??
+    90;
+  if (fitness >= 82) return 0;
+  return Math.min(6, Math.round((82 - fitness) * 0.25));
 }
 
 /** @deprecated Use getMatchdayTryWeight(position, true) — kept for imports that expect a scalar. */

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { LiveMatchCommand, ManagerCareer } from "@/lib/manager/types";
 import {
@@ -23,6 +23,10 @@ import {
   applyManagerMatchResult,
   getNextManagerFixture,
 } from "@/lib/manager/managerSimulation";
+import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
+import {
+  getManagerScheduledFixtureHeadline,
+} from "@/lib/manager/managerFixtureDisplay";
 import { ensureCupBracketReady } from "@/lib/manager/managerChallengeCup";
 import { ensurePlayoffsReady } from "@/lib/manager/managerPlayoffs";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
@@ -42,6 +46,8 @@ const STATUS_PILL_CLASS = {
   loss: "bg-red-500/20 text-red-300 border-red-500/40",
   level: "bg-pitch-700/50 text-pitch-200 border-pitch-600",
 };
+
+const MAX_VISIBLE_EVENTS = 5;
 
 interface ManagerPlayGameProps {
   career: ManagerCareer;
@@ -69,6 +75,14 @@ export function ManagerPlayGame({
   careerRef.current = career;
   commandRef.current = command;
   liveRef.current = live;
+
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
 
   useEffect(() => {
     if (!sched) return;
@@ -176,9 +190,7 @@ export function ManagerPlayGame({
     const tacticCommand = commandFromTactics(careerRef.current);
     commandRef.current = tacticCommand;
     setCommand(tacticCommand);
-    setLive(
-      advanceLiveToFullTime(live, careerRef.current, tacticCommand)
-    );
+    setLive(advanceLiveToFullTime(live, careerRef.current, tacticCommand));
     setHasStarted(true);
   };
 
@@ -204,187 +216,248 @@ export function ManagerPlayGame({
   const isPreview = live.phase === "preview";
   const isHalftime = live.phase === "halftime";
   const canClose = !hasStarted || live.isComplete;
+  const visibleEvents = [...live.events].reverse().slice(0, MAX_VISIBLE_EVENTS);
+  const hiddenEventCount = Math.max(0, live.events.length - MAX_VISIBLE_EVENTS);
+
+  const selectCommand = (cmd: LiveMatchCommand) => {
+    playUiClick();
+    setCommand(cmd);
+  };
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/80 p-3 backdrop-blur-sm sm:items-center sm:p-4"
+      className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-black/85 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-label="Live match"
       onClick={canClose ? handleAbandon : undefined}
     >
       <div
-        className={`card-glass max-h-[92vh] w-full max-w-lg overflow-y-auto ${SPACING.cardPadding}`}
+        className="card-glass mx-auto flex h-[100dvh] w-full max-w-lg flex-col overflow-hidden p-3 sm:p-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className={SPACING.stackLg}>
-          <div className="text-center">
-            <p className={TYPO.sectionLabel}>
-              {sched.label ?? `Round ${sched.round}`} ·{" "}
+        {/* Scoreboard */}
+        <header className="shrink-0 border-b border-pitch-700/50 pb-2 text-center">
+          <div className="flex flex-wrap items-center justify-center gap-1.5">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-400">
+              {getManagerScheduledFixtureHeadline(sched)} ·{" "}
               {sched.isHome ? "Home" : "Away"}
             </p>
-            <p className={`mt-2 text-2xl font-bold text-white`}>
-              {homeName}{" "}
-              <span className="text-theme-primary">{homeScore}</span>
-              <span className="mx-2 text-pitch-500">-</span>
-              <span className="text-theme-primary">{awayScore}</span>{" "}
-              {awayName}
-            </p>
-            {!isPreview && (
-              <>
-                <p className={`mt-1 font-mono text-xl text-accent-gold`}>
-                  {formatLiveClock(live.minute)}
-                  {live.isComplete
-                    ? " · Full Time"
-                    : isHalftime
-                      ? " · Half Time"
-                      : ""}
-                </p>
-                <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-                  <span
-                    className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${STATUS_PILL_CLASS[status.tone]}`}
-                  >
-                    {status.pill}
-                  </span>
-                  <span className={`${TYPO.bodySm} text-pitch-300`}>
-                    {status.line}
-                  </span>
-                </div>
-              </>
-            )}
+            <ManagerCompetitionBadge
+              competition={sched.competition}
+              cupRound={sched.cupRound}
+            />
           </div>
 
+          <p className="mt-1.5 truncate text-base font-bold leading-tight text-white sm:text-lg">
+            <span className={live.isHome ? "text-theme-primary" : ""}>
+              {homeName}
+            </span>{" "}
+            <span className="text-theme-primary tabular-nums">
+              {homeScore}-{awayScore}
+            </span>{" "}
+            <span className={!live.isHome ? "text-theme-primary" : ""}>
+              {awayName}
+            </span>
+          </p>
+
+          {!isPreview && (
+            <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+              <span className="font-mono text-sm font-bold text-accent-gold tabular-nums">
+                {formatLiveClock(live.minute)}
+                {live.isComplete
+                  ? " FT"
+                  : isHalftime
+                    ? " HT"
+                    : ""}
+              </span>
+              <span
+                className={`rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${STATUS_PILL_CLASS[status.tone]}`}
+              >
+                {status.pill}
+              </span>
+            </div>
+          )}
+          {!isPreview && !isHalftime && (
+            <p className="mt-0.5 line-clamp-1 text-[11px] text-pitch-400">
+              {status.line}
+            </p>
+          )}
+        </header>
+
+        {/* Main — fills viewport, no scroll */}
+        <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden py-2">
           {isPreview && (
-            <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-              <p className={TYPO.sectionLabel}>Match Preview</p>
-              <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
-                <span>{career.club}: {userRating}</span>
-                <span>{sched.opponent}: {oppRating}</span>
+            <div className={`${CARD.inset} shrink-0 p-3`}>
+              <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm">
+                <span>
+                  {career.club}:{" "}
+                  <strong className="text-theme-primary">{userRating}</strong>
+                </span>
+                <span>
+                  {sched.opponent}: <strong>{oppRating}</strong>
+                </span>
               </div>
-              <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
-                Tactics: {career.tactics.playingStyle.replace("_", " ")} ·{" "}
+              <p className="mt-1.5 line-clamp-2 text-[11px] text-pitch-400">
+                {career.tactics.playingStyle.replace("_", " ")} ·{" "}
                 {career.tactics.attackFocus.replace("_", " ")} ·{" "}
                 {career.tactics.defenceFocus.replace("_", " ")}
               </p>
-              <div className="mt-4 grid gap-2 sm:grid-cols-2">
-                <GameButton variant="theme" onClick={handleStartGame}>
-                  Start Game
-                </GameButton>
-                <GameButton variant="secondary" onClick={handleSimulateToFullTime}>
-                  Simulate to Full Time
-                </GameButton>
-                <GameButton
-                  variant="secondary"
-                  className="sm:col-span-2"
-                  onClick={handleAbandon}
-                >
-                  Close
-                </GameButton>
-              </div>
             </div>
           )}
 
           {isHalftime && (
-            <div className={`${CARD.elevated} ${SPACING.cardPadding}`}>
-              <p className={TYPO.sectionLabel}>Half Time</p>
-              <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+            <div className="shrink-0 space-y-2">
+              <p className={`${TYPO.bodySm} line-clamp-2 text-pitch-300`}>
                 {live.effectivenessLine}
               </p>
-              <p className={`${TYPO.sectionLabel} mt-3 mb-2`}>
-                Command for second half
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
+                Second half command
               </p>
-              <div className="grid grid-cols-2 gap-2">
-                {COMMANDS.map((cmd) => (
-                  <GameButton
-                    key={cmd}
-                    variant={command === cmd ? "theme" : "secondary"}
-                    size="sm"
-                    onClick={() => {
-                      playUiClick();
-                      setCommand(cmd);
-                    }}
-                  >
-                    {getLiveCommandLabel(cmd)}
-                  </GameButton>
-                ))}
-              </div>
-              <GameButton
-                variant="theme"
-                className="mt-4"
-                onClick={handleStartSecondHalf}
-              >
-                Start Second Half
-              </GameButton>
+              <CommandGrid command={command} onSelect={selectCommand} />
             </div>
           )}
 
           {!isPreview && !isHalftime && !live.isComplete && (
-            <>
-              <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-                <p className={TYPO.sectionLabel}>Current Command</p>
-                <p className="mt-1 font-medium text-white">
+            <div className="shrink-0 space-y-2">
+              <p className="line-clamp-1 text-[11px] text-pitch-400">
+                <span className="font-medium text-white">
                   {getLiveCommandLabel(command)}
-                </p>
-                <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-                  {live.effectivenessLine}
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {COMMANDS.map((cmd) => (
-                  <GameButton
-                    key={cmd}
-                    variant={command === cmd ? "theme" : "secondary"}
-                    size="sm"
-                    onClick={() => {
-                      playUiClick();
-                      setCommand(cmd);
-                    }}
-                  >
-                    {getLiveCommandLabel(cmd)}
-                  </GameButton>
-                ))}
-              </div>
-              <GameButton variant="secondary" onClick={handleSimulateToFullTime}>
-                Simulate to Full Time
-              </GameButton>
-            </>
+                </span>
+                {" · "}
+                {live.effectivenessLine}
+              </p>
+              <CommandGrid command={command} onSelect={selectCommand} />
+            </div>
           )}
 
-          <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-            <p className={TYPO.sectionLabel}>Match Events</p>
-            {live.events.length === 0 ? (
-              <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
-                {isPreview ? "Events will appear once the match starts." : "Waiting for action…"}
+          {live.isComplete && (
+            <p className={`shrink-0 text-center ${TYPO.bodySm} text-pitch-300`}>
+              {live.effectivenessLine}
+            </p>
+          )}
+
+          {/* Events — newest only, no scrollbar */}
+          <div
+            className={`${CARD.inset} flex min-h-0 flex-1 flex-col overflow-hidden p-2.5`}
+          >
+            <div className="flex shrink-0 items-center justify-between gap-2">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
+                Match events
+              </p>
+              {hiddenEventCount > 0 && (
+                <span className="text-[10px] text-pitch-600">
+                  +{hiddenEventCount} earlier
+                </span>
+              )}
+            </div>
+            {visibleEvents.length === 0 ? (
+              <p className="mt-2 text-[11px] text-pitch-500">
+                {isPreview
+                  ? "Events appear once the match starts."
+                  : "Waiting for action…"}
               </p>
             ) : (
-              <ul className={`mt-2 max-h-40 overflow-y-auto ${SPACING.stackSm}`}>
-                {[...live.events].reverse().map((ev, i) => (
+              <ul className="mt-1.5 min-h-0 flex-1 space-y-1 overflow-hidden">
+                {visibleEvents.map((ev, i) => (
                   <li
                     key={`${ev.minute}-${ev.type}-${i}`}
-                    className={`${TYPO.bodySm} ${
+                    className={`line-clamp-2 text-[11px] leading-snug sm:text-xs ${
                       ev.team === "user" ? "text-white" : "text-pitch-400"
                     }`}
                   >
+                    <span className="font-mono text-pitch-500">
+                      {ev.minute}&apos;
+                    </span>{" "}
                     {ev.description}
                   </li>
                 ))}
               </ul>
             )}
           </div>
+        </div>
+
+        {/* Actions */}
+        <footer className="shrink-0 space-y-2 border-t border-pitch-700/50 pt-2">
+          {isPreview && (
+            <div className="grid grid-cols-2 gap-2">
+              <GameButton variant="theme" size="sm" onClick={handleStartGame}>
+                Start
+              </GameButton>
+              <GameButton
+                variant="secondary"
+                size="sm"
+                onClick={handleSimulateToFullTime}
+              >
+                Sim to FT
+              </GameButton>
+              <GameButton
+                variant="secondary"
+                size="sm"
+                className="col-span-2"
+                onClick={handleAbandon}
+              >
+                Close
+              </GameButton>
+            </div>
+          )}
+
+          {isHalftime && (
+            <GameButton variant="theme" size="sm" onClick={handleStartSecondHalf}>
+              Start second half
+            </GameButton>
+          )}
+
+          {!isPreview && !isHalftime && !live.isComplete && (
+            <GameButton
+              variant="secondary"
+              size="sm"
+              onClick={handleSimulateToFullTime}
+            >
+              Simulate to full time
+            </GameButton>
+          )}
 
           {live.isComplete && (
-            <GameButton variant="theme" onClick={() => finishMatch(live)}>
-              View Match Review
+            <GameButton variant="theme" size="sm" onClick={() => finishMatch(live)}>
+              View match review
             </GameButton>
           )}
 
           {hasStarted && !live.isComplete && (
-            <GameButton variant="secondary" onClick={handleAbandon}>
-              Abandon Match
+            <GameButton variant="secondary" size="sm" onClick={handleAbandon}>
+              Abandon match
             </GameButton>
           )}
-        </div>
+        </footer>
       </div>
+    </div>
+  );
+}
+
+function CommandGrid({
+  command,
+  onSelect,
+}: {
+  command: LiveMatchCommand;
+  onSelect: (cmd: LiveMatchCommand) => void;
+}) {
+  return (
+    <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-5">
+      {COMMANDS.map((cmd) => (
+        <button
+          key={cmd}
+          type="button"
+          onClick={() => onSelect(cmd)}
+          className={`btn-press min-h-[36px] rounded-lg border px-1 py-1.5 text-[10px] font-bold uppercase leading-tight tracking-wide transition sm:min-h-[40px] sm:text-[11px] ${
+            command === cmd
+              ? "border-theme-primary bg-theme-primary/15 text-theme-primary ring-1 ring-theme-primary/30"
+              : "border-pitch-600/80 bg-pitch-900/60 text-pitch-300 hover:border-pitch-500 hover:text-white"
+          }`}
+        >
+          {getLiveCommandLabel(cmd)}
+        </button>
+      ))}
     </div>
   );
 }

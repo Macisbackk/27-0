@@ -11,6 +11,11 @@ import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { POSITION_SHORT } from "@/lib/positions";
 import { getClubByName } from "@/lib/clubs";
 import { formatWage } from "@/lib/manager/managerContracts";
+import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
+import {
+  getManagerCupRoundLabel,
+  isChallengeCupFixture,
+} from "@/lib/manager/managerFixtureDisplay";
 
 interface ManagerMatchReviewProps {
   career: ManagerCareer;
@@ -51,16 +56,23 @@ export function ManagerMatchReview({
 
   const roundLabel =
     fixture.competition === "challenge_cup"
-      ? fixture.meta?.cupRound?.replace(/_/g, " ") ?? "Challenge Cup"
+      ? getManagerCupRoundLabel(fixture.meta?.cupRound)
       : fixture.competition === "playoffs"
         ? "Play-Offs"
-      : `Round ${fixture.round} — League`;
+        : `Round ${fixture.round} — League`;
 
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-3">
           <h1 className={TYPO.pageTitle}>Match Review</h1>
+          {fixture.competition && (
+            <ManagerCompetitionBadge
+              competition={fixture.competition}
+              cupRound={fixture.meta?.cupRound}
+              detailed={isChallengeCupFixture(fixture.competition)}
+            />
+          )}
           <span
             className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${resultBadgeClass}`}
           >

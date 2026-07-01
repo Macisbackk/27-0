@@ -48,8 +48,8 @@ export function generateWeeklyNews(career: ManagerCareer): LatestNewsItem[] {
 
   const recentPurchase = career.inboxMessages.find(
     (m) =>
-      m.type === "transfer" &&
-      m.title === "Transfer Completed" &&
+      (m.type === "transfer_complete" ||
+        (m.type === "transfer" && m.title === "Transfer Completed")) &&
       m.week >= week - 1
   );
   if (recentPurchase) {

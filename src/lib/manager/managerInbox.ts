@@ -14,7 +14,15 @@ import {
 } from "./managerSeasonRewards";
 import { buildSeasonSummary } from "./managerState";
 import { getPlayerById } from "../players";
-import { formatWage, getContractStatus, applyRenewal, ensureRenewalDemands, generateRenewalDemand, evaluateRenewalOffer } from "./managerContracts";
+import {
+  formatWage,
+  getContractStatus,
+  applyRenewal,
+  ensureRenewalDemands,
+  generateRenewalDemand,
+  evaluateRenewalOffer,
+} from "./managerContracts";
+import { syncReserveContractExpiryInbox } from "./managerReserveContracts";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { getManagerPlayer } from "./managerPlayers";
 
@@ -90,6 +98,7 @@ export function markInboxMessagesRead(career: ManagerCareer): ManagerCareer {
 
 export function createPlayerPurchaseMessage(
   career: ManagerCareer,
+  playerId: string,
   playerName: string,
   fromClub: string,
   fee: number,
@@ -97,12 +106,13 @@ export function createPlayerPurchaseMessage(
 ): InboxMessage {
   return normalizeInboxMessage(
     {
-      id: `purchase-${playerName}-${career.gameWeek}-${Date.now()}`,
-      type: "transfer",
+      id: `purchase-${playerId}-w${career.gameWeek}-${Date.now()}`,
+      type: "transfer_complete",
       title: "Transfer Completed",
       body: `${playerName} has joined from ${fromClub} for ${formatWage(fee)} on ${formatWage(wagePerYear)}/yr.`,
       read: false,
-      resolved: true,
+      resolved: false,
+      playerId,
       playerName,
       offerClub: fromClub,
       offerAmount: fee,
@@ -359,6 +369,7 @@ export function bulkRenewExpiringContractsWithInbox(career: ManagerCareer): {
 export function syncManagerInboxMessages(career: ManagerCareer): ManagerCareer {
   let next = syncCupDrawInboxMessages(career);
   next = syncContractExpiryInboxMessages(next);
+  next = syncReserveContractExpiryInbox(next);
   if (next.isSeasonComplete) {
     next = addSeasonRewardInboxMessage(next);
   }
@@ -424,5 +435,53 @@ export function addReserveReturnInboxMessage(
     read: false,
     resolved: false,
     playerName: names.join(", "),
+  });
+}
+
+export function addYouthIntakeInboxMessage(
+  career: ManagerCareer,
+  count: number,
+  summary: string
+): ManagerCareer {
+  const msgId = `youth-intake-s${career.seasonYear}`;
+  if (career.inboxMessages.some((m) => m.id === msgId)) return career;
+
+  return pushInboxMessage(career, {
+    id: msgId,
+    type: "youth_intake",
+    title: "Youth Intake",
+    body: `${count} new academy prospects are available to sign: ${summary}. Open Reserves to offer youth contracts.`,
+    week: career.gameWeek,
+    season: career.seasonYear,
+    gameWeek: career.gameWeek,
+    createdAt: new Date().toISOString(),
+    read: false,
+    resolved: false,
+  });
+}
+
+export function addReserveContractRenewalInboxMessage(
+  career: ManagerCareer,
+  reserveId: string,
+  playerName: string,
+  wagePerYear: number,
+  years: number
+): ManagerCareer {
+  const msgId = `reserve-renewed-${reserveId}-s${career.seasonYear}-w${career.gameWeek}`;
+  if (career.inboxMessages.some((m) => m.id === msgId)) return career;
+
+  return pushInboxMessage(career, {
+    id: msgId,
+    type: "contract",
+    title: "Reserve Contract Renewed",
+    body: `${playerName} signed a ${years}-year youth deal at ${formatWage(wagePerYear)}/yr.`,
+    week: career.gameWeek,
+    season: career.seasonYear,
+    gameWeek: career.gameWeek,
+    createdAt: new Date().toISOString(),
+    read: false,
+    resolved: false,
+    playerId: reserveId,
+    playerName,
   });
 }

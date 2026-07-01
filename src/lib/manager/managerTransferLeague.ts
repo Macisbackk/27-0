@@ -286,6 +286,7 @@ export function completePlayerPurchase(
     purchased,
     createPlayerPurchaseMessage(
       purchased,
+      playerId,
       player?.name ?? "Player",
       club,
       offer.transferFee,

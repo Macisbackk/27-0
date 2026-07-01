@@ -13,11 +13,10 @@ import {
   addReserveReturnInboxMessage,
 } from "./managerInbox";
 import { createInitialPlayerState } from "./managerSquad";
+import { generateInitialContract } from "./managerContracts";
 import {
-  buildContractsForSquad,
-  computeWageBill,
-  generateInitialContract,
-} from "./managerContracts";
+  computeCareerWageBill,
+} from "./managerReserveContracts";
 import { getManagerClubTeamRating } from "./managerRating";
 import { reserveToPlayer } from "./managerPlayers";
 import type { Player } from "../types";
@@ -90,6 +89,25 @@ function generateReservePlayer(
     reserveTries: 0,
     calledUpForNextMatch: false,
     baseRating: rating,
+  };
+}
+
+function hashCode(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h << 5) - h + s.charCodeAt(i);
+  return h;
+}
+
+export function createYouthProspect(
+  seed: string,
+  seasonYear: number,
+  index: number,
+  position: Position
+): ManagerReservePlayer {
+  const player = generateReservePlayer(`${seed}-y${seasonYear}`, index, position);
+  return {
+    ...player,
+    id: `mgr-youth-${seasonYear}-${index}-${Math.abs(hashCode(player.name))}`,
   };
 }
 
@@ -277,14 +295,23 @@ export function promoteReserveToSquad(
   contract.squadRole = "Prospect";
   contract.purchaseFee = 0;
 
+  const nextReserveContracts = { ...(career.reserveContracts ?? {}) };
+  delete nextReserveContracts[reserveId];
+  const nextContracts = {
+    ...career.contracts,
+    [reserveId]: contract,
+  };
+
   const next: ManagerCareer = {
     ...career,
     playerRegistry: { ...career.playerRegistry, [reserveId]: player },
     squad: [...career.squad, createInitialPlayerState(reserveId)],
-    contracts: { ...career.contracts, [reserveId]: contract },
-    wageBill: computeWageBill({
-      ...career.contracts,
-      [reserveId]: contract,
+    contracts: nextContracts,
+    reserveContracts: nextReserveContracts,
+    wageBill: computeCareerWageBill({
+      ...career,
+      contracts: nextContracts,
+      reserveContracts: nextReserveContracts,
     }),
     reserves: career.reserves.filter((r) => r.id !== reserveId),
     calledUpReserveIds: career.calledUpReserveIds.filter(
@@ -301,15 +328,23 @@ export function releaseReserve(
   career: ManagerCareer,
   reserveId: string
 ): ManagerCareer {
+  const nextContracts = { ...(career.reserveContracts ?? {}) };
+  delete nextContracts[reserveId];
+
   return {
     ...career,
     reserves: career.reserves.filter((r) => r.id !== reserveId),
+    reserveContracts: nextContracts,
     calledUpReserveIds: career.calledUpReserveIds.filter(
       (id) => id !== reserveId
     ),
     matchdayInterchange: career.matchdayInterchange.filter(
       (id) => id !== reserveId
     ),
+    wageBill: computeCareerWageBill({
+      ...career,
+      reserveContracts: nextContracts,
+    }),
   };
 }
 

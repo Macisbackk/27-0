@@ -20,6 +20,7 @@ import { ManagerDevelopmentReview } from "@/components/manager/ManagerDevelopmen
 import { ManagerSeasonRewards } from "@/components/manager/ManagerSeasonRewards";
 import { ManagerFriendlySelect } from "@/components/manager/ManagerFriendlySelect";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
+import { resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
   loadManagerCareer,
@@ -143,19 +144,22 @@ export default function ManagerPage() {
 
   const handleSimulate = () => {
     if (!career) return;
-    const check = validateFitMatchdaySquad(career);
+    const working = resolveCareerForMatchSimulation(career);
+    const check = validateFitMatchdaySquad(working);
     if (!check.valid) return;
-    const ready = ensureCupBracketReady(career);
-    if (ready !== career) persist(ready);
+    const ready = ensureCupBracketReady(working);
+    if (ready !== working) persist(ready);
     afterMatch(simulateManagerNextMatch(ready));
   };
 
   const handlePlayGame = () => {
     if (!career) return;
-    const check = validateFitMatchdaySquad(career);
+    const working = resolveCareerForMatchSimulation(career);
+    const check = validateFitMatchdaySquad(working);
     if (!check.valid) return;
-    const ready = ensureCupBracketReady(career);
-    if (ready !== career) persist(ready);
+    const ready = ensureCupBracketReady(working);
+    if (ready !== working) persist(ready);
+    if (working !== career) persist(working);
     setPlayGameOpen(true);
   };
 
@@ -167,7 +171,9 @@ export default function ManagerPage() {
   const handleContinueSeason = () => {
     if (!career) return;
     const next = advanceToNextSeason(career);
-    setCareer(hydrateManagerCareer(next));
+    const hydrated = hydrateManagerCareer(next);
+    setCareer(hydrated);
+    saveManagerCareer(hydrated);
     setView("hub");
   };
 
