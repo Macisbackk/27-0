@@ -67,6 +67,7 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   total_winnings: "Total Winnings",
   manager_challenge_cups: "Cups Won",
   manager_cup_finals: "Finals Reached",
+  manager_league_titles: "League Titles",
   manager_total_earnings: "Total Earnings",
 };
 

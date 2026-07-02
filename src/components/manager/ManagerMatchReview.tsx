@@ -2,6 +2,7 @@
 
 import { AnimatePresence } from "framer-motion";
 import { MatchDetailsPanel } from "@/components/MatchDetailsPanel";
+import { MatchPlayerOfTheMatchCard } from "@/components/MatchPlayerOfTheMatchCard";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -95,7 +96,7 @@ export function ManagerMatchReview({
       <div
         className={`${CARD.elevated} ${SPACING.cardPadding} text-center ${
           isChallengeCupFixture(fixture.competition)
-            ? "border-2 border-accent-gold/50 bg-accent-gold/10 ring-1 ring-accent-gold/25"
+            ? "border-2 border-accent-gold/50 bg-accent-gold/10"
             : ""
         }`}
       >
@@ -121,6 +122,46 @@ export function ManagerMatchReview({
           </p>
         </div>
       )}
+
+      {cupBracketSnapshot && (
+        <div
+          className={`${CARD.base} ${SPACING.cardPadding} border-2 border-accent-gold/40 bg-accent-gold/5`}
+        >
+          <p className={`${TYPO.sectionLabel} text-accent-gold`}>
+            Challenge Cup Bracket · {roundLabel}
+          </p>
+          <p className={`mt-1 mb-3 ${TYPO.bodySm} text-pitch-400`}>
+            Bracket as it stood after this tie
+          </p>
+          <BracketRecap
+            matches={cupBracketSnapshot.matches}
+            userClub={career.club}
+            byeTeams={cupBracketSnapshot.byeTeams}
+          />
+        </div>
+      )}
+
+      {fixture.manOfTheMatch && (
+        <MatchPlayerOfTheMatchCard
+          motm={fixture.manOfTheMatch}
+          userClub={career.club}
+        />
+      )}
+
+      <AnimatePresence>
+        <MatchDetailsPanel
+          fixture={fixture}
+          onClose={onClose}
+          roundLabel={roundLabel}
+          seed={career.seed}
+          userSquad={squad}
+          userTeamName={career.club}
+          currentSeasonOnly
+          hideMatchStory
+          hideMotm
+          scoringOnly
+        />
+      </AnimatePresence>
 
       {(fixture.meta?.tacticReview ||
         fixture.meta?.tacticEffectivenessLine ||
@@ -176,24 +217,6 @@ export function ManagerMatchReview({
         </ManagerSectionCard>
       )}
 
-      {cupBracketSnapshot && (
-        <div
-          className={`${CARD.base} ${SPACING.cardPadding} border-2 border-accent-gold/40 bg-accent-gold/5`}
-        >
-          <p className={`${TYPO.sectionLabel} text-accent-gold`}>
-            Challenge Cup Bracket · {roundLabel}
-          </p>
-          <p className={`mt-1 mb-3 ${TYPO.bodySm} text-pitch-400`}>
-            Bracket as it stood after this tie
-          </p>
-          <BracketRecap
-            matches={cupBracketSnapshot.matches}
-            userClub={career.club}
-            byeTeams={cupBracketSnapshot.byeTeams}
-          />
-        </div>
-      )}
-
       {attendance && (
         <ManagerSectionCard title="Gate & Fans" accent="sky">
           <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
@@ -245,19 +268,6 @@ export function ManagerMatchReview({
           </ul>
         </div>
       )}
-
-      <AnimatePresence>
-        <MatchDetailsPanel
-          fixture={fixture}
-          onClose={onClose}
-          roundLabel={roundLabel}
-          seed={career.seed}
-          userSquad={squad}
-          userTeamName={career.club}
-          currentSeasonOnly
-          hideMatchStory
-        />
-      </AnimatePresence>
 
       {fixture.meta?.injuries && fixture.meta.injuries.length > 0 && (
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>

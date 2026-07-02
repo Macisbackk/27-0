@@ -21,6 +21,7 @@ import { ManagerSeasonRewards } from "@/components/manager/ManagerSeasonRewards"
 import { ManagerTrophyModal } from "@/components/manager/ManagerTrophyModal";
 import { ManagerLeagueWinnersModal } from "@/components/manager/ManagerLeagueWinnersModal";
 import { ManagerIncomingBidModal } from "@/components/manager/ManagerIncomingBidModal";
+import { ManagerRetirementIntentModal } from "@/components/manager/ManagerRetirementIntentModal";
 import { ManagerFriendlySelect } from "@/components/manager/ManagerFriendlySelect";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
@@ -61,6 +62,10 @@ import {
   getPendingUnsolicitedOffer,
   rejectIncomingOffer,
 } from "@/lib/manager/managerTransferLeague";
+import {
+  acknowledgeRetirementIntentPopup,
+  getPendingRetirementIntentPopup,
+} from "@/lib/manager/managerRetirement";
 
 const NAV_VIEWS: ManagerView[] = [
   "hub",
@@ -89,6 +94,11 @@ export default function ManagerPage() {
     null
   );
   const [incomingBidModalOpen, setIncomingBidModalOpen] = useState(false);
+  const [pendingRetirementIntentId, setPendingRetirementIntentId] = useState<
+    string | null
+  >(null);
+  const [retirementIntentModalOpen, setRetirementIntentModalOpen] =
+    useState(false);
 
   useEffect(() => {
     setHasSave(hasManagerCareer());
@@ -119,9 +129,13 @@ export default function ManagerPage() {
       return;
     }
     const unsolicited = getPendingUnsolicitedOffer(hydrated);
+    const retirementIntent = getPendingRetirementIntentPopup(hydrated);
     if (unsolicited) {
       setPendingIncomingBidId(unsolicited.id);
       setIncomingBidModalOpen(true);
+    } else if (retirementIntent) {
+      setPendingRetirementIntentId(retirementIntent.id);
+      setRetirementIntentModalOpen(true);
     } else if (shouldShowLeagueWinnersCelebration(hydrated)) {
       setLeagueWinnersModalOpen(true);
     }
@@ -170,7 +184,9 @@ export default function ManagerPage() {
 
     const wonLeagueTable = shouldShowLeagueWinnersCelebration(next);
     const unsolicited = getPendingUnsolicitedOffer(next);
+    const retirementIntent = getPendingRetirementIntentPopup(next);
     setPendingIncomingBidId(unsolicited?.id ?? null);
+    setPendingRetirementIntentId(retirementIntent?.id ?? null);
 
     if (next.isSeasonComplete) {
       recordSeasonComplete(next);
@@ -199,6 +215,12 @@ export default function ManagerPage() {
 
     if (pendingIncomingBidId) {
       setIncomingBidModalOpen(true);
+      setView("hub");
+      return;
+    }
+
+    if (pendingRetirementIntentId) {
+      setRetirementIntentModalOpen(true);
       setView("hub");
       return;
     }
@@ -234,6 +256,14 @@ export default function ManagerPage() {
     setPendingIncomingBidId(null);
     persist(nextCareer);
 
+    const retirementIntent = getPendingRetirementIntentPopup(nextCareer);
+    if (retirementIntent) {
+      setPendingRetirementIntentId(retirementIntent.id);
+      setRetirementIntentModalOpen(true);
+      setView("hub");
+      return;
+    }
+
     if (pendingLeagueWinnersCelebration) {
       setPendingLeagueWinnersCelebration(false);
       setLeagueWinnersModalOpen(true);
@@ -266,6 +296,62 @@ export default function ManagerPage() {
   const handleIncomingBidReject = () => {
     if (!career || !pendingIncomingBidId) return;
     handleIncomingBidResolved(rejectIncomingOffer(career, pendingIncomingBidId));
+  };
+
+  const continueAfterRetirementIntent = (nextCareer: ManagerCareer) => {
+    const nextIntent = getPendingRetirementIntentPopup(nextCareer);
+    if (nextIntent) {
+      setPendingRetirementIntentId(nextIntent.id);
+      setRetirementIntentModalOpen(true);
+      setView("hub");
+      return;
+    }
+
+    setPendingRetirementIntentId(null);
+    setRetirementIntentModalOpen(false);
+
+    if (pendingLeagueWinnersCelebration) {
+      setPendingLeagueWinnersCelebration(false);
+      setLeagueWinnersModalOpen(true);
+      setView("hub");
+      return;
+    }
+
+    if (pendingTrophyCelebration) {
+      setPendingTrophyCelebration(false);
+      setTrophyModalOpen(true);
+      setView("hub");
+      return;
+    }
+
+    if (nextCareer.isSeasonComplete) {
+      setView("season-review");
+      return;
+    }
+
+    setView("hub");
+  };
+
+  const handleRetirementIntentAcknowledge = () => {
+    if (!career || !pendingRetirementIntentId) return;
+    const next = acknowledgeRetirementIntentPopup(
+      career,
+      pendingRetirementIntentId
+    );
+    persist(next);
+    continueAfterRetirementIntent(next);
+  };
+
+  const handleRetirementIntentViewContracts = () => {
+    if (!career || !pendingRetirementIntentId) return;
+    const next = acknowledgeRetirementIntentPopup(
+      career,
+      pendingRetirementIntentId
+    );
+    persist(next);
+    setPendingRetirementIntentId(null);
+    setRetirementIntentModalOpen(false);
+    setView("contracts");
   };
 
   const handlePlayoffsIntroContinue = () => {
@@ -328,6 +414,11 @@ export default function ManagerPage() {
   const incomingBidOffer =
     career && pendingIncomingBidId
       ? career.inboxMessages.find((m) => m.id === pendingIncomingBidId)
+      : undefined;
+
+  const retirementIntentMessage =
+    career && pendingRetirementIntentId
+      ? career.inboxMessages.find((m) => m.id === pendingRetirementIntentId)
       : undefined;
 
   return (
@@ -495,6 +586,17 @@ export default function ManagerPage() {
           onReject={handleIncomingBidReject}
         />
       )}
+
+      {career &&
+        retirementIntentModalOpen &&
+        retirementIntentMessage && (
+          <ManagerRetirementIntentModal
+            career={career}
+            message={retirementIntentMessage}
+            onAcknowledge={handleRetirementIntentAcknowledge}
+            onViewContracts={handleRetirementIntentViewContracts}
+          />
+        )}
 
       {career && leagueWinnersModalOpen && (
         <ManagerLeagueWinnersModal

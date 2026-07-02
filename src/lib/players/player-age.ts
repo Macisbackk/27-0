@@ -62,6 +62,17 @@ function calculatePreciseAge(
   return age >= 0 ? age : undefined;
 }
 
+/** Age a player would be during a given calendar / season year. */
+export function getAgeAtYear(
+  player: Player,
+  year: number
+): number | undefined {
+  const birthYear = resolveBirthYear(player.birthYear, player.dateOfBirth);
+  if (birthYear === undefined) return undefined;
+  const age = year - birthYear;
+  return age >= 0 && age <= 120 ? age : undefined;
+}
+
 function resolveReferenceYear(player: Player): number | undefined {
   return player.eraYear ?? player.primeYear ?? player.cardYear;
 }

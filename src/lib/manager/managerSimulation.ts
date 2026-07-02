@@ -124,6 +124,7 @@ import { maybeAddReserveReport } from "./managerReserveReports";
 import { rotateLatestNews } from "./managerNews";
 import {
   generateManagerMatchBio,
+  buildManagerMotmPerformanceSummary,
 } from "./manager-match-summary";
 import { syncManagerFinance, applyClubRevenue } from "./managerFinance";
 
@@ -387,12 +388,17 @@ export function applyManagerMatchResult(
           playerId: motmId,
           playerName: motmPlayer.name,
           teamName: career.club,
-          performanceSummary:
-            (fixture.scoringDetail?.dreamTeam.tryScorers.find(
+          performanceSummary: buildManagerMotmPerformanceSummary(
+            motmId,
+            motmPlayer.name,
+            fixture,
+            career.xiiiSlotPositions,
+            career.matchdayXiii
+          ),
+          tries:
+            fixture.scoringDetail?.dreamTeam.tryScorers.find(
               (s) => s.playerId === motmId
-            )?.tries ?? 0) >= 2
-              ? "Outstanding try-scoring display"
-              : "Standout performance",
+            )?.tries || undefined,
         },
       }
     : fixture;
@@ -406,6 +412,8 @@ export function applyManagerMatchResult(
     attendance: attendanceMeta ?? undefined,
     playedLive: options.playedLive ?? false,
     injuryCount: injuries.length,
+    forwardTries: forward,
+    backTries: back,
   });
   fixtureWithMotm.matchBio = matchBio;
 

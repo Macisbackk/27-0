@@ -1,7 +1,7 @@
 import { getPlayerById } from "../players";
 import { getPlayerAge } from "../players/player-age";
 import { getManagerClubTeamRating } from "./managerRating";
-import { getManagerPlayer } from "./managerPlayers";
+import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import type {
   ContractStatus,
   ManagerCareer,
@@ -108,7 +108,7 @@ export function generateRenewalDemand(
 ): RenewalDemand {
   const player = getManagerPlayer(career, playerId);
   const rating = player?.rating ?? player?.peakRating ?? 70;
-  const age = player ? getPlayerAge(player) : undefined;
+  const age = getManagerPlayerAge(career, playerId);
   const appearances = getPlayerSeasonAppearances(career, playerId);
   const happiness = contract.happiness;
 

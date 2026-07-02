@@ -4,10 +4,8 @@ import type { SquadSlot } from "../types";
 import { getManagerPlayer } from "./managerPlayers";
 import type { LiveMatchEvent, ManagerCareer, ManagerFixtureRecord } from "./types";
 import { enrichManagerFixtureScoring } from "./managerScoring";
-import {
-  generateManagerMatchBio,
-  isLegacyFantasyMatchBio,
-} from "./manager-match-summary";
+import { generateManagerMatchBio } from "./manager-match-summary";
+import { countTriesByPositionGroup } from "./managerTacticsScoring";
 import { buildMatchdayScoringEntries } from "./managerSquad";
 import { allocateWeightedTries } from "./managerTryScoring";
 import { buildOpponentTryScoringDetail } from "./managerOpponentScoring";
@@ -153,7 +151,15 @@ function refreshManagerMatchBio(
   fixture: MatchFixture
 ): void {
   const record = fixture as ManagerFixtureRecord;
-  if (!isLegacyFantasyMatchBio(fixture.matchBio)) return;
+
+  const userScorers = fixture.scoringDetail?.dreamTeam.tryScorers ?? [];
+  const xiii = record.meta?.matchdayXiii ?? career.matchdayXiii;
+  const slots = record.meta?.xiiiSlotPositions ?? career.xiiiSlotPositions;
+  const { forward, back } = countTriesByPositionGroup(
+    userScorers,
+    slots,
+    xiii
+  );
 
   fixture.matchBio = generateManagerMatchBio(fixture, career.seed, {
     clubName: career.club,
@@ -164,6 +170,8 @@ function refreshManagerMatchBio(
     attendance: record.meta?.attendance,
     playedLive: record.meta?.playedLive,
     injuryCount: record.meta?.injuries?.length,
+    forwardTries: forward,
+    backTries: back,
   });
 }
 

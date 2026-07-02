@@ -32,6 +32,7 @@ import {
   ensureLeagueClubRosters,
   reconcileLeagueRosters,
 } from "./managerLeagueRosters";
+import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
 import {
   addPlayersToFreeAgents,
   simulateAiContractExpiries,
@@ -300,6 +301,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     ...withIntake,
     leagueListedPlayers: seasonListed,
     transferMarket: seasonListed.map((l) => l.playerId),
+    playerDevelopment: snapshotSquadSeasonStartRatings(withIntake),
   };
   if (summary.budgetChange > 0) {
     finalCareer = applyClubRevenue(

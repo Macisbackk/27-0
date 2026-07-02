@@ -1,12 +1,12 @@
 import seedrandom from "seedrandom";
 import { POSITION_SHORT } from "../positions";
-import { getPlayerAge } from "../players/player-age";
 import type {
+  InboxMessage,
   ManagerCareer,
   PlayerContract,
   RetiredPlayer,
 } from "./types";
-import { getManagerPlayer } from "./managerPlayers";
+import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import { computeWageBill } from "./managerContracts";
 import { reconcileLeagueRosters } from "./managerLeagueRosters";
 import {
@@ -140,7 +140,7 @@ export function ensureRetirementIntent(career: ManagerCareer): ManagerCareer {
     const player = getManagerPlayer(next, ps.playerId);
     if (!contract || !player) continue;
 
-    const age = getPlayerAge(player) ?? 0;
+    const age = getManagerPlayerAge(next, ps.playerId) ?? 0;
     if (!isRetirementAge(age)) continue;
     if (contract.retirementIntentSeason === career.seasonYear) continue;
 
@@ -167,6 +167,32 @@ export function ensureRetirementIntent(career: ManagerCareer): ManagerCareer {
   return next;
 }
 
+/** Unread retirement-plan inbox item — surfaced as a popup before the hub. */
+export function getPendingRetirementIntentPopup(
+  career: ManagerCareer
+): InboxMessage | undefined {
+  return career.inboxMessages.find(
+    (m) =>
+      m.type === "retirement" &&
+      m.id.startsWith("retirement-intent-") &&
+      !m.read &&
+      m.playerId
+  );
+}
+
+export function acknowledgeRetirementIntentPopup(
+  career: ManagerCareer,
+  messageId: string
+): ManagerCareer {
+  return {
+    ...career,
+    inboxMessages: career.inboxMessages.map((m) =>
+      m.id === messageId ? { ...m, read: true } : m
+    ),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
 /** Remove retiring players at season rollover and archive them. */
 export function applySeasonRetirements(career: ManagerCareer): {
   career: ManagerCareer;
@@ -181,7 +207,7 @@ export function applySeasonRetirements(career: ManagerCareer): {
     const player = getManagerPlayer(career, ps.playerId);
     if (!contract || !player) continue;
 
-    const age = getPlayerAge(player) ?? 0;
+    const age = getManagerPlayerAge(next, ps.playerId) ?? 0;
     if (!shouldRetireAtSeasonEnd(career, ps.playerId, age, contract)) {
       continue;
     }

@@ -1,11 +1,19 @@
 import seedrandom from "seedrandom";
 import type { MatchFixture } from "../game/season-simulation";
+import type { Position } from "../types";
 import type {
   CupRoundKey,
   ManagerCompetition,
   MatchAttendanceMeta,
 } from "./types";
 import { getManagerCompetitionLabel } from "./managerFixtureDisplay";
+
+const FORWARD_POSITIONS = new Set<Position>([
+  "PROP",
+  "HOOKER",
+  "SECOND_ROW",
+  "LOOSE_FORWARD",
+]);
 
 export interface ManagerMatchBioContext {
   clubName: string;
@@ -16,6 +24,8 @@ export interface ManagerMatchBioContext {
   attendance?: MatchAttendanceMeta;
   playedLive?: boolean;
   injuryCount?: number;
+  forwardTries?: number;
+  backTries?: number;
 }
 
 function pickVariant(lines: string[], seed: string, key: string): string {
@@ -51,25 +61,70 @@ function formatTopScorerLine(
   const owner = possessive ? `${top.name}'s` : top.name;
 
   if (top.tries >= 3) {
-    return `${owner} hat-trick was the headline act.`;
+    return `${owner} hat-trick led the way.`;
   }
   if (top.tries === 2) {
     if (sorted.length > 1 && sorted[1]!.tries > 0) {
       return `${top.name} scored twice, with ${sorted[1]!.name} also crossing.`;
     }
-    return `${top.name} finished with a brace.`;
+    return `${top.name}'s brace led the scoring.`;
   }
   if (sorted.length >= 2) {
     const names = sorted
       .slice(0, 2)
       .map((s) => s.name)
       .join(" and ");
-    return `${names} shared the tries.`;
+    return `${names} shared the tries across the afternoon.`;
   }
-  return `${top.name} got over the line.`;
+  return `${top.name} led the scoring with a well-worked try.`;
 }
 
-function formatKickingBattle(fixture: MatchFixture): string | null {
+/** MOTM blurb focused on on-field play — not goal-kicking. */
+export function buildManagerMotmPerformanceSummary(
+  playerId: string,
+  _playerName: string,
+  fixture: MatchFixture,
+  slotPositions: Position[],
+  xiiiIds: string[]
+): string {
+  const tries =
+    fixture.scoringDetail?.dreamTeam.tryScorers.find(
+      (s) => s.playerId === playerId
+    )?.tries ?? 0;
+
+  if (tries >= 3) return "hat-trick hero";
+  if (tries === 2) return "brace led the attack";
+
+  const idx = xiiiIds.indexOf(playerId);
+  const pos =
+    idx >= 0
+      ? slotPositions[idx]
+      : undefined;
+
+  if (tries === 1) {
+    if (pos && FORWARD_POSITIONS.has(pos)) return "led from the front in the pack";
+    if (pos === "SCRUM_HALF" || pos === "STAND_OFF") {
+      return "pulled the strings at half-back";
+    }
+    if (pos === "FULLBACK" || pos === "WING" || pos === "CENTRE") {
+      return "finished strongly out wide";
+    }
+    return "crossed for a crucial try";
+  }
+
+  if (pos && FORWARD_POSITIONS.has(pos)) return "dominated the middle";
+  if (pos === "SCRUM_HALF" || pos === "STAND_OFF") {
+    return "controlled the tempo from half-back";
+  }
+  return "standout all-round display";
+}
+
+/** Only when tries are level and the boot decided the result. */
+function formatKickingDecider(fixture: MatchFixture): string | null {
+  const tryMargin = fixture.triesFor - fixture.triesAgainst;
+  const pointsMargin = fixture.pointsFor - fixture.pointsAgainst;
+  if (tryMargin !== 0 || pointsMargin === 0) return null;
+
   const forKicking = fixture.scoringDetail?.dreamTeam.kicking;
   const againstKicking = fixture.scoringDetail?.opponent.kicking;
   const userGoals =
@@ -83,29 +138,50 @@ function formatKickingBattle(fixture: MatchFixture): string | null {
 
   if (userGoals === 0 && oppGoals === 0) return null;
 
-  const tryMargin = fixture.triesFor - fixture.triesAgainst;
-  const pointsMargin = fixture.pointsFor - fixture.pointsAgainst;
+  if (pointsMargin > 0) {
+    return `Tries were shared, but goal-kicking edged it ${userGoals} to ${oppGoals}.`;
+  }
+  return `Level on tries — their kicker won it ${oppGoals} goals to ${userGoals}.`;
+}
 
-  if (tryMargin === 0 && pointsMargin !== 0) {
-    if (pointsMargin > 0) {
-      return `The sides finished level on tries, but your kicking game edged it ${userGoals} goals to ${oppGoals}.`;
-    }
-    return `Tries were shared, but their goal-kicking won it ${oppGoals} to ${userGoals} off the boot.`;
-  }
+function buildAttackShapeLine(
+  forwardTries: number,
+  backTries: number,
+  seed: string,
+  round: number
+): string | null {
+  const total = forwardTries + backTries;
+  if (total === 0) return null;
 
-  if (userGoals >= 4 && oppGoals <= 1) {
-    return `A reliable kicking display — ${userGoals} goals from the tee helped control the scoreboard.`;
+  if (forwardTries >= 2 && forwardTries > backTries) {
+    return pickVariant(
+      [
+        `The pack led the way with ${formatTryCount(forwardTries)} through the middle.`,
+        `Forwards did the damage — ${formatTryCount(forwardTries)} from the pack.`,
+        `A strong afternoon for the forwards with ${formatTryCount(forwardTries)} close to the sticks.`,
+      ],
+      seed,
+      `pack-r${round}`
+    );
   }
-  if (oppGoals >= 4 && userGoals <= 1) {
-    return `${fixture.opponent} punished errors with the boot, landing ${oppGoals} goals.`;
+  if (backTries >= 2 && backTries > forwardTries) {
+    return pickVariant(
+      [
+        `The backs finished the chances — ${formatTryCount(backTries)} out wide.`,
+        `Width told the story as the back line crossed ${formatTryCount(backTries)}.`,
+        `Out wide was where the damage was done with ${formatTryCount(backTries)} from the backs.`,
+      ],
+      seed,
+      `backs-r${round}`
+    );
   }
-  if (userGoals > oppGoals && fixture.result === "W") {
-    return `Goals from the boot (${userGoals}) kept the pressure on when the line was defended.`;
+  if (forwardTries > 0 && backTries > 0) {
+    return `Tries were shared across the pack and the backs.`;
   }
-  if (oppGoals > userGoals && fixture.result === "L") {
-    return `Their kicker was clinical with ${oppGoals} goals — yours managed ${userGoals}.`;
+  if (forwardTries > 0) {
+    return `All ${formatTryCount(forwardTries)} came from the forwards.`;
   }
-  return null;
+  return `The back line did all the scoring with ${formatTryCount(backTries)}.`;
 }
 
 function buildResultOpener(
@@ -178,14 +254,16 @@ function buildResultOpener(
 function buildTryNarrative(
   fixture: MatchFixture,
   clubName: string,
-  won: boolean
+  won: boolean,
+  context: ManagerMatchBioContext,
+  seed: string
 ): string {
   const userTries = fixture.triesFor;
   const oppTries = fixture.triesAgainst;
   const detail = fixture.scoringDetail;
 
   if (userTries === 0 && oppTries === 0) {
-    return "A rare scoreless stalemate on the try line — every point came off the boot.";
+    return "A rare scoreless stalemate on the try line — a grinding, attritional contest.";
   }
 
   const parts: string[] = [];
@@ -205,21 +283,39 @@ function buildTryNarrative(
   const userScorerLine = detail
     ? formatTopScorerLine(detail.dreamTeam.tryScorers, false)
     : null;
-  const oppScorerLine = detail
-    ? formatTopScorerLine(detail.opponent.tryScorers, false)
+  const oppTopScorer = detail
+    ? [...detail.opponent.tryScorers]
+        .filter((s) => s.tries > 0)
+        .sort((a, b) => b.tries - a.tries)[0]
     : null;
 
   if (won && userScorerLine) {
     parts.push(userScorerLine);
-  } else if (!won && oppScorerLine) {
-    const line =
-      oppScorerLine.charAt(0).toLowerCase() + oppScorerLine.slice(1);
-    parts.push(`${fixture.opponent} were led by ${line}`);
+  } else if (!won && oppTopScorer) {
+    if (oppTopScorer.tries >= 2) {
+      parts.push(
+        `${fixture.opponent} were led by ${oppTopScorer.name} with ${oppTopScorer.tries} tries.`
+      );
+    } else {
+      parts.push(`${oppTopScorer.name}'s try proved the difference for ${fixture.opponent}.`);
+    }
   } else if (userScorerLine) {
     parts.push(userScorerLine);
   }
 
-  const kicking = formatKickingBattle(fixture);
+  const forwardTries = context.forwardTries ?? 0;
+  const backTries = context.backTries ?? 0;
+  const shapeLine = buildAttackShapeLine(
+    forwardTries,
+    backTries,
+    seed,
+    fixture.round
+  );
+  if (shapeLine && (won || forwardTries + backTries > 0)) {
+    parts.push(shapeLine);
+  }
+
+  const kicking = formatKickingDecider(fixture);
   if (kicking) parts.push(kicking);
 
   return parts.join(" ");
@@ -282,7 +378,7 @@ function buildExtras(
     const isUser = motm.teamName === context.clubName;
     if (isUser) {
       const summary = motm.performanceSummary
-        ? ` (${motm.performanceSummary})`
+        ? ` — ${motm.performanceSummary}`
         : motm.tries && motm.tries >= 2
           ? ` with ${motm.tries} tries`
           : "";
@@ -310,7 +406,7 @@ export function generateManagerMatchBio(
     context.competition,
     context.cupRound
   );
-  const tryStory = buildTryNarrative(fixture, context.clubName, won);
+  const tryStory = buildTryNarrative(fixture, context.clubName, won, context, seed);
   const tactic = buildTacticSentence(context);
   const extras = buildExtras(fixture, context, seed);
 

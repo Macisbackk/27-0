@@ -118,6 +118,8 @@ function managerStatsToTrackerPayload(
     bestCupFinishRank: 0,
     bestCupFinishLabel: "",
     cupWinPercentage: 0,
+    leagueTitles: stats.leagueTitles,
+    superLeagueTitles: stats.superLeagueTitles,
   };
 }
 
@@ -259,7 +261,7 @@ async function upsertTrackerModeOnline(
     const row = {
       coach_name: coachName,
       player_name: coachName,
-      score: 0,
+      score: mode === SUPER_LEAGUE_MODE ? stats.leagueTitles : 0,
       wins: payload.totalWins,
       losses: payload.totalLosses,
       perfect_runs: payload.perfectRuns,
@@ -493,7 +495,7 @@ async function fetchRemoteTrackerEntries(
     const { data, error } = await supabase
       .from("leaderboard")
       .select(
-        "coach_name, wins, losses, perfect_runs, winless_seasons, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, updated_at, created_at"
+        "coach_name, score, wins, losses, perfect_runs, winless_seasons, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, updated_at, created_at"
       )
       .eq("mode", mode)
       .eq("difficulty", "NORMAL")
@@ -525,6 +527,8 @@ async function fetchRemoteTrackerEntries(
         bestCupFinishRank: 0,
         bestCupFinishLabel: "",
         cupWinPercentage: 0,
+        leagueTitles: typeof row.score === "number" ? row.score : 0,
+        superLeagueTitles: 0,
       }));
   } catch (err) {
     console.error("[manager-leaderboard] tracker fetch failed:", err);
@@ -648,9 +652,14 @@ async function getManagerTrackerLeaderboardAsync(
     merged.set(liveEntry.username.toLowerCase(), liveEntry);
   }
 
+  let entries = [...merged.values()];
+  if (tracker === "manager_league_titles") {
+    entries = entries.filter((entry) => entry.leagueTitles > 0);
+  }
+
   return {
     source: remote !== null ? "remote" : "local",
-    rows: rankByTracker([...merged.values()], tracker, limit, currentUser),
+    rows: rankByTracker(entries, tracker, limit, currentUser),
   };
 }
 

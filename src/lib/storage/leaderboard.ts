@@ -219,6 +219,8 @@ function toTrackerEntry(
     bestCupFinishRank: row.bestCupFinishRank ?? 0,
     bestCupFinishLabel: row.bestCupFinishLabel ?? "",
     cupWinPercentage: row.cupWinPercentage ?? 0,
+    leagueTitles: row.leagueTitles ?? 0,
+    superLeagueTitles: row.superLeagueTitles ?? 0,
   };
 }
 
@@ -544,6 +546,8 @@ function userStatsToClassicTrackerEntry(
     bestCupFinishRank: 0,
     bestCupFinishLabel: "",
     cupWinPercentage: 0,
+    leagueTitles: 0,
+    superLeagueTitles: 0,
   };
 }
 
@@ -763,6 +767,8 @@ async function getExistingRemoteStats(
       bestCupFinishRank: data.best_cup_finish_rank ?? 0,
       bestCupFinishLabel: data.best_cup_finish ?? "",
       cupWinPercentage: data.cup_win_percentage ?? 0,
+      leagueTitles: 0,
+      superLeagueTitles: 0,
     };
   } catch {
     return null;

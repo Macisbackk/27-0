@@ -18,8 +18,7 @@ import {
   computeCareerWageBill,
 } from "./managerReserveContracts";
 import { getManagerClubTeamRating } from "./managerRating";
-import { reserveToPlayer } from "./managerPlayers";
-import { getPlayerAge } from "../players/player-age";
+import { reserveToPlayer, getManagerPlayerAge } from "./managerPlayers";
 import { reconcileLeagueRosters } from "./managerLeagueRosters";
 import type { Player } from "../types";
 import type { PlayerDevelopmentState } from "./types";
@@ -147,13 +146,17 @@ export function rollYouthRatingGain(
 }
 
 function createPlayerDevelopmentFromReserve(
-  reserve: ManagerReservePlayer
+  reserve: ManagerReservePlayer,
+  seasonYear: number
 ): PlayerDevelopmentState {
+  const seasonStartRating = reserve.baseRating ?? reserve.rating;
   return {
     rating: reserve.rating,
-    peakRating: Math.max(reserve.rating, reserve.baseRating ?? reserve.rating),
+    peakRating: Math.max(reserve.rating, seasonStartRating),
     potential: reserve.potentialRating,
     developmentRate: reserve.developmentRate,
+    seasonStartRating,
+    promotedSeasonYear: seasonYear,
   };
 }
 
@@ -172,7 +175,7 @@ export function applyYouthMatchDevelopment(
 
     const registered = playerRegistry[ps.playerId];
     const age = registered
-      ? getPlayerAge(registered) ?? 25
+      ? getManagerPlayerAge(career, ps.playerId) ?? 25
       : 25;
     const developmentRate =
       dev.developmentRate ??
@@ -478,7 +481,7 @@ export function promoteReserveToSquad(
     return { ok: false, error: "Squad is full" };
   }
 
-  const player: Player = reserveToPlayer(reserve);
+  const player: Player = reserveToPlayer(reserve, career.seasonYear);
   const rep = getManagerClubTeamRating(career.club);
   const contract = generateInitialContract(reserveId, false, rep);
   contract.squadRole = "Prospect";
@@ -496,7 +499,7 @@ export function promoteReserveToSquad(
     playerRegistry: { ...career.playerRegistry, [reserveId]: player },
     playerDevelopment: {
       ...(career.playerDevelopment ?? {}),
-      [reserveId]: createPlayerDevelopmentFromReserve(reserve),
+      [reserveId]: createPlayerDevelopmentFromReserve(reserve, career.seasonYear),
     },
     squad: [...career.squad, createInitialPlayerState(reserveId)],
     contracts: nextContracts,

@@ -24,6 +24,7 @@ import {
 import { createClubAttendanceData, syncClubAttendanceData } from "./managerAttendance";
 import { createManagerChallengeCup } from "./managerChallengeCup";
 import { generateReserveSquad } from "./managerReserves";
+import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
 import {
   applyYearlyYouthIntake,
   buildReserveContractsForReserves,
@@ -348,6 +349,10 @@ export function createNewCareer(club: string): ManagerCareer {
     transferMarket: leagueListed.map((l) => l.playerId),
   };
   hydrated = applyYearlyYouthIntake(hydrated);
+  hydrated = {
+    ...hydrated,
+    playerDevelopment: snapshotSquadSeasonStartRatings(hydrated),
+  };
   saveManagerCareer(hydrated);
   return hydrated;
 }

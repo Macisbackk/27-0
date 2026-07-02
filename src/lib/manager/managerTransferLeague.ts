@@ -169,6 +169,33 @@ export function getAskingPrice(
   return Math.round(player.value * (1.5 + rng() * 1.0));
 }
 
+export function getLeagueListingAskingPrice(
+  career: ManagerCareer,
+  playerId: string,
+  club?: string
+): number | null {
+  const entry = club
+    ? career.leagueListedPlayers.find(
+        (l) => l.playerId === playerId && l.club === club
+      )
+    : career.leagueListedPlayers.find((l) => l.playerId === playerId);
+  return entry?.askingPrice ?? null;
+}
+
+/** Asking price the selling club will hold out for (listed fee from the transfer list). */
+export function getSellerAskingPrice(
+  career: ManagerCareer,
+  playerId: string,
+  club: string,
+  listed: boolean
+): number {
+  if (listed) {
+    const listedPrice = getLeagueListingAskingPrice(career, playerId, club);
+    if (listedPrice != null) return listedPrice;
+  }
+  return getAskingPrice(playerId, listed, career.seed, career.gameWeek);
+}
+
 export function listPlayerForTransfer(
   career: ManagerCareer,
   playerId: string,
@@ -281,6 +308,36 @@ export interface BuyOffer {
   squadRole: SquadRole;
 }
 
+/** Rare acceptance when a bid is close to, but under, the seller's minimum. */
+function trySellerAcceptsReducedFee(
+  career: ManagerCareer,
+  playerId: string,
+  offerFee: number,
+  minFee: number,
+  listed: boolean
+): boolean {
+  const floorRatio = listed ? 0.92 : 0.96;
+  if (offerFee >= minFee || offerFee < minFee * floorRatio) return false;
+
+  const ratio = offerFee / minFee;
+  const rng = seedrandom(
+    `${career.seed}-transfer-nego-${playerId}-${offerFee}-w${career.gameWeek}`
+  );
+
+  let chance = 0;
+  if (listed) {
+    if (ratio >= 0.98) chance = 0.2;
+    else if (ratio >= 0.95) chance = 0.11;
+    else if (ratio >= 0.92) chance = 0.05;
+  } else if (ratio >= 0.99) {
+    chance = 0.12;
+  } else if (ratio >= 0.97) {
+    chance = 0.06;
+  }
+
+  return rng() < chance;
+}
+
 export function evaluateBuyOffer(
   career: ManagerCareer,
   playerId: string,
@@ -301,21 +358,29 @@ export function evaluateBuyOffer(
     };
   }
 
-  const asking = getAskingPrice(
-    playerId,
-    listed,
-    career.seed,
-    career.gameWeek
-  );
-  const minFee = listed ? asking * 0.85 : asking * 1.1;
+  const asking = getSellerAskingPrice(career, playerId, club, listed);
+  const minFee = listed ? asking : asking * 1.1;
+  let feeAcceptedSoftly = false;
 
   if (offer.transferFee < minFee) {
-    return {
-      accepted: false,
-      reason: listed
-        ? "Transfer fee too low."
-        : "Club unwilling to sell — fee too low for an unlisted player.",
-    };
+    if (
+      trySellerAcceptsReducedFee(
+        career,
+        playerId,
+        offer.transferFee,
+        minFee,
+        listed
+      )
+    ) {
+      feeAcceptedSoftly = true;
+    } else {
+      return {
+        accepted: false,
+        reason: listed
+          ? "Transfer fee too low."
+          : "Club unwilling to sell — fee too low for an unlisted player.",
+      };
+    }
   }
   if (career.budget < offer.transferFee) {
     return { accepted: false, reason: "Insufficient transfer budget." };
@@ -339,7 +404,12 @@ export function evaluateBuyOffer(
     return { accepted: false, reason: "Squad is full." };
   }
 
-  return { accepted: true, reason: "Deal agreed." };
+  return {
+    accepted: true,
+    reason: feeAcceptedSoftly
+      ? "Selling club accepted slightly below their valuation."
+      : "Deal agreed.",
+  };
 }
 
 export function completePlayerPurchase(

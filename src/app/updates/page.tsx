@@ -40,7 +40,7 @@ export default function UpdatesPage() {
                       setOpenId(update.id);
                     }
                   }}
-                  className={`${CARD.base} ${CARD.panel} w-full rounded-xl border text-left transition ${
+                  className={`${CARD.panel} w-full rounded-xl text-left transition ${
                     isOpen
                       ? "border-accent-green/40 bg-pitch-900/80"
                       : "border-pitch-700/50 hover:border-pitch-600/60"

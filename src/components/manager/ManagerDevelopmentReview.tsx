@@ -22,6 +22,34 @@ export function ManagerDevelopmentReview({
   const changes = career.lastSeasonDevelopmentReview ?? [];
   const improved = changes.filter((c) => c.delta > 0);
   const declined = changes.filter((c) => c.delta < 0);
+  const steady = changes.filter((c) => c.delta === 0);
+
+  function changeLabel(
+    c: (typeof changes)[number],
+    tone: "improved" | "declined" | "steady" = "steady"
+  ) {
+    const afterClass =
+      tone === "improved"
+        ? "text-theme-primary font-semibold"
+        : tone === "declined"
+          ? "text-red-300 font-semibold"
+          : "font-semibold text-white";
+
+    if (c.promotedFromReserve) {
+      return (
+        <span className="text-pitch-500">
+          Season start {c.before} →{" "}
+          <span className={afterClass}>{c.after}</span>
+          <span className="text-pitch-400"> · from reserves</span>
+        </span>
+      );
+    }
+    return (
+      <span className="text-pitch-500">
+        {c.before} → <span className={afterClass}>{c.after}</span>
+      </span>
+    );
+  }
 
   return (
     <div className={`mx-auto max-w-lg ${SPACING.stackLg}`}>
@@ -49,9 +77,7 @@ export function ManagerDevelopmentReview({
                 {improved.map((c) => (
                   <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-baseline gap-1`}>
                     <span className="font-semibold text-white">{c.playerName}</span>
-                    <span className="text-pitch-500">
-                      {c.before} → <span className="text-theme-primary font-semibold">{c.after}</span>
-                    </span>
+                    {changeLabel(c, "improved")}
                     <ManagerDeltaBadge delta={c.delta} />
                     <span className="text-pitch-500">· POT {c.potential}</span>
                   </li>
@@ -65,10 +91,21 @@ export function ManagerDevelopmentReview({
                 {declined.map((c) => (
                   <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-baseline gap-1`}>
                     <span className="font-semibold text-white">{c.playerName}</span>
-                    <span className="text-pitch-500">
-                      {c.before} → <span className="text-red-300 font-semibold">{c.after}</span>
-                    </span>
+                    {changeLabel(c, "declined")}
                     <ManagerDeltaBadge delta={c.delta} />
+                    <span className="text-pitch-500">· POT {c.potential}</span>
+                  </li>
+                ))}
+              </ul>
+            </ManagerSectionCard>
+          )}
+          {steady.length > 0 && (
+            <ManagerSectionCard title="Unchanged">
+              <ul className={`mt-2 ${SPACING.stackSm}`}>
+                {steady.map((c) => (
+                  <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-baseline gap-1`}>
+                    <span className="font-semibold text-white">{c.playerName}</span>
+                    {changeLabel(c, "steady")}
                     <span className="text-pitch-500">· POT {c.potential}</span>
                   </li>
                 ))}

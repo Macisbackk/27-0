@@ -5,11 +5,11 @@ import { GameButton } from "@/components/ui/GameButton";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, SquadRole } from "@/lib/manager/types";
-import { getManagerPlayer } from "@/lib/manager/managerPlayers";
-import { POSITION_SHORT } from "@/lib/positions";
-import type { Position } from "@/lib/types";
-import { getManagerPlayerEligiblePositions } from "@/lib/manager/managerPlayers";
-import { getPlayerAge } from "@/lib/players/player-age";
+import {
+  getManagerPlayer,
+  getManagerPlayerAge,
+  getManagerPlayerEligiblePositions,
+} from "@/lib/manager/managerPlayers";
 import {
   evaluateRenewalOffer,
   formatWage,
@@ -184,7 +184,9 @@ export function ManagerContracts({
     ? getManagerPlayerEligiblePositions(career, selected.player.id)
     : [];
   const primaryPosition = selectedPositions[0];
-  const selectedAge = selected ? getPlayerAge(selected.player) : null;
+  const selectedAge = selected
+    ? getManagerPlayerAge(career, selected.player.id)
+    : null;
 
   const wagePct = Math.min(
     100,

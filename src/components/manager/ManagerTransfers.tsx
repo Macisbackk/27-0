@@ -10,7 +10,7 @@ import {
   ManagerTransferResultModal,
   type TransferResultDetails,
 } from "@/components/manager/ManagerTransferResultModal";
-import { ManagerSectionCard, ManagerStat, ManagerClubFinancesPanel } from "@/components/manager/manager-ui";
+import { ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
 import { getTransferBudget } from "@/lib/manager/managerFinance";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -23,6 +23,7 @@ import {
   evaluateBuyOffer,
   getAllLeaguePlayers,
   getAskingPrice,
+  getSellerAskingPrice,
 } from "@/lib/manager/managerTransferLeague";
 import {
   completeFreeAgentSigning,
@@ -70,6 +71,7 @@ export function ManagerTransfers({
   const wagePct = Math.round(
     (career.wageBill / Math.max(1, career.wageBudget)) * 100
   );
+  const transferFund = getTransferBudget(career);
 
   const listedPlayers = useMemo(() => {
     return career.leagueListedPlayers
@@ -154,12 +156,10 @@ export function ManagerTransfers({
   ) => {
     const player = getPlayerById(playerId);
     const demand = getTransferDemand(playerId, career.club);
-    const asking = career.leagueListedPlayers.find((l) => l.playerId === playerId)
-      ?.askingPrice;
     const fee =
       offerOverride?.transferFee ??
       (listed
-        ? (asking ?? getAskingPrice(playerId, true, career.seed, career.gameWeek))
+        ? getSellerAskingPrice(career, playerId, club, true)
         : offerPlayerId === playerId && offerFee > 0
           ? offerFee
           : getAskingPrice(playerId, false, career.seed, career.gameWeek));
@@ -202,9 +202,7 @@ export function ManagerTransfers({
 
   const submitListedAssistantDeal = (playerId: string, club: string) => {
     const demand = getTransferDemand(playerId, career.club);
-    const asking =
-      career.leagueListedPlayers.find((l) => l.playerId === playerId)?.askingPrice ??
-      getAskingPrice(playerId, true, career.seed, career.gameWeek);
+    const asking = getSellerAskingPrice(career, playerId, club, true);
     playUiClick();
     submitTransferOffer(playerId, club, true, {
       transferFee: asking,
@@ -214,9 +212,7 @@ export function ManagerTransfers({
   };
 
   const submitListedNegotiatedDeal = (playerId: string, club: string) => {
-    const asking =
-      career.leagueListedPlayers.find((l) => l.playerId === playerId)?.askingPrice ??
-      getAskingPrice(playerId, true, career.seed, career.gameWeek);
+    const asking = getSellerAskingPrice(career, playerId, club, true);
     playUiClick();
     submitTransferOffer(playerId, club, true, {
       transferFee: asking,
@@ -301,27 +297,29 @@ export function ManagerTransfers({
         </p>
       </div>
 
-      <ManagerClubFinancesPanel career={career} showSplitGuide />
-
-      <ManagerSectionCard title="Wage Budget" variant="elevated" accent="primary">
+      <ManagerSectionCard title="Funds & wages" variant="elevated" accent="primary">
         <div className="mt-2 grid grid-cols-2 gap-3">
+          <ManagerStat
+            label="Transfer fund"
+            value={formatWage(transferFund)}
+            tone="gold"
+            large
+          />
           <ManagerStat
             label="Wage bill"
             value={formatWage(career.wageBill)}
             tone={wageOverBudget ? "amber" : "default"}
             large
           />
-          <ManagerStat
-            label="Wage budget"
-            value={formatWage(career.wageBudget)}
-            tone="muted"
-          />
         </div>
         <div className="mt-3">
           <div className="mb-1 flex justify-between text-xs text-pitch-500">
-            <span>Wage budget used</span>
+            <span>
+              Wage budget {formatWage(career.wageBudget)} ·{" "}
+              {wagePct}% used
+            </span>
             <span className={wageOverBudget ? "text-amber-300" : "text-theme-primary"}>
-              {wagePct}%
+              {wageOverBudget ? "Over budget" : "Within budget"}
             </span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-pitch-800">

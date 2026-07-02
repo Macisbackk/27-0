@@ -30,20 +30,23 @@ export const CARD = {
     "rounded-lg border border-pitch-700/55 bg-pitch-950/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]",
   stat: "rl-stat-box rounded-lg border border-pitch-600/45 bg-pitch-900/60",
   hover:
-    "transition hover:border-theme-tertiary/35 hover:bg-pitch-900/75 hover:shadow-[0_0_20px_var(--theme-glow-soft)]",
+    "transition hover:border-pitch-500/50 hover:bg-pitch-900/75",
+  /** Accent overlay — pair with a bordered surface; border tint only (no ring/glow halo). */
   featured:
-    "border border-theme-tertiary/40 shadow-[0_0_36px_var(--theme-glow-soft),inset_0_1px_0_rgba(255,255,255,0.06)] ring-1 ring-theme-tertiary/25",
+    "border-theme-tertiary/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]",
   featuredHard:
-    "border border-accent-red/35 shadow-[0_0_32px_rgba(239,68,68,0.18),inset_0_1px_0_rgba(255,255,255,0.04)] ring-1 ring-accent-red/20",
+    "border-accent-red/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",
   interactive:
-    "btn-press cursor-pointer transition hover:border-theme-primary/45 hover:bg-pitch-800/65 hover:shadow-[0_0_16px_var(--theme-glow-soft)] active:border-theme-primary/55 active:bg-pitch-800/80",
+    "btn-press cursor-pointer transition hover:border-theme-primary/45 hover:bg-pitch-800/65 active:border-theme-primary/55 active:bg-pitch-800/80",
   selected:
-    "border-theme-tertiary/60 bg-pitch-800/45 ring-1 ring-theme-tertiary/30 shadow-[0_0_20px_var(--theme-glow-soft)]",
+    "border-theme-tertiary/50 bg-pitch-800/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",
   /** Legacy global panel — aligned with design system surfaces */
   panel: "matchday-panel",
-  glass: "card-glass",
-  /** Home-style featured mode card stack */
-  hero: "matchday-panel card-glass",
+  /** Backdrop/blur overlay — pair with panel/base; no border (parent supplies outline). */
+  glass:
+    "rounded-2xl bg-pitch-800/55 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]",
+  /** Home-style featured mode card — single bordered surface */
+  hero: "matchday-panel",
 } as const;
 
 /** Page layout helpers — pair with PageShell component. */
@@ -58,7 +61,7 @@ export const FILTER = {
   input:
     "w-full rounded-lg border border-pitch-600 bg-pitch-900/60 px-3 py-2.5 text-sm text-white outline-none transition focus:border-theme-primary sm:px-4 sm:py-3",
   chipActive:
-    "border-theme-tertiary/60 bg-theme-primary/10 text-theme-primary ring-1 ring-theme-tertiary/30",
+    "border-theme-tertiary/60 bg-theme-primary/10 text-theme-primary",
   chipIdle: "border-pitch-600 text-gray-400 hover:text-white",
   tabGroup:
     "flex w-full flex-wrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:inline-flex sm:w-auto sm:flex-nowrap",
@@ -69,14 +72,13 @@ export const BTN_PRESS = "btn-press";
 
 /** Store theme trim for toggle groups / panels */
 export const THEME = {
-  /** Ring-only accent — parent tab group already has a base border. */
-  tabGroupRing:
-    "ring-1 ring-theme-tertiary/20 shadow-[0_0_14px_var(--theme-glow-soft)]",
+  /** Border-color accent — parent tab group already has a base border. */
+  tabGroupRing: "border-theme-tertiary/30",
 } as const;
 
 /** Shared button classes — prefer GameButton / getGameButtonClass for new code. */
 export const BTN = {
-  base: `${TYPO.button} btn-press inline-flex min-h-[44px] items-center justify-center rounded-lg px-4 py-2.5 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-tertiary disabled:active:scale-100 disabled:active:brightness-100`,
+  base: `${TYPO.button} btn-press inline-flex min-h-[44px] items-center justify-center rounded-lg px-4 py-2.5 transition focus-visible:outline-none disabled:active:scale-100 disabled:active:brightness-100`,
   theme:
     "game-button game-button--theme btn-press-glow game-button--md disabled:cursor-not-allowed disabled:opacity-50",
   themeLg:
@@ -116,25 +118,25 @@ export const BTN = {
     "game-button game-button--success btn-press game-button--md disabled:cursor-not-allowed disabled:opacity-50",
   tabActive: "bg-theme-primary text-[var(--theme-text-on-primary)]",
   tabIdle:
-    "border border-pitch-600 text-gray-400 hover:border-pitch-500 hover:text-white",
+    "border border-transparent text-gray-400 hover:bg-pitch-800/60 hover:text-white",
   tabGroupInner:
     "flex-1 rounded-lg px-4 py-2.5 sm:flex-none sm:px-5",
-  tabGroupActive:
-    "tab-group-btn-active ring-1 ring-theme-tertiary/40",
+  tabGroupActive: "tab-group-btn-active",
   modeCurrentActive:
     "border-2 border-mode-current/75 bg-mode-current text-pitch-950 shadow-[0_0_28px_var(--mode-current-glow),inset_0_1px_0_rgba(255,255,255,0.08)]",
   modeCurrentIdle:
     "border border-theme-tertiary/25 bg-pitch-900/90 text-gray-400 hover:border-theme-tertiary/50 hover:text-white",
   tabGroupIdle:
-    "border border-theme-tertiary/25 bg-pitch-900/90 text-gray-400 hover:border-theme-tertiary/50 hover:text-white",
+    "border border-transparent bg-pitch-900/90 text-gray-400 hover:bg-pitch-800/80 hover:text-white",
   toggleIdle:
-    "border border-theme-tertiary/30 bg-pitch-900/90 text-gray-400 hover:border-theme-tertiary/55 hover:text-white",
+    "border border-transparent bg-pitch-900/90 text-gray-400 hover:bg-pitch-800/80 hover:text-white",
   hardActive:
     "border-2 border-accent-red/85 bg-accent-red text-white shadow-[0_0_28px_rgba(239,68,68,0.5),inset_0_1px_0_rgba(255,255,255,0.1)]",
-  hardIdle: "text-gray-400 hover:border-accent-red/40 hover:bg-accent-red/10 hover:text-accent-red",
+  hardIdle:
+    "border border-transparent text-gray-400 hover:bg-accent-red/10 hover:text-accent-red",
   eraActive: "era-tab-btn-active",
   eraIdle:
-    "border border-theme-tertiary/30 bg-pitch-900/90 text-gray-400 hover:border-accent-gold/40 hover:text-accent-gold",
+    "border border-transparent bg-pitch-900/90 text-gray-400 hover:bg-pitch-800/80 hover:text-accent-gold",
   accentOutline: `w-full border border-theme-primary/40 bg-theme-primary/10 text-theme-primary hover:border-theme-primary/55 hover:bg-theme-primary/20 sm:w-auto`,
   hardAccentOutline: `w-full border border-accent-red/45 bg-accent-red/10 text-accent-red hover:border-accent-red/65 hover:bg-accent-red/20 hover:text-red-300 sm:w-auto`,
   goldOutline: `w-full border-2 border-accent-gold/50 bg-accent-gold/10 text-accent-gold hover:border-accent-gold/65 hover:bg-accent-gold/20`,
@@ -150,7 +152,7 @@ export const BTN = {
 /** Normal / Current mode visual tokens — green only for mode-state controls. */
 export const MODE_CURRENT = {
   tabGroupRing:
-    "border-mode-current/40 shadow-[0_0_20px_var(--mode-current-glow)]",
+    "border-mode-current/35",
   modeCardHover: "hover:border-mode-current/30 group-hover:text-mode-current",
 } as const;
 
@@ -164,7 +166,7 @@ export const NORMAL = {
 /** Era mode visual tokens — gold historic/retro accent. */
 export const ERA = {
   tabGroupRing:
-    "ring-1 ring-accent-gold/35 shadow-[0_0_16px_rgba(251,191,36,0.15)]",
+    "border-accent-gold/30",
   itemActive:
     "border border-accent-gold/40 bg-accent-gold/15 text-accent-gold",
   dot: "bg-accent-gold",
@@ -172,8 +174,7 @@ export const ERA = {
 
 /** Hard mode visual tokens — red mirror of normal green styling. */
 export const HARD = {
-  tabGroupRing:
-    "ring-1 ring-accent-red/35 shadow-[0_0_16px_rgba(239,68,68,0.15)]",
+  tabGroupRing: "border-accent-red/30",
   modeCard: CARD.featuredHard,
   modeCardHover: "hover:border-accent-red/45 group-hover:text-accent-red",
   banner:
@@ -201,7 +202,7 @@ export const NAV_SIZE = {
 export const NAV = {
   item: `${TYPO.nav} btn-press flex ${NAV_SIZE.control} items-center gap-2 rounded-lg border border-transparent px-2.5 text-sm transition`,
   itemActive:
-    "border border-theme-tertiary/45 bg-theme-primary/10 text-theme-primary ring-1 ring-theme-tertiary/30",
+    "border border-theme-tertiary/40 bg-theme-primary/10 text-theme-primary",
   itemIdle: "text-gray-300 hover:border-pitch-600/50 hover:bg-pitch-800/60 hover:text-white",
   list: "space-y-1",
   sectionLabel:

@@ -1,12 +1,13 @@
 "use client";
 
 import { GameButton } from "@/components/ui/GameButton";
+import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ManagerStat } from "@/components/manager/manager-ui";
-import { getClubColors } from "@/lib/clubs";
 import type { FriendlyOpponentChoice, ManagerCareer } from "@/lib/manager/types";
 import { getFriendlyAttendanceInterest } from "@/lib/manager/managerFriendlies";
+import { getFriendlyDualBorderStyle } from "@/lib/manager/managerFriendlyUi";
 import { playUiClick } from "@/lib/sound";
 
 interface ManagerFriendlySelectProps {
@@ -33,18 +34,21 @@ export function ManagerFriendlySelect({
       </div>
 
       <div className="grid items-stretch gap-3 sm:grid-cols-3">
-        {choices.map((choice) => {
-          const colors = getClubColors(choice.club);
-          return (
+        {choices.map((choice) => (
           <div
             key={choice.id}
-            className={`${CARD.elevated} ${SPACING.cardPadding} flex h-full flex-col border-l-4`}
-            style={{
-              borderLeftColor: colors.primary,
-              borderColor: colors.secondary,
-            }}
+            className={`${CARD.elevated} ${SPACING.cardPadding} flex h-full flex-col border border-pitch-700/40`}
+            style={getFriendlyDualBorderStyle(career.club, choice.club)}
           >
-            <div className="min-h-[3.25rem]">
+            <div className="flex min-h-[1.25rem] items-center justify-between gap-2">
+              <ClubDualSwatch club={career.club} size="sm" />
+              <span className="text-[10px] font-bold uppercase tracking-wider text-pitch-500">
+                vs
+              </span>
+              <ClubDualSwatch club={choice.club} size="sm" />
+            </div>
+
+            <div className="mt-3 min-h-[3.25rem]">
               <p className="line-clamp-2 font-semibold leading-snug text-white">
                 {choice.displayName}
               </p>
@@ -81,8 +85,7 @@ export function ManagerFriendlySelect({
               Choose Opponent
             </GameButton>
           </div>
-          );
-        })}
+        ))}
       </div>
     </div>
   );

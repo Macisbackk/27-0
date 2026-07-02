@@ -26,6 +26,7 @@ import {
 } from "@/lib/manager/managerAttendance";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { getClubIndicatorColor } from "@/lib/clubs";
+import { getFriendlyDualBorderStyle } from "@/lib/manager/managerFriendlyUi";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
@@ -148,7 +149,7 @@ function HubPlayoffsGateCard({
 
   return (
     <div
-      className={`${CARD.elevated} ${CARD.featured} ${SPACING.cardPadding} border-2 border-theme-primary/50 bg-gradient-to-b from-theme-primary/12 to-pitch-950/90 ring-2 ring-theme-primary/25`}
+      className={`${CARD.elevated} ${SPACING.cardPadding} border-2 border-theme-primary/50 bg-gradient-to-b from-theme-primary/12 to-pitch-950/90`}
     >
       <span className="inline-flex rounded-full border border-theme-primary/45 bg-theme-primary/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-theme-primary">
         Regular season complete
@@ -214,7 +215,7 @@ function HubPlayoffBracketPanel({
 
   return (
     <div
-      className={`${CARD.elevated} ${SPACING.cardPadding} border-2 border-accent-gold/55 bg-accent-gold/10 ring-2 ring-accent-gold/30`}
+      className={`${CARD.elevated} ${SPACING.cardPadding} border-2 border-accent-gold/55 bg-accent-gold/10`}
     >
       <div className="flex flex-wrap items-center gap-2">
         <p className={`${TYPO.sectionLabel} text-accent-gold`}>Play-Off Bracket</p>
@@ -463,14 +464,23 @@ export function ManagerHub({
     if (!result.ok) window.alert(result.message);
   };
 
+  const isFriendlyFixture = nextFixture?.competition === "friendly";
+
   const nextFixtureCard =
     nextFixture && !career.isSeasonComplete && !playoffsPending ? (
       <div
-        className={`${CARD.elevated} ${CARD.featured} ${SPACING.cardPadding} ${
+        className={`${CARD.elevated} ${SPACING.cardPadding} ${
           isCupFixture || isPlayoffFixture
-            ? "border-2 border-accent-gold/55 bg-accent-gold/12 ring-2 ring-accent-gold/30"
-            : ""
+            ? "border-2 border-accent-gold/55 bg-accent-gold/12"
+            : isFriendlyFixture
+              ? "border border-pitch-700/40"
+              : CARD.featured
         }`}
+        style={
+          isFriendlyFixture
+            ? getFriendlyDualBorderStyle(career.club, nextFixture.opponent)
+            : undefined
+        }
       >
         <div className="flex flex-wrap items-center gap-2">
           <p className={TYPO.sectionLabel}>
@@ -499,6 +509,14 @@ export function ManagerHub({
             {homeAttendanceOutlook.label}
           </p>
         )}
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
+            Recent Form
+          </p>
+          <ManagerFormStrip
+            results={career.recentForm.slice(-5) as ("W" | "L" | "D")[]}
+          />
+        </div>
         <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
           <ManagerStat label="Your rating" value={String(teamRating)} tone="primary" />
           {oppRating !== null && (
@@ -585,29 +603,7 @@ export function ManagerHub({
       </ManagerSectionCard>
     ) : null;
 
-  const teamStatusCard = (
-    <ManagerSectionCard title="Team Status">
-      <div className="mt-2 grid grid-cols-2 gap-3 text-sm sm:grid-cols-2">
-        <ManagerStat
-          label="Injuries"
-          value={String(injuryCount)}
-          tone={injuryCount > 0 ? "red" : "primary"}
-        />
-        <div>
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
-            Recent Form
-          </p>
-          <div className="mt-1">
-            <ManagerFormStrip
-              results={career.recentForm.slice(-5) as ("W" | "L" | "D")[]}
-            />
-          </div>
-        </div>
-      </div>
-    </ManagerSectionCard>
-  );
-
-  const scoringLeadersCard =
+  const contractsCard =
     ts.played > 0 ? (
       <ManagerSectionCard title="Scoring Leaders">
         <div className="mt-2 grid gap-2 text-sm sm:grid-cols-2">
@@ -777,7 +773,6 @@ export function ManagerHub({
           wageOverBudget={wageOverBudget}
         />
         <ManagerClubFinancesPanel career={career} />
-        {teamStatusCard}
         {quickActionsCard}
       </div>
     );
@@ -796,7 +791,6 @@ export function ManagerHub({
           wageOverBudget={wageOverBudget}
         />
         <ManagerClubFinancesPanel career={career} />
-        {teamStatusCard}
         {scoringLeadersCard}
         {contractsCard}
         {quickActionsCard}
@@ -821,8 +815,6 @@ export function ManagerHub({
       <HubStandingsPanel career={career} />
 
       {newsSection}
-
-      {teamStatusCard}
 
       {scoringLeadersCard}
 

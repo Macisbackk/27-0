@@ -460,6 +460,10 @@ export interface PlayerDevelopmentState {
   potential: number;
   /** Per-match growth pace carried over from the reserve squad. */
   developmentRate?: number;
+  /** Squad rating at the start of the current season (for year-end review). */
+  seasonStartRating?: number;
+  /** Season year when this player was promoted from reserves on a full-time deal. */
+  promotedSeasonYear?: number;
 }
 
 export interface PlayerDevelopmentChange {
@@ -469,6 +473,8 @@ export interface PlayerDevelopmentChange {
   after: number;
   potential: number;
   delta: number;
+  seasonStartRating?: number;
+  promotedFromReserve?: boolean;
 }
 
 export interface ManagerCareer {

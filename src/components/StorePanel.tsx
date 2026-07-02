@@ -165,9 +165,9 @@ export function StorePanel() {
           return (
             <li
               key={theme.id}
-              className={`${CARD.base} ${CARD.panel} overflow-hidden rounded-xl border transition ${
+              className={`${CARD.panel} overflow-hidden rounded-xl transition ${
                 isSelected
-                  ? "border-[var(--theme-tertiary)] shadow-[0_0_24px_var(--theme-glow)] ring-1 ring-[var(--theme-tertiary)]"
+                  ? "border-[var(--theme-tertiary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
                   : "border-pitch-700/50"
               }`}
             >

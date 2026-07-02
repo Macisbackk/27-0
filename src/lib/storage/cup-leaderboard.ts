@@ -331,6 +331,8 @@ export function mapCupProfilesToTrackerEntries(
       bestCupFinishRank: 0,
       bestCupFinishLabel: "",
       cupWinPercentage: winPct,
+      leagueTitles: 0,
+      superLeagueTitles: 0,
     };
   });
 }

@@ -34,8 +34,8 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
 
   const panelClass =
     variant === "featured"
-      ? `${SPACING.sectionGap} w-full max-w-3xl matchday-panel ${CARD.base} ${CARD.featured} ${SPACING.cardPadding}`
-      : `${SPACING.sectionGap} w-full max-w-2xl matchday-panel ${CARD.base} p-4`;
+      ? `${SPACING.sectionGap} w-full max-w-3xl matchday-panel ${CARD.featured} ${SPACING.cardPadding}`
+      : `${SPACING.sectionGap} w-full max-w-2xl matchday-panel p-4`;
 
   const titleClass =
     variant === "featured"

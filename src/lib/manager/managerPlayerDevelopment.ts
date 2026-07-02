@@ -1,7 +1,7 @@
 import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { getPlayerById } from "../players";
-import { getPlayerAge } from "../players/player-age";
+import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import type {
   ManagerCareer,
   PlayerDevelopmentChange,
@@ -25,10 +25,10 @@ function developOnePlayer(
   playerDevelopment: Record<string, PlayerDevelopmentState>,
   extras?: { appearances?: number; tries?: number; form?: number }
 ): PlayerDevelopmentState | null {
-  const base = getPlayerById(playerId);
+  const base = getPlayerById(playerId) ?? getManagerPlayer(career, playerId);
   if (!base) return null;
 
-  const age = getPlayerAge(base) ?? 25;
+  const age = getManagerPlayerAge(career, playerId) ?? 25;
   const existing = playerDevelopment[playerId];
   const baseline = getManagerModePlayerRating(
     playerId,
@@ -116,11 +116,44 @@ function developLeaguePlayersAtSeasonEnd(
       if (after === before) continue;
 
       next[player.id] = {
+        ...existing,
         rating: after,
         peakRating: Math.max(existing?.peakRating ?? baseline, after, baseline),
         potential,
       };
     }
+  }
+
+  return next;
+}
+
+/** Snapshot each squad player's rating at the start of a new season. */
+export function snapshotSquadSeasonStartRatings(
+  career: ManagerCareer
+): Record<string, PlayerDevelopmentState> {
+  const next = { ...(career.playerDevelopment ?? {}) };
+
+  for (const ps of career.squad) {
+    const base = getPlayerById(ps.playerId);
+    if (!base) continue;
+
+    const age = getManagerPlayerAge(career, ps.playerId) ?? 25;
+    const baseline = getManagerModePlayerRating(
+      ps.playerId,
+      base.name,
+      base.rating ?? base.peakRating
+    );
+    const existing = next[ps.playerId];
+    const current = existing?.rating ?? baseline;
+
+    next[ps.playerId] = {
+      rating: current,
+      peakRating: existing?.peakRating ?? current,
+      potential: existing?.potential ?? computePotential(baseline, age),
+      developmentRate: existing?.developmentRate,
+      seasonStartRating: current,
+      promotedSeasonYear: undefined,
+    };
   }
 
   return next;
@@ -144,7 +177,9 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
       base.name,
       base.rating ?? base.peakRating
     );
-    const before = playerDevelopment[ps.playerId]?.rating ?? baseline;
+    const devState = playerDevelopment[ps.playerId];
+    const reviewBefore =
+      devState?.seasonStartRating ?? devState?.rating ?? baseline;
 
     const developed = developOnePlayer(ps.playerId, career, playerDevelopment, {
       appearances: ps.seasonAppearances,
@@ -153,17 +188,23 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
     });
     if (!developed) continue;
 
-    playerDevelopment[ps.playerId] = developed;
+    playerDevelopment[ps.playerId] = {
+      ...devState,
+      ...developed,
+    };
 
-    const actualDelta = developed.rating - before;
-    if (actualDelta !== 0) {
+    const actualDelta = developed.rating - reviewBefore;
+    const promotedThisSeason = devState?.promotedSeasonYear === career.seasonYear;
+    if (actualDelta !== 0 || promotedThisSeason) {
       changes.push({
         playerId: ps.playerId,
         playerName: base.name,
-        before,
+        before: reviewBefore,
         after: developed.rating,
         potential: developed.potential,
         delta: actualDelta,
+        seasonStartRating: devState?.seasonStartRating,
+        promotedFromReserve: promotedThisSeason,
       });
     }
   }
@@ -202,5 +243,8 @@ export function getPlayerPotential(
   if (dev) return dev.potential;
   const player = getManagerPlayer(career, playerId);
   if (!player) return null;
-  return computePotential(player.peakRating, getPlayerAge(player) ?? 25);
+  return computePotential(
+    player.peakRating,
+    getManagerPlayerAge(career, playerId) ?? 25
+  );
 }

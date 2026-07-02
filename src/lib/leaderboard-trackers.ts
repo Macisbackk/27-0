@@ -17,6 +17,7 @@ export type LeaderboardTrackerType =
   | "total_winnings"
   | "manager_challenge_cups"
   | "manager_cup_finals"
+  | "manager_league_titles"
   | "manager_total_earnings";
 
 export type TrophyCabinetSection = "current" | "era";
@@ -42,6 +43,10 @@ export interface LeaderboardTrackerEntry {
   bestCupFinishRank: number;
   bestCupFinishLabel: string;
   cupWinPercentage: number;
+  /** Manager Mode — regular-season league titles (1st in table). */
+  leagueTitles: number;
+  /** Manager Mode — play-off Super League championships. */
+  superLeagueTitles: number;
 }
 
 export interface LeaderboardTrackerRow {
@@ -159,6 +164,12 @@ export const LEADERBOARD_TRACKERS: {
     label: "Total Winnings",
     shortLabel: "Total Winnings",
     clubFundsOnly: true,
+  },
+  {
+    id: "manager_league_titles",
+    label: "League Titles Won",
+    shortLabel: "League Titles",
+    managerSuperLeagueOnly: true,
   },
   {
     id: "manager_challenge_cups",
@@ -293,6 +304,7 @@ export function getTrackersForManagerDbMode(
   }
   const order: LeaderboardTrackerType[] = [
     "best_record",
+    "manager_league_titles",
     "perfect_runs",
     "winless_seasons",
   ];
@@ -349,6 +361,8 @@ export function rankByTracker(
         return b.challengeCupWins - a.challengeCupWins;
       case "manager_cup_finals":
         return b.cupFinals - a.cupFinals;
+      case "manager_league_titles":
+        return b.leagueTitles - a.leagueTitles;
       default:
         return 0;
     }
@@ -402,6 +416,8 @@ export function getTrackerStatDisplay(
       return String(entry.challengeCupWins);
     case "manager_cup_finals":
       return String(entry.cupFinals);
+    case "manager_league_titles":
+      return String(entry.leagueTitles);
     default:
       return "—";
   }
@@ -499,6 +515,8 @@ export function mergeLeaderboardStats(
     bestCupFinishRank,
     bestCupFinishLabel,
     cupWinPercentage,
+    leagueTitles: 0,
+    superLeagueTitles: 0,
   };
 }
 
@@ -539,5 +557,7 @@ export function combineLeaderboardTrackerStats(
       cupGames > 0
         ? (totalWins / cupGames) * 100
         : Math.max(a.cupWinPercentage ?? 0, b.cupWinPercentage ?? 0),
+    leagueTitles: (a.leagueTitles ?? 0) + (b.leagueTitles ?? 0),
+    superLeagueTitles: (a.superLeagueTitles ?? 0) + (b.superLeagueTitles ?? 0),
   };
 }

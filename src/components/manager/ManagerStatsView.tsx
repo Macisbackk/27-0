@@ -8,7 +8,7 @@ import {
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
-import { getManagerPlayer } from "@/lib/manager/managerPlayers";
+import { getManagerPlayer, getRetiredPlayerDisplayAge } from "@/lib/manager/managerPlayers";
 import {
   computeSquadFitness,
   computeSquadForm,
@@ -417,7 +417,7 @@ function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
                       {player.positionLabel}
                     </td>
                     <td className="px-3 py-2.5 text-center text-pitch-300">
-                      {player.age}
+                      {getRetiredPlayerDisplayAge(career, player)}
                     </td>
                     <td className="px-3 py-2.5 text-center font-semibold text-accent-gold">
                       {player.peakRating}

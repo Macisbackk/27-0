@@ -82,6 +82,18 @@ body {
   button:not(:disabled):not(.no-btn-press) {
     @apply btn-press;
   }
+
+  /* Prevent persistent browser focus ring (often blue) after mouse clicks. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--theme-primary) 55%, transparent);
+    outline-offset: 2px;
+  }
 }
 
 .app-header {
