@@ -603,7 +603,7 @@ export function ManagerHub({
       </ManagerSectionCard>
     ) : null;
 
-  const contractsCard =
+  const scoringLeadersCard =
     ts.played > 0 ? (
       <ManagerSectionCard title="Scoring Leaders">
         <div className="mt-2 grid gap-2 text-sm sm:grid-cols-2">

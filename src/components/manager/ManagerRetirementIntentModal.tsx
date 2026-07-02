@@ -71,6 +71,7 @@ export function ManagerRetirementIntentModal({
           player={player}
           club={career.club}
           listed={false}
+          fee={0}
           wagePerYear={contract?.wagePerYear ?? 0}
         >
           <p className={`${TYPO.bodySm} text-pitch-400`}>

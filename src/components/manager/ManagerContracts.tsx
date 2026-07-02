@@ -10,6 +10,8 @@ import {
   getManagerPlayerAge,
   getManagerPlayerEligiblePositions,
 } from "@/lib/manager/managerPlayers";
+import { POSITION_SHORT } from "@/lib/positions";
+import type { Position } from "@/lib/types";
 import {
   evaluateRenewalOffer,
   formatWage,

@@ -50,6 +50,8 @@ export interface StoredLeaderboardEntry {
   bestCupFinishRank: number;
   bestCupFinishLabel: string;
   cupWinPercentage: number;
+  leagueTitles?: number;
+  superLeagueTitles?: number;
   /** Super League Current vs Era — defaults to current for legacy rows. */
   modeVariant?: ModeVariant;
 }

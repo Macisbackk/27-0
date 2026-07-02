@@ -8,7 +8,6 @@ import type {
   PlayerDevelopmentState,
 } from "./types";
 import { getManagerModePlayerRating } from "./managerSquadRatings";
-import { getManagerPlayer } from "./managerPlayers";
 import { getLeagueClubRosterIds } from "./managerLeagueRosters";
 
 function computePotential(peakRating: number, age: number): number {
@@ -98,7 +97,7 @@ function developLeaguePlayersAtSeasonEnd(
       if (userIds.has(player.id)) continue;
       if (rng() > 0.55) continue;
 
-      const age = getPlayerAge(player) ?? 25;
+      const age = getManagerPlayerAge(career, player.id) ?? 25;
       const baseline = getManagerModePlayerRating(
         player.id,
         player.name,
