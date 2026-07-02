@@ -3,6 +3,10 @@ import type { ManagerCareer } from "./types";
 import { DEFAULT_TACTICS } from "./types";
 import { EMPTY_TEAM_SEASON_STATS } from "./managerCareerStats";
 import { initLeagueClubStates, ensureLeagueClubStates } from "./managerLeagueState";
+import {
+  ensureLeagueClubRosters,
+  initLeagueClubRosters,
+} from "./managerLeagueRosters";
 import { getManagerClubConfig } from "./club-config";
 import {
   getManagerLineupForClub,
@@ -10,7 +14,6 @@ import {
 } from "./managerRating";
 import { createInitialPlayerState } from "./managerSquad";
 import { buildManagerSchedule, buildLeagueTableFromMatches } from "./managerFixtures";
-import { generateTransferMarket } from "./managerTransfers";
 import {
   buildContractsForSquad,
   computeWageBill,
@@ -154,7 +157,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     leagueListedPlayers:
       raw.leagueListedPlayers ??
       generateLeagueListedPlayers(
-        raw.club,
+        raw,
         raw.seed ?? "migrate",
         raw.gameWeek ?? 0
       ),
@@ -172,6 +175,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     lastReserveReportWeek: raw.lastReserveReportWeek,
     leagueClubStates: ensureLeagueClubStates(raw.leagueClubStates),
     leagueClubStatesWeek: raw.leagueClubStatesWeek ?? 0,
+    leagueClubRosters: raw.leagueClubRosters,
     playerDevelopment: raw.playerDevelopment ?? {},
     lastSeasonDevelopmentReview: raw.lastSeasonDevelopmentReview,
   };
@@ -184,6 +188,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = ensureCupBracketReady(career);
   career = ensurePlayoffsReady(career);
   career = ensureSeasonEndPlayerDevelopment(career);
+  career = ensureLeagueClubRosters(career);
   return syncManagerInboxMessages(career);
 }
 
@@ -227,7 +232,6 @@ export function createNewCareer(club: string): ManagerCareer {
 
   const schedule = buildManagerSchedule(club, seed);
   const squadIdSet = new Set(squad.map((p) => p.playerId));
-  const leagueListed = generateLeagueListedPlayers(club, seed, 0);
 
   const transferBudget = computeFirstSeasonTransferBudget(club, seed);
 
@@ -266,8 +270,8 @@ export function createNewCareer(club: string): ManagerCareer {
     currentFixtureIndex: 0,
     currentRound: 0,
     leagueTable: buildLeagueTableFromMatches([], club),
-    transferMarket: leagueListed.map((l) => l.playerId),
-    leagueListedPlayers: leagueListed,
+    transferMarket: [],
+    leagueListedPlayers: [],
     playerTransferStatus: {},
     inboxMessages: [],
     clubFunds: initClubTransferBudgets(club, seed),
@@ -302,11 +306,18 @@ export function createNewCareer(club: string): ManagerCareer {
     hubResultsExpanded: false,
     leagueClubStates: initLeagueClubStates(),
     leagueClubStatesWeek: 0,
+    leagueClubRosters: initLeagueClubRosters(club),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
 
   let hydrated = hydrateManagerCareer(career);
+  const leagueListed = generateLeagueListedPlayers(hydrated, seed, 0);
+  hydrated = {
+    ...hydrated,
+    leagueListedPlayers: leagueListed,
+    transferMarket: leagueListed.map((l) => l.playerId),
+  };
   hydrated = applyYearlyYouthIntake(hydrated);
   saveManagerCareer(hydrated);
   return hydrated;

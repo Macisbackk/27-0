@@ -11,7 +11,7 @@ interface PageShellProps {
   innerClassName?: string;
   /** Stadium floodlight overlay (play / manager). */
   withLights?: boolean;
-  /** On lg+, constrain to viewport below header/footer. */
+  /** On lg+, minimum height below header (page scrolls; footer follows content). */
   desktopFit?: boolean;
   /** Tighter vertical padding on desktop. */
   compact?: boolean;

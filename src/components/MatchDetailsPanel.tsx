@@ -1,27 +1,13 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import type { MatchFixture } from "@/lib/game/season-simulation";
-import {
-  DREAM_TEAM_NAME,
-  type TeamScoringDetail,
-} from "@/lib/game/season-simulation";
-import { getOpponentTeamSummary } from "@/lib/game/opponent-scorers";
-import { getEraTeamByDisplayName } from "@/lib/players/era-teams";
-import { getAverageSquadRating } from "@/lib/squad-analysis";
-import {
-  findSlotByPlayerId,
-  formatPlayerLineExtras,
-} from "@/lib/squad-display";
+import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import type { SquadSlot } from "@/lib/types";
 import { resolveEraTeamClubName } from "@/lib/players/era-teams";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { ClubTeamLabel } from "./ClubTeamLabel";
-import { KickingSummarySection } from "./KickingSummarySection";
-import { TeamColouredScoringSection } from "./TeamColouredScoringSection";
-import { TryScorerChips, TryScorersEmptyNote } from "./TryScorerChips";
+import { TeamScoringBreakdown } from "./TeamScoringBreakdown";
 
 interface MatchDetailsPanelProps {
   fixture: MatchFixture;
@@ -36,6 +22,8 @@ interface MatchDetailsPanelProps {
   eraTeamValues?: Record<string, number>;
   /** Current Mode — opponent summary uses 2026 squad pool only. */
   currentSeasonOnly?: boolean;
+  /** Hide match story when shown elsewhere (e.g. manager match review). */
+  hideMatchStory?: boolean;
 }
 
 export function MatchDetailsPanel({
@@ -47,26 +35,10 @@ export function MatchDetailsPanel({
   userTeamName = DREAM_TEAM_NAME,
   userClubColorOverride,
   eraClubLookup,
-  eraTeamRatings,
   currentSeasonOnly = false,
+  hideMatchStory = false,
 }: MatchDetailsPanelProps) {
   const detail = fixture.scoringDetail;
-  const userAvgRating = userSquad ? getAverageSquadRating(userSquad) : 0;
-  const eraOpponent = eraClubLookup
-    ? getEraTeamByDisplayName(fixture.opponent)
-    : null;
-  const opponentSummary =
-    eraOpponent && eraTeamRatings?.[fixture.opponent] !== undefined
-      ? {
-          name: fixture.opponent,
-          averageRating: eraTeamRatings[fixture.opponent],
-        }
-      : getOpponentTeamSummary(
-          fixture.opponent,
-          seed,
-          fixture.round,
-          currentSeasonOnly ? { currentSeasonOnly: true } : undefined
-        );
 
   return (
     <motion.div
@@ -88,7 +60,7 @@ export function MatchDetailsPanel({
               )}
               vs {fixture.opponent}
             </p>
-            {fixture.matchBio && (
+            {fixture.matchBio && !hideMatchStory && (
               <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
                 <p className={TYPO.sectionTitle}>Match Story</p>
                 <p className={`mt-2 ${TYPO.bodySm}`}>{fixture.matchBio}</p>
@@ -116,24 +88,22 @@ export function MatchDetailsPanel({
         </div>
 
         {detail ? (
-          <div className={SPACING.stackLg}>
-            <TeamScoringBlock
+          <div className="space-y-4">
+            <TeamScoringBreakdown
               teamName={userTeamName}
               colorClub={
                 userClubColorOverride ??
                 resolveEraTeamClubName(userTeamName, eraClubLookup)
               }
               scoring={detail.dreamTeam}
-              averageRating={userAvgRating}
               userSquad={userSquad}
-              isUserTeam
+              variant="user"
             />
-            <TeamScoringBlock
+            <TeamScoringBreakdown
               teamName={fixture.opponent}
               colorClub={resolveEraTeamClubName(fixture.opponent, eraClubLookup)}
               scoring={detail.opponent}
-              averageRating={opponentSummary.averageRating}
-              isUserTeam={false}
+              variant="opponent"
             />
           </div>
         ) : (
@@ -141,79 +111,5 @@ export function MatchDetailsPanel({
         )}
       </div>
     </motion.div>
-  );
-}
-
-function TeamScoringBlock({
-  teamName,
-  colorClub,
-  scoring,
-  averageRating,
-  userSquad,
-  isUserTeam,
-}: {
-  teamName: string;
-  colorClub: string;
-  scoring: TeamScoringDetail;
-  averageRating: number;
-  userSquad?: SquadSlot[];
-  isUserTeam: boolean;
-}) {
-  const hasTries = scoring.tryScorers.length > 0;
-  const kicking = scoring.kicking;
-  const hasKicking =
-    (kicking?.conversions ?? 0) > 0 ||
-    (kicking?.penalties ?? 0) > 0 ||
-    (kicking?.dropGoals ?? 0) > 0;
-
-  return (
-    <div className={SPACING.stackMd}>
-      <ClubTeamLabel club={teamName} colorClub={colorClub} />
-      {hasTries && (
-        <TeamColouredScoringSection colorClub={colorClub}>
-          <p className={TYPO.sectionTitle}>Tries</p>
-          <div className="mt-2">
-            <TryScorerChips
-              scorers={scoring.tryScorers.map((s) => {
-                const slot = userSquad
-                  ? findSlotByPlayerId(userSquad, s.playerId)
-                  : undefined;
-                const extras = formatPlayerLineExtras(slot);
-                return {
-                  playerId: s.playerId,
-                  name: s.name,
-                  tries: s.tries,
-                  positionNote: extras.positionNote,
-                };
-              })}
-              variant={isUserTeam ? "user" : "opponent"}
-            />
-          </div>
-        </TeamColouredScoringSection>
-      )}
-      {hasKicking && (
-        <TeamColouredScoringSection colorClub={colorClub}>
-          <KickingSummarySection kicking={kicking} bare />
-        </TeamColouredScoringSection>
-      )}
-      {!hasTries && !hasKicking && (
-        <TryScorersEmptyNote />
-      )}
-    </div>
-  );
-}
-
-function ScoringSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: ReactNode;
-}) {
-  return (
-    <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
-      <p className={TYPO.sectionTitle}>{title}</p>
-      <div className="mt-2">{children}</div>
-    </div>
   );
 }

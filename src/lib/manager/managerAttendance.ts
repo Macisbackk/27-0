@@ -66,6 +66,9 @@ function leaguePositionMultiplier(position: number): number {
 }
 
 function opponentMultiplier(opponent: string): number {
+  if (POOR_AWAY_FOLLOWING_CLUBS.has(opponent)) {
+    return 0.86;
+  }
   const strength = getClubBaseStrength(opponent);
   return 0.9 + (strength - 70) * 0.008;
 }
@@ -78,9 +81,72 @@ const POOR_AWAY_FOLLOWING_CLUBS = new Set([
   "Huddersfield Giants",
 ]);
 
+export function hasPoorAwayFollowing(club: string): boolean {
+  return POOR_AWAY_FOLLOWING_CLUBS.has(club);
+}
+
 function awayTravelCrowdMultiplier(visitingClub: string): number {
   if (POOR_AWAY_FOLLOWING_CLUBS.has(visitingClub)) return 0.72;
   return 1;
+}
+
+export type AttendanceOutlookLevel = "low" | "medium" | "high";
+
+function attendanceOutlookFromPredicted(
+  predicted: number,
+  baseAttendance: number,
+  visitingOpponent: string
+): { level: AttendanceOutlookLevel; label: string } {
+  const ratio = predicted / Math.max(1, baseAttendance);
+  const poorAway = hasPoorAwayFollowing(visitingOpponent);
+
+  if (poorAway) {
+    if (ratio < 0.78) {
+      return {
+        level: "low",
+        label: "Modest crowd — limited away support",
+      };
+    }
+    if (ratio < 0.95) {
+      return {
+        level: "medium",
+        label: "Average gate — few travelling fans",
+      };
+    }
+    return {
+      level: "medium",
+      label: "Steady gate — weak away following",
+    };
+  }
+
+  if (ratio >= 1.08) {
+    return { level: "high", label: "Strong turnout expected" };
+  }
+  if (ratio >= 0.88) {
+    return { level: "medium", label: "Good gate expected" };
+  }
+  return { level: "low", label: "Modest crowd expected" };
+}
+
+/** Predicted home gate + fan-facing label for an upcoming fixture. */
+export function getHomeFixtureAttendanceOutlook(
+  career: ManagerCareer,
+  fixture: Pick<
+    ManagerScheduledFixture,
+    "opponent" | "isHome" | "competition" | "round" | "id"
+  >
+): { label: string; predictedAttendance: number; level: AttendanceOutlookLevel } | null {
+  if (!fixture.isHome) return null;
+
+  const scheduled = fixture as ManagerScheduledFixture;
+  const predictedAttendance = calculateMatchAttendance(career, scheduled);
+  const { label, level } = attendanceOutlookFromPredicted(
+    predictedAttendance,
+    career.attendanceData.baseAttendance,
+    fixture.opponent
+  );
+
+  return { label, predictedAttendance, level };
 }
 
 function competitionMultiplier(competition: ManagerCompetition): number {
@@ -130,8 +196,9 @@ export function processHomeMatchAttendance(
 
   const attendance = calculateMatchAttendance(career, fixture);
   const isBigGame =
-    getClubBaseStrength(fixture.opponent) >= 80 ||
-    fixture.competition === "challenge_cup";
+    fixture.competition === "challenge_cup" ||
+    (!hasPoorAwayFollowing(fixture.opponent) &&
+      getClubBaseStrength(fixture.opponent) >= 80);
   const price = ticketPrice(fixture.competition, isBigGame);
   const gateIncome = attendance * price;
 

@@ -1,6 +1,7 @@
 import seedrandom from "seedrandom";
 import type { MatchFixture } from "../game/season-simulation";
 import { snapToRLScore, decomposeRLScore } from "../game/rl-scores";
+import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
 import { getOpponentMatchRating } from "../game/opponent-scorers";
 import type { Position } from "../types";
 import type {
@@ -51,8 +52,7 @@ const COMMAND_LABELS: Record<LiveMatchCommand, string> = {
   attack: "Attack",
   defend: "Defend",
   balanced: "Balanced",
-  use_forwards: "Use Forwards",
-  spread_wide: "Spread Wide",
+  champagne: "Champagne",
 };
 
 export function getLiveCommandLabel(cmd: LiveMatchCommand): string {
@@ -70,11 +70,11 @@ export function commandFromTactics(career: ManagerCareer): LiveMatchCommand {
   ) {
     return "defend";
   }
-  if (attackFocus === "middle" || playingStyle === "direct") {
-    return "use_forwards";
-  }
-  if (attackFocus === "edges" || playingStyle === "expansive") {
-    return "spread_wide";
+  if (
+    playingStyle === "expansive" &&
+    (attackFocus === "offloads" || defenceFocus === "aggressive_contact")
+  ) {
+    return "champagne";
   }
   if (
     playingStyle === "high_tempo" ||
@@ -84,6 +84,53 @@ export function commandFromTactics(career: ManagerCareer): LiveMatchCommand {
     return "attack";
   }
   return "balanced";
+}
+
+export const LIVE_MATCH_COMMANDS: LiveMatchCommand[] = [
+  "attack",
+  "balanced",
+  "defend",
+  "champagne",
+];
+
+export function describeLiveCommand(cmd: LiveMatchCommand): string {
+  switch (cmd) {
+    case "attack":
+      return "Push for tries — more attacking chances, slightly more risk.";
+    case "defend":
+      return "Protect the scoreline — tighter defence, less attacking output.";
+    case "champagne":
+      return "All-out attack — highest try chance, defence wide open. Extra risky when you're the weaker side.";
+    default:
+      return "Steady game — balance between attack and defence.";
+  }
+}
+
+/** Why the current tactics map to a given live-play default. */
+export function getTacticsLiveCommandReason(career: ManagerCareer): string {
+  const { playingStyle, attackFocus, defenceFocus } = career.tactics;
+
+  if (
+    playingStyle === "defensive" ||
+    defenceFocus === "conservative" ||
+    defenceFocus === "goal_line"
+  ) {
+    return "Defensive setup — live play opens on Defend.";
+  }
+  if (
+    playingStyle === "expansive" &&
+    (attackFocus === "offloads" || defenceFocus === "aggressive_contact")
+  ) {
+    return "Expansive, high-risk approach — live play opens on Champagne rugby.";
+  }
+  if (
+    playingStyle === "high_tempo" ||
+    attackFocus === "offloads" ||
+    defenceFocus === "aggressive_contact"
+  ) {
+    return "Attacking emphasis — live play opens on Attack.";
+  }
+  return "Balanced setup — live play opens on Balanced.";
 }
 
 export function formatLiveClock(minute: number): string {
@@ -117,7 +164,10 @@ export function getMatchStatusLabel(
   };
 }
 
-function commandAttackMod(cmd: LiveMatchCommand): {
+function commandAttackMod(
+  cmd: LiveMatchCommand,
+  ratingGap = 0
+): {
   userChance: number;
   oppChance: number;
   errorRisk: number;
@@ -128,10 +178,16 @@ function commandAttackMod(cmd: LiveMatchCommand): {
       return { userChance: 1.35, oppChance: 1.1, errorRisk: 1.15, momentumShift: 3 };
     case "defend":
       return { userChance: 0.75, oppChance: 0.85, errorRisk: 0.8, momentumShift: -2 };
-    case "use_forwards":
-      return { userChance: 1.2, oppChance: 1.0, errorRisk: 1.05, momentumShift: 2 };
-    case "spread_wide":
-      return { userChance: 1.15, oppChance: 1.05, errorRisk: 1.1, momentumShift: 2 };
+    case "champagne": {
+      const concedeVsBetter =
+        ratingGap < 0 ? 0.15 + Math.min(0.55, Math.abs(ratingGap) * 0.04) : 0.1;
+      return {
+        userChance: 1.55,
+        oppChance: 1.22 + concedeVsBetter,
+        errorRisk: 1.35,
+        momentumShift: 5,
+      };
+    }
     default:
       return { userChance: 1, oppChance: 1, errorRisk: 1, momentumShift: 0 };
   }
@@ -149,11 +205,8 @@ function tacticCommandBias(
   if (t.playingStyle === "defensive") oppChance -= 0.06 * scale;
   if (t.playingStyle === "direct") userChance += 0.05 * scale;
   if (t.defenceFocus === "conservative") oppChance -= 0.05 * scale;
-  if (cmd === "use_forwards" && t.attackFocus === "middle") {
-    userChance += 0.06;
-  }
-  if (cmd === "spread_wide" && t.attackFocus === "edges") {
-    userChance += 0.06;
+  if (cmd === "champagne" && t.playingStyle === "expansive") {
+    userChance += 0.05;
   }
   if (cmd === "defend" && t.defenceFocus === "goal_line") {
     oppChance -= 0.05;
@@ -181,10 +234,10 @@ function scorerPositionBias(
   attackFocus: ManagerCareer["tactics"]["attackFocus"]
 ): number {
   const preferForward =
-    command === "use_forwards" ||
-    (command === "balanced" && attackFocus === "middle");
+    command === "balanced" && attackFocus === "middle";
   const preferBack =
-    command === "spread_wide" ||
+    command === "champagne" ||
+    command === "attack" ||
     (command === "balanced" && attackFocus === "edges");
   if (preferForward && FORWARD_POSITIONS.includes(pos)) return 1.12;
   if (preferBack && BACK_POSITIONS.includes(pos)) return 1.12;
@@ -280,11 +333,8 @@ function effectivenessFromCommand(
   cmd: LiveMatchCommand,
   momentum: number
 ): string {
-  if (cmd === "use_forwards" && momentum > 15) {
-    return "Good — your pack is winning territory.";
-  }
-  if (cmd === "spread_wide" && momentum > 10) {
-    return "The edges are creating space out wide.";
+  if (cmd === "champagne" && momentum > 12) {
+    return "Champagne rugby — all-out attack, defence wide open.";
   }
   if (cmd === "defend" && momentum < -10) {
     return "Under pressure — defensive line holding for now.";
@@ -416,11 +466,16 @@ export function advanceLiveTick(
     state.opponent,
     state.seed,
     state.round,
-    { currentSeasonOnly: true }
+    getManagerOpponentPoolOptions(career, state.opponent)
   );
 
-  const mods = commandAttackMod(command);
+  const ratingGap = userRating - oppRating;
+  const mods = commandAttackMod(command, ratingGap);
   const tacticBias = tacticCommandBias(career, command);
+  const champagneVsBetter =
+    command === "champagne" && ratingGap < 0
+      ? 1 + Math.min(0.5, Math.abs(ratingGap) * 0.045)
+      : 1;
 
   for (let step = 0; step < GAME_MINUTES_PER_TICK; step++) {
     minute++;
@@ -446,7 +501,7 @@ export function advanceLiveTick(
         userRating,
         !state.isHome,
         -momentum,
-        mods.oppChance * tacticBias.oppChance,
+        mods.oppChance * tacticBias.oppChance * champagneVsBetter,
         rng
       );
 

@@ -14,15 +14,18 @@ interface TryScorerChipsProps {
   scorers: TryScorerChipEntry[];
   /** @deprecated Kept for call-site compatibility — styling is unified. */
   variant?: "user" | "opponent";
+  compact?: boolean;
 }
 
 /** Try scorers rendered like conversions/penalties — stacked stat lines in a scoring section. */
-export function TryScorerChips({ scorers }: TryScorerChipsProps) {
+export function TryScorerChips({ scorers, compact = false }: TryScorerChipsProps) {
   const grouped = groupTryScorersForDisplay(scorers);
   if (grouped.length === 0) return null;
 
+  const textClass = compact ? TYPO.bodySm : TYPO.statValue;
+
   return (
-    <p className={`${TYPO.statValue} flex flex-wrap gap-x-1 gap-y-0.5`}>
+    <p className={`${textClass} flex flex-wrap gap-x-1 gap-y-0.5 text-gray-300`}>
       {grouped.map((scorer, index) => {
         const label =
           scorer.tries > 1 ? `${scorer.name} x${scorer.tries}` : scorer.name;
@@ -38,7 +41,7 @@ export function TryScorerChips({ scorers }: TryScorerChipsProps) {
                 ·
               </span>
             )}
-            <span className="break-words">{label}</span>
+            <span className="break-words text-gray-200">{label}</span>
           </span>
         );
       })}

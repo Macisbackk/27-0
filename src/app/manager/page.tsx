@@ -45,7 +45,7 @@ import {
   playMatchUpsetVictory,
   playUiClick,
 } from "@/lib/sound";
-import { PageShell, PageShellBody } from "@/components/ui/PageShell";
+import { PageShell } from "@/components/ui/PageShell";
 import {
   ensureFriendlyChoices,
   isAwaitingFriendlyChoice,
@@ -181,7 +181,7 @@ export default function ManagerPage() {
     career && NAV_VIEWS.includes(view as (typeof NAV_VIEWS)[number]);
 
   return (
-    <PageShell withLights compact desktopFit={!!showNav}>
+    <PageShell withLights compact width="wide">
       {view === "landing" && (
         <ManagerLanding
           hasSave={hasSave}
@@ -202,7 +202,7 @@ export default function ManagerPage() {
       )}
 
       {showNav && career && (
-        <div className="flex min-h-0 flex-1 flex-col gap-4 lg:gap-3">
+        <div className="flex flex-col gap-4 lg:gap-3">
           <ManagerNav
             active={view}
             club={career.club}
@@ -211,7 +211,7 @@ export default function ManagerPage() {
             unreadInbox={countUnreadInbox(career)}
           />
 
-          <PageShellBody className="gap-4 lg:gap-3">
+          <div className="flex flex-col gap-4 lg:gap-3">
             {view === "hub" && (
               <>
                 {isAwaitingFriendlyChoice(career) ? (
@@ -275,7 +275,7 @@ export default function ManagerPage() {
               />
             )}
             {view === "stats" && <ManagerStatsView career={career} />}
-          </PageShellBody>
+          </div>
         </div>
       )}
 
@@ -290,7 +290,7 @@ export default function ManagerPage() {
       {career && view === "match-review" && reviewFixtureId !== null && (
         <div className="space-y-4">
           <ManagerNav
-            active="fixtures"
+            active="hub"
             club={career.club}
             onNavigate={setView}
           />

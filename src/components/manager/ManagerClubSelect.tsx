@@ -1,10 +1,15 @@
 "use client";
 
 import { useMemo } from "react";
+import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { getAllManagerClubConfigs } from "@/lib/manager/club-config";
+import {
+  formatSquadRatingStars,
+  getAllManagerClubConfigs,
+  squadRatingToStars,
+} from "@/lib/manager/club-config";
 import { getClubAttendanceProfile } from "@/lib/manager/managerAttendance";
 import { playUiClick } from "@/lib/sound";
 
@@ -13,111 +18,95 @@ interface ManagerClubSelectProps {
   onBack: () => void;
 }
 
-function difficultyLabel(stars: number): string {
-  return "★".repeat(stars) + "☆".repeat(5 - stars);
-}
-
 export function ManagerClubSelect({ onSelect, onBack }: ManagerClubSelectProps) {
   const clubs = useMemo(
     () =>
       getAllManagerClubConfigs().sort((a, b) => b.squadRating - a.squadRating),
     []
   );
+  const allRatings = useMemo(
+    () => clubs.map((club) => club.squadRating),
+    [clubs]
+  );
 
   return (
-    <div className={`mx-auto max-w-4xl ${SPACING.stackLg}`}>
-      <div className="text-center sm:text-left">
-        <h1 className={TYPO.pageTitle}>Choose Your Club</h1>
-        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-          Pick your Super League side — sorted by squad strength.
+    <div className={`mx-auto max-w-xl ${SPACING.stackMd}`}>
+      <div>
+        <h1 className={`${TYPO.pageTitle} text-lg sm:text-xl`}>Choose Your Club</h1>
+        <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
+          Sorted by squad strength — tap to start your career.
         </p>
       </div>
 
-      <div className={`grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
+      <ul className="space-y-1.5" role="list">
         {clubs.map((club) => {
           const attendance = getClubAttendanceProfile(club.name);
+          const ratingStars = squadRatingToStars(club.squadRating, allRatings);
+
           return (
-            <button
-              key={club.name}
-              type="button"
-              onClick={() => {
-                playUiClick();
-                onSelect(club.name);
-              }}
-              className={`group relative overflow-hidden ${CARD.hero} ${CARD.interactive} text-left transition-transform hover:scale-[1.02]`}
-              style={
-                {
-                  "--club-primary": club.primaryColor,
-                  "--club-secondary": club.secondaryColor,
-                } as React.CSSProperties
-              }
-            >
-              <div
-                className="absolute inset-0 opacity-25 transition-opacity group-hover:opacity-40"
-                style={{
-                  background: `linear-gradient(135deg, ${club.primaryColor} 0%, transparent 55%, ${club.secondaryColor} 100%)`,
+            <li key={club.name}>
+              <button
+                type="button"
+                onClick={() => {
+                  playUiClick();
+                  onSelect(club.name);
                 }}
-              />
-              <div className="relative p-4 sm:p-5">
-                <div className="flex items-start gap-3">
-                  <div
-                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-white/15 shadow-lg"
-                    style={{
-                      background: `linear-gradient(145deg, ${club.primaryColor}, ${club.secondaryColor})`,
-                    }}
-                  >
-                    <span className="text-lg font-black text-white drop-shadow">
-                      {club.squadRating}
-                    </span>
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className={`${TYPO.cardTitle} truncate text-white`}>
+                className={`${CARD.base} ${CARD.interactive} flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left sm:gap-3 sm:px-3`}
+              >
+                <span
+                  className="w-1 shrink-0 self-stretch rounded-full"
+                  style={{ backgroundColor: club.primaryColor }}
+                  aria-hidden
+                />
+                <ClubDualSwatch
+                  club={club.name}
+                  size="md"
+                  primary={club.primaryColor}
+                  secondary={club.secondaryColor}
+                  className="hidden sm:flex"
+                />
+                <ClubDualSwatch
+                  club={club.name}
+                  size="sm"
+                  primary={club.primaryColor}
+                  secondary={club.secondaryColor}
+                  className="sm:hidden"
+                />
+
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="truncate text-sm font-semibold text-white">
                       {club.name}
                     </p>
-                    <p
-                      className={`mt-0.5 text-xs font-medium`}
-                      style={{ color: club.primaryColor }}
+                    <span
+                      className="shrink-0 font-mono text-[11px] tracking-wide text-accent-gold"
+                      aria-label={`${ratingStars} out of 5 stars`}
                     >
-                      {club.expectation}
-                    </p>
+                      {formatSquadRatingStars(ratingStars)}
+                    </span>
                   </div>
+                  <p className="truncate text-xs text-pitch-400">
+                    {club.expectation}
+                    <span className="text-pitch-600"> · </span>
+                    £{(club.budget / 1000).toFixed(0)}k
+                    <span className="text-pitch-600"> · </span>
+                    ~{(attendance.base / 1000).toFixed(1)}k home
+                  </p>
                 </div>
 
-                <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-                  <div className={`${CARD.inset} px-2.5 py-2`}>
-                    <p className="text-pitch-500">Squad OVR</p>
-                    <p className="text-base font-bold text-theme-primary">
-                      {club.squadRating}
-                    </p>
-                  </div>
-                  <div className={`${CARD.inset} px-2.5 py-2`}>
-                    <p className="text-pitch-500">Budget</p>
-                    <p className="text-base font-semibold text-white">
-                      £{(club.budget / 1000).toFixed(0)}k
-                    </p>
-                  </div>
-                  <div className={`${CARD.inset} px-2.5 py-2`}>
-                    <p className="text-pitch-500">Difficulty</p>
-                    <p className="font-mono text-sm tracking-wide text-accent-gold">
-                      {difficultyLabel(club.difficulty)}
-                    </p>
-                  </div>
-                  <div className={`${CARD.inset} px-2.5 py-2`}>
-                    <p className="text-pitch-500">Home crowd</p>
-                    <p className="text-sm font-semibold text-white">
-                      ~{(attendance.base / 1000).toFixed(1)}k
-                    </p>
-                  </div>
+                <div className="shrink-0 text-right">
+                  <p className="text-sm font-bold leading-none text-theme-primary">
+                    {club.squadRating}
+                  </p>
+                  <p className="mt-0.5 text-[10px] uppercase tracking-wide text-pitch-500">
+                    OVR
+                  </p>
                 </div>
-
-                <p className="mt-3 text-center text-xs font-semibold uppercase tracking-wider text-pitch-400 opacity-0 transition-opacity group-hover:opacity-100">
-                  Manage {club.name.split(" ")[0]}
-                </p>
-              </div>
-            </button>
+              </button>
+            </li>
           );
         })}
-      </div>
+      </ul>
 
       <GameButton variant="secondary" onClick={onBack} fullWidth={false}>
         Back

@@ -1,6 +1,5 @@
 import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
-import { getCurrentSeasonOpponentPool } from "../game/opponent-squad-strength";
 import { getPlayerById } from "../players";
 import { getPlayerAge } from "../players/player-age";
 import type {
@@ -10,6 +9,7 @@ import type {
 } from "./types";
 import { getManagerModePlayerRating } from "./managerSquadRatings";
 import { getManagerPlayer } from "./managerPlayers";
+import { getLeagueClubRosterIds } from "./managerLeagueRosters";
 
 function computePotential(peakRating: number, age: number): number {
   if (age <= 21) return Math.min(95, peakRating + 8);
@@ -79,8 +79,10 @@ function developLeaguePlayersAtSeasonEnd(
 
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === career.club) continue;
-    const pool = getCurrentSeasonOpponentPool(club).slice(0, 22);
-    for (const player of pool) {
+    const rosterIds = getLeagueClubRosterIds(career, club).slice(0, 22);
+    for (const playerId of rosterIds) {
+      const player = getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
+      if (!player) continue;
       if (userIds.has(player.id)) continue;
       if (rng() > 0.55) continue;
 

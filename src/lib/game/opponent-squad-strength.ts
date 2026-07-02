@@ -11,6 +11,8 @@ import type { Player } from "../types";
 
 export interface OpponentPoolOptions {
   currentSeasonOnly?: boolean;
+  /** Manager mode — use the saved league roster instead of the static pool. */
+  poolOverride?: Player[];
 }
 
 const SQUAD_SIZE = 13;
@@ -41,6 +43,9 @@ export function getOpponentClubPool(
   club: string,
   options: OpponentPoolOptions = {}
 ): Player[] {
+  if (options.poolOverride && options.poolOverride.length > 0) {
+    return options.poolOverride;
+  }
   if (options.currentSeasonOnly) {
     return getCurrentSeasonOpponentPool(club);
   }

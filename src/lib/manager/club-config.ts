@@ -89,6 +89,23 @@ export function getAllManagerClubConfigs(): ManagerClubConfig[] {
   return CURRENT_PLAYABLE_CLUBS.map((name) => getManagerClubConfig(name));
 }
 
+/** Map squad OVR to 1–5 stars relative to the playable league (best = 5). */
+export function squadRatingToStars(
+  rating: number,
+  allRatings: readonly number[]
+): number {
+  if (allRatings.length === 0) return 3;
+  const min = Math.min(...allRatings);
+  const max = Math.max(...allRatings);
+  if (max <= min) return 3;
+  return Math.max(1, Math.min(5, Math.round(((rating - min) / (max - min)) * 4) + 1));
+}
+
+export function formatSquadRatingStars(stars: number): string {
+  const filled = Math.max(0, Math.min(5, stars));
+  return "★".repeat(filled) + "☆".repeat(5 - filled);
+}
+
 export function buildDefaultLineup(playerIds: readonly string[]): {
   xiiiIds: string[];
   slotPositions: Position[];

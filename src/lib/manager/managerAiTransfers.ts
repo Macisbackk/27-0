@@ -1,10 +1,14 @@
 import seedrandom from "seedrandom";
 import { getPlayerById } from "../players";
-import { getCurrentSquadPlayerIds } from "../players/era-teams";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { Position } from "../types";
 import type { LeagueTransferActivity, ManagerCareer } from "./types";
 import { getAskingPrice } from "./managerTransferLeague";
+import { getManagerPlayer } from "./managerPlayers";
+import {
+  getLeagueClubRosterIds,
+  transferLeaguePlayer,
+} from "./managerLeagueRosters";
 
 const MAX_TRANSFER_HISTORY = 32;
 const TRANSFER_CHANCE_PER_MATCH = 0.22;
@@ -16,11 +20,16 @@ const RIVAL_CLUBS: Record<string, string[]> = {
   "Hull KR": ["Hull FC"],
 };
 
-function clubNeedsPosition(club: string, seed: string, week: number): Position | null {
-  const roster = getCurrentSquadPlayerIds(club);
+function clubNeedsPosition(
+  career: ManagerCareer,
+  club: string,
+  seed: string,
+  week: number
+): Position | null {
+  const roster = getLeagueClubRosterIds(career, club);
   const counts: Partial<Record<Position, number>> = {};
   for (const id of roster) {
-    const p = getPlayerById(id);
+    const p = getManagerPlayer(career, id) ?? getPlayerById(id);
     if (!p) continue;
     counts[p.position] = (counts[p.position] ?? 0) + 1;
   }
@@ -51,6 +60,7 @@ export function maybeGenerateAiTransfers(career: ManagerCareer): ManagerCareer {
 
   const toCandidates = otherClubs.filter((c) => c !== fromClub);
   const need = clubNeedsPosition(
+    career,
     toCandidates[Math.floor(rng() * toCandidates.length)]!,
     career.seed,
     career.gameWeek
@@ -58,31 +68,35 @@ export function maybeGenerateAiTransfers(career: ManagerCareer): ManagerCareer {
   const toClub =
     need !== null
       ? toCandidates.find(
-          (c) => clubNeedsPosition(c, career.seed, career.gameWeek) === need
+          (c) =>
+            clubNeedsPosition(career, c, career.seed, career.gameWeek) === need
         ) ?? toCandidates[Math.floor(rng() * toCandidates.length)]!
       : toCandidates[Math.floor(rng() * toCandidates.length)]!;
 
   const listedFromClub = career.leagueListedPlayers.filter(
     (l) => l.club === fromClub
   );
-  const roster = getCurrentSquadPlayerIds(fromClub);
+  const roster = getLeagueClubRosterIds(career, fromClub);
   let pool =
     listedFromClub.length > 0
       ? listedFromClub.map((l) => l.playerId)
       : roster.filter((id) => {
-          const p = getPlayerById(id);
+          const p = getManagerPlayer(career, id) ?? getPlayerById(id);
           return p && (p.rating ?? p.peakRating) < 82;
         });
 
   if (need) {
-    const positional = pool.filter((id) => getPlayerById(id)?.position === need);
+    const positional = pool.filter((id) => {
+      const p = getManagerPlayer(career, id) ?? getPlayerById(id);
+      return p?.position === need;
+    });
     if (positional.length > 0) pool = positional;
   }
 
   if (pool.length === 0) return career;
 
   const playerId = pool[Math.floor(rng() * pool.length)]!;
-  const player = getPlayerById(playerId);
+  const player = getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
   if (!player) return career;
 
   const listed = career.leagueListedPlayers.some((l) => l.playerId === playerId);
@@ -105,12 +119,19 @@ export function maybeGenerateAiTransfers(career: ManagerCareer): ManagerCareer {
     (l) => l.playerId !== playerId
   );
 
-  return {
-    ...career,
-    leagueListedPlayers,
-    leagueTransfers: [activity, ...(career.leagueTransfers ?? [])].slice(
-      0,
-      MAX_TRANSFER_HISTORY
-    ),
-  };
+  const withRoster = transferLeaguePlayer(
+    {
+      ...career,
+      leagueListedPlayers,
+      leagueTransfers: [activity, ...(career.leagueTransfers ?? [])].slice(
+        0,
+        MAX_TRANSFER_HISTORY
+      ),
+    },
+    playerId,
+    fromClub,
+    toClub
+  );
+
+  return withRoster;
 }

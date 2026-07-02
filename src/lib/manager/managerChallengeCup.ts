@@ -1,4 +1,7 @@
-import type { ChallengeCupBracketState } from "../game/challenge-cup-bracket";
+import type {
+  BracketMatch,
+  ChallengeCupBracketState,
+} from "../game/challenge-cup-bracket";
 import {
   createChallengeCupBracket,
   deriveCupOutcomeFromBracket,
@@ -80,14 +83,38 @@ export function getPendingCupBracketRound(
   return null;
 }
 
+function findReadyAiMatch(
+  bracket: ChallengeCupBracketState
+): BracketMatch | undefined {
+  return bracket.matches
+    .filter((m) => m.status === "ready" && !m.isUserMatch)
+    .sort((a, b) => a.round - b.round || a.slot - b.slot)[0];
+}
+
+/** Simulate ready AI ties across the bracket (earlier rounds first). */
+function simulateReadyAiCupMatches(
+  bracket: ChallengeCupBracketState,
+  squad: ReturnType<typeof buildSquadSlotsFromMatchday>,
+  maxSteps = 48
+): ChallengeCupBracketState {
+  let next = bracket;
+  for (let step = 0; step < maxSteps; step++) {
+    if (next.userEliminated || next.tournamentComplete) break;
+    const aiReady = findReadyAiMatch(next);
+    if (!aiReady) break;
+    next = simulateBracketMatch(next, aiReady.id, squad);
+  }
+  return next;
+}
+
 function simulateAiUntilUserReady(
   bracket: ChallengeCupBracketState,
   round: number,
   squad: ReturnType<typeof buildSquadSlotsFromMatchday>
 ): ChallengeCupBracketState {
-  let next = bracket;
+  let next = simulateReadyAiCupMatches(bracket, squad);
   let guard = 0;
-  while (guard < 20) {
+  while (guard < 48) {
     guard++;
     const userMatch = getMatchesForRound(next, round).find(
       (m) => m.isUserMatch && m.status === "ready"
@@ -95,9 +122,7 @@ function simulateAiUntilUserReady(
     if (userMatch) return next;
     if (next.userEliminated || next.tournamentComplete) return next;
 
-    const aiReady = getMatchesForRound(next, round).find(
-      (m) => m.status === "ready" && !m.isUserMatch
-    );
+    const aiReady = findReadyAiMatch(next);
     if (!aiReady) break;
     next = simulateBracketMatch(next, aiReady.id, squad);
   }
@@ -119,6 +144,20 @@ export function prepareCupRound(
     bracketRound,
     squad
   );
+}
+
+/** After the user plays a cup tie, resolve other ready AI games so the bracket can progress. */
+export function advanceCupBracketAfterUserMatch(
+  career: ManagerCareer
+): ChallengeCupBracketState {
+  const cup = career.challengeCup;
+  if (!cup || cup.userEliminated || cup.tournamentComplete) return cup;
+
+  const squad = buildSquadSlotsFromMatchday(
+    career.matchdayXiii,
+    career.xiiiSlotPositions
+  );
+  return simulateReadyAiCupMatches(cup, squad);
 }
 
 export function getUserCupMatch(
@@ -216,16 +255,13 @@ export function getNextLeagueOrCupFixture(
         career.matchdayXiii,
         career.xiiiSlotPositions
       );
-      let next = prepared;
-      const roundMatches = getMatchesForRound(next, cupRound);
-      for (const m of roundMatches) {
-        if (m.status === "ready" && !m.isUserMatch) {
-          next = simulateBracketMatch(next, m.id, squad);
-        }
-      }
-      const retry = getUserCupMatch(next, cupRound);
+      const advanced = simulateAiUntilUserReady(prepared, cupRound, squad);
+      const retry = getUserCupMatch(advanced, cupRound);
       if (retry) {
-        return buildCupScheduledFixture({ ...career, challengeCup: next }, retry);
+        return buildCupScheduledFixture(
+          { ...career, challengeCup: advanced },
+          retry
+        );
       }
     }
   }

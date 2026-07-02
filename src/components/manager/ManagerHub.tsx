@@ -14,6 +14,7 @@ import {
 } from "@/lib/manager/managerContracts";
 import {
   fanMoodTrend,
+  getHomeFixtureAttendanceOutlook,
   getLastHomeGate,
 } from "@/lib/manager/managerAttendance";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
@@ -273,6 +274,11 @@ export function ManagerHub({
       ? getMatchPrediction(teamRating, oppRating ?? 70, nextFixture.isHome)
       : null;
 
+  const homeAttendanceOutlook =
+    nextFixture?.isHome && !career.isSeasonComplete
+      ? getHomeFixtureAttendanceOutlook(career, nextFixture)
+      : null;
+
   const formDisplay =
     career.recentForm.length > 0
       ? career.recentForm.slice(-5).join(" ")
@@ -323,6 +329,12 @@ export function ManagerHub({
             {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
             {nextFixture.isHome ? "Home" : "Away"}
           </p>
+          {homeAttendanceOutlook && (
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+              {homeAttendanceOutlook.label} · ~
+              {homeAttendanceOutlook.predictedAttendance.toLocaleString()} expected
+            </p>
+          )}
           <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
             <div>
               <p className="text-pitch-500 text-xs">Your rating</p>

@@ -1572,8 +1572,6 @@ body {
 
     .desktop-page-fit {
       min-height: calc(100dvh - var(--app-chrome-height));
-      max-height: calc(100dvh - var(--app-chrome-height));
-      overflow: hidden;
     }
 
     .desktop-scroll-rail {

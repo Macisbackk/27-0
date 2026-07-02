@@ -101,9 +101,12 @@ export function selectClubMatchSquad(
   round: number,
   options?: OpponentPoolOptions & { draftMode?: boolean }
 ): Player[] {
-  const pool = options?.currentSeasonOnly
-    ? getCurrentSeasonOpponentPool(club)
-    : getPlayersByClub(club);
+  const pool =
+    options?.poolOverride && options.poolOverride.length > 0
+      ? options.poolOverride
+      : options?.currentSeasonOnly
+        ? getCurrentSeasonOpponentPool(club)
+        : getPlayersByClub(club);
   if (pool.length === 0) return [];
 
   const rng = seedrandom(`${seed}-opp-squad-${round}-${club}`);

@@ -1,6 +1,7 @@
 import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { getManagerClubTeamRating } from "./managerRating";
+import { getHomeFixtureAttendanceOutlook, hasPoorAwayFollowing } from "./managerAttendance";
 import type {
   FriendlyOpponentChoice,
   ManagerCareer,
@@ -67,8 +68,7 @@ function buildFriendlyCandidates(
       difficulty: "balanced" as const,
       teamRating,
       description: `Pre-season friendly against ${club}.`,
-      attendanceInterest:
-        teamRating >= 82 ? "high" : teamRating >= 74 ? "medium" : "low",
+      attendanceInterest: attendanceInterestForFriendlyOpponent(club, teamRating),
     };
   });
 
@@ -143,9 +143,34 @@ export function completeFriendlyMatch(career: ManagerCareer): ManagerCareer {
 }
 
 export function getFriendlyAttendanceInterest(
-  choice: FriendlyOpponentChoice
+  choice: FriendlyOpponentChoice,
+  career?: ManagerCareer
 ): string {
+  if (career) {
+    const outlook = getHomeFixtureAttendanceOutlook(career, {
+      id: `friendly-preview-${choice.id}`,
+      round: 0,
+      opponent: choice.club,
+      isHome: true,
+      competition: "friendly",
+    });
+    if (outlook) {
+      return `${outlook.label} (~${outlook.predictedAttendance.toLocaleString()})`;
+    }
+  }
   return ATTENDANCE_LABELS[choice.attendanceInterest];
+}
+
+function attendanceInterestForFriendlyOpponent(
+  club: string,
+  teamRating: number
+): FriendlyOpponentChoice["attendanceInterest"] {
+  if (hasPoorAwayFollowing(club)) {
+    return teamRating >= 78 ? "medium" : "low";
+  }
+  if (teamRating >= 82) return "high";
+  if (teamRating >= 74) return "medium";
+  return "low";
 }
 
 export { defaultPreSeason };

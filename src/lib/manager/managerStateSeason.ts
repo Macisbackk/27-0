@@ -3,6 +3,7 @@ import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import type { ManagerCareer, ManagerSeasonSummary, SeasonHighlightResult } from "./types";
 import { buildManagerSchedule, buildLeagueTableFromMatches } from "./managerFixtures";
 import { generateTransferMarket } from "./managerTransfers";
+import { generateLeagueListedPlayers } from "./managerTransferLeague";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { EMPTY_TEAM_SEASON_STATS } from "./managerCareerStats";
 import {
@@ -25,6 +26,11 @@ import {
   applyYearlyYouthIntake,
   tickReserveContractsForNewSeason,
 } from "./managerReserveContracts";
+import {
+  applyAiYouthIntakeToLeague,
+  ensureLeagueClubRosters,
+  reconcileLeagueRosters,
+} from "./managerLeagueRosters";
 
 const CAREER_KEY = "27-0-manager-career";
 
@@ -179,7 +185,6 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   else if (leaving.length > 0) boardConfidence = Math.max(0, boardConfidence - 4);
 
   const newSeed = `${career.seed}-s${career.seasonYear + 1}`;
-  const squadIdSet = new Set(withInbox.squad.map((p) => p.playerId));
 
   const transferBudget = computeSeasonTransferBudget(
     career.club,
@@ -216,12 +221,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     challengeCup: createManagerChallengeCup(newSeed, career.club),
     playoffs: undefined,
     wagePressureWeeks: 0,
-    transferMarket: generateTransferMarket(
-      career.club,
-      squadIdSet,
-      newSeed,
-      0
-    ),
+    transferMarket: generateTransferMarket(withInbox, newSeed, 0),
     squad: withInbox.squad.map((p) => ({
       ...p,
       seasonAppearances: 0,
@@ -247,7 +247,17 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     updatedAt: new Date().toISOString(),
   };
 
-  const withIntake = applyYearlyYouthIntake(next);
-  persistCareer(withIntake);
-  return withIntake;
+  const withIntake = applyYearlyYouthIntake(
+    applyAiYouthIntakeToLeague(
+      ensureLeagueClubRosters(reconcileLeagueRosters(next))
+    )
+  );
+  const seasonListed = generateLeagueListedPlayers(withIntake, newSeed, 0);
+  const finalCareer = {
+    ...withIntake,
+    leagueListedPlayers: seasonListed,
+    transferMarket: seasonListed.map((l) => l.playerId),
+  };
+  persistCareer(finalCareer);
+  return finalCareer;
 }

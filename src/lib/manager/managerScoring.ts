@@ -2,7 +2,10 @@ import seedrandom from "seedrandom";
 import type { SquadSlot } from "../types";
 import type { MatchFixture } from "../game/season-simulation";
 import { enrichFantasyFixtureSummary } from "../game/fantasy-match-summary";
-import { getOpponentMatchRating } from "../game/opponent-scorers";
+import {
+  generateManagerMatchBio,
+} from "./manager-match-summary";
+import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
 import { selectClubMatchSquad } from "../game/opponent-scorers";
 import type { ManagerCareer, ManagerTactics } from "./types";
 import { buildMatchdayScoringEntries } from "./managerSquad";
@@ -129,11 +132,21 @@ export function enrichManagerFixtureScoring(
   const userWeights = buildUserWeights(entries, tactics, rng);
   const userAlloc = allocateTries(fixture.triesFor, userWeights, rng);
 
+  const oppPoolOptions = opponentOptions?.career
+    ? {
+        ...opponentOptions,
+        ...getManagerOpponentPoolOptions(
+          opponentOptions.career,
+          fixture.opponent
+        ),
+      }
+    : opponentOptions;
+
   const oppSquad = selectClubMatchSquad(
     fixture.opponent,
     seed,
     fixture.round,
-    opponentOptions
+    oppPoolOptions
   );
   const oppEntries = oppSquad.map((p) => ({
     id: p.id,
@@ -203,6 +216,11 @@ export function enrichManagerFixtureScoring(
   };
 
   enrichFantasyFixtureSummary(fixture, squad, seed);
+
+  const clubName = opponentOptions?.career?.club;
+  if (clubName) {
+    fixture.matchBio = generateManagerMatchBio(fixture, seed, { clubName });
+  }
 }
 
 export function getMatchPrediction(

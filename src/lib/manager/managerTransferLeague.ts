@@ -1,6 +1,5 @@
 import seedrandom from "seedrandom";
 import { getPlayerById } from "../players";
-import { getCurrentSquadPlayerIds } from "../players/era-teams";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { getManagerClubConfig } from "./club-config";
 import type {
@@ -18,6 +17,11 @@ import {
   inferSquadRole,
 } from "./managerContracts";
 import { getManagerClubTeamRating } from "./managerRating";
+import {
+  findPlayerLeagueClub,
+  getLeagueClubRosterIds,
+  transferLeaguePlayer,
+} from "./managerLeagueRosters";
 import { createInitialPlayerState } from "./managerSquad";
 import { getPlayerAge } from "../players/player-age";
 import { getTransferDemand } from "./managerTransfers";
@@ -39,7 +43,7 @@ export function initClubFunds(userClub: string): Record<string, number> {
 }
 
 export function generateLeagueListedPlayers(
-  userClub: string,
+  career: ManagerCareer,
   seed: string,
   gameWeek: number
 ): LeagueListedPlayer[] {
@@ -47,8 +51,8 @@ export function generateLeagueListedPlayers(
   const listed: LeagueListedPlayer[] = [];
 
   for (const club of CURRENT_PLAYABLE_CLUBS) {
-    if (club === userClub) continue;
-    const roster = getCurrentSquadPlayerIds(club);
+    if (club === career.club) continue;
+    const roster = getLeagueClubRosterIds(career, club);
     const listCount = 1 + Math.floor(rng() * 3);
     const shuffled = [...roster].sort(() => rng() - 0.5);
 
@@ -268,16 +272,23 @@ export function completePlayerPurchase(
   sellerFunds[club] = (sellerFunds[club] ?? 0) + offer.transferFee;
 
   const purchased: ManagerCareer = deductTransferFee(
-    syncManagerFinance({
-      ...career,
-      clubFunds: sellerFunds,
-      squad: [...career.squad, createInitialPlayerState(playerId)],
-      contracts: nextContracts,
-      wageBill: computeWageBill(nextContracts),
-      leagueListedPlayers: nextListed,
-      transferMarket: nextListed.map((l) => l.playerId),
-      updatedAt: new Date().toISOString(),
-    }),
+    syncManagerFinance(
+      transferLeaguePlayer(
+        {
+          ...career,
+          clubFunds: sellerFunds,
+          squad: [...career.squad, createInitialPlayerState(playerId)],
+          contracts: nextContracts,
+          wageBill: computeWageBill(nextContracts),
+          leagueListedPlayers: nextListed,
+          transferMarket: nextListed.map((l) => l.playerId),
+          updatedAt: new Date().toISOString(),
+        },
+        playerId,
+        club,
+        career.club
+      )
+    ),
     offer.transferFee
   );
 
@@ -391,6 +402,7 @@ export function acceptIncomingOffer(
   };
 
   nextCareer = addTransferIncome(nextCareer, msg.offerAmount);
+  nextCareer = transferLeaguePlayer(nextCareer, playerId, career.club, buyer);
   const saleMsg = createPlayerSaleMessage(
     nextCareer,
     msg.playerName ?? getPlayerById(playerId)?.name ?? "Player",
@@ -508,14 +520,14 @@ export function negotiateIncomingOffer(
   };
 }
 
-export function getAllLeaguePlayers(userClub: string): {
+export function getAllLeaguePlayers(career: ManagerCareer): {
   playerId: string;
   club: string;
 }[] {
   const rows: { playerId: string; club: string }[] = [];
   for (const club of CURRENT_PLAYABLE_CLUBS) {
-    if (club === userClub) continue;
-    for (const id of getCurrentSquadPlayerIds(club)) {
+    if (club === career.club) continue;
+    for (const id of getLeagueClubRosterIds(career, club)) {
       rows.push({ playerId: id, club });
     }
   }

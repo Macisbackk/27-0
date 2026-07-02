@@ -7,9 +7,6 @@ import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSquadSlotsFromMatchday } from "@/lib/manager/managerSquad";
-import { getManagerPlayer } from "@/lib/manager/managerPlayers";
-import { POSITION_SHORT } from "@/lib/positions";
-import { getClubByName } from "@/lib/clubs";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
 import {
@@ -43,7 +40,6 @@ export function ManagerMatchReview({
     fixture.meta?.xiiiSlotPositions ?? career.xiiiSlotPositions,
     career
   );
-  const club = getClubByName(career.club);
   const attendance = fixture.meta?.attendance;
   const won = fixture.result === "W";
   const lost = fixture.result === "L";
@@ -52,19 +48,15 @@ export function ManagerMatchReview({
     : lost
       ? "bg-red-500/20 text-red-300 border-red-500/40"
       : "bg-pitch-700/50 text-pitch-200 border-pitch-600";
-  const interchangeIds =
-    fixture.meta?.matchdayInterchange ?? career.matchdayInterchange;
-  const benchPlayers = interchangeIds
-    .filter(Boolean)
-    .map((id) => getManagerPlayer(career, id))
-    .filter((p): p is NonNullable<typeof p> => !!p);
 
   const roundLabel =
     fixture.competition === "challenge_cup"
       ? getManagerCupRoundLabel(fixture.meta?.cupRound)
       : fixture.competition === "playoffs"
         ? "Play-Offs"
-        : `Round ${fixture.round} — League`;
+        : fixture.competition === "friendly"
+          ? "Friendly"
+          : `Round ${fixture.round} — League`;
 
   const cupBracketSnapshot =
     isChallengeCupFixture(fixture.competition) &&
@@ -120,6 +112,15 @@ export function ManagerMatchReview({
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{roundLabel}</p>
       </div>
 
+      {fixture.matchBio && (
+        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+          <p className={TYPO.sectionLabel}>Match Story</p>
+          <p className={`mt-2 leading-relaxed ${TYPO.bodySm} text-pitch-200`}>
+            {fixture.matchBio}
+          </p>
+        </div>
+      )}
+
       {cupBracketSnapshot && (
         <div
           className={`${CARD.base} ${SPACING.cardPadding} border-2 border-accent-gold/40 bg-accent-gold/5`}
@@ -165,22 +166,6 @@ export function ManagerMatchReview({
         </div>
       )}
 
-      {fixture.meta?.tacticEffectivenessLine && (
-        <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-          <p className={`${TYPO.bodySm} italic text-pitch-300`}>
-            {fixture.meta.tacticEffectivenessLine}
-          </p>
-        </div>
-      )}
-
-      {fixture.meta?.tacticImpactLine && (
-        <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-          <p className={`${TYPO.bodySm} italic text-pitch-300`}>
-            {fixture.meta.tacticImpactLine}
-          </p>
-        </div>
-      )}
-
       <AnimatePresence>
         <MatchDetailsPanel
           fixture={fixture}
@@ -189,37 +174,10 @@ export function ManagerMatchReview({
           seed={career.seed}
           userSquad={squad}
           userTeamName={career.club}
-          userClubColorOverride={club?.primaryColor}
           currentSeasonOnly
+          hideMatchStory
         />
       </AnimatePresence>
-
-      {benchPlayers.length > 0 && (
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <p className={TYPO.sectionLabel}>Interchange</p>
-          <ul className={`mt-2 flex flex-wrap gap-2 ${TYPO.bodySm}`}>
-            {benchPlayers.map((player) => {
-              const tries =
-                fixture.scoringDetail?.dreamTeam.tryScorers.find(
-                  (s) => s.playerId === player.id
-                )?.tries ?? 0;
-              return (
-                <li
-                  key={player.id}
-                  className="rounded-lg border border-pitch-600 bg-pitch-900/50 px-2 py-1"
-                >
-                  {player.name}
-                  <span className="text-pitch-500">
-                    {" "}
-                    · {POSITION_SHORT[player.position]}
-                    {tries > 0 ? ` · ${tries} try${tries === 1 ? "" : "ies"}` : ""}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
 
       {fixture.meta?.injuries && fixture.meta.injuries.length > 0 && (
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>

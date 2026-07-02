@@ -6,6 +6,7 @@ import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { getPlayerById } from "@/lib/players";
+import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { formatValue } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Player, Position } from "@/lib/types";
@@ -71,9 +72,9 @@ export function ManagerTransfers({
 
   const leagueSearch = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return getAllLeaguePlayers(career.club)
+    return getAllLeaguePlayers(career)
       .map(({ playerId, club }) => {
-        const raw = getPlayerById(playerId);
+        const raw = getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
         if (!raw) return null;
         const player = withManagerRating(raw);
         const listed = career.leagueListedPlayers.some(
@@ -145,10 +146,10 @@ export function ManagerTransfers({
   };
 
   return (
-    <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
+    <div className={`w-full ${SPACING.stackLg}`}>
       <div>
         <h1 className={TYPO.pageTitle}>Transfers</h1>
-        <p className={`${TYPO.bodySm} text-pitch-400`}>
+        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
           Budget: {formatWage(career.budget)} · Wage bill{" "}
           {formatWage(career.wageBill)} / {formatWage(career.wageBudget)}
         </p>
@@ -156,19 +157,18 @@ export function ManagerTransfers({
 
       {leagueTransfers.length > 0 && (
         <section className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <h2 className={`${TYPO.sectionLabel} mb-2`}>League Transfers</h2>
-          <ul className={`max-h-48 overflow-y-auto ${SPACING.stackSm}`}>
+          <h2 className={`${TYPO.sectionLabel} mb-3`}>League Transfers</h2>
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {leagueTransfers.slice(0, 12).map((tx) => (
               <li
                 key={tx.id}
-                className={`${TYPO.bodySm} border-b border-pitch-800/60 pb-2 last:border-0`}
+                className={`${CARD.inset} ${SPACING.cardPaddingSm} ${TYPO.bodySm}`}
               >
                 <span className="font-medium text-white">{tx.playerName}</span>
-                <span className="text-pitch-400">
-                  {" "}
-                  — {tx.fromClub} → {tx.toClub}
+                <span className="mt-0.5 block text-pitch-400">
+                  {tx.fromClub} → {tx.toClub}
                 </span>
-                <span className="block text-pitch-500">
+                <span className="mt-1 block text-pitch-500">
                   {formatWage(tx.fee)} · Week {tx.week}
                 </span>
               </li>
@@ -178,7 +178,7 @@ export function ManagerTransfers({
       )}
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-        <p className={`${TYPO.sectionLabel} mb-2`}>Filter by position</p>
+        <p className={`${TYPO.sectionLabel} mb-3`}>Filter by position</p>
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
@@ -204,39 +204,45 @@ export function ManagerTransfers({
         </div>
       </div>
 
-      <section>
-        <h2 className={`${TYPO.sectionLabel} mb-2`}>Available Players</h2>
-        <p className={`mb-2 ${TYPO.bodySm} text-pitch-500`}>
-          Transfer-listed players only
-        </p>
-        <div className={`grid gap-2 sm:grid-cols-2`}>
+      <section className="space-y-3">
+        <div>
+          <h2 className={TYPO.sectionLabel}>Available Players</h2>
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
+            Transfer-listed players only
+          </p>
+        </div>
+        <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
           {listedPlayers.map(({ player, club, askingPrice }) => {
             const demand = getTransferDemand(player.id, career.club);
             return (
               <div
                 key={player.id}
-                className={`${CARD.base} ${SPACING.cardPaddingSm}`}
+                className={`${CARD.base} ${SPACING.cardPadding} flex flex-col`}
               >
-                <div className="flex justify-between gap-2">
-                  <div>
+                <div className="flex flex-1 justify-between gap-3">
+                  <div className="min-w-0">
                     <p className="font-medium text-white">{player.name}</p>
-                    <p className={`${TYPO.bodySm} text-pitch-400`}>
-                      {club} · {formatPositions(player)} · {player.peakRating}{" "}
-                      rated
+                    <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+                      {club}
+                    </p>
+                    <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
+                      {formatPositions(player)} · {player.peakRating} rated
+                    </p>
+                    <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+                      Ask: {formatWage(askingPrice)}
                     </p>
                     <p className={`${TYPO.bodySm} text-pitch-500`}>
-                      Ask: {formatWage(askingPrice)} · Wage:{" "}
-                      {formatWage(demand.wagePerYear)}/yr
+                      Wage: {formatWage(demand.wagePerYear)}/yr
                     </p>
                   </div>
-                  <span className="text-sm text-accent-gold">
+                  <span className="shrink-0 text-sm font-semibold text-accent-gold">
                     {formatValue(player.value)}
                   </span>
                 </div>
                 <GameButton
                   variant="theme"
                   size="sm"
-                  className="mt-2"
+                  className="mt-4"
                   disabled={career.budget < askingPrice}
                   onClick={() => {
                     playUiClick();
@@ -249,18 +255,20 @@ export function ManagerTransfers({
             );
           })}
           {listedPlayers.length === 0 && (
-            <p className={`${TYPO.bodySm} text-pitch-400`}>
+            <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
               No transfer-listed players available right now.
             </p>
           )}
         </div>
       </section>
 
-      <section>
-        <h2 className={`${TYPO.sectionLabel} mb-2`}>Search League Players</h2>
-        <p className={`mb-2 ${TYPO.bodySm} text-pitch-500`}>
-          Bid for any Super League player — unlisted players cost more
-        </p>
+      <section className="space-y-3">
+        <div>
+          <h2 className={TYPO.sectionLabel}>Search League Players</h2>
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
+            Bid for any Super League player — unlisted players cost more
+          </p>
+        </div>
         <input
           type="search"
           placeholder="Search by name or club…"
@@ -288,7 +296,7 @@ export function ManagerTransfers({
             </button>
           ))}
         </div>
-        <div className={`grid gap-2 sm:grid-cols-2`}>
+        <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
           {leagueSearch.map(({ player, club }) => {
             const fee = getAskingPrice(
               player.id,
@@ -300,24 +308,27 @@ export function ManagerTransfers({
             return (
               <div
                 key={player.id}
-                className={`${CARD.inset} ${SPACING.cardPaddingSm}`}
+                className={`${CARD.inset} ${SPACING.cardPadding} flex flex-col`}
               >
                 <p className="font-medium text-white">{player.name}</p>
-                <p className={`${TYPO.bodySm} text-pitch-400`}>
-                  {club} · {formatPositions(player)} · {player.peakRating} ·{" "}
-                  {formatValue(player.value)}
+                <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{club}</p>
+                <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
+                  {formatPositions(player)} · {player.peakRating} rated
+                </p>
+                <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+                  Value: {formatValue(player.value)}
                 </p>
                 <p className={`${TYPO.bodySm} text-pitch-500`}>
                   Est. fee: {formatWage(fee)}+ (unlisted)
                 </p>
                 {isOffering ? (
-                  <div className="mt-2">
+                  <div className="mt-4">
                     <input
                       type="number"
                       step={5000}
                       value={offerFee}
                       onChange={(e) => setOfferFee(Number(e.target.value))}
-                      className="w-full rounded border border-pitch-600 bg-pitch-900 px-2 py-1 text-sm text-white"
+                      className="w-full rounded-lg border border-pitch-600 bg-pitch-900 px-3 py-2 text-sm text-white"
                     />
                     <GameButton
                       variant="theme"
@@ -332,7 +343,7 @@ export function ManagerTransfers({
                   <GameButton
                     variant="secondary"
                     size="sm"
-                    className="mt-2"
+                    className="mt-4"
                     onClick={() => {
                       playUiClick();
                       setOfferPlayerId(player.id);

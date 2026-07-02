@@ -1,5 +1,6 @@
 import { getPlayerById } from "../players";
 import { getManagerPlayer } from "./managerPlayers";
+import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
 import { getOpponentMatchRating } from "../game/opponent-scorers";
 import { simulateOneFixture } from "../game/season-simulation";
 import type { ManagerCareer, ManagerFixtureRecord } from "./types";
@@ -34,6 +35,7 @@ import { processHomeMatchAttendance } from "./managerAttendance";
 import {
   applyCupMatchToBracket,
   ensureCupBracketReady,
+  advanceCupBracketAfterUserMatch,
   getNextLeagueOrCupFixture,
   isLeagueAndCupPhaseComplete,
 } from "./managerChallengeCup";
@@ -101,6 +103,9 @@ import { syncManagerInboxMessages } from "./managerInbox";
 import { completeFriendlyMatch } from "./managerFriendlies";
 import { maybeAddReserveReport } from "./managerReserveReports";
 import { rotateLatestNews } from "./managerNews";
+import {
+  generateManagerMatchBio,
+} from "./manager-match-summary";
 import { syncManagerFinance } from "./managerFinance";
 
 interface TacticModifiers {
@@ -314,7 +319,8 @@ export function applyManagerMatchResult(
         round,
         career.seed,
         userMatch,
-        leagueStates
+        leagueStates,
+        career
       ),
     ];
     leagueTable = buildLeagueTableFromMatches(roundResults, career.club);
@@ -400,6 +406,10 @@ export function applyManagerMatchResult(
       fixture
     );
     working = { ...working, challengeCup };
+    if (!challengeCup.userEliminated && !challengeCup.tournamentComplete) {
+      challengeCup = advanceCupBracketAfterUserMatch(working);
+      working = { ...working, challengeCup };
+    }
   }
 
   let playoffs = working.playoffs;
@@ -432,8 +442,21 @@ export function applyManagerMatchResult(
       }
     : fixture;
 
+  const matchBio = generateManagerMatchBio(fixtureWithMotm, career.seed, {
+    clubName: career.club,
+    competition: sched.competition,
+    cupRound: sched.cupRound,
+    tacticImpactLine: mods.tacticLine,
+    tacticEffectivenessLine: effectivenessLine,
+    attendance: attendanceMeta ?? undefined,
+    playedLive: options.playedLive ?? false,
+    injuryCount: injuries.length,
+  });
+  fixtureWithMotm.matchBio = matchBio;
+
   const record: ManagerFixtureRecord = {
     ...fixtureWithMotm,
+    matchBio,
     userClub: career.club,
     fixtureId: sched.id,
     competition: sched.competition,
@@ -565,12 +588,12 @@ export function applyManagerMatchResult(
     finalCareer = {
       ...finalCareer,
       leagueListedPlayers: generateLeagueListedPlayers(
-        finalCareer.club,
+        finalCareer,
         finalCareer.seed,
         finalCareer.gameWeek
       ),
       transferMarket: generateLeagueListedPlayers(
-        finalCareer.club,
+        finalCareer,
         finalCareer.seed,
         finalCareer.gameWeek
       ).map((l) => l.playerId),
@@ -622,7 +645,9 @@ export function previewManagerMatchScoreline(
           sched.opponent,
           simCareer.seed,
           round,
-          { currentSeasonOnly: !isFriendly }
+          isFriendly
+            ? { currentSeasonOnly: false }
+            : getManagerOpponentPoolOptions(simCareer, sched.opponent)
         );
   const homeAdj = sched.isHome ? 5 : -1;
   const ratingGap = userRating - baseOppRating + homeAdj;

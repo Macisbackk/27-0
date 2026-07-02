@@ -44,7 +44,7 @@ export function ManagerFriendlySelect({
               {choice.description}
             </p>
             <p className={`mt-1 text-xs text-pitch-500`}>
-              {getFriendlyAttendanceInterest(choice)}
+              {getFriendlyAttendanceInterest(choice, career)}
             </p>
             <GameButton
               variant="theme"

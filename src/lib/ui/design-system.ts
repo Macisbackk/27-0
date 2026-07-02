@@ -61,7 +61,7 @@ export const FILTER = {
     "border-theme-tertiary/60 bg-theme-primary/10 text-theme-primary ring-1 ring-theme-tertiary/30",
   chipIdle: "border-pitch-600 text-gray-400 hover:text-white",
   tabGroup:
-    "inline-flex w-full rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto",
+    "flex w-full flex-wrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:inline-flex sm:w-auto sm:flex-nowrap",
 } as const;
 
 /** Shared pressed-state utility — pair with BTN.base on interactive elements. */
@@ -245,7 +245,7 @@ export function tabGroupButtonClass(
   active: boolean,
   variant: "normal" | "current" | "hard" | "era" | "gold" = "normal"
 ): string {
-  const base = `${TYPO.button} btn-press flex-1 ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
+  const base = `${TYPO.button} btn-press flex flex-1 items-center justify-center text-center ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.toggleIdle}`;

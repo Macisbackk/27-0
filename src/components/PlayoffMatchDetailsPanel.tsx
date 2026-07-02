@@ -1,16 +1,11 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import type { PlayoffBracketMatch } from "@/lib/game/playoff-bracket";
 import { getPlayoffRoundLabel } from "@/lib/game/playoff-bracket";
-import type { TeamScoringDetail } from "@/lib/game/season-simulation";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { ClubTeamLabel } from "./ClubTeamLabel";
-import { KickingSummarySection } from "./KickingSummarySection";
-import { TeamColouredScoringSection } from "./TeamColouredScoringSection";
-import { TryScorerChips, TryScorersEmptyNote } from "./TryScorerChips";
+import { TeamScoringBreakdown } from "./TeamScoringBreakdown";
 
 interface PlayoffMatchDetailsPanelProps {
   match: PlayoffBracketMatch;
@@ -88,14 +83,17 @@ export function PlayoffMatchDetailsPanel({
         </div>
 
         {scoring ? (
-          <div className={SPACING.stackLg}>
-            <TeamScoringBlock
+          <div className="space-y-4">
+            <TeamScoringBreakdown
               teamName={match.homeTeam}
+              colorClub={match.homeTeam}
               scoring={scoring.home}
             />
-            <TeamScoringBlock
+            <TeamScoringBreakdown
               teamName={match.awayTeam}
+              colorClub={match.awayTeam}
               scoring={scoring.away}
+              variant="opponent"
             />
           </div>
         ) : (
@@ -103,63 +101,5 @@ export function PlayoffMatchDetailsPanel({
         )}
       </div>
     </motion.div>
-  );
-}
-
-function TeamScoringBlock({
-  teamName,
-  scoring,
-}: {
-  teamName: string;
-  scoring: TeamScoringDetail;
-}) {
-  const hasTries = scoring.tryScorers.length > 0;
-  const kicking = scoring.kicking;
-  const hasKicking =
-    (kicking?.conversions ?? 0) > 0 ||
-    (kicking?.penalties ?? 0) > 0 ||
-    (kicking?.dropGoals ?? 0) > 0;
-
-  return (
-    <div className={SPACING.stackMd}>
-      <ClubTeamLabel club={teamName} colorClub={teamName} />
-      {hasTries && (
-        <TeamColouredScoringSection colorClub={teamName}>
-          <p className={TYPO.sectionTitle}>Tries</p>
-          <div className="mt-2">
-            <TryScorerChips
-              scorers={scoring.tryScorers.map((s) => ({
-                playerId: s.playerId,
-                name: s.name,
-                tries: s.tries,
-              }))}
-            />
-          </div>
-        </TeamColouredScoringSection>
-      )}
-      {hasKicking && (
-        <TeamColouredScoringSection colorClub={teamName}>
-          <KickingSummarySection kicking={kicking} bare />
-        </TeamColouredScoringSection>
-      )}
-      {!hasTries && !hasKicking && (
-        <TryScorersEmptyNote />
-      )}
-    </div>
-  );
-}
-
-function ScoringSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: ReactNode;
-}) {
-  return (
-    <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
-      <p className={TYPO.sectionTitle}>{title}</p>
-      <div className="mt-2">{children}</div>
-    </div>
   );
 }

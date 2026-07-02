@@ -19,6 +19,7 @@ import {
 } from "./managerReserveContracts";
 import { getManagerClubTeamRating } from "./managerRating";
 import { reserveToPlayer } from "./managerPlayers";
+import { reconcileLeagueRosters } from "./managerLeagueRosters";
 import type { Player } from "../types";
 
 const FIRST_NAMES = [
@@ -302,7 +303,7 @@ export function promoteReserveToSquad(
     [reserveId]: contract,
   };
 
-  const next: ManagerCareer = {
+  const next: ManagerCareer = reconcileLeagueRosters({
     ...career,
     playerRegistry: { ...career.playerRegistry, [reserveId]: player },
     squad: [...career.squad, createInitialPlayerState(reserveId)],
@@ -320,7 +321,7 @@ export function promoteReserveToSquad(
     matchdayInterchange: career.matchdayInterchange.filter(
       (id) => id !== reserveId
     ),
-  };
+  });
   return { ok: true, career: next };
 }
 

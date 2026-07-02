@@ -13,7 +13,9 @@ import type {
   ManagerLeagueRow,
   ManagerRoundMatch,
   ManagerScheduledFixture,
+  ManagerCareer,
 } from "./types";
+import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
 
 export function buildManagerSchedule(
   club: string,
@@ -67,17 +69,22 @@ function simulateClubFixture(
   away: string,
   round: number,
   seed: string,
-  leagueClubStates?: LeagueClubStates
+  leagueClubStates?: LeagueClubStates,
+  career?: ManagerCareer
 ): { homeScore: number; awayScore: number; homeTries: number; awayTries: number } {
   const rng = seedrandom(`${seed}-mgr-club-r${round}-${home}-${away}`);
+  const homePool = career
+    ? getManagerOpponentPoolOptions(career, home)
+    : { currentSeasonOnly: true as const };
+  const awayPool = career
+    ? getManagerOpponentPoolOptions(career, away)
+    : { currentSeasonOnly: true as const };
   const homeStr =
-    getMatchClubStrength(home, seed, round, true, {
-      currentSeasonOnly: true,
-    }) - getLeagueClubInjuryPenalty(leagueClubStates, home);
+    getMatchClubStrength(home, seed, round, true, homePool) -
+    getLeagueClubInjuryPenalty(leagueClubStates, home);
   const awayStr =
-    getMatchClubStrength(away, seed, round, false, {
-      currentSeasonOnly: true,
-    }) - getLeagueClubInjuryPenalty(leagueClubStates, away);
+    getMatchClubStrength(away, seed, round, false, awayPool) -
+    getLeagueClubInjuryPenalty(leagueClubStates, away);
   const diff = homeStr - awayStr + (rng() - 0.5) * 8;
   const homeWins = rng() < 1 / (1 + Math.exp(-diff / 4.2));
 
@@ -125,7 +132,8 @@ export function simulateRoundOtherMatches(
   round: number,
   seed: string,
   userMatch: ManagerRoundMatch,
-  leagueClubStates?: LeagueClubStates
+  leagueClubStates?: LeagueClubStates,
+  career?: ManagerCareer
 ): ManagerRoundMatch[] {
   const allClubs = [...CURRENT_PLAYABLE_CLUBS];
   const resting = allClubs.filter(
@@ -135,7 +143,14 @@ export function simulateRoundOtherMatches(
   const results: ManagerRoundMatch[] = [userMatch];
 
   for (const [home, away] of pairs) {
-    const sim = simulateClubFixture(home, away, round, seed, leagueClubStates);
+    const sim = simulateClubFixture(
+      home,
+      away,
+      round,
+      seed,
+      leagueClubStates,
+      career
+    );
     results.push({
       round,
       homeTeam: home,

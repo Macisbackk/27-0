@@ -2,7 +2,8 @@ import seedrandom from "seedrandom";
 import type { MatchFixture, TeamScoringDetail } from "../game/season-simulation";
 import { selectClubMatchSquad } from "../game/opponent-scorers";
 import { getPlayerEligiblePositions } from "../players/player-positions";
-import type { ManagerTactics } from "./types";
+import type { ManagerCareer, ManagerTactics } from "./types";
+import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
 
 function allocateTries(
   totalTries: number,
@@ -32,13 +33,16 @@ export function buildOpponentTryScoringDetail(
   seed: string,
   round: number,
   _tactics?: ManagerTactics,
-  fixtureKey?: string
+  fixtureKey?: string,
+  career?: ManagerCareer
 ): TeamScoringDetail["tryScorers"] {
   if (tries <= 0) return [];
 
-  const oppSquad = selectClubMatchSquad(opponent, seed, round, {
-    currentSeasonOnly: true,
-  });
+  const poolOptions = career
+    ? getManagerOpponentPoolOptions(career, opponent)
+    : { currentSeasonOnly: true as const };
+
+  const oppSquad = selectClubMatchSquad(opponent, seed, round, poolOptions);
   if (oppSquad.length === 0) {
     return [];
   }
@@ -76,7 +80,8 @@ export function repairOpponentTryScorers(
   fixture: MatchFixture,
   seed: string,
   tactics?: ManagerTactics,
-  fixtureKey?: string
+  fixtureKey?: string,
+  career?: ManagerCareer
 ): void {
   if (fixture.triesAgainst <= 0) return;
   const tryScorers = buildOpponentTryScoringDetail(
@@ -85,7 +90,8 @@ export function repairOpponentTryScorers(
     seed,
     fixture.round,
     tactics,
-    fixtureKey
+    fixtureKey,
+    career
   );
   if (tryScorers.length === 0) return;
 

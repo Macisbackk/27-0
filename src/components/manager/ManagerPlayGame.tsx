@@ -15,6 +15,7 @@ import {
   getLiveMatchEvents,
   getMatchStatusLabel,
   HALFTIME_MINUTE,
+  LIVE_MATCH_COMMANDS,
   liveMatchToFixture,
   REAL_TICK_MS,
   type LiveMatchState,
@@ -33,21 +34,13 @@ import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
 
-const COMMANDS: LiveMatchCommand[] = [
-  "balanced",
-  "attack",
-  "defend",
-  "use_forwards",
-  "spread_wide",
-];
+const COMMANDS = LIVE_MATCH_COMMANDS;
 
 const STATUS_PILL_CLASS = {
   win: "bg-theme-primary/20 text-theme-primary border-theme-primary/40",
   loss: "bg-red-500/20 text-red-300 border-red-500/40",
   level: "bg-pitch-700/50 text-pitch-200 border-pitch-600",
 };
-
-const MAX_VISIBLE_EVENTS = 5;
 
 interface ManagerPlayGameProps {
   career: ManagerCareer;
@@ -216,8 +209,7 @@ export function ManagerPlayGame({
   const isPreview = live.phase === "preview";
   const isHalftime = live.phase === "halftime";
   const canClose = !hasStarted || live.isComplete;
-  const visibleEvents = [...live.events].reverse().slice(0, MAX_VISIBLE_EVENTS);
-  const hiddenEventCount = Math.max(0, live.events.length - MAX_VISIBLE_EVENTS);
+  const matchEvents = [...live.events].reverse();
 
   const selectCommand = (cmd: LiveMatchCommand) => {
     playUiClick();
@@ -337,32 +329,30 @@ export function ManagerPlayGame({
             </p>
           )}
 
-          {/* Events — newest only, no scrollbar */}
+          {/* Events — scroll within available space */}
           <div
             className={`${CARD.inset} flex min-h-0 flex-1 flex-col overflow-hidden p-2.5`}
           >
-            <div className="flex shrink-0 items-center justify-between gap-2">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
-                Match events
-              </p>
-              {hiddenEventCount > 0 && (
-                <span className="text-[10px] text-pitch-600">
-                  +{hiddenEventCount} earlier
+            <p className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
+              Match events
+              {matchEvents.length > 0 && (
+                <span className="ml-1.5 font-normal normal-case text-pitch-600">
+                  ({matchEvents.length})
                 </span>
               )}
-            </div>
-            {visibleEvents.length === 0 ? (
+            </p>
+            {matchEvents.length === 0 ? (
               <p className="mt-2 text-[11px] text-pitch-500">
                 {isPreview
                   ? "Events appear once the match starts."
                   : "Waiting for action…"}
               </p>
             ) : (
-              <ul className="mt-1.5 min-h-0 flex-1 space-y-1 overflow-hidden">
-                {visibleEvents.map((ev, i) => (
+              <ul className="mt-1.5 min-h-0 flex-1 space-y-0.5 overflow-y-auto overscroll-contain pr-0.5 [-ms-overflow-style:none] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-pitch-600/80">
+                {matchEvents.map((ev, i) => (
                   <li
                     key={`${ev.minute}-${ev.type}-${i}`}
-                    className={`line-clamp-2 text-[11px] leading-snug sm:text-xs ${
+                    className={`text-[11px] leading-snug sm:text-xs ${
                       ev.team === "user" ? "text-white" : "text-pitch-400"
                     }`}
                   >
@@ -443,7 +433,7 @@ function CommandGrid({
   onSelect: (cmd: LiveMatchCommand) => void;
 }) {
   return (
-    <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-5">
+    <div className="grid grid-cols-4 gap-1.5">
       {COMMANDS.map((cmd) => (
         <button
           key={cmd}

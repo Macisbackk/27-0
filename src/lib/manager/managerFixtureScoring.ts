@@ -4,6 +4,10 @@ import type { SquadSlot } from "../types";
 import { getManagerPlayer } from "./managerPlayers";
 import type { LiveMatchEvent, ManagerCareer, ManagerFixtureRecord } from "./types";
 import { enrichManagerFixtureScoring } from "./managerScoring";
+import {
+  generateManagerMatchBio,
+  isLegacyFantasyMatchBio,
+} from "./manager-match-summary";
 import { buildMatchdayScoringEntries } from "./managerSquad";
 import { allocateWeightedTries } from "./managerTryScoring";
 import { buildOpponentTryScoringDetail } from "./managerOpponentScoring";
@@ -69,70 +73,98 @@ export function ensureManagerFixtureScoring(
   }
 
   if (opponentScoringUsesClubLump(fixture)) {
-    repairOpponentTryScorers(fixture, career.seed, career.tactics, fixtureKey);
+    repairOpponentTryScorers(
+      fixture,
+      career.seed,
+      career.tactics,
+      fixtureKey,
+      career
+    );
   }
 
-  if (fixture.scoringDetail) return;
+  if (!fixture.scoringDetail) {
+    const entries = buildMatchdayScoringEntries(
+      career,
+      matchdayXiii,
+      xiiiSlotPositions,
+      matchdayInterchange
+    );
+    const rng = seedrandom(
+      `${career.seed}-mgr-fallback-${fixtureKey ?? `r${fixture.round}`}`
+    );
+    const weights = entries.map((e) => e.tryWeightMultiplier * (0.9 + rng() * 0.2));
+    const alloc = allocateWeightedTries(fixture.triesFor, weights, rng);
+    const userTryScorers = entries
+      .map((e, i) => ({
+        playerId: e.player.id,
+        name: e.player.name,
+        tries: alloc[i] ?? 0,
+      }))
+      .filter((s) => s.tries > 0);
 
-  const entries = buildMatchdayScoringEntries(
-    career,
-    matchdayXiii,
-    xiiiSlotPositions,
-    matchdayInterchange
-  );
-  const rng = seedrandom(
-    `${career.seed}-mgr-fallback-${fixtureKey ?? `r${fixture.round}`}`
-  );
-  const weights = entries.map((e) => e.tryWeightMultiplier * (0.9 + rng() * 0.2));
-  const alloc = allocateWeightedTries(fixture.triesFor, weights, rng);
-  const userTryScorers = entries
-    .map((e, i) => ({
-      playerId: e.player.id,
-      name: e.player.name,
-      tries: alloc[i] ?? 0,
-    }))
-    .filter((s) => s.tries > 0);
+    const oppName = fixture.opponent;
 
-  const oppName = fixture.opponent;
+    fixture.scoringDetail = {
+      dreamTeam: {
+        tryScorers: userTryScorers,
+        kicking: fixture.scoringFor
+          ? {
+              playerId: userTryScorers[0]?.playerId ?? "kicker",
+              name: userTryScorers[0]?.name ?? career.seed,
+              conversions: fixture.scoringFor.conversions,
+              conversionAttempts: fixture.scoringFor.tries,
+              penalties: fixture.scoringFor.penalties,
+              dropGoals: fixture.scoringFor.dropGoals,
+            }
+          : null,
+      },
+      opponent: {
+        tryScorers:
+          fixture.triesAgainst > 0
+            ? buildOpponentTryScoringDetail(
+                oppName,
+                fixture.triesAgainst,
+                career.seed,
+                fixture.round,
+                career.tactics,
+                fixtureKey,
+                career
+              )
+            : [],
+        kicking: fixture.scoringAgainst
+          ? {
+              playerId: oppName,
+              name: oppName,
+              conversions: fixture.scoringAgainst.conversions,
+              conversionAttempts: fixture.scoringAgainst.tries,
+              penalties: fixture.scoringAgainst.penalties,
+              dropGoals: fixture.scoringAgainst.dropGoals,
+            }
+          : null,
+      },
+    };
+  }
 
-  fixture.scoringDetail = {
-    dreamTeam: {
-      tryScorers: userTryScorers,
-      kicking: fixture.scoringFor
-        ? {
-            playerId: userTryScorers[0]?.playerId ?? "kicker",
-            name: userTryScorers[0]?.name ?? career.seed,
-            conversions: fixture.scoringFor.conversions,
-            conversionAttempts: fixture.scoringFor.tries,
-            penalties: fixture.scoringFor.penalties,
-            dropGoals: fixture.scoringFor.dropGoals,
-          }
-        : null,
-    },
-    opponent: {
-      tryScorers:
-        fixture.triesAgainst > 0
-          ? buildOpponentTryScoringDetail(
-              oppName,
-              fixture.triesAgainst,
-              career.seed,
-              fixture.round,
-              career.tactics,
-              fixtureKey
-            )
-          : [],
-      kicking: fixture.scoringAgainst
-        ? {
-            playerId: oppName,
-            name: oppName,
-            conversions: fixture.scoringAgainst.conversions,
-            conversionAttempts: fixture.scoringAgainst.tries,
-            penalties: fixture.scoringAgainst.penalties,
-            dropGoals: fixture.scoringAgainst.dropGoals,
-          }
-        : null,
-    },
-  };
+  refreshManagerMatchBio(career, fixture);
+}
+
+function refreshManagerMatchBio(
+  career: ManagerCareer,
+  fixture: MatchFixture
+): void {
+  const record = fixture as ManagerFixtureRecord;
+  if (!isLegacyFantasyMatchBio(fixture.matchBio)) return;
+
+  fixture.matchBio = generateManagerMatchBio(fixture, career.seed, {
+    clubName: career.club,
+    competition: record.competition ?? record.meta?.competition,
+    cupRound: record.meta?.cupRound,
+    tacticImpactLine: record.meta?.tacticImpactLine,
+    tacticEffectivenessLine: record.meta?.tacticEffectivenessLine,
+    attendance: record.meta?.attendance,
+    playedLive: record.meta?.playedLive,
+    injuryCount: record.meta?.injuries?.length,
+  });
 }
 
 function resolvePlayerIdByName(
@@ -239,7 +271,8 @@ export function applyLiveEventsToFixtureScoring(
       career.seed,
       fixture.round,
       career.tactics,
-      fixtureKey
+      fixtureKey,
+      career
     );
     if (fromSquad.length > 0) {
       oppTryScorers.push(...fromSquad);

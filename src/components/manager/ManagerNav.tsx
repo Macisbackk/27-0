@@ -61,7 +61,7 @@ export function ManagerNav({
                   onNavigate(tab.id);
                 }}
                 disabled={disabled}
-                className={`btn-press shrink-0 min-h-[38px] rounded-lg px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wide transition sm:min-h-[40px] sm:px-3 sm:text-xs ${
+                className={`btn-press flex shrink-0 items-center justify-center text-center min-h-[38px] min-w-[4.25rem] rounded-lg px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wide transition sm:min-h-[40px] sm:w-full sm:min-w-0 sm:px-3 sm:text-xs ${
                   active === tab.id ? BTN.tabActive : BTN.tabIdle
                 } ${disabled ? "pointer-events-none opacity-40" : ""}`}
               >

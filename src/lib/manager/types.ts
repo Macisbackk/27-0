@@ -404,8 +404,7 @@ export type LiveMatchCommand =
   | "attack"
   | "defend"
   | "balanced"
-  | "use_forwards"
-  | "spread_wide";
+  | "champagne";
 
 export interface PlayerDevelopmentState {
   rating: number;
@@ -487,6 +486,8 @@ export interface ManagerCareer {
   /** Per-club injury load for league sim fairness (AI clubs miss players too). */
   leagueClubStates?: Record<string, { injuriesOut: number }>;
   leagueClubStatesWeek?: number;
+  /** Persisted AI club squads — transfers and youth intake update these each season. */
+  leagueClubRosters?: Record<string, string[]>;
   createdAt: string;
   updatedAt: string;
 }

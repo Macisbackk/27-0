@@ -1,11 +1,11 @@
 import seedrandom from "seedrandom";
 import { getPlayerById, getPlayersByCategory } from "../players";
-import { getCurrentSquadPlayerIds } from "../players/era-teams";
 import { isHiddenPlayer } from "../players/goat";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { ManagerCareer } from "./types";
 import type { ManagerInjury, InjuryType } from "./types";
 import { createInitialPlayerState } from "./managerSquad";
+import { getLeagueClubRosterIds } from "./managerLeagueRosters";
 import {
   calculateWageForPlayer,
   computeWageBill,
@@ -51,12 +51,12 @@ export function getTransferDemand(
 }
 
 export function generateTransferMarket(
-  userClub: string,
-  userSquadIds: Set<string>,
+  career: ManagerCareer,
   seed: string,
   round: number
 ): string[] {
   const rng = seedrandom(`${seed}-transfers-r${round}`);
+  const userSquadIds = new Set(career.squad.map((p) => p.playerId));
   const allCurrent = getPlayersByCategory("current").filter(
     (p) =>
       p.category === "current" &&
@@ -67,8 +67,8 @@ export function generateTransferMarket(
 
   const otherClubIds = new Set<string>();
   for (const club of CURRENT_PLAYABLE_CLUBS) {
-    if (club === userClub) continue;
-    for (const id of getCurrentSquadPlayerIds(club)) {
+    if (club === career.club) continue;
+    for (const id of getLeagueClubRosterIds(career, club)) {
       otherClubIds.add(id);
     }
   }

@@ -16,13 +16,14 @@ import {
   buildMergedDisplaySchedule,
   ensureCupBracketReady,
 } from "@/lib/manager/managerChallengeCup";
-import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
+import { getHomeFixtureAttendanceOutlook } from "@/lib/manager/managerAttendance";
 import {
   getManagerPlayedFixtureLabel,
   getManagerScheduledFixtureHeadline,
   isChallengeCupFixture,
 } from "@/lib/manager/managerFixtureDisplay";
 import { ensurePlayoffsReady } from "@/lib/manager/managerPlayoffs";
+import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import type {
   ManagerCareer,
@@ -36,7 +37,14 @@ interface ManagerFixturesProps {
   onSelectFixture: (fixtureId: string) => void;
 }
 
-type FixtureFilter = "all" | "upcoming" | "results" | "league" | "cup" | "playoffs";
+type FixtureFilter =
+  | "all"
+  | "upcoming"
+  | "results"
+  | "league"
+  | "cup"
+  | "playoffs"
+  | "friendlies";
 
 type FixtureListItem =
   | {
@@ -59,6 +67,7 @@ const FILTERS: { id: FixtureFilter; label: string }[] = [
   { id: "league", label: "League" },
   { id: "cup", label: "Cup" },
   { id: "playoffs", label: "Play-Offs" },
+  { id: "friendlies", label: "Friendlies" },
 ];
 
 function ordinal(n: number): string {
@@ -89,9 +98,8 @@ function matchesCompetitionFilter(
   }
   if (filter === "league") return competition === "league" || !competition;
   if (filter === "cup") return competition === "challenge_cup";
-  if (filter === "playoffs") {
-    return competition === "playoffs" || competition === "friendly";
-  }
+  if (filter === "playoffs") return competition === "playoffs";
+  if (filter === "friendlies") return competition === "friendly";
   return true;
 }
 
@@ -213,6 +221,7 @@ function UpcomingFixtureRow({
   const awayColors = sched.isHome ? opponentColors ?? userColors : userColors;
   const isCup = isChallengeCupFixture(sched.competition);
   const isPlayoff = sched.competition === "playoffs";
+  const isFriendly = sched.competition === "friendly";
 
   return (
     <div
@@ -223,7 +232,9 @@ function UpcomingFixtureRow({
             ? "border-accent-gold/35 bg-accent-gold/5"
             : isPlayoff
               ? "border-theme-primary/30 bg-theme-primary/5"
-              : "border-pitch-700/50 bg-pitch-950/50"
+              : isFriendly
+                ? "border-sky-400/30 bg-sky-400/5"
+                : "border-pitch-700/50 bg-pitch-950/50"
       }`}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -302,6 +313,11 @@ export function ManagerFixtures({
     ? null
     : getNextManagerFixture(readyCareer);
 
+  const homeAttendanceOutlook =
+    nextFixture?.isHome && !career.isSeasonComplete
+      ? getHomeFixtureAttendanceOutlook(career, nextFixture)
+      : null;
+
   const position = getUserLeaguePosition(career.leagueTable, career.club);
   const ts = career.teamSeasonStats;
   const recentForm = career.recentForm.slice(-5) as ("W" | "L" | "D")[];
@@ -335,7 +351,11 @@ export function ManagerFixtures({
   const upcomingCount = allItems.filter((i) => i.kind === "upcoming").length;
 
   const showUpcomingFirst =
-    filter === "all" || filter === "upcoming" || filter === "league" || filter === "cup";
+    filter === "all" ||
+    filter === "upcoming" ||
+    filter === "league" ||
+    filter === "cup" ||
+    filter === "friendlies";
   const upcomingItems = filteredItems.filter((i) => i.kind === "upcoming");
   const playedItems = filteredItems.filter((i) => i.kind === "played");
   const playedDisplay =
@@ -425,6 +445,13 @@ export function ManagerFixtures({
             {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
             {nextFixture.isHome ? "Home" : "Away"}
           </p>
+          {homeAttendanceOutlook && (
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+              {homeAttendanceOutlook.label} · ~
+              {homeAttendanceOutlook.predictedAttendance.toLocaleString()}{" "}
+              expected
+            </p>
+          )}
         </div>
       )}
 
