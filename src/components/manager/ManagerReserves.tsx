@@ -79,12 +79,13 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     }
     if (filter === "potential") {
       list.sort((a, b) => b.potentialRating - a.potentialRating);
-    } else if (filter === "rating") {
-      list.sort((a, b) => b.rating - a.rating);
     } else if (filter === "age") {
       list.sort((a, b) => a.age - b.age);
     } else if (filter === "callup") {
       list = list.filter((r) => !r.calledUpForNextMatch);
+      list.sort((a, b) => b.rating - a.rating);
+    } else {
+      list.sort((a, b) => b.rating - a.rating);
     }
     return list;
   }, [career.reserves, filter, positionFilter]);

@@ -116,7 +116,7 @@ export function ManagerReserveReleaseModal({
                   <ManagerStat
                     label="Wage"
                     value={`${formatWage(contract.wagePerYear)}/yr`}
-                    tone="sky"
+                    tone="default"
                   />
                   <ManagerStat
                     label="Contract"

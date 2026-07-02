@@ -2,10 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
   ManagerInboxMessageCard,
+  ManagerSectionCard,
+  ManagerStat,
 } from "@/components/manager/manager-ui";
 import type { InboxMessage, InboxMessageType, ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
@@ -53,6 +55,9 @@ function matchesFilter(msg: InboxMessage, filter: InboxFilter): boolean {
       msg.type === "sale"
     );
   }
+  if (filter === "contract") {
+    return msg.type === "contract" || msg.type === "retirement";
+  }
   if (filter === "injury") {
     return msg.type === "injury" || msg.type === "release";
   }
@@ -64,6 +69,14 @@ function matchesFilter(msg: InboxMessage, filter: InboxFilter): boolean {
     );
   }
   return msg.type === filter;
+}
+
+function InboxActionRow({ children }: { children: React.ReactNode }) {
+  return <div className="grid gap-2 sm:grid-cols-3">{children}</div>;
+}
+
+function InboxSingleAction({ children }: { children: React.ReactNode }) {
+  return <div className="grid gap-2">{children}</div>;
 }
 
 export function ManagerInbox({
@@ -90,6 +103,7 @@ export function ManagerInbox({
   }, []);
 
   const resolved = career.inboxMessages.filter((m) => m.resolved).slice(0, 10);
+  const bidCount = messages.filter((m) => matchesFilter(m, "transfer_offer_in")).length;
 
   const handleAccept = (id: string) => {
     const result = acceptIncomingOffer(career, id);
@@ -124,61 +138,89 @@ export function ManagerInbox({
   };
 
   return (
-    <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
+    <div className={`mx-auto w-full max-w-3xl ${SPACING.stackLg}`}>
       <div>
         <h1 className={TYPO.pageTitle}>Inbox</h1>
-        <p className={`${TYPO.bodySm} text-pitch-400`}>
-          {messages.length} open message{messages.length === 1 ? "" : "s"} ·
-          messages auto-delete after 7 weeks
+        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+          Club messages and transfer offers — auto-cleared after 7 weeks
         </p>
       </div>
 
+      <ManagerSectionCard variant="elevated" accent="primary">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <ManagerStat
+            label="Open"
+            value={String(messages.length)}
+            tone={messages.length > 0 ? "primary" : "muted"}
+            large
+          />
+          <ManagerStat
+            label="Bids"
+            value={String(bidCount)}
+            tone={bidCount > 0 ? "gold" : "muted"}
+          />
+          <ManagerStat
+            label="Season"
+            value={`${career.seasonYear} · Wk ${career.gameWeek}`}
+            tone="muted"
+          />
+        </div>
+      </ManagerSectionCard>
+
       {messages.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {INBOX_FILTERS.map((f) => {
-            const count =
-              f.id === "all"
-                ? messages.length
-                : messages.filter((m) => matchesFilter(m, f.id)).length;
-            if (f.id !== "all" && count === 0) return null;
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => {
-                  playUiClick();
-                  setFilter(f.id);
-                }}
-                className={`rounded-full border px-2.5 py-1 text-xs font-medium transition ${
-                  filter === f.id
-                    ? "border-theme-primary/50 bg-theme-primary/15 text-theme-primary"
-                    : "border-pitch-600/60 bg-pitch-900/40 text-pitch-400 hover:border-pitch-500"
-                }`}
-              >
-                {f.label}
-                {count > 0 && (
-                  <span className="ml-1 opacity-70">({count})</span>
-                )}
-              </button>
-            );
-          })}
+        <div className={`${CARD.base} ${SPACING.cardPaddingSm}`}>
+          <p className={`${TYPO.sectionLabel} mb-2.5`}>Filter</p>
+          <div className="flex flex-wrap gap-2">
+            {INBOX_FILTERS.map((f) => {
+              const count =
+                f.id === "all"
+                  ? messages.length
+                  : messages.filter((m) => matchesFilter(m, f.id)).length;
+              if (f.id !== "all" && count === 0) return null;
+              return (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() => {
+                    playUiClick();
+                    setFilter(f.id);
+                  }}
+                  className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
+                    filter === f.id ? FILTER.chipActive : FILTER.chipIdle
+                  }`}
+                >
+                  {f.label}
+                  {count > 0 && (
+                    <span className="ml-1.5 opacity-70">({count})</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
 
       {feedback && (
-        <p className={`${TYPO.bodySm} text-theme-primary`}>{feedback}</p>
+        <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+          <p className={`${TYPO.bodySm} text-theme-primary`}>{feedback}</p>
+        </div>
       )}
 
       {messages.length === 0 && (
-        <p className={`${TYPO.bodySm} text-pitch-500`}>
-          No new messages. List players for transfer to attract offers.
-        </p>
+        <ManagerSectionCard variant="inset">
+          <p className={`${TYPO.bodySm} text-pitch-400`}>
+            No new messages. Rival clubs may approach you about unlisted
+            players, or list your own squad to attract bids.
+          </p>
+        </ManagerSectionCard>
       )}
 
       {messages.length > 0 && filteredMessages.length === 0 && (
-        <p className={`${TYPO.bodySm} text-pitch-500`}>
-          No messages in this category.
-        </p>
+        <ManagerSectionCard variant="inset">
+          <p className={`${TYPO.bodySm} text-pitch-400`}>
+            No messages in this category.
+          </p>
+        </ManagerSectionCard>
       )}
 
       <div className={SPACING.stackMd}>
@@ -186,11 +228,11 @@ export function ManagerInbox({
           <ManagerInboxMessageCard key={msg.id} message={msg}>
             {(msg.type === "transfer" || msg.type === "transfer_offer_in") &&
               msg.askingPrice != null && (
-                <div className="space-y-2">
+                <>
                   {negotiatingId === msg.id ? (
-                    <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+                    <div className={`${CARD.inset} ${SPACING.cardPaddingSm} space-y-3`}>
                       <label className={TYPO.bodySm}>
-                        <span className="text-pitch-400">Your counter</span>
+                        <span className="text-pitch-400">Your counter offer</span>
                         <input
                           type="number"
                           step={5000}
@@ -198,34 +240,38 @@ export function ManagerInbox({
                           onChange={(e) =>
                             setCounterAmount(Number(e.target.value))
                           }
-                          className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1 text-white"
+                          className={`${FILTER.input} mt-2`}
                         />
                       </label>
-                      <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                      <InboxActionRow>
                         <GameButton
                           variant="theme"
                           size="sm"
+                          fullWidth
                           onClick={() => {
                             playUiClick();
                             handleNegotiate(msg);
                           }}
                         >
-                          Submit Counter
+                          Submit counter
                         </GameButton>
                         <GameButton
                           variant="secondary"
                           size="sm"
+                          fullWidth
+                          className="sm:col-span-2"
                           onClick={() => setNegotiatingId(null)}
                         >
                           Cancel
                         </GameButton>
-                      </div>
+                      </InboxActionRow>
                     </div>
                   ) : (
-                    <div className="grid gap-2 sm:grid-cols-3">
+                    <InboxActionRow>
                       <GameButton
                         variant="theme"
                         size="sm"
+                        fullWidth
                         onClick={() => {
                           playUiClick();
                           handleAccept(msg.id);
@@ -237,6 +283,7 @@ export function ManagerInbox({
                       <GameButton
                         variant="secondary"
                         size="sm"
+                        fullWidth
                         onClick={() => startNegotiate(msg)}
                       >
                         Negotiate
@@ -244,6 +291,7 @@ export function ManagerInbox({
                       <GameButton
                         variant="secondary"
                         size="sm"
+                        fullWidth
                         onClick={() => {
                           playUiClick();
                           handleReject(msg.id);
@@ -251,51 +299,60 @@ export function ManagerInbox({
                       >
                         Reject
                       </GameButton>
-                    </div>
+                    </InboxActionRow>
                   )}
-                </div>
+                </>
               )}
 
             {msg.type === "cup_draw" && onNavigate && (
-              <GameButton
-                variant="theme"
-                size="sm"
-                onClick={() => {
-                  playUiClick();
-                  dismiss(msg.id);
-                  onNavigate("fixtures");
-                }}
-              >
-                View Fixture
-              </GameButton>
+              <InboxSingleAction>
+                <GameButton
+                  variant="theme"
+                  size="sm"
+                  fullWidth
+                  onClick={() => {
+                    playUiClick();
+                    dismiss(msg.id);
+                    onNavigate("fixtures");
+                  }}
+                >
+                  View fixture
+                </GameButton>
+              </InboxSingleAction>
             )}
 
             {msg.type === "season_reward" && onNavigate && (
-              <GameButton
-                variant="theme"
-                size="sm"
-                onClick={() => {
-                  playUiClick();
-                  dismiss(msg.id);
-                  onNavigate("season-rewards");
-                }}
-              >
-                View Rewards
-              </GameButton>
+              <InboxSingleAction>
+                <GameButton
+                  variant="theme"
+                  size="sm"
+                  fullWidth
+                  onClick={() => {
+                    playUiClick();
+                    dismiss(msg.id);
+                    onNavigate("season-rewards");
+                  }}
+                >
+                  View rewards
+                </GameButton>
+              </InboxSingleAction>
             )}
 
             {msg.type === "youth_intake" && onNavigate && (
-              <GameButton
-                variant="theme"
-                size="sm"
-                onClick={() => {
-                  playUiClick();
-                  dismiss(msg.id);
-                  onNavigate("reserves");
-                }}
-              >
-                View youth intake
-              </GameButton>
+              <InboxSingleAction>
+                <GameButton
+                  variant="theme"
+                  size="sm"
+                  fullWidth
+                  onClick={() => {
+                    playUiClick();
+                    dismiss(msg.id);
+                    onNavigate("reserves");
+                  }}
+                >
+                  View youth intake
+                </GameButton>
+              </InboxSingleAction>
             )}
 
             {(msg.type === "release" ||
@@ -309,16 +366,19 @@ export function ManagerInbox({
               msg.type === "reserve_return" ||
               msg.type === "news" ||
               msg.type === "general") && (
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={() => {
-                  playUiClick();
-                  dismiss(msg.id);
-                }}
-              >
-                Dismiss
-              </GameButton>
+              <InboxSingleAction>
+                <GameButton
+                  variant="secondary"
+                  size="sm"
+                  fullWidth
+                  onClick={() => {
+                    playUiClick();
+                    dismiss(msg.id);
+                  }}
+                >
+                  Dismiss
+                </GameButton>
+              </InboxSingleAction>
             )}
           </ManagerInboxMessageCard>
         ))}
@@ -326,7 +386,7 @@ export function ManagerInbox({
 
       {resolved.length > 0 && (
         <section>
-          <h2 className={`${TYPO.sectionLabel} mb-2`}>Recent</h2>
+          <h2 className={`${TYPO.sectionLabel} mb-3`}>Recent</h2>
           <div className={SPACING.stackSm}>
             {resolved.map((msg) => (
               <ManagerInboxMessageCard

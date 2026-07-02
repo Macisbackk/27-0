@@ -311,15 +311,22 @@ export function ManagerContracts({
         <div className={`${SPACING.stackSm}`}>
         {rows.map(({ player, contract, status, rating }) => {
           const urgent =
-            contract.yearsRemaining <= 1 || contract.expiresAtSeasonEnd;
+            contract.yearsRemaining <= 1 ||
+            contract.expiresAtSeasonEnd ||
+            contract.retiringAtSeasonEnd;
           const statusColor =
-            status === "unhappy"
+            contract.retiringAtSeasonEnd
+              ? "text-stone-200 bg-stone-500/15 border-stone-400/35"
+              : status === "unhappy"
               ? "text-red-300 bg-red-500/10 border-red-500/30"
               : status === "expires_this_season" || status === "wants_renewal"
                 ? "text-accent-gold bg-accent-gold/10 border-accent-gold/30"
                 : status === "renewed"
                   ? "text-theme-primary bg-theme-primary/10 border-theme-primary/30"
                   : "text-pitch-300 bg-pitch-800/50 border-pitch-600/40";
+          const statusLabel = contract.retiringAtSeasonEnd
+            ? "Retiring end of season"
+            : STATUS_LABELS[status] ?? status;
           return (
             <button
               key={player.id}
@@ -350,7 +357,7 @@ export function ManagerContracts({
                 <span
                   className={`shrink-0 rounded-full border px-2 py-0.5 text-xs ${statusColor}`}
                 >
-                  {STATUS_LABELS[status] ?? status}
+                  {statusLabel}
                 </span>
               </div>
             </button>

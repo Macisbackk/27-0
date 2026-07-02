@@ -16,6 +16,7 @@ export interface TransferResultDetails {
   years: number;
   accepted: boolean;
   reason: string;
+  freeTransfer?: boolean;
 }
 
 interface ManagerTransferResultModalProps {
@@ -75,11 +76,15 @@ export function ManagerTransferResultModal({
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <ManagerStat label="Transfer fee" value={formatWage(result.fee)} tone="gold" />
+          <ManagerStat
+            label="Transfer fee"
+            value={result.freeTransfer || result.fee <= 0 ? "Free" : formatWage(result.fee)}
+            tone="gold"
+          />
           <ManagerStat
             label="Wage"
             value={`${formatWage(result.wagePerYear)}/yr`}
-            tone="sky"
+            tone="default"
           />
           <ManagerStat
             label="Contract"

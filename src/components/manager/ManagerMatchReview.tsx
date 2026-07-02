@@ -122,23 +122,56 @@ export function ManagerMatchReview({
         </div>
       )}
 
-      {(fixture.meta?.tacticImpactLine || fixture.meta?.tacticEffectivenessLine) && (
+      {(fixture.meta?.tacticReview ||
+        fixture.meta?.tacticEffectivenessLine ||
+        fixture.meta?.tacticImpactLine) && (
         <ManagerSectionCard title="Tactical Report" accent="primary">
-          {fixture.meta.tacticImpactLine && (
-            <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
-              <span className="font-semibold text-pitch-500">Game plan: </span>
-              {fixture.meta.tacticImpactLine}
-            </p>
-          )}
-          {fixture.meta.tacticEffectivenessLine && (
-            <p
-              className={`${fixture.meta.tacticImpactLine ? "mt-2" : "mt-1"} ${TYPO.bodySm} ${
-                won ? "text-theme-primary" : "text-pitch-200"
-              }`}
-            >
-              <span className="font-semibold text-pitch-500">How it played: </span>
-              {fixture.meta.tacticEffectivenessLine}
-            </p>
+          {fixture.meta.tacticReview ? (
+            <>
+              <p
+                className={`mt-1 ${TYPO.bodySm} font-semibold ${
+                  won ? "text-theme-primary" : "text-pitch-100"
+                }`}
+              >
+                {fixture.meta.tacticReview.headline}
+              </p>
+              <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+                <span className="font-semibold text-pitch-500">You used: </span>
+                {fixture.meta.tacticReview.usedLabel}
+              </p>
+              <ul className={`mt-3 ${SPACING.stackSm}`}>
+                {fixture.meta.tacticReview.recommendations.map((line) => (
+                  <li
+                    key={line}
+                    className={`flex gap-2 ${TYPO.bodySm} leading-relaxed text-pitch-200`}
+                  >
+                    <span className="shrink-0 text-theme-primary" aria-hidden>
+                      →
+                    </span>
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <>
+              {fixture.meta.tacticImpactLine && (
+                <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+                  <span className="font-semibold text-pitch-500">Game plan: </span>
+                  {fixture.meta.tacticImpactLine}
+                </p>
+              )}
+              {fixture.meta.tacticEffectivenessLine && (
+                <p
+                  className={`${fixture.meta.tacticImpactLine ? "mt-2" : "mt-1"} ${TYPO.bodySm} ${
+                    won ? "text-theme-primary" : "text-pitch-200"
+                  }`}
+                >
+                  <span className="font-semibold text-pitch-500">How it played: </span>
+                  {fixture.meta.tacticEffectivenessLine}
+                </p>
+              )}
+            </>
           )}
         </ManagerSectionCard>
       )}
@@ -163,16 +196,33 @@ export function ManagerMatchReview({
 
       {attendance && (
         <ManagerSectionCard title="Gate & Fans" accent="sky">
-          <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
+          <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
             <ManagerStat
               label="Attendance"
               value={attendance.attendance.toLocaleString()}
               tone="sky"
             />
             <ManagerStat
-              label="Gate Income"
+              label="Gate income"
               value={formatWage(attendance.gateIncome)}
               tone="gold"
+            />
+            <ManagerStat
+              label="→ Transfer fund"
+              value={formatWage(
+                attendance.transferAllocation ??
+                  Math.round(attendance.gateIncome * 0.12)
+              )}
+              tone="gold"
+            />
+            <ManagerStat
+              label="→ Club operations"
+              value={formatWage(
+                attendance.operatingAllocation ??
+                  attendance.gateIncome -
+                    Math.round(attendance.gateIncome * 0.12)
+              )}
+              tone="primary"
             />
             <ManagerStat
               label="Fan Mood"

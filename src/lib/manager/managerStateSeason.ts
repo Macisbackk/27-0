@@ -16,6 +16,7 @@ import { createManagerChallengeCup } from "./managerChallengeCup";
 import { userQualifiedForManagerPlayoffs } from "./managerPlayoffs";
 import { initPreSeasonState } from "./managerFriendlies";
 import {
+  applyClubRevenue,
   computeSeasonTransferBudget,
   initManagerFinance,
   refreshClubFundsForSeason,
@@ -31,6 +32,14 @@ import {
   ensureLeagueClubRosters,
   reconcileLeagueRosters,
 } from "./managerLeagueRosters";
+import {
+  addPlayersToFreeAgents,
+  simulateAiContractExpiries,
+} from "./managerFreeAgents";
+import {
+  applySeasonRetirements,
+  tickClubCareerTotals,
+} from "./managerRetirement";
 
 const CAREER_KEY = "27-0-manager-career";
 
@@ -163,8 +172,10 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
 
 export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const summary = buildSeasonSummary(career);
+  const withTotals = tickClubCareerTotals(career);
+  const { career: afterRetirements } = applySeasonRetirements(withTotals);
   const { career: afterSquadContracts, leaving: squadLeaving } =
-    tickContractsForNewSeason(career);
+    tickContractsForNewSeason(afterRetirements);
   const { career: afterReserveContracts, leaving: reserveLeaving } =
     tickReserveContractsForNewSeason(afterSquadContracts);
 
@@ -179,9 +190,18 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     withInbox = addContractLeavingInboxMessage(withInbox, reserveId, name);
   }
 
+  const withFreeAgents = addPlayersToFreeAgents(
+    withInbox,
+    squadLeaving.map((playerId) => ({
+      playerId,
+      formerClub: career.club,
+    })),
+    career.seasonYear + 1
+  );
+
   const leaving = [...squadLeaving, ...reserveLeaving];
 
-  let boardConfidence = withInbox.boardConfidence;
+  let boardConfidence = withFreeAgents.boardConfidence;
   if (leaving.length >= 3) boardConfidence = Math.max(0, boardConfidence - 10);
   else if (leaving.length > 0) boardConfidence = Math.max(0, boardConfidence - 4);
 
@@ -194,8 +214,11 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     summary
   );
 
+  const carriedOperating =
+    afterReserveContracts.managerFinance?.operatingBalance ?? 0;
+
   const next: ManagerCareer = {
-    ...withInbox,
+    ...withFreeAgents,
     seasonYear: career.seasonYear + 1,
     seed: newSeed,
     budget: transferBudget,
@@ -223,9 +246,10 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     playoffs: undefined,
     playoffsIntroAcknowledged: false,
     trophyCelebrationShown: false,
+    leagueWinnersCelebrationShown: false,
     wagePressureWeeks: 0,
-    transferMarket: generateTransferMarket(withInbox, newSeed, 0),
-    squad: withInbox.squad.map((p) => ({
+    transferMarket: generateTransferMarket(withFreeAgents, newSeed, 0),
+    squad: withFreeAgents.squad.map((p) => ({
       ...p,
       seasonAppearances: 0,
       seasonTries: 0,
@@ -233,6 +257,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     })),
     reserves: afterReserveContracts.reserves.map((r) => ({
       ...r,
+      age: r.age + 1,
       baseRating: r.rating,
       reserveAppearances: 0,
       reserveTries: 0,
@@ -245,10 +270,13 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     preSeason: initPreSeasonState({}),
     managerFinance: {
       transferBudget,
+      operatingBalance: carriedOperating,
       wageBudget: afterReserveContracts.wageBudget,
       wageBill: afterReserveContracts.wageBill,
-      clubFunds: transferBudget,
+      clubFunds: transferBudget + carriedOperating,
       seasonIncome: 0,
+      seasonTransferIncome: 0,
+      seasonOperatingIncome: 0,
       seasonSpending: 0,
     },
     latestNews: [],
@@ -260,17 +288,26 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     updatedAt: new Date().toISOString(),
   };
 
-  const withIntake = applyYearlyYouthIntake(
-    applyAiYouthIntakeToLeague(
-      ensureLeagueClubRosters(reconcileLeagueRosters(next))
+  const withIntake = simulateAiContractExpiries(
+    applyYearlyYouthIntake(
+      applyAiYouthIntakeToLeague(
+        ensureLeagueClubRosters(reconcileLeagueRosters(next))
+      )
     )
   );
   const seasonListed = generateLeagueListedPlayers(withIntake, newSeed, 0);
-  const finalCareer = {
+  let finalCareer: ManagerCareer = {
     ...withIntake,
     leagueListedPlayers: seasonListed,
     transferMarket: seasonListed.map((l) => l.playerId),
   };
+  if (summary.budgetChange > 0) {
+    finalCareer = applyClubRevenue(
+      finalCareer,
+      summary.budgetChange,
+      "board_grant"
+    );
+  }
   persistCareer(finalCareer);
   return finalCareer;
 }

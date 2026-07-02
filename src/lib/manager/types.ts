@@ -66,12 +66,22 @@ export interface PlayerContract {
   purchaseFee?: number;
   renewalDemand?: RenewalDemand;
   status?: ContractStatus;
+  /** Player plans to hang up their boots at the end of this season. */
+  retiringAtSeasonEnd?: boolean;
+  /** Season when retirement intent was last evaluated. */
+  retirementIntentSeason?: number;
 }
 
 export interface ManagerTactics {
   playingStyle: PlayingStyle;
   attackFocus: AttackFocus;
   defenceFocus: DefenceFocus;
+}
+
+export interface TacticMatchReviewAdvice {
+  headline: string;
+  usedLabel: string;
+  recommendations: string[];
 }
 
 export type InjuryType =
@@ -159,6 +169,8 @@ export interface GateIncomeRecord {
   round: number;
   attendance: number;
   income: number;
+  transferAllocation: number;
+  operatingAllocation: number;
   competition: ManagerCompetition;
 }
 
@@ -201,6 +213,8 @@ export interface ManagerRoundMatch {
 export interface MatchAttendanceMeta {
   attendance: number;
   gateIncome: number;
+  transferAllocation: number;
+  operatingAllocation: number;
   fanMoodChange: number;
   ticketPrice: number;
 }
@@ -208,6 +222,7 @@ export interface MatchAttendanceMeta {
 export interface ManagerMatchMeta {
   tacticImpactLine?: string;
   tacticEffectivenessLine?: string;
+  tacticReview?: TacticMatchReviewAdvice;
   injuries: { playerId: string; name: string; injury: ManagerInjury }[];
   playerOfMatchId?: string | null;
   playedLive?: boolean;
@@ -312,6 +327,13 @@ export interface LeagueListedPlayer {
   listedAtWeek: number;
 }
 
+export interface FreeAgent {
+  playerId: string;
+  formerClub: string;
+  sinceWeek: number;
+  sinceSeason: number;
+}
+
 export interface LeagueTransferActivity {
   id: string;
   week: number;
@@ -349,10 +371,13 @@ export interface PreSeasonState {
 
 export interface ManagerFinance {
   transferBudget: number;
+  operatingBalance: number;
   wageBudget: number;
   wageBill: number;
   clubFunds: number;
   seasonIncome: number;
+  seasonTransferIncome: number;
+  seasonOperatingIncome: number;
   seasonSpending: number;
 }
 
@@ -380,6 +405,7 @@ export type InboxMessageType =
   | "release"
   | "season_reward"
   | "youth_intake"
+  | "retirement"
   | "news"
   | "general";
 
@@ -399,6 +425,27 @@ export interface InboxMessage {
   offerClub?: string;
   offerAmount?: number;
   askingPrice?: number;
+  /** Unsolicited bid for an unlisted player — surfaced as a post-match popup. */
+  unsolicited?: boolean;
+}
+
+export interface RetiredPlayer {
+  playerId: string;
+  playerName: string;
+  position: import("../types").Position;
+  positionLabel: string;
+  age: number;
+  peakRating: number;
+  seasonRetired: number;
+  clubAppearances: number;
+  clubTries: number;
+  seasonsAtClub: number;
+}
+
+export interface ClubCareerTotals {
+  appearances: number;
+  tries: number;
+  seasons: number;
 }
 
 export type LiveMatchCommand =
@@ -411,6 +458,8 @@ export interface PlayerDevelopmentState {
   rating: number;
   peakRating: number;
   potential: number;
+  /** Per-match growth pace carried over from the reserve squad. */
+  developmentRate?: number;
 }
 
 export interface PlayerDevelopmentChange {
@@ -445,6 +494,8 @@ export interface ManagerCareer {
   playoffsIntroAcknowledged?: boolean;
   /** Title celebration shown for the completed season (Super League Champions). */
   trophyCelebrationShown?: boolean;
+  /** League Leaders celebration shown after the regular season (table winners). */
+  leagueWinnersCelebrationShown?: boolean;
   /** Consecutive weeks wage bill exceeded budget — triggers board pressure. */
   wagePressureWeeks?: number;
   matchdayXiii: string[];
@@ -459,6 +510,7 @@ export interface ManagerCareer {
   leagueTable: ManagerLeagueRow[];
   transferMarket: string[];
   leagueListedPlayers: LeagueListedPlayer[];
+  freeAgents?: FreeAgent[];
   playerTransferStatus: Record<string, PlayerTransferStatus>;
   inboxMessages: InboxMessage[];
   clubFunds: Record<string, number>;
@@ -493,6 +545,9 @@ export interface ManagerCareer {
   leagueClubStatesWeek?: number;
   /** Persisted AI club squads — transfers and youth intake update these each season. */
   leagueClubRosters?: Record<string, string[]>;
+  /** Club appearances/tries accumulated across seasons in this save. */
+  clubCareerTotals?: Record<string, ClubCareerTotals>;
+  retiredPlayers?: RetiredPlayer[];
   createdAt: string;
   updatedAt: string;
 }

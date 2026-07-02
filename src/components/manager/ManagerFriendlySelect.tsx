@@ -4,6 +4,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ManagerStat } from "@/components/manager/manager-ui";
+import { getClubColors } from "@/lib/clubs";
 import type { FriendlyOpponentChoice, ManagerCareer } from "@/lib/manager/types";
 import { getFriendlyAttendanceInterest } from "@/lib/manager/managerFriendlies";
 import { playUiClick } from "@/lib/sound";
@@ -32,10 +33,16 @@ export function ManagerFriendlySelect({
       </div>
 
       <div className="grid items-stretch gap-3 sm:grid-cols-3">
-        {choices.map((choice) => (
+        {choices.map((choice) => {
+          const colors = getClubColors(choice.club);
+          return (
           <div
             key={choice.id}
-            className={`${CARD.elevated} ${SPACING.cardPadding} flex h-full flex-col`}
+            className={`${CARD.elevated} ${SPACING.cardPadding} flex h-full flex-col border-l-4`}
+            style={{
+              borderLeftColor: colors.primary,
+              borderColor: colors.secondary,
+            }}
           >
             <div className="min-h-[3.25rem]">
               <p className="line-clamp-2 font-semibold leading-snug text-white">
@@ -74,7 +81,8 @@ export function ManagerFriendlySelect({
               Choose Opponent
             </GameButton>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

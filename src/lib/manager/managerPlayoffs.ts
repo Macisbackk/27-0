@@ -284,6 +284,18 @@ export function isPlayoffsPhaseComplete(career: ManagerCareer): boolean {
   return playoffs.tournamentComplete || playoffs.userEliminated;
 }
 
+export function shouldShowLeagueWinnersCelebration(
+  career: ManagerCareer
+): boolean {
+  if (career.leagueWinnersCelebrationShown) return false;
+  if (!isLeagueAndCupPhaseComplete(career)) return false;
+  const position = getUserLeaguePosition(
+    getManagerLeagueTable(career),
+    career.club
+  );
+  return position === 1;
+}
+
 export function needsPlayoffsIntro(career: ManagerCareer): boolean {
   if (career.playoffsIntroAcknowledged) return false;
   if (!isLeagueAndCupPhaseComplete(career)) return false;

@@ -45,6 +45,7 @@ import {
   computeFirstSeasonTransferBudget,
   syncManagerFinance,
   initClubTransferBudgets,
+  hydrateGateIncomeRecord,
 } from "./managerFinance";
 
 const CAREER_KEY = "27-0-manager-career";
@@ -130,7 +131,9 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     wageBudget,
     wageBill,
     attendanceData,
-    gateIncomeHistory: raw.gateIncomeHistory ?? [],
+    gateIncomeHistory: (raw.gateIncomeHistory ?? []).map((r) =>
+      hydrateGateIncomeRecord(r)
+    ),
     challengeCup,
     seasonAttendance: raw.seasonAttendance ?? {
       total: 0,
@@ -184,6 +187,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     managerFinance: initManagerFinance(raw),
     latestNews: raw.latestNews ?? [],
     leagueTransfers: raw.leagueTransfers ?? [],
+    freeAgents: raw.freeAgents ?? [],
     wagePressureWeeks: raw.wagePressureWeeks ?? 0,
     lastReserveReportWeek: raw.lastReserveReportWeek,
     leagueClubStates: ensureLeagueClubStates(raw.leagueClubStates),
@@ -191,6 +195,8 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     leagueClubRosters: raw.leagueClubRosters,
     playerDevelopment: raw.playerDevelopment ?? {},
     lastSeasonDevelopmentReview: raw.lastSeasonDevelopmentReview,
+    clubCareerTotals: raw.clubCareerTotals ?? {},
+    retiredPlayers: raw.retiredPlayers ?? [],
   };
 
   career = ensureRenewalDemands(career);
@@ -297,14 +303,18 @@ export function createNewCareer(club: string): ManagerCareer {
     preSeason: initPreSeasonState({}),
     managerFinance: {
       transferBudget,
+      operatingBalance: Math.round(wageBudget * 0.2),
       wageBudget,
       wageBill,
-      clubFunds: transferBudget,
+      clubFunds: transferBudget + Math.round(wageBudget * 0.2),
       seasonIncome: 0,
+      seasonTransferIncome: 0,
+      seasonOperatingIncome: 0,
       seasonSpending: 0,
     },
     latestNews: [],
     leagueTransfers: [],
+    freeAgents: [],
     wins: 0,
     losses: 0,
     teamSeasonStats: { ...EMPTY_TEAM_SEASON_STATS },

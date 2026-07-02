@@ -9,6 +9,7 @@ import type {
   RenewalDemand,
   SquadRole,
 } from "./types";
+import { clearRetirementIntentOnRenewal } from "./managerRetirement";
 
 export function formatWage(amount: number): string {
   if (amount >= 1_000_000) return `£${(amount / 1_000_000).toFixed(2)}m`;
@@ -164,7 +165,7 @@ export function getWageBudgetForClub(club: string): number {
   return Math.round(3_200_000 + rating * 15_000);
 }
 
-function roleRank(role: SquadRole): number {
+export function roleRank(role: SquadRole): number {
   const ranks: Record<SquadRole, number> = {
     Star: 5,
     Starter: 4,
@@ -287,7 +288,7 @@ export function applyRenewal(
   if (!contract) return career;
 
   const nextContracts = { ...career.contracts };
-  nextContracts[playerId] = {
+  nextContracts[playerId] = clearRetirementIntentOnRenewal({
     ...contract,
     wagePerYear: offer.wagePerYear,
     yearsRemaining: offer.yearsRequested,
@@ -296,7 +297,7 @@ export function applyRenewal(
     happiness: Math.min(99, contract.happiness + 15),
     renewalDemand: undefined,
     status: "renewed",
-  };
+  });
 
   const wageBill = computeWageBill(nextContracts);
   return {

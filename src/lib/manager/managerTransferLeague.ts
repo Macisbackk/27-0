@@ -322,8 +322,15 @@ export function evaluateBuyOffer(
   }
 
   const demand = getTransferDemand(playerId, career.club);
+  const rating = player.rating ?? player.peakRating ?? 70;
   if (offer.wagePerYear < demand.wagePerYear * 0.9) {
     return { accepted: false, reason: "Wage offer too low." };
+  }
+  if (offer.yearsRequested < demand.yearsRequested && rating >= 75) {
+    return {
+      accepted: false,
+      reason: "Player wants a longer contract.",
+    };
   }
   if (career.wageBill + offer.wagePerYear > career.wageBudget * 1.05) {
     return { accepted: false, reason: "Wage bill would exceed budget." };
@@ -343,10 +350,11 @@ export function completePlayerPurchase(
   listed: boolean
 ): ManagerCareer {
   const rep = getManagerClubTeamRating(career.club);
+  const demand = getTransferDemand(playerId, career.club);
   const contract = generateInitialContract(playerId, false, rep);
   contract.wagePerYear = offer.wagePerYear;
   contract.yearsRemaining = offer.yearsRequested;
-  contract.squadRole = offer.squadRole;
+  contract.squadRole = demand.squadRole;
   contract.expiresAtSeasonEnd = offer.yearsRequested <= 1;
   contract.purchaseFee = offer.transferFee;
 
@@ -448,6 +456,117 @@ export function generateIncomingTransferOffers(
   return { ...career, inboxMessages: messages };
 }
 
+/** Uncommon post-match approaches for unlisted squad players in good form. */
+export function generateUnsolicitedTransferOffers(
+  career: ManagerCareer
+): ManagerCareer {
+  const rng = seedrandom(`${career.seed}-unsolicited-w${career.gameWeek}`);
+
+  if (rng() > 0.05) return career;
+
+  if (
+    career.inboxMessages.some((m) => !m.resolved && m.unsolicited)
+  ) {
+    return career;
+  }
+
+  const listedIds = new Set(
+    Object.entries(career.playerTransferStatus)
+      .filter(([, status]) => status.listed)
+      .map(([id]) => id)
+  );
+  const protectedIds = getProtectedTransferPlayerIds(career, career.club);
+
+  const candidates = career.squad
+    .map((ps) => {
+      if (listedIds.has(ps.playerId) || protectedIds.has(ps.playerId)) {
+        return null;
+      }
+      if (ps.injury) return null;
+
+      const player = getPlayerById(ps.playerId);
+      if (!player) return null;
+
+      const rating = player.rating ?? player.peakRating;
+      const formBoost = Math.max(0, ps.form - 50) / 45;
+      const triesBoost = Math.min(ps.seasonTries * 0.18, 0.55);
+      const appsBoost = ps.seasonAppearances >= 3 ? 0.12 : 0;
+      const ratingBoost =
+        rating >= 85 ? 0.3 : rating >= 80 ? 0.18 : rating >= 76 ? 0.08 : 0;
+      const weight = 0.35 + formBoost + triesBoost + appsBoost + ratingBoost;
+
+      return { ps, player, weight };
+    })
+    .filter(
+      (
+        row
+      ): row is {
+        ps: (typeof career.squad)[number];
+        player: NonNullable<ReturnType<typeof getPlayerById>>;
+        weight: number;
+      } => row !== null
+    );
+
+  if (candidates.length === 0) return career;
+
+  const totalWeight = candidates.reduce((sum, row) => sum + row.weight, 0);
+  let roll = rng() * totalWeight;
+  let picked = candidates[0]!;
+  for (const row of candidates) {
+    roll -= row.weight;
+    if (roll <= 0) {
+      picked = row;
+      break;
+    }
+  }
+
+  const { ps, player } = picked;
+  const impliedPrice = getAskingPrice(
+    ps.playerId,
+    false,
+    career.seed,
+    career.gameWeek
+  );
+  const buyers = CURRENT_PLAYABLE_CLUBS.filter((club) => club !== career.club);
+  const buyer = buyers[Math.floor(rng() * buyers.length)]!;
+  const funds = career.clubFunds[buyer] ?? getManagerClubConfig(buyer).budget;
+  const offerAmount = Math.round(impliedPrice * (0.9 + rng() * 0.1));
+
+  if (offerAmount > funds * 0.35) return career;
+
+  return pushInboxMessage(career, {
+    id: `unsolicited-${ps.playerId}-${career.gameWeek}-${Math.floor(rng() * 10000)}`,
+    type: "transfer",
+    title: "Transfer Approach",
+    body: `${buyer} want to sign ${player.name}, who is not on the transfer list. They've offered ${formatWage(offerAmount)}.`,
+    week: career.gameWeek,
+    season: career.seasonYear,
+    gameWeek: career.gameWeek,
+    createdAt: new Date().toISOString(),
+    read: false,
+    resolved: false,
+    playerId: ps.playerId,
+    playerName: player.name,
+    offerClub: buyer,
+    offerAmount,
+    askingPrice: impliedPrice,
+    unsolicited: true,
+  });
+}
+
+export function getPendingUnsolicitedOffer(
+  career: ManagerCareer
+): InboxMessage | undefined {
+  return career.inboxMessages.find(
+    (m) =>
+      !m.resolved &&
+      m.unsolicited &&
+      m.playerId &&
+      m.offerAmount != null &&
+      m.offerClub
+  );
+}
+
 export function acceptIncomingOffer(
   career: ManagerCareer,
   messageId: string
@@ -466,6 +585,9 @@ export function acceptIncomingOffer(
   delete nextContracts[playerId];
   const nextTransfer = { ...career.playerTransferStatus };
   delete nextTransfer[playerId];
+  const nextListed = career.leagueListedPlayers.filter(
+    (row) => row.playerId !== playerId
+  );
 
   const clubFunds = { ...career.clubFunds };
   const buyer = msg.offerClub ?? "Unknown";
@@ -484,6 +606,7 @@ export function acceptIncomingOffer(
     matchdayXiii: xiii,
     matchdayInterchange: interchange,
     playerTransferStatus: nextTransfer,
+    leagueListedPlayers: nextListed,
     inboxMessages: nextMessages,
     updatedAt: new Date().toISOString(),
   };

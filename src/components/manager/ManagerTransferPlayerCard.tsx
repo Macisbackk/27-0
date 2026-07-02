@@ -11,6 +11,7 @@ import {
 import { getClubIndicatorColor } from "@/lib/clubs";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { formatValue } from "@/lib/players";
+import { formatPlayerAge } from "@/lib/players/player-age";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Player } from "@/lib/types";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
@@ -36,10 +37,10 @@ interface ManagerTransferPlayerCardProps {
   player: Player;
   club: string;
   listed: boolean;
+  freeAgent?: boolean;
   fee: number;
   wagePerYear: number;
   yearsRequested?: number;
-  squadRole?: string;
   children: ReactNode;
 }
 
@@ -47,10 +48,10 @@ export function ManagerTransferPlayerCard({
   player,
   club,
   listed,
+  freeAgent = false,
   fee,
   wagePerYear,
   yearsRequested,
-  squadRole,
   children,
 }: ManagerTransferPlayerCardProps) {
   const rating = player.peakRating;
@@ -59,7 +60,7 @@ export function ManagerTransferPlayerCard({
 
   return (
     <ManagerSectionCard
-      variant={listed ? "elevated" : "inset"}
+      variant={listed || freeAgent ? "elevated" : "inset"}
       className="!p-0 overflow-hidden"
     >
       <div
@@ -71,18 +72,15 @@ export function ManagerTransferPlayerCard({
             <div className="flex flex-wrap items-center gap-2">
               <span
                 className={`inline-flex rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                  listed
-                    ? "border-theme-primary/40 bg-theme-primary/12 text-theme-primary"
-                    : "border-amber-400/40 bg-amber-400/10 text-amber-300"
+                  freeAgent
+                    ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
+                    : listed
+                      ? "border-theme-primary/40 bg-theme-primary/12 text-theme-primary"
+                      : "border-amber-400/40 bg-amber-400/10 text-amber-300"
                 }`}
               >
-                {listed ? "Listed" : "Unlisted"}
+                {freeAgent ? "Free agent" : listed ? "Listed" : "Unlisted"}
               </span>
-              {squadRole && (
-                <span className="rounded-full border border-pitch-600/50 bg-pitch-800/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-pitch-300">
-                  {squadRole}
-                </span>
-              )}
             </div>
             <p className="mt-1.5 truncate font-display text-base font-bold text-white">
               {player.name}
@@ -112,8 +110,8 @@ export function ManagerTransferPlayerCard({
 
       <div className="grid grid-cols-2 gap-3 px-3 py-3 sm:px-4">
         <ManagerStat
-          label={listed ? "Asking price" : "Est. fee"}
-          value={formatWage(fee)}
+          label={freeAgent ? "Transfer fee" : listed ? "Asking price" : "Est. fee"}
+          value={freeAgent ? "Free" : formatWage(fee)}
           tone="gold"
         />
         <ManagerStat
@@ -122,9 +120,14 @@ export function ManagerTransferPlayerCard({
           tone="gold"
         />
         <ManagerStat
+          label="Age"
+          value={formatPlayerAge(player)}
+          tone="muted"
+        />
+        <ManagerStat
           label="Wage demand"
           value={`${formatWage(wagePerYear)}/yr`}
-          tone="sky"
+          tone="default"
         />
         <ManagerStat
           label="Contract"
@@ -137,7 +140,7 @@ export function ManagerTransferPlayerCard({
         />
       </div>
 
-      {!listed && (
+      {!listed && !freeAgent && (
         <p className={`px-3 pb-1 sm:px-4 ${TYPO.bodySm} text-amber-300/90`}>
           Unlisted bids need a premium fee to tempt the selling club.
         </p>
@@ -154,6 +157,7 @@ interface ManagerLeagueTransferCardProps {
   toClub: string;
   fee: number;
   week: number;
+  compact?: boolean;
 }
 
 export function ManagerLeagueTransferCard({
@@ -162,7 +166,30 @@ export function ManagerLeagueTransferCard({
   toClub,
   fee,
   week,
+  compact = false,
 }: ManagerLeagueTransferCardProps) {
+  if (compact) {
+    return (
+      <li className="flex items-center gap-2 rounded-md border border-pitch-700/40 bg-pitch-950/40 px-2 py-1.5 text-xs">
+        <span
+          className="h-3 w-0.5 shrink-0 rounded-full"
+          style={{ backgroundColor: getClubIndicatorColor(toClub) }}
+          aria-hidden
+        />
+        <span className="min-w-0 flex-1 truncate font-medium text-white">
+          {playerName}
+        </span>
+        <span className="hidden min-w-0 truncate text-pitch-500 sm:inline">
+          {fromClub} → {toClub}
+        </span>
+        <span className="shrink-0 font-semibold text-accent-gold">
+          {fee <= 0 ? "Free" : formatWage(fee)}
+        </span>
+        <span className={`${MANAGER_LABEL} shrink-0 text-pitch-500`}>W{week}</span>
+      </li>
+    );
+  }
+
   return (
     <li
       className="rounded-lg border border-pitch-700/50 bg-pitch-950/55 p-3"
@@ -175,7 +202,9 @@ export function ManagerLeagueTransferCard({
         <span className="font-medium text-theme-primary">{toClub}</span>
       </p>
       <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-        <span className="font-semibold text-accent-gold">{formatWage(fee)}</span>
+        <span className="font-semibold text-accent-gold">
+          {fee <= 0 ? "Free" : formatWage(fee)}
+        </span>
         <span className={`${MANAGER_LABEL} text-pitch-500`}>Week {week}</span>
       </div>
     </li>

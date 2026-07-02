@@ -11,11 +11,12 @@ import {
   getManagerPlayerEligiblePositions,
 } from "@/lib/manager/managerPlayers";
 import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
-import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
+import { getUnavailableSquadPlayers, isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import {
   assignPlayerToMatchday,
   canAssignPlayerToXiiiSlot,
   findPlayerMatchdaySlot,
+  getMatchdayPlayerIds,
   getReplacementCandidates,
   getSquadPoolPlayers,
   slotAbbrev,
@@ -26,6 +27,7 @@ import { ManagerSquadPlayerModal } from "@/components/manager/ManagerSquadPlayer
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { autoFixMatchdaySquad, autoSortMatchdaySquad } from "@/lib/manager/managerAutoFix";
 import { GameButton } from "@/components/ui/GameButton";
+import { ManagerSectionCard } from "@/components/manager/manager-ui";
 import { ManagerTacticsPanel } from "@/components/manager/ManagerTactics";
 import { playUiClick } from "@/lib/sound";
 
@@ -46,6 +48,16 @@ type SquadSelectionRole = keyof typeof SQUAD_SELECTION_CLASS;
 
 function squadSelectionClass(role: SquadSelectionRole): string {
   return SQUAD_SELECTION_CLASS[role];
+}
+
+function unavailableAccentClass(isSuspension: boolean): string {
+  return isSuspension
+    ? "border-amber-500/50 bg-amber-500/10 ring-1 ring-amber-500/35"
+    : "border-red-500/50 bg-red-500/10 ring-1 ring-red-500/35";
+}
+
+function unavailableTextClass(isSuspension: boolean): string {
+  return isSuspension ? "text-amber-300" : "text-red-300";
 }
 
 function useFinePointer(): boolean {
@@ -84,6 +96,7 @@ function TeamSheetSlot({
   const player = playerId ? getManagerPlayer(career, playerId) : null;
   const ps = career.squad.find((p) => p.playerId === playerId);
   const unavailable = ps ? isPlayerUnavailable(ps) : false;
+  const isSuspension = ps?.injury?.type === "suspension";
 
   return (
     <button
@@ -105,7 +118,7 @@ function TeamSheetSlot({
         onOpenDetails(playerId);
       }}
       className={`min-h-[44px] w-full select-none rounded-md border px-1.5 py-1 text-left transition ${squadSelectionClass(selectionRole)} ${
-        unavailable ? "opacity-60" : ""
+        unavailable ? unavailableAccentClass(!!isSuspension) : ""
       }`}
     >
       <p className="text-[10px] font-bold uppercase tracking-wider text-pitch-500">
@@ -118,7 +131,7 @@ function TeamSheetSlot({
             {player.rating ?? player.peakRating}
           </p>
           {ps?.injury && (
-            <p className="text-[10px] text-red-300">
+            <p className={`text-[10px] font-medium ${unavailableTextClass(isSuspension)}`}>
               {formatInjuryLabel(ps.injury)}
             </p>
           )}
@@ -276,6 +289,16 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
 
   const squadCheck = validateFitMatchdaySquad(career);
 
+  const unavailablePlayers = useMemo(
+    () => getUnavailableSquadPlayers(career),
+    [career]
+  );
+
+  const matchdayIds = useMemo(
+    () => getMatchdayPlayerIds(career),
+    [career]
+  );
+
   const inSelectionMode =
     !!pendingAssignId || !!replaceSourcePlayerId || !!selectedTarget;
 
@@ -355,6 +378,56 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
         </div>
       )}
 
+      {unavailablePlayers.length > 0 && (
+        <ManagerSectionCard
+          title={`Unavailable (${unavailablePlayers.length})`}
+          accent="red"
+        >
+          <ul className={`mt-2 ${SPACING.stackSm}`}>
+            {unavailablePlayers.map((ps) => {
+              const player = getManagerPlayer(career, ps.playerId);
+              if (!player || !ps.injury) return null;
+              const positions = getManagerPlayerEligiblePositions(
+                career,
+                ps.playerId
+              );
+              const isSuspension = ps.injury.type === "suspension";
+              const onMatchday = matchdayIds.has(ps.playerId);
+              return (
+                <li
+                  key={ps.playerId}
+                  className={`rounded-lg border px-3 py-2 ${unavailableAccentClass(isSuspension)}`}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-white">
+                        {player.name}
+                      </p>
+                      <p className="text-[10px] text-pitch-400">
+                        {positions.map((p) => POSITION_SHORT[p]).join(" · ")}
+                      </p>
+                    </div>
+                    <span className="shrink-0 font-bold text-pitch-400">
+                      {player.rating ?? player.peakRating}
+                    </span>
+                  </div>
+                  <p
+                    className={`mt-1 text-xs font-medium ${unavailableTextClass(isSuspension)}`}
+                  >
+                    {formatInjuryLabel(ps.injury)}
+                  </p>
+                  {onMatchday && (
+                    <p className="mt-1 text-[10px] font-medium text-amber-300">
+                      Still on team sheet — use Auto Fix or swap out
+                    </p>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </ManagerSectionCard>
+      )}
+
       <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
         <div className={SPACING.stackMd}>
           <div className="rounded-xl border border-pitch-700/40 bg-gradient-to-b from-pitch-800/20 to-pitch-950/60 p-4">
@@ -423,6 +496,11 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                 const player = playerId
                   ? getManagerPlayer(career, playerId)
                   : null;
+                const ps = playerId
+                  ? career.squad.find((p) => p.playerId === playerId)
+                  : null;
+                const unavailable = ps ? isPlayerUnavailable(ps) : false;
+                const isSuspension = ps?.injury?.type === "suspension";
                 return (
                   <button
                     key={i}
@@ -447,7 +525,9 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                       playUiClick();
                       openPlayerDetails(playerId);
                     }}
-                    className={`${squadSelectionClass(selectionRole)} select-none rounded-lg border px-2 py-2 text-left`}
+                    className={`${squadSelectionClass(selectionRole)} select-none rounded-lg border px-2 py-2 text-left ${
+                      unavailable ? unavailableAccentClass(!!isSuspension) : ""
+                    }`}
                   >
                     <p className="text-[10px] text-pitch-500">{14 + i}.</p>
                     <p className="truncate text-sm text-white">
@@ -456,6 +536,13 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     {player && (
                       <p className="text-[10px] text-theme-primary">
                         {player.rating ?? player.peakRating}
+                      </p>
+                    )}
+                    {ps?.injury && (
+                      <p
+                        className={`text-[10px] font-medium ${unavailableTextClass(!!isSuspension)}`}
+                      >
+                        {formatInjuryLabel(ps.injury)}
                       </p>
                     )}
                   </button>

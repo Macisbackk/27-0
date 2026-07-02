@@ -10,6 +10,7 @@ import type {
   MatchAttendanceMeta,
 } from "./types";
 import type { MatchFixture } from "../game/season-simulation";
+import { applyClubRevenue, splitRevenue } from "./managerFinance";
 
 export const CLUB_ATTENDANCE_PROFILES: Record<
   string,
@@ -226,6 +227,8 @@ export function processHomeMatchAttendance(
       getClubBaseStrength(fixture.opponent) >= 80);
   const price = ticketPrice(fixture.competition, isBigGame);
   const gateIncome = attendance * price;
+  const { transfer: transferAllocation, operating: operatingAllocation } =
+    splitRevenue(gateIncome, "gate");
 
   let fanMoodChange = 0;
   if (match.result === "W") fanMoodChange += 3;
@@ -253,6 +256,8 @@ export function processHomeMatchAttendance(
     round: fixture.round,
     attendance,
     income: gateIncome,
+    transferAllocation,
+    operatingAllocation,
     competition: fixture.competition,
   };
 
@@ -266,11 +271,9 @@ export function processHomeMatchAttendance(
         : Math.min(career.seasonAttendance.low, attendance),
   };
 
-  return {
-    career: {
+  const withRevenue = applyClubRevenue(
+    {
       ...career,
-      budget: career.budget + gateIncome,
-      clubFundsEarned: career.clubFundsEarned + gateIncome,
       attendanceData: {
         ...career.attendanceData,
         fanMood: newFanMood,
@@ -279,9 +282,17 @@ export function processHomeMatchAttendance(
       gateIncomeHistory: [...career.gateIncomeHistory, record],
       seasonAttendance,
     },
+    gateIncome,
+    "gate"
+  );
+
+  return {
+    career: withRevenue,
     meta: {
       attendance,
       gateIncome,
+      transferAllocation,
+      operatingAllocation,
       fanMoodChange,
       ticketPrice: price,
     },

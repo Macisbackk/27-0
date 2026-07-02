@@ -63,6 +63,9 @@ export function getManagerOpponentPoolOptions(
  */
 export function reconcileLeagueRosters(career: ManagerCareer): ManagerCareer {
   const userPlayerIds = new Set(career.squad.map((p) => p.playerId));
+  const freeAgentIds = new Set(
+    (career.freeAgents ?? []).map((f) => f.playerId)
+  );
   let rosters: LeagueClubRosters = {
     ...(career.leagueClubRosters ?? initLeagueClubRosters(career.club)),
   };
@@ -72,19 +75,22 @@ export function reconcileLeagueRosters(career: ManagerCareer): ManagerCareer {
     if (!rosters[club] || rosters[club].length < 13) {
       const base = getManagerRosterIds(club);
       const merged = new Set([...(rosters[club] ?? []), ...base]);
-      rosters[club] = [...merged];
+      rosters[club] = [...merged].filter((id) => !freeAgentIds.has(id));
     }
   }
 
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === career.club) continue;
-    rosters[club] = (rosters[club] ?? []).filter((id) => !userPlayerIds.has(id));
+    rosters[club] = (rosters[club] ?? []).filter(
+      (id) => !userPlayerIds.has(id) && !freeAgentIds.has(id)
+    );
   }
 
   const assigned = new Set<string>(userPlayerIds);
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === career.club) continue;
     rosters[club] = (rosters[club] ?? []).filter((id) => {
+      if (freeAgentIds.has(id)) return false;
       if (assigned.has(id)) return false;
       assigned.add(id);
       return true;

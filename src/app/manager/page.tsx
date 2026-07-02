@@ -18,8 +18,9 @@ import { ManagerMatchReview } from "@/components/manager/ManagerMatchReview";
 import { ManagerSeasonReview } from "@/components/manager/ManagerSeasonReview";
 import { ManagerDevelopmentReview } from "@/components/manager/ManagerDevelopmentReview";
 import { ManagerSeasonRewards } from "@/components/manager/ManagerSeasonRewards";
-import { ManagerPlayoffsIntroModal } from "@/components/manager/ManagerPlayoffsIntroModal";
 import { ManagerTrophyModal } from "@/components/manager/ManagerTrophyModal";
+import { ManagerLeagueWinnersModal } from "@/components/manager/ManagerLeagueWinnersModal";
+import { ManagerIncomingBidModal } from "@/components/manager/ManagerIncomingBidModal";
 import { ManagerFriendlySelect } from "@/components/manager/ManagerFriendlySelect";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
@@ -35,7 +36,7 @@ import {
 } from "@/lib/manager/managerState";
 import { simulateManagerNextMatch } from "@/lib/manager/managerSimulation";
 import { ensureCupBracketReady } from "@/lib/manager/managerChallengeCup";
-import { ensurePlayoffsReady, needsPlayoffsIntro, acknowledgePlayoffsIntro } from "@/lib/manager/managerPlayoffs";
+import { ensurePlayoffsReady, acknowledgePlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
 import {
   recordCareerStarted,
   recordMatchResult,
@@ -55,6 +56,11 @@ import {
   selectFriendlyOpponent,
 } from "@/lib/manager/managerFriendlies";
 import { countUnreadInbox } from "@/lib/manager/managerInbox";
+import {
+  acceptIncomingOffer,
+  getPendingUnsolicitedOffer,
+  rejectIncomingOffer,
+} from "@/lib/manager/managerTransferLeague";
 
 const NAV_VIEWS: ManagerView[] = [
   "hub",
@@ -76,6 +82,13 @@ export default function ManagerPage() {
   const [playGameOpen, setPlayGameOpen] = useState(false);
   const [trophyModalOpen, setTrophyModalOpen] = useState(false);
   const [pendingTrophyCelebration, setPendingTrophyCelebration] = useState(false);
+  const [leagueWinnersModalOpen, setLeagueWinnersModalOpen] = useState(false);
+  const [pendingLeagueWinnersCelebration, setPendingLeagueWinnersCelebration] =
+    useState(false);
+  const [pendingIncomingBidId, setPendingIncomingBidId] = useState<string | null>(
+    null
+  );
+  const [incomingBidModalOpen, setIncomingBidModalOpen] = useState(false);
 
   useEffect(() => {
     setHasSave(hasManagerCareer());
@@ -104,6 +117,13 @@ export default function ManagerPage() {
           : "season-review"
       );
       return;
+    }
+    const unsolicited = getPendingUnsolicitedOffer(hydrated);
+    if (unsolicited) {
+      setPendingIncomingBidId(unsolicited.id);
+      setIncomingBidModalOpen(true);
+    } else if (shouldShowLeagueWinnersCelebration(hydrated)) {
+      setLeagueWinnersModalOpen(true);
     }
     setView("hub");
   };
@@ -148,11 +168,16 @@ export default function ManagerPage() {
       next.playoffs?.finish === "Super League Champions" &&
       !next.trophyCelebrationShown;
 
+    const wonLeagueTable = shouldShowLeagueWinnersCelebration(next);
+    const unsolicited = getPendingUnsolicitedOffer(next);
+    setPendingIncomingBidId(unsolicited?.id ?? null);
+
     if (next.isSeasonComplete) {
       recordSeasonComplete(next);
       if (fixture) {
         setReviewFixtureId(fixture.fixtureId ?? `round-${fixture.round}`);
         setView("match-review");
+        setPendingLeagueWinnersCelebration(wonLeagueTable);
         setPendingTrophyCelebration(wonTitle);
       } else if (wonTitle) {
         setTrophyModalOpen(true);
@@ -162,11 +187,25 @@ export default function ManagerPage() {
     } else if (fixture) {
       setReviewFixtureId(fixture.fixtureId ?? `round-${fixture.round}`);
       setView("match-review");
+      setPendingLeagueWinnersCelebration(wonLeagueTable);
     }
   };
 
-  const handleMatchReviewClose = () => {
+  const continueAfterMatchReview = () => {
     if (!career) {
+      setView("hub");
+      return;
+    }
+
+    if (pendingIncomingBidId) {
+      setIncomingBidModalOpen(true);
+      setView("hub");
+      return;
+    }
+
+    if (pendingLeagueWinnersCelebration) {
+      setPendingLeagueWinnersCelebration(false);
+      setLeagueWinnersModalOpen(true);
       setView("hub");
       return;
     }
@@ -186,9 +225,59 @@ export default function ManagerPage() {
     setView("hub");
   };
 
+  const handleMatchReviewClose = () => {
+    continueAfterMatchReview();
+  };
+
+  const handleIncomingBidResolved = (nextCareer: ManagerCareer) => {
+    setIncomingBidModalOpen(false);
+    setPendingIncomingBidId(null);
+    persist(nextCareer);
+
+    if (pendingLeagueWinnersCelebration) {
+      setPendingLeagueWinnersCelebration(false);
+      setLeagueWinnersModalOpen(true);
+      setView("hub");
+      return;
+    }
+
+    if (pendingTrophyCelebration) {
+      setPendingTrophyCelebration(false);
+      setTrophyModalOpen(true);
+      setView("hub");
+      return;
+    }
+
+    if (nextCareer.isSeasonComplete) {
+      setView("season-review");
+      return;
+    }
+
+    setView("hub");
+  };
+
+  const handleIncomingBidAccept = () => {
+    if (!career || !pendingIncomingBidId) return;
+    const result = acceptIncomingOffer(career, pendingIncomingBidId);
+    if (!result.ok || !result.career) return;
+    handleIncomingBidResolved(result.career);
+  };
+
+  const handleIncomingBidReject = () => {
+    if (!career || !pendingIncomingBidId) return;
+    handleIncomingBidResolved(rejectIncomingOffer(career, pendingIncomingBidId));
+  };
+
   const handlePlayoffsIntroContinue = () => {
     if (!career) return;
     persist(acknowledgePlayoffsIntro(career));
+  };
+
+  const handleLeagueWinnersModalContinue = () => {
+    if (!career) return;
+    persist({ ...career, leagueWinnersCelebrationShown: true });
+    setLeagueWinnersModalOpen(false);
+    setView("hub");
   };
 
   const handleTrophyModalContinue = () => {
@@ -236,6 +325,11 @@ export default function ManagerPage() {
   const showNav =
     career && NAV_VIEWS.includes(view as (typeof NAV_VIEWS)[number]);
 
+  const incomingBidOffer =
+    career && pendingIncomingBidId
+      ? career.inboxMessages.find((m) => m.id === pendingIncomingBidId)
+      : undefined;
+
   return (
     <PageShell withLights compact width="wide">
       {view === "landing" && (
@@ -262,6 +356,8 @@ export default function ManagerPage() {
           <ManagerNav
             active={view}
             club={career.club}
+            seasonYear={career.seasonYear}
+            gameWeek={career.gameWeek}
             onNavigate={setView}
             disabled={playGameOpen}
             unreadInbox={countUnreadInbox(career)}
@@ -288,6 +384,7 @@ export default function ManagerPage() {
                     career={career}
                     onPlayGame={handlePlayGame}
                     onSimulate={handleSimulate}
+                    onPlayoffsContinue={handlePlayoffsIntroContinue}
                     onSelectFixture={(fixtureId) => {
                       setReviewFixtureId(fixtureId);
                       setView("match-review");
@@ -348,6 +445,8 @@ export default function ManagerPage() {
           <ManagerNav
             active="hub"
             club={career.club}
+            seasonYear={career.seasonYear}
+            gameWeek={career.gameWeek}
             onNavigate={setView}
           />
           <ManagerMatchReview
@@ -387,10 +486,20 @@ export default function ManagerPage() {
           }}
         />
       )}
-      {career && needsPlayoffsIntro(career) && (
-        <ManagerPlayoffsIntroModal
+
+      {career && incomingBidModalOpen && incomingBidOffer && (
+        <ManagerIncomingBidModal
           career={career}
-          onContinue={handlePlayoffsIntroContinue}
+          offer={incomingBidOffer}
+          onAccept={handleIncomingBidAccept}
+          onReject={handleIncomingBidReject}
+        />
+      )}
+
+      {career && leagueWinnersModalOpen && (
+        <ManagerLeagueWinnersModal
+          career={career}
+          onContinue={handleLeagueWinnersModalContinue}
         />
       )}
 

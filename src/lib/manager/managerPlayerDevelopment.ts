@@ -39,9 +39,21 @@ function developOnePlayer(
   const potential = existing?.potential ?? computePotential(baseline, age);
 
   let delta = 0;
-  if (age <= 22) delta += 1;
-  else if (age >= 33) delta -= 1;
-  else if (age >= 30) delta -= 0.5;
+  if (before < potential) {
+    if (age <= 21) delta += 1.5;
+    else if (age <= 24) delta += 1;
+    else if (age <= 27) delta += 0.5;
+    else if (age >= 33) delta -= 1;
+    else if (age >= 30) delta -= 0.5;
+
+    const potentialGap = potential - before;
+    if (age <= 24 && potentialGap >= 10) delta += 0.5;
+    else if (age <= 27 && potentialGap >= 6) delta += 0.25;
+  } else if (age >= 33) {
+    delta -= 1;
+  } else if (age >= 30) {
+    delta -= 0.5;
+  }
 
   const appearances = extras?.appearances ?? 0;
   const tries = extras?.tries ?? 0;

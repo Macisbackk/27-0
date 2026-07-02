@@ -19,8 +19,10 @@ import {
 } from "./managerReserveContracts";
 import { getManagerClubTeamRating } from "./managerRating";
 import { reserveToPlayer } from "./managerPlayers";
+import { getPlayerAge } from "../players/player-age";
 import { reconcileLeagueRosters } from "./managerLeagueRosters";
 import type { Player } from "../types";
+import type { PlayerDevelopmentState } from "./types";
 
 const FIRST_NAMES = [
   "Jack", "Tom", "Liam", "Ethan", "Noah", "Mason", "Harvey", "Finn",
@@ -75,6 +77,167 @@ export function sortReservesBySeasonGrowth(
   });
 }
 
+function computeDevelopmentRateForPotential(
+  potential: number,
+  rng: () => number
+): number {
+  const normalized = Math.max(0, Math.min(1, (potential - 65) / 30));
+  return 0.5 + normalized * 0.42 + rng() * 0.12;
+}
+
+export interface YouthGrowthInput {
+  age: number;
+  rating: number;
+  potentialRating: number;
+  developmentRate: number;
+  playedFirstTeam?: boolean;
+  playedReserve?: boolean;
+}
+
+/** Chance of +1 (or rarely +2) toward potential this match week. */
+export function computeYouthGrowthChance(input: YouthGrowthInput): number {
+  const gap = input.potentialRating - input.rating;
+  if (gap <= 0) return 0;
+
+  let ageFactor = 1;
+  if (input.age <= 20) ageFactor = 1.4;
+  else if (input.age <= 22) ageFactor = 1.3;
+  else if (input.age <= 24) ageFactor = 1.2;
+  else if (input.age <= 26) ageFactor = 1.05;
+  else if (input.age <= 27) ageFactor = 0.88;
+  else if (input.age <= 29) ageFactor = 0.48;
+  else ageFactor = 0.18;
+
+  const potentialFactor = 0.82 + (input.potentialRating - 65) / 55;
+  const gapFactor = 1 + Math.min(gap / 24, 0.35);
+
+  let chance =
+    input.developmentRate * 0.13 * ageFactor * potentialFactor * gapFactor;
+
+  if (gap <= 2) chance *= 0.2;
+  else if (gap <= 4) chance *= 0.45;
+  else if (gap <= 7) chance *= 0.72;
+
+  if (input.playedFirstTeam) chance *= 1.35;
+  else if (input.playedReserve) chance *= 1;
+  else chance *= 0.85;
+
+  return Math.min(0.38, Math.max(0, chance));
+}
+
+export function rollYouthRatingGain(
+  input: YouthGrowthInput,
+  rng: () => number
+): number {
+  if (input.rating >= input.potentialRating) return input.rating;
+  if (rng() >= computeYouthGrowthChance(input)) return input.rating;
+
+  let gain = 1;
+  const gap = input.potentialRating - input.rating;
+  if (
+    input.age <= 21 &&
+    input.potentialRating >= 84 &&
+    gap >= 10 &&
+    rng() < 0.12
+  ) {
+    gain = 2;
+  }
+
+  return Math.min(input.potentialRating, input.rating + gain);
+}
+
+function createPlayerDevelopmentFromReserve(
+  reserve: ManagerReservePlayer
+): PlayerDevelopmentState {
+  return {
+    rating: reserve.rating,
+    peakRating: Math.max(reserve.rating, reserve.baseRating ?? reserve.rating),
+    potential: reserve.potentialRating,
+    developmentRate: reserve.developmentRate,
+  };
+}
+
+export function applyYouthMatchDevelopment(
+  career: ManagerCareer,
+  context: { round: number; matchdayIds: Set<string> }
+): ManagerCareer {
+  const rng = seedrandom(`${career.seed}-youth-ft-r${context.round}`);
+  const playerDevelopment = { ...(career.playerDevelopment ?? {}) };
+  const playerRegistry = { ...career.playerRegistry };
+  let changed = false;
+
+  for (const ps of career.squad) {
+    const dev = playerDevelopment[ps.playerId];
+    if (!dev || dev.rating >= dev.potential) continue;
+
+    const registered = playerRegistry[ps.playerId];
+    const age = registered
+      ? getPlayerAge(registered) ?? 25
+      : 25;
+    const developmentRate =
+      dev.developmentRate ??
+      computeDevelopmentRateForPotential(dev.potential, () => 0.1);
+
+    const nextRating = rollYouthRatingGain(
+      {
+        age,
+        rating: dev.rating,
+        potentialRating: dev.potential,
+        developmentRate,
+        playedFirstTeam: context.matchdayIds.has(ps.playerId),
+      },
+      rng
+    );
+    if (nextRating === dev.rating) continue;
+
+    playerDevelopment[ps.playerId] = {
+      ...dev,
+      rating: nextRating,
+      peakRating: Math.max(dev.peakRating, nextRating),
+    };
+    if (registered) {
+      playerRegistry[ps.playerId] = {
+        ...registered,
+        rating: nextRating,
+        peakRating: Math.max(registered.peakRating, nextRating),
+      };
+    }
+    changed = true;
+  }
+
+  const reserves = career.reserves.map((reserve) => {
+    if (!context.matchdayIds.has(reserve.id)) return reserve;
+    if (reserve.rating >= reserve.potentialRating) return reserve;
+
+    const nextRating = rollYouthRatingGain(
+      {
+        age: reserve.age,
+        rating: reserve.rating,
+        potentialRating: reserve.potentialRating,
+        developmentRate: reserve.developmentRate,
+        playedFirstTeam: true,
+      },
+      rng
+    );
+    if (nextRating === reserve.rating) return reserve;
+    changed = true;
+    return {
+      ...reserve,
+      rating: Math.max(reserve.baseRating ?? reserve.rating, nextRating),
+    };
+  });
+
+  if (!changed) return career;
+
+  return {
+    ...career,
+    playerDevelopment,
+    playerRegistry,
+    reserves,
+    updatedAt: new Date().toISOString(),
+  };
+}
+
 function generateReservePlayer(
   seed: string,
   index: number,
@@ -99,7 +262,7 @@ function generateReservePlayer(
     eligiblePositions: [position],
     rating,
     potentialRating: potential,
-    developmentRate: 0.4 + rng() * 0.6,
+    developmentRate: computeDevelopmentRateForPotential(potential, rng),
     form: 50 + Math.floor(rng() * 25),
     fitness: 85 + Math.floor(rng() * 15),
     reserveAppearances: 0,
@@ -213,10 +376,19 @@ export function applyReserveMatchDevelopment(
       }
     }
 
-    if (next.rating < next.potentialRating && rng() < next.developmentRate * 0.15) {
-      next.rating = Math.min(next.potentialRating, next.rating + 1);
+    if (next.rating < next.potentialRating) {
+      next.rating = rollYouthRatingGain(
+        {
+          age: next.age,
+          rating: next.rating,
+          potentialRating: next.potentialRating,
+          developmentRate: next.developmentRate,
+          playedReserve: played,
+        },
+        rng
+      );
     }
-    next.rating = Math.max(next.baseRating, next.rating);
+    next.rating = Math.max(next.baseRating ?? next.rating, next.rating);
 
     return next;
   });
@@ -322,6 +494,10 @@ export function promoteReserveToSquad(
   const next: ManagerCareer = reconcileLeagueRosters({
     ...career,
     playerRegistry: { ...career.playerRegistry, [reserveId]: player },
+    playerDevelopment: {
+      ...(career.playerDevelopment ?? {}),
+      [reserveId]: createPlayerDevelopmentFromReserve(reserve),
+    },
     squad: [...career.squad, createInitialPlayerState(reserveId)],
     contracts: nextContracts,
     reserveContracts: nextReserveContracts,
@@ -367,15 +543,11 @@ export function releaseReserve(
 
 export function developReserveFromFirstTeamAppearance(
   career: ManagerCareer,
-  reserveId: string
+  reserveId: string,
+  round: number
 ): ManagerCareer {
-  const reserves = career.reserves.map((r) => {
-    if (r.id !== reserveId) return r;
-    if (r.rating >= r.potentialRating) return r;
-    return {
-      ...r,
-      rating: Math.min(r.potentialRating, r.rating + 1),
-    };
+  return applyYouthMatchDevelopment(career, {
+    round,
+    matchdayIds: new Set([reserveId]),
   });
-  return { ...career, reserves };
 }

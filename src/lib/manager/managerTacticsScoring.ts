@@ -5,6 +5,7 @@ import type {
   DefenceFocus,
   ManagerTactics,
   PlayingStyle,
+  TacticMatchReviewAdvice,
 } from "./types";
 
 export interface TacticModifiers {
@@ -324,6 +325,289 @@ export function countOpponentTriesByZone(
     }
   }
   return { edge, middle };
+}
+
+const PLAYING_STYLE_LABELS: Record<PlayingStyle, string> = {
+  balanced: "Balanced",
+  expansive: "Expansive",
+  direct: "Direct",
+  defensive: "Defensive",
+  high_tempo: "High Tempo",
+};
+
+const ATTACK_FOCUS_LABELS: Record<AttackFocus, string> = {
+  middle: "Middle",
+  edges: "Edges",
+  kicking_game: "Kicking Game",
+  offloads: "Offloads",
+  safe_sets: "Safe Sets",
+};
+
+const DEFENCE_FOCUS_LABELS: Record<DefenceFocus, string> = {
+  line_speed: "Line Speed",
+  conservative: "Conservative",
+  aggressive_contact: "Aggressive Contact",
+  edge_defence: "Edge Defence",
+  goal_line: "Goal-Line Defence",
+};
+
+const ALL_PLAYING_STYLES: PlayingStyle[] = [
+  "balanced",
+  "expansive",
+  "direct",
+  "defensive",
+  "high_tempo",
+];
+
+const ALL_ATTACK_FOCUSES: AttackFocus[] = [
+  "middle",
+  "edges",
+  "kicking_game",
+  "offloads",
+  "safe_sets",
+];
+
+const ALL_DEFENCE_FOCUSES: DefenceFocus[] = [
+  "line_speed",
+  "conservative",
+  "aggressive_contact",
+  "edge_defence",
+  "goal_line",
+];
+
+function formatTacticsLabel(tactics: ManagerTactics): string {
+  return `${PLAYING_STYLE_LABELS[tactics.playingStyle]} · ${ATTACK_FOCUS_LABELS[tactics.attackFocus]} · ${DEFENCE_FOCUS_LABELS[tactics.defenceFocus]}`;
+}
+
+function tacticsEqual(a: ManagerTactics, b: ManagerTactics): boolean {
+  return (
+    a.playingStyle === b.playingStyle &&
+    a.attackFocus === b.attackFocus &&
+    a.defenceFocus === b.defenceFocus
+  );
+}
+
+interface TacticMatchContext {
+  won: boolean;
+  pointsFor: number;
+  pointsAgainst: number;
+  userTries: number;
+  concededTries: number;
+  forwardTries: number;
+  backTries: number;
+  conceded: { edge: number; middle: number };
+}
+
+function scoreDefenceForMatch(
+  defenceFocus: DefenceFocus,
+  opponentTryScorers: { playerId: string; tries: number }[]
+): number {
+  let score = 0;
+  for (const scorer of opponentTryScorers) {
+    const p = getPlayerById(scorer.playerId);
+    const position = p?.position ?? ("CENTRE" as Position);
+    const mult = getDefenceConcedeMultiplier(defenceFocus, position);
+    score -= (mult - 1) * scorer.tries * 1.75;
+  }
+  const mods = getTacticModifiers({
+    playingStyle: "balanced",
+    attackFocus: "middle",
+    defenceFocus,
+  });
+  score -= mods.opponentPenalty * 0.35;
+  return score;
+}
+
+function scoreAttackForMatch(
+  tactics: ManagerTactics,
+  ctx: TacticMatchContext
+): number {
+  const mods = getTacticModifiers(tactics);
+  let score = mods.strengthBonus * 0.45 - mods.errorRisk * (ctx.won ? 0.4 : 1.1);
+
+  if (ctx.userTries < ctx.concededTries) {
+    if (
+      tactics.playingStyle === "expansive" ||
+      tactics.playingStyle === "direct" ||
+      tactics.playingStyle === "high_tempo"
+    ) {
+      score += 0.85;
+    }
+    if (tactics.attackFocus !== "safe_sets") score += 0.45;
+    if (tactics.playingStyle === "defensive") score -= 1.25;
+  }
+
+  if (ctx.forwardTries > ctx.backTries) {
+    score +=
+      getPlayingStyleTryMultiplier(tactics.playingStyle, "PROP") * 0.35 +
+      getAttackFocusTryMultiplier(tactics.attackFocus, "PROP") * 0.35;
+  }
+  if (ctx.backTries > ctx.forwardTries) {
+    score +=
+      getPlayingStyleTryMultiplier(tactics.playingStyle, "WING") * 0.35 +
+      getAttackFocusTryMultiplier(tactics.attackFocus, "WING") * 0.35;
+  }
+
+  if (!ctx.won && ctx.pointsFor < ctx.pointsAgainst) {
+    const margin = ctx.pointsAgainst - ctx.pointsFor;
+    if (margin >= 12 && tactics.playingStyle === "defensive") score -= 0.75;
+    if (margin <= 6 && tactics.attackFocus === "safe_sets") score -= 0.5;
+  }
+
+  return score;
+}
+
+function scoreTacticsForMatch(
+  tactics: ManagerTactics,
+  ctx: TacticMatchContext,
+  opponentTryScorers: { playerId: string; tries: number }[]
+): number {
+  return (
+    scoreDefenceForMatch(tactics.defenceFocus, opponentTryScorers) +
+    scoreAttackForMatch(tactics, ctx)
+  );
+}
+
+function findBestTacticsForMatch(
+  ctx: TacticMatchContext,
+  opponentTryScorers: { playerId: string; tries: number }[]
+): ManagerTactics {
+  let best: ManagerTactics = {
+    playingStyle: "balanced",
+    attackFocus: "middle",
+    defenceFocus: "goal_line",
+  };
+  let bestScore = -Infinity;
+
+  for (const playingStyle of ALL_PLAYING_STYLES) {
+    for (const attackFocus of ALL_ATTACK_FOCUSES) {
+      for (const defenceFocus of ALL_DEFENCE_FOCUSES) {
+        const candidate = { playingStyle, attackFocus, defenceFocus };
+        const score = scoreTacticsForMatch(candidate, ctx, opponentTryScorers);
+        if (score > bestScore) {
+          bestScore = score;
+          best = candidate;
+        }
+      }
+    }
+  }
+
+  return best;
+}
+
+function buildTacticRecommendations(
+  current: ManagerTactics,
+  best: ManagerTactics,
+  ctx: TacticMatchContext
+): string[] {
+  const recs: string[] = [];
+
+  if (ctx.won && tacticsEqual(current, best)) {
+    return [
+      "This setup matched how the game played out — keep it against similar opposition.",
+    ];
+  }
+
+  if (ctx.won) {
+    return [
+      `You won with ${formatTacticsLabel(current)}, but ${formatTacticsLabel(best)} may have stretched the margin.`,
+    ];
+  }
+
+  if (best.defenceFocus !== current.defenceFocus) {
+    if (ctx.conceded.edge > ctx.conceded.middle) {
+      recs.push(
+        `Switch defence to ${DEFENCE_FOCUS_LABELS[best.defenceFocus]} — they scored ${ctx.conceded.edge} try${ctx.conceded.edge === 1 ? "" : "ies"} out wide.`
+      );
+    } else if (ctx.conceded.middle > 0) {
+      recs.push(
+        `Switch defence to ${DEFENCE_FOCUS_LABELS[best.defenceFocus]} — close-range tries through the middle cost you.`
+      );
+    } else {
+      recs.push(
+        `Tighten up with ${DEFENCE_FOCUS_LABELS[best.defenceFocus]} — you conceded ${ctx.concededTries} tries.`
+      );
+    }
+  }
+
+  if (
+    best.attackFocus !== current.attackFocus &&
+    ctx.userTries <= ctx.concededTries
+  ) {
+    recs.push(
+      `Shift attack to ${ATTACK_FOCUS_LABELS[best.attackFocus]} — ${ctx.userTries} tries was not enough to win.`
+    );
+  }
+
+  if (best.playingStyle !== current.playingStyle) {
+    const styleReasons: Record<PlayingStyle, string> = {
+      direct:
+        "run direct through the forwards — the pack needed more ball",
+      expansive:
+        "spread the ball wide — the edges offered more scoring threat",
+      defensive:
+        "sit in and grind — this was a game to limit damage first",
+      high_tempo:
+        "lift the tempo — you needed to chase the scoreboard",
+      balanced:
+        "steady the ship with a balanced approach",
+    };
+    recs.push(
+      `Try ${PLAYING_STYLE_LABELS[best.playingStyle]} — ${styleReasons[best.playingStyle]}.`
+    );
+  }
+
+  if (recs.length === 0) {
+    recs.push(`Better fit: ${formatTacticsLabel(best)}.`);
+  }
+
+  return recs.slice(0, 3);
+}
+
+/** Post-match advice on what tactics would have won (or improved) the result. */
+export function buildTacticMatchReviewAdvice(
+  tactics: ManagerTactics,
+  won: boolean,
+  pointsFor: number,
+  pointsAgainst: number,
+  userTries: number,
+  concededTries: number,
+  forwardTries: number,
+  backTries: number,
+  opponentTryScorers: { playerId: string; tries: number }[] = []
+): TacticMatchReviewAdvice {
+  const conceded = countOpponentTriesByZone(opponentTryScorers);
+  const ctx: TacticMatchContext = {
+    won,
+    pointsFor,
+    pointsAgainst,
+    userTries,
+    concededTries,
+    forwardTries,
+    backTries,
+    conceded,
+  };
+
+  const best = findBestTacticsForMatch(ctx, opponentTryScorers);
+  const margin = pointsFor - pointsAgainst;
+
+  let headline: string;
+  if (won) {
+    headline =
+      tacticsEqual(tactics, best)
+        ? "Your tactics were the right call"
+        : "You got the result — a tweak could have helped";
+  } else if (margin >= -6) {
+    headline = "A different game plan could have turned this";
+  } else {
+    headline = "The wrong setup for this match-up";
+  }
+
+  return {
+    headline,
+    usedLabel: formatTacticsLabel(tactics),
+    recommendations: buildTacticRecommendations(tactics, best, ctx),
+  };
 }
 
 export function buildTacticEffectivenessLine(

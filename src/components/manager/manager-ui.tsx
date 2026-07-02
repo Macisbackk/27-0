@@ -1,5 +1,11 @@
 import type { ReactNode } from "react";
-import type { InboxMessage, InboxMessageType, LatestNewsItem } from "@/lib/manager/types";
+import type { InboxMessage, InboxMessageType, LatestNewsItem, ManagerCareer } from "@/lib/manager/types";
+import { formatWage } from "@/lib/manager/managerContracts";
+import {
+  REVENUE_SPLIT,
+  getOperatingBalance,
+  getTransferBudget,
+} from "@/lib/manager/managerFinance";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -162,7 +168,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: string;
     badge: string;
     iconBox: string;
-    card: string;
     accentBar: string;
   }
 > = {
@@ -171,7 +176,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "£",
     badge: "border-accent-gold/50 bg-accent-gold/15 text-accent-gold",
     iconBox: "border-accent-gold/45 bg-accent-gold/20 text-accent-gold",
-    card: "border-accent-gold/30 bg-accent-gold/[0.07]",
     accentBar: "bg-accent-gold",
   },
   transfer_offer_in: {
@@ -179,7 +183,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "IN",
     badge: "border-emerald-400/45 bg-emerald-500/15 text-emerald-300",
     iconBox: "border-emerald-400/45 bg-emerald-500/20 text-emerald-200",
-    card: "border-emerald-500/25 bg-emerald-500/[0.08]",
     accentBar: "bg-emerald-400",
   },
   transfer_offer_out: {
@@ -187,7 +190,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "OUT",
     badge: "border-sky-400/45 bg-sky-500/15 text-sky-300",
     iconBox: "border-sky-400/45 bg-sky-500/20 text-sky-200",
-    card: "border-sky-500/25 bg-sky-500/[0.08]",
     accentBar: "bg-sky-400",
   },
   transfer_complete: {
@@ -195,7 +197,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "✓",
     badge: "border-theme-primary/45 bg-theme-primary/15 text-theme-primary",
     iconBox: "border-theme-primary/45 bg-theme-primary/20 text-theme-primary",
-    card: "border-theme-primary/30 bg-theme-primary/[0.08]",
     accentBar: "bg-theme-primary",
   },
   sale: {
@@ -203,7 +204,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "$",
     badge: "border-amber-400/45 bg-amber-500/15 text-amber-200",
     iconBox: "border-amber-400/45 bg-amber-500/20 text-amber-100",
-    card: "border-amber-500/25 bg-amber-500/[0.08]",
     accentBar: "bg-amber-400",
   },
   contract: {
@@ -211,7 +211,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "C",
     badge: "border-cyan-400/45 bg-cyan-500/15 text-cyan-200",
     iconBox: "border-cyan-400/45 bg-cyan-500/20 text-cyan-100",
-    card: "border-cyan-500/25 bg-cyan-500/[0.08]",
     accentBar: "bg-cyan-400",
   },
   board: {
@@ -219,7 +218,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "B",
     badge: "border-orange-400/45 bg-orange-500/15 text-orange-200",
     iconBox: "border-orange-400/45 bg-orange-500/20 text-orange-100",
-    card: "border-orange-500/25 bg-orange-500/[0.08]",
     accentBar: "bg-orange-400",
   },
   injury: {
@@ -227,7 +225,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "+",
     badge: "border-red-400/45 bg-red-500/15 text-red-300",
     iconBox: "border-red-400/45 bg-red-500/20 text-red-200",
-    card: "border-red-500/30 bg-red-500/[0.09]",
     accentBar: "bg-red-400",
   },
   release: {
@@ -235,7 +232,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "×",
     badge: "border-rose-400/45 bg-rose-500/15 text-rose-300",
     iconBox: "border-rose-400/45 bg-rose-500/20 text-rose-200",
-    card: "border-rose-500/30 bg-rose-500/[0.09]",
     accentBar: "bg-rose-400",
   },
   cup_draw: {
@@ -243,7 +239,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "CC",
     badge: "border-accent-gold/55 bg-accent-gold/18 text-accent-gold",
     iconBox: "border-accent-gold/50 bg-accent-gold/25 text-accent-gold",
-    card: "border-accent-gold/35 bg-accent-gold/[0.1] ring-1 ring-accent-gold/15",
     accentBar: "bg-accent-gold",
   },
   season_reward: {
@@ -251,7 +246,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "★",
     badge: "border-violet-400/45 bg-violet-500/15 text-violet-200",
     iconBox: "border-violet-400/45 bg-violet-500/20 text-violet-100",
-    card: "border-violet-500/30 bg-violet-500/[0.09] ring-1 ring-violet-400/15",
     accentBar: "bg-violet-400",
   },
   youth_intake: {
@@ -259,15 +253,20 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "Y",
     badge: "border-lime-400/45 bg-lime-500/15 text-lime-200",
     iconBox: "border-lime-400/45 bg-lime-500/20 text-lime-100",
-    card: "border-lime-500/25 bg-lime-500/[0.08]",
     accentBar: "bg-lime-400",
+  },
+  retirement: {
+    label: "Retirement",
+    icon: "R",
+    badge: "border-stone-400/45 bg-stone-500/15 text-stone-200",
+    iconBox: "border-stone-400/45 bg-stone-500/20 text-stone-100",
+    accentBar: "bg-stone-400",
   },
   reserve_report: {
     label: "Reserve Report",
     icon: "R",
     badge: "border-indigo-400/40 bg-indigo-500/12 text-indigo-200",
     iconBox: "border-indigo-400/40 bg-indigo-500/18 text-indigo-100",
-    card: "border-indigo-500/22 bg-indigo-500/[0.07]",
     accentBar: "bg-indigo-400",
   },
   reserve_callup: {
@@ -275,7 +274,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "↑",
     badge: "border-teal-400/45 bg-teal-500/15 text-teal-200",
     iconBox: "border-teal-400/45 bg-teal-500/20 text-teal-100",
-    card: "border-teal-500/25 bg-teal-500/[0.08]",
     accentBar: "bg-teal-400",
   },
   reserve_return: {
@@ -283,7 +281,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "↓",
     badge: "border-slate-400/40 bg-slate-500/12 text-slate-300",
     iconBox: "border-slate-400/40 bg-slate-500/18 text-slate-200",
-    card: "border-slate-500/22 bg-slate-500/[0.07]",
     accentBar: "bg-slate-400",
   },
   fixture: {
@@ -291,7 +288,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "F",
     badge: "border-blue-400/40 bg-blue-500/12 text-blue-200",
     iconBox: "border-blue-400/40 bg-blue-500/18 text-blue-100",
-    card: "border-blue-500/22 bg-blue-500/[0.07]",
     accentBar: "bg-blue-400",
   },
   news: {
@@ -299,7 +295,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "N",
     badge: "border-pitch-500/45 bg-pitch-800/70 text-pitch-300",
     iconBox: "border-pitch-500/45 bg-pitch-800/80 text-pitch-200",
-    card: "border-pitch-600/35 bg-pitch-900/50",
     accentBar: "bg-pitch-500",
   },
   general: {
@@ -307,7 +302,6 @@ const INBOX_MESSAGE_STYLE: Record<
     icon: "i",
     badge: "border-pitch-600/45 bg-pitch-800/60 text-pitch-400",
     iconBox: "border-pitch-600/45 bg-pitch-800/70 text-pitch-300",
-    card: "border-pitch-700/40 bg-pitch-950/40",
     accentBar: "bg-pitch-600",
   },
 };
@@ -316,7 +310,7 @@ export function ManagerInboxBadge({ type }: { type: InboxMessageType }) {
   const style = INBOX_MESSAGE_STYLE[type];
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${style.badge}`}
+      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${style.badge}`}
     >
       {style.label}
     </span>
@@ -347,6 +341,46 @@ export function inboxMessageAccent(
   return undefined;
 }
 
+function InboxMessageMeta({ message }: { message: InboxMessage }) {
+  const hasOffer = message.offerAmount != null;
+  const hasAsking = message.askingPrice != null;
+  const hasPlayer = Boolean(message.playerName);
+  const hasClub = Boolean(message.offerClub);
+
+  if (!hasOffer && !hasAsking && !hasPlayer && !hasClub) return null;
+
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {hasPlayer && (
+        <ManagerStat label="Player" value={message.playerName!} tone="default" />
+      )}
+      {hasClub && (
+        <ManagerStat label="Club" value={message.offerClub!} tone="muted" />
+      )}
+      {hasOffer && (
+        <ManagerStat
+          label="Offer"
+          value={formatWage(message.offerAmount!)}
+          tone="gold"
+        />
+      )}
+      {hasAsking && (
+        <ManagerStat
+          label="Asking"
+          value={formatWage(message.askingPrice!)}
+          tone="gold"
+        />
+      )}
+    </div>
+  );
+}
+
+export function ManagerInboxActionFooter({ children }: { children: ReactNode }) {
+  return (
+    <div className="border-t border-pitch-700/45 pt-3">{children}</div>
+  );
+}
+
 export function ManagerInboxMessageCard({
   message,
   children,
@@ -357,62 +391,156 @@ export function ManagerInboxMessageCard({
   compact?: boolean;
 }) {
   const style = INBOX_MESSAGE_STYLE[message.type];
+  const weekLabel = `Week ${message.gameWeek}`;
 
   if (compact) {
     return (
-      <div
-        className={`flex items-start gap-2.5 rounded-lg border px-3 py-2.5 opacity-75 ${style.card}`}
+      <article
+        className={`${CARD.inset} relative flex items-center gap-3 overflow-hidden px-3 py-3 opacity-80`}
       >
         <span
-          className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md border text-[10px] font-bold ${style.iconBox}`}
+          className={`absolute inset-y-0 left-0 w-1 ${style.accentBar}`}
+          aria-hidden
+        />
+        <span
+          className={`ml-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border text-[10px] font-bold ${style.iconBox}`}
           aria-hidden
         >
           {style.icon}
         </span>
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-1.5">
+          <div className="flex items-center gap-2">
             <ManagerInboxBadge type={message.type} />
-            <span className="text-[10px] text-pitch-500">Wk {message.gameWeek}</span>
+            <span className={`${MANAGER_LABEL} text-pitch-500`}>{weekLabel}</span>
           </div>
-          <p className={`mt-1 ${TYPO.bodySm} font-medium text-pitch-200`}>
+          <p className="mt-1 truncate text-sm font-medium text-pitch-200">
             {message.title}
           </p>
         </div>
-      </div>
+      </article>
     );
   }
 
   return (
     <article
-      className={`relative overflow-hidden rounded-xl border ${SPACING.cardPadding} ${style.card}`}
+      className={`${CARD.elevated} relative flex flex-col overflow-hidden`}
     >
       <span
         className={`absolute inset-y-0 left-0 w-1 ${style.accentBar}`}
         aria-hidden
       />
-      <div className="flex gap-3 pl-2">
-        <span
-          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border text-xs font-bold ${style.iconBox}`}
-          aria-hidden
-        >
-          {style.icon}
-        </span>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <ManagerInboxBadge type={message.type} />
-            <span className="text-xs text-pitch-500">Week {message.gameWeek}</span>
-            {!message.read && (
-              <span className="rounded-full bg-theme-primary/25 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-theme-primary">
-                New
-              </span>
-            )}
+      <div className={`flex flex-1 flex-col gap-3 ${SPACING.cardPaddingSm} pl-4`}>
+        <header className="flex gap-3">
+          <span
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border text-xs font-bold ${style.iconBox}`}
+            aria-hidden
+          >
+            {style.icon}
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              <ManagerInboxBadge type={message.type} />
+              <span className={`${MANAGER_LABEL} text-pitch-500`}>{weekLabel}</span>
+              {!message.read && (
+                <span className="rounded-full bg-theme-primary/20 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-theme-primary">
+                  New
+                </span>
+              )}
+            </div>
+            <h3 className="mt-2 text-base font-semibold leading-snug text-white">
+              {message.title}
+            </h3>
           </div>
-          <h3 className="mt-2 font-semibold text-white">{message.title}</h3>
-          <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>{message.body}</p>
-          {children && <div className="mt-3">{children}</div>}
-        </div>
+        </header>
+
+        <p
+          className={`${TYPO.bodySm} whitespace-pre-line leading-relaxed text-pitch-300`}
+        >
+          {message.body}
+        </p>
+
+        <InboxMessageMeta message={message} />
+
+        {children && (
+          <ManagerInboxActionFooter>{children}</ManagerInboxActionFooter>
+        )}
       </div>
     </article>
+  );
+}
+
+export function ManagerClubFinancesPanel({
+  career,
+  showSplitGuide = false,
+}: {
+  career: ManagerCareer;
+  showSplitGuide?: boolean;
+}) {
+  const transfer = getTransferBudget(career);
+  const operating = getOperatingBalance(career);
+  const finance = career.managerFinance;
+  const seasonTransfer = finance?.seasonTransferIncome ?? 0;
+  const seasonOperating = finance?.seasonOperatingIncome ?? 0;
+
+  return (
+    <ManagerSectionCard title="Club Finances" variant="elevated" accent="gold">
+      <p className={`${TYPO.bodySm} text-pitch-400`}>
+        Match income is split between the transfer fund and day-to-day club
+        running costs.
+      </p>
+      <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <ManagerStat
+          label="Transfer fund"
+          value={formatWage(transfer)}
+          tone="gold"
+          large
+        />
+        <ManagerStat
+          label="Club operations"
+          value={formatWage(operating)}
+          tone="primary"
+        />
+        <ManagerStat
+          label="Total reserves"
+          value={formatWage(transfer + operating)}
+          tone="muted"
+        />
+      </div>
+      {(seasonTransfer > 0 || seasonOperating > 0) && (
+        <div className="mt-3 grid grid-cols-2 gap-3">
+          <ManagerStat
+            label="Earned this season → transfers"
+            value={formatWage(seasonTransfer)}
+            tone="gold"
+          />
+          <ManagerStat
+            label="Earned this season → operations"
+            value={formatWage(seasonOperating)}
+            tone="primary"
+          />
+        </div>
+      )}
+      {showSplitGuide && (
+        <div className={`mt-3 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
+          <p className={TYPO.sectionLabel}>How income is allocated</p>
+          <ul className={`mt-2 space-y-1.5 ${TYPO.bodySm} text-pitch-400`}>
+            {(Object.keys(REVENUE_SPLIT) as Array<keyof typeof REVENUE_SPLIT>).map(
+              (key) => {
+                const row = REVENUE_SPLIT[key];
+                return (
+                  <li key={key}>
+                    <span className="text-pitch-300">{row.label}</span>
+                    {" — "}
+                    {Math.round(row.transfer * 100)}% transfer fund ·{" "}
+                    {Math.round(row.operating * 100)}% club operations
+                  </li>
+                );
+              }
+            )}
+          </ul>
+        </div>
+      )}
+    </ManagerSectionCard>
   );
 }
 

@@ -1,4 +1,3 @@
-import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { ManagerCareer, ManagerFinance, ManagerSeasonSummary } from "./types";
 import { getManagerClubConfig } from "./club-config";
@@ -23,6 +22,66 @@ const FIRST_SEASON_TRANSFER_RANGE: Record<string, [number, number]> = {
   "Toulouse Olympique": [750_000, 1_100_000],
   "York Knights": [700_000, 1_000_000],
 };
+
+export type RevenueSource =
+  | "gate"
+  | "match_fee"
+  | "cup_prize"
+  | "player_sale"
+  | "board_grant";
+
+/** Share of each income type routed to transfer vs day-to-day club running costs. */
+export const REVENUE_SPLIT: Record<
+  RevenueSource,
+  { transfer: number; operating: number; label: string }
+> = {
+  gate: {
+    transfer: 0.12,
+    operating: 0.88,
+    label: "Gate receipts",
+  },
+  match_fee: {
+    transfer: 0.28,
+    operating: 0.72,
+    label: "Match fees & TV",
+  },
+  cup_prize: {
+    transfer: 0.4,
+    operating: 0.6,
+    label: "Cup prize money",
+  },
+  player_sale: {
+    transfer: 0.85,
+    operating: 0.15,
+    label: "Player sales",
+  },
+  board_grant: {
+    transfer: 0.55,
+    operating: 0.45,
+    label: "Board allocation",
+  },
+};
+
+export function splitRevenue(
+  amount: number,
+  source: RevenueSource
+): { transfer: number; operating: number; total: number } {
+  if (amount <= 0) {
+    return { transfer: 0, operating: 0, total: 0 };
+  }
+  const share = REVENUE_SPLIT[source];
+  const transfer = Math.round(amount * share.transfer);
+  const operating = amount - transfer;
+  return { transfer, operating, total: amount };
+}
+
+export function getTransferBudget(career: ManagerCareer): number {
+  return career.managerFinance?.transferBudget ?? career.budget;
+}
+
+export function getOperatingBalance(career: ManagerCareer): number {
+  return career.managerFinance?.operatingBalance ?? 0;
+}
 
 function hashSeed(seed: string, club: string): number {
   let h = 0;
@@ -79,23 +138,50 @@ export function initManagerFinance(career: Partial<ManagerCareer>): ManagerFinan
   const club = career.club ?? "Bradford Bulls";
   const seed = career.seed ?? "mgr";
   const transferBudget =
+    career.budget ??
     career.managerFinance?.transferBudget ??
     computeFirstSeasonTransferBudget(club, seed);
+  const operatingBalance = career.managerFinance?.operatingBalance ?? 0;
   const wageBudget =
     career.wageBudget ?? getWageBudgetForClub(club);
   const wageBill =
     career.wageBill ??
     (career.contracts ? computeWageBill(career.contracts) : 0);
-  const clubFunds =
-    career.budget ?? career.managerFinance?.clubFunds ?? getManagerClubConfig(club).budget;
 
   return {
     transferBudget,
+    operatingBalance,
     wageBudget,
     wageBill,
-    clubFunds,
+    clubFunds: transferBudget + operatingBalance,
     seasonIncome: career.managerFinance?.seasonIncome ?? 0,
+    seasonTransferIncome: career.managerFinance?.seasonTransferIncome ?? 0,
+    seasonOperatingIncome: career.managerFinance?.seasonOperatingIncome ?? 0,
     seasonSpending: career.managerFinance?.seasonSpending ?? 0,
+  };
+}
+
+export function applyClubRevenue(
+  career: ManagerCareer,
+  amount: number,
+  source: RevenueSource
+): ManagerCareer {
+  if (amount <= 0) return career;
+
+  const { transfer, operating } = splitRevenue(amount, source);
+  const finance = initManagerFinance(career);
+  finance.transferBudget += transfer;
+  finance.operatingBalance += operating;
+  finance.clubFunds = finance.transferBudget + finance.operatingBalance;
+  finance.seasonIncome += amount;
+  finance.seasonTransferIncome += transfer;
+  finance.seasonOperatingIncome += operating;
+
+  return {
+    ...career,
+    budget: finance.transferBudget,
+    clubFundsEarned: career.clubFundsEarned + amount,
+    managerFinance: finance,
   };
 }
 
@@ -103,11 +189,12 @@ export function syncManagerFinance(career: ManagerCareer): ManagerCareer {
   const finance = initManagerFinance(career);
   finance.wageBill = computeWageBill(career.contracts);
   finance.wageBudget = career.wageBudget;
-  finance.clubFunds = career.budget;
+  finance.transferBudget = career.budget;
+  finance.clubFunds = finance.transferBudget + finance.operatingBalance;
   return {
     ...career,
     managerFinance: finance,
-    budget: finance.clubFunds,
+    budget: finance.transferBudget,
     wageBill: finance.wageBill,
   };
 }
@@ -117,12 +204,12 @@ export function deductTransferFee(
   amount: number
 ): ManagerCareer {
   const finance = initManagerFinance(career);
-  finance.clubFunds -= amount;
   finance.transferBudget = Math.max(0, finance.transferBudget - amount);
   finance.seasonSpending += amount;
+  finance.clubFunds = finance.transferBudget + finance.operatingBalance;
   return {
     ...career,
-    budget: finance.clubFunds,
+    budget: finance.transferBudget,
     managerFinance: finance,
   };
 }
@@ -131,15 +218,7 @@ export function addTransferIncome(
   career: ManagerCareer,
   amount: number
 ): ManagerCareer {
-  const finance = initManagerFinance(career);
-  finance.clubFunds += amount;
-  finance.transferBudget += amount;
-  finance.seasonIncome += amount;
-  return {
-    ...career,
-    budget: finance.clubFunds,
-    managerFinance: finance,
-  };
+  return applyClubRevenue(career, amount, "player_sale");
 }
 
 export function initClubTransferBudgets(
@@ -184,3 +263,43 @@ export function getUserLeaguePositionForBudget(
 ): number {
   return getUserLeaguePosition(career.leagueTable, career.club);
 }
+
+/** Hydrate legacy gate records that pre-date revenue split tracking. */
+export function hydrateGateIncomeRecord(
+  record: Partial<GateIncomeRecordCompat>
+): {
+  fixtureId: string;
+  round: number;
+  attendance: number;
+  income: number;
+  transferAllocation: number;
+  operatingAllocation: number;
+  competition: ManagerCareer["gateIncomeHistory"][number]["competition"];
+} {
+  const income = record.income ?? 0;
+  const transferAllocation =
+    record.transferAllocation ??
+    splitRevenue(income, "gate").transfer;
+  const operatingAllocation =
+    record.operatingAllocation ??
+    income - transferAllocation;
+  return {
+    fixtureId: record.fixtureId ?? "legacy",
+    round: record.round ?? 0,
+    attendance: record.attendance ?? 0,
+    income,
+    transferAllocation,
+    operatingAllocation,
+    competition: record.competition ?? "league",
+  };
+}
+
+type GateIncomeRecordCompat = {
+  fixtureId?: string;
+  round?: number;
+  attendance?: number;
+  income?: number;
+  transferAllocation?: number;
+  operatingAllocation?: number;
+  competition?: ManagerCareer["gateIncomeHistory"][number]["competition"];
+};

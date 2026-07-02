@@ -23,6 +23,7 @@ import {
   evaluateRenewalOffer,
 } from "./managerContracts";
 import { syncReserveContractExpiryInbox } from "./managerReserveContracts";
+import { ensureRetirementIntent } from "./managerRetirement";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { getManagerPlayer } from "./managerPlayers";
 
@@ -53,6 +54,7 @@ export function normalizeInboxMessage(
     offerClub: raw.offerClub,
     offerAmount: raw.offerAmount,
     askingPrice: raw.askingPrice,
+    unsolicited: raw.unsolicited,
   };
 }
 
@@ -292,6 +294,56 @@ export function addContractRenewalInboxMessage(
   });
 }
 
+export function addRetirementIntentInboxMessage(
+  career: ManagerCareer,
+  playerId: string,
+  playerName: string,
+  age: number
+): ManagerCareer {
+  const msgId = `retirement-intent-${playerId}-s${career.seasonYear}`;
+  if (career.inboxMessages.some((m) => m.id === msgId)) return career;
+
+  return pushInboxMessage(career, {
+    id: msgId,
+    type: "retirement",
+    title: "Retirement Planned",
+    body: `${playerName} (${age}) is considering retirement and plans to call time on their career at the end of the ${career.seasonYear} season.`,
+    week: career.gameWeek,
+    season: career.seasonYear,
+    gameWeek: career.gameWeek,
+    createdAt: new Date().toISOString(),
+    read: false,
+    resolved: false,
+    playerId,
+    playerName,
+  });
+}
+
+export function addPlayerRetiredInboxMessage(
+  career: ManagerCareer,
+  playerId: string,
+  playerName: string,
+  age: number
+): ManagerCareer {
+  const msgId = `retired-${playerId}-s${career.seasonYear}`;
+  if (career.inboxMessages.some((m) => m.id === msgId)) return career;
+
+  return pushInboxMessage(career, {
+    id: msgId,
+    type: "retirement",
+    title: "Player Retired",
+    body: `${playerName} has retired from rugby at age ${age} after ${career.seasonYear} season. They leave the club with our best wishes.`,
+    week: career.gameWeek,
+    season: career.seasonYear,
+    gameWeek: career.gameWeek,
+    createdAt: new Date().toISOString(),
+    read: false,
+    resolved: false,
+    playerId,
+    playerName,
+  });
+}
+
 export function addContractLeavingInboxMessage(
   career: ManagerCareer,
   playerId: string,
@@ -385,6 +437,7 @@ export function syncManagerInboxMessages(career: ManagerCareer): ManagerCareer {
   let next = syncCupDrawInboxMessages(career);
   next = syncContractExpiryInboxMessages(next);
   next = syncReserveContractExpiryInbox(next);
+  next = ensureRetirementIntent(next);
   if (next.isSeasonComplete) {
     next = addSeasonRewardInboxMessage(next);
   }

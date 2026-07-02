@@ -10,7 +10,8 @@ import {
   ManagerTransferResultModal,
   type TransferResultDetails,
 } from "@/components/manager/ManagerTransferResultModal";
-import { ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
+import { ManagerSectionCard, ManagerStat, ManagerClubFinancesPanel } from "@/components/manager/manager-ui";
+import { getTransferBudget } from "@/lib/manager/managerFinance";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -23,6 +24,10 @@ import {
   getAllLeaguePlayers,
   getAskingPrice,
 } from "@/lib/manager/managerTransferLeague";
+import {
+  completeFreeAgentSigning,
+  evaluateFreeAgentOffer,
+} from "@/lib/manager/managerFreeAgents";
 import { getTransferDemand } from "@/lib/manager/managerTransfers";
 import { getPlayerById } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
@@ -52,6 +57,14 @@ export function ManagerTransfers({
     useState<TransferResultDetails | null>(null);
   const [offerPlayerId, setOfferPlayerId] = useState<string | null>(null);
   const [offerFee, setOfferFee] = useState(0);
+  const [listedNegotiateId, setListedNegotiateId] = useState<string | null>(null);
+  const [listedOfferWage, setListedOfferWage] = useState(0);
+  const [listedOfferYears, setListedOfferYears] = useState(1);
+  const [freeAgentNegotiateId, setFreeAgentNegotiateId] = useState<string | null>(
+    null
+  );
+  const [freeAgentOfferWage, setFreeAgentOfferWage] = useState(0);
+  const [freeAgentOfferYears, setFreeAgentOfferYears] = useState(1);
 
   const wageOverBudget = career.wageBill > career.wageBudget;
   const wagePct = Math.round(
@@ -72,6 +85,23 @@ export function ManagerTransfers({
       })
       .sort((a, b) => b.player.peakRating - a.player.peakRating);
   }, [career.leagueListedPlayers, positionFilter]);
+
+  const freeAgents = useMemo(() => {
+    return (career.freeAgents ?? [])
+      .map((entry) => {
+        const raw =
+          getManagerPlayer(career, entry.playerId) ??
+          getPlayerById(entry.playerId);
+        if (!raw) return null;
+        return { ...entry, player: withManagerRating(raw) };
+      })
+      .filter((r): r is NonNullable<typeof r> => r !== null)
+      .filter((r) => {
+        if (positionFilter === "all") return true;
+        return getPlayerEligiblePositions(r.player).includes(positionFilter);
+      })
+      .sort((a, b) => b.player.peakRating - a.player.peakRating);
+  }, [career, positionFilter]);
 
   const leagueSearch = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -115,16 +145,28 @@ export function ManagerTransfers({
   const submitTransferOffer = (
     playerId: string,
     club: string,
-    listed: boolean
+    listed: boolean,
+    offerOverride?: {
+      transferFee: number;
+      wagePerYear: number;
+      yearsRequested: number;
+    }
   ) => {
     const player = getPlayerById(playerId);
     const demand = getTransferDemand(playerId, career.club);
+    const asking = career.leagueListedPlayers.find((l) => l.playerId === playerId)
+      ?.askingPrice;
     const fee =
-      offerPlayerId === playerId && offerFee > 0
-        ? offerFee
-        : getAskingPrice(playerId, listed, career.seed, career.gameWeek);
+      offerOverride?.transferFee ??
+      (listed
+        ? (asking ?? getAskingPrice(playerId, true, career.seed, career.gameWeek))
+        : offerPlayerId === playerId && offerFee > 0
+          ? offerFee
+          : getAskingPrice(playerId, false, career.seed, career.gameWeek));
 
-    const offer = {
+    const offer = offerOverride
+      ? { ...offerOverride, squadRole: demand.squadRole }
+      : {
       transferFee: fee,
       wagePerYear: demand.wagePerYear,
       yearsRequested: demand.yearsRequested,
@@ -135,9 +177,9 @@ export function ManagerTransfers({
     setTransferResult({
       playerName: player?.name ?? "Player",
       club,
-      fee,
-      wagePerYear: demand.wagePerYear,
-      years: demand.yearsRequested,
+      fee: offer.transferFee,
+      wagePerYear: offer.wagePerYear,
+      years: offer.yearsRequested,
       accepted: result.accepted,
       reason: result.reason,
     });
@@ -145,7 +187,109 @@ export function ManagerTransfers({
     if (result.accepted) {
       onUpdate(completePlayerPurchase(career, playerId, club, offer, listed));
       setOfferPlayerId(null);
+      setListedNegotiateId(null);
     }
+  };
+
+  const openListedNegotiation = (playerId: string) => {
+    const demand = getTransferDemand(playerId, career.club);
+    playUiClick();
+    setListedNegotiateId(playerId);
+    setListedOfferWage(demand.wagePerYear);
+    setListedOfferYears(demand.yearsRequested);
+    setOfferPlayerId(null);
+  };
+
+  const submitListedAssistantDeal = (playerId: string, club: string) => {
+    const demand = getTransferDemand(playerId, career.club);
+    const asking =
+      career.leagueListedPlayers.find((l) => l.playerId === playerId)?.askingPrice ??
+      getAskingPrice(playerId, true, career.seed, career.gameWeek);
+    playUiClick();
+    submitTransferOffer(playerId, club, true, {
+      transferFee: asking,
+      wagePerYear: demand.wagePerYear,
+      yearsRequested: demand.yearsRequested,
+    });
+  };
+
+  const submitListedNegotiatedDeal = (playerId: string, club: string) => {
+    const asking =
+      career.leagueListedPlayers.find((l) => l.playerId === playerId)?.askingPrice ??
+      getAskingPrice(playerId, true, career.seed, career.gameWeek);
+    playUiClick();
+    submitTransferOffer(playerId, club, true, {
+      transferFee: asking,
+      wagePerYear: listedOfferWage,
+      yearsRequested: listedOfferYears,
+    });
+  };
+
+  const submitFreeAgentOffer = (
+    playerId: string,
+    formerClub: string,
+    offerOverride?: {
+      wagePerYear: number;
+      yearsRequested: number;
+    }
+  ) => {
+    const player = getPlayerById(playerId);
+    const demand = getTransferDemand(playerId, career.club);
+    const offer = {
+      transferFee: 0,
+      wagePerYear: offerOverride?.wagePerYear ?? demand.wagePerYear,
+      yearsRequested: offerOverride?.yearsRequested ?? demand.yearsRequested,
+      squadRole: demand.squadRole,
+    };
+
+    const result = evaluateFreeAgentOffer(career, playerId, offer);
+    setTransferResult({
+      playerName: player?.name ?? "Player",
+      club: formerClub,
+      fee: 0,
+      wagePerYear: offer.wagePerYear,
+      years: offer.yearsRequested,
+      accepted: result.accepted,
+      reason: result.reason,
+      freeTransfer: true,
+    });
+
+    if (result.accepted) {
+      onUpdate(completeFreeAgentSigning(career, playerId, offer));
+      setFreeAgentNegotiateId(null);
+      setListedNegotiateId(null);
+      setOfferPlayerId(null);
+    }
+  };
+
+  const openFreeAgentNegotiation = (playerId: string) => {
+    const demand = getTransferDemand(playerId, career.club);
+    playUiClick();
+    setFreeAgentNegotiateId(playerId);
+    setFreeAgentOfferWage(demand.wagePerYear);
+    setFreeAgentOfferYears(demand.yearsRequested);
+    setListedNegotiateId(null);
+    setOfferPlayerId(null);
+  };
+
+  const submitFreeAgentAssistantDeal = (playerId: string, formerClub: string) => {
+    const demand = getTransferDemand(playerId, career.club);
+    playUiClick();
+    submitFreeAgentOffer(playerId, formerClub, {
+      wagePerYear: demand.wagePerYear,
+      yearsRequested: demand.yearsRequested,
+    });
+  };
+
+  const submitFreeAgentNegotiatedDeal = (
+    playerId: string,
+    formerClub: string
+  ) => {
+    playUiClick();
+    submitFreeAgentOffer(playerId, formerClub, {
+      wagePerYear: freeAgentOfferWage,
+      yearsRequested: freeAgentOfferYears,
+    });
   };
 
   return (
@@ -153,27 +297,24 @@ export function ManagerTransfers({
       <div>
         <h1 className={TYPO.pageTitle}>Transfers</h1>
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-          Sign listed players or bid for anyone in the league
+          Sign listed players, pick up free agents, or bid for anyone in the league
         </p>
       </div>
 
-      <ManagerSectionCard title="Transfer Budget" variant="elevated" accent="gold">
-        <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <ManagerStat
-            label="Available funds"
-            value={formatWage(career.budget)}
-            tone="gold"
-            large
-          />
+      <ManagerClubFinancesPanel career={career} showSplitGuide />
+
+      <ManagerSectionCard title="Wage Budget" variant="elevated" accent="primary">
+        <div className="mt-2 grid grid-cols-2 gap-3">
           <ManagerStat
             label="Wage bill"
             value={formatWage(career.wageBill)}
             tone={wageOverBudget ? "amber" : "default"}
+            large
           />
           <ManagerStat
             label="Wage budget"
             value={formatWage(career.wageBudget)}
-            tone="sky"
+            tone="muted"
           />
         </div>
         <div className="mt-3">
@@ -195,11 +336,13 @@ export function ManagerTransfers({
       </ManagerSectionCard>
 
       {leagueTransfers.length > 0 && (
-        <ManagerSectionCard title="League Transfers" variant="inset">
-          <ul className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {leagueTransfers.slice(0, 12).map((tx) => (
+        <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+          <p className={TYPO.sectionLabel}>Recent League Transfers</p>
+          <ul className="mt-2 max-h-36 space-y-1 overflow-y-auto">
+            {leagueTransfers.slice(0, 8).map((tx) => (
               <ManagerLeagueTransferCard
                 key={tx.id}
+                compact
                 playerName={tx.playerName}
                 fromClub={tx.fromClub}
                 toClub={tx.toClub}
@@ -208,7 +351,12 @@ export function ManagerTransfers({
               />
             ))}
           </ul>
-        </ManagerSectionCard>
+          {leagueTransfers.length > 8 && (
+            <p className={`mt-1.5 ${TYPO.bodySm} text-pitch-500`}>
+              +{leagueTransfers.length - 8} more this season
+            </p>
+          )}
+        </div>
       )}
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
@@ -242,12 +390,18 @@ export function ManagerTransfers({
         <div>
           <h2 className={TYPO.sectionLabel}>Available Players</h2>
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
-            Transfer-listed — ready to sign at the asking price
+            Transfer-listed — negotiate contract terms or leave the deal to your
+            assistant
           </p>
         </div>
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
           {listedPlayers.map(({ player, club, askingPrice }) => {
             const demand = getTransferDemand(player.id, career.club);
+            const isNegotiating = listedNegotiateId === player.id;
+            const canAffordFee = getTransferBudget(career) >= askingPrice;
+            const canAffordAssistant =
+              canAffordFee &&
+              career.wageBill + demand.wagePerYear <= career.wageBudget * 1.05;
             return (
               <ManagerTransferPlayerCard
                 key={player.id}
@@ -255,28 +409,220 @@ export function ManagerTransfers({
                 club={club}
                 listed
                 fee={askingPrice}
-                wagePerYear={demand.wagePerYear}
-                yearsRequested={demand.yearsRequested}
-                squadRole={demand.squadRole}
+                wagePerYear={isNegotiating ? listedOfferWage : demand.wagePerYear}
+                yearsRequested={
+                  isNegotiating ? listedOfferYears : demand.yearsRequested
+                }
               >
-                <GameButton
-                  variant="theme"
-                  size="sm"
-                  fullWidth
-                  disabled={career.budget < askingPrice}
-                  onClick={() => {
-                    playUiClick();
-                    submitTransferOffer(player.id, club, true);
-                  }}
-                >
-                  Sign for {formatWage(askingPrice)}
-                </GameButton>
+                {isNegotiating ? (
+                  <div className="space-y-3">
+                    <p className={`${TYPO.bodySm} text-pitch-400`}>
+                      Player demands: {formatWage(demand.wagePerYear)}/yr ·{" "}
+                      {demand.yearsRequested}yr
+                    </p>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      <label className={TYPO.bodySm}>
+                        <span className="text-pitch-500">Wage (£/yr)</span>
+                        <input
+                          type="number"
+                          step={1000}
+                          value={listedOfferWage}
+                          onChange={(e) =>
+                            setListedOfferWage(Number(e.target.value))
+                          }
+                          className={`${FILTER.input} mt-1`}
+                        />
+                      </label>
+                      <label className={TYPO.bodySm}>
+                        <span className="text-pitch-500">Contract length</span>
+                        <input
+                          type="number"
+                          min={1}
+                          max={4}
+                          value={listedOfferYears}
+                          onChange={(e) =>
+                            setListedOfferYears(Number(e.target.value))
+                          }
+                          className={`${FILTER.input} mt-1`}
+                        />
+                      </label>
+                    </div>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      <GameButton
+                        variant="theme"
+                        size="sm"
+                        fullWidth
+                        disabled={!canAffordFee}
+                        onClick={() =>
+                          submitListedNegotiatedDeal(player.id, club)
+                        }
+                      >
+                        Submit offer — {formatWage(askingPrice)}
+                      </GameButton>
+                      <GameButton
+                        variant="secondary"
+                        size="sm"
+                        fullWidth
+                        onClick={() => {
+                          playUiClick();
+                          setListedNegotiateId(null);
+                        }}
+                      >
+                        Cancel
+                      </GameButton>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <GameButton
+                      variant="theme"
+                      size="sm"
+                      fullWidth
+                      disabled={!canAffordFee}
+                      onClick={() => openListedNegotiation(player.id)}
+                    >
+                      Negotiate deal
+                    </GameButton>
+                    <GameButton
+                      variant="secondary"
+                      size="sm"
+                      fullWidth
+                      disabled={!canAffordAssistant}
+                      onClick={() =>
+                        submitListedAssistantDeal(player.id, club)
+                      }
+                    >
+                      Leave to assistant
+                    </GameButton>
+                  </div>
+                )}
               </ManagerTransferPlayerCard>
             );
           })}
           {listedPlayers.length === 0 && (
             <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
               No transfer-listed players available right now.
+            </p>
+          )}
+        </div>
+      </section>
+
+      <section className="space-y-3">
+        <div>
+          <h2 className={TYPO.sectionLabel}>Free Agents</h2>
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
+            Out-of-contract players — no transfer fee, negotiate wages only
+          </p>
+        </div>
+        <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
+          {freeAgents.map(({ player, formerClub, playerId }) => {
+            const demand = getTransferDemand(player.id, career.club);
+            const isNegotiating = freeAgentNegotiateId === player.id;
+            const canAffordAssistant =
+              career.wageBill + demand.wagePerYear <= career.wageBudget * 1.05;
+            const canAffordNegotiated =
+              career.wageBill + freeAgentOfferWage <= career.wageBudget * 1.05;
+            return (
+              <ManagerTransferPlayerCard
+                key={playerId}
+                player={player}
+                club={formerClub}
+                listed={false}
+                freeAgent
+                fee={0}
+                wagePerYear={isNegotiating ? freeAgentOfferWage : demand.wagePerYear}
+                yearsRequested={
+                  isNegotiating ? freeAgentOfferYears : demand.yearsRequested
+                }
+              >
+                {isNegotiating ? (
+                  <div className="space-y-3">
+                    <p className={`${TYPO.bodySm} text-pitch-400`}>
+                      Player demands: {formatWage(demand.wagePerYear)}/yr ·{" "}
+                      {demand.yearsRequested}yr
+                    </p>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      <label className={TYPO.bodySm}>
+                        <span className="text-pitch-500">Wage (£/yr)</span>
+                        <input
+                          type="number"
+                          step={1000}
+                          value={freeAgentOfferWage}
+                          onChange={(e) =>
+                            setFreeAgentOfferWage(Number(e.target.value))
+                          }
+                          className={`${FILTER.input} mt-1`}
+                        />
+                      </label>
+                      <label className={TYPO.bodySm}>
+                        <span className="text-pitch-500">Contract length</span>
+                        <input
+                          type="number"
+                          min={1}
+                          max={4}
+                          value={freeAgentOfferYears}
+                          onChange={(e) =>
+                            setFreeAgentOfferYears(Number(e.target.value))
+                          }
+                          className={`${FILTER.input} mt-1`}
+                        />
+                      </label>
+                    </div>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      <GameButton
+                        variant="theme"
+                        size="sm"
+                        fullWidth
+                        disabled={!canAffordNegotiated}
+                        onClick={() =>
+                          submitFreeAgentNegotiatedDeal(playerId, formerClub)
+                        }
+                      >
+                        Submit offer — Free
+                      </GameButton>
+                      <GameButton
+                        variant="secondary"
+                        size="sm"
+                        fullWidth
+                        onClick={() => {
+                          playUiClick();
+                          setFreeAgentNegotiateId(null);
+                        }}
+                      >
+                        Cancel
+                      </GameButton>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <GameButton
+                      variant="theme"
+                      size="sm"
+                      fullWidth
+                      onClick={() => openFreeAgentNegotiation(player.id)}
+                    >
+                      Negotiate deal
+                    </GameButton>
+                    <GameButton
+                      variant="secondary"
+                      size="sm"
+                      fullWidth
+                      disabled={!canAffordAssistant}
+                      onClick={() =>
+                        submitFreeAgentAssistantDeal(playerId, formerClub)
+                      }
+                    >
+                      Leave to assistant
+                    </GameButton>
+                  </div>
+                )}
+              </ManagerTransferPlayerCard>
+            );
+          })}
+          {freeAgents.length === 0 && (
+            <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
+              No free agents available right now. Players appear here when contracts
+              expire at season end.
             </p>
           )}
         </div>
@@ -335,7 +681,6 @@ export function ManagerTransfers({
                 fee={isOffering && offerFee > 0 ? offerFee : fee}
                 wagePerYear={demand.wagePerYear}
                 yearsRequested={demand.yearsRequested}
-                squadRole={demand.squadRole}
               >
                 {isOffering ? (
                   <div className="space-y-2">

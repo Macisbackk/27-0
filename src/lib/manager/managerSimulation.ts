@@ -29,6 +29,7 @@ import {
 } from "./managerScoring";
 import {
   buildTacticEffectivenessLine,
+  buildTacticMatchReviewAdvice,
   countTriesByPositionGroup,
   applyTacticFormAdjustment,
   getTacticModifiers,
@@ -92,6 +93,7 @@ export function isManagerSeasonComplete(career: ManagerCareer): boolean {
 }
 import { countExpiringContracts } from "./managerContracts";
 import { maybeGenerateAiTransfers } from "./managerAiTransfers";
+import { maybeAiSignFreeAgents } from "./managerFreeAgents";
 import { developSquadAtSeasonEnd } from "./managerPlayerDevelopment";
 import {
   advanceLiveToFullTime,
@@ -106,12 +108,14 @@ import {
 } from "./managerFixtureScoring";
 import {
   applyReserveMatchDevelopment,
+  applyYouthMatchDevelopment,
   clearReserveCallUps,
   getReserveOpponent,
   simulateReserveFixture,
 } from "./managerReserves";
 import {
   generateIncomingTransferOffers,
+  generateUnsolicitedTransferOffers,
   generateLeagueListedPlayers,
 } from "./managerTransferLeague";
 import { syncManagerInboxMessages } from "./managerInbox";
@@ -121,7 +125,7 @@ import { rotateLatestNews } from "./managerNews";
 import {
   generateManagerMatchBio,
 } from "./manager-match-summary";
-import { syncManagerFinance } from "./managerFinance";
+import { syncManagerFinance, applyClubRevenue } from "./managerFinance";
 
 export { getTacticModifiers } from "./managerTacticsScoring";
 
@@ -225,6 +229,17 @@ export function applyManagerMatchResult(
     back,
     fixture.scoringDetail?.opponent.tryScorers ?? []
   );
+  const tacticReview = buildTacticMatchReviewAdvice(
+    career.tactics,
+    fixture.result === "W",
+    fixture.pointsFor,
+    fixture.pointsAgainst,
+    fixture.triesFor,
+    fixture.triesAgainst,
+    forward,
+    back,
+    fixture.scoringDetail?.opponent.tryScorers ?? []
+  );
 
   const won = fixture.result === "W";
 
@@ -280,11 +295,12 @@ export function applyManagerMatchResult(
     round
   );
 
+  const matchdayIds = new Set([
+    ...career.matchdayXiii.filter(Boolean),
+    ...career.matchdayInterchange.filter(Boolean),
+  ]);
+
   let nextSquad = tickInjuries(career.squad).map((ps) => {
-    const matchdayIds = new Set([
-      ...career.matchdayXiii.filter(Boolean),
-      ...career.matchdayInterchange.filter(Boolean),
-    ]);
     const played = matchdayIds.has(ps.playerId);
     const tryCount =
       fixture.scoringDetail?.dreamTeam.tryScorers.find(
@@ -311,7 +327,7 @@ export function applyManagerMatchResult(
     };
   });
 
-  const matchdayIds = [
+  const matchdayIdList = [
     ...career.matchdayXiii.filter(Boolean),
     ...career.matchdayInterchange.filter(Boolean),
   ];
@@ -319,7 +335,7 @@ export function applyManagerMatchResult(
     career,
     fixture,
     squad,
-    matchdayIds,
+    matchdayIdList,
     motmId
   );
   const teamSeasonStats = isFriendly
@@ -402,6 +418,7 @@ export function applyManagerMatchResult(
     meta: {
       tacticImpactLine: mods.tacticLine,
       tacticEffectivenessLine: effectivenessLine,
+      tacticReview,
       injuries: injuries.map((i) => ({
         ...i,
         name: getPlayerById(i.playerId)?.name ?? "Player",
@@ -445,12 +462,12 @@ export function applyManagerMatchResult(
 
   const matchIncome = isFriendly
     ? won
-      ? 8_000
-      : 4_000
+      ? 4_000
+      : 2_000
     : won
-      ? 25_000
-      : 10_000;
-  const cupBonus = isCup && won ? 50_000 : 0;
+      ? 15_000
+      : 6_000;
+  const cupBonus = isCup && won ? 30_000 : 0;
 
   const nextFixtureIndex =
     isCup || isFriendly || isPlayoff
@@ -478,8 +495,6 @@ export function applyManagerMatchResult(
       isFriendly || isCup || isPlayoff
         ? career.losses
         : career.losses + (won ? 0 : 1),
-    budget: working.budget + matchIncome + cupBonus,
-    clubFundsEarned: working.clubFundsEarned + matchIncome + cupBonus,
     boardConfidence,
     teamSeasonStats,
     playerSeasonStats: statsUpdate.playerSeasonStats,
@@ -495,6 +510,12 @@ export function applyManagerMatchResult(
   let finalCareer: ManagerCareer = ensurePlayoffsReady(
     syncManagerLeagueTable(nextCareer)
   );
+  if (matchIncome > 0) {
+    finalCareer = applyClubRevenue(finalCareer, matchIncome, "match_fee");
+  }
+  if (cupBonus > 0) {
+    finalCareer = applyClubRevenue(finalCareer, cupBonus, "cup_prize");
+  }
   finalCareer = {
     ...finalCareer,
     isSeasonComplete: isManagerSeasonComplete(finalCareer),
@@ -511,13 +532,18 @@ export function applyManagerMatchResult(
 
   const reserveOpp = getReserveOpponent(sched.opponent, round, career.seed);
   const reserveResult = simulateReserveFixture(finalCareer, round, reserveOpp);
+  finalCareer = applyYouthMatchDevelopment(finalCareer, { round, matchdayIds });
   finalCareer = applyReserveMatchDevelopment(finalCareer, reserveResult);
   finalCareer = clearReserveCallUps(finalCareer);
   finalCareer = generateIncomingTransferOffers(finalCareer);
+  if (!isFriendly) {
+    finalCareer = generateUnsolicitedTransferOffers(finalCareer);
+  }
   finalCareer = syncManagerInboxMessages(finalCareer);
   finalCareer = maybeAddReserveReport(finalCareer);
   finalCareer = rotateLatestNews(finalCareer);
   finalCareer = maybeGenerateAiTransfers(finalCareer);
+  finalCareer = maybeAiSignFreeAgents(finalCareer);
   if (isFriendly) {
     finalCareer = completeFriendlyMatch(finalCareer);
   }

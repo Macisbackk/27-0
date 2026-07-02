@@ -31,6 +31,12 @@ export function isPlayerUnavailable(player: ManagerPlayerState): boolean {
   return !!(player.injury && player.injury.matchesRemaining > 0);
 }
 
+export function getUnavailableSquadPlayers(
+  career: ManagerCareer
+): ManagerPlayerState[] {
+  return career.squad.filter(isPlayerUnavailable);
+}
+
 export function canPlayPosition(
   playerId: string,
   position: Position
