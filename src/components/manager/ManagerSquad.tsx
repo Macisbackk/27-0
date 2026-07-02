@@ -13,7 +13,7 @@ import {
 import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
 import { getUnavailableSquadPlayers, isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import {
-  assignPlayerToMatchday,
+  tryAssignPlayerToMatchday,
   canAssignPlayerToXiiiSlot,
   findPlayerMatchdaySlot,
   getMatchdayPlayerIds,
@@ -24,8 +24,9 @@ import {
   type MatchdaySlotTarget,
 } from "@/lib/manager/managerMatchdaySquad";
 import { ManagerSquadPlayerModal } from "@/components/manager/ManagerSquadPlayerModal";
+import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
-import { autoFixMatchdaySquad, autoSortMatchdaySquad } from "@/lib/manager/managerAutoFix";
+import { autoFixMatchdaySquad, autoSortMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { GameButton } from "@/components/ui/GameButton";
 import {
   ManagerPage,
@@ -158,6 +159,16 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
   const [replaceSourcePlayerId, setReplaceSourcePlayerId] = useState<
     string | null
   >(null);
+  const [assignmentNotice, setAssignmentNotice] = useState<string | null>(null);
+  const [dialog, setDialog] = useState<{ title: string; message: string } | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (!assignmentNotice) return;
+    const timer = window.setTimeout(() => setAssignmentNotice(null), 4000);
+    return () => window.clearTimeout(timer);
+  }, [assignmentNotice]);
 
   useEffect(
     () => () => {
@@ -210,11 +221,26 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     );
   }, [squadPool, career, positionFilter, selectedTarget, replaceSlot, replacementCandidates]);
 
+  const applyAssignment = (
+    target: MatchdaySlotTarget,
+    playerId: string,
+    onDone?: () => void
+  ) => {
+    const result = tryAssignPlayerToMatchday(career, target, playerId);
+    if (result.ok) {
+      onUpdate(result.career);
+      onDone?.();
+      return;
+    }
+    setAssignmentNotice(result.message ?? "Could not assign player.");
+  };
+
   const handleSelectSlot = (target: MatchdaySlotTarget) => {
     if (pendingAssignId) {
-      onUpdate(assignPlayerToMatchday(career, target, pendingAssignId));
-      setPendingAssignId(null);
-      setSelectedTarget(null);
+      applyAssignment(target, pendingAssignId, () => {
+        setPendingAssignId(null);
+        setSelectedTarget(null);
+      });
       return;
     }
     if (target.kind === "xiii") {
@@ -228,13 +254,15 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
 
   const handlePickPlayer = (playerId: string) => {
     if (replaceSlot) {
-      onUpdate(assignPlayerToMatchday(career, replaceSlot, playerId));
-      setReplaceSourcePlayerId(null);
+      applyAssignment(replaceSlot, playerId, () => {
+        setReplaceSourcePlayerId(null);
+      });
       return;
     }
     if (!selectedTarget) return;
-    onUpdate(assignPlayerToMatchday(career, selectedTarget, playerId));
-    setSelectedTarget(null);
+    applyAssignment(selectedTarget, playerId, () => {
+      setSelectedTarget(null);
+    });
   };
 
   const handleReplacePlayer = (playerId: string) => {
@@ -290,7 +318,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     setModalPlayerId(null);
   };
 
-  const squadCheck = validateFitMatchdaySquad(career);
+  const squadCheck = validateFitMatchdaySquad(resolveCareerForMatchSimulation(career));
 
   const unavailablePlayers = useMemo(
     () => getUnavailableSquadPlayers(career),
@@ -351,13 +379,24 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
               setPendingAssignId(null);
               setSelectedTarget(null);
               setReplaceSourcePlayerId(null);
-              if (!result.ok) window.alert(result.message);
+              if (!result.ok) {
+                setDialog({ title: "Auto Sort failed", message: result.message });
+              }
             }}
           >
             Auto Sort Best XI
           </GameButton>
         }
       />
+
+      {assignmentNotice && (
+        <div
+          className={`${CARD.inset} ${SPACING.cardPaddingSm} border border-red-500/40`}
+          role="status"
+        >
+          <p className={`${TYPO.bodySm} text-red-200`}>{assignmentNotice}</p>
+        </div>
+      )}
 
       {!squadCheck.valid && (
         <div
@@ -374,7 +413,9 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
               playUiClick();
               const result = autoFixMatchdaySquad(career);
               onUpdate(result.career);
-              if (!result.ok) window.alert(result.message);
+              if (!result.ok) {
+                setDialog({ title: "Auto Fix failed", message: result.message });
+              }
             }}
           >
             Auto Fix Squad
@@ -383,7 +424,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
       )}
 
       {unavailablePlayers.length > 0 && (
-        <div className="rounded-lg border border-red-500/25 bg-red-500/5 px-2.5 py-2">
+        <div className="rounded-lg border border-red-500/25 bg-red-500/5 px-4 py-2.5 sm:px-3 sm:py-2">
           <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-red-300/80">
             Unavailable ({unavailablePlayers.length})
           </p>
@@ -513,7 +554,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                       playUiClick();
                       openPlayerDetails(playerId);
                     }}
-                    className={`${squadSelectionClass(selectionRole)} select-none rounded-lg border px-2 py-2 text-left ${
+                    className={`${squadSelectionClass(selectionRole)} select-none rounded-lg border ${SPACING.listItem} text-left ${
                       unavailable ? unavailableAccentClass(!!isSuspension) : ""
                     }`}
                   >
@@ -571,11 +612,11 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                 : "Tap a player to assign, or tap matchday players for options"}
             </p>
           )}
-          <div className="mb-2 flex flex-wrap gap-1">
+          <div className="mb-2 flex gap-1 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible">
             <button
               type="button"
               onClick={() => setPositionFilter("all")}
-              className={`rounded border px-2 py-0.5 text-[10px] ${
+              className={`shrink-0 rounded border px-2 py-0.5 text-[10px] ${
                 positionFilter === "all"
                   ? "border-theme-primary text-theme-primary"
                   : "border-pitch-600 text-pitch-400"
@@ -588,7 +629,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                 key={pos}
                 type="button"
                 onClick={() => setPositionFilter(pos)}
-                className={`rounded border px-2 py-0.5 text-[10px] ${
+                className={`shrink-0 rounded border px-2 py-0.5 text-[10px] ${
                   positionFilter === pos
                     ? "border-theme-primary text-theme-primary"
                     : "border-pitch-600 text-pitch-400"
@@ -622,7 +663,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                       playUiClick();
                       openPlayerDetails(playerId);
                     }}
-                    className={`${squadSelectionClass(poolRole)} select-none rounded-lg border px-2 py-2 text-left transition`}
+                    className={`${squadSelectionClass(poolRole)} select-none rounded-lg border ${SPACING.listItem} text-left transition`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
@@ -672,6 +713,14 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
           onReplace={handleReplacePlayer}
         />
       )}
+
+      <ManagerDialog
+        open={dialog !== null}
+        title={dialog?.title ?? ""}
+        message={dialog?.message ?? ""}
+        onConfirm={() => setDialog(null)}
+        onCancel={() => setDialog(null)}
+      />
     </ManagerPage>
   );
 }

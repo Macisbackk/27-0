@@ -267,6 +267,45 @@ export function syncManagerLeagueTable(career: ManagerCareer): ManagerCareer {
   return { ...career, leagueTable: getManagerLeagueTable(career) };
 }
 
+/** Backfill round results when fixtures outpace saved roundMatches. */
+export function reconcileRoundMatches(career: ManagerCareer): ManagerCareer {
+  const leagueFixtures = career.fixtures
+    .filter((f) => (f.competition ?? "league") === "league")
+    .sort((a, b) => a.round - b.round);
+  if (leagueFixtures.length === 0) return career;
+
+  const roundsPresent = new Set(career.roundMatches?.map((m) => m.round) ?? []);
+  let roundMatches = [...(career.roundMatches ?? [])];
+  let working = career;
+
+  for (const f of leagueFixtures) {
+    if (roundsPresent.has(f.round)) continue;
+    const userMatch: ManagerRoundMatch = {
+      round: f.round,
+      homeTeam: f.isHome ? career.club : f.opponent,
+      awayTeam: f.isHome ? f.opponent : career.club,
+      homeScore: f.isHome ? f.pointsFor : f.pointsAgainst,
+      awayScore: f.isHome ? f.pointsAgainst : f.pointsFor,
+      homeTries: f.isHome ? f.triesFor : f.triesAgainst,
+      awayTries: f.isHome ? f.triesAgainst : f.triesFor,
+    };
+    const others = simulateRoundOtherMatches(
+      career.club,
+      f.opponent,
+      f.round,
+      career.seed,
+      userMatch,
+      working.leagueClubStates,
+      working
+    );
+    roundMatches = [...roundMatches, ...others];
+    roundsPresent.add(f.round);
+  }
+
+  if (roundMatches.length === (career.roundMatches?.length ?? 0)) return career;
+  return { ...career, roundMatches };
+}
+
 export function getUserLeaguePosition(
   table: ManagerLeagueRow[],
   userClub: string

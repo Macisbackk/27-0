@@ -13,7 +13,7 @@ import {
   getManagerRosterIds,
 } from "./managerRating";
 import { createInitialPlayerState } from "./managerSquad";
-import { buildManagerSchedule, buildLeagueTableFromMatches, getManagerLeagueTable, syncManagerLeagueTable } from "./managerFixtures";
+import { buildManagerSchedule, buildLeagueTableFromMatches, getManagerLeagueTable, syncManagerLeagueTable, reconcileRoundMatches } from "./managerFixtures";
 import {
   buildContractsForSquad,
   computeWageBill,
@@ -22,7 +22,7 @@ import {
   getWageBudgetForClub,
 } from "./managerContracts";
 import { createClubAttendanceData, syncClubAttendanceData } from "./managerAttendance";
-import { createManagerChallengeCup } from "./managerChallengeCup";
+import { createManagerChallengeCup, reconcileChallengeCupFromFixtures } from "./managerChallengeCup";
 import { generateReserveSquad } from "./managerReserves";
 import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
 import {
@@ -40,7 +40,7 @@ import { initPreSeasonState, ensureFriendlyChoices } from "./managerFriendlies";
 import { ensureCupBracketReady } from "./managerChallengeCup";
 import { ensurePlayoffsReady, syncPlayoffsIntroAcknowledged } from "./managerPlayoffs";
 import { ensureSeasonEndPlayerDevelopment } from "./managerPlayerDevelopment";
-import { isManagerSeasonComplete } from "./managerSimulation";
+import { isManagerSeasonComplete, isManagerSeasonCompleteLite } from "./managerSimulation";
 import {
   initManagerFinance,
   computeFirstSeasonTransferBudget,
@@ -89,6 +89,16 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
 
   let challengeCup = raw.challengeCup as ChallengeCupBracketState | undefined;
   if (!challengeCup?.matches?.length) {
+    const cupPlayed = (raw.fixtures ?? []).some(
+      (f) => f.competition === "challenge_cup"
+    );
+    const isNewCareer =
+      (raw.fixtures?.length ?? 0) === 0 && (raw.gameWeek ?? 0) === 0;
+    if (!cupPlayed && (isNewCareer || !raw.challengeCup)) {
+      challengeCup = createManagerChallengeCup(raw.seed ?? "migrate", raw.club);
+    }
+  }
+  if (!challengeCup) {
     challengeCup = createManagerChallengeCup(raw.seed ?? "migrate", raw.club);
   }
 
@@ -202,6 +212,11 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
 
   career = ensureRenewalDemands(career);
   career = ensureReserveRenewalDemands(career);
+  career = reconcileRoundMatches(career);
+  career = {
+    ...career,
+    challengeCup: reconcileChallengeCupFromFixtures(career),
+  };
   career = hydrateInboxMessages(career);
   career = syncManagerFinance(career);
   career = ensureFriendlyChoices(career);
@@ -216,6 +231,36 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = ensureSeasonEndPlayerDevelopment(career);
   career = ensureLeagueClubRosters(career);
   return syncManagerInboxMessages(career);
+}
+
+/** Light save-path sync — no AI cup/playoff sim, inbox rolls, or season development. */
+export function prepareManagerCareerForSave(raw: ManagerCareer): ManagerCareer {
+  let contracts = raw.contracts ?? {};
+  contracts = hydrateLegacyContracts(contracts);
+  const wageBill = computeCareerWageBill({
+    ...raw,
+    contracts,
+    reserveContracts: raw.reserveContracts,
+  } as ManagerCareer);
+
+  let career: ManagerCareer = {
+    ...raw,
+    gameWeek: raw.gameWeek ?? raw.currentRound ?? 0,
+    contracts,
+    wageBill,
+    wageBudget: raw.wageBudget ?? getWageBudgetForClub(raw.club),
+  };
+
+  career = ensureRenewalDemands(career);
+  career = ensureReserveRenewalDemands(career);
+  career = syncManagerFinance(career);
+  career = syncManagerLeagueTable(career);
+  career = syncPlayoffsIntroAcknowledged(career);
+  career = {
+    ...career,
+    isSeasonComplete: isManagerSeasonCompleteLite(career),
+  };
+  return career;
 }
 
 export function loadManagerCareer(): ManagerCareer | null {

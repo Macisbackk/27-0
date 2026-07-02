@@ -64,7 +64,7 @@ export function ManagerTransferPlayerCard({
       className="!p-0 overflow-hidden"
     >
       <div
-        className="border-b border-pitch-700/40 px-3 py-2.5 sm:px-4"
+        className="border-b border-pitch-700/40 px-4 py-3 sm:px-4"
         style={{ borderLeftWidth: 4, borderLeftColor: accent }}
       >
         <div className="flex items-start justify-between gap-2">
@@ -108,7 +108,7 @@ export function ManagerTransferPlayerCard({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 px-3 py-3 sm:px-4">
+      <div className="grid grid-cols-2 gap-3 px-4 py-3 sm:px-4">
         <ManagerStat
           label={freeAgent ? "Transfer fee" : listed ? "Asking price" : "Est. fee"}
           value={freeAgent ? "Free" : formatWage(fee)}
@@ -141,12 +141,12 @@ export function ManagerTransferPlayerCard({
       </div>
 
       {!listed && !freeAgent && (
-        <p className={`px-3 pb-1 sm:px-4 ${TYPO.bodySm} text-amber-300/90`}>
+        <p className={`px-4 pb-1 sm:px-4 ${TYPO.bodySm} text-amber-300/90`}>
           Unlisted bids need a premium fee to tempt the selling club.
         </p>
       )}
 
-      <div className="border-t border-pitch-700/40 px-3 py-3 sm:px-4">{children}</div>
+      <div className="border-t border-pitch-700/40 px-4 py-3 sm:px-4">{children}</div>
     </ManagerSectionCard>
   );
 }

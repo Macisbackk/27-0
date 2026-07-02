@@ -9,16 +9,10 @@ import {
   getLeagueClubRosterIds,
   transferLeaguePlayer,
 } from "./managerLeagueRosters";
+import { RIVAL_CLUBS } from "./managerRivals";
 
 const MAX_TRANSFER_HISTORY = 32;
 const TRANSFER_CHANCE_PER_MATCH = 0.22;
-const RIVAL_CLUBS: Record<string, string[]> = {
-  "Wigan Warriors": ["St Helens", "Leigh Leopards"],
-  "St Helens": ["Wigan Warriors", "Leigh Leopards"],
-  "Leeds Rhinos": ["Bradford Bulls", "Huddersfield Giants"],
-  "Hull FC": ["Hull KR"],
-  "Hull KR": ["Hull FC"],
-};
 
 function clubNeedsPosition(
   career: ManagerCareer,
@@ -119,9 +113,14 @@ export function maybeGenerateAiTransfers(career: ManagerCareer): ManagerCareer {
     (l) => l.playerId !== playerId
   );
 
+  const clubFunds = { ...career.clubFunds };
+  clubFunds[fromClub] = Math.max(0, (clubFunds[fromClub] ?? 0) - fee);
+  clubFunds[toClub] = (clubFunds[toClub] ?? 0) + fee;
+
   const withRoster = transferLeaguePlayer(
     {
       ...career,
+      clubFunds,
       leagueListedPlayers,
       leagueTransfers: [activity, ...(career.leagueTransfers ?? [])].slice(
         0,

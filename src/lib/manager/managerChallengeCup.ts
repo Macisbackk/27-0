@@ -60,7 +60,19 @@ export function ensureCupBracketReady(career: ManagerCareer): ManagerCareer {
   if (pending === null || !career.challengeCup) return career;
 
   const prepared = prepareCupRound(career);
-  const userMatch = getUserCupMatch(prepared, pending);
+  const cup = career.challengeCup;
+  const completeBefore = cup.matches.filter((m) => m.status === "complete").length;
+  const completeAfter = prepared.matches.filter((m) => m.status === "complete").length;
+
+  if (
+    completeAfter === completeBefore &&
+    prepared.userEliminated === cup.userEliminated &&
+    prepared.tournamentComplete === cup.tournamentComplete &&
+    prepared.userWon === cup.userWon
+  ) {
+    return career;
+  }
+
   return { ...career, challengeCup: prepared };
 }
 
@@ -108,22 +120,20 @@ function simulateReadyAiCupMatches(
 
 function simulateAiUntilUserReady(
   bracket: ChallengeCupBracketState,
-  round: number,
   squad: ReturnType<typeof buildSquadSlotsFromMatchday>
 ): ChallengeCupBracketState {
   let next = simulateReadyAiCupMatches(bracket, squad);
+  if (getUserCupMatch(next)) return next;
+
   let guard = 0;
   while (guard < 48) {
     guard++;
-    const userMatch = getMatchesForRound(next, round).find(
-      (m) => m.isUserMatch && m.status === "ready"
-    );
-    if (userMatch) return next;
     if (next.userEliminated || next.tournamentComplete) return next;
 
     const aiReady = findReadyAiMatch(next);
     if (!aiReady) break;
     next = simulateBracketMatch(next, aiReady.id, squad);
+    if (getUserCupMatch(next)) return next;
   }
   return next;
 }
@@ -136,13 +146,10 @@ export function prepareCupRound(
 
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
-    career.xiiiSlotPositions
+    career.xiiiSlotPositions,
+    career
   );
-  return simulateAiUntilUserReady(
-    career.challengeCup,
-    bracketRound,
-    squad
-  );
+  return simulateAiUntilUserReady(career.challengeCup, squad);
 }
 
 /** After the user plays a cup tie, resolve other ready AI games so the bracket can progress. */
@@ -154,9 +161,62 @@ export function advanceCupBracketAfterUserMatch(
 
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
-    career.xiiiSlotPositions
+    career.xiiiSlotPositions,
+    career
   );
   return simulateReadyAiCupMatches(cup, squad);
+}
+
+/** Repair cup bracket flags or empty bracket from saved cup fixtures. */
+export function reconcileChallengeCupFromFixtures(
+  career: ManagerCareer
+): ChallengeCupBracketState {
+  const cupPlayed = countCupFixturesPlayed(career);
+  let cup =
+    career.challengeCup?.matches?.length
+      ? career.challengeCup
+      : createManagerChallengeCup(career.seed, career.club);
+
+  const cupFixtures = career.fixtures.filter(
+    (f) => f.competition === "challenge_cup"
+  );
+
+  if (!career.challengeCup?.matches?.length && cupFixtures.length > 0) {
+    cup = createManagerChallengeCup(career.seed, career.club);
+    let working = { ...career, challengeCup: cup };
+    for (const fixture of cupFixtures) {
+      const cupKey = fixture.meta?.cupRound;
+      if (!cupKey) continue;
+      const bracketRound = cupRoundKeyToBracketRound(cupKey);
+      const match = cup.matches.find(
+        (m) => m.isUserMatch && m.round === bracketRound
+      );
+      if (!match) continue;
+      const updated = applyCupMatchToBracket(working, match.id, fixture);
+      if (updated) {
+        cup = updated;
+        working = { ...working, challengeCup: cup };
+      }
+    }
+  }
+
+  if (
+    cupPlayed >= CUP_TRIGGERS_LEAGUE_GAMES.length &&
+    !cup.tournamentComplete &&
+    !cup.userEliminated
+  ) {
+    const last = cupFixtures[cupFixtures.length - 1];
+    const wonFinal =
+      last?.result === "W" && last.meta?.cupRound === "final";
+    cup = {
+      ...cup,
+      tournamentComplete: true,
+      userEliminated: last?.result === "L",
+      userWon: wonFinal,
+    };
+  }
+
+  return cup;
 }
 
 export function getUserCupMatch(
@@ -164,14 +224,24 @@ export function getUserCupMatch(
   preferredRound?: number
 ): { matchId: string; opponent: string; isHome: boolean; round: number } | null {
   if (bracket.userEliminated || bracket.tournamentComplete) return null;
-  const round = preferredRound ?? getActiveRound(bracket);
-  const match = getMatchesForRound(bracket, round).find(
-    (m) => m.isUserMatch && m.status === "ready"
-  );
-  if (!match || !match.homeTeam || !match.awayTeam) return null;
-  const isHome = match.homeTeam === bracket.userClub;
-  const opponent = isHome ? match.awayTeam : match.homeTeam;
-  return { matchId: match.id, opponent, isHome, round };
+
+  const roundsToSearch =
+    preferredRound !== undefined
+      ? [preferredRound, 1, 2, 3, 4].filter(
+          (round, index, all) => all.indexOf(round) === index
+        )
+      : [getActiveRound(bracket)];
+
+  for (const round of roundsToSearch) {
+    const match = getMatchesForRound(bracket, round).find(
+      (m) => m.isUserMatch && m.status === "ready"
+    );
+    if (!match || !match.homeTeam || !match.awayTeam) continue;
+    const isHome = match.homeTeam === bracket.userClub;
+    const opponent = isHome ? match.awayTeam : match.homeTeam;
+    return { matchId: match.id, opponent, isHome, round };
+  }
+  return null;
 }
 
 export function buildCupScheduledFixture(
@@ -204,7 +274,14 @@ export function isLeagueAndCupPhaseComplete(career: ManagerCareer): boolean {
   if (cup.tournamentComplete || cup.userEliminated) return true;
 
   const pendingRound = getPendingCupBracketRound(career);
-  if (pendingRound === null) return true;
+  if (pendingRound === null) {
+    const cupPlayed = countCupFixturesPlayed(career);
+    return (
+      cup.tournamentComplete ||
+      cup.userEliminated ||
+      cupPlayed >= CUP_TRIGGERS_LEAGUE_GAMES.length
+    );
+  }
 
   const prepared = prepareCupRound(career);
   const cupMatch = getUserCupMatch(prepared, pendingRound);
@@ -250,9 +327,10 @@ export function getNextLeagueOrCupFixture(
     } else {
       const squad = buildSquadSlotsFromMatchday(
         career.matchdayXiii,
-        career.xiiiSlotPositions
+        career.xiiiSlotPositions,
+        career
       );
-      const advanced = simulateAiUntilUserReady(prepared, cupRound, squad);
+      const advanced = simulateAiUntilUserReady(prepared, squad);
       const retry = getUserCupMatch(advanced, cupRound);
       if (retry) {
         return buildCupScheduledFixture(
@@ -293,7 +371,7 @@ export function getCupHubStatus(career: ManagerCareer): string {
     const prepared = prepareCupRound(career);
     const match = getUserCupMatch(prepared, pending);
     if (match) {
-      return `Challenge Cup: ${getCupRoundLabel(pending)} vs ${match.opponent}`;
+      return `Challenge Cup: ${getCupRoundLabel(match.round)} vs ${match.opponent}`;
     }
   }
 
@@ -301,15 +379,30 @@ export function getCupHubStatus(career: ManagerCareer): string {
   return `Challenge Cup: ${getCupRoundLabel(active)}`;
 }
 
+export function isCupMatchReadyForResult(
+  career: ManagerCareer,
+  cupMatchId: string
+): boolean {
+  const bracket = career.challengeCup;
+  if (!bracket) return false;
+  const match = getMatchById(bracket, cupMatchId);
+  return !!(
+    match &&
+    match.status === "ready" &&
+    match.homeTeam &&
+    match.awayTeam
+  );
+}
+
 export function applyCupMatchToBracket(
   career: ManagerCareer,
   cupMatchId: string,
   fixture: MatchFixture
-): ChallengeCupBracketState {
+): ChallengeCupBracketState | null {
   const bracket = career.challengeCup;
   const match = getMatchById(bracket, cupMatchId);
   if (!match || match.status !== "ready" || !match.homeTeam || !match.awayTeam) {
-    return bracket;
+    return null;
   }
 
   const userClub = bracket.userClub;

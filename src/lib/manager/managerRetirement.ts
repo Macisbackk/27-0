@@ -109,8 +109,8 @@ function buildRetiredPlayerRecord(
   const ps = career.squad.find((p) => p.playerId === playerId);
   const totals = career.clubCareerTotals?.[playerId];
   const clubAppearances =
-    (totals?.appearances ?? 0) + (ps?.seasonAppearances ?? 0);
-  const clubTries = (totals?.tries ?? 0) + (ps?.seasonTries ?? 0);
+    totals?.appearances ?? ps?.seasonAppearances ?? 0;
+  const clubTries = totals?.tries ?? ps?.seasonTries ?? 0;
   const position = player.position;
 
   return {

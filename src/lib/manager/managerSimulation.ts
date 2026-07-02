@@ -42,6 +42,7 @@ import {
   ensureCupBracketReady,
   advanceCupBracketAfterUserMatch,
   getNextLeagueOrCupFixture,
+  isCupMatchReadyForResult,
   isLeagueAndCupPhaseComplete,
 } from "./managerChallengeCup";
 import {
@@ -50,6 +51,7 @@ import {
   buildPlayoffScheduledFixture,
   ensurePlayoffsReady,
   getUserPlayoffMatch,
+  isPlayoffMatchReadyForResult,
   isPlayoffsPhaseComplete,
   preparePlayoffRound,
   userQualifiedForManagerPlayoffs,
@@ -85,12 +87,29 @@ export function getNextManagerFixture(
   );
 }
 
+export function isManagerSeasonCompleteLite(career: ManagerCareer): boolean {
+  const synced = syncManagerLeagueTable(career);
+  if (!isLeagueAndCupPhaseComplete(synced)) return false;
+  if (!userQualifiedForManagerPlayoffs(synced)) return true;
+  if (!synced.playoffsIntroAcknowledged) return false;
+  const playoffs = synced.playoffs;
+  if (!playoffs) return false;
+  return isPlayoffsPhaseComplete({ ...synced, playoffs });
+}
+
 export function isManagerSeasonComplete(career: ManagerCareer): boolean {
   const synced = syncManagerLeagueTable(career);
   if (!isLeagueAndCupPhaseComplete(synced)) return false;
   const withPlayoffs = ensurePlayoffsReady(synced);
   return isPlayoffsPhaseComplete(withPlayoffs);
 }
+
+/** Squad + cup/playoff bracket prep before resolving or playing the next fixture. */
+export function prepareCareerForNextMatch(career: ManagerCareer): ManagerCareer {
+  const simulated = resolveCareerForMatchSimulation(career);
+  return ensurePlayoffsReady(ensureCupBracketReady(simulated));
+}
+
 import { countExpiringContracts } from "./managerContracts";
 import { maybeGenerateAiTransfers } from "./managerAiTransfers";
 import { maybeAiSignFreeAgents } from "./managerFreeAgents";
@@ -175,6 +194,20 @@ export function applyManagerMatchResult(
   const isCup = sched.competition === "challenge_cup";
   const isPlayoff = sched.competition === "playoffs";
   const isFriendly = sched.competition === "friendly";
+
+  if (isCup && sched.cupMatchId && !isCupMatchReadyForResult(career, sched.cupMatchId)) {
+    console.warn("Cup match not ready for result:", sched.cupMatchId);
+    return career;
+  }
+  if (
+    isPlayoff &&
+    sched.playoffMatchId &&
+    !isPlayoffMatchReadyForResult(career, sched.playoffMatchId)
+  ) {
+    console.warn("Playoff match not ready for result:", sched.playoffMatchId);
+    return career;
+  }
+
   const round = sched.round;
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
@@ -352,11 +385,12 @@ export function applyManagerMatchResult(
 
   let challengeCup = working.challengeCup;
   if (isCup && sched.cupMatchId) {
-    challengeCup = applyCupMatchToBracket(
-      working,
-      sched.cupMatchId,
-      fixture
-    );
+    const updated = applyCupMatchToBracket(working, sched.cupMatchId, fixture);
+    if (!updated) {
+      console.warn("Cup bracket update failed:", sched.cupMatchId);
+      return career;
+    }
+    challengeCup = updated;
     working = { ...working, challengeCup };
     if (!challengeCup.userEliminated && !challengeCup.tournamentComplete) {
       challengeCup = advanceCupBracketAfterUserMatch(working);
@@ -366,11 +400,16 @@ export function applyManagerMatchResult(
 
   let playoffs = working.playoffs;
   if (isPlayoff && sched.playoffMatchId) {
-    playoffs = applyPlayoffMatchToBracket(
+    const updated = applyPlayoffMatchToBracket(
       working,
       sched.playoffMatchId,
       fixture
     );
+    if (!updated) {
+      console.warn("Playoff bracket update failed:", sched.playoffMatchId);
+      return career;
+    }
+    playoffs = updated;
     working = { ...working, playoffs };
     if (!playoffs.userEliminated && !playoffs.tournamentComplete) {
       playoffs = advancePlayoffBracketAfterUserMatch(working);
@@ -557,18 +596,20 @@ export function applyManagerMatchResult(
   }
   finalCareer = syncManagerFinance(finalCareer);
   if (finalCareer.gameWeek % 3 === 0) {
+    const refreshed = generateLeagueListedPlayers(
+      finalCareer,
+      finalCareer.seed,
+      finalCareer.gameWeek
+    );
+    const listedIds = new Set(refreshed.map((l) => l.playerId));
+    const preserved = finalCareer.leagueListedPlayers.filter(
+      (l) => !listedIds.has(l.playerId)
+    );
+    const merged = [...preserved, ...refreshed];
     finalCareer = {
       ...finalCareer,
-      leagueListedPlayers: generateLeagueListedPlayers(
-        finalCareer,
-        finalCareer.seed,
-        finalCareer.gameWeek
-      ),
-      transferMarket: generateLeagueListedPlayers(
-        finalCareer,
-        finalCareer.seed,
-        finalCareer.gameWeek
-      ).map((l) => l.playerId),
+      leagueListedPlayers: merged,
+      transferMarket: merged.map((l) => l.playerId),
     };
   }
 
@@ -681,8 +722,7 @@ export function simulateManagerMatchLive(
 export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
   if (isManagerSeasonComplete(career)) return career;
 
-  const simCareer = resolveCareerForMatchSimulation(career);
-  const ready = ensurePlayoffsReady(ensureCupBracketReady(simCareer));
+  const ready = prepareCareerForNextMatch(career);
   const sched = getNextManagerFixture(ready);
   if (!sched) return ready;
 
@@ -711,9 +751,12 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
     schedOverride: sched,
     liveEvents,
   });
+  const applied = next.fixtures.length > ready.fixtures.length;
   return {
     ...next,
-    matchSimState: nextSimState,
+    matchSimState: applied
+      ? nextSimState
+      : ready.matchSimState,
   };
 }
 

@@ -110,6 +110,11 @@ export function ManagerInbox({
     if (result.ok && result.career) {
       setFeedback(null);
       onUpdate(result.career);
+      return;
+    }
+    setFeedback(result.error ?? "Could not complete this transfer.");
+    if (result.error?.includes("no longer")) {
+      onUpdate(rejectIncomingOffer(career, id));
     }
   };
 
@@ -331,7 +336,12 @@ export function ManagerInbox({
                   onClick={() => {
                     playUiClick();
                     dismiss(msg.id);
-                    onNavigate("season-rewards");
+                    onNavigate(
+                      career.isSeasonComplete &&
+                        career.seasonRewardClaimedForYear !== career.seasonYear
+                        ? "season-review"
+                        : "season-rewards"
+                    );
                   }}
                 >
                   View rewards

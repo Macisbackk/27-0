@@ -37,7 +37,7 @@ export function ManagerPlayoffsIntroModal({
 
   return (
     <div
-      className="fixed inset-0 z-[95] flex items-end justify-center overflow-y-auto bg-black/80 p-3 backdrop-blur-sm sm:items-center sm:p-4"
+      className={`fixed inset-0 z-[95] flex items-end justify-center overflow-y-auto bg-black/80 ${SPACING.modalBackdrop} backdrop-blur-sm sm:items-center`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="playoffs-intro-title"

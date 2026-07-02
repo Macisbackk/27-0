@@ -34,8 +34,26 @@ export function ManagerMatchReview({
 }: ManagerMatchReviewProps) {
   const fixture =
     career.fixtures.find((f) => f.fixtureId === fixtureId) ??
-    career.fixtures.find((f) => `round-${f.round}` === fixtureId);
-  if (!fixture) return null;
+    career.fixtures.find((f) => `round-${f.round}` === fixtureId) ??
+    (career.lastMatchFixture &&
+    (career.lastMatchFixture.fixtureId === fixtureId ||
+      `round-${career.lastMatchFixture.round}` === fixtureId)
+      ? career.lastMatchFixture
+      : undefined);
+
+  if (!fixture) {
+    return (
+      <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
+        <div className={`${CARD.elevated} ${SPACING.cardPaddingMobile} text-center space-y-4`}>
+          <h1 className={TYPO.viewTitle}>Match not found</h1>
+          <p className={`${TYPO.bodySm} text-pitch-400`}>
+            This result could not be loaded from your save.
+          </p>
+          <GameButton onClick={onClose}>Close</GameButton>
+        </div>
+      </div>
+    );
+  }
 
   const squad = buildSquadSlotsFromMatchday(
     fixture.meta?.matchdayXiii ?? career.matchdayXiii,

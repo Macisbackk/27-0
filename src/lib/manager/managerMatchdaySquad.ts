@@ -1,5 +1,6 @@
-import type { Position } from "../types";
+import { POSITION_SHORT } from "../positions";
 import { canPlayPosition } from "../players/player-positions";
+import type { Position } from "../types";
 import type { ManagerCareer } from "./types";
 import { getManagerPlayer } from "./managerPlayers";
 import { isPlayerUnavailable } from "./managerSquad";
@@ -43,6 +44,42 @@ function normalizeBench(career: ManagerCareer): string[] {
   const bench = [...career.matchdayInterchange];
   while (bench.length < ERA_BENCH_FROM_STARTING_17) bench.push("");
   return bench.slice(0, ERA_BENCH_FROM_STARTING_17);
+}
+
+export function tryAssignPlayerToMatchday(
+  career: ManagerCareer,
+  target: MatchdaySlotTarget,
+  playerId: string
+): { ok: boolean; career: ManagerCareer; message?: string } {
+  const player = getManagerPlayer(career, playerId);
+  if (!player) {
+    return { ok: false, career, message: "Player not found." };
+  }
+
+  const ps = career.squad.find((p) => p.playerId === playerId);
+  if (ps && isPlayerUnavailable(ps)) {
+    return {
+      ok: false,
+      career,
+      message: `${player.name} is unavailable (injured or suspended).`,
+    };
+  }
+
+  if (target.kind === "xiii" && !canAssignPlayerToXiiiSlot(career, target.index, playerId)) {
+    const pos = career.xiiiSlotPositions[target.index];
+    return {
+      ok: false,
+      career,
+      message: pos
+        ? `${player.name} cannot play ${POSITION_SHORT[pos]}.`
+        : "Invalid selection for this slot.",
+    };
+  }
+
+  return {
+    ok: true,
+    career: assignPlayerToMatchday(career, target, playerId),
+  };
 }
 
 export function assignPlayerToMatchday(

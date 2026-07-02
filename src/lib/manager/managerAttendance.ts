@@ -11,6 +11,7 @@ import type {
 } from "./types";
 import type { MatchFixture } from "../game/season-simulation";
 import { applyClubRevenue, splitRevenue } from "./managerFinance";
+import { areRivalClubs } from "./managerRivals";
 
 export const CLUB_ATTENDANCE_PROFILES: Record<
   string,
@@ -121,8 +122,13 @@ export type AttendanceOutlookLevel = "low" | "medium" | "high";
 function attendanceOutlookFromPredicted(
   predicted: number,
   baseAttendance: number,
-  visitingOpponent: string
+  visitingOpponent: string,
+  homeClub: string
 ): { level: AttendanceOutlookLevel; label: string } {
+  if (areRivalClubs(homeClub, visitingOpponent)) {
+    return { level: "high", label: "Rivalry fixture — near sell-out expected" };
+  }
+
   const ratio = predicted / Math.max(1, baseAttendance);
   const poorAway = hasPoorAwayFollowing(visitingOpponent);
 
@@ -169,7 +175,8 @@ export function getHomeFixtureAttendanceOutlook(
   const { label, level } = attendanceOutlookFromPredicted(
     predictedAttendance,
     career.attendanceData.baseAttendance,
-    fixture.opponent
+    fixture.opponent,
+    career.club
   );
 
   return { label, predictedAttendance, level };
@@ -185,6 +192,18 @@ function ticketPrice(competition: ManagerCompetition, isBigGame: boolean): numbe
   return 20;
 }
 
+function rivalFixtureAttendance(
+  career: ManagerCareer,
+  fixture: ManagerScheduledFixture,
+  stadiumCapacity: number
+): number {
+  const rng = seedrandom(
+    `${career.seed}-rival-att-${fixture.id ?? `${career.club}-${fixture.opponent}`}`
+  );
+  const fillRatio = 0.92 + rng() * 0.08;
+  return Math.round(stadiumCapacity * fillRatio);
+}
+
 export function calculateMatchAttendance(
   career: ManagerCareer,
   fixture: ManagerScheduledFixture
@@ -192,6 +211,11 @@ export function calculateMatchAttendance(
   if (!fixture.isHome) return 0;
 
   const { baseAttendance, stadiumCapacity, fanMood } = career.attendanceData;
+
+  if (areRivalClubs(career.club, fixture.opponent)) {
+    return rivalFixtureAttendance(career, fixture, stadiumCapacity);
+  }
+
   const position =
     career.leagueTable.find((r) => r.isUserTeam)?.position ?? 10;
 
@@ -223,6 +247,7 @@ export function processHomeMatchAttendance(
   const attendance = calculateMatchAttendance(career, fixture);
   const isBigGame =
     fixture.competition === "challenge_cup" ||
+    areRivalClubs(career.club, fixture.opponent) ||
     (!hasPoorAwayFollowing(fixture.opponent) &&
       getClubBaseStrength(fixture.opponent) >= 80);
   const price = ticketPrice(fixture.competition, isBigGame);
@@ -320,8 +345,5 @@ export function initAllClubAttendance(): Record<string, ClubAttendanceData> {
 }
 
 export function derbyMultiplier(home: string, away: string): number {
-  const rng = seedrandom(`${home}-${away}`);
-  if (home.includes("Hull") && away.includes("Hull")) return 1.2;
-  if (home.includes("Bradford") && away.includes("Leeds")) return 1.15;
-  return 1 + (rng() < 0.1 ? 0.1 : 0);
+  return areRivalClubs(home, away) ? 1.2 : 1;
 }

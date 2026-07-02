@@ -191,15 +191,30 @@ export function getPlayoffHubStatus(career: ManagerCareer): string {
   return "Play-Offs: In progress";
 }
 
+export function isPlayoffMatchReadyForResult(
+  career: ManagerCareer,
+  playoffMatchId: string
+): boolean {
+  const bracket = career.playoffs;
+  if (!bracket) return false;
+  const match = getMatchById(bracket, playoffMatchId);
+  return !!(
+    match &&
+    match.status === "ready" &&
+    match.homeTeam &&
+    match.awayTeam
+  );
+}
+
 export function applyPlayoffMatchToBracket(
   career: ManagerCareer,
   playoffMatchId: string,
   fixture: MatchFixture
-): PlayoffBracketState {
+): PlayoffBracketState | null {
   const bracket = career.playoffs!;
   const match = getMatchById(bracket, playoffMatchId);
   if (!match || match.status !== "ready" || !match.homeTeam || !match.awayTeam) {
-    return bracket;
+    return null;
   }
 
   const userClub = bracket.userClub ?? career.club;
@@ -310,7 +325,10 @@ export function isManagerPlayoffsActive(career: ManagerCareer): boolean {
 }
 
 export function acknowledgePlayoffsIntro(career: ManagerCareer): ManagerCareer {
-  return { ...career, playoffsIntroAcknowledged: true };
+  return ensurePlayoffsReady({
+    ...career,
+    playoffsIntroAcknowledged: true,
+  });
 }
 
 export function syncPlayoffsIntroAcknowledged(career: ManagerCareer): ManagerCareer {

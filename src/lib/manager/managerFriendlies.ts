@@ -67,7 +67,6 @@ function buildFriendlyCandidates(
       displayName: club,
       difficulty: "balanced" as const,
       teamRating,
-      description: `Pre-season friendly against ${club}.`,
       attendanceInterest: attendanceInterestForFriendlyOpponent(club, teamRating),
     };
   });

@@ -22,9 +22,9 @@ import { ManagerTrophyModal } from "@/components/manager/ManagerTrophyModal";
 import { ManagerLeagueWinnersModal } from "@/components/manager/ManagerLeagueWinnersModal";
 import { ManagerIncomingBidModal } from "@/components/manager/ManagerIncomingBidModal";
 import { ManagerRetirementIntentModal } from "@/components/manager/ManagerRetirementIntentModal";
+import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerFriendlySelect } from "@/components/manager/ManagerFriendlySelect";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
-import { resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
   loadManagerCareer,
@@ -34,10 +34,14 @@ import {
   advanceToNextSeason,
   hasManagerCareer,
   hydrateManagerCareer,
+  prepareManagerCareerForSave,
 } from "@/lib/manager/managerState";
-import { simulateManagerNextMatch } from "@/lib/manager/managerSimulation";
-import { ensureCupBracketReady } from "@/lib/manager/managerChallengeCup";
-import { ensurePlayoffsReady, acknowledgePlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
+import {
+  getNextManagerFixture,
+  prepareCareerForNextMatch,
+  simulateManagerNextMatch,
+} from "@/lib/manager/managerSimulation";
+import { acknowledgePlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
 import {
   recordCareerStarted,
   recordMatchResult,
@@ -100,17 +104,25 @@ export default function ManagerPage() {
   >(null);
   const [retirementIntentModalOpen, setRetirementIntentModalOpen] =
     useState(false);
+  const [postMatchReviewFlow, setPostMatchReviewFlow] = useState(false);
+  const [matchReviewReturnView, setMatchReviewReturnView] =
+    useState<ManagerView>("hub");
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [alertDialog, setAlertDialog] = useState<{
+    title: string;
+    message: string;
+  } | null>(null);
 
   useEffect(() => {
     setHasSave(hasManagerCareer());
     const saved = loadManagerCareer();
-    if (saved) setCareer(hydrateManagerCareer(saved));
+    if (saved) setCareer(saved);
   }, []);
 
   const persist = useCallback((next: ManagerCareer) => {
-    const hydrated = hydrateManagerCareer(next);
-    setCareer(hydrated);
-    saveManagerCareer(hydrated);
+    const prepared = prepareManagerCareerForSave(next);
+    setCareer(prepared);
+    saveManagerCareer(prepared);
     setHasSave(true);
   }, []);
 
@@ -119,35 +131,47 @@ export default function ManagerPage() {
   const handleContinue = () => {
     const saved = loadManagerCareer();
     if (!saved) return;
-    const hydrated = hydrateManagerCareer(saved);
-    setCareer(hydrated);
-    if (hydrated.isSeasonComplete) {
+    setCareer(saved);
+    if (saved.isSeasonComplete) {
+      if (
+        saved.playoffs?.finish === "Super League Champions" &&
+        !saved.trophyCelebrationShown
+      ) {
+        setTrophyModalOpen(true);
+        setView("hub");
+        return;
+      }
       setView(
-        hydrated.seasonRewardClaimedForYear === hydrated.seasonYear
+        saved.seasonRewardClaimedForYear === saved.seasonYear
           ? "season-rewards"
           : "season-review"
       );
       return;
     }
-    const unsolicited = getPendingUnsolicitedOffer(hydrated);
-    const retirementIntent = getPendingRetirementIntentPopup(hydrated);
+    const unsolicited = getPendingUnsolicitedOffer(saved);
+    const retirementIntent = getPendingRetirementIntentPopup(saved);
     if (unsolicited) {
       setPendingIncomingBidId(unsolicited.id);
       setIncomingBidModalOpen(true);
     } else if (retirementIntent) {
       setPendingRetirementIntentId(retirementIntent.id);
       setRetirementIntentModalOpen(true);
-    } else if (shouldShowLeagueWinnersCelebration(hydrated)) {
+    } else if (shouldShowLeagueWinnersCelebration(saved)) {
       setLeagueWinnersModalOpen(true);
     }
     setView("hub");
   };
 
   const handleDelete = () => {
+    setDeleteConfirmOpen(true);
+  };
+
+  const confirmDelete = () => {
     deleteManagerCareer();
     setCareer(null);
     setHasSave(false);
     setView("landing");
+    setDeleteConfirmOpen(false);
   };
 
   const handleSelectClub = (club: string) => {
@@ -193,6 +217,8 @@ export default function ManagerPage() {
       recordSeasonComplete(next);
       if (fixture) {
         setReviewFixtureId(fixture.fixtureId ?? `round-${fixture.round}`);
+        setPostMatchReviewFlow(true);
+        setMatchReviewReturnView("hub");
         setView("match-review");
         setPendingLeagueWinnersCelebration(wonLeagueTable);
         setPendingTrophyCelebration(wonTitle);
@@ -203,6 +229,8 @@ export default function ManagerPage() {
       }
     } else if (fixture) {
       setReviewFixtureId(fixture.fixtureId ?? `round-${fixture.round}`);
+      setPostMatchReviewFlow(true);
+      setMatchReviewReturnView("hub");
       setView("match-review");
       setPendingLeagueWinnersCelebration(wonLeagueTable);
     }
@@ -249,7 +277,13 @@ export default function ManagerPage() {
   };
 
   const handleMatchReviewClose = () => {
-    continueAfterMatchReview();
+    setReviewFixtureId(null);
+    if (postMatchReviewFlow) {
+      setPostMatchReviewFlow(false);
+      continueAfterMatchReview();
+      return;
+    }
+    setView(matchReviewReturnView);
   };
 
   const handleIncomingBidResolved = (nextCareer: ManagerCareer) => {
@@ -290,7 +324,20 @@ export default function ManagerPage() {
   const handleIncomingBidAccept = () => {
     if (!career || !pendingIncomingBidId) return;
     const result = acceptIncomingOffer(career, pendingIncomingBidId);
-    if (!result.ok || !result.career) return;
+    if (!result.ok || !result.career) {
+      setAlertDialog({
+        title: "Transfer failed",
+        message: result.error ?? "Could not complete this transfer.",
+      });
+      if (result.error?.includes("no longer")) {
+        setIncomingBidModalOpen(false);
+        setPendingIncomingBidId(null);
+        persist(
+          rejectIncomingOffer(career, pendingIncomingBidId)
+        );
+      }
+      return;
+    }
     handleIncomingBidResolved(result.career);
   };
 
@@ -352,6 +399,19 @@ export default function ManagerPage() {
     persist(next);
     setPendingRetirementIntentId(null);
     setRetirementIntentModalOpen(false);
+
+    const hasQueue =
+      pendingLeagueWinnersCelebration ||
+      pendingTrophyCelebration ||
+      pendingIncomingBidId ||
+      !!getPendingUnsolicitedOffer(next) ||
+      !!getPendingRetirementIntentPopup(next) ||
+      next.isSeasonComplete;
+
+    if (hasQueue) {
+      continueAfterRetirementIntent(next);
+      return;
+    }
     setView("contracts");
   };
 
@@ -376,22 +436,21 @@ export default function ManagerPage() {
 
   const handleSimulate = () => {
     if (!career) return;
-    const working = resolveCareerForMatchSimulation(career);
-    const check = validateFitMatchdaySquad(working);
+    const ready = prepareCareerForNextMatch(career);
+    const check = validateFitMatchdaySquad(ready);
     if (!check.valid) return;
-    const ready = ensurePlayoffsReady(ensureCupBracketReady(working));
-    if (ready !== working) persist(ready);
+    if (!getNextManagerFixture(ready)) return;
+    setCareer(ready);
     afterMatch(simulateManagerNextMatch(ready));
   };
 
   const handlePlayGame = () => {
     if (!career) return;
-    const working = resolveCareerForMatchSimulation(career);
-    const check = validateFitMatchdaySquad(working);
+    const ready = prepareCareerForNextMatch(career);
+    const check = validateFitMatchdaySquad(ready);
     if (!check.valid) return;
-    const ready = ensurePlayoffsReady(ensureCupBracketReady(working));
-    if (ready !== working) persist(ready);
-    if (working !== career) persist(working);
+    if (!getNextManagerFixture(ready)) return;
+    setCareer(ready);
     setPlayGameOpen(true);
   };
 
@@ -423,7 +482,7 @@ export default function ManagerPage() {
       : undefined;
 
   return (
-    <PageShell withLights compact width="wide" innerClassName="px-3 sm:px-4">
+    <PageShell withLights compact width="wide">
       {view === "landing" && (
         <ManagerLanding
           hasSave={hasSave}
@@ -479,6 +538,8 @@ export default function ManagerPage() {
                     onPlayoffsContinue={handlePlayoffsIntroContinue}
                     onSelectFixture={(fixtureId) => {
                       setReviewFixtureId(fixtureId);
+                      setPostMatchReviewFlow(false);
+                      setMatchReviewReturnView("hub");
                       setView("match-review");
                     }}
                     onUpdate={persist}
@@ -515,6 +576,8 @@ export default function ManagerPage() {
                 career={career}
                 onSelectFixture={(fixtureId) => {
                   setReviewFixtureId(fixtureId);
+                  setPostMatchReviewFlow(false);
+                  setMatchReviewReturnView("fixtures");
                   setView("match-review");
                 }}
               />
@@ -539,7 +602,8 @@ export default function ManagerPage() {
             club={career.club}
             seasonYear={career.seasonYear}
             gameWeek={career.gameWeek}
-            onNavigate={setView}
+            disabled
+            onNavigate={() => {}}
           />
           <ManagerMatchReview
             career={career}
@@ -612,6 +676,26 @@ export default function ManagerPage() {
           onContinue={handleTrophyModalContinue}
         />
       )}
+
+      <ManagerDialog
+        open={deleteConfirmOpen}
+        variant="confirm"
+        destructive
+        title="Delete career"
+        message="Delete this career save? This cannot be undone."
+        confirmLabel="Delete"
+        cancelLabel="Keep save"
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteConfirmOpen(false)}
+      />
+
+      <ManagerDialog
+        open={alertDialog !== null}
+        title={alertDialog?.title ?? ""}
+        message={alertDialog?.message ?? ""}
+        onConfirm={() => setAlertDialog(null)}
+        onCancel={() => setAlertDialog(null)}
+      />
     </PageShell>
   );
 }

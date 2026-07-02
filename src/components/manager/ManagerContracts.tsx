@@ -18,7 +18,9 @@ import {
   getContractStatus,
 } from "@/lib/manager/managerContracts";
 import { bulkRenewExpiringContractsWithInbox, renewManagerContract } from "@/lib/manager/managerInbox";
-import { releasePlayer } from "@/lib/manager/managerTransfers";
+import { releasePlayerWithCost } from "@/lib/manager/managerTransferLeague";
+import { getWageBillPercent, isWageOverBudget } from "@/lib/manager/managerFinance";
+import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { playPanelClose, playUiClick } from "@/lib/sound";
 import { ManagerPage } from "@/components/manager/manager-ui";
 
@@ -62,6 +64,7 @@ export function ManagerContracts({
   } | null>(null);
 
   const [bulkResult, setBulkResult] = useState<string | null>(null);
+  const [releaseConfirmId, setReleaseConfirmId] = useState<string | null>(null);
 
   const expiringCount = useMemo(
     () =>
@@ -178,8 +181,15 @@ export function ManagerContracts({
 
   const handleRelease = () => {
     if (!selectedId) return;
-    if (!window.confirm("Release this player from the squad?")) return;
-    onUpdate(releasePlayer(career, selectedId));
+    setReleaseConfirmId(selectedId);
+  };
+
+  const confirmRelease = () => {
+    if (!releaseConfirmId) return;
+    const result = releasePlayerWithCost(career, releaseConfirmId);
+    setReleaseConfirmId(null);
+    if (!result.ok || !result.career) return;
+    onUpdate(result.career);
     closeModal();
   };
 
@@ -191,11 +201,8 @@ export function ManagerContracts({
     ? getManagerPlayerAge(career, selected.player.id)
     : null;
 
-  const wagePct = Math.min(
-    100,
-    Math.round((career.wageBill / Math.max(1, career.wageBudget)) * 100)
-  );
-  const overBudget = career.wageBill > career.wageBudget;
+  const wagePct = getWageBillPercent(career);
+  const overBudget = isWageOverBudget(career);
 
   return (
     <ManagerPage>
@@ -340,7 +347,7 @@ export function ManagerContracts({
                 playUiClick();
                 openRenewal(player.id);
               }}
-              className={`${CARD.inset} w-full text-left px-3 py-3 transition hover:border-theme-primary/40 ${
+              className={`${CARD.inset} w-full text-left ${SPACING.listItem} transition hover:border-theme-primary/40 ${
                 urgent ? "border-l-4 border-accent-gold" : ""
               }`}
             >
@@ -373,7 +380,7 @@ export function ManagerContracts({
 
       {selected && (
         <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/75 p-3 backdrop-blur-sm sm:items-center sm:p-4"
+          className={`fixed inset-0 z-50 flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} backdrop-blur-sm sm:items-center`}
           role="dialog"
           aria-modal="true"
           aria-label={`Contract renewal for ${selected.player.name}`}
@@ -520,6 +527,18 @@ export function ManagerContracts({
           </div>
         </div>
       )}
+
+      <ManagerDialog
+        open={releaseConfirmId !== null}
+        variant="confirm"
+        destructive
+        title="Release player"
+        message="Release this player from the squad?"
+        confirmLabel="Release"
+        cancelLabel="Keep"
+        onConfirm={confirmRelease}
+        onCancel={() => setReleaseConfirmId(null)}
+      />
     </ManagerPage>
   );
 }

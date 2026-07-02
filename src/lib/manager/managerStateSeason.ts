@@ -21,7 +21,7 @@ import {
   initManagerFinance,
   refreshClubFundsForSeason,
 } from "./managerFinance";
-import { addContractLeavingInboxMessage } from "./managerInbox";
+import { addContractLeavingInboxMessage, clearSeasonTransferState } from "./managerInbox";
 import { createClubAttendanceData } from "./managerAttendance";
 import {
   applyYearlyYouthIntake,
@@ -32,6 +32,7 @@ import {
   ensureLeagueClubRosters,
   reconcileLeagueRosters,
 } from "./managerLeagueRosters";
+import { initLeagueClubStates } from "./managerLeagueState";
 import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
 import {
   addPlayersToFreeAgents,
@@ -200,30 +201,34 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     career.seasonYear + 1
   );
 
+  const clearedTransfers = clearSeasonTransferState(withFreeAgents);
+
   const leaving = [...squadLeaving, ...reserveLeaving];
 
-  let boardConfidence = withFreeAgents.boardConfidence;
+  let boardConfidence = clearedTransfers.boardConfidence;
   if (leaving.length >= 3) boardConfidence = Math.max(0, boardConfidence - 10);
   else if (leaving.length > 0) boardConfidence = Math.max(0, boardConfidence - 4);
 
   const newSeed = `${career.seed}-s${career.seasonYear + 1}`;
 
+  const prevFinance = afterReserveContracts.managerFinance;
   const transferBudget = computeSeasonTransferBudget(
     career.club,
     newSeed,
     career.seasonYear + 1,
-    summary
+    summary,
+    prevFinance
   );
 
   const carriedOperating =
     afterReserveContracts.managerFinance?.operatingBalance ?? 0;
 
   const next: ManagerCareer = {
-    ...withFreeAgents,
+    ...clearedTransfers,
     seasonYear: career.seasonYear + 1,
     seed: newSeed,
     budget: transferBudget,
-    clubFundsEarned: afterReserveContracts.clubFundsEarned + summary.budgetChange,
+    clubFundsEarned: afterReserveContracts.clubFundsEarned,
     boardConfidence: Math.min(85, boardConfidence + 10),
     schedule: buildManagerSchedule(career.club, newSeed),
     fixtures: [],
@@ -285,6 +290,8 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     playerDevelopment: afterReserveContracts.playerDevelopment,
     lastSeasonDevelopmentReview: undefined,
     lastReserveReportWeek: undefined,
+    leagueClubStates: initLeagueClubStates(),
+    leagueClubStatesWeek: 0,
     clubFunds: refreshClubFundsForSeason(afterReserveContracts, summary),
     updatedAt: new Date().toISOString(),
   };

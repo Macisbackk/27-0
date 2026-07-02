@@ -11,7 +11,12 @@ import {
   type TransferResultDetails,
 } from "@/components/manager/ManagerTransferResultModal";
 import { ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
-import { getTransferBudget } from "@/lib/manager/managerFinance";
+import {
+  canAffordAdditionalWage,
+  getTransferBudget,
+  getWageBillPercent,
+  isWageOverBudget,
+} from "@/lib/manager/managerFinance";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -67,10 +72,8 @@ export function ManagerTransfers({
   const [freeAgentOfferWage, setFreeAgentOfferWage] = useState(0);
   const [freeAgentOfferYears, setFreeAgentOfferYears] = useState(1);
 
-  const wageOverBudget = career.wageBill > career.wageBudget;
-  const wagePct = Math.round(
-    (career.wageBill / Math.max(1, career.wageBudget)) * 100
-  );
+  const wageOverBudget = isWageOverBudget(career);
+  const wagePct = getWageBillPercent(career);
   const transferFund = getTransferBudget(career);
 
   const listedPlayers = useMemo(() => {
@@ -399,7 +402,7 @@ export function ManagerTransfers({
             const canAffordFee = getTransferBudget(career) >= askingPrice;
             const canAffordAssistant =
               canAffordFee &&
-              career.wageBill + demand.wagePerYear <= career.wageBudget * 1.05;
+              canAffordAdditionalWage(career, demand.wagePerYear);
             return (
               <ManagerTransferPlayerCard
                 key={player.id}
@@ -516,10 +519,14 @@ export function ManagerTransfers({
           {freeAgents.map(({ player, formerClub, playerId }) => {
             const demand = getTransferDemand(player.id, career.club);
             const isNegotiating = freeAgentNegotiateId === player.id;
-            const canAffordAssistant =
-              career.wageBill + demand.wagePerYear <= career.wageBudget * 1.05;
-            const canAffordNegotiated =
-              career.wageBill + freeAgentOfferWage <= career.wageBudget * 1.05;
+            const canAffordAssistant = canAffordAdditionalWage(
+              career,
+              demand.wagePerYear
+            );
+            const canAffordNegotiated = canAffordAdditionalWage(
+              career,
+              freeAgentOfferWage
+            );
             return (
               <ManagerTransferPlayerCard
                 key={playerId}

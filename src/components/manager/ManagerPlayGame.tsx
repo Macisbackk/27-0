@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD } from "@/lib/ui/design-system";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { LiveMatchCommand, ManagerCareer } from "@/lib/manager/types";
 import {
@@ -23,15 +23,13 @@ import {
 import {
   applyManagerMatchResult,
   getNextManagerFixture,
+  prepareCareerForNextMatch,
 } from "@/lib/manager/managerSimulation";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
-import {
-  getManagerScheduledFixtureHeadline,
-} from "@/lib/manager/managerFixtureDisplay";
-import { ensureCupBracketReady } from "@/lib/manager/managerChallengeCup";
-import { ensurePlayoffsReady } from "@/lib/manager/managerPlayoffs";
+import { getManagerScheduledFixtureHeadline } from "@/lib/manager/managerFixtureDisplay";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
+import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
 
 const COMMANDS = LIVE_MATCH_COMMANDS;
@@ -53,13 +51,14 @@ export function ManagerPlayGame({
   onComplete,
   onCancel,
 }: ManagerPlayGameProps) {
-  const readyCareer = ensurePlayoffsReady(ensureCupBracketReady(career));
+  const readyCareer = prepareCareerForNextMatch(career);
   const sched = getNextManagerFixture(readyCareer);
   const fixtureKey = sched?.id ?? "none";
   const [live, setLive] = useState<LiveMatchState | null>(null);
   const [command, setCommand] = useState<LiveMatchCommand>("balanced");
   const [clockRunning, setClockRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [abandonConfirmOpen, setAbandonConfirmOpen] = useState(false);
   const finishedRef = useRef(false);
   const careerRef = useRef(career);
   const commandRef = useRef(command);
@@ -94,7 +93,7 @@ export function ManagerPlayGame({
       finishedRef.current = true;
       const fixture = liveMatchToFixture(finalState, careerRef.current);
       const next = applyManagerMatchResult(
-        ensureCupBracketReady(careerRef.current),
+        prepareCareerForNextMatch(careerRef.current),
         fixture,
         {
           playedLive: true,
@@ -167,12 +166,15 @@ export function ManagerPlayGame({
   };
 
   const handleAbandon = () => {
-    if (
-      hasStarted &&
-      !window.confirm("Abandon this match? Progress will be lost.")
-    ) {
+    if (hasStarted) {
+      setAbandonConfirmOpen(true);
       return;
     }
+    onCancel();
+  };
+
+  const confirmAbandon = () => {
+    setAbandonConfirmOpen(false);
     onCancel();
   };
 
@@ -187,7 +189,25 @@ export function ManagerPlayGame({
     setHasStarted(true);
   };
 
-  if (!sched || !live) return null;
+  if (!sched || !live) {
+    return (
+      <div
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Live match unavailable"
+      >
+        <div className={`${CARD.elevated} max-w-md w-full p-6 text-center space-y-4`}>
+          <h2 className={TYPO.viewTitle}>No fixture ready</h2>
+          <p className={`${TYPO.bodySm} text-pitch-400`}>
+            Your next match could not be loaded. Check your squad selection and
+            try again from the hub.
+          </p>
+          <GameButton onClick={onCancel}>Back to hub</GameButton>
+        </div>
+      </div>
+    );
+  }
 
   const userRating = computeManagerTeamRating(
     career.matchdayXiii,
@@ -197,7 +217,7 @@ export function ManagerPlayGame({
   );
   const oppRating = Math.round(
     getOpponentMatchRating(sched.opponent, career.seed, sched.round, {
-      currentSeasonOnly: true,
+      currentSeasonOnly: sched.competition !== "friendly",
     })
   );
 
@@ -225,7 +245,7 @@ export function ManagerPlayGame({
       onClick={canClose ? handleAbandon : undefined}
     >
       <div
-        className="card-glass mx-auto flex h-[100dvh] w-full max-w-lg flex-col overflow-hidden p-3 sm:p-4"
+        className={`card-glass mx-auto flex h-[100dvh] w-full max-w-lg flex-col overflow-hidden ${SPACING.cardPaddingSm}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Scoreboard */}
@@ -280,7 +300,7 @@ export function ManagerPlayGame({
         {/* Main — fills viewport, no scroll */}
         <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden py-2">
           {isPreview && (
-            <div className={`${CARD.inset} shrink-0 p-3`}>
+            <div className={`${CARD.inset} shrink-0 ${SPACING.cardPaddingSm}`}>
               <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm">
                 <span>
                   {career.club}:{" "}
@@ -331,7 +351,7 @@ export function ManagerPlayGame({
 
           {/* Events — scroll within available space */}
           <div
-            className={`${CARD.inset} flex min-h-0 flex-1 flex-col overflow-hidden p-2.5`}
+            className={`${CARD.inset} flex min-h-0 flex-1 flex-col overflow-hidden ${SPACING.cardPaddingSm}`}
           >
             <p className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
               Match events
@@ -421,6 +441,18 @@ export function ManagerPlayGame({
           )}
         </footer>
       </div>
+
+      <ManagerDialog
+        open={abandonConfirmOpen}
+        variant="confirm"
+        destructive
+        title="Abandon match"
+        message="Abandon this match? Progress will be lost."
+        confirmLabel="Abandon"
+        cancelLabel="Keep playing"
+        onConfirm={confirmAbandon}
+        onCancel={() => setAbandonConfirmOpen(false)}
+      />
     </div>
   );
 }

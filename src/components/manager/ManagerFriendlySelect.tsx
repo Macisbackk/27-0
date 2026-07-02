@@ -60,12 +60,7 @@ export function ManagerFriendlySelect({
               />
             </div>
 
-            <p
-              className={`mt-3 min-h-[2.5rem] line-clamp-3 ${TYPO.managerBody}`}
-            >
-              {choice.description}
-            </p>
-            <p className={`mt-2 line-clamp-2 ${TYPO.managerBody}`}>
+            <p className={`mt-3 line-clamp-2 ${TYPO.managerBody}`}>
               {getFriendlyAttendanceInterest(choice, career)}
             </p>
 

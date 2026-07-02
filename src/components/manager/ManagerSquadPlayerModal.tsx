@@ -19,6 +19,7 @@ import {
 import { findPlayerMatchdaySlot } from "@/lib/manager/managerMatchdaySquad";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { playPanelClose, playUiClick } from "@/lib/sound";
+import { ManagerDialog } from "@/components/manager/ManagerDialog";
 
 interface ManagerSquadPlayerModalProps {
   career: ManagerCareer;
@@ -39,6 +40,8 @@ export function ManagerSquadPlayerModal({
     suggestedAskingPrice(playerId)
   );
   const [showListForm, setShowListForm] = useState(false);
+  const [releaseConfirmOpen, setReleaseConfirmOpen] = useState(false);
+  const [errorDialog, setErrorDialog] = useState<string | null>(null);
 
   const player = getManagerPlayer(career, playerId);
   const contract = career.contracts[playerId];
@@ -70,29 +73,31 @@ export function ManagerSquadPlayerModal({
   };
 
   const handleRelease = () => {
-    const fitCheck = validateFitMatchdaySquad(career);
-    const fitWarning = fitCheck.valid
-      ? ""
-      : "\n\nWarning: releasing this player may leave you without a fit matchday 17. Play and simulate will stay disabled until fixed.";
-    if (
-      !window.confirm(
-        `Release ${player.name}? Settlement cost: ${formatWage(releaseCost)}${fitWarning}`
-      )
-    ) {
-      return;
-    }
+    setReleaseConfirmOpen(true);
+  };
+
+  const confirmRelease = () => {
+    setReleaseConfirmOpen(false);
     const result = releasePlayerWithCost(career, playerId);
     if (!result.ok) {
-      window.alert(result.error);
+      setErrorDialog(result.error ?? "Could not release this player.");
       return;
     }
     if (result.career) onUpdate(result.career);
     onClose();
   };
 
+  const releaseConfirmMessage = (() => {
+    const fitCheck = validateFitMatchdaySquad(career);
+    const fitWarning = fitCheck.valid
+      ? ""
+      : "\n\nWarning: releasing this player may leave you without a fit matchday 17. Play and simulate will stay disabled until fixed.";
+    return `Release ${player.name}? Settlement cost: ${formatWage(releaseCost)}${fitWarning}`;
+  })();
+
   return (
     <div
-      className="fixed inset-0 z-[90] flex items-end justify-center bg-black/75 p-3 backdrop-blur-sm sm:items-center sm:p-4"
+      className={`fixed inset-0 z-[90] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} backdrop-blur-sm sm:items-center`}
       role="dialog"
       aria-modal="true"
       onClick={() => {
@@ -185,6 +190,26 @@ export function ManagerSquadPlayerModal({
           </GameButton>
         </div>
       </div>
+
+      <ManagerDialog
+        open={releaseConfirmOpen}
+        variant="confirm"
+        destructive
+        title="Release player"
+        message={releaseConfirmMessage}
+        confirmLabel="Release"
+        cancelLabel="Keep"
+        onConfirm={confirmRelease}
+        onCancel={() => setReleaseConfirmOpen(false)}
+      />
+
+      <ManagerDialog
+        open={errorDialog !== null}
+        title="Release failed"
+        message={errorDialog ?? ""}
+        onConfirm={() => setErrorDialog(null)}
+        onCancel={() => setErrorDialog(null)}
+      />
     </div>
   );
 }

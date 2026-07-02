@@ -7,17 +7,17 @@ import { getProtectedTransferPlayerIds } from "./managerTransferLeague";
 import { getTransferDemand } from "./managerTransfers";
 import { getManagerPlayer } from "./managerPlayers";
 import {
-  computeWageBill,
   generateInitialContract,
   formatWage,
 } from "./managerContracts";
+import { computeCareerWageBill } from "./managerReserveContracts";
 import { getManagerClubTeamRating } from "./managerRating";
 import {
   getLeagueClubRosterIds,
   transferLeaguePlayer,
 } from "./managerLeagueRosters";
 import { createInitialPlayerState } from "./managerSquad";
-import { syncManagerFinance } from "./managerFinance";
+import { syncManagerFinance, canAffordAdditionalWage } from "./managerFinance";
 import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
 
 const MAX_TRANSFER_HISTORY = 32;
@@ -112,7 +112,7 @@ export function evaluateFreeAgentOffer(
       reason: "Player wants a longer contract.",
     };
   }
-  if (career.wageBill + offer.wagePerYear > career.wageBudget * 1.05) {
+  if (!canAffordAdditionalWage(career, offer.wagePerYear)) {
     return { accepted: false, reason: "Wage bill would exceed budget." };
   }
   if (career.squad.length >= 35) {
@@ -174,7 +174,10 @@ export function completeFreeAgentSigning(
         ...career,
         squad: [...career.squad, createInitialPlayerState(playerId)],
         contracts: nextContracts,
-        wageBill: computeWageBill(nextContracts),
+        wageBill: computeCareerWageBill({
+          ...career,
+          contracts: nextContracts,
+        } as ManagerCareer),
         freeAgents,
         updatedAt: new Date().toISOString(),
       },

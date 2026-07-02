@@ -30,7 +30,7 @@ import {
 } from "@/lib/manager/managerFixtureDisplay";
 import { ensurePlayoffsReady } from "@/lib/manager/managerPlayoffs";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
-import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
+import { getNextManagerFixture, isManagerSeasonCompleteLite } from "@/lib/manager/managerSimulation";
 import type {
   ManagerCareer,
   ManagerFixtureRecord,
@@ -215,7 +215,7 @@ function UpcomingFixtureRow({
 
   return (
     <div
-      className={`rounded-lg border px-3 py-3 sm:px-4 ${
+      className={`rounded-lg border px-4 py-3.5 sm:px-4 sm:py-3 ${
         friendlyBorderStyle
           ? "border-pitch-700/40"
           : isNext
@@ -301,6 +301,7 @@ export function ManagerFixtures({
 
   const readyCareer = ensurePlayoffsReady(ensureCupBracketReady(career));
   const nextFixture = getNextManagerFixture(readyCareer);
+  const seasonComplete = isManagerSeasonCompleteLite(readyCareer);
 
   const simCareer = resolveCareerForMatchSimulation(career);
   const teamRating = computeManagerTeamRating(
@@ -311,7 +312,7 @@ export function ManagerFixtures({
   );
 
   const oppRating =
-    nextFixture && !career.isSeasonComplete
+    nextFixture && !seasonComplete
       ? nextFixture.competition === "friendly" &&
         career.preSeason.activeFriendly
         ? career.preSeason.activeFriendly.teamRating
@@ -326,12 +327,12 @@ export function ManagerFixtures({
       : null;
 
   const prediction =
-    nextFixture && !career.isSeasonComplete
+    nextFixture && !seasonComplete
       ? getMatchPrediction(teamRating, oppRating ?? 70, nextFixture.isHome)
       : null;
 
   const homeAttendanceOutlook =
-    nextFixture?.isHome && !career.isSeasonComplete
+    nextFixture?.isHome && !seasonComplete
       ? getHomeFixtureAttendanceOutlook(career, nextFixture)
       : null;
 
@@ -429,7 +430,7 @@ export function ManagerFixtures({
         </p>
       </div>
 
-      {nextFixture && !career.isSeasonComplete && (
+      {nextFixture && !seasonComplete && (
         <div
           className={`${CARD.elevated} ${SPACING.cardPadding} ${
             isChallengeCupFixture(nextFixture.competition)

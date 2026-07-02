@@ -455,7 +455,7 @@ export function ManagerInboxMessageCard({
   if (compact) {
     return (
       <article
-        className={`${CARD.inset} relative flex items-center gap-3 overflow-hidden px-3 py-3 opacity-80`}
+        className={`${CARD.inset} relative flex items-center gap-3 overflow-hidden ${SPACING.listItem} opacity-80`}
       >
         <span
           className={`absolute inset-y-0 left-0 w-1 ${style.accentBar}`}
@@ -488,7 +488,7 @@ export function ManagerInboxMessageCard({
         className={`absolute inset-y-0 left-0 w-1 ${style.accentBar}`}
         aria-hidden
       />
-      <div className={`flex flex-1 flex-col gap-3 ${SPACING.cardPaddingSm} pl-4`}>
+      <div className={`flex flex-1 flex-col gap-3 ${SPACING.cardPaddingSm} pl-5 sm:pl-4`}>
         <header className="flex gap-3">
           <span
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border text-xs font-bold ${style.iconBox}`}
@@ -530,10 +530,8 @@ export function ManagerInboxMessageCard({
 
 export function ManagerClubFinancesPanel({
   career,
-  showSplitGuide = false,
 }: {
   career: ManagerCareer;
-  showSplitGuide?: boolean;
 }) {
   const transfer = getTransferBudget(career);
   const operating = getOperatingBalance(career);
@@ -579,10 +577,22 @@ export function ManagerClubFinancesPanel({
           />
         </div>
       )}
-      {showSplitGuide && (
-        <div className={`mt-3 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
-          <p className={TYPO.sectionLabel}>How income is allocated</p>
-          <ul className={`mt-2 space-y-1.5 ${TYPO.bodySm} text-pitch-400`}>
+      <details className="group mt-3">
+        <summary
+          className={`flex cursor-pointer list-none items-center justify-between rounded-lg border border-pitch-700/50 bg-pitch-950/40 px-3 py-2 transition hover:border-pitch-500/50 [&::-webkit-details-marker]:hidden`}
+        >
+          <span className={`${TYPO.sectionLabel} text-pitch-300`}>
+            How income is allocated
+          </span>
+          <span
+            className="text-[10px] font-bold uppercase tracking-wider text-pitch-500 transition group-open:rotate-180"
+            aria-hidden
+          >
+            Info
+          </span>
+        </summary>
+        <div className={`mt-2 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
+          <ul className={`space-y-1.5 ${TYPO.bodySm} text-pitch-400`}>
             {(Object.keys(REVENUE_SPLIT) as Array<keyof typeof REVENUE_SPLIT>).map(
               (key) => {
                 const row = REVENUE_SPLIT[key];
@@ -598,7 +608,7 @@ export function ManagerClubFinancesPanel({
             )}
           </ul>
         </div>
-      )}
+      </details>
     </ManagerSectionCard>
   );
 }

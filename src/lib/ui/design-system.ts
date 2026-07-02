@@ -3,15 +3,16 @@ import { TYPO } from "./typography";
 /** Shared spacing tokens — padding, gaps, section margins. */
 export const SPACING = {
   sectionGap: "mt-6",
-  cardPadding: "p-4 sm:p-6",
-  cardPaddingSm: "p-3 sm:p-4",
+  /** Default card padding — roomier on small screens. */
+  cardPadding: "p-5 sm:p-6",
+  cardPaddingSm: "p-4 sm:p-5",
   cardPaddingLg: "p-6 sm:p-8",
   cardGridGap: "gap-3 sm:gap-4",
   sectionContentTop: "pt-4",
   sectionContentTopFeatured: "pt-5",
   headingMargin: "mb-3",
   buttonGap: "gap-2",
-  pageX: "px-4",
+  pageX: "px-5 sm:px-6",
   stackSm: "space-y-2",
   stackMd: "space-y-3",
   stackLg: "space-y-4",
@@ -19,8 +20,14 @@ export const SPACING = {
   navItemGap: "space-y-1.5",
   /** Gap between navigation section groups (e.g. main nav → play → settings). */
   navSectionGap: "mt-3",
-  /** Tighter mobile padding for dense manager cards. */
-  cardPaddingMobile: "p-3.5 sm:p-5 lg:p-6",
+  /** Manager cards — extra breathing room on phones. */
+  cardPaddingMobile: "p-5 sm:p-5 lg:p-6",
+  /** Modal/sheet backdrop inset from screen edges. */
+  modalBackdrop: "p-4 sm:p-6",
+  /** Dense table cells on mobile. */
+  tableCell: "px-3 py-2 sm:px-2.5 sm:py-1.5",
+  /** Interactive list rows (squad pool, reserves, etc.). */
+  listItem: "px-3 py-2.5 sm:px-2.5 sm:py-2",
 } as const;
 
 /** Shared card surface classes. */
@@ -69,14 +76,15 @@ export const MANAGER = {
   statGrid3: "grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3",
   statGrid4:
     "grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 [&>*:nth-child(3):last-child]:col-span-2 sm:[&>*:nth-child(3):last-child]:col-span-1",
-  tabGrid: "grid grid-cols-4 gap-1.5 sm:gap-2 lg:grid-cols-8",
+  tabGrid:
+    "flex gap-1.5 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-4 sm:gap-2 sm:overflow-visible sm:pb-0 lg:grid-cols-7",
   modalTitle: "font-display text-lg font-bold text-white sm:text-xl",
 } as const;
 
 /** Form & filter inputs. */
 export const FILTER = {
   input:
-    "w-full rounded-lg border border-pitch-600 bg-pitch-900/60 px-3 py-2.5 text-sm text-white outline-none transition focus:border-theme-primary sm:px-4 sm:py-3",
+    "w-full rounded-lg border border-pitch-600 bg-pitch-900/60 px-3.5 py-2.5 text-sm text-white outline-none transition focus:border-theme-primary sm:px-4 sm:py-3",
   chipActive:
     "border-theme-tertiary/60 bg-theme-primary/10 text-theme-primary",
   chipIdle: "border-pitch-600 text-gray-400 hover:text-white",

@@ -128,17 +128,19 @@ export function createPlayerSaleMessage(
   playerName: string,
   buyerClub: string,
   fee: number,
-  playerId?: string
+  playerId?: string,
+  purchaseFee?: number
 ): InboxMessage {
-  const purchaseFee =
-    playerId != null ? career.contracts[playerId]?.purchaseFee : undefined;
+  const boughtFor =
+    purchaseFee ??
+    (playerId != null ? career.contracts[playerId]?.purchaseFee : undefined);
   let profitLine = "";
-  if (purchaseFee != null && purchaseFee > 0) {
-    const profit = fee - purchaseFee;
+  if (boughtFor != null && boughtFor > 0) {
+    const profit = fee - boughtFor;
     profitLine =
       profit >= 0
-        ? `\nProfit on transfer: ${formatWage(profit)} (bought for ${formatWage(purchaseFee)}).`
-        : `\nLoss on transfer: ${formatWage(Math.abs(profit))} (bought for ${formatWage(purchaseFee)}).`;
+        ? `\nProfit on transfer: ${formatWage(profit)} (bought for ${formatWage(boughtFor)}).`
+        : `\nLoss on transfer: ${formatWage(Math.abs(profit))} (bought for ${formatWage(boughtFor)}).`;
   }
 
   return normalizeInboxMessage(
@@ -146,7 +148,7 @@ export function createPlayerSaleMessage(
       id: `sale-${playerName}-${career.gameWeek}-${Date.now()}`,
       type: "sale",
       title: "Transfer Completed",
-      body: `${playerName} has joined ${buyerClub} for ${formatWage(fee)}.\nThe fee has been added to your transfer budget.${profitLine}`,
+      body: `${playerName} has joined ${buyerClub} for ${formatWage(fee)}.\nThe fee has been added to your club funds (transfer and operating budgets).${profitLine}`,
       read: false,
       resolved: false,
       playerId,
@@ -420,14 +422,33 @@ export function bulkRenewExpiringContractsWithInbox(career: ManagerCareer): {
 
 export const INBOX_MAX_AGE_WEEKS = 7;
 
+/** Clear unresolved transfer state at season rollover. */
+export function clearSeasonTransferState(career: ManagerCareer): ManagerCareer {
+  return {
+    ...career,
+    inboxMessages: career.inboxMessages.map((m) =>
+      !m.resolved &&
+      (m.type === "transfer" || m.type === "transfer_offer_in")
+        ? { ...m, resolved: true, read: true }
+        : m
+    ),
+    playerTransferStatus: {},
+  };
+}
+
 /** Remove inbox messages older than maxAgeWeeks (by game week). */
 export function purgeStaleInboxMessages(
   career: ManagerCareer,
   maxAgeWeeks = INBOX_MAX_AGE_WEEKS
 ): ManagerCareer {
   const inboxMessages = career.inboxMessages.filter((m) => {
+    if (!m.resolved && (m.type === "transfer" || m.type === "transfer_offer_in")) {
+      return true;
+    }
+    const season = m.season ?? career.seasonYear;
+    if (season < career.seasonYear) return false;
     const week = m.gameWeek ?? m.week ?? 0;
-    return career.gameWeek - week <= maxAgeWeeks;
+    return career.gameWeek - week <= maxAgeWeeks && career.gameWeek >= week;
   });
   if (inboxMessages.length === career.inboxMessages.length) return career;
   return { ...career, inboxMessages, updatedAt: new Date().toISOString() };

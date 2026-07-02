@@ -10,6 +10,7 @@ import type {
   SquadRole,
 } from "./types";
 import { clearRetirementIntentOnRenewal } from "./managerRetirement";
+import { canAffordAdditionalWage } from "./managerFinance";
 
 export function formatWage(amount: number): string {
   if (amount >= 1_000_000) return `£${(amount / 1_000_000).toFixed(2)}m`;
@@ -244,8 +245,7 @@ export function evaluateRenewalOffer(
     };
   }
   if (
-    career.wageBill - contract.wagePerYear + offer.wagePerYear >
-    career.wageBudget * 1.05
+    !canAffordAdditionalWage(career, offer.wagePerYear - contract.wagePerYear)
   ) {
     return {
       accepted: false,

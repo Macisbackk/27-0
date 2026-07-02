@@ -3,6 +3,7 @@ import type { ManagerCareer, ManagerFinance, ManagerSeasonSummary } from "./type
 import { getManagerClubConfig } from "./club-config";
 import { computeWageBill } from "./managerContracts";
 import { getWageBudgetForClub } from "./managerContracts";
+import { computeCareerWageBill } from "./managerReserveContracts";
 import { getUserLeaguePosition } from "./managerFixtures";
 
 /** First-season transfer budget ranges [min, max] by club. */
@@ -79,6 +80,32 @@ export function getTransferBudget(career: ManagerCareer): number {
   return career.managerFinance?.transferBudget ?? career.budget;
 }
 
+/** Signing grace above strict wage budget (5%). */
+export const WAGE_GRACE_MULTIPLIER = 1.05;
+
+export function getWageBudgetCeiling(career: ManagerCareer): number {
+  return Math.round(career.wageBudget * WAGE_GRACE_MULTIPLIER);
+}
+
+export function isWageOverBudget(career: ManagerCareer): boolean {
+  return career.wageBill > career.wageBudget;
+}
+
+export function isWageAboveGrace(career: ManagerCareer): boolean {
+  return career.wageBill > getWageBudgetCeiling(career);
+}
+
+export function canAffordAdditionalWage(
+  career: ManagerCareer,
+  additionalWage: number
+): boolean {
+  return career.wageBill + additionalWage <= getWageBudgetCeiling(career);
+}
+
+export function getWageBillPercent(career: ManagerCareer): number {
+  return Math.round((career.wageBill / Math.max(1, career.wageBudget)) * 100);
+}
+
 export function getOperatingBalance(career: ManagerCareer): number {
   return career.managerFinance?.operatingBalance ?? 0;
 }
@@ -146,7 +173,9 @@ export function initManagerFinance(career: Partial<ManagerCareer>): ManagerFinan
     career.wageBudget ?? getWageBudgetForClub(club);
   const wageBill =
     career.wageBill ??
-    (career.contracts ? computeWageBill(career.contracts) : 0);
+    (career.contracts
+      ? computeCareerWageBill(career as ManagerCareer)
+      : 0);
 
   return {
     transferBudget,
@@ -187,7 +216,7 @@ export function applyClubRevenue(
 
 export function syncManagerFinance(career: ManagerCareer): ManagerCareer {
   const finance = initManagerFinance(career);
-  finance.wageBill = computeWageBill(career.contracts);
+  finance.wageBill = computeCareerWageBill(career);
   finance.wageBudget = career.wageBudget;
   finance.transferBudget = career.budget;
   finance.clubFunds = finance.transferBudget + finance.operatingBalance;

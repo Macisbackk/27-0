@@ -26,13 +26,37 @@ import {
 import { createInitialPlayerState } from "./managerSquad";
 import { getPlayerAge } from "../players/player-age";
 import { getTransferDemand } from "./managerTransfers";
-import { syncManagerFinance, deductTransferFee, addTransferIncome } from "./managerFinance";
+import { addPlayersToFreeAgents, isFreeAgent } from "./managerFreeAgents";
+import { syncManagerFinance, deductTransferFee, addTransferIncome, getTransferBudget, canAffordAdditionalWage } from "./managerFinance";
+import { computeCareerWageBill } from "./managerReserveContracts";
 import {
   createPlayerSaleMessage,
   createPlayerPurchaseMessage,
   pushInboxMessage,
   normalizeInboxMessage,
 } from "./managerInbox";
+
+function invalidatePlayerTransferOffers(
+  career: ManagerCareer,
+  playerId: string
+): ManagerCareer {
+  const nextTransfer = { ...career.playerTransferStatus };
+  delete nextTransfer[playerId];
+  return {
+    ...career,
+    inboxMessages: career.inboxMessages.map((m) =>
+      m.playerId === playerId &&
+      !m.resolved &&
+      (m.type === "transfer" || m.type === "transfer_offer_in")
+        ? { ...m, resolved: true, read: true }
+        : m
+    ),
+    leagueListedPlayers: career.leagueListedPlayers.filter(
+      (row) => row.playerId !== playerId
+    ),
+    playerTransferStatus: nextTransfer,
+  };
+}
 
 export function initClubFunds(userClub: string): Record<string, number> {
   const funds: Record<string, number> = {};
@@ -251,7 +275,9 @@ export function releasePlayerWithCost(
   playerId: string
 ): { ok: boolean; career?: ManagerCareer; error?: string; cost?: number } {
   const cost = computeReleaseCost(career, playerId);
-  if (career.budget < cost) {
+  const transferBudget =
+    career.managerFinance?.transferBudget ?? career.budget;
+  if (transferBudget < cost) {
     return {
       ok: false,
       error: `Cannot afford release settlement (${formatWage(cost)} required)`,
@@ -266,8 +292,6 @@ export function releasePlayerWithCost(
   );
   const nextContracts = { ...career.contracts };
   delete nextContracts[playerId];
-  const nextTransfer = { ...career.playerTransferStatus };
-  delete nextTransfer[playerId];
 
   const msg = normalizeInboxMessage(
     {
@@ -283,21 +307,35 @@ export function releasePlayerWithCost(
     career
   );
 
-  return {
-    ok: true,
-    cost,
-    career: {
+  let nextCareer: ManagerCareer = invalidatePlayerTransferOffers(
+    {
       ...career,
-      budget: career.budget - cost,
       squad: career.squad.filter((p) => p.playerId !== playerId),
       contracts: nextContracts,
-      wageBill: computeWageBill(nextContracts),
+      wageBill: computeCareerWageBill({
+        ...career,
+        contracts: nextContracts,
+      } as ManagerCareer),
       matchdayXiii: xiii,
       matchdayInterchange: interchange,
-      playerTransferStatus: nextTransfer,
       inboxMessages: [msg, ...career.inboxMessages],
       updatedAt: new Date().toISOString(),
     },
+    playerId
+  );
+
+  if (cost > 0) {
+    nextCareer = deductTransferFee(nextCareer, cost);
+  }
+  nextCareer = addPlayersToFreeAgents(nextCareer, [
+    { playerId, formerClub: career.club },
+  ]);
+  nextCareer = syncManagerFinance(nextCareer);
+
+  return {
+    ok: true,
+    cost,
+    career: nextCareer,
   };
 }
 
@@ -348,6 +386,11 @@ export function evaluateBuyOffer(
   const player = getPlayerById(playerId);
   if (!player) return { accepted: false, reason: "Player not found" };
 
+  const sellerClub = findPlayerLeagueClub(career, playerId);
+  if (!isFreeAgent(career, playerId) && sellerClub !== club) {
+    return { accepted: false, reason: "Player is no longer at that club." };
+  }
+
   if (
     !listed &&
     getProtectedTransferPlayerIds(career, club).has(playerId)
@@ -382,7 +425,7 @@ export function evaluateBuyOffer(
       };
     }
   }
-  if (career.budget < offer.transferFee) {
+  if (getTransferBudget(career) < offer.transferFee) {
     return { accepted: false, reason: "Insufficient transfer budget." };
   }
 
@@ -397,7 +440,7 @@ export function evaluateBuyOffer(
       reason: "Player wants a longer contract.",
     };
   }
-  if (career.wageBill + offer.wagePerYear > career.wageBudget * 1.05) {
+  if (!canAffordAdditionalWage(career, offer.wagePerYear)) {
     return { accepted: false, reason: "Wage bill would exceed budget." };
   }
   if (career.squad.length >= 35) {
@@ -419,6 +462,11 @@ export function completePlayerPurchase(
   offer: BuyOffer,
   listed: boolean
 ): ManagerCareer {
+  const sellerClub = findPlayerLeagueClub(career, playerId);
+  if (!isFreeAgent(career, playerId) && sellerClub !== club) {
+    return career;
+  }
+
   const rep = getManagerClubTeamRating(career.club);
   const demand = getTransferDemand(playerId, career.club);
   const contract = generateInitialContract(playerId, false, rep);
@@ -444,9 +492,19 @@ export function completePlayerPurchase(
           clubFunds: sellerFunds,
           squad: [...career.squad, createInitialPlayerState(playerId)],
           contracts: nextContracts,
-          wageBill: computeWageBill(nextContracts),
+          wageBill: computeCareerWageBill({
+            ...career,
+            contracts: nextContracts,
+          } as ManagerCareer),
           leagueListedPlayers: nextListed,
-          transferMarket: nextListed.map((l) => l.playerId),
+          transferMarket: [
+            ...new Set([
+              ...nextListed.map((l) => l.playerId),
+              ...career.transferMarket.filter(
+                (id) => career.playerTransferStatus[id]?.listed
+              ),
+            ]),
+          ],
           updatedAt: new Date().toISOString(),
         },
         playerId,
@@ -647,6 +705,15 @@ export function acceptIncomingOffer(
   }
 
   const playerId = msg.playerId;
+  if (!career.squad.some((p) => p.playerId === playerId)) {
+    return { ok: false, error: "Player is no longer at your club" };
+  }
+  const soldContract = career.contracts[playerId];
+  if (!soldContract) {
+    return { ok: false, error: "Player contract not found" };
+  }
+  const purchaseFee = soldContract.purchaseFee;
+
   const xiii = career.matchdayXiii.map((id) => (id === playerId ? "" : id));
   const interchange = career.matchdayInterchange.map((id) =>
     id === playerId ? "" : id
@@ -659,9 +726,17 @@ export function acceptIncomingOffer(
     (row) => row.playerId !== playerId
   );
 
-  const clubFunds = { ...career.clubFunds };
   const buyer = msg.offerClub ?? "Unknown";
-  clubFunds[buyer] = Math.max(0, (clubFunds[buyer] ?? 0) - msg.offerAmount);
+  const buyerFunds = career.clubFunds[buyer] ?? 0;
+  if (buyerFunds < msg.offerAmount) {
+    return {
+      ok: false,
+      error: `${buyer} can no longer afford this transfer.`,
+    };
+  }
+
+  const clubFunds = { ...career.clubFunds };
+  clubFunds[buyer] = buyerFunds - msg.offerAmount;
 
   const nextMessages = career.inboxMessages.map((m) =>
     m.id === messageId ? { ...m, resolved: true, read: true } : m
@@ -672,7 +747,10 @@ export function acceptIncomingOffer(
     clubFunds,
     squad: career.squad.filter((p) => p.playerId !== playerId),
     contracts: nextContracts,
-    wageBill: computeWageBill(nextContracts),
+    wageBill: computeCareerWageBill({
+      ...career,
+      contracts: nextContracts,
+    } as ManagerCareer),
     matchdayXiii: xiii,
     matchdayInterchange: interchange,
     playerTransferStatus: nextTransfer,
@@ -688,9 +766,11 @@ export function acceptIncomingOffer(
     msg.playerName ?? getPlayerById(playerId)?.name ?? "Player",
     buyer,
     msg.offerAmount,
-    playerId
+    playerId,
+    purchaseFee
   );
   nextCareer = pushInboxMessage(nextCareer, saleMsg);
+  nextCareer = syncManagerFinance(nextCareer);
 
   return {
     ok: true,

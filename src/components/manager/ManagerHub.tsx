@@ -6,7 +6,7 @@ import { CARD, PAGE, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
-import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
+import { getNextManagerFixture, isManagerSeasonComplete } from "@/lib/manager/managerSimulation";
 import { ensureCupBracketReady, getCupHubStatus } from "@/lib/manager/managerChallengeCup";
 import { PlayoffBracketDisplay } from "@/components/PlayoffBracketDisplay";
 import {
@@ -38,6 +38,8 @@ import {
 import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import { playSeasonComplete, playSimulateRound, playUiClick } from "@/lib/sound";
 import { autoFixMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
+import { isWageOverBudget } from "@/lib/manager/managerFinance";
+import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { getHubNewsItems } from "@/lib/manager/managerNews";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
@@ -328,15 +330,15 @@ function HubLeagueTable({
         <table className="w-full min-w-[520px] text-left text-sm">
           <thead>
             <tr className="border-b border-pitch-700/50 text-pitch-400">
-              <th className="px-2 py-1.5">#</th>
-              <th className="px-2 py-1.5">Club</th>
-              <th className="px-2 py-1.5 text-center">P</th>
-              <th className="px-2 py-1.5 text-center">W</th>
-              <th className="px-2 py-1.5 text-center">L</th>
-              <th className="px-2 py-1.5 text-center">PF</th>
-              <th className="px-2 py-1.5 text-center">PA</th>
-              <th className="px-2 py-1.5 text-center">+/-</th>
-              <th className="px-2 py-1.5 text-center">Pts</th>
+              <th className={SPACING.tableCell}>#</th>
+              <th className={SPACING.tableCell}>Club</th>
+              <th className={`${SPACING.tableCell} text-center`}>P</th>
+              <th className={`${SPACING.tableCell} text-center`}>W</th>
+              <th className={`${SPACING.tableCell} text-center`}>L</th>
+              <th className={`${SPACING.tableCell} text-center`}>PF</th>
+              <th className={`${SPACING.tableCell} text-center`}>PA</th>
+              <th className={`${SPACING.tableCell} text-center`}>+/-</th>
+              <th className={`${SPACING.tableCell} text-center`}>Pts</th>
             </tr>
           </thead>
           <tbody>
@@ -349,10 +351,10 @@ function HubLeagueTable({
                     row.isUserTeam ? "bg-theme-primary/10" : ""
                   }`}
                 >
-                  <td className="px-2 py-1.5 font-mono text-pitch-400">
+                  <td className={`${SPACING.tableCell} font-mono text-pitch-400`}>
                     {row.position}
                   </td>
-                  <td className="px-2 py-1.5">
+                  <td className={SPACING.tableCell}>
                     <span className="flex items-center gap-2">
                       <span
                         className="inline-block h-2 w-2 rounded-full"
@@ -369,18 +371,18 @@ function HubLeagueTable({
                       </span>
                     </span>
                   </td>
-                  <td className="px-2 py-1.5 text-center">{row.played}</td>
-                  <td className="px-2 py-1.5 text-center">{row.wins}</td>
-                  <td className="px-2 py-1.5 text-center">{row.losses}</td>
-                  <td className="px-2 py-1.5 text-center">{row.pointsFor}</td>
-                  <td className="px-2 py-1.5 text-center">
+                  <td className={`${SPACING.tableCell} text-center`}>{row.played}</td>
+                  <td className={`${SPACING.tableCell} text-center`}>{row.wins}</td>
+                  <td className={`${SPACING.tableCell} text-center`}>{row.losses}</td>
+                  <td className={`${SPACING.tableCell} text-center`}>{row.pointsFor}</td>
+                  <td className={`${SPACING.tableCell} text-center`}>
                     {row.pointsAgainst}
                   </td>
-                  <td className="px-2 py-1.5 text-center">
+                  <td className={`${SPACING.tableCell} text-center`}>
                     {row.pointsDifference > 0 ? "+" : ""}
                     {row.pointsDifference}
                   </td>
-                  <td className="px-2 py-1.5 text-center font-semibold text-accent-gold">
+                  <td className={`${SPACING.tableCell} text-center font-semibold text-accent-gold`}>
                     {row.leaguePoints}
                   </td>
                 </tr>
@@ -401,7 +403,11 @@ export function ManagerHub({
   onNavigate,
   onPlayoffsContinue,
 }: ManagerHubProps) {
+  const [dialog, setDialog] = useState<{ title: string; message: string } | null>(
+    null
+  );
   const hubCareer = ensurePlayoffsReady(ensureCupBracketReady(career));
+
   const nextFixture = getNextManagerFixture(hubCareer);
   const position = getUserLeaguePosition(career.leagueTable, career.club);
   const simCareer = resolveCareerForMatchSimulation(career);
@@ -420,14 +426,15 @@ export function ManagerHub({
   const squadCheck = validateFitMatchdaySquad(simCareer);
   const playoffsPending = needsPlayoffsIntro(career);
   const playoffsActive = isManagerPlayoffsActive(hubCareer);
-  const canPlay = squadCheck.valid && !career.isSeasonComplete && !playoffsPending;
+  const seasonComplete = isManagerSeasonComplete(hubCareer);
+  const canPlay = squadCheck.valid && !seasonComplete && !playoffsPending;
   const isPlayoffFixture = nextFixture?.competition === "playoffs";
   const isCupFixture = nextFixture
     ? isChallengeCupFixture(nextFixture.competition)
     : false;
 
   const oppRating =
-    nextFixture && !career.isSeasonComplete
+    nextFixture && !seasonComplete
       ? nextFixture.competition === "friendly" &&
         career.preSeason.activeFriendly
         ? career.preSeason.activeFriendly.teamRating
@@ -442,12 +449,12 @@ export function ManagerHub({
       : null;
 
   const prediction =
-    nextFixture && !career.isSeasonComplete
+    nextFixture && !seasonComplete
       ? getMatchPrediction(teamRating, oppRating ?? 70, nextFixture.isHome)
       : null;
 
   const homeAttendanceOutlook =
-    nextFixture?.isHome && !career.isSeasonComplete
+    nextFixture?.isHome && !seasonComplete
       ? getHomeFixtureAttendanceOutlook(career, nextFixture)
       : null;
 
@@ -455,20 +462,32 @@ export function ManagerHub({
   const lastGate = getLastHomeGate(career.gateIncomeHistory);
   const cupStatus = getCupHubStatus(career);
   const playoffStatus = getPlayoffHubStatus(career);
-  const wageOverBudget = career.wageBill > career.wageBudget;
+  const wageOverBudget = isWageOverBudget(career);
   const wagePressure = career.wagePressureWeeks ?? 0;
   const newsItems = getHubNewsItems(career);
 
   const handleAutoFix = () => {
     const result = autoFixMatchdaySquad(career);
     onUpdate?.(result.career);
-    if (!result.ok) window.alert(result.message);
+    if (!result.ok) {
+      setDialog({ title: "Auto-fix failed", message: result.message });
+    }
   };
+
+  const alertDialog = (
+    <ManagerDialog
+      open={dialog !== null}
+      title={dialog?.title ?? ""}
+      message={dialog?.message ?? ""}
+      onConfirm={() => setDialog(null)}
+      onCancel={() => setDialog(null)}
+    />
+  );
 
   const isFriendlyFixture = nextFixture?.competition === "friendly";
 
   const nextFixtureCard =
-    nextFixture && !career.isSeasonComplete && !playoffsPending ? (
+    nextFixture && !seasonComplete && !playoffsPending ? (
       <div
         className={`${CARD.elevated} ${SPACING.cardPadding} ${
           isCupFixture || isPlayoffFixture
@@ -552,7 +571,7 @@ export function ManagerHub({
         </ManagerStatGrid>
         {!squadCheck.valid && (
           <div
-            className={`mt-3 rounded-lg border border-accent-gold/40 bg-accent-gold/10 px-3 py-2 ${TYPO.bodySm} text-accent-gold whitespace-pre-line`}
+            className={`mt-3 rounded-lg border border-accent-gold/40 bg-accent-gold/10 px-4 py-2.5 sm:px-3 sm:py-2 ${TYPO.bodySm} text-accent-gold whitespace-pre-line`}
           >
             {squadCheck.message}
             {onUpdate && (
@@ -763,54 +782,61 @@ export function ManagerHub({
 
   if (playoffsPending && onPlayoffsContinue) {
     return (
-      <div className={PAGE.section}>
-        <HubPlayoffsGateCard career={career} onContinue={onPlayoffsContinue} />
-        {newsSection}
-        <HubLeagueTable
-          career={career}
-          title="Final League Standings"
-          subtitle="Frozen — play-off results now decide the title"
-        />
-        <HubBoardBudgetAttendance
-          career={career}
-          lastGate={lastGate}
-          wageOverBudget={wageOverBudget}
-        />
-        <ManagerClubFinancesPanel career={career} />
-        {quickActionsCard}
-      </div>
+      <>
+        <div className={PAGE.section}>
+          <HubPlayoffsGateCard career={career} onContinue={onPlayoffsContinue} />
+          {newsSection}
+          <HubLeagueTable
+            career={career}
+            title="Final League Standings"
+            subtitle="Frozen — play-off results now decide the title"
+          />
+          <HubBoardBudgetAttendance
+            career={career}
+            lastGate={lastGate}
+            wageOverBudget={wageOverBudget}
+          />
+          <ManagerClubFinancesPanel career={career} />
+          {quickActionsCard}
+        </div>
+        {alertDialog}
+      </>
     );
   }
 
   if (playoffsActive && hubCareer.playoffs) {
     return (
-      <div className={PAGE.section}>
-        {nextFixtureCard}
-        <HubPlayoffBracketPanel playoffs={hubCareer.playoffs} />
-        {newsSection}
-        <HubPlayoffsCampaignCard career={hubCareer} />
-        <HubBoardBudgetAttendance
-          career={career}
-          lastGate={lastGate}
-          wageOverBudget={wageOverBudget}
-        />
-        <ManagerClubFinancesPanel career={career} />
-        {scoringLeadersCard}
-        {contractsCard}
-        {quickActionsCard}
-      </div>
+      <>
+        <div className={PAGE.section}>
+          {nextFixtureCard}
+          <HubPlayoffBracketPanel playoffs={hubCareer.playoffs} />
+          {newsSection}
+          <HubPlayoffsCampaignCard career={hubCareer} />
+          <HubBoardBudgetAttendance
+            career={career}
+            lastGate={lastGate}
+            wageOverBudget={wageOverBudget}
+          />
+          <ManagerClubFinancesPanel career={career} />
+          {scoringLeadersCard}
+          {contractsCard}
+          {quickActionsCard}
+        </div>
+        {alertDialog}
+      </>
     );
   }
 
   return (
-    <div className={PAGE.section}>
-      {nextFixtureCard}
-
+    <>
+      <div className={PAGE.section}>
       {seasonProgressCard}
+
+      {nextFixtureCard}
 
       <HubStandingsPanel career={career} />
 
-      <ManagerClubFinancesPanel career={career} showSplitGuide />
+      <ManagerClubFinancesPanel career={career} />
 
       <HubBoardBudgetAttendance
         career={career}
@@ -826,5 +852,7 @@ export function ManagerHub({
 
       {quickActionsCard}
     </div>
+    {alertDialog}
+    </>
   );
 }

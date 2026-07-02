@@ -351,7 +351,6 @@ export interface FriendlyOpponentChoice {
   displayName: string;
   difficulty: "easy" | "balanced" | "hard";
   teamRating: number;
-  description: string;
   attendanceInterest: "low" | "medium" | "high";
 }
 

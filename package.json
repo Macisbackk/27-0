@@ -59,6 +59,8 @@
     "validate:spin-pools": "tsx scripts/validate-spin-pools.ts",
     "simulate:normal-difficulty-audit": "tsx scripts/simulate-normal-difficulty-audit.ts",
     "test:playoffs": "tsx scripts/test-playoff-simulation.ts",
+    "test:cup-fixtures": "tsx scripts/test-cup-fixture-resolution.ts",
+    "test:manager-audit": "tsx scripts/test-manager-audit-fixes.ts",
     "merge:coachbeard-accounts": "tsx scripts/merge-coachbeard-accounts.ts",
     "debug:spin-randomness": "tsx scripts/debug-spin-randomness.ts",
     "debug:era-data-gaps": "tsx scripts/debug-era-data-gaps.ts",

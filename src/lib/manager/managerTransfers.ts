@@ -12,6 +12,7 @@ import {
   generateInitialContract,
   inferSquadRole,
 } from "./managerContracts";
+import { canAffordAdditionalWage } from "./managerFinance";
 import { getManagerClubTeamRating } from "./managerRating";
 import { getPlayerAge } from "../players/player-age";
 
@@ -86,8 +87,7 @@ export function canAffordPlayer(budget: number, playerId: string): boolean {
 }
 
 export function canAffordWage(career: ManagerCareer, wage: number): boolean {
-  const projected = career.wageBill + wage;
-  return projected <= career.wageBudget * 1.05;
+  return canAffordAdditionalWage(career, wage);
 }
 
 export function signPlayer(
@@ -138,6 +138,7 @@ export function signPlayer(
   return { ok: true, career: next };
 }
 
+/** @deprecated Use releasePlayerWithCost from managerTransferLeague. */
 export function releasePlayer(
   career: ManagerCareer,
   playerId: string
