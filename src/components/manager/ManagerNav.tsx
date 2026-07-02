@@ -2,6 +2,7 @@
 
 import { BTN } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { getClubIndicatorColor } from "@/lib/clubs";
 import type { ManagerView } from "@/lib/manager/types";
 import { playTabChange, playUiClick } from "@/lib/sound";
 
@@ -33,9 +34,18 @@ export function ManagerNav({
 }: ManagerNavProps) {
   return (
     <header className="space-y-3">
-      <div>
-        <p className={TYPO.sectionLabel}>Manager Mode</p>
-        <h1 className={`${TYPO.pageTitle} text-xl sm:text-2xl`}>{club}</h1>
+      <div className="flex items-center gap-3">
+        <span
+          className="hidden h-10 w-1 shrink-0 rounded-full sm:block"
+          style={{ backgroundColor: getClubIndicatorColor(club) }}
+          aria-hidden
+        />
+        <div>
+          <p className={TYPO.sectionLabel}>Manager Mode</p>
+          <h1 className={`${TYPO.pageTitle} text-xl sm:text-2xl`}>
+            <span style={{ color: getClubIndicatorColor(club) }}>{club}</span>
+          </h1>
+        </div>
       </div>
 
       <nav className="manager-tab-rail -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:grid sm:grid-cols-4 sm:overflow-visible sm:px-0 lg:grid-cols-8">

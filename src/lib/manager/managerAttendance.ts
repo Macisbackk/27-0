@@ -13,7 +13,7 @@ import type { MatchFixture } from "../game/season-simulation";
 
 export const CLUB_ATTENDANCE_PROFILES: Record<
   string,
-  { base: number; capacity: number }
+  { base: number; capacity: number; min?: number }
 > = {
   "Wigan Warriors": { base: 13_500, capacity: 25_000 },
   "St Helens": { base: 12_000, capacity: 18_000 },
@@ -26,7 +26,7 @@ export const CLUB_ATTENDANCE_PROFILES: Record<
   "Wakefield Trinity": { base: 6_500, capacity: 9_000 },
   "Huddersfield Giants": { base: 5_500, capacity: 24_000 },
   "Castleford Tigers": { base: 7_000, capacity: 10_000 },
-  "Bradford Bulls": { base: 6_500, capacity: 25_000 },
+  "Bradford Bulls": { base: 7_500, capacity: 25_000, min: 6_700 },
   "Toulouse Olympique": { base: 5_000, capacity: 19_000 },
   "York Knights": { base: 4_500, capacity: 8_500 },
 };
@@ -34,10 +34,19 @@ export const CLUB_ATTENDANCE_PROFILES: Record<
 export function getClubAttendanceProfile(club: string): {
   base: number;
   capacity: number;
+  min?: number;
 } {
   return (
     CLUB_ATTENDANCE_PROFILES[club] ?? { base: 6_000, capacity: 12_000 }
   );
+}
+
+export function getClubAttendanceFloor(
+  club: string,
+  baseAttendance: number
+): number {
+  const profile = getClubAttendanceProfile(club);
+  return profile.min ?? Math.round(baseAttendance * 0.55);
 }
 
 export function createClubAttendanceData(club: string): ClubAttendanceData {
@@ -47,6 +56,22 @@ export function createClubAttendanceData(club: string): ClubAttendanceData {
     currentAverageAttendance: base,
     stadiumCapacity: capacity,
     fanMood: 50,
+  };
+}
+
+/** Refresh stored attendance from club profile (e.g. after profile tuning). */
+export function syncClubAttendanceData(
+  club: string,
+  data: ClubAttendanceData
+): ClubAttendanceData {
+  const { base, capacity } = getClubAttendanceProfile(club);
+  const prevBase = data.baseAttendance;
+  return {
+    ...data,
+    baseAttendance: base,
+    stadiumCapacity: capacity,
+    currentAverageAttendance:
+      data.currentAverageAttendance === prevBase ? base : data.currentAverageAttendance,
   };
 }
 
@@ -177,7 +202,7 @@ export function calculateMatchAttendance(
     competitionMultiplier(fixture.competition) *
     (0.85 + fanMood / 200);
 
-  const floor = Math.round(baseAttendance * 0.55);
+  const floor = getClubAttendanceFloor(career.club, baseAttendance);
   const raw = Math.round(baseAttendance * mult);
   return Math.max(floor, Math.min(stadiumCapacity, raw));
 }

@@ -9,6 +9,7 @@ import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSquadSlotsFromMatchday } from "@/lib/manager/managerSquad";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
+import { ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
 import {
   getManagerCupRoundLabel,
   isChallengeCupFixture,
@@ -140,17 +141,25 @@ export function ManagerMatchReview({
       )}
 
       {attendance && (
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <p className={TYPO.sectionLabel}>Gate & Fans</p>
+        <ManagerSectionCard title="Gate & Fans" accent="sky">
           <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
-            <span>Attendance: {attendance.attendance.toLocaleString()}</span>
-            <span>Gate Income: {formatWage(attendance.gateIncome)}</span>
-            <span>
-              Fan Mood: {attendance.fanMoodChange >= 0 ? "+" : ""}
-              {attendance.fanMoodChange}
-            </span>
+            <ManagerStat
+              label="Attendance"
+              value={attendance.attendance.toLocaleString()}
+              tone="sky"
+            />
+            <ManagerStat
+              label="Gate Income"
+              value={formatWage(attendance.gateIncome)}
+              tone="gold"
+            />
+            <ManagerStat
+              label="Fan Mood"
+              value={`${attendance.fanMoodChange >= 0 ? "+" : ""}${attendance.fanMoodChange}`}
+              tone={attendance.fanMoodChange >= 0 ? "primary" : "red"}
+            />
           </div>
-        </div>
+        </ManagerSectionCard>
       )}
 
       {fixture.meta?.liveEvents && fixture.meta.liveEvents.length > 0 && (

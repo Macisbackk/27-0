@@ -13,7 +13,7 @@ import {
   getManagerRosterIds,
 } from "./managerRating";
 import { createInitialPlayerState } from "./managerSquad";
-import { buildManagerSchedule, buildLeagueTableFromMatches } from "./managerFixtures";
+import { buildManagerSchedule, buildLeagueTableFromMatches, getManagerLeagueTable, syncManagerLeagueTable } from "./managerFixtures";
 import {
   buildContractsForSquad,
   computeWageBill,
@@ -21,7 +21,7 @@ import {
   ensureRenewalDemands,
   getWageBudgetForClub,
 } from "./managerContracts";
-import { createClubAttendanceData } from "./managerAttendance";
+import { createClubAttendanceData, syncClubAttendanceData } from "./managerAttendance";
 import { createManagerChallengeCup } from "./managerChallengeCup";
 import { generateReserveSquad } from "./managerReserves";
 import {
@@ -90,8 +90,9 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     challengeCup = createManagerChallengeCup(raw.seed ?? "migrate", raw.club);
   }
 
-  const attendanceData =
-    raw.attendanceData ?? createClubAttendanceData(raw.club);
+  const attendanceData = raw.attendanceData
+    ? syncClubAttendanceData(raw.club, raw.attendanceData)
+    : createClubAttendanceData(raw.club);
 
   const schedule = (raw.schedule ?? []).map((s) => ({
     ...s,
@@ -100,10 +101,12 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     label: s.label ?? `Round ${s.round} — League`,
   }));
 
-  const leagueTable = (raw.roundMatches?.length
-    ? buildLeagueTableFromMatches(raw.roundMatches, raw.club)
-    : (raw.leagueTable ?? [])
-  ).map((row) => ({
+  const leagueTable = getManagerLeagueTable({
+    ...raw,
+    roundMatches: raw.roundMatches ?? [],
+    leagueTable: raw.leagueTable ?? [],
+    fixtures: raw.fixtures ?? [],
+  } as ManagerCareer).map((row) => ({
     ...row,
     isUserTeam: row.isUserTeam ?? row.team === raw.club,
   }));
@@ -196,6 +199,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = syncManagerFinance(career);
   career = ensureFriendlyChoices(career);
   career = ensureCupBracketReady(career);
+  career = syncManagerLeagueTable(career);
   career = ensurePlayoffsReady(career);
   career = {
     ...career,

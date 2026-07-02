@@ -16,6 +16,7 @@ import type {
   ManagerCareer,
 } from "./types";
 import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
+import { countLeagueFixturesPlayed } from "./managerChallengeCup";
 
 export function buildManagerSchedule(
   club: string,
@@ -235,6 +236,35 @@ export function buildLeagueTableFromMatches(
   });
 
   return rows.map((row, i) => ({ ...row, position: i + 1 }));
+}
+
+/** Authoritative league table — rebuild from round results when they cover the season played. */
+export function getManagerLeagueTable(career: ManagerCareer): ManagerLeagueRow[] {
+  const leaguePlayed = countLeagueFixturesPlayed(career);
+  const roundCount = new Set(career.roundMatches?.map((m) => m.round) ?? []).size;
+  const roundMatchesAuthoritative =
+    Boolean(career.roundMatches?.length) && roundCount >= leaguePlayed;
+
+  if (roundMatchesAuthoritative) {
+    return buildLeagueTableFromMatches(career.roundMatches, career.club);
+  }
+
+  if (career.leagueTable?.length) {
+    return career.leagueTable.map((row) => ({
+      ...row,
+      isUserTeam: row.isUserTeam ?? row.team === career.club,
+    }));
+  }
+
+  if (career.roundMatches?.length) {
+    return buildLeagueTableFromMatches(career.roundMatches, career.club);
+  }
+
+  return buildLeagueTableFromMatches([], career.club);
+}
+
+export function syncManagerLeagueTable(career: ManagerCareer): ManagerCareer {
+  return { ...career, leagueTable: getManagerLeagueTable(career) };
 }
 
 export function getUserLeaguePosition(

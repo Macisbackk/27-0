@@ -15,22 +15,28 @@ import {
   countLeagueFixturesPlayed,
   isLeagueAndCupPhaseComplete,
 } from "./managerChallengeCup";
-import { getUserLeaguePosition } from "./managerFixtures";
+import {
+  getManagerLeagueTable,
+  getUserLeaguePosition,
+  syncManagerLeagueTable,
+} from "./managerFixtures";
 
 export const PLAYOFF_QUALIFIERS = 6;
 
 export function userQualifiedForManagerPlayoffs(career: ManagerCareer): boolean {
   return (
-    getUserLeaguePosition(career.leagueTable, career.club) <= PLAYOFF_QUALIFIERS
+    getUserLeaguePosition(getManagerLeagueTable(career), career.club) <=
+    PLAYOFF_QUALIFIERS
   );
 }
 
 
 export function createManagerPlayoffs(career: ManagerCareer): PlayoffBracketState {
-  const position = getUserLeaguePosition(career.leagueTable, career.club);
+  const table = getManagerLeagueTable(career);
+  const position = getUserLeaguePosition(table, career.club);
   return createPlayoffBracket(
     `${career.seed}-playoffs`,
-    career.leagueTable,
+    table,
     position,
     { currentSeasonOnly: true, userClub: career.club }
   );
@@ -154,14 +160,15 @@ export function buildPlayoffScheduledFixture(
 }
 
 export function ensurePlayoffsReady(career: ManagerCareer): ManagerCareer {
-  if (career.isSeasonComplete || !isLeagueAndCupPhaseComplete(career)) {
-    return career;
+  const synced = syncManagerLeagueTable(career);
+  if (!isLeagueAndCupPhaseComplete(synced)) {
+    return synced;
   }
-  if (!userQualifiedForManagerPlayoffs(career)) return career;
+  if (!userQualifiedForManagerPlayoffs(synced)) return synced;
 
-  let playoffs = career.playoffs ?? createManagerPlayoffs(career);
-  playoffs = preparePlayoffRound({ ...career, playoffs });
-  return { ...career, playoffs };
+  let playoffs = synced.playoffs ?? createManagerPlayoffs(synced);
+  playoffs = preparePlayoffRound({ ...synced, playoffs });
+  return { ...synced, playoffs };
 }
 
 export function getPlayoffHubStatus(career: ManagerCareer): string {

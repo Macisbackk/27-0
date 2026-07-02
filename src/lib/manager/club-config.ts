@@ -73,36 +73,30 @@ function getLeagueSquadRatings(): number[] {
   return CURRENT_PLAYABLE_CLUBS.map((name) => getManagerClubRating(name));
 }
 
-/** Board expectation tier from squad OVR — clubs on the same rating band share the same bio. */
+function getSquadRatingRank(
+  squadRating: number,
+  allRatings: readonly number[]
+): number {
+  return allRatings.filter((r) => r > squadRating).length + 1;
+}
+
+/** Board expectation tier from squad OVR rank — top five title contenders, sixth fights for playoffs. */
 export function getManagerClubExpectationTier(
   squadRating: number,
   allRatings: readonly number[]
 ): ManagerClubExpectationTier {
-  const bands = [...new Set(allRatings)].sort((a, b) => b - a);
-  const bandIndex = bands.indexOf(squadRating);
-  if (bandIndex < 0) return "mid-table";
+  if (allRatings.length === 0) return "mid-table";
 
-  const totalBands = bands.length;
-  if (bandIndex === 0) return "title";
-  if (bandIndex === 1 || totalBands <= 2) return "playoffs";
+  const rank = getSquadRatingRank(squadRating, allRatings);
+  const total = allRatings.length;
 
-  const remaining = totalBands - 2;
-  const relIndex = bandIndex - 2;
+  if (rank <= 5) return "title";
+  if (rank === 6) return "playoffs";
 
-  if (remaining === 1) return "mid-table";
-  if (remaining === 2) {
-    return relIndex === 0 ? "mid-table" : "avoid-bottom";
-  }
-  if (remaining === 3) {
-    if (relIndex === 0) return "mid-table";
-    if (relIndex === 1) return "avoid-bottom";
-    return "survive";
-  }
-
-  const fraction = relIndex / (remaining - 1);
-  if (fraction < 0.34) return "mid-table";
-  if (fraction < 0.67) return "avoid-bottom";
-  return "survive";
+  const fromBottom = total - rank;
+  if (fromBottom <= 1) return "survive";
+  if (fromBottom <= 3) return "avoid-bottom";
+  return "mid-table";
 }
 
 export function getManagerClubExpectation(

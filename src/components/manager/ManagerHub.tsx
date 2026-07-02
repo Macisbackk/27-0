@@ -18,7 +18,7 @@ import {
   getLastHomeGate,
 } from "@/lib/manager/managerAttendance";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
-import { getClubByName, getClubColors, getClubIndicatorColor } from "@/lib/clubs";
+import { getClubIndicatorColor } from "@/lib/clubs";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
@@ -33,6 +33,15 @@ import { autoFixMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/man
 import { getHubNewsItems } from "@/lib/manager/managerNews";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
+import {
+  ManagerFormStrip,
+  ManagerNewsItem,
+  ManagerSectionCard,
+  ManagerStat,
+  boardConfidenceTone,
+  fanMoodTone,
+  leaguePositionTone,
+} from "@/components/manager/manager-ui";
 import {
   getManagerScheduledFixtureHeadline,
   isChallengeCupFixture,
@@ -61,14 +70,14 @@ function formatFunds(budget: number): string {
 
 function HubBoardBudgetAttendance({
   career,
-  club,
   transferBudget,
   lastGate,
+  wageOverBudget,
 }: {
   career: ManagerCareer;
-  club: ReturnType<typeof getClubByName>;
   transferBudget: number;
   lastGate: ReturnType<typeof getLastHomeGate>;
+  wageOverBudget: boolean;
 }) {
   return (
     <div
@@ -77,46 +86,43 @@ function HubBoardBudgetAttendance({
     >
       <p className={TYPO.sectionLabel}>Board · Budget · Attendance</p>
       <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
-        <div>
-          <p className="text-pitch-500 text-xs">Board Confidence</p>
-          <p className="font-semibold text-white">{career.boardConfidence}%</p>
-        </div>
-        <div>
-          <p className="text-pitch-500 text-xs">Transfer Budget</p>
-          <p className="font-semibold text-accent-gold">
-            {formatFunds(transferBudget)}
-          </p>
-        </div>
-        <div>
-          <p className="text-pitch-500 text-xs">Club Funds</p>
-          <p className="font-semibold text-pitch-200">
-            {formatFunds(career.budget)}
-          </p>
-        </div>
-        <div>
-          <p className="text-pitch-500 text-xs">Wage Bill</p>
-          <p className="font-semibold text-pitch-200">
-            {formatWage(career.wageBill)}
-            <span className="text-pitch-500 font-normal">
-              {" "}
-              / {formatWage(career.wageBudget)}
-            </span>
-          </p>
-        </div>
-        <div>
-          <p className="text-pitch-500 text-xs">Avg Attendance</p>
-          <p>
-            {career.attendanceData.currentAverageAttendance.toLocaleString()}
-          </p>
-        </div>
-        <div>
-          <p className="text-pitch-500 text-xs">Fan Mood</p>
-          <p>{fanMoodTrend(career.attendanceData.fanMood)}</p>
-        </div>
+        <ManagerStat
+          label="Board Confidence"
+          value={`${career.boardConfidence}%`}
+          tone={boardConfidenceTone(career.boardConfidence)}
+        />
+        <ManagerStat
+          label="Transfer Budget"
+          value={formatFunds(transferBudget)}
+          tone="gold"
+        />
+        <ManagerStat
+          label="Club Funds"
+          value={formatFunds(career.budget)}
+          tone="default"
+        />
+        <ManagerStat
+          label="Wage Bill"
+          value={`${formatWage(career.wageBill)} / ${formatWage(career.wageBudget)}`}
+          tone={wageOverBudget ? "amber" : "muted"}
+        />
+        <ManagerStat
+          label="Avg Attendance"
+          value={career.attendanceData.currentAverageAttendance.toLocaleString()}
+          tone="sky"
+        />
+        <ManagerStat
+          label="Fan Mood"
+          value={fanMoodTrend(career.attendanceData.fanMood)}
+          tone={fanMoodTone(career.attendanceData.fanMood)}
+        />
       </div>
       {lastGate && (
-        <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
-          Last home gate: {lastGate.attendance.toLocaleString()}
+        <p className={`mt-2 ${TYPO.bodySm}`}>
+          <span className="text-pitch-500">Last home gate: </span>
+          <span className="font-semibold text-sky-300">
+            {lastGate.attendance.toLocaleString()}
+          </span>
         </p>
       )}
     </div>
@@ -154,7 +160,21 @@ function HubLeagueTable({ career }: { career: ManagerCareer }) {
       </div>
       {userRow && (
         <p className={`mt-1 ${TYPO.cardTitle}`}>
-          {ordinal(userRow.position)} · {career.club}
+          <span
+            className={
+              userRow.position <= 3
+                ? "text-accent-gold"
+                : userRow.position <= 6
+                  ? "text-theme-primary"
+                  : userRow.position >= 12
+                    ? "text-red-300"
+                    : "text-white"
+            }
+          >
+            {ordinal(userRow.position)}
+          </span>
+          <span className="text-pitch-400"> · </span>
+          <span className="text-theme-primary">{career.club}</span>
         </p>
       )}
       <div className="mt-3 overflow-x-auto">
@@ -233,7 +253,6 @@ export function ManagerHub({
   onUpdate,
   onNavigate,
 }: ManagerHubProps) {
-  const club = getClubByName(career.club);
   const nextFixture = getNextManagerFixture(
     ensurePlayoffsReady(ensureCupBracketReady(career))
   );
@@ -278,11 +297,6 @@ export function ManagerHub({
     nextFixture?.isHome && !career.isSeasonComplete
       ? getHomeFixtureAttendanceOutlook(career, nextFixture)
       : null;
-
-  const formDisplay =
-    career.recentForm.length > 0
-      ? career.recentForm.slice(-5).join(" ")
-      : "—";
 
   const expiringCount = countExpiringContracts(career.contracts);
   const lastGate = getLastHomeGate(career.gateIncomeHistory);
@@ -336,27 +350,17 @@ export function ManagerHub({
             </p>
           )}
           <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
-            <div>
-              <p className="text-pitch-500 text-xs">Your rating</p>
-              <p className="font-semibold text-theme-primary">{teamRating}</p>
-            </div>
+            <ManagerStat label="Your rating" value={String(teamRating)} tone="primary" />
             {oppRating !== null && (
-              <div>
-                <p className="text-pitch-500 text-xs">Opponent rating</p>
-                <p className="font-semibold">{oppRating}</p>
-              </div>
+              <ManagerStat label="Opponent rating" value={String(oppRating)} tone="default" />
             )}
-            <div>
-              <p className="text-pitch-500 text-xs">Game week</p>
-              <p>
-                {career.gameWeek}/{career.schedule.length}
-              </p>
-            </div>
+            <ManagerStat
+              label="Game week"
+              value={`${career.gameWeek}/${career.schedule.length}`}
+              tone="muted"
+            />
             {prediction && (
-              <div>
-                <p className="text-pitch-500 text-xs">Prediction</p>
-                <p className="text-theme-tertiary">{prediction}</p>
-              </div>
+              <ManagerStat label="Prediction" value={prediction} tone="sky" />
             )}
           </div>
           {!squadCheck.valid && (
@@ -407,105 +411,133 @@ export function ManagerHub({
 
       <HubBoardBudgetAttendance
         career={career}
-        club={club}
         transferBudget={transferBudget}
         lastGate={lastGate}
+        wageOverBudget={wageOverBudget}
       />
 
-      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-        <p className={TYPO.sectionLabel}>Season Progress</p>
+      <ManagerSectionCard title="Season Progress">
         <p className={`mt-1 ${TYPO.cardTitle}`}>
-          Game Week {career.gameWeek} of {career.schedule.length}
+          Game Week{" "}
+          <span className="text-theme-primary">{career.gameWeek}</span>
+          <span className="text-pitch-500"> of </span>
+          {career.schedule.length}
         </p>
-        <p className={`${TYPO.bodySm} text-pitch-400`}>
-          Season {career.seasonYear} · {ordinal(position)} in the table ·{" "}
-          {cupStatus} · {playoffStatus}
+        <p className={`mt-1 ${TYPO.bodySm}`}>
+          <span className="text-pitch-500">Season {career.seasonYear} · </span>
+          <span className={leaguePositionTone(position) === "gold" ? "text-accent-gold font-semibold" : leaguePositionTone(position) === "primary" ? "text-theme-primary font-semibold" : leaguePositionTone(position) === "red" ? "text-red-300 font-semibold" : "text-white font-semibold"}>
+            {ordinal(position)}
+          </span>
+          <span className="text-pitch-500"> in the table</span>
         </p>
+        <div className="mt-2 flex flex-wrap gap-2">
+          <span className="rounded-full border border-accent-gold/40 bg-accent-gold/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent-gold">
+            {cupStatus}
+          </span>
+          <span className="rounded-full border border-theme-primary/40 bg-theme-primary/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-theme-primary">
+            {playoffStatus}
+          </span>
+        </div>
         {wageOverBudget && (
-          <p className={`mt-1 ${TYPO.bodySm} text-amber-300`}>
+          <p className={`mt-2 ${TYPO.bodySm} text-amber-300`}>
             Wage bill over budget
             {wagePressure >= 4
               ? " — board demanding sales or renewals at lower wages"
               : ""}
           </p>
         )}
-        <div className="mt-2 h-2 overflow-hidden rounded-full bg-pitch-800">
+        <div className="mt-3 h-2 overflow-hidden rounded-full bg-pitch-800">
           <div
-            className="h-full bg-theme-primary transition-all"
+            className="h-full bg-gradient-to-r from-theme-primary/80 to-theme-primary transition-all"
             style={{
               width: `${Math.min(100, (career.gameWeek / Math.max(1, career.schedule.length)) * 100)}%`,
             }}
           />
         </div>
-      </div>
+      </ManagerSectionCard>
 
       <HubLeagueTable career={career} />
 
       {newsItems.length > 0 && (
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <p className={TYPO.sectionLabel}>Latest News</p>
+        <ManagerSectionCard title="Latest News" variant="inset">
           <ul className={`mt-2 ${SPACING.stackSm}`}>
             {newsItems.map((item) => (
-              <li
-                key={item.id}
-                className={`${TYPO.bodySm} text-pitch-200 before:mr-2 before:text-theme-primary before:content-['•']`}
-              >
-                {item.text}
-              </li>
+              <ManagerNewsItem key={item.id} item={item} />
             ))}
           </ul>
-        </div>
+        </ManagerSectionCard>
       )}
 
-      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-        <p className={`${TYPO.sectionLabel} mb-2`}>Team Status</p>
-        <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-2">
+      <ManagerSectionCard title="Team Status">
+        <div className="mt-2 grid grid-cols-2 gap-3 text-sm sm:grid-cols-2">
+          <ManagerStat
+            label="Injuries"
+            value={String(injuryCount)}
+            tone={injuryCount > 0 ? "red" : "primary"}
+          />
           <div>
-            <p className="text-pitch-500 text-xs">Injuries</p>
-            <p>{injuryCount}</p>
-          </div>
-          <div>
-            <p className="text-pitch-500 text-xs">Recent Form</p>
-            <p className="font-mono tracking-widest">{formDisplay}</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
+              Recent Form
+            </p>
+            <div className="mt-1">
+              <ManagerFormStrip
+                results={career.recentForm.slice(-5) as ("W" | "L" | "D")[]}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      </ManagerSectionCard>
 
       {ts.played > 0 && (
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <p className={`${TYPO.sectionLabel} mb-2`}>Scoring Leaders</p>
-          <div className="grid gap-2 text-sm sm:grid-cols-2">
+        <ManagerSectionCard title="Scoring Leaders">
+          <div className="mt-2 grid gap-2 text-sm sm:grid-cols-2">
             <span>
-              Record: {ts.wins}W-{ts.losses}L
+              <span className="text-pitch-500">Record: </span>
+              <span className="font-semibold text-theme-primary">{ts.wins}W</span>
+              <span className="text-pitch-500">-</span>
+              <span className="font-semibold text-red-300">{ts.losses}L</span>
             </span>
             <span>
-              Tries: {ts.triesFor} scored / {ts.triesAgainst} conceded
+              <span className="text-pitch-500">Tries: </span>
+              <span className="font-semibold text-theme-primary">{ts.triesFor}</span>
+              <span className="text-pitch-500"> scored / </span>
+              <span className="font-semibold text-red-300">{ts.triesAgainst}</span>
+              <span className="text-pitch-500"> conceded</span>
             </span>
           </div>
           {topScorer && (
-            <p className={`mt-2 ${TYPO.bodySm} text-pitch-200`}>
-              Top try scorer:{" "}
+            <p className={`mt-2 ${TYPO.bodySm}`}>
+              <span className="text-pitch-500">Top try scorer: </span>
               <span className="font-semibold text-white">
                 {getManagerPlayer(career, topScorer.playerId)?.name ?? "—"}
-              </span>{" "}
-              ({topScorer.tries})
+              </span>
+              <span className="font-semibold text-accent-gold">
+                {" "}
+                ({topScorer.tries})
+              </span>
             </p>
           )}
           {topKicker && topKicker.goals > 0 && (
-            <p className={`${TYPO.bodySm} text-pitch-200`}>
-              Top goal scorer:{" "}
+            <p className={TYPO.bodySm}>
+              <span className="text-pitch-500">Top goal scorer: </span>
               <span className="font-semibold text-white">
                 {getManagerPlayer(career, topKicker.playerId)?.name ?? "—"}
-              </span>{" "}
-              ({topKicker.goals})
+              </span>
+              <span className="font-semibold text-sky-300">
+                {" "}
+                ({topKicker.goals})
+              </span>
             </p>
           )}
-        </div>
+        </ManagerSectionCard>
       )}
 
       {(expiringCount > 0 || injuryCount > 0) && (
-        <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-          <p className={TYPO.sectionLabel}>Contracts & Injuries</p>
+        <ManagerSectionCard
+          title="Contracts & Injuries"
+          variant="inset"
+          accent={injuryCount > 0 ? "red" : "amber"}
+        >
           {expiringCount > 0 && (
             <p className={`mt-1 ${TYPO.bodySm} text-accent-gold`}>
               {expiringCount} contract{expiringCount > 1 ? "s" : ""} expiring
@@ -517,7 +549,7 @@ export function ManagerHub({
               {injuryCount} player{injuryCount > 1 ? "s" : ""} unavailable
             </p>
           )}
-        </div>
+        </ManagerSectionCard>
       )}
 
       {onNavigate && (

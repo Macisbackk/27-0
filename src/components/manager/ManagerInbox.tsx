@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import {
+  ManagerInboxBadge,
+  ManagerSectionCard,
+  inboxMessageAccent,
+} from "@/components/manager/manager-ui";
 import type { InboxMessage, ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
   acceptIncomingOffer,
@@ -98,11 +103,27 @@ export function ManagerInbox({
         </p>
       )}
 
-      {messages.map((msg) => (
-        <div key={msg.id} className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <p className={TYPO.sectionLabel}>{msg.title}</p>
-          <p className={`mt-1 ${TYPO.bodySm} text-white`}>{msg.body}</p>
-          <p className={`mt-1 text-xs text-pitch-500`}>Week {msg.gameWeek}</p>
+      {messages.map((msg) => {
+        const accent = inboxMessageAccent(msg.type);
+        const isActionable =
+          msg.type === "transfer" ||
+          msg.type === "transfer_offer_in" ||
+          msg.type === "cup_draw" ||
+          msg.type === "season_reward" ||
+          msg.type === "youth_intake";
+
+        return (
+        <ManagerSectionCard
+          key={msg.id}
+          variant={isActionable ? "elevated" : "base"}
+          accent={accent}
+        >
+          <div className="flex flex-wrap items-center gap-2">
+            <ManagerInboxBadge type={msg.type} />
+            <span className="text-xs text-pitch-500">Week {msg.gameWeek}</span>
+          </div>
+          <p className={`mt-2 font-semibold text-white`}>{msg.title}</p>
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>{msg.body}</p>
 
           {(msg.type === "transfer" || msg.type === "transfer_offer_in") &&
             msg.askingPrice != null && (
@@ -244,8 +265,9 @@ export function ManagerInbox({
               Dismiss
             </GameButton>
           )}
-        </div>
-      ))}
+        </ManagerSectionCard>
+        );
+      })}
 
       {resolved.length > 0 && (
         <section>

@@ -18,6 +18,8 @@ import {
 import {
   buildLeagueTableFromMatches,
   simulateRoundOtherMatches,
+  getUserLeaguePosition,
+  syncManagerLeagueTable,
 } from "./managerFixtures";
 import { rollPostMatchInjuries } from "./managerTransfers";
 import { computeManagerTeamRating } from "./managerRating";
@@ -52,14 +54,14 @@ import {
 export function getNextManagerFixture(
   career: ManagerCareer
 ): ReturnType<typeof getNextLeagueOrCupFixture> {
-  if (career.isSeasonComplete) return null;
+  const synced = syncManagerLeagueTable(career);
 
-  const leagueOrCup = getNextLeagueOrCupFixture(career);
+  const leagueOrCup = getNextLeagueOrCupFixture(synced);
   if (leagueOrCup) return leagueOrCup;
 
-  if (!isLeagueAndCupPhaseComplete(career)) return null;
+  if (!isLeagueAndCupPhaseComplete(synced)) return null;
 
-  const withPlayoffs = ensurePlayoffsReady(career);
+  const withPlayoffs = ensurePlayoffsReady(synced);
   if (isPlayoffsPhaseComplete(withPlayoffs)) return null;
 
   const prepared = preparePlayoffRound(withPlayoffs);
@@ -73,8 +75,10 @@ export function getNextManagerFixture(
 }
 
 export function isManagerSeasonComplete(career: ManagerCareer): boolean {
-  if (!isLeagueAndCupPhaseComplete(career)) return false;
-  return isPlayoffsPhaseComplete(ensurePlayoffsReady(career));
+  const synced = syncManagerLeagueTable(career);
+  if (!isLeagueAndCupPhaseComplete(synced)) return false;
+  const withPlayoffs = ensurePlayoffsReady(synced);
+  return isPlayoffsPhaseComplete(withPlayoffs);
 }
 import { countExpiringContracts } from "./managerContracts";
 import { maybeGenerateAiTransfers } from "./managerAiTransfers";
@@ -484,7 +488,7 @@ export function applyManagerMatchResult(
     },
   };
 
-  const position = leagueTable.find((r) => r.isUserTeam)?.position ?? 14;
+  const position = getUserLeaguePosition(leagueTable, career.club);
 
   let boardConfidence = career.boardConfidence;
   if (won) boardConfidence = Math.min(100, boardConfidence + 3);
@@ -558,7 +562,9 @@ export function applyManagerMatchResult(
     updatedAt: new Date().toISOString(),
   };
 
-  let finalCareer: ManagerCareer = ensurePlayoffsReady(nextCareer);
+  let finalCareer: ManagerCareer = ensurePlayoffsReady(
+    syncManagerLeagueTable(nextCareer)
+  );
   finalCareer = {
     ...finalCareer,
     isSeasonComplete: isManagerSeasonComplete(finalCareer),
@@ -706,12 +712,12 @@ export function simulateManagerMatchLive(
 }
 
 export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
-  if (career.isSeasonComplete) return career;
+  if (isManagerSeasonComplete(career)) return career;
 
   const simCareer = resolveCareerForMatchSimulation(career);
   const ready = ensurePlayoffsReady(ensureCupBracketReady(simCareer));
   const sched = getNextManagerFixture(ready);
-  if (!sched) return career;
+  if (!sched) return ready;
 
   const { fixture, liveEvents } = simulateManagerMatchLive(ready, sched);
   const { avgForm } = computePlayerModifiers(ready, [

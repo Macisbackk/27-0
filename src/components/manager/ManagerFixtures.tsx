@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { ClubColorChip } from "@/components/ClubColorChip";
 import { FixtureResultRow } from "@/components/FixtureResultRow";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
+import { ManagerFormStrip, ManagerStat, leaguePositionTone } from "@/components/manager/manager-ui";
 import {
   CARD,
   SPACING,
@@ -180,27 +181,7 @@ function buildFixtureList(
 }
 
 function FormStrip({ results }: { results: ("W" | "L" | "D")[] }) {
-  if (results.length === 0) {
-    return <span className="text-pitch-500">—</span>;
-  }
-  return (
-    <div className="flex flex-wrap gap-1">
-      {results.map((r, i) => (
-        <span
-          key={`${r}-${i}`}
-          className={`inline-flex h-6 min-w-[1.5rem] items-center justify-center rounded px-1 text-[10px] font-bold ${
-            r === "W"
-              ? "bg-theme-primary/20 text-theme-primary"
-              : r === "L"
-                ? "bg-red-500/20 text-red-300"
-                : "bg-pitch-700/80 text-pitch-300"
-          }`}
-        >
-          {r}
-        </span>
-      ))}
-    </div>
-  );
+  return <ManagerFormStrip results={results} />;
 }
 
 function UpcomingFixtureRow({
@@ -309,9 +290,7 @@ export function ManagerFixtures({
   const [filter, setFilter] = useState<FixtureFilter>("all");
 
   const readyCareer = ensurePlayoffsReady(ensureCupBracketReady(career));
-  const nextFixture = career.isSeasonComplete
-    ? null
-    : getNextManagerFixture(readyCareer);
+  const nextFixture = getNextManagerFixture(readyCareer);
 
   const homeAttendanceOutlook =
     nextFixture?.isHome && !career.isSeasonComplete
@@ -373,39 +352,30 @@ export function ManagerFixtures({
       <div className={`${CARD.elevated} ${SPACING.cardPadding}`}>
         <p className={TYPO.sectionLabel}>Season snapshot</p>
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
-              Record
-            </p>
-            <p className="mt-0.5 text-lg font-bold text-white">
-              {career.wins}W – {career.losses}L
-            </p>
-          </div>
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
-              Points diff
-            </p>
-            <p
-              className={`mt-0.5 text-lg font-bold ${
-                ts.pointsDifference > 0
-                  ? "text-theme-primary"
-                  : ts.pointsDifference < 0
-                    ? "text-red-300"
-                    : "text-white"
-              }`}
-            >
-              {ts.pointsDifference > 0 ? "+" : ""}
-              {ts.pointsDifference}
-            </p>
-          </div>
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
-              League
-            </p>
-            <p className="mt-0.5 text-lg font-bold text-white">
-              {ordinal(position)}
-            </p>
-          </div>
+          <ManagerStat
+            label="Record"
+            value={`${career.wins}W – ${career.losses}L`}
+            tone="default"
+            large
+          />
+          <ManagerStat
+            label="Points diff"
+            value={`${ts.pointsDifference > 0 ? "+" : ""}${ts.pointsDifference}`}
+            tone={
+              ts.pointsDifference > 0
+                ? "primary"
+                : ts.pointsDifference < 0
+                  ? "red"
+                  : "default"
+            }
+            large
+          />
+          <ManagerStat
+            label="League"
+            value={ordinal(position)}
+            tone={leaguePositionTone(position)}
+            large
+          />
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
               Form

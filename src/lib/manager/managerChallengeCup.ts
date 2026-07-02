@@ -56,7 +56,6 @@ export function countCupFixturesPlayed(career: ManagerCareer): number {
 }
 
 export function ensureCupBracketReady(career: ManagerCareer): ManagerCareer {
-  if (career.isSeasonComplete) return career;
   const pending = getPendingCupBracketRound(career);
   if (pending === null || !career.challengeCup) return career;
 
@@ -220,8 +219,6 @@ export function isLeagueAndCupPhaseComplete(career: ManagerCareer): boolean {
 export function getNextLeagueOrCupFixture(
   career: ManagerCareer
 ): ManagerScheduledFixture | null {
-  if (career.isSeasonComplete) return null;
-
   if (needsPreSeasonFriendlies(career) && career.preSeason.activeFriendly) {
     const f = career.preSeason.activeFriendly;
     return {

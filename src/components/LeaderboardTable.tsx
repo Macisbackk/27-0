@@ -49,8 +49,8 @@ const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
 type LeaderboardPlayStyle = "quick" | "manager";
 
 const PLAY_STYLE_TABS: { id: LeaderboardPlayStyle; label: string }[] = [
-  { id: "quick", label: "Quick Mode" },
   { id: "manager", label: "Manager Mode" },
+  { id: "quick", label: "Quick Mode" },
 ];
 
 const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
@@ -77,7 +77,7 @@ interface LeaderboardTableProps {
 export function LeaderboardTable({
   initialDifficulty = "NORMAL",
 }: LeaderboardTableProps) {
-  const [playStyle, setPlayStyle] = useState<LeaderboardPlayStyle>("quick");
+  const [playStyle, setPlayStyle] = useState<LeaderboardPlayStyle>("manager");
   const [leaderboardMode, setLeaderboardMode] =
     useState<LeaderboardDbMode>("super-league");
   const [managerMode, setManagerMode] =

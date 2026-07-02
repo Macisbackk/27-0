@@ -619,126 +619,37 @@ export function advanceLiveMinute(
   return advanceLiveTick(state, career, command);
 }
 
-function schedFromLiveState(state: LiveMatchState): ManagerScheduledFixture {
-  return {
-    id: state.fixtureId,
-    round: state.round,
-    opponent: state.opponent,
-    isHome: state.isHome,
-    competition: state.competition ?? "league",
-    label: `Round ${state.round}`,
-  };
-}
-
-function isColdStartSimulate(state: LiveMatchState): boolean {
-  return (
-    state.phase === "preview" ||
-    (state.minute === 0 &&
-      state.userScore === 0 &&
-      state.oppScore === 0 &&
-      state.events.length === 0)
-  );
-}
-
-function tryCountFromState(state: LiveMatchState, team: "user" | "opponent"): number {
-  const fromEvents = state.events.filter(
-    (e) => e.type === "try" && e.team === team
-  ).length;
-  if (team === "user") {
-    return Math.max(state.userTries, fromEvents);
-  }
-  return Math.max(state.oppTries, fromEvents);
-}
-
-function applyPreviewFullTime(
-  state: LiveMatchState,
-  preview: MatchFixture
-): LiveMatchState {
-  return {
-    ...state,
-    minute: 80,
-    userScore: preview.pointsFor,
-    oppScore: preview.pointsAgainst,
-    userTries: preview.triesFor,
-    oppTries: preview.triesAgainst,
-    targetPointsFor: preview.pointsFor,
-    targetPointsAgainst: preview.pointsAgainst,
-    targetTriesFor: preview.triesFor,
-    targetTriesAgainst: preview.triesAgainst,
-    isComplete: true,
-    isPlaying: false,
-    phase: "full_time",
-    effectivenessLine: "Full time — match simulated to the final whistle.",
-  };
-}
-
-/** Finish from in-progress live scores toward targets set at kick-off. */
-function completeMidGameToTarget(state: LiveMatchState): LiveMatchState {
-  const targetFor = state.targetPointsFor;
-  const targetAgainst = state.targetPointsAgainst;
-  const targetTriesFor = state.targetTriesFor;
-  const targetTriesAgainst = state.targetTriesAgainst;
-
-  const minute =
-    state.phase === "halftime"
-      ? HALFTIME_MINUTE
-      : Math.min(state.minute, 80);
-  const shareRemaining = Math.max(0, (80 - minute) / 80);
-
-  const curFor = snapToRLScore(state.userScore, false);
-  const curAgainst = snapToRLScore(state.oppScore, false);
-
-  let finalFor =
-    curFor + Math.round(Math.max(0, targetFor - curFor) * shareRemaining);
-  let finalAgainst =
-    curAgainst +
-    Math.round(Math.max(0, targetAgainst - curAgainst) * shareRemaining);
-
-  finalFor = snapToRLScore(finalFor, false);
-  finalAgainst = snapToRLScore(finalAgainst, false);
-  finalFor = Math.max(finalFor, curFor);
-  finalAgainst = Math.max(finalAgainst, curAgainst);
-
-  if (finalFor === finalAgainst) {
-    if (targetFor > targetAgainst) finalFor += 2;
-    else if (targetAgainst > targetFor) finalAgainst += 2;
-    else finalFor += 2;
-  }
-
-  const curTriesFor = tryCountFromState(state, "user");
-  const curTriesAgainst = tryCountFromState(state, "opponent");
-  const finalTriesFor =
-    curTriesFor +
-    Math.round(Math.max(0, targetTriesFor - curTriesFor) * shareRemaining);
-  const finalTriesAgainst =
-    curTriesAgainst +
-    Math.round(Math.max(0, targetTriesAgainst - curTriesAgainst) * shareRemaining);
-
-  return {
-    ...state,
-    minute: 80,
-    userScore: finalFor,
-    oppScore: finalAgainst,
-    userTries: Math.max(finalTriesFor, curTriesFor),
-    oppTries: Math.max(finalTriesAgainst, curTriesAgainst),
-    isComplete: true,
-    isPlaying: false,
-    phase: "full_time",
-    effectivenessLine: "Full time — match simulated to the final whistle.",
-  };
-}
-
 export function advanceLiveToFullTime(
   state: LiveMatchState,
   career: ManagerCareer,
-  _command: LiveMatchCommand
+  command: LiveMatchCommand
 ): LiveMatchState {
-  if (!isColdStartSimulate(state)) {
-    return completeMidGameToTarget(state);
+  let current: LiveMatchState = {
+    ...state,
+    command,
+    phase:
+      state.phase === "halftime"
+        ? "second_half"
+        : state.phase === "preview"
+          ? "first_half"
+          : state.phase,
+    isPlaying: true,
+  };
+
+  const maxIterations = Math.ceil(80 / GAME_MINUTES_PER_TICK) + 5;
+  for (let i = 0; i < maxIterations && !current.isComplete; i++) {
+    current = advanceLiveTick(current, career, command, 80);
   }
 
-  const preview = previewManagerMatchScoreline(career, schedFromLiveState(state));
-  return applyPreviewFullTime(state, preview);
+  if (!current.isComplete) {
+    current = finalizeLiveMatch(current);
+  }
+
+  return {
+    ...current,
+    isPlaying: false,
+    effectivenessLine: "Full time — match simulated to the final whistle.",
+  };
 }
 
 function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {

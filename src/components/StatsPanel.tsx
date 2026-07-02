@@ -56,12 +56,12 @@ import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 type StatsModeId = "quick" | "manager";
 
 const STATS_MODE_TABS: { id: StatsModeId; label: string }[] = [
-  { id: "quick", label: "Quick Mode" },
   { id: "manager", label: "Manager Mode" },
+  { id: "quick", label: "Quick Mode" },
 ];
 
 export function StatsPanel() {
-  const [modeTab, setModeTab] = useState<StatsModeId>("quick");
+  const [modeTab, setModeTab] = useState<StatsModeId>("manager");
   const [activeTab, setActiveTab] = useState<StatsTabId>("overall");
   const [managerTab, setManagerTab] =
     useState<ManagerStatsTabId>("overall");
