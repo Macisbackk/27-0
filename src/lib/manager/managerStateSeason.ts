@@ -253,6 +253,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     playoffsIntroAcknowledged: false,
     trophyCelebrationShown: false,
     leagueWinnersCelebrationShown: false,
+    challengeCupCelebrationShown: false,
     wagePressureWeeks: 0,
     transferMarket: generateTransferMarket(withFreeAgents, newSeed, 0),
     squad: withFreeAgents.squad.map((p) => ({

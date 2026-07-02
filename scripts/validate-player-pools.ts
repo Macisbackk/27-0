@@ -7,7 +7,6 @@ import { join } from "path";
 import {
   CURRENT_PLAYABLE_CLUBS,
   auditModePool,
-  getChallengeCupPool,
   getDraftPool,
   getFantasyPool,
   getGlobalRecruitmentPool,
@@ -21,7 +20,6 @@ import { PLAYER_RATING_OVERRIDES } from "../data/player-rating-overrides";
 import {
   isPreSuperLeagueOnlyPlayer,
 } from "../src/lib/players/super-league-eligibility";
-import { getEraClubsWithTeams } from "../src/lib/players/era-teams";
 import { generateSlotTeamYearTarget } from "../src/lib/game/slot-team-year-pick";
 import { createEmptySquad } from "../src/lib/positions";
 import { sampleOpponentSquadRatingsByClub } from "../src/lib/game/opponent-squad-strength";
@@ -57,7 +55,6 @@ function findUnsafeDuplicateNames(): { name: string; ids: string[] }[] {
 function main(): void {
   const normal = auditModePool("normal");
   const hard = auditModePool("hard");
-  const cup = auditModePool("challenge-cup");
   const fantasy = auditModePool("fantasy");
   const draft = auditModePool("draft");
 
@@ -68,7 +65,7 @@ function main(): void {
     .map((p) => ({
       id: p.id,
       name: p.name,
-      reason: "era-only generated player excluded from Normal/Hard/Cup/Draft/Fantasy global pools",
+      reason: "era-only generated player excluded from Normal/Hard/Draft/Fantasy global pools",
     }));
 
   const preSlExcluded = getAllDatabasePlayers()
@@ -168,10 +165,8 @@ function main(): void {
       normalModeGlobalTotal: globalPool.length,
       normalModeTeamYearPools: getNormalModeTeamYearPools().length,
       hardModePool: getHardModeGlobalPool().length,
-      challengeCupPool: getChallengeCupPool().length,
       fantasyPool: getFantasyPool().length,
       draftPool: getDraftPool().length,
-      eraChallengeCupTeams: getEraClubsWithTeams().length,
       eraOnlyExcludedFromGlobal: eraExcluded.length,
       preSuperLeagueExcluded: preSlExcluded,
       preSuperLeagueHiddenFromPools: preSlHiddenFromPools,
@@ -193,7 +188,6 @@ function main(): void {
       opponentSquadSample: opponentSample,
     },
     hardMode: hard,
-    challengeCup: cup,
     fantasy,
     draft,
     missingNormalClubs,
@@ -208,8 +202,7 @@ function main(): void {
   console.log("Player pool validation\n");
   console.log(`Normal global pool: ${globalPool.length}`);
   console.log(`Normal team-year pools: ${report.summary.normalModeTeamYearPools}`);
-  console.log(`Hard / Cup / Fantasy / Draft: ${hard.totalPlayers} / ${cup.totalPlayers} / ${fantasy.totalPlayers} / ${draft.totalPlayers}`);
-  console.log(`Era Cup teams: ${report.summary.eraChallengeCupTeams}`);
+  console.log(`Hard / Fantasy / Draft: ${hard.totalPlayers} / ${fantasy.totalPlayers} / ${draft.totalPlayers}`);
   console.log(`Pre-SL-only in database: ${preSlExcluded}`);
   console.log(`Pre-SL-only hidden from pools: ${preSlHiddenFromPools}`);
   console.log(`Non-2026 spin pools: ${non2026Pools.length}`);

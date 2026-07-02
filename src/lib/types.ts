@@ -25,7 +25,7 @@ export type PlayerCategory = "current" | "historic" | "legend";
 
 export type PlayerCardStatus = "Current" | "Historic" | "Legend";
 
-export type GameMode = "CLASSIC" | "CHALLENGE_CUP" | "DRAFT" | "FANTASY" | "ERA_CHALLENGE_CUP";
+export type GameMode = "CLASSIC" | "DRAFT" | "FANTASY";
 
 /** Normal Mode spin variant — persisted on runs, stats, and leaderboard rows. */
 export type ModeVariant = "current" | "era";
@@ -119,7 +119,6 @@ export interface SquadSlot {
 }
 
 export type GamePhase =
-  | "clubSelect"
   | "pitch"
   | "reveal"
   | "choice"

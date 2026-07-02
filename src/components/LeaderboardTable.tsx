@@ -20,15 +20,7 @@ import {
   type LeaderboardDbMode,
 } from "@/lib/storage/leaderboard";
 import {
-  getCupTeamWinsLeaderboardAsync,
-  getEraCupTeamWinsLeaderboardAsync,
-  type CupTeamWinsLeaderboardRow,
-} from "@/lib/storage/cup-team-wins";
-import {
-  CUP_ERA_VARIANT_CHANGED_EVENT,
-  getCupEraVariant,
   getNormalEraVariant,
-  setCupEraVariant,
   setNormalEraVariant,
   NORMAL_ERA_VARIANT_CHANGED_EVENT,
 } from "@/lib/storage/preferences";
@@ -40,7 +32,6 @@ import {
 } from "@/lib/storage/manager-leaderboard";
 import { playTabChange } from "@/lib/sound";
 import { RecordWithPercentage } from "./RecordWithPercentage";
-import { CupTeamWinsBarGraph } from "./CupTeamWinsBarGraph";
 import { BTN, CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -88,33 +79,21 @@ export function LeaderboardTable({
   const [difficulty, setDifficulty] =
     useState<GameDifficulty>(initialDifficulty);
   const [entries, setEntries] = useState<LeaderboardTrackerRow[]>([]);
-  const [teamWinsRows, setTeamWinsRows] = useState<CupTeamWinsLeaderboardRow[]>(
-    []
-  );
-  const [teamWinsTotal, setTeamWinsTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [usingFallback, setUsingFallback] = useState(false);
-  const [cupEraMode, setCupEraMode] = useState(false);
   const [normalEraMode, setNormalEraMode] = useState(false);
   const requestId = useRef(0);
 
   const isManagerPlayStyle = playStyle === "manager";
 
   useEffect(() => {
-    setCupEraMode(getCupEraVariant());
     setNormalEraMode(getNormalEraVariant());
-    const onCupEra = (event: Event) => {
-      const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
-      if (detail) setCupEraMode(detail.eraMode);
-    };
     const onNormalEra = (event: Event) => {
       const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
       if (detail) setNormalEraMode(detail.eraMode);
     };
-    window.addEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupEra);
     window.addEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalEra);
     return () => {
-      window.removeEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupEra);
       window.removeEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalEra);
     };
   }, []);
@@ -131,8 +110,6 @@ export function LeaderboardTable({
       ? tracker
       : getDefaultTrackerForDbMode(leaderboardMode);
 
-  const isTeamWinsTracker =
-    !isManagerPlayStyle && activeTracker === "challenge_cup_team_wins";
   const isClubFundsMode =
     !isManagerPlayStyle && leaderboardMode === "club-funds";
   const isTrophyCabinetMode =
@@ -162,7 +139,6 @@ export function LeaderboardTable({
     setLeaderboardMode(mode);
     setTracker(getDefaultTrackerForDbMode(mode));
     if (
-      mode === "challenge-cup" ||
       mode === "fantasy" ||
       mode === "club-funds" ||
       mode === "trophy-cabinet"
@@ -177,8 +153,6 @@ export function LeaderboardTable({
     setTracker(getDefaultTrackerForManagerDbMode(mode));
   };
 
-  const isChallengeCupMode =
-    !isManagerPlayStyle && leaderboardMode === "challenge-cup";
   const isSuperLeagueMode =
     !isManagerPlayStyle && leaderboardMode === "super-league";
   const superLeagueModeVariant = normalEraMode ? "era" : "current";
@@ -196,8 +170,6 @@ export function LeaderboardTable({
         );
         if (currentRequest !== requestId.current) return;
         setEntries(result.rows);
-        setTeamWinsRows([]);
-        setTeamWinsTotal(0);
         setUsingFallback(result.source === "local");
         return;
       }
@@ -214,34 +186,9 @@ export function LeaderboardTable({
             );
         if (currentRequest !== requestId.current) return;
         setEntries(result.rows);
-        setTeamWinsRows([]);
-        setTeamWinsTotal(0);
         setUsingFallback(result.source === "local");
         return;
       }
-
-      if (isTeamWinsTracker) {
-        if (isChallengeCupMode && cupEraMode) {
-          const result = await getEraCupTeamWinsLeaderboardAsync();
-          if (currentRequest !== requestId.current) return;
-          setTeamWinsRows(result.rows);
-          setTeamWinsTotal(result.totalCups);
-          setEntries([]);
-          setUsingFallback(result.source === "local");
-          return;
-        }
-
-        const result = await getCupTeamWinsLeaderboardAsync();
-        if (currentRequest !== requestId.current) return;
-        setTeamWinsRows(result.rows);
-        setTeamWinsTotal(result.totalCups);
-        setEntries([]);
-        setUsingFallback(result.source === "local");
-        return;
-      }
-
-      const cupModeVariant =
-        isChallengeCupMode && cupEraMode ? "era" : "current";
 
       const result = await getTrackerLeaderboardAsync(
         activeTracker,
@@ -249,18 +196,12 @@ export function LeaderboardTable({
         difficulty,
         50,
         leaderboardMode,
-        isSuperLeagueMode
-          ? superLeagueModeVariant
-          : isChallengeCupMode
-            ? cupModeVariant
-            : "current"
+        isSuperLeagueMode ? superLeagueModeVariant : "current"
       );
 
       if (currentRequest !== requestId.current) return;
 
       setEntries(result.rows);
-      setTeamWinsRows([]);
-      setTeamWinsTotal(0);
       setUsingFallback(result.source === "local");
     } finally {
       if (currentRequest === requestId.current) {
@@ -273,11 +214,8 @@ export function LeaderboardTable({
     leaderboardMode,
     managerMode,
     activeTracker,
-    isTeamWinsTracker,
     isClubFundsMode,
     isTrophyCabinetMode,
-    isChallengeCupMode,
-    cupEraMode,
     isSuperLeagueMode,
     superLeagueModeVariant,
     isManagerPlayStyle,
@@ -302,15 +240,13 @@ export function LeaderboardTable({
   const quickModeLabel =
     leaderboardMode === "draft"
       ? "Draft Mode"
-      : leaderboardMode === "challenge-cup"
-        ? "Challenge Cup"
-        : leaderboardMode === "fantasy"
-          ? "Fantasy Mode"
-          : leaderboardMode === "club-funds"
-            ? "Total Winnings"
-            : leaderboardMode === "trophy-cabinet"
-              ? "Trophy Cabinet"
-              : "Normal Mode";
+      : leaderboardMode === "fantasy"
+        ? "Fantasy Mode"
+        : leaderboardMode === "club-funds"
+          ? "Total Winnings"
+          : leaderboardMode === "trophy-cabinet"
+            ? "Trophy Cabinet"
+            : "Normal Mode";
 
   const managerModeLabel =
     MANAGER_LEADERBOARD_MODES.find((mode) => mode.id === managerMode)?.label ??
@@ -324,7 +260,6 @@ export function LeaderboardTable({
 
   const quickModeOptions = [
     { id: "super-league" as const, label: "Normal Mode" },
-    { id: "challenge-cup" as const, label: "Challenge Cup" },
     { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
     { id: "club-funds" as const, label: "Total Winnings" },
   ] as const;
@@ -339,10 +274,7 @@ export function LeaderboardTable({
     !isManagerScoreMode;
 
   const showPeriodFilters =
-    !isManagerPlayStyle &&
-    !isTeamWinsTracker &&
-    !isClubFundsMode &&
-    !isTrophyCabinetMode;
+    !isManagerPlayStyle && !isClubFundsMode && !isTrophyCabinetMode;
 
   return (
     <div>
@@ -398,20 +330,6 @@ export function LeaderboardTable({
           }
         )}
       </div>
-
-      {isChallengeCupMode && (
-        <div className="mb-5">
-          <ChallengeCupVariantToggle
-            sectionLabel="Cup Variant"
-            useShortLabels
-            eraMode={cupEraMode}
-            onEraModeChange={(era) => {
-              setCupEraMode(era);
-              setCupEraVariant(era);
-            }}
-          />
-        </div>
-      )}
 
       {isSuperLeagueMode && (
         <div className="mb-5">
@@ -517,22 +435,7 @@ export function LeaderboardTable({
         </div>
       )}
 
-      {isTeamWinsTracker ? (
-        <div
-          className={`transition-opacity ${loading ? "opacity-60" : "opacity-100"}`}
-        >
-          {loading && teamWinsRows.length === 0 ? (
-            <div className="matchday-panel p-12 text-center text-gray-500">
-              Loading leaderboard…
-            </div>
-          ) : (
-            <CupTeamWinsBarGraph
-              entries={teamWinsRows}
-              totalCups={teamWinsTotal}
-            />
-          )}
-        </div>
-      ) : loading && entries.length === 0 ? (
+      {loading && entries.length === 0 ? (
         <div className="matchday-panel p-12 text-center text-gray-500">
           Loading leaderboard…
         </div>
@@ -619,11 +522,7 @@ export function LeaderboardTable({
         {isManagerPlayStyle ? "Manager Mode" : "Quick Mode"}
         {" · "}
         {modeLabel}
-        {!isManagerPlayStyle &&
-        difficulty === "HARD" &&
-        leaderboardMode !== "challenge-cup"
-          ? " · Hard"
-          : ""}
+        {!isManagerPlayStyle && difficulty === "HARD" ? " · Hard" : ""}
         {" · "}
         {trackerLabel}
       </p>

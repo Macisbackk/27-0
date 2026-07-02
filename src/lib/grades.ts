@@ -325,8 +325,6 @@ export function getGradeReviewBio(
 
 /** Section heading above the season narrative on the review screen. */
 export function getSeasonStoryHeading(mode: GameMode): string {
-  if (mode === "CHALLENGE_CUP") return "Cup Run Story";
-  if (mode === "ERA_CHALLENGE_CUP") return "Era Tournament Story";
   return "Season Story";
 }
 
@@ -343,50 +341,6 @@ function modeStoryBioPool(
       "Top of the table and deserved league winners.",
       "They set the standard across the regular season.",
       "A league-winning season built on consistency.",
-    ];
-  }
-
-  if (mode === "CHALLENGE_CUP") {
-    if (isPerfect || grade === "S+" || grade === "S") {
-      return [
-        "A cup run for the ages — every round felt like destiny.",
-        "Wembley-bound form from the opening tie to the final whistle.",
-        "A knockout campaign that turned pressure into silverware.",
-      ];
-    }
-    if (grade === "A" || grade === "B") {
-      return [
-        "A deep cup run that kept the dream alive deep into the competition.",
-        "Statement wins in the knockouts — this side belonged in the latter stages.",
-        "Cup football at its best: tight games, big moments, real belief.",
-      ];
-    }
-    return [
-      "An early exit that left this squad hungry for another cup tilt.",
-      "Knockout football is cruel — one bad afternoon ended the run.",
-      "Cup hopes faded, but there were flashes of what this team could do.",
-    ];
-  }
-
-  if (mode === "ERA_CHALLENGE_CUP") {
-    if (isPerfect || grade === "S+" || grade === "S") {
-      return [
-        "An era-defining tournament — this side looked built for the occasion.",
-        "Historic opposition, modern pressure, and a squad that rose to it.",
-        "A golden era cup run that will be talked about for years.",
-      ];
-    }
-    if (grade === "A" || grade === "B") {
-      return [
-        "A strong era tournament showing against legendary opposition.",
-        "Big names, tight games — this run had real pedigree.",
-        "Survived the early rounds and made a genuine tilt at glory.",
-      ];
-    }
-    return [
-      "A tough era draw — experience gained against some of the greats.",
-      "Knocked out early, but the era tournament tested this squad properly.",
-      "Historic opposition exposed gaps this team will want to fix.",
     ];
   }
 

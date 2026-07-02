@@ -22,7 +22,8 @@ import { releasePlayerWithCost } from "@/lib/manager/managerTransferLeague";
 import { getWageBillPercent, isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { playPanelClose, playUiClick } from "@/lib/sound";
-import { ManagerPage } from "@/components/manager/manager-ui";
+import { ManagerPage, ManagerSeasonImpactBadge } from "@/components/manager/manager-ui";
+import { getPlayerSeasonImpact } from "@/lib/manager/managerPlayerImpact";
 
 type ContractFilter =
   | "all"
@@ -364,6 +365,18 @@ export function ManagerContracts({
                       {formatWage(contract.wagePerYear)}/yr ·{" "}
                       {contract.yearsRemaining}yr · {contract.squadRole}
                     </p>
+                    {(() => {
+                      const ps = career.squad.find((p) => p.playerId === player.id);
+                      if (!ps || ps.seasonAppearances === 0) return null;
+                      return (
+                        <p className="mt-1">
+                          <ManagerSeasonImpactBadge
+                            impact={getPlayerSeasonImpact(career, player.id)}
+                            compact
+                          />
+                        </p>
+                      );
+                    })()}
                   </div>
                 </div>
                 <span

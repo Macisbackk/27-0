@@ -20,6 +20,7 @@ import { ManagerDevelopmentReview } from "@/components/manager/ManagerDevelopmen
 import { ManagerSeasonRewards } from "@/components/manager/ManagerSeasonRewards";
 import { ManagerTrophyModal } from "@/components/manager/ManagerTrophyModal";
 import { ManagerLeagueWinnersModal } from "@/components/manager/ManagerLeagueWinnersModal";
+import { ManagerChallengeCupWinModal } from "@/components/manager/ManagerChallengeCupWinModal";
 import { ManagerIncomingBidModal } from "@/components/manager/ManagerIncomingBidModal";
 import { ManagerRetirementIntentModal } from "@/components/manager/ManagerRetirementIntentModal";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
@@ -42,6 +43,7 @@ import {
   simulateManagerNextMatch,
 } from "@/lib/manager/managerSimulation";
 import { acknowledgePlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
+import { shouldShowChallengeCupCelebration } from "@/lib/manager/managerChallengeCup";
 import {
   recordCareerStarted,
   recordMatchResult,
@@ -95,6 +97,9 @@ export default function ManagerPage() {
   const [leagueWinnersModalOpen, setLeagueWinnersModalOpen] = useState(false);
   const [pendingLeagueWinnersCelebration, setPendingLeagueWinnersCelebration] =
     useState(false);
+  const [challengeCupWinModalOpen, setChallengeCupWinModalOpen] = useState(false);
+  const [pendingChallengeCupCelebration, setPendingChallengeCupCelebration] =
+    useState(false);
   const [pendingIncomingBidId, setPendingIncomingBidId] = useState<string | null>(
     null
   );
@@ -119,12 +124,49 @@ export default function ManagerPage() {
     if (saved) setCareer(saved);
   }, []);
 
+  const awaitingFriendlyChoice =
+    career != null && isAwaitingFriendlyChoice(career);
+
+  useEffect(() => {
+    if (!awaitingFriendlyChoice) return;
+    if (NAV_VIEWS.includes(view as ManagerView) && view !== "hub") {
+      setView("hub");
+    }
+  }, [awaitingFriendlyChoice, view]);
+
   const persist = useCallback((next: ManagerCareer) => {
     const prepared = prepareManagerCareerForSave(next);
     setCareer(prepared);
     saveManagerCareer(prepared);
     setHasSave(true);
   }, []);
+
+  useEffect(() => {
+    if (!career || !awaitingFriendlyChoice) return;
+    if (career.preSeason.currentChoices.length >= 3) return;
+    persist(ensureFriendlyChoices(career));
+  }, [career, awaitingFriendlyChoice, persist]);
+
+  const handleNavNavigate = useCallback(
+    (next: ManagerView) => {
+      if (career && isAwaitingFriendlyChoice(career) && next !== "hub") {
+        setView("hub");
+        return;
+      }
+      setView(next);
+    },
+    [career]
+  );
+
+  const handleFriendlySelect = useCallback(
+    (choiceId: string) => {
+      if (!career) return;
+      persist(
+        ensureFriendlyChoices(selectFriendlyOpponent(career, choiceId))
+      );
+    },
+    [career, persist]
+  );
 
   const handleStartNew = () => setView("club-select");
 
@@ -133,6 +175,11 @@ export default function ManagerPage() {
     if (!saved) return;
     setCareer(saved);
     if (saved.isSeasonComplete) {
+      if (shouldShowChallengeCupCelebration(saved)) {
+        setChallengeCupWinModalOpen(true);
+        setView("hub");
+        return;
+      }
       if (
         saved.playoffs?.finish === "Super League Champions" &&
         !saved.trophyCelebrationShown
@@ -156,6 +203,8 @@ export default function ManagerPage() {
     } else if (retirementIntent) {
       setPendingRetirementIntentId(retirementIntent.id);
       setRetirementIntentModalOpen(true);
+    } else if (shouldShowChallengeCupCelebration(saved)) {
+      setChallengeCupWinModalOpen(true);
     } else if (shouldShowLeagueWinnersCelebration(saved)) {
       setLeagueWinnersModalOpen(true);
     }
@@ -208,6 +257,7 @@ export default function ManagerPage() {
       !next.trophyCelebrationShown;
 
     const wonLeagueTable = shouldShowLeagueWinnersCelebration(next);
+    const wonChallengeCup = shouldShowChallengeCupCelebration(next);
     const unsolicited = getPendingUnsolicitedOffer(next);
     const retirementIntent = getPendingRetirementIntentPopup(next);
     setPendingIncomingBidId(unsolicited?.id ?? null);
@@ -220,6 +270,7 @@ export default function ManagerPage() {
         setPostMatchReviewFlow(true);
         setMatchReviewReturnView("hub");
         setView("match-review");
+        setPendingChallengeCupCelebration(wonChallengeCup);
         setPendingLeagueWinnersCelebration(wonLeagueTable);
         setPendingTrophyCelebration(wonTitle);
       } else if (wonTitle) {
@@ -232,6 +283,7 @@ export default function ManagerPage() {
       setPostMatchReviewFlow(true);
       setMatchReviewReturnView("hub");
       setView("match-review");
+      setPendingChallengeCupCelebration(wonChallengeCup);
       setPendingLeagueWinnersCelebration(wonLeagueTable);
     }
   };
@@ -250,6 +302,13 @@ export default function ManagerPage() {
 
     if (pendingRetirementIntentId) {
       setRetirementIntentModalOpen(true);
+      setView("hub");
+      return;
+    }
+
+    if (pendingChallengeCupCelebration) {
+      setPendingChallengeCupCelebration(false);
+      setChallengeCupWinModalOpen(true);
       setView("hub");
       return;
     }
@@ -295,6 +354,13 @@ export default function ManagerPage() {
     if (retirementIntent) {
       setPendingRetirementIntentId(retirementIntent.id);
       setRetirementIntentModalOpen(true);
+      setView("hub");
+      return;
+    }
+
+    if (pendingChallengeCupCelebration) {
+      setPendingChallengeCupCelebration(false);
+      setChallengeCupWinModalOpen(true);
       setView("hub");
       return;
     }
@@ -358,6 +424,13 @@ export default function ManagerPage() {
     setPendingRetirementIntentId(null);
     setRetirementIntentModalOpen(false);
 
+    if (pendingChallengeCupCelebration) {
+      setPendingChallengeCupCelebration(false);
+      setChallengeCupWinModalOpen(true);
+      setView("hub");
+      return;
+    }
+
     if (pendingLeagueWinnersCelebration) {
       setPendingLeagueWinnersCelebration(false);
       setLeagueWinnersModalOpen(true);
@@ -401,6 +474,7 @@ export default function ManagerPage() {
     setRetirementIntentModalOpen(false);
 
     const hasQueue =
+      pendingChallengeCupCelebration ||
       pendingLeagueWinnersCelebration ||
       pendingTrophyCelebration ||
       pendingIncomingBidId ||
@@ -424,6 +498,34 @@ export default function ManagerPage() {
     if (!career) return;
     persist({ ...career, leagueWinnersCelebrationShown: true });
     setLeagueWinnersModalOpen(false);
+    setView("hub");
+  };
+
+  const handleChallengeCupWinModalContinue = () => {
+    if (!career) return;
+    const updated = { ...career, challengeCupCelebrationShown: true };
+    persist(updated);
+    setChallengeCupWinModalOpen(false);
+
+    if (pendingLeagueWinnersCelebration) {
+      setPendingLeagueWinnersCelebration(false);
+      setLeagueWinnersModalOpen(true);
+      setView("hub");
+      return;
+    }
+
+    if (pendingTrophyCelebration) {
+      setPendingTrophyCelebration(false);
+      setTrophyModalOpen(true);
+      setView("hub");
+      return;
+    }
+
+    if (updated.isSeasonComplete) {
+      setView("season-review");
+      return;
+    }
+
     setView("hub");
   };
 
@@ -505,32 +607,26 @@ export default function ManagerPage() {
       {showNav && career && (
         <div className={`flex flex-col ${PAGE.section}`}>
           <ManagerNav
-            active={view}
+            active={awaitingFriendlyChoice ? "hub" : view}
             club={career.club}
             seasonYear={career.seasonYear}
             gameWeek={career.gameWeek}
-            onNavigate={setView}
-            disabled={playGameOpen}
+            onNavigate={handleNavNavigate}
+            disabled={playGameOpen || awaitingFriendlyChoice}
             unreadInbox={countUnreadInbox(career)}
           />
 
           <div className={`flex flex-col ${PAGE.section}`}>
-            {view === "hub" && (
+            {awaitingFriendlyChoice ? (
+              <ManagerFriendlySelect
+                career={career}
+                friendlyNumber={career.preSeason.friendliesPlayed + 1}
+                choices={career.preSeason.currentChoices}
+                onSelect={handleFriendlySelect}
+              />
+            ) : (
               <>
-                {isAwaitingFriendlyChoice(career) ? (
-                  <ManagerFriendlySelect
-                    career={career}
-                    friendlyNumber={career.preSeason.friendliesPlayed + 1}
-                    choices={career.preSeason.currentChoices}
-                    onSelect={(choiceId) => {
-                      persist(
-                        ensureFriendlyChoices(
-                          selectFriendlyOpponent(career, choiceId)
-                        )
-                      );
-                    }}
-                  />
-                ) : (
+                {view === "hub" && (
                   <ManagerHub
                     career={career}
                     onPlayGame={handlePlayGame}
@@ -543,46 +639,46 @@ export default function ManagerPage() {
                       setView("match-review");
                     }}
                     onUpdate={persist}
-                    onNavigate={setView}
+                    onNavigate={handleNavNavigate}
                   />
                 )}
+
+                {view === "inbox" && (
+                  <ManagerInbox
+                    career={career}
+                    onUpdate={persist}
+                    onNavigate={(v) => {
+                      if (v === "season-rewards") setView("season-rewards");
+                      else handleNavNavigate(v);
+                    }}
+                  />
+                )}
+                {view === "squad" && (
+                  <ManagerSquad career={career} onUpdate={persist} />
+                )}
+                {view === "reserves" && (
+                  <ManagerReserves career={career} onUpdate={persist} />
+                )}
+                {view === "contracts" && (
+                  <ManagerContracts career={career} onUpdate={persist} />
+                )}
+                {view === "transfers" && (
+                  <ManagerTransfers career={career} onUpdate={persist} />
+                )}
+                {view === "fixtures" && (
+                  <ManagerFixtures
+                    career={career}
+                    onSelectFixture={(fixtureId) => {
+                      setReviewFixtureId(fixtureId);
+                      setPostMatchReviewFlow(false);
+                      setMatchReviewReturnView("fixtures");
+                      setView("match-review");
+                    }}
+                  />
+                )}
+                {view === "stats" && <ManagerStatsView career={career} />}
               </>
             )}
-
-            {view === "inbox" && (
-              <ManagerInbox
-                career={career}
-                onUpdate={persist}
-                onNavigate={(v) => {
-                  if (v === "season-rewards") setView("season-rewards");
-                  else setView(v);
-                }}
-              />
-            )}
-            {view === "squad" && (
-              <ManagerSquad career={career} onUpdate={persist} />
-            )}
-            {view === "reserves" && (
-              <ManagerReserves career={career} onUpdate={persist} />
-            )}
-            {view === "contracts" && (
-              <ManagerContracts career={career} onUpdate={persist} />
-            )}
-            {view === "transfers" && (
-              <ManagerTransfers career={career} onUpdate={persist} />
-            )}
-            {view === "fixtures" && (
-              <ManagerFixtures
-                career={career}
-                onSelectFixture={(fixtureId) => {
-                  setReviewFixtureId(fixtureId);
-                  setPostMatchReviewFlow(false);
-                  setMatchReviewReturnView("fixtures");
-                  setView("match-review");
-                }}
-              />
-            )}
-            {view === "stats" && <ManagerStatsView career={career} />}
           </div>
         </div>
       )}
@@ -667,6 +763,13 @@ export default function ManagerPage() {
         <ManagerLeagueWinnersModal
           career={career}
           onContinue={handleLeagueWinnersModalContinue}
+        />
+      )}
+
+      {career && challengeCupWinModalOpen && (
+        <ManagerChallengeCupWinModal
+          career={career}
+          onContinue={handleChallengeCupWinModalContinue}
         />
       )}
 

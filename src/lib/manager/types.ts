@@ -474,6 +474,8 @@ export interface PlayerDevelopmentChange {
   delta: number;
   seasonStartRating?: number;
   promotedFromReserve?: boolean;
+  /** Season impact score (0–100) when development was calculated. */
+  seasonImpact?: number;
 }
 
 export interface ManagerCareer {
@@ -501,6 +503,8 @@ export interface ManagerCareer {
   trophyCelebrationShown?: boolean;
   /** League Leaders celebration shown after the regular season (table winners). */
   leagueWinnersCelebrationShown?: boolean;
+  /** Challenge Cup win celebration shown after lifting the cup. */
+  challengeCupCelebrationShown?: boolean;
   /** Consecutive weeks wage bill exceeded budget — triggers board pressure. */
   wagePressureWeeks?: number;
   matchdayXiii: string[];

@@ -13,21 +13,18 @@ export default async function PlayPage({
     difficulty?: string;
     cup?: string;
     era?: string;
+    eraCup?: string;
     joeMellor?: string;
     superSamHallas?: string;
     draft?: string;
     fantasy?: string;
-    eraCup?: string;
   }>;
 }) {
   const params = await searchParams;
 
-  if (params.eraCup === "1") {
-    redirect("/play?cup=1&era=1");
-  }
-
-  // Block removed public modes — redirect to default Normal Current.
   if (
+    params.cup === "1" ||
+    params.eraCup === "1" ||
     params.fantasy === "1" ||
     params.draft === "1" ||
     params.difficulty === "hard"
@@ -35,41 +32,24 @@ export default async function PlayPage({
     redirect("/play");
   }
 
-  const wantsCup = params.cup === "1";
-  const wantsEraCup = wantsCup && params.era === "1";
   const wantsNormalEra = isNormalEraMode(params);
   const wantsSuperSamHallas = params.superSamHallas === "1";
   const wantsJoeMellor = params.joeMellor === "1" && !wantsSuperSamHallas;
 
-  const superSamHallasMode = wantsSuperSamHallas;
-  const joeMellorMode = wantsJoeMellor;
+  const mode: GameMode = "CLASSIC";
 
-  let mode: GameMode = "CLASSIC";
-  if (wantsCup) {
-    mode = "CHALLENGE_CUP";
-  }
-
-  const title = superSamHallasMode
+  const title = wantsSuperSamHallas
     ? "Super Sam Hallas Mode"
-    : joeMellorMode
+    : wantsJoeMellor
       ? "Joe Mellor GOAT Mode"
       : getPlayPageTitle(mode, "NORMAL", wantsNormalEra);
-
-  const subtitle =
-    mode === "CHALLENGE_CUP"
-      ? wantsEraCup
-        ? undefined
-        : "Choose your club, draft club legends, and fight through a knockout tournament."
-      : undefined;
 
   return (
     <GameStarter
       mode={mode}
       title={title}
-      subtitle={subtitle}
-      joeMellorMode={joeMellorMode}
-      superSamHallasMode={superSamHallasMode}
-      eraChallengeCup={wantsEraCup}
+      joeMellorMode={wantsJoeMellor}
+      superSamHallasMode={wantsSuperSamHallas}
       normalEraMode={wantsNormalEra}
     />
   );

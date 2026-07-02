@@ -1,4 +1,3 @@
-import type { ChallengeCupResult } from "./game/challenge-cup-simulation";
 import type { SeasonResult } from "./game/season-simulation";
 import type { GameMode } from "./types";
 
@@ -38,7 +37,6 @@ export interface ClubFundsRunInput {
   mode: GameMode;
   isHiddenRun?: boolean;
   seasonResult?: SeasonResult | null;
-  cupResult?: ChallengeCupResult | null;
   /** When set, only regular-season or play-off reward lines are computed. */
   fundsPhase?: "regular" | "playoff";
 }
@@ -141,7 +139,7 @@ export function computeClubFundsLines(
   if (input.isHiddenRun) return [];
 
   const lines: ClubFundsEarnedLine[] = [];
-  const { mode, seasonResult, cupResult, fundsPhase } = input;
+  const { mode, seasonResult, fundsPhase } = input;
 
   if (mode === "CLASSIC" && seasonResult) {
     const includeRegular = fundsPhase !== "playoff";
@@ -229,44 +227,6 @@ export function computeClubFundsLines(
         label: "20+ Wins in a Season",
         amount: CLUB_FUNDS_REWARDS.twentyWins,
       });
-    }
-  }
-
-  if (mode === "CHALLENGE_CUP" && cupResult) {
-    if (cupResult.eraMode) {
-      if (cupResult.isWinner) {
-        lines.push({
-          id: "era-cup-win",
-          label: "Era Challenge Cup Win",
-          amount: CLUB_FUNDS_REWARDS.eraChallengeCupWin,
-        });
-      } else if (
-        cupResult.finish === "Runners-Up" ||
-        cupResult.finish === "Winners"
-      ) {
-        lines.push({
-          id: "cup-final",
-          label: "Cup Final Appearance",
-          amount: CLUB_FUNDS_REWARDS.cupFinal,
-        });
-      }
-    } else {
-      if (cupResult.isWinner) {
-        lines.push({
-          id: "cup-win",
-          label: "Challenge Cup Win",
-          amount: CLUB_FUNDS_REWARDS.challengeCupWin,
-        });
-      } else if (
-        cupResult.finish === "Runners-Up" ||
-        cupResult.finish === "Winners"
-      ) {
-        lines.push({
-          id: "cup-final",
-          label: "Cup Final Appearance",
-          amount: CLUB_FUNDS_REWARDS.cupFinal,
-        });
-      }
     }
   }
 

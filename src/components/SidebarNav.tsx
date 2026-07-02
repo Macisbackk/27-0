@@ -6,13 +6,10 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogoMark } from "@/components/LogoMark";
 import { useAuth } from "@/lib/auth-context";
-import { buildPlayHref, isCupEraMode, isPlayModeActive } from "@/lib/play-links";
+import { buildPlayHref, isPlayModeActive } from "@/lib/play-links";
 import {
-  getCupEraVariant,
   getNormalEraVariant,
-  setCupEraVariant,
   setNormalEraVariant,
-  CUP_ERA_VARIANT_CHANGED_EVENT,
   NORMAL_ERA_VARIANT_CHANGED_EVENT,
 } from "@/lib/storage/preferences";
 import {
@@ -58,18 +55,15 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const { loading, isLoggedIn } = useAuth();
   const [normalEraVariant, setNormalEraVariantState] = useState(false);
   const [muted, setMuted] = useState(false);
-  const [cupEraVariant, setCupEraVariantState] = useState(false);
 
   useEffect(() => {
     setNormalEraVariantState(getNormalEraVariant());
-    setCupEraVariantState(getCupEraVariant());
   }, []);
 
   useEffect(() => {
     if (!open) return;
     setMuted(isSoundMuted());
     setNormalEraVariantState(getNormalEraVariant());
-    setCupEraVariantState(getCupEraVariant());
   }, [open]);
 
   const playSearch = {
@@ -80,48 +74,29 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     difficulty: searchParams.get("difficulty"),
   };
 
-  const isEraCup = isCupEraMode(playSearch);
-  const isCupActive = isPlayModeActive(pathname, playSearch, "cup");
   const isNormalEra = isPlayModeActive(pathname, playSearch, "classic", true);
   const isNormalCurrent = isPlayModeActive(pathname, playSearch, "classic", false);
   const isNormalActive = isNormalEra || isNormalCurrent;
 
   useEffect(() => {
-    if (isCupActive) {
-      setCupEraVariantState(isEraCup);
-    }
     if (isNormalActive) {
       setNormalEraVariantState(isNormalEra);
     }
-  }, [isCupActive, isEraCup, isNormalActive, isNormalEra]);
+  }, [isNormalActive, isNormalEra]);
 
   useEffect(() => {
-    const onCupVariant = (event: Event) => {
-      const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
-      if (detail) setCupEraVariantState(detail.eraMode);
-    };
     const onNormalVariant = (event: Event) => {
       const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
       if (detail) setNormalEraVariantState(detail.eraMode);
     };
-    window.addEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupVariant);
     window.addEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalVariant);
     return () => {
-      window.removeEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupVariant);
       window.removeEventListener(
         NORMAL_ERA_VARIANT_CHANGED_EVENT,
         onNormalVariant
       );
     };
   }, []);
-
-  const handleCupVariantChange = (era: boolean) => {
-    setCupEraVariant(era);
-    setCupEraVariantState(era);
-    if (pathname.startsWith("/play") && playSearch.cup === "1") {
-      router.push(buildPlayHref("cup", era));
-    }
-  };
 
   const handleNormalVariantChange = (era: boolean) => {
     setNormalEraVariant(era);
@@ -134,13 +109,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     ) {
       router.push(buildPlayHref("classic", era));
     }
-  };
-
-  const handleChallengeCupNavigate = () => {
-    playUiClick();
-    setCupEraVariant(cupEraVariant);
-    router.push(buildPlayHref("cup", cupEraVariant));
-    onClose();
   };
 
   const handleNormalNavigate = () => {
@@ -270,40 +238,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         sectionLabel="Mode"
                         eraMode={normalEraVariant}
                         onEraModeChange={handleNormalVariantChange}
-                      />
-                    </div>
-                  </li>
-
-                  <li className={NAV.playModeGroup}>
-                    <button
-                      type="button"
-                      onClick={handleChallengeCupNavigate}
-                      className={`${navLinkClass(isCupActive, false)} w-full ${
-                        isCupActive && isEraCup
-                          ? "border-accent-gold/40 bg-accent-gold text-pitch-950 hover:bg-accent-gold/90"
-                          : isCupActive
-                            ? NAV.itemActive
-                            : ""
-                      }`}
-                    >
-                      <span aria-hidden className={NAV.icon}>
-                        🏆
-                      </span>
-                      Challenge Cup
-                      {isCupActive && (
-                        <span
-                          className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
-                            isEraCup ? "bg-accent-gold" : "bg-theme-primary"
-                          }`}
-                        />
-                      )}
-                    </button>
-                    <div className={NAV.nestedBlock}>
-                      <ChallengeCupVariantToggle
-                        compact
-                        hideLabel
-                        eraMode={cupEraVariant}
-                        onEraModeChange={handleCupVariantChange}
                       />
                     </div>
                   </li>

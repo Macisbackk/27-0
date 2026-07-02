@@ -3,7 +3,7 @@ import type { GameDifficulty, GameMode, LeaderboardPeriod } from "../types";
 import { mergeUserStatsData } from "./merge-user-stats";
 import { EMPTY_STATS, migrateUserStats, type StoredStats } from "./stats";
 import { STORAGE_KEYS } from "./keys";
-import type { CupLeaderboardProfile } from "./cup-leaderboard";
+import type { CupLeaderboardProfile } from "./cup-leaderboard-types";
 
 export const PRIMARY_COACH = "coachbeard";
 export const SECONDARY_COACH = "coachbeard2";

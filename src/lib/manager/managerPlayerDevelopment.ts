@@ -9,6 +9,12 @@ import type {
 } from "./types";
 import { getManagerModePlayerRating } from "./managerSquadRatings";
 import { getLeagueClubRosterIds } from "./managerLeagueRosters";
+import {
+  getPlayerSeasonImpact,
+  impactDevelopmentDelta,
+  isPoorSeasonImpact,
+  rollImpactRegression,
+} from "./managerPlayerImpact";
 
 const VETERAN_AGE = 30;
 /** Chance a veteran with a good season gains +1 when performance alone wouldn't. */
@@ -28,7 +34,9 @@ function hadGoodSeason(extras?: {
   appearances?: number;
   tries?: number;
   form?: number;
+  impact?: number;
 }): boolean {
+  if (extras?.impact != null && isPoorSeasonImpact(extras.impact)) return false;
   if (!extras) return false;
   const appearances = extras.appearances ?? 0;
   const tries = extras.tries ?? 0;
@@ -43,7 +51,7 @@ function hadGoodSeason(extras?: {
 
 function isVeteranWithGoodSeason(
   age: number,
-  extras?: { appearances?: number; tries?: number; form?: number }
+  extras?: { appearances?: number; tries?: number; form?: number; impact?: number }
 ): boolean {
   return age >= VETERAN_AGE && hadGoodSeason(extras);
 }
@@ -52,7 +60,7 @@ function developOnePlayer(
   playerId: string,
   career: ManagerCareer,
   playerDevelopment: Record<string, PlayerDevelopmentState>,
-  extras?: { appearances?: number; tries?: number; form?: number },
+  extras?: { appearances?: number; tries?: number; form?: number; impact?: number },
   rng?: () => number
 ): PlayerDevelopmentState | null {
   const base = getPlayerById(playerId) ?? getManagerPlayer(career, playerId);
@@ -72,6 +80,7 @@ function developOnePlayer(
   const appearances = extras?.appearances ?? 0;
   const tries = extras?.tries ?? 0;
   const form = extras?.form ?? 50;
+  const impact = extras?.impact ?? 50;
   const playedEnoughForIncrease =
     !extras || appearances >= MIN_APPEARANCES_FOR_INCREASE;
 
@@ -112,11 +121,19 @@ function developOnePlayer(
     delta -= 0.5;
   }
 
+  delta += impactDevelopmentDelta(impact, appearances);
+
   if (veteranGoodSeason) {
     delta = Math.max(0, delta);
   }
 
   let finalDelta = Math.round(delta);
+  if (!playedEnoughForIncrease && finalDelta > 0) {
+    finalDelta = 0;
+  }
+  if (rng) {
+    finalDelta += rollImpactRegression(impact, appearances, rng);
+  }
   if (!playedEnoughForIncrease && finalDelta > 0) {
     finalDelta = 0;
   }
@@ -252,6 +269,8 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
     const reviewBefore =
       devState?.seasonStartRating ?? devState?.rating ?? baseline;
 
+    const impact = getPlayerSeasonImpact(career, ps.playerId);
+
     const developed = developOnePlayer(
       ps.playerId,
       career,
@@ -260,6 +279,7 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
         appearances: ps.seasonAppearances,
         tries: ps.seasonTries,
         form: ps.form,
+        impact,
       },
       seedrandom(`${career.seed}-dev-${career.seasonYear}-${ps.playerId}`)
     );
@@ -282,6 +302,7 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
         delta: actualDelta,
         seasonStartRating: devState?.seasonStartRating,
         promotedFromReserve: promotedThisSeason,
+        seasonImpact: impact,
       });
     }
   }

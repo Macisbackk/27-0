@@ -130,7 +130,7 @@ export function selectFriendlyOpponent(
 
 export function completeFriendlyMatch(career: ManagerCareer): ManagerCareer {
   const played = career.preSeason.friendliesPlayed + 1;
-  return {
+  return ensureFriendlyChoices({
     ...career,
     preSeason: {
       friendliesPlayed: played,
@@ -138,7 +138,7 @@ export function completeFriendlyMatch(career: ManagerCareer): ManagerCareer {
       currentChoices: [],
       activeFriendly: null,
     },
-  };
+  });
 }
 
 export function getFriendlyAttendanceInterest(

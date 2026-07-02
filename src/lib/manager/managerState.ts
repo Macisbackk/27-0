@@ -260,6 +260,7 @@ export function prepareManagerCareerForSave(raw: ManagerCareer): ManagerCareer {
     ...career,
     isSeasonComplete: isManagerSeasonCompleteLite(career),
   };
+  career = ensureFriendlyChoices(career);
   return career;
 }
 

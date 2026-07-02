@@ -37,8 +37,6 @@ export const CURRENT_PLAYABLE_CLUBS = getCurrentPlayableClubNames() as unknown a
 export type PlayerPoolMode =
   | "normal"
   | "hard"
-  | "challenge-cup"
-  | "era-challenge-cup"
   | "fantasy"
   | "draft";
 
@@ -310,22 +308,10 @@ export function auditModePool(mode: PlayerPoolMode): PlayerPoolAudit {
       return auditNormalModePool();
     case "hard":
       return auditGlobalPool(mode, getHardModeGlobalPool(), clubs);
-    case "challenge-cup":
-      return auditGlobalPool(mode, getChallengeCupPool(), clubs);
     case "fantasy":
       return auditGlobalPool(mode, getFantasyPool(), clubs);
     case "draft":
       return auditGlobalPool(mode, getDraftPool(), clubs);
-    case "era-challenge-cup":
-      return {
-        mode,
-        totalPlayers: 0,
-        byClub: {},
-        byCategory: { current: 0, historic: 0, legend: 0 },
-        missingClubs: [],
-        lowCountClubs: [],
-        eraOnlyExcluded: 0,
-      };
     default:
       return auditGlobalPool(mode, getGlobalRecruitmentPool(), clubs);
   }

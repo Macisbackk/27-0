@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type {
-  CupRunRankingResult,
   GameDifficulty,
   GameMode,
   GamePhase,
@@ -43,7 +42,6 @@ import {
   createPlayoffBracket,
   type PlayoffBracketState,
 } from "@/lib/game/playoff-bracket";
-import type { ChallengeCupResult } from "@/lib/game/challenge-cup-simulation";
 import { createJoeMellorStartingSquad } from "@/lib/game/joe-mellor-mode";
 import {
   ALL_SUPER_SAM_SLOT_INDICES,
@@ -61,11 +59,9 @@ import {
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { awardClubFundsForRun } from "@/lib/storage/club-funds";
 import { recordCompletedRun, recordPlayoffCompletion } from "@/lib/storage/run";
-import { getAverageSquadRating } from "@/lib/squad-analysis";
 import {
   playJoeMellorActivate,
   playSuperSamHallasActivate,
-  playModeChallengeCupStart,
   playModeClassicStart,
   playModeDraftStart,
   playDraftPlacement,
@@ -85,12 +81,8 @@ import { PlayoffReview } from "./PlayoffReview";
 import { PlayoffBracket } from "./PlayoffBracket";
 import { SeasonReview } from "./SeasonReview";
 import { SeasonSimulation } from "./SeasonSimulation";
-import { ChallengeCupReview } from "./ChallengeCupReview";
-import { ChallengeCupBracket } from "./ChallengeCupBracket";
-import { ChallengeCupClubSelect } from "./ChallengeCupClubSelect";
 import { MatchdayScoreboard } from "./MatchdayScoreboard";
 import { HardModeBadge } from "./HardModeBadge";
-import { ClubHeaderBar } from "./ClubBadge";
 import { GuestNotice } from "./GuestNotice";
 import { DraftPositionPlacement } from "./DraftPositionPlacement";
 import { LINK, BTN, CARD, SPACING } from "@/lib/ui/design-system";
@@ -155,14 +147,10 @@ export function GameBoard({
   normalEraMode = false,
 }: GameBoardProps) {
   const spinVariant: SpinPoolVariant = normalEraMode ? "era" : "current";
-  const isChallengeCup = mode === "CHALLENGE_CUP";
   const isDraftMode = mode === "DRAFT";
-  const isSlotRecruitMode = mode === "CLASSIC" && !isChallengeCup;
+  const isSlotRecruitMode = mode === "CLASSIC";
   const [runKey, setRunKey] = useState(0);
-  const [phase, setPhase] = useState<GamePhase>(
-    isChallengeCup ? "clubSelect" : "pitch"
-  );
-  const [cupClub, setCupClub] = useState<string | null>(null);
+  const [phase, setPhase] = useState<GamePhase>("pitch");
   const [selectedSlotIndex, setSelectedSlotIndex] = useState<number | null>(
     null
   );
@@ -180,11 +168,7 @@ export function GameBoard({
   const [rerollsThisRun, setRerollsThisRun] = useState(0);
   const rerollsThisRunRef = useRef(0);
   const [seasonResult, setSeasonResult] = useState<SeasonResult | null>(null);
-  const [cupResult, setCupResult] = useState<ChallengeCupResult | null>(null);
   const [runRank, setRunRank] = useState<number | undefined>();
-  const [cupRankingResult, setCupRankingResult] = useState<
-    CupRunRankingResult | undefined
-  >();
   const [submittedOnline, setSubmittedOnline] = useState(false);
   const [clubFundsPayout, setClubFundsPayout] =
     useState<ClubFundsPayoutResult | null>(null);
@@ -232,9 +216,8 @@ export function GameBoard({
     () => ({
       hardMode: isHardMode,
       draftMode: isDraftMode,
-      clubFilter: isChallengeCup && cupClub ? cupClub : undefined,
     }),
-    [isHardMode, isDraftMode, isChallengeCup, cupClub]
+    [isHardMode, isDraftMode]
   );
 
   const { seed, runId } = useMemo(() => {
@@ -271,7 +254,6 @@ export function GameBoard({
   ]);
 
   useEffect(() => {
-    if (isChallengeCup && !cupClub) return;
     if (superSamHallasMode) {
       setSlotOffers(new Map());
       setDraftPickIndex(0);
@@ -308,8 +290,6 @@ export function GameBoard({
     joeMellorMode,
     superSamHallasMode,
     recruitmentOptions,
-    isChallengeCup,
-    cupClub,
     isHardMode,
     isDraftMode,
   ]);
@@ -321,14 +301,12 @@ export function GameBoard({
       playSuperSamHallasActivate();
     } else if (joeMellorMode) {
       playJoeMellorActivate();
-    } else if (isChallengeCup) {
-      playModeChallengeCupStart();
     } else if (isDraftMode) {
       playModeDraftStart(difficulty);
     } else {
       playModeClassicStart(difficulty);
     }
-  }, [superSamHallasMode, joeMellorMode, isChallengeCup, isDraftMode, difficulty]);
+  }, [superSamHallasMode, joeMellorMode, isDraftMode, difficulty]);
 
   const activeOfferKey = isDraftMode ? draftPickIndex : selectedSlotIndex;
 
@@ -347,7 +325,7 @@ export function GameBoard({
   }, [phase, activeOfferKey, seed]);
 
   useEffect(() => {
-    if (!isDraftMode || superSamHallasMode || isChallengeCup) return;
+    if (!isDraftMode || superSamHallasMode) return;
     const maxPicks = TOTAL_SLOTS - (joeMellorMode ? 1 : 0);
     if (draftPickIndex >= maxPicks) return;
     if (getOfferForPick(slotOffers, draftPickIndex)) return;
@@ -380,7 +358,6 @@ export function GameBoard({
   }, [
     isDraftMode,
     superSamHallasMode,
-    isChallengeCup,
     draftPickIndex,
     squad,
     seed,
@@ -390,7 +367,7 @@ export function GameBoard({
   ]);
 
   useEffect(() => {
-    if (!isDraftMode || superSamHallasMode || isChallengeCup) return;
+    if (!isDraftMode || superSamHallasMode) return;
     if (pendingPlayer) return;
     if (getFilledCount(squad) >= TOTAL_SLOTS) return;
 
@@ -403,7 +380,6 @@ export function GameBoard({
   }, [
     isDraftMode,
     superSamHallasMode,
-    isChallengeCup,
     phase,
     squad,
     slotOffers,
@@ -490,16 +466,13 @@ export function GameBoard({
 
   const resetRun = useCallback(() => {
     setRunKey((k) => k + 1);
-    setPhase(isChallengeCup ? "clubSelect" : "pitch");
-    setCupClub(null);
+    setPhase("pitch");
     setSelectedSlotIndex(null);
     setSlotRecruitTarget(null);
     setActiveSpinTarget(null);
     setSquad(createStartingSquad({ joeMellorMode, superSamHallasMode }));
     setSeasonResult(null);
-    setCupResult(null);
     setRunRank(undefined);
-    setCupRankingResult(undefined);
     setSubmittedOnline(false);
     setClubFundsPayout(null);
     setPlayoffFundsPayout(null);
@@ -522,33 +495,21 @@ export function GameBoard({
     setLegendSpinSlotIndex(null);
     setLegendSpinUsed(false);
     setReviewStage("regular");
-  }, [joeMellorMode, superSamHallasMode, isChallengeCup]);
-
-  const handleCupClubSelected = useCallback((club: string) => {
-    setCupClub(club);
-    setPhase("pitch");
-  }, []);
+  }, [joeMellorMode, superSamHallasMode]);
 
   const startTournamentSimulation = useCallback(
     (finalSquad: SquadSlot[]) => {
       playSeasonStart();
 
-      if (isChallengeCup) {
-        setCupResult(null);
-        setSeasonResult(null);
-        setPhase("simulation");
-      } else {
-        const result = simulateSeason(finalSquad, seed, {
-          draftMode: isDraftMode,
-          currentSeasonOnly: !normalEraMode,
-        });
-        setSeasonResult(result);
-        setCupResult(null);
-        setPhase("simulation");
-        setReviewStage("regular");
-        recordedRef.current = false;
-        fundsAwardedRef.current = false;
-      }
+      const result = simulateSeason(finalSquad, seed, {
+        draftMode: isDraftMode,
+        currentSeasonOnly: !normalEraMode,
+      });
+      setSeasonResult(result);
+      setPhase("simulation");
+      setReviewStage("regular");
+      recordedRef.current = false;
+      fundsAwardedRef.current = false;
     },
     [
       runId,
@@ -557,7 +518,6 @@ export function GameBoard({
       difficulty,
       joeMellorMode,
       superSamHallasMode,
-      isChallengeCup,
       isDraftMode,
       normalEraMode,
     ]
@@ -622,7 +582,6 @@ export function GameBoard({
           mode,
           isHiddenRun: joeMellorMode || superSamHallasMode,
           seasonResult: result,
-          cupResult: null,
           fundsPhase: "regular",
         });
         setClubFundsPayout(payout);
@@ -685,14 +644,13 @@ export function GameBoard({
 
   useEffect(() => {
     if (phase !== "review" || reviewStage !== "regular" || !seasonResult) return;
-    if (isChallengeCup || joeMellorMode || superSamHallasMode) return;
+    if (joeMellorMode || superSamHallasMode) return;
     finalizeRegularSeason(seasonResult, squad);
   }, [
     phase,
     reviewStage,
     seasonResult,
     squad,
-    isChallengeCup,
     joeMellorMode,
     superSamHallasMode,
     finalizeRegularSeason,
@@ -702,7 +660,7 @@ export function GameBoard({
     if (phase !== "review" || reviewStage !== "playoffFinal" || !seasonResult) {
       return;
     }
-    if (isChallengeCup || joeMellorMode || superSamHallasMode) return;
+    if (joeMellorMode || superSamHallasMode) return;
     const playoff = playoffResultRef.current ?? seasonResult.playoffResult;
     if (!playoff) return;
     finalizePlayoffRun({ ...seasonResult, playoffResult: playoff }, squad);
@@ -711,7 +669,6 @@ export function GameBoard({
     reviewStage,
     seasonResult,
     squad,
-    isChallengeCup,
     joeMellorMode,
     superSamHallasMode,
     finalizePlayoffRun,
@@ -745,7 +702,6 @@ export function GameBoard({
             mode,
             isHiddenRun: joeMellorMode || superSamHallasMode,
             seasonResult: updated,
-            cupResult: null,
             fundsPhase: "playoff",
           });
           setPlayoffFundsPayout(payout);
@@ -1221,76 +1177,6 @@ export function GameBoard({
     setPhase("review");
   }, []);
 
-  const handleCupComplete = useCallback(
-    (result: ChallengeCupResult) => {
-      setCupResult({
-        ...result,
-        userTeamYearId: cupClub ?? result.userClub,
-      });
-
-      if (recordedRef.current) {
-        setPhase("review");
-        return;
-      }
-      recordedRef.current = true;
-
-      const signedIds = squad
-        .filter((s) => s.player)
-        .map((s) => s.player!.id);
-      const value = getSquadValue(squad);
-
-      void recordCompletedRun(
-        {
-          id: runId,
-          mode,
-          status: "COMPLETED",
-          currentPlayer: null,
-          currentIndex: TOTAL_SLOTS,
-          totalOffers: TOTAL_SLOTS,
-          squad,
-          totalValue: value,
-          filledCount: getFilledCount(squad),
-          totalSlots: TOTAL_SLOTS,
-          canSign: false,
-          seed,
-        },
-        signedIds,
-        difficulty,
-        {
-          joeMellorMode,
-          superSamHallasMode,
-          challengeCupMode: true,
-          seasonWins: result.wins,
-          seasonLosses: result.losses,
-          cupFinish: result.finish,
-          cupWon: result.isWinner,
-          averageSquadRating: getAverageSquadRating(squad),
-          rerollsUsed: rerollsThisRunRef.current,
-          matchResults: result.fixtures.map((fixture) => fixture.result),
-          cupTeam: cupClub ?? result.userClub,
-        }
-      ).then((completed) => {
-        setSubmittedOnline(completed.submittedOnline);
-        setCupRankingResult(completed.cupRanking);
-        if (completed.cupRanking?.cupWinsRank) {
-          setRunRank(completed.cupRanking.cupWinsRank);
-        }
-        setPhase("review");
-      });
-      return;
-    },
-    [
-      squad,
-      runId,
-      mode,
-      seed,
-      difficulty,
-      joeMellorMode,
-      superSamHallasMode,
-      cupClub,
-    ]
-  );
-
   const playerPair =
     !isSlotRecruitMode &&
     (phase === "choice" || phase === "reveal") &&
@@ -1324,21 +1210,19 @@ export function GameBoard({
       )}
 
       <div>
-        {phase !== "clubSelect" && phase !== "review" && (
+        {phase !== "review" && (
           <GuestNotice variant="play" />
         )}
 
-        {phase !== "clubSelect" && (
-          <MatchdayScoreboard
+        <MatchdayScoreboard
             difficulty={difficulty}
             filledCount={filledCount}
             totalSlots={TOTAL_SLOTS}
             totalValue={totalValue}
             hideScore={isHardMode}
           />
-        )}
 
-        {superSamHallasMode && phase !== "clubSelect" && phase !== "review" && (
+        {superSamHallasMode && phase !== "review" && (
           <motion.div
             className={`mt-4 overflow-hidden ${CARD.base} border-accent-gold/50 bg-accent-gold/15 px-3 py-3 text-center sm:px-4 sm:py-4`}
             initial={{ opacity: 0, scale: 0.96 }}
@@ -1351,7 +1235,7 @@ export function GameBoard({
           </motion.div>
         )}
 
-        {joeMellorMode && !superSamHallasMode && phase !== "clubSelect" && phase !== "review" && (
+        {joeMellorMode && !superSamHallasMode && phase !== "review" && (
           <motion.div
             className={`mt-4 overflow-hidden ${CARD.base} border-accent-gold/50 bg-accent-gold/15 px-3 py-3 text-center sm:px-4 sm:py-4`}
             initial={{ opacity: 0, scale: 0.96 }}
@@ -1361,24 +1245,6 @@ export function GameBoard({
             <p className={`${TYPO.sectionLabel} text-accent-gold`}>
               GOAT MODE ACTIVATED
             </p>
-          </motion.div>
-        )}
-
-        {isChallengeCup && cupClub && phase !== "clubSelect" && (
-          <motion.div
-            className={`mt-4 overflow-hidden ${CARD.base} border-accent-green/40 bg-accent-green/10`}
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <ClubHeaderBar club={cupClub} size="md" thick />
-            <div className="px-4 py-3 text-center">
-              <p className={`${TYPO.sectionTitle} text-accent-green`}>
-                Challenge Cup — {cupClub}
-              </p>
-              <p className={`mt-1 ${TYPO.bodySm}`}>
-                Club-only draft · Single elimination knockout tournament
-              </p>
-            </div>
           </motion.div>
         )}
 
@@ -1429,13 +1295,6 @@ export function GameBoard({
         )}
 
         <div className="relative mt-4 overflow-x-hidden overflow-y-visible">
-          {phase === "clubSelect" && isChallengeCup && (
-            <ChallengeCupClubSelect
-              seed={seed}
-              onSelect={handleCupClubSelected}
-            />
-          )}
-
           {(phase === "pitch" ||
             phase === "reveal" ||
             phase === "choice" ||
@@ -1487,18 +1346,7 @@ export function GameBoard({
             </div>
           )}
 
-          {phase === "simulation" && isChallengeCup && !cupResult && (
-            <div className={`${CARD.panel} mt-4 p-2 sm:p-4`}>
-              <ChallengeCupBracket
-                squad={squad}
-                seed={seed}
-                userClub={cupClub!}
-                onComplete={handleCupComplete}
-              />
-            </div>
-          )}
-
-          {phase === "simulation" && seasonResult && !isChallengeCup && (
+          {phase === "simulation" && seasonResult && (
             <div className={`${CARD.panel} mt-4 ${SPACING.cardPadding}`}>
               <SeasonSimulation
                 result={seasonResult}
@@ -1602,26 +1450,8 @@ export function GameBoard({
         </div>
       </div>
 
-      {phase === "review" && cupResult && isChallengeCup && (
-        <ChallengeCupReview
-          squad={squad}
-          cupResult={cupResult}
-          seed={seed}
-          difficulty={difficulty}
-          joeMellorMode={joeMellorMode}
-          superSamHallasMode={superSamHallasMode}
-          cupRankingResult={cupRankingResult}
-          submittedOnline={submittedOnline}
-          clubFundsPayout={clubFundsPayout}
-          onPlayAgain={resetRun}
-          onClose={() => setPhase(isChallengeCup ? "clubSelect" : "pitch")}
-          onReturnHome={resetRun}
-        />
-      )}
-
       {phase === "review" &&
         seasonResult &&
-        !isChallengeCup &&
         reviewStage === "regular" && (
         <SeasonReview
           squad={squad}

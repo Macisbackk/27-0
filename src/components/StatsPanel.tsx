@@ -5,21 +5,15 @@ import type { UserStatsData } from "@/lib/types";
 import { formatValue } from "@/lib/players";
 import { EMPTY_STATS, getAllStats } from "@/lib/storage/stats";
 import { SHOW_DRAFT_MODE } from "@/lib/feature-flags";
-import { ensureEraCupLeaderboardSynced } from "@/lib/storage/cup-leaderboard";
 import { getUsername } from "@/lib/storage/user";
 import {
   STATS_TABS,
-  getChallengeCupView,
-  getEraChallengeCupView,
   getDraftModeView,
-  getHardChallengeCupView,
-  getHardDraftModeView,
   getFantasyModeView,
   getHardNormalModeView,
   getOverallView,
   getSuperLeagueView,
   formatRankingOrDash,
-  getChallengeCupPersonalBests,
   formatRatingOrDash,
   formatRecordOrDash,
   type StatsTabId,
@@ -44,11 +38,8 @@ import {
 } from "@/lib/manager/manager-stats-views";
 import type { ManagerLifetimeStats } from "@/lib/manager/types";
 import {
-  getCupEraVariant,
   getNormalEraVariant,
-  CUP_ERA_VARIANT_CHANGED_EVENT,
   NORMAL_ERA_VARIANT_CHANGED_EVENT,
-  setCupEraVariant,
   setNormalEraVariant,
 } from "@/lib/storage/preferences";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
@@ -73,46 +64,32 @@ export function StatsPanel() {
     null
   );
   const [fantasyStats, setFantasyStats] = useState<UserStatsData | null>(null);
-  const [eraCupStats, setEraCupStats] = useState<UserStatsData | null>(null);
   const [eraNormalStats, setEraNormalStats] = useState<UserStatsData | null>(
     null
   );
   const [normalEraMode, setNormalEraMode] = useState(false);
-  const [cupEraMode, setCupEraMode] = useState(false);
   const [managerStats, setManagerStats] = useState(EMPTY_MANAGER_STATS);
 
   const refresh = () => {
     const stored = getAllStats();
-    const username = getUsername();
-    if (username) {
-      ensureEraCupLeaderboardSynced(username, stored.eraCup);
-    }
     setNormalStats(stored.normal);
     setHardStats(stored.hard);
     setDraftNormalStats(stored.draftNormal);
     setDraftHardStats(stored.draftHard);
     setFantasyStats(stored.fantasy);
-    setEraCupStats(stored.eraCup);
     setEraNormalStats(stored.eraNormal);
     setManagerStats(loadManagerStats());
   };
 
   useEffect(() => {
     setNormalEraMode(getNormalEraVariant());
-    setCupEraMode(getCupEraVariant());
     const onNormalEra = (event: Event) => {
       const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
       if (detail) setNormalEraMode(detail.eraMode);
     };
-    const onCupEra = (event: Event) => {
-      const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
-      if (detail) setCupEraMode(detail.eraMode);
-    };
     window.addEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalEra);
-    window.addEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupEra);
     return () => {
       window.removeEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalEra);
-      window.removeEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCupEra);
     };
   }, []);
 
@@ -129,7 +106,6 @@ export function StatsPanel() {
       !draftNormalStats ||
       !draftHardStats ||
       !fantasyStats ||
-      !eraCupStats ||
       !eraNormalStats
     ) {
       return;
@@ -140,7 +116,7 @@ export function StatsPanel() {
       draftNormal: draftNormalStats,
       draftHard: draftHardStats,
     });
-  }, [normalStats, hardStats, draftNormalStats, draftHardStats, fantasyStats, eraCupStats, eraNormalStats]);
+  }, [normalStats, hardStats, draftNormalStats, draftHardStats, fantasyStats, eraNormalStats]);
 
   if (
     !normalStats ||
@@ -148,7 +124,6 @@ export function StatsPanel() {
     !draftNormalStats ||
     !draftHardStats ||
     !fantasyStats ||
-    !eraCupStats ||
     !eraNormalStats
   ) {
     return (
@@ -164,8 +139,7 @@ export function StatsPanel() {
     hardStats.totalRuns > 0 ||
     (SHOW_DRAFT_MODE && draftNormalStats.totalSeasonsSimulated > 0) ||
     (SHOW_DRAFT_MODE && draftHardStats.totalSeasonsSimulated > 0) ||
-    fantasyStats.totalSeasonsSimulated > 0 ||
-    eraCupStats.eraChallengeCupRuns > 0;
+    fantasyStats.totalSeasonsSimulated > 0;
 
   const hasAnyManagerStats =
     managerStats.seasonsCompleted > 0 ||
@@ -243,18 +217,6 @@ export function StatsPanel() {
               onEraModeChange={(era) => {
                 setNormalEraMode(era);
                 setNormalEraVariant(era);
-              }}
-            />
-          )}
-          {activeTab === "challenge-cup" && (
-            <ChallengeCupTab
-              normal={normalStats}
-              hard={hardStats}
-              eraCup={eraCupStats}
-              eraMode={cupEraMode}
-              onEraModeChange={(era) => {
-                setCupEraMode(era);
-                setCupEraVariant(era);
               }}
             />
           )}
@@ -765,124 +727,6 @@ function SuperLeagueTab({
   );
 }
 
-function HardModeTab({
-  stats,
-  draftHard,
-}: {
-  stats: UserStatsData;
-  draftHard: UserStatsData;
-}) {
-  const normalView = getHardNormalModeView(stats);
-  const draftView = getHardDraftModeView(draftHard);
-  const cupView = getHardChallengeCupView(stats);
-
-  return (
-    <div className="space-y-8">
-      <StatsSection title="Hard Normal Mode" headerExtra={<HardModeBadge />}>
-        <StatCard label="Runs" value={String(normalView.runs)} />
-        <StatCard
-          label="Wins"
-          value={String(normalView.wins)}
-          highlight={normalView.wins > 0}
-        />
-        <StatCard label="Losses" value={String(normalView.losses)} />
-        <StatCard
-          label="Total Record"
-          value={formatRecordOrDash(
-            normalView.hasSeasons ? normalView.totalRecord : null
-          )}
-          highlight={normalView.totalRecord.wins >= 20}
-        />
-        <StatCard
-          label="Worst Record"
-          value={formatRecordOrDash(
-            normalView.hasSeasons ? normalView.worstRecord : null
-          )}
-        />
-        <StatCard
-          label="League Titles"
-          value={String(normalView.leagueTitles)}
-          highlight={normalView.leagueTitles > 0}
-        />
-        <StatCard
-          label="27-0 Seasons"
-          value={String(normalView.perfectSeasons)}
-          highlight={normalView.perfectSeasons > 0}
-        />
-        <StatCard
-          label="0-27 Seasons"
-          value={String(normalView.winlessSeasons)}
-        />
-      </StatsSection>
-
-      {SHOW_DRAFT_MODE && (
-      <StatsSection title="Hard Draft Mode" headerExtra={<HardModeBadge />}>
-        <StatCard label="Runs" value={String(draftView.runs)} />
-        <StatCard
-          label="Wins"
-          value={String(draftView.wins)}
-          highlight={draftView.wins > 0}
-        />
-        <StatCard label="Losses" value={String(draftView.losses)} />
-        <StatCard
-          label="Total Record"
-          value={formatRecordOrDash(
-            draftView.hasSeasons ? draftView.totalRecord : null
-          )}
-          highlight={draftView.totalRecord.wins >= 20}
-        />
-        <StatCard
-          label="Worst Record"
-          value={formatRecordOrDash(
-            draftView.hasSeasons ? draftView.worstRecord : null
-          )}
-        />
-        <StatCard
-          label="League Titles"
-          value={String(draftView.leagueTitles)}
-          highlight={draftView.leagueTitles > 0}
-        />
-        <StatCard
-          label="27-0 Seasons"
-          value={String(draftView.perfectSeasons)}
-          highlight={draftView.perfectSeasons > 0}
-        />
-        <StatCard
-          label="0-27 Seasons"
-          value={String(draftView.winlessSeasons)}
-        />
-      </StatsSection>
-      )}
-
-      <StatsSection title="Hard Challenge Cup" headerExtra={<HardModeBadge />}>
-        <StatCard label="Appearances" value={String(cupView.appearances)} />
-        <StatCard
-          label="Cup Match Wins"
-          value={String(cupView.wins)}
-          highlight={cupView.wins > 0}
-        />
-        <StatCard label="Cup Match Losses" value={String(cupView.losses)} />
-        <StatCard
-          label="Cup Record"
-          value={formatRecordOrDash(
-            cupView.hasGames ? cupView.totalRecord : null
-          )}
-        />
-        <StatCard
-          label="Cups Won"
-          value={String(cupView.cupsWon)}
-          highlight={cupView.cupsWon > 0}
-        />
-        <StatCard
-          label="Finals Reached"
-          value={String(cupView.finals)}
-          highlight={cupView.finals > 0}
-        />
-      </StatsSection>
-    </div>
-  );
-}
-
 function DraftModeTab({ draftNormal }: { draftNormal: UserStatsData }) {
   const view = getDraftModeView(draftNormal);
 
@@ -963,225 +807,6 @@ function FantasyModeTab({ stats }: { stats: UserStatsData }) {
           label="Best Team Rating"
           value={formatRatingOrDash(view.bestTeamRating)}
           highlight={(view.bestTeamRating ?? 0) >= 88}
-        />
-      </StatsSection>
-    </div>
-  );
-}
-
-function ChallengeCupTab({
-  normal,
-  hard,
-  eraCup,
-  eraMode,
-  onEraModeChange,
-}: {
-  normal: UserStatsData;
-  hard: UserStatsData;
-  eraCup: UserStatsData;
-  eraMode: boolean;
-  onEraModeChange: (eraMode: boolean) => void;
-}) {
-  if (eraMode) {
-    const view = getEraChallengeCupView(eraCup);
-    return (
-      <div className="space-y-8">
-        <ChallengeCupVariantToggle
-          sectionLabel="Mode Variant"
-          useShortLabels
-          eraMode={eraMode}
-          onEraModeChange={onEraModeChange}
-        />
-
-        <StatsSection title="Era Challenge Cup">
-          <StatCard label="Era Cup Appearances" value={String(view.runs)} />
-          <StatCard
-            label="Total Record"
-            value={
-              view.wins + view.losses > 0 ? (
-                <RecordWithPercentage wins={view.wins} losses={view.losses} />
-              ) : (
-                "—"
-              )
-            }
-            highlight={view.totalRecord.wins >= 4}
-          />
-          <StatCard
-            label="Era Match Wins"
-            value={String(view.wins)}
-            highlight={view.wins > 0}
-          />
-          <StatCard label="Era Match Losses" value={String(view.losses)} />
-        </StatsSection>
-
-        <StatsSection title="Achievements">
-          <StatCard
-            label="Era Cups Won"
-            value={String(view.cupsWon)}
-            highlight={view.cupsWon > 0}
-          />
-          <StatCard
-            label="Best Era Team Used"
-            value={view.bestTeamUsed ?? "—"}
-            highlight={view.bestTeamUsed !== null}
-          />
-        </StatsSection>
-      </div>
-    );
-  }
-
-  const view = getChallengeCupView(normal, hard);
-  const personalBests = getChallengeCupPersonalBests(normal, hard);
-
-  return (
-    <div className="space-y-8">
-      <ChallengeCupVariantToggle
-        sectionLabel="Mode Variant"
-        useShortLabels
-        eraMode={eraMode}
-        onEraModeChange={onEraModeChange}
-      />
-
-      <StatsSection title="Challenge Cup">
-        <StatCard
-          label="Challenge Cup Appearances"
-          value={String(view.runs)}
-        />
-        <StatCard
-          label="Total Record"
-          value={
-            view.wins + view.losses > 0 ? (
-              <RecordWithPercentage
-                wins={view.totalRecord.wins}
-                losses={view.totalRecord.losses}
-              />
-            ) : (
-              "—"
-            )
-          }
-          highlight={view.totalRecord.wins >= 10}
-        />
-        <StatCard
-          label="Challenge Cup Match Wins"
-          value={String(view.wins)}
-          highlight={view.wins > 0}
-        />
-        <StatCard
-          label="Challenge Cup Match Losses"
-          value={String(view.losses)}
-        />
-      </StatsSection>
-
-      <StatsSection title="Achievements">
-        <StatCard
-          label="Challenge Cups Won"
-          value={String(view.cupsWon)}
-          highlight={view.cupsWon > 0}
-        />
-        <StatCard
-          label="Finals Reached"
-          value={String(view.finals)}
-          highlight={view.finals > 0}
-        />
-        <StatCard
-          label="Semi Finals Reached"
-          value={String(view.semiFinals)}
-        />
-        <StatCard
-          label="Quarter Finals Reached"
-          value={String(view.quarterFinals)}
-        />
-      </StatsSection>
-
-      <StatsSection title="Records">
-        <StatCard
-          label="Best Cup Finish"
-          value={view.bestFinish ?? "—"}
-          highlight={view.bestFinish === "Winners"}
-        />
-        <StatCard
-          label="Best Tournament Ranking"
-          value={formatRankingOrDash(view.bestRanking)}
-          highlight={view.bestRanking === 1}
-        />
-      </StatsSection>
-
-      <StatsSection title="Challenge Cup Personal Bests">
-        <StatCard
-          label="Most Cup Match Wins"
-          value={String(personalBests.mostCupMatchWins)}
-          highlight={personalBests.mostCupMatchWins > 0}
-        />
-        <StatCard
-          label="Best Tournament Finish"
-          value={personalBests.bestTournamentFinish ?? "—"}
-          highlight={personalBests.bestTournamentFinish === "Winners"}
-        />
-        <StatCard
-          label="Longest Cup Winning Streak"
-          value={String(personalBests.longestCupWinningStreak)}
-          highlight={personalBests.longestCupWinningStreak > 0}
-        />
-        <StatCard
-          label="Most Cups Won"
-          value={String(personalBests.mostCupsWon)}
-          highlight={personalBests.mostCupsWon > 0}
-        />
-      </StatsSection>
-
-      <StatsSection title="Performance">
-        <StatCard
-          label="Highest Rated Cup Squad"
-          value={formatRatingOrDash(view.highestRatedSquad)}
-          highlight={view.highestRatedSquad !== null}
-        />
-        <StatCard
-          label="Lowest Rated Cup Squad"
-          value={formatRatingOrDash(view.lowestRatedSquad)}
-        />
-      </StatsSection>
-    </div>
-  );
-}
-
-function EraChallengeCupTab({ stats }: { stats: UserStatsData }) {
-  const view = getEraChallengeCupView(stats);
-
-  return (
-    <div className="space-y-8">
-      <StatsSection title="Career">
-        <StatCard
-          label="Era Cup Appearances"
-          value={String(view.runs)}
-        />
-        <StatCard
-          label="Total Record"
-          value={formatRecordOrDash(
-            view.wins + view.losses > 0 ? view.totalRecord : null
-          )}
-          highlight={view.totalRecord.wins >= 4}
-        />
-        <StatCard
-          label="Era Match Wins"
-          value={String(view.wins)}
-          highlight={view.wins > 0}
-        />
-        <StatCard
-          label="Era Match Losses"
-          value={String(view.losses)}
-        />
-      </StatsSection>
-
-      <StatsSection title="Achievements">
-        <StatCard
-          label="Era Cups Won"
-          value={String(view.cupsWon)}
-          highlight={view.cupsWon > 0}
-        />
-        <StatCard
-          label="Best Era Team Used"
-          value={view.bestTeamUsed ?? "—"}
-          highlight={view.bestTeamUsed !== null}
         />
       </StatsSection>
     </div>

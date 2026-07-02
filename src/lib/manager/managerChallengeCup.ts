@@ -351,6 +351,15 @@ export function getNextLeagueOrCupFixture(
   };
 }
 
+export function shouldShowChallengeCupCelebration(
+  career: ManagerCareer
+): boolean {
+  if (career.challengeCupCelebrationShown) return false;
+  const cup = career.challengeCup;
+  if (!cup) return false;
+  return cup.userWon || deriveCupOutcomeFromBracket(cup).isWinner;
+}
+
 export function getCupHubStatus(career: ManagerCareer): string {
   const cup = career.challengeCup;
   if (!cup) return "Challenge Cup: Not started";

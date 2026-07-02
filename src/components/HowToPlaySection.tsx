@@ -21,18 +21,6 @@ const MODES = [
     body: "Spin historic team-years and draft from exact era player pools.",
     accent: "era" as const,
   },
-  {
-    title: "Challenge Cup Current",
-    tag: "Cup",
-    body: "Pick or randomise a 2026 club, set your XIII, and fight through the bracket.",
-    accent: "cup" as const,
-  },
-  {
-    title: "Era Challenge Cup",
-    tag: "Era Cup",
-    body: "Lead a historic team-year through the knockout draw.",
-    accent: "era-cup" as const,
-  },
 ] as const;
 
 const ACCENT_STYLES = {
@@ -44,16 +32,6 @@ const ACCENT_STYLES = {
   era: {
     card: "border-accent-gold/30 bg-accent-gold/5",
     tag: "border-accent-gold/40 bg-accent-gold/10 text-accent-gold",
-    dot: "bg-accent-gold",
-  },
-  cup: {
-    card: "border-theme-tertiary/35 bg-theme-primary/5",
-    tag: "border-theme-tertiary/45 bg-theme-primary/10 text-theme-primary",
-    dot: "bg-theme-primary",
-  },
-  "era-cup": {
-    card: "border-accent-gold/25 bg-accent-gold/[0.07]",
-    tag: "border-accent-gold/35 bg-accent-gold/10 text-accent-gold",
     dot: "bg-accent-gold",
   },
 } as const;

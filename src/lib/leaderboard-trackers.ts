@@ -70,7 +70,6 @@ export const TROPHY_CABINET_SECTIONS: {
     trackerIds: [
       "league_titles",
       "super_league_champions",
-      "challenge_cup_trophy",
     ],
   },
   {
@@ -79,7 +78,6 @@ export const TROPHY_CABINET_SECTIONS: {
     trackerIds: [
       "era_league_title",
       "era_league_champions",
-      "era_cup_trophy",
     ],
   },
 ];
@@ -194,7 +192,6 @@ export const LEADERBOARD_TRACKERS: {
 export function getTrackersForDbMode(
   dbMode:
     | "super-league"
-    | "challenge-cup"
     | "draft"
     | "fantasy"
     | "club-funds"
@@ -209,18 +206,6 @@ export function getTrackersForDbMode(
       .map((id) => LEADERBOARD_TRACKERS.find((t) => t.id === id))
       .filter((t): t is NonNullable<typeof t> => !!t);
   }
-  if (dbMode === "challenge-cup") {
-    const cupTrackers = LEADERBOARD_TRACKERS.filter(
-      (t) => t.cupOnly || t.id === "best_record"
-    );
-    const order: LeaderboardTrackerType[] = [
-      "best_record",
-      "challenge_cup_team_wins",
-    ];
-    return order
-      .map((id) => cupTrackers.find((t) => t.id === id))
-      .filter((t): t is NonNullable<typeof t> => !!t);
-  }
   return LEADERBOARD_TRACKERS.filter(
     (t) => !t.cupOnly && !t.clubFundsOnly && !t.trophyCabinetOnly
   );
@@ -229,7 +214,6 @@ export function getTrackersForDbMode(
 export function getDefaultTrackerForDbMode(
   dbMode:
     | "super-league"
-    | "challenge-cup"
     | "draft"
     | "fantasy"
     | "club-funds"
@@ -242,7 +226,6 @@ export function isTrackerValidForDbMode(
   tracker: LeaderboardTrackerType,
   dbMode:
     | "super-league"
-    | "challenge-cup"
     | "draft"
     | "fantasy"
     | "club-funds"

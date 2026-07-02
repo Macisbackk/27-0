@@ -169,7 +169,7 @@ export default function ProfilePage() {
 
         <SectionCard
           title="Total Record"
-          helper="Across Normal, Hard, Draft, and Challenge Cup modes."
+          helper="Across Normal and Draft quick modes."
         >
           {statsLoading || !view ? (
             <p className={TYPO.bodySm}>Loading career stats…</p>
@@ -186,11 +186,6 @@ export default function ProfilePage() {
                 label="League Titles"
                 value={String(view.leagueTitles)}
                 highlight={view.leagueTitles > 0}
-              />
-              <ProfileStatCard
-                label="Challenge Cups"
-                value={String(view.challengeCups)}
-                highlight={view.challengeCups > 0}
               />
               <ProfileStatCard
                 label="27-0 Seasons"

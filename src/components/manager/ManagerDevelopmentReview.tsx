@@ -8,6 +8,7 @@ import { playUiClick } from "@/lib/sound";
 import {
   ManagerDeltaBadge,
   ManagerSectionCard,
+  ManagerSeasonImpactBadge,
 } from "@/components/manager/manager-ui";
 
 interface ManagerDevelopmentReviewProps {
@@ -59,7 +60,8 @@ export function ManagerDevelopmentReview({
           {career.club} · {career.seasonYear}
         </h1>
         <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-300`}>
-          How your squad developed over the season
+          How your squad developed over the season. Poor impact seasons increase
+          regression risk.
         </p>
       </ManagerSectionCard>
 
@@ -75,8 +77,11 @@ export function ManagerDevelopmentReview({
             <ManagerSectionCard title="Improved" accent="primary">
               <ul className={`mt-2 ${SPACING.stackSm}`}>
                 {improved.map((c) => (
-                  <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-baseline gap-1`}>
+                  <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-center gap-2`}>
                     <span className="font-semibold text-white">{c.playerName}</span>
+                    {c.seasonImpact != null && (
+                      <ManagerSeasonImpactBadge impact={c.seasonImpact} compact />
+                    )}
                     {changeLabel(c, "improved")}
                     <ManagerDeltaBadge delta={c.delta} />
                     <span className="text-pitch-500">· POT {c.potential}</span>
@@ -89,8 +94,11 @@ export function ManagerDevelopmentReview({
             <ManagerSectionCard title="Declined" accent="red">
               <ul className={`mt-2 ${SPACING.stackSm}`}>
                 {declined.map((c) => (
-                  <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-baseline gap-1`}>
+                  <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-center gap-2`}>
                     <span className="font-semibold text-white">{c.playerName}</span>
+                    {c.seasonImpact != null && (
+                      <ManagerSeasonImpactBadge impact={c.seasonImpact} compact />
+                    )}
                     {changeLabel(c, "declined")}
                     <ManagerDeltaBadge delta={c.delta} />
                     <span className="text-pitch-500">· POT {c.potential}</span>
@@ -103,8 +111,11 @@ export function ManagerDevelopmentReview({
             <ManagerSectionCard title="Unchanged">
               <ul className={`mt-2 ${SPACING.stackSm}`}>
                 {steady.map((c) => (
-                  <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-baseline gap-1`}>
+                  <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-center gap-2`}>
                     <span className="font-semibold text-white">{c.playerName}</span>
+                    {c.seasonImpact != null && (
+                      <ManagerSeasonImpactBadge impact={c.seasonImpact} compact />
+                    )}
                     {changeLabel(c, "steady")}
                     <span className="text-pitch-500">· POT {c.potential}</span>
                   </li>

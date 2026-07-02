@@ -19,12 +19,6 @@ import { normalizeModeVariant } from "../mode-variant";
 import { STORAGE_KEYS } from "./keys";
 import { getAuthUserId, isLoggedIn } from "../auth-session";
 import { getUsername } from "./user";
-import { getCupTeamWinsLeaderboardAsync } from "./cup-team-wins";
-import {
-  ensureEraCupLeaderboardSynced,
-  getAllEraCupLeaderboardProfiles,
-  mapCupProfilesToTrackerEntries,
-} from "./cup-leaderboard";
 import { getTrophyCabinetLeaderboardAsync } from "./trophy-cabinet-leaderboard";
 import { getAllStats } from "./stats";
 import type { UserStatsData } from "../types";
@@ -83,38 +77,32 @@ export interface SupabaseLeaderboardRow {
 
 export type LeaderboardDbMode =
   | "super-league"
-  | "challenge-cup"
   | "draft"
   | "fantasy"
   | "club-funds"
   | "trophy-cabinet";
 
-/** Era Challenge Cup shares the challenge-cup leaderboard bucket. */
 export function normalizeLeaderboardGameMode(mode: GameMode): GameMode {
-  return mode === "ERA_CHALLENGE_CUP" ? "CHALLENGE_CUP" : mode;
+  return mode;
 }
 
 export function gameModeToDbMode(mode: GameMode): LeaderboardDbMode {
-  const normalized = normalizeLeaderboardGameMode(mode);
-  if (normalized === "CHALLENGE_CUP") return "challenge-cup";
-  if (normalized === "DRAFT") return "draft";
-  if (normalized === "FANTASY") return "fantasy";
+  if (mode === "DRAFT") return "draft";
+  if (mode === "FANTASY") return "fantasy";
   return "super-league";
 }
 
 function dbModeToGameMode(dbMode: LeaderboardDbMode): GameMode {
-  if (dbMode === "challenge-cup") return "CHALLENGE_CUP";
   if (dbMode === "draft") return "DRAFT";
   if (dbMode === "fantasy") return "FANTASY";
   return "CLASSIC";
 }
 
-/** Cup entries are stored under a single difficulty bucket. */
 function resolveLeaderboardDifficulty(
   dbMode: LeaderboardDbMode,
   difficulty: GameDifficulty
 ): GameDifficulty {
-  return dbMode === "challenge-cup" || dbMode === "fantasy" ? "NORMAL" : difficulty;
+  return dbMode === "fantasy" ? "NORMAL" : difficulty;
 }
 
 const SUPABASE_SELECT_EXTENDED =
@@ -230,7 +218,7 @@ function resolveLeaderboardModeVariant(
   dbMode: LeaderboardDbMode,
   modeVariant: ModeVariant = "current"
 ): ModeVariant {
-  if (dbMode === "super-league" || dbMode === "challenge-cup") {
+  if (dbMode === "super-league") {
     return normalizeModeVariant(modeVariant);
   }
   return "current";
@@ -285,7 +273,7 @@ function mapSupabaseToTrackerEntries(
 
   for (const row of rows) {
     if ((row.difficulty ?? "NORMAL") !== difficulty) continue;
-    if (dbMode === "super-league" || dbMode === "challenge-cup") {
+    if (dbMode === "super-league") {
       const rowVariant = normalizeModeVariant(
         row.mode_variant != null ? row.mode_variant : effectiveVariant
       );
@@ -371,7 +359,7 @@ async function fetchTrackerEntriesFromSupabase(
       .eq("difficulty", effectiveDifficulty)
       .limit(250);
 
-    if (dbMode === "super-league" || dbMode === "challenge-cup") {
+    if (dbMode === "super-league") {
       query = query.eq("mode_variant", effectiveVariant);
     }
 
@@ -428,7 +416,7 @@ async function insertToSupabase(
       .eq("mode", dbMode)
       .eq("difficulty", difficulty);
 
-    if (dbMode === "super-league" || dbMode === "challenge-cup") {
+    if (dbMode === "super-league") {
       existingQuery = existingQuery.eq("mode_variant", effectiveVariant);
     }
 
@@ -553,16 +541,6 @@ function userStatsToClassicTrackerEntry(
   };
 }
 
-function getSupplementalEraCupEntries(): LeaderboardTrackerEntry[] {
-  const username = getUsername();
-  if (username) {
-    ensureEraCupLeaderboardSynced(username, getAllStats().eraCup);
-  }
-  return mapCupProfilesToTrackerEntries(getAllEraCupLeaderboardProfiles()).filter(
-    hasTrackerActivity
-  );
-}
-
 function getSupplementalEraNormalEntries(
   difficulty: GameDifficulty
 ): LeaderboardTrackerEntry[] {
@@ -605,9 +583,7 @@ function buildTrackerEntries(
 
   if (period !== "ALL_TIME") return entries;
 
-  if (dbMode === "challenge-cup" && modeVariant === "era") {
-    entries = mergeTrackerEntryLists(entries, getSupplementalEraCupEntries());
-  } else if (dbMode === "super-league" && modeVariant === "era") {
+  if (dbMode === "super-league" && modeVariant === "era") {
     entries = mergeTrackerEntryLists(
       entries,
       getSupplementalEraNormalEntries(difficulty)
@@ -638,7 +614,7 @@ function saveLocalEntry(
   let entries = loadLocalEntries();
   const storageMode = normalizeLeaderboardGameMode(mode);
   const effectiveVariant =
-    storageMode === "CLASSIC" || storageMode === "CHALLENGE_CUP"
+    storageMode === "CLASSIC"
       ? normalizeModeVariant(modeVariant)
       : "current";
 
@@ -713,7 +689,7 @@ function getExistingLocalStats(
 ): Partial<LeaderboardTrackerEntry> | null {
   const storageMode = normalizeLeaderboardGameMode(mode);
   const effectiveVariant =
-    storageMode === "CLASSIC" || storageMode === "CHALLENGE_CUP"
+    storageMode === "CLASSIC"
       ? normalizeModeVariant(modeVariant)
       : "current";
   const allTime = loadLocalEntries().find(
@@ -747,7 +723,7 @@ async function getExistingRemoteStats(
       .eq("mode", dbMode)
       .eq("difficulty", difficulty);
 
-    if (dbMode === "super-league" || dbMode === "challenge-cup") {
+    if (dbMode === "super-league") {
       query = query.eq("mode_variant", effectiveVariant);
     }
 
@@ -819,15 +795,11 @@ export async function addLeaderboardEntry(
     effectiveDifficulty,
     modeVariant
   );
-  const isCupRun = storageMode === "CHALLENGE_CUP";
   const merged = mergeLeaderboardStats(remoteExisting ?? localExisting, {
     squadValue,
     wins,
     losses,
     isPerfectSeason: options?.isPerfectSeason,
-    cupWon: options?.cupWon,
-    cupFinish: options?.cupFinish,
-    isCupRun,
   });
 
   saveLocalEntry(
@@ -858,24 +830,6 @@ export async function getTrackerLeaderboardAsync(
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
   if (dbMode === "trophy-cabinet") {
     return getTrophyCabinetLeaderboardAsync(tracker, limit);
-  }
-
-  if (tracker === "challenge_cup_team_wins") {
-    const result = await getCupTeamWinsLeaderboardAsync();
-    return {
-      source: result.source,
-      rows: result.rows.map((row) => ({
-        rank: row.rank,
-        username: row.teamName,
-        statDisplay: String(row.tournamentWins),
-        achievedAt: "",
-        difficulty: "NORMAL",
-        mode: "CHALLENGE_CUP",
-        barPercent: row.barPercent,
-        isLeader: row.isLeader,
-        tournamentWins: row.tournamentWins,
-      })),
-    };
   }
 
   const currentUser = getUsername() ?? "";

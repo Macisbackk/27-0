@@ -312,12 +312,6 @@ export function resolveStatsBucket(
 
   }
 
-  if (mode === "ERA_CHALLENGE_CUP") {
-
-    return "eraCup";
-
-  }
-
   if (mode === "CLASSIC" && normalizeModeVariant(modeVariant) === "era") {
 
     return "eraNormal";

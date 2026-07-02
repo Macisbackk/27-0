@@ -4,18 +4,11 @@ import { useEffect, useState, type ReactNode } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { buildPlayHref } from "@/lib/play-links";
 import {
-  getCupEraVariant,
   getNormalEraVariant,
-  setCupEraVariant,
   setNormalEraVariant,
-  CUP_ERA_VARIANT_CHANGED_EVENT,
   NORMAL_ERA_VARIANT_CHANGED_EVENT,
 } from "@/lib/storage/preferences";
-import {
-  playModeChallengeCupStart,
-  playModeClassicStart,
-  playUiClick,
-} from "@/lib/sound";
+import { playModeClassicStart, playUiClick } from "@/lib/sound";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GuestNotice } from "./GuestNotice";
@@ -24,38 +17,25 @@ import { ModeStartLink } from "./ModeStartLink";
 
 export function HomeModeSelector() {
   const [normalEraMode, setNormalEraMode] = useState(false);
-  const [cupEraMode, setCupEraMode] = useState(false);
   const [quickModeOpen, setQuickModeOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setNormalEraMode(getNormalEraVariant());
-    setCupEraMode(getCupEraVariant());
     setMounted(true);
 
     const onNormal = (event: Event) => {
       const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
       if (detail) setNormalEraMode(detail.eraMode);
     };
-    const onCup = (event: Event) => {
-      const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
-      if (detail) setCupEraMode(detail.eraMode);
-    };
 
     window.addEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormal);
-    window.addEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCup);
     return () => {
       window.removeEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormal);
-      window.removeEventListener(CUP_ERA_VARIANT_CHANGED_EVENT, onCup);
     };
   }, []);
 
-  const normalHref = mounted
-    ? buildPlayHref("classic", normalEraMode)
-    : "/play";
-  const cupHref = mounted
-    ? buildPlayHref("cup", cupEraMode)
-    : "/play?cup=1";
+  const normalHref = mounted ? buildPlayHref("classic", normalEraMode) : "/play";
 
   return (
     <div>
@@ -115,7 +95,9 @@ export function HomeModeSelector() {
           </button>
 
           {quickModeOpen && (
-            <div className={`mt-5 flex flex-col gap-5 border-t border-pitch-700/50 pt-5`}>
+            <div
+              className={`mt-5 flex flex-col gap-5 border-t border-pitch-700/50 pt-5`}
+            >
               <ModePanel title="Current Mode" eraActive={normalEraMode}>
                 <p className={TYPO.body}>
                   Draft your XIII position by position and simulate a full Super
@@ -156,35 +138,6 @@ export function HomeModeSelector() {
                   {normalEraMode ? "Start Era Mode →" : "Start Current Mode →"}
                 </ModeStartLink>
               </ModePanel>
-
-              <ModePanel title="Challenge Cup" eraActive={cupEraMode}>
-                <p className={TYPO.body}>
-                  Draft your squad and battle through a knockout tournament — or
-                  pick a historic club season and lead that era squad through the
-                  draw.
-                </p>
-
-                <ChallengeCupVariantToggle
-                  useShortLabels
-                  eraMode={cupEraMode}
-                  onEraModeChange={(era) => {
-                    setCupEraMode(era);
-                    setCupEraVariant(era);
-                  }}
-                  className="mt-5"
-                />
-
-                <ModeStartLink
-                  href={cupHref}
-                  eraMode={cupEraMode}
-                  onClick={() => playModeChallengeCupStart()}
-                  className="mt-5"
-                >
-                  {cupEraMode
-                    ? "Start Era Challenge Cup →"
-                    : "Start Challenge Cup →"}
-                </ModeStartLink>
-              </ModePanel>
             </div>
           )}
         </div>
@@ -202,17 +155,13 @@ function ModePanel({
   eraActive?: boolean;
   children: ReactNode;
 }) {
-  const titleClass = eraActive ? "text-accent-gold" : "text-white";
-
   return (
     <div
-      className={`group w-full ${SPACING.cardPadding} transition ${
-        eraActive
-          ? `${CARD.base} border border-accent-gold/30 bg-pitch-900/95 shadow-[0_0_32px_rgba(251,191,36,0.08)] hover:border-accent-gold/40`
-          : `${CARD.glass} ${CARD.panel} ${CARD.featured} hover:border-theme-tertiary/50`
+      className={`${SPACING.cardPadding} ${CARD.base} ${
+        eraActive ? "border-accent-gold/35" : "border-pitch-700/50"
       }`}
     >
-      <h3 className={`${TYPO.cardTitle} ${titleClass}`}>{title}</h3>
+      <h3 className={`${TYPO.cardTitle} text-white`}>{title}</h3>
       {children}
     </div>
   );
