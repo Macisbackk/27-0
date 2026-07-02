@@ -30,6 +30,8 @@ import {
 import {
   buildTacticEffectivenessLine,
   countTriesByPositionGroup,
+  applyTacticFormAdjustment,
+  getTacticModifiers,
 } from "./managerTacticsScoring";
 import { updateStatsAfterMatch } from "./managerCareerStats";
 import type { MatchFixture } from "../game/season-simulation";
@@ -49,6 +51,7 @@ import {
   getUserPlayoffMatch,
   isPlayoffsPhaseComplete,
   preparePlayoffRound,
+  userQualifiedForManagerPlayoffs,
 } from "./managerPlayoffs";
 
 export function getNextManagerFixture(
@@ -60,6 +63,13 @@ export function getNextManagerFixture(
   if (leagueOrCup) return leagueOrCup;
 
   if (!isLeagueAndCupPhaseComplete(synced)) return null;
+
+  if (
+    userQualifiedForManagerPlayoffs(synced) &&
+    !synced.playoffsIntroAcknowledged
+  ) {
+    return null;
+  }
 
   const withPlayoffs = ensurePlayoffsReady(synced);
   if (isPlayoffsPhaseComplete(withPlayoffs)) return null;
@@ -113,88 +123,7 @@ import {
 } from "./manager-match-summary";
 import { syncManagerFinance } from "./managerFinance";
 
-interface TacticModifiers {
-  strengthBonus: number;
-  opponentPenalty: number;
-  errorRisk: number;
-  fatigueFactor: number;
-  tacticLine: string;
-}
-
-export function getTacticModifiers(
-  tactics: ManagerCareer["tactics"]
-): TacticModifiers {
-  let strengthBonus = 0;
-  let opponentPenalty = 0;
-  let errorRisk = 0;
-  let fatigueFactor = 1;
-  const lines: string[] = [];
-
-  switch (tactics.playingStyle) {
-    case "expansive":
-      strengthBonus += 2;
-      errorRisk += 0.15;
-      lines.push("expansive style created edge chances");
-      break;
-    case "direct":
-      strengthBonus += 1.5;
-      lines.push("direct approach through the pack");
-      break;
-    case "defensive":
-      strengthBonus -= 1;
-      opponentPenalty -= 2;
-      lines.push("defensive shape kept the score tight");
-      break;
-    case "high_tempo":
-      strengthBonus += 1;
-      opponentPenalty += 1;
-      fatigueFactor = 1.35;
-      lines.push("high tempo opened the game up");
-      break;
-    default:
-      break;
-  }
-
-  switch (tactics.attackFocus) {
-    case "kicking_game":
-      strengthBonus += 1;
-      break;
-    case "safe_sets":
-      errorRisk -= 0.1;
-      break;
-    default:
-      break;
-  }
-
-  switch (tactics.defenceFocus) {
-    case "line_speed":
-      opponentPenalty -= 1;
-      break;
-    case "aggressive_contact":
-      opponentPenalty -= 0.5;
-      fatigueFactor += 0.15;
-      break;
-    case "conservative":
-      opponentPenalty -= 1.5;
-      strengthBonus -= 0.5;
-      break;
-    default:
-      break;
-  }
-
-  const tacticLine =
-    lines.length > 0
-      ? `Your ${lines[0]}${errorRisk > 0.1 ? ", but errors crept in" : fatigueFactor > 1.2 ? ", though fatigue showed late on" : "."}`
-      : "A balanced game plan from the coaching box.";
-
-  return {
-    strengthBonus,
-    opponentPenalty,
-    errorRisk,
-    fatigueFactor,
-    tacticLine,
-  };
-}
+export { getTacticModifiers } from "./managerTacticsScoring";
 
 function computePlayerModifiers(
   career: ManagerCareer,
@@ -293,7 +222,8 @@ export function applyManagerMatchResult(
     fixture.triesFor,
     fixture.triesAgainst,
     forward,
-    back
+    back,
+    fixture.scoringDetail?.opponent.tryScorers ?? []
   );
 
   const won = fixture.result === "W";
@@ -660,12 +590,15 @@ export function previewManagerMatchScoreline(
   const homeAdj = sched.isHome ? 5 : -1;
   const ratingGap = userRating - baseOppRating + homeAdj;
   const formFromRatings = Math.max(-3, Math.min(7, ratingGap * 0.4));
-  const combinedForm = Math.max(
-    -2,
-    Math.min(
-      8,
-      teamForm + simCareer.matchSimState.form * 0.12 + formFromRatings
-    )
+  const combinedForm = applyTacticFormAdjustment(
+    Math.max(
+      -2,
+      Math.min(
+        8,
+        teamForm + simCareer.matchSimState.form * 0.12 + formFromRatings
+      )
+    ),
+    mods
   );
 
   const strengthBias =

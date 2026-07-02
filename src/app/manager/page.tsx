@@ -18,6 +18,8 @@ import { ManagerMatchReview } from "@/components/manager/ManagerMatchReview";
 import { ManagerSeasonReview } from "@/components/manager/ManagerSeasonReview";
 import { ManagerDevelopmentReview } from "@/components/manager/ManagerDevelopmentReview";
 import { ManagerSeasonRewards } from "@/components/manager/ManagerSeasonRewards";
+import { ManagerPlayoffsIntroModal } from "@/components/manager/ManagerPlayoffsIntroModal";
+import { ManagerTrophyModal } from "@/components/manager/ManagerTrophyModal";
 import { ManagerFriendlySelect } from "@/components/manager/ManagerFriendlySelect";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
@@ -33,7 +35,7 @@ import {
 } from "@/lib/manager/managerState";
 import { simulateManagerNextMatch } from "@/lib/manager/managerSimulation";
 import { ensureCupBracketReady } from "@/lib/manager/managerChallengeCup";
-import { ensurePlayoffsReady } from "@/lib/manager/managerPlayoffs";
+import { ensurePlayoffsReady, needsPlayoffsIntro, acknowledgePlayoffsIntro } from "@/lib/manager/managerPlayoffs";
 import {
   recordCareerStarted,
   recordMatchResult,
@@ -72,6 +74,8 @@ export default function ManagerPage() {
   const [hasSave, setHasSave] = useState(false);
   const [reviewFixtureId, setReviewFixtureId] = useState<string | null>(null);
   const [playGameOpen, setPlayGameOpen] = useState(false);
+  const [trophyModalOpen, setTrophyModalOpen] = useState(false);
+  const [pendingTrophyCelebration, setPendingTrophyCelebration] = useState(false);
 
   useEffect(() => {
     setHasSave(hasManagerCareer());
@@ -93,11 +97,15 @@ export default function ManagerPage() {
     if (!saved) return;
     const hydrated = hydrateManagerCareer(saved);
     setCareer(hydrated);
-    setView(hydrated.isSeasonComplete
-      ? hydrated.seasonRewardClaimedForYear === hydrated.seasonYear
-        ? "season-rewards"
-        : "season-review"
-      : "hub");
+    if (hydrated.isSeasonComplete) {
+      setView(
+        hydrated.seasonRewardClaimedForYear === hydrated.seasonYear
+          ? "season-rewards"
+          : "season-review"
+      );
+      return;
+    }
+    setView("hub");
   };
 
   const handleDelete = () => {
@@ -134,13 +142,60 @@ export default function ManagerPage() {
       recordMatchResult(won, margin, won ? 25_000 : 10_000);
     }
     persist(next);
+
+    const wonTitle =
+      next.isSeasonComplete &&
+      next.playoffs?.finish === "Super League Champions" &&
+      !next.trophyCelebrationShown;
+
     if (next.isSeasonComplete) {
       recordSeasonComplete(next);
-      setView("season-review");
+      if (fixture) {
+        setReviewFixtureId(fixture.fixtureId ?? `round-${fixture.round}`);
+        setView("match-review");
+        setPendingTrophyCelebration(wonTitle);
+      } else if (wonTitle) {
+        setTrophyModalOpen(true);
+      } else {
+        setView("season-review");
+      }
     } else if (fixture) {
       setReviewFixtureId(fixture.fixtureId ?? `round-${fixture.round}`);
       setView("match-review");
     }
+  };
+
+  const handleMatchReviewClose = () => {
+    if (!career) {
+      setView("hub");
+      return;
+    }
+
+    if (pendingTrophyCelebration) {
+      setPendingTrophyCelebration(false);
+      setTrophyModalOpen(true);
+      setView("hub");
+      return;
+    }
+
+    if (career.isSeasonComplete) {
+      setView("season-review");
+      return;
+    }
+
+    setView("hub");
+  };
+
+  const handlePlayoffsIntroContinue = () => {
+    if (!career) return;
+    persist(acknowledgePlayoffsIntro(career));
+  };
+
+  const handleTrophyModalContinue = () => {
+    if (!career) return;
+    persist({ ...career, trophyCelebrationShown: true });
+    setTrophyModalOpen(false);
+    setView("season-review");
   };
 
   const handleSimulate = () => {
@@ -298,7 +353,7 @@ export default function ManagerPage() {
           <ManagerMatchReview
             career={career}
             fixtureId={reviewFixtureId}
-            onClose={() => setView("hub")}
+            onClose={handleMatchReviewClose}
           />
         </div>
       )}
@@ -330,6 +385,19 @@ export default function ManagerPage() {
             playUiClick();
             router.push("/");
           }}
+        />
+      )}
+      {career && needsPlayoffsIntro(career) && (
+        <ManagerPlayoffsIntroModal
+          career={career}
+          onContinue={handlePlayoffsIntroContinue}
+        />
+      )}
+
+      {career && trophyModalOpen && (
+        <ManagerTrophyModal
+          career={career}
+          onContinue={handleTrophyModalContinue}
         />
       )}
     </PageShell>

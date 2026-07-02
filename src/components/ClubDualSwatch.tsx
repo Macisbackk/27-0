@@ -3,6 +3,7 @@
 import { getClubColors } from "@/lib/clubs";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_COLORS } from "@/lib/clubs/dream-team";
+import { getLuminance } from "@/lib/ui/contrast";
 
 interface ClubDualSwatchProps {
   club: string;
@@ -36,10 +37,14 @@ export function ClubDualSwatch({
           }
         : getClubColors(club);
   const dim = SIZE_CLASS[size];
+  const lowContrast =
+    getLuminance(colors.primary) < 0.1 || getLuminance(colors.secondary) < 0.1;
 
   return (
     <div
-      className={`flex shrink-0 overflow-hidden rounded-sm border border-black/10 ${dim} ${className}`}
+      className={`flex shrink-0 overflow-hidden rounded-sm border ${
+        lowContrast ? "border-white/25 ring-1 ring-white/15" : "border-white/15"
+      } ${dim} ${className}`}
       title={club}
     >
       <span

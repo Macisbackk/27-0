@@ -2,17 +2,21 @@
 
 import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import {
+  ManagerLeagueTransferCard,
+  ManagerTransferPlayerCard,
+} from "@/components/manager/ManagerTransferPlayerCard";
+import {
+  ManagerTransferResultModal,
+  type TransferResultDetails,
+} from "@/components/manager/ManagerTransferResultModal";
+import { ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
-import { getPlayerById } from "@/lib/players";
-import { getManagerPlayer } from "@/lib/manager/managerPlayers";
-import { formatValue } from "@/lib/players";
-import { POSITION_SHORT } from "@/lib/positions";
-import type { Player, Position } from "@/lib/types";
-import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
-import { applyManagerModeRatingToPlayer } from "@/lib/manager/managerSquadRatings";
 import { formatWage } from "@/lib/manager/managerContracts";
+import { getManagerPlayer } from "@/lib/manager/managerPlayers";
+import { applyManagerModeRatingToPlayer } from "@/lib/manager/managerSquadRatings";
 import {
   completePlayerPurchase,
   evaluateBuyOffer,
@@ -20,11 +24,11 @@ import {
   getAskingPrice,
 } from "@/lib/manager/managerTransferLeague";
 import { getTransferDemand } from "@/lib/manager/managerTransfers";
+import { getPlayerById } from "@/lib/players";
+import { POSITION_SHORT } from "@/lib/positions";
+import type { Player, Position } from "@/lib/types";
+import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
 import { playUiClick } from "@/lib/sound";
-import {
-  ManagerTransferResultModal,
-  type TransferResultDetails,
-} from "@/components/manager/ManagerTransferResultModal";
 
 interface ManagerTransfersProps {
   career: ManagerCareer;
@@ -33,12 +37,6 @@ interface ManagerTransfersProps {
 
 function withManagerRating(player: Player): Player {
   return applyManagerModeRatingToPlayer(player);
-}
-
-function formatPositions(player: Player): string {
-  return getPlayerEligiblePositions(player)
-    .map((p) => POSITION_SHORT[p])
-    .join(" · ");
 }
 
 export function ManagerTransfers({
@@ -54,6 +52,11 @@ export function ManagerTransfers({
     useState<TransferResultDetails | null>(null);
   const [offerPlayerId, setOfferPlayerId] = useState<string | null>(null);
   const [offerFee, setOfferFee] = useState(0);
+
+  const wageOverBudget = career.wageBill > career.wageBudget;
+  const wagePct = Math.round(
+    (career.wageBill / Math.max(1, career.wageBudget)) * 100
+  );
 
   const listedPlayers = useMemo(() => {
     return career.leagueListedPlayers
@@ -150,31 +153,62 @@ export function ManagerTransfers({
       <div>
         <h1 className={TYPO.pageTitle}>Transfers</h1>
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-          Budget: {formatWage(career.budget)} · Wage bill{" "}
-          {formatWage(career.wageBill)} / {formatWage(career.wageBudget)}
+          Sign listed players or bid for anyone in the league
         </p>
       </div>
 
+      <ManagerSectionCard title="Transfer Budget" variant="elevated" accent="gold">
+        <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <ManagerStat
+            label="Available funds"
+            value={formatWage(career.budget)}
+            tone="gold"
+            large
+          />
+          <ManagerStat
+            label="Wage bill"
+            value={formatWage(career.wageBill)}
+            tone={wageOverBudget ? "amber" : "default"}
+          />
+          <ManagerStat
+            label="Wage budget"
+            value={formatWage(career.wageBudget)}
+            tone="sky"
+          />
+        </div>
+        <div className="mt-3">
+          <div className="mb-1 flex justify-between text-xs text-pitch-500">
+            <span>Wage budget used</span>
+            <span className={wageOverBudget ? "text-amber-300" : "text-theme-primary"}>
+              {wagePct}%
+            </span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-pitch-800">
+            <div
+              className={`h-full transition-all ${
+                wageOverBudget ? "bg-amber-400" : "bg-theme-primary"
+              }`}
+              style={{ width: `${Math.min(100, wagePct)}%` }}
+            />
+          </div>
+        </div>
+      </ManagerSectionCard>
+
       {leagueTransfers.length > 0 && (
-        <section className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <h2 className={`${TYPO.sectionLabel} mb-3`}>League Transfers</h2>
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <ManagerSectionCard title="League Transfers" variant="inset">
+          <ul className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {leagueTransfers.slice(0, 12).map((tx) => (
-              <li
+              <ManagerLeagueTransferCard
                 key={tx.id}
-                className={`${CARD.inset} ${SPACING.cardPaddingSm} ${TYPO.bodySm}`}
-              >
-                <span className="font-medium text-white">{tx.playerName}</span>
-                <span className="mt-0.5 block text-pitch-400">
-                  {tx.fromClub} → {tx.toClub}
-                </span>
-                <span className="mt-1 block text-pitch-500">
-                  {formatWage(tx.fee)} · Week {tx.week}
-                </span>
-              </li>
+                playerName={tx.playerName}
+                fromClub={tx.fromClub}
+                toClub={tx.toClub}
+                fee={tx.fee}
+                week={tx.week}
+              />
             ))}
           </ul>
-        </section>
+        </ManagerSectionCard>
       )}
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
@@ -208,50 +242,36 @@ export function ManagerTransfers({
         <div>
           <h2 className={TYPO.sectionLabel}>Available Players</h2>
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
-            Transfer-listed players only
+            Transfer-listed — ready to sign at the asking price
           </p>
         </div>
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
           {listedPlayers.map(({ player, club, askingPrice }) => {
             const demand = getTransferDemand(player.id, career.club);
             return (
-              <div
+              <ManagerTransferPlayerCard
                 key={player.id}
-                className={`${CARD.base} ${SPACING.cardPadding} flex flex-col`}
+                player={player}
+                club={club}
+                listed
+                fee={askingPrice}
+                wagePerYear={demand.wagePerYear}
+                yearsRequested={demand.yearsRequested}
+                squadRole={demand.squadRole}
               >
-                <div className="flex flex-1 justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="font-medium text-white">{player.name}</p>
-                    <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-                      {club}
-                    </p>
-                    <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
-                      {formatPositions(player)} · {player.peakRating} rated
-                    </p>
-                    <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
-                      Ask: {formatWage(askingPrice)}
-                    </p>
-                    <p className={`${TYPO.bodySm} text-pitch-500`}>
-                      Wage: {formatWage(demand.wagePerYear)}/yr
-                    </p>
-                  </div>
-                  <span className="shrink-0 text-sm font-semibold text-accent-gold">
-                    {formatValue(player.value)}
-                  </span>
-                </div>
                 <GameButton
                   variant="theme"
                   size="sm"
-                  className="mt-4"
+                  fullWidth
                   disabled={career.budget < askingPrice}
                   onClick={() => {
                     playUiClick();
                     submitTransferOffer(player.id, club, true);
                   }}
                 >
-                  Sign — {formatWage(askingPrice)}
+                  Sign for {formatWage(askingPrice)}
                 </GameButton>
-              </div>
+              </ManagerTransferPlayerCard>
             );
           })}
           {listedPlayers.length === 0 && (
@@ -266,7 +286,7 @@ export function ManagerTransfers({
         <div>
           <h2 className={TYPO.sectionLabel}>Search League Players</h2>
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
-            Bid for any Super League player — unlisted players cost more
+            Bid for any Super League player — unlisted deals cost more
           </p>
         </div>
         <input
@@ -274,7 +294,7 @@ export function ManagerTransfers({
           placeholder="Search by name or club…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="mb-3 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-3 py-2 text-white"
+          className={`${FILTER.input} mb-3`}
         />
         <div className="mb-3 flex flex-wrap gap-2">
           {(
@@ -304,56 +324,55 @@ export function ManagerTransfers({
               career.seed,
               career.gameWeek
             );
+            const demand = getTransferDemand(player.id, career.club);
             const isOffering = offerPlayerId === player.id;
             return (
-              <div
+              <ManagerTransferPlayerCard
                 key={player.id}
-                className={`${CARD.inset} ${SPACING.cardPadding} flex flex-col`}
+                player={player}
+                club={club}
+                listed={false}
+                fee={isOffering && offerFee > 0 ? offerFee : fee}
+                wagePerYear={demand.wagePerYear}
+                yearsRequested={demand.yearsRequested}
+                squadRole={demand.squadRole}
               >
-                <p className="font-medium text-white">{player.name}</p>
-                <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{club}</p>
-                <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
-                  {formatPositions(player)} · {player.peakRating} rated
-                </p>
-                <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
-                  Value: {formatValue(player.value)}
-                </p>
-                <p className={`${TYPO.bodySm} text-pitch-500`}>
-                  Est. fee: {formatWage(fee)}+ (unlisted)
-                </p>
                 {isOffering ? (
-                  <div className="mt-4">
-                    <input
-                      type="number"
-                      step={5000}
-                      value={offerFee}
-                      onChange={(e) => setOfferFee(Number(e.target.value))}
-                      className="w-full rounded-lg border border-pitch-600 bg-pitch-900 px-3 py-2 text-sm text-white"
-                    />
+                  <div className="space-y-2">
+                    <label className={TYPO.bodySm}>
+                      <span className="text-pitch-500">Your bid</span>
+                      <input
+                        type="number"
+                        step={5000}
+                        value={offerFee}
+                        onChange={(e) => setOfferFee(Number(e.target.value))}
+                        className={`${FILTER.input} mt-1`}
+                      />
+                    </label>
                     <GameButton
                       variant="theme"
                       size="sm"
-                      className="mt-2"
+                      fullWidth
                       onClick={() => submitTransferOffer(player.id, club, false)}
                     >
-                      Submit Offer
+                      Submit {formatWage(offerFee)} offer
                     </GameButton>
                   </div>
                 ) : (
                   <GameButton
                     variant="secondary"
                     size="sm"
-                    className="mt-4"
+                    fullWidth
                     onClick={() => {
                       playUiClick();
                       setOfferPlayerId(player.id);
                       setOfferFee(fee);
                     }}
                   >
-                    Make Offer
+                    Make offer — from {formatWage(fee)}
                   </GameButton>
                 )}
-              </div>
+              </ManagerTransferPlayerCard>
             );
           })}
         </div>

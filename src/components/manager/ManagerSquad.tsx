@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { POSITION_SHORT } from "@/lib/positions";
@@ -34,32 +34,55 @@ interface ManagerSquadProps {
   onUpdate: (career: ManagerCareer) => void;
 }
 
+const SINGLE_CLICK_DELAY_MS = 220;
+
+const SQUAD_SELECTION_CLASS = {
+  idle: "border-pitch-700/60 bg-pitch-900/50 hover:border-pitch-500",
+  source: "border-theme-primary bg-theme-primary/12 ring-2 ring-theme-primary/45",
+  target: "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50",
+} as const;
+
+type SquadSelectionRole = keyof typeof SQUAD_SELECTION_CLASS;
+
+function squadSelectionClass(role: SquadSelectionRole): string {
+  return SQUAD_SELECTION_CLASS[role];
+}
+
+function useFinePointer(): boolean {
+  const [finePointer, setFinePointer] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(pointer: fine)");
+    const update = () => setFinePointer(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  return finePointer;
+}
+
 function TeamSheetSlot({
   slotIndex,
   position,
   playerId,
   career,
-  selected,
-  replaceHighlight,
-  assignMode,
-  pendingAssign,
+  selectionRole,
   onSelect,
-  onPlayerClick,
+  onPrimaryPlayerAction,
+  onOpenDetails,
 }: {
   slotIndex: number;
   position: Position;
   playerId: string;
   career: ManagerCareer;
-  selected: boolean;
-  replaceHighlight?: boolean;
-  assignMode?: boolean;
-  pendingAssign?: boolean;
+  selectionRole: SquadSelectionRole;
   onSelect: () => void;
-  onPlayerClick: (playerId: string) => void;
+  onPrimaryPlayerAction: (playerId: string) => void;
+  onOpenDetails: (playerId: string) => void;
 }) {
   const player = playerId ? getManagerPlayer(career, playerId) : null;
   const ps = career.squad.find((p) => p.playerId === playerId);
-  const reserve = career.reserves.find((r) => r.id === playerId);
   const unavailable = ps ? isPlayerUnavailable(ps) : false;
 
   return (
@@ -67,26 +90,23 @@ function TeamSheetSlot({
       type="button"
       onClick={() => {
         playUiClick();
-        if (pendingAssign && (assignMode || !playerId)) {
-          onSelect();
+        if (selectionRole === "target") {
+          if (playerId) onPrimaryPlayerAction(playerId);
+          else onSelect();
           return;
         }
-        if (replaceHighlight && playerId) {
-          onPlayerClick(playerId);
-          return;
-        }
-        if (playerId) onPlayerClick(playerId);
+        if (playerId) onPrimaryPlayerAction(playerId);
         else onSelect();
       }}
-      className={`min-h-[44px] w-full rounded-md border px-1.5 py-1 text-left transition ${
-        replaceHighlight
-          ? "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50"
-          : selected
-          ? "border-theme-primary bg-theme-primary/10 ring-1 ring-theme-primary/40"
-          : assignMode
-          ? "border-theme-primary/60 bg-theme-primary/5 hover:border-theme-primary"
-          : "border-pitch-700/60 bg-pitch-900/50 hover:border-pitch-500"
-      } ${unavailable ? "opacity-60" : ""}`}
+      onDoubleClick={(e) => {
+        e.preventDefault();
+        if (!playerId) return;
+        playUiClick();
+        onOpenDetails(playerId);
+      }}
+      className={`min-h-[44px] w-full select-none rounded-md border px-1.5 py-1 text-left transition ${squadSelectionClass(selectionRole)} ${
+        unavailable ? "opacity-60" : ""
+      }`}
     >
       <p className="text-[10px] font-bold uppercase tracking-wider text-pitch-500">
         {slotAbbrev(position)}
@@ -111,6 +131,8 @@ function TeamSheetSlot({
 }
 
 export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
+  const finePointer = useFinePointer();
+  const singleClickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [selectedTarget, setSelectedTarget] = useState<MatchdaySlotTarget | null>(
     null
   );
@@ -120,6 +142,27 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
   const [replaceSourcePlayerId, setReplaceSourcePlayerId] = useState<
     string | null
   >(null);
+
+  useEffect(
+    () => () => {
+      if (singleClickTimerRef.current) {
+        clearTimeout(singleClickTimerRef.current);
+      }
+    },
+    []
+  );
+
+  const clearSingleClickTimer = () => {
+    if (singleClickTimerRef.current) {
+      clearTimeout(singleClickTimerRef.current);
+      singleClickTimerRef.current = null;
+    }
+  };
+
+  const openPlayerDetails = (playerId: string) => {
+    clearSingleClickTimer();
+    setModalPlayerId(playerId);
+  };
 
   const replaceSlot = replaceSourcePlayerId
     ? findPlayerMatchdaySlot(career, replaceSourcePlayerId)
@@ -192,6 +235,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
   };
 
   const handlePoolPlayerClick = (playerId: string) => {
+    clearSingleClickTimer();
     if (pendingAssignId) return;
     if (selectedTarget || replaceSourcePlayerId) {
       handlePickPlayer(playerId);
@@ -201,16 +245,28 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     setModalPlayerId(null);
   };
 
-  const handlePlayerClick = (playerId: string) => {
+  const handleMatchdayPlayerPrimaryClick = (playerId: string) => {
     if (selectedTarget && replaceCandidateIds.has(playerId)) {
+      clearSingleClickTimer();
       handlePickPlayer(playerId);
       return;
     }
     if (replaceSourcePlayerId && replaceCandidateIds.has(playerId)) {
+      clearSingleClickTimer();
       handlePickPlayer(playerId);
       return;
     }
-    setModalPlayerId(playerId);
+
+    if (!finePointer) {
+      openPlayerDetails(playerId);
+      return;
+    }
+
+    clearSingleClickTimer();
+    singleClickTimerRef.current = setTimeout(() => {
+      handleReplacePlayer(playerId);
+      singleClickTimerRef.current = null;
+    }, SINGLE_CLICK_DELAY_MS);
   };
 
   const persistAndClose = (next: ManagerCareer) => {
@@ -220,13 +276,43 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
 
   const squadCheck = validateFitMatchdaySquad(career);
 
+  const inSelectionMode =
+    !!pendingAssignId || !!replaceSourcePlayerId || !!selectedTarget;
+
+  const getMatchdaySlotRole = (
+    target: MatchdaySlotTarget,
+    playerId: string,
+    canAssignHere = true
+  ): SquadSelectionRole => {
+    if (playerId && replaceSourcePlayerId === playerId) return "source";
+    if (
+      selectedTarget?.kind === target.kind &&
+      selectedTarget.index === target.index
+    ) {
+      return "source";
+    }
+    if (pendingAssignId && canAssignHere) return "target";
+    if (inSelectionMode && playerId && replaceCandidateIds.has(playerId)) {
+      return "target";
+    }
+    return "idle";
+  };
+
+  const getPoolPlayerRole = (playerId: string): SquadSelectionRole => {
+    if (pendingAssignId === playerId) return "source";
+    if (inSelectionMode && replaceCandidateIds.has(playerId)) return "target";
+    return "idle";
+  };
+
   return (
     <div className={`mx-auto max-w-5xl ${SPACING.stackLg}`}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h1 className={TYPO.pageTitle}>Squad</h1>
           <p className={`${TYPO.bodySm} text-pitch-400`}>
-            Team sheet & matchday 17 · pick a player, then tap a slot
+            {finePointer
+              ? "Click squad players to assign · click matchday players to swap · double-click for options"
+              : "Tap a player to assign, or a slot then a player · tap matchday players for options"}
           </p>
         </div>
         <GameButton
@@ -291,13 +377,12 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     const position =
                       career.xiiiSlotPositions[slotIndex] ?? "CENTRE";
                     const playerId = career.matchdayXiii[slotIndex] ?? "";
-                    const isSelected =
-                      selectedTarget?.kind === "xiii" &&
-                      selectedTarget.index === slotIndex;
-                    const isReplaceTarget =
-                      !!playerId && replaceCandidateIds.has(playerId);
-                    const isAssignTarget =
-                      !!pendingAssignId &&
+                    const slotTarget: MatchdaySlotTarget = {
+                      kind: "xiii",
+                      index: slotIndex,
+                    };
+                    const canAssignHere =
+                      !pendingAssignId ||
                       canAssignPlayerToXiiiSlot(
                         career,
                         slotIndex,
@@ -310,14 +395,16 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                         position={position}
                         playerId={playerId}
                         career={career}
-                        selected={isSelected}
-                        replaceHighlight={isReplaceTarget}
-                        assignMode={isAssignTarget}
-                        pendingAssign={!!pendingAssignId}
+                        selectionRole={getMatchdaySlotRole(
+                          slotTarget,
+                          playerId,
+                          canAssignHere
+                        )}
                         onSelect={() =>
                           handleSelectSlot({ kind: "xiii", index: slotIndex })
                         }
-                        onPlayerClick={handlePlayerClick}
+                        onPrimaryPlayerAction={handleMatchdayPlayerPrimaryClick}
+                        onOpenDetails={openPlayerDetails}
                       />
                     );
                   })}
@@ -331,42 +418,36 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {Array.from({ length: 4 }, (_, i) => {
                 const playerId = career.matchdayInterchange[i] ?? "";
-                const isSelected =
-                  selectedTarget?.kind === "bench" && selectedTarget.index === i;
+                const slotTarget: MatchdaySlotTarget = { kind: "bench", index: i };
+                const selectionRole = getMatchdaySlotRole(slotTarget, playerId);
                 const player = playerId
                   ? getManagerPlayer(career, playerId)
                   : null;
-                const isReplaceTarget =
-                  !!playerId && replaceCandidateIds.has(playerId);
-                const isAssignTarget = !!pendingAssignId;
                 return (
                   <button
                     key={i}
                     type="button"
                     onClick={() => {
                       playUiClick();
-                      if (pendingAssignId) {
-                        handleSelectSlot({ kind: "bench", index: i });
+                      if (selectionRole === "target") {
+                        if (playerId) handleMatchdayPlayerPrimaryClick(playerId);
+                        else handleSelectSlot({ kind: "bench", index: i });
                         return;
                       }
-                      if (isReplaceTarget && playerId) {
-                        handlePickPlayer(playerId);
-                        return;
-                      }
-                      if (isSelected) {
+                      if (selectionRole === "source" && !playerId) {
                         setSelectedTarget(null);
                         return;
                       }
-                      if (playerId) handlePlayerClick(playerId);
+                      if (playerId) handleMatchdayPlayerPrimaryClick(playerId);
                       else handleSelectSlot({ kind: "bench", index: i });
                     }}
-                    className={`rounded-lg border px-2 py-2 text-left ${
-                      isReplaceTarget
-                        ? "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50"
-                        : isSelected || isAssignTarget
-                        ? "border-theme-primary bg-theme-primary/10"
-                        : "border-pitch-700/60 bg-pitch-900/40"
-                    }`}
+                    onDoubleClick={(e) => {
+                      e.preventDefault();
+                      if (!playerId) return;
+                      playUiClick();
+                      openPlayerDetails(playerId);
+                    }}
+                    className={`${squadSelectionClass(selectionRole)} select-none rounded-lg border px-2 py-2 text-left`}
                   >
                     <p className="text-[10px] text-pitch-500">{14 + i}.</p>
                     <p className="truncate text-sm text-white">
@@ -387,23 +468,32 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>
           <p className={`${TYPO.sectionLabel} mb-2`}>Squad Players</p>
           {pendingAssignId ? (
-            <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>
-              Select a highlighted starter slot (by position) or interchange
-              bench
+            <p className={`mb-2 ${TYPO.bodySm} text-pitch-300`}>
+              <span className="font-semibold text-theme-primary">
+                {getManagerPlayer(career, pendingAssignId)?.name}
+              </span>{" "}
+              selected — pick a{" "}
+              <span className="font-semibold text-accent-gold">highlighted slot</span>
             </p>
           ) : replaceSourcePlayerId ? (
-            <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>
-              Tap a highlighted player to replace{" "}
-              {getManagerPlayer(career, replaceSourcePlayerId)?.name}
+            <p className={`mb-2 ${TYPO.bodySm} text-pitch-300`}>
+              Swapping{" "}
+              <span className="font-semibold text-theme-primary">
+                {getManagerPlayer(career, replaceSourcePlayerId)?.name}
+              </span>{" "}
+              — pick a{" "}
+              <span className="font-semibold text-accent-gold">highlighted player</span>
             </p>
           ) : selectedTarget ? (
-            <p className={`mb-2 ${TYPO.bodySm} text-accent-gold`}>
-              Tap a player below to fill this slot
+            <p className={`mb-2 ${TYPO.bodySm} text-pitch-300`}>
+              Slot selected — pick a{" "}
+              <span className="font-semibold text-accent-gold">highlighted player</span>
             </p>
           ) : (
             <p className={`mb-2 ${TYPO.bodySm} text-pitch-500`}>
-              Click a player to assign, or a slot then a player · double-click a
-              player for details
+              {finePointer
+                ? "Click to assign · double-click for player options"
+                : "Tap a player to assign, or tap matchday players for options"}
             </p>
           )}
           <div className="mb-2 flex flex-wrap gap-1">
@@ -441,8 +531,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                 career,
                 playerId
               );
-              const ps = career.squad.find((p) => p.playerId === playerId);
-              const isHighlighted = replaceCandidateIds.has(playerId);
+              const poolRole = getPoolPlayerRole(playerId);
               const sourceLabel = isReserveCallUp ? "Reserve" : "Squad";
               return (
                 <li key={playerId}>
@@ -452,17 +541,13 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                       playUiClick();
                       handlePoolPlayerClick(playerId);
                     }}
-                    onDoubleClick={() => {
+                    onDoubleClick={(e) => {
+                      e.preventDefault();
+                      if (!finePointer) return;
                       playUiClick();
-                      setModalPlayerId(playerId);
+                      openPlayerDetails(playerId);
                     }}
-                    className={`rounded-lg border px-2 py-2 text-left transition ${
-                      pendingAssignId === playerId
-                        ? "border-theme-primary bg-theme-primary/10 ring-1 ring-theme-primary/40"
-                        : isHighlighted
-                        ? "border-accent-gold bg-accent-gold/10 hover:border-accent-gold"
-                        : "border-pitch-700/50 hover:border-pitch-500"
-                    }`}
+                    className={`${squadSelectionClass(poolRole)} select-none rounded-lg border px-2 py-2 text-left transition`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">

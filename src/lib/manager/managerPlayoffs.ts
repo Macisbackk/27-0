@@ -283,3 +283,32 @@ export function isPlayoffsPhaseComplete(career: ManagerCareer): boolean {
   if (!playoffs) return false;
   return playoffs.tournamentComplete || playoffs.userEliminated;
 }
+
+export function needsPlayoffsIntro(career: ManagerCareer): boolean {
+  if (career.playoffsIntroAcknowledged) return false;
+  if (!isLeagueAndCupPhaseComplete(career)) return false;
+  if (!userQualifiedForManagerPlayoffs(career)) return false;
+  return true;
+}
+
+export function isManagerPlayoffsActive(career: ManagerCareer): boolean {
+  if (!career.playoffs || !career.playoffsIntroAcknowledged) return false;
+  if (!userQualifiedForManagerPlayoffs(career)) return false;
+  return !isPlayoffsPhaseComplete(career);
+}
+
+export function acknowledgePlayoffsIntro(career: ManagerCareer): ManagerCareer {
+  return { ...career, playoffsIntroAcknowledged: true };
+}
+
+export function syncPlayoffsIntroAcknowledged(career: ManagerCareer): ManagerCareer {
+  if (career.playoffsIntroAcknowledged) return career;
+  const playedPlayoff = career.fixtures.some((f) => f.competition === "playoffs");
+  if (playedPlayoff) {
+    return { ...career, playoffsIntroAcknowledged: true };
+  }
+  if (!needsPlayoffsIntro(career)) {
+    return { ...career, playoffsIntroAcknowledged: true };
+  }
+  return career;
+}

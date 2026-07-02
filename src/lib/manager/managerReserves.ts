@@ -59,6 +59,22 @@ export function getPotentialTier(potential: number): string {
   return "Depth Potential";
 }
 
+export function getReserveSeasonGrowthDelta(
+  reserve: ManagerReservePlayer
+): number {
+  return reserve.rating - (reserve.baseRating ?? reserve.rating);
+}
+
+export function sortReservesBySeasonGrowth(
+  reserves: ManagerReservePlayer[]
+): ManagerReservePlayer[] {
+  return [...reserves].sort((a, b) => {
+    const delta = getReserveSeasonGrowthDelta(b) - getReserveSeasonGrowthDelta(a);
+    if (delta !== 0) return delta;
+    return b.rating - a.rating;
+  });
+}
+
 function generateReservePlayer(
   seed: string,
   index: number,

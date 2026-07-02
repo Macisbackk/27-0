@@ -16,6 +16,7 @@ import {
   getLiveCommandLabel,
   getTacticsLiveCommandReason,
 } from "@/lib/manager/managerLiveMatch";
+import { getTacticGameplaySummary } from "@/lib/manager/managerTacticsScoring";
 import { playUiClick } from "@/lib/sound";
 
 const PLAYING_STYLES: { value: PlayingStyle; label: string }[] = [
@@ -43,28 +44,28 @@ const DEFENCE_FOCUS: { value: DefenceFocus; label: string }[] = [
 ];
 
 const TACTIC_BIOS: Record<string, string> = {
-  balanced: "Even risk and reward — reliable in most match-ups. Live play defaults to Balanced.",
+  balanced: "Even risk and reward — reliable in most match-ups.",
   expansive:
-    "Spread the ball wide for more try chances; slightly more errors. With Offloads or Aggressive Contact, live play defaults to Champagne rugby.",
-  direct: "Run hard through the middle — good for wearing down packs.",
+    "Spread the ball wide for more tries; higher error risk. Strong attacking edge.",
+  direct: "Run hard through the middle — forwards score more, backs less.",
   defensive:
-    "Tighter shape, fewer points conceded; harder to score yourself. Live play defaults to Defend.",
+    "Tighter defence, fewer points conceded; harder to score yourself.",
   high_tempo:
-    "Fast sets and quick play-the-balls; opens the game but tires players. Live play defaults to Attack.",
-  middle: "Target the forwards and short-ball running lanes.",
-  edges: "Use width and wingers to create line breaks.",
-  kicking_game: "Territory through kicks; can pin opponents deep.",
+    "Fast sets open the game but tire players faster — extra injury risk.",
+  middle: "Target the pack — +edge for forward tries.",
+  edges: "Use width — wingers and centres favoured for tries.",
+  kicking_game: "Territory through kicks — halves and wingers benefit.",
   offloads:
-    "Keep the ball alive in contact for broken-field chances. With Expansive style, live play defaults to Champagne rugby.",
-  safe_sets: "Lower error rate on possession; fewer flashy plays.",
-  line_speed: "Rush up in defence to shut down their attack early.",
+    "Keep the ball alive in contact — broken-field tries, slightly more errors.",
+  safe_sets: "Fewer errors and a tighter game — less explosive attack.",
+  line_speed: "Rush defence shuts down halves; watch kicks behind the line.",
   conservative:
-    "Hold your line and wait for mistakes. Live play defaults to Defend.",
+    "Hold your line — fewer tries conceded, less turnover ball to attack with.",
   aggressive_contact:
-    "Big hits and dominant tackles; higher injury risk. With Expansive style, live play defaults to Champagne rugby.",
-  edge_defence: "Shut down their wide threats.",
+    "Dominant tackles and contact; higher fatigue and injury risk.",
+  edge_defence: "Shut down wingers — strong wide defence, middle can leak.",
   goal_line:
-    "Protect your try line when under sustained pressure. Live play defaults to Defend.",
+    "Protect the posts — tough to score close range, edges remain a threat.",
 };
 
 function OptionGroup<T extends string>({
@@ -101,6 +102,39 @@ function OptionGroup<T extends string>({
       <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
         {TACTIC_BIOS[value] ?? ""}
       </p>
+    </div>
+  );
+}
+
+function MatchImpactPreview({ tactics }: { tactics: ManagerTactics }) {
+  const summary = getTacticGameplaySummary(tactics);
+
+  return (
+    <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
+      <p className={TYPO.sectionLabel}>Match Impact</p>
+      <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
+        <span className="font-semibold text-theme-primary">Attack: </span>
+        {summary.attackEffect}
+      </p>
+      <p className={`mt-1.5 ${TYPO.bodySm} text-pitch-300`}>
+        <span className="font-semibold text-sky-300">Defence: </span>
+        {summary.defenceEffect}
+      </p>
+      <p className={`mt-3 text-sm font-semibold text-theme-primary`}>
+        {summary.matchImpact}
+      </p>
+      {summary.cautions.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {summary.cautions.map((caution) => (
+            <span
+              key={caution}
+              className="rounded-full border border-amber-500/35 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-200"
+            >
+              {caution}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -179,6 +213,7 @@ export function ManagerTacticsPanel({
         value={t.defenceFocus}
         onChange={(v) => update({ defenceFocus: v })}
       />
+      <MatchImpactPreview tactics={t} />
       <LivePlayPreview career={career} />
     </div>
   );

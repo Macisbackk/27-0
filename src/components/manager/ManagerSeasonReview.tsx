@@ -87,7 +87,11 @@ export function ManagerSeasonReview({
             <ManagerInfoRow label="Best Player" value={bestPlayer.name} tone="gold" />
           )}
           {topScorer && (
-            <ManagerInfoRow label="Top Try Scorer" value={topScorer.name} tone="primary" />
+            <ManagerInfoRow
+              label="Top Try Scorer"
+              value={`${topScorer.name} (${summary.topTryScorerTries})`}
+              tone="primary"
+            />
           )}
           <ManagerInfoRow
             label="Biggest Win"

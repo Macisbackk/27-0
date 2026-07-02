@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import type { ManagerCareer } from "@/lib/manager/types";
+import type { ManagerCareer, ManagerReservePlayer } from "@/lib/manager/types";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Position } from "@/lib/types";
 import {
@@ -28,6 +28,8 @@ import {
 } from "@/lib/manager/managerContracts";
 import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import { playUiClick } from "@/lib/sound";
+import { ManagerReserveReleaseModal } from "@/components/manager/ManagerReserveReleaseModal";
+import { ManagerReserveGrowthPanel } from "@/components/manager/ManagerReserveGrowthPanel";
 
 type ReserveFilter = "all" | "position" | "potential" | "rating" | "age" | "callup";
 
@@ -48,6 +50,9 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
   const [filter, setFilter] = useState<ReserveFilter>("all");
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
   const [message, setMessage] = useState<string | null>(null);
+  const [releaseTarget, setReleaseTarget] = useState<ManagerReservePlayer | null>(
+    null
+  );
 
   const nextFixture = getNextManagerFixture(career);
   const upcomingOpp = nextFixture
@@ -99,10 +104,19 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     setMessage("Called up for next match");
   };
 
-  const handleRelease = (id: string, name: string) => {
-    if (!window.confirm(`Release ${name} from the reserves?`)) return;
-    onUpdate(releaseReserve(career, id));
-    setMessage(`${name} released`);
+  const handleReleaseClick = (reserve: ManagerReservePlayer) => {
+    playUiClick();
+    setReleaseTarget(reserve);
+  };
+
+  const handleReleaseConfirm = () => {
+    if (!releaseTarget) return;
+    onUpdate(releaseReserve(career, releaseTarget.id));
+    setMessage(`${releaseTarget.name} released`);
+  };
+
+  const handleReleaseModalClose = () => {
+    setReleaseTarget(null);
   };
 
   const handleSignProspect = (id: string) => {
@@ -145,7 +159,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
   };
 
   return (
-    <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
+    <div className={`mx-auto max-w-5xl ${SPACING.stackLg}`}>
       <div>
         <h1 className={TYPO.pageTitle}>Reserves</h1>
         <p className={`${TYPO.bodySm} text-pitch-400`}>
@@ -280,6 +294,8 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         </div>
       )}
 
+      <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+        <div className={SPACING.stackLg}>
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-2`}>Filters</p>
         <div className="flex flex-wrap gap-2">
@@ -428,10 +444,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                 <GameButton
                   variant="secondary"
                   size="sm"
-                  onClick={() => {
-                    playUiClick();
-                    handleRelease(r.id, r.name);
-                  }}
+                  onClick={() => handleReleaseClick(r)}
                 >
                   Release
                 </GameButton>
@@ -445,6 +458,19 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         <p className={`${TYPO.bodySm} text-pitch-500`}>
           No reserve players match your filters.
         </p>
+      )}
+        </div>
+
+        <ManagerReserveGrowthPanel career={career} />
+      </div>
+
+      {releaseTarget && (
+        <ManagerReserveReleaseModal
+          reserve={releaseTarget}
+          contract={career.reserveContracts?.[releaseTarget.id] ?? null}
+          onCancel={handleReleaseModalClose}
+          onConfirm={handleReleaseConfirm}
+        />
       )}
     </div>
   );

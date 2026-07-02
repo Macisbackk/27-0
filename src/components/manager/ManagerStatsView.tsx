@@ -12,6 +12,7 @@ import {
   getTopTryScorer,
 } from "@/lib/manager/managerCareerStats";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
+import { getManagerCareerSaveView } from "@/lib/manager/managerCareerSaveStats";
 import {
   ManagerSectionCard,
   ManagerStat,
@@ -24,6 +25,7 @@ interface ManagerStatsViewProps {
 
 export function ManagerStatsView({ career }: ManagerStatsViewProps) {
   const ts = career.teamSeasonStats;
+  const careerSave = getManagerCareerSaveView(career);
   const topScorer = getTopTryScorer(career.playerSeasonStats);
   const topKicker = getTopGoalScorer(career.playerSeasonStats);
   const position = getUserLeaguePosition(career.leagueTable, career.club);
@@ -34,6 +36,130 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
 
   return (
     <div className={SPACING.stackLg}>
+      <ManagerSectionCard title={`Career — ${career.club}`} variant="featured" accent="gold">
+        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+          All-time stats for this save
+        </p>
+        <div className="mt-3 grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
+          <ManagerStat
+            label="Seasons"
+            value={String(careerSave.seasons)}
+            tone="gold"
+            large
+          />
+          <ManagerStat
+            label="Career record"
+            value={careerSave.totalRecordLabel}
+            tone="primary"
+          />
+          <ManagerStat
+            label="Best finish"
+            value={careerSave.bestFinishLabel}
+            tone="gold"
+          />
+          <ManagerStat
+            label="Super League titles"
+            value={String(careerSave.superLeagueTitles)}
+            tone={careerSave.superLeagueTitles > 0 ? "gold" : "muted"}
+          />
+          <ManagerStat
+            label="Challenge Cups"
+            value={String(careerSave.challengeCups)}
+            tone={careerSave.challengeCups > 0 ? "gold" : "muted"}
+          />
+          <ManagerStat
+            label="Total trophies"
+            value={String(careerSave.trophies)}
+            tone={careerSave.trophies > 0 ? "gold" : "muted"}
+          />
+          <ManagerStat
+            label="Top-six finishes"
+            value={String(careerSave.topSixFinishes)}
+            tone="primary"
+          />
+          <ManagerStat
+            label="Worst season"
+            value={careerSave.worstRecordLabel}
+            tone="red"
+          />
+          <ManagerStat
+            label="Club earnings"
+            value={careerSave.earningsLabel}
+            tone="gold"
+          />
+          <ManagerStat
+            label="Biggest win"
+            value={
+              careerSave.biggestWinMargin > 0
+                ? `+${careerSave.biggestWinMargin}`
+                : "—"
+            }
+            tone="primary"
+          />
+          <ManagerStat
+            label="Biggest defeat"
+            value={
+              careerSave.biggestDefeatMargin > 0
+                ? `-${careerSave.biggestDefeatMargin}`
+                : "—"
+            }
+            tone="red"
+          />
+          <ManagerStat
+            label="Perfect seasons"
+            value={String(careerSave.perfectSeasons)}
+            tone={careerSave.perfectSeasons > 0 ? "gold" : "muted"}
+          />
+        </div>
+      </ManagerSectionCard>
+
+      {careerSave.seasonRows.length > 0 && (
+        <ManagerSectionCard title="Season History" className="overflow-x-auto !p-0">
+          <table className="w-full min-w-[480px] text-left text-sm">
+            <thead>
+              <tr className="border-b border-pitch-700/50 text-pitch-400">
+                <th className="px-3 py-2">Season</th>
+                <th className="px-3 py-2 text-center">Finish</th>
+                <th className="px-3 py-2 text-center">Record</th>
+                <th className="px-3 py-2">Trophies</th>
+              </tr>
+            </thead>
+            <tbody>
+              {careerSave.seasonRows.map((row) => (
+                <tr
+                  key={`${row.seasonYear}-${row.inProgress ? "current" : "done"}`}
+                  className={`border-b border-pitch-800/40 ${
+                    row.inProgress ? "bg-theme-primary/5" : ""
+                  }`}
+                >
+                  <td className="px-3 py-2">
+                    <span
+                      className={
+                        row.inProgress
+                          ? "font-semibold text-theme-primary"
+                          : "text-pitch-200"
+                      }
+                    >
+                      {row.seasonYear}
+                      {row.inProgress ? " (current)" : ""}
+                    </span>
+                  </td>
+                  <td className="px-3 py-2 text-center font-medium text-accent-gold">
+                    {ordinal(row.position)}
+                  </td>
+                  <td className="px-3 py-2 text-center text-pitch-300">
+                    {row.wins}W-{row.losses}L
+                  </td>
+                  <td className="px-3 py-2 text-pitch-300">
+                    {row.trophies.length > 0 ? row.trophies.join(", ") : "—"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </ManagerSectionCard>
+      )}
+
       <h2 className={TYPO.cardTitle}>Season Statistics</h2>
 
       <ManagerSectionCard title="Team" variant="elevated" accent="primary">

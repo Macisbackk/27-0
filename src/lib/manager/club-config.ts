@@ -134,7 +134,11 @@ export function getManagerClubConfig(clubName: string): ManagerClubConfig {
   const club = getClubByName(clubName);
   const strength = getClubBaseStrength(clubName);
   const uiColors = club
-    ? resolveClubUiColors(club.primaryColor, club.secondaryColor)
+    ? resolveClubUiColors(
+        club.primaryColor,
+        club.secondaryColor,
+        club.accentColor
+      )
     : { primary: "#1e293b", secondary: "#334155" };
   const allRatings = getLeagueSquadRatings();
   const squadRating = getManagerClubRating(clubName);

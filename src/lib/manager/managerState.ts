@@ -37,7 +37,7 @@ import {
 } from "./managerInbox";
 import { initPreSeasonState, ensureFriendlyChoices } from "./managerFriendlies";
 import { ensureCupBracketReady } from "./managerChallengeCup";
-import { ensurePlayoffsReady } from "./managerPlayoffs";
+import { ensurePlayoffsReady, syncPlayoffsIntroAcknowledged } from "./managerPlayoffs";
 import { ensureSeasonEndPlayerDevelopment } from "./managerPlayerDevelopment";
 import { isManagerSeasonComplete } from "./managerSimulation";
 import {
@@ -201,6 +201,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = ensureCupBracketReady(career);
   career = syncManagerLeagueTable(career);
   career = ensurePlayoffsReady(career);
+  career = syncPlayoffsIntroAcknowledged(career);
   career = {
     ...career,
     isSeasonComplete: isManagerSeasonComplete(career),

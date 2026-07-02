@@ -257,6 +257,7 @@ export interface ManagerSeasonSummary {
   trophies: string[];
   bestPlayerId: string | null;
   topTryScorerId: string | null;
+  topTryScorerTries: number;
   challengeCupResult: string;
   playoffFinish?: PlayoffFinish | null;
   biggestWin: SeasonHighlightResult | null;
@@ -440,6 +441,10 @@ export interface ManagerCareer {
   gateIncomeHistory: GateIncomeRecord[];
   challengeCup: ChallengeCupBracketState;
   playoffs?: PlayoffBracketState;
+  /** User has seen the play-offs intro and can play bracket matches. */
+  playoffsIntroAcknowledged?: boolean;
+  /** Title celebration shown for the completed season (Super League Champions). */
+  trophyCelebrationShown?: boolean;
   /** Consecutive weeks wage bill exceeded budget — triggers board pressure. */
   wagePressureWeeks?: number;
   matchdayXiii: string[];

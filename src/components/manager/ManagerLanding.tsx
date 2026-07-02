@@ -31,15 +31,6 @@ export function ManagerLanding({
           <span className="font-semibold text-theme-primary">Super League</span>{" "}
           club.
         </p>
-        <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
-          <span className="text-accent-gold">Squad</span>
-          <span className="text-pitch-600"> · </span>
-          <span className="text-sky-300">Tactics</span>
-          <span className="text-pitch-600"> · </span>
-          <span className="text-theme-primary">Form</span>
-          <span className="text-pitch-600"> · </span>
-          <span className="text-accent-gold">Trophies</span>
-        </p>
       </div>
 
       <div className={SPACING.stackMd}>

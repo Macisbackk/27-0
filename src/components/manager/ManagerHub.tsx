@@ -8,7 +8,8 @@ import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import { ensureCupBracketReady, getCupHubStatus } from "@/lib/manager/managerChallengeCup";
-import { ensurePlayoffsReady, getPlayoffHubStatus } from "@/lib/manager/managerPlayoffs";
+import { PlayoffBracketDisplay } from "@/components/PlayoffBracketDisplay";
+import { ensurePlayoffsReady, getPlayoffHubStatus, isManagerPlayoffsActive, needsPlayoffsIntro } from "@/lib/manager/managerPlayoffs";
 import {
   countExpiringContracts,
 } from "@/lib/manager/managerContracts";
@@ -41,6 +42,7 @@ import {
   boardConfidenceTone,
   fanMoodTone,
   leaguePositionTone,
+  matchPredictionTone,
 } from "@/components/manager/manager-ui";
 import {
   getManagerScheduledFixtureHeadline,
@@ -127,6 +129,24 @@ function HubBoardBudgetAttendance({
       )}
     </div>
   );
+}
+
+function HubStandingsPanel({ career }: { career: ManagerCareer }) {
+  const ready = ensurePlayoffsReady(ensureCupBracketReady(career));
+  if (isManagerPlayoffsActive(ready) && ready.playoffs) {
+    return (
+      <div className={`${CARD.elevated} ${SPACING.cardPadding}`}>
+        <p className={TYPO.sectionLabel}>Play-Off Bracket</p>
+        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+          League table frozen — play-off results decide the title.
+        </p>
+        <div className="mt-3">
+          <PlayoffBracketDisplay state={ready.playoffs} />
+        </div>
+      </div>
+    );
+  }
+  return <HubLeagueTable career={career} />;
 }
 
 function HubLeagueTable({ career }: { career: ManagerCareer }) {
@@ -271,7 +291,8 @@ export function ManagerHub({
   const topKicker = getTopGoalScorer(career.playerSeasonStats);
   const ts = career.teamSeasonStats;
   const squadCheck = validateFitMatchdaySquad(simCareer);
-  const canPlay = squadCheck.valid && !career.isSeasonComplete;
+  const playoffsPending = needsPlayoffsIntro(career);
+  const canPlay = squadCheck.valid && !career.isSeasonComplete && !playoffsPending;
 
   const oppRating =
     nextFixture && !career.isSeasonComplete
@@ -344,9 +365,8 @@ export function ManagerHub({
             {nextFixture.isHome ? "Home" : "Away"}
           </p>
           {homeAttendanceOutlook && (
-            <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
-              {homeAttendanceOutlook.label} · ~
-              {homeAttendanceOutlook.predictedAttendance.toLocaleString()} expected
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
+              {homeAttendanceOutlook.label}
             </p>
           )}
           <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
@@ -359,8 +379,19 @@ export function ManagerHub({
               value={`${career.gameWeek}/${career.schedule.length}`}
               tone="muted"
             />
+            {homeAttendanceOutlook && (
+              <ManagerStat
+                label="Expected gate"
+                value={`~${homeAttendanceOutlook.predictedAttendance.toLocaleString()}`}
+                tone="sky"
+              />
+            )}
             {prediction && (
-              <ManagerStat label="Prediction" value={prediction} tone="sky" />
+              <ManagerStat
+                label="Prediction"
+                value={prediction}
+                tone={matchPredictionTone(prediction)}
+              />
             )}
           </div>
           {!squadCheck.valid && (
@@ -456,7 +487,7 @@ export function ManagerHub({
         </div>
       </ManagerSectionCard>
 
-      <HubLeagueTable career={career} />
+      <HubStandingsPanel career={career} />
 
       {newsItems.length > 0 && (
         <ManagerSectionCard title="Latest News" variant="inset">

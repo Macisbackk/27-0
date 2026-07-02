@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
+import { getClubColors } from "@/lib/clubs";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -42,6 +43,7 @@ export function ManagerClubSelect({ onSelect, onBack }: ManagerClubSelectProps) 
         {clubs.map((club) => {
           const attendance = getClubAttendanceProfile(club.name);
           const ratingStars = squadRatingToStars(club.squadRating, allRatings);
+          const colors = getClubColors(club.name);
 
           return (
             <li key={club.name}>
@@ -55,21 +57,21 @@ export function ManagerClubSelect({ onSelect, onBack }: ManagerClubSelectProps) 
               >
                 <span
                   className="w-1 shrink-0 self-stretch rounded-full"
-                  style={{ backgroundColor: club.primaryColor }}
+                  style={{ backgroundColor: colors.primary }}
                   aria-hidden
                 />
                 <ClubDualSwatch
                   club={club.name}
                   size="md"
-                  primary={club.primaryColor}
-                  secondary={club.secondaryColor}
+                  primary={colors.primary}
+                  secondary={colors.secondary}
                   className="hidden sm:flex"
                 />
                 <ClubDualSwatch
                   club={club.name}
                   size="sm"
-                  primary={club.primaryColor}
-                  secondary={club.secondaryColor}
+                  primary={colors.primary}
+                  secondary={colors.secondary}
                   className="sm:hidden"
                 />
 

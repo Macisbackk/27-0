@@ -202,18 +202,14 @@ function ModePanel({
   eraActive?: boolean;
   children: ReactNode;
 }) {
-  const cardAccent = eraActive
-    ? "border border-accent-gold/25 shadow-[0_0_32px_rgba(251,191,36,0.08)] hover:border-accent-gold/35"
-    : `${CARD.featured} hover:border-theme-tertiary/50`;
-
   const titleClass = eraActive ? "text-accent-gold" : "text-white";
 
   return (
     <div
-      className={`group w-full ${SPACING.cardPadding} transition ${cardAccent} ${
+      className={`group w-full ${SPACING.cardPadding} transition ${
         eraActive
-          ? `${CARD.base} border border-accent-gold/30 bg-pitch-900/95`
-          : `${CARD.glass} ${CARD.panel}`
+          ? `${CARD.base} border border-accent-gold/30 bg-pitch-900/95 shadow-[0_0_32px_rgba(251,191,36,0.08)] hover:border-accent-gold/40`
+          : `${CARD.glass} ${CARD.panel} ${CARD.featured} hover:border-theme-tertiary/50`
       }`}
     >
       <h3 className={`${TYPO.cardTitle} ${titleClass}`}>{title}</h3>

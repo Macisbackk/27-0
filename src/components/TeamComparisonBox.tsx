@@ -109,7 +109,7 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
   return (
     <motion.div
       className={`overflow-hidden ${CARD.elevated}${
-        eraMode ? " border border-accent-gold/35 ring-1 ring-accent-gold/15" : ""
+        eraMode ? " ring-1 ring-accent-gold/30" : ""
       }`}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}

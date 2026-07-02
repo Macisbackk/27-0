@@ -69,8 +69,9 @@ export const BTN_PRESS = "btn-press";
 
 /** Store theme trim for toggle groups / panels */
 export const THEME = {
+  /** Ring-only accent — parent tab group already has a base border. */
   tabGroupRing:
-    "border-theme-tertiary/45 shadow-[0_0_14px_var(--theme-glow-soft)] ring-1 ring-theme-tertiary/25",
+    "ring-1 ring-theme-tertiary/20 shadow-[0_0_14px_var(--theme-glow-soft)]",
 } as const;
 
 /** Shared button classes — prefer GameButton / getGameButtonClass for new code. */
@@ -163,7 +164,7 @@ export const NORMAL = {
 /** Era mode visual tokens — gold historic/retro accent. */
 export const ERA = {
   tabGroupRing:
-    "border-accent-gold/50 shadow-[0_0_20px_rgba(251,191,36,0.22)]",
+    "ring-1 ring-accent-gold/35 shadow-[0_0_16px_rgba(251,191,36,0.15)]",
   itemActive:
     "border border-accent-gold/40 bg-accent-gold/15 text-accent-gold",
   dot: "bg-accent-gold",
@@ -172,7 +173,7 @@ export const ERA = {
 /** Hard mode visual tokens — red mirror of normal green styling. */
 export const HARD = {
   tabGroupRing:
-    "border-accent-red/50 shadow-[0_0_20px_rgba(239,68,68,0.22)]",
+    "ring-1 ring-accent-red/35 shadow-[0_0_16px_rgba(239,68,68,0.15)]",
   modeCard: CARD.featuredHard,
   modeCardHover: "hover:border-accent-red/45 group-hover:text-accent-red",
   banner:
@@ -263,22 +264,32 @@ export function tabGroupButtonClass(
   return `${base} ${BTN.tabGroupActive}`;
 }
 
-/** Tab group wrapper — theme tertiary ring; mode colour only on active tab button. */
+/** Tab group wrapper — single base border; accent ring follows active mode. */
 export function tabGroupClass(
-  _hardActive = false,
+  hardActive = false,
   _currentModeActive = false,
-  _eraActive = false
+  eraActive = false
 ): string {
-  return `${FILTER.tabGroup} ${THEME.tabGroupRing}`;
+  const accent = hardActive
+    ? HARD.tabGroupRing
+    : eraActive
+      ? ERA.tabGroupRing
+      : THEME.tabGroupRing;
+  return `${FILTER.tabGroup} ${accent}`;
 }
 
 /** Compact nested toggle for sidebar play modes. */
 export function nestedTabGroupClass(
-  _hardActive = false,
+  hardActive = false,
   _currentModeActive = false,
-  _eraActive = false
+  eraActive = false
 ): string {
-  return `${FILTER.tabGroup} w-full p-0.5 ${THEME.tabGroupRing}`;
+  const accent = hardActive
+    ? HARD.tabGroupRing
+    : eraActive
+      ? ERA.tabGroupRing
+      : THEME.tabGroupRing;
+  return `${FILTER.tabGroup} w-full p-0.5 ${accent}`;
 }
 
 export function nestedTabGroupButtonClass(

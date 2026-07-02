@@ -3,6 +3,9 @@ import type { ClubColorSet } from "../clubs";
 /** Off-white/silver accent for dark UI when a team's main visible colour is white. */
 export const UI_THEME_WHITE_SOFT = "#E2E4E8";
 
+/** Visible stand-in for black kit panels on dark app surfaces (swatches, stripes). */
+export const UI_BLACK_TRIM = "#3d4340";
+
 /** True for #000, black, rgb(0,0,0), and near-black hex values. */
 export function isBlackLike(color: string): boolean {
   const normalized = color.trim().toLowerCase();

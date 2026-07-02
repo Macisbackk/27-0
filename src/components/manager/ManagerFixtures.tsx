@@ -4,7 +4,11 @@ import { useMemo, useState } from "react";
 import { ClubColorChip } from "@/components/ClubColorChip";
 import { FixtureResultRow } from "@/components/FixtureResultRow";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
-import { ManagerFormStrip, ManagerStat, leaguePositionTone } from "@/components/manager/manager-ui";
+import { ManagerFormStrip, ManagerStat, leaguePositionTone, matchPredictionTone } from "@/components/manager/manager-ui";
+import { getMatchPrediction } from "@/lib/manager/managerScoring";
+import { computeManagerTeamRating } from "@/lib/manager/managerRating";
+import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
+import { resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import {
   CARD,
   SPACING,
@@ -292,6 +296,34 @@ export function ManagerFixtures({
   const readyCareer = ensurePlayoffsReady(ensureCupBracketReady(career));
   const nextFixture = getNextManagerFixture(readyCareer);
 
+  const simCareer = resolveCareerForMatchSimulation(career);
+  const teamRating = computeManagerTeamRating(
+    simCareer.matchdayXiii,
+    simCareer.matchdayInterchange,
+    simCareer.xiiiSlotPositions,
+    simCareer
+  );
+
+  const oppRating =
+    nextFixture && !career.isSeasonComplete
+      ? nextFixture.competition === "friendly" &&
+        career.preSeason.activeFriendly
+        ? career.preSeason.activeFriendly.teamRating
+        : Math.round(
+            getOpponentMatchRating(
+              nextFixture.opponent,
+              career.seed,
+              nextFixture.round,
+              { currentSeasonOnly: nextFixture.competition !== "friendly" }
+            )
+          )
+      : null;
+
+  const prediction =
+    nextFixture && !career.isSeasonComplete
+      ? getMatchPrediction(teamRating, oppRating ?? 70, nextFixture.isHome)
+      : null;
+
   const homeAttendanceOutlook =
     nextFixture?.isHome && !career.isSeasonComplete
       ? getHomeFixtureAttendanceOutlook(career, nextFixture)
@@ -416,12 +448,26 @@ export function ManagerFixtures({
             {nextFixture.isHome ? "Home" : "Away"}
           </p>
           {homeAttendanceOutlook && (
-            <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
-              {homeAttendanceOutlook.label} · ~
-              {homeAttendanceOutlook.predictedAttendance.toLocaleString()}{" "}
-              expected
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
+              {homeAttendanceOutlook.label}
             </p>
           )}
+          <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+            {homeAttendanceOutlook && (
+              <ManagerStat
+                label="Expected gate"
+                value={`~${homeAttendanceOutlook.predictedAttendance.toLocaleString()}`}
+                tone="sky"
+              />
+            )}
+            {prediction && (
+              <ManagerStat
+                label="Prediction"
+                value={prediction}
+                tone={matchPredictionTone(prediction)}
+              />
+            )}
+          </div>
         </div>
       )}
 

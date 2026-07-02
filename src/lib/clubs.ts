@@ -4,7 +4,7 @@ import {
   getClubPanelTextStyle,
   getLuminance,
 } from "./ui/contrast";
-import { isBlackLike } from "./ui/theme-accent-colors";
+import { isBlackLike, UI_BLACK_TRIM } from "./ui/theme-accent-colors";
 
 
 
@@ -108,15 +108,48 @@ export type ClubColorSet = {
   shortName: string;
 };
 
-/** Swap kit colours for UI when black secondary would hide on dark surfaces. */
+/**
+ * Map kit colours to UI-safe pair — chromatic colour is always `primary`.
+ * Black is never used as the lead accent (headers, indicators, stripes).
+ */
 export function resolveClubUiColors(
   primary: string,
-  secondary: string
+  secondary: string,
+  accent?: string
 ): { primary: string; secondary: string } {
-  if (isBlackLike(secondary)) {
-    return { primary: secondary, secondary: primary };
+  const kit = [primary, secondary, accent].filter((c): c is string => Boolean(c));
+  const chromatic = kit.filter((c) => !isBlackLike(c));
+
+  if (chromatic.length === 0) {
+    return { primary: "#374151", secondary: "#9CA3AF" };
   }
-  return { primary, secondary };
+
+  let uiPrimary: string;
+  if (!isBlackLike(primary)) {
+    uiPrimary = primary;
+  } else if (!isBlackLike(secondary)) {
+    uiPrimary = secondary;
+  } else if (accent && !isBlackLike(accent)) {
+    uiPrimary = accent;
+  } else {
+    uiPrimary = chromatic[0]!;
+  }
+
+  let uiSecondary: string | undefined;
+  for (const c of [secondary, primary, accent]) {
+    if (c && !isBlackLike(c) && c !== uiPrimary) {
+      uiSecondary = c;
+      break;
+    }
+  }
+
+  if (!uiSecondary) {
+    uiSecondary = kit.some(isBlackLike)
+      ? UI_BLACK_TRIM
+      : chromatic.find((c) => c !== uiPrimary) ?? "#9CA3AF";
+  }
+
+  return { primary: uiPrimary, secondary: uiSecondary };
 }
 
 export function getClubColors(clubName: string): ClubColorSet {
@@ -126,7 +159,11 @@ export function getClubColors(clubName: string): ClubColorSet {
     return { primary: "#374151", secondary: "#9CA3AF", shortName: "???" };
   }
 
-  const ui = resolveClubUiColors(club.primaryColor, club.secondaryColor);
+  const ui = resolveClubUiColors(
+    club.primaryColor,
+    club.secondaryColor,
+    club.accentColor
+  );
   return {
     primary: ui.primary,
     secondary: ui.secondary,
@@ -135,15 +172,9 @@ export function getClubColors(clubName: string): ClubColorSet {
   };
 }
 
-/** Single-colour club marker — keeps chromatic kit visible when black is secondary. */
+/** Single-colour club marker for tables, borders, and nav accents. */
 export function getClubIndicatorColor(clubName: string): string {
-  const club = getClubByName(clubName);
-  if (!club) return "#374151";
-  const colors = getClubColors(clubName);
-  if (isBlackLike(club.secondaryColor)) {
-    return colors.secondary;
-  }
-  return colors.primary;
+  return getClubColors(clubName).primary;
 }
 
 /** Shared two-tone club theme — single source for all club UI. */

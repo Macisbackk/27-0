@@ -122,6 +122,27 @@ export function ManagerMatchReview({
         </div>
       )}
 
+      {(fixture.meta?.tacticImpactLine || fixture.meta?.tacticEffectivenessLine) && (
+        <ManagerSectionCard title="Tactical Report" accent="primary">
+          {fixture.meta.tacticImpactLine && (
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+              <span className="font-semibold text-pitch-500">Game plan: </span>
+              {fixture.meta.tacticImpactLine}
+            </p>
+          )}
+          {fixture.meta.tacticEffectivenessLine && (
+            <p
+              className={`${fixture.meta.tacticImpactLine ? "mt-2" : "mt-1"} ${TYPO.bodySm} ${
+                won ? "text-theme-primary" : "text-pitch-200"
+              }`}
+            >
+              <span className="font-semibold text-pitch-500">How it played: </span>
+              {fixture.meta.tacticEffectivenessLine}
+            </p>
+          )}
+        </ManagerSectionCard>
+      )}
+
       {cupBracketSnapshot && (
         <div
           className={`${CARD.base} ${SPACING.cardPadding} border-2 border-accent-gold/40 bg-accent-gold/5`}

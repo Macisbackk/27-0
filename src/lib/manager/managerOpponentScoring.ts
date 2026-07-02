@@ -1,9 +1,9 @@
 import seedrandom from "seedrandom";
 import type { MatchFixture, TeamScoringDetail } from "../game/season-simulation";
 import { selectClubMatchSquad } from "../game/opponent-scorers";
-import { getPlayerEligiblePositions } from "../players/player-positions";
-import type { ManagerCareer, ManagerTactics } from "./types";
+import { getDefenceConcedeMultiplier } from "./managerTacticsScoring";
 import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
+import type { ManagerCareer, ManagerTactics } from "./types";
 
 function allocateTries(
   totalTries: number,
@@ -32,7 +32,7 @@ export function buildOpponentTryScoringDetail(
   tries: number,
   seed: string,
   round: number,
-  _tactics?: ManagerTactics,
+  tactics?: ManagerTactics,
   fixtureKey?: string,
   career?: ManagerCareer
 ): TeamScoringDetail["tryScorers"] {
@@ -53,7 +53,10 @@ export function buildOpponentTryScoringDetail(
   const weights = oppSquad.map((p) => {
     const rating = p.rating ?? p.peakRating;
     const variance = 0.85 + rng() * 0.3;
-    return Math.max(0.1, rating * variance);
+    const defenceMod = tactics
+      ? getDefenceConcedeMultiplier(tactics.defenceFocus, p.position)
+      : 1;
+    return Math.max(0.1, rating * variance * defenceMod);
   });
   const alloc = allocateTries(tries, weights, rng);
 

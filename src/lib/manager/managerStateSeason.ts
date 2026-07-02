@@ -143,6 +143,7 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
     trophies,
     bestPlayerId,
     topTryScorerId,
+    topTryScorerTries: topTries,
     challengeCupResult: cupOutcome.label,
     playoffFinish,
     biggestWin,
@@ -220,6 +221,8 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     seasonAttendance: { total: 0, count: 0, high: 0, low: 0 },
     challengeCup: createManagerChallengeCup(newSeed, career.club),
     playoffs: undefined,
+    playoffsIntroAcknowledged: false,
+    trophyCelebrationShown: false,
     wagePressureWeeks: 0,
     transferMarket: generateTransferMarket(withInbox, newSeed, 0),
     squad: withInbox.squad.map((p) => ({
@@ -228,6 +231,16 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
       seasonTries: 0,
       fitness: Math.min(100, p.fitness + 20),
     })),
+    reserves: afterReserveContracts.reserves.map((r) => ({
+      ...r,
+      baseRating: r.rating,
+      reserveAppearances: 0,
+      reserveTries: 0,
+      calledUpForNextMatch: false,
+    })),
+    calledUpReserveIds: [],
+    reserveResults: [],
+    lastReserveResult: null,
     leagueTable: buildLeagueTableFromMatches([], career.club),
     preSeason: initPreSeasonState({}),
     managerFinance: {
