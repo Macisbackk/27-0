@@ -1306,12 +1306,13 @@ export function GameBoard({
         : "";
 
   return (
-    <div className="matchday-arena min-h-screen">
+    <div className="matchday-arena arena-surface relative flex min-h-full flex-1 flex-col lg:desktop-page-fit">
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
       <div className="stadium-lights pointer-events-none fixed inset-0" />
 
+      <div className="relative mx-auto flex w-full max-w-6xl flex-col overflow-x-hidden py-4 pb-8 sm:py-5 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4">
       {(title || subtitle || isHardMode) && (
-        <div className="relative mx-auto max-w-6xl px-4 pt-4">
+        <div className="pt-1 lg:pt-0">
           <div className="flex flex-wrap items-center gap-3">
             {title && (
               <h1 className="font-display text-lg font-bold text-white">{title}</h1>
@@ -1322,7 +1323,7 @@ export function GameBoard({
         </div>
       )}
 
-      <div className="relative mx-auto max-w-6xl overflow-x-hidden px-4 py-4 pb-10 sm:py-6">
+      <div>
         {phase !== "clubSelect" && phase !== "review" && (
           <GuestNotice variant="play" />
         )}
@@ -1677,6 +1678,7 @@ export function GameBoard({
           onReturnHome={resetRun}
         />
       )}
+      </div>
     </div>
   );
 }

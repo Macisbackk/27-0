@@ -3,16 +3,16 @@
 import { useState } from "react";
 import { GAME_UPDATES } from "../../../data/updates";
 import { playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { PageShell } from "@/components/ui/PageShell";
+import { CARD, PAGE, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 export default function UpdatesPage() {
   const [openId, setOpenId] = useState<string | null>(GAME_UPDATES[0]?.id ?? null);
 
   return (
-    <div className="matchday-arena min-h-screen">
-      <div className="stadium-backdrop pointer-events-none fixed inset-0" />
-      <div className="relative mx-auto max-w-2xl px-4 py-10 sm:py-14">
+    <PageShell withLights compact>
+      <div className={`mx-auto max-w-2xl ${PAGE.section}`}>
         <header className="text-center">
           <p className={TYPO.sectionLabel}>Changelog</p>
           <h1 className="mt-2 font-display text-3xl font-black text-white sm:text-4xl">
@@ -23,7 +23,7 @@ export default function UpdatesPage() {
           </p>
         </header>
 
-        <ul className={`mt-8 space-y-3 ${SPACING.stackMd}`}>
+        <ul className="space-y-3">
           {GAME_UPDATES.map((update) => {
             const isOpen = openId === update.id;
             return (
@@ -71,6 +71,6 @@ export default function UpdatesPage() {
           })}
         </ul>
       </div>
-    </div>
+    </PageShell>
   );
 }

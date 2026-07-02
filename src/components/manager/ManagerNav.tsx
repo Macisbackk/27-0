@@ -38,12 +38,18 @@ export function ManagerNav({
         <h1 className={`${TYPO.pageTitle} text-xl sm:text-2xl`}>{club}</h1>
       </div>
 
-      <nav className="grid grid-cols-4 gap-1.5 sm:grid-cols-8 sm:gap-2">
+      <nav className="manager-tab-rail -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:grid sm:grid-cols-4 sm:overflow-visible sm:px-0 lg:grid-cols-8">
           {TABS.map((tab) => {
             const label =
               tab.id === "inbox" && unreadInbox > 0
                 ? `Inbox (${unreadInbox > 9 ? "9+" : unreadInbox})`
                 : tab.label;
+            const shortLabel =
+              tab.id === "contracts"
+                ? "Deals"
+                : tab.id === "transfers"
+                  ? "Market"
+                  : tab.label;
             return (
               <button
                 key={tab.id}
@@ -55,11 +61,12 @@ export function ManagerNav({
                   onNavigate(tab.id);
                 }}
                 disabled={disabled}
-                className={`btn-press min-h-[36px] rounded-lg px-1.5 py-1.5 font-display text-[10px] font-bold uppercase tracking-wide transition sm:min-h-[40px] sm:px-3 sm:text-xs ${
+                className={`btn-press shrink-0 min-h-[38px] rounded-lg px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wide transition sm:min-h-[40px] sm:px-3 sm:text-xs ${
                   active === tab.id ? BTN.tabActive : BTN.tabIdle
                 } ${disabled ? "pointer-events-none opacity-40" : ""}`}
               >
-                {label}
+                <span className="sm:hidden">{shortLabel}</span>
+                <span className="hidden sm:inline">{label}</span>
               </button>
             );
           })}

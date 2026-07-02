@@ -63,7 +63,7 @@ export function HomeModeSelector() {
 
       <div className={`mx-auto flex max-w-xl flex-col gap-5`}>
         <div
-          className={`group w-full ${SPACING.cardPaddingLg} transition ${CARD.featured} ${CARD.glass} ${CARD.panel} border-theme-primary/30 hover:border-theme-primary/50`}
+          className={`group w-full ${SPACING.cardPaddingLg} transition ${CARD.featured} ${CARD.hero} border-theme-primary/35 hover:border-theme-primary/55`}
         >
           <p className={TYPO.sectionLabel}>Main Mode</p>
           <h2 className={`${TYPO.cardTitle} mt-1 text-2xl text-white`}>
@@ -84,7 +84,7 @@ export function HomeModeSelector() {
         </div>
 
         <div
-          className={`w-full ${SPACING.cardPaddingLg} transition ${CARD.glass} ${CARD.panel} ${CARD.featured}`}
+          className={`w-full ${SPACING.cardPaddingLg} transition ${CARD.hero} ${CARD.featured}`}
         >
           <button
             type="button"

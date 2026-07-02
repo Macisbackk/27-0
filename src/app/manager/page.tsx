@@ -45,7 +45,7 @@ import {
   playMatchUpsetVictory,
   playUiClick,
 } from "@/lib/sound";
-import { SPACING } from "@/lib/ui/design-system";
+import { PageShell, PageShellBody } from "@/components/ui/PageShell";
 import {
   ensureFriendlyChoices,
   isAwaitingFriendlyChoice,
@@ -181,7 +181,7 @@ export default function ManagerPage() {
     career && NAV_VIEWS.includes(view as (typeof NAV_VIEWS)[number]);
 
   return (
-    <div className={`mx-auto max-w-4xl ${SPACING.pageX} py-6 sm:py-8`}>
+    <PageShell withLights compact desktopFit={!!showNav}>
       {view === "landing" && (
         <ManagerLanding
           hasSave={hasSave}
@@ -202,7 +202,7 @@ export default function ManagerPage() {
       )}
 
       {showNav && career && (
-        <div className={SPACING.stackLg}>
+        <div className="flex min-h-0 flex-1 flex-col gap-4 lg:gap-3">
           <ManagerNav
             active={view}
             club={career.club}
@@ -211,69 +211,71 @@ export default function ManagerPage() {
             unreadInbox={countUnreadInbox(career)}
           />
 
-          {view === "hub" && (
-            <>
-              {isAwaitingFriendlyChoice(career) ? (
-                <ManagerFriendlySelect
-                  career={career}
-                  friendlyNumber={career.preSeason.friendliesPlayed + 1}
-                  choices={career.preSeason.currentChoices}
-                  onSelect={(choiceId) => {
-                    persist(
-                      ensureFriendlyChoices(
-                        selectFriendlyOpponent(career, choiceId)
-                      )
-                    );
-                  }}
-                />
-              ) : (
-                <ManagerHub
-                  career={career}
-                  onPlayGame={handlePlayGame}
-                  onSimulate={handleSimulate}
-                  onSelectFixture={(fixtureId) => {
-                    setReviewFixtureId(fixtureId);
-                    setView("match-review");
-                  }}
-                  onUpdate={persist}
-                  onNavigate={setView}
-                />
-              )}
-            </>
-          )}
+          <PageShellBody className="gap-4 lg:gap-3">
+            {view === "hub" && (
+              <>
+                {isAwaitingFriendlyChoice(career) ? (
+                  <ManagerFriendlySelect
+                    career={career}
+                    friendlyNumber={career.preSeason.friendliesPlayed + 1}
+                    choices={career.preSeason.currentChoices}
+                    onSelect={(choiceId) => {
+                      persist(
+                        ensureFriendlyChoices(
+                          selectFriendlyOpponent(career, choiceId)
+                        )
+                      );
+                    }}
+                  />
+                ) : (
+                  <ManagerHub
+                    career={career}
+                    onPlayGame={handlePlayGame}
+                    onSimulate={handleSimulate}
+                    onSelectFixture={(fixtureId) => {
+                      setReviewFixtureId(fixtureId);
+                      setView("match-review");
+                    }}
+                    onUpdate={persist}
+                    onNavigate={setView}
+                  />
+                )}
+              </>
+            )}
 
-          {view === "inbox" && (
-            <ManagerInbox
-              career={career}
-              onUpdate={persist}
-              onNavigate={(v) => {
-                if (v === "season-rewards") setView("season-rewards");
-                else setView(v);
-              }}
-            />
-          )}
-          {view === "squad" && (
-            <ManagerSquad career={career} onUpdate={persist} />
-          )}
-          {view === "reserves" && (
-            <ManagerReserves career={career} onUpdate={persist} />
-          )}
-          {view === "contracts" && (
-            <ManagerContracts career={career} onUpdate={persist} />
-          )}
-          {view === "transfers" && (
-            <ManagerTransfers career={career} onUpdate={persist} />
-          )}
-          {view === "fixtures" && (
-            <ManagerFixtures
-              career={career}
-              onSelectFixture={(fixtureId) => {
-                setReviewFixtureId(fixtureId);
-                setView("match-review");
-              }}
-            />
-          )}
-          {view === "stats" && <ManagerStatsView career={career} />}
+            {view === "inbox" && (
+              <ManagerInbox
+                career={career}
+                onUpdate={persist}
+                onNavigate={(v) => {
+                  if (v === "season-rewards") setView("season-rewards");
+                  else setView(v);
+                }}
+              />
+            )}
+            {view === "squad" && (
+              <ManagerSquad career={career} onUpdate={persist} />
+            )}
+            {view === "reserves" && (
+              <ManagerReserves career={career} onUpdate={persist} />
+            )}
+            {view === "contracts" && (
+              <ManagerContracts career={career} onUpdate={persist} />
+            )}
+            {view === "transfers" && (
+              <ManagerTransfers career={career} onUpdate={persist} />
+            )}
+            {view === "fixtures" && (
+              <ManagerFixtures
+                career={career}
+                onSelectFixture={(fixtureId) => {
+                  setReviewFixtureId(fixtureId);
+                  setView("match-review");
+                }}
+              />
+            )}
+            {view === "stats" && <ManagerStatsView career={career} />}
+          </PageShellBody>
         </div>
       )}
 
@@ -286,7 +288,7 @@ export default function ManagerPage() {
       )}
 
       {career && view === "match-review" && reviewFixtureId !== null && (
-        <div className={SPACING.stackLg}>
+        <div className="space-y-4">
           <ManagerNav
             active="fixtures"
             club={career.club}
@@ -329,6 +331,6 @@ export default function ManagerPage() {
           }}
         />
       )}
-    </div>
+    </PageShell>
   );
 }

@@ -48,7 +48,7 @@ export default function RootLayout({
           <UiThemeProvider />
           <SoundUnlock />
           <Header />
-          <main className="flex-1">{children}</main>
+          <main className="app-main flex min-h-0 flex-1 flex-col">{children}</main>
           <SiteFooter />
         </AuthProvider>
         <Analytics />

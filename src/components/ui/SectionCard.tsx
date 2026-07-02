@@ -21,7 +21,7 @@ export function SectionCard({
 }: SectionCardProps) {
   return (
     <section
-      className={`${CARD.base} ${featured ? CARD.featured : ""} ${SPACING.cardPadding} ${className}`}
+      className={`${CARD.hero} ${featured ? CARD.featured : ""} ${SPACING.cardPadding} ${className}`}
     >
       {title && (
         <header className={SPACING.headingMargin}>

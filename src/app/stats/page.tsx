@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { StatsPanel } from "@/components/StatsPanel";
+import { PageShell } from "@/components/ui/PageShell";
 import { useAuth } from "@/lib/auth-context";
 import { getAllStats } from "@/lib/storage/stats";
 import { importLocalStatsToCloud } from "@/lib/storage/stats-cloud";
-import { BTN, CARD, LINK, SPACING } from "@/lib/ui/design-system";
+import { BTN, CARD, LINK, PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 export default function StatsPage() {
@@ -33,38 +34,44 @@ export default function StatsPage() {
   };
 
   return (
-    <div className={`mx-auto max-w-4xl ${SPACING.pageX} py-8`}>
-      <h1 className={`mb-2 ${TYPO.pageTitle}`}>{title}</h1>
+    <PageShell withLights compact>
+      <div className={PAGE.section}>
+        <header>
+          <p className={TYPO.sectionLabel}>Career</p>
+          <h1 className={`mt-1 ${TYPO.pageTitle}`}>{title}</h1>
+        </header>
 
-      {!loading && !isLoggedIn && (
-        <div className={`${CARD.panel} mb-6 ${SPACING.cardPadding} ${TYPO.body}`}>
-          <p>Log in to save your statistics online.</p>
-          <Link href="/" className={`mt-2 inline-block ${LINK.accent}`}>
-            Go to Home to log in →
-          </Link>
-        </div>
-      )}
+        {!loading && !isLoggedIn && (
+          <div className={`${CARD.hero} ${CARD.featured} p-4 sm:p-6 ${TYPO.body}`}>
+            <p>Log in to save your statistics online.</p>
+            <Link href="/" className={`mt-2 inline-block ${LINK.accent}`}>
+              Go to Home to log in →
+            </Link>
+          </div>
+        )}
 
-      {isLoggedIn && (
-        <div className={`mb-6 flex flex-wrap items-center ${SPACING.buttonGap}`}>
-          <button
-            type="button"
-            disabled={importing}
-            onClick={() => void handleImport()}
-            className={`${BTN.base} ${BTN.secondary} !min-h-[40px] text-[10px]`}
-          >
-            Import local stats to account
-          </button>
-          {importMsg && <p className={TYPO.body}>{importMsg}</p>}
-        </div>
-      )}
+        {isLoggedIn && (
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              disabled={importing}
+              onClick={() => void handleImport()}
+              className={`${BTN.base} ${BTN.secondary} !min-h-[40px] text-xs`}
+            >
+              Import local stats to account
+            </button>
+            {importMsg && <p className={TYPO.body}>{importMsg}</p>}
+          </div>
+        )}
 
-      <p className={`mb-6 ${TYPO.bodySm}`}>
-        {isLoggedIn
-          ? "Career statistics synced to your account when logged in."
-          : "Career statistics on this device (local only until you log in)."}
-      </p>
-      <StatsPanel />
-    </div>
+        <p className={TYPO.bodySm}>
+          {isLoggedIn
+            ? "Career statistics synced to your account when logged in."
+            : "Career statistics on this device (local only until you log in)."}
+        </p>
+
+        <StatsPanel />
+      </div>
+    </PageShell>
   );
 }

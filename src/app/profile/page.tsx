@@ -13,8 +13,9 @@ import {
   getOverallView,
 } from "@/lib/stats-views";
 import { SectionCard } from "@/components/ui/SectionCard";
+import { PageShell } from "@/components/ui/PageShell";
 import { RL_INFO_BOX_CLASS } from "@/components/cards/rl-card";
-import { BTN, CARD, LINK, SPACING } from "@/lib/ui/design-system";
+import { BTN, CARD, LINK, PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 interface StoredStats {
@@ -111,22 +112,22 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className={`mx-auto max-w-4xl ${SPACING.pageX} py-8`}>
+      <PageShell compact>
         <p className={TYPO.bodySm}>Loading profile…</p>
-      </div>
+      </PageShell>
     );
   }
 
   if (!isLoggedIn) {
     return (
-      <div className={`mx-auto max-w-4xl ${SPACING.pageX} py-8`}>
-        <div className={`${CARD.panel} ${SPACING.cardPadding}`}>
+      <PageShell compact>
+        <div className={`${CARD.hero} p-4 sm:p-6`}>
           <p className={TYPO.body}>Log in to view your coach profile.</p>
           <Link href="/login?redirect=/profile" className={`mt-3 inline-block ${LINK.accent}`}>
             Log in →
           </Link>
         </div>
-      </div>
+      </PageShell>
     );
   }
 
@@ -139,10 +140,14 @@ export default function ProfilePage() {
     : "—";
 
   return (
-    <div className={`mx-auto max-w-4xl ${SPACING.pageX} py-8`}>
-      <h1 className={`mb-6 ${TYPO.pageTitle}`}>Coach Profile</h1>
+    <PageShell withLights compact>
+      <div className={PAGE.section}>
+        <header>
+          <p className={TYPO.sectionLabel}>Account</p>
+          <h1 className={`mt-1 ${TYPO.pageTitle}`}>Coach Profile</h1>
+        </header>
 
-      <div className="space-y-6">
+        <div className="space-y-5">
         <SectionCard title="Account">
           <dl className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -209,7 +214,7 @@ export default function ProfilePage() {
           <p className={TYPO.bodySm}>
             Send a reset link to your account email to choose a new password.
           </p>
-          <div className={`mt-4 flex flex-wrap items-center ${SPACING.buttonGap}`}>
+          <div className="mt-4 flex flex-wrap items-center gap-2">
             <button
               type="button"
               disabled={resetBusy || !email}
@@ -227,19 +232,20 @@ export default function ProfilePage() {
           )}
         </SectionCard>
 
-        <div className={`flex flex-wrap ${SPACING.buttonGap}`}>
+        <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => void signOut()}
-            className={`${BTN.base} ${BTN.danger} !min-h-[40px] text-[10px]`}
+            className={`${BTN.base} ${BTN.danger} !min-h-[40px] text-xs`}
           >
             Log Out
           </button>
-          <Link href="/" className={`${BTN.base} ${BTN.secondary} !min-h-[40px] text-[10px]`}>
+          <Link href="/" className={`${BTN.base} ${BTN.secondary} !min-h-[40px] text-xs`}>
             Back to Home
           </Link>
         </div>
+        </div>
       </div>
-    </div>
+    </PageShell>
   );
 }

@@ -23,7 +23,7 @@ export function ManagerLanding({
 }: ManagerLandingProps) {
   return (
     <div className={`mx-auto max-w-lg ${SPACING.stackLg}`}>
-      <div className={`${CARD.elevated} ${SPACING.cardPaddingLg} text-center`}>
+      <div className={`${CARD.hero} ${CARD.featured} ${SPACING.cardPaddingLg} text-center`}>
         <p className={TYPO.sectionLabel}>Career Mode</p>
         <h1 className={`mt-2 ${TYPO.pageTitle}`}>Manager Mode</h1>
         <p className={`mt-3 ${TYPO.body} text-pitch-300`}>

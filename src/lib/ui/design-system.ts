@@ -23,23 +23,34 @@ export const SPACING = {
 
 /** Shared card surface classes. */
 export const CARD = {
-  base: "rounded-xl border border-pitch-600/50 bg-pitch-900/55",
+  base: "rounded-xl border border-pitch-600/55 bg-pitch-900/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",
   elevated:
-    "rounded-xl border border-pitch-600/50 bg-gradient-to-b from-pitch-900/80 to-pitch-950/90",
-  inset: "rounded-lg border border-pitch-700/50 bg-pitch-950/50",
-  stat: "rl-stat-box rounded-lg border border-pitch-600/40 bg-pitch-900/55",
+    "rounded-xl border border-pitch-600/55 bg-gradient-to-b from-pitch-900/85 to-pitch-950/95 shadow-[0_8px_28px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.05)]",
+  inset:
+    "rounded-lg border border-pitch-700/55 bg-pitch-950/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]",
+  stat: "rl-stat-box rounded-lg border border-pitch-600/45 bg-pitch-900/60",
   hover:
-    "transition hover:border-pitch-500/60 hover:bg-pitch-900/70",
+    "transition hover:border-theme-tertiary/35 hover:bg-pitch-900/75 hover:shadow-[0_0_20px_var(--theme-glow-soft)]",
   featured:
-    "border border-theme-tertiary/35 shadow-[0_0_32px_var(--theme-glow-soft)] ring-1 ring-theme-tertiary/20",
+    "border border-theme-tertiary/40 shadow-[0_0_36px_var(--theme-glow-soft),inset_0_1px_0_rgba(255,255,255,0.06)] ring-1 ring-theme-tertiary/25",
   featuredHard:
-    "border border-accent-red/30 shadow-[0_0_32px_rgba(239,68,68,0.14)]",
+    "border border-accent-red/35 shadow-[0_0_32px_rgba(239,68,68,0.18),inset_0_1px_0_rgba(255,255,255,0.04)] ring-1 ring-accent-red/20",
   interactive:
-    "btn-press cursor-pointer transition hover:border-theme-primary/40 hover:bg-pitch-800/60 active:border-theme-primary/50 active:bg-pitch-800/75",
-  selected: "border-theme-tertiary/55 bg-pitch-800/40 ring-1 ring-theme-tertiary/25",
+    "btn-press cursor-pointer transition hover:border-theme-primary/45 hover:bg-pitch-800/65 hover:shadow-[0_0_16px_var(--theme-glow-soft)] active:border-theme-primary/55 active:bg-pitch-800/80",
+  selected:
+    "border-theme-tertiary/60 bg-pitch-800/45 ring-1 ring-theme-tertiary/30 shadow-[0_0_20px_var(--theme-glow-soft)]",
   /** Legacy global panel — aligned with design system surfaces */
   panel: "matchday-panel",
   glass: "card-glass",
+  /** Home-style featured mode card stack */
+  hero: "matchday-panel card-glass",
+} as const;
+
+/** Page layout helpers — pair with PageShell component. */
+export const PAGE = {
+  section: "space-y-4 sm:space-y-5 lg:space-y-4",
+  sectionHero: "text-center",
+  cardStack: "flex flex-col gap-4 sm:gap-5",
 } as const;
 
 /** Form & filter inputs. */

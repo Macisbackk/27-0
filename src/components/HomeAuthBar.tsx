@@ -13,7 +13,7 @@ export function HomeAuthBar() {
   }
 
   return (
-    <section className={`${CARD.panel} mx-auto max-w-md ${SPACING.cardPadding} text-center`}>
+    <section className={`${CARD.hero} ${CARD.featured} mx-auto max-w-md ${SPACING.cardPadding} text-center`}>
       <p className={TYPO.sectionTitle}>Get Started</p>
       <div className={`mt-4 flex flex-col ${SPACING.buttonGap} sm:flex-row sm:justify-center`}>
         <Link href="#play-modes" className={`${BTN.theme} text-center`}>

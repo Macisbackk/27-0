@@ -306,7 +306,7 @@ export function ManagerHub({
   };
 
   return (
-    <div className={SPACING.stackLg}>
+    <div className="space-y-4 sm:space-y-5 lg:space-y-3">
       {nextFixture && !career.isSeasonComplete && (
         <div
           className={`${CARD.elevated} ${CARD.featured} ${SPACING.cardPadding} ${

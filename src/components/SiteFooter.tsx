@@ -6,7 +6,7 @@ const DISCLAIMER =
 
 export function SiteFooter() {
   return (
-    <footer className="relative z-10 mt-auto border-t border-pitch-700/40 bg-pitch-950/80 px-4 py-6">
+    <footer className="site-footer relative z-10 mt-auto border-t border-pitch-700/45 bg-pitch-950/75 px-4 py-5 backdrop-blur-md">
       <div className="mx-auto max-w-4xl">
         <FooterSupportLinks />
         <p className={`mt-4 text-center ${TYPO.bodySm}`}>{DISCLAIMER}</p>
