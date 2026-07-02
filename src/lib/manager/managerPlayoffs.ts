@@ -1,4 +1,4 @@
-import type { PlayoffBracketState } from "../game/playoff-bracket";
+import type { PlayoffBracketState, PlayoffBracketMatch } from "../game/playoff-bracket";
 import {
   createPlayoffBracket,
   getActiveRound,
@@ -15,20 +15,19 @@ import {
   countLeagueFixturesPlayed,
   isLeagueAndCupPhaseComplete,
 } from "./managerChallengeCup";
+import { getUserLeaguePosition } from "./managerFixtures";
 
 export const PLAYOFF_QUALIFIERS = 6;
 
-export function getUserLeaguePosition(career: ManagerCareer): number {
-  return career.leagueTable.find((r) => r.isUserTeam)?.position ?? 14;
-}
-
 export function userQualifiedForManagerPlayoffs(career: ManagerCareer): boolean {
-  return getUserLeaguePosition(career) <= PLAYOFF_QUALIFIERS;
+  return (
+    getUserLeaguePosition(career.leagueTable, career.club) <= PLAYOFF_QUALIFIERS
+  );
 }
 
 
 export function createManagerPlayoffs(career: ManagerCareer): PlayoffBracketState {
-  const position = getUserLeaguePosition(career);
+  const position = getUserLeaguePosition(career.leagueTable, career.club);
   return createPlayoffBracket(
     `${career.seed}-playoffs`,
     career.leagueTable,
@@ -37,28 +36,64 @@ export function createManagerPlayoffs(career: ManagerCareer): PlayoffBracketStat
   );
 }
 
-function simulateAiUntilUserPlayoffReady(
+function findReadyAiPlayoffMatch(
+  bracket: PlayoffBracketState
+): PlayoffBracketMatch | undefined {
+  return bracket.matches
+    .filter((m) => m.status === "ready" && !m.isUserMatch)
+    .sort((a, b) => a.round - b.round || a.slot - b.slot)[0];
+}
+
+function simulateReadyAiPlayoffMatches(
   bracket: PlayoffBracketState,
-  round: number,
-  squad: ReturnType<typeof buildSquadSlotsFromMatchday>
+  squad: ReturnType<typeof buildSquadSlotsFromMatchday>,
+  maxSteps = 48
 ): PlayoffBracketState {
   let next = bracket;
+  for (let step = 0; step < maxSteps; step++) {
+    if (next.userEliminated || next.tournamentComplete) break;
+    const aiReady = findReadyAiPlayoffMatch(next);
+    if (!aiReady) break;
+    next = simulatePlayoffBracketMatch(next, aiReady.id, squad);
+  }
+  return next;
+}
+
+function simulateAiUntilUserPlayoffReady(
+  bracket: PlayoffBracketState,
+  squad: ReturnType<typeof buildSquadSlotsFromMatchday>
+): PlayoffBracketState {
+  let next = simulateReadyAiPlayoffMatches(bracket, squad);
   let guard = 0;
-  while (guard < 20) {
+  while (guard < 48) {
     guard++;
-    const userMatch = getMatchesForRound(next, round).find(
+    const userMatch = next.matches.find(
       (m) => m.isUserMatch && m.status === "ready"
     );
     if (userMatch) return next;
     if (next.userEliminated || next.tournamentComplete) return next;
 
-    const aiReady = getMatchesForRound(next, round).find(
-      (m) => m.status === "ready" && !m.isUserMatch
-    );
+    const aiReady = findReadyAiPlayoffMatch(next);
     if (!aiReady) break;
     next = simulatePlayoffBracketMatch(next, aiReady.id, squad);
   }
   return next;
+}
+
+export function advancePlayoffBracketAfterUserMatch(
+  career: ManagerCareer
+): PlayoffBracketState {
+  const playoffs = career.playoffs;
+  if (!playoffs || playoffs.userEliminated || playoffs.tournamentComplete) {
+    return playoffs ?? createManagerPlayoffs(career);
+  }
+
+  const squad = buildSquadSlotsFromMatchday(
+    career.matchdayXiii,
+    career.xiiiSlotPositions,
+    career
+  );
+  return simulateReadyAiPlayoffMatches(playoffs, squad);
 }
 
 export function preparePlayoffRound(
@@ -74,8 +109,7 @@ export function preparePlayoffRound(
     career.xiiiSlotPositions,
     career
   );
-  const round = getActiveRound(bracket);
-  return simulateAiUntilUserPlayoffReady(bracket, round, squad);
+  return simulateAiUntilUserPlayoffReady(bracket, squad);
 }
 
 export function getUserPlayoffMatch(

@@ -31,6 +31,7 @@ export const STORAGE_KEYS = {
   statsSchemaVersion: "27-0-stats-schema-version",
   managerCareer: "27-0-manager-career",
   managerStats: "27-0-manager-stats",
+  managerLeaderboard: "27-0-manager-leaderboard",
 } as const;
 
 /** Bump when StoredStats shape changes — triggers one-time local migration. */

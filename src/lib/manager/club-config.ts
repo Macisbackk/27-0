@@ -1,5 +1,5 @@
 import { getClubBaseStrength } from "../game/club-strength";
-import { getClubByName } from "../clubs";
+import { getClubByName, resolveClubUiColors } from "../clubs";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { Position } from "../types";
 import { SQUAD_STRUCTURE } from "../positions";
@@ -18,6 +18,7 @@ import {
 export interface ManagerClubConfig {
   name: string;
   expectation: string;
+  expectationTier: ManagerClubExpectationTier;
   budget: number;
   difficulty: number;
   squadRating: number;
@@ -25,21 +26,22 @@ export interface ManagerClubConfig {
   secondaryColor: string;
 }
 
-const CLUB_EXPECTATIONS: Record<string, string> = {
-  "Wigan Warriors": "Win the title",
-  "St Helens": "Win the title",
-  "Leeds Rhinos": "Reach playoffs",
-  "Warrington Wolves": "Reach playoffs",
-  "Hull KR": "Reach playoffs",
-  "Catalans Dragons": "Reach playoffs",
-  "Hull FC": "Mid-table push",
-  "Toulouse Olympique": "Mid-table push",
-  "Leigh Leopards": "Mid-table push",
-  "Huddersfield Giants": "Avoid bottom",
-  "Castleford Tigers": "Avoid bottom",
-  "Bradford Bulls": "Mid-table push",
-  "Wakefield Trinity": "Survive and develop",
-  "York Knights": "Survive and develop",
+export type ManagerClubExpectationTier =
+  | "title"
+  | "playoffs"
+  | "mid-table"
+  | "avoid-bottom"
+  | "survive";
+
+export const MANAGER_EXPECTATION_LABELS: Record<
+  ManagerClubExpectationTier,
+  string
+> = {
+  title: "Win the title",
+  playoffs: "Reach playoffs",
+  "mid-table": "Mid-table push",
+  "avoid-bottom": "Avoid bottom",
+  survive: "Survive and develop",
 };
 
 const CLUB_BUDGET: Record<string, number> = {
@@ -67,6 +69,69 @@ function difficultyFromStrength(strength: number): number {
   return 1;
 }
 
+function getLeagueSquadRatings(): number[] {
+  return CURRENT_PLAYABLE_CLUBS.map((name) => getManagerClubRating(name));
+}
+
+/** Board expectation tier from squad OVR — clubs on the same rating band share the same bio. */
+export function getManagerClubExpectationTier(
+  squadRating: number,
+  allRatings: readonly number[]
+): ManagerClubExpectationTier {
+  const bands = [...new Set(allRatings)].sort((a, b) => b - a);
+  const bandIndex = bands.indexOf(squadRating);
+  if (bandIndex < 0) return "mid-table";
+
+  const totalBands = bands.length;
+  if (bandIndex === 0) return "title";
+  if (bandIndex === 1 || totalBands <= 2) return "playoffs";
+
+  const remaining = totalBands - 2;
+  const relIndex = bandIndex - 2;
+
+  if (remaining === 1) return "mid-table";
+  if (remaining === 2) {
+    return relIndex === 0 ? "mid-table" : "avoid-bottom";
+  }
+  if (remaining === 3) {
+    if (relIndex === 0) return "mid-table";
+    if (relIndex === 1) return "avoid-bottom";
+    return "survive";
+  }
+
+  const fraction = relIndex / (remaining - 1);
+  if (fraction < 0.34) return "mid-table";
+  if (fraction < 0.67) return "avoid-bottom";
+  return "survive";
+}
+
+export function getManagerClubExpectation(
+  squadRating: number,
+  allRatings?: readonly number[]
+): string {
+  const ratings = allRatings ?? getLeagueSquadRatings();
+  const tier = getManagerClubExpectationTier(squadRating, ratings);
+  return MANAGER_EXPECTATION_LABELS[tier];
+}
+
+export function didMeetManagerBoardExpectation(
+  tier: ManagerClubExpectationTier,
+  position: number,
+  playoffFinish: string | null
+): boolean {
+  switch (tier) {
+    case "title":
+      return playoffFinish === "Super League Champions";
+    case "playoffs":
+      return position <= 6;
+    case "mid-table":
+      return position <= 10;
+    case "avoid-bottom":
+    case "survive":
+      return position <= 12;
+  }
+}
+
 export function getManagerClubRating(clubName: string): number {
   return getManagerClubTeamRating(clubName);
 }
@@ -74,14 +139,21 @@ export function getManagerClubRating(clubName: string): number {
 export function getManagerClubConfig(clubName: string): ManagerClubConfig {
   const club = getClubByName(clubName);
   const strength = getClubBaseStrength(clubName);
+  const uiColors = club
+    ? resolveClubUiColors(club.primaryColor, club.secondaryColor)
+    : { primary: "#1e293b", secondary: "#334155" };
+  const allRatings = getLeagueSquadRatings();
+  const squadRating = getManagerClubRating(clubName);
+  const expectationTier = getManagerClubExpectationTier(squadRating, allRatings);
   return {
     name: clubName,
-    expectation: CLUB_EXPECTATIONS[clubName] ?? "Compete in Super League",
+    expectation: MANAGER_EXPECTATION_LABELS[expectationTier],
+    expectationTier,
     budget: CLUB_BUDGET[clubName] ?? 600_000,
     difficulty: difficultyFromStrength(strength),
-    squadRating: getManagerClubRating(clubName),
-    primaryColor: club?.primaryColor ?? "#1e293b",
-    secondaryColor: club?.secondaryColor ?? "#334155",
+    squadRating,
+    primaryColor: uiColors.primary,
+    secondaryColor: uiColors.secondary,
   };
 }
 

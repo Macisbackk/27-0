@@ -1,6 +1,6 @@
 "use client";
 
-import { getClubColors } from "@/lib/clubs";
+import { getClubColors, getClubIndicatorColor } from "@/lib/clubs";
 import { DREAM_TEAM_COLORS } from "@/lib/clubs/dream-team";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { getReadableTextColor, getClubPillStyle } from "@/lib/ui/contrast";
@@ -72,7 +72,7 @@ export function ClubNameLabel({
       >
         <span
           className="h-3 w-1 shrink-0 rounded-full"
-          style={{ backgroundColor: colors.primary }}
+          style={{ backgroundColor: getClubIndicatorColor(colorClub ?? club) }}
           aria-hidden
         />
         <span className={`min-w-0 truncate ${TYPO.identityLine}`}>{club}</span>
@@ -94,8 +94,8 @@ export function ClubNameLabel({
       style={
         showAccent
           ? {
-              borderLeft: isRight ? undefined : `3px solid ${colors.primary}`,
-              borderRight: isRight ? `3px solid ${colors.primary}` : undefined,
+              borderLeft: isRight ? undefined : `3px solid ${getClubIndicatorColor(colorClub ?? club)}`,
+              borderRight: isRight ? `3px solid ${getClubIndicatorColor(colorClub ?? club)}` : undefined,
               paddingLeft: isRight ? 0 : "0.625rem",
               paddingRight: isRight ? "0.625rem" : 0,
             }

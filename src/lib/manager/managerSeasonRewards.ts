@@ -4,7 +4,7 @@ import { formatClubFunds } from "../club-funds";
 import { awardClubFundsLines } from "../storage/club-funds";
 import type { ManagerCareer, ManagerSeasonSummary } from "./types";
 import { getUserLeaguePosition } from "./managerFixtures";
-import { getManagerClubConfig } from "./club-config";
+import { getManagerClubConfig, didMeetManagerBoardExpectation } from "./club-config";
 
 export function getManagerSeasonRewardRunId(career: ManagerCareer): string {
   return `manager-${career.id}-s${career.seasonYear}`;
@@ -107,13 +107,11 @@ export function computeManagerSeasonRewardLines(
     });
   }
 
-  const objectiveMet =
-    (config.expectation.includes("title") &&
-      playoffFinish === "Super League Champions") ||
-    (config.expectation.includes("playoff") && position <= 6) ||
-    (config.expectation.includes("Mid-table") && position <= 10) ||
-    (config.expectation.includes("Avoid bottom") && position <= 12) ||
-    (config.expectation.includes("Survive") && position <= 12);
+  const objectiveMet = didMeetManagerBoardExpectation(
+    config.expectationTier,
+    position,
+    playoffFinish
+  );
 
   if (objectiveMet) {
     lines.push({

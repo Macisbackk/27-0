@@ -3,7 +3,7 @@
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
-import { getClubByName } from "@/lib/clubs";
+import { getClubIndicatorColor } from "@/lib/clubs";
 
 interface ManagerTableProps {
   career: ManagerCareer;
@@ -31,7 +31,7 @@ export function ManagerTable({ career }: ManagerTableProps) {
           </thead>
           <tbody>
             {career.leagueTable.map((row) => {
-              const club = getClubByName(row.team);
+              const indicatorColor = getClubIndicatorColor(row.team);
               return (
                 <tr
                   key={row.team}
@@ -46,7 +46,7 @@ export function ManagerTable({ career }: ManagerTableProps) {
                     <span className="flex items-center gap-2">
                       <span
                         className="inline-block h-2.5 w-2.5 rounded-full"
-                        style={{ backgroundColor: club?.primaryColor }}
+                        style={{ backgroundColor: indicatorColor }}
                       />
                       <span
                         className={

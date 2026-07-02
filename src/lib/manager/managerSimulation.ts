@@ -40,6 +40,7 @@ import {
   isLeagueAndCupPhaseComplete,
 } from "./managerChallengeCup";
 import {
+  advancePlayoffBracketAfterUserMatch,
   applyPlayoffMatchToBracket,
   buildPlayoffScheduledFixture,
   ensurePlayoffsReady,
@@ -420,6 +421,10 @@ export function applyManagerMatchResult(
       fixture
     );
     working = { ...working, playoffs };
+    if (!playoffs.userEliminated && !playoffs.tournamentComplete) {
+      playoffs = advancePlayoffBracketAfterUserMatch(working);
+      working = { ...working, playoffs };
+    }
   }
 
   const motmPlayer = motmId
@@ -553,10 +558,7 @@ export function applyManagerMatchResult(
     updatedAt: new Date().toISOString(),
   };
 
-  let finalCareer: ManagerCareer = ensurePlayoffsReady({
-    ...nextCareer,
-    isSeasonComplete: isManagerSeasonComplete(nextCareer),
-  });
+  let finalCareer: ManagerCareer = ensurePlayoffsReady(nextCareer);
   finalCareer = {
     ...finalCareer,
     isSeasonComplete: isManagerSeasonComplete(finalCareer),
@@ -707,7 +709,7 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
   if (career.isSeasonComplete) return career;
 
   const simCareer = resolveCareerForMatchSimulation(career);
-  const ready = ensureCupBracketReady(simCareer);
+  const ready = ensurePlayoffsReady(ensureCupBracketReady(simCareer));
   const sched = getNextManagerFixture(ready);
   if (!sched) return career;
 

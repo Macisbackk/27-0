@@ -3,7 +3,7 @@ import { getPlayerById } from "../players";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { Position } from "../types";
 import type { LeagueTransferActivity, ManagerCareer } from "./types";
-import { getAskingPrice } from "./managerTransferLeague";
+import { getAskingPrice, getProtectedTransferPlayerIds } from "./managerTransferLeague";
 import { getManagerPlayer } from "./managerPlayers";
 import {
   getLeagueClubRosterIds,
@@ -77,13 +77,13 @@ export function maybeGenerateAiTransfers(career: ManagerCareer): ManagerCareer {
     (l) => l.club === fromClub
   );
   const roster = getLeagueClubRosterIds(career, fromClub);
+  const protectedIds = getProtectedTransferPlayerIds(career, fromClub);
   let pool =
     listedFromClub.length > 0
-      ? listedFromClub.map((l) => l.playerId)
-      : roster.filter((id) => {
-          const p = getManagerPlayer(career, id) ?? getPlayerById(id);
-          return p && (p.rating ?? p.peakRating) < 82;
-        });
+      ? listedFromClub
+          .map((l) => l.playerId)
+          .filter((id) => !protectedIds.has(id))
+      : roster.filter((id) => !protectedIds.has(id));
 
   if (need) {
     const positional = pool.filter((id) => {

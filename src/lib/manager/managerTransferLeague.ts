@@ -17,6 +17,7 @@ import {
   inferSquadRole,
 } from "./managerContracts";
 import { getManagerClubTeamRating } from "./managerRating";
+import { getManagerModePlayerRating } from "./managerSquadRatings";
 import {
   findPlayerLeagueClub,
   getLeagueClubRosterIds,
@@ -42,6 +43,73 @@ export function initClubFunds(userClub: string): Record<string, number> {
   return funds;
 }
 
+function getPlayerListingRating(playerId: string): number {
+  const player = getPlayerById(playerId);
+  if (!player) return 0;
+  return getManagerModePlayerRating(
+    playerId,
+    player.name,
+    player.rating ?? player.peakRating
+  );
+}
+
+/** Each club's top-rated player(s) are never transfer-listed. */
+export function getProtectedTransferPlayerIds(
+  career: ManagerCareer,
+  club: string
+): Set<string> {
+  const roster = getLeagueClubRosterIds(career, club);
+  let topRating = 0;
+  for (const id of roster) {
+    topRating = Math.max(topRating, getPlayerListingRating(id));
+  }
+  if (topRating <= 0) return new Set();
+
+  const protectedIds = new Set<string>();
+  for (const id of roster) {
+    if (getPlayerListingRating(id) === topRating) {
+      protectedIds.add(id);
+    }
+  }
+  return protectedIds;
+}
+
+function getListableClubPlayers(
+  career: ManagerCareer,
+  club: string
+): { id: string; rating: number }[] {
+  const protectedIds = getProtectedTransferPlayerIds(career, club);
+  return getLeagueClubRosterIds(career, club)
+    .map((id) => {
+      if (protectedIds.has(id)) return null;
+      const rating = getPlayerListingRating(id);
+      if (rating <= 0) return null;
+      return { id, rating };
+    })
+    .filter((row): row is { id: string; rating: number } => row !== null);
+}
+
+function pickWeightedListablePlayer(
+  pool: { id: string; rating: number }[],
+  rng: () => number
+): string | null {
+  if (pool.length === 0) return null;
+  const clubBest = Math.max(...pool.map((row) => row.rating));
+  const weighted = pool.map((row) => {
+    const belowBest = Math.max(0, clubBest - row.rating);
+    // Fringe players list often; near-best squad members only occasionally.
+    const weight = Math.pow(belowBest + 2, 1.55);
+    return { id: row.id, weight };
+  });
+  const total = weighted.reduce((sum, row) => sum + row.weight, 0);
+  let roll = rng() * total;
+  for (const row of weighted) {
+    roll -= row.weight;
+    if (roll <= 0) return row.id;
+  }
+  return weighted[weighted.length - 1]!.id;
+}
+
 export function generateLeagueListedPlayers(
   career: ManagerCareer,
   seed: string,
@@ -52,14 +120,20 @@ export function generateLeagueListedPlayers(
 
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === career.club) continue;
-    const roster = getLeagueClubRosterIds(career, club);
-    const listCount = 1 + Math.floor(rng() * 3);
-    const shuffled = [...roster].sort(() => rng() - 0.5);
 
-    for (let i = 0; i < listCount && i < shuffled.length; i++) {
-      const playerId = shuffled[i]!;
+    const pool = getListableClubPlayers(career, club);
+    if (pool.length === 0) continue;
+
+    const listCount = Math.min(pool.length, 1 + Math.floor(rng() * 3));
+    const remaining = [...pool];
+
+    for (let i = 0; i < listCount; i++) {
+      const playerId = pickWeightedListablePlayer(remaining, rng);
+      if (!playerId) break;
+
       const player = getPlayerById(playerId);
       if (!player) continue;
+
       const mult = 0.8 + rng() * 0.4;
       listed.push({
         playerId,
@@ -67,13 +141,16 @@ export function generateLeagueListedPlayers(
         askingPrice: Math.round(player.value * mult),
         listedAtWeek: gameWeek,
       });
+
+      const pickedIndex = remaining.findIndex((row) => row.id === playerId);
+      if (pickedIndex >= 0) remaining.splice(pickedIndex, 1);
     }
   }
 
   return listed.sort((a, b) => {
-    const ra = getPlayerById(a.playerId)?.peakRating ?? 0;
-    const rb = getPlayerById(b.playerId)?.peakRating ?? 0;
-    return rb - ra;
+    const clubCmp = a.club.localeCompare(b.club);
+    if (clubCmp !== 0) return clubCmp;
+    return getPlayerListingRating(a.playerId) - getPlayerListingRating(b.playerId);
   });
 }
 
@@ -213,6 +290,16 @@ export function evaluateBuyOffer(
 ): { accepted: boolean; reason: string } {
   const player = getPlayerById(playerId);
   if (!player) return { accepted: false, reason: "Player not found" };
+
+  if (
+    !listed &&
+    getProtectedTransferPlayerIds(career, club).has(playerId)
+  ) {
+    return {
+      accepted: false,
+      reason: "Club considers this player not for sale.",
+    };
+  }
 
   const asking = getAskingPrice(
     playerId,

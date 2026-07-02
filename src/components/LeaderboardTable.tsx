@@ -5,11 +5,15 @@ import type { GameDifficulty, LeaderboardPeriod } from "@/lib/types";
 import { formatPeriodLabel } from "@/lib/leaderboard";
 import {
   getDefaultTrackerForDbMode,
+  getDefaultTrackerForManagerDbMode,
   getTrackersForDbMode,
+  getTrackersForManagerDbMode,
   isTrackerValidForDbMode,
+  isTrackerValidForManagerDbMode,
   TROPHY_CABINET_SECTIONS,
   type LeaderboardTrackerRow,
   type LeaderboardTrackerType,
+  type ManagerLeaderboardDbMode,
 } from "@/lib/leaderboard-trackers";
 import {
   getTrackerLeaderboardAsync,
@@ -30,21 +34,24 @@ import {
 } from "@/lib/storage/preferences";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { getClubFundsLeaderboardAsync } from "@/lib/storage/club-funds-leaderboard";
+import {
+  getManagerLeaderboardAsync,
+  MANAGER_LEADERBOARD_MODES,
+} from "@/lib/storage/manager-leaderboard";
 import { playTabChange } from "@/lib/sound";
 import { RecordWithPercentage } from "./RecordWithPercentage";
 import { CupTeamWinsBarGraph } from "./CupTeamWinsBarGraph";
-import { HardModeBadge } from "./HardModeBadge";
-import {
-  BTN,
-  CARD,
-  SPACING,
-  tabGroupButtonClass,
-  tabGroupClass,
-} from "@/lib/ui/design-system";
+import { BTN, CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { SHOW_DRAFT_MODE } from "@/lib/feature-flags";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
+
+type LeaderboardPlayStyle = "quick" | "manager";
+
+const PLAY_STYLE_TABS: { id: LeaderboardPlayStyle; label: string }[] = [
+  { id: "quick", label: "Quick Mode" },
+  { id: "manager", label: "Manager Mode" },
+];
 
 const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   perfect_runs: "27-0 Seasons",
@@ -58,6 +65,9 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   era_league_champions: "Era Champions",
   era_cup_trophy: "Era Cup",
   total_winnings: "Total Winnings",
+  manager_challenge_cups: "Cups Won",
+  manager_cup_finals: "Finals Reached",
+  manager_total_earnings: "Total Earnings",
 };
 
 interface LeaderboardTableProps {
@@ -67,8 +77,11 @@ interface LeaderboardTableProps {
 export function LeaderboardTable({
   initialDifficulty = "NORMAL",
 }: LeaderboardTableProps) {
+  const [playStyle, setPlayStyle] = useState<LeaderboardPlayStyle>("quick");
   const [leaderboardMode, setLeaderboardMode] =
     useState<LeaderboardDbMode>("super-league");
+  const [managerMode, setManagerMode] =
+    useState<ManagerLeaderboardDbMode>("manager-super-league");
   const [tracker, setTracker] = useState<LeaderboardTrackerType>("best_record");
   const [period, setPeriod] = useState<LeaderboardPeriod>("ALL_TIME");
   const [difficulty, setDifficulty] =
@@ -83,6 +96,8 @@ export function LeaderboardTable({
   const [cupEraMode, setCupEraMode] = useState(false);
   const [normalEraMode, setNormalEraMode] = useState(false);
   const requestId = useRef(0);
+
+  const isManagerPlayStyle = playStyle === "manager";
 
   useEffect(() => {
     setCupEraMode(getCupEraVariant());
@@ -103,25 +118,68 @@ export function LeaderboardTable({
     };
   }, []);
 
-  const availableTrackers = getTrackersForDbMode(leaderboardMode);
-  const activeTracker = isTrackerValidForDbMode(tracker, leaderboardMode)
-    ? tracker
-    : getDefaultTrackerForDbMode(leaderboardMode);
-  const isTeamWinsTracker = activeTracker === "challenge_cup_team_wins";
-  const isClubFundsMode = leaderboardMode === "club-funds";
-  const isTrophyCabinetMode = leaderboardMode === "trophy-cabinet";
+  const availableTrackers = isManagerPlayStyle
+    ? getTrackersForManagerDbMode(managerMode)
+    : getTrackersForDbMode(leaderboardMode);
 
-  const handleModeChange = (mode: LeaderboardDbMode) => {
+  const activeTracker = isManagerPlayStyle
+    ? isTrackerValidForManagerDbMode(tracker, managerMode)
+      ? tracker
+      : getDefaultTrackerForManagerDbMode(managerMode)
+    : isTrackerValidForDbMode(tracker, leaderboardMode)
+      ? tracker
+      : getDefaultTrackerForDbMode(leaderboardMode);
+
+  const isTeamWinsTracker =
+    !isManagerPlayStyle && activeTracker === "challenge_cup_team_wins";
+  const isClubFundsMode =
+    !isManagerPlayStyle && leaderboardMode === "club-funds";
+  const isTrophyCabinetMode =
+    !isManagerPlayStyle && leaderboardMode === "trophy-cabinet";
+  const isManagerTrophyCabinetMode =
+    isManagerPlayStyle && managerMode === "manager-trophy-cabinet";
+  const isManagerEarningsMode =
+    isManagerPlayStyle && managerMode === "manager-earnings";
+  const isManagerScoreMode =
+    isManagerTrophyCabinetMode || isManagerEarningsMode;
+
+  const handlePlayStyleChange = (style: LeaderboardPlayStyle) => {
+    if (style !== playStyle) playTabChange();
+    setPlayStyle(style);
+    if (style === "manager") {
+      setManagerMode("manager-super-league");
+      setTracker(getDefaultTrackerForManagerDbMode("manager-super-league"));
+      setDifficulty("NORMAL");
+    } else {
+      setLeaderboardMode("super-league");
+      setTracker(getDefaultTrackerForDbMode("super-league"));
+    }
+  };
+
+  const handleQuickModeChange = (mode: LeaderboardDbMode) => {
     if (mode !== leaderboardMode) playTabChange();
     setLeaderboardMode(mode);
     setTracker(getDefaultTrackerForDbMode(mode));
-    if (mode === "challenge-cup" || mode === "fantasy" || mode === "club-funds" || mode === "trophy-cabinet") {
+    if (
+      mode === "challenge-cup" ||
+      mode === "fantasy" ||
+      mode === "club-funds" ||
+      mode === "trophy-cabinet"
+    ) {
       setDifficulty("NORMAL");
     }
   };
 
-  const isChallengeCupMode = leaderboardMode === "challenge-cup";
-  const isSuperLeagueMode = leaderboardMode === "super-league";
+  const handleManagerModeChange = (mode: ManagerLeaderboardDbMode) => {
+    if (mode !== managerMode) playTabChange();
+    setManagerMode(mode);
+    setTracker(getDefaultTrackerForManagerDbMode(mode));
+  };
+
+  const isChallengeCupMode =
+    !isManagerPlayStyle && leaderboardMode === "challenge-cup";
+  const isSuperLeagueMode =
+    !isManagerPlayStyle && leaderboardMode === "super-league";
   const superLeagueModeVariant = normalEraMode ? "era" : "current";
 
   const loadEntries = useCallback(async () => {
@@ -129,6 +187,20 @@ export function LeaderboardTable({
     setLoading(true);
 
     try {
+      if (isManagerPlayStyle) {
+        const result = await getManagerLeaderboardAsync(
+          managerMode,
+          activeTracker,
+          50
+        );
+        if (currentRequest !== requestId.current) return;
+        setEntries(result.rows);
+        setTeamWinsRows([]);
+        setTeamWinsTotal(0);
+        setUsingFallback(result.source === "local");
+        return;
+      }
+
       if (isClubFundsMode || isTrophyCabinetMode) {
         const result = isClubFundsMode
           ? await getClubFundsLeaderboardAsync()
@@ -198,6 +270,7 @@ export function LeaderboardTable({
     period,
     difficulty,
     leaderboardMode,
+    managerMode,
     activeTracker,
     isTeamWinsTracker,
     isClubFundsMode,
@@ -206,20 +279,26 @@ export function LeaderboardTable({
     cupEraMode,
     isSuperLeagueMode,
     superLeagueModeVariant,
-    normalEraMode,
+    isManagerPlayStyle,
   ]);
 
   useEffect(() => {
+    if (isManagerPlayStyle) {
+      if (!isTrackerValidForManagerDbMode(tracker, managerMode)) {
+        setTracker(getDefaultTrackerForManagerDbMode(managerMode));
+      }
+      return;
+    }
     if (!isTrackerValidForDbMode(tracker, leaderboardMode)) {
       setTracker(getDefaultTrackerForDbMode(leaderboardMode));
     }
-  }, [leaderboardMode, tracker]);
+  }, [leaderboardMode, managerMode, tracker, isManagerPlayStyle]);
 
   useEffect(() => {
     void loadEntries();
   }, [loadEntries]);
 
-  const modeLabel =
+  const quickModeLabel =
     leaderboardMode === "draft"
       ? "Draft Mode"
       : leaderboardMode === "challenge-cup"
@@ -232,45 +311,91 @@ export function LeaderboardTable({
               ? "Trophy Cabinet"
               : "Normal Mode";
 
+  const managerModeLabel =
+    MANAGER_LEADERBOARD_MODES.find((mode) => mode.id === managerMode)?.label ??
+    "Manager Mode";
+
+  const modeLabel = isManagerPlayStyle ? managerModeLabel : quickModeLabel;
+
   const trackerLabel =
     availableTrackers.find((t) => t.id === activeTracker)?.label ??
     "Leaderboard";
 
-  const modeOptions = (
-    [
-      { id: "super-league" as const, label: "Normal Mode" },
-      { id: "challenge-cup" as const, label: "Challenge Cup" },
-      { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
-      { id: "club-funds" as const, label: "Total Winnings" },
-    ] as const
-  );
+  const quickModeOptions = [
+    { id: "super-league" as const, label: "Normal Mode" },
+    { id: "challenge-cup" as const, label: "Challenge Cup" },
+    { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
+    { id: "club-funds" as const, label: "Total Winnings" },
+  ] as const;
+
+  const emptyStateMessage = isManagerPlayStyle
+    ? `No ${trackerLabel.toLowerCase()} entries yet. Complete a manager season to appear on the leaderboard!`
+    : `No ${trackerLabel.toLowerCase()} entries yet. Complete a run to appear on the leaderboard!`;
+
+  const showUpdatedColumn =
+    !isClubFundsMode &&
+    !isTrophyCabinetMode &&
+    !isManagerScoreMode;
+
+  const showPeriodFilters =
+    !isManagerPlayStyle &&
+    !isTeamWinsTracker &&
+    !isClubFundsMode &&
+    !isTrophyCabinetMode;
 
   return (
     <div>
-      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {modeOptions.map((mode) => {
-          const selected = leaderboardMode === mode.id;
-          return (
+      <nav className="-mx-1 mb-5 overflow-x-auto px-1 pb-1">
+        <div className="flex min-w-max gap-2">
+          {PLAY_STYLE_TABS.map((tab) => (
             <button
-              key={mode.id}
+              key={tab.id}
               type="button"
-              onClick={() => handleModeChange(mode.id)}
-              className={`btn-press min-h-[44px] rounded-xl border-2 px-4 py-4 text-left transition active:scale-[0.98] ${
-                selected
-                  ? `${CARD.featured} border-accent-green/60 bg-accent-green/10`
-                  : `${CARD.base} hover:border-pitch-500/60 hover:bg-pitch-800/40`
+              onClick={() => handlePlayStyleChange(tab.id)}
+              className={`btn-press shrink-0 min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
+                playStyle === tab.id ? BTN.tabActive : BTN.tabIdle
               }`}
             >
-              <span
-                className={`${TYPO.sectionTitle} sm:text-base ${
-                  selected ? "text-accent-green" : "text-gray-300"
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {(isManagerPlayStyle ? MANAGER_LEADERBOARD_MODES : quickModeOptions).map(
+          (mode) => {
+            const selected = isManagerPlayStyle
+              ? managerMode === mode.id
+              : leaderboardMode === mode.id;
+            return (
+              <button
+                key={mode.id}
+                type="button"
+                onClick={() =>
+                  isManagerPlayStyle
+                    ? handleManagerModeChange(
+                        mode.id as ManagerLeaderboardDbMode
+                      )
+                    : handleQuickModeChange(mode.id as LeaderboardDbMode)
+                }
+                className={`btn-press min-h-[44px] rounded-xl border-2 px-4 py-4 text-left transition active:scale-[0.98] ${
+                  selected
+                    ? `${CARD.featured} border-accent-green/60 bg-accent-green/10`
+                    : `${CARD.base} hover:border-pitch-500/60 hover:bg-pitch-800/40`
                 }`}
               >
-                {mode.label}
-              </span>
-            </button>
-          );
-        })}
+                <span
+                  className={`${TYPO.sectionTitle} sm:text-base ${
+                    selected ? "text-accent-green" : "text-gray-300"
+                  }`}
+                >
+                  {mode.label}
+                </span>
+              </button>
+            );
+          }
+        )}
       </div>
 
       {isChallengeCupMode && (
@@ -369,7 +494,7 @@ export function LeaderboardTable({
         )}
       </div>
 
-      {!isTeamWinsTracker && !isClubFundsMode && !isTrophyCabinetMode && (
+      {showPeriodFilters && (
         <div className="mb-6 flex flex-wrap gap-2">
           {PERIODS.map((p) => (
             <button
@@ -412,8 +537,7 @@ export function LeaderboardTable({
         </div>
       ) : entries.length === 0 ? (
         <div className="matchday-panel p-12 text-center text-gray-500">
-          No {trackerLabel.toLowerCase()} entries yet. Complete a run to appear
-          on the leaderboard!
+          {emptyStateMessage}
         </div>
       ) : (
         <div
@@ -429,7 +553,7 @@ export function LeaderboardTable({
                 <th className="px-4 py-3">
                   {STAT_COLUMN[activeTracker] ?? "Stat"}
                 </th>
-                {!isClubFundsMode && !isTrophyCabinetMode && (
+                {showUpdatedColumn && (
                   <th className="hidden px-4 py-3 sm:table-cell">Updated</th>
                 )}
               </tr>
@@ -472,9 +596,11 @@ export function LeaderboardTable({
                       entry.statDisplay
                     )}
                   </td>
-                  {!isClubFundsMode && !isTrophyCabinetMode && (
+                  {showUpdatedColumn && (
                     <td className="hidden px-4 py-3 text-sm text-gray-500 sm:table-cell">
-                      {new Date(entry.achievedAt).toLocaleDateString()}
+                      {entry.achievedAt
+                        ? new Date(entry.achievedAt).toLocaleDateString()
+                        : "—"}
                     </td>
                   )}
                 </tr>
@@ -489,8 +615,12 @@ export function LeaderboardTable({
           ? "Showing local fallback · online sync unavailable"
           : "Updated online across all players"}
         {" · "}
+        {isManagerPlayStyle ? "Manager Mode" : "Quick Mode"}
+        {" · "}
         {modeLabel}
-        {difficulty === "HARD" && leaderboardMode !== "challenge-cup"
+        {!isManagerPlayStyle &&
+        difficulty === "HARD" &&
+        leaderboardMode !== "challenge-cup"
           ? " · Hard"
           : ""}
         {" · "}

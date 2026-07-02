@@ -14,7 +14,10 @@ export type LeaderboardTrackerType =
   | "era_cup_trophy"
   | "era_league_title"
   | "era_league_champions"
-  | "total_winnings";
+  | "total_winnings"
+  | "manager_challenge_cups"
+  | "manager_cup_finals"
+  | "manager_total_earnings";
 
 export type TrophyCabinetSection = "current" | "era";
 
@@ -83,6 +86,10 @@ export const LEADERBOARD_TRACKERS: {
   cupOnly?: boolean;
   clubFundsOnly?: boolean;
   trophyCabinetOnly?: boolean;
+  managerTrophyCabinetOnly?: boolean;
+  managerSuperLeagueOnly?: boolean;
+  managerChallengeCupOnly?: boolean;
+  managerEarningsOnly?: boolean;
   trophySection?: TrophyCabinetSection;
 }[] = [
   { id: "best_record", label: "Total Record", shortLabel: "Total Record" },
@@ -107,6 +114,7 @@ export const LEADERBOARD_TRACKERS: {
     label: "League Titles",
     shortLabel: "League Titles",
     trophyCabinetOnly: true,
+    managerTrophyCabinetOnly: true,
     trophySection: "current",
   },
   {
@@ -114,6 +122,7 @@ export const LEADERBOARD_TRACKERS: {
     label: "Super League Champions",
     shortLabel: "SL Champions",
     trophyCabinetOnly: true,
+    managerTrophyCabinetOnly: true,
     trophySection: "current",
   },
   {
@@ -121,6 +130,7 @@ export const LEADERBOARD_TRACKERS: {
     label: "Challenge Cup Trophy",
     shortLabel: "Challenge Cup",
     trophyCabinetOnly: true,
+    managerTrophyCabinetOnly: true,
     trophySection: "current",
   },
   {
@@ -149,6 +159,24 @@ export const LEADERBOARD_TRACKERS: {
     label: "Total Winnings",
     shortLabel: "Total Winnings",
     clubFundsOnly: true,
+  },
+  {
+    id: "manager_challenge_cups",
+    label: "Challenge Cups Won",
+    shortLabel: "Cups Won",
+    managerChallengeCupOnly: true,
+  },
+  {
+    id: "manager_cup_finals",
+    label: "Cup Finals Reached",
+    shortLabel: "Finals",
+    managerChallengeCupOnly: true,
+  },
+  {
+    id: "manager_total_earnings",
+    label: "Total Earnings",
+    shortLabel: "Total Earnings",
+    managerEarningsOnly: true,
   },
 ];
 
@@ -220,6 +248,72 @@ export function isTrophyCabinetTracker(
   );
 }
 
+export function isManagerTrophyCabinetTracker(
+  tracker: LeaderboardTrackerType
+): tracker is Extract<
+  LeaderboardTrackerType,
+  "league_titles" | "super_league_champions" | "challenge_cup_trophy"
+> {
+  return LEADERBOARD_TRACKERS.some(
+    (t) => t.id === tracker && t.managerTrophyCabinetOnly
+  );
+}
+
+export const MANAGER_TROPHY_CABINET_TRACKER_IDS = [
+  "league_titles",
+  "super_league_champions",
+  "challenge_cup_trophy",
+] as const satisfies readonly LeaderboardTrackerType[];
+
+export type ManagerLeaderboardDbMode =
+  | "manager-super-league"
+  | "manager-challenge-cup"
+  | "manager-trophy-cabinet"
+  | "manager-earnings";
+
+export function getTrackersForManagerDbMode(
+  dbMode: ManagerLeaderboardDbMode
+) {
+  if (dbMode === "manager-earnings") {
+    return LEADERBOARD_TRACKERS.filter((t) => t.managerEarningsOnly);
+  }
+  if (dbMode === "manager-trophy-cabinet") {
+    return MANAGER_TROPHY_CABINET_TRACKER_IDS.map((id) =>
+      LEADERBOARD_TRACKERS.find((t) => t.id === id)
+    ).filter((t): t is NonNullable<typeof t> => !!t);
+  }
+  if (dbMode === "manager-challenge-cup") {
+    const order: LeaderboardTrackerType[] = [
+      "manager_challenge_cups",
+      "manager_cup_finals",
+    ];
+    return order
+      .map((id) => LEADERBOARD_TRACKERS.find((t) => t.id === id))
+      .filter((t): t is NonNullable<typeof t> => !!t);
+  }
+  const order: LeaderboardTrackerType[] = [
+    "best_record",
+    "perfect_runs",
+    "winless_seasons",
+  ];
+  return order
+    .map((id) => LEADERBOARD_TRACKERS.find((t) => t.id === id))
+    .filter((t): t is NonNullable<typeof t> => !!t);
+}
+
+export function getDefaultTrackerForManagerDbMode(
+  dbMode: ManagerLeaderboardDbMode
+): LeaderboardTrackerType {
+  return getTrackersForManagerDbMode(dbMode)[0]?.id ?? "best_record";
+}
+
+export function isTrackerValidForManagerDbMode(
+  tracker: LeaderboardTrackerType,
+  dbMode: ManagerLeaderboardDbMode
+): boolean {
+  return getTrackersForManagerDbMode(dbMode).some((t) => t.id === tracker);
+}
+
 const CUP_FINISH_LABELS: Record<number, string> = {
   5: "Winners",
   4: "Runners-Up",
@@ -251,7 +345,10 @@ export function rankByTracker(
         return aLosses - bLosses;
       }
       case "challenge_cup_team_wins":
+      case "manager_challenge_cups":
         return b.challengeCupWins - a.challengeCupWins;
+      case "manager_cup_finals":
+        return b.cupFinals - a.cupFinals;
       default:
         return 0;
     }
@@ -301,7 +398,10 @@ export function getTrackerStatDisplay(
         entry.bestRecordLosses ?? entry.totalLosses
       );
     case "challenge_cup_team_wins":
+    case "manager_challenge_cups":
       return String(entry.challengeCupWins);
+    case "manager_cup_finals":
+      return String(entry.cupFinals);
     default:
       return "—";
   }

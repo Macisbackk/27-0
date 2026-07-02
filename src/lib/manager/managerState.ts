@@ -39,6 +39,7 @@ import { initPreSeasonState, ensureFriendlyChoices } from "./managerFriendlies";
 import { ensureCupBracketReady } from "./managerChallengeCup";
 import { ensurePlayoffsReady } from "./managerPlayoffs";
 import { ensureSeasonEndPlayerDevelopment } from "./managerPlayerDevelopment";
+import { isManagerSeasonComplete } from "./managerSimulation";
 import {
   initManagerFinance,
   computeFirstSeasonTransferBudget,
@@ -99,9 +100,18 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     label: s.label ?? `Round ${s.round} — League`,
   }));
 
+  const leagueTable = (raw.roundMatches?.length
+    ? buildLeagueTableFromMatches(raw.roundMatches, raw.club)
+    : (raw.leagueTable ?? [])
+  ).map((row) => ({
+    ...row,
+    isUserTeam: row.isUserTeam ?? row.team === raw.club,
+  }));
+
   let career: ManagerCareer = {
     ...raw,
     gameWeek,
+    leagueTable,
     currentFixtureIndex: raw.currentFixtureIndex ?? raw.currentRound ?? 0,
     teamSeasonStats: raw.teamSeasonStats ?? { ...EMPTY_TEAM_SEASON_STATS },
     playerSeasonStats: raw.playerSeasonStats ?? {},
@@ -187,6 +197,10 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = ensureFriendlyChoices(career);
   career = ensureCupBracketReady(career);
   career = ensurePlayoffsReady(career);
+  career = {
+    ...career,
+    isSeasonComplete: isManagerSeasonComplete(career),
+  };
   career = ensureSeasonEndPlayerDevelopment(career);
   career = ensureLeagueClubRosters(career);
   return syncManagerInboxMessages(career);

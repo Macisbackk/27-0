@@ -4,6 +4,7 @@ import {
   getClubPanelTextStyle,
   getLuminance,
 } from "./ui/contrast";
+import { isBlackLike } from "./ui/theme-accent-colors";
 
 
 
@@ -107,17 +108,42 @@ export type ClubColorSet = {
   shortName: string;
 };
 
+/** Swap kit colours for UI when black secondary would hide on dark surfaces. */
+export function resolveClubUiColors(
+  primary: string,
+  secondary: string
+): { primary: string; secondary: string } {
+  if (isBlackLike(secondary)) {
+    return { primary: secondary, secondary: primary };
+  }
+  return { primary, secondary };
+}
+
 export function getClubColors(clubName: string): ClubColorSet {
   const club = getClubByName(clubName);
 
-  return club
-    ? {
-        primary: club.primaryColor,
-        secondary: club.secondaryColor,
-        accent: club.accentColor,
-        shortName: club.shortName,
-      }
-    : { primary: "#374151", secondary: "#9CA3AF", shortName: "???" };
+  if (!club) {
+    return { primary: "#374151", secondary: "#9CA3AF", shortName: "???" };
+  }
+
+  const ui = resolveClubUiColors(club.primaryColor, club.secondaryColor);
+  return {
+    primary: ui.primary,
+    secondary: ui.secondary,
+    accent: club.accentColor,
+    shortName: club.shortName,
+  };
+}
+
+/** Single-colour club marker — keeps chromatic kit visible when black is secondary. */
+export function getClubIndicatorColor(clubName: string): string {
+  const club = getClubByName(clubName);
+  if (!club) return "#374151";
+  const colors = getClubColors(clubName);
+  if (isBlackLike(club.secondaryColor)) {
+    return colors.secondary;
+  }
+  return colors.primary;
 }
 
 /** Shared two-tone club theme — single source for all club UI. */

@@ -33,6 +33,7 @@ import {
 } from "@/lib/manager/managerState";
 import { simulateManagerNextMatch } from "@/lib/manager/managerSimulation";
 import { ensureCupBracketReady } from "@/lib/manager/managerChallengeCup";
+import { ensurePlayoffsReady } from "@/lib/manager/managerPlayoffs";
 import {
   recordCareerStarted,
   recordMatchResult,
@@ -147,7 +148,7 @@ export default function ManagerPage() {
     const working = resolveCareerForMatchSimulation(career);
     const check = validateFitMatchdaySquad(working);
     if (!check.valid) return;
-    const ready = ensureCupBracketReady(working);
+    const ready = ensurePlayoffsReady(ensureCupBracketReady(working));
     if (ready !== working) persist(ready);
     afterMatch(simulateManagerNextMatch(ready));
   };
@@ -157,7 +158,7 @@ export default function ManagerPage() {
     const working = resolveCareerForMatchSimulation(career);
     const check = validateFitMatchdaySquad(working);
     if (!check.valid) return;
-    const ready = ensureCupBracketReady(working);
+    const ready = ensurePlayoffsReady(ensureCupBracketReady(working));
     if (ready !== working) persist(ready);
     if (working !== career) persist(working);
     setPlayGameOpen(true);

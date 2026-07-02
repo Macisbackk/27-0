@@ -499,8 +499,15 @@ export interface ManagerLifetimeStats {
   losses: number;
   trophies: number;
   leagueTitles: number;
+  superLeagueTitles: number;
   challengeCups: number;
+  cupFinals: number;
+  topSixFinishes: number;
+  perfectSeasons: number;
+  winlessSeasons: number;
   bestFinish: number | null;
+  worstRecordWins: number | null;
+  worstRecordLosses: number | null;
   biggestWin: number;
   biggestDefeat: number;
   totalEarnings: number;

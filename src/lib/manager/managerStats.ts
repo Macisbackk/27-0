@@ -1,3 +1,7 @@
+import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
+import { syncManagerLeaderboard } from "../storage/manager-leaderboard";
+import { getUserLeaguePosition } from "./managerFixtures";
+import { pickManagerWorstSeasonRecord } from "./manager-stats-views";
 import type { ManagerCareer, ManagerLifetimeStats } from "./types";
 
 const STATS_KEY = "27-0-manager-stats";
@@ -9,8 +13,15 @@ export const EMPTY_MANAGER_STATS: ManagerLifetimeStats = {
   losses: 0,
   trophies: 0,
   leagueTitles: 0,
+  superLeagueTitles: 0,
   challengeCups: 0,
+  cupFinals: 0,
+  topSixFinishes: 0,
+  perfectSeasons: 0,
+  winlessSeasons: 0,
   bestFinish: null,
+  worstRecordWins: null,
+  worstRecordLosses: null,
   biggestWin: 0,
   biggestDefeat: 0,
   totalEarnings: 0,
@@ -43,6 +54,7 @@ export function recordCareerStarted(club: string): void {
   )[0];
   stats.favouriteClub = topClub?.[0] ?? club;
   saveManagerStats(stats);
+  syncManagerLeaderboard(stats);
 }
 
 export function recordMatchResult(
@@ -60,21 +72,57 @@ export function recordMatchResult(
   }
   stats.totalEarnings += earnings;
   saveManagerStats(stats);
+  syncManagerLeaderboard(stats);
 }
 
 export function recordSeasonComplete(career: ManagerCareer): void {
   const stats = loadManagerStats();
   stats.seasonsCompleted++;
-  const position =
-    career.leagueTable.find((r) => r.isUserTeam)?.position ?? 14;
+
+  const position = getUserLeaguePosition(career.leagueTable, career.club);
+  const seasonWins = career.wins;
+  const seasonLosses = career.losses;
+
   if (stats.bestFinish === null || position < stats.bestFinish) {
     stats.bestFinish = position;
   }
+
+  const worst = pickManagerWorstSeasonRecord(stats, seasonWins, seasonLosses);
+  stats.worstRecordWins = worst.wins;
+  stats.worstRecordLosses = worst.losses;
+
   if (position === 1) {
     stats.leagueTitles++;
     stats.trophies++;
   }
+  if (position <= 6) {
+    stats.topSixFinishes++;
+  }
+
+  if (seasonWins === 27 && seasonLosses === 0) {
+    stats.perfectSeasons++;
+  }
+  if (seasonWins === 0 && seasonLosses === 27) {
+    stats.winlessSeasons++;
+  }
+
+  const playoffFinish = career.playoffs?.finish ?? null;
+  if (playoffFinish === "Super League Champions") {
+    stats.superLeagueTitles++;
+    stats.trophies++;
+  }
+
+  const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
+  if (cupOutcome.isWinner) {
+    stats.challengeCups++;
+    stats.trophies++;
+  }
+  if (cupOutcome.isWinner || cupOutcome.finish === "Runners-Up") {
+    stats.cupFinals++;
+  }
+
   saveManagerStats(stats);
+  syncManagerLeaderboard(stats);
 }
 
 export { STATS_KEY };

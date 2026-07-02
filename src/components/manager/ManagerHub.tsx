@@ -18,7 +18,7 @@ import {
   getLastHomeGate,
 } from "@/lib/manager/managerAttendance";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
-import { getClubByName } from "@/lib/clubs";
+import { getClubByName, getClubColors, getClubIndicatorColor } from "@/lib/clubs";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
@@ -73,7 +73,7 @@ function HubBoardBudgetAttendance({
   return (
     <div
       className={`${CARD.elevated} ${SPACING.cardPadding} border-l-4`}
-      style={{ borderLeftColor: club?.primaryColor ?? "var(--theme-primary)" }}
+      style={{ borderLeftColor: getClubIndicatorColor(career.club) }}
     >
       <p className={TYPO.sectionLabel}>Board · Budget · Attendance</p>
       <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
@@ -174,7 +174,7 @@ function HubLeagueTable({ career }: { career: ManagerCareer }) {
           </thead>
           <tbody>
             {displayRows.map((row) => {
-              const club = getClubByName(row.team);
+              const indicatorColor = getClubIndicatorColor(row.team);
               return (
                 <tr
                   key={row.team}
@@ -189,7 +189,7 @@ function HubLeagueTable({ career }: { career: ManagerCareer }) {
                     <span className="flex items-center gap-2">
                       <span
                         className="inline-block h-2 w-2 rounded-full"
-                        style={{ backgroundColor: club?.primaryColor }}
+                        style={{ backgroundColor: indicatorColor }}
                       />
                       <span
                         className={

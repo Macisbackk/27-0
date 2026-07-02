@@ -20,8 +20,9 @@ export default async function LeaderboardPage({
           <p className={TYPO.sectionLabel}>Rankings</p>
           <h1 className={`mt-1 ${TYPO.pageTitle}`}>Leaderboard</h1>
           <p className={`mt-2 ${TYPO.bodySm}`}>
-            Super League squad-value rankings, Challenge Cup records, and total
-            Club Funds winnings, updated online across all players.
+            Quick Mode and Manager Mode rankings — Super League records,
+            Challenge Cup trophies, and career earnings, synced online across
+            all players.
           </p>
         </header>
         <LeaderboardGuestNotice />
