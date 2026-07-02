@@ -7,6 +7,36 @@ export interface GameUpdate {
 /** Public changelog — newest first. */
 export const GAME_UPDATES: GameUpdate[] = [
   {
+    id: "preseason-friendlies-fix",
+    title: "Pre-Season Friendly Selection",
+    summary:
+      "Manager Mode now reliably shows three opponent choices after each pre-season friendly. The picker appears whenever a choice is pending, including when returning from match review or other tabs.",
+  },
+  {
+    id: "manager-season-impact",
+    title: "Season Impact Stat",
+    summary:
+      "Manager Mode tracks a season impact score for each squad player — blending form, minutes, and results. Strong impact boosts end-of-season development; poor impact can trigger regression.",
+  },
+  {
+    id: "manager-and-quick-split",
+    title: "Manager Mode & Quick Mode",
+    summary:
+      "The home screen now leads with Manager Mode — a full career with contracts, transfers, reserves, tactics, live matches, the Challenge Cup, and play-offs. Quick Mode is a faster draft-and-simulate option with Current Mode (2026 squads) or Era Mode (historic team-years).",
+  },
+  {
+    id: "quick-mode-streamline",
+    title: "Quick Mode Streamlining",
+    summary:
+      "Standalone Challenge Cup and Era Challenge Cup quick modes have been removed. Knockout cup football now lives inside Manager Mode careers. Quick Mode focuses on building a XIII and simulating a full Super League season.",
+  },
+  {
+    id: "leaderboards-manager-quick",
+    title: "Manager & Quick Leaderboards",
+    summary:
+      "Leaderboards are split into Manager Mode and Quick Mode tabs — tracking league titles, Challenge Cup wins, perfect seasons, and career earnings separately for each play style.",
+  },
+  {
     id: "mode-restructure",
     title: "Current / Era Mode Restructure",
     summary:
@@ -31,33 +61,15 @@ export const GAME_UPDATES: GameUpdate[] = [
       "Play-Off Review now shows the completed bracket by default with clickable matches opening full match details.",
   },
   {
-    id: "challenge-cup-era",
-    title: "Era Challenge Cup",
-    summary:
-      "Pick a historic club season and lead a pre-built era squad through a knockout tournament against random opponents from rugby league history.",
-  },
-  {
-    id: "challenge-cup",
-    title: "Challenge Cup",
-    summary:
-      "Draft your squad and battle through a knockout tournament. Choose Current teams or Era teams from the mode toggle.",
-  },
-  {
     id: "playoffs",
     title: "Super League Play-Offs",
     summary:
-      "Finish in the top six during a Normal Mode season to continue into the play-offs and chase the championship.",
+      "Finish in the top six during a Quick Mode season or Manager Mode league campaign to continue into the play-offs and chase the championship.",
   },
   {
     id: "showcase",
     title: "Player Showcase",
     summary:
       "Browse player cards, ratings, and values across the Super League database.",
-  },
-  {
-    id: "leaderboards",
-    title: "Leaderboards",
-    summary:
-      "Compete on Normal Mode, Challenge Cup, and total Club Funds leaderboards.",
   },
 ];
