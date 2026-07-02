@@ -37,6 +37,8 @@ import type {
   ManagerScheduledFixture,
 } from "@/lib/manager/types";
 import { playUiClick } from "@/lib/sound";
+import { GameButton } from "@/components/ui/GameButton";
+import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
 
 interface ManagerFixturesProps {
   career: ManagerCareer;
@@ -298,6 +300,7 @@ export function ManagerFixtures({
   onSelectFixture,
 }: ManagerFixturesProps) {
   const [filter, setFilter] = useState<FixtureFilter>("all");
+  const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
 
   const readyCareer = ensurePlayoffsReady(ensureCupBracketReady(career));
   const nextFixture = getNextManagerFixture(readyCareer);
@@ -482,6 +485,17 @@ export function ManagerFixtures({
               />
             )}
           </div>
+          <GameButton
+            variant="secondary"
+            size="sm"
+            className="mt-4"
+            onClick={() => {
+              playUiClick();
+              setViewClubSheet(nextFixture.opponent);
+            }}
+          >
+            View {nextFixture.opponent} team sheet
+          </GameButton>
         </div>
       )}
 
@@ -603,6 +617,14 @@ export function ManagerFixtures({
             </section>
           )}
         </div>
+      )}
+
+      {viewClubSheet && (
+        <ManagerClubSquadSheet
+          career={career}
+          club={viewClubSheet}
+          onClose={() => setViewClubSheet(null)}
+        />
       )}
     </div>
   );

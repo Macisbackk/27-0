@@ -11,6 +11,7 @@ import { getManagerModePlayerRating } from "./managerSquadRatings";
 import { getLeagueClubRosterIds } from "./managerLeagueRosters";
 import {
   getPlayerSeasonImpact,
+  computePlayerSeasonImpact,
   impactDevelopmentDelta,
   isPoorSeasonImpact,
   rollImpactRegression,
@@ -164,6 +165,45 @@ function developOnePlayer(
   };
 }
 
+function simulateLeaguePlayerSeason(
+  career: ManagerCareer,
+  rating: number,
+  rng: () => number
+): { appearances: number; tries: number; form: number; impact: number } {
+  const teamGames = Math.max(
+    22,
+    career.fixtures.filter((f) => (f.competition ?? "league") !== "friendly")
+      .length
+  );
+  const quality = Math.min(1, Math.max(0, (rating - 68) / 28));
+  const isRegular = rng() < 0.25 + quality * 0.5;
+
+  let appearances = 0;
+  if (isRegular) {
+    appearances = Math.round(
+      teamGames * (0.5 + quality * 0.35 + rng() * 0.12)
+    );
+  } else {
+    appearances = Math.round(rng() * teamGames * 0.28);
+  }
+  appearances = Math.min(teamGames, Math.max(0, appearances));
+
+  const tries = Math.round(
+    appearances * (0.02 + quality * 0.1 + rng() * 0.06)
+  );
+  const form = Math.round(
+    Math.max(32, Math.min(78, 46 + quality * 18 + (rng() - 0.5) * 16))
+  );
+  const impact = computePlayerSeasonImpact({
+    appearances,
+    tries,
+    form,
+    teamGamesPlayed: teamGames,
+  });
+
+  return { appearances, tries, form, impact };
+}
+
 function developLeaguePlayersAtSeasonEnd(
   career: ManagerCareer,
   playerDevelopment: Record<string, PlayerDevelopmentState>
@@ -174,40 +214,26 @@ function developLeaguePlayersAtSeasonEnd(
 
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === career.club) continue;
-    const rosterIds = getLeagueClubRosterIds(career, club).slice(0, 22);
+    const rosterIds = getLeagueClubRosterIds(career, club);
     for (const playerId of rosterIds) {
       const player = getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
       if (!player) continue;
       if (userIds.has(player.id)) continue;
-      if (rng() > 0.55) continue;
 
-      const age = getManagerPlayerAge(career, player.id) ?? 25;
-      const baseline = getManagerModePlayerRating(
+      const rating = player.rating ?? player.peakRating;
+      const season = simulateLeaguePlayerSeason(career, rating, rng);
+      const developed = developOnePlayer(
         player.id,
-        player.name,
-        player.rating ?? player.peakRating
+        career,
+        next,
+        season,
+        seedrandom(`${career.seed}-league-dev-${career.seasonYear}-${player.id}`)
       );
-      const existing = next[player.id];
-      const before = existing?.rating ?? baseline;
-      const potential = existing?.potential ?? computePotential(baseline, age);
-      let delta = 0;
-      if (age <= 23) delta += rng() < 0.6 ? 1 : 0;
-      else if (age >= 32) {
-        if (rng() < 0.22) {
-          delta += rng() < VETERAN_UPSIDE_CHANCE ? 1 : 0;
-        } else {
-          delta -= rng() < 0.55 ? 1 : 0;
-        }
-      } else delta += rng() < 0.35 ? 1 : rng() < 0.2 ? -1 : 0;
-
-      const after = Math.max(55, Math.min(potential, before + delta));
-      if (after === before) continue;
+      if (!developed) continue;
 
       next[player.id] = {
-        ...existing,
-        rating: after,
-        peakRating: Math.max(existing?.peakRating ?? baseline, after, baseline),
-        potential,
+        ...next[player.id],
+        ...developed,
       };
     }
   }

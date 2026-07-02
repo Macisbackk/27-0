@@ -11,6 +11,39 @@ import type { ManagerCareer } from "./types";
 
 export type LeagueClubRosters = Record<string, string[]>;
 
+/** Player IDs owned by the user's club (squad, reserves, youth intake). */
+export function getUserClubPlayerIds(career: ManagerCareer): Set<string> {
+  const ids = new Set<string>();
+  for (const p of career.squad) ids.add(p.playerId);
+  for (const r of career.reserves ?? []) ids.add(r.id);
+  for (const y of career.youthProspects ?? []) ids.add(y.id);
+  return ids;
+}
+
+function getFreeAgentIds(career: ManagerCareer): Set<string> {
+  return new Set((career.freeAgents ?? []).map((f) => f.playerId));
+}
+
+function dedupeIds(ids: string[]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const id of ids) {
+    if (seen.has(id)) continue;
+    seen.add(id);
+    out.push(id);
+  }
+  return out;
+}
+
+/** Strip user-owned and free-agent IDs from a roster list (read-path safety). */
+function sanitizeRosterIds(career: ManagerCareer, ids: string[]): string[] {
+  const userIds = getUserClubPlayerIds(career);
+  const freeAgentIds = getFreeAgentIds(career);
+  return dedupeIds(
+    ids.filter((id) => !userIds.has(id) && !freeAgentIds.has(id))
+  );
+}
+
 /** Initialise AI club rosters from the 2026 squad pools (user club excluded). */
 export function initLeagueClubRosters(userClub: string): LeagueClubRosters {
   const rosters: LeagueClubRosters = {};
@@ -28,9 +61,12 @@ export function getLeagueClubRosterIds(
   if (club === career.club) {
     return career.squad.map((p) => p.playerId);
   }
-  const stored = career.leagueClubRosters?.[club];
-  if (stored && stored.length > 0) return stored;
-  return getManagerRosterIds(club);
+  const rosters = career.leagueClubRosters;
+  const ids =
+    rosters && club in rosters
+      ? (rosters[club] ?? [])
+      : getManagerRosterIds(club);
+  return sanitizeRosterIds(career, ids);
 }
 
 export function getLeagueClubPlayerPool(
@@ -62,10 +98,8 @@ export function getManagerOpponentPoolOptions(
  * no player appears on two clubs, and all AI clubs have a roster.
  */
 export function reconcileLeagueRosters(career: ManagerCareer): ManagerCareer {
-  const userPlayerIds = new Set(career.squad.map((p) => p.playerId));
-  const freeAgentIds = new Set(
-    (career.freeAgents ?? []).map((f) => f.playerId)
-  );
+  const userPlayerIds = getUserClubPlayerIds(career);
+  const freeAgentIds = getFreeAgentIds(career);
   let rosters: LeagueClubRosters = {
     ...(career.leagueClubRosters ?? initLeagueClubRosters(career.club)),
   };
@@ -75,14 +109,18 @@ export function reconcileLeagueRosters(career: ManagerCareer): ManagerCareer {
     if (!rosters[club] || rosters[club].length < 13) {
       const base = getManagerRosterIds(club);
       const merged = new Set([...(rosters[club] ?? []), ...base]);
-      rosters[club] = [...merged].filter((id) => !freeAgentIds.has(id));
+      rosters[club] = [...merged].filter(
+        (id) => !freeAgentIds.has(id) && !userPlayerIds.has(id)
+      );
     }
   }
 
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === career.club) continue;
-    rosters[club] = (rosters[club] ?? []).filter(
-      (id) => !userPlayerIds.has(id) && !freeAgentIds.has(id)
+    rosters[club] = dedupeIds(
+      (rosters[club] ?? []).filter(
+        (id) => !userPlayerIds.has(id) && !freeAgentIds.has(id)
+      )
     );
   }
 
@@ -114,22 +152,20 @@ export function ensureLeagueClubRosters(career: ManagerCareer): ManagerCareer {
 export function transferLeaguePlayer(
   career: ManagerCareer,
   playerId: string,
-  fromClub: string,
+  _fromClub: string,
   toClub?: string
 ): ManagerCareer {
   const rosters: LeagueClubRosters = {
     ...(career.leagueClubRosters ?? initLeagueClubRosters(career.club)),
   };
 
-  if (fromClub !== career.club && rosters[fromClub]) {
-    rosters[fromClub] = rosters[fromClub]!.filter((id) => id !== playerId);
+  for (const club of CURRENT_PLAYABLE_CLUBS) {
+    if (club === career.club) continue;
+    rosters[club] = (rosters[club] ?? []).filter((id) => id !== playerId);
   }
 
   if (toClub && toClub !== career.club) {
-    const list = rosters[toClub] ?? [];
-    if (!list.includes(playerId)) {
-      rosters[toClub] = [...list, playerId];
-    }
+    rosters[toClub] = [...(rosters[toClub] ?? []), playerId];
   }
 
   return reconcileLeagueRosters({ ...career, leagueClubRosters: rosters });
@@ -189,7 +225,7 @@ export function findPlayerLeagueClub(
   career: ManagerCareer,
   playerId: string
 ): string | null {
-  if (career.squad.some((p) => p.playerId === playerId)) {
+  if (getUserClubPlayerIds(career).has(playerId)) {
     return career.club;
   }
   const rosters = career.leagueClubRosters ?? {};

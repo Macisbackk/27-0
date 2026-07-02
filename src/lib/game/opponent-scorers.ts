@@ -21,7 +21,7 @@ import { allocateMatchTries } from "./try-allocation";
 import { getPlayerTryWeight } from "./try-weights";
 
 /** Opponent XIII positions for try allocation. */
-const OPPONENT_LINEUP: Position[] = [
+export const OPPONENT_LINEUP: Position[] = [
   "FULLBACK",
   "WING",
   "WING",

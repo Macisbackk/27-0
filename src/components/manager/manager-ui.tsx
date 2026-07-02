@@ -8,11 +8,6 @@ import {
 } from "@/lib/manager/managerFinance";
 import { CARD, MANAGER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import {
-  IMPACT_TONE_CLASS,
-  impactLabel,
-  impactTone,
-} from "@/lib/manager/managerPlayerImpact";
 
 export type ManagerValueTone =
   | "default"
@@ -655,25 +650,6 @@ export function ManagerDeltaBadge({ delta }: { delta: number }) {
     >
       {positive ? "+" : ""}
       {delta}
-    </span>
-  );
-}
-
-export function ManagerSeasonImpactBadge({
-  impact,
-  compact = false,
-}: {
-  impact: number;
-  compact?: boolean;
-}) {
-  const tone = impactTone(impact);
-  const label = impactLabel(impact);
-  return (
-    <span
-      className={`inline-flex items-center rounded border px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${IMPACT_TONE_CLASS[tone]}`}
-      title={`Season impact ${impact}/100 — ${label}`}
-    >
-      {compact ? impact : `${impact} · ${label}`}
     </span>
   );
 }

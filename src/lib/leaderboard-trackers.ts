@@ -207,7 +207,14 @@ export function getTrackersForDbMode(
       .filter((t): t is NonNullable<typeof t> => !!t);
   }
   return LEADERBOARD_TRACKERS.filter(
-    (t) => !t.cupOnly && !t.clubFundsOnly && !t.trophyCabinetOnly
+    (t) =>
+      !t.cupOnly &&
+      !t.clubFundsOnly &&
+      !t.trophyCabinetOnly &&
+      !t.managerSuperLeagueOnly &&
+      !t.managerChallengeCupOnly &&
+      !t.managerEarningsOnly &&
+      !t.managerTrophyCabinetOnly
   );
 }
 

@@ -33,9 +33,12 @@ import {
   deleteManagerCareer,
   createNewCareer,
   advanceToNextSeason,
-  hasManagerCareer,
   hydrateManagerCareer,
   prepareManagerCareerForSave,
+  getActiveSaveSlot,
+  setActiveSaveSlot,
+  listManagerSaveSlots,
+  type ManagerSaveSlotSummary,
 } from "@/lib/manager/managerState";
 import {
   getNextManagerFixture,
@@ -89,7 +92,8 @@ export default function ManagerPage() {
   const router = useRouter();
   const [view, setView] = useState<ManagerView>("landing");
   const [career, setCareer] = useState<ManagerCareer | null>(null);
-  const [hasSave, setHasSave] = useState(false);
+  const [activeSlot, setActiveSlot] = useState(0);
+  const [saveSlots, setSaveSlots] = useState<ManagerSaveSlotSummary[]>([]);
   const [reviewFixtureId, setReviewFixtureId] = useState<string | null>(null);
   const [playGameOpen, setPlayGameOpen] = useState(false);
   const [trophyModalOpen, setTrophyModalOpen] = useState(false);
@@ -113,16 +117,33 @@ export default function ManagerPage() {
   const [matchReviewReturnView, setMatchReviewReturnView] =
     useState<ManagerView>("hub");
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [deleteSlot, setDeleteSlot] = useState<number | null>(null);
   const [alertDialog, setAlertDialog] = useState<{
     title: string;
     message: string;
   } | null>(null);
 
-  useEffect(() => {
-    setHasSave(hasManagerCareer());
-    const saved = loadManagerCareer();
-    if (saved) setCareer(saved);
+  const refreshSaveSlots = useCallback(() => {
+    setSaveSlots(listManagerSaveSlots());
   }, []);
+
+  useEffect(() => {
+    const slot = getActiveSaveSlot();
+    setActiveSlot(slot);
+    refreshSaveSlots();
+    const saved = loadManagerCareer(slot);
+    if (saved) setCareer(saved);
+  }, [refreshSaveSlots]);
+
+  const persist = useCallback(
+    (next: ManagerCareer) => {
+      const prepared = prepareManagerCareerForSave(next);
+      setCareer(prepared);
+      saveManagerCareer(prepared, activeSlot);
+      refreshSaveSlots();
+    },
+    [activeSlot, refreshSaveSlots]
+  );
 
   const awaitingFriendlyChoice =
     career != null && isAwaitingFriendlyChoice(career);
@@ -133,13 +154,6 @@ export default function ManagerPage() {
       setView("hub");
     }
   }, [awaitingFriendlyChoice, view]);
-
-  const persist = useCallback((next: ManagerCareer) => {
-    const prepared = prepareManagerCareerForSave(next);
-    setCareer(prepared);
-    saveManagerCareer(prepared);
-    setHasSave(true);
-  }, []);
 
   useEffect(() => {
     if (!career || !awaitingFriendlyChoice) return;
@@ -168,11 +182,13 @@ export default function ManagerPage() {
     [career, persist]
   );
 
-  const handleStartNew = () => setView("club-select");
+  const handleStartNew = (slot: number) => {
+    setActiveSlot(slot);
+    setActiveSaveSlot(slot);
+    setView("club-select");
+  };
 
-  const handleContinue = () => {
-    const saved = loadManagerCareer();
-    if (!saved) return;
+  const continueCareer = (saved: ManagerCareer) => {
     setCareer(saved);
     if (saved.isSeasonComplete) {
       if (shouldShowChallengeCupCelebration(saved)) {
@@ -211,22 +227,36 @@ export default function ManagerPage() {
     setView("hub");
   };
 
-  const handleDelete = () => {
+  const handleContinue = (slot: number) => {
+    setActiveSlot(slot);
+    setActiveSaveSlot(slot);
+    const saved = loadManagerCareer(slot);
+    if (!saved) return;
+    continueCareer(saved);
+  };
+
+  const handleDelete = (slot: number) => {
+    setDeleteSlot(slot);
     setDeleteConfirmOpen(true);
   };
 
   const confirmDelete = () => {
-    deleteManagerCareer();
-    setCareer(null);
-    setHasSave(false);
+    if (deleteSlot == null) return;
+    deleteManagerCareer(deleteSlot);
+    if (deleteSlot === activeSlot) {
+      setCareer(null);
+    }
+    refreshSaveSlots();
     setView("landing");
     setDeleteConfirmOpen(false);
+    setDeleteSlot(null);
   };
 
   const handleSelectClub = (club: string) => {
-    const next = createNewCareer(club);
+    const next = createNewCareer(club, activeSlot);
     recordCareerStarted(club);
     setCareer(next);
+    refreshSaveSlots();
     setView("hub");
   };
 
@@ -566,7 +596,8 @@ export default function ManagerPage() {
     const next = advanceToNextSeason(career);
     const hydrated = hydrateManagerCareer(next);
     setCareer(hydrated);
-    saveManagerCareer(hydrated);
+    saveManagerCareer(hydrated, activeSlot);
+    refreshSaveSlots();
     setView("hub");
   };
 
@@ -587,7 +618,7 @@ export default function ManagerPage() {
     <PageShell withLights compact width="wide">
       {view === "landing" && (
         <ManagerLanding
-          hasSave={hasSave}
+          saveSlots={saveSlots}
           onStartNew={handleStartNew}
           onContinue={handleContinue}
           onDelete={handleDelete}
@@ -599,6 +630,7 @@ export default function ManagerPage() {
           onSelect={handleSelectClub}
           onBack={() => {
             playUiClick();
+            refreshSaveSlots();
             setView("landing");
           }}
         />
@@ -785,7 +817,11 @@ export default function ManagerPage() {
         variant="confirm"
         destructive
         title="Delete career"
-        message="Delete this career save? This cannot be undone."
+        message={
+          deleteSlot != null
+            ? `Delete save slot ${deleteSlot + 1}? This cannot be undone.`
+            : "Delete this career save? This cannot be undone."
+        }
         confirmLabel="Delete"
         cancelLabel="Keep save"
         onConfirm={confirmDelete}

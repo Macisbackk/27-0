@@ -40,17 +40,14 @@ import {
 } from "./managerFreeAgents";
 import {
   applySeasonRetirements,
+  applyLeagueRetirements,
   tickClubCareerTotals,
 } from "./managerRetirement";
 
-const CAREER_KEY = "27-0-manager-career";
+import { writeManagerCareerRaw } from "./managerSaveStorage";
 
 function persistCareer(career: ManagerCareer): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(
-    CAREER_KEY,
-    JSON.stringify({ ...career, updatedAt: new Date().toISOString() })
-  );
+  writeManagerCareerRaw(career);
 }
 
 export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary {
@@ -176,8 +173,9 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const summary = buildSeasonSummary(career);
   const withTotals = tickClubCareerTotals(career);
   const { career: afterRetirements } = applySeasonRetirements(withTotals);
+  const afterLeagueRetirements = applyLeagueRetirements(afterRetirements);
   const { career: afterSquadContracts, leaving: squadLeaving } =
-    tickContractsForNewSeason(afterRetirements);
+    tickContractsForNewSeason(afterLeagueRetirements);
   const { career: afterReserveContracts, leaving: reserveLeaving } =
     tickReserveContractsForNewSeason(afterSquadContracts);
 

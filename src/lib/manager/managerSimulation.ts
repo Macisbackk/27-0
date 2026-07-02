@@ -25,7 +25,6 @@ import { rollPostMatchInjuries } from "./managerTransfers";
 import { computeManagerTeamRating } from "./managerRating";
 import {
   enrichManagerFixtureScoring,
-  pickMotmPlayerId,
 } from "./managerScoring";
 import {
   buildTacticEffectivenessLine,
@@ -143,7 +142,7 @@ import { maybeAddReserveReport } from "./managerReserveReports";
 import { rotateLatestNews } from "./managerNews";
 import {
   generateManagerMatchBio,
-  buildManagerMotmPerformanceSummary,
+  selectManagerManOfTheMatch,
 } from "./manager-match-summary";
 import { syncManagerFinance, applyClubRevenue } from "./managerFinance";
 
@@ -244,10 +243,18 @@ export function applyManagerMatchResult(
   }
   ensureManagerFixtureScoring(career, fixture, squad, sched.id);
 
-  const motmId = pickMotmPlayerId(fixture, [
-    ...career.matchdayXiii,
-    ...career.matchdayInterchange,
-  ]);
+  const matchdayIdList = [
+    ...career.matchdayXiii.filter(Boolean),
+    ...career.matchdayInterchange.filter(Boolean),
+  ];
+  const motm = selectManagerManOfTheMatch(
+    fixture,
+    career,
+    matchdayIdList,
+    career.seed,
+    sched.id
+  );
+  const motmId = motm?.teamName === career.club ? motm.playerId : null;
   const userScorers = fixture.scoringDetail?.dreamTeam.tryScorers ?? [];
   const { forward, back } = countTriesByPositionGroup(
     userScorers,
@@ -361,10 +368,6 @@ export function applyManagerMatchResult(
     };
   });
 
-  const matchdayIdList = [
-    ...career.matchdayXiii.filter(Boolean),
-    ...career.matchdayInterchange.filter(Boolean),
-  ];
   const statsUpdate = updateStatsAfterMatch(
     career,
     fixture,
@@ -417,29 +420,8 @@ export function applyManagerMatchResult(
     }
   }
 
-  const motmPlayer = motmId
-    ? getManagerPlayer(career, motmId)
-    : null;
-  const fixtureWithMotm: MatchFixture = motmId && motmPlayer
-    ? {
-        ...fixture,
-        manOfTheMatch: {
-          playerId: motmId,
-          playerName: motmPlayer.name,
-          teamName: career.club,
-          performanceSummary: buildManagerMotmPerformanceSummary(
-            motmId,
-            motmPlayer.name,
-            fixture,
-            career.xiiiSlotPositions,
-            career.matchdayXiii
-          ),
-          tries:
-            fixture.scoringDetail?.dreamTeam.tryScorers.find(
-              (s) => s.playerId === motmId
-            )?.tries || undefined,
-        },
-      }
+  const fixtureWithMotm: MatchFixture = motm
+    ? { ...fixture, manOfTheMatch: motm }
     : fixture;
 
   const matchBio = generateManagerMatchBio(fixtureWithMotm, career.seed, {
@@ -470,7 +452,7 @@ export function applyManagerMatchResult(
         ...i,
         name: getPlayerById(i.playerId)?.name ?? "Player",
       })),
-      playerOfMatchId: motmId,
+      playerOfMatchId: motm?.playerId ?? null,
       playedLive: options.playedLive ?? false,
       attendance: attendanceMeta ?? undefined,
       competition: sched.competition,

@@ -13,12 +13,6 @@ export const GAME_UPDATES: GameUpdate[] = [
       "Manager Mode now reliably shows three opponent choices after each pre-season friendly. The picker appears whenever a choice is pending, including when returning from match review or other tabs.",
   },
   {
-    id: "manager-season-impact",
-    title: "Season Impact Stat",
-    summary:
-      "Manager Mode tracks a season impact score for each squad player — blending form, minutes, and results. Strong impact boosts end-of-season development; poor impact can trigger regression.",
-  },
-  {
     id: "manager-and-quick-split",
     title: "Manager Mode & Quick Mode",
     summary:

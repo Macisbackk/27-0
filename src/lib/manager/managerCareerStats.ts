@@ -109,7 +109,7 @@ export function updateStatsAfterMatch(
     stats.goals += kicking.conversions + kicking.penalties;
   }
 
-  if (motmPlayerId) {
+  if (motmPlayerId && xiiiIds.includes(motmPlayerId)) {
     const stats = getOrCreatePlayerStats(playerSeasonStats, motmPlayerId);
     stats.playerOfMatch += 1;
   }

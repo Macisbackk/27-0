@@ -30,10 +30,8 @@ import { autoFixMatchdaySquad, autoSortMatchdaySquad, resolveCareerForMatchSimul
 import { GameButton } from "@/components/ui/GameButton";
 import {
   ManagerPage,
-  ManagerSeasonImpactBadge,
   ManagerViewHeader,
 } from "@/components/manager/manager-ui";
-import { getPlayerSeasonImpact } from "@/lib/manager/managerPlayerImpact";
 import { ManagerTacticsPanel } from "@/components/manager/ManagerTactics";
 import { playUiClick } from "@/lib/sound";
 
@@ -135,14 +133,6 @@ function TeamSheetSlot({
           <p className="truncate text-sm font-medium text-white">{player.name}</p>
           <p className="text-[10px] text-theme-primary">
             {player.rating ?? player.peakRating}
-            {ps && ps.seasonAppearances > 0 && (
-              <span className="ml-1 inline-block align-middle">
-                <ManagerSeasonImpactBadge
-                  impact={getPlayerSeasonImpact(career, playerId)}
-                  compact
-                />
-              </span>
-            )}
           </p>
           {ps?.injury && (
             <p className={`text-[10px] font-medium ${unavailableTextClass(isSuspension)}`}>
@@ -575,14 +565,6 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     {player && (
                       <p className="text-[10px] text-theme-primary">
                         {player.rating ?? player.peakRating}
-                        {ps && ps.seasonAppearances > 0 && (
-                          <span className="ml-1.5 inline-block align-middle">
-                            <ManagerSeasonImpactBadge
-                              impact={getPlayerSeasonImpact(career, playerId!)}
-                              compact
-                            />
-                          </span>
-                        )}
                       </p>
                     )}
                     {ps?.injury && (
@@ -694,20 +676,6 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                         <p className="text-[10px] text-pitch-400">
                           {positions.map((p) => POSITION_SHORT[p]).join(" · ")}
                         </p>
-                        {(() => {
-                          const ps = career.squad.find(
-                            (p) => p.playerId === playerId
-                          );
-                          if (!ps || ps.seasonAppearances === 0) return null;
-                          return (
-                            <p className="mt-1">
-                              <ManagerSeasonImpactBadge
-                                impact={getPlayerSeasonImpact(career, playerId)}
-                                compact
-                              />
-                            </p>
-                          );
-                        })()}
                       </div>
                       <span className="shrink-0 font-bold text-theme-primary">
                         {player.rating ?? player.peakRating}

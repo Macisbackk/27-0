@@ -1,12 +1,15 @@
 import seedrandom from "seedrandom";
 import type { MatchFixture } from "../game/season-simulation";
+import type { ManOfTheMatch } from "../game/fantasy-match-summary";
 import type { Position } from "../types";
 import type {
   CupRoundKey,
+  ManagerCareer,
   ManagerCompetition,
   MatchAttendanceMeta,
 } from "./types";
 import { getManagerCompetitionLabel } from "./managerFixtureDisplay";
+import { getManagerPlayer } from "./managerPlayers";
 
 const FORWARD_POSITIONS = new Set<Position>([
   "PROP",
@@ -85,23 +88,25 @@ export function buildManagerMotmPerformanceSummary(
   _playerName: string,
   fixture: MatchFixture,
   slotPositions: Position[],
-  xiiiIds: string[]
+  xiiiIds: string[],
+  teamName?: string
 ): string {
-  const tries =
-    fixture.scoringDetail?.dreamTeam.tryScorers.find(
-      (s) => s.playerId === playerId
-    )?.tries ?? 0;
+  const isOpponent = teamName != null && teamName === fixture.opponent;
+  const tryScorers = isOpponent
+    ? fixture.scoringDetail?.opponent.tryScorers ?? []
+    : fixture.scoringDetail?.dreamTeam.tryScorers ?? [];
+  const tries = tryScorers.find((s) => s.playerId === playerId)?.tries ?? 0;
 
-  if (tries >= 3) return "hat-trick hero";
-  if (tries === 2) return "brace led the attack";
+  if (tries >= 3) return isOpponent ? "hat-trick decided it" : "hat-trick hero";
+  if (tries === 2) {
+    return isOpponent ? "brace turned the game" : "brace led the attack";
+  }
 
-  const idx = xiiiIds.indexOf(playerId);
-  const pos =
-    idx >= 0
-      ? slotPositions[idx]
-      : undefined;
+  const idx = isOpponent ? -1 : xiiiIds.indexOf(playerId);
+  const pos = idx >= 0 ? slotPositions[idx] : undefined;
 
   if (tries === 1) {
+    if (isOpponent) return "crossed at a crucial moment";
     if (pos && FORWARD_POSITIONS.has(pos)) return "led from the front in the pack";
     if (pos === "SCRUM_HALF" || pos === "STAND_OFF") {
       return "pulled the strings at half-back";
@@ -112,11 +117,239 @@ export function buildManagerMotmPerformanceSummary(
     return "crossed for a crucial try";
   }
 
+  if (isOpponent) {
+    return fixture.result === "L"
+      ? "standout display in defeat"
+      : "kept the side competitive throughout";
+  }
+
   if (pos && FORWARD_POSITIONS.has(pos)) return "dominated the middle";
   if (pos === "SCRUM_HALF" || pos === "STAND_OFF") {
     return "controlled the tempo from half-back";
   }
   return "standout all-round display";
+}
+
+interface ManagerMotmCandidate {
+  playerId: string;
+  playerName: string;
+  teamName: string;
+  rating: number;
+  tries: number;
+  conversions: number;
+  penalties: number;
+  dropGoals: number;
+  won: boolean;
+}
+
+function scoreManagerMotmCandidate(
+  candidate: ManagerMotmCandidate,
+  margin: number
+): number {
+  const close = isCloseMargin(margin);
+  let score = 0;
+  score += candidate.tries * 8;
+  score += candidate.conversions * 2;
+  score += candidate.penalties * 3;
+  score += candidate.dropGoals * 4;
+  if (candidate.won) score += 5;
+  if (
+    close &&
+    (candidate.tries > 0 ||
+      candidate.conversions > 0 ||
+      candidate.penalties > 0 ||
+      candidate.dropGoals > 0)
+  ) {
+    score += 3;
+  }
+  score += candidate.rating / 10;
+  return score;
+}
+
+function isNamedOpponentScorer(
+  fixture: MatchFixture,
+  playerId: string
+): boolean {
+  return playerId !== fixture.opponent;
+}
+
+function addManagerMotmTryScorers(
+  candidates: ManagerMotmCandidate[],
+  scorers: { playerId: string; name: string; tries: number }[],
+  teamName: string,
+  fixture: MatchFixture,
+  career: ManagerCareer,
+  won: boolean,
+  userMatchdayIds?: Set<string>
+): void {
+  for (const scorer of scorers) {
+    if (scorer.tries <= 0) continue;
+    if (teamName === fixture.opponent && !isNamedOpponentScorer(fixture, scorer.playerId)) {
+      continue;
+    }
+    if (userMatchdayIds && !userMatchdayIds.has(scorer.playerId)) continue;
+
+    const player = getManagerPlayer(career, scorer.playerId);
+    candidates.push({
+      playerId: scorer.playerId,
+      playerName: scorer.name,
+      teamName,
+      rating: player?.rating ?? player?.peakRating ?? 80,
+      tries: scorer.tries,
+      conversions: 0,
+      penalties: 0,
+      dropGoals: 0,
+      won,
+    });
+  }
+}
+
+function addManagerMotmKicker(
+  candidates: ManagerMotmCandidate[],
+  kicking:
+    | {
+        playerId: string;
+        name: string;
+        conversions: number;
+        penalties: number;
+        dropGoals: number;
+      }
+    | null
+    | undefined,
+  teamName: string,
+  fixture: MatchFixture,
+  career: ManagerCareer,
+  won: boolean,
+  userMatchdayIds?: Set<string>
+): void {
+  if (!kicking) return;
+  if (teamName === fixture.opponent && !isNamedOpponentScorer(fixture, kicking.playerId)) {
+    return;
+  }
+  if (userMatchdayIds && !userMatchdayIds.has(kicking.playerId)) return;
+
+  const goals = kicking.conversions + kicking.penalties + kicking.dropGoals;
+  if (goals <= 0) return;
+
+  const existing = candidates.find((c) => c.playerId === kicking.playerId);
+  if (existing) {
+    existing.conversions += kicking.conversions;
+    existing.penalties += kicking.penalties;
+    existing.dropGoals += kicking.dropGoals;
+    return;
+  }
+
+  const player = getManagerPlayer(career, kicking.playerId);
+  candidates.push({
+    playerId: kicking.playerId,
+    playerName: kicking.name,
+    teamName,
+    rating: player?.rating ?? player?.peakRating ?? 80,
+    tries: 0,
+    conversions: kicking.conversions,
+    penalties: kicking.penalties,
+    dropGoals: kicking.dropGoals,
+    won,
+  });
+}
+
+/** Pick MOTM from both squads using tries, goals, result, and rating. */
+export function selectManagerManOfTheMatch(
+  fixture: MatchFixture,
+  career: ManagerCareer,
+  userMatchdayIds: string[],
+  seed: string,
+  fixtureKey: string
+): ManOfTheMatch | undefined {
+  const userIds = new Set(userMatchdayIds.filter(Boolean));
+  const candidates: ManagerMotmCandidate[] = [];
+  const userWon = fixture.result === "W";
+  const oppWon = fixture.result === "L";
+
+  addManagerMotmTryScorers(
+    candidates,
+    fixture.scoringDetail?.dreamTeam.tryScorers ?? [],
+    career.club,
+    fixture,
+    career,
+    userWon,
+    userIds
+  );
+  addManagerMotmKicker(
+    candidates,
+    fixture.scoringDetail?.dreamTeam.kicking,
+    career.club,
+    fixture,
+    career,
+    userWon,
+    userIds
+  );
+  addManagerMotmTryScorers(
+    candidates,
+    fixture.scoringDetail?.opponent.tryScorers ?? [],
+    fixture.opponent,
+    fixture,
+    career,
+    oppWon
+  );
+  addManagerMotmKicker(
+    candidates,
+    fixture.scoringDetail?.opponent.kicking,
+    fixture.opponent,
+    fixture,
+    career,
+    oppWon
+  );
+
+  if (candidates.length === 0) {
+    const fallbackUser = userMatchdayIds.find(Boolean);
+    if (fallbackUser) {
+      const player = getManagerPlayer(career, fallbackUser);
+      if (player) {
+        return {
+          playerId: fallbackUser,
+          playerName: player.name,
+          teamName: career.club,
+          performanceSummary: buildManagerMotmPerformanceSummary(
+            fallbackUser,
+            player.name,
+            fixture,
+            career.xiiiSlotPositions,
+            career.matchdayXiii,
+            career.club
+          ),
+        };
+      }
+    }
+    return undefined;
+  }
+
+  const margin = Math.abs(fixture.pointsFor - fixture.pointsAgainst);
+  const scored = candidates.map((candidate) => ({
+    candidate,
+    score: scoreManagerMotmCandidate(candidate, margin),
+  }));
+  scored.sort((a, b) => b.score - a.score);
+  const topScore = scored[0]!.score;
+  const tied = scored.filter((entry) => entry.score === topScore);
+  const rng = seedrandom(`${seed}-mgr-motm-${fixtureKey}`);
+  const picked = tied[Math.floor(rng() * tied.length)]!.candidate;
+
+  const isUser = picked.teamName === career.club;
+  return {
+    playerId: picked.playerId,
+    playerName: picked.playerName,
+    teamName: picked.teamName,
+    performanceSummary: buildManagerMotmPerformanceSummary(
+      picked.playerId,
+      picked.playerName,
+      fixture,
+      career.xiiiSlotPositions,
+      career.matchdayXiii,
+      isUser ? career.club : fixture.opponent
+    ),
+    tries: picked.tries > 0 ? picked.tries : undefined,
+  };
 }
 
 /** Only when tries are level and the boot decided the result. */

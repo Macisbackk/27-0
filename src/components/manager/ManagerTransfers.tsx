@@ -40,6 +40,7 @@ import { POSITION_SHORT } from "@/lib/positions";
 import type { Player, Position } from "@/lib/types";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
 import { playUiClick } from "@/lib/sound";
+import { ManagerClubSquadBrowser } from "@/components/manager/ManagerClubSquadSheet";
 
 interface ManagerTransfersProps {
   career: ManagerCareer;
@@ -299,6 +300,8 @@ export function ManagerTransfers({
           Sign listed players, pick up free agents, or bid for anyone in the league
         </p>
       </div>
+
+      <ManagerClubSquadBrowser career={career} />
 
       <ManagerSectionCard title="Funds & wages" variant="elevated" accent="primary">
         <div className="mt-2 grid grid-cols-2 gap-3">

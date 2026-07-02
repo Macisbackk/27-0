@@ -8,7 +8,6 @@ import { playUiClick } from "@/lib/sound";
 import {
   ManagerDeltaBadge,
   ManagerSectionCard,
-  ManagerSeasonImpactBadge,
 } from "@/components/manager/manager-ui";
 
 interface ManagerDevelopmentReviewProps {
@@ -60,8 +59,7 @@ export function ManagerDevelopmentReview({
           {career.club} · {career.seasonYear}
         </h1>
         <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-300`}>
-          How your squad developed over the season. Poor impact seasons increase
-          regression risk.
+          How your squad developed over the season.
         </p>
       </ManagerSectionCard>
 
@@ -79,9 +77,6 @@ export function ManagerDevelopmentReview({
                 {improved.map((c) => (
                   <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-center gap-2`}>
                     <span className="font-semibold text-white">{c.playerName}</span>
-                    {c.seasonImpact != null && (
-                      <ManagerSeasonImpactBadge impact={c.seasonImpact} compact />
-                    )}
                     {changeLabel(c, "improved")}
                     <ManagerDeltaBadge delta={c.delta} />
                     <span className="text-pitch-500">· POT {c.potential}</span>
@@ -96,9 +91,6 @@ export function ManagerDevelopmentReview({
                 {declined.map((c) => (
                   <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-center gap-2`}>
                     <span className="font-semibold text-white">{c.playerName}</span>
-                    {c.seasonImpact != null && (
-                      <ManagerSeasonImpactBadge impact={c.seasonImpact} compact />
-                    )}
                     {changeLabel(c, "declined")}
                     <ManagerDeltaBadge delta={c.delta} />
                     <span className="text-pitch-500">· POT {c.potential}</span>
@@ -113,9 +105,6 @@ export function ManagerDevelopmentReview({
                 {steady.map((c) => (
                   <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-center gap-2`}>
                     <span className="font-semibold text-white">{c.playerName}</span>
-                    {c.seasonImpact != null && (
-                      <ManagerSeasonImpactBadge impact={c.seasonImpact} compact />
-                    )}
                     {changeLabel(c, "steady")}
                     <span className="text-pitch-500">· POT {c.potential}</span>
                   </li>

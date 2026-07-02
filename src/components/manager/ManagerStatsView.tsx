@@ -20,11 +20,9 @@ import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getManagerCareerSaveView } from "@/lib/manager/managerCareerSaveStats";
 import {
   ManagerSectionCard,
-  ManagerSeasonImpactBadge,
   ManagerStat,
   leaguePositionTone,
 } from "@/components/manager/manager-ui";
-import { getPlayerSeasonImpact } from "@/lib/manager/managerPlayerImpact";
 import { playUiClick } from "@/lib/sound";
 
 type StatsTab = "season" | "career" | "retired";
@@ -185,13 +183,10 @@ function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
                 <th className="px-3 py-2 text-center">Tries</th>
                 <th className="px-3 py-2 text-center">Goals</th>
                 <th className="px-3 py-2 text-center">POTM</th>
-                <th className="px-3 py-2 text-center">Impact</th>
               </tr>
             </thead>
             <tbody>
-              {playerRows.map((row, idx) => {
-                const impact = getPlayerSeasonImpact(career, row.playerId);
-                return (
+              {playerRows.map((row, idx) => (
                 <tr
                   key={row.playerId}
                   className={`border-b border-pitch-800/40 ${
@@ -228,12 +223,8 @@ function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
                   <td className="px-3 py-2 text-center text-accent-gold">
                     {row.playerOfMatch > 0 ? row.playerOfMatch : "—"}
                   </td>
-                  <td className="px-3 py-2 text-center">
-                    <ManagerSeasonImpactBadge impact={impact} compact />
-                  </td>
                 </tr>
-              );
-              })}
+              ))}
             </tbody>
           </table>
         </ManagerSectionCard>

@@ -1,5 +1,6 @@
 import seedrandom from "seedrandom";
 import { POSITION_SHORT } from "../positions";
+import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type {
   InboxMessage,
   ManagerCareer,
@@ -8,7 +9,11 @@ import type {
 } from "./types";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import { computeWageBill } from "./managerContracts";
-import { reconcileLeagueRosters } from "./managerLeagueRosters";
+import {
+  getLeagueClubRosterIds,
+  initLeagueClubRosters,
+  reconcileLeagueRosters,
+} from "./managerLeagueRosters";
 import {
   addPlayerRetiredInboxMessage,
   addRetirementIntentInboxMessage,
@@ -59,6 +64,27 @@ export function shouldRetireAtSeasonEnd(
     return rng() < 0.72;
   }
   return false;
+}
+
+/** AI league players — age-based retirement rolls each season. */
+export function shouldRetireByAge(
+  career: ManagerCareer,
+  playerId: string,
+  age: number
+): boolean {
+  if (age >= 39) return true;
+  if (age >= 38) {
+    const rng = seedrandom(
+      `${career.seed}-retire-final-${playerId}-s${career.seasonYear}`
+    );
+    return rng() < 0.72;
+  }
+  const chance = getRetirementChanceForAge(age);
+  if (chance <= 0) return false;
+  const rng = seedrandom(
+    `${career.seed}-ai-retire-roll-${playerId}-s${career.seasonYear}`
+  );
+  return rng() < chance;
 }
 
 function removeRetiredPlayerFromSquad(
@@ -237,6 +263,47 @@ export function applySeasonRetirements(career: ManagerCareer): {
     }),
     retiredIds,
   };
+}
+
+/** Retire veterans across AI club rosters at season rollover. */
+export function applyLeagueRetirements(career: ManagerCareer): ManagerCareer {
+  const rosters: Record<string, string[]> = {
+    ...(career.leagueClubRosters ?? initLeagueClubRosters(career.club)),
+  };
+  const playerDevelopment = { ...(career.playerDevelopment ?? {}) };
+  const playerRegistry = { ...career.playerRegistry };
+  let changed = false;
+
+  for (const club of CURRENT_PLAYABLE_CLUBS) {
+    if (club === career.club) continue;
+    const ids = getLeagueClubRosterIds(career, club);
+    const kept: string[] = [];
+
+    for (const playerId of ids) {
+      const age = getManagerPlayerAge(career, playerId) ?? 0;
+      if (shouldRetireByAge(career, playerId, age)) {
+        changed = true;
+        delete playerDevelopment[playerId];
+        if (playerId.startsWith("mgr-ai-")) {
+          delete playerRegistry[playerId];
+        }
+        continue;
+      }
+      kept.push(playerId);
+    }
+
+    rosters[club] = kept;
+  }
+
+  if (!changed) return career;
+
+  return reconcileLeagueRosters({
+    ...career,
+    leagueClubRosters: rosters,
+    playerDevelopment,
+    playerRegistry,
+    updatedAt: new Date().toISOString(),
+  });
 }
 
 /** Accumulate per-player club totals before squad is reset for the new season. */

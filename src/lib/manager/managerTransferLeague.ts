@@ -21,6 +21,7 @@ import { getManagerModePlayerRating } from "./managerSquadRatings";
 import {
   findPlayerLeagueClub,
   getLeagueClubRosterIds,
+  getUserClubPlayerIds,
   transferLeaguePlayer,
 } from "./managerLeagueRosters";
 import { createInitialPlayerState } from "./managerSquad";
@@ -884,10 +885,13 @@ export function getAllLeaguePlayers(career: ManagerCareer): {
   playerId: string;
   club: string;
 }[] {
+  const assigned = new Set(getUserClubPlayerIds(career));
   const rows: { playerId: string; club: string }[] = [];
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === career.club) continue;
     for (const id of getLeagueClubRosterIds(career, club)) {
+      if (assigned.has(id)) continue;
+      assigned.add(id);
       rows.push({ playerId: id, club });
     }
   }

@@ -36,7 +36,18 @@ export function getManagerPlayer(
   const reserve = career.reserves.find((r) => r.id === playerId);
   if (reserve) return reserveToPlayer(reserve, career.seasonYear);
   const generated = career.playerRegistry[playerId];
-  if (generated) return applyManagerModeRatingToPlayer(generated);
+  if (generated) {
+    const dev = career.playerDevelopment?.[playerId];
+    const rated = applyManagerModeRatingToPlayer(generated);
+    if (dev) {
+      return {
+        ...rated,
+        rating: dev.rating,
+        peakRating: dev.peakRating,
+      };
+    }
+    return rated;
+  }
   const base = getPlayerById(playerId);
   const dev = career.playerDevelopment?.[playerId];
   if (base && dev) {

@@ -40,6 +40,7 @@ import { playSeasonComplete, playSimulateRound, playUiClick } from "@/lib/sound"
 import { autoFixMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
+import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
 import { getHubNewsItems } from "@/lib/manager/managerNews";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
@@ -263,18 +264,26 @@ function HubPlayoffsCampaignCard({ career }: { career: ManagerCareer }) {
   );
 }
 
-function HubStandingsPanel({ career }: { career: ManagerCareer }) {
-  return <HubLeagueTable career={career} />;
+function HubStandingsPanel({
+  career,
+  onViewClub,
+}: {
+  career: ManagerCareer;
+  onViewClub?: (club: string) => void;
+}) {
+  return <HubLeagueTable career={career} onViewClub={onViewClub} />;
 }
 
 function HubLeagueTable({
   career,
   title = "League Table",
   subtitle,
+  onViewClub,
 }: {
   career: ManagerCareer;
   title?: string;
   subtitle?: string;
+  onViewClub?: (club: string) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
   const rows = career.leagueTable;
@@ -355,21 +364,46 @@ function HubLeagueTable({
                     {row.position}
                   </td>
                   <td className={SPACING.tableCell}>
-                    <span className="flex items-center gap-2">
-                      <span
-                        className="inline-block h-2 w-2 rounded-full"
-                        style={{ backgroundColor: indicatorColor }}
-                      />
-                      <span
-                        className={
-                          row.isUserTeam
-                            ? "font-semibold text-theme-primary"
-                            : "text-pitch-200"
-                        }
+                    {onViewClub ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          playUiClick();
+                          onViewClub(row.team);
+                        }}
+                        className="flex w-full items-center gap-2 text-left transition hover:text-theme-primary"
                       >
-                        {row.team}
+                        <span
+                          className="inline-block h-2 w-2 rounded-full"
+                          style={{ backgroundColor: indicatorColor }}
+                        />
+                        <span
+                          className={
+                            row.isUserTeam
+                              ? "font-semibold text-theme-primary"
+                              : "text-pitch-200"
+                          }
+                        >
+                          {row.team}
+                        </span>
+                      </button>
+                    ) : (
+                      <span className="flex items-center gap-2">
+                        <span
+                          className="inline-block h-2 w-2 rounded-full"
+                          style={{ backgroundColor: indicatorColor }}
+                        />
+                        <span
+                          className={
+                            row.isUserTeam
+                              ? "font-semibold text-theme-primary"
+                              : "text-pitch-200"
+                          }
+                        >
+                          {row.team}
+                        </span>
                       </span>
-                    </span>
+                    )}
                   </td>
                   <td className={`${SPACING.tableCell} text-center`}>{row.played}</td>
                   <td className={`${SPACING.tableCell} text-center`}>{row.wins}</td>
@@ -406,7 +440,19 @@ export function ManagerHub({
   const [dialog, setDialog] = useState<{ title: string; message: string } | null>(
     null
   );
+  const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
   const hubCareer = ensurePlayoffsReady(ensureCupBracketReady(career));
+  const clubSheetModal =
+    viewClubSheet != null ? (
+      <ManagerClubSquadSheet
+        career={career}
+        club={viewClubSheet}
+        onClose={() => setViewClubSheet(null)}
+        onViewUserSquad={
+          onNavigate ? () => onNavigate("squad") : undefined
+        }
+      />
+    ) : null;
 
   const nextFixture = getNextManagerFixture(hubCareer);
   const position = getUserLeaguePosition(career.leagueTable, career.club);
@@ -790,6 +836,7 @@ export function ManagerHub({
             career={career}
             title="Final League Standings"
             subtitle="Frozen — play-off results now decide the title"
+            onViewClub={setViewClubSheet}
           />
           <HubBoardBudgetAttendance
             career={career}
@@ -800,6 +847,7 @@ export function ManagerHub({
           {quickActionsCard}
         </div>
         {alertDialog}
+        {clubSheetModal}
       </>
     );
   }
@@ -823,6 +871,7 @@ export function ManagerHub({
           {quickActionsCard}
         </div>
         {alertDialog}
+        {clubSheetModal}
       </>
     );
   }
@@ -834,7 +883,7 @@ export function ManagerHub({
 
       {nextFixtureCard}
 
-      <HubStandingsPanel career={career} />
+      <HubStandingsPanel career={career} onViewClub={setViewClubSheet} />
 
       <ManagerClubFinancesPanel career={career} />
 
@@ -853,6 +902,7 @@ export function ManagerHub({
       {quickActionsCard}
     </div>
     {alertDialog}
+    {clubSheetModal}
     </>
   );
 }

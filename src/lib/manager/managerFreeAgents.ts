@@ -14,6 +14,8 @@ import { computeCareerWageBill } from "./managerReserveContracts";
 import { getManagerClubTeamRating } from "./managerRating";
 import {
   getLeagueClubRosterIds,
+  getUserClubPlayerIds,
+  reconcileLeagueRosters,
   transferLeaguePlayer,
 } from "./managerLeagueRosters";
 import { createInitialPlayerState } from "./managerSquad";
@@ -40,21 +42,14 @@ export function addPlayersToFreeAgents(
   if (entries.length === 0) return career;
 
   const existingIds = getFreeAgentIds(career);
+  const userIds = getUserClubPlayerIds(career);
   const newAgents: FreeAgent[] = [...(career.freeAgents ?? [])];
-  let rosters = { ...(career.leagueClubRosters ?? {}) };
   let leagueListedPlayers = career.leagueListedPlayers;
   let transferMarket = career.transferMarket;
 
   for (const { playerId, formerClub } of entries) {
     if (existingIds.has(playerId)) continue;
-    if (career.squad.some((s) => s.playerId === playerId)) continue;
-
-    for (const club of CURRENT_PLAYABLE_CLUBS) {
-      if (club === career.club) continue;
-      if (rosters[club]) {
-        rosters[club] = rosters[club]!.filter((id) => id !== playerId);
-      }
-    }
+    if (userIds.has(playerId)) continue;
 
     leagueListedPlayers = leagueListedPlayers.filter(
       (l) => l.playerId !== playerId
@@ -72,14 +67,13 @@ export function addPlayersToFreeAgents(
 
   if (newAgents.length === (career.freeAgents ?? []).length) return career;
 
-  return {
+  return reconcileLeagueRosters({
     ...career,
-    leagueClubRosters: rosters,
     leagueListedPlayers,
     transferMarket,
     freeAgents: newAgents,
     updatedAt: new Date().toISOString(),
-  };
+  });
 }
 
 export function evaluateFreeAgentOffer(

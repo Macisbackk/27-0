@@ -20,8 +20,6 @@ import { findPlayerMatchdaySlot } from "@/lib/manager/managerMatchdaySquad";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { playPanelClose, playUiClick } from "@/lib/sound";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
-import { ManagerSeasonImpactBadge } from "@/components/manager/manager-ui";
-import { getPlayerSeasonImpact } from "@/lib/manager/managerPlayerImpact";
 
 interface ManagerSquadPlayerModalProps {
   career: ManagerCareer;
@@ -48,13 +46,8 @@ export function ManagerSquadPlayerModal({
   const player = getManagerPlayer(career, playerId);
   const contract = career.contracts[playerId];
   const transferStatus = career.playerTransferStatus[playerId];
-  const ps = career.squad.find((p) => p.playerId === playerId);
   const slot = findPlayerMatchdaySlot(career, playerId);
   const releaseCost = computeReleaseCost(career, playerId);
-  const seasonImpact =
-    ps && ps.seasonAppearances > 0
-      ? getPlayerSeasonImpact(career, playerId)
-      : null;
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -124,11 +117,6 @@ export function ManagerSquadPlayerModal({
           <span>{formatValue(player.value)}</span>
           {contract && <span>{formatWage(contract.wagePerYear)}/yr</span>}
           {contract && <span>{contract.yearsRemaining}yr left</span>}
-          {seasonImpact != null && (
-            <span className="col-span-2">
-              <ManagerSeasonImpactBadge impact={seasonImpact} />
-            </span>
-          )}
           {slot && (
             <span>{slot.kind === "xiii" ? "Starter" : "Interchange"}</span>
           )}

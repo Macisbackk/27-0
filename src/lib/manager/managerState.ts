@@ -49,7 +49,18 @@ import {
   hydrateGateIncomeRecord,
 } from "./managerFinance";
 
-const CAREER_KEY = "27-0-manager-career";
+import {
+  deleteManagerCareerRaw,
+  getActiveSaveSlot,
+  hasAnyManagerCareer,
+  hasManagerCareerInSlot,
+  listManagerSaveSlots,
+  MANAGER_SAVE_SLOT_COUNT,
+  readManagerCareerRaw,
+  setActiveSaveSlot,
+  writeManagerCareerRaw,
+  type ManagerSaveSlotSummary,
+} from "./managerSaveStorage";
 
 /** Backfill missing contract fields on older saves. */
 function hydrateLegacyContracts(
@@ -261,38 +272,31 @@ export function prepareManagerCareerForSave(raw: ManagerCareer): ManagerCareer {
     isSeasonComplete: isManagerSeasonCompleteLite(career),
   };
   career = ensureFriendlyChoices(career);
+  career = ensureLeagueClubRosters(career);
   return career;
 }
 
-export function loadManagerCareer(): ManagerCareer | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = localStorage.getItem(CAREER_KEY);
-    if (!raw) return null;
-    return hydrateManagerCareer(JSON.parse(raw) as ManagerCareer);
-  } catch {
-    return null;
-  }
+export function loadManagerCareer(slot?: number): ManagerCareer | null {
+  const raw = readManagerCareerRaw(slot);
+  if (!raw) return null;
+  return hydrateManagerCareer(raw);
 }
 
-export function saveManagerCareer(career: ManagerCareer): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(
-    CAREER_KEY,
-    JSON.stringify({ ...career, updatedAt: new Date().toISOString() })
-  );
+export function saveManagerCareer(career: ManagerCareer, slot?: number): void {
+  writeManagerCareerRaw(career, slot);
 }
 
-export function deleteManagerCareer(): void {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(CAREER_KEY);
+export function deleteManagerCareer(slot?: number): void {
+  deleteManagerCareerRaw(slot);
 }
 
-export function hasManagerCareer(): boolean {
-  return !!loadManagerCareer();
+export function hasManagerCareer(slot?: number): boolean {
+  return hasManagerCareerInSlot(slot);
 }
 
-export function createNewCareer(club: string): ManagerCareer {
+export function createNewCareer(club: string, slot?: number): ManagerCareer {
+  const targetSlot = slot ?? getActiveSaveSlot();
+  setActiveSaveSlot(targetSlot);
   const config = getManagerClubConfig(club);
   const seed = `mgr-${club}-${Date.now()}`;
   const rosterIds = getManagerRosterIds(club);
@@ -399,10 +403,17 @@ export function createNewCareer(club: string): ManagerCareer {
     ...hydrated,
     playerDevelopment: snapshotSquadSeasonStartRatings(hydrated),
   };
-  saveManagerCareer(hydrated);
+  saveManagerCareer(hydrated, targetSlot);
   return hydrated;
 }
 
 export { buildSeasonSummary, advanceToNextSeason } from "./managerStateSeason";
 
-export { CAREER_KEY };
+export {
+  getActiveSaveSlot,
+  setActiveSaveSlot,
+  listManagerSaveSlots,
+  hasAnyManagerCareer,
+  MANAGER_SAVE_SLOT_COUNT,
+  type ManagerSaveSlotSummary,
+} from "./managerSaveStorage";

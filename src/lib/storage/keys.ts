@@ -29,7 +29,9 @@ export const STORAGE_KEYS = {
   uiThemeCssCache: "27-0-ui-theme-css-cache",
   coachbeardMergeComplete: "27-0-coachbeard-merge-v1",
   statsSchemaVersion: "27-0-stats-schema-version",
+  /** @deprecated Legacy single save — migrated to slot 0 */
   managerCareer: "27-0-manager-career",
+  managerCareerSlot: (slot: number) => `27-0-manager-career-slot-${slot}`,
   managerStats: "27-0-manager-stats",
   managerLeaderboard: "27-0-manager-leaderboard",
 } as const;

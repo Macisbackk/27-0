@@ -48,15 +48,17 @@ export function ChallengeCupVariantToggle({
   const eraLabel = useShortLabels || compact ? "Era" : "Era Teams";
 
   return (
-    <div className={className}>
+    <div
+      className={`${compact ? "" : "flex flex-col items-center"} ${className}`}
+    >
       {!hideLabel && (
         <p
-          className={`mb-1.5 ${compact ? "px-1" : "text-center"} ${TYPO.sectionLabel}`}
+          className={`mb-1.5 w-full ${compact ? "px-1" : "text-center"} ${TYPO.sectionLabel}`}
         >
           {sectionLabel}
         </p>
       )}
-      <div className={groupClass}>
+      <div className={`${groupClass}${compact ? "" : " mx-auto w-full max-w-xs sm:max-w-none"}`}>
         <button
           type="button"
           onClick={() => {
