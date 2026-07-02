@@ -37,7 +37,7 @@ function formatVenue(fixture: MatchFixture): string {
 }
 
 function formatTryCount(n: number): string {
-  return `${n} try${n !== 1 ? "ies" : ""}`;
+  return `${n} ${n === 1 ? "try" : "tries"}`;
 }
 
 function formatTopScorerLine(

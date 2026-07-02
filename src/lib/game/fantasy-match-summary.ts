@@ -237,7 +237,7 @@ function addOpponentCandidates(
 function buildPerformanceSummary(candidate: MotmCandidate): string | undefined {
   const parts: string[] = [];
   if (candidate.tries > 0) {
-    parts.push(`${candidate.tries} try${candidate.tries !== 1 ? "s" : ""}`);
+    parts.push(`${candidate.tries} ${candidate.tries === 1 ? "try" : "tries"}`);
   }
   const goals =
     candidate.conversions + candidate.penalties + candidate.dropGoals;
