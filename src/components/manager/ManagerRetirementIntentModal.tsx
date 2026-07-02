@@ -57,7 +57,7 @@ export function ManagerRetirementIntentModal({
           <span className="inline-flex rounded-full border border-stone-400/45 bg-stone-500/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-stone-200">
             Retirement
           </span>
-          <h2 id="retirement-intent-title" className={`mt-3 ${TYPO.pageTitle}`}>
+          <h2 id="retirement-intent-title" className={`mt-3 ${TYPO.cardTitle}`}>
             End of Career Planned
           </h2>
           <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>

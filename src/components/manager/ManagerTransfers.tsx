@@ -291,7 +291,7 @@ export function ManagerTransfers({
   return (
     <div className={`w-full ${SPACING.stackLg}`}>
       <div>
-        <h1 className={TYPO.pageTitle}>Transfers</h1>
+        <h1 className={TYPO.viewTitle}>Transfers</h1>
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
           Sign listed players, pick up free agents, or bid for anyone in the league
         </p>

@@ -6,8 +6,8 @@ import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
   ManagerInboxMessageCard,
+  ManagerPage,
   ManagerSectionCard,
-  ManagerStat,
 } from "@/components/manager/manager-ui";
 import type { InboxMessage, InboxMessageType, ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
@@ -138,39 +138,41 @@ export function ManagerInbox({
   };
 
   return (
-    <div className={`mx-auto w-full max-w-3xl ${SPACING.stackLg}`}>
-      <div>
-        <h1 className={TYPO.pageTitle}>Inbox</h1>
-        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-          Club messages and transfer offers — auto-cleared after 7 weeks
-        </p>
+    <ManagerPage>
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div className="min-w-0">
+          <h1 className={TYPO.viewTitle}>Inbox</h1>
+          <p className={`mt-1 ${TYPO.managerBody}`}>
+            Club messages and transfer offers — auto-cleared after 7 weeks
+          </p>
+        </div>
+        <div className="flex shrink-0 flex-wrap items-center gap-1.5 text-xs">
+          <span className="rounded-md border border-pitch-700/50 bg-pitch-950/40 px-2 py-0.5 text-pitch-400">
+            Open{" "}
+            <span
+              className={
+                messages.length > 0
+                  ? "font-semibold text-theme-primary"
+                  : "font-medium text-pitch-300"
+              }
+            >
+              {messages.length}
+            </span>
+          </span>
+          {bidCount > 0 && (
+            <span className="rounded-md border border-accent-gold/30 bg-accent-gold/10 px-2 py-0.5 text-pitch-400">
+              Bids{" "}
+              <span className="font-semibold text-accent-gold">{bidCount}</span>
+            </span>
+          )}
+          <span className="px-1 text-pitch-500">
+            {career.seasonYear} · Wk {career.gameWeek}
+          </span>
+        </div>
       </div>
 
-      <ManagerSectionCard variant="elevated" accent="primary">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <ManagerStat
-            label="Open"
-            value={String(messages.length)}
-            tone={messages.length > 0 ? "primary" : "muted"}
-            large
-          />
-          <ManagerStat
-            label="Bids"
-            value={String(bidCount)}
-            tone={bidCount > 0 ? "gold" : "muted"}
-          />
-          <ManagerStat
-            label="Season"
-            value={`${career.seasonYear} · Wk ${career.gameWeek}`}
-            tone="muted"
-          />
-        </div>
-      </ManagerSectionCard>
-
       {messages.length > 0 && (
-        <div className={`${CARD.base} ${SPACING.cardPaddingSm}`}>
-          <p className={`${TYPO.sectionLabel} mb-2.5`}>Filter</p>
-          <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
             {INBOX_FILTERS.map((f) => {
               const count =
                 f.id === "all"
@@ -185,7 +187,7 @@ export function ManagerInbox({
                     playUiClick();
                     setFilter(f.id);
                   }}
-                  className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
+                  className={`rounded-lg border px-2.5 py-1 text-[11px] font-medium transition ${
                     filter === f.id ? FILTER.chipActive : FILTER.chipIdle
                   }`}
                 >
@@ -196,7 +198,6 @@ export function ManagerInbox({
                 </button>
               );
             })}
-          </div>
         </div>
       )}
 
@@ -398,6 +399,6 @@ export function ManagerInbox({
           </div>
         </section>
       )}
-    </div>
+    </ManagerPage>
   );
 }

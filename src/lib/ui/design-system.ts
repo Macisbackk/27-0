@@ -19,6 +19,8 @@ export const SPACING = {
   navItemGap: "space-y-1.5",
   /** Gap between navigation section groups (e.g. main nav → play → settings). */
   navSectionGap: "mt-3",
+  /** Tighter mobile padding for dense manager cards. */
+  cardPaddingMobile: "p-3.5 sm:p-5 lg:p-6",
 } as const;
 
 /** Shared card surface classes. */
@@ -54,6 +56,21 @@ export const PAGE = {
   section: "space-y-4 sm:space-y-5 lg:space-y-4",
   sectionHero: "text-center",
   cardStack: "flex flex-col gap-4 sm:gap-5",
+} as const;
+
+/** Manager Mode layout — fluid mobile-first spacing and grids. */
+export const MANAGER = {
+  page: `mx-auto w-full max-w-3xl ${PAGE.section}`,
+  pageWide: `mx-auto w-full max-w-5xl ${PAGE.section}`,
+  /** Player pool above team sheet on mobile. */
+  splitLayout:
+    "grid gap-4 lg:grid-cols-[minmax(0,1fr)_min(100%,280px)] lg:gap-6 [&>*:first-child]:order-2 [&>*:last-child]:order-1 lg:[&>*:first-child]:order-1 lg:[&>*:last-child]:order-2",
+  statGrid2: "grid grid-cols-2 gap-2.5 sm:gap-3",
+  statGrid3: "grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3",
+  statGrid4:
+    "grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 [&>*:nth-child(3):last-child]:col-span-2 sm:[&>*:nth-child(3):last-child]:col-span-1",
+  tabGrid: "grid grid-cols-4 gap-1.5 sm:gap-2 lg:grid-cols-8",
+  modalTitle: "font-display text-lg font-bold text-white sm:text-xl",
 } as const;
 
 /** Form & filter inputs. */

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CARD, MANAGER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Position } from "@/lib/types";
@@ -27,7 +27,10 @@ import { ManagerSquadPlayerModal } from "@/components/manager/ManagerSquadPlayer
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { autoFixMatchdaySquad, autoSortMatchdaySquad } from "@/lib/manager/managerAutoFix";
 import { GameButton } from "@/components/ui/GameButton";
-import { ManagerSectionCard } from "@/components/manager/manager-ui";
+import {
+  ManagerPage,
+  ManagerViewHeader,
+} from "@/components/manager/manager-ui";
 import { ManagerTacticsPanel } from "@/components/manager/ManagerTactics";
 import { playUiClick } from "@/lib/sound";
 
@@ -328,32 +331,33 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
   };
 
   return (
-    <div className={`mx-auto max-w-5xl ${SPACING.stackLg}`}>
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div>
-          <h1 className={TYPO.pageTitle}>Squad</h1>
-          <p className={`${TYPO.bodySm} text-pitch-400`}>
-            {finePointer
-              ? "Click squad players to assign · click matchday players to swap · double-click for options"
-              : "Tap a player to assign, or a slot then a player · tap matchday players for options"}
-          </p>
-        </div>
-        <GameButton
-          variant="theme"
-          size="sm"
-          onClick={() => {
-            playUiClick();
-            const result = autoSortMatchdaySquad(career);
-            onUpdate(result.career);
-            setPendingAssignId(null);
-            setSelectedTarget(null);
-            setReplaceSourcePlayerId(null);
-            if (!result.ok) window.alert(result.message);
-          }}
-        >
-          Auto Sort Best XI
-        </GameButton>
-      </div>
+    <ManagerPage wide>
+      <ManagerViewHeader
+        title="Squad"
+        subtitle={
+          finePointer
+            ? "Click squad players to assign · click matchday players to swap · double-click for options"
+            : "Tap a player to assign, or a slot then a player · tap matchday players for options"
+        }
+        action={
+          <GameButton
+            variant="theme"
+            size="sm"
+            className="w-full sm:w-auto"
+            onClick={() => {
+              playUiClick();
+              const result = autoSortMatchdaySquad(career);
+              onUpdate(result.career);
+              setPendingAssignId(null);
+              setSelectedTarget(null);
+              setReplaceSourcePlayerId(null);
+              if (!result.ok) window.alert(result.message);
+            }}
+          >
+            Auto Sort Best XI
+          </GameButton>
+        }
+      />
 
       {!squadCheck.valid && (
         <div
@@ -379,56 +383,40 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
       )}
 
       {unavailablePlayers.length > 0 && (
-        <ManagerSectionCard
-          title={`Unavailable (${unavailablePlayers.length})`}
-          accent="red"
-        >
-          <ul className={`mt-2 ${SPACING.stackSm}`}>
+        <div className="rounded-lg border border-red-500/25 bg-red-500/5 px-2.5 py-2">
+          <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-red-300/80">
+            Unavailable ({unavailablePlayers.length})
+          </p>
+          <div className="flex flex-wrap gap-1.5">
             {unavailablePlayers.map((ps) => {
               const player = getManagerPlayer(career, ps.playerId);
               if (!player || !ps.injury) return null;
-              const positions = getManagerPlayerEligiblePositions(
-                career,
-                ps.playerId
-              );
               const isSuspension = ps.injury.type === "suspension";
               const onMatchday = matchdayIds.has(ps.playerId);
               return (
-                <li
+                <span
                   key={ps.playerId}
-                  className={`rounded-lg border px-3 py-2 ${unavailableAccentClass(isSuspension)}`}
+                  className={`inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-md border px-2 py-0.5 text-[11px] ${unavailableAccentClass(isSuspension)}`}
                 >
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-white">
-                        {player.name}
-                      </p>
-                      <p className="text-[10px] text-pitch-400">
-                        {positions.map((p) => POSITION_SHORT[p]).join(" · ")}
-                      </p>
-                    </div>
-                    <span className="shrink-0 font-bold text-pitch-400">
-                      {player.rating ?? player.peakRating}
-                    </span>
-                  </div>
-                  <p
-                    className={`mt-1 text-xs font-medium ${unavailableTextClass(isSuspension)}`}
-                  >
+                  <span className="truncate font-medium text-white">
+                    {player.name}
+                  </span>
+                  <span className={unavailableTextClass(isSuspension)}>
                     {formatInjuryLabel(ps.injury)}
-                  </p>
+                  </span>
                   {onMatchday && (
-                    <p className="mt-1 text-[10px] font-medium text-amber-300">
-                      Still on team sheet — use Auto Fix or swap out
-                    </p>
+                    <span className="text-[10px] font-medium text-amber-300">
+                      on sheet
+                    </span>
                   )}
-                </li>
+                </span>
               );
             })}
-          </ul>
-        </ManagerSectionCard>
+          </div>
+        </div>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+      <div className={MANAGER.splitLayout}>
         <div className={SPACING.stackMd}>
           <div className="rounded-xl border border-pitch-700/40 bg-gradient-to-b from-pitch-800/20 to-pitch-950/60 p-4">
             <p className={`${TYPO.sectionLabel} mb-3 text-center`}>Starting XIII</p>
@@ -442,8 +430,8 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                       : row.slots.length === 2
                         ? "grid-cols-2 max-w-xs mx-auto"
                         : row.slots.length === 3
-                          ? "grid-cols-3"
-                          : "grid-cols-4"
+                          ? "grid-cols-3 max-w-sm mx-auto"
+                          : "grid-cols-4 max-w-sm mx-auto"
                   }`}
                 >
                   {row.slots.map((slotIndex) => {
@@ -684,6 +672,6 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
           onReplace={handleReplacePlayer}
         />
       )}
-    </div>
+    </ManagerPage>
   );
 }

@@ -49,7 +49,7 @@ export function ManagerIncomingBidModal({
           <span className="inline-flex rounded-full border border-amber-400/45 bg-amber-400/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-300">
             Unlisted player
           </span>
-          <h2 id="incoming-bid-title" className={`mt-3 ${TYPO.pageTitle}`}>
+          <h2 id="incoming-bid-title" className={`mt-3 ${TYPO.cardTitle}`}>
             Transfer Approach
           </h2>
           <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>

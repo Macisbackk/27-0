@@ -51,6 +51,7 @@ import {
   playUiClick,
 } from "@/lib/sound";
 import { PageShell } from "@/components/ui/PageShell";
+import { PAGE } from "@/lib/ui/design-system";
 import {
   ensureFriendlyChoices,
   isAwaitingFriendlyChoice,
@@ -422,7 +423,7 @@ export default function ManagerPage() {
       : undefined;
 
   return (
-    <PageShell withLights compact width="wide">
+    <PageShell withLights compact width="wide" innerClassName="px-3 sm:px-4">
       {view === "landing" && (
         <ManagerLanding
           hasSave={hasSave}
@@ -443,7 +444,7 @@ export default function ManagerPage() {
       )}
 
       {showNav && career && (
-        <div className="flex flex-col gap-4 lg:gap-3">
+        <div className={`flex flex-col ${PAGE.section}`}>
           <ManagerNav
             active={view}
             club={career.club}
@@ -454,7 +455,7 @@ export default function ManagerPage() {
             unreadInbox={countUnreadInbox(career)}
           />
 
-          <div className="flex flex-col gap-4 lg:gap-3">
+          <div className={`flex flex-col ${PAGE.section}`}>
             {view === "hub" && (
               <>
                 {isAwaitingFriendlyChoice(career) ? (

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CARD, PAGE, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
@@ -47,6 +47,7 @@ import {
   ManagerNewsItem,
   ManagerSectionCard,
   ManagerStat,
+  ManagerStatGrid,
   boardConfidenceTone,
   fanMoodTone,
   leaguePositionTone,
@@ -496,9 +497,12 @@ export function ManagerHub({
             {getManagerScheduledFixtureHeadline(nextFixture)}
           </p>
         )}
-        <p className="mt-1 text-xl font-bold text-white sm:text-2xl">
-          {career.club} {nextFixture.isHome ? "vs" : "@"}{" "}
-          {nextFixture.opponent}
+        <p className="mt-2 text-lg font-bold leading-snug text-white sm:mt-1 sm:text-2xl">
+          <span className="block sm:inline">{career.club}</span>{" "}
+          <span className="text-pitch-500">
+            {nextFixture.isHome ? "vs" : "@"}
+          </span>{" "}
+          <span className="block sm:inline">{nextFixture.opponent}</span>
         </p>
         <p className={`${TYPO.bodySm} text-pitch-400`}>
           {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
@@ -517,7 +521,7 @@ export function ManagerHub({
             results={career.recentForm.slice(-5) as ("W" | "L" | "D")[]}
           />
         </div>
-        <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+        <ManagerStatGrid cols={4} className="mt-3 text-sm">
           <ManagerStat label="Your rating" value={String(teamRating)} tone="primary" />
           {oppRating !== null && (
             <ManagerStat label="Opponent rating" value={String(oppRating)} tone="default" />
@@ -545,7 +549,7 @@ export function ManagerHub({
               tone={matchPredictionTone(prediction)}
             />
           )}
-        </div>
+        </ManagerStatGrid>
         {!squadCheck.valid && (
           <div
             className={`mt-3 rounded-lg border border-accent-gold/40 bg-accent-gold/10 px-3 py-2 ${TYPO.bodySm} text-accent-gold whitespace-pre-line`}
@@ -566,7 +570,7 @@ export function ManagerHub({
             )}
           </div>
         )}
-        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+        <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
           <GameButton
             variant="theme"
             disabled={!canPlay}
@@ -759,7 +763,7 @@ export function ManagerHub({
 
   if (playoffsPending && onPlayoffsContinue) {
     return (
-      <div className="space-y-4 sm:space-y-5 lg:space-y-4">
+      <div className={PAGE.section}>
         <HubPlayoffsGateCard career={career} onContinue={onPlayoffsContinue} />
         {newsSection}
         <HubLeagueTable
@@ -780,7 +784,7 @@ export function ManagerHub({
 
   if (playoffsActive && hubCareer.playoffs) {
     return (
-      <div className="space-y-4 sm:space-y-5 lg:space-y-4">
+      <div className={PAGE.section}>
         {nextFixtureCard}
         <HubPlayoffBracketPanel playoffs={hubCareer.playoffs} />
         {newsSection}
@@ -799,8 +803,12 @@ export function ManagerHub({
   }
 
   return (
-    <div className="space-y-4 sm:space-y-5 lg:space-y-3">
+    <div className={PAGE.section}>
       {nextFixtureCard}
+
+      {seasonProgressCard}
+
+      <HubStandingsPanel career={career} />
 
       <ManagerClubFinancesPanel career={career} showSplitGuide />
 
@@ -809,10 +817,6 @@ export function ManagerHub({
         lastGate={lastGate}
         wageOverBudget={wageOverBudget}
       />
-
-      {seasonProgressCard}
-
-      <HubStandingsPanel career={career} />
 
       {newsSection}
 

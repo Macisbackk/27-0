@@ -381,7 +381,7 @@ export function ManagerFixtures({
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
       <div>
-        <h1 className={TYPO.pageTitle}>Fixtures</h1>
+        <h1 className={TYPO.viewTitle}>Fixtures</h1>
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
           Season {career.seasonYear} · {career.club}
         </p>

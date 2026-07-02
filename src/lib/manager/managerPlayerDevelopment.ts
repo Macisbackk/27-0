@@ -10,6 +10,12 @@ import type {
 import { getManagerModePlayerRating } from "./managerSquadRatings";
 import { getLeagueClubRosterIds } from "./managerLeagueRosters";
 
+const VETERAN_AGE = 30;
+/** Chance a veteran with a good season gains +1 when performance alone wouldn't. */
+const VETERAN_UPSIDE_CHANCE = 0.18;
+/** Minimum appearances before a player can gain rating at season end. */
+const MIN_APPEARANCES_FOR_INCREASE = 8;
+
 function computePotential(peakRating: number, age: number): number {
   if (age <= 21) return Math.min(95, peakRating + 8);
   if (age <= 24) return Math.min(92, peakRating + 5);
@@ -18,11 +24,36 @@ function computePotential(peakRating: number, age: number): number {
   return Math.max(65, peakRating - 3);
 }
 
+function hadGoodSeason(extras?: {
+  appearances?: number;
+  tries?: number;
+  form?: number;
+}): boolean {
+  if (!extras) return false;
+  const appearances = extras.appearances ?? 0;
+  const tries = extras.tries ?? 0;
+  const form = extras.form ?? 50;
+
+  if (appearances >= 18) return true;
+  if (appearances >= 10 && form >= 58) return true;
+  if (form >= 70 && appearances >= MIN_APPEARANCES_FOR_INCREASE) return true;
+  if (tries >= 6 && appearances >= 10) return true;
+  return false;
+}
+
+function isVeteranWithGoodSeason(
+  age: number,
+  extras?: { appearances?: number; tries?: number; form?: number }
+): boolean {
+  return age >= VETERAN_AGE && hadGoodSeason(extras);
+}
+
 function developOnePlayer(
   playerId: string,
   career: ManagerCareer,
   playerDevelopment: Record<string, PlayerDevelopmentState>,
-  extras?: { appearances?: number; tries?: number; form?: number }
+  extras?: { appearances?: number; tries?: number; form?: number },
+  rng?: () => number
 ): PlayerDevelopmentState | null {
   const base = getPlayerById(playerId) ?? getManagerPlayer(career, playerId);
   if (!base) return null;
@@ -36,41 +67,77 @@ function developOnePlayer(
   );
   const before = existing?.rating ?? baseline;
   const potential = existing?.potential ?? computePotential(baseline, age);
-
-  let delta = 0;
-  if (before < potential) {
-    if (age <= 21) delta += 1.5;
-    else if (age <= 24) delta += 1;
-    else if (age <= 27) delta += 0.5;
-    else if (age >= 33) delta -= 1;
-    else if (age >= 30) delta -= 0.5;
-
-    const potentialGap = potential - before;
-    if (age <= 24 && potentialGap >= 10) delta += 0.5;
-    else if (age <= 27 && potentialGap >= 6) delta += 0.25;
-  } else if (age >= 33) {
-    delta -= 1;
-  } else if (age >= 30) {
-    delta -= 0.5;
-  }
+  const veteranGoodSeason = isVeteranWithGoodSeason(age, extras);
 
   const appearances = extras?.appearances ?? 0;
   const tries = extras?.tries ?? 0;
   const form = extras?.form ?? 50;
+  const playedEnoughForIncrease =
+    !extras || appearances >= MIN_APPEARANCES_FOR_INCREASE;
 
-  if (appearances >= 18) delta += 1.5;
-  else if (appearances >= 10) delta += 0.5;
-  else if (appearances < 4 && extras) delta -= 0.5;
+  let delta = 0;
+  if (before < potential) {
+    if (playedEnoughForIncrease) {
+      if (age <= 21) delta += 1.5;
+      else if (age <= 24) delta += 1;
+      else if (age <= 27) delta += 0.5;
+      else if (!veteranGoodSeason) {
+        if (age >= 33) delta -= 1;
+        else if (age >= 30) delta -= 0.5;
+      }
 
-  if (tries >= 12) delta += 1;
-  else if (tries >= 6) delta += 0.5;
+      const potentialGap = potential - before;
+      if (age <= 24 && potentialGap >= 10) delta += 0.5;
+      else if (age <= 27 && potentialGap >= 6) delta += 0.25;
+    } else if (!veteranGoodSeason) {
+      if (age >= 33) delta -= 1;
+      else if (age >= 30) delta -= 0.5;
+    }
+  } else if (!veteranGoodSeason) {
+    if (age >= 33) delta -= 1;
+    else if (age >= 30) delta -= 0.5;
+  }
 
-  if (form >= 70) delta += 1;
-  else if (form >= 58) delta += 0.5;
-  else if (form < 42 && extras) delta -= 0.5;
+  if (playedEnoughForIncrease) {
+    if (appearances >= 18) delta += 1.5;
+    else if (appearances >= 10) delta += 0.5;
 
-  const rounded = Math.round(delta);
-  const after = Math.max(55, Math.min(potential, before + rounded));
+    if (tries >= 12) delta += 1;
+    else if (tries >= 6) delta += 0.5;
+
+    if (form >= 70) delta += 1;
+    else if (form >= 58) delta += 0.5;
+    else if (form < 42 && extras) delta -= 0.5;
+  } else if (appearances < 4 && extras) {
+    delta -= 0.5;
+  }
+
+  if (veteranGoodSeason) {
+    delta = Math.max(0, delta);
+  }
+
+  let finalDelta = Math.round(delta);
+  if (!playedEnoughForIncrease && finalDelta > 0) {
+    finalDelta = 0;
+  }
+  if (
+    veteranGoodSeason &&
+    playedEnoughForIncrease &&
+    finalDelta <= 0 &&
+    rng &&
+    rng() < VETERAN_UPSIDE_CHANCE
+  ) {
+    finalDelta = 1;
+  }
+
+  const ratingCap =
+    veteranGoodSeason && finalDelta > 0
+      ? Math.max(potential, before + finalDelta)
+      : potential;
+  let after = Math.max(55, Math.min(ratingCap, before + finalDelta));
+  if (veteranGoodSeason) {
+    after = Math.max(before, after);
+  }
   const newPeak = Math.max(existing?.peakRating ?? baseline, after, baseline);
 
   return {
@@ -108,8 +175,13 @@ function developLeaguePlayersAtSeasonEnd(
       const potential = existing?.potential ?? computePotential(baseline, age);
       let delta = 0;
       if (age <= 23) delta += rng() < 0.6 ? 1 : 0;
-      else if (age >= 32) delta -= rng() < 0.55 ? 1 : 0;
-      else delta += rng() < 0.35 ? 1 : rng() < 0.2 ? -1 : 0;
+      else if (age >= 32) {
+        if (rng() < 0.22) {
+          delta += rng() < VETERAN_UPSIDE_CHANCE ? 1 : 0;
+        } else {
+          delta -= rng() < 0.55 ? 1 : 0;
+        }
+      } else delta += rng() < 0.35 ? 1 : rng() < 0.2 ? -1 : 0;
 
       const after = Math.max(55, Math.min(potential, before + delta));
       if (after === before) continue;
@@ -180,11 +252,17 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
     const reviewBefore =
       devState?.seasonStartRating ?? devState?.rating ?? baseline;
 
-    const developed = developOnePlayer(ps.playerId, career, playerDevelopment, {
-      appearances: ps.seasonAppearances,
-      tries: ps.seasonTries,
-      form: ps.form,
-    });
+    const developed = developOnePlayer(
+      ps.playerId,
+      career,
+      playerDevelopment,
+      {
+        appearances: ps.seasonAppearances,
+        tries: ps.seasonTries,
+        form: ps.form,
+      },
+      seedrandom(`${career.seed}-dev-${career.seasonYear}-${ps.playerId}`)
+    );
     if (!developed) continue;
 
     playerDevelopment[ps.playerId] = {

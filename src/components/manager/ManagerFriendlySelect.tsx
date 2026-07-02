@@ -2,12 +2,17 @@
 
 import { GameButton } from "@/components/ui/GameButton";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { ManagerStat } from "@/components/manager/manager-ui";
+import {
+  ManagerPage,
+  ManagerSectionCard,
+  ManagerStat,
+  ManagerViewHeader,
+} from "@/components/manager/manager-ui";
 import type { FriendlyOpponentChoice, ManagerCareer } from "@/lib/manager/types";
 import { getFriendlyAttendanceInterest } from "@/lib/manager/managerFriendlies";
-import { getFriendlyDualBorderStyle } from "@/lib/manager/managerFriendlyUi";
+import { getFriendlyOpponentBorderStyle } from "@/lib/manager/managerFriendlyUi";
 import { playUiClick } from "@/lib/sound";
 
 interface ManagerFriendlySelectProps {
@@ -24,31 +29,24 @@ export function ManagerFriendlySelect({
   onSelect,
 }: ManagerFriendlySelectProps) {
   return (
-    <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
-      <div>
-        <h1 className={TYPO.pageTitle}>Choose Friendly Opponent</h1>
-        <p className={`${TYPO.bodySm} text-pitch-400`}>
-          Pre-season Friendly {friendlyNumber} of 2 — pick any club from your
-          save · {career.club}
-        </p>
-      </div>
+    <ManagerPage>
+      <ManagerViewHeader
+        title="Choose Friendly Opponent"
+        subtitle={`Pre-season Friendly ${friendlyNumber} of 2 — pick any club from your save · ${career.club}`}
+      />
 
-      <div className="grid items-stretch gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {choices.map((choice) => (
-          <div
+          <ManagerSectionCard
             key={choice.id}
-            className={`${CARD.elevated} ${SPACING.cardPadding} flex h-full flex-col border border-pitch-700/40`}
-            style={getFriendlyDualBorderStyle(career.club, choice.club)}
+            className="flex h-full flex-col !p-3.5 sm:!p-5"
+            style={getFriendlyOpponentBorderStyle(choice.club)}
           >
-            <div className="flex min-h-[1.25rem] items-center justify-between gap-2">
-              <ClubDualSwatch club={career.club} size="sm" />
-              <span className="text-[10px] font-bold uppercase tracking-wider text-pitch-500">
-                vs
-              </span>
+            <div className="flex min-h-[1.25rem] items-center gap-2">
               <ClubDualSwatch club={choice.club} size="sm" />
             </div>
 
-            <div className="mt-3 min-h-[3.25rem]">
+            <div className="mt-3 min-h-[2.75rem]">
               <p className="line-clamp-2 font-semibold leading-snug text-white">
                 {choice.displayName}
               </p>
@@ -63,11 +61,11 @@ export function ManagerFriendlySelect({
             </div>
 
             <p
-              className={`mt-3 min-h-[2.5rem] line-clamp-2 ${TYPO.bodySm} text-pitch-400`}
+              className={`mt-3 min-h-[2.5rem] line-clamp-3 ${TYPO.managerBody}`}
             >
               {choice.description}
             </p>
-            <p className="mt-2 min-h-[2.5rem] line-clamp-2 text-xs leading-relaxed text-pitch-500">
+            <p className={`mt-2 line-clamp-2 ${TYPO.managerBody}`}>
               {getFriendlyAttendanceInterest(choice, career)}
             </p>
 
@@ -76,7 +74,7 @@ export function ManagerFriendlySelect({
             <GameButton
               variant="theme"
               size="sm"
-              className="mt-4 shrink-0"
+              className="mt-4 w-full shrink-0"
               onClick={() => {
                 playUiClick();
                 onSelect(choice.id);
@@ -84,9 +82,9 @@ export function ManagerFriendlySelect({
             >
               Choose Opponent
             </GameButton>
-          </div>
+          </ManagerSectionCard>
         ))}
       </div>
-    </div>
+    </ManagerPage>
   );
 }

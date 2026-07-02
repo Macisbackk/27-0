@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
+import { CARD, FILTER, MANAGER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, ManagerReservePlayer } from "@/lib/manager/types";
 import { POSITION_SHORT } from "@/lib/positions";
@@ -28,6 +28,9 @@ import {
 } from "@/lib/manager/managerContracts";
 import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import { playUiClick } from "@/lib/sound";
+import {
+  ManagerPage,
+} from "@/components/manager/manager-ui";
 import { ManagerReserveReleaseModal } from "@/components/manager/ManagerReserveReleaseModal";
 import { ManagerReserveGrowthPanel } from "@/components/manager/ManagerReserveGrowthPanel";
 
@@ -160,10 +163,10 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
   };
 
   return (
-    <div className={`mx-auto max-w-5xl ${SPACING.stackLg}`}>
+    <ManagerPage wide>
       <div>
-        <h1 className={TYPO.pageTitle}>Reserves</h1>
-        <p className={`${TYPO.bodySm} text-pitch-400`}>
+        <h1 className={TYPO.viewTitle}>Reserves</h1>
+        <p className={`${TYPO.managerBody}`}>
           Youth & reserve squad · {career.reserves.length} players · Reserve
           wages from {formatWage(
             Object.values(career.reserveContracts ?? {}).reduce(
@@ -295,7 +298,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         </div>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+      <div className={MANAGER.splitLayout}>
         <div className={SPACING.stackLg}>
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-2`}>Filters</p>
@@ -473,6 +476,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
           onConfirm={handleReleaseConfirm}
         />
       )}
-    </div>
+    </ManagerPage>
   );
 }

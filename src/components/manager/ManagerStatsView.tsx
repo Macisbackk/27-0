@@ -37,7 +37,7 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
   return (
     <div className={SPACING.stackLg}>
       <div>
-        <h1 className={TYPO.pageTitle}>Stats</h1>
+        <h1 className={TYPO.viewTitle}>Stats</h1>
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
           {tab === "season"
             ? `${career.seasonYear} season statistics`

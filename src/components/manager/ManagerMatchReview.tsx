@@ -74,7 +74,7 @@ export function ManagerMatchReview({
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className={TYPO.pageTitle}>Match Review</h1>
+          <h1 className={TYPO.viewTitle}>Match Review</h1>
           {fixture.competition && (
             <ManagerCompetitionBadge
               competition={fixture.competition}

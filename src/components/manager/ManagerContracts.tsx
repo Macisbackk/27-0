@@ -20,6 +20,7 @@ import {
 import { bulkRenewExpiringContractsWithInbox, renewManagerContract } from "@/lib/manager/managerInbox";
 import { releasePlayer } from "@/lib/manager/managerTransfers";
 import { playPanelClose, playUiClick } from "@/lib/sound";
+import { ManagerPage } from "@/components/manager/manager-ui";
 
 type ContractFilter =
   | "all"
@@ -197,11 +198,11 @@ export function ManagerContracts({
   const overBudget = career.wageBill > career.wageBudget;
 
   return (
-    <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
-      <div className={`${CARD.elevated} ${CARD.featured} ${SPACING.cardPadding}`}>
+    <ManagerPage>
+      <div className={`${CARD.elevated} ${CARD.featured} ${SPACING.cardPaddingMobile}`}>
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className={TYPO.pageTitle}>Contracts</h1>
+            <h1 className={TYPO.viewTitle}>Contracts</h1>
             <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
               Manage wages, renewals, and squad roles
             </p>
@@ -433,7 +434,7 @@ export function ManagerContracts({
               </div>
             )}
 
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            <div className="mt-4 grid gap-3 md:grid-cols-3">
               <label className={TYPO.bodySm}>
                 <span className="text-pitch-400">Offer wage (£/yr)</span>
                 <input
@@ -519,6 +520,6 @@ export function ManagerContracts({
           </div>
         </div>
       )}
-    </div>
+    </ManagerPage>
   );
 }

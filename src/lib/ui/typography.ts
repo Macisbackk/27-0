@@ -2,6 +2,9 @@
 
 export const TYPO = {
   pageTitle: "font-display text-3xl font-black tracking-tight text-white sm:text-4xl",
+  /** In-app manager screen titles — smaller on mobile. */
+  viewTitle:
+    "font-display text-xl font-black tracking-tight text-white sm:text-2xl lg:text-3xl",
   pageSubtitle: "text-base text-gray-400 sm:text-lg leading-relaxed",
   sectionLabel: "font-display text-xs font-bold uppercase tracking-[0.2em] text-theme-primary",
   sectionTitle: "font-display text-sm font-bold uppercase tracking-wider text-theme-primary",
@@ -9,11 +12,13 @@ export const TYPO = {
   playerName: "font-display text-xl font-semibold leading-tight text-white sm:text-2xl",
   playerNameSm: "font-display text-lg font-semibold leading-tight text-white",
   clubName: "font-display text-[10px] font-bold uppercase tracking-wide text-gray-300 sm:text-xs",
-  statLabel: "text-[10px] font-medium uppercase tracking-wider text-gray-500",
+  statLabel: "text-[10px] font-medium uppercase tracking-wider text-gray-500 sm:text-[11px]",
   statValue: "text-sm font-medium text-white",
   statValueLg: "font-display text-xl font-bold text-white",
   body: "text-sm text-gray-400 leading-relaxed",
   bodySm: "text-xs text-gray-500 leading-relaxed",
+  /** Manager in-app copy — readable on small screens. */
+  managerBody: "text-sm leading-relaxed text-pitch-400 sm:text-xs sm:text-pitch-500",
   button: "font-display text-xs font-bold uppercase tracking-[0.15em]",
   nav: "text-sm font-medium",
   identityLine: "text-sm font-semibold text-gray-300 sm:text-base",

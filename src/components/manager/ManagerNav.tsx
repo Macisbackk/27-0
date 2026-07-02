@@ -1,21 +1,21 @@
 "use client";
 
 import { ClubLogoBox } from "@/components/ClubBadge";
-import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
+import { BTN, CARD, MANAGER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubIndicatorColor } from "@/lib/clubs";
 import type { ManagerView } from "@/lib/manager/types";
 import { playTabChange, playUiClick } from "@/lib/sound";
 
-const TABS: { id: ManagerView; label: string }[] = [
-  { id: "hub", label: "Hub" },
-  { id: "inbox", label: "Inbox" },
-  { id: "squad", label: "Squad" },
-  { id: "reserves", label: "Reserves" },
-  { id: "contracts", label: "Contracts" },
-  { id: "transfers", label: "Transfers" },
-  { id: "fixtures", label: "Fixtures" },
-  { id: "stats", label: "Stats" },
+const TABS: { id: ManagerView; label: string; shortLabel: string }[] = [
+  { id: "hub", label: "Hub", shortLabel: "Hub" },
+  { id: "inbox", label: "Inbox", shortLabel: "Inbox" },
+  { id: "squad", label: "Squad", shortLabel: "Squad" },
+  { id: "reserves", label: "Reserves", shortLabel: "Res." },
+  { id: "contracts", label: "Contracts", shortLabel: "Deals" },
+  { id: "transfers", label: "Transfers", shortLabel: "Market" },
+  { id: "fixtures", label: "Fixtures", shortLabel: "Fixt." },
+  { id: "stats", label: "Stats", shortLabel: "Stats" },
 ];
 
 interface ManagerNavProps {
@@ -46,9 +46,9 @@ export function ManagerNav({
         : null;
 
   return (
-    <header className="space-y-3">
+    <header className="space-y-2.5 sm:space-y-3">
       <div
-        className={`${CARD.elevated} ${SPACING.cardPaddingSm} flex items-center gap-3 border-l-4`}
+        className={`${CARD.elevated} ${SPACING.cardPaddingMobile} flex items-center gap-3 border-l-4`}
         style={{ borderLeftColor: clubAccent }}
       >
         <ClubLogoBox club={club} size="sm" className="hidden sm:flex" />
@@ -56,29 +56,23 @@ export function ManagerNav({
         <div className="min-w-0 flex-1">
           <p className={`${TYPO.sectionLabel} text-pitch-400`}>Manager Career</p>
           <h1
-            className="truncate font-display text-lg font-black uppercase tracking-wide text-white sm:text-xl"
+            className="truncate font-display text-base font-black uppercase tracking-wide text-white sm:text-xl"
             title={club}
           >
             {club}
           </h1>
           {seasonMeta && (
-            <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>{seasonMeta}</p>
+            <p className={`mt-0.5 ${TYPO.managerBody}`}>{seasonMeta}</p>
           )}
         </div>
       </div>
 
-      <nav className="manager-tab-rail -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:grid sm:grid-cols-4 sm:overflow-visible sm:px-0 lg:grid-cols-8">
+      <nav className={MANAGER.tabGrid} aria-label="Manager navigation">
         {TABS.map((tab) => {
           const label =
             tab.id === "inbox" && unreadInbox > 0
               ? `Inbox (${unreadInbox > 9 ? "9+" : unreadInbox})`
               : tab.label;
-          const shortLabel =
-            tab.id === "contracts"
-              ? "Deals"
-              : tab.id === "transfers"
-                ? "Market"
-                : tab.label;
           return (
             <button
               key={tab.id}
@@ -90,11 +84,11 @@ export function ManagerNav({
                 onNavigate(tab.id);
               }}
               disabled={disabled}
-              className={`btn-press flex shrink-0 items-center justify-center text-center min-h-[38px] min-w-[4.25rem] rounded-lg px-3 py-2 font-display text-[11px] font-bold uppercase tracking-wide transition sm:min-h-[40px] sm:w-full sm:min-w-0 sm:px-3 sm:text-xs ${
+              className={`btn-press flex min-h-[44px] items-center justify-center rounded-lg px-2 py-2.5 text-center font-display text-[10px] font-bold uppercase tracking-wide transition sm:px-3 sm:text-xs ${
                 active === tab.id ? BTN.tabActive : BTN.tabIdle
               } ${disabled ? "pointer-events-none opacity-40" : ""}`}
             >
-              <span className="sm:hidden">{shortLabel}</span>
+              <span className="sm:hidden">{tab.shortLabel}</span>
               <span className="hidden sm:inline">{label}</span>
             </button>
           );

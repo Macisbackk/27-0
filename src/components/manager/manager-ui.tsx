@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import type { InboxMessage, InboxMessageType, LatestNewsItem, ManagerCareer } from "@/lib/manager/types";
 import { formatWage } from "@/lib/manager/managerContracts";
 import {
@@ -6,7 +6,7 @@ import {
   getOperatingBalance,
   getTransferBudget,
 } from "@/lib/manager/managerFinance";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CARD, MANAGER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 export type ManagerValueTone =
@@ -39,7 +39,63 @@ const STAT_VALUE_LG: Record<ManagerValueTone, string> = {
 };
 
 export const MANAGER_LABEL =
-  "text-[10px] font-semibold uppercase tracking-wider text-pitch-500";
+  "text-[11px] font-semibold uppercase tracking-wider text-pitch-500 sm:text-[10px]";
+
+export function ManagerPage({
+  wide = false,
+  children,
+  className = "",
+}: {
+  wide?: boolean;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={`${wide ? MANAGER.pageWide : MANAGER.page} ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+export function ManagerViewHeader({
+  title,
+  subtitle,
+  action,
+}: {
+  title: string;
+  subtitle?: string;
+  action?: ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div className="min-w-0">
+        <h1 className={TYPO.viewTitle}>{title}</h1>
+        {subtitle ? (
+          <p className={`mt-1 ${TYPO.managerBody}`}>{subtitle}</p>
+        ) : null}
+      </div>
+      {action ? <div className="shrink-0">{action}</div> : null}
+    </div>
+  );
+}
+
+export function ManagerStatGrid({
+  cols = 2,
+  className = "",
+  children,
+}: {
+  cols?: 2 | 3 | 4;
+  className?: string;
+  children: ReactNode;
+}) {
+  const gridClass =
+    cols === 4
+      ? MANAGER.statGrid4
+      : cols === 3
+        ? MANAGER.statGrid3
+        : MANAGER.statGrid2;
+  return <div className={`${gridClass} ${className}`}>{children}</div>;
+}
 
 export function ManagerFormStrip({
   results,
@@ -116,6 +172,7 @@ export function ManagerSectionCard({
   variant = "base",
   accent,
   className = "",
+  style,
 }: {
   title?: string;
   subtitle?: string;
@@ -123,6 +180,7 @@ export function ManagerSectionCard({
   variant?: "base" | "elevated" | "inset" | "featured";
   accent?: "gold" | "primary" | "red" | "amber" | "sky";
   className?: string;
+  style?: CSSProperties;
 }) {
   const surface =
     variant === "elevated"
@@ -148,7 +206,8 @@ export function ManagerSectionCard({
 
   return (
     <div
-      className={`${surface} ${SPACING.cardPadding} ${accentBorder} ${className}`}
+      className={`${surface} ${SPACING.cardPaddingMobile} ${accentBorder} ${className}`}
+      style={style}
     >
       {title && <p className={TYPO.sectionLabel}>{title}</p>}
       {subtitle && (
@@ -350,7 +409,7 @@ function InboxMessageMeta({ message }: { message: InboxMessage }) {
   if (!hasOffer && !hasAsking && !hasPlayer && !hasClub) return null;
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+    <div className={MANAGER.statGrid4}>
       {hasPlayer && (
         <ManagerStat label="Player" value={message.playerName!} tone="default" />
       )}
@@ -488,7 +547,7 @@ export function ManagerClubFinancesPanel({
         Match income is split between the transfer fund and day-to-day club
         running costs.
       </p>
-      <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className={`mt-3 ${MANAGER.statGrid3}`}>
         <ManagerStat
           label="Transfer fund"
           value={formatWage(transfer)}
@@ -507,7 +566,7 @@ export function ManagerClubFinancesPanel({
         />
       </div>
       {(seasonTransfer > 0 || seasonOperating > 0) && (
-        <div className="mt-3 grid grid-cols-2 gap-3">
+        <div className={`mt-3 ${MANAGER.statGrid2}`}>
           <ManagerStat
             label="Earned this season → transfers"
             value={formatWage(seasonTransfer)}
