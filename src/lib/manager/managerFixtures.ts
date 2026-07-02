@@ -1,6 +1,8 @@
 import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { getMatchClubStrength } from "../game/opponent-squad-strength";
+import { getLeagueClubInjuryPenalty } from "./managerLeagueState";
+import type { LeagueClubStates } from "./managerLeagueState";
 import {
   decomposeRLScore,
   pickRLScore,
@@ -64,15 +66,18 @@ function simulateClubFixture(
   home: string,
   away: string,
   round: number,
-  seed: string
+  seed: string,
+  leagueClubStates?: LeagueClubStates
 ): { homeScore: number; awayScore: number; homeTries: number; awayTries: number } {
   const rng = seedrandom(`${seed}-mgr-club-r${round}-${home}-${away}`);
-  const homeStr = getMatchClubStrength(home, seed, round, true, {
-    currentSeasonOnly: true,
-  });
-  const awayStr = getMatchClubStrength(away, seed, round, false, {
-    currentSeasonOnly: true,
-  });
+  const homeStr =
+    getMatchClubStrength(home, seed, round, true, {
+      currentSeasonOnly: true,
+    }) - getLeagueClubInjuryPenalty(leagueClubStates, home);
+  const awayStr =
+    getMatchClubStrength(away, seed, round, false, {
+      currentSeasonOnly: true,
+    }) - getLeagueClubInjuryPenalty(leagueClubStates, away);
   const diff = homeStr - awayStr + (rng() - 0.5) * 8;
   const homeWins = rng() < 1 / (1 + Math.exp(-diff / 4.2));
 
@@ -119,7 +124,8 @@ export function simulateRoundOtherMatches(
   userOpponent: string,
   round: number,
   seed: string,
-  userMatch: ManagerRoundMatch
+  userMatch: ManagerRoundMatch,
+  leagueClubStates?: LeagueClubStates
 ): ManagerRoundMatch[] {
   const allClubs = [...CURRENT_PLAYABLE_CLUBS];
   const resting = allClubs.filter(
@@ -129,7 +135,7 @@ export function simulateRoundOtherMatches(
   const results: ManagerRoundMatch[] = [userMatch];
 
   for (const [home, away] of pairs) {
-    const sim = simulateClubFixture(home, away, round, seed);
+    const sim = simulateClubFixture(home, away, round, seed, leagueClubStates);
     results.push({
       round,
       homeTeam: home,

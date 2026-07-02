@@ -14,7 +14,7 @@ const PLAYABLE_CLUB_BASE_STRENGTH: Record<string, number> = {
   "York Knights": 74,
   "Huddersfield Giants": 73,
   "Castleford Tigers": 70,
-  "Bradford Bulls": 69,
+  "Bradford Bulls": 74,
   "Wakefield Trinity": 66,
 };
 

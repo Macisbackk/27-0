@@ -10,8 +10,13 @@ import {
 } from "./managerSquad";
 import { resolveCareerForMatchSimulation } from "./managerAutoFix";
 import {
-  simulateRoundOtherMatches,
+  applyUserMatchToLeagueStates,
+  getLeagueClubInjuryPenalty,
+  resolveLeagueClubStatesForFixture,
+} from "./managerLeagueState";
+import {
   buildLeagueTableFromMatches,
+  simulateRoundOtherMatches,
 } from "./managerFixtures";
 import { rollPostMatchInjuries } from "./managerTransfers";
 import { computeManagerTeamRating } from "./managerRating";
@@ -285,6 +290,10 @@ export function applyManagerMatchResult(
 
   let roundResults = career.roundMatches;
   let leagueTable = career.leagueTable;
+  let leagueStates = resolveLeagueClubStatesForFixture(
+    career,
+    !isCup && !isFriendly && !isPlayoff ? round : career.gameWeek || round
+  );
 
   if (!isCup && !isFriendly && !isPlayoff) {
     const userMatch = {
@@ -304,7 +313,8 @@ export function applyManagerMatchResult(
         sched.opponent,
         round,
         career.seed,
-        userMatch
+        userMatch,
+        leagueStates
       ),
     ];
     leagueTable = buildLeagueTableFromMatches(roundResults, career.club);
@@ -318,6 +328,15 @@ export function applyManagerMatchResult(
     round,
     mods.fatigueFactor,
     aggressiveDefence
+  );
+
+  leagueStates = applyUserMatchToLeagueStates(
+    leagueStates,
+    career.club,
+    sched.opponent,
+    injuries.length,
+    career.seed,
+    round
   );
 
   let nextSquad = tickInjuries(career.squad).map((ps) => {
@@ -478,6 +497,11 @@ export function applyManagerMatchResult(
 
   const nextCareer: ManagerCareer = {
     ...working,
+    leagueClubStates: leagueStates,
+    leagueClubStatesWeek:
+      !isCup && !isFriendly && !isPlayoff
+        ? round
+        : career.leagueClubStatesWeek,
     fixtures: [...career.fixtures, record],
     roundMatches: roundResults,
     leagueTable,
@@ -574,6 +598,15 @@ export function previewManagerMatchScoreline(
     ...simCareer.matchdayInterchange,
   ]);
 
+  const leagueStates = resolveLeagueClubStatesForFixture(
+    simCareer,
+    isFriendly ? simCareer.gameWeek || round : round
+  );
+  const opponentInjuryPenalty = getLeagueClubInjuryPenalty(
+    leagueStates,
+    sched.opponent
+  );
+
   const teamForm = Math.max(-10, Math.min(10, (avgForm - 50) / 5));
   const userRating = computeManagerTeamRating(
     simCareer.matchdayXiii,
@@ -604,14 +637,15 @@ export function previewManagerMatchScoreline(
 
   const strengthBias =
     userRating > baseOppRating
-      ? Math.min(5, (userRating - baseOppRating) * 0.2)
+      ? Math.min(8, (userRating - baseOppRating) * 0.35)
       : 0;
 
   const opponentRating =
     baseOppRating +
     mods.opponentPenalty * 0.12 -
     mods.strengthBonus * 0.25 -
-    strengthBias;
+    strengthBias -
+    opponentInjuryPenalty;
 
   const { fixture } = simulateOneFixture(
     squad,
@@ -626,6 +660,7 @@ export function previewManagerMatchScoreline(
     {
       currentSeasonOnly: !isFriendly,
       opponentRatingOverride: opponentRating,
+      userRatingOverride: userRating,
       cupMode: sched.competition === "challenge_cup",
       managerCareerMode: true,
     }

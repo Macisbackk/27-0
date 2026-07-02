@@ -37,7 +37,7 @@ const CLUB_EXPECTATIONS: Record<string, string> = {
   "Leigh Leopards": "Mid-table push",
   "Huddersfield Giants": "Avoid bottom",
   "Castleford Tigers": "Avoid bottom",
-  "Bradford Bulls": "Avoid bottom / build long-term",
+  "Bradford Bulls": "Mid-table push",
   "Wakefield Trinity": "Survive and develop",
   "York Knights": "Survive and develop",
 };
@@ -54,7 +54,7 @@ const CLUB_BUDGET: Record<string, number> = {
   "Leigh Leopards": 740_000,
   "Huddersfield Giants": 680_000,
   "Castleford Tigers": 620_000,
-  "Bradford Bulls": 580_000,
+  "Bradford Bulls": 650_000,
   "Wakefield Trinity": 520_000,
   "York Knights": 500_000,
 };

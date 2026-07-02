@@ -101,14 +101,20 @@ export function buildSquadSlotsFromMatchday(
   slotPositions: Position[],
   career?: ManagerCareer
 ): SquadSlot[] {
-  const squad = createEmptySquad();
+  let squad = createEmptySquad();
   for (let i = 0; i < xiiiIds.length; i++) {
+    const playedPos = slotPositions[i];
+    if (playedPos) {
+      squad = squad.map((s) =>
+        s.slotIndex === i ? { ...s, position: playedPos } : s
+      );
+    }
     const id = xiiiIds[i]!;
     if (!id) continue;
     const player = career ? getManagerPlayer(career, id) : getPlayerById(id);
     if (!player) continue;
     const penalty = career ? getManagerFitnessRatingPenalty(career, id) : 0;
-    signPlayerToSlot(squad, player, i, penalty);
+    squad = signPlayerToSlot(squad, player, i, penalty);
   }
   return squad;
 }

@@ -70,6 +70,19 @@ function opponentMultiplier(opponent: string): number {
   return 0.9 + (strength - 70) * 0.008;
 }
 
+/** Clubs with limited travelling support — smaller crowds when they visit. */
+const POOR_AWAY_FOLLOWING_CLUBS = new Set([
+  "Toulouse Olympique",
+  "Catalans Dragons",
+  "York Knights",
+  "Huddersfield Giants",
+]);
+
+function awayTravelCrowdMultiplier(visitingClub: string): number {
+  if (POOR_AWAY_FOLLOWING_CLUBS.has(visitingClub)) return 0.72;
+  return 1;
+}
+
 function competitionMultiplier(competition: ManagerCompetition): number {
   return competition === "challenge_cup" ? 1.12 : 1;
 }
@@ -94,6 +107,7 @@ export function calculateMatchAttendance(
     formMultiplier(career.recentForm) *
     leaguePositionMultiplier(position) *
     opponentMultiplier(fixture.opponent) *
+    awayTravelCrowdMultiplier(fixture.opponent) *
     competitionMultiplier(fixture.competition) *
     (0.85 + fanMood / 200);
 

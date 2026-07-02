@@ -484,6 +484,9 @@ export interface ManagerCareer {
   playerDevelopment?: Record<string, PlayerDevelopmentState>;
   lastSeasonDevelopmentReview?: PlayerDevelopmentChange[];
   lastReserveReportWeek?: number;
+  /** Per-club injury load for league sim fairness (AI clubs miss players too). */
+  leagueClubStates?: Record<string, { injuriesOut: number }>;
+  leagueClubStatesWeek?: number;
   createdAt: string;
   updatedAt: string;
 }

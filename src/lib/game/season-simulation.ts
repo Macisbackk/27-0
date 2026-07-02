@@ -566,6 +566,8 @@ export interface SimulateFixtureOptions {
   cupMode?: boolean;
   /** Use opponent squad average rating instead of club base strength. */
   opponentRatingOverride?: number;
+  /** Manager UI team rating — aligns sim with hub/preview strength. */
+  userRatingOverride?: number;
   /** Draft Mode — stronger teams rewarded, fewer unrealistic upsets. */
   draftMode?: boolean;
   /** Current Mode — opponents use 2026 team-year pools only. */
@@ -635,7 +637,8 @@ function resolveOutcome(
   rng: () => number,
   options: SimulateFixtureOptions = {}
 ): { won: boolean; isUpset: boolean; ratingGap: number } {
-  const avgRating = getAverageSquadRating(squad);
+  const avgRating =
+    options.userRatingOverride ?? getAverageSquadRating(squad);
   const totalValue = getSquadValue(squad);
   const ratingGap = avgRating - opponentStrength;
   const draftMode = options.draftMode ?? false;
@@ -647,7 +650,7 @@ function resolveOutcome(
   const formEffect = form * (managerMode ? 0.55 : 0.4);
   const draftRatingBonus = draftMode ? getDraftTeamRatingBonus(avgRating) : 0;
 
-  let noiseScale = draftMode ? 8 : managerMode ? 3.2 : 7;
+  let noiseScale = draftMode ? 8 : managerMode ? 2.6 : 7;
   const absGap = Math.abs(ratingGap);
   if (absGap >= 10) noiseScale = draftMode ? 2 : 2.5;
   else if (absGap >= 8) noiseScale = draftMode ? 2.8 : 3.5;
@@ -658,7 +661,7 @@ function resolveOutcome(
 
   const noise = (rng() - 0.5) * noiseScale;
   const strengthGap = strength - opponentStrength;
-  const ratingWeight = draftMode ? 1.55 : managerMode ? 1.48 : 1.34;
+  const ratingWeight = draftMode ? 1.55 : managerMode ? 1.62 : 1.34;
   const valueWeight = draftMode ? 0.85 : managerMode ? 0.65 : 0.8;
   const diff =
     ratingGap * ratingWeight +
@@ -679,10 +682,10 @@ function resolveOutcome(
   } else {
     const floor = getNormalWinProbabilityFloor(ratingGap);
     if (floor !== null) winProbability = Math.max(winProbability, floor);
-    else if (ratingGap >= 5) winProbability = Math.max(winProbability, managerMode ? 0.84 : 0.72);
-    else if (managerMode && ratingGap >= 3) winProbability = Math.max(winProbability, 0.72);
-    else if (managerMode && ratingGap >= 1) winProbability = Math.max(winProbability, 0.62);
-    else if (managerMode && ratingGap >= 0) winProbability = Math.max(winProbability, 0.54);
+    else if (ratingGap >= 5) winProbability = Math.max(winProbability, managerMode ? 0.9 : 0.72);
+    else if (managerMode && ratingGap >= 3) winProbability = Math.max(winProbability, 0.8);
+    else if (managerMode && ratingGap >= 1) winProbability = Math.max(winProbability, 0.7);
+    else if (managerMode && ratingGap >= 0) winProbability = Math.max(winProbability, 0.58);
   }
 
   if (ratingGap <= -10) winProbability = Math.min(winProbability, 0.1);
@@ -698,23 +701,38 @@ function resolveOutcome(
   let won = rng() < winProbability;
   let isUpset = false;
 
-  // Favourite losses — rare when rating gap is large
+  // Favourite losses — rare when rating gap is large (manager mode: minimal when clearly stronger)
   if (won && ratingGap >= 2) {
-    const upsetChance = draftMode
-      ? getDraftFavoriteUpsetChance(ratingGap, cupMode)
-      : ratingGap >= 10
-        ? cupMode
-          ? 0.028
-          : 0.015
-        : ratingGap >= 8
+    const upsetChance =
+      managerMode && ratingGap >= 3
+        ? ratingGap >= 10
           ? cupMode
-            ? 0.05
-            : 0.03
-          : ratingGap >= 5
+            ? 0.006
+            : 0.003
+          : ratingGap >= 8
             ? cupMode
-              ? 0.085
-              : 0.055
-            : 0;
+              ? 0.01
+              : 0.006
+            : ratingGap >= 5
+              ? cupMode
+                ? 0.015
+                : 0.008
+              : 0
+        : draftMode
+          ? getDraftFavoriteUpsetChance(ratingGap, cupMode)
+          : ratingGap >= 10
+            ? cupMode
+              ? 0.028
+              : 0.015
+            : ratingGap >= 8
+              ? cupMode
+                ? 0.05
+                : 0.03
+              : ratingGap >= 5
+                ? cupMode
+                  ? 0.085
+                  : 0.055
+                : 0;
     if (upsetChance > 0 && rng() < upsetChance) {
       won = false;
       isUpset = true;

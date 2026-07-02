@@ -2,6 +2,7 @@ import type { ChallengeCupBracketState } from "../game/challenge-cup-bracket";
 import type { ManagerCareer } from "./types";
 import { DEFAULT_TACTICS } from "./types";
 import { EMPTY_TEAM_SEASON_STATS } from "./managerCareerStats";
+import { initLeagueClubStates, ensureLeagueClubStates } from "./managerLeagueState";
 import { getManagerClubConfig } from "./club-config";
 import {
   getManagerLineupForClub,
@@ -169,6 +170,8 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     leagueTransfers: raw.leagueTransfers ?? [],
     wagePressureWeeks: raw.wagePressureWeeks ?? 0,
     lastReserveReportWeek: raw.lastReserveReportWeek,
+    leagueClubStates: ensureLeagueClubStates(raw.leagueClubStates),
+    leagueClubStatesWeek: raw.leagueClubStatesWeek ?? 0,
     playerDevelopment: raw.playerDevelopment ?? {},
     lastSeasonDevelopmentReview: raw.lastSeasonDevelopmentReview,
   };
@@ -297,6 +300,8 @@ export function createNewCareer(club: string): ManagerCareer {
     calledUpReserveIds: [],
     playerRegistry: {},
     hubResultsExpanded: false,
+    leagueClubStates: initLeagueClubStates(),
+    leagueClubStatesWeek: 0,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

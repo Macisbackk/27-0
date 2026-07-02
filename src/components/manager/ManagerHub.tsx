@@ -20,7 +20,6 @@ import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidatio
 import { getClubByName } from "@/lib/clubs";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
-import { getManagerClubKeyPlayers } from "@/lib/manager/managerSquadRatings";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { getMatchPrediction } from "@/lib/manager/managerScoring";
 import {
@@ -288,17 +287,6 @@ export function ManagerHub({
   const newsItems = getHubNewsItems(career);
   const transferBudget = career.managerFinance?.transferBudget ?? career.budget;
 
-  const keyPlayers = useMemo(
-    () =>
-      getManagerClubKeyPlayers(
-        career.squad.map((p) => p.playerId),
-        (id) => getManagerPlayer(career, id)?.rating ?? 0,
-        (id) => getManagerPlayer(career, id)?.name ?? "",
-        5
-      ),
-    [career]
-  );
-
   const handleAutoFix = () => {
     const result = autoFixMatchdaySquad(career);
     onUpdate?.(result.career);
@@ -470,27 +458,6 @@ export function ManagerHub({
           </div>
         </div>
       </div>
-
-      {keyPlayers.length > 0 && (
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <p className={`${TYPO.sectionLabel} mb-3`}>Stars of the Team</p>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
-            {keyPlayers.map((p) => (
-              <div
-                key={p.playerId}
-                className={`${CARD.inset} px-3 py-2 text-center`}
-              >
-                <p className="truncate text-sm font-medium text-white">
-                  {p.name}
-                </p>
-                <p className="mt-0.5 text-lg font-bold text-theme-primary">
-                  {p.rating}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {ts.played > 0 && (
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>
