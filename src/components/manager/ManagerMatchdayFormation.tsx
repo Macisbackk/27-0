@@ -6,6 +6,7 @@ import { toMatchdaySquadSlotsFromCareer } from "@/lib/manager/matchday-lineup";
 import type { MatchdaySlotTarget } from "@/lib/manager/managerMatchdaySquad";
 import { canAssignPlayerToXiiiSlot } from "@/lib/manager/managerMatchdaySquad";
 import type { ManagerCareer } from "@/lib/manager/types";
+import type { SquadSlot } from "@/lib/types";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -13,7 +14,10 @@ import { TYPO } from "@/lib/ui/typography";
 type SlotAccent = "source" | "target";
 
 interface ManagerMatchdayFormationProps {
-  career: ManagerCareer;
+  career?: ManagerCareer;
+  /** Read-only opponent / league club sheet — same pitch layout without career state. */
+  squad?: SquadSlot[];
+  clubColorOverride?: string;
   title?: string;
   interactive?: boolean;
   selectedTarget?: MatchdaySlotTarget | null;
@@ -26,6 +30,8 @@ interface ManagerMatchdayFormationProps {
 
 export function ManagerMatchdayFormation({
   career,
+  squad: squadOverride,
+  clubColorOverride,
   title = "Starting XIII",
   interactive = false,
   selectedTarget,
@@ -36,12 +42,15 @@ export function ManagerMatchdayFormation({
   onFilledSlotClick,
 }: ManagerMatchdayFormationProps) {
   const squad = useMemo(
-    () => toMatchdaySquadSlotsFromCareer(career),
-    [career]
+    () =>
+      squadOverride ??
+      (career ? toMatchdaySquadSlotsFromCareer(career) : []),
+    [career, squadOverride]
   );
+  const pitchClub = clubColorOverride ?? career?.club ?? "";
 
   const slotAccent = useMemo(() => {
-    if (!interactive) return undefined;
+    if (!interactive || !career) return undefined;
     const accent: Partial<Record<number, SlotAccent>> = {};
 
     for (let slotIndex = 0; slotIndex < 13; slotIndex++) {
@@ -98,13 +107,13 @@ export function ManagerMatchdayFormation({
         hideValueSummary
         interactive={interactive}
         allowFilledSlotClick={interactive}
-        clubColorOverride={career.club}
+        clubColorOverride={pitchClub || undefined}
         slotAccent={slotAccent}
         selectedSlot={
           selectedTarget?.kind === "xiii" ? selectedTarget.index : undefined
         }
         onSlotClick={(slotIndex) => {
-          if (!interactive) return;
+          if (!interactive || !career) return;
           const playerId = career.matchdayXiii[slotIndex] ?? "";
           if (playerId && onFilledSlotClick) {
             onFilledSlotClick(playerId);

@@ -29,7 +29,7 @@ export default function UpdatesPage() {
             return (
               <li key={update.id}>
                 <div
-                  className={`${CARD.panel} overflow-hidden rounded-xl border transition ${
+                  className={`${CARD.panel} overflow-hidden rounded-xl border transition-colors ${
                     isOpen
                       ? "border-accent-green/40 bg-pitch-900/80"
                       : "border-pitch-700/50 hover:border-pitch-600/60"
@@ -47,15 +47,15 @@ export default function UpdatesPage() {
                         setOpenId(update.id);
                       }
                     }}
-                    className="flex min-h-[3.25rem] w-full items-center justify-between gap-3 px-4 py-3 text-left transition hover:bg-pitch-800/35 sm:min-h-[3.5rem] sm:px-5"
+                    className="no-btn-press grid h-14 w-full grid-cols-[minmax(0,1fr)_2rem] items-center gap-3 px-4 text-left transition-colors hover:bg-pitch-800/35 active:bg-pitch-800/50 sm:px-5"
                     aria-expanded={isOpen}
                   >
-                    <span className="min-w-0 flex-1 font-display text-sm font-bold leading-snug text-white sm:text-base">
+                    <span className="line-clamp-2 font-display text-sm font-bold leading-tight text-white sm:text-base">
                       {update.title}
                     </span>
                     <span
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-pitch-600/50 text-sm text-accent-green transition ${
-                        isOpen ? "rotate-180 bg-pitch-800/60" : ""
+                      className={`flex h-8 w-8 items-center justify-center rounded-md border border-pitch-600/50 bg-pitch-900/50 text-sm text-accent-green transition-transform duration-200 ${
+                        isOpen ? "rotate-180" : ""
                       }`}
                       aria-hidden
                     >

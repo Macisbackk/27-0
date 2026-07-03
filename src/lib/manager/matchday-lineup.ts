@@ -94,7 +94,8 @@ export function toMatchdaySquadSlotsFromCareer(career: ManagerCareer): SquadSlot
 }
 
 export function toMatchdaySquadSlotsFromClubLineup(
-  lineup: ClubMatchdayLineup
+  lineup: ClubMatchdayLineup,
+  career?: ManagerCareer
 ): SquadSlot[] {
   const xiiiIds = Array.from({ length: XIII_SLOTS }, (_, slotIndex) => {
     return lineup.xiii[slotIndex]?.player.id ?? "";
@@ -102,5 +103,5 @@ export function toMatchdaySquadSlotsFromClubLineup(
   const slotPositions = Array.from({ length: XIII_SLOTS }, (_, slotIndex) => {
     return lineup.xiii[slotIndex]?.position ?? getFormationSlotPosition(slotIndex);
   });
-  return toMatchdaySquadSlots({ xiiiIds, slotPositions });
+  return toMatchdaySquadSlots({ xiiiIds, slotPositions, career });
 }

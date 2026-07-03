@@ -40,8 +40,11 @@ export function getLineupXiiiPlayers(lineup: ClubMatchdayLineup): Player[] {
 }
 
 /** RugbyPitch / TeamSheet slots — delegates to unified matchday-lineup converter. */
-export function clubLineupToSquadSlots(lineup: ClubMatchdayLineup): SquadSlot[] {
-  return toMatchdaySquadSlotsFromClubLineup(lineup);
+export function clubLineupToSquadSlots(
+  lineup: ClubMatchdayLineup,
+  career?: ManagerCareer
+): SquadSlot[] {
+  return toMatchdaySquadSlotsFromClubLineup(lineup, career);
 }
 
 function buildOpponentXiii(
@@ -52,7 +55,7 @@ function buildOpponentXiii(
     const player = selected[i]!;
     xiii[i] = {
       player,
-      position: getFormationSlotPosition(i),
+      position: OPPONENT_LINEUP[i] ?? getFormationSlotPosition(i),
     };
   }
   return xiii;

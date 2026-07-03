@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
-import { TeamSheet } from "@/components/TeamSheet";
+import { ManagerMatchdayFormation } from "@/components/manager/ManagerMatchdayFormation";
 import { GameButton } from "@/components/ui/GameButton";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { useModalA11y } from "@/hooks/useModalA11y";
@@ -15,11 +15,10 @@ import {
 import { getManagerPlayerAge } from "@/lib/manager/managerPlayers";
 import type { ManagerCareer } from "@/lib/manager/types";
 import type { Player } from "@/lib/types";
-import { POSITION_SHORT } from "@/lib/positions";
-import { CARD, MODAL, SPACING } from "@/lib/ui/design-system";
+import { CURRENT_PLAYABLE_CLUBS } from "@/lib/clubs/super-league-display";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playPanelClose, playUiClick } from "@/lib/sound";
-import { CURRENT_PLAYABLE_CLUBS } from "@/lib/clubs/super-league-display";
 
 interface ManagerClubSquadSheetProps {
   career: ManagerCareer;
@@ -54,39 +53,34 @@ function teamStrengthLabel(avg: number): { label: string; className: string } {
   };
 }
 
-function InterchangeSlot({
+function ReadonlyInterchangeSlot({
   player,
-  age,
-  listed,
   shirtNumber,
+  listed,
+  age,
 }: {
-  player: Player;
-  age: number | undefined;
-  listed: boolean;
+  player: Player | undefined;
   shirtNumber: number;
+  listed?: boolean;
+  age?: number;
 }) {
   return (
-    <div className="flex min-w-[4.5rem] flex-col items-center gap-1.5 rounded-lg border border-pitch-700/50 bg-pitch-950/55 px-2 py-2">
-      <span className="flex h-6 w-6 items-center justify-center rounded-full border border-pitch-600/60 bg-pitch-900/80 text-[10px] font-bold text-pitch-300">
-        {shirtNumber}
-      </span>
-      <p className="line-clamp-2 min-h-[2rem] w-full text-center text-[11px] font-semibold leading-tight text-white">
-        {player.name}
-      </p>
-      <div className="flex flex-wrap items-center justify-center gap-1 text-[10px]">
-        <span className="rounded border border-pitch-600/50 bg-pitch-900/70 px-1 py-0.5 font-bold uppercase tracking-wide text-sky-300">
-          {POSITION_SHORT[player.position]}
-        </span>
-        <span className="font-bold text-theme-primary">{player.peakRating}</span>
-      </div>
-      <div className="flex flex-wrap items-center justify-center gap-1 text-[10px] text-pitch-500">
-        {age != null && <span>{age}y</span>}
-        {listed && (
-          <span className="rounded border border-theme-primary/35 bg-theme-primary/10 px-1 py-0.5 font-bold uppercase tracking-wider text-theme-primary">
-            Listed
-          </span>
-        )}
-      </div>
+    <div className="rounded-lg border border-pitch-700/50 bg-pitch-950/55 px-2 py-2 text-left">
+      <p className="text-[10px] text-pitch-500">{shirtNumber}.</p>
+      <p className="truncate text-sm text-white">{player?.name ?? "Empty"}</p>
+      {player && (
+        <p className="text-[10px] text-theme-primary">{player.peakRating}</p>
+      )}
+      {(age != null || listed) && (
+        <div className="mt-0.5 flex flex-wrap gap-1 text-[10px] text-pitch-500">
+          {age != null && <span>{age}y</span>}
+          {listed && (
+            <span className="font-bold uppercase tracking-wider text-theme-primary">
+              Listed
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -98,8 +92,14 @@ export function ManagerClubSquadSheet({
   onViewUserSquad,
   round,
 }: ManagerClubSquadSheetProps) {
-  const lineup = getClubMatchdayLineup(career, club, round);
-  const squadSlots = useMemo(() => clubLineupToSquadSlots(lineup), [lineup]);
+  const lineup = useMemo(
+    () => getClubMatchdayLineup(career, club, round),
+    [career, club, round]
+  );
+  const squadSlots = useMemo(
+    () => clubLineupToSquadSlots(lineup, career),
+    [lineup, career]
+  );
   const clubAccent = getClubIndicatorColor(club);
 
   const handleClose = useCallback(() => {
@@ -108,13 +108,6 @@ export function ManagerClubSquadSheet({
   }, [onClose]);
 
   const panelRef = useModalA11y(true, handleClose);
-
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      panelRef.current?.scrollTo({ top: 0, behavior: "auto" });
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    });
-  }, [club, round, panelRef]);
 
   const listedPlayerIds = useMemo(
     () =>
@@ -145,10 +138,12 @@ export function ManagerClubSquadSheet({
   const strength = teamStrengthLabel(teamAvg);
   const filledXiii = xiiiPlayers.length;
 
+  const interchangePlayers = lineup.interchange;
+
   return (
     <BodyPortal>
       <div
-        className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} ${SPACING.safeBottom} backdrop-blur-sm sm:items-center`}
+        className={`fixed inset-0 z-[95] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm`}
         role="presentation"
         onClick={handleClose}
       >
@@ -158,46 +153,45 @@ export function ManagerClubSquadSheet({
           role="dialog"
           aria-modal="true"
           aria-labelledby="manager-club-sheet-title"
-          className={`${MODAL.panelWide} card-glass outline-none`}
+          className="card-glass flex max-h-[min(88vh,720px)] w-full max-w-md flex-col overflow-hidden outline-none sm:max-w-lg"
           onClick={(e) => e.stopPropagation()}
         >
           <div
-            className="h-1.5 w-full shrink-0"
+            className="h-1 w-full shrink-0"
             style={{ backgroundColor: clubAccent }}
             aria-hidden
           />
 
-          <div className={MODAL.panelPadding}>
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex min-w-0 items-start gap-3">
-                <ClubDualSwatch club={club} size="md" />
-                <div className="min-w-0">
-                  <p className={TYPO.sectionLabel}>Team Sheet</p>
-                  <h2
-                    id="manager-club-sheet-title"
-                    className={`truncate ${TYPO.cardTitle}`}
-                  >
-                    {club}
-                  </h2>
-                  <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-                    {lineup.isUserClub
-                      ? "Your matchday 17"
-                      : "Projected matchday 17"}{" "}
-                    · Season {career.seasonYear}
-                  </p>
-                </div>
+          <div className="flex shrink-0 items-start justify-between gap-3 border-b border-pitch-700/40 px-4 py-3">
+            <div className="flex min-w-0 items-start gap-2.5">
+              <ClubDualSwatch club={club} size="sm" />
+              <div className="min-w-0">
+                <p className={TYPO.sectionLabel}>Team Sheet</p>
+                <h2
+                  id="manager-club-sheet-title"
+                  className={`truncate ${TYPO.cardTitle}`}
+                >
+                  {club}
+                </h2>
+                <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
+                  {lineup.isUserClub
+                    ? "Your matchday 17"
+                    : "Projected matchday 17"}
+                </p>
               </div>
-              <GameButton
-                variant="secondary"
-                size="sm"
-                className="shrink-0"
-                onClick={handleClose}
-              >
-                Close
-              </GameButton>
             </div>
+            <GameButton
+              variant="secondary"
+              size="sm"
+              className="shrink-0"
+              onClick={handleClose}
+            >
+              Close
+            </GameButton>
+          </div>
 
-            <div className="mt-3 flex flex-wrap items-center gap-2">
+          <div className="min-h-0 flex-1 overflow-y-auto px-4 py-3">
+            <div className="flex flex-wrap items-center gap-2">
               <span
                 className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${strength.className}`}
               >
@@ -227,35 +221,45 @@ export function ManagerClubSquadSheet({
               </p>
             ) : null}
 
-            <div className="mt-4 min-w-0 rounded-xl border border-pitch-700/40 bg-gradient-to-b from-pitch-800/20 to-pitch-950/60 p-3 sm:p-4">
-              <TeamSheet
-                squad={squadSlots}
-                clubColorOverride={club}
-                interactive
-              />
+            <div className="mt-3">
+              {lineup.isUserClub ? (
+                <ManagerMatchdayFormation career={career} title="Starting XIII" />
+              ) : (
+                <ManagerMatchdayFormation
+                  squad={squadSlots}
+                  clubColorOverride={club}
+                  title="Starting XIII"
+                />
+              )}
             </div>
 
-            {lineup.interchange.length > 0 && (
-              <section className="mt-5">
-                <p className={TYPO.sectionLabel}>Interchange · 14–17</p>
-                <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  {lineup.interchange.map((player, index) => (
-                    <InterchangeSlot
-                      key={player.id}
+            <div className={`${CARD.base} ${SPACING.cardPadding} mt-3`}>
+              <p className={`${TYPO.sectionLabel} mb-2`}>Interchange</p>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                {Array.from({ length: 4 }, (_, i) => {
+                  const player = interchangePlayers[i];
+                  const playerId = player?.id;
+                  return (
+                    <ReadonlyInterchangeSlot
+                      key={i}
                       player={player}
-                      age={getManagerPlayerAge(career, player.id)}
-                      listed={listedPlayerIds.has(player.id)}
-                      shirtNumber={14 + index}
+                      shirtNumber={14 + i}
+                      listed={playerId ? listedPlayerIds.has(playerId) : false}
+                      age={
+                        playerId
+                          ? getManagerPlayerAge(career, playerId)
+                          : undefined
+                      }
                     />
-                  ))}
-                </div>
-              </section>
-            )}
+                  );
+                })}
+              </div>
+            </div>
 
             {lineup.isUserClub && onViewUserSquad && (
               <GameButton
                 variant="theme"
-                className="mt-5 w-full"
+                className="mt-4 w-full"
                 onClick={() => {
                   playUiClick();
                   handleClose();
