@@ -20,6 +20,9 @@ import {
   getUserLeaguePosition,
   syncManagerLeagueTable,
 } from "./managerFixtures";
+import { PLAYOFF_QUALIFIERS } from "../game/playoff-simulation";
+
+export { PLAYOFF_QUALIFIERS };
 
 export const GRAND_FINAL_VENUE = "Old Trafford";
 export const GRAND_FINAL_ATTENDANCE_MIN = 70_000;
