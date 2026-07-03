@@ -1,6 +1,8 @@
 import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import { isWorseRecord } from "../lifetime-stats";
-import { getUserLeaguePosition } from "./managerFixtures";
+import { isLeagueAndCupPhaseComplete } from "./managerChallengeCup";
+import { getUserLeagueTablePosition } from "./managerFixtures";
+import { getManagerSeasonTrophyLabels } from "./managerSeasonTrophies";
 import type { ManagerCareer, ManagerSeasonSummary } from "./types";
 
 export interface ManagerCareerSaveStats {
@@ -42,20 +44,13 @@ function applySeasonAchievements(
     playoffFinish: string | null;
     challengeCupWon: boolean;
     challengeCupFinal: boolean;
-    countAchievements: boolean;
+    countLeagueAchievements: boolean;
+    countPlayoffAchievements: boolean;
   }
 ): void {
-  if (season.countAchievements) {
+  if (season.countLeagueAchievements) {
     if (season.position === 1) {
       stats.leagueTitles++;
-      stats.trophies++;
-    }
-    if (season.playoffFinish === "Super League Champions") {
-      stats.superLeagueTitles++;
-      stats.trophies++;
-    }
-    if (season.challengeCupWon) {
-      stats.challengeCups++;
       stats.trophies++;
     }
     if (season.position <= 6) {
@@ -67,6 +62,20 @@ function applySeasonAchievements(
     if (season.wins === 0 && season.losses === 27) {
       stats.winlessSeasons++;
     }
+  }
+
+  if (season.countPlayoffAchievements) {
+    if (season.playoffFinish === "Super League Champions") {
+      stats.superLeagueTitles++;
+      stats.trophies++;
+    }
+    if (season.challengeCupWon) {
+      stats.challengeCups++;
+      stats.trophies++;
+    }
+  } else if (season.challengeCupWon) {
+    stats.challengeCups++;
+    stats.trophies++;
   }
 
   if (season.challengeCupWon || season.challengeCupFinal) {
@@ -155,7 +164,8 @@ export function computeManagerCareerSaveStats(
       playoffFinish: s.playoffFinish ?? null,
       challengeCupWon: cupWon,
       challengeCupFinal: cupFinal,
-      countAchievements: true,
+      countLeagueAchievements: true,
+      countPlayoffAchievements: true,
     });
 
     const winMargin = marginFromSummaryHighlight(s.biggestWin);
@@ -170,8 +180,9 @@ export function computeManagerCareerSaveStats(
   stats.losses += career.losses;
 
   const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
-  const currentPosition = getUserLeaguePosition(career.leagueTable, career.club);
+  const currentPosition = getUserLeagueTablePosition(career);
   const currentMargins = marginsFromFixtures(career);
+  const leaguePhaseComplete = isLeagueAndCupPhaseComplete(career);
 
   applySeasonAchievements(stats, {
     position: currentPosition,
@@ -181,7 +192,8 @@ export function computeManagerCareerSaveStats(
     challengeCupWon: cupOutcome.isWinner,
     challengeCupFinal:
       cupOutcome.isWinner || cupOutcome.finish === "Runners-Up",
-    countAchievements: career.isSeasonComplete,
+    countLeagueAchievements: leaguePhaseComplete,
+    countPlayoffAchievements: career.isSeasonComplete,
   });
 
   if (currentMargins.biggestWin > stats.biggestWinMargin) {
@@ -212,23 +224,8 @@ export function buildManagerCareerSeasonRows(
     !career.isSeasonComplete;
 
   if (hasCurrentActivity) {
-    const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
-    const trophies: string[] = [];
-    const position = getUserLeaguePosition(career.leagueTable, career.club);
-
-    if (career.isSeasonComplete) {
-      if (career.playoffs?.finish === "Super League Champions") {
-        trophies.push("Super League Champions");
-      } else if (position === 1) {
-        trophies.push("League Leaders");
-      }
-      if (cupOutcome.isWinner) trophies.push("Challenge Cup");
-      if (career.playoffs?.finish === "Grand Final Runner-Up") {
-        trophies.push("Grand Final Runner-Up");
-      }
-    } else if (cupOutcome.isWinner) {
-      trophies.push("Challenge Cup");
-    }
+    const trophies = getManagerSeasonTrophyLabels(career);
+    const position = getUserLeagueTablePosition(career);
 
     rows.push({
       seasonYear: career.seasonYear,

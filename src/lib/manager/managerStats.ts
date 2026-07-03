@@ -1,7 +1,8 @@
 import { STORAGE_KEYS } from "../storage/keys";
 import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import { syncManagerLeaderboard } from "../storage/manager-leaderboard";
-import { getUserLeaguePosition } from "./managerFixtures";
+import { isLeagueAndCupPhaseComplete } from "./managerChallengeCup";
+import { getUserLeagueTablePosition } from "./managerFixtures";
 import { pickManagerWorstSeasonRecord } from "./manager-stats-views";
 import type { ManagerCareer, ManagerLifetimeStats } from "./types";
 
@@ -76,11 +77,40 @@ export function recordMatchResult(
   syncManagerLeaderboard(stats);
 }
 
+export function recordLeaguePhaseAchievements(career: ManagerCareer): void {
+  if (!isLeagueAndCupPhaseComplete(career)) return;
+  if (career.leaguePhaseStatsRecordedForYear === career.seasonYear) return;
+
+  const stats = loadManagerStats();
+  const position = getUserLeagueTablePosition(career);
+  const seasonWins = career.wins;
+  const seasonLosses = career.losses;
+
+  if (position === 1) {
+    stats.leagueTitles++;
+    stats.trophies++;
+  }
+  if (position <= 6) {
+    stats.topSixFinishes++;
+  }
+  if (seasonWins === 27 && seasonLosses === 0) {
+    stats.perfectSeasons++;
+  }
+  if (seasonWins === 0 && seasonLosses === 27) {
+    stats.winlessSeasons++;
+  }
+
+  saveManagerStats(stats);
+  syncManagerLeaderboard(stats);
+}
+
 export function recordSeasonComplete(career: ManagerCareer): void {
+  recordLeaguePhaseAchievements(career);
+
   const stats = loadManagerStats();
   stats.seasonsCompleted++;
 
-  const position = getUserLeaguePosition(career.leagueTable, career.club);
+  const position = getUserLeagueTablePosition(career);
   const seasonWins = career.wins;
   const seasonLosses = career.losses;
 
@@ -91,21 +121,6 @@ export function recordSeasonComplete(career: ManagerCareer): void {
   const worst = pickManagerWorstSeasonRecord(stats, seasonWins, seasonLosses);
   stats.worstRecordWins = worst.wins;
   stats.worstRecordLosses = worst.losses;
-
-  if (position === 1) {
-    stats.leagueTitles++;
-    stats.trophies++;
-  }
-  if (position <= 6) {
-    stats.topSixFinishes++;
-  }
-
-  if (seasonWins === 27 && seasonLosses === 0) {
-    stats.perfectSeasons++;
-  }
-  if (seasonWins === 0 && seasonLosses === 27) {
-    stats.winlessSeasons++;
-  }
 
   const playoffFinish = career.playoffs?.finish ?? null;
   if (playoffFinish === "Super League Champions") {
@@ -124,6 +139,21 @@ export function recordSeasonComplete(career: ManagerCareer): void {
 
   saveManagerStats(stats);
   syncManagerLeaderboard(stats);
+}
+
+/** Credit global lifetime stats for league table finish once per season. */
+export function recordLeaguePhaseAchievementsIfNeeded(
+  career: ManagerCareer
+): ManagerCareer {
+  if (!isLeagueAndCupPhaseComplete(career)) return career;
+  if (career.leaguePhaseStatsRecordedForYear === career.seasonYear) {
+    return career;
+  }
+  recordLeaguePhaseAchievements(career);
+  return {
+    ...career,
+    leaguePhaseStatsRecordedForYear: career.seasonYear,
+  };
 }
 
 export { STATS_KEY };

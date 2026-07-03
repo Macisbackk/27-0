@@ -1,8 +1,8 @@
 # 27-0
 
-Build the most valuable Super League rugby team from random player offers. Inspired by [82-0.com](https://82-0.com), built for English Super League fans.
+Super League rugby league squad builder and career sim. Inspired by [82-0.com](https://82-0.com).
 
-**Runs entirely client-side** — no database, no authentication, no environment variables required.
+**Manager Mode** is the headline experience — run a club through league, cup, and play-offs. **Quick Mode** is the fast spin-and-simulate loop. Optional Supabase auth syncs stats, leaderboards, and club funds across devices.
 
 ## Quick Start
 
@@ -11,94 +11,54 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). That's it.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Gameplay
+Optional: configure Supabase env vars for online accounts (see `.env.example` if present).
 
-- Receive one real Super League player at a time
-- **Sign** them to your XIII (if their position slot is open) or **Skip** them forever
-- Fill all 13 positions to complete your run
-- Your score = total transfer value of your squad
-- Leaderboard and stats saved in **localStorage** on this device
+## Game Modes
 
-### Squad Positions (13)
+### Manager Mode (`/manager`)
 
-| Position | Count |
-|----------|-------|
-| Fullback | 1 |
-| Wing | 2 |
-| Centre | 2 |
-| Stand Off | 1 |
-| Scrum Half | 1 |
-| Prop | 2 |
-| Hooker | 1 |
-| Second Row | 2 |
-| Loose Forward | 1 |
+- Choose a Super League club and manage a multi-season career
+- Squad, tactics, contracts, transfers, reserves, inbox, friendlies
+- Challenge Cup and top-six play-offs
+- **Three save slots** on this device — **export/import JSON** from the landing screen to back up careers
+- Manager finances (transfer budget, wages, gate income) are separate from Quick Mode club funds
 
-## Tech Stack
+### Quick Mode (`/play`)
 
-- **Next.js 15** (App Router)
-- **TypeScript**
-- **Tailwind CSS**
-- **JSON player database** (bundled at build time)
-- **localStorage** for leaderboard & statistics
+- Build a XIII position-by-position from club/year spins
+- Simulate a 27-round season and play-offs
+- **Current** — 2026 squads · **Era** — historic team-years
+
+## Two Economies
+
+| Currency | Where | Purpose |
+|----------|--------|---------|
+| **Club funds** | Quick Mode | Earned per run; spend in **Store** on UI themes; syncs when logged in |
+| **Manager finances** | Manager save only | Transfer budget, wages, gate receipts — stays in your career file |
 
 ## Player Database
 
-All players are real — stored in `data/*.json`:
-
-```
-data/
-├── clubs.json
-├── current-squads.json
-├── historic-players.json
-└── legends.json
-```
-
-Validate after editing:
+Real Super League players in `data/*.json`. Validate after edits:
 
 ```bash
 npm run validate:players
 ```
 
-**Reveal logic:** 80% current players, 20% historic (with rare legend appearances).
-
-See `data/README.md` for the player schema.
-
 ## Local Storage
 
 | Key | Contents |
 |-----|----------|
-| `27-0-username` | Display name for leaderboard |
-| `27-0-stats` | Career statistics |
-| `27-0-leaderboard` | Daily / weekly / monthly / all-time scores |
+| `27-0-manager-career-slot-0/1/2` | Manager careers |
+| `27-0-stats` | Quick Mode career stats |
+| `27-0-club-funds` | Meta currency for Store |
+| `27-0-manager-stats` | Manager lifetime stats (local) |
 
-Data is per-browser. Clear site data to reset.
+Export manager saves regularly — careers are not cloud-synced yet.
 
-## Project Structure
+## Tech Stack
 
-```
-data/                     # Player database (source of truth)
-scripts/validate-players.ts
-src/
-├── app/                  # Pages (no API routes)
-├── components/           # UI
-└── lib/
-    ├── players/          # JSON loader & normalizer
-    ├── game/             # Engine & generator
-    └── storage/          # localStorage (stats, leaderboard, user)
-```
-
-## Deploy
-
-Static-friendly Next.js app — deploy to Vercel with zero configuration:
-
-```bash
-npm run build
-```
-
-No `DATABASE_URL` or secrets needed.
-
-## License
-
-MIT
+- Next.js 15 (App Router), TypeScript, Tailwind CSS
+- JSON player database bundled at build time
+- localStorage + optional Supabase (auth, leaderboards, cloud stats)

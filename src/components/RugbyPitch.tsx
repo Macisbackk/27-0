@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useMemo, type MouseEvent } from "react";
 import { motion } from "framer-motion";
 import type { Player, SquadSlot } from "@/lib/types";
 import { formatValue } from "@/lib/players";
@@ -27,6 +27,8 @@ interface RugbyPitchProps {
   /** Allow clicking filled slots (e.g. Fantasy Mode change player). */
   allowFilledSlotClick?: boolean;
   onSlotClick?: (slotIndex: number) => void;
+  /** Desktop double-click on a filled slot (e.g. manager player options). */
+  onFilledSlotDoubleClick?: (slotIndex: number) => void;
   /** @deprecated Hover highlight uses CSS only — avoids layout shake. */
   onSlotHover?: (slotIndex: number | null) => void;
   dimmed?: boolean;
@@ -55,6 +57,7 @@ function RugbyPitchInner({
   interactive,
   allowFilledSlotClick,
   onSlotClick,
+  onFilledSlotDoubleClick,
   dimmed,
   lockedSlots,
   placementPlayer,
@@ -180,6 +183,14 @@ function RugbyPitchInner({
                       onClick={
                         canClick ? () => onSlotClick!(slotIndex) : undefined
                       }
+                      onDoubleClick={
+                        canClick && slot.player && onFilledSlotDoubleClick
+                          ? (e) => {
+                              e.preventDefault();
+                              onFilledSlotDoubleClick(slotIndex);
+                            }
+                          : undefined
+                      }
                     />
                   </div>
                 );
@@ -303,6 +314,7 @@ const SquadMarker = memo(function SquadMarker({
   clubColorOverride,
   slotSizeClass = PITCH_SLOT_SIZE_CLASS,
   onClick,
+  onDoubleClick,
 }: {
   slot: SquadSlot;
   highlighted?: boolean;
@@ -316,6 +328,7 @@ const SquadMarker = memo(function SquadMarker({
   clubColorOverride?: string;
   slotSizeClass?: string;
   onClick?: () => void;
+  onDoubleClick?: (e: MouseEvent) => void;
 }) {
   const player = slot.player;
   const description = POSITION_DESCRIPTIONS[slot.position];
@@ -417,8 +430,9 @@ const SquadMarker = memo(function SquadMarker({
         <button
           type="button"
           onClick={onClick}
+          onDoubleClick={onDoubleClick}
           title={`${slot.label}: change or remove player`}
-          className={`btn-press rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50 ${
+          className={`btn-press select-none rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50 ${
             accent === "source"
               ? "ring-2 ring-theme-primary shadow-[0_0_14px_rgba(34,197,94,0.35)]"
               : accent === "target"

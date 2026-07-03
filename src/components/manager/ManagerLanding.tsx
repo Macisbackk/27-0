@@ -1,6 +1,8 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
+import { EconomyExplainer } from "@/components/EconomyExplainer";
 import { GameButton } from "@/components/ui/GameButton";
 import { getClubColors } from "@/lib/clubs";
 import type { ManagerSaveSlotSummary } from "@/lib/manager/managerState";
@@ -13,6 +15,9 @@ interface ManagerLandingProps {
   onStartNew: (slot: number) => void;
   onContinue: (slot: number) => void;
   onDelete: (slot: number) => void;
+  onExport?: (slot: number) => void;
+  onImport?: (slot: number, file: File) => void;
+  importMessage?: string | null;
 }
 
 function formatSlotMeta(slot: ManagerSaveSlotSummary): string {
@@ -26,7 +31,13 @@ export function ManagerLanding({
   onStartNew,
   onContinue,
   onDelete,
+  onExport,
+  onImport,
+  importMessage,
 }: ManagerLandingProps) {
+  const importRef = useRef<HTMLInputElement>(null);
+  const [importSlot, setImportSlot] = useState<number | null>(null);
+
   return (
     <div className={`mx-auto max-w-lg ${SPACING.stackLg}`}>
       <div
@@ -37,9 +48,30 @@ export function ManagerLanding({
         <p className={`mt-3 ${TYPO.body} text-pitch-300`}>
           Take charge of a{" "}
           <span className="font-semibold text-theme-primary">Super League</span>{" "}
-          club. Up to two careers can be saved on this device.
+          club. Up to three careers on this device — export saves to back them up.
         </p>
       </div>
+
+      <EconomyExplainer compact />
+
+      {importMessage && (
+        <p className={`${TYPO.bodySm} text-theme-primary`}>{importMessage}</p>
+      )}
+
+      <input
+        ref={importRef}
+        type="file"
+        accept="application/json,.json"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file && importSlot != null && onImport) {
+            onImport(importSlot, file);
+          }
+          e.target.value = "";
+          setImportSlot(null);
+        }}
+      />
 
       <div className={SPACING.stackMd}>
         {saveSlots.map((slot) => {
@@ -102,25 +134,62 @@ export function ManagerLanding({
                     >
                       Delete
                     </GameButton>
+                    {onExport && (
+                      <GameButton
+                        variant="secondary"
+                        size="sm"
+                        className="col-span-2"
+                        onClick={() => {
+                          playUiClick();
+                          onExport(slot.slot);
+                        }}
+                      >
+                        Export save
+                      </GameButton>
+                    )}
                   </>
                 ) : (
-                  <GameButton
-                    variant="theme"
-                    className="col-span-2"
-                    onClick={() => {
-                      playSeasonStart();
-                      playUiClick();
-                      onStartNew(slot.slot);
-                    }}
-                  >
-                    New Career
-                  </GameButton>
+                  <>
+                    <GameButton
+                      variant="theme"
+                      className="col-span-2"
+                      onClick={() => {
+                        playSeasonStart();
+                        playUiClick();
+                        onStartNew(slot.slot);
+                      }}
+                    >
+                      New Career
+                    </GameButton>
+                    {onImport && (
+                      <GameButton
+                        variant="secondary"
+                        size="sm"
+                        className="col-span-2"
+                        onClick={() => {
+                          playUiClick();
+                          setImportSlot(slot.slot);
+                          importRef.current?.click();
+                        }}
+                      >
+                        Import save
+                      </GameButton>
+                    )}
+                  </>
                 )}
               </div>
             </div>
           );
         })}
       </div>
+
+      <p className={`text-center ${TYPO.bodySm} text-pitch-500`}>
+        Careers stay on this browser. Export regularly and sign in to sync stats
+        online.{" "}
+        <a href="/updates" className="text-theme-primary underline">
+          See updates
+        </a>
+      </p>
     </div>
   );
 }

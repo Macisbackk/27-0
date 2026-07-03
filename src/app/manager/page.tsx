@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ManagerLanding } from "@/components/manager/ManagerLanding";
 import { ManagerClubSelect } from "@/components/manager/ManagerClubSelect";
 import { ManagerNav } from "@/components/manager/ManagerNav";
+import { ManagerMobileBottomNav } from "@/components/manager/ManagerMobileBottomNav";
 import { ManagerHub } from "@/components/manager/ManagerHub";
 import { ManagerSquad } from "@/components/manager/ManagerSquad";
 import { ManagerContracts } from "@/components/manager/ManagerContracts";
@@ -54,6 +55,7 @@ import {
   recordCareerStarted,
   recordMatchResult,
   recordSeasonComplete,
+  recordLeaguePhaseAchievementsIfNeeded,
 } from "@/lib/manager/managerStats";
 import {
   playMatchBigWin,
@@ -79,6 +81,14 @@ import {
   acknowledgeRetirementIntentPopup,
   getPendingRetirementIntentPopup,
 } from "@/lib/manager/managerRetirement";
+import {
+  downloadManagerCareerExport,
+  importManagerCareerFromFile,
+} from "@/lib/manager/managerSaveExport";
+import { readManagerCareerRaw } from "@/lib/manager/managerSaveStorage";
+import { markOnboardingStepComplete } from "@/lib/manager/managerOnboarding";
+import { shouldShowSaveMigrationNotice } from "@/lib/manager/managerSaveMigration";
+import { ManagerSaveMigrationNotice } from "@/components/manager/ManagerSaveMigrationNotice";
 
 const NAV_VIEWS: ManagerView[] = [
   "hub",
@@ -111,6 +121,7 @@ export default function ManagerPage() {
   const [career, setCareer] = useState<ManagerCareer | null>(null);
   const [activeSlot, setActiveSlot] = useState(0);
   const [saveSlots, setSaveSlots] = useState<ManagerSaveSlotSummary[]>([]);
+  const [importMessage, setImportMessage] = useState<string | null>(null);
   const [reviewFixtureId, setReviewFixtureId] = useState<string | null>(null);
   const [playGameOpen, setPlayGameOpen] = useState(false);
   const [trophyModalOpen, setTrophyModalOpen] = useState(false);
@@ -141,6 +152,7 @@ export default function ManagerPage() {
     title: string;
     message: string;
   } | null>(null);
+  const [showSaveMigration, setShowSaveMigration] = useState(false);
 
   const refreshSaveSlots = useCallback(() => {
     setSaveSlots(listManagerSaveSlots());
@@ -150,8 +162,12 @@ export default function ManagerPage() {
     const slot = getActiveSaveSlot();
     setActiveSlot(slot);
     refreshSaveSlots();
-    const saved = loadManagerCareer(slot);
-    if (saved) setCareer(saved);
+    const raw = readManagerCareerRaw(slot);
+    if (!raw) return;
+    const previousVersion = raw.saveVersion;
+    const saved = hydrateManagerCareer(raw);
+    setCareer(saved);
+    setShowSaveMigration(shouldShowSaveMigrationNotice(previousVersion));
   }, [refreshSaveSlots]);
 
   const persist = useCallback(
@@ -302,6 +318,29 @@ export default function ManagerPage() {
     setDeleteSlot(null);
   };
 
+  const handleExportSave = (slot: number) => {
+    const raw = readManagerCareerRaw(slot);
+    if (!raw) {
+      setImportMessage("Nothing to export in that slot.");
+      return;
+    }
+    downloadManagerCareerExport(hydrateManagerCareer(raw));
+    setImportMessage(`Exported save ${slot + 1}.`);
+  };
+
+  const handleImportSave = async (slot: number, file: File) => {
+    try {
+      const imported = await importManagerCareerFromFile(file);
+      saveManagerCareer(imported, slot);
+      refreshSaveSlots();
+      setImportMessage(`Imported ${imported.club} into save ${slot + 1}.`);
+    } catch (err) {
+      setImportMessage(
+        err instanceof Error ? err.message : "Could not import save file."
+      );
+    }
+  };
+
   const handleSelectClub = (club: string) => {
     const next = createNewCareer(club, activeSlot);
     recordCareerStarted(club);
@@ -329,25 +368,39 @@ export default function ManagerPage() {
       playResultSound(won, fixture);
       recordMatchResult(won, margin, won ? 25_000 : 10_000);
     }
-    persist(next);
+    if (next.preSeason.friendliesPlayed >= 2) {
+      markOnboardingStepComplete("friendlies");
+    }
+    const leagueFixturesPlayed = next.fixtures.filter(
+      (f) => (f.competition ?? "league") === "league"
+    ).length;
+    if (
+      fixture &&
+      (fixture.competition ?? "league") === "league" &&
+      leagueFixturesPlayed >= 1
+    ) {
+      markOnboardingStepComplete("first-match");
+    }
+    const withLeagueStats = recordLeaguePhaseAchievementsIfNeeded(next);
+    persist(withLeagueStats);
 
     const wonTitle =
-      next.isSeasonComplete &&
-      next.playoffs?.finish === "Super League Champions" &&
-      !next.trophyCelebrationShown;
+      withLeagueStats.isSeasonComplete &&
+      withLeagueStats.playoffs?.finish === "Super League Champions" &&
+      !withLeagueStats.trophyCelebrationShown;
 
-    const wonLeagueTable = shouldShowLeagueWinnersCelebration(next);
-    const wonChallengeCup = shouldShowChallengeCupCelebration(next);
+    const wonLeagueTable = shouldShowLeagueWinnersCelebration(withLeagueStats);
+    const wonChallengeCup = shouldShowChallengeCupCelebration(withLeagueStats);
     if (wonChallengeCup) {
-      recordManagerCupTeamWin(next.club, activeSlot, next.seasonYear);
+      recordManagerCupTeamWin(withLeagueStats.club, activeSlot, withLeagueStats.seasonYear);
     }
-    const unsolicited = getPendingUnsolicitedOffer(next);
-    const retirementIntent = getPendingRetirementIntentPopup(next);
+    const unsolicited = getPendingUnsolicitedOffer(withLeagueStats);
+    const retirementIntent = getPendingRetirementIntentPopup(withLeagueStats);
     setPendingIncomingBidId(unsolicited?.id ?? null);
     setPendingRetirementIntentId(retirementIntent?.id ?? null);
 
-    if (next.isSeasonComplete) {
-      recordSeasonComplete(next);
+    if (withLeagueStats.isSeasonComplete) {
+      recordSeasonComplete(withLeagueStats);
       if (fixture) {
         setReviewFixtureId(fixture.fixtureId ?? `round-${fixture.round}`);
         setPostMatchReviewFlow(true);
@@ -719,6 +772,9 @@ export default function ManagerPage() {
           onStartNew={handleStartNew}
           onContinue={handleContinue}
           onDelete={handleDelete}
+          onExport={handleExportSave}
+          onImport={handleImportSave}
+          importMessage={importMessage}
         />
       )}
 
@@ -734,7 +790,7 @@ export default function ManagerPage() {
       )}
 
       {showNav && career && (
-        <div className={`flex flex-col ${PAGE.section}`}>
+        <div className={`flex flex-col pb-20 sm:pb-0 ${PAGE.section}`}>
           <ManagerNav
             active={awaitingFriendlyChoice ? "hub" : view}
             club={career.club}
@@ -746,6 +802,11 @@ export default function ManagerPage() {
           />
 
           <div className={`flex flex-col ${PAGE.section}`}>
+            {showSaveMigration && (
+              <ManagerSaveMigrationNotice
+                onDismiss={() => setShowSaveMigration(false)}
+              />
+            )}
             {awaitingFriendlyChoice ? (
               <ManagerFriendlySelect
                 career={career}
@@ -815,6 +876,12 @@ export default function ManagerPage() {
               </>
             )}
           </div>
+          <ManagerMobileBottomNav
+            active={awaitingFriendlyChoice ? "hub" : view}
+            onNavigate={handleNavNavigate}
+            disabled={playGameOpen || awaitingFriendlyChoice}
+            unreadInbox={countUnreadInbox(career)}
+          />
         </div>
       )}
 

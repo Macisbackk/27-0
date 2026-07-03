@@ -8,6 +8,7 @@ import {
   setNormalEraVariant,
   NORMAL_ERA_VARIANT_CHANGED_EVENT,
 } from "@/lib/storage/preferences";
+import { getQuickModeCurrentEraHint, getQuickModeLabel } from "@/lib/mode-labels";
 import { playModeClassicStart, playUiClick } from "@/lib/sound";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -80,8 +81,8 @@ export function HomeModeSelector() {
                 Spin & Simulate
               </h2>
               <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
-                Fast squad-building campaigns — current squads or historic era
-                teams.
+                New to 27-0? Try a quick season first, or jump straight into a
+                full Manager career.
               </p>
             </div>
             <span
@@ -98,14 +99,14 @@ export function HomeModeSelector() {
             <div
               className={`mt-5 flex flex-col gap-5 border-t border-pitch-700/50 pt-5`}
             >
-              <ModePanel title="Current Mode" eraActive={normalEraMode}>
+              <ModePanel title={getQuickModeLabel(normalEraMode)} eraActive={normalEraMode}>
                 <p className={TYPO.body}>
                   Build your XIII position by position and simulate a full Super
                   League campaign. Can you go 27-0?
                 </p>
 
                 <ChallengeCupVariantToggle
-                  sectionLabel="Mode"
+                  sectionLabel="Squad pool"
                   useShortLabels
                   eraMode={normalEraMode}
                   onEraModeChange={(era) => {
@@ -115,16 +116,9 @@ export function HomeModeSelector() {
                   className="mt-5"
                 />
 
-                {normalEraMode ? (
-                  <p className={`mt-3 ${TYPO.bodySm} text-gray-500`}>
-                    Historic Super League team-years with club + year spins — no
-                    2026 squads.
-                  </p>
-                ) : (
-                  <p className={`mt-3 ${TYPO.bodySm} text-gray-500`}>
-                    2026 current squads only — club spins with no year label.
-                  </p>
-                )}
+                <p className={`mt-3 ${TYPO.bodySm} text-gray-500`}>
+                  {getQuickModeCurrentEraHint(normalEraMode)}
+                </p>
 
                 <ModeStartLink
                   href={normalHref}
@@ -135,8 +129,17 @@ export function HomeModeSelector() {
                   }}
                   className="mt-5"
                 >
-                  {normalEraMode ? "Start Era Mode →" : "Start Current Mode →"}
+                  {normalEraMode ? "Start Era Quick Mode →" : "Start Quick Mode →"}
                 </ModeStartLink>
+
+                <GameButton
+                  variant="secondary"
+                  href="/manager"
+                  className="mt-3"
+                  onClick={() => playUiClick()}
+                >
+                  Prefer a full career? Manager Mode →
+                </GameButton>
               </ModePanel>
             </div>
           )}

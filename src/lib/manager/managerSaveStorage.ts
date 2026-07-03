@@ -1,7 +1,7 @@
 import { STORAGE_KEYS } from "../storage/keys";
 import type { ManagerCareer } from "./types";
 
-export const MANAGER_SAVE_SLOT_COUNT = 2;
+export const MANAGER_SAVE_SLOT_COUNT = 3;
 
 export interface ManagerSaveSlotSummary {
   slot: number;

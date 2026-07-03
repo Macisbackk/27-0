@@ -214,7 +214,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       <span aria-hidden className={NAV.icon}>
                         🏉
                       </span>
-                      Normal Mode
+                      Quick Mode
                       {isNormalActive && (
                         <span
                           className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${

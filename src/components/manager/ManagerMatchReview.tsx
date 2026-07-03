@@ -25,6 +25,10 @@ import {
   cupRoundKeyToBracketRound,
   snapshotCupBracketAtRound,
 } from "@/lib/manager/managerChallengeCup";
+import {
+  getManagerMatchKeyMoment,
+  type MatchKeyMomentTone,
+} from "@/lib/manager/managerMatchMoments";
 
 interface ManagerMatchReviewProps {
   career: ManagerCareer;
@@ -95,6 +99,19 @@ export function ManagerMatchReview({
         )
       : null;
 
+  const keyMoment = getManagerMatchKeyMoment(
+    fixture,
+    career.club,
+    fixture.competition ?? fixture.meta?.competition
+  );
+
+  const momentToneClass: Record<MatchKeyMomentTone, string> = {
+    gold: "border-accent-gold/40 bg-accent-gold/10 text-accent-gold",
+    primary: "border-theme-primary/40 bg-theme-primary/10 text-theme-primary",
+    red: "border-red-500/40 bg-red-500/10 text-red-300",
+    sky: "border-sky-500/40 bg-sky-500/10 text-sky-300",
+  };
+
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -148,6 +165,20 @@ export function ManagerMatchReview({
         </p>
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{roundLabel}</p>
       </div>
+
+      {keyMoment && (
+        <div
+          className={`rounded-xl border px-4 py-3 ${momentToneClass[keyMoment.tone]}`}
+        >
+          <p className="text-[10px] font-bold uppercase tracking-wider">
+            {keyMoment.label}
+          </p>
+          <p className="mt-1 font-display text-lg font-bold text-white">
+            {keyMoment.headline}
+          </p>
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-200`}>{keyMoment.body}</p>
+        </div>
+      )}
 
       {fixture.matchBio && (
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>

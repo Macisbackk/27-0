@@ -265,7 +265,7 @@ export function LeaderboardTable() {
             ? "Trophy Cabinet"
             : leaderboardMode === "cup-team-wins"
               ? "Cup Team Wins"
-              : "Normal Mode";
+              : "Quick Mode";
 
   const managerModeLabel =
     MANAGER_LEADERBOARD_MODES.find((mode) => mode.id === managerMode)?.label ??
@@ -278,7 +278,7 @@ export function LeaderboardTable() {
     "Leaderboard";
 
   const quickModeOptions = [
-    { id: "super-league" as const, label: "Normal Mode" },
+    { id: "super-league" as const, label: "Quick Mode" },
     { id: "cup-team-wins" as const, label: "Cup Team Wins" },
     { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
     { id: "club-funds" as const, label: "Total Winnings" },

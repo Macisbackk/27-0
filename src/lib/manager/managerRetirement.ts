@@ -135,11 +135,15 @@ function buildRetiredPlayerRecord(
 
   const ps = career.squad.find((p) => p.playerId === playerId);
   const totals = career.clubCareerTotals?.[playerId];
+  const seasonStats = career.playerSeasonStats[playerId];
   const clubAppearances =
-    totals?.appearances ?? ps?.seasonAppearances ?? 0;
-  const clubTries = totals?.tries ?? ps?.seasonTries ?? 0;
+    totals?.appearances ??
+    ps?.seasonAppearances ??
+    seasonStats?.appearances ??
+    0;
+  const clubTries =
+    totals?.tries ?? ps?.seasonTries ?? seasonStats?.tries ?? 0;
   const position = player.position;
-  const isUserClub = club === career.club;
 
   return {
     playerId,
@@ -150,9 +154,21 @@ function buildRetiredPlayerRecord(
     age,
     peakRating: player.peakRating,
     seasonRetired: career.seasonYear,
-    clubAppearances: isUserClub ? clubAppearances : 0,
-    clubTries: isUserClub ? clubTries : 0,
-    seasonsAtClub: isUserClub ? (totals?.seasons ?? 1) : 0,
+    clubAppearances,
+    clubTries,
+    seasonsAtClub: totals?.seasons ?? (clubAppearances > 0 ? 1 : 0),
+  };
+}
+
+/** Save-scoped apps/tries for a retired player (backfills legacy records). */
+export function getRetiredPlayerSaveStats(
+  career: ManagerCareer,
+  record: RetiredPlayer
+): { appearances: number; tries: number } {
+  const totals = career.clubCareerTotals?.[record.playerId];
+  return {
+    appearances: Math.max(record.clubAppearances, totals?.appearances ?? 0),
+    tries: Math.max(record.clubTries, totals?.tries ?? 0),
   };
 }
 
@@ -331,6 +347,55 @@ export function tickClubCareerTotals(career: ManagerCareer): ManagerCareer {
       tries: (existing?.tries ?? 0) + ps.seasonTries,
       seasons: (existing?.seasons ?? 0) + 1,
     };
+  }
+
+  return tickLeaguePlayerCareerTotals({ ...career, clubCareerTotals: totals });
+}
+
+/** Estimate league roster player stats from club results this season. */
+export function tickLeaguePlayerCareerTotals(
+  career: ManagerCareer
+): ManagerCareer {
+  const totals = { ...(career.clubCareerTotals ?? {}) };
+
+  for (const club of CURRENT_PLAYABLE_CLUBS) {
+    if (club === career.club) continue;
+
+    const rosterIds = getLeagueClubRosterIds(career, club);
+    if (rosterIds.length === 0) continue;
+
+    const clubRow = career.leagueTable.find((row) => row.team === club);
+    const roundsPlayed = clubRow?.played ?? 0;
+    if (roundsPlayed <= 0) continue;
+
+    const sorted = [...rosterIds].sort((a, b) => {
+      const ratingA = getManagerPlayer(career, a)?.peakRating ?? 70;
+      const ratingB = getManagerPlayer(career, b)?.peakRating ?? 70;
+      return ratingB - ratingA;
+    });
+    const regulars = sorted.slice(0, 17);
+    const teamTries = Math.max(
+      1,
+      Math.round((clubRow?.pointsFor ?? roundsPlayed * 18) / 4)
+    );
+    const ratingSum = regulars.reduce(
+      (sum, id) => sum + (getManagerPlayer(career, id)?.peakRating ?? 70),
+      0
+    );
+
+    for (const playerId of regulars) {
+      const existing = totals[playerId];
+      const rating = getManagerPlayer(career, playerId)?.peakRating ?? 70;
+      const tryShare =
+        ratingSum > 0 ? (rating / ratingSum) * teamTries * 0.4 : 0;
+      const seasonTries = Math.max(0, Math.round(tryShare));
+
+      totals[playerId] = {
+        appearances: (existing?.appearances ?? 0) + roundsPlayed,
+        tries: (existing?.tries ?? 0) + seasonTries,
+        seasons: (existing?.seasons ?? 0) + 1,
+      };
+    }
   }
 
   return { ...career, clubCareerTotals: totals };

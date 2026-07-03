@@ -23,7 +23,8 @@ import {
 } from "./managerContracts";
 import { createClubAttendanceData, syncClubAttendanceData } from "./managerAttendance";
 import { createManagerChallengeCup, reconcileChallengeCupFromFixtures } from "./managerChallengeCup";
-import { generateReserveSquad } from "./managerReserves";
+import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubReserveCounts } from "./managerReserves";
+import { stampManagerSaveVersion } from "./managerSaveVersion";
 import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
 import {
   applyYearlyYouthIntake,
@@ -216,6 +217,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     leagueClubStates: ensureLeagueClubStates(raw.leagueClubStates),
     leagueClubStatesWeek: raw.leagueClubStatesWeek ?? 0,
     leagueClubRosters: raw.leagueClubRosters,
+    leagueClubReserveCounts: raw.leagueClubReserveCounts,
     playerDevelopment: raw.playerDevelopment ?? {},
     lastSeasonDevelopmentReview: raw.lastSeasonDevelopmentReview,
     clubCareerTotals: raw.clubCareerTotals ?? {},
@@ -243,6 +245,13 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = ensureSeasonEndPlayerDevelopment(career);
   career = ensureLeagueClubRosters(career);
   career = normalizeMatchdayLineup(career);
+  if (!career.leagueClubReserveCounts) {
+    career = {
+      ...career,
+      leagueClubReserveCounts: initLeagueClubReserveCounts(),
+    };
+  }
+  career = reconcileLeagueClubReserveCounts(career);
   return syncManagerInboxMessages(career);
 }
 
@@ -280,7 +289,7 @@ export function prepareManagerCareerForSave(raw: ManagerCareer): ManagerCareer {
     ...career,
     isSeasonComplete: isManagerSeasonComplete(career),
   };
-  return career;
+  return stampManagerSaveVersion(career);
 }
 
 export function loadManagerCareer(slot?: number): ManagerCareer | null {
@@ -394,6 +403,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     leagueClubStates: initLeagueClubStates(),
     leagueClubStatesWeek: 0,
     leagueClubRosters: initLeagueClubRosters(club),
+    leagueClubReserveCounts: initLeagueClubReserveCounts(),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

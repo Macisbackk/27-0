@@ -5,6 +5,9 @@ import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSeasonSummary } from "@/lib/manager/managerState";
+import { ManagerSeasonRecapCard } from "@/components/manager/ManagerSeasonRecapCard";
+import { GuestSaveNudge } from "@/components/EconomyExplainer";
+import { useAuth } from "@/lib/auth-context";
 import { getPlayerById } from "@/lib/players";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { playSeasonComplete, playUiClick } from "@/lib/sound";
@@ -25,6 +28,7 @@ export function ManagerSeasonReview({
   onViewRewards,
   onHome,
 }: ManagerSeasonReviewProps) {
+  const { isLoggedIn, loading } = useAuth();
   const summary = buildSeasonSummary(career);
   const bestPlayer = summary.bestPlayerId
     ? getPlayerById(summary.bestPlayerId)
@@ -177,6 +181,16 @@ export function ManagerSeasonReview({
           )}
         </div>
       </ManagerSectionCard>
+
+      <ManagerSeasonRecapCard
+        club={career.club}
+        seasonYear={career.seasonYear}
+        summary={summary}
+      />
+
+      {!loading && !isLoggedIn && (
+        <GuestSaveNudge context="manager-season" />
+      )}
 
       <GameButton
         variant="theme"

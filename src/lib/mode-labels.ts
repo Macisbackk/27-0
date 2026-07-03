@@ -7,7 +7,17 @@ export function getSeasonReviewLabel(
 ): string {
   if (mode === "DRAFT") return "Draft Mode Season Review";
   if (mode === "FANTASY") return "Fantasy Mode Season Review";
-  return normalEraMode ? "Era Mode Season Review" : "Current Mode Season Review";
+  return normalEraMode ? "Era Quick Mode Season Review" : "Quick Mode Season Review";
+}
+
+export function getQuickModeLabel(normalEraMode = false): string {
+  return normalEraMode ? "Era Quick Mode" : "Quick Mode";
+}
+
+export function getQuickModeCurrentEraHint(normalEraMode: boolean): string {
+  return normalEraMode
+    ? "Historic Super League team-years — spin club and season together."
+    : "2026 current squads — club spins with today's rosters.";
 }
 
 export function getPlayPageTitle(
@@ -17,7 +27,7 @@ export function getPlayPageTitle(
 ): string {
   if (mode === "FANTASY") return "Fantasy Mode";
   if (mode === "DRAFT") return "Draft Mode";
-  return normalEraMode ? "Era Mode" : "Current Mode";
+  return normalEraMode ? "Era Quick Mode" : "Quick Mode";
 }
 
 export const FANTASY_MODE_INTRO =

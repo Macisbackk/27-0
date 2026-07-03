@@ -32,9 +32,15 @@ export function generateReserveReportMessage(
   }
 
   if (recentResults.length > 0) {
+    const walkovers = recentResults.filter((r) => r.walkover).length;
     lines.push(
       `Reserve team: ${formWins} win${formWins === 1 ? "" : "s"} from last ${recentResults.length} games.`
     );
+    if (walkovers > 0) {
+      lines.push(
+        `${walkovers} fixture${walkovers === 1 ? "" : "s"} decided by walkover (minimum 17 registered).`
+      );
+    }
   }
 
   return {

@@ -138,9 +138,11 @@ export function mergeUserStatsData(
     averageRerollsPerRun:
       totalRuns === 0
         ? 0
-        : (a.averageRerollsPerRun * a.totalRuns +
-            b.averageRerollsPerRun * b.totalRuns) /
-          totalRuns,
+        : Math.round(
+            (a.averageRerollsPerRun * a.totalRuns +
+              b.averageRerollsPerRun * b.totalRuns) /
+              totalRuns
+          ),
     challengeCupRuns: a.challengeCupRuns + b.challengeCupRuns,
     challengeCupWins: a.challengeCupWins + b.challengeCupWins,
     challengeCupLosses: a.challengeCupLosses + b.challengeCupLosses,

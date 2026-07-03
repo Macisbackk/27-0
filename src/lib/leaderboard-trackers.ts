@@ -66,7 +66,7 @@ export const TROPHY_CABINET_SECTIONS: {
 }[] = [
   {
     id: "current",
-    label: "Current Mode",
+    label: "Quick Mode",
     trackerIds: [
       "league_titles",
       "super_league_champions",

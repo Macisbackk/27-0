@@ -19,7 +19,7 @@ export type StatsTabId =
 
 export const STATS_TABS: { id: StatsTabId; label: string }[] = [
   { id: "overall", label: "Overall" },
-  { id: "super-league", label: "Normal Mode" },
+  { id: "super-league", label: "Quick Mode" },
 ];
 
 function mergeDraftCounts(
@@ -453,7 +453,13 @@ export function formatRankingOrDash(rank: number | null): string {
 }
 
 export function formatRatingOrDash(rating: number | null): string {
-  return rating !== null ? String(rating) : "—";
+  if (rating === null || rating <= 0) return "—";
+  return String(Math.round(rating));
+}
+
+/** Whole-number counts (wins, titles, reroll averages, etc.). */
+export function formatCountStat(value: number): string {
+  return String(Math.round(value));
 }
 
 export function formatWinPercentage(wins: number, losses: number): number | null {

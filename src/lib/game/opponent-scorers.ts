@@ -2,7 +2,7 @@ import seedrandom from "seedrandom";
 import { getPlayersByClub } from "../players";
 import { getPlayerEligiblePositions } from "../players/player-positions";
 import { getEraTeamByDisplayName, getEraTeamMatchSquad } from "../players/era-teams";
-import { getFantasyEligiblePlayers } from "./fantasy-mode";
+import { getFantasyPool } from "./player-pool-eligibility";
 import { getClubBaseStrength } from "./club-strength";
 import {
   getCurrentSeasonOpponentPool,
@@ -110,14 +110,14 @@ export function selectClubMatchSquad(
       candidates = pool.filter((p) => !used.has(p.id));
     }
     if (candidates.length === 0 && !options?.currentSeasonOnly) {
-      const fallback = getFantasyEligiblePlayers().filter(
+      const fallback = getFantasyPool().filter(
         (p) =>
           getPlayerEligiblePositions(p).includes(position) && !used.has(p.id)
       );
       candidates =
         fallback.length > 0
           ? fallback
-          : getFantasyEligiblePlayers().filter((p) => !used.has(p.id));
+          : getFantasyPool().filter((p) => !used.has(p.id));
     }
     if (candidates.length === 0) break;
 

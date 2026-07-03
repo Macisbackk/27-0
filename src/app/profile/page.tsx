@@ -18,6 +18,7 @@ import { PageShell } from "@/components/ui/PageShell";
 import { RL_INFO_BOX_CLASS } from "@/components/cards/rl-card";
 import { BTN, CARD, LINK, PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { EconomyExplainer } from "@/components/EconomyExplainer";
 
 interface StoredStats {
   normal: UserStatsData;
@@ -155,7 +156,13 @@ export default function ProfilePage() {
         <header>
           <p className={TYPO.sectionLabel}>Account</p>
           <h1 className={`mt-1 ${TYPO.pageTitle}`}>Coach Profile</h1>
+          <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+            Your account, cloud sync status, and a quick snapshot of Quick Mode
+            runs. For deep dives and filters, use Stats.
+          </p>
         </header>
+
+        <EconomyExplainer compact />
 
         <div className="space-y-5">
         <SectionCard title="Account">
@@ -178,8 +185,8 @@ export default function ProfilePage() {
         </SectionCard>
 
         <SectionCard
-          title="Total Record"
-          helper="Across Current and Era Quick Mode runs."
+          title="Quick Mode snapshot"
+          helper="Logged-in runs sync to the cloud. Manager careers stay on this device unless exported."
         >
           {statsLoading || !view ? (
             <p className={TYPO.bodySm}>Loading career stats…</p>

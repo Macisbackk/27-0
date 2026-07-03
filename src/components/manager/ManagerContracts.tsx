@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -25,6 +25,7 @@ import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { playPanelClose, playUiClick } from "@/lib/sound";
 import { ManagerPage } from "@/components/manager/manager-ui";
 import { managerCalloutClass } from "@/lib/manager/managerSurfaces";
+import { markOnboardingStepComplete } from "@/lib/manager/managerOnboarding";
 
 type ContractFilter =
   | "all"
@@ -67,6 +68,10 @@ export function ManagerContracts({
 
   const [bulkResult, setBulkResult] = useState<string | null>(null);
   const [releaseConfirmId, setReleaseConfirmId] = useState<string | null>(null);
+
+  useEffect(() => {
+    markOnboardingStepComplete("finances");
+  }, []);
 
   const expiringCount = useMemo(
     () =>

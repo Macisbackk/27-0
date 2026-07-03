@@ -35,6 +35,8 @@ import { LeagueTable } from "./LeagueTable";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
 import { NORMAL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { QuickToManagerBridge, GuestSaveNudge } from "@/components/EconomyExplainer";
+import { useAuth } from "@/lib/auth-context";
 
 interface SeasonReviewProps {
   squad: SquadSlot[];
@@ -73,7 +75,10 @@ export function SeasonReview({
   onFinalizeSeason,
   onReturnHome,
 }: SeasonReviewProps) {
+  const { isLoggedIn, loading } = useAuth();
   const totalValue = getSquadValue(squad);
+  const quickClub =
+    squad.find((s) => s.player?.club)?.player?.club ?? undefined;
   const gradeInfo = getSeasonGradeFromSquad(squad, seasonResult, totalValue);
   const awards = useMemo(
     () =>
@@ -420,6 +425,12 @@ export function SeasonReview({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65 }}
         >
+          {mode === "CLASSIC" && (
+            <QuickToManagerBridge clubName={quickClub} />
+          )}
+          {!loading && !isLoggedIn && (
+            <GuestSaveNudge context="quick-season" />
+          )}
           {!hideEndOfRunNav && (
             <ReviewPlayAgain
               onPlayAgain={handlePlayAgain}

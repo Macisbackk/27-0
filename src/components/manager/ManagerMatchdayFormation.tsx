@@ -26,6 +26,7 @@ interface ManagerMatchdayFormationProps {
   replaceCandidateIds?: Set<string>;
   onSlotClick?: (target: MatchdaySlotTarget) => void;
   onFilledSlotClick?: (playerId: string) => void;
+  onFilledSlotDoubleClick?: (playerId: string) => void;
 }
 
 export function ManagerMatchdayFormation({
@@ -40,6 +41,7 @@ export function ManagerMatchdayFormation({
   replaceCandidateIds,
   onSlotClick,
   onFilledSlotClick,
+  onFilledSlotDoubleClick,
 }: ManagerMatchdayFormationProps) {
   const squad = useMemo(
     () =>
@@ -121,6 +123,14 @@ export function ManagerMatchdayFormation({
           }
           onSlotClick?.({ kind: "xiii", index: slotIndex });
         }}
+        onFilledSlotDoubleClick={
+          interactive && career && onFilledSlotDoubleClick
+            ? (slotIndex) => {
+                const playerId = career.matchdayXiii[slotIndex] ?? "";
+                if (playerId) onFilledSlotDoubleClick(playerId);
+              }
+            : undefined
+        }
       />
       {interactive && (
         <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-500`}>

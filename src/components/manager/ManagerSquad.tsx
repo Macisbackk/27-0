@@ -24,6 +24,7 @@ import { ManagerMatchdayFormation } from "@/components/manager/ManagerMatchdayFo
 import { ManagerSquadPlayerModal } from "@/components/manager/ManagerSquadPlayerModal";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
+import { markOnboardingStepComplete } from "@/lib/manager/managerOnboarding";
 import { autoFixMatchdaySquad, autoSortMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { GameButton } from "@/components/ui/GameButton";
 import {
@@ -117,6 +118,9 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
 
   const openPlayerDetails = (playerId: string) => {
     clearSingleClickTimer();
+    setPendingAssignId(null);
+    setReplaceSourcePlayerId(null);
+    setSelectedTarget(null);
     setModalPlayerId(playerId);
   };
 
@@ -208,14 +212,31 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
   };
 
   const handlePoolPlayerClick = (playerId: string) => {
-    clearSingleClickTimer();
     if (pendingAssignId) return;
     if (selectedTarget || replaceSourcePlayerId) {
+      clearSingleClickTimer();
       handlePickPlayer(playerId);
       return;
     }
-    setPendingAssignId(playerId);
-    setModalPlayerId(null);
+
+    if (!finePointer) {
+      setPendingAssignId(playerId);
+      setModalPlayerId(null);
+      return;
+    }
+
+    clearSingleClickTimer();
+    singleClickTimerRef.current = setTimeout(() => {
+      setPendingAssignId(playerId);
+      setModalPlayerId(null);
+      singleClickTimerRef.current = null;
+    }, SINGLE_CLICK_DELAY_MS);
+  };
+
+  const handleMatchdayPlayerDoubleClick = (playerId: string) => {
+    if (!finePointer) return;
+    playUiClick();
+    openPlayerDetails(playerId);
   };
 
   const handleMatchdayPlayerPrimaryClick = (playerId: string) => {
@@ -243,6 +264,9 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
   };
 
   const persistAndClose = (next: ManagerCareer) => {
+    if (validateFitMatchdaySquad(resolveCareerForMatchSimulation(next)).valid) {
+      markOnboardingStepComplete("lineup");
+    }
     onUpdate(next);
     setModalPlayerId(null);
   };
@@ -397,6 +421,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
             replaceCandidateIds={replaceCandidateIds}
             onSlotClick={handleSelectSlot}
             onFilledSlotClick={handleMatchdayPlayerPrimaryClick}
+            onFilledSlotDoubleClick={handleMatchdayPlayerDoubleClick}
           />
 
           <div className={`${CARD.base} ${SPACING.cardPadding}`}>
@@ -434,9 +459,8 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     }}
                     onDoubleClick={(e) => {
                       e.preventDefault();
-                      if (!playerId) return;
-                      playUiClick();
-                      openPlayerDetails(playerId);
+                      if (!playerId || !finePointer) return;
+                      handleMatchdayPlayerDoubleClick(playerId);
                     }}
                     className={`${squadSelectionClass(selectionRole)} select-none rounded-lg border ${SPACING.listItem} text-left ${
                       unavailable ? unavailableAccentClass(!!isSuspension) : ""
@@ -544,8 +568,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     onDoubleClick={(e) => {
                       e.preventDefault();
                       if (!finePointer) return;
-                      playUiClick();
-                      openPlayerDetails(playerId);
+                      handleMatchdayPlayerDoubleClick(playerId);
                     }}
                     className={`${squadSelectionClass(poolRole)} select-none rounded-lg border ${SPACING.listItem} text-left transition`}
                   >

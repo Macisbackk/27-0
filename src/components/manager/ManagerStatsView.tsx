@@ -10,6 +10,7 @@ import { TYPO } from "@/lib/ui/typography";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { getManagerPlayer, getRetiredPlayerDisplayAge } from "@/lib/manager/managerPlayers";
+import { getRetiredPlayerSaveStats } from "@/lib/manager/managerRetirement";
 import {
   computeSquadFitness,
   computeSquadForm,
@@ -19,6 +20,10 @@ import {
 } from "@/lib/manager/managerCareerStats";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getManagerCareerSaveView } from "@/lib/manager/managerCareerSaveStats";
+import {
+  getManagerCareerHeadlines,
+  getManagerCareerMilestones,
+} from "@/lib/manager/managerCareerMilestones";
 import {
   ManagerSectionCard,
   ManagerStat,
@@ -240,9 +245,39 @@ function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
 
 function CareerStatsPanel({ career }: { career: ManagerCareer }) {
   const careerSave = getManagerCareerSaveView(career);
+  const headlines = getManagerCareerHeadlines(career);
+  const milestones = getManagerCareerMilestones(career);
 
   return (
     <>
+      {headlines.length > 0 && (
+        <ManagerSectionCard title="Career headlines" accent="primary">
+          <ul className={`mt-2 ${SPACING.stackSm} ${TYPO.bodySm} text-pitch-300`}>
+            {headlines.map((line) => (
+              <li key={line}>· {line}</li>
+            ))}
+          </ul>
+        </ManagerSectionCard>
+      )}
+
+      <ManagerSectionCard title="Milestones" variant="inset">
+        <div className="mt-2 flex flex-wrap gap-2">
+          {milestones.map((m) => (
+            <span
+              key={m.id}
+              className={`rounded-full border px-2.5 py-1 text-xs ${
+                m.earned
+                  ? "border-accent-gold/50 bg-accent-gold/10 text-accent-gold"
+                  : "border-pitch-600 text-pitch-500"
+              }`}
+            >
+              {m.label}
+              {m.detail ? ` · ${m.detail}` : ""}
+            </span>
+          ))}
+        </div>
+      </ManagerSectionCard>
+
       <ManagerSectionCard
         title={`Career — ${career.club}`}
         variant="featured"
@@ -267,6 +302,11 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
             label="Best finish"
             value={careerSave.bestFinishLabel}
             tone="gold"
+          />
+          <ManagerStat
+            label="League titles"
+            value={String(careerSave.leagueTitles)}
+            tone={careerSave.leagueTitles > 0 ? "gold" : "muted"}
           />
           <ManagerStat
             label="Super League titles"
@@ -399,6 +439,7 @@ function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
           {leagueRetirements > 0
             ? ` (${leagueRetirements} from other clubs)`
             : ""}
+          . Apps and tries are totals from this career save.
         </p>
       </ManagerSectionCard>
 
@@ -422,6 +463,7 @@ function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
                 {retired.map((player) => {
                   const club = player.club ?? career.club;
                   const isUserClub = club === career.club;
+                  const saveStats = getRetiredPlayerSaveStats(career, player);
                   return (
                     <tr
                       key={`${player.playerId}-${player.seasonRetired}`}
@@ -456,10 +498,10 @@ function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
                         {player.peakRating}
                       </td>
                       <td className="px-3 py-2.5 text-center text-pitch-300">
-                        {isUserClub ? player.clubAppearances : "—"}
+                        {saveStats.appearances}
                       </td>
                       <td className="px-3 py-2.5 text-center text-theme-primary">
-                        {isUserClub ? player.clubTries : "—"}
+                        {saveStats.tries}
                       </td>
                       <td className="px-3 py-2.5 text-center text-pitch-400">
                         {player.seasonRetired}

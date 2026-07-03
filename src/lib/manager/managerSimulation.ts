@@ -130,6 +130,7 @@ import {
   clearReserveCallUps,
   getReserveOpponent,
   simulateReserveFixture,
+  tickLeagueClubReserveCounts,
 } from "./managerReserves";
 import {
   generateIncomingTransferOffers,
@@ -140,6 +141,15 @@ import { syncManagerInboxMessages } from "./managerInbox";
 import { completeFriendlyMatch } from "./managerFriendlies";
 import { maybeAddReserveReport } from "./managerReserveReports";
 import { rotateLatestNews } from "./managerNews";
+import {
+  addMatchKeyMomentInboxMessage,
+  getManagerMatchKeyMoment,
+} from "./managerMatchMoments";
+import {
+  getManagerDifficultyBoardDelta,
+  getManagerDifficultySimAdjustments,
+  maybeAddBoardUltimatumInbox,
+} from "./managerDifficulty";
 import {
   generateManagerMatchBio,
   selectManagerManOfTheMatch,
@@ -516,6 +526,14 @@ export function applyManagerMatchResult(
   const expiring = countExpiringContracts(career.contracts);
   if (expiring >= 4) boardConfidence = Math.max(0, boardConfidence - 3);
 
+  boardConfidence = Math.max(
+    0,
+    Math.min(
+      100,
+      boardConfidence + getManagerDifficultyBoardDelta(career, position, won)
+    )
+  );
+
   const matchIncome = isMagicWeekendFixture(sched)
     ? 0
     : isFriendly
@@ -589,6 +607,7 @@ export function applyManagerMatchResult(
   }
 
   const reserveOpp = getReserveOpponent(sched.opponent, round, career.seed);
+  finalCareer = tickLeagueClubReserveCounts(finalCareer, round);
   const reserveResult = simulateReserveFixture(finalCareer, round, reserveOpp);
   finalCareer = applyYouthMatchDevelopment(finalCareer, { round, matchdayIds });
   finalCareer = applyReserveMatchDevelopment(finalCareer, reserveResult);
@@ -600,6 +619,19 @@ export function applyManagerMatchResult(
   finalCareer = syncManagerInboxMessages(finalCareer);
   finalCareer = maybeAddReserveReport(finalCareer);
   finalCareer = rotateLatestNews(finalCareer);
+  const keyMoment = getManagerMatchKeyMoment(
+    record,
+    career.club,
+    sched.competition
+  );
+  if (keyMoment && !options.playedLive) {
+    finalCareer = addMatchKeyMomentInboxMessage(
+      finalCareer,
+      record,
+      keyMoment
+    );
+  }
+  finalCareer = maybeAddBoardUltimatumInbox(finalCareer);
   finalCareer = maybeGenerateAiTransfers(finalCareer);
   finalCareer = maybeAiSignFreeAgents(finalCareer);
   if (isFriendly) {
@@ -687,6 +719,7 @@ export function previewManagerMatchScoreline(
     ),
     mods
   );
+  const difficultyAdj = getManagerDifficultySimAdjustments(simCareer);
 
   const strengthBias =
     userRating > baseOppRating
@@ -698,7 +731,8 @@ export function previewManagerMatchScoreline(
     mods.opponentPenalty * 0.12 -
     mods.strengthBonus * 0.25 -
     strengthBias -
-    opponentInjuryPenalty;
+    opponentInjuryPenalty +
+    difficultyAdj.opponentRatingDelta;
 
   const { fixture } = simulateOneFixture(
     squad,
@@ -707,7 +741,7 @@ export function previewManagerMatchScoreline(
     round,
     simCareer.seed,
     {
-      form: combinedForm,
+      form: combinedForm + difficultyAdj.formDelta,
       seasonDropGoals: simCareer.matchSimState.seasonDropGoals,
     },
     {

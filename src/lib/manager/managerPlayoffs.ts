@@ -157,8 +157,9 @@ export function getUserPlayoffMatch(
   if (!match || !match.homeTeam || !match.awayTeam) return null;
 
   const isNeutral = match.isNeutral;
-  const isHome = isNeutral ? false : match.homeTeam === userClub;
-  const opponent = isHome ? match.awayTeam : match.homeTeam;
+  const userIsListedHome = match.homeTeam === userClub;
+  const opponent = userIsListedHome ? match.awayTeam! : match.homeTeam!;
+  const isHome = isNeutral ? false : userIsListedHome;
   return {
     matchId: match.id,
     opponent,

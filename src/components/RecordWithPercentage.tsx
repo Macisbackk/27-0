@@ -8,7 +8,7 @@ interface RecordWithPercentageProps {
   percentageClassName?: string;
 }
 
-/** e.g. 184-96 with (65.7%) in accent colour */
+/** e.g. 184-96 with (66%) in accent colour */
 export function RecordWithPercentage({
   wins,
   losses,
@@ -20,7 +20,7 @@ export function RecordWithPercentage({
   if (games === 0) {
     return <span className={className}>0-0</span>;
   }
-  const pct = ((wins / games) * 100).toFixed(1);
+  const pct = Math.round((wins / games) * 100);
   return (
     <span className={className}>
       <span className={recordClassName}>

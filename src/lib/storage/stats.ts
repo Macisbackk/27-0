@@ -510,12 +510,7 @@ export function updateRerollStats(
   const newTotalRerolls = existing.totalRerollsUsed + rerollsUsed;
 
   const newAverage =
-
-    newTotalRuns > 0
-
-      ? Math.round((newTotalRerolls / newTotalRuns) * 10) / 10
-
-      : 0;
+    newTotalRuns > 0 ? Math.round(newTotalRerolls / newTotalRuns) : 0;
 
 
 

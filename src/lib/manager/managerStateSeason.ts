@@ -4,7 +4,7 @@ import type { ManagerCareer, ManagerSeasonSummary, SeasonHighlightResult } from 
 import { buildManagerSchedule, buildLeagueTableFromMatches } from "./managerFixtures";
 import { generateTransferMarket } from "./managerTransfers";
 import { generateLeagueListedPlayers } from "./managerTransferLeague";
-import { getUserLeaguePosition } from "./managerFixtures";
+import { getUserLeagueTablePosition } from "./managerFixtures";
 import { EMPTY_TEAM_SEASON_STATS } from "./managerCareerStats";
 import {
   countExpiringContracts,
@@ -22,7 +22,8 @@ import {
   refreshClubFundsForSeason,
 } from "./managerFinance";
 import { addContractLeavingInboxMessage, clearSeasonTransferState } from "./managerInbox";
-import { createClubAttendanceData } from "./managerAttendance";
+import { createClubAttendanceData, applyAttendancePerformanceDrift } from "./managerAttendance";
+import { applySeasonAiReserveIntake } from "./managerReserves";
 import {
   applyYearlyYouthIntake,
   tickReserveContractsForNewSeason,
@@ -43,9 +44,10 @@ import {
   applyLeagueRetirements,
   tickClubCareerTotals,
 } from "./managerRetirement";
+import { getManagerSeasonTrophyLabels } from "./managerSeasonTrophies";
 
 export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary {
-  const position = getUserLeaguePosition(career.leagueTable, career.club);
+  const position = getUserLeagueTablePosition(career);
   let bestPlayerId: string | null = null;
   let bestRating = 0;
   let topTryScorerId: string | null = null;
@@ -64,18 +66,9 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
     }
   }
 
-  const trophies: string[] = [];
+  const trophies = getManagerSeasonTrophyLabels(career);
   const playoffFinish = career.playoffs?.finish ?? null;
-  if (playoffFinish === "Super League Champions") {
-    trophies.push("Super League Champions");
-  } else if (position === 1) {
-    trophies.push("League Leaders");
-  }
   const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
-  if (cupOutcome.isWinner) trophies.push("Challenge Cup");
-  if (playoffFinish === "Grand Final Runner-Up") {
-    trophies.push("Grand Final Runner-Up");
-  }
 
   let budgetChange = 0;
   if (playoffFinish === "Super League Champions") budgetChange = 600_000;
@@ -215,6 +208,17 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const carriedOperating =
     afterReserveContracts.managerFinance?.operatingBalance ?? 0;
 
+  const attendanceAfterSeason = applyAttendancePerformanceDrift(
+    applySeasonAiReserveIntake(
+      {
+        ...clearedTransfers,
+        seasonHistory: [...career.seasonHistory, summary],
+      },
+      career.seasonYear + 1
+    ),
+    "season_end"
+  ).attendanceData;
+
   const next: ManagerCareer = {
     ...clearedTransfers,
     seasonYear: career.seasonYear + 1,
@@ -238,13 +242,14 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     matchSimState: { form: 0, seasonDropGoals: 0 },
     lastMatchFixture: null,
     gateIncomeHistory: [],
-    attendanceData: createClubAttendanceData(career.club),
+    attendanceData: attendanceAfterSeason,
     seasonAttendance: { total: 0, count: 0, high: 0, low: 0 },
     challengeCup: createManagerChallengeCup(newSeed, career.club),
     playoffs: undefined,
     playoffsIntroAcknowledged: false,
     trophyCelebrationShown: false,
     leagueWinnersCelebrationShown: false,
+    leaguePhaseStatsRecordedForYear: null,
     challengeCupCelebrationShown: false,
     wagePressureWeeks: 0,
     transferMarket: generateTransferMarket(withFreeAgents, newSeed, 0),

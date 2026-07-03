@@ -372,3 +372,8 @@ export function getUserLeaguePosition(
 ): number {
   return table.find((r) => r.team === userClub)?.position ?? 14;
 }
+
+/** Authoritative table position — prefer round-match rebuild over stale leagueTable. */
+export function getUserLeagueTablePosition(career: ManagerCareer): number {
+  return getUserLeaguePosition(getManagerLeagueTable(career), career.club);
+}

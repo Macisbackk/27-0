@@ -9,10 +9,15 @@ import { POSITION_SHORT } from "@/lib/positions";
 import type { Position } from "@/lib/types";
 import {
   callUpReserveForNextMatch,
+  fillReserveSquadMinimum,
   getPotentialTier,
   getReserveOpponent,
   promoteReserveToSquad,
   releaseReserve,
+  RESERVE_EMERGENCY_RECRUITMENT_EXCUSE,
+  RESERVE_EMERGENCY_RECRUITMENT_TITLE,
+  RESERVE_RECRUITMENT_FEE,
+  RESERVE_SQUAD_MIN,
 } from "@/lib/manager/managerReserves";
 import {
   bulkRenewExpiringReserveContracts,
@@ -141,6 +146,25 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     setMessage(`${reserve.name} renewed at ${formatWage(demand.wagePerYear)}/yr`);
   };
 
+  const reserveShortfall = Math.max(0, RESERVE_SQUAD_MIN - career.reserves.length);
+  const transferBudget =
+    career.managerFinance?.transferBudget ?? career.budget;
+  const canAffordRecruitment = transferBudget >= RESERVE_RECRUITMENT_FEE;
+
+  const handleEmergencyRecruitment = () => {
+    playUiClick();
+    const shortfall = RESERVE_SQUAD_MIN - career.reserves.length;
+    const result = fillReserveSquadMinimum(career);
+    if (!result.ok || !result.career) {
+      setMessage(result.error ?? "Could not register emergency reserves");
+      return;
+    }
+    onUpdate(result.career);
+    setMessage(
+      `${shortfall} performance-unit graduate${shortfall === 1 ? "" : "s"} registered on reserve listing`
+    );
+  };
+
   const handleBulkRenewReserves = () => {
     const { career: next, renewed, declined } =
       bulkRenewExpiringReserveContracts(career);
@@ -172,6 +196,41 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
 
       {message && (
         <p className={`${TYPO.bodySm} text-theme-primary`}>{message}</p>
+      )}
+
+      {reserveShortfall > 0 && (
+        <div className={`${CARD.elevated} ${SPACING.cardPadding} border-l-4 border-red-500/70`}>
+          <p className={TYPO.sectionLabel}>
+            Reserve listing short — {career.reserves.length}/{RESERVE_SQUAD_MIN}{" "}
+            registered
+          </p>
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+            {RESERVE_EMERGENCY_RECRUITMENT_EXCUSE}
+          </p>
+          <p className={`mt-2 ${TYPO.bodySm} text-accent-gold`}>
+            Without {RESERVE_SQUAD_MIN} registered players, reserve fixtures are
+            awarded as an 18-0 walkover defeat.
+          </p>
+          <GameButton
+            variant="theme"
+            size="sm"
+            className="mt-3"
+            disabled={!canAffordRecruitment}
+            onClick={handleEmergencyRecruitment}
+          >
+            {RESERVE_EMERGENCY_RECRUITMENT_TITLE} — £
+            {(RESERVE_RECRUITMENT_FEE / 1000).toFixed(0)}k
+            {reserveShortfall > 0
+              ? ` · register ${reserveShortfall} player${reserveShortfall === 1 ? "" : "s"}`
+              : ""}
+          </GameButton>
+          {!canAffordRecruitment && (
+            <p className={`mt-2 ${TYPO.bodySm} text-red-400`}>
+              Transfer budget £{(transferBudget / 1000).toFixed(0)}k — need £
+              {(RESERVE_RECRUITMENT_FEE / 1000).toFixed(0)}k
+            </p>
+          )}
+        </div>
       )}
 
       {youthProspects.length > 0 && (
@@ -266,15 +325,30 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
           {career.lastReserveResult && (
             <div>
               <p className={TYPO.sectionLabel}>Latest Reserve Result</p>
-              <p className={`mt-1 font-medium text-white`}>
-                {career.club} Reserves {career.lastReserveResult.userScore} -{" "}
-                {career.lastReserveResult.oppScore}{" "}
-                {career.lastReserveResult.opponent}
-              </p>
-              {career.lastReserveResult.topPerformer && (
-                <p className={`${TYPO.bodySm} text-pitch-400`}>
-                  Top Performer: {career.lastReserveResult.topPerformer}
-                </p>
+              {career.lastReserveResult.walkover ? (
+                <>
+                  <p className={`mt-1 font-medium text-white`}>
+                    {career.lastReserveResult.walkoverReason}
+                  </p>
+                  <p className={`${TYPO.bodySm} text-pitch-400`}>
+                    {career.club} Reserves {career.lastReserveResult.userScore} -{" "}
+                    {career.lastReserveResult.oppScore}{" "}
+                    {career.lastReserveResult.opponent}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className={`mt-1 font-medium text-white`}>
+                    {career.club} Reserves {career.lastReserveResult.userScore} -{" "}
+                    {career.lastReserveResult.oppScore}{" "}
+                    {career.lastReserveResult.opponent}
+                  </p>
+                  {career.lastReserveResult.topPerformer && (
+                    <p className={`${TYPO.bodySm} text-pitch-400`}>
+                      Top Performer: {career.lastReserveResult.topPerformer}
+                    </p>
+                  )}
+                </>
               )}
             </div>
           )}

@@ -17,7 +17,10 @@ import {
   addYouthIntakeInboxMessage,
   pushInboxMessage,
 } from "./managerInbox";
-import { createYouthProspect } from "./managerReserves";
+import {
+  createYouthProspect,
+  reconcileLeagueClubReserveCounts,
+} from "./managerReserves";
 
 /** Cheap youth/reserve wages — well below first-team deals. */
 export function generateReserveYouthContract(
@@ -267,7 +270,7 @@ export function signYouthProspect(
 
   return {
     ok: true,
-    career: {
+    career: reconcileLeagueClubReserveCounts({
       ...career,
       reserves: [...career.reserves, prospect],
       reserveContracts,
@@ -276,7 +279,7 @@ export function signYouthProspect(
       ),
       wageBill: computeCareerWageBill({ ...career, reserveContracts }),
       updatedAt: new Date().toISOString(),
-    },
+    }),
   };
 }
 

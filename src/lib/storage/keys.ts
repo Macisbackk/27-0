@@ -35,6 +35,7 @@ export const STORAGE_KEYS = {
   managerStats: "27-0-manager-stats",
   managerLeaderboard: "27-0-manager-leaderboard",
   managerActiveSlot: "27-0-manager-active-slot",
+  managerOnboarding: "27-0-manager-onboarding",
 } as const;
 
 /** Bump when StoredStats shape changes — triggers one-time local migration. */

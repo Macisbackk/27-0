@@ -15,6 +15,7 @@ import {
   formatRankingOrDash,
   formatRatingOrDash,
   formatRecordOrDash,
+  formatCountStat,
   type StatsTabId,
 } from "@/lib/stats-views";
 import { RecordWithPercentage } from "./RecordWithPercentage";
@@ -603,7 +604,7 @@ function OverallTab({
           />
           <StatCard
             label="Average Rerolls Per Run"
-            value={String(view.averageRerollsPerRun)}
+            value={formatCountStat(view.averageRerollsPerRun)}
           />
         </StatsSection>
       )}
@@ -624,7 +625,7 @@ function SuperLeagueTab({
 }) {
   const activeStats = eraMode ? eraNormal : normal;
   const view = getSuperLeagueView(activeStats);
-  const modeLabel = eraMode ? "Era Normal Mode" : "Current Normal Mode";
+  const modeLabel = eraMode ? "Era Quick Mode" : "Quick Mode";
 
   return (
     <div className="space-y-8">
@@ -636,9 +637,9 @@ function SuperLeagueTab({
       />
 
       <StatsSection title={modeLabel}>
-        <StatCard label="Normal Mode Runs" value={String(view.runs)} />
-        <StatCard label="Normal Mode Wins" value={String(view.wins)} />
-        <StatCard label="Normal Mode Losses" value={String(view.losses)} />
+        <StatCard label="Quick Mode runs" value={String(view.runs)} />
+        <StatCard label="Quick Mode wins" value={String(view.wins)} />
+        <StatCard label="Quick Mode losses" value={String(view.losses)} />
         <StatCard
           label="Regular Season Record"
           value={formatRecordOrDash(
@@ -668,7 +669,7 @@ function SuperLeagueTab({
           )}
         />
         <StatCard
-          label="Worst Normal Mode Record"
+          label="Worst Quick Mode record"
           value={formatRecordOrDash(
             view.hasSeasons ? view.worstRecord : null
           )}
@@ -714,16 +715,16 @@ function SuperLeagueTab({
           highlight={view.grandFinalAppearances > 0}
         />
         <StatCard
-          label="Normal Mode 27-0 Seasons"
+          label="Quick Mode 27-0 seasons"
           value={String(view.perfectSeasons)}
           highlight={view.perfectSeasons > 0}
         />
         <StatCard
-          label="Normal Mode 0-27 Seasons"
+          label="Quick Mode 0-27 seasons"
           value={String(view.winlessSeasons)}
         />
         <StatCard
-          label="Best Normal Mode Ranking"
+          label="Best Quick Mode ranking"
           value={formatRankingOrDash(view.bestRanking)}
           highlight={view.bestRanking === 1}
         />

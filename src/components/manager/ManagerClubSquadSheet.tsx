@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { ClubDualSwatch } from "@/components/ClubDualSwatch";
+import { ClubLogoBox } from "@/components/ClubBadge";
 import { ManagerMatchdayFormation } from "@/components/manager/ManagerMatchdayFormation";
 import { GameButton } from "@/components/ui/GameButton";
 import { BodyPortal } from "@/components/ui/BodyPortal";
@@ -16,7 +16,7 @@ import { getManagerPlayerAge } from "@/lib/manager/managerPlayers";
 import type { ManagerCareer } from "@/lib/manager/types";
 import type { Player } from "@/lib/types";
 import { CURRENT_PLAYABLE_CLUBS } from "@/lib/clubs/super-league-display";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CARD, SPACING, BTN } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playPanelClose, playUiClick } from "@/lib/sound";
 
@@ -162,9 +162,30 @@ export function ManagerClubSquadSheet({
             aria-hidden
           />
 
-          <div className="flex shrink-0 items-start justify-between gap-3 border-b border-pitch-700/40 px-4 py-3">
-            <div className="flex min-w-0 items-start gap-2.5">
-              <ClubDualSwatch club={club} size="sm" />
+          <div
+            className="relative shrink-0 overflow-hidden border-b border-pitch-700/40 px-4 py-3"
+            style={{
+              background: `linear-gradient(to right, ${clubAccent}18, transparent 55%)`,
+            }}
+          >
+            <ClubLogoBox
+              club={club}
+              size="lg"
+              className="pointer-events-none absolute right-20 top-1/2 z-0 -translate-y-1/2 scale-[2.4] opacity-[0.13]"
+              aria-hidden
+            />
+
+            <button
+              type="button"
+              onClick={handleClose}
+              className={`${BTN.closeSm} absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center text-base leading-none`}
+              aria-label="Close team sheet"
+            >
+              ✕
+            </button>
+
+            <div className="relative z-10 flex min-w-0 items-start gap-2.5 pr-11">
+              <ClubLogoBox club={club} size="sm" className="shrink-0" />
               <div className="min-w-0">
                 <p className={TYPO.sectionLabel}>Team Sheet</p>
                 <h2
@@ -180,14 +201,6 @@ export function ManagerClubSquadSheet({
                 </p>
               </div>
             </div>
-            <GameButton
-              variant="secondary"
-              size="sm"
-              className="shrink-0"
-              onClick={handleClose}
-            >
-              Close
-            </GameButton>
           </div>
 
           <div className="min-h-0 flex-1 overflow-y-auto px-4 py-3">

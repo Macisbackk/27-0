@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { HomeAuthBar } from "@/components/HomeAuthBar";
+import { EconomyExplainer } from "@/components/EconomyExplainer";
 import { EmailConfirmedBanner } from "@/components/EmailConfirmedBanner";
 import { HomeModeSelector } from "@/components/HomeModeSelector";
 import { HowToPlaySection } from "@/components/HowToPlaySection";
@@ -19,12 +20,16 @@ export default function HomePage() {
           <LogoMark size="lg" className="justify-center" />
         </h1>
         <p className={`mt-4 ${TYPO.pageSubtitle}`}>
-          Build the most valuable Super League team through strategic
-          recruitment.
+          Manager Mode puts you in the dugout. Quick Mode is the fast squad-builder
+          — can you go 27-0?
         </p>
         <p className={`mt-2 ${TYPO.bodySm}`}>
-          Build your squad on the team sheet — can you go 27-0?
+          Build your squad on the team sheet and chase perfection.
         </p>
+      </div>
+
+      <div className="mt-6 mx-auto max-w-xl">
+        <EconomyExplainer compact />
       </div>
 
       <Suspense fallback={null}>
@@ -52,6 +57,9 @@ export default function HomePage() {
           </Link>
           <Link href="/showcase" className={LINK.subtle}>
             Player Showcase →
+          </Link>
+          <Link href="/updates" className={LINK.subtle}>
+            Updates →
           </Link>
         </div>
         <JoeMellorEasterEgg />

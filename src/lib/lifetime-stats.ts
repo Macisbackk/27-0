@@ -69,7 +69,7 @@ export function formatRecordWithPercentage(
 ): string {
   const games = wins + losses;
   if (games === 0) return "0-0";
-  const pct = ((wins / games) * 100).toFixed(1);
+  const pct = Math.round((wins / games) * 100);
   return `${wins}-${losses} (${pct}%)`;
 }
 

@@ -25,6 +25,12 @@ import {
   getHomeFixtureAttendanceOutlook,
   getLastHomeGate,
 } from "@/lib/manager/managerAttendance";
+import { getManagerHubAlerts } from "@/lib/manager/managerHubAlerts";
+import { getHubNewsItems } from "@/lib/manager/managerNews";
+import { getManagerDifficultyPressure } from "@/lib/manager/managerDifficulty";
+import { shouldShowManagerOnboarding } from "@/lib/manager/managerOnboarding";
+import { ManagerHubAlertsPanel } from "@/components/manager/ManagerHubAlertsPanel";
+import { ManagerOnboardingPanel } from "@/components/manager/ManagerOnboardingPanel";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
@@ -98,6 +104,18 @@ function HubBoardBudgetAttendance({
   lastGate: ReturnType<typeof getLastHomeGate>;
   wageOverBudget: boolean;
 }) {
+  const pressure = getManagerDifficultyPressure(career);
+  const pressureToneClass =
+    pressure.tone === "red"
+      ? "text-red-300"
+      : pressure.tone === "amber"
+        ? "text-amber-300"
+        : pressure.tone === "gold"
+          ? "text-accent-gold"
+          : pressure.tone === "primary"
+            ? "text-theme-primary"
+            : "text-pitch-400";
+
   return (
     <div
       className={managerClubAccentCardClass()}
@@ -126,6 +144,12 @@ function HubBoardBudgetAttendance({
           tone={fanMoodTone(career.attendanceData.fanMood)}
         />
       </div>
+      <p className={`mt-2 ${TYPO.bodySm}`}>
+        <span className={`font-semibold ${pressureToneClass}`}>
+          {pressure.label}:{" "}
+        </span>
+        <span className="text-pitch-300">{pressure.detail}</span>
+      </p>
       {lastGate && (
         <p className={`mt-2 ${TYPO.bodySm}`}>
           <span className="text-pitch-500">Last home gate: </span>
@@ -309,6 +333,11 @@ export function ManagerHub({
     null
   );
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(() =>
+    shouldShowManagerOnboarding(career)
+  );
+
+  const hubAlerts = getManagerHubAlerts(career);
 
   const hubCareer = syncBracketProgress(career);
   const clubSheetModal =
@@ -610,6 +639,13 @@ export function ManagerHub({
           <GameButton
             variant="secondary"
             size="sm"
+            onClick={() => onNavigate("inbox")}
+          >
+            Inbox
+          </GameButton>
+          <GameButton
+            variant="secondary"
+            size="sm"
             onClick={() => onNavigate("across-league")}
           >
             Across League
@@ -631,6 +667,39 @@ export function ManagerHub({
         </div>
       </div>
     ) : null;
+
+  const hubNews = getHubNewsItems(career).slice(0, 3);
+
+  const commandCentre = (
+    <>
+      {showOnboarding && (
+        <ManagerOnboardingPanel
+          onNavigate={onNavigate}
+          onDismiss={() => setShowOnboarding(false)}
+        />
+      )}
+      <ManagerHubAlertsPanel alerts={hubAlerts} onNavigate={onNavigate} />
+      {hubNews.length > 0 && (
+        <ManagerSectionCard title="Latest headlines" variant="inset">
+          <ul className={`mt-2 ${SPACING.stackSm} ${TYPO.bodySm} text-pitch-300`}>
+            {hubNews.map((item) => (
+              <li key={item.id}>· {item.text}</li>
+            ))}
+          </ul>
+          {onNavigate && (
+            <GameButton
+              variant="secondary"
+              size="sm"
+              className="mt-3"
+              onClick={() => onNavigate("across-league")}
+            >
+              Across the League
+            </GameButton>
+          )}
+        </ManagerSectionCard>
+      )}
+    </>
+  );
 
   const seasonProgressCard = (
     <ManagerSectionCard title="Season Progress">
@@ -685,6 +754,7 @@ export function ManagerHub({
       <>
         <div className={PAGE.section}>
           <HubPlayoffsGateCard career={career} onContinue={onPlayoffsContinue} />
+          {commandCentre}
           <ManagerLeagueTable
             career={career}
             title="Final League Standings"
@@ -712,6 +782,7 @@ export function ManagerHub({
           <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28">
             {nextFixtureCard}
           </div>
+          {commandCentre}
           <HubPlayoffBracketPanel playoffs={hubCareer.playoffs} />
           <HubPlayoffsCampaignCard career={hubCareer} />
           <HubBoardBudgetAttendance
@@ -737,6 +808,8 @@ export function ManagerHub({
         {seasonProgressCard}
         {nextFixtureCard}
       </div>
+
+      {commandCentre}
 
       <HubStandingsPanel
         career={career}

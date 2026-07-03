@@ -135,6 +135,8 @@ export interface ReserveFixtureResult {
   userWon: boolean;
   topPerformer?: string;
   userTries: number;
+  walkover?: boolean;
+  walkoverReason?: string;
 }
 
 export interface ManagerPlayerSeasonStats {
@@ -162,6 +164,8 @@ export interface ClubAttendanceData {
   currentAverageAttendance: number;
   stadiumCapacity: number;
   fanMood: number;
+  /** Dynamic minimum gate — rises with sustained success, erodes when struggling. */
+  attendanceFloor?: number;
 }
 
 export interface GateIncomeRecord {
@@ -514,6 +518,8 @@ export interface ManagerCareer {
   trophyCelebrationShown?: boolean;
   /** League Leaders celebration shown after the regular season (table winners). */
   leagueWinnersCelebrationShown?: boolean;
+  /** Lifetime stats already credited for this season's league table finish. */
+  leaguePhaseStatsRecordedForYear?: number | null;
   /** Challenge Cup win celebration shown after lifting the cup. */
   challengeCupCelebrationShown?: boolean;
   /** Consecutive weeks wage bill exceeded budget — triggers board pressure. */
@@ -565,9 +571,13 @@ export interface ManagerCareer {
   leagueClubStatesWeek?: number;
   /** Persisted AI club squads — transfers and youth intake update these each season. */
   leagueClubRosters?: Record<string, string[]>;
+  /** Reserve squad headcount per club — used for walkovers across the save. */
+  leagueClubReserveCounts?: Record<string, number>;
   /** Club appearances/tries accumulated across seasons in this save. */
   clubCareerTotals?: Record<string, ClubCareerTotals>;
   retiredPlayers?: RetiredPlayer[];
+  /** Save schema version for migrations. */
+  saveVersion?: number;
   createdAt: string;
   updatedAt: string;
 }

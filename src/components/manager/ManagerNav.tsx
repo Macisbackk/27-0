@@ -106,7 +106,7 @@ export function ManagerNav({
         </button>
       </div>
 
-      <nav className={MANAGER.tabGrid} aria-label="Manager sections">
+      <nav className={`${MANAGER.tabGrid} hidden sm:grid`} aria-label="Manager sections">
         {MAIN_TABS.map((tab) => (
           <button
             key={tab.id}

@@ -7,11 +7,13 @@ import type {
   ManagerCareer,
   ManagerCompetition,
   ManagerScheduledFixture,
+  ManagerSeasonSummary,
   MatchAttendanceMeta,
 } from "./types";
 import type { MatchFixture } from "../game/season-simulation";
 import { applyClubRevenue, splitRevenue } from "./managerFinance";
 import { areRivalClubs } from "./managerRivals";
+import { getUserLeagueTablePosition } from "./managerFixtures";
 import {
   GRAND_FINAL_ATTENDANCE_MAX,
   GRAND_FINAL_ATTENDANCE_MIN,
@@ -83,10 +85,147 @@ export function getClubAttendanceProfile(club: string): {
 
 export function getClubAttendanceFloor(
   club: string,
-  baseAttendance: number
+  baseAttendance: number,
+  storedFloor?: number
 ): number {
+  if (storedFloor != null) return storedFloor;
   const profile = getClubAttendanceProfile(club);
   return profile.min ?? Math.round(baseAttendance * 0.55);
+}
+
+function initialAttendanceFloor(club: string, baseAttendance: number): number {
+  return getClubAttendanceFloor(club, baseAttendance);
+}
+
+function clampAttendance(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
+function seasonPerformanceScore(summary: ManagerSeasonSummary): number {
+  let score = 0;
+  if (summary.position === 1) score += 0.9;
+  else if (summary.position <= 3) score += 0.55;
+  else if (summary.position <= 6) score += 0.25;
+  else if (summary.position <= 9) score -= 0.05;
+  else if (summary.position <= 11) score -= 0.25;
+  else score -= 0.45;
+
+  if (summary.playoffFinish === "Super League Champions") score += 0.4;
+  if (summary.trophies.includes("League Leaders")) score += 0.15;
+  if (summary.trophies.includes("Challenge Cup")) score += 0.2;
+
+  const games = summary.wins + summary.losses;
+  if (games > 0) {
+    score += (summary.wins / games - 0.5) * 0.5;
+  }
+
+  return clampAttendance(score, -1, 1);
+}
+
+/** -1 (struggling) to 1 (historic success) from career results and fan mood. */
+export function getHistoricalPerformanceSignal(career: ManagerCareer): number {
+  let weighted = 0;
+  let weight = 0;
+
+  for (let i = 0; i < career.seasonHistory.length; i++) {
+    const season = career.seasonHistory[i]!;
+    const seasonWeight = 0.65 + i * 0.12;
+    weighted += seasonPerformanceScore(season) * seasonWeight;
+    weight += seasonWeight;
+  }
+
+  const games = career.wins + career.losses;
+  if (games > 0) {
+    const position = getUserLeagueTablePosition(career);
+    const winRate = career.wins / games;
+    let current = (winRate - 0.5) * 1.6;
+    if (position <= 2) current += 0.35;
+    else if (position <= 6) current += 0.15;
+    else if (position >= 12) current -= 0.25;
+    weighted += clampAttendance(current, -1, 1) * 1.1;
+    weight += 1.1;
+  }
+
+  const mood = (career.attendanceData.fanMood - 50) / 50;
+  weighted += mood * 0.35;
+  weight += 0.35;
+
+  if (weight <= 0) return 0;
+  return clampAttendance(weighted / weight, -1, 1);
+}
+
+export type AttendanceDriftIntensity = "home_match" | "season_end";
+
+/** Slowly shift floor/base/average from long-term club performance. */
+export function applyAttendancePerformanceDrift(
+  career: ManagerCareer,
+  intensity: AttendanceDriftIntensity
+): ManagerCareer {
+  const profile = getClubAttendanceProfile(career.club);
+  const data = career.attendanceData;
+  const signal = getHistoricalPerformanceSignal(career);
+
+  const profileFloor =
+    profile.min ?? Math.round(profile.base * 0.55);
+  const profileBase = profile.base;
+  const floor =
+    data.attendanceFloor ?? initialAttendanceFloor(career.club, data.baseAttendance);
+
+  const maxFloor = Math.round(
+    Math.min(data.baseAttendance * 0.9, data.stadiumCapacity * 0.58)
+  );
+  const minBase = Math.round(profileBase * 0.72);
+  const maxBase = Math.round(
+    Math.min(profileBase * 1.2, data.stadiumCapacity * 0.78)
+  );
+
+  const floorStep = intensity === "season_end" ? 320 : 18;
+  const baseStep = intensity === "season_end" ? 260 : 14;
+  const avgStep = intensity === "season_end" ? 180 : 10;
+
+  const floorDelta =
+    signal >= 0
+      ? Math.round(signal * floorStep)
+      : Math.round(signal * floorStep * 0.3);
+  const baseDelta = Math.round(signal * baseStep);
+  const avgDelta =
+    signal >= 0
+      ? Math.round(signal * avgStep * 0.55)
+      : Math.round(signal * avgStep);
+
+  const newFloor = clampAttendance(
+    floor + floorDelta,
+    profileFloor,
+    Math.max(profileFloor, maxFloor)
+  );
+  const newBase = clampAttendance(
+    data.baseAttendance + baseDelta,
+    minBase,
+    maxBase
+  );
+  const newAverage = clampAttendance(
+    data.currentAverageAttendance + avgDelta,
+    Math.round(newBase * 0.82),
+    data.stadiumCapacity
+  );
+
+  if (
+    newFloor === floor &&
+    newBase === data.baseAttendance &&
+    newAverage === data.currentAverageAttendance
+  ) {
+    return career;
+  }
+
+  return {
+    ...career,
+    attendanceData: {
+      ...data,
+      attendanceFloor: newFloor,
+      baseAttendance: newBase,
+      currentAverageAttendance: newAverage,
+    },
+  };
 }
 
 export function createClubAttendanceData(club: string): ClubAttendanceData {
@@ -96,22 +235,21 @@ export function createClubAttendanceData(club: string): ClubAttendanceData {
     currentAverageAttendance: base,
     stadiumCapacity: capacity,
     fanMood: 50,
+    attendanceFloor: initialAttendanceFloor(club, base),
   };
 }
 
-/** Refresh stored attendance from club profile (e.g. after profile tuning). */
+/** Refresh capacity/floor defaults without wiping drifted attendance expectations. */
 export function syncClubAttendanceData(
   club: string,
   data: ClubAttendanceData
 ): ClubAttendanceData {
-  const { base, capacity } = getClubAttendanceProfile(club);
-  const prevBase = data.baseAttendance;
+  const { capacity } = getClubAttendanceProfile(club);
+  const profileFloor = getClubAttendanceFloor(club, data.baseAttendance);
   return {
     ...data,
-    baseAttendance: base,
     stadiumCapacity: capacity,
-    currentAverageAttendance:
-      data.currentAverageAttendance === prevBase ? base : data.currentAverageAttendance,
+    attendanceFloor: data.attendanceFloor ?? profileFloor,
   };
 }
 
@@ -543,7 +681,11 @@ export function calculateMatchAttendance(
     competitionMultiplier(fixture.competition) *
     (0.85 + fanMood / 200);
 
-  const floor = getClubAttendanceFloor(career.club, baseAttendance);
+  const floor = getClubAttendanceFloor(
+    career.club,
+    baseAttendance,
+    career.attendanceData.attendanceFloor
+  );
   const raw = Math.round(baseAttendance * mult);
   return Math.max(floor, Math.min(stadiumCapacity, raw));
 }
@@ -606,16 +748,19 @@ export function processHomeMatchAttendance(
   };
 
   const withRevenue = applyClubRevenue(
-    {
-      ...career,
-      attendanceData: {
-        ...career.attendanceData,
-        fanMood: newFanMood,
-        currentAverageAttendance: newAvg,
+    applyAttendancePerformanceDrift(
+      {
+        ...career,
+        attendanceData: {
+          ...career.attendanceData,
+          fanMood: newFanMood,
+          currentAverageAttendance: newAvg,
+        },
+        gateIncomeHistory: [...career.gateIncomeHistory, record],
+        seasonAttendance,
       },
-      gateIncomeHistory: [...career.gateIncomeHistory, record],
-      seasonAttendance,
-    },
+      "home_match"
+    ),
     gateIncome,
     "gate"
   );

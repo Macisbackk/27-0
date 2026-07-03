@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
@@ -19,6 +20,7 @@ import {
 } from "@/lib/manager/managerTransferLeague";
 import { findPlayerMatchdaySlot } from "@/lib/manager/managerMatchdaySquad";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
+import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
 import { playPanelClose, playUiClick } from "@/lib/sound";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 
@@ -116,6 +118,25 @@ export function ManagerSquadPlayerModal({
           {slot && (
             <span>{slot.kind === "xiii" ? "Starter" : "Interchange"}</span>
           )}
+          {(() => {
+            const ps = career.squad.find((p) => p.playerId === playerId);
+            if (!ps) return null;
+            if (ps.injury) {
+              return (
+                <span className="col-span-2 text-red-300">
+                  {formatInjuryLabel(ps.injury)}
+                </span>
+              );
+            }
+            if (ps.fitness < 75) {
+              return (
+                <span className="col-span-2 text-amber-300">
+                  Fitness {Math.round(ps.fitness)}% — may need rest
+                </span>
+              );
+            }
+            return null;
+          })()}
           {transferStatus?.listed && (
             <span className="col-span-2 text-accent-gold">
               Listed — {formatWage(transferStatus.askingPrice)}
@@ -124,6 +145,13 @@ export function ManagerSquadPlayerModal({
         </div>
 
         <div className="mt-4 grid gap-2">
+          <GameButton
+            variant="secondary"
+            href={`/showcase?player=${encodeURIComponent(playerId)}`}
+            onClick={() => playUiClick()}
+          >
+            View Full Profile
+          </GameButton>
           <GameButton
             variant="theme"
             onClick={() => {

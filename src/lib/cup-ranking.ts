@@ -1,5 +1,3 @@
-import { formatRecordWithPercentage } from "./lifetime-stats";
-
 export function applyMatchResultsToStreak(
   currentStreak: number,
   longestStreak: number,
@@ -24,7 +22,7 @@ export function getCupWinPercentage(
 ): number {
   const total = wins + losses;
   if (total === 0) return 0;
-  return Math.round((wins / total) * 1000) / 10;
+  return Math.round((wins / total) * 100);
 }
 
 export function getCupFinishRank(finish: string | null | undefined): number {

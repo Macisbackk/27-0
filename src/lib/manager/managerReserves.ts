@@ -16,7 +16,9 @@ import { createInitialPlayerState } from "./managerSquad";
 import { generateInitialContract } from "./managerContracts";
 import {
   computeCareerWageBill,
+  generateReserveYouthContract,
 } from "./managerReserveContracts";
+import { deductTransferFee } from "./managerFinance";
 import { getManagerClubTeamRating } from "./managerRating";
 import { reserveToPlayer, getManagerPlayerAge } from "./managerPlayers";
 import { reconcileLeagueRosters } from "./managerLeagueRosters";
@@ -41,6 +43,19 @@ const FRENCH_RESERVE_CLUBS = new Set([
   "Toulouse Olympique",
   "Catalans Dragons",
 ]);
+
+/** Minimum registered reserves required to field a side (RFL reserve listing). */
+export const RESERVE_SQUAD_MIN = 17;
+export const RESERVE_SQUAD_MAX = 30;
+export const RESERVE_RECRUITMENT_FEE = 300_000;
+export const RESERVE_WALKOVER_SCORE = 18;
+export const RESERVE_WALKOVER_REASON = "Walkover — not enough players";
+
+export const RESERVE_EMERGENCY_RECRUITMENT_TITLE =
+  "Academy development levy";
+
+export const RESERVE_EMERGENCY_RECRUITMENT_EXCUSE =
+  "Under RFL Operational Rules, clubs must register at least 17 players for reserve fixtures. Pay a £300k academy development levy to fast-track performance-unit graduates onto the reserve listing for the remainder of the season.";
 
 const FRENCH_FIRST_NAMES = [
   "Lucas", "Hugo", "Nathan", "Enzo", "Louis", "Theo", "Mathis", "Jules",
@@ -392,11 +407,179 @@ export function getReserveOpponent(club: string, round: number, seed: string): s
   return others[Math.floor(rng() * others.length)]!;
 }
 
+export function initLeagueClubReserveCounts(): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const club of CURRENT_PLAYABLE_CLUBS) {
+    counts[club] = 24;
+  }
+  return counts;
+}
+
+export function getClubReserveCount(
+  career: ManagerCareer,
+  club: string
+): number {
+  if (club === career.club) {
+    return career.reserves.length;
+  }
+  const counts =
+    career.leagueClubReserveCounts ?? initLeagueClubReserveCounts();
+  return counts[club] ?? 24;
+}
+
+export function reconcileLeagueClubReserveCounts(
+  career: ManagerCareer
+): ManagerCareer {
+  const counts = {
+    ...(career.leagueClubReserveCounts ?? initLeagueClubReserveCounts()),
+    [career.club]: career.reserves.length,
+  };
+  return { ...career, leagueClubReserveCounts: counts };
+}
+
+/** Seeded reserve-list churn for AI clubs between reserve rounds. */
+export function tickLeagueClubReserveCounts(
+  career: ManagerCareer,
+  round: number
+): ManagerCareer {
+  const counts = {
+    ...(career.leagueClubReserveCounts ?? initLeagueClubReserveCounts()),
+    [career.club]: career.reserves.length,
+  };
+
+  for (const club of CURRENT_PLAYABLE_CLUBS) {
+    if (club === career.club) continue;
+    const rng = seedrandom(`${career.seed}-res-churn-r${round}-${club}`);
+    let count = counts[club] ?? 24;
+    if (rng() < 0.07 && count > 14) count -= 1;
+    if (rng() < 0.04 && count < 24) count += 1;
+    counts[club] = count;
+  }
+
+  return { ...career, leagueClubReserveCounts: counts };
+}
+
+/** Youth intake bump for AI reserve listings at season start. */
+export function applySeasonAiReserveIntake(
+  career: ManagerCareer,
+  seasonYear: number
+): ManagerCareer {
+  const counts = {
+    ...(career.leagueClubReserveCounts ?? initLeagueClubReserveCounts()),
+    [career.club]: career.reserves.length,
+  };
+
+  for (const club of CURRENT_PLAYABLE_CLUBS) {
+    if (club === career.club) continue;
+    const rng = seedrandom(`${career.seed}-res-intake-s${seasonYear}-${club}`);
+    const intake = 2 + Math.floor(rng() * 3);
+    counts[club] = Math.min(24, (counts[club] ?? 24) + intake);
+  }
+
+  return { ...career, leagueClubReserveCounts: counts };
+}
+
+function createReserveWalkoverResult(
+  round: number,
+  opponentClub: string,
+  userWon: boolean
+): ReserveFixtureResult {
+  return {
+    round,
+    opponent: `${opponentClub} Reserves`,
+    opponentClub,
+    userScore: userWon ? RESERVE_WALKOVER_SCORE : 0,
+    oppScore: userWon ? 0 : RESERVE_WALKOVER_SCORE,
+    userWon,
+    userTries: userWon ? 3 : 0,
+    walkover: true,
+    walkoverReason: RESERVE_WALKOVER_REASON,
+  };
+}
+
+function generateEmergencyReserveRecruits(
+  career: ManagerCareer,
+  count: number
+): ManagerReservePlayer[] {
+  const positions: Position[] = [];
+  for (const { position, count: slotCount } of SQUAD_STRUCTURE) {
+    for (let i = 0; i < slotCount; i++) positions.push(position);
+  }
+  const rng = seedrandom(`${career.seed}-emergency-res-${career.gameWeek}`);
+  const shuffled = [...positions].sort(() => rng() - 0.5);
+  const startIndex = career.reserves.length;
+
+  const recruits: ManagerReservePlayer[] = [];
+  for (let i = 0; i < count; i++) {
+    const pos = shuffled[(startIndex + i) % shuffled.length] ?? "CENTRE";
+    recruits.push(
+      generateReservePlayer(
+        `${career.seed}-emergency-${career.seasonYear}`,
+        startIndex + i,
+        pos,
+        career.club
+      )
+    );
+  }
+  return recruits;
+}
+
+export function fillReserveSquadMinimum(
+  career: ManagerCareer
+): { ok: boolean; career?: ManagerCareer; error?: string } {
+  const shortfall = RESERVE_SQUAD_MIN - career.reserves.length;
+  if (shortfall <= 0) {
+    return { ok: false, error: "Reserve squad already meets the 17-player minimum" };
+  }
+  if (career.reserves.length + shortfall > RESERVE_SQUAD_MAX) {
+    return { ok: false, error: "Reserve squad is full" };
+  }
+
+  const transferBudget =
+    career.managerFinance?.transferBudget ?? career.budget;
+  if (transferBudget < RESERVE_RECRUITMENT_FEE) {
+    return {
+      ok: false,
+      error: `Need £${(RESERVE_RECRUITMENT_FEE / 1000).toFixed(0)}k transfer budget`,
+    };
+  }
+
+  const recruits = generateEmergencyReserveRecruits(career, shortfall);
+  const reserveContracts = { ...(career.reserveContracts ?? {}) };
+  for (const recruit of recruits) {
+    reserveContracts[recruit.id] = generateReserveYouthContract(recruit);
+  }
+
+  let next: ManagerCareer = {
+    ...career,
+    reserves: [...career.reserves, ...recruits],
+    reserveContracts,
+    updatedAt: new Date().toISOString(),
+  };
+  next = deductTransferFee(next, RESERVE_RECRUITMENT_FEE);
+  next = reconcileLeagueClubReserveCounts({
+    ...next,
+    wageBill: computeCareerWageBill(next),
+  });
+
+  return { ok: true, career: next };
+}
+
 export function simulateReserveFixture(
   career: ManagerCareer,
   round: number,
   opponentClub: string
 ): ReserveFixtureResult {
+  const userCount = getClubReserveCount(career, career.club);
+  const oppCount = getClubReserveCount(career, opponentClub);
+
+  if (userCount < RESERVE_SQUAD_MIN) {
+    return createReserveWalkoverResult(round, opponentClub, false);
+  }
+  if (oppCount < RESERVE_SQUAD_MIN) {
+    return createReserveWalkoverResult(round, opponentClub, true);
+  }
+
   const rng = seedrandom(`${career.seed}-res-fix-r${round}`);
   const squadRating =
     career.reserves.reduce((sum, r) => sum + r.rating, 0) /
@@ -439,6 +622,14 @@ export function applyReserveMatchDevelopment(
   career: ManagerCareer,
   result: ReserveFixtureResult
 ): ManagerCareer {
+  if (result.walkover) {
+    return {
+      ...career,
+      reserveResults: [...career.reserveResults, result],
+      lastReserveResult: result,
+    };
+  }
+
   const rng = seedrandom(`${career.seed}-res-dev-r${result.round}`);
   const reserves = career.reserves.map((r) => {
     let next = { ...r };
@@ -601,7 +792,7 @@ export function promoteReserveToSquad(
       (id) => id !== reserveId
     ),
   });
-  return { ok: true, career: next };
+  return { ok: true, career: reconcileLeagueClubReserveCounts(next) };
 }
 
 export function releaseReserve(
@@ -611,7 +802,7 @@ export function releaseReserve(
   const nextContracts = { ...(career.reserveContracts ?? {}) };
   delete nextContracts[reserveId];
 
-  return {
+  return reconcileLeagueClubReserveCounts({
     ...career,
     reserves: career.reserves.filter((r) => r.id !== reserveId),
     reserveContracts: nextContracts,
@@ -625,7 +816,7 @@ export function releaseReserve(
       ...career,
       reserveContracts: nextContracts,
     }),
-  };
+  });
 }
 
 export function developReserveFromFirstTeamAppearance(

@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   getShowcasePlayers,
   formatValue,
@@ -74,6 +75,8 @@ function formatPlayerTypeLabel(status: PlayerCategory | "all"): string {
 }
 
 export function PlayerShowcase() {
+  const searchParams = useSearchParams();
+  const deepLinkPlayerId = searchParams.get("player");
   const [filters, setFilters] = useState<ShowcaseFilters>(DEFAULT_FILTERS);
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDeferredValue(searchInput);
@@ -126,6 +129,15 @@ export function PlayerShowcase() {
       sortDir,
     ]
   );
+
+  useEffect(() => {
+    if (!deepLinkPlayerId) return;
+    const player = ALL_PLAYERS.find((p) => p.id === deepLinkPlayerId);
+    if (!player) return;
+    setDetailPlayer(player);
+    setExpandedPlayerId(player.id);
+    setSearchInput(player.name);
+  }, [deepLinkPlayerId]);
 
   useEffect(() => {
     setCurrentPage(1);
