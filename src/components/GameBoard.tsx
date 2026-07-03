@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import type {
   GameDifficulty,
@@ -72,6 +73,7 @@ import {
   playRevealChoices,
   playReroll,
   playSeasonStart,
+  playUiClick,
 } from "@/lib/sound";
 import { PlayerChoice } from "./PlayerChoice";
 import { RecruitmentSlotReveal } from "./RecruitmentSlotReveal";
@@ -1196,7 +1198,7 @@ export function GameBoard({
 
       <div
         ref={mainScrollRef}
-        className={`relative mx-auto flex w-full max-w-6xl flex-col overflow-x-hidden ${SPACING.pageX} py-4 pb-8 sm:py-5 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4`}
+        className={`relative mx-auto flex w-full max-w-6xl flex-col overflow-x-hidden ${SPACING.pageX} py-4 pb-28 sm:py-5 sm:pb-8 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4`}
       >
       {(title || subtitle) && (
         <div className="pt-1 lg:pt-0">
@@ -1452,6 +1454,42 @@ export function GameBoard({
           </AnimatePresence>
         </div>
       </div>
+
+      {phase !== "review" && (
+        <div
+          className="fixed inset-x-0 bottom-0 z-30 border-t border-pitch-700/60 bg-pitch-950/95 px-3 py-2 backdrop-blur-md sm:hidden"
+          style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
+        >
+          <div className="mx-auto flex max-w-lg items-center gap-2">
+            <Link
+              href="/"
+              onClick={() => playUiClick()}
+              className={`${BTN.base} ${BTN.secondary} min-h-[44px] shrink-0 px-3 text-xs`}
+            >
+              Leave run
+            </Link>
+            {phase === "pitch" && filledCount < TOTAL_SLOTS && (
+              <button
+                type="button"
+                onClick={handleAutofill}
+                disabled={choosing}
+                className={`${BTN.base} ${BTN.greenOutlineSm} min-h-[44px] flex-1 px-3 text-xs`}
+              >
+                Auto Fill
+              </button>
+            )}
+            {phase === "pitch" && filledCount >= TOTAL_SLOTS && (
+              <button
+                type="button"
+                onClick={() => startTournamentSimulation(squad)}
+                className={`${BTN.base} ${BTN.goldOutlineSm} min-h-[44px] flex-1 px-3 text-xs`}
+              >
+                Simulate Season
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       {phase === "review" &&
         seasonResult &&

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import {
   ManagerTransferPlayerCard,
@@ -16,7 +16,7 @@ import {
   getWageBillPercent,
   isWageOverBudget,
 } from "@/lib/manager/managerFinance";
-import { CARD, FILTER, SPACING, tabGroupButtonClass, tabGroupClass } from "@/lib/ui/design-system";
+import { CARD, FILTER, SPACING, TAB_RAIL, tabGroupButtonClass, tabGroupClass } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { formatWage } from "@/lib/manager/managerContracts";
@@ -38,13 +38,6 @@ import { getPlayerById } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Player, Position } from "@/lib/types";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
-import {
-  playerMatchesTransferPriority,
-  TRANSFER_PRIORITY_LABELS,
-  type TransferPriorityFilter,
-  getSquadNeedPositions,
-  getExpiringContractPositions,
-} from "@/lib/manager/managerTransferPriorities";
 import { playUiClick } from "@/lib/sound";
 
 interface ManagerTransfersProps {
@@ -70,8 +63,6 @@ export function ManagerTransfers({
 }: ManagerTransfersProps) {
   const [tab, setTab] = useState<TransferTab>("listed");
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
-  const [priorityFilter, setPriorityFilter] =
-    useState<TransferPriorityFilter>("all");
   const [leagueSort, setLeagueSort] = useState<"rating" | "team" | "name">(
     "rating"
   );
@@ -93,16 +84,45 @@ export function ManagerTransfers({
   const wagePct = getWageBillPercent(career);
   const transferFund = getTransferBudget(career);
 
-  const squadNeeds = useMemo(() => getSquadNeedPositions(career), [career]);
-  const expiringPositions = useMemo(
-    () => getExpiringContractPositions(career),
-    [career]
+  const listedPlayerIds = useMemo(
+    () => new Set(career.leagueListedPlayers.map((l) => l.playerId)),
+    [career.leagueListedPlayers]
   );
 
-  const matchesPriority = useCallback(
-    (playerId: string) =>
-      playerMatchesTransferPriority(career, playerId, priorityFilter),
-    [career, priorityFilter]
+  const freeAgentIds = useMemo(
+    () => new Set((career.freeAgents ?? []).map((f) => f.playerId)),
+    [career.freeAgents]
+  );
+
+  /** Full unlisted pool — not transfer-listed, not a free agent, not at your club. */
+  const allUnlistedPlayers = useMemo(() => {
+    return getAllLeaguePlayers(career)
+      .map(({ playerId, club }) => {
+        const raw =
+          getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
+        if (!raw) return null;
+        return { player: withManagerRating(raw), club, playerId };
+      })
+      .filter((r): r is NonNullable<typeof r> => r !== null)
+      .filter((r) => !listedPlayerIds.has(r.playerId))
+      .filter((r) => !freeAgentIds.has(r.playerId));
+  }, [career, listedPlayerIds, freeAgentIds]);
+
+  const tabCounts = useMemo(
+    () => ({
+      listed: career.leagueListedPlayers.filter((entry) =>
+        Boolean(getPlayerById(entry.playerId))
+      ).length,
+      freeAgents: (career.freeAgents ?? []).filter(
+        (entry) =>
+          Boolean(
+            getManagerPlayer(career, entry.playerId) ??
+              getPlayerById(entry.playerId)
+          )
+      ).length,
+      unlisted: allUnlistedPlayers.length,
+    }),
+    [career, allUnlistedPlayers.length]
   );
 
   const listedPlayers = useMemo(() => {
@@ -113,13 +133,12 @@ export function ManagerTransfers({
         return { ...entry, player: withManagerRating(raw) };
       })
       .filter((r): r is NonNullable<typeof r> => r !== null)
-      .filter((r) => matchesPriority(r.player.id))
       .filter((r) => {
         if (positionFilter === "all") return true;
         return getPlayerEligiblePositions(r.player).includes(positionFilter);
       })
       .sort((a, b) => b.player.peakRating - a.player.peakRating);
-  }, [career.leagueListedPlayers, positionFilter, matchesPriority]);
+  }, [career.leagueListedPlayers, positionFilter]);
 
   const freeAgents = useMemo(() => {
     return (career.freeAgents ?? [])
@@ -131,29 +150,16 @@ export function ManagerTransfers({
         return { ...entry, player: withManagerRating(raw) };
       })
       .filter((r): r is NonNullable<typeof r> => r !== null)
-      .filter((r) => matchesPriority(r.player.id))
       .filter((r) => {
         if (positionFilter === "all") return true;
         return getPlayerEligiblePositions(r.player).includes(positionFilter);
       })
       .sort((a, b) => b.player.peakRating - a.player.peakRating);
-  }, [career, positionFilter, matchesPriority]);
+  }, [career, positionFilter]);
 
-  const leagueSearch = useMemo(() => {
+  const unlistedPlayers = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return getAllLeaguePlayers(career)
-      .map(({ playerId, club }) => {
-        const raw = getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
-        if (!raw) return null;
-        const player = withManagerRating(raw);
-        const listed = career.leagueListedPlayers.some(
-          (l) => l.playerId === playerId
-        );
-        return { player, club, listed };
-      })
-      .filter((r): r is NonNullable<typeof r> => r !== null)
-      .filter((r) => !r.listed)
-      .filter((r) => matchesPriority(r.player.id))
+    return allUnlistedPlayers
       .filter((r) => {
         if (!q) return true;
         return (
@@ -167,15 +173,17 @@ export function ManagerTransfers({
       })
       .sort((a, b) => {
         if (leagueSort === "team") {
-          return a.club.localeCompare(b.club) || b.player.peakRating - a.player.peakRating;
+          return (
+            a.club.localeCompare(b.club) ||
+            b.player.peakRating - a.player.peakRating
+          );
         }
         if (leagueSort === "name") {
           return a.player.name.localeCompare(b.player.name);
         }
         return b.player.peakRating - a.player.peakRating;
-      })
-      .slice(0, 24);
-  }, [career, search, positionFilter, leagueSort, matchesPriority]);
+      });
+  }, [allUnlistedPlayers, search, positionFilter, leagueSort]);
 
   const submitTransferOffer = (
     playerId: string,
@@ -380,12 +388,13 @@ export function ManagerTransfers({
         </div>
       </ManagerSectionCard>
 
-      <div className={tabGroupClass()}>
+      <div className={`${TAB_RAIL.outer} sm:overflow-visible`}>
+        <div className={`${tabGroupClass()} ${TAB_RAIL.inner} sm:w-auto`}>
         {(
           [
-            ["listed", listedPlayers.length],
-            ["freeAgents", freeAgents.length],
-            ["unlisted", leagueSearch.length],
+            ["listed", tabCounts.listed],
+            ["freeAgents", tabCounts.freeAgents],
+            ["unlisted", tabCounts.unlisted],
           ] as const
         ).map(([id, count]) => (
           <button
@@ -398,43 +407,7 @@ export function ManagerTransfers({
             {count > 0 ? ` (${count})` : ""}
           </button>
         ))}
-      </div>
-
-      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-        <p className={`${TYPO.sectionLabel} mb-3`}>Transfer priorities</p>
-        <div className="flex flex-wrap gap-2">
-          {(
-            Object.keys(TRANSFER_PRIORITY_LABELS) as TransferPriorityFilter[]
-          ).map((id) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => {
-                playUiClick();
-                setPriorityFilter(id);
-              }}
-              className={`rounded-lg border px-2 py-1 text-xs ${
-                priorityFilter === id
-                  ? FILTER.chipActive
-                  : "border-pitch-600 text-pitch-300"
-              }`}
-            >
-              {TRANSFER_PRIORITY_LABELS[id]}
-            </button>
-          ))}
         </div>
-        {priorityFilter === "squad-needs" && squadNeeds.length > 0 && (
-          <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
-            Short cover:{" "}
-            {squadNeeds.map((pos) => POSITION_SHORT[pos]).join(", ")}
-          </p>
-        )}
-        {priorityFilter === "expiring" && expiringPositions.length > 0 && (
-          <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
-            Expiring roles:{" "}
-            {expiringPositions.map((pos) => POSITION_SHORT[pos]).join(", ")}
-          </p>
-        )}
       </div>
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
@@ -443,7 +416,7 @@ export function ManagerTransfers({
           <button
             type="button"
             onClick={() => setPositionFilter("all")}
-            className={`rounded-lg border px-2 py-1 text-xs ${
+            className={`${FILTER.chipTouch} ${
               positionFilter === "all" ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
             }`}
           >
@@ -454,7 +427,7 @@ export function ManagerTransfers({
               key={pos}
               type="button"
               onClick={() => setPositionFilter(pos)}
-              className={`rounded-lg border px-2 py-1 text-xs ${
+              className={`${FILTER.chipTouch} ${
                 positionFilter === pos ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
               }`}
             >
@@ -722,7 +695,7 @@ export function ManagerTransfers({
               key={id}
               type="button"
               onClick={() => setLeagueSort(id)}
-              className={`rounded-lg border px-2 py-1 text-xs ${
+              className={`${FILTER.chipTouch} ${
                 leagueSort === id ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
               }`}
             >
@@ -731,7 +704,7 @@ export function ManagerTransfers({
           ))}
         </div>
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
-          {leagueSearch.map(({ player, club }) => {
+          {unlistedPlayers.map(({ player, club }) => {
             const fee = getAskingPrice(
               player.id,
               false,
@@ -788,9 +761,11 @@ export function ManagerTransfers({
               </ManagerTransferPlayerCard>
             );
           })}
-          {leagueSearch.length === 0 && (
+          {unlistedPlayers.length === 0 && (
             <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
-              No unlisted players match your search.
+              {allUnlistedPlayers.length === 0
+                ? "No unlisted players available to bid on right now."
+                : "No unlisted players match your filters."}
             </p>
           )}
         </div>

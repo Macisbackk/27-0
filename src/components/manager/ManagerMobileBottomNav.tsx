@@ -19,7 +19,6 @@ const PRIMARY_TABS: {
 ];
 
 const MORE_ITEMS: { id: ManagerView; label: string }[] = [
-  { id: "inbox", label: "Inbox" },
   { id: "reserves", label: "Reserves" },
   { id: "contracts", label: "Contracts" },
   { id: "across-league", label: "Across the League" },
@@ -30,14 +29,12 @@ interface ManagerMobileBottomNavProps {
   active: ManagerView;
   onNavigate: (view: ManagerView) => void;
   disabled?: boolean;
-  unreadInbox?: number;
 }
 
 export function ManagerMobileBottomNav({
   active,
   onNavigate,
   disabled,
-  unreadInbox = 0,
 }: ManagerMobileBottomNavProps) {
   const [moreOpen, setMoreOpen] = useState(false);
   const moreActive = MORE_ITEMS.some((item) => item.id === active);
@@ -96,11 +93,6 @@ export function ManagerMobileBottomNav({
             <span className="font-display text-[10px] font-bold uppercase tracking-wide">
               More
             </span>
-            {unreadInbox > 0 && active !== "inbox" && (
-              <span className="absolute right-2 top-1 rounded-full bg-theme-primary px-1 text-[8px] font-bold text-[var(--theme-text-on-primary)]">
-                {unreadInbox > 9 ? "9+" : unreadInbox}
-              </span>
-            )}
           </button>
         </div>
       </nav>
@@ -116,7 +108,7 @@ export function ManagerMobileBottomNav({
             role="dialog"
             aria-modal="true"
             aria-label="More manager sections"
-            className={`w-full max-w-lg outline-none ${CARD.elevated} ${SPACING.cardPadding} rounded-b-none rounded-t-2xl`}
+            className={`w-full max-w-lg outline-none ${CARD.elevated} ${SPACING.cardPadding} ${SPACING.safeBottom} rounded-b-none rounded-t-2xl`}
             onClick={(e) => e.stopPropagation()}
           >
             <p className={TYPO.sectionLabel}>More sections</p>
@@ -126,18 +118,13 @@ export function ManagerMobileBottomNav({
                   key={item.id}
                   type="button"
                   onClick={() => navigate(item.id)}
-                  className={`btn-press rounded-lg border px-3 py-3 text-left text-sm font-semibold transition ${
+                  className={`btn-press rounded-lg border px-3 py-3 text-left text-sm font-semibold transition min-h-[44px] ${
                     active === item.id
                       ? "border-theme-primary/45 bg-theme-primary/12 text-white"
                       : "border-pitch-700/50 bg-pitch-900/40 text-pitch-200"
                   }`}
                 >
                   {item.label}
-                  {item.id === "inbox" && unreadInbox > 0 && (
-                    <span className="ml-2 rounded-full bg-theme-primary px-1.5 py-px text-[10px] font-bold text-[var(--theme-text-on-primary)]">
-                      {unreadInbox}
-                    </span>
-                  )}
                 </button>
               ))}
             </div>

@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { ClubLogoBox } from "@/components/ClubBadge";
+import { ManagerLeaguePlayerSheetModal } from "@/components/manager/ManagerLeaguePlayerSheetModal";
 import { ManagerMatchdayFormation } from "@/components/manager/ManagerMatchdayFormation";
 import { GameButton } from "@/components/ui/GameButton";
 import { BodyPortal } from "@/components/ui/BodyPortal";
@@ -16,6 +17,7 @@ import { getManagerPlayerAge } from "@/lib/manager/managerPlayers";
 import type { ManagerCareer } from "@/lib/manager/types";
 import type { Player } from "@/lib/types";
 import { CURRENT_PLAYABLE_CLUBS } from "@/lib/clubs/super-league-display";
+import { getFormationSlotDisplayLabel } from "@/lib/positions";
 import { CARD, SPACING, BTN } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playPanelClose, playUiClick } from "@/lib/sound";
@@ -58,14 +60,16 @@ function ReadonlyInterchangeSlot({
   shirtNumber,
   listed,
   age,
+  onSelect,
 }: {
   player: Player | undefined;
   shirtNumber: number;
   listed?: boolean;
   age?: number;
+  onSelect?: () => void;
 }) {
-  return (
-    <div className="rounded-lg border border-pitch-700/50 bg-pitch-950/55 px-2 py-2 text-left">
+  const content = (
+    <>
       <p className="text-[10px] text-pitch-500">{shirtNumber}.</p>
       <p className="truncate text-sm text-white">{player?.name ?? "Empty"}</p>
       {player && (
@@ -81,9 +85,36 @@ function ReadonlyInterchangeSlot({
           )}
         </div>
       )}
+    </>
+  );
+
+  if (player && onSelect) {
+    return (
+      <button
+        type="button"
+        onClick={() => {
+          playUiClick();
+          onSelect();
+        }}
+        className="btn-press rounded-lg border border-pitch-700/50 bg-pitch-950/55 px-2 py-2 text-left transition hover:border-theme-primary/40 hover:bg-pitch-900/70"
+      >
+        {content}
+      </button>
+    );
+  }
+
+  return (
+    <div className="rounded-lg border border-pitch-700/50 bg-pitch-950/55 px-2 py-2 text-left">
+      {content}
     </div>
   );
 }
+
+type SelectedLeaguePlayer = {
+  playerId: string;
+  slotLabel: string;
+  inStartingXiii: boolean;
+};
 
 export function ManagerClubSquadSheet({
   career,
@@ -139,6 +170,27 @@ export function ManagerClubSquadSheet({
   const filledXiii = xiiiPlayers.length;
 
   const interchangePlayers = lineup.interchange;
+  const [selectedPlayer, setSelectedPlayer] = useState<SelectedLeaguePlayer | null>(
+    null
+  );
+
+  const openPlayerDetails = useCallback(
+    (playerId: string, slotLabel: string, inStartingXiii: boolean) => {
+      setSelectedPlayer({ playerId, slotLabel, inStartingXiii });
+    },
+    []
+  );
+
+  const handlePitchPlayerClick = useCallback(
+    (playerId: string, slotIndex: number) => {
+      openPlayerDetails(
+        playerId,
+        getFormationSlotDisplayLabel(slotIndex),
+        true
+      );
+    },
+    [openPlayerDetails]
+  );
 
   return (
     <BodyPortal>
@@ -163,42 +215,68 @@ export function ManagerClubSquadSheet({
           />
 
           <div
-            className="relative shrink-0 overflow-hidden border-b border-pitch-700/40 px-4 py-3"
+            className={`relative shrink-0 overflow-hidden border-b border-pitch-700/40 px-3 py-2 sm:px-4 ${
+              lineup.isUserClub ? "sm:py-2.5" : "py-1.5 sm:py-2"
+            }`}
             style={{
               background: `linear-gradient(to right, ${clubAccent}18, transparent 55%)`,
             }}
           >
-            <ClubLogoBox
-              club={club}
-              size="lg"
-              className="pointer-events-none absolute right-20 top-1/2 z-0 -translate-y-1/2 scale-[2.4] opacity-[0.13]"
-              aria-hidden
-            />
+            {lineup.isUserClub && (
+              <ClubLogoBox
+                club={club}
+                size="md"
+                className="pointer-events-none absolute right-16 top-1/2 z-0 hidden -translate-y-1/2 scale-[1.6] opacity-[0.1] sm:block"
+                aria-hidden
+              />
+            )}
 
             <button
               type="button"
               onClick={handleClose}
-              className={`${BTN.closeSm} absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center text-base leading-none`}
+              className={`${BTN.closeSm} absolute right-2 top-2 z-20 flex h-8 w-8 items-center justify-center text-sm leading-none sm:right-3 sm:top-2.5 sm:h-9 sm:w-9 sm:text-base`}
               aria-label="Close team sheet"
             >
               ✕
             </button>
 
-            <div className="relative z-10 flex min-w-0 items-start gap-2.5 pr-11">
-              <ClubLogoBox club={club} size="sm" className="shrink-0" />
-              <div className="min-w-0">
-                <p className={TYPO.sectionLabel}>Team Sheet</p>
-                <h2
-                  id="manager-club-sheet-title"
-                  className={`truncate ${TYPO.cardTitle}`}
-                >
-                  {club}
-                </h2>
-                <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
-                  {lineup.isUserClub
-                    ? "Your matchday 17"
-                    : "Projected matchday 17"}
-                </p>
+            <div className="relative z-10 flex min-w-0 items-center gap-2 pr-9 sm:pr-11">
+              <ClubLogoBox club={club} size="xs" className="shrink-0 sm:hidden" />
+              <ClubLogoBox club={club} size="sm" className="hidden shrink-0 sm:block" />
+              <div className="min-w-0 flex-1">
+                {lineup.isUserClub ? (
+                  <>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-theme-primary">
+                      Team Sheet
+                    </p>
+                    <h2
+                      id="manager-club-sheet-title"
+                      className="truncate font-display text-sm font-bold text-white sm:text-base"
+                    >
+                      {club}
+                    </h2>
+                    <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
+                      Your matchday 17
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-pitch-500">
+                      Team Sheet
+                    </p>
+                    <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0">
+                      <h2
+                        id="manager-club-sheet-title"
+                        className="truncate font-display text-sm font-bold text-white"
+                      >
+                        {club}
+                      </h2>
+                      <span className="shrink-0 text-[11px] text-pitch-500">
+                        Projected matchday 17
+                      </span>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -236,12 +314,18 @@ export function ManagerClubSquadSheet({
 
             <div className="mt-3">
               {lineup.isUserClub ? (
-                <ManagerMatchdayFormation career={career} title="Starting XIII" />
+                <ManagerMatchdayFormation
+                  career={career}
+                  title="Starting XIII"
+                  onPlayerClick={handlePitchPlayerClick}
+                />
               ) : (
                 <ManagerMatchdayFormation
                   squad={squadSlots}
                   clubColorOverride={club}
                   title="Starting XIII"
+                  hideTitle
+                  onPlayerClick={handlePitchPlayerClick}
                 />
               )}
             </div>
@@ -261,6 +345,16 @@ export function ManagerClubSquadSheet({
                       age={
                         playerId
                           ? getManagerPlayerAge(career, playerId)
+                          : undefined
+                      }
+                      onSelect={
+                        playerId
+                          ? () =>
+                              openPlayerDetails(
+                                playerId,
+                                `Interchange ${14 + i}`,
+                                false
+                              )
                           : undefined
                       }
                     />
@@ -285,6 +379,17 @@ export function ManagerClubSquadSheet({
           </div>
         </div>
       </div>
+
+      {selectedPlayer && (
+        <ManagerLeaguePlayerSheetModal
+          career={career}
+          club={club}
+          playerId={selectedPlayer.playerId}
+          slotLabel={selectedPlayer.slotLabel}
+          inStartingXiii={selectedPlayer.inStartingXiii}
+          onClose={() => setSelectedPlayer(null)}
+        />
+      )}
     </BodyPortal>
   );
 }

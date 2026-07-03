@@ -1,6 +1,8 @@
 import sl2026Squads from "../../../data/sl-2026-squads.json";
 import sl2026ApplyReport from "../../../data/sl-2026-squads-apply-report.json";
 import { PLAYER_RATING_OVERRIDES } from "../../../data/player-rating-overrides";
+import type { Player } from "../types";
+import { syncPlayerValueFromRating } from "../players/ratings";
 
 type Sl2026Entry = { name: string; positions: string; rating: number };
 type RatingsChangedEntry = {
@@ -58,15 +60,16 @@ export function hasManagerModeRating(playerId: string): boolean {
   return MANAGER_RATING_BY_PLAYER_ID.has(playerId);
 }
 
-export function applyManagerModeRatingToPlayer<
-  T extends { id: string; name: string; peakRating: number },
->(player: T): T {
-  if (!hasManagerModeRating(player.id)) return player;
-  const mgrRating = MANAGER_RATING_BY_PLAYER_ID.get(player.id)!;
-  return {
-    ...player,
-    peakRating: Math.max(mgrRating, player.peakRating),
-  };
+export function applyManagerModeRatingToPlayer(player: Player): Player {
+  let next = player;
+  if (hasManagerModeRating(player.id)) {
+    const mgrRating = MANAGER_RATING_BY_PLAYER_ID.get(player.id)!;
+    const peakRating = Math.max(mgrRating, player.peakRating);
+    if (peakRating !== player.peakRating) {
+      next = { ...player, peakRating };
+    }
+  }
+  return syncPlayerValueFromRating(next);
 }
 
 export function getManagerClubKeyPlayers(

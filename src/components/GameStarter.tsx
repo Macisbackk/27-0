@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { GameMode } from "@/lib/types";
 import { isNormalEraMode } from "@/lib/play-links";
+import { ensurePlayersLoaded } from "@/lib/players";
 import { GameBoard } from "./GameBoard";
 
 interface GameStarterProps {
@@ -37,13 +38,17 @@ export function GameStarter({
       }));
 
   useEffect(() => {
-    setReady(true);
+    void ensurePlayersLoaded().then(() => setReady(true));
   }, []);
 
   if (!ready) {
     return (
-      <div className="matchday-arena flex min-h-screen items-center justify-center">
-        <p className="text-sm text-gray-500">Loading run…</p>
+      <div className="matchday-arena flex min-h-screen items-center justify-center px-6">
+        <div className="w-full max-w-md animate-pulse space-y-3 motion-reduce:animate-none">
+          <div className="mx-auto h-6 w-40 rounded-lg bg-pitch-800/80" />
+          <div className="h-20 rounded-xl bg-pitch-800/60" />
+          <div className="h-40 rounded-xl bg-pitch-800/50" />
+        </div>
       </div>
     );
   }

@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { ManagerLanding } from "@/components/manager/ManagerLanding";
 import { ManagerClubSelect } from "@/components/manager/ManagerClubSelect";
 import { ManagerNav } from "@/components/manager/ManagerNav";
@@ -15,7 +16,13 @@ import { ManagerTransfers } from "@/components/manager/ManagerTransfers";
 import { ManagerFixtures } from "@/components/manager/ManagerFixtures";
 import { ManagerAcrossLeague } from "@/components/manager/ManagerAcrossLeague";
 import { ManagerStatsView } from "@/components/manager/ManagerStatsView";
-import { ManagerPlayGame } from "@/components/manager/ManagerPlayGame";
+const ManagerPlayGame = dynamic(
+  () =>
+    import("@/components/manager/ManagerPlayGame").then((m) => ({
+      default: m.ManagerPlayGame,
+    })),
+  { ssr: false }
+);
 import { ManagerMatchReview } from "@/components/manager/ManagerMatchReview";
 import { ManagerSeasonReview } from "@/components/manager/ManagerSeasonReview";
 import { ManagerDevelopmentReview } from "@/components/manager/ManagerDevelopmentReview";
@@ -89,18 +96,14 @@ import { readManagerCareerRaw } from "@/lib/manager/managerSaveStorage";
 import { markOnboardingStepComplete } from "@/lib/manager/managerOnboarding";
 import { shouldShowSaveMigrationNotice } from "@/lib/manager/managerSaveMigration";
 import { ManagerSaveMigrationNotice } from "@/components/manager/ManagerSaveMigrationNotice";
-
-const NAV_VIEWS: ManagerView[] = [
-  "hub",
-  "inbox",
-  "squad",
-  "reserves",
-  "contracts",
-  "transfers",
-  "fixtures",
-  "across-league",
-  "stats",
-];
+import { PlayerRegistryGate } from "@/components/PlayerRegistryGate";
+import {
+  MANAGER_NAV_VIEWS,
+  isManagerNavView,
+  managerPathForView,
+  managerPathFromLegacyViewParam,
+  managerViewFromPathname,
+} from "@/lib/manager/manager-routes";
 
 /** Full-screen manager views that should open at the top of the page. */
 const SCROLL_TOP_VIEWS: ManagerView[] = [
@@ -115,8 +118,16 @@ function scrollManagerPageToTop() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
+function resolveInitialNavView(pathname: string, saved: ManagerCareer): ManagerView {
+  const fromPath = managerViewFromPathname(pathname);
+  if (fromPath && isManagerNavView(fromPath)) return fromPath;
+  return "hub";
+}
+
 export default function ManagerPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const viewRestoredRef = useRef(false);
   const [view, setView] = useState<ManagerView>("landing");
   const [career, setCareer] = useState<ManagerCareer | null>(null);
   const [activeSlot, setActiveSlot] = useState(0);
@@ -185,10 +196,11 @@ export default function ManagerPage() {
 
   useEffect(() => {
     if (!awaitingFriendlyChoice) return;
-    if (NAV_VIEWS.includes(view as ManagerView) && view !== "hub") {
+    if (MANAGER_NAV_VIEWS.includes(view as ManagerView) && view !== "hub") {
       setView("hub");
+      router.replace(managerPathForView("hub"));
     }
-  }, [awaitingFriendlyChoice, view]);
+  }, [awaitingFriendlyChoice, view, router]);
 
   useEffect(() => {
     if (!career || !awaitingFriendlyChoice) return;
@@ -223,12 +235,46 @@ export default function ManagerPage() {
     (next: ManagerView) => {
       if (career && isAwaitingFriendlyChoice(career) && next !== "hub") {
         setView("hub");
+        router.replace(managerPathForView("hub"));
         return;
       }
       setView(next);
+      if (isManagerNavView(next) || next === "club-select") {
+        router.replace(managerPathForView(next));
+      }
     },
-    [career]
+    [career, router]
   );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const legacyPath = managerPathFromLegacyViewParam(params.get("view"));
+    if (legacyPath && legacyPath !== pathname) {
+      router.replace(legacyPath);
+    }
+  }, [pathname, router]);
+
+  useEffect(() => {
+    if (!career) return;
+    const fromPath = managerViewFromPathname(pathname);
+    if (fromPath === "club-select") {
+      setView("club-select");
+      return;
+    }
+    if (fromPath && isManagerNavView(fromPath) && !SCROLL_TOP_VIEWS.includes(view)) {
+      setView(fromPath);
+    }
+  }, [pathname, career, view]);
+
+  useEffect(() => {
+    if (!career || viewRestoredRef.current) return;
+    const fromPath = managerViewFromPathname(pathname);
+    if (fromPath && fromPath !== "hub") {
+      setView(fromPath);
+    }
+    viewRestoredRef.current = true;
+  }, [career, pathname]);
 
   const handleFriendlySelect = useCallback(
     (choiceId: string) => {
@@ -244,6 +290,7 @@ export default function ManagerPage() {
     setActiveSlot(slot);
     setActiveSaveSlot(slot);
     setView("club-select");
+    router.replace(managerPathForView("club-select"));
   };
 
   const continueCareer = (saved: ManagerCareer) => {
@@ -284,7 +331,8 @@ export default function ManagerPage() {
     } else if (shouldShowLeagueWinnersCelebration(saved)) {
       setLeagueWinnersModalOpen(true);
     }
-    setView("hub");
+    setView(resolveInitialNavView(pathname, saved));
+    router.replace(managerPathForView(resolveInitialNavView(pathname, saved)));
   };
 
   const handleContinue = (slot: number) => {
@@ -347,6 +395,7 @@ export default function ManagerPage() {
     setCareer(next);
     refreshSaveSlots();
     setView("hub");
+    router.replace(managerPathForView("hub"));
   };
 
   const playResultSound = (won: boolean, fixture: ManagerCareer["fixtures"][0]) => {
@@ -637,6 +686,7 @@ export default function ManagerPage() {
       return;
     }
     setView("contracts");
+    router.replace(managerPathForView("contracts"));
   };
 
   const handlePlayoffsIntroContinue = () => {
@@ -749,10 +799,11 @@ export default function ManagerPage() {
     const hydrated = hydrateManagerCareer(next);
     persist(hydrated);
     setView("hub");
+    router.replace(managerPathForView("hub"));
   };
 
   const showNav =
-    career && NAV_VIEWS.includes(view as (typeof NAV_VIEWS)[number]);
+    career && MANAGER_NAV_VIEWS.includes(view as (typeof MANAGER_NAV_VIEWS)[number]);
 
   const incomingBidOffer =
     career && pendingIncomingBidId
@@ -766,6 +817,7 @@ export default function ManagerPage() {
 
   return (
     <PageShell withLights compact width="wide">
+      <PlayerRegistryGate>
       {view === "landing" && (
         <ManagerLanding
           saveSlots={saveSlots}
@@ -785,6 +837,7 @@ export default function ManagerPage() {
             playUiClick();
             refreshSaveSlots();
             setView("landing");
+            router.replace("/manager");
           }}
         />
       )}
@@ -880,7 +933,6 @@ export default function ManagerPage() {
             active={awaitingFriendlyChoice ? "hub" : view}
             onNavigate={handleNavNavigate}
             disabled={playGameOpen || awaitingFriendlyChoice}
-            unreadInbox={countUnreadInbox(career)}
           />
         </div>
       )}
@@ -995,6 +1047,7 @@ export default function ManagerPage() {
         onConfirm={() => setAlertDialog(null)}
         onCancel={() => setAlertDialog(null)}
       />
+      </PlayerRegistryGate>
     </PageShell>
   );
 }

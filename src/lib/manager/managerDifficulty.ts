@@ -1,11 +1,27 @@
-import type { ManagerCareer } from "./types";
+import type { ManagerCareer, ManagerSeasonSummary } from "./types";
 import {
+  didMeetManagerBoardExpectation,
+  expectationTierFromStars,
   getManagerClubConfig,
   MANAGER_EXPECTATION_LABELS,
   type ManagerClubExpectationTier,
 } from "./club-config";
+import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { pushInboxMessage } from "./managerInbox";
+
+const PRESTIGE_SHIFT_THRESHOLD = 2;
+const LEAGUE_SIZE = CURRENT_PLAYABLE_CLUBS.length;
+
+export function getCareerClubStars(career: ManagerCareer): number {
+  return career.difficulty ?? getManagerClubConfig(career.club).difficulty;
+}
+
+export function getCareerExpectationTier(
+  career: ManagerCareer
+): ManagerClubExpectationTier {
+  return expectationTierFromStars(getCareerClubStars(career));
+}
 
 export interface ManagerDifficultySimAdjustments {
   opponentRatingDelta: number;
@@ -19,8 +35,88 @@ export interface ManagerDifficultyPressure {
 }
 
 function expectationTier(career: ManagerCareer): ManagerClubExpectationTier {
-  const config = getManagerClubConfig(career.club);
-  return config.expectationTier;
+  return getCareerExpectationTier(career);
+}
+
+/** +1 / 0 / -1 momentum from one season vs the current board target. */
+export function evaluateSeasonPrestigeMomentumDelta(
+  career: ManagerCareer,
+  summary: ManagerSeasonSummary
+): number {
+  const tier = getCareerExpectationTier(career);
+  const position = summary.position;
+  const playoffFinish = summary.playoffFinish ?? null;
+  const met = didMeetManagerBoardExpectation(tier, position, playoffFinish);
+  const wonTitle = playoffFinish === "Super League Champions";
+  const wonCup = summary.trophies.some((t) => t.includes("Challenge Cup"));
+
+  if (wonTitle && tier !== "title") return 1;
+  if (wonCup && met) return 1;
+  if (met && position <= 2 && (tier === "playoffs" || tier === "mid-table")) {
+    return 1;
+  }
+  if (met) return 0;
+
+  if (position >= LEAGUE_SIZE - 1) return -1;
+  if (tier === "title" && position > 6) return -1;
+  if (tier === "playoffs" && position > 10) return -1;
+  if (tier === "mid-table" && position >= 12) return -1;
+  return -1;
+}
+
+export function applySeasonClubPrestigeDrift(
+  career: ManagerCareer,
+  summary: ManagerSeasonSummary
+): { career: ManagerCareer; starDelta: number } {
+  const delta = evaluateSeasonPrestigeMomentumDelta(career, summary);
+  let momentum = (career.prestigeMomentum ?? 0) + delta;
+  let stars = getCareerClubStars(career);
+  let starDelta = 0;
+
+  while (momentum >= PRESTIGE_SHIFT_THRESHOLD && stars < 5) {
+    stars += 1;
+    starDelta += 1;
+    momentum -= PRESTIGE_SHIFT_THRESHOLD;
+  }
+  while (momentum <= -PRESTIGE_SHIFT_THRESHOLD && stars > 1) {
+    stars -= 1;
+    starDelta -= 1;
+    momentum += PRESTIGE_SHIFT_THRESHOLD;
+  }
+
+  momentum = Math.max(-1, Math.min(1, momentum));
+
+  const tier = expectationTierFromStars(stars);
+  let next: ManagerCareer = {
+    ...career,
+    difficulty: stars,
+    prestigeMomentum: momentum,
+    boardExpectation: MANAGER_EXPECTATION_LABELS[tier],
+  };
+
+  if (starDelta !== 0) {
+    const nextSeason = career.seasonYear + 1;
+    const msgId = `prestige-${starDelta > 0 ? "rise" : "fall"}-s${nextSeason}`;
+    if (!next.inboxMessages.some((m) => m.id === msgId)) {
+      next = pushInboxMessage(next, {
+        id: msgId,
+        type: "news",
+        title: starDelta > 0 ? "Club status rising" : "Club status falling",
+        body:
+          starDelta > 0
+            ? `Years of success have raised ${career.club} to a ${stars}-star club. Board expectations will increase.`
+            : `Persistent poor results have dropped ${career.club} to a ${stars}-star club.`,
+        week: 0,
+        season: nextSeason,
+        gameWeek: 0,
+        createdAt: new Date().toISOString(),
+        read: false,
+        resolved: true,
+      });
+    }
+  }
+
+  return { career: next, starDelta };
 }
 
 /** Nudge simulation from club strength tier and current league standing. */
@@ -106,7 +202,7 @@ export function getManagerDifficultyPressure(
   const tier = expectationTier(career);
   const position = getUserLeaguePosition(career.leagueTable, career.club);
   const target = MANAGER_EXPECTATION_LABELS[tier];
-  const stars = career.difficulty ?? getManagerClubConfig(career.club).difficulty;
+  const stars = getCareerClubStars(career);
 
   if (career.boardConfidence < 30) {
     return {

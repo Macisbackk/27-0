@@ -2,7 +2,7 @@ import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import { isWorseRecord } from "../lifetime-stats";
 import { isLeagueAndCupPhaseComplete } from "./managerChallengeCup";
 import { getUserLeagueTablePosition } from "./managerFixtures";
-import { getManagerSeasonTrophyLabels } from "./managerSeasonTrophies";
+import { getManagerSeasonTrophyLabels, getSeasonSummaryTrophyLabels } from "./managerSeasonTrophies";
 import type { ManagerCareer, ManagerSeasonSummary } from "./types";
 
 export interface ManagerCareerSaveStats {
@@ -214,7 +214,7 @@ export function buildManagerCareerSeasonRows(
     position: s.position,
     wins: s.wins,
     losses: s.losses,
-    trophies: s.trophies,
+    trophies: getSeasonSummaryTrophyLabels(s),
     inProgress: false,
   }));
 

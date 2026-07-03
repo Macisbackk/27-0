@@ -461,23 +461,8 @@ export function applyManagerMatchResult(
     ? { ...fixture, manOfTheMatch: motm }
     : fixture;
 
-  const matchBio = generateManagerMatchBio(fixtureWithMotm, career.seed, {
-    clubName: career.club,
-    competition: sched.competition,
-    cupRound: sched.cupRound,
-    tacticImpactLine: mods.tacticLine,
-    tacticEffectivenessLine: effectivenessLine,
-    attendance: attendanceMeta ?? undefined,
-    playedLive: options.playedLive ?? false,
-    injuryCount: injuries.length,
-    forwardTries: forward,
-    backTries: back,
-  });
-  fixtureWithMotm.matchBio = matchBio;
-
   const record: ManagerFixtureRecord = {
     ...fixtureWithMotm,
-    matchBio,
     userClub: career.club,
     fixtureId: sched.id,
     competition: sched.competition,
@@ -502,6 +487,29 @@ export function applyManagerMatchResult(
   };
 
   const position = getUserLeaguePosition(leagueTable, career.club);
+
+  const matchBio = generateManagerMatchBio(fixtureWithMotm, career.seed, {
+    clubName: career.club,
+    competition: sched.competition,
+    cupRound: sched.cupRound,
+    tactics: career.tactics,
+    tacticImpactLine: mods.tacticLine,
+    tacticEffectivenessLine: effectivenessLine,
+    attendance: attendanceMeta ?? undefined,
+    playedLive: options.playedLive ?? false,
+    liveEvents: options.liveEvents,
+    injuryCount: injuries.length,
+    injuries: injuries.map(
+      (i) => getPlayerById(i.playerId)?.name ?? "Player"
+    ),
+    forwardTries: forward,
+    backTries: back,
+    recentForm: career.recentForm,
+    tablePosition:
+      !isCup && !isFriendly && !isPlayoff ? position : undefined,
+  });
+  fixtureWithMotm.matchBio = matchBio;
+  record.matchBio = matchBio;
 
   let boardConfidence = career.boardConfidence;
   if (won) boardConfidence = Math.min(100, boardConfidence + 3);

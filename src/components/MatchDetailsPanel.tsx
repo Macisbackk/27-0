@@ -110,7 +110,7 @@ export function MatchDetailsPanel({
             {fixture.matchBio && !hideMatchStory && (
               <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
                 <p className={TYPO.sectionTitle}>Match Story</p>
-                <p className={`mt-2 ${TYPO.bodySm}`}>{fixture.matchBio}</p>
+                <p className={`mt-2 whitespace-pre-line ${TYPO.bodySm}`}>{fixture.matchBio}</p>
               </div>
             )}
           </div>

@@ -45,6 +45,7 @@ import {
   tickClubCareerTotals,
 } from "./managerRetirement";
 import { getManagerSeasonTrophyLabels } from "./managerSeasonTrophies";
+import { applySeasonClubPrestigeDrift } from "./managerDifficulty";
 
 export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary {
   const position = getUserLeagueTablePosition(career);
@@ -315,5 +316,9 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
       "board_grant"
     );
   }
-  return finalCareer;
+  const { career: withPrestige } = applySeasonClubPrestigeDrift(
+    finalCareer,
+    summary
+  );
+  return withPrestige;
 }

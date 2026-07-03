@@ -16,6 +16,11 @@ import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { ModeStartLink } from "./ModeStartLink";
 
+function isMobileViewport(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(max-width: 639px)").matches;
+}
+
 export function HomeModeSelector() {
   const [normalEraMode, setNormalEraMode] = useState(false);
   const [quickModeOpen, setQuickModeOpen] = useState(false);
@@ -23,6 +28,7 @@ export function HomeModeSelector() {
 
   useEffect(() => {
     setNormalEraMode(getNormalEraVariant());
+    setQuickModeOpen(isMobileViewport());
     setMounted(true);
 
     const onNormal = (event: Event) => {
@@ -67,33 +73,45 @@ export function HomeModeSelector() {
         <div
           className={`w-full ${SPACING.cardPaddingLg} transition ${CARD.hero} ${CARD.featured}`}
         >
-          <button
-            type="button"
-            className="flex w-full items-start justify-between gap-4 text-left"
-            onClick={() => {
-              playUiClick();
-              setQuickModeOpen((open) => !open);
-            }}
-          >
-            <div>
-              <p className={TYPO.sectionLabel}>Quick Mode</p>
-              <h2 className={`${TYPO.cardTitle} mt-1 text-2xl text-white`}>
-                Spin & Simulate
-              </h2>
-              <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
-                New to 27-0? Try a quick season first, or jump straight into a
-                full Manager career.
-              </p>
-            </div>
-            <span
-              className={`mt-1 shrink-0 text-sm text-theme-primary transition ${
-                quickModeOpen ? "rotate-180" : ""
-              }`}
-              aria-hidden
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <button
+              type="button"
+              className="flex w-full flex-1 items-start justify-between gap-4 text-left sm:cursor-default"
+              onClick={() => {
+                playUiClick();
+                setQuickModeOpen((open) => !open);
+              }}
             >
-              ▼
-            </span>
-          </button>
+              <div>
+                <p className={TYPO.sectionLabel}>Quick Mode</p>
+                <h2 className={`${TYPO.cardTitle} mt-1 text-2xl text-white`}>
+                  Spin & Simulate
+                </h2>
+                <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+                  Build your XIII in ~3 minutes and chase 27-0.
+                </p>
+              </div>
+              <span
+                className={`mt-1 shrink-0 text-sm text-theme-primary transition sm:hidden ${
+                  quickModeOpen ? "rotate-180" : ""
+                }`}
+                aria-hidden
+              >
+                ▼
+              </span>
+            </button>
+            <ModeStartLink
+              href={normalHref}
+              eraMode={normalEraMode}
+              onClick={() => {
+                playUiClick();
+                playModeClassicStart("NORMAL");
+              }}
+              className="shrink-0 sm:mt-1"
+            >
+              {normalEraMode ? "Quick season →" : "Quick season (~3 min) →"}
+            </ModeStartLink>
+          </div>
 
           {quickModeOpen && (
             <div

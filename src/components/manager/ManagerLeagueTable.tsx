@@ -81,8 +81,58 @@ export function ManagerLeagueTable({
           <span className="text-theme-primary">{career.club}</span>
         </p>
       )}
-      <div className="-mx-1 mt-3 overflow-x-auto px-1">
-        <table className="w-full max-sm:min-w-[320px] text-left text-sm">
+      <ul className={`mt-3 space-y-2 sm:hidden ${SPACING.stackSm}`}>
+        {displayRows.map((row) => {
+          const indicatorColor = getClubIndicatorColor(row.team);
+          const inner = (
+            <>
+              <span className="font-mono text-sm text-pitch-400">{row.position}</span>
+              <span
+                className="inline-block h-2 w-2 shrink-0 rounded-full"
+                style={{ backgroundColor: indicatorColor }}
+              />
+              <span
+                className={`min-w-0 flex-1 truncate text-sm ${
+                  row.isUserTeam ? "font-semibold text-theme-primary" : "text-pitch-200"
+                }`}
+              >
+                {row.team}
+              </span>
+              <span className="text-xs text-pitch-400">
+                {row.wins}W-{row.losses}L
+              </span>
+              <span className="font-semibold text-accent-gold">{row.leaguePoints}pts</span>
+            </>
+          );
+          return (
+            <li
+              key={row.team}
+              className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2 ${
+                row.isUserTeam
+                  ? "border-theme-primary/35 bg-theme-primary/10"
+                  : "border-pitch-700/50 bg-pitch-950/40"
+              }`}
+            >
+              {onViewClub ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    playUiClick();
+                    onViewClub(row.team);
+                  }}
+                  className="flex w-full items-center gap-2 text-left"
+                >
+                  {inner}
+                </button>
+              ) : (
+                inner
+              )}
+            </li>
+          );
+        })}
+      </ul>
+      <div className="-mx-1 mt-3 hidden overflow-x-auto px-1 sm:block">
+        <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-pitch-700/50 text-pitch-400">
               <th className={SPACING.tableCell}>#</th>

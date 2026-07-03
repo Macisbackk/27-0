@@ -4,6 +4,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerSeasonSummary } from "@/lib/manager/types";
+import { getSeasonSummaryTrophyLabels } from "@/lib/manager/managerSeasonTrophies";
 import { ManagerSectionCard } from "@/components/manager/manager-ui";
 
 interface ManagerSeasonRecapCardProps {
@@ -17,9 +18,10 @@ export function ManagerSeasonRecapCard({
   seasonYear,
   summary,
 }: ManagerSeasonRecapCardProps) {
+  const trophies = getSeasonSummaryTrophyLabels(summary);
   const trophyLine =
-    summary.trophies.length > 0
-      ? summary.trophies.join(" · ")
+    trophies.length > 0
+      ? trophies.join(" · ")
       : "No silverware this year";
 
   return (

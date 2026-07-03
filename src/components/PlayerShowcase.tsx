@@ -32,6 +32,7 @@ import { ShowcasePlayerCard } from "./ShowcasePlayerCard";
 import {
   ShowcasePagination,
   SHOWCASE_PAGE_SIZE,
+  getShowcasePageSize,
 } from "./ShowcasePagination";
 import {
   RL_FILTER_CHIP_ACTIVE,
@@ -130,6 +131,16 @@ export function PlayerShowcase() {
     ]
   );
 
+  const [pageSize, setPageSize] = useState(SHOWCASE_PAGE_SIZE);
+
+  useEffect(() => {
+    const syncPageSize = () => setPageSize(getShowcasePageSize());
+    syncPageSize();
+    const mq = window.matchMedia("(max-width: 639px)");
+    mq.addEventListener("change", syncPageSize);
+    return () => mq.removeEventListener("change", syncPageSize);
+  }, []);
+
   useEffect(() => {
     if (!deepLinkPlayerId) return;
     const player = ALL_PLAYERS.find((p) => p.id === deepLinkPlayerId);
@@ -144,7 +155,7 @@ export function PlayerShowcase() {
     setExpandedPlayerId(null);
   }, [filterResultsKey]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / SHOWCASE_PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const effectivePage = Math.min(currentPage, totalPages);
 
   useEffect(() => {
@@ -154,9 +165,9 @@ export function PlayerShowcase() {
   }, [currentPage, totalPages]);
 
   const pagePlayers = useMemo(() => {
-    const start = (effectivePage - 1) * SHOWCASE_PAGE_SIZE;
-    return filtered.slice(start, start + SHOWCASE_PAGE_SIZE);
-  }, [filtered, effectivePage]);
+    const start = (effectivePage - 1) * pageSize;
+    return filtered.slice(start, start + pageSize);
+  }, [filtered, effectivePage, pageSize]);
 
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
@@ -482,6 +493,7 @@ export function PlayerShowcase() {
                 currentPage={effectivePage}
                 totalPages={totalPages}
                 totalItems={filtered.length}
+                pageSize={pageSize}
                 onPageChange={handlePageChange}
               />
 
@@ -503,6 +515,7 @@ export function PlayerShowcase() {
                   currentPage={effectivePage}
                   totalPages={totalPages}
                   totalItems={filtered.length}
+                  pageSize={pageSize}
                   onPageChange={handlePageChange}
                 />
               )}

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { CARD, MANAGER, SPACING } from "@/lib/ui/design-system";
+import { useEffect, useMemo, useState } from "react";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Position } from "@/lib/types";
@@ -21,16 +21,15 @@ import {
   type MatchdaySlotTarget,
 } from "@/lib/manager/managerMatchdaySquad";
 import { ManagerMatchdayFormation } from "@/components/manager/ManagerMatchdayFormation";
-import { ManagerSquadPlayerModal } from "@/components/manager/ManagerSquadPlayerModal";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
-import { markOnboardingStepComplete } from "@/lib/manager/managerOnboarding";
 import { autoFixMatchdaySquad, autoSortMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { GameButton } from "@/components/ui/GameButton";
 import {
   ManagerPage,
   ManagerViewHeader,
 } from "@/components/manager/manager-ui";
+import { MobileDetailsAccordion } from "@/components/MobileDetailsAccordion";
 import { ManagerTacticsPanel } from "@/components/manager/ManagerTactics";
 import { playUiClick } from "@/lib/sound";
 
@@ -38,8 +37,6 @@ interface ManagerSquadProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
 }
-
-const SINGLE_CLICK_DELAY_MS = 220;
 
 const SQUAD_SELECTION_CLASS = {
   idle: "border-pitch-700/60 bg-pitch-900/50 hover:border-pitch-500",
@@ -63,28 +60,87 @@ function unavailableTextClass(isSuspension: boolean): string {
   return isSuspension ? "text-amber-300" : "text-red-300";
 }
 
-function useFinePointer(): boolean {
-  const [finePointer, setFinePointer] = useState(false);
+const SQUAD_POOL_SECTIONS = [
+  {
+    id: "backs",
+    label: "Backs",
+    positions: ["FULLBACK", "WING", "CENTRE"] as Position[],
+  },
+  {
+    id: "halves",
+    label: "Halves",
+    positions: ["STAND_OFF", "SCRUM_HALF"] as Position[],
+  },
+  {
+    id: "forwards",
+    label: "Forwards",
+    positions: ["PROP", "HOOKER", "SECOND_ROW", "LOOSE_FORWARD"] as Position[],
+  },
+] as const;
 
-  useEffect(() => {
-    const mq = window.matchMedia("(pointer: fine)");
-    const update = () => setFinePointer(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
+type SquadPoolSectionId = (typeof SQUAD_POOL_SECTIONS)[number]["id"];
 
-  return finePointer;
+function getSquadPoolSection(
+  career: ManagerCareer,
+  playerId: string
+): SquadPoolSectionId {
+  const positions = getManagerPlayerEligiblePositions(career, playerId);
+  for (const section of SQUAD_POOL_SECTIONS) {
+    if (positions.some((pos) => section.positions.includes(pos))) {
+      return section.id;
+    }
+  }
+  return "forwards";
+}
+
+type SquadPoolEntry = ReturnType<typeof getSquadPoolPlayers>[number];
+
+function SquadPoolPlayerButton({
+  career,
+  entry,
+  poolRole,
+  onClick,
+}: {
+  career: ManagerCareer;
+  entry: SquadPoolEntry;
+  poolRole: SquadSelectionRole;
+  onClick: () => void;
+}) {
+  const { playerId, isReserveCallUp } = entry;
+  const player = getManagerPlayer(career, playerId);
+  if (!player) return null;
+
+  const positions = getManagerPlayerEligiblePositions(career, playerId);
+  const sourceLabel = isReserveCallUp ? "Res" : "Sqd";
+
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={onClick}
+        className={`${squadSelectionClass(poolRole)} btn-press select-none rounded-lg border px-2 py-1.5 text-left transition sm:px-2 sm:py-2`}
+      >
+        <div className="flex items-start justify-between gap-1">
+          <p className="min-w-0 truncate text-xs font-medium leading-tight text-white sm:text-sm">
+            {player.name}
+          </p>
+          <span className="shrink-0 text-xs font-bold text-theme-primary">
+            {player.peakRating}
+          </span>
+        </div>
+        <p className="mt-0.5 truncate text-[9px] text-pitch-400 sm:text-[10px]">
+          {positions.map((p) => POSITION_SHORT[p]).join(" · ")} · {sourceLabel}
+        </p>
+      </button>
+    </li>
+  );
 }
 
 export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
-  const finePointer = useFinePointer();
-  const singleClickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [selectedTarget, setSelectedTarget] = useState<MatchdaySlotTarget | null>(
     null
   );
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
-  const [modalPlayerId, setModalPlayerId] = useState<string | null>(null);
   const [pendingAssignId, setPendingAssignId] = useState<string | null>(null);
   const [replaceSourcePlayerId, setReplaceSourcePlayerId] = useState<
     string | null
@@ -99,30 +155,6 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     const timer = window.setTimeout(() => setAssignmentNotice(null), 4000);
     return () => window.clearTimeout(timer);
   }, [assignmentNotice]);
-
-  useEffect(
-    () => () => {
-      if (singleClickTimerRef.current) {
-        clearTimeout(singleClickTimerRef.current);
-      }
-    },
-    []
-  );
-
-  const clearSingleClickTimer = () => {
-    if (singleClickTimerRef.current) {
-      clearTimeout(singleClickTimerRef.current);
-      singleClickTimerRef.current = null;
-    }
-  };
-
-  const openPlayerDetails = (playerId: string) => {
-    clearSingleClickTimer();
-    setPendingAssignId(null);
-    setReplaceSourcePlayerId(null);
-    setSelectedTarget(null);
-    setModalPlayerId(playerId);
-  };
 
   const replaceSlot = replaceSourcePlayerId
     ? findPlayerMatchdaySlot(career, replaceSourcePlayerId)
@@ -153,6 +185,25 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
       )
     );
   }, [squadPool, career, positionFilter, selectedTarget, replaceSlot, replacementCandidates]);
+
+  const squadPoolBySection = useMemo(() => {
+    const grouped: Record<SquadPoolSectionId, SquadPoolEntry[]> = {
+      backs: [],
+      halves: [],
+      forwards: [],
+    };
+    for (const entry of filteredPool) {
+      grouped[getSquadPoolSection(career, entry.playerId)].push(entry);
+    }
+    for (const section of SQUAD_POOL_SECTIONS) {
+      grouped[section.id].sort((a, b) => {
+        const ra = getManagerPlayer(career, a.playerId)?.peakRating ?? 0;
+        const rb = getManagerPlayer(career, b.playerId)?.peakRating ?? 0;
+        return rb - ra;
+      });
+    }
+    return grouped;
+  }, [filteredPool, career]);
 
   const applyAssignment = (
     target: MatchdaySlotTarget,
@@ -214,61 +265,22 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
   const handlePoolPlayerClick = (playerId: string) => {
     if (pendingAssignId) return;
     if (selectedTarget || replaceSourcePlayerId) {
-      clearSingleClickTimer();
       handlePickPlayer(playerId);
       return;
     }
-
-    if (!finePointer) {
-      setPendingAssignId(playerId);
-      setModalPlayerId(null);
-      return;
-    }
-
-    clearSingleClickTimer();
-    singleClickTimerRef.current = setTimeout(() => {
-      setPendingAssignId(playerId);
-      setModalPlayerId(null);
-      singleClickTimerRef.current = null;
-    }, SINGLE_CLICK_DELAY_MS);
+    setPendingAssignId(playerId);
   };
 
-  const handleMatchdayPlayerDoubleClick = (playerId: string) => {
-    if (!finePointer) return;
-    playUiClick();
-    openPlayerDetails(playerId);
-  };
-
-  const handleMatchdayPlayerPrimaryClick = (playerId: string) => {
+  const handleMatchdayPlayerClick = (playerId: string) => {
     if (selectedTarget && replaceCandidateIds.has(playerId)) {
-      clearSingleClickTimer();
       handlePickPlayer(playerId);
       return;
     }
     if (replaceSourcePlayerId && replaceCandidateIds.has(playerId)) {
-      clearSingleClickTimer();
       handlePickPlayer(playerId);
       return;
     }
-
-    if (!finePointer) {
-      openPlayerDetails(playerId);
-      return;
-    }
-
-    clearSingleClickTimer();
-    singleClickTimerRef.current = setTimeout(() => {
-      handleReplacePlayer(playerId);
-      singleClickTimerRef.current = null;
-    }, SINGLE_CLICK_DELAY_MS);
-  };
-
-  const persistAndClose = (next: ManagerCareer) => {
-    if (validateFitMatchdaySquad(resolveCareerForMatchSimulation(next)).valid) {
-      markOnboardingStepComplete("lineup");
-    }
-    onUpdate(next);
-    setModalPlayerId(null);
+    handleReplacePlayer(playerId);
   };
 
   const squadCheck = validateFitMatchdaySquad(resolveCareerForMatchSimulation(career));
@@ -315,11 +327,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     <ManagerPage wide>
       <ManagerViewHeader
         title="Squad"
-        subtitle={
-          finePointer
-            ? "Click squad players to assign · click matchday players to swap · double-click for options"
-            : "Tap a player to assign, or a slot then a player · tap matchday players for options"
-        }
+        subtitle="Tap squad players to assign · tap matchday slots or players to swap"
         action={
           <GameButton
             variant="theme"
@@ -410,7 +418,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
         </div>
       )}
 
-      <div className={MANAGER.splitLayout}>
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_min(100%,440px)] lg:gap-6 [&>*:first-child]:order-2 [&>*:last-child]:order-1 lg:[&>*:first-child]:order-1 lg:[&>*:last-child]:order-2">
         <div className={SPACING.stackMd}>
           <ManagerMatchdayFormation
             career={career}
@@ -420,8 +428,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
             replaceSourcePlayerId={replaceSourcePlayerId}
             replaceCandidateIds={replaceCandidateIds}
             onSlotClick={handleSelectSlot}
-            onFilledSlotClick={handleMatchdayPlayerPrimaryClick}
-            onFilledSlotDoubleClick={handleMatchdayPlayerDoubleClick}
+            onFilledSlotClick={handleMatchdayPlayerClick}
           />
 
           <div className={`${CARD.base} ${SPACING.cardPadding}`}>
@@ -446,7 +453,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     onClick={() => {
                       playUiClick();
                       if (selectionRole === "target") {
-                        if (playerId) handleMatchdayPlayerPrimaryClick(playerId);
+                        if (playerId) handleMatchdayPlayerClick(playerId);
                         else handleSelectSlot({ kind: "bench", index: i });
                         return;
                       }
@@ -454,13 +461,8 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                         setSelectedTarget(null);
                         return;
                       }
-                      if (playerId) handleMatchdayPlayerPrimaryClick(playerId);
+                      if (playerId) handleMatchdayPlayerClick(playerId);
                       else handleSelectSlot({ kind: "bench", index: i });
-                    }}
-                    onDoubleClick={(e) => {
-                      e.preventDefault();
-                      if (!playerId || !finePointer) return;
-                      handleMatchdayPlayerDoubleClick(playerId);
                     }}
                     className={`${squadSelectionClass(selectionRole)} select-none rounded-lg border ${SPACING.listItem} text-left ${
                       unavailable ? unavailableAccentClass(!!isSuspension) : ""
@@ -515,9 +517,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
             </p>
           ) : (
             <p className={`mb-2 ${TYPO.bodySm} text-pitch-500`}>
-              {finePointer
-                ? "Click to assign · double-click for player options"
-                : "Tap a player to assign, or tap matchday players for options"}
+              Tap a squad player, then a slot — or tap a matchday player to swap
             </p>
           )}
           <div className="mb-2 flex gap-1 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible">
@@ -547,81 +547,80 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
               </button>
             ))}
           </div>
-          <ul className={`max-h-[420px] overflow-y-auto ${SPACING.stackSm}`}>
-            {filteredPool.map(({ playerId, isReserveCallUp }) => {
-              const player = getManagerPlayer(career, playerId);
-              if (!player) return null;
-              const positions = getManagerPlayerEligiblePositions(
-                career,
-                playerId
-              );
-              const poolRole = getPoolPlayerRole(playerId);
-              const sourceLabel = isReserveCallUp ? "Reserve" : "Squad";
-              return (
-                <li key={playerId}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playUiClick();
-                      handlePoolPlayerClick(playerId);
-                    }}
-                    onDoubleClick={(e) => {
-                      e.preventDefault();
-                      if (!finePointer) return;
-                      handleMatchdayPlayerDoubleClick(playerId);
-                    }}
-                    className={`${squadSelectionClass(poolRole)} select-none rounded-lg border ${SPACING.listItem} text-left transition`}
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-medium text-white">
-                          {player.name}
-                          <span className="ml-1 text-[10px] text-pitch-500">
-                            ({sourceLabel})
-                          </span>
-                        </p>
-                        <p className="text-[10px] text-pitch-400">
-                          {positions.map((p) => POSITION_SHORT[p]).join(" · ")}
-                        </p>
-                      </div>
-                      <span className="shrink-0 font-bold text-theme-primary">
-                        {player.peakRating}
-                      </span>
-                    </div>
-                  </button>
-                </li>
-              );
-            })}
-            {filteredPool.length === 0 && (
-              <p className={`${TYPO.bodySm} text-pitch-500`}>
-                {selectedTarget || replaceSourcePlayerId
-                  ? "No eligible players for this slot."
-                  : career.calledUpReserveIds.length === 0
-                    ? "No squad players available — call up reserves from the Reserves tab, or all fit players are already on the sheet."
-                    : "No squad players available — all are in the matchday 17."}
-              </p>
-            )}
-          </ul>
+          {positionFilter === "all" ? (
+            <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
+              {SQUAD_POOL_SECTIONS.map((section) => {
+                const sectionPlayers = squadPoolBySection[section.id];
+                return (
+                  <div key={section.id} className="min-w-0">
+                    <p className="mb-1.5 text-center text-[9px] font-bold uppercase tracking-wider text-pitch-500 sm:text-[10px]">
+                      {section.label}
+                    </p>
+                    <ul
+                      className={`max-h-[13.5rem] overflow-y-auto overscroll-contain ${SPACING.stackSm} pr-0.5`}
+                    >
+                      {sectionPlayers.map((entry) => (
+                        <SquadPoolPlayerButton
+                          key={entry.playerId}
+                          career={career}
+                          entry={entry}
+                          poolRole={getPoolPlayerRole(entry.playerId)}
+                          onClick={() => {
+                            playUiClick();
+                            handlePoolPlayerClick(entry.playerId);
+                          }}
+                        />
+                      ))}
+                      {sectionPlayers.length === 0 && (
+                        <li>
+                          <p className={`px-1 py-2 text-center ${TYPO.bodySm} text-pitch-600`}>
+                            —
+                          </p>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <ul
+              className={`grid max-h-[13.5rem] grid-cols-3 gap-2 overflow-y-auto overscroll-contain sm:gap-2.5 ${SPACING.stackSm}`}
+            >
+              {filteredPool.map((entry) => (
+                <SquadPoolPlayerButton
+                  key={entry.playerId}
+                  career={career}
+                  entry={entry}
+                  poolRole={getPoolPlayerRole(entry.playerId)}
+                  onClick={() => {
+                    playUiClick();
+                    handlePoolPlayerClick(entry.playerId);
+                  }}
+                />
+              ))}
+            </ul>
+          )}
+          {filteredPool.length === 0 && (
+            <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+              {selectedTarget || replaceSourcePlayerId
+                ? "No eligible players for this slot."
+                : career.calledUpReserveIds.length === 0
+                  ? "No squad players available — call up reserves from the Reserves tab, or all fit players are already on the sheet."
+                  : "No squad players available — all are in the matchday 17."}
+            </p>
+          )}
         </div>
       </div>
 
-      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-        <p className={`${TYPO.sectionLabel} mb-3 text-center`}>Tactics</p>
-        <ManagerTacticsPanel
-          career={career}
-          onChange={(tactics) => onUpdate({ ...career, tactics })}
-        />
-      </div>
-
-      {modalPlayerId && (
-        <ManagerSquadPlayerModal
-          career={career}
-          playerId={modalPlayerId}
-          onClose={() => setModalPlayerId(null)}
-          onUpdate={persistAndClose}
-          onReplace={handleReplacePlayer}
-        />
-      )}
+      <MobileDetailsAccordion title="Tactics">
+        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+          <ManagerTacticsPanel
+            career={career}
+            onChange={(tactics) => onUpdate({ ...career, tactics })}
+          />
+        </div>
+      </MobileDetailsAccordion>
 
       <ManagerDialog
         open={dialog !== null}

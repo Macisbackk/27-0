@@ -32,6 +32,21 @@ export function MatchdayScoreboard({
             <p className={`${TYPO.bodySm} uppercase tracking-wider`}>
               {filledCount} of {totalSlots} positions filled
             </p>
+            <div
+              className="mt-2 h-1.5 overflow-hidden rounded-full bg-pitch-800/80"
+              role="progressbar"
+              aria-valuenow={filledCount}
+              aria-valuemin={0}
+              aria-valuemax={totalSlots}
+              aria-label="Squad fill progress"
+            >
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-theme-primary/80 to-accent-green transition-all duration-300 motion-reduce:transition-none"
+                style={{
+                  width: `${Math.min(100, (filledCount / Math.max(1, totalSlots)) * 100)}%`,
+                }}
+              />
+            </div>
           </div>
         </div>
 

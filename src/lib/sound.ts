@@ -5,6 +5,7 @@
  */
 
 import type { GameDifficulty } from "./types";
+import { triggerHaptic } from "./haptics";
 import {
   initSoundUnlock,
   isSoundMuted,
@@ -31,6 +32,7 @@ export function playUiClick(): void {
 
 export function playTabChange(): void {
   playSound("tabChange");
+  triggerHaptic(8);
 }
 
 export function playMenuOpen(): void {
@@ -181,6 +183,7 @@ export function playSeasonStart(): void {
 
 export function playSimulateRound(): void {
   playSound("simulateRound");
+  triggerHaptic(12);
 }
 
 export function playSimulateAll(): void {
@@ -201,10 +204,12 @@ export function playWinlessSeason(): void {
 
 export function playMatchNarrowWin(): void {
   playSound("win");
+  triggerHaptic([10, 30, 10]);
 }
 
 export function playMatchBigWin(): void {
   playSound("bigWin");
+  triggerHaptic([15, 40, 15, 40]);
 }
 
 export function playMatchDefeat(): void {

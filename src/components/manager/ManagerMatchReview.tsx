@@ -1,11 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { BracketRecap } from "@/components/BracketRecap";
 import { MatchDetailsPanel } from "@/components/MatchDetailsPanel";
 import { MatchPlayerOfTheMatchCard } from "@/components/MatchPlayerOfTheMatchCard";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CARD, FILTER, SPACING, TAB_RAIL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSquadSlotsFromMatchday } from "@/lib/manager/managerSquad";
@@ -41,6 +42,10 @@ export function ManagerMatchReview({
   fixtureId,
   onClose,
 }: ManagerMatchReviewProps) {
+  const [mobileTab, setMobileTab] = useState<"story" | "stats" | "tactics">(
+    "story"
+  );
+
   const fixture =
     career.fixtures.find((f) => f.fixtureId === fixtureId) ??
     career.fixtures.find((f) => `round-${f.round}` === fixtureId) ??
@@ -110,7 +115,17 @@ export function ManagerMatchReview({
     primary: "border-theme-primary/40 bg-theme-primary/10 text-theme-primary",
     red: "border-red-500/40 bg-red-500/10 text-red-300",
     sky: "border-sky-500/40 bg-sky-500/10 text-sky-300",
+    muted: "border-pitch-600/50 bg-pitch-800/40 text-pitch-300",
   };
+
+  const hasTactics = Boolean(
+    fixture.meta?.tacticReview ||
+      fixture.meta?.tacticEffectivenessLine ||
+      fixture.meta?.tacticImpactLine
+  );
+
+  const tabVisible = (tab: typeof mobileTab) =>
+    mobileTab === tab ? "block space-y-4" : "hidden sm:block sm:space-y-4";
 
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
@@ -166,6 +181,33 @@ export function ManagerMatchReview({
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{roundLabel}</p>
       </div>
 
+      <div className={`${TAB_RAIL.outer} sm:hidden`}>
+        <div className={`${TAB_RAIL.inner} gap-1.5`}>
+          {(
+            [
+              ["story", "Story"],
+              ["stats", "Stats"],
+              ...(hasTactics ? ([["tactics", "Tactics"]] as const) : []),
+            ] as const
+          ).map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => {
+                playUiClick();
+                setMobileTab(id);
+              }}
+              className={`${TAB_RAIL.item} min-h-[44px] rounded-lg border px-3 py-2 text-sm font-semibold ${
+                mobileTab === id ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className={tabVisible("story")}>
       {keyMoment && (
         <div
           className={`rounded-xl border px-4 py-3 ${momentToneClass[keyMoment.tone]}`}
@@ -183,7 +225,7 @@ export function ManagerMatchReview({
       {fixture.matchBio && (
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>
           <p className={TYPO.sectionLabel}>Match Story</p>
-          <p className={`mt-2 leading-relaxed ${TYPO.bodySm} text-pitch-200`}>
+          <p className={`mt-2 leading-relaxed whitespace-pre-line ${TYPO.bodySm} text-pitch-200`}>
             {fixture.matchBio}
           </p>
         </div>
@@ -211,7 +253,9 @@ export function ManagerMatchReview({
           userClub={career.club}
         />
       )}
+      </div>
 
+      <div className={tabVisible("stats")}>
       <AnimatePresence>
         <MatchDetailsPanel
           fixture={fixture}
@@ -226,60 +270,6 @@ export function ManagerMatchReview({
           scoringOnly
         />
       </AnimatePresence>
-
-      {(fixture.meta?.tacticReview ||
-        fixture.meta?.tacticEffectivenessLine ||
-        fixture.meta?.tacticImpactLine) && (
-        <ManagerSectionCard title="Tactical Report" accent="primary">
-          {fixture.meta.tacticReview ? (
-            <>
-              <p
-                className={`mt-1 ${TYPO.bodySm} font-semibold ${
-                  won ? "text-theme-primary" : "text-pitch-100"
-                }`}
-              >
-                {fixture.meta.tacticReview.headline}
-              </p>
-              <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
-                <span className="font-semibold text-pitch-500">You used: </span>
-                {fixture.meta.tacticReview.usedLabel}
-              </p>
-              <ul className={`mt-3 ${SPACING.stackSm}`}>
-                {fixture.meta.tacticReview.recommendations.map((line) => (
-                  <li
-                    key={line}
-                    className={`flex gap-2 ${TYPO.bodySm} leading-relaxed text-pitch-200`}
-                  >
-                    <span className="shrink-0 text-theme-primary" aria-hidden>
-                      →
-                    </span>
-                    <span>{line}</span>
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : (
-            <>
-              {fixture.meta.tacticImpactLine && (
-                <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
-                  <span className="font-semibold text-pitch-500">Game plan: </span>
-                  {fixture.meta.tacticImpactLine}
-                </p>
-              )}
-              {fixture.meta.tacticEffectivenessLine && (
-                <p
-                  className={`${fixture.meta.tacticImpactLine ? "mt-2" : "mt-1"} ${TYPO.bodySm} ${
-                    won ? "text-theme-primary" : "text-pitch-200"
-                  }`}
-                >
-                  <span className="font-semibold text-pitch-500">How it played: </span>
-                  {fixture.meta.tacticEffectivenessLine}
-                </p>
-              )}
-            </>
-          )}
-        </ManagerSectionCard>
-      )}
 
       {attendance && (
         <ManagerSectionCard
@@ -360,6 +350,65 @@ export function ManagerMatchReview({
               </li>
             ))}
           </ul>
+        </div>
+      )}
+      </div>
+
+      {hasTactics && (
+        <div className={tabVisible("tactics")}>
+      {(fixture.meta?.tacticReview ||
+        fixture.meta?.tacticEffectivenessLine ||
+        fixture.meta?.tacticImpactLine) && (
+        <ManagerSectionCard title="Tactical Report" accent="primary">
+          {fixture.meta.tacticReview ? (
+            <>
+              <p
+                className={`mt-1 ${TYPO.bodySm} font-semibold ${
+                  won ? "text-theme-primary" : "text-pitch-100"
+                }`}
+              >
+                {fixture.meta.tacticReview.headline}
+              </p>
+              <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+                <span className="font-semibold text-pitch-500">You used: </span>
+                {fixture.meta.tacticReview.usedLabel}
+              </p>
+              <ul className={`mt-3 ${SPACING.stackSm}`}>
+                {fixture.meta.tacticReview.recommendations.map((line) => (
+                  <li
+                    key={line}
+                    className={`flex gap-2 ${TYPO.bodySm} leading-relaxed text-pitch-200`}
+                  >
+                    <span className="shrink-0 text-theme-primary" aria-hidden>
+                      →
+                    </span>
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <>
+              {fixture.meta.tacticImpactLine && (
+                <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+                  <span className="font-semibold text-pitch-500">Game plan: </span>
+                  {fixture.meta.tacticImpactLine}
+                </p>
+              )}
+              {fixture.meta.tacticEffectivenessLine && (
+                <p
+                  className={`${fixture.meta.tacticImpactLine ? "mt-2" : "mt-1"} ${TYPO.bodySm} ${
+                    won ? "text-theme-primary" : "text-pitch-200"
+                  }`}
+                >
+                  <span className="font-semibold text-pitch-500">How it played: </span>
+                  {fixture.meta.tacticEffectivenessLine}
+                </p>
+              )}
+            </>
+          )}
+        </ManagerSectionCard>
+      )}
         </div>
       )}
     </div>

@@ -195,7 +195,7 @@ export function SeasonReview({
       <div className="stadium-lights pointer-events-none fixed inset-0" />
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
 
-      <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-8 sm:py-12">
+      <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-8 pb-36 sm:py-12 sm:pb-12">
         <motion.header
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -420,11 +420,13 @@ export function SeasonReview({
         </CollapsibleReviewSection>
 
         <motion.footer
-          className="mt-8 w-full max-w-xl space-y-3"
+          className="fixed inset-x-0 bottom-0 z-[55] border-t border-pitch-700/60 bg-pitch-950/95 px-4 py-3 backdrop-blur-md sm:static sm:mt-8 sm:w-full sm:max-w-xl sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none"
+          style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65 }}
         >
+          <div className="mx-auto w-full max-w-xl space-y-3">
           {mode === "CLASSIC" && (
             <QuickToManagerBridge clubName={quickClub} />
           )}
@@ -439,6 +441,7 @@ export function SeasonReview({
             />
           )}
           <ReturnHomeButton onBeforeNavigate={onReturnHome} />
+          </div>
         </motion.footer>
       </div>
     </div>

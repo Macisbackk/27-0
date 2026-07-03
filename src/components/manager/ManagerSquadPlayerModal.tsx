@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
@@ -145,13 +144,6 @@ export function ManagerSquadPlayerModal({
         </div>
 
         <div className="mt-4 grid gap-2">
-          <GameButton
-            variant="secondary"
-            href={`/showcase?player=${encodeURIComponent(playerId)}`}
-            onClick={() => playUiClick()}
-          >
-            View Full Profile
-          </GameButton>
           <GameButton
             variant="theme"
             onClick={() => {

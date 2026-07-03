@@ -23,8 +23,14 @@ export function SiteFooter() {
     );
   }
 
+  const hideOnMobileManager = pathname.startsWith("/manager");
+
   return (
-    <footer className="site-footer relative z-10 mt-auto shrink-0 border-t border-pitch-700/45 bg-pitch-950/75 px-4 py-5 backdrop-blur-md">
+    <footer
+      className={`site-footer relative z-10 mt-auto shrink-0 border-t border-pitch-700/45 bg-pitch-950/75 px-4 py-5 backdrop-blur-md ${
+        hideOnMobileManager ? "hidden sm:block" : ""
+      }`}
+    >
       <div className="mx-auto max-w-4xl">
         <FooterSupportLinks />
         <p className={`mt-4 text-center ${TYPO.bodySm}`}>{DISCLAIMER}</p>

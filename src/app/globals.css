@@ -2072,3 +2072,14 @@ button.mode-start-btn-hard,
 .ui-accent-glow {
   box-shadow: 0 0 24px var(--ui-accent-glow);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-panel,
+  .sidebar-nav-scroll {
+    scroll-behavior: auto;
+  }
+
+  .animate-pulse {
+    animation: none !important;
+  }
+}

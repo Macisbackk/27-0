@@ -21,7 +21,6 @@ import {
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getManagerCareerSaveView } from "@/lib/manager/managerCareerSaveStats";
 import {
-  getManagerCareerHeadlines,
   getManagerCareerMilestones,
 } from "@/lib/manager/managerCareerMilestones";
 import {
@@ -245,21 +244,10 @@ function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
 
 function CareerStatsPanel({ career }: { career: ManagerCareer }) {
   const careerSave = getManagerCareerSaveView(career);
-  const headlines = getManagerCareerHeadlines(career);
   const milestones = getManagerCareerMilestones(career);
 
   return (
     <>
-      {headlines.length > 0 && (
-        <ManagerSectionCard title="Career headlines" accent="primary">
-          <ul className={`mt-2 ${SPACING.stackSm} ${TYPO.bodySm} text-pitch-300`}>
-            {headlines.map((line) => (
-              <li key={line}>· {line}</li>
-            ))}
-          </ul>
-        </ManagerSectionCard>
-      )}
-
       <ManagerSectionCard title="Milestones" variant="inset">
         <div className="mt-2 flex flex-wrap gap-2">
           {milestones.map((m) => (

@@ -7,7 +7,7 @@ import {
   ensureLeagueClubRosters,
   initLeagueClubRosters,
 } from "./managerLeagueRosters";
-import { getManagerClubConfig } from "./club-config";
+import { getManagerClubConfig, expectationTierFromStars, MANAGER_EXPECTATION_LABELS } from "./club-config";
 import {
   getManagerLineupForClub,
   getManagerRosterIds,
@@ -138,6 +138,8 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
 
   let career: ManagerCareer = {
     ...raw,
+    difficulty: raw.difficulty ?? getManagerClubConfig(raw.club).difficulty,
+    prestigeMomentum: raw.prestigeMomentum ?? 0,
     gameWeek,
     leagueTable,
     currentFixtureIndex: raw.currentFixtureIndex ?? raw.currentRound ?? 0,
@@ -342,8 +344,10 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     budget: transferBudget,
     clubFundsEarned: 0,
     boardConfidence: 65,
-    boardExpectation: config.expectation,
+    boardExpectation:
+      MANAGER_EXPECTATION_LABELS[expectationTierFromStars(config.difficulty)],
     difficulty: config.difficulty,
+    prestigeMomentum: 0,
     tactics: { ...DEFAULT_TACTICS },
     squad,
     contracts,

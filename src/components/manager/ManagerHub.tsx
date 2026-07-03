@@ -59,6 +59,8 @@ import { isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
 import { ManagerLeagueTable } from "@/components/manager/ManagerLeagueTable";
+import { ManagerHubStickyActions } from "@/components/manager/ManagerHubStickyActions";
+import { MobileDetailsAccordion } from "@/components/MobileDetailsAccordion";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
 import {
@@ -476,9 +478,9 @@ export function ManagerHub({
             {homeAttendanceOutlook.label}
           </p>
         )}
-        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
-            Recent Form
+            Form streak
           </p>
           <ManagerFormStrip
             results={career.recentForm.slice(-5) as ("W" | "L" | "D")[]}
@@ -533,7 +535,7 @@ export function ManagerHub({
             )}
           </div>
         )}
-        <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <div className="mt-4 hidden grid-cols-1 gap-2 sm:grid sm:grid-cols-2">
           <GameButton
             variant="theme"
             disabled={!canPlay}
@@ -635,13 +637,6 @@ export function ManagerHub({
             onClick={() => onNavigate("squad")}
           >
             Squad & Tactics
-          </GameButton>
-          <GameButton
-            variant="secondary"
-            size="sm"
-            onClick={() => onNavigate("inbox")}
-          >
-            Inbox
           </GameButton>
           <GameButton
             variant="secondary"
@@ -749,6 +744,39 @@ export function ManagerHub({
     </ManagerSectionCard>
   );
 
+  const showStickyPlayBar =
+    Boolean(nextFixture && !seasonComplete && !playoffsPending);
+
+  const stickyActions = (
+    <ManagerHubStickyActions
+      visible={showStickyPlayBar}
+      canPlay={canPlay}
+      isPlayoffFixture={!!isPlayoffFixture}
+      onPlayGame={onPlayGame}
+      onSimulate={onSimulate}
+    />
+  );
+
+  const clubDetailsSections = (
+    <>
+      <HubStandingsPanel
+        career={career}
+        onViewClub={setViewClubSheet}
+        onViewFullLeague={
+          onNavigate ? () => onNavigate("across-league") : undefined
+        }
+      />
+      <ManagerClubFinancesPanel career={career} collapsible />
+      <HubBoardBudgetAttendance
+        career={career}
+        lastGate={lastGate}
+        wageOverBudget={wageOverBudget}
+      />
+      {scoringLeadersCard}
+      {contractsCard}
+    </>
+  );
+
   if (playoffsPending && onPlayoffsContinue) {
     return (
       <>
@@ -778,23 +806,26 @@ export function ManagerHub({
   if (playoffsActive && hubCareer.playoffs) {
     return (
       <>
-        <div className={PAGE.section}>
+        <div className={`${PAGE.section} pb-24 sm:pb-0`}>
           <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28">
             {nextFixtureCard}
           </div>
           {commandCentre}
-          <HubPlayoffBracketPanel playoffs={hubCareer.playoffs} />
-          <HubPlayoffsCampaignCard career={hubCareer} />
-          <HubBoardBudgetAttendance
-            career={career}
-            lastGate={lastGate}
-            wageOverBudget={wageOverBudget}
-          />
-          <ManagerClubFinancesPanel career={career} />
-          {scoringLeadersCard}
-          {contractsCard}
+          <MobileDetailsAccordion title="Club details">
+            <HubPlayoffBracketPanel playoffs={hubCareer.playoffs} />
+            <HubPlayoffsCampaignCard career={hubCareer} />
+            <HubBoardBudgetAttendance
+              career={career}
+              lastGate={lastGate}
+              wageOverBudget={wageOverBudget}
+            />
+            <ManagerClubFinancesPanel career={career} />
+            {scoringLeadersCard}
+            {contractsCard}
+          </MobileDetailsAccordion>
           {quickActionsCard}
         </div>
+        {stickyActions}
         {alertDialog}
         {clubSheetModal}
       </>
@@ -803,7 +834,7 @@ export function ManagerHub({
 
   return (
     <>
-      <div className={PAGE.section}>
+      <div className={`${PAGE.section} pb-24 sm:pb-0`}>
       <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
         {seasonProgressCard}
         {nextFixtureCard}
@@ -811,28 +842,13 @@ export function ManagerHub({
 
       {commandCentre}
 
-      <HubStandingsPanel
-        career={career}
-        onViewClub={setViewClubSheet}
-        onViewFullLeague={
-          onNavigate ? () => onNavigate("across-league") : undefined
-        }
-      />
-
-      <ManagerClubFinancesPanel career={career} collapsible />
-
-      <HubBoardBudgetAttendance
-        career={career}
-        lastGate={lastGate}
-        wageOverBudget={wageOverBudget}
-      />
-
-      {scoringLeadersCard}
-
-      {contractsCard}
+      <MobileDetailsAccordion title="Club details">
+        {clubDetailsSections}
+      </MobileDetailsAccordion>
 
       {quickActionsCard}
     </div>
+    {stickyActions}
     {alertDialog}
     {clubSheetModal}
     </>

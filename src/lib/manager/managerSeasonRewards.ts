@@ -4,7 +4,8 @@ import { formatClubFunds } from "../club-funds";
 import { awardClubFundsLines } from "../storage/club-funds";
 import type { ManagerCareer, ManagerSeasonSummary } from "./types";
 import { getUserLeaguePosition } from "./managerFixtures";
-import { getManagerClubConfig, didMeetManagerBoardExpectation } from "./club-config";
+import { didMeetManagerBoardExpectation } from "./club-config";
+import { getCareerExpectationTier } from "./managerDifficulty";
 
 export function getManagerSeasonRewardRunId(career: ManagerCareer): string {
   return `manager-${career.id}-s${career.seasonYear}`;
@@ -20,7 +21,6 @@ export function computeManagerSeasonRewardLines(
     getUserLeaguePosition(career.leagueTable, career.club);
   const wins = summary?.wins ?? career.wins;
   const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
-  const config = getManagerClubConfig(career.club);
 
   lines.push({
     id: "mgr-season-complete",
@@ -108,7 +108,7 @@ export function computeManagerSeasonRewardLines(
   }
 
   const objectiveMet = didMeetManagerBoardExpectation(
-    config.expectationTier,
+    getCareerExpectationTier(career),
     position,
     playoffFinish
   );

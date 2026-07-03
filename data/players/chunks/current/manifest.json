@@ -1,0 +1,112 @@
+{
+  "clubs": [
+    {
+      "club": "Bradford Bulls",
+      "slug": "bradford-bulls",
+      "file": "bradford-bulls.json",
+      "count": 17
+    },
+    {
+      "club": "Castleford Tigers",
+      "slug": "castleford-tigers",
+      "file": "castleford-tigers.json",
+      "count": 17
+    },
+    {
+      "club": "Catalans Dragons",
+      "slug": "catalans-dragons",
+      "file": "catalans-dragons.json",
+      "count": 17
+    },
+    {
+      "club": "Huddersfield Giants",
+      "slug": "huddersfield-giants",
+      "file": "huddersfield-giants.json",
+      "count": 17
+    },
+    {
+      "club": "Hull FC",
+      "slug": "hull-fc",
+      "file": "hull-fc.json",
+      "count": 17
+    },
+    {
+      "club": "Hull KR",
+      "slug": "hull-kr",
+      "file": "hull-kr.json",
+      "count": 17
+    },
+    {
+      "club": "Leeds Rhinos",
+      "slug": "leeds-rhinos",
+      "file": "leeds-rhinos.json",
+      "count": 16
+    },
+    {
+      "club": "Leigh Leopards",
+      "slug": "leigh-leopards",
+      "file": "leigh-leopards.json",
+      "count": 17
+    },
+    {
+      "club": "London Broncos",
+      "slug": "london-broncos",
+      "file": "london-broncos.json",
+      "count": 10
+    },
+    {
+      "club": "Oldham RLFC",
+      "slug": "oldham-rlfc",
+      "file": "oldham-rlfc.json",
+      "count": 2
+    },
+    {
+      "club": "Salford Red Devils",
+      "slug": "salford-red-devils",
+      "file": "salford-red-devils.json",
+      "count": 16
+    },
+    {
+      "club": "Sheffield Eagles",
+      "slug": "sheffield-eagles",
+      "file": "sheffield-eagles.json",
+      "count": 2
+    },
+    {
+      "club": "St Helens",
+      "slug": "st-helens",
+      "file": "st-helens.json",
+      "count": 17
+    },
+    {
+      "club": "Toulouse Olympique",
+      "slug": "toulouse-olympique",
+      "file": "toulouse-olympique.json",
+      "count": 17
+    },
+    {
+      "club": "Wakefield Trinity",
+      "slug": "wakefield-trinity",
+      "file": "wakefield-trinity.json",
+      "count": 17
+    },
+    {
+      "club": "Warrington Wolves",
+      "slug": "warrington-wolves",
+      "file": "warrington-wolves.json",
+      "count": 17
+    },
+    {
+      "club": "Wigan Warriors",
+      "slug": "wigan-warriors",
+      "file": "wigan-warriors.json",
+      "count": 17
+    },
+    {
+      "club": "York Knights",
+      "slug": "york-knights",
+      "file": "york-knights.json",
+      "count": 17
+    }
+  ]
+}

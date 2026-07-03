@@ -502,7 +502,10 @@ export interface ManagerCareer {
   clubFundsEarned: number;
   boardConfidence: number;
   boardExpectation: string;
+  /** Club prestige tier (1–5 stars). Rises or falls after sustained success or failure. */
   difficulty: number;
+  /** Momentum toward the next star change (-1..1 between shifts). */
+  prestigeMomentum?: number;
   tactics: ManagerTactics;
   squad: ManagerPlayerState[];
   contracts: Record<string, PlayerContract>;

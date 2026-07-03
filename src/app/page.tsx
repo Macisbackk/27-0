@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { HomeAuthBar } from "@/components/HomeAuthBar";
-import { EconomyExplainer } from "@/components/EconomyExplainer";
 import { EmailConfirmedBanner } from "@/components/EmailConfirmedBanner";
 import { HomeModeSelector } from "@/components/HomeModeSelector";
 import { HowToPlaySection } from "@/components/HowToPlaySection";
@@ -26,10 +25,6 @@ export default function HomePage() {
         <p className={`mt-2 ${TYPO.bodySm}`}>
           Build your squad on the team sheet and chase perfection.
         </p>
-      </div>
-
-      <div className="mt-6 mx-auto max-w-xl">
-        <EconomyExplainer compact />
       </div>
 
       <Suspense fallback={null}>

@@ -4,11 +4,20 @@ import { BTN } from "@/lib/ui/design-system";
 import { playUiClick } from "@/lib/sound";
 
 export const SHOWCASE_PAGE_SIZE = 50;
+export const SHOWCASE_PAGE_SIZE_MOBILE = 25;
+
+export function getShowcasePageSize(): number {
+  if (typeof window === "undefined") return SHOWCASE_PAGE_SIZE;
+  return window.matchMedia("(max-width: 639px)").matches
+    ? SHOWCASE_PAGE_SIZE_MOBILE
+    : SHOWCASE_PAGE_SIZE;
+}
 
 interface ShowcasePaginationProps {
   currentPage: number;
   totalPages: number;
   totalItems: number;
+  pageSize?: number;
   onPageChange: (page: number) => void;
 }
 
@@ -16,14 +25,15 @@ export function ShowcasePagination({
   currentPage,
   totalPages,
   totalItems,
+  pageSize = SHOWCASE_PAGE_SIZE,
   onPageChange,
 }: ShowcasePaginationProps) {
   if (totalItems === 0) return null;
 
   const isFirst = currentPage <= 1;
   const isLast = currentPage >= totalPages;
-  const rangeStart = (currentPage - 1) * SHOWCASE_PAGE_SIZE + 1;
-  const rangeEnd = Math.min(currentPage * SHOWCASE_PAGE_SIZE, totalItems);
+  const rangeStart = (currentPage - 1) * pageSize + 1;
+  const rangeEnd = Math.min(currentPage * pageSize, totalItems);
 
   const goTo = (page: number) => {
     if (page < 1 || page > totalPages || page === currentPage) return;
@@ -50,7 +60,7 @@ export function ShowcasePagination({
           type="button"
           onClick={() => goTo(currentPage - 1)}
           disabled={isFirst}
-          className={`${BTN.base} ${BTN.secondary} min-h-9 shrink-0 px-3 py-2 text-xs sm:min-h-[44px] sm:px-4 sm:text-sm`}
+          className={`${BTN.base} ${BTN.secondary} min-h-[44px] shrink-0 px-3 py-2 text-xs sm:px-4 sm:text-sm`}
         >
           Previous
         </button>
@@ -63,7 +73,7 @@ export function ShowcasePagination({
           type="button"
           onClick={() => goTo(currentPage + 1)}
           disabled={isLast}
-          className={`${BTN.base} ${BTN.secondary} min-h-9 shrink-0 px-3 py-2 text-xs sm:min-h-[44px] sm:px-4 sm:text-sm`}
+          className={`${BTN.base} ${BTN.secondary} min-h-[44px] shrink-0 px-3 py-2 text-xs sm:px-4 sm:text-sm`}
         >
           Next
         </button>

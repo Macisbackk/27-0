@@ -73,6 +73,23 @@ export function computePlayerValue(
   return Math.max(floor, Math.min(ceiling, rounded));
 }
 
+/** Keep stored value aligned when peak rating, position, or category changes. */
+export function syncPlayerValueFromRating<
+  T extends {
+    peakRating: number;
+    position: Position;
+    category: PlayerCategory;
+    value: number;
+  },
+>(player: T): T {
+  const value = computePlayerValue(
+    player.peakRating,
+    player.position,
+    player.category
+  );
+  return player.value === value ? player : { ...player, value };
+}
+
 export function getValueTier(rating: number): string {
   if (rating >= 97) return "Generational";
   if (rating >= 94) return "Elite Star";

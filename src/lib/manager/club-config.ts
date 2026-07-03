@@ -108,6 +108,15 @@ export function getManagerClubExpectation(
   return MANAGER_EXPECTATION_LABELS[tier];
 }
 
+/** Board expectation tier from the club's current 1–5 star status. */
+export function expectationTierFromStars(stars: number): ManagerClubExpectationTier {
+  if (stars >= 5) return "title";
+  if (stars >= 4) return "playoffs";
+  if (stars >= 3) return "mid-table";
+  if (stars >= 2) return "avoid-bottom";
+  return "survive";
+}
+
 export function didMeetManagerBoardExpectation(
   tier: ManagerClubExpectationTier,
   position: number,

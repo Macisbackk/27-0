@@ -111,7 +111,9 @@ function seasonPerformanceScore(summary: ManagerSeasonSummary): number {
   else score -= 0.45;
 
   if (summary.playoffFinish === "Super League Champions") score += 0.4;
-  if (summary.trophies.includes("League Leaders")) score += 0.15;
+  if (summary.trophies.includes("League Leaders") || summary.position === 1) {
+    score += 0.15;
+  }
   if (summary.trophies.includes("Challenge Cup")) score += 0.2;
 
   const games = summary.wins + summary.losses;

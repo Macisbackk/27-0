@@ -1,3 +1,4 @@
+import seedrandom from "seedrandom";
 import { getPlayerById } from "../players";
 import { getPlayerAge } from "../players/player-age";
 import { getManagerClubTeamRating } from "./managerRating";
@@ -117,6 +118,44 @@ export function generateInitialContract(
     expiresAtSeasonEnd: yearsRemaining <= 1,
     squadRole: role,
     happiness: 55 + Math.floor(Math.random() * 30),
+  };
+}
+
+/** Stable contract snapshot for AI league club players (not stored on the save). */
+export function getLeagueClubPlayerContract(
+  career: ManagerCareer,
+  club: string,
+  playerId: string,
+  options?: { inStartingXiii?: boolean }
+): PlayerContract {
+  if (club === career.club && career.contracts[playerId]) {
+    return career.contracts[playerId];
+  }
+
+  const player = getManagerPlayer(career, playerId);
+  const rating = player?.peakRating ?? 70;
+  const age = getManagerPlayerAge(career, playerId);
+  const inStartingXiii = options?.inStartingXiii ?? false;
+  const role = inferSquadRole(rating, inStartingXiii, age);
+  const wage = calculateWageForPlayer(
+    playerId,
+    role,
+    getManagerClubTeamRating(club),
+    career
+  );
+
+  const rng = seedrandom(`${career.seed}-league-contract-${club}-${playerId}`);
+  const yearsRemaining =
+    rating >= 85
+      ? 2 + Math.floor(rng() * 2)
+      : 1 + Math.floor(rng() * 3);
+
+  return {
+    wagePerYear: wage,
+    yearsRemaining,
+    expiresAtSeasonEnd: yearsRemaining <= 1,
+    squadRole: role,
+    happiness: 55 + Math.floor(rng() * 30),
   };
 }
 
@@ -412,9 +451,10 @@ export function tickContractsForNewSeason(
 export function countExpiringContracts(
   contracts: Record<string, PlayerContract>
 ): number {
-  return Object.values(contracts).filter(
-    (c) => c.yearsRemaining <= 1 || c.expiresAtSeasonEnd
-  ).length;
+  return Object.values(contracts).filter((c) => {
+    const status = getContractStatus(c);
+    return status === "expires_this_season" || status === "wants_renewal";
+  }).length;
 }
 
 export function ensureRenewalDemands(career: ManagerCareer): ManagerCareer {

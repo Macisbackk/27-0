@@ -135,8 +135,8 @@ function RugbyPitchInner({
               formationOnly
                 ? "aspect-[5/7.6] min-h-0 max-h-[min(68vh,480px)]"
                 : compact
-                  ? "min-h-[540px]"
-                  : "min-h-[580px] sm:min-h-[600px] md:min-h-[580px] lg:aspect-[5/8] lg:min-h-0"
+                  ? "min-h-[420px] sm:min-h-[540px]"
+                  : "min-h-[480px] sm:min-h-[580px] md:min-h-[580px] lg:aspect-[5/8] lg:min-h-0"
             }`}
           >
             <PitchMarkings />
@@ -347,7 +347,7 @@ const SquadMarker = memo(function SquadMarker({
         "border-theme-primary bg-theme-primary/12 shadow-[0_0_14px_rgba(34,197,94,0.35)]";
     } else if (accent === "target") {
       stateClass =
-        "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50";
+        "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50 animate-pulse motion-reduce:animate-none";
     } else if (selected) {
       stateClass =
         "border-accent-gold bg-accent-gold/20 shadow-[0_0_16px_rgba(251,191,36,0.45)]";

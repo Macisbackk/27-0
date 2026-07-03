@@ -5,11 +5,14 @@ import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSeasonSummary } from "@/lib/manager/managerState";
+import { getSeasonSummaryTrophyLabels } from "@/lib/manager/managerSeasonTrophies";
 import { ManagerSeasonRecapCard } from "@/components/manager/ManagerSeasonRecapCard";
 import { GuestSaveNudge } from "@/components/EconomyExplainer";
 import { useAuth } from "@/lib/auth-context";
 import { getPlayerById } from "@/lib/players";
 import { formatWage } from "@/lib/manager/managerContracts";
+import { formatSquadRatingStars } from "@/lib/manager/club-config";
+import { getCareerClubStars } from "@/lib/manager/managerDifficulty";
 import { playSeasonComplete, playUiClick } from "@/lib/sound";
 import {
   ManagerInfoRow,
@@ -30,6 +33,8 @@ export function ManagerSeasonReview({
 }: ManagerSeasonReviewProps) {
   const { isLoggedIn, loading } = useAuth();
   const summary = buildSeasonSummary(career);
+  const trophies = getSeasonSummaryTrophyLabels(summary);
+  const clubStars = getCareerClubStars(career);
   const bestPlayer = summary.bestPlayerId
     ? getPlayerById(summary.bestPlayerId)
     : null;
@@ -166,16 +171,21 @@ export function ManagerSeasonReview({
             value={`${career.boardConfidence}%`}
             tone={boardConfidenceTone(career.boardConfidence)}
           />
+          <ManagerInfoRow
+            label="Club Status"
+            value={`${clubStars}-star · ${formatSquadRatingStars(clubStars)}`}
+            tone="gold"
+          />
           <ManagerInfoRow label="Board Verdict" value={summary.boardVerdict} tone="default" />
           <ManagerInfoRow
             label="Budget Change"
             value={`+${formatWage(summary.budgetChange)}`}
             tone="gold"
           />
-          {summary.trophies.length > 0 && (
+          {trophies.length > 0 && (
             <ManagerInfoRow
               label="Trophies"
-              value={summary.trophies.join(", ")}
+              value={trophies.join(", ")}
               tone="gold"
             />
           )}

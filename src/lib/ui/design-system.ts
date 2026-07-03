@@ -108,6 +108,9 @@ export const FILTER = {
   chipActive:
     "border-theme-tertiary/60 bg-theme-primary/10 text-theme-primary",
   chipIdle: "border-pitch-600 text-gray-400 hover:text-white",
+  /** Touch-friendly filter / priority chips (44px min). */
+  chipTouch:
+    "min-h-[44px] rounded-lg border px-3 py-2 text-sm font-medium transition",
   tabGroup:
     "flex w-full flex-wrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:inline-flex sm:w-auto sm:flex-nowrap",
 } as const;

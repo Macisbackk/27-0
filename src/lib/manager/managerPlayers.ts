@@ -4,9 +4,15 @@ import { getPlayerById } from "../players";
 import { getPlayerEligiblePositions } from "../players/player-positions";
 import { getAgeAtYear, resolveBirthYear } from "../players/player-age";
 
-import {
-  applyManagerModeRatingToPlayer,
-} from "./managerSquadRatings";
+import { computePlayerValue, syncPlayerValueFromRating } from "../players/ratings";
+import { applyManagerModeRatingToPlayer } from "./managerSquadRatings";
+
+function withDevelopmentRating(player: Player, devRating: number): Player {
+  return syncPlayerValueFromRating({
+    ...player,
+    peakRating: devRating,
+  });
+}
 
 function hydratePlayerBirthData(player: Player): Player {
   const birthYear = resolveBirthYear(
@@ -49,7 +55,7 @@ export function reserveToPlayer(
     peakRating: reserve.rating,
     category: "current",
     club: "",
-    value: reserve.rating * 5000,
+    value: computePlayerValue(reserve.rating, reserve.position, "current"),
     nationality: reserve.nationality,
     birthYear,
     yearsActive: `${birthYear}–`,
@@ -70,20 +76,14 @@ export function getManagerPlayer(
       hydratePlayerBirthData(generated)
     );
     if (dev) {
-      return {
-        ...rated,
-        peakRating: dev.rating,
-      };
+      return withDevelopmentRating(rated, dev.rating);
     }
     return rated;
   }
   const base = getPlayerById(playerId);
   const dev = career.playerDevelopment?.[playerId];
   if (base && dev) {
-    return {
-      ...applyManagerModeRatingToPlayer(base),
-      peakRating: dev.rating,
-    };
+    return withDevelopmentRating(applyManagerModeRatingToPlayer(base), dev.rating);
   }
   const player = base;
   if (!player) return undefined;

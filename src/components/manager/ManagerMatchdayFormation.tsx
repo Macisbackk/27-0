@@ -19,6 +19,8 @@ interface ManagerMatchdayFormationProps {
   squad?: SquadSlot[];
   clubColorOverride?: string;
   title?: string;
+  /** Hide the in-card section title (e.g. when the parent modal already labels the sheet). */
+  hideTitle?: boolean;
   interactive?: boolean;
   selectedTarget?: MatchdaySlotTarget | null;
   pendingAssignId?: string | null;
@@ -27,6 +29,8 @@ interface ManagerMatchdayFormationProps {
   onSlotClick?: (target: MatchdaySlotTarget) => void;
   onFilledSlotClick?: (playerId: string) => void;
   onFilledSlotDoubleClick?: (playerId: string) => void;
+  /** Read-only — tap filled slots to inspect player details. */
+  onPlayerClick?: (playerId: string, slotIndex: number) => void;
 }
 
 export function ManagerMatchdayFormation({
@@ -34,6 +38,7 @@ export function ManagerMatchdayFormation({
   squad: squadOverride,
   clubColorOverride,
   title = "Starting XIII",
+  hideTitle = false,
   interactive = false,
   selectedTarget,
   pendingAssignId,
@@ -42,6 +47,7 @@ export function ManagerMatchdayFormation({
   onSlotClick,
   onFilledSlotClick,
   onFilledSlotDoubleClick,
+  onPlayerClick,
 }: ManagerMatchdayFormationProps) {
   const squad = useMemo(
     () =>
@@ -50,6 +56,7 @@ export function ManagerMatchdayFormation({
     [career, squadOverride]
   );
   const pitchClub = clubColorOverride ?? career?.club ?? "";
+  const canInspectPlayers = Boolean(onPlayerClick);
 
   const slotAccent = useMemo(() => {
     if (!interactive || !career) return undefined;
@@ -98,7 +105,9 @@ export function ManagerMatchdayFormation({
     <div
       className={`${CARD.base} ${SPACING.cardPaddingSm} overflow-hidden border border-pitch-700/40 bg-gradient-to-b from-pitch-800/20 to-pitch-950/60`}
     >
-      <p className={`${TYPO.sectionLabel} mb-3 text-center`}>{title}</p>
+      {!hideTitle && (
+        <p className={`${TYPO.sectionLabel} mb-2 text-center sm:mb-3`}>{title}</p>
+      )}
       <RugbyPitch
         squad={squad}
         totalValue={getSquadValue(squad)}
@@ -107,14 +116,19 @@ export function ManagerMatchdayFormation({
         formationOnly
         compact
         hideValueSummary
-        interactive={interactive}
-        allowFilledSlotClick={interactive}
+        interactive={interactive || canInspectPlayers}
+        allowFilledSlotClick={interactive || canInspectPlayers}
         clubColorOverride={pitchClub || undefined}
         slotAccent={slotAccent}
         selectedSlot={
           selectedTarget?.kind === "xiii" ? selectedTarget.index : undefined
         }
         onSlotClick={(slotIndex) => {
+          const slot = squad.find((s) => s.slotIndex === slotIndex);
+          if (canInspectPlayers && slot?.player) {
+            onPlayerClick!(slot.player.id, slotIndex);
+            return;
+          }
           if (!interactive || !career) return;
           const playerId = career.matchdayXiii[slotIndex] ?? "";
           if (playerId && onFilledSlotClick) {
@@ -135,6 +149,11 @@ export function ManagerMatchdayFormation({
       {interactive && (
         <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-500`}>
           Tap a slot or player to swap · use the squad list for full options
+        </p>
+      )}
+      {canInspectPlayers && !interactive && (
+        <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-500`}>
+          Tap a player for contract and profile details
         </p>
       )}
     </div>

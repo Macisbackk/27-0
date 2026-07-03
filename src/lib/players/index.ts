@@ -1,114 +1,74 @@
-import currentSquads from "../../../data/current-squads.json";
-import historicPlayers from "../../../data/historic-players.json";
-import legends from "../../../data/legends.json";
 import type { Player, PlayerCategory, Position } from "../types";
-import { normalizePlayer } from "./normalize";
-import { getEligiblePositions } from "./player-positions";
-import { isHiddenPlayer } from "./goat";
 import { getValueTier as getValueTierFromRating } from "./ratings";
 import { getClubByName } from "../clubs";
-import { clubsMatch, resolveCanonicalClubName } from "../clubs/club-match";
+import { clubsMatch } from "../clubs/club-match";
 import { getActiveSuperLeagueClubNames } from "../clubs/super-league-display";
 import { isSuperLeagueEligiblePlayer } from "./super-league-eligibility";
+import { isHiddenPlayer } from "./goat";
 import { isGameplayYearCard, isYearPinnedPlayer } from "./year-card";
+import { applyPlayerRegistry, buildPlayerRegistry } from "./registry";
 
-/** Year cards often store only a single primary position — inherit richer dual roles from related cards. */
-function inheritPositionsFromBasePlayers(byId: Map<string, Player>): void {
-  const richestByBase = new Map<string, Position[]>();
-  const richestByName = new Map<string, Position[]>();
+const store = {
+  all: [] as Player[],
+  current: [] as Player[],
+  historic: [] as Player[],
+  legends: [] as Player[],
+  byId: new Map<string, Player>(),
+};
 
-  for (const player of byId.values()) {
-    const baseId = player.basePlayerId ?? player.id;
-    const eligible = getEligiblePositions(player);
-    const nameKey = player.name.toLowerCase().trim();
+let clientLoadPromise: Promise<void> | null = null;
+let clientLoadComplete = false;
 
-    const existingBase = richestByBase.get(baseId);
-    if (!existingBase || eligible.length > existingBase.length) {
-      richestByBase.set(baseId, eligible);
-    }
-
-    const existingName = richestByName.get(nameKey);
-    if (!existingName || eligible.length > existingName.length) {
-      richestByName.set(nameKey, eligible);
-    }
-  }
-
-  for (const player of byId.values()) {
-    const baseId = player.basePlayerId ?? player.id;
-    const nameKey = player.name.toLowerCase().trim();
-    const richest = richestByBase.get(baseId) ?? richestByName.get(nameKey);
-    if (!richest) continue;
-
-    const current = getEligiblePositions(player);
-    if (richest.length <= current.length) continue;
-
-    player.positions = [...new Set([...current, ...richest])];
-  }
-}
-
-function loadPlayers(): {
-  all: Player[];
-  current: Player[];
-  historic: Player[];
-  legends: Player[];
-  byId: Map<string, Player>;
-} {
-  const legendIds = new Set(
-    (legends as Record<string, unknown>[]).map((p) => p.id as string)
+async function loadClientRegistry(): Promise<void> {
+  const { loadAllPlayerRawRows } = await import("./player-chunks");
+  const raw = await loadAllPlayerRawRows();
+  applyPlayerRegistry(
+    store,
+    buildPlayerRegistry(raw.current, raw.historic, raw.legends)
   );
-
-  const current = (currentSquads as Record<string, unknown>[]).map(normalizePlayer);
-  const historicRaw = (historicPlayers as Record<string, unknown>[])
-    .filter((p) => !legendIds.has(p.id as string))
-    .map(normalizePlayer);
-  const legendPlayers = (legends as Record<string, unknown>[]).map(normalizePlayer);
-
-  const byId = new Map<string, Player>();
-  const pool: Player[] = [];
-
-  for (const p of [...current, ...historicRaw, ...legendPlayers]) {
-    byId.set(p.id, p);
-  }
-
-  inheritPositionsFromBasePlayers(byId);
-
-  for (const p of current) {
-    if (!isHiddenPlayer(p) && isGameplayYearCard(p)) pool.push(p);
-  }
-
-  for (const p of [...historicRaw, ...legendPlayers]) {
-    if (isHiddenPlayer(p)) continue;
-    if (p.availableInGame === false) continue;
-    if (!isGameplayYearCard(p)) continue;
-    pool.push(p);
-  }
-
-  const all = pool;
-  const historic = all.filter((p) => p.category === "historic");
-  const legendsOnly = all.filter((p) => p.category === "legend");
-
-  return {
-    all,
-    current: all.filter((p) => p.category === "current"),
-    historic,
-    legends: legendsOnly,
-    byId,
-  };
+  clientLoadComplete = true;
 }
 
-const registry = loadPlayers();
+function ensureRegistrySync(): void {
+  if (store.byId.size > 0 || typeof window !== "undefined") return;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { buildSyncPlayerRegistry } = require("./sync-bootstrap") as typeof import("./sync-bootstrap");
+  applyPlayerRegistry(store, buildSyncPlayerRegistry());
+  clientLoadComplete = true;
+}
 
-export const PLAYER_POOL = registry.all;
-export const CURRENT_PLAYERS = registry.current;
-export const HISTORIC_PLAYERS = registry.historic;
-export const LEGEND_PLAYERS = registry.legends;
+/** Load chunked player JSON on the client (no-op on server). */
+export function ensurePlayersLoaded(): Promise<void> {
+  if (clientLoadComplete) return Promise.resolve();
+  if (typeof window === "undefined") {
+    ensureRegistrySync();
+    return Promise.resolve();
+  }
+  if (!clientLoadPromise) {
+    clientLoadPromise = loadClientRegistry().catch((error) => {
+      clientLoadPromise = null;
+      throw error;
+    });
+  }
+  return clientLoadPromise;
+}
+
+if (typeof window !== "undefined") {
+  void ensurePlayersLoaded();
+}
+
+export const PLAYER_POOL = store.all;
+export const CURRENT_PLAYERS = store.current;
+export const HISTORIC_PLAYERS = store.historic;
+export const LEGEND_PLAYERS = store.legends;
 
 export function getAllDatabasePlayers(): Player[] {
-  return [...registry.byId.values()];
+  return [...store.byId.values()];
 }
 
 export function getPlayerById(id: string): Player | undefined {
-  return registry.byId.get(id);
+  ensureRegistrySync();
+  return store.byId.get(id);
 }
 
 export function getPlayersByPosition(
@@ -137,7 +97,9 @@ export function getPlayersByClub(club: string): Player[] {
 
 /** Active Super League clubs that have at least one player in the database. */
 export function getClubsWithPlayers(): string[] {
-  const withPlayers = new Set(PLAYER_POOL.map((p) => getClubByName(p.club)?.name ?? p.club));
+  const withPlayers = new Set(
+    PLAYER_POOL.map((p) => getClubByName(p.club)?.name ?? p.club)
+  );
   return getActiveSuperLeagueClubNames()
     .filter((c) => withPlayers.has(c))
     .sort((a, b) => a.localeCompare(b));
@@ -158,6 +120,7 @@ export {
   compressPeakRating,
   ratingToValue,
   computePlayerValue,
+  syncPlayerValueFromRating,
 } from "./ratings";
 export {
   formatPlayerDisplayName,
@@ -277,10 +240,18 @@ export {
 } from "./team-year-rosters";
 
 export const PLAYER_COUNTS = {
-  total: PLAYER_POOL.length,
-  current: CURRENT_PLAYERS.length,
-  historic: HISTORIC_PLAYERS.length,
-  legends: LEGEND_PLAYERS.length,
+  get total() {
+    return PLAYER_POOL.length;
+  },
+  get current() {
+    return CURRENT_PLAYERS.length;
+  },
+  get historic() {
+    return HISTORIC_PLAYERS.length;
+  },
+  get legends() {
+    return LEGEND_PLAYERS.length;
+  },
 };
 
 export {

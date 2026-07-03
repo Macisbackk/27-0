@@ -3,7 +3,7 @@ import type { ManagerCareer, ManagerCompetition } from "./types";
 import { getManagerCompetitionLabel } from "./managerFixtureDisplay";
 import { pushInboxMessage } from "./managerInbox";
 
-export type MatchKeyMomentTone = "gold" | "primary" | "red" | "sky";
+export type MatchKeyMomentTone = "gold" | "primary" | "red" | "sky" | "muted";
 
 export interface ManagerMatchKeyMoment {
   id: string;
@@ -18,6 +18,22 @@ function competitionLabel(competition?: ManagerCompetition): string {
   return getManagerCompetitionLabel(competition);
 }
 
+function isCloseMargin(margin: number): boolean {
+  return margin <= 6;
+}
+
+function isDominantMargin(margin: number, isThrashing?: boolean): boolean {
+  return isThrashing === true || margin >= 20;
+}
+
+function isComfortableMargin(margin: number): boolean {
+  return margin >= 7 && margin <= 19;
+}
+
+function isHighScoring(fixture: MatchFixture): boolean {
+  return fixture.pointsFor + fixture.pointsAgainst >= 56;
+}
+
 export function getManagerMatchKeyMoment(
   fixture: MatchFixture,
   clubName: string,
@@ -26,17 +42,49 @@ export function getManagerMatchKeyMoment(
   const won = fixture.result === "W";
   const lost = fixture.result === "L";
   const margin = Math.abs(fixture.pointsFor - fixture.pointsAgainst);
-  const comp = competitionLabel(competition);
-  const score = `${fixture.pointsFor}-${fixture.pointsAgainst}`;
+  const comp = competitionLabel(competition).toLowerCase();
   const vs = fixture.opponent;
+  const close = isCloseMargin(margin);
+  const dominant = isDominantMargin(margin, fixture.isThrashing);
+  const comfortable = isComfortableMargin(margin);
+
+  if (competition === "friendly") {
+    return {
+      id: "friendly",
+      label: "Friendly",
+      headline: won ? "Pre-season run-out" : "Friendly defeat",
+      body: won
+        ? `Useful minutes against ${vs} — no league points on the line.`
+        : `${clubName} lost a friendly to ${vs}; nothing that defines the season.`,
+      tone: "muted",
+    };
+  }
 
   if (competition === "challenge_cup" && won) {
     return {
       id: "cup-win",
       label: "Cup tie",
-      headline: `Challenge Cup win — ${score} vs ${vs}`,
-      body: `${clubName} are through to the next round of the Challenge Cup.`,
+      headline: close ? "Cup tie survived" : dominant ? "Cup demolition" : "Into the next round",
+      body: close
+        ? `${clubName} scraped past ${vs} — the Challenge Cup run continues.`
+        : dominant
+          ? `${clubName} blew ${vs} away and marched into the next round.`
+          : `${clubName} beat ${vs} to keep the Challenge Cup dream alive.`,
       tone: "gold",
+    };
+  }
+
+  if (competition === "challenge_cup" && lost) {
+    return {
+      id: "cup-loss",
+      label: "Cup exit",
+      headline: close ? "Cup heartbreak" : dominant ? "Cup rout" : "Out of the cup",
+      body: close
+        ? `So close against ${vs} — ${clubName}'s Challenge Cup run is over.`
+        : dominant
+          ? `${vs} ended the cup run in brutal fashion.`
+          : `${vs} knocked ${clubName} out of the Challenge Cup.`,
+      tone: "red",
     };
   }
 
@@ -44,49 +92,13 @@ export function getManagerMatchKeyMoment(
     return {
       id: "playoff-win",
       label: "Play-offs",
-      headline: `Play-off victory — ${score} vs ${vs}`,
-      body: `${clubName} stay alive in the play-off hunt.`,
+      headline: close ? "Play-off thriller" : dominant ? "Play-off statement" : "Still in the hunt",
+      body: close
+        ? `${clubName} survived a nail-biter against ${vs} — Old Trafford remains in sight.`
+        : dominant
+          ? `${clubName} hammered ${vs} and took a huge step towards the Grand Final.`
+          : `${clubName} beat ${vs} to stay alive in the play-offs.`,
       tone: "gold",
-    };
-  }
-
-  if (fixture.isUpset && won) {
-    return {
-      id: "upset-win",
-      label: "Upset",
-      headline: `Upset win — ${score} vs ${vs}`,
-      body: `Against the odds, ${clubName} pulled off a famous ${comp.toLowerCase()} result.`,
-      tone: "gold",
-    };
-  }
-
-  if (fixture.isThrashing && won) {
-    return {
-      id: "thrashing-win",
-      label: "Statement win",
-      headline: `Dominant display — ${score} vs ${vs}`,
-      body: `${clubName} sent a message with a commanding ${comp.toLowerCase()} win.`,
-      tone: "primary",
-    };
-  }
-
-  if (fixture.isThrashing && lost) {
-    return {
-      id: "thrashing-loss",
-      label: "Heavy defeat",
-      headline: `Heavy loss — ${score} vs ${vs}`,
-      body: `${clubName} were well beaten — the dressing room will need a response.`,
-      tone: "red",
-    };
-  }
-
-  if (competition === "challenge_cup" && lost && margin <= 6) {
-    return {
-      id: "cup-narrow-loss",
-      label: "Cup exit",
-      headline: `Narrow cup exit — ${score} vs ${vs}`,
-      body: `So close in the Challenge Cup — ${clubName} fall just short.`,
-      tone: "red",
     };
   }
 
@@ -94,29 +106,143 @@ export function getManagerMatchKeyMoment(
     return {
       id: "playoff-loss",
       label: "Play-offs",
-      headline: `Play-off defeat — ${score} vs ${vs}`,
-      body: `${clubName}'s season hangs by a thread after a play-off loss.`,
+      headline: close ? "Play-off agony" : "Season over",
+      body: close
+        ? `${vs} ended ${clubName}'s play-off campaign by the finest margin.`
+        : `${vs} knocked ${clubName} out of the play-offs.`,
       tone: "red",
     };
   }
 
-  if (won && margin <= 4) {
+  if (fixture.isUpset && won) {
+    return {
+      id: "upset-win",
+      label: "Upset",
+      headline: "Against the odds",
+      body: `${clubName} weren't fancied against ${vs} but pulled off a famous ${comp} win.`,
+      tone: "gold",
+    };
+  }
+
+  if (fixture.isUpset && lost) {
+    return {
+      id: "upset-loss",
+      label: "Shock defeat",
+      headline: "Favourites fall short",
+      body: `${clubName} were tipped to beat ${vs} and came up well short — a result that stings.`,
+      tone: "red",
+    };
+  }
+
+  if (won && fixture.triesAgainst === 0 && fixture.triesFor >= 3) {
+    return {
+      id: "shutout-win",
+      label: "Clean sheet",
+      headline: "Defence untroubled",
+      body: `${clubName} kept ${vs} try-less — a complete ${comp} performance at both ends.`,
+      tone: "primary",
+    };
+  }
+
+  if (lost && fixture.triesFor === 0) {
+    return {
+      id: "blank-loss",
+      label: "Blank afternoon",
+      headline: "No answer in attack",
+      body: `${clubName} couldn't cross against ${vs} — a frustrating ${comp} afternoon.`,
+      tone: "red",
+    };
+  }
+
+  if (won && dominant) {
+    return {
+      id: "dominant-win",
+      label: "Statement win",
+      headline: "Dominant display",
+      body: `${clubName} put ${vs} to the sword in a one-sided ${comp} win.`,
+      tone: "primary",
+    };
+  }
+
+  if (lost && dominant) {
+    return {
+      id: "dominant-loss",
+      label: "Heavy defeat",
+      headline: "Well beaten",
+      body: `${vs} had far too much for ${clubName} — a chastening ${comp} defeat.`,
+      tone: "red",
+    };
+  }
+
+  if (isHighScoring(fixture) && close) {
+    return {
+      id: "shootout",
+      label: "Shoot-out",
+      headline: won ? "Points galore" : "High-scoring heartbreak",
+      body: won
+        ? `${clubName} edged a wild ${comp} shoot-out against ${vs}.`
+        : `${clubName} scored plenty against ${vs} but still came up short.`,
+      tone: won ? "sky" : "red",
+    };
+  }
+
+  if (won && close) {
     return {
       id: "narrow-win",
       label: "Narrow win",
-      headline: `Nail-biter — ${score} vs ${vs}`,
-      body: `${clubName} edged a tight ${comp.toLowerCase()} contest.`,
+      headline: "Nail-biter",
+      body: `${clubName} edged a tight ${comp} contest against ${vs}.`,
       tone: "sky",
     };
   }
 
-  if (lost && margin <= 4) {
+  if (lost && close) {
     return {
       id: "narrow-loss",
       label: "Narrow loss",
-      headline: `Heartbreaker — ${score} vs ${vs}`,
-      body: `${clubName} came up just short in a fine ${comp.toLowerCase()} battle.`,
+      headline: "Heartbreaker",
+      body: `${clubName} came up just short against ${vs} in a game that could have gone either way.`,
       tone: "red",
+    };
+  }
+
+  if (won && comfortable) {
+    return {
+      id: "comfortable-win",
+      label: "Comfortable win",
+      headline: "Professional job",
+      body: `${clubName} controlled the ${comp} clash with ${vs} and won without needing a late scare.`,
+      tone: "primary",
+    };
+  }
+
+  if (lost && comfortable) {
+    return {
+      id: "comfortable-loss",
+      label: "Outplayed",
+      headline: "Second best",
+      body: `${vs} were clearly the better side — ${clubName} never really got a foothold.`,
+      tone: "red",
+    };
+  }
+
+  if (won) {
+    return {
+      id: "routine-win",
+      label: "League win",
+      headline: fixture.isHome ? "Home comforts" : "Away day success",
+      body: `${clubName} took the ${comp} points against ${vs}${fixture.isHome ? " in front of their own fans" : " on the road"}.`,
+      tone: "primary",
+    };
+  }
+
+  if (lost) {
+    return {
+      id: "routine-loss",
+      label: "Defeat",
+      headline: fixture.isHome ? "Home disappointment" : "Away day defeat",
+      body: `${clubName} lost a ${comp} fixture to ${vs}${fixture.isHome ? " at home" : ""}.`,
+      tone: "muted",
     };
   }
 
