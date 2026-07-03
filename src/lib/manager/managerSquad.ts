@@ -2,14 +2,16 @@ import type { Position, SquadSlot } from "../types";
 import { getPlayerById } from "../players";
 import { getPlayerEligiblePositions } from "../players/player-positions";
 import {
-  createEmptySquad,
-  signPlayerToSlot,
   SQUAD_STRUCTURE,
   POSITION_SHORT,
 } from "../positions";
 import type { ManagerCareer, ManagerPlayerState } from "./types";
 import { getManagerPlayer, getManagerPlayerEligiblePositions } from "./managerPlayers";
 import { getMatchdayTryWeight } from "./managerTryScoring";
+import {
+  getManagerFitnessRatingPenalty,
+  toMatchdaySquadSlots,
+} from "./matchday-lineup";
 import {
   ERA_BENCH_FROM_STARTING_17,
   ERA_STARTING_17_SIZE,
@@ -107,37 +109,10 @@ export function buildSquadSlotsFromMatchday(
   slotPositions: Position[],
   career?: ManagerCareer
 ): SquadSlot[] {
-  let squad = createEmptySquad();
-  for (let i = 0; i < xiiiIds.length; i++) {
-    const playedPos = slotPositions[i];
-    if (playedPos) {
-      squad = squad.map((s) =>
-        s.slotIndex === i ? { ...s, position: playedPos } : s
-      );
-    }
-    const id = xiiiIds[i]!;
-    if (!id) continue;
-    const player = career ? getManagerPlayer(career, id) : getPlayerById(id);
-    if (!player) continue;
-    const penalty = career ? getManagerFitnessRatingPenalty(career, id) : 0;
-    squad = signPlayerToSlot(squad, player, i, penalty);
-  }
-  return squad;
+  return toMatchdaySquadSlots({ xiiiIds, slotPositions, career });
 }
 
-/** Mild OOP-style penalty when fitness is low after injury / heavy minutes. */
-export function getManagerFitnessRatingPenalty(
-  career: ManagerCareer,
-  playerId: string
-): number {
-  const ps = career.squad.find((p) => p.playerId === playerId);
-  const fitness =
-    ps?.fitness ??
-    career.reserves.find((r) => r.id === playerId)?.fitness ??
-    90;
-  if (fitness >= 82) return 0;
-  return Math.min(6, Math.round((82 - fitness) * 0.25));
-}
+export { getManagerFitnessRatingPenalty } from "./matchday-lineup";
 
 /** @deprecated Use getMatchdayTryWeight(position, true) — kept for imports that expect a scalar. */
 export const MATCHDAY_INTERCHANGE_TRY_WEIGHT = 0.35;

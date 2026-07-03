@@ -1,7 +1,6 @@
 import { getPlayerById } from "../players";
 import { getManagerPlayer } from "./managerPlayers";
-import { getManagerOpponentPoolOptions, pruneLeagueListedPlayers } from "./managerLeagueRosters";
-import { getOpponentMatchRating } from "../game/opponent-scorers";
+import { getManagerOpponentMatchRating, pruneLeagueListedPlayers } from "./managerLeagueRosters";
 import { simulateOneFixture } from "../game/season-simulation";
 import type { ManagerCareer, ManagerFixtureRecord } from "./types";
 import {
@@ -669,13 +668,11 @@ export function previewManagerMatchScoreline(
   const baseOppRating =
     isFriendly && friendlyRating
       ? friendlyRating
-      : getOpponentMatchRating(
+      : getManagerOpponentMatchRating(
+          simCareer,
           sched.opponent,
           simCareer.seed,
-          round,
-          isFriendly
-            ? { currentSeasonOnly: false }
-            : getManagerOpponentPoolOptions(simCareer, sched.opponent)
+          round
         );
   const homeAdj = sched.isNeutral ? 0 : sched.isHome ? 5 : -1;
   const ratingGap = userRating - baseOppRating + homeAdj;

@@ -1,8 +1,11 @@
 import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
-import { getMatchClubStrength } from "../game/opponent-squad-strength";
 import { getLeagueClubInjuryPenalty } from "./managerLeagueState";
 import type { LeagueClubStates } from "./managerLeagueState";
+import {
+  getLeagueClubStableRating,
+} from "./managerLeagueRosters";
+import { getManagerClubTeamRating } from "./managerRating";
 import {
   decomposeRLScore,
   pickRLScore,
@@ -15,7 +18,6 @@ import type {
   ManagerScheduledFixture,
   ManagerCareer,
 } from "./types";
-import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
 import { countLeagueFixturesPlayed } from "./managerChallengeCup";
 import {
   MAGIC_WEEKEND_ROUND,
@@ -77,6 +79,56 @@ function pairTeamsForRound(
   return pairs;
 }
 
+const MANAGER_HOME_ADVANTAGE = 1.5;
+
+function getClubMatchRating(
+  club: string,
+  round: number,
+  seed: string,
+  leagueClubStates: LeagueClubStates | undefined,
+  career: ManagerCareer | undefined
+): number {
+  const stable = career
+    ? getLeagueClubStableRating(career, club)
+    : getManagerClubTeamRating(club);
+  const varianceRng = seedrandom(`${seed}-mgr-club-var-r${round}-${club}`);
+  const fixtureVariance = (varianceRng() - 0.5) * 2.5;
+  return (
+    stable + fixtureVariance - getLeagueClubInjuryPenalty(leagueClubStates, club)
+  );
+}
+
+function resolveManagerClubMatchWinProbability(
+  homeRating: number,
+  awayRating: number,
+  rng: () => number
+): number {
+  const ratingGap = homeRating - awayRating;
+  const absGap = Math.abs(ratingGap);
+
+  let noiseScale = 2.6;
+  if (absGap >= 10) noiseScale = 2.2;
+  else if (absGap >= 8) noiseScale = 2.5;
+  else if (absGap >= 5) noiseScale = 3;
+  else if (absGap >= 3) noiseScale = 3.5;
+
+  const noise = (rng() - 0.5) * noiseScale;
+  const diff = ratingGap + MANAGER_HOME_ADVANTAGE + noise;
+  let homeWinProb = 1 / (1 + Math.exp(-diff / 3.6));
+
+  if (ratingGap >= 12) homeWinProb = Math.max(homeWinProb, 0.94);
+  else if (ratingGap >= 8) homeWinProb = Math.max(homeWinProb, 0.88);
+  else if (ratingGap >= 5) homeWinProb = Math.max(homeWinProb, 0.8);
+  else if (ratingGap >= 3) homeWinProb = Math.max(homeWinProb, 0.7);
+
+  if (ratingGap <= -12) homeWinProb = Math.min(homeWinProb, 0.06);
+  else if (ratingGap <= -8) homeWinProb = Math.min(homeWinProb, 0.12);
+  else if (ratingGap <= -5) homeWinProb = Math.min(homeWinProb, 0.2);
+  else if (ratingGap <= -3) homeWinProb = Math.min(homeWinProb, 0.3);
+
+  return Math.max(0.04, Math.min(0.96, homeWinProb));
+}
+
 function simulateClubFixture(
   home: string,
   away: string,
@@ -86,20 +138,14 @@ function simulateClubFixture(
   career?: ManagerCareer
 ): { homeScore: number; awayScore: number; homeTries: number; awayTries: number } {
   const rng = seedrandom(`${seed}-mgr-club-r${round}-${home}-${away}`);
-  const homePool = career
-    ? getManagerOpponentPoolOptions(career, home)
-    : { currentSeasonOnly: true as const };
-  const awayPool = career
-    ? getManagerOpponentPoolOptions(career, away)
-    : { currentSeasonOnly: true as const };
-  const homeStr =
-    getMatchClubStrength(home, seed, round, true, homePool) -
-    getLeagueClubInjuryPenalty(leagueClubStates, home);
-  const awayStr =
-    getMatchClubStrength(away, seed, round, false, awayPool) -
-    getLeagueClubInjuryPenalty(leagueClubStates, away);
-  const diff = homeStr - awayStr + (rng() - 0.5) * 8;
-  const homeWins = rng() < 1 / (1 + Math.exp(-diff / 4.2));
+  const homeStr = getClubMatchRating(home, round, seed, leagueClubStates, career);
+  const awayStr = getClubMatchRating(away, round, seed, leagueClubStates, career);
+  const homeWinProb = resolveManagerClubMatchWinProbability(
+    homeStr,
+    awayStr,
+    rng
+  );
+  const homeWins = rng() < homeWinProb;
 
   const winnerMin = 14;
   const winnerMax = 36;

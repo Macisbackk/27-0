@@ -47,7 +47,7 @@ import {
   managerPillClass,
   managerCalloutClass,
 } from "@/lib/manager/managerSurfaces";
-import { MANAGER_HUB_NEXT_FIXTURE_ID } from "@/lib/manager/managerHubScroll";
+import { MANAGER_HUB_SCROLL_TARGET_ID } from "@/lib/manager/managerHubScroll";
 import { autoFixMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
@@ -406,10 +406,7 @@ export function ManagerHub({
   const nextFixtureCard =
     nextFixture && !seasonComplete && !playoffsPending ? (
       <div
-        id={MANAGER_HUB_NEXT_FIXTURE_ID}
-        className={managerFixtureCardClass(nextFixture.competition, {
-          scrollMargin: true,
-        })}
+        className={managerFixtureCardClass(nextFixture.competition)}
         style={managerFixtureCardStyle(
           nextFixture.competition,
           career.club,
@@ -712,7 +709,9 @@ export function ManagerHub({
     return (
       <>
         <div className={PAGE.section}>
-          {nextFixtureCard}
+          <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28">
+            {nextFixtureCard}
+          </div>
           <HubPlayoffBracketPanel playoffs={hubCareer.playoffs} />
           <HubPlayoffsCampaignCard career={hubCareer} />
           <HubBoardBudgetAttendance
@@ -734,9 +733,10 @@ export function ManagerHub({
   return (
     <>
       <div className={PAGE.section}>
-      {seasonProgressCard}
-
-      {nextFixtureCard}
+      <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
+        {seasonProgressCard}
+        {nextFixtureCard}
+      </div>
 
       <HubStandingsPanel
         career={career}

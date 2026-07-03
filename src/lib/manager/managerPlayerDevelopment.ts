@@ -55,11 +55,14 @@ function hadGoodSeason(extras?: {
   const appearances = extras.appearances ?? 0;
   const tries = extras.tries ?? 0;
   const form = extras.form ?? 50;
+  const impact = extras.impact ?? 50;
 
-  if (appearances >= 18) return true;
-  if (appearances >= 10 && form >= 58) return true;
-  if (form >= 70 && appearances >= MIN_APPEARANCES_FOR_INCREASE) return true;
-  if (tries >= 6 && appearances >= 10) return true;
+  if (appearances < MIN_APPEARANCES_FOR_INCREASE) return false;
+
+  if (impact >= 58) return true;
+  if (impact >= 52 && appearances >= 10) return true;
+  if (form >= 68 && appearances >= 10 && impact >= 48) return true;
+  if (tries >= 8 && appearances >= 10 && impact >= 50) return true;
   return false;
 }
 
@@ -95,11 +98,13 @@ function developOnePlayer(
     existing?.potential
   );
   const veteranGoodSeason = isVeteranWithGoodSeason(age, extras);
-
   const appearances = extras?.appearances ?? 0;
   const tries = extras?.tries ?? 0;
   const form = extras?.form ?? 50;
   const impact = extras?.impact ?? 50;
+  const poorIndividualSeason = isPoorSeasonImpact(impact);
+  const protectFromDecline = veteranGoodSeason && !poorIndividualSeason;
+
   const playedEnoughForIncrease =
     !extras || appearances >= MIN_APPEARANCES_FOR_INCREASE;
 
@@ -109,7 +114,7 @@ function developOnePlayer(
       if (age <= 21) delta += 1.5;
       else if (age <= 24) delta += 1;
       else if (age <= 27) delta += 0.5;
-      else if (!veteranGoodSeason) {
+      else if (!protectFromDecline) {
         if (age >= 33) delta -= 1;
         else if (age >= 30) delta -= 0.5;
       }
@@ -117,18 +122,31 @@ function developOnePlayer(
       const potentialGap = potential - before;
       if (age <= 24 && potentialGap >= 10) delta += 0.5;
       else if (age <= 27 && potentialGap >= 6) delta += 0.25;
-    } else if (!veteranGoodSeason) {
+    } else if (!protectFromDecline) {
       if (age >= 33) delta -= 1;
       else if (age >= 30) delta -= 0.5;
     }
-  } else if (!veteranGoodSeason) {
+  } else if (!protectFromDecline) {
     if (age >= 33) delta -= 1;
     else if (age >= 30) delta -= 0.5;
   }
 
   if (playedEnoughForIncrease) {
-    if (appearances >= 18) delta += 1.5;
-    else if (appearances >= 10) delta += 0.5;
+    const performanceFactor =
+      impact >= 58
+        ? 1
+        : impact >= 52
+          ? 0.75
+          : impact >= 45
+            ? 0.35
+            : impact < 42
+              ? 0
+              : 0.15;
+
+    if (performanceFactor > 0) {
+      if (appearances >= 18) delta += 1.5 * performanceFactor;
+      else if (appearances >= 10) delta += 0.5 * performanceFactor;
+    }
 
     if (tries >= 12) delta += 1;
     else if (tries >= 6) delta += 0.5;
@@ -136,13 +154,17 @@ function developOnePlayer(
     if (form >= 70) delta += 1;
     else if (form >= 58) delta += 0.5;
     else if (form < 42 && extras) delta -= 0.5;
+
+    if (appearances >= 14 && poorIndividualSeason) {
+      delta -= 0.35;
+    }
   } else if (appearances < 4 && extras) {
     delta -= 0.5;
   }
 
   delta += impactDevelopmentDelta(impact, appearances);
 
-  if (veteranGoodSeason) {
+  if (protectFromDecline) {
     delta = Math.max(0, delta);
   }
 
@@ -158,6 +180,7 @@ function developOnePlayer(
   }
   if (
     veteranGoodSeason &&
+    !poorIndividualSeason &&
     playedEnoughForIncrease &&
     finalDelta <= 0 &&
     rng &&
@@ -167,11 +190,11 @@ function developOnePlayer(
   }
 
   const ratingCap =
-    veteranGoodSeason && finalDelta > 0
+    veteranGoodSeason && !poorIndividualSeason && finalDelta > 0
       ? Math.max(potential, before + finalDelta)
       : potential;
   let after = Math.max(55, Math.min(ratingCap, before + finalDelta));
-  if (veteranGoodSeason) {
+  if (protectFromDecline) {
     after = Math.max(before, after);
   }
   const newPeak = Math.max(existing?.peakRating ?? baseline, after, baseline);
@@ -296,6 +319,101 @@ export function snapshotSquadSeasonStartRatings(
   return next;
 }
 
+const UNDERPERFORMER_IMPACT_THRESHOLD = 42;
+const UNDERPERFORMER_MIN_APPEARANCES = 5;
+
+function isTeamGoodSeason(career: ManagerCareer): boolean {
+  const { played, wins } = career.teamSeasonStats;
+  if (played < 10) return false;
+  const winRate = wins / played;
+  const position =
+    career.leagueTable.find((row) => row.isUserTeam)?.position ?? 14;
+  return winRate >= 0.52 || position <= 6;
+}
+
+function applyGoodSeasonUnderperformerDowngrades(
+  career: ManagerCareer,
+  playerDevelopment: Record<string, PlayerDevelopmentState>,
+  changes: PlayerDevelopmentChange[]
+): void {
+  if (!isTeamGoodSeason(career)) return;
+
+  const rng = seedrandom(
+    `${career.seed}-underperformer-${career.seasonYear}`
+  );
+
+  const candidates = career.squad
+    .map((ps) => {
+      const base = getPlayerById(ps.playerId);
+      if (!base) return null;
+
+      const impact = getPlayerSeasonImpact(career, ps.playerId);
+      if (impact >= UNDERPERFORMER_IMPACT_THRESHOLD) return null;
+      if ((ps.seasonAppearances ?? 0) < UNDERPERFORMER_MIN_APPEARANCES) {
+        return null;
+      }
+
+      const existingChange = changes.find((c) => c.playerId === ps.playerId);
+      if (existingChange && existingChange.delta < 0) return null;
+
+      const devState = playerDevelopment[ps.playerId];
+      const reviewBefore =
+        devState?.seasonStartRating ?? devState?.rating ?? base.peakRating;
+      const currentAfter =
+        existingChange?.after ?? devState?.rating ?? reviewBefore;
+      if (currentAfter <= reviewBefore - 1) return null;
+
+      return {
+        ps,
+        base,
+        impact,
+        reviewBefore,
+        currentAfter,
+        existingChange,
+      };
+    })
+    .filter((row): row is NonNullable<typeof row> => row != null)
+    .sort((a, b) => a.impact - b.impact || a.currentAfter - b.currentAfter);
+
+  if (candidates.length === 0) return;
+
+  const downgradeCount = Math.min(
+    candidates.length,
+    1 + Math.floor(rng() * Math.min(3, candidates.length))
+  );
+
+  for (let i = 0; i < downgradeCount; i++) {
+    const { ps, base, impact, reviewBefore, currentAfter, existingChange } =
+      candidates[i]!;
+    const after = Math.max(55, currentAfter - 1);
+    if (after >= currentAfter) continue;
+
+    const devState = playerDevelopment[ps.playerId];
+    playerDevelopment[ps.playerId] = {
+      ...devState,
+      rating: after,
+      peakRating: Math.max(devState?.peakRating ?? after, after),
+    };
+
+    const newDelta = after - reviewBefore;
+    if (existingChange) {
+      existingChange.after = after;
+      existingChange.delta = newDelta;
+    } else {
+      changes.push({
+        playerId: ps.playerId,
+        playerName: base.name,
+        before: reviewBefore,
+        after,
+        potential: devState?.potential ?? 80,
+        delta: newDelta,
+        seasonStartRating: devState?.seasonStartRating,
+        seasonImpact: impact,
+      });
+    }
+  }
+}
+
 export function developSquadAtSeasonEnd(career: ManagerCareer): {
   career: ManagerCareer;
   changes: PlayerDevelopmentChange[];
@@ -355,6 +473,8 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
       });
     }
   }
+
+  applyGoodSeasonUnderperformerDowngrades(career, playerDevelopment, changes);
 
   const withLeague = developLeaguePlayersAtSeasonEnd(career, playerDevelopment);
 

@@ -5,7 +5,7 @@ import type { PlayerTryTotal } from "@/lib/game/season-tries";
 import type { SeasonAward } from "@/lib/season-awards";
 import type { SquadSlot } from "@/lib/types";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CARD } from "@/lib/ui/design-system";
 import { RugbyPitch } from "./RugbyPitch";
 import { TeamSheetPlayerPopup } from "./TeamSheetPlayerPopup";
 
@@ -34,7 +34,7 @@ export function TeamSheet({
 
   return (
     <>
-      <div className={`${CARD.base} ${SPACING.cardPaddingSm} overflow-hidden`}>
+      <div className={`${CARD.base} overflow-hidden p-3 sm:p-4`}>
         <RugbyPitch
           squad={squad}
           totalValue={getSquadValue(squad)}

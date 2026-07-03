@@ -4,7 +4,14 @@ import { getPlayerById } from "../players";
 import type { OpponentPoolOptions } from "../game/opponent-squad-strength";
 import type { Player, Position } from "../types";
 import { SQUAD_STRUCTURE } from "../positions";
-import { getManagerRosterIds } from "./managerRating";
+import { getOpponentMatchRating } from "../game/opponent-scorers";
+import { buildDefaultLineup } from "./club-config";
+import {
+  computeManagerTeamRating,
+  getManagerClubTeamRating,
+  getManagerLineupForClub,
+  getManagerRosterIds,
+} from "./managerRating";
 import { getManagerPlayer, reserveToPlayer } from "./managerPlayers";
 import { createYouthProspect } from "./managerReserves";
 import type { ManagerCareer } from "./types";
@@ -91,6 +98,48 @@ export function getManagerOpponentPoolOptions(
     currentSeasonOnly: true,
     poolOverride: pool.length > 0 ? pool : undefined,
   };
+}
+
+/** Stable lineup rating for a league club (development-aware). */
+export function getLeagueClubStableRating(
+  career: ManagerCareer,
+  club: string
+): number {
+  const rosterIds = getLeagueClubRosterIds(career, club);
+  const lineup = buildDefaultLineup(rosterIds);
+  if (lineup) {
+    return computeManagerTeamRating(
+      lineup.xiiiIds,
+      lineup.benchIds,
+      lineup.slotPositions,
+      career
+    );
+  }
+
+  const fallback = getManagerLineupForClub(club);
+  if (fallback.xiiiIds.some(Boolean)) {
+    return computeManagerTeamRating(
+      fallback.xiiiIds,
+      fallback.benchIds,
+      fallback.slotPositions,
+      career
+    );
+  }
+
+  return getManagerClubTeamRating(club);
+}
+
+/** Match-day opponent rating anchored to squad quality — limits random XIII variance. */
+export function getManagerOpponentMatchRating(
+  career: ManagerCareer,
+  club: string,
+  seed: string,
+  round: number
+): number {
+  const poolOptions = getManagerOpponentPoolOptions(career, club);
+  const matchSquadRating = getOpponentMatchRating(club, seed, round, poolOptions);
+  const stableRating = getLeagueClubStableRating(career, club);
+  return Math.round(stableRating * 0.74 + matchSquadRating * 0.26);
 }
 
 /**

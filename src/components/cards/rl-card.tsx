@@ -99,6 +99,8 @@ interface RLCardShellProps {
   club: string;
   /** When set, used for card border/background colours instead of `club`. */
   clubColorOverride?: string;
+  /** Full club-themed border/background, or neutral shell with top bar only elsewhere. */
+  clubAccent?: "full" | "top-bar-only";
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
@@ -107,15 +109,23 @@ interface RLCardShellProps {
 export function RLCardShell({
   club,
   clubColorOverride,
+  clubAccent = "full",
   children,
   className = "",
   style,
 }: RLCardShellProps) {
   const colorClub = clubColorOverride ?? club;
+  const clubThemed = clubAccent === "full";
   return (
     <div
-      className={`rl-player-card flex flex-col overflow-hidden ${RL_CARD_RADIUS} ${RL_CARD_BORDER} ${RL_CARD_SHADOW} ${CLUB_CHOICE_CARD_CLASS} ${className}`}
-      style={{ ...getClubChoiceCardStyle(colorClub), ...style }}
+      className={`rl-player-card rl-card-shell flex flex-col overflow-hidden ${
+        clubThemed
+          ? `${RL_CARD_RADIUS} ${RL_CARD_BORDER} ${RL_CARD_SHADOW} ${CLUB_CHOICE_CARD_CLASS}`
+          : CARD.base
+      } ${className}`}
+      style={
+        clubThemed ? { ...getClubChoiceCardStyle(colorClub), ...style } : style
+      }
     >
       {children}
     </div>

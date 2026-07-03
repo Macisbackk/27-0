@@ -40,6 +40,8 @@ interface RugbyPitchProps {
   clubColorOverride?: string;
   /** Read-only compact formation for Player Representation. */
   formationOnly?: boolean;
+  /** Manager squad editor — highlight slots for swap / assign. */
+  slotAccent?: Partial<Record<number, "source" | "target">>;
 }
 
 function RugbyPitchInner({
@@ -60,6 +62,7 @@ function RugbyPitchInner({
   hideValueSummary,
   clubColorOverride,
   formationOnly = false,
+  slotAccent,
 }: RugbyPitchProps) {
   const lockedSet = useMemo(() => new Set(lockedSlots ?? []), [lockedSlots]);
   const headerTitle = formationOnly
@@ -112,7 +115,7 @@ function RugbyPitchInner({
       <div
         className={`mx-auto w-full ${
           formationOnly
-            ? "max-w-[min(100%,360px)]"
+            ? "max-w-[min(100%,400px)]"
             : compact
               ? "max-w-[380px]"
               : "max-w-[min(100%,400px)] sm:max-w-[540px] md:max-w-[640px]"
@@ -128,7 +131,7 @@ function RugbyPitchInner({
           <div
             className={`relative w-full overflow-hidden rounded-2xl border-2 border-accent-green/40 shadow-[0_0_24px_rgba(34,197,94,0.15)] rugby-pitch-pro ${
               formationOnly
-                ? "min-h-[500px]"
+                ? "aspect-[5/7.6] min-h-0 max-h-[min(68vh,480px)]"
                 : compact
                   ? "min-h-[540px]"
                   : "min-h-[580px] sm:min-h-[600px] md:min-h-[580px] lg:aspect-[5/8] lg:min-h-0"
@@ -144,6 +147,7 @@ function RugbyPitchInner({
 
                 const isSelected = selectedSlot === slotIndex;
                 const isHighlight = highlightSlot === slotIndex;
+                const accent = slotAccent?.[slotIndex];
                 const isEmpty = !slot.player;
                 const isLocked = lockedSet.has(slotIndex);
                 const canClick = !!(
@@ -166,6 +170,7 @@ function RugbyPitchInner({
                       slot={slot}
                       highlighted={isHighlight}
                       selected={isSelected}
+                      accent={accent}
                       compact={compact || formationOnly}
                       fullPlayerNames={formationOnly}
                       hardMode={hardMode}
@@ -290,6 +295,7 @@ const SquadMarker = memo(function SquadMarker({
   slot,
   highlighted,
   selected,
+  accent,
   compact: _compact,
   fullPlayerNames = false,
   hardMode,
@@ -302,6 +308,7 @@ const SquadMarker = memo(function SquadMarker({
   slot: SquadSlot;
   highlighted?: boolean;
   selected?: boolean;
+  accent?: "source" | "target";
   compact?: boolean;
   fullPlayerNames?: boolean;
   hardMode?: boolean;
@@ -322,7 +329,13 @@ const SquadMarker = memo(function SquadMarker({
 
     let stateClass =
       "border-dashed border-accent-green/30 bg-black/40 text-white/40";
-    if (selected) {
+    if (accent === "source") {
+      stateClass =
+        "border-theme-primary bg-theme-primary/12 shadow-[0_0_14px_rgba(34,197,94,0.35)]";
+    } else if (accent === "target") {
+      stateClass =
+        "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50";
+    } else if (selected) {
       stateClass =
         "border-accent-gold bg-accent-gold/20 shadow-[0_0_16px_rgba(251,191,36,0.45)]";
     } else if (highlighted) {
@@ -402,7 +415,11 @@ const SquadMarker = memo(function SquadMarker({
           onClick={onClick}
           title={`${slot.label}: change or remove player`}
           className={`btn-press rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50 ${
-            selected
+            accent === "source"
+              ? "ring-2 ring-theme-primary shadow-[0_0_14px_rgba(34,197,94,0.35)]"
+              : accent === "target"
+                ? "ring-2 ring-accent-gold shadow-[0_0_12px_rgba(251,191,36,0.35)]"
+                : selected
               ? "ring-2 ring-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.45)]"
               : "hover:ring-2 hover:ring-accent-green/40"
           }`}

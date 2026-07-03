@@ -6,7 +6,7 @@ import {
   generateManagerMatchBio,
 } from "./manager-match-summary";
 import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
-import { selectClubMatchSquad } from "../game/opponent-scorers";
+import { selectClubMatchSquad, OPPONENT_LINEUP } from "../game/opponent-scorers";
 import type { ManagerCareer, ManagerTactics } from "./types";
 import { buildMatchdayScoringEntries } from "./managerSquad";
 import {
@@ -148,10 +148,13 @@ export function enrichManagerFixtureScoring(
     fixture.round,
     oppPoolOptions
   );
-  const oppEntries = oppSquad.map((p) => ({
+  const oppEntries = oppSquad.map((p, i) => ({
     id: p.id,
     name: p.name,
-    position: getPlayerEligiblePositions(p)[0] ?? p.position,
+    position:
+      OPPONENT_LINEUP[i] ??
+      getPlayerEligiblePositions(p)[0] ??
+      p.position,
     rating: p.peakRating,
   }));
   const oppWeights = buildOpponentWeights(oppEntries, tactics, rng);

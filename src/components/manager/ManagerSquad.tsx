@@ -14,15 +14,13 @@ import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
 import { getUnavailableSquadPlayers, isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import {
   tryAssignPlayerToMatchday,
-  canAssignPlayerToXiiiSlot,
   findPlayerMatchdaySlot,
   getMatchdayPlayerIds,
   getReplacementCandidates,
   getSquadPoolPlayers,
-  slotAbbrev,
-  TEAM_SHEET_ROWS,
   type MatchdaySlotTarget,
 } from "@/lib/manager/managerMatchdaySquad";
+import { ManagerMatchdayFormation } from "@/components/manager/ManagerMatchdayFormation";
 import { ManagerSquadPlayerModal } from "@/components/manager/ManagerSquadPlayerModal";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
@@ -76,75 +74,6 @@ function useFinePointer(): boolean {
   }, []);
 
   return finePointer;
-}
-
-function TeamSheetSlot({
-  slotIndex,
-  position,
-  playerId,
-  career,
-  selectionRole,
-  onSelect,
-  onPrimaryPlayerAction,
-  onOpenDetails,
-}: {
-  slotIndex: number;
-  position: Position;
-  playerId: string;
-  career: ManagerCareer;
-  selectionRole: SquadSelectionRole;
-  onSelect: () => void;
-  onPrimaryPlayerAction: (playerId: string) => void;
-  onOpenDetails: (playerId: string) => void;
-}) {
-  const player = playerId ? getManagerPlayer(career, playerId) : null;
-  const ps = career.squad.find((p) => p.playerId === playerId);
-  const unavailable = ps ? isPlayerUnavailable(ps) : false;
-  const isSuspension = ps?.injury?.type === "suspension";
-
-  return (
-    <button
-      type="button"
-      onClick={() => {
-        playUiClick();
-        if (selectionRole === "target") {
-          if (playerId) onPrimaryPlayerAction(playerId);
-          else onSelect();
-          return;
-        }
-        if (playerId) onPrimaryPlayerAction(playerId);
-        else onSelect();
-      }}
-      onDoubleClick={(e) => {
-        e.preventDefault();
-        if (!playerId) return;
-        playUiClick();
-        onOpenDetails(playerId);
-      }}
-      className={`min-h-[44px] w-full select-none rounded-md border px-1.5 py-1 text-left transition ${squadSelectionClass(selectionRole)} ${
-        unavailable ? unavailableAccentClass(!!isSuspension) : ""
-      }`}
-    >
-      <p className="text-[10px] font-bold uppercase tracking-wider text-pitch-500">
-        {slotAbbrev(position)}
-      </p>
-      {player ? (
-        <>
-          <p className="truncate text-sm font-medium text-white">{player.name}</p>
-          <p className="text-[10px] text-theme-primary">
-            {player.peakRating}
-          </p>
-          {ps?.injury && (
-            <p className={`text-[10px] font-medium ${unavailableTextClass(isSuspension)}`}>
-              {formatInjuryLabel(ps.injury)}
-            </p>
-          )}
-        </>
-      ) : (
-        <p className="text-xs text-pitch-500">Select player</p>
-      )}
-    </button>
-  );
 }
 
 export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
@@ -459,61 +388,16 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
 
       <div className={MANAGER.splitLayout}>
         <div className={SPACING.stackMd}>
-          <div className="rounded-xl border border-pitch-700/40 bg-gradient-to-b from-pitch-800/20 to-pitch-950/60 p-4">
-            <p className={`${TYPO.sectionLabel} mb-3 text-center`}>Starting XIII</p>
-            <div className="mx-auto max-w-lg space-y-2">
-              {TEAM_SHEET_ROWS.map((row, rowIdx) => (
-                <div
-                  key={rowIdx}
-                  className={`grid gap-1.5 ${
-                    row.slots.length === 1
-                      ? "grid-cols-1 max-w-[140px] mx-auto"
-                      : row.slots.length === 2
-                        ? "grid-cols-2 max-w-xs mx-auto"
-                        : row.slots.length === 3
-                          ? "grid-cols-3 max-w-sm mx-auto"
-                          : "grid-cols-4 max-w-sm mx-auto"
-                  }`}
-                >
-                  {row.slots.map((slotIndex) => {
-                    const position =
-                      career.xiiiSlotPositions[slotIndex] ?? "CENTRE";
-                    const playerId = career.matchdayXiii[slotIndex] ?? "";
-                    const slotTarget: MatchdaySlotTarget = {
-                      kind: "xiii",
-                      index: slotIndex,
-                    };
-                    const canAssignHere =
-                      !pendingAssignId ||
-                      canAssignPlayerToXiiiSlot(
-                        career,
-                        slotIndex,
-                        pendingAssignId
-                      );
-                    return (
-                      <TeamSheetSlot
-                        key={slotIndex}
-                        slotIndex={slotIndex}
-                        position={position}
-                        playerId={playerId}
-                        career={career}
-                        selectionRole={getMatchdaySlotRole(
-                          slotTarget,
-                          playerId,
-                          canAssignHere
-                        )}
-                        onSelect={() =>
-                          handleSelectSlot({ kind: "xiii", index: slotIndex })
-                        }
-                        onPrimaryPlayerAction={handleMatchdayPlayerPrimaryClick}
-                        onOpenDetails={openPlayerDetails}
-                      />
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-          </div>
+          <ManagerMatchdayFormation
+            career={career}
+            interactive
+            selectedTarget={selectedTarget}
+            pendingAssignId={pendingAssignId}
+            replaceSourcePlayerId={replaceSourcePlayerId}
+            replaceCandidateIds={replaceCandidateIds}
+            onSlotClick={handleSelectSlot}
+            onFilledSlotClick={handleMatchdayPlayerPrimaryClick}
+          />
 
           <div className={`${CARD.base} ${SPACING.cardPadding}`}>
             <p className={`${TYPO.sectionLabel} mb-2`}>Interchange</p>

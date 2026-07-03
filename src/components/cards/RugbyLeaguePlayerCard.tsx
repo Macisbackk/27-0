@@ -51,6 +51,8 @@ interface RugbyLeaguePlayerCardProps {
   allowLongName?: boolean;
   /** Era mode: use era team club colours instead of the player's current club. */
   clubColorOverride?: string;
+  /** Hide the top colour bar when a parent shell already shows club colours. */
+  showClubColourBar?: boolean;
   className?: string;
 }
 
@@ -71,6 +73,7 @@ function playerCardPropsEqual(
     prev.achievementDisplay === next.achievementDisplay &&
     prev.allowLongName === next.allowLongName &&
     prev.clubColorOverride === next.clubColorOverride &&
+    prev.showClubColourBar === next.showClubColourBar &&
     prev.className === next.className
   );
 }
@@ -85,6 +88,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
   achievementDisplay = "compact",
   allowLongName = false,
   clubColorOverride,
+  showClubColourBar = true,
   className = "",
 }: RugbyLeaguePlayerCardProps) {
   const displayClub = getPlayerDisplayClub(player);
@@ -251,7 +255,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
           </div>
         </div>
 
-        <ClubColourBar club={colorClub} />
+        {showClubColourBar && <ClubColourBar club={colorClub} />}
         <ClubNameStrip
           club={displayClub}
           colors={colors}
@@ -322,17 +326,21 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
 
   const allowAchievementPopover =
     achievementDisplay === "showcase" || achievementDisplay === "expanded";
+  const showcaseTopBarOnly = achievementDisplay === "showcase";
 
   return (
     <RLCardShell
       club={colorClub}
       clubColorOverride={clubColorOverride}
+      clubAccent={showcaseTopBarOnly ? "top-bar-only" : "full"}
       className={`${equalHeight ? "min-h-full" : ""} ${
         isGoat ? "ring-2 ring-accent-gold" : isLegend ? "ring-2 ring-accent-gold/40" : ""
       } ${allowAchievementPopover ? "!overflow-visible" : ""} ${className}`}
     >
-      <ClubColourBar club={colorClub} />
-      <ClubNameStrip club={displayClub} colors={colors} />
+      {showClubColourBar && <ClubColourBar club={colorClub} />}
+      {!showcaseTopBarOnly && (
+        <ClubNameStrip club={displayClub} colors={colors} />
+      )}
 
       <div className="flex flex-1 flex-col gap-2 p-3 sm:p-4">
         <div className="flex items-start gap-3">

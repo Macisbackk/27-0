@@ -619,6 +619,17 @@ function getDraftWinProbabilityFloor(ratingGap: number): number | null {
   return null;
 }
 
+function getManagerWinProbabilityFloor(ratingGap: number): number | null {
+  if (ratingGap >= 12) return 0.97;
+  if (ratingGap >= 10) return 0.94;
+  if (ratingGap >= 8) return 0.9;
+  if (ratingGap >= 5) return 0.84;
+  if (ratingGap >= 3) return 0.74;
+  if (ratingGap >= 1) return 0.66;
+  if (ratingGap >= 0) return 0.56;
+  return null;
+}
+
 function getNormalWinProbabilityFloor(ratingGap: number): number | null {
   if (ratingGap >= 10) return 0.9;
   if (ratingGap >= 7) return 0.84;
@@ -680,12 +691,11 @@ function resolveOutcome(
     if (floor !== null) winProbability = Math.max(winProbability, floor);
     else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.74);
   } else {
-    const floor = getNormalWinProbabilityFloor(ratingGap);
+    const floor = managerMode
+      ? getManagerWinProbabilityFloor(ratingGap)
+      : getNormalWinProbabilityFloor(ratingGap);
     if (floor !== null) winProbability = Math.max(winProbability, floor);
-    else if (ratingGap >= 5) winProbability = Math.max(winProbability, managerMode ? 0.9 : 0.72);
-    else if (managerMode && ratingGap >= 3) winProbability = Math.max(winProbability, 0.8);
-    else if (managerMode && ratingGap >= 1) winProbability = Math.max(winProbability, 0.7);
-    else if (managerMode && ratingGap >= 0) winProbability = Math.max(winProbability, 0.58);
+    else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.72);
   }
 
   if (ratingGap <= -10) winProbability = Math.min(winProbability, 0.1);
@@ -694,7 +704,7 @@ function resolveOutcome(
 
   winProbability = Math.max(0.04, Math.min(0.96, winProbability));
 
-  if (!draftMode && ratingGap >= -3 && ratingGap <= 2) {
+  if (!draftMode && !managerMode && ratingGap >= -3 && ratingGap <= 2) {
     winProbability = Math.min(0.96, winProbability + 0.07);
   }
 

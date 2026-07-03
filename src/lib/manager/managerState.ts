@@ -40,6 +40,7 @@ import { initPreSeasonState, ensureFriendlyChoices } from "./managerFriendlies";
 import { ensureCupBracketReady } from "./managerChallengeCup";
 import { ensurePlayoffsReady, syncPlayoffsIntroAcknowledged } from "./managerPlayoffs";
 import { ensureSeasonEndPlayerDevelopment } from "./managerPlayerDevelopment";
+import { normalizeMatchdayLineup } from "./matchday-lineup";
 import { isManagerSeasonComplete } from "./managerSimulation";
 import {
   initManagerFinance,
@@ -241,6 +242,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   };
   career = ensureSeasonEndPlayerDevelopment(career);
   career = ensureLeagueClubRosters(career);
+  career = normalizeMatchdayLineup(career);
   return syncManagerInboxMessages(career);
 }
 

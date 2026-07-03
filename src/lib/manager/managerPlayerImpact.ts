@@ -108,6 +108,7 @@ export function impactDevelopmentDelta(
 ): number {
   if (appearances === 0) return impact < 35 ? -0.25 : 0;
 
+  if (appearances >= 14 && impact < 42) return -0.75;
   if (impact < 28) return -1.15;
   if (impact < 35) return -0.85;
   if (impact < 40) return -0.6;

@@ -30,6 +30,27 @@ import {
   isChallengeCupFinalFixture,
 } from "./managerChallengeCup";
 
+const FRENCH_SUPER_LEAGUE_CLUBS = new Set([
+  "Catalans Dragons",
+  "Toulouse Olympique",
+]);
+
+/** Clubs with limited travelling support — smaller crowds when they visit. */
+const POOR_AWAY_FOLLOWING_CLUBS = new Set([
+  "York Knights",
+  "Huddersfield Giants",
+]);
+
+export function isFrenchSuperLeagueClub(club: string): boolean {
+  return FRENCH_SUPER_LEAGUE_CLUBS.has(club);
+}
+
+function isCrossChannelFixture(homeClub: string, visitingClub: string): boolean {
+  const homeFrench = isFrenchSuperLeagueClub(homeClub);
+  const awayFrench = isFrenchSuperLeagueClub(visitingClub);
+  return homeFrench !== awayFrench;
+}
+
 export const CLUB_ATTENDANCE_PROFILES: Record<
   string,
   { base: number; capacity: number; min?: number }
@@ -117,24 +138,28 @@ function opponentMultiplier(opponent: string): number {
   return 0.9 + (strength - 70) * 0.008;
 }
 
-/** Clubs with limited travelling support — smaller crowds when they visit. */
-const POOR_AWAY_FOLLOWING_CLUBS = new Set([
-  "Toulouse Olympique",
-  "Catalans Dragons",
-  "York Knights",
-  "Huddersfield Giants",
-]);
-
-export function hasPoorAwayFollowing(club: string): boolean {
-  return POOR_AWAY_FOLLOWING_CLUBS.has(club);
-}
-
-function awayTravelCrowdMultiplier(visitingClub: string): number {
+function awayTravelCrowdMultiplier(
+  homeClub: string,
+  visitingClub: string
+): number {
+  if (isCrossChannelFixture(homeClub, visitingClub)) {
+    if (isFrenchSuperLeagueClub(homeClub)) {
+      const visitorStrength = getClubBaseStrength(visitingClub);
+      if (visitorStrength >= 80) return 1.16;
+      if (visitorStrength >= 75) return 1.1;
+      return 1.06;
+    }
+    return 0.96;
+  }
   if (POOR_AWAY_FOLLOWING_CLUBS.has(visitingClub)) return 0.72;
   return 1;
 }
 
 export type AttendanceOutlookLevel = "low" | "medium" | "high";
+
+export function hasPoorAwayFollowing(club: string): boolean {
+  return POOR_AWAY_FOLLOWING_CLUBS.has(club);
+}
 
 function attendanceOutlookFromPredicted(
   predicted: number,
@@ -156,6 +181,19 @@ function attendanceOutlookFromPredicted(
 
   if (areRivalClubs(homeClub, visitingOpponent)) {
     return { level: "high", label: "Rivalry fixture — near sell-out expected" };
+  }
+
+  if (isCrossChannelFixture(homeClub, visitingOpponent)) {
+    if (isFrenchSuperLeagueClub(homeClub)) {
+      return {
+        level: "high",
+        label: "Cross-channel clash — strong English away support expected",
+      };
+    }
+    return {
+      level: "medium",
+      label: "Cross-channel fixture — comparable to a domestic away day",
+    };
   }
 
   const ratio = predicted / Math.max(1, baseAttendance);
@@ -495,7 +533,7 @@ export function calculateMatchAttendance(
     formMultiplier(career.recentForm) *
     leaguePositionMultiplier(position) *
     opponentMultiplier(fixture.opponent) *
-    awayTravelCrowdMultiplier(fixture.opponent) *
+    awayTravelCrowdMultiplier(career.club, fixture.opponent) *
     competitionMultiplier(fixture.competition) *
     (0.85 + fanMood / 200);
 
@@ -521,6 +559,7 @@ export function processHomeMatchAttendance(
     fixture.competition === "playoffs" ||
     fixture.competition === "challenge_cup" ||
     areRivalClubs(career.club, fixture.opponent) ||
+    isCrossChannelFixture(career.club, fixture.opponent) ||
     (!hasPoorAwayFollowing(fixture.opponent) &&
       getClubBaseStrength(fixture.opponent) >= 80);
   const price = ticketPrice(fixture.competition, isBigGame);

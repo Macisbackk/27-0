@@ -4,7 +4,7 @@ import type { SquadSlot } from "@/lib/types";
 import { getClubColors } from "@/lib/clubs";
 import { formatPitchSlotPlayerName } from "@/lib/players/display-name";
 import { getPlayerColorClub } from "@/lib/players/run-club";
-import { getFormationSlotDisplayLabel, POSITION_SHORT } from "@/lib/positions";
+import { POSITION_SHORT } from "@/lib/positions";
 import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
 /** Shared footprint for empty and filled pitch slots — scales with pitch width. */
@@ -14,9 +14,9 @@ export const PITCH_SLOT_SIZE_CLASS =
 export const PITCH_SLOT_COMPACT_CLASS =
   "h-[clamp(42px,9.5vw,64px)] w-[clamp(40px,9vw,60px)]";
 
-/** Season review team sheet — room for two-line full names. */
+/** Season review team sheet — compact two-line names without dead space. */
 export const PITCH_SLOT_REVIEW_CLASS =
-  "h-[clamp(58px,13vw,78px)] w-[clamp(44px,10vw,64px)] sm:h-[clamp(64px,14vw,86px)] sm:w-[clamp(48px,11vw,72px)]";
+  "h-[clamp(48px,10.5vw,62px)] w-[clamp(50px,11vw,68px)] sm:h-[clamp(52px,11vw,66px)] sm:w-[clamp(54px,11.5vw,74px)]";
 
 interface PitchSlotCardProps {
   slot: SquadSlot;
@@ -39,11 +39,13 @@ export function PitchSlotCard({
 }: PitchSlotCardProps) {
   const player = slot.player!;
   const colors = getClubColors(getPlayerColorClub(player, clubColorOverride));
+  const isReviewSheet = fullPlayerNames;
   const isMatchdayPitch = !compact && !fullPlayerNames;
-  const positionLabel =
-    compact && !fullPlayerNames
-      ? POSITION_SHORT[slot.position]
-      : getFormationSlotDisplayLabel(slot.slotIndex);
+  const positionLabel = isReviewSheet
+    ? POSITION_SHORT[slot.position]
+    : fullPlayerNames || !compact
+      ? slot.label
+      : POSITION_SHORT[slot.position];
   const effectiveRating = getEffectivePeakRating(slot);
   const ratingLabel = hardMode ? "??" : String(Math.round(effectiveRating));
   const sizeClass = fullPlayerNames
@@ -69,17 +71,21 @@ export function PitchSlotCard({
         <span className="h-full flex-1" style={{ backgroundColor: colors.secondary }} />
       </div>
       <div
-        className={`flex min-h-0 flex-1 flex-col items-stretch px-1 py-0.5 ${
+        className={`flex min-h-0 flex-1 flex-col items-stretch px-1 ${
           isMatchdayPitch
-            ? "justify-between gap-0.5 sm:gap-1 sm:px-1.5 sm:py-1 md:px-2 md:py-1.5"
-            : "items-center justify-center gap-0"
+            ? "justify-between gap-0.5 py-0.5 sm:gap-1 sm:px-1.5 sm:py-1 md:px-2 md:py-1.5"
+            : isReviewSheet
+              ? "justify-between gap-0 py-0.5"
+              : "items-center justify-center gap-0 py-0.5"
         }`}
       >
         <span
-          className={`line-clamp-2 w-full shrink-0 text-center font-display font-bold leading-tight text-gray-400 ${
+          className={`w-full shrink-0 text-center font-display font-bold leading-none text-gray-400 ${
             isMatchdayPitch
               ? "text-[8px] sm:text-[9px] md:text-[10px]"
-              : "text-[7px] sm:text-[8px]"
+              : isReviewSheet
+                ? "text-[6px] sm:text-[7px]"
+                : "text-[7px] sm:text-[8px]"
           }`}
         >
           {positionLabel}
@@ -97,7 +103,7 @@ export function PitchSlotCard({
           <p
             className={`min-h-0 w-full text-center font-display font-semibold text-white ${
               fullPlayerNames
-                ? "line-clamp-2 flex-1 break-words [overflow-wrap:anywhere] px-0.5 text-[7px] leading-[1.15] sm:text-[9px]"
+                ? "line-clamp-2 shrink-0 break-words [overflow-wrap:anywhere] px-0.5 text-[7px] leading-[1.08] sm:text-[8px]"
                 : compact
                   ? "truncate px-0.5 text-[8px] leading-[1.15] sm:text-[9px]"
                   : "line-clamp-2 break-words text-[7px] leading-[1.15] sm:text-[8px]"
@@ -109,9 +115,11 @@ export function PitchSlotCard({
         {!hardMode && (
           <span
             className={`w-full shrink-0 text-center font-display font-black leading-none text-accent-green ${
-              compact || fullPlayerNames
-                ? "text-[10px] sm:text-[11px]"
-                : "text-sm sm:text-base md:text-xl lg:text-2xl"
+              fullPlayerNames
+                ? "text-[11px] sm:text-xs"
+                : compact
+                  ? "text-[10px] sm:text-[11px]"
+                  : "text-sm sm:text-base md:text-xl lg:text-2xl"
             }`}
           >
             {ratingLabel}

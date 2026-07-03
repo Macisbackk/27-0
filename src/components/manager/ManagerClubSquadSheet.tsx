@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
-import { PitchSlotCard } from "@/components/PitchSlotCard";
 import { TeamSheet } from "@/components/TeamSheet";
 import { GameButton } from "@/components/ui/GameButton";
 import { BodyPortal } from "@/components/ui/BodyPortal";
@@ -15,8 +14,8 @@ import {
 } from "@/lib/manager/managerLeagueLineup";
 import { getManagerPlayerAge } from "@/lib/manager/managerPlayers";
 import type { ManagerCareer } from "@/lib/manager/types";
+import type { Player } from "@/lib/types";
 import { POSITION_SHORT } from "@/lib/positions";
-import type { Player, SquadSlot } from "@/lib/types";
 import { CARD, MODAL, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playPanelClose, playUiClick } from "@/lib/sound";
@@ -57,30 +56,29 @@ function teamStrengthLabel(avg: number): { label: string; className: string } {
 
 function InterchangeSlot({
   player,
-  club,
   age,
   listed,
+  shirtNumber,
 }: {
   player: Player;
-  club: string;
   age: number | undefined;
   listed: boolean;
+  shirtNumber: number;
 }) {
-  const slot: SquadSlot = {
-    slotIndex: 0,
-    position: player.position,
-    label: POSITION_SHORT[player.position],
-    player,
-  };
-
   return (
-    <div className="flex flex-col items-center gap-1">
-      <PitchSlotCard
-        slot={slot}
-        clubColorOverride={club}
-        compact
-        fullPlayerNames
-      />
+    <div className="flex min-w-[4.5rem] flex-col items-center gap-1.5 rounded-lg border border-pitch-700/50 bg-pitch-950/55 px-2 py-2">
+      <span className="flex h-6 w-6 items-center justify-center rounded-full border border-pitch-600/60 bg-pitch-900/80 text-[10px] font-bold text-pitch-300">
+        {shirtNumber}
+      </span>
+      <p className="line-clamp-2 min-h-[2rem] w-full text-center text-[11px] font-semibold leading-tight text-white">
+        {player.name}
+      </p>
+      <div className="flex flex-wrap items-center justify-center gap-1 text-[10px]">
+        <span className="rounded border border-pitch-600/50 bg-pitch-900/70 px-1 py-0.5 font-bold uppercase tracking-wide text-sky-300">
+          {POSITION_SHORT[player.position]}
+        </span>
+        <span className="font-bold text-theme-primary">{player.peakRating}</span>
+      </div>
       <div className="flex flex-wrap items-center justify-center gap-1 text-[10px] text-pitch-500">
         {age != null && <span>{age}y</span>}
         {listed && (
@@ -229,7 +227,7 @@ export function ManagerClubSquadSheet({
               </p>
             ) : null}
 
-            <div className="mt-4 min-w-0">
+            <div className="mt-4 min-w-0 rounded-xl border border-pitch-700/40 bg-gradient-to-b from-pitch-800/20 to-pitch-950/60 p-3 sm:p-4">
               <TeamSheet
                 squad={squadSlots}
                 clubColorOverride={club}
@@ -240,14 +238,14 @@ export function ManagerClubSquadSheet({
             {lineup.interchange.length > 0 && (
               <section className="mt-5">
                 <p className={TYPO.sectionLabel}>Interchange · 14–17</p>
-                <div className="mt-3 flex flex-wrap justify-center gap-3 sm:gap-4">
-                  {lineup.interchange.map((player) => (
+                <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  {lineup.interchange.map((player, index) => (
                     <InterchangeSlot
                       key={player.id}
                       player={player}
-                      club={club}
                       age={getManagerPlayerAge(career, player.id)}
                       listed={listedPlayerIds.has(player.id)}
+                      shirtNumber={14 + index}
                     />
                   ))}
                 </div>

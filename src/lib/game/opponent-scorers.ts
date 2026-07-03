@@ -19,23 +19,10 @@ import type {
 import type { ScoreBreakdown } from "./rl-scores";
 import { allocateMatchTries } from "./try-allocation";
 import { getPlayerTryWeight } from "./try-weights";
+import { FORMATION_SLOT_POSITIONS } from "../positions";
 
-/** Opponent XIII positions for try allocation. */
-export const OPPONENT_LINEUP: Position[] = [
-  "FULLBACK",
-  "WING",
-  "WING",
-  "CENTRE",
-  "CENTRE",
-  "STAND_OFF",
-  "SCRUM_HALF",
-  "PROP",
-  "HOOKER",
-  "PROP",
-  "SECOND_ROW",
-  "SECOND_ROW",
-  "LOOSE_FORWARD",
-];
+/** Opponent XIII positions for try allocation (slot index 0–12). */
+export const OPPONENT_LINEUP: Position[] = [...FORMATION_SLOT_POSITIONS];
 
 /** Weighted bands — mid-range players most common, not all-star picks. */
 const OPP_BANDS: { min: number; max: number; weight: number }[] = [

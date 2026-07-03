@@ -1,9 +1,11 @@
 import { getTeamYearPool } from "../game/team-year-pools";
 import { getCurrentSquadPlayerIds } from "../players/era-teams";
 import { getPlayerById } from "../players";
-import { getPlayerRatingForPosition } from "../players/player-positions";
+import { getPlayerEligiblePositions, getPlayerRatingForPosition } from "../players/player-positions";
 import type { Position } from "../types";
+import { FORMATION_SLOT_POSITIONS } from "../positions";
 import { buildDefaultLineup } from "./club-config";
+import { ERA_BENCH_FROM_STARTING_17 } from "../players/era-starting-17s";
 import { getManagerPlayer } from "./managerPlayers";
 import { getManagerModePlayerRating } from "./managerSquadRatings";
 import type { ManagerCareer } from "./types";
@@ -108,25 +110,26 @@ export function getManagerLineupForClub(club: string): {
   const lineup = buildDefaultLineup(rosterIds);
   if (lineup) return lineup;
 
-  const xiiiIds = rosterIds.slice(0, 13);
-  const slotPositions: Position[] = [
-    "FULLBACK",
-    "WING",
-    "WING",
-    "CENTRE",
-    "CENTRE",
-    "STAND_OFF",
-    "SCRUM_HALF",
-    "PROP",
-    "HOOKER",
-    "PROP",
-    "SECOND_ROW",
-    "LOOSE_FORWARD",
-    "SECOND_ROW",
-  ];
-  return {
-    xiiiIds,
-    slotPositions,
-    benchIds: rosterIds.slice(13, 17),
-  };
+  const players = rosterIds
+    .map((id) => getPlayerById(id))
+    .filter((p): p is NonNullable<typeof p> => !!p);
+  const used = new Set<string>();
+  const slotPositions = [...FORMATION_SLOT_POSITIONS];
+  const xiiiIds: string[] = [];
+
+  for (const position of slotPositions) {
+    const pick = players.find(
+      (player) =>
+        !used.has(player.id) &&
+        getPlayerEligiblePositions(player).includes(position)
+    );
+    if (pick) used.add(pick.id);
+    xiiiIds.push(pick?.id ?? "");
+  }
+
+  const benchIds = rosterIds
+    .filter((id) => !xiiiIds.includes(id))
+    .slice(0, ERA_BENCH_FROM_STARTING_17);
+
+  return { xiiiIds, slotPositions, benchIds };
 }

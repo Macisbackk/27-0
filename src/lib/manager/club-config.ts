@@ -2,7 +2,7 @@ import { getClubBaseStrength } from "../game/club-strength";
 import { getClubByName, resolveClubUiColors } from "../clubs";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { Position } from "../types";
-import { SQUAD_STRUCTURE } from "../positions";
+import { FORMATION_SLOT_POSITIONS } from "../positions";
 import { getPlayerById } from "../players";
 import { getPlayerEligiblePositions } from "../players/player-positions";
 import {
@@ -186,10 +186,7 @@ export function buildDefaultLineup(playerIds: readonly string[]): {
     .filter((p): p is NonNullable<typeof p> => !!p)
     .sort((a, b) => b.peakRating - a.peakRating);
 
-  const lineup: Position[] = [];
-  for (const { position, count } of SQUAD_STRUCTURE) {
-    for (let i = 0; i < count; i++) lineup.push(position);
-  }
+  const lineup: Position[] = [...FORMATION_SLOT_POSITIONS];
 
   const used = new Set<string>();
   const xiiiIds: string[] = [];

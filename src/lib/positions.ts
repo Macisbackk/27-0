@@ -71,6 +71,11 @@ const SLOT_DEFINITIONS: { position: Position; label: string }[] = [
   { position: "SECOND_ROW", label: "Right Second Row" },
 ];
 
+/** Position type for each slot index 0–12 (matches SLOT_DEFINITIONS). */
+export const FORMATION_SLOT_POSITIONS: Position[] = SLOT_DEFINITIONS.map(
+  (def) => def.position
+);
+
 /** All 13 starting slots in team-sheet order. */
 export const FORMATION_SLOT_INDICES = [
   0, 1, 3, 4, 2, 5, 6, 7, 8, 9, 10, 12, 11,
@@ -90,7 +95,12 @@ export function getFormationSlotDisplayLabel(slotIndex: number): string {
   const def = SLOT_DEFINITIONS[slotIndex];
   if (!def) return "Unknown";
   if (def.position === "FULLBACK") return "Full Back";
-  return POSITION_LABELS[def.position];
+  return def.label;
+}
+
+/** Position type for a formation slot index. */
+export function getFormationSlotPosition(slotIndex: number): Position {
+  return FORMATION_SLOT_POSITIONS[slotIndex] ?? "LOOSE_FORWARD";
 }
 
 /** Sort key for rendering players in team-sheet order. */
@@ -103,7 +113,7 @@ export function getFormationSlotSortOrder(slotIndex: number): number {
 
 /**
  * Rugby League 13-player formation — percentage coords inside pitch container.
- * FB → back line (LW, LC, RC, RW) → halves → front row → second row → loose forward.
+ * FB → back line → halves → front row → second row + loose forward.
  */
 export const FORMATION_COORDS: Record<
   number,
@@ -119,9 +129,9 @@ export const FORMATION_COORDS: Record<
   7: { left: 26, top: 58 },
   8: { left: 50, top: 58 },
   9: { left: 74, top: 58 },
-  10: { left: 34, top: 76 },
-  12: { left: 66, top: 76 },
-  11: { left: 50, top: 90 },
+  10: { left: 26, top: 76 },
+  11: { left: 50, top: 76 },
+  12: { left: 74, top: 76 },
 };
 
 /** Standard RL shirt numbers 1–13 for pitch slot indices. */
@@ -147,9 +157,13 @@ export const FORMATION_ROWS: number[][] = [
   [1, 3, 4, 2],
   [5, 6],
   [7, 8, 9],
-  [10, 12],
-  [11],
+  [10, 11, 12],
 ];
+
+/** Grid rows for team-sheet editors (same layout as pitch coords). */
+export const TEAM_SHEET_ROWS: { slots: number[] }[] = FORMATION_ROWS.map(
+  (slots) => ({ slots })
+);
 
 /** 13-player Super League starting side structure */
 export const SQUAD_STRUCTURE: { position: Position; count: number }[] = [

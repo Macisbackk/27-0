@@ -1,4 +1,8 @@
-import { POSITION_SHORT } from "../positions";
+import {
+  getFormationSlotPosition,
+  POSITION_SHORT,
+  TEAM_SHEET_ROWS,
+} from "../positions";
 import { canPlayPosition } from "../players/player-positions";
 import type { Position } from "../types";
 import type { ManagerCareer } from "./types";
@@ -25,7 +29,8 @@ export function canAssignPlayerToXiiiSlot(
   slotIndex: number,
   playerId: string
 ): boolean {
-  const position = career.xiiiSlotPositions[slotIndex];
+  const position =
+    career.xiiiSlotPositions[slotIndex] ?? getFormationSlotPosition(slotIndex);
   const player = getManagerPlayer(career, playerId);
   if (!position || !player) return false;
 
@@ -76,7 +81,9 @@ export function tryAssignPlayerToMatchday(
   }
 
   if (target.kind === "xiii" && !canAssignPlayerToXiiiSlot(career, target.index, playerId)) {
-    const pos = career.xiiiSlotPositions[target.index];
+    const pos =
+      career.xiiiSlotPositions[target.index] ??
+      getFormationSlotPosition(target.index);
     return {
       ok: false,
       career,
@@ -270,29 +277,7 @@ export function getReplacementCandidates(
   });
 }
 
-export const TEAM_SHEET_ROWS: { slots: number[] }[] = [
-  { slots: [0] },
-  { slots: [1, 3, 4, 2] },
-  { slots: [5, 6] },
-  { slots: [7, 9, 8] },
-  { slots: [10, 11] },
-  { slots: [12] },
-];
-
-export function slotAbbrev(position: Position): string {
-  const map: Record<Position, string> = {
-    FULLBACK: "FB",
-    WING: "WG",
-    CENTRE: "CE",
-    STAND_OFF: "SO",
-    SCRUM_HALF: "SH",
-    PROP: "PF",
-    HOOKER: "HK",
-    SECOND_ROW: "SR",
-    LOOSE_FORWARD: "LF",
-  };
-  return map[position];
-}
+export { TEAM_SHEET_ROWS };
 
 export function findPlayerMatchdaySlot(
   career: ManagerCareer,

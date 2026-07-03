@@ -4,7 +4,7 @@ import { useState } from "react";
 import { GAME_UPDATES } from "../../../data/updates";
 import { playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { PageShell } from "@/components/ui/PageShell";
-import { CARD, PAGE, SPACING } from "@/lib/ui/design-system";
+import { CARD, PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 export default function UpdatesPage() {
@@ -28,44 +28,48 @@ export default function UpdatesPage() {
             const isOpen = openId === update.id;
             return (
               <li key={update.id}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    playUiClick();
-                    if (isOpen) {
-                      playPanelClose();
-                      setOpenId(null);
-                    } else {
-                      playPanelExpand();
-                      setOpenId(update.id);
-                    }
-                  }}
-                  className={`${CARD.panel} w-full rounded-xl text-left transition ${
+                <div
+                  className={`${CARD.panel} overflow-hidden rounded-xl border transition ${
                     isOpen
                       ? "border-accent-green/40 bg-pitch-900/80"
                       : "border-pitch-700/50 hover:border-pitch-600/60"
-                  } ${SPACING.cardPaddingSm}`}
-                  aria-expanded={isOpen}
+                  }`}
                 >
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="font-display text-sm font-bold text-white sm:text-base">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      playUiClick();
+                      if (isOpen) {
+                        playPanelClose();
+                        setOpenId(null);
+                      } else {
+                        playPanelExpand();
+                        setOpenId(update.id);
+                      }
+                    }}
+                    className="flex min-h-[3.25rem] w-full items-center justify-between gap-3 px-4 py-3 text-left transition hover:bg-pitch-800/35 sm:min-h-[3.5rem] sm:px-5"
+                    aria-expanded={isOpen}
+                  >
+                    <span className="min-w-0 flex-1 font-display text-sm font-bold leading-snug text-white sm:text-base">
                       {update.title}
                     </span>
                     <span
-                      className={`shrink-0 text-accent-green transition ${
-                        isOpen ? "rotate-180" : ""
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-pitch-600/50 text-sm text-accent-green transition ${
+                        isOpen ? "rotate-180 bg-pitch-800/60" : ""
                       }`}
                       aria-hidden
                     >
                       ▾
                     </span>
-                  </div>
+                  </button>
                   {isOpen && (
-                    <p className={`mt-3 ${TYPO.bodySm} leading-relaxed text-gray-400`}>
-                      {update.summary}
-                    </p>
+                    <div className="border-t border-pitch-700/40 px-4 pb-4 pt-3 sm:px-5">
+                      <p className={`${TYPO.bodySm} leading-relaxed text-gray-400`}>
+                        {update.summary}
+                      </p>
+                    </div>
                   )}
-                </button>
+                </div>
               </li>
             );
           })}

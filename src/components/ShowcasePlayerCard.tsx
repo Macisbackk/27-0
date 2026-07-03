@@ -1,14 +1,13 @@
 "use client";
 
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback } from "react";
 import type { Player } from "@/lib/types";
 import { formatPlayerDisplayName } from "@/lib/players/prime-year";
 import { formatShowcaseClubYear } from "@/lib/players/year-card";
-import { getClubColors, getClubTheme } from "@/lib/clubs";
 import { RugbyLeaguePlayerCard } from "./cards/RugbyLeaguePlayerCard";
 import { ClubColourBar } from "./ClubBadge";
-import { ClubDualSwatch } from "./ClubDualSwatch";
 import { playPanelClose, playPanelExpand } from "@/lib/sound";
+import { CARD } from "@/lib/ui/design-system";
 
 interface ShowcasePlayerCardProps {
   player: Player;
@@ -37,21 +36,6 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
 }: ShowcasePlayerCardProps) {
   const displayName = formatPlayerDisplayName(player);
   const clubYearLabel = formatShowcaseClubYear(player);
-  const colors = getClubColors(player.club);
-  const theme = getClubTheme(player.club);
-
-  const cardShellStyle = useMemo(
-    () => ({
-      borderColor: expanded
-        ? `${colors.primary}99`
-        : `${theme.cardBorder}66`,
-      backgroundColor: theme.cardBackground,
-      boxShadow: expanded
-        ? `0 0 0 1px ${colors.primary}33, inset 3px 0 0 ${colors.primary}`
-        : `inset 3px 0 0 ${colors.primary}`,
-    }),
-    [colors.primary, expanded, theme.cardBackground, theme.cardBorder]
-  );
 
   const handleToggle = useCallback(() => {
     if (expanded) playPanelClose();
@@ -71,28 +55,23 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
 
   return (
     <div
-      className={`showcase-player-card h-auto w-full min-w-0 self-start overflow-hidden rounded-lg border transition ${
-        expanded ? "showcase-player-card--expanded" : ""
-      }`}
-      style={cardShellStyle}
+      className={`showcase-player-card h-auto w-full min-w-0 self-start overflow-hidden transition ${
+        expanded
+          ? "showcase-player-card--expanded border-accent-green/40"
+          : "hover:border-pitch-500/50"
+      } ${CARD.base}`}
     >
       <ClubColourBar club={player.club} />
 
       <button
         type="button"
         className={`flex w-full min-w-0 items-start gap-2 px-3 py-2 text-left transition sm:py-2.5 ${
-          expanded
-            ? "bg-accent-green/5"
-            : "hover:bg-pitch-900/60"
+          expanded ? "bg-accent-green/5" : "hover:bg-pitch-900/60"
         }`}
         onClick={handleToggle}
+        onKeyDown={handleKeyDown}
         aria-expanded={expanded}
       >
-        <ClubDualSwatch
-          club={player.club}
-          size="sm"
-          className="mt-0.5 shrink-0"
-        />
         <span className="showcase-compact-name min-w-0 flex-1 font-display font-bold leading-snug text-white">
           <span className="block break-words [overflow-wrap:anywhere] line-clamp-3">
             {displayName}
@@ -114,6 +93,8 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
             compactMobile
             achievementDisplay="showcase"
             allowLongName
+            showClubColourBar={false}
+            className="!border-0 !bg-transparent !shadow-none"
           />
           <button
             type="button"

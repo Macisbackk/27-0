@@ -3,7 +3,11 @@ import {
   OPPONENT_LINEUP,
   selectClubMatchSquad,
 } from "../game/opponent-scorers";
-import { getFormationSlotDisplayLabel } from "../positions";
+import {
+  FORMATION_SLOT_POSITIONS,
+  getFormationSlotDisplayLabel,
+  getFormationSlotPosition,
+} from "../positions";
 import type { SquadSlot } from "../types";
 import { ERA_BENCH_FROM_STARTING_17 } from "../players/era-starting-17s";
 import type { Player, Position } from "../types";
@@ -13,6 +17,7 @@ import {
   getLeagueClubPlayerPool,
   getManagerOpponentPoolOptions,
 } from "./managerLeagueRosters";
+import { toMatchdaySquadSlotsFromClubLineup } from "./matchday-lineup";
 
 const STARTING_XIII_SLOTS = 13;
 
@@ -34,19 +39,9 @@ export function getLineupXiiiPlayers(lineup: ClubMatchdayLineup): Player[] {
     .map((row) => row.player);
 }
 
-/** RugbyPitch / TeamSheet slots for manager club sheet popups. */
+/** RugbyPitch / TeamSheet slots — delegates to unified matchday-lineup converter. */
 export function clubLineupToSquadSlots(lineup: ClubMatchdayLineup): SquadSlot[] {
-  return Array.from({ length: STARTING_XIII_SLOTS }, (_, slotIndex) => {
-    const entry = lineup.xiii[slotIndex];
-    const position =
-      entry?.position ?? OPPONENT_LINEUP[slotIndex] ?? ("LOOSE_FORWARD" as Position);
-    return {
-      slotIndex,
-      position,
-      label: getFormationSlotDisplayLabel(slotIndex),
-      player: entry?.player ?? null,
-    };
-  });
+  return toMatchdaySquadSlotsFromClubLineup(lineup);
 }
 
 function buildOpponentXiii(
@@ -57,7 +52,7 @@ function buildOpponentXiii(
     const player = selected[i]!;
     xiii[i] = {
       player,
-      position: OPPONENT_LINEUP[i] ?? player.position,
+      position: getFormationSlotPosition(i),
     };
   }
   return xiii;
@@ -76,7 +71,8 @@ function buildUserClubLineup(career: ManagerCareer): ClubMatchdayLineup {
   const xiii: ClubMatchdayLineup["xiii"] = new Array(STARTING_XIII_SLOTS);
   for (let i = 0; i < career.matchdayXiii.length && i < STARTING_XIII_SLOTS; i++) {
     const playerId = career.matchdayXiii[i];
-    const position = career.xiiiSlotPositions[i];
+    const position =
+      career.xiiiSlotPositions[i] ?? getFormationSlotPosition(i);
     if (!playerId || !position) continue;
     const player = getManagerPlayer(career, playerId);
     if (player) xiii[i] = { player, position };
