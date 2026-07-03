@@ -184,7 +184,7 @@ export function buildDefaultLineup(playerIds: readonly string[]): {
   const players = playerIds
     .map((id) => getPlayerById(id))
     .filter((p): p is NonNullable<typeof p> => !!p)
-    .sort((a, b) => (b.rating ?? b.peakRating) - (a.rating ?? a.peakRating));
+    .sort((a, b) => b.peakRating - a.peakRating);
 
   const lineup: Position[] = [];
   for (const { position, count } of SQUAD_STRUCTURE) {

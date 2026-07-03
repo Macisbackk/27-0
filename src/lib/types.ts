@@ -97,8 +97,6 @@ export interface Player extends PlayerAchievements {
   cardYear?: number;
   category: PlayerCategory;
   peakRating: number;
-  /** @deprecated use peakRating — kept for backward compatibility */
-  rating: number;
   value: number;
   appearances?: number;
   tries?: number;

@@ -72,7 +72,7 @@ function developOnePlayer(
   const baseline = getManagerModePlayerRating(
     playerId,
     base.name,
-    base.rating ?? base.peakRating
+    base.peakRating
   );
   const before = existing?.rating ?? baseline;
   const potential = existing?.potential ?? computePotential(baseline, age);
@@ -220,7 +220,7 @@ function developLeaguePlayersAtSeasonEnd(
       if (!player) continue;
       if (userIds.has(player.id)) continue;
 
-      const rating = player.rating ?? player.peakRating;
+      const rating = player.peakRating;
       const season = simulateLeaguePlayerSeason(career, rating, rng);
       const developed = developOnePlayer(
         player.id,
@@ -255,7 +255,7 @@ export function snapshotSquadSeasonStartRatings(
     const baseline = getManagerModePlayerRating(
       ps.playerId,
       base.name,
-      base.rating ?? base.peakRating
+      base.peakRating
     );
     const existing = next[ps.playerId];
     const current = existing?.rating ?? baseline;
@@ -289,7 +289,7 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
     const baseline = getManagerModePlayerRating(
       ps.playerId,
       base.name,
-      base.rating ?? base.peakRating
+      base.peakRating
     );
     const devState = playerDevelopment[ps.playerId];
     const reviewBefore =

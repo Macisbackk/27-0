@@ -127,7 +127,8 @@ function removeRetiredPlayerFromSquad(
 function buildRetiredPlayerRecord(
   career: ManagerCareer,
   playerId: string,
-  age: number
+  age: number,
+  club: string
 ): RetiredPlayer | null {
   const player = getManagerPlayer(career, playerId);
   if (!player) return null;
@@ -138,18 +139,20 @@ function buildRetiredPlayerRecord(
     totals?.appearances ?? ps?.seasonAppearances ?? 0;
   const clubTries = totals?.tries ?? ps?.seasonTries ?? 0;
   const position = player.position;
+  const isUserClub = club === career.club;
 
   return {
     playerId,
     playerName: player.name,
+    club,
     position,
     positionLabel: POSITION_SHORT[position] ?? position,
     age,
     peakRating: player.peakRating,
     seasonRetired: career.seasonYear,
-    clubAppearances,
-    clubTries,
-    seasonsAtClub: totals?.seasons ?? 1,
+    clubAppearances: isUserClub ? clubAppearances : 0,
+    clubTries: isUserClub ? clubTries : 0,
+    seasonsAtClub: isUserClub ? (totals?.seasons ?? 1) : 0,
   };
 }
 
@@ -238,7 +241,12 @@ export function applySeasonRetirements(career: ManagerCareer): {
       continue;
     }
 
-    const record = buildRetiredPlayerRecord(next, ps.playerId, age);
+    const record = buildRetiredPlayerRecord(
+      next,
+      ps.playerId,
+      age,
+      career.club
+    );
     if (record) {
       retiredPlayers.unshift(record);
     }
@@ -272,6 +280,7 @@ export function applyLeagueRetirements(career: ManagerCareer): ManagerCareer {
   };
   const playerDevelopment = { ...(career.playerDevelopment ?? {}) };
   const playerRegistry = { ...career.playerRegistry };
+  const retiredPlayers = [...(career.retiredPlayers ?? [])];
   let changed = false;
 
   for (const club of CURRENT_PLAYABLE_CLUBS) {
@@ -282,6 +291,10 @@ export function applyLeagueRetirements(career: ManagerCareer): ManagerCareer {
     for (const playerId of ids) {
       const age = getManagerPlayerAge(career, playerId) ?? 0;
       if (shouldRetireByAge(career, playerId, age)) {
+        const record = buildRetiredPlayerRecord(career, playerId, age, club);
+        if (record) {
+          retiredPlayers.unshift(record);
+        }
         changed = true;
         delete playerDevelopment[playerId];
         if (playerId.startsWith("mgr-ai-")) {
@@ -302,6 +315,7 @@ export function applyLeagueRetirements(career: ManagerCareer): ManagerCareer {
     leagueClubRosters: rosters,
     playerDevelopment,
     playerRegistry,
+    retiredPlayers,
     updatedAt: new Date().toISOString(),
   });
 }

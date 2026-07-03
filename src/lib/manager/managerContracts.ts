@@ -68,7 +68,7 @@ export function calculateWageForPlayer(
     ? getManagerPlayer(career, playerId)
     : getPlayerById(playerId);
   if (!player) return 25_000;
-  const rating = player.rating ?? player.peakRating;
+  const rating = player.peakRating;
   const age = career
     ? getManagerPlayerAge(career, playerId)
     : getPlayerAge(player);
@@ -95,7 +95,7 @@ export function generateInitialContract(
   const player = career
     ? getManagerPlayer(career, playerId)
     : getPlayerById(playerId);
-  const rating = player?.rating ?? player?.peakRating ?? 70;
+  const rating = player?.peakRating ?? 70;
   const age = career
     ? getManagerPlayerAge(career, playerId)
     : player
@@ -125,7 +125,7 @@ export function generateRenewalDemand(
   career: ManagerCareer
 ): RenewalDemand {
   const player = getManagerPlayer(career, playerId);
-  const rating = player?.rating ?? player?.peakRating ?? 70;
+  const rating = player?.peakRating ?? 70;
   const age = getManagerPlayerAge(career, playerId);
   const appearances = getPlayerSeasonAppearances(career, playerId);
   const happiness = contract.happiness;
@@ -207,7 +207,7 @@ export function evaluateRenewalOffer(
 ): { accepted: boolean; reason: string } {
   const demand = contract.renewalDemand ?? generateRenewalDemand(playerId, contract, career);
   const player = getManagerPlayer(career, playerId);
-  const rating = player?.rating ?? player?.peakRating ?? 70;
+  const rating = player?.peakRating ?? 70;
   const happiness = contract.happiness;
   const appearances = getPlayerSeasonAppearances(career, playerId);
   const form = career.squad.find((p) => p.playerId === playerId)?.form ?? 50;

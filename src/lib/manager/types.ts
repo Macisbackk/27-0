@@ -185,6 +185,11 @@ export interface ManagerScheduledFixture {
   playoffRound?: number;
   playoffMatchId?: string;
   label: string;
+  isNeutral?: boolean;
+  venue?: string;
+  /** Bracket listing for neutral play-off fixtures (e.g. Grand Final). */
+  listedHome?: string;
+  listedAway?: string;
 }
 
 export interface ManagerLeagueRow {
@@ -217,6 +222,9 @@ export interface MatchAttendanceMeta {
   operatingAllocation: number;
   fanMoodChange: number;
   ticketPrice: number;
+  venue?: string;
+  /** Neutral Grand Final — crowd shown for flavour, no gate revenue to the club. */
+  excludedFromClubFunds?: boolean;
 }
 
 export interface ManagerMatchMeta {
@@ -299,6 +307,7 @@ export type ManagerView =
   | "inbox"
   | "transfers"
   | "fixtures"
+  | "across-league"
   | "table"
   | "stats"
   | "play-game"
@@ -431,6 +440,8 @@ export interface InboxMessage {
 export interface RetiredPlayer {
   playerId: string;
   playerName: string;
+  /** Club the player retired from (user squad or AI league club). */
+  club?: string;
   position: import("../types").Position;
   positionLabel: string;
   age: number;

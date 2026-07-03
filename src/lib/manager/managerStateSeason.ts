@@ -54,8 +54,8 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
   for (const ps of career.squad) {
     const player = getManagerPlayer(career, ps.playerId);
     if (!player) continue;
-    if ((player.rating ?? player.peakRating) > bestRating) {
-      bestRating = player.rating ?? player.peakRating;
+    if (player.peakRating > bestRating) {
+      bestRating = player.peakRating;
       bestPlayerId = ps.playerId;
     }
     if (ps.seasonTries > topTries) {

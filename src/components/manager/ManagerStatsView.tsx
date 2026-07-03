@@ -7,6 +7,7 @@ import {
   tabGroupClass,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { getManagerPlayer, getRetiredPlayerDisplayAge } from "@/lib/manager/managerPlayers";
 import {
@@ -378,24 +379,37 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
 }
 
 function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
-  const retired = career.retiredPlayers ?? [];
+  const retired = [...(career.retiredPlayers ?? [])].sort((a, b) => {
+    if (b.seasonRetired !== a.seasonRetired) {
+      return b.seasonRetired - a.seasonRetired;
+    }
+    return a.playerName.localeCompare(b.playerName);
+  });
+
+  const leagueRetirements = retired.filter(
+    (player) => (player.club ?? career.club) !== career.club
+  ).length;
 
   return (
     <>
-      <ManagerSectionCard title="Retired players" variant="featured" accent="gold">
+      <ManagerSectionCard title="League retirements" variant="featured" accent="gold">
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
           {retired.length} player{retired.length === 1 ? "" : "s"} have retired
-          during this save
+          across Super League during this save
+          {leagueRetirements > 0
+            ? ` (${leagueRetirements} from other clubs)`
+            : ""}
         </p>
       </ManagerSectionCard>
 
       {retired.length > 0 ? (
-        <ManagerSectionCard title="Club retirees" variant="elevated">
+        <ManagerSectionCard title="Retired players" variant="elevated">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[520px] text-left text-sm">
+            <table className="w-full min-w-[560px] text-left text-sm">
               <thead>
                 <tr className="border-b border-pitch-700/50 text-[10px] uppercase tracking-wider text-pitch-500">
                   <th className="px-3 py-2 font-semibold">Player</th>
+                  <th className="px-3 py-2 font-semibold">Club</th>
                   <th className="px-3 py-2 text-center font-semibold">Pos</th>
                   <th className="px-3 py-2 text-center font-semibold">Age</th>
                   <th className="px-3 py-2 text-center font-semibold">Peak</th>
@@ -405,42 +419,62 @@ function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
                 </tr>
               </thead>
               <tbody>
-                {retired.map((player) => (
-                  <tr
-                    key={`${player.playerId}-${player.seasonRetired}`}
-                    className="border-b border-pitch-800/60 last:border-0"
-                  >
-                    <td className="px-3 py-2.5 font-medium text-white">
-                      {player.playerName}
-                    </td>
-                    <td className="px-3 py-2.5 text-center text-pitch-300">
-                      {player.positionLabel}
-                    </td>
-                    <td className="px-3 py-2.5 text-center text-pitch-300">
-                      {getRetiredPlayerDisplayAge(career, player)}
-                    </td>
-                    <td className="px-3 py-2.5 text-center font-semibold text-accent-gold">
-                      {player.peakRating}
-                    </td>
-                    <td className="px-3 py-2.5 text-center text-pitch-300">
-                      {player.clubAppearances}
-                    </td>
-                    <td className="px-3 py-2.5 text-center text-theme-primary">
-                      {player.clubTries}
-                    </td>
-                    <td className="px-3 py-2.5 text-center text-pitch-400">
-                      {player.seasonRetired}
-                    </td>
-                  </tr>
-                ))}
+                {retired.map((player) => {
+                  const club = player.club ?? career.club;
+                  const isUserClub = club === career.club;
+                  return (
+                    <tr
+                      key={`${player.playerId}-${player.seasonRetired}`}
+                      className={`border-b border-pitch-800/60 last:border-0 ${
+                        isUserClub ? "bg-theme-primary/5" : ""
+                      }`}
+                    >
+                      <td className="px-3 py-2.5 font-medium text-white">
+                        {player.playerName}
+                      </td>
+                      <td className="px-3 py-2.5">
+                        <span className="flex items-center gap-2">
+                          <ClubDualSwatch club={club} size="xs" />
+                          <span
+                            className={`truncate text-xs ${
+                              isUserClub
+                                ? "font-semibold text-theme-primary"
+                                : "text-pitch-300"
+                            }`}
+                          >
+                            {club}
+                          </span>
+                        </span>
+                      </td>
+                      <td className="px-3 py-2.5 text-center text-pitch-300">
+                        {player.positionLabel}
+                      </td>
+                      <td className="px-3 py-2.5 text-center text-pitch-300">
+                        {getRetiredPlayerDisplayAge(career, player)}
+                      </td>
+                      <td className="px-3 py-2.5 text-center font-semibold text-accent-gold">
+                        {player.peakRating}
+                      </td>
+                      <td className="px-3 py-2.5 text-center text-pitch-300">
+                        {isUserClub ? player.clubAppearances : "—"}
+                      </td>
+                      <td className="px-3 py-2.5 text-center text-theme-primary">
+                        {isUserClub ? player.clubTries : "—"}
+                      </td>
+                      <td className="px-3 py-2.5 text-center text-pitch-400">
+                        {player.seasonRetired}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </ManagerSectionCard>
       ) : (
         <p className={`${TYPO.bodySm} text-pitch-500`}>
-          No retirements yet. Veterans aged 34+ may announce plans to retire
-          towards the end of a season.
+          No retirements yet. Veterans aged 34+ across the league may retire at
+          the end of each season.
         </p>
       )}
     </>

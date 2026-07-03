@@ -112,7 +112,7 @@ export function ManagerSquadPlayerModal({
         <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
           <span>{POSITION_SHORT[player.position]}</span>
           <span className="text-theme-primary">
-            {player.rating ?? player.peakRating} rated
+            {player.peakRating} rated
           </span>
           <span>{formatValue(player.value)}</span>
           {contract && <span>{formatWage(contract.wagePerYear)}/yr</span>}

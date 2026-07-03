@@ -9,6 +9,7 @@ import type {
   MatchAttendanceMeta,
 } from "./types";
 import { getManagerCompetitionLabel } from "./managerFixtureDisplay";
+import { GRAND_FINAL_VENUE } from "./managerPlayoffs";
 import { getManagerPlayer } from "./managerPlayers";
 
 const FORWARD_POSITIONS = new Set<Position>([
@@ -44,8 +45,9 @@ function isHeavyMargin(margin: number, isThrashing?: boolean): boolean {
   return isThrashing === true || margin >= 20;
 }
 
-function formatVenue(fixture: MatchFixture): string {
-  if (fixture.isNeutral) return "at a neutral venue";
+function formatVenue(fixture: MatchFixture, venue?: string): string {
+  if (venue) return `at ${venue}`;
+  if (fixture.isNeutral) return `at ${GRAND_FINAL_VENUE}`;
   return fixture.isHome ? "at home" : "away";
 }
 
@@ -194,7 +196,7 @@ function addManagerMotmTryScorers(
       playerId: scorer.playerId,
       playerName: scorer.name,
       teamName,
-      rating: player?.rating ?? player?.peakRating ?? 80,
+      rating: player?.peakRating ?? 80,
       tries: scorer.tries,
       conversions: 0,
       penalties: 0,
@@ -244,7 +246,7 @@ function addManagerMotmKicker(
     playerId: kicking.playerId,
     playerName: kicking.name,
     teamName,
-    rating: player?.rating ?? player?.peakRating ?? 80,
+    rating: player?.peakRating ?? 80,
     tries: 0,
     conversions: kicking.conversions,
     penalties: kicking.penalties,
@@ -585,7 +587,11 @@ function buildExtras(
     );
   }
 
-  if (context.attendance && fixture.isHome) {
+  if (context.attendance?.excludedFromClubFunds) {
+    const gate = context.attendance.attendance.toLocaleString();
+    const venueName = context.attendance.venue ?? "the neutral venue";
+    extras.push(`A crowd of ${gate} packed ${venueName} for the Grand Final.`);
+  } else if (context.attendance && fixture.isHome) {
     const gate = context.attendance.attendance.toLocaleString();
     const mood = context.attendance.fanMoodChange;
     if (mood >= 3) {

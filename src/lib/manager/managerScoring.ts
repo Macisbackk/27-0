@@ -67,7 +67,7 @@ function buildUserWeights(
       tactics.attackFocus,
       e.playedPosition
     );
-    const rating = e.player.rating ?? e.player.peakRating;
+    const rating = e.player.peakRating;
     const variance = 0.85 + rng() * 0.3;
     return Math.max(
       0.1,
@@ -152,7 +152,7 @@ export function enrichManagerFixtureScoring(
     id: p.id,
     name: p.name,
     position: getPlayerEligiblePositions(p)[0] ?? p.position,
-    rating: p.rating ?? p.peakRating,
+    rating: p.peakRating,
   }));
   const oppWeights = buildOpponentWeights(oppEntries, tactics, rng);
   const oppAlloc = allocateTries(fixture.triesAgainst, oppWeights, rng);

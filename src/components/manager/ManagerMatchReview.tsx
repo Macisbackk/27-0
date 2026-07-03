@@ -236,35 +236,52 @@ export function ManagerMatchReview({
       )}
 
       {attendance && (
-        <ManagerSectionCard title="Gate & Fans" accent="sky">
+        <ManagerSectionCard
+          title={
+            attendance.excludedFromClubFunds
+              ? `Grand Final · ${attendance.venue ?? "Neutral venue"}`
+              : "Gate & Fans"
+          }
+          accent="sky"
+        >
           <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
             <ManagerStat
               label="Attendance"
               value={attendance.attendance.toLocaleString()}
               tone="sky"
             />
-            <ManagerStat
-              label="Gate income"
-              value={formatWage(attendance.gateIncome)}
-              tone="gold"
-            />
-            <ManagerStat
-              label="→ Transfer fund"
-              value={formatWage(
-                attendance.transferAllocation ??
-                  Math.round(attendance.gateIncome * 0.12)
-              )}
-              tone="gold"
-            />
-            <ManagerStat
-              label="→ Club operations"
-              value={formatWage(
-                attendance.operatingAllocation ??
-                  attendance.gateIncome -
-                    Math.round(attendance.gateIncome * 0.12)
-              )}
-              tone="primary"
-            />
+            {attendance.excludedFromClubFunds ? (
+              <ManagerStat
+                label="Gate income"
+                value="Neutral venue — no club gate"
+                tone="gold"
+              />
+            ) : (
+              <>
+                <ManagerStat
+                  label="Gate income"
+                  value={formatWage(attendance.gateIncome)}
+                  tone="gold"
+                />
+                <ManagerStat
+                  label="→ Transfer fund"
+                  value={formatWage(
+                    attendance.transferAllocation ??
+                      Math.round(attendance.gateIncome * 0.12)
+                  )}
+                  tone="gold"
+                />
+                <ManagerStat
+                  label="→ Club operations"
+                  value={formatWage(
+                    attendance.operatingAllocation ??
+                      attendance.gateIncome -
+                        Math.round(attendance.gateIncome * 0.12)
+                  )}
+                  tone="primary"
+                />
+              </>
+            )}
             <ManagerStat
               label="Fan Mood"
               value={`${attendance.fanMoodChange >= 0 ? "+" : ""}${attendance.fanMoodChange}`}

@@ -34,7 +34,7 @@ import {
 import { ManagerReserveReleaseModal } from "@/components/manager/ManagerReserveReleaseModal";
 import { ManagerReserveGrowthPanel } from "@/components/manager/ManagerReserveGrowthPanel";
 
-type ReserveFilter = "all" | "position" | "potential" | "rating" | "age" | "callup";
+type ReserveFilter = "all" | "position" | "potential" | "rating" | "age";
 
 const STATUS_LABELS: Record<string, string> = {
   expires_this_season: "Expires this season",
@@ -84,9 +84,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
       list.sort((a, b) => b.potentialRating - a.potentialRating);
     } else if (filter === "age") {
       list.sort((a, b) => a.age - b.age);
-    } else if (filter === "callup") {
-      list = list.filter((r) => !r.calledUpForNextMatch);
-      list.sort((a, b) => b.rating - a.rating);
     } else {
       list.sort((a, b) => b.rating - a.rating);
     }
@@ -101,11 +98,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     }
     onUpdate(result.career);
     setMessage("Player signed to first-team squad");
-  };
-
-  const handleCallUp = (id: string) => {
-    onUpdate(callUpReserveForNextMatch(career, id));
-    setMessage("Called up for next match");
   };
 
   const handleReleaseClick = (reserve: ManagerReservePlayer) => {
@@ -309,7 +301,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
               ["potential", "Potential"],
               ["rating", "Rating"],
               ["age", "Age"],
-              ["callup", "Available call-up"],
             ] as const
           ).map(([id, label]) => (
             <button
@@ -369,14 +360,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             >
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="font-medium text-white">
-                    {r.name}
-                    {r.calledUpForNextMatch && (
-                      <span className="ml-2 text-xs text-theme-primary">
-                        Called up
-                      </span>
-                    )}
-                  </p>
+                  <p className="font-medium text-white">{r.name}</p>
                   <p className={`${TYPO.bodySm} text-pitch-400`}>
                     {POSITION_SHORT[r.position]} · Age {r.age} · {r.nationality}
                   </p>
@@ -404,9 +388,28 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                 <span>
                   {r.reserveAppearances} apps · {r.reserveTries} tries
                 </span>
+                {r.calledUpForNextMatch && (
+                  <span className="font-semibold text-theme-primary">Called up</span>
+                )}
               </div>
 
               <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                <GameButton
+                  variant="theme"
+                  size="sm"
+                  disabled={r.calledUpForNextMatch}
+                  onClick={() => {
+                    playUiClick();
+                    onUpdate(callUpReserveForNextMatch(career, r.id));
+                    setMessage(
+                      r.calledUpForNextMatch
+                        ? `${r.name} is already called up`
+                        : `${r.name} called up for next match`
+                    );
+                  }}
+                >
+                  {r.calledUpForNextMatch ? "Called up" : "Call up for next match"}
+                </GameButton>
                 {needsRenew && contract && (
                   <GameButton
                     variant="theme"
@@ -433,17 +436,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                   }}
                 >
                   Full-time contract
-                </GameButton>
-                <GameButton
-                  variant="secondary"
-                  size="sm"
-                  disabled={r.calledUpForNextMatch}
-                  onClick={() => {
-                    playUiClick();
-                    handleCallUp(r.id);
-                  }}
-                >
-                  Call up next game
                 </GameButton>
                 <GameButton
                   variant="secondary"

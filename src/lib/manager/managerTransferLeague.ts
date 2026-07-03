@@ -78,7 +78,7 @@ function getPlayerListingRating(
   return getManagerModePlayerRating(
     playerId,
     player.name,
-    player.rating ?? player.peakRating
+    player.peakRating
   );
 }
 
@@ -445,7 +445,7 @@ export function evaluateBuyOffer(
   }
 
   const demand = getTransferDemand(career, playerId);
-  const rating = player.rating ?? player.peakRating ?? 70;
+  const rating = player.peakRating ?? 70;
   if (offer.wagePerYear < demand.wagePerYear * 0.9) {
     return { accepted: false, reason: "Wage offer too low." };
   }
@@ -567,7 +567,7 @@ export function generateIncomingTransferOffers(
     const player = getPlayerById(playerId);
     if (!player) continue;
 
-    const rating = player.rating ?? player.peakRating;
+    const rating = player.peakRating;
     const priceRatio = status.askingPrice / Math.max(1, player.value);
     let chance = 0.12;
     if (priceRatio <= 1.1) chance += 0.2;
@@ -639,7 +639,7 @@ export function generateUnsolicitedTransferOffers(
       const player = getPlayerById(ps.playerId);
       if (!player) return null;
 
-      const rating = player.rating ?? player.peakRating;
+      const rating = player.peakRating;
       const formBoost = Math.max(0, ps.form - 50) / 45;
       const triesBoost = Math.min(ps.seasonTries * 0.18, 0.55);
       const appsBoost = ps.seasonAppearances >= 3 ? 0.12 : 0;

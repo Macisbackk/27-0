@@ -8,17 +8,17 @@
     {
       "name": "Ethan Ryan",
       "positions": "WG",
-      "rating": 81
+      "rating": 84
     },
     {
       "name": "Waqa Blake",
       "positions": "CE",
-      "rating": 87
+      "rating": 85
     },
     {
       "name": "Esan Marsters",
       "positions": "CE",
-      "rating": 86
+      "rating": 85
     },
     {
       "name": "Jayden Okunbor",
@@ -33,7 +33,7 @@
     {
       "name": "Rowan Milnes",
       "positions": "SH",
-      "rating": 80
+      "rating": 81
     },
     {
       "name": "Ryan Sutton",
@@ -82,7 +82,7 @@
     },
     {
       "name": "Ed Chamberlain",
-      "positions": "CE/WG",
+      "positions": "CE/SR",
       "rating": 82
     }
   ],
@@ -125,7 +125,7 @@
     {
       "name": "Renouf Atoni",
       "positions": "PF",
-      "rating": 85
+      "rating": 84
     },
     {
       "name": "Liam Hood",
@@ -165,7 +165,7 @@
     {
       "name": "Krystian Mapapalangi",
       "positions": "CE/SR",
-      "rating": 81
+      "rating": 84
     },
     {
       "name": "Joe Westerman",
@@ -192,7 +192,7 @@
     {
       "name": "Solomona Faataape",
       "positions": "CE",
-      "rating": 83
+      "rating": 85
     },
     {
       "name": "Manase Kaho",
@@ -207,7 +207,7 @@
     {
       "name": "Lewis Dodd",
       "positions": "SH",
-      "rating": 83
+      "rating": 84
     },
     {
       "name": "Chris Satae",
@@ -230,14 +230,14 @@
       "rating": 84
     },
     {
-      "name": "Tariq Sims",
+      "name": "Ben Condon",
       "positions": "SR",
-      "rating": 86
+      "rating": 83
     },
     {
       "name": "Benjamin Garcia",
       "positions": "LF",
-      "rating": 88
+      "rating": 86
     },
     {
       "name": "Paul Seguier",
@@ -555,7 +555,7 @@
     {
       "name": "Jake Connor",
       "positions": "SH",
-      "rating": 87
+      "rating": 91
     },
     {
       "name": "Mikolaj Oledzki",

@@ -98,7 +98,6 @@ for (const file of FILES) {
     let newRating = compress(raw, category);
     if (p.id === "bradford-cur-joe-mellor") newRating = 88;
     p.peakRating = newRating;
-    p.rating = newRating;
     p.value = ratingToValue(newRating);
   }
 

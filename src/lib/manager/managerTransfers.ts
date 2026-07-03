@@ -36,7 +36,7 @@ export function getTransferDemand(
   playerId: string
 ): TransferDemand {
   const player = getManagerPlayer(career, playerId);
-  const rating = player?.rating ?? player?.peakRating ?? 70;
+  const rating = player?.peakRating ?? 70;
   const age = getManagerPlayerAge(career, playerId);
   const role = inferSquadRole(rating, false, age);
   const wage = calculateWageForPlayer(

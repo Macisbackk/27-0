@@ -136,13 +136,6 @@ export function ManagerReserveReleaseModal({
               .
             </p>
 
-            {reserve.calledUpForNextMatch && (
-              <p className="mt-3 rounded-lg border border-amber-500/35 bg-amber-500/10 px-3 py-2.5 text-sm text-amber-200">
-                This player is called up for the next match. Releasing them will
-                remove that call-up.
-              </p>
-            )}
-
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
               <GameButton variant="secondary" onClick={handleDone}>
                 Cancel

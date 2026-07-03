@@ -51,7 +51,7 @@ export function buildOpponentTryScoringDetail(
     `${seed}-opp-tries-${fixtureKey ?? `r${round}`}-${opponent}`
   );
   const weights = oppSquad.map((p) => {
-    const rating = p.rating ?? p.peakRating;
+    const rating = p.peakRating;
     const variance = 0.85 + rng() * 0.3;
     const defenceMod = tactics
       ? getDefenceConcedeMultiplier(tactics.defenceFocus, p.position)

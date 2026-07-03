@@ -7,12 +7,7 @@ import {
   formatClubFunds,
   formatClubFundsExact,
 } from "@/lib/club-funds";
-import {
-  CLUB_FUNDS_CHANGED_EVENT,
-  getClubFundsBalance,
-  getClubFundsTotalEarned,
-  syncClubFundsLeaderboardOnLoad,
-} from "@/lib/storage/club-funds";
+import { useClubFunds } from "@/hooks/useClubFunds";
 import { playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -26,26 +21,10 @@ interface ClubFundsDisplayProps {
 export function ClubFundsDisplay({
   placement = "desktop",
 }: ClubFundsDisplayProps) {
-  const [balance, setBalance] = useState(0);
-  const [totalEarned, setTotalEarned] = useState(0);
+  const { balance, totalEarned, ready } = useClubFunds();
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const isMobileUnderLogo = placement === "mobile-under-logo";
-
-  useEffect(() => {
-    setMounted(true);
-    setBalance(getClubFundsBalance());
-    setTotalEarned(getClubFundsTotalEarned());
-    syncClubFundsLeaderboardOnLoad();
-
-    const sync = () => {
-      setBalance(getClubFundsBalance());
-      setTotalEarned(getClubFundsTotalEarned());
-    };
-    window.addEventListener(CLUB_FUNDS_CHANGED_EVENT, sync);
-    return () => window.removeEventListener(CLUB_FUNDS_CHANGED_EVENT, sync);
-  }, []);
 
   const closePanel = () => {
     playPanelClose();
@@ -89,29 +68,16 @@ export function ClubFundsDisplay({
     };
   }, [open, isMobileUnderLogo]);
 
-  const visibilityClass = "block";
+  const formatted = ready ? formatClubFunds(balance) : "—";
 
-  if (!mounted) {
-    return (
-      <div
-        className={`${visibilityClass} ${
-          isMobileUnderLogo
-            ? "mt-0.5 h-3.5 w-full"
-            : "flex h-11 min-h-[44px] min-w-[4.5rem] items-center justify-center sm:min-w-[5.25rem]"
-        }`}
-        aria-hidden
-      />
-    );
-  }
-
-  const formatted = formatClubFunds(balance);
+  const triggerClass = isMobileUnderLogo
+    ? "flex min-h-[1.125rem] items-center justify-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[11px] font-semibold tabular-nums leading-none text-accent-green transition hover:bg-pitch-800/35 hover:text-theme-primary active:bg-pitch-800/50"
+    : "header-control-btn flex h-11 min-h-[44px] items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-pitch-600/80 bg-pitch-900/25 px-2.5 font-semibold tabular-nums text-accent-green transition hover:border-theme-primary/45 hover:bg-theme-primary/5 sm:px-3";
 
   return (
     <div
       ref={rootRef}
-      className={`relative shrink-0 ${visibilityClass} ${
-        isMobileUnderLogo ? "mt-0.5 w-full max-w-[5.5rem]" : ""
-      }`}
+      className={`relative shrink-0 ${isMobileUnderLogo ? "w-full" : ""}`}
     >
       <button
         type="button"
@@ -121,18 +87,23 @@ export function ClubFundsDisplay({
           else playPanelExpand();
           setOpen((value) => !value);
         }}
-        className="header-control-btn flex h-11 min-h-[44px] w-[4.25rem] max-w-[4.25rem] shrink-0 items-center justify-center gap-0.5 overflow-hidden rounded-lg border border-pitch-600 px-1 text-theme-primary transition hover:border-theme-primary/50 hover:bg-theme-primary/10 sm:w-auto sm:max-w-none sm:gap-1.5 sm:px-3"
+        className={triggerClass}
         aria-expanded={open}
         aria-haspopup="dialog"
-        aria-label={`Club Funds: ${formatted}. Tap for earnings info.`}
-        title={`Club Funds: ${formatted}`}
+        aria-label={
+          ready
+            ? `Club Funds: ${formatted}. Tap for earnings info.`
+            : "Club Funds loading"
+        }
+        title={ready ? `Club Funds: ${formatted}` : undefined}
+        disabled={!ready}
       >
         {!isMobileUnderLogo && (
-          <span aria-hidden className="shrink-0 text-xs leading-none">
-            💷
+          <span className="hidden text-[10px] font-semibold uppercase tracking-wider text-pitch-500 sm:inline">
+            Funds
           </span>
         )}
-        <span className="min-w-0 max-w-full truncate text-[10px] font-bold tabular-nums leading-none sm:text-sm">
+        <span className={isMobileUnderLogo ? "text-[11px]" : "text-sm leading-none"}>
           {formatted}
         </span>
       </button>

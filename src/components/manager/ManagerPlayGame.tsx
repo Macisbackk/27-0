@@ -26,7 +26,10 @@ import {
   prepareCareerForNextMatch,
 } from "@/lib/manager/managerSimulation";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
-import { getManagerScheduledFixtureHeadline } from "@/lib/manager/managerFixtureDisplay";
+import {
+  getManagerScheduledFixtureHeadline,
+  getManagerScheduledFixtureVenueLabel,
+} from "@/lib/manager/managerFixtureDisplay";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
@@ -259,7 +262,7 @@ export function ManagerPlayGame({
           <div className="flex flex-wrap items-center justify-center gap-1.5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-400">
               {getManagerScheduledFixtureHeadline(sched)} ·{" "}
-              {sched.isHome ? "Home" : "Away"}
+              {getManagerScheduledFixtureVenueLabel(sched)}
             </p>
             <ManagerCompetitionBadge
               competition={sched.competition}

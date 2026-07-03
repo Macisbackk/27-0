@@ -29,6 +29,14 @@ export function getManagerCompetitionLabel(
   return "League";
 }
 
+export function getManagerScheduledFixtureVenueLabel(
+  sched: Pick<ManagerScheduledFixture, "isHome" | "isNeutral" | "venue">
+): string {
+  if (sched.isNeutral && sched.venue) return `Neutral · ${sched.venue}`;
+  if (sched.isNeutral) return "Neutral";
+  return sched.isHome ? "Home" : "Away";
+}
+
 export function getManagerScheduledFixtureHeadline(
   sched: Pick<
     ManagerScheduledFixture,

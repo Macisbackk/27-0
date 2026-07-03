@@ -102,7 +102,7 @@ export function ManagerContracts({
           player,
           contract,
           status,
-          rating: player.rating ?? player.peakRating,
+          rating: player.peakRating,
         };
       })
       .filter((r): r is NonNullable<typeof r> => r !== null);

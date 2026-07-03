@@ -158,7 +158,6 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     cardYear,
     category,
     peakRating,
-    rating: peakRating,
     value: computePlayerValue(peakRating, position, category),
     appearances: raw.appearances as number | undefined,
     tries:

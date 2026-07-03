@@ -28,7 +28,6 @@ export function createSuperSamHallasPlayer(
     yearsActive: "2020–Present",
     category: "current",
     peakRating,
-    rating: peakRating,
     value: computePlayerValue(peakRating, slotPosition, "current"),
     tries: 0,
     intlCaps: 0,

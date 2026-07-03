@@ -18,7 +18,6 @@ export function reserveToPlayer(
     name: reserve.name,
     position: reserve.position,
     peakRating: reserve.rating,
-    rating: reserve.rating,
     category: "current",
     club: "",
     value: reserve.rating * 5000,
@@ -42,8 +41,7 @@ export function getManagerPlayer(
     if (dev) {
       return {
         ...rated,
-        rating: dev.rating,
-        peakRating: dev.peakRating,
+        peakRating: dev.rating,
       };
     }
     return rated;
@@ -53,8 +51,7 @@ export function getManagerPlayer(
   if (base && dev) {
     return {
       ...applyManagerModeRatingToPlayer(base),
-      rating: dev.rating,
-      peakRating: dev.peakRating,
+      peakRating: dev.rating,
     };
   }
   const player = base;

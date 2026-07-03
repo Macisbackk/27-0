@@ -12,6 +12,12 @@ import type {
 import type { MatchFixture } from "../game/season-simulation";
 import { applyClubRevenue, splitRevenue } from "./managerFinance";
 import { areRivalClubs } from "./managerRivals";
+import {
+  GRAND_FINAL_ATTENDANCE_MAX,
+  GRAND_FINAL_ATTENDANCE_MIN,
+  GRAND_FINAL_VENUE,
+  isGrandFinalFixture,
+} from "./managerPlayoffs";
 
 export const CLUB_ATTENDANCE_PROFILES: Record<
   string,
@@ -123,8 +129,20 @@ function attendanceOutlookFromPredicted(
   predicted: number,
   baseAttendance: number,
   visitingOpponent: string,
-  homeClub: string
+  homeClub: string,
+  competition?: ManagerCompetition
 ): { level: AttendanceOutlookLevel; label: string } {
+  if (competition === "playoffs") {
+    if (areRivalClubs(homeClub, visitingOpponent)) {
+      return { level: "high", label: "Play-off derby — sell-out expected" };
+    }
+    const fill = predicted / Math.max(1, getClubAttendanceProfile(homeClub).capacity);
+    if (fill >= 0.92) {
+      return { level: "high", label: "Play-offs — near sell-out expected" };
+    }
+    return { level: "high", label: "Play-offs — bumper crowd expected" };
+  }
+
   if (areRivalClubs(homeClub, visitingOpponent)) {
     return { level: "high", label: "Rivalry fixture — near sell-out expected" };
   }
@@ -165,9 +183,18 @@ export function getHomeFixtureAttendanceOutlook(
   career: ManagerCareer,
   fixture: Pick<
     ManagerScheduledFixture,
-    "opponent" | "isHome" | "competition" | "round" | "id"
+    "opponent" | "isHome" | "competition" | "round" | "id" | "isNeutral" | "playoffRound"
   >
 ): { label: string; predictedAttendance: number; level: AttendanceOutlookLevel } | null {
+  if (isGrandFinalFixture(fixture)) {
+    const predictedAttendance = calculateGrandFinalAttendance(career, fixture as ManagerScheduledFixture);
+    return {
+      label: `Grand Final at ${GRAND_FINAL_VENUE} — bumper crowd expected`,
+      predictedAttendance,
+      level: "high",
+    };
+  }
+
   if (!fixture.isHome) return null;
 
   const scheduled = fixture as ManagerScheduledFixture;
@@ -176,17 +203,121 @@ export function getHomeFixtureAttendanceOutlook(
     predictedAttendance,
     career.attendanceData.baseAttendance,
     fixture.opponent,
-    career.club
+    career.club,
+    fixture.competition
   );
 
   return { label, predictedAttendance, level };
 }
 
+export function calculateGrandFinalAttendance(
+  career: ManagerCareer,
+  fixture: Pick<ManagerScheduledFixture, "id">
+): number {
+  const rng = seedrandom(`${career.seed}-gf-att-${fixture.id}`);
+  const span = GRAND_FINAL_ATTENDANCE_MAX - GRAND_FINAL_ATTENDANCE_MIN + 1;
+  return GRAND_FINAL_ATTENDANCE_MIN + Math.floor(rng() * span);
+}
+
+function fanMoodChangeFromMatch(
+  fixture: ManagerScheduledFixture,
+  match: MatchFixture
+): number {
+  let fanMoodChange = 0;
+  if (match.result === "W") fanMoodChange += 3;
+  else fanMoodChange -= 2;
+  if (match.isUpset) fanMoodChange += 2;
+  const margin = match.pointsFor - match.pointsAgainst;
+  if (margin >= 20) fanMoodChange += 2;
+  if (margin <= -15) fanMoodChange -= 2;
+  if (fixture.competition === "challenge_cup" && match.result === "W") {
+    fanMoodChange += 2;
+  }
+  if (fixture.competition === "playoffs" && match.result === "W") {
+    fanMoodChange += 3;
+  }
+  return fanMoodChange;
+}
+
+function processGrandFinalAttendance(
+  career: ManagerCareer,
+  fixture: ManagerScheduledFixture,
+  match: MatchFixture
+): {
+  career: ManagerCareer;
+  meta: MatchAttendanceMeta;
+} {
+  const attendance = calculateGrandFinalAttendance(career, fixture);
+  const fanMoodChange = fanMoodChangeFromMatch(fixture, match);
+  const newFanMood = Math.max(
+    10,
+    Math.min(99, career.attendanceData.fanMood + fanMoodChange)
+  );
+
+  return {
+    career: {
+      ...career,
+      attendanceData: {
+        ...career.attendanceData,
+        fanMood: newFanMood,
+      },
+    },
+    meta: {
+      attendance,
+      gateIncome: 0,
+      transferAllocation: 0,
+      operatingAllocation: 0,
+      fanMoodChange,
+      ticketPrice: 0,
+      venue: GRAND_FINAL_VENUE,
+      excludedFromClubFunds: true,
+    },
+  };
+}
+
+export function processMatchAttendance(
+  career: ManagerCareer,
+  fixture: ManagerScheduledFixture,
+  match: MatchFixture
+): {
+  career: ManagerCareer;
+  meta: MatchAttendanceMeta | null;
+} {
+  if (isGrandFinalFixture(fixture)) {
+    return processGrandFinalAttendance(career, fixture, match);
+  }
+  return processHomeMatchAttendance(career, fixture, match);
+}
+
 function competitionMultiplier(competition: ManagerCompetition): number {
-  return competition === "challenge_cup" ? 1.12 : 1;
+  if (competition === "challenge_cup") return 1.12;
+  if (competition === "playoffs") return 1;
+  return 1;
+}
+
+function sellOutAttendance(stadiumCapacity: number): number {
+  return stadiumCapacity;
+}
+
+function playoffFixtureAttendance(
+  career: ManagerCareer,
+  fixture: ManagerScheduledFixture,
+  stadiumCapacity: number,
+  baseAttendance: number
+): number {
+  const rng = seedrandom(
+    `${career.seed}-playoff-att-${fixture.id ?? `${career.club}-${fixture.opponent}-r${fixture.round}`}`
+  );
+  const fillRatio = 0.84 + rng() * 0.12;
+  const fromCapacity = Math.round(stadiumCapacity * fillRatio);
+  const floor = Math.round(
+    Math.max(baseAttendance * 1.45, stadiumCapacity * 0.8)
+  );
+  return Math.max(floor, Math.min(stadiumCapacity, fromCapacity));
 }
 
 function ticketPrice(competition: ManagerCompetition, isBigGame: boolean): number {
+  if (competition === "playoffs") return 28;
   if (competition === "challenge_cup") return 22;
   if (isBigGame) return 24;
   return 20;
@@ -211,8 +342,23 @@ export function calculateMatchAttendance(
   if (!fixture.isHome) return 0;
 
   const { baseAttendance, stadiumCapacity, fanMood } = career.attendanceData;
+  const isPlayoff = fixture.competition === "playoffs";
+  const isRival = areRivalClubs(career.club, fixture.opponent);
 
-  if (areRivalClubs(career.club, fixture.opponent)) {
+  if (isPlayoff && isRival) {
+    return sellOutAttendance(stadiumCapacity);
+  }
+
+  if (isPlayoff) {
+    return playoffFixtureAttendance(
+      career,
+      fixture,
+      stadiumCapacity,
+      baseAttendance
+    );
+  }
+
+  if (isRival) {
     return rivalFixtureAttendance(career, fixture, stadiumCapacity);
   }
 
@@ -246,6 +392,7 @@ export function processHomeMatchAttendance(
 
   const attendance = calculateMatchAttendance(career, fixture);
   const isBigGame =
+    fixture.competition === "playoffs" ||
     fixture.competition === "challenge_cup" ||
     areRivalClubs(career.club, fixture.opponent) ||
     (!hasPoorAwayFollowing(fixture.opponent) &&
@@ -255,16 +402,7 @@ export function processHomeMatchAttendance(
   const { transfer: transferAllocation, operating: operatingAllocation } =
     splitRevenue(gateIncome, "gate");
 
-  let fanMoodChange = 0;
-  if (match.result === "W") fanMoodChange += 3;
-  else fanMoodChange -= 2;
-  if (match.isUpset) fanMoodChange += 2;
-  const margin = match.pointsFor - match.pointsAgainst;
-  if (margin >= 20) fanMoodChange += 2;
-  if (margin <= -15) fanMoodChange -= 2;
-  if (fixture.competition === "challenge_cup" && match.result === "W") {
-    fanMoodChange += 2;
-  }
+  const fanMoodChange = fanMoodChangeFromMatch(fixture, match);
 
   const newFanMood = Math.max(
     10,

@@ -70,6 +70,14 @@ function validatePlayers(
     if (p.peakRating < 75 || p.peakRating > 99) {
       throw new Error(`Invalid rating for ${p.name}: ${p.peakRating}`);
     }
+
+    const legacyRating = (p as unknown as Record<string, unknown>).rating;
+    if (legacyRating !== undefined) {
+      throw new Error(
+        `Legacy rating field on ${p.id} — remove "rating" and use peakRating only`
+      );
+    }
+
     if (p.value < 10000) {
       throw new Error(`Invalid value for ${p.name}: ${p.value}`);
     }

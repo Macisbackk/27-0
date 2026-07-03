@@ -3,9 +3,8 @@ import { POSITION_SHORT } from "../positions";
 import type { Position } from "../types";
 import type { ManagerCareer } from "./types";
 import { assignPlayerToMatchday } from "./managerMatchdaySquad";
-import { getManagerPlayer, getManagerPlayerEligiblePositions } from "./managerPlayers";
+import { getManagerPlayer, isCalledUpReserve } from "./managerPlayers";
 import { isPlayerUnavailable } from "./managerSquad";
-import { callUpReserveForNextMatch } from "./managerReserves";
 import { validateFitMatchdaySquad } from "./managerMatchdayValidation";
 import { ERA_BENCH_FROM_STARTING_17 } from "../players/era-starting-17s";
 
@@ -22,7 +21,7 @@ function bestSquadPlayerForPosition(
       if (!player || !canPlayPosition(player, position)) return null;
       return {
         id: ps.playerId,
-        rating: player.rating ?? player.peakRating,
+        rating: player.peakRating,
       };
     })
     .filter((c): c is NonNullable<typeof c> => c !== null)
@@ -38,10 +37,7 @@ function bestReserveForPosition(
 ): string | null {
   const candidates = career.reserves
     .filter((r) => !exclude.has(r.id))
-    .filter(
-      (r) =>
-        !r.calledUpForNextMatch || career.calledUpReserveIds.includes(r.id)
-    )
+    .filter((r) => isCalledUpReserve(career, r.id))
     .map((r) => {
       const player = getManagerPlayer(career, r.id);
       if (!player) return null;
@@ -71,11 +67,6 @@ function createEmptyMatchdayState(career: ManagerCareer): ManagerCareer {
     ...career,
     matchdayXiii: career.xiiiSlotPositions.map(() => ""),
     matchdayInterchange: Array(ERA_BENCH_FROM_STARTING_17).fill(""),
-    calledUpReserveIds: [],
-    reserves: career.reserves.map((r) => ({
-      ...r,
-      calledUpForNextMatch: false,
-    })),
   };
 }
 
@@ -103,9 +94,6 @@ function buildOptimalMatchdaySquad(career: ManagerCareer): {
       };
     }
 
-    if (pick.isReserve) {
-      working = callUpReserveForNextMatch(working, pick.id);
-    }
     working = assignPlayerToMatchday(
       working,
       { kind: "xiii", index: i },
@@ -125,7 +113,7 @@ function buildOptimalMatchdaySquad(career: ManagerCareer): {
         if (!player) return null;
         return {
           id: ps.playerId,
-          rating: player.rating ?? player.peakRating,
+          rating: player.peakRating,
           isReserve: false,
         };
       })
@@ -133,6 +121,7 @@ function buildOptimalMatchdaySquad(career: ManagerCareer): {
 
     const reserveBench = [...working.reserves]
       .filter((r) => !used.has(r.id))
+      .filter((r) => isCalledUpReserve(working, r.id))
       .map((r) => ({ id: r.id, rating: r.rating, isReserve: true }));
 
     const pick = [...squadBench, ...reserveBench].sort(
@@ -141,9 +130,6 @@ function buildOptimalMatchdaySquad(career: ManagerCareer): {
 
     if (!pick) break;
 
-    if (pick.isReserve) {
-      working = callUpReserveForNextMatch(working, pick.id);
-    }
     working = assignPlayerToMatchday(
       working,
       { kind: "bench", index: i },

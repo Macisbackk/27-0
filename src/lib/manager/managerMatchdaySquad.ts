@@ -2,7 +2,7 @@ import { POSITION_SHORT } from "../positions";
 import { canPlayPosition } from "../players/player-positions";
 import type { Position } from "../types";
 import type { ManagerCareer } from "./types";
-import { getManagerPlayer } from "./managerPlayers";
+import { getManagerPlayer, isCalledUpReserve } from "./managerPlayers";
 import { isPlayerUnavailable } from "./managerSquad";
 import { ERA_BENCH_FROM_STARTING_17 } from "../players/era-starting-17s";
 
@@ -33,6 +33,7 @@ export function canAssignPlayerToXiiiSlot(
   if (ps && isPlayerUnavailable(ps)) return false;
 
   const reserve = career.reserves.find((r) => r.id === playerId);
+  if (reserve && !isCalledUpReserve(career, playerId)) return false;
   if (reserve) {
     return canPlayPosition(player, position);
   }
@@ -62,6 +63,15 @@ export function tryAssignPlayerToMatchday(
       ok: false,
       career,
       message: `${player.name} is unavailable (injured or suspended).`,
+    };
+  }
+
+  const reserve = career.reserves.find((r) => r.id === playerId);
+  if (reserve && !isCalledUpReserve(career, playerId)) {
+    return {
+      ok: false,
+      career,
+      message: `${player.name} must be called up from Reserves before selection.`,
     };
   }
 
@@ -183,10 +193,8 @@ export function getAvailableSquadPlayers(career: ManagerCareer): {
   }
 
   for (const r of career.reserves) {
-    if (inLineup.has(r.id)) continue;
-    if (r.calledUpForNextMatch || career.calledUpReserveIds.includes(r.id)) {
-      list.push({ playerId: r.id, isReserveCallUp: true });
-    }
+    if (inLineup.has(r.id) || !isCalledUpReserve(career, r.id)) continue;
+    list.push({ playerId: r.id, isReserveCallUp: true });
   }
 
   return list;
@@ -206,19 +214,13 @@ export function getSquadPoolPlayers(career: ManagerCareer): {
   }
 
   for (const r of career.reserves) {
-    if (inLineup.has(r.id)) continue;
-    if (
-      !r.calledUpForNextMatch &&
-      !career.calledUpReserveIds.includes(r.id)
-    ) {
-      continue;
-    }
+    if (inLineup.has(r.id) || !isCalledUpReserve(career, r.id)) continue;
     list.push({ playerId: r.id, isReserveCallUp: true });
   }
 
   return list.sort((a, b) => {
-    const ra = getManagerPlayer(career, a.playerId)?.rating ?? 0;
-    const rb = getManagerPlayer(career, b.playerId)?.rating ?? 0;
+    const ra = getManagerPlayer(career, a.playerId)?.peakRating ?? 0;
+    const rb = getManagerPlayer(career, b.playerId)?.peakRating ?? 0;
     return rb - ra;
   });
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -15,7 +15,7 @@ import {
   negotiateIncomingOffer,
   rejectIncomingOffer,
 } from "@/lib/manager/managerTransferLeague";
-import { resolveInboxMessage, markInboxMessagesRead, countUnreadInbox } from "@/lib/manager/managerInbox";
+import { resolveInboxMessage, viewAllInboxAsSeen, canViewAllInboxAsSeen } from "@/lib/manager/managerInbox";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { playUiClick } from "@/lib/sound";
 
@@ -95,12 +95,7 @@ export function ManagerInbox({
     [messages, filter]
   );
 
-  useEffect(() => {
-    if (countUnreadInbox(career) > 0) {
-      onUpdate(markInboxMessagesRead(career));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const showViewAllAsSeen = canViewAllInboxAsSeen(career);
 
   const resolved = career.inboxMessages.filter((m) => m.resolved).slice(0, 10);
   const bidCount = messages.filter((m) => matchesFilter(m, "transfer_offer_in")).length;
@@ -142,6 +137,12 @@ export function ManagerInbox({
     onUpdate(resolveInboxMessage(career, id));
   };
 
+  const handleViewAllAsSeen = () => {
+    playUiClick();
+    onUpdate(viewAllInboxAsSeen(career));
+    setFeedback(null);
+  };
+
   return (
     <ManagerPage>
       <div className="flex flex-wrap items-start justify-between gap-2">
@@ -151,7 +152,17 @@ export function ManagerInbox({
             Club messages and transfer offers — auto-cleared after 7 weeks
           </p>
         </div>
-        <div className="flex shrink-0 flex-wrap items-center gap-1.5 text-xs">
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
+          {showViewAllAsSeen && (
+            <GameButton
+              variant="secondary"
+              size="sm"
+              onClick={handleViewAllAsSeen}
+            >
+              View all as seen
+            </GameButton>
+          )}
+          <div className="flex flex-wrap items-center gap-1.5 text-xs">
           <span className="rounded-md border border-pitch-700/50 bg-pitch-950/40 px-2 py-0.5 text-pitch-400">
             Open{" "}
             <span
@@ -173,6 +184,7 @@ export function ManagerInbox({
           <span className="px-1 text-pitch-500">
             {career.seasonYear} · Wk {career.gameWeek}
           </span>
+          </div>
         </div>
       </div>
 

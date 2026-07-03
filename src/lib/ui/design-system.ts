@@ -97,7 +97,7 @@ export const MANAGER = {
   statGrid4:
     "grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 [&>*:nth-child(3):last-child]:col-span-2 sm:[&>*:nth-child(3):last-child]:col-span-1",
   tabGrid:
-    "flex snap-x snap-mandatory gap-1.5 overflow-x-auto pb-0.5 scroll-pl-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-4 sm:gap-2 sm:overflow-visible sm:pb-0 sm:snap-none lg:grid-cols-7",
+    "flex snap-x snap-mandatory gap-1.5 overflow-x-auto pb-0.5 scroll-pl-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-4 sm:gap-2 sm:overflow-visible sm:pb-0 sm:snap-none lg:grid-cols-8",
   modalTitle: "font-display text-lg font-bold text-white sm:text-xl",
 } as const;
 

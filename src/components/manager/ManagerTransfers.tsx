@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import {
-  ManagerLeagueTransferCard,
   ManagerTransferPlayerCard,
 } from "@/components/manager/ManagerTransferPlayerCard";
 import {
@@ -40,7 +39,6 @@ import { POSITION_SHORT } from "@/lib/positions";
 import type { Player, Position } from "@/lib/types";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
 import { playUiClick } from "@/lib/sound";
-import { ManagerClubSquadBrowser } from "@/components/manager/ManagerClubSquadSheet";
 
 interface ManagerTransfersProps {
   career: ManagerCareer;
@@ -145,8 +143,6 @@ export function ManagerTransfers({
       })
       .slice(0, 24);
   }, [career, search, positionFilter, leagueSort]);
-
-  const leagueTransfers = career.leagueTransfers ?? [];
 
   const submitTransferOffer = (
     playerId: string,
@@ -301,8 +297,6 @@ export function ManagerTransfers({
         </p>
       </div>
 
-      <ManagerClubSquadBrowser career={career} />
-
       <ManagerSectionCard title="Funds & wages" variant="elevated" accent="primary">
         <div className="mt-2 grid grid-cols-2 gap-3">
           <ManagerStat
@@ -338,30 +332,6 @@ export function ManagerTransfers({
           </div>
         </div>
       </ManagerSectionCard>
-
-      {leagueTransfers.length > 0 && (
-        <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-          <p className={TYPO.sectionLabel}>Recent League Transfers</p>
-          <ul className="mt-2 max-h-36 space-y-1 overflow-y-auto">
-            {leagueTransfers.slice(0, 8).map((tx) => (
-              <ManagerLeagueTransferCard
-                key={tx.id}
-                compact
-                playerName={tx.playerName}
-                fromClub={tx.fromClub}
-                toClub={tx.toClub}
-                fee={tx.fee}
-                week={tx.week}
-              />
-            ))}
-          </ul>
-          {leagueTransfers.length > 8 && (
-            <p className={`mt-1.5 ${TYPO.bodySm} text-pitch-500`}>
-              +{leagueTransfers.length - 8} more this season
-            </p>
-          )}
-        </div>
-      )}
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-3`}>Filter by position</p>

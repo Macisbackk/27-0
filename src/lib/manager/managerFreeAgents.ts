@@ -96,7 +96,7 @@ export function evaluateFreeAgentOffer(
   }
 
   const demand = getTransferDemand(career, playerId);
-  const rating = player.rating ?? player.peakRating ?? 70;
+  const rating = player.peakRating ?? 70;
   if (offer.wagePerYear < demand.wagePerYear * 0.9) {
     return { accepted: false, reason: "Wage offer too low." };
   }
@@ -211,7 +211,7 @@ export function simulateAiContractExpiries(career: ManagerCareer): ManagerCareer
         const p = getManagerPlayer(career, id) ?? getPlayerById(id);
         return {
           id,
-          rating: p?.rating ?? p?.peakRating ?? 70,
+          rating: p?.peakRating ?? 70,
         };
       })
       .filter((c) => c.rating < 78)

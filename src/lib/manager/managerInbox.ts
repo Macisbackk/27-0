@@ -98,6 +98,43 @@ export function markInboxMessagesRead(career: ManagerCareer): ManagerCareer {
   };
 }
 
+function inboxMessageRequiresAction(msg: InboxMessage): boolean {
+  if (msg.resolved) return false;
+  return msg.type === "transfer" || msg.type === "transfer_offer_in";
+}
+
+/** Mark everything read; dismiss informational messages (keeps open transfer bids). */
+export function viewAllInboxAsSeen(career: ManagerCareer): ManagerCareer {
+  let changed = false;
+  const inboxMessages = career.inboxMessages.map((m) => {
+    if (m.resolved) {
+      if (!m.read) {
+        changed = true;
+        return { ...m, read: true };
+      }
+      return m;
+    }
+    if (inboxMessageRequiresAction(m)) {
+      if (!m.read) {
+        changed = true;
+        return { ...m, read: true };
+      }
+      return m;
+    }
+    changed = true;
+    return { ...m, read: true, resolved: true };
+  });
+  if (!changed) return career;
+  return { ...career, inboxMessages, updatedAt: new Date().toISOString() };
+}
+
+export function canViewAllInboxAsSeen(career: ManagerCareer): boolean {
+  return career.inboxMessages.some((m) => {
+    if (!m.read) return true;
+    return !m.resolved && !inboxMessageRequiresAction(m);
+  });
+}
+
 export function createPlayerPurchaseMessage(
   career: ManagerCareer,
   playerId: string,

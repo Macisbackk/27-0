@@ -12,6 +12,7 @@ import { ManagerReserves } from "@/components/manager/ManagerReserves";
 import { ManagerInbox } from "@/components/manager/ManagerInbox";
 import { ManagerTransfers } from "@/components/manager/ManagerTransfers";
 import { ManagerFixtures } from "@/components/manager/ManagerFixtures";
+import { ManagerAcrossLeague } from "@/components/manager/ManagerAcrossLeague";
 import { ManagerStatsView } from "@/components/manager/ManagerStatsView";
 import { ManagerPlayGame } from "@/components/manager/ManagerPlayGame";
 import { ManagerMatchReview } from "@/components/manager/ManagerMatchReview";
@@ -86,6 +87,7 @@ const NAV_VIEWS: ManagerView[] = [
   "contracts",
   "transfers",
   "fixtures",
+  "across-league",
   "stats",
 ];
 
@@ -748,6 +750,12 @@ export default function ManagerPage() {
                       setMatchReviewReturnView("fixtures");
                       setView("match-review");
                     }}
+                  />
+                )}
+                {view === "across-league" && (
+                  <ManagerAcrossLeague
+                    career={career}
+                    onNavigate={handleNavNavigate}
                   />
                 )}
                 {view === "stats" && <ManagerStatsView career={career} />}

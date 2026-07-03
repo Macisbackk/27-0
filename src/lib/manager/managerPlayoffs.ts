@@ -21,7 +21,21 @@ import {
   syncManagerLeagueTable,
 } from "./managerFixtures";
 
-export const PLAYOFF_QUALIFIERS = 6;
+export const GRAND_FINAL_VENUE = "Old Trafford";
+export const GRAND_FINAL_ATTENDANCE_MIN = 70_000;
+export const GRAND_FINAL_ATTENDANCE_MAX = 80_000;
+
+export function isGrandFinalFixture(
+  fixture: Pick<
+    ManagerScheduledFixture,
+    "competition" | "isNeutral" | "playoffRound"
+  >
+): boolean {
+  return (
+    fixture.competition === "playoffs" &&
+    (fixture.isNeutral === true || fixture.playoffRound === 3)
+  );
+}
 
 export function userQualifiedForManagerPlayoffs(career: ManagerCareer): boolean {
   return (
@@ -124,7 +138,10 @@ export function getUserPlayoffMatch(
   matchId: string;
   opponent: string;
   isHome: boolean;
+  isNeutral: boolean;
   round: number;
+  bracketHome: string;
+  bracketAway: string;
 } | null {
   if (bracket.userEliminated || bracket.tournamentComplete) return null;
   const userClub = bracket.userClub;
@@ -136,9 +153,18 @@ export function getUserPlayoffMatch(
   );
   if (!match || !match.homeTeam || !match.awayTeam) return null;
 
-  const isHome = match.homeTeam === userClub;
+  const isNeutral = match.isNeutral;
+  const isHome = isNeutral ? false : match.homeTeam === userClub;
   const opponent = isHome ? match.awayTeam : match.homeTeam;
-  return { matchId: match.id, opponent, isHome, round };
+  return {
+    matchId: match.id,
+    opponent,
+    isHome,
+    isNeutral,
+    round: match.round,
+    bracketHome: match.homeTeam,
+    bracketAway: match.awayTeam,
+  };
 }
 
 export function buildPlayoffScheduledFixture(
@@ -147,15 +173,26 @@ export function buildPlayoffScheduledFixture(
 ): ManagerScheduledFixture {
   const leaguePlayed = countLeagueFixturesPlayed(career);
   const roundLabel = getPlayoffRoundLabel(playoffMatch.round);
+  const grandFinal = isGrandFinalFixture({
+    competition: "playoffs",
+    isNeutral: playoffMatch.isNeutral,
+    playoffRound: playoffMatch.round,
+  });
   return {
     id: `playoff-${playoffMatch.matchId}`,
     round: leaguePlayed + countCupFixturesPlayed(career) + 1,
     opponent: playoffMatch.opponent,
     isHome: playoffMatch.isHome,
+    isNeutral: playoffMatch.isNeutral,
+    venue: grandFinal ? GRAND_FINAL_VENUE : undefined,
+    listedHome: grandFinal ? playoffMatch.bracketHome : undefined,
+    listedAway: grandFinal ? playoffMatch.bracketAway : undefined,
     competition: "playoffs",
     playoffMatchId: playoffMatch.matchId,
     playoffRound: playoffMatch.round,
-    label: `Play-Offs — ${roundLabel}`,
+    label: grandFinal
+      ? `Play-Offs — Grand Final at ${GRAND_FINAL_VENUE}`
+      : `Play-Offs — ${roundLabel}`,
   };
 }
 

@@ -111,7 +111,6 @@ export function validateFitMatchdaySquad(
   }
 
   const unique = [...new Set(missing)];
-  const hasCallUps = career.calledUpReserveIds.length > 0;
 
   if (
     xiiiFilled === ERA_XIII_FROM_STARTING_17 &&
@@ -127,8 +126,13 @@ export function validateFitMatchdaySquad(
   if (unique.length > 0) {
     message += `\nMissing: ${unique.join(", ")}.`;
   }
-  if (!hasCallUps && unique.length > 0) {
-    message += "\nCall up reserves or change your squad before playing.";
+  if (
+    unique.length > 0 &&
+    career.reserves.length > 0 &&
+    career.calledUpReserveIds.length === 0
+  ) {
+    message +=
+      "\nCall up reserves from the Reserves tab to add them to your squad pool.";
   }
 
   return { valid: false, message, missing: unique };

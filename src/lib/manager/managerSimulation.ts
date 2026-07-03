@@ -35,7 +35,7 @@ import {
 } from "./managerTacticsScoring";
 import { updateStatsAfterMatch } from "./managerCareerStats";
 import type { MatchFixture } from "../game/season-simulation";
-import { processHomeMatchAttendance } from "./managerAttendance";
+import { processMatchAttendance } from "./managerAttendance";
 import {
   applyCupMatchToBracket,
   ensureCupBracketReady,
@@ -402,7 +402,7 @@ export function applyManagerMatchResult(
   let working: ManagerCareer = { ...career, squad: nextSquad };
 
   const { career: withAttendance, meta: attendanceMeta } =
-    processHomeMatchAttendance(working, sched, fixture);
+    processMatchAttendance(working, sched, fixture);
   working = withAttendance;
 
   let challengeCup = working.challengeCup;
@@ -672,7 +672,7 @@ export function previewManagerMatchScoreline(
             ? { currentSeasonOnly: false }
             : getManagerOpponentPoolOptions(simCareer, sched.opponent)
         );
-  const homeAdj = sched.isHome ? 5 : -1;
+  const homeAdj = sched.isNeutral ? 0 : sched.isHome ? 5 : -1;
   const ratingGap = userRating - baseOppRating + homeAdj;
   const formFromRatings = Math.max(-3, Math.min(7, ratingGap * 0.4));
   const combinedForm = applyTacticFormAdjustment(
@@ -701,7 +701,7 @@ export function previewManagerMatchScoreline(
   const { fixture } = simulateOneFixture(
     squad,
     sched.opponent,
-    sched.isHome,
+    sched.isNeutral ? false : sched.isHome,
     round,
     simCareer.seed,
     {
@@ -716,6 +716,10 @@ export function previewManagerMatchScoreline(
       managerCareerMode: true,
     }
   );
+
+  if (sched.isNeutral) {
+    fixture.isNeutral = true;
+  }
 
   return fixture;
 }

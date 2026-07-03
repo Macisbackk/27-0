@@ -38,6 +38,8 @@ All game players come from these JSON files. **No fictional names.**
 
 Position strings like `"Scrum-half"` are auto-normalized on load.
 
+**Ratings:** Use `peakRating` only (75–99). Do not add a separate `rating` field — validation rejects it. Manual overrides live in `data/player-rating-overrides.ts`.
+
 **Utility players:** Set `"position": "Utility"` and optionally `"primaryPosition": "CENTRE"` for an explicit mapping. Without `primaryPosition`, the loader infers the best squad slot from career stats (e.g. Graeme Horne → Centre). Utility never causes validation errors.
 
 ## Adding Players

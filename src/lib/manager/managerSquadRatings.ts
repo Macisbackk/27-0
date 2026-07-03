@@ -59,14 +59,13 @@ export function hasManagerModeRating(playerId: string): boolean {
 }
 
 export function applyManagerModeRatingToPlayer<
-  T extends { id: string; name: string; rating?: number; peakRating: number },
+  T extends { id: string; name: string; peakRating: number },
 >(player: T): T {
   if (!hasManagerModeRating(player.id)) return player;
   const mgrRating = MANAGER_RATING_BY_PLAYER_ID.get(player.id)!;
   return {
     ...player,
-    rating: mgrRating,
-    peakRating: Math.max(mgrRating, player.peakRating ?? mgrRating),
+    peakRating: Math.max(mgrRating, player.peakRating),
   };
 }
 

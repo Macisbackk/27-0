@@ -39,7 +39,6 @@ export function createJoeMellorGoatPlayer(): Player {
     ),
     category: "current",
     peakRating,
-    rating: peakRating,
     value: computePlayerValue(peakRating, "LOOSE_FORWARD", "current"),
     tries: resolveCareerTries(JOE_MELLOR_NORMAL_ID, "current"),
     intlCaps: 0,

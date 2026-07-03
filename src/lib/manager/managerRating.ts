@@ -35,7 +35,7 @@ const SPINE_POSITIONS = new Set<Position>([
 function playerBaseRating(playerId: string, career?: ManagerCareer): number {
   const p = career ? getManagerPlayer(career, playerId) : getPlayerById(playerId);
   if (!p) return 0;
-  const base = p.rating ?? p.peakRating;
+  const base = p.peakRating;
   return career ? base : getManagerModePlayerRating(playerId, p.name, base);
 }
 

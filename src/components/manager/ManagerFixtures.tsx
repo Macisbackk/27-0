@@ -27,6 +27,7 @@ import { getHomeFixtureAttendanceOutlook } from "@/lib/manager/managerAttendance
 import {
   getManagerPlayedFixtureLabel,
   getManagerScheduledFixtureHeadline,
+  getManagerScheduledFixtureVenueLabel,
   isChallengeCupFixture,
 } from "@/lib/manager/managerFixtureDisplay";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
@@ -203,10 +204,30 @@ function UpcomingFixtureRow({
   const opponent = sched.opponent;
   const opponentColors = opponent !== "TBC" ? getClubColors(opponent) : null;
   const userColors = getClubColors(club);
-  const homeName = sched.isHome ? club : opponent;
-  const awayName = sched.isHome ? opponent : club;
-  const homeColors = sched.isHome ? userColors : opponentColors ?? userColors;
-  const awayColors = sched.isHome ? opponentColors ?? userColors : userColors;
+  const homeName =
+    sched.isNeutral && sched.listedHome
+      ? sched.listedHome
+      : sched.isHome
+        ? club
+        : opponent;
+  const awayName =
+    sched.isNeutral && sched.listedAway
+      ? sched.listedAway
+      : sched.isHome
+        ? opponent
+        : club;
+  const homeColors =
+    sched.isNeutral && sched.listedHome
+      ? getClubColors(sched.listedHome)
+      : sched.isHome
+        ? userColors
+        : opponentColors ?? userColors;
+  const awayColors =
+    sched.isNeutral && sched.listedAway
+      ? getClubColors(sched.listedAway)
+      : sched.isHome
+        ? opponentColors ?? userColors
+        : userColors;
   const isCup = isChallengeCupFixture(sched.competition);
   const isPlayoff = sched.competition === "playoffs";
   const isFriendly = sched.competition === "friendly";
@@ -245,12 +266,14 @@ function UpcomingFixtureRow({
         </div>
         <span
           className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-            sched.isHome
-              ? "bg-theme-primary/15 text-theme-primary"
-              : "bg-pitch-700/80 text-pitch-300"
+            sched.isNeutral
+              ? "bg-accent-gold/15 text-accent-gold"
+              : sched.isHome
+                ? "bg-theme-primary/15 text-theme-primary"
+                : "bg-pitch-700/80 text-pitch-300"
           }`}
         >
-          {sched.isHome ? "Home" : "Away"}
+          {getManagerScheduledFixtureVenueLabel(sched)}
         </span>
       </div>
 
@@ -331,11 +354,15 @@ export function ManagerFixtures({
 
   const prediction =
     nextFixture && !seasonComplete
-      ? getMatchPrediction(teamRating, oppRating ?? 70, nextFixture.isHome)
+      ? getMatchPrediction(
+          teamRating,
+          oppRating ?? 70,
+          nextFixture.isNeutral ? true : nextFixture.isHome
+        )
       : null;
 
   const homeAttendanceOutlook =
-    nextFixture?.isHome && !seasonComplete
+    nextFixture && !seasonComplete
       ? getHomeFixtureAttendanceOutlook(career, nextFixture)
       : null;
 
@@ -457,12 +484,13 @@ export function ManagerFixtures({
             />
           </div>
           <p className="mt-2 text-xl font-bold text-white sm:text-2xl">
-            {career.club} {nextFixture.isHome ? "vs" : "@"}{" "}
+            {career.club}{" "}
+            {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}{" "}
             {nextFixture.opponent}
           </p>
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
             {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
-            {nextFixture.isHome ? "Home" : "Away"}
+            {getManagerScheduledFixtureVenueLabel(nextFixture)}
           </p>
           {homeAttendanceOutlook && (
             <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>

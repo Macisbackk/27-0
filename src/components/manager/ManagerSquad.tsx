@@ -132,7 +132,7 @@ function TeamSheetSlot({
         <>
           <p className="truncate text-sm font-medium text-white">{player.name}</p>
           <p className="text-[10px] text-theme-primary">
-            {player.rating ?? player.peakRating}
+            {player.peakRating}
           </p>
           {ps?.injury && (
             <p className={`text-[10px] font-medium ${unavailableTextClass(isSuspension)}`}>
@@ -564,7 +564,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     </p>
                     {player && (
                       <p className="text-[10px] text-theme-primary">
-                        {player.rating ?? player.peakRating}
+                        {player.peakRating}
                       </p>
                     )}
                     {ps?.injury && (
@@ -678,7 +678,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                         </p>
                       </div>
                       <span className="shrink-0 font-bold text-theme-primary">
-                        {player.rating ?? player.peakRating}
+                        {player.peakRating}
                       </span>
                     </div>
                   </button>
@@ -689,7 +689,9 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
               <p className={`${TYPO.bodySm} text-pitch-500`}>
                 {selectedTarget || replaceSourcePlayerId
                   ? "No eligible players for this slot."
-                  : "No squad players available — all are in the matchday 17."}
+                  : career.calledUpReserveIds.length === 0
+                    ? "No squad players available — call up reserves from the Reserves tab, or all fit players are already on the sheet."
+                    : "No squad players available — all are in the matchday 17."}
               </p>
             )}
           </ul>

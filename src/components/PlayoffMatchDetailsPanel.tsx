@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import type { PlayoffBracketMatch } from "@/lib/game/playoff-bracket";
 import { getPlayoffRoundLabel } from "@/lib/game/playoff-bracket";
+import { GRAND_FINAL_VENUE } from "@/lib/manager/managerPlayoffs";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { TeamScoringBreakdown } from "./TeamScoringBreakdown";
@@ -29,7 +30,7 @@ export function PlayoffMatchDetailsPanel({
 
   const scoring = match.scoringDetail;
   const venueLabel = match.isNeutral
-    ? null
+    ? GRAND_FINAL_VENUE
     : match.userFixture?.isHome
       ? "Home"
       : match.isUserMatch

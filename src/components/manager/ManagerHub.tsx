@@ -43,13 +43,12 @@ import { autoFixMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/man
 import { isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
-import { getHubNewsItems } from "@/lib/manager/managerNews";
+import { ManagerLeagueTable } from "@/components/manager/ManagerLeagueTable";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
 import {
   ManagerClubFinancesPanel,
   ManagerFormStrip,
-  ManagerNewsItem,
   ManagerSectionCard,
   ManagerStat,
   ManagerStatGrid,
@@ -60,6 +59,7 @@ import {
 } from "@/components/manager/manager-ui";
 import {
   getManagerScheduledFixtureHeadline,
+  getManagerScheduledFixtureVenueLabel,
   isChallengeCupFixture,
 } from "@/lib/manager/managerFixtureDisplay";
 
@@ -273,170 +273,7 @@ function HubStandingsPanel({
   career: ManagerCareer;
   onViewClub?: (club: string) => void;
 }) {
-  return <HubLeagueTable career={career} onViewClub={onViewClub} />;
-}
-
-function HubLeagueTable({
-  career,
-  title = "League Table",
-  subtitle,
-  onViewClub,
-}: {
-  career: ManagerCareer;
-  title?: string;
-  subtitle?: string;
-  onViewClub?: (club: string) => void;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  const rows = career.leagueTable;
-  if (rows.length === 0) return null;
-
-  const userRow = rows.find((r) => r.isUserTeam);
-  const showCompact =
-    !expanded && rows.length > 8 && userRow && userRow.position > 5;
-  const displayRows = showCompact
-    ? [...rows.slice(0, 5), ...(userRow.position > 5 ? [userRow] : [])]
-    : rows;
-
-  return (
-    <div className={`${CARD.elevated} ${SPACING.cardPadding}`}>
-      <div className="flex items-center justify-between gap-2">
-        <p className={TYPO.sectionLabel}>{title}</p>
-        {rows.length > 6 && (
-          <button
-            type="button"
-            onClick={() => {
-              playUiClick();
-              setExpanded((e) => !e);
-            }}
-            className="text-xs text-theme-primary hover:underline"
-          >
-            {expanded ? "Show less" : "Show full table"}
-          </button>
-        )}
-      </div>
-      {subtitle && (
-        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{subtitle}</p>
-      )}
-      {userRow && (
-        <p className={`mt-1 ${TYPO.cardTitle}`}>
-          <span
-            className={
-              userRow.position <= 3
-                ? "text-accent-gold"
-                : userRow.position <= 6
-                  ? "text-theme-primary"
-                  : userRow.position >= 12
-                    ? "text-red-300"
-                    : "text-white"
-            }
-          >
-            {ordinal(userRow.position)}
-          </span>
-          <span className="text-pitch-400"> · </span>
-          <span className="text-theme-primary">{career.club}</span>
-        </p>
-      )}
-      <div className="-mx-1 mt-3 overflow-x-auto px-1">
-        <table className="w-full max-sm:min-w-[320px] text-left text-sm">
-          <thead>
-            <tr className="border-b border-pitch-700/50 text-pitch-400">
-              <th className={SPACING.tableCell}>#</th>
-              <th className={SPACING.tableCell}>Club</th>
-              <th className={`${SPACING.tableCell} text-center`}>P</th>
-              <th className={`${SPACING.tableCell} text-center`}>W</th>
-              <th className={`${SPACING.tableCell} text-center`}>L</th>
-              <th className={`hidden sm:table-cell ${SPACING.tableCell} text-center`}>
-                PF
-              </th>
-              <th className={`hidden sm:table-cell ${SPACING.tableCell} text-center`}>
-                PA
-              </th>
-              <th className={`hidden md:table-cell ${SPACING.tableCell} text-center`}>
-                +/-
-              </th>
-              <th className={`${SPACING.tableCell} text-center`}>Pts</th>
-            </tr>
-          </thead>
-          <tbody>
-            {displayRows.map((row) => {
-              const indicatorColor = getClubIndicatorColor(row.team);
-              return (
-                <tr
-                  key={row.team}
-                  className={`border-b border-pitch-800/40 ${
-                    row.isUserTeam ? "bg-theme-primary/10" : ""
-                  }`}
-                >
-                  <td className={`${SPACING.tableCell} font-mono text-pitch-400`}>
-                    {row.position}
-                  </td>
-                  <td className={SPACING.tableCell}>
-                    {onViewClub ? (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          playUiClick();
-                          onViewClub(row.team);
-                        }}
-                        className="flex w-full items-center gap-2 text-left transition hover:text-theme-primary"
-                      >
-                        <span
-                          className="inline-block h-2 w-2 rounded-full"
-                          style={{ backgroundColor: indicatorColor }}
-                        />
-                        <span
-                          className={
-                            row.isUserTeam
-                              ? "font-semibold text-theme-primary"
-                              : "text-pitch-200"
-                          }
-                        >
-                          {row.team}
-                        </span>
-                      </button>
-                    ) : (
-                      <span className="flex items-center gap-2">
-                        <span
-                          className="inline-block h-2 w-2 rounded-full"
-                          style={{ backgroundColor: indicatorColor }}
-                        />
-                        <span
-                          className={
-                            row.isUserTeam
-                              ? "font-semibold text-theme-primary"
-                              : "text-pitch-200"
-                          }
-                        >
-                          {row.team}
-                        </span>
-                      </span>
-                    )}
-                  </td>
-                  <td className={`${SPACING.tableCell} text-center`}>{row.played}</td>
-                  <td className={`${SPACING.tableCell} text-center`}>{row.wins}</td>
-                  <td className={`${SPACING.tableCell} text-center`}>{row.losses}</td>
-                  <td className={`hidden sm:table-cell ${SPACING.tableCell} text-center`}>
-                    {row.pointsFor}
-                  </td>
-                  <td className={`hidden sm:table-cell ${SPACING.tableCell} text-center`}>
-                    {row.pointsAgainst}
-                  </td>
-                  <td className={`hidden md:table-cell ${SPACING.tableCell} text-center`}>
-                    {row.pointsDifference > 0 ? "+" : ""}
-                    {row.pointsDifference}
-                  </td>
-                  <td className={`${SPACING.tableCell} text-center font-semibold text-accent-gold`}>
-                    {row.leaguePoints}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+  return <ManagerLeagueTable career={career} onViewClub={onViewClub} />;
 }
 
 export function ManagerHub({
@@ -507,11 +344,15 @@ export function ManagerHub({
 
   const prediction =
     nextFixture && !seasonComplete
-      ? getMatchPrediction(teamRating, oppRating ?? 70, nextFixture.isHome)
+      ? getMatchPrediction(
+          teamRating,
+          oppRating ?? 70,
+          nextFixture.isNeutral ? true : nextFixture.isHome
+        )
       : null;
 
   const homeAttendanceOutlook =
-    nextFixture?.isHome && !seasonComplete
+    nextFixture && !seasonComplete
       ? getHomeFixtureAttendanceOutlook(career, nextFixture)
       : null;
 
@@ -521,7 +362,6 @@ export function ManagerHub({
   const playoffStatus = getPlayoffHubStatus(hubCareer);
   const wageOverBudget = isWageOverBudget(career);
   const wagePressure = career.wagePressureWeeks ?? 0;
-  const newsItems = getHubNewsItems(career);
 
   const handleAutoFix = () => {
     const result = autoFixMatchdaySquad(career);
@@ -576,13 +416,13 @@ export function ManagerHub({
         <p className="mt-2 text-lg font-bold leading-snug text-white sm:mt-1 sm:text-2xl">
           <span className="block sm:inline">{career.club}</span>{" "}
           <span className="text-pitch-500">
-            {nextFixture.isHome ? "vs" : "@"}
+            {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
           </span>{" "}
           <span className="block sm:inline">{nextFixture.opponent}</span>
         </p>
         <p className={`${TYPO.bodySm} text-pitch-400`}>
           {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
-          {nextFixture.isHome ? "Home" : "Away"}
+          {getManagerScheduledFixtureVenueLabel(nextFixture)}
         </p>
         {homeAttendanceOutlook && (
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
@@ -672,17 +512,6 @@ export function ManagerHub({
       </div>
     ) : null;
 
-  const newsSection =
-    newsItems.length > 0 ? (
-      <ManagerSectionCard title="Latest News" variant="inset">
-        <ul className={`mt-2 ${SPACING.stackSm}`}>
-          {newsItems.map((item) => (
-            <ManagerNewsItem key={item.id} item={item} />
-          ))}
-        </ul>
-      </ManagerSectionCard>
-    ) : null;
-
   const scoringLeadersCard =
     ts.played > 0 ? (
       <ManagerSectionCard title="Scoring Leaders">
@@ -763,9 +592,9 @@ export function ManagerHub({
           <GameButton
             variant="secondary"
             size="sm"
-            onClick={() => onNavigate("reserves")}
+            onClick={() => onNavigate("across-league")}
           >
-            Reserves
+            Across League
           </GameButton>
           <GameButton
             variant="secondary"
@@ -842,8 +671,7 @@ export function ManagerHub({
       <>
         <div className={PAGE.section}>
           <HubPlayoffsGateCard career={career} onContinue={onPlayoffsContinue} />
-          {newsSection}
-          <HubLeagueTable
+          <ManagerLeagueTable
             career={career}
             title="Final League Standings"
             subtitle="Frozen — play-off results now decide the title"
@@ -869,7 +697,6 @@ export function ManagerHub({
         <div className={PAGE.section}>
           {nextFixtureCard}
           <HubPlayoffBracketPanel playoffs={hubCareer.playoffs} />
-          {newsSection}
           <HubPlayoffsCampaignCard career={hubCareer} />
           <HubBoardBudgetAttendance
             career={career}
@@ -903,8 +730,6 @@ export function ManagerHub({
         lastGate={lastGate}
         wageOverBudget={wageOverBudget}
       />
-
-      {newsSection}
 
       {scoringLeadersCard}
 

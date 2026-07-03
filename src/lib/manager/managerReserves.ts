@@ -201,8 +201,7 @@ export function applyYouthMatchDevelopment(
     if (registered) {
       playerRegistry[ps.playerId] = {
         ...registered,
-        rating: nextRating,
-        peakRating: Math.max(registered.peakRating, nextRating),
+        peakRating: nextRating,
       };
     }
     changed = true;
@@ -444,18 +443,26 @@ export function callUpReserveForNextMatch(
 }
 
 export function clearReserveCallUps(career: ManagerCareer): ManagerCareer {
-  const calledSet = new Set(career.calledUpReserveIds);
-  if (calledSet.size === 0) return career;
-
+  const reserveIds = new Set(career.reserves.map((r) => r.id));
   const returned = career.reserves
-    .filter((r) => calledSet.has(r.id))
+    .filter((r) =>
+      career.matchdayXiii.includes(r.id) ||
+      career.matchdayInterchange.includes(r.id)
+    )
     .map((r) => ({ id: r.id, name: r.name }));
+
+  if (returned.length === 0 && career.calledUpReserveIds.length === 0) {
+    return career;
+  }
 
   let next: ManagerCareer = {
     ...career,
     calledUpReserveIds: [],
-    matchdayInterchange: career.matchdayInterchange.filter(
-      (id) => !calledSet.has(id)
+    matchdayXiii: career.matchdayXiii.map((id) =>
+      reserveIds.has(id) ? "" : id
+    ),
+    matchdayInterchange: career.matchdayInterchange.map((id) =>
+      reserveIds.has(id) ? "" : id
     ),
     reserves: career.reserves.map((r) => ({
       ...r,
@@ -463,7 +470,9 @@ export function clearReserveCallUps(career: ManagerCareer): ManagerCareer {
     })),
   };
 
-  next = addReserveReturnInboxMessage(next, returned);
+  if (returned.length > 0) {
+    next = addReserveReturnInboxMessage(next, returned);
+  }
 
   return next;
 }
