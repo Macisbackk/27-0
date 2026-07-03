@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerTransferPlayerCard } from "@/components/manager/ManagerTransferPlayerCard";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import { formatWage } from "@/lib/manager/managerContracts";
 import type { InboxMessage, ManagerCareer } from "@/lib/manager/types";
 import { getPlayerById } from "@/lib/players";
@@ -28,6 +29,13 @@ export function ManagerIncomingBidModal({
   const buyer = offer.offerClub ?? "A rival club";
   const fee = offer.offerAmount ?? 0;
 
+  const handleDismiss = useCallback(() => {
+    playUiClick();
+    onReject();
+  }, [onReject]);
+
+  const panelRef = useModalA11y(true, handleDismiss);
+
   useEffect(() => {
     playMenuOpen();
   }, []);
@@ -42,7 +50,9 @@ export function ManagerIncomingBidModal({
       aria-labelledby="incoming-bid-title"
     >
       <div
-        className={`card-glass w-full max-w-lg overflow-hidden ${SPACING.cardPadding}`}
+        ref={panelRef}
+        tabIndex={-1}
+        className={`card-glass w-full max-w-lg overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="-mx-4 -mt-4 mb-4 border-b border-amber-400/35 bg-amber-400/10 px-4 py-4 sm:-mx-6 sm:-mt-6 sm:px-6">

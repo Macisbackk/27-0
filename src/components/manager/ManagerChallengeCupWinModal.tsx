@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { playCupFinalWin, playUiClick } from "@/lib/sound";
 
@@ -35,6 +36,13 @@ export function ManagerChallengeCupWinModal({
       ? `${finalWin.pointsFor}-${finalWin.pointsAgainst}`
       : null;
 
+  const handleContinue = useCallback(() => {
+    playUiClick();
+    onContinue();
+  }, [onContinue]);
+
+  const panelRef = useModalA11y(true, handleContinue);
+
   return (
     <div
       className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/80 ${SPACING.modalBackdrop} backdrop-blur-sm sm:items-center`}
@@ -43,7 +51,9 @@ export function ManagerChallengeCupWinModal({
       aria-labelledby="challenge-cup-win-title"
     >
       <div
-        className={`card-glass w-full max-w-md overflow-hidden ${SPACING.cardPadding}`}
+        ref={panelRef}
+        tabIndex={-1}
+        className={`card-glass w-full max-w-md overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="-mx-5 -mt-5 mb-4 border-b border-accent-gold/45 bg-accent-gold/12 px-5 py-5 text-center sm:-mx-6 sm:-mt-6 sm:px-6">
@@ -67,14 +77,7 @@ export function ManagerChallengeCupWinModal({
           You lifted the trophy at Wembley — a historic night for the club.
         </p>
 
-        <GameButton
-          variant="theme"
-          className="mt-5"
-          onClick={() => {
-            playUiClick();
-            onContinue();
-          }}
-        >
+        <GameButton variant="theme" className="mt-5" onClick={handleContinue}>
           Continue
         </GameButton>
       </div>

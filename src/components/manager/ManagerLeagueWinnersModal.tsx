@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { getClubColors } from "@/lib/clubs";
 import { playSeasonComplete, playUiClick } from "@/lib/sound";
@@ -19,6 +20,13 @@ export function ManagerLeagueWinnersModal({
 }: ManagerLeagueWinnersModalProps) {
   const colors = getClubColors(career.club);
 
+  const handleContinue = useCallback(() => {
+    playUiClick();
+    onContinue();
+  }, [onContinue]);
+
+  const panelRef = useModalA11y(true, handleContinue);
+
   useEffect(() => {
     playSeasonComplete();
   }, []);
@@ -31,7 +39,9 @@ export function ManagerLeagueWinnersModal({
       aria-labelledby="league-winners-title"
     >
       <div
-        className={`card-glass w-full max-w-md overflow-hidden ${SPACING.cardPadding}`}
+        ref={panelRef}
+        tabIndex={-1}
+        className={`card-glass w-full max-w-md overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div
@@ -67,14 +77,7 @@ export function ManagerLeagueWinnersModal({
           who lifts the title.
         </p>
 
-        <GameButton
-          variant="theme"
-          className="mt-5"
-          onClick={() => {
-            playUiClick();
-            onContinue();
-          }}
-        >
+        <GameButton variant="theme" className="mt-5" onClick={handleContinue}>
           Continue
         </GameButton>
       </div>

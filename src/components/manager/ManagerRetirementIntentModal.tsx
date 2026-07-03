@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerTransferPlayerCard } from "@/components/manager/ManagerTransferPlayerCard";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import { formatWage } from "@/lib/manager/managerContracts";
 import type { InboxMessage, ManagerCareer } from "@/lib/manager/types";
 import {
@@ -36,6 +37,13 @@ export function ManagerRetirementIntentModal({
     ? getManagerPlayerAge(career, message.playerId)
     : undefined;
 
+  const handleAcknowledge = useCallback(() => {
+    playUiClick();
+    onAcknowledge();
+  }, [onAcknowledge]);
+
+  const panelRef = useModalA11y(true, handleAcknowledge);
+
   useEffect(() => {
     playMenuOpen();
   }, []);
@@ -50,7 +58,9 @@ export function ManagerRetirementIntentModal({
       aria-labelledby="retirement-intent-title"
     >
       <div
-        className={`card-glass w-full max-w-lg overflow-hidden ${SPACING.cardPadding}`}
+        ref={panelRef}
+        tabIndex={-1}
+        className={`card-glass w-full max-w-lg overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="-mx-4 -mt-4 mb-4 border-b border-stone-400/35 bg-stone-500/10 px-4 py-4 sm:-mx-6 sm:-mt-6 sm:px-6">
@@ -108,10 +118,7 @@ export function ManagerRetirementIntentModal({
           <GameButton
             variant={onViewContracts ? "secondary" : "theme"}
             className={onViewContracts ? undefined : "sm:col-span-2"}
-            onClick={() => {
-              playUiClick();
-              onAcknowledge();
-            }}
+            onClick={handleAcknowledge}
           >
             Understood
           </GameButton>

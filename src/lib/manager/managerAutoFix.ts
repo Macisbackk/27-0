@@ -2,11 +2,31 @@ import { canPlayPosition } from "../players/player-positions";
 import { POSITION_SHORT } from "../positions";
 import type { Position } from "../types";
 import type { ManagerCareer } from "./types";
-import { assignPlayerToMatchday } from "./managerMatchdaySquad";
+import { assignPlayerToMatchday, type MatchdaySlotTarget } from "./managerMatchdaySquad";
 import { getManagerPlayer, isCalledUpReserve } from "./managerPlayers";
+import { callUpReserveForNextMatch } from "./managerReserves";
 import { isPlayerUnavailable } from "./managerSquad";
 import { validateFitMatchdaySquad } from "./managerMatchdayValidation";
 import { ERA_BENCH_FROM_STARTING_17 } from "../players/era-starting-17s";
+
+function ensureReserveCalledUp(
+  career: ManagerCareer,
+  reserveId: string
+): ManagerCareer {
+  if (!career.reserves.some((r) => r.id === reserveId)) return career;
+  if (isCalledUpReserve(career, reserveId)) return career;
+  return callUpReserveForNextMatch(career, reserveId);
+}
+
+function assignWithAutoCallUp(
+  career: ManagerCareer,
+  target: MatchdaySlotTarget,
+  playerId: string,
+  isReserve: boolean
+): ManagerCareer {
+  const ready = isReserve ? ensureReserveCalledUp(career, playerId) : career;
+  return assignPlayerToMatchday(ready, target, playerId);
+}
 
 function bestSquadPlayerForPosition(
   career: ManagerCareer,
@@ -37,12 +57,11 @@ function bestReserveForPosition(
 ): string | null {
   const candidates = career.reserves
     .filter((r) => !exclude.has(r.id))
-    .filter((r) => isCalledUpReserve(career, r.id))
     .map((r) => {
       const player = getManagerPlayer(career, r.id);
       if (!player) return null;
       if (!canPlayPosition(player, position)) return null;
-      return { id: r.id, rating: r.rating };
+      return { id: r.id, rating: player.peakRating };
     })
     .filter((c): c is NonNullable<typeof c> => c !== null)
     .sort((a, b) => b.rating - a.rating);
@@ -94,10 +113,11 @@ function buildOptimalMatchdaySquad(career: ManagerCareer): {
       };
     }
 
-    working = assignPlayerToMatchday(
+    working = assignWithAutoCallUp(
       working,
       { kind: "xiii", index: i },
-      pick.id
+      pick.id,
+      pick.isReserve
     );
     used.add(pick.id);
     const name = getManagerPlayer(working, pick.id)?.name ?? "Player";
@@ -121,8 +141,12 @@ function buildOptimalMatchdaySquad(career: ManagerCareer): {
 
     const reserveBench = [...working.reserves]
       .filter((r) => !used.has(r.id))
-      .filter((r) => isCalledUpReserve(working, r.id))
-      .map((r) => ({ id: r.id, rating: r.rating, isReserve: true }));
+      .map((r) => {
+        const player = getManagerPlayer(working, r.id);
+        if (!player) return null;
+        return { id: r.id, rating: player.peakRating, isReserve: true };
+      })
+      .filter((c): c is NonNullable<typeof c> => c !== null);
 
     const pick = [...squadBench, ...reserveBench].sort(
       (a, b) => b.rating - a.rating
@@ -130,10 +154,11 @@ function buildOptimalMatchdaySquad(career: ManagerCareer): {
 
     if (!pick) break;
 
-    working = assignPlayerToMatchday(
+    working = assignWithAutoCallUp(
       working,
       { kind: "bench", index: i },
-      pick.id
+      pick.id,
+      pick.isReserve
     );
     used.add(pick.id);
     const name = getManagerPlayer(working, pick.id)?.name ?? "Player";

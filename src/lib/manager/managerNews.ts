@@ -147,5 +147,13 @@ export function rotateLatestNews(career: ManagerCareer): ManagerCareer {
 }
 
 export function getHubNewsItems(career: ManagerCareer): LatestNewsItem[] {
-  return career.latestNews.slice(0, DISPLAY_COUNT);
+  const fresh = generateWeeklyNews(career);
+  return [...fresh, ...career.latestNews]
+    .filter(
+      (item, idx, arr) => arr.findIndex((x) => x.id === item.id) === idx
+    )
+    .slice(0, DISPLAY_COUNT);
 }
+
+/** @alias getHubNewsItems — league-wide headlines for Across the League */
+export const getLeagueNewsItems = getHubNewsItems;

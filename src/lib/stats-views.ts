@@ -180,6 +180,7 @@ export function getOverallView(
       hard.seasonWins +
       hard.challengeCupWins +
       era.seasonWins +
+      era.challengeCupWins +
       draftN.seasonWins +
       draftH.seasonWins,
     totalLosses:
@@ -188,6 +189,7 @@ export function getOverallView(
       hard.seasonLosses +
       hard.challengeCupLosses +
       era.seasonLosses +
+      era.challengeCupLosses +
       draftN.seasonLosses +
       draftH.seasonLosses,
     totalSeasons:
@@ -220,7 +222,8 @@ export function getOverallView(
       era.superLeagueTitles +
       draftN.superLeagueTitles +
       draftH.superLeagueTitles,
-    challengeCups: normal.challengeCupsWon + hard.challengeCupsWon,
+    challengeCups:
+      normal.challengeCupsWon + hard.challengeCupsWon + era.challengeCupsWon,
     perfectSeasons:
       normal.totalPerfectSeasons +
       hard.totalPerfectSeasons +

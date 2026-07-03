@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { playCupFinalWin, playUiClick } from "@/lib/sound";
 
@@ -16,6 +17,13 @@ export function ManagerTrophyModal({
   career,
   onContinue,
 }: ManagerTrophyModalProps) {
+  const handleContinue = useCallback(() => {
+    playUiClick();
+    onContinue();
+  }, [onContinue]);
+
+  const panelRef = useModalA11y(true, handleContinue);
+
   useEffect(() => {
     playCupFinalWin();
   }, []);
@@ -28,7 +36,9 @@ export function ManagerTrophyModal({
       aria-labelledby="trophy-title"
     >
       <div
-        className={`card-glass w-full max-w-md overflow-hidden ${SPACING.cardPadding}`}
+        ref={panelRef}
+        tabIndex={-1}
+        className={`card-glass w-full max-w-md overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="-mx-4 -mt-4 mb-4 border-b border-accent-gold/40 bg-accent-gold/10 px-4 py-5 text-center sm:-mx-6 sm:-mt-6 sm:px-6">
@@ -50,14 +60,7 @@ export function ManagerTrophyModal({
           You lifted the trophy at the Grand Final — a season to remember.
         </p>
 
-        <GameButton
-          variant="theme"
-          className="mt-5"
-          onClick={() => {
-            playUiClick();
-            onContinue();
-          }}
-        >
+        <GameButton variant="theme" className="mt-5" onClick={handleContinue}>
           Continue
         </GameButton>
       </div>

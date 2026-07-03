@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { formatValue } from "@/lib/players";
@@ -43,22 +44,18 @@ export function ManagerSquadPlayerModal({
   const [releaseConfirmOpen, setReleaseConfirmOpen] = useState(false);
   const [errorDialog, setErrorDialog] = useState<string | null>(null);
 
+  const handleClose = useCallback(() => {
+    playPanelClose();
+    onClose();
+  }, [onClose]);
+
+  const panelRef = useModalA11y(true, handleClose);
+
   const player = getManagerPlayer(career, playerId);
   const contract = career.contracts[playerId];
   const transferStatus = career.playerTransferStatus[playerId];
   const slot = findPlayerMatchdaySlot(career, playerId);
   const releaseCost = computeReleaseCost(career, playerId);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        playPanelClose();
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
 
   if (!player) return null;
 
@@ -99,13 +96,12 @@ export function ManagerSquadPlayerModal({
       className={`fixed inset-0 z-[90] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} backdrop-blur-sm sm:items-center`}
       role="dialog"
       aria-modal="true"
-      onClick={() => {
-        playPanelClose();
-        onClose();
-      }}
+      onClick={handleClose}
     >
       <div
-        className={`card-glass w-full max-w-md ${SPACING.cardPadding}`}
+        ref={panelRef}
+        tabIndex={-1}
+        className={`card-glass w-full max-w-md outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className={TYPO.cardTitle}>{player.name}</h2>

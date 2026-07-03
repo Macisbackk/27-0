@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import type { LiveMatchCommand, ManagerCareer } from "@/lib/manager/types";
 import {
   advanceLiveTick,
@@ -71,14 +72,6 @@ export function ManagerPlayGame({
   careerRef.current = career;
   commandRef.current = command;
   liveRef.current = live;
-
-  useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, []);
 
   useEffect(() => {
     if (!sched) return;
@@ -187,6 +180,16 @@ export function ManagerPlayGame({
     onCancel();
   };
 
+  const handleEscapeClose = useCallback(() => {
+    if (hasStarted) {
+      setAbandonConfirmOpen(true);
+      return;
+    }
+    onCancel();
+  }, [hasStarted, onCancel]);
+
+  const panelRef = useModalA11y(true, handleEscapeClose);
+
   const handleSimulateToFullTime = () => {
     if (!live || live.isComplete) return;
     playSimulateRound();
@@ -201,7 +204,9 @@ export function ManagerPlayGame({
   if (!sched || !live) {
     return (
       <div
-        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4"
+        ref={panelRef}
+        tabIndex={-1}
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 outline-none"
         role="dialog"
         aria-modal="true"
         aria-label="Live match unavailable"
@@ -237,7 +242,6 @@ export function ManagerPlayGame({
   const status = getMatchStatusLabel(live.userScore, live.oppScore, live.isHome);
   const isPreview = live.phase === "preview";
   const isHalftime = live.phase === "halftime";
-  const canClose = !hasStarted || live.isComplete;
   const matchEvents = [...live.events].reverse();
 
   const selectCommand = (cmd: LiveMatchCommand) => {
@@ -247,11 +251,12 @@ export function ManagerPlayGame({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-black/85 backdrop-blur-sm"
+      ref={panelRef}
+      tabIndex={-1}
+      className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-black/85 backdrop-blur-sm outline-none"
       role="dialog"
       aria-modal="true"
       aria-label="Live match"
-      onClick={canClose ? handleAbandon : undefined}
     >
       <div
         className={`card-glass mx-auto flex h-[100dvh] w-full max-w-lg flex-col overflow-hidden ${SPACING.cardPaddingSm}`}

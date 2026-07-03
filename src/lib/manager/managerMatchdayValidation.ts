@@ -132,7 +132,7 @@ export function validateFitMatchdaySquad(
     career.calledUpReserveIds.length === 0
   ) {
     message +=
-      "\nCall up reserves from the Reserves tab to add them to your squad pool.";
+      "\nUse Auto Fix Squad to fill gaps and call up the best reserves automatically.";
   }
 
   return { valid: false, message, missing: unique };

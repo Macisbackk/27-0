@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { PlayoffBracketDisplay } from "@/components/PlayoffBracketDisplay";
 import { ManagerStat } from "@/components/manager/manager-ui";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { ensurePlayoffsReady } from "@/lib/manager/managerPlayoffs";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -31,6 +32,13 @@ export function ManagerPlayoffsIntroModal({
   const bracket = ready.playoffs;
   const position = getUserLeaguePosition(career.leagueTable, career.club);
 
+  const handleContinue = useCallback(() => {
+    playUiClick();
+    onContinue();
+  }, [onContinue]);
+
+  const panelRef = useModalA11y(true, handleContinue);
+
   useEffect(() => {
     playSeasonComplete();
   }, []);
@@ -43,7 +51,9 @@ export function ManagerPlayoffsIntroModal({
       aria-labelledby="playoffs-intro-title"
     >
       <div
-        className={`card-glass my-auto w-full max-w-2xl overflow-hidden ${SPACING.cardPadding}`}
+        ref={panelRef}
+        tabIndex={-1}
+        className={`card-glass my-auto w-full max-w-2xl overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="-mx-4 -mt-4 mb-4 border-b border-theme-primary/30 bg-theme-primary/10 px-4 py-4 sm:-mx-6 sm:-mt-6 sm:px-6">
@@ -94,14 +104,7 @@ export function ManagerPlayoffsIntroModal({
           matter for the title.
         </p>
 
-        <GameButton
-          variant="theme"
-          className="mt-5"
-          onClick={() => {
-            playUiClick();
-            onContinue();
-          }}
-        >
+        <GameButton variant="theme" className="mt-5" onClick={handleContinue}>
           Continue to Play-Offs
         </GameButton>
       </div>

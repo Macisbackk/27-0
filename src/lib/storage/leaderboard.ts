@@ -512,8 +512,8 @@ function userStatsToClassicTrackerEntry(
   stats: UserStatsData,
   difficulty: GameDifficulty
 ): LeaderboardTrackerEntry {
-  const wins = stats.seasonWins + stats.playoffWins;
-  const losses = stats.seasonLosses + stats.playoffLosses;
+  const wins = stats.seasonWins;
+  const losses = stats.seasonLosses;
   const games = wins + losses;
   const bestWins = stats.bestRecordWins || stats.bestOverallSeasonWins || wins;
   const bestLosses =

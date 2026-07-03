@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { ManagerReservePlayer, PlayerContract } from "@/lib/manager/types";
 import { formatWage } from "@/lib/manager/managerContracts";
@@ -26,16 +27,12 @@ export function ManagerReserveReleaseModal({
 }: ManagerReserveReleaseModalProps) {
   const [released, setReleased] = useState(false);
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        playPanelClose();
-        onCancel();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+  const handleCancel = useCallback(() => {
+    playPanelClose();
+    onCancel();
   }, [onCancel]);
+
+  const panelRef = useModalA11y(true, handleCancel);
 
   const handleConfirm = () => {
     playUiClick();
@@ -44,8 +41,7 @@ export function ManagerReserveReleaseModal({
   };
 
   const handleDone = () => {
-    playPanelClose();
-    onCancel();
+    handleCancel();
   };
 
   return (
@@ -54,13 +50,12 @@ export function ManagerReserveReleaseModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="reserve-release-title"
-      onClick={() => {
-        playPanelClose();
-        onCancel();
-      }}
+      onClick={handleCancel}
     >
       <div
-        className={`card-glass w-full max-w-md overflow-hidden ${SPACING.cardPadding}`}
+        ref={panelRef}
+        tabIndex={-1}
+        className={`card-glass w-full max-w-md overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div

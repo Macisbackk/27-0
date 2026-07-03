@@ -62,7 +62,9 @@ import {
   playUiClick,
 } from "@/lib/sound";
 import { PageShell } from "@/components/ui/PageShell";
+import { GameButton } from "@/components/ui/GameButton";
 import { PAGE } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 import {
   ensureFriendlyChoices,
   isAwaitingFriendlyChoice,
@@ -775,14 +777,19 @@ export default function ManagerPage() {
 
       {career && view === "match-review" && reviewFixtureId !== null && (
         <div className="space-y-4">
-          <ManagerNav
-            active="hub"
-            club={career.club}
-            seasonYear={career.seasonYear}
-            gameWeek={career.gameWeek}
-            disabled
-            onNavigate={() => {}}
-          />
+          <div className="flex flex-wrap items-center gap-3">
+            <GameButton
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                playUiClick();
+                handleMatchReviewClose();
+              }}
+            >
+              ← Back
+            </GameButton>
+            <p className={TYPO.sectionLabel}>Match Review</p>
+          </div>
           <ManagerMatchReview
             career={career}
             fixtureId={reviewFixtureId}

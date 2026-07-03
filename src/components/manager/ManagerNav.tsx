@@ -115,6 +115,7 @@ export function ManagerNav({
             className={`btn-press shrink-0 min-w-[4.25rem] flex min-h-[44px] items-center justify-center rounded-lg px-2.5 py-2.5 text-center font-display text-xs font-bold uppercase tracking-wide transition sm:min-w-0 sm:px-3 ${
               active === tab.id ? BTN.tabActive : BTN.tabIdle
             } ${disabled ? "pointer-events-none opacity-40" : ""}`}
+            aria-current={active === tab.id ? "page" : undefined}
           >
             <span className="sm:hidden">{tab.shortLabel}</span>
             <span className="hidden sm:inline">{tab.label}</span>

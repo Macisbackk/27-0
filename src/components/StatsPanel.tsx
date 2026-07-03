@@ -95,9 +95,11 @@ export function StatsPanel() {
     refresh();
     window.addEventListener("focus", refresh);
     window.addEventListener("auth-state-changed", refresh);
+    window.addEventListener("stats-merged", refresh);
     return () => {
       window.removeEventListener("focus", refresh);
       window.removeEventListener("auth-state-changed", refresh);
+      window.removeEventListener("stats-merged", refresh);
     };
   }, []);
 

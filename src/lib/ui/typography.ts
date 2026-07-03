@@ -18,7 +18,7 @@ export const TYPO = {
   body: "text-sm text-gray-400 leading-relaxed",
   bodySm: "text-xs text-gray-500 leading-relaxed",
   /** Manager in-app copy — readable on small screens. */
-  managerBody: "text-sm leading-relaxed text-pitch-400 sm:text-xs sm:text-pitch-500",
+  managerBody: "text-sm leading-relaxed text-pitch-400 sm:text-sm sm:text-pitch-500",
   button: "font-display text-xs font-bold uppercase tracking-[0.15em]",
   nav: "text-sm font-medium",
   identityLine: "text-sm font-semibold text-gray-300 sm:text-base",

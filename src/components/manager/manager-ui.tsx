@@ -530,8 +530,11 @@ export function ManagerInboxMessageCard({
 
 export function ManagerClubFinancesPanel({
   career,
+  collapsible = false,
 }: {
   career: ManagerCareer;
+  /** Hub: collapsed by default to reduce scroll depth. */
+  collapsible?: boolean;
 }) {
   const transfer = getTransferBudget(career);
   const operating = getOperatingBalance(career);
@@ -539,8 +542,8 @@ export function ManagerClubFinancesPanel({
   const seasonTransfer = finance?.seasonTransferIncome ?? 0;
   const seasonOperating = finance?.seasonOperatingIncome ?? 0;
 
-  return (
-    <ManagerSectionCard title="Club Finances" variant="elevated" accent="gold">
+  const body = (
+    <>
       <p className={`${TYPO.bodySm} text-pitch-400`}>
         Match income is split between the transfer fund and day-to-day club
         running costs.
@@ -609,6 +612,35 @@ export function ManagerClubFinancesPanel({
           </ul>
         </div>
       </details>
+    </>
+  );
+
+  if (collapsible) {
+    return (
+      <details className="group">
+        <summary
+          className={`${CARD.elevated} flex cursor-pointer list-none items-center justify-between gap-3 ${SPACING.cardPadding} [&::-webkit-details-marker]:hidden`}
+        >
+          <div className="min-w-0 text-left">
+            <p className={TYPO.sectionLabel}>Club Finances</p>
+            <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
+              Transfer fund {formatWage(transfer)} · Ops {formatWage(operating)}
+            </p>
+          </div>
+          <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-pitch-500 transition group-open:rotate-180">
+            Expand
+          </span>
+        </summary>
+        <div className={`mt-2 ${CARD.elevated} ${SPACING.cardPadding}`}>
+          {body}
+        </div>
+      </details>
+    );
+  }
+
+  return (
+    <ManagerSectionCard title="Club Finances" variant="elevated" accent="gold">
+      {body}
     </ManagerSectionCard>
   );
 }

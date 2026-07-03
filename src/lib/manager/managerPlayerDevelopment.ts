@@ -1,4 +1,5 @@
 import seedrandom from "seedrandom";
+import { PLAYER_POTENTIAL_OVERRIDES } from "../../../data/player-potential-overrides";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { getPlayerById } from "../players";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
@@ -29,6 +30,18 @@ function computePotential(peakRating: number, age: number): number {
   if (age <= 27) return Math.min(90, peakRating + 2);
   if (age <= 30) return peakRating;
   return Math.max(65, peakRating - 3);
+}
+
+function resolvePlayerPotential(
+  playerId: string,
+  peakRating: number,
+  age: number,
+  existing?: number
+): number {
+  const override = PLAYER_POTENTIAL_OVERRIDES[playerId];
+  if (override !== undefined) return override;
+  if (existing !== undefined) return existing;
+  return computePotential(peakRating, age);
 }
 
 function hadGoodSeason(extras?: {
@@ -75,7 +88,12 @@ function developOnePlayer(
     base.peakRating
   );
   const before = existing?.rating ?? baseline;
-  const potential = existing?.potential ?? computePotential(baseline, age);
+  const potential = resolvePlayerPotential(
+    playerId,
+    baseline,
+    age,
+    existing?.potential
+  );
   const veteranGoodSeason = isVeteranWithGoodSeason(age, extras);
 
   const appearances = extras?.appearances ?? 0;
@@ -263,7 +281,12 @@ export function snapshotSquadSeasonStartRatings(
     next[ps.playerId] = {
       rating: current,
       peakRating: existing?.peakRating ?? current,
-      potential: existing?.potential ?? computePotential(baseline, age),
+      potential: resolvePlayerPotential(
+        ps.playerId,
+        baseline,
+        age,
+        existing?.potential
+      ),
       developmentRate: existing?.developmentRate,
       seasonStartRating: current,
       promotedSeasonYear: undefined,
@@ -364,11 +387,15 @@ export function getPlayerPotential(
   playerId: string
 ): number | null {
   const dev = career.playerDevelopment?.[playerId];
-  if (dev) return dev.potential;
   const player = getManagerPlayer(career, playerId);
-  if (!player) return null;
-  return computePotential(
-    player.peakRating,
-    getManagerPlayerAge(career, playerId) ?? 25
+  if (!player && !dev) return null;
+  const baseline = player
+    ? getManagerModePlayerRating(playerId, player.name, player.peakRating)
+    : (dev?.peakRating ?? dev?.rating ?? 0);
+  return resolvePlayerPotential(
+    playerId,
+    baseline,
+    getManagerPlayerAge(career, playerId) ?? 25,
+    dev?.potential
   );
 }

@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogoMark } from "@/components/LogoMark";
 import { useAuth } from "@/lib/auth-context";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import { buildPlayHref, isPlayModeActive } from "@/lib/play-links";
 import {
   getNormalEraVariant,
@@ -55,6 +56,11 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const { loading, isLoggedIn } = useAuth();
   const [normalEraVariant, setNormalEraVariantState] = useState(false);
   const [muted, setMuted] = useState(false);
+  const closeMenu = useCallback(() => {
+    playMenuClose();
+    onClose();
+  }, [onClose]);
+  const panelRef = useModalA11y(open, closeMenu);
 
   useEffect(() => {
     setNormalEraVariantState(getNormalEraVariant());
@@ -118,26 +124,13 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     onClose();
   };
 
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [open, onClose]);
-
-  const handleToggleSound = () => {
-    setMuted(toggleSoundMuted());
-  };
-
   const handleNavClick = () => {
     playUiClick();
     onClose();
+  };
+
+  const handleToggleSound = () => {
+    setMuted(toggleSoundMuted());
   };
 
   const navLinkClass = (active: boolean, eraAccent = false) =>
@@ -165,13 +158,15 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => {
-              playMenuClose();
-              onClose();
-            }}
+            onClick={closeMenu}
           />
           <motion.aside
-            className="sidebar-panel fixed inset-y-0 left-0 z-[70] flex w-[min(280px,88vw)] max-h-[100dvh] flex-col shadow-2xl"
+            ref={panelRef}
+            tabIndex={-1}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
+            className="sidebar-panel fixed inset-y-0 left-0 z-[70] flex w-[min(280px,88vw)] max-h-[100dvh] flex-col shadow-2xl outline-none"
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
@@ -183,10 +178,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
               </div>
               <button
                 type="button"
-                onClick={() => {
-                  playMenuClose();
-                  onClose();
-                }}
+                onClick={closeMenu}
                 className={`${BTN.close} px-2 py-1 text-xs`}
               >
                 Close

@@ -99,8 +99,11 @@ export function ClubFundsDisplay({
         disabled={!ready}
       >
         {!isMobileUnderLogo && (
-          <span className="hidden text-[10px] font-semibold uppercase tracking-wider text-pitch-500 sm:inline">
-            Funds
+          <span
+            aria-hidden
+            className="shrink-0 text-[11px] leading-none sm:text-xs"
+          >
+            💷
           </span>
         )}
         <span className={isMobileUnderLogo ? "text-[11px]" : "text-sm leading-none"}>

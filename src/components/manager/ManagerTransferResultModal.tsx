@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import { ManagerStat } from "@/components/manager/manager-ui";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { playPanelClose } from "@/lib/sound";
@@ -28,29 +29,24 @@ export function ManagerTransferResultModal({
   result,
   onClose,
 }: ManagerTransferResultModalProps) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        playPanelClose();
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+  const handleClose = useCallback(() => {
+    playPanelClose();
+    onClose();
   }, [onClose]);
+
+  const panelRef = useModalA11y(true, handleClose);
 
   return (
     <div
       className={`fixed inset-0 z-[90] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} backdrop-blur-sm sm:items-center`}
       role="dialog"
       aria-modal="true"
-      onClick={() => {
-        playPanelClose();
-        onClose();
-      }}
+      onClick={handleClose}
     >
       <div
-        className={`card-glass w-full max-w-md overflow-hidden ${SPACING.cardPadding}`}
+        ref={panelRef}
+        tabIndex={-1}
+        className={`card-glass w-full max-w-md overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div

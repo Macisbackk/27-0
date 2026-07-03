@@ -1,10 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ClubHeaderBar, ClubLogoBox } from "@/components/ClubBadge";
 import { GameButton } from "@/components/ui/GameButton";
+import { BodyPortal } from "@/components/ui/BodyPortal";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import { getClubIndicatorColor } from "@/lib/clubs";
-import { getClubMatchdayLineup } from "@/lib/manager/managerLeagueLineup";
+import {
+  getClubMatchdayLineup,
+  getLineupXiiiPlayers,
+} from "@/lib/manager/managerLeagueLineup";
 import { getManagerPlayerAge } from "@/lib/manager/managerPlayers";
 import {
   slotAbbrev,
@@ -181,6 +186,13 @@ export function ManagerClubSquadSheet({
   const lineup = getClubMatchdayLineup(career, club, round);
   const clubAccent = getClubIndicatorColor(club);
 
+  const handleClose = useCallback(() => {
+    playPanelClose();
+    onClose();
+  }, [onClose]);
+
+  const panelRef = useModalA11y(true, handleClose);
+
   const listedPlayerIds = useMemo(
     () =>
       new Set(
@@ -191,7 +203,7 @@ export function ManagerClubSquadSheet({
     [career.leagueListedPlayers, club]
   );
 
-  const xiiiPlayers = lineup.xiii.map((row) => row.player);
+  const xiiiPlayers = getLineupXiiiPlayers(lineup);
   const allPlayers = [...xiiiPlayers, ...lineup.interchange];
 
   const xiiiAvg =
@@ -229,20 +241,20 @@ export function ManagerClubSquadSheet({
   const compactRow = (slotCount: number) => slotCount >= 3;
 
   return (
-    <div
-      className={MODAL.backdrop}
-      role="dialog"
-      aria-modal="true"
-      aria-label={`${club} matchday squad`}
-      onClick={() => {
-        playPanelClose();
-        onClose();
-      }}
-    >
+    <BodyPortal>
       <div
-        className={`${MODAL.panelWide} card-glass overflow-hidden`}
-        onClick={(e) => e.stopPropagation()}
+        className={`fixed inset-0 z-[90] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} ${SPACING.safeBottom} backdrop-blur-sm sm:items-center`}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${club} matchday squad`}
+        onClick={handleClose}
       >
+        <div
+          ref={panelRef}
+          tabIndex={-1}
+          className={`${MODAL.panelWide} card-glass overflow-hidden outline-none`}
+          onClick={(e) => e.stopPropagation()}
+        >
         <ClubHeaderBar club={club} size="sm" />
 
         <div className={MODAL.panelPadding}>
@@ -275,10 +287,7 @@ export function ManagerClubSquadSheet({
               variant="secondary"
               size="sm"
               className="shrink-0"
-              onClick={() => {
-                playPanelClose();
-                onClose();
-              }}
+              onClick={handleClose}
             >
               Close
             </GameButton>
@@ -413,7 +422,7 @@ export function ManagerClubSquadSheet({
               className="mt-5 w-full"
               onClick={() => {
                 playUiClick();
-                onClose();
+                handleClose();
                 onViewUserSquad();
               }}
             >
@@ -422,7 +431,8 @@ export function ManagerClubSquadSheet({
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </BodyPortal>
   );
 }
 

@@ -269,11 +269,27 @@ function HubPlayoffsCampaignCard({ career }: { career: ManagerCareer }) {
 function HubStandingsPanel({
   career,
   onViewClub,
+  onViewFullLeague,
 }: {
   career: ManagerCareer;
   onViewClub?: (club: string) => void;
+  onViewFullLeague?: () => void;
 }) {
-  return <ManagerLeagueTable career={career} onViewClub={onViewClub} />;
+  return (
+    <div className={SPACING.stackSm}>
+      <ManagerLeagueTable
+        career={career}
+        title="League Snapshot"
+        subtitle="Top of the table — expand for the full standings"
+        onViewClub={onViewClub}
+      />
+      {onViewFullLeague && (
+        <GameButton variant="secondary" size="sm" onClick={onViewFullLeague}>
+          Across the League
+        </GameButton>
+      )}
+    </div>
+  );
 }
 
 export function ManagerHub({
@@ -721,9 +737,15 @@ export function ManagerHub({
 
       {nextFixtureCard}
 
-      <HubStandingsPanel career={career} onViewClub={setViewClubSheet} />
+      <HubStandingsPanel
+        career={career}
+        onViewClub={setViewClubSheet}
+        onViewFullLeague={
+          onNavigate ? () => onNavigate("across-league") : undefined
+        }
+      />
 
-      <ManagerClubFinancesPanel career={career} />
+      <ManagerClubFinancesPanel career={career} collapsible />
 
       <HubBoardBudgetAttendance
         career={career}

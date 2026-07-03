@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer, SquadRole } from "@/lib/manager/types";
 import {
   getManagerPlayer,
@@ -147,20 +148,13 @@ export function ManagerContracts({
     setLastResponse(null);
   };
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     playPanelClose();
     setSelectedId(null);
     setLastResponse(null);
-  };
+  }, []);
 
-  useEffect(() => {
-    if (!selectedId) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeModal();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [selectedId]);
+  const contractPanelRef = useModalA11y(selectedId !== null, closeModal);
 
   const submitOffer = () => {
     if (!selectedId) return;
@@ -387,7 +381,9 @@ export function ManagerContracts({
           onClick={closeModal}
         >
           <div
-            className={`card-glass max-h-[min(92vh,720px)] w-full max-w-lg overflow-y-auto ${SPACING.cardPadding} animate-fade-up`}
+            ref={contractPanelRef}
+            tabIndex={-1}
+            className={`card-glass max-h-[min(92vh,720px)] w-full max-w-lg overflow-y-auto outline-none ${SPACING.cardPadding} animate-fade-up`}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className={TYPO.cardTitle}>{selected.player.name}</h2>

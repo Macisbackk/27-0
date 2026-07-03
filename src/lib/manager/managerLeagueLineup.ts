@@ -12,10 +12,22 @@ import {
   getManagerOpponentPoolOptions,
 } from "./managerLeagueRosters";
 
+export type ClubMatchdayLineupSlot = {
+  player: Player;
+  position: Position;
+};
+
 export interface ClubMatchdayLineup {
-  xiii: Array<{ player: Player; position: Position }>;
+  /** Slot-indexed starting XIII (index 0–12 matches team sheet layout). */
+  xiii: Array<ClubMatchdayLineupSlot | undefined>;
   interchange: Player[];
   isUserClub: boolean;
+}
+
+export function getLineupXiiiPlayers(lineup: ClubMatchdayLineup): Player[] {
+  return lineup.xiii
+    .filter((row): row is ClubMatchdayLineupSlot => row != null)
+    .map((row) => row.player);
 }
 
 function leagueGamesPlayed(career: ManagerCareer): number {
@@ -28,13 +40,13 @@ function leagueGamesPlayed(career: ManagerCareer): number {
 }
 
 function buildUserClubLineup(career: ManagerCareer): ClubMatchdayLineup {
-  const xiii: ClubMatchdayLineup["xiii"] = [];
+  const xiii: ClubMatchdayLineup["xiii"] = Array(career.matchdayXiii.length);
   for (let i = 0; i < career.matchdayXiii.length; i++) {
     const playerId = career.matchdayXiii[i];
     const position = career.xiiiSlotPositions[i];
     if (!playerId || !position) continue;
     const player = getManagerPlayer(career, playerId);
-    if (player) xiii.push({ player, position });
+    if (player) xiii[i] = { player, position };
   }
 
   const interchange: Player[] = [];
@@ -89,10 +101,7 @@ export function getClubSquadAverageRating(
   round?: number
 ): number {
   const lineup = getClubMatchdayLineup(career, club, round);
-  const players = [
-    ...lineup.xiii.map((row) => row.player),
-    ...lineup.interchange,
-  ];
+  const players = [...getLineupXiiiPlayers(lineup), ...lineup.interchange];
   if (players.length === 0) return 0;
   const total = players.reduce(
     (sum, p) => sum + p.peakRating,

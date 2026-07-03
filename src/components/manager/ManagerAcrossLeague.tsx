@@ -16,6 +16,8 @@ import {
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { formatWage } from "@/lib/manager/managerContracts";
+import { getLeagueTopTryScorers } from "@/lib/manager/managerLeagueLeaders";
+import { getLeagueNewsItems } from "@/lib/manager/managerNews";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import { getPlayerById } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
@@ -32,8 +34,13 @@ export function ManagerAcrossLeague({
 }: ManagerAcrossLeagueProps) {
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
 
-  const newsItems = career.latestNews;
+  const newsItems = getLeagueNewsItems(career);
   const leagueTransfers = career.leagueTransfers ?? [];
+
+  const topTryScorers = useMemo(
+    () => getLeagueTopTryScorers(career, 10),
+    [career]
+  );
 
   const otherClubListings = useMemo(() => {
     return career.leagueListedPlayers
@@ -80,15 +87,25 @@ export function ManagerAcrossLeague({
           subtitle={`Season ${career.seasonYear} · Week ${career.gameWeek} — news, squads and transfer activity from around Super League`}
         />
 
-        {newsItems.length > 0 && (
-          <ManagerSectionCard title="Latest News" variant="inset">
+        <ManagerClubSquadBrowser
+          career={career}
+          onViewUserSquad={onNavigate ? () => onNavigate("squad") : undefined}
+        />
+
+        <ManagerSectionCard title="League News" variant="inset">
+          {newsItems.length > 0 ? (
             <ul className={`mt-2 ${SPACING.stackSm}`}>
               {newsItems.map((item) => (
                 <ManagerNewsItem key={item.id} item={item} />
               ))}
             </ul>
-          </ManagerSectionCard>
-        )}
+          ) : (
+            <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+              No league headlines yet — play a match or advance the week for
+              updates.
+            </p>
+          )}
+        </ManagerSectionCard>
 
         <ManagerLeagueTable
           career={career}
@@ -96,6 +113,66 @@ export function ManagerAcrossLeague({
           onViewClub={setViewClubSheet}
           defaultExpanded
         />
+
+        <ManagerSectionCard title="Top Try Scorers" variant="elevated">
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+            Super League leading try scorers this season.
+          </p>
+          {topTryScorers.length > 0 ? (
+            <ol className="mt-3 space-y-2">
+              {topTryScorers.map((entry, index) => {
+                const posLabel = entry.position
+                  ? POSITION_SHORT[entry.position]
+                  : null;
+                return (
+                  <li
+                    key={entry.playerId}
+                    className={`${CARD.inset} flex items-center gap-3 ${SPACING.cardPaddingSm} ${
+                      entry.isUserClub
+                        ? "border-theme-primary/35 bg-theme-primary/5"
+                        : ""
+                    }`}
+                  >
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-display text-sm font-black ${
+                        index === 0
+                          ? "bg-accent-gold/15 text-accent-gold ring-1 ring-accent-gold/35"
+                          : index < 3
+                            ? "bg-theme-primary/15 text-theme-primary ring-1 ring-theme-primary/30"
+                            : "bg-pitch-800/80 text-pitch-300 ring-1 ring-pitch-600/50"
+                      }`}
+                    >
+                      {index + 1}
+                    </span>
+                    <ClubDualSwatch club={entry.club} size="xs" />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-semibold text-white">
+                        {entry.playerName}
+                      </p>
+                      <p className={`${TYPO.bodySm} text-pitch-400`}>
+                        {entry.club}
+                        {posLabel ? ` · ${posLabel}` : ""}
+                      </p>
+                    </div>
+                    <div className="shrink-0 text-right">
+                      <p className="font-display text-lg font-black text-theme-primary">
+                        {entry.tries}
+                      </p>
+                      <p className={`${TYPO.bodySm} text-pitch-500`}>
+                        {entry.tries === 1 ? "try" : "tries"}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          ) : (
+            <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+              No league tries recorded yet — play a league match to open the
+              chart.
+            </p>
+          )}
+        </ManagerSectionCard>
 
         {leagueTransfers.length > 0 && (
           <ManagerSectionCard title="Transfer Wire" variant="elevated">
@@ -187,10 +264,6 @@ export function ManagerAcrossLeague({
           </ManagerSectionCard>
         )}
 
-        <ManagerClubSquadBrowser
-          career={career}
-          onViewUserSquad={onNavigate ? () => onNavigate("squad") : undefined}
-        />
       </div>
       {clubSheetModal}
     </>
