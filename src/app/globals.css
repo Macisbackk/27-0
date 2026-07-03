@@ -110,9 +110,10 @@ body {
   backdrop-filter: blur(10px);
 }
 
-/* Three-column header: equal side slots keep the logo centred on mobile */
-.app-header .grid-cols-\[1fr_auto_1fr\] > :first-child,
-.app-header .grid-cols-\[1fr_auto_1fr\] > :last-child {
+/* Header side slots: keep menu/auth from shrinking on narrow screens */
+.app-header .grid-cols-\[minmax\(0\,1fr\)_minmax\(0\,1fr\)\] > :first-child,
+.app-header .grid-cols-\[minmax\(0\,1fr\)_auto_minmax\(0\,1fr\)\] > :first-child,
+.app-header .grid-cols-\[minmax\(0\,1fr\)_auto_minmax\(0\,1fr\)\] > :last-child {
   flex-shrink: 0;
 }
 

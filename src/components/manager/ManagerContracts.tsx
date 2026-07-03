@@ -24,6 +24,7 @@ import { getWageBillPercent, isWageOverBudget } from "@/lib/manager/managerFinan
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { playPanelClose, playUiClick } from "@/lib/sound";
 import { ManagerPage } from "@/components/manager/manager-ui";
+import { managerCalloutClass } from "@/lib/manager/managerSurfaces";
 
 type ContractFilter =
   | "all"
@@ -239,7 +240,7 @@ export function ManagerContracts({
           </div>
         </div>
         {expiringCount > 0 && (
-          <div className="mt-4 flex flex-wrap items-center gap-2 rounded-lg border border-accent-gold/30 bg-accent-gold/5 px-3 py-2">
+          <div className={`mt-4 flex flex-wrap items-center gap-2 ${managerCalloutClass("gold")}`}>
             <p className={`flex-1 ${TYPO.bodySm} text-accent-gold`}>
               {expiringCount} contract{expiringCount === 1 ? "" : "s"} expiring
               soon

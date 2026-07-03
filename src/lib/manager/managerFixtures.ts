@@ -17,6 +17,11 @@ import type {
 } from "./types";
 import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
 import { countLeagueFixturesPlayed } from "./managerChallengeCup";
+import {
+  MAGIC_WEEKEND_ROUND,
+  buildMagicWeekendFixture,
+  getLeagueFixtureSides,
+} from "./managerMagicWeekend";
 
 export function buildManagerSchedule(
   club: string,
@@ -35,20 +40,27 @@ export function buildManagerSchedule(
     fixtures.push({ opponent: opp, isHome: false });
   }
 
-  const rng = seedrandom(`${seed}-extra-fixture`);
-  const extraOpp = opponents[Math.floor(rng() * opponents.length)]!;
-  fixtures.push({ opponent: extraOpp, isHome: rng() < 0.5 });
+  const magicWeekend = buildMagicWeekendFixture(club, seed);
 
   const shuffleRng = seedrandom(`${seed}-schedule-shuffle`);
   const shuffled = [...fixtures].sort(() => shuffleRng() - 0.5);
 
-  return shuffled.slice(0, MANAGER_SEASON_GAMES).map((f, i) => ({
-    ...f,
-    id: `league-r${i + 1}-${seed}`,
-    round: i + 1,
-    competition: "league" as const,
-    label: `Round ${i + 1} — League`,
-  }));
+  const ordered = [...shuffled];
+  ordered.splice(MAGIC_WEEKEND_ROUND - 1, 0, magicWeekend);
+
+  return ordered.slice(0, MANAGER_SEASON_GAMES).map((f, i) => {
+    const round = i + 1;
+    const isMagic = round === MAGIC_WEEKEND_ROUND && f.isNeutral;
+    return {
+      ...f,
+      id: `league-r${round}-${seed}`,
+      round,
+      competition: "league" as const,
+      label: isMagic
+        ? `Magic Weekend — ${f.opponent}`
+        : `Round ${round} — League`,
+    };
+  });
 }
 
 function pairTeamsForRound(
@@ -280,14 +292,16 @@ export function reconcileRoundMatches(career: ManagerCareer): ManagerCareer {
 
   for (const f of leagueFixtures) {
     if (roundsPresent.has(f.round)) continue;
+    const sides = getLeagueFixtureSides(career.club, f);
+    const userIsListedHome = sides.homeTeam === career.club;
     const userMatch: ManagerRoundMatch = {
       round: f.round,
-      homeTeam: f.isHome ? career.club : f.opponent,
-      awayTeam: f.isHome ? f.opponent : career.club,
-      homeScore: f.isHome ? f.pointsFor : f.pointsAgainst,
-      awayScore: f.isHome ? f.pointsAgainst : f.pointsFor,
-      homeTries: f.isHome ? f.triesFor : f.triesAgainst,
-      awayTries: f.isHome ? f.triesAgainst : f.triesFor,
+      homeTeam: sides.homeTeam,
+      awayTeam: sides.awayTeam,
+      homeScore: userIsListedHome ? f.pointsFor : f.pointsAgainst,
+      awayScore: userIsListedHome ? f.pointsAgainst : f.pointsFor,
+      homeTries: userIsListedHome ? f.triesFor : f.triesAgainst,
+      awayTries: userIsListedHome ? f.triesAgainst : f.triesFor,
     };
     const others = simulateRoundOtherMatches(
       career.club,

@@ -3,7 +3,10 @@
 import { ClubLogoBox } from "@/components/ClubBadge";
 import { BTN, CARD, MANAGER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { getClubIndicatorColor } from "@/lib/clubs";
+import {
+  managerClubAccentCardClass,
+  managerClubAccentCardStyle,
+} from "@/lib/manager/managerSurfaces";
 import type { ManagerView } from "@/lib/manager/types";
 import { playTabChange, playUiClick } from "@/lib/sound";
 
@@ -37,7 +40,6 @@ export function ManagerNav({
   disabled,
   unreadInbox = 0,
 }: ManagerNavProps) {
-  const clubAccent = getClubIndicatorColor(club);
   const seasonMeta =
     seasonYear != null
       ? `Season ${seasonYear}${gameWeek != null ? ` · Week ${gameWeek}` : ""}`
@@ -60,8 +62,8 @@ export function ManagerNav({
   return (
     <header className="space-y-2.5 sm:space-y-3">
       <div
-        className={`${CARD.elevated} ${SPACING.cardPaddingMobile} flex items-center gap-3 border-l-4`}
-        style={{ borderLeftColor: clubAccent }}
+        className={`${managerClubAccentCardClass()} flex items-center gap-3`}
+        style={managerClubAccentCardStyle(club)}
       >
         <ClubLogoBox club={club} size="sm" className="hidden sm:flex" />
         <ClubLogoBox club={club} size="xs" className="sm:hidden" />
@@ -85,8 +87,8 @@ export function ManagerNav({
         disabled={disabled}
         className={`btn-press flex min-h-[44px] w-full items-center justify-between rounded-xl border px-4 py-2.5 text-left transition ${
           active === "inbox"
-            ? "border-theme-primary/50 bg-theme-primary/15"
-            : "border-pitch-700/50 bg-pitch-900/40 hover:border-pitch-500/60"
+            ? "border-theme-primary/45 bg-theme-primary/12"
+            : "border-pitch-600/50 bg-pitch-900/40 hover:border-pitch-500/55"
         } ${disabled ? "pointer-events-none opacity-40" : ""}`}
         aria-current={active === "inbox" ? "page" : undefined}
       >

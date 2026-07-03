@@ -18,6 +18,11 @@ import {
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubColors } from "@/lib/clubs";
+import {
+  managerFixtureCardClass,
+  managerFixtureCardStyle,
+  managerFixtureRowClass,
+} from "@/lib/manager/managerSurfaces";
 import { getFriendlyDualBorderStyle } from "@/lib/manager/managerFriendlyUi";
 import {
   buildMergedDisplaySchedule,
@@ -238,17 +243,11 @@ function UpcomingFixtureRow({
 
   return (
     <div
-      className={`rounded-lg border px-4 py-3.5 sm:px-4 sm:py-3 ${
-        friendlyBorderStyle
-          ? "border-pitch-700/40"
-          : isNext
-            ? "border-theme-primary/50 bg-theme-primary/5"
-            : isCup
-              ? "border-accent-gold/35 bg-accent-gold/5"
-              : isPlayoff
-                ? "border-theme-primary/30 bg-theme-primary/5"
-                : "border-pitch-700/50 bg-pitch-950/50"
-      }`}
+      className={managerFixtureRowClass({
+        isNext,
+        competition: sched.competition,
+        hasFriendlyStyle: Boolean(friendlyBorderStyle),
+      })}
       style={friendlyBorderStyle}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -462,18 +461,12 @@ export function ManagerFixtures({
 
       {nextFixture && !seasonComplete && (
         <div
-          className={`${CARD.elevated} ${SPACING.cardPadding} ${
-            isChallengeCupFixture(nextFixture.competition)
-              ? "border border-accent-gold/35 ring-1 ring-accent-gold/20"
-              : nextFixture.competition === "friendly"
-                ? "border border-pitch-700/40"
-                : "border-l-4 border-theme-primary"
-          }`}
-          style={
-            nextFixture.competition === "friendly"
-              ? getFriendlyDualBorderStyle(career.club, nextFixture.opponent)
-              : undefined
-          }
+          className={managerFixtureCardClass(nextFixture.competition)}
+          style={managerFixtureCardStyle(
+            nextFixture.competition,
+            career.club,
+            nextFixture.opponent
+          )}
         >
           <div className="flex flex-wrap items-center gap-2">
             <p className={TYPO.sectionLabel}>Next match</p>

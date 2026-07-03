@@ -3,6 +3,10 @@ import type { LatestNewsItem, ManagerCareer } from "./types";
 import { getNextManagerFixture } from "./managerSimulation";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { formatWage } from "./managerContracts";
+import {
+  MAGIC_WEEKEND_VENUE,
+  isMagicWeekendFixture,
+} from "./managerMagicWeekend";
 
 const MAX_STORED = 10;
 const DISPLAY_COUNT = 5;
@@ -19,7 +23,9 @@ export function generateWeeklyNews(career: ManagerCareer): LatestNewsItem[] {
       id: `news-fixture-${week}`,
       week,
       type: "fixture",
-      text: `${career.club} prepare for ${next.isHome ? "home" : "away"} clash with ${next.opponent} in Round ${next.round}.`,
+      text: isMagicWeekendFixture(next)
+        ? `${career.club} head to Magic Weekend at ${MAGIC_WEEKEND_VENUE} to face rivals ${next.opponent}.`
+        : `${career.club} prepare for ${next.isHome ? "home" : "away"} clash with ${next.opponent} in Round ${next.round}.`,
     });
   }
 

@@ -46,6 +46,7 @@ import {
   prepareCareerForNextMatch,
   simulateManagerNextMatch,
 } from "@/lib/manager/managerSimulation";
+import { scrollToManagerHubNextFixture } from "@/lib/manager/managerHubScroll";
 import { acknowledgePlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
 import { shouldShowChallengeCupCelebration } from "@/lib/manager/managerChallengeCup";
 import { recordManagerCupTeamWin } from "@/lib/storage/cup-team-wins";
@@ -62,9 +63,7 @@ import {
   playUiClick,
 } from "@/lib/sound";
 import { PageShell } from "@/components/ui/PageShell";
-import { GameButton } from "@/components/ui/GameButton";
 import { PAGE } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
 import {
   ensureFriendlyChoices,
   isAwaitingFriendlyChoice,
@@ -92,6 +91,19 @@ const NAV_VIEWS: ManagerView[] = [
   "across-league",
   "stats",
 ];
+
+/** Full-screen manager views that should open at the top of the page. */
+const SCROLL_TOP_VIEWS: ManagerView[] = [
+  "match-review",
+  "season-review",
+  "development-review",
+  "season-rewards",
+];
+
+function scrollManagerPageToTop() {
+  if (typeof window === "undefined") return;
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+}
 
 export default function ManagerPage() {
   const router = useRouter();
@@ -121,6 +133,8 @@ export default function ManagerPage() {
   const [postMatchReviewFlow, setPostMatchReviewFlow] = useState(false);
   const [matchReviewReturnView, setMatchReviewReturnView] =
     useState<ManagerView>("hub");
+  const [pendingHubNextFixtureScroll, setPendingHubNextFixtureScroll] =
+    useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleteSlot, setDeleteSlot] = useState<number | null>(null);
   const [alertDialog, setAlertDialog] = useState<{
@@ -165,6 +179,29 @@ export default function ManagerPage() {
     if (career.preSeason.currentChoices.length >= 3) return;
     persist(ensureFriendlyChoices(career));
   }, [career, awaitingFriendlyChoice, persist]);
+
+  useEffect(() => {
+    if (!SCROLL_TOP_VIEWS.includes(view)) return;
+    requestAnimationFrame(() => {
+      scrollManagerPageToTop();
+    });
+  }, [view, reviewFixtureId]);
+
+  useEffect(() => {
+    if (view !== "hub" || !pendingHubNextFixtureScroll) return;
+    setPendingHubNextFixtureScroll(false);
+    const frame = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        scrollToManagerHubNextFixture();
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [view, pendingHubNextFixtureScroll]);
+
+  useEffect(() => {
+    if (view === "hub" || !pendingHubNextFixtureScroll) return;
+    setPendingHubNextFixtureScroll(false);
+  }, [view, pendingHubNextFixtureScroll]);
 
   const handleNavNavigate = useCallback(
     (next: ManagerView) => {
@@ -385,10 +422,24 @@ export default function ManagerPage() {
     setReviewFixtureId(null);
     if (postMatchReviewFlow) {
       setPostMatchReviewFlow(false);
+      const landsOnHub =
+        !career ||
+        Boolean(pendingIncomingBidId) ||
+        Boolean(pendingRetirementIntentId) ||
+        pendingChallengeCupCelebration ||
+        pendingLeagueWinnersCelebration ||
+        pendingTrophyCelebration ||
+        !career.isSeasonComplete;
       continueAfterMatchReview();
+      if (landsOnHub) {
+        setPendingHubNextFixtureScroll(true);
+      }
       return;
     }
     setView(matchReviewReturnView);
+    if (matchReviewReturnView === "hub") {
+      setPendingHubNextFixtureScroll(true);
+    }
   };
 
   const handleIncomingBidResolved = (nextCareer: ManagerCareer) => {
@@ -776,26 +827,11 @@ export default function ManagerPage() {
       )}
 
       {career && view === "match-review" && reviewFixtureId !== null && (
-        <div className="space-y-4">
-          <div className="flex flex-wrap items-center gap-3">
-            <GameButton
-              variant="secondary"
-              size="sm"
-              onClick={() => {
-                playUiClick();
-                handleMatchReviewClose();
-              }}
-            >
-              ← Back
-            </GameButton>
-            <p className={TYPO.sectionLabel}>Match Review</p>
-          </div>
-          <ManagerMatchReview
-            career={career}
-            fixtureId={reviewFixtureId}
-            onClose={handleMatchReviewClose}
-          />
-        </div>
+        <ManagerMatchReview
+          career={career}
+          fixtureId={reviewFixtureId}
+          onClose={handleMatchReviewClose}
+        />
       )}
 
       {career && view === "season-review" && (

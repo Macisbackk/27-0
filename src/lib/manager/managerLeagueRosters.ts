@@ -191,7 +191,8 @@ export function applyAiYouthIntakeToLeague(career: ManagerCareer): ManagerCareer
         `${career.seed}-${club}`,
         career.seasonYear,
         i,
-        pos
+        pos,
+        club
       );
       const playerId = `mgr-ai-${club.replace(/\s+/g, "-")}-${career.seasonYear}-${i}-${Math.abs(hashCode(prospect.name))}`;
       const player = reserveToPlayer({ ...prospect, id: playerId }, career.seasonYear);

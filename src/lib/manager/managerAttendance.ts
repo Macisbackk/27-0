@@ -18,6 +18,17 @@ import {
   GRAND_FINAL_VENUE,
   isGrandFinalFixture,
 } from "./managerPlayoffs";
+import {
+  MAGIC_WEEKEND_VENUE,
+  calculateMagicWeekendAttendance,
+  isMagicWeekendFixture,
+} from "./managerMagicWeekend";
+import {
+  CHALLENGE_CUP_FINAL_ATTENDANCE_MAX,
+  CHALLENGE_CUP_FINAL_ATTENDANCE_MIN,
+  CHALLENGE_CUP_FINAL_VENUE,
+  isChallengeCupFinalFixture,
+} from "./managerChallengeCup";
 
 export const CLUB_ATTENDANCE_PROFILES: Record<
   string,
@@ -183,13 +194,37 @@ export function getHomeFixtureAttendanceOutlook(
   career: ManagerCareer,
   fixture: Pick<
     ManagerScheduledFixture,
-    "opponent" | "isHome" | "competition" | "round" | "id" | "isNeutral" | "playoffRound"
+    "opponent" | "isHome" | "competition" | "round" | "id" | "isNeutral" | "playoffRound" | "cupRound"
   >
 ): { label: string; predictedAttendance: number; level: AttendanceOutlookLevel } | null {
   if (isGrandFinalFixture(fixture)) {
     const predictedAttendance = calculateGrandFinalAttendance(career, fixture as ManagerScheduledFixture);
     return {
       label: `Grand Final at ${GRAND_FINAL_VENUE} — bumper crowd expected`,
+      predictedAttendance,
+      level: "high",
+    };
+  }
+
+  if (isChallengeCupFinalFixture(fixture)) {
+    const predictedAttendance = calculateChallengeCupFinalAttendance(
+      career,
+      fixture as ManagerScheduledFixture
+    );
+    return {
+      label: `Challenge Cup Final at ${CHALLENGE_CUP_FINAL_VENUE} — bumper crowd expected`,
+      predictedAttendance,
+      level: "high",
+    };
+  }
+
+  if (isMagicWeekendFixture(fixture)) {
+    const predictedAttendance = calculateMagicWeekendAttendance(
+      career.seed,
+      fixture.id ?? `magic-${fixture.round}`
+    );
+    return {
+      label: `Magic Weekend at ${MAGIC_WEEKEND_VENUE} — bumper crowd expected`,
       predictedAttendance,
       level: "high",
     };
@@ -219,6 +254,16 @@ export function calculateGrandFinalAttendance(
   return GRAND_FINAL_ATTENDANCE_MIN + Math.floor(rng() * span);
 }
 
+export function calculateChallengeCupFinalAttendance(
+  career: ManagerCareer,
+  fixture: Pick<ManagerScheduledFixture, "id">
+): number {
+  const rng = seedrandom(`${career.seed}-ccf-att-${fixture.id}`);
+  const span =
+    CHALLENGE_CUP_FINAL_ATTENDANCE_MAX - CHALLENGE_CUP_FINAL_ATTENDANCE_MIN + 1;
+  return CHALLENGE_CUP_FINAL_ATTENDANCE_MIN + Math.floor(rng() * span);
+}
+
 function fanMoodChangeFromMatch(
   fixture: ManagerScheduledFixture,
   match: MatchFixture
@@ -237,6 +282,81 @@ function fanMoodChangeFromMatch(
     fanMoodChange += 3;
   }
   return fanMoodChange;
+}
+
+function processMagicWeekendAttendance(
+  career: ManagerCareer,
+  fixture: ManagerScheduledFixture,
+  match: MatchFixture
+): {
+  career: ManagerCareer;
+  meta: MatchAttendanceMeta;
+} {
+  const attendance = calculateMagicWeekendAttendance(
+    career.seed,
+    fixture.id ?? `magic-${fixture.round}`
+  );
+  const fanMoodChange = fanMoodChangeFromMatch(fixture, match);
+  const newFanMood = Math.max(
+    10,
+    Math.min(99, career.attendanceData.fanMood + fanMoodChange)
+  );
+
+  return {
+    career: {
+      ...career,
+      attendanceData: {
+        ...career.attendanceData,
+        fanMood: newFanMood,
+      },
+    },
+    meta: {
+      attendance,
+      gateIncome: 0,
+      transferAllocation: 0,
+      operatingAllocation: 0,
+      fanMoodChange,
+      ticketPrice: 0,
+      venue: MAGIC_WEEKEND_VENUE,
+      excludedFromClubFunds: true,
+    },
+  };
+}
+
+function processChallengeCupFinalAttendance(
+  career: ManagerCareer,
+  fixture: ManagerScheduledFixture,
+  match: MatchFixture
+): {
+  career: ManagerCareer;
+  meta: MatchAttendanceMeta;
+} {
+  const attendance = calculateChallengeCupFinalAttendance(career, fixture);
+  const fanMoodChange = fanMoodChangeFromMatch(fixture, match);
+  const newFanMood = Math.max(
+    10,
+    Math.min(99, career.attendanceData.fanMood + fanMoodChange)
+  );
+
+  return {
+    career: {
+      ...career,
+      attendanceData: {
+        ...career.attendanceData,
+        fanMood: newFanMood,
+      },
+    },
+    meta: {
+      attendance,
+      gateIncome: 0,
+      transferAllocation: 0,
+      operatingAllocation: 0,
+      fanMoodChange,
+      ticketPrice: 0,
+      venue: CHALLENGE_CUP_FINAL_VENUE,
+      excludedFromClubFunds: true,
+    },
+  };
 }
 
 function processGrandFinalAttendance(
@@ -285,6 +405,12 @@ export function processMatchAttendance(
 } {
   if (isGrandFinalFixture(fixture)) {
     return processGrandFinalAttendance(career, fixture, match);
+  }
+  if (isChallengeCupFinalFixture(fixture)) {
+    return processChallengeCupFinalAttendance(career, fixture, match);
+  }
+  if (isMagicWeekendFixture(fixture)) {
+    return processMagicWeekendAttendance(career, fixture, match);
   }
   return processHomeMatchAttendance(career, fixture, match);
 }

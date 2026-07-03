@@ -10,6 +10,8 @@ import type {
 } from "./types";
 import { getManagerCompetitionLabel } from "./managerFixtureDisplay";
 import { GRAND_FINAL_VENUE } from "./managerPlayoffs";
+import { MAGIC_WEEKEND_VENUE } from "./managerMagicWeekend";
+import { CHALLENGE_CUP_FINAL_VENUE } from "./managerChallengeCup";
 import { getManagerPlayer } from "./managerPlayers";
 
 const FORWARD_POSITIONS = new Set<Position>([
@@ -436,19 +438,22 @@ function buildResultOpener(
   const score = `${fixture.pointsFor}-${fixture.pointsAgainst}`;
 
   if (competition === "challenge_cup") {
+    const cupVenue = fixture.isNeutral
+      ? `at ${CHALLENGE_CUP_FINAL_VENUE}`
+      : venue;
     if (won && heavy) {
-      return `${clubName} marched into the next round with a commanding ${score} ${venue} win over ${fixture.opponent} in the ${compLabel}.`;
+      return `${clubName} marched into the next round with a commanding ${score} ${cupVenue} win over ${fixture.opponent} in the ${compLabel}.`;
     }
     if (won && close) {
-      return `A ${score} ${venue} win over ${fixture.opponent} kept your Challenge Cup run alive in a tense ${compLabel} tie.`;
+      return `A ${score} ${cupVenue} win over ${fixture.opponent} kept your Challenge Cup run alive in a tense ${compLabel} tie.`;
     }
     if (!won && close) {
-      return `${fixture.opponent} ended your cup run with a narrow ${fixture.pointsAgainst}-${fixture.pointsFor} win ${venue} in the ${compLabel}.`;
+      return `${fixture.opponent} ended your cup run with a narrow ${fixture.pointsAgainst}-${fixture.pointsFor} win ${cupVenue} in the ${compLabel}.`;
     }
     if (!won) {
-      return `Cup heartbreak for ${clubName} — a ${fixture.pointsAgainst}-${fixture.pointsFor} defeat ${venue} to ${fixture.opponent} in the ${compLabel}.`;
+      return `Cup heartbreak for ${clubName} — a ${fixture.pointsAgainst}-${fixture.pointsFor} defeat ${cupVenue} to ${fixture.opponent} in the ${compLabel}.`;
     }
-    return `${clubName} booked their place in the next round with a ${score} ${venue} win over ${fixture.opponent}.`;
+    return `${clubName} booked their place in the next round with a ${score} ${cupVenue} win over ${fixture.opponent}.`;
   }
 
   if (competition === "playoffs") {
@@ -466,6 +471,23 @@ function buildResultOpener(
     return won
       ? `A ${score} ${venue} friendly win over ${fixture.opponent} gave the squad useful minutes.`
       : `A ${fixture.pointsAgainst}-${fixture.pointsFor} friendly defeat ${venue} to ${fixture.opponent} — a run-out rather than a result that defines the season.`;
+  }
+
+  if (fixture.isNeutral && competition === "league") {
+    const mwVenue = `at ${MAGIC_WEEKEND_VENUE}`;
+    if (won && heavy) {
+      return `${clubName} dominated Magic Weekend with a ${score} win over rivals ${fixture.opponent} ${mwVenue}.`;
+    }
+    if (won && close) {
+      return `${clubName} edged rivals ${fixture.opponent} ${score} in a Magic Weekend thriller ${mwVenue}.`;
+    }
+    if (!won && close) {
+      return `Magic Weekend heartbreak — ${fixture.opponent} edged ${clubName} ${fixture.pointsAgainst}-${fixture.pointsFor} ${mwVenue}.`;
+    }
+    if (!won) {
+      return `${fixture.opponent} got the better of the Magic Weekend derby, beating ${clubName} ${fixture.pointsAgainst}-${fixture.pointsFor} ${mwVenue}.`;
+    }
+    return `${clubName} beat rivals ${fixture.opponent} ${score} at Magic Weekend ${mwVenue}.`;
   }
 
   if (won && heavy) {
@@ -590,7 +612,17 @@ function buildExtras(
   if (context.attendance?.excludedFromClubFunds) {
     const gate = context.attendance.attendance.toLocaleString();
     const venueName = context.attendance.venue ?? "the neutral venue";
-    extras.push(`A crowd of ${gate} packed ${venueName} for the Grand Final.`);
+    if (venueName === MAGIC_WEEKEND_VENUE) {
+      extras.push(
+        `Magic Weekend brought ${gate} fans to ${venueName} — a neutral venue, so neither club took gate receipts.`
+      );
+    } else if (venueName === CHALLENGE_CUP_FINAL_VENUE) {
+      extras.push(
+        `A crowd of ${gate} packed ${venueName} for the Challenge Cup Final — a neutral venue, so neither club took gate receipts.`
+      );
+    } else {
+      extras.push(`A crowd of ${gate} packed ${venueName} for the Grand Final.`);
+    }
   } else if (context.attendance && fixture.isHome) {
     const gate = context.attendance.attendance.toLocaleString();
     const mood = context.attendance.fanMoodChange;

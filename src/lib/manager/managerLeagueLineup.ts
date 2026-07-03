@@ -3,6 +3,8 @@ import {
   OPPONENT_LINEUP,
   selectClubMatchSquad,
 } from "../game/opponent-scorers";
+import { getFormationSlotDisplayLabel } from "../positions";
+import type { SquadSlot } from "../types";
 import { ERA_BENCH_FROM_STARTING_17 } from "../players/era-starting-17s";
 import type { Player, Position } from "../types";
 import type { ManagerCareer } from "./types";
@@ -11,6 +13,8 @@ import {
   getLeagueClubPlayerPool,
   getManagerOpponentPoolOptions,
 } from "./managerLeagueRosters";
+
+const STARTING_XIII_SLOTS = 13;
 
 export type ClubMatchdayLineupSlot = {
   player: Player;
@@ -30,6 +34,35 @@ export function getLineupXiiiPlayers(lineup: ClubMatchdayLineup): Player[] {
     .map((row) => row.player);
 }
 
+/** RugbyPitch / TeamSheet slots for manager club sheet popups. */
+export function clubLineupToSquadSlots(lineup: ClubMatchdayLineup): SquadSlot[] {
+  return Array.from({ length: STARTING_XIII_SLOTS }, (_, slotIndex) => {
+    const entry = lineup.xiii[slotIndex];
+    const position =
+      entry?.position ?? OPPONENT_LINEUP[slotIndex] ?? ("LOOSE_FORWARD" as Position);
+    return {
+      slotIndex,
+      position,
+      label: getFormationSlotDisplayLabel(slotIndex),
+      player: entry?.player ?? null,
+    };
+  });
+}
+
+function buildOpponentXiii(
+  selected: Player[]
+): ClubMatchdayLineup["xiii"] {
+  const xiii: ClubMatchdayLineup["xiii"] = new Array(STARTING_XIII_SLOTS);
+  for (let i = 0; i < selected.length && i < STARTING_XIII_SLOTS; i++) {
+    const player = selected[i]!;
+    xiii[i] = {
+      player,
+      position: OPPONENT_LINEUP[i] ?? player.position,
+    };
+  }
+  return xiii;
+}
+
 function leagueGamesPlayed(career: ManagerCareer): number {
   return Math.max(
     career.teamSeasonStats.played,
@@ -40,8 +73,8 @@ function leagueGamesPlayed(career: ManagerCareer): number {
 }
 
 function buildUserClubLineup(career: ManagerCareer): ClubMatchdayLineup {
-  const xiii: ClubMatchdayLineup["xiii"] = Array(career.matchdayXiii.length);
-  for (let i = 0; i < career.matchdayXiii.length; i++) {
+  const xiii: ClubMatchdayLineup["xiii"] = new Array(STARTING_XIII_SLOTS);
+  for (let i = 0; i < career.matchdayXiii.length && i < STARTING_XIII_SLOTS; i++) {
     const playerId = career.matchdayXiii[i];
     const position = career.xiiiSlotPositions[i];
     if (!playerId || !position) continue;
@@ -72,10 +105,7 @@ export function getClubMatchdayLineup(
   const matchRound = round ?? Math.max(career.currentRound, career.gameWeek, 1);
   const options = getManagerOpponentPoolOptions(career, club);
   const selected = selectClubMatchSquad(club, career.seed, matchRound, options);
-  const xiii: ClubMatchdayLineup["xiii"] = selected.map((player, index) => ({
-    player,
-    position: OPPONENT_LINEUP[index] ?? player.position,
-  }));
+  const xiii = buildOpponentXiii(selected);
 
   const usedIds = new Set(selected.map((p) => p.id));
   const pool = getLeagueClubPlayerPool(career, club).filter(

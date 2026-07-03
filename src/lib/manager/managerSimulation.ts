@@ -21,6 +21,7 @@ import {
   getUserLeaguePosition,
   syncManagerLeagueTable,
 } from "./managerFixtures";
+import { getLeagueFixtureSides, isMagicWeekendFixture } from "./managerMagicWeekend";
 import { rollPostMatchInjuries } from "./managerTransfers";
 import { computeManagerTeamRating } from "./managerRating";
 import {
@@ -311,14 +312,16 @@ export function applyManagerMatchResult(
   );
 
   if (!isCup && !isFriendly && !isPlayoff) {
+    const sides = getLeagueFixtureSides(career.club, sched);
+    const userIsListedHome = sides.homeTeam === career.club;
     const userMatch = {
       round,
-      homeTeam: sched.isHome ? career.club : sched.opponent,
-      awayTeam: sched.isHome ? sched.opponent : career.club,
-      homeScore: sched.isHome ? fixture.pointsFor : fixture.pointsAgainst,
-      awayScore: sched.isHome ? fixture.pointsAgainst : fixture.pointsFor,
-      homeTries: sched.isHome ? fixture.triesFor : fixture.triesAgainst,
-      awayTries: sched.isHome ? fixture.triesAgainst : fixture.triesFor,
+      homeTeam: sides.homeTeam,
+      awayTeam: sides.awayTeam,
+      homeScore: userIsListedHome ? fixture.pointsFor : fixture.pointsAgainst,
+      awayScore: userIsListedHome ? fixture.pointsAgainst : fixture.pointsFor,
+      homeTries: userIsListedHome ? fixture.triesFor : fixture.triesAgainst,
+      awayTries: userIsListedHome ? fixture.triesAgainst : fixture.triesFor,
     };
 
     roundResults = [
@@ -514,13 +517,15 @@ export function applyManagerMatchResult(
   const expiring = countExpiringContracts(career.contracts);
   if (expiring >= 4) boardConfidence = Math.max(0, boardConfidence - 3);
 
-  const matchIncome = isFriendly
-    ? won
-      ? 4_000
-      : 2_000
-    : won
-      ? 15_000
-      : 6_000;
+  const matchIncome = isMagicWeekendFixture(sched)
+    ? 0
+    : isFriendly
+        ? won
+          ? 4_000
+          : 2_000
+        : won
+          ? 15_000
+          : 6_000;
   const cupBonus = isCup && won ? 30_000 : 0;
 
   const nextFixtureIndex =

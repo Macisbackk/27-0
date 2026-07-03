@@ -10,7 +10,7 @@ import type {
   SquadRole,
 } from "./types";
 import { clearRetirementIntentOnRenewal } from "./managerRetirement";
-import { canAffordAdditionalWage } from "./managerFinance";
+import { canAffordAdditionalWage, scaleManagerEconomy } from "./managerFinance";
 
 export function formatWage(amount: number): string {
   if (amount >= 1_000_000) return `£${(amount / 1_000_000).toFixed(2)}m`;
@@ -83,7 +83,8 @@ export function calculateWageForPlayer(
   };
 
   const wage = Math.round(base * roleMult[role]);
-  return Math.min(MAX_DEMAND_BY_ROLE[role], Math.max(15_000, wage));
+  const capped = Math.min(MAX_DEMAND_BY_ROLE[role], Math.max(15_000, wage));
+  return scaleManagerEconomy(capped);
 }
 
 export function generateInitialContract(
@@ -181,7 +182,7 @@ export function computeWageBill(
 
 export function getWageBudgetForClub(club: string): number {
   const rating = getManagerClubTeamRating(club);
-  return Math.round(3_200_000 + rating * 15_000);
+  return scaleManagerEconomy(Math.round(3_200_000 + rating * 15_000));
 }
 
 export function roleRank(role: SquadRole): number {

@@ -11,6 +11,10 @@ import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { ensurePlayoffsReady } from "@/lib/manager/managerPlayoffs";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { playSeasonComplete, playUiClick } from "@/lib/sound";
+import {
+  managerModalHeaderClass,
+  managerPillClass,
+} from "@/lib/manager/managerSurfaces";
 
 interface ManagerPlayoffsIntroModalProps {
   career: ManagerCareer;
@@ -56,8 +60,8 @@ export function ManagerPlayoffsIntroModal({
         className={`card-glass my-auto w-full max-w-2xl overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="-mx-4 -mt-4 mb-4 border-b border-theme-primary/30 bg-theme-primary/10 px-4 py-4 sm:-mx-6 sm:-mt-6 sm:px-6">
-          <span className="inline-flex rounded-full border border-theme-primary/45 bg-theme-primary/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-theme-primary">
+        <div className={managerModalHeaderClass("primary")}>
+          <span className={managerPillClass("primary")}>
             Regular season complete
           </span>
           <h2 id="playoffs-intro-title" className={`mt-2 ${TYPO.pageTitle}`}>

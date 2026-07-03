@@ -37,6 +37,51 @@ const BRACKET_ROUND_TO_KEY: Record<number, CupRoundKey> = {
   4: "final",
 };
 
+export const CHALLENGE_CUP_FINAL_VENUE = "Wembley Stadium";
+export const CHALLENGE_CUP_FINAL_ATTENDANCE_MIN = 72_000;
+export const CHALLENGE_CUP_FINAL_ATTENDANCE_MAX = 85_000;
+
+export function isChallengeCupFinalFixture(
+  fixture: Pick<
+    ManagerScheduledFixture,
+    "competition" | "cupRound" | "isNeutral"
+  >
+): boolean {
+  return (
+    fixture.competition === "challenge_cup" &&
+    (fixture.cupRound === "final" || fixture.isNeutral === true)
+  );
+}
+
+function decorateCupFinalNeutral<
+  T extends {
+    opponent: string;
+    label?: string;
+    isHome?: boolean;
+  },
+>(
+  fixture: T,
+  bracketHome: string,
+  bracketAway: string
+): T & {
+  isHome: false;
+  isNeutral: true;
+  venue: string;
+  listedHome: string;
+  listedAway: string;
+  label: string;
+} {
+  return {
+    ...fixture,
+    isHome: false,
+    isNeutral: true,
+    venue: CHALLENGE_CUP_FINAL_VENUE,
+    listedHome: bracketHome,
+    listedAway: bracketAway,
+    label: `Challenge Cup Final at ${CHALLENGE_CUP_FINAL_VENUE}`,
+  };
+}
+
 export function createManagerChallengeCup(
   seed: string,
   userClub: string
@@ -222,7 +267,7 @@ export function reconcileChallengeCupFromFixtures(
 export function getUserCupMatch(
   bracket: ChallengeCupBracketState,
   preferredRound?: number
-): { matchId: string; opponent: string; isHome: boolean; round: number } | null {
+): { matchId: string; opponent: string; isHome: boolean; round: number; bracketHome: string; bracketAway: string } | null {
   if (bracket.userEliminated || bracket.tournamentComplete) return null;
 
   const roundsToSearch =
@@ -239,7 +284,14 @@ export function getUserCupMatch(
     if (!match || !match.homeTeam || !match.awayTeam) continue;
     const isHome = match.homeTeam === bracket.userClub;
     const opponent = isHome ? match.awayTeam : match.homeTeam;
-    return { matchId: match.id, opponent, isHome, round };
+    return {
+      matchId: match.id,
+      opponent,
+      isHome,
+      round,
+      bracketHome: match.homeTeam,
+      bracketAway: match.awayTeam,
+    };
   }
   return null;
 }
@@ -250,14 +302,26 @@ export function buildCupScheduledFixture(
 ): ManagerScheduledFixture {
   const cupKey = BRACKET_ROUND_TO_KEY[cupMatch.round] ?? "round_one";
   const leaguePlayed = countLeagueFixturesPlayed(career);
-  return {
+  const base = {
     id: `cup-${cupMatch.matchId}`,
     round: leaguePlayed + 1,
     opponent: cupMatch.opponent,
-    isHome: cupMatch.isHome,
-    competition: "challenge_cup",
+    competition: "challenge_cup" as const,
     cupRound: cupKey,
     cupMatchId: cupMatch.matchId,
+  };
+
+  if (cupKey === "final") {
+    return decorateCupFinalNeutral(
+      base,
+      cupMatch.bracketHome,
+      cupMatch.bracketAway
+    );
+  }
+
+  return {
+    ...base,
+    isHome: cupMatch.isHome,
     label: CUP_ROUND_LABELS[cupKey],
   };
 }
@@ -517,15 +581,20 @@ function resolveCupDisplayFixture(
       f.competition === "challenge_cup" && f.meta?.cupRound === cupKey
   );
   if (played) {
-    return {
+    const base = {
       id: played.fixtureId ?? `cup-played-${cupKey}`,
       round: played.round,
       opponent: played.opponent,
-      isHome: played.isHome,
-      competition: "challenge_cup",
+      competition: "challenge_cup" as const,
       cupRound: cupKey,
       label: `${CUP_ROUND_LABELS[cupKey]} vs ${played.opponent}`,
     };
+    if (cupKey === "final") {
+      const bracketHome = played.isHome ? career.club : played.opponent;
+      const bracketAway = played.isHome ? played.opponent : career.club;
+      return decorateCupFinalNeutral(base, bracketHome, bracketAway);
+    }
+    return { ...base, isHome: played.isHome };
   }
 
   const bracketRound = CUP_KEY_TO_BRACKET_ROUND[cupKey];
@@ -534,16 +603,23 @@ function resolveCupDisplayFixture(
     const prepared = prepareCupRound(career);
     const match = getUserCupMatch(prepared, pending);
     if (match) {
-      return {
+      const base = {
         id: `cup-${match.matchId}`,
         round,
         opponent: match.opponent,
-        isHome: match.isHome,
-        competition: "challenge_cup",
+        competition: "challenge_cup" as const,
         cupRound: cupKey,
         cupMatchId: match.matchId,
         label: `${CUP_ROUND_LABELS[cupKey]} vs ${match.opponent}`,
       };
+      if (cupKey === "final") {
+        return decorateCupFinalNeutral(
+          base,
+          match.bracketHome,
+          match.bracketAway
+        );
+      }
+      return { ...base, isHome: match.isHome };
     }
   }
 
@@ -557,27 +633,43 @@ function resolveCupDisplayFixture(
   if (cupMatch?.homeTeam && cupMatch.awayTeam) {
     const isHome = cupMatch.homeTeam === career.club;
     const opponent = isHome ? cupMatch.awayTeam : cupMatch.homeTeam;
-    return {
+    const base = {
       id: `cup-slot-${cupKey}`,
       round,
       opponent,
-      isHome,
-      competition: "challenge_cup",
+      competition: "challenge_cup" as const,
       cupRound: cupKey,
       cupMatchId: cupMatch.id,
       label: `${CUP_ROUND_LABELS[cupKey]} vs ${opponent}`,
     };
+    if (cupKey === "final") {
+      return decorateCupFinalNeutral(
+        base,
+        cupMatch.homeTeam,
+        cupMatch.awayTeam
+      );
+    }
+    return { ...base, isHome };
   }
 
-  return {
+  const tbcBase = {
     id: `cup-slot-${cupKey}`,
     round,
     opponent: "TBC",
-    isHome: true,
-    competition: "challenge_cup",
+    competition: "challenge_cup" as const,
     cupRound: cupKey,
     label: CUP_ROUND_LABELS[cupKey],
   };
+  if (cupKey === "final") {
+    return {
+      ...tbcBase,
+      isHome: false,
+      isNeutral: true,
+      venue: CHALLENGE_CUP_FINAL_VENUE,
+      label: `Challenge Cup Final at ${CHALLENGE_CUP_FINAL_VENUE}`,
+    };
+  }
+  return { ...tbcBase, isHome: true };
 }
 
 export function cupRoundKeyToBracketRound(key: CupRoundKey): number {

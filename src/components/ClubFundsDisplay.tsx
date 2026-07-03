@@ -77,7 +77,7 @@ export function ClubFundsDisplay({
   return (
     <div
       ref={rootRef}
-      className={`relative shrink-0 ${isMobileUnderLogo ? "w-full" : ""}`}
+      className={`relative shrink-0 ${isMobileUnderLogo ? "flex justify-center" : ""}`}
     >
       <button
         type="button"

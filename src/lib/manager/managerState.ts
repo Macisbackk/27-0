@@ -178,13 +178,13 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
             ...r,
             baseRating: r.baseRating ?? r.rating,
           }))
-        : generateReserveSquad(raw.seed ?? "migrate"),
+        : generateReserveSquad(raw.seed ?? "migrate", 24, raw.club),
     reserveContracts:
       raw.reserveContracts ??
       buildReserveContractsForReserves(
         raw.reserves?.length
           ? raw.reserves
-          : generateReserveSquad(raw.seed ?? "migrate")
+          : generateReserveSquad(raw.seed ?? "migrate", 24, raw.club)
       ),
     youthProspects: raw.youthProspects ?? [],
     reserveResults: raw.reserveResults ?? [],
@@ -316,7 +316,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
 
   const transferBudget = computeFirstSeasonTransferBudget(club, seed);
 
-  const reserves = generateReserveSquad(seed);
+  const reserves = generateReserveSquad(seed, 24, club);
   const reserveContracts = buildReserveContractsForReserves(reserves);
   const wageBill = computeCareerWageBill({
     contracts,

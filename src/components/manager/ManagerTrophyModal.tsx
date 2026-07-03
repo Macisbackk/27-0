@@ -7,6 +7,10 @@ import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { playCupFinalWin, playUiClick } from "@/lib/sound";
+import {
+  managerModalHeaderClass,
+  managerPillClass,
+} from "@/lib/manager/managerSurfaces";
 
 interface ManagerTrophyModalProps {
   career: ManagerCareer;
@@ -41,11 +45,11 @@ export function ManagerTrophyModal({
         className={`card-glass w-full max-w-md overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="-mx-4 -mt-4 mb-4 border-b border-accent-gold/40 bg-accent-gold/10 px-4 py-5 text-center sm:-mx-6 sm:-mt-6 sm:px-6">
+        <div className={managerModalHeaderClass("gold", { centered: true })}>
           <p className="text-5xl" aria-hidden>
             🏆
           </p>
-          <span className="mt-3 inline-flex rounded-full border border-accent-gold/50 bg-accent-gold/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent-gold">
+          <span className={`mt-3 ${managerPillClass("gold")}`}>
             Champions
           </span>
           <h2 id="trophy-title" className={`mt-3 ${TYPO.pageTitle}`}>

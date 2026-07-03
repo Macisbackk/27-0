@@ -26,8 +26,6 @@ import {
   getLastHomeGate,
 } from "@/lib/manager/managerAttendance";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
-import { getClubIndicatorColor } from "@/lib/clubs";
-import { getFriendlyDualBorderStyle } from "@/lib/manager/managerFriendlyUi";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getManagerOpponentPoolOptions } from "@/lib/manager/managerLeagueRosters";
@@ -39,6 +37,17 @@ import {
 } from "@/lib/manager/managerCareerStats";
 import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import { playSeasonComplete, playSimulateRound, playUiClick } from "@/lib/sound";
+import {
+  managerClubAccentCardClass,
+  managerClubAccentCardStyle,
+  managerCompetitionSurfaceClass,
+  managerFeaturedBannerClass,
+  managerFixtureCardClass,
+  managerFixtureCardStyle,
+  managerPillClass,
+  managerCalloutClass,
+} from "@/lib/manager/managerSurfaces";
+import { MANAGER_HUB_NEXT_FIXTURE_ID } from "@/lib/manager/managerHubScroll";
 import { autoFixMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
@@ -91,8 +100,8 @@ function HubBoardBudgetAttendance({
 }) {
   return (
     <div
-      className={`${CARD.elevated} ${SPACING.cardPadding} border-l-4`}
-      style={{ borderLeftColor: getClubIndicatorColor(career.club) }}
+      className={managerClubAccentCardClass()}
+      style={managerClubAccentCardStyle(career.club)}
     >
       <p className={TYPO.sectionLabel}>Board · Attendance · Wages</p>
       <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
@@ -154,10 +163,8 @@ function HubPlayoffsGateCard({
   }, [position]);
 
   return (
-    <div
-      className={`${CARD.elevated} ${SPACING.cardPadding} border-2 border-theme-primary/50 bg-gradient-to-b from-theme-primary/12 to-pitch-950/90`}
-    >
-      <span className="inline-flex rounded-full border border-theme-primary/45 bg-theme-primary/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-theme-primary">
+    <div className={managerFeaturedBannerClass("primary")}>
+      <span className={managerPillClass("primary")}>
         Regular season complete
       </span>
       <h2 className={`mt-3 ${TYPO.pageTitle} text-xl sm:text-2xl`}>
@@ -221,12 +228,12 @@ function HubPlayoffBracketPanel({
 
   return (
     <div
-      className={`${CARD.elevated} ${SPACING.cardPadding} border-2 border-accent-gold/55 bg-accent-gold/10`}
+      className={`${CARD.elevated} ${SPACING.cardPadding} border ${managerCompetitionSurfaceClass("playoffs")}`}
     >
       <div className="flex flex-wrap items-center gap-2">
-        <p className={`${TYPO.sectionLabel} text-accent-gold`}>Play-Off Bracket</p>
+        <p className={`${TYPO.sectionLabel} text-theme-primary`}>Play-Off Bracket</p>
         {activeRound != null && (
-          <span className="rounded-full border border-accent-gold/40 bg-accent-gold/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent-gold">
+          <span className={managerPillClass("primary")}>
             {getPlayoffRoundLabel(activeRound)}
           </span>
         )}
@@ -258,9 +265,7 @@ function HubPlayoffsCampaignCard({ career }: { career: ManagerCareer }) {
         · Season {career.seasonYear}
       </p>
       <div className="mt-2 flex flex-wrap gap-2">
-        <span className="rounded-full border border-accent-gold/40 bg-accent-gold/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent-gold">
-          Play-Offs live
-        </span>
+        <span className={managerPillClass("primary")}>Play-Offs live</span>
       </div>
     </ManagerSectionCard>
   );
@@ -397,23 +402,19 @@ export function ManagerHub({
     />
   );
 
-  const isFriendlyFixture = nextFixture?.competition === "friendly";
 
   const nextFixtureCard =
     nextFixture && !seasonComplete && !playoffsPending ? (
       <div
-        className={`${CARD.elevated} ${SPACING.cardPadding} ${
-          isCupFixture || isPlayoffFixture
-            ? "border-2 border-accent-gold/55 bg-accent-gold/12"
-            : isFriendlyFixture
-              ? "border border-pitch-700/40"
-              : CARD.featured
-        }`}
-        style={
-          isFriendlyFixture
-            ? getFriendlyDualBorderStyle(career.club, nextFixture.opponent)
-            : undefined
-        }
+        id={MANAGER_HUB_NEXT_FIXTURE_ID}
+        className={managerFixtureCardClass(nextFixture.competition, {
+          scrollMargin: true,
+        })}
+        style={managerFixtureCardStyle(
+          nextFixture.competition,
+          career.club,
+          nextFixture.opponent
+        )}
       >
         <div className="flex flex-wrap items-center gap-2">
           <p className={TYPO.sectionLabel}>
@@ -425,7 +426,11 @@ export function ManagerHub({
           />
         </div>
         {(isCupFixture || isPlayoffFixture) && (
-          <p className="mt-1 text-sm font-semibold text-accent-gold">
+          <p
+            className={`mt-1 text-sm font-semibold ${
+              isPlayoffFixture ? "text-theme-primary" : "text-accent-gold"
+            }`}
+          >
             {getManagerScheduledFixtureHeadline(nextFixture)}
           </p>
         )}
@@ -484,7 +489,7 @@ export function ManagerHub({
         </ManagerStatGrid>
         {!squadCheck.valid && (
           <div
-            className={`mt-3 rounded-lg border border-accent-gold/40 bg-accent-gold/10 px-4 py-2.5 sm:px-3 sm:py-2 ${TYPO.bodySm} text-accent-gold whitespace-pre-line`}
+            className={`mt-3 ${managerCalloutClass("amber")} px-4 py-2.5 sm:px-3 sm:py-2 ${TYPO.bodySm} whitespace-pre-line`}
           >
             {squadCheck.message}
             {onUpdate && (
@@ -656,12 +661,8 @@ export function ManagerHub({
         <span className="text-pitch-500"> in the table</span>
       </p>
       <div className="mt-2 flex flex-wrap gap-2">
-        <span className="rounded-full border border-accent-gold/40 bg-accent-gold/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent-gold">
-          {cupStatus}
-        </span>
-        <span className="rounded-full border border-theme-primary/40 bg-theme-primary/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-theme-primary">
-          {playoffStatus}
-        </span>
+        <span className={managerPillClass("gold")}>{cupStatus}</span>
+        <span className={managerPillClass("primary")}>{playoffStatus}</span>
       </div>
       {wageOverBudget && (
         <p className={`mt-2 ${TYPO.bodySm} text-amber-300`}>

@@ -37,6 +37,74 @@ const LAST_NAMES = [
 
 const NATIONALITIES = ["England", "Wales", "Scotland", "Ireland", "France", "Australia"];
 
+const FRENCH_RESERVE_CLUBS = new Set([
+  "Toulouse Olympique",
+  "Catalans Dragons",
+]);
+
+const FRENCH_FIRST_NAMES = [
+  "Lucas", "Hugo", "Nathan", "Enzo", "Louis", "Theo", "Mathis", "Jules",
+  "Romain", "Maxime", "Baptiste", "Florian", "Adrien", "Kilian", "Yann",
+  "Paul", "Antoine", "Clement", "Damien", "Julien", "Morgan", "Arthur",
+  "Benjamin", "Valentin", "Alexandre", "Nicolas", "Guillaume", "Thomas",
+  "Simon", "Corentin", "Jordan", "Anthony", "Kevin", "Sami", "Alrix",
+  "Eloi", "Teiva", "Leo", "Thibault", "Quentin", "Pierre", "Yoann",
+  "Gaetan", "Remi", "Cedric", "Fabien", "Sebastien", "Christophe", "Olivier",
+  "Jerome", "Mickael", "Tristan", "Loic", "Axel", "Noa", "Elias", "Matteo",
+  "Gabin", "Robin", "Bastien", "Gregoire", "Mathieu", "Flavien", "Dorian",
+  "Lenny", "Timothee", "Victor", "William", "Xavier", "Yohan", "Zakaria",
+  "Aurelien", "Brice", "Cyril", "Didier", "Etienne", "Francois", "Gauthier",
+  "Herve", "Ilan", "Jean", "Kylian", "Lilian", "Marc", "Nolan", "Oscar",
+  "Patrice", "Raphael", "Sylvain", "Tanguy", "Ugo", "Wesley", "Yannick",
+  "Zinedine", "Arnaud", "Benoit", "Charly", "Denis",
+];
+
+const FRENCH_LAST_NAMES = [
+  "Martin", "Bernard", "Dubois", "Thomas", "Robert", "Richard", "Petit",
+  "Durand", "Leroy", "Moreau", "Simon", "Laurent", "Lefebvre", "Michel",
+  "Garcia", "David", "Bertrand", "Roux", "Vincent", "Fournier", "Bonnet",
+  "Fontaine", "Dupont", "Mercier", "Marchand", "Girard", "Blanc", "Henry",
+  "Bousquet", "Fabre", "Coste", "Sanchez", "Perez", "Romano", "Gigot",
+  "Marguerite", "Bourgarel", "Viguier", "Mourgue", "Chanareille", "Da Costa",
+  "Marion", "Laguerre", "Pelissier", "Salabio", "Tison", "Fages", "Julian",
+  "Rives", "Barthou", "Bouchet", "Cousin", "Delmas", "Escande", "Ferrer",
+  "Garrigues", "Hernandez", "Izard", "Jourdan", "Klein", "Lacombe",
+  "Navarro", "Pons", "Quiles", "Rey", "Serra", "Torres", "Urbain",
+  "Vidal", "Yrieix", "Ziani", "Andrieu", "Barthe", "Cabrera",
+  "Ducasse", "Espinas", "Fabregas", "Galin", "Hernani", "Innocenti", "Jorda",
+  "Kuntz", "Lapeyre", "Mazars", "Nouvel", "Pujol", "Riviere",
+  "Sabatier", "Teixeira", "Valette", "Aussar", "Berge", "Carme",
+  "Deschamps", "Escudier", "Ferrand", "Galy", "Hilaire", "Isnard",
+  "Lafon", "Maurin", "Narbonne", "Ollagnier", "Peyre", "Roussel", "Sanz",
+  "Taffanel", "Verdier", "Armand", "Bardy", "Cavailhes", "Dubarry", "Esteve",
+  "Ferrasse", "Gorse", "Homs", "Izquierdo", "Lacoste", "Nouguier", "Ortiz",
+  "Peyron", "Rigal", "Sole", "Tissier", "Villeneuve",
+];
+
+function usesFrenchReserveIdentity(club?: string): boolean {
+  return club != null && FRENCH_RESERVE_CLUBS.has(club);
+}
+
+function pickReserveName(
+  rng: () => number,
+  club?: string
+): { first: string; last: string } {
+  const french = usesFrenchReserveIdentity(club);
+  const firstPool = french ? FRENCH_FIRST_NAMES : FIRST_NAMES;
+  const lastPool = french ? FRENCH_LAST_NAMES : LAST_NAMES;
+  return {
+    first: firstPool[Math.floor(rng() * firstPool.length)]!,
+    last: lastPool[Math.floor(rng() * lastPool.length)]!,
+  };
+}
+
+function pickReserveNationality(rng: () => number, club?: string): string {
+  if (usesFrenchReserveIdentity(club)) {
+    return rng() < 0.82 ? "France" : NATIONALITIES[Math.floor(rng() * NATIONALITIES.length)]!;
+  }
+  return NATIONALITIES[Math.floor(rng() * NATIONALITIES.length)]!;
+}
+
 function pickPotential(age: number, rng: () => number): number {
   const roll = rng();
   if (roll < 0.04) return 85 + Math.floor(rng() * 6);
@@ -243,7 +311,8 @@ export function applyYouthMatchDevelopment(
 function generateReservePlayer(
   seed: string,
   index: number,
-  position: Position
+  position: Position,
+  club?: string
 ): ManagerReservePlayer {
   const rng = seedrandom(`${seed}-reserve-${index}`);
   const age = 17 + Math.floor(rng() * 6);
@@ -252,14 +321,13 @@ function generateReservePlayer(
     potential,
     ratingForAge(age, potential, rng)
   );
-  const first = FIRST_NAMES[Math.floor(rng() * FIRST_NAMES.length)]!;
-  const last = LAST_NAMES[Math.floor(rng() * LAST_NAMES.length)]!;
+  const { first, last } = pickReserveName(rng, club);
 
   return {
     id: `mgr-res-${seed}-${index}`,
     name: `${first} ${last}`,
     age,
-    nationality: NATIONALITIES[Math.floor(rng() * NATIONALITIES.length)]!,
+    nationality: pickReserveNationality(rng, club),
     position,
     eligiblePositions: [position],
     rating,
@@ -284,9 +352,15 @@ export function createYouthProspect(
   seed: string,
   seasonYear: number,
   index: number,
-  position: Position
+  position: Position,
+  club?: string
 ): ManagerReservePlayer {
-  const player = generateReservePlayer(`${seed}-y${seasonYear}`, index, position);
+  const player = generateReservePlayer(
+    `${seed}-y${seasonYear}`,
+    index,
+    position,
+    club
+  );
   return {
     ...player,
     id: `mgr-youth-${seasonYear}-${index}-${Math.abs(hashCode(player.name))}`,
@@ -295,7 +369,8 @@ export function createYouthProspect(
 
 export function generateReserveSquad(
   seed: string,
-  count = 24
+  count = 24,
+  club?: string
 ): ManagerReservePlayer[] {
   const positions: Position[] = [];
   for (const { position, count: c } of SQUAD_STRUCTURE) {
@@ -306,7 +381,7 @@ export function generateReserveSquad(
   const reserves: ManagerReservePlayer[] = [];
   for (let i = 0; i < count; i++) {
     const pos = shuffled[i % shuffled.length] ?? "CENTRE";
-    reserves.push(generateReservePlayer(seed, i, pos));
+    reserves.push(generateReservePlayer(seed, i, pos, club));
   }
   return reserves;
 }

@@ -1,24 +1,22 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-import { ClubHeaderBar, ClubLogoBox } from "@/components/ClubBadge";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { ClubDualSwatch } from "@/components/ClubDualSwatch";
+import { PitchSlotCard } from "@/components/PitchSlotCard";
+import { TeamSheet } from "@/components/TeamSheet";
 import { GameButton } from "@/components/ui/GameButton";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { getClubIndicatorColor } from "@/lib/clubs";
 import {
+  clubLineupToSquadSlots,
   getClubMatchdayLineup,
   getLineupXiiiPlayers,
 } from "@/lib/manager/managerLeagueLineup";
 import { getManagerPlayerAge } from "@/lib/manager/managerPlayers";
-import {
-  slotAbbrev,
-  TEAM_SHEET_ROWS,
-} from "@/lib/manager/managerMatchdaySquad";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { POSITION_SHORT } from "@/lib/positions";
-import type { Player, Position } from "@/lib/types";
-import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
+import type { Player, SquadSlot } from "@/lib/types";
 import { CARD, MODAL, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playPanelClose, playUiClick } from "@/lib/sound";
@@ -32,147 +30,66 @@ interface ManagerClubSquadSheetProps {
   round?: number;
 }
 
-function ratingBadgeClass(rating: number): string {
-  if (rating >= 85) {
-    return "bg-accent-gold/15 text-accent-gold ring-1 ring-accent-gold/35";
-  }
-  if (rating >= 78) {
-    return "bg-theme-primary/15 text-theme-primary ring-1 ring-theme-primary/35";
-  }
-  return "bg-pitch-800/80 text-pitch-200 ring-1 ring-pitch-600/50";
-}
-
 function teamStrengthLabel(avg: number): { label: string; className: string } {
   if (avg >= 84) {
-    return { label: "Elite", className: "text-accent-gold border-accent-gold/40 bg-accent-gold/10" };
+    return {
+      label: "Elite",
+      className: "text-accent-gold border-accent-gold/40 bg-accent-gold/10",
+    };
   }
   if (avg >= 80) {
-    return { label: "Strong", className: "text-theme-primary border-theme-primary/40 bg-theme-primary/10" };
+    return {
+      label: "Strong",
+      className: "text-theme-primary border-theme-primary/40 bg-theme-primary/10",
+    };
   }
   if (avg >= 76) {
-    return { label: "Competitive", className: "text-sky-300 border-sky-400/35 bg-sky-400/10" };
+    return {
+      label: "Competitive",
+      className: "text-sky-300 border-sky-400/35 bg-sky-400/10",
+    };
   }
-  return { label: "Developing", className: "text-pitch-300 border-pitch-600/50 bg-pitch-800/50" };
+  return {
+    label: "Developing",
+    className: "text-pitch-300 border-pitch-600/50 bg-pitch-800/50",
+  };
 }
 
-function isBackPosition(position: Position): boolean {
-  return (
-    position === "FULLBACK" ||
-    position === "WING" ||
-    position === "CENTRE" ||
-    position === "STAND_OFF" ||
-    position === "SCRUM_HALF"
-  );
-}
-
-function positionChipClass(position: Position): string {
-  return isBackPosition(position)
-    ? "border-sky-400/35 bg-sky-400/10 text-sky-200"
-    : "border-amber-400/35 bg-amber-400/10 text-amber-200";
-}
-
-function TeamSheetPlayerSlot({
-  position,
+function InterchangeSlot({
   player,
+  club,
   age,
   listed,
-  compact,
 }: {
-  position: Position;
   player: Player;
-  age: number | null | undefined;
+  club: string;
+  age: number | undefined;
   listed: boolean;
-  compact?: boolean;
 }) {
-  const rating = player.peakRating;
+  const slot: SquadSlot = {
+    slotIndex: 0,
+    position: player.position,
+    label: POSITION_SHORT[player.position],
+    player,
+  };
 
   return (
-    <div
-      className={`relative flex min-h-[4.5rem] flex-col justify-between rounded-lg border border-pitch-700/55 bg-pitch-950/75 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] ${
-        compact ? "px-1.5 py-1.5 sm:px-2 sm:py-2" : "px-2 py-2"
-      }`}
-    >
-      <span
-        className={`absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-md font-display text-[11px] font-black sm:h-8 sm:w-8 sm:text-xs ${ratingBadgeClass(rating)}`}
-      >
-        {rating}
-      </span>
-
-      <div className="flex flex-wrap items-center gap-1 pr-8">
-        <span
-          className={`rounded border px-1 py-0.5 text-[9px] font-bold uppercase tracking-wider ${positionChipClass(position)}`}
-        >
-          {slotAbbrev(position)}
-        </span>
+    <div className="flex flex-col items-center gap-1">
+      <PitchSlotCard
+        slot={slot}
+        clubColorOverride={club}
+        compact
+        fullPlayerNames
+      />
+      <div className="flex flex-wrap items-center justify-center gap-1 text-[10px] text-pitch-500">
+        {age != null && <span>{age}y</span>}
         {listed && (
-          <span className="rounded border border-theme-primary/35 bg-theme-primary/10 px-1 py-0.5 text-[8px] font-bold uppercase tracking-wider text-theme-primary">
+          <span className="rounded border border-theme-primary/35 bg-theme-primary/10 px-1 py-0.5 font-bold uppercase tracking-wider text-theme-primary">
             Listed
           </span>
         )}
       </div>
-
-      <div className="mt-1 min-w-0 pr-7">
-        <p
-          className={`truncate font-display font-bold leading-tight text-white ${
-            compact ? "text-[11px] sm:text-sm" : "text-sm"
-          }`}
-          title={player.name}
-        >
-          {player.name}
-        </p>
-        {age != null && (
-          <p className="mt-0.5 text-[10px] text-pitch-500">{age}y</p>
-        )}
-      </div>
     </div>
-  );
-}
-
-function BenchPlayerSlot({
-  index,
-  player,
-  age,
-  listed,
-}: {
-  index: number;
-  player: Player;
-  age: number | null | undefined;
-  listed: boolean;
-}) {
-  const positions = getPlayerEligiblePositions(player);
-  const posLabel = positions.map((p) => POSITION_SHORT[p]).join(" · ");
-
-  return (
-    <li
-      className={`${CARD.inset} relative flex min-h-[5rem] flex-col justify-between ${SPACING.cardPaddingSm}`}
-    >
-      <div className="flex items-start justify-between gap-2">
-        <span className="font-mono text-[10px] font-bold text-pitch-500">
-          {14 + index}
-        </span>
-        <span
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md font-display text-xs font-black ${ratingBadgeClass(player.peakRating)}`}
-        >
-          {player.peakRating}
-        </span>
-      </div>
-      <div className="min-w-0">
-        <p className="truncate font-display text-sm font-bold text-white" title={player.name}>
-          {player.name}
-        </p>
-        <p className="mt-0.5 truncate text-[10px] text-pitch-400">{posLabel}</p>
-        <div className="mt-1 flex flex-wrap items-center gap-1.5">
-          {age != null && (
-            <span className="text-[10px] text-pitch-500">{age}y</span>
-          )}
-          {listed && (
-            <span className="rounded border border-theme-primary/35 bg-theme-primary/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-theme-primary">
-              Listed
-            </span>
-          )}
-        </div>
-      </div>
-    </li>
   );
 }
 
@@ -184,6 +101,7 @@ export function ManagerClubSquadSheet({
   round,
 }: ManagerClubSquadSheetProps) {
   const lineup = getClubMatchdayLineup(career, club, round);
+  const squadSlots = useMemo(() => clubLineupToSquadSlots(lineup), [lineup]);
   const clubAccent = getClubIndicatorColor(club);
 
   const handleClose = useCallback(() => {
@@ -192,6 +110,13 @@ export function ManagerClubSquadSheet({
   }, [onClose]);
 
   const panelRef = useModalA11y(true, handleClose);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      panelRef.current?.scrollTo({ top: 0, behavior: "auto" });
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+  }, [club, round, panelRef]);
 
   const listedPlayerIds = useMemo(
     () =>
@@ -205,7 +130,6 @@ export function ManagerClubSquadSheet({
 
   const xiiiPlayers = getLineupXiiiPlayers(lineup);
   const allPlayers = [...xiiiPlayers, ...lineup.interchange];
-
   const xiiiAvg =
     xiiiPlayers.length > 0
       ? Math.round(
@@ -213,15 +137,6 @@ export function ManagerClubSquadSheet({
             xiiiPlayers.length
         )
       : 0;
-
-  const benchAvg =
-    lineup.interchange.length > 0
-      ? Math.round(
-          lineup.interchange.reduce((sum, player) => sum + player.peakRating, 0) /
-            lineup.interchange.length
-        )
-      : 0;
-
   const teamAvg =
     allPlayers.length > 0
       ? Math.round(
@@ -229,208 +144,131 @@ export function ManagerClubSquadSheet({
             allPlayers.length
         )
       : 0;
-
   const strength = teamStrengthLabel(teamAvg);
-  const starPlayer =
-    xiiiPlayers.length > 0
-      ? xiiiPlayers.reduce((best, player) =>
-          player.peakRating > best.peakRating ? player : best
-        )
-      : null;
-
-  const compactRow = (slotCount: number) => slotCount >= 3;
+  const filledXiii = xiiiPlayers.length;
 
   return (
     <BodyPortal>
       <div
-        className={`fixed inset-0 z-[90] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} ${SPACING.safeBottom} backdrop-blur-sm sm:items-center`}
-        role="dialog"
-        aria-modal="true"
-        aria-label={`${club} matchday squad`}
+        className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} ${SPACING.safeBottom} backdrop-blur-sm sm:items-center`}
+        role="presentation"
         onClick={handleClose}
       >
         <div
           ref={panelRef}
           tabIndex={-1}
-          className={`${MODAL.panelWide} card-glass overflow-hidden outline-none`}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="manager-club-sheet-title"
+          className={`${MODAL.panelWide} card-glass outline-none`}
           onClick={(e) => e.stopPropagation()}
         >
-        <ClubHeaderBar club={club} size="sm" />
+          <div
+            className="h-1.5 w-full shrink-0"
+            style={{ backgroundColor: clubAccent }}
+            aria-hidden
+          />
 
-        <div className={MODAL.panelPadding}>
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-3">
-                <ClubLogoBox club={club} size="md" />
+          <div className={MODAL.panelPadding}>
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex min-w-0 items-start gap-3">
+                <ClubDualSwatch club={club} size="md" />
                 <div className="min-w-0">
                   <p className={TYPO.sectionLabel}>Team Sheet</p>
-                  <h2 className={`truncate ${TYPO.cardTitle}`}>{club}</h2>
+                  <h2
+                    id="manager-club-sheet-title"
+                    className={`truncate ${TYPO.cardTitle}`}
+                  >
+                    {club}
+                  </h2>
+                  <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+                    {lineup.isUserClub
+                      ? "Your matchday 17"
+                      : "Projected matchday 17"}{" "}
+                    · Season {career.seasonYear}
+                  </p>
                 </div>
               </div>
-              <div className="mt-2 flex flex-wrap items-center gap-2">
-                <span className="rounded-full border border-pitch-600/60 bg-pitch-900/70 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-pitch-300">
-                  Season {career.seasonYear}
-                </span>
-                <span
-                  className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${strength.className}`}
-                >
-                  {strength.label}
-                </span>
-                <span className="text-[11px] text-pitch-400">
-                  {lineup.isUserClub
-                    ? "Your current lineup"
-                    : "Projected matchday 17"}
-                </span>
-              </div>
-            </div>
-            <GameButton
-              variant="secondary"
-              size="sm"
-              className="shrink-0"
-              onClick={handleClose}
-            >
-              Close
-            </GameButton>
-          </div>
-
-          <div
-            className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4"
-            style={{ borderLeftWidth: 3, borderLeftColor: clubAccent }}
-          >
-            <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
-                Squad avg
-              </p>
-              <p className="mt-0.5 font-display text-xl font-black text-white">
-                {teamAvg || "—"}
-              </p>
-            </div>
-            <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
-                Starting XIII
-              </p>
-              <p className="mt-0.5 font-display text-xl font-black text-theme-primary">
-                {xiiiAvg || "—"}
-              </p>
-            </div>
-            <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
-                Interchange
-              </p>
-              <p className="mt-0.5 font-display text-xl font-black text-sky-300">
-                {benchAvg || "—"}
-              </p>
-            </div>
-            <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
-                Key player
-              </p>
-              <p
-                className="mt-0.5 truncate font-display text-sm font-bold text-accent-gold"
-                title={starPlayer?.name}
+              <GameButton
+                variant="secondary"
+                size="sm"
+                className="shrink-0"
+                onClick={handleClose}
               >
-                {starPlayer?.name ?? "—"}
-              </p>
+                Close
+              </GameButton>
             </div>
-          </div>
 
-          <section className="mt-5">
-            <div className="flex items-center justify-between gap-2">
-              <p className={TYPO.sectionLabel}>Starting XIII</p>
-              <span className="text-[10px] text-pitch-500">1–13</span>
-            </div>
-            <div
-              className={`mt-3 rounded-xl border border-pitch-700/45 bg-gradient-to-b from-theme-primary/[0.07] via-pitch-900/50 to-pitch-950/80 ${SPACING.cardPadding} ${SPACING.stackSm}`}
-            >
-              {TEAM_SHEET_ROWS.map((row, rowIndex) => (
-                <div
-                  key={rowIndex}
-                  className="grid gap-1.5 sm:gap-2"
-                  style={{
-                    gridTemplateColumns: `repeat(${row.slots.length}, minmax(0, 1fr))`,
-                  }}
-                >
-                  {row.slots.map((slotIndex) => {
-                    const entry = lineup.xiii[slotIndex];
-                    if (!entry) {
-                      return (
-                        <div
-                          key={slotIndex}
-                          className="flex min-h-[4.5rem] items-center justify-center rounded-lg border border-dashed border-pitch-700/45 bg-pitch-950/30 text-center text-[10px] text-pitch-600"
-                        >
-                          Empty
-                        </div>
-                      );
-                    }
-                    const age = getManagerPlayerAge(career, entry.player.id);
-                    return (
-                      <TeamSheetPlayerSlot
-                        key={slotIndex}
-                        position={entry.position}
-                        player={entry.player}
-                        age={age}
-                        listed={listedPlayerIds.has(entry.player.id)}
-                        compact={compactRow(row.slots.length)}
-                      />
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-            <div className="mt-2 flex flex-wrap gap-3 text-[10px] text-pitch-500">
-              <span className="inline-flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-sm border border-sky-400/35 bg-sky-400/15" />
-                Backs
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span
+                className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${strength.className}`}
+              >
+                {strength.label}
               </span>
-              <span className="inline-flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-sm border border-amber-400/35 bg-amber-400/15" />
-                Forwards
+              <span className="text-[11px] text-pitch-400">
+                XIII avg{" "}
+                <span className="font-semibold text-theme-primary">
+                  {xiiiAvg || "—"}
+                </span>
+              </span>
+              <span className="text-[11px] text-pitch-400">
+                Squad avg{" "}
+                <span className="font-semibold text-white">
+                  {teamAvg || "—"}
+                </span>
               </span>
             </div>
-          </section>
 
-          <section className="mt-5">
-            <div className="flex items-center justify-between gap-2">
-              <p className={TYPO.sectionLabel}>Interchange</p>
-              <span className="text-[10px] text-pitch-500">14–17</span>
-            </div>
-            {lineup.interchange.length === 0 ? (
-              <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
-                No interchange selected.
+            {filledXiii < 13 ? (
+              <p
+                className={`mt-3 rounded-lg border border-amber-500/35 bg-amber-500/10 px-3 py-2 ${TYPO.bodySm} text-amber-100`}
+                role="status"
+              >
+                Only {filledXiii} of 13 starting spots could be filled from this
+                club&apos;s squad pool.
               </p>
-            ) : (
-              <ul className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-4">
-                {lineup.interchange.map((player, index) => {
-                  const age = getManagerPlayerAge(career, player.id);
-                  return (
-                    <BenchPlayerSlot
+            ) : null}
+
+            <div className="mt-4 min-w-0">
+              <TeamSheet
+                squad={squadSlots}
+                clubColorOverride={club}
+                interactive
+              />
+            </div>
+
+            {lineup.interchange.length > 0 && (
+              <section className="mt-5">
+                <p className={TYPO.sectionLabel}>Interchange · 14–17</p>
+                <div className="mt-3 flex flex-wrap justify-center gap-3 sm:gap-4">
+                  {lineup.interchange.map((player) => (
+                    <InterchangeSlot
                       key={player.id}
-                      index={index}
                       player={player}
-                      age={age}
+                      club={club}
+                      age={getManagerPlayerAge(career, player.id)}
                       listed={listedPlayerIds.has(player.id)}
                     />
-                  );
-                })}
-              </ul>
+                  ))}
+                </div>
+              </section>
             )}
-          </section>
 
-          {lineup.isUserClub && onViewUserSquad && (
-            <GameButton
-              variant="theme"
-              className="mt-5 w-full"
-              onClick={() => {
-                playUiClick();
-                handleClose();
-                onViewUserSquad();
-              }}
-            >
-              Open Squad Screen
-            </GameButton>
-          )}
+            {lineup.isUserClub && onViewUserSquad && (
+              <GameButton
+                variant="theme"
+                className="mt-5 w-full"
+                onClick={() => {
+                  playUiClick();
+                  handleClose();
+                  onViewUserSquad();
+                }}
+              >
+                Open Squad Screen
+              </GameButton>
+            )}
+          </div>
         </div>
-      </div>
       </div>
     </BodyPortal>
   );
@@ -451,7 +289,7 @@ export function ManagerClubSquadBrowser({
       ? career.leagueTable.map((row) => row.team)
       : CURRENT_PLAYABLE_CLUBS;
   const [selectedClub, setSelectedClub] = useState<string>(
-    clubs.find((club) => club !== career.club) ?? career.club
+    clubs.find((c) => c !== career.club) ?? career.club
   );
   const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -471,10 +309,10 @@ export function ManagerClubSquadBrowser({
             }}
             className="min-h-[44px] flex-1 rounded-lg border border-pitch-600 bg-pitch-900/60 px-3 py-2 text-sm text-white outline-none focus:border-theme-primary"
           >
-            {clubs.map((club) => (
-              <option key={club} value={club}>
-                {club}
-                {club === career.club ? " (You)" : ""}
+            {clubs.map((c) => (
+              <option key={c} value={c}>
+                {c}
+                {c === career.club ? " (You)" : ""}
               </option>
             ))}
           </select>

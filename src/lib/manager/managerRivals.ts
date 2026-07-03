@@ -12,6 +12,8 @@ export const RIVAL_CLUBS: Record<string, string[]> = {
   "Warrington Wolves": ["St Helens", "Wigan Warriors"],
   "Toulouse Olympique": ["Catalans Dragons"],
   "Catalans Dragons": ["Toulouse Olympique"],
+  "Huddersfield Giants": ["York Knights"],
+  "York Knights": ["Huddersfield Giants"],
 };
 
 export function areRivalClubs(clubA: string, clubB: string): boolean {

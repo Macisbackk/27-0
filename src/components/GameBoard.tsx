@@ -209,6 +209,7 @@ export function GameBoard({
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
   const placementScrollRef = useRef<HTMLDivElement>(null);
+  const mainScrollRef = useRef<HTMLDivElement>(null);
   const lastScrolledPlayerIdRef = useRef<string | null>(null);
 
   const recruitmentOptions = useMemo(
@@ -1166,6 +1167,14 @@ export function GameBoard({
     setPhase("review");
   }, []);
 
+  useEffect(() => {
+    if (phase !== "simulation" && phase !== "review") return;
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      mainScrollRef.current?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+  }, [phase, reviewStage]);
+
   const playerPair =
     !isSlotRecruitMode &&
     (phase === "choice" || phase === "reveal") &&
@@ -1185,7 +1194,10 @@ export function GameBoard({
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
       <div className="stadium-lights pointer-events-none fixed inset-0" />
 
-      <div className={`relative mx-auto flex w-full max-w-6xl flex-col overflow-x-hidden ${SPACING.pageX} py-4 pb-8 sm:py-5 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4`}>
+      <div
+        ref={mainScrollRef}
+        className={`relative mx-auto flex w-full max-w-6xl flex-col overflow-x-hidden ${SPACING.pageX} py-4 pb-8 sm:py-5 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4`}
+      >
       {(title || subtitle) && (
         <div className="pt-1 lg:pt-0">
           <div className="flex flex-wrap items-center gap-3">

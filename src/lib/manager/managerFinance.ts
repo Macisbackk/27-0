@@ -6,6 +6,13 @@ import { getWageBudgetForClub } from "./managerContracts";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { getUserLeaguePosition } from "./managerFixtures";
 
+/** Global scale for manager-mode wages and transfer budgets. */
+export const MANAGER_ECONOMY_SCALE = 0.85;
+
+export function scaleManagerEconomy(amount: number): number {
+  return Math.round(amount * MANAGER_ECONOMY_SCALE);
+}
+
 /** First-season transfer budget ranges [min, max] by club. */
 const FIRST_SEASON_TRANSFER_RANGE: Record<string, [number, number]> = {
   "Wigan Warriors": [1_800_000, 2_500_000],
@@ -123,7 +130,8 @@ export function computeFirstSeasonTransferBudget(
 ): number {
   const range = FIRST_SEASON_TRANSFER_RANGE[club] ?? [700_000, 1_000_000];
   const t = hashSeed(seed, club) % 1000;
-  return Math.round(range[0] + ((range[1] - range[0]) * t) / 1000);
+  const raw = Math.round(range[0] + ((range[1] - range[0]) * t) / 1000);
+  return scaleManagerEconomy(raw);
 }
 
 export function computeSeasonTransferBudget(
@@ -156,8 +164,9 @@ export function computeSeasonTransferBudget(
   else if (summary?.challengeCupResult?.includes("Final")) base += 100_000;
 
   const config = getManagerClubConfig(club);
-  const floor = Math.round(config.budget * 0.85);
-  const cap = Math.round(config.budget * 2.2);
+  const scaledClubBudget = scaleManagerEconomy(config.budget);
+  const floor = Math.round(scaledClubBudget * 0.85);
+  const cap = Math.round(scaledClubBudget * 2.2);
   return Math.max(floor, Math.min(cap, base));
 }
 

@@ -243,7 +243,7 @@ export function generateYearlyYouthProspects(
   for (let i = 0; i < count; i++) {
     const pos = shuffled[i % shuffled.length] ?? "CENTRE";
     prospects.push(
-      createYouthProspect(career.seed, career.seasonYear, i, pos)
+      createYouthProspect(career.seed, career.seasonYear, i, pos, career.club)
     );
   }
   return prospects;

@@ -5,6 +5,8 @@ import type {
   ManagerScheduledFixture,
 } from "./types";
 import { CUP_ROUND_LABELS } from "./types";
+import { isMagicWeekendFixture } from "./managerMagicWeekend";
+import { isChallengeCupFinalFixture } from "./managerChallengeCup";
 
 export function isChallengeCupFixture(
   competition?: ManagerCompetition
@@ -44,7 +46,13 @@ export function getManagerScheduledFixtureHeadline(
   >
 ): string {
   if (sched.competition === "challenge_cup") {
+    if (isChallengeCupFinalFixture(sched)) {
+      return sched.label ?? "Challenge Cup Final";
+    }
     return sched.label ?? getManagerCupRoundLabel(sched.cupRound);
+  }
+  if (isMagicWeekendFixture(sched)) {
+    return sched.label ?? "Magic Weekend";
   }
   if (sched.label) return sched.label;
   if (sched.competition === "playoffs") return "Play-Offs";
@@ -56,7 +64,7 @@ export function getManagerScheduledFixtureHeadline(
 export function getManagerPlayedFixtureLabel(
   fixture: Pick<
     ManagerFixtureRecord,
-    "competition" | "round" | "meta"
+    "competition" | "round" | "meta" | "isNeutral"
   >
 ): string {
   if (fixture.competition === "challenge_cup") {
@@ -64,5 +72,6 @@ export function getManagerPlayedFixtureLabel(
   }
   if (fixture.competition === "playoffs") return "Play-Offs";
   if (fixture.competition === "friendly") return "Friendly";
+  if (fixture.competition === "league" && fixture.isNeutral) return "Magic Weekend";
   return `Round ${fixture.round} — League`;
 }

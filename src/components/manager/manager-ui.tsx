@@ -8,6 +8,7 @@ import {
 } from "@/lib/manager/managerFinance";
 import { CARD, MANAGER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { managerSectionAccentClass } from "@/lib/manager/managerSurfaces";
 
 export type ManagerValueTone =
   | "default"
@@ -191,18 +192,7 @@ export function ManagerSectionCard({
           ? `${CARD.elevated} ${CARD.featured}`
           : CARD.base;
 
-  const accentBorder =
-    accent === "gold"
-      ? "border-l-4 border-l-accent-gold/70"
-      : accent === "primary"
-        ? "border-l-4 border-l-theme-primary/70"
-        : accent === "red"
-          ? "border-l-4 border-l-red-400/70"
-          : accent === "amber"
-            ? "border-l-4 border-l-amber-400/70"
-            : accent === "sky"
-              ? "border-l-4 border-l-sky-400/70"
-              : "";
+  const accentBorder = accent ? managerSectionAccentClass(accent) : "";
 
   return (
     <div
@@ -436,7 +426,7 @@ function InboxMessageMeta({ message }: { message: InboxMessage }) {
 
 export function ManagerInboxActionFooter({ children }: { children: ReactNode }) {
   return (
-    <div className="border-t border-pitch-700/45 pt-3">{children}</div>
+    <div className="border-t border-pitch-700/50 pt-3">{children}</div>
   );
 }
 

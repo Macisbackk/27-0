@@ -3,6 +3,7 @@ import {
   getManagerCompetitionLabel,
   isChallengeCupFixture,
 } from "@/lib/manager/managerFixtureDisplay";
+import { managerPillClass } from "@/lib/manager/managerSurfaces";
 
 interface ManagerCompetitionBadgeProps {
   competition: ManagerCompetition;
@@ -20,9 +21,7 @@ export function ManagerCompetitionBadge({
 }: ManagerCompetitionBadgeProps) {
   if (competition === "playoffs") {
     return (
-      <span
-        className={`inline-flex items-center rounded-full border border-theme-primary/40 bg-theme-primary/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-theme-primary ${className}`}
-      >
+      <span className={`${managerPillClass("primary")} ${className}`}>
         Play-Offs
       </span>
     );
@@ -30,9 +29,7 @@ export function ManagerCompetitionBadge({
 
   if (competition === "friendly") {
     return (
-      <span
-        className={`inline-flex items-center rounded-full border border-sky-400/40 bg-sky-400/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-sky-300 ${className}`}
-      >
+      <span className={`${managerPillClass("sky")} ${className}`}>
         Friendly
       </span>
     );
@@ -46,7 +43,7 @@ export function ManagerCompetitionBadge({
 
   return (
     <span
-      className={`inline-flex items-center rounded-full border border-accent-gold/50 bg-accent-gold/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent-gold ${className}`}
+      className={`${managerPillClass("gold")} ${className}`}
       title={detailed ? undefined : getManagerCompetitionLabel(competition, cupRound)}
     >
       {label}

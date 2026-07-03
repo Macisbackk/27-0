@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence } from "framer-motion";
+import { BracketRecap } from "@/components/BracketRecap";
 import { MatchDetailsPanel } from "@/components/MatchDetailsPanel";
 import { MatchPlayerOfTheMatchCard } from "@/components/MatchPlayerOfTheMatchCard";
 import { GameButton } from "@/components/ui/GameButton";
@@ -15,7 +16,11 @@ import {
   getManagerCupRoundLabel,
   isChallengeCupFixture,
 } from "@/lib/manager/managerFixtureDisplay";
-import { BracketRecap } from "@/components/BracketRecap";
+import {
+  managerCompetitionSurfaceClass,
+  managerInsetPanelClass,
+} from "@/lib/manager/managerSurfaces";
+import { playUiClick } from "@/lib/sound";
 import {
   cupRoundKeyToBracketRound,
   snapshotCupBracketAtRound,
@@ -49,7 +54,9 @@ export function ManagerMatchReview({
           <p className={`${TYPO.bodySm} text-pitch-400`}>
             This result could not be loaded from your save.
           </p>
-          <GameButton onClick={onClose}>Close</GameButton>
+          <GameButton onClick={() => { playUiClick(); onClose(); }}>
+            ← Back
+          </GameButton>
         </div>
       </div>
     );
@@ -106,16 +113,26 @@ export function ManagerMatchReview({
             {won ? "Win" : lost ? "Loss" : "Draw"}
           </span>
         </div>
-        <GameButton variant="secondary" fullWidth={false} size="sm" onClick={onClose}>
-          Close
+        <GameButton
+          variant="secondary"
+          fullWidth={false}
+          size="sm"
+          onClick={() => {
+            playUiClick();
+            onClose();
+          }}
+        >
+          ← Back
         </GameButton>
       </div>
 
       <div
         className={`${CARD.elevated} ${SPACING.cardPadding} text-center ${
           isChallengeCupFixture(fixture.competition)
-            ? "border-2 border-accent-gold/50 bg-accent-gold/10"
-            : ""
+            ? managerCompetitionSurfaceClass("challenge_cup")
+            : fixture.competition === "playoffs"
+              ? managerCompetitionSurfaceClass("playoffs")
+              : ""
         }`}
       >
         <p className={`text-xl font-bold text-white sm:text-2xl`}>
@@ -142,9 +159,7 @@ export function ManagerMatchReview({
       )}
 
       {cupBracketSnapshot && (
-        <div
-          className={`${CARD.base} ${SPACING.cardPadding} border-2 border-accent-gold/40 bg-accent-gold/5`}
-        >
+        <div className={managerInsetPanelClass("gold")}>
           <p className={`${TYPO.sectionLabel} text-accent-gold`}>
             Challenge Cup Bracket · {roundLabel}
           </p>
