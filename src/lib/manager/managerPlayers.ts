@@ -2,11 +2,40 @@ import type { Position, Player } from "../types";
 import type { ManagerCareer, ManagerReservePlayer, RetiredPlayer } from "./types";
 import { getPlayerById } from "../players";
 import { getPlayerEligiblePositions } from "../players/player-positions";
-import { getAgeAtYear } from "../players/player-age";
+import { getAgeAtYear, resolveBirthYear } from "../players/player-age";
 
 import {
   applyManagerModeRatingToPlayer,
 } from "./managerSquadRatings";
+
+function hydratePlayerBirthData(player: Player): Player {
+  const birthYear = resolveBirthYear(
+    player.birthYear,
+    player.dateOfBirth,
+    player.yearsActive
+  );
+  if (birthYear !== undefined) {
+    return birthYear === player.birthYear
+      ? player
+      : { ...player, birthYear };
+  }
+
+  const canonical = getPlayerById(player.id);
+  if (!canonical) return player;
+
+  const canonicalBirthYear = resolveBirthYear(
+    canonical.birthYear,
+    canonical.dateOfBirth,
+    canonical.yearsActive
+  );
+  if (canonicalBirthYear === undefined) return player;
+
+  return {
+    ...player,
+    birthYear: canonicalBirthYear,
+    dateOfBirth: player.dateOfBirth ?? canonical.dateOfBirth,
+  };
+}
 
 export function reserveToPlayer(
   reserve: ManagerReservePlayer,
@@ -37,7 +66,9 @@ export function getManagerPlayer(
   const generated = career.playerRegistry[playerId];
   if (generated) {
     const dev = career.playerDevelopment?.[playerId];
-    const rated = applyManagerModeRatingToPlayer(generated);
+    const rated = applyManagerModeRatingToPlayer(
+      hydratePlayerBirthData(generated)
+    );
     if (dev) {
       return {
         ...rated,
@@ -56,7 +87,7 @@ export function getManagerPlayer(
   }
   const player = base;
   if (!player) return undefined;
-  return applyManagerModeRatingToPlayer(player);
+  return applyManagerModeRatingToPlayer(hydratePlayerBirthData(player));
 }
 
 /** In-game age for manager mode — uses career season year, not the real-world calendar. */

@@ -80,7 +80,8 @@
     "team": "Bradford Bulls",
     "displayClub": "Bradford Bulls",
     "basePlayerId": "bradford-cur-dan-russell",
-    "primaryPosition": "SR"
+    "primaryPosition": "SR",
+    "birthYear": 1995
   },
   {
     "id": "bradford-cur-ebon-scurr",
@@ -378,7 +379,8 @@
     "team": "Bradford Bulls",
     "displayClub": "Bradford Bulls",
     "basePlayerId": "bradford-cur-mitch-souter",
-    "primaryPosition": "HK"
+    "primaryPosition": "HK",
+    "birthYear": 2001
   },
   {
     "id": "bradford-cur-rowan-milnes",
@@ -1077,7 +1079,8 @@
     "team": "Catalans Dragons",
     "displayClub": "Catalans Dragons",
     "basePlayerId": "catalans-cur-arthur-romano",
-    "primaryPosition": "CE/WG"
+    "primaryPosition": "CE/WG",
+    "birthYear": 1997
   },
   {
     "id": "catalans-cur-bayley-sironen",
@@ -1102,7 +1105,9 @@
     "team": "Catalans Dragons",
     "displayClub": "Catalans Dragons",
     "basePlayerId": "catalans-cur-bayley-sironen",
-    "primaryPosition": "SR"
+    "primaryPosition": "SR",
+    "dateOfBirth": "1996-12-23",
+    "birthYear": 1996
   },
   {
     "id": "catalans-cur-benjamin-garcia",
@@ -1261,7 +1266,9 @@
     "team": "Catalans Dragons",
     "displayClub": "Catalans Dragons",
     "basePlayerId": "catalans-cur-jordan-dezaria",
-    "primaryPosition": "PF"
+    "primaryPosition": "PF",
+    "dateOfBirth": "1996-11-06",
+    "birthYear": 1996
   },
   {
     "id": "catalans-cur-julian-bousquet",
@@ -1348,7 +1355,8 @@
     "team": "Catalans Dragons",
     "displayClub": "Catalans Dragons",
     "basePlayerId": "catalans-cur-manase-kaho",
-    "primaryPosition": "WG"
+    "primaryPosition": "WG",
+    "birthYear": 2001
   },
   {
     "id": "catalans-cur-nick-cotric",
@@ -1404,7 +1412,9 @@
     "team": "Catalans Dragons",
     "displayClub": "Catalans Dragons",
     "basePlayerId": "catalans-cur-paul-seguier",
-    "primaryPosition": "SR/LF"
+    "primaryPosition": "SR/LF",
+    "dateOfBirth": "1997-09-08",
+    "birthYear": 1997
   },
   {
     "id": "catalans-cur-solomona-faataape",
@@ -1871,7 +1881,9 @@
     "team": "Huddersfield Giants",
     "displayClub": "Huddersfield Giants",
     "basePlayerId": "huddersfield-cur-oliver-wilson",
-    "primaryPosition": "SR/PF"
+    "primaryPosition": "SR/PF",
+    "dateOfBirth": "2000-03-22",
+    "birthYear": 2000
   },
   {
     "id": "huddersfield-cur-sam-halsall",
@@ -2576,7 +2588,8 @@
     "team": "Hull KR",
     "displayClub": "Hull KR",
     "basePlayerId": "hull-kr-cur-danny-richardson",
-    "primaryPosition": "HB"
+    "primaryPosition": "HB",
+    "birthYear": 1996
   },
   {
     "id": "hull-kr-cur-dean-hadley",
@@ -2819,7 +2832,9 @@
     "team": "Hull KR",
     "displayClub": "Hull KR",
     "basePlayerId": "hull-kr-cur-kelepi-tanginoa",
-    "primaryPosition": "SR/PF"
+    "primaryPosition": "SR/PF",
+    "dateOfBirth": "1994-03-01",
+    "birthYear": 1994
   },
   {
     "id": "hull-kr-cur-mikey-lewis",
@@ -3238,7 +3253,8 @@
     "team": "Leeds Rhinos",
     "displayClub": "Leeds Rhinos",
     "basePlayerId": "leeds-cur-james-bentley",
-    "primaryPosition": "SR"
+    "primaryPosition": "SR",
+    "birthYear": 1992
   },
   {
     "id": "leeds-cur-james-mcdonnell",
@@ -3467,7 +3483,9 @@
     "team": "Leeds Rhinos",
     "displayClub": "Leeds Rhinos",
     "basePlayerId": "leeds-cur-sam-lisone",
-    "primaryPosition": "PF"
+    "primaryPosition": "PF",
+    "dateOfBirth": "1994-02-19",
+    "birthYear": 1994
   },
   {
     "id": "leeds-cur-tom-holroyd",
@@ -3580,7 +3598,9 @@
     "team": "Leigh Leopards",
     "displayClub": "Leigh Leopards",
     "basePlayerId": "leigh-cur-darnell-mcintosh",
-    "primaryPosition": "WG"
+    "primaryPosition": "WG",
+    "dateOfBirth": "1997-07-05",
+    "birthYear": 1997
   },
   {
     "id": "leigh-cur-david-armstrong",
@@ -3665,7 +3685,9 @@
     "team": "Leigh Leopards",
     "displayClub": "Leigh Leopards",
     "basePlayerId": "leigh-cur-ethan-o-neill",
-    "primaryPosition": "SR"
+    "primaryPosition": "SR",
+    "dateOfBirth": "1999-06-01",
+    "birthYear": 1999
   },
   {
     "id": "leigh-cur-frankie-halton",
@@ -4042,7 +4064,8 @@
     "displayClub": "London Broncos",
     "basePlayerId": "london-cur-harry-aldous",
     "status": "Current",
-    "primaryPosition": "PROP"
+    "primaryPosition": "PROP",
+    "birthYear": 2004
   },
   {
     "id": "london-cur-jack-campagnolo",
@@ -4289,7 +4312,8 @@
     "displayClub": "Oldham RLFC",
     "basePlayerId": "oldham-cur-jonty-gorley",
     "status": "Current",
-    "primaryPosition": "STAND_OFF"
+    "primaryPosition": "STAND_OFF",
+    "birthYear": 2004
   },
   {
     "id": "oldham-cur-zach-jebson",
@@ -4357,7 +4381,8 @@
     "displayClub": "Salford Red Devils",
     "basePlayerId": "salford-cur-brodie-shields",
     "status": "Current",
-    "primaryPosition": "PROP"
+    "primaryPosition": "PROP",
+    "birthYear": 2004
   },
   {
     "id": "salford-cur-chris-savelio",
@@ -4377,7 +4402,8 @@
     "displayClub": "Salford Red Devils",
     "basePlayerId": "salford-cur-chris-savelio",
     "status": "Current",
-    "primaryPosition": "HOOKER"
+    "primaryPosition": "HOOKER",
+    "birthYear": 2004
   },
   {
     "id": "salford-cur-dele-sule",
@@ -4397,7 +4423,8 @@
     "displayClub": "Salford Red Devils",
     "basePlayerId": "salford-cur-dele-sule",
     "status": "Current",
-    "primaryPosition": "WING"
+    "primaryPosition": "WING",
+    "birthYear": 2004
   },
   {
     "id": "salford-cur-ellis-robson",
@@ -4521,7 +4548,8 @@
     "displayClub": "Salford Red Devils",
     "basePlayerId": "salford-cur-logan-ewington",
     "status": "Current",
-    "primaryPosition": "SCRUM_HALF"
+    "primaryPosition": "SCRUM_HALF",
+    "birthYear": 2004
   },
   {
     "id": "salford-cur-mitch-clark",
@@ -4589,7 +4617,8 @@
     "displayClub": "Salford Red Devils",
     "basePlayerId": "salford-cur-ryan-kingston",
     "status": "Current",
-    "primaryPosition": "WING"
+    "primaryPosition": "WING",
+    "birthYear": 2004
   },
   {
     "id": "salford-cur-shane-wright",
@@ -4633,7 +4662,8 @@
     "displayClub": "Salford Red Devils",
     "basePlayerId": "salford-cur-sitili-ngahe",
     "status": "Current",
-    "primaryPosition": "SECOND_ROW"
+    "primaryPosition": "SECOND_ROW",
+    "birthYear": 2004
   },
   {
     "id": "salford-cur-tim-bergin",
@@ -5208,7 +5238,9 @@
     "team": "St Helens",
     "displayClub": "St Helens",
     "basePlayerId": "st-helens-cur-morgan-knowles",
-    "primaryPosition": "LF"
+    "primaryPosition": "LF",
+    "dateOfBirth": "1996-11-05",
+    "birthYear": 1996
   },
   {
     "id": "st-helens-cur-tristan-sailor",
@@ -5380,7 +5412,9 @@
     "team": "Toulouse Olympique",
     "displayClub": "Toulouse Olympique",
     "basePlayerId": "toulouse-cur-eloi-pelissier",
-    "primaryPosition": "HK"
+    "primaryPosition": "HK",
+    "dateOfBirth": "1991-06-18",
+    "birthYear": 1991
   },
   {
     "id": "toulouse-cur-jake-shorrocks",
@@ -5463,7 +5497,8 @@
     "team": "Toulouse Olympique",
     "displayClub": "Toulouse Olympique",
     "basePlayerId": "toulouse-cur-john-toleafoa",
-    "primaryPosition": "PF"
+    "primaryPosition": "PF",
+    "birthYear": 1999
   },
   {
     "id": "toulouse-cur-justin-sangare",
@@ -5488,7 +5523,9 @@
     "team": "Toulouse Olympique",
     "displayClub": "Toulouse Olympique",
     "basePlayerId": "toulouse-cur-justin-sangare",
-    "primaryPosition": "PF"
+    "primaryPosition": "PF",
+    "dateOfBirth": "1998-03-07",
+    "birthYear": 1998
   },
   {
     "id": "toulouse-cur-lambert-belmas",
@@ -5772,7 +5809,9 @@
     "team": "Wakefield Trinity",
     "displayClub": "Wakefield Trinity",
     "basePlayerId": "wakefield-cur-cameron-scott",
-    "primaryPosition": "CE"
+    "primaryPosition": "CE",
+    "dateOfBirth": "1999-10-07",
+    "birthYear": 1999
   },
   {
     "id": "wakefield-cur-corey-hall",
@@ -5944,7 +5983,9 @@
     "team": "Wakefield Trinity",
     "displayClub": "Wakefield Trinity",
     "basePlayerId": "wakefield-cur-liam-hood",
-    "primaryPosition": "HK"
+    "primaryPosition": "HK",
+    "dateOfBirth": "1992-01-06",
+    "birthYear": 1992
   },
   {
     "id": "wakefield-cur-mason-lino",
@@ -6114,7 +6155,9 @@
     "team": "Wakefield Trinity",
     "displayClub": "Wakefield Trinity",
     "basePlayerId": "wakefield-cur-renouf-atoni",
-    "primaryPosition": "PF"
+    "primaryPosition": "PF",
+    "dateOfBirth": "1995-06-25",
+    "birthYear": 1995
   },
   {
     "id": "wakefield-cur-seth-nikotemo",
@@ -6576,7 +6619,9 @@
     "team": "Warrington Wolves",
     "displayClub": "Warrington Wolves",
     "basePlayerId": "warrington-cur-matty-nicholson",
-    "primaryPosition": "SR"
+    "primaryPosition": "SR",
+    "dateOfBirth": "2003-07-18",
+    "birthYear": 2003
   },
   {
     "id": "warrington-cur-max-wood",
@@ -7397,7 +7442,8 @@
     "team": "York Knights",
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-jordan-lipp",
-    "primaryPosition": "CE"
+    "primaryPosition": "CE",
+    "birthYear": 2001
   },
   {
     "id": "york-cur-jordan-thompson",
@@ -7541,7 +7587,8 @@
     "team": "York Knights",
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-oliver-field",
-    "primaryPosition": "SR"
+    "primaryPosition": "SR",
+    "birthYear": 2002
   },
   {
     "id": "york-cur-paul-mcshane",

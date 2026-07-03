@@ -1,5 +1,13 @@
 import { getPlayerById } from "../players";
 import type { Position } from "../types";
+import {
+  DEFENCE_FOCUS_LABELS,
+  formatTacticsLabel,
+  PLAYING_STYLE_LABELS,
+  TACTIC_ATTACK_EFFECT,
+  TACTIC_DEFENCE_EFFECT,
+  ATTACK_FOCUS_LABELS,
+} from "./managerTacticsCopy";
 import type {
   AttackFocus,
   DefenceFocus,
@@ -153,21 +161,8 @@ export function getTacticGameplaySummary(
   const mods = getTacticModifiers(tactics);
   const netEdge = mods.strengthBonus * 0.25 - mods.opponentPenalty * 0.12;
 
-  const attackEffect: Record<AttackFocus, string> = {
-    middle: "Pack-heavy attack — forwards favoured for tries",
-    edges: "Wide attack — backs and edges favoured for tries",
-    kicking_game: "Territory kicks — halves and wingers benefit",
-    offloads: "Broken-field play — offloads create chaos",
-    safe_sets: "Low-risk sets — fewer errors, fewer line breaks",
-  };
-
-  const defenceEffect: Record<DefenceFocus, string> = {
-    line_speed: "Rush defence — shuts down halves, gaps behind the line",
-    conservative: "Hold the line — fewer points conceded, less turnover ball",
-    aggressive_contact: "Dominant contact — big hits, higher fatigue risk",
-    edge_defence: "Shut down wingers — middle may leak tries",
-    goal_line: "Protect the posts — edges and kicks are the danger",
-  };
+  const attackEffect = TACTIC_ATTACK_EFFECT;
+  const defenceEffect = TACTIC_DEFENCE_EFFECT;
 
   const cautions: string[] = [];
   if (mods.errorRisk > 0.1) cautions.push("Higher error risk");
@@ -327,30 +322,6 @@ export function countOpponentTriesByZone(
   return { edge, middle };
 }
 
-const PLAYING_STYLE_LABELS: Record<PlayingStyle, string> = {
-  balanced: "Balanced",
-  expansive: "Expansive",
-  direct: "Direct",
-  defensive: "Defensive",
-  high_tempo: "High Tempo",
-};
-
-const ATTACK_FOCUS_LABELS: Record<AttackFocus, string> = {
-  middle: "Middle",
-  edges: "Edges",
-  kicking_game: "Kicking Game",
-  offloads: "Offloads",
-  safe_sets: "Safe Sets",
-};
-
-const DEFENCE_FOCUS_LABELS: Record<DefenceFocus, string> = {
-  line_speed: "Line Speed",
-  conservative: "Conservative",
-  aggressive_contact: "Aggressive Contact",
-  edge_defence: "Edge Defence",
-  goal_line: "Goal-Line Defence",
-};
-
 const ALL_PLAYING_STYLES: PlayingStyle[] = [
   "balanced",
   "expansive",
@@ -374,10 +345,6 @@ const ALL_DEFENCE_FOCUSES: DefenceFocus[] = [
   "edge_defence",
   "goal_line",
 ];
-
-function formatTacticsLabel(tactics: ManagerTactics): string {
-  return `${PLAYING_STYLE_LABELS[tactics.playingStyle]} · ${ATTACK_FOCUS_LABELS[tactics.attackFocus]} · ${DEFENCE_FOCUS_LABELS[tactics.defenceFocus]}`;
-}
 
 function tacticsEqual(a: ManagerTactics, b: ManagerTactics): boolean {
   return (
@@ -673,7 +640,7 @@ export function buildTacticEffectivenessLine(
       : "Defensive shape kept the score close, but attacking output was limited.";
   }
   if (!won && concededTries >= 3) {
-    return `The ${defenceFocus.replace(/_/g, " ")} plan leaked too many tries — time to reassess.`;
+    return `The ${DEFENCE_FOCUS_LABELS[defenceFocus]} plan leaked too many tries — time to reassess.`;
   }
   return won
     ? "Your game plan came together when it mattered most."

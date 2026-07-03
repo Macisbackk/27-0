@@ -10,7 +10,6 @@ import {
   FORMATION_SLOT_INDICES,
   FORMATION_SLOT_NUMBER,
   POSITION_DESCRIPTIONS,
-  POSITION_SHORT,
   POSITION_TILE_LABEL,
 } from "@/lib/positions";
 import { PitchSlotCard, PITCH_SLOT_COMPACT_CLASS, PITCH_SLOT_REVIEW_CLASS, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
@@ -322,9 +321,10 @@ const SquadMarker = memo(function SquadMarker({
   const description = POSITION_DESCRIPTIONS[slot.position];
 
   if (!player) {
-    const positionLabel = _compact
-      ? POSITION_SHORT[slot.position]
-      : POSITION_TILE_LABEL[slot.position];
+    const positionLabel =
+      _compact || fullPlayerNames
+        ? slot.label
+        : POSITION_TILE_LABEL[slot.position];
     const shirtNumber = FORMATION_SLOT_NUMBER[slot.slotIndex];
 
     let stateClass =
@@ -369,9 +369,13 @@ const SquadMarker = memo(function SquadMarker({
           </span>
         )}
         <span
-          className={`w-full text-center font-display font-bold uppercase leading-tight tracking-wide ${
+          className={`w-full text-center font-display font-semibold ${
+            _compact || fullPlayerNames
+              ? "line-clamp-2 px-0.5 text-[5.5px] leading-[1.08] sm:text-[6.5px]"
+              : "text-[8px] font-bold uppercase leading-tight tracking-wide sm:text-[9px] md:text-[10px]"
+          } ${
             interactive ? "text-white" : "text-white/40"
-          } text-[8px] sm:text-[9px] md:text-[10px]`}
+          }`}
         >
           {positionLabel}
         </span>

@@ -106,7 +106,8 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     BIRTH_YEAR_OVERRIDES[parsedId.baseId] ?? BIRTH_YEAR_OVERRIDES[id];
   const birthYear = resolveBirthYear(
     (raw.birthYear as number | undefined) ?? birthYearOverride,
-    rawDateOfBirth
+    rawDateOfBirth,
+    yearsActive
   );
   const cardYear = resolveCardYear(
     raw.cardYear as number | undefined,

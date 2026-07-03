@@ -154,7 +154,7 @@ export function getFriendlyAttendanceInterest(
       competition: "friendly",
     });
     if (outlook) {
-      return `${outlook.label} (~${outlook.predictedAttendance.toLocaleString()})`;
+      return `~${outlook.predictedAttendance.toLocaleString()} · ${outlook.label}`;
     }
   }
   return ATTENDANCE_LABELS[choice.attendanceInterest];

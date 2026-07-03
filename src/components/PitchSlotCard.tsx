@@ -4,7 +4,6 @@ import type { SquadSlot } from "@/lib/types";
 import { getClubColors } from "@/lib/clubs";
 import { formatPitchSlotPlayerName } from "@/lib/players/display-name";
 import { getPlayerColorClub } from "@/lib/players/run-club";
-import { POSITION_SHORT } from "@/lib/positions";
 import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
 /** Shared footprint for empty and filled pitch slots — scales with pitch width. */
@@ -41,11 +40,8 @@ export function PitchSlotCard({
   const colors = getClubColors(getPlayerColorClub(player, clubColorOverride));
   const isReviewSheet = fullPlayerNames;
   const isMatchdayPitch = !compact && !fullPlayerNames;
-  const positionLabel = isReviewSheet
-    ? POSITION_SHORT[slot.position]
-    : fullPlayerNames || !compact
-      ? slot.label
-      : POSITION_SHORT[slot.position];
+  const isTeamSheet = compact || fullPlayerNames;
+  const positionLabel = slot.label;
   const effectiveRating = getEffectivePeakRating(slot);
   const ratingLabel = hardMode ? "??" : String(Math.round(effectiveRating));
   const sizeClass = fullPlayerNames
@@ -80,12 +76,12 @@ export function PitchSlotCard({
         }`}
       >
         <span
-          className={`w-full shrink-0 text-center font-display font-bold leading-none text-gray-400 ${
+          className={`w-full shrink-0 text-center font-display font-semibold text-gray-400 ${
             isMatchdayPitch
-              ? "text-[8px] sm:text-[9px] md:text-[10px]"
-              : isReviewSheet
-                ? "text-[6px] sm:text-[7px]"
-                : "text-[7px] sm:text-[8px]"
+              ? "text-[8px] leading-none sm:text-[9px] md:text-[10px]"
+              : isTeamSheet
+                ? "line-clamp-2 px-0.5 text-[5.5px] leading-[1.08] sm:text-[6.5px]"
+                : "line-clamp-2 text-[7px] leading-[1.05] sm:text-[8px]"
           }`}
         >
           {positionLabel}

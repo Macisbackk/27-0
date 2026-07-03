@@ -184,15 +184,21 @@ function attendanceOutlookFromPredicted(
   }
 
   if (isCrossChannelFixture(homeClub, visitingOpponent)) {
+    if (competition === "friendly") {
+      if (isFrenchSuperLeagueClub(homeClub)) {
+        return { level: "high", label: "Strong away support" };
+      }
+      return { level: "medium", label: "Cross-channel friendly" };
+    }
     if (isFrenchSuperLeagueClub(homeClub)) {
       return {
         level: "high",
-        label: "Cross-channel clash — strong English away support expected",
+        label: "Strong English away support",
       };
     }
     return {
       level: "medium",
-      label: "Cross-channel fixture — comparable to a domestic away day",
+      label: "Steady gate — cross-channel trip",
     };
   }
 

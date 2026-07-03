@@ -1,7 +1,7 @@
 "use client";
 
 import { ClubLogoBox } from "@/components/ClubBadge";
-import { BTN, CARD, MANAGER, SPACING } from "@/lib/ui/design-system";
+import { BTN, MANAGER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
   managerClubAccentCardClass,
@@ -54,10 +54,8 @@ export function ManagerNav({
     onNavigate(tab);
   };
 
-  const inboxLabel =
-    unreadInbox > 0
-      ? `Inbox (${unreadInbox > 9 ? "9+" : unreadInbox})`
-      : "Inbox";
+  const unreadLabel =
+    unreadInbox > 9 ? "9+" : unreadInbox > 0 ? String(unreadInbox) : null;
 
   return (
     <header className="space-y-2.5 sm:space-y-3">
@@ -79,33 +77,34 @@ export function ManagerNav({
             <p className={`mt-0.5 ${TYPO.managerBody}`}>{seasonMeta}</p>
           )}
         </div>
+        <button
+          type="button"
+          onClick={() => navigate("inbox")}
+          disabled={disabled}
+          className={`btn-press relative shrink-0 flex min-h-[52px] min-w-[4.25rem] flex-col items-center justify-center gap-1 rounded-lg border px-2.5 py-2 text-center transition sm:min-w-[4.75rem] sm:px-3 ${
+            active === "inbox"
+              ? "border-theme-primary/45 bg-theme-primary/12"
+              : "border-pitch-600/50 bg-pitch-900/40 hover:border-pitch-500/55"
+          } ${disabled ? "pointer-events-none opacity-40" : ""}`}
+          aria-current={active === "inbox" ? "page" : undefined}
+          aria-label={
+            unreadInbox > 0 ? `Inbox, ${unreadInbox} unread` : "Inbox"
+          }
+        >
+          <span className="font-display text-[10px] font-bold uppercase tracking-wide text-white sm:text-xs">
+            Inbox
+          </span>
+          {unreadLabel && active !== "inbox" ? (
+            <span className="rounded-full bg-theme-primary px-1.5 py-px text-[9px] font-bold leading-none text-[var(--theme-text-on-primary)] sm:text-[10px]">
+              {unreadLabel}
+            </span>
+          ) : (
+            <span className={`${TYPO.managerBody} text-[9px] text-pitch-500 sm:text-[10px]`}>
+              Mail
+            </span>
+          )}
+        </button>
       </div>
-
-      <button
-        type="button"
-        onClick={() => navigate("inbox")}
-        disabled={disabled}
-        className={`btn-press flex min-h-[44px] w-full items-center justify-between rounded-xl border px-4 py-2.5 text-left transition ${
-          active === "inbox"
-            ? "border-theme-primary/45 bg-theme-primary/12"
-            : "border-pitch-600/50 bg-pitch-900/40 hover:border-pitch-500/55"
-        } ${disabled ? "pointer-events-none opacity-40" : ""}`}
-        aria-current={active === "inbox" ? "page" : undefined}
-      >
-        <span className="flex flex-col gap-0.5">
-          <span className="font-display text-xs font-bold uppercase tracking-wide text-white">
-            {inboxLabel}
-          </span>
-          <span className={`${TYPO.managerBody} text-pitch-500`}>
-            Messages & transfer offers
-          </span>
-        </span>
-        {unreadInbox > 0 && active !== "inbox" && (
-          <span className="rounded-full bg-theme-primary px-2 py-0.5 text-[10px] font-bold text-[var(--theme-text-on-primary)]">
-            {unreadInbox > 9 ? "9+" : unreadInbox}
-          </span>
-        )}
-      </button>
 
       <nav className={MANAGER.tabGrid} aria-label="Manager sections">
         {MAIN_TABS.map((tab) => (

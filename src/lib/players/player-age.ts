@@ -1,14 +1,41 @@
 import type { Player } from "../types";
 
+/** Infer birth year from career start when DOB is missing (current-era newcomers). */
+export function inferBirthYearFromYearsActive(
+  yearsActive?: string
+): number | undefined {
+  if (!yearsActive) return undefined;
+
+  const present = yearsActive.match(/^(\d{4})\s*[–-]\s*Present/i);
+  if (present) {
+    const debutYear = Number.parseInt(present[1]!, 10);
+    if (!Number.isFinite(debutYear)) return undefined;
+    // Typical Super League debut age for squad-listed players.
+    return debutYear - 22;
+  }
+
+  const range = yearsActive.match(/^(\d{4})\s*[–-]\s*(\d{4})/);
+  if (range) {
+    const debutYear = Number.parseInt(range[1]!, 10);
+    if (!Number.isFinite(debutYear)) return undefined;
+    return debutYear - 18;
+  }
+
+  return undefined;
+}
+
 /** Derive birth year from explicit field or date-of-birth string. */
 export function resolveBirthYear(
   birthYear?: number,
-  dateOfBirth?: string
+  dateOfBirth?: string,
+  yearsActive?: string
 ): number | undefined {
   if (birthYear !== undefined && Number.isFinite(birthYear)) {
     return birthYear;
   }
-  if (!dateOfBirth) return undefined;
+  if (!dateOfBirth) {
+    return inferBirthYearFromYearsActive(yearsActive);
+  }
 
   const iso = dateOfBirth.match(/^(\d{4})-/);
   if (iso) return Number.parseInt(iso[1], 10);
@@ -19,7 +46,7 @@ export function resolveBirthYear(
   const leadingYear = dateOfBirth.match(/^(\d{4})/);
   if (leadingYear) return Number.parseInt(leadingYear[1], 10);
 
-  return undefined;
+  return inferBirthYearFromYearsActive(yearsActive);
 }
 
 /** Card-era year from explicit field or year suffix on player id. */

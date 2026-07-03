@@ -26,6 +26,7 @@ import {
   getNextManagerFixture,
   prepareCareerForNextMatch,
 } from "@/lib/manager/managerSimulation";
+import { formatTacticsLabel } from "@/lib/manager/managerTacticsCopy";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
 import {
   getManagerScheduledFixtureHeadline,
@@ -324,10 +325,8 @@ export function ManagerPlayGame({
                   {sched.opponent}: <strong>{oppRating}</strong>
                 </span>
               </div>
-              <p className="mt-1.5 line-clamp-2 text-[11px] text-pitch-400">
-                {career.tactics.playingStyle.replace("_", " ")} ·{" "}
-                {career.tactics.attackFocus.replace("_", " ")} ·{" "}
-                {career.tactics.defenceFocus.replace("_", " ")}
+              <p className="mt-1.5 line-clamp-2 text-center text-[11px] text-pitch-400">
+                {formatTacticsLabel(career.tactics)}
               </p>
             </div>
           )}

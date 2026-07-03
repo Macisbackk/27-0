@@ -583,7 +583,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
       </div>
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-        <p className={`${TYPO.sectionLabel} mb-3`}>Tactics</p>
+        <p className={`${TYPO.sectionLabel} mb-3 text-center`}>Tactics</p>
         <ManagerTacticsPanel
           career={career}
           onChange={(tactics) => onUpdate({ ...career, tactics })}
