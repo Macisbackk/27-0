@@ -58,6 +58,12 @@ export function LoginForm() {
   }, [cooldownUntil]);
 
   const signupBlocked = mode === "signup" && cooldownSeconds > 0;
+  const errorId = "login-form-error";
+  const successId = "login-form-success";
+  const emailId = "login-email";
+  const passwordId = "login-password";
+  const confirmPasswordId = "login-confirm-password";
+  const coachId = "login-coach-name";
 
   const handleSubmit = async () => {
     if (signupBlocked) return;
@@ -152,35 +158,63 @@ export function LoginForm() {
       </div>
 
       <div className={`mt-5 ${SPACING.stackMd}`}>
+        <label htmlFor={emailId} className="sr-only">
+          Email
+        </label>
         <input
+          id={emailId}
           type="email"
+          autoComplete="email"
           value={emailInput}
           onChange={(e) => setEmailInput(e.target.value)}
           placeholder="Email"
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : success ? successId : undefined}
           className={FILTER.input}
         />
+        <label htmlFor={passwordId} className="sr-only">
+          Password
+        </label>
         <input
+          id={passwordId}
           type="password"
+          autoComplete={mode === "signup" ? "new-password" : "current-password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : success ? successId : undefined}
           className={FILTER.input}
         />
         {mode === "signup" && (
           <>
+            <label htmlFor={confirmPasswordId} className="sr-only">
+              Confirm password
+            </label>
             <input
+              id={confirmPasswordId}
               type="password"
+              autoComplete="new-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm Password"
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? errorId : success ? successId : undefined}
               className={FILTER.input}
             />
+            <label htmlFor={coachId} className="sr-only">
+              Coach name
+            </label>
             <input
+              id={coachId}
               type="text"
+              autoComplete="nickname"
               value={coachInput}
               onChange={(e) => setCoachInput(e.target.value)}
               placeholder="Coach Name"
               maxLength={COACH_NAME_MAX_LENGTH}
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? errorId : success ? successId : undefined}
               className={FILTER.input}
             />
             <p className={TYPO.bodySm}>
@@ -192,13 +226,21 @@ export function LoginForm() {
       </div>
 
       {success && (
-        <p className={`mt-3 ${TYPO.body} font-medium text-accent-green`} role="status">
+        <p
+          id={successId}
+          className={`mt-3 ${TYPO.body} font-medium text-accent-green`}
+          role="status"
+        >
           {success}
         </p>
       )}
 
       {error && (
-        <p className={`mt-3 ${TYPO.body} font-medium text-red-400`} role="alert">
+        <p
+          id={errorId}
+          className={`mt-3 ${TYPO.body} font-medium text-red-400`}
+          role="alert"
+        >
           {error}
         </p>
       )}

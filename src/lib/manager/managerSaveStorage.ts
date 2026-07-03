@@ -1,9 +1,7 @@
 import { STORAGE_KEYS } from "../storage/keys";
 import type { ManagerCareer } from "./types";
 
-export const MANAGER_SAVE_SLOT_COUNT = 4;
-
-const ACTIVE_SLOT_KEY = "27-0-manager-active-slot";
+export const MANAGER_SAVE_SLOT_COUNT = 2;
 
 export interface ManagerSaveSlotSummary {
   slot: number;
@@ -23,10 +21,17 @@ function migrateLegacySaveIfNeeded(): void {
   const legacy = localStorage.getItem(STORAGE_KEYS.managerCareer);
   if (!legacy) return;
 
-  if (!localStorage.getItem(STORAGE_KEYS.managerCareerSlot(0))) {
-    localStorage.setItem(STORAGE_KEYS.managerCareerSlot(0), legacy);
+  for (let slot = 0; slot < MANAGER_SAVE_SLOT_COUNT; slot++) {
+    if (!localStorage.getItem(STORAGE_KEYS.managerCareerSlot(slot))) {
+      localStorage.setItem(STORAGE_KEYS.managerCareerSlot(slot), legacy);
+      localStorage.removeItem(STORAGE_KEYS.managerCareer);
+      return;
+    }
   }
-  localStorage.removeItem(STORAGE_KEYS.managerCareer);
+
+  console.warn(
+    "[manager-save] Legacy career save found but all slots occupied — legacy key kept for manual recovery."
+  );
 }
 
 export function getManagerCareerSlotKey(slot: number): string {
@@ -36,7 +41,7 @@ export function getManagerCareerSlotKey(slot: number): string {
 export function getActiveSaveSlot(): number {
   if (typeof window === "undefined") return 0;
   migrateLegacySaveIfNeeded();
-  const raw = localStorage.getItem(ACTIVE_SLOT_KEY);
+  const raw = localStorage.getItem(STORAGE_KEYS.managerActiveSlot);
   const parsed = raw != null ? parseInt(raw, 10) : 0;
   if (!Number.isFinite(parsed) || parsed < 0 || parsed >= MANAGER_SAVE_SLOT_COUNT) {
     return 0;
@@ -47,7 +52,7 @@ export function getActiveSaveSlot(): number {
 export function setActiveSaveSlot(slot: number): void {
   if (typeof window === "undefined") return;
   if (slot < 0 || slot >= MANAGER_SAVE_SLOT_COUNT) return;
-  localStorage.setItem(ACTIVE_SLOT_KEY, String(slot));
+  localStorage.setItem(STORAGE_KEYS.managerActiveSlot, String(slot));
 }
 
 function readRawCareer(slot: number): ManagerCareer | null {
@@ -56,7 +61,17 @@ function readRawCareer(slot: number): ManagerCareer | null {
   try {
     const raw = localStorage.getItem(getManagerCareerSlotKey(slot));
     if (!raw) return null;
-    return JSON.parse(raw) as ManagerCareer;
+    const parsed = JSON.parse(raw) as Partial<ManagerCareer>;
+    if (
+      typeof parsed !== "object" ||
+      parsed == null ||
+      typeof parsed.club !== "string" ||
+      typeof parsed.seasonYear !== "number" ||
+      typeof parsed.seed !== "string"
+    ) {
+      return null;
+    }
+    return parsed as ManagerCareer;
   } catch {
     return null;
   }

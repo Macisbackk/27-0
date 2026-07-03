@@ -124,8 +124,14 @@ export function mergeUserStatsData(
       b.playerSeasonLosses
     ),
     joeMellorRuns: a.joeMellorRuns + b.joeMellorRuns,
-    bestJoeMellorWins: Math.max(a.bestJoeMellorWins, b.bestJoeMellorWins),
-    bestJoeMellorLosses: Math.min(a.bestJoeMellorLosses, b.bestJoeMellorLosses),
+    bestJoeMellorWins: pickBestRecord(
+      { wins: a.bestJoeMellorWins, losses: a.bestJoeMellorLosses },
+      { wins: b.bestJoeMellorWins, losses: b.bestJoeMellorLosses }
+    ).wins,
+    bestJoeMellorLosses: pickBestRecord(
+      { wins: a.bestJoeMellorWins, losses: a.bestJoeMellorLosses },
+      { wins: b.bestJoeMellorWins, losses: b.bestJoeMellorLosses }
+    ).losses,
     joeMellorPerfectSeasons: a.joeMellorPerfectSeasons + b.joeMellorPerfectSeasons,
     totalRerollsUsed: a.totalRerollsUsed + b.totalRerollsUsed,
     mostRerollsInRun: Math.max(a.mostRerollsInRun, b.mostRerollsInRun),

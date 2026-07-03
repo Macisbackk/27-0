@@ -2,29 +2,21 @@ import type { GameDifficulty, GameMode } from "./types";
 
 export function getSeasonReviewLabel(
   mode: GameMode,
-  difficulty: GameDifficulty,
+  _difficulty: GameDifficulty,
   normalEraMode = false
 ): string {
-  if (mode === "DRAFT") {
-    return difficulty === "HARD"
-      ? "Hard Draft Mode Season Review"
-      : "Draft Mode Season Review";
-  }
+  if (mode === "DRAFT") return "Draft Mode Season Review";
   if (mode === "FANTASY") return "Fantasy Mode Season Review";
-  if (difficulty === "HARD") return "Hard Mode Season Review";
   return normalEraMode ? "Era Mode Season Review" : "Current Mode Season Review";
 }
 
 export function getPlayPageTitle(
   mode: GameMode,
-  difficulty: GameDifficulty,
+  _difficulty: GameDifficulty,
   normalEraMode = false
 ): string {
   if (mode === "FANTASY") return "Fantasy Mode";
-  if (mode === "DRAFT") {
-    return difficulty === "HARD" ? "Hard Draft Mode" : "Draft Mode";
-  }
-  if (difficulty === "HARD") return "Hard Mode";
+  if (mode === "DRAFT") return "Draft Mode";
   return normalEraMode ? "Era Mode" : "Current Mode";
 }
 

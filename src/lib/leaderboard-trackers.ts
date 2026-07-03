@@ -89,7 +89,6 @@ export const LEADERBOARD_TRACKERS: {
   cupOnly?: boolean;
   clubFundsOnly?: boolean;
   trophyCabinetOnly?: boolean;
-  managerTrophyCabinetOnly?: boolean;
   managerSuperLeagueOnly?: boolean;
   managerChallengeCupOnly?: boolean;
   managerEarningsOnly?: boolean;
@@ -117,7 +116,6 @@ export const LEADERBOARD_TRACKERS: {
     label: "League Titles",
     shortLabel: "League Titles",
     trophyCabinetOnly: true,
-    managerTrophyCabinetOnly: true,
     trophySection: "current",
   },
   {
@@ -125,7 +123,6 @@ export const LEADERBOARD_TRACKERS: {
     label: "Super League Champions",
     shortLabel: "SL Champions",
     trophyCabinetOnly: true,
-    managerTrophyCabinetOnly: true,
     trophySection: "current",
   },
   {
@@ -133,7 +130,6 @@ export const LEADERBOARD_TRACKERS: {
     label: "Challenge Cup Trophy",
     shortLabel: "Challenge Cup",
     trophyCabinetOnly: true,
-    managerTrophyCabinetOnly: true,
     trophySection: "current",
   },
   {
@@ -196,6 +192,7 @@ export function getTrackersForDbMode(
     | "fantasy"
     | "club-funds"
     | "trophy-cabinet"
+    | "cup-team-wins"
 ) {
   if (dbMode === "club-funds") {
     return LEADERBOARD_TRACKERS.filter((t) => t.clubFundsOnly);
@@ -206,6 +203,9 @@ export function getTrackersForDbMode(
       .map((id) => LEADERBOARD_TRACKERS.find((t) => t.id === id))
       .filter((t): t is NonNullable<typeof t> => !!t);
   }
+  if (dbMode === "cup-team-wins") {
+    return LEADERBOARD_TRACKERS.filter((t) => t.id === "challenge_cup_team_wins");
+  }
   return LEADERBOARD_TRACKERS.filter(
     (t) =>
       !t.cupOnly &&
@@ -213,8 +213,7 @@ export function getTrackersForDbMode(
       !t.trophyCabinetOnly &&
       !t.managerSuperLeagueOnly &&
       !t.managerChallengeCupOnly &&
-      !t.managerEarningsOnly &&
-      !t.managerTrophyCabinetOnly
+      !t.managerEarningsOnly
   );
 }
 
@@ -225,6 +224,7 @@ export function getDefaultTrackerForDbMode(
     | "fantasy"
     | "club-funds"
     | "trophy-cabinet"
+    | "cup-team-wins"
 ): LeaderboardTrackerType {
   return getTrackersForDbMode(dbMode)[0]?.id ?? "best_record";
 }
@@ -237,6 +237,7 @@ export function isTrackerValidForDbMode(
     | "fantasy"
     | "club-funds"
     | "trophy-cabinet"
+    | "cup-team-wins"
 ): boolean {
   return getTrackersForDbMode(dbMode).some((t) => t.id === tracker);
 }
@@ -249,27 +250,9 @@ export function isTrophyCabinetTracker(
   );
 }
 
-export function isManagerTrophyCabinetTracker(
-  tracker: LeaderboardTrackerType
-): tracker is Extract<
-  LeaderboardTrackerType,
-  "league_titles" | "super_league_champions" | "challenge_cup_trophy"
-> {
-  return LEADERBOARD_TRACKERS.some(
-    (t) => t.id === tracker && t.managerTrophyCabinetOnly
-  );
-}
-
-export const MANAGER_TROPHY_CABINET_TRACKER_IDS = [
-  "league_titles",
-  "super_league_champions",
-  "challenge_cup_trophy",
-] as const satisfies readonly LeaderboardTrackerType[];
-
 export type ManagerLeaderboardDbMode =
   | "manager-super-league"
   | "manager-challenge-cup"
-  | "manager-trophy-cabinet"
   | "manager-earnings";
 
 export function getTrackersForManagerDbMode(
@@ -277,11 +260,6 @@ export function getTrackersForManagerDbMode(
 ) {
   if (dbMode === "manager-earnings") {
     return LEADERBOARD_TRACKERS.filter((t) => t.managerEarningsOnly);
-  }
-  if (dbMode === "manager-trophy-cabinet") {
-    return MANAGER_TROPHY_CABINET_TRACKER_IDS.map((id) =>
-      LEADERBOARD_TRACKERS.find((t) => t.id === id)
-    ).filter((t): t is NonNullable<typeof t> => !!t);
   }
   if (dbMode === "manager-challenge-cup") {
     const order: LeaderboardTrackerType[] = [
@@ -352,7 +330,18 @@ export function rankByTracker(
       case "manager_cup_finals":
         return b.cupFinals - a.cupFinals;
       case "manager_league_titles":
-        return b.leagueTitles - a.leagueTitles;
+      case "league_titles":
+      case "era_league_title":
+        return (b.leagueTitles ?? 0) - (a.leagueTitles ?? 0);
+      case "super_league_champions":
+      case "era_league_champions":
+        return (b.superLeagueTitles ?? 0) - (a.superLeagueTitles ?? 0);
+      case "challenge_cup_trophy":
+      case "era_cup_trophy":
+        return b.challengeCupWins - a.challengeCupWins;
+      case "total_winnings":
+      case "manager_total_earnings":
+        return 0;
       default:
         return 0;
     }
@@ -407,7 +396,15 @@ export function getTrackerStatDisplay(
     case "manager_cup_finals":
       return String(entry.cupFinals);
     case "manager_league_titles":
-      return String(entry.leagueTitles);
+    case "league_titles":
+    case "era_league_title":
+      return String(entry.leagueTitles ?? 0);
+    case "super_league_champions":
+    case "era_league_champions":
+      return String(entry.superLeagueTitles ?? 0);
+    case "challenge_cup_trophy":
+    case "era_cup_trophy":
+      return String(entry.challengeCupWins);
     default:
       return "—";
   }
@@ -423,12 +420,16 @@ export function mergeLeaderboardStats(
     cupWon?: boolean;
     cupFinish?: string;
     isCupRun?: boolean;
+    /** Play-off phase update — adds W/L but skips season perfect/winless counters. */
+    isPlayoffPhaseUpdate?: boolean;
   }
 ): Omit<
   LeaderboardTrackerEntry,
   "username" | "achievedAt" | "difficulty" | "mode"
 > {
   const isCupRun = update.isCupRun === true;
+  const skipSeasonCounters =
+    isCupRun || update.isPlayoffPhaseUpdate === true;
   const runWins = update.wins;
   const runLosses = update.losses;
   const seasonGames = runWins + runLosses;
@@ -439,10 +440,10 @@ export function mergeLeaderboardStats(
   const squadValue = Math.max(existing?.squadValue ?? 0, update.squadValue);
   const totalWins = (existing?.totalWins ?? 0) + runWins;
   const totalLosses = (existing?.totalLosses ?? 0) + runLosses;
-  const perfectRuns = isCupRun
+  const perfectRuns = skipSeasonCounters
     ? (existing?.perfectRuns ?? 0)
     : (existing?.perfectRuns ?? 0) + (update.isPerfectSeason ? 1 : 0);
-  const winlessSeasons = isCupRun
+  const winlessSeasons = skipSeasonCounters
     ? (existing?.winlessSeasons ?? 0)
     : (existing?.winlessSeasons ?? 0) +
       (seasonGames > 0 && runWins === 0 ? 1 : 0);
@@ -452,7 +453,7 @@ export function mergeLeaderboardStats(
 
   let bestRecordWins = existing?.bestRecordWins ?? 0;
   let bestRecordLosses = existing?.bestRecordLosses ?? 0;
-  if (!isCupRun && seasonGames > 0) {
+  if (!isCupRun && !update.isPlayoffPhaseUpdate && seasonGames > 0) {
     const better =
       runWins > bestRecordWins ||
       (runWins === bestRecordWins && runLosses < bestRecordLosses);
@@ -486,7 +487,7 @@ export function mergeLeaderboardStats(
   }
 
   let bestWinPercentage = existing?.bestWinPercentage ?? 0;
-  if (!isCupRun && seasonGames > 0) {
+  if (!isCupRun && !update.isPlayoffPhaseUpdate && seasonGames > 0) {
     const runPct = (runWins / seasonGames) * 100;
     if (runPct > bestWinPercentage) bestWinPercentage = runPct;
   }
@@ -524,14 +525,24 @@ export function combineLeaderboardTrackerStats(
   const totalLosses = (a.totalLosses ?? 0) + (b.totalLosses ?? 0);
   const cupGames = totalWins + totalLosses;
 
+  const aRecordWins = a.bestRecordWins ?? a.totalWins ?? 0;
+  const aRecordLosses = a.bestRecordLosses ?? a.totalLosses ?? 0;
+  const bRecordWins = b.bestRecordWins ?? b.totalWins ?? 0;
+  const bRecordLosses = b.bestRecordLosses ?? b.totalLosses ?? 0;
+  const betterRecord =
+    bRecordWins > aRecordWins ||
+    (bRecordWins === aRecordWins && bRecordLosses < aRecordLosses)
+      ? { wins: bRecordWins, losses: bRecordLosses }
+      : { wins: aRecordWins, losses: aRecordLosses };
+
   return {
     squadValue: Math.max(a.squadValue ?? 0, b.squadValue ?? 0),
     totalWins,
     totalLosses,
     perfectRuns: (a.perfectRuns ?? 0) + (b.perfectRuns ?? 0),
     winlessSeasons: (a.winlessSeasons ?? 0) + (b.winlessSeasons ?? 0),
-    bestRecordWins: totalWins,
-    bestRecordLosses: totalLosses,
+    bestRecordWins: betterRecord.wins,
+    bestRecordLosses: betterRecord.losses,
     bestWinPercentage:
       cupGames > 0
         ? Math.max(a.bestWinPercentage ?? 0, b.bestWinPercentage ?? 0)

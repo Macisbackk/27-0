@@ -7,7 +7,8 @@ import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getNextManagerFixture, isManagerSeasonComplete } from "@/lib/manager/managerSimulation";
-import { ensureCupBracketReady, getCupHubStatus } from "@/lib/manager/managerChallengeCup";
+import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
+import { getCupHubStatus } from "@/lib/manager/managerChallengeCup";
 import { PlayoffBracketDisplay } from "@/components/PlayoffBracketDisplay";
 import {
   ensurePlayoffsReady,
@@ -29,6 +30,7 @@ import { getClubIndicatorColor } from "@/lib/clubs";
 import { getFriendlyDualBorderStyle } from "@/lib/manager/managerFriendlyUi";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
+import { getManagerOpponentPoolOptions } from "@/lib/manager/managerLeagueRosters";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { getMatchPrediction } from "@/lib/manager/managerScoring";
 import {
@@ -335,8 +337,8 @@ function HubLeagueTable({
           <span className="text-theme-primary">{career.club}</span>
         </p>
       )}
-      <div className="mt-3 overflow-x-auto">
-        <table className="w-full min-w-[520px] text-left text-sm">
+      <div className="-mx-1 mt-3 overflow-x-auto px-1">
+        <table className="w-full max-sm:min-w-[320px] text-left text-sm">
           <thead>
             <tr className="border-b border-pitch-700/50 text-pitch-400">
               <th className={SPACING.tableCell}>#</th>
@@ -344,9 +346,15 @@ function HubLeagueTable({
               <th className={`${SPACING.tableCell} text-center`}>P</th>
               <th className={`${SPACING.tableCell} text-center`}>W</th>
               <th className={`${SPACING.tableCell} text-center`}>L</th>
-              <th className={`${SPACING.tableCell} text-center`}>PF</th>
-              <th className={`${SPACING.tableCell} text-center`}>PA</th>
-              <th className={`${SPACING.tableCell} text-center`}>+/-</th>
+              <th className={`hidden sm:table-cell ${SPACING.tableCell} text-center`}>
+                PF
+              </th>
+              <th className={`hidden sm:table-cell ${SPACING.tableCell} text-center`}>
+                PA
+              </th>
+              <th className={`hidden md:table-cell ${SPACING.tableCell} text-center`}>
+                +/-
+              </th>
               <th className={`${SPACING.tableCell} text-center`}>Pts</th>
             </tr>
           </thead>
@@ -408,11 +416,13 @@ function HubLeagueTable({
                   <td className={`${SPACING.tableCell} text-center`}>{row.played}</td>
                   <td className={`${SPACING.tableCell} text-center`}>{row.wins}</td>
                   <td className={`${SPACING.tableCell} text-center`}>{row.losses}</td>
-                  <td className={`${SPACING.tableCell} text-center`}>{row.pointsFor}</td>
-                  <td className={`${SPACING.tableCell} text-center`}>
+                  <td className={`hidden sm:table-cell ${SPACING.tableCell} text-center`}>
+                    {row.pointsFor}
+                  </td>
+                  <td className={`hidden sm:table-cell ${SPACING.tableCell} text-center`}>
                     {row.pointsAgainst}
                   </td>
-                  <td className={`${SPACING.tableCell} text-center`}>
+                  <td className={`hidden md:table-cell ${SPACING.tableCell} text-center`}>
                     {row.pointsDifference > 0 ? "+" : ""}
                     {row.pointsDifference}
                   </td>
@@ -441,7 +451,8 @@ export function ManagerHub({
     null
   );
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
-  const hubCareer = ensurePlayoffsReady(ensureCupBracketReady(career));
+
+  const hubCareer = syncBracketProgress(career);
   const clubSheetModal =
     viewClubSheet != null ? (
       <ManagerClubSquadSheet
@@ -487,9 +498,9 @@ export function ManagerHub({
         : Math.round(
             getOpponentMatchRating(
               nextFixture.opponent,
-              career.seed,
+              hubCareer.seed,
               nextFixture.round,
-              { currentSeasonOnly: nextFixture.competition !== "friendly" }
+              getManagerOpponentPoolOptions(hubCareer, nextFixture.opponent)
             )
           )
       : null;
@@ -506,8 +517,8 @@ export function ManagerHub({
 
   const expiringCount = countExpiringContracts(career.contracts);
   const lastGate = getLastHomeGate(career.gateIncomeHistory);
-  const cupStatus = getCupHubStatus(career);
-  const playoffStatus = getPlayoffHubStatus(career);
+  const cupStatus = getCupHubStatus(hubCareer);
+  const playoffStatus = getPlayoffHubStatus(hubCareer);
   const wageOverBudget = isWageOverBudget(career);
   const wagePressure = career.wagePressureWeeks ?? 0;
   const newsItems = getHubNewsItems(career);

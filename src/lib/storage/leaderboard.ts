@@ -80,7 +80,8 @@ export type LeaderboardDbMode =
   | "draft"
   | "fantasy"
   | "club-funds"
-  | "trophy-cabinet";
+  | "trophy-cabinet"
+  | "cup-team-wins";
 
 export function normalizeLeaderboardGameMode(mode: GameMode): GameMode {
   return mode;
@@ -763,6 +764,7 @@ export async function addLeaderboardEntry(
     isPerfectSeason?: boolean;
     cupWon?: boolean;
     cupFinish?: string;
+    isPlayoffPhaseUpdate?: boolean;
     achievedAt?: Date;
     modeVariant?: ModeVariant;
   }
@@ -800,6 +802,9 @@ export async function addLeaderboardEntry(
     wins,
     losses,
     isPerfectSeason: options?.isPerfectSeason,
+    cupWon: options?.cupWon,
+    cupFinish: options?.cupFinish,
+    isPlayoffPhaseUpdate: options?.isPlayoffPhaseUpdate,
   });
 
   saveLocalEntry(

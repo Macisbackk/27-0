@@ -28,6 +28,26 @@ export const SPACING = {
   tableCell: "px-3 py-2 sm:px-2.5 sm:py-1.5",
   /** Interactive list rows (squad pool, reserves, etc.). */
   listItem: "px-3 py-2.5 sm:px-2.5 sm:py-2",
+  /** Bottom safe-area padding for fixed sheets / modals. */
+  safeBottom: "pb-[max(1rem,env(safe-area-inset-bottom))]",
+} as const;
+
+/** Mobile-first modal / bottom-sheet pattern (matches ManagerDialog). */
+export const MODAL = {
+  backdrop: `fixed inset-0 z-40 flex items-end justify-center bg-black/70 ${SPACING.modalBackdrop} backdrop-blur-sm sm:items-center`,
+  panel:
+    "w-full max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden rounded-t-2xl sm:max-w-3xl sm:rounded-2xl",
+  panelWide:
+    "w-full max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden rounded-t-2xl sm:max-w-4xl sm:rounded-2xl",
+  panelPadding: `p-3 sm:p-6 ${SPACING.safeBottom}`,
+} as const;
+
+/** Horizontally scrollable tab rails with snap (mobile). */
+export const TAB_RAIL = {
+  outer:
+    "-mx-1 snap-x snap-mandatory scroll-pl-1 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+  inner: "flex min-w-max gap-2",
+  item: "shrink-0 snap-start",
 } as const;
 
 /** Shared card surface classes. */
@@ -77,7 +97,7 @@ export const MANAGER = {
   statGrid4:
     "grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 [&>*:nth-child(3):last-child]:col-span-2 sm:[&>*:nth-child(3):last-child]:col-span-1",
   tabGrid:
-    "flex gap-1.5 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-4 sm:gap-2 sm:overflow-visible sm:pb-0 lg:grid-cols-7",
+    "flex snap-x snap-mandatory gap-1.5 overflow-x-auto pb-0.5 scroll-pl-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-4 sm:gap-2 sm:overflow-visible sm:pb-0 sm:snap-none lg:grid-cols-7",
   modalTitle: "font-display text-lg font-bold text-white sm:text-xl",
 } as const;
 
@@ -169,7 +189,7 @@ export const BTN = {
   /** @deprecated Use accentOutline or modeCurrentOutlineSm for Current-only controls */
   greenOutlineSm: `border border-theme-primary/50 bg-theme-primary/10 text-theme-primary hover:bg-theme-primary/20`,
   modeCurrentOutlineSm: `border border-mode-current/50 bg-mode-current/10 text-mode-current hover:bg-mode-current/20`,
-  close: `shrink-0 min-h-[36px] rounded-lg border border-pitch-600 px-2.5 py-1 text-gray-400 transition hover:text-white`,
+  close: `shrink-0 min-h-[44px] rounded-lg border border-pitch-600 px-2.5 py-1 text-gray-400 transition hover:text-white sm:min-h-[36px]`,
   closeSm: `shrink-0 rounded-lg border border-pitch-600 px-2 py-1 text-gray-400 transition hover:text-white`,
   header: `header-control-btn flex h-11 min-h-[44px] min-w-[5.75rem] items-center justify-center gap-2 rounded-lg border border-pitch-600 px-4 text-sm font-medium text-gray-300 transition hover:border-theme-primary hover:text-white`,
 } as const;
@@ -214,13 +234,13 @@ export const HARD = {
 /** Shared nav control dimensions (sidebar, footer icons, toggles). */
 export const NAV_SIZE = {
   /** Primary sidebar nav row height */
-  control: "h-10 min-h-[40px]",
+  control: "h-11 min-h-[44px]",
   /** Square icon-only link buttons */
-  iconButton: "h-10 w-10 min-h-[40px] min-w-[40px]",
+  iconButton: "h-11 w-11 min-h-[44px] min-w-[44px]",
   /** Nested Off/On and Current/Era toggles */
-  nestedToggle: "h-8 min-h-[32px]",
+  nestedToggle: "h-11 min-h-[44px] sm:h-9 sm:min-h-[36px]",
   /** Home page mode card tab buttons */
-  modeTab: "h-10 min-h-[40px]",
+  modeTab: "h-11 min-h-[44px]",
 } as const;
 
 /** Navigation & links. */

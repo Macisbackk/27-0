@@ -10,6 +10,7 @@ interface GameStarterProps {
   mode: GameMode;
   title: string;
   subtitle?: string;
+  difficulty?: import("@/lib/types").GameDifficulty;
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
   normalEraMode?: boolean;
@@ -19,6 +20,7 @@ export function GameStarter({
   mode,
   title,
   subtitle,
+  difficulty = "NORMAL",
   joeMellorMode = false,
   superSamHallasMode = false,
   normalEraMode = false,
@@ -51,7 +53,7 @@ export function GameStarter({
       mode={mode}
       title={title}
       subtitle={subtitle}
-      difficulty="NORMAL"
+      difficulty={difficulty}
       joeMellorMode={joeMellorMode}
       superSamHallasMode={superSamHallasMode}
       normalEraMode={isNormalEra}

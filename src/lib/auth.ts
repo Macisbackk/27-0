@@ -58,7 +58,7 @@ export async function isCoachNameTaken(
     return (data?.length ?? 0) > 0;
   } catch (err) {
     console.error("[auth] isCoachNameTaken failed:", err);
-    return false;
+    return true;
   }
 }
 

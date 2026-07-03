@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { StatsPanel } from "@/components/StatsPanel";
-import { PageShell } from "@/components/ui/PageShell";
+import { PageShell, PageShellBody } from "@/components/ui/PageShell";
 import { useAuth } from "@/lib/auth-context";
 import { getAllStats } from "@/lib/storage/stats";
 import { importLocalStatsToCloud } from "@/lib/storage/stats-cloud";
@@ -34,7 +34,8 @@ export default function StatsPage() {
   };
 
   return (
-    <PageShell withLights compact>
+    <PageShell withLights compact desktopFit>
+      <PageShellBody>
       <div className={PAGE.section}>
         <header>
           <p className={TYPO.sectionLabel}>Career</p>
@@ -56,7 +57,7 @@ export default function StatsPage() {
               type="button"
               disabled={importing}
               onClick={() => void handleImport()}
-              className={`${BTN.base} ${BTN.secondary} !min-h-[40px] text-xs`}
+              className={`${BTN.base} ${BTN.secondary} text-xs`}
             >
               Import local stats to account
             </button>
@@ -72,6 +73,7 @@ export default function StatsPage() {
 
         <StatsPanel />
       </div>
+      </PageShellBody>
     </PageShell>
   );
 }

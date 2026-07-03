@@ -1,4 +1,4 @@
-import { getPlayerById } from "../players";
+import { getManagerPlayer } from "./managerPlayers";
 import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import type { ManagerCareer, ManagerSeasonSummary, SeasonHighlightResult } from "./types";
 import { buildManagerSchedule, buildLeagueTableFromMatches } from "./managerFixtures";
@@ -44,12 +44,6 @@ import {
   tickClubCareerTotals,
 } from "./managerRetirement";
 
-import { writeManagerCareerRaw } from "./managerSaveStorage";
-
-function persistCareer(career: ManagerCareer): void {
-  writeManagerCareerRaw(career);
-}
-
 export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary {
   const position = getUserLeaguePosition(career.leagueTable, career.club);
   let bestPlayerId: string | null = null;
@@ -58,7 +52,7 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
   let topTries = 0;
 
   for (const ps of career.squad) {
-    const player = getPlayerById(ps.playerId);
+    const player = getManagerPlayer(career, ps.playerId);
     if (!player) continue;
     if ((player.rating ?? player.peakRating) > bestRating) {
       bestRating = player.rating ?? player.peakRating;
@@ -163,7 +157,7 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
     wageBill: career.wageBill,
     expiringContracts: expiring,
     playersLeaving: leaving.map(
-      (id) => getPlayerById(id)?.name ?? id
+      (id) => getManagerPlayer(career, id)?.name ?? id
     ),
     seasonVerdict,
   };
@@ -181,7 +175,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
 
   let withInbox = afterReserveContracts;
   for (const playerId of squadLeaving) {
-    const name = getPlayerById(playerId)?.name ?? playerId;
+    const name = getManagerPlayer(withInbox, playerId)?.name ?? playerId;
     withInbox = addContractLeavingInboxMessage(withInbox, playerId, name);
   }
   for (const reserveId of reserveLeaving) {
@@ -316,6 +310,5 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
       "board_grant"
     );
   }
-  persistCareer(finalCareer);
   return finalCareer;
 }

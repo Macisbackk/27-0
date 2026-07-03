@@ -16,7 +16,7 @@ import { getClubColors } from "@/lib/clubs";
 import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { playSlotLand, playSlotSpinStart, playSlotSpinTick } from "@/lib/sound";
-import { CARD } from "@/lib/ui/design-system";
+import { CARD, MODAL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { SlotReel, type SlotReelHandle } from "./SlotReel";
 
@@ -157,9 +157,9 @@ export function RecruitmentSlotReveal({
   }, [teamPlan, yearPlan, onComplete, clubColors.primary, isEraSpin]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-3 sm:p-4">
+    <div className={`${MODAL.backdrop} z-50 bg-black/85`}>
       <div
-        className={`${CARD.panel} w-full max-w-md overflow-hidden border border-accent-green/25`}
+        className={`${CARD.panel} ${MODAL.panel} w-full max-w-md overflow-hidden border border-accent-green/25 ${MODAL.panelPadding}`}
       >
         <div
           className="border-b border-pitch-700/50 px-4 py-3 text-center sm:px-6 sm:py-4"

@@ -22,12 +22,13 @@ import {
   findPlayerLeagueClub,
   getLeagueClubRosterIds,
   getUserClubPlayerIds,
+  pruneLeagueListedPlayers,
   transferLeaguePlayer,
 } from "./managerLeagueRosters";
-import { createInitialPlayerState } from "./managerSquad";
-import { getPlayerAge } from "../players/player-age";
+import { getManagerPlayer } from "./managerPlayers";
 import { getTransferDemand } from "./managerTransfers";
-import { addPlayersToFreeAgents, isFreeAgent } from "./managerFreeAgents";
+import { createInitialPlayerState } from "./managerSquad";
+import { addPlayersToFreeAgents, completeFreeAgentSigning, isFreeAgent } from "./managerFreeAgents";
 import { syncManagerFinance, deductTransferFee, addTransferIncome, getTransferBudget, canAffordAdditionalWage } from "./managerFinance";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import {
@@ -68,8 +69,11 @@ export function initClubFunds(userClub: string): Record<string, number> {
   return funds;
 }
 
-function getPlayerListingRating(playerId: string): number {
-  const player = getPlayerById(playerId);
+function getPlayerListingRating(
+  career: ManagerCareer,
+  playerId: string
+): number {
+  const player = getManagerPlayer(career, playerId);
   if (!player) return 0;
   return getManagerModePlayerRating(
     playerId,
@@ -86,13 +90,13 @@ export function getProtectedTransferPlayerIds(
   const roster = getLeagueClubRosterIds(career, club);
   let topRating = 0;
   for (const id of roster) {
-    topRating = Math.max(topRating, getPlayerListingRating(id));
+    topRating = Math.max(topRating, getPlayerListingRating(career, id));
   }
   if (topRating <= 0) return new Set();
 
   const protectedIds = new Set<string>();
   for (const id of roster) {
-    if (getPlayerListingRating(id) === topRating) {
+    if (getPlayerListingRating(career, id) === topRating) {
       protectedIds.add(id);
     }
   }
@@ -107,7 +111,7 @@ function getListableClubPlayers(
   return getLeagueClubRosterIds(career, club)
     .map((id) => {
       if (protectedIds.has(id)) return null;
-      const rating = getPlayerListingRating(id);
+      const rating = getPlayerListingRating(career, id);
       if (rating <= 0) return null;
       return { id, rating };
     })
@@ -175,7 +179,10 @@ export function generateLeagueListedPlayers(
   return listed.sort((a, b) => {
     const clubCmp = a.club.localeCompare(b.club);
     if (clubCmp !== 0) return clubCmp;
-    return getPlayerListingRating(a.playerId) - getPlayerListingRating(b.playerId);
+    return (
+      getPlayerListingRating(career, a.playerId) -
+      getPlayerListingRating(career, b.playerId)
+    );
   });
 }
 
@@ -387,6 +394,13 @@ export function evaluateBuyOffer(
   const player = getPlayerById(playerId);
   if (!player) return { accepted: false, reason: "Player not found" };
 
+  if (isFreeAgent(career, playerId)) {
+    return {
+      accepted: false,
+      reason: "This player is a free agent — sign them without a transfer fee.",
+    };
+  }
+
   const sellerClub = findPlayerLeagueClub(career, playerId);
   if (!isFreeAgent(career, playerId) && sellerClub !== club) {
     return { accepted: false, reason: "Player is no longer at that club." };
@@ -430,7 +444,7 @@ export function evaluateBuyOffer(
     return { accepted: false, reason: "Insufficient transfer budget." };
   }
 
-  const demand = getTransferDemand(playerId, career.club);
+  const demand = getTransferDemand(career, playerId);
   const rating = player.rating ?? player.peakRating ?? 70;
   if (offer.wagePerYear < demand.wagePerYear * 0.9) {
     return { accepted: false, reason: "Wage offer too low." };
@@ -463,14 +477,21 @@ export function completePlayerPurchase(
   offer: BuyOffer,
   listed: boolean
 ): ManagerCareer {
+  if (isFreeAgent(career, playerId)) {
+    return completeFreeAgentSigning(career, playerId, {
+      ...offer,
+      transferFee: 0,
+    });
+  }
+
   const sellerClub = findPlayerLeagueClub(career, playerId);
   if (!isFreeAgent(career, playerId) && sellerClub !== club) {
     return career;
   }
 
   const rep = getManagerClubTeamRating(career.club);
-  const demand = getTransferDemand(playerId, career.club);
-  const contract = generateInitialContract(playerId, false, rep);
+  const demand = getTransferDemand(career, playerId);
+  const contract = generateInitialContract(playerId, false, rep, career);
   contract.wagePerYear = offer.wagePerYear;
   contract.yearsRemaining = offer.yearsRequested;
   contract.squadRole = demand.squadRole;
@@ -517,15 +538,17 @@ export function completePlayerPurchase(
   );
 
   const player = getPlayerById(playerId);
-  return pushInboxMessage(
-    purchased,
-    createPlayerPurchaseMessage(
+  return pruneLeagueListedPlayers(
+    pushInboxMessage(
       purchased,
-      playerId,
-      player?.name ?? "Player",
-      club,
-      offer.transferFee,
-      offer.wagePerYear
+      createPlayerPurchaseMessage(
+        purchased,
+        playerId,
+        player?.name ?? "Player",
+        club,
+        offer.transferFee,
+        offer.wagePerYear
+      )
     )
   );
 }
@@ -904,8 +927,11 @@ export function suggestedAskingPrice(playerId: string): number {
   return Math.round(player.value * 1.05);
 }
 
-export function suggestedWageOffer(playerId: string, club: string): BuyOffer {
-  const demand = getTransferDemand(playerId, club);
+export function suggestedWageOffer(
+  career: ManagerCareer,
+  playerId: string
+): BuyOffer {
+  const demand = getTransferDemand(career, playerId);
   return {
     transferFee: 0,
     wagePerYear: demand.wagePerYear,

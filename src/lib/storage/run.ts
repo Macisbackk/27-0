@@ -163,9 +163,10 @@ export async function recordPlayoffCompletion(
   let nationalRank: number | undefined;
   if (loggedIn && run.mode === "CLASSIC") {
     await addLeaderboardEntry(totalValue, run.mode, difficulty, {
-      wins,
-      losses,
+      wins: options.playoffWins,
+      losses: options.playoffLosses,
       modeVariant,
+      isPlayoffPhaseUpdate: true,
     });
     const dbMode = gameModeToDbMode(run.mode);
     nationalRank = (

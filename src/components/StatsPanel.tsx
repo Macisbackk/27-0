@@ -10,7 +10,6 @@ import {
   STATS_TABS,
   getDraftModeView,
   getFantasyModeView,
-  getHardNormalModeView,
   getOverallView,
   getSuperLeagueView,
   formatRankingOrDash,
@@ -18,10 +17,9 @@ import {
   formatRecordOrDash,
   type StatsTabId,
 } from "@/lib/stats-views";
-import { HardModeBadge } from "./HardModeBadge";
 import { RecordWithPercentage } from "./RecordWithPercentage";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
-import { BTN } from "@/lib/ui/design-system";
+import { BTN, TAB_RAIL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { runStatsPageValidation } from "@/lib/validation/stats-page-validation";
 import { playTabChange } from "@/lib/sound";
@@ -96,7 +94,11 @@ export function StatsPanel() {
   useEffect(() => {
     refresh();
     window.addEventListener("focus", refresh);
-    return () => window.removeEventListener("focus", refresh);
+    window.addEventListener("auth-state-changed", refresh);
+    return () => {
+      window.removeEventListener("focus", refresh);
+      window.removeEventListener("auth-state-changed", refresh);
+    };
   }, []);
 
   useEffect(() => {
@@ -152,8 +154,8 @@ export function StatsPanel() {
 
   return (
     <div className="space-y-6">
-      <nav className="-mx-1 overflow-x-auto px-1 pb-1">
-        <div className="flex min-w-max gap-2">
+      <nav className={`${TAB_RAIL.outer} mb-5`}>
+        <div className={`${TAB_RAIL.inner}`}>
           {STATS_MODE_TABS.map((tab) => (
             <button
               key={tab.id}
@@ -162,7 +164,7 @@ export function StatsPanel() {
                 if (modeTab !== tab.id) playTabChange();
                 setModeTab(tab.id);
               }}
-              className={`btn-press shrink-0 min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
+              className={`${TAB_RAIL.item} btn-press min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
                 modeTab === tab.id ? BTN.tabActive : BTN.tabIdle
               }`}
             >
@@ -174,8 +176,8 @@ export function StatsPanel() {
 
       {modeTab === "quick" && (
         <>
-          <nav className="-mx-1 overflow-x-auto px-1 pb-1">
-            <div className="flex min-w-max gap-2">
+          <nav className={`${TAB_RAIL.outer} mb-5`}>
+            <div className={TAB_RAIL.inner}>
               {STATS_TABS.map((tab) => (
                 <button
                   key={tab.id}
@@ -184,7 +186,7 @@ export function StatsPanel() {
                     if (activeTab !== tab.id) playTabChange();
                     setActiveTab(tab.id);
                   }}
-                  className={`btn-press shrink-0 min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
+                  className={`${TAB_RAIL.item} btn-press min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
                     activeTab === tab.id ? BTN.tabActive : BTN.tabIdle
                   }`}
                 >
@@ -206,13 +208,13 @@ export function StatsPanel() {
               hard={hardStats}
               draftNormal={publicDraftNormal}
               draftHard={publicDraftHard}
+              eraNormal={eraNormalStats}
             />
           )}
           {activeTab === "super-league" && (
             <SuperLeagueTab
               normal={normalStats}
               eraNormal={eraNormalStats}
-              hard={hardStats}
               eraMode={normalEraMode}
               onEraModeChange={(era) => {
                 setNormalEraMode(era);
@@ -225,8 +227,8 @@ export function StatsPanel() {
 
       {modeTab === "manager" && (
         <>
-          <nav className="-mx-1 overflow-x-auto px-1 pb-1">
-            <div className="flex min-w-max gap-2">
+          <nav className={`${TAB_RAIL.outer} mb-5`}>
+            <div className={TAB_RAIL.inner}>
               {MANAGER_STATS_TABS.map((tab) => (
                 <button
                   key={tab.id}
@@ -235,7 +237,7 @@ export function StatsPanel() {
                     if (managerTab !== tab.id) playTabChange();
                     setManagerTab(tab.id);
                   }}
-                  className={`btn-press shrink-0 min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
+                  className={`${TAB_RAIL.item} btn-press min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
                     managerTab === tab.id ? BTN.tabActive : BTN.tabIdle
                   }`}
                 >
@@ -453,13 +455,15 @@ function OverallTab({
   hard,
   draftNormal,
   draftHard,
+  eraNormal,
 }: {
   normal: UserStatsData;
   hard: UserStatsData;
   draftNormal: UserStatsData;
   draftHard: UserStatsData;
+  eraNormal: UserStatsData;
 }) {
-  const view = getOverallView(normal, hard, draftNormal, draftHard);
+  const view = getOverallView(normal, hard, draftNormal, draftHard, eraNormal);
 
   return (
     <div className="space-y-8">
@@ -504,14 +508,14 @@ function OverallTab({
 
       <StatsSection title="Achievements">
         <StatCard
-          label="League Titles"
+          label="Minor Premierships"
           value={String(view.leagueTitles)}
           highlight={view.leagueTitles > 0}
         />
         <StatCard
-          label="Challenge Cups"
-          value={String(view.challengeCups)}
-          highlight={view.challengeCups > 0}
+          label="Super League Titles"
+          value={String(view.superLeagueTitles)}
+          highlight={view.superLeagueTitles > 0}
         />
         <StatCard
           label="Total 27-0 Seasons"
@@ -613,7 +617,6 @@ function SuperLeagueTab({
 }: {
   normal: UserStatsData;
   eraNormal: UserStatsData;
-  hard: UserStatsData;
   eraMode: boolean;
   onEraModeChange: (eraMode: boolean) => void;
 }) {

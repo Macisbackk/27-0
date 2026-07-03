@@ -1,10 +1,5 @@
-"use client";
-
 import { redirect } from "next/navigation";
-import { GameStarter } from "@/components/GameStarter";
-import { getPlayPageTitle } from "@/lib/mode-labels";
-import { isNormalEraMode } from "@/lib/play-links";
-import type { GameMode } from "@/lib/types";
+import { PlayPageClient } from "./PlayPageClient";
 
 export default async function PlayPage({
   searchParams,
@@ -22,35 +17,28 @@ export default async function PlayPage({
 }) {
   const params = await searchParams;
 
+  const isHiddenMode =
+    params.joeMellor === "1" || params.superSamHallas === "1";
+
   if (
-    params.cup === "1" ||
-    params.eraCup === "1" ||
-    params.fantasy === "1" ||
-    params.draft === "1" ||
-    params.difficulty === "hard"
+    !isHiddenMode &&
+    (params.cup === "1" ||
+      params.eraCup === "1" ||
+      params.fantasy === "1" ||
+      params.draft === "1" ||
+      params.difficulty === "hard")
   ) {
     redirect("/play");
   }
 
-  const wantsNormalEra = isNormalEraMode(params);
-  const wantsSuperSamHallas = params.superSamHallas === "1";
-  const wantsJoeMellor = params.joeMellor === "1" && !wantsSuperSamHallas;
-
-  const mode: GameMode = "CLASSIC";
-
-  const title = wantsSuperSamHallas
-    ? "Super Sam Hallas Mode"
-    : wantsJoeMellor
-      ? "Joe Mellor GOAT Mode"
-      : getPlayPageTitle(mode, "NORMAL", wantsNormalEra);
-
   return (
-    <GameStarter
-      mode={mode}
-      title={title}
-      joeMellorMode={wantsJoeMellor}
-      superSamHallasMode={wantsSuperSamHallas}
-      normalEraMode={wantsNormalEra}
+    <PlayPageClient
+      params={{
+        difficulty: params.difficulty,
+        era: params.era,
+        joeMellor: params.joeMellor,
+        superSamHallas: params.superSamHallas,
+      }}
     />
   );
 }

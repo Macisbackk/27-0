@@ -3,6 +3,7 @@ import { isLoggedIn } from "../auth-session";
 import { isSupabaseConfigured, supabase } from "../supabase";
 import { getAuthUserId } from "../auth-session";
 import { getUsername } from "./user";
+import { isGuestLeaderboardName } from "./leaderboard";
 import { STORAGE_KEYS } from "./keys";
 import { getClubFundsTotalEarned } from "./club-funds";
 import type { LeaderboardTrackerRow } from "../leaderboard-trackers";
@@ -17,16 +18,6 @@ export interface ClubFundsLeaderboardEntry {
   username: string;
   totalEarned: number;
   updatedAt: string;
-}
-
-function isGuestLeaderboardName(username: string): boolean {
-  const normalized = username.trim().toLowerCase();
-  return (
-    !normalized ||
-    normalized === "guest" ||
-    normalized === "coach" ||
-    normalized === LOCAL_GUEST_KEY.toLowerCase()
-  );
 }
 
 function loadLocalEntries(): Record<string, ClubFundsLeaderboardEntry> {
@@ -99,10 +90,11 @@ export async function submitClubFundsLeaderboardOnline(
         player_name: coachName,
         mode: LEADERBOARD_MODE,
         difficulty: "NORMAL",
+        mode_variant: "current",
         score: totalEarned,
         updated_at: new Date().toISOString(),
       },
-      { onConflict: "user_id,mode,difficulty" }
+      { onConflict: "user_id,mode,difficulty,mode_variant" }
     );
   } catch (err) {
     console.error("[club-funds-leaderboard] submit failed:", err);

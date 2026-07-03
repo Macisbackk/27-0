@@ -47,6 +47,7 @@ import {
 } from "@/lib/manager/managerSimulation";
 import { acknowledgePlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
 import { shouldShowChallengeCupCelebration } from "@/lib/manager/managerChallengeCup";
+import { recordManagerCupTeamWin } from "@/lib/storage/cup-team-wins";
 import {
   recordCareerStarted,
   recordMatchResult,
@@ -192,6 +193,7 @@ export default function ManagerPage() {
     setCareer(saved);
     if (saved.isSeasonComplete) {
       if (shouldShowChallengeCupCelebration(saved)) {
+        recordManagerCupTeamWin(saved.club, activeSlot, saved.seasonYear);
         setChallengeCupWinModalOpen(true);
         setView("hub");
         return;
@@ -220,6 +222,7 @@ export default function ManagerPage() {
       setPendingRetirementIntentId(retirementIntent.id);
       setRetirementIntentModalOpen(true);
     } else if (shouldShowChallengeCupCelebration(saved)) {
+      recordManagerCupTeamWin(saved.club, activeSlot, saved.seasonYear);
       setChallengeCupWinModalOpen(true);
     } else if (shouldShowLeagueWinnersCelebration(saved)) {
       setLeagueWinnersModalOpen(true);
@@ -231,7 +234,13 @@ export default function ManagerPage() {
     setActiveSlot(slot);
     setActiveSaveSlot(slot);
     const saved = loadManagerCareer(slot);
-    if (!saved) return;
+    if (!saved) {
+      setAlertDialog({
+        title: "Save unavailable",
+        message: `Save ${slot + 1} could not be loaded. The file may be corrupt — delete this slot and start a new career.`,
+      });
+      return;
+    }
     continueCareer(saved);
   };
 
@@ -288,6 +297,9 @@ export default function ManagerPage() {
 
     const wonLeagueTable = shouldShowLeagueWinnersCelebration(next);
     const wonChallengeCup = shouldShowChallengeCupCelebration(next);
+    if (wonChallengeCup) {
+      recordManagerCupTeamWin(next.club, activeSlot, next.seasonYear);
+    }
     const unsolicited = getPendingUnsolicitedOffer(next);
     const retirementIntent = getPendingRetirementIntentPopup(next);
     setPendingIncomingBidId(unsolicited?.id ?? null);
@@ -570,18 +582,50 @@ export default function ManagerPage() {
     if (!career) return;
     const ready = prepareCareerForNextMatch(career);
     const check = validateFitMatchdaySquad(ready);
-    if (!check.valid) return;
-    if (!getNextManagerFixture(ready)) return;
+    if (!check.valid) {
+      setAlertDialog({
+        title: "Squad not ready",
+        message: check.message || "Fix your matchday squad before simulating.",
+      });
+      return;
+    }
+    if (!getNextManagerFixture(ready)) {
+      setAlertDialog({
+        title: "No fixture",
+        message: "There is no match scheduled to simulate.",
+      });
+      return;
+    }
     setCareer(ready);
-    afterMatch(simulateManagerNextMatch(ready));
+    const result = simulateManagerNextMatch(ready);
+    if (!result.ok) {
+      setAlertDialog({
+        title: "Simulation failed",
+        message: result.error,
+      });
+      return;
+    }
+    afterMatch(result.career);
   };
 
   const handlePlayGame = () => {
     if (!career) return;
     const ready = prepareCareerForNextMatch(career);
     const check = validateFitMatchdaySquad(ready);
-    if (!check.valid) return;
-    if (!getNextManagerFixture(ready)) return;
+    if (!check.valid) {
+      setAlertDialog({
+        title: "Squad not ready",
+        message: check.message || "Fix your matchday squad before playing.",
+      });
+      return;
+    }
+    if (!getNextManagerFixture(ready)) {
+      setAlertDialog({
+        title: "No fixture",
+        message: "There is no match scheduled to play.",
+      });
+      return;
+    }
     setCareer(ready);
     setPlayGameOpen(true);
   };
@@ -595,9 +639,7 @@ export default function ManagerPage() {
     if (!career) return;
     const next = advanceToNextSeason(career);
     const hydrated = hydrateManagerCareer(next);
-    setCareer(hydrated);
-    saveManagerCareer(hydrated, activeSlot);
-    refreshSaveSlots();
+    persist(hydrated);
     setView("hub");
   };
 

@@ -10,10 +10,21 @@ const MODE_KEY_MAP: Record<PlayModeKey, string> = {
   draft: STORAGE_KEYS.draftDifficulty,
 };
 
-function parseDifficulty(raw: string | null): GameDifficulty | null {
-  if (raw === "HARD" || raw === "hard") return "HARD";
-  if (raw === "NORMAL" || raw === "normal") return "NORMAL";
-  return null;
+function scrubStoredHardDifficulty(): void {
+  if (typeof window === "undefined") return;
+  try {
+    for (const key of [
+      STORAGE_KEYS.normalDifficulty,
+      STORAGE_KEYS.draftDifficulty,
+    ]) {
+      const raw = localStorage.getItem(key);
+      if (raw === "HARD" || raw === "hard") {
+        localStorage.setItem(key, "NORMAL");
+      }
+    }
+  } catch {
+    // ignore
+  }
 }
 
 function migrateLegacyDifficulty(): void {
@@ -29,23 +40,20 @@ function migrateLegacyDifficulty(): void {
       legacy === "true" ||
       legacy === "HARD" ||
       legacy === "hard";
-    const migrated: GameDifficulty = hard ? "HARD" : "NORMAL";
-    localStorage.setItem(STORAGE_KEYS.normalDifficulty, migrated);
+    if (hard) {
+      localStorage.setItem(STORAGE_KEYS.normalDifficulty, "NORMAL");
+    }
     localStorage.setItem(STORAGE_KEYS.draftDifficulty, "NORMAL");
   } catch {
     // ignore
   }
 }
 
-export function getModeDifficulty(mode: PlayModeKey): GameDifficulty {
+export function getModeDifficulty(_mode: PlayModeKey): GameDifficulty {
   if (typeof window === "undefined") return "NORMAL";
   migrateLegacyDifficulty();
-  try {
-    const parsed = parseDifficulty(localStorage.getItem(MODE_KEY_MAP[mode]));
-    return parsed ?? "NORMAL";
-  } catch {
-    return "NORMAL";
-  }
+  scrubStoredHardDifficulty();
+  return "NORMAL";
 }
 
 export function setModeDifficulty(
@@ -53,10 +61,11 @@ export function setModeDifficulty(
   difficulty: GameDifficulty
 ): void {
   migrateLegacyDifficulty();
-  localStorage.setItem(MODE_KEY_MAP[mode], difficulty);
+  const normalized: GameDifficulty = difficulty === "HARD" ? "NORMAL" : difficulty;
+  localStorage.setItem(MODE_KEY_MAP[mode], normalized);
   window.dispatchEvent(
     new CustomEvent(MODE_DIFFICULTY_CHANGED_EVENT, {
-      detail: { mode, difficulty },
+      detail: { mode, difficulty: normalized },
     })
   );
 }

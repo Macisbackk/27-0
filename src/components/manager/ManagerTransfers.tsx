@@ -159,7 +159,7 @@ export function ManagerTransfers({
     }
   ) => {
     const player = getPlayerById(playerId);
-    const demand = getTransferDemand(playerId, career.club);
+    const demand = getTransferDemand(career, playerId);
     const fee =
       offerOverride?.transferFee ??
       (listed
@@ -196,7 +196,7 @@ export function ManagerTransfers({
   };
 
   const openListedNegotiation = (playerId: string) => {
-    const demand = getTransferDemand(playerId, career.club);
+    const demand = getTransferDemand(career, playerId);
     playUiClick();
     setListedNegotiateId(playerId);
     setListedOfferWage(demand.wagePerYear);
@@ -205,7 +205,7 @@ export function ManagerTransfers({
   };
 
   const submitListedAssistantDeal = (playerId: string, club: string) => {
-    const demand = getTransferDemand(playerId, career.club);
+    const demand = getTransferDemand(career, playerId);
     const asking = getSellerAskingPrice(career, playerId, club, true);
     playUiClick();
     submitTransferOffer(playerId, club, true, {
@@ -234,7 +234,7 @@ export function ManagerTransfers({
     }
   ) => {
     const player = getPlayerById(playerId);
-    const demand = getTransferDemand(playerId, career.club);
+    const demand = getTransferDemand(career, playerId);
     const offer = {
       transferFee: 0,
       wagePerYear: offerOverride?.wagePerYear ?? demand.wagePerYear,
@@ -263,7 +263,7 @@ export function ManagerTransfers({
   };
 
   const openFreeAgentNegotiation = (playerId: string) => {
-    const demand = getTransferDemand(playerId, career.club);
+    const demand = getTransferDemand(career, playerId);
     playUiClick();
     setFreeAgentNegotiateId(playerId);
     setFreeAgentOfferWage(demand.wagePerYear);
@@ -273,7 +273,7 @@ export function ManagerTransfers({
   };
 
   const submitFreeAgentAssistantDeal = (playerId: string, formerClub: string) => {
-    const demand = getTransferDemand(playerId, career.club);
+    const demand = getTransferDemand(career, playerId);
     playUiClick();
     submitFreeAgentOffer(playerId, formerClub, {
       wagePerYear: demand.wagePerYear,
@@ -400,7 +400,7 @@ export function ManagerTransfers({
         </div>
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
           {listedPlayers.map(({ player, club, askingPrice }) => {
-            const demand = getTransferDemand(player.id, career.club);
+            const demand = getTransferDemand(career, player.id);
             const isNegotiating = listedNegotiateId === player.id;
             const canAffordFee = getTransferBudget(career) >= askingPrice;
             const canAffordAssistant =
@@ -520,7 +520,7 @@ export function ManagerTransfers({
         </div>
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
           {freeAgents.map(({ player, formerClub, playerId }) => {
-            const demand = getTransferDemand(player.id, career.club);
+            const demand = getTransferDemand(career, player.id);
             const isNegotiating = freeAgentNegotiateId === player.id;
             const canAffordAssistant = canAffordAdditionalWage(
               career,
@@ -678,7 +678,7 @@ export function ManagerTransfers({
               career.seed,
               career.gameWeek
             );
-            const demand = getTransferDemand(player.id, career.club);
+            const demand = getTransferDemand(career, player.id);
             const isOffering = offerPlayerId === player.id;
             return (
               <ManagerTransferPlayerCard

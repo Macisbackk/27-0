@@ -111,7 +111,7 @@ export function ManagerNav({
             type="button"
             onClick={() => navigate(tab.id)}
             disabled={disabled}
-            className={`btn-press shrink-0 min-w-[4.25rem] flex min-h-[44px] items-center justify-center rounded-lg px-2.5 py-2.5 text-center font-display text-[10px] font-bold uppercase tracking-wide transition sm:min-w-0 sm:px-3 sm:text-xs ${
+            className={`btn-press shrink-0 min-w-[4.25rem] flex min-h-[44px] items-center justify-center rounded-lg px-2.5 py-2.5 text-center font-display text-xs font-bold uppercase tracking-wide transition sm:min-w-0 sm:px-3 ${
               active === tab.id ? BTN.tabActive : BTN.tabIdle
             } ${disabled ? "pointer-events-none opacity-40" : ""}`}
           >

@@ -2,6 +2,7 @@ import { isLoggedIn } from "../auth-session";
 import { isSupabaseConfigured, supabase } from "../supabase";
 import { getAuthUserId } from "../auth-session";
 import { getUsername } from "./user";
+import { isGuestLeaderboardName } from "./leaderboard";
 import { STORAGE_KEYS } from "./keys";
 import { getAllStats, type StoredStats } from "./stats";
 import type { LeaderboardTrackerRow, LeaderboardTrackerType } from "../leaderboard-trackers";
@@ -42,16 +43,6 @@ export interface TrophyCabinetLeaderboardEntry {
   username: string;
   trophyCount: number;
   updatedAt: string;
-}
-
-function isGuestLeaderboardName(username: string): boolean {
-  const normalized = username.trim().toLowerCase();
-  return (
-    !normalized ||
-    normalized === "guest" ||
-    normalized === "coach" ||
-    normalized === LOCAL_GUEST_KEY.toLowerCase()
-  );
 }
 
 export function getTrophyCountFromStats(

@@ -32,7 +32,13 @@ import {
 } from "@/lib/storage/manager-leaderboard";
 import { playTabChange } from "@/lib/sound";
 import { RecordWithPercentage } from "./RecordWithPercentage";
-import { BTN, CARD } from "@/lib/ui/design-system";
+import { CupTeamWinsBarGraph } from "./CupTeamWinsBarGraph";
+import {
+  getCupTeamWinsLeaderboardAsync,
+  getEraCupTeamWinsLeaderboardAsync,
+  type CupTeamWinsLeaderboardRow,
+} from "@/lib/storage/cup-team-wins";
+import { BTN, CARD, TAB_RAIL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
@@ -62,13 +68,7 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   manager_total_earnings: "Total Earnings",
 };
 
-interface LeaderboardTableProps {
-  initialDifficulty?: GameDifficulty;
-}
-
-export function LeaderboardTable({
-  initialDifficulty = "NORMAL",
-}: LeaderboardTableProps) {
+export function LeaderboardTable() {
   const [playStyle, setPlayStyle] = useState<LeaderboardPlayStyle>("manager");
   const [leaderboardMode, setLeaderboardMode] =
     useState<LeaderboardDbMode>("super-league");
@@ -76,9 +76,12 @@ export function LeaderboardTable({
     useState<ManagerLeaderboardDbMode>("manager-super-league");
   const [tracker, setTracker] = useState<LeaderboardTrackerType>("best_record");
   const [period, setPeriod] = useState<LeaderboardPeriod>("ALL_TIME");
-  const [difficulty, setDifficulty] =
-    useState<GameDifficulty>(initialDifficulty);
+  const difficulty: GameDifficulty = "NORMAL";
   const [entries, setEntries] = useState<LeaderboardTrackerRow[]>([]);
+  const [cupTeamWinRows, setCupTeamWinRows] = useState<CupTeamWinsLeaderboardRow[]>(
+    []
+  );
+  const [cupTeamWinsTotal, setCupTeamWinsTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [usingFallback, setUsingFallback] = useState(false);
   const [normalEraMode, setNormalEraMode] = useState(false);
@@ -114,12 +117,11 @@ export function LeaderboardTable({
     !isManagerPlayStyle && leaderboardMode === "club-funds";
   const isTrophyCabinetMode =
     !isManagerPlayStyle && leaderboardMode === "trophy-cabinet";
-  const isManagerTrophyCabinetMode =
-    isManagerPlayStyle && managerMode === "manager-trophy-cabinet";
+  const isCupTeamWinsMode =
+    !isManagerPlayStyle && leaderboardMode === "cup-team-wins";
   const isManagerEarningsMode =
     isManagerPlayStyle && managerMode === "manager-earnings";
-  const isManagerScoreMode =
-    isManagerTrophyCabinetMode || isManagerEarningsMode;
+  const isManagerScoreMode = isManagerEarningsMode;
 
   const handlePlayStyleChange = (style: LeaderboardPlayStyle) => {
     if (style !== playStyle) playTabChange();
@@ -127,7 +129,6 @@ export function LeaderboardTable({
     if (style === "manager") {
       setManagerMode("manager-super-league");
       setTracker(getDefaultTrackerForManagerDbMode("manager-super-league"));
-      setDifficulty("NORMAL");
     } else {
       setLeaderboardMode("super-league");
       setTracker(getDefaultTrackerForDbMode("super-league"));
@@ -141,9 +142,10 @@ export function LeaderboardTable({
     if (
       mode === "fantasy" ||
       mode === "club-funds" ||
-      mode === "trophy-cabinet"
+      mode === "trophy-cabinet" ||
+      mode === "cup-team-wins"
     ) {
-      setDifficulty("NORMAL");
+      return;
     }
   };
 
@@ -155,6 +157,7 @@ export function LeaderboardTable({
 
   const isSuperLeagueMode =
     !isManagerPlayStyle && leaderboardMode === "super-league";
+  const showCupVariantToggle = isSuperLeagueMode || isCupTeamWinsMode;
   const superLeagueModeVariant = normalEraMode ? "era" : "current";
 
   const loadEntries = useCallback(async () => {
@@ -170,6 +173,18 @@ export function LeaderboardTable({
         );
         if (currentRequest !== requestId.current) return;
         setEntries(result.rows);
+        setUsingFallback(result.source === "local");
+        return;
+      }
+
+      if (isCupTeamWinsMode) {
+        const result = normalEraMode
+          ? await getEraCupTeamWinsLeaderboardAsync()
+          : await getCupTeamWinsLeaderboardAsync();
+        if (currentRequest !== requestId.current) return;
+        setCupTeamWinRows(result.rows);
+        setCupTeamWinsTotal(result.totalCups);
+        setEntries([]);
         setUsingFallback(result.source === "local");
         return;
       }
@@ -216,9 +231,11 @@ export function LeaderboardTable({
     activeTracker,
     isClubFundsMode,
     isTrophyCabinetMode,
+    isCupTeamWinsMode,
     isSuperLeagueMode,
     superLeagueModeVariant,
     isManagerPlayStyle,
+    normalEraMode,
   ]);
 
   useEffect(() => {
@@ -246,7 +263,9 @@ export function LeaderboardTable({
           ? "Total Winnings"
           : leaderboardMode === "trophy-cabinet"
             ? "Trophy Cabinet"
-            : "Normal Mode";
+            : leaderboardMode === "cup-team-wins"
+              ? "Cup Team Wins"
+              : "Normal Mode";
 
   const managerModeLabel =
     MANAGER_LEADERBOARD_MODES.find((mode) => mode.id === managerMode)?.label ??
@@ -260,6 +279,7 @@ export function LeaderboardTable({
 
   const quickModeOptions = [
     { id: "super-league" as const, label: "Normal Mode" },
+    { id: "cup-team-wins" as const, label: "Cup Team Wins" },
     { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
     { id: "club-funds" as const, label: "Total Winnings" },
   ] as const;
@@ -271,21 +291,30 @@ export function LeaderboardTable({
   const showUpdatedColumn =
     !isClubFundsMode &&
     !isTrophyCabinetMode &&
+    !isCupTeamWinsMode &&
     !isManagerScoreMode;
 
   const showPeriodFilters =
-    !isManagerPlayStyle && !isClubFundsMode && !isTrophyCabinetMode;
+    !isManagerPlayStyle &&
+    !isClubFundsMode &&
+    !isTrophyCabinetMode &&
+    !isCupTeamWinsMode;
 
   return (
     <div>
-      <nav className="-mx-1 mb-5 overflow-x-auto px-1 pb-1">
-        <div className="flex min-w-max gap-2">
+      <nav
+        className={`${TAB_RAIL.outer} mb-5`}
+        aria-label="Leaderboard play style"
+      >
+        <div className={TAB_RAIL.inner} role="tablist">
           {PLAY_STYLE_TABS.map((tab) => (
             <button
               key={tab.id}
               type="button"
+              role="tab"
+              aria-selected={playStyle === tab.id}
               onClick={() => handlePlayStyleChange(tab.id)}
-              className={`btn-press shrink-0 min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
+              className={`${TAB_RAIL.item} btn-press min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
                 playStyle === tab.id ? BTN.tabActive : BTN.tabIdle
               }`}
             >
@@ -295,43 +324,84 @@ export function LeaderboardTable({
         </div>
       </nav>
 
-      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {(isManagerPlayStyle ? MANAGER_LEADERBOARD_MODES : quickModeOptions).map(
-          (mode) => {
-            const selected = isManagerPlayStyle
-              ? managerMode === mode.id
-              : leaderboardMode === mode.id;
-            return (
-              <button
-                key={mode.id}
-                type="button"
-                onClick={() =>
-                  isManagerPlayStyle
-                    ? handleManagerModeChange(
-                        mode.id as ManagerLeaderboardDbMode
-                      )
-                    : handleQuickModeChange(mode.id as LeaderboardDbMode)
-                }
-                className={`btn-press min-h-[44px] rounded-xl border-2 px-4 py-4 text-left transition active:scale-[0.98] ${
-                  selected
-                    ? `${CARD.featured} border-accent-green/60 bg-accent-green/10`
-                    : `${CARD.base} hover:border-pitch-500/60 hover:bg-pitch-800/40`
-                }`}
-              >
-                <span
-                  className={`${TYPO.sectionTitle} sm:text-base ${
-                    selected ? "text-accent-green" : "text-gray-300"
-                  }`}
-                >
-                  {mode.label}
-                </span>
-              </button>
-            );
-          }
-        )}
-      </div>
+      {(() => {
+        const modeOptions = isManagerPlayStyle
+          ? MANAGER_LEADERBOARD_MODES
+          : quickModeOptions;
+        const modeLabel = isManagerPlayStyle
+          ? "Manager leaderboard modes"
+          : "Quick mode leaderboards";
 
-      {isSuperLeagueMode && (
+        const renderModeButton = (
+          mode: (typeof modeOptions)[number],
+          compact: boolean
+        ) => {
+          const selected = isManagerPlayStyle
+            ? managerMode === mode.id
+            : leaderboardMode === mode.id;
+          return (
+            <button
+              key={mode.id}
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              onClick={() =>
+                isManagerPlayStyle
+                  ? handleManagerModeChange(mode.id as ManagerLeaderboardDbMode)
+                  : handleQuickModeChange(mode.id as LeaderboardDbMode)
+              }
+              className={
+                compact
+                  ? `${TAB_RAIL.item} btn-press min-h-[44px] shrink-0 rounded-lg px-3 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-4 sm:text-sm ${
+                      selected ? BTN.tabActive : BTN.tabIdle
+                    }`
+                  : `btn-press min-h-[44px] rounded-xl border-2 px-4 py-4 text-left transition active:scale-[0.98] ${
+                      selected
+                        ? `${CARD.featured} border-accent-green/60 bg-accent-green/10`
+                        : `${CARD.base} hover:border-pitch-500/60 hover:bg-pitch-800/40`
+                    }`
+              }
+            >
+              <span
+                className={
+                  compact
+                    ? selected
+                      ? "text-accent-green"
+                      : "text-gray-300"
+                    : `${TYPO.sectionTitle} sm:text-base ${
+                        selected ? "text-accent-green" : "text-gray-300"
+                      }`
+                }
+              >
+                {mode.label}
+              </span>
+            </button>
+          );
+        };
+
+        return (
+          <>
+            <div
+              className={`${TAB_RAIL.outer} mb-5 sm:hidden`}
+              role="tablist"
+              aria-label={modeLabel}
+            >
+              <div className={TAB_RAIL.inner}>
+                {modeOptions.map((mode) => renderModeButton(mode, true))}
+              </div>
+            </div>
+            <div
+              className="mb-5 hidden gap-3 sm:grid sm:grid-cols-2 lg:grid-cols-4"
+              role="tablist"
+              aria-label={modeLabel}
+            >
+              {modeOptions.map((mode) => renderModeButton(mode, false))}
+            </div>
+          </>
+        );
+      })()}
+
+      {showCupVariantToggle && (
         <div className="mb-5">
           <ChallengeCupVariantToggle
             sectionLabel="Mode Variant"
@@ -359,27 +429,29 @@ export function LeaderboardTable({
                   <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
                     {section.label}
                   </p>
-                  <div className="-mb-px flex gap-1 overflow-x-auto pb-px">
-                    {sectionTrackers.map((t) => {
-                      const selected = activeTracker === t.id;
-                      return (
-                        <button
-                          key={t.id}
-                          type="button"
-                          onClick={() => {
-                            if (activeTracker !== t.id) playTabChange();
-                            setTracker(t.id);
-                          }}
-                          className={`shrink-0 min-h-[40px] border-b-2 px-3 py-2 ${TYPO.button} transition sm:px-4 ${
-                            selected
-                              ? "border-accent-green text-accent-green"
-                              : "border-transparent text-gray-500 hover:border-pitch-600 hover:text-gray-300"
-                          }`}
-                        >
-                          {t.shortLabel}
-                        </button>
-                      );
-                    })}
+                  <div className={`${TAB_RAIL.outer} -mb-px pb-px`}>
+                    <div className={TAB_RAIL.inner}>
+                      {sectionTrackers.map((t) => {
+                        const selected = activeTracker === t.id;
+                        return (
+                          <button
+                            key={t.id}
+                            type="button"
+                            onClick={() => {
+                              if (activeTracker !== t.id) playTabChange();
+                              setTracker(t.id);
+                            }}
+                            className={`${TAB_RAIL.item} shrink-0 min-h-[44px] border-b-2 px-3 py-2 ${TYPO.button} transition sm:px-4 ${
+                              selected
+                                ? "border-accent-green text-accent-green"
+                                : "border-transparent text-gray-500 hover:border-pitch-600 hover:text-gray-300"
+                            }`}
+                          >
+                            {t.shortLabel}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               );
@@ -387,27 +459,29 @@ export function LeaderboardTable({
           </div>
         ) : (
           availableTrackers.length > 1 && (
-            <div className="-mb-px flex gap-1 overflow-x-auto pb-px">
-              {availableTrackers.map((t) => {
-                const selected = activeTracker === t.id;
-                return (
-                  <button
-                    key={t.id}
-                    type="button"
-                    onClick={() => {
-                      if (activeTracker !== t.id) playTabChange();
-                      setTracker(t.id);
-                    }}
-                    className={`shrink-0 min-h-[40px] border-b-2 px-3 py-2 ${TYPO.button} transition sm:px-4 ${
-                      selected
-                        ? "border-accent-green text-accent-green"
-                        : "border-transparent text-gray-500 hover:border-pitch-600 hover:text-gray-300"
-                    }`}
-                  >
-                    {t.shortLabel}
-                  </button>
-                );
-              })}
+            <div className={`${TAB_RAIL.outer} -mb-px pb-px`}>
+              <div className={TAB_RAIL.inner}>
+                {availableTrackers.map((t) => {
+                  const selected = activeTracker === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => {
+                        if (activeTracker !== t.id) playTabChange();
+                        setTracker(t.id);
+                      }}
+                      className={`${TAB_RAIL.item} shrink-0 min-h-[44px] border-b-2 px-3 py-2 ${TYPO.button} transition sm:px-4 ${
+                        selected
+                          ? "border-accent-green text-accent-green"
+                          : "border-transparent text-gray-500 hover:border-pitch-600 hover:text-gray-300"
+                      }`}
+                    >
+                      {t.shortLabel}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )
         )}
@@ -423,7 +497,7 @@ export function LeaderboardTable({
                 if (period !== p) playTabChange();
                 setPeriod(p);
               }}
-              className={`rounded-full px-3 py-1.5 text-xs font-medium transition ${
+              className={`btn-press flex min-h-[44px] items-center rounded-full px-3 py-2 text-xs font-medium transition ${
                 period === p
                   ? "bg-pitch-700 text-white"
                   : "bg-pitch-800/80 text-gray-500 hover:text-gray-300"
@@ -435,9 +509,21 @@ export function LeaderboardTable({
         </div>
       )}
 
-      {loading && entries.length === 0 ? (
+      {loading && entries.length === 0 && !isCupTeamWinsMode ? (
         <div className="matchday-panel p-12 text-center text-gray-500">
           Loading leaderboard…
+        </div>
+      ) : isCupTeamWinsMode ? (
+        <div
+          className={`matchday-panel p-6 transition-opacity ${
+            loading ? "opacity-60" : "opacity-100"
+          }`}
+        >
+          <CupTeamWinsBarGraph
+            entries={cupTeamWinRows}
+            totalCups={cupTeamWinsTotal}
+            emptyMessage="No Challenge Cup team wins recorded yet. Win the cup in Quick Mode to add your club."
+          />
         </div>
       ) : entries.length === 0 ? (
         <div className="matchday-panel p-12 text-center text-gray-500">
@@ -449,7 +535,35 @@ export function LeaderboardTable({
             loading ? "opacity-60" : "opacity-100"
           }`}
         >
-          <table className="w-full">
+          <ul
+            className="divide-y divide-pitch-700/30 sm:hidden"
+            aria-label={`${trackerLabel} rankings`}
+          >
+            {entries.map((entry) => (
+              <li
+                key={`mobile-${entry.rank}-${entry.username}-${entry.achievedAt}`}
+                className={`flex items-center justify-between gap-3 px-4 py-3 ${
+                  entry.isCurrentUser ? "bg-accent-green/5" : ""
+                }`}
+              >
+                <div className="flex min-w-0 items-center gap-3">
+                  <span
+                    className={`shrink-0 font-bold tabular-nums ${
+                      entry.rank <= 3 ? "text-accent-gold" : "text-gray-400"
+                    }`}
+                  >
+                    {entry.rank}
+                  </span>
+                  <span className="truncate font-medium">{entry.username}</span>
+                </div>
+                <div className="shrink-0 text-right font-semibold text-accent-gold">
+                  {renderLeaderboardStat(entry, activeTracker)}
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="hidden overflow-x-auto sm:block">
+          <table className="w-full min-w-[480px]">
             <thead>
               <tr className="border-b border-pitch-600/50 text-left text-xs uppercase tracking-wider text-gray-500">
                 <th className="px-4 py-3">#</th>
@@ -483,22 +597,7 @@ export function LeaderboardTable({
                     <span className="font-medium">{entry.username}</span>
                   </td>
                   <td className="px-4 py-3 font-semibold text-accent-gold">
-                    {activeTracker === "best_record" ? (
-                      (() => {
-                        const match = entry.statDisplay.match(
-                          /^(\d+)-(\d+)\s+\(([\d.]+)%\)$/
-                        );
-                        if (!match) return entry.statDisplay;
-                        return (
-                          <RecordWithPercentage
-                            wins={Number.parseInt(match[1]!, 10)}
-                            losses={Number.parseInt(match[2]!, 10)}
-                          />
-                        );
-                      })()
-                    ) : (
-                      entry.statDisplay
-                    )}
+                    {renderLeaderboardStat(entry, activeTracker)}
                   </td>
                   {showUpdatedColumn && (
                     <td className="hidden px-4 py-3 text-sm text-gray-500 sm:table-cell">
@@ -511,6 +610,7 @@ export function LeaderboardTable({
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 
@@ -522,10 +622,26 @@ export function LeaderboardTable({
         {isManagerPlayStyle ? "Manager Mode" : "Quick Mode"}
         {" · "}
         {modeLabel}
-        {!isManagerPlayStyle && difficulty === "HARD" ? " · Hard" : ""}
         {" · "}
         {trackerLabel}
       </p>
     </div>
   );
+}
+
+function renderLeaderboardStat(
+  entry: LeaderboardTrackerRow,
+  activeTracker: LeaderboardTrackerType
+) {
+  if (activeTracker === "best_record") {
+    const match = entry.statDisplay.match(/^(\d+)-(\d+)\s+\(([\d.]+)%\)$/);
+    if (!match) return entry.statDisplay;
+    return (
+      <RecordWithPercentage
+        wins={Number.parseInt(match[1]!, 10)}
+        losses={Number.parseInt(match[2]!, 10)}
+      />
+    );
+  }
+  return entry.statDisplay;
 }

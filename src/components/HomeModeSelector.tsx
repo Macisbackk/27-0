@@ -77,7 +77,7 @@ export function HomeModeSelector() {
             <div>
               <p className={TYPO.sectionLabel}>Quick Mode</p>
               <h2 className={`${TYPO.cardTitle} mt-1 text-2xl text-white`}>
-                Draft & Simulate
+                Spin & Simulate
               </h2>
               <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
                 Fast squad-building campaigns — current squads or historic era
@@ -100,7 +100,7 @@ export function HomeModeSelector() {
             >
               <ModePanel title="Current Mode" eraActive={normalEraMode}>
                 <p className={TYPO.body}>
-                  Draft your XIII position by position and simulate a full Super
+                  Build your XIII position by position and simulate a full Super
                   League campaign. Can you go 27-0?
                 </p>
 

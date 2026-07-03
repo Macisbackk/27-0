@@ -10,6 +10,12 @@ const CORE_STEPS = [
 
 const MODES = [
   {
+    title: "Manager Mode",
+    tag: "Career",
+    body: "Take charge of a Super League club — contracts, tactics, transfers, and full-season management.",
+    accent: "current" as const,
+  },
+  {
     title: "Normal Current",
     tag: "Current",
     body: "Spin 2026 Super League clubs and build a squad capable of going 27-0.",

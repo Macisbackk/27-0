@@ -25,7 +25,6 @@ import { FixtureResultRow } from "./FixtureResultRow";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
 import type { MatchFixture } from "@/lib/game/season-simulation";
 import { Confetti } from "./Confetti";
-import { HardModeBadge } from "./HardModeBadge";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
@@ -34,7 +33,7 @@ import { userQualifiedForPlayoffs } from "@/lib/game/playoff-simulation";
 import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
 import { LeagueTable } from "./LeagueTable";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
-import { HARD, NORMAL } from "@/lib/ui/design-system";
+import { NORMAL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 interface SeasonReviewProps {
@@ -95,13 +94,12 @@ export function SeasonReview({
   );
   const isPerfect = seasonResult.isPerfect;
   const isSuperSquad = gradeInfo.grade === "S" || gradeInfo.grade === "S+";
-  const isHardMode = difficulty === "HARD";
   const isSpecialMode = joeMellorMode || superSamHallasMode;
   const reviewLabel = superSamHallasMode
     ? "Super Sam Hallas Mode Season Review"
     : joeMellorMode
       ? "Joe Mellor GOAT Mode Season Review"
-      : getSeasonReviewLabel(mode, difficulty, normalEraMode);
+      : getSeasonReviewLabel(mode, "NORMAL", normalEraMode);
   const [selectedFixture, setSelectedFixture] = useState<MatchFixture | null>(
     null
   );
@@ -186,7 +184,7 @@ export function SeasonReview({
   }, [squad, seasonResult, seed, joeMellorMode, superSamHallasMode]);
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(0.5rem,env(safe-area-inset-top))] backdrop-blur-md">
       {showCelebration && <Confetti />}
 
       <div className="stadium-lights pointer-events-none fixed inset-0" />
@@ -199,9 +197,7 @@ export function SeasonReview({
           className="w-full max-w-xl text-center"
         >
           <p
-            className={`font-display text-xs font-semibold uppercase tracking-[0.3em] ${
-              isHardMode ? HARD.reviewAccent : NORMAL.reviewAccent
-            }`}
+            className={`font-display text-xs font-semibold uppercase tracking-[0.3em] ${NORMAL.reviewAccent}`}
           >
             {reviewLabel}
           </p>
@@ -210,12 +206,6 @@ export function SeasonReview({
             submittedOnline={submittedOnline}
             specialRun={isSpecialMode}
           />
-
-          {isHardMode && (
-            <div className={`mt-3 flex justify-center ${HARD.banner} rounded-xl px-4 py-2`}>
-              <HardModeBadge />
-            </div>
-          )}
 
           <motion.div
             className="mt-4"
@@ -286,8 +276,7 @@ export function SeasonReview({
           >
             <ReviewPlayAgain
               onPlayAgain={handlePlayAgain}
-              leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
-              hardMode={isHardMode}
+              leaderboardHref="/leaderboard"
               compact
               hideReturnHome
             />
@@ -418,7 +407,6 @@ export function SeasonReview({
         <CollapsibleReviewSection title="Squad Review" delay={0.38} defaultOpen={false}>
           <SquadReviewSection
             squad={squad}
-            hardMode={isHardMode}
             awards={playerAwards}
             tryScorers={seasonResult.tryScorers}
             expectedTotalTries={expectedTries}
@@ -435,8 +423,7 @@ export function SeasonReview({
           {!hideEndOfRunNav && (
             <ReviewPlayAgain
               onPlayAgain={handlePlayAgain}
-              leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
-              hardMode={isHardMode}
+              leaderboardHref="/leaderboard"
               hideReturnHome
             />
           )}

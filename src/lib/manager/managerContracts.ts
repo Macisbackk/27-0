@@ -61,12 +61,17 @@ function baseWageFromRating(rating: number, age?: number): number {
 export function calculateWageForPlayer(
   playerId: string,
   role: SquadRole,
-  _clubReputation: number
+  _clubReputation: number,
+  career?: ManagerCareer
 ): number {
-  const player = getPlayerById(playerId);
+  const player = career
+    ? getManagerPlayer(career, playerId)
+    : getPlayerById(playerId);
   if (!player) return 25_000;
   const rating = player.rating ?? player.peakRating;
-  const age = getPlayerAge(player);
+  const age = career
+    ? getManagerPlayerAge(career, playerId)
+    : getPlayerAge(player);
   const base = baseWageFromRating(rating, age);
 
   const roleMult: Record<SquadRole, number> = {
@@ -84,13 +89,25 @@ export function calculateWageForPlayer(
 export function generateInitialContract(
   playerId: string,
   inStartingXiii: boolean,
-  clubReputation: number
+  clubReputation: number,
+  career?: ManagerCareer
 ): PlayerContract {
-  const player = getPlayerById(playerId);
+  const player = career
+    ? getManagerPlayer(career, playerId)
+    : getPlayerById(playerId);
   const rating = player?.rating ?? player?.peakRating ?? 70;
-  const age = player ? getPlayerAge(player) : undefined;
+  const age = career
+    ? getManagerPlayerAge(career, playerId)
+    : player
+      ? getPlayerAge(player)
+      : undefined;
   const role = inferSquadRole(rating, inStartingXiii, age);
-  const wage = calculateWageForPlayer(playerId, role, clubReputation);
+  const wage = calculateWageForPlayer(
+    playerId,
+    role,
+    clubReputation,
+    career
+  );
   const yearsRemaining = rating >= 85 ? 2 + Math.floor(Math.random() * 2) : 1 + Math.floor(Math.random() * 3);
 
   return {
@@ -131,7 +148,8 @@ export function generateRenewalDemand(
   const fairBase = calculateWageForPlayer(
     playerId,
     role,
-    getManagerClubTeamRating(career.club)
+    getManagerClubTeamRating(career.club),
+    career
   );
 
   return {

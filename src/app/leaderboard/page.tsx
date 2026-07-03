@@ -1,20 +1,13 @@
 import { LeaderboardGuestNotice } from "@/components/LeaderboardGuestNotice";
 import { LeaderboardTable } from "@/components/LeaderboardTable";
-import { PageShell } from "@/components/ui/PageShell";
+import { PageShell, PageShellBody } from "@/components/ui/PageShell";
 import { PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
-export default async function LeaderboardPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ difficulty?: string }>;
-}) {
-  const params = await searchParams;
-  const difficulty =
-    params.difficulty === "hard" ? ("HARD" as const) : ("NORMAL" as const);
-
+export default async function LeaderboardPage() {
   return (
-    <PageShell withLights compact>
+    <PageShell withLights compact desktopFit>
+      <PageShellBody>
       <div className={PAGE.section}>
         <header>
           <p className={TYPO.sectionLabel}>Rankings</p>
@@ -26,8 +19,9 @@ export default async function LeaderboardPage({
           </p>
         </header>
         <LeaderboardGuestNotice />
-        <LeaderboardTable initialDifficulty={difficulty} />
+        <LeaderboardTable />
       </div>
+      </PageShellBody>
     </PageShell>
   );
 }

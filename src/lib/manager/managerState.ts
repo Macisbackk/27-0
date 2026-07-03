@@ -40,7 +40,7 @@ import { initPreSeasonState, ensureFriendlyChoices } from "./managerFriendlies";
 import { ensureCupBracketReady } from "./managerChallengeCup";
 import { ensurePlayoffsReady, syncPlayoffsIntroAcknowledged } from "./managerPlayoffs";
 import { ensureSeasonEndPlayerDevelopment } from "./managerPlayerDevelopment";
-import { isManagerSeasonComplete, isManagerSeasonCompleteLite } from "./managerSimulation";
+import { isManagerSeasonComplete } from "./managerSimulation";
 import {
   initManagerFinance,
   computeFirstSeasonTransferBudget,
@@ -267,12 +267,17 @@ export function prepareManagerCareerForSave(raw: ManagerCareer): ManagerCareer {
   career = syncManagerFinance(career);
   career = syncManagerLeagueTable(career);
   career = syncPlayoffsIntroAcknowledged(career);
-  career = {
-    ...career,
-    isSeasonComplete: isManagerSeasonCompleteLite(career),
-  };
   career = ensureFriendlyChoices(career);
   career = ensureLeagueClubRosters(career);
+  career = {
+    ...career,
+    challengeCup: reconcileChallengeCupFromFixtures(career),
+  };
+  career = reconcileRoundMatches(career);
+  career = {
+    ...career,
+    isSeasonComplete: isManagerSeasonComplete(career),
+  };
   return career;
 }
 
@@ -283,7 +288,7 @@ export function loadManagerCareer(slot?: number): ManagerCareer | null {
 }
 
 export function saveManagerCareer(career: ManagerCareer, slot?: number): void {
-  writeManagerCareerRaw(career, slot);
+  writeManagerCareerRaw(prepareManagerCareerForSave(career), slot);
 }
 
 export function deleteManagerCareer(slot?: number): void {

@@ -1,7 +1,6 @@
 import {
   getDefaultTrackerForManagerDbMode,
   getTrackersForManagerDbMode,
-  isManagerTrophyCabinetTracker,
   isTrackerValidForManagerDbMode,
   rankByTracker,
   type LeaderboardTrackerEntry,
@@ -16,6 +15,7 @@ import {
 } from "../manager/managerStats";
 import type { ManagerLifetimeStats } from "../manager/types";
 import { getUsername } from "./user";
+import { isGuestLeaderboardName } from "./leaderboard";
 import { STORAGE_KEYS } from "./keys";
 
 const LOCAL_GUEST_KEY = "__local_guest__";
@@ -23,30 +23,12 @@ const SUPER_LEAGUE_MODE = "manager-super-league";
 const CHALLENGE_CUP_MODE = "manager-challenge-cup";
 const EARNINGS_MODE = "manager-earnings";
 
-export type ManagerTrophyTracker = Extract<
-  LeaderboardTrackerType,
-  "league_titles" | "super_league_champions" | "challenge_cup_trophy"
->;
-
-const MANAGER_TROPHY_TRACKERS: ManagerTrophyTracker[] = [
-  "league_titles",
-  "super_league_champions",
-  "challenge_cup_trophy",
-];
-
-const MANAGER_TROPHY_MODE_MAP: Record<ManagerTrophyTracker, string> = {
-  league_titles: "manager-trophy-league-titles",
-  super_league_champions: "manager-trophy-super-league",
-  challenge_cup_trophy: "manager-trophy-challenge-cup",
-};
-
 export const MANAGER_LEADERBOARD_MODES: {
   id: ManagerLeaderboardDbMode;
   label: string;
 }[] = [
   { id: "manager-super-league", label: "Super League" },
   { id: "manager-challenge-cup", label: "Challenge Cup" },
-  { id: "manager-trophy-cabinet", label: "Trophy Cabinet" },
   { id: "manager-earnings", label: "Total Earnings" },
 ];
 
@@ -76,19 +58,8 @@ interface ManagerTrackerLeaderboardEntry {
 
 type LocalManagerLeaderboardStore = {
   tracker: Record<string, ManagerTrackerLeaderboardEntry>;
-  trophies: Record<string, Record<ManagerTrophyTracker, ManagerScoreLeaderboardEntry>>;
   earnings: Record<string, ManagerScoreLeaderboardEntry>;
 };
-
-function isGuestLeaderboardName(username: string): boolean {
-  const normalized = username.trim().toLowerCase();
-  return (
-    !normalized ||
-    normalized === "guest" ||
-    normalized === "coach" ||
-    normalized === LOCAL_GUEST_KEY.toLowerCase()
-  );
-}
 
 function formatManagerEarnings(amount: number): string {
   if (amount >= 1_000_000) {
@@ -136,32 +107,20 @@ function hasManagerLeaderboardActivity(stats: ManagerLifetimeStats): boolean {
   );
 }
 
-function getTrophyCountFromManagerStats(
-  tracker: ManagerTrophyTracker,
-  stats: ManagerLifetimeStats
-): number {
-  switch (tracker) {
-    case "league_titles":
-      return stats.leagueTitles;
-    case "super_league_champions":
-      return stats.superLeagueTitles;
-    case "challenge_cup_trophy":
-      return stats.challengeCups;
-    default:
-      return 0;
-  }
-}
-
 function loadLocalStore(): LocalManagerLeaderboardStore {
   if (typeof window === "undefined") {
-    return { tracker: {}, trophies: {}, earnings: {} };
+    return { tracker: {}, earnings: {} };
   }
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.managerLeaderboard);
-    if (!raw) return { tracker: {}, trophies: {}, earnings: {} };
-    return JSON.parse(raw) as LocalManagerLeaderboardStore;
+    if (!raw) return { tracker: {}, earnings: {} };
+    const parsed = JSON.parse(raw) as Partial<LocalManagerLeaderboardStore>;
+    return {
+      tracker: parsed.tracker ?? {},
+      earnings: parsed.earnings ?? {},
+    };
   } catch {
-    return { tracker: {}, trophies: {}, earnings: {} };
+    return { tracker: {}, earnings: {} };
   }
 }
 
@@ -184,30 +143,6 @@ function updateLocalTrackerEntry(
     updatedAt: new Date().toISOString(),
     userId: userId ?? existing?.userId,
   };
-  saveLocalStore(store);
-}
-
-function updateLocalTrophyEntry(
-  username: string,
-  tracker: ManagerTrophyTracker,
-  score: number,
-  userId?: string
-): void {
-  if (score <= 0) return;
-  const store = loadLocalStore();
-  const userEntries = store.trophies[username] ?? ({} as Record<
-    ManagerTrophyTracker,
-    ManagerScoreLeaderboardEntry
-  >);
-  const existing = userEntries[tracker];
-  if (existing && existing.score >= score) return;
-  userEntries[tracker] = {
-    username,
-    score,
-    updatedAt: new Date().toISOString(),
-    userId: userId ?? existing?.userId,
-  };
-  store.trophies[username] = userEntries;
   saveLocalStore(store);
 }
 
@@ -371,13 +306,6 @@ export function syncManagerLeaderboard(
     void upsertTrackerModeOnline(SUPER_LEAGUE_MODE, stats);
     void upsertTrackerModeOnline(CHALLENGE_CUP_MODE, stats);
 
-    for (const tracker of MANAGER_TROPHY_TRACKERS) {
-      const count = getTrophyCountFromManagerStats(tracker, stats);
-      if (count <= 0) continue;
-      updateLocalTrophyEntry(username, tracker, count, userId);
-      void upsertScoreModeOnline(MANAGER_TROPHY_MODE_MAP[tracker], count);
-    }
-
     if (stats.totalEarnings > 0) {
       updateLocalEarningsEntry(username, stats.totalEarnings, userId);
       void upsertScoreModeOnline(EARNINGS_MODE, stats.totalEarnings);
@@ -386,10 +314,6 @@ export function syncManagerLeaderboard(
   }
 
   updateLocalTrackerEntry(LOCAL_GUEST_KEY, stats);
-  for (const tracker of MANAGER_TROPHY_TRACKERS) {
-    const count = getTrophyCountFromManagerStats(tracker, stats);
-    if (count > 0) updateLocalTrophyEntry(LOCAL_GUEST_KEY, tracker, count);
-  }
   if (stats.totalEarnings > 0) {
     updateLocalEarningsEntry(LOCAL_GUEST_KEY, stats.totalEarnings);
   }
@@ -606,17 +530,6 @@ function buildLocalTrackerEntries(): LeaderboardTrackerEntry[] {
     }));
 }
 
-function buildLocalTrophyEntries(
-  tracker: ManagerTrophyTracker
-): ManagerScoreLeaderboardEntry[] {
-  const store = loadLocalStore();
-  return filterPublicScoreEntries(
-    Object.values(store.trophies)
-      .map((userMap) => userMap[tracker])
-      .filter((entry): entry is ManagerScoreLeaderboardEntry => !!entry)
-  );
-}
-
 function buildLocalEarningsEntries(): ManagerScoreLeaderboardEntry[] {
   return filterPublicScoreEntries(Object.values(loadLocalStore().earnings));
 }
@@ -660,50 +573,6 @@ async function getManagerTrackerLeaderboardAsync(
   return {
     source: remote !== null ? "remote" : "local",
     rows: rankByTracker(entries, tracker, limit, currentUser),
-  };
-}
-
-async function getManagerTrophyLeaderboardAsync(
-  tracker: ManagerTrophyTracker,
-  limit: number
-): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
-  const currentUser = getUsername() ?? "";
-  const userId = getAuthUserId() ?? undefined;
-  const stats = loadManagerStats();
-  const currentCount = getTrophyCountFromManagerStats(tracker, stats);
-  const mode = MANAGER_TROPHY_MODE_MAP[tracker];
-
-  syncManagerLeaderboard(stats);
-
-  const liveEntry =
-    currentCount > 0
-      ? {
-          username:
-            currentUser && !isGuestLeaderboardName(currentUser)
-              ? currentUser
-              : "You",
-          score: currentCount,
-          updatedAt: new Date().toISOString(),
-          userId,
-        }
-      : null;
-
-  const remote = await fetchRemoteScoreEntries(mode);
-  const merged = mergeScoreEntries(
-    remote ?? [],
-    buildLocalTrophyEntries(tracker),
-    liveEntry ? [liveEntry] : []
-  );
-
-  return {
-    source: remote !== null ? "remote" : "local",
-    rows: mapScoreEntriesToRows(
-      merged,
-      currentUser,
-      userId,
-      limit,
-      String
-    ),
   };
 }
 
@@ -756,13 +625,6 @@ export async function getManagerLeaderboardAsync(
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
   if (dbMode === "manager-earnings") {
     return getManagerEarningsLeaderboardAsync(limit);
-  }
-
-  if (dbMode === "manager-trophy-cabinet") {
-    if (!isManagerTrophyCabinetTracker(tracker)) {
-      return { rows: [], source: "local" };
-    }
-    return getManagerTrophyLeaderboardAsync(tracker, limit);
   }
 
   if (

@@ -37,7 +37,7 @@ export function ManagerLanding({
         <p className={`mt-3 ${TYPO.body} text-pitch-300`}>
           Take charge of a{" "}
           <span className="font-semibold text-theme-primary">Super League</span>{" "}
-          club. Up to four careers can be saved on this device.
+          club. Up to two careers can be saved on this device.
         </p>
       </div>
 

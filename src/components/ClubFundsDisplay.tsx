@@ -89,9 +89,7 @@ export function ClubFundsDisplay({
     };
   }, [open, isMobileUnderLogo]);
 
-  const visibilityClass = isMobileUnderLogo
-    ? "sm:hidden"
-    : "hidden sm:block";
+  const visibilityClass = "block";
 
   if (!mounted) {
     return (
@@ -123,28 +121,18 @@ export function ClubFundsDisplay({
           else playPanelExpand();
           setOpen((value) => !value);
         }}
-        className={
-          isMobileUnderLogo
-            ? "mx-auto flex w-full min-w-0 items-center justify-center bg-transparent p-0 text-theme-primary transition hover:text-theme-primary/85 focus:outline-none focus-visible:ring-1 focus-visible:ring-theme-primary/50"
-            : "header-control-btn flex h-11 min-h-[44px] w-[4.75rem] max-w-[4.75rem] shrink-0 items-center justify-center gap-0.5 overflow-hidden rounded-lg border border-pitch-600 px-1 text-theme-primary transition hover:border-theme-primary/50 hover:bg-theme-primary/10 sm:w-auto sm:max-w-none sm:gap-1.5 sm:px-3"
-        }
+        className="header-control-btn flex h-11 min-h-[44px] w-[4.25rem] max-w-[4.25rem] shrink-0 items-center justify-center gap-0.5 overflow-hidden rounded-lg border border-pitch-600 px-1 text-theme-primary transition hover:border-theme-primary/50 hover:bg-theme-primary/10 sm:w-auto sm:max-w-none sm:gap-1.5 sm:px-3"
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-label={`Club Funds: ${formatted}. Tap for earnings info.`}
         title={`Club Funds: ${formatted}`}
       >
         {!isMobileUnderLogo && (
-          <span aria-hidden className="shrink-0 text-[11px] leading-none sm:text-xs">
+          <span aria-hidden className="shrink-0 text-xs leading-none">
             💷
           </span>
         )}
-        <span
-          className={`min-w-0 max-w-full truncate font-bold tabular-nums leading-none ${
-            isMobileUnderLogo
-              ? "text-[11px] tracking-tight"
-              : "text-[10px] sm:text-sm"
-          }`}
-        >
+        <span className="min-w-0 max-w-full truncate text-[10px] font-bold tabular-nums leading-none sm:text-sm">
           {formatted}
         </span>
       </button>

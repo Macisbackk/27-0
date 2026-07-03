@@ -26,6 +26,9 @@ alter table public.leaderboard add column if not exists cup_win_percentage numer
 alter table public.leaderboard add column if not exists mode_variant text default 'current';
 alter table public.leaderboard add column if not exists updated_at timestamptz;
 
+alter table public.leaderboard add column if not exists perfect_runs integer;
+update public.leaderboard set perfect_runs = 0 where perfect_runs is null;
+
 update public.leaderboard set mode = 'super-league' where mode is null;
 -- Valid mode values: super-league, challenge-cup, draft
 update public.leaderboard set difficulty = 'NORMAL' where difficulty is null;
@@ -77,9 +80,7 @@ create policy "Allow public read leaderboard"
   on public.leaderboard for select using (true);
 
 drop policy if exists "Allow public insert leaderboard" on public.leaderboard;
-create policy "Allow public insert leaderboard"
-  on public.leaderboard for insert with check (true);
+-- Inserts are handled via authenticated upsert policies in auth-schema.sql
 
+-- Public updates are not allowed — use authenticated own-row policies only.
 drop policy if exists "Allow public update leaderboard" on public.leaderboard;
-create policy "Allow public update leaderboard"
-  on public.leaderboard for update using (true);

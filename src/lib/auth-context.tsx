@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -20,13 +21,13 @@ import {
   type UserProfile,
 } from "./auth";
 import { setAuthCache } from "./auth-session";
-import { supabase } from "./supabase";
+import { supabase, isSupabaseConfigured } from "./supabase";
 import {
   cleanAuthRedirectFromUrl,
   detectEmailConfirmationRedirect,
   markEmailConfirmPending,
 } from "./auth-callback";
-import { loadCloudStats } from "./storage/stats-cloud";
+import { loadCloudStats, saveCloudStats } from "./storage/stats-cloud";
 import { loadCloudClubFunds } from "./storage/club-funds-cloud";
 import { mergeClubFundsFromCloud, syncClubFundsLeaderboardOnLoad } from "./storage/club-funds";
 import { syncTrophyCabinetLeaderboardOnLoad } from "./storage/trophy-cabinet-leaderboard";
@@ -34,8 +35,6 @@ import { syncManagerLeaderboardOnLoad } from "./storage/manager-leaderboard";
 import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
 import { STORAGE_KEYS } from "./storage/keys";
 import { getAllStats, mergeCloudStatsWithLocal } from "./storage/stats";
-import { runCoachbeardAccountMergeLocal } from "./storage/coachbeard-account-merge";
-import { isSupabaseConfigured } from "./supabase";
 
 interface AuthContextValue {
   user: User | null;
@@ -62,6 +61,7 @@ async function hydrateStatsFromCloud(): Promise<void> {
   const local = getAllStats();
   const merged = mergeCloudStatsWithLocal(cloud, local);
   localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(merged));
+  await saveCloudStats(merged);
 }
 
 async function hydrateClubFundsFromCloud(): Promise<void> {
@@ -89,12 +89,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const syncGenerationRef = useRef(0);
 
   const syncFromSession = useCallback(async (session: Session | null) => {
+    const generation = ++syncGenerationRef.current;
     const nextUser = session?.user ?? null;
     setUser(nextUser);
 
     if (!nextUser) {
+      if (generation !== syncGenerationRef.current) return;
       setProfile(null);
       applySession(null, null);
       window.dispatchEvent(new Event("auth-state-changed"));
@@ -102,25 +105,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     let nextProfile = await fetchProfile(nextUser.id);
+    if (generation !== syncGenerationRef.current) return;
+
     if (!nextProfile) {
       const metaName = nextUser.user_metadata?.coach_name as string | undefined;
       if (metaName) {
         await createProfile(nextUser.id, metaName);
         nextProfile = await fetchProfile(nextUser.id);
+        if (generation !== syncGenerationRef.current) return;
       }
     }
 
     setProfile(nextProfile);
     applySession(session, nextProfile);
 
-    runCoachbeardAccountMergeLocal({
-      coachName: nextProfile?.coach_name ?? null,
-      email: nextUser.email ?? null,
-    });
-
-    await hydrateStatsFromCloud();
-    await hydrateClubFundsFromCloud();
-    await hydrateUiThemeFromCloud();
+    await Promise.all([
+      hydrateStatsFromCloud(),
+      hydrateClubFundsFromCloud(),
+      hydrateUiThemeFromCloud(),
+    ]);
+    if (generation !== syncGenerationRef.current) return;
     window.dispatchEvent(new Event("auth-state-changed"));
   }, []);
 
@@ -156,6 +160,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "TOKEN_REFRESHED") return;
       if (event === "SIGNED_IN" && detectEmailConfirmationRedirect()) {
         markEmailConfirmPending();
         cleanAuthRedirectFromUrl();

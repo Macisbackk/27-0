@@ -190,98 +190,29 @@ interface StoredStats {
 
 
 
+import { mergeUserStatsData } from "./merge-user-stats";
+
+
+
 export type { StoredStats };
 
 
 
-function pickMoreActiveBucket(
-
-  cloudBucket: UserStatsData,
-
-  localBucket: UserStatsData,
-
-  activityKey: keyof UserStatsData
-
-): UserStatsData {
-
-  const cloudVal = (cloudBucket[activityKey] as number) ?? 0;
-
-  const localVal = (localBucket[activityKey] as number) ?? 0;
-
-  return localVal > cloudVal ? localBucket : cloudBucket;
-
-}
-
-
-
-/** Merge cloud stats with local saves so era/draft/fantasy buckets are not wiped on login. */
+/** Merge cloud stats with local saves cumulatively per bucket. */
 
 export function mergeCloudStatsWithLocal(
-
   cloud: StoredStats,
-
   local: StoredStats
-
 ): StoredStats {
-
   return {
-
-    normal: cloud.normal,
-
-    hard: cloud.hard,
-
-    draftNormal: pickMoreActiveBucket(
-
-      cloud.draftNormal,
-
-      local.draftNormal,
-
-      "totalSeasonsSimulated"
-
-    ),
-
-    draftHard: pickMoreActiveBucket(
-
-      cloud.draftHard,
-
-      local.draftHard,
-
-      "totalSeasonsSimulated"
-
-    ),
-
-    fantasy: pickMoreActiveBucket(
-
-      cloud.fantasy,
-
-      local.fantasy,
-
-      "totalSeasonsSimulated"
-
-    ),
-
-    eraCup: pickMoreActiveBucket(
-
-      cloud.eraCup,
-
-      local.eraCup,
-
-      "eraChallengeCupRuns"
-
-    ),
-
-    eraNormal: pickMoreActiveBucket(
-
-      cloud.eraNormal,
-
-      local.eraNormal,
-
-      "totalSeasonsSimulated"
-
-    ),
-
+    normal: mergeUserStatsData(cloud.normal, local.normal),
+    hard: mergeUserStatsData(cloud.hard, local.hard),
+    draftNormal: mergeUserStatsData(cloud.draftNormal, local.draftNormal),
+    draftHard: mergeUserStatsData(cloud.draftHard, local.draftHard),
+    fantasy: mergeUserStatsData(cloud.fantasy, local.fantasy),
+    eraCup: mergeUserStatsData(cloud.eraCup, local.eraCup),
+    eraNormal: mergeUserStatsData(cloud.eraNormal, local.eraNormal),
   };
-
 }
 
 

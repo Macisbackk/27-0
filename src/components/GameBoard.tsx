@@ -82,10 +82,9 @@ import { PlayoffBracket } from "./PlayoffBracket";
 import { SeasonReview } from "./SeasonReview";
 import { SeasonSimulation } from "./SeasonSimulation";
 import { MatchdayScoreboard } from "./MatchdayScoreboard";
-import { HardModeBadge } from "./HardModeBadge";
 import { GuestNotice } from "./GuestNotice";
 import { DraftPositionPlacement } from "./DraftPositionPlacement";
-import { LINK, BTN, CARD, SPACING } from "@/lib/ui/design-system";
+import { LINK, BTN, CARD, SPACING, MODAL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import {
@@ -206,18 +205,17 @@ export function GameBoard({
     null
   );
   const [legendSpinUsed, setLegendSpinUsed] = useState(false);
+  const [recruitNotice, setRecruitNotice] = useState<string | null>(null);
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
   const placementScrollRef = useRef<HTMLDivElement>(null);
   const lastScrolledPlayerIdRef = useRef<string | null>(null);
 
-  const isHardMode = difficulty === "HARD";
   const recruitmentOptions = useMemo(
     () => ({
-      hardMode: isHardMode,
       draftMode: isDraftMode,
     }),
-    [isHardMode, isDraftMode]
+    [isDraftMode]
   );
 
   const { seed, runId } = useMemo(() => {
@@ -231,7 +229,6 @@ export function GameBoard({
   useEffect(() => {
     if (
       !isSlotRecruitMode ||
-      isHardMode ||
       joeMellorMode ||
       superSamHallasMode
     ) {
@@ -247,7 +244,6 @@ export function GameBoard({
     runKey,
     seed,
     isSlotRecruitMode,
-    isHardMode,
     joeMellorMode,
     superSamHallasMode,
     spinVariant,
@@ -260,7 +256,7 @@ export function GameBoard({
       setSpinPickIndex(0);
       setPendingPlayer(null);
       setDiscardedPlayerIds(new Set());
-      setRerollsRemaining(isHardMode ? 0 : MAX_REROLLS_PER_RUN);
+      setRerollsRemaining(MAX_REROLLS_PER_RUN);
       setRerollsThisRun(0);
       rerollsThisRunRef.current = 0;
       return;
@@ -269,7 +265,7 @@ export function GameBoard({
     const lockedIds = joeMellorMode ? [JOE_MELLOR_GOAT_ID] : [];
 
     setSlotOffers(
-      isDraftMode
+      isDraftMode || isSlotRecruitMode
         ? new Map()
         : generateSlotOffers(
             seed,
@@ -282,7 +278,7 @@ export function GameBoard({
     setSpinPickIndex(0);
     setPendingPlayer(null);
     setDiscardedPlayerIds(new Set());
-    setRerollsRemaining(isHardMode ? 0 : MAX_REROLLS_PER_RUN);
+    setRerollsRemaining(MAX_REROLLS_PER_RUN);
     setRerollsThisRun(0);
     rerollsThisRunRef.current = 0;
   }, [
@@ -290,8 +286,8 @@ export function GameBoard({
     joeMellorMode,
     superSamHallasMode,
     recruitmentOptions,
-    isHardMode,
     isDraftMode,
+    isSlotRecruitMode,
   ]);
 
   useEffect(() => {
@@ -414,7 +410,6 @@ export function GameBoard({
       {
         seed,
         legendOnly:
-          !isHardMode &&
           !legendSpinUsed &&
           legendSpinSlotIndex === selectedSlotIndex,
       }
@@ -428,7 +423,6 @@ export function GameBoard({
     seed,
     legendSpinUsed,
     legendSpinSlotIndex,
-    isHardMode,
   ]);
 
   useEffect(() => {
@@ -458,7 +452,6 @@ export function GameBoard({
   }, [slotRecruitTarget, activeSpinTarget]);
 
   const rerollAvailable =
-    !isHardMode &&
     !isSlotRecruitMode &&
     activeOfferKey !== null &&
     rerollsRemaining > 0 &&
@@ -495,6 +488,8 @@ export function GameBoard({
     setLegendSpinSlotIndex(null);
     setLegendSpinUsed(false);
     setReviewStage("regular");
+    setRecruitNotice(null);
+    modeSoundPlayed.current = false;
   }, [joeMellorMode, superSamHallasMode]);
 
   const startTournamentSimulation = useCallback(
@@ -656,24 +651,6 @@ export function GameBoard({
     finalizeRegularSeason,
   ]);
 
-  useEffect(() => {
-    if (phase !== "review" || reviewStage !== "playoffFinal" || !seasonResult) {
-      return;
-    }
-    if (joeMellorMode || superSamHallasMode) return;
-    const playoff = playoffResultRef.current ?? seasonResult.playoffResult;
-    if (!playoff) return;
-    finalizePlayoffRun({ ...seasonResult, playoffResult: playoff }, squad);
-  }, [
-    phase,
-    reviewStage,
-    seasonResult,
-    squad,
-    joeMellorMode,
-    superSamHallasMode,
-    finalizePlayoffRun,
-  ]);
-
   const handleContinuePlayoffs = useCallback(() => {
     if (!seasonResult) return;
     finalizeRegularSeason(seasonResult, squad);
@@ -818,7 +795,6 @@ export function GameBoard({
       playPositionSelect();
       const t0 = performance.now();
       const requireLegendPlayer =
-        !isHardMode &&
         !legendSpinUsed &&
         legendSpinSlotIndex === slotIndex;
       const target = generateSlotTeamYearTargetForSlot(
@@ -836,7 +812,14 @@ export function GameBoard({
           target?.teamYearId
         );
       }
-      if (!target) return;
+      if (!target) {
+        setRecruitNotice(
+          "No eligible players left for this slot. Try another position or finish manually."
+        );
+        return;
+      }
+
+      setRecruitNotice(null);
 
       setPendingPlayer(null);
       lastScrolledPlayerIdRef.current = null;
@@ -858,13 +841,11 @@ export function GameBoard({
       usedTeamYearKeys,
       legendSpinUsed,
       legendSpinSlotIndex,
-      isHardMode,
     ]
   );
 
   const handleSlotRespin = useCallback(() => {
     if (
-      isHardMode ||
       !isSlotRecruitMode ||
       respinsRemaining <= 0 ||
       phase !== "choice" ||
@@ -876,7 +857,6 @@ export function GameBoard({
 
     const nextSpinIndex = spinPickIndex + 1;
     const requireLegendPlayer =
-      !isHardMode &&
       !legendSpinUsed &&
       legendSpinSlotIndex === selectedSlotIndex;
     const target = generateSlotTeamYearTargetForSlot(
@@ -888,7 +868,14 @@ export function GameBoard({
       usedTeamYearKeys,
       { requireLegendPlayer, spinVariant }
     );
-    if (!target) return;
+    if (!target) {
+      setRecruitNotice(
+        "No eligible players left for a respin. Sign the current offer or pick another slot."
+      );
+      return;
+    }
+
+    setRecruitNotice(null);
 
     playReroll();
     setRespinsRemaining((n) => n - 1);
@@ -898,7 +885,6 @@ export function GameBoard({
     setSpinSessionId((id) => id + 1);
     setPhase("reveal");
   }, [
-    isHardMode,
     isSlotRecruitMode,
     respinsRemaining,
     phase,
@@ -911,7 +897,6 @@ export function GameBoard({
     usedTeamYearKeys,
     legendSpinUsed,
     legendSpinSlotIndex,
-    isHardMode,
   ]);
 
   const handleSelectSlot = useCallback(
@@ -1033,7 +1018,6 @@ export function GameBoard({
   const handleReroll = useCallback(() => {
     const rerollKey = isDraftMode ? draftPickIndex : selectedSlotIndex;
     if (
-      isHardMode ||
       !currentRound ||
       rerollKey === null ||
       rerolling ||
@@ -1097,7 +1081,6 @@ export function GameBoard({
 
     setRerolling(false);
   }, [
-    isHardMode,
     isDraftMode,
     draftPickIndex,
     currentRound,
@@ -1135,7 +1118,13 @@ export function GameBoard({
         usedTeamYearKeys,
         spinVariant
       );
-      if (!result) return;
+      if (!result) {
+        setRecruitNotice(
+          "Autofill could not complete the squad — not enough eligible players remain."
+        );
+        return;
+      }
+      setRecruitNotice(null);
       setSquad(result.squad);
       setSpinPickIndex(result.nextSpinIndex);
       setUsedTeamYearKeys(new Set(result.usedTeamYearKeys));
@@ -1196,14 +1185,13 @@ export function GameBoard({
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
       <div className="stadium-lights pointer-events-none fixed inset-0" />
 
-      <div className="relative mx-auto flex w-full max-w-6xl flex-col overflow-x-hidden py-4 pb-8 sm:py-5 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4">
-      {(title || subtitle || isHardMode) && (
+      <div className={`relative mx-auto flex w-full max-w-6xl flex-col overflow-x-hidden ${SPACING.pageX} py-4 pb-8 sm:py-5 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4`}>
+      {(title || subtitle) && (
         <div className="pt-1 lg:pt-0">
           <div className="flex flex-wrap items-center gap-3">
             {title && (
-              <h1 className="font-display text-lg font-bold text-white">{title}</h1>
+              <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>{title}</h1>
             )}
-            {isHardMode && <HardModeBadge />}
           </div>
           {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
         </div>
@@ -1215,12 +1203,19 @@ export function GameBoard({
         )}
 
         <MatchdayScoreboard
-            difficulty={difficulty}
             filledCount={filledCount}
             totalSlots={TOTAL_SLOTS}
             totalValue={totalValue}
-            hideScore={isHardMode}
           />
+
+        {recruitNotice && phase === "pitch" && (
+          <p
+            className="mt-3 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-100"
+            role="status"
+          >
+            {recruitNotice}
+          </p>
+        )}
 
         {superSamHallasMode && phase !== "review" && (
           <motion.div
@@ -1304,14 +1299,13 @@ export function GameBoard({
               className={`pb-2 sm:max-h-none sm:overflow-visible ${
                 phase === "choice" || phase === "reveal"
                   ? "overflow-x-hidden overflow-y-visible"
-                  : "max-h-[min(88vh,900px)] overflow-x-hidden overflow-y-auto"
+                  : "overflow-x-hidden overflow-y-visible sm:max-h-[min(88vh,900px)] sm:overflow-y-auto"
               }`}
             >
               {phase === "placement" && pendingPlayer && isDraftMode && (
                 <DraftPositionPlacement
                   player={pendingPlayer}
                   squad={squad}
-                  hardMode={isHardMode}
                   showRule={draftPickIndex === 0}
                   onPlace={handlePlaceDraftPlayer}
                   disabled={choosing}
@@ -1327,7 +1321,6 @@ export function GameBoard({
                     ? selectedSlotIndex ?? undefined
                     : undefined
                 }
-                hardMode={isHardMode}
                 interactive={
                   !superSamHallasMode &&
                   phase === "pitch" &&
@@ -1371,13 +1364,13 @@ export function GameBoard({
               activeSpinTarget && (
               <motion.div
                 key={choiceKey}
-                className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+                className={MODAL.backdrop}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
                 <motion.div
-                  className={`${CARD.panel} max-h-[92vh] w-full max-w-3xl overflow-y-auto overflow-x-hidden p-3 sm:p-6`}
+                  className={`${CARD.panel} ${MODAL.panel} ${MODAL.panelPadding}`}
                   initial={{ opacity: 0, y: 40, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 20 }}
@@ -1388,11 +1381,10 @@ export function GameBoard({
                     entries={slotRecruitEntries}
                     onSelect={handleSlotTeamYearPick}
                     onBack={handleBackToPitch}
-                    onRespin={!isHardMode ? handleSlotRespin : undefined}
-                    respinsRemaining={!isHardMode ? respinsRemaining : 0}
+                    onRespin={handleSlotRespin}
+                    respinsRemaining={respinsRemaining}
                     maxRespins={MAX_RESPINS_PER_RUN}
                     disabled={choosing}
-                    hardMode={isHardMode}
                   />
                 </motion.div>
               </motion.div>
@@ -1403,13 +1395,13 @@ export function GameBoard({
               playerPair && (
               <motion.div
                 key={choiceKey}
-                className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+                className={MODAL.backdrop}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
                 <motion.div
-                  className={`${CARD.panel} max-h-[92vh] w-full max-w-4xl overflow-y-auto overflow-x-hidden p-2 sm:p-8`}
+                  className={`${CARD.panel} ${MODAL.panelWide} ${MODAL.panelPadding}`}
                   initial={{ opacity: 0, y: 40, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 20 }}
@@ -1438,7 +1430,6 @@ export function GameBoard({
                     rerollAvailable={rerollAvailable}
                     rerollsRemaining={rerollsRemaining}
                     disabled={choosing || rerolling}
-                    hardMode={isHardMode}
                     draftMode={isDraftMode}
                     showDraftRule={isDraftMode && draftPickIndex === 0}
                     draftSquad={isDraftMode ? squad : undefined}
@@ -1501,7 +1492,6 @@ export function GameBoard({
           playoffBracketState={completedPlayoffBracketState}
           playoffFundsPayout={playoffFundsPayout}
           clubFundsPayout={clubFundsPayout}
-          isHardMode={isHardMode}
           onFinalizeRun={handleFinalizePlayoffRun}
           onPlayAgain={handlePlayoffReviewDone}
           onClose={() => setPhase("pitch")}

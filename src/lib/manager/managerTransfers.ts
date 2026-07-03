@@ -14,7 +14,7 @@ import {
 } from "./managerContracts";
 import { canAffordAdditionalWage } from "./managerFinance";
 import { getManagerClubTeamRating } from "./managerRating";
-import { getPlayerAge } from "../players/player-age";
+import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 
 const INJURY_POOL: { type: InjuryType; min: number; max: number; serious: boolean }[] = [
   { type: "knock", min: 1, max: 1, serious: false },
@@ -32,17 +32,18 @@ export interface TransferDemand {
 }
 
 export function getTransferDemand(
-  playerId: string,
-  club: string
+  career: ManagerCareer,
+  playerId: string
 ): TransferDemand {
-  const player = getPlayerById(playerId);
+  const player = getManagerPlayer(career, playerId);
   const rating = player?.rating ?? player?.peakRating ?? 70;
-  const age = player ? getPlayerAge(player) : undefined;
+  const age = getManagerPlayerAge(career, playerId);
   const role = inferSquadRole(rating, false, age);
   const wage = calculateWageForPlayer(
     playerId,
     role,
-    getManagerClubTeamRating(club)
+    getManagerClubTeamRating(career.club),
+    career
   );
   return {
     wagePerYear: wage,
@@ -103,7 +104,7 @@ export function signPlayer(
     return { ok: false, error: "Insufficient transfer budget" };
   }
 
-  const demand = getTransferDemand(playerId, career.club);
+  const demand = getTransferDemand(career, playerId);
   if (!canAffordWage(career, demand.wagePerYear)) {
     return {
       ok: false,
@@ -115,7 +116,7 @@ export function signPlayer(
   }
 
   const rep = getManagerClubTeamRating(career.club);
-  const contract = generateInitialContract(playerId, false, rep);
+  const contract = generateInitialContract(playerId, false, rep, career);
   contract.wagePerYear = demand.wagePerYear;
   contract.yearsRemaining = demand.yearsRequested;
   contract.squadRole = demand.squadRole;

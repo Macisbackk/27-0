@@ -1,10 +1,11 @@
+import { STORAGE_KEYS } from "../storage/keys";
 import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import { syncManagerLeaderboard } from "../storage/manager-leaderboard";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { pickManagerWorstSeasonRecord } from "./manager-stats-views";
 import type { ManagerCareer, ManagerLifetimeStats } from "./types";
 
-const STATS_KEY = "27-0-manager-stats";
+const STATS_KEY = STORAGE_KEYS.managerStats;
 
 export const EMPTY_MANAGER_STATS: ManagerLifetimeStats = {
   careersStarted: 0,

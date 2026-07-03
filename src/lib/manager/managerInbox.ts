@@ -12,7 +12,7 @@ import {
   computeManagerSeasonRewardLines,
   formatRewardTotal,
 } from "./managerSeasonRewards";
-import { buildSeasonSummary } from "./managerState";
+import { buildSeasonSummary } from "./managerStateSeason";
 import { getPlayerById } from "../players";
 import {
   formatWage,
@@ -426,6 +426,9 @@ export const INBOX_MAX_AGE_WEEKS = 7;
 export function clearSeasonTransferState(career: ManagerCareer): ManagerCareer {
   return {
     ...career,
+    freeAgents: [],
+    leagueListedPlayers: [],
+    transferMarket: [],
     inboxMessages: career.inboxMessages.map((m) =>
       !m.resolved &&
       (m.type === "transfer" || m.type === "transfer_offer_in")

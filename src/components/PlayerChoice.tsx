@@ -142,7 +142,7 @@ export function PlayerChoice({
         </div>
       )}
 
-      <div className="grid grid-cols-2 items-stretch gap-1.5 sm:gap-3 md:gap-4">
+      <div className="grid grid-cols-1 items-stretch gap-2 min-[400px]:grid-cols-2 sm:gap-3 md:gap-4">
         <ChoiceCard
           player={displayA}
           label="A"

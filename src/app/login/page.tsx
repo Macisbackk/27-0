@@ -6,9 +6,9 @@ import { TYPO } from "@/lib/ui/typography";
 
 export default function LoginPage() {
   return (
-    <div className="matchday-arena min-h-screen">
+    <div className="matchday-arena flex min-h-full flex-1 flex-col">
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
-      <div className={`relative mx-auto max-w-md ${SPACING.pageX} py-12 sm:py-16`}>
+      <div className={`relative mx-auto max-w-md ${SPACING.pageX} py-8 sm:py-12`}>
         <div className="mb-8 text-center">
           <p className={TYPO.sectionLabel}>Account</p>
           <h1 className={`mt-2 ${TYPO.pageTitle}`}>Log In</h1>

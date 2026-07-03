@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { sendPasswordResetEmail } from "@/lib/auth";
-import { getAllStats } from "@/lib/storage/stats";
+import { getAllStats, mergeCloudStatsWithLocal } from "@/lib/storage/stats";
 import { loadCloudStats } from "@/lib/storage/stats-cloud";
+import { STORAGE_KEYS } from "@/lib/storage/keys";
 import type { UserStatsData } from "@/lib/types";
 import {
   formatRecordOrDash,
@@ -23,6 +24,7 @@ interface StoredStats {
   hard: UserStatsData;
   draftNormal: UserStatsData;
   draftHard: UserStatsData;
+  eraNormal: UserStatsData;
 }
 
 function formatMemberSince(iso: string | undefined): string | null {
@@ -84,7 +86,9 @@ export default function ProfilePage() {
 
     void (async () => {
       const cloud = await loadCloudStats();
-      const next = cloud ?? getAllStats();
+      const local = getAllStats();
+      const next = mergeCloudStatsWithLocal(cloud ?? local, local);
+      localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(next));
       if (mounted) {
         setStats(next);
         setStatsLoading(false);
@@ -132,9 +136,15 @@ export default function ProfilePage() {
   }
 
   const memberSince = formatMemberSince(profile?.created_at);
-  const view =
-    stats &&
-    getOverallView(stats.normal, stats.hard, stats.draftNormal, stats.draftHard);
+  const view = stats
+    ? getOverallView(
+        stats.normal,
+        stats.hard,
+        stats.draftNormal,
+        stats.draftHard,
+        stats.eraNormal
+      )
+    : null;
   const totalRecord = view
     ? formatRecordOrDash({ wins: view.totalWins, losses: view.totalLosses })
     : "—";
@@ -169,7 +179,7 @@ export default function ProfilePage() {
 
         <SectionCard
           title="Total Record"
-          helper="Across Normal and Draft quick modes."
+          helper="Across Current and Era Quick Mode runs."
         >
           {statsLoading || !view ? (
             <p className={TYPO.bodySm}>Loading career stats…</p>
@@ -183,9 +193,14 @@ export default function ProfilePage() {
               <ProfileStatCard label="Total Record" value={totalRecord} />
               <ProfileStatCard label="Total Runs" value={String(view.totalRuns)} />
               <ProfileStatCard
-                label="League Titles"
+                label="Minor Premierships"
                 value={String(view.leagueTitles)}
                 highlight={view.leagueTitles > 0}
+              />
+              <ProfileStatCard
+                label="Super League Titles"
+                value={String(view.superLeagueTitles)}
+                highlight={view.superLeagueTitles > 0}
               />
               <ProfileStatCard
                 label="27-0 Seasons"
@@ -214,7 +229,7 @@ export default function ProfilePage() {
               type="button"
               disabled={resetBusy || !email}
               onClick={() => void handlePasswordReset()}
-              className={`${BTN.base} ${BTN.secondary} !min-h-[40px] text-[10px]`}
+              className={`${BTN.base} ${BTN.secondary} text-[10px] sm:text-xs`}
             >
               Send Password Reset Email
             </button>
@@ -231,11 +246,11 @@ export default function ProfilePage() {
           <button
             type="button"
             onClick={() => void signOut()}
-            className={`${BTN.base} ${BTN.danger} !min-h-[40px] text-xs`}
+            className={`${BTN.base} ${BTN.danger} text-xs`}
           >
             Log Out
           </button>
-          <Link href="/" className={`${BTN.base} ${BTN.secondary} !min-h-[40px] text-xs`}>
+          <Link href="/" className={`${BTN.base} ${BTN.secondary} text-xs`}>
             Back to Home
           </Link>
         </div>

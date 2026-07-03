@@ -51,7 +51,7 @@ export function ManagerPlayGame({
   onComplete,
   onCancel,
 }: ManagerPlayGameProps) {
-  const readyCareer = prepareCareerForNextMatch(career);
+  const readyCareer = career;
   const sched = getNextManagerFixture(readyCareer);
   const fixtureKey = sched?.id ?? "none";
   const [live, setLive] = useState<LiveMatchState | null>(null);
@@ -59,6 +59,7 @@ export function ManagerPlayGame({
   const [clockRunning, setClockRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [abandonConfirmOpen, setAbandonConfirmOpen] = useState(false);
+  const [applyError, setApplyError] = useState<string | null>(null);
   const finishedRef = useRef(false);
   const careerRef = useRef(career);
   const commandRef = useRef(command);
@@ -92,7 +93,7 @@ export function ManagerPlayGame({
       if (finishedRef.current) return;
       finishedRef.current = true;
       const fixture = liveMatchToFixture(finalState, careerRef.current);
-      const next = applyManagerMatchResult(
+      const result = applyManagerMatchResult(
         prepareCareerForNextMatch(careerRef.current),
         fixture,
         {
@@ -101,7 +102,12 @@ export function ManagerPlayGame({
           liveEvents: getLiveMatchEvents(finalState),
         }
       );
-      onComplete(next);
+      if (!result.ok) {
+        finishedRef.current = false;
+        setApplyError(result.error);
+        return;
+      }
+      onComplete(result.career);
     },
     [sched, onComplete]
   );
@@ -443,6 +449,24 @@ export function ManagerPlayGame({
       </div>
 
       <ManagerDialog
+        open={applyError !== null}
+        title="Match not saved"
+        message={
+          applyError ??
+          "This result could not be applied. Return to the hub and try again."
+        }
+        confirmLabel="Back to hub"
+        onConfirm={() => {
+          setApplyError(null);
+          onCancel();
+        }}
+        onCancel={() => {
+          setApplyError(null);
+          onCancel();
+        }}
+      />
+
+      <ManagerDialog
         open={abandonConfirmOpen}
         variant="confirm"
         destructive
@@ -471,7 +495,7 @@ function CommandGrid({
           key={cmd}
           type="button"
           onClick={() => onSelect(cmd)}
-          className={`btn-press min-h-[36px] rounded-lg border px-1 py-1.5 text-[10px] font-bold uppercase leading-tight tracking-wide transition sm:min-h-[40px] sm:text-[11px] ${
+          className={`btn-press min-h-[44px] rounded-lg border px-1 py-1.5 text-[10px] font-bold uppercase leading-tight tracking-wide transition sm:min-h-[40px] sm:text-[11px] ${
             command === cmd
               ? "border-theme-primary bg-theme-primary/15 text-theme-primary ring-1 ring-theme-primary/30"
               : "border-pitch-600/80 bg-pitch-900/60 text-pitch-300 hover:border-pitch-500 hover:text-white"

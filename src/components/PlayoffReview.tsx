@@ -37,7 +37,6 @@ interface PlayoffReviewProps {
   playoffBracketState?: PlayoffBracketState | null;
   playoffFundsPayout?: ClubFundsPayoutResult | null;
   clubFundsPayout?: ClubFundsPayoutResult | null;
-  isHardMode?: boolean;
   onFinalizeRun?: () => void;
   onPlayAgain: () => void;
   onClose: () => void;
@@ -51,7 +50,6 @@ export function PlayoffReview({
   playoffBracketState = null,
   playoffFundsPayout = null,
   clubFundsPayout = null,
-  isHardMode = false,
   onFinalizeRun,
   onPlayAgain,
   onReturnHome,
@@ -128,7 +126,7 @@ export function PlayoffReview({
   }, [playoffBracketState]);
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(0.5rem,env(safe-area-inset-top))] backdrop-blur-md">
       {isChampion && <Confetti />}
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-8 sm:py-12">
@@ -233,7 +231,6 @@ export function PlayoffReview({
         >
           <SquadReviewSection
             squad={squad}
-            hardMode={isHardMode}
             awards={playerAwards}
             tryScorers={playoffResult.tryScorers}
             expectedTotalTries={playoffResult.tryScorers.reduce(
@@ -255,8 +252,7 @@ export function PlayoffReview({
         >
           <ReviewPlayAgain
             onPlayAgain={onPlayAgain}
-            leaderboardHref={`/leaderboard${isHardMode ? "?difficulty=hard" : ""}`}
-            hardMode={isHardMode}
+            leaderboardHref="/leaderboard"
             hideReturnHome
           />
           <ReturnHomeButton onBeforeNavigate={onReturnHome} />

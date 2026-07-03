@@ -1,6 +1,6 @@
 import { getPlayerById } from "../players";
 import { getManagerPlayer } from "./managerPlayers";
-import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
+import { getManagerOpponentPoolOptions, pruneLeagueListedPlayers } from "./managerLeagueRosters";
 import { getOpponentMatchRating } from "../game/opponent-scorers";
 import { simulateOneFixture } from "../game/season-simulation";
 import type { ManagerCareer, ManagerFixtureRecord } from "./types";
@@ -177,6 +177,17 @@ function computePlayerModifiers(
 }
 
 /** Apply a completed fixture to career state (simulate or live). */
+export type ManagerMatchApplyResult =
+  | { ok: true; career: ManagerCareer }
+  | { ok: false; career: ManagerCareer; error: string };
+
+function matchApplyFail(
+  career: ManagerCareer,
+  error: string
+): ManagerMatchApplyResult {
+  return { ok: false, career, error };
+}
+
 export function applyManagerMatchResult(
   career: ManagerCareer,
   fixture: MatchFixture,
@@ -185,10 +196,12 @@ export function applyManagerMatchResult(
     schedOverride?: ReturnType<typeof getNextManagerFixture>;
     liveEvents?: import("./types").LiveMatchEvent[];
   } = {}
-): ManagerCareer {
+): ManagerMatchApplyResult {
   const sched =
     options.schedOverride ?? getNextManagerFixture(career);
-  if (!sched) return career;
+  if (!sched) {
+    return matchApplyFail(career, "No fixture is scheduled.");
+  }
 
   const isCup = sched.competition === "challenge_cup";
   const isPlayoff = sched.competition === "playoffs";
@@ -196,7 +209,10 @@ export function applyManagerMatchResult(
 
   if (isCup && sched.cupMatchId && !isCupMatchReadyForResult(career, sched.cupMatchId)) {
     console.warn("Cup match not ready for result:", sched.cupMatchId);
-    return career;
+    return matchApplyFail(
+      career,
+      "Challenge Cup bracket is not ready for this result. Try again from the hub."
+    );
   }
   if (
     isPlayoff &&
@@ -204,7 +220,10 @@ export function applyManagerMatchResult(
     !isPlayoffMatchReadyForResult(career, sched.playoffMatchId)
   ) {
     console.warn("Playoff match not ready for result:", sched.playoffMatchId);
-    return career;
+    return matchApplyFail(
+      career,
+      "Play-off bracket is not ready for this result. Try again from the hub."
+    );
   }
 
   const round = sched.round;
@@ -391,7 +410,10 @@ export function applyManagerMatchResult(
     const updated = applyCupMatchToBracket(working, sched.cupMatchId, fixture);
     if (!updated) {
       console.warn("Cup bracket update failed:", sched.cupMatchId);
-      return career;
+      return matchApplyFail(
+        career,
+        "Could not update the Challenge Cup bracket for this match."
+      );
     }
     challengeCup = updated;
     working = { ...working, challengeCup };
@@ -410,7 +432,10 @@ export function applyManagerMatchResult(
     );
     if (!updated) {
       console.warn("Playoff bracket update failed:", sched.playoffMatchId);
-      return career;
+      return matchApplyFail(
+        career,
+        "Could not update the play-off bracket for this match."
+      );
     }
     playoffs = updated;
     working = { ...working, playoffs };
@@ -588,14 +613,17 @@ export function applyManagerMatchResult(
       (l) => !listedIds.has(l.playerId)
     );
     const merged = [...preserved, ...refreshed];
+    const deduped = Array.from(
+      new Map(merged.map((l) => [l.playerId, l])).values()
+    );
     finalCareer = {
       ...finalCareer,
-      leagueListedPlayers: merged,
-      transferMarket: merged.map((l) => l.playerId),
+      leagueListedPlayers: deduped,
+      transferMarket: deduped.map((l) => l.playerId),
     };
   }
 
-  return finalCareer;
+  return { ok: true, career: pruneLeagueListedPlayers(finalCareer) };
 }
 
 export function previewManagerMatchScoreline(
@@ -701,12 +729,18 @@ export function simulateManagerMatchLive(
   return { fixture, liveEvents: [] };
 }
 
-export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
-  if (isManagerSeasonComplete(career)) return career;
+export function simulateManagerNextMatch(
+  career: ManagerCareer
+): ManagerMatchApplyResult {
+  if (isManagerSeasonComplete(career)) {
+    return matchApplyFail(career, "The season is already complete.");
+  }
 
   const ready = prepareCareerForNextMatch(career);
   const sched = getNextManagerFixture(ready);
-  if (!sched) return ready;
+  if (!sched) {
+    return matchApplyFail(ready, "No fixture is scheduled.");
+  }
 
   const { fixture, liveEvents } = simulateManagerMatchLive(ready, sched);
   const { avgForm } = computePlayerModifiers(ready, [
@@ -729,16 +763,26 @@ export function simulateManagerNextMatch(career: ManagerCareer): ManagerCareer {
       (fixture.scoringAgainst?.dropGoals ?? 0),
   };
 
-  const next = applyManagerMatchResult(ready, fixture, {
+  const result = applyManagerMatchResult(ready, fixture, {
     schedOverride: sched,
     liveEvents,
   });
-  const applied = next.fixtures.length > ready.fixtures.length;
+  if (!result.ok) return result;
+
+  const applied = result.career.fixtures.length > ready.fixtures.length;
+  if (!applied) {
+    return matchApplyFail(
+      ready,
+      "Instant simulation did not record a match result."
+    );
+  }
+
   return {
-    ...next,
-    matchSimState: applied
-      ? nextSimState
-      : ready.matchSimState,
+    ok: true,
+    career: {
+      ...result.career,
+      matchSimState: nextSimState,
+    },
   };
 }
 

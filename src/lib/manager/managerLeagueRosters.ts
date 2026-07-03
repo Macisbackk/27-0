@@ -106,17 +106,6 @@ export function reconcileLeagueRosters(career: ManagerCareer): ManagerCareer {
 
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === career.club) continue;
-    if (!rosters[club] || rosters[club].length < 13) {
-      const base = getManagerRosterIds(club);
-      const merged = new Set([...(rosters[club] ?? []), ...base]);
-      rosters[club] = [...merged].filter(
-        (id) => !freeAgentIds.has(id) && !userPlayerIds.has(id)
-      );
-    }
-  }
-
-  for (const club of CURRENT_PLAYABLE_CLUBS) {
-    if (club === career.club) continue;
     rosters[club] = dedupeIds(
       (rosters[club] ?? []).filter(
         (id) => !userPlayerIds.has(id) && !freeAgentIds.has(id)
@@ -168,7 +157,9 @@ export function transferLeaguePlayer(
     rosters[toClub] = [...(rosters[toClub] ?? []), playerId];
   }
 
-  return reconcileLeagueRosters({ ...career, leagueClubRosters: rosters });
+  return pruneLeagueListedPlayers(
+    reconcileLeagueRosters({ ...career, leagueClubRosters: rosters })
+  );
 }
 
 /** Add generated youth prospects to AI club rosters at season start. */
@@ -234,4 +225,19 @@ export function findPlayerLeagueClub(
     if (rosters[club]?.includes(playerId)) return club;
   }
   return null;
+}
+
+export function pruneLeagueListedPlayers(career: ManagerCareer): ManagerCareer {
+  const leagueListedPlayers = career.leagueListedPlayers.filter((listing) => {
+    const club = findPlayerLeagueClub(career, listing.playerId);
+    return club === listing.club;
+  });
+  if (leagueListedPlayers.length === career.leagueListedPlayers.length) {
+    return career;
+  }
+  return {
+    ...career,
+    leagueListedPlayers,
+    transferMarket: leagueListedPlayers.map((l) => l.playerId),
+  };
 }

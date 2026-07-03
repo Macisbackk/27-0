@@ -85,7 +85,7 @@ export function evaluateFreeAgentOffer(
     return { accepted: false, reason: "Player is not a free agent." };
   }
 
-  const player = getPlayerById(playerId);
+  const player = getManagerPlayer(career, playerId);
   if (!player) return { accepted: false, reason: "Player not found." };
 
   if (offer.transferFee > 0) {
@@ -95,7 +95,7 @@ export function evaluateFreeAgentOffer(
     };
   }
 
-  const demand = getTransferDemand(playerId, career.club);
+  const demand = getTransferDemand(career, playerId);
   const rating = player.rating ?? player.peakRating ?? 70;
   if (offer.wagePerYear < demand.wagePerYear * 0.9) {
     return { accepted: false, reason: "Wage offer too low." };
@@ -149,8 +149,8 @@ export function completeFreeAgentSigning(
   const formerClub = entry?.formerClub ?? "Free Agents";
 
   const rep = getManagerClubTeamRating(career.club);
-  const demand = getTransferDemand(playerId, career.club);
-  const contract = generateInitialContract(playerId, false, rep);
+  const demand = getTransferDemand(career, playerId);
+  const contract = generateInitialContract(playerId, false, rep, career);
   contract.wagePerYear = offer.wagePerYear;
   contract.yearsRemaining = offer.yearsRequested;
   contract.squadRole = demand.squadRole;

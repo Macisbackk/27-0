@@ -92,39 +92,77 @@ export function getOverallView(
   normal: UserStatsData,
   hard: UserStatsData,
   draftNormal?: UserStatsData,
-  draftHard?: UserStatsData
+  draftHard?: UserStatsData,
+  eraNormal?: UserStatsData
 ) {
   const draftN = draftNormal ?? { ...EMPTY_STATS };
   const draftH = draftHard ?? { ...EMPTY_STATS };
+  const era = eraNormal ?? { ...EMPTY_STATS };
   const totalRecord = {
     wins:
       normal.seasonWins +
       hard.seasonWins +
+      era.seasonWins +
       draftN.seasonWins +
       draftH.seasonWins,
     losses:
       normal.seasonLosses +
       hard.seasonLosses +
+      era.seasonLosses +
       draftN.seasonLosses +
       draftH.seasonLosses,
   };
-  const worstRecord = pickWorstSeasonRecord(normal, hard);
+  const worstRecord = [
+    normal,
+    hard,
+    era,
+    draftN,
+    draftH,
+  ].reduce<{ wins: number; losses: number } | null>((worst, bucket) => {
+    if (bucket.totalSeasonsSimulated <= 0) return worst;
+    const candidate = {
+      wins: bucket.worstRecordWins,
+      losses: bucket.worstRecordLosses,
+    };
+    if (
+      !worst ||
+      isWorseRecord(
+        candidate.wins,
+        candidate.losses,
+        worst.wins,
+        worst.losses
+      )
+    ) {
+      return candidate;
+    }
+    return worst;
+  }, null);
   const mergedDrafts = mergeDraftCounts(
-    mergeDraftCounts(normal.draftCounts, hard.draftCounts),
+    mergeDraftCounts(
+      mergeDraftCounts(normal.draftCounts, hard.draftCounts),
+      era.draftCounts
+    ),
     mergeDraftCounts(draftN.draftCounts, draftH.draftCounts)
   );
   const mergedSeasonWins = mergeDraftCounts(
-    mergeDraftCounts(normal.playerSeasonWins, hard.playerSeasonWins),
+    mergeDraftCounts(
+      mergeDraftCounts(normal.playerSeasonWins, hard.playerSeasonWins),
+      era.playerSeasonWins
+    ),
     mergeDraftCounts(draftN.playerSeasonWins, draftH.playerSeasonWins)
   );
   const mergedSeasonLosses = mergeDraftCounts(
-    mergeDraftCounts(normal.playerSeasonLosses, hard.playerSeasonLosses),
+    mergeDraftCounts(
+      mergeDraftCounts(normal.playerSeasonLosses, hard.playerSeasonLosses),
+      era.playerSeasonLosses
+    ),
     mergeDraftCounts(draftN.playerSeasonLosses, draftH.playerSeasonLosses)
   );
 
   const lowestValues = [
     normal.lowestSquadValue,
     hard.lowestSquadValue,
+    era.lowestSquadValue,
     draftN.lowestSquadValue,
     draftH.lowestSquadValue,
   ].filter((v): v is number => v !== null);
@@ -133,6 +171,7 @@ export function getOverallView(
     totalRuns:
       normal.totalRuns +
       hard.totalRuns +
+      era.totalSeasonsSimulated +
       draftN.totalSeasonsSimulated +
       draftH.totalSeasonsSimulated,
     totalWins:
@@ -140,6 +179,7 @@ export function getOverallView(
       normal.challengeCupWins +
       hard.seasonWins +
       hard.challengeCupWins +
+      era.seasonWins +
       draftN.seasonWins +
       draftH.seasonWins,
     totalLosses:
@@ -147,49 +187,66 @@ export function getOverallView(
       normal.challengeCupLosses +
       hard.seasonLosses +
       hard.challengeCupLosses +
+      era.seasonLosses +
       draftN.seasonLosses +
       draftH.seasonLosses,
     totalSeasons:
       normal.totalSeasonsSimulated +
       hard.totalSeasonsSimulated +
+      era.totalSeasonsSimulated +
       draftN.totalSeasonsSimulated +
       draftH.totalSeasonsSimulated,
     totalRecord,
     worstRecord,
     longestUnbeatenRun: Math.max(
       normal.longestUnbeatenRun,
-      hard.longestUnbeatenRun
+      hard.longestUnbeatenRun,
+      era.longestUnbeatenRun
     ),
     longestLosingStreak: Math.max(
       normal.longestLosingStreak,
-      hard.longestLosingStreak
+      hard.longestLosingStreak,
+      era.longestLosingStreak
     ),
     leagueTitles:
       normal.leagueTitlesWon +
       hard.leagueTitlesWon +
+      era.leagueTitlesWon +
       draftN.leagueTitlesWon +
       draftH.leagueTitlesWon,
+    superLeagueTitles:
+      normal.superLeagueTitles +
+      hard.superLeagueTitles +
+      era.superLeagueTitles +
+      draftN.superLeagueTitles +
+      draftH.superLeagueTitles,
     challengeCups: normal.challengeCupsWon + hard.challengeCupsWon,
     perfectSeasons:
       normal.totalPerfectSeasons +
       hard.totalPerfectSeasons +
+      era.totalPerfectSeasons +
       draftN.totalPerfectSeasons +
       draftH.totalPerfectSeasons,
     winlessSeasons:
       normal.totalWinlessSeasons +
       hard.totalWinlessSeasons +
+      era.totalWinlessSeasons +
       draftN.totalWinlessSeasons +
       draftH.totalWinlessSeasons,
     highestSquadValue: Math.max(
       normal.highestSquadValue,
       hard.highestSquadValue,
+      era.highestSquadValue,
       draftN.highestSquadValue,
       draftH.highestSquadValue
     ),
     lowestSquadValue:
       lowestValues.length > 0 ? Math.min(...lowestValues) : null,
     bestNationalRanking: pickBestRanking(
-      pickBestRanking(normal.bestNationalRanking, hard.bestNationalRanking),
+      pickBestRanking(
+        pickBestRanking(normal.bestNationalRanking, hard.bestNationalRanking),
+        era.bestNationalRanking
+      ),
       pickBestRanking(draftN.bestNationalRanking, draftH.bestNationalRanking)
     ),
     mostSelected: getMostSelectedPlayer(mergedDrafts),

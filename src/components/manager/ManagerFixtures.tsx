@@ -7,6 +7,7 @@ import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetition
 import { ManagerFormStrip, ManagerStat, leaguePositionTone, matchPredictionTone } from "@/components/manager/manager-ui";
 import { getMatchPrediction } from "@/lib/manager/managerScoring";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
+import { getManagerOpponentPoolOptions } from "@/lib/manager/managerLeagueRosters";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import {
@@ -20,17 +21,16 @@ import { getClubColors } from "@/lib/clubs";
 import { getFriendlyDualBorderStyle } from "@/lib/manager/managerFriendlyUi";
 import {
   buildMergedDisplaySchedule,
-  ensureCupBracketReady,
 } from "@/lib/manager/managerChallengeCup";
+import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
 import { getHomeFixtureAttendanceOutlook } from "@/lib/manager/managerAttendance";
 import {
   getManagerPlayedFixtureLabel,
   getManagerScheduledFixtureHeadline,
   isChallengeCupFixture,
 } from "@/lib/manager/managerFixtureDisplay";
-import { ensurePlayoffsReady } from "@/lib/manager/managerPlayoffs";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
-import { getNextManagerFixture, isManagerSeasonCompleteLite } from "@/lib/manager/managerSimulation";
+import { getNextManagerFixture, isManagerSeasonComplete } from "@/lib/manager/managerSimulation";
 import type {
   ManagerCareer,
   ManagerFixtureRecord,
@@ -302,9 +302,9 @@ export function ManagerFixtures({
   const [filter, setFilter] = useState<FixtureFilter>("all");
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
 
-  const readyCareer = ensurePlayoffsReady(ensureCupBracketReady(career));
+  const readyCareer = syncBracketProgress(career);
   const nextFixture = getNextManagerFixture(readyCareer);
-  const seasonComplete = isManagerSeasonCompleteLite(readyCareer);
+  const seasonComplete = isManagerSeasonComplete(readyCareer);
 
   const simCareer = resolveCareerForMatchSimulation(career);
   const teamRating = computeManagerTeamRating(
@@ -322,9 +322,9 @@ export function ManagerFixtures({
         : Math.round(
             getOpponentMatchRating(
               nextFixture.opponent,
-              career.seed,
+              readyCareer.seed,
               nextFixture.round,
-              { currentSeasonOnly: nextFixture.competition !== "friendly" }
+              getManagerOpponentPoolOptions(readyCareer, nextFixture.opponent)
             )
           )
       : null;

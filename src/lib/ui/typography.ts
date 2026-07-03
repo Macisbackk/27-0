@@ -12,7 +12,7 @@ export const TYPO = {
   playerName: "font-display text-xl font-semibold leading-tight text-white sm:text-2xl",
   playerNameSm: "font-display text-lg font-semibold leading-tight text-white",
   clubName: "font-display text-[10px] font-bold uppercase tracking-wide text-gray-300 sm:text-xs",
-  statLabel: "text-[10px] font-medium uppercase tracking-wider text-gray-500 sm:text-[11px]",
+  statLabel: "text-xs font-medium uppercase tracking-wider text-gray-500",
   statValue: "text-sm font-medium text-white",
   statValueLg: "font-display text-xl font-bold text-white",
   body: "text-sm text-gray-400 leading-relaxed",

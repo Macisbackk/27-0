@@ -1,7 +1,7 @@
 import { isSupabaseConfigured, supabase } from "../supabase";
 import { getAuthUserId } from "../auth-session";
 import type { GameDifficulty, UserStatsData } from "../types";
-import { EMPTY_STATS, migrateUserStats } from "./stats";
+import { EMPTY_STATS, mergeCloudStatsWithLocal, migrateUserStats } from "./stats";
 
 const BUNDLE_KEY = "stats_bundle";
 
@@ -121,7 +121,11 @@ export async function importLocalStatsToCloud(
   if (!userId) return { ok: false, error: "Log in to import stats." };
 
   try {
-    await saveCloudStats(local);
+    const cloud = await loadCloudStats();
+    const merged = cloud
+      ? mergeCloudStatsWithLocal(cloud, local)
+      : local;
+    await saveCloudStats(merged);
     return { ok: true };
   } catch {
     return { ok: false, error: "Import failed." };
