@@ -626,7 +626,7 @@ export function ManagerHub({
             size="sm"
             onClick={() => onNavigate("squad")}
           >
-            Squad & Tactics
+            Squad
           </GameButton>
           <GameButton
             variant="secondary"

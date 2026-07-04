@@ -233,8 +233,6 @@ function UpcomingFixtureRow({
       : sched.isHome
         ? opponentColors ?? userColors
         : userColors;
-  const isCup = isChallengeCupFixture(sched.competition);
-  const isPlayoff = sched.competition === "playoffs";
   const isFriendly = sched.competition === "friendly";
   const friendlyBorderStyle =
     isFriendly && opponent !== "TBC"
@@ -250,12 +248,12 @@ function UpcomingFixtureRow({
       })}
       style={friendlyBorderStyle}
     >
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
           <ManagerCompetitionBadge
             competition={sched.competition}
             cupRound={sched.cupRound}
-            detailed={isCup}
+            detailed={false}
           />
           {isNext && (
             <span className="rounded-full border border-theme-primary/40 bg-theme-primary/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-theme-primary">
@@ -276,12 +274,12 @@ function UpcomingFixtureRow({
         </span>
       </div>
 
-      <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+      <p className={`mt-2 break-words ${TYPO.bodySm} text-pitch-400`}>
         {getManagerScheduledFixtureHeadline(sched)}
       </p>
 
       {opponent !== "TBC" ? (
-        <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
+        <div className="mt-3 grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1 sm:gap-3">
           <ClubColorChip
             name={homeName}
             primary={homeColors.primary}
@@ -294,7 +292,7 @@ function UpcomingFixtureRow({
             compact
             align="left"
           />
-          <span className="font-display text-xs font-bold uppercase tracking-widest text-pitch-500">
+          <span className="shrink-0 px-0.5 font-display text-[10px] font-bold uppercase tracking-widest text-pitch-500 sm:text-xs">
             vs
           </span>
           <ClubColorChip
@@ -409,7 +407,7 @@ export function ManagerFixtures({
     filter === "results" ? playedItems : [...playedItems].reverse();
 
   return (
-    <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
+    <div className={`mx-auto w-full min-w-0 max-w-3xl overflow-x-hidden ${SPACING.stackLg}`}>
       <div>
         <h1 className={TYPO.viewTitle}>Fixtures</h1>
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
@@ -476,12 +474,14 @@ export function ManagerFixtures({
               detailed={isChallengeCupFixture(nextFixture.competition)}
             />
           </div>
-          <p className="mt-2 text-xl font-bold text-white sm:text-2xl">
-            {career.club}{" "}
-            {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}{" "}
-            {nextFixture.opponent}
+          <p className="mt-2 break-words text-base font-bold leading-snug text-white sm:text-2xl">
+            <span className="block sm:inline">{career.club}</span>{" "}
+            <span className="text-pitch-500">
+              {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
+            </span>{" "}
+            <span className="block sm:inline">{nextFixture.opponent}</span>
           </p>
-          <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+          <p className={`mt-1 break-words ${TYPO.bodySm} text-pitch-400`}>
             {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
             {getManagerScheduledFixtureVenueLabel(nextFixture)}
           </p>
@@ -509,7 +509,7 @@ export function ManagerFixtures({
           <GameButton
             variant="secondary"
             size="sm"
-            className="mt-4"
+            className="mt-4 w-full sm:w-auto"
             onClick={() => {
               playUiClick();
               setViewClubSheet(nextFixture.opponent);
@@ -520,20 +520,28 @@ export function ManagerFixtures({
         </div>
       )}
 
-      <div className={tabGroupClass()}>
-        {FILTERS.map((f) => (
-          <button
-            key={f.id}
-            type="button"
-            className={tabGroupButtonClass(filter === f.id)}
-            onClick={() => {
-              playUiClick();
-              setFilter(f.id);
-            }}
-          >
-            {f.label}
-          </button>
-        ))}
+      <div
+        className="-mx-1 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:overflow-visible"
+        role="tablist"
+        aria-label="Filter fixtures"
+      >
+        <div className={`${tabGroupClass()} w-max min-w-full !flex-nowrap sm:w-auto sm:min-w-0`}>
+          {FILTERS.map((f) => (
+            <button
+              key={f.id}
+              type="button"
+              role="tab"
+              aria-selected={filter === f.id}
+              className={`${tabGroupButtonClass(filter === f.id)} shrink-0 !flex-none whitespace-nowrap px-3 sm:shrink sm:!flex-1 sm:px-0`}
+              onClick={() => {
+                playUiClick();
+                setFilter(f.id);
+              }}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {filteredItems.length === 0 ? (
@@ -584,16 +592,16 @@ export function ManagerFixtures({
 
                   return (
                     <div key={item.key} className={SPACING.stackSm}>
-                      <div className="flex flex-wrap items-center gap-2 px-0.5">
+                      <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 px-0.5">
                         {fixture.competition && (
                           <ManagerCompetitionBadge
                             competition={fixture.competition}
                             cupRound={fixture.meta?.cupRound}
-                            detailed={isChallengeCupFixture(fixture.competition)}
+                            detailed={false}
                           />
                         )}
                         {attendance != null && (
-                          <span className={`${TYPO.bodySm} text-pitch-500`}>
+                          <span className={`shrink-0 ${TYPO.bodySm} text-pitch-500`}>
                             Attendance {attendance.toLocaleString()}
                           </span>
                         )}

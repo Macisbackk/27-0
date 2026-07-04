@@ -22,6 +22,7 @@ import {
 } from "./managerFixtures";
 import { getLeagueFixtureSides, isMagicWeekendFixture } from "./managerMagicWeekend";
 import { rollPostMatchInjuries } from "./managerTransfers";
+import { tickPositionRetraining } from "./managerPositionRetraining";
 import { computeManagerTeamRating } from "./managerRating";
 import {
   enrichManagerFixtureScoring,
@@ -625,6 +626,9 @@ export function applyManagerMatchResult(
     finalCareer = generateUnsolicitedTransferOffers(finalCareer);
   }
   finalCareer = syncManagerInboxMessages(finalCareer);
+  if (!isCup && !isFriendly && !isPlayoff) {
+    finalCareer = tickPositionRetraining(finalCareer);
+  }
   finalCareer = maybeAddReserveReport(finalCareer);
   finalCareer = rotateLatestNews(finalCareer);
   const keyMoment = getManagerMatchKeyMoment(

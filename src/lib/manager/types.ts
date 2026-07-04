@@ -480,6 +480,16 @@ export interface PlayerDevelopmentState {
   promotedSeasonYear?: number;
 }
 
+/** In-progress dual-position retraining for a first-team player. */
+export interface PlayerPositionRetraining {
+  fromPosition: Position;
+  targetPosition: Position;
+  weeksRemaining: number;
+  totalWeeks: number;
+  startedAtWeek: number;
+  startedAtSeason: number;
+}
+
 export interface PlayerDevelopmentChange {
   playerId: string;
   playerName: string;
@@ -567,6 +577,10 @@ export interface ManagerCareer {
   latestNews: LatestNewsItem[];
   leagueTransfers: LeagueTransferActivity[];
   playerDevelopment?: Record<string, PlayerDevelopmentState>;
+  /** Positions earned through retraining in this save. */
+  playerLearnedPositions?: Record<string, Position[]>;
+  /** Active position retraining keyed by player id. */
+  playerPositionRetraining?: Record<string, PlayerPositionRetraining>;
   lastSeasonDevelopmentReview?: PlayerDevelopmentChange[];
   lastReserveReportWeek?: number;
   /** Per-club injury load for league sim fairness (AI clubs miss players too). */

@@ -124,13 +124,19 @@ export function getManagerPlayerEligiblePositions(
 ): Position[] {
   const reserve = career.reserves.find((r) => r.id === playerId);
   if (reserve) {
-    return getPlayerEligiblePositions(
+    const base = getPlayerEligiblePositions(
       reserveToPlayer(reserve, career.seasonYear)
     );
+    const learned = career.playerLearnedPositions?.[playerId] ?? [];
+    if (learned.length === 0) return base;
+    return [...new Set([...base, ...learned])];
   }
   const player = getManagerPlayer(career, playerId);
   if (!player) return [];
-  return getPlayerEligiblePositions(player);
+  const base = getPlayerEligiblePositions(player);
+  const learned = career.playerLearnedPositions?.[playerId] ?? [];
+  if (learned.length === 0) return base;
+  return [...new Set([...base, ...learned])];
 }
 
 export function isReservePlayerId(

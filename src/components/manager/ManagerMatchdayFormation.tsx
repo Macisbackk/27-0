@@ -148,7 +148,7 @@ export function ManagerMatchdayFormation({
       />
       {interactive && (
         <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-500`}>
-          Tap a slot or player to swap · use the squad list for full options
+          Click a slot or player to swap · double-click a player for options
         </p>
       )}
       {canInspectPlayers && !interactive && (

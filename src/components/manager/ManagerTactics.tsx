@@ -19,6 +19,7 @@ import {
   getTacticsLiveCommandReason,
 } from "@/lib/manager/managerLiveMatch";
 import { getTacticGameplaySummary } from "@/lib/manager/managerTacticsScoring";
+import { ManagerPositionRetrainingPanel } from "@/components/manager/ManagerPositionRetraining";
 import { playUiClick } from "@/lib/sound";
 
 function OptionGroup<T extends string>({
@@ -141,9 +142,11 @@ function LivePlayPreview({ career }: { career: ManagerCareer }) {
 export function ManagerTacticsPanel({
   career,
   onChange,
+  onCareerUpdate,
 }: {
   career: ManagerCareer;
   onChange: (tactics: ManagerTactics) => void;
+  onCareerUpdate?: (career: ManagerCareer) => void;
 }) {
   const t = career.tactics;
   const update = (patch: Partial<ManagerTactics>) => {
@@ -175,6 +178,9 @@ export function ManagerTacticsPanel({
       />
       <MatchImpactPreview tactics={t} />
       <LivePlayPreview career={career} />
+      {onCareerUpdate && (
+        <ManagerPositionRetrainingPanel career={career} onUpdate={onCareerUpdate} />
+      )}
     </div>
   );
 }

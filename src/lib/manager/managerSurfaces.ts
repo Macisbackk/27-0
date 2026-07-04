@@ -147,7 +147,7 @@ export function managerFixtureRowClass(options: {
   competition: ManagerCompetition;
   hasFriendlyStyle?: boolean;
 }): string {
-  const base = "rounded-lg border px-4 py-3.5 sm:px-4 sm:py-3";
+  const base = "min-w-0 rounded-lg border px-3 py-3 sm:px-4 sm:py-3";
   if (options.hasFriendlyStyle) {
     return `${base} border-sky-400/40 bg-sky-400/5`;
   }

@@ -886,7 +886,7 @@ export default function ManagerPage() {
             unreadInbox={countUnreadInbox(career)}
           />
 
-          <div className={`flex flex-col ${PAGE.section}`}>
+          <div className={`flex min-w-0 flex-col ${PAGE.section}`}>
             {showSaveMigration && (
               <ManagerSaveMigrationNotice
                 onDismiss={() => setShowSaveMigration(false)}

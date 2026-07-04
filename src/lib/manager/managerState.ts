@@ -221,6 +221,8 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     leagueClubRosters: raw.leagueClubRosters,
     leagueClubReserveCounts: raw.leagueClubReserveCounts,
     playerDevelopment: raw.playerDevelopment ?? {},
+    playerLearnedPositions: raw.playerLearnedPositions ?? {},
+    playerPositionRetraining: raw.playerPositionRetraining ?? {},
     lastSeasonDevelopmentReview: raw.lastSeasonDevelopmentReview,
     clubCareerTotals: raw.clubCareerTotals ?? {},
     retiredPlayers: raw.retiredPlayers ?? [],

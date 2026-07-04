@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
+import { CARD, SPACING, tabGroupButtonClass, tabGroupClass } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Position } from "@/lib/types";
@@ -21,6 +21,7 @@ import {
   type MatchdaySlotTarget,
 } from "@/lib/manager/managerMatchdaySquad";
 import { ManagerMatchdayFormation } from "@/components/manager/ManagerMatchdayFormation";
+import { ManagerSquadPlayerModal } from "@/components/manager/ManagerSquadPlayerModal";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { autoFixMatchdaySquad, autoSortMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
@@ -29,13 +30,28 @@ import {
   ManagerPage,
   ManagerViewHeader,
 } from "@/components/manager/manager-ui";
-import { MobileDetailsAccordion } from "@/components/MobileDetailsAccordion";
 import { ManagerTacticsPanel } from "@/components/manager/ManagerTactics";
-import { playUiClick } from "@/lib/sound";
+import { playTabChange, playUiClick } from "@/lib/sound";
 
 interface ManagerSquadProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
+}
+
+const SINGLE_CLICK_DELAY_MS = 220;
+
+function useFinePointer(): boolean {
+  const [finePointer, setFinePointer] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(pointer: fine)");
+    const update = () => setFinePointer(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  return finePointer;
 }
 
 const SQUAD_SELECTION_CLASS = {
@@ -70,11 +86,13 @@ function SquadPoolPlayerButton({
   entry,
   poolRole,
   onClick,
+  onDoubleClick,
 }: {
   career: ManagerCareer;
   entry: SquadPoolEntry;
   poolRole: SquadSelectionRole;
   onClick: () => void;
+  onDoubleClick?: (e: MouseEvent) => void;
 }) {
   const { playerId, isReserveCallUp } = entry;
   const player = getManagerPlayer(career, playerId);
@@ -88,6 +106,7 @@ function SquadPoolPlayerButton({
       <button
         type="button"
         onClick={onClick}
+        onDoubleClick={onDoubleClick}
         className={`${squadSelectionClass(poolRole)} btn-press select-none rounded-lg border px-1.5 py-1.5 text-left transition sm:px-2 sm:py-2`}
       >
         <div className="flex items-start justify-between gap-0.5">
@@ -106,11 +125,22 @@ function SquadPoolPlayerButton({
   );
 }
 
+type SquadSubTab = "squad" | "tactics";
+
+const SQUAD_SUB_TABS: { id: SquadSubTab; label: string }[] = [
+  { id: "squad", label: "Squad" },
+  { id: "tactics", label: "Tactics" },
+];
+
 export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
+  const finePointer = useFinePointer();
+  const matchdayClickTimerRef = useRef<number | null>(null);
+  const [subTab, setSubTab] = useState<SquadSubTab>("squad");
   const [selectedTarget, setSelectedTarget] = useState<MatchdaySlotTarget | null>(
     null
   );
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
+  const [modalPlayerId, setModalPlayerId] = useState<string | null>(null);
   const [pendingAssignId, setPendingAssignId] = useState<string | null>(null);
   const [replaceSourcePlayerId, setReplaceSourcePlayerId] = useState<
     string | null
@@ -125,6 +155,15 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     const timer = window.setTimeout(() => setAssignmentNotice(null), 4000);
     return () => window.clearTimeout(timer);
   }, [assignmentNotice]);
+
+  useEffect(
+    () => () => {
+      if (matchdayClickTimerRef.current != null) {
+        window.clearTimeout(matchdayClickTimerRef.current);
+      }
+    },
+    []
+  );
 
   const replaceSlot = replaceSourcePlayerId
     ? findPlayerMatchdaySlot(career, replaceSourcePlayerId)
@@ -229,7 +268,19 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
       handlePickPlayer(playerId);
       return;
     }
+    setModalPlayerId(null);
     setPendingAssignId(playerId);
+  };
+
+  const openPlayerModal = (playerId: string) => {
+    if (matchdayClickTimerRef.current != null) {
+      window.clearTimeout(matchdayClickTimerRef.current);
+      matchdayClickTimerRef.current = null;
+    }
+    setModalPlayerId(playerId);
+    setPendingAssignId(null);
+    setSelectedTarget(null);
+    setReplaceSourcePlayerId(null);
   };
 
   const handleMatchdayPlayerClick = (playerId: string) => {
@@ -243,6 +294,37 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     }
     handleReplacePlayer(playerId);
   };
+
+  const handleMatchdayPlayerDoubleClick = (playerId: string) => {
+    playUiClick();
+    openPlayerModal(playerId);
+  };
+
+  const handleMatchdayPlayerPrimaryClick = (playerId: string) => {
+    playUiClick();
+    if (!finePointer) {
+      openPlayerModal(playerId);
+      return;
+    }
+    if (matchdayClickTimerRef.current != null) {
+      window.clearTimeout(matchdayClickTimerRef.current);
+    }
+    matchdayClickTimerRef.current = window.setTimeout(() => {
+      matchdayClickTimerRef.current = null;
+      handleMatchdayPlayerClick(playerId);
+    }, SINGLE_CLICK_DELAY_MS);
+  };
+
+  const squadHelpText = finePointer
+    ? "Click squad players to assign · click matchday players to swap · double-click for player options"
+    : "Tap squad players to assign · tap matchday players for options";
+
+  const tacticsHelpText =
+    "Set your playing style, attack focus, and defence focus for the next match.";
+
+  const squadPoolHelpText = finePointer
+    ? "Click to assign · double-click for player options"
+    : "Tap to assign";
 
   const squadCheck = validateFitMatchdaySquad(resolveCareerForMatchSimulation(career));
 
@@ -284,33 +366,75 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     return "idle";
   };
 
+  const switchSubTab = (next: SquadSubTab) => {
+    if (subTab === next) return;
+    playTabChange();
+    playUiClick();
+    if (next === "tactics") {
+      setSelectedTarget(null);
+      setPendingAssignId(null);
+      setReplaceSourcePlayerId(null);
+      setModalPlayerId(null);
+      if (matchdayClickTimerRef.current != null) {
+        window.clearTimeout(matchdayClickTimerRef.current);
+        matchdayClickTimerRef.current = null;
+      }
+    }
+    setSubTab(next);
+  };
+
   return (
     <ManagerPage wide>
       <ManagerViewHeader
         title="Squad"
-        subtitle="Tap squad players to assign · tap matchday slots or players to swap"
+        subtitle={subTab === "squad" ? squadHelpText : tacticsHelpText}
         action={
-          <GameButton
-            variant="theme"
-            size="sm"
-            className="w-full sm:w-auto"
-            onClick={() => {
-              playUiClick();
-              const result = autoSortMatchdaySquad(career);
-              onUpdate(result.career);
-              setPendingAssignId(null);
-              setSelectedTarget(null);
-              setReplaceSourcePlayerId(null);
-              if (!result.ok) {
-                setDialog({ title: "Auto Sort failed", message: result.message });
-              }
-            }}
-          >
-            Auto Sort Best XI
-          </GameButton>
+          subTab === "squad" ? (
+            <GameButton
+              variant="theme"
+              size="sm"
+              className="w-full sm:w-auto"
+              onClick={() => {
+                playUiClick();
+                const result = autoSortMatchdaySquad(career);
+                onUpdate(result.career);
+                setPendingAssignId(null);
+                setSelectedTarget(null);
+                setReplaceSourcePlayerId(null);
+                if (!result.ok) {
+                  setDialog({ title: "Auto Sort failed", message: result.message });
+                }
+              }}
+            >
+              Auto Sort Best XI
+            </GameButton>
+          ) : undefined
         }
       />
 
+      <div className={tabGroupClass()}>
+        {SQUAD_SUB_TABS.map(({ id, label }) => (
+          <button
+            key={id}
+            type="button"
+            className={tabGroupButtonClass(subTab === id)}
+            onClick={() => switchSubTab(id)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {subTab === "tactics" ? (
+        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+          <ManagerTacticsPanel
+            career={career}
+            onChange={(tactics) => onUpdate({ ...career, tactics })}
+            onCareerUpdate={onUpdate}
+          />
+        </div>
+      ) : (
+        <>
       {assignmentNotice && (
         <div
           className={`${CARD.inset} ${SPACING.cardPaddingSm} border border-red-500/40`}
@@ -389,7 +513,8 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
             replaceSourcePlayerId={replaceSourcePlayerId}
             replaceCandidateIds={replaceCandidateIds}
             onSlotClick={handleSelectSlot}
-            onFilledSlotClick={handleMatchdayPlayerClick}
+            onFilledSlotClick={handleMatchdayPlayerPrimaryClick}
+            onFilledSlotDoubleClick={handleMatchdayPlayerDoubleClick}
           />
 
           <div className={`${CARD.base} ${SPACING.cardPadding}`}>
@@ -412,19 +537,33 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                     key={i}
                     type="button"
                     onClick={() => {
-                      playUiClick();
                       if (selectionRole === "target") {
-                        if (playerId) handleMatchdayPlayerClick(playerId);
-                        else handleSelectSlot({ kind: "bench", index: i });
+                        if (playerId) handleMatchdayPlayerPrimaryClick(playerId);
+                        else {
+                          playUiClick();
+                          handleSelectSlot({ kind: "bench", index: i });
+                        }
                         return;
                       }
                       if (selectionRole === "source" && !playerId) {
+                        playUiClick();
                         setSelectedTarget(null);
                         return;
                       }
-                      if (playerId) handleMatchdayPlayerClick(playerId);
-                      else handleSelectSlot({ kind: "bench", index: i });
+                      if (playerId) handleMatchdayPlayerPrimaryClick(playerId);
+                      else {
+                        playUiClick();
+                        handleSelectSlot({ kind: "bench", index: i });
+                      }
                     }}
+                    onDoubleClick={
+                      playerId && finePointer
+                        ? (e) => {
+                            e.preventDefault();
+                            handleMatchdayPlayerDoubleClick(playerId);
+                          }
+                        : undefined
+                    }
                     className={`${squadSelectionClass(selectionRole)} select-none rounded-lg border ${SPACING.listItem} text-left ${
                       unavailable ? unavailableAccentClass(!!isSuspension) : ""
                     }`}
@@ -478,7 +617,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
             </p>
           ) : (
             <p className={`mb-2 ${TYPO.bodySm} text-pitch-500`}>
-              Tap a squad player, then a slot — or tap a matchday player to swap
+              {squadPoolHelpText}
             </p>
           )}
           <div className="mb-2 flex gap-1 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible">
@@ -519,6 +658,14 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
                   playUiClick();
                   handlePoolPlayerClick(entry.playerId);
                 }}
+                onDoubleClick={
+                  finePointer
+                    ? (e) => {
+                        e.preventDefault();
+                        handleMatchdayPlayerDoubleClick(entry.playerId);
+                      }
+                    : undefined
+                }
               />
             ))}
           </ul>
@@ -533,15 +680,18 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
           )}
         </div>
       </div>
+        </>
+      )}
 
-      <MobileDetailsAccordion title="Tactics">
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <ManagerTacticsPanel
-            career={career}
-            onChange={(tactics) => onUpdate({ ...career, tactics })}
-          />
-        </div>
-      </MobileDetailsAccordion>
+      {modalPlayerId && (
+        <ManagerSquadPlayerModal
+          career={career}
+          playerId={modalPlayerId}
+          onClose={() => setModalPlayerId(null)}
+          onUpdate={onUpdate}
+          onReplace={handleReplacePlayer}
+        />
+      )}
 
       <ManagerDialog
         open={dialog !== null}
