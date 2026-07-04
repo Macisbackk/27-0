@@ -22,6 +22,9 @@ export const POSITION_RETRAINING_PATHS: PositionRetrainingPath[] = [
   { from: "CENTRE", to: "WING", months: 2 },
   { from: "SECOND_ROW", to: "PROP", months: 3 },
   { from: "PROP", to: "SECOND_ROW", months: 2 },
+  { from: "HOOKER", to: "STAND_OFF", months: 6 },
+  { from: "HOOKER", to: "SCRUM_HALF", months: 6 },
+  { from: "HOOKER", to: "LOOSE_FORWARD", months: 5 },
   { from: "WING", to: "FULLBACK", months: 1 },
   { from: "STAND_OFF", to: "FULLBACK", months: 2 },
   { from: "SCRUM_HALF", to: "FULLBACK", months: 2 },
@@ -95,12 +98,38 @@ export function getRetrainingProgress(
   );
 }
 
+export function playerHasDualPositions(
+  career: ManagerCareer,
+  playerId: string
+): boolean {
+  return getManagerPlayerEligiblePositions(career, playerId).length > 1;
+}
+
+export type PlayerRetrainingStatus =
+  | "available"
+  | "training"
+  | "already_dual"
+  | "no_paths";
+
+export function getPlayerRetrainingStatus(
+  career: ManagerCareer,
+  playerId: string
+): PlayerRetrainingStatus {
+  if (getActiveRetraining(career, playerId)) return "training";
+  if (playerHasDualPositions(career, playerId)) return "already_dual";
+  if (getAvailableRetrainingTargets(career, playerId).length > 0) {
+    return "available";
+  }
+  return "no_paths";
+}
+
 export function getAvailableRetrainingTargets(
   career: ManagerCareer,
   playerId: string
 ): PositionRetrainingPath[] {
   if (!isPlayerInFirstTeamSquad(career, playerId)) return [];
   if (getActiveRetraining(career, playerId)) return [];
+  if (playerHasDualPositions(career, playerId)) return [];
 
   const primary = getPlayerPrimaryPosition(career, playerId);
   if (!primary) return [];
@@ -128,6 +157,13 @@ export function startPositionRetraining(
     return {
       ok: false,
       message: "This player is already retraining for another position.",
+    };
+  }
+
+  if (playerHasDualPositions(career, playerId)) {
+    return {
+      ok: false,
+      message: "This player already has a dual position and cannot retrain.",
     };
   }
 
