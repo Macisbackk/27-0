@@ -127,14 +127,14 @@ export function getManagerPlayerEligiblePositions(
     const base = getPlayerEligiblePositions(
       reserveToPlayer(reserve, career.seasonYear)
     );
-    const learned = career.playerLearnedPositions?.[playerId] ?? [];
+    const learned = career.playerLearnedPositions[playerId] ?? [];
     if (learned.length === 0) return base;
     return [...new Set([...base, ...learned])];
   }
   const player = getManagerPlayer(career, playerId);
   if (!player) return [];
   const base = getPlayerEligiblePositions(player);
-  const learned = career.playerLearnedPositions?.[playerId] ?? [];
+  const learned = career.playerLearnedPositions[playerId] ?? [];
   if (learned.length === 0) return base;
   return [...new Set([...base, ...learned])];
 }

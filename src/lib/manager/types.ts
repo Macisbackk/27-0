@@ -578,9 +578,9 @@ export interface ManagerCareer {
   leagueTransfers: LeagueTransferActivity[];
   playerDevelopment?: Record<string, PlayerDevelopmentState>;
   /** Positions earned through retraining in this save. */
-  playerLearnedPositions?: Record<string, Position[]>;
+  playerLearnedPositions: Record<string, Position[]>;
   /** Active position retraining keyed by player id. */
-  playerPositionRetraining?: Record<string, PlayerPositionRetraining>;
+  playerPositionRetraining: Record<string, PlayerPositionRetraining>;
   lastSeasonDevelopmentReview?: PlayerDevelopmentChange[];
   lastReserveReportWeek?: number;
   /** Per-club injury load for league sim fairness (AI clubs miss players too). */

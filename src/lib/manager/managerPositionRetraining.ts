@@ -72,13 +72,13 @@ export function getActiveRetraining(
   career: ManagerCareer,
   playerId: string
 ): PlayerPositionRetraining | null {
-  return career.playerPositionRetraining?.[playerId] ?? null;
+  return career.playerPositionRetraining[playerId] ?? null;
 }
 
 export function listActiveRetraining(
   career: ManagerCareer
 ): { playerId: string; training: PlayerPositionRetraining }[] {
-  const map = career.playerPositionRetraining ?? {};
+  const map = career.playerPositionRetraining;
   return Object.entries(map).map(([playerId, training]) => ({
     playerId,
     training,
@@ -168,7 +168,7 @@ export function startPositionRetraining(
   let nextCareer: ManagerCareer = {
     ...career,
     playerPositionRetraining: {
-      ...(career.playerPositionRetraining ?? {}),
+      ...career.playerPositionRetraining,
       [playerId]: training,
     },
     updatedAt: new Date().toISOString(),
@@ -196,14 +196,14 @@ function completeRetraining(
   playerId: string,
   training: PlayerPositionRetraining
 ): ManagerCareer {
-  const learned = career.playerLearnedPositions ?? {};
+  const learned = career.playerLearnedPositions;
   const existing = learned[playerId] ?? [];
   const nextLearned = existing.includes(training.targetPosition)
     ? existing
     : [...existing, training.targetPosition];
 
   const player = getManagerPlayer(career, playerId);
-  let next = {
+  let next: ManagerCareer = {
     ...career,
     playerLearnedPositions: {
       ...learned,
@@ -231,7 +231,7 @@ function completeRetraining(
 /** Advance all active retraining by one league week. */
 export function tickPositionRetraining(career: ManagerCareer): ManagerCareer {
   const retraining = career.playerPositionRetraining;
-  if (!retraining || Object.keys(retraining).length === 0) return career;
+  if (Object.keys(retraining).length === 0) return career;
 
   let nextCareer = career;
   const nextRetraining = { ...retraining };

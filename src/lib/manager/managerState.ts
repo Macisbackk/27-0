@@ -388,6 +388,8 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     latestNews: [],
     leagueTransfers: [],
     freeAgents: [],
+    playerLearnedPositions: {},
+    playerPositionRetraining: {},
     wins: 0,
     losses: 0,
     teamSeasonStats: { ...EMPTY_TEAM_SEASON_STATS },
