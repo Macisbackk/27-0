@@ -9,7 +9,6 @@ import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import {
   formatRetrainingDuration,
   formatRetrainingPathLabel,
-  getActiveRetraining,
   getAvailableRetrainingTargets,
   getPlayerRetrainingStatus,
   getRetrainingProgress,
@@ -31,32 +30,19 @@ function weeksToMonthsLabel(weeks: number): string {
   return formatRetrainingDuration(months);
 }
 
-function statusHint(status: PlayerRetrainingStatus): string | null {
-  switch (status) {
-    case "already_dual":
-      return "Dual role";
-    case "training":
-      return "In training";
-    case "no_paths":
-      return "No paths";
-    default:
-      return null;
-  }
-}
-
 function playerChipClass(
   status: PlayerRetrainingStatus,
   selected: boolean
 ): string {
   const base = "rounded-lg border px-3 py-2 text-xs transition";
   if (status === "already_dual" || status === "no_paths") {
-    return `${base} cursor-not-allowed border-pitch-700/50 bg-pitch-950/40 text-pitch-600 opacity-50`;
+    return `${base} cursor-not-allowed border-pitch-600/60 bg-pitch-900/40 text-pitch-400 opacity-60`;
   }
   if (status === "training") {
-    return `${base} cursor-not-allowed border-theme-primary/25 bg-theme-primary/5 text-pitch-500 opacity-70`;
+    return `${base} cursor-not-allowed border-theme-primary/30 bg-theme-primary/10 text-theme-primary/70`;
   }
   if (selected) return `${base} ${FILTER.chipActive}`;
-  return `${base} ${FILTER.chipIdle} btn-press hover:border-theme-primary/45 hover:text-white`;
+  return `${base} ${FILTER.chipIdle} btn-press`;
 }
 
 export function ManagerPositionRetrainingPanel({
@@ -129,9 +115,9 @@ export function ManagerPositionRetrainingPanel({
   };
 
   return (
-    <div className="text-center">
-      <p className={`${TYPO.sectionLabel} mb-2`}>Dual Position Training</p>
-      <p className={`mx-auto max-w-lg ${TYPO.bodySm} text-pitch-400`}>
+    <div className={`${CARD.stat} ${SPACING.cardPaddingSm} text-center`}>
+      <p className={TYPO.sectionLabel}>Dual Position Training</p>
+      <p className={`mx-auto mt-2 max-w-lg ${TYPO.bodySm} text-pitch-400`}>
         Single-role players can learn a second position over several months.
         Progress advances each league week ({WEEKS_PER_MONTH} weeks = 1 month).
         Players who already have dual roles cannot retrain.
@@ -147,14 +133,17 @@ export function ManagerPositionRetrainingPanel({
       )}
 
       {activeTraining.length > 0 && (
-        <div className={`${CARD.stat} ${SPACING.cardPaddingSm} mt-4 text-left`}>
-          <p className={`${TYPO.sectionLabel} mb-3 text-center`}>In progress</p>
+        <div className={`mt-4 ${SPACING.stackSm} text-left`}>
+          <p className={`${TYPO.sectionLabel} mb-2 text-center`}>In progress</p>
           <ul className={SPACING.stackSm}>
             {activeTraining.map(({ playerId, training }) => {
               const player = getManagerPlayer(career, playerId);
               const progress = getRetrainingProgress(training);
               return (
-                <li key={playerId}>
+                <li
+                  key={playerId}
+                  className="rounded-lg border border-pitch-600/60 bg-pitch-900/40 px-3 py-2.5"
+                >
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold text-white">
@@ -187,13 +176,8 @@ export function ManagerPositionRetrainingPanel({
       <div className="mt-4">
         <p className={`${TYPO.sectionLabel} mb-2`}>Squad players</p>
         <div className="flex flex-wrap justify-center gap-2">
-          {squadPlayers.map(({ entry, player, status, options }) => {
+          {squadPlayers.map(({ entry, player, status }) => {
             const isSelected = selectedPlayerId === entry.playerId;
-            const hint = statusHint(status);
-            const active = getActiveRetraining(career, entry.playerId);
-            const positionsLabel = formatPlayerPositionLabel(player, {
-              short: true,
-            });
 
             return (
               <button
@@ -203,37 +187,28 @@ export function ManagerPositionRetrainingPanel({
                 onClick={() => handleSelectPlayer(entry.playerId, status)}
                 title={
                   status === "already_dual"
-                    ? `${player.name} already plays ${positionsLabel}`
+                    ? `${player.name} already has a dual role`
                     : status === "no_paths"
-                      ? `${player.name} has no retraining paths from ${POSITION_SHORT[player.position]}`
+                      ? `${player.name} has no retraining paths`
                       : undefined
                 }
-                className={`min-w-[7.5rem] max-w-[11rem] text-left ${playerChipClass(status, isSelected)}`}
+                className={playerChipClass(status, isSelected)}
               >
-                <span className="block truncate font-semibold text-inherit">
-                  {player.name}
-                </span>
-                <span className="mt-0.5 block text-[10px] leading-snug text-pitch-500">
-                  {positionsLabel}
-                  {active
-                    ? ` · ${POSITION_SHORT[active.targetPosition]}`
-                    : hint
-                      ? ` · ${hint}`
-                      : options.length > 0
-                        ? ` · ${options.length} path${options.length === 1 ? "" : "s"}`
-                        : ""}
-                </span>
+                {player.name}
               </button>
             );
           })}
         </div>
+        <p className={`mx-auto mt-2 max-w-lg ${TYPO.bodySm} text-pitch-400`}>
+          {selectedRow
+            ? `${selectedRow.player.name} · ${formatPlayerPositionLabel(selectedRow.player, { short: true })}`
+            : "Select a single-role player to view retraining paths."}
+        </p>
       </div>
 
       {selectedRow && selectedRow.status === "available" && (
         <div className="mt-4">
-          <p className={`${TYPO.sectionLabel} mb-2`}>
-            Train {selectedRow.player.name} as
-          </p>
+          <p className={`${TYPO.sectionLabel} mb-2`}>New position</p>
           <div className="flex flex-wrap justify-center gap-2">
             {selectedRow.options.map((path) => {
               const key = `${path.from}->${path.to}`;
@@ -252,36 +227,30 @@ export function ManagerPositionRetrainingPanel({
                   }`}
                 >
                   {formatRetrainingPathLabel(path.from, path.to)}
-                  <span className="mt-0.5 block text-[10px] text-pitch-500">
-                    {formatRetrainingDuration(path.months)}
-                  </span>
                 </button>
               );
             })}
           </div>
+          <p className={`mx-auto mt-2 max-w-lg ${TYPO.bodySm} text-pitch-400`}>
+            {selectedPath
+              ? `${formatRetrainingDuration(selectedPath.months)} · ${selectedRow.player.name} learns ${POSITION_SHORT[selectedPath.to]} from ${POSITION_SHORT[selectedPath.from]}`
+              : "Pick a path to see duration and confirm training."}
+          </p>
           {selectedPath && (
-            <>
-              <p className={`mx-auto mt-2 max-w-lg ${TYPO.bodySm} text-pitch-400`}>
-                {selectedRow.player.name} will learn{" "}
-                {POSITION_SHORT[selectedPath.to]} over{" "}
-                {formatRetrainingDuration(selectedPath.months)}, starting from{" "}
-                {POSITION_SHORT[selectedPath.from]}.
-              </p>
-              <button
-                type="button"
-                onClick={handleStart}
-                className={`mt-3 rounded-lg border px-4 py-2 text-xs font-semibold transition ${FILTER.chipActive} btn-press`}
-              >
-                Start training
-              </button>
-            </>
+            <button
+              type="button"
+              onClick={handleStart}
+              className={`mt-3 rounded-lg border px-3 py-2 text-xs font-semibold transition ${FILTER.chipActive} btn-press`}
+            >
+              Start training
+            </button>
           )}
         </div>
       )}
 
       <p className={`mx-auto mt-4 max-w-lg ${TYPO.bodySm} text-pitch-500`}>
-        Paths by primary role: CE→SR/WG, SR→PF/LF, PF→SR, HK→HB/LF, WG→FB,
-        HB→FB, LF→HB, FB→WG/HB.
+        CE→SR/WG · SR→PF/LF · PF→SR · HK→HB/LF · WG→FB · HB→FB · LF→HB ·
+        FB→WG/HB
       </p>
     </div>
   );

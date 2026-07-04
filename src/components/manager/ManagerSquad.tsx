@@ -426,13 +426,11 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
       </div>
 
       {subTab === "tactics" ? (
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <ManagerTacticsPanel
-            career={career}
-            onChange={(tactics) => onUpdate({ ...career, tactics })}
-            onCareerUpdate={onUpdate}
-          />
-        </div>
+        <ManagerTacticsPanel
+          career={career}
+          onChange={(tactics) => onUpdate({ ...career, tactics })}
+          onCareerUpdate={onUpdate}
+        />
       ) : (
         <>
       {assignmentNotice && (
