@@ -2,6 +2,7 @@ import {
   deriveCupOutcomeFromBracket,
   getCupRoundLabel,
 } from "../game/challenge-cup-bracket";
+import { isSameManagerClub } from "../clubs/super-league-display";
 import type { InboxMessage, ManagerCareer } from "./types";
 import {
   getPendingCupBracketRound,
@@ -502,11 +503,29 @@ export function syncManagerInboxMessages(career: ManagerCareer): ManagerCareer {
   if (next.isSeasonComplete) {
     next = addSeasonRewardInboxMessage(next);
   }
-  return purgeStaleInboxMessages(next);
+  return purgeStaleInboxMessages(purgeInvalidTransferOffers(next));
 }
 
 export function countUnreadInbox(career: ManagerCareer): number {
   return career.inboxMessages.filter((m) => !m.read).length;
+}
+
+export function purgeInvalidTransferOffers(career: ManagerCareer): ManagerCareer {
+  let changed = false;
+  const inboxMessages = career.inboxMessages.map((m) => {
+    if (
+      !m.resolved &&
+      (m.type === "transfer" || m.type === "transfer_offer_in") &&
+      m.offerClub &&
+      isSameManagerClub(m.offerClub, career.club)
+    ) {
+      changed = true;
+      return { ...m, resolved: true, read: true };
+    }
+    return m;
+  });
+  if (!changed) return career;
+  return { ...career, inboxMessages, updatedAt: new Date().toISOString() };
 }
 
 export function hydrateInboxMessages(career: ManagerCareer): ManagerCareer {
@@ -516,7 +535,7 @@ export function hydrateInboxMessages(career: ManagerCareer): ManagerCareer {
       normalizeInboxMessage(m, career)
     ),
   };
-  return purgeStaleInboxMessages(hydrated);
+  return purgeStaleInboxMessages(purgeInvalidTransferOffers(hydrated));
 }
 
 export function addReserveCallUpInboxMessage(

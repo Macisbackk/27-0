@@ -95,10 +95,12 @@ import {
 import { readManagerCareerRaw } from "@/lib/manager/managerSaveStorage";
 import { markOnboardingStepComplete } from "@/lib/manager/managerOnboarding";
 import { shouldShowSaveMigrationNotice } from "@/lib/manager/managerSaveMigration";
+import { managerFixtureDisplayId } from "@/lib/manager/managerFixtureDisplay";
 import { ManagerSaveMigrationNotice } from "@/components/manager/ManagerSaveMigrationNotice";
 import {
   MANAGER_NAV_VIEWS,
   isManagerNavView,
+  isManagerStateOverlayView,
   managerPathForSquadTab,
   managerPathForView,
   managerPathFromLegacyViewParam,
@@ -228,27 +230,31 @@ export default function ManagerPage() {
     [router, pathname]
   );
 
-  const prevPathnameRef = useRef(pathname);
+  const prevPathnameRef = useRef<string | null>(null);
 
-  /** Sync view state when the URL changes (browser back/forward); dismiss stale overlays. */
+  /** Sync view from URL on mount and browser back/forward; dismiss stale overlays. */
   useLayoutEffect(() => {
     if (prevPathnameRef.current === pathname) return;
+    const hadPreviousPath = prevPathnameRef.current !== null;
     prevPathnameRef.current = pathname;
 
     const fromUrl = resolveManagerScreenFromPathname(pathname);
     if (!fromUrl) return;
 
-    setReviewFixtureId(null);
-    setPostMatchReviewFlow(false);
+    if (hadPreviousPath) {
+      setReviewFixtureId(null);
+      setPostMatchReviewFlow(false);
+      setPendingChallengeCupCelebration(false);
+      setPendingLeagueWinnersCelebration(false);
+      setPendingTrophyCelebration(false);
+      setManagerView(setView, fromUrl);
+      return;
+    }
 
-    if (
-      fromUrl === "landing" ||
-      fromUrl === "club-select" ||
-      isManagerNavView(fromUrl)
-    ) {
+    if (!isManagerStateOverlayView(view)) {
       setManagerView(setView, fromUrl);
     }
-  }, [pathname]);
+  }, [pathname, view]);
 
   const refreshSaveSlots = useCallback(() => {
     setSaveSlots(listManagerSaveSlots());
@@ -280,18 +286,20 @@ export default function ManagerPage() {
 
   const persist = useCallback(
     (next: ManagerCareer) => {
+      const slot = getActiveSaveSlot();
       const prepared = prepareManagerCareerForSave(next);
       setCareer(prepared);
-      saveManagerCareer(prepared, activeSlot);
+      saveManagerCareer(prepared, slot);
+      setActiveSlot(slot);
       refreshSaveSlots();
     },
-    [activeSlot, refreshSaveSlots]
+    [refreshSaveSlots]
   );
 
   const awaitingFriendlyChoice =
     career != null && isAwaitingFriendlyChoice(career);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!awaitingFriendlyChoice) return;
     if (MANAGER_NAV_VIEWS.includes(displayView) && displayView !== "hub") {
       goToView("hub");
@@ -372,12 +380,13 @@ export default function ManagerPage() {
     goToView("club-select");
   };
 
-  const continueCareer = (saved: ManagerCareer) => {
-    careerSlotRef.current = getActiveSaveSlot();
+  const continueCareer = (saved: ManagerCareer, slot: number) => {
+    careerSlotRef.current = slot;
+    setActiveSlot(slot);
     setCareer(saved);
     if (saved.isSeasonComplete) {
       if (shouldShowChallengeCupCelebration(saved)) {
-        recordManagerCupTeamWin(saved.club, activeSlot, saved.seasonYear);
+        recordManagerCupTeamWin(saved.club, slot, saved.seasonYear);
         setChallengeCupWinModalOpen(true);
         goToView("hub");
         return;
@@ -407,7 +416,7 @@ export default function ManagerPage() {
       setPendingRetirementIntentId(retirementIntent.id);
       setRetirementIntentModalOpen(true);
     } else if (shouldShowChallengeCupCelebration(saved)) {
-      recordManagerCupTeamWin(saved.club, activeSlot, saved.seasonYear);
+      recordManagerCupTeamWin(saved.club, slot, saved.seasonYear);
       setChallengeCupWinModalOpen(true);
     } else if (shouldShowLeagueWinnersCelebration(saved)) {
       setLeagueWinnersModalOpen(true);
@@ -427,7 +436,7 @@ export default function ManagerPage() {
       });
       return;
     }
-    continueCareer(saved);
+    continueCareer(saved, slot);
   };
 
   const handleDelete = (slot: number) => {
@@ -523,7 +532,11 @@ export default function ManagerPage() {
     const wonLeagueTable = shouldShowLeagueWinnersCelebration(withLeagueStats);
     const wonChallengeCup = shouldShowChallengeCupCelebration(withLeagueStats);
     if (wonChallengeCup) {
-      recordManagerCupTeamWin(withLeagueStats.club, activeSlot, withLeagueStats.seasonYear);
+      recordManagerCupTeamWin(
+        withLeagueStats.club,
+        getActiveSaveSlot(),
+        withLeagueStats.seasonYear
+      );
     }
     const unsolicited = getPendingUnsolicitedOffer(withLeagueStats);
     const retirementIntent = getPendingRetirementIntentPopup(withLeagueStats);
@@ -533,7 +546,7 @@ export default function ManagerPage() {
     if (withLeagueStats.isSeasonComplete) {
       recordSeasonComplete(withLeagueStats);
       if (fixture) {
-        setReviewFixtureId(fixture.fixtureId ?? `round-${fixture.round}`);
+        setReviewFixtureId(managerFixtureDisplayId(fixture));
         setPostMatchReviewFlow(true);
         setMatchReviewReturnView("hub");
         goToView("match-review", { syncUrl: false });
@@ -546,7 +559,7 @@ export default function ManagerPage() {
         goToView("season-review", { syncUrl: false });
       }
     } else if (fixture) {
-      setReviewFixtureId(fixture.fixtureId ?? `round-${fixture.round}`);
+      setReviewFixtureId(managerFixtureDisplayId(fixture));
       setPostMatchReviewFlow(true);
       setMatchReviewReturnView("hub");
       goToView("match-review", { syncUrl: false });
@@ -819,6 +832,7 @@ export default function ManagerPage() {
 
   const handleSimulate = () => {
     if (!career) return;
+    const snapshot = career;
     const ready = prepareCareerForNextMatch(career);
     const check = validateFitMatchdaySquad(ready);
     if (!check.valid) {
@@ -838,6 +852,7 @@ export default function ManagerPage() {
     setCareer(ready);
     const result = simulateManagerNextMatch(ready);
     if (!result.ok) {
+      setCareer(snapshot);
       setAlertDialog({
         title: "Simulation failed",
         message: result.error,
@@ -882,8 +897,12 @@ export default function ManagerPage() {
     goToView("hub");
   };
 
+  const managerOverlayActive = isManagerStateOverlayView(view);
+
   const showNav =
-    career && MANAGER_NAV_VIEWS.includes(displayView as (typeof MANAGER_NAV_VIEWS)[number]);
+    career &&
+    !managerOverlayActive &&
+    MANAGER_NAV_VIEWS.includes(displayView as (typeof MANAGER_NAV_VIEWS)[number]);
 
   const incomingBidOffer =
     career && pendingIncomingBidId
@@ -953,12 +972,6 @@ export default function ManagerPage() {
                     onPlayGame={handlePlayGame}
                     onSimulate={handleSimulate}
                     onPlayoffsContinue={handlePlayoffsIntroContinue}
-                    onSelectFixture={(fixtureId) => {
-                      setReviewFixtureId(fixtureId);
-                      setPostMatchReviewFlow(false);
-                      setMatchReviewReturnView("hub");
-                      goToView("match-review", { syncUrl: false });
-                    }}
                     onUpdate={persist}
                     onNavigate={handleNavNavigate}
                   />

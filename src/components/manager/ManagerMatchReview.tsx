@@ -16,6 +16,8 @@ import { ManagerMobileBackBar, ManagerSectionCard, ManagerStat } from "@/compone
 import {
   getManagerCupRoundLabel,
   isChallengeCupFixture,
+  managerFixtureDisplayId,
+  resolveManagerFixtureRecord,
 } from "@/lib/manager/managerFixtureDisplay";
 import {
   managerCompetitionSurfaceClass,
@@ -50,14 +52,7 @@ export function ManagerMatchReview({
     "story"
   );
 
-  const fixture =
-    career.fixtures.find((f) => f.fixtureId === fixtureId) ??
-    career.fixtures.find((f) => `round-${f.round}` === fixtureId) ??
-    (career.lastMatchFixture &&
-    (career.lastMatchFixture.fixtureId === fixtureId ||
-      `round-${career.lastMatchFixture.round}` === fixtureId)
-      ? career.lastMatchFixture
-      : undefined);
+  const fixture = resolveManagerFixtureRecord(career, fixtureId);
 
   if (!fixture) {
     return (
@@ -73,8 +68,14 @@ export function ManagerMatchReview({
     );
   }
 
+  const isLastMatch =
+    career.lastMatchFixture != null &&
+    managerFixtureDisplayId(career.lastMatchFixture) ===
+      managerFixtureDisplayId(fixture);
+
   const squad = buildSquadSlotsFromMatchday(
-    fixture.meta?.matchdayXiii ?? career.matchdayXiii,
+    fixture.meta?.matchdayXiii ??
+      (isLastMatch ? career.matchdayXiii : career.matchdayXiii.map(() => "")),
     fixture.meta?.xiiiSlotPositions ?? career.xiiiSlotPositions,
     career
   );

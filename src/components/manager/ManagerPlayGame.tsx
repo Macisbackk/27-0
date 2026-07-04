@@ -33,7 +33,7 @@ import {
   getManagerScheduledFixtureVenueLabel,
 } from "@/lib/manager/managerFixtureDisplay";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
-import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
+import { getManagerOpponentMatchRating } from "@/lib/manager/managerLeagueRosters";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
 
@@ -230,10 +230,11 @@ export function ManagerPlayGame({
     career.xiiiSlotPositions,
     career
   );
-  const oppRating = Math.round(
-    getOpponentMatchRating(sched.opponent, career.seed, sched.round, {
-      currentSeasonOnly: sched.competition !== "friendly",
-    })
+  const oppRating = getManagerOpponentMatchRating(
+    career,
+    sched.opponent,
+    career.seed,
+    sched.round
   );
 
   const homeName = live.isHome ? career.club : sched.opponent;

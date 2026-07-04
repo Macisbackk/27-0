@@ -144,29 +144,23 @@ export function resolveManagerScreenFromPathname(pathname: string): ManagerView 
   return null;
 }
 
-/** Single render-time view: URL wins on back/forward; state covers push lag. */
+/** Single render-time view: overlays first; URL is source of truth for tabs. */
 export function resolveManagerDisplayView(
   pathname: string,
   stateView: ManagerView
 ): ManagerView {
-  const fromUrl = resolveManagerScreenFromPathname(pathname);
+  if (isManagerStateOverlayView(stateView)) {
+    return stateView;
+  }
 
-  // URL-backed nav always wins over stale overlay / pending state (fixes browser back).
-  if (fromUrl && isManagerNavView(fromUrl)) {
-    if (
-      isManagerNavView(stateView) &&
-      managerPathForView(stateView) !== pathname &&
-      stateView !== fromUrl
-    ) {
-      return stateView;
-    }
+  const fromUrl = resolveManagerScreenFromPathname(pathname);
+  if (fromUrl) {
     return fromUrl;
   }
 
-  if (fromUrl === "landing" || fromUrl === "club-select") return fromUrl;
-
-  if (isManagerStateOverlayView(stateView)) return stateView;
-  if (isManagerNavView(stateView)) return stateView;
+  if (isManagerNavView(stateView)) {
+    return stateView;
+  }
   return stateView;
 }
 

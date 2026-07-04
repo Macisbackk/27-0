@@ -16,6 +16,7 @@ import {
   getWageBillPercent,
   isWageOverBudget,
 } from "@/lib/manager/managerFinance";
+import { isSameManagerClub } from "@/lib/clubs/super-league-display";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { TYPO } from "@/lib/ui/typography";
@@ -127,6 +128,7 @@ export function ManagerTransfers({
 
   const listedPlayers = useMemo(() => {
     return career.leagueListedPlayers
+      .filter((entry) => !isSameManagerClub(entry.club, career.club))
       .map((entry) => {
         const raw = getPlayerById(entry.playerId);
         if (!raw) return null;
@@ -437,6 +439,9 @@ export function ManagerTransfers({
             const canAffordAssistant =
               canAffordFee &&
               canAffordAdditionalWage(career, demand.wagePerYear);
+            const canAffordNegotiated =
+              canAffordFee &&
+              canAffordAdditionalWage(career, listedOfferWage);
             return (
               <ManagerTransferPlayerCard
                 key={player.id}
@@ -487,7 +492,7 @@ export function ManagerTransfers({
                         variant="theme"
                         size="sm"
                         fullWidth
-                        disabled={!canAffordFee}
+                        disabled={!canAffordNegotiated}
                         onClick={() =>
                           submitListedNegotiatedDeal(player.id, club)
                         }

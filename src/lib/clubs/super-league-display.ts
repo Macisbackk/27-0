@@ -81,6 +81,16 @@ export function getCurrentPlayableClubNames(): string[] {
   return [...CURRENT_PLAYABLE_CLUBS];
 }
 
+/** Case-insensitive club identity — used for transfer buyer/seller guards. */
+export function isSameManagerClub(a: string, b: string): boolean {
+  return a.trim().toLowerCase() === b.trim().toLowerCase();
+}
+
+/** AI clubs that may bid for the user's players (never the user's own club). */
+export function rivalTransferClubs(userClub: string): string[] {
+  return CURRENT_PLAYABLE_CLUBS.filter((c) => !isSameManagerClub(c, userClub));
+}
+
 export function getPlayableClubNames(): string[] {
   return Array.from(PLAYABLE_CLUB_NAMES);
 }

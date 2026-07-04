@@ -1,6 +1,6 @@
 import seedrandom from "seedrandom";
 import { getPlayerById } from "../players";
-import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
+import { CURRENT_PLAYABLE_CLUBS, isSameManagerClub, rivalTransferClubs } from "../clubs/super-league-display";
 import { getManagerClubConfig } from "./club-config";
 import type {
   InboxMessage,
@@ -402,6 +402,12 @@ export function evaluateBuyOffer(
   }
 
   const sellerClub = findPlayerLeagueClub(career, playerId);
+  if (sellerClub && isSameManagerClub(sellerClub, career.club)) {
+    return {
+      accepted: false,
+      reason: "You cannot buy players from your own club.",
+    };
+  }
   if (!isFreeAgent(career, playerId) && sellerClub !== club) {
     return { accepted: false, reason: "Player is no longer at that club." };
   }
@@ -577,8 +583,10 @@ export function generateIncomingTransferOffers(
 
     if (rng() > chance) continue;
 
-    const buyers = CURRENT_PLAYABLE_CLUBS.filter((c) => c !== career.club);
+    const buyers = rivalTransferClubs(career.club);
+    if (buyers.length === 0) continue;
     const buyer = buyers[Math.floor(rng() * buyers.length)]!;
+    if (isSameManagerClub(buyer, career.club)) continue;
     const funds = clubFunds[buyer] ?? getManagerClubConfig(buyer).budget;
     const offerAmount = Math.round(
       status.askingPrice * (0.75 + rng() * 0.2)
@@ -679,8 +687,10 @@ export function generateUnsolicitedTransferOffers(
     career.seed,
     career.gameWeek
   );
-  const buyers = CURRENT_PLAYABLE_CLUBS.filter((club) => club !== career.club);
+  const buyers = rivalTransferClubs(career.club);
+  if (buyers.length === 0) return career;
   const buyer = buyers[Math.floor(rng() * buyers.length)]!;
+  if (isSameManagerClub(buyer, career.club)) return career;
   const funds = career.clubFunds[buyer] ?? getManagerClubConfig(buyer).budget;
   const offerAmount = Math.round(impliedPrice * (0.9 + rng() * 0.1));
 
@@ -715,7 +725,8 @@ export function getPendingUnsolicitedOffer(
       m.unsolicited &&
       m.playerId &&
       m.offerAmount != null &&
-      m.offerClub
+      m.offerClub &&
+      !isSameManagerClub(m.offerClub, career.club)
   );
 }
 
@@ -751,6 +762,9 @@ export function acceptIncomingOffer(
   );
 
   const buyer = msg.offerClub ?? "Unknown";
+  if (isSameManagerClub(buyer, career.club)) {
+    return { ok: false, error: "Invalid offer — your club cannot buy from itself." };
+  }
   const buyerFunds = career.clubFunds[buyer] ?? 0;
   if (buyerFunds < msg.offerAmount) {
     return {

@@ -1,5 +1,5 @@
 import seedrandom from "seedrandom";
-import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
+import { CURRENT_PLAYABLE_CLUBS, isSameManagerClub } from "../clubs/super-league-display";
 import { getPlayerById } from "../players";
 import type { OpponentPoolOptions } from "../game/opponent-squad-strength";
 import type { Player, Position } from "../types";
@@ -279,8 +279,9 @@ export function findPlayerLeagueClub(
 
 export function pruneLeagueListedPlayers(career: ManagerCareer): ManagerCareer {
   const leagueListedPlayers = career.leagueListedPlayers.filter((listing) => {
+    if (isSameManagerClub(listing.club, career.club)) return false;
     const club = findPlayerLeagueClub(career, listing.playerId);
-    return club === listing.club;
+    return club != null && isSameManagerClub(club, listing.club);
   });
   if (leagueListedPlayers.length === career.leagueListedPlayers.length) {
     return career;

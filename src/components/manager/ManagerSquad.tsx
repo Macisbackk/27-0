@@ -17,7 +17,7 @@ import {
   findPlayerMatchdaySlot,
   getMatchdayPlayerIds,
   getReplacementCandidates,
-  getSquadPoolPlayers,
+  getSquadRosterPoolPlayers,
   type MatchdaySlotTarget,
 } from "@/lib/manager/managerMatchdaySquad";
 import { ManagerMatchdayFormation } from "@/components/manager/ManagerMatchdayFormation";
@@ -83,7 +83,7 @@ function unavailableTextClass(isSuspension: boolean): string {
   return isSuspension ? "text-amber-300" : "text-red-300";
 }
 
-type SquadPoolEntry = ReturnType<typeof getSquadPoolPlayers>[number];
+type SquadPoolEntry = ReturnType<typeof getSquadRosterPoolPlayers>[number];
 
 const SQUAD_POOL_GRID_CLASS =
   "grid grid-flow-col grid-rows-2 gap-x-1.5 gap-y-1.5 [grid-auto-columns:minmax(0,1fr)] sm:gap-x-2 sm:gap-y-2";
@@ -101,10 +101,12 @@ function SquadPoolPlayerButton({
   onClick: () => void;
   onDoubleClick?: (e: MouseEvent) => void;
 }) {
-  const { playerId, isReserveCallUp } = entry;
+  const { playerId, isReserveCallUp, unavailable } = entry;
   const player = getManagerPlayer(career, playerId);
   if (!player) return null;
 
+  const ps = career.squad.find((p) => p.playerId === playerId);
+  const isSuspension = ps?.injury?.type === "suspension";
   const positions = getManagerPlayerEligiblePositions(career, playerId);
   const sourceLabel = isReserveCallUp ? "Res" : "Sqd";
 
@@ -114,7 +116,9 @@ function SquadPoolPlayerButton({
         type="button"
         onClick={onClick}
         onDoubleClick={onDoubleClick}
-        className={`${squadSelectionClass(poolRole)} btn-press select-none rounded-lg border px-1.5 py-1.5 text-left transition sm:px-2 sm:py-2`}
+        className={`${squadSelectionClass(poolRole)} btn-press select-none rounded-lg border px-1.5 py-1.5 text-left transition sm:px-2 sm:py-2 ${
+          unavailable ? `${unavailableAccentClass(!!isSuspension)} opacity-90` : ""
+        }`}
       >
         <div className="flex items-start justify-between gap-0.5">
           <p className="min-w-0 flex-1 text-[10px] font-medium leading-[1.15] text-white [overflow-wrap:anywhere] line-clamp-2 sm:text-xs sm:leading-tight">
@@ -127,6 +131,13 @@ function SquadPoolPlayerButton({
         <p className="mt-0.5 line-clamp-1 text-[9px] leading-tight text-pitch-400 sm:text-[10px]">
           {positions.map((p) => POSITION_SHORT[p]).join(" · ")} · {sourceLabel}
         </p>
+        {unavailable && ps?.injury && (
+          <p
+            className={`mt-0.5 line-clamp-2 text-[9px] font-medium leading-tight sm:text-[10px] ${unavailableTextClass(!!isSuspension)}`}
+          >
+            {formatInjuryLabel(ps.injury)}
+          </p>
+        )}
       </button>
     </li>
   );
@@ -184,7 +195,7 @@ export function ManagerSquad({
     [replacementCandidates]
   );
 
-  const squadPool = useMemo(() => getSquadPoolPlayers(career), [career]);
+  const squadPool = useMemo(() => getSquadRosterPoolPlayers(career), [career]);
 
   const filteredPool = useMemo(() => {
     if (selectedTarget || replaceSlot) {
@@ -266,7 +277,12 @@ export function ManagerSquad({
     }
   };
 
-  const handlePoolPlayerClick = (playerId: string) => {
+  const handlePoolPlayerClick = (playerId: string, unavailable: boolean) => {
+    if (unavailable) {
+      playUiClick();
+      openPlayerModal(playerId);
+      return;
+    }
     if (pendingAssignId) return;
     if (selectedTarget || replaceSourcePlayerId) {
       handlePickPlayer(playerId);
@@ -370,18 +386,20 @@ export function ManagerSquad({
     return "idle";
   };
 
+  const clearAssignmentState = () => {
+    setSelectedTarget(null);
+    setPendingAssignId(null);
+    setReplaceSourcePlayerId(null);
+    setModalPlayerId(null);
+    if (matchdayClickTimerRef.current != null) {
+      window.clearTimeout(matchdayClickTimerRef.current);
+      matchdayClickTimerRef.current = null;
+    }
+  };
+
   const switchSubTab = (next: SquadSubTab) => {
     if (subTab === next) return;
-    if (next === "tactics") {
-      setSelectedTarget(null);
-      setPendingAssignId(null);
-      setReplaceSourcePlayerId(null);
-      setModalPlayerId(null);
-      if (matchdayClickTimerRef.current != null) {
-        window.clearTimeout(matchdayClickTimerRef.current);
-        matchdayClickTimerRef.current = null;
-      }
-    }
+    clearAssignmentState();
     onSubTabChange(next);
   };
 
@@ -613,6 +631,7 @@ export function ManagerSquad({
               {squadPoolHelpText}
             </p>
           )}
+          {!(selectedTarget || replaceSourcePlayerId || pendingAssignId) && (
           <div className="mb-2 flex gap-1 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible">
             <button
               type="button"
@@ -640,6 +659,7 @@ export function ManagerSquad({
               </button>
             ))}
           </div>
+          )}
           <ul className={SQUAD_POOL_GRID_CLASS}>
             {displayPool.map((entry) => (
               <SquadPoolPlayerButton
@@ -649,7 +669,7 @@ export function ManagerSquad({
                 poolRole={getPoolPlayerRole(entry.playerId)}
                 onClick={() => {
                   playUiClick();
-                  handlePoolPlayerClick(entry.playerId);
+                  handlePoolPlayerClick(entry.playerId, entry.unavailable);
                 }}
                 onDoubleClick={
                   finePointer
@@ -668,7 +688,7 @@ export function ManagerSquad({
                 ? "No eligible players for this slot."
                 : career.calledUpReserveIds.length === 0
                   ? "No squad players available — call up reserves from the Reserves tab, or all fit players are already on the sheet."
-                  : "No squad players available — all are in the matchday 17."}
+                  : "No fit squad players available — injured players are shown above; others may already be on the sheet."}
             </p>
           )}
         </div>

@@ -207,7 +207,38 @@ export function getAvailableSquadPlayers(career: ManagerCareer): {
   return list;
 }
 
-/** All squad players not in the starting 17 or interchange. */
+/** All squad players not in the starting 17 or interchange (includes injured — display only). */
+export function getSquadRosterPoolPlayers(career: ManagerCareer): {
+  playerId: string;
+  isReserveCallUp: boolean;
+  unavailable: boolean;
+}[] {
+  const inLineup = getMatchdayPlayerIds(career);
+  const list: { playerId: string; isReserveCallUp: boolean; unavailable: boolean }[] =
+    [];
+
+  for (const ps of career.squad) {
+    if (inLineup.has(ps.playerId)) continue;
+    list.push({
+      playerId: ps.playerId,
+      isReserveCallUp: false,
+      unavailable: isPlayerUnavailable(ps),
+    });
+  }
+
+  for (const r of career.reserves) {
+    if (inLineup.has(r.id) || !isCalledUpReserve(career, r.id)) continue;
+    list.push({ playerId: r.id, isReserveCallUp: true, unavailable: false });
+  }
+
+  return list.sort((a, b) => {
+    const ra = getManagerPlayer(career, a.playerId)?.peakRating ?? 0;
+    const rb = getManagerPlayer(career, b.playerId)?.peakRating ?? 0;
+    return rb - ra;
+  });
+}
+
+/** Fit squad players not in the matchday 17 — eligible for selection. */
 export function getSquadPoolPlayers(career: ManagerCareer): {
   playerId: string;
   isReserveCallUp: boolean;

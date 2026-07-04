@@ -84,11 +84,12 @@ interface ManagerHubProps {
   career: ManagerCareer;
   onPlayGame: () => void;
   onSimulate: () => void;
-  onSelectFixture?: (fixtureId: string) => void;
   onUpdate?: (career: ManagerCareer) => void;
   onNavigate?: (view: ManagerView) => void;
   onPlayoffsContinue?: () => void;
 }
+
+const playoffsGateSoundPlayed = new Set<string>();
 
 function ordinal(n: number): string {
   if (n === 1) return "1st";
@@ -185,8 +186,12 @@ function HubPlayoffsGateCard({
   const position = getUserLeaguePosition(career.leagueTable, career.club);
 
   useEffect(() => {
-    if (position > 1) playSeasonComplete();
-  }, [position]);
+    if (position <= 1) return;
+    const key = `${career.club}:${career.seasonYear}`;
+    if (playoffsGateSoundPlayed.has(key)) return;
+    playoffsGateSoundPlayed.add(key);
+    playSeasonComplete();
+  }, [position, career.club, career.seasonYear]);
 
   return (
     <div className={managerFeaturedBannerClass("primary")}>

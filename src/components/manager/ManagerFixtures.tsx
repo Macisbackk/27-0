@@ -35,6 +35,7 @@ import {
   getManagerScheduledFixtureHeadline,
   getManagerScheduledFixtureVenueLabel,
   isChallengeCupFixture,
+  managerFixtureDisplayId,
 } from "@/lib/manager/managerFixtureDisplay";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getNextManagerFixture, isManagerSeasonComplete } from "@/lib/manager/managerSimulation";
@@ -401,6 +402,7 @@ export function ManagerFixtures({
     filter === "upcoming" ||
     filter === "league" ||
     filter === "cup" ||
+    filter === "playoffs" ||
     filter === "friendlies";
   const upcomingItems = filteredItems.filter((i) => i.kind === "upcoming");
   const playedItems = filteredItems.filter((i) => i.kind === "played");
@@ -588,7 +590,7 @@ export function ManagerFixtures({
                 {playedDisplay.map((item) => {
                   if (item.kind !== "played") return null;
                   const { fixture } = item;
-                  const fixtureId = fixture.fixtureId ?? item.key;
+                  const fixtureId = managerFixtureDisplayId(fixture);
                   const attendance = fixture.meta?.attendance?.attendance;
 
                   return (
