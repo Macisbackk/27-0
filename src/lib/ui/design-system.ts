@@ -114,11 +114,12 @@ export const FILTER = {
   chipTouch:
     "min-h-[44px] rounded-lg border px-3 py-2 text-sm font-medium transition",
   tabGroup:
-    "flex w-full flex-nowrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto",
+    "mx-auto inline-flex w-fit max-w-full flex-nowrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto",
 } as const;
 
 /** Horizontally centre segmented sub-tab bars (Squad/Tactics, Transfers, Stats, etc.). */
-export const SUB_TAB_BAR_SHELL = "flex w-full justify-center" as const;
+export const SUB_TAB_BAR_SHELL =
+  "flex w-full justify-center px-0 sm:px-1" as const;
 
 /** Shared pressed-state utility — pair with BTN.base on interactive elements. */
 export const BTN_PRESS = "btn-press";
@@ -294,6 +295,28 @@ export const STAT_HIGHLIGHT = {
   neutral: "text-white",
   winGlow: "shadow-[0_0_8px_var(--theme-glow-soft)]",
 } as const;
+
+/** Tab toggle inside a centred sub-tab group (manager Squad/Tactics, Transfers, etc.). */
+export function subTabGroupButtonClass(
+  active: boolean,
+  variant: "normal" | "current" | "hard" | "era" | "gold" = "normal"
+): string {
+  const base = `${TYPO.button} btn-press box-border inline-flex flex-none min-w-[5rem] items-center justify-center px-4 text-center ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
+  if (!active) {
+    if (variant === "hard") return `${base} ${BTN.hardIdle}`;
+    if (variant === "era") return `${base} ${BTN.toggleIdle}`;
+    if (variant === "gold") return `${base} ${BTN.eraIdle}`;
+    if (variant === "current") return `${base} ${BTN.toggleIdle}`;
+    return `${base} ${BTN.tabGroupIdle}`;
+  }
+  if (variant === "hard") return `${base} ${BTN.hardActive}`;
+  if (variant === "era") return `${base} ${BTN.eraActive}`;
+  if (variant === "gold") {
+    return `${base} border-2 border-accent-gold/50 bg-accent-gold/10 text-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.2)]`;
+  }
+  if (variant === "current" || variant === "normal") return `${base} ${BTN.tabGroupActive}`;
+  return `${base} ${BTN.tabGroupActive}`;
+}
 
 /** Tab toggle inside a tab group (Normal/Hard, Login/Signup). */
 export function tabGroupButtonClass(

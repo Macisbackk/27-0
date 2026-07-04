@@ -144,29 +144,32 @@ export function resolveManagerScreenFromPathname(pathname: string): ManagerView 
   return null;
 }
 
-/** Single render-time view: URL wins on back/forward; pending nav covers push lag. */
+/** Single render-time view: URL wins on back/forward; state covers push lag. */
 export function resolveManagerDisplayView(
   pathname: string,
-  stateView: ManagerView,
-  pendingNavView: ManagerView | null
+  stateView: ManagerView
 ): ManagerView {
-  if (isManagerStateOverlayView(stateView)) return stateView;
-
   const fromUrl = resolveManagerScreenFromPathname(pathname);
+
+  // URL-backed nav always wins over stale overlay / pending state (fixes browser back).
   if (fromUrl && isManagerNavView(fromUrl)) {
-    if (pendingNavView && pendingNavView !== fromUrl) return pendingNavView;
+    if (
+      isManagerNavView(stateView) &&
+      managerPathForView(stateView) !== pathname &&
+      stateView !== fromUrl
+    ) {
+      return stateView;
+    }
     return fromUrl;
   }
-  if (fromUrl) return fromUrl;
-  if (pendingNavView) return pendingNavView;
+
+  if (fromUrl === "landing" || fromUrl === "club-select") return fromUrl;
+
+  if (isManagerStateOverlayView(stateView)) return stateView;
+  if (isManagerNavView(stateView)) return stateView;
   return stateView;
 }
 
-export function resolveSquadSubTabDisplay(
-  pathname: string,
-  pendingSubTab: SquadSubTab | null
-): SquadSubTab {
-  const fromUrl = managerSquadSubTabFromPathname(pathname);
-  if (pendingSubTab && pendingSubTab !== fromUrl) return pendingSubTab;
-  return fromUrl;
+export function resolveSquadSubTabDisplay(pathname: string): SquadSubTab {
+  return managerSquadSubTabFromPathname(pathname);
 }

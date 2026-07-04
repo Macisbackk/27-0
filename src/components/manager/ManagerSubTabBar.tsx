@@ -2,7 +2,7 @@
 
 import {
   SUB_TAB_BAR_SHELL,
-  tabGroupButtonClass,
+  subTabGroupButtonClass,
   tabGroupClass,
 } from "@/lib/ui/design-system";
 import { playTabChange, playUiClick } from "@/lib/sound";
@@ -38,7 +38,7 @@ export function ManagerSubTabBar<T extends string>({
             type="button"
             role="tab"
             aria-selected={active === id}
-            className={tabGroupButtonClass(active === id)}
+            className={subTabGroupButtonClass(active === id)}
             onClick={() => {
               if (active === id) return;
               playTabChange();

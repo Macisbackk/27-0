@@ -138,18 +138,14 @@ function resolveInitialNavView(pathname: string, saved: ManagerCareer): ManagerV
 export default function ManagerPage() {
   const router = useRouter();
   const pathname = usePathname();
-  const [pendingNavView, setPendingNavView] = useState<ManagerView | null>(null);
-  const [pendingSquadSubTab, setPendingSquadSubTab] = useState<SquadSubTab | null>(
-    null
-  );
   const [view, setView] = useState<ManagerView>("landing");
   const displayView = useMemo(
-    () => resolveManagerDisplayView(pathname, view, pendingNavView),
-    [pathname, view, pendingNavView]
+    () => resolveManagerDisplayView(pathname, view),
+    [pathname, view]
   );
   const squadSubTab = useMemo(
-    () => resolveSquadSubTabDisplay(pathname, pendingSquadSubTab),
-    [pathname, pendingSquadSubTab]
+    () => resolveSquadSubTabDisplay(pathname),
+    [pathname]
   );
   const [career, setCareer] = useState<ManagerCareer | null>(null);
   const [activeSlot, setActiveSlot] = useState(0);
@@ -206,9 +202,6 @@ export default function ManagerPage() {
         setManagerView(setView, next);
         return;
       }
-
-      setPendingNavView(null);
-
       if (next === "landing") {
         setManagerView(setView, "landing");
         router.replace("/manager");
@@ -222,15 +215,40 @@ export default function ManagerPage() {
       }
 
       if (isManagerNavView(next)) {
-        setPendingNavView(next);
-        router.push(managerPathForView(next));
+        setManagerView(setView, next);
+        const target = managerPathForView(next);
+        if (target !== pathname) {
+          router.push(target);
+        }
         return;
       }
 
       setManagerView(setView, next);
     },
-    [router]
+    [router, pathname]
   );
+
+  const prevPathnameRef = useRef(pathname);
+
+  /** Sync view state when the URL changes (browser back/forward); dismiss stale overlays. */
+  useLayoutEffect(() => {
+    if (prevPathnameRef.current === pathname) return;
+    prevPathnameRef.current = pathname;
+
+    const fromUrl = resolveManagerScreenFromPathname(pathname);
+    if (!fromUrl) return;
+
+    setReviewFixtureId(null);
+    setPostMatchReviewFlow(false);
+
+    if (
+      fromUrl === "landing" ||
+      fromUrl === "club-select" ||
+      isManagerNavView(fromUrl)
+    ) {
+      setManagerView(setView, fromUrl);
+    }
+  }, [pathname]);
 
   const refreshSaveSlots = useCallback(() => {
     setSaveSlots(listManagerSaveSlots());
@@ -240,17 +258,6 @@ export default function ManagerPage() {
     refreshSaveSlots();
     setActiveSlot(getActiveSaveSlot());
   }, [refreshSaveSlots]);
-
-  useEffect(() => {
-    const fromUrl = resolveManagerScreenFromPathname(pathname);
-    if (pendingNavView && fromUrl === pendingNavView) {
-      setPendingNavView(null);
-    }
-    const urlSubTab = resolveSquadSubTabDisplay(pathname, null);
-    if (pendingSquadSubTab && pendingSquadSubTab === urlSubTab) {
-      setPendingSquadSubTab(null);
-    }
-  }, [pathname, pendingNavView, pendingSquadSubTab]);
 
   /** Load career from disk once per save slot — not on every tab change. */
   useLayoutEffect(() => {
@@ -333,7 +340,6 @@ export default function ManagerPage() {
 
   const handleSquadSubTabChange = useCallback(
     (tab: SquadSubTab) => {
-      setPendingSquadSubTab(tab);
       router.push(managerPathForSquadTab(tab));
     },
     [router]
