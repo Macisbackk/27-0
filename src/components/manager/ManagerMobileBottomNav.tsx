@@ -15,14 +15,14 @@ const PRIMARY_TABS: {
   { id: "hub", label: "Hub", icon: "🏠" },
   { id: "squad", label: "Squad", icon: "👥" },
   { id: "transfers", label: "Market", icon: "💷" },
-  { id: "fixtures", label: "Fixtures", icon: "📅" },
+  { id: "reserves", label: "Reserves", icon: "📋" },
 ];
 
-const MORE_ITEMS: { id: ManagerView; label: string }[] = [
-  { id: "reserves", label: "Reserves" },
-  { id: "contracts", label: "Contracts" },
-  { id: "across-league", label: "Across the League" },
-  { id: "stats", label: "Stats" },
+const MORE_ITEMS: { id: ManagerView; label: string; icon: string }[] = [
+  { id: "fixtures", label: "Fixtures", icon: "📅" },
+  { id: "contracts", label: "Contracts", icon: "📝" },
+  { id: "across-league", label: "League", icon: "🏉" },
+  { id: "stats", label: "Stats", icon: "📊" },
 ];
 
 interface ManagerMobileBottomNavProps {
@@ -51,29 +51,34 @@ export function ManagerMobileBottomNav({
   return (
     <>
       <nav
-        className="fixed inset-x-0 bottom-0 z-50 border-t border-pitch-700/60 bg-pitch-950/95 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur-md sm:hidden"
+        className="fixed inset-x-0 bottom-0 z-50 border-t border-pitch-600/70 bg-pitch-950/98 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(0,0,0,0.35)] backdrop-blur-md sm:hidden"
         aria-label="Manager mobile navigation"
       >
-        <div className="mx-auto grid max-w-lg grid-cols-5 gap-1 px-2 pt-1.5">
-          {PRIMARY_TABS.map((tab) => (
+        <div className="mx-auto grid max-w-lg grid-cols-5 gap-1 px-2 pt-2">
+          {PRIMARY_TABS.map((tab) => {
+            const isActive = active === tab.id;
+            return (
             <button
               key={tab.id}
               type="button"
               disabled={disabled}
               onClick={() => navigate(tab.id)}
-              className={`btn-press flex min-h-[52px] flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1.5 text-center transition ${
-                active === tab.id ? BTN.tabActive : "text-pitch-400"
+              className={`btn-press flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-center transition ${
+                isActive
+                  ? `${BTN.tabActive} ring-2 ring-theme-primary/50 ring-offset-1 ring-offset-pitch-950`
+                  : "border border-pitch-700/40 bg-pitch-900/50 text-pitch-300"
               } ${disabled ? "pointer-events-none opacity-40" : ""}`}
-              aria-current={active === tab.id ? "page" : undefined}
+              aria-current={isActive ? "page" : undefined}
             >
-              <span className="text-base leading-none" aria-hidden>
+              <span className="text-lg leading-none" aria-hidden>
                 {tab.icon}
               </span>
-              <span className="font-display text-[10px] font-bold uppercase tracking-wide">
+              <span className="font-display text-[11px] font-bold uppercase tracking-wide">
                 {tab.label}
               </span>
             </button>
-          ))}
+            );
+          })}
           <button
             type="button"
             disabled={disabled}
@@ -81,16 +86,18 @@ export function ManagerMobileBottomNav({
               playUiClick();
               setMoreOpen((open) => !open);
             }}
-            className={`btn-press relative flex min-h-[52px] flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1.5 text-center transition ${
-              moreActive || moreOpen ? BTN.tabActive : "text-pitch-400"
+            className={`btn-press relative flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-center transition ${
+              moreActive || moreOpen
+                ? `${BTN.tabActive} ring-2 ring-theme-primary/50 ring-offset-1 ring-offset-pitch-950`
+                : "border border-pitch-700/40 bg-pitch-900/50 text-pitch-300"
             } ${disabled ? "pointer-events-none opacity-40" : ""}`}
             aria-expanded={moreOpen}
             aria-haspopup="dialog"
           >
-            <span className="text-base leading-none" aria-hidden>
+            <span className="text-lg leading-none" aria-hidden>
               ⋯
             </span>
-            <span className="font-display text-[10px] font-bold uppercase tracking-wide">
+            <span className="font-display text-[11px] font-bold uppercase tracking-wide">
               More
             </span>
           </button>
@@ -111,22 +118,30 @@ export function ManagerMobileBottomNav({
             className={`w-full max-w-lg outline-none ${CARD.elevated} ${SPACING.cardPadding} ${SPACING.safeBottom} rounded-b-none rounded-t-2xl`}
             onClick={(e) => e.stopPropagation()}
           >
-            <p className={TYPO.sectionLabel}>More sections</p>
-            <div className={`mt-3 grid grid-cols-2 gap-2 ${SPACING.stackSm}`}>
-              {MORE_ITEMS.map((item) => (
+            <p className={`${TYPO.sectionLabel} text-pitch-300`}>More sections</p>
+            <div className={`mt-3 flex flex-col gap-2 ${SPACING.stackSm}`}>
+              {MORE_ITEMS.map((item) => {
+                const isActive = active === item.id;
+                return (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => navigate(item.id)}
-                  className={`btn-press rounded-lg border px-3 py-3 text-left text-sm font-semibold transition min-h-[44px] ${
-                    active === item.id
-                      ? "border-theme-primary/45 bg-theme-primary/12 text-white"
-                      : "border-pitch-700/50 bg-pitch-900/40 text-pitch-200"
+                  className={`btn-press flex min-h-[52px] items-center gap-3 rounded-xl border px-4 py-3 text-left transition ${
+                    isActive
+                      ? "border-theme-primary/55 bg-theme-primary/15 text-white ring-2 ring-theme-primary/35"
+                      : "border-pitch-600/55 bg-pitch-900/70 text-pitch-100 hover:border-pitch-500/60 hover:bg-pitch-800/70"
                   }`}
                 >
-                  {item.label}
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-pitch-950/60 text-lg" aria-hidden>
+                    {item.icon}
+                  </span>
+                  <span className="font-display text-sm font-bold uppercase tracking-wide">
+                    {item.label}
+                  </span>
                 </button>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

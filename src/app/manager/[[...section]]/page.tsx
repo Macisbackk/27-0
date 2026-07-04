@@ -96,10 +96,10 @@ import { readManagerCareerRaw } from "@/lib/manager/managerSaveStorage";
 import { markOnboardingStepComplete } from "@/lib/manager/managerOnboarding";
 import { shouldShowSaveMigrationNotice } from "@/lib/manager/managerSaveMigration";
 import { ManagerSaveMigrationNotice } from "@/components/manager/ManagerSaveMigrationNotice";
-import { PlayerRegistryGate } from "@/components/PlayerRegistryGate";
 import {
   MANAGER_NAV_VIEWS,
   isManagerNavView,
+  isManagerOverlayView,
   managerPathForView,
   managerPathFromLegacyViewParam,
   managerViewFromPathname,
@@ -127,7 +127,6 @@ function resolveInitialNavView(pathname: string, saved: ManagerCareer): ManagerV
 export default function ManagerPage() {
   const router = useRouter();
   const pathname = usePathname();
-  const viewRestoredRef = useRef(false);
   const [view, setView] = useState<ManagerView>("landing");
   const [career, setCareer] = useState<ManagerCareer | null>(null);
   const [activeSlot, setActiveSlot] = useState(0);
@@ -165,6 +164,24 @@ export default function ManagerPage() {
   } | null>(null);
   const [showSaveMigration, setShowSaveMigration] = useState(false);
 
+  const viewRef = useRef<ManagerView>(view);
+  viewRef.current = view;
+
+  const goToView = useCallback(
+    (next: ManagerView, options?: { syncUrl?: boolean }) => {
+      setView(next);
+      if (options?.syncUrl === false) return;
+      if (next === "landing") {
+        router.replace("/manager");
+        return;
+      }
+      if (isManagerNavView(next) || next === "club-select") {
+        router.replace(managerPathForView(next));
+      }
+    },
+    [router]
+  );
+
   const refreshSaveSlots = useCallback(() => {
     setSaveSlots(listManagerSaveSlots());
   }, []);
@@ -173,13 +190,16 @@ export default function ManagerPage() {
     const slot = getActiveSaveSlot();
     setActiveSlot(slot);
     refreshSaveSlots();
+    const fromPath = managerViewFromPathname(pathname);
+    if (!fromPath || !isManagerNavView(fromPath)) return;
     const raw = readManagerCareerRaw(slot);
     if (!raw) return;
     const previousVersion = raw.saveVersion;
     const saved = hydrateManagerCareer(raw);
     setCareer(saved);
     setShowSaveMigration(shouldShowSaveMigrationNotice(previousVersion));
-  }, [refreshSaveSlots]);
+    setView(fromPath);
+  }, [pathname, refreshSaveSlots]);
 
   const persist = useCallback(
     (next: ManagerCareer) => {
@@ -197,10 +217,9 @@ export default function ManagerPage() {
   useEffect(() => {
     if (!awaitingFriendlyChoice) return;
     if (MANAGER_NAV_VIEWS.includes(view as ManagerView) && view !== "hub") {
-      setView("hub");
-      router.replace(managerPathForView("hub"));
+      goToView("hub");
     }
-  }, [awaitingFriendlyChoice, view, router]);
+  }, [awaitingFriendlyChoice, view, goToView]);
 
   useEffect(() => {
     if (!career || !awaitingFriendlyChoice) return;
@@ -234,16 +253,12 @@ export default function ManagerPage() {
   const handleNavNavigate = useCallback(
     (next: ManagerView) => {
       if (career && isAwaitingFriendlyChoice(career) && next !== "hub") {
-        setView("hub");
-        router.replace(managerPathForView("hub"));
+        goToView("hub");
         return;
       }
-      setView(next);
-      if (isManagerNavView(next) || next === "club-select") {
-        router.replace(managerPathForView(next));
-      }
+      goToView(next);
     },
-    [career, router]
+    [career, goToView]
   );
 
   useEffect(() => {
@@ -257,24 +272,16 @@ export default function ManagerPage() {
 
   useEffect(() => {
     if (!career) return;
+    if (isManagerOverlayView(viewRef.current)) return;
     const fromPath = managerViewFromPathname(pathname);
     if (fromPath === "club-select") {
       setView("club-select");
       return;
     }
-    if (fromPath && isManagerNavView(fromPath) && !SCROLL_TOP_VIEWS.includes(view)) {
+    if (fromPath && isManagerNavView(fromPath)) {
       setView(fromPath);
     }
-  }, [pathname, career, view]);
-
-  useEffect(() => {
-    if (!career || viewRestoredRef.current) return;
-    const fromPath = managerViewFromPathname(pathname);
-    if (fromPath && fromPath !== "hub") {
-      setView(fromPath);
-    }
-    viewRestoredRef.current = true;
-  }, [career, pathname]);
+  }, [pathname, career]);
 
   const handleFriendlySelect = useCallback(
     (choiceId: string) => {
@@ -289,8 +296,7 @@ export default function ManagerPage() {
   const handleStartNew = (slot: number) => {
     setActiveSlot(slot);
     setActiveSaveSlot(slot);
-    setView("club-select");
-    router.replace(managerPathForView("club-select"));
+    goToView("club-select");
   };
 
   const continueCareer = (saved: ManagerCareer) => {
@@ -299,7 +305,7 @@ export default function ManagerPage() {
       if (shouldShowChallengeCupCelebration(saved)) {
         recordManagerCupTeamWin(saved.club, activeSlot, saved.seasonYear);
         setChallengeCupWinModalOpen(true);
-        setView("hub");
+        goToView("hub");
         return;
       }
       if (
@@ -307,13 +313,14 @@ export default function ManagerPage() {
         !saved.trophyCelebrationShown
       ) {
         setTrophyModalOpen(true);
-        setView("hub");
+        goToView("hub");
         return;
       }
-      setView(
+      goToView(
         saved.seasonRewardClaimedForYear === saved.seasonYear
           ? "season-rewards"
-          : "season-review"
+          : "season-review",
+        { syncUrl: false }
       );
       return;
     }
@@ -331,8 +338,8 @@ export default function ManagerPage() {
     } else if (shouldShowLeagueWinnersCelebration(saved)) {
       setLeagueWinnersModalOpen(true);
     }
-    setView(resolveInitialNavView(pathname, saved));
-    router.replace(managerPathForView(resolveInitialNavView(pathname, saved)));
+    const nextView = resolveInitialNavView(pathname, saved);
+    goToView(nextView);
   };
 
   const handleContinue = (slot: number) => {
@@ -361,7 +368,7 @@ export default function ManagerPage() {
       setCareer(null);
     }
     refreshSaveSlots();
-    setView("landing");
+    goToView("landing");
     setDeleteConfirmOpen(false);
     setDeleteSlot(null);
   };
@@ -394,8 +401,7 @@ export default function ManagerPage() {
     recordCareerStarted(club);
     setCareer(next);
     refreshSaveSlots();
-    setView("hub");
-    router.replace(managerPathForView("hub"));
+    goToView("hub");
   };
 
   const playResultSound = (won: boolean, fixture: ManagerCareer["fixtures"][0]) => {
@@ -454,20 +460,20 @@ export default function ManagerPage() {
         setReviewFixtureId(fixture.fixtureId ?? `round-${fixture.round}`);
         setPostMatchReviewFlow(true);
         setMatchReviewReturnView("hub");
-        setView("match-review");
+        goToView("match-review", { syncUrl: false });
         setPendingChallengeCupCelebration(wonChallengeCup);
         setPendingLeagueWinnersCelebration(wonLeagueTable);
         setPendingTrophyCelebration(wonTitle);
       } else if (wonTitle) {
         setTrophyModalOpen(true);
       } else {
-        setView("season-review");
+        goToView("season-review", { syncUrl: false });
       }
     } else if (fixture) {
       setReviewFixtureId(fixture.fixtureId ?? `round-${fixture.round}`);
       setPostMatchReviewFlow(true);
       setMatchReviewReturnView("hub");
-      setView("match-review");
+      goToView("match-review", { syncUrl: false });
       setPendingChallengeCupCelebration(wonChallengeCup);
       setPendingLeagueWinnersCelebration(wonLeagueTable);
     }
@@ -475,49 +481,49 @@ export default function ManagerPage() {
 
   const continueAfterMatchReview = () => {
     if (!career) {
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (pendingIncomingBidId) {
       setIncomingBidModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (pendingRetirementIntentId) {
       setRetirementIntentModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (pendingChallengeCupCelebration) {
       setPendingChallengeCupCelebration(false);
       setChallengeCupWinModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (pendingLeagueWinnersCelebration) {
       setPendingLeagueWinnersCelebration(false);
       setLeagueWinnersModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (pendingTrophyCelebration) {
       setPendingTrophyCelebration(false);
       setTrophyModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (career.isSeasonComplete) {
-      setView("season-review");
+      goToView("season-review", { syncUrl: false });
       return;
     }
 
-    setView("hub");
+    goToView("hub");
   };
 
   const handleMatchReviewClose = () => {
@@ -538,7 +544,7 @@ export default function ManagerPage() {
       }
       return;
     }
-    setView(matchReviewReturnView);
+    goToView(matchReviewReturnView);
     if (matchReviewReturnView === "hub") {
       setPendingHubNextFixtureScroll(true);
     }
@@ -553,37 +559,37 @@ export default function ManagerPage() {
     if (retirementIntent) {
       setPendingRetirementIntentId(retirementIntent.id);
       setRetirementIntentModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (pendingChallengeCupCelebration) {
       setPendingChallengeCupCelebration(false);
       setChallengeCupWinModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (pendingLeagueWinnersCelebration) {
       setPendingLeagueWinnersCelebration(false);
       setLeagueWinnersModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (pendingTrophyCelebration) {
       setPendingTrophyCelebration(false);
       setTrophyModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (nextCareer.isSeasonComplete) {
-      setView("season-review");
+      goToView("season-review", { syncUrl: false });
       return;
     }
 
-    setView("hub");
+    goToView("hub");
   };
 
   const handleIncomingBidAccept = () => {
@@ -616,7 +622,7 @@ export default function ManagerPage() {
     if (nextIntent) {
       setPendingRetirementIntentId(nextIntent.id);
       setRetirementIntentModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
@@ -626,30 +632,30 @@ export default function ManagerPage() {
     if (pendingChallengeCupCelebration) {
       setPendingChallengeCupCelebration(false);
       setChallengeCupWinModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (pendingLeagueWinnersCelebration) {
       setPendingLeagueWinnersCelebration(false);
       setLeagueWinnersModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (pendingTrophyCelebration) {
       setPendingTrophyCelebration(false);
       setTrophyModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (nextCareer.isSeasonComplete) {
-      setView("season-review");
+      goToView("season-review", { syncUrl: false });
       return;
     }
 
-    setView("hub");
+    goToView("hub");
   };
 
   const handleRetirementIntentAcknowledge = () => {
@@ -685,8 +691,7 @@ export default function ManagerPage() {
       continueAfterRetirementIntent(next);
       return;
     }
-    setView("contracts");
-    router.replace(managerPathForView("contracts"));
+    goToView("contracts");
   };
 
   const handlePlayoffsIntroContinue = () => {
@@ -698,7 +703,7 @@ export default function ManagerPage() {
     if (!career) return;
     persist({ ...career, leagueWinnersCelebrationShown: true });
     setLeagueWinnersModalOpen(false);
-    setView("hub");
+    goToView("hub");
   };
 
   const handleChallengeCupWinModalContinue = () => {
@@ -710,30 +715,30 @@ export default function ManagerPage() {
     if (pendingLeagueWinnersCelebration) {
       setPendingLeagueWinnersCelebration(false);
       setLeagueWinnersModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (pendingTrophyCelebration) {
       setPendingTrophyCelebration(false);
       setTrophyModalOpen(true);
-      setView("hub");
+      goToView("hub");
       return;
     }
 
     if (updated.isSeasonComplete) {
-      setView("season-review");
+      goToView("season-review", { syncUrl: false });
       return;
     }
 
-    setView("hub");
+    goToView("hub");
   };
 
   const handleTrophyModalContinue = () => {
     if (!career) return;
     persist({ ...career, trophyCelebrationShown: true });
     setTrophyModalOpen(false);
-    setView("season-review");
+    goToView("season-review", { syncUrl: false });
   };
 
   const handleSimulate = () => {
@@ -798,8 +803,7 @@ export default function ManagerPage() {
     const next = advanceToNextSeason(career);
     const hydrated = hydrateManagerCareer(next);
     persist(hydrated);
-    setView("hub");
-    router.replace(managerPathForView("hub"));
+    goToView("hub");
   };
 
   const showNav =
@@ -817,7 +821,6 @@ export default function ManagerPage() {
 
   return (
     <PageShell withLights compact width="wide">
-      <PlayerRegistryGate>
       {view === "landing" && (
         <ManagerLanding
           saveSlots={saveSlots}
@@ -836,8 +839,7 @@ export default function ManagerPage() {
           onBack={() => {
             playUiClick();
             refreshSaveSlots();
-            setView("landing");
-            router.replace("/manager");
+            goToView("landing");
           }}
         />
       )}
@@ -879,7 +881,7 @@ export default function ManagerPage() {
                       setReviewFixtureId(fixtureId);
                       setPostMatchReviewFlow(false);
                       setMatchReviewReturnView("hub");
-                      setView("match-review");
+                      goToView("match-review", { syncUrl: false });
                     }}
                     onUpdate={persist}
                     onNavigate={handleNavNavigate}
@@ -891,7 +893,7 @@ export default function ManagerPage() {
                     career={career}
                     onUpdate={persist}
                     onNavigate={(v) => {
-                      if (v === "season-rewards") setView("season-rewards");
+                      if (v === "season-rewards") goToView("season-rewards", { syncUrl: false });
                       else handleNavNavigate(v);
                     }}
                   />
@@ -915,7 +917,7 @@ export default function ManagerPage() {
                       setReviewFixtureId(fixtureId);
                       setPostMatchReviewFlow(false);
                       setMatchReviewReturnView("fixtures");
-                      setView("match-review");
+                      goToView("match-review", { syncUrl: false });
                     }}
                   />
                 )}
@@ -956,7 +958,7 @@ export default function ManagerPage() {
       {career && view === "season-review" && (
         <ManagerSeasonReview
           career={career}
-          onViewRewards={() => setView("development-review")}
+          onViewRewards={() => goToView("development-review", { syncUrl: false })}
           onHome={() => {
             playUiClick();
             router.push("/");
@@ -967,7 +969,7 @@ export default function ManagerPage() {
       {career && view === "development-review" && (
         <ManagerDevelopmentReview
           career={career}
-          onContinue={() => setView("season-rewards")}
+          onContinue={() => goToView("season-rewards", { syncUrl: false })}
         />
       )}
 
@@ -1047,7 +1049,6 @@ export default function ManagerPage() {
         onConfirm={() => setAlertDialog(null)}
         onCancel={() => setAlertDialog(null)}
       />
-      </PlayerRegistryGate>
     </PageShell>
   );
 }

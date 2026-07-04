@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-06-22T07:19:04.687Z",
+  "generatedAt": "2026-07-04T00:09:21.887Z",
   "summary": {
-    "playersAudited": 1752,
+    "playersAudited": 2495,
     "mismatches": 0,
     "invertedPeers": 0,
     "outOfBand": 0
@@ -20,10 +20,10 @@
       "value": 631000
     },
     {
-      "id": "andrew-johns",
-      "name": "Andrew Johns",
+      "id": "bradford-leg-robbie-hunter-paul-2002",
+      "name": "Robbie Hunter-Paul",
       "rating": 96,
-      "value": 580000
+      "value": 574000
     },
     {
       "id": "paul-sculthorpe",
@@ -38,156 +38,156 @@
       "value": 563000
     },
     {
+      "id": "st-helens-leg-paul-sculthorpe-2000",
+      "name": "Paul Sculthorpe",
+      "rating": 96,
+      "value": 557000
+    },
+    {
+      "id": "st-helens-leg-paul-sculthorpe-2002",
+      "name": "Paul Sculthorpe",
+      "rating": 96,
+      "value": 557000
+    },
+    {
       "id": "bradford-leg-robbie-hunter-paul",
       "name": "Robbie Hunter-Paul",
       "rating": 95,
       "value": 515000
     },
     {
-      "id": "kevin-sinfield",
-      "name": "Kevin Sinfield",
+      "id": "bradford-leg-robbie-hunter-paul-2001",
+      "name": "Robbie Hunter-Paul",
       "rating": 95,
+      "value": 510000
+    },
+    {
+      "id": "bradford-leg-robbie-hunter-paul-2003",
+      "name": "Robbie Hunter-Paul",
+      "rating": 95,
+      "value": 510000
+    },
+    {
+      "id": "bradford-leg-robbie-hunter-paul-2005",
+      "name": "Robbie Hunter-Paul",
+      "rating": 94,
       "value": 500000
     },
     {
-      "id": "wigan-hist-sam-tomkins",
+      "id": "bradford-leg-robbie-hunter-paul-1999",
+      "name": "Robbie Hunter-Paul",
+      "rating": 94,
+      "value": 500000
+    },
+    {
+      "id": "bradford-leg-robbie-hunter-paul-2000",
+      "name": "Robbie Hunter-Paul",
+      "rating": 94,
+      "value": 500000
+    },
+    {
+      "id": "bradford-leg-robbie-hunter-paul-2004",
+      "name": "Robbie Hunter-Paul",
+      "rating": 94,
+      "value": 500000
+    },
+    {
+      "id": "wigan-leg-sam-tomkins-2016",
       "name": "Sam Tomkins",
       "rating": 94,
       "value": 500000
-    },
-    {
-      "id": "sam-burgess",
-      "name": "Sam Burgess",
-      "rating": 95,
-      "value": 500000
-    },
-    {
-      "id": "andy-farrell",
-      "name": "Andy Farrell",
-      "rating": 95,
-      "value": 500000
-    },
-    {
-      "id": "martin-offiah",
-      "name": "Martin Offiah",
-      "rating": 94,
-      "value": 500000
-    },
-    {
-      "id": "wigan-cur-bevan-french",
-      "name": "Bevan French",
-      "rating": 93,
-      "value": 465000
-    },
-    {
-      "id": "jamie-peacock",
-      "name": "Jamie Peacock",
-      "rating": 93,
-      "value": 429000
-    },
-    {
-      "id": "rob-burrow",
-      "name": "Rob Burrow",
-      "rating": 92,
-      "value": 386000
-    },
-    {
-      "id": "paul-newlove",
-      "name": "Paul Newlove",
-      "rating": 92,
-      "value": 379000
     }
   ],
   "lowValue": [
     {
-      "id": "bradford-hist-sam-smith",
-      "name": "Sam Smith",
+      "id": "toulouse-hist-henry-o-kane-2025",
+      "name": "Henry O'Kane",
       "rating": 75,
       "value": 45000
     },
     {
-      "id": "bradford-hist-eldon-myers",
-      "name": "Eldon Myers",
+      "id": "toulouse-hist-henry-o-kane-2023",
+      "name": "Henry O'Kane",
       "rating": 75,
       "value": 45000
     },
     {
-      "id": "wigan-cur-harvey-ward",
-      "name": "Harvey Ward",
+      "id": "toulouse-hist-henry-o-kane-2022",
+      "name": "Henry O'Kane",
       "rating": 75,
-      "value": 46000
+      "value": 45000
     },
     {
-      "id": "bradford-hist-george-milton",
-      "name": "George Milton",
-      "rating": 76,
-      "value": 58000
+      "id": "london-cur-eloi-pelissier-2018",
+      "name": "Éloi Pélissier",
+      "rating": 75,
+      "value": 45000
     },
     {
-      "id": "catalans-hist-teddy-sadaoui",
-      "name": "Teddy Sadaoui",
-      "rating": 76,
-      "value": 59000
+      "id": "leeds-hist-kallum-watkins-2008",
+      "name": "Kallum Watkins",
+      "rating": 75,
+      "value": 45000
     },
     {
-      "id": "castleford-hist-james-grehan",
-      "name": "James Grehan",
-      "rating": 76,
-      "value": 59000
+      "id": "warrington-hist-era-nigel-vagana",
+      "name": "Nigel Vagana",
+      "rating": 75,
+      "value": 45000
     },
     {
-      "id": "bradford-hist-joe-burton",
-      "name": "Joe Burton",
-      "rating": 76,
-      "value": 59000
+      "id": "wakefield-hist-era-adrian-brunker",
+      "name": "Adrian Brunker",
+      "rating": 75,
+      "value": 45000
     },
     {
-      "id": "wigan-cur-phoenix-steinwede",
-      "name": "Phoenix Steinwede",
-      "rating": 76,
-      "value": 59000
+      "id": "wakefield-hist-era-paul-sampson",
+      "name": "Paul Sampson",
+      "rating": 75,
+      "value": 45000
     },
     {
-      "id": "bradford-cur-cameron-bate",
-      "name": "Cameron Bate",
-      "rating": 76,
-      "value": 59000
+      "id": "wakefield-hist-era-ben-rauter",
+      "name": "Ben Rauter",
+      "rating": 75,
+      "value": 45000
     },
     {
-      "id": "bradford-cur-alfie-leake",
-      "name": "Alfie Leake",
-      "rating": 76,
-      "value": 59000
+      "id": "wakefield-hist-era-richard-smith",
+      "name": "Richard Smith",
+      "rating": 75,
+      "value": 45000
     },
     {
-      "id": "wakefield-cur-tom-whitehead",
-      "name": "Tom Whitehead",
-      "rating": 76,
-      "value": 59000
+      "id": "wakefield-hist-era-damon-keating",
+      "name": "Damon Keating",
+      "rating": 75,
+      "value": 45000
     },
     {
-      "id": "wakefield-cur-caleb-uele",
-      "name": "Caleb Uele",
-      "rating": 76,
-      "value": 59000
+      "id": "wakefield-hist-era-richard-newlove",
+      "name": "Richard Newlove",
+      "rating": 75,
+      "value": 45000
     },
     {
-      "id": "st-helens-cur-sam-royle",
-      "name": "Sam Royle",
-      "rating": 76,
-      "value": 59000
+      "id": "wakefield-hist-era-matt-seers",
+      "name": "Matt Seers",
+      "rating": 75,
+      "value": 45000
     },
     {
-      "id": "salford-cur-ellis-robson",
-      "name": "Ellis Robson",
-      "rating": 76,
-      "value": 59000
+      "id": "wakefield-hist-era-justin-ryder",
+      "name": "Justin Ryder",
+      "rating": 75,
+      "value": 45000
     },
     {
-      "id": "castleford-cur-lewis-peachey",
-      "name": "Lewis Peachey",
-      "rating": 76,
-      "value": 59000
+      "id": "wakefield-hist-era-steve-southern",
+      "name": "Steve Southern",
+      "rating": 75,
+      "value": 45000
     }
   ],
   "anomalies": []

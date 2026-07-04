@@ -2,7 +2,7 @@ import type { ManagerView } from "./types";
 
 /** Views exposed as /manager/:section path segments. */
 export const MANAGER_ROUTE_SECTIONS: Partial<Record<ManagerView, string>> = {
-  hub: "",
+  hub: "hub",
   inbox: "inbox",
   squad: "squad",
   reserves: "reserves",
@@ -16,7 +16,7 @@ export const MANAGER_ROUTE_SECTIONS: Partial<Record<ManagerView, string>> = {
 
 const SECTION_TO_VIEW = Object.fromEntries(
   Object.entries(MANAGER_ROUTE_SECTIONS).map(([view, section]) => [
-    section || "hub",
+    section,
     view,
   ])
 ) as Record<string, ManagerView>;
@@ -37,14 +37,13 @@ export function managerPathForView(view: ManagerView): string {
   if (view === "landing") return "/manager";
   const section = MANAGER_ROUTE_SECTIONS[view];
   if (section === undefined) return "/manager";
-  if (section === "") return "/manager";
   return `/manager/${section}`;
 }
 
-/** Map /manager, /manager/squad, etc. to a nav view (null if not a nav section). */
+/** Map /manager/hub, /manager/squad, etc. to a nav view (null on /manager = saves menu). */
 export function managerViewFromPathname(pathname: string): ManagerView | null {
   const normalized = pathname.replace(/\/+$/, "") || "/manager";
-  if (normalized === "/manager") return "hub";
+  if (normalized === "/manager") return null;
   const match = normalized.match(/^\/manager\/([^/]+)$/);
   if (!match) return null;
   return SECTION_TO_VIEW[match[1]!] ?? null;
@@ -61,4 +60,18 @@ export function managerPathFromLegacyViewParam(view: string | null): string | nu
 
 export function isManagerNavView(view: ManagerView): boolean {
   return MANAGER_NAV_VIEWS.includes(view);
+}
+
+/** Full-screen flows that are not reflected in the URL. */
+export const MANAGER_OVERLAY_VIEWS: ManagerView[] = [
+  "match-review",
+  "season-review",
+  "development-review",
+  "season-rewards",
+  "landing",
+  "club-select",
+];
+
+export function isManagerOverlayView(view: ManagerView): boolean {
+  return MANAGER_OVERLAY_VIEWS.includes(view);
 }

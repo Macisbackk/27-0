@@ -45,9 +45,6 @@ import { playUiClick } from "@/lib/sound";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
-const ALL_PLAYERS = getShowcasePlayers();
-const POSITIONS = Object.keys(POSITION_LABELS) as Position[];
-
 const DEFAULT_FILTERS: ShowcaseFilters = {
   search: "",
   status: "current",
@@ -77,6 +74,11 @@ function formatPlayerTypeLabel(status: PlayerCategory | "all"): string {
 
 export function PlayerShowcase() {
   const searchParams = useSearchParams();
+  const allPlayers = useMemo(() => getShowcasePlayers(), []);
+  const POSITIONS = useMemo(
+    () => Object.keys(POSITION_LABELS) as Position[],
+    []
+  );
   const deepLinkPlayerId = searchParams.get("player");
   const [filters, setFilters] = useState<ShowcaseFilters>(DEFAULT_FILTERS);
   const [searchInput, setSearchInput] = useState("");
@@ -88,8 +90,8 @@ export function PlayerShowcase() {
   const [currentPage, setCurrentPage] = useState(1);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const clubs = useMemo(() => getUniqueClubs(ALL_PLAYERS), []);
-  const dbStats = useMemo(() => computeShowcaseDbStats(ALL_PLAYERS), []);
+  const clubs = useMemo(() => getUniqueClubs(allPlayers), [allPlayers]);
+  const dbStats = useMemo(() => computeShowcaseDbStats(allPlayers), [allPlayers]);
 
   const activeFiltersState = useMemo(
     (): ShowcaseFilters => ({ ...filters, search: debouncedSearch }),
@@ -99,12 +101,12 @@ export function PlayerShowcase() {
   const filtered = useMemo(
     () =>
       applyShowcasePipeline(
-        ALL_PLAYERS,
+        allPlayers,
         activeFiltersState,
         sortKey,
         sortDir
       ),
-    [activeFiltersState, sortKey, sortDir]
+    [activeFiltersState, sortKey, sortDir, allPlayers]
   );
 
   const filterResultsKey = useMemo(
@@ -143,12 +145,12 @@ export function PlayerShowcase() {
 
   useEffect(() => {
     if (!deepLinkPlayerId) return;
-    const player = ALL_PLAYERS.find((p) => p.id === deepLinkPlayerId);
+    const player = allPlayers.find((p) => p.id === deepLinkPlayerId);
     if (!player) return;
     setDetailPlayer(player);
     setExpandedPlayerId(player.id);
     setSearchInput(player.name);
-  }, [deepLinkPlayerId]);
+  }, [deepLinkPlayerId, allPlayers]);
 
   useEffect(() => {
     setCurrentPage(1);

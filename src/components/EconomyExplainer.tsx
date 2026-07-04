@@ -3,7 +3,6 @@
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { playUiClick } from "@/lib/sound";
 
 interface EconomyExplainerProps {
   compact?: boolean;
@@ -25,33 +24,6 @@ export function EconomyExplainer({ compact = false }: EconomyExplainerProps) {
           — transfer budget, wages, and gate receipts inside your career save only.
         </li>
       </ul>
-    </div>
-  );
-}
-
-interface QuickToManagerBridgeProps {
-  clubName?: string;
-}
-
-export function QuickToManagerBridge({ clubName }: QuickToManagerBridgeProps) {
-  return (
-    <div
-      className={`${CARD.elevated} ${SPACING.cardPadding} border-l-4 border-theme-primary text-center`}
-    >
-      <p className={TYPO.sectionLabel}>Ready for the dugout?</p>
-      <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
-        {clubName
-          ? `Liked ${clubName}? Take charge in a full Manager career.`
-          : "Build a squad in Quick Mode, then run a full season as gaffer in Manager Mode."}
-      </p>
-      <GameButton
-        variant="theme"
-        href="/manager"
-        className="mt-4"
-        onClick={() => playUiClick()}
-      >
-        Start Manager Mode
-      </GameButton>
     </div>
   );
 }

@@ -31,6 +31,24 @@ import {
   type MatchKeyMomentTone,
 } from "@/lib/manager/managerMatchMoments";
 
+function MatchReviewBackBar({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="sticky top-0 z-20 -mx-1 mb-3 border-b border-pitch-800/70 bg-pitch-950/95 py-2.5 backdrop-blur-md sm:static sm:mx-0 sm:mb-0 sm:border-0 sm:bg-transparent sm:py-0 sm:backdrop-blur-none">
+      <GameButton
+        variant="secondary"
+        fullWidth={false}
+        size="sm"
+        onClick={() => {
+          playUiClick();
+          onClose();
+        }}
+      >
+        ← Back
+      </GameButton>
+    </div>
+  );
+}
+
 interface ManagerMatchReviewProps {
   career: ManagerCareer;
   fixtureId: string;
@@ -58,14 +76,12 @@ export function ManagerMatchReview({
   if (!fixture) {
     return (
       <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
+        <MatchReviewBackBar onClose={onClose} />
         <div className={`${CARD.elevated} ${SPACING.cardPaddingMobile} text-center space-y-4`}>
           <h1 className={TYPO.viewTitle}>Match not found</h1>
           <p className={`${TYPO.bodySm} text-pitch-400`}>
             This result could not be loaded from your save.
           </p>
-          <GameButton onClick={() => { playUiClick(); onClose(); }}>
-            ← Back
-          </GameButton>
         </div>
       </div>
     );
@@ -129,33 +145,22 @@ export function ManagerMatchReview({
 
   return (
     <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className={TYPO.viewTitle}>Match Review</h1>
-          {fixture.competition && (
-            <ManagerCompetitionBadge
-              competition={fixture.competition}
-              cupRound={fixture.meta?.cupRound}
-              detailed={isChallengeCupFixture(fixture.competition)}
-            />
-          )}
-          <span
-            className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${resultBadgeClass}`}
-          >
-            {won ? "Win" : lost ? "Loss" : "Draw"}
-          </span>
-        </div>
-        <GameButton
-          variant="secondary"
-          fullWidth={false}
-          size="sm"
-          onClick={() => {
-            playUiClick();
-            onClose();
-          }}
+      <MatchReviewBackBar onClose={onClose} />
+
+      <div className="flex flex-wrap items-center gap-3">
+        <h1 className={TYPO.viewTitle}>Match Review</h1>
+        {fixture.competition && (
+          <ManagerCompetitionBadge
+            competition={fixture.competition}
+            cupRound={fixture.meta?.cupRound}
+            detailed={isChallengeCupFixture(fixture.competition)}
+          />
+        )}
+        <span
+          className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${resultBadgeClass}`}
         >
-          ← Back
-        </GameButton>
+          {won ? "Win" : lost ? "Loss" : "Draw"}
+        </span>
       </div>
 
       <div

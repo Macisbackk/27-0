@@ -19,7 +19,18 @@ const store = {
 let clientLoadPromise: Promise<void> | null = null;
 let clientLoadComplete = false;
 
-async function loadClientRegistry(): Promise<void> {
+function bootstrapRegistryFromSync(): void {
+  if (store.byId.size > 0) {
+    clientLoadComplete = true;
+    return;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { buildSyncPlayerRegistry } = require("./sync-bootstrap") as typeof import("./sync-bootstrap");
+  applyPlayerRegistry(store, buildSyncPlayerRegistry());
+  clientLoadComplete = true;
+}
+
+async function loadClientRegistryFromChunks(): Promise<void> {
   const { loadAllPlayerRawRows } = await import("./player-chunks");
   const raw = await loadAllPlayerRawRows();
   applyPlayerRegistry(
@@ -30,22 +41,19 @@ async function loadClientRegistry(): Promise<void> {
 }
 
 function ensureRegistrySync(): void {
-  if (store.byId.size > 0 || typeof window !== "undefined") return;
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { buildSyncPlayerRegistry } = require("./sync-bootstrap") as typeof import("./sync-bootstrap");
-  applyPlayerRegistry(store, buildSyncPlayerRegistry());
-  clientLoadComplete = true;
+  bootstrapRegistryFromSync();
 }
 
-/** Load chunked player JSON on the client (no-op on server). */
+export function arePlayersLoaded(): boolean {
+  return clientLoadComplete && store.byId.size > 0;
+}
+
+/** Ensures player registry is ready. Sync bootstrap first; chunks optional in background. */
 export function ensurePlayersLoaded(): Promise<void> {
+  bootstrapRegistryFromSync();
   if (clientLoadComplete) return Promise.resolve();
-  if (typeof window === "undefined") {
-    ensureRegistrySync();
-    return Promise.resolve();
-  }
   if (!clientLoadPromise) {
-    clientLoadPromise = loadClientRegistry().catch((error) => {
+    clientLoadPromise = loadClientRegistryFromChunks().catch((error) => {
       clientLoadPromise = null;
       throw error;
     });
@@ -53,9 +61,7 @@ export function ensurePlayersLoaded(): Promise<void> {
   return clientLoadPromise;
 }
 
-if (typeof window !== "undefined") {
-  void ensurePlayersLoaded();
-}
+bootstrapRegistryFromSync();
 
 export const PLAYER_POOL = store.all;
 export const CURRENT_PLAYERS = store.current;

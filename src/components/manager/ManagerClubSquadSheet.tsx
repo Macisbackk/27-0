@@ -1,19 +1,22 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { ClubLogoBox } from "@/components/ClubBadge";
+import { ClubMark } from "@/components/ClubBadge";
 import { ManagerLeaguePlayerSheetModal } from "@/components/manager/ManagerLeaguePlayerSheetModal";
 import { ManagerMatchdayFormation } from "@/components/manager/ManagerMatchdayFormation";
 import { GameButton } from "@/components/ui/GameButton";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { useModalA11y } from "@/hooks/useModalA11y";
-import { getClubIndicatorColor } from "@/lib/clubs";
 import {
   clubLineupToSquadSlots,
   getClubMatchdayLineup,
   getLineupXiiiPlayers,
 } from "@/lib/manager/managerLeagueLineup";
 import { getManagerPlayerAge } from "@/lib/manager/managerPlayers";
+import {
+  managerClubAccentCardClass,
+  managerClubAccentCardStyle,
+} from "@/lib/manager/managerSurfaces";
 import type { ManagerCareer } from "@/lib/manager/types";
 import type { Player } from "@/lib/types";
 import { CURRENT_PLAYABLE_CLUBS } from "@/lib/clubs/super-league-display";
@@ -131,7 +134,6 @@ export function ManagerClubSquadSheet({
     () => clubLineupToSquadSlots(lineup, career),
     [lineup, career]
   );
-  const clubAccent = getClubIndicatorColor(club);
 
   const handleClose = useCallback(() => {
     playPanelClose();
@@ -209,28 +211,9 @@ export function ManagerClubSquadSheet({
           onClick={(e) => e.stopPropagation()}
         >
           <div
-            className="h-1 w-full shrink-0"
-            style={{ backgroundColor: clubAccent }}
-            aria-hidden
-          />
-
-          <div
-            className={`relative shrink-0 overflow-hidden border-b border-pitch-700/40 px-3 py-2 sm:px-4 ${
-              lineup.isUserClub ? "sm:py-2.5" : "py-1.5 sm:py-2"
-            }`}
-            style={{
-              background: `linear-gradient(to right, ${clubAccent}18, transparent 55%)`,
-            }}
+            className={`relative shrink-0 border-b border-pitch-700/40 px-4 py-3 sm:py-3.5 ${managerClubAccentCardClass()}`}
+            style={managerClubAccentCardStyle(club)}
           >
-            {lineup.isUserClub && (
-              <ClubLogoBox
-                club={club}
-                size="md"
-                className="pointer-events-none absolute right-16 top-1/2 z-0 hidden -translate-y-1/2 scale-[1.6] opacity-[0.1] sm:block"
-                aria-hidden
-              />
-            )}
-
             <button
               type="button"
               onClick={handleClose}
@@ -240,43 +223,22 @@ export function ManagerClubSquadSheet({
               ✕
             </button>
 
-            <div className="relative z-10 flex min-w-0 items-center gap-2 pr-9 sm:pr-11">
-              <ClubLogoBox club={club} size="xs" className="shrink-0 sm:hidden" />
-              <ClubLogoBox club={club} size="sm" className="hidden shrink-0 sm:block" />
+            <div className="relative z-10 flex min-w-0 items-center gap-3 pr-9 sm:pr-11">
+              <ClubMark club={club} size="xs" className="sm:hidden" />
+              <ClubMark club={club} size="sm" className="hidden sm:block" />
               <div className="min-w-0 flex-1">
-                {lineup.isUserClub ? (
-                  <>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-theme-primary">
-                      Team Sheet
-                    </p>
-                    <h2
-                      id="manager-club-sheet-title"
-                      className="truncate font-display text-sm font-bold text-white sm:text-base"
-                    >
-                      {club}
-                    </h2>
-                    <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
-                      Your matchday 17
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-pitch-500">
-                      Team Sheet
-                    </p>
-                    <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0">
-                      <h2
-                        id="manager-club-sheet-title"
-                        className="truncate font-display text-sm font-bold text-white"
-                      >
-                        {club}
-                      </h2>
-                      <span className="shrink-0 text-[11px] text-pitch-500">
-                        Projected matchday 17
-                      </span>
-                    </div>
-                  </>
-                )}
+                <p className={TYPO.sectionLabel}>Team Sheet</p>
+                <h2
+                  id="manager-club-sheet-title"
+                  className="truncate font-display text-base font-bold text-white sm:text-lg"
+                >
+                  {club}
+                </h2>
+                <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
+                  {lineup.isUserClub
+                    ? "Your matchday 17"
+                    : "Projected matchday 17"}
+                </p>
               </div>
             </div>
           </div>

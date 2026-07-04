@@ -250,8 +250,8 @@ export function ManagerAcrossLeague({
                       <p className="truncate font-semibold text-white">
                         {entry.player.name}
                       </p>
-                      <p className={`${TYPO.bodySm} text-pitch-400`}>
-                        Ex-{entry.formerClub} · {posLabel} · {entry.player.peakRating} OVR
+                      <p className={`${TYPO.bodySm} text-theme-primary`}>
+                        Free agent · {posLabel} · {entry.player.peakRating} OVR
                       </p>
                     </div>
                     <span className={`${TYPO.bodySm} shrink-0 text-pitch-500`}>

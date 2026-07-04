@@ -56,7 +56,7 @@ export function ManagerTransferPlayerCard({
 }: ManagerTransferPlayerCardProps) {
   const rating = player.peakRating;
   const positions = getPlayerEligiblePositions(player);
-  const accent = getClubIndicatorColor(club);
+  const accent = freeAgent ? undefined : getClubIndicatorColor(club);
 
   return (
     <ManagerSectionCard
@@ -64,29 +64,49 @@ export function ManagerTransferPlayerCard({
       className="!p-0 overflow-hidden"
     >
       <div
-        className="border-b border-pitch-700/40 px-4 py-3 sm:px-4"
-        style={{ borderLeftWidth: 4, borderLeftColor: accent }}
+        className={`border-b border-pitch-700/40 px-4 py-3 sm:px-4 ${
+          freeAgent ? "border-l-4 border-l-theme-primary" : ""
+        }`}
+        style={
+          freeAgent
+            ? undefined
+            : { borderLeftWidth: 4, borderLeftColor: accent }
+        }
       >
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <span
-                className={`inline-flex rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                  freeAgent
-                    ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
-                    : listed
+              {!freeAgent && (
+                <span
+                  className={`inline-flex rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                    listed
                       ? "border-theme-primary/40 bg-theme-primary/12 text-theme-primary"
                       : "border-amber-400/40 bg-amber-400/10 text-amber-300"
-                }`}
-              >
-                {freeAgent ? "Free agent" : listed ? "Listed" : "Unlisted"}
-              </span>
+                  }`}
+                >
+                  {listed ? "Listed" : "Unlisted"}
+                </span>
+              )}
             </div>
             <p className="mt-1.5 truncate font-display text-base font-bold text-white">
               {player.name}
             </p>
             <div className="mt-1">
-              <ClubNameLabel club={club} variant="inline" compact />
+              {freeAgent ? (
+                <span className="inline-flex min-w-0 max-w-full items-center gap-1.5">
+                  <span
+                    className="h-3 w-1 shrink-0 rounded-full bg-theme-primary"
+                    aria-hidden
+                  />
+                  <span
+                    className={`min-w-0 truncate ${TYPO.identityLine} text-theme-primary`}
+                  >
+                    Free agent
+                  </span>
+                </span>
+              ) : (
+                <ClubNameLabel club={club} variant="inline" compact />
+              )}
             </div>
           </div>
           <span

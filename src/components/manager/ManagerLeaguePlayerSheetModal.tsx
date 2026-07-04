@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { ClubDualSwatch } from "@/components/ClubDualSwatch";
+import { ClubMark } from "@/components/ClubBadge";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { GameButton } from "@/components/ui/GameButton";
 import { useModalA11y } from "@/hooks/useModalA11y";
@@ -97,7 +97,7 @@ export function ManagerLeaguePlayerSheetModal({
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-start gap-3">
-            <ClubDualSwatch club={club} size="sm" />
+            <ClubMark club={club} size="sm" />
             <div className="min-w-0 flex-1">
               <h2 id="league-player-sheet-title" className={TYPO.cardTitle}>
                 {player.name}

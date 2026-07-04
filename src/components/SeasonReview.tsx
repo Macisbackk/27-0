@@ -17,9 +17,10 @@ import { getSquadValue } from "@/lib/positions";
 import { formatValue } from "@/lib/players";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { formatSeasonWinPercentageOrDash } from "@/lib/stats-views";
-import { playGradeSound, playPanelClose, playPanelExpand } from "@/lib/sound";
+import { playGradeSound, playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { ReviewPlayAgain } from "./ReviewPlayAgain";
 import { ReturnHomeButton } from "./ReturnHomeButton";
+import { GameButton } from "./ui/GameButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
 import { FixtureResultRow } from "./FixtureResultRow";
 import { MatchDetailsPanel } from "./MatchDetailsPanel";
@@ -35,7 +36,7 @@ import { LeagueTable } from "./LeagueTable";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
 import { NORMAL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { QuickToManagerBridge, GuestSaveNudge } from "@/components/EconomyExplainer";
+import { GuestSaveNudge } from "@/components/EconomyExplainer";
 import { useAuth } from "@/lib/auth-context";
 
 interface SeasonReviewProps {
@@ -77,8 +78,6 @@ export function SeasonReview({
 }: SeasonReviewProps) {
   const { isLoggedIn, loading } = useAuth();
   const totalValue = getSquadValue(squad);
-  const quickClub =
-    squad.find((s) => s.player?.club)?.player?.club ?? undefined;
   const gradeInfo = getSeasonGradeFromSquad(squad, seasonResult, totalValue);
   const awards = useMemo(
     () =>
@@ -269,7 +268,9 @@ export function SeasonReview({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
         >
-          <ReturnHomeButton onBeforeNavigate={onReturnHome} />
+          {!showPlayoffPrompt && (
+            <ReturnHomeButton onBeforeNavigate={onReturnHome} />
+          )}
         </motion.div>
 
         {!hideEndOfRunNav && (
@@ -427,20 +428,38 @@ export function SeasonReview({
           transition={{ delay: 0.65 }}
         >
           <div className="mx-auto w-full max-w-xl space-y-3">
-          {mode === "CLASSIC" && (
-            <QuickToManagerBridge clubName={quickClub} />
-          )}
-          {!loading && !isLoggedIn && (
+          {!loading && !isLoggedIn && !showPlayoffPrompt && (
             <GuestSaveNudge context="quick-season" />
           )}
-          {!hideEndOfRunNav && (
-            <ReviewPlayAgain
-              onPlayAgain={handlePlayAgain}
-              leaderboardHref="/leaderboard"
-              hideReturnHome
-            />
+          {showPlayoffPrompt ? (
+            <>
+              <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
+                You qualified for the play-offs — complete the knockout stage to
+                finish your season.
+              </p>
+              <GameButton
+                variant="theme"
+                className="w-full"
+                onClick={() => {
+                  playUiClick();
+                  onContinuePlayoffs?.();
+                }}
+              >
+                Continue to Play-Offs →
+              </GameButton>
+            </>
+          ) : (
+            <>
+              {!hideEndOfRunNav && (
+                <ReviewPlayAgain
+                  onPlayAgain={handlePlayAgain}
+                  leaderboardHref="/leaderboard"
+                  hideReturnHome
+                />
+              )}
+              <ReturnHomeButton onBeforeNavigate={onReturnHome} />
+            </>
           )}
-          <ReturnHomeButton onBeforeNavigate={onReturnHome} />
           </div>
         </motion.footer>
       </div>

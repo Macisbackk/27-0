@@ -8,7 +8,7 @@ import {
   setNormalEraVariant,
   NORMAL_ERA_VARIANT_CHANGED_EVENT,
 } from "@/lib/storage/preferences";
-import { getQuickModeCurrentEraHint, getQuickModeLabel } from "@/lib/mode-labels";
+import { getQuickModeCurrentEraHint, getQuickSeasonLabel, getQuickSeasonStartLabel } from "@/lib/mode-labels";
 import { playModeClassicStart, playUiClick } from "@/lib/sound";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -21,14 +21,59 @@ function isMobileViewport(): boolean {
   return window.matchMedia("(max-width: 639px)").matches;
 }
 
+interface QuickModePanelProps {
+  normalEraMode: boolean;
+  normalHref: string;
+  onEraModeChange: (era: boolean) => void;
+}
+
+function QuickModePanel({
+  normalEraMode,
+  normalHref,
+  onEraModeChange,
+}: QuickModePanelProps) {
+  return (
+    <ModePanel title={getQuickSeasonLabel(normalEraMode)} eraActive={normalEraMode}>
+      <p className={TYPO.body}>
+        Build your XIII position by position and simulate a full Super League
+        campaign. Can you go 27-0?
+      </p>
+
+      <ChallengeCupVariantToggle
+        sectionLabel="Squad pool"
+        useShortLabels
+        eraMode={normalEraMode}
+        onEraModeChange={onEraModeChange}
+        className="mt-5"
+      />
+
+      <p className={`mt-3 ${TYPO.bodySm} text-gray-500`}>
+        {getQuickModeCurrentEraHint(normalEraMode)}
+      </p>
+
+      <ModeStartLink
+        href={normalHref}
+        eraMode={normalEraMode}
+        onClick={() => {
+          playUiClick();
+          playModeClassicStart("NORMAL");
+        }}
+        className="mt-5"
+      >
+        {getQuickSeasonStartLabel(normalEraMode)}
+      </ModeStartLink>
+    </ModePanel>
+  );
+}
+
 export function HomeModeSelector() {
   const [normalEraMode, setNormalEraMode] = useState(false);
-  const [quickModeOpen, setQuickModeOpen] = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setNormalEraMode(getNormalEraVariant());
-    setQuickModeOpen(isMobileViewport());
+    setMobileExpanded(isMobileViewport());
     setMounted(true);
 
     const onNormal = (event: Event) => {
@@ -41,6 +86,11 @@ export function HomeModeSelector() {
       window.removeEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormal);
     };
   }, []);
+
+  const handleEraModeChange = (era: boolean) => {
+    setNormalEraMode(era);
+    setNormalEraVariant(era);
+  };
 
   const normalHref = mounted ? buildPlayHref("classic", normalEraMode) : "/play";
 
@@ -76,11 +126,13 @@ export function HomeModeSelector() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <button
               type="button"
-              className="flex w-full flex-1 items-start justify-between gap-4 text-left sm:cursor-default"
+              className="flex w-full flex-1 items-start justify-between gap-4 text-left sm:pointer-events-none"
               onClick={() => {
                 playUiClick();
-                setQuickModeOpen((open) => !open);
+                setMobileExpanded((open) => !open);
               }}
+              aria-expanded={mobileExpanded}
+              aria-controls="quick-mode-panel-mobile"
             >
               <div>
                 <p className={TYPO.sectionLabel}>Quick Mode</p>
@@ -88,12 +140,17 @@ export function HomeModeSelector() {
                   Spin & Simulate
                 </h2>
                 <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
-                  Build your XIII in ~3 minutes and chase 27-0.
+                  Build your XIII and chase 27-0.
+                  {mounted && normalEraMode ? (
+                    <span className="mt-1 block text-accent-gold">
+                      Era squads selected
+                    </span>
+                  ) : null}
                 </p>
               </div>
               <span
                 className={`mt-1 shrink-0 text-sm text-theme-primary transition sm:hidden ${
-                  quickModeOpen ? "rotate-180" : ""
+                  mobileExpanded ? "rotate-180" : ""
                 }`}
                 aria-hidden
               >
@@ -107,60 +164,34 @@ export function HomeModeSelector() {
                 playUiClick();
                 playModeClassicStart("NORMAL");
               }}
-              className="shrink-0 sm:mt-1"
+              className="hidden shrink-0 !w-auto sm:mt-1 sm:inline-flex"
             >
-              {normalEraMode ? "Quick season →" : "Quick season (~3 min) →"}
+              {getQuickSeasonStartLabel(normalEraMode)}
             </ModeStartLink>
           </div>
 
-          {quickModeOpen && (
+          <div
+            className={`mt-5 hidden flex-col gap-5 border-t border-pitch-700/50 pt-5 sm:flex`}
+          >
+            <QuickModePanel
+              normalEraMode={normalEraMode}
+              normalHref={normalHref}
+              onEraModeChange={handleEraModeChange}
+            />
+          </div>
+
+          {mobileExpanded ? (
             <div
-              className={`mt-5 flex flex-col gap-5 border-t border-pitch-700/50 pt-5`}
+              id="quick-mode-panel-mobile"
+              className={`mt-5 flex flex-col gap-5 border-t border-pitch-700/50 pt-5 sm:hidden`}
             >
-              <ModePanel title={getQuickModeLabel(normalEraMode)} eraActive={normalEraMode}>
-                <p className={TYPO.body}>
-                  Build your XIII position by position and simulate a full Super
-                  League campaign. Can you go 27-0?
-                </p>
-
-                <ChallengeCupVariantToggle
-                  sectionLabel="Squad pool"
-                  useShortLabels
-                  eraMode={normalEraMode}
-                  onEraModeChange={(era) => {
-                    setNormalEraMode(era);
-                    setNormalEraVariant(era);
-                  }}
-                  className="mt-5"
-                />
-
-                <p className={`mt-3 ${TYPO.bodySm} text-gray-500`}>
-                  {getQuickModeCurrentEraHint(normalEraMode)}
-                </p>
-
-                <ModeStartLink
-                  href={normalHref}
-                  eraMode={normalEraMode}
-                  onClick={() => {
-                    playUiClick();
-                    playModeClassicStart("NORMAL");
-                  }}
-                  className="mt-5"
-                >
-                  {normalEraMode ? "Start Era Quick Mode →" : "Start Quick Mode →"}
-                </ModeStartLink>
-
-                <GameButton
-                  variant="secondary"
-                  href="/manager"
-                  className="mt-3"
-                  onClick={() => playUiClick()}
-                >
-                  Prefer a full career? Manager Mode →
-                </GameButton>
-              </ModePanel>
+              <QuickModePanel
+                normalEraMode={normalEraMode}
+                normalHref={normalHref}
+                onEraModeChange={handleEraModeChange}
+              />
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

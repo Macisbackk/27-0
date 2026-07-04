@@ -4,7 +4,6 @@ import {
   getClubColors,
   getClubHeaderBarStyle,
   getClubIdentityStripStyle,
-  getClubLogoBoxStyle,
   getClubTheme,
 } from "@/lib/clubs";
 import { getClubLogoTextColor } from "@/lib/ui/contrast";
@@ -12,29 +11,58 @@ import { getClubLogoTextColor } from "@/lib/ui/contrast";
 export type ClubLogoSize = "xs" | "sm" | "md" | "lg";
 
 const LOGO_SIZE: Record<ClubLogoSize, { box: string; text: string }> = {
-  xs: { box: "h-8 w-8", text: "text-[9px]" },
-  sm: { box: "h-10 w-10", text: "text-[10px]" },
-  md: { box: "h-12 w-12", text: "text-[11px]" },
-  lg: { box: "h-14 w-14", text: "text-xs" },
+  xs: { box: "h-8 w-8", text: "text-[8px]" },
+  sm: { box: "h-10 w-10", text: "text-[9px]" },
+  md: { box: "h-12 w-12", text: "text-[10px]" },
+  lg: { box: "h-14 w-14", text: "text-[11px]" },
 };
 
-const HEADER_SIZE: Record<"sm" | "md" | "lg" | "pitch", { bar: string; text: string }> = {
-  sm: { bar: "h-5", text: "text-[9px]" },
-  md: { bar: "h-6", text: "text-[11px]" },
-  lg: { bar: "h-8", text: "text-sm" },
-  pitch: { bar: "h-5", text: "text-[9px]" },
-};
+const MARK_SHELL =
+  "shrink-0 overflow-hidden rounded-lg shadow-sm ring-1 ring-white/10";
+
+function resolveClubColors(club: string, colorsProp?: ClubColorSet): ClubColorSet {
+  return colorsProp ?? getClubTheme(club).colors;
+}
+
+interface ClubMarkProps {
+  club: string;
+  colors?: ClubColorSet;
+  size?: ClubLogoSize;
+  className?: string;
+}
+
+/** Square two-tone club colours — no abbreviation. */
+export function ClubMark({
+  club,
+  colors: colorsProp,
+  size = "sm",
+  className = "",
+}: ClubMarkProps) {
+  const colors = resolveClubColors(club, colorsProp);
+  const dim = LOGO_SIZE[size];
+
+  return (
+    <div
+      className={`flex ${MARK_SHELL} ${dim.box} ${className}`}
+      title={club}
+      aria-hidden
+    >
+      <span className="h-full w-1/2" style={{ backgroundColor: colors.primary }} />
+      <span className="h-full w-1/2" style={{ backgroundColor: colors.secondary }} />
+    </div>
+  );
+}
 
 interface ClubLogoBoxProps {
   club: string;
   colors?: ClubColorSet;
   size?: ClubLogoSize;
   className?: string;
-  /** Show club abbreviation inside logo — pitch cards only. */
+  /** Show club abbreviation inside logo — compact lists and pitch cards. */
   showAbbrev?: boolean;
 }
 
-/** Two-tone club logo — primary + secondary panels with abbreviation. */
+/** Two-tone club crest — optional abbreviation for tight spaces. */
 export function ClubLogoBox({
   club,
   colors: colorsProp,
@@ -42,52 +70,52 @@ export function ClubLogoBox({
   className = "",
   showAbbrev = true,
 }: ClubLogoBoxProps) {
-  const theme = getClubTheme(club);
-  const colors = colorsProp ?? theme.colors;
+  const colors = resolveClubColors(club, colorsProp);
   const initials = colors.shortName;
   const dim = LOGO_SIZE[size];
 
+  if (!showAbbrev) {
+    return (
+      <ClubMark
+        club={club}
+        colors={colors}
+        size={size}
+        className={className}
+      />
+    );
+  }
+
+  const logoText = getClubLogoTextColor(
+    colors.primary,
+    colors.secondary,
+    colors.accent
+  );
+
   return (
     <div
-      className={`club-logo-box relative flex ${dim.box} shrink-0 overflow-hidden rounded-md border-2 ${className}`}
-      style={getClubLogoBoxStyle(club)}
+      className={`relative flex ${MARK_SHELL} ${dim.box} ${className}`}
       title={club}
     >
-      <div
-        className="absolute inset-y-0 left-0 w-[55%]"
-        style={{ backgroundColor: colors.primary }}
-      />
-      <div
-        className="absolute inset-y-0 right-0 w-[45%]"
-        style={{ backgroundColor: colors.secondary }}
-      />
-      {colors.accent && (
-        <div
-          className="absolute left-0 top-0 z-10 h-1.5 w-full"
-          style={{ backgroundColor: colors.accent }}
-        />
-      )}
-      {showAbbrev && (
+      <div className="absolute inset-0 flex">
         <span
-          className={`relative z-10 m-auto font-display font-black leading-none ${dim.text}`}
-          style={(() => {
-            const logoText = getClubLogoTextColor(
-              colors.primary,
-              colors.secondary,
-              colors.accent
-            );
-            return {
-              color: logoText,
-              textShadow:
-                logoText === "#ffffff"
-                  ? "0 1px 2px rgba(0,0,0,0.85)"
-                  : "none",
-            };
-          })()}
-        >
-          {initials}
-        </span>
-      )}
+          className="h-full w-1/2"
+          style={{ backgroundColor: colors.primary }}
+        />
+        <span
+          className="h-full w-1/2"
+          style={{ backgroundColor: colors.secondary }}
+        />
+      </div>
+      <span
+        className={`relative z-10 m-auto font-display font-bold leading-none tracking-[0.14em] ${dim.text}`}
+        style={{
+          color: logoText,
+          textShadow:
+            logoText === "#ffffff" ? "0 1px 2px rgba(0,0,0,0.75)" : "none",
+        }}
+      >
+        {initials}
+      </span>
     </div>
   );
 }
@@ -105,6 +133,13 @@ export function ClubColourBar({ club }: { club: string }) {
     </div>
   );
 }
+
+const HEADER_SIZE: Record<"sm" | "md" | "lg" | "pitch", { bar: string; text: string }> = {
+  sm: { bar: "h-5", text: "text-[9px]" },
+  md: { bar: "h-6", text: "text-[11px]" },
+  lg: { bar: "h-8", text: "text-sm" },
+  pitch: { bar: "h-5", text: "text-[9px]" },
+};
 
 interface ClubHeaderBarProps {
   club: string;
@@ -209,12 +244,16 @@ export function ClubIdentityStrip({
       className={`flex items-center gap-2 ${compact ? "px-1.5 py-1" : "px-2.5 py-1.5"}`}
       style={getClubIdentityStripStyle(club)}
     >
-      <ClubLogoBox
-        club={club}
-        colors={colors}
-        size={logoSize}
-        showAbbrev={showLogoAbbrev}
-      />
+      {showLogoAbbrev && !showClubName ? (
+        <ClubLogoBox
+          club={club}
+          colors={colors}
+          size={logoSize}
+          showAbbrev
+        />
+      ) : (
+        <ClubMark club={club} colors={colors} size={logoSize} />
+      )}
       {showClubName && (
         <span
           className={`min-w-0 break-words font-display font-bold uppercase leading-snug tracking-wide ${

@@ -120,9 +120,8 @@ export function ManagerTransfers({
               getPlayerById(entry.playerId)
           )
       ).length,
-      unlisted: allUnlistedPlayers.length,
     }),
-    [career, allUnlistedPlayers.length]
+    [career]
   );
 
   const listedPlayers = useMemo(() => {
@@ -394,7 +393,7 @@ export function ManagerTransfers({
           [
             ["listed", tabCounts.listed],
             ["freeAgents", tabCounts.freeAgents],
-            ["unlisted", tabCounts.unlisted],
+            ["unlisted", null],
           ] as const
         ).map(([id, count]) => (
           <button
@@ -404,7 +403,7 @@ export function ManagerTransfers({
             onClick={() => switchTab(id)}
           >
             {TRANSFER_TAB_LABELS[id]}
-            {count > 0 ? ` (${count})` : ""}
+            {count != null && count > 0 ? ` (${count})` : ""}
           </button>
         ))}
         </div>

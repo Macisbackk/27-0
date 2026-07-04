@@ -14,6 +14,14 @@ export function getQuickModeLabel(normalEraMode = false): string {
   return normalEraMode ? "Era Quick Mode" : "Quick Mode";
 }
 
+export function getQuickSeasonLabel(normalEraMode = false): string {
+  return normalEraMode ? "Era quick season" : "Quick season";
+}
+
+export function getQuickSeasonStartLabel(normalEraMode = false): string {
+  return `${getQuickSeasonLabel(normalEraMode)} →`;
+}
+
 export function getQuickModeCurrentEraHint(normalEraMode: boolean): string {
   return normalEraMode
     ? "Historic Super League team-years — spin club and season together."

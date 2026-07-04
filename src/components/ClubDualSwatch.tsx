@@ -42,8 +42,8 @@ export function ClubDualSwatch({
 
   return (
     <div
-      className={`flex shrink-0 overflow-hidden rounded-sm border ${
-        lowContrast ? "border-white/25 ring-1 ring-white/15" : "border-white/15"
+      className={`flex shrink-0 overflow-hidden rounded-md shadow-sm ring-1 ring-white/10 ${
+        lowContrast ? "ring-white/20" : ""
       } ${dim} ${className}`}
       title={club}
     >
