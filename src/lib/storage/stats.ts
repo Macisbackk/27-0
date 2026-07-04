@@ -199,7 +199,6 @@ export type { StoredStats };
 
 
 /** Merge cloud stats with local saves cumulatively per bucket. */
-
 export function mergeCloudStatsWithLocal(
   cloud: StoredStats,
   local: StoredStats
@@ -213,6 +212,93 @@ export function mergeCloudStatsWithLocal(
     eraCup: mergeUserStatsData(cloud.eraCup, local.eraCup),
     eraNormal: mergeUserStatsData(cloud.eraNormal, local.eraNormal),
   };
+}
+
+const STORED_STATS_KEYS: (keyof StoredStats)[] = [
+  "normal",
+  "hard",
+  "draftNormal",
+  "draftHard",
+  "fantasy",
+  "eraCup",
+  "eraNormal",
+];
+
+/** Fingerprint cumulative counters used to detect duplicate cloud/local snapshots. */
+function userStatsSyncSignature(stats: UserStatsData): string {
+  const s = migrateUserStats(stats);
+  return [
+    s.totalSeasonsSimulated,
+    s.totalRuns,
+    s.seasonWins,
+    s.seasonLosses,
+    s.leagueTitlesWon,
+    s.superLeagueTitles,
+    s.totalPerfectSeasons,
+  ].join(":");
+}
+
+function userStatsSyncEqual(a: UserStatsData, b: UserStatsData): boolean {
+  return userStatsSyncSignature(a) === userStatsSyncSignature(b);
+}
+
+/**
+ * Reconcile cloud and local stats without double-counting identical snapshots.
+ * Local wins when it has newer progress on this device; otherwise merge only
+ * when both buckets have independent multi-device history.
+ */
+export function reconcileUserStats(
+  cloud: UserStatsData,
+  local: UserStatsData
+): UserStatsData {
+  const c = migrateUserStats(cloud);
+  const l = migrateUserStats(local);
+
+  if (userStatsSyncEqual(c, l)) return c;
+
+  const localSeasons = l.totalSeasonsSimulated;
+  const cloudSeasons = c.totalSeasonsSimulated;
+  const localGames = l.seasonWins + l.seasonLosses;
+  const cloudGames = c.seasonWins + c.seasonLosses;
+
+  if (localSeasons === 0 && localGames === 0 && l.totalRuns === 0) return c;
+
+  if (
+    localSeasons > cloudSeasons ||
+    (localSeasons === cloudSeasons &&
+      (l.totalRuns > c.totalRuns || localGames > cloudGames))
+  ) {
+    return l;
+  }
+
+  if (cloudSeasons > localSeasons || cloudGames > localGames) {
+    if (localSeasons === 0 && l.totalRuns === 0 && localGames === 0) return c;
+    return mergeUserStatsData(c, l);
+  }
+
+  return c;
+}
+
+export function reconcileStoredStats(
+  cloud: StoredStats | null,
+  local: StoredStats
+): StoredStats {
+  if (!cloud) return local;
+
+  const result = {} as StoredStats;
+  for (const key of STORED_STATS_KEYS) {
+    result[key] = reconcileUserStats(cloud[key], local[key]);
+  }
+  return result;
+}
+
+export function storedStatsDifferFromCloud(
+  cloud: StoredStats,
+  reconciled: StoredStats
+): boolean {
+  return STORED_STATS_KEYS.some(
+    (key) => !userStatsSyncEqual(reconciled[key], cloud[key])
+  );
 }
 
 
@@ -479,6 +565,31 @@ export function getAllStats(): StoredStats {
 
   return loadStoredStats();
 
+}
+
+/** Clears Quick Mode career stats locally and in the cloud when logged in. */
+export async function resetCareerStats(): Promise<{ ok: boolean; error?: string }> {
+  const empty = emptyStoredStats();
+
+  if (typeof window !== "undefined") {
+    localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(empty));
+    window.dispatchEvent(new Event("stats-merged"));
+  }
+
+  if (!isLoggedIn()) {
+    return { ok: true };
+  }
+
+  try {
+    const { saveCloudStats } = await import("./stats-cloud");
+    await saveCloudStats(empty);
+    return { ok: true };
+  } catch {
+    return {
+      ok: false,
+      error: "Local stats were cleared but cloud reset failed. Try again.",
+    };
+  }
 }
 
 

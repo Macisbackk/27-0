@@ -31,5 +31,9 @@ export function applyUiThemeToDocument(theme: UiThemeDefinition): void {
 }
 
 export function applyUiThemeById(themeId: string): void {
+  if (typeof document !== "undefined") {
+    const root = document.documentElement;
+    if (root.dataset.uiTheme === themeId) return;
+  }
   applyUiThemeToDocument(getUiThemeById(themeId));
 }

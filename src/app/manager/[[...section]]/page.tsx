@@ -845,7 +845,7 @@ export default function ManagerPage() {
       )}
 
       {showNav && career && (
-        <div className={`flex flex-col pb-20 sm:pb-0 ${PAGE.section}`}>
+        <div className={`flex flex-col manager-mobile-nav-pad sm:pb-0 ${PAGE.section}`}>
           <ManagerNav
             active={awaitingFriendlyChoice ? "hub" : view}
             club={career.club}

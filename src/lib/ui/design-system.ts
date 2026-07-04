@@ -34,7 +34,7 @@ export const SPACING = {
 
 /** Mobile-first modal / bottom-sheet pattern (matches ManagerDialog). */
 export const MODAL = {
-  backdrop: `fixed inset-0 z-40 flex items-end justify-center bg-black/70 ${SPACING.modalBackdrop} backdrop-blur-sm sm:items-center`,
+  backdrop: `fixed inset-0 z-40 flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} sm:items-center`,
   panel:
     "w-full max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden rounded-t-2xl sm:max-w-3xl sm:rounded-2xl",
   panelWide:
@@ -45,7 +45,7 @@ export const MODAL = {
 /** Horizontally scrollable tab rails with snap (mobile). */
 export const TAB_RAIL = {
   outer:
-    "-mx-1 snap-x snap-mandatory scroll-pl-1 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+    "flex justify-center snap-x snap-mandatory overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
   inner: "flex min-w-max gap-2",
   item: "shrink-0 snap-start",
 } as const;
@@ -112,7 +112,7 @@ export const FILTER = {
   chipTouch:
     "min-h-[44px] rounded-lg border px-3 py-2 text-sm font-medium transition",
   tabGroup:
-    "flex w-full flex-wrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:inline-flex sm:w-auto sm:flex-nowrap",
+    "mx-auto flex w-full flex-nowrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:inline-flex sm:w-auto",
 } as const;
 
 /** Shared pressed-state utility — pair with BTN.base on interactive elements. */
@@ -164,27 +164,27 @@ export const BTN = {
     "border border-red-600/50 bg-red-950/30 text-red-300 hover:border-red-500 hover:bg-red-950/50 disabled:cursor-not-allowed disabled:opacity-50",
   success:
     "game-button game-button--success btn-press game-button--md disabled:cursor-not-allowed disabled:opacity-50",
-  tabActive: "bg-theme-primary text-[var(--theme-text-on-primary)]",
+  tabActive: "border-2 border-transparent bg-theme-primary text-[var(--theme-text-on-primary)]",
   tabIdle:
-    "border border-transparent text-gray-400 hover:bg-pitch-800/60 hover:text-white",
+    "border-2 border-transparent text-gray-400 hover:bg-pitch-800/60 hover:text-white",
   tabGroupInner:
     "flex-1 rounded-lg px-4 py-2.5 sm:flex-none sm:px-5",
   tabGroupActive: "tab-group-btn-active",
   modeCurrentActive:
     "border-2 border-mode-current/75 bg-mode-current text-pitch-950 shadow-[0_0_28px_var(--mode-current-glow),inset_0_1px_0_rgba(255,255,255,0.08)]",
   modeCurrentIdle:
-    "border border-theme-tertiary/25 bg-pitch-900/90 text-gray-400 hover:border-theme-tertiary/50 hover:text-white",
+    "border-2 border-transparent bg-pitch-900/90 text-gray-400 hover:border-theme-tertiary/50 hover:text-white",
   tabGroupIdle:
-    "border border-transparent bg-pitch-900/90 text-gray-400 hover:bg-pitch-800/80 hover:text-white",
+    "border-2 border-transparent bg-pitch-900/90 text-gray-400 hover:bg-pitch-800/80 hover:text-white",
   toggleIdle:
-    "border border-transparent bg-pitch-900/90 text-gray-400 hover:bg-pitch-800/80 hover:text-white",
+    "border-2 border-transparent bg-pitch-900/90 text-gray-400 hover:bg-pitch-800/80 hover:text-white",
   hardActive:
     "border-2 border-accent-red/85 bg-accent-red text-white shadow-[0_0_28px_rgba(239,68,68,0.5),inset_0_1px_0_rgba(255,255,255,0.1)]",
   hardIdle:
-    "border border-transparent text-gray-400 hover:bg-accent-red/10 hover:text-accent-red",
+    "border-2 border-transparent text-gray-400 hover:bg-accent-red/10 hover:text-accent-red",
   eraActive: "era-tab-btn-active",
   eraIdle:
-    "border border-transparent bg-pitch-900/90 text-gray-400 hover:bg-pitch-800/80 hover:text-accent-gold",
+    "border-2 border-transparent bg-pitch-900/90 text-gray-400 hover:bg-pitch-800/80 hover:text-accent-gold",
   accentOutline: `w-full border border-theme-primary/40 bg-theme-primary/10 text-theme-primary hover:border-theme-primary/55 hover:bg-theme-primary/20 sm:w-auto`,
   hardAccentOutline: `w-full border border-accent-red/45 bg-accent-red/10 text-accent-red hover:border-accent-red/65 hover:bg-accent-red/20 hover:text-red-300 sm:w-auto`,
   goldOutline: `w-full border-2 border-accent-gold/50 bg-accent-gold/10 text-accent-gold hover:border-accent-gold/65 hover:bg-accent-gold/20`,
@@ -295,7 +295,7 @@ export function tabGroupButtonClass(
   active: boolean,
   variant: "normal" | "current" | "hard" | "era" | "gold" = "normal"
 ): string {
-  const base = `${TYPO.button} btn-press flex flex-1 items-center justify-center text-center ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
+  const base = `${TYPO.button} btn-press box-border flex flex-1 items-center justify-center text-center ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.toggleIdle}`;
@@ -345,7 +345,7 @@ export function nestedTabGroupButtonClass(
   active: boolean,
   variant: "normal" | "current" | "hard" | "era" | "gold" = "normal"
 ): string {
-  const base = `${TYPO.button} btn-press flex-1 rounded-md px-2 ${NAV_SIZE.nestedToggle} text-[10px] font-semibold uppercase tracking-wide`;
+  const base = `${TYPO.button} btn-press box-border flex-1 rounded-md px-2 ${NAV_SIZE.nestedToggle} text-[10px] font-semibold uppercase tracking-wide`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.toggleIdle}`;

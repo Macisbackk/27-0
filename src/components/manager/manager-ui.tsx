@@ -1,11 +1,13 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { InboxMessage, InboxMessageType, LatestNewsItem, ManagerCareer } from "@/lib/manager/types";
+import { GameButton } from "@/components/ui/GameButton";
 import { formatWage } from "@/lib/manager/managerContracts";
 import {
   REVENUE_SPLIT,
   getOperatingBalance,
   getTransferBudget,
 } from "@/lib/manager/managerFinance";
+import { playUiClick } from "@/lib/sound";
 import { CARD, MANAGER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { managerSectionAccentClass } from "@/lib/manager/managerSurfaces";
@@ -54,6 +56,46 @@ export function ManagerPage({
   return (
     <div className={`${wide ? MANAGER.pageWide : MANAGER.page} ${className}`}>
       {children}
+    </div>
+  );
+}
+
+/** Prominent sticky back control on mobile manager overlays. */
+export function ManagerMobileBackBar({
+  label = "Back",
+  onBack,
+}: {
+  label?: string;
+  onBack: () => void;
+}) {
+  return (
+    <div className="sticky top-0 z-30 -mx-5 mb-4 border-b border-pitch-700/80 bg-pitch-950/98 px-5 py-3 sm:static sm:mx-0 sm:mb-3 sm:border-0 sm:bg-transparent sm:px-0 sm:py-0">
+      <button
+        type="button"
+        onClick={() => {
+          playUiClick();
+          onBack();
+        }}
+        className="btn-press flex w-full min-h-[48px] items-center justify-center gap-2 rounded-xl border-2 border-pitch-500/70 bg-pitch-900/95 px-4 font-display text-sm font-bold uppercase tracking-wide text-white shadow-[0_2px_12px_rgba(0,0,0,0.35)] sm:hidden"
+      >
+        <span className="text-base leading-none" aria-hidden>
+          ←
+        </span>
+        {label}
+      </button>
+      <div className="hidden sm:block">
+        <GameButton
+          variant="secondary"
+          fullWidth={false}
+          size="sm"
+          onClick={() => {
+            playUiClick();
+            onBack();
+          }}
+        >
+          ← {label}
+        </GameButton>
+      </div>
     </div>
   );
 }

@@ -22,16 +22,12 @@ export function ManagerHubStickyActions({
   if (!visible) return null;
 
   return (
-    <div
-      className="fixed inset-x-0 z-40 border-t border-pitch-700/60 bg-pitch-950/95 px-3 py-2 backdrop-blur-md sm:hidden"
-      style={{
-        bottom: "calc(3.25rem + max(0.5rem, env(safe-area-inset-bottom)))",
-      }}
-    >
-      <div className="mx-auto grid max-w-lg grid-cols-2 gap-2">
+    <div className="manager-mobile-play-bar fixed inset-x-0 z-40 flex items-center border-t border-pitch-700/60 bg-pitch-950/98 px-3 backdrop-blur-md sm:hidden">
+      <div className="mx-auto flex w-full max-w-lg gap-2">
         <GameButton
           variant="theme"
           size="sm"
+          className="min-h-[44px] min-w-0 flex-1"
           disabled={!canPlay}
           onClick={() => {
             playUiClick();
@@ -43,6 +39,7 @@ export function ManagerHubStickyActions({
         <GameButton
           variant="secondary"
           size="sm"
+          className="min-h-[44px] min-w-0 flex-1"
           disabled={!canPlay}
           onClick={() => {
             playSimulateRound();

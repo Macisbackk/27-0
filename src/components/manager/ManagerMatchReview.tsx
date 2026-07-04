@@ -12,7 +12,7 @@ import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSquadSlotsFromMatchday } from "@/lib/manager/managerSquad";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
-import { ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
+import { ManagerMobileBackBar, ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
 import {
   getManagerCupRoundLabel,
   isChallengeCupFixture,
@@ -32,21 +32,7 @@ import {
 } from "@/lib/manager/managerMatchMoments";
 
 function MatchReviewBackBar({ onClose }: { onClose: () => void }) {
-  return (
-    <div className="sticky top-0 z-20 -mx-1 mb-3 border-b border-pitch-800/70 bg-pitch-950/95 py-2.5 backdrop-blur-md sm:static sm:mx-0 sm:mb-0 sm:border-0 sm:bg-transparent sm:py-0 sm:backdrop-blur-none">
-      <GameButton
-        variant="secondary"
-        fullWidth={false}
-        size="sm"
-        onClick={() => {
-          playUiClick();
-          onClose();
-        }}
-      >
-        ← Back
-      </GameButton>
-    </div>
-  );
+  return <ManagerMobileBackBar label="Back to hub" onBack={onClose} />;
 }
 
 interface ManagerMatchReviewProps {

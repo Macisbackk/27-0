@@ -60,40 +60,10 @@ function unavailableTextClass(isSuspension: boolean): string {
   return isSuspension ? "text-amber-300" : "text-red-300";
 }
 
-const SQUAD_POOL_SECTIONS = [
-  {
-    id: "backs",
-    label: "Backs",
-    positions: ["FULLBACK", "WING", "CENTRE"] as Position[],
-  },
-  {
-    id: "halves",
-    label: "Halves",
-    positions: ["STAND_OFF", "SCRUM_HALF"] as Position[],
-  },
-  {
-    id: "forwards",
-    label: "Forwards",
-    positions: ["PROP", "HOOKER", "SECOND_ROW", "LOOSE_FORWARD"] as Position[],
-  },
-] as const;
-
-type SquadPoolSectionId = (typeof SQUAD_POOL_SECTIONS)[number]["id"];
-
-function getSquadPoolSection(
-  career: ManagerCareer,
-  playerId: string
-): SquadPoolSectionId {
-  const positions = getManagerPlayerEligiblePositions(career, playerId);
-  for (const section of SQUAD_POOL_SECTIONS) {
-    if (positions.some((pos) => section.positions.includes(pos))) {
-      return section.id;
-    }
-  }
-  return "forwards";
-}
-
 type SquadPoolEntry = ReturnType<typeof getSquadPoolPlayers>[number];
+
+const SQUAD_POOL_GRID_CLASS =
+  "grid grid-flow-col grid-rows-2 gap-x-1.5 gap-y-1.5 [grid-auto-columns:minmax(0,1fr)] sm:gap-x-2 sm:gap-y-2";
 
 function SquadPoolPlayerButton({
   career,
@@ -118,17 +88,17 @@ function SquadPoolPlayerButton({
       <button
         type="button"
         onClick={onClick}
-        className={`${squadSelectionClass(poolRole)} btn-press select-none rounded-lg border px-2 py-1.5 text-left transition sm:px-2 sm:py-2`}
+        className={`${squadSelectionClass(poolRole)} btn-press select-none rounded-lg border px-1.5 py-1.5 text-left transition sm:px-2 sm:py-2`}
       >
-        <div className="flex items-start justify-between gap-1">
-          <p className="min-w-0 truncate text-xs font-medium leading-tight text-white sm:text-sm">
+        <div className="flex items-start justify-between gap-0.5">
+          <p className="min-w-0 flex-1 text-[10px] font-medium leading-[1.15] text-white [overflow-wrap:anywhere] line-clamp-2 sm:text-xs sm:leading-tight">
             {player.name}
           </p>
-          <span className="shrink-0 text-xs font-bold text-theme-primary">
+          <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
             {player.peakRating}
           </span>
         </div>
-        <p className="mt-0.5 truncate text-[9px] text-pitch-400 sm:text-[10px]">
+        <p className="mt-0.5 line-clamp-1 text-[9px] leading-tight text-pitch-400 sm:text-[10px]">
           {positions.map((p) => POSITION_SHORT[p]).join(" · ")} · {sourceLabel}
         </p>
       </button>
@@ -186,24 +156,15 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
     );
   }, [squadPool, career, positionFilter, selectedTarget, replaceSlot, replacementCandidates]);
 
-  const squadPoolBySection = useMemo(() => {
-    const grouped: Record<SquadPoolSectionId, SquadPoolEntry[]> = {
-      backs: [],
-      halves: [],
-      forwards: [],
-    };
-    for (const entry of filteredPool) {
-      grouped[getSquadPoolSection(career, entry.playerId)].push(entry);
-    }
-    for (const section of SQUAD_POOL_SECTIONS) {
-      grouped[section.id].sort((a, b) => {
+  const displayPool = useMemo(
+    () =>
+      [...filteredPool].sort((a, b) => {
         const ra = getManagerPlayer(career, a.playerId)?.peakRating ?? 0;
         const rb = getManagerPlayer(career, b.playerId)?.peakRating ?? 0;
         return rb - ra;
-      });
-    }
-    return grouped;
-  }, [filteredPool, career]);
+      }),
+    [filteredPool, career]
+  );
 
   const applyAssignment = (
     target: MatchdaySlotTarget,
@@ -547,61 +508,21 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
               </button>
             ))}
           </div>
-          {positionFilter === "all" ? (
-            <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
-              {SQUAD_POOL_SECTIONS.map((section) => {
-                const sectionPlayers = squadPoolBySection[section.id];
-                return (
-                  <div key={section.id} className="min-w-0">
-                    <p className="mb-1.5 text-center text-[9px] font-bold uppercase tracking-wider text-pitch-500 sm:text-[10px]">
-                      {section.label}
-                    </p>
-                    <ul
-                      className={`max-h-[13.5rem] overflow-y-auto overscroll-contain ${SPACING.stackSm} pr-0.5`}
-                    >
-                      {sectionPlayers.map((entry) => (
-                        <SquadPoolPlayerButton
-                          key={entry.playerId}
-                          career={career}
-                          entry={entry}
-                          poolRole={getPoolPlayerRole(entry.playerId)}
-                          onClick={() => {
-                            playUiClick();
-                            handlePoolPlayerClick(entry.playerId);
-                          }}
-                        />
-                      ))}
-                      {sectionPlayers.length === 0 && (
-                        <li>
-                          <p className={`px-1 py-2 text-center ${TYPO.bodySm} text-pitch-600`}>
-                            —
-                          </p>
-                        </li>
-                      )}
-                    </ul>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <ul
-              className={`grid max-h-[13.5rem] grid-cols-3 gap-2 overflow-y-auto overscroll-contain sm:gap-2.5 ${SPACING.stackSm}`}
-            >
-              {filteredPool.map((entry) => (
-                <SquadPoolPlayerButton
-                  key={entry.playerId}
-                  career={career}
-                  entry={entry}
-                  poolRole={getPoolPlayerRole(entry.playerId)}
-                  onClick={() => {
-                    playUiClick();
-                    handlePoolPlayerClick(entry.playerId);
-                  }}
-                />
-              ))}
-            </ul>
-          )}
-          {filteredPool.length === 0 && (
+          <ul className={SQUAD_POOL_GRID_CLASS}>
+            {displayPool.map((entry) => (
+              <SquadPoolPlayerButton
+                key={entry.playerId}
+                career={career}
+                entry={entry}
+                poolRole={getPoolPlayerRole(entry.playerId)}
+                onClick={() => {
+                  playUiClick();
+                  handlePoolPlayerClick(entry.playerId);
+                }}
+              />
+            ))}
+          </ul>
+          {displayPool.length === 0 && (
             <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
               {selectedTarget || replaceSourcePlayerId
                 ? "No eligible players for this slot."

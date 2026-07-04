@@ -16,7 +16,7 @@ import {
   getWageBillPercent,
   isWageOverBudget,
 } from "@/lib/manager/managerFinance";
-import { CARD, FILTER, SPACING, TAB_RAIL, tabGroupButtonClass, tabGroupClass } from "@/lib/ui/design-system";
+import { CARD, FILTER, SPACING, tabGroupButtonClass, tabGroupClass } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { formatWage } from "@/lib/manager/managerContracts";
@@ -387,8 +387,7 @@ export function ManagerTransfers({
         </div>
       </ManagerSectionCard>
 
-      <div className={`${TAB_RAIL.outer} sm:overflow-visible`}>
-        <div className={`${tabGroupClass()} ${TAB_RAIL.inner} sm:w-auto`}>
+      <div className={tabGroupClass()}>
         {(
           [
             ["listed", tabCounts.listed],
@@ -406,7 +405,6 @@ export function ManagerTransfers({
             {count != null && count > 0 ? ` (${count})` : ""}
           </button>
         ))}
-        </div>
       </div>
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>

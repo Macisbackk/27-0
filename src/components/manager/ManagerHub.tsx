@@ -473,12 +473,21 @@ export function ManagerHub({
           {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
           {getManagerScheduledFixtureVenueLabel(nextFixture)}
         </p>
+        <p className={`mt-1 sm:hidden ${TYPO.bodySm}`}>
+          <span className="text-pitch-500">Week </span>
+          <span className="font-semibold text-theme-primary">
+            {career.gameWeek}/{career.schedule.length}
+          </span>
+          <span className="text-pitch-500"> · </span>
+          <span className="font-semibold text-white">{ordinal(position)}</span>
+          <span className="text-pitch-500"> · S{career.seasonYear}</span>
+        </p>
         {homeAttendanceOutlook && (
-          <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
+          <p className={`mt-1 hidden ${TYPO.bodySm} text-pitch-500 sm:block`}>
             {homeAttendanceOutlook.label}
           </p>
         )}
-        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+        <div className="mt-2 hidden flex-wrap items-center gap-x-3 gap-y-1.5 sm:flex">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
             Form streak
           </p>
@@ -486,7 +495,7 @@ export function ManagerHub({
             results={career.recentForm.slice(-5) as ("W" | "L" | "D")[]}
           />
         </div>
-        <ManagerStatGrid cols={4} className="mt-3 text-sm">
+        <ManagerStatGrid cols={4} className="mt-3 text-sm [&>*:nth-child(n+5)]:hidden sm:[&>*:nth-child(n+5)]:block">
           <ManagerStat label="Your rating" value={String(teamRating)} tone="primary" />
           {oppRating !== null && (
             <ManagerStat label="Opponent rating" value={String(oppRating)} tone="default" />
@@ -561,6 +570,13 @@ export function ManagerHub({
       </div>
     ) : null;
 
+  const showStickyPlayBar =
+    Boolean(nextFixture && !seasonComplete && !playoffsPending);
+
+  const hubMobilePad = showStickyPlayBar
+    ? "manager-mobile-hub-pad sm:pb-0"
+    : "manager-mobile-nav-pad sm:pb-0";
+
   const scoringLeadersCard =
     ts.played > 0 ? (
       <ManagerSectionCard title="Scoring Leaders">
@@ -628,7 +644,7 @@ export function ManagerHub({
 
   const quickActionsCard =
     onNavigate ? (
-      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+      <div className={`hidden sm:block ${CARD.base} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-3`}>Quick Actions</p>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <GameButton
@@ -675,8 +691,8 @@ export function ManagerHub({
       )}
       <ManagerHubAlertsPanel alerts={hubAlerts} onNavigate={onNavigate} />
       {hubNews.length > 0 && (
-        <ManagerSectionCard title="Latest headlines" variant="inset">
-          <ul className={`mt-2 ${SPACING.stackSm} ${TYPO.bodySm} text-pitch-300`}>
+        <MobileDetailsAccordion title="Latest headlines">
+          <ul className={`${SPACING.stackSm} ${TYPO.bodySm} text-pitch-300`}>
             {hubNews.map((item) => (
               <li key={item.id}>· {item.text}</li>
             ))}
@@ -691,12 +707,13 @@ export function ManagerHub({
               Across the League
             </GameButton>
           )}
-        </ManagerSectionCard>
+        </MobileDetailsAccordion>
       )}
     </>
   );
 
   const seasonProgressCard = (
+    <div className={showStickyPlayBar ? "hidden sm:block" : undefined}>
     <ManagerSectionCard title="Season Progress">
       <p className={`mt-1 ${TYPO.cardTitle}`}>
         Game Week{" "}
@@ -742,10 +759,8 @@ export function ManagerHub({
         />
       </div>
     </ManagerSectionCard>
+    </div>
   );
-
-  const showStickyPlayBar =
-    Boolean(nextFixture && !seasonComplete && !playoffsPending);
 
   const stickyActions = (
     <ManagerHubStickyActions
@@ -806,7 +821,7 @@ export function ManagerHub({
   if (playoffsActive && hubCareer.playoffs) {
     return (
       <>
-        <div className={`${PAGE.section} pb-24 sm:pb-0`}>
+        <div className={`${PAGE.section} ${hubMobilePad}`}>
           <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28">
             {nextFixtureCard}
           </div>
@@ -834,7 +849,7 @@ export function ManagerHub({
 
   return (
     <>
-      <div className={`${PAGE.section} pb-24 sm:pb-0`}>
+      <div className={`${PAGE.section} ${hubMobilePad}`}>
       <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
         {seasonProgressCard}
         {nextFixtureCard}

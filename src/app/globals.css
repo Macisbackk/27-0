@@ -63,6 +63,12 @@
   --danger: #ef4444;
   --danger-rgb: 239 68 68;
   --theme-soft: var(--theme-primary-soft);
+
+  /* Manager mobile chrome — keep bottom nav + hub play bar aligned */
+  --manager-mobile-nav-h: calc(
+    0.5rem + 3.5rem + max(0.5rem, env(safe-area-inset-bottom))
+  );
+  --manager-mobile-playbar-h: calc(1rem + 2.75rem);
 }
 
 body {
@@ -70,6 +76,29 @@ body {
   color: var(--text-primary);
   @apply antialiased;
   font-family: var(--font-body);
+  overflow-x: clip;
+}
+
+html {
+  scrollbar-gutter: stable;
+  overflow-x: clip;
+}
+
+@media (max-width: 639px) {
+  .manager-mobile-nav-pad {
+    padding-bottom: var(--manager-mobile-nav-h);
+  }
+
+  .manager-mobile-hub-pad {
+    padding-bottom: calc(
+      var(--manager-mobile-nav-h) + var(--manager-mobile-playbar-h)
+    );
+  }
+
+  .manager-mobile-play-bar {
+    bottom: var(--manager-mobile-nav-h);
+    height: var(--manager-mobile-playbar-h);
+  }
 }
 
 @layer base {
@@ -907,7 +936,7 @@ body {
 
 @layer components {
   .btn-press {
-    @apply transition-transform duration-100 ease-out active:scale-[0.97] active:brightness-95;
+    @apply transition-[filter,box-shadow,opacity] duration-100 ease-out active:brightness-95;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
@@ -1883,7 +1912,6 @@ button.game-button,
   backdrop-filter: none !important;
   transform: translateZ(0);
   transition:
-    transform 120ms ease,
     box-shadow 120ms ease,
     border-color 120ms ease,
     filter 120ms ease;
@@ -1891,11 +1919,12 @@ button.game-button,
 }
 
 .game-button:hover:not(:disabled) {
-  transform: translateY(-1px);
+  filter: brightness(1.05);
 }
 
 .game-button:active:not(:disabled) {
-  transform: translateY(0) scale(0.98);
+  filter: brightness(0.95);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 .game-button:disabled {

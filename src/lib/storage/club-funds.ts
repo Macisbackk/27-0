@@ -50,6 +50,14 @@ function loadState(): ClubFundsState {
   }
 }
 
+function clubFundsEqual(a: ClubFundsState, b: ClubFundsState): boolean {
+  if (a.balance !== b.balance || a.totalEarned !== b.totalEarned) return false;
+  if (a.paidRunIds.length !== b.paidRunIds.length) return false;
+  const idsA = [...a.paidRunIds].sort().join("\0");
+  const idsB = [...b.paidRunIds].sort().join("\0");
+  return idsA === idsB;
+}
+
 function saveState(state: ClubFundsState): void {
   if (typeof window === "undefined") return;
   const trimmed: ClubFundsState = {
@@ -57,6 +65,8 @@ function saveState(state: ClubFundsState): void {
     totalEarned: state.totalEarned,
     paidRunIds: state.paidRunIds.slice(-MAX_PAID_RUN_IDS),
   };
+  const current = loadState();
+  if (clubFundsEqual(current, trimmed)) return;
   localStorage.setItem(STORAGE_KEYS.clubFunds, JSON.stringify(trimmed));
   window.dispatchEvent(new CustomEvent(CLUB_FUNDS_CHANGED_EVENT));
   void saveCloudClubFunds(trimmed);

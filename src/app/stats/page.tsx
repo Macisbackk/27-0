@@ -5,9 +5,8 @@ import Link from "next/link";
 import { StatsPanel } from "@/components/StatsPanel";
 import { PageShell, PageShellBody } from "@/components/ui/PageShell";
 import { useAuth } from "@/lib/auth-context";
-import { getAllStats, mergeCloudStatsWithLocal } from "@/lib/storage/stats";
-import { importLocalStatsToCloud, loadCloudStats } from "@/lib/storage/stats-cloud";
-import { STORAGE_KEYS } from "@/lib/storage/keys";
+import { getAllStats } from "@/lib/storage/stats";
+import { importLocalStatsToCloud } from "@/lib/storage/stats-cloud";
 import { BTN, CARD, LINK, PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -19,25 +18,6 @@ export default function StatsPage() {
   useEffect(() => {
     setImportMsg(null);
   }, [isLoggedIn]);
-
-  useEffect(() => {
-    if (!isLoggedIn || loading) return;
-
-    let mounted = true;
-    void (async () => {
-      const cloud = await loadCloudStats();
-      const local = getAllStats();
-      const next = mergeCloudStatsWithLocal(cloud ?? local, local);
-      localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(next));
-      if (mounted) {
-        window.dispatchEvent(new Event("stats-merged"));
-      }
-    })();
-
-    return () => {
-      mounted = false;
-    };
-  }, [isLoggedIn, loading]);
 
   const title = coachName ? `${coachName}'s Stats` : "Your Stats";
 

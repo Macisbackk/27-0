@@ -62,8 +62,22 @@ function loadState(): UiThemeStoreState {
   }
 }
 
+function uiThemeStateEqual(a: UiThemeStoreState, b: UiThemeStoreState): boolean {
+  if (a.selectedThemeId !== b.selectedThemeId) return false;
+  if (a.purchaseIds.length !== b.purchaseIds.length) return false;
+  if (a.unlockedThemeIds.length !== b.unlockedThemeIds.length) return false;
+  const purchasesA = [...a.purchaseIds].sort().join("\0");
+  const purchasesB = [...b.purchaseIds].sort().join("\0");
+  if (purchasesA !== purchasesB) return false;
+  const unlockedA = [...a.unlockedThemeIds].sort().join("\0");
+  const unlockedB = [...b.unlockedThemeIds].sort().join("\0");
+  return unlockedA === unlockedB;
+}
+
 function saveState(state: UiThemeStoreState): void {
   if (typeof window === "undefined") return;
+  const current = loadState();
+  if (uiThemeStateEqual(current, state)) return;
   localStorage.setItem(STORAGE_KEYS.uiThemeStore, JSON.stringify(state));
   applyUiThemeById(state.selectedThemeId);
   window.dispatchEvent(new CustomEvent(UI_THEME_CHANGED_EVENT));

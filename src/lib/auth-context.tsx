@@ -34,7 +34,7 @@ import { syncTrophyCabinetLeaderboardOnLoad } from "./storage/trophy-cabinet-lea
 import { syncManagerLeaderboardOnLoad } from "./storage/manager-leaderboard";
 import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
 import { STORAGE_KEYS } from "./storage/keys";
-import { getAllStats, mergeCloudStatsWithLocal } from "./storage/stats";
+import { getAllStats, reconcileStoredStats, storedStatsDifferFromCloud } from "./storage/stats";
 
 interface AuthContextValue {
   user: User | null;
@@ -55,13 +55,24 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+/** Prevents duplicate cloud hydrates when getSession and INITIAL_SESSION both fire. */
+let hydratedSessionKey: string | null = null;
+
 async function hydrateStatsFromCloud(): Promise<void> {
   const cloud = await loadCloudStats();
-  if (!cloud) return;
   const local = getAllStats();
-  const merged = mergeCloudStatsWithLocal(cloud, local);
-  localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(merged));
-  await saveCloudStats(merged);
+
+  if (!cloud) {
+    await saveCloudStats(local);
+    return;
+  }
+
+  const reconciled = reconcileStoredStats(cloud, local);
+  localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(reconciled));
+
+  if (storedStatsDifferFromCloud(cloud, reconciled)) {
+    await saveCloudStats(reconciled);
+  }
 }
 
 async function hydrateClubFundsFromCloud(): Promise<void> {
@@ -91,42 +102,53 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const syncGenerationRef = useRef(0);
 
-  const syncFromSession = useCallback(async (session: Session | null) => {
-    const generation = ++syncGenerationRef.current;
-    const nextUser = session?.user ?? null;
-    setUser(nextUser);
+  const syncFromSession = useCallback(
+    async (session: Session | null, options?: { forceHydrate?: boolean }) => {
+      const generation = ++syncGenerationRef.current;
+      const nextUser = session?.user ?? null;
+      setUser(nextUser);
 
-    if (!nextUser) {
-      if (generation !== syncGenerationRef.current) return;
-      setProfile(null);
-      applySession(null, null);
-      window.dispatchEvent(new Event("auth-state-changed"));
-      return;
-    }
-
-    let nextProfile = await fetchProfile(nextUser.id);
-    if (generation !== syncGenerationRef.current) return;
-
-    if (!nextProfile) {
-      const metaName = nextUser.user_metadata?.coach_name as string | undefined;
-      if (metaName) {
-        await createProfile(nextUser.id, metaName);
-        nextProfile = await fetchProfile(nextUser.id);
+      if (!nextUser) {
+        hydratedSessionKey = null;
         if (generation !== syncGenerationRef.current) return;
+        setProfile(null);
+        applySession(null, null);
+        window.dispatchEvent(new Event("auth-state-changed"));
+        return;
       }
-    }
 
-    setProfile(nextProfile);
-    applySession(session, nextProfile);
+      let nextProfile = await fetchProfile(nextUser.id);
+      if (generation !== syncGenerationRef.current) return;
 
-    await Promise.all([
-      hydrateStatsFromCloud(),
-      hydrateClubFundsFromCloud(),
-      hydrateUiThemeFromCloud(),
-    ]);
-    if (generation !== syncGenerationRef.current) return;
-    window.dispatchEvent(new Event("auth-state-changed"));
-  }, []);
+      if (!nextProfile) {
+        const metaName = nextUser.user_metadata?.coach_name as string | undefined;
+        if (metaName) {
+          await createProfile(nextUser.id, metaName);
+          nextProfile = await fetchProfile(nextUser.id);
+          if (generation !== syncGenerationRef.current) return;
+        }
+      }
+
+      setProfile(nextProfile);
+      applySession(session, nextProfile);
+
+      const sessionKey = nextUser.id;
+      const skipHydrate =
+        !options?.forceHydrate && hydratedSessionKey === sessionKey;
+      if (skipHydrate) return;
+
+      await Promise.all([
+        hydrateStatsFromCloud(),
+        hydrateClubFundsFromCloud(),
+        hydrateUiThemeFromCloud(),
+      ]);
+      if (generation !== syncGenerationRef.current) return;
+
+      hydratedSessionKey = sessionKey;
+      window.dispatchEvent(new Event("auth-state-changed"));
+    },
+    []
+  );
 
   useEffect(() => {
     let mounted = true;
@@ -186,8 +208,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       const result = await authSignUp(email, password, coachName);
       if (result.ok) {
+        hydratedSessionKey = null;
         const { data } = await supabase.auth.getSession();
-        await syncFromSession(data.session);
+        await syncFromSession(data.session, { forceHydrate: true });
       }
       return result;
     },
@@ -198,8 +221,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (email: string, password: string) => {
       const result = await authSignIn(email, password);
       if (result.ok) {
+        hydratedSessionKey = null;
         const { data } = await supabase.auth.getSession();
-        await syncFromSession(data.session);
+        await syncFromSession(data.session, { forceHydrate: true });
       }
       return result;
     },
@@ -208,6 +232,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(async () => {
     await authSignOut();
+    hydratedSessionKey = null;
     setUser(null);
     setProfile(null);
     applySession(null, null);

@@ -5,9 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { sendPasswordResetEmail } from "@/lib/auth";
-import { getAllStats, mergeCloudStatsWithLocal } from "@/lib/storage/stats";
-import { loadCloudStats } from "@/lib/storage/stats-cloud";
-import { STORAGE_KEYS } from "@/lib/storage/keys";
+import { getAllStats, resetCareerStats } from "@/lib/storage/stats";
 import type { UserStatsData } from "@/lib/types";
 import {
   formatRecordOrDash,
@@ -18,7 +16,6 @@ import { PageShell } from "@/components/ui/PageShell";
 import { RL_INFO_BOX_CLASS } from "@/components/cards/rl-card";
 import { BTN, CARD, LINK, PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { EconomyExplainer } from "@/components/EconomyExplainer";
 
 interface StoredStats {
   normal: UserStatsData;
@@ -72,6 +69,10 @@ export default function ProfilePage() {
   const [resetBusy, setResetBusy] = useState(false);
   const [resetMsg, setResetMsg] = useState<string | null>(null);
   const [resetError, setResetError] = useState<string | null>(null);
+  const [statsResetConfirm, setStatsResetConfirm] = useState(false);
+  const [statsResetBusy, setStatsResetBusy] = useState(false);
+  const [statsResetMsg, setStatsResetMsg] = useState<string | null>(null);
+  const [statsResetError, setStatsResetError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !isLoggedIn) {
@@ -82,22 +83,19 @@ export default function ProfilePage() {
   useEffect(() => {
     if (!isLoggedIn) return;
 
-    let mounted = true;
-    setStatsLoading(true);
+    const refresh = () => {
+      setStats(getAllStats());
+      setStatsLoading(false);
+    };
 
-    void (async () => {
-      const cloud = await loadCloudStats();
-      const local = getAllStats();
-      const next = mergeCloudStatsWithLocal(cloud ?? local, local);
-      localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(next));
-      if (mounted) {
-        setStats(next);
-        setStatsLoading(false);
-      }
-    })();
+    setStatsLoading(true);
+    refresh();
+    window.addEventListener("auth-state-changed", refresh);
+    window.addEventListener("stats-merged", refresh);
 
     return () => {
-      mounted = false;
+      window.removeEventListener("auth-state-changed", refresh);
+      window.removeEventListener("stats-merged", refresh);
     };
   }, [isLoggedIn]);
 
@@ -113,6 +111,32 @@ export default function ProfilePage() {
       setResetError(result.error ?? "Could not send reset email.");
     }
     setResetBusy(false);
+  };
+
+  const handleResetCareerStats = async () => {
+    if (!statsResetConfirm) {
+      setStatsResetMsg(null);
+      setStatsResetError(null);
+      setStatsResetConfirm(true);
+      return;
+    }
+
+    setStatsResetBusy(true);
+    setStatsResetMsg(null);
+    setStatsResetError(null);
+    const result = await resetCareerStats();
+    if (result.ok) {
+      setStats(getAllStats());
+      setStatsResetConfirm(false);
+      setStatsResetMsg(
+        isLoggedIn
+          ? "Career stats reset on this device and your online account."
+          : "Career stats reset on this device."
+      );
+    } else {
+      setStatsResetError(result.error ?? "Could not reset career stats.");
+    }
+    setStatsResetBusy(false);
   };
 
   if (loading) {
@@ -147,7 +171,7 @@ export default function ProfilePage() {
       )
     : null;
   const totalRecord = view
-    ? formatRecordOrDash({ wins: view.totalWins, losses: view.totalLosses })
+    ? formatRecordOrDash(view.totalRecord)
     : "—";
 
   return (
@@ -161,8 +185,6 @@ export default function ProfilePage() {
             runs. For deep dives and filters, use Stats.
           </p>
         </header>
-
-        <EconomyExplainer compact />
 
         <div className="space-y-5">
         <SectionCard title="Account">
@@ -192,13 +214,19 @@ export default function ProfilePage() {
             <p className={TYPO.bodySm}>Loading career stats…</p>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              <ProfileStatCard label="Total Wins" value={String(view.totalWins)} />
               <ProfileStatCard
-                label="Total Losses"
-                value={String(view.totalLosses)}
+                label="Seasons Played"
+                value={String(view.totalSeasons)}
               />
-              <ProfileStatCard label="Total Record" value={totalRecord} />
-              <ProfileStatCard label="Total Runs" value={String(view.totalRuns)} />
+              <ProfileStatCard
+                label="Match Wins"
+                value={String(view.totalRecord.wins)}
+              />
+              <ProfileStatCard
+                label="Match Losses"
+                value={String(view.totalRecord.losses)}
+              />
+              <ProfileStatCard label="Match Record" value={totalRecord} />
               <ProfileStatCard
                 label="Minor Premierships"
                 value={String(view.leagueTitles)}
@@ -225,6 +253,56 @@ export default function ProfilePage() {
               View detailed stats →
             </Link>
           </p>
+          <div className="mt-5 border-t border-pitch-700/50 pt-4">
+            <p className={TYPO.bodySm}>
+              Reset Quick Mode wins, seasons, and trophies tracked in Stats.
+              Manager Mode saves on this device are not affected. Leaderboard
+              entries are not removed.
+            </p>
+            {statsResetConfirm ? (
+              <div className="mt-3 rounded-lg border border-red-500/35 bg-red-950/20 p-3">
+                <p className={`${TYPO.bodySm} text-red-200`}>
+                  This cannot be undone. Clear all Quick Mode career stats?
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    disabled={statsResetBusy}
+                    onClick={() => void handleResetCareerStats()}
+                    className={`${BTN.base} ${BTN.danger} text-xs`}
+                  >
+                    Yes, reset career stats
+                  </button>
+                  <button
+                    type="button"
+                    disabled={statsResetBusy}
+                    onClick={() => {
+                      setStatsResetConfirm(false);
+                      setStatsResetError(null);
+                    }}
+                    className={`${BTN.base} ${BTN.secondary} text-xs`}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                disabled={statsResetBusy}
+                onClick={() => void handleResetCareerStats()}
+                className={`${BTN.base} ${BTN.danger} mt-3 text-xs`}
+              >
+                Reset career stats
+              </button>
+            )}
+            {statsResetMsg && (
+              <p className={`mt-3 ${TYPO.body} text-accent-green`}>{statsResetMsg}</p>
+            )}
+            {statsResetError && (
+              <p className={`mt-3 ${TYPO.body} text-red-400`}>{statsResetError}</p>
+            )}
+          </div>
         </SectionCard>
 
         <SectionCard title="Password">

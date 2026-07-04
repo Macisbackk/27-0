@@ -50,18 +50,6 @@ function QuickModePanel({
       <p className={`mt-3 ${TYPO.bodySm} text-gray-500`}>
         {getQuickModeCurrentEraHint(normalEraMode)}
       </p>
-
-      <ModeStartLink
-        href={normalHref}
-        eraMode={normalEraMode}
-        onClick={() => {
-          playUiClick();
-          playModeClassicStart("NORMAL");
-        }}
-        className="mt-5"
-      >
-        {getQuickSeasonStartLabel(normalEraMode)}
-      </ModeStartLink>
     </ModePanel>
   );
 }
@@ -164,7 +152,9 @@ export function HomeModeSelector() {
                 playUiClick();
                 playModeClassicStart("NORMAL");
               }}
-              className="hidden shrink-0 !w-auto sm:mt-1 sm:inline-flex"
+              className={`shrink-0 !w-auto sm:mt-1 ${
+                mobileExpanded ? "inline-flex" : "hidden sm:inline-flex"
+              }`}
             >
               {getQuickSeasonStartLabel(normalEraMode)}
             </ModeStartLink>
