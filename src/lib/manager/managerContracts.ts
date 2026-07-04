@@ -346,16 +346,19 @@ export function applyRenewal(
   if (!contract) return career;
 
   const nextContracts = { ...career.contracts };
-  nextContracts[playerId] = clearRetirementIntentOnRenewal({
-    ...contract,
-    wagePerYear: offer.wagePerYear,
-    yearsRemaining: offer.yearsRequested,
-    expiresAtSeasonEnd: offer.yearsRequested <= 1,
-    squadRole: offer.squadRole,
-    happiness: Math.min(99, contract.happiness + 15),
-    renewalDemand: undefined,
-    status: "renewed",
-  });
+  nextContracts[playerId] = clearRetirementIntentOnRenewal(
+    {
+      ...contract,
+      wagePerYear: offer.wagePerYear,
+      yearsRemaining: offer.yearsRequested,
+      expiresAtSeasonEnd: offer.yearsRequested <= 1,
+      squadRole: offer.squadRole,
+      happiness: Math.min(99, contract.happiness + 15),
+      renewalDemand: undefined,
+      status: "renewed",
+    },
+    career.seasonYear
+  );
 
   const wageBill = computeWageBill(nextContracts);
   return {

@@ -178,7 +178,7 @@ export function ManagerSeasonReview({
           />
           <ManagerInfoRow label="Board Verdict" value={summary.boardVerdict} tone="default" />
           <ManagerInfoRow
-            label="Budget Change"
+            label="Club Funds (on continue)"
             value={`+${formatWage(summary.budgetChange)}`}
             tone="gold"
           />

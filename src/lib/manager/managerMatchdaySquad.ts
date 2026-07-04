@@ -3,10 +3,8 @@ import {
   POSITION_SHORT,
   TEAM_SHEET_ROWS,
 } from "../positions";
-import { canPlayPosition } from "../players/player-positions";
-import type { Position } from "../types";
 import type { ManagerCareer } from "./types";
-import { getManagerPlayer, isCalledUpReserve } from "./managerPlayers";
+import { getManagerPlayer, getManagerPlayerEligiblePositions, isCalledUpReserve } from "./managerPlayers";
 import { isPlayerUnavailable } from "./managerSquad";
 import { ERA_BENCH_FROM_STARTING_17 } from "../players/era-starting-17s";
 
@@ -39,11 +37,8 @@ export function canAssignPlayerToXiiiSlot(
 
   const reserve = career.reserves.find((r) => r.id === playerId);
   if (reserve && !isCalledUpReserve(career, playerId)) return false;
-  if (reserve) {
-    return canPlayPosition(player, position);
-  }
 
-  return canPlayPosition(player, position);
+  return getManagerPlayerEligiblePositions(career, playerId).includes(position);
 }
 
 function normalizeBench(career: ManagerCareer): string[] {

@@ -151,6 +151,8 @@ export function ManagerSquad({
 }: ManagerSquadProps) {
   const finePointer = useFinePointer();
   const matchdayClickTimerRef = useRef<number | null>(null);
+  const squadPoolPanelRef = useRef<HTMLDivElement>(null);
+  const matchdayPanelRef = useRef<HTMLDivElement>(null);
   const [selectedTarget, setSelectedTarget] = useState<MatchdaySlotTarget | null>(
     null
   );
@@ -179,6 +181,20 @@ export function ManagerSquad({
     },
     []
   );
+
+  useEffect(() => {
+    if (!pendingAssignId) return;
+
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (squadPoolPanelRef.current?.contains(target)) return;
+      if (matchdayPanelRef.current?.contains(target)) return;
+      setPendingAssignId(null);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [pendingAssignId]);
 
   const replaceSlot = replaceSourcePlayerId
     ? findPlayerMatchdaySlot(career, replaceSourcePlayerId)
@@ -281,6 +297,11 @@ export function ManagerSquad({
     if (unavailable) {
       playUiClick();
       openPlayerModal(playerId);
+      return;
+    }
+    if (pendingAssignId === playerId) {
+      playUiClick();
+      setPendingAssignId(null);
       return;
     }
     if (pendingAssignId) return;
@@ -515,7 +536,7 @@ export function ManagerSquad({
       )}
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_min(100%,440px)] lg:gap-6 [&>*:first-child]:order-2 [&>*:last-child]:order-1 lg:[&>*:first-child]:order-1 lg:[&>*:last-child]:order-2">
-        <div className={SPACING.stackMd}>
+        <div ref={matchdayPanelRef} className={SPACING.stackMd}>
           <ManagerMatchdayFormation
             career={career}
             interactive
@@ -602,7 +623,7 @@ export function ManagerSquad({
           </div>
         </div>
 
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+        <div ref={squadPoolPanelRef} className={`${CARD.base} ${SPACING.cardPadding}`}>
           <p className={`${TYPO.sectionLabel} mb-2`}>Squad Players</p>
           {pendingAssignId ? (
             <p className={`mb-2 ${TYPO.bodySm} text-pitch-300`}>

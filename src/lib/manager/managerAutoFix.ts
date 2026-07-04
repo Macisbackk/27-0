@@ -1,9 +1,8 @@
-import { canPlayPosition } from "../players/player-positions";
 import { POSITION_SHORT } from "../positions";
 import type { Position } from "../types";
 import type { ManagerCareer } from "./types";
 import { assignPlayerToMatchday, type MatchdaySlotTarget } from "./managerMatchdaySquad";
-import { getManagerPlayer, isCalledUpReserve } from "./managerPlayers";
+import { getManagerPlayer, getManagerPlayerEligiblePositions, isCalledUpReserve } from "./managerPlayers";
 import { callUpReserveForNextMatch } from "./managerReserves";
 import { isPlayerUnavailable } from "./managerSquad";
 import { validateFitMatchdaySquad } from "./managerMatchdayValidation";
@@ -38,7 +37,12 @@ function bestSquadPlayerForPosition(
     .filter((ps) => !isPlayerUnavailable(ps))
     .map((ps) => {
       const player = getManagerPlayer(career, ps.playerId);
-      if (!player || !canPlayPosition(player, position)) return null;
+      if (
+        !player ||
+        !getManagerPlayerEligiblePositions(career, ps.playerId).includes(position)
+      ) {
+        return null;
+      }
       return {
         id: ps.playerId,
         rating: player.peakRating,
@@ -60,7 +64,9 @@ function bestReserveForPosition(
     .map((r) => {
       const player = getManagerPlayer(career, r.id);
       if (!player) return null;
-      if (!canPlayPosition(player, position)) return null;
+      if (!getManagerPlayerEligiblePositions(career, r.id).includes(position)) {
+        return null;
+      }
       return { id: r.id, rating: player.peakRating };
     })
     .filter((c): c is NonNullable<typeof c> => c !== null)

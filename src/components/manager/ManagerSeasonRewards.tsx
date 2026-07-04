@@ -12,10 +12,10 @@ import {
   claimManagerSeasonRewards,
   computeManagerSeasonRewardLines,
   formatRewardTotal,
-  getManagerSeasonRewardSplit,
   isManagerSeasonRewardClaimed,
 } from "@/lib/manager/managerSeasonRewards";
-import { formatWage } from "@/lib/manager/managerContracts";
+import { formatClubFunds } from "@/lib/club-funds";
+import { getClubFundsBalance } from "@/lib/storage/club-funds";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { playSeasonComplete, playUiClick } from "@/lib/sound";
 
@@ -45,7 +45,7 @@ export function ManagerSeasonRewards({
           lines,
           total: lines.reduce((s, l) => s + l.amount, 0),
           awarded: false,
-          newBalance: 0,
+          newBalance: getClubFundsBalance(),
         }
       : null
   );
@@ -77,7 +77,7 @@ export function ManagerSeasonRewards({
           {formatRewardTotal(lines)}
         </p>
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-          Added to your transfer fund and club operations when claimed
+          Added to your account Club Funds when claimed
         </p>
       </div>
 
@@ -100,22 +100,13 @@ export function ManagerSeasonRewards({
 
       {payout && payout.awarded && (
         <>
-          <ClubFundsEarned payout={payout} title="Season earnings" />
-          {(() => {
-            const { transfer, operating } = getManagerSeasonRewardSplit(
-              payout.total
-            );
-            return (
-              <p className={`${TYPO.bodySm} text-center text-pitch-300`}>
-                <span className="text-accent-gold">{formatWage(transfer)}</span>
-                <span className="text-pitch-500"> to transfer fund · </span>
-                <span className="text-theme-primary">
-                  {formatWage(operating)}
-                </span>
-                <span className="text-pitch-500"> to club operations</span>
-              </p>
-            );
-          })()}
+          <ClubFundsEarned payout={payout} title="Club Funds earned" />
+          <p className={`${TYPO.bodySm} text-center text-pitch-300`}>
+            New balance:{" "}
+            <span className="font-semibold text-accent-gold">
+              {formatClubFunds(payout.newBalance)}
+            </span>
+          </p>
         </>
       )}
 

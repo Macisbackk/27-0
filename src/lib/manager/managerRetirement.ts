@@ -56,6 +56,15 @@ export function shouldRetireAtSeasonEnd(
   contract: PlayerContract
 ): boolean {
   if (contract.retiringAtSeasonEnd) return true;
+
+  // Persuaded to stay — honour renewed or active deals instead of age rolls.
+  if (
+    contract.status === "renewed" ||
+    (!contract.expiresAtSeasonEnd && contract.yearsRemaining > 0)
+  ) {
+    return false;
+  }
+
   if (age >= 39) return true;
   if (age >= 38) {
     const rng = seedrandom(
@@ -187,6 +196,7 @@ export function ensureRetirementIntent(career: ManagerCareer): ManagerCareer {
 
     const age = getManagerPlayerAge(next, ps.playerId) ?? 0;
     if (!isRetirementAge(age)) continue;
+    if (contract.status === "renewed") continue;
     if (contract.retirementIntentSeason === career.seasonYear) continue;
 
     const willRetire = rollRetirementIntent(career, ps.playerId, age);
@@ -402,11 +412,13 @@ export function tickLeaguePlayerCareerTotals(
 }
 
 export function clearRetirementIntentOnRenewal(
-  contract: PlayerContract
+  contract: PlayerContract,
+  seasonYear: number
 ): PlayerContract {
   return {
     ...contract,
     retiringAtSeasonEnd: false,
-    retirementIntentSeason: undefined,
+    // Lock intent for this season so sync does not re-roll after a new deal.
+    retirementIntentSeason: seasonYear,
   };
 }

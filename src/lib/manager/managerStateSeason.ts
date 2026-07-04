@@ -16,11 +16,11 @@ import { createManagerChallengeCup } from "./managerChallengeCup";
 import { userQualifiedForManagerPlayoffs } from "./managerPlayoffs";
 import { initPreSeasonState } from "./managerFriendlies";
 import {
-  applyClubRevenue,
   computeSeasonTransferBudget,
   initManagerFinance,
   refreshClubFundsForSeason,
 } from "./managerFinance";
+import { awardManagerSeasonBoardGrant } from "./managerSeasonRewards";
 import { addContractLeavingInboxMessage, clearSeasonTransferState } from "./managerInbox";
 import { createClubAttendanceData, applyAttendancePerformanceDrift } from "./managerAttendance";
 import { applySeasonAiReserveIntake } from "./managerReserves";
@@ -309,13 +309,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     transferMarket: seasonListed.map((l) => l.playerId),
     playerDevelopment: snapshotSquadSeasonStartRatings(withIntake),
   };
-  if (summary.budgetChange > 0) {
-    finalCareer = applyClubRevenue(
-      finalCareer,
-      summary.budgetChange,
-      "board_grant"
-    );
-  }
+  awardManagerSeasonBoardGrant(finalCareer, summary);
   const { career: withPrestige } = applySeasonClubPrestigeDrift(
     finalCareer,
     summary
