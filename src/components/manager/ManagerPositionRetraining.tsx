@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { POSITION_SHORT } from "@/lib/positions";
-import type { ManagerCareer } from "@/lib/manager/types";
+import type { ManagerCareer, PlayerPositionRetraining } from "@/lib/manager/types";
 import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import {
   formatRetrainingDuration,
@@ -16,7 +16,6 @@ import {
   startPositionRetraining,
   WEEKS_PER_MONTH,
   type PlayerRetrainingStatus,
-  type PlayerPositionRetraining,
 } from "@/lib/manager/managerPositionRetraining";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { playUiClick } from "@/lib/sound";
