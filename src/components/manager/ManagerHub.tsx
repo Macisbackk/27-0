@@ -26,7 +26,6 @@ import {
   getLastHomeGate,
 } from "@/lib/manager/managerAttendance";
 import { getManagerHubAlerts } from "@/lib/manager/managerHubAlerts";
-import { getHubNewsItems } from "@/lib/manager/managerNews";
 import { getManagerDifficultyPressure } from "@/lib/manager/managerDifficulty";
 import { shouldShowManagerOnboarding } from "@/lib/manager/managerOnboarding";
 import { ManagerHubAlertsPanel } from "@/components/manager/ManagerHubAlertsPanel";
@@ -651,8 +650,6 @@ export function ManagerHub({
       </div>
     ) : null;
 
-  const hubNews = getHubNewsItems(career).slice(0, 3);
-
   const commandCentre = (
     <>
       {showOnboarding && (
@@ -662,15 +659,6 @@ export function ManagerHub({
         />
       )}
       <ManagerHubAlertsPanel alerts={hubAlerts} onNavigate={onNavigate} />
-      {hubNews.length > 0 && (
-        <MobileDetailsAccordion title="Latest headlines">
-          <ul className={`${SPACING.stackSm} ${TYPO.bodySm} text-pitch-300`}>
-            {hubNews.map((item) => (
-              <li key={item.id}>· {item.text}</li>
-            ))}
-          </ul>
-        </MobileDetailsAccordion>
-      )}
     </>
   );
 
