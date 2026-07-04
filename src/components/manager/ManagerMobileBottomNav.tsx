@@ -63,10 +63,10 @@ export function ManagerMobileBottomNav({
               type="button"
               disabled={disabled}
               onClick={() => navigate(tab.id)}
-              className={`btn-press flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-center transition ${
+              className={`btn-press flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-xl border-2 px-1 py-2 text-center transition ${
                 isActive
-                  ? `${BTN.tabActive} ring-2 ring-theme-primary/50 ring-offset-1 ring-offset-pitch-950`
-                  : "border border-pitch-700/40 bg-pitch-900/50 text-pitch-300"
+                  ? BTN.tabActive
+                  : "border-transparent bg-pitch-900/50 text-pitch-300 hover:bg-pitch-800/60 hover:text-white"
               } ${disabled ? "pointer-events-none opacity-40" : ""}`}
               aria-current={isActive ? "page" : undefined}
             >
@@ -86,10 +86,10 @@ export function ManagerMobileBottomNav({
               playUiClick();
               setMoreOpen((open) => !open);
             }}
-            className={`btn-press relative flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-center transition ${
+            className={`btn-press relative flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-xl border-2 px-1 py-2 text-center transition ${
               moreActive || moreOpen
-                ? `${BTN.tabActive} ring-2 ring-theme-primary/50 ring-offset-1 ring-offset-pitch-950`
-                : "border border-pitch-700/40 bg-pitch-900/50 text-pitch-300"
+                ? BTN.tabActive
+                : "border-transparent bg-pitch-900/50 text-pitch-300 hover:bg-pitch-800/60 hover:text-white"
             } ${disabled ? "pointer-events-none opacity-40" : ""}`}
             aria-expanded={moreOpen}
             aria-haspopup="dialog"

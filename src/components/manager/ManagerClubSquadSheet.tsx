@@ -12,7 +12,6 @@ import {
   getClubMatchdayLineup,
   getLineupXiiiPlayers,
 } from "@/lib/manager/managerLeagueLineup";
-import { getManagerPlayerAge } from "@/lib/manager/managerPlayers";
 import {
   managerClubAccentCardClass,
   managerClubAccentCardStyle,
@@ -62,34 +61,38 @@ function ReadonlyInterchangeSlot({
   player,
   shirtNumber,
   listed,
-  age,
   onSelect,
 }: {
   player: Player | undefined;
   shirtNumber: number;
   listed?: boolean;
-  age?: number;
   onSelect?: () => void;
 }) {
   const content = (
-    <>
-      <p className="text-[10px] text-pitch-500">{shirtNumber}.</p>
-      <p className="truncate text-sm text-white">{player?.name ?? "Empty"}</p>
-      {player && (
-        <p className="text-[10px] text-theme-primary">{player.peakRating}</p>
-      )}
-      {(age != null || listed) && (
-        <div className="mt-0.5 flex flex-wrap gap-1 text-[10px] text-pitch-500">
-          {age != null && <span>{age}y</span>}
-          {listed && (
-            <span className="font-bold uppercase tracking-wider text-theme-primary">
-              Listed
-            </span>
-          )}
-        </div>
-      )}
-    </>
+    <div className="flex min-h-[4.5rem] min-w-0 flex-col gap-1">
+      <div className="flex items-center justify-between gap-1">
+        <span className="text-[10px] font-semibold text-pitch-500">
+          {shirtNumber}
+        </span>
+        {player ? (
+          <span className="text-[10px] font-bold text-theme-primary">
+            {player.peakRating}
+          </span>
+        ) : null}
+      </div>
+      <p className="line-clamp-2 flex-1 text-xs font-medium leading-snug text-white [overflow-wrap:anywhere]">
+        {player?.name ?? "Empty"}
+      </p>
+      {listed ? (
+        <span className="text-[9px] font-bold uppercase tracking-wide text-theme-primary">
+          Listed
+        </span>
+      ) : null}
+    </div>
   );
+
+  const className =
+    "min-w-0 rounded-lg border border-pitch-700/50 bg-pitch-950/55 px-2 py-2 text-left";
 
   if (player && onSelect) {
     return (
@@ -99,18 +102,14 @@ function ReadonlyInterchangeSlot({
           playUiClick();
           onSelect();
         }}
-        className="btn-press rounded-lg border border-pitch-700/50 bg-pitch-950/55 px-2 py-2 text-left transition hover:border-theme-primary/40 hover:bg-pitch-900/70"
+        className={`btn-press ${className} transition hover:border-theme-primary/40 hover:bg-pitch-900/70`}
       >
         {content}
       </button>
     );
   }
 
-  return (
-    <div className="rounded-lg border border-pitch-700/50 bg-pitch-950/55 px-2 py-2 text-left">
-      {content}
-    </div>
-  );
+  return <div className={className}>{content}</div>;
 }
 
 type SelectedLeaguePlayer = {
@@ -304,11 +303,6 @@ export function ManagerClubSquadSheet({
                       player={player}
                       shirtNumber={14 + i}
                       listed={playerId ? listedPlayerIds.has(playerId) : false}
-                      age={
-                        playerId
-                          ? getManagerPlayerAge(career, playerId)
-                          : undefined
-                      }
                       onSelect={
                         playerId
                           ? () =>

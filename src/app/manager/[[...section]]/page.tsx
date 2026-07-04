@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { ManagerLanding } from "@/components/manager/ManagerLanding";
@@ -99,7 +99,6 @@ import { ManagerSaveMigrationNotice } from "@/components/manager/ManagerSaveMigr
 import {
   MANAGER_NAV_VIEWS,
   isManagerNavView,
-  isManagerOverlayView,
   managerPathForView,
   managerPathFromLegacyViewParam,
   managerViewFromPathname,
@@ -116,6 +115,23 @@ const SCROLL_TOP_VIEWS: ManagerView[] = [
 function scrollManagerPageToTop() {
   if (typeof window === "undefined") return;
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+}
+
+function setManagerView(
+  setView: Dispatch<SetStateAction<ManagerView>>,
+  next: ManagerView
+) {
+  setView((current) => (current === next ? current : next));
+}
+
+/** Map URL → manager view for cold loads and browser back/forward. */
+function resolveViewFromPathname(pathname: string): ManagerView | null {
+  const fromPath = managerViewFromPathname(pathname);
+  if (fromPath === "club-select") return "club-select";
+  const normalized = pathname.replace(/\/+$/, "") || "/manager";
+  if (normalized === "/manager") return "landing";
+  if (fromPath && isManagerNavView(fromPath)) return fromPath;
+  return null;
 }
 
 function resolveInitialNavView(pathname: string, saved: ManagerCareer): ManagerView {
@@ -164,13 +180,16 @@ export default function ManagerPage() {
   } | null>(null);
   const [showSaveMigration, setShowSaveMigration] = useState(false);
 
-  const viewRef = useRef<ManagerView>(view);
-  viewRef.current = view;
+  /** Set when goToView updates the URL — pathname effect must not re-sync view or reload save. */
+  const internalNavRef = useRef(false);
+  /** Slot whose career is already in React state — skip disk re-hydrate on tab switches. */
+  const careerSlotRef = useRef<number | null>(null);
 
   const goToView = useCallback(
     (next: ManagerView, options?: { syncUrl?: boolean }) => {
-      setView(next);
+      setManagerView(setView, next);
       if (options?.syncUrl === false) return;
+      internalNavRef.current = true;
       if (next === "landing") {
         router.replace("/manager");
         return;
@@ -187,19 +206,38 @@ export default function ManagerPage() {
   }, []);
 
   useEffect(() => {
-    const slot = getActiveSaveSlot();
-    setActiveSlot(slot);
     refreshSaveSlots();
+    setActiveSlot(getActiveSaveSlot());
+  }, [refreshSaveSlots]);
+
+  /** URL → view only (back/forward, cold load). Never reload career or save slots here. */
+  useLayoutEffect(() => {
+    if (internalNavRef.current) {
+      internalNavRef.current = false;
+      return;
+    }
+    const resolved = resolveViewFromPathname(pathname);
+    if (resolved) setManagerView(setView, resolved);
+  }, [pathname]);
+
+  /** Load career from disk once per save slot — not on every tab change. */
+  useLayoutEffect(() => {
+    const slot = getActiveSaveSlot();
+    setActiveSlot((prev) => (prev === slot ? prev : slot));
+
     const fromPath = managerViewFromPathname(pathname);
     if (!fromPath || !isManagerNavView(fromPath)) return;
+    if (careerSlotRef.current === slot) return;
+
     const raw = readManagerCareerRaw(slot);
     if (!raw) return;
-    const previousVersion = raw.saveVersion;
-    const saved = hydrateManagerCareer(raw);
-    setCareer(saved);
-    setShowSaveMigration(shouldShowSaveMigrationNotice(previousVersion));
-    setView(fromPath);
-  }, [pathname, refreshSaveSlots]);
+
+    careerSlotRef.current = slot;
+    setCareer(hydrateManagerCareer(raw));
+    setShowSaveMigration(
+      shouldShowSaveMigrationNotice(raw.saveVersion)
+    );
+  }, [pathname]);
 
   const persist = useCallback(
     (next: ManagerCareer) => {
@@ -270,19 +308,6 @@ export default function ManagerPage() {
     }
   }, [pathname, router]);
 
-  useEffect(() => {
-    if (!career) return;
-    if (isManagerOverlayView(viewRef.current)) return;
-    const fromPath = managerViewFromPathname(pathname);
-    if (fromPath === "club-select") {
-      setView("club-select");
-      return;
-    }
-    if (fromPath && isManagerNavView(fromPath)) {
-      setView(fromPath);
-    }
-  }, [pathname, career]);
-
   const handleFriendlySelect = useCallback(
     (choiceId: string) => {
       if (!career) return;
@@ -296,10 +321,13 @@ export default function ManagerPage() {
   const handleStartNew = (slot: number) => {
     setActiveSlot(slot);
     setActiveSaveSlot(slot);
+    careerSlotRef.current = null;
+    setCareer(null);
     goToView("club-select");
   };
 
   const continueCareer = (saved: ManagerCareer) => {
+    careerSlotRef.current = getActiveSaveSlot();
     setCareer(saved);
     if (saved.isSeasonComplete) {
       if (shouldShowChallengeCupCelebration(saved)) {
@@ -365,6 +393,7 @@ export default function ManagerPage() {
     if (deleteSlot == null) return;
     deleteManagerCareer(deleteSlot);
     if (deleteSlot === activeSlot) {
+      careerSlotRef.current = null;
       setCareer(null);
     }
     refreshSaveSlots();
@@ -399,6 +428,7 @@ export default function ManagerPage() {
   const handleSelectClub = (club: string) => {
     const next = createNewCareer(club, activeSlot);
     recordCareerStarted(club);
+    careerSlotRef.current = activeSlot;
     setCareer(next);
     refreshSaveSlots();
     goToView("hub");

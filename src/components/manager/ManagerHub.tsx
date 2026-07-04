@@ -297,32 +297,6 @@ function HubPlayoffsCampaignCard({ career }: { career: ManagerCareer }) {
   );
 }
 
-function HubStandingsPanel({
-  career,
-  onViewClub,
-  onViewFullLeague,
-}: {
-  career: ManagerCareer;
-  onViewClub?: (club: string) => void;
-  onViewFullLeague?: () => void;
-}) {
-  return (
-    <div className={SPACING.stackSm}>
-      <ManagerLeagueTable
-        career={career}
-        title="League Snapshot"
-        subtitle="Top of the table — expand for the full standings"
-        onViewClub={onViewClub}
-      />
-      {onViewFullLeague && (
-        <GameButton variant="secondary" size="sm" onClick={onViewFullLeague}>
-          Across the League
-        </GameButton>
-      )}
-    </div>
-  );
-}
-
 export function ManagerHub({
   career,
   onPlayGame,
@@ -646,20 +620,13 @@ export function ManagerHub({
     onNavigate ? (
       <div className={`hidden sm:block ${CARD.base} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-3`}>Quick Actions</p>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           <GameButton
             variant="secondary"
             size="sm"
             onClick={() => onNavigate("squad")}
           >
             Squad & Tactics
-          </GameButton>
-          <GameButton
-            variant="secondary"
-            size="sm"
-            onClick={() => onNavigate("across-league")}
-          >
-            Across League
           </GameButton>
           <GameButton
             variant="secondary"
@@ -697,16 +664,6 @@ export function ManagerHub({
               <li key={item.id}>· {item.text}</li>
             ))}
           </ul>
-          {onNavigate && (
-            <GameButton
-              variant="secondary"
-              size="sm"
-              className="mt-3"
-              onClick={() => onNavigate("across-league")}
-            >
-              Across the League
-            </GameButton>
-          )}
         </MobileDetailsAccordion>
       )}
     </>
@@ -774,13 +731,6 @@ export function ManagerHub({
 
   const clubDetailsSections = (
     <>
-      <HubStandingsPanel
-        career={career}
-        onViewClub={setViewClubSheet}
-        onViewFullLeague={
-          onNavigate ? () => onNavigate("across-league") : undefined
-        }
-      />
       <ManagerClubFinancesPanel career={career} collapsible />
       <HubBoardBudgetAttendance
         career={career}
