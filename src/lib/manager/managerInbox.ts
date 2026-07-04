@@ -244,7 +244,7 @@ export function addSeasonRewardInboxMessage(
     id: msgId,
     type: "season_reward",
     title: "Season Complete",
-    body: `${career.seasonYear} season finished — ${position}${getOrdinal(position)} in the league, Challenge Cup: ${cupOutcome.label}. Club Funds rewards available: ${total}.`,
+    body: `${career.seasonYear} season finished — ${position}${getOrdinal(position)} in the league, Challenge Cup: ${cupOutcome.label}. Season earnings available: ${total}.`,
     week: career.gameWeek,
     season: career.seasonYear,
     gameWeek: career.gameWeek,

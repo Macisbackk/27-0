@@ -1,11 +1,16 @@
 import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import type { ClubFundsEarnedLine, ClubFundsPayoutResult } from "../club-funds";
 import { formatClubFunds } from "../club-funds";
-import { awardClubFundsLines } from "../storage/club-funds";
 import type { ManagerCareer, ManagerSeasonSummary } from "./types";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { didMeetManagerBoardExpectation } from "./club-config";
 import { getCareerExpectationTier } from "./managerDifficulty";
+import {
+  applyClubRevenue,
+  getOperatingBalance,
+  getTransferBudget,
+  splitRevenue,
+} from "./managerFinance";
 
 export function getManagerSeasonRewardRunId(career: ManagerCareer): string {
   return `manager-${career.id}-s${career.seasonYear}`;
@@ -139,18 +144,48 @@ export function claimManagerSeasonRewards(
 ): { payout: ClubFundsPayoutResult; career: ManagerCareer } {
   const runId = getManagerSeasonRewardRunId(career);
   const lines = computeManagerSeasonRewardLines(career, summary);
-  const payout = awardClubFundsLines(runId, lines);
+  const total = lines.reduce((sum, line) => sum + line.amount, 0);
+  const reserves =
+    getTransferBudget(career) + getOperatingBalance(career);
+
+  if (isManagerSeasonRewardClaimed(career) || total <= 0) {
+    return {
+      payout: {
+        runId,
+        lines,
+        total,
+        awarded: false,
+        newBalance: reserves,
+      },
+      career,
+    };
+  }
+
+  const nextCareer = applyClubRevenue(career, total, "board_grant");
 
   return {
-    payout,
+    payout: {
+      runId,
+      lines,
+      total,
+      awarded: true,
+      newBalance:
+        getTransferBudget(nextCareer) + getOperatingBalance(nextCareer),
+    },
     career: {
-      ...career,
-      seasonRewardClaimedForYear: payout.awarded
-        ? career.seasonYear
-        : career.seasonRewardClaimedForYear,
+      ...nextCareer,
+      seasonRewardClaimedForYear: career.seasonYear,
       updatedAt: new Date().toISOString(),
     },
   };
+}
+
+export function getManagerSeasonRewardSplit(total: number): {
+  transfer: number;
+  operating: number;
+} {
+  const { transfer, operating } = splitRevenue(total, "board_grant");
+  return { transfer, operating };
 }
 
 export function isManagerSeasonRewardClaimed(career: ManagerCareer): boolean {

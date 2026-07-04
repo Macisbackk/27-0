@@ -10,12 +10,13 @@ import {
   formatRetrainingDuration,
   formatRetrainingPathLabel,
   getAvailableRetrainingTargets,
+  getActiveRetraining,
   getPlayerRetrainingStatus,
   getRetrainingProgress,
-  listActiveRetraining,
   startPositionRetraining,
   WEEKS_PER_MONTH,
   type PlayerRetrainingStatus,
+  type PlayerPositionRetraining,
 } from "@/lib/manager/managerPositionRetraining";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { playUiClick } from "@/lib/sound";
@@ -38,11 +39,58 @@ function playerChipClass(
   if (status === "already_dual" || status === "no_paths") {
     return `${base} cursor-not-allowed border-pitch-600/60 bg-pitch-900/40 text-pitch-400 opacity-60`;
   }
-  if (status === "training") {
-    return `${base} cursor-not-allowed border-theme-primary/30 bg-theme-primary/10 text-theme-primary/70`;
-  }
   if (selected) return `${base} ${FILTER.chipActive}`;
   return `${base} ${FILTER.chipIdle} btn-press`;
+}
+
+function TrainingPlayerCard({
+  name,
+  rating,
+  training,
+}: {
+  name: string;
+  rating: number;
+  training: PlayerPositionRetraining;
+}) {
+  const progress = getRetrainingProgress(training);
+  const pct = Math.round(progress * 100);
+  const weeksDone = training.totalWeeks - training.weeksRemaining;
+
+  return (
+    <div
+      className={`${CARD.inset} min-w-[9.5rem] max-w-[11.5rem] border-theme-primary/35 bg-gradient-to-b from-theme-primary/10 to-pitch-950/90 px-3 py-2.5 text-left`}
+      aria-label={`${name} training ${pct}% complete`}
+    >
+      <div className="flex items-start justify-between gap-2">
+        <p className="min-w-0 truncate text-xs font-semibold text-white">{name}</p>
+        <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary">
+          {rating}
+        </span>
+      </div>
+      <p className="mt-0.5 text-[10px] font-medium text-theme-primary/90">
+        {formatRetrainingPathLabel(training.fromPosition, training.targetPosition)}
+      </p>
+      <div className="mt-2 flex items-center justify-between gap-2 text-[10px] tabular-nums">
+        <span className="font-semibold text-theme-primary">{pct}%</span>
+        <span className="text-pitch-500">
+          {weeksDone}/{training.totalWeeks} wk
+        </span>
+        <span className="text-pitch-400">{weeksToMonthsLabel(training.weeksRemaining)} left</span>
+      </div>
+      <div
+        className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-pitch-800/90 ring-1 ring-pitch-700/50"
+        role="progressbar"
+        aria-valuenow={pct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-theme-primary/80 to-theme-primary transition-[width] duration-300"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+    </div>
+  );
 }
 
 export function ManagerPositionRetrainingPanel({
@@ -65,9 +113,9 @@ export function ManagerPositionRetrainingPanel({
       .filter((row): row is NonNullable<typeof row> => row != null)
       .sort((a, b) => {
         const rank = (s: PlayerRetrainingStatus) =>
-          s === "available"
+          s === "training"
             ? 0
-            : s === "training"
+            : s === "available"
               ? 1
               : s === "already_dual"
                 ? 2
@@ -78,8 +126,6 @@ export function ManagerPositionRetrainingPanel({
       });
   }, [career]);
 
-  const activeTraining = useMemo(() => listActiveRetraining(career), [career]);
-
   const selectedRow = selectedPlayerId
     ? squadPlayers.find((row) => row.entry.playerId === selectedPlayerId) ?? null
     : null;
@@ -87,6 +133,8 @@ export function ManagerPositionRetrainingPanel({
   const selectedPath = selectedRow?.options.find(
     (path) => `${path.from}->${path.to}` === selectedPathKey
   );
+
+  const trainingCount = squadPlayers.filter((p) => p.status === "training").length;
 
   const handleSelectPlayer = (playerId: string, status: PlayerRetrainingStatus) => {
     if (status !== "available") return;
@@ -132,45 +180,11 @@ export function ManagerPositionRetrainingPanel({
         </p>
       )}
 
-      {activeTraining.length > 0 && (
-        <div className={`mt-4 ${SPACING.stackSm} text-left`}>
-          <p className={`${TYPO.sectionLabel} mb-2 text-center`}>In progress</p>
-          <ul className={SPACING.stackSm}>
-            {activeTraining.map(({ playerId, training }) => {
-              const player = getManagerPlayer(career, playerId);
-              const progress = getRetrainingProgress(training);
-              return (
-                <li
-                  key={playerId}
-                  className="rounded-lg border border-pitch-600/60 bg-pitch-900/40 px-3 py-2.5"
-                >
-                  <div className="flex flex-wrap items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-white">
-                        {player?.name ?? "Unknown"}
-                      </p>
-                      <p className={`${TYPO.bodySm} text-pitch-400`}>
-                        {formatRetrainingPathLabel(
-                          training.fromPosition,
-                          training.targetPosition
-                        )}
-                      </p>
-                    </div>
-                    <span className="shrink-0 text-xs font-semibold tabular-nums text-theme-primary">
-                      {weeksToMonthsLabel(training.weeksRemaining)} left
-                    </span>
-                  </div>
-                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-pitch-800">
-                    <div
-                      className="h-full rounded-full bg-theme-primary transition-all"
-                      style={{ width: `${Math.round(progress * 100)}%` }}
-                    />
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+      {trainingCount > 0 && (
+        <p className={`mx-auto mt-3 max-w-lg ${TYPO.bodySm} text-theme-primary/90`}>
+          {trainingCount} player{trainingCount === 1 ? "" : "s"} in training — progress
+          updates each league week.
+        </p>
       )}
 
       <div className="mt-4">
@@ -178,6 +192,18 @@ export function ManagerPositionRetrainingPanel({
         <div className="flex flex-wrap justify-center gap-2">
           {squadPlayers.map(({ entry, player, status }) => {
             const isSelected = selectedPlayerId === entry.playerId;
+            const training = getActiveRetraining(career, entry.playerId);
+
+            if (status === "training" && training) {
+              return (
+                <TrainingPlayerCard
+                  key={entry.playerId}
+                  name={player.name}
+                  rating={player.peakRating}
+                  training={training}
+                />
+              );
+            }
 
             return (
               <button

@@ -4,30 +4,6 @@ import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
-interface EconomyExplainerProps {
-  compact?: boolean;
-}
-
-export function EconomyExplainer({ compact = false }: EconomyExplainerProps) {
-  return (
-    <div
-      className={`${compact ? CARD.inset : CARD.base} ${SPACING.cardPaddingSm} text-left`}
-    >
-      <p className={TYPO.sectionLabel}>Two economies</p>
-      <ul className={`mt-2 ${SPACING.stackSm} ${TYPO.bodySm} text-pitch-300`}>
-        <li>
-          <span className="font-semibold text-accent-gold">Club funds</span> — earned
-          in Quick Mode, spent in the Store on UI themes. Syncs online when logged in.
-        </li>
-        <li>
-          <span className="font-semibold text-theme-primary">Manager finances</span>{" "}
-          — transfer budget, wages, and gate receipts inside your career save only.
-        </li>
-      </ul>
-    </div>
-  );
-}
-
 interface GuestSaveNudgeProps {
   context: "manager-season" | "quick-season";
 }

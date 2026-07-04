@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
-import { EconomyExplainer } from "@/components/EconomyExplainer";
 import { GameButton } from "@/components/ui/GameButton";
 import { getClubColors } from "@/lib/clubs";
 import type { ManagerSaveSlotSummary } from "@/lib/manager/managerState";
@@ -51,8 +50,6 @@ export function ManagerLanding({
           club. Up to three careers on this device — export saves to back them up.
         </p>
       </div>
-
-      <EconomyExplainer compact />
 
       {importMessage && (
         <p className={`${TYPO.bodySm} text-theme-primary`}>{importMessage}</p>

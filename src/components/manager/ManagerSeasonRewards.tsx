@@ -12,8 +12,10 @@ import {
   claimManagerSeasonRewards,
   computeManagerSeasonRewardLines,
   formatRewardTotal,
+  getManagerSeasonRewardSplit,
   isManagerSeasonRewardClaimed,
 } from "@/lib/manager/managerSeasonRewards";
+import { formatWage } from "@/lib/manager/managerContracts";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { playSeasonComplete, playUiClick } from "@/lib/sound";
 
@@ -75,7 +77,7 @@ export function ManagerSeasonRewards({
           {formatRewardTotal(lines)}
         </p>
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-          Main Club Funds earned for your season performance
+          Added to your transfer fund and club operations when claimed
         </p>
       </div>
 
@@ -97,7 +99,24 @@ export function ManagerSeasonRewards({
       </div>
 
       {payout && payout.awarded && (
-        <ClubFundsEarned payout={payout} />
+        <>
+          <ClubFundsEarned payout={payout} title="Season earnings" />
+          {(() => {
+            const { transfer, operating } = getManagerSeasonRewardSplit(
+              payout.total
+            );
+            return (
+              <p className={`${TYPO.bodySm} text-center text-pitch-300`}>
+                <span className="text-accent-gold">{formatWage(transfer)}</span>
+                <span className="text-pitch-500"> to transfer fund · </span>
+                <span className="text-theme-primary">
+                  {formatWage(operating)}
+                </span>
+                <span className="text-pitch-500"> to club operations</span>
+              </p>
+            );
+          })()}
+        </>
       )}
 
       {claimed && !payout?.awarded && (
@@ -108,7 +127,7 @@ export function ManagerSeasonRewards({
 
       {!claimed && (
         <GameButton variant="theme" onClick={handleClaim}>
-          Claim Club Funds
+          Claim season earnings
         </GameButton>
       )}
 

@@ -7,16 +7,20 @@ import { TYPO } from "@/lib/ui/typography";
 
 interface ClubFundsEarnedProps {
   payout: ClubFundsPayoutResult | null;
+  title?: string;
 }
 
-export function ClubFundsEarned({ payout }: ClubFundsEarnedProps) {
+export function ClubFundsEarned({
+  payout,
+  title = "Club Funds Earned",
+}: ClubFundsEarnedProps) {
   if (!payout || payout.lines.length === 0) return null;
 
   return (
     <div
       className={`${CARD.panel} mx-auto mt-4 w-full max-w-md border border-accent-green/25 px-4 py-3 text-center`}
     >
-      <p className={TYPO.sectionLabel}>Club Funds Earned</p>
+      <p className={TYPO.sectionLabel}>{title}</p>
       <ul className={`mt-2 space-y-1 ${TYPO.bodySm}`}>
         {payout.lines.map((line) => (
           <li key={line.id} className="text-gray-300">
