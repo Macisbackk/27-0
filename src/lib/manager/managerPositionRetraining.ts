@@ -28,6 +28,8 @@ export const POSITION_RETRAINING_PATHS: PositionRetrainingPath[] = [
   { from: "WING", to: "FULLBACK", months: 1 },
   { from: "STAND_OFF", to: "FULLBACK", months: 2 },
   { from: "SCRUM_HALF", to: "FULLBACK", months: 2 },
+  { from: "STAND_OFF", to: "HOOKER", months: 4 },
+  { from: "SCRUM_HALF", to: "HOOKER", months: 4 },
   { from: "SECOND_ROW", to: "LOOSE_FORWARD", months: 6 },
   { from: "LOOSE_FORWARD", to: "STAND_OFF", months: 12 },
   { from: "LOOSE_FORWARD", to: "SCRUM_HALF", months: 12 },

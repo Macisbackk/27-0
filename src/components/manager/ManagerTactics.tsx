@@ -22,23 +22,25 @@ import { getTacticGameplaySummary } from "@/lib/manager/managerTacticsScoring";
 import { ManagerPositionRetrainingPanel } from "@/components/manager/ManagerPositionRetraining";
 import { playUiClick } from "@/lib/sound";
 
-function OptionGroup<T extends string>({
+function CompactOptionRow<T extends string>({
   label,
   options,
   value,
-  bio,
   onChange,
 }: {
   label: string;
   options: { value: T; label: string }[];
   value: T;
-  bio: string;
   onChange: (v: T) => void;
 }) {
   return (
-    <div className="text-center">
-      <p className={`${TYPO.sectionLabel} mb-2`}>{label}</p>
-      <div className="flex flex-wrap justify-center gap-2">
+    <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-2.5">
+      <p
+        className={`${TYPO.sectionLabel} shrink-0 sm:w-[4.75rem] sm:text-left sm:text-[10px]`}
+      >
+        {label}
+      </p>
+      <div className="flex min-w-0 flex-1 flex-wrap justify-center gap-1 sm:justify-start sm:gap-1.5">
         {options.map((opt) => (
           <button
             key={opt.value}
@@ -47,16 +49,51 @@ function OptionGroup<T extends string>({
               playUiClick();
               onChange(opt.value);
             }}
-            className={`rounded-lg border px-3 py-2 text-xs transition ${
-              value === opt.value ? FILTER.chipActive : FILTER.chipIdle
+            className={`rounded-md border px-2 py-1 text-[10px] leading-tight transition sm:px-2.5 sm:py-1.5 sm:text-xs ${
+              value === opt.value ? FILTER.chipActive : `${FILTER.chipIdle} btn-press`
             }`}
           >
             {opt.label}
           </button>
         ))}
       </div>
-      <p className={`mx-auto mt-2 max-w-lg ${TYPO.bodySm} text-pitch-400`}>
-        {bio}
+    </div>
+  );
+}
+
+function TacticsSetupPanel({
+  tactics,
+  onChange,
+}: {
+  tactics: ManagerTactics;
+  onChange: (patch: Partial<ManagerTactics>) => void;
+}) {
+  return (
+    <div className={`${CARD.stat} ${SPACING.cardPaddingSm} space-y-2.5`}>
+      <CompactOptionRow
+        label="Style"
+        options={PLAYING_STYLE_OPTIONS}
+        value={tactics.playingStyle}
+        onChange={(v) => onChange({ playingStyle: v })}
+      />
+      <CompactOptionRow
+        label="Attack"
+        options={ATTACK_FOCUS_OPTIONS}
+        value={tactics.attackFocus}
+        onChange={(v) => onChange({ attackFocus: v })}
+      />
+      <CompactOptionRow
+        label="Defence"
+        options={DEFENCE_FOCUS_OPTIONS}
+        value={tactics.defenceFocus}
+        onChange={(v) => onChange({ defenceFocus: v })}
+      />
+      <p
+        className={`border-t border-pitch-700/40 pt-2 text-[11px] leading-snug text-pitch-400 sm:text-xs`}
+      >
+        {PLAYING_STYLE_BIOS[tactics.playingStyle]}{" "}
+        <span className="text-pitch-600">·</span> {ATTACK_FOCUS_BIOS[tactics.attackFocus]}{" "}
+        <span className="text-pitch-600">·</span> {DEFENCE_FOCUS_BIOS[tactics.defenceFocus]}
       </p>
     </div>
   );
@@ -68,19 +105,18 @@ function MatchImpactPreview({ tactics }: { tactics: ManagerTactics }) {
   return (
     <div className={`${CARD.stat} ${SPACING.cardPaddingSm} text-center`}>
       <p className={TYPO.sectionLabel}>Match Impact</p>
-      <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
+      <p className={`mt-1.5 text-[11px] leading-snug text-pitch-300 sm:text-xs`}>
         <span className="font-semibold text-theme-primary">Attack: </span>
         {summary.attackEffect}
-      </p>
-      <p className={`mt-1.5 ${TYPO.bodySm} text-pitch-300`}>
+        <span className="mx-1.5 text-pitch-600">·</span>
         <span className="font-semibold text-sky-300">Defence: </span>
         {summary.defenceEffect}
       </p>
-      <p className={`mt-3 text-sm font-semibold text-theme-primary`}>
+      <p className={`mt-1.5 text-xs font-semibold text-theme-primary sm:text-sm`}>
         {summary.matchImpact}
       </p>
       {summary.cautions.length > 0 && (
-        <div className="mt-2 flex flex-wrap justify-center gap-1.5">
+        <div className="mt-1.5 flex flex-wrap justify-center gap-1">
           {summary.cautions.map((caution) => (
             <span
               key={caution}
@@ -102,18 +138,11 @@ function LivePlayPreview({ career }: { career: ManagerCareer }) {
   return (
     <div className={`${CARD.stat} ${SPACING.cardPaddingSm} text-center`}>
       <p className={TYPO.sectionLabel}>Live Play</p>
-      <p className={`mx-auto mt-2 max-w-lg ${TYPO.bodySm} text-pitch-200`}>
-        When you play a match live, you can switch between{" "}
-        <span className="text-pitch-100">Attack</span>,{" "}
-        <span className="text-pitch-100">Balanced</span>,{" "}
-        <span className="text-pitch-100">Defend</span>, and{" "}
-        <span className="text-pitch-100">Champagne</span> during the game.
-      </p>
-      <div className="mt-3 flex flex-wrap justify-center gap-1.5">
+      <div className="mt-1.5 flex flex-wrap justify-center gap-1">
         {LIVE_MATCH_COMMANDS.map((cmd) => (
           <span
             key={cmd}
-            className={`rounded-lg border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${
+            className={`rounded-md border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
               cmd === defaultCommand
                 ? "border-theme-primary/50 bg-theme-primary/15 text-theme-primary"
                 : "border-pitch-600/60 bg-pitch-900/40 text-pitch-400"
@@ -123,17 +152,11 @@ function LivePlayPreview({ career }: { career: ManagerCareer }) {
           </span>
         ))}
       </div>
-      <p className={`mx-auto mt-3 max-w-lg ${TYPO.bodySm} text-pitch-300`}>
+      <p className={`mx-auto mt-1.5 max-w-lg text-[11px] leading-snug text-pitch-300 sm:text-xs`}>
         <span className="font-semibold text-theme-primary">
           {getLiveCommandLabel(defaultCommand)}
         </span>{" "}
-        is your kick-off command with this setup.
-      </p>
-      <p className={`mx-auto mt-1 max-w-lg ${TYPO.bodySm} text-pitch-400`}>
-        {reason}
-      </p>
-      <p className={`mx-auto mt-2 max-w-lg ${TYPO.bodySm} text-pitch-500`}>
-        {describeLiveCommand(defaultCommand)}
+        at kick-off — {reason}. {describeLiveCommand(defaultCommand)}
       </p>
     </div>
   );
@@ -154,28 +177,8 @@ export function ManagerTacticsPanel({
   };
 
   return (
-    <div className={`${SPACING.stackLg}`}>
-      <OptionGroup
-        label="Playing Style"
-        options={PLAYING_STYLE_OPTIONS}
-        value={t.playingStyle}
-        bio={PLAYING_STYLE_BIOS[t.playingStyle]}
-        onChange={(v) => update({ playingStyle: v })}
-      />
-      <OptionGroup
-        label="Attack Focus"
-        options={ATTACK_FOCUS_OPTIONS}
-        value={t.attackFocus}
-        bio={ATTACK_FOCUS_BIOS[t.attackFocus]}
-        onChange={(v) => update({ attackFocus: v })}
-      />
-      <OptionGroup
-        label="Defence Focus"
-        options={DEFENCE_FOCUS_OPTIONS}
-        value={t.defenceFocus}
-        bio={DEFENCE_FOCUS_BIOS[t.defenceFocus]}
-        onChange={(v) => update({ defenceFocus: v })}
-      />
+    <div className={SPACING.stackSm}>
+      <TacticsSetupPanel tactics={t} onChange={update} />
       <MatchImpactPreview tactics={t} />
       <LivePlayPreview career={career} />
       {onCareerUpdate && (

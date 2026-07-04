@@ -42,7 +42,9 @@ export const MODAL = {
   panelPadding: `p-3 sm:p-6 ${SPACING.safeBottom}`,
 } as const;
 
-/** Horizontally scrollable tab rails with snap (mobile). */
+/** Horizontally scrollable tab rails with snap (mobile).
+ *  Use for leaderboard / match-review only — manager page sub-tabs must use
+ *  ManagerSubTabBar + tabGroupClass() so tabs stay centered. */
 export const TAB_RAIL = {
   outer:
     "flex justify-center snap-x snap-mandatory overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
@@ -112,7 +114,7 @@ export const FILTER = {
   chipTouch:
     "min-h-[44px] rounded-lg border px-3 py-2 text-sm font-medium transition",
   tabGroup:
-    "mx-auto flex w-full flex-nowrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:inline-flex sm:w-auto",
+    "mx-auto flex w-full flex-nowrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:inline-flex sm:w-auto sm:flex-wrap",
 } as const;
 
 /** Shared pressed-state utility — pair with BTN.base on interactive elements. */

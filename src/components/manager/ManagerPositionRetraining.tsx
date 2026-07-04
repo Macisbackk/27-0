@@ -30,64 +30,142 @@ function weeksToMonthsLabel(weeks: number): string {
   return formatRetrainingDuration(months);
 }
 
-function playerChipClass(
-  status: PlayerRetrainingStatus,
-  selected: boolean
-): string {
-  const base = "rounded-lg border px-3 py-2 text-xs transition";
-  if (status === "already_dual" || status === "no_paths") {
-    return `${base} cursor-not-allowed border-pitch-600/60 bg-pitch-900/40 text-pitch-400 opacity-60`;
+const RETRAINING_PLAYER_CARD_WIDTH =
+  "w-[10.5rem] shrink-0 sm:w-[11rem]";
+
+function retrainingCardShellClass(variant: "idle" | "selected" | "training" | "disabled"): string {
+  const base = `${CARD.inset} ${RETRAINING_PLAYER_CARD_WIDTH} flex flex-col rounded-lg border px-3 py-2.5 text-left transition`;
+  switch (variant) {
+    case "selected":
+      return `${base} border-theme-tertiary/60 bg-theme-primary/10`;
+    case "training":
+      return `${base} border-theme-primary/35 bg-gradient-to-b from-theme-primary/10 to-pitch-950/90`;
+    case "disabled":
+      return `${base} cursor-not-allowed border-pitch-600/60 bg-pitch-900/40 opacity-60`;
+    default:
+      return `${base} border-pitch-600/60 bg-pitch-950/55 btn-press hover:border-pitch-500/55 hover:bg-pitch-900/70`;
   }
-  if (selected) return `${base} ${FILTER.chipActive}`;
-  return `${base} ${FILTER.chipIdle} btn-press`;
 }
 
-function TrainingPlayerCard({
+function RetrainingPlayerCardHeader({
   name,
   rating,
-  training,
 }: {
   name: string;
   rating: number;
-  training: PlayerPositionRetraining;
 }) {
-  const progress = getRetrainingProgress(training);
-  const pct = Math.round(progress * 100);
-  const weeksDone = training.totalWeeks - training.weeksRemaining;
+  return (
+    <div className="flex items-start justify-between gap-2">
+      <p className="min-w-0 truncate text-xs font-semibold text-white">{name}</p>
+      <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary">
+        {rating}
+      </span>
+    </div>
+  );
+}
+
+function RetrainingPlayerCardFooter({
+  training,
+}: {
+  training?: PlayerPositionRetraining;
+}) {
+  if (training) {
+    const progress = getRetrainingProgress(training);
+    const pct = Math.round(progress * 100);
+    const weeksDone = training.totalWeeks - training.weeksRemaining;
+
+    return (
+      <div className="mt-2 min-h-[2.75rem]">
+        <div className="flex items-center justify-between gap-1 text-[10px] tabular-nums">
+          <span className="font-semibold text-theme-primary">{pct}%</span>
+          <span className="text-pitch-500">
+            {weeksDone}/{training.totalWeeks} wk
+          </span>
+          <span className="text-pitch-400">{weeksToMonthsLabel(training.weeksRemaining)} left</span>
+        </div>
+        <div
+          className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-pitch-800/90 ring-1 ring-pitch-700/50"
+          role="progressbar"
+          aria-valuenow={pct}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-theme-primary/80 to-theme-primary transition-[width] duration-300"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  return <div className="mt-2 min-h-[2.75rem]" aria-hidden />;
+}
+
+interface RetrainingPlayerCardProps {
+  name: string;
+  rating: number;
+  subtitle: string;
+  variant: "idle" | "selected" | "training" | "disabled";
+  training?: PlayerPositionRetraining;
+  title?: string;
+  onClick?: () => void;
+}
+
+function RetrainingPlayerCard({
+  name,
+  rating,
+  subtitle,
+  variant,
+  training,
+  title,
+  onClick,
+}: RetrainingPlayerCardProps) {
+  const shellClass = retrainingCardShellClass(variant);
+  const subtitleClass =
+    variant === "training"
+      ? "text-theme-primary/90"
+      : variant === "selected"
+        ? "text-theme-primary"
+        : variant === "disabled"
+          ? "text-pitch-500"
+          : "text-pitch-400";
+
+  const body = (
+    <>
+      <RetrainingPlayerCardHeader name={name} rating={rating} />
+      <p className={`mt-0.5 line-clamp-2 text-[10px] font-medium leading-tight ${subtitleClass}`}>
+        {subtitle}
+      </p>
+      <RetrainingPlayerCardFooter training={training} />
+    </>
+  );
+
+  if (variant === "idle" || variant === "selected") {
+    return (
+      <button
+        type="button"
+        className={shellClass}
+        title={title}
+        onClick={onClick}
+        aria-pressed={variant === "selected"}
+      >
+        {body}
+      </button>
+    );
+  }
 
   return (
     <div
-      className={`${CARD.inset} min-w-[9.5rem] max-w-[11.5rem] border-theme-primary/35 bg-gradient-to-b from-theme-primary/10 to-pitch-950/90 px-3 py-2.5 text-left`}
-      aria-label={`${name} training ${pct}% complete`}
+      className={shellClass}
+      title={title}
+      aria-label={
+        training
+          ? `${name} training ${Math.round(getRetrainingProgress(training) * 100)}% complete`
+          : title
+      }
     >
-      <div className="flex items-start justify-between gap-2">
-        <p className="min-w-0 truncate text-xs font-semibold text-white">{name}</p>
-        <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary">
-          {rating}
-        </span>
-      </div>
-      <p className="mt-0.5 text-[10px] font-medium text-theme-primary/90">
-        {formatRetrainingPathLabel(training.fromPosition, training.targetPosition)}
-      </p>
-      <div className="mt-2 flex items-center justify-between gap-2 text-[10px] tabular-nums">
-        <span className="font-semibold text-theme-primary">{pct}%</span>
-        <span className="text-pitch-500">
-          {weeksDone}/{training.totalWeeks} wk
-        </span>
-        <span className="text-pitch-400">{weeksToMonthsLabel(training.weeksRemaining)} left</span>
-      </div>
-      <div
-        className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-pitch-800/90 ring-1 ring-pitch-700/50"
-        role="progressbar"
-        aria-valuenow={pct}
-        aria-valuemin={0}
-        aria-valuemax={100}
-      >
-        <div
-          className="h-full rounded-full bg-gradient-to-r from-theme-primary/80 to-theme-primary transition-[width] duration-300"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
+      {body}
     </div>
   );
 }
@@ -188,39 +266,67 @@ export function ManagerPositionRetrainingPanel({
 
       <div className="mt-4">
         <p className={`${TYPO.sectionLabel} mb-2`}>Squad players</p>
-        <div className="flex flex-wrap justify-center gap-2">
+        <div className="mx-auto grid max-w-3xl grid-cols-2 justify-items-center gap-2 sm:grid-cols-3 lg:grid-cols-4">
           {squadPlayers.map(({ entry, player, status }) => {
             const isSelected = selectedPlayerId === entry.playerId;
             const training = getActiveRetraining(career, entry.playerId);
+            const positionLabel = formatPlayerPositionLabel(player, { short: true });
 
             if (status === "training" && training) {
               return (
-                <TrainingPlayerCard
+                <RetrainingPlayerCard
                   key={entry.playerId}
                   name={player.name}
                   rating={player.peakRating}
+                  subtitle={formatRetrainingPathLabel(
+                    training.fromPosition,
+                    training.targetPosition
+                  )}
+                  variant="training"
                   training={training}
                 />
               );
             }
 
+            if (status === "already_dual") {
+              return (
+                <RetrainingPlayerCard
+                  key={entry.playerId}
+                  name={player.name}
+                  rating={player.peakRating}
+                  subtitle={`${positionLabel} · Dual role`}
+                  variant="disabled"
+                  title={`${player.name} already has a dual role`}
+                />
+              );
+            }
+
+            if (status === "no_paths") {
+              return (
+                <RetrainingPlayerCard
+                  key={entry.playerId}
+                  name={player.name}
+                  rating={player.peakRating}
+                  subtitle={`${positionLabel} · No paths`}
+                  variant="disabled"
+                  title={`${player.name} has no retraining paths`}
+                />
+              );
+            }
+
             return (
-              <button
+              <RetrainingPlayerCard
                 key={entry.playerId}
-                type="button"
-                disabled={status !== "available"}
-                onClick={() => handleSelectPlayer(entry.playerId, status)}
-                title={
-                  status === "already_dual"
-                    ? `${player.name} already has a dual role`
-                    : status === "no_paths"
-                      ? `${player.name} has no retraining paths`
-                      : undefined
+                name={player.name}
+                rating={player.peakRating}
+                subtitle={
+                  isSelected && selectedPath
+                    ? formatRetrainingPathLabel(selectedPath.from, selectedPath.to)
+                    : `${positionLabel} · Tap to select`
                 }
-                className={playerChipClass(status, isSelected)}
-              >
-                {player.name}
-              </button>
+                variant={isSelected ? "selected" : "idle"}
+                onClick={() => handleSelectPlayer(entry.playerId, status)}
+              />
             );
           })}
         </div>
@@ -274,8 +380,8 @@ export function ManagerPositionRetrainingPanel({
       )}
 
       <p className={`mx-auto mt-4 max-w-lg ${TYPO.bodySm} text-pitch-500`}>
-        CE→SR/WG · SR→PF/LF · PF→SR · HK→HB/LF · WG→FB · HB→FB · LF→HB ·
-        FB→WG/HB
+        CE→SR/WG · SR→PF/LF · PF→SR · HK→SO/SH/LF · HB→HK/FB · WG→FB · LF→SO/SH ·
+        FB→WG/SO/SH
       </p>
     </div>
   );

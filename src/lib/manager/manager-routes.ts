@@ -21,6 +21,15 @@ const SECTION_TO_VIEW = Object.fromEntries(
   ])
 ) as Record<string, ManagerView>;
 
+/** Squad page sub-tabs — reflected in the URL (/manager/squad/tactics). */
+export const SQUAD_SUB_TABS = ["squad", "tactics"] as const;
+export type SquadSubTab = (typeof SQUAD_SUB_TABS)[number];
+
+export const SQUAD_SUB_TAB_OPTIONS: { id: SquadSubTab; label: string }[] = [
+  { id: "squad", label: "Squad" },
+  { id: "tactics", label: "Tactics" },
+];
+
 export const MANAGER_NAV_VIEWS: ManagerView[] = [
   "hub",
   "inbox",
@@ -33,25 +42,62 @@ export const MANAGER_NAV_VIEWS: ManagerView[] = [
   "stats",
 ];
 
+export interface ParsedManagerPath {
+  view: ManagerView | null;
+  squadSubTab: SquadSubTab | null;
+}
+
+export function parseManagerPathname(pathname: string): ParsedManagerPath {
+  const normalized = pathname.replace(/\/+$/, "") || "/manager";
+  if (normalized === "/manager") {
+    return { view: null, squadSubTab: null };
+  }
+
+  const squadMatch = normalized.match(/^\/manager\/squad(?:\/(tactics))?$/);
+  if (squadMatch) {
+    return {
+      view: "squad",
+      squadSubTab: squadMatch[1] === "tactics" ? "tactics" : "squad",
+    };
+  }
+
+  const singleMatch = normalized.match(/^\/manager\/([^/]+)$/);
+  if (!singleMatch) {
+    return { view: null, squadSubTab: null };
+  }
+
+  return {
+    view: SECTION_TO_VIEW[singleMatch[1]!] ?? null,
+    squadSubTab: null,
+  };
+}
+
 export function managerPathForView(view: ManagerView): string {
   if (view === "landing") return "/manager";
+  if (view === "tactics") return managerPathForSquadTab("tactics");
   const section = MANAGER_ROUTE_SECTIONS[view];
   if (section === undefined) return "/manager";
   return `/manager/${section}`;
 }
 
-/** Map /manager/hub, /manager/squad, etc. to a nav view (null on /manager = saves menu). */
+export function managerPathForSquadTab(tab: SquadSubTab = "squad"): string {
+  if (tab === "tactics") return "/manager/squad/tactics";
+  return "/manager/squad";
+}
+
+/** Map /manager/hub, /manager/squad, /manager/squad/tactics, etc. to a nav view. */
 export function managerViewFromPathname(pathname: string): ManagerView | null {
-  const normalized = pathname.replace(/\/+$/, "") || "/manager";
-  if (normalized === "/manager") return null;
-  const match = normalized.match(/^\/manager\/([^/]+)$/);
-  if (!match) return null;
-  return SECTION_TO_VIEW[match[1]!] ?? null;
+  return parseManagerPathname(pathname).view;
+}
+
+export function managerSquadSubTabFromPathname(pathname: string): SquadSubTab {
+  return parseManagerPathname(pathname).squadSubTab ?? "squad";
 }
 
 /** Legacy ?view=squad query support → path. */
 export function managerPathFromLegacyViewParam(view: string | null): string | null {
   if (!view) return null;
+  if (view === "tactics") return managerPathForSquadTab("tactics");
   if (!MANAGER_NAV_VIEWS.includes(view as ManagerView) && view !== "club-select") {
     return null;
   }

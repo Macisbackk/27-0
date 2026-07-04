@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
-import { CARD, SPACING, tabGroupButtonClass, tabGroupClass } from "@/lib/ui/design-system";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Position } from "@/lib/types";
@@ -31,11 +31,18 @@ import {
   ManagerViewHeader,
 } from "@/components/manager/manager-ui";
 import { ManagerTacticsPanel } from "@/components/manager/ManagerTactics";
-import { playTabChange, playUiClick } from "@/lib/sound";
+import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
+import {
+  SQUAD_SUB_TAB_OPTIONS,
+  type SquadSubTab,
+} from "@/lib/manager/manager-routes";
+import { playUiClick } from "@/lib/sound";
 
 interface ManagerSquadProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
+  subTab: SquadSubTab;
+  onSubTabChange: (tab: SquadSubTab) => void;
 }
 
 const SINGLE_CLICK_DELAY_MS = 220;
@@ -125,17 +132,14 @@ function SquadPoolPlayerButton({
   );
 }
 
-type SquadSubTab = "squad" | "tactics";
-
-const SQUAD_SUB_TABS: { id: SquadSubTab; label: string }[] = [
-  { id: "squad", label: "Squad" },
-  { id: "tactics", label: "Tactics" },
-];
-
-export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
+export function ManagerSquad({
+  career,
+  onUpdate,
+  subTab,
+  onSubTabChange,
+}: ManagerSquadProps) {
   const finePointer = useFinePointer();
   const matchdayClickTimerRef = useRef<number | null>(null);
-  const [subTab, setSubTab] = useState<SquadSubTab>("squad");
   const [selectedTarget, setSelectedTarget] = useState<MatchdaySlotTarget | null>(
     null
   );
@@ -368,8 +372,6 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
 
   const switchSubTab = (next: SquadSubTab) => {
     if (subTab === next) return;
-    playTabChange();
-    playUiClick();
     if (next === "tactics") {
       setSelectedTarget(null);
       setPendingAssignId(null);
@@ -380,7 +382,7 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
         matchdayClickTimerRef.current = null;
       }
     }
-    setSubTab(next);
+    onSubTabChange(next);
   };
 
   return (
@@ -412,18 +414,11 @@ export function ManagerSquad({ career, onUpdate }: ManagerSquadProps) {
         }
       />
 
-      <div className={tabGroupClass()}>
-        {SQUAD_SUB_TABS.map(({ id, label }) => (
-          <button
-            key={id}
-            type="button"
-            className={tabGroupButtonClass(subTab === id)}
-            onClick={() => switchSubTab(id)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      <ManagerSubTabBar
+        tabs={SQUAD_SUB_TAB_OPTIONS}
+        active={subTab}
+        onChange={switchSubTab}
+      />
 
       {subTab === "tactics" ? (
         <ManagerTacticsPanel

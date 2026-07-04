@@ -16,7 +16,8 @@ import {
   getWageBillPercent,
   isWageOverBudget,
 } from "@/lib/manager/managerFinance";
-import { CARD, FILTER, SPACING, tabGroupButtonClass, tabGroupClass } from "@/lib/ui/design-system";
+import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
+import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { formatWage } from "@/lib/manager/managerContracts";
@@ -330,12 +331,22 @@ export function ManagerTransfers({
 
   const switchTab = (next: TransferTab) => {
     if (tab === next) return;
-    playUiClick();
     setTab(next);
     setListedNegotiateId(null);
     setFreeAgentNegotiateId(null);
     setOfferPlayerId(null);
   };
+
+  const transferSubTabs = (
+    [
+      ["listed", tabCounts.listed],
+      ["freeAgents", tabCounts.freeAgents],
+      ["unlisted", null],
+    ] as const
+  ).map(([id, count]) => ({
+    id,
+    label: `${TRANSFER_TAB_LABELS[id]}${count != null && count > 0 ? ` (${count})` : ""}`,
+  }));
 
   const tabSubtitle =
     tab === "listed"
@@ -387,25 +398,7 @@ export function ManagerTransfers({
         </div>
       </ManagerSectionCard>
 
-      <div className={tabGroupClass()}>
-        {(
-          [
-            ["listed", tabCounts.listed],
-            ["freeAgents", tabCounts.freeAgents],
-            ["unlisted", null],
-          ] as const
-        ).map(([id, count]) => (
-          <button
-            key={id}
-            type="button"
-            className={tabGroupButtonClass(tab === id)}
-            onClick={() => switchTab(id)}
-          >
-            {TRANSFER_TAB_LABELS[id]}
-            {count != null && count > 0 ? ` (${count})` : ""}
-          </button>
-        ))}
-      </div>
+      <ManagerSubTabBar tabs={transferSubTabs} active={tab} onChange={switchTab} />
 
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-3`}>Filter by position</p>

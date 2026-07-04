@@ -3,9 +3,8 @@
 import { useState } from "react";
 import {
   SPACING,
-  tabGroupButtonClass,
-  tabGroupClass,
 } from "@/lib/ui/design-system";
+import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -28,7 +27,6 @@ import {
   ManagerStat,
   leaguePositionTone,
 } from "@/components/manager/manager-ui";
-import { playUiClick } from "@/lib/sound";
 
 type StatsTab = "season" | "career" | "retired";
 
@@ -52,27 +50,15 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
         </p>
       </div>
 
-      <div className={tabGroupClass()}>
-        {(
-          [
-            ["season", "Season"],
-            ["career", "Career"],
-            ["retired", "Retired"],
-          ] as const
-        ).map(([id, label]) => (
-          <button
-            key={id}
-            type="button"
-            className={tabGroupButtonClass(tab === id)}
-            onClick={() => {
-              if (tab !== id) playUiClick();
-              setTab(id);
-            }}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      <ManagerSubTabBar
+        tabs={[
+          { id: "season", label: "Season" },
+          { id: "career", label: "Career" },
+          { id: "retired", label: "Retired" },
+        ]}
+        active={tab}
+        onChange={setTab}
+      />
 
       {tab === "season" ? (
         <SeasonStatsPanel career={career} />

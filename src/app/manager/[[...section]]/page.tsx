@@ -99,9 +99,12 @@ import { ManagerSaveMigrationNotice } from "@/components/manager/ManagerSaveMigr
 import {
   MANAGER_NAV_VIEWS,
   isManagerNavView,
+  managerPathForSquadTab,
   managerPathForView,
   managerPathFromLegacyViewParam,
+  managerSquadSubTabFromPathname,
   managerViewFromPathname,
+  type SquadSubTab,
 } from "@/lib/manager/manager-routes";
 
 /** Full-screen manager views that should open at the top of the page. */
@@ -143,6 +146,7 @@ function resolveInitialNavView(pathname: string, saved: ManagerCareer): ManagerV
 export default function ManagerPage() {
   const router = useRouter();
   const pathname = usePathname();
+  const squadSubTab = managerSquadSubTabFromPathname(pathname);
   const [view, setView] = useState<ManagerView>("landing");
   const [career, setCareer] = useState<ManagerCareer | null>(null);
   const [activeSlot, setActiveSlot] = useState(0);
@@ -297,6 +301,14 @@ export default function ManagerPage() {
       goToView(next);
     },
     [career, goToView]
+  );
+
+  const handleSquadSubTabChange = useCallback(
+    (tab: SquadSubTab) => {
+      internalNavRef.current = true;
+      router.replace(managerPathForSquadTab(tab));
+    },
+    [router]
   );
 
   useEffect(() => {
@@ -929,7 +941,12 @@ export default function ManagerPage() {
                   />
                 )}
                 {view === "squad" && (
-                  <ManagerSquad career={career} onUpdate={persist} />
+                  <ManagerSquad
+                    career={career}
+                    onUpdate={persist}
+                    subTab={squadSubTab}
+                    onSubTabChange={handleSquadSubTabChange}
+                  />
                 )}
                 {view === "reserves" && (
                   <ManagerReserves career={career} onUpdate={persist} />
