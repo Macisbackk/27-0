@@ -121,3 +121,52 @@ export const MANAGER_OVERLAY_VIEWS: ManagerView[] = [
 export function isManagerOverlayView(view: ManagerView): boolean {
   return MANAGER_OVERLAY_VIEWS.includes(view);
 }
+
+/** Overlays driven by React state only — not reflected in the URL. */
+export const MANAGER_STATE_OVERLAY_VIEWS: ManagerView[] = [
+  "match-review",
+  "season-review",
+  "development-review",
+  "season-rewards",
+];
+
+export function isManagerStateOverlayView(view: ManagerView): boolean {
+  return MANAGER_STATE_OVERLAY_VIEWS.includes(view);
+}
+
+/** Map pathname to a routable manager screen (landing, club-select, or nav tab). */
+export function resolveManagerScreenFromPathname(pathname: string): ManagerView | null {
+  const fromPath = managerViewFromPathname(pathname);
+  if (fromPath === "club-select") return "club-select";
+  const normalized = pathname.replace(/\/+$/, "") || "/manager";
+  if (normalized === "/manager") return "landing";
+  if (fromPath && isManagerNavView(fromPath)) return fromPath;
+  return null;
+}
+
+/** Single render-time view: URL wins on back/forward; pending nav covers push lag. */
+export function resolveManagerDisplayView(
+  pathname: string,
+  stateView: ManagerView,
+  pendingNavView: ManagerView | null
+): ManagerView {
+  if (isManagerStateOverlayView(stateView)) return stateView;
+
+  const fromUrl = resolveManagerScreenFromPathname(pathname);
+  if (fromUrl && isManagerNavView(fromUrl)) {
+    if (pendingNavView && pendingNavView !== fromUrl) return pendingNavView;
+    return fromUrl;
+  }
+  if (fromUrl) return fromUrl;
+  if (pendingNavView) return pendingNavView;
+  return stateView;
+}
+
+export function resolveSquadSubTabDisplay(
+  pathname: string,
+  pendingSubTab: SquadSubTab | null
+): SquadSubTab {
+  const fromUrl = managerSquadSubTabFromPathname(pathname);
+  if (pendingSubTab && pendingSubTab !== fromUrl) return pendingSubTab;
+  return fromUrl;
+}

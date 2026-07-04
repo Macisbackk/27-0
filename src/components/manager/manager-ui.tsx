@@ -60,7 +60,7 @@ export function ManagerPage({
   );
 }
 
-/** Prominent sticky back control on mobile manager overlays. */
+/** Full-width sticky back bar for manager overlays (match review, etc.). */
 export function ManagerMobileBackBar({
   label = "Back",
   onBack,
@@ -74,36 +74,23 @@ export function ManagerMobileBackBar({
   };
 
   return (
-    <div className="sticky top-0 z-30 -mx-5 mb-4 border-b border-theme-tertiary/20 bg-pitch-950/95 px-5 py-3 backdrop-blur-md sm:static sm:mx-0 sm:mb-4 sm:border-0 sm:bg-transparent sm:px-0 sm:py-0">
+    <div className="sticky top-0 z-30 -mx-5 mb-4 border-b border-theme-primary/20 bg-gradient-to-b from-pitch-950/98 to-pitch-950/90 shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-md sm:-mx-0 sm:rounded-none">
       <button
         type="button"
         onClick={handleBack}
-        className="btn-press flex w-full min-h-[48px] items-center justify-center gap-2.5 rounded-xl border border-theme-primary/40 bg-gradient-to-b from-theme-primary/12 to-pitch-900/90 px-4 font-display text-sm font-bold uppercase tracking-wide text-theme-primary shadow-[0_2px_10px_rgba(0,0,0,0.28)] sm:hidden"
+        className="btn-press flex w-full min-h-[52px] items-center gap-3 px-5 py-3.5 text-left transition hover:bg-theme-primary/8 active:bg-theme-primary/12 sm:min-h-[48px] sm:px-4 sm:py-3"
       >
         <span
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-theme-primary/30 bg-theme-primary/15 text-sm leading-none"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-theme-primary/35 bg-theme-primary/12 text-base font-bold leading-none text-theme-primary"
           aria-hidden
         >
           ←
         </span>
-        {label}
-      </button>
-      <button
-        type="button"
-        onClick={handleBack}
-        className="btn-press hidden sm:inline-flex items-center gap-3 rounded-lg border border-pitch-600/55 bg-pitch-900/45 px-3 py-2 text-left transition hover:border-theme-primary/45 hover:bg-theme-primary/8"
-      >
-        <span
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-theme-primary/35 bg-theme-primary/12 text-base font-bold leading-none text-theme-primary"
-          aria-hidden
-        >
-          ←
-        </span>
-        <span className="min-w-0">
+        <span className="min-w-0 flex-1">
           <span className="block text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
             Manager
           </span>
-          <span className="block text-sm font-semibold leading-tight text-white">
+          <span className="block font-display text-sm font-bold uppercase tracking-wide text-theme-primary">
             {label}
           </span>
         </span>

@@ -114,8 +114,11 @@ export const FILTER = {
   chipTouch:
     "min-h-[44px] rounded-lg border px-3 py-2 text-sm font-medium transition",
   tabGroup:
-    "mx-auto flex w-full flex-nowrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:inline-flex sm:w-auto sm:flex-wrap",
+    "flex w-full flex-nowrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto",
 } as const;
+
+/** Horizontally centre segmented sub-tab bars (Squad/Tactics, Transfers, Stats, etc.). */
+export const SUB_TAB_BAR_SHELL = "flex w-full justify-center" as const;
 
 /** Shared pressed-state utility — pair with BTN.base on interactive elements. */
 export const BTN_PRESS = "btn-press";

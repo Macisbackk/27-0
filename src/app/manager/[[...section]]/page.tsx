@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { ManagerLanding } from "@/components/manager/ManagerLanding";
@@ -102,8 +102,10 @@ import {
   managerPathForSquadTab,
   managerPathForView,
   managerPathFromLegacyViewParam,
-  managerSquadSubTabFromPathname,
   managerViewFromPathname,
+  resolveManagerDisplayView,
+  resolveManagerScreenFromPathname,
+  resolveSquadSubTabDisplay,
   type SquadSubTab,
 } from "@/lib/manager/manager-routes";
 
@@ -127,16 +129,6 @@ function setManagerView(
   setView((current) => (current === next ? current : next));
 }
 
-/** Map URL → manager view for cold loads and browser back/forward. */
-function resolveViewFromPathname(pathname: string): ManagerView | null {
-  const fromPath = managerViewFromPathname(pathname);
-  if (fromPath === "club-select") return "club-select";
-  const normalized = pathname.replace(/\/+$/, "") || "/manager";
-  if (normalized === "/manager") return "landing";
-  if (fromPath && isManagerNavView(fromPath)) return fromPath;
-  return null;
-}
-
 function resolveInitialNavView(pathname: string, saved: ManagerCareer): ManagerView {
   const fromPath = managerViewFromPathname(pathname);
   if (fromPath && isManagerNavView(fromPath)) return fromPath;
@@ -146,8 +138,19 @@ function resolveInitialNavView(pathname: string, saved: ManagerCareer): ManagerV
 export default function ManagerPage() {
   const router = useRouter();
   const pathname = usePathname();
-  const squadSubTab = managerSquadSubTabFromPathname(pathname);
+  const [pendingNavView, setPendingNavView] = useState<ManagerView | null>(null);
+  const [pendingSquadSubTab, setPendingSquadSubTab] = useState<SquadSubTab | null>(
+    null
+  );
   const [view, setView] = useState<ManagerView>("landing");
+  const displayView = useMemo(
+    () => resolveManagerDisplayView(pathname, view, pendingNavView),
+    [pathname, view, pendingNavView]
+  );
+  const squadSubTab = useMemo(
+    () => resolveSquadSubTabDisplay(pathname, pendingSquadSubTab),
+    [pathname, pendingSquadSubTab]
+  );
   const [career, setCareer] = useState<ManagerCareer | null>(null);
   const [activeSlot, setActiveSlot] = useState(0);
   const [saveSlots, setSaveSlots] = useState<ManagerSaveSlotSummary[]>([]);
@@ -184,23 +187,47 @@ export default function ManagerPage() {
   } | null>(null);
   const [showSaveMigration, setShowSaveMigration] = useState(false);
 
-  /** Set when goToView updates the URL — pathname effect must not re-sync view or reload save. */
-  const internalNavRef = useRef(false);
   /** Slot whose career is already in React state — skip disk re-hydrate on tab switches. */
   const careerSlotRef = useRef<number | null>(null);
 
   const goToView = useCallback(
     (next: ManagerView, options?: { syncUrl?: boolean }) => {
-      setManagerView(setView, next);
-      if (options?.syncUrl === false) return;
-      internalNavRef.current = true;
+      if (options?.syncUrl === false) {
+        setManagerView(setView, next);
+        return;
+      }
+
+      if (
+        next === "match-review" ||
+        next === "season-review" ||
+        next === "development-review" ||
+        next === "season-rewards"
+      ) {
+        setManagerView(setView, next);
+        return;
+      }
+
+      setPendingNavView(null);
+
       if (next === "landing") {
+        setManagerView(setView, "landing");
         router.replace("/manager");
         return;
       }
-      if (isManagerNavView(next) || next === "club-select") {
-        router.replace(managerPathForView(next));
+
+      if (next === "club-select") {
+        setManagerView(setView, "club-select");
+        router.replace(managerPathForView("club-select"));
+        return;
       }
+
+      if (isManagerNavView(next)) {
+        setPendingNavView(next);
+        router.push(managerPathForView(next));
+        return;
+      }
+
+      setManagerView(setView, next);
     },
     [router]
   );
@@ -214,15 +241,16 @@ export default function ManagerPage() {
     setActiveSlot(getActiveSaveSlot());
   }, [refreshSaveSlots]);
 
-  /** URL → view only (back/forward, cold load). Never reload career or save slots here. */
-  useLayoutEffect(() => {
-    if (internalNavRef.current) {
-      internalNavRef.current = false;
-      return;
+  useEffect(() => {
+    const fromUrl = resolveManagerScreenFromPathname(pathname);
+    if (pendingNavView && fromUrl === pendingNavView) {
+      setPendingNavView(null);
     }
-    const resolved = resolveViewFromPathname(pathname);
-    if (resolved) setManagerView(setView, resolved);
-  }, [pathname]);
+    const urlSubTab = resolveSquadSubTabDisplay(pathname, null);
+    if (pendingSquadSubTab && pendingSquadSubTab === urlSubTab) {
+      setPendingSquadSubTab(null);
+    }
+  }, [pathname, pendingNavView, pendingSquadSubTab]);
 
   /** Load career from disk once per save slot — not on every tab change. */
   useLayoutEffect(() => {
@@ -258,10 +286,10 @@ export default function ManagerPage() {
 
   useEffect(() => {
     if (!awaitingFriendlyChoice) return;
-    if (MANAGER_NAV_VIEWS.includes(view as ManagerView) && view !== "hub") {
+    if (MANAGER_NAV_VIEWS.includes(displayView) && displayView !== "hub") {
       goToView("hub");
     }
-  }, [awaitingFriendlyChoice, view, goToView]);
+  }, [awaitingFriendlyChoice, displayView, goToView]);
 
   useEffect(() => {
     if (!career || !awaitingFriendlyChoice) return;
@@ -277,7 +305,7 @@ export default function ManagerPage() {
   }, [view, reviewFixtureId]);
 
   useEffect(() => {
-    if (view !== "hub" || !pendingHubNextFixtureScroll) return;
+    if (displayView !== "hub" || !pendingHubNextFixtureScroll) return;
     setPendingHubNextFixtureScroll(false);
     const frame = requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -285,12 +313,12 @@ export default function ManagerPage() {
       });
     });
     return () => cancelAnimationFrame(frame);
-  }, [view, pendingHubNextFixtureScroll]);
+  }, [displayView, pendingHubNextFixtureScroll]);
 
   useEffect(() => {
-    if (view === "hub" || !pendingHubNextFixtureScroll) return;
+    if (displayView === "hub" || !pendingHubNextFixtureScroll) return;
     setPendingHubNextFixtureScroll(false);
-  }, [view, pendingHubNextFixtureScroll]);
+  }, [displayView, pendingHubNextFixtureScroll]);
 
   const handleNavNavigate = useCallback(
     (next: ManagerView) => {
@@ -305,8 +333,8 @@ export default function ManagerPage() {
 
   const handleSquadSubTabChange = useCallback(
     (tab: SquadSubTab) => {
-      internalNavRef.current = true;
-      router.replace(managerPathForSquadTab(tab));
+      setPendingSquadSubTab(tab);
+      router.push(managerPathForSquadTab(tab));
     },
     [router]
   );
@@ -849,7 +877,7 @@ export default function ManagerPage() {
   };
 
   const showNav =
-    career && MANAGER_NAV_VIEWS.includes(view as (typeof MANAGER_NAV_VIEWS)[number]);
+    career && MANAGER_NAV_VIEWS.includes(displayView as (typeof MANAGER_NAV_VIEWS)[number]);
 
   const incomingBidOffer =
     career && pendingIncomingBidId
@@ -863,7 +891,7 @@ export default function ManagerPage() {
 
   return (
     <PageShell withLights compact width="wide">
-      {view === "landing" && (
+      {displayView === "landing" && (
         <ManagerLanding
           saveSlots={saveSlots}
           onStartNew={handleStartNew}
@@ -875,7 +903,7 @@ export default function ManagerPage() {
         />
       )}
 
-      {view === "club-select" && (
+      {displayView === "club-select" && (
         <ManagerClubSelect
           onSelect={handleSelectClub}
           onBack={() => {
@@ -889,7 +917,7 @@ export default function ManagerPage() {
       {showNav && career && (
         <div className={`flex flex-col manager-mobile-nav-pad sm:pb-0 ${PAGE.section}`}>
           <ManagerNav
-            active={awaitingFriendlyChoice ? "hub" : view}
+            active={awaitingFriendlyChoice ? "hub" : displayView}
             club={career.club}
             seasonYear={career.seasonYear}
             gameWeek={career.gameWeek}
@@ -913,7 +941,7 @@ export default function ManagerPage() {
               />
             ) : (
               <>
-                {view === "hub" && (
+                {displayView === "hub" && (
                   <ManagerHub
                     career={career}
                     onPlayGame={handlePlayGame}
@@ -930,7 +958,7 @@ export default function ManagerPage() {
                   />
                 )}
 
-                {view === "inbox" && (
+                {displayView === "inbox" && (
                   <ManagerInbox
                     career={career}
                     onUpdate={persist}
@@ -940,7 +968,7 @@ export default function ManagerPage() {
                     }}
                   />
                 )}
-                {view === "squad" && (
+                {displayView === "squad" && (
                   <ManagerSquad
                     career={career}
                     onUpdate={persist}
@@ -948,16 +976,16 @@ export default function ManagerPage() {
                     onSubTabChange={handleSquadSubTabChange}
                   />
                 )}
-                {view === "reserves" && (
+                {displayView === "reserves" && (
                   <ManagerReserves career={career} onUpdate={persist} />
                 )}
-                {view === "contracts" && (
+                {displayView === "contracts" && (
                   <ManagerContracts career={career} onUpdate={persist} />
                 )}
-                {view === "transfers" && (
+                {displayView === "transfers" && (
                   <ManagerTransfers career={career} onUpdate={persist} />
                 )}
-                {view === "fixtures" && (
+                {displayView === "fixtures" && (
                   <ManagerFixtures
                     career={career}
                     onSelectFixture={(fixtureId) => {
@@ -968,18 +996,18 @@ export default function ManagerPage() {
                     }}
                   />
                 )}
-                {view === "across-league" && (
+                {displayView === "across-league" && (
                   <ManagerAcrossLeague
                     career={career}
                     onNavigate={handleNavNavigate}
                   />
                 )}
-                {view === "stats" && <ManagerStatsView career={career} />}
+                {displayView === "stats" && <ManagerStatsView career={career} />}
               </>
             )}
           </div>
           <ManagerMobileBottomNav
-            active={awaitingFriendlyChoice ? "hub" : view}
+            active={awaitingFriendlyChoice ? "hub" : displayView}
             onNavigate={handleNavNavigate}
             disabled={playGameOpen || awaitingFriendlyChoice}
           />

@@ -15,6 +15,7 @@ import {
   SPACING,
   tabGroupButtonClass,
   tabGroupClass,
+  SUB_TAB_BAR_SHELL,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubColors } from "@/lib/clubs";
@@ -521,11 +522,11 @@ export function ManagerFixtures({
       )}
 
       <div
-        className="-mx-1 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:overflow-visible"
+        className={`${SUB_TAB_BAR_SHELL} overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:overflow-visible`}
         role="tablist"
         aria-label="Filter fixtures"
       >
-        <div className={`${tabGroupClass()} w-max min-w-full !flex-nowrap sm:w-auto sm:min-w-0`}>
+        <div className={`${tabGroupClass()} shrink-0 sm:shrink`}>
           {FILTERS.map((f) => (
             <button
               key={f.id}

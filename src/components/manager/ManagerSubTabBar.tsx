@@ -1,6 +1,10 @@
 "use client";
 
-import { tabGroupButtonClass, tabGroupClass } from "@/lib/ui/design-system";
+import {
+  SUB_TAB_BAR_SHELL,
+  tabGroupButtonClass,
+  tabGroupClass,
+} from "@/lib/ui/design-system";
 import { playTabChange, playUiClick } from "@/lib/sound";
 
 export interface ManagerSubTabOption<T extends string> {
@@ -23,22 +27,29 @@ export function ManagerSubTabBar<T extends string>({
   className,
 }: ManagerSubTabBarProps<T>) {
   return (
-    <div className={`${tabGroupClass()} ${className ?? ""}`}>
-      {tabs.map(({ id, label }) => (
-        <button
-          key={id}
-          type="button"
-          className={tabGroupButtonClass(active === id)}
-          onClick={() => {
-            if (active === id) return;
-            playTabChange();
-            playUiClick();
-            onChange(id);
-          }}
-        >
-          {label}
-        </button>
-      ))}
+    <div className={SUB_TAB_BAR_SHELL}>
+      <div
+        className={`${tabGroupClass()} ${className ?? ""}`}
+        role="tablist"
+      >
+        {tabs.map(({ id, label }) => (
+          <button
+            key={id}
+            type="button"
+            role="tab"
+            aria-selected={active === id}
+            className={tabGroupButtonClass(active === id)}
+            onClick={() => {
+              if (active === id) return;
+              playTabChange();
+              playUiClick();
+              onChange(id);
+            }}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
