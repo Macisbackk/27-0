@@ -25,6 +25,7 @@ import {
   NORMAL_ERA_VARIANT_CHANGED_EVENT,
 } from "@/lib/storage/preferences";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
+import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { getClubFundsLeaderboardAsync } from "@/lib/storage/club-funds-leaderboard";
 import {
   getManagerLeaderboardAsync,
@@ -32,7 +33,6 @@ import {
 } from "@/lib/storage/manager-leaderboard";
 import { playTabChange } from "@/lib/sound";
 import { RecordWithPercentage, parseRecordWithPercentage } from "./RecordWithPercentage";
-import { BTN, CARD, TAB_RAIL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
@@ -257,26 +257,13 @@ export function LeaderboardTable() {
 
   return (
     <div>
-      <nav
-        className={`${TAB_RAIL.outer} mb-5`}
-        aria-label="Leaderboard play style"
-      >
-        <div className={TAB_RAIL.inner} role="tablist">
-          {PLAY_STYLE_TABS.map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              role="tab"
-              aria-selected={playStyle === tab.id}
-              onClick={() => handlePlayStyleChange(tab.id)}
-              className={`${TAB_RAIL.item} btn-press min-h-[44px] rounded-lg px-4 py-2 font-display text-sm font-bold uppercase tracking-wider transition ${
-                playStyle === tab.id ? BTN.tabActive : BTN.tabIdle
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+      <nav className="mb-5" aria-label="Leaderboard play style">
+        <ManagerSubTabBar
+          tabs={PLAY_STYLE_TABS}
+          active={playStyle}
+          onChange={handlePlayStyleChange}
+          ariaLabel="Leaderboard play style"
+        />
       </nav>
 
       {(() => {
@@ -287,82 +274,29 @@ export function LeaderboardTable() {
           ? "Manager leaderboard modes"
           : "Quick mode leaderboards";
 
-        const renderModeButton = (
-          mode: (typeof modeOptions)[number],
-          compact: boolean
-        ) => {
-          const selected = isManagerPlayStyle
-            ? managerMode === mode.id
-            : leaderboardMode === mode.id;
-
-          if (compact) {
-            return (
-              <button
-                key={mode.id}
-                type="button"
-                role="tab"
-                aria-selected={selected}
-                onClick={() =>
-                  isManagerPlayStyle
-                    ? handleManagerModeChange(mode.id as ManagerLeaderboardDbMode)
-                    : handleQuickModeChange(mode.id as LeaderboardDbMode)
-                }
-                className={`${TAB_RAIL.item} btn-press min-h-[44px] shrink-0 rounded-lg px-3 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-4 sm:text-sm ${
-                  selected ? BTN.tabActive : BTN.tabIdle
-                }`}
-              >
-                {mode.label}
-              </button>
-            );
-          }
-
-          return (
-            <button
-              key={mode.id}
-              type="button"
-              role="tab"
-              aria-selected={selected}
-              onClick={() =>
-                isManagerPlayStyle
-                  ? handleManagerModeChange(mode.id as ManagerLeaderboardDbMode)
-                  : handleQuickModeChange(mode.id as LeaderboardDbMode)
-              }
-              className={`btn-press min-h-[44px] rounded-xl border-2 px-4 py-4 text-left transition active:scale-[0.98] ${
-                selected
-                  ? `${CARD.featured} border-accent-green/60 bg-accent-green/10`
-                  : `${CARD.base} hover:border-pitch-500/60 hover:bg-pitch-800/40`
-              }`}
-            >
-              <span
-                className={`font-display text-sm font-bold uppercase tracking-wider sm:text-base ${
-                  selected ? "text-accent-green" : "text-gray-300"
-                }`}
-              >
-                {mode.label}
-              </span>
-            </button>
-          );
-        };
-
         return (
-          <>
-            <div
-              className={`${TAB_RAIL.outer} mb-5 sm:hidden`}
-              role="tablist"
-              aria-label={modeLabel}
-            >
-              <div className={TAB_RAIL.inner}>
-                {modeOptions.map((mode) => renderModeButton(mode, true))}
-              </div>
-            </div>
-            <div
-              className="mb-5 hidden gap-3 sm:grid sm:grid-cols-2 lg:grid-cols-4"
-              role="tablist"
-              aria-label={modeLabel}
-            >
-              {modeOptions.map((mode) => renderModeButton(mode, false))}
-            </div>
-          </>
+          <nav className="mb-5" aria-label={modeLabel}>
+            <ManagerSubTabBar
+              tabs={modeOptions.map((mode) => ({
+                id: mode.id,
+                label: mode.label,
+              }))}
+              active={
+                isManagerPlayStyle
+                  ? managerMode
+                  : leaderboardMode
+              }
+              onChange={(id) => {
+                if (isManagerPlayStyle) {
+                  handleManagerModeChange(id as ManagerLeaderboardDbMode);
+                } else {
+                  handleQuickModeChange(id as LeaderboardDbMode);
+                }
+              }}
+              scrollable={modeOptions.length > 3}
+              ariaLabel={modeLabel}
+            />
+          </nav>
         );
       })()}
 
@@ -380,9 +314,9 @@ export function LeaderboardTable() {
         </div>
       )}
 
-      <div className="mb-5 border-b border-pitch-700/60">
+      <div className="mb-5">
         {isTrophyCabinetMode ? (
-          <div className="space-y-4 pb-1">
+          <div className="space-y-4">
             {TROPHY_CABINET_SECTIONS.map((section) => {
               const sectionTrackers = availableTrackers.filter((t) =>
                 section.trackerIds.includes(t.id)
@@ -391,87 +325,51 @@ export function LeaderboardTable() {
 
               return (
                 <div key={section.id}>
-                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                  <p className={`mb-2 ${TYPO.sectionLabel} text-pitch-500`}>
                     {section.label}
                   </p>
-                  <div className={`${TAB_RAIL.outer} -mb-px pb-px`}>
-                    <div className={TAB_RAIL.inner}>
-                      {sectionTrackers.map((t) => {
-                        const selected = activeTracker === t.id;
-                        return (
-                          <button
-                            key={t.id}
-                            type="button"
-                            onClick={() => {
-                              if (activeTracker !== t.id) playTabChange();
-                              setTracker(t.id);
-                            }}
-                            className={`${TAB_RAIL.item} shrink-0 min-h-[44px] border-b-2 px-3 py-2 ${TYPO.button} transition sm:px-4 ${
-                              selected
-                                ? "border-accent-green text-accent-green"
-                                : "border-transparent text-gray-500 hover:border-pitch-600 hover:text-gray-300"
-                            }`}
-                          >
-                            {t.shortLabel}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
+                  <ManagerSubTabBar
+                    tabs={sectionTrackers.map((t) => ({
+                      id: t.id,
+                      label: t.shortLabel,
+                    }))}
+                    active={activeTracker}
+                    onChange={(id) => setTracker(id)}
+                    scrollable={sectionTrackers.length > 4}
+                    ariaLabel={section.label}
+                  />
                 </div>
               );
             })}
           </div>
         ) : (
           availableTrackers.length > 1 && (
-            <div className={`${TAB_RAIL.outer} -mb-px pb-px`}>
-              <div className={TAB_RAIL.inner}>
-                {availableTrackers.map((t) => {
-                  const selected = activeTracker === t.id;
-                  return (
-                    <button
-                      key={t.id}
-                      type="button"
-                      onClick={() => {
-                        if (activeTracker !== t.id) playTabChange();
-                        setTracker(t.id);
-                      }}
-                      className={`${TAB_RAIL.item} shrink-0 min-h-[44px] border-b-2 px-3 py-2 ${TYPO.button} transition sm:px-4 ${
-                        selected
-                          ? "border-accent-green text-accent-green"
-                          : "border-transparent text-gray-500 hover:border-pitch-600 hover:text-gray-300"
-                      }`}
-                    >
-                      {t.shortLabel}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+            <ManagerSubTabBar
+              tabs={availableTrackers.map((t) => ({
+                id: t.id,
+                label: t.shortLabel,
+              }))}
+              active={activeTracker}
+              onChange={(id) => setTracker(id)}
+              scrollable={availableTrackers.length > 4}
+              ariaLabel="Leaderboard category"
+            />
           )
         )}
       </div>
 
       {showPeriodFilters && (
-        <div className="mb-6 flex flex-wrap gap-2">
-          {PERIODS.map((p) => (
-            <button
-              key={p}
-              type="button"
-              onClick={() => {
-                if (period !== p) playTabChange();
-                setPeriod(p);
-              }}
-              className={`btn-press flex min-h-[44px] items-center rounded-full px-3 py-2 text-xs font-medium transition ${
-                period === p
-                  ? "bg-pitch-700 text-white"
-                  : "bg-pitch-800/80 text-gray-500 hover:text-gray-300"
-              }`}
-            >
-              {formatPeriodLabel(p)}
-            </button>
-          ))}
-        </div>
+        <nav className="mb-6" aria-label="Leaderboard period">
+          <ManagerSubTabBar
+            tabs={PERIODS.map((p) => ({
+              id: p,
+              label: formatPeriodLabel(p),
+            }))}
+            active={period}
+            onChange={(p) => setPeriod(p)}
+            ariaLabel="Leaderboard period"
+          />
+        </nav>
       )}
 
       {loading && entries.length === 0 ? (

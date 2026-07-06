@@ -9,6 +9,7 @@ import { useModalA11y } from "@/hooks/useModalA11y";
 import { formatWage } from "@/lib/manager/managerContracts";
 import type { InboxMessage, ManagerCareer } from "@/lib/manager/types";
 import { getPlayerById } from "@/lib/players";
+import { managerModalHeaderClass, managerPillClass } from "@/lib/manager/managerSurfaces";
 import { playMenuOpen, playUiClick } from "@/lib/sound";
 
 interface ManagerIncomingBidModalProps {
@@ -55,8 +56,8 @@ export function ManagerIncomingBidModal({
         className={`card-glass w-full max-w-lg overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="-mx-4 -mt-4 mb-4 border-b border-amber-400/35 bg-amber-400/10 px-4 py-4 sm:-mx-6 sm:-mt-6 sm:px-6">
-          <span className="inline-flex rounded-full border border-amber-400/45 bg-amber-400/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-300">
+        <div className={managerModalHeaderClass("amber")}>
+          <span className={managerPillClass("amber")}>
             Unlisted player
           </span>
           <h2 id="incoming-bid-title" className={`mt-3 ${TYPO.cardTitle}`}>

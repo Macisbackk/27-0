@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { managerDataRowClass } from "@/lib/manager/managerSurfaces";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import {
   ManagerClubSquadBrowser,
@@ -244,7 +245,7 @@ export function ManagerAcrossLeague({
                 return (
                   <li
                     key={entry.playerId}
-                    className="flex items-center justify-between gap-3 rounded-lg border border-pitch-700/50 bg-pitch-950/55 px-3 py-2"
+                    className={`${managerDataRowClass()} flex items-center justify-between gap-3 px-3 py-2`}
                   >
                     <div className="min-w-0">
                       <p className="truncate font-semibold text-white">

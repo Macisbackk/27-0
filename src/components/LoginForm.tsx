@@ -8,8 +8,9 @@ import {
   COACH_NAME_MAX_LENGTH,
   COACH_NAME_MIN_LENGTH,
 } from "@/lib/storage/user";
-import { BTN, CARD, FILTER, SPACING, tabGroupButtonClass } from "@/lib/ui/design-system";
+import { BTN, CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 
 type AuthMode = "signup" | "login";
 
@@ -132,29 +133,20 @@ export function LoginForm() {
         Play without an account — stats stay on this device only.
       </p>
 
-      <div className={`mt-6 flex ${SPACING.buttonGap}`}>
-        <button
-          type="button"
-          onClick={() => {
-            setMode("login");
+      <div className="mt-6">
+        <ManagerSubTabBar
+          tabs={[
+            { id: "login", label: "Log In" },
+            { id: "signup", label: "Create Account" },
+          ]}
+          active={mode}
+          onChange={(next) => {
+            setMode(next);
             setError(null);
             setSuccess(null);
           }}
-          className={`flex-1 ${tabGroupButtonClass(mode === "login")}`}
-        >
-          Log In
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setMode("signup");
-            setError(null);
-            setSuccess(null);
-          }}
-          className={`flex-1 ${tabGroupButtonClass(mode === "signup")}`}
-        >
-          Create Account
-        </button>
+          ariaLabel="Account mode"
+        />
       </div>
 
       <div className={`mt-5 ${SPACING.stackMd}`}>

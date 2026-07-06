@@ -16,6 +16,8 @@ import {
   impactDevelopmentDelta,
   isPoorSeasonImpact,
   rollImpactRegression,
+  getTeamSeasonDevelopmentModifier,
+  computeImpactBasedGrowth,
 } from "./managerPlayerImpact";
 
 const VETERAN_AGE = 30;
@@ -78,7 +80,8 @@ function developOnePlayer(
   career: ManagerCareer,
   playerDevelopment: Record<string, PlayerDevelopmentState>,
   extras?: { appearances?: number; tries?: number; form?: number; impact?: number },
-  rng?: () => number
+  rng?: () => number,
+  clubForTeamMod?: string
 ): PlayerDevelopmentState | null {
   const base = getPlayerById(playerId) ?? getManagerPlayer(career, playerId);
   if (!base) return null;
@@ -104,71 +107,50 @@ function developOnePlayer(
   const impact = extras?.impact ?? 50;
   const poorIndividualSeason = isPoorSeasonImpact(impact);
   const protectFromDecline = veteranGoodSeason && !poorIndividualSeason;
+  const teamMod = getTeamSeasonDevelopmentModifier(career, clubForTeamMod);
 
   const playedEnoughForIncrease =
     !extras || appearances >= MIN_APPEARANCES_FOR_INCREASE;
 
-  let delta = 0;
-  if (before < potential) {
-    if (playedEnoughForIncrease) {
-      if (age <= 21) delta += 1.5;
-      else if (age <= 24) delta += 1;
-      else if (age <= 27) delta += 0.5;
-      else if (!protectFromDecline) {
-        if (age >= 33) delta -= 1;
-        else if (age >= 30) delta -= 0.5;
-      }
+  let delta = impactDevelopmentDelta(impact, appearances);
 
-      const potentialGap = potential - before;
-      if (age <= 24 && potentialGap >= 10) delta += 0.5;
-      else if (age <= 27 && potentialGap >= 6) delta += 0.25;
-    } else if (!protectFromDecline) {
-      if (age >= 33) delta -= 1;
-      else if (age >= 30) delta -= 0.5;
-    }
-  } else if (!protectFromDecline) {
-    if (age >= 33) delta -= 1;
-    else if (age >= 30) delta -= 0.5;
+  if (before < potential && playedEnoughForIncrease) {
+    delta += computeImpactBasedGrowth(
+      impact,
+      appearances,
+      age,
+      potential - before,
+      teamMod,
+      MIN_APPEARANCES_FOR_INCREASE
+    );
   }
 
-  if (playedEnoughForIncrease) {
-    const performanceFactor =
-      impact >= 58
-        ? 1
-        : impact >= 52
-          ? 0.75
-          : impact >= 45
-            ? 0.35
-            : impact < 42
-              ? 0
-              : 0.15;
-
-    if (performanceFactor > 0) {
-      if (appearances >= 18) delta += 1.5 * performanceFactor;
-      else if (appearances >= 10) delta += 0.5 * performanceFactor;
+  if (!protectFromDecline) {
+    if (age >= 33 && (impact < 50 || !playedEnoughForIncrease)) {
+      delta -= 0.85;
+    } else if (age >= 30 && impact < 48) {
+      delta -= 0.45;
+    } else if (before >= potential && age >= 30) {
+      delta -= age >= 33 ? 0.75 : 0.35;
     }
+  }
 
-    if (tries >= 12) delta += 1;
-    else if (tries >= 6) delta += 0.5;
-
-    if (form >= 70) delta += 1;
-    else if (form >= 58) delta += 0.5;
-    else if (form < 42 && extras) delta -= 0.5;
-
-    if (appearances >= 14 && poorIndividualSeason) {
-      delta -= 0.35;
-    }
+  if (appearances >= 14 && poorIndividualSeason) {
+    delta -= 0.2;
   } else if (appearances < 4 && extras) {
-    delta -= 0.5;
+    delta -= 0.35;
   }
-
-  delta += impactDevelopmentDelta(impact, appearances);
 
   if (protectFromDecline) {
     delta = Math.max(0, delta);
   }
 
   let finalDelta = Math.round(delta);
+  const maxPositiveDelta =
+    age <= 21 ? 3 : age <= 24 ? 2 : age <= 27 ? 2 : 1;
+  if (finalDelta > maxPositiveDelta) {
+    finalDelta = maxPositiveDelta;
+  }
   if (!playedEnoughForIncrease && finalDelta > 0) {
     finalDelta = 0;
   }
@@ -268,7 +250,8 @@ function developLeaguePlayersAtSeasonEnd(
         career,
         next,
         season,
-        seedrandom(`${career.seed}-league-dev-${career.seasonYear}-${player.id}`)
+        seedrandom(`${career.seed}-league-dev-${career.seasonYear}-${player.id}`),
+        club
       );
       if (!developed) continue;
 

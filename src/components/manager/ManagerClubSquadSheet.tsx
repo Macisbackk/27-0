@@ -15,6 +15,8 @@ import {
 import {
   managerClubAccentCardClass,
   managerClubAccentCardStyle,
+  managerCalloutClass,
+  managerDataRowClass,
 } from "@/lib/manager/managerSurfaces";
 import type { ManagerCareer } from "@/lib/manager/types";
 import type { Player } from "@/lib/types";
@@ -91,8 +93,7 @@ function ReadonlyInterchangeSlot({
     </div>
   );
 
-  const className =
-    "min-w-0 rounded-lg border border-pitch-700/50 bg-pitch-950/55 px-2 py-2 text-left";
+  const className = managerDataRowClass();
 
   if (player && onSelect) {
     return (
@@ -265,7 +266,7 @@ export function ManagerClubSquadSheet({
 
             {filledXiii < 13 ? (
               <p
-                className={`mt-3 rounded-lg border border-amber-500/35 bg-amber-500/10 px-3 py-2 ${TYPO.bodySm} text-amber-100`}
+                className={`mt-3 ${managerCalloutClass("amber")} ${TYPO.bodySm}`}
                 role="status"
               >
                 Only {filledXiii} of 13 starting spots could be filled from this

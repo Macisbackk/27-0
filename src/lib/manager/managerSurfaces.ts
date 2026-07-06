@@ -5,6 +5,11 @@ import { getFriendlyDualBorderStyle } from "./managerFriendlyUi";
 import { isChallengeCupFixture } from "./managerFixtureDisplay";
 import type { ManagerCompetition } from "./types";
 
+/**
+ * Manager border system — every surface keeps the neutral pitch outline from CARD;
+ * semantic colour is expressed as a left accent stripe (+ optional subtle tint).
+ */
+
 /** Shared pill / badge chrome for manager mode. */
 export const MANAGER_PILL = {
   base: "inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider",
@@ -13,7 +18,7 @@ export const MANAGER_PILL = {
   sky: "border-sky-400/45 bg-sky-400/12 text-sky-300",
   amber: "border-amber-400/45 bg-amber-400/12 text-amber-300",
   red: "border-red-500/45 bg-red-500/12 text-red-300",
-  muted: "border-pitch-600/45 bg-pitch-800/60 text-pitch-300",
+  muted: "border-pitch-600/55 bg-pitch-800/60 text-pitch-300",
   stone: "border-stone-400/45 bg-stone-500/12 text-stone-200",
 } as const;
 
@@ -24,19 +29,30 @@ export function managerPillClass(tone: ManagerPillTone): string {
 }
 
 export const MANAGER_BORDER = {
-  default: "border-pitch-600/50",
-  subtle: "border-pitch-700/45",
+  /** Matches CARD.base / CARD.elevated outline */
+  default: "border-pitch-600/55",
+  subtle: "border-pitch-700/50",
   divider: "border-pitch-700/50",
+  interactiveHover: "hover:border-pitch-500/55",
+} as const;
+
+const ACCENT_STRIPE = {
+  gold: "border-l-4 border-l-accent-gold/60 bg-accent-gold/5",
+  primary: "border-l-4 border-l-theme-primary/60 bg-theme-primary/5",
+  red: "border-l-4 border-l-red-400/60 bg-red-500/5",
+  amber: "border-l-4 border-l-amber-400/60 bg-amber-500/5",
+  sky: "border-l-4 border-l-sky-400/55 bg-sky-400/5",
+  stone: "border-l-4 border-l-stone-400/55 bg-stone-500/5",
 } as const;
 
 const COMPETITION_SURFACE: Record<
   "league" | "cup" | "playoff" | "friendly",
   string
 > = {
-  league: "border-l-4 border-l-theme-primary/55",
-  cup: "border-accent-gold/45 bg-accent-gold/10",
-  playoff: "border-theme-primary/45 bg-theme-primary/10",
-  friendly: "border-sky-400/40 bg-sky-400/5",
+  league: ACCENT_STRIPE.primary,
+  cup: ACCENT_STRIPE.gold,
+  playoff: ACCENT_STRIPE.primary,
+  friendly: ACCENT_STRIPE.sky,
 };
 
 export function managerCompetitionKey(
@@ -54,12 +70,23 @@ export function managerCompetitionSurfaceClass(
   return COMPETITION_SURFACE[managerCompetitionKey(competition)];
 }
 
+export function managerCompetitionPanelClass(
+  competition: ManagerCompetition,
+  options?: { variant?: "elevated" | "base"; scrollMargin?: boolean }
+): string {
+  const surface = options?.variant === "base" ? CARD.base : CARD.elevated;
+  const scroll = options?.scrollMargin ? "scroll-mt-28" : "";
+  return `${surface} ${SPACING.cardPadding} ${scroll} ${managerCompetitionSurfaceClass(competition)}`.trim();
+}
+
 export function managerFixtureCardClass(
   competition: ManagerCompetition,
   options?: { scrollMargin?: boolean }
 ): string {
-  const scroll = options?.scrollMargin ? "scroll-mt-28" : "";
-  return `${CARD.elevated} ${SPACING.cardPadding} ${scroll} ${managerCompetitionSurfaceClass(competition)}`.trim();
+  return managerCompetitionPanelClass(competition, {
+    variant: "elevated",
+    scrollMargin: options?.scrollMargin,
+  });
 }
 
 export function managerFixtureCardStyle(
@@ -83,10 +110,8 @@ export function managerFeaturedBannerClass(
   tone: "primary" | "gold" | "cup" = "primary"
 ): string {
   const accent =
-    tone === "gold" || tone === "cup"
-      ? "border-accent-gold/45 bg-gradient-to-b from-accent-gold/10 to-pitch-950/95"
-      : "border-theme-primary/45 bg-gradient-to-b from-theme-primary/10 to-pitch-950/95";
-  return `${CARD.elevated} ${SPACING.cardPadding} border ${accent}`;
+    tone === "gold" || tone === "cup" ? ACCENT_STRIPE.gold : ACCENT_STRIPE.primary;
+  return `${CARD.elevated} ${SPACING.cardPadding} ${accent}`;
 }
 
 export type ManagerModalHeaderTone =
@@ -98,12 +123,12 @@ export type ManagerModalHeaderTone =
   | "neutral";
 
 const MODAL_HEADER_TONE: Record<ManagerModalHeaderTone, string> = {
-  gold: "border-accent-gold/45 bg-accent-gold/10",
-  primary: "border-theme-primary/45 bg-theme-primary/10",
-  amber: "border-amber-400/45 bg-amber-400/10",
-  red: "border-red-500/45 bg-red-500/10",
-  stone: "border-stone-400/45 bg-stone-500/10",
-  neutral: "border-pitch-600/50 bg-pitch-900/40",
+  gold: `${MANAGER_BORDER.divider} bg-accent-gold/8`,
+  primary: `${MANAGER_BORDER.divider} bg-theme-primary/8`,
+  amber: `${MANAGER_BORDER.divider} bg-amber-400/8`,
+  red: `${MANAGER_BORDER.divider} bg-red-500/8`,
+  stone: `${MANAGER_BORDER.divider} bg-stone-500/8`,
+  neutral: `${MANAGER_BORDER.divider} bg-pitch-900/40`,
 };
 
 export function managerModalHeaderClass(
@@ -117,29 +142,80 @@ export function managerModalHeaderClass(
   return `border-b ${inset} ${centered} ${MODAL_HEADER_TONE[tone]}`.trim();
 }
 
+/** Full-border highlight box for inline alerts (not primary card surfaces). */
 export function managerCalloutClass(
-  tone: "gold" | "primary" | "amber" | "red" = "gold"
+  tone: "gold" | "primary" | "amber" | "red" | "sky" | "muted" = "gold"
 ): string {
   const map = {
-    gold: "border-accent-gold/45 bg-accent-gold/10 text-accent-gold",
-    primary: "border-theme-primary/45 bg-theme-primary/10 text-theme-primary",
-    amber: "border-amber-400/45 bg-amber-400/10 text-amber-100",
-    red: "border-red-500/45 bg-red-500/10 text-red-200",
+    gold: `border-accent-gold/45 bg-accent-gold/10 text-accent-gold`,
+    primary: `border-theme-primary/45 bg-theme-primary/10 text-theme-primary`,
+    amber: `border-amber-400/45 bg-amber-400/10 text-amber-100`,
+    red: `border-red-500/45 bg-red-500/10 text-red-200`,
+    sky: `border-sky-400/45 bg-sky-400/10 text-sky-300`,
+    muted: `${MANAGER_BORDER.default} bg-pitch-800/40 text-pitch-300`,
   };
   return `rounded-lg border px-3 py-2.5 ${map[tone]}`;
 }
 
+/** Left accent stripe for section cards — pairs with CARD surfaces. */
 export function managerSectionAccentClass(
   accent: "gold" | "primary" | "red" | "amber" | "sky"
 ): string {
-  const map = {
-    gold: "border-l-4 border-l-accent-gold/55",
-    primary: "border-l-4 border-l-theme-primary/55",
-    red: "border-l-4 border-l-red-400/55",
-    amber: "border-l-4 border-l-amber-400/55",
-    sky: "border-l-4 border-l-sky-400/55",
-  };
-  return map[accent];
+  return ACCENT_STRIPE[accent];
+}
+
+/** Inset panel with optional left accent (neutral uses CARD.inset border only). */
+export function managerInsetPanelClass(
+  tone?: "gold" | "primary" | "neutral"
+): string {
+  const base = `${CARD.inset} ${SPACING.cardPadding}`;
+  if (tone === "gold") return `${base} ${ACCENT_STRIPE.gold}`;
+  if (tone === "primary") return `${base} ${ACCENT_STRIPE.primary}`;
+  return base;
+}
+
+/** Alert / notice panel on inset surfaces (squad warnings, migration, etc.). */
+export function managerAlertPanelClass(
+  tone: "gold" | "primary" | "amber" | "red"
+): string {
+  const stripe =
+    tone === "gold"
+      ? ACCENT_STRIPE.gold
+      : tone === "primary"
+        ? ACCENT_STRIPE.primary
+        : tone === "amber"
+          ? ACCENT_STRIPE.amber
+          : ACCENT_STRIPE.red;
+  return `${CARD.inset} ${SPACING.cardPaddingSm} ${stripe}`;
+}
+
+/** Compact list / accordion row — neutral border everywhere. */
+export function managerListRowClass(interactive = true): string {
+  const hover = interactive
+    ? `transition ${MANAGER_BORDER.interactiveHover} hover:bg-pitch-900/50`
+    : "";
+  return `rounded-lg border ${MANAGER_BORDER.subtle} bg-pitch-950/40 px-3 py-2 ${hover}`;
+}
+
+/** Dense data row (squad sheet, league lists). */
+export function managerDataRowClass(): string {
+  return `min-w-0 rounded-lg border ${MANAGER_BORDER.subtle} bg-pitch-950/55 px-2 py-2 text-left sm:px-3 sm:py-2.5`;
+}
+
+export function managerResultBadgeClass(
+  result: "win" | "loss" | "draw"
+): string {
+  if (result === "win") {
+    return "border-theme-primary/45 bg-theme-primary/15 text-theme-primary";
+  }
+  if (result === "loss") {
+    return "border-red-500/45 bg-red-500/15 text-red-300";
+  }
+  return `${MANAGER_BORDER.default} bg-pitch-800/50 text-pitch-200`;
+}
+
+function managerFixtureRowBase(): string {
+  return `min-w-0 rounded-lg border ${MANAGER_BORDER.default} bg-pitch-950/50 px-3 py-3 sm:px-4 sm:py-3`;
 }
 
 export function managerFixtureRowClass(options: {
@@ -147,30 +223,17 @@ export function managerFixtureRowClass(options: {
   competition: ManagerCompetition;
   hasFriendlyStyle?: boolean;
 }): string {
-  const base = "min-w-0 rounded-lg border px-3 py-3 sm:px-4 sm:py-3";
+  const base = managerFixtureRowBase();
+
   if (options.hasFriendlyStyle) {
-    return `${base} border-sky-400/40 bg-sky-400/5`;
+    return `${base} ${ACCENT_STRIPE.sky}`;
   }
   if (options.isNext) {
-    return `${base} border-theme-primary/45 bg-theme-primary/8`;
+    return `${base} border-l-4 border-l-theme-primary/60 bg-theme-primary/6`;
   }
-  const key = managerCompetitionKey(options.competition);
-  if (key === "cup") return `${base} border-accent-gold/45 bg-accent-gold/8`;
-  if (key === "playoff") {
-    return `${base} border-theme-primary/40 bg-theme-primary/8`;
-  }
-  return `${base} border-pitch-700/45 bg-pitch-950/50`;
-}
 
-export function managerInsetPanelClass(
-  tone?: "gold" | "primary" | "neutral"
-): string {
-  const base = `${CARD.inset} ${SPACING.cardPadding}`;
-  if (tone === "gold") {
-    return `${base} border-accent-gold/45 bg-accent-gold/8`;
-  }
-  if (tone === "primary") {
-    return `${base} border-theme-primary/45 bg-theme-primary/8`;
-  }
+  const key = managerCompetitionKey(options.competition);
+  if (key === "cup") return `${base} ${ACCENT_STRIPE.gold}`;
+  if (key === "playoff") return `${base} ${ACCENT_STRIPE.primary}`;
   return base;
 }

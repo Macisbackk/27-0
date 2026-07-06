@@ -10,7 +10,7 @@ import {
 import { playUiClick } from "@/lib/sound";
 import { CARD, MANAGER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { managerSectionAccentClass } from "@/lib/manager/managerSurfaces";
+import { managerSectionAccentClass, MANAGER_BORDER, managerListRowClass } from "@/lib/manager/managerSurfaces";
 
 export type ManagerValueTone =
   | "default"
@@ -77,8 +77,8 @@ export function ManagerMobileBackBar({
 
   const placementClass =
     placement === "bottom"
-      ? "sticky bottom-0 z-30 -mx-5 mt-4 border-t border-theme-primary/20 bg-gradient-to-t from-pitch-950/98 to-pitch-950/90 shadow-[0_-4px_24px_rgba(0,0,0,0.35)]"
-      : "sticky top-0 z-30 -mx-5 mb-4 border-b border-theme-primary/20 bg-gradient-to-b from-pitch-950/98 to-pitch-950/90 shadow-[0_4px_24px_rgba(0,0,0,0.35)]";
+      ? `sticky bottom-0 z-30 -mx-5 mt-4 border-t ${MANAGER_BORDER.divider} bg-gradient-to-t from-pitch-950/98 to-pitch-950/90 shadow-[0_-4px_24px_rgba(0,0,0,0.35)]`
+      : `sticky top-0 z-30 -mx-5 mb-4 border-b ${MANAGER_BORDER.divider} bg-gradient-to-b from-pitch-950/98 to-pitch-950/90 shadow-[0_4px_24px_rgba(0,0,0,0.35)]`;
 
   return (
     <div
@@ -90,7 +90,7 @@ export function ManagerMobileBackBar({
         className="btn-press flex w-full min-h-[52px] items-center gap-3 px-5 py-3.5 text-left transition hover:bg-theme-primary/8 active:bg-theme-primary/12 sm:min-h-[48px] sm:px-4 sm:py-3"
       >
         <span
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-theme-primary/35 bg-theme-primary/12 text-base font-bold leading-none text-theme-primary"
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${MANAGER_BORDER.default} bg-pitch-900/60 text-base font-bold leading-none text-theme-primary`}
           aria-hidden
         >
           ←
@@ -476,7 +476,7 @@ function InboxMessageMeta({ message }: { message: InboxMessage }) {
 
 export function ManagerInboxActionFooter({ children }: { children: ReactNode }) {
   return (
-    <div className="border-t border-pitch-700/50 pt-3">{children}</div>
+    <div className={`border-t ${MANAGER_BORDER.divider} pt-3`}>{children}</div>
   );
 }
 
@@ -622,7 +622,7 @@ export function ManagerClubFinancesPanel({
       )}
       <details className="group mt-3">
         <summary
-          className={`flex cursor-pointer list-none items-center justify-between rounded-lg border border-pitch-700/50 bg-pitch-950/40 px-3 py-2 transition hover:border-pitch-500/50 [&::-webkit-details-marker]:hidden`}
+          className={`${managerListRowClass()} flex cursor-pointer list-none items-center justify-between [&::-webkit-details-marker]:hidden`}
         >
           <span className={`${TYPO.sectionLabel} text-pitch-300`}>
             How income is allocated

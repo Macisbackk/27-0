@@ -2,9 +2,10 @@ import type { CSSProperties } from "react";
 import clubsData from "../../data/clubs.json";
 import {
   getClubPanelTextStyle,
+  getClubPillBackground,
   getLuminance,
 } from "./ui/contrast";
-import { isBlackLike, UI_BLACK_TRIM } from "./ui/theme-accent-colors";
+import { isBlackLike, UI_BLACK_TRIM, UI_THEME_WHITE_SOFT } from "./ui/theme-accent-colors";
 
 
 
@@ -174,7 +175,30 @@ export function getClubColors(clubName: string): ClubColorSet {
 
 /** Single-colour club marker for tables, borders, and nav accents. */
 export function getClubIndicatorColor(clubName: string): string {
-  return getClubColors(clubName).primary;
+  const club = getClubByName(clubName);
+  if (!club) {
+    return "#374151";
+  }
+
+  const indicator = getClubPillBackground(
+    club.primaryColor,
+    club.secondaryColor,
+    club.accentColor
+  );
+
+  // Near-black indicators vanish on dark UI (e.g. Hull FC black kit).
+  if (getLuminance(indicator) < 0.1) {
+    const chromatic = [club.primaryColor, club.secondaryColor, club.accentColor]
+      .filter((c): c is string => Boolean(c))
+      .filter((c) => !isBlackLike(c));
+    const onDark = chromatic.find(
+      (c) => getLuminance(c) >= 0.15 && getLuminance(c) < 0.85
+    );
+    if (onDark) return onDark;
+    return UI_THEME_WHITE_SOFT;
+  }
+
+  return indicator;
 }
 
 /** Shared two-tone club theme — single source for all club UI. */

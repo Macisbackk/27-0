@@ -122,6 +122,49 @@ assert(
 );
 
 assert(
+  (badChange?.delta ?? 0) <= 0,
+  "Poor impact season does not gain rating"
+);
+
+assert(
+  (goodChange?.delta ?? 0) >= 1 && (goodChange?.delta ?? 0) <= 3,
+  "Strong season gains are capped and meaningful"
+);
+
+const poorTeamCareer = {
+  ...badCareer,
+  isSeasonComplete: true,
+  leagueTable: badCareer.leagueTable.map((row) =>
+    row.isUserTeam
+      ? { ...row, position: 13, wins: 6, losses: 16, played: 22 }
+      : row
+  ),
+  teamSeasonStats: { ...badCareer.teamSeasonStats, wins: 6, losses: 16, played: 22 },
+};
+
+const goodTeamCareer = {
+  ...goodCareer,
+  leagueTable: goodCareer.leagueTable.map((row) =>
+    row.isUserTeam
+      ? { ...row, position: 2, wins: 18, losses: 4, played: 22 }
+      : row
+  ),
+  teamSeasonStats: { ...goodCareer.teamSeasonStats, wins: 18, losses: 4, played: 22 },
+};
+
+const poorTeamChange = developSquadAtSeasonEnd(poorTeamCareer).changes.find(
+  (c) => c.playerId === playerId
+);
+const goodTeamChange = developSquadAtSeasonEnd(goodTeamCareer).changes.find(
+  (c) => c.playerId === playerId
+);
+
+assert(
+  (goodTeamChange?.delta ?? 0) >= (poorTeamChange?.delta ?? 0),
+  "Good team season develops better than poor team season"
+);
+
+assert(
   badChange == null || (badChange.seasonImpact != null && badChange.seasonImpact < 42),
   "Poor impact stored when player appears in development review"
 );

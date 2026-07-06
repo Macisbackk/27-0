@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ClubNameLabel } from "@/components/ClubNameLabel";
+import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { GameButton } from "@/components/ui/GameButton";
 import {
   MANAGER_LABEL,
@@ -61,10 +62,17 @@ export function ManagerRetirementIntentModal({
     ? getManagerPlayerAge(career, message.playerId)
     : undefined;
 
+  const [confirmStayOpen, setConfirmStayOpen] = useState(false);
+
   const handleAcknowledge = useCallback(() => {
     playUiClick();
     onAcknowledge();
   }, [onAcknowledge]);
+
+  const handleConfirmStay = useCallback(() => {
+    setConfirmStayOpen(false);
+    onConvinceToStay?.();
+  }, [onConvinceToStay]);
 
   const panelRef = useModalA11y(true, handleAcknowledge);
 
@@ -263,7 +271,7 @@ export function ManagerRetirementIntentModal({
               variant="theme"
               onClick={() => {
                 playUiClick();
-                onConvinceToStay?.();
+                setConfirmStayOpen(true);
               }}
             >
               Convince to stay
@@ -279,6 +287,21 @@ export function ManagerRetirementIntentModal({
         </div>
         </div>
       </div>
+
+      <ManagerDialog
+        open={confirmStayOpen}
+        variant="confirm"
+        title="Offer one more year?"
+        message={
+          contract?.wagePerYear != null
+            ? `Offer ${player.name} a 1-year contract at ${formatWage(contract.wagePerYear)}/yr — the same wage as now?\n\nThey will stay for the rest of this season and one more year, then retire. This can only be done once.`
+            : `Offer ${player.name} a 1-year contract at their current wage?\n\nThey will stay for the rest of this season and one more year, then retire. This can only be done once.`
+        }
+        confirmLabel="Yes — offer contract"
+        cancelLabel="Go back"
+        onConfirm={handleConfirmStay}
+        onCancel={() => setConfirmStayOpen(false)}
+      />
     </div>
   );
 }

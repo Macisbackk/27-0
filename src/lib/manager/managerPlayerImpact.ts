@@ -134,3 +134,72 @@ export function rollImpactRegression(
 export function isPoorSeasonImpact(impact: number): boolean {
   return impact < 42;
 }
+
+/** Team results scale how much positive development the squad earns. */
+export function getTeamSeasonDevelopmentModifier(
+  career: ManagerCareer,
+  club?: string
+): number {
+  const targetClub = club ?? career.club;
+  const row = career.leagueTable.find((entry) => entry.team === targetClub);
+
+  const played = row?.played ?? career.teamSeasonStats.played;
+  const wins = row?.wins ?? career.teamSeasonStats.wins;
+  if (played < 6) return 1;
+
+  const winRate = wins / played;
+  const position = row?.position ?? 14;
+
+  let mod = 0.68 + winRate * 0.62;
+  if (position <= 3) mod += 0.1;
+  else if (position <= 6) mod += 0.05;
+  else if (position >= 11) mod -= 0.08;
+  else if (position >= 13) mod -= 0.14;
+
+  return Math.max(0.52, Math.min(1.28, mod));
+}
+
+/** Positive rating growth from impact, minutes, age, and team context. */
+export function computeImpactBasedGrowth(
+  impact: number,
+  appearances: number,
+  age: number,
+  potentialGap: number,
+  teamMod: number,
+  minAppearances = 8
+): number {
+  if (appearances < minAppearances || isPoorSeasonImpact(impact)) return 0;
+
+  const impactNorm = Math.max(0, Math.min(1, (impact - 42) / 36));
+  if (impactNorm <= 0) return 0;
+
+  const maxGain =
+    age <= 21
+      ? 2.25
+      : age <= 24
+        ? 1.85
+        : age <= 27
+          ? 1.35
+          : age <= 29
+            ? 0.85
+            : 0.45;
+
+  const appFactor =
+    appearances >= 20
+      ? 1
+      : appearances >= 16
+        ? 0.9
+        : appearances >= 12
+          ? 0.75
+          : appearances >= minAppearances
+            ? 0.55
+            : 0;
+
+  let gain = impactNorm * maxGain * appFactor * teamMod;
+
+  if (impact >= 58 && potentialGap >= 6 && age <= 26) {
+    gain += 0.15 * Math.min(1, potentialGap / 12) * impactNorm;
+  }
+
+  return gain;
+}

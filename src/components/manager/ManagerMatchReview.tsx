@@ -6,7 +6,8 @@ import { BracketRecap } from "@/components/BracketRecap";
 import { MatchDetailsPanel } from "@/components/MatchDetailsPanel";
 import { MatchPlayerOfTheMatchCard } from "@/components/MatchPlayerOfTheMatchCard";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD, FILTER, SPACING, TAB_RAIL } from "@/lib/ui/design-system";
+import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSquadSlotsFromMatchday } from "@/lib/manager/managerSquad";
@@ -22,9 +23,10 @@ import {
 } from "@/lib/manager/managerFixtureDisplay";
 import {
   managerCompetitionSurfaceClass,
+  managerCalloutClass,
   managerInsetPanelClass,
+  managerResultBadgeClass,
 } from "@/lib/manager/managerSurfaces";
-import { playUiClick } from "@/lib/sound";
 import {
   cupRoundKeyToBracketRound,
   snapshotCupBracketAtRound,
@@ -96,11 +98,9 @@ export function ManagerMatchReview({
   const attendance = fixture.meta?.attendance;
   const won = fixture.result === "W";
   const lost = fixture.result === "L";
-  const resultBadgeClass = won
-    ? "bg-theme-primary/20 text-theme-primary border-theme-primary/40"
-    : lost
-      ? "bg-red-500/20 text-red-300 border-red-500/40"
-      : "bg-pitch-700/50 text-pitch-200 border-pitch-600";
+  const resultBadgeClass = managerResultBadgeClass(
+    won ? "win" : lost ? "loss" : "draw"
+  );
 
   const roundLabel =
     fixture.competition === "challenge_cup"
@@ -128,11 +128,11 @@ export function ManagerMatchReview({
   );
 
   const momentToneClass: Record<MatchKeyMomentTone, string> = {
-    gold: "border-accent-gold/40 bg-accent-gold/10 text-accent-gold",
-    primary: "border-theme-primary/40 bg-theme-primary/10 text-theme-primary",
-    red: "border-red-500/40 bg-red-500/10 text-red-300",
-    sky: "border-sky-500/40 bg-sky-500/10 text-sky-300",
-    muted: "border-pitch-600/50 bg-pitch-800/40 text-pitch-300",
+    gold: managerCalloutClass("gold"),
+    primary: managerCalloutClass("primary"),
+    red: managerCalloutClass("red"),
+    sky: managerCalloutClass("sky"),
+    muted: managerCalloutClass("muted"),
   };
 
   const hasTactics = Boolean(
@@ -166,11 +166,9 @@ export function ManagerMatchReview({
 
       <div
         className={`${CARD.elevated} ${SPACING.cardPadding} text-center ${
-          isChallengeCupFixture(fixture.competition)
-            ? managerCompetitionSurfaceClass("challenge_cup")
-            : fixture.competition === "playoffs"
-              ? managerCompetitionSurfaceClass("playoffs")
-              : ""
+          fixture.competition
+            ? managerCompetitionSurfaceClass(fixture.competition)
+            : ""
         }`}
       >
         <p className={`text-xl font-bold text-white sm:text-2xl`}>
@@ -187,30 +185,19 @@ export function ManagerMatchReview({
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{roundLabel}</p>
       </div>
 
-      <div className={`${TAB_RAIL.outer} sm:hidden`}>
-        <div className={`${TAB_RAIL.inner} gap-1.5`}>
-          {(
+      <div className="sm:hidden">
+        <ManagerSubTabBar
+          tabs={(
             [
               ["story", "Story"],
               ["stats", "Stats"],
               ...(hasTactics ? ([["tactics", "Tactics"]] as const) : []),
             ] as const
-          ).map(([id, label]) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => {
-                playUiClick();
-                setMobileTab(id);
-              }}
-              className={`${TAB_RAIL.item} min-h-[44px] rounded-lg border px-3 py-2 text-sm font-semibold ${
-                mobileTab === id ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+          ).map(([id, label]) => ({ id, label }))}
+          active={mobileTab}
+          onChange={setMobileTab}
+          ariaLabel="Match review sections"
+        />
       </div>
 
       <div className={tabVisible("story")}>

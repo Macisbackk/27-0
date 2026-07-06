@@ -12,6 +12,7 @@ import { ensurePlayoffsReady } from "@/lib/manager/managerPlayoffs";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { playSeasonComplete, playUiClick } from "@/lib/sound";
 import {
+  managerInsetPanelClass,
   managerModalHeaderClass,
   managerPillClass,
 } from "@/lib/manager/managerSurfaces";
@@ -95,7 +96,7 @@ export function ManagerPlayoffsIntroModal({
         </div>
 
         {bracket && (
-          <div className="mt-4 overflow-hidden rounded-xl border border-pitch-700/40 bg-pitch-950/40 p-2 sm:p-3">
+          <div className={`mt-4 overflow-hidden ${managerInsetPanelClass()} p-2 sm:p-3`}>
             <PlayoffBracketDisplay state={bracket} embedded />
           </div>
         )}

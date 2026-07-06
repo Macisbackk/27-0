@@ -4,6 +4,11 @@ import { GameButton } from "@/components/ui/GameButton";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
+import {
+  impactLabel,
+  impactTone,
+  IMPACT_TONE_CLASS,
+} from "@/lib/manager/managerPlayerImpact";
 import { playUiClick } from "@/lib/sound";
 import {
   ManagerDeltaBadge,
@@ -23,6 +28,18 @@ export function ManagerDevelopmentReview({
   const improved = changes.filter((c) => c.delta > 0);
   const declined = changes.filter((c) => c.delta < 0);
   const steady = changes.filter((c) => c.delta === 0);
+
+  function impactBadge(c: (typeof changes)[number]) {
+    if (c.seasonImpact == null) return null;
+    const tone = impactTone(c.seasonImpact);
+    return (
+      <span
+        className={`rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${IMPACT_TONE_CLASS[tone]}`}
+      >
+        Impact {c.seasonImpact} · {impactLabel(c.seasonImpact)}
+      </span>
+    );
+  }
 
   function changeLabel(
     c: (typeof changes)[number],
@@ -79,6 +96,7 @@ export function ManagerDevelopmentReview({
                     <span className="font-semibold text-white">{c.playerName}</span>
                     {changeLabel(c, "improved")}
                     <ManagerDeltaBadge delta={c.delta} />
+                    {impactBadge(c)}
                     <span className="text-pitch-500">· POT {c.potential}</span>
                   </li>
                 ))}
@@ -93,6 +111,7 @@ export function ManagerDevelopmentReview({
                     <span className="font-semibold text-white">{c.playerName}</span>
                     {changeLabel(c, "declined")}
                     <ManagerDeltaBadge delta={c.delta} />
+                    {impactBadge(c)}
                     <span className="text-pitch-500">· POT {c.potential}</span>
                   </li>
                 ))}
@@ -106,6 +125,7 @@ export function ManagerDevelopmentReview({
                   <li key={c.playerId} className={`${TYPO.bodySm} flex flex-wrap items-center gap-2`}>
                     <span className="font-semibold text-white">{c.playerName}</span>
                     {changeLabel(c, "steady")}
+                    {impactBadge(c)}
                     <span className="text-pitch-500">· POT {c.potential}</span>
                   </li>
                 ))}

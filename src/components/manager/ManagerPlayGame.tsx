@@ -35,15 +35,16 @@ import {
 } from "@/lib/manager/managerFixtureDisplay";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getManagerOpponentMatchRating } from "@/lib/manager/managerLeagueRosters";
+import { managerResultBadgeClass } from "@/lib/manager/managerSurfaces";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
 
 const COMMANDS = LIVE_MATCH_COMMANDS;
 
 const STATUS_PILL_CLASS = {
-  win: "bg-theme-primary/20 text-theme-primary border-theme-primary/40",
-  loss: "bg-red-500/20 text-red-300 border-red-500/40",
-  level: "bg-pitch-700/50 text-pitch-200 border-pitch-600",
+  win: managerResultBadgeClass("win"),
+  loss: managerResultBadgeClass("loss"),
+  level: managerResultBadgeClass("draw"),
 };
 
 interface ManagerPlayGameProps {

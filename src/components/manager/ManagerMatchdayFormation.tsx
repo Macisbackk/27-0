@@ -103,7 +103,7 @@ export function ManagerMatchdayFormation({
 
   return (
     <div
-      className={`${CARD.base} ${SPACING.cardPaddingSm} overflow-hidden border border-pitch-700/40 bg-gradient-to-b from-pitch-800/20 to-pitch-950/60`}
+      className={`${CARD.base} ${SPACING.cardPaddingSm} overflow-hidden bg-gradient-to-b from-pitch-800/20 to-pitch-950/60`}
     >
       {!hideTitle && (
         <p className={`${TYPO.sectionLabel} mb-2 text-center sm:mb-3`}>{title}</p>
@@ -129,7 +129,7 @@ export function ManagerMatchdayFormation({
           }
           if (!interactive || !career) return;
           const playerId = career.matchdayXiii[slotIndex] ?? "";
-          if (playerId && onFilledSlotClick) {
+          if (playerId && onFilledSlotClick && !pendingAssignId) {
             onFilledSlotClick(playerId);
             return;
           }
@@ -146,7 +146,9 @@ export function ManagerMatchdayFormation({
       />
       {interactive && (
         <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-500`}>
-          Click a slot or player to swap · double-click a player for options
+          {pendingAssignId
+            ? "Click a highlighted slot to sub this player on"
+            : "Click a slot or player to swap · double-click a player for options"}
         </p>
       )}
       {canInspectPlayers && !interactive && (

@@ -22,12 +22,11 @@ import {
   formatCountStat,
   type StatsTabId,
 } from "@/lib/stats-views";
+import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { RecordWithPercentage } from "./RecordWithPercentage";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
-import { tabGroupButtonClass, tabGroupClass, SUB_TAB_BAR_SHELL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { runStatsPageValidation } from "@/lib/validation/stats-page-validation";
-import { playTabChange } from "@/lib/sound";
 import {
   loadManagerStats,
   EMPTY_MANAGER_STATS,
@@ -185,49 +184,23 @@ export function StatsPanel() {
   return (
     <div className="space-y-6">
       <nav className="mb-5" aria-label="Stats mode">
-        <div className={SUB_TAB_BAR_SHELL}>
-          <div className={tabGroupClass()} role="tablist">
-            {STATS_MODE_TABS.map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={modeTab === tab.id}
-                onClick={() => {
-                  if (modeTab !== tab.id) playTabChange();
-                  setModeTab(tab.id);
-                }}
-                className={tabGroupButtonClass(modeTab === tab.id)}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <ManagerSubTabBar
+          tabs={STATS_MODE_TABS}
+          active={modeTab}
+          onChange={setModeTab}
+          ariaLabel="Stats mode"
+        />
       </nav>
 
       {modeTab === "quick" && (
         <>
           <nav className="mb-5" aria-label="Quick mode stats">
-            <div className={SUB_TAB_BAR_SHELL}>
-              <div className={tabGroupClass()} role="tablist">
-                {STATS_TABS.map((tab) => (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={activeTab === tab.id}
-                    onClick={() => {
-                      if (activeTab !== tab.id) playTabChange();
-                      setActiveTab(tab.id);
-                    }}
-                    className={tabGroupButtonClass(activeTab === tab.id)}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <ManagerSubTabBar
+              tabs={STATS_TABS}
+              active={activeTab}
+              onChange={setActiveTab}
+              ariaLabel="Quick mode stats"
+            />
           </nav>
 
           {!hasAnyRuns && (
@@ -262,25 +235,12 @@ export function StatsPanel() {
       {modeTab === "manager" && (
         <>
           <nav className="mb-5" aria-label="Manager mode stats">
-            <div className={SUB_TAB_BAR_SHELL}>
-              <div className={tabGroupClass()} role="tablist">
-                {MANAGER_STATS_TABS.map((tab) => (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={managerTab === tab.id}
-                    onClick={() => {
-                      if (managerTab !== tab.id) playTabChange();
-                      setManagerTab(tab.id);
-                    }}
-                    className={tabGroupButtonClass(managerTab === tab.id)}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <ManagerSubTabBar
+              tabs={MANAGER_STATS_TABS}
+              active={managerTab}
+              onChange={setManagerTab}
+              ariaLabel="Manager mode stats"
+            />
           </nav>
 
           {!hasAnyManagerStats && (

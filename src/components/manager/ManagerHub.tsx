@@ -4,12 +4,22 @@ import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, PAGE, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
+import type {
+  ManagerCareer,
+  ManagerScheduledFixture,
+  ManagerView,
+} from "@/lib/manager/types";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getNextManagerFixture, isManagerSeasonComplete } from "@/lib/manager/managerSimulation";
 import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
 import { getCupHubStatus } from "@/lib/manager/managerChallengeCup";
+import { BracketRecap } from "@/components/BracketRecap";
 import { PlayoffBracketDisplay } from "@/components/PlayoffBracketDisplay";
+import {
+  getActiveRound,
+  getCupRoundLabel,
+  type ChallengeCupBracketState,
+} from "@/lib/game/challenge-cup-bracket";
 import {
   getPlayoffHubStatus,
   isManagerPlayoffsActive,
@@ -44,7 +54,7 @@ import { playSimulateRound, playUiClick } from "@/lib/sound";
 import {
   managerClubAccentCardClass,
   managerClubAccentCardStyle,
-  managerCompetitionSurfaceClass,
+  managerCompetitionPanelClass,
   managerFeaturedBannerClass,
   managerFixtureCardClass,
   managerFixtureCardStyle,
@@ -73,6 +83,7 @@ import {
   matchPredictionTone,
 } from "@/components/manager/manager-ui";
 import {
+  getManagerCupRoundLabel,
   getManagerScheduledFixtureHeadline,
   getManagerScheduledFixtureVenueLabel,
   isChallengeCupFixture,
@@ -169,6 +180,46 @@ function HubBoardBudgetAttendance({
   );
 }
 
+function HubChallengeCupBracketPanel({
+  cup,
+  cupStatus,
+  nextFixture,
+}: {
+  cup: ChallengeCupBracketState;
+  cupStatus: string;
+  nextFixture: ManagerScheduledFixture;
+}) {
+  const activeRound = getActiveRound(cup);
+  const roundLabel = nextFixture.cupRound
+    ? getManagerCupRoundLabel(nextFixture.cupRound)
+    : getCupRoundLabel(activeRound);
+
+  return (
+    <div className={managerCompetitionPanelClass("challenge_cup")}>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className={`${TYPO.sectionLabel} text-accent-gold`}>
+              Challenge Cup Bracket
+            </p>
+            <span className={managerPillClass("gold")}>{roundLabel}</span>
+          </div>
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+            <span className="text-accent-gold">{cupStatus}</span>
+          </p>
+        </div>
+      </div>
+      <div className="mt-3">
+        <BracketRecap
+          matches={cup.matches}
+          userClub={cup.userClub}
+          byeTeams={cup.byeTeams}
+        />
+      </div>
+    </div>
+  );
+}
+
 function HubPlayoffBracketPanel({
   playoffs,
   career,
@@ -183,9 +234,7 @@ function HubPlayoffBracketPanel({
   const playoffStatus = getPlayoffHubStatus(career);
 
   return (
-    <div
-      className={`${CARD.elevated} ${SPACING.cardPadding} border ${managerCompetitionSurfaceClass("playoffs")}`}
-    >
+    <div className={managerCompetitionPanelClass("playoffs")}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -625,6 +674,25 @@ export function ManagerHub({
     </div>
   );
 
+  const leagueTableCard = (
+    <ManagerLeagueTable
+      career={career}
+      subtitle={`Season ${career.seasonYear} · Week ${career.gameWeek}`}
+      onViewClub={setViewClubSheet}
+    />
+  );
+
+  const hubStandingsCard =
+    isCupFixture && hubCareer.challengeCup && nextFixture ? (
+      <HubChallengeCupBracketPanel
+        cup={hubCareer.challengeCup}
+        cupStatus={cupStatus}
+        nextFixture={nextFixture}
+      />
+    ) : (
+      leagueTableCard
+    );
+
   const stickyActions = (
     <ManagerHubStickyActions
       visible={showStickyPlayBar}
@@ -652,8 +720,9 @@ export function ManagerHub({
     return (
       <>
         <div className={`${PAGE.section} ${hubMobilePad}`}>
-          <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28">
+          <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
             {nextFixtureCard}
+            {hubStandingsCard}
           </div>
           {commandCentre}
           <HubPlayoffBracketPanel
@@ -685,6 +754,7 @@ export function ManagerHub({
       <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
         {seasonProgressCard}
         {nextFixtureCard}
+        {hubStandingsCard}
       </div>
 
       {commandCentre}

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { CARD, LINK, SPACING } from "@/lib/ui/design-system";
+import { managerAlertPanelClass } from "@/lib/manager/managerSurfaces";
+import { LINK, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playUiClick } from "@/lib/sound";
 import { acknowledgeSaveMigration } from "@/lib/manager/managerSaveMigration";
@@ -14,9 +15,7 @@ export function ManagerSaveMigrationNotice({
   onDismiss,
 }: ManagerSaveMigrationNoticeProps) {
   return (
-    <div
-      className={`${CARD.base} ${SPACING.cardPaddingSm} border border-theme-primary/40 bg-theme-primary/5`}
-    >
+    <div className={managerAlertPanelClass("primary")}>
       <p className={`${TYPO.bodySm} text-pitch-200`}>
         Your career save was updated for the latest Manager rules (reserves,
         trophies, attendance).{" "}

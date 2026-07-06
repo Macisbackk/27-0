@@ -194,7 +194,7 @@ export function SeasonReview({
       <div className="stadium-lights pointer-events-none fixed inset-0" />
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
 
-      <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-8 pb-36 sm:py-12 sm:pb-12">
+      <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-8 sm:py-12">
         <motion.header
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -311,15 +311,6 @@ export function SeasonReview({
                 )}
               </span>
             </p>
-            {showPlayoffPrompt && (
-              <button
-                type="button"
-                onClick={onContinuePlayoffs}
-                className="mt-3 w-full rounded-lg border border-theme-primary/50 bg-theme-primary/10 px-4 py-2.5 font-display text-sm font-bold uppercase tracking-wider text-theme-primary transition hover:bg-theme-primary/20"
-              >
-                Continue to Play-Offs
-              </button>
-            )}
             {missedPlayoffs && (
               <p className="font-semibold text-gray-500">Missed Play-Offs</p>
             )}
@@ -421,13 +412,12 @@ export function SeasonReview({
         </CollapsibleReviewSection>
 
         <motion.footer
-          className="fixed inset-x-0 bottom-0 z-[55] border-t border-pitch-700/60 bg-pitch-950/95 px-4 py-3 backdrop-blur-md sm:static sm:mt-8 sm:w-full sm:max-w-xl sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none"
-          style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+          className="mt-8 w-full max-w-xl space-y-3"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65 }}
         >
-          <div className="mx-auto w-full max-w-xl space-y-3">
+          <div className="space-y-3">
           {!loading && !isLoggedIn && !showPlayoffPrompt && (
             <GuestSaveNudge context="quick-season" />
           )}

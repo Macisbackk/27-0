@@ -21,11 +21,13 @@ import { playUiClick } from "@/lib/sound";
 interface ManagerObjectivesIntroModalProps {
   career: ManagerCareer;
   onContinue: () => void;
+  onBack: () => void;
 }
 
 export function ManagerObjectivesIntroModal({
   career,
   onContinue,
+  onBack,
 }: ManagerObjectivesIntroModalProps) {
   const intro = getManagerBoardObjectiveIntro(career);
 
@@ -33,6 +35,11 @@ export function ManagerObjectivesIntroModal({
     playUiClick();
     onContinue();
   }, [onContinue]);
+
+  const handleBack = useCallback(() => {
+    playUiClick();
+    onBack();
+  }, [onBack]);
 
   const panelRef = useModalA11y(true, handleContinue);
 
@@ -111,9 +118,14 @@ export function ManagerObjectivesIntroModal({
           {intro.confidenceNote}
         </p>
 
-        <GameButton variant="theme" className="mt-5" onClick={handleContinue}>
-          Let&apos;s get started
-        </GameButton>
+        <div className={`mt-5 flex flex-col gap-2 sm:flex-row sm:items-center ${SPACING.buttonGap}`}>
+          <GameButton variant="secondary" onClick={handleBack} className="sm:flex-1">
+            Back
+          </GameButton>
+          <GameButton variant="theme" onClick={handleContinue} className="sm:flex-1">
+            Let&apos;s get started
+          </GameButton>
+        </div>
       </div>
     </div>
   );

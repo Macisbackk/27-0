@@ -10,12 +10,10 @@ import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getManagerOpponentPoolOptions } from "@/lib/manager/managerLeagueRosters";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
+import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import {
   CARD,
   SPACING,
-  tabGroupButtonClass,
-  tabGroupClass,
-  SUB_TAB_BAR_SHELL,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubColors } from "@/lib/clubs";
@@ -23,6 +21,7 @@ import {
   managerFixtureCardClass,
   managerFixtureCardStyle,
   managerFixtureRowClass,
+  managerPillClass,
 } from "@/lib/manager/managerSurfaces";
 import { getFriendlyDualBorderStyle } from "@/lib/manager/managerFriendlyUi";
 import {
@@ -258,7 +257,7 @@ function UpcomingFixtureRow({
             detailed={false}
           />
           {isNext && (
-            <span className="rounded-full border border-theme-primary/40 bg-theme-primary/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-theme-primary">
+            <span className={managerPillClass("primary")}>
               Next
             </span>
           )}
@@ -523,29 +522,13 @@ export function ManagerFixtures({
         </div>
       )}
 
-      <div
-        className={`${SUB_TAB_BAR_SHELL} overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:overflow-visible`}
-        role="tablist"
-        aria-label="Filter fixtures"
-      >
-        <div className={`${tabGroupClass()} shrink-0 sm:shrink`}>
-          {FILTERS.map((f) => (
-            <button
-              key={f.id}
-              type="button"
-              role="tab"
-              aria-selected={filter === f.id}
-              className={`${tabGroupButtonClass(filter === f.id)} shrink-0 !flex-none whitespace-nowrap px-3 sm:shrink sm:!flex-1 sm:px-0`}
-              onClick={() => {
-                playUiClick();
-                setFilter(f.id);
-              }}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <ManagerSubTabBar
+        tabs={FILTERS}
+        active={filter}
+        onChange={setFilter}
+        scrollable
+        ariaLabel="Filter fixtures"
+      />
 
       {filteredItems.length === 0 ? (
         <div className={`${CARD.base} ${SPACING.cardPadding} text-center`}>

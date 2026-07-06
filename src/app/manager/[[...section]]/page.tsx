@@ -533,7 +533,6 @@ export default function ManagerPage() {
 
   const handleSelectClub = (club: string) => {
     const next = createNewCareer(club, activeSlot);
-    recordCareerStarted(club);
     careerSlotRef.current = activeSlot;
     setCareer(next);
     refreshSaveSlots();
@@ -892,7 +891,17 @@ export default function ManagerPage() {
 
   const handleObjectivesIntroContinue = () => {
     if (!career) return;
+    recordCareerStarted(career.club);
     persist({ ...career, objectivesIntroShown: true });
+  };
+
+  const handleObjectivesIntroBack = () => {
+    if (activeSlot == null) return;
+    deleteManagerCareer(activeSlot);
+    careerSlotRef.current = null;
+    setCareer(null);
+    refreshSaveSlots();
+    goToView("club-select");
   };
 
   const handleLeagueWinnersModalContinue = () => {
@@ -1238,6 +1247,7 @@ export default function ManagerPage() {
         <ManagerObjectivesIntroModal
           career={career}
           onContinue={handleObjectivesIntroContinue}
+          onBack={handleObjectivesIntroBack}
         />
       )}
 

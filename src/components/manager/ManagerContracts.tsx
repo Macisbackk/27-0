@@ -24,7 +24,10 @@ import { getWageBillPercent, isWageOverBudget } from "@/lib/manager/managerFinan
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { playPanelClose, playUiClick } from "@/lib/sound";
 import { ManagerPage } from "@/components/manager/manager-ui";
-import { managerCalloutClass } from "@/lib/manager/managerSurfaces";
+import {
+  managerCalloutClass,
+  managerSectionAccentClass,
+} from "@/lib/manager/managerSurfaces";
 import { markOnboardingStepComplete } from "@/lib/manager/managerOnboarding";
 
 type ContractFilter =
@@ -346,7 +349,7 @@ export function ManagerContracts({
                 openRenewal(player.id);
               }}
               className={`${CARD.inset} w-full text-left ${SPACING.listItem} transition hover:border-theme-primary/40 ${
-                urgent ? "border-l-4 border-accent-gold" : ""
+                urgent ? managerSectionAccentClass("gold") : ""
               }`}
             >
               <div className="flex flex-wrap items-center justify-between gap-2">

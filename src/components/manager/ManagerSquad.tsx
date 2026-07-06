@@ -36,6 +36,7 @@ import {
   SQUAD_SUB_TAB_OPTIONS,
   type SquadSubTab,
 } from "@/lib/manager/manager-routes";
+import { managerAlertPanelClass } from "@/lib/manager/managerSurfaces";
 import { playUiClick } from "@/lib/sound";
 
 interface ManagerSquadProps {
@@ -85,8 +86,36 @@ function unavailableTextClass(isSuspension: boolean): string {
 
 type SquadPoolEntry = ReturnType<typeof getSquadRosterPoolPlayers>[number];
 
+/** Shared footprint for squad pool + interchange player boxes. */
+const SQUAD_PLAYER_BOX_CLASS =
+  "flex h-full min-h-[4.5rem] w-full min-w-0 flex-col px-2 py-1.5 sm:min-h-[4.75rem] sm:px-2.5 sm:py-2";
+
+const SQUAD_PLAYER_NAME_CLASS =
+  "min-w-0 flex-1 text-[10px] font-medium leading-[1.15] text-white line-clamp-2 [overflow-wrap:anywhere] sm:text-xs sm:leading-tight";
+
+const SQUAD_PLAYER_META_CLASS =
+  "mt-0.5 line-clamp-1 text-[9px] leading-tight text-pitch-400 sm:text-[10px]";
+
+const SQUAD_PLAYER_STATUS_CLASS =
+  "mt-0.5 min-h-[1.125rem] line-clamp-1 text-[9px] font-medium leading-tight sm:min-h-[1.25rem] sm:text-[10px]";
+
 const SQUAD_POOL_GRID_CLASS =
-  "grid grid-flow-col grid-rows-2 gap-x-1.5 gap-y-1.5 [grid-auto-columns:minmax(0,1fr)] sm:gap-x-2 sm:gap-y-2";
+  "grid w-max min-w-full grid-flow-col grid-rows-2 auto-cols-[7.5rem] items-stretch gap-x-1.5 gap-y-1.5 sm:auto-cols-[8.25rem] sm:gap-x-2 sm:gap-y-2";
+
+function squadPlayerBoxClass(
+  selectionRole: SquadSelectionRole,
+  unavailable?: boolean,
+  isSuspension?: boolean
+): string {
+  return [
+    squadSelectionClass(selectionRole),
+    SQUAD_PLAYER_BOX_CLASS,
+    "btn-press select-none rounded-lg border text-left transition",
+    unavailable ? `${unavailableAccentClass(!!isSuspension)} opacity-90` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
 
 function SquadPoolPlayerButton({
   career,
@@ -111,33 +140,31 @@ function SquadPoolPlayerButton({
   const sourceLabel = isReserveCallUp ? "Res" : "Sqd";
 
   return (
-    <li>
+    <li className="h-full min-h-0">
       <button
         type="button"
         onClick={onClick}
         onDoubleClick={onDoubleClick}
-        className={`${squadSelectionClass(poolRole)} btn-press select-none rounded-lg border px-1.5 py-1.5 text-left transition sm:px-2 sm:py-2 ${
-          unavailable ? `${unavailableAccentClass(!!isSuspension)} opacity-90` : ""
-        }`}
+        className={squadPlayerBoxClass(poolRole, unavailable, isSuspension)}
       >
-        <div className="flex items-start justify-between gap-0.5">
-          <p className="min-w-0 flex-1 text-[10px] font-medium leading-[1.15] text-white [overflow-wrap:anywhere] line-clamp-2 sm:text-xs sm:leading-tight">
-            {player.name}
-          </p>
+        <div className="flex items-start justify-between gap-1">
+          <p className={SQUAD_PLAYER_NAME_CLASS}>{player.name}</p>
           <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
             {player.peakRating}
           </span>
         </div>
-        <p className="mt-0.5 line-clamp-1 text-[9px] leading-tight text-pitch-400 sm:text-[10px]">
+        <p className={SQUAD_PLAYER_META_CLASS}>
           {positions.map((p) => POSITION_SHORT[p]).join(" · ")} · {sourceLabel}
         </p>
-        {unavailable && ps?.injury && (
-          <p
-            className={`mt-0.5 line-clamp-2 text-[9px] font-medium leading-tight sm:text-[10px] ${unavailableTextClass(!!isSuspension)}`}
-          >
-            {formatInjuryLabel(ps.injury)}
-          </p>
-        )}
+        <p
+          className={`${SQUAD_PLAYER_STATUS_CLASS} ${
+            unavailable && ps?.injury
+              ? unavailableTextClass(!!isSuspension)
+              : "invisible"
+          }`}
+        >
+          {unavailable && ps?.injury ? formatInjuryLabel(ps.injury) : "\u00a0"}
+        </p>
       </button>
     </li>
   );
@@ -362,14 +389,16 @@ export function ManagerSquad({
   };
 
   const squadHelpText = finePointer
-    ? "Click squad players to assign · click matchday players to swap · double-click for player options"
+    ? "Click a squad player, then a highlighted slot to sub · click matchday players to swap · double-click for options"
     : "Tap any player for options · substitute from the player menu";
 
   const tacticsHelpText =
     "Set your playing style, attack focus, and defence focus for the next match.";
 
   const squadPoolHelpText = finePointer
-    ? "Click to assign · double-click for player options"
+    ? pendingAssignId
+      ? "Pick a highlighted slot on the pitch or interchange"
+      : "Click to select, then pick a slot · double-click for options"
     : "Tap for player options";
 
   const squadCheck = validateFitMatchdaySquad(resolveCareerForMatchSimulation(career));
@@ -473,18 +502,13 @@ export function ManagerSquad({
       ) : (
         <>
       {assignmentNotice && (
-        <div
-          className={`${CARD.inset} ${SPACING.cardPaddingSm} border border-red-500/40`}
-          role="status"
-        >
+        <div className={managerAlertPanelClass("red")} role="status">
           <p className={`${TYPO.bodySm} text-red-200`}>{assignmentNotice}</p>
         </div>
       )}
 
       {!squadCheck.valid && (
-        <div
-          className={`${CARD.inset} ${SPACING.cardPaddingSm} border border-accent-gold/40`}
-        >
+        <div className={managerAlertPanelClass("gold")}>
           <p className={`${TYPO.bodySm} text-accent-gold whitespace-pre-line`}>
             {squadCheck.message}
           </p>
@@ -507,7 +531,7 @@ export function ManagerSquad({
       )}
 
       {unavailablePlayers.length > 0 && (
-        <div className="rounded-lg border border-red-500/25 bg-red-500/5 px-4 py-2.5 sm:px-3 sm:py-2">
+        <div className={managerAlertPanelClass("red")}>
           <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-red-300/80">
             Unavailable ({unavailablePlayers.length})
           </p>
@@ -540,8 +564,11 @@ export function ManagerSquad({
         </div>
       )}
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_min(100%,440px)] lg:gap-6 [&>*:first-child]:order-2 [&>*:last-child]:order-1 lg:[&>*:first-child]:order-1 lg:[&>*:last-child]:order-2">
-        <div ref={matchdayPanelRef} className={SPACING.stackMd}>
+      <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_min(100%,440px)] lg:gap-6 [&>*:first-child]:order-2 [&>*:last-child]:order-1 lg:[&>*:first-child]:order-1 lg:[&>*:last-child]:order-2">
+        <div
+          ref={matchdayPanelRef}
+          className={`mx-auto min-w-0 w-full max-w-[min(100%,26.25rem)] lg:mx-0 lg:max-w-none ${SPACING.stackMd}`}
+        >
           <ManagerMatchdayFormation
             career={career}
             interactive
@@ -556,7 +583,7 @@ export function ManagerSquad({
 
           <div className={`${CARD.base} ${SPACING.cardPadding}`}>
             <p className={`${TYPO.sectionLabel} mb-2`}>Interchange</p>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <div className="grid grid-cols-2 auto-rows-fr items-stretch gap-2 sm:grid-cols-4">
               {Array.from({ length: 4 }, (_, i) => {
                 const playerId = career.matchdayInterchange[i] ?? "";
                 const slotTarget: MatchdaySlotTarget = { kind: "bench", index: i };
@@ -574,6 +601,11 @@ export function ManagerSquad({
                     key={i}
                     type="button"
                     onClick={() => {
+                      if (pendingAssignId) {
+                        playUiClick();
+                        handleSelectSlot({ kind: "bench", index: i });
+                        return;
+                      }
                       if (selectionRole === "target") {
                         if (playerId) handleMatchdayPlayerPrimaryClick(playerId);
                         else {
@@ -601,26 +633,38 @@ export function ManagerSquad({
                           }
                         : undefined
                     }
-                    className={`${squadSelectionClass(selectionRole)} select-none rounded-lg border ${SPACING.listItem} text-left ${
-                      unavailable ? unavailableAccentClass(!!isSuspension) : ""
-                    }`}
+                    className={squadPlayerBoxClass(
+                      selectionRole,
+                      unavailable,
+                      isSuspension
+                    )}
                   >
-                    <p className="text-[10px] text-pitch-500">{14 + i}.</p>
-                    <p className="truncate text-sm text-white">
-                      {player?.name ?? "Empty"}
-                    </p>
-                    {player && (
-                      <p className="text-[10px] text-theme-primary">
-                        {player.peakRating}
-                      </p>
-                    )}
-                    {ps?.injury && (
+                    <div className="flex items-start justify-between gap-1">
                       <p
-                        className={`text-[10px] font-medium ${unavailableTextClass(!!isSuspension)}`}
+                        className={`${SQUAD_PLAYER_NAME_CLASS} ${
+                          player ? "" : "text-pitch-500"
+                        }`}
                       >
-                        {formatInjuryLabel(ps.injury)}
+                        {player?.name ?? "Empty"}
                       </p>
-                    )}
+                      {player && (
+                        <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
+                          {player.peakRating}
+                        </span>
+                      )}
+                    </div>
+                    <p className={SQUAD_PLAYER_META_CLASS}>
+                      Interchange {14 + i}
+                    </p>
+                    <p
+                      className={`${SQUAD_PLAYER_STATUS_CLASS} ${
+                        ps?.injury
+                          ? unavailableTextClass(!!isSuspension)
+                          : "invisible"
+                      }`}
+                    >
+                      {ps?.injury ? formatInjuryLabel(ps.injury) : "\u00a0"}
+                    </p>
                   </button>
                 );
               })}
@@ -628,7 +672,7 @@ export function ManagerSquad({
           </div>
         </div>
 
-        <div ref={squadPoolPanelRef} className={`${CARD.base} ${SPACING.cardPadding}`}>
+        <div ref={squadPoolPanelRef} className={`min-w-0 w-full ${CARD.base} ${SPACING.cardPadding}`}>
           <p className={`${TYPO.sectionLabel} mb-2`}>Squad Players</p>
           {pendingAssignId ? (
             <p className={`mb-2 ${TYPO.bodySm} text-pitch-300`}>
@@ -686,28 +730,30 @@ export function ManagerSquad({
             ))}
           </div>
           )}
-          <ul className={SQUAD_POOL_GRID_CLASS}>
-            {displayPool.map((entry) => (
-              <SquadPoolPlayerButton
-                key={entry.playerId}
-                career={career}
-                entry={entry}
-                poolRole={getPoolPlayerRole(entry.playerId)}
-                onClick={() => {
-                  playUiClick();
-                  handlePoolPlayerClick(entry.playerId, entry.unavailable);
-                }}
-                onDoubleClick={
-                  finePointer
-                    ? (e) => {
-                        e.preventDefault();
-                        handleMatchdayPlayerDoubleClick(entry.playerId);
-                      }
-                    : undefined
-                }
-              />
-            ))}
-          </ul>
+          <div className="min-w-0 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <ul className={SQUAD_POOL_GRID_CLASS}>
+              {displayPool.map((entry) => (
+                <SquadPoolPlayerButton
+                  key={entry.playerId}
+                  career={career}
+                  entry={entry}
+                  poolRole={getPoolPlayerRole(entry.playerId)}
+                  onClick={() => {
+                    playUiClick();
+                    handlePoolPlayerClick(entry.playerId, entry.unavailable);
+                  }}
+                  onDoubleClick={
+                    finePointer
+                      ? (e) => {
+                          e.preventDefault();
+                          handleMatchdayPlayerDoubleClick(entry.playerId);
+                        }
+                      : undefined
+                  }
+                />
+              ))}
+            </ul>
+          </div>
           {displayPool.length === 0 && (
             <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
               {selectedTarget || replaceSourcePlayerId

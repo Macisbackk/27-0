@@ -9,6 +9,10 @@ import {
   type ManagerValueTone,
 } from "@/components/manager/manager-ui";
 import { getClubIndicatorColor } from "@/lib/clubs";
+import {
+  managerDataRowClass,
+  managerListRowClass,
+} from "@/lib/manager/managerSurfaces";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { formatValue } from "@/lib/players";
 import { formatPlayerAge } from "@/lib/players/player-age";
@@ -190,7 +194,7 @@ export function ManagerLeagueTransferCard({
 }: ManagerLeagueTransferCardProps) {
   if (compact) {
     return (
-      <li className="flex items-center gap-2 rounded-md border border-pitch-700/40 bg-pitch-950/40 px-2 py-1.5 text-xs">
+      <li className={`${managerListRowClass(false)} flex items-center gap-2 rounded-md px-2 py-1.5 text-xs`}>
         <span
           className="h-3 w-0.5 shrink-0 rounded-full"
           style={{ backgroundColor: getClubIndicatorColor(toClub) }}
@@ -212,7 +216,7 @@ export function ManagerLeagueTransferCard({
 
   return (
     <li
-      className="rounded-lg border border-pitch-700/50 bg-pitch-950/55 p-3"
+      className={`${managerDataRowClass()} p-3`}
       style={{ borderLeftWidth: 3, borderLeftColor: getClubIndicatorColor(toClub) }}
     >
       <p className="truncate font-semibold text-white">{playerName}</p>

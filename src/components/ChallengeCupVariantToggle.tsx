@@ -1,13 +1,14 @@
 "use client";
 
+import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import {
   nestedTabGroupButtonClass,
   nestedTabGroupClass,
-  tabGroupButtonClass,
-  tabGroupClass,
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playEraModeOff, playEraModeOn } from "@/lib/sound";
+
+type CupVariantId = "current" | "era";
 
 interface ChallengeCupVariantToggleProps {
   eraMode: boolean;
@@ -33,55 +34,64 @@ export function ChallengeCupVariantToggle({
   hideLabel = false,
   sectionLabel = "Cup Mode",
 }: ChallengeCupVariantToggleProps) {
-  const currentClass = compact
-    ? nestedTabGroupButtonClass(!eraMode, "normal")
-    : tabGroupButtonClass(!eraMode, "normal");
-  const eraClass = compact
-    ? nestedTabGroupButtonClass(eraMode, "era")
-    : tabGroupButtonClass(eraMode, "era");
-  const groupClass = compact
-    ? nestedTabGroupClass(false, !eraMode, eraMode)
-    : tabGroupClass(false, !eraMode, eraMode);
-
   const currentLabel =
     useShortLabels || compact ? "Current" : "Current Teams";
   const eraLabel = useShortLabels || compact ? "Era" : "Era Teams";
 
+  const tabs = [
+    { id: "current" as const, label: currentLabel, variant: "normal" as const },
+    { id: "era" as const, label: eraLabel, variant: "era" as const },
+  ];
+
+  const handleChange = (id: CupVariantId) => {
+    if (id === "era" && !eraMode) {
+      playEraModeOn();
+      onEraModeChange(true);
+      return;
+    }
+    if (id === "current" && eraMode) {
+      playEraModeOff();
+      onEraModeChange(false);
+    }
+  };
+
   return (
     <div
-      className={`${compact ? "" : "flex flex-col items-center"} ${className}`}
+      className={`${compact ? "" : "flex flex-col items-stretch"} ${className}`}
     >
       {!hideLabel && (
         <p
-          className={`mb-1.5 w-full ${compact ? "px-1" : "text-center"} ${TYPO.sectionLabel}`}
+          className={`mb-1.5 w-full ${compact ? "px-1" : ""} ${TYPO.sectionLabel}`}
         >
           {sectionLabel}
         </p>
       )}
-      <div className={`${groupClass}${compact ? "" : " mx-auto w-full max-w-xs sm:max-w-none"}`}>
-        <button
-          type="button"
-          onClick={() => {
-            if (!eraMode) return;
-            playEraModeOff();
-            onEraModeChange(false);
-          }}
-          className={currentClass}
-        >
-          {currentLabel}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            if (eraMode) return;
-            playEraModeOn();
-            onEraModeChange(true);
-          }}
-          className={eraClass}
-        >
-          {eraLabel}
-        </button>
-      </div>
+      {compact ? (
+        <div className={nestedTabGroupClass(false, !eraMode, eraMode)}>
+          <button
+            type="button"
+            onClick={() => handleChange("current")}
+            className={nestedTabGroupButtonClass(!eraMode, "normal")}
+          >
+            {currentLabel}
+          </button>
+          <button
+            type="button"
+            onClick={() => handleChange("era")}
+            className={nestedTabGroupButtonClass(eraMode, "era")}
+          >
+            {eraLabel}
+          </button>
+        </div>
+      ) : (
+        <ManagerSubTabBar
+          tabs={tabs}
+          active={eraMode ? "era" : "current"}
+          onChange={handleChange}
+          eraAccent={eraMode}
+          ariaLabel={sectionLabel}
+        />
+      )}
     </div>
   );
 }
