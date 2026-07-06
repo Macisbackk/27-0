@@ -32,7 +32,6 @@ type ContractFilter =
   | "expiring"
   | "highest_wage"
   | "lowest_wage"
-  | "unhappy"
   | "position"
   | "role";
 
@@ -118,11 +117,6 @@ export function ManagerContracts({
       list = list.filter(
         (r) =>
           r.contract.yearsRemaining <= 1 || r.contract.expiresAtSeasonEnd
-      );
-    }
-    if (filter === "unhappy") {
-      list = list.filter(
-        (r) => r.contract.happiness < 40 || r.status === "unhappy"
       );
     }
     if (filter === "highest_wage") {
@@ -274,7 +268,6 @@ export function ManagerContracts({
               ["expiring", "Expiring soon"],
               ["highest_wage", "Highest wage"],
               ["lowest_wage", "Lowest wage"],
-              ["unhappy", "Unhappy"],
             ] as const
           ).map(([id, label]) => (
             <button
@@ -325,9 +318,12 @@ export function ManagerContracts({
           const urgent =
             contract.yearsRemaining <= 1 ||
             contract.expiresAtSeasonEnd ||
-            contract.retiringAtSeasonEnd;
+            contract.retiringAtSeasonEnd ||
+            contract.retireAfterContract;
           const statusColor =
-            contract.retiringAtSeasonEnd
+            contract.retireAfterContract
+              ? "text-stone-200 bg-stone-500/15 border-stone-400/35"
+              : contract.retiringAtSeasonEnd
               ? "text-stone-200 bg-stone-500/15 border-stone-400/35"
               : status === "unhappy"
               ? "text-red-300 bg-red-500/10 border-red-500/30"
@@ -336,7 +332,9 @@ export function ManagerContracts({
                 : status === "renewed"
                   ? "text-theme-primary bg-theme-primary/10 border-theme-primary/30"
                   : "text-pitch-300 bg-pitch-800/50 border-pitch-600/40";
-          const statusLabel = contract.retiringAtSeasonEnd
+          const statusLabel = contract.retireAfterContract
+            ? "Final year — retiring after"
+            : contract.retiringAtSeasonEnd
             ? "Retiring end of season"
             : STATUS_LABELS[status] ?? status;
           return (

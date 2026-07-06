@@ -207,10 +207,6 @@ export function pickWeightedNormalModePool<T extends TeamYearPool>(
   return pickUniformTeamYearPool(pools, rng);
 }
 
-export function getEraChallengeCupTeamCount(): number {
-  return getEraClubsWithTeams().length;
-}
-
 export interface PlayerPoolAudit {
   mode: PlayerPoolMode;
   totalPlayers: number;

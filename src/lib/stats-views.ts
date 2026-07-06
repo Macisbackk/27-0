@@ -7,15 +7,9 @@ import {
   getWorstPerformingPlayer,
 } from "./lifetime-stats";
 import { EMPTY_STATS } from "./storage/stats";
-import { getCupWinPercentage } from "./cup-ranking";
-import { SHOW_DRAFT_MODE } from "./feature-flags";
-import type { CupPersonalBests, UserStatsData } from "./types";
+import type { UserStatsData } from "./types";
 
-export type StatsTabId =
-  | "overall"
-  | "super-league"
-  | "draft-mode"
-  | "fantasy-mode";
+export type StatsTabId = "overall" | "super-league";
 
 export const STATS_TABS: { id: StatsTabId; label: string }[] = [
   { id: "overall", label: "Overall" },
@@ -59,33 +53,6 @@ function pickBestRanking(
   if (a === null) return b;
   if (b === null) return a;
   return Math.min(a, b);
-}
-
-function pickBestCupFinish(
-  a: string | null,
-  b: string | null
-): string | null {
-  const rank = (f: string | null): number => {
-    switch (f) {
-      case "Winners":
-        return 5;
-      case "Runners-Up":
-        return 4;
-      case "Semi Final":
-        return 3;
-      case "Quarter Final":
-        return 2;
-      case "Round of 16":
-        return 1;
-      default:
-        return 0;
-    }
-  };
-  const aRank = rank(a);
-  const bRank = rank(b);
-  if (aRank === 0) return b;
-  if (bRank === 0) return a;
-  return aRank >= bRank ? a : b;
 }
 
 export function getOverallView(
@@ -176,20 +143,14 @@ export function getOverallView(
       draftH.totalSeasonsSimulated,
     totalWins:
       normal.seasonWins +
-      normal.challengeCupWins +
       hard.seasonWins +
-      hard.challengeCupWins +
       era.seasonWins +
-      era.challengeCupWins +
       draftN.seasonWins +
       draftH.seasonWins,
     totalLosses:
       normal.seasonLosses +
-      normal.challengeCupLosses +
       hard.seasonLosses +
-      hard.challengeCupLosses +
       era.seasonLosses +
-      era.challengeCupLosses +
       draftN.seasonLosses +
       draftH.seasonLosses,
     totalSeasons:
@@ -222,8 +183,6 @@ export function getOverallView(
       era.superLeagueTitles +
       draftN.superLeagueTitles +
       draftH.superLeagueTitles,
-    challengeCups:
-      normal.challengeCupsWon + hard.challengeCupsWon + era.challengeCupsWon,
     perfectSeasons:
       normal.totalPerfectSeasons +
       hard.totalPerfectSeasons +
@@ -370,76 +329,6 @@ export function getHardDraftModeView(stats: UserStatsData) {
   };
 }
 
-export function getFantasyModeView(stats: UserStatsData) {
-  return {
-    runs: stats.totalSeasonsSimulated,
-    wins: stats.seasonWins,
-    losses: stats.seasonLosses,
-    winPercentage: formatWinPercentage(stats.seasonWins, stats.seasonLosses),
-    hasSeasons: stats.totalSeasonsSimulated > 0,
-    totalRecord: {
-      wins: stats.seasonWins,
-      losses: stats.seasonLosses,
-    },
-    worstRecord: {
-      wins: stats.worstRecordWins,
-      losses: stats.worstRecordLosses,
-    },
-    leagueTitles: stats.leagueTitlesWon,
-    perfectSeasons: stats.totalPerfectSeasons,
-    winlessSeasons: stats.totalWinlessSeasons,
-    bestSquadValue: stats.highestSquadValue,
-    bestTeamRating: stats.bestTeamRating > 0 ? stats.bestTeamRating : null,
-  };
-}
-
-export function getHardChallengeCupView(stats: UserStatsData) {
-  const wins = stats.challengeCupWins;
-  const losses = stats.challengeCupLosses;
-  return {
-    appearances: stats.challengeCupRuns,
-    wins,
-    losses,
-    totalRecord: { wins, losses },
-    cupsWon: stats.challengeCupsWon,
-    finals: stats.challengeCupFinals,
-    hasGames: wins + losses > 0,
-  };
-}
-
-export function getChallengeCupView(normal: UserStatsData, hard: UserStatsData) {
-  const ratings = [
-    normal.highestCupSquadRating,
-    hard.highestCupSquadRating,
-  ].filter((r): r is number => r !== null);
-  const lowRatings = [
-    normal.lowestCupSquadRating,
-    hard.lowestCupSquadRating,
-  ].filter((r): r is number => r !== null);
-
-  return {
-    runs: normal.challengeCupRuns + hard.challengeCupRuns,
-    wins: normal.challengeCupWins + hard.challengeCupWins,
-    losses: normal.challengeCupLosses + hard.challengeCupLosses,
-    totalRecord: {
-      wins: normal.challengeCupWins + hard.challengeCupWins,
-      losses: normal.challengeCupLosses + hard.challengeCupLosses,
-    },
-    cupsWon: normal.challengeCupsWon + hard.challengeCupsWon,
-    finals: normal.challengeCupFinals + hard.challengeCupFinals,
-    semiFinals: normal.challengeCupSemiFinals + hard.challengeCupSemiFinals,
-    quarterFinals:
-      normal.challengeCupQuarterFinals + hard.challengeCupQuarterFinals,
-    bestFinish: pickBestCupFinish(normal.bestCupFinish, hard.bestCupFinish),
-    bestRanking: pickBestRanking(
-      normal.bestCupNationalRanking,
-      hard.bestCupNationalRanking
-    ),
-    highestRatedSquad: ratings.length > 0 ? Math.max(...ratings) : null,
-    lowestRatedSquad: lowRatings.length > 0 ? Math.min(...lowRatings) : null,
-  };
-}
-
 export function formatRecordOrDash(
   record: { wins: number; losses: number } | null
 ): string {
@@ -483,41 +372,3 @@ export function formatSeasonWinPercentageOrDash(
   return formatWinPercentageOrDash(formatWinPercentage(wins, losses));
 }
 
-export function getEraChallengeCupView(stats: UserStatsData) {
-  return {
-    runs: stats.eraChallengeCupRuns,
-    wins: stats.eraChallengeCupWins,
-    losses: stats.eraChallengeCupLosses,
-    totalRecord: {
-      wins: stats.eraChallengeCupWins,
-      losses: stats.eraChallengeCupLosses,
-    },
-    cupsWon: stats.eraCupsWon,
-    bestTeamUsed: stats.bestEraTeamUsed,
-  };
-}
-
-export function getChallengeCupPersonalBests(
-  normal: UserStatsData,
-  hard: UserStatsData
-): CupPersonalBests {
-  const wins = normal.challengeCupWins + hard.challengeCupWins;
-  const losses = normal.challengeCupLosses + hard.challengeCupLosses;
-
-  return {
-    mostCupMatchWins: Math.max(
-      normal.bestCupMatchWinsInTournament,
-      hard.bestCupMatchWinsInTournament
-    ),
-    bestTournamentFinish: pickBestCupFinish(
-      normal.bestCupFinish,
-      hard.bestCupFinish
-    ),
-    longestCupWinningStreak: Math.max(
-      normal.longestCupMatchWinStreak,
-      hard.longestCupMatchWinStreak
-    ),
-    mostCupsWon: normal.challengeCupsWon + hard.challengeCupsWon,
-    bestCupWinPercentage: getCupWinPercentage(wins, losses),
-  };
-}

@@ -80,8 +80,7 @@ export type LeaderboardDbMode =
   | "draft"
   | "fantasy"
   | "club-funds"
-  | "trophy-cabinet"
-  | "cup-team-wins";
+  | "trophy-cabinet";
 
 export function normalizeLeaderboardGameMode(mode: GameMode): GameMode {
   return mode;
@@ -166,7 +165,8 @@ function saveLocalEntries(entries: StoredLeaderboardEntry[]): void {
 export function clearLocalLeaderboard(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(STORAGE_KEYS.leaderboard);
-  localStorage.removeItem(STORAGE_KEYS.cupLeaderboard);
+  localStorage.removeItem("27-0-cup-leaderboard");
+  localStorage.removeItem("27-0-era-cup-leaderboard");
 }
 
 function getPeriodStart(period: LeaderboardPeriod): Date | null {
@@ -762,8 +762,6 @@ export async function addLeaderboardEntry(
     wins?: number;
     losses?: number;
     isPerfectSeason?: boolean;
-    cupWon?: boolean;
-    cupFinish?: string;
     isPlayoffPhaseUpdate?: boolean;
     achievedAt?: Date;
     modeVariant?: ModeVariant;
@@ -802,8 +800,6 @@ export async function addLeaderboardEntry(
     wins,
     losses,
     isPerfectSeason: options?.isPerfectSeason,
-    cupWon: options?.cupWon,
-    cupFinish: options?.cupFinish,
     isPlayoffPhaseUpdate: options?.isPlayoffPhaseUpdate,
   });
 

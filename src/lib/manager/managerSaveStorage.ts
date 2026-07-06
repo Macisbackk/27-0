@@ -105,13 +105,23 @@ export function readManagerCareerRaw(slot?: number): ManagerCareer | null {
 export function writeManagerCareerRaw(
   career: ManagerCareer,
   slot?: number
-): void {
-  if (typeof window === "undefined") return;
-  const targetSlot = slot ?? getActiveSaveSlot();
-  localStorage.setItem(
-    getManagerCareerSlotKey(targetSlot),
-    JSON.stringify({ ...career, updatedAt: new Date().toISOString() })
-  );
+): { ok: true } | { ok: false; error: string } {
+  if (typeof window === "undefined") return { ok: true };
+  try {
+    const targetSlot = slot ?? getActiveSaveSlot();
+    localStorage.setItem(
+      getManagerCareerSlotKey(targetSlot),
+      JSON.stringify({ ...career, updatedAt: new Date().toISOString() })
+    );
+    return { ok: true };
+  } catch (err) {
+    const message =
+      err instanceof DOMException && err.name === "QuotaExceededError"
+        ? "Storage full — free space on this device and try again."
+        : "Could not save your career. Check browser storage is enabled.";
+    console.error("[manager-save] write failed:", err);
+    return { ok: false, error: message };
+  }
 }
 
 export function deleteManagerCareerRaw(slot?: number): void {

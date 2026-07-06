@@ -191,13 +191,6 @@ export function mergeUserStatsData(
       b.bestCupMatchWinsInTournament
     ),
     bestTeamRating: Math.max(a.bestTeamRating, b.bestTeamRating),
-    eraChallengeCupRuns: a.eraChallengeCupRuns + b.eraChallengeCupRuns,
-    eraChallengeCupWins: a.eraChallengeCupWins + b.eraChallengeCupWins,
-    eraChallengeCupLosses: a.eraChallengeCupLosses + b.eraChallengeCupLosses,
-    eraCupsWon: a.eraCupsWon + b.eraCupsWon,
-    eraMatchWins: a.eraMatchWins + b.eraMatchWins,
-    eraMatchLosses: a.eraMatchLosses + b.eraMatchLosses,
-    bestEraTeamUsed: a.bestEraTeamUsed ?? b.bestEraTeamUsed,
     regularSeasonWins: a.regularSeasonWins + b.regularSeasonWins,
     regularSeasonLosses: a.regularSeasonLosses + b.regularSeasonLosses,
     playoffWins: a.playoffWins + b.playoffWins,

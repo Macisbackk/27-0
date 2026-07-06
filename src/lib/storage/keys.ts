@@ -9,15 +9,7 @@ export const STORAGE_KEYS = {
   normalDifficulty: "27-0-normal-difficulty",
   draftDifficulty: "27-0-draft-difficulty",
   soundMuted: "27-0-sound-muted",
-  cupLeaderboard: "27-0-cup-leaderboard",
-  cupTeamWins: "27-0-cup-team-wins",
-  eraCupLeaderboard: "27-0-era-cup-leaderboard",
-  eraCupTeamWins: "27-0-era-cup-team-wins",
-  eraCupTeamWinRuns: "27-0-era-cup-team-win-runs",
-  cupTeamWinRuns: "27-0-cup-team-win-runs",
   recruitmentStyle: "27-0-recruitment-style",
-  eraTournamentType: "27-0-era-tournament-type",
-  cupEraVariant: "27-0-cup-era-variant",
   normalEraVariant: "27-0-normal-era-variant",
   clubFunds: "27-0-club-funds",
   clubFundsLeaderboard: "27-0-club-funds-leaderboard",
@@ -39,4 +31,4 @@ export const STORAGE_KEYS = {
 } as const;
 
 /** Bump when StoredStats shape changes — triggers one-time local migration. */
-export const STATS_SCHEMA_VERSION = 2;
+export const STATS_SCHEMA_VERSION = 3;

@@ -8,11 +8,7 @@ export const CLUB_FUNDS_REWARDS = {
   playoffSemiFinalWin: 30_000,
   playoffFinalRunnerUp: 40_000,
   superLeagueTitle: 100_000,
-  challengeCupWin: 75_000,
-  eraChallengeCupWin: 75_000,
-  fantasyLeagueTitle: 100_000,
   perfectSeason: 250_000,
-  cupFinal: 25_000,
   seasonComplete: 10_000,
   regularSeasonWin: 500,
   twentyWins: 25_000,
@@ -88,8 +84,9 @@ function appendPlayoffFundsLines(
 
 /** Display Club Funds in compact header format (£850k, £1.2m, £12m, £100m). */
 export function formatClubFunds(amount: number): string {
-  if (amount >= 1_000_000) {
-    const millions = amount / 1_000_000;
+  const value = Math.round(amount);
+  if (value >= 1_000_000) {
+    const millions = value / 1_000_000;
     if (millions >= 100) {
       return `£${Math.round(millions)}m`;
     }
@@ -101,10 +98,10 @@ export function formatClubFunds(amount: number): string {
       rounded % 1 === 0 ? String(rounded) : rounded.toFixed(1).replace(/\.0$/, "");
     return `£${text}m`;
   }
-  if (amount >= 1_000) {
-    return `£${Math.round(amount / 1_000)}k`;
+  if (value >= 1_000) {
+    return `£${Math.round(value / 1_000)}k`;
   }
-  return `£${amount}`;
+  return `£${value}`;
 }
 
 /** Full exact value for expanded currency panel (no rounding). */
@@ -198,38 +195,6 @@ export function computeClubFundsLines(
     }
   }
 
-  if (mode === "FANTASY" && seasonResult) {
-    lines.push({
-      id: "season-complete",
-      label: "Season Completed",
-      amount: CLUB_FUNDS_REWARDS.seasonComplete,
-    });
-
-    if (seasonResult.leaguePosition === 1) {
-      lines.push({
-        id: "fantasy-title",
-        label: "Fantasy League Title",
-        amount: CLUB_FUNDS_REWARDS.fantasyLeagueTitle,
-      });
-    }
-
-    if (seasonResult.isPerfect) {
-      lines.push({
-        id: "perfect-season",
-        label: "27-0 Perfect Season",
-        amount: CLUB_FUNDS_REWARDS.perfectSeason,
-      });
-    }
-
-    if (seasonResult.wins >= 20) {
-      lines.push({
-        id: "twenty-wins",
-        label: "20+ Wins in a Season",
-        amount: CLUB_FUNDS_REWARDS.twentyWins,
-      });
-    }
-  }
-
   return lines;
 }
 
@@ -240,11 +205,7 @@ const CLUB_FUNDS_INFO_LINES_SOURCE = [
   { label: "Top-Six Finish", amount: CLUB_FUNDS_REWARDS.topSixFinish },
   { label: "Play-Off Semi-Final Win", amount: CLUB_FUNDS_REWARDS.playoffSemiFinalWin },
   { label: "Play-Off Eliminator Win", amount: CLUB_FUNDS_REWARDS.playoffEliminatorWin },
-  { label: "Challenge Cup Win", amount: CLUB_FUNDS_REWARDS.challengeCupWin },
-  { label: "Era Challenge Cup Win", amount: CLUB_FUNDS_REWARDS.eraChallengeCupWin },
-  { label: "Fantasy League Title", amount: CLUB_FUNDS_REWARDS.fantasyLeagueTitle },
   { label: "27-0 Perfect Season", amount: CLUB_FUNDS_REWARDS.perfectSeason },
-  { label: "Cup Final Appearance", amount: CLUB_FUNDS_REWARDS.cupFinal },
   { label: "Season Completed", amount: CLUB_FUNDS_REWARDS.seasonComplete },
   { label: "20+ Wins in a Season", amount: CLUB_FUNDS_REWARDS.twentyWins },
 ] as const;

@@ -1,4 +1,3 @@
-import { getClubBaseStrength } from "../game/club-strength";
 import { getClubByName, resolveClubUiColors } from "../clubs";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { Position } from "../types";
@@ -44,6 +43,17 @@ export const MANAGER_EXPECTATION_LABELS: Record<
   survive: "Survive and develop",
 };
 
+/** Fixed board star ratings for select clubs; others derive from squad OVR rank. */
+const CLUB_STAR_OVERRIDES: Record<string, number> = {
+  "Leeds Rhinos": 5,
+  "St Helens": 5,
+  "Wigan Warriors": 5,
+  "Hull KR": 4,
+  "Warrington Wolves": 4,
+  "Huddersfield Giants": 2,
+  "York Knights": 1,
+};
+
 const CLUB_BUDGET: Record<string, number> = {
   "Wigan Warriors": 1_200_000,
   "St Helens": 1_150_000,
@@ -60,14 +70,6 @@ const CLUB_BUDGET: Record<string, number> = {
   "Wakefield Trinity": 520_000,
   "York Knights": 500_000,
 };
-
-function difficultyFromStrength(strength: number): number {
-  if (strength >= 82) return 5;
-  if (strength >= 78) return 4;
-  if (strength >= 74) return 3;
-  if (strength >= 70) return 2;
-  return 1;
-}
 
 function getLeagueSquadRatings(): number[] {
   return CURRENT_PLAYABLE_CLUBS.map((name) => getManagerClubRating(name));
@@ -141,7 +143,6 @@ export function getManagerClubRating(clubName: string): number {
 
 export function getManagerClubConfig(clubName: string): ManagerClubConfig {
   const club = getClubByName(clubName);
-  const strength = getClubBaseStrength(clubName);
   const uiColors = club
     ? resolveClubUiColors(
         club.primaryColor,
@@ -157,7 +158,7 @@ export function getManagerClubConfig(clubName: string): ManagerClubConfig {
     expectation: MANAGER_EXPECTATION_LABELS[expectationTier],
     expectationTier,
     budget: CLUB_BUDGET[clubName] ?? 600_000,
-    difficulty: difficultyFromStrength(strength),
+    difficulty: getManagerClubStarRating(clubName),
     squadRating,
     primaryColor: uiColors.primary,
     secondaryColor: uiColors.secondary,
@@ -166,6 +167,14 @@ export function getManagerClubConfig(clubName: string): ManagerClubConfig {
 
 export function getAllManagerClubConfigs(): ManagerClubConfig[] {
   return CURRENT_PLAYABLE_CLUBS.map((name) => getManagerClubConfig(name));
+}
+
+/** Club prestige stars (1–5) — overrides for named clubs, else from squad OVR rank. */
+export function getManagerClubStarRating(clubName: string): number {
+  const override = CLUB_STAR_OVERRIDES[clubName];
+  if (override !== undefined) return override;
+  const allRatings = getLeagueSquadRatings();
+  return squadRatingToStars(getManagerClubRating(clubName), allRatings);
 }
 
 /** Map squad OVR to 1–5 stars relative to the playable league (best = 5). */

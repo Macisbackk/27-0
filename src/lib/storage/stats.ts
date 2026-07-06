@@ -138,20 +138,6 @@ export const EMPTY_STATS: UserStatsData = {
 
   bestTeamRating: 0,
 
-  eraChallengeCupRuns: 0,
-
-  eraChallengeCupWins: 0,
-
-  eraChallengeCupLosses: 0,
-
-  eraCupsWon: 0,
-
-  eraMatchWins: 0,
-
-  eraMatchLosses: 0,
-
-  bestEraTeamUsed: null,
-
   regularSeasonWins: 0,
   regularSeasonLosses: 0,
   playoffWins: 0,
@@ -181,8 +167,6 @@ interface StoredStats {
 
   fantasy: UserStatsData;
 
-  eraCup: UserStatsData;
-
   /** Normal Mode Era variant — separate from current `normal` bucket. */
   eraNormal: UserStatsData;
 
@@ -209,7 +193,6 @@ export function mergeCloudStatsWithLocal(
     draftNormal: mergeUserStatsData(cloud.draftNormal, local.draftNormal),
     draftHard: mergeUserStatsData(cloud.draftHard, local.draftHard),
     fantasy: mergeUserStatsData(cloud.fantasy, local.fantasy),
-    eraCup: mergeUserStatsData(cloud.eraCup, local.eraCup),
     eraNormal: mergeUserStatsData(cloud.eraNormal, local.eraNormal),
   };
 }
@@ -220,7 +203,6 @@ const STORED_STATS_KEYS: (keyof StoredStats)[] = [
   "draftNormal",
   "draftHard",
   "fantasy",
-  "eraCup",
   "eraNormal",
 ];
 
@@ -242,10 +224,22 @@ function userStatsSyncEqual(a: UserStatsData, b: UserStatsData): boolean {
   return userStatsSyncSignature(a) === userStatsSyncSignature(b);
 }
 
+function userStatsRicher(
+  a: UserStatsData,
+  b: UserStatsData
+): UserStatsData {
+  if (a.totalSeasonsSimulated !== b.totalSeasonsSimulated) {
+    return a.totalSeasonsSimulated > b.totalSeasonsSimulated ? a : b;
+  }
+  const aGames = a.seasonWins + a.seasonLosses;
+  const bGames = b.seasonWins + b.seasonLosses;
+  if (aGames !== bGames) return aGames > bGames ? a : b;
+  if (a.totalRuns !== b.totalRuns) return a.totalRuns > b.totalRuns ? a : b;
+  return a;
+}
+
 /**
  * Reconcile cloud and local stats without double-counting identical snapshots.
- * Local wins when it has newer progress on this device; otherwise merge only
- * when both buckets have independent multi-device history.
  */
 export function reconcileUserStats(
   cloud: UserStatsData,
@@ -256,27 +250,19 @@ export function reconcileUserStats(
 
   if (userStatsSyncEqual(c, l)) return c;
 
-  const localSeasons = l.totalSeasonsSimulated;
-  const cloudSeasons = c.totalSeasonsSimulated;
-  const localGames = l.seasonWins + l.seasonLosses;
-  const cloudGames = c.seasonWins + c.seasonLosses;
+  const localEmpty =
+    l.totalSeasonsSimulated === 0 &&
+    l.totalRuns === 0 &&
+    l.seasonWins + l.seasonLosses === 0;
+  const cloudEmpty =
+    c.totalSeasonsSimulated === 0 &&
+    c.totalRuns === 0 &&
+    c.seasonWins + c.seasonLosses === 0;
 
-  if (localSeasons === 0 && localGames === 0 && l.totalRuns === 0) return c;
+  if (localEmpty) return c;
+  if (cloudEmpty) return l;
 
-  if (
-    localSeasons > cloudSeasons ||
-    (localSeasons === cloudSeasons &&
-      (l.totalRuns > c.totalRuns || localGames > cloudGames))
-  ) {
-    return l;
-  }
-
-  if (cloudSeasons > localSeasons || cloudGames > localGames) {
-    if (localSeasons === 0 && l.totalRuns === 0 && localGames === 0) return c;
-    return mergeUserStatsData(c, l);
-  }
-
-  return c;
+  return userStatsRicher(c, l);
 }
 
 export function reconcileStoredStats(
@@ -403,25 +389,106 @@ export function migrateUserStats(raw: Partial<UserStatsData>): UserStatsData {
 
   merged.bestTeamRating = merged.bestTeamRating ?? 0;
 
-  merged.eraChallengeCupRuns = merged.eraChallengeCupRuns ?? 0;
+  return sanitizeUserStatInts(merged);
 
-  merged.eraChallengeCupWins = merged.eraChallengeCupWins ?? merged.eraMatchWins ?? 0;
+}
 
-  merged.eraChallengeCupLosses =
-    merged.eraChallengeCupLosses ?? merged.eraMatchLosses ?? 0;
 
-  merged.eraChallengeCupLosses = merged.eraChallengeCupLosses ?? 0;
 
-  merged.eraCupsWon = merged.eraCupsWon ?? 0;
+function roundUserStatInt(value: number | undefined | null): number {
+  const n = value ?? 0;
+  return Number.isFinite(n) ? Math.round(n) : 0;
+}
 
-  merged.eraMatchWins = merged.eraMatchWins ?? 0;
-
-  merged.eraMatchLosses = merged.eraMatchLosses ?? 0;
-
-  merged.bestEraTeamUsed = merged.bestEraTeamUsed ?? null;
-
-  return merged;
-
+function sanitizeUserStatInts(stats: UserStatsData): UserStatsData {
+  return {
+    ...stats,
+    totalRuns: roundUserStatInt(stats.totalRuns),
+    highestSquadValue: roundUserStatInt(stats.highestSquadValue),
+    lowestSquadValue:
+      stats.lowestSquadValue === null
+        ? null
+        : roundUserStatInt(stats.lowestSquadValue),
+    averageSquadValue: roundUserStatInt(stats.averageSquadValue),
+    bestPositionValue: roundUserStatInt(stats.bestPositionValue),
+    weeklyBest: roundUserStatInt(stats.weeklyBest),
+    monthlyBest: roundUserStatInt(stats.monthlyBest),
+    mostValuablePlayerEverPulledVal: roundUserStatInt(
+      stats.mostValuablePlayerEverPulledVal
+    ),
+    bestBradfordSquad: roundUserStatInt(stats.bestBradfordSquad),
+    bestWiganSquad: roundUserStatInt(stats.bestWiganSquad),
+    bestLeedsSquad: roundUserStatInt(stats.bestLeedsSquad),
+    bestStHelensSquad: roundUserStatInt(stats.bestStHelensSquad),
+    bestHistoricSquad: roundUserStatInt(stats.bestHistoricSquad),
+    totalSeasonsSimulated: roundUserStatInt(stats.totalSeasonsSimulated),
+    totalWins: roundUserStatInt(stats.totalWins),
+    totalLosses: roundUserStatInt(stats.totalLosses),
+    seasonWins: roundUserStatInt(stats.seasonWins),
+    seasonLosses: roundUserStatInt(stats.seasonLosses),
+    bestRecordWins: roundUserStatInt(stats.bestRecordWins),
+    bestRecordLosses: roundUserStatInt(stats.bestRecordLosses),
+    worstRecordWins: roundUserStatInt(stats.worstRecordWins),
+    worstRecordLosses: roundUserStatInt(stats.worstRecordLosses),
+    longestUnbeatenRun: roundUserStatInt(stats.longestUnbeatenRun),
+    longestLosingStreak: roundUserStatInt(stats.longestLosingStreak),
+    leagueTitlesWon: roundUserStatInt(stats.leagueTitlesWon),
+    totalPerfectSeasons: roundUserStatInt(stats.totalPerfectSeasons),
+    totalWinlessSeasons: roundUserStatInt(stats.totalWinlessSeasons),
+    averageSeasonFinish: roundUserStatInt(stats.averageSeasonFinish),
+    joeMellorRuns: roundUserStatInt(stats.joeMellorRuns),
+    bestJoeMellorWins: roundUserStatInt(stats.bestJoeMellorWins),
+    bestJoeMellorLosses: roundUserStatInt(stats.bestJoeMellorLosses),
+    joeMellorPerfectSeasons: roundUserStatInt(stats.joeMellorPerfectSeasons),
+    totalRerollsUsed: roundUserStatInt(stats.totalRerollsUsed),
+    mostRerollsInRun: roundUserStatInt(stats.mostRerollsInRun),
+    averageRerollsPerRun: roundUserStatInt(stats.averageRerollsPerRun),
+    challengeCupRuns: roundUserStatInt(stats.challengeCupRuns),
+    challengeCupWins: roundUserStatInt(stats.challengeCupWins),
+    challengeCupLosses: roundUserStatInt(stats.challengeCupLosses),
+    challengeCupsWon: roundUserStatInt(stats.challengeCupsWon),
+    challengeCupFinals: roundUserStatInt(stats.challengeCupFinals),
+    challengeCupSemiFinals: roundUserStatInt(stats.challengeCupSemiFinals),
+    challengeCupQuarterFinals: roundUserStatInt(stats.challengeCupQuarterFinals),
+    longestCupMatchWinStreak: roundUserStatInt(stats.longestCupMatchWinStreak),
+    currentCupMatchWinStreak: roundUserStatInt(stats.currentCupMatchWinStreak),
+    longestTournamentWinsInRow: roundUserStatInt(stats.longestTournamentWinsInRow),
+    currentTournamentWinsInRow: roundUserStatInt(
+      stats.currentTournamentWinsInRow
+    ),
+    bestCupMatchWinsInTournament: roundUserStatInt(
+      stats.bestCupMatchWinsInTournament
+    ),
+    bestTeamRating: roundUserStatInt(stats.bestTeamRating),
+    regularSeasonWins: roundUserStatInt(stats.regularSeasonWins),
+    regularSeasonLosses: roundUserStatInt(stats.regularSeasonLosses),
+    playoffWins: roundUserStatInt(stats.playoffWins),
+    playoffLosses: roundUserStatInt(stats.playoffLosses),
+    topSixFinishes: roundUserStatInt(stats.topSixFinishes),
+    playoffAppearances: roundUserStatInt(stats.playoffAppearances),
+    playoffEliminatorWins: roundUserStatInt(stats.playoffEliminatorWins),
+    playoffSemiFinalWins: roundUserStatInt(stats.playoffSemiFinalWins),
+    grandFinalAppearances: roundUserStatInt(stats.grandFinalAppearances),
+    superLeagueTitles: roundUserStatInt(stats.superLeagueTitles),
+    bestOverallSeasonWins: roundUserStatInt(stats.bestOverallSeasonWins),
+    bestOverallSeasonLosses: roundUserStatInt(stats.bestOverallSeasonLosses),
+    bestNationalRanking:
+      stats.bestNationalRanking === null
+        ? null
+        : roundUserStatInt(stats.bestNationalRanking),
+    bestCupNationalRanking:
+      stats.bestCupNationalRanking === null
+        ? null
+        : roundUserStatInt(stats.bestCupNationalRanking),
+    highestCupSquadRating:
+      stats.highestCupSquadRating === null
+        ? null
+        : roundUserStatInt(stats.highestCupSquadRating),
+    lowestCupSquadRating:
+      stats.lowestCupSquadRating === null
+        ? null
+        : roundUserStatInt(stats.lowestCupSquadRating),
+  };
 }
 
 
@@ -433,7 +500,6 @@ function emptyStoredStats(): StoredStats {
     draftNormal: { ...EMPTY_STATS },
     draftHard: { ...EMPTY_STATS },
     fantasy: { ...EMPTY_STATS },
-    eraCup: { ...EMPTY_STATS },
     eraNormal: { ...EMPTY_STATS },
   };
 }
@@ -445,9 +511,28 @@ function hydrateStoredStats(raw: Partial<StoredStats>): StoredStats {
     draftNormal: migrateUserStats(raw.draftNormal ?? {}),
     draftHard: migrateUserStats(raw.draftHard ?? {}),
     fantasy: migrateUserStats(raw.fantasy ?? {}),
-    eraCup: migrateUserStats(raw.eraCup ?? {}),
     eraNormal: migrateUserStats(raw.eraNormal ?? {}),
   };
+}
+
+function purgeLegacyCupLocalStorage(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem("27-0-cup-leaderboard");
+  localStorage.removeItem("27-0-era-cup-leaderboard");
+}
+
+function stripLegacyEraCupStatsBucket(): void {
+  if (typeof window === "undefined") return;
+  const raw = localStorage.getItem(STORAGE_KEYS.stats);
+  if (!raw) return;
+  try {
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    if (!("eraCup" in parsed)) return;
+    delete parsed.eraCup;
+    localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(parsed));
+  } catch {
+    /* ignore */
+  }
 }
 
 function ensureStatsSchemaVersion(): void {
@@ -456,8 +541,11 @@ function ensureStatsSchemaVersion(): void {
     localStorage.getItem(STORAGE_KEYS.statsSchemaVersion) ?? "1",
     10
   );
+  if (version < STATS_SCHEMA_VERSION) {
+    purgeLegacyCupLocalStorage();
+    stripLegacyEraCupStatsBucket();
+  }
   if (version >= STATS_SCHEMA_VERSION) return;
-  // Legacy `normal` bucket remains Current Mode; eraNormal starts empty.
   localStorage.setItem(
     STORAGE_KEYS.statsSchemaVersion,
     String(STATS_SCHEMA_VERSION)
@@ -565,6 +653,36 @@ export function getAllStats(): StoredStats {
 
   return loadStoredStats();
 
+}
+
+export async function refreshCareerStatsFromCloud(): Promise<boolean> {
+  if (typeof window === "undefined" || !isLoggedIn()) return false;
+
+  const { loadCloudStats, saveCloudStats } = await import("./stats-cloud");
+  const cloud = await loadCloudStats();
+  const local = getAllStats();
+
+  if (!cloud) {
+    await saveCloudStats(local);
+    window.dispatchEvent(new Event("stats-merged"));
+    return true;
+  }
+
+  const reconciled = reconcileStoredStats(cloud, local);
+  localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(reconciled));
+
+  if (storedStatsDifferFromCloud(cloud, reconciled)) {
+    await saveCloudStats(reconciled);
+  }
+
+  window.dispatchEvent(new Event("stats-merged"));
+  return true;
+}
+
+export async function flushCareerStatsToCloud(): Promise<void> {
+  if (typeof window === "undefined" || !isLoggedIn()) return;
+  const { saveCloudStats } = await import("./stats-cloud");
+  await saveCloudStats(getAllStats());
 }
 
 /** Clears Quick Mode career stats locally and in the cloud when logged in. */

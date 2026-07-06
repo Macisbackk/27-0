@@ -20,6 +20,7 @@ export interface PositionRetrainingPath {
 export const POSITION_RETRAINING_PATHS: PositionRetrainingPath[] = [
   { from: "CENTRE", to: "SECOND_ROW", months: 2 },
   { from: "CENTRE", to: "WING", months: 2 },
+  { from: "WING", to: "CENTRE", months: 3 },
   { from: "SECOND_ROW", to: "PROP", months: 3 },
   { from: "PROP", to: "SECOND_ROW", months: 2 },
   { from: "HOOKER", to: "STAND_OFF", months: 6 },

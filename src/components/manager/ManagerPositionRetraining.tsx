@@ -1,24 +1,22 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { POSITION_SHORT } from "@/lib/positions";
 import type { ManagerCareer, PlayerPositionRetraining } from "@/lib/manager/types";
 import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import {
-  formatRetrainingDuration,
   formatRetrainingPathLabel,
   getAvailableRetrainingTargets,
   getActiveRetraining,
   getPlayerRetrainingStatus,
   getRetrainingProgress,
-  startPositionRetraining,
   WEEKS_PER_MONTH,
   type PlayerRetrainingStatus,
 } from "@/lib/manager/managerPositionRetraining";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { playUiClick } from "@/lib/sound";
+import { ManagerRetrainingPathModal } from "@/components/manager/ManagerRetrainingPathModal";
 
 interface ManagerPositionRetrainingPanelProps {
   career: ManagerCareer;
@@ -27,7 +25,7 @@ interface ManagerPositionRetrainingPanelProps {
 
 function weeksToMonthsLabel(weeks: number): string {
   const months = Math.max(1, Math.ceil(weeks / WEEKS_PER_MONTH));
-  return formatRetrainingDuration(months);
+  return `${months} mo`;
 }
 
 const RETRAINING_PLAYER_CARD_WIDTH =
@@ -174,9 +172,7 @@ export function ManagerPositionRetrainingPanel({
   career,
   onUpdate,
 }: ManagerPositionRetrainingPanelProps) {
-  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
-  const [selectedPathKey, setSelectedPathKey] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [pathModalPlayerId, setPathModalPlayerId] = useState<string | null>(null);
 
   const squadPlayers = useMemo(() => {
     return career.squad
@@ -203,40 +199,16 @@ export function ManagerPositionRetrainingPanel({
       });
   }, [career]);
 
-  const selectedRow = selectedPlayerId
-    ? squadPlayers.find((row) => row.entry.playerId === selectedPlayerId) ?? null
+  const pathModalRow = pathModalPlayerId
+    ? squadPlayers.find((row) => row.entry.playerId === pathModalPlayerId) ?? null
     : null;
-
-  const selectedPath = selectedRow?.options.find(
-    (path) => `${path.from}->${path.to}` === selectedPathKey
-  );
 
   const trainingCount = squadPlayers.filter((p) => p.status === "training").length;
 
   const handleSelectPlayer = (playerId: string, status: PlayerRetrainingStatus) => {
     if (status !== "available") return;
     playUiClick();
-    setNotice(null);
-    setSelectedPathKey(null);
-    setSelectedPlayerId((prev) => (prev === playerId ? null : playerId));
-  };
-
-  const handleStart = () => {
-    if (!selectedPlayerId || !selectedPath) return;
-    playUiClick();
-    const result = startPositionRetraining(
-      career,
-      selectedPlayerId,
-      selectedPath.to
-    );
-    if (!result.ok) {
-      setNotice(result.message);
-      return;
-    }
-    setNotice(null);
-    onUpdate(result.career);
-    setSelectedPlayerId(null);
-    setSelectedPathKey(null);
+    setPathModalPlayerId(playerId);
   };
 
   return (
@@ -247,15 +219,6 @@ export function ManagerPositionRetrainingPanel({
         Progress advances each league week ({WEEKS_PER_MONTH} weeks = 1 month).
         Players who already have dual roles cannot retrain.
       </p>
-
-      {notice && (
-        <p
-          className={`mx-auto mt-3 max-w-lg ${TYPO.bodySm} text-amber-300`}
-          role="status"
-        >
-          {notice}
-        </p>
-      )}
 
       {trainingCount > 0 && (
         <p className={`mx-auto mt-3 max-w-lg ${TYPO.bodySm} text-theme-primary/90`}>
@@ -268,7 +231,6 @@ export function ManagerPositionRetrainingPanel({
         <p className={`${TYPO.sectionLabel} mb-2`}>Squad players</p>
         <div className="mx-auto grid max-w-3xl grid-cols-2 justify-items-center gap-2 sm:grid-cols-3 lg:grid-cols-4">
           {squadPlayers.map(({ entry, player, status }) => {
-            const isSelected = selectedPlayerId === entry.playerId;
             const training = getActiveRetraining(career, entry.playerId);
             const positionLabel = formatPlayerPositionLabel(player, { short: true });
 
@@ -319,70 +281,32 @@ export function ManagerPositionRetrainingPanel({
                 key={entry.playerId}
                 name={player.name}
                 rating={player.peakRating}
-                subtitle={
-                  isSelected && selectedPath
-                    ? formatRetrainingPathLabel(selectedPath.from, selectedPath.to)
-                    : `${positionLabel} · Tap to select`
-                }
-                variant={isSelected ? "selected" : "idle"}
+                subtitle={`${positionLabel} · Tap to train`}
+                variant={pathModalPlayerId === entry.playerId ? "selected" : "idle"}
                 onClick={() => handleSelectPlayer(entry.playerId, status)}
               />
             );
           })}
         </div>
         <p className={`mx-auto mt-2 max-w-lg ${TYPO.bodySm} text-pitch-400`}>
-          {selectedRow
-            ? `${selectedRow.player.name} · ${formatPlayerPositionLabel(selectedRow.player, { short: true })}`
-            : "Select a single-role player to view retraining paths."}
+          Select a single-role player to choose a retraining path.
         </p>
       </div>
 
-      {selectedRow && selectedRow.status === "available" && (
-        <div className="mt-4">
-          <p className={`${TYPO.sectionLabel} mb-2`}>New position</p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {selectedRow.options.map((path) => {
-              const key = `${path.from}->${path.to}`;
-              const active = selectedPathKey === key;
-              return (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => {
-                    playUiClick();
-                    setSelectedPathKey(active ? null : key);
-                    setNotice(null);
-                  }}
-                  className={`rounded-lg border px-3 py-2 text-xs transition ${
-                    active ? FILTER.chipActive : `${FILTER.chipIdle} btn-press`
-                  }`}
-                >
-                  {formatRetrainingPathLabel(path.from, path.to)}
-                </button>
-              );
-            })}
-          </div>
-          <p className={`mx-auto mt-2 max-w-lg ${TYPO.bodySm} text-pitch-400`}>
-            {selectedPath
-              ? `${formatRetrainingDuration(selectedPath.months)} · ${selectedRow.player.name} learns ${POSITION_SHORT[selectedPath.to]} from ${POSITION_SHORT[selectedPath.from]}`
-              : "Pick a path to see duration and confirm training."}
-          </p>
-          {selectedPath && (
-            <button
-              type="button"
-              onClick={handleStart}
-              className={`mt-3 rounded-lg border px-3 py-2 text-xs font-semibold transition ${FILTER.chipActive} btn-press`}
-            >
-              Start training
-            </button>
-          )}
-        </div>
-      )}
-
       <p className={`mx-auto mt-4 max-w-lg ${TYPO.bodySm} text-pitch-500`}>
-        CE→SR/WG · SR→PF/LF · PF→SR · HK→SO/SH/LF · HB→HK/FB · WG→FB · LF→SO/SH ·
+        CE→SR/WG · SR→PF/LF · PF→SR · HK→SO/SH/LF · HB→HK/FB · WG→CE/FB · LF→SO/SH ·
         FB→WG/SO/SH
       </p>
+
+      {pathModalRow && pathModalRow.options.length > 0 && (
+        <ManagerRetrainingPathModal
+          career={career}
+          playerId={pathModalRow.entry.playerId}
+          paths={pathModalRow.options}
+          onClose={() => setPathModalPlayerId(null)}
+          onUpdate={onUpdate}
+        />
+      )}
     </div>
   );
 }

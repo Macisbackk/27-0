@@ -70,6 +70,10 @@ export interface PlayerContract {
   retiringAtSeasonEnd?: boolean;
   /** Season when retirement intent was last evaluated. */
   retirementIntentSeason?: number;
+  /** One-time convince-to-stay used — extra year at same wage, then retire. */
+  convincedToStayUsed?: boolean;
+  /** Retire when the current deal ends (after a convince-to-stay extension). */
+  retireAfterContract?: boolean;
 }
 
 export interface ManagerTactics {
@@ -535,6 +539,8 @@ export interface ManagerCareer {
   leaguePhaseStatsRecordedForYear?: number | null;
   /** Challenge Cup win celebration shown after lifting the cup. */
   challengeCupCelebrationShown?: boolean;
+  /** Career-start board objectives popup dismissed. */
+  objectivesIntroShown?: boolean;
   /** Consecutive weeks wage bill exceeded budget — triggers board pressure. */
   wagePressureWeeks?: number;
   matchdayXiii: string[];

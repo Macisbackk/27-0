@@ -14,6 +14,7 @@ import {
   simulatePlayoffBracketRound,
   type PlayoffBracketState,
 } from "@/lib/game/playoff-bracket";
+import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import type { PlayoffResult } from "@/lib/game/playoff-simulation";
 import {
   playMatchBigWin,
@@ -180,6 +181,8 @@ export function PlayoffBracket({
     [state, activeRound]
   );
 
+  const userClub = state.userClub ?? DREAM_TEAM_NAME;
+
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md">
       <div className="stadium-lights pointer-events-none fixed inset-0" />
@@ -209,6 +212,7 @@ export function PlayoffBracket({
             <PlayoffMatchCard
               key={match.id}
               match={match}
+              userClub={userClub}
               selected={selectedId === match.id}
               onSelect={() => {
                 if (
@@ -240,6 +244,7 @@ export function PlayoffBracket({
             <PlayoffMatchCard
               key={match.id}
               match={match}
+              userClub={userClub}
               selected={selectedId === match.id}
               onSelect={() => {
                 if (

@@ -31,13 +31,7 @@ import {
   MANAGER_LEADERBOARD_MODES,
 } from "@/lib/storage/manager-leaderboard";
 import { playTabChange } from "@/lib/sound";
-import { RecordWithPercentage } from "./RecordWithPercentage";
-import { CupTeamWinsBarGraph } from "./CupTeamWinsBarGraph";
-import {
-  getCupTeamWinsLeaderboardAsync,
-  getEraCupTeamWinsLeaderboardAsync,
-  type CupTeamWinsLeaderboardRow,
-} from "@/lib/storage/cup-team-wins";
+import { RecordWithPercentage, parseRecordWithPercentage } from "./RecordWithPercentage";
 import { BTN, CARD, TAB_RAIL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -54,13 +48,10 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   perfect_runs: "27-0 Seasons",
   winless_seasons: "0-27 Seasons",
   best_record: "Total Record",
-  challenge_cup_team_wins: "Tournament Wins",
   league_titles: "League Titles",
   super_league_champions: "SL Champions",
-  challenge_cup_trophy: "Challenge Cup",
   era_league_title: "Era League Titles",
   era_league_champions: "Era Champions",
-  era_cup_trophy: "Era Cup",
   total_winnings: "Total Winnings",
   manager_challenge_cups: "Cups Won",
   manager_cup_finals: "Finals Reached",
@@ -78,10 +69,6 @@ export function LeaderboardTable() {
   const [period, setPeriod] = useState<LeaderboardPeriod>("ALL_TIME");
   const difficulty: GameDifficulty = "NORMAL";
   const [entries, setEntries] = useState<LeaderboardTrackerRow[]>([]);
-  const [cupTeamWinRows, setCupTeamWinRows] = useState<CupTeamWinsLeaderboardRow[]>(
-    []
-  );
-  const [cupTeamWinsTotal, setCupTeamWinsTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [usingFallback, setUsingFallback] = useState(false);
   const [normalEraMode, setNormalEraMode] = useState(false);
@@ -117,8 +104,6 @@ export function LeaderboardTable() {
     !isManagerPlayStyle && leaderboardMode === "club-funds";
   const isTrophyCabinetMode =
     !isManagerPlayStyle && leaderboardMode === "trophy-cabinet";
-  const isCupTeamWinsMode =
-    !isManagerPlayStyle && leaderboardMode === "cup-team-wins";
   const isManagerEarningsMode =
     isManagerPlayStyle && managerMode === "manager-earnings";
   const isManagerScoreMode = isManagerEarningsMode;
@@ -139,14 +124,6 @@ export function LeaderboardTable() {
     if (mode !== leaderboardMode) playTabChange();
     setLeaderboardMode(mode);
     setTracker(getDefaultTrackerForDbMode(mode));
-    if (
-      mode === "fantasy" ||
-      mode === "club-funds" ||
-      mode === "trophy-cabinet" ||
-      mode === "cup-team-wins"
-    ) {
-      return;
-    }
   };
 
   const handleManagerModeChange = (mode: ManagerLeaderboardDbMode) => {
@@ -157,7 +134,7 @@ export function LeaderboardTable() {
 
   const isSuperLeagueMode =
     !isManagerPlayStyle && leaderboardMode === "super-league";
-  const showCupVariantToggle = isSuperLeagueMode || isCupTeamWinsMode;
+  const showCupVariantToggle = isSuperLeagueMode;
   const superLeagueModeVariant = normalEraMode ? "era" : "current";
 
   const loadEntries = useCallback(async () => {
@@ -173,18 +150,6 @@ export function LeaderboardTable() {
         );
         if (currentRequest !== requestId.current) return;
         setEntries(result.rows);
-        setUsingFallback(result.source === "local");
-        return;
-      }
-
-      if (isCupTeamWinsMode) {
-        const result = normalEraMode
-          ? await getEraCupTeamWinsLeaderboardAsync()
-          : await getCupTeamWinsLeaderboardAsync();
-        if (currentRequest !== requestId.current) return;
-        setCupTeamWinRows(result.rows);
-        setCupTeamWinsTotal(result.totalCups);
-        setEntries([]);
         setUsingFallback(result.source === "local");
         return;
       }
@@ -231,7 +196,6 @@ export function LeaderboardTable() {
     activeTracker,
     isClubFundsMode,
     isTrophyCabinetMode,
-    isCupTeamWinsMode,
     isSuperLeagueMode,
     superLeagueModeVariant,
     isManagerPlayStyle,
@@ -255,17 +219,11 @@ export function LeaderboardTable() {
   }, [loadEntries]);
 
   const quickModeLabel =
-    leaderboardMode === "draft"
-      ? "Draft Mode"
-      : leaderboardMode === "fantasy"
-        ? "Fantasy Mode"
-        : leaderboardMode === "club-funds"
-          ? "Total Winnings"
-          : leaderboardMode === "trophy-cabinet"
-            ? "Trophy Cabinet"
-            : leaderboardMode === "cup-team-wins"
-              ? "Cup Team Wins"
-              : "Quick Mode";
+    leaderboardMode === "club-funds"
+      ? "Total Winnings"
+      : leaderboardMode === "trophy-cabinet"
+        ? "Trophy Cabinet"
+        : "Quick Mode";
 
   const managerModeLabel =
     MANAGER_LEADERBOARD_MODES.find((mode) => mode.id === managerMode)?.label ??
@@ -279,7 +237,6 @@ export function LeaderboardTable() {
 
   const quickModeOptions = [
     { id: "super-league" as const, label: "Quick Mode" },
-    { id: "cup-team-wins" as const, label: "Cup Team Wins" },
     { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
     { id: "club-funds" as const, label: "Total Winnings" },
   ] as const;
@@ -291,14 +248,12 @@ export function LeaderboardTable() {
   const showUpdatedColumn =
     !isClubFundsMode &&
     !isTrophyCabinetMode &&
-    !isCupTeamWinsMode &&
     !isManagerScoreMode;
 
   const showPeriodFilters =
     !isManagerPlayStyle &&
     !isClubFundsMode &&
-    !isTrophyCabinetMode &&
-    !isCupTeamWinsMode;
+    !isTrophyCabinetMode;
 
   return (
     <div>
@@ -339,6 +294,28 @@ export function LeaderboardTable() {
           const selected = isManagerPlayStyle
             ? managerMode === mode.id
             : leaderboardMode === mode.id;
+
+          if (compact) {
+            return (
+              <button
+                key={mode.id}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                onClick={() =>
+                  isManagerPlayStyle
+                    ? handleManagerModeChange(mode.id as ManagerLeaderboardDbMode)
+                    : handleQuickModeChange(mode.id as LeaderboardDbMode)
+                }
+                className={`${TAB_RAIL.item} btn-press min-h-[44px] shrink-0 rounded-lg px-3 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-4 sm:text-sm ${
+                  selected ? BTN.tabActive : BTN.tabIdle
+                }`}
+              >
+                {mode.label}
+              </button>
+            );
+          }
+
           return (
             <button
               key={mode.id}
@@ -350,28 +327,16 @@ export function LeaderboardTable() {
                   ? handleManagerModeChange(mode.id as ManagerLeaderboardDbMode)
                   : handleQuickModeChange(mode.id as LeaderboardDbMode)
               }
-              className={
-                compact
-                  ? `${TAB_RAIL.item} btn-press min-h-[44px] shrink-0 rounded-lg px-3 py-2 font-display text-xs font-bold uppercase tracking-wider transition sm:px-4 sm:text-sm ${
-                      selected ? BTN.tabActive : BTN.tabIdle
-                    }`
-                  : `btn-press min-h-[44px] rounded-xl border-2 px-4 py-4 text-left transition active:scale-[0.98] ${
-                      selected
-                        ? `${CARD.featured} border-accent-green/60 bg-accent-green/10`
-                        : `${CARD.base} hover:border-pitch-500/60 hover:bg-pitch-800/40`
-                    }`
-              }
+              className={`btn-press min-h-[44px] rounded-xl border-2 px-4 py-4 text-left transition active:scale-[0.98] ${
+                selected
+                  ? `${CARD.featured} border-accent-green/60 bg-accent-green/10`
+                  : `${CARD.base} hover:border-pitch-500/60 hover:bg-pitch-800/40`
+              }`}
             >
               <span
-                className={
-                  compact
-                    ? selected
-                      ? "text-accent-green"
-                      : "text-gray-300"
-                    : `${TYPO.sectionTitle} sm:text-base ${
-                        selected ? "text-accent-green" : "text-gray-300"
-                      }`
-                }
+                className={`font-display text-sm font-bold uppercase tracking-wider sm:text-base ${
+                  selected ? "text-accent-green" : "text-gray-300"
+                }`}
               >
                 {mode.label}
               </span>
@@ -509,21 +474,9 @@ export function LeaderboardTable() {
         </div>
       )}
 
-      {loading && entries.length === 0 && !isCupTeamWinsMode ? (
+      {loading && entries.length === 0 ? (
         <div className="matchday-panel p-12 text-center text-gray-500">
           Loading leaderboard…
-        </div>
-      ) : isCupTeamWinsMode ? (
-        <div
-          className={`matchday-panel p-6 transition-opacity ${
-            loading ? "opacity-60" : "opacity-100"
-          }`}
-        >
-          <CupTeamWinsBarGraph
-            entries={cupTeamWinRows}
-            totalCups={cupTeamWinsTotal}
-            emptyMessage="No Challenge Cup team wins recorded yet. Win the cup in Quick Mode to add your club."
-          />
         </div>
       ) : entries.length === 0 ? (
         <div className="matchday-panel p-12 text-center text-gray-500">
@@ -634,14 +587,19 @@ function renderLeaderboardStat(
   activeTracker: LeaderboardTrackerType
 ) {
   if (activeTracker === "best_record") {
-    const match = entry.statDisplay.match(/^(\d+)-(\d+)\s+\(([\d.]+)%\)$/);
-    if (!match) return entry.statDisplay;
-    return (
-      <RecordWithPercentage
-        wins={Number.parseInt(match[1]!, 10)}
-        losses={Number.parseInt(match[2]!, 10)}
-      />
-    );
+    const parsed = parseRecordWithPercentage(entry.statDisplay);
+    if (parsed) {
+      return (
+        <RecordWithPercentage wins={parsed.wins} losses={parsed.losses} />
+      );
+    }
+    return entry.statDisplay;
   }
+
+  const plainNumber = entry.statDisplay.match(/^[\d.]+$/);
+  if (plainNumber) {
+    return String(Math.round(Number.parseFloat(entry.statDisplay)));
+  }
+
   return entry.statDisplay;
 }

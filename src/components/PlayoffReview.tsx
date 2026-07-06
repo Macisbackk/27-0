@@ -216,6 +216,7 @@ export function PlayoffReview({
           >
             <PlayoffBracketDisplay
               state={playoffBracketState}
+              embedded
               championLabel={
                 bracketChampion ??
                 (playoffResult.isChampion ? "Dream Team" : playoffResult.finish)

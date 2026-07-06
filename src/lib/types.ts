@@ -216,13 +216,6 @@ export interface UserStatsData {
   bestCupMatchWinsInTournament: number;
   /** Highest average squad rating across completed fantasy seasons. */
   bestTeamRating: number;
-  eraChallengeCupRuns: number;
-  eraChallengeCupWins: number;
-  eraChallengeCupLosses: number;
-  eraCupsWon: number;
-  eraMatchWins: number;
-  eraMatchLosses: number;
-  bestEraTeamUsed: string | null;
   /** Regular-season wins only (27-game campaign). */
   regularSeasonWins: number;
   /** Regular-season losses only. */

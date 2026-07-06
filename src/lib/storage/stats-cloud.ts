@@ -11,7 +11,6 @@ interface StoredStats {
   draftNormal: UserStatsData;
   draftHard: UserStatsData;
   fantasy: UserStatsData;
-  eraCup: UserStatsData;
   eraNormal: UserStatsData;
 }
 
@@ -35,7 +34,6 @@ export async function loadCloudStats(): Promise<StoredStats | null> {
       draftNormal: { ...EMPTY_STATS },
       draftHard: { ...EMPTY_STATS },
       fantasy: { ...EMPTY_STATS },
-      eraCup: { ...EMPTY_STATS },
       eraNormal: { ...EMPTY_STATS },
     };
 
@@ -59,10 +57,6 @@ export async function loadCloudStats(): Promise<StoredStats | null> {
         );
       } else if (mode === "FANTASY") {
         result.fantasy = migrateUserStats(
-          (row.stat_json as Partial<UserStatsData>) ?? {}
-        );
-      } else if (mode === "ERA_CUP") {
-        result.eraCup = migrateUserStats(
           (row.stat_json as Partial<UserStatsData>) ?? {}
         );
       } else if (mode === "ERA_NORMAL") {
@@ -89,7 +83,6 @@ export async function saveCloudStats(stats: StoredStats): Promise<void> {
     { key: "draftNormal", mode: "DRAFT_NORMAL" },
     { key: "draftHard", mode: "DRAFT_HARD" },
     { key: "fantasy", mode: "FANTASY" },
-    { key: "eraCup", mode: "ERA_CUP" },
     { key: "eraNormal", mode: "ERA_NORMAL" },
   ];
 

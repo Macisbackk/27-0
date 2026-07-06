@@ -299,6 +299,11 @@ export function ManagerSquad({
       openPlayerModal(playerId);
       return;
     }
+    if (!finePointer) {
+      playUiClick();
+      openPlayerModal(playerId);
+      return;
+    }
     if (pendingAssignId === playerId) {
       playUiClick();
       setPendingAssignId(null);
@@ -358,14 +363,14 @@ export function ManagerSquad({
 
   const squadHelpText = finePointer
     ? "Click squad players to assign · click matchday players to swap · double-click for player options"
-    : "Tap squad players to assign · tap matchday players for options";
+    : "Tap any player for options · substitute from the player menu";
 
   const tacticsHelpText =
     "Set your playing style, attack focus, and defence focus for the next match.";
 
   const squadPoolHelpText = finePointer
     ? "Click to assign · double-click for player options"
-    : "Tap to assign";
+    : "Tap for player options";
 
   const squadCheck = validateFitMatchdaySquad(resolveCareerForMatchSimulation(career));
 

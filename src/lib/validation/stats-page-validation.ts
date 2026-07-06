@@ -1,6 +1,6 @@
 import type { UserStatsData } from "../types";
+import { EMPTY_STATS } from "../storage/stats";
 import {
-  getChallengeCupView,
   getDraftModeView,
   getHardDraftModeView,
   getHardNormalModeView,
@@ -15,20 +15,17 @@ export function validateStatsPageStats(input: {
   hard: UserStatsData;
   draftNormal: UserStatsData;
   draftHard: UserStatsData;
+  eraNormal?: UserStatsData;
 }): string[] {
-  const { normal, hard, draftNormal, draftHard } = input;
+  const { normal, hard, draftNormal, draftHard, eraNormal } = input;
+  const era = eraNormal ?? EMPTY_STATS;
   const issues: string[] = [];
 
-  const overall = getOverallView(normal, hard, draftNormal, draftHard);
+  const overall = getOverallView(normal, hard, draftNormal, draftHard, era);
   const seasonRunSum =
     normal.totalSeasonsSimulated +
     hard.totalSeasonsSimulated +
-    draftNormal.totalSeasonsSimulated +
-    draftHard.totalSeasonsSimulated;
-
-  const visibleModeRuns =
-    normal.totalRuns +
-    hard.totalRuns +
+    era.totalSeasonsSimulated +
     draftNormal.totalSeasonsSimulated +
     draftHard.totalSeasonsSimulated;
 
@@ -56,6 +53,7 @@ export function validateStatsPageStats(input: {
   const perfectSum =
     normal.totalPerfectSeasons +
     hard.totalPerfectSeasons +
+    era.totalPerfectSeasons +
     draftNormal.totalPerfectSeasons +
     draftHard.totalPerfectSeasons;
   if (overall.perfectSeasons !== perfectSum) {
@@ -67,31 +65,12 @@ export function validateStatsPageStats(input: {
   const winlessSum =
     normal.totalWinlessSeasons +
     hard.totalWinlessSeasons +
+    era.totalWinlessSeasons +
     draftNormal.totalWinlessSeasons +
     draftHard.totalWinlessSeasons;
   if (overall.winlessSeasons !== winlessSum) {
     issues.push(
       `Overall 0-27 count (${overall.winlessSeasons}) ≠ sum of mode winless seasons (${winlessSum})`
-    );
-  }
-
-  const cupView = getChallengeCupView(normal, hard);
-  const appearances = normal.challengeCupRuns + hard.challengeCupRuns;
-  if (cupView.runs !== appearances) {
-    issues.push(
-      `Cup appearances (${cupView.runs}) ≠ challengeCupRuns sum (${appearances})`
-    );
-  }
-  const trophies = normal.challengeCupsWon + hard.challengeCupsWon;
-  if (cupView.cupsWon !== trophies) {
-    issues.push(
-      `Cup trophies (${cupView.cupsWon}) ≠ challengeCupsWon sum (${trophies})`
-    );
-  }
-  const matchWins = normal.challengeCupWins + hard.challengeCupWins;
-  if (cupView.wins !== matchWins) {
-    issues.push(
-      `Cup match wins (${cupView.wins}) ≠ challengeCupWins sum (${matchWins})`
     );
   }
 
@@ -127,10 +106,6 @@ export function validateStatsPageStats(input: {
   const slView = getSuperLeagueView(normal);
   if (slView.runs !== normal.totalSeasonsSimulated) {
     issues.push("Normal mode runs mismatch with totalSeasonsSimulated");
-  }
-
-  if (overall.totalRuns < visibleModeRuns - normal.challengeCupRuns - hard.challengeCupRuns) {
-    // totalRuns in overall includes draft seasons as totalSeasonsSimulated — sanity only
   }
 
   return issues;

@@ -152,7 +152,7 @@ export function ManagerSquadPlayerModal({
               onClose();
             }}
           >
-            Replace Player
+            Substitute
           </GameButton>
 
           {!transferStatus?.listed && !showListForm && (

@@ -45,6 +45,16 @@ interface RugbyPitchProps {
   slotAccent?: Partial<Record<number, "source" | "target">>;
 }
 
+/** Shared layout + typography for recruitment, review, and manager team sheets. */
+export const TEAM_SHEET_RUGBY_PITCH_PROPS = {
+  formationOnly: true,
+  compact: true,
+  hideValueSummary: true,
+} as const satisfies Pick<
+  RugbyPitchProps,
+  "formationOnly" | "compact" | "hideValueSummary"
+>;
+
 function RugbyPitchInner({
   squad,
   totalValue,

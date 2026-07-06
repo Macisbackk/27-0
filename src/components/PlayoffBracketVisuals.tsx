@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import type { PlayoffBracketMatch } from "@/lib/game/playoff-bracket";
-import { getPlayoffRoundLabel } from "@/lib/game/playoff-bracket";
+import { getPlayoffRoundLabel, getPlayoffTeamDisplayInfo } from "@/lib/game/playoff-bracket";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 
@@ -19,29 +19,18 @@ const PLAYOFF_ROUNDS = [
   { round: 3, short: "GF" },
 ] as const;
 
-export function PlayoffBracketHeader({
+export function PlayoffBracketProgressStrip({
   activeRound,
   tournamentComplete,
+  compact = false,
 }: {
   activeRound: number;
   tournamentComplete: boolean;
+  compact?: boolean;
 }) {
   return (
-    <div className="playoff-bracket-header matchday-panel overflow-hidden px-4 py-5 text-center sm:px-6 sm:py-6">
-      <div className="playoff-bracket-header__shine pointer-events-none" aria-hidden />
-      <p className="font-display text-[10px] font-bold uppercase tracking-[0.4em] text-mode-current sm:text-xs">
-        Super League Play-Offs
-      </p>
-      <h2 className="mt-2 font-display text-2xl font-black tracking-tight text-white sm:text-3xl">
-        Knockout Bracket
-      </h2>
-      <p className="mt-2 text-sm text-gray-400">
-        {tournamentComplete
-          ? "Play-offs complete — review the path to the trophy"
-          : `${getPlayoffRoundLabel(activeRound)} — simulate matches to advance`}
-      </p>
-
-      <div className="playoff-bracket-progress mx-auto mt-5 max-w-md">
+    <div className={compact ? "space-y-3" : "space-y-4"}>
+      <div className={`playoff-bracket-progress ${compact ? "mt-0" : "mx-auto mt-5 max-w-md"}`}>
         {PLAYOFF_ROUNDS.map(({ round, short }, index) => {
           const isFinal = round === 3;
           const isComplete = tournamentComplete || activeRound > round;
@@ -69,7 +58,9 @@ export function PlayoffBracketHeader({
                 </span>
               </div>
               <p
-                className={`mt-1.5 hidden text-[9px] font-semibold uppercase tracking-wider sm:block ${
+                className={`mt-1.5 text-[9px] font-semibold uppercase tracking-wider ${
+                  compact ? "hidden sm:block" : "hidden sm:block"
+                } ${
                   isLive
                     ? isFinal
                       ? "text-accent-gold"
@@ -86,11 +77,48 @@ export function PlayoffBracketHeader({
         })}
       </div>
 
-      <div className="mx-auto mt-4 flex max-w-lg flex-wrap items-center justify-center gap-2">
+      <div
+        className={`flex flex-wrap items-center justify-center gap-2 ${
+          compact ? "" : "mx-auto max-w-lg"
+        }`}
+      >
         <span className="playoff-bracket-tag">
           1st & 2nd receive a semi-final bye
         </span>
+        <span className="playoff-bracket-tag playoff-bracket-tag--muted">
+          3v6 · 4v5 eliminators → semis → final
+        </span>
       </div>
+    </div>
+  );
+}
+
+export function PlayoffBracketHeader({
+  activeRound,
+  tournamentComplete,
+}: {
+  activeRound: number;
+  tournamentComplete: boolean;
+}) {
+  return (
+    <div className="playoff-bracket-header matchday-panel overflow-hidden px-4 py-5 text-center sm:px-6 sm:py-6">
+      <div className="playoff-bracket-header__shine pointer-events-none" aria-hidden />
+      <p className="font-display text-[10px] font-bold uppercase tracking-[0.4em] text-mode-current sm:text-xs">
+        Super League Play-Offs
+      </p>
+      <h2 className="mt-2 font-display text-2xl font-black tracking-tight text-white sm:text-3xl">
+        Knockout Bracket
+      </h2>
+      <p className="mt-2 text-sm text-gray-400">
+        {tournamentComplete
+          ? "Play-offs complete — review the path to the trophy"
+          : `${getPlayoffRoundLabel(activeRound)} — simulate matches to advance`}
+      </p>
+
+      <PlayoffBracketProgressStrip
+        activeRound={activeRound}
+        tournamentComplete={tournamentComplete}
+      />
     </div>
   );
 }
@@ -145,6 +173,7 @@ export function PlayoffMatchCard({
   isActiveRound,
   interactive = true,
   mobile = false,
+  userClub = DREAM_TEAM_NAME,
 }: {
   match: PlayoffBracketMatch;
   selected: boolean;
@@ -152,6 +181,7 @@ export function PlayoffMatchCard({
   isActiveRound: boolean;
   interactive?: boolean;
   mobile?: boolean;
+  userClub?: string;
 }) {
   const isComplete = match.status === "complete";
   const isReady = match.status === "ready";
@@ -187,24 +217,24 @@ export function PlayoffMatchCard({
       )}
 
       <PlayoffTeamRow
-        team={match.homeTeam}
+        match={match}
+        side="home"
         score={match.homeScore}
         isWinner={isComplete && match.winner === match.homeTeam}
         isLoser={isComplete && match.loser === match.homeTeam}
-        isUser={match.homeTeam === DREAM_TEAM_NAME}
-        isPending={isPending && !match.homeTeam}
+        isUser={match.homeTeam === userClub}
         mobile={mobile}
       />
 
       <div className="playoff-bracket-divider" aria-hidden />
 
       <PlayoffTeamRow
-        team={match.awayTeam}
+        match={match}
+        side="away"
         score={match.awayScore}
         isWinner={isComplete && match.winner === match.awayTeam}
         isLoser={isComplete && match.loser === match.awayTeam}
-        isUser={match.awayTeam === DREAM_TEAM_NAME}
-        isPending={isPending && !match.awayTeam}
+        isUser={match.awayTeam === userClub}
         mobile={mobile}
       />
 
@@ -222,24 +252,29 @@ export function PlayoffMatchCard({
 }
 
 function PlayoffTeamRow({
-  team,
+  match,
+  side,
   score,
   isWinner,
   isLoser,
   isUser,
-  isPending,
   mobile = false,
 }: {
-  team: string | null;
+  match: PlayoffBracketMatch;
+  side: "home" | "away";
   score: number | null;
   isWinner: boolean;
   isLoser: boolean;
   isUser: boolean;
-  isPending: boolean;
   mobile?: boolean;
 }) {
-  const label = isPending ? "TBD" : (team ?? "TBD");
-  const swatchClub = team && team !== DREAM_TEAM_NAME ? team : "Wigan Warriors";
+  const display = getPlayoffTeamDisplayInfo(match, side);
+  const label = display.text;
+  const isPending = display.isPlaceholder;
+  const swatchClub =
+    !isPending && match[side === "home" ? "homeTeam" : "awayTeam"]
+      ? match[side === "home" ? "homeTeam" : "awayTeam"]!
+      : "Wigan Warriors";
 
   return (
     <div
@@ -250,26 +285,31 @@ function PlayoffTeamRow({
       }`}
     >
       <div className="flex min-w-0 flex-1 items-center gap-2">
-        {!isPending && team ? (
+        {!isPending ? (
           <ClubDualSwatch club={swatchClub} size="xs" />
         ) : (
           <span className="h-3 w-3 shrink-0 rounded-full bg-pitch-700/80 ring-1 ring-pitch-600/50" />
         )}
-        <span
-          className={`min-w-0 font-semibold leading-snug ${
-            mobile ? "break-words" : "truncate"
-          } ${mobile ? "text-xs" : "text-[11px] sm:text-xs"} ${
-            isUser
-              ? "text-mode-current"
-              : isPending
-                ? "italic text-gray-500"
-                : isWinner
-                  ? "text-white"
-                  : "text-gray-200"
-          }`}
-        >
-          {label}
-        </span>
+        <div className="min-w-0 flex-1">
+          <span
+            className={`block font-semibold leading-snug [overflow-wrap:anywhere] ${
+              mobile ? "text-xs" : "text-[11px] sm:text-xs"
+            } ${
+              isUser
+                ? "text-mode-current"
+                : isPending
+                  ? "italic text-gray-500"
+                  : isWinner
+                    ? "text-white"
+                    : "text-gray-200"
+            }`}
+          >
+            {label}
+          </span>
+          {display.hasLeagueBye && (
+            <span className="playoff-bracket-bye-badge">League bye</span>
+          )}
+        </div>
       </div>
       <span
         className={`playoff-bracket-score ${

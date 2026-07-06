@@ -11,6 +11,7 @@ import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSquadSlotsFromMatchday } from "@/lib/manager/managerSquad";
 import { formatWage } from "@/lib/manager/managerContracts";
+import { ManagerMatchEventLine } from "@/components/manager/ManagerMatchEventLine";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
 import { ManagerMobileBackBar, ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
 import {
@@ -33,8 +34,20 @@ import {
   type MatchKeyMomentTone,
 } from "@/lib/manager/managerMatchMoments";
 
-function MatchReviewBackBar({ onClose }: { onClose: () => void }) {
-  return <ManagerMobileBackBar label="Back to hub" onBack={onClose} />;
+function MatchReviewBackBar({
+  onClose,
+  placement = "top",
+}: {
+  onClose: () => void;
+  placement?: "top" | "bottom";
+}) {
+  return (
+    <ManagerMobileBackBar
+      label="Back to hub"
+      onBack={onClose}
+      placement={placement}
+    />
+  );
 }
 
 interface ManagerMatchReviewProps {
@@ -64,6 +77,7 @@ export function ManagerMatchReview({
             This result could not be loaded from your save.
           </p>
         </div>
+        <MatchReviewBackBar onClose={onClose} placement="bottom" />
       </div>
     );
   }
@@ -324,9 +338,12 @@ export function ManagerMatchReview({
           <p className={TYPO.sectionLabel}>Match Events</p>
           <ul className={`mt-2 max-h-48 overflow-y-auto ${SPACING.stackSm}`}>
             {[...fixture.meta.liveEvents].reverse().map((ev, i) => (
-              <li key={`${ev.minute}-${i}`} className={`${TYPO.bodySm}`}>
-                {ev.description}
-              </li>
+              <ManagerMatchEventLine
+                key={`${ev.minute}-${i}`}
+                event={ev}
+                userClub={career.club}
+                opponentClub={fixture.opponent}
+              />
             ))}
           </ul>
         </div>
@@ -403,6 +420,8 @@ export function ManagerMatchReview({
       )}
         </div>
       )}
+
+      <MatchReviewBackBar onClose={onClose} placement="bottom" />
     </div>
   );
 }

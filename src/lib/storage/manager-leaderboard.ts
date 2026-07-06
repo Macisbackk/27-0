@@ -8,6 +8,7 @@ import {
   type LeaderboardTrackerType,
   type ManagerLeaderboardDbMode,
 } from "../leaderboard-trackers";
+import { formatClubFunds } from "../club-funds";
 import { isLoggedIn, getAuthUserId } from "../auth-session";
 import { isSupabaseConfigured, supabase } from "../supabase";
 import {
@@ -61,36 +62,28 @@ type LocalManagerLeaderboardStore = {
   earnings: Record<string, ManagerScoreLeaderboardEntry>;
 };
 
-function formatManagerEarnings(amount: number): string {
-  if (amount >= 1_000_000) {
-    return `£${(amount / 1_000_000).toFixed(1)}m`;
-  }
-  if (amount >= 1_000) {
-    return `£${(amount / 1_000).toFixed(0)}k`;
-  }
-  return `£${amount}`;
-}
-
 function managerStatsToTrackerPayload(
   stats: ManagerLifetimeStats
 ): Omit<LeaderboardTrackerEntry, "username" | "achievedAt" | "difficulty" | "mode"> {
-  const games = stats.wins + stats.losses;
+  const wins = Math.round(stats.wins);
+  const losses = Math.round(stats.losses);
+  const games = wins + losses;
   return {
     squadValue: 0,
-    totalWins: stats.wins,
-    totalLosses: stats.losses,
-    perfectRuns: stats.perfectSeasons,
-    winlessSeasons: stats.winlessSeasons,
-    bestRecordWins: stats.wins,
-    bestRecordLosses: stats.losses,
-    bestWinPercentage: games > 0 ? (stats.wins / games) * 100 : 0,
-    challengeCupWins: stats.challengeCups,
-    cupFinals: stats.cupFinals,
+    totalWins: wins,
+    totalLosses: losses,
+    perfectRuns: Math.round(stats.perfectSeasons),
+    winlessSeasons: Math.round(stats.winlessSeasons),
+    bestRecordWins: wins,
+    bestRecordLosses: losses,
+    bestWinPercentage: games > 0 ? Math.round((wins / games) * 100) : 0,
+    challengeCupWins: Math.round(stats.challengeCups),
+    cupFinals: Math.round(stats.cupFinals),
     bestCupFinishRank: 0,
     bestCupFinishLabel: "",
     cupWinPercentage: 0,
-    leagueTitles: stats.leagueTitles,
-    superLeagueTitles: stats.superLeagueTitles,
+    leagueTitles: Math.round(stats.leagueTitles),
+    superLeagueTitles: Math.round(stats.superLeagueTitles),
   };
 }
 
@@ -377,7 +370,7 @@ function mapScoreEntriesToRows(
   const rows = sorted.slice(0, limit).map((entry, index) => ({
     rank: index + 1,
     username: entry.username,
-    statDisplay: formatScore(entry.score),
+    statDisplay: formatScore(Math.round(entry.score)),
     achievedAt: entry.updatedAt,
     difficulty: "NORMAL" as const,
     mode: "CLASSIC" as const,
@@ -398,7 +391,7 @@ function mapScoreEntriesToRows(
       rows.push({
         rank: userIndex + 1,
         username: entry.username,
-        statDisplay: formatScore(entry.score),
+        statDisplay: formatScore(Math.round(entry.score)),
         achievedAt: entry.updatedAt,
         difficulty: "NORMAL",
         mode: "CLASSIC",
@@ -613,7 +606,7 @@ async function getManagerEarningsLeaderboardAsync(
       currentUser,
       userId,
       limit,
-      formatManagerEarnings
+      formatClubFunds
     ),
   };
 }

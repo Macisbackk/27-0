@@ -163,10 +163,6 @@ export function playModeDraftStart(difficulty: GameDifficulty): void {
   playSound(difficulty === "HARD" ? "modeHard" : "modeDraft");
 }
 
-export function playModeChallengeCupStart(): void {
-  playSound("challengeCup");
-}
-
 export function playJoeMellorActivate(): void {
   playSound("joeMellor");
 }
@@ -184,10 +180,6 @@ export function playSeasonStart(): void {
 export function playSimulateRound(): void {
   playSound("simulateRound");
   triggerHaptic(12);
-}
-
-export function playSimulateAll(): void {
-  playSound("simulateAll");
 }
 
 export function playSeasonComplete(): void {

@@ -95,11 +95,8 @@ export function ManagerPlayoffsIntroModal({
         </div>
 
         {bracket && (
-          <div className="mt-4">
-            <p className={TYPO.sectionLabel}>Bracket</p>
-            <div className="mt-2">
-              <PlayoffBracketDisplay state={bracket} />
-            </div>
+          <div className="mt-4 overflow-hidden rounded-xl border border-pitch-700/40 bg-pitch-950/40 p-2 sm:p-3">
+            <PlayoffBracketDisplay state={bracket} embedded />
           </div>
         )}
 

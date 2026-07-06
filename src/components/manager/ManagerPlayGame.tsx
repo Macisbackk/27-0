@@ -27,6 +27,7 @@ import {
   prepareCareerForNextMatch,
 } from "@/lib/manager/managerSimulation";
 import { formatTacticsLabel } from "@/lib/manager/managerTacticsCopy";
+import { ManagerMatchEventLine } from "@/components/manager/ManagerMatchEventLine";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
 import {
   getManagerScheduledFixtureHeadline,
@@ -384,17 +385,12 @@ export function ManagerPlayGame({
             ) : (
               <ul className="mt-1.5 min-h-0 flex-1 space-y-0.5 overflow-y-auto overscroll-contain pr-0.5 [-ms-overflow-style:none] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-pitch-600/80">
                 {matchEvents.map((ev, i) => (
-                  <li
+                  <ManagerMatchEventLine
                     key={`${ev.minute}-${ev.type}-${i}`}
-                    className={`text-[11px] leading-snug sm:text-xs ${
-                      ev.team === "user" ? "text-white" : "text-pitch-400"
-                    }`}
-                  >
-                    <span className="font-mono text-pitch-500">
-                      {ev.minute}&apos;
-                    </span>{" "}
-                    {ev.description}
-                  </li>
+                    event={ev}
+                    userClub={career.club}
+                    opponentClub={sched.opponent}
+                  />
                 ))}
               </ul>
             )}

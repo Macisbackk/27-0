@@ -67,10 +67,12 @@ export function formatRecordWithPercentage(
   wins: number,
   losses: number
 ): string {
-  const games = wins + losses;
+  const w = Math.round(wins);
+  const l = Math.round(losses);
+  const games = w + l;
   if (games === 0) return "0-0";
-  const pct = Math.round((wins / games) * 100);
-  return `${wins}-${losses} (${pct}%)`;
+  const pct = Math.round((w / games) * 100);
+  return `${w}-${l} (${pct}%)`;
 }
 
 export function formatLeagueFinish(position: number): string {
@@ -122,11 +124,6 @@ export interface SeasonLifetimeInput {
   nationalRank?: number;
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
-  challengeCupMode?: boolean;
-  eraChallengeCupMode?: boolean;
-  eraTeamUsed?: string;
-  cupFinish?: string;
-  cupWon?: boolean;
   averageSquadRating?: number;
   matchResults?: ("W" | "L")[];
   playoffWins?: number;
@@ -152,11 +149,6 @@ export function applySeasonLifetimeUpdate(
     nationalRank,
     joeMellorMode,
     superSamHallasMode,
-    challengeCupMode,
-    eraChallengeCupMode,
-    eraTeamUsed,
-    cupFinish,
-    cupWon,
     averageSquadRating,
     matchResults = [],
     playoffWins = 0,

@@ -1,6 +1,7 @@
 import { STORAGE_KEYS } from "../storage/keys";
 import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import { syncManagerLeaderboard } from "../storage/manager-leaderboard";
+import { isLoggedIn } from "../auth-session";
 import { isLeagueAndCupPhaseComplete } from "./managerChallengeCup";
 import { getUserLeagueTablePosition } from "./managerFixtures";
 import { pickManagerWorstSeasonRecord } from "./manager-stats-views";
@@ -31,12 +32,92 @@ export const EMPTY_MANAGER_STATS: ManagerLifetimeStats = {
   clubSeasons: {},
 };
 
+function managerStatsSignature(stats: ManagerLifetimeStats): string {
+  return [
+    stats.seasonsCompleted,
+    stats.wins,
+    stats.losses,
+    stats.leagueTitles,
+    stats.totalEarnings,
+  ].join(":");
+}
+
+function pickRicherManagerStats(
+  a: ManagerLifetimeStats,
+  b: ManagerLifetimeStats
+): ManagerLifetimeStats {
+  if (a.seasonsCompleted !== b.seasonsCompleted) {
+    return a.seasonsCompleted > b.seasonsCompleted ? a : b;
+  }
+  const aGames = a.wins + a.losses;
+  const bGames = b.wins + b.losses;
+  if (aGames !== bGames) return aGames > bGames ? a : b;
+  if (a.totalEarnings !== b.totalEarnings) {
+    return a.totalEarnings > b.totalEarnings ? a : b;
+  }
+  return a;
+}
+
+export function reconcileManagerStats(
+  cloud: ManagerLifetimeStats,
+  local: ManagerLifetimeStats
+): ManagerLifetimeStats {
+  const c = sanitizeManagerStats(cloud);
+  const l = sanitizeManagerStats(local);
+
+  if (managerStatsSignature(c) === managerStatsSignature(l)) return c;
+
+  const localEmpty =
+    l.seasonsCompleted === 0 && l.wins === 0 && l.losses === 0;
+  const cloudEmpty =
+    c.seasonsCompleted === 0 && c.wins === 0 && c.losses === 0;
+
+  if (localEmpty) return c;
+  if (cloudEmpty) return l;
+
+  return pickRicherManagerStats(c, l);
+}
+
+export function sanitizeManagerStats(
+  raw: Partial<ManagerLifetimeStats>
+): ManagerLifetimeStats {
+  const merged = { ...EMPTY_MANAGER_STATS, ...raw };
+  return {
+    ...merged,
+    careersStarted: Math.round(merged.careersStarted),
+    seasonsCompleted: Math.round(merged.seasonsCompleted),
+    wins: Math.round(merged.wins),
+    losses: Math.round(merged.losses),
+    trophies: Math.round(merged.trophies),
+    leagueTitles: Math.round(merged.leagueTitles),
+    superLeagueTitles: Math.round(merged.superLeagueTitles),
+    challengeCups: Math.round(merged.challengeCups),
+    cupFinals: Math.round(merged.cupFinals),
+    topSixFinishes: Math.round(merged.topSixFinishes),
+    perfectSeasons: Math.round(merged.perfectSeasons),
+    winlessSeasons: Math.round(merged.winlessSeasons),
+    biggestWin: Math.round(merged.biggestWin),
+    biggestDefeat: Math.round(merged.biggestDefeat),
+    totalEarnings: Math.round(merged.totalEarnings),
+    bestFinish:
+      merged.bestFinish !== null ? Math.round(merged.bestFinish) : null,
+    worstRecordWins:
+      merged.worstRecordWins !== null
+        ? Math.round(merged.worstRecordWins)
+        : null,
+    worstRecordLosses:
+      merged.worstRecordLosses !== null
+        ? Math.round(merged.worstRecordLosses)
+        : null,
+  };
+}
+
 export function loadManagerStats(): ManagerLifetimeStats {
   if (typeof window === "undefined") return { ...EMPTY_MANAGER_STATS };
   try {
     const raw = localStorage.getItem(STATS_KEY);
     if (!raw) return { ...EMPTY_MANAGER_STATS };
-    return { ...EMPTY_MANAGER_STATS, ...JSON.parse(raw) };
+    return sanitizeManagerStats(JSON.parse(raw) as Partial<ManagerLifetimeStats>);
   } catch {
     return { ...EMPTY_MANAGER_STATS };
   }
@@ -44,7 +125,63 @@ export function loadManagerStats(): ManagerLifetimeStats {
 
 export function saveManagerStats(stats: ManagerLifetimeStats): void {
   if (typeof window === "undefined") return;
-  localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+  const sanitized = sanitizeManagerStats(stats);
+  localStorage.setItem(STATS_KEY, JSON.stringify(sanitized));
+  if (isLoggedIn()) {
+    void import("../storage/manager-stats-cloud").then(({ saveCloudManagerStats }) =>
+      saveCloudManagerStats(sanitized)
+    );
+  }
+}
+
+export async function refreshManagerStatsFromCloud(): Promise<boolean> {
+  if (typeof window === "undefined" || !isLoggedIn()) return false;
+
+  const { loadCloudManagerStats, saveCloudManagerStats } = await import(
+    "../storage/manager-stats-cloud"
+  );
+
+  const cloud = await loadCloudManagerStats();
+  const local = loadManagerStats();
+
+  if (!cloud) {
+    if (
+      local.seasonsCompleted > 0 ||
+      local.wins > 0 ||
+      local.losses > 0 ||
+      local.careersStarted > 0
+    ) {
+      await saveCloudManagerStats(local);
+    }
+    return true;
+  }
+
+  const reconciled = reconcileManagerStats(cloud, local);
+  localStorage.setItem(STATS_KEY, JSON.stringify(reconciled));
+
+  if (managerStatsSignature(reconciled) !== managerStatsSignature(cloud)) {
+    await saveCloudManagerStats(reconciled);
+  }
+
+  syncManagerLeaderboard(reconciled);
+  window.dispatchEvent(new Event("stats-merged"));
+  return true;
+}
+
+export async function flushManagerStatsToCloud(): Promise<void> {
+  if (typeof window === "undefined" || !isLoggedIn()) return;
+  const { saveCloudManagerStats } = await import("../storage/manager-stats-cloud");
+  await saveCloudManagerStats(loadManagerStats());
+}
+
+export function resetManagerStats(): void {
+  if (typeof window === "undefined") return;
+  const empty = { ...EMPTY_MANAGER_STATS };
+  saveManagerStats(empty);
+  syncManagerLeaderboard(empty);
+  void import("../storage/manager-stats-cloud").then(({ saveCloudManagerStats }) =>
+    saveCloudManagerStats(empty)
+  );
 }
 
 export function recordCareerStarted(club: string): void {

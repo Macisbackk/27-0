@@ -302,8 +302,11 @@ export function loadManagerCareer(slot?: number): ManagerCareer | null {
   return hydrateManagerCareer(raw);
 }
 
-export function saveManagerCareer(career: ManagerCareer, slot?: number): void {
-  writeManagerCareerRaw(prepareManagerCareerForSave(career), slot);
+export function saveManagerCareer(
+  career: ManagerCareer,
+  slot?: number
+): { ok: true } | { ok: false; error: string } {
+  return writeManagerCareerRaw(prepareManagerCareerForSave(career), slot);
 }
 
 export function deleteManagerCareer(slot?: number): void {
@@ -408,6 +411,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     calledUpReserveIds: [],
     playerRegistry: {},
     hubResultsExpanded: false,
+    objectivesIntroShown: false,
     leagueClubStates: initLeagueClubStates(),
     leagueClubStatesWeek: 0,
     leagueClubRosters: initLeagueClubRosters(club),

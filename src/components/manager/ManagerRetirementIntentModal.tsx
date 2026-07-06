@@ -23,6 +23,7 @@ import {
   managerModalHeaderClass,
   managerPillClass,
 } from "@/lib/manager/managerSurfaces";
+import { canConvincePlayerToStay } from "@/lib/manager/managerRetirement";
 import { POSITION_SHORT } from "@/lib/positions";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
 import { playMenuOpen, playUiClick } from "@/lib/sound";
@@ -31,7 +32,7 @@ interface ManagerRetirementIntentModalProps {
   career: ManagerCareer;
   message: InboxMessage;
   onAcknowledge: () => void;
-  onViewContracts?: () => void;
+  onConvinceToStay?: () => void;
 }
 
 function ratingClass(rating: number): string {
@@ -48,7 +49,7 @@ export function ManagerRetirementIntentModal({
   career,
   message,
   onAcknowledge,
-  onViewContracts,
+  onConvinceToStay,
 }: ManagerRetirementIntentModalProps) {
   const player = message.playerId
     ? getManagerPlayer(career, message.playerId)
@@ -73,6 +74,9 @@ export function ManagerRetirementIntentModal({
 
   if (!player || !message.playerId) return null;
 
+  const canConvince =
+    onConvinceToStay != null &&
+    canConvincePlayerToStay(career, message.playerId);
   const positions = getPlayerEligiblePositions(player);
   const rating = player.peakRating;
   const contractLabel =
@@ -201,10 +205,12 @@ export function ManagerRetirementIntentModal({
               </span>
               <div className="min-w-0 pt-0.5">
                 <p className="text-sm font-medium text-white">
-                  End of {career.seasonYear}
+                  {canConvince ? "Your decision" : `End of ${career.seasonYear}`}
                 </p>
                 <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
-                  Contract runs out and the player plans to retire.
+                  {canConvince
+                    ? "Let them retire as planned, or convince them to stay one more year at the same wage — then they retire for good."
+                    : "Contract runs out and the player plans to retire."}
                 </p>
               </div>
             </li>
@@ -221,7 +227,9 @@ export function ManagerRetirementIntentModal({
                   Hangs up their boots
                 </p>
                 <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
-                  Leaves the squad unless persuaded to sign on.
+                  {canConvince
+                    ? "If convinced, they play one final season then retire — this option works once per player."
+                    : "Leaves the squad at the end of the season unless already persuaded to stay."}
                 </p>
               </div>
             </li>
@@ -232,10 +240,17 @@ export function ManagerRetirementIntentModal({
           <p className={`${TYPO.bodySm} leading-relaxed text-stone-100`}>
             {message.body}
           </p>
-          <p className={`mt-2 ${TYPO.bodySm} text-stone-300/90`}>
-            A fresh contract offer before the season ends may convince them to
-            play on — head to Contracts to try.
-          </p>
+          {canConvince && contract?.wagePerYear != null && (
+            <p className={`mt-2 ${TYPO.bodySm} text-stone-300/90`}>
+              <span className="font-semibold text-white">Convince to stay</span>{" "}
+              offers one more season at{" "}
+              <span className="font-semibold text-theme-primary">
+                {formatWage(contract.wagePerYear)}/yr
+              </span>{" "}
+              — the same wage as now. They will hang up their boots when that
+              year ends. This can only be used once per player.
+            </p>
+          )}
         </div>
         </div>
 
@@ -243,23 +258,23 @@ export function ManagerRetirementIntentModal({
           className={`shrink-0 border-t border-pitch-700/50 bg-pitch-950/90 ${SPACING.cardPadding} pt-4`}
         >
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {onViewContracts && (
+          {canConvince && (
             <GameButton
               variant="theme"
               onClick={() => {
                 playUiClick();
-                onViewContracts();
+                onConvinceToStay?.();
               }}
             >
-              Offer new contract
+              Convince to stay
             </GameButton>
           )}
           <GameButton
-            variant={onViewContracts ? "secondary" : "theme"}
-            className={onViewContracts ? undefined : "sm:col-span-2"}
+            variant={canConvince ? "secondary" : "theme"}
+            className={canConvince ? undefined : "sm:col-span-2"}
             onClick={handleAcknowledge}
           >
-            Understood
+            {canConvince ? "Let them retire" : "Understood"}
           </GameButton>
         </div>
         </div>

@@ -3,17 +3,21 @@
 import { useEffect, useState, type ReactNode } from "react";
 import type { UserStatsData } from "@/lib/types";
 import { formatValue } from "@/lib/players";
-import { EMPTY_STATS, getAllStats } from "@/lib/storage/stats";
+import { formatClubFunds } from "@/lib/club-funds";
+import { useAuth } from "@/lib/auth-context";
+import {
+  EMPTY_STATS,
+  flushCareerStatsToCloud,
+  getAllStats,
+  refreshCareerStatsFromCloud,
+} from "@/lib/storage/stats";
 import { SHOW_DRAFT_MODE } from "@/lib/feature-flags";
 import { getUsername } from "@/lib/storage/user";
 import {
   STATS_TABS,
-  getDraftModeView,
-  getFantasyModeView,
   getOverallView,
   getSuperLeagueView,
   formatRankingOrDash,
-  formatRatingOrDash,
   formatRecordOrDash,
   formatCountStat,
   type StatsTabId,
@@ -27,6 +31,8 @@ import { playTabChange } from "@/lib/sound";
 import {
   loadManagerStats,
   EMPTY_MANAGER_STATS,
+  flushManagerStatsToCloud,
+  refreshManagerStatsFromCloud,
 } from "@/lib/manager/managerStats";
 import {
   MANAGER_STATS_TABS,
@@ -51,6 +57,7 @@ const STATS_MODE_TABS: { id: StatsModeId; label: string }[] = [
 ];
 
 export function StatsPanel() {
+  const { isLoggedIn } = useAuth();
   const [modeTab, setModeTab] = useState<StatsModeId>("manager");
   const [activeTab, setActiveTab] = useState<StatsTabId>("overall");
   const [managerTab, setManagerTab] =
@@ -62,7 +69,6 @@ export function StatsPanel() {
   const [draftHardStats, setDraftHardStats] = useState<UserStatsData | null>(
     null
   );
-  const [fantasyStats, setFantasyStats] = useState<UserStatsData | null>(null);
   const [eraNormalStats, setEraNormalStats] = useState<UserStatsData | null>(
     null
   );
@@ -75,7 +81,6 @@ export function StatsPanel() {
     setHardStats(stored.hard);
     setDraftNormalStats(stored.draftNormal);
     setDraftHardStats(stored.draftHard);
-    setFantasyStats(stored.fantasy);
     setEraNormalStats(stored.eraNormal);
     setManagerStats(loadManagerStats());
   };
@@ -97,12 +102,36 @@ export function StatsPanel() {
     window.addEventListener("focus", refresh);
     window.addEventListener("auth-state-changed", refresh);
     window.addEventListener("stats-merged", refresh);
+
+    const pullFromCloud = () => {
+      if (!isLoggedIn) return;
+      void Promise.all([
+        refreshCareerStatsFromCloud(),
+        refreshManagerStatsFromCloud(),
+      ]).then(refresh);
+    };
+
+    const flushToCloud = () => {
+      if (!isLoggedIn) return;
+      void Promise.all([flushCareerStatsToCloud(), flushManagerStatsToCloud()]);
+    };
+
+    const onVisible = () => {
+      if (document.visibilityState === "visible") pullFromCloud();
+    };
+
+    pullFromCloud();
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("pagehide", flushToCloud);
+
     return () => {
       window.removeEventListener("focus", refresh);
       window.removeEventListener("auth-state-changed", refresh);
       window.removeEventListener("stats-merged", refresh);
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("pagehide", flushToCloud);
     };
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (
@@ -110,7 +139,6 @@ export function StatsPanel() {
       !hardStats ||
       !draftNormalStats ||
       !draftHardStats ||
-      !fantasyStats ||
       !eraNormalStats
     ) {
       return;
@@ -120,15 +148,15 @@ export function StatsPanel() {
       hard: hardStats,
       draftNormal: draftNormalStats,
       draftHard: draftHardStats,
+      eraNormal: eraNormalStats,
     });
-  }, [normalStats, hardStats, draftNormalStats, draftHardStats, fantasyStats, eraNormalStats]);
+  }, [normalStats, hardStats, draftNormalStats, draftHardStats, eraNormalStats]);
 
   if (
     !normalStats ||
     !hardStats ||
     !draftNormalStats ||
     !draftHardStats ||
-    !fantasyStats ||
     !eraNormalStats
   ) {
     return (
@@ -143,8 +171,7 @@ export function StatsPanel() {
     eraNormalStats.totalRuns > 0 ||
     hardStats.totalRuns > 0 ||
     (SHOW_DRAFT_MODE && draftNormalStats.totalSeasonsSimulated > 0) ||
-    (SHOW_DRAFT_MODE && draftHardStats.totalSeasonsSimulated > 0) ||
-    fantasyStats.totalSeasonsSimulated > 0;
+    (SHOW_DRAFT_MODE && draftHardStats.totalSeasonsSimulated > 0);
 
   const hasAnyManagerStats =
     managerStats.seasonsCompleted > 0 ||
@@ -276,7 +303,9 @@ export function StatsPanel() {
       )}
 
       <p className="text-center text-xs text-gray-600">
-        Statistics saved locally in this browser
+        {isLoggedIn
+          ? "Statistics sync to your account when logged in."
+          : "Statistics saved locally in this browser until you log in."}
       </p>
     </div>
   );
@@ -288,12 +317,12 @@ function ManagerOverallTab({ stats }: { stats: ManagerLifetimeStats }) {
   return (
     <div className="space-y-8">
       <StatsSection title="Career">
-        <StatCard label="Total Seasons" value={String(view.totalSeasons)} />
-        <StatCard label="Total Wins" value={String(view.totalWins)} />
-        <StatCard label="Total Losses" value={String(view.totalLosses)} />
+        <StatCard label="Total Seasons" value={formatCountStat(view.totalSeasons)} />
+        <StatCard label="Total Wins" value={formatCountStat(view.totalWins)} />
+        <StatCard label="Total Losses" value={formatCountStat(view.totalLosses)} />
         <StatCard
           label="Careers Started"
-          value={String(view.careersStarted)}
+          value={formatCountStat(view.careersStarted)}
         />
       </StatsSection>
 
@@ -309,43 +338,45 @@ function ManagerOverallTab({ stats }: { stats: ManagerLifetimeStats }) {
         />
         <StatCard
           label="Biggest Win Margin"
-          value={view.biggestWin > 0 ? `${view.biggestWin} pts` : "—"}
+          value={view.biggestWin > 0 ? `${formatCountStat(view.biggestWin)} pts` : "—"}
           highlight={view.biggestWin >= 20}
         />
         <StatCard
           label="Biggest Defeat Margin"
-          value={view.biggestDefeat > 0 ? `${view.biggestDefeat} pts` : "—"}
+          value={
+            view.biggestDefeat > 0 ? `${formatCountStat(view.biggestDefeat)} pts` : "—"
+          }
         />
       </StatsSection>
 
       <StatsSection title="Achievements">
         <StatCard
           label="League Titles"
-          value={String(view.leagueTitles)}
+          value={formatCountStat(view.leagueTitles)}
           highlight={view.leagueTitles > 0}
         />
         <StatCard
           label="Super League Titles"
-          value={String(view.superLeagueTitles)}
+          value={formatCountStat(view.superLeagueTitles)}
           highlight={view.superLeagueTitles > 0}
         />
         <StatCard
           label="Challenge Cups"
-          value={String(view.challengeCups)}
+          value={formatCountStat(view.challengeCups)}
           highlight={view.challengeCups > 0}
         />
         <StatCard
           label="Total 27-0 Seasons"
-          value={String(view.perfectSeasons)}
+          value={formatCountStat(view.perfectSeasons)}
           highlight={view.perfectSeasons > 0}
         />
         <StatCard
           label="Total 0-27 Seasons"
-          value={String(view.winlessSeasons)}
+          value={formatCountStat(view.winlessSeasons)}
         />
         <StatCard
           label="Total Trophies"
-          value={String(view.trophies)}
+          value={formatCountStat(view.trophies)}
           highlight={view.trophies > 0}
         />
       </StatsSection>
@@ -359,9 +390,7 @@ function ManagerOverallTab({ stats }: { stats: ManagerLifetimeStats }) {
         <StatCard
           label="Total Earnings"
           value={
-            view.totalEarnings > 0
-              ? `£${(view.totalEarnings / 1000).toFixed(0)}k`
-              : "—"
+            view.totalEarnings > 0 ? formatClubFunds(view.totalEarnings) : "—"
           }
           highlight={view.totalEarnings >= 500_000}
         />
@@ -376,9 +405,9 @@ function ManagerSuperLeagueTab({ stats }: { stats: ManagerLifetimeStats }) {
   return (
     <div className="space-y-8">
       <StatsSection title="Super League">
-        <StatCard label="Seasons Completed" value={String(view.seasons)} />
-        <StatCard label="Match Wins" value={String(view.wins)} />
-        <StatCard label="Match Losses" value={String(view.losses)} />
+        <StatCard label="Seasons Completed" value={formatCountStat(view.seasons)} />
+        <StatCard label="Match Wins" value={formatCountStat(view.wins)} />
+        <StatCard label="Match Losses" value={formatCountStat(view.losses)} />
         <StatCard
           label="Total Record"
           value={formatRecordOrDash(
@@ -394,28 +423,28 @@ function ManagerSuperLeagueTab({ stats }: { stats: ManagerLifetimeStats }) {
         />
         <StatCard
           label="League Titles"
-          value={String(view.leagueTitles)}
+          value={formatCountStat(view.leagueTitles)}
           highlight={view.leagueTitles > 0}
         />
         <StatCard
           label="Super League Titles"
-          value={String(view.superLeagueTitles)}
+          value={formatCountStat(view.superLeagueTitles)}
           highlight={view.superLeagueTitles > 0}
         />
         <StatCard
           label="Top-Six Finishes"
-          value={String(view.topSixFinishes)}
+          value={formatCountStat(view.topSixFinishes)}
           highlight={view.topSixFinishes > 0}
         />
         <StatCard label="Best League Finish" value={view.bestFinish} />
         <StatCard
           label="27-0 Seasons"
-          value={String(view.perfectSeasons)}
+          value={formatCountStat(view.perfectSeasons)}
           highlight={view.perfectSeasons > 0}
         />
         <StatCard
           label="0-27 Seasons"
-          value={String(view.winlessSeasons)}
+          value={formatCountStat(view.winlessSeasons)}
         />
         <StatCard
           label="Favourite Club"
@@ -434,16 +463,16 @@ function ManagerChallengeCupTab({ stats }: { stats: ManagerLifetimeStats }) {
       <StatsSection title="Challenge Cup">
         <StatCard
           label="Seasons Played"
-          value={String(view.seasons)}
+          value={formatCountStat(view.seasons)}
         />
         <StatCard
           label="Challenge Cups Won"
-          value={String(view.cupsWon)}
+          value={formatCountStat(view.cupsWon)}
           highlight={view.cupsWon > 0}
         />
         <StatCard
           label="Finals Reached"
-          value={String(view.finals)}
+          value={formatCountStat(view.finals)}
           highlight={view.finals > 0}
         />
       </StatsSection>
@@ -451,7 +480,7 @@ function ManagerChallengeCupTab({ stats }: { stats: ManagerLifetimeStats }) {
       <StatsSection title="Achievements">
         <StatCard
           label="Total Trophies"
-          value={String(view.trophies)}
+          value={formatCountStat(view.trophies)}
           highlight={view.trophies > 0}
         />
       </StatsSection>
@@ -477,12 +506,12 @@ function OverallTab({
   return (
     <div className="space-y-8">
       <StatsSection title="Career">
-        <StatCard label="Total Runs" value={String(view.totalRuns)} />
-        <StatCard label="Total Wins" value={String(view.totalWins)} />
-        <StatCard label="Total Losses" value={String(view.totalLosses)} />
+        <StatCard label="Total Runs" value={formatCountStat(view.totalRuns)} />
+        <StatCard label="Total Wins" value={formatCountStat(view.totalWins)} />
+        <StatCard label="Total Losses" value={formatCountStat(view.totalLosses)} />
         <StatCard
           label="Total Seasons Simulated"
-          value={String(view.totalSeasons)}
+          value={formatCountStat(view.totalSeasons)}
         />
       </StatsSection>
 
@@ -500,7 +529,7 @@ function OverallTab({
           label="Longest Unbeaten Run"
           value={
             view.longestUnbeatenRun > 0
-              ? `${view.longestUnbeatenRun} games`
+              ? `${formatCountStat(view.longestUnbeatenRun)} games`
               : "—"
           }
           highlight={view.longestUnbeatenRun >= 10}
@@ -509,7 +538,7 @@ function OverallTab({
           label="Longest Losing Streak"
           value={
             view.longestLosingStreak > 0
-              ? `${view.longestLosingStreak} games`
+              ? `${formatCountStat(view.longestLosingStreak)} games`
               : "—"
           }
         />
@@ -518,22 +547,22 @@ function OverallTab({
       <StatsSection title="Achievements">
         <StatCard
           label="Minor Premierships"
-          value={String(view.leagueTitles)}
+          value={formatCountStat(view.leagueTitles)}
           highlight={view.leagueTitles > 0}
         />
         <StatCard
           label="Super League Titles"
-          value={String(view.superLeagueTitles)}
+          value={formatCountStat(view.superLeagueTitles)}
           highlight={view.superLeagueTitles > 0}
         />
         <StatCard
           label="Total 27-0 Seasons"
-          value={String(view.perfectSeasons)}
+          value={formatCountStat(view.perfectSeasons)}
           highlight={view.perfectSeasons > 0}
         />
         <StatCard
           label="Total 0-27 Seasons"
-          value={String(view.winlessSeasons)}
+          value={formatCountStat(view.winlessSeasons)}
         />
       </StatsSection>
 
@@ -574,7 +603,7 @@ function OverallTab({
           value={view.mostSelected?.name ?? "—"}
           sub={
             view.mostSelected
-              ? `${view.mostSelected.count} selections`
+              ? `${formatCountStat(view.mostSelected.count)} selections`
               : undefined
           }
         />
@@ -583,7 +612,7 @@ function OverallTab({
           value={view.mostSuccessful?.name ?? "—"}
           sub={
             view.mostSuccessful
-              ? `${view.mostSuccessful.wins} season wins`
+              ? `${formatCountStat(view.mostSuccessful.wins)} season wins`
               : undefined
           }
         />
@@ -592,7 +621,7 @@ function OverallTab({
           value={view.worstPerforming?.name ?? "—"}
           sub={
             view.worstPerforming
-              ? `${view.worstPerforming.losses} season losses`
+              ? `${formatCountStat(view.worstPerforming.losses)} season losses`
               : undefined
           }
         />
@@ -602,11 +631,11 @@ function OverallTab({
         <StatsSection title="Recruitment">
           <StatCard
             label="Total Rerolls Used"
-            value={String(view.totalRerollsUsed)}
+            value={formatCountStat(view.totalRerollsUsed)}
           />
           <StatCard
             label="Most Rerolls In A Run"
-            value={String(view.mostRerollsInRun)}
+            value={formatCountStat(view.mostRerollsInRun)}
           />
           <StatCard
             label="Average Rerolls Per Run"
@@ -643,9 +672,9 @@ function SuperLeagueTab({
       />
 
       <StatsSection title={modeLabel}>
-        <StatCard label="Quick Mode runs" value={String(view.runs)} />
-        <StatCard label="Quick Mode wins" value={String(view.wins)} />
-        <StatCard label="Quick Mode losses" value={String(view.losses)} />
+        <StatCard label="Quick Mode runs" value={formatCountStat(view.runs)} />
+        <StatCard label="Quick Mode wins" value={formatCountStat(view.wins)} />
+        <StatCard label="Quick Mode losses" value={formatCountStat(view.losses)} />
         <StatCard
           label="Regular Season Record"
           value={formatRecordOrDash(
@@ -690,135 +719,49 @@ function SuperLeagueTab({
         />
         <StatCard
           label="League Titles"
-          value={String(view.leagueTitles)}
+          value={formatCountStat(view.leagueTitles)}
           highlight={view.leagueTitles > 0}
         />
         <StatCard
           label="Super League Titles"
-          value={String(view.superLeagueTitles)}
+          value={formatCountStat(view.superLeagueTitles)}
           highlight={view.superLeagueTitles > 0}
         />
         <StatCard
           label="Top-Six Finishes"
-          value={String(view.topSixFinishes)}
+          value={formatCountStat(view.topSixFinishes)}
           highlight={view.topSixFinishes > 0}
         />
         <StatCard
           label="Play-Off Appearances"
-          value={String(view.playoffAppearances)}
+          value={formatCountStat(view.playoffAppearances)}
         />
         <StatCard
           label="Eliminator Wins"
-          value={String(view.playoffEliminatorWins)}
+          value={formatCountStat(view.playoffEliminatorWins)}
         />
         <StatCard
           label="Semi-Final Wins"
-          value={String(view.playoffSemiFinalWins)}
+          value={formatCountStat(view.playoffSemiFinalWins)}
         />
         <StatCard
           label="Grand Final Appearances"
-          value={String(view.grandFinalAppearances)}
+          value={formatCountStat(view.grandFinalAppearances)}
           highlight={view.grandFinalAppearances > 0}
         />
         <StatCard
           label="Quick Mode 27-0 seasons"
-          value={String(view.perfectSeasons)}
+          value={formatCountStat(view.perfectSeasons)}
           highlight={view.perfectSeasons > 0}
         />
         <StatCard
           label="Quick Mode 0-27 seasons"
-          value={String(view.winlessSeasons)}
+          value={formatCountStat(view.winlessSeasons)}
         />
         <StatCard
           label="Best Quick Mode ranking"
           value={formatRankingOrDash(view.bestRanking)}
           highlight={view.bestRanking === 1}
-        />
-      </StatsSection>
-    </div>
-  );
-}
-
-function DraftModeTab({ draftNormal }: { draftNormal: UserStatsData }) {
-  const view = getDraftModeView(draftNormal);
-
-  return (
-    <div className="space-y-8">
-      <StatsSection title="Draft Mode">
-        <StatCard label="Draft Mode Runs" value={String(view.runs)} />
-        <StatCard label="Draft Mode Wins" value={String(view.wins)} />
-        <StatCard label="Draft Mode Losses" value={String(view.losses)} />
-        <StatCard
-          label="Total Record"
-          value={formatRecordOrDash(view.hasSeasons ? view.totalRecord : null)}
-          highlight={view.totalRecord.wins >= 20}
-        />
-        <StatCard
-          label="Worst Draft Mode Record"
-          value={formatRecordOrDash(view.hasSeasons ? view.worstRecord : null)}
-        />
-        <StatCard
-          label="League Titles"
-          value={String(view.leagueTitles)}
-          highlight={view.leagueTitles > 0}
-        />
-        <StatCard
-          label="Draft Mode 27-0 Seasons"
-          value={String(view.perfectSeasons)}
-          highlight={view.perfectSeasons > 0}
-        />
-        <StatCard
-          label="Draft Mode 0-27 Seasons"
-          value={String(view.winlessSeasons)}
-        />
-      </StatsSection>
-    </div>
-  );
-}
-
-function FantasyModeTab({ stats }: { stats: UserStatsData }) {
-  const view = getFantasyModeView(stats);
-
-  return (
-    <div className="space-y-8">
-      <StatsSection title="Fantasy Mode">
-        <StatCard label="Fantasy Mode Runs" value={String(view.runs)} />
-        <StatCard label="Fantasy Mode Wins" value={String(view.wins)} />
-        <StatCard label="Fantasy Mode Losses" value={String(view.losses)} />
-        <StatCard
-          label="Total Record"
-          value={formatRecordOrDash(view.hasSeasons ? view.totalRecord : null)}
-          highlight={view.totalRecord.wins >= 20}
-        />
-        <StatCard
-          label="Worst Fantasy Mode Record"
-          value={formatRecordOrDash(view.hasSeasons ? view.worstRecord : null)}
-        />
-        <StatCard
-          label="League Titles"
-          value={String(view.leagueTitles)}
-          highlight={view.leagueTitles > 0}
-        />
-        <StatCard
-          label="Fantasy Mode 27-0 Seasons"
-          value={String(view.perfectSeasons)}
-          highlight={view.perfectSeasons > 0}
-        />
-        <StatCard
-          label="Fantasy Mode 0-27 Seasons"
-          value={String(view.winlessSeasons)}
-        />
-        <StatCard
-          label="Best Squad Value"
-          value={
-            view.bestSquadValue > 0 ? formatValue(view.bestSquadValue) : "—"
-          }
-          highlight={view.bestSquadValue >= 2_500_000}
-        />
-        <StatCard
-          label="Best Team Rating"
-          value={formatRatingOrDash(view.bestTeamRating)}
-          highlight={(view.bestTeamRating ?? 0) >= 88}
         />
       </StatsSection>
     </div>

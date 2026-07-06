@@ -3,7 +3,7 @@
 import {
   SUB_TAB_BAR_SHELL,
   subTabGroupButtonClass,
-  tabGroupClass,
+  subTabGroupClass,
 } from "@/lib/ui/design-system";
 import { playTabChange, playUiClick } from "@/lib/sound";
 
@@ -29,7 +29,7 @@ export function ManagerSubTabBar<T extends string>({
   return (
     <div className={SUB_TAB_BAR_SHELL}>
       <div
-        className={`${tabGroupClass()} ${className ?? ""}`}
+        className={`${subTabGroupClass()} ${className ?? ""}`}
         role="tablist"
       >
         {tabs.map(({ id, label }) => (

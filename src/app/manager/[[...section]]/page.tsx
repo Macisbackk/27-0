@@ -32,6 +32,9 @@ import { ManagerLeagueWinnersModal } from "@/components/manager/ManagerLeagueWin
 import { ManagerChallengeCupWinModal } from "@/components/manager/ManagerChallengeCupWinModal";
 import { ManagerIncomingBidModal } from "@/components/manager/ManagerIncomingBidModal";
 import { ManagerRetirementIntentModal } from "@/components/manager/ManagerRetirementIntentModal";
+import { ManagerContractExpiryModal } from "@/components/manager/ManagerContractExpiryModal";
+import { ManagerPlayoffsIntroModal } from "@/components/manager/ManagerPlayoffsIntroModal";
+import { ManagerObjectivesIntroModal } from "@/components/manager/ManagerObjectivesIntroModal";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerFriendlySelect } from "@/components/manager/ManagerFriendlySelect";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
@@ -55,9 +58,9 @@ import {
   simulateManagerNextMatch,
 } from "@/lib/manager/managerSimulation";
 import { scrollToManagerHubNextFixture } from "@/lib/manager/managerHubScroll";
-import { acknowledgePlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
+import { shouldShowManagerObjectivesIntro } from "@/lib/manager/managerBoardObjectives";
+import { acknowledgePlayoffsIntro, needsPlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
 import { shouldShowChallengeCupCelebration } from "@/lib/manager/managerChallengeCup";
-import { recordManagerCupTeamWin } from "@/lib/storage/cup-team-wins";
 import {
   recordCareerStarted,
   recordMatchResult,
@@ -80,12 +83,17 @@ import {
 } from "@/lib/manager/managerFriendlies";
 import { countUnreadInbox } from "@/lib/manager/managerInbox";
 import {
+  acknowledgeContractExpiryPopup,
+  getPendingContractExpiryPopup,
+} from "@/lib/manager/managerInbox";
+import {
   acceptIncomingOffer,
   getPendingUnsolicitedOffer,
   rejectIncomingOffer,
 } from "@/lib/manager/managerTransferLeague";
 import {
   acknowledgeRetirementIntentPopup,
+  convincePlayerToStay,
   getPendingRetirementIntentPopup,
 } from "@/lib/manager/managerRetirement";
 import {
@@ -172,6 +180,10 @@ export default function ManagerPage() {
   >(null);
   const [retirementIntentModalOpen, setRetirementIntentModalOpen] =
     useState(false);
+  const [pendingContractExpiryId, setPendingContractExpiryId] = useState<
+    string | null
+  >(null);
+  const [contractExpiryModalOpen, setContractExpiryModalOpen] = useState(false);
   const [postMatchReviewFlow, setPostMatchReviewFlow] = useState(false);
   const [matchReviewReturnView, setMatchReviewReturnView] =
     useState<ManagerView>("hub");
@@ -187,6 +199,7 @@ export default function ManagerPage() {
 
   /** Slot whose career is already in React state — skip disk re-hydrate on tab switches. */
   const careerSlotRef = useRef<number | null>(null);
+  const careerRef = useRef<ManagerCareer | null>(null);
 
   const goToView = useCallback(
     (next: ManagerView, options?: { syncUrl?: boolean }) => {
@@ -288,13 +301,45 @@ export default function ManagerPage() {
     (next: ManagerCareer) => {
       const slot = getActiveSaveSlot();
       const prepared = prepareManagerCareerForSave(next);
+      const result = saveManagerCareer(prepared, slot);
+      if (!result.ok) {
+        setCareer(prepared);
+        careerRef.current = prepared;
+        setAlertDialog({
+          title: "Save failed",
+          message: result.error,
+        });
+        return;
+      }
       setCareer(prepared);
-      saveManagerCareer(prepared, slot);
+      careerRef.current = prepared;
       setActiveSlot(slot);
       refreshSaveSlots();
     },
     [refreshSaveSlots]
   );
+
+  useEffect(() => {
+    careerRef.current = career;
+  }, [career]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const flush = () => {
+      const current = careerRef.current;
+      if (!current) return;
+      saveManagerCareer(current, getActiveSaveSlot());
+    };
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") flush();
+    };
+    window.addEventListener("pagehide", flush);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
 
   const awaitingFriendlyChoice =
     career != null && isAwaitingFriendlyChoice(career);
@@ -386,7 +431,6 @@ export default function ManagerPage() {
     setCareer(saved);
     if (saved.isSeasonComplete) {
       if (shouldShowChallengeCupCelebration(saved)) {
-        recordManagerCupTeamWin(saved.club, slot, saved.seasonYear);
         setChallengeCupWinModalOpen(true);
         goToView("hub");
         return;
@@ -408,15 +452,18 @@ export default function ManagerPage() {
       return;
     }
     const unsolicited = getPendingUnsolicitedOffer(saved);
+    const contractExpiry = getPendingContractExpiryPopup(saved);
     const retirementIntent = getPendingRetirementIntentPopup(saved);
     if (unsolicited) {
       setPendingIncomingBidId(unsolicited.id);
       setIncomingBidModalOpen(true);
+    } else if (contractExpiry) {
+      setPendingContractExpiryId(contractExpiry.id);
+      setContractExpiryModalOpen(true);
     } else if (retirementIntent) {
       setPendingRetirementIntentId(retirementIntent.id);
       setRetirementIntentModalOpen(true);
     } else if (shouldShowChallengeCupCelebration(saved)) {
-      recordManagerCupTeamWin(saved.club, slot, saved.seasonYear);
       setChallengeCupWinModalOpen(true);
     } else if (shouldShowLeagueWinnersCelebration(saved)) {
       setLeagueWinnersModalOpen(true);
@@ -470,7 +517,11 @@ export default function ManagerPage() {
   const handleImportSave = async (slot: number, file: File) => {
     try {
       const imported = await importManagerCareerFromFile(file);
-      saveManagerCareer(imported, slot);
+      const result = saveManagerCareer(imported, slot);
+      if (!result.ok) {
+        setImportMessage(result.error);
+        return;
+      }
       refreshSaveSlots();
       setImportMessage(`Imported ${imported.club} into save ${slot + 1}.`);
     } catch (err) {
@@ -531,16 +582,11 @@ export default function ManagerPage() {
 
     const wonLeagueTable = shouldShowLeagueWinnersCelebration(withLeagueStats);
     const wonChallengeCup = shouldShowChallengeCupCelebration(withLeagueStats);
-    if (wonChallengeCup) {
-      recordManagerCupTeamWin(
-        withLeagueStats.club,
-        getActiveSaveSlot(),
-        withLeagueStats.seasonYear
-      );
-    }
     const unsolicited = getPendingUnsolicitedOffer(withLeagueStats);
+    const contractExpiry = getPendingContractExpiryPopup(withLeagueStats);
     const retirementIntent = getPendingRetirementIntentPopup(withLeagueStats);
     setPendingIncomingBidId(unsolicited?.id ?? null);
+    setPendingContractExpiryId(contractExpiry?.id ?? null);
     setPendingRetirementIntentId(retirementIntent?.id ?? null);
 
     if (withLeagueStats.isSeasonComplete) {
@@ -576,6 +622,12 @@ export default function ManagerPage() {
 
     if (pendingIncomingBidId) {
       setIncomingBidModalOpen(true);
+      goToView("hub");
+      return;
+    }
+
+    if (pendingContractExpiryId) {
+      setContractExpiryModalOpen(true);
       goToView("hub");
       return;
     }
@@ -622,6 +674,7 @@ export default function ManagerPage() {
       const landsOnHub =
         !career ||
         Boolean(pendingIncomingBidId) ||
+        Boolean(pendingContractExpiryId) ||
         Boolean(pendingRetirementIntentId) ||
         pendingChallengeCupCelebration ||
         pendingLeagueWinnersCelebration ||
@@ -643,6 +696,14 @@ export default function ManagerPage() {
     setIncomingBidModalOpen(false);
     setPendingIncomingBidId(null);
     persist(nextCareer);
+
+    const contractExpiry = getPendingContractExpiryPopup(nextCareer);
+    if (contractExpiry) {
+      setPendingContractExpiryId(contractExpiry.id);
+      setContractExpiryModalOpen(true);
+      goToView("hub");
+      return;
+    }
 
     const retirementIntent = getPendingRetirementIntentPopup(nextCareer);
     if (retirementIntent) {
@@ -706,6 +767,57 @@ export default function ManagerPage() {
     handleIncomingBidResolved(rejectIncomingOffer(career, pendingIncomingBidId));
   };
 
+  const continueAfterContractExpiry = (nextCareer: ManagerCareer) => {
+    const nextContract = getPendingContractExpiryPopup(nextCareer);
+    if (nextContract) {
+      setPendingContractExpiryId(nextContract.id);
+      setContractExpiryModalOpen(true);
+      goToView("hub");
+      return;
+    }
+
+    setPendingContractExpiryId(null);
+    setContractExpiryModalOpen(false);
+    continueAfterRetirementIntent(nextCareer);
+  };
+
+  const handleContractExpiryDismiss = () => {
+    if (!career || !pendingContractExpiryId) return;
+    const next = acknowledgeContractExpiryPopup(
+      career,
+      pendingContractExpiryId
+    );
+    persist(next);
+    continueAfterContractExpiry(next);
+  };
+
+  const handleContractExpiryViewContracts = () => {
+    if (!career || !pendingContractExpiryId) return;
+    const next = acknowledgeContractExpiryPopup(
+      career,
+      pendingContractExpiryId
+    );
+    persist(next);
+    setPendingContractExpiryId(null);
+    setContractExpiryModalOpen(false);
+
+    const hasQueue =
+      pendingChallengeCupCelebration ||
+      pendingLeagueWinnersCelebration ||
+      pendingTrophyCelebration ||
+      pendingIncomingBidId ||
+      !!getPendingUnsolicitedOffer(next) ||
+      !!getPendingContractExpiryPopup(next) ||
+      !!getPendingRetirementIntentPopup(next) ||
+      next.isSeasonComplete;
+
+    if (hasQueue) {
+      continueAfterContractExpiry(next);
+      return;
+    }
+    goToView("contracts");
+  };
+
   const continueAfterRetirementIntent = (nextCareer: ManagerCareer) => {
     const nextIntent = getPendingRetirementIntentPopup(nextCareer);
     if (nextIntent) {
@@ -747,6 +859,22 @@ export default function ManagerPage() {
     goToView("hub");
   };
 
+  const handleRetirementIntentConvinceToStay = () => {
+    if (!career || !pendingRetirementIntentId || !retirementIntentMessage?.playerId) {
+      return;
+    }
+    const convinced = convincePlayerToStay(
+      career,
+      retirementIntentMessage.playerId
+    );
+    const next = acknowledgeRetirementIntentPopup(
+      convinced,
+      pendingRetirementIntentId
+    );
+    persist(next);
+    continueAfterRetirementIntent(next);
+  };
+
   const handleRetirementIntentAcknowledge = () => {
     if (!career || !pendingRetirementIntentId) return;
     const next = acknowledgeRetirementIntentPopup(
@@ -757,35 +885,14 @@ export default function ManagerPage() {
     continueAfterRetirementIntent(next);
   };
 
-  const handleRetirementIntentViewContracts = () => {
-    if (!career || !pendingRetirementIntentId) return;
-    const next = acknowledgeRetirementIntentPopup(
-      career,
-      pendingRetirementIntentId
-    );
-    persist(next);
-    setPendingRetirementIntentId(null);
-    setRetirementIntentModalOpen(false);
-
-    const hasQueue =
-      pendingChallengeCupCelebration ||
-      pendingLeagueWinnersCelebration ||
-      pendingTrophyCelebration ||
-      pendingIncomingBidId ||
-      !!getPendingUnsolicitedOffer(next) ||
-      !!getPendingRetirementIntentPopup(next) ||
-      next.isSeasonComplete;
-
-    if (hasQueue) {
-      continueAfterRetirementIntent(next);
-      return;
-    }
-    goToView("contracts");
-  };
-
   const handlePlayoffsIntroContinue = () => {
     if (!career) return;
     persist(acknowledgePlayoffsIntro(career));
+  };
+
+  const handleObjectivesIntroContinue = () => {
+    if (!career) return;
+    persist({ ...career, objectivesIntroShown: true });
   };
 
   const handleLeagueWinnersModalContinue = () => {
@@ -914,6 +1021,22 @@ export default function ManagerPage() {
       ? career.inboxMessages.find((m) => m.id === pendingRetirementIntentId)
       : undefined;
 
+  const contractExpiryMessage =
+    career && pendingContractExpiryId
+      ? career.inboxMessages.find((m) => m.id === pendingContractExpiryId)
+      : undefined;
+
+  const managerCelebrationModalsOpen =
+    incomingBidModalOpen ||
+    contractExpiryModalOpen ||
+    retirementIntentModalOpen ||
+    challengeCupWinModalOpen ||
+    leagueWinnersModalOpen ||
+    trophyModalOpen;
+
+  const canShowManagerHubIntroModals =
+    displayView === "hub" && !managerCelebrationModalsOpen;
+
   return (
     <PageShell withLights compact width="wide">
       {displayView === "landing" && (
@@ -971,7 +1094,6 @@ export default function ManagerPage() {
                     career={career}
                     onPlayGame={handlePlayGame}
                     onSimulate={handleSimulate}
-                    onPlayoffsContinue={handlePlayoffsIntroContinue}
                     onUpdate={persist}
                     onNavigate={handleNavNavigate}
                   />
@@ -1095,9 +1217,39 @@ export default function ManagerPage() {
             career={career}
             message={retirementIntentMessage}
             onAcknowledge={handleRetirementIntentAcknowledge}
-            onViewContracts={handleRetirementIntentViewContracts}
+            onConvinceToStay={handleRetirementIntentConvinceToStay}
           />
         )}
+
+      {career &&
+        contractExpiryModalOpen &&
+        contractExpiryMessage && (
+          <ManagerContractExpiryModal
+            career={career}
+            message={contractExpiryMessage}
+            onDismiss={handleContractExpiryDismiss}
+            onViewContracts={handleContractExpiryViewContracts}
+          />
+        )}
+
+      {career &&
+        canShowManagerHubIntroModals &&
+        shouldShowManagerObjectivesIntro(career) && (
+        <ManagerObjectivesIntroModal
+          career={career}
+          onContinue={handleObjectivesIntroContinue}
+        />
+      )}
+
+      {career &&
+        canShowManagerHubIntroModals &&
+        !shouldShowManagerObjectivesIntro(career) &&
+        needsPlayoffsIntro(career) && (
+        <ManagerPlayoffsIntroModal
+          career={career}
+          onContinue={handlePlayoffsIntroContinue}
+        />
+      )}
 
       {career && leagueWinnersModalOpen && (
         <ManagerLeagueWinnersModal

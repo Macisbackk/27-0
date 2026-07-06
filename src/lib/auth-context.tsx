@@ -27,14 +27,13 @@ import {
   detectEmailConfirmationRedirect,
   markEmailConfirmPending,
 } from "./auth-callback";
-import { loadCloudStats, saveCloudStats } from "./storage/stats-cloud";
+import { refreshCareerStatsFromCloud } from "./storage/stats";
+import { refreshManagerStatsFromCloud } from "./manager/managerStats";
 import { loadCloudClubFunds } from "./storage/club-funds-cloud";
 import { mergeClubFundsFromCloud, syncClubFundsLeaderboardOnLoad } from "./storage/club-funds";
 import { syncTrophyCabinetLeaderboardOnLoad } from "./storage/trophy-cabinet-leaderboard";
 import { syncManagerLeaderboardOnLoad } from "./storage/manager-leaderboard";
 import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
-import { STORAGE_KEYS } from "./storage/keys";
-import { getAllStats, reconcileStoredStats, storedStatsDifferFromCloud } from "./storage/stats";
 
 interface AuthContextValue {
   user: User | null;
@@ -59,20 +58,8 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 let hydratedSessionKey: string | null = null;
 
 async function hydrateStatsFromCloud(): Promise<void> {
-  const cloud = await loadCloudStats();
-  const local = getAllStats();
-
-  if (!cloud) {
-    await saveCloudStats(local);
-    return;
-  }
-
-  const reconciled = reconcileStoredStats(cloud, local);
-  localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(reconciled));
-
-  if (storedStatsDifferFromCloud(cloud, reconciled)) {
-    await saveCloudStats(reconciled);
-  }
+  await refreshCareerStatsFromCloud();
+  await refreshManagerStatsFromCloud();
 }
 
 async function hydrateClubFundsFromCloud(): Promise<void> {

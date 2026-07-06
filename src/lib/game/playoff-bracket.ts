@@ -162,6 +162,58 @@ export function getPlayoffRoundLabel(round: number): string {
   }
 }
 
+const PLAYOFF_FEEDER_LABELS: Record<string, string> = {
+  "elim-low": "3rd vs 6th winner",
+  "elim-high": "4th vs 5th winner",
+  "semi-low": "1st-route SF winner",
+  "semi-high": "2nd-route SF winner",
+};
+
+export interface PlayoffTeamDisplayInfo {
+  text: string;
+  isPlaceholder: boolean;
+  /** League positions 1–2 enter the semi-final with a bye. */
+  hasLeagueBye?: boolean;
+}
+
+/** Human-readable slot label when a team is not yet decided. */
+export function getPlayoffTeamDisplayInfo(
+  match: PlayoffBracketMatch,
+  side: "home" | "away"
+): PlayoffTeamDisplayInfo {
+  const team = side === "home" ? match.homeTeam : match.awayTeam;
+  if (team) {
+    return {
+      text: team,
+      isPlaceholder: false,
+      hasLeagueBye:
+        match.round === 2 &&
+        side === "home" &&
+        match.status !== "complete",
+    };
+  }
+
+  if (match.round === 2 && side === "away" && match.feederIds?.[0]) {
+    return {
+      text: PLAYOFF_FEEDER_LABELS[match.feederIds[0]] ?? "TBD",
+      isPlaceholder: true,
+    };
+  }
+
+  if (match.round === 3) {
+    const feederId =
+      side === "home" ? match.feederIds?.[0] : match.feederIds?.[1];
+    if (feederId) {
+      return {
+        text: PLAYOFF_FEEDER_LABELS[feederId] ?? "TBD",
+        isPlaceholder: true,
+      };
+    }
+  }
+
+  return { text: "TBD", isPlaceholder: true };
+}
+
 export function getMatchById(
   state: PlayoffBracketState,
   id: string

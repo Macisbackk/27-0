@@ -5,7 +5,7 @@ import type {
 } from "../club-funds";
 import { computeClubFundsLines } from "../club-funds";
 import { STORAGE_KEYS } from "./keys";
-import { saveCloudClubFunds } from "./club-funds-cloud";
+import { loadCloudClubFunds, saveCloudClubFunds } from "./club-funds-cloud";
 import { syncClubFundsLeaderboard } from "./club-funds-leaderboard";
 
 export const CLUB_FUNDS_CHANGED_EVENT = "27-0-club-funds-changed";
@@ -98,25 +98,30 @@ export function mergeClubFundsFromCloud(cloud: ClubFundsState | null): void {
   if (!cloud) return;
   const local = loadState();
   const paidSet = new Set([...local.paidRunIds, ...cloud.paidRunIds]);
-  const localExclusiveIds = local.paidRunIds.filter((id) => !cloud.paidRunIds.includes(id));
-  const cloudExclusiveIds = cloud.paidRunIds.filter((id) => !local.paidRunIds.includes(id));
+  const localExclusiveIds = local.paidRunIds.filter(
+    (id) => !cloud.paidRunIds.includes(id)
+  );
+  const cloudExclusiveIds = cloud.paidRunIds.filter(
+    (id) => !local.paidRunIds.includes(id)
+  );
   const totalEarned = Math.max(
     local.totalEarned,
     cloud.totalEarned ?? cloud.balance
   );
 
+  const isStorePurchaseId = (id: string) => id.startsWith("theme-");
+  const localHasUnsyncedStoreSpend = localExclusiveIds.some(isStorePurchaseId);
+  const cloudHasStoreSpend = cloudExclusiveIds.some(isStorePurchaseId);
+
   let balance: number;
-  if (localExclusiveIds.some((id) => id.startsWith("theme-"))) {
+  if (localHasUnsyncedStoreSpend) {
     // Local store spend not yet on cloud — never restore a higher stale cloud balance.
     balance = local.balance;
-  } else if (
-    cloudExclusiveIds.some((id) => id.startsWith("theme-")) &&
-    cloud.balance < local.balance
-  ) {
+  } else if (cloudHasStoreSpend && cloud.balance < local.balance) {
+    // Cloud recorded a store purchase this device has not applied yet.
     balance = cloud.balance;
-  } else if (localExclusiveIds.length > 0 || cloudExclusiveIds.length > 0) {
-    balance = Math.min(local.balance, cloud.balance);
   } else {
+    // Earnings may exist on either device — keep the higher spendable balance.
     balance = Math.max(local.balance, cloud.balance);
   }
 
@@ -129,6 +134,18 @@ export function mergeClubFundsFromCloud(cloud: ClubFundsState | null): void {
   };
   saveState(merged);
   syncClubFundsLeaderboard(merged.totalEarned);
+}
+
+/** Pull latest Club Funds from the logged-in account and merge into local storage. */
+export async function refreshClubFundsFromCloud(): Promise<void> {
+  const cloud = await loadCloudClubFunds();
+  mergeClubFundsFromCloud(cloud);
+}
+
+/** Best-effort push before the tab closes (mobile browsers). */
+export function flushClubFundsToCloud(): void {
+  if (typeof window === "undefined") return;
+  void saveCloudClubFunds(loadState());
 }
 
 export interface SpendClubFundsResult {

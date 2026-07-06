@@ -6,7 +6,7 @@ import type { SeasonAward } from "@/lib/season-awards";
 import type { SquadSlot } from "@/lib/types";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
 import { CARD } from "@/lib/ui/design-system";
-import { RugbyPitch } from "./RugbyPitch";
+import { RugbyPitch, TEAM_SHEET_RUGBY_PITCH_PROPS } from "./RugbyPitch";
 import { TeamSheetPlayerPopup } from "./TeamSheetPlayerPopup";
 
 interface TeamSheetProps {
@@ -41,9 +41,7 @@ export function TeamSheet({
           filledCount={getFilledCount(squad)}
           totalSlots={TOTAL_SLOTS}
           hardMode={hardMode}
-          formationOnly
-          compact
-          hideValueSummary
+          {...TEAM_SHEET_RUGBY_PITCH_PROPS}
           clubColorOverride={clubColorOverride}
           interactive={interactive}
           allowFilledSlotClick={interactive}

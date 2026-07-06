@@ -307,6 +307,32 @@ export function syncContractExpiryInboxMessages(
   return next;
 }
 
+/** Unread contract-expiry inbox item — surfaced as a popup before the hub. */
+export function getPendingContractExpiryPopup(
+  career: ManagerCareer
+): InboxMessage | undefined {
+  return career.inboxMessages.find(
+    (m) =>
+      m.type === "contract" &&
+      m.id.startsWith("contract-expiry-") &&
+      !m.read &&
+      m.playerId
+  );
+}
+
+export function acknowledgeContractExpiryPopup(
+  career: ManagerCareer,
+  messageId: string
+): ManagerCareer {
+  return {
+    ...career,
+    inboxMessages: career.inboxMessages.map((m) =>
+      m.id === messageId ? { ...m, read: true } : m
+    ),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
 export function addContractRenewalInboxMessage(
   career: ManagerCareer,
   playerId: string,

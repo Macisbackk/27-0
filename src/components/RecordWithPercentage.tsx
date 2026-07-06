@@ -16,15 +16,17 @@ export function RecordWithPercentage({
   recordClassName = "",
   percentageClassName = "text-accent-green",
 }: RecordWithPercentageProps) {
-  const games = wins + losses;
+  const w = Math.round(wins);
+  const l = Math.round(losses);
+  const games = w + l;
   if (games === 0) {
     return <span className={className}>0-0</span>;
   }
-  const pct = Math.round((wins / games) * 100);
+  const pct = Math.round((w / games) * 100);
   return (
     <span className={className}>
       <span className={recordClassName}>
-        {wins}-{losses}
+        {w}-{l}
       </span>
       <span className={`ml-3 sm:ml-4 ${percentageClassName}`}>({pct}%)</span>
     </span>
@@ -34,11 +36,11 @@ export function RecordWithPercentage({
 export function parseRecordWithPercentage(
   display: string
 ): { wins: number; losses: number; hasPercentage: boolean } | null {
-  const match = display.match(/^(\d+)-(\d+)(?:\s+\([\d.]+%\))?$/);
+  const match = display.match(/^([\d.]+)-([\d.]+)(?:\s+\([\d.]+%\))?$/);
   if (!match) return null;
   return {
-    wins: Number.parseInt(match[1]!, 10),
-    losses: Number.parseInt(match[2]!, 10),
+    wins: Math.round(Number.parseFloat(match[1]!)),
+    losses: Math.round(Number.parseFloat(match[2]!)),
     hasPercentage: display.includes("%"),
   };
 }

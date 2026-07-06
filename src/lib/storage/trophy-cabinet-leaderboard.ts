@@ -14,8 +14,6 @@ export type TrophyCabinetTracker = Extract<
   LeaderboardTrackerType,
   | "league_titles"
   | "super_league_champions"
-  | "challenge_cup_trophy"
-  | "era_cup_trophy"
   | "era_league_title"
   | "era_league_champions"
 >;
@@ -23,19 +21,15 @@ export type TrophyCabinetTracker = Extract<
 const TROPHY_TRACKERS: TrophyCabinetTracker[] = [
   "league_titles",
   "super_league_champions",
-  "challenge_cup_trophy",
   "era_league_title",
   "era_league_champions",
-  "era_cup_trophy",
 ];
 
 const TRACKER_TO_MODE: Record<TrophyCabinetTracker, string> = {
   league_titles: "trophy-league-titles",
   super_league_champions: "trophy-super-league",
-  challenge_cup_trophy: "trophy-challenge-cup",
   era_league_title: "trophy-era-league",
   era_league_champions: "trophy-era-league-champions",
-  era_cup_trophy: "trophy-era-cup",
 };
 
 export interface TrophyCabinetLeaderboardEntry {
@@ -49,20 +43,16 @@ export function getTrophyCountFromStats(
   tracker: TrophyCabinetTracker,
   stats: StoredStats
 ): number {
-  const { normal, hard, eraNormal, eraCup } = stats;
+  const { normal, hard, eraNormal } = stats;
   switch (tracker) {
     case "league_titles":
       return normal.leagueTitlesWon + hard.leagueTitlesWon;
     case "super_league_champions":
       return normal.superLeagueTitles + hard.superLeagueTitles;
-    case "challenge_cup_trophy":
-      return normal.challengeCupsWon + hard.challengeCupsWon;
     case "era_league_title":
       return eraNormal.leagueTitlesWon;
     case "era_league_champions":
       return eraNormal.superLeagueTitles;
-    case "era_cup_trophy":
-      return eraCup.eraCupsWon;
     default:
       return 0;
   }
@@ -297,7 +287,7 @@ function mapEntriesToRows(
   const rows = sorted.slice(0, limit).map((entry, index) => ({
     rank: index + 1,
     username: entry.username,
-    statDisplay: String(entry.trophyCount),
+    statDisplay: String(Math.round(entry.trophyCount)),
     achievedAt: entry.updatedAt,
     difficulty: "NORMAL" as const,
     mode: "CLASSIC" as const,
@@ -313,7 +303,7 @@ function mapEntriesToRows(
       rows.push({
         rank: userIndex + 1,
         username: entry.username,
-        statDisplay: String(entry.trophyCount),
+        statDisplay: String(Math.round(entry.trophyCount)),
         achievedAt: entry.updatedAt,
         difficulty: "NORMAL",
         mode: "CLASSIC",

@@ -7,6 +7,36 @@ export interface GameUpdate {
 /** Public changelog — newest first. */
 export const GAME_UPDATES: GameUpdate[] = [
   {
+    id: "playoff-bracket-layout",
+    title: "Play-Off Bracket Layout",
+    summary:
+      "The knockout bracket is easier to follow on phone and desktop — one round at a time on mobile with EF/SF/GF tabs, a progress strip, clearer bye and feeder labels, and the bracket surfaced on the Manager hub during play-offs.",
+  },
+  {
+    id: "club-funds-sync",
+    title: "Club Funds Cloud Sync",
+    summary:
+      "Your Club Funds account balance now syncs correctly between mobile and desktop when signed in. Earnings from completed runs on one device no longer leave the other stuck on a lower balance.",
+  },
+  {
+    id: "team-sheet-typography",
+    title: "Consistent Team Sheets",
+    summary:
+      "All team sheets — Quick Mode, Manager matchday, cup ties, and reviews — now use the same compact squad slot text so names and ratings fill each position box cleanly.",
+  },
+  {
+    id: "manager-squad-contracts",
+    title: "Manager Squad & Contracts",
+    summary:
+      "Squad management is smoother: mobile opens a player menu with Substitute, position retraining is a popup, expiring contracts trigger a transfer-style alert in the last six months, and manager sub-tabs span the full page width.",
+  },
+  {
+    id: "manager-career-polish",
+    title: "Manager Career Polish",
+    summary:
+      "Career stats round cleanly after profile reset, mobile saves flush more reliably, play-offs continue from a popup instead of a full-page gate, club star ratings reflect Leeds, St Helens, Wigan, Hull KR, Warrington, Huddersfield, and York, and wingers can retrain to centre in three months.",
+  },
+  {
     id: "preseason-friendlies-fix",
     title: "Pre-Season Friendly Selection",
     summary:

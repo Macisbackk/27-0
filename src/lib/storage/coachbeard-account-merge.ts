@@ -3,7 +3,6 @@ import type { GameDifficulty, GameMode, LeaderboardPeriod } from "../types";
 import { mergeUserStatsData } from "./merge-user-stats";
 import { EMPTY_STATS, migrateUserStats, type StoredStats } from "./stats";
 import { STORAGE_KEYS } from "./keys";
-import type { CupLeaderboardProfile } from "./cup-leaderboard-types";
 
 export const PRIMARY_COACH = "coachbeard";
 export const SECONDARY_COACH = "coachbeard2";
@@ -16,8 +15,6 @@ export interface CoachbeardMergeReport {
   reason?: string;
   hadSecondaryData: boolean;
   leaderboardEntriesMerged: number;
-  cupProfilesMerged: number;
-  eraCupProfilesMerged: number;
   clubFundsLeaderboardMerged: boolean;
   statsMerged: boolean;
   coachbeard2StillVisible: boolean;
@@ -33,40 +30,6 @@ function isSecondaryName(name: string): boolean {
 
 function isPrimaryName(name: string): boolean {
   return name.trim().toLowerCase() === PRIMARY_COACH.toLowerCase();
-}
-
-function mergeCupProfiles(
-  primary: CupLeaderboardProfile,
-  secondary: CupLeaderboardProfile
-): CupLeaderboardProfile {
-  return {
-    username: PRIMARY_COACH,
-    cupsWon: primary.cupsWon + secondary.cupsWon,
-    cupMatchWins: primary.cupMatchWins + secondary.cupMatchWins,
-    cupMatchLosses: primary.cupMatchLosses + secondary.cupMatchLosses,
-    cupFinals: primary.cupFinals + secondary.cupFinals,
-    cupSemiFinals: primary.cupSemiFinals + secondary.cupSemiFinals,
-    cupQuarterFinals: primary.cupQuarterFinals + secondary.cupQuarterFinals,
-    longestCupMatchWinStreak: Math.max(
-      primary.longestCupMatchWinStreak,
-      secondary.longestCupMatchWinStreak
-    ),
-    currentCupMatchWinStreak: Math.max(
-      primary.currentCupMatchWinStreak,
-      secondary.currentCupMatchWinStreak
-    ),
-    longestTournamentWinsInRow: Math.max(
-      primary.longestTournamentWinsInRow,
-      secondary.longestTournamentWinsInRow
-    ),
-    currentTournamentWinsInRow: Math.max(
-      primary.currentTournamentWinsInRow,
-      secondary.currentTournamentWinsInRow
-    ),
-    lastUpdated: [primary.lastUpdated, secondary.lastUpdated]
-      .sort()
-      .pop()!,
-  };
 }
 
 function loadJson<T>(key: string, fallback: T): T {
@@ -97,15 +60,6 @@ function hasSecondaryLocalData(): boolean {
     return true;
   }
 
-  const cup = loadJson<Record<string, unknown>>(STORAGE_KEYS.cupLeaderboard, {});
-  if (Object.keys(cup).some((k) => isSecondaryName(k))) return true;
-
-  const eraCup = loadJson<Record<string, unknown>>(
-    STORAGE_KEYS.eraCupLeaderboard,
-    {}
-  );
-  if (Object.keys(eraCup).some((k) => isSecondaryName(k))) return true;
-
   const fundsLb = loadJson<Record<string, unknown>>(
     STORAGE_KEYS.clubFundsLeaderboard,
     {}
@@ -120,15 +74,6 @@ function hasSecondaryLocalData(): boolean {
 
 function coachbeard2StillVisibleLocally(): boolean {
   if (typeof window === "undefined") return false;
-
-  const cup = loadJson<Record<string, unknown>>(STORAGE_KEYS.cupLeaderboard, {});
-  if (Object.keys(cup).some((k) => isSecondaryName(k))) return true;
-
-  const eraCup = loadJson<Record<string, unknown>>(
-    STORAGE_KEYS.eraCupLeaderboard,
-    {}
-  );
-  if (Object.keys(eraCup).some((k) => isSecondaryName(k))) return true;
 
   const leaderboard = loadJson<{ username?: string }[]>(
     STORAGE_KEYS.leaderboard,
@@ -200,60 +145,6 @@ function mergeLocalLeaderboardEntries(): number {
 
   localStorage.setItem(STORAGE_KEYS.leaderboard, JSON.stringify(remaining));
   return mergedCount;
-}
-
-function mergeCupProfileStore(storageKey: string): number {
-  const profiles = loadJson<Record<string, CupLeaderboardProfile>>(
-    storageKey,
-    {}
-  );
-  const secondary = profiles[SECONDARY_COACH] ?? profiles["coachbeard2"];
-  if (!secondary) {
-    const altKey = Object.keys(profiles).find((k) => isSecondaryName(k));
-    if (!altKey) return 0;
-    profiles[PRIMARY_COACH] = mergeCupProfiles(
-      profiles[PRIMARY_COACH] ?? {
-        username: PRIMARY_COACH,
-        cupsWon: 0,
-        cupMatchWins: 0,
-        cupMatchLosses: 0,
-        cupFinals: 0,
-        cupSemiFinals: 0,
-        cupQuarterFinals: 0,
-        longestCupMatchWinStreak: 0,
-        currentCupMatchWinStreak: 0,
-        longestTournamentWinsInRow: 0,
-        currentTournamentWinsInRow: 0,
-        lastUpdated: new Date(0).toISOString(),
-      },
-      profiles[altKey]
-    );
-    delete profiles[altKey];
-    localStorage.setItem(storageKey, JSON.stringify(profiles));
-    return 1;
-  }
-
-  profiles[PRIMARY_COACH] = mergeCupProfiles(
-    profiles[PRIMARY_COACH] ?? {
-      username: PRIMARY_COACH,
-      cupsWon: 0,
-      cupMatchWins: 0,
-      cupMatchLosses: 0,
-      cupFinals: 0,
-      cupSemiFinals: 0,
-      cupQuarterFinals: 0,
-      longestCupMatchWinStreak: 0,
-      currentCupMatchWinStreak: 0,
-      longestTournamentWinsInRow: 0,
-      currentTournamentWinsInRow: 0,
-      lastUpdated: new Date(0).toISOString(),
-    },
-    secondary
-  );
-  delete profiles[SECONDARY_COACH];
-  delete profiles["coachbeard2"];
-  localStorage.setItem(storageKey, JSON.stringify(profiles));
-  return 1;
 }
 
 function mergeClubFundsLeaderboardLocal(): boolean {
@@ -366,10 +257,6 @@ function mergeLocalStatsIfNeeded(
       migrateUserStats(secondary.fantasy ?? EMPTY_STATS),
       migrateUserStats(local.fantasy ?? EMPTY_STATS)
     ),
-    eraCup: mergeUserStatsData(
-      migrateUserStats(secondary.eraCup ?? EMPTY_STATS),
-      migrateUserStats(local.eraCup ?? EMPTY_STATS)
-    ),
     eraNormal: mergeUserStatsData(
       migrateUserStats(secondary.eraNormal ?? EMPTY_STATS),
       migrateUserStats(local.eraNormal ?? EMPTY_STATS)
@@ -385,9 +272,12 @@ function snapshotStatsForSecondaryIfNeeded(): void {
   const snapshotKey = `${STORAGE_KEYS.stats}-coachbeard2-snapshot`;
   if (localStorage.getItem(snapshotKey)) return;
 
-  const cup = loadJson<Record<string, unknown>>(STORAGE_KEYS.cupLeaderboard, {});
-  const hasSecondary = Object.keys(cup).some((k) => isSecondaryName(k));
-  const hasPrimary = Object.keys(cup).some((k) => isPrimaryName(k));
+  const leaderboard = loadJson<{ username?: string }[]>(
+    STORAGE_KEYS.leaderboard,
+    []
+  );
+  const hasSecondary = leaderboard.some((e) => isSecondaryName(e.username ?? ""));
+  const hasPrimary = leaderboard.some((e) => isPrimaryName(e.username ?? ""));
 
   if (hasSecondary && !hasPrimary) {
     const stats = localStorage.getItem(STORAGE_KEYS.stats);
@@ -412,8 +302,6 @@ export function runCoachbeardAccountMergeLocal(options: {
       reason: "server",
       hadSecondaryData: false,
       leaderboardEntriesMerged: 0,
-      cupProfilesMerged: 0,
-      eraCupProfilesMerged: 0,
       clubFundsLeaderboardMerged: false,
       statsMerged: false,
       coachbeard2StillVisible: false,
@@ -427,8 +315,6 @@ export function runCoachbeardAccountMergeLocal(options: {
       reason: "already_complete",
       hadSecondaryData: false,
       leaderboardEntriesMerged: 0,
-      cupProfilesMerged: 0,
-      eraCupProfilesMerged: 0,
       clubFundsLeaderboardMerged: false,
       statsMerged: false,
       coachbeard2StillVisible: coachbeard2StillVisibleLocally(),
@@ -447,8 +333,6 @@ export function runCoachbeardAccountMergeLocal(options: {
       reason: "no_secondary_data",
       hadSecondaryData: false,
       leaderboardEntriesMerged: 0,
-      cupProfilesMerged: 0,
-      eraCupProfilesMerged: 0,
       clubFundsLeaderboardMerged: false,
       statsMerged: false,
       coachbeard2StillVisible: false,
@@ -456,18 +340,17 @@ export function runCoachbeardAccountMergeLocal(options: {
     };
   }
 
-  const cup = loadJson<Record<string, unknown>>(STORAGE_KEYS.cupLeaderboard, {});
+  const leaderboard = loadJson<{ username?: string }[]>(
+    STORAGE_KEYS.leaderboard,
+    []
+  );
   const hadOnlySecondary =
-    Object.keys(cup).some((k) => isSecondaryName(k)) &&
-    !Object.keys(cup).some((k) => isPrimaryName(k));
+    leaderboard.some((e) => isSecondaryName(e.username ?? "")) &&
+    !leaderboard.some((e) => isPrimaryName(e.username ?? ""));
 
   snapshotStatsForSecondaryIfNeeded();
 
   const leaderboardEntriesMerged = mergeLocalLeaderboardEntries();
-  const cupProfilesMerged = mergeCupProfileStore(STORAGE_KEYS.cupLeaderboard);
-  const eraCupProfilesMerged = mergeCupProfileStore(
-    STORAGE_KEYS.eraCupLeaderboard
-  );
   const clubFundsLeaderboardMerged = mergeClubFundsLeaderboardLocal();
   mergeClubFundsState();
 
@@ -490,8 +373,6 @@ export function runCoachbeardAccountMergeLocal(options: {
     skipped: false,
     hadSecondaryData: true,
     leaderboardEntriesMerged,
-    cupProfilesMerged,
-    eraCupProfilesMerged,
     clubFundsLeaderboardMerged,
     statsMerged,
     coachbeard2StillVisible,

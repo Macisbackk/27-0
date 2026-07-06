@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { RugbyPitch } from "@/components/RugbyPitch";
+import { RugbyPitch, TEAM_SHEET_RUGBY_PITCH_PROPS } from "@/components/RugbyPitch";
 import { toMatchdaySquadSlotsFromCareer } from "@/lib/manager/matchday-lineup";
 import type { MatchdaySlotTarget } from "@/lib/manager/managerMatchdaySquad";
 import { canAssignPlayerToXiiiSlot } from "@/lib/manager/managerMatchdaySquad";
@@ -113,9 +113,7 @@ export function ManagerMatchdayFormation({
         totalValue={getSquadValue(squad)}
         filledCount={getFilledCount(squad)}
         totalSlots={TOTAL_SLOTS}
-        formationOnly
-        compact
-        hideValueSummary
+        {...TEAM_SHEET_RUGBY_PITCH_PROPS}
         interactive={interactive || canInspectPlayers}
         allowFilledSlotClick={interactive || canInspectPlayers}
         clubColorOverride={pitchClub || undefined}

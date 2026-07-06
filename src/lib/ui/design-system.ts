@@ -117,9 +117,8 @@ export const FILTER = {
     "mx-auto inline-flex w-fit max-w-full flex-nowrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto",
 } as const;
 
-/** Horizontally centre segmented sub-tab bars (Squad/Tactics, Transfers, Stats, etc.). */
-export const SUB_TAB_BAR_SHELL =
-  "flex w-full justify-center px-0 sm:px-1" as const;
+/** Full-width shell for segmented sub-tab bars (Squad/Tactics, Transfers, Stats, etc.). */
+export const SUB_TAB_BAR_SHELL = "w-full" as const;
 
 /** Shared pressed-state utility — pair with BTN.base on interactive elements. */
 export const BTN_PRESS = "btn-press";
@@ -296,12 +295,26 @@ export const STAT_HIGHLIGHT = {
   winGlow: "shadow-[0_0_8px_var(--theme-glow-soft)]",
 } as const;
 
-/** Tab toggle inside a centred sub-tab group (manager Squad/Tactics, Transfers, etc.). */
+/** Sub-tab group wrapper — stretches to parent width. */
+export function subTabGroupClass(
+  hardActive = false,
+  _currentModeActive = false,
+  eraActive = false
+): string {
+  const accent = hardActive
+    ? HARD.tabGroupRing
+    : eraActive
+      ? ERA.tabGroupRing
+      : THEME.tabGroupRing;
+  return `flex w-full flex-nowrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 ${accent}`;
+}
+
+/** Tab toggle inside a full-width sub-tab group (manager Squad/Tactics, Transfers, etc.). */
 export function subTabGroupButtonClass(
   active: boolean,
   variant: "normal" | "current" | "hard" | "era" | "gold" = "normal"
 ): string {
-  const base = `${TYPO.button} btn-press box-border inline-flex flex-none min-w-[5rem] items-center justify-center px-4 text-center ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
+  const base = `${TYPO.button} btn-press box-border flex flex-1 min-w-0 items-center justify-center px-2 text-center sm:px-4 ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.toggleIdle}`;

@@ -55,6 +55,14 @@ export function shouldRetireAtSeasonEnd(
   age: number,
   contract: PlayerContract
 ): boolean {
+  if (
+    contract.retireAfterContract &&
+    contract.convincedToStayUsed &&
+    (contract.yearsRemaining <= 0 || contract.expiresAtSeasonEnd)
+  ) {
+    return true;
+  }
+
   if (contract.retiringAtSeasonEnd) return true;
 
   // Persuaded to stay — honour renewed or active deals instead of age rolls.
@@ -197,6 +205,7 @@ export function ensureRetirementIntent(career: ManagerCareer): ManagerCareer {
     const age = getManagerPlayerAge(next, ps.playerId) ?? 0;
     if (!isRetirementAge(age)) continue;
     if (contract.status === "renewed") continue;
+    if (contract.convincedToStayUsed || contract.retireAfterContract) continue;
     if (contract.retirementIntentSeason === career.seasonYear) continue;
 
     const willRetire = rollRetirementIntent(career, ps.playerId, age);
@@ -418,7 +427,49 @@ export function clearRetirementIntentOnRenewal(
   return {
     ...contract,
     retiringAtSeasonEnd: false,
+    retireAfterContract: false,
     // Lock intent for this season so sync does not re-roll after a new deal.
     retirementIntentSeason: seasonYear,
+  };
+}
+
+export function canConvincePlayerToStay(
+  career: ManagerCareer,
+  playerId: string
+): boolean {
+  const contract = career.contracts[playerId];
+  if (!contract) return false;
+  if (contract.convincedToStayUsed) return false;
+  return Boolean(contract.retiringAtSeasonEnd);
+}
+
+/** One extra year at the same wage — can only be used once per player. */
+export function convincePlayerToStay(
+  career: ManagerCareer,
+  playerId: string
+): ManagerCareer {
+  const contract = career.contracts[playerId];
+  if (!contract || !canConvincePlayerToStay(career, playerId)) {
+    return career;
+  }
+
+  const nextContracts = { ...career.contracts };
+  nextContracts[playerId] = {
+    ...contract,
+    convincedToStayUsed: true,
+    retireAfterContract: true,
+    retiringAtSeasonEnd: false,
+    wagePerYear: contract.wagePerYear,
+    yearsRemaining: 1,
+    expiresAtSeasonEnd: false,
+    renewalDemand: undefined,
+    status: undefined,
+    retirementIntentSeason: career.seasonYear,
+  };
+
+  return {
+    ...career,
+    contracts: nextContracts,
+    updatedAt: new Date().toISOString(),
   };
 }

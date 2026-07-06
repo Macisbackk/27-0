@@ -9,7 +9,6 @@ import { TYPO } from "@/lib/ui/typography";
 import {
   formatSquadRatingStars,
   getAllManagerClubConfigs,
-  squadRatingToStars,
 } from "@/lib/manager/club-config";
 import { getClubAttendanceProfile } from "@/lib/manager/managerAttendance";
 import { playUiClick } from "@/lib/sound";
@@ -25,10 +24,6 @@ export function ManagerClubSelect({ onSelect, onBack }: ManagerClubSelectProps) 
       getAllManagerClubConfigs().sort((a, b) => b.squadRating - a.squadRating),
     []
   );
-  const allRatings = useMemo(
-    () => clubs.map((club) => club.squadRating),
-    [clubs]
-  );
 
   return (
     <div className={`mx-auto max-w-xl ${SPACING.stackMd}`}>
@@ -42,7 +37,7 @@ export function ManagerClubSelect({ onSelect, onBack }: ManagerClubSelectProps) 
       <ul className="space-y-1.5" role="list">
         {clubs.map((club) => {
           const attendance = getClubAttendanceProfile(club.name);
-          const ratingStars = squadRatingToStars(club.squadRating, allRatings);
+          const ratingStars = club.difficulty;
           const colors = getClubColors(club.name);
 
           return (

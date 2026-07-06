@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { sendPasswordResetEmail } from "@/lib/auth";
 import { getAllStats, resetCareerStats } from "@/lib/storage/stats";
+import { resetManagerStats } from "@/lib/manager/managerStats";
 import type { UserStatsData } from "@/lib/types";
 import {
   formatRecordOrDash,
@@ -126,6 +127,7 @@ export default function ProfilePage() {
     setStatsResetError(null);
     const result = await resetCareerStats();
     if (result.ok) {
+      resetManagerStats();
       setStats(getAllStats());
       setStatsResetConfirm(false);
       setStatsResetMsg(
@@ -262,7 +264,7 @@ export default function ProfilePage() {
             {statsResetConfirm ? (
               <div className="mt-3 rounded-lg border border-red-500/35 bg-red-950/20 p-3">
                 <p className={`${TYPO.bodySm} text-red-200`}>
-                  This cannot be undone. Clear all Quick Mode career stats?
+                  This cannot be undone. Clear all Quick Mode and Manager Mode career stats?
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button

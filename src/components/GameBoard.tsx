@@ -78,7 +78,7 @@ import {
 import { PlayerChoice } from "./PlayerChoice";
 import { RecruitmentSlotReveal } from "./RecruitmentSlotReveal";
 import { SlotTeamYearPicker } from "./SlotTeamYearPicker";
-import { RugbyPitch } from "./RugbyPitch";
+import { RugbyPitch, TEAM_SHEET_RUGBY_PITCH_PROPS } from "./RugbyPitch";
 import { PlayoffReview } from "./PlayoffReview";
 import { PlayoffBracket } from "./PlayoffBracket";
 import { SeasonReview } from "./SeasonReview";
@@ -1330,6 +1330,7 @@ export function GameBoard({
                 totalValue={totalValue}
                 filledCount={filledCount}
                 totalSlots={TOTAL_SLOTS}
+                {...TEAM_SHEET_RUGBY_PITCH_PROPS}
                 selectedSlot={
                   phase === "pitch" && !isDraftMode
                     ? selectedSlotIndex ?? undefined

@@ -14,13 +14,14 @@ const PRIMARY_TABS: {
 }[] = [
   { id: "hub", label: "Hub", icon: "🏠" },
   { id: "squad", label: "Squad", icon: "👥" },
-  { id: "transfers", label: "Market", icon: "💷" },
   { id: "reserves", label: "Reserves", icon: "📋" },
+  { id: "contracts", label: "Contracts", icon: "📝" },
+  { id: "transfers", label: "Market", icon: "💷" },
 ];
 
 const MORE_ITEMS: { id: ManagerView; label: string; icon: string }[] = [
+  { id: "inbox", label: "Inbox", icon: "✉" },
   { id: "fixtures", label: "Fixtures", icon: "📅" },
-  { id: "contracts", label: "Contracts", icon: "📝" },
   { id: "across-league", label: "League", icon: "🏉" },
   { id: "stats", label: "Stats", icon: "📊" },
 ];
@@ -54,7 +55,7 @@ export function ManagerMobileBottomNav({
         className="fixed inset-x-0 bottom-0 z-50 border-t border-pitch-600/70 bg-pitch-950/98 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(0,0,0,0.35)] backdrop-blur-md sm:hidden"
         aria-label="Manager mobile navigation"
       >
-        <div className="mx-auto grid max-w-lg grid-cols-5 gap-1 px-2 pt-2">
+        <div className="mx-auto grid max-w-lg grid-cols-6 gap-0.5 px-1.5 pt-2">
           {PRIMARY_TABS.map((tab) => {
             const isActive = active === tab.id;
             return (
@@ -63,7 +64,7 @@ export function ManagerMobileBottomNav({
               type="button"
               disabled={disabled}
               onClick={() => navigate(tab.id)}
-              className={`btn-press flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-xl border-2 px-1 py-2 text-center transition ${
+              className={`btn-press flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-xl border-2 px-0.5 py-2 text-center transition ${
                 isActive
                   ? BTN.tabActive
                   : "border-transparent bg-pitch-900/50 text-pitch-300 hover:bg-pitch-800/60 hover:text-white"
@@ -73,7 +74,7 @@ export function ManagerMobileBottomNav({
               <span className="text-lg leading-none" aria-hidden>
                 {tab.icon}
               </span>
-              <span className="font-display text-[11px] font-bold uppercase tracking-wide">
+              <span className="font-display text-[10px] font-bold uppercase tracking-wide leading-tight">
                 {tab.label}
               </span>
             </button>
@@ -86,7 +87,7 @@ export function ManagerMobileBottomNav({
               playUiClick();
               setMoreOpen((open) => !open);
             }}
-            className={`btn-press relative flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-xl border-2 px-1 py-2 text-center transition ${
+            className={`btn-press relative flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-xl border-2 px-0.5 py-2 text-center transition ${
               moreActive || moreOpen
                 ? BTN.tabActive
                 : "border-transparent bg-pitch-900/50 text-pitch-300 hover:bg-pitch-800/60 hover:text-white"
@@ -97,7 +98,7 @@ export function ManagerMobileBottomNav({
             <span className="text-lg leading-none" aria-hidden>
               ⋯
             </span>
-            <span className="font-display text-[11px] font-bold uppercase tracking-wide">
+            <span className="font-display text-[10px] font-bold uppercase tracking-wide leading-tight">
               More
             </span>
           </button>

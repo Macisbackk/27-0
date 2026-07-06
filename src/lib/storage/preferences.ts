@@ -108,49 +108,6 @@ export function setRecruitmentStyle(style: RecruitmentStyle): void {
   localStorage.setItem(STORAGE_KEYS.recruitmentStyle, style);
 }
 
-export type EraTournamentType = "onePerClub" | "allTeams";
-
-function parseEraTournamentType(raw: string | null): EraTournamentType | null {
-  if (raw === "onePerClub" || raw === "allTeams") return raw;
-  return null;
-}
-
-export function getEraTournamentType(): EraTournamentType {
-  if (typeof window === "undefined") return "allTeams";
-  try {
-    return parseEraTournamentType(
-      localStorage.getItem(STORAGE_KEYS.eraTournamentType)
-    ) ?? "allTeams";
-  } catch {
-    return "allTeams";
-  }
-}
-
-export function setEraTournamentType(type: EraTournamentType): void {
-  localStorage.setItem(STORAGE_KEYS.eraTournamentType, type);
-}
-
-export const CUP_ERA_VARIANT_CHANGED_EVENT = "27-0-cup-era-variant-changed";
-
-export function getCupEraVariant(): boolean {
-  if (typeof window === "undefined") return false;
-  try {
-    return localStorage.getItem(STORAGE_KEYS.cupEraVariant) === "1";
-  } catch {
-    return false;
-  }
-}
-
-export function setCupEraVariant(eraMode: boolean): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEYS.cupEraVariant, eraMode ? "1" : "0");
-  window.dispatchEvent(
-    new CustomEvent(CUP_ERA_VARIANT_CHANGED_EVENT, {
-      detail: { eraMode },
-    })
-  );
-}
-
 export const NORMAL_ERA_VARIANT_CHANGED_EVENT =
   "27-0-normal-era-variant-changed";
 

@@ -64,17 +64,26 @@ export function ManagerPage({
 export function ManagerMobileBackBar({
   label = "Back",
   onBack,
+  placement = "top",
 }: {
   label?: string;
   onBack: () => void;
+  placement?: "top" | "bottom";
 }) {
   const handleBack = () => {
     playUiClick();
     onBack();
   };
 
+  const placementClass =
+    placement === "bottom"
+      ? "sticky bottom-0 z-30 -mx-5 mt-4 border-t border-theme-primary/20 bg-gradient-to-t from-pitch-950/98 to-pitch-950/90 shadow-[0_-4px_24px_rgba(0,0,0,0.35)]"
+      : "sticky top-0 z-30 -mx-5 mb-4 border-b border-theme-primary/20 bg-gradient-to-b from-pitch-950/98 to-pitch-950/90 shadow-[0_4px_24px_rgba(0,0,0,0.35)]";
+
   return (
-    <div className="sticky top-0 z-30 -mx-5 mb-4 border-b border-theme-primary/20 bg-gradient-to-b from-pitch-950/98 to-pitch-950/90 shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-md sm:-mx-0 sm:rounded-none">
+    <div
+      className={`${placementClass} backdrop-blur-md sm:-mx-0 sm:rounded-none`}
+    >
       <button
         type="button"
         onClick={handleBack}

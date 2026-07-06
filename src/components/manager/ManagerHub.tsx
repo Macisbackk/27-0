@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, PAGE, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -11,7 +11,6 @@ import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
 import { getCupHubStatus } from "@/lib/manager/managerChallengeCup";
 import { PlayoffBracketDisplay } from "@/components/PlayoffBracketDisplay";
 import {
-  ensurePlayoffsReady,
   getPlayoffHubStatus,
   isManagerPlayoffsActive,
   needsPlayoffsIntro,
@@ -41,7 +40,7 @@ import {
   getTopTryScorer,
 } from "@/lib/manager/managerCareerStats";
 import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
-import { playSeasonComplete, playSimulateRound, playUiClick } from "@/lib/sound";
+import { playSimulateRound, playUiClick } from "@/lib/sound";
 import {
   managerClubAccentCardClass,
   managerClubAccentCardStyle,
@@ -85,10 +84,7 @@ interface ManagerHubProps {
   onSimulate: () => void;
   onUpdate?: (career: ManagerCareer) => void;
   onNavigate?: (view: ManagerView) => void;
-  onPlayoffsContinue?: () => void;
 }
-
-const playoffsGateSoundPlayed = new Set<string>();
 
 function ordinal(n: number): string {
   if (n === 1) return "1st";
@@ -173,131 +169,49 @@ function HubBoardBudgetAttendance({
   );
 }
 
-function HubPlayoffsGateCard({
-  career,
-  onContinue,
-}: {
-  career: ManagerCareer;
-  onContinue: () => void;
-}) {
-  const ready = ensurePlayoffsReady(career);
-  const bracket = ready.playoffs;
-  const position = getUserLeaguePosition(career.leagueTable, career.club);
-
-  useEffect(() => {
-    if (position <= 1) return;
-    const key = `${career.club}:${career.seasonYear}`;
-    if (playoffsGateSoundPlayed.has(key)) return;
-    playoffsGateSoundPlayed.add(key);
-    playSeasonComplete();
-  }, [position, career.club, career.seasonYear]);
-
-  return (
-    <div className={managerFeaturedBannerClass("primary")}>
-      <span className={managerPillClass("primary")}>
-        Regular season complete
-      </span>
-      <h2 className={`mt-3 ${TYPO.pageTitle} text-xl sm:text-2xl`}>
-        Play-Offs await
-      </h2>
-      <p className={`mt-2 ${TYPO.bodySm} leading-relaxed text-pitch-200`}>
-        {career.club} finished{" "}
-        <span className="font-semibold text-theme-primary">
-          {ordinal(position)}
-        </span>{" "}
-        in the league — you&apos;ve qualified for the top-six play-offs. The
-        league table is now frozen; only play-off results decide the title.
-      </p>
-      <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <ManagerStat
-          label="League finish"
-          value={ordinal(position)}
-          tone={position <= 2 ? "gold" : "primary"}
-        />
-        <ManagerStat
-          label="Record"
-          value={`${career.wins}W-${career.losses}L`}
-          tone="default"
-        />
-        <ManagerStat
-          label="Season"
-          value={String(career.seasonYear)}
-          tone="muted"
-        />
-      </div>
-      {bracket && (
-        <div className="mt-4">
-          <p className={`${TYPO.sectionLabel} text-accent-gold`}>Bracket preview</p>
-          <div className="mt-2">
-            <PlayoffBracketDisplay state={bracket} />
-          </div>
-        </div>
-      )}
-      <GameButton
-        variant="theme"
-        className="mt-5"
-        onClick={() => {
-          playUiClick();
-          onContinue();
-        }}
-      >
-        Continue to Play-Offs
-      </GameButton>
-    </div>
-  );
-}
-
 function HubPlayoffBracketPanel({
   playoffs,
+  career,
 }: {
   playoffs: NonNullable<ManagerCareer["playoffs"]>;
+  career: ManagerCareer;
 }) {
   const activeRound = playoffs.matches.find(
     (m) => m.isUserMatch && m.status === "ready"
   )?.round;
+  const position = getUserLeaguePosition(career.leagueTable, career.club);
+  const playoffStatus = getPlayoffHubStatus(career);
 
   return (
     <div
       className={`${CARD.elevated} ${SPACING.cardPadding} border ${managerCompetitionSurfaceClass("playoffs")}`}
     >
-      <div className="flex flex-wrap items-center gap-2">
-        <p className={`${TYPO.sectionLabel} text-theme-primary`}>Play-Off Bracket</p>
-        {activeRound != null && (
-          <span className={managerPillClass("primary")}>
-            {getPlayoffRoundLabel(activeRound)}
-          </span>
-        )}
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className={`${TYPO.sectionLabel} text-theme-primary`}>
+              Play-Off Bracket
+            </p>
+            {activeRound != null && (
+              <span className={managerPillClass("primary")}>
+                {getPlayoffRoundLabel(activeRound)}
+              </span>
+            )}
+          </div>
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+            Finished{" "}
+            <span className="font-semibold text-theme-primary">
+              {ordinal(position)}
+            </span>{" "}
+            in the league ·{" "}
+            <span className="text-accent-gold">{playoffStatus}</span>
+          </p>
+        </div>
       </div>
-      <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
-        League table frozen — every play-off tie counts towards the title.
-      </p>
       <div className="mt-3">
-        <PlayoffBracketDisplay state={playoffs} />
+        <PlayoffBracketDisplay state={playoffs} embedded />
       </div>
     </div>
-  );
-}
-
-function HubPlayoffsCampaignCard({ career }: { career: ManagerCareer }) {
-  const playoffStatus = getPlayoffHubStatus(career);
-  const position = getUserLeaguePosition(career.leagueTable, career.club);
-
-  return (
-    <ManagerSectionCard title="Play-Off Campaign" variant="elevated" accent="gold">
-      <p className={`mt-1 ${TYPO.cardTitle}`}>
-        <span className="text-accent-gold">{playoffStatus}</span>
-      </p>
-      <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-        Finished the league in{" "}
-        <span className="font-semibold text-theme-primary">
-          {ordinal(position)}
-        </span>{" "}
-        · Season {career.seasonYear}
-      </p>
-      <div className="mt-2 flex flex-wrap gap-2">
-        <span className={managerPillClass("primary")}>Play-Offs live</span>
-      </div>
-    </ManagerSectionCard>
   );
 }
 
@@ -307,7 +221,6 @@ export function ManagerHub({
   onSimulate,
   onUpdate,
   onNavigate,
-  onPlayoffsContinue,
 }: ManagerHubProps) {
   const [dialog, setDialog] = useState<{ title: string; message: string } | null>(
     null
@@ -735,32 +648,6 @@ export function ManagerHub({
     </>
   );
 
-  if (playoffsPending && onPlayoffsContinue) {
-    return (
-      <>
-        <div className={PAGE.section}>
-          <HubPlayoffsGateCard career={career} onContinue={onPlayoffsContinue} />
-          {commandCentre}
-          <ManagerLeagueTable
-            career={career}
-            title="Final League Standings"
-            subtitle="Frozen — play-off results now decide the title"
-            onViewClub={setViewClubSheet}
-          />
-          <HubBoardBudgetAttendance
-            career={career}
-            lastGate={lastGate}
-            wageOverBudget={wageOverBudget}
-          />
-          <ManagerClubFinancesPanel career={career} />
-          {quickActionsCard}
-        </div>
-        {alertDialog}
-        {clubSheetModal}
-      </>
-    );
-  }
-
   if (playoffsActive && hubCareer.playoffs) {
     return (
       <>
@@ -769,9 +656,11 @@ export function ManagerHub({
             {nextFixtureCard}
           </div>
           {commandCentre}
+          <HubPlayoffBracketPanel
+            playoffs={hubCareer.playoffs}
+            career={hubCareer}
+          />
           <MobileDetailsAccordion title="Club details">
-            <HubPlayoffBracketPanel playoffs={hubCareer.playoffs} />
-            <HubPlayoffsCampaignCard career={hubCareer} />
             <HubBoardBudgetAttendance
               career={career}
               lastGate={lastGate}

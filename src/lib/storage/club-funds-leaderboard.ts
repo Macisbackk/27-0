@@ -159,7 +159,7 @@ function mapEntriesToRows(
     .map((entry, index) => ({
       rank: index + 1,
       username: entry.username,
-      statDisplay: formatClubFunds(entry.totalEarned),
+      statDisplay: formatClubFunds(Math.round(entry.totalEarned)),
       achievedAt: "",
       difficulty: "NORMAL",
       mode: "CLASSIC",
