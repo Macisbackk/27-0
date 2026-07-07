@@ -67,9 +67,9 @@ export function getManagerPlayer(
   career: ManagerCareer,
   playerId: string
 ): Player | undefined {
-  const reserve = career.reserves.find((r) => r.id === playerId);
+  const reserve = career.reserves?.find((r) => r.id === playerId);
   if (reserve) return reserveToPlayer(reserve, career.seasonYear);
-  const generated = career.playerRegistry[playerId];
+  const generated = career.playerRegistry?.[playerId];
   if (generated) {
     const dev = career.playerDevelopment?.[playerId];
     const rated = applyManagerModeRatingToPlayer(
@@ -95,7 +95,7 @@ export function getManagerPlayerAge(
   career: ManagerCareer,
   playerId: string
 ): number | undefined {
-  const reserve = career.reserves.find((r) => r.id === playerId);
+  const reserve = career.reserves?.find((r) => r.id === playerId);
   if (reserve) return reserve.age;
 
   const player = getManagerPlayer(career, playerId);
@@ -122,7 +122,7 @@ export function getManagerPlayerEligiblePositions(
   career: ManagerCareer,
   playerId: string
 ): Position[] {
-  const reserve = career.reserves.find((r) => r.id === playerId);
+  const reserve = career.reserves?.find((r) => r.id === playerId);
   if (reserve) {
     const base = getPlayerEligiblePositions(
       reserveToPlayer(reserve, career.seasonYear)

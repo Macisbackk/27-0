@@ -626,13 +626,13 @@ export default function ManagerPage() {
       if (creatingCareer) return;
       setCreatingCareer(true);
       window.setTimeout(() => {
+        let next;
         try {
           const slot = getActiveSaveSlot();
-          const next = createNewCareer(club, slot);
+          next = createNewCareer(club, slot);
           careerSlotRef.current = slot;
           setCareerState(next);
           refreshSaveSlots();
-          goToView("hub");
         } catch (err) {
           setAlertDialog({
             title: "Could not start career",
@@ -641,9 +641,11 @@ export default function ManagerPage() {
                 ? err.message
                 : "Something went wrong creating your save.",
           });
-        } finally {
           setCreatingCareer(false);
+          return;
         }
+        goToView("hub");
+        setCreatingCareer(false);
       }, 0);
     },
     [creatingCareer, goToView, refreshSaveSlots, setCareerState]

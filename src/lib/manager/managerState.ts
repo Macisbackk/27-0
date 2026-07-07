@@ -368,13 +368,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     contracts,
     reserveContracts,
   } as ManagerCareer);
-  const wageBudget = resolveWageBudgetForCareer({
-    club,
-    contracts,
-    reserveContracts,
-    wageBill,
-    squad,
-  } as ManagerCareer);
+  const initialWageBudget = getWageBudgetForClub(club);
 
   const clubFacilities = createDefaultClubFacilities();
   const attendanceData = {
@@ -397,7 +391,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     tactics: { ...DEFAULT_TACTICS },
     squad,
     contracts,
-    wageBudget,
+    wageBudget: initialWageBudget,
     wageBill,
     attendanceData,
     clubFacilities,
@@ -421,10 +415,10 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     preSeason: initPreSeasonState({}),
     managerFinance: {
       transferBudget,
-      operatingBalance: Math.round(wageBudget * 0.2),
-      wageBudget,
+      operatingBalance: Math.round(initialWageBudget * 0.2),
+      wageBudget: initialWageBudget,
       wageBill,
-      clubFunds: transferBudget + Math.round(wageBudget * 0.2),
+      clubFunds: transferBudget + Math.round(initialWageBudget * 0.2),
       seasonIncome: 0,
       seasonTransferIncome: 0,
       seasonOperatingIncome: 0,

@@ -23,7 +23,7 @@ export function getPlayerSeasonAppearances(
   career: ManagerCareer,
   playerId: string
 ): number {
-  const fromStats = career.playerSeasonStats[playerId]?.appearances;
+  const fromStats = career.playerSeasonStats?.[playerId]?.appearances;
   if (fromStats !== undefined && fromStats > 0) return fromStats;
   const ps = career.squad.find((p) => p.playerId === playerId);
   return ps?.seasonAppearances ?? 0;
