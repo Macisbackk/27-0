@@ -160,10 +160,28 @@ export default function ManagerPage() {
   const router = useRouter();
   const pathname = usePathname();
   const [view, setView] = useState<ManagerView>("landing");
-  const displayView = useMemo(
-    () => resolveManagerDisplayView(pathname, view),
-    [pathname, view]
+  /** Forward nav only — cleared synchronously when pathname changes (browser back). */
+  const pendingForwardNavRef = useRef<{ path: string; view: ManagerView } | null>(
+    null
   );
+  const prevPathnameForNavRef = useRef(pathname);
+  const displayView = useMemo(() => {
+    if (prevPathnameForNavRef.current !== pathname) {
+      pendingForwardNavRef.current = null;
+      prevPathnameForNavRef.current = pathname;
+    }
+
+    const resolved = resolveManagerDisplayView(pathname, view);
+    const pending = pendingForwardNavRef.current;
+    if (
+      pending &&
+      pathname !== pending.path &&
+      view === pending.view
+    ) {
+      return pending.view;
+    }
+    return resolved;
+  }, [pathname, view]);
   const squadSubTab = useMemo(
     () => resolveSquadSubTabDisplay(pathname),
     [pathname]
@@ -212,6 +230,7 @@ export default function ManagerPage() {
   } | null>(null);
   const [showSaveMigration, setShowSaveMigration] = useState(false);
   const [onboardingRevision, setOnboardingRevision] = useState(0);
+  const [creatingCareer, setCreatingCareer] = useState(false);
 
   /** Slot whose career is already in React state — skip disk re-hydrate on tab switches. */
   const careerSlotRef = useRef<number | null>(null);
@@ -240,20 +259,25 @@ export default function ManagerPage() {
         return;
       }
       if (next === "landing") {
+        const target = "/manager";
+        pendingForwardNavRef.current = { path: target, view: "landing" };
         setManagerView(setView, "landing");
-        router.replace("/manager");
+        router.replace(target);
         return;
       }
 
       if (next === "club-select") {
+        const target = managerPathForView("club-select");
+        pendingForwardNavRef.current = { path: target, view: "club-select" };
         setManagerView(setView, "club-select");
-        router.replace(managerPathForView("club-select"));
+        router.replace(target);
         return;
       }
 
       if (isManagerNavView(next)) {
-        setManagerView(setView, next);
         const target = managerPathForView(next);
+        pendingForwardNavRef.current = { path: target, view: next };
+        setManagerView(setView, next);
         if (target !== pathname) {
           router.push(target);
         }
@@ -597,14 +621,33 @@ export default function ManagerPage() {
     }
   };
 
-  const handleSelectClub = (club: string) => {
-    const slot = getActiveSaveSlot();
-    const next = createNewCareer(club, slot);
-    careerSlotRef.current = slot;
-    setCareerState(next);
-    refreshSaveSlots();
-    goToView("hub");
-  };
+  const handleSelectClub = useCallback(
+    (club: string) => {
+      if (creatingCareer) return;
+      setCreatingCareer(true);
+      window.setTimeout(() => {
+        try {
+          const slot = getActiveSaveSlot();
+          const next = createNewCareer(club, slot);
+          careerSlotRef.current = slot;
+          setCareerState(next);
+          refreshSaveSlots();
+          goToView("hub");
+        } catch (err) {
+          setAlertDialog({
+            title: "Could not start career",
+            message:
+              err instanceof Error
+                ? err.message
+                : "Something went wrong creating your save.",
+          });
+        } finally {
+          setCreatingCareer(false);
+        }
+      }, 0);
+    },
+    [creatingCareer, goToView, refreshSaveSlots, setCareerState]
+  );
 
   const playResultSound = (won: boolean, fixture: ManagerCareer["fixtures"][0]) => {
     if (won) {
@@ -1199,8 +1242,10 @@ export default function ManagerPage() {
 
       {displayView === "club-select" && (
         <ManagerClubSelect
+          busy={creatingCareer}
           onSelect={handleSelectClub}
           onBack={() => {
+            if (creatingCareer) return;
             playUiClick();
             refreshSaveSlots();
             goToView("landing");

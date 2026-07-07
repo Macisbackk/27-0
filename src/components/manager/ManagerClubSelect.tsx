@@ -18,14 +18,17 @@ import { playUiClick } from "@/lib/sound";
 interface ManagerClubSelectProps {
   onSelect: (club: string) => void;
   onBack: () => void;
+  busy?: boolean;
 }
 
 function ClubSelectRow({
   club,
   onSelect,
+  disabled,
 }: {
   club: ManagerClubConfig;
   onSelect: (club: string) => void;
+  disabled?: boolean;
 }) {
   const attendance = getClubAttendanceProfile(club.name);
   const ratingStars = club.difficulty;
@@ -35,11 +38,13 @@ function ClubSelectRow({
     <li>
       <button
         type="button"
+        disabled={disabled}
         onClick={() => {
+          if (disabled) return;
           playUiClick();
           onSelect(club.name);
         }}
-        className={`${CARD.base} ${CARD.interactive} flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left sm:gap-3 sm:px-3`}
+        className={`${CARD.base} ${CARD.interactive} flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left sm:gap-3 sm:px-3 disabled:pointer-events-none disabled:opacity-50`}
       >
         <span
           className="w-1 shrink-0 self-stretch rounded-full"
@@ -95,7 +100,11 @@ function ClubSelectRow({
   );
 }
 
-export function ManagerClubSelect({ onSelect, onBack }: ManagerClubSelectProps) {
+export function ManagerClubSelect({
+  onSelect,
+  onBack,
+  busy = false,
+}: ManagerClubSelectProps) {
   const starGroups = useMemo(() => {
     const byStars = new Map<number, ManagerClubConfig[]>();
 
@@ -123,6 +132,12 @@ export function ManagerClubSelect({ onSelect, onBack }: ManagerClubSelectProps) 
         </p>
       </div>
 
+      {busy && (
+        <p className={`${TYPO.bodySm} text-center text-theme-primary`}>
+          Starting your career…
+        </p>
+      )}
+
       <div className={SPACING.stackMd}>
         {starGroups.map(({ stars, clubs }) => (
           <section key={stars}>
@@ -145,14 +160,24 @@ export function ManagerClubSelect({ onSelect, onBack }: ManagerClubSelectProps) 
             </p>
             <ul className="space-y-1.5" role="list">
               {clubs.map((club) => (
-                <ClubSelectRow key={club.name} club={club} onSelect={onSelect} />
+                <ClubSelectRow
+                  key={club.name}
+                  club={club}
+                  onSelect={onSelect}
+                  disabled={busy}
+                />
               ))}
             </ul>
           </section>
         ))}
       </div>
 
-      <GameButton variant="secondary" onClick={onBack} fullWidth={false}>
+      <GameButton
+        variant="secondary"
+        onClick={onBack}
+        fullWidth={false}
+        disabled={busy}
+      >
         Back
       </GameButton>
     </div>
