@@ -12,6 +12,8 @@ import {
 import { ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
 import {
   canAffordAdditionalWage,
+  evaluateClubSigningAppeal,
+  getComfortableSigningRating,
   getTransferBudget,
   getWageBillPercent,
   isWageOverBudget,
@@ -125,6 +127,8 @@ export function ManagerTransfers({
     }),
     [career]
   );
+
+  const comfortableTarget = getComfortableSigningRating(career.club);
 
   const listedPlayers = useMemo(() => {
     return career.leagueListedPlayers
@@ -398,6 +402,10 @@ export function ManagerTransfers({
             />
           </div>
         </div>
+        <p className={`mt-3 ${TYPO.bodySm} text-pitch-500`}>
+          Realistic targets sit around {comfortableTarget} rating — higher-rated
+          players cost premium fees and may refuse lower clubs.
+        </p>
       </ManagerSectionCard>
 
       <ManagerSubTabBar tabs={transferSubTabs} active={tab} onChange={switchTab} />
@@ -432,14 +440,26 @@ export function ManagerTransfers({
       {tab === "listed" && (
       <section className="space-y-3">
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
-          {listedPlayers.map(({ player, club, askingPrice }) => {
+          {listedPlayers.map(({ player, club }) => {
             const demand = getTransferDemand(career, player.id);
+            const effectiveFee = getSellerAskingPrice(
+              career,
+              player.id,
+              club,
+              true
+            );
+            const appeal = evaluateClubSigningAppeal(
+              career.club,
+              player.peakRating
+            );
             const isNegotiating = listedNegotiateId === player.id;
-            const canAffordFee = getTransferBudget(career) >= askingPrice;
+            const canAffordFee = getTransferBudget(career) >= effectiveFee;
             const canAffordAssistant =
+              appeal.allowed &&
               canAffordFee &&
               canAffordAdditionalWage(career, demand.wagePerYear);
             const canAffordNegotiated =
+              appeal.allowed &&
               canAffordFee &&
               canAffordAdditionalWage(career, listedOfferWage);
             return (
@@ -448,7 +468,7 @@ export function ManagerTransfers({
                 player={player}
                 club={club}
                 listed
-                fee={askingPrice}
+                fee={effectiveFee}
                 wagePerYear={isNegotiating ? listedOfferWage : demand.wagePerYear}
                 yearsRequested={
                   isNegotiating ? listedOfferYears : demand.yearsRequested
@@ -497,7 +517,7 @@ export function ManagerTransfers({
                           submitListedNegotiatedDeal(player.id, club)
                         }
                       >
-                        Submit offer — {formatWage(askingPrice)}
+                        Submit offer — {formatWage(effectiveFee)}
                       </GameButton>
                       <GameButton
                         variant="secondary"
@@ -513,12 +533,18 @@ export function ManagerTransfers({
                     </div>
                   </div>
                 ) : (
-                  <div className="grid gap-2 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    {!appeal.allowed && appeal.reason && (
+                      <p className={`${TYPO.bodySm} text-amber-300/90`}>
+                        {appeal.reason}
+                      </p>
+                    )}
+                    <div className="grid gap-2 sm:grid-cols-2">
                     <GameButton
                       variant="theme"
                       size="sm"
                       fullWidth
-                      disabled={!canAffordFee}
+                      disabled={!canAffordFee || !appeal.allowed}
                       onClick={() => openListedNegotiation(player.id)}
                     >
                       Negotiate deal
@@ -534,6 +560,7 @@ export function ManagerTransfers({
                     >
                       Leave to assistant
                     </GameButton>
+                    </div>
                   </div>
                 )}
               </ManagerTransferPlayerCard>
@@ -553,15 +580,17 @@ export function ManagerTransfers({
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
           {freeAgents.map(({ player, formerClub, playerId }) => {
             const demand = getTransferDemand(career, player.id);
+            const appeal = evaluateClubSigningAppeal(
+              career.club,
+              player.peakRating
+            );
             const isNegotiating = freeAgentNegotiateId === player.id;
-            const canAffordAssistant = canAffordAdditionalWage(
-              career,
-              demand.wagePerYear
-            );
-            const canAffordNegotiated = canAffordAdditionalWage(
-              career,
-              freeAgentOfferWage
-            );
+            const canAffordAssistant =
+              appeal.allowed &&
+              canAffordAdditionalWage(career, demand.wagePerYear);
+            const canAffordNegotiated =
+              appeal.allowed &&
+              canAffordAdditionalWage(career, freeAgentOfferWage);
             return (
               <ManagerTransferPlayerCard
                 key={playerId}
@@ -634,11 +663,18 @@ export function ManagerTransfers({
                     </div>
                   </div>
                 ) : (
-                  <div className="grid gap-2 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    {!appeal.allowed && appeal.reason && (
+                      <p className={`${TYPO.bodySm} text-amber-300/90`}>
+                        {appeal.reason}
+                      </p>
+                    )}
+                    <div className="grid gap-2 sm:grid-cols-2">
                     <GameButton
                       variant="theme"
                       size="sm"
                       fullWidth
+                      disabled={!appeal.allowed}
                       onClick={() => openFreeAgentNegotiation(player.id)}
                     >
                       Negotiate deal
@@ -654,6 +690,7 @@ export function ManagerTransfers({
                     >
                       Leave to assistant
                     </GameButton>
+                    </div>
                   </div>
                 )}
               </ManagerTransferPlayerCard>
@@ -700,21 +737,27 @@ export function ManagerTransfers({
         </div>
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
           {unlistedPlayers.map(({ player, club }) => {
-            const fee = getAskingPrice(
+            const effectiveFee = getSellerAskingPrice(
+              career,
               player.id,
-              false,
-              career.seed,
-              career.gameWeek
+              club,
+              false
+            );
+            const appeal = evaluateClubSigningAppeal(
+              career.club,
+              player.peakRating
             );
             const demand = getTransferDemand(career, player.id);
             const isOffering = offerPlayerId === player.id;
+            const canAffordBid =
+              appeal.allowed && getTransferBudget(career) >= effectiveFee * 1.1;
             return (
               <ManagerTransferPlayerCard
                 key={player.id}
                 player={player}
                 club={club}
                 listed={false}
-                fee={isOffering && offerFee > 0 ? offerFee : fee}
+                fee={isOffering && offerFee > 0 ? offerFee : effectiveFee}
                 wagePerYear={demand.wagePerYear}
                 yearsRequested={demand.yearsRequested}
               >
@@ -734,24 +777,33 @@ export function ManagerTransfers({
                       variant="theme"
                       size="sm"
                       fullWidth
+                      disabled={!appeal.allowed}
                       onClick={() => submitTransferOffer(player.id, club, false)}
                     >
                       Submit {formatWage(offerFee)} offer
                     </GameButton>
                   </div>
                 ) : (
-                  <GameButton
-                    variant="secondary"
-                    size="sm"
-                    fullWidth
-                    onClick={() => {
-                      playUiClick();
-                      setOfferPlayerId(player.id);
-                      setOfferFee(fee);
-                    }}
-                  >
-                    Make offer — from {formatWage(fee)}
-                  </GameButton>
+                  <div className="space-y-2">
+                    {!appeal.allowed && appeal.reason && (
+                      <p className={`${TYPO.bodySm} text-amber-300/90`}>
+                        {appeal.reason}
+                      </p>
+                    )}
+                    <GameButton
+                      variant="secondary"
+                      size="sm"
+                      fullWidth
+                      disabled={!canAffordBid}
+                      onClick={() => {
+                        playUiClick();
+                        setOfferPlayerId(player.id);
+                        setOfferFee(effectiveFee);
+                      }}
+                    >
+                      Make offer — from {formatWage(effectiveFee)}
+                    </GameButton>
+                  </div>
                 )}
               </ManagerTransferPlayerCard>
             );

@@ -38,6 +38,65 @@ export function getManagerCareerSlotKey(slot: number): string {
   return STORAGE_KEYS.managerCareerSlot(slot);
 }
 
+function getManagerCareerBackupKey(slot: number): string {
+  return STORAGE_KEYS.managerCareerBackup(slot);
+}
+
+function isValidCareerShape(parsed: Partial<ManagerCareer>): parsed is ManagerCareer {
+  return (
+    typeof parsed === "object" &&
+    parsed != null &&
+    typeof parsed.club === "string" &&
+    typeof parsed.seasonYear === "number" &&
+    typeof parsed.seed === "string"
+  );
+}
+
+function parseCareerJson(raw: string): ManagerCareer | null {
+  try {
+    const parsed = JSON.parse(raw) as Partial<ManagerCareer>;
+    return isValidCareerShape(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function stampUpdatedAt(career: ManagerCareer): ManagerCareer {
+  return { ...career, updatedAt: new Date().toISOString() };
+}
+
+function mirrorManagerCareerBackup(career: ManagerCareer, slot: number): void {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.setItem(
+      getManagerCareerBackupKey(slot),
+      JSON.stringify(stampUpdatedAt(career))
+    );
+  } catch {
+    // Best-effort — session backup must never block the main save path.
+  }
+}
+
+function clearManagerCareerBackup(slot: number): void {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.removeItem(getManagerCareerBackupKey(slot));
+  } catch {
+    // ignore
+  }
+}
+
+function readBackupCareer(slot: number): ManagerCareer | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(getManagerCareerBackupKey(slot));
+    if (!raw) return null;
+    return parseCareerJson(raw);
+  } catch {
+    return null;
+  }
+}
+
 export function getActiveSaveSlot(): number {
   if (typeof window === "undefined") return 0;
   migrateLegacySaveIfNeeded();
@@ -60,21 +119,27 @@ function readRawCareer(slot: number): ManagerCareer | null {
   migrateLegacySaveIfNeeded();
   try {
     const raw = localStorage.getItem(getManagerCareerSlotKey(slot));
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as Partial<ManagerCareer>;
-    if (
-      typeof parsed !== "object" ||
-      parsed == null ||
-      typeof parsed.club !== "string" ||
-      typeof parsed.seasonYear !== "number" ||
-      typeof parsed.seed !== "string"
-    ) {
-      return null;
+    if (raw) {
+      const parsed = parseCareerJson(raw);
+      if (parsed) return parsed;
     }
-    return parsed as ManagerCareer;
   } catch {
-    return null;
+    // Fall through to session backup.
   }
+
+  const backup = readBackupCareer(slot);
+  if (!backup) return null;
+
+  // Recover localStorage from the session mirror when primary storage is missing.
+  try {
+    localStorage.setItem(
+      getManagerCareerSlotKey(slot),
+      JSON.stringify(stampUpdatedAt(backup))
+    );
+  } catch {
+    // Still return backup so the career can load in-memory this session.
+  }
+  return backup;
 }
 
 export function summarizeManagerSaveSlot(slot: number): ManagerSaveSlotSummary {
@@ -107,12 +172,14 @@ export function writeManagerCareerRaw(
   slot?: number
 ): { ok: true } | { ok: false; error: string } {
   if (typeof window === "undefined") return { ok: true };
+  const targetSlot = slot ?? getActiveSaveSlot();
+  const stamped = stampUpdatedAt(career);
+  const payload = JSON.stringify(stamped);
+
+  mirrorManagerCareerBackup(stamped, targetSlot);
+
   try {
-    const targetSlot = slot ?? getActiveSaveSlot();
-    localStorage.setItem(
-      getManagerCareerSlotKey(targetSlot),
-      JSON.stringify({ ...career, updatedAt: new Date().toISOString() })
-    );
+    localStorage.setItem(getManagerCareerSlotKey(targetSlot), payload);
     return { ok: true };
   } catch (err) {
     const message =
@@ -126,7 +193,9 @@ export function writeManagerCareerRaw(
 
 export function deleteManagerCareerRaw(slot?: number): void {
   if (typeof window === "undefined") return;
-  localStorage.removeItem(getManagerCareerSlotKey(slot ?? getActiveSaveSlot()));
+  const targetSlot = slot ?? getActiveSaveSlot();
+  localStorage.removeItem(getManagerCareerSlotKey(targetSlot));
+  clearManagerCareerBackup(targetSlot);
 }
 
 export function hasManagerCareerInSlot(slot?: number): boolean {

@@ -1379,16 +1379,16 @@ export function GameBoard({
               activeSpinTarget && (
               <motion.div
                 key={choiceKey}
-                className={MODAL.backdrop}
+                className="recruitment-choice-backdrop fixed inset-0 z-40 flex items-center justify-center bg-black/82 p-3 sm:p-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
                 <motion.div
-                  className={`${CARD.panel} ${MODAL.panel} ${MODAL.panelPadding}`}
-                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                  className="w-full max-w-5xl max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden"
+                  initial={{ opacity: 0, y: 24, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 20 }}
+                  exit={{ opacity: 0, y: 16 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
                 >
                   <SlotTeamYearPicker

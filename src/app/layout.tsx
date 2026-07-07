@@ -55,14 +55,16 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: UI_THEME_BOOTSTRAP_SCRIPT }}
         />
       </head>
-      <body className="flex min-h-screen flex-col">
+      <body className="flex min-h-screen min-w-0 max-w-full flex-col overflow-x-clip">
         <AuthProvider>
           <CoachbeardMergeRunner />
           <UiThemeProvider />
           <SoundUnlock />
           <PwaInstallPrompt />
           <Header />
-          <main className="app-main flex flex-1 flex-col">{children}</main>
+          <main className="app-main flex min-w-0 max-w-full flex-1 flex-col overflow-x-clip">
+            {children}
+          </main>
           <SiteFooter />
         </AuthProvider>
         <Analytics />

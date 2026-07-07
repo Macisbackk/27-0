@@ -9,6 +9,7 @@ import { TYPO } from "@/lib/ui/typography";
 import {
   formatSquadRatingStars,
   getAllManagerClubConfigs,
+  MANAGER_STAR_TIER_BIOS,
   type ManagerClubConfig,
 } from "@/lib/manager/club-config";
 import { getClubAttendanceProfile } from "@/lib/manager/managerAttendance";
@@ -126,7 +127,7 @@ export function ManagerClubSelect({ onSelect, onBack }: ManagerClubSelectProps) 
         {starGroups.map(({ stars, clubs }) => (
           <section key={stars}>
             <h2
-              className={`mb-1.5 flex items-center gap-2 ${TYPO.sectionLabel}`}
+              className={`mb-1 flex items-center gap-2 ${TYPO.sectionLabel}`}
             >
               <span
                 className="font-mono text-accent-gold"
@@ -138,6 +139,10 @@ export function ManagerClubSelect({ onSelect, onBack }: ManagerClubSelectProps) 
                 {clubs.length} club{clubs.length === 1 ? "" : "s"}
               </span>
             </h2>
+            <p className={`mb-1.5 ${TYPO.bodySm} text-pitch-400`}>
+              {MANAGER_STAR_TIER_BIOS[stars] ??
+                "Board expectations scale with club status."}
+            </p>
             <ul className="space-y-1.5" role="list">
               {clubs.map((club) => (
                 <ClubSelectRow key={club.name} club={club} onSelect={onSelect} />

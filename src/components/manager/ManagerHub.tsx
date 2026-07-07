@@ -36,9 +36,7 @@ import {
 } from "@/lib/manager/managerAttendance";
 import { getManagerHubAlerts } from "@/lib/manager/managerHubAlerts";
 import { getManagerDifficultyPressure } from "@/lib/manager/managerDifficulty";
-import { shouldShowManagerOnboarding } from "@/lib/manager/managerOnboarding";
 import { ManagerHubAlertsPanel } from "@/components/manager/ManagerHubAlertsPanel";
-import { ManagerOnboardingPanel } from "@/components/manager/ManagerOnboardingPanel";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
@@ -209,7 +207,7 @@ function HubChallengeCupBracketPanel({
           </p>
         </div>
       </div>
-      <div className="mt-3">
+      <div className="mt-3 min-w-0 overflow-hidden">
         <BracketRecap
           matches={cup.matches}
           userClub={cup.userClub}
@@ -275,9 +273,6 @@ export function ManagerHub({
     null
   );
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
-  const [showOnboarding, setShowOnboarding] = useState(() =>
-    shouldShowManagerOnboarding(career)
-  );
 
   const hubAlerts = getManagerHubAlerts(career);
 
@@ -613,15 +608,7 @@ export function ManagerHub({
     ) : null;
 
   const commandCentre = (
-    <>
-      {showOnboarding && (
-        <ManagerOnboardingPanel
-          onNavigate={onNavigate}
-          onDismiss={() => setShowOnboarding(false)}
-        />
-      )}
-      <ManagerHubAlertsPanel alerts={hubAlerts} onNavigate={onNavigate} />
-    </>
+    <ManagerHubAlertsPanel alerts={hubAlerts} onNavigate={onNavigate} />
   );
 
   const seasonProgressCard = (

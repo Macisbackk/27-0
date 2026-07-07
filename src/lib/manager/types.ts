@@ -172,6 +172,15 @@ export interface ClubAttendanceData {
   attendanceFloor?: number;
 }
 
+export type FacilityType = "youth" | "training" | "stadium" | "commercial";
+
+export interface ClubFacilities {
+  youth: number;
+  training: number;
+  stadium: number;
+  commercial: number;
+}
+
 export interface GateIncomeRecord {
   fixtureId: string;
   round: number;
@@ -314,6 +323,7 @@ export type ManagerView =
   | "reserves"
   | "inbox"
   | "transfers"
+  | "club"
   | "fixtures"
   | "across-league"
   | "table"
@@ -526,6 +536,7 @@ export interface ManagerCareer {
   wageBudget: number;
   wageBill: number;
   attendanceData: ClubAttendanceData;
+  clubFacilities?: ClubFacilities;
   gateIncomeHistory: GateIncomeRecord[];
   challengeCup: ChallengeCupBracketState;
   playoffs?: PlayoffBracketState;

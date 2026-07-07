@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import {
   getSpinTeamsForVariant,
@@ -16,11 +16,11 @@ import { getClubColors } from "@/lib/clubs";
 import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { playSlotLand, playSlotSpinStart, playSlotSpinTick } from "@/lib/sound";
-import { CARD, MODAL } from "@/lib/ui/design-system";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { SlotReel, type SlotReelHandle } from "./SlotReel";
 
-const LAND_HOLD_MS = 240;
+const LAND_HOLD_MS = 320;
 const TICK_SOUND_INTERVAL = 4;
 
 interface RecruitmentSlotRevealProps {
@@ -38,7 +38,9 @@ export function RecruitmentSlotReveal({
   const teamReelRef = useRef<SlotReelHandle>(null);
   const yearReelRef = useRef<SlotReelHandle>(null);
   const shellRef = useRef<HTMLDivElement>(null);
-  const resultRef = useRef<HTMLParagraphElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
+  const [isSpinning, setIsSpinning] = useState(true);
+  const [landed, setLanded] = useState(false);
 
   const clubColors = useMemo(
     () => getClubColors(target.team),
@@ -66,6 +68,8 @@ export function RecruitmentSlotReveal({
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const lockReels = () => {
+      setIsSpinning(false);
+      setLanded(true);
       for (const shell of shellRef.current?.querySelectorAll(".slot-reveal-reel") ??
         []) {
         shell.classList.add("slot-reel-lock-flash");
@@ -157,31 +161,41 @@ export function RecruitmentSlotReveal({
   }, [teamPlan, yearPlan, onComplete, clubColors.primary, isEraSpin]);
 
   return (
-    <div className={`${MODAL.backdrop} z-50 bg-black/85`}>
+    <div
+      className={`recruitment-spin-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/88 ${SPACING.modalBackdrop}`}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Recruitment spin"
+    >
       <div
-        className={`${CARD.panel} ${MODAL.panel} w-full max-w-md overflow-hidden border border-accent-green/25 ${MODAL.panelPadding}`}
+        className={`recruitment-spin-panel ${CARD.elevated} w-full max-w-lg overflow-hidden border border-accent-green/30 shadow-[0_0_48px_rgba(34,197,94,0.12)]`}
+        style={{
+          boxShadow: `0 0 48px rgba(34,197,94,0.12), inset 4px 0 0 ${clubColors.primary}`,
+        }}
       >
         <div
-          className="border-b border-pitch-700/50 px-4 py-3 text-center sm:px-6 sm:py-4"
+          className="border-b border-pitch-700/50 px-5 py-4 text-center sm:px-8 sm:py-5"
           style={{
-            background: `linear-gradient(180deg, ${clubColors.primary}18 0%, transparent 100%)`,
+            background: `linear-gradient(180deg, ${clubColors.primary}22 0%, transparent 100%)`,
           }}
         >
           <p className={TYPO.sectionLabel}>Recruitment draw</p>
-          <p className="mt-1 font-display text-base font-bold text-white sm:text-lg">
-            Spin for your signing
+          <p className="mt-1 font-display text-lg font-bold text-white sm:text-xl">
+            {isSpinning ? "Spinning…" : "You landed on"}
           </p>
         </div>
 
-        <div ref={shellRef} className="px-3 py-4 sm:px-6 sm:py-6">
+        <div ref={shellRef} className="px-4 py-6 sm:px-8 sm:py-8">
           <div
-            className={`flex max-w-full items-stretch justify-center ${
-              isEraSpin ? "gap-1.5 sm:gap-2.5" : ""
+            className={`recruitment-spin-reels flex max-w-full items-stretch justify-center ${
+              isEraSpin ? "gap-2 sm:gap-3" : ""
             }`}
           >
             <div
-              className={`slot-reveal-reel min-w-0 rounded-xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1 py-0 ${
-                isEraSpin ? "flex-1" : "w-full max-w-sm"
+              className={`slot-reveal-reel recruitment-spin-reel min-w-0 rounded-2xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1.5 py-1 ${
+                isEraSpin ? "flex-1" : "w-full"
+              } ${isSpinning ? "recruitment-spin-reel--active" : ""} ${
+                landed ? "recruitment-spin-reel--landed" : ""
               }`}
             >
               <SlotReel
@@ -194,7 +208,11 @@ export function RecruitmentSlotReveal({
               />
             </div>
             {isEraSpin && yearPlan && (
-              <div className="slot-reveal-reel slot-reveal-year-reel min-w-0 shrink-0 flex-1 rounded-xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1 py-0">
+              <div
+                className={`slot-reveal-reel slot-reveal-year-reel recruitment-spin-reel recruitment-spin-year-reel min-w-0 shrink-0 flex-1 rounded-2xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1.5 py-1 ${
+                  isSpinning ? "recruitment-spin-reel--active" : ""
+                } ${landed ? "recruitment-spin-reel--landed" : ""}`}
+              >
                 <SlotReel
                   ref={yearReelRef}
                   strip={yearPlan.strip}
@@ -205,21 +223,26 @@ export function RecruitmentSlotReveal({
             )}
           </div>
 
-          <p
+          <div
             ref={resultRef}
             hidden
-            className="mt-3 text-center font-display text-sm font-bold text-white sm:text-base"
+            className="mt-5 text-center"
           >
-            {target.team}
-            {isEraSpin && (
-              <>
-                {" "}
-                <span className="text-accent-green">
-                  {formatShortYear(target.year)}
-                </span>
-              </>
-            )}
-          </p>
+            <p className="font-display text-xl font-black text-white sm:text-2xl">
+              {target.team}
+              {isEraSpin && (
+                <>
+                  {" "}
+                  <span className="text-accent-green">
+                    {formatShortYear(target.year)}
+                  </span>
+                </>
+              )}
+            </p>
+            <p className={`mt-1.5 ${TYPO.bodySm} text-gray-400`}>
+              Choose your signing…
+            </p>
+          </div>
         </div>
       </div>
     </div>

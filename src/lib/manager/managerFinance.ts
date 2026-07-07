@@ -1,35 +1,134 @@
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { ManagerCareer, ManagerFinance, ManagerSeasonSummary } from "./types";
-import { getManagerClubConfig } from "./club-config";
+import { getManagerClubStarRating } from "./club-config";
 import { computeWageBill } from "./managerContracts";
 import { getWageBudgetForClub } from "./managerContracts";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { getUserLeaguePosition } from "./managerFixtures";
+import { getManagerModePlayerRating } from "./managerSquadRatings";
+import { getManagerPlayer } from "./managerPlayers";
 
 /** Global scale for manager-mode wages and transfer budgets. */
 export const MANAGER_ECONOMY_SCALE = 0.85;
+
+/** Season transfer budget ranges [min, max] by club star tier (before economy scale). */
+const TRANSFER_RANGE_BY_STARS: Record<number, [number, number]> = {
+  5: [950_000, 1_400_000],
+  4: [700_000, 1_000_000],
+  3: [480_000, 720_000],
+  2: [300_000, 480_000],
+  1: [200_000, 340_000],
+};
+
+/** Max rating a club comfortably recruits without heavy fee / wage premiums. */
+const COMFORT_RATING_BY_STARS: Record<number, number> = {
+  5: 95,
+  4: 88,
+  3: 84,
+  2: 80,
+  1: 77,
+};
 
 export function scaleManagerEconomy(amount: number): number {
   return Math.round(amount * MANAGER_ECONOMY_SCALE);
 }
 
-/** First-season transfer budget ranges [min, max] by club. */
-const FIRST_SEASON_TRANSFER_RANGE: Record<string, [number, number]> = {
-  "Wigan Warriors": [1_800_000, 2_500_000],
-  "St Helens": [1_600_000, 2_300_000],
-  "Leeds Rhinos": [1_600_000, 2_300_000],
-  "Warrington Wolves": [1_500_000, 2_200_000],
-  "Hull KR": [1_300_000, 2_000_000],
-  "Hull FC": [1_200_000, 1_800_000],
-  "Catalans Dragons": [1_200_000, 1_800_000],
-  "Leigh Leopards": [1_000_000, 1_600_000],
-  "Bradford Bulls": [900_000, 1_400_000],
-  "Wakefield Trinity": [850_000, 1_300_000],
-  "Castleford Tigers": [800_000, 1_200_000],
-  "Huddersfield Giants": [800_000, 1_200_000],
-  "Toulouse Olympique": [750_000, 1_100_000],
-  "York Knights": [700_000, 1_000_000],
-};
+export function getClubStarTier(club: string): number {
+  return getManagerClubStarRating(club);
+}
+
+export function getComfortableSigningRating(club: string): number {
+  const stars = getClubStarTier(club);
+  return COMFORT_RATING_BY_STARS[stars] ?? COMFORT_RATING_BY_STARS[3]!;
+}
+
+/** Inflated transfer fee when a smaller club chases players above their tier. */
+export function getTransferFeePremium(
+  club: string,
+  playerRating: number
+): number {
+  const comfortable = getComfortableSigningRating(club);
+  if (playerRating <= comfortable) return 1;
+  const gap = playerRating - comfortable;
+  return 1 + gap * 0.14;
+}
+
+export function getBuyerAdjustedTransferFee(
+  club: string,
+  baseFee: number,
+  playerRating: number
+): number {
+  return Math.round(baseFee * getTransferFeePremium(club, playerRating));
+}
+
+export interface ClubSigningAppeal {
+  allowed: boolean;
+  reason?: string;
+  wagePremium: number;
+  feePremium: number;
+}
+
+/** Whether a club can realistically attract a player — gates York/Huddersfield from elite signings. */
+export function evaluateClubSigningAppeal(
+  club: string,
+  playerRating: number
+): ClubSigningAppeal {
+  const stars = getClubStarTier(club);
+  const comfortable = getComfortableSigningRating(club);
+  const feePremium = getTransferFeePremium(club, playerRating);
+
+  if (playerRating <= comfortable) {
+    return { allowed: true, wagePremium: 1, feePremium: 1 };
+  }
+
+  const gap = playerRating - comfortable;
+
+  if (stars <= 1 && playerRating >= 84) {
+    return {
+      allowed: false,
+      feePremium,
+      wagePremium: 1,
+      reason:
+        "Players of this calibre are not interested in your club — target lower-rated squad options.",
+    };
+  }
+  if (stars <= 2 && playerRating >= 88) {
+    return {
+      allowed: false,
+      feePremium,
+      wagePremium: 1,
+      reason:
+        "Elite players rarely join clubs at your level — look for squad players around 80 rating.",
+    };
+  }
+  if (gap > 5) {
+    return {
+      allowed: false,
+      feePremium,
+      wagePremium: 1,
+      reason: `This signing is above your club's reach — scout targets around ${comfortable} rating or lower.`,
+    };
+  }
+
+  return {
+    allowed: true,
+    feePremium,
+    wagePremium: 1 + gap * 0.07,
+  };
+}
+
+export function getManagerPlayerListingRating(
+  career: ManagerCareer,
+  playerId: string
+): number {
+  const player = getManagerPlayer(career, playerId);
+  if (!player) return 0;
+  return getManagerModePlayerRating(
+    playerId,
+    player.name,
+    player.peakRating
+  );
+}
 
 export type RevenueSource =
   | "gate"
@@ -87,8 +186,8 @@ export function getTransferBudget(career: ManagerCareer): number {
   return career.managerFinance?.transferBudget ?? career.budget;
 }
 
-/** Signing grace above strict wage budget (5%). */
-export const WAGE_GRACE_MULTIPLIER = 1.05;
+/** No overspend grace — wage budget is a hard ceiling. */
+export const WAGE_GRACE_MULTIPLIER = 1;
 
 export function getWageBudgetCeiling(career: ManagerCareer): number {
   return Math.round(career.wageBudget * WAGE_GRACE_MULTIPLIER);
@@ -128,7 +227,8 @@ export function computeFirstSeasonTransferBudget(
   club: string,
   seed: string
 ): number {
-  const range = FIRST_SEASON_TRANSFER_RANGE[club] ?? [700_000, 1_000_000];
+  const stars = getClubStarTier(club);
+  const range = TRANSFER_RANGE_BY_STARS[stars] ?? TRANSFER_RANGE_BY_STARS[3]!;
   const t = hashSeed(seed, club) % 1000;
   const raw = Math.round(range[0] + ((range[1] - range[0]) * t) / 1000);
   return scaleManagerEconomy(raw);
@@ -160,13 +260,13 @@ export function computeSeasonTransferBudget(
   if (wins >= 18) base += 150_000;
   else if (wins >= 12) base += 75_000;
 
-  if (summary?.trophies.includes("Challenge Cup")) base += 200_000;
-  else if (summary?.challengeCupResult?.includes("Final")) base += 100_000;
+  if (summary?.trophies.includes("Challenge Cup")) base += 120_000;
+  else if (summary?.challengeCupResult?.includes("Final")) base += 60_000;
 
-  const config = getManagerClubConfig(club);
-  const scaledClubBudget = scaleManagerEconomy(config.budget);
-  const floor = Math.round(scaledClubBudget * 0.85);
-  const cap = Math.round(scaledClubBudget * 2.2);
+  const stars = getClubStarTier(club);
+  const range = TRANSFER_RANGE_BY_STARS[stars] ?? TRANSFER_RANGE_BY_STARS[3]!;
+  const floor = scaleManagerEconomy(range[0]);
+  const cap = scaleManagerEconomy(Math.round(range[1] * 1.3));
   return Math.max(floor, Math.min(cap, base));
 }
 

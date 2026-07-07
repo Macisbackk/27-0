@@ -21,6 +21,7 @@ import {
   createYouthProspect,
   reconcileLeagueClubReserveCounts,
 } from "./managerReserves";
+import { getClubFacilities, getYouthIntakeBonus } from "./managerFacilities";
 
 /** Cheap youth/reserve wages — well below first-team deals. */
 export function generateReserveYouthContract(
@@ -226,15 +227,21 @@ export function tickReserveContractsForNewSeason(career: ManagerCareer): {
   return { career: nextCareer, leaving };
 }
 
-export function rollYouthIntakeCount(seed: string, seasonYear: number): number {
+export function rollYouthIntakeCount(
+  seed: string,
+  seasonYear: number,
+  youthLevel = 0
+): number {
   const rng = seedrandom(`${seed}-youth-intake-s${seasonYear}`);
-  return 3 + Math.floor(rng() * 4);
+  const base = 3 + Math.floor(rng() * 4);
+  return Math.min(8, base + getYouthIntakeBonus(youthLevel));
 }
 
 export function generateYearlyYouthProspects(
   career: ManagerCareer
 ): ManagerReservePlayer[] {
-  const count = rollYouthIntakeCount(career.seed, career.seasonYear);
+  const youthLevel = getClubFacilities(career).youth;
+  const count = rollYouthIntakeCount(career.seed, career.seasonYear, youthLevel);
   const positions: Position[] = [];
   for (const { position, count: c } of SQUAD_STRUCTURE) {
     for (let i = 0; i < c; i++) positions.push(position);
@@ -246,7 +253,14 @@ export function generateYearlyYouthProspects(
   for (let i = 0; i < count; i++) {
     const pos = shuffled[i % shuffled.length] ?? "CENTRE";
     prospects.push(
-      createYouthProspect(career.seed, career.seasonYear, i, pos, career.club)
+      createYouthProspect(
+        career.seed,
+        career.seasonYear,
+        i,
+        pos,
+        career.club,
+        youthLevel
+      )
     );
   }
   return prospects;

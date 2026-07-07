@@ -1,4 +1,5 @@
 import seedrandom from "seedrandom";
+import { getFacilityDevelopmentMultiplier } from "./managerFacilities";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { decomposeRLScore, pickRLScore, snapToRLScore } from "../game/rl-scores";
 import type { Position } from "../types";
@@ -120,19 +121,33 @@ function pickReserveNationality(rng: () => number, club?: string): string {
   return NATIONALITIES[Math.floor(rng() * NATIONALITIES.length)]!;
 }
 
-function pickPotential(age: number, rng: () => number): number {
-  const roll = rng();
-  if (roll < 0.04) return 85 + Math.floor(rng() * 6);
-  if (roll < 0.14) return 80 + Math.floor(rng() * 5);
-  if (roll < 0.35) return 75 + Math.floor(rng() * 5);
-  if (roll < 0.65) return 70 + Math.floor(rng() * 5);
-  return 65 + Math.floor(rng() * 5);
+function pickPotential(
+  age: number,
+  rng: () => number,
+  youthLevel = 0
+): number {
+  const shift = youthLevel * 0.012;
+  const roll = Math.min(0.99, rng() - shift);
+  let potential: number;
+  if (roll < 0.04) potential = 85 + Math.floor(rng() * 6);
+  else if (roll < 0.14) potential = 80 + Math.floor(rng() * 5);
+  else if (roll < 0.35) potential = 75 + Math.floor(rng() * 5);
+  else if (roll < 0.65) potential = 70 + Math.floor(rng() * 5);
+  else potential = 65 + Math.floor(rng() * 5);
+  const floor = 65 + youthLevel * 2;
+  return Math.min(92, Math.max(floor, potential + Math.floor(youthLevel * 0.35)));
 }
 
-function ratingForAge(age: number, potential: number, rng: () => number): number {
-  if (age <= 18) return 55 + Math.floor(rng() * 14);
-  if (age <= 20) return 60 + Math.floor(rng() * 13);
-  return 63 + Math.floor(rng() * 13);
+function ratingForAge(
+  age: number,
+  potential: number,
+  rng: () => number,
+  youthLevel = 0
+): number {
+  const boost = youthLevel * 2;
+  if (age <= 18) return 55 + Math.floor(rng() * 14) + boost;
+  if (age <= 20) return 60 + Math.floor(rng() * 13) + boost;
+  return 63 + Math.floor(rng() * 13) + boost;
 }
 
 export function getPotentialTier(potential: number): string {
@@ -174,6 +189,8 @@ export interface YouthGrowthInput {
   developmentRate: number;
   playedFirstTeam?: boolean;
   playedReserve?: boolean;
+  /** Youth + training facility multiplier. */
+  facilityMultiplier?: number;
 }
 
 /** Chance of +1 (or rarely +2) toward potential this match week. */
@@ -203,6 +220,8 @@ export function computeYouthGrowthChance(input: YouthGrowthInput): number {
   if (input.playedFirstTeam) chance *= 1.35;
   else if (input.playedReserve) chance *= 1;
   else chance *= 0.85;
+
+  chance *= input.facilityMultiplier ?? 1;
 
   return Math.min(0.38, Math.max(0, chance));
 }
@@ -248,6 +267,7 @@ export function applyYouthMatchDevelopment(
   context: { round: number; matchdayIds: Set<string> }
 ): ManagerCareer {
   const rng = seedrandom(`${career.seed}-youth-ft-r${context.round}`);
+  const facilityMultiplier = getFacilityDevelopmentMultiplier(career);
   const playerDevelopment = { ...(career.playerDevelopment ?? {}) };
   const playerRegistry = { ...career.playerRegistry };
   let changed = false;
@@ -271,6 +291,7 @@ export function applyYouthMatchDevelopment(
         potentialRating: dev.potential,
         developmentRate,
         playedFirstTeam: context.matchdayIds.has(ps.playerId),
+        facilityMultiplier,
       },
       rng
     );
@@ -301,6 +322,7 @@ export function applyYouthMatchDevelopment(
         potentialRating: reserve.potentialRating,
         developmentRate: reserve.developmentRate,
         playedFirstTeam: true,
+        facilityMultiplier,
       },
       rng
     );
@@ -327,14 +349,15 @@ function generateReservePlayer(
   seed: string,
   index: number,
   position: Position,
-  club?: string
+  club?: string,
+  youthLevel = 0
 ): ManagerReservePlayer {
   const rng = seedrandom(`${seed}-reserve-${index}`);
   const age = 17 + Math.floor(rng() * 6);
-  const potential = pickPotential(age, rng);
+  const potential = pickPotential(age, rng, youthLevel);
   const rating = Math.min(
     potential,
-    ratingForAge(age, potential, rng)
+    ratingForAge(age, potential, rng, youthLevel)
   );
   const { first, last } = pickReserveName(rng, club);
 
@@ -368,13 +391,15 @@ export function createYouthProspect(
   seasonYear: number,
   index: number,
   position: Position,
-  club?: string
+  club?: string,
+  youthLevel = 0
 ): ManagerReservePlayer {
   const player = generateReservePlayer(
     `${seed}-y${seasonYear}`,
     index,
     position,
-    club
+    club,
+    youthLevel
   );
   return {
     ...player,
@@ -631,6 +656,7 @@ export function applyReserveMatchDevelopment(
   }
 
   const rng = seedrandom(`${career.seed}-res-dev-r${result.round}`);
+  const facilityMultiplier = getFacilityDevelopmentMultiplier(career);
   const reserves = career.reserves.map((r) => {
     let next = { ...r };
     if (result.userWon) next.form = Math.min(99, next.form + 2);
@@ -652,6 +678,7 @@ export function applyReserveMatchDevelopment(
           potentialRating: next.potentialRating,
           developmentRate: next.developmentRate,
           playedReserve: played,
+          facilityMultiplier,
         },
         rng
       );

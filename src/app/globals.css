@@ -71,17 +71,37 @@
   --manager-mobile-playbar-h: calc(1rem + 2.75rem);
 }
 
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+@media (min-width: 1024px) {
+  html {
+    scrollbar-gutter: stable;
+  }
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   @apply antialiased;
   font-family: var(--font-body);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
   overflow-x: clip;
 }
 
-html {
-  scrollbar-gutter: stable;
-  overflow-x: clip;
+.app-header,
+.app-main,
+.site-footer {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 @media (max-width: 639px) {
@@ -1417,6 +1437,59 @@ html {
     overflow: hidden;
   }
 
+  .recruitment-spin-reel {
+    --slot-reel-item-h: 52px;
+    min-height: calc(var(--slot-reel-item-h) * 3);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 8px 28px rgba(0, 0, 0, 0.35);
+  }
+
+  .recruitment-spin-reel--active {
+    animation: recruitmentSpinPulse 1.1s ease-in-out infinite;
+  }
+
+  .recruitment-spin-reel--landed {
+    animation: none;
+  }
+
+  @keyframes recruitmentSpinPulse {
+    0%,
+    100% {
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 8px 28px rgba(0, 0, 0, 0.35);
+    }
+    50% {
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 8px 32px rgba(34, 197, 94, 0.14);
+    }
+  }
+
+  .recruitment-spin-backdrop {
+    backdrop-filter: blur(6px);
+  }
+
+  .recruitment-spin-panel {
+    animation: recruitmentSpinPanelIn 0.35s ease-out;
+  }
+
+  @keyframes recruitmentSpinPanelIn {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .recruitment-choice-backdrop {
+    backdrop-filter: blur(4px);
+  }
+
   .slot-reveal-display-text {
     font-size: clamp(0.68rem, 2.1vw + 0.38rem, 0.92rem);
     line-height: 1;
@@ -1451,6 +1524,26 @@ html {
     white-space: nowrap;
     padding-inline: 0.15rem;
     font-size: clamp(0.62rem, 1.9vw + 0.32rem, 0.8rem);
+  }
+
+  .recruitment-spin-reel .slot-reveal-team-name {
+    font-size: clamp(0.72rem, 2.2vw + 0.35rem, 0.95rem);
+  }
+
+  .recruitment-spin-year-reel {
+    width: 6rem;
+    min-width: 6rem;
+  }
+
+  @media (min-width: 640px) {
+    .recruitment-spin-year-reel {
+      width: 7rem;
+      min-width: 7rem;
+    }
+
+    .recruitment-spin-reel {
+      --slot-reel-item-h: 56px;
+    }
   }
 
   .slot-reveal-spinning {

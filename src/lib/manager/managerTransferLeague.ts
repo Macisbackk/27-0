@@ -29,7 +29,7 @@ import { getManagerPlayer } from "./managerPlayers";
 import { getTransferDemand } from "./managerTransfers";
 import { createInitialPlayerState } from "./managerSquad";
 import { addPlayersToFreeAgents, completeFreeAgentSigning, isFreeAgent } from "./managerFreeAgents";
-import { syncManagerFinance, deductTransferFee, addTransferIncome, getTransferBudget, canAffordAdditionalWage } from "./managerFinance";
+import { syncManagerFinance, deductTransferFee, addTransferIncome, getTransferBudget, canAffordAdditionalWage, evaluateClubSigningAppeal, getBuyerAdjustedTransferFee, getManagerPlayerListingRating, computeFirstSeasonTransferBudget } from "./managerFinance";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import {
   createPlayerSaleMessage,
@@ -60,12 +60,12 @@ function invalidatePlayerTransferOffers(
   };
 }
 
-export function initClubFunds(userClub: string): Record<string, number> {
+export function initClubFunds(userClub: string, seed = "init"): Record<string, number> {
   const funds: Record<string, number> = {};
   for (const club of CURRENT_PLAYABLE_CLUBS) {
-    funds[club] = getManagerClubConfig(club).budget;
+    funds[club] = computeFirstSeasonTransferBudget(club, `${seed}-ai`);
   }
-  funds[userClub] = getManagerClubConfig(userClub).budget;
+  funds[userClub] = computeFirstSeasonTransferBudget(userClub, seed);
   return funds;
 }
 
@@ -221,11 +221,16 @@ export function getSellerAskingPrice(
   club: string,
   listed: boolean
 ): number {
+  let base: number;
   if (listed) {
     const listedPrice = getLeagueListingAskingPrice(career, playerId, club);
-    if (listedPrice != null) return listedPrice;
+    if (listedPrice != null) base = listedPrice;
+    else base = getAskingPrice(playerId, listed, career.seed, career.gameWeek);
+  } else {
+    base = getAskingPrice(playerId, listed, career.seed, career.gameWeek);
   }
-  return getAskingPrice(playerId, listed, career.seed, career.gameWeek);
+  const rating = getManagerPlayerListingRating(career, playerId);
+  return getBuyerAdjustedTransferFee(career.club, base, rating);
 }
 
 export function listPlayerForTransfer(
@@ -426,6 +431,12 @@ export function evaluateBuyOffer(
   const minFee = listed ? asking : asking * 1.1;
   let feeAcceptedSoftly = false;
 
+  const rating = getManagerPlayerListingRating(career, playerId);
+  const appeal = evaluateClubSigningAppeal(career.club, rating);
+  if (!appeal.allowed) {
+    return { accepted: false, reason: appeal.reason ?? "Signing blocked." };
+  }
+
   if (offer.transferFee < minFee) {
     if (
       trySellerAcceptsReducedFee(
@@ -451,8 +462,8 @@ export function evaluateBuyOffer(
   }
 
   const demand = getTransferDemand(career, playerId);
-  const rating = player.peakRating ?? 70;
-  if (offer.wagePerYear < demand.wagePerYear * 0.9) {
+  const minWage = Math.round(demand.wagePerYear * appeal.wagePremium);
+  if (offer.wagePerYear < minWage * 0.9) {
     return { accepted: false, reason: "Wage offer too low." };
   }
   if (offer.yearsRequested < demand.yearsRequested && rating >= 75) {

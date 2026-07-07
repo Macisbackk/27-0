@@ -46,7 +46,7 @@ export function generateReserveReportMessage(
   return {
     id: `reserve-report-w${career.gameWeek}`,
     type: "reserve_report",
-    title: "Reserve Update",
+    title: "Monthly Reserve Report",
     body: lines.join("\n"),
     week: career.gameWeek,
     season: career.seasonYear,
@@ -67,4 +67,30 @@ export function maybeAddReserveReport(career: ManagerCareer): ManagerCareer {
     ...pushInboxMessage(career, msg),
     lastReserveReportWeek: career.gameWeek,
   };
+}
+
+/** Unread monthly reserve report — surfaced as a popup on the hub. */
+export function getPendingReserveReportPopup(
+  career: ManagerCareer
+): InboxMessage | undefined {
+  return career.inboxMessages.find(
+    (m) => m.type === "reserve_report" && !m.read
+  );
+}
+
+export function acknowledgeReserveReportPopup(
+  career: ManagerCareer,
+  messageId: string
+): ManagerCareer {
+  return {
+    ...career,
+    inboxMessages: career.inboxMessages.map((m) =>
+      m.id === messageId ? { ...m, read: true, resolved: true } : m
+    ),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+export function getReserveReportMonth(career: ManagerCareer): number {
+  return Math.max(1, Math.floor(career.gameWeek / REPORT_INTERVAL_WEEKS));
 }

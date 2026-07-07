@@ -24,6 +24,8 @@ export const STORAGE_KEYS = {
   /** @deprecated Legacy single save — migrated to slot 0 */
   managerCareer: "27-0-manager-career",
   managerCareerSlot: (slot: number) => `27-0-manager-career-slot-${slot}`,
+  /** Session backup when localStorage write fails or before tab teardown on mobile. */
+  managerCareerBackup: (slot: number) => `27-0-manager-career-backup-${slot}`,
   managerStats: "27-0-manager-stats",
   managerLeaderboard: "27-0-manager-leaderboard",
   managerActiveSlot: "27-0-manager-active-slot",

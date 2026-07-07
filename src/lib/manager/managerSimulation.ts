@@ -155,6 +155,7 @@ import {
   generateManagerMatchBio,
   selectManagerManOfTheMatch,
 } from "./manager-match-summary";
+import { getCommercialMatchIncomeMultiplier } from "./managerFacilities";
 import { syncManagerFinance, applyClubRevenue } from "./managerFinance";
 
 export { getTacticModifiers } from "./managerTacticsScoring";
@@ -234,6 +235,13 @@ export function applyManagerMatchResult(
     return matchApplyFail(
       career,
       "Play-off bracket is not ready for this result. Try again from the hub."
+    );
+  }
+
+  if (career.fixtures.some((f) => f.fixtureId === sched.id)) {
+    return matchApplyFail(
+      career,
+      "This fixture result was already recorded."
     );
   }
 
@@ -543,15 +551,20 @@ export function applyManagerMatchResult(
     )
   );
 
+  const commercialMult = getCommercialMatchIncomeMultiplier(
+    career.clubFacilities?.commercial ?? 0
+  );
   const matchIncome = isMagicWeekendFixture(sched)
     ? 0
-    : isFriendly
-        ? won
-          ? 4_000
-          : 2_000
-        : won
-          ? 15_000
-          : 6_000;
+    : Math.round(
+        (isFriendly
+          ? won
+            ? 4_000
+            : 2_000
+          : won
+            ? 15_000
+            : 6_000) * commercialMult
+      );
   const cupBonus = isCup && won ? 30_000 : 0;
 
   const nextFixtureIndex =
@@ -762,6 +775,7 @@ export function previewManagerMatchScoreline(
       userRatingOverride: userRating,
       cupMode: sched.competition === "challenge_cup",
       managerCareerMode: true,
+      matchKey: isFriendly ? `${simCareer.seed}-${sched.id}` : undefined,
     }
   );
 

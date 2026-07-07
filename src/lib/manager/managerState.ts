@@ -22,6 +22,11 @@ import {
   getWageBudgetForClub,
 } from "./managerContracts";
 import { createClubAttendanceData, syncClubAttendanceData } from "./managerAttendance";
+import {
+  createDefaultClubFacilities,
+  ensureClubFacilities,
+  getEffectiveStadiumCapacity,
+} from "./managerFacilities";
 import { createManagerChallengeCup, reconcileChallengeCupFromFixtures } from "./managerChallengeCup";
 import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubReserveCounts } from "./managerReserves";
 import { stampManagerSaveVersion } from "./managerSaveVersion";
@@ -115,9 +120,13 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     challengeCup = createManagerChallengeCup(raw.seed ?? "migrate", raw.club);
   }
 
+  const clubFacilities = ensureClubFacilities(raw.clubFacilities);
   const attendanceData = raw.attendanceData
-    ? syncClubAttendanceData(raw.club, raw.attendanceData)
-    : createClubAttendanceData(raw.club);
+    ? syncClubAttendanceData(raw.club, raw.attendanceData, clubFacilities)
+    : {
+        ...createClubAttendanceData(raw.club),
+        stadiumCapacity: getEffectiveStadiumCapacity(raw.club, clubFacilities),
+      };
 
   const schedule = (raw.schedule ?? []).map((s) => ({
     ...s,
@@ -157,6 +166,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     wageBudget,
     wageBill,
     attendanceData,
+    clubFacilities,
     gateIncomeHistory: (raw.gateIncomeHistory ?? []).map((r) =>
       hydrateGateIncomeRecord(r)
     ),
@@ -309,6 +319,14 @@ export function saveManagerCareer(
   return writeManagerCareerRaw(prepareManagerCareerForSave(career), slot);
 }
 
+/** Immediate disk flush for lifecycle hooks (page hide, unmount, etc.). */
+export function flushManagerCareerToDisk(
+  career: ManagerCareer,
+  slot?: number
+): { ok: true } | { ok: false; error: string } {
+  return saveManagerCareer(career, slot);
+}
+
 export function deleteManagerCareer(slot?: number): void {
   deleteManagerCareerRaw(slot);
 }
@@ -341,6 +359,12 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     reserveContracts,
   } as ManagerCareer);
 
+  const clubFacilities = createDefaultClubFacilities();
+  const attendanceData = {
+    ...createClubAttendanceData(club),
+    stadiumCapacity: getEffectiveStadiumCapacity(club, clubFacilities),
+  };
+
   const career: ManagerCareer = {
     id: seed,
     club,
@@ -358,7 +382,8 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     contracts,
     wageBudget,
     wageBill,
-    attendanceData: createClubAttendanceData(club),
+    attendanceData,
+    clubFacilities,
     gateIncomeHistory: [],
     challengeCup: createManagerChallengeCup(seed, club),
     matchdayXiii: lineup.xiiiIds,

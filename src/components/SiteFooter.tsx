@@ -18,7 +18,7 @@ export function SiteFooter() {
   if (minimalChrome) {
     return (
       <footer className="site-footer relative z-10 mt-auto shrink-0 border-t border-pitch-700/45 bg-pitch-950/75 px-4 py-3 backdrop-blur-md">
-        <p className={`text-center ${TYPO.bodySm}`}>{DISCLAIMER}</p>
+        <p className={`text-center break-words ${TYPO.bodySm}`}>{DISCLAIMER}</p>
       </footer>
     );
   }
@@ -33,7 +33,7 @@ export function SiteFooter() {
     >
       <div className="mx-auto max-w-4xl">
         <FooterSupportLinks />
-        <p className={`mt-4 text-center ${TYPO.bodySm}`}>{DISCLAIMER}</p>
+        <p className={`mt-4 text-center break-words ${TYPO.bodySm}`}>{DISCLAIMER}</p>
       </div>
     </footer>
   );

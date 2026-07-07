@@ -1,8 +1,7 @@
 import seedrandom from "seedrandom";
 import type { MatchFixture } from "../game/season-simulation";
 import { snapToRLScore, decomposeRLScore } from "../game/rl-scores";
-import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
-import { getOpponentMatchRating } from "../game/opponent-scorers";
+import { getManagerOpponentMatchRating } from "./managerLeagueRosters";
 import type { Position } from "../types";
 import type {
   LiveMatchCommand,
@@ -434,6 +433,23 @@ export function createLiveMatch(
   };
 }
 
+/** Opponent strength for live ticks — friendlies use the picked opponent's saved rating. */
+function resolveLiveOpponentRating(
+  career: ManagerCareer,
+  state: LiveMatchState
+): number {
+  if (state.competition === "friendly") {
+    const friendlyRating = career.preSeason.activeFriendly?.teamRating;
+    if (friendlyRating != null) return friendlyRating;
+  }
+  return getManagerOpponentMatchRating(
+    career,
+    state.opponent,
+    state.seed,
+    state.round
+  );
+}
+
 /** Advance live match; stops at maxMinute (40 for half-time, 80 for full time). */
 export function advanceLiveTick(
   state: LiveMatchState,
@@ -462,12 +478,7 @@ export function advanceLiveTick(
     career.xiiiSlotPositions,
     career
   );
-  const oppRating = getOpponentMatchRating(
-    state.opponent,
-    state.seed,
-    state.round,
-    getManagerOpponentPoolOptions(career, state.opponent)
-  );
+  const oppRating = resolveLiveOpponentRating(career, state);
 
   const ratingGap = userRating - oppRating;
   const mods = commandAttackMod(command, ratingGap);

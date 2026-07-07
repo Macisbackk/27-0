@@ -2,6 +2,7 @@ import seedrandom from "seedrandom";
 import { getPlayerById } from "../players";
 import { getPlayerAge } from "../players/player-age";
 import { getManagerClubTeamRating } from "./managerRating";
+import { getManagerClubStarRating } from "./club-config";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import type {
   ContractStatus,
@@ -220,8 +221,16 @@ export function computeWageBill(
 }
 
 export function getWageBudgetForClub(club: string): number {
-  const rating = getManagerClubTeamRating(club);
-  return scaleManagerEconomy(Math.round(3_200_000 + rating * 15_000));
+  const stars = getManagerClubStarRating(club);
+  const byStars: Record<number, number> = {
+    5: 3_750_000,
+    4: 3_050_000,
+    3: 2_350_000,
+    2: 1_800_000,
+    1: 1_300_000,
+  };
+  const base = byStars[stars] ?? byStars[3]!;
+  return scaleManagerEconomy(base);
 }
 
 export function roleRank(role: SquadRole): number {

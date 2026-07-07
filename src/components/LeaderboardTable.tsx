@@ -25,13 +25,15 @@ import {
   NORMAL_ERA_VARIANT_CHANGED_EVENT,
 } from "@/lib/storage/preferences";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
-import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
+import {
+  LeaderboardTabBar,
+  type LeaderboardTabAccent,
+} from "./LeaderboardTabBar";
 import { getClubFundsLeaderboardAsync } from "@/lib/storage/club-funds-leaderboard";
 import {
   getManagerLeaderboardAsync,
   MANAGER_LEADERBOARD_MODES,
 } from "@/lib/storage/manager-leaderboard";
-import { playTabChange } from "@/lib/sound";
 import { RecordWithPercentage, parseRecordWithPercentage } from "./RecordWithPercentage";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -43,6 +45,38 @@ const PLAY_STYLE_TABS: { id: LeaderboardPlayStyle; label: string }[] = [
   { id: "manager", label: "Manager Mode" },
   { id: "quick", label: "Quick Mode" },
 ];
+
+const QUICK_MODE_ACCENTS = {
+  "super-league": "green",
+  "trophy-cabinet": "gold",
+  "club-funds": "sky",
+} as const satisfies Partial<Record<LeaderboardDbMode, LeaderboardTabAccent>>;
+
+const MANAGER_MODE_ACCENTS: Record<
+  ManagerLeaderboardDbMode,
+  LeaderboardTabAccent
+> = {
+  "manager-super-league": "green",
+  "manager-challenge-cup": "gold",
+  "manager-earnings": "sky",
+};
+
+const TRACKER_ACCENTS: Partial<
+  Record<LeaderboardTrackerType, LeaderboardTabAccent>
+> = {
+  perfect_runs: "green",
+  winless_seasons: "amber",
+  best_record: "theme",
+  league_titles: "green",
+  super_league_champions: "gold",
+  era_league_title: "green",
+  era_league_champions: "gold",
+  total_winnings: "sky",
+  manager_challenge_cups: "gold",
+  manager_cup_finals: "gold",
+  manager_league_titles: "green",
+  manager_total_earnings: "sky",
+};
 
 const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   perfect_runs: "27-0 Seasons",
@@ -109,7 +143,6 @@ export function LeaderboardTable() {
   const isManagerScoreMode = isManagerEarningsMode;
 
   const handlePlayStyleChange = (style: LeaderboardPlayStyle) => {
-    if (style !== playStyle) playTabChange();
     setPlayStyle(style);
     if (style === "manager") {
       setManagerMode("manager-super-league");
@@ -121,13 +154,11 @@ export function LeaderboardTable() {
   };
 
   const handleQuickModeChange = (mode: LeaderboardDbMode) => {
-    if (mode !== leaderboardMode) playTabChange();
     setLeaderboardMode(mode);
     setTracker(getDefaultTrackerForDbMode(mode));
   };
 
   const handleManagerModeChange = (mode: ManagerLeaderboardDbMode) => {
-    if (mode !== managerMode) playTabChange();
     setManagerMode(mode);
     setTracker(getDefaultTrackerForManagerDbMode(mode));
   };
@@ -258,7 +289,8 @@ export function LeaderboardTable() {
   return (
     <div>
       <nav className="mb-5" aria-label="Leaderboard play style">
-        <ManagerSubTabBar
+        <LeaderboardTabBar
+          tier="playStyle"
           tabs={PLAY_STYLE_TABS}
           active={playStyle}
           onChange={handlePlayStyleChange}
@@ -276,10 +308,14 @@ export function LeaderboardTable() {
 
         return (
           <nav className="mb-5" aria-label={modeLabel}>
-            <ManagerSubTabBar
+            <LeaderboardTabBar
+              tier="mode"
               tabs={modeOptions.map((mode) => ({
                 id: mode.id,
                 label: mode.label,
+                accent: isManagerPlayStyle
+                  ? MANAGER_MODE_ACCENTS[mode.id as ManagerLeaderboardDbMode]
+                  : QUICK_MODE_ACCENTS[mode.id as keyof typeof QUICK_MODE_ACCENTS],
               }))}
               active={
                 isManagerPlayStyle
@@ -293,7 +329,6 @@ export function LeaderboardTable() {
                   handleQuickModeChange(id as LeaderboardDbMode);
                 }
               }}
-              scrollable={modeOptions.length > 3}
               ariaLabel={modeLabel}
             />
           </nav>
@@ -328,10 +363,12 @@ export function LeaderboardTable() {
                   <p className={`mb-2 ${TYPO.sectionLabel} text-pitch-500`}>
                     {section.label}
                   </p>
-                  <ManagerSubTabBar
+                  <LeaderboardTabBar
+                    tier="category"
                     tabs={sectionTrackers.map((t) => ({
                       id: t.id,
                       label: t.shortLabel,
+                      accent: TRACKER_ACCENTS[t.id],
                     }))}
                     active={activeTracker}
                     onChange={(id) => setTracker(id)}
@@ -344,10 +381,12 @@ export function LeaderboardTable() {
           </div>
         ) : (
           availableTrackers.length > 1 && (
-            <ManagerSubTabBar
+            <LeaderboardTabBar
+              tier="category"
               tabs={availableTrackers.map((t) => ({
                 id: t.id,
                 label: t.shortLabel,
+                accent: TRACKER_ACCENTS[t.id],
               }))}
               active={activeTracker}
               onChange={(id) => setTracker(id)}
@@ -360,7 +399,8 @@ export function LeaderboardTable() {
 
       {showPeriodFilters && (
         <nav className="mb-6" aria-label="Leaderboard period">
-          <ManagerSubTabBar
+          <LeaderboardTabBar
+            tier="period"
             tabs={PERIODS.map((p) => ({
               id: p,
               label: formatPeriodLabel(p),

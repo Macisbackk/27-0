@@ -19,9 +19,16 @@ export function BracketMobileRoundNav({
   getShortLabel,
   activeClassName = "border-theme-primary/60 bg-theme-primary/15 text-theme-primary",
 }: BracketMobileRoundNavProps) {
+  const columnClass =
+    rounds.length >= 4
+      ? "grid-cols-4"
+      : rounds.length === 2
+        ? "grid-cols-2"
+        : "grid-cols-3";
+
   return (
     <div
-      className="bracket-round-nav grid grid-cols-3 gap-2 md:hidden"
+      className={`bracket-round-nav grid gap-2 md:hidden ${columnClass}`}
       role="tablist"
       aria-label="Bracket rounds"
     >

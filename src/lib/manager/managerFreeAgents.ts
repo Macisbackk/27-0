@@ -19,7 +19,7 @@ import {
   transferLeaguePlayer,
 } from "./managerLeagueRosters";
 import { createInitialPlayerState } from "./managerSquad";
-import { syncManagerFinance, canAffordAdditionalWage } from "./managerFinance";
+import { syncManagerFinance, canAffordAdditionalWage, evaluateClubSigningAppeal, getManagerPlayerListingRating } from "./managerFinance";
 import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
 
 const MAX_TRANSFER_HISTORY = 32;
@@ -96,8 +96,14 @@ export function evaluateFreeAgentOffer(
   }
 
   const demand = getTransferDemand(career, playerId);
-  const rating = player.peakRating ?? 70;
-  if (offer.wagePerYear < demand.wagePerYear * 0.9) {
+  const rating = getManagerPlayerListingRating(career, playerId);
+  const appeal = evaluateClubSigningAppeal(career.club, rating);
+  if (!appeal.allowed) {
+    return { accepted: false, reason: appeal.reason ?? "Signing blocked." };
+  }
+
+  const minWage = Math.round(demand.wagePerYear * appeal.wagePremium);
+  if (offer.wagePerYear < minWage * 0.9) {
     return { accepted: false, reason: "Wage offer too low." };
   }
   if (offer.yearsRequested < demand.yearsRequested && rating >= 75) {

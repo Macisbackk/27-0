@@ -574,6 +574,8 @@ export interface SimulateFixtureOptions {
   currentSeasonOnly?: boolean;
   /** Manager career — outcomes track team rating and form more closely. */
   managerCareerMode?: boolean;
+  /** Override RNG key when round alone is not unique (e.g. pre-season friendlies). */
+  matchKey?: string;
 }
 
 export interface SimulateSeasonOptions {
@@ -960,7 +962,9 @@ export function simulateOneFixture(
   options: SimulateFixtureOptions = {}
 ): { fixture: MatchFixture; state: MatchSimState } {
   const strength = calculateSquadStrength(squad);
-  const rng = seedrandom(`${seed}-match-${round}`);
+  const rng = seedrandom(
+    options.matchKey ?? `${seed}-match-${round}`
+  );
 
   const opponentStrength =
     options.opponentRatingOverride ??

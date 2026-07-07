@@ -13,8 +13,8 @@ export function Header() {
 
   return (
     <>
-      <header className="app-header sticky top-0 z-50 border-b">
-        <div className="relative mx-auto grid min-h-14 max-w-6xl grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-1 px-2 py-1.5 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:h-[3.75rem] sm:gap-2 sm:px-4 sm:py-0">
+      <header className="app-header sticky top-0 z-50 overflow-x-clip border-b">
+        <div className="relative mx-auto grid min-h-14 max-w-6xl min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-1 overflow-hidden px-2 py-1.5 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:h-[3.75rem] sm:gap-2 sm:px-4 sm:py-0">
           <div className="flex min-h-[44px] min-w-0 items-center justify-start sm:col-start-1">
             <button
               type="button"

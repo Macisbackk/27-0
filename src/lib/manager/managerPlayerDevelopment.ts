@@ -8,6 +8,7 @@ import type {
   PlayerDevelopmentChange,
   PlayerDevelopmentState,
 } from "./types";
+import { getClubFacilities, getTrainingDevelopmentMultiplier } from "./managerFacilities";
 import { getManagerModePlayerRating } from "./managerSquadRatings";
 import { getLeagueClubRosterIds } from "./managerLeagueRosters";
 import {
@@ -107,7 +108,9 @@ function developOnePlayer(
   const impact = extras?.impact ?? 50;
   const poorIndividualSeason = isPoorSeasonImpact(impact);
   const protectFromDecline = veteranGoodSeason && !poorIndividualSeason;
-  const teamMod = getTeamSeasonDevelopmentModifier(career, clubForTeamMod);
+  const teamMod =
+    getTeamSeasonDevelopmentModifier(career, clubForTeamMod) *
+    getTrainingDevelopmentMultiplier(getClubFacilities(career).training);
 
   const playedEnoughForIncrease =
     !extras || appearances >= MIN_APPEARANCES_FOR_INCREASE;

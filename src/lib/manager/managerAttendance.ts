@@ -1,5 +1,10 @@
 import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
+import {
+  getCommercialGateMultiplier,
+  getEffectiveStadiumCapacity,
+  ensureClubFacilities,
+} from "./managerFacilities";
 import { getClubBaseStrength } from "../game/club-strength";
 import type {
   ClubAttendanceData,
@@ -241,12 +246,18 @@ export function createClubAttendanceData(club: string): ClubAttendanceData {
   };
 }
 
-/** Refresh capacity/floor defaults without wiping drifted attendance expectations. */
+/** Refresh floor defaults without wiping drifted attendance or stadium upgrades. */
 export function syncClubAttendanceData(
   club: string,
-  data: ClubAttendanceData
+  data: ClubAttendanceData,
+  facilities?: import("./types").ClubFacilities
 ): ClubAttendanceData {
-  const { capacity } = getClubAttendanceProfile(club);
+  const profileCapacity = getClubAttendanceProfile(club).capacity;
+  const capacity = facilities
+    ? getEffectiveStadiumCapacity(club, ensureClubFacilities(facilities))
+    : data.stadiumCapacity > profileCapacity
+      ? data.stadiumCapacity
+      : profileCapacity;
   const profileFloor = getClubAttendanceFloor(club, data.baseAttendance);
   return {
     ...data,
@@ -713,7 +724,10 @@ export function processHomeMatchAttendance(
     (!hasPoorAwayFollowing(fixture.opponent) &&
       getClubBaseStrength(fixture.opponent) >= 80);
   const price = ticketPrice(fixture.competition, isBigGame);
-  const gateIncome = attendance * price;
+  const commercialMult = getCommercialGateMultiplier(
+    ensureClubFacilities(career.clubFacilities).commercial
+  );
+  const gateIncome = Math.round(attendance * price * commercialMult);
   const { transfer: transferAllocation, operating: operatingAllocation } =
     splitRevenue(gateIncome, "gate");
 

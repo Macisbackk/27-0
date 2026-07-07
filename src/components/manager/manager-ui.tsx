@@ -362,7 +362,7 @@ const INBOX_MESSAGE_STYLE: Record<
     accentBar: "bg-stone-400",
   },
   reserve_report: {
-    label: "Reserve Report",
+    label: "Monthly Report",
     icon: "R",
     badge: "border-indigo-400/40 bg-indigo-500/12 text-indigo-200",
     iconBox: "border-indigo-400/40 bg-indigo-500/18 text-indigo-100",

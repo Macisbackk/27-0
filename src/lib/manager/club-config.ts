@@ -37,10 +37,19 @@ export const MANAGER_EXPECTATION_LABELS: Record<
   string
 > = {
   title: "Win the title",
-  playoffs: "Reach playoffs",
-  "mid-table": "Mid-table push",
-  "avoid-bottom": "Avoid bottom",
+  playoffs: "Reach the play-offs",
+  "mid-table": "Mid-table finish",
+  "avoid-bottom": "Avoid the bottom",
   survive: "Survive and develop",
+};
+
+/** Short tier summary for club-select group headers (matches star-based board targets). */
+export const MANAGER_STAR_TIER_BIOS: Record<number, string> = {
+  5: "Title contenders — win the Grand Final",
+  4: "Play-off push — finish in the top six",
+  3: "Mid-table finish — build toward the top half",
+  2: "Stay clear of the bottom places",
+  1: "Survive and develop — every point counts",
 };
 
 /** Fixed board star ratings for select clubs; others derive from squad OVR rank. */
@@ -54,21 +63,12 @@ const CLUB_STAR_OVERRIDES: Record<string, number> = {
   "York Knights": 1,
 };
 
-const CLUB_BUDGET: Record<string, number> = {
-  "Wigan Warriors": 1_200_000,
-  "St Helens": 1_150_000,
-  "Leeds Rhinos": 1_000_000,
-  "Warrington Wolves": 950_000,
-  "Hull KR": 850_000,
-  "Catalans Dragons": 820_000,
-  "Hull FC": 780_000,
-  "Toulouse Olympique": 760_000,
-  "Leigh Leopards": 740_000,
-  "Huddersfield Giants": 680_000,
-  "Castleford Tigers": 620_000,
-  "Bradford Bulls": 650_000,
-  "Wakefield Trinity": 520_000,
-  "York Knights": 500_000,
+const TRANSFER_BUDGET_MID_BY_STARS: Record<number, number> = {
+  5: 1_000_000,
+  4: 723_000,
+  3: 510_000,
+  2: 332_000,
+  1: 230_000,
 };
 
 function getLeagueSquadRatings(): number[] {
@@ -150,15 +150,15 @@ export function getManagerClubConfig(clubName: string): ManagerClubConfig {
         club.accentColor
       )
     : { primary: "#1e293b", secondary: "#334155" };
-  const allRatings = getLeagueSquadRatings();
   const squadRating = getManagerClubRating(clubName);
-  const expectationTier = getManagerClubExpectationTier(squadRating, allRatings);
+  const stars = getManagerClubStarRating(clubName);
+  const expectationTier = expectationTierFromStars(stars);
   return {
     name: clubName,
     expectation: MANAGER_EXPECTATION_LABELS[expectationTier],
     expectationTier,
-    budget: CLUB_BUDGET[clubName] ?? 600_000,
-    difficulty: getManagerClubStarRating(clubName),
+    budget: TRANSFER_BUDGET_MID_BY_STARS[stars] ?? TRANSFER_BUDGET_MID_BY_STARS[3]!,
+    difficulty: stars,
     squadRating,
     primaryColor: uiColors.primary,
     secondaryColor: uiColors.secondary,

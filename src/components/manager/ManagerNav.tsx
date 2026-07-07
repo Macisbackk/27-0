@@ -16,6 +16,7 @@ const MAIN_TABS: { id: ManagerView; label: string; shortLabel: string }[] = [
   { id: "reserves", label: "Reserves", shortLabel: "Res." },
   { id: "contracts", label: "Contracts", shortLabel: "Deals" },
   { id: "transfers", label: "Transfers", shortLabel: "Market" },
+  { id: "club", label: "Club", shortLabel: "Club" },
   { id: "fixtures", label: "Fixtures", shortLabel: "Fixt." },
   { id: "across-league", label: "Across the League", shortLabel: "League" },
   { id: "stats", label: "Stats", shortLabel: "Stats" },

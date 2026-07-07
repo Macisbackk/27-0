@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { GameButton } from "@/components/ui/GameButton";
 import type { Player } from "@/lib/types";
 import {
   formatCareerTries,
@@ -16,7 +17,6 @@ import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
 import { getClubColors } from "@/lib/clubs";
 import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
-import { playUiClick } from "@/lib/sound";
 import { AchievementChipList } from "./cards/AchievementChipList";
 import {
   PlayerSpecialBadge,
@@ -25,6 +25,7 @@ import {
 } from "./cards/PlayerStatusBadge";
 import { StatBox, TIER_STAT_SPAN_CLASS } from "./ui/StatBox";
 import { CARD } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 interface SlotRecruitPlayerCardProps {
   player: Player;
@@ -32,18 +33,30 @@ interface SlotRecruitPlayerCardProps {
   hardMode?: boolean;
   clubColorOverride?: string;
   statsExpanded?: boolean;
+  topPick?: boolean;
   disabled?: boolean;
   onSelect: () => void;
   onToggleStats: () => void;
 }
 
-/** Normal Mode pick card — tap to sign; View Stats for full details. */
+function ratingBadgeClass(rating: number): string {
+  if (rating >= 85) {
+    return "bg-accent-gold/15 text-accent-gold ring-accent-gold/40";
+  }
+  if (rating >= 78) {
+    return "bg-theme-primary/15 text-theme-primary ring-theme-primary/40";
+  }
+  return "bg-pitch-800/90 text-pitch-100 ring-pitch-600/50";
+}
+
+/** Quick Mode pick card — sign or expand stats. */
 export function SlotRecruitPlayerCard({
   player,
   teamYearLabel,
   hardMode,
   clubColorOverride,
   statsExpanded = false,
+  topPick = false,
   disabled,
   onSelect,
   onToggleStats,
@@ -60,6 +73,7 @@ export function SlotRecruitPlayerCard({
   const tier = getValueTier(player.peakRating);
   const maskValue = (value: string) => (hardMode ? "???" : value);
   const hiddenClass = hardMode ? "invisible select-none" : "";
+  const positionLabel = formatPlayerPositionLabel(player, { short: false });
 
   const appearancesValue =
     player.appearances !== undefined ? String(player.appearances) : "Unknown";
@@ -75,55 +89,81 @@ export function SlotRecruitPlayerCard({
 
   return (
     <div
-      className={`${CARD.base} flex h-full min-w-0 flex-col overflow-hidden transition hover:border-accent-green/35 ${
-        disabled ? "opacity-50" : ""
-      }`}
+      className={`${CARD.base} flex h-full min-w-0 flex-col overflow-hidden transition ${
+        topPick ? "border-accent-gold/45 ring-1 ring-accent-gold/25" : "hover:border-accent-green/40"
+      } ${disabled ? "opacity-50" : ""}`}
       style={{
         boxShadow: `inset 3px 0 0 ${colors.primary}`,
       }}
     >
-      <button
-        type="button"
-        disabled={disabled}
-        onClick={onSelect}
-        className="btn-press group flex min-w-0 flex-col px-2.5 pt-2 pb-1 text-left disabled:cursor-not-allowed sm:px-3 sm:pt-2.5 sm:pb-1.5"
-      >
+      <div className="flex min-w-0 flex-1 flex-col px-3 pt-3 pb-2 sm:px-4 sm:pt-4">
         <div className="flex min-w-0 items-start justify-between gap-2">
-          <h3 className="min-w-0 flex-1 line-clamp-2 break-words font-display text-xs font-bold leading-tight text-white sm:text-sm">
-            {displayName}
-          </h3>
-          <div className="flex max-w-[44%] shrink-0 flex-col items-end min-[480px]:max-w-[48%]">
-            <p
-              className={`text-right font-display font-bold leading-none text-accent-green ${
-                hardMode ? "text-gray-600" : ""
-              } text-sm sm:text-base`}
-            >
-              {hardMode ? "???" : player.peakRating}
-              {!hardMode && <span className="hidden sm:inline"> OVR</span>}
-            </p>
-            <p className="mt-0.5 line-clamp-2 text-right text-[10px] font-semibold leading-snug text-accent-green/90 sm:text-[11px]">
-              {formatPlayerPositionLabel(player, { short: false })}
-            </p>
+          <div className="min-w-0 flex-1">
+            {topPick && (
+              <span className="mb-1.5 inline-block rounded-md border border-accent-gold/40 bg-accent-gold/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent-gold">
+                Top rating
+              </span>
+            )}
+            <h3 className="line-clamp-2 break-words font-display text-sm font-bold leading-snug text-white sm:text-base">
+              {displayName}
+            </h3>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              <span className="rounded-md border border-pitch-600/55 bg-pitch-950/70 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-sky-300">
+                {positionLabel}
+              </span>
+              {!hardMode && (
+                <span className="rounded-md border border-pitch-600/55 bg-pitch-950/70 px-1.5 py-0.5 text-[10px] font-semibold text-gray-400">
+                  {getNationalityAbbrev(player.nationality)}
+                </span>
+              )}
+              {!hardMode && (
+                <span className="rounded-md border border-pitch-600/55 bg-pitch-950/70 px-1.5 py-0.5 text-[10px] font-semibold text-gray-400">
+                  {tier}
+                </span>
+              )}
+            </div>
+          </div>
+          <div
+            className={`flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl ring-1 ${ratingBadgeClass(
+              player.peakRating
+            )}`}
+          >
+            <span className="font-display text-lg font-black leading-none">
+              {hardMode ? "?" : player.peakRating}
+            </span>
+            {!hardMode && (
+              <span className="mt-0.5 text-[8px] font-bold uppercase tracking-wider opacity-80">
+                OVR
+              </span>
+            )}
           </div>
         </div>
-        <p className="mt-1 min-w-0 line-clamp-2 break-words text-[10px] leading-snug text-gray-400 sm:text-xs">
-          {teamYearLabel}
-        </p>
-      </button>
 
-      <div className="px-2.5 pb-1.5 sm:px-3 sm:pb-2">
+        {!hardMode && (
+          <p className={`mt-2 ${TYPO.bodySm} text-gray-500`}>
+            Value {formatValue(player.value)} · Age {formatPlayerAge(player)}
+          </p>
+        )}
+      </div>
+
+      <div className="mt-auto space-y-2 border-t border-pitch-700/45 px-3 py-3 sm:px-4">
+        <GameButton
+          variant="current"
+          size="sm"
+          fullWidth
+          disabled={disabled}
+          onClick={onSelect}
+        >
+          Sign player
+        </GameButton>
         <button
           type="button"
           disabled={disabled}
           aria-expanded={statsExpanded}
-          onClick={(event) => {
-            event.stopPropagation();
-            playUiClick();
-            onToggleStats();
-          }}
-          className="rounded-md border border-pitch-600/60 bg-pitch-950/50 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-accent-green/35 hover:text-accent-green disabled:cursor-not-allowed sm:text-[10px]"
+          onClick={onToggleStats}
+          className="w-full rounded-lg border border-pitch-600/60 bg-pitch-950/50 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-accent-green/35 hover:text-accent-green disabled:cursor-not-allowed sm:text-[11px]"
         >
-          {statsExpanded ? "Close" : "View Stats"}
+          {statsExpanded ? "Hide stats" : "View full stats"}
         </button>
       </div>
 
@@ -137,7 +177,7 @@ export function SlotRecruitPlayerCard({
             transition={{ duration: 0.22, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="border-t border-pitch-700/50 px-2 pb-2 pt-1.5 sm:px-3 sm:pt-2">
+            <div className="border-t border-pitch-700/50 px-3 pb-3 pt-2 sm:px-4 sm:pb-4">
               {statusBadge && (
                 <div className="mb-2" aria-hidden={hardMode || undefined}>
                   {statusBadge}
@@ -153,10 +193,10 @@ export function SlotRecruitPlayerCard({
                 </div>
               )}
 
-              <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-1.5">
+              <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
                 <StatBox
                   label="Position"
-                  value={formatPlayerPositionLabel(player, { short: false })}
+                  value={positionLabel}
                   size="lg"
                   light
                   compact
