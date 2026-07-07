@@ -306,15 +306,19 @@ export function subTabGroupClass(
     : eraActive
       ? ERA.tabGroupRing
       : THEME.tabGroupRing;
-  return `flex w-full flex-nowrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 ${accent}`;
+  return `flex w-full flex-nowrap gap-0.5 rounded-lg border border-pitch-600/60 bg-pitch-900/80 p-0.5 ${accent}`;
 }
 
 /** Tab toggle inside a full-width sub-tab group (manager Squad/Tactics, Transfers, etc.). */
 export function subTabGroupButtonClass(
   active: boolean,
-  variant: "normal" | "current" | "hard" | "era" | "gold" = "normal"
+  variant: "normal" | "current" | "hard" | "era" | "gold" = "normal",
+  scrollable = false
 ): string {
-  const base = `${TYPO.button} btn-press box-border flex flex-1 min-w-0 items-center justify-center px-2 text-center sm:px-4 ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
+  const sizing = scrollable
+    ? "shrink-0 whitespace-nowrap min-h-[34px] px-2 py-1 sm:min-h-[36px] sm:px-2.5"
+    : "flex-1 min-w-0 min-h-[34px] px-1 py-1 sm:min-h-[36px] sm:px-1.5";
+  const base = `font-display text-[10px] font-bold uppercase leading-tight tracking-[0.06em] sm:text-[11px] sm:tracking-[0.1em] btn-press box-border flex items-center justify-center rounded-[6px] text-center ${sizing}`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.toggleIdle}`;

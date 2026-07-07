@@ -17,10 +17,10 @@ const PRIMARY_TABS: {
   { id: "reserves", label: "Reserves", icon: "📋" },
   { id: "contracts", label: "Contracts", icon: "📝" },
   { id: "transfers", label: "Market", icon: "💷" },
-  { id: "club", label: "Club", icon: "🏟️" },
 ];
 
 const MORE_ITEMS: { id: ManagerView; label: string; icon: string }[] = [
+  { id: "club", label: "Club", icon: "🏟️" },
   { id: "inbox", label: "Inbox", icon: "✉" },
   { id: "fixtures", label: "Fixtures", icon: "📅" },
   { id: "across-league", label: "League", icon: "🏉" },

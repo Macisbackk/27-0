@@ -1,8 +1,7 @@
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { ManagerCareer, ManagerFinance, ManagerSeasonSummary } from "./types";
 import { getManagerClubStarRating } from "./club-config";
-import { computeWageBill } from "./managerContracts";
-import { getWageBudgetForClub } from "./managerContracts";
+import { computeWageBill, getWageBudgetForClub, resolveWageBudgetForCareer } from "./managerContracts";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { getManagerModePlayerRating } from "./managerSquadRatings";
@@ -208,6 +207,17 @@ export function canAffordAdditionalWage(
   return career.wageBill + additionalWage <= getWageBudgetCeiling(career);
 }
 
+/** Renewals use the full budget ceiling — existing players should not be blocked. */
+export function canAffordRenewalWage(
+  career: ManagerCareer,
+  currentWage: number,
+  newWage: number
+): boolean {
+  const delta = newWage - currentWage;
+  if (delta <= 0) return true;
+  return career.wageBill + delta <= getWageBudgetCeiling(career);
+}
+
 export function getWageBillPercent(career: ManagerCareer): number {
   return Math.round((career.wageBill / Math.max(1, career.wageBudget)) * 100);
 }
@@ -279,7 +289,9 @@ export function initManagerFinance(career: Partial<ManagerCareer>): ManagerFinan
     computeFirstSeasonTransferBudget(club, seed);
   const operatingBalance = career.managerFinance?.operatingBalance ?? 0;
   const wageBudget =
-    career.wageBudget ?? getWageBudgetForClub(club);
+    career.wageBudget ??
+    resolveWageBudgetForCareer(career as ManagerCareer) ??
+    getWageBudgetForClub(club);
   const wageBill =
     career.wageBill ??
     (career.contracts
@@ -326,7 +338,10 @@ export function applyClubRevenue(
 export function syncManagerFinance(career: ManagerCareer): ManagerCareer {
   const finance = initManagerFinance(career);
   finance.wageBill = computeCareerWageBill(career);
-  finance.wageBudget = career.wageBudget;
+  finance.wageBudget = resolveWageBudgetForCareer({
+    ...career,
+    wageBill: finance.wageBill,
+  });
   finance.transferBudget = career.budget;
   finance.clubFunds = finance.transferBudget + finance.operatingBalance;
   return {
@@ -334,6 +349,7 @@ export function syncManagerFinance(career: ManagerCareer): ManagerCareer {
     managerFinance: finance,
     budget: finance.transferBudget,
     wageBill: finance.wageBill,
+    wageBudget: finance.wageBudget,
   };
 }
 

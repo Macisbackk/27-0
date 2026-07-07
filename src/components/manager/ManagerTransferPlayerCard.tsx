@@ -43,6 +43,8 @@ interface ManagerTransferPlayerCardProps {
   listed: boolean;
   freeAgent?: boolean;
   fee: number;
+  /** Seller's listed/market fee when buyer-tier premium inflates the user's fee. */
+  sellerListedFee?: number;
   wagePerYear: number;
   yearsRequested?: number;
   children: ReactNode;
@@ -54,6 +56,7 @@ export function ManagerTransferPlayerCard({
   listed,
   freeAgent = false,
   fee,
+  sellerListedFee,
   wagePerYear,
   yearsRequested,
   children,
@@ -134,7 +137,17 @@ export function ManagerTransferPlayerCard({
 
       <div className="grid grid-cols-2 gap-3 px-4 py-3 sm:px-4">
         <ManagerStat
-          label={freeAgent ? "Transfer fee" : listed ? "Asking price" : "Est. fee"}
+          label={
+            freeAgent
+              ? "Transfer fee"
+              : listed
+                ? sellerListedFee != null
+                  ? "Your fee"
+                  : "Asking price"
+                : sellerListedFee != null
+                  ? "Your bid"
+                  : "Est. fee"
+          }
           value={freeAgent ? "Free" : formatWage(fee)}
           tone="gold"
         />
@@ -163,6 +176,12 @@ export function ManagerTransferPlayerCard({
           tone="muted"
         />
       </div>
+
+      {sellerListedFee != null && (
+        <p className={`px-4 pb-1 sm:px-4 ${TYPO.bodySm} text-pitch-400`}>
+          Listed at {formatWage(sellerListedFee)} — your club pays a tier premium.
+        </p>
+      )}
 
       {!listed && !freeAgent && (
         <p className={`px-4 pb-1 sm:px-4 ${TYPO.bodySm} text-amber-300/90`}>

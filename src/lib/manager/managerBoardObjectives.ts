@@ -24,6 +24,8 @@ export function getBoardObjectiveSuccessDetail(
   switch (tier) {
     case "title":
       return "Win the Grand Final and lift the Super League title.";
+    case "top":
+      return "Finish in the top three on the league table.";
     case "playoffs":
       return "Finish the regular season in the top six to reach the play-offs.";
     case "mid-table":

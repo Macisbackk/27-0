@@ -20,6 +20,7 @@ import {
   countExpiringContracts,
   ensureRenewalDemands,
   getWageBudgetForClub,
+  resolveWageBudgetForCareer,
 } from "./managerContracts";
 import { createClubAttendanceData, syncClubAttendanceData } from "./managerAttendance";
 import {
@@ -103,7 +104,12 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
       contracts,
       reserveContracts: raw.reserveContracts,
     } as ManagerCareer);
-  const wageBudget = getWageBudgetForClub(raw.club);
+  const wageBudget = resolveWageBudgetForCareer({
+    ...raw,
+    contracts,
+    wageBill,
+    reserveContracts: raw.reserveContracts,
+  } as ManagerCareer);
 
   let challengeCup = raw.challengeCup as ChallengeCupBracketState | undefined;
   if (!challengeCup?.matches?.length) {
@@ -284,7 +290,12 @@ export function prepareManagerCareerForSave(raw: ManagerCareer): ManagerCareer {
     gameWeek: raw.gameWeek ?? raw.currentRound ?? 0,
     contracts,
     wageBill,
-    wageBudget: raw.wageBudget ?? getWageBudgetForClub(raw.club),
+    wageBudget: resolveWageBudgetForCareer({
+      ...raw,
+      contracts,
+      wageBill,
+      reserveContracts: raw.reserveContracts,
+    } as ManagerCareer),
   };
 
   career = ensureRenewalDemands(career);
@@ -345,7 +356,6 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
   const squad = rosterIds.map((id) => createInitialPlayerState(id));
   const startingIds = new Set(lineup.xiiiIds);
   const contracts = buildContractsForSquad(rosterIds, startingIds, club);
-  const wageBudget = getWageBudgetForClub(club);
 
   const schedule = buildManagerSchedule(club, seed);
   const squadIdSet = new Set(squad.map((p) => p.playerId));
@@ -357,6 +367,13 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
   const wageBill = computeCareerWageBill({
     contracts,
     reserveContracts,
+  } as ManagerCareer);
+  const wageBudget = resolveWageBudgetForCareer({
+    club,
+    contracts,
+    reserveContracts,
+    wageBill,
+    squad,
   } as ManagerCareer);
 
   const clubFacilities = createDefaultClubFacilities();

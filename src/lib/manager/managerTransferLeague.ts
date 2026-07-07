@@ -221,16 +221,25 @@ export function getSellerAskingPrice(
   club: string,
   listed: boolean
 ): number {
-  let base: number;
   if (listed) {
     const listedPrice = getLeagueListingAskingPrice(career, playerId, club);
-    if (listedPrice != null) base = listedPrice;
-    else base = getAskingPrice(playerId, listed, career.seed, career.gameWeek);
-  } else {
-    base = getAskingPrice(playerId, listed, career.seed, career.gameWeek);
+    if (listedPrice != null) return listedPrice;
+    return getAskingPrice(playerId, listed, career.seed, career.gameWeek);
   }
+  return getAskingPrice(playerId, listed, career.seed, career.gameWeek);
+}
+
+/** Minimum fee the user's club must pay — seller asking price plus buyer-tier premium. */
+export function getBuyerMinimumTransferFee(
+  career: ManagerCareer,
+  playerId: string,
+  club: string,
+  listed: boolean
+): number {
+  const asking = getSellerAskingPrice(career, playerId, club, listed);
   const rating = getManagerPlayerListingRating(career, playerId);
-  return getBuyerAdjustedTransferFee(career.club, base, rating);
+  const adjusted = getBuyerAdjustedTransferFee(career.club, asking, rating);
+  return listed ? adjusted : Math.round(adjusted * 1.1);
 }
 
 export function listPlayerForTransfer(
@@ -427,8 +436,7 @@ export function evaluateBuyOffer(
     };
   }
 
-  const asking = getSellerAskingPrice(career, playerId, club, listed);
-  const minFee = listed ? asking : asking * 1.1;
+  const minFee = getBuyerMinimumTransferFee(career, playerId, club, listed);
   let feeAcceptedSoftly = false;
 
   const rating = getManagerPlayerListingRating(career, playerId);

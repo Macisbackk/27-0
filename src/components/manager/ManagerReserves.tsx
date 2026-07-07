@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD, FILTER, MANAGER, SPACING } from "@/lib/ui/design-system";
+import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, ManagerReservePlayer } from "@/lib/manager/types";
 import { POSITION_SHORT } from "@/lib/positions";
@@ -364,7 +364,11 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         </div>
       )}
 
-      <div className={MANAGER.splitLayout}>
+      <div className="lg:hidden">
+        <ManagerReserveGrowthPanel career={career} variant="mobile" />
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_min(100%,280px)] lg:gap-6">
         <div className={SPACING.stackLg}>
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-2`}>Filters</p>
@@ -531,7 +535,9 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
       )}
         </div>
 
-        <ManagerReserveGrowthPanel career={career} />
+        <div className="hidden lg:block">
+          <ManagerReserveGrowthPanel career={career} variant="desktop" />
+        </div>
       </div>
 
       {releaseTarget && (

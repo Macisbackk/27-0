@@ -12,7 +12,7 @@ import type {
   SquadRole,
 } from "./types";
 import { clearRetirementIntentOnRenewal } from "./managerRetirement";
-import { canAffordAdditionalWage, scaleManagerEconomy } from "./managerFinance";
+import { canAffordRenewalWage, scaleManagerEconomy } from "./managerFinance";
 
 export function formatWage(amount: number): string {
   if (amount >= 1_000_000) return `£${(amount / 1_000_000).toFixed(2)}m`;
@@ -220,6 +220,40 @@ export function computeWageBill(
   return Object.values(contracts).reduce((sum, c) => sum + c.wagePerYear, 0);
 }
 
+/** Wage bill if every expiring player renews at their current demand. */
+export function projectWageBillAfterRenewals(career: ManagerCareer): number {
+  let squadWages = 0;
+  for (const ps of career.squad) {
+    const contract = career.contracts[ps.playerId];
+    if (!contract) continue;
+    const status = getContractStatus(contract);
+    if (status === "expires_this_season" || status === "wants_renewal") {
+      const demand =
+        contract.renewalDemand ??
+        generateRenewalDemand(ps.playerId, contract, career);
+      squadWages += demand.wagePerYear;
+    } else {
+      squadWages += contract.wagePerYear;
+    }
+  }
+  return squadWages + computeWageBill(career.reserveContracts ?? {});
+}
+
+/**
+ * Wage budget must cover the current squad and projected renewal demands —
+ * star-tier floors alone are too low for full squads after economy scaling.
+ */
+export function resolveWageBudgetForCareer(career: ManagerCareer): number {
+  const wageBill =
+    computeWageBill(career.contracts) +
+    computeWageBill(career.reserveContracts ?? {});
+  const tierFloor = getWageBudgetForClub(career.club);
+  const afterRenewals = projectWageBillAfterRenewals(career);
+  const squadFloor = Math.round(Math.max(wageBill, afterRenewals) * 1.05);
+  const floor = Math.max(tierFloor, squadFloor);
+  return Math.max(career.wageBudget ?? 0, floor);
+}
+
 export function getWageBudgetForClub(club: string): number {
   const stars = getManagerClubStarRating(club);
   const byStars: Record<number, number> = {
@@ -312,7 +346,7 @@ export function evaluateRenewalOffer(
     };
   }
   if (
-    !canAffordAdditionalWage(career, offer.wagePerYear - contract.wagePerYear)
+    !canAffordRenewalWage(career, contract.wagePerYear, offer.wagePerYear)
   ) {
     return {
       accepted: false,
@@ -481,7 +515,16 @@ export function ensureRenewalDemands(career: ManagerCareer): ManagerCareer {
       changed = true;
     }
   }
-  return changed ? { ...career, contracts } : career;
+  return changed
+    ? {
+        ...career,
+        contracts,
+        wageBudget: resolveWageBudgetForCareer({ ...career, contracts }),
+      }
+    : {
+        ...career,
+        wageBudget: resolveWageBudgetForCareer(career),
+      };
 }
 
 export function previewPlayersLeaving(

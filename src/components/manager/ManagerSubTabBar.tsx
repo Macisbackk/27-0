@@ -10,6 +10,8 @@ import { playTabChange, playUiClick } from "@/lib/sound";
 export interface ManagerSubTabOption<T extends string> {
   id: T;
   label: string;
+  /** Shorter label on narrow screens when many tabs share one row. */
+  shortLabel?: string;
   variant?: "normal" | "current" | "hard" | "era" | "gold";
 }
 
@@ -37,25 +39,24 @@ export function ManagerSubTabBar<T extends string>({
   hardAccent = false,
 }: ManagerSubTabBarProps<T>) {
   const shellClass = scrollable
-    ? `${SUB_TAB_BAR_SHELL} overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`
+    ? `${SUB_TAB_BAR_SHELL} overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`
     : SUB_TAB_BAR_SHELL;
 
   const groupClass = `${subTabGroupClass(hardAccent, false, eraAccent)}${
-    scrollable ? " min-w-max" : ""
+    scrollable ? " min-w-max w-max max-w-none" : ""
   } ${className ?? ""}`;
 
   return (
     <div className={shellClass}>
       <div className={groupClass} role="tablist" aria-label={ariaLabel}>
-        {tabs.map(({ id, label, variant = "normal" }) => (
+        {tabs.map(({ id, label, shortLabel, variant = "normal" }) => (
           <button
             key={id}
             type="button"
             role="tab"
             aria-selected={active === id}
-            className={`${subTabGroupButtonClass(active === id, variant)}${
-              scrollable ? " shrink-0 whitespace-nowrap !flex-none px-3 sm:px-4" : ""
-            }`}
+            title={label}
+            className={subTabGroupButtonClass(active === id, variant, scrollable)}
             onClick={() => {
               if (active === id) return;
               playTabChange();
@@ -63,7 +64,14 @@ export function ManagerSubTabBar<T extends string>({
               onChange(id);
             }}
           >
-            {label}
+            {shortLabel ? (
+              <>
+                <span className="truncate sm:hidden">{shortLabel}</span>
+                <span className="hidden truncate sm:inline">{label}</span>
+              </>
+            ) : (
+              <span className="truncate">{label}</span>
+            )}
           </button>
         ))}
       </div>

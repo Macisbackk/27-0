@@ -168,15 +168,23 @@ export function RecruitmentSlotReveal({
       aria-label="Recruitment spin"
     >
       <div
-        className={`recruitment-spin-panel ${CARD.elevated} w-full max-w-lg overflow-hidden border border-accent-green/30 shadow-[0_0_48px_rgba(34,197,94,0.12)]`}
+        className={`recruitment-spin-panel ${CARD.elevated} w-full max-w-lg overflow-hidden border shadow-[0_0_48px_rgba(34,197,94,0.12)] ${
+          landed ? "border-accent-green/30" : "border-pitch-600/50"
+        }`}
         style={{
-          boxShadow: `0 0 48px rgba(34,197,94,0.12), inset 4px 0 0 ${clubColors.primary}`,
+          boxShadow: landed
+            ? `0 0 48px rgba(34,197,94,0.12), inset 4px 0 0 ${clubColors.primary}`
+            : "0 0 48px rgba(34,197,94,0.12), inset 4px 0 0 rgba(100,116,139,0.45)",
+          transition: "box-shadow 0.35s ease-out, border-color 0.35s ease-out",
         }}
       >
         <div
           className="border-b border-pitch-700/50 px-5 py-4 text-center sm:px-8 sm:py-5"
           style={{
-            background: `linear-gradient(180deg, ${clubColors.primary}22 0%, transparent 100%)`,
+            background: landed
+              ? `linear-gradient(180deg, ${clubColors.primary}22 0%, transparent 100%)`
+              : "linear-gradient(180deg, rgba(51,65,85,0.35) 0%, transparent 100%)",
+            transition: "background 0.35s ease-out",
           }}
         >
           <p className={TYPO.sectionLabel}>Recruitment draw</p>

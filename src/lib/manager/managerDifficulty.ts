@@ -52,15 +52,17 @@ export function evaluateSeasonPrestigeMomentumDelta(
 
   if (wonTitle && tier !== "title") return 1;
   if (wonCup && met) return 1;
-  if (met && position <= 2 && (tier === "playoffs" || tier === "mid-table")) {
+  if (met && position <= 2 && (tier === "top" || tier === "playoffs" || tier === "mid-table")) {
     return 1;
   }
   if (met) return 0;
 
   if (position >= LEAGUE_SIZE - 1) return -1;
   if (tier === "title" && position > 6) return -1;
+  if (tier === "top" && position > 6) return -1;
   if (tier === "playoffs" && position > 10) return -1;
   if (tier === "mid-table" && position >= 12) return -1;
+  if ((tier === "survive" || tier === "avoid-bottom") && position >= 13) return -1;
   return -1;
 }
 
@@ -133,7 +135,7 @@ export function getManagerDifficultySimAdjustments(
   if (tier === "survive" || tier === "avoid-bottom") {
     opponentRatingDelta += 1.2;
     formDelta -= 0.4;
-  } else if (tier === "title" || tier === "playoffs") {
+  } else if (tier === "title" || tier === "top" || tier === "playoffs") {
     opponentRatingDelta -= 0.8;
     formDelta += 0.3;
   }
@@ -143,13 +145,26 @@ export function getManagerDifficultySimAdjustments(
       opponentRatingDelta += 0.6;
       formDelta -= 0.25;
     }
-    if (tier === "survive" && position >= 10) {
-      opponentRatingDelta += 1;
-      formDelta -= 0.35;
+    if (tier === "top" && position > 3) {
+      opponentRatingDelta += 0.55;
+      formDelta -= 0.22;
     }
     if (tier === "playoffs" && position > 6) {
       opponentRatingDelta += 0.5;
       formDelta -= 0.2;
+    }
+    if (tier === "mid-table" && position >= 11) {
+      opponentRatingDelta += 0.35;
+      formDelta -= 0.15;
+    }
+    if (tier === "survive" && position >= 10) {
+      opponentRatingDelta += 1;
+      formDelta -= 0.35;
+    }
+    // avoid-bottom only comes from squad-rank helpers, not star ratings
+    if (tier === "avoid-bottom" && position >= 11) {
+      opponentRatingDelta += 0.85;
+      formDelta -= 0.3;
     }
   }
 
@@ -181,16 +196,21 @@ export function getManagerDifficultyBoardDelta(
     if (position === 1 && won) delta += 1;
     if (position > 3 && !won) delta -= 2;
     if (position > 5 && won) delta -= 1;
+  } else if (tier === "top") {
+    if (position <= 3 && won) delta += 1;
+    if (position > 5 && !won) delta -= 2;
+    if (position > 6 && won) delta -= 1;
   } else if (tier === "playoffs") {
     if (position <= 6 && won) delta += 1;
     if (position > 8 && !won) delta -= 2;
+  } else if (tier === "mid-table") {
+    if (position <= 8 && won) delta += 1;
+    if (position >= 11 && !won) delta -= 2;
+    if (position >= 12 && !won) delta -= 1;
   } else if (tier === "survive" || tier === "avoid-bottom") {
     if (position <= 10 && won) delta += 2;
     if (position >= 12 && !won) delta -= 3;
     if (position >= 13 && !won) delta -= 2;
-  } else {
-    if (position <= 8 && won) delta += 1;
-    if (position >= 11 && !won) delta -= 1;
   }
 
   return delta;
@@ -240,11 +260,27 @@ export function getManagerDifficultyPressure(
     };
   }
 
+  if (tier === "top" && position > 3 && career.gameWeek >= 8) {
+    return {
+      label: "Top-three push",
+      detail: `Target: ${target} · Currently ${position}th — stay in the leading pack.`,
+      tone: "amber",
+    };
+  }
+
   if (tier === "playoffs" && position > 6 && career.gameWeek >= 10) {
     return {
       label: "Play-off push",
       detail: `${position}th — need top-six form to meet the ${target.toLowerCase()} target.`,
       tone: "primary",
+    };
+  }
+
+  if (tier === "mid-table" && position >= 11 && career.gameWeek >= 8) {
+    return {
+      label: "Mid-table push",
+      detail: `${position}th — need to climb the table to meet a ${target.toLowerCase()} target.`,
+      tone: "amber",
     };
   }
 

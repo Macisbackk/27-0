@@ -30,7 +30,7 @@ import {
   completePlayerPurchase,
   evaluateBuyOffer,
   getAllLeaguePlayers,
-  getAskingPrice,
+  getBuyerMinimumTransferFee,
   getSellerAskingPrice,
 } from "@/lib/manager/managerTransferLeague";
 import {
@@ -52,9 +52,15 @@ interface ManagerTransfersProps {
 type TransferTab = "listed" | "freeAgents" | "unlisted";
 
 const TRANSFER_TAB_LABELS: Record<TransferTab, string> = {
-  listed: "Transfer listed",
+  listed: "Listed",
   freeAgents: "Free agents",
-  unlisted: "Unlisted players",
+  unlisted: "Unlisted",
+};
+
+const TRANSFER_TAB_SHORT_LABELS: Record<TransferTab, string> = {
+  listed: "Listed",
+  freeAgents: "Free",
+  unlisted: "Bid",
 };
 
 function withManagerRating(player: Player): Player {
@@ -206,10 +212,10 @@ export function ManagerTransfers({
     const fee =
       offerOverride?.transferFee ??
       (listed
-        ? getSellerAskingPrice(career, playerId, club, true)
+        ? getBuyerMinimumTransferFee(career, playerId, club, true)
         : offerPlayerId === playerId && offerFee > 0
           ? offerFee
-          : getAskingPrice(playerId, false, career.seed, career.gameWeek));
+          : getBuyerMinimumTransferFee(career, playerId, club, false));
 
     const offer = offerOverride
       ? { ...offerOverride, squadRole: demand.squadRole }
@@ -249,20 +255,20 @@ export function ManagerTransfers({
 
   const submitListedAssistantDeal = (playerId: string, club: string) => {
     const demand = getTransferDemand(career, playerId);
-    const asking = getSellerAskingPrice(career, playerId, club, true);
+    const buyerFee = getBuyerMinimumTransferFee(career, playerId, club, true);
     playUiClick();
     submitTransferOffer(playerId, club, true, {
-      transferFee: asking,
+      transferFee: buyerFee,
       wagePerYear: demand.wagePerYear,
       yearsRequested: demand.yearsRequested,
     });
   };
 
   const submitListedNegotiatedDeal = (playerId: string, club: string) => {
-    const asking = getSellerAskingPrice(career, playerId, club, true);
+    const buyerFee = getBuyerMinimumTransferFee(career, playerId, club, true);
     playUiClick();
     submitTransferOffer(playerId, club, true, {
-      transferFee: asking,
+      transferFee: buyerFee,
       wagePerYear: listedOfferWage,
       yearsRequested: listedOfferYears,
     });
@@ -352,6 +358,7 @@ export function ManagerTransfers({
   ).map(([id, count]) => ({
     id,
     label: `${TRANSFER_TAB_LABELS[id]}${count != null && count > 0 ? ` (${count})` : ""}`,
+    shortLabel: `${TRANSFER_TAB_SHORT_LABELS[id]}${count != null && count > 0 ? ` (${count})` : ""}`,
   }));
 
   const tabSubtitle =
@@ -442,7 +449,13 @@ export function ManagerTransfers({
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
           {listedPlayers.map(({ player, club }) => {
             const demand = getTransferDemand(career, player.id);
-            const effectiveFee = getSellerAskingPrice(
+            const listedPrice = getSellerAskingPrice(
+              career,
+              player.id,
+              club,
+              true
+            );
+            const buyerFee = getBuyerMinimumTransferFee(
               career,
               player.id,
               club,
@@ -453,7 +466,7 @@ export function ManagerTransfers({
               player.peakRating
             );
             const isNegotiating = listedNegotiateId === player.id;
-            const canAffordFee = getTransferBudget(career) >= effectiveFee;
+            const canAffordFee = getTransferBudget(career) >= buyerFee;
             const canAffordAssistant =
               appeal.allowed &&
               canAffordFee &&
@@ -468,7 +481,10 @@ export function ManagerTransfers({
                 player={player}
                 club={club}
                 listed
-                fee={effectiveFee}
+                fee={buyerFee}
+                sellerListedFee={
+                  listedPrice < buyerFee ? listedPrice : undefined
+                }
                 wagePerYear={isNegotiating ? listedOfferWage : demand.wagePerYear}
                 yearsRequested={
                   isNegotiating ? listedOfferYears : demand.yearsRequested
@@ -517,7 +533,7 @@ export function ManagerTransfers({
                           submitListedNegotiatedDeal(player.id, club)
                         }
                       >
-                        Submit offer — {formatWage(effectiveFee)}
+                        Submit offer — {formatWage(buyerFee)}
                       </GameButton>
                       <GameButton
                         variant="secondary"
@@ -737,7 +753,13 @@ export function ManagerTransfers({
         </div>
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
           {unlistedPlayers.map(({ player, club }) => {
-            const effectiveFee = getSellerAskingPrice(
+            const listedPrice = getSellerAskingPrice(
+              career,
+              player.id,
+              club,
+              false
+            );
+            const buyerFee = getBuyerMinimumTransferFee(
               career,
               player.id,
               club,
@@ -750,14 +772,17 @@ export function ManagerTransfers({
             const demand = getTransferDemand(career, player.id);
             const isOffering = offerPlayerId === player.id;
             const canAffordBid =
-              appeal.allowed && getTransferBudget(career) >= effectiveFee * 1.1;
+              appeal.allowed && getTransferBudget(career) >= buyerFee;
             return (
               <ManagerTransferPlayerCard
                 key={player.id}
                 player={player}
                 club={club}
                 listed={false}
-                fee={isOffering && offerFee > 0 ? offerFee : effectiveFee}
+                fee={isOffering && offerFee > 0 ? offerFee : buyerFee}
+                sellerListedFee={
+                  listedPrice < buyerFee ? listedPrice : undefined
+                }
                 wagePerYear={demand.wagePerYear}
                 yearsRequested={demand.yearsRequested}
               >
@@ -798,10 +823,10 @@ export function ManagerTransfers({
                       onClick={() => {
                         playUiClick();
                         setOfferPlayerId(player.id);
-                        setOfferFee(effectiveFee);
+                        setOfferFee(buyerFee);
                       }}
                     >
-                      Make offer — from {formatWage(effectiveFee)}
+                      Make offer — from {formatWage(buyerFee)}
                     </GameButton>
                   </div>
                 )}

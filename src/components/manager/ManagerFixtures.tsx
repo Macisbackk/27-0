@@ -75,14 +75,14 @@ type FixtureListItem =
       isNext: boolean;
     };
 
-const FILTERS: { id: FixtureFilter; label: string }[] = [
+const FILTERS: { id: FixtureFilter; label: string; shortLabel?: string }[] = [
   { id: "all", label: "All" },
-  { id: "upcoming", label: "Upcoming" },
+  { id: "upcoming", label: "Upcoming", shortLabel: "Next" },
   { id: "results", label: "Results" },
   { id: "league", label: "League" },
   { id: "cup", label: "Cup" },
-  { id: "playoffs", label: "Play-Offs" },
-  { id: "friendlies", label: "Friendlies" },
+  { id: "playoffs", label: "Play-Offs", shortLabel: "Playoffs" },
+  { id: "friendlies", label: "Friendlies", shortLabel: "Friendlies" },
 ];
 
 function ordinal(n: number): string {

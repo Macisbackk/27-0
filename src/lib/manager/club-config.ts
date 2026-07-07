@@ -27,6 +27,7 @@ export interface ManagerClubConfig {
 
 export type ManagerClubExpectationTier =
   | "title"
+  | "top"
   | "playoffs"
   | "mid-table"
   | "avoid-bottom"
@@ -37,19 +38,32 @@ export const MANAGER_EXPECTATION_LABELS: Record<
   string
 > = {
   title: "Win the title",
-  playoffs: "Reach the play-offs",
+  top: "Push for the top",
+  playoffs: "Make the play-offs",
   "mid-table": "Mid-table finish",
   "avoid-bottom": "Avoid the bottom",
-  survive: "Survive and develop",
+  survive: "Survive",
+};
+
+/** One board-expectation tier per star rating — used for careers and club select bios. */
+export const STAR_EXPECTATION_TIER_BY_STARS: Record<
+  1 | 2 | 3 | 4 | 5,
+  ManagerClubExpectationTier
+> = {
+  5: "title",
+  4: "top",
+  3: "playoffs",
+  2: "mid-table",
+  1: "survive",
 };
 
 /** Short tier summary for club-select group headers (matches star-based board targets). */
 export const MANAGER_STAR_TIER_BIOS: Record<number, string> = {
-  5: "Title contenders — win the Grand Final",
-  4: "Play-off push — finish in the top six",
-  3: "Mid-table finish — build toward the top half",
-  2: "Stay clear of the bottom places",
-  1: "Survive and develop — every point counts",
+  5: "Win the title — Grand Final favourites",
+  4: "Push for the top — challenge the leading pack",
+  3: "Make the play-offs — finish in the top six",
+  2: "Mid-table finish — solid Super League campaign",
+  1: "Survive — stay clear of the bottom places",
 };
 
 /** Fixed board star ratings for select clubs; others derive from squad OVR rank. */
@@ -112,11 +126,8 @@ export function getManagerClubExpectation(
 
 /** Board expectation tier from the club's current 1–5 star status. */
 export function expectationTierFromStars(stars: number): ManagerClubExpectationTier {
-  if (stars >= 5) return "title";
-  if (stars >= 4) return "playoffs";
-  if (stars >= 3) return "mid-table";
-  if (stars >= 2) return "avoid-bottom";
-  return "survive";
+  const clamped = Math.max(1, Math.min(5, Math.round(stars))) as 1 | 2 | 3 | 4 | 5;
+  return STAR_EXPECTATION_TIER_BY_STARS[clamped];
 }
 
 export function didMeetManagerBoardExpectation(
@@ -127,6 +138,8 @@ export function didMeetManagerBoardExpectation(
   switch (tier) {
     case "title":
       return playoffFinish === "Super League Champions";
+    case "top":
+      return position <= 3;
     case "playoffs":
       return position <= 6;
     case "mid-table":
