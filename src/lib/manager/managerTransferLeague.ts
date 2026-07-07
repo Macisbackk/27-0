@@ -26,7 +26,7 @@ import {
   transferLeaguePlayer,
 } from "./managerLeagueRosters";
 import { getManagerPlayer } from "./managerPlayers";
-import { getTransferDemand } from "./managerTransfers";
+import { getPlayerSigningDemand } from "./managerTransfers";
 import { createInitialPlayerState } from "./managerSquad";
 import { addPlayersToFreeAgents, completeFreeAgentSigning, isFreeAgent } from "./managerFreeAgents";
 import { syncManagerFinance, deductTransferFee, addTransferIncome, getTransferBudget, canAffordAdditionalWage, evaluateClubSigningAppeal, getBuyerAdjustedTransferFee, getManagerPlayerListingRating, computeFirstSeasonTransferBudget } from "./managerFinance";
@@ -469,12 +469,11 @@ export function evaluateBuyOffer(
     return { accepted: false, reason: "Insufficient transfer budget." };
   }
 
-  const demand = getTransferDemand(career, playerId);
-  const minWage = Math.round(demand.wagePerYear * appeal.wagePremium);
-  if (offer.wagePerYear < minWage * 0.9) {
+  const signing = getPlayerSigningDemand(career, playerId);
+  if (offer.wagePerYear < signing.minAcceptableWage) {
     return { accepted: false, reason: "Wage offer too low." };
   }
-  if (offer.yearsRequested < demand.yearsRequested && rating >= 75) {
+  if (offer.yearsRequested < signing.yearsRequested && rating >= 75) {
     return {
       accepted: false,
       reason: "Player wants a longer contract.",
@@ -515,7 +514,7 @@ export function completePlayerPurchase(
   }
 
   const rep = getManagerClubTeamRating(career.club);
-  const demand = getTransferDemand(career, playerId);
+  const demand = getPlayerSigningDemand(career, playerId);
   const contract = generateInitialContract(playerId, false, rep, career);
   contract.wagePerYear = offer.wagePerYear;
   contract.yearsRemaining = offer.yearsRequested;
@@ -964,7 +963,7 @@ export function suggestedWageOffer(
   career: ManagerCareer,
   playerId: string
 ): BuyOffer {
-  const demand = getTransferDemand(career, playerId);
+  const demand = getPlayerSigningDemand(career, playerId);
   return {
     transferFee: 0,
     wagePerYear: demand.wagePerYear,

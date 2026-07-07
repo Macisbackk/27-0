@@ -25,6 +25,7 @@ import {
 import {
   ManagerSectionCard,
   ManagerStat,
+  ManagerViewHeader,
   leaguePositionTone,
 } from "@/components/manager/manager-ui";
 
@@ -39,25 +40,27 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
 
   return (
     <div className={SPACING.stackLg}>
-      <div>
-        <h1 className={TYPO.viewTitle}>Stats</h1>
-        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-          {tab === "season"
+      <ManagerViewHeader
+        title="Stats"
+        subtitle={
+          tab === "season"
             ? `${career.seasonYear} season statistics`
             : tab === "career"
               ? `All-time career record at ${career.club}`
-              : "Players who have retired during this save"}
-        </p>
-      </div>
-
-      <ManagerSubTabBar
-        tabs={[
-          { id: "season", label: "Season" },
-          { id: "career", label: "Career" },
-          { id: "retired", label: "Retired" },
-        ]}
-        active={tab}
-        onChange={setTab}
+              : "Players who have retired during this save"
+        }
+        tabs={
+          <ManagerSubTabBar
+            tabs={[
+              { id: "season", label: "Season" },
+              { id: "career", label: "Career" },
+              { id: "retired", label: "Retired" },
+            ]}
+            active={tab}
+            onChange={setTab}
+            inline
+          />
+        }
       />
 
       {tab === "season" ? (

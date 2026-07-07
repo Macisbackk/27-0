@@ -155,6 +155,10 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     ...raw,
     difficulty: raw.difficulty ?? getManagerClubConfig(raw.club).difficulty,
     prestigeMomentum: raw.prestigeMomentum ?? 0,
+    clubStarRiseCelebratedAt:
+      raw.clubStarRiseCelebratedAt ??
+      raw.difficulty ??
+      getManagerClubConfig(raw.club).difficulty,
     gameWeek,
     leagueTable,
     currentFixtureIndex: raw.currentFixtureIndex ?? raw.currentRound ?? 0,
@@ -388,6 +392,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
       MANAGER_EXPECTATION_LABELS[expectationTierFromStars(config.difficulty)],
     difficulty: config.difficulty,
     prestigeMomentum: 0,
+    clubStarRiseCelebratedAt: config.difficulty,
     tactics: { ...DEFAULT_TACTICS },
     squad,
     contracts,

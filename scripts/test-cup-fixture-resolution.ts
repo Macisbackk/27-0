@@ -7,6 +7,7 @@ import { autoFixMatchdaySquad } from "../src/lib/manager/managerAutoFix";
 import {
   createManagerChallengeCup,
   ensureCupBracketReady,
+  getCupBracketDisplayRound,
   getPendingCupBracketRound,
   getUserCupMatch,
   prepareCupRound,
@@ -113,10 +114,58 @@ assert(
 );
 
 const cupSynced = ensureCupBracketReady(afterFiveLeague);
+const cupSyncedAgain = ensureCupBracketReady(cupSynced);
+assert(
+  cupSyncedAgain === cupSynced,
+  "ensureCupBracketReady is idempotent once the bracket is prepared"
+);
 const cupFixture = getNextManagerFixture(cupSynced);
 
 assert(cupFixture?.competition === "challenge_cup", "Next fixture is Challenge Cup");
 assert(!!cupFixture?.cupMatchId, "Cup fixture includes bracket match id");
+
+const displayRound = getCupBracketDisplayRound(cupSynced);
+const futureComplete =
+  cupSynced.challengeCup?.matches.filter(
+    (m) => m.round > displayRound && m.status === "complete"
+  ) ?? [];
+assert(
+  futureComplete.length === 0,
+  "No future-round cup ties complete before user plays their first tie"
+);
+
+const overSimulatedCup = cupSynced.challengeCup!;
+const legacyUnclipped = {
+  ...cupSynced,
+  challengeCup: {
+    ...overSimulatedCup,
+    matches: overSimulatedCup.matches.map((m) => {
+      if (m.round < 3) return m;
+      const winner = m.homeTeam ?? m.awayTeam;
+      return {
+        ...m,
+        status: "complete" as const,
+        homeScore: 24,
+        awayScore: 12,
+        winner,
+        loser: m.homeTeam === winner ? m.awayTeam : m.homeTeam,
+      };
+    }),
+  },
+};
+const repaired = ensureCupBracketReady(legacyUnclipped);
+const futureAfterRepair =
+  repaired.challengeCup?.matches.filter(
+    (m) => m.round > displayRound && m.status === "complete"
+  ) ?? [];
+assert(
+  futureAfterRepair.length === 0,
+  "Legacy over-simulated bracket is clipped without spurious re-persist on repeat"
+);
+assert(
+  ensureCupBracketReady(repaired) === repaired,
+  "Repaired bracket is not rewritten on a second ensureCupBracketReady pass"
+);
 
 const autoFixed = autoFixMatchdaySquad(afterFiveLeague);
 assert(autoFixed.ok, "Auto-fix succeeds for test squad");

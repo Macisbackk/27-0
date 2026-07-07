@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { ClubColorChip } from "@/components/ClubColorChip";
 import { FixtureResultRow } from "@/components/FixtureResultRow";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
-import { ManagerFormStrip, ManagerStat, leaguePositionTone, matchPredictionTone } from "@/components/manager/manager-ui";
+import { ManagerFormStrip, ManagerStat, ManagerViewHeader, leaguePositionTone, matchPredictionTone } from "@/components/manager/manager-ui";
 import { getMatchPrediction } from "@/lib/manager/managerScoring";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getManagerOpponentPoolOptions } from "@/lib/manager/managerLeagueRosters";
@@ -410,12 +410,20 @@ export function ManagerFixtures({
 
   return (
     <div className={`mx-auto w-full min-w-0 max-w-3xl overflow-x-hidden ${SPACING.stackLg}`}>
-      <div>
-        <h1 className={TYPO.viewTitle}>Fixtures</h1>
-        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-          Season {career.seasonYear} · {career.club}
-        </p>
-      </div>
+      <ManagerViewHeader
+        title="Fixtures"
+        subtitle={`Season ${career.seasonYear} · ${career.club}`}
+        tabs={
+          <ManagerSubTabBar
+            tabs={FILTERS}
+            active={filter}
+            onChange={setFilter}
+            scrollable
+            inline
+            ariaLabel="Filter fixtures"
+          />
+        }
+      />
 
       <div className={`${CARD.elevated} ${SPACING.cardPadding}`}>
         <p className={TYPO.sectionLabel}>Season snapshot</p>
@@ -521,14 +529,6 @@ export function ManagerFixtures({
           </GameButton>
         </div>
       )}
-
-      <ManagerSubTabBar
-        tabs={FILTERS}
-        active={filter}
-        onChange={setFilter}
-        scrollable
-        ariaLabel="Filter fixtures"
-      />
 
       {filteredItems.length === 0 ? (
         <div className={`${CARD.base} ${SPACING.cardPadding} text-center`}>

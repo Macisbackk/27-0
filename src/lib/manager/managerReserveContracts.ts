@@ -10,8 +10,11 @@ import type {
 import {
   computeWageBill,
   formatWage,
+  generateInitialContract,
   getContractStatus,
 } from "./managerContracts";
+import { getManagerClubTeamRating } from "./managerRating";
+import { reserveToPlayer } from "./managerPlayers";
 import {
   addReserveContractRenewalInboxMessage,
   addYouthIntakeInboxMessage,
@@ -60,6 +63,35 @@ export function generateReserveRenewalDemand(
     yearsRequested: reserve.age <= 19 ? 2 : 1,
     squadRole: "Prospect",
   };
+}
+
+/** First-team deal when a reserve graduates from the youth listing. */
+export function generatePromotedReserveContract(
+  career: ManagerCareer,
+  reserve: ManagerReservePlayer
+): PlayerContract {
+  const player = reserveToPlayer(reserve, career.seasonYear);
+  const withPlayer: ManagerCareer = {
+    ...career,
+    playerRegistry: { ...career.playerRegistry, [reserve.id]: player },
+  };
+  const rep = getManagerClubTeamRating(career.club);
+  const contract = generateInitialContract(
+    reserve.id,
+    false,
+    rep,
+    withPlayer
+  );
+  contract.squadRole = "Prospect";
+  contract.purchaseFee = 0;
+
+  const minYears = reserve.age <= 21 ? 3 : 2;
+  if (contract.yearsRemaining < minYears) {
+    contract.yearsRemaining = minYears;
+  }
+  contract.expiresAtSeasonEnd = contract.yearsRemaining <= 1;
+
+  return contract;
 }
 
 export function buildReserveContractsForReserves(

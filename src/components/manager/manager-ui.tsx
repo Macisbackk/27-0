@@ -112,20 +112,25 @@ export function ManagerViewHeader({
   title,
   subtitle,
   action,
+  tabs,
 }: {
   title: string;
   subtitle?: string;
   action?: ReactNode;
+  tabs?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-      <div className="min-w-0">
-        <h1 className={TYPO.viewTitle}>{title}</h1>
-        {subtitle ? (
-          <p className={`mt-1 ${TYPO.managerBody}`}>{subtitle}</p>
-        ) : null}
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div className="min-w-0 flex-1">
+          <h1 className={TYPO.viewTitle}>{title}</h1>
+          {subtitle ? (
+            <p className={`mt-1 ${TYPO.managerBody}`}>{subtitle}</p>
+          ) : null}
+        </div>
+        {tabs ? <div className="shrink-0 sm:self-end">{tabs}</div> : null}
+        {action ? <div className="shrink-0">{action}</div> : null}
       </div>
-      {action ? <div className="shrink-0">{action}</div> : null}
     </div>
   );
 }

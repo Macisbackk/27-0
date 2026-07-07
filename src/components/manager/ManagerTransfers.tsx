@@ -9,7 +9,7 @@ import {
   ManagerTransferResultModal,
   type TransferResultDetails,
 } from "@/components/manager/ManagerTransferResultModal";
-import { ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
+import { ManagerSectionCard, ManagerStat, ManagerViewHeader } from "@/components/manager/manager-ui";
 import {
   canAffordAdditionalWage,
   evaluateClubSigningAppeal,
@@ -37,7 +37,7 @@ import {
   completeFreeAgentSigning,
   evaluateFreeAgentOffer,
 } from "@/lib/manager/managerFreeAgents";
-import { getTransferDemand } from "@/lib/manager/managerTransfers";
+import { getPlayerSigningDemand } from "@/lib/manager/managerTransfers";
 import { getPlayerById } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Player, Position } from "@/lib/types";
@@ -208,7 +208,7 @@ export function ManagerTransfers({
     }
   ) => {
     const player = getPlayerById(playerId);
-    const demand = getTransferDemand(career, playerId);
+    const demand = getPlayerSigningDemand(career, playerId);
     const fee =
       offerOverride?.transferFee ??
       (listed
@@ -245,7 +245,7 @@ export function ManagerTransfers({
   };
 
   const openListedNegotiation = (playerId: string) => {
-    const demand = getTransferDemand(career, playerId);
+    const demand = getPlayerSigningDemand(career, playerId);
     playUiClick();
     setListedNegotiateId(playerId);
     setListedOfferWage(demand.wagePerYear);
@@ -254,7 +254,7 @@ export function ManagerTransfers({
   };
 
   const submitListedAssistantDeal = (playerId: string, club: string) => {
-    const demand = getTransferDemand(career, playerId);
+    const demand = getPlayerSigningDemand(career, playerId);
     const buyerFee = getBuyerMinimumTransferFee(career, playerId, club, true);
     playUiClick();
     submitTransferOffer(playerId, club, true, {
@@ -283,7 +283,7 @@ export function ManagerTransfers({
     }
   ) => {
     const player = getPlayerById(playerId);
-    const demand = getTransferDemand(career, playerId);
+    const demand = getPlayerSigningDemand(career, playerId);
     const offer = {
       transferFee: 0,
       wagePerYear: offerOverride?.wagePerYear ?? demand.wagePerYear,
@@ -312,7 +312,7 @@ export function ManagerTransfers({
   };
 
   const openFreeAgentNegotiation = (playerId: string) => {
-    const demand = getTransferDemand(career, playerId);
+    const demand = getPlayerSigningDemand(career, playerId);
     playUiClick();
     setFreeAgentNegotiateId(playerId);
     setFreeAgentOfferWage(demand.wagePerYear);
@@ -322,7 +322,7 @@ export function ManagerTransfers({
   };
 
   const submitFreeAgentAssistantDeal = (playerId: string, formerClub: string) => {
-    const demand = getTransferDemand(career, playerId);
+    const demand = getPlayerSigningDemand(career, playerId);
     playUiClick();
     submitFreeAgentOffer(playerId, formerClub, {
       wagePerYear: demand.wagePerYear,
@@ -370,10 +370,18 @@ export function ManagerTransfers({
 
   return (
     <div className={`w-full ${SPACING.stackLg}`}>
-      <div>
-        <h1 className={TYPO.viewTitle}>Transfers</h1>
-        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{tabSubtitle}</p>
-      </div>
+      <ManagerViewHeader
+        title="Transfers"
+        subtitle={tabSubtitle}
+        tabs={
+          <ManagerSubTabBar
+            tabs={transferSubTabs}
+            active={tab}
+            onChange={switchTab}
+            inline
+          />
+        }
+      />
 
       <ManagerSectionCard title="Funds & wages" variant="elevated" accent="primary">
         <div className="mt-2 grid grid-cols-2 gap-3">
@@ -415,8 +423,6 @@ export function ManagerTransfers({
         </p>
       </ManagerSectionCard>
 
-      <ManagerSubTabBar tabs={transferSubTabs} active={tab} onChange={switchTab} />
-
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-3`}>Filter by position</p>
         <div className="flex flex-wrap gap-2">
@@ -448,7 +454,7 @@ export function ManagerTransfers({
       <section className="space-y-3">
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
           {listedPlayers.map(({ player, club }) => {
-            const demand = getTransferDemand(career, player.id);
+            const demand = getPlayerSigningDemand(career, player.id);
             const listedPrice = getSellerAskingPrice(
               career,
               player.id,
@@ -595,7 +601,7 @@ export function ManagerTransfers({
       <section className="space-y-3">
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
           {freeAgents.map(({ player, formerClub, playerId }) => {
-            const demand = getTransferDemand(career, player.id);
+            const demand = getPlayerSigningDemand(career, player.id);
             const appeal = evaluateClubSigningAppeal(
               career.club,
               player.peakRating
@@ -769,7 +775,7 @@ export function ManagerTransfers({
               career.club,
               player.peakRating
             );
-            const demand = getTransferDemand(career, player.id);
+            const demand = getPlayerSigningDemand(career, player.id);
             const isOffering = offerPlayerId === player.id;
             const canAffordBid =
               appeal.allowed && getTransferBudget(career) >= buyerFee;

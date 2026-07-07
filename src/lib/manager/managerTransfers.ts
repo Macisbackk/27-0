@@ -12,7 +12,7 @@ import {
   generateInitialContract,
   inferSquadRole,
 } from "./managerContracts";
-import { canAffordAdditionalWage } from "./managerFinance";
+import { canAffordAdditionalWage, evaluateClubSigningAppeal, getManagerPlayerListingRating } from "./managerFinance";
 import { getManagerClubTeamRating } from "./managerRating";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 
@@ -29,6 +29,11 @@ export interface TransferDemand {
   wagePerYear: number;
   yearsRequested: number;
   squadRole: ReturnType<typeof inferSquadRole>;
+}
+
+/** Wage/terms the player expects from your club (includes tier premium when applicable). */
+export interface PlayerSigningDemand extends TransferDemand {
+  minAcceptableWage: number;
 }
 
 export function getTransferDemand(
@@ -49,6 +54,23 @@ export function getTransferDemand(
     wagePerYear: wage,
     yearsRequested: rating >= 82 ? 2 : 1,
     squadRole: role,
+  };
+}
+
+/** Player wage demand at your club — matches transfer evaluation logic. */
+export function getPlayerSigningDemand(
+  career: ManagerCareer,
+  playerId: string
+): PlayerSigningDemand {
+  const base = getTransferDemand(career, playerId);
+  const rating = getManagerPlayerListingRating(career, playerId);
+  const appeal = evaluateClubSigningAppeal(career.club, rating);
+  const wagePerYear = Math.round(base.wagePerYear * appeal.wagePremium);
+  return {
+    wagePerYear,
+    yearsRequested: base.yearsRequested,
+    squadRole: base.squadRole,
+    minAcceptableWage: Math.round(wagePerYear * 0.9),
   };
 }
 
@@ -104,7 +126,7 @@ export function signPlayer(
     return { ok: false, error: "Insufficient transfer budget" };
   }
 
-  const demand = getTransferDemand(career, playerId);
+  const demand = getPlayerSigningDemand(career, playerId);
   if (!canAffordWage(career, demand.wagePerYear)) {
     return {
       ok: false,

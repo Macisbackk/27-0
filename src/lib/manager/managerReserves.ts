@@ -1,5 +1,12 @@
 import seedrandom from "seedrandom";
-import { getFacilityDevelopmentMultiplier } from "./managerFacilities";
+import {
+  getClubFacilities,
+  getFacilityDevelopmentMultiplier,
+  getYouthIntakePotentialBonus,
+  getYouthIntakePotentialFloor,
+  getYouthIntakeRatingBoost,
+  getYouthIntakeRollShift,
+} from "./managerFacilities";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { decomposeRLScore, pickRLScore, snapToRLScore } from "../game/rl-scores";
 import type { Position } from "../types";
@@ -14,13 +21,12 @@ import {
   addReserveReturnInboxMessage,
 } from "./managerInbox";
 import { createInitialPlayerState } from "./managerSquad";
-import { generateInitialContract } from "./managerContracts";
 import {
   computeCareerWageBill,
+  generatePromotedReserveContract,
   generateReserveYouthContract,
 } from "./managerReserveContracts";
 import { deductTransferFee } from "./managerFinance";
-import { getManagerClubTeamRating } from "./managerRating";
 import { reserveToPlayer, getManagerPlayerAge } from "./managerPlayers";
 import { reconcileLeagueRosters } from "./managerLeagueRosters";
 import type { Player } from "../types";
@@ -126,7 +132,7 @@ function pickPotential(
   rng: () => number,
   youthLevel = 0
 ): number {
-  const shift = youthLevel * 0.012;
+  const shift = getYouthIntakeRollShift(youthLevel);
   const roll = Math.min(0.99, rng() - shift);
   let potential: number;
   if (roll < 0.04) potential = 85 + Math.floor(rng() * 6);
@@ -134,8 +140,9 @@ function pickPotential(
   else if (roll < 0.35) potential = 75 + Math.floor(rng() * 5);
   else if (roll < 0.65) potential = 70 + Math.floor(rng() * 5);
   else potential = 65 + Math.floor(rng() * 5);
-  const floor = 65 + youthLevel * 2;
-  return Math.min(92, Math.max(floor, potential + Math.floor(youthLevel * 0.35)));
+  const floor = getYouthIntakePotentialFloor(youthLevel);
+  const bonus = getYouthIntakePotentialBonus(youthLevel);
+  return Math.min(92, Math.max(floor, potential + bonus));
 }
 
 function ratingForAge(
@@ -144,7 +151,7 @@ function ratingForAge(
   rng: () => number,
   youthLevel = 0
 ): number {
-  const boost = youthLevel * 2;
+  const boost = getYouthIntakeRatingBoost(youthLevel);
   if (age <= 18) return 55 + Math.floor(rng() * 14) + boost;
   if (age <= 20) return 60 + Math.floor(rng() * 13) + boost;
   return 63 + Math.floor(rng() * 13) + boost;
@@ -534,6 +541,7 @@ function generateEmergencyReserveRecruits(
   const shuffled = [...positions].sort(() => rng() - 0.5);
   const startIndex = career.reserves.length;
 
+  const facilities = getClubFacilities(career);
   const recruits: ManagerReservePlayer[] = [];
   for (let i = 0; i < count; i++) {
     const pos = shuffled[(startIndex + i) % shuffled.length] ?? "CENTRE";
@@ -542,7 +550,8 @@ function generateEmergencyReserveRecruits(
         `${career.seed}-emergency-${career.seasonYear}`,
         startIndex + i,
         pos,
-        career.club
+        career.club,
+        facilities.youth
       )
     );
   }
@@ -784,10 +793,7 @@ export function promoteReserveToSquad(
   }
 
   const player: Player = reserveToPlayer(reserve, career.seasonYear);
-  const rep = getManagerClubTeamRating(career.club);
-  const contract = generateInitialContract(reserveId, false, rep);
-  contract.squadRole = "Prospect";
-  contract.purchaseFee = 0;
+  const contract = generatePromotedReserveContract(career, reserve);
 
   const nextReserveContracts = { ...(career.reserveContracts ?? {}) };
   delete nextReserveContracts[reserveId];

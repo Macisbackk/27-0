@@ -100,25 +100,54 @@ export function countCupFixturesPlayed(career: ManagerCareer): number {
     .length;
 }
 
+function cupBracketSnapshotsEqual(
+  a: ChallengeCupBracketState,
+  b: ChallengeCupBracketState
+): boolean {
+  if (
+    a.userEliminated !== b.userEliminated ||
+    a.tournamentComplete !== b.tournamentComplete ||
+    a.userWon !== b.userWon ||
+    a.matches.length !== b.matches.length
+  ) {
+    return false;
+  }
+
+  return a.matches.every((match, index) => {
+    const other = b.matches[index]!;
+    return (
+      match.id === other.id &&
+      match.status === other.status &&
+      match.homeTeam === other.homeTeam &&
+      match.awayTeam === other.awayTeam &&
+      match.homeScore === other.homeScore &&
+      match.awayScore === other.awayScore &&
+      match.winner === other.winner &&
+      match.loser === other.loser
+    );
+  });
+}
+
 export function ensureCupBracketReady(career: ManagerCareer): ManagerCareer {
   const pending = getPendingCupBracketRound(career);
-  if (pending === null || !career.challengeCup) return career;
-
-  const prepared = prepareCupRound(career);
   const cup = career.challengeCup;
-  const completeBefore = cup.matches.filter((m) => m.status === "complete").length;
-  const completeAfter = prepared.matches.filter((m) => m.status === "complete").length;
+  if (pending === null || !cup) return career;
+
+  const snapshotBefore = clipCupBracketToUserProgress(career);
+  const prepared = prepareCupRound(career);
+  const clipped = clipCupBracketToUserProgress({
+    ...career,
+    challengeCup: prepared,
+  });
 
   if (
-    completeAfter === completeBefore &&
-    prepared.userEliminated === cup.userEliminated &&
-    prepared.tournamentComplete === cup.tournamentComplete &&
-    prepared.userWon === cup.userWon
+    cupBracketSnapshotsEqual(snapshotBefore, clipped) &&
+    cupBracketSnapshotsEqual(cup, clipped)
   ) {
     return career;
   }
 
-  return { ...career, challengeCup: prepared };
+  return { ...career, challengeCup: clipped };
 }
 
 export function getPendingCupBracketRound(
@@ -147,17 +176,18 @@ function findReadyAiMatch(
     .sort((a, b) => a.round - b.round || a.slot - b.slot)[0];
 }
 
-/** Simulate ready AI ties across the bracket (earlier rounds first). */
+/** Simulate ready AI ties up to `maxRound` (inclusive). */
 function simulateReadyAiCupMatches(
   bracket: ChallengeCupBracketState,
   squad: ReturnType<typeof buildSquadSlotsFromMatchday>,
+  maxRound = 4,
   maxSteps = 48
 ): ChallengeCupBracketState {
   let next = bracket;
   for (let step = 0; step < maxSteps; step++) {
     if (next.userEliminated || next.tournamentComplete) break;
     const aiReady = findReadyAiMatch(next);
-    if (!aiReady) break;
+    if (!aiReady || aiReady.round > maxRound) break;
     next = simulateBracketMatch(next, aiReady.id, squad);
   }
   return next;
@@ -167,18 +197,16 @@ function simulateAiUntilUserReady(
   bracket: ChallengeCupBracketState,
   squad: ReturnType<typeof buildSquadSlotsFromMatchday>
 ): ChallengeCupBracketState {
-  let next = simulateReadyAiCupMatches(bracket, squad);
-  if (getUserCupMatch(next)) return next;
+  const userMatch = getUserCupMatch(bracket);
+  if (userMatch) {
+    return simulateReadyAiCupMatches(bracket, squad, userMatch.round);
+  }
 
-  let guard = 0;
-  while (guard < 48) {
-    guard++;
-    if (next.userEliminated || next.tournamentComplete) return next;
-
-    const aiReady = findReadyAiMatch(next);
-    if (!aiReady) break;
-    next = simulateBracketMatch(next, aiReady.id, squad);
+  let next = bracket;
+  for (let round = 1; round <= 4; round++) {
+    next = simulateReadyAiCupMatches(next, squad, round);
     if (getUserCupMatch(next)) return next;
+    if (next.userEliminated || next.tournamentComplete) return next;
   }
   return next;
 }
@@ -209,7 +237,7 @@ export function advanceCupBracketAfterUserMatch(
     career.xiiiSlotPositions,
     career
   );
-  return simulateReadyAiCupMatches(cup, squad);
+  return simulateAiUntilUserReady(cup, squad);
 }
 
 /** Repair cup bracket flags or empty bracket from saved cup fixtures. */
@@ -261,7 +289,7 @@ export function reconcileChallengeCupFromFixtures(
     };
   }
 
-  return cup;
+  return clipCupBracketToUserProgress({ ...career, challengeCup: cup });
 }
 
 export function getUserCupMatch(
@@ -674,6 +702,40 @@ function resolveCupDisplayFixture(
 
 export function cupRoundKeyToBracketRound(key: CupRoundKey): number {
   return CUP_KEY_TO_BRACKET_ROUND[key];
+}
+
+/** Furthest cup round the user has reached — used to hide later-round AI results. */
+export function getCupBracketDisplayRound(career: ManagerCareer): number {
+  const cup = career.challengeCup;
+  if (!cup) return 1;
+  if (cup.userEliminated || cup.tournamentComplete) return 4;
+
+  const pending = getPendingCupBracketRound(career);
+  if (pending !== null) return pending;
+
+  const cupPlayed = countCupFixturesPlayed(career);
+  if (cupPlayed === 0) return 1;
+  return Math.min(4, cupPlayed + 1);
+}
+
+/** Bracket view for UI — hides results from rounds the user has not reached. */
+export function getCupBracketForDisplay(
+  career: ManagerCareer
+): ChallengeCupBracketState | undefined {
+  const cup = career.challengeCup;
+  if (!cup) return undefined;
+  return snapshotCupBracketAtRound(cup, getCupBracketDisplayRound(career));
+}
+
+/** Repair over-simulated AI results ahead of the user's current cup round. */
+export function clipCupBracketToUserProgress(
+  career: ManagerCareer
+): ChallengeCupBracketState {
+  const cup =
+    career.challengeCup?.matches?.length
+      ? career.challengeCup
+      : createManagerChallengeCup(career.seed, career.club);
+  return snapshotCupBracketAtRound(cup, getCupBracketDisplayRound(career));
 }
 
 /** Bracket view as it stood after a given cup round (hides later-round results). */

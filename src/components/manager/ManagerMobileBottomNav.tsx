@@ -3,29 +3,14 @@
 import { useState } from "react";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import {
+  MANAGER_MOBILE_MORE_NAV_TABS,
+  MANAGER_PRIMARY_NAV_TABS,
+  isManagerMobileMoreNavView,
+} from "@/lib/manager/manager-nav-config";
 import type { ManagerView } from "@/lib/manager/types";
 import { playTabChange, playUiClick } from "@/lib/sound";
 import { useModalA11y } from "@/hooks/useModalA11y";
-
-const PRIMARY_TABS: {
-  id: ManagerView;
-  label: string;
-  icon: string;
-}[] = [
-  { id: "hub", label: "Hub", icon: "🏠" },
-  { id: "squad", label: "Squad", icon: "👥" },
-  { id: "reserves", label: "Reserves", icon: "📋" },
-  { id: "contracts", label: "Contracts", icon: "📝" },
-  { id: "transfers", label: "Market", icon: "💷" },
-];
-
-const MORE_ITEMS: { id: ManagerView; label: string; icon: string }[] = [
-  { id: "club", label: "Club", icon: "🏟️" },
-  { id: "inbox", label: "Inbox", icon: "✉" },
-  { id: "fixtures", label: "Fixtures", icon: "📅" },
-  { id: "across-league", label: "League", icon: "🏉" },
-  { id: "stats", label: "Stats", icon: "📊" },
-];
 
 interface ManagerMobileBottomNavProps {
   active: ManagerView;
@@ -39,7 +24,7 @@ export function ManagerMobileBottomNav({
   disabled,
 }: ManagerMobileBottomNavProps) {
   const [moreOpen, setMoreOpen] = useState(false);
-  const moreActive = MORE_ITEMS.some((item) => item.id === active);
+  const moreActive = isManagerMobileMoreNavView(active);
   const panelRef = useModalA11y(moreOpen, () => setMoreOpen(false));
 
   const navigate = (view: ManagerView) => {
@@ -57,28 +42,28 @@ export function ManagerMobileBottomNav({
         aria-label="Manager mobile navigation"
       >
         <div className="mx-auto grid max-w-lg grid-cols-6 gap-0.5 px-1.5 pt-2">
-          {PRIMARY_TABS.map((tab) => {
+          {MANAGER_PRIMARY_NAV_TABS.map((tab) => {
             const isActive = active === tab.id;
             return (
-            <button
-              key={tab.id}
-              type="button"
-              disabled={disabled}
-              onClick={() => navigate(tab.id)}
-              className={`btn-press flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-xl border-2 px-0.5 py-2 text-center transition ${
-                isActive
-                  ? BTN.tabActive
-                  : "border-transparent bg-pitch-900/50 text-pitch-300 hover:bg-pitch-800/60 hover:text-white"
-              } ${disabled ? "pointer-events-none opacity-40" : ""}`}
-              aria-current={isActive ? "page" : undefined}
-            >
-              <span className="text-lg leading-none" aria-hidden>
-                {tab.icon}
-              </span>
-              <span className="font-display text-[10px] font-bold uppercase tracking-wide leading-tight">
-                {tab.label}
-              </span>
-            </button>
+              <button
+                key={tab.id}
+                type="button"
+                disabled={disabled}
+                onClick={() => navigate(tab.id)}
+                className={`btn-press flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-xl border-2 px-0.5 py-2 text-center transition ${
+                  isActive
+                    ? BTN.tabActive
+                    : "border-transparent bg-pitch-900/50 text-pitch-300 hover:bg-pitch-800/60 hover:text-white"
+                } ${disabled ? "pointer-events-none opacity-40" : ""}`}
+                aria-current={isActive ? "page" : undefined}
+              >
+                <span className="text-lg leading-none" aria-hidden>
+                  {tab.icon}
+                </span>
+                <span className="font-display text-[10px] font-bold uppercase tracking-wide leading-tight">
+                  {tab.shortLabel}
+                </span>
+              </button>
             );
           })}
           <button
@@ -122,26 +107,29 @@ export function ManagerMobileBottomNav({
           >
             <p className={`${TYPO.sectionLabel} text-pitch-300`}>More sections</p>
             <div className={`mt-3 flex flex-col gap-2 ${SPACING.stackSm}`}>
-              {MORE_ITEMS.map((item) => {
+              {MANAGER_MOBILE_MORE_NAV_TABS.map((item) => {
                 const isActive = active === item.id;
                 return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => navigate(item.id)}
-                  className={`btn-press flex min-h-[52px] items-center gap-3 rounded-xl border px-4 py-3 text-left transition ${
-                    isActive
-                      ? "border-theme-primary/55 bg-theme-primary/15 text-white ring-2 ring-theme-primary/35"
-                      : "border-pitch-600/55 bg-pitch-900/70 text-pitch-100 hover:border-pitch-500/60 hover:bg-pitch-800/70"
-                  }`}
-                >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-pitch-950/60 text-lg" aria-hidden>
-                    {item.icon}
-                  </span>
-                  <span className="font-display text-sm font-bold uppercase tracking-wide">
-                    {item.label}
-                  </span>
-                </button>
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => navigate(item.id)}
+                    className={`btn-press flex min-h-[52px] items-center gap-3 rounded-xl border px-4 py-3 text-left transition ${
+                      isActive
+                        ? "border-theme-primary/55 bg-theme-primary/15 text-white ring-2 ring-theme-primary/35"
+                        : "border-pitch-600/55 bg-pitch-900/70 text-pitch-100 hover:border-pitch-500/60 hover:bg-pitch-800/70"
+                    }`}
+                  >
+                    <span
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-pitch-950/60 text-lg"
+                      aria-hidden
+                    >
+                      {item.icon}
+                    </span>
+                    <span className="font-display text-sm font-bold uppercase tracking-wide">
+                      {item.label}
+                    </span>
+                  </button>
                 );
               })}
             </div>

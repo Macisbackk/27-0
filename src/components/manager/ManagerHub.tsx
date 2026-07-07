@@ -12,7 +12,7 @@ import type {
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getNextManagerFixture, isManagerSeasonComplete } from "@/lib/manager/managerSimulation";
 import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
-import { getCupHubStatus } from "@/lib/manager/managerChallengeCup";
+import { getCupBracketForDisplay, getCupHubStatus } from "@/lib/manager/managerChallengeCup";
 import { BracketRecap } from "@/components/BracketRecap";
 import { PlayoffBracketDisplay } from "@/components/PlayoffBracketDisplay";
 import {
@@ -179,14 +179,17 @@ function HubBoardBudgetAttendance({
 }
 
 function HubChallengeCupBracketPanel({
-  cup,
+  career,
   cupStatus,
   nextFixture,
 }: {
-  cup: ChallengeCupBracketState;
+  career: ManagerCareer;
   cupStatus: string;
   nextFixture: ManagerScheduledFixture;
 }) {
+  const cup = getCupBracketForDisplay(career);
+  if (!cup) return null;
+
   const activeRound = getActiveRound(cup);
   const roundLabel = nextFixture.cupRound
     ? getManagerCupRoundLabel(nextFixture.cupRound)
@@ -669,12 +672,22 @@ export function ManagerHub({
     />
   );
 
+  const showPlayoffBracket =
+    hubCareer.playoffs &&
+    career.playoffsIntroAcknowledged &&
+    (playoffsActive || isPlayoffFixture);
+
   const hubStandingsCard =
     isCupFixture && hubCareer.challengeCup && nextFixture ? (
       <HubChallengeCupBracketPanel
-        cup={hubCareer.challengeCup}
+        career={hubCareer}
         cupStatus={cupStatus}
         nextFixture={nextFixture}
+      />
+    ) : showPlayoffBracket ? (
+      <HubPlayoffBracketPanel
+        playoffs={hubCareer.playoffs!}
+        career={hubCareer}
       />
     ) : (
       leagueTableCard
@@ -712,10 +725,6 @@ export function ManagerHub({
             {hubStandingsCard}
           </div>
           {commandCentre}
-          <HubPlayoffBracketPanel
-            playoffs={hubCareer.playoffs}
-            career={hubCareer}
-          />
           <MobileDetailsAccordion title="Club details">
             <HubBoardBudgetAttendance
               career={career}

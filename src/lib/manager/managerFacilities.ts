@@ -88,6 +88,26 @@ export function getYouthIntakeBonus(level: number): number {
   return 0;
 }
 
+/** Minimum potential floor on yearly youth intake. */
+export function getYouthIntakePotentialFloor(level: number): number {
+  return 65 + Math.floor(clampLevel(level) * 3);
+}
+
+/** Shifts youth intake rolls toward higher potential tiers. */
+export function getYouthIntakeRollShift(level: number): number {
+  return clampLevel(level) * 0.02;
+}
+
+/** Flat bonus applied to rolled youth intake potential. */
+export function getYouthIntakePotentialBonus(level: number): number {
+  return Math.floor(clampLevel(level) * 1.2);
+}
+
+/** Starting rating boost for academy graduates — kept below potential lift. */
+export function getYouthIntakeRatingBoost(level: number): number {
+  return Math.floor(clampLevel(level) * 1);
+}
+
 /** Multiplier on in-season youth/reserve growth chance. */
 export function getYouthGrowthMultiplier(level: number): number {
   return 1 + clampLevel(level) * 0.06;
@@ -127,7 +147,7 @@ export function getFacilityEffectSummary(
     case "youth":
       return lv === 0
         ? "Standard academy intake and prospect quality."
-        : `+${getYouthIntakeBonus(lv)} intake/season · +${lv * 2} potential floor · +${lv * 2} starting rating`;
+        : `+${getYouthIntakeBonus(lv)} intake/season · ${getYouthIntakePotentialFloor(lv)}+ potential floor · +${getYouthIntakeRatingBoost(lv)} starting rating`;
     case "training":
       return lv === 0
         ? "Baseline player development."

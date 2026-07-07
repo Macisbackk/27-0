@@ -4,7 +4,7 @@ import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { FreeAgent, LeagueTransferActivity, ManagerCareer } from "./types";
 import type { BuyOffer } from "./managerTransferLeague";
 import { getProtectedTransferPlayerIds } from "./managerTransferLeague";
-import { getTransferDemand } from "./managerTransfers";
+import { getPlayerSigningDemand } from "./managerTransfers";
 import { getManagerPlayer } from "./managerPlayers";
 import {
   generateInitialContract,
@@ -95,18 +95,17 @@ export function evaluateFreeAgentOffer(
     };
   }
 
-  const demand = getTransferDemand(career, playerId);
+  const signing = getPlayerSigningDemand(career, playerId);
   const rating = getManagerPlayerListingRating(career, playerId);
   const appeal = evaluateClubSigningAppeal(career.club, rating);
   if (!appeal.allowed) {
     return { accepted: false, reason: appeal.reason ?? "Signing blocked." };
   }
 
-  const minWage = Math.round(demand.wagePerYear * appeal.wagePremium);
-  if (offer.wagePerYear < minWage * 0.9) {
+  if (offer.wagePerYear < signing.minAcceptableWage) {
     return { accepted: false, reason: "Wage offer too low." };
   }
-  if (offer.yearsRequested < demand.yearsRequested && rating >= 75) {
+  if (offer.yearsRequested < signing.yearsRequested && rating >= 75) {
     return {
       accepted: false,
       reason: "Player wants a longer contract.",
@@ -155,7 +154,7 @@ export function completeFreeAgentSigning(
   const formerClub = entry?.formerClub ?? "Free Agents";
 
   const rep = getManagerClubTeamRating(career.club);
-  const demand = getTransferDemand(career, playerId);
+  const demand = getPlayerSigningDemand(career, playerId);
   const contract = generateInitialContract(playerId, false, rep, career);
   contract.wagePerYear = offer.wagePerYear;
   contract.yearsRemaining = offer.yearsRequested;

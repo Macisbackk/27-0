@@ -546,10 +546,18 @@ export interface ManagerCareer {
   trophyCelebrationShown?: boolean;
   /** League Leaders celebration shown after the regular season (table winners). */
   leagueWinnersCelebrationShown?: boolean;
+  /** Perfect 27-0 league season celebration shown. */
+  perfectSeasonCelebrationShown?: boolean;
+  /** Winless 0-27 league season celebration shown. */
+  winlessSeasonCelebrationShown?: boolean;
   /** Lifetime stats already credited for this season's league table finish. */
   leaguePhaseStatsRecordedForYear?: number | null;
   /** Challenge Cup win celebration shown after lifting the cup. */
   challengeCupCelebrationShown?: boolean;
+  /** Last club star tier the rise celebration was shown for (1–5). */
+  clubStarRiseCelebratedAt?: number;
+  /** Previous star tier when a rise celebration is pending. */
+  pendingClubStarRiseFrom?: number;
   /** Career-start board objectives popup dismissed. */
   objectivesIntroShown?: boolean;
   /** Consecutive weeks wage bill exceeded budget — triggers board pressure. */

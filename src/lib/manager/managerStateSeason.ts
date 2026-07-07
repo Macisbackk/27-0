@@ -46,6 +46,7 @@ import {
 } from "./managerRetirement";
 import { getManagerSeasonTrophyLabels } from "./managerSeasonTrophies";
 import { applySeasonClubPrestigeDrift } from "./managerDifficulty";
+import { getClubFacilities } from "./managerFacilities";
 
 export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary {
   const position = getUserLeagueTablePosition(career);
@@ -159,6 +160,7 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
 
 export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const summary = buildSeasonSummary(career);
+  const seasonStartFacilities = getClubFacilities(career);
   const withTotals = tickClubCareerTotals(career);
   const { career: afterRetirements } = applySeasonRetirements(withTotals);
   const afterLeagueRetirements = applyLeagueRetirements(afterRetirements);
@@ -250,6 +252,8 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     playoffsIntroAcknowledged: false,
     trophyCelebrationShown: false,
     leagueWinnersCelebrationShown: false,
+    perfectSeasonCelebrationShown: false,
+    winlessSeasonCelebrationShown: false,
     leaguePhaseStatsRecordedForYear: null,
     challengeCupCelebrationShown: false,
     wagePressureWeeks: 0,
@@ -307,12 +311,15 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     ...withIntake,
     leagueListedPlayers: seasonListed,
     transferMarket: seasonListed.map((l) => l.playerId),
-    playerDevelopment: snapshotSquadSeasonStartRatings(withIntake),
   };
   awardManagerSeasonBoardGrant(finalCareer, summary);
   const { career: withPrestige } = applySeasonClubPrestigeDrift(
     finalCareer,
-    summary
+    summary,
+    { seasonStartFacilities }
   );
-  return withPrestige;
+  return {
+    ...withPrestige,
+    playerDevelopment: snapshotSquadSeasonStartRatings(withPrestige),
+  };
 }

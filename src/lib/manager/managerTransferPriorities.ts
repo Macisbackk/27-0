@@ -6,7 +6,7 @@ import {
   getManagerPlayerEligiblePositions,
 } from "./managerPlayers";
 import { canAffordAdditionalWage } from "./managerFinance";
-import { getTransferDemand } from "./managerTransfers";
+import { getPlayerSigningDemand } from "./managerTransfers";
 
 export type TransferPriorityFilter =
   | "all"
@@ -77,7 +77,7 @@ export function playerMatchesTransferPriority(
   }
 
   if (filter === "cap-space") {
-    const demand = getTransferDemand(career, playerId);
+    const demand = getPlayerSigningDemand(career, playerId);
     return canAffordAdditionalWage(career, demand.wagePerYear);
   }
 

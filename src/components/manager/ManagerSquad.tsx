@@ -31,9 +31,7 @@ import {
   ManagerViewHeader,
 } from "@/components/manager/manager-ui";
 import { ManagerTacticsPanel } from "@/components/manager/ManagerTactics";
-import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import {
-  SQUAD_SUB_TAB_OPTIONS,
   type SquadSubTab,
 } from "@/lib/manager/manager-routes";
 import { managerAlertPanelClass } from "@/lib/manager/managerSurfaces";
@@ -43,7 +41,6 @@ interface ManagerSquadProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
   subTab: SquadSubTab;
-  onSubTabChange: (tab: SquadSubTab) => void;
 }
 
 const SINGLE_CLICK_DELAY_MS = 220;
@@ -174,7 +171,6 @@ export function ManagerSquad({
   career,
   onUpdate,
   subTab,
-  onSubTabChange,
 }: ManagerSquadProps) {
   const finePointer = useFinePointer();
   const matchdayClickTimerRef = useRef<number | null>(null);
@@ -208,6 +204,14 @@ export function ManagerSquad({
     },
     []
   );
+
+  useEffect(() => {
+    setPendingAssignId(null);
+    setSelectedTarget(null);
+    setReplaceSourcePlayerId(null);
+    setModalPlayerId(null);
+    setAssignmentNotice(null);
+  }, [subTab]);
 
   useEffect(() => {
     if (!pendingAssignId) return;
@@ -452,16 +456,10 @@ export function ManagerSquad({
     }
   };
 
-  const switchSubTab = (next: SquadSubTab) => {
-    if (subTab === next) return;
-    clearAssignmentState();
-    onSubTabChange(next);
-  };
-
   return (
     <ManagerPage wide>
       <ManagerViewHeader
-        title="Squad"
+        title={subTab === "tactics" ? "Tactics" : "Squad"}
         subtitle={subTab === "squad" ? squadHelpText : tacticsHelpText}
         action={
           subTab === "squad" ? (
@@ -485,12 +483,6 @@ export function ManagerSquad({
             </GameButton>
           ) : undefined
         }
-      />
-
-      <ManagerSubTabBar
-        tabs={SQUAD_SUB_TAB_OPTIONS}
-        active={subTab}
-        onChange={switchSubTab}
       />
 
       {subTab === "tactics" ? (

@@ -1,4 +1,8 @@
-import type { ManagerCareer, ManagerSeasonSummary } from "./types";
+import type {
+  ClubFacilities,
+  ManagerCareer,
+  ManagerSeasonSummary,
+} from "./types";
 import {
   didMeetManagerBoardExpectation,
   expectationTierFromStars,
@@ -8,6 +12,7 @@ import {
 } from "./club-config";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { getUserLeaguePosition } from "./managerFixtures";
+import { getClubFacilities } from "./managerFacilities";
 import { pushInboxMessage } from "./managerInbox";
 
 const PRESTIGE_SHIFT_THRESHOLD = 2;
@@ -15,6 +20,63 @@ const LEAGUE_SIZE = CURRENT_PLAYABLE_CLUBS.length;
 
 export function getCareerClubStars(career: ManagerCareer): number {
   return career.difficulty ?? getManagerClubConfig(career.club).difficulty;
+}
+
+export function shouldShowClubStarRiseCelebration(
+  career: ManagerCareer
+): boolean {
+  const stars = getCareerClubStars(career);
+  const celebratedAt =
+    career.clubStarRiseCelebratedAt ??
+    getManagerClubConfig(career.club).difficulty;
+  return stars > celebratedAt;
+}
+
+export function getPendingClubStarRiseFrom(career: ManagerCareer): number {
+  if (career.pendingClubStarRiseFrom != null) {
+    return career.pendingClubStarRiseFrom;
+  }
+  return Math.max(1, getCareerClubStars(career) - 1);
+}
+
+export function acknowledgeClubStarRiseCelebration(
+  career: ManagerCareer
+): ManagerCareer {
+  return {
+    ...career,
+    clubStarRiseCelebratedAt: getCareerClubStars(career),
+    pendingClubStarRiseFrom: undefined,
+  };
+}
+
+/** +1 momentum when the squad improved meaningfully over the season. */
+export function evaluateSquadGrowthMomentum(career: ManagerCareer): number {
+  const dev = career.playerDevelopment ?? {};
+  let totalStart = 0;
+  let totalNow = 0;
+  let count = 0;
+
+  for (const ps of career.squad) {
+    const state = dev[ps.playerId];
+    const seasonStart = state?.seasonStartRating;
+    if (seasonStart == null) continue;
+    totalStart += seasonStart;
+    totalNow += state.rating ?? seasonStart;
+    count += 1;
+  }
+
+  if (count === 0) return 0;
+  return (totalNow - totalStart) / count >= 2 ? 1 : 0;
+}
+
+/** +1 momentum when facilities were upgraded during the season. */
+export function evaluateFacilityInvestmentMomentum(
+  seasonStart: ClubFacilities,
+  current: ClubFacilities
+): number {
+  const startTotal = Object.values(seasonStart).reduce((sum, level) => sum + level, 0);
+  const currentTotal = Object.values(current).reduce((sum, level) => sum + level, 0);
+  return currentTotal - startTotal >= 3 ? 1 : 0;
 }
 
 export function getCareerExpectationTier(
@@ -68,9 +130,18 @@ export function evaluateSeasonPrestigeMomentumDelta(
 
 export function applySeasonClubPrestigeDrift(
   career: ManagerCareer,
-  summary: ManagerSeasonSummary
+  summary: ManagerSeasonSummary,
+  options?: { seasonStartFacilities?: ClubFacilities }
 ): { career: ManagerCareer; starDelta: number } {
-  const delta = evaluateSeasonPrestigeMomentumDelta(career, summary);
+  const seasonStartFacilities =
+    options?.seasonStartFacilities ?? getClubFacilities(career);
+  const delta =
+    evaluateSeasonPrestigeMomentumDelta(career, summary) +
+    evaluateSquadGrowthMomentum(career) +
+    evaluateFacilityInvestmentMomentum(
+      seasonStartFacilities,
+      getClubFacilities(career)
+    );
   let momentum = (career.prestigeMomentum ?? 0) + delta;
   let stars = getCareerClubStars(career);
   let starDelta = 0;
@@ -94,6 +165,9 @@ export function applySeasonClubPrestigeDrift(
     difficulty: stars,
     prestigeMomentum: momentum,
     boardExpectation: MANAGER_EXPECTATION_LABELS[tier],
+    ...(starDelta > 0
+      ? { pendingClubStarRiseFrom: getCareerClubStars(career) }
+      : {}),
   };
 
   if (starDelta !== 0) {

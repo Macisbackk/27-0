@@ -1,7 +1,11 @@
 import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { getManagerClubTeamRating } from "./managerRating";
-import { getHomeFixtureAttendanceOutlook, hasPoorAwayFollowing } from "./managerAttendance";
+import {
+  expectsLimitedCrossChannelFriendlyAwaySupport,
+  getHomeFixtureAttendanceOutlook,
+  hasPoorAwayFollowing,
+} from "./managerAttendance";
 import type {
   FriendlyOpponentChoice,
   ManagerCareer,
@@ -67,7 +71,11 @@ function buildFriendlyCandidates(
       displayName: club,
       difficulty: "balanced" as const,
       teamRating,
-      attendanceInterest: attendanceInterestForFriendlyOpponent(club, teamRating),
+      attendanceInterest: attendanceInterestForFriendlyOpponent(
+        userClub,
+        club,
+        teamRating
+      ),
     };
   });
 
@@ -161,10 +169,20 @@ export function getFriendlyAttendanceInterest(
 }
 
 function attendanceInterestForFriendlyOpponent(
-  club: string,
+  userClub: string,
+  opponentClub: string,
   teamRating: number
 ): FriendlyOpponentChoice["attendanceInterest"] {
-  if (hasPoorAwayFollowing(club)) {
+  if (
+    expectsLimitedCrossChannelFriendlyAwaySupport(
+      userClub,
+      opponentClub,
+      "friendly"
+    )
+  ) {
+    return "low";
+  }
+  if (hasPoorAwayFollowing(opponentClub)) {
     return teamRating >= 78 ? "medium" : "low";
   }
   if (teamRating >= 82) return "high";
