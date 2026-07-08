@@ -52,6 +52,7 @@ export function ManagerPositionRetrainingCompleteModal({
   }, []);
 
   const playerName = player?.name ?? message.playerName ?? "Player";
+  const squadRating = player?.peakRating ?? null;
   const pathLabel =
     fromPosition && toPosition
       ? formatRetrainingPathLabel(fromPosition, toPosition)
@@ -88,10 +89,10 @@ export function ManagerPositionRetrainingCompleteModal({
         </div>
 
         <div className={`mt-4 space-y-3 ${TYPO.bodySm} text-pitch-300`}>
-          {player ? (
+          {squadRating !== null ? (
             <p className="text-center text-pitch-400">
               Squad rating{" "}
-              <span className="font-bold text-theme-primary">{player.rating}</span>
+              <span className="font-bold text-theme-primary">{squadRating}</span>
             </p>
           ) : null}
           {fromPosition && toPosition ? (

@@ -366,6 +366,13 @@ const INBOX_MESSAGE_STYLE: Record<
     iconBox: "border-stone-400/45 bg-stone-500/20 text-stone-100",
     accentBar: "bg-stone-400",
   },
+  position_retraining_complete: {
+    label: "Dual Position",
+    icon: "2P",
+    badge: "border-theme-primary/45 bg-theme-primary/15 text-theme-primary",
+    iconBox: "border-theme-primary/45 bg-theme-primary/20 text-theme-primary",
+    accentBar: "bg-theme-primary",
+  },
   reserve_report: {
     label: "Monthly Report",
     icon: "R",

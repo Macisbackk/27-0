@@ -92,6 +92,10 @@ export function acknowledgeReserveReportPopup(
   };
 }
 
-export function getReserveReportMonth(career: ManagerCareer): number {
+export function getReserveReportPeriod(career: ManagerCareer): number {
   return Math.max(1, Math.floor(career.gameWeek / REPORT_INTERVAL_WEEKS));
+}
+
+export function getReserveReportMonth(career: ManagerCareer): number {
+  return getReserveReportPeriod(career);
 }

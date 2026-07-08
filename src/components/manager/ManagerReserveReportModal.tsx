@@ -11,7 +11,7 @@ import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import type { InboxMessage, ManagerCareer } from "@/lib/manager/types";
-import { getReserveReportPeriod } from "@/lib/manager/managerReserveReports";
+import { getReserveReportMonth } from "@/lib/manager/managerReserveReports";
 import { getPotentialTier } from "@/lib/manager/managerReserves";
 import { POSITION_SHORT } from "@/lib/positions";
 import {
