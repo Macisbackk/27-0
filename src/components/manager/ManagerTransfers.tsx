@@ -378,7 +378,6 @@ export function ManagerTransfers({
             tabs={transferSubTabs}
             active={tab}
             onChange={switchTab}
-            inline
           />
         }
       />

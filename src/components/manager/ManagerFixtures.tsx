@@ -419,7 +419,6 @@ export function ManagerFixtures({
             active={filter}
             onChange={setFilter}
             scrollable
-            inline
             ariaLabel="Filter fixtures"
           />
         }

@@ -58,7 +58,6 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
             ]}
             active={tab}
             onChange={setTab}
-            inline
           />
         }
       />

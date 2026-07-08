@@ -25,8 +25,6 @@ interface ManagerSubTabBarProps<T extends string> {
   ariaLabel?: string;
   /** Horizontal scroll when many tabs (e.g. fixture filters). */
   scrollable?: boolean;
-  /** Compact width for embedding beside main nav or view headers. */
-  inline?: boolean;
   eraAccent?: boolean;
   hardAccent?: boolean;
 }
@@ -39,21 +37,16 @@ export function ManagerSubTabBar<T extends string>({
   className,
   ariaLabel,
   scrollable = false,
-  inline = false,
   eraAccent = false,
   hardAccent = false,
 }: ManagerSubTabBarProps<T>) {
-  const compactGroup = scrollable || inline;
-  const shellClass = inline
-    ? "flex w-full justify-center sm:w-auto"
-    : scrollable
-      ? "w-full overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      : SUB_TAB_BAR_SHELL;
+  const compactGroup = scrollable;
+  const shellClass = scrollable
+    ? "flex w-full justify-center overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    : SUB_TAB_BAR_SHELL;
 
   const groupClass = compactGroup
-    ? `${subTabGroupClass(hardAccent, false, eraAccent)}${
-        inline ? " w-auto" : " min-w-max w-max max-w-none"
-      } ${className ?? ""}`
+    ? `${subTabGroupClass(hardAccent, false, eraAccent)} min-w-max w-max max-w-none ${className ?? ""}`
     : `${tabGroupClass(hardAccent, false, eraAccent)} ${className ?? ""}`;
 
   return (
@@ -68,11 +61,7 @@ export function ManagerSubTabBar<T extends string>({
             title={label}
             className={
               compactGroup
-                ? subTabGroupButtonClass(
-                    active === id,
-                    variant,
-                    scrollable || inline
-                  )
+                ? subTabGroupButtonClass(active === id, variant, true)
                 : tabGroupButtonClass(active === id, variant)
             }
             onClick={() => {

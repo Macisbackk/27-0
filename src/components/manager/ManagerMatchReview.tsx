@@ -185,7 +185,7 @@ export function ManagerMatchReview({
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{roundLabel}</p>
       </div>
 
-      <div className="sm:hidden">
+      <div className="flex justify-center sm:hidden">
         <ManagerSubTabBar
           tabs={(
             [
