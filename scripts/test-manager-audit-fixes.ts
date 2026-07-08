@@ -8,7 +8,6 @@ import {
   getPendingCupBracketRound,
   isLeagueAndCupPhaseComplete,
 } from "../src/lib/manager/managerChallengeCup";
-import { isManagerSeasonCompleteLite } from "../src/lib/manager/managerSimulation";
 import { computeCareerWageBill } from "../src/lib/manager/managerReserveContracts";
 import { syncManagerFinance } from "../src/lib/manager/managerFinance";
 import { purgeStaleInboxMessages } from "../src/lib/manager/managerInbox";
@@ -216,6 +215,41 @@ const cupDoneCareer = {
 assert(
   isLeagueAndCupPhaseComplete(cupDoneCareer),
   "cup phase complete when four cup ties played despite stale bracket flags"
+);
+
+const cupEliminatedCareer = {
+  ...cupDoneCareer,
+  fixtures: [
+    ...cupDoneCareer.fixtures.slice(0, 27),
+    {
+      round: 28,
+      opponent: "Wigan Warriors",
+      isHome: true,
+      result: "L" as const,
+      pointsFor: 12,
+      pointsAgainst: 24,
+      triesFor: 2,
+      triesAgainst: 4,
+      scoringFor: { tries: 2, conversions: 2, penalties: 0, dropGoals: 0, points: 12 },
+      scoringAgainst: { tries: 4, conversions: 4, penalties: 0, dropGoals: 0, points: 24 },
+      isThrashing: false,
+      isUpset: false,
+      userClub: cupDoneCareer.club,
+      fixtureId: "cup-loss",
+      competition: "challenge_cup" as const,
+      meta: { cupRound: "round_one" as const, injuries: [] },
+    },
+  ],
+  challengeCup: {
+    ...cupDoneCareer.challengeCup,
+    userEliminated: false,
+    tournamentComplete: false,
+    userWon: false,
+  },
+} as ManagerCareer;
+assert(
+  isLeagueAndCupPhaseComplete(cupEliminatedCareer),
+  "cup phase complete when user lost a cup tie even if bracket flags are stale"
 );
 
 assert(

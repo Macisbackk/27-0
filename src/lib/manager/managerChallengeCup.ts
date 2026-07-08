@@ -273,23 +273,79 @@ export function reconcileChallengeCupFromFixtures(
     }
   }
 
-  if (
-    cupPlayed >= CUP_TRIGGERS_LEAGUE_GAMES.length &&
-    !cup.tournamentComplete &&
-    !cup.userEliminated
-  ) {
-    const last = cupFixtures[cupFixtures.length - 1];
-    const wonFinal =
-      last?.result === "W" && last.meta?.cupRound === "final";
-    cup = {
-      ...cup,
+  cup = syncCupOutcomeFlagsFromFixtures(cup, cupFixtures);
+
+  return clipCupBracketToUserProgress({ ...career, challengeCup: cup });
+}
+
+function syncCupOutcomeFlagsFromFixtures(
+  cup: ChallengeCupBracketState,
+  cupFixtures: ManagerCareer["fixtures"]
+): ChallengeCupBracketState {
+  if (cupFixtures.length === 0) return cup;
+
+  let next = cup;
+  if (cupFixtures.some((f) => f.result === "L") && !next.userEliminated) {
+    next = {
+      ...next,
+      userEliminated: true,
       tournamentComplete: true,
-      userEliminated: last?.result === "L",
+    };
+  }
+
+  if (
+    cupFixtures.length >= CUP_TRIGGERS_LEAGUE_GAMES.length &&
+    !next.tournamentComplete &&
+    !next.userEliminated
+  ) {
+    const last = cupFixtures[cupFixtures.length - 1]!;
+    const wonFinal =
+      last.result === "W" && last.meta?.cupRound === "final";
+    next = {
+      ...next,
+      tournamentComplete: true,
+      userEliminated: last.result === "L",
       userWon: wonFinal,
     };
   }
 
-  return clipCupBracketToUserProgress({ ...career, challengeCup: cup });
+  return next;
+}
+
+/** Prepare cup bracket and locate the user's next tie, simulating AI if needed. */
+export function resolveCupBracketForScheduling(career: ManagerCareer): {
+  career: ManagerCareer;
+  pendingRound: number | null;
+  userMatch: ReturnType<typeof getUserCupMatch>;
+} {
+  const challengeCup = reconcileChallengeCupFromFixtures(career);
+  const synced = { ...career, challengeCup };
+  const pendingRound = getPendingCupBracketRound(synced);
+  if (pendingRound === null) {
+    return { career: synced, pendingRound: null, userMatch: null };
+  }
+
+  let prepared = prepareCupRound(synced);
+  let userMatch = getUserCupMatch(prepared, pendingRound);
+  if (
+    !userMatch &&
+    !prepared.userEliminated &&
+    !prepared.tournamentComplete
+  ) {
+    const squad = buildSquadSlotsFromMatchday(
+      career.matchdayXiii,
+      career.xiiiSlotPositions,
+      career
+    );
+    prepared = simulateAiUntilUserReady(prepared, squad);
+    userMatch = getUserCupMatch(prepared, pendingRound);
+  }
+
+  return {
+    career: { ...synced, challengeCup: prepared },
+    pendingRound,
+    userMatch,
+  };
 }
 
 export function getUserCupMatch(
@@ -361,28 +417,29 @@ export function isLeagueAndCupPhaseComplete(career: ManagerCareer): boolean {
     career.currentFixtureIndex >= career.schedule.length;
   if (!leagueDone) return false;
 
-  const cup = career.challengeCup;
-  if (!cup) return true;
-  if (cup.tournamentComplete || cup.userEliminated) return true;
+  if (!career.challengeCup) return true;
 
-  const pendingRound = getPendingCupBracketRound(career);
+  const { pendingRound, userMatch, career: cupCareer } =
+    resolveCupBracketForScheduling(career);
+  const prepared = cupCareer.challengeCup;
+  if (!prepared) return true;
+
+  if (prepared.tournamentComplete || prepared.userEliminated) return true;
+
   if (pendingRound === null) {
-    const cupPlayed = countCupFixturesPlayed(career);
-    return (
-      cup.tournamentComplete ||
-      cup.userEliminated ||
-      cupPlayed >= CUP_TRIGGERS_LEAGUE_GAMES.length
-    );
+    return countCupFixturesPlayed(career) >= CUP_TRIGGERS_LEAGUE_GAMES.length;
   }
 
-  const prepared = prepareCupRound(career);
-  const cupMatch = getUserCupMatch(prepared, pendingRound);
-  if (cupMatch) return false;
-
+  if (userMatch) return false;
   if (prepared.userEliminated || prepared.tournamentComplete) return true;
 
-  const cupPlayed = countCupFixturesPlayed(career);
-  return cupPlayed >= 4;
+  if (countCupFixturesPlayed(career) >= CUP_TRIGGERS_LEAGUE_GAMES.length) {
+    return true;
+  }
+
+  return career.fixtures.some(
+    (f) => f.competition === "challenge_cup" && f.result === "L"
+  );
 }
 
 export function getNextLeagueOrCupFixture(
@@ -404,33 +461,12 @@ export function getNextLeagueOrCupFixture(
     return null;
   }
 
-  const cupRound = getPendingCupBracketRound(career);
-  if (cupRound !== null) {
-    const prepared = prepareCupRound(career);
-    const cupMatch = getUserCupMatch(prepared, cupRound);
-    if (cupMatch) {
-      return buildCupScheduledFixture(
-        { ...career, challengeCup: prepared },
-        cupMatch
-      );
-    }
-    if (prepared.userEliminated || prepared.tournamentComplete) {
-      // bye or already resolved — fall through
-    } else {
-      const squad = buildSquadSlotsFromMatchday(
-        career.matchdayXiii,
-        career.xiiiSlotPositions,
-        career
-      );
-      const advanced = simulateAiUntilUserReady(prepared, squad);
-      const retry = getUserCupMatch(advanced, cupRound);
-      if (retry) {
-        return buildCupScheduledFixture(
-          { ...career, challengeCup: advanced },
-          retry
-        );
-      }
-    }
+  const cupResolved = resolveCupBracketForScheduling(career);
+  if (cupResolved.pendingRound !== null && cupResolved.userMatch) {
+    return buildCupScheduledFixture(
+      cupResolved.career,
+      cupResolved.userMatch
+    );
   }
 
   const idx = career.currentFixtureIndex;

@@ -45,7 +45,7 @@ export function ManagerReserveReportModal({
     playMenuOpen();
   }, []);
 
-  const period = getReserveReportPeriod(career);
+  const month = getReserveReportMonth(career);
   const bodyLines = useMemo(
     () => message.body.split("\n").filter((line) => line.trim().length > 0),
     [message.body]
@@ -56,7 +56,7 @@ export function ManagerReserveReportModal({
     [career.reserves]
   );
 
-  const recentResults = career.reserveResults.slice(-8);
+  const recentResults = career.reserveResults.slice(-4);
   const recentWins = recentResults.filter((r) => r.userWon).length;
 
   return (
@@ -89,8 +89,7 @@ export function ManagerReserveReportModal({
               {message.title}
             </h2>
             <p className={`mx-auto mt-2 max-w-sm ${TYPO.bodySm} text-pitch-300`}>
-              Bi-monthly academy and reserve update (period {period}) for{" "}
-              {career.seasonYear}.
+              Month {month} academy and reserve update for {career.seasonYear}.
             </p>
           </div>
 
