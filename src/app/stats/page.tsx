@@ -27,7 +27,7 @@ export default function StatsPage() {
     const result = await importLocalStatsToCloud(getAllStats());
     setImportMsg(
       result.ok
-        ? "Local stats imported to your online account."
+        ? "Stats synced to your account without double-counting."
         : (result.error ?? "Import failed.")
     );
     setImporting(false);

@@ -1,7 +1,11 @@
 import { isSupabaseConfigured, supabase } from "../supabase";
 import { getAuthUserId } from "../auth-session";
 import type { GameDifficulty, UserStatsData } from "../types";
-import { EMPTY_STATS, mergeCloudStatsWithLocal, migrateUserStats } from "./stats";
+import {
+  EMPTY_STATS,
+  migrateUserStats,
+  reconcileStoredStats,
+} from "./stats";
 
 const BUNDLE_KEY = "stats_bundle";
 
@@ -107,6 +111,11 @@ export async function saveCloudStats(stats: StoredStats): Promise<void> {
   }
 }
 
+/**
+ * Import local stats to the logged-in cloud account without double-counting.
+ * Uses reconcile (prefer richer / identical fingerprint) — never additive merge of
+ * the same play history, which previously inflated Trophy Cabinet titles.
+ */
 export async function importLocalStatsToCloud(
   local: StoredStats
 ): Promise<{ ok: boolean; error?: string }> {
@@ -115,10 +124,19 @@ export async function importLocalStatsToCloud(
 
   try {
     const cloud = await loadCloudStats();
-    const merged = cloud
-      ? mergeCloudStatsWithLocal(cloud, local)
-      : local;
-    await saveCloudStats(merged);
+    const reconciled = reconcileStoredStats(cloud, local);
+    await saveCloudStats(reconciled);
+
+    if (typeof window !== "undefined") {
+      const { STORAGE_KEYS } = await import("./keys");
+      localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(reconciled));
+      const { syncTrophyCabinetLeaderboard } = await import(
+        "./trophy-cabinet-leaderboard"
+      );
+      syncTrophyCabinetLeaderboard(reconciled);
+      window.dispatchEvent(new Event("stats-merged"));
+    }
+
     return { ok: true };
   } catch {
     return { ok: false, error: "Import failed." };

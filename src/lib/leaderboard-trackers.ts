@@ -117,7 +117,7 @@ export const LEADERBOARD_TRACKERS: {
   managerEarningsOnly?: boolean;
   trophySection?: TrophyCabinetSection;
 }[] = [
-  { id: "best_record", label: "Total Record", shortLabel: "Total Record" },
+  { id: "best_record", label: "Best Season Record", shortLabel: "Best Record" },
   {
     id: "perfect_runs",
     label: "Most 27-0 Seasons",
@@ -306,10 +306,10 @@ export function rankByTracker(
       case "winless_seasons":
         return b.winlessSeasons - a.winlessSeasons;
       case "best_record": {
-        const aWins = a.bestRecordWins ?? a.totalWins;
-        const bWins = b.bestRecordWins ?? b.totalWins;
-        const aLosses = a.bestRecordLosses ?? a.totalLosses;
-        const bLosses = b.bestRecordLosses ?? b.totalLosses;
+        const aWins = a.bestRecordWins;
+        const bWins = b.bestRecordWins;
+        const aLosses = a.bestRecordLosses;
+        const bLosses = b.bestRecordLosses;
         if (bWins !== aWins) {
           return bWins - aWins;
         }
@@ -375,8 +375,8 @@ export function getTrackerStatDisplay(
       return String(sanitized.winlessSeasons);
     case "best_record":
       return formatRecordWithPercentage(
-        sanitized.bestRecordWins || sanitized.totalWins,
-        sanitized.bestRecordLosses || sanitized.totalLosses
+        sanitized.bestRecordWins,
+        sanitized.bestRecordLosses
       );
     case "manager_challenge_cups":
       return String(sanitized.challengeCupWins);

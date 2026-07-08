@@ -16,12 +16,18 @@ export const MANAGER_PRIMARY_NAV_TABS: ManagerNavTab[] = [
   { id: "transfers", label: "Transfers", shortLabel: "Market", icon: "💷" },
 ];
 
-/** Secondary sections — desktop More menu (inbox stays in the header). */
+/** Secondary sections — mobile More sheet (inbox stays in the header on desktop). */
 export const MANAGER_MORE_NAV_TABS: ManagerNavTab[] = [
   { id: "club", label: "Club", shortLabel: "Club", icon: "🏟️" },
   { id: "fixtures", label: "Fixtures", shortLabel: "Fixt.", icon: "📅" },
   { id: "across-league", label: "Across the League", shortLabel: "League", icon: "🏉" },
   { id: "stats", label: "Stats", shortLabel: "Stats", icon: "📊" },
+];
+
+/** Full desktop tab bar — all sections visible (inbox remains in the header). */
+export const MANAGER_DESKTOP_NAV_TABS: ManagerNavTab[] = [
+  ...MANAGER_PRIMARY_NAV_TABS,
+  ...MANAGER_MORE_NAV_TABS,
 ];
 
 /** Mobile More sheet — includes inbox (no header inbox on small screens). */
@@ -32,10 +38,6 @@ export const MANAGER_MOBILE_MORE_NAV_TABS: ManagerNavTab[] = [
   { id: "across-league", label: "League", shortLabel: "League", icon: "🏉" },
   { id: "stats", label: "Stats", shortLabel: "Stats", icon: "📊" },
 ];
-
-export function isManagerMoreNavView(view: ManagerView): boolean {
-  return MANAGER_MORE_NAV_TABS.some((tab) => tab.id === view);
-}
 
 export function isManagerMobileMoreNavView(view: ManagerView): boolean {
   return MANAGER_MOBILE_MORE_NAV_TABS.some((tab) => tab.id === view);

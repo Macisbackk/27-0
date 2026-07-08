@@ -1,8 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import { GameButton } from "@/components/ui/GameButton";
+import { ManagerDialog } from "@/components/manager/ManagerDialog";
+import { useAuth } from "@/lib/auth-context";
 import { getClubColors } from "@/lib/clubs";
 import type { ManagerSaveSlotSummary } from "@/lib/manager/managerState";
 import { CARD, SPACING } from "@/lib/ui/design-system";
@@ -36,6 +39,22 @@ export function ManagerLanding({
 }: ManagerLandingProps) {
   const importRef = useRef<HTMLInputElement>(null);
   const [importSlot, setImportSlot] = useState<number | null>(null);
+  const [signInPromptSlot, setSignInPromptSlot] = useState<number | null>(null);
+  const { isLoggedIn, loading } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const loginHref = `/login?redirect=${encodeURIComponent(pathname || "/manager")}`;
+
+  const requestNewCareer = (slot: number) => {
+    playSeasonStart();
+    playUiClick();
+    if (!loading && !isLoggedIn) {
+      setSignInPromptSlot(slot);
+      return;
+    }
+    onStartNew(slot);
+  };
 
   return (
     <div className={`mx-auto max-w-lg ${SPACING.stackLg}`}>
@@ -47,7 +66,10 @@ export function ManagerLanding({
         <p className={`mt-3 ${TYPO.body} text-pitch-300`}>
           Take charge of a{" "}
           <span className="font-semibold text-theme-primary">Super League</span>{" "}
-          club. Up to three careers on this device — export saves to back them up.
+          club. Up to three careers —{" "}
+          {isLoggedIn
+            ? "synced to your account across devices."
+            : "sign in to sync saves across devices."}
         </p>
       </div>
 
@@ -150,11 +172,7 @@ export function ManagerLanding({
                     <GameButton
                       variant="theme"
                       className="col-span-2"
-                      onClick={() => {
-                        playSeasonStart();
-                        playUiClick();
-                        onStartNew(slot.slot);
-                      }}
+                      onClick={() => requestNewCareer(slot.slot)}
                     >
                       New Career
                     </GameButton>
@@ -181,12 +199,36 @@ export function ManagerLanding({
       </div>
 
       <p className={`text-center ${TYPO.bodySm} text-pitch-500`}>
-        Careers stay on this browser. Export regularly and sign in to sync stats
-        online.{" "}
+        {!loading &&
+          (isLoggedIn
+            ? "Careers auto-save to your account when you play. Export for an extra backup."
+            : "Sign in to keep careers on your account — otherwise they only live in this browser.")}{" "}
         <a href="/updates" className="text-theme-primary underline">
           See updates
         </a>
       </p>
+
+      <ManagerDialog
+        open={signInPromptSlot != null}
+        title="Sign in to save"
+        message={
+          "Manager careers sync to your account when you're signed in — " +
+          "so your save follows you across devices and won't be lost if the browser clears storage.\n\n" +
+          "You can still play as a guest, but the career will only live on this device."
+        }
+        variant="confirm"
+        confirmLabel="Sign in"
+        cancelLabel="Continue as guest"
+        onConfirm={() => {
+          setSignInPromptSlot(null);
+          router.push(loginHref);
+        }}
+        onCancel={() => {
+          const slot = signInPromptSlot;
+          setSignInPromptSlot(null);
+          if (slot != null) onStartNew(slot);
+        }}
+      />
     </div>
   );
 }

@@ -91,14 +91,28 @@ function updateLocalEntry(
   trophyCount: number,
   userId?: string
 ): void {
-  if (!username || trophyCount <= 0) return;
+  if (!username) return;
   const entries = loadLocalEntries();
   const userEntries = entries[username] ?? ({} as Record<
     TrophyCabinetTracker,
     TrophyCabinetLeaderboardEntry
   >);
   const existing = userEntries[tracker];
-  if (existing && existing.trophyCount >= trophyCount) return;
+  // Sync absolute career tallies so inflated rows can be corrected downward.
+  if (existing && existing.trophyCount === trophyCount) {
+    if (!userId || existing.userId === userId) return;
+  }
+  if (trophyCount <= 0) {
+    if (!existing) return;
+    delete userEntries[tracker];
+    if (Object.keys(userEntries).length === 0) {
+      delete entries[username];
+    } else {
+      entries[username] = userEntries;
+    }
+    saveLocalEntries(entries);
+    return;
+  }
   userEntries[tracker] = {
     username,
     trophyCount,
@@ -119,8 +133,7 @@ async function submitTrophyOnline(
     !userId ||
     !coachName ||
     isGuestLeaderboardName(coachName) ||
-    !isSupabaseConfigured ||
-    trophyCount <= 0
+    !isSupabaseConfigured
   ) {
     return;
   }
@@ -141,7 +154,20 @@ async function submitTrophyOnline(
 
     const currentScore =
       typeof existing?.score === "number" ? existing.score : 0;
-    if (trophyCount < currentScore) return;
+    // Write absolute career tallies so repaired local/cloud stats can
+    // correct previously inflated Trophy Cabinet rows (including to zero).
+    if (trophyCount === currentScore) return;
+
+    if (trophyCount <= 0) {
+      if (existing?.id) {
+        const { error } = await supabase
+          .from("leaderboard")
+          .delete()
+          .eq("id", existing.id);
+        if (error) throw error;
+      }
+      return;
+    }
 
     const payload = {
       coach_name: coachName,
@@ -187,7 +213,6 @@ export function syncTrophyCabinetLeaderboard(stats?: StoredStats): void {
 
     for (const tracker of TROPHY_TRACKERS) {
       const count = counts[tracker];
-      if (count <= 0) continue;
       updateLocalEntry(username, tracker, count, userId);
       void submitTrophyOnline(tracker, count);
     }
@@ -196,7 +221,6 @@ export function syncTrophyCabinetLeaderboard(stats?: StoredStats): void {
 
   for (const tracker of TROPHY_TRACKERS) {
     const count = counts[tracker];
-    if (count <= 0) continue;
     updateLocalEntry(LOCAL_GUEST_KEY, tracker, count);
   }
 }

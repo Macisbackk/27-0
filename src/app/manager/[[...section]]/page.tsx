@@ -82,8 +82,8 @@ import {
 import {
   recordCareerStarted,
   recordMatchResult,
-  recordSeasonComplete,
   recordLeaguePhaseAchievementsIfNeeded,
+  recordSeasonCompleteIfNeeded,
 } from "@/lib/manager/managerStats";
 import {
   playMatchBigWin,
@@ -127,6 +127,12 @@ import {
   importManagerCareerFromFile,
 } from "@/lib/manager/managerSaveExport";
 import { readManagerCareerRaw } from "@/lib/manager/managerSaveStorage";
+import { isLoggedIn } from "@/lib/auth-session";
+import {
+  flushManagerCareerToCloud,
+  MANAGER_SAVES_CHANGED_EVENT,
+  refreshManagerCareersFromCloud,
+} from "@/lib/storage/manager-career-cloud";
 import {
   markOnboardingStepComplete,
   shouldShowManagerOnboarding,
@@ -353,6 +359,37 @@ export default function ManagerPage() {
     setActiveSlot(getActiveSaveSlot());
   }, [refreshSaveSlots]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const pullFromCloud = () => {
+      if (!isLoggedIn()) return;
+      void refreshManagerCareersFromCloud().then(() => {
+        refreshSaveSlots();
+        const slot = getActiveSaveSlot();
+        const fromPath = managerViewFromPathname(pathname);
+        if (!fromPath || !isManagerNavView(fromPath)) return;
+        if (careerSlotRef.current === slot && careerRef.current) return;
+        const raw = readManagerCareerRaw(slot);
+        if (!raw) return;
+        careerSlotRef.current = slot;
+        setCareerState(hydrateManagerCareer(raw));
+      });
+    };
+
+    const onSavesChanged = () => {
+      refreshSaveSlots();
+    };
+
+    window.addEventListener("auth-state-changed", pullFromCloud);
+    window.addEventListener(MANAGER_SAVES_CHANGED_EVENT, onSavesChanged);
+
+    return () => {
+      window.removeEventListener("auth-state-changed", pullFromCloud);
+      window.removeEventListener(MANAGER_SAVES_CHANGED_EVENT, onSavesChanged);
+    };
+  }, [pathname, refreshSaveSlots, setCareerState]);
+
   /** Load career from disk once per save slot — not on every tab change. */
   useLayoutEffect(() => {
     const slot = getActiveSaveSlot();
@@ -455,11 +492,15 @@ export default function ManagerPage() {
     const flush = () => {
       const current = careerRef.current;
       if (!current) return;
-      const result = flushManagerCareerToDisk(current, getActiveSaveSlot());
+      const slot = getActiveSaveSlot();
+      const result = flushManagerCareerToDisk(current, slot);
       if (!result.ok) {
         flushErrorRef.current = result.error;
       } else {
         flushErrorRef.current = null;
+      }
+      if (isLoggedIn()) {
+        void flushManagerCareerToCloud(current, slot);
       }
     };
 
@@ -780,30 +821,32 @@ export default function ManagerPage() {
       markOnboardingStepComplete("first-match");
     }
     const withLeagueStats = recordLeaguePhaseAchievementsIfNeeded(next);
-    persist(withLeagueStats);
+    const withSeasonStats = withLeagueStats.isSeasonComplete
+      ? recordSeasonCompleteIfNeeded(withLeagueStats)
+      : withLeagueStats;
+    persist(withSeasonStats);
 
     const wonTitle =
-      withLeagueStats.isSeasonComplete &&
-      withLeagueStats.playoffs?.finish === "Super League Champions" &&
-      !withLeagueStats.trophyCelebrationShown;
+      withSeasonStats.isSeasonComplete &&
+      withSeasonStats.playoffs?.finish === "Super League Champions" &&
+      !withSeasonStats.trophyCelebrationShown;
 
-    const seasonRecord = resolvePendingSeasonRecordCelebration(withLeagueStats);
+    const seasonRecord = resolvePendingSeasonRecordCelebration(withSeasonStats);
     const wonLeagueTable =
-      !seasonRecord && shouldShowLeagueWinnersCelebration(withLeagueStats);
-    const wonChallengeCup = shouldShowChallengeCupCelebration(withLeagueStats);
-    const unsolicited = getPendingUnsolicitedOffer(withLeagueStats);
-    const contractExpiry = getPendingContractExpiryPopup(withLeagueStats);
-    const retirementIntent = getPendingRetirementIntentPopup(withLeagueStats);
-    const reserveReport = getPendingReserveReportPopup(withLeagueStats);
-    const retrainingComplete = getPendingPositionRetrainingPopup(withLeagueStats);
+      !seasonRecord && shouldShowLeagueWinnersCelebration(withSeasonStats);
+    const wonChallengeCup = shouldShowChallengeCupCelebration(withSeasonStats);
+    const unsolicited = getPendingUnsolicitedOffer(withSeasonStats);
+    const contractExpiry = getPendingContractExpiryPopup(withSeasonStats);
+    const retirementIntent = getPendingRetirementIntentPopup(withSeasonStats);
+    const reserveReport = getPendingReserveReportPopup(withSeasonStats);
+    const retrainingComplete = getPendingPositionRetrainingPopup(withSeasonStats);
     setPendingIncomingBidId(unsolicited?.id ?? null);
     setPendingContractExpiryId(contractExpiry?.id ?? null);
     setPendingRetirementIntentId(retirementIntent?.id ?? null);
     setPendingPositionRetrainingId(retrainingComplete?.id ?? null);
     setPendingReserveReportId(reserveReport?.id ?? null);
 
-    if (withLeagueStats.isSeasonComplete) {
-      recordSeasonComplete(withLeagueStats);
+    if (withSeasonStats.isSeasonComplete) {
       if (fixture) {
         setReviewFixtureId(managerFixtureDisplayId(fixture));
         setPostMatchReviewFlow(true);

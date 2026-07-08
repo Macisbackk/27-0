@@ -1,3 +1,4 @@
+import { isLoggedIn } from "../auth-session";
 import { STORAGE_KEYS } from "../storage/keys";
 import type { ManagerCareer } from "./types";
 
@@ -112,6 +113,11 @@ export function setActiveSaveSlot(slot: number): void {
   if (typeof window === "undefined") return;
   if (slot < 0 || slot >= MANAGER_SAVE_SLOT_COUNT) return;
   localStorage.setItem(STORAGE_KEYS.managerActiveSlot, String(slot));
+  if (isLoggedIn()) {
+    void import("../storage/manager-career-cloud").then(({ saveCloudManagerActiveSlot }) =>
+      saveCloudManagerActiveSlot(slot)
+    );
+  }
 }
 
 function readRawCareer(slot: number): ManagerCareer | null {
@@ -180,6 +186,12 @@ export function writeManagerCareerRaw(
 
   try {
     localStorage.setItem(getManagerCareerSlotKey(targetSlot), payload);
+    if (isLoggedIn()) {
+      void import("../storage/manager-career-cloud").then(
+        ({ scheduleManagerCareerCloudSave }) =>
+          scheduleManagerCareerCloudSave(stamped, targetSlot)
+      );
+    }
     return { ok: true };
   } catch (err) {
     const message =
@@ -196,6 +208,11 @@ export function deleteManagerCareerRaw(slot?: number): void {
   const targetSlot = slot ?? getActiveSaveSlot();
   localStorage.removeItem(getManagerCareerSlotKey(targetSlot));
   clearManagerCareerBackup(targetSlot);
+  if (isLoggedIn()) {
+    void import("../storage/manager-career-cloud").then(({ deleteCloudManagerCareer }) =>
+      deleteCloudManagerCareer(targetSlot)
+    );
+  }
 }
 
 export function hasManagerCareerInSlot(slot?: number): boolean {

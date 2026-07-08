@@ -255,6 +255,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     perfectSeasonCelebrationShown: false,
     winlessSeasonCelebrationShown: false,
     leaguePhaseStatsRecordedForYear: null,
+    seasonCompleteStatsRecordedForYear: null,
     challengeCupCelebrationShown: false,
     wagePressureWeeks: 0,
     transferMarket: generateTransferMarket(withFreeAgents, newSeed, 0),

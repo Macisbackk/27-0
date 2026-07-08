@@ -55,7 +55,7 @@ npm run validate:players
 | `27-0-club-funds` | Meta currency for Store |
 | `27-0-manager-stats` | Manager lifetime stats (local) |
 
-Export manager saves regularly — careers are not cloud-synced yet.
+Manager careers sync to your account when signed in. Export saves for an extra backup.
 
 ## Tech Stack
 

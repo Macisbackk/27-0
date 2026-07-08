@@ -34,6 +34,7 @@ import { mergeClubFundsFromCloud, syncClubFundsLeaderboardOnLoad } from "./stora
 import { syncTrophyCabinetLeaderboardOnLoad } from "./storage/trophy-cabinet-leaderboard";
 import { syncManagerLeaderboardOnLoad } from "./storage/manager-leaderboard";
 import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
+import { refreshManagerCareersFromCloud } from "./storage/manager-career-cloud";
 
 interface AuthContextValue {
   user: User | null;
@@ -72,6 +73,10 @@ async function hydrateClubFundsFromCloud(): Promise<void> {
 
 async function hydrateUiThemeFromCloud(): Promise<void> {
   await mergeUiThemeStoreFromCloud();
+}
+
+async function hydrateManagerCareersFromCloud(): Promise<void> {
+  await refreshManagerCareersFromCloud();
 }
 
 function applySession(session: Session | null, profile: UserProfile | null) {
@@ -128,6 +133,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         hydrateStatsFromCloud(),
         hydrateClubFundsFromCloud(),
         hydrateUiThemeFromCloud(),
+        hydrateManagerCareersFromCloud(),
       ]);
       if (generation !== syncGenerationRef.current) return;
 

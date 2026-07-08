@@ -1,16 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { ClubLogoBox } from "@/components/ClubBadge";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import type { ManagerSubTabOption } from "@/components/manager/ManagerSubTabBar";
 import { BTN } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import {
-  MANAGER_MORE_NAV_TABS,
-  MANAGER_PRIMARY_NAV_TABS,
-  isManagerMoreNavView,
-} from "@/lib/manager/manager-nav-config";
+import { MANAGER_DESKTOP_NAV_TABS } from "@/lib/manager/manager-nav-config";
 import {
   managerClubAccentCardClass,
   managerClubAccentCardStyle,
@@ -45,10 +40,6 @@ export function ManagerNav({
   unreadInbox = 0,
   contextTabs,
 }: ManagerNavProps) {
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreRef = useRef<HTMLDivElement>(null);
-  const moreActive = isManagerMoreNavView(active);
-
   const seasonMeta =
     seasonYear != null
       ? `S${seasonYear}${gameWeek != null ? ` · W${gameWeek}` : ""}`
@@ -61,22 +52,10 @@ export function ManagerNav({
     if (active !== tab) playTabChange();
     playUiClick();
     onNavigate(tab);
-    setMoreOpen(false);
   };
 
   const unreadLabel =
     unreadInbox > 9 ? "9+" : unreadInbox > 0 ? String(unreadInbox) : null;
-
-  useEffect(() => {
-    if (!moreOpen) return;
-    const onPointerDown = (event: MouseEvent) => {
-      if (!moreRef.current?.contains(event.target as Node)) {
-        setMoreOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", onPointerDown);
-    return () => document.removeEventListener("mousedown", onPointerDown);
-  }, [moreOpen]);
 
   return (
     <header className="space-y-1.5">
@@ -133,91 +112,37 @@ export function ManagerNav({
         </button>
       </div>
 
-      <div className="hidden flex-col gap-1.5 sm:flex">
-        <div className="flex items-center gap-2">
-          <nav
-            className="flex min-w-0 flex-1 snap-x snap-mandatory gap-1 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            aria-label="Manager sections"
-          >
-            {MANAGER_PRIMARY_NAV_TABS.map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => navigate(tab.id)}
-                disabled={disabled}
-                className={`btn-press shrink-0 rounded-lg px-2.5 py-2 text-center font-display text-[11px] font-bold uppercase tracking-wide transition sm:px-3 sm:text-xs ${
-                  active === tab.id ? BTN.tabActive : BTN.tabIdle
-                } ${disabled ? "pointer-events-none opacity-40" : ""}`}
-                aria-current={active === tab.id ? "page" : undefined}
-              >
-                {tab.label}
-              </button>
-            ))}
-            <div className="relative shrink-0" ref={moreRef}>
-              <button
-                type="button"
-                disabled={disabled}
-                onClick={() => {
-                  playUiClick();
-                  setMoreOpen((open) => !open);
-                }}
-                className={`btn-press rounded-lg px-2.5 py-2 text-center font-display text-[11px] font-bold uppercase tracking-wide transition sm:px-3 sm:text-xs ${
-                  moreActive || moreOpen ? BTN.tabActive : BTN.tabIdle
-                } ${disabled ? "pointer-events-none opacity-40" : ""}`}
-                aria-expanded={moreOpen}
-                aria-haspopup="menu"
-              >
-                More
-              </button>
-              {moreOpen && (
-                <div
-                  role="menu"
-                  className="absolute right-0 top-full z-40 mt-1 min-w-[11rem] rounded-xl border border-pitch-600/60 bg-pitch-950/98 p-1 shadow-xl backdrop-blur-md"
-                >
-                  {MANAGER_MORE_NAV_TABS.map((tab) => (
-                    <button
-                      key={tab.id}
-                      type="button"
-                      role="menuitem"
-                      onClick={() => navigate(tab.id)}
-                      className={`btn-press flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left font-display text-xs font-bold uppercase tracking-wide transition ${
-                        active === tab.id
-                          ? "bg-theme-primary/15 text-white"
-                          : "text-pitch-200 hover:bg-pitch-800/80 hover:text-white"
-                      }`}
-                    >
-                      <span aria-hidden>{tab.icon}</span>
-                      {tab.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </nav>
-
-          {contextTabs ? (
-            <div className="hidden shrink-0 lg:block">
-              <ManagerSubTabBar
-                tabs={contextTabs.tabs}
-                active={contextTabs.active}
-                onChange={contextTabs.onChange}
-                ariaLabel={contextTabs.ariaLabel}
-                inline
-              />
-            </div>
-          ) : null}
-        </div>
+      <div className="hidden flex-col items-center gap-1.5 sm:flex">
+        <nav
+          className="flex w-full max-w-5xl flex-wrap justify-center gap-1 px-1"
+          aria-label="Manager sections"
+        >
+          {MANAGER_DESKTOP_NAV_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => navigate(tab.id)}
+              disabled={disabled}
+              className={`btn-press shrink-0 rounded-lg px-2.5 py-2 text-center font-display text-[11px] font-bold uppercase tracking-wide transition sm:px-3 sm:text-xs ${
+                active === tab.id ? BTN.tabActive : BTN.tabIdle
+              } ${disabled ? "pointer-events-none opacity-40" : ""}`}
+              aria-current={active === tab.id ? "page" : undefined}
+              title={tab.label}
+            >
+              <span className="xl:hidden">{tab.shortLabel}</span>
+              <span className="hidden xl:inline">{tab.label}</span>
+            </button>
+          ))}
+        </nav>
 
         {contextTabs ? (
-          <div className="flex justify-center lg:hidden">
-            <ManagerSubTabBar
-              tabs={contextTabs.tabs}
-              active={contextTabs.active}
-              onChange={contextTabs.onChange}
-              ariaLabel={contextTabs.ariaLabel}
-              inline
-            />
-          </div>
+          <ManagerSubTabBar
+            tabs={contextTabs.tabs}
+            active={contextTabs.active}
+            onChange={contextTabs.onChange}
+            ariaLabel={contextTabs.ariaLabel}
+            inline
+          />
         ) : null}
       </div>
 

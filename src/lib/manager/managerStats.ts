@@ -242,6 +242,8 @@ export function recordLeaguePhaseAchievements(career: ManagerCareer): void {
 }
 
 export function recordSeasonComplete(career: ManagerCareer): void {
+  if (career.seasonCompleteStatsRecordedForYear === career.seasonYear) return;
+
   recordLeaguePhaseAchievements(career);
 
   const stats = loadManagerStats();
@@ -276,6 +278,23 @@ export function recordSeasonComplete(career: ManagerCareer): void {
 
   saveManagerStats(stats);
   syncManagerLeaderboard(stats);
+}
+
+/** Credit end-of-season lifetime stats once per season year. */
+export function recordSeasonCompleteIfNeeded(
+  career: ManagerCareer
+): ManagerCareer {
+  if (!career.isSeasonComplete) return career;
+  if (career.seasonCompleteStatsRecordedForYear === career.seasonYear) {
+    return career;
+  }
+  recordSeasonComplete(career);
+  return {
+    ...career,
+    leaguePhaseStatsRecordedForYear:
+      career.leaguePhaseStatsRecordedForYear ?? career.seasonYear,
+    seasonCompleteStatsRecordedForYear: career.seasonYear,
+  };
 }
 
 /** Credit global lifetime stats for league table finish once per season. */

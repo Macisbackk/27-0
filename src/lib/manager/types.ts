@@ -556,6 +556,8 @@ export interface ManagerCareer {
   winlessSeasonCelebrationShown?: boolean;
   /** Lifetime stats already credited for this season's league table finish. */
   leaguePhaseStatsRecordedForYear?: number | null;
+  /** Lifetime stats already credited for this season's complete (playoffs/cup). */
+  seasonCompleteStatsRecordedForYear?: number | null;
   /** Challenge Cup win celebration shown after lifting the cup. */
   challengeCupCelebrationShown?: boolean;
   /** Last club star tier the rise celebration was shown for (1–5). */
