@@ -433,6 +433,7 @@ export type InboxMessageType =
   | "youth_intake"
   | "retirement"
   | "news"
+  | "position_retraining_complete"
   | "general";
 
 export interface InboxMessage {
@@ -453,6 +454,9 @@ export interface InboxMessage {
   askingPrice?: number;
   /** Unsolicited bid for an unlisted player — surfaced as a post-match popup. */
   unsolicited?: boolean;
+  /** Dual-position retraining completion — surfaced as a post-match popup. */
+  retrainingFrom?: import("../types").Position;
+  retrainingTo?: import("../types").Position;
 }
 
 export interface RetiredPlayer {

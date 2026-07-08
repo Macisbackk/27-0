@@ -209,24 +209,26 @@ export function ManagerNav({
         </div>
 
         {contextTabs ? (
-          <div className="lg:hidden">
+          <div className="flex justify-center lg:hidden">
             <ManagerSubTabBar
               tabs={contextTabs.tabs}
               active={contextTabs.active}
               onChange={contextTabs.onChange}
               ariaLabel={contextTabs.ariaLabel}
+              inline
             />
           </div>
         ) : null}
       </div>
 
       {contextTabs ? (
-        <div className="sm:hidden">
+        <div className="flex justify-center sm:hidden">
           <ManagerSubTabBar
             tabs={contextTabs.tabs}
             active={contextTabs.active}
             onChange={contextTabs.onChange}
             ariaLabel={contextTabs.ariaLabel}
+            inline
           />
         </div>
       ) : null}

@@ -6,6 +6,7 @@ import {
   getManagerPlayerEligiblePositions,
 } from "./managerPlayers";
 import type { ManagerCareer, PlayerPositionRetraining } from "./types";
+import type { InboxMessage } from "./types";
 
 /** Manager calendar — four game weeks per month (matches reserve reports). */
 export const WEEKS_PER_MONTH = 4;
@@ -252,7 +253,7 @@ function completeRetraining(
 
   next = pushInboxMessage(next, {
     id: `retrain-complete-${playerId}-${career.seasonYear}-w${career.gameWeek}-${training.targetPosition}`,
-    type: "general",
+    type: "position_retraining_complete",
     title: "Retraining complete",
     body: `${player?.name ?? "Player"} can now play ${POSITION_LABELS[training.targetPosition]} as well as ${POSITION_LABELS[training.fromPosition]}.`,
     week: career.gameWeek,
@@ -260,11 +261,36 @@ function completeRetraining(
     gameWeek: career.gameWeek,
     createdAt: new Date().toISOString(),
     read: false,
+    resolved: false,
     playerId,
     playerName: player?.name,
+    retrainingFrom: training.fromPosition,
+    retrainingTo: training.targetPosition,
   });
 
   return next;
+}
+
+/** Unread dual-position retraining completion — surfaced as a post-match popup. */
+export function getPendingPositionRetrainingPopup(
+  career: ManagerCareer
+): InboxMessage | undefined {
+  return career.inboxMessages.find(
+    (m) => m.type === "position_retraining_complete" && !m.read
+  );
+}
+
+export function acknowledgePositionRetrainingPopup(
+  career: ManagerCareer,
+  messageId: string
+): ManagerCareer {
+  return {
+    ...career,
+    inboxMessages: career.inboxMessages.map((m) =>
+      m.id === messageId ? { ...m, read: true, resolved: true } : m
+    ),
+    updatedAt: new Date().toISOString(),
+  };
 }
 
 /** Advance all active retraining by one league week. */

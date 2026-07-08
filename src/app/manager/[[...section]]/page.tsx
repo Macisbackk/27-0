@@ -37,6 +37,7 @@ import { ManagerIncomingBidModal } from "@/components/manager/ManagerIncomingBid
 import { ManagerRetirementIntentModal } from "@/components/manager/ManagerRetirementIntentModal";
 import { ManagerContractExpiryModal } from "@/components/manager/ManagerContractExpiryModal";
 import { ManagerReserveReportModal } from "@/components/manager/ManagerReserveReportModal";
+import { ManagerPositionRetrainingCompleteModal } from "@/components/manager/ManagerPositionRetrainingCompleteModal";
 import { ManagerPlayoffsIntroModal } from "@/components/manager/ManagerPlayoffsIntroModal";
 import { ManagerObjectivesIntroModal } from "@/components/manager/ManagerObjectivesIntroModal";
 import { ManagerOnboardingModal } from "@/components/manager/ManagerOnboardingModal";
@@ -117,6 +118,10 @@ import {
   acknowledgeReserveReportPopup,
   getPendingReserveReportPopup,
 } from "@/lib/manager/managerReserveReports";
+import {
+  acknowledgePositionRetrainingPopup,
+  getPendingPositionRetrainingPopup,
+} from "@/lib/manager/managerPositionRetraining";
 import {
   downloadManagerCareerExport,
   importManagerCareerFromFile,
@@ -236,6 +241,10 @@ export default function ManagerPage() {
     string | null
   >(null);
   const [reserveReportModalOpen, setReserveReportModalOpen] = useState(false);
+  const [pendingPositionRetrainingId, setPendingPositionRetrainingId] =
+    useState<string | null>(null);
+  const [positionRetrainingCompleteModalOpen, setPositionRetrainingCompleteModalOpen] =
+    useState(false);
   const [postMatchReviewFlow, setPostMatchReviewFlow] = useState(false);
   const [matchReviewReturnView, setMatchReviewReturnView] =
     useState<ManagerView>("hub");
@@ -623,20 +632,26 @@ export default function ManagerPage() {
       setPendingRetirementIntentId(retirementIntent.id);
       setRetirementIntentModalOpen(true);
     } else {
-      const reserveReport = getPendingReserveReportPopup(saved);
-      if (reserveReport) {
-        setPendingReserveReportId(reserveReport.id);
-        setReserveReportModalOpen(true);
-      } else if (shouldShowChallengeCupCelebration(saved)) {
-        setChallengeCupWinModalOpen(true);
-      } else if (shouldShowLeagueWinnersCelebration(saved)) {
-        setLeagueWinnersModalOpen(true);
-      } else if (shouldShowPerfectSeasonCelebration(saved)) {
-        setSeasonRecordModalOpen("perfect");
-      } else if (shouldShowWinlessSeasonCelebration(saved)) {
-        setSeasonRecordModalOpen("winless");
-      } else if (shouldShowClubStarRiseCelebration(saved)) {
-        setClubStarRiseModalOpen(true);
+      const retrainingComplete = getPendingPositionRetrainingPopup(saved);
+      if (retrainingComplete) {
+        setPendingPositionRetrainingId(retrainingComplete.id);
+        setPositionRetrainingCompleteModalOpen(true);
+      } else {
+        const reserveReport = getPendingReserveReportPopup(saved);
+        if (reserveReport) {
+          setPendingReserveReportId(reserveReport.id);
+          setReserveReportModalOpen(true);
+        } else if (shouldShowChallengeCupCelebration(saved)) {
+          setChallengeCupWinModalOpen(true);
+        } else if (shouldShowLeagueWinnersCelebration(saved)) {
+          setLeagueWinnersModalOpen(true);
+        } else if (shouldShowPerfectSeasonCelebration(saved)) {
+          setSeasonRecordModalOpen("perfect");
+        } else if (shouldShowWinlessSeasonCelebration(saved)) {
+          setSeasonRecordModalOpen("winless");
+        } else if (shouldShowClubStarRiseCelebration(saved)) {
+          setClubStarRiseModalOpen(true);
+        }
       }
     }
     const nextView = resolveInitialNavView(pathname, saved);
@@ -780,9 +795,11 @@ export default function ManagerPage() {
     const contractExpiry = getPendingContractExpiryPopup(withLeagueStats);
     const retirementIntent = getPendingRetirementIntentPopup(withLeagueStats);
     const reserveReport = getPendingReserveReportPopup(withLeagueStats);
+    const retrainingComplete = getPendingPositionRetrainingPopup(withLeagueStats);
     setPendingIncomingBidId(unsolicited?.id ?? null);
     setPendingContractExpiryId(contractExpiry?.id ?? null);
     setPendingRetirementIntentId(retirementIntent?.id ?? null);
+    setPendingPositionRetrainingId(retrainingComplete?.id ?? null);
     setPendingReserveReportId(reserveReport?.id ?? null);
 
     if (withLeagueStats.isSeasonComplete) {
@@ -836,6 +853,12 @@ export default function ManagerPage() {
       return;
     }
 
+    if (pendingPositionRetrainingId) {
+      setPositionRetrainingCompleteModalOpen(true);
+      goToView("hub");
+      return;
+    }
+
     if (pendingReserveReportId) {
       setReserveReportModalOpen(true);
       goToView("hub");
@@ -854,6 +877,7 @@ export default function ManagerPage() {
         Boolean(pendingIncomingBidId) ||
         Boolean(pendingContractExpiryId) ||
         Boolean(pendingRetirementIntentId) ||
+        Boolean(pendingPositionRetrainingId) ||
         Boolean(pendingReserveReportId) ||
         pendingChallengeCupCelebration ||
         pendingSeasonRecordCelebration ||
@@ -893,15 +917,7 @@ export default function ManagerPage() {
       return;
     }
 
-    const reserveReport = getPendingReserveReportPopup(nextCareer);
-    if (reserveReport) {
-      setPendingReserveReportId(reserveReport.id);
-      setReserveReportModalOpen(true);
-      goToView("hub");
-      return;
-    }
-
-    continueCelebrationQueue("cup", nextCareer);
+    continueAfterPositionRetrainingPopup(nextCareer);
   };
 
   const handleIncomingBidAccept = () => {
@@ -972,6 +988,7 @@ export default function ManagerPage() {
       !!getPendingUnsolicitedOffer(next) ||
       !!getPendingContractExpiryPopup(next) ||
       !!getPendingRetirementIntentPopup(next) ||
+      !!getPendingPositionRetrainingPopup(next) ||
       !!getPendingReserveReportPopup(next) ||
       next.isSeasonComplete;
 
@@ -982,17 +999,17 @@ export default function ManagerPage() {
     goToView("contracts");
   };
 
-  const continueAfterRetirementIntent = (nextCareer: ManagerCareer) => {
-    const nextIntent = getPendingRetirementIntentPopup(nextCareer);
-    if (nextIntent) {
-      setPendingRetirementIntentId(nextIntent.id);
-      setRetirementIntentModalOpen(true);
+  const continueAfterPositionRetrainingPopup = (nextCareer: ManagerCareer) => {
+    const retrainingComplete = getPendingPositionRetrainingPopup(nextCareer);
+    if (retrainingComplete) {
+      setPendingPositionRetrainingId(retrainingComplete.id);
+      setPositionRetrainingCompleteModalOpen(true);
       goToView("hub");
       return;
     }
 
-    setPendingRetirementIntentId(null);
-    setRetirementIntentModalOpen(false);
+    setPendingPositionRetrainingId(null);
+    setPositionRetrainingCompleteModalOpen(false);
 
     const reserveReport = getPendingReserveReportPopup(nextCareer);
     if (reserveReport) {
@@ -1006,6 +1023,62 @@ export default function ManagerPage() {
     setReserveReportModalOpen(false);
 
     continueCelebrationQueue("cup", nextCareer);
+  };
+
+  const continueAfterRetirementIntent = (nextCareer: ManagerCareer) => {
+    const nextIntent = getPendingRetirementIntentPopup(nextCareer);
+    if (nextIntent) {
+      setPendingRetirementIntentId(nextIntent.id);
+      setRetirementIntentModalOpen(true);
+      goToView("hub");
+      return;
+    }
+
+    setPendingRetirementIntentId(null);
+    setRetirementIntentModalOpen(false);
+    continueAfterPositionRetrainingPopup(nextCareer);
+  };
+
+  const handlePositionRetrainingCompleteContinue = () => {
+    if (!career || !pendingPositionRetrainingId) return;
+    const next = acknowledgePositionRetrainingPopup(
+      career,
+      pendingPositionRetrainingId
+    );
+    persist(next);
+    continueAfterPositionRetrainingPopup(next);
+  };
+
+  const handlePositionRetrainingCompleteViewTactics = () => {
+    if (!career || !pendingPositionRetrainingId) return;
+    const next = acknowledgePositionRetrainingPopup(
+      career,
+      pendingPositionRetrainingId
+    );
+    persist(next);
+    setPendingPositionRetrainingId(null);
+    setPositionRetrainingCompleteModalOpen(false);
+
+    const hasQueue =
+      pendingChallengeCupCelebration ||
+      pendingSeasonRecordCelebration ||
+      pendingLeagueWinnersCelebration ||
+      pendingTrophyCelebration ||
+      pendingIncomingBidId ||
+      !!getPendingUnsolicitedOffer(next) ||
+      !!getPendingContractExpiryPopup(next) ||
+      !!getPendingRetirementIntentPopup(next) ||
+      !!getPendingPositionRetrainingPopup(next) ||
+      !!getPendingReserveReportPopup(next) ||
+      next.isSeasonComplete;
+
+    if (hasQueue) {
+      continueAfterPositionRetrainingPopup(next);
+      return;
+    }
+
+    goToView("squad", { syncUrl: true });
+    handleSquadSubTabChange("tactics");
   };
 
   const handleRetirementIntentConvinceToStay = () => {
@@ -1040,7 +1113,7 @@ export default function ManagerPage() {
     persist(next);
     setPendingReserveReportId(null);
     setReserveReportModalOpen(false);
-    continueAfterRetirementIntent(next);
+    continueAfterPositionRetrainingPopup(next);
   };
 
   const handleReserveReportViewReserves = () => {
@@ -1059,11 +1132,12 @@ export default function ManagerPage() {
       !!getPendingUnsolicitedOffer(next) ||
       !!getPendingContractExpiryPopup(next) ||
       !!getPendingRetirementIntentPopup(next) ||
+      !!getPendingPositionRetrainingPopup(next) ||
       !!getPendingReserveReportPopup(next) ||
       next.isSeasonComplete;
 
     if (hasQueue) {
-      continueAfterRetirementIntent(next);
+      continueAfterPositionRetrainingPopup(next);
       return;
     }
 
@@ -1227,10 +1301,16 @@ export default function ManagerPage() {
       ? career.inboxMessages.find((m) => m.id === pendingReserveReportId)
       : undefined;
 
+  const positionRetrainingMessage =
+    career && pendingPositionRetrainingId
+      ? career.inboxMessages.find((m) => m.id === pendingPositionRetrainingId)
+      : undefined;
+
   const managerCelebrationModalsOpen =
     incomingBidModalOpen ||
     contractExpiryModalOpen ||
     retirementIntentModalOpen ||
+    positionRetrainingCompleteModalOpen ||
     reserveReportModalOpen ||
     challengeCupWinModalOpen ||
     leagueWinnersModalOpen ||
@@ -1448,6 +1528,17 @@ export default function ManagerPage() {
             message={contractExpiryMessage}
             onDismiss={handleContractExpiryDismiss}
             onViewContracts={handleContractExpiryViewContracts}
+          />
+        )}
+
+      {career &&
+        positionRetrainingCompleteModalOpen &&
+        positionRetrainingMessage && (
+          <ManagerPositionRetrainingCompleteModal
+            career={career}
+            message={positionRetrainingMessage}
+            onContinue={handlePositionRetrainingCompleteContinue}
+            onViewTactics={handlePositionRetrainingCompleteViewTactics}
           />
         )}
 

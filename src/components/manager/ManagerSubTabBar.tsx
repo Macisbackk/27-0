@@ -4,6 +4,8 @@ import {
   SUB_TAB_BAR_SHELL,
   subTabGroupButtonClass,
   subTabGroupClass,
+  tabGroupButtonClass,
+  tabGroupClass,
 } from "@/lib/ui/design-system";
 import { playTabChange, playUiClick } from "@/lib/sound";
 
@@ -29,7 +31,7 @@ interface ManagerSubTabBarProps<T extends string> {
   hardAccent?: boolean;
 }
 
-/** Full-width segmented sub-tabs — use site-wide for consistent nav styling. */
+/** Centered segmented sub-tabs — use site-wide for consistent nav styling. */
 export function ManagerSubTabBar<T extends string>({
   tabs,
   active,
@@ -41,15 +43,18 @@ export function ManagerSubTabBar<T extends string>({
   eraAccent = false,
   hardAccent = false,
 }: ManagerSubTabBarProps<T>) {
+  const compactGroup = scrollable || inline;
   const shellClass = inline
-    ? "w-auto"
+    ? "flex w-full justify-center sm:w-auto"
     : scrollable
-      ? `${SUB_TAB_BAR_SHELL} overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`
+      ? "w-full overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       : SUB_TAB_BAR_SHELL;
 
-  const groupClass = `${subTabGroupClass(hardAccent, false, eraAccent)}${
-    inline ? " w-auto" : scrollable ? " min-w-max w-max max-w-none" : ""
-  } ${className ?? ""}`;
+  const groupClass = compactGroup
+    ? `${subTabGroupClass(hardAccent, false, eraAccent)}${
+        inline ? " w-auto" : " min-w-max w-max max-w-none"
+      } ${className ?? ""}`
+    : `${tabGroupClass(hardAccent, false, eraAccent)} ${className ?? ""}`;
 
   return (
     <div className={shellClass}>
@@ -61,11 +66,15 @@ export function ManagerSubTabBar<T extends string>({
             role="tab"
             aria-selected={active === id}
             title={label}
-            className={subTabGroupButtonClass(
-              active === id,
-              variant,
-              scrollable || inline
-            )}
+            className={
+              compactGroup
+                ? subTabGroupButtonClass(
+                    active === id,
+                    variant,
+                    scrollable || inline
+                  )
+                : tabGroupButtonClass(active === id, variant)
+            }
             onClick={() => {
               if (active === id) return;
               playTabChange();

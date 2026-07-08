@@ -117,8 +117,8 @@ export const FILTER = {
     "mx-auto inline-flex w-fit max-w-full flex-nowrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto",
 } as const;
 
-/** Full-width shell for segmented sub-tab bars (Squad/Tactics, Transfers, Stats, etc.). */
-export const SUB_TAB_BAR_SHELL = "w-full" as const;
+/** Centered shell for segmented sub-tab bars (Squad/Tactics, Transfers, Stats, etc.). */
+export const SUB_TAB_BAR_SHELL = "flex w-full justify-center" as const;
 
 /** Shared pressed-state utility — pair with BTN.base on interactive elements. */
 export const BTN_PRESS = "btn-press";

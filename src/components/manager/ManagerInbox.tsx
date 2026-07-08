@@ -387,6 +387,7 @@ export function ManagerInbox({
               msg.type === "reserve_report" ||
               msg.type === "reserve_callup" ||
               msg.type === "reserve_return" ||
+              msg.type === "position_retraining_complete" ||
               msg.type === "news" ||
               msg.type === "general") && (
               <InboxSingleAction>

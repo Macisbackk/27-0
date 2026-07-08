@@ -3,7 +3,8 @@ import type { InboxMessage } from "./types";
 import { getPotentialTier } from "./managerReserves";
 import { pushInboxMessage } from "./managerInbox";
 
-const REPORT_INTERVAL_WEEKS = 4;
+/** In-game weeks between reserve reports (two calendar months at 4 weeks each). */
+const REPORT_INTERVAL_WEEKS = 8;
 
 export function shouldGenerateReserveReport(career: ManagerCareer): boolean {
   if (career.gameWeek < REPORT_INTERVAL_WEEKS) return false;
@@ -14,14 +15,14 @@ export function shouldGenerateReserveReport(career: ManagerCareer): boolean {
 export function generateReserveReportMessage(
   career: ManagerCareer
 ): InboxMessage {
-  const month = Math.max(1, Math.floor(career.gameWeek / REPORT_INTERVAL_WEEKS));
+  const period = getReserveReportPeriod(career);
   const sorted = [...career.reserves].sort((a, b) => b.rating - a.rating);
   const top = sorted[0];
   const improver = sorted.find((r) => r.rating > r.baseRating + 1);
-  const recentResults = career.reserveResults.slice(-4);
+  const recentResults = career.reserveResults.slice(-REPORT_INTERVAL_WEEKS);
   const formWins = recentResults.filter((r) => r.userWon).length;
 
-  const lines: string[] = [`Reserve update — month ${month}`];
+  const lines: string[] = [`Reserve update — period ${period}`];
 
   if (improver) {
     lines.push(
@@ -46,7 +47,7 @@ export function generateReserveReportMessage(
   return {
     id: `reserve-report-w${career.gameWeek}`,
     type: "reserve_report",
-    title: "Monthly Reserve Report",
+    title: "Reserve Report",
     body: lines.join("\n"),
     week: career.gameWeek,
     season: career.seasonYear,
@@ -69,7 +70,7 @@ export function maybeAddReserveReport(career: ManagerCareer): ManagerCareer {
   };
 }
 
-/** Unread monthly reserve report — surfaced as a popup on the hub. */
+/** Unread reserve report — surfaced as a popup on the hub. */
 export function getPendingReserveReportPopup(
   career: ManagerCareer
 ): InboxMessage | undefined {
@@ -91,6 +92,6 @@ export function acknowledgeReserveReportPopup(
   };
 }
 
-export function getReserveReportMonth(career: ManagerCareer): number {
+export function getReserveReportPeriod(career: ManagerCareer): number {
   return Math.max(1, Math.floor(career.gameWeek / REPORT_INTERVAL_WEEKS));
 }
