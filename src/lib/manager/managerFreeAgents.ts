@@ -21,10 +21,25 @@ import {
 import { createInitialPlayerState } from "./managerSquad";
 import { syncManagerFinance, canAffordAdditionalWage, evaluateClubSigningAppeal, getManagerPlayerListingRating } from "./managerFinance";
 import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
+import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 
 const MAX_TRANSFER_HISTORY = 32;
-const AI_FREE_AGENT_SIGN_CHANCE = 0.18;
-const AI_CONTRACT_EXPIRY_CHANCE = 0.42;
+const BASE_AI_FREE_AGENT_SIGN_CHANCE = 0.18;
+const BASE_AI_CONTRACT_EXPIRY_CHANCE = 0.42;
+
+function freeAgentSignChanceForCareer(career: ManagerCareer): number {
+  const seasonIndex = getLeagueSeasonIndex(career);
+  return Math.min(0.42, BASE_AI_FREE_AGENT_SIGN_CHANCE + seasonIndex * 0.035);
+}
+
+function contractExpiryChanceForCareer(career: ManagerCareer): number {
+  const seasonIndex = getLeagueSeasonIndex(career);
+  return Math.min(0.82, BASE_AI_CONTRACT_EXPIRY_CHANCE + seasonIndex * 0.05);
+}
+
+function releaseRatingCapForCareer(career: ManagerCareer): number {
+  return 78 + Math.min(8, getLeagueSeasonIndex(career));
+}
 
 export function getFreeAgentIds(career: ManagerCareer): Set<string> {
   return new Set((career.freeAgents ?? []).map((f) => f.playerId));
@@ -206,10 +221,15 @@ export function simulateAiContractExpiries(career: ManagerCareer): ManagerCareer
 
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === career.club) continue;
-    if (rng() > AI_CONTRACT_EXPIRY_CHANCE) continue;
+    if (rng() > contractExpiryChanceForCareer(career)) continue;
 
     const roster = getLeagueClubRosterIds(career, club);
     const protectedIds = getProtectedTransferPlayerIds(career, club);
+    const ratingCap = releaseRatingCapForCareer(career);
+    const releaseSlots = Math.min(
+      3,
+      1 + Math.floor(getLeagueSeasonIndex(career) / 2)
+    );
     const candidates = roster
       .filter((id) => !protectedIds.has(id) && !isFreeAgent(career, id))
       .map((id) => {
@@ -219,13 +239,16 @@ export function simulateAiContractExpiries(career: ManagerCareer): ManagerCareer
           rating: p?.peakRating ?? 70,
         };
       })
-      .filter((c) => c.rating < 78)
+      .filter((c) => c.rating < ratingCap)
       .sort((a, b) => a.rating - b.rating);
 
-    if (candidates.length === 0) continue;
-    const pick =
-      candidates[Math.floor(rng() * Math.min(3, candidates.length))]!;
-    entries.push({ playerId: pick.id, formerClub: club });
+    for (let i = 0; i < releaseSlots && candidates.length > 0; i++) {
+      const pick =
+        candidates[Math.floor(rng() * Math.min(4, candidates.length))]!;
+      entries.push({ playerId: pick.id, formerClub: club });
+      const idx = candidates.findIndex((c) => c.id === pick.id);
+      if (idx >= 0) candidates.splice(idx, 1);
+    }
   }
 
   return addPlayersToFreeAgents(career, entries);
@@ -240,7 +263,7 @@ export function maybeAiSignFreeAgents(career: ManagerCareer): ManagerCareer {
   const rng = seedrandom(
     `${career.seed}-fa-sign-w${career.gameWeek}-m${career.fixtures.length}`
   );
-  if (rng() > AI_FREE_AGENT_SIGN_CHANCE) return career;
+  if (rng() > freeAgentSignChanceForCareer(career)) return career;
 
   const agent = pool[Math.floor(rng() * pool.length)]!;
   const otherClubs = CURRENT_PLAYABLE_CLUBS.filter((c) => c !== career.club);

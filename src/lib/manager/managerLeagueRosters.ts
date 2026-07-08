@@ -5,13 +5,12 @@ import type { OpponentPoolOptions } from "../game/opponent-squad-strength";
 import type { Player, Position } from "../types";
 import { SQUAD_STRUCTURE } from "../positions";
 import { getOpponentMatchRating } from "../game/opponent-scorers";
-import { buildDefaultLineup } from "./club-config";
+import { getManagerClubTeamRating, getManagerRosterIds } from "./managerRating";
 import {
-  computeManagerTeamRating,
-  getManagerClubTeamRating,
-  getManagerLineupForClub,
-  getManagerRosterIds,
-} from "./managerRating";
+  aiClubYouthLevel,
+  getLeagueSeasonIndex,
+  initAiYouthDevelopment,
+} from "./managerLeagueSeason";
 import { getManagerPlayer, reserveToPlayer } from "./managerPlayers";
 import { createYouthProspect } from "./managerReserves";
 import type { ManagerCareer } from "./types";
@@ -105,28 +104,13 @@ export function getLeagueClubStableRating(
   career: ManagerCareer,
   club: string
 ): number {
-  const rosterIds = getLeagueClubRosterIds(career, club);
-  const lineup = buildDefaultLineup(rosterIds);
-  if (lineup) {
-    return computeManagerTeamRating(
-      lineup.xiiiIds,
-      lineup.benchIds,
-      lineup.slotPositions,
-      career
-    );
-  }
+  const pool = getLeagueClubPlayerPool(career, club);
+  if (pool.length === 0) return getManagerClubTeamRating(club);
 
-  const fallback = getManagerLineupForClub(club);
-  if (fallback.xiiiIds.some(Boolean)) {
-    return computeManagerTeamRating(
-      fallback.xiiiIds,
-      fallback.benchIds,
-      fallback.slotPositions,
-      career
-    );
-  }
-
-  return getManagerClubTeamRating(club);
+  const ranked = [...pool].sort((a, b) => b.peakRating - a.peakRating);
+  const sample = ranked.slice(0, 17);
+  const total = sample.reduce((sum, player) => sum + player.peakRating, 0);
+  return Math.round(total / sample.length);
 }
 
 /** Match-day opponent rating anchored to squad quality — limits random XIII variance. */
@@ -215,9 +199,11 @@ export function transferLeaguePlayer(
 export function applyAiYouthIntakeToLeague(career: ManagerCareer): ManagerCareer {
   let next = career;
   const registry = { ...next.playerRegistry };
+  const playerDevelopment = { ...(next.playerDevelopment ?? {}) };
   const rosters: LeagueClubRosters = {
     ...(next.leagueClubRosters ?? initLeagueClubRosters(next.club)),
   };
+  const seasonIndex = getLeagueSeasonIndex(career);
 
   const positions: Position[] = [];
   for (const { position, count } of SQUAD_STRUCTURE) {
@@ -230,7 +216,9 @@ export function applyAiYouthIntakeToLeague(career: ManagerCareer): ManagerCareer
     const rng = seedrandom(
       `${career.seed}-ai-youth-${club}-s${career.seasonYear}`
     );
-    const count = 1 + Math.floor(rng() * 2);
+    const youthLevel = aiClubYouthLevel(club);
+    const baseCount = 2 + Math.floor(seasonIndex / 2);
+    const count = Math.min(5, baseCount + Math.floor(rng() * 2));
     const shuffled = [...positions].sort(() => rng() - 0.5);
     const list = [...(rosters[club] ?? [])];
 
@@ -241,18 +229,31 @@ export function applyAiYouthIntakeToLeague(career: ManagerCareer): ManagerCareer
         career.seasonYear,
         i,
         pos,
-        club
+        club,
+        youthLevel
       );
       const playerId = `mgr-ai-${club.replace(/\s+/g, "-")}-${career.seasonYear}-${i}-${Math.abs(hashCode(prospect.name))}`;
       const player = reserveToPlayer({ ...prospect, id: playerId }, career.seasonYear);
       registry[playerId] = player;
+      playerDevelopment[playerId] = initAiYouthDevelopment(
+        career,
+        playerId,
+        player.peakRating,
+        prospect.potentialRating,
+        prospect.developmentRate
+      );
       list.push(playerId);
     }
 
     rosters[club] = list;
   }
 
-  next = { ...next, playerRegistry: registry, leagueClubRosters: rosters };
+  next = {
+    ...next,
+    playerRegistry: registry,
+    playerDevelopment,
+    leagueClubRosters: rosters,
+  };
   return reconcileLeagueRosters(next);
 }
 

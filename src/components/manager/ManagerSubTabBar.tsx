@@ -2,8 +2,6 @@
 
 import {
   SUB_TAB_BAR_SHELL,
-  subTabGroupButtonClass,
-  subTabGroupClass,
   tabGroupButtonClass,
   tabGroupClass,
 } from "@/lib/ui/design-system";
@@ -29,7 +27,7 @@ interface ManagerSubTabBarProps<T extends string> {
   hardAccent?: boolean;
 }
 
-/** Centered segmented sub-tabs — use site-wide for consistent nav styling. */
+/** Centered segmented sub-tabs — one shared style across Manager Mode. */
 export function ManagerSubTabBar<T extends string>({
   tabs,
   active,
@@ -40,14 +38,17 @@ export function ManagerSubTabBar<T extends string>({
   eraAccent = false,
   hardAccent = false,
 }: ManagerSubTabBarProps<T>) {
-  const compactGroup = scrollable;
   const shellClass = scrollable
     ? "flex w-full justify-center overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     : SUB_TAB_BAR_SHELL;
 
-  const groupClass = compactGroup
-    ? `${subTabGroupClass(hardAccent, false, eraAccent)} min-w-max w-max max-w-none ${className ?? ""}`
-    : `${tabGroupClass(hardAccent, false, eraAccent)} ${className ?? ""}`;
+  const groupClass = `${tabGroupClass(hardAccent, false, eraAccent)}${
+    scrollable
+      ? " min-w-max w-max max-w-none"
+      : " w-full max-w-md sm:w-auto sm:min-w-[18rem]"
+  } ${className ?? ""}`.trim();
+
+  const buttonLayout = scrollable ? "scroll" : "equal";
 
   return (
     <div className={shellClass}>
@@ -59,11 +60,11 @@ export function ManagerSubTabBar<T extends string>({
             role="tab"
             aria-selected={active === id}
             title={label}
-            className={
-              compactGroup
-                ? subTabGroupButtonClass(active === id, variant, true)
-                : tabGroupButtonClass(active === id, variant)
-            }
+            className={tabGroupButtonClass(
+              active === id,
+              variant,
+              buttonLayout
+            )}
             onClick={() => {
               if (active === id) return;
               playTabChange();

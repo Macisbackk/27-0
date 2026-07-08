@@ -1,6 +1,5 @@
 import seedrandom from "seedrandom";
 import { OPPONENT_LINEUP } from "../game/opponent-scorers";
-import { getPlayerById } from "../players";
 import { getPlayerEligiblePositions } from "../players/player-positions";
 import {
   getFormationSlotPosition,
@@ -9,11 +8,9 @@ import type { SquadSlot } from "../types";
 import { ERA_BENCH_FROM_STARTING_17 } from "../players/era-starting-17s";
 import type { Player, Position } from "../types";
 import type { ManagerCareer } from "./types";
-import { buildDefaultLineup } from "./club-config";
 import { getManagerPlayer } from "./managerPlayers";
 import {
   getLeagueClubPlayerPool,
-  getLeagueClubRosterIds,
 } from "./managerLeagueRosters";
 import { toMatchdaySquadSlotsFromClubLineup } from "./matchday-lineup";
 
@@ -45,13 +42,6 @@ export function clubLineupToSquadSlots(
   return toMatchdaySquadSlotsFromClubLineup(lineup, career);
 }
 
-function resolveLineupPlayer(
-  career: ManagerCareer,
-  playerId: string
-): Player | undefined {
-  return getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
-}
-
 function buildBestAvailableXiiiFromPool(pool: Player[]): {
   xiii: ClubMatchdayLineup["xiii"];
   usedIds: Set<string>;
@@ -78,35 +68,6 @@ function buildBestAvailableXiiiFromPool(pool: Player[]): {
   return { xiii, usedIds: used };
 }
 
-function idsLineupToClubMatchday(
-  career: ManagerCareer,
-  lineup: {
-    xiiiIds: string[];
-    slotPositions: Position[];
-    benchIds: string[];
-  }
-): ClubMatchdayLineup {
-  const xiii: ClubMatchdayLineup["xiii"] = new Array(STARTING_XIII_SLOTS);
-  for (let i = 0; i < STARTING_XIII_SLOTS; i++) {
-    const id = lineup.xiiiIds[i];
-    if (!id) continue;
-    const player = resolveLineupPlayer(career, id);
-    if (!player) continue;
-    xiii[i] = {
-      player,
-      position: lineup.slotPositions[i] ?? getFormationSlotPosition(i),
-    };
-  }
-
-  const interchange: Player[] = [];
-  for (const id of lineup.benchIds.slice(0, ERA_BENCH_FROM_STARTING_17)) {
-    const player = resolveLineupPlayer(career, id);
-    if (player) interchange.push(player);
-  }
-
-  return { xiii, interchange, isUserClub: false };
-}
-
 function buildLeagueClubInterchange(
   pool: Player[],
   usedIds: Set<string>,
@@ -131,20 +92,7 @@ function buildOpponentClubLineup(
   club: string,
   matchRound: number
 ): ClubMatchdayLineup {
-  const rosterIds = getLeagueClubRosterIds(career, club);
   const pool = getLeagueClubPlayerPool(career, club);
-  const canonical = buildDefaultLineup(rosterIds);
-
-  if (
-    canonical &&
-    canonical.xiiiIds.filter(Boolean).length === STARTING_XIII_SLOTS
-  ) {
-    const fromCanonical = idsLineupToClubMatchday(career, canonical);
-    if (getLineupXiiiPlayers(fromCanonical).length === STARTING_XIII_SLOTS) {
-      return fromCanonical;
-    }
-  }
-
   const { xiii, usedIds } = buildBestAvailableXiiiFromPool(pool);
   const interchange = buildLeagueClubInterchange(
     pool,

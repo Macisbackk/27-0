@@ -10,9 +10,15 @@ import {
   transferLeaguePlayer,
 } from "./managerLeagueRosters";
 import { RIVAL_CLUBS } from "./managerRivals";
+import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 
 const MAX_TRANSFER_HISTORY = 32;
-const TRANSFER_CHANCE_PER_MATCH = 0.22;
+const BASE_TRANSFER_CHANCE_PER_MATCH = 0.22;
+
+function transferChanceForCareer(career: ManagerCareer): number {
+  const seasonIndex = getLeagueSeasonIndex(career);
+  return Math.min(0.48, BASE_TRANSFER_CHANCE_PER_MATCH + seasonIndex * 0.04);
+}
 
 function clubNeedsPosition(
   career: ManagerCareer,
@@ -41,7 +47,7 @@ export function maybeGenerateAiTransfers(career: ManagerCareer): ManagerCareer {
   const rng = seedrandom(
     `${career.seed}-ai-transfer-w${career.gameWeek}-m${career.fixtures.length}`
   );
-  if (rng() > TRANSFER_CHANCE_PER_MATCH) return career;
+  if (rng() > transferChanceForCareer(career)) return career;
 
   const rivals = RIVAL_CLUBS[career.club] ?? [];
   const otherClubs = CURRENT_PLAYABLE_CLUBS.filter((c) => c !== career.club);

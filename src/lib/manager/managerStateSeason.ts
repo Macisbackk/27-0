@@ -28,6 +28,7 @@ import {
   applyYearlyYouthIntake,
   tickReserveContractsForNewSeason,
 } from "./managerReserveContracts";
+import { simulateAiSeasonRosterActivity } from "./managerAiRosterEvolution";
 import {
   applyAiYouthIntakeToLeague,
   ensureLeagueClubRosters,
@@ -300,10 +301,12 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     updatedAt: new Date().toISOString(),
   };
 
-  const withIntake = simulateAiContractExpiries(
-    applyYearlyYouthIntake(
-      applyAiYouthIntakeToLeague(
-        ensureLeagueClubRosters(reconcileLeagueRosters(next))
+  const withIntake = simulateAiSeasonRosterActivity(
+    simulateAiContractExpiries(
+      applyYearlyYouthIntake(
+        applyAiYouthIntakeToLeague(
+          ensureLeagueClubRosters(reconcileLeagueRosters(next))
+        )
       )
     )
   );

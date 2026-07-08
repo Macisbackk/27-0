@@ -335,12 +335,17 @@ export function subTabGroupButtonClass(
   return `${base} ${BTN.tabGroupActive}`;
 }
 
-/** Tab toggle inside a tab group (Normal/Hard, Login/Signup). */
+/** Tab toggle inside a tab group (Normal/Hard, Login/Signup, Manager sub-tabs). */
 export function tabGroupButtonClass(
   active: boolean,
-  variant: "normal" | "current" | "hard" | "era" | "gold" = "normal"
+  variant: "normal" | "current" | "hard" | "era" | "gold" = "normal",
+  layout: "equal" | "scroll" = "equal"
 ): string {
-  const base = `${TYPO.button} btn-press box-border flex flex-1 items-center justify-center text-center ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
+  const sizing =
+    layout === "scroll"
+      ? "shrink-0 whitespace-nowrap px-3.5 sm:flex-none sm:px-5"
+      : "min-w-0 flex-1";
+  const base = `${TYPO.button} btn-press box-border flex ${sizing} items-center justify-center text-center ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.toggleIdle}`;

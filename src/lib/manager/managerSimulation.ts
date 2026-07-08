@@ -113,6 +113,7 @@ export function prepareCareerForNextMatch(career: ManagerCareer): ManagerCareer 
 import { countExpiringContracts } from "./managerContracts";
 import { maybeGenerateAiTransfers } from "./managerAiTransfers";
 import { maybeAiSignFreeAgents } from "./managerFreeAgents";
+import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 import { developSquadAtSeasonEnd } from "./managerPlayerDevelopment";
 import {
   advanceLiveToFullTime,
@@ -659,6 +660,14 @@ export function applyManagerMatchResult(
   finalCareer = maybeAddBoardUltimatumInbox(finalCareer);
   finalCareer = maybeGenerateAiTransfers(finalCareer);
   finalCareer = maybeAiSignFreeAgents(finalCareer);
+  const leagueSeasonIndex = getLeagueSeasonIndex(finalCareer);
+  if (leagueSeasonIndex >= 2) {
+    finalCareer = maybeGenerateAiTransfers(finalCareer);
+    finalCareer = maybeAiSignFreeAgents(finalCareer);
+  }
+  if (leagueSeasonIndex >= 4) {
+    finalCareer = maybeGenerateAiTransfers(finalCareer);
+  }
   if (isFriendly) {
     finalCareer = completeFriendlyMatch(finalCareer);
   }
