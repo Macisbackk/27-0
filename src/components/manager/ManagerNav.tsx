@@ -88,7 +88,7 @@ export function ManagerNav({
           type="button"
           onClick={() => navigate("inbox")}
           disabled={disabled}
-          className={`btn-press relative flex h-9 min-w-9 shrink-0 items-center justify-center gap-1 rounded-lg border px-2 transition sm:min-h-[40px] sm:px-2.5 ${
+          className={`btn-press relative flex h-9 min-w-9 shrink-0 items-center justify-center gap-1 rounded-sm border px-2 transition sm:min-h-[40px] sm:px-2.5 ${
             active === "inbox"
               ? "border-theme-primary/45 bg-theme-primary/12"
               : "border-pitch-600/50 bg-pitch-900/40 hover:border-pitch-500/55"
@@ -123,7 +123,7 @@ export function ManagerNav({
               type="button"
               onClick={() => navigate(tab.id)}
               disabled={disabled}
-              className={`btn-press shrink-0 rounded-lg px-2.5 py-2 text-center font-display text-[11px] font-bold uppercase tracking-wide transition sm:px-3 sm:text-xs ${
+              className={`btn-press shrink-0 rounded-sm px-2.5 py-2 text-center font-display text-[11px] font-bold uppercase tracking-wide transition sm:px-3 sm:text-xs ${
                 active === tab.id ? BTN.tabActive : BTN.tabIdle
               } ${disabled ? "pointer-events-none opacity-40" : ""}`}
               aria-current={active === tab.id ? "page" : undefined}

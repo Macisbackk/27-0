@@ -50,7 +50,7 @@ export function ManagerMobileBottomNav({
                 type="button"
                 disabled={disabled}
                 onClick={() => navigate(tab.id)}
-                className={`btn-press flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-xl border-2 px-0.5 py-2 text-center transition ${
+                className={`btn-press flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-sm border-2 px-0.5 py-2 text-center transition ${
                   isActive
                     ? BTN.tabActive
                     : "border-transparent bg-pitch-900/50 text-pitch-300 hover:bg-pitch-800/60 hover:text-white"
@@ -73,7 +73,7 @@ export function ManagerMobileBottomNav({
               playUiClick();
               setMoreOpen((open) => !open);
             }}
-            className={`btn-press relative flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-xl border-2 px-0.5 py-2 text-center transition ${
+            className={`btn-press relative flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-sm border-2 px-0.5 py-2 text-center transition ${
               moreActive || moreOpen
                 ? BTN.tabActive
                 : "border-transparent bg-pitch-900/50 text-pitch-300 hover:bg-pitch-800/60 hover:text-white"
@@ -114,7 +114,7 @@ export function ManagerMobileBottomNav({
                     key={item.id}
                     type="button"
                     onClick={() => navigate(item.id)}
-                    className={`btn-press flex min-h-[52px] items-center gap-3 rounded-xl border px-4 py-3 text-left transition ${
+                    className={`btn-press flex min-h-[52px] items-center gap-3 rounded-sm border px-4 py-3 text-left transition ${
                       isActive
                         ? "border-theme-primary/55 bg-theme-primary/15 text-white ring-2 ring-theme-primary/35"
                         : "border-pitch-600/55 bg-pitch-900/70 text-pitch-100 hover:border-pitch-500/60 hover:bg-pitch-800/70"

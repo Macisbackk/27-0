@@ -47,7 +47,7 @@ export default function AuthCallbackPage() {
   if (error) {
     return (
       <div className="matchday-arena flex min-h-[50vh] items-center justify-center px-4">
-        <div className="matchday-panel max-w-md p-6 text-center">
+        <div className="scoreboard-panel max-w-md p-6 text-center">
           <p className="font-display text-sm font-bold text-red-400">
             Email confirmation failed
           </p>
@@ -55,7 +55,7 @@ export default function AuthCallbackPage() {
           <button
             type="button"
             onClick={() => router.replace("/")}
-            className="mt-4 text-sm text-accent-green hover:underline"
+            className="mt-4 text-sm text-theme-primary hover:underline"
           >
             Return to Home
           </button>

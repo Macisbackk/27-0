@@ -2,13 +2,13 @@
 
 import { useMemo } from "react";
 import { RugbyPitch, TEAM_SHEET_RUGBY_PITCH_PROPS } from "@/components/RugbyPitch";
+import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
 import { toMatchdaySquadSlotsFromCareer } from "@/lib/manager/matchday-lineup";
 import type { MatchdaySlotTarget } from "@/lib/manager/managerMatchdaySquad";
 import { canAssignPlayerToXiiiSlot } from "@/lib/manager/managerMatchdaySquad";
 import type { ManagerCareer } from "@/lib/manager/types";
 import type { SquadSlot } from "@/lib/types";
 import { getFilledCount, getSquadValue, TOTAL_SLOTS } from "@/lib/positions";
-import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 type SlotAccent = "source" | "target";
@@ -102,11 +102,15 @@ export function ManagerMatchdayFormation({
   ]);
 
   return (
-    <div
-      className={`${CARD.base} ${SPACING.cardPaddingSm} overflow-hidden bg-gradient-to-b from-pitch-800/20 to-pitch-950/60`}
+    <ClipboardPanel
+      padded
+      className="overflow-hidden bg-gradient-to-b from-pitch-800/20 to-pitch-950/60"
     >
       {!hideTitle && (
-        <p className={`${TYPO.sectionLabel} mb-2 text-center sm:mb-3`}>{title}</p>
+        <div className="mb-2 text-center sm:mb-3">
+          <p className="game-section-header__label">TEAM SHEET</p>
+          <h2 className="game-section-header__title">{title}</h2>
+        </div>
       )}
       <RugbyPitch
         squad={squad}
@@ -156,6 +160,6 @@ export function ManagerMatchdayFormation({
           Tap a player for contract and profile details
         </p>
       )}
-    </div>
+    </ClipboardPanel>
   );
 }

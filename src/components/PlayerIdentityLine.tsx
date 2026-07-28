@@ -68,7 +68,7 @@ export function PlayerIdentityLine({
       } ${className}`}
     >
       <span
-        className={`shrink-0 font-display font-bold tracking-wider text-accent-green ${
+        className={`shrink-0 font-display font-bold tracking-wider text-theme-primary ${
           compact ? "text-[10px]" : "text-sm sm:text-base"
         }`}
       >

@@ -43,7 +43,7 @@ export function SquadSummaryPanel({
             </p>
             {revealRatings && (
               <p className="mt-1 text-xs">
-                <span className="font-display font-bold text-accent-green">
+                <span className="font-display font-bold text-theme-primary">
                   {info.ratingAdjusted
                     ? `${info.originalRating} → ${info.adjustedRating} OVR`
                     : `${info.adjustedRating} OVR`}

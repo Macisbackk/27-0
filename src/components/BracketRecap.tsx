@@ -229,7 +229,7 @@ function RecapTeam({
   return (
     <div
       className={`${mobile ? "px-3 py-2" : "px-2 py-1"} ${
-        winner ? "bg-accent-green/10" : loser ? "opacity-40" : ""
+        winner ? "bg-theme-primary/10" : loser ? "opacity-40" : ""
       }`}
     >
       <div className="flex items-center gap-2">
@@ -246,7 +246,7 @@ function RecapTeam({
           <span
             className={`font-bold tabular-nums ${
               mobile ? "text-sm" : "text-[10px]"
-            } ${winner ? "text-accent-green" : "text-gray-500"}`}
+            } ${winner ? "text-theme-primary" : "text-gray-500"}`}
           >
             {score}
           </span>

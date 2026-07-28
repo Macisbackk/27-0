@@ -26,6 +26,8 @@ import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { autoFixMatchdaySquad, autoSortMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { GameButton } from "@/components/ui/GameButton";
+import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
+import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import {
   ManagerPage,
   ManagerViewHeader,
@@ -486,11 +488,20 @@ export function ManagerSquad({
       />
 
       {subTab === "tactics" ? (
-        <ManagerTacticsPanel
-          career={career}
-          onChange={(tactics) => onUpdate({ ...career, tactics })}
-          onCareerUpdate={onUpdate}
-        />
+        <ClipboardPanel padded>
+          <GameSectionHeader
+            label="TACTICS"
+            title="Match Plan"
+            subtitle={tacticsHelpText}
+          />
+          <div className="mt-3">
+            <ManagerTacticsPanel
+              career={career}
+              onChange={(tactics) => onUpdate({ ...career, tactics })}
+              onCareerUpdate={onUpdate}
+            />
+          </div>
+        </ClipboardPanel>
       ) : (
         <>
       {assignmentNotice && (
@@ -573,7 +584,7 @@ export function ManagerSquad({
             onFilledSlotDoubleClick={handleMatchdayPlayerDoubleClick}
           />
 
-          <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+          <div className={`${CARD.clipboard} ${SPACING.cardPadding}`}>
             <p className={`${TYPO.sectionLabel} mb-2`}>Interchange</p>
             <div className="grid grid-cols-2 auto-rows-fr items-stretch gap-2 sm:grid-cols-4">
               {Array.from({ length: 4 }, (_, i) => {
@@ -664,7 +675,7 @@ export function ManagerSquad({
           </div>
         </div>
 
-        <div ref={squadPoolPanelRef} className={`min-w-0 w-full ${CARD.base} ${SPACING.cardPadding}`}>
+        <div ref={squadPoolPanelRef} className={`min-w-0 w-full ${CARD.clipboard} ${SPACING.cardPadding}`}>
           <p className={`${TYPO.sectionLabel} mb-2`}>Squad Players</p>
           {pendingAssignId ? (
             <p className={`mb-2 ${TYPO.bodySm} text-pitch-300`}>

@@ -90,7 +90,7 @@ export function SlotRecruitPlayerCard({
   return (
     <div
       className={`${CARD.base} flex h-full min-w-0 flex-col overflow-hidden transition ${
-        topPick ? "border-accent-gold/45 ring-1 ring-accent-gold/25" : "hover:border-accent-green/40"
+        topPick ? "border-accent-gold/45 ring-1 ring-accent-gold/25" : "hover:border-theme-primary/40"
       } ${disabled ? "opacity-50" : ""}`}
       style={{
         boxShadow: `inset 3px 0 0 ${colors.primary}`,
@@ -161,7 +161,7 @@ export function SlotRecruitPlayerCard({
           disabled={disabled}
           aria-expanded={statsExpanded}
           onClick={onToggleStats}
-          className="w-full rounded-lg border border-pitch-600/60 bg-pitch-950/50 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-accent-green/35 hover:text-accent-green disabled:cursor-not-allowed sm:text-[11px]"
+          className="w-full rounded-lg border border-pitch-600/60 bg-pitch-950/50 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-theme-primary/35 hover:text-theme-primary disabled:cursor-not-allowed sm:text-[11px]"
         >
           {statsExpanded ? "Hide stats" : "View full stats"}
         </button>

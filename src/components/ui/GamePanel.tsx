@@ -1,44 +1,54 @@
 import type { CSSProperties, ReactNode } from "react";
-import { SPACING } from "@/lib/ui/design-system";
+import {
+  panelPaddedClass,
+  panelSurfaceClass,
+  type PanelSurface,
+  type PanelVariant,
+} from "@/components/ui/panelSurfaces";
 
-export type GamePanelVariant = "base" | "elevated" | "inset" | "featured";
+export type GamePanelVariant = PanelVariant;
+export type GamePanelSurface = PanelSurface;
 
 interface GamePanelProps {
   children: ReactNode;
-  variant?: GamePanelVariant;
-  /** Hide the left kit stripe (e.g. nested rows). */
+  /** Visual family — programme (default), scoreboard, or clipboard. */
+  surface?: PanelSurface;
+  variant?: PanelVariant;
+  /** Hide surface-specific trim (kit stripe / pin / bars). */
   flush?: boolean;
   padded?: boolean;
   className?: string;
   style?: CSSProperties;
   as?: "div" | "section" | "article";
+  label?: string;
 }
 
-const VARIANT_CLASS: Record<GamePanelVariant, string> = {
-  base: "game-panel",
-  elevated: "game-panel game-panel--elevated",
-  inset: "game-panel game-panel--inset",
-  featured: "game-panel game-panel--elevated game-panel--featured",
-};
-
-/** Shared 27-0 clubhouse panel — kit stripe + tertiary trim. */
+/**
+ * Shared 27-0 panel router.
+ * Prefer ProgrammePanel / ScoreboardPanel / ClipboardPanel for new code.
+ */
 export function GamePanel({
   children,
+  surface = "programme",
   variant = "base",
   flush = false,
   padded = false,
   className = "",
   style,
   as: Tag = "div",
+  label,
 }: GamePanelProps) {
   return (
     <Tag
-      className={`${VARIANT_CLASS[variant]}${flush ? " game-panel--flush" : ""}${
-        padded ? ` ${SPACING.cardPadding}` : ""
-      } ${className}`.trim()}
+      className={`${panelSurfaceClass(surface, variant, flush)} ${panelPaddedClass(padded)} ${className}`.trim()}
       style={style}
     >
-      <div className="game-panel__body relative z-[1]">{children}</div>
+      <div className="panel-body game-panel__body relative z-[1]">
+        {label && surface === "programme" ? (
+          <p className="programme-panel__label mb-2">{label}</p>
+        ) : null}
+        {children}
+      </div>
     </Tag>
   );
 }

@@ -3,7 +3,10 @@
 import { useMemo, useState } from "react";
 import { ClubFundsEarned } from "@/components/ClubFundsEarned";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
+import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
+import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
+import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSeasonSummary } from "@/lib/manager/managerState";
@@ -68,11 +71,17 @@ export function ManagerSeasonRewards({
         Return Home
       </GameButton>
 
-      <div className={`${CARD.elevated} ${CARD.featured} ${SPACING.cardPaddingLg} text-center`}>
-        <p className={TYPO.sectionLabel}>End of Season Rewards</p>
-        <h1 className={`mt-2 ${TYPO.pageTitle}`}>
-          {career.club} · {career.seasonYear}
-        </h1>
+      <ScoreboardPanel variant="featured" padded className="text-center">
+        <GameSectionHeader
+          label="RESULTS BOARD"
+          title={
+            <>
+              {career.club} · {career.seasonYear}
+            </>
+          }
+          subtitle="End of Season Rewards"
+          className="text-center [&_.game-section-header__title]:text-center"
+        />
         <div className="pitch-divider mx-auto my-4 max-w-xs" />
         <p className={`mt-2 font-[family-name:var(--font-pitch)] text-3xl tracking-wide text-accent-gold`}>
           {formatRewardTotal(lines)}
@@ -80,9 +89,9 @@ export function ManagerSeasonRewards({
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
           Added to your account Club Funds when claimed
         </p>
-      </div>
+      </ScoreboardPanel>
 
-      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+      <ProgrammePanel padded>
         <p className={`${TYPO.sectionLabel} mb-2`}>Reward Breakdown</p>
         <ul className={SPACING.stackSm}>
           {lines.map((line) => (
@@ -97,7 +106,7 @@ export function ManagerSeasonRewards({
             </li>
           ))}
         </ul>
-      </div>
+      </ProgrammePanel>
 
       {payout && payout.awarded && (
         <>

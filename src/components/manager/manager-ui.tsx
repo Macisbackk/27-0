@@ -256,7 +256,7 @@ export function ManagerSectionCard({
       className={`${surface} ${SPACING.cardPaddingMobile} ${accentBorder} ${className}`}
       style={style}
     >
-      <div className="game-panel__body relative z-[1]">
+      <div className="panel-body relative z-[1]">
         {title && <p className={TYPO.sectionLabel}>{title}</p>}
         {subtitle && (
           <p className={`${title ? "mt-1" : ""} ${TYPO.bodySm} text-pitch-400`}>

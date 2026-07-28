@@ -96,7 +96,7 @@ export function PlayerChoice({
         </p>
         {showDraftRule && (
           <p className="mx-auto mt-3 max-w-md rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-3 py-2 text-left text-xs text-gray-400">
-            <span className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-green">
+            <span className="font-display text-[10px] font-bold uppercase tracking-wider text-theme-primary">
               Draft Mode
             </span>
             <span className="mt-1 block">{DRAFT_MODE_RULE}</span>
@@ -116,7 +116,7 @@ export function PlayerChoice({
             </span>
             <span
               className={`font-display text-xs font-bold sm:text-sm ${
-                rerollsRemaining > 0 ? "text-accent-green" : "text-gray-500"
+                rerollsRemaining > 0 ? "text-theme-primary" : "text-gray-500"
               }`}
             >
               {rerollsRemaining}
@@ -133,7 +133,7 @@ export function PlayerChoice({
             disabled={disabled || !rerollAvailable || rerollsRemaining <= 0}
             className={`rounded-lg border px-3 py-2 font-display text-[10px] font-bold uppercase tracking-[0.12em] transition sm:px-5 sm:py-2.5 sm:text-xs sm:tracking-[0.18em] btn-press ${
               rerollAvailable && rerollsRemaining > 0 && !disabled
-                ? "border-accent-green/50 bg-accent-green/10 text-accent-green hover:bg-accent-green/20"
+                ? "border-theme-primary/50 bg-theme-primary/10 text-theme-primary hover:bg-theme-primary/20"
                 : "cursor-not-allowed border-pitch-700/60 bg-pitch-900/50 text-gray-600"
             }`}
           >
@@ -205,7 +205,7 @@ function ChoiceCard({
             <span
               role="button"
               tabIndex={0}
-              className="rounded-full border border-pitch-600/50 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-accent-green/40 hover:text-accent-green sm:text-[10px]"
+              className="rounded-full border border-pitch-600/50 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-theme-primary/40 hover:text-theme-primary sm:text-[10px]"
               onClick={(e) => {
                 e.stopPropagation();
                 onViewDetails();
@@ -221,7 +221,7 @@ function ChoiceCard({
               Info
             </span>
           )}
-          <span className="hidden rounded-full bg-accent-green/20 px-2 py-0.5 text-[10px] font-semibold text-accent-green opacity-0 transition group-hover:opacity-100 sm:inline">
+          <span className="hidden rounded-full bg-theme-primary/20 px-2 py-0.5 text-[10px] font-semibold text-theme-primary opacity-0 transition group-hover:opacity-100 sm:inline">
             Sign →
           </span>
         </span>

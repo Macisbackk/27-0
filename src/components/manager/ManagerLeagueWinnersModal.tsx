@@ -41,7 +41,7 @@ export function ManagerLeagueWinnersModal({
       <div
         ref={panelRef}
         tabIndex={-1}
-        className={`card-glass w-full max-w-md overflow-hidden outline-none ${SPACING.cardPadding}`}
+        className={`game-modal-panel w-full max-w-md overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div

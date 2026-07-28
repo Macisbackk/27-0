@@ -57,7 +57,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
     <div
       className={`showcase-player-card h-auto w-full min-w-0 self-start overflow-hidden transition ${
         expanded
-          ? "showcase-player-card--expanded border-accent-green/40"
+          ? "showcase-player-card--expanded border-theme-primary/40"
           : "hover:border-pitch-500/50"
       } ${CARD.base}`}
     >
@@ -66,7 +66,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
       <button
         type="button"
         className={`flex w-full min-w-0 items-start gap-2 px-3 py-2 text-left transition sm:py-2.5 ${
-          expanded ? "bg-accent-green/5" : "hover:bg-pitch-900/60"
+          expanded ? "bg-theme-primary/5" : "hover:bg-pitch-900/60"
         }`}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
@@ -98,7 +98,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
           />
           <button
             type="button"
-            className="mt-2 w-full rounded-lg border border-pitch-600/50 px-3 py-2 text-xs font-medium text-gray-300 transition hover:border-accent-green/40 hover:text-accent-green"
+            className="mt-2 w-full rounded-lg border border-pitch-600/50 px-3 py-2 text-xs font-medium text-gray-300 transition hover:border-theme-primary/40 hover:text-theme-primary"
             onClick={() => {
               onOpenDetail(player);
             }}

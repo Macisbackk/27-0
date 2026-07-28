@@ -2,6 +2,10 @@
 
 import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
+import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
+import { GameTableRow } from "@/components/ui/GameTableRow";
+import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, ManagerReservePlayer } from "@/lib/manager/types";
@@ -180,26 +184,23 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
 
   return (
     <ManagerPage wide>
-      <div>
-        <h1 className={TYPO.viewTitle}>Reserves</h1>
-        <p className={`${TYPO.managerBody}`}>
-          Youth & reserve squad · {career.reserves.length} players · Reserve
-          wages from {formatWage(
-            Object.values(career.reserveContracts ?? {}).reduce(
-              (s, c) => s + c.wagePerYear,
-              0
-            )
-          )}
-          /yr
-        </p>
-      </div>
+      <GameSectionHeader
+        label="ACADEMY"
+        title="Reserves"
+        subtitle={`Youth & reserve squad · ${career.reserves.length} players · Reserve wages from ${formatWage(
+          Object.values(career.reserveContracts ?? {}).reduce(
+            (s, c) => s + c.wagePerYear,
+            0
+          )
+        )}/yr`}
+      />
 
       {message && (
         <p className={`${TYPO.bodySm} text-theme-primary`}>{message}</p>
       )}
 
       {reserveShortfall > 0 && (
-        <div className={`${CARD.elevated} ${SPACING.cardPadding} border-l-4 border-red-500/70`}>
+        <ProgrammePanel variant="elevated" padded className="border-l-4 border-red-500/70">
           <p className={TYPO.sectionLabel}>
             Reserve listing short — {career.reserves.length}/{RESERVE_SQUAD_MIN}{" "}
             registered
@@ -230,11 +231,11 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
               {(RESERVE_RECRUITMENT_FEE / 1000).toFixed(0)}k
             </p>
           )}
-        </div>
+        </ProgrammePanel>
       )}
 
       {youthProspects.length > 0 && (
-        <div className={`${CARD.elevated} ${SPACING.cardPadding} border-l-4 border-theme-primary`}>
+        <ProgrammePanel variant="elevated" padded className="border-l-4 border-theme-primary">
           <p className={TYPO.sectionLabel}>Youth intake · {career.seasonYear}</p>
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
             {youthProspects.length} academy prospect
@@ -245,10 +246,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             {youthProspects.map((p) => {
               const previewWage = generateReserveYouthContract(p).wagePerYear;
               return (
-                <div
-                  key={p.id}
-                  className={`${CARD.inset} ${SPACING.cardPaddingSm}`}
-                >
+                <GameTableRow key={p.id} variant="ledger" className={`${SPACING.cardPaddingSm}`}>
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div>
                       <p className="font-medium text-white">{p.name}</p>
@@ -292,15 +290,15 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                       Pass
                     </GameButton>
                   </div>
-                </div>
+                </GameTableRow>
               );
             })}
           </div>
-        </div>
+        </ProgrammePanel>
       )}
 
       {expiringReserveCount > 0 && (
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+        <ClipboardPanel padded>
           <p className={TYPO.sectionLabel}>Reserve contracts</p>
           <p className={`mt-1 ${TYPO.bodySm} text-accent-gold`}>
             {expiringReserveCount} youth contract
@@ -317,11 +315,11 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
           >
             Renew all expiring reserves
           </GameButton>
-        </div>
+        </ClipboardPanel>
       )}
 
       {(career.lastReserveResult || upcomingOpp) && (
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+        <ClipboardPanel padded>
           {career.lastReserveResult && (
             <div>
               <p className={TYPO.sectionLabel}>Latest Reserve Result</p>
@@ -361,7 +359,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
               </p>
             </div>
           )}
-        </div>
+        </ClipboardPanel>
       )}
 
       <div className="lg:hidden">
@@ -370,7 +368,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_min(100%,280px)] lg:gap-6">
         <div className={SPACING.stackLg}>
-      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+      <div className={`${CARD.clipboard} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-2`}>Filters</p>
         <div className="flex flex-wrap gap-2">
           {(
@@ -385,7 +383,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
               key={id}
               type="button"
               onClick={() => setFilter(id)}
-              className={`rounded-lg border px-2 py-1 text-xs ${
+              className={`rounded-sm border px-2 py-1 text-xs ${
                 filter === id ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
               }`}
             >
@@ -397,7 +395,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
           <button
             type="button"
             onClick={() => setPositionFilter("all")}
-            className={`rounded-lg border px-2 py-1 text-xs ${
+            className={`rounded-sm border px-2 py-1 text-xs ${
               positionFilter === "all"
                 ? FILTER.chipActive
                 : "border-pitch-600 text-pitch-300"
@@ -410,7 +408,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
               key={pos}
               type="button"
               onClick={() => setPositionFilter(pos)}
-              className={`rounded-lg border px-2 py-1 text-xs ${
+              className={`rounded-sm border px-2 py-1 text-xs ${
                 positionFilter === pos
                   ? FILTER.chipActive
                   : "border-pitch-600 text-pitch-300"
@@ -430,9 +428,10 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             status === "expires_this_season" || status === "wants_renewal";
 
           return (
-            <div
+            <GameTableRow
               key={r.id}
-              className={`${CARD.base} ${SPACING.cardPaddingSm} ${
+              variant="ledger"
+              className={`${SPACING.cardPaddingSm} ${
                 needsRenew ? "border-accent-gold/40" : ""
               }`}
             >
@@ -523,7 +522,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                   Release
                 </GameButton>
               </div>
-            </div>
+            </GameTableRow>
           );
         })}
       </div>

@@ -1,5 +1,5 @@
 import { GameBadge } from "@/components/ui/GameBadge";
-import { GamePanel } from "@/components/ui/GamePanel";
+import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
 import { GameSectionTitle } from "@/components/ui/GameSectionTitle";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -34,15 +34,11 @@ const MODES = [
 
 export function HowToPlaySection() {
   return (
-    <GamePanel
-      as="section"
-      variant="elevated"
-      className="overflow-hidden"
-    >
+    <ProgrammePanel as="section" variant="elevated" className="overflow-hidden">
       <div
-        className={`border-b border-theme-tertiary/20 bg-[rgba(3,8,6,0.55)] ${SPACING.cardPadding} sm:px-6`}
+        className={`border-b border-theme-tertiary/25 bg-[#070c14] ${SPACING.cardPadding} sm:px-6`}
       >
-        <GameSectionTitle label="Guide" heading="How To Play" />
+        <GameSectionTitle label="Matchday programme" heading="How To Play" />
         <p id="how-to-play-heading" className="sr-only">
           How To Play
         </p>
@@ -58,7 +54,7 @@ export function HowToPlaySection() {
           {CORE_STEPS.map((step, index) => (
             <li
               key={step}
-              className="flex items-start gap-3 rounded-lg border border-theme-tertiary/20 bg-[rgba(3,8,6,0.55)] px-3 py-2.5"
+              className="game-table-row game-table-row--slip flex items-start gap-3"
             >
               <span
                 className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-sm border border-theme-tertiary/40 bg-theme-primary/10 font-display text-[11px] font-black text-theme-primary"
@@ -76,12 +72,9 @@ export function HowToPlaySection() {
         <p className={TYPO.statLabel}>Modes</p>
         <ul className="mt-3 grid gap-2 sm:grid-cols-3">
           {MODES.map((mode) => (
-            <li
-              key={mode.title}
-              className="rounded-lg border border-theme-tertiary/20 bg-[rgba(3,8,6,0.55)] px-3 py-3"
-            >
+            <li key={mode.title} className="match-ticket">
               <GameBadge tone={mode.tone}>{mode.tag}</GameBadge>
-              <p className="mt-2 font-display text-sm font-bold text-white">
+              <p className="mt-2 font-display text-sm font-bold uppercase tracking-wide text-white">
                 {mode.title}
               </p>
               <p className={`mt-1 ${TYPO.bodySm}`}>{mode.body}</p>
@@ -89,6 +82,6 @@ export function HowToPlaySection() {
           ))}
         </ul>
       </div>
-    </GamePanel>
+    </ProgrammePanel>
   );
 }

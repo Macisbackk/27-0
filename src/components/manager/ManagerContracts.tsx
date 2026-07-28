@@ -2,6 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
+import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
+import { GameTableRow } from "@/components/ui/GameTableRow";
+import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
@@ -203,15 +207,15 @@ export function ManagerContracts({
 
   return (
     <ManagerPage>
-      <div className={`${CARD.elevated} ${CARD.featured} ${SPACING.cardPaddingMobile}`}>
+      <GameSectionHeader
+        label="CONTRACT LEDGER"
+        title="Contracts"
+        subtitle="Manage wages, renewals, and squad roles"
+      />
+
+      <ProgrammePanel variant="featured" padded>
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className={TYPO.viewTitle}>Contracts</h1>
-            <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-              Manage wages, renewals, and squad roles
-            </p>
-          </div>
-          <div className="text-right">
             <p className="text-xs uppercase tracking-wider text-pitch-500">
               Wage bill
             </p>
@@ -260,9 +264,9 @@ export function ManagerContracts({
         {bulkResult && (
           <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>{bulkResult}</p>
         )}
-      </div>
+      </ProgrammePanel>
 
-      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+      <ClipboardPanel padded>
         <p className={`${TYPO.sectionLabel} mb-2`}>Filters</p>
         <div className="flex flex-wrap gap-2">
           {(
@@ -277,7 +281,7 @@ export function ManagerContracts({
               key={id}
               type="button"
               onClick={() => setFilter(id)}
-              className={`rounded-lg border px-2 py-1 text-xs ${
+              className={`rounded-sm border px-2 py-1 text-xs ${
                 filter === id ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
               }`}
             >
@@ -289,7 +293,7 @@ export function ManagerContracts({
           <button
             type="button"
             onClick={() => setPositionFilter("all")}
-            className={`rounded-lg border px-2 py-1 text-xs ${
+            className={`rounded-sm border px-2 py-1 text-xs ${
               positionFilter === "all"
                 ? FILTER.chipActive
                 : "border-pitch-600 text-pitch-300"
@@ -302,7 +306,7 @@ export function ManagerContracts({
               key={pos}
               type="button"
               onClick={() => setPositionFilter(pos)}
-              className={`rounded-lg border px-2 py-1 text-xs ${
+              className={`rounded-sm border px-2 py-1 text-xs ${
                 positionFilter === pos
                   ? FILTER.chipActive
                   : "border-pitch-600 text-pitch-300"
@@ -312,9 +316,9 @@ export function ManagerContracts({
             </button>
           ))}
         </div>
-      </div>
+      </ClipboardPanel>
 
-      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+      <ClipboardPanel padded>
         <p className={`${TYPO.sectionLabel} mb-2`}>Squad Contracts</p>
         <div className={`${SPACING.stackSm}`}>
         {rows.map(({ player, contract, status, rating }) => {
@@ -341,20 +345,19 @@ export function ManagerContracts({
             ? "Retiring end of season"
             : STATUS_LABELS[status] ?? status;
           return (
-            <button
+            <GameTableRow
               key={player.id}
-              type="button"
+              variant="ledger"
+              interactive
               onClick={() => {
                 playUiClick();
                 openRenewal(player.id);
               }}
-              className={`${CARD.inset} w-full text-left ${SPACING.listItem} transition hover:border-theme-primary/40 ${
-                urgent ? managerSectionAccentClass("gold") : ""
-              }`}
+              className={`w-full text-left ${urgent ? managerSectionAccentClass("gold") : ""}`}
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex min-w-0 items-center gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-theme-primary/15 text-sm font-bold text-theme-primary">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-theme-primary/15 text-sm font-bold text-theme-primary">
                     {rating}
                   </span>
                   <div className="min-w-0">
@@ -368,16 +371,16 @@ export function ManagerContracts({
                   </div>
                 </div>
                 <span
-                  className={`shrink-0 rounded-full border px-2 py-0.5 text-xs ${statusColor}`}
+                  className={`shrink-0 rounded-sm border px-2 py-0.5 text-xs ${statusColor}`}
                 >
                   {statusLabel}
                 </span>
               </div>
-            </button>
+            </GameTableRow>
           );
         })}
         </div>
-      </div>
+      </ClipboardPanel>
 
       {selected && (
         <div
@@ -390,7 +393,7 @@ export function ManagerContracts({
           <div
             ref={contractPanelRef}
             tabIndex={-1}
-            className={`card-glass max-h-[min(92vh,720px)] w-full max-w-lg overflow-y-auto outline-none ${SPACING.cardPadding} animate-fade-up`}
+            className={`game-modal-panel max-h-[min(92vh,720px)] w-full max-w-lg overflow-y-auto outline-none ${SPACING.cardPadding} animate-fade-up`}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className={TYPO.cardTitle}>{selected.player.name}</h2>

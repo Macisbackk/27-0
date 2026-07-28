@@ -34,12 +34,12 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
 
   const panelClass =
     variant === "featured"
-      ? `${SPACING.sectionGap} w-full max-w-3xl game-panel game-panel--elevated game-panel--featured ${SPACING.cardPadding}`
-      : `${SPACING.sectionGap} w-full max-w-2xl game-panel game-panel--elevated p-4`;
+      ? `${SPACING.sectionGap} w-full max-w-3xl programme-panel programme-panel--elevated programme-panel--featured ${SPACING.cardPadding}`
+      : `${SPACING.sectionGap} w-full max-w-2xl programme-panel programme-panel--elevated p-4`;
 
   const titleClass =
     variant === "featured"
-      ? "font-display text-base font-bold uppercase tracking-wider text-accent-green sm:text-lg"
+      ? "font-display text-base font-bold uppercase tracking-wider text-theme-primary sm:text-lg"
       : TYPO.sectionTitle;
 
   return (
@@ -56,7 +56,7 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
         className="flex w-full items-center gap-3 text-left transition hover:opacity-90"
       >
         <motion.span
-          className="shrink-0 text-sm text-accent-green"
+          className="shrink-0 text-sm text-theme-primary"
           animate={{ rotate: open ? 90 : 0 }}
           transition={{ duration: 0.2, ease: "easeInOut" }}
           aria-hidden

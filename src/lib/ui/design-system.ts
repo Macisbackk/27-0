@@ -36,9 +36,9 @@ export const SPACING = {
 export const MODAL = {
   backdrop: `fixed inset-0 z-40 flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} sm:items-center`,
   panel:
-    "w-full max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden rounded-t-2xl sm:max-w-3xl sm:rounded-2xl",
+    "game-modal-panel w-full max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden sm:max-w-3xl",
   panelWide:
-    "w-full max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden rounded-t-2xl sm:max-w-4xl sm:rounded-2xl",
+    "game-modal-panel w-full max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden sm:max-w-4xl",
   panelPadding: `p-3 sm:p-6 ${SPACING.safeBottom}`,
 } as const;
 
@@ -52,28 +52,34 @@ export const TAB_RAIL = {
   item: "shrink-0 snap-start",
 } as const;
 
-/** Shared card surface classes — map to game-panel language. */
+/** Shared card surface classes — programme / scoreboard / clipboard. */
 export const CARD = {
-  base: "game-panel",
-  elevated: "game-panel game-panel--elevated",
-  inset: "game-panel game-panel--inset",
+  base: "programme-panel",
+  elevated: "programme-panel programme-panel--elevated",
+  inset: "programme-panel programme-panel--inset",
   stat: "game-stat-card",
   hover:
     "transition hover:border-theme-tertiary/50",
   /** Accent overlay — pair with a bordered surface; border tint only (no ring/glow halo). */
-  featured: "game-panel--featured",
+  featured: "programme-panel--featured",
   featuredHard:
     "border-accent-red/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",
   interactive:
     "btn-press cursor-pointer transition hover:border-theme-primary/45",
   selected:
     "border-theme-tertiary/50 bg-pitch-800/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",
-  /** Legacy global panel — aligned with design system surfaces */
-  panel: "game-panel game-panel--elevated",
-  /** Modal / overlay panel — opaque clubhouse (no glass blur) */
-  glass: "game-panel game-panel--elevated",
-  /** Home-style featured mode card — single bordered surface */
-  hero: "game-panel game-panel--elevated game-panel--featured",
+  /** Legacy global panel — programme elevated */
+  panel: "programme-panel programme-panel--elevated",
+  /** Modal / overlay panel — opaque programme (no glass blur) */
+  glass: "programme-panel programme-panel--elevated",
+  /** Home-style featured mode card */
+  hero: "programme-panel programme-panel--elevated programme-panel--featured",
+  /** Broadcast / live match */
+  scoreboard: "scoreboard-panel",
+  scoreboardElevated: "scoreboard-panel scoreboard-panel--elevated",
+  /** Squad / tactics / dense lists */
+  clipboard: "clipboard-panel",
+  clipboardElevated: "clipboard-panel clipboard-panel--elevated",
 } as const;
 
 /** Page layout helpers — pair with PageShell component. */
@@ -110,7 +116,7 @@ export const FILTER = {
   chipTouch:
     "min-h-[44px] rounded-lg border px-3 py-2 text-sm font-medium transition",
   tabGroup:
-    "mx-auto inline-flex w-fit max-w-full flex-nowrap rounded-xl border border-theme-tertiary/30 bg-[rgba(5,12,10,0.92)] p-1 sm:w-auto",
+    "mx-auto inline-flex w-fit max-w-full flex-nowrap rounded-sm border border-theme-tertiary/40 bg-[#0b1220] p-1 sm:w-auto",
 } as const;
 
 /** Centered shell for segmented sub-tab bars (Squad/Tactics, Transfers, Stats, etc.). */
@@ -169,7 +175,7 @@ export const BTN = {
   tabIdle:
     "border-2 border-transparent text-gray-400 hover:bg-pitch-800/60 hover:text-white",
   tabGroupInner:
-    "flex-1 rounded-lg px-4 py-2.5 sm:flex-none sm:px-5",
+    "flex-1 rounded-sm px-4 py-2.5 sm:flex-none sm:px-5",
   tabGroupActive: "tab-group-btn-active",
   modeCurrentActive:
     "border-2 border-mode-current/75 bg-mode-current text-pitch-950 shadow-[0_0_28px_var(--mode-current-glow),inset_0_1px_0_rgba(255,255,255,0.08)]",

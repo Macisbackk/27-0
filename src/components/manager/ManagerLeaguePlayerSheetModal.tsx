@@ -93,7 +93,7 @@ export function ManagerLeaguePlayerSheetModal({
           role="dialog"
           aria-modal="true"
           aria-labelledby="league-player-sheet-title"
-          className={`card-glass w-full max-w-md outline-none ${SPACING.cardPadding}`}
+          className={`game-modal-panel w-full max-w-md outline-none ${SPACING.cardPadding}`}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-start gap-3">

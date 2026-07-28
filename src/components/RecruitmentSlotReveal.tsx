@@ -74,7 +74,7 @@ export function RecruitmentSlotReveal({
         []) {
         shell.classList.add("slot-reel-lock-flash");
         shell.classList.remove("border-pitch-600/70", "bg-pitch-950/80");
-        shell.classList.add("border-accent-green/55", "bg-pitch-950/95");
+        shell.classList.add("border-theme-primary/55", "bg-pitch-950/95");
         (shell as HTMLElement).style.borderTopColor = clubColors.primary;
       }
       if (resultRef.current) {
@@ -168,13 +168,13 @@ export function RecruitmentSlotReveal({
       aria-label="Recruitment spin"
     >
       <div
-        className={`recruitment-spin-panel ${CARD.elevated} w-full max-w-lg overflow-hidden border shadow-[0_0_48px_rgba(34,197,94,0.12)] ${
-          landed ? "border-accent-green/30" : "border-pitch-600/50"
+        className={`recruitment-spin-panel ${CARD.elevated} w-full max-w-lg overflow-hidden border shadow-[4px_4px_0_rgba(0,0,0,0.4)] ${
+          landed ? "border-theme-primary/30" : "border-pitch-600/50"
         }`}
         style={{
           boxShadow: landed
-            ? `0 0 48px rgba(34,197,94,0.12), inset 4px 0 0 ${clubColors.primary}`
-            : "0 0 48px rgba(34,197,94,0.12), inset 4px 0 0 rgba(100,116,139,0.45)",
+            ? `4px 4px 0 rgba(0,0,0,0.4), inset 4px 0 0 ${clubColors.primary}`
+            : "4px 4px 0 rgba(0,0,0,0.4), inset 4px 0 0 rgba(100,116,139,0.45)",
           transition: "box-shadow 0.35s ease-out, border-color 0.35s ease-out",
         }}
       >
@@ -241,7 +241,7 @@ export function RecruitmentSlotReveal({
               {isEraSpin && (
                 <>
                   {" "}
-                  <span className="text-accent-green">
+                  <span className="text-theme-primary">
                     {formatShortYear(target.year)}
                   </span>
                 </>

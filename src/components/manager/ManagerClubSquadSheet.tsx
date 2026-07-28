@@ -207,7 +207,7 @@ export function ManagerClubSquadSheet({
           role="dialog"
           aria-modal="true"
           aria-labelledby="manager-club-sheet-title"
-          className="card-glass flex max-h-[min(88vh,720px)] w-full max-w-md flex-col overflow-hidden outline-none sm:max-w-lg"
+          className="game-modal-panel flex max-h-[min(88vh,720px)] w-full max-w-md flex-col overflow-hidden outline-none sm:max-w-lg"
           onClick={(e) => e.stopPropagation()}
         >
           <div

@@ -58,7 +58,7 @@ export function ManagerPlayoffsIntroModal({
       <div
         ref={panelRef}
         tabIndex={-1}
-        className={`card-glass my-auto w-full max-w-2xl overflow-hidden outline-none ${SPACING.cardPadding}`}
+        className={`game-modal-panel my-auto w-full max-w-2xl overflow-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={managerModalHeaderClass("primary")}>

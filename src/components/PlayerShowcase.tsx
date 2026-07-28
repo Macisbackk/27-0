@@ -463,7 +463,7 @@ export function PlayerShowcase() {
         </aside>
 
         <div className="min-w-0 space-y-4">
-          <div className="matchday-panel flex flex-wrap items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
+          <div className="scoreboard-panel flex flex-wrap items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
             <span className="text-sm font-medium text-white">
               {filtered.length} player{filtered.length !== 1 ? "s" : ""}
             </span>
@@ -475,7 +475,7 @@ export function PlayerShowcase() {
                     key={chip.key}
                     type="button"
                     onClick={chip.clear}
-                    className="inline-flex items-center gap-1 rounded-full border border-accent-green/30 bg-accent-green/10 px-2.5 py-0.5 text-[11px] font-medium text-accent-green transition hover:bg-accent-green/20"
+                    className="inline-flex items-center gap-1 rounded-full border border-theme-primary/30 bg-theme-primary/10 px-2.5 py-0.5 text-[11px] font-medium text-theme-primary transition hover:bg-theme-primary/20"
                   >
                     {chip.label}
                     <span aria-hidden>×</span>
@@ -486,7 +486,7 @@ export function PlayerShowcase() {
           </div>
 
           {filtered.length === 0 ? (
-            <div className="card-glass px-4 py-10 text-center text-gray-500 sm:p-12">
+            <div className="programme-panel programme-panel--elevated px-4 py-10 text-center text-gray-500 sm:p-12">
               No players match your filters. Try adjusting or reset.
             </div>
           ) : (

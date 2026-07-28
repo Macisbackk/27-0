@@ -28,7 +28,7 @@ export function DraftPositionPlacement({
 
   const panelClass = hardMode
     ? `${HARD.banner} ${SPACING.cardPadding}`
-    : `${CARD.base} border-accent-green/30 bg-accent-green/5 ${SPACING.cardPadding}`;
+    : `${CARD.base} border-theme-primary/30 bg-theme-primary/5 ${SPACING.cardPadding}`;
 
   return (
     <div className={`mx-auto mb-4 max-w-2xl ${panelClass}`}>
@@ -77,7 +77,7 @@ export function DraftPositionPlacement({
               onClick={() => onPlace(slot.slotIndex)}
               className={`min-h-[40px] rounded-lg border px-3 py-2 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
                 penalty === 0
-                  ? "border-accent-green/45 bg-accent-green/10 hover:bg-accent-green/20"
+                  ? "border-theme-primary/45 bg-theme-primary/10 hover:bg-theme-primary/20"
                   : "border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20"
               }`}
             >
@@ -86,7 +86,7 @@ export function DraftPositionPlacement({
               </span>
               <span
                 className={`mt-0.5 block text-[10px] font-medium ${
-                  penalty === 0 ? "text-accent-green" : "text-amber-400"
+                  penalty === 0 ? "text-theme-primary" : "text-amber-400"
                 }`}
               >
                 {natural

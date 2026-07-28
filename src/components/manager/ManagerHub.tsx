@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
+import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
+import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { CARD, PAGE, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type {
@@ -18,7 +21,6 @@ import { PlayoffBracketDisplay } from "@/components/PlayoffBracketDisplay";
 import {
   getActiveRound,
   getCupRoundLabel,
-  type ChallengeCupBracketState,
 } from "@/lib/game/challenge-cup-bracket";
 import {
   getPlayoffHubStatus,
@@ -48,13 +50,13 @@ import {
   getTopTryScorer,
 } from "@/lib/manager/managerCareerStats";
 import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
+import { getHubNewsItems } from "@/lib/manager/managerNews";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
 import {
   managerClubAccentCardClass,
   managerClubAccentCardStyle,
   managerCompetitionPanelClass,
-  managerFeaturedBannerClass,
-  managerFixtureCardClass,
+  managerCompetitionSurfaceClass,
   managerFixtureCardStyle,
   managerPillClass,
   managerCalloutClass,
@@ -72,6 +74,7 @@ import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetition
 import {
   ManagerClubFinancesPanel,
   ManagerFormStrip,
+  ManagerNewsItem,
   ManagerSectionCard,
   ManagerStat,
   ManagerStatGrid,
@@ -372,45 +375,53 @@ export function ManagerHub({
   );
 
 
+  const hubNews = getHubNewsItems(career);
+
   const nextFixtureCard =
     nextFixture && !seasonComplete && !playoffsPending ? (
-      <div
-        className={managerFixtureCardClass(nextFixture.competition)}
+      <ScoreboardPanel
+        variant="elevated"
+        padded
+        className={`matchday-scoreboard ${managerCompetitionSurfaceClass(nextFixture.competition)}`}
         style={managerFixtureCardStyle(
           nextFixture.competition,
           career.club,
           nextFixture.opponent
         )}
       >
-        <div className="flex flex-wrap items-center gap-2">
-          <p className={TYPO.sectionLabel}>
-            {isPlayoffFixture ? "Next Play-Off Fixture" : "Next Fixture"}
-          </p>
-          <ManagerCompetitionBadge
-            competition={nextFixture.competition}
-            cupRound={nextFixture.cupRound}
-          />
-        </div>
+        <GameSectionHeader
+          label="NEXT FIXTURE"
+          title={
+            <>
+              <span className="block sm:inline">{career.club}</span>{" "}
+              <span className="text-pitch-500">
+                {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
+              </span>{" "}
+              <span className="block sm:inline">{nextFixture.opponent}</span>
+            </>
+          }
+          subtitle={
+            <span className="flex flex-wrap items-center gap-2">
+              <ManagerCompetitionBadge
+                competition={nextFixture.competition}
+                cupRound={nextFixture.cupRound}
+              />
+              <span>
+                {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
+                {getManagerScheduledFixtureVenueLabel(nextFixture)}
+              </span>
+            </span>
+          }
+        />
         {(isCupFixture || isPlayoffFixture) && (
           <p
-            className={`mt-1 text-sm font-semibold ${
+            className={`mt-2 text-sm font-semibold ${
               isPlayoffFixture ? "text-theme-primary" : "text-accent-gold"
             }`}
           >
             {getManagerScheduledFixtureHeadline(nextFixture)}
           </p>
         )}
-        <p className="mt-2 text-lg font-bold leading-snug text-white sm:mt-1 sm:text-2xl">
-          <span className="block sm:inline">{career.club}</span>{" "}
-          <span className="text-pitch-500">
-            {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
-          </span>{" "}
-          <span className="block sm:inline">{nextFixture.opponent}</span>
-        </p>
-        <p className={`${TYPO.bodySm} text-pitch-400`}>
-          {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
-          {getManagerScheduledFixtureVenueLabel(nextFixture)}
-        </p>
         <p className={`mt-1 sm:hidden ${TYPO.bodySm}`}>
           <span className="text-pitch-500">Week </span>
           <span className="font-semibold text-theme-primary">
@@ -505,7 +516,18 @@ export function ManagerHub({
             Simulate Match
           </GameButton>
         </div>
-      </div>
+      </ScoreboardPanel>
+    ) : null;
+
+  const newsTickerCard =
+    hubNews.length > 0 ? (
+      <ProgrammePanel padded label="PROGRAMME TICKER">
+        <ul className={`mt-1 ${SPACING.stackSm}`}>
+          {hubNews.slice(0, 5).map((item) => (
+            <ManagerNewsItem key={item.id} item={item} />
+          ))}
+        </ul>
+      </ProgrammePanel>
     ) : null;
 
   const showStickyPlayBar =
@@ -616,8 +638,13 @@ export function ManagerHub({
 
   const seasonProgressCard = (
     <div className={showStickyPlayBar ? "hidden sm:block" : undefined}>
-    <ManagerSectionCard title="Season Progress">
-      <p className={`mt-1 ${TYPO.cardTitle}`}>
+    <ProgrammePanel padded>
+      <GameSectionHeader
+        label="CLUB OFFICE"
+        title="Season Progress"
+        subtitle={`Season ${career.seasonYear}`}
+      />
+      <p className={`mt-2 ${TYPO.cardTitle}`}>
         Game Week{" "}
         <span className="text-theme-primary">{career.gameWeek}</span>
         <span className="text-pitch-500"> of </span>
@@ -660,16 +687,23 @@ export function ManagerHub({
           }}
         />
       </div>
-    </ManagerSectionCard>
+    </ProgrammePanel>
     </div>
   );
 
   const leagueTableCard = (
-    <ManagerLeagueTable
-      career={career}
-      subtitle={`Season ${career.seasonYear} · Week ${career.gameWeek}`}
-      onViewClub={setViewClubSheet}
-    />
+    <div className={SPACING.stackSm}>
+      <GameSectionHeader
+        label="RESULTS BOARD"
+        title="League Table"
+        subtitle={`Season ${career.seasonYear} · Week ${career.gameWeek}`}
+      />
+      <ManagerLeagueTable
+        career={career}
+        subtitle={`Season ${career.seasonYear} · Week ${career.gameWeek}`}
+        onViewClub={setViewClubSheet}
+      />
+    </div>
   );
 
   const showPlayoffBracket =
@@ -679,16 +713,22 @@ export function ManagerHub({
 
   const hubStandingsCard =
     isCupFixture && hubCareer.challengeCup && nextFixture ? (
-      <HubChallengeCupBracketPanel
-        career={hubCareer}
-        cupStatus={cupStatus}
-        nextFixture={nextFixture}
-      />
+      <div className={SPACING.stackSm}>
+        <GameSectionHeader label="RESULTS BOARD" title="Challenge Cup" />
+        <HubChallengeCupBracketPanel
+          career={hubCareer}
+          cupStatus={cupStatus}
+          nextFixture={nextFixture}
+        />
+      </div>
     ) : showPlayoffBracket ? (
-      <HubPlayoffBracketPanel
-        playoffs={hubCareer.playoffs!}
-        career={hubCareer}
-      />
+      <div className={SPACING.stackSm}>
+        <GameSectionHeader label="RESULTS BOARD" title="Play-Offs" />
+        <HubPlayoffBracketPanel
+          playoffs={hubCareer.playoffs!}
+          career={hubCareer}
+        />
+      </div>
     ) : (
       leagueTableCard
     );
@@ -722,9 +762,11 @@ export function ManagerHub({
         <div className={`${PAGE.section} ${hubMobilePad}`}>
           <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
             {nextFixtureCard}
+            {newsTickerCard}
             {hubStandingsCard}
           </div>
           {commandCentre}
+          <GameSectionHeader label="CLUB OFFICE" title="Club details" className="sm:hidden" />
           <MobileDetailsAccordion title="Club details">
             <HubBoardBudgetAttendance
               career={career}
@@ -750,11 +792,13 @@ export function ManagerHub({
       <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
         {seasonProgressCard}
         {nextFixtureCard}
+        {newsTickerCard}
         {hubStandingsCard}
       </div>
 
       {commandCentre}
 
+      <GameSectionHeader label="CLUB OFFICE" title="Club details" className="sm:hidden" />
       <MobileDetailsAccordion title="Club details">
         {clubDetailsSections}
       </MobileDetailsAccordion>

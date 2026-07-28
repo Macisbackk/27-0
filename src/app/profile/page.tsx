@@ -299,7 +299,7 @@ export default function ProfilePage() {
               </button>
             )}
             {statsResetMsg && (
-              <p className={`mt-3 ${TYPO.body} text-accent-green`}>{statsResetMsg}</p>
+              <p className={`mt-3 ${TYPO.body} text-theme-primary`}>{statsResetMsg}</p>
             )}
             {statsResetError && (
               <p className={`mt-3 ${TYPO.body} text-red-400`}>{statsResetError}</p>
@@ -322,7 +322,7 @@ export default function ProfilePage() {
             </button>
           </div>
           {resetMsg && (
-            <p className={`mt-3 ${TYPO.body} text-accent-green`}>{resetMsg}</p>
+            <p className={`mt-3 ${TYPO.body} text-theme-primary`}>{resetMsg}</p>
           )}
           {resetError && (
             <p className={`mt-3 ${TYPO.body} text-red-400`}>{resetError}</p>

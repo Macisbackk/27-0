@@ -99,8 +99,8 @@ function RugbyPitchInner({
   return (
     <div className="relative w-full overflow-x-hidden">
       {!compact && !formationOnly && (
-        <div className="matchday-panel mb-3 flex items-center justify-between px-4 py-2">
-          <h3 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-green">
+        <div className="scoreboard-panel mb-3 flex items-center justify-between px-4 py-2">
+          <h3 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-theme-primary">
             {headerTitle}
           </h3>
           <div className="text-right">
@@ -141,7 +141,7 @@ function RugbyPitchInner({
           }
         >
           <div
-            className={`relative w-full overflow-hidden rounded-2xl border-2 border-accent-green/40 shadow-[0_0_24px_rgba(34,197,94,0.15)] rugby-pitch-pro ${
+            className={`relative w-full overflow-hidden rounded-2xl border-2 border-theme-primary/40 shadow-[3px_3px_0_rgba(0,0,0,0.35)] rugby-pitch-pro ${
               formationOnly
                 ? "aspect-[5/7.6] min-h-0 max-h-[min(68vh,480px)]"
                 : compact
@@ -213,7 +213,7 @@ function RugbyPitchInner({
       {!compact && !formationOnly && (
         <div className="mx-auto mt-2 h-1.5 max-w-[640px] overflow-hidden rounded-full bg-pitch-800">
           <motion.div
-            className="h-full rounded-full bg-gradient-to-r from-accent-green to-emerald-400"
+            className="h-full rounded-full bg-gradient-to-r from-theme-primary to-theme-tertiary"
             initial={false}
             animate={{ width: `${(filledCount / totalSlots) * 100}%` }}
             transition={{ duration: 0.5 }}
@@ -309,7 +309,7 @@ const EMPTY_SLOT_BASE_CLASS =
   "squad-marker-empty flex shrink-0 flex-col items-center justify-center gap-0 rounded-lg border-2 px-0.5 py-0.5 box-border";
 
 const EMPTY_SLOT_INTERACTIVE_CLASS =
-  "cursor-pointer border-accent-green/50 bg-black/60 hover:border-accent-green hover:bg-accent-green/10 hover:shadow-[0_0_12px_rgba(34,197,94,0.35)] focus-visible:border-accent-green focus-visible:bg-accent-green/10 focus-visible:shadow-[0_0_12px_rgba(34,197,94,0.35)]";
+  "cursor-pointer border-theme-primary/50 bg-black/60 hover:border-theme-primary hover:bg-theme-primary/10 focus-visible:border-theme-primary focus-visible:bg-theme-primary/10";
 
 const SquadMarker = memo(function SquadMarker({
   slot,
@@ -351,10 +351,10 @@ const SquadMarker = memo(function SquadMarker({
     const shirtNumber = FORMATION_SLOT_NUMBER[slot.slotIndex];
 
     let stateClass =
-      "border-dashed border-accent-green/30 bg-black/40 text-white/40";
+      "border-dashed border-theme-primary/30 bg-black/40 text-white/40";
     if (accent === "source") {
       stateClass =
-        "border-theme-primary bg-theme-primary/12 shadow-[0_0_14px_rgba(34,197,94,0.35)]";
+        "border-theme-primary bg-theme-primary/12";
     } else if (accent === "target") {
       stateClass =
         "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50 animate-pulse motion-reduce:animate-none";
@@ -385,7 +385,7 @@ const SquadMarker = memo(function SquadMarker({
         {shirtNumber !== undefined && (
           <span
             className={`font-display font-black leading-none ${
-              interactive ? "text-accent-green" : "text-accent-green/50"
+              interactive ? "text-theme-primary" : "text-theme-primary/50"
             } text-[11px] sm:text-xs md:text-sm`}
           >
             {shirtNumber}
@@ -403,7 +403,7 @@ const SquadMarker = memo(function SquadMarker({
           {positionLabel}
         </span>
         {interactive && (
-          <span className="text-[9px] font-semibold uppercase tracking-wider text-accent-green sm:text-[10px] md:text-xs">
+          <span className="text-[9px] font-semibold uppercase tracking-wider text-theme-primary sm:text-[10px] md:text-xs">
             +
           </span>
         )}
@@ -416,7 +416,7 @@ const SquadMarker = memo(function SquadMarker({
           type="button"
           onClick={onClick}
           title={tooltip}
-          className={`${EMPTY_SLOT_BASE_CLASS} btn-press ${slotSizeClass} ${stateClass} outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50`}
+          className={`${EMPTY_SLOT_BASE_CLASS} btn-press ${slotSizeClass} ${stateClass} outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50`}
         >
           {inner}
         </button>
@@ -442,14 +442,14 @@ const SquadMarker = memo(function SquadMarker({
           onClick={onClick}
           onDoubleClick={onDoubleClick}
           title={`${slot.label}: change or remove player`}
-          className={`btn-press select-none rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50 ${
+          className={`btn-press select-none rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50 ${
             accent === "source"
-              ? "ring-2 ring-theme-primary shadow-[0_0_14px_rgba(34,197,94,0.35)]"
+              ? "ring-2 ring-theme-primary"
               : accent === "target"
                 ? "ring-2 ring-accent-gold shadow-[0_0_12px_rgba(251,191,36,0.35)]"
                 : selected
               ? "ring-2 ring-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.45)]"
-              : "hover:ring-2 hover:ring-accent-green/40"
+              : "hover:ring-2 hover:ring-theme-primary/40"
           }`}
         >
           <PitchSlotCard

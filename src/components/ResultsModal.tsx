@@ -14,7 +14,7 @@ interface ResultsModalProps {
 export function ResultsModal({ run, mode, onClose }: ResultsModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-      <div className="card-glass max-h-[90vh] w-full max-w-lg overflow-y-auto p-6 animate-fade-up">
+      <div className="game-modal-panel max-h-[90vh] w-full max-w-lg overflow-y-auto p-6 animate-fade-up">
         <div className="text-center">
           <p className="text-sm uppercase tracking-wider text-gray-500">
             Run Complete

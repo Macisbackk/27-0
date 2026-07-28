@@ -73,7 +73,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
   return (
     <div className="flex w-full flex-col items-center justify-center px-4 py-6">
       <motion.p
-        className="font-display text-xs font-bold uppercase tracking-[0.35em] text-accent-green"
+        className="font-display text-xs font-bold uppercase tracking-[0.35em] text-theme-primary"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
@@ -89,7 +89,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
       </motion.h2>
 
       <div className="mt-6 w-full max-w-lg">
-        <div className="matchday-panel p-5 text-center sm:p-6">
+        <div className="scoreboard-panel p-5 text-center sm:p-6">
           <p className="text-sm text-gray-500">
             Round {currentRound} of {SEASON_GAMES}
           </p>
@@ -101,7 +101,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               </p>
               <motion.p
                 key={wins}
-                className="font-display text-3xl font-black text-accent-green sm:text-4xl"
+                className="font-display text-3xl font-black text-theme-primary sm:text-4xl"
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
               >
@@ -142,7 +142,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
                 <p
                   className={`mt-1 text-xs font-bold uppercase tracking-wider ${
                     currentFixture.result === "W"
-                      ? "text-accent-green"
+                      ? "text-theme-primary"
                       : "text-red-400"
                   }`}
                 >
@@ -200,7 +200,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
                 </span>
                 <span
                   className={`shrink-0 font-bold ${
-                    f.result === "W" ? "text-accent-green" : "text-red-400"
+                    f.result === "W" ? "text-theme-primary" : "text-red-400"
                   }`}
                 >
                   {f.result}

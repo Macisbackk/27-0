@@ -53,7 +53,7 @@ export function FixtureResultRow({
       onClick={onClick}
       className={`fixture-result-row min-w-0 w-full max-w-full text-left transition ${
         selected
-          ? "fixture-result-row--selected border-accent-green/50 bg-accent-green/10"
+          ? "fixture-result-row--selected border-theme-primary/50 bg-theme-primary/10"
           : cupHighlight
             ? `${CARD.base} border-2 border-accent-gold/50 bg-accent-gold/10 ring-1 ring-accent-gold/25`
             : `${CARD.base} bg-pitch-900/40`
@@ -87,7 +87,7 @@ export function FixtureResultRow({
           <span
             className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-black sm:h-7 sm:w-7 sm:text-xs ${
               fixture.result === "W"
-                ? "bg-accent-green/25 text-accent-green"
+                ? "bg-theme-primary/25 text-theme-primary"
                 : "bg-red-500/25 text-red-400"
             }`}
           >

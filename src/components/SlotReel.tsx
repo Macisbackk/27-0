@@ -47,7 +47,7 @@ export const SlotReel = memo(
           {strip.map((item, i) => (
             <div
               key={`${item}-${i}`}
-              className={`slot-reel-item slot-reveal-display-text text-center font-display font-black uppercase text-accent-green ${textClassName ?? ""}`}
+              className={`slot-reel-item slot-reveal-display-text text-center font-display font-black uppercase text-theme-primary ${textClassName ?? ""}`}
               style={{ height: SLOT_REEL_ITEM_HEIGHT_PX }}
             >
               {formatItem(item)}

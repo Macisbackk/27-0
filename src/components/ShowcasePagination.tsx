@@ -43,7 +43,7 @@ export function ShowcasePagination({
 
   return (
     <nav
-      className="matchday-panel flex min-w-0 flex-col gap-2 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:px-4 sm:py-3"
+      className="programme-panel programme-panel--elevated flex min-w-0 flex-col gap-2 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:px-4 sm:py-3"
       aria-label="Player showcase pagination"
     >
       <p className="min-w-0 text-center text-xs text-gray-500 sm:text-left sm:text-sm">

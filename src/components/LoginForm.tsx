@@ -118,7 +118,7 @@ export function LoginForm() {
       <p className={TYPO.sectionTitle}>27-0 Account</p>
 
       {passwordResetSuccess && (
-        <p className={`mt-3 ${TYPO.body} text-accent-green`}>
+        <p className={`mt-3 ${TYPO.body} text-theme-primary`}>
           Password updated. Log in with your new password.
         </p>
       )}
@@ -220,7 +220,7 @@ export function LoginForm() {
       {success && (
         <p
           id={successId}
-          className={`mt-3 ${TYPO.body} font-medium text-accent-green`}
+          className={`mt-3 ${TYPO.body} font-medium text-theme-primary`}
           role="status"
         >
           {success}

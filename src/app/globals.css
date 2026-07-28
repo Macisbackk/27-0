@@ -148,17 +148,15 @@ body {
 }
 
 .app-header {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--header-bg) 92%, transparent) 0%,
-    color-mix(in srgb, var(--header-bg) 78%, transparent) 100%
-  );
-  border-color: color-mix(in srgb, var(--theme-tertiary) 22%, var(--border-subtle));
+  background: #0a1018;
+  border-color: color-mix(in srgb, var(--theme-tertiary) 40%, var(--border-subtle));
+  border-bottom-width: 2px;
   box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.22),
-    0 1px 0 color-mix(in srgb, var(--theme-primary) 12%, transparent);
+    0 4px 0 rgba(0, 0, 0, 0.35),
+    inset 0 -3px 0 color-mix(in srgb, var(--theme-primary) 55%, transparent);
   overflow-x: clip;
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 /* Header side slots: keep menu/auth from shrinking on narrow screens */
@@ -1017,14 +1015,17 @@ body {
   }
 
   /* ── 27-0 shared game buttons (Store theme / mode / semantic) ── */
+  /* Stadium signage / broadcast lower-third buttons */
   .game-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: auto;
     max-width: 100%;
-    border-radius: 0.5rem;
-    font-weight: 700;
+    border-radius: 4px 14px 4px 14px;
+    font-weight: 900;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
     line-height: 1.2;
     text-align: center;
     text-decoration: none;
@@ -1035,60 +1036,53 @@ body {
     backdrop-filter: none;
     transform: translateZ(0);
     transition:
-      filter 0.15s ease,
-      box-shadow 0.15s ease,
-      transform 0.1s ease,
-      border-color 0.15s ease,
-      background 0.15s ease;
+      filter 0.12s ease,
+      box-shadow 0.12s ease,
+      transform 0.08s ease,
+      border-color 0.12s ease,
+      background 0.12s ease;
   }
 
   .game-button--sm {
     min-height: 40px;
     padding: 0.5rem 0.75rem;
-    font-size: 0.75rem;
-    border-radius: 0.5rem;
+    font-size: 0.6875rem;
+    border-radius: 3px 10px 3px 10px;
   }
 
   .game-button--md {
     min-height: 44px;
     padding: 0.625rem 1rem;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
   }
 
   .game-button--lg {
     min-height: 52px;
     padding: 1rem 1.25rem;
-    border-radius: 0.75rem;
+    border-radius: 4px 16px 4px 16px;
     font-family: var(--font-display), "Arial Black", Impact, sans-serif;
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
   }
 
-  /* Store-themed generic button — broadcast bar, tertiary trim, light glow */
+  /* Store-themed — kit stripe fill, tertiary trim, hard offset (no neon) */
   .game-button--theme {
     border: 2px solid var(--theme-tertiary);
     background-color: var(--theme-primary);
     background-image: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.14) 0%,
-      transparent 42%,
-      transparent 100%
+      90deg,
+      var(--theme-primary) 0 72%,
+      var(--theme-secondary) 72% 100%
     );
     color: var(--theme-text-on-primary);
-    box-shadow:
-      0 0 0 1px var(--theme-tertiary),
-      0 6px 16px rgba(0, 0, 0, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);
   }
 
   .game-button--theme:hover:not(:disabled) {
-    background-color: color-mix(in srgb, var(--theme-primary) 86%, var(--theme-tertiary));
-    box-shadow:
-      0 0 0 1px var(--theme-tertiary),
-      0 8px 20px rgba(0, 0, 0, 0.32),
-      0 0 12px var(--theme-glow-soft);
+    filter: brightness(1.06);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.5);
   }
 
   /* Current Mode — fixed green, never Store theme */
@@ -1096,21 +1090,16 @@ body {
     border: 2px solid var(--mode-current-border);
     background-color: var(--mode-current);
     background-image: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.14) 0%,
-      transparent 42%
+      90deg,
+      var(--mode-current) 0 72%,
+      color-mix(in srgb, var(--mode-current) 70%, #000) 72% 100%
     );
     color: var(--mode-current-text) !important;
-    box-shadow:
-      0 6px 16px rgba(0, 0, 0, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);
   }
 
   .game-button--current:hover:not(:disabled) {
-    background-color: color-mix(in srgb, var(--mode-current) 90%, #ffffff);
-    box-shadow:
-      0 8px 18px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    filter: brightness(1.05);
   }
 
   /* Era Mode — fixed gold */
@@ -1118,72 +1107,69 @@ body {
     border: 2px solid var(--mode-era-border);
     background-color: var(--mode-era);
     background-image: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.16) 0%,
-      transparent 42%
+      90deg,
+      var(--mode-era) 0 72%,
+      color-mix(in srgb, var(--mode-era) 75%, #000) 72% 100%
     );
     color: var(--mode-era-text) !important;
-    box-shadow:
-      0 6px 16px rgba(0, 0, 0, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);
   }
 
   .game-button--era:hover:not(:disabled) {
-    background-color: color-mix(in srgb, var(--mode-era) 90%, #ffffff);
+    filter: brightness(1.05);
   }
 
   .game-button--secondary {
     border: 2px solid var(--theme-tertiary);
-    background: rgba(5, 12, 10, 0.94);
+    background: #0b1220;
     color: var(--theme-primary);
-    box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--theme-tertiary) 35%, transparent),
-      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
   }
 
   .game-button--secondary:hover:not(:disabled) {
     border-color: var(--theme-tertiary);
     color: var(--theme-secondary);
-    background: var(--theme-secondary-soft);
-    box-shadow: 0 0 0 1px var(--theme-tertiary);
+    background: color-mix(in srgb, var(--theme-secondary) 12%, #0b1220);
   }
 
   .game-button--ghost {
-    border: 2px solid transparent;
+    border: 2px solid color-mix(in srgb, var(--theme-tertiary) 40%, transparent);
     background: transparent;
     color: #d1d5db;
+    box-shadow: none;
   }
 
   .game-button--ghost:hover:not(:disabled) {
     border-color: var(--theme-tertiary);
     color: var(--theme-primary);
-    background: var(--theme-tertiary-soft);
+    background: color-mix(in srgb, var(--theme-primary) 8%, transparent);
   }
 
   .game-button--danger {
     border: 2px solid color-mix(in srgb, var(--danger) 75%, transparent);
     background: color-mix(in srgb, var(--danger) 88%, #000);
     color: #ffffff;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);
   }
 
   .game-button--danger:hover:not(:disabled) {
     filter: brightness(1.05);
-    box-shadow: 0 0 18px color-mix(in srgb, var(--danger) 35%, transparent);
   }
 
   .game-button--success {
     border: 2px solid color-mix(in srgb, var(--success) 75%, transparent);
     background: var(--success);
     color: #07130a;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);
   }
 
   .game-button--success:hover:not(:disabled) {
     filter: brightness(1.05);
-    box-shadow: 0 0 18px color-mix(in srgb, var(--success) 35%, transparent);
   }
 
   .game-button:active:not(:disabled) {
-    transform: scale(0.98);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
   }
 
   /* Legacy hooks — mode start buttons delegate to game-button classes */
@@ -1951,9 +1937,8 @@ body {
 }
 
 /*
- * Opaque game buttons (unlayered) — required inside card-glass / matchday-panel.
- * Backdrop-filter ancestors otherwise paint gradient backgrounds invisible
- * (buttons look like plain coloured text links).
+ * Opaque stadium buttons (unlayered) — required inside programme/card panels.
+ * Must NOT force soft 12px radius — that was killing the custom look.
  */
 a.game-button,
 button.game-button,
@@ -1962,9 +1947,10 @@ button.game-button,
   align-items: center !important;
   justify-content: center !important;
   max-width: 100%;
-  border-radius: 12px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.02em;
+  border-radius: 4px 14px 4px 14px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
   line-height: 1.2;
   text-align: center;
   text-decoration: none !important;
@@ -1977,7 +1963,8 @@ button.game-button,
   transition:
     box-shadow 120ms ease,
     border-color 120ms ease,
-    filter 120ms ease;
+    filter 120ms ease,
+    transform 80ms ease;
   cursor: pointer;
 }
 
@@ -1986,8 +1973,8 @@ button.game-button,
 }
 
 .game-button:active:not(:disabled) {
-  filter: brightness(0.95);
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.25);
+  transform: translate(2px, 2px);
+  filter: brightness(0.97);
 }
 
 .game-button:disabled {
@@ -2000,18 +1987,20 @@ button.game-button,
 .game-button--sm {
   min-height: 40px;
   padding: 0.5rem 0.875rem;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
+  border-radius: 3px 10px 3px 10px !important;
 }
 
 .game-button--md {
   min-height: 44px;
   padding: 0.625rem 1rem;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
 }
 
 .game-button--lg {
   min-height: 48px;
   padding: 0.75rem 1.125rem;
+  border-radius: 4px 16px 4px 16px !important;
   font-family: var(--font-display), "Arial Black", Impact, sans-serif;
   font-size: 1rem;
   font-weight: 900;
@@ -2024,49 +2013,47 @@ button.game-button--theme,
 .game-button--theme {
   background-color: var(--theme-primary) !important;
   background-image: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.14) 0%,
-    transparent 42%
+    90deg,
+    var(--theme-primary) 0 72%,
+    var(--theme-secondary) 72% 100%
   ) !important;
   border: 2px solid var(--theme-tertiary) !important;
   color: var(--theme-text-on-primary) !important;
-  box-shadow:
-    0 0 0 1px var(--theme-tertiary),
-    0 6px 16px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45) !important;
 }
 
 a.game-button--theme:hover:not(:disabled),
 button.game-button--theme:hover:not(:disabled),
 .game-button--theme:hover:not(:disabled) {
-  background-color: color-mix(in srgb, var(--theme-primary) 86%, var(--theme-tertiary)) !important;
+  filter: brightness(1.06);
 }
 
 a.game-button--secondary,
 button.game-button--secondary,
 .game-button--secondary {
-  background-color: rgb(15 24 20 / 0.98) !important;
+  background-color: #0b1220 !important;
   background-image: none !important;
   border: 2px solid var(--theme-tertiary) !important;
   color: var(--theme-primary) !important;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-tertiary) 40%, transparent) !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4) !important;
 }
 
 a.game-button--secondary:hover:not(:disabled),
 button.game-button--secondary:hover:not(:disabled),
 .game-button--secondary:hover:not(:disabled) {
   color: var(--theme-secondary) !important;
-  background-color: var(--theme-secondary-soft) !important;
+  background-color: color-mix(in srgb, var(--theme-secondary) 12%, #0b1220) !important;
   border-color: var(--theme-tertiary) !important;
 }
 
 a.game-button--ghost,
 button.game-button--ghost,
 .game-button--ghost {
-  background-color: rgb(15 24 20 / 0.65) !important;
+  background-color: transparent !important;
   background-image: none !important;
-  border: 2px solid color-mix(in srgb, var(--theme-tertiary) 35%, transparent) !important;
+  border: 2px solid color-mix(in srgb, var(--theme-tertiary) 40%, transparent) !important;
   color: #e5e7eb !important;
+  box-shadow: none !important;
 }
 
 /*

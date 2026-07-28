@@ -2,12 +2,13 @@
 
 import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
+import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
   ManagerInboxMessageCard,
   ManagerPage,
-  ManagerSectionCard,
 } from "@/components/manager/manager-ui";
 import type { InboxMessage, InboxMessageType, ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
@@ -145,48 +146,47 @@ export function ManagerInbox({
 
   return (
     <ManagerPage>
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div className="min-w-0">
-          <h1 className={TYPO.viewTitle}>Inbox</h1>
-          <p className={`mt-1 ${TYPO.managerBody}`}>
-            Club messages and transfer offers — auto-cleared after 7 weeks
-          </p>
-        </div>
-        <div className="flex shrink-0 flex-wrap items-center gap-2">
-          {showViewAllAsSeen && (
-            <GameButton
-              variant="secondary"
-              size="sm"
-              onClick={handleViewAllAsSeen}
-            >
-              View all as seen
-            </GameButton>
-          )}
-          <div className="flex flex-wrap items-center gap-1.5 text-xs">
-          <span className="rounded-md border border-pitch-700/50 bg-pitch-950/40 px-2 py-0.5 text-pitch-400">
-            Open{" "}
-            <span
-              className={
-                messages.length > 0
-                  ? "font-semibold text-theme-primary"
-                  : "font-medium text-pitch-300"
-              }
-            >
-              {messages.length}
-            </span>
-          </span>
-          {bidCount > 0 && (
-            <span className="rounded-md border border-accent-gold/30 bg-accent-gold/10 px-2 py-0.5 text-pitch-400">
-              Bids{" "}
-              <span className="font-semibold text-accent-gold">{bidCount}</span>
-            </span>
-          )}
-          <span className="px-1 text-pitch-500">
-            {career.seasonYear} · Wk {career.gameWeek}
-          </span>
+      <GameSectionHeader
+        label="INBOX"
+        title="Club Mail"
+        subtitle="Club messages and transfer offers — auto-cleared after 7 weeks"
+        action={
+          <div className="flex shrink-0 flex-wrap items-center gap-2">
+            {showViewAllAsSeen && (
+              <GameButton
+                variant="secondary"
+                size="sm"
+                onClick={handleViewAllAsSeen}
+              >
+                View all as seen
+              </GameButton>
+            )}
+            <div className="flex flex-wrap items-center gap-1.5 text-xs">
+              <span className="rounded-sm border border-pitch-700/50 bg-pitch-950/40 px-2 py-0.5 text-pitch-400">
+                Open{" "}
+                <span
+                  className={
+                    messages.length > 0
+                      ? "font-semibold text-theme-primary"
+                      : "font-medium text-pitch-300"
+                  }
+                >
+                  {messages.length}
+                </span>
+              </span>
+              {bidCount > 0 && (
+                <span className="rounded-sm border border-accent-gold/30 bg-accent-gold/10 px-2 py-0.5 text-pitch-400">
+                  Bids{" "}
+                  <span className="font-semibold text-accent-gold">{bidCount}</span>
+                </span>
+              )}
+              <span className="px-1 text-pitch-500">
+                {career.seasonYear} · Wk {career.gameWeek}
+              </span>
+            </div>
           </div>
-        </div>
-      </div>
+        }
+      />
 
       {messages.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
@@ -204,7 +204,7 @@ export function ManagerInbox({
                     playUiClick();
                     setFilter(f.id);
                   }}
-                  className={`rounded-lg border px-2.5 py-1 text-[11px] font-medium transition ${
+                  className={`rounded-sm border px-2.5 py-1 text-[11px] font-medium transition ${
                     filter === f.id ? FILTER.chipActive : FILTER.chipIdle
                   }`}
                 >
@@ -219,26 +219,26 @@ export function ManagerInbox({
       )}
 
       {feedback && (
-        <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+        <ProgrammePanel variant="inset" padded>
           <p className={`${TYPO.bodySm} text-theme-primary`}>{feedback}</p>
-        </div>
+        </ProgrammePanel>
       )}
 
       {messages.length === 0 && (
-        <ManagerSectionCard variant="inset">
+        <ProgrammePanel variant="inset" padded>
           <p className={`${TYPO.bodySm} text-pitch-400`}>
             No new messages. Rival clubs may approach you about unlisted
             players, or list your own squad to attract bids.
           </p>
-        </ManagerSectionCard>
+        </ProgrammePanel>
       )}
 
       {messages.length > 0 && filteredMessages.length === 0 && (
-        <ManagerSectionCard variant="inset">
+        <ProgrammePanel variant="inset" padded>
           <p className={`${TYPO.bodySm} text-pitch-400`}>
             No messages in this category.
           </p>
-        </ManagerSectionCard>
+        </ProgrammePanel>
       )}
 
       <div className={SPACING.stackMd}>

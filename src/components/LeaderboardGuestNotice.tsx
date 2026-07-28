@@ -12,7 +12,7 @@ export function LeaderboardGuestNotice() {
 
   return (
     <div
-      className={`mb-4 ${CARD.base} border-accent-green/20 bg-accent-green/5 ${SPACING.cardPaddingSm}`}
+      className={`mb-4 ${CARD.base} border-theme-primary/20 bg-theme-primary/5 ${SPACING.cardPaddingSm}`}
     >
       <p className={TYPO.body}>
         Log in to submit your own scores. You can still view online leaderboards

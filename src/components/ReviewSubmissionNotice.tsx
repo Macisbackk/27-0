@@ -16,7 +16,7 @@ export function ReviewSubmissionNotice({
   return (
     <p
       className={`mx-auto mt-3 max-w-md text-center text-xs font-medium ${
-        submittedOnline ? "text-accent-green/90" : "text-gray-500"
+        submittedOnline ? "text-theme-primary/90" : "text-gray-500"
       }`}
     >
       {submittedOnline

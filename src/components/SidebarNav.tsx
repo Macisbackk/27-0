@@ -37,11 +37,11 @@ interface SidebarNavProps {
 }
 
 const MAIN_NAV_ITEMS = [
-  { href: "/store", label: "Store", icon: "🛒" },
-  { href: "/showcase", label: "Player Showcase", icon: "⭐" },
-  { href: "/stats", label: "Statistics", icon: "📊" },
-  { href: "/leaderboard", label: "Leaderboard", icon: "🏆" },
-  { href: "/updates", label: "Updates", icon: "📰" },
+  { href: "/store", label: "Store", icon: "ST" },
+  { href: "/showcase", label: "Player Showcase", icon: "PS" },
+  { href: "/stats", label: "Statistics", icon: "FX" },
+  { href: "/leaderboard", label: "Leaderboard", icon: "LB" },
+  { href: "/updates", label: "Updates", icon: "UP" },
 ] as const;
 
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
@@ -198,7 +198,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       className={`${navLinkClass(pathname.startsWith("/manager"))} w-full font-semibold`}
                     >
                       <span aria-hidden className={NAV.icon}>
-                        📋
+                        MM
                       </span>
                       Manager Mode
                       {pathname.startsWith("/manager") && (
@@ -221,7 +221,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       className={`${navLinkClass(isNormalActive, isNormalEra)} w-full`}
                     >
                       <span aria-hidden className={NAV.icon}>
-                        🏉
+                        QM
                       </span>
                       Quick Mode
                       {isNormalActive && (
@@ -287,7 +287,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         className={navLinkClass(pathname.startsWith("/profile"))}
                       >
                         <span aria-hidden className={NAV.icon}>
-                          👤
+                          CP
                         </span>
                         Coach Profile
                         {pathname.startsWith("/profile") && (
@@ -301,7 +301,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         className={navLinkClass(pathname.startsWith("/login"))}
                       >
                         <span aria-hidden className={NAV.icon}>
-                          🔑
+                          IN
                         </span>
                         Log In
                         {pathname.startsWith("/login") && (

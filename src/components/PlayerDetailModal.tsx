@@ -38,7 +38,7 @@ export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
       onClick={handleClose}
     >
       <div
-        className={`card-glass max-h-[92vh] w-full max-w-lg overflow-y-auto ${SPACING.cardPadding} animate-fade-up`}
+        className={`game-modal-panel max-h-[92vh] w-full max-w-lg overflow-y-auto ${SPACING.cardPadding} animate-fade-up`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-3 flex items-start justify-between gap-2">
@@ -75,7 +75,7 @@ export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
         <div className={`mt-3 grid grid-cols-2 gap-2 ${TYPO.bodySm}`}>
           <div className={CARD.inset}>
             <p className={TYPO.statLabel}>Peak Rating</p>
-            <p className="mt-0.5 font-semibold text-accent-green">
+            <p className="mt-0.5 font-semibold text-theme-primary">
               {player.peakRating}
             </p>
           </div>

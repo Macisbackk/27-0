@@ -30,7 +30,7 @@ export function DraftPositionsRemaining({
       </p>
       {entries.length === 0 ? (
         <p
-          className={`mt-1.5 font-display font-bold text-accent-green ${
+          className={`mt-1.5 font-display font-bold text-theme-primary ${
             compact ? "text-[10px]" : "text-xs"
           }`}
         >
@@ -51,7 +51,7 @@ export function DraftPositionsRemaining({
             return (
               <span
                 key={entry.key}
-                className="inline-flex shrink-0 items-center rounded-full border border-accent-green/35 bg-accent-green/10 px-2 py-0.5 font-display font-bold text-accent-green"
+                className="inline-flex shrink-0 items-center rounded-full border border-theme-primary/35 bg-theme-primary/10 px-2 py-0.5 font-display font-bold text-theme-primary"
               >
                 {label}
               </span>

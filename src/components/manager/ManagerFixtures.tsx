@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { ClubColorChip } from "@/components/ClubColorChip";
 import { FixtureResultRow } from "@/components/FixtureResultRow";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
-import { ManagerFormStrip, ManagerStat, ManagerViewHeader, leaguePositionTone, matchPredictionTone } from "@/components/manager/manager-ui";
+import { ManagerFormStrip, ManagerStat, leaguePositionTone, matchPredictionTone } from "@/components/manager/manager-ui";
 import { getMatchPrediction } from "@/lib/manager/managerScoring";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getManagerOpponentPoolOptions } from "@/lib/manager/managerLeagueRosters";
@@ -12,13 +12,16 @@ import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import {
-  CARD,
   SPACING,
 } from "@/lib/ui/design-system";
+import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
+import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
+import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
+import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubColors } from "@/lib/clubs";
 import {
-  managerFixtureCardClass,
+  managerCompetitionSurfaceClass,
   managerFixtureCardStyle,
   managerFixtureRowClass,
   managerPillClass,
@@ -410,21 +413,22 @@ export function ManagerFixtures({
 
   return (
     <div className={`mx-auto w-full min-w-0 max-w-3xl overflow-x-hidden ${SPACING.stackLg}`}>
-      <ManagerViewHeader
+      <GameSectionHeader
+        label="FIXTURE WALL"
         title="Fixtures"
         subtitle={`Season ${career.seasonYear} · ${career.club}`}
-        tabs={
-          <ManagerSubTabBar
-            tabs={FILTERS}
-            active={filter}
-            onChange={setFilter}
-            scrollable
-            ariaLabel="Filter fixtures"
-          />
-        }
       />
+      <div className="flex w-full min-w-0 justify-center">
+        <ManagerSubTabBar
+          tabs={FILTERS}
+          active={filter}
+          onChange={setFilter}
+          scrollable
+          ariaLabel="Filter fixtures"
+        />
+      </div>
 
-      <div className={`${CARD.elevated} ${SPACING.cardPadding}`}>
+      <ProgrammePanel variant="elevated" padded>
         <p className={TYPO.sectionLabel}>Season snapshot</p>
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <ManagerStat
@@ -464,11 +468,13 @@ export function ManagerFixtures({
           {playedCount} played · {upcomingCount} remaining · Week{" "}
           {career.gameWeek}/{career.schedule.length}
         </p>
-      </div>
+      </ProgrammePanel>
 
       {nextFixture && !seasonComplete && (
-        <div
-          className={managerFixtureCardClass(nextFixture.competition)}
+        <ScoreboardPanel
+          variant="elevated"
+          padded
+          className={`matchday-scoreboard ${managerCompetitionSurfaceClass(nextFixture.competition)}`}
           style={managerFixtureCardStyle(
             nextFixture.competition,
             career.club,
@@ -526,15 +532,15 @@ export function ManagerFixtures({
           >
             View {nextFixture.opponent} team sheet
           </GameButton>
-        </div>
+        </ScoreboardPanel>
       )}
 
       {filteredItems.length === 0 ? (
-        <div className={`${CARD.base} ${SPACING.cardPadding} text-center`}>
+        <ClipboardPanel padded className="text-center">
           <p className={`${TYPO.bodySm} text-pitch-400`}>
             No fixtures match this filter.
           </p>
-        </div>
+        </ClipboardPanel>
       ) : (
         <div className={SPACING.stackLg}>
           {showUpcomingFirst && upcomingItems.length > 0 && (

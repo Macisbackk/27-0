@@ -51,7 +51,7 @@ export function SlotRecruitPlacementConfirm({
   const displayName = formatPlayerDisplayName(player);
 
   return (
-    <div className={`${CARD.panel} mb-4 border border-accent-green/25 p-4 sm:p-5`}>
+    <div className={`${CARD.panel} mb-4 border border-theme-primary/25 p-4 sm:p-5`}>
       {onBack && (
         <button
           type="button"

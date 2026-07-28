@@ -8,7 +8,7 @@ import { TYPO } from "@/lib/ui/typography";
 
 const HEADER_HEIGHT = "h-14";
 const CHEVRON_BOX =
-  "flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-pitch-600/50 bg-pitch-900/50 text-sm text-accent-green transition-transform duration-200";
+  "flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-pitch-600/50 bg-pitch-900/50 text-sm text-theme-primary transition-transform duration-200";
 
 interface ChangelogAccordionProps {
   entries: GameUpdate[];
@@ -44,7 +44,7 @@ export function ChangelogAccordion({
             <div
               className={`${CARD.panel} overflow-hidden rounded-xl border transition-colors ${
                 isOpen
-                  ? "border-accent-green/40 bg-pitch-900/80"
+                  ? "border-theme-primary/40 bg-pitch-900/80"
                   : "border-pitch-700/50 hover:border-pitch-600/60"
               }`}
             >

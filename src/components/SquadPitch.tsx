@@ -19,7 +19,7 @@ export function SquadPitch({
   totalSlots,
 }: SquadPitchProps) {
   return (
-    <div className="card-glass p-4 sm:p-5">
+    <div className="programme-panel programme-panel--elevated p-4 sm:p-5">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
           Your Squad
@@ -35,7 +35,7 @@ export function SquadPitch({
       </div>
 
       <div className="relative rounded-xl bg-pitch-900/60 p-3 sm:p-4">
-        <div className="absolute inset-0 rounded-xl border border-accent-green/10" />
+        <div className="absolute inset-0 rounded-xl border border-theme-primary/10" />
 
         <div className="relative space-y-2">
           <Row
@@ -70,7 +70,7 @@ export function SquadPitch({
 
       <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-pitch-700">
         <div
-          className="h-full rounded-full bg-accent-green transition-all duration-500"
+          className="h-full rounded-full bg-theme-primary transition-all duration-500"
           style={{ width: `${(filledCount / totalSlots) * 100}%` }}
         />
       </div>

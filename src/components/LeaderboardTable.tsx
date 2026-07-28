@@ -413,16 +413,16 @@ export function LeaderboardTable() {
       )}
 
       {loading && entries.length === 0 ? (
-        <div className="game-panel game-panel--elevated p-12 text-center text-gray-500">
+        <div className="programme-panel programme-panel--elevated p-12 text-center text-gray-500">
           Loading leaderboard…
         </div>
       ) : entries.length === 0 ? (
-        <div className="game-panel game-panel--elevated p-12 text-center text-gray-500">
+        <div className="programme-panel programme-panel--elevated p-12 text-center text-gray-500">
           {emptyStateMessage}
         </div>
       ) : (
         <div
-          className={`game-panel game-panel--elevated overflow-hidden transition-opacity ${
+          className={`scoreboard-panel scoreboard-panel--elevated overflow-hidden transition-opacity ${
             loading ? "opacity-60" : "opacity-100"
           }`}
         >
@@ -434,7 +434,7 @@ export function LeaderboardTable() {
               <li
                 key={`mobile-${entry.rank}-${entry.username}-${entry.achievedAt}`}
                 className={`flex items-center justify-between gap-3 px-4 py-3 ${
-                  entry.isCurrentUser ? "bg-accent-green/5" : ""
+                  entry.isCurrentUser ? "bg-theme-primary/5" : ""
                 }`}
               >
                 <div className="flex min-w-0 items-center gap-3">
@@ -472,7 +472,7 @@ export function LeaderboardTable() {
                 <tr
                   key={`${entry.rank}-${entry.username}-${entry.achievedAt}`}
                   className={`border-b border-pitch-700/30 transition hover:bg-pitch-800/30 ${
-                    entry.isCurrentUser ? "bg-accent-green/5" : ""
+                    entry.isCurrentUser ? "bg-theme-primary/5" : ""
                   }`}
                 >
                   <td className="px-4 py-3">

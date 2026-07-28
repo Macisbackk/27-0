@@ -109,7 +109,7 @@ export function SlotTeamYearPicker({
                 {target.team}
               </h2>
               <div className="mt-2 flex flex-wrap items-center gap-2">
-                <span className="rounded-lg border border-accent-green/35 bg-accent-green/12 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-accent-green">
+                <span className="rounded-lg border border-theme-primary/35 bg-theme-primary/12 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-theme-primary">
                   {shortYear}
                 </span>
                 <span className="rounded-lg border border-pitch-600/60 bg-pitch-950/70 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-gray-300">
@@ -125,7 +125,7 @@ export function SlotTeamYearPicker({
                   onRespin();
                 }}
                 disabled={disabled || respinsRemaining <= 0}
-                className="shrink-0 rounded-lg border border-pitch-600 bg-pitch-900/90 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-gray-300 transition-colors hover:border-accent-green/45 hover:bg-pitch-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:text-xs"
+                className="shrink-0 rounded-lg border border-pitch-600 bg-pitch-900/90 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-gray-300 transition-colors hover:border-theme-primary/45 hover:bg-pitch-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:text-xs"
               >
                 {respinsRemaining > 0
                   ? `Respin ${respinsRemaining}/${maxRespins}`
@@ -149,7 +149,7 @@ export function SlotTeamYearPicker({
           ) : (
             <>
               <p className={`mb-3 text-center ${TYPO.bodySm} text-gray-500`}>
-                Tap <span className="font-semibold text-accent-green">Sign player</span>{" "}
+                Tap <span className="font-semibold text-theme-primary">Sign player</span>{" "}
                 to add them to your squad
               </p>
               <div className="mx-auto grid max-h-[min(58vh,520px)] max-w-5xl grid-cols-1 gap-3 overflow-y-auto overflow-x-hidden pr-0.5 min-[520px]:grid-cols-3 sm:gap-4">

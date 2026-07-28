@@ -18,13 +18,13 @@ export function ClubFundsEarned({
 
   return (
     <div
-      className={`${CARD.panel} mx-auto mt-4 w-full max-w-md border border-accent-green/25 px-4 py-3 text-center`}
+      className={`${CARD.panel} mx-auto mt-4 w-full max-w-md border border-theme-primary/25 px-4 py-3 text-center`}
     >
       <p className={TYPO.sectionLabel}>{title}</p>
       <ul className={`mt-2 space-y-1 ${TYPO.bodySm}`}>
         {payout.lines.map((line) => (
           <li key={line.id} className="text-gray-300">
-            <span className="font-semibold text-accent-green">
+            <span className="font-semibold text-theme-primary">
               +{formatClubFunds(line.amount)}
             </span>{" "}
             {line.label}

@@ -14,7 +14,7 @@ export function RecordWithPercentage({
   losses,
   className = "",
   recordClassName = "",
-  percentageClassName = "text-accent-green",
+  percentageClassName = "text-theme-primary",
 }: RecordWithPercentageProps) {
   const w = Math.round(wins);
   const l = Math.round(losses);

@@ -87,7 +87,7 @@ export function TryScorersPanel({
             return !v;
           });
         }}
-        className="w-full rounded-lg border border-pitch-600/40 bg-pitch-950/50 px-3 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-accent-green transition hover:border-accent-green/35 hover:bg-pitch-900/60 hover:text-emerald-300"
+        className="w-full rounded-lg border border-pitch-600/40 bg-pitch-950/50 px-3 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-theme-primary transition hover:border-theme-primary/35 hover:bg-pitch-900/60 hover:text-theme-primary"
         aria-expanded={open}
       >
         {open ? "Hide All Try Scorers" : title}

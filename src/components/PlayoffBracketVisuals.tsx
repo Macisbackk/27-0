@@ -101,7 +101,7 @@ export function PlayoffBracketHeader({
   tournamentComplete: boolean;
 }) {
   return (
-    <div className="playoff-bracket-header matchday-panel overflow-hidden px-4 py-5 text-center sm:px-6 sm:py-6">
+    <div className="playoff-bracket-header scoreboard-panel overflow-hidden px-4 py-5 text-center sm:px-6 sm:py-6">
       <div className="playoff-bracket-header__shine pointer-events-none" aria-hidden />
       <p className="font-display text-[10px] font-bold uppercase tracking-[0.4em] text-mode-current sm:text-xs">
         Super League Play-Offs

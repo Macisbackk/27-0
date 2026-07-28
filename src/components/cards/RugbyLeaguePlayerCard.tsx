@@ -178,7 +178,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
           }`}
         >
           <span
-            className={`pitch-card-initials font-display font-black uppercase leading-none tracking-wider text-accent-green ${
+            className={`pitch-card-initials font-display font-black uppercase leading-none tracking-wider text-theme-primary ${
               compact
                 ? "text-xs sm:text-sm"
                 : "text-sm sm:text-base"
@@ -199,7 +199,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
             {player.name}
           </p>
           <span
-            className={`pitch-card-rating font-display font-bold leading-none text-accent-green ${
+            className={`pitch-card-rating font-display font-bold leading-none text-theme-primary ${
               compact
                 ? "text-sm sm:text-base"
                 : "text-base sm:text-[17px]"

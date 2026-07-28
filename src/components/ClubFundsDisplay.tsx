@@ -71,8 +71,8 @@ export function ClubFundsDisplay({
   const formatted = ready ? formatClubFunds(balance) : "—";
 
   const triggerClass = isMobileUnderLogo
-    ? "flex min-h-[1.125rem] items-center justify-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[11px] font-semibold tabular-nums leading-none text-accent-green transition hover:bg-pitch-800/35 hover:text-theme-primary active:bg-pitch-800/50"
-    : "header-control-btn flex h-11 min-h-[44px] items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-pitch-600/80 bg-pitch-900/25 px-2.5 font-semibold tabular-nums text-accent-green transition hover:border-theme-primary/45 hover:bg-theme-primary/5 sm:px-3";
+    ? "flex min-h-[1.125rem] items-center justify-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[11px] font-semibold tabular-nums leading-none text-theme-primary transition hover:bg-pitch-800/35 hover:text-theme-primary active:bg-pitch-800/50"
+    : "header-control-btn flex h-11 min-h-[44px] items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-pitch-600/80 bg-pitch-900/25 px-2.5 font-semibold tabular-nums text-theme-primary transition hover:border-theme-primary/45 hover:bg-theme-primary/5 sm:px-3";
 
   return (
     <div
@@ -198,7 +198,7 @@ function ClubFundsPanelContent({
       <div className={`mt-2 space-y-1 ${mobile ? "text-xs" : TYPO.bodySm}`}>
         <p className="flex items-start justify-between gap-3 text-gray-300">
           <span className="shrink-0">Current balance</span>
-          <span className="min-w-0 text-right font-semibold tabular-nums text-accent-green">
+          <span className="min-w-0 text-right font-semibold tabular-nums text-theme-primary">
             {formatClubFundsExact(balance)}
           </span>
         </p>
@@ -218,7 +218,7 @@ function ClubFundsPanelContent({
             }`}
           >
             <span className="min-w-0 flex-1">{line.label}</span>
-            <span className="shrink-0 font-semibold tabular-nums text-accent-green">
+            <span className="shrink-0 font-semibold tabular-nums text-theme-primary">
               {formatClubFundsExact(line.amount)}
             </span>
           </li>

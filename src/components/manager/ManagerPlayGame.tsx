@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
@@ -263,11 +264,11 @@ export function ManagerPlayGame({
       aria-label="Live match"
     >
       <div
-        className={`game-panel game-panel--elevated game-panel--flush mx-auto flex h-[100dvh] w-full max-w-lg flex-col overflow-hidden ${SPACING.cardPaddingSm}`}
+        className={`scoreboard-panel scoreboard-panel--elevated scoreboard-panel--flush mx-auto flex h-[100dvh] w-full max-w-lg flex-col overflow-hidden ${SPACING.cardPaddingSm}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Scoreboard */}
-        <header className="matchday-scoreboard shrink-0 rounded-lg px-2 py-2 text-center">
+        <header className="matchday-scoreboard shrink-0 px-2 py-2 text-center">
           <div className="flex flex-wrap items-center justify-center gap-1.5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-400">
               {getManagerScheduledFixtureHeadline(sched)} ·{" "}
@@ -302,7 +303,7 @@ export function ManagerPlayGame({
                     : ""}
               </span>
               <span
-                className={`rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${STATUS_PILL_CLASS[status.tone]}`}
+                className={`rounded-sm border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${STATUS_PILL_CLASS[status.tone]}`}
               >
                 {status.pill}
               </span>
@@ -335,7 +336,7 @@ export function ManagerPlayGame({
           )}
 
           {isHalftime && (
-            <div className="shrink-0 space-y-2">
+            <ClipboardPanel padded className="shrink-0 space-y-2">
               <p className={`${TYPO.bodySm} line-clamp-2 text-pitch-300`}>
                 {live.effectivenessLine}
               </p>
@@ -343,7 +344,7 @@ export function ManagerPlayGame({
                 Second half command
               </p>
               <CommandGrid command={command} onSelect={selectCommand} />
-            </div>
+            </ClipboardPanel>
           )}
 
           {!isPreview && !isHalftime && !live.isComplete && (
@@ -367,7 +368,7 @@ export function ManagerPlayGame({
 
           {/* Events — scroll within available space */}
           <div
-            className={`${CARD.inset} flex min-h-0 flex-1 flex-col overflow-hidden ${SPACING.cardPaddingSm}`}
+            className={`${CARD.clipboard} flex min-h-0 flex-1 flex-col overflow-hidden ${SPACING.cardPaddingSm}`}
           >
             <p className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
               Match events
@@ -384,7 +385,7 @@ export function ManagerPlayGame({
                   : "Waiting for action…"}
               </p>
             ) : (
-              <ul className="mt-1.5 min-h-0 flex-1 space-y-0.5 overflow-y-auto overscroll-contain pr-0.5 [-ms-overflow-style:none] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-pitch-600/80">
+              <ul className="mt-1.5 min-h-0 flex-1 space-y-0.5 overflow-y-auto overscroll-contain pr-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-pitch-600/80">
                 {matchEvents.map((ev, i) => (
                   <ManagerMatchEventLine
                     key={`${ev.minute}-${ev.type}-${i}`}

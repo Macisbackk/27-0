@@ -15,13 +15,13 @@ export function MatchdayScoreboard({
   totalValue,
 }: MatchdayScoreboardProps) {
   return (
-    <div className="matchday-scoreboard relative overflow-hidden rounded-xl border border-white/10 px-4 py-3 shadow-2xl">
+    <div className="matchday-scoreboard relative overflow-hidden border border-white/10 px-4 py-3 shadow-[0_6px_0_rgba(0,0,0,0.45)]">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-pitch-900/40 via-transparent to-pitch-900/40" />
       <div className="relative flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-accent-green" />
-            <span className={`${TYPO.sectionLabel} text-accent-green`}>
+            <span className="h-2 w-2 animate-pulse rounded-full bg-theme-primary" />
+            <span className={`${TYPO.sectionLabel} text-theme-primary`}>
               Super League
             </span>
           </div>
@@ -41,7 +41,7 @@ export function MatchdayScoreboard({
               aria-label="Squad fill progress"
             >
               <div
-                className="h-full rounded-full bg-gradient-to-r from-theme-primary/80 to-accent-green transition-all duration-300 motion-reduce:transition-none"
+                className="h-full rounded-full bg-gradient-to-r from-theme-primary/80 to-theme-primary transition-all duration-300 motion-reduce:transition-none"
                 style={{
                   width: `${Math.min(100, (filledCount / Math.max(1, totalSlots)) * 100)}%`,
                 }}

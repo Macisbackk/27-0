@@ -132,7 +132,7 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
           <TeamSidePanel
             label="Your Team"
             badge="🟢 Your Team"
-            badgeClass="border-accent-green/40 bg-accent-green/10 text-accent-green"
+            badgeClass="border-theme-primary/40 bg-theme-primary/10 text-theme-primary"
             side={user}
             align="left"
             sideKey="left"
@@ -270,9 +270,9 @@ const RatingBar = memo(function RatingBar({
 }) {
   const barClass =
     edge === "better"
-      ? "bg-accent-green shadow-[0_0_12px_rgba(34,197,94,0.5)]"
+      ? "bg-theme-primary"
       : edge === "worse"
-        ? "bg-accent-red shadow-[0_0_12px_rgba(239,68,68,0.5)]"
+        ? "bg-accent-red"
         : "bg-pitch-600";
 
   return (
@@ -299,39 +299,27 @@ const RatingBadge = memo(function RatingBadge({
   edge: "better" | "worse" | "tie";
 }) {
   const betterStyles =
-    "border-accent-green/50 bg-accent-green/10 shadow-[0_0_24px_rgba(34,197,94,0.15)]";
+    "border-theme-primary/50 bg-theme-primary/10";
   const worseStyles =
-    "border-accent-red/50 bg-accent-red/10 shadow-[0_0_24px_rgba(239,68,68,0.15)]";
+    "border-accent-red/50 bg-accent-red/10";
   const tieStyles =
-    "border-gray-500/50 bg-pitch-900/60 shadow-[0_0_16px_rgba(148,163,184,0.12)]";
-  const betterGlow = [
-    "0 0 16px rgba(34,197,94,0.1)",
-    "0 0 28px rgba(34,197,94,0.2)",
-    "0 0 16px rgba(34,197,94,0.1)",
-  ];
-  const worseGlow = [
-    "0 0 16px rgba(239,68,68,0.1)",
-    "0 0 28px rgba(239,68,68,0.2)",
-    "0 0 16px rgba(239,68,68,0.1)",
-  ];
-
+    "border-gray-500/50 bg-pitch-900/60";
   const edgeStyles =
     edge === "better"
       ? betterStyles
       : edge === "worse"
         ? worseStyles
         : tieStyles;
-  const glow =
-    edge === "better" ? betterGlow : edge === "worse" ? worseGlow : undefined;
+  const glow = undefined; // softened: no animated neon glow
   const nameColor =
     edge === "better"
-      ? "text-accent-green/90"
+      ? "text-theme-primary/90"
       : edge === "worse"
         ? "text-accent-red/90"
         : "text-gray-400";
   const ratingColor =
     edge === "better"
-      ? "text-accent-green"
+      ? "text-theme-primary"
       : edge === "worse"
         ? "text-accent-red"
         : "text-gray-300";

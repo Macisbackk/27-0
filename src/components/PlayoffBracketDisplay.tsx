@@ -117,7 +117,7 @@ export function PlayoffBracketDisplay({
           getShortLabel={(round) =>
             PLAYOFF_ROUND_SHORT[round] ?? getPlayoffRoundLabel(round)
           }
-          activeClassName="border-theme-primary/55 bg-theme-primary/12 text-theme-primary shadow-[0_0_16px_rgba(34,197,94,0.12)]"
+          activeClassName="border-theme-primary/55 bg-theme-primary/12 text-theme-primary shadow-[3px_3px_0_rgba(0,0,0,0.35)]"
         />
 
         <div className="mt-4 md:hidden">

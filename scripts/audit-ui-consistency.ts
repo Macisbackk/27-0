@@ -1,7 +1,8 @@
 #!/usr/bin/env npx tsx
 /**
  * Audits UI consistency for the 27-0 design system.
- * Flags: raw CTA buttons, old card-glass/matchday-panel hotspots, hardcoded Current green in generic UI.
+ * Flags: raw CTAs, card-glass/matchday-panel, hardcoded Current green,
+ * soft rounded-xl dashboard cards, missing stadium button usage patterns.
  * Run: npm run audit:ui-consistency
  */
 
@@ -32,10 +33,12 @@ const ALLOWLIST = new Set([
   "src/components/ui/buttons.tsx",
   "src/components/ModeStartLink.tsx",
   "src/components/ChallengeCupVariantToggle.tsx",
-]);
-
-const ALLOW_CARD_GLASS = new Set([
-  // Temporary: CSS aliases still cover these; prefer migrating gradually
+  "src/components/ui/panelSurfaces.ts",
+  "src/components/ui/ProgrammePanel.tsx",
+  "src/components/ui/ScoreboardPanel.tsx",
+  "src/components/ui/ClipboardPanel.tsx",
+  "src/components/ui/GamePanel.tsx",
+  "src/components/ui/GameModal.tsx",
 ]);
 
 const CHECKS: {
@@ -60,37 +63,61 @@ const CHECKS: {
       file.includes("GameTabs") ||
       file.includes("PitchSlot") ||
       file.includes("modal") ||
-      file.toLowerCase().includes("dialog"),
+      file.toLowerCase().includes("dialog") ||
+      file.includes("GameTableRow"),
   },
   {
     id: "card-glass-hotspot",
-    severity: "warn",
+    severity: "error",
     regex: /\bcard-glass\b/g,
     skipIf: (file) =>
       file.includes("design-system") || file.includes("globals.css"),
   },
   {
     id: "matchday-panel-hotspot",
-    severity: "warn",
+    severity: "error",
     regex: /\bmatchday-panel\b/g,
     skipIf: (file) =>
       file.includes("design-system") || file.includes("globals.css"),
   },
   {
     id: "hardcoded-current-green-class",
-    severity: "warn",
-    regex: /\b(text|bg|border)-accent-green\b/g,
+    severity: "error",
+    regex: /\b(text|bg|border|from|to|via)-accent-green\b/g,
     skipIf: (file) =>
       file.includes("ModeStart") ||
       file.includes("ChallengeCup") ||
       file.includes("globals.css") ||
-      file.includes("design-system.css"),
+      file.includes("design-system.css") ||
+      file.includes("theme-css-vars") ||
+      file.includes("ui-themes"),
   },
   {
     id: "btn-primary-legacy",
     severity: "warn",
     regex: /\bbtn-primary\b/g,
     skipIf: (file) => file.includes("globals.css"),
+  },
+  {
+    id: "soft-rounded-xl-card",
+    severity: "warn",
+    regex: /\brounded-xl\b.*\b(border|bg-|shadow)/g,
+    skipIf: (file) =>
+      file.includes("design-system") ||
+      file.includes("globals.css") ||
+      file.includes("PitchSlot"),
+  },
+  {
+    id: "neon-green-glow",
+    severity: "warn",
+    regex: /rgba\(34,\s*197,\s*94/g,
+  },
+  {
+    id: "plain-text-action-underline",
+    severity: "warn",
+    regex: /<(?:button|a)\b[^>]*className=["'][^"']*\bunderline\b[^"']*["'][^>]*>/g,
+    skipIf: (_file, line) =>
+      line.includes("GameButton") || line.includes("LINK."),
   },
 ];
 
@@ -112,7 +139,6 @@ function main() {
   for (const file of files) {
     const rel = relative(ROOT, file).replace(/\\/g, "/");
     if (ALLOWLIST.has(rel)) continue;
-    if (ALLOW_CARD_GLASS.has(rel) && false) continue;
 
     const text = readFileSync(file, "utf8");
     const lines = text.split(/\r?\n/);
@@ -139,13 +165,13 @@ function main() {
   const warns = findings.filter((f) => f.severity === "warn");
 
   console.log(`UI consistency audit: ${errors.length} errors, ${warns.length} warnings`);
-  for (const f of [...errors, ...warns].slice(0, 80)) {
+  for (const f of [...errors, ...warns].slice(0, 100)) {
     console.log(
       `[${f.severity}] ${f.id} ${f.file}:${f.line} — ${f.snippet}`
     );
   }
-  if (findings.length > 80) {
-    console.log(`…and ${findings.length - 80} more`);
+  if (findings.length > 100) {
+    console.log(`…and ${findings.length - 100} more`);
   }
 
   if (errors.length > 0) {

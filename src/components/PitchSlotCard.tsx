@@ -57,7 +57,7 @@ export function PitchSlotCard({
 
   return (
     <div
-      className={`pitch-slot-card flex shrink-0 flex-col rounded-md border border-theme-tertiary/45 bg-[rgba(5,12,10,0.92)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_4px_10px_rgba(0,0,0,0.35)] ${sizeClass} overflow-hidden ${className}`}
+      className={`pitch-slot-card flex shrink-0 flex-col rounded-md border border-theme-primary/35 bg-[rgba(5,12,10,0.92)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_4px_10px_rgba(0,0,0,0.35)] ${sizeClass} overflow-hidden ${className}`}
       title={player.name}
     >
       <div

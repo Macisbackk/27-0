@@ -221,7 +221,7 @@ export function RLRatingDisplay({
   return (
     <div className={`shrink-0 text-center ${className}`}>
       <p
-        className={`font-bold uppercase tracking-wider text-accent-green/80 ${
+        className={`font-bold uppercase tracking-wider text-theme-primary/80 ${
           compact ? "text-[7px]" : large ? "text-[10px]" : "text-[8px]"
         }`}
       >
@@ -231,7 +231,7 @@ export function RLRatingDisplay({
         className={`rl-rating-value font-display font-black leading-none ${
           masked
             ? "text-gray-600"
-            : "text-accent-green drop-shadow-[0_0_14px_rgba(34,197,94,0.5)]"
+            : "text-theme-primary"
         } ${
           compact
             ? "text-2xl sm:text-6xl"

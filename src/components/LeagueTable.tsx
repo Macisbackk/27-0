@@ -49,14 +49,14 @@ const LeagueTableRowView = memo(function LeagueTableRowView({
     <tr
       className={`border-b border-pitch-800/50 transition ${
         highlight
-          ? "border-l-2 border-l-accent-green bg-accent-green/[0.08]"
+          ? "border-l-2 border-l-theme-primary bg-theme-primary/10"
           : "hover:bg-pitch-900/40"
       }`}
     >
       <td
         className={`sticky left-0 z-10 px-2 py-2.5 font-display font-bold backdrop-blur-sm ${
           highlight
-            ? "bg-accent-green/[0.12] text-accent-green"
+            ? "bg-theme-primary/10 text-theme-primary"
             : "bg-pitch-950/95 text-gray-400"
         }`}
       >
@@ -73,7 +73,7 @@ const LeagueTableRowView = memo(function LeagueTableRowView({
       <td className="px-2 py-2.5 text-center text-gray-400">{row.played}</td>
       <td
         className={`px-2 py-2.5 text-center font-semibold ${
-          highlight ? "text-accent-green" : "text-white"
+          highlight ? "text-theme-primary" : "text-white"
         }`}
       >
         {row.wins}
@@ -88,7 +88,7 @@ const LeagueTableRowView = memo(function LeagueTableRowView({
       <td
         className={`hidden px-2 py-2.5 text-center font-medium md:table-cell ${
           row.pointsDifference > 0
-            ? "text-accent-green"
+            ? "text-theme-primary"
             : row.pointsDifference < 0
               ? "text-red-400"
               : "text-gray-400"
@@ -99,7 +99,7 @@ const LeagueTableRowView = memo(function LeagueTableRowView({
       </td>
       <td
         className={`px-2 py-2.5 text-center font-display font-bold ${
-          highlight ? "text-accent-green" : "text-white"
+          highlight ? "text-theme-primary" : "text-white"
         }`}
       >
         {row.leaguePoints}

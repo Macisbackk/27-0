@@ -16,12 +16,12 @@ export default function HomePage() {
     <PageShell withLights compact>
       <div className={PAGE.sectionHero}>
         <GameHeader
-          eyebrow="Super League matchday"
+          eyebrow="Scoreboard"
           title={<LogoMark size="lg" className="justify-center" />}
           subtitle={
             <>
-              Manager Mode puts you in the dugout. Quick Mode is the fast
-              squad-builder — can you go 27-0?
+              Manager Mode is the main game. Quick Mode is the matchday ticket —
+              can you go 27-0?
             </>
           }
           className="mx-auto max-w-2xl text-left sm:text-center [&_.game-header__title]:flex [&_.game-header__title]:justify-center"

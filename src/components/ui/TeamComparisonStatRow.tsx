@@ -71,7 +71,7 @@ export const TeamComparisonStatRow = memo(function TeamComparisonStatRow({
         } ${isRight ? "sm:text-right" : "sm:text-left"}`}
       >
         {isWinner && side === "left" && (
-          <span className="mr-1 text-accent-green" aria-hidden>
+          <span className="mr-1 text-theme-primary" aria-hidden>
             ✓
           </span>
         )}

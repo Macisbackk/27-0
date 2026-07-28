@@ -102,7 +102,7 @@ export function ManagerRetirementIntentModal({
       <div
         ref={panelRef}
         tabIndex={-1}
-        className={`card-glass my-auto flex w-full max-w-lg max-h-[min(92dvh,900px)] flex-col overflow-hidden outline-none sm:rounded-2xl`}
+        className={`game-modal-panel my-auto flex w-full max-w-lg max-h-[min(92dvh,900px)] flex-col overflow-hidden outline-none sm:rounded-2xl`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={`flex-1 overflow-y-auto overflow-x-hidden ${SPACING.cardPadding}`}>

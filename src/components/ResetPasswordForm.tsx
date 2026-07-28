@@ -119,7 +119,7 @@ export function ResetPasswordForm() {
   if (state === "success") {
     return (
       <div className={`${CARD.panel} ${SPACING.cardPadding} text-center`}>
-        <p className={`${TYPO.cardTitle} text-accent-green`}>Password updated</p>
+        <p className={`${TYPO.cardTitle} text-theme-primary`}>Password updated</p>
         <p className={`mt-2 ${TYPO.body}`}>
           Your new password is saved. Redirecting to log in…
         </p>

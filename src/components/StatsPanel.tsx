@@ -159,7 +159,7 @@ export function StatsPanel() {
     !eraNormalStats
   ) {
     return (
-      <div className="card-glass p-12 text-center text-gray-500">
+      <div className="programme-panel programme-panel--elevated p-12 text-center text-gray-500">
         <p className={TYPO.body}>Loading stats...</p>
       </div>
     );
@@ -204,7 +204,7 @@ export function StatsPanel() {
           </nav>
 
           {!hasAnyRuns && (
-            <div className="card-glass p-6 text-center text-gray-500">
+            <div className="programme-panel programme-panel--elevated p-6 text-center text-gray-500">
               No runs yet. Play a game to start tracking your stats.
             </div>
           )}
@@ -244,7 +244,7 @@ export function StatsPanel() {
           </nav>
 
           {!hasAnyManagerStats && (
-            <div className="card-glass p-6 text-center text-gray-500">
+            <div className="programme-panel programme-panel--elevated p-6 text-center text-gray-500">
               No manager seasons yet. Start a career in Manager Mode to track
               stats.
             </div>
@@ -738,9 +738,9 @@ function StatsSection({
   headerExtra?: ReactNode;
 }) {
   return (
-    <section className="matchday-panel p-4 sm:p-5">
+    <section className="programme-panel programme-panel--elevated p-4 sm:p-5">
       <div className="mb-4 flex flex-wrap items-center gap-3">
-        <h2 className="font-display text-sm font-bold uppercase tracking-wider text-accent-green">
+        <h2 className="font-display text-sm font-bold uppercase tracking-wider text-theme-primary">
           {title}
         </h2>
         {headerExtra}

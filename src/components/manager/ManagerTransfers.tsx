@@ -9,7 +9,7 @@ import {
   ManagerTransferResultModal,
   type TransferResultDetails,
 } from "@/components/manager/ManagerTransferResultModal";
-import { ManagerSectionCard, ManagerStat, ManagerViewHeader } from "@/components/manager/manager-ui";
+import { ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
 import {
   canAffordAdditionalWage,
   evaluateClubSigningAppeal,
@@ -19,7 +19,9 @@ import {
   isWageOverBudget,
 } from "@/lib/manager/managerFinance";
 import { isSameManagerClub } from "@/lib/clubs/super-league-display";
-import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
+import { FILTER, SPACING } from "@/lib/ui/design-system";
+import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
+import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -370,17 +372,18 @@ export function ManagerTransfers({
 
   return (
     <div className={`w-full ${SPACING.stackLg}`}>
-      <ManagerViewHeader
+      <GameSectionHeader
+        label="TRANSFER ROOM"
         title="Transfers"
         subtitle={tabSubtitle}
-        tabs={
-          <ManagerSubTabBar
-            tabs={transferSubTabs}
-            active={tab}
-            onChange={switchTab}
-          />
-        }
       />
+      <div className="flex w-full min-w-0 justify-center">
+        <ManagerSubTabBar
+          tabs={transferSubTabs}
+          active={tab}
+          onChange={switchTab}
+        />
+      </div>
 
       <ManagerSectionCard title="Funds & wages" variant="elevated" accent="primary">
         <div className="mt-2 grid grid-cols-2 gap-3">
@@ -422,13 +425,13 @@ export function ManagerTransfers({
         </p>
       </ManagerSectionCard>
 
-      <div className={`${CARD.base} ${SPACING.cardPadding}`}>
+      <ClipboardPanel padded>
         <p className={`${TYPO.sectionLabel} mb-3`}>Filter by position</p>
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setPositionFilter("all")}
-            className={`${FILTER.chipTouch} ${
+            className={`${FILTER.chipTouch} rounded-sm ${
               positionFilter === "all" ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
             }`}
           >
@@ -439,7 +442,7 @@ export function ManagerTransfers({
               key={pos}
               type="button"
               onClick={() => setPositionFilter(pos)}
-              className={`${FILTER.chipTouch} ${
+              className={`${FILTER.chipTouch} rounded-sm ${
                 positionFilter === pos ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
               }`}
             >
@@ -447,7 +450,7 @@ export function ManagerTransfers({
             </button>
           ))}
         </div>
-      </div>
+      </ClipboardPanel>
 
       {tab === "listed" && (
       <section className="space-y-3">

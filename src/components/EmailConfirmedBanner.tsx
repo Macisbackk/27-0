@@ -47,7 +47,7 @@ export function EmailConfirmedBanner() {
 
   return (
     <div
-      className={`${CARD.panel} mx-auto mb-6 max-w-md border border-accent-green/40 bg-accent-green/10 ${SPACING.cardPadding} shadow-[0_0_24px_rgba(34,197,94,0.12)]`}
+      className={`${CARD.panel} mx-auto mb-6 max-w-md border border-theme-primary/40 bg-theme-primary/10 ${SPACING.cardPadding} shadow-[3px_3px_0_rgba(0,0,0,0.35)]`}
       role="status"
     >
       <div className="flex items-start justify-between gap-3">

@@ -99,7 +99,7 @@ export function managerFixtureCardStyle(
 }
 
 export function managerClubAccentCardClass(): string {
-  return `${CARD.elevated} game-panel--flush ${SPACING.cardPadding} border-l-4`;
+  return `${CARD.elevated} programme-panel--flush ${SPACING.cardPadding} border-l-4`;
 }
 
 export function managerClubAccentCardStyle(club: string): CSSProperties {
@@ -154,7 +154,7 @@ export function managerCalloutClass(
     sky: `border-sky-400/45 bg-sky-400/10 text-sky-300`,
     muted: `${MANAGER_BORDER.default} bg-pitch-800/40 text-pitch-300`,
   };
-  return `rounded-lg border px-3 py-2.5 ${map[tone]}`;
+  return `rounded-sm border px-3 py-2.5 ${map[tone]}`;
 }
 
 /** Left accent stripe for section cards — pairs with CARD surfaces. */
@@ -189,17 +189,17 @@ export function managerAlertPanelClass(
   return `${CARD.inset} ${SPACING.cardPaddingSm} ${stripe}`;
 }
 
-/** Compact list / accordion row — neutral border everywhere. */
+/** Compact list / accordion row — clipboard list language. */
 export function managerListRowClass(interactive = true): string {
   const hover = interactive
-    ? `transition ${MANAGER_BORDER.interactiveHover} hover:bg-pitch-900/50`
+    ? `game-table-row--interactive transition ${MANAGER_BORDER.interactiveHover}`
     : "";
-  return `rounded-lg border ${MANAGER_BORDER.subtle} bg-pitch-950/40 px-3 py-2 ${hover}`;
+  return `game-table-row game-table-row--ledger ${hover}`;
 }
 
 /** Dense data row (squad sheet, league lists). */
 export function managerDataRowClass(): string {
-  return `min-w-0 rounded-lg border ${MANAGER_BORDER.subtle} bg-pitch-950/55 px-2 py-2 text-left sm:px-3 sm:py-2.5`;
+  return `game-table-row game-table-row--ledger min-w-0 text-left`;
 }
 
 export function managerResultBadgeClass(
@@ -215,7 +215,7 @@ export function managerResultBadgeClass(
 }
 
 function managerFixtureRowBase(): string {
-  return `min-w-0 rounded-lg border ${MANAGER_BORDER.default} bg-pitch-950/50 px-3 py-3 sm:px-4 sm:py-3`;
+  return `game-table-row game-table-row--fixture min-w-0`;
 }
 
 export function managerFixtureRowClass(options: {
@@ -229,7 +229,7 @@ export function managerFixtureRowClass(options: {
     return `${base} ${ACCENT_STRIPE.sky}`;
   }
   if (options.isNext) {
-    return `${base} border-l-4 border-l-theme-primary/60 bg-theme-primary/6`;
+    return `${base} border-l-4 border-l-theme-primary`;
   }
 
   const key = managerCompetitionKey(options.competition);
