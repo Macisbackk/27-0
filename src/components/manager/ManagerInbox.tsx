@@ -147,7 +147,7 @@ export function ManagerInbox({
   return (
     <ManagerPage>
       <GameSectionHeader
-        label="INBOX"
+        label="Inbox"
         title="Club Mail"
         subtitle="Club messages and transfer offers — auto-cleared after 7 weeks"
         action={

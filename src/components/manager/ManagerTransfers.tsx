@@ -373,7 +373,7 @@ export function ManagerTransfers({
   return (
     <div className={`w-full ${SPACING.stackLg}`}>
       <GameSectionHeader
-        label="TRANSFER ROOM"
+        label="Transfers"
         title="Transfers"
         subtitle={tabSubtitle}
       />

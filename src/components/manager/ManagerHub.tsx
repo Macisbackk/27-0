@@ -390,7 +390,7 @@ export function ManagerHub({
         )}
       >
         <GameSectionHeader
-          label="NEXT FIXTURE"
+          label="Next fixture"
           title={
             <>
               <span className="block sm:inline">{career.club}</span>{" "}
@@ -640,7 +640,7 @@ export function ManagerHub({
     <div className={showStickyPlayBar ? "hidden sm:block" : undefined}>
     <ProgrammePanel padded>
       <GameSectionHeader
-        label="CLUB OFFICE"
+        label="Club office"
         title="Season Progress"
         subtitle={`Season ${career.seasonYear}`}
       />
@@ -694,7 +694,7 @@ export function ManagerHub({
   const leagueTableCard = (
     <div className={SPACING.stackSm}>
       <GameSectionHeader
-        label="RESULTS BOARD"
+        label="Results"
         title="League Table"
         subtitle={`Season ${career.seasonYear} · Week ${career.gameWeek}`}
       />
@@ -714,7 +714,7 @@ export function ManagerHub({
   const hubStandingsCard =
     isCupFixture && hubCareer.challengeCup && nextFixture ? (
       <div className={SPACING.stackSm}>
-        <GameSectionHeader label="RESULTS BOARD" title="Challenge Cup" />
+        <GameSectionHeader label="Results" title="Challenge Cup" />
         <HubChallengeCupBracketPanel
           career={hubCareer}
           cupStatus={cupStatus}
@@ -723,7 +723,7 @@ export function ManagerHub({
       </div>
     ) : showPlayoffBracket ? (
       <div className={SPACING.stackSm}>
-        <GameSectionHeader label="RESULTS BOARD" title="Play-Offs" />
+        <GameSectionHeader label="Results" title="Play-Offs" />
         <HubPlayoffBracketPanel
           playoffs={hubCareer.playoffs!}
           career={hubCareer}
@@ -766,7 +766,7 @@ export function ManagerHub({
             {hubStandingsCard}
           </div>
           {commandCentre}
-          <GameSectionHeader label="CLUB OFFICE" title="Club details" className="sm:hidden" />
+          <GameSectionHeader label="Club office" title="Club details" className="sm:hidden" />
           <MobileDetailsAccordion title="Club details">
             <HubBoardBudgetAttendance
               career={career}
@@ -798,7 +798,7 @@ export function ManagerHub({
 
       {commandCentre}
 
-      <GameSectionHeader label="CLUB OFFICE" title="Club details" className="sm:hidden" />
+      <GameSectionHeader label="Club office" title="Club details" className="sm:hidden" />
       <MobileDetailsAccordion title="Club details">
         {clubDetailsSections}
       </MobileDetailsAccordion>

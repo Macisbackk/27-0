@@ -73,7 +73,7 @@ export function ManagerSeasonRewards({
 
       <ScoreboardPanel variant="featured" padded className="text-center">
         <GameSectionHeader
-          label="RESULTS BOARD"
+          label="Rewards"
           title={
             <>
               {career.club} · {career.seasonYear}

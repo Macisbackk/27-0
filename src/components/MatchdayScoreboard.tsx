@@ -15,7 +15,7 @@ export function MatchdayScoreboard({
   totalValue,
 }: MatchdayScoreboardProps) {
   return (
-    <div className="matchday-scoreboard relative overflow-hidden border border-white/10 px-4 py-3 shadow-[0_6px_0_rgba(0,0,0,0.45)]">
+    <div className="matchday-scoreboard relative overflow-hidden border border-white/10 px-4 py-3 shadow-[0_14px_34px_rgba(0,0,0,0.28)]">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-pitch-900/40 via-transparent to-pitch-900/40" />
       <div className="relative flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">

@@ -108,7 +108,7 @@ export function ManagerMatchdayFormation({
     >
       {!hideTitle && (
         <div className="mb-2 text-center sm:mb-3">
-          <p className="game-section-header__label">TEAM SHEET</p>
+          <p className="game-section-header__label">Team sheet</p>
           <h2 className="game-section-header__title">{title}</h2>
         </div>
       )}

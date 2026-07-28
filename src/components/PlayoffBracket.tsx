@@ -203,7 +203,7 @@ export function PlayoffBracket({
             getShortLabel={(round) =>
               PLAYOFF_ROUND_SHORT[round] ?? getPlayoffRoundLabel(round)
             }
-            activeClassName="border-mode-current/55 bg-mode-current/12 text-mode-current shadow-[3px_3px_0_rgba(0,0,0,0.35)]"
+            activeClassName="border-mode-current/55 bg-mode-current/12 text-mode-current"
           />
         </div>
 

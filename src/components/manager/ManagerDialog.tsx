@@ -57,7 +57,7 @@ export function ManagerDialog({
         <div
           ref={panelRef}
           tabIndex={-1}
-          className={`game-modal-panel programme-panel--elevated w-full max-w-md outline-none ${SPACING.cardPadding}`}
+          className={`game-modal-panel w-full max-w-md outline-none ${SPACING.cardPadding}`}
           onClick={(e) => e.stopPropagation()}
         >
           <h2 id="manager-dialog-title" className={TYPO.cardTitle}>

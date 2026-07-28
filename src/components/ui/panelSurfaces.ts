@@ -3,8 +3,9 @@ import { SPACING } from "@/lib/ui/design-system";
 export type PanelSurface = "programme" | "scoreboard" | "clipboard";
 export type PanelVariant = "base" | "elevated" | "inset" | "featured";
 
+/** All surfaces share the same clean panel geometry; class names keep semantic intent. */
 const SURFACE_CLASS: Record<PanelSurface, string> = {
-  programme: "programme-panel",
+  programme: "game-panel",
   scoreboard: "scoreboard-panel",
   clipboard: "clipboard-panel",
 };

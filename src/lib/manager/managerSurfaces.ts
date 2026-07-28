@@ -99,7 +99,7 @@ export function managerFixtureCardStyle(
 }
 
 export function managerClubAccentCardClass(): string {
-  return `${CARD.elevated} programme-panel--flush ${SPACING.cardPadding} border-l-4`;
+  return `${CARD.elevated} game-panel--flush ${SPACING.cardPadding} border-l-4`;
 }
 
 export function managerClubAccentCardStyle(club: string): CSSProperties {

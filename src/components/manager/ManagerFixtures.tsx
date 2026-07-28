@@ -414,7 +414,7 @@ export function ManagerFixtures({
   return (
     <div className={`mx-auto w-full min-w-0 max-w-3xl overflow-x-hidden ${SPACING.stackLg}`}>
       <GameSectionHeader
-        label="FIXTURE WALL"
+        label="Fixtures"
         title="Fixtures"
         subtitle={`Season ${career.seasonYear} · ${career.club}`}
       />

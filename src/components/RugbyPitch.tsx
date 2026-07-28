@@ -141,7 +141,7 @@ function RugbyPitchInner({
           }
         >
           <div
-            className={`relative w-full overflow-hidden rounded-2xl border-2 border-theme-primary/40 shadow-[3px_3px_0_rgba(0,0,0,0.35)] rugby-pitch-pro ${
+            className={`relative w-full overflow-hidden rounded-2xl border border-theme-primary/30 shadow-[0_14px_34px_rgba(0,0,0,0.28)] rugby-pitch-pro ${
               formationOnly
                 ? "aspect-[5/7.6] min-h-0 max-h-[min(68vh,480px)]"
                 : compact

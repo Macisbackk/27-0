@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
+import { GamePanel } from "@/components/ui/GamePanel";
 import { GameSectionTitle } from "@/components/ui/GameSectionTitle";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -22,7 +22,7 @@ export function SectionCard({
   className = "",
 }: SectionCardProps) {
   return (
-    <ProgrammePanel
+    <GamePanel
       as="section"
       variant={featured ? "featured" : "elevated"}
       padded
@@ -35,6 +35,6 @@ export function SectionCard({
         </header>
       ) : null}
       {children}
-    </ProgrammePanel>
+    </GamePanel>
   );
 }

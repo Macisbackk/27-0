@@ -148,12 +148,10 @@ body {
 }
 
 .app-header {
-  background: #0a1018;
-  border-color: color-mix(in srgb, var(--theme-tertiary) 40%, var(--border-subtle));
-  border-bottom-width: 2px;
-  box-shadow:
-    0 4px 0 rgba(0, 0, 0, 0.35),
-    inset 0 -3px 0 color-mix(in srgb, var(--theme-primary) 55%, transparent);
+  background: rgba(7, 12, 11, 0.96);
+  border-color: color-mix(in srgb, var(--theme-tertiary) 22%, var(--border-subtle));
+  border-bottom-width: 1px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   overflow-x: clip;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
@@ -1014,19 +1012,19 @@ body {
       0 0 16px rgba(251, 191, 36, 0.28);
   }
 
-  /* ── 27-0 shared game buttons (Store theme / mode / semantic) ── */
-  /* Stadium signage / broadcast lower-third buttons */
+  /* ── 27-0 shared game buttons — clean premium sports CTAs ── */
   .game-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.45rem;
     width: auto;
     max-width: 100%;
-    border-radius: 4px 14px 4px 14px;
-    font-weight: 900;
-    letter-spacing: 0.045em;
-    text-transform: uppercase;
-    line-height: 1.2;
+    border-radius: 12px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    line-height: 1;
     text-align: center;
     text-decoration: none;
     isolation: isolate;
@@ -1036,140 +1034,127 @@ body {
     backdrop-filter: none;
     transform: translateZ(0);
     transition:
-      filter 0.12s ease,
-      box-shadow 0.12s ease,
-      transform 0.08s ease,
-      border-color 0.12s ease,
-      background 0.12s ease;
+      transform 120ms ease,
+      background 120ms ease,
+      border-color 120ms ease,
+      filter 120ms ease;
   }
 
   .game-button--sm {
     min-height: 40px;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.6875rem;
-    border-radius: 3px 10px 3px 10px;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.8125rem;
+    border-radius: 10px;
   }
 
   .game-button--md {
     min-height: 44px;
-    padding: 0.625rem 1rem;
-    font-size: 0.8125rem;
+    padding: 0.75rem 1.15rem;
+    font-size: 0.875rem;
   }
 
   .game-button--lg {
     min-height: 52px;
-    padding: 1rem 1.25rem;
-    border-radius: 4px 16px 4px 16px;
+    padding: 0.9rem 1.35rem;
+    border-radius: 12px;
     font-family: var(--font-display), "Arial Black", Impact, sans-serif;
-    font-size: 1.0625rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
   }
 
-  /* Store-themed — kit stripe fill, tertiary trim, hard offset (no neon) */
   .game-button--theme {
-    border: 2px solid var(--theme-tertiary);
-    background-color: var(--theme-primary);
-    background-image: linear-gradient(
-      90deg,
-      var(--theme-primary) 0 72%,
-      var(--theme-secondary) 72% 100%
-    );
+    border: 1px solid color-mix(in srgb, var(--theme-tertiary) 55%, var(--theme-primary));
+    background: var(--theme-primary);
+    background-image: none;
     color: var(--theme-text-on-primary);
-    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--theme-primary) 22%, transparent);
   }
 
   .game-button--theme:hover:not(:disabled) {
-    filter: brightness(1.06);
-    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.5);
+    filter: brightness(1.05);
+    transform: translateY(-1px);
   }
 
-  /* Current Mode — fixed green, never Store theme */
   .game-button--current {
-    border: 2px solid var(--mode-current-border);
-    background-color: var(--mode-current);
-    background-image: linear-gradient(
-      90deg,
-      var(--mode-current) 0 72%,
-      color-mix(in srgb, var(--mode-current) 70%, #000) 72% 100%
-    );
+    border: 1px solid var(--mode-current-border);
+    background: var(--mode-current);
+    background-image: none;
     color: var(--mode-current-text) !important;
-    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--mode-current) 22%, transparent);
   }
 
   .game-button--current:hover:not(:disabled) {
-    filter: brightness(1.05);
+    filter: brightness(1.04);
+    transform: translateY(-1px);
   }
 
-  /* Era Mode — fixed gold */
   .game-button--era {
-    border: 2px solid var(--mode-era-border);
-    background-color: var(--mode-era);
-    background-image: linear-gradient(
-      90deg,
-      var(--mode-era) 0 72%,
-      color-mix(in srgb, var(--mode-era) 75%, #000) 72% 100%
-    );
+    border: 1px solid var(--mode-era-border);
+    background: var(--mode-era);
+    background-image: none;
     color: var(--mode-era-text) !important;
-    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--mode-era) 22%, transparent);
   }
 
   .game-button--era:hover:not(:disabled) {
-    filter: brightness(1.05);
+    filter: brightness(1.04);
+    transform: translateY(-1px);
   }
 
   .game-button--secondary {
-    border: 2px solid var(--theme-tertiary);
-    background: #0b1220;
-    color: var(--theme-primary);
-    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+    border: 1px solid color-mix(in srgb, var(--theme-tertiary) 40%, transparent);
+    background: rgba(7, 12, 11, 0.94);
+    color: #e5e7eb;
+    box-shadow: none;
   }
 
   .game-button--secondary:hover:not(:disabled) {
-    border-color: var(--theme-tertiary);
-    color: var(--theme-secondary);
-    background: color-mix(in srgb, var(--theme-secondary) 12%, #0b1220);
+    border-color: color-mix(in srgb, var(--theme-tertiary) 55%, transparent);
+    color: #fff;
+    background: color-mix(in srgb, var(--theme-primary) 10%, rgba(7, 12, 11, 0.94));
+    transform: translateY(-1px);
   }
 
   .game-button--ghost {
-    border: 2px solid color-mix(in srgb, var(--theme-tertiary) 40%, transparent);
+    border: 1px solid transparent;
     background: transparent;
     color: #d1d5db;
     box-shadow: none;
   }
 
   .game-button--ghost:hover:not(:disabled) {
-    border-color: var(--theme-tertiary);
-    color: var(--theme-primary);
-    background: color-mix(in srgb, var(--theme-primary) 8%, transparent);
+    border-color: color-mix(in srgb, var(--theme-tertiary) 28%, transparent);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.04);
   }
 
   .game-button--danger {
-    border: 2px solid color-mix(in srgb, var(--danger) 75%, transparent);
+    border: 1px solid color-mix(in srgb, var(--danger) 60%, transparent);
     background: color-mix(in srgb, var(--danger) 88%, #000);
     color: #ffffff;
-    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);
+    box-shadow: none;
   }
 
   .game-button--danger:hover:not(:disabled) {
     filter: brightness(1.05);
+    transform: translateY(-1px);
   }
 
   .game-button--success {
-    border: 2px solid color-mix(in srgb, var(--success) 75%, transparent);
+    border: 1px solid color-mix(in srgb, var(--success) 55%, transparent);
     background: var(--success);
     color: #07130a;
-    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);
+    box-shadow: none;
   }
 
   .game-button--success:hover:not(:disabled) {
-    filter: brightness(1.05);
+    filter: brightness(1.04);
+    transform: translateY(-1px);
   }
 
   .game-button:active:not(:disabled) {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
+    transform: translateY(0);
   }
 
   /* Legacy hooks — mode start buttons delegate to game-button classes */
@@ -1937,8 +1922,7 @@ body {
 }
 
 /*
- * Opaque stadium buttons (unlayered) — required inside programme/card panels.
- * Must NOT force soft 12px radius — that was killing the custom look.
+ * Opaque game buttons (unlayered) — clean premium sports CTAs.
  */
 a.game-button,
 button.game-button,
@@ -1946,12 +1930,13 @@ button.game-button,
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  gap: 0.45rem;
   max-width: 100%;
-  border-radius: 4px 14px 4px 14px !important;
-  font-weight: 900 !important;
-  letter-spacing: 0.045em;
-  text-transform: uppercase;
-  line-height: 1.2;
+  border-radius: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  line-height: 1;
   text-align: center;
   text-decoration: none !important;
   isolation: isolate !important;
@@ -1961,20 +1946,21 @@ button.game-button,
   backdrop-filter: none !important;
   transform: translateZ(0);
   transition:
-    box-shadow 120ms ease,
+    transform 120ms ease,
+    background 120ms ease,
     border-color 120ms ease,
-    filter 120ms ease,
-    transform 80ms ease;
+    filter 120ms ease;
   cursor: pointer;
 }
 
 .game-button:hover:not(:disabled) {
-  filter: brightness(1.05);
+  filter: brightness(1.04);
+  transform: translateY(-1px);
 }
 
 .game-button:active:not(:disabled) {
-  transform: translate(2px, 2px);
-  filter: brightness(0.97);
+  transform: translateY(0);
+  filter: brightness(0.98);
 }
 
 .game-button:disabled {
@@ -1986,64 +1972,59 @@ button.game-button,
 
 .game-button--sm {
   min-height: 40px;
-  padding: 0.5rem 0.875rem;
-  font-size: 0.6875rem;
-  border-radius: 3px 10px 3px 10px !important;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.8125rem;
+  border-radius: 10px !important;
 }
 
 .game-button--md {
   min-height: 44px;
-  padding: 0.625rem 1rem;
-  font-size: 0.8125rem;
+  padding: 0.75rem 1.15rem;
+  font-size: 0.875rem;
 }
 
 .game-button--lg {
   min-height: 48px;
-  padding: 0.75rem 1.125rem;
-  border-radius: 4px 16px 4px 16px !important;
+  padding: 0.85rem 1.25rem;
+  border-radius: 12px !important;
   font-family: var(--font-display), "Arial Black", Impact, sans-serif;
   font-size: 1rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-weight: 800;
+  letter-spacing: 0.01em;
 }
 
 a.game-button--theme,
 button.game-button--theme,
 .game-button--theme {
   background-color: var(--theme-primary) !important;
-  background-image: linear-gradient(
-    90deg,
-    var(--theme-primary) 0 72%,
-    var(--theme-secondary) 72% 100%
-  ) !important;
-  border: 2px solid var(--theme-tertiary) !important;
+  background-image: none !important;
+  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 55%, var(--theme-primary)) !important;
   color: var(--theme-text-on-primary) !important;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45) !important;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--theme-primary) 22%, transparent) !important;
 }
 
 a.game-button--theme:hover:not(:disabled),
 button.game-button--theme:hover:not(:disabled),
 .game-button--theme:hover:not(:disabled) {
-  filter: brightness(1.06);
+  filter: brightness(1.05);
 }
 
 a.game-button--secondary,
 button.game-button--secondary,
 .game-button--secondary {
-  background-color: #0b1220 !important;
+  background-color: rgba(7, 12, 11, 0.94) !important;
   background-image: none !important;
-  border: 2px solid var(--theme-tertiary) !important;
-  color: var(--theme-primary) !important;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 40%, transparent) !important;
+  color: #e5e7eb !important;
+  box-shadow: none !important;
 }
 
 a.game-button--secondary:hover:not(:disabled),
 button.game-button--secondary:hover:not(:disabled),
 .game-button--secondary:hover:not(:disabled) {
-  color: var(--theme-secondary) !important;
-  background-color: color-mix(in srgb, var(--theme-secondary) 12%, #0b1220) !important;
-  border-color: var(--theme-tertiary) !important;
+  color: #fff !important;
+  background-color: color-mix(in srgb, var(--theme-primary) 10%, rgba(7, 12, 11, 0.94)) !important;
+  border-color: color-mix(in srgb, var(--theme-tertiary) 55%, transparent) !important;
 }
 
 a.game-button--ghost,
@@ -2051,7 +2032,7 @@ button.game-button--ghost,
 .game-button--ghost {
   background-color: transparent !important;
   background-image: none !important;
-  border: 2px solid color-mix(in srgb, var(--theme-tertiary) 40%, transparent) !important;
+  border: 1px solid transparent !important;
   color: #e5e7eb !important;
   box-shadow: none !important;
 }

@@ -490,7 +490,7 @@ export function ManagerSquad({
       {subTab === "tactics" ? (
         <ClipboardPanel padded>
           <GameSectionHeader
-            label="TACTICS"
+            label="Tactics"
             title="Match Plan"
             subtitle={tacticsHelpText}
           />

@@ -168,13 +168,13 @@ export function RecruitmentSlotReveal({
       aria-label="Recruitment spin"
     >
       <div
-        className={`recruitment-spin-panel ${CARD.elevated} w-full max-w-lg overflow-hidden border shadow-[4px_4px_0_rgba(0,0,0,0.4)] ${
+        className={`recruitment-spin-panel ${CARD.elevated} w-full max-w-lg overflow-hidden border shadow-[0_14px_34px_rgba(0,0,0,0.28)] ${
           landed ? "border-theme-primary/30" : "border-pitch-600/50"
         }`}
         style={{
           boxShadow: landed
-            ? `4px 4px 0 rgba(0,0,0,0.4), inset 4px 0 0 ${clubColors.primary}`
-            : "4px 4px 0 rgba(0,0,0,0.4), inset 4px 0 0 rgba(100,116,139,0.45)",
+            ? `0 14px 34px rgba(0,0,0,0.28), inset 3px 0 0 ${clubColors.primary}`
+            : "0 14px 34px rgba(0,0,0,0.28), inset 3px 0 0 rgba(100,116,139,0.45)",
           transition: "box-shadow 0.35s ease-out, border-color 0.35s ease-out",
         }}
       >

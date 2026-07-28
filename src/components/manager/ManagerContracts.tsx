@@ -208,7 +208,7 @@ export function ManagerContracts({
   return (
     <ManagerPage>
       <GameSectionHeader
-        label="CONTRACT LEDGER"
+        label="Contracts"
         title="Contracts"
         subtitle="Manage wages, renewals, and squad roles"
       />

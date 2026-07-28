@@ -52,32 +52,26 @@ export const TAB_RAIL = {
   item: "shrink-0 snap-start",
 } as const;
 
-/** Shared card surface classes — programme / scoreboard / clipboard. */
+/** Shared card surface classes — clean sports panels. */
 export const CARD = {
-  base: "programme-panel",
-  elevated: "programme-panel programme-panel--elevated",
-  inset: "programme-panel programme-panel--inset",
+  base: "game-panel",
+  elevated: "game-panel game-panel--elevated",
+  inset: "game-panel game-panel--inset",
   stat: "game-stat-card",
   hover:
-    "transition hover:border-theme-tertiary/50",
-  /** Accent overlay — pair with a bordered surface; border tint only (no ring/glow halo). */
-  featured: "programme-panel--featured",
+    "transition hover:border-theme-tertiary/40",
+  featured: "game-panel--featured",
   featuredHard:
-    "border-accent-red/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",
+    "border-accent-red/35",
   interactive:
-    "btn-press cursor-pointer transition hover:border-theme-primary/45",
+    "btn-press cursor-pointer transition hover:border-theme-primary/40",
   selected:
-    "border-theme-tertiary/50 bg-pitch-800/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",
-  /** Legacy global panel — programme elevated */
-  panel: "programme-panel programme-panel--elevated",
-  /** Modal / overlay panel — opaque programme (no glass blur) */
-  glass: "programme-panel programme-panel--elevated",
-  /** Home-style featured mode card */
-  hero: "programme-panel programme-panel--elevated programme-panel--featured",
-  /** Broadcast / live match */
+    "border-theme-tertiary/40 bg-pitch-800/45",
+  panel: "game-panel game-panel--elevated",
+  glass: "game-panel game-panel--elevated",
+  hero: "game-panel game-panel--elevated game-panel--featured",
   scoreboard: "scoreboard-panel",
   scoreboardElevated: "scoreboard-panel scoreboard-panel--elevated",
-  /** Squad / tactics / dense lists */
   clipboard: "clipboard-panel",
   clipboardElevated: "clipboard-panel clipboard-panel--elevated",
 } as const;
@@ -116,7 +110,7 @@ export const FILTER = {
   chipTouch:
     "min-h-[44px] rounded-lg border px-3 py-2 text-sm font-medium transition",
   tabGroup:
-    "mx-auto inline-flex w-fit max-w-full flex-nowrap rounded-sm border border-theme-tertiary/40 bg-[#0b1220] p-1 sm:w-auto",
+    "mx-auto inline-flex w-fit max-w-full flex-nowrap rounded-xl border border-theme-tertiary/25 bg-[rgba(7,12,11,0.94)] p-1 sm:w-auto",
 } as const;
 
 /** Centered shell for segmented sub-tab bars (Squad/Tactics, Transfers, Stats, etc.). */

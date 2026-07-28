@@ -185,7 +185,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
   return (
     <ManagerPage wide>
       <GameSectionHeader
-        label="ACADEMY"
+        label="Academy"
         title="Reserves"
         subtitle={`Youth & reserve squad · ${career.reserves.length} players · Reserve wages from ${formatWage(
           Object.values(career.reserveContracts ?? {}).reduce(
