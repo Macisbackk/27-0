@@ -413,16 +413,16 @@ export function LeaderboardTable() {
       )}
 
       {loading && entries.length === 0 ? (
-        <div className="matchday-panel p-12 text-center text-gray-500">
+        <div className="game-panel game-panel--elevated p-12 text-center text-gray-500">
           Loading leaderboard…
         </div>
       ) : entries.length === 0 ? (
-        <div className="matchday-panel p-12 text-center text-gray-500">
+        <div className="game-panel game-panel--elevated p-12 text-center text-gray-500">
           {emptyStateMessage}
         </div>
       ) : (
         <div
-          className={`matchday-panel overflow-hidden transition-opacity ${
+          className={`game-panel game-panel--elevated overflow-hidden transition-opacity ${
             loading ? "opacity-60" : "opacity-100"
           }`}
         >

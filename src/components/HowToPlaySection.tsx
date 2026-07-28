@@ -1,4 +1,7 @@
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { GameBadge } from "@/components/ui/GameBadge";
+import { GamePanel } from "@/components/ui/GamePanel";
+import { GameSectionTitle } from "@/components/ui/GameSectionTitle";
+import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 const CORE_STEPS = [
@@ -13,51 +16,36 @@ const MODES = [
     title: "Manager Mode",
     tag: "Career",
     body: "Take charge of a Super League club — contracts, tactics, transfers, and full-season management.",
-    accent: "current" as const,
+    tone: "theme" as const,
   },
   {
     title: "Normal Current",
     tag: "Current",
     body: "Spin 2026 Super League clubs and build a squad capable of going 27-0.",
-    accent: "current" as const,
+    tone: "win" as const,
   },
   {
     title: "Normal Era",
     tag: "Era",
     body: "Spin historic team-years and draft from exact era player pools.",
-    accent: "era" as const,
+    tone: "gold" as const,
   },
 ] as const;
 
-const ACCENT_STYLES = {
-  current: {
-    card: "border-mode-current/30 bg-mode-current/5",
-    tag: "border-mode-current/40 bg-mode-current/10 text-mode-current",
-    dot: "bg-mode-current",
-  },
-  era: {
-    card: "border-accent-gold/30 bg-accent-gold/5",
-    tag: "border-accent-gold/40 bg-accent-gold/10 text-accent-gold",
-    dot: "bg-accent-gold",
-  },
-} as const;
-
 export function HowToPlaySection() {
   return (
-    <section
-      className={`matchday-panel overflow-hidden ${CARD.featured}`}
-      aria-labelledby="how-to-play-heading"
+    <GamePanel
+      as="section"
+      variant="elevated"
+      className="overflow-hidden"
     >
       <div
-        className={`border-b border-pitch-600/45 bg-pitch-950/40 ${SPACING.cardPadding} sm:px-6`}
+        className={`border-b border-theme-tertiary/20 bg-[rgba(3,8,6,0.55)] ${SPACING.cardPadding} sm:px-6`}
       >
-        <p className={TYPO.sectionLabel}>Guide</p>
-        <h3
-          id="how-to-play-heading"
-          className="mt-1 font-display text-lg font-black tracking-tight text-white sm:text-xl"
-        >
+        <GameSectionTitle label="Guide" heading="How To Play" />
+        <p id="how-to-play-heading" className="sr-only">
           How To Play
-        </h3>
+        </p>
         <p className={`mt-2 max-w-2xl ${TYPO.body}`}>
           Every mode uses the same recruitment loop — only the club spin and
           competition format change.
@@ -70,56 +58,37 @@ export function HowToPlaySection() {
           {CORE_STEPS.map((step, index) => (
             <li
               key={step}
-              className="flex items-start gap-3 rounded-lg border border-pitch-700/50 bg-pitch-950/45 px-3 py-2.5"
+              className="flex items-start gap-3 rounded-lg border border-theme-tertiary/20 bg-[rgba(3,8,6,0.55)] px-3 py-2.5"
             >
               <span
-                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-theme-tertiary/40 bg-theme-primary/10 font-display text-[11px] font-black text-theme-primary"
+                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-sm border border-theme-tertiary/40 bg-theme-primary/10 font-display text-[11px] font-black text-theme-primary"
                 aria-hidden
               >
                 {index + 1}
               </span>
-              <span className={`min-w-0 pt-0.5 ${TYPO.body} text-gray-300`}>
-                {step}
-              </span>
+              <span className={`${TYPO.bodySm} text-pitch-200`}>{step}</span>
             </li>
           ))}
         </ol>
 
-        <p className={`mt-6 ${TYPO.statLabel}`}>Game modes</p>
-        <ul className="mt-3 grid gap-3 sm:grid-cols-2">
-          {MODES.map((mode) => {
-            const accent = ACCENT_STYLES[mode.accent];
-            return (
-              <li
-                key={mode.title}
-                className={`rounded-xl border p-4 transition ${accent.card}`}
-              >
-                <div className="flex items-start gap-3">
-                  <span
-                    className={`mt-1 h-2 w-2 shrink-0 rounded-full ${accent.dot}`}
-                    aria-hidden
-                  />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <p className="font-display text-sm font-bold text-white">
-                        {mode.title}
-                      </p>
-                      <span
-                        className={`rounded-full border px-2 py-0.5 font-display text-[9px] font-bold uppercase tracking-wider ${accent.tag}`}
-                      >
-                        {mode.tag}
-                      </span>
-                    </div>
-                    <p className={`mt-2 ${TYPO.bodySm} text-gray-400`}>
-                      {mode.body}
-                    </p>
-                  </div>
-                </div>
-              </li>
-            );
-          })}
+        <div className="pitch-divider my-5" />
+
+        <p className={TYPO.statLabel}>Modes</p>
+        <ul className="mt-3 grid gap-2 sm:grid-cols-3">
+          {MODES.map((mode) => (
+            <li
+              key={mode.title}
+              className="rounded-lg border border-theme-tertiary/20 bg-[rgba(3,8,6,0.55)] px-3 py-3"
+            >
+              <GameBadge tone={mode.tone}>{mode.tag}</GameBadge>
+              <p className="mt-2 font-display text-sm font-bold text-white">
+                {mode.title}
+              </p>
+              <p className={`mt-1 ${TYPO.bodySm}`}>{mode.body}</p>
+            </li>
+          ))}
         </ul>
       </div>
-    </section>
+    </GamePanel>
   );
 }

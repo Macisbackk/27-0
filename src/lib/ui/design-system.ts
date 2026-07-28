@@ -52,32 +52,28 @@ export const TAB_RAIL = {
   item: "shrink-0 snap-start",
 } as const;
 
-/** Shared card surface classes. */
+/** Shared card surface classes — map to game-panel language. */
 export const CARD = {
-  base: "rounded-xl border border-pitch-600/55 bg-pitch-900/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",
-  elevated:
-    "rounded-xl border border-pitch-600/55 bg-gradient-to-b from-pitch-900/85 to-pitch-950/95 shadow-[0_8px_28px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.05)]",
-  inset:
-    "rounded-lg border border-pitch-700/55 bg-pitch-950/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]",
-  stat: "rl-stat-box rounded-lg border border-pitch-600/45 bg-pitch-900/60",
+  base: "game-panel",
+  elevated: "game-panel game-panel--elevated",
+  inset: "game-panel game-panel--inset",
+  stat: "game-stat-card",
   hover:
-    "transition hover:border-pitch-500/50 hover:bg-pitch-900/75",
+    "transition hover:border-theme-tertiary/50",
   /** Accent overlay — pair with a bordered surface; border tint only (no ring/glow halo). */
-  featured:
-    "border-theme-tertiary/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]",
+  featured: "game-panel--featured",
   featuredHard:
     "border-accent-red/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",
   interactive:
-    "btn-press cursor-pointer transition hover:border-theme-primary/45 hover:bg-pitch-800/65 active:border-theme-primary/55 active:bg-pitch-800/80",
+    "btn-press cursor-pointer transition hover:border-theme-primary/45",
   selected:
     "border-theme-tertiary/50 bg-pitch-800/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",
   /** Legacy global panel — aligned with design system surfaces */
-  panel: "matchday-panel",
-  /** Backdrop/blur overlay — pair with panel/base; no border (parent supplies outline). */
-  glass:
-    "rounded-2xl bg-pitch-800/55 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]",
+  panel: "game-panel game-panel--elevated",
+  /** Modal / overlay panel — opaque clubhouse (no glass blur) */
+  glass: "game-panel game-panel--elevated",
   /** Home-style featured mode card — single bordered surface */
-  hero: "matchday-panel",
+  hero: "game-panel game-panel--elevated game-panel--featured",
 } as const;
 
 /** Page layout helpers — pair with PageShell component. */
@@ -106,7 +102,7 @@ export const MANAGER = {
 /** Form & filter inputs. */
 export const FILTER = {
   input:
-    "w-full rounded-lg border border-pitch-600 bg-pitch-900/60 px-3.5 py-2.5 text-sm text-white outline-none transition focus:border-theme-primary sm:px-4 sm:py-3",
+    "game-input",
   chipActive:
     "border-theme-tertiary/60 bg-theme-primary/10 text-theme-primary",
   chipIdle: "border-pitch-600 text-gray-400 hover:text-white",
@@ -114,7 +110,7 @@ export const FILTER = {
   chipTouch:
     "min-h-[44px] rounded-lg border px-3 py-2 text-sm font-medium transition",
   tabGroup:
-    "mx-auto inline-flex w-fit max-w-full flex-nowrap rounded-xl border border-pitch-600/60 bg-pitch-900/80 p-1 sm:w-auto",
+    "mx-auto inline-flex w-fit max-w-full flex-nowrap rounded-xl border border-theme-tertiary/30 bg-[rgba(5,12,10,0.92)] p-1 sm:w-auto",
 } as const;
 
 /** Centered shell for segmented sub-tab bars (Squad/Tactics, Transfers, Stats, etc.). */
@@ -254,8 +250,7 @@ export const NAV_SIZE = {
 /** Navigation & links. */
 export const NAV = {
   item: `${TYPO.nav} btn-press flex ${NAV_SIZE.control} items-center gap-2 rounded-lg border border-transparent px-2.5 text-sm transition`,
-  itemActive:
-    "border border-theme-tertiary/40 bg-theme-primary/10 text-theme-primary",
+  itemActive: "sidebar-nav-item-active",
   itemIdle: "text-gray-300 hover:border-pitch-600/50 hover:bg-pitch-800/60 hover:text-white",
   list: "space-y-1",
   sectionLabel:

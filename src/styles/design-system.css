@@ -1,0 +1,457 @@
+/**
+ * 27-0 design system — rugby clubhouse + broadcast + programme trim.
+ * Store themes drive --theme-*; Current/Era greens/golds stay mode-only.
+ */
+
+/* ── App shell ───────────────────────────────────────────────────────────── */
+.app-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 100dvh;
+  background:
+    radial-gradient(
+      circle at top,
+      var(--theme-primary-soft),
+      transparent 34rem
+    ),
+    linear-gradient(180deg, #07100d 0%, #030706 100%);
+}
+
+.app-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 120px 120px;
+  mask-image: radial-gradient(ellipse at 50% 20%, black 0%, transparent 78%);
+}
+
+.app-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Game panel (programme / clubhouse) ──────────────────────────────────── */
+.game-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 40%, transparent);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
+    rgba(5, 12, 10, 0.92);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 14px 36px rgba(0, 0, 0, 0.32);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.game-panel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    var(--theme-primary),
+    var(--theme-secondary),
+    var(--theme-tertiary)
+  );
+  pointer-events: none;
+}
+
+.game-panel--flush::before {
+  display: none;
+}
+
+.game-panel--inset {
+  border-radius: 0.5rem;
+  border-color: color-mix(in srgb, var(--theme-tertiary) 22%, rgba(255, 255, 255, 0.08));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
+    rgba(3, 8, 6, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.game-panel--inset::before {
+  width: 3px;
+  opacity: 0.85;
+}
+
+.game-panel--elevated {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 18px 48px rgba(0, 0, 0, 0.4);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012)),
+    rgba(7, 16, 13, 0.96);
+}
+
+.game-panel--featured {
+  border-color: color-mix(in srgb, var(--theme-tertiary) 55%, transparent);
+}
+
+.game-panel__body {
+  position: relative;
+  z-index: 1;
+}
+
+.game-panel__label {
+  font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--theme-primary);
+}
+
+/* Legacy aliases → game-panel language (no heavy glass) */
+.card-glass,
+.matchday-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 40%, transparent);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
+    rgba(5, 12, 10, 0.94);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 14px 36px rgba(0, 0, 0, 0.32);
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+.card-glass::before,
+.matchday-panel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    var(--theme-primary),
+    var(--theme-secondary),
+    var(--theme-tertiary)
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Scorebug / programme headers ────────────────────────────────────────── */
+.game-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 35%, transparent);
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--theme-primary) 14%, transparent) 0%,
+      rgba(5, 12, 10, 0.92) 28%,
+      rgba(5, 12, 10, 0.92) 100%
+    );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.game-header__eyebrow {
+  font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--theme-primary);
+}
+
+.game-header__title {
+  font-family: var(--font-pitch), var(--font-display), Impact, sans-serif;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.game-header__subtitle {
+  font-size: 0.8125rem;
+  color: #9ca3af;
+  line-height: 1.4;
+}
+
+.game-section-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-tertiary) 28%, transparent);
+}
+
+.game-section-title__label {
+  font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--theme-primary);
+}
+
+.game-section-title__heading {
+  font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* ── Ticket / programme badges ───────────────────────────────────────────── */
+.game-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-height: 1.5rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 0.25rem;
+  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 45%, transparent);
+  background: color-mix(in srgb, var(--theme-primary) 12%, rgba(5, 12, 10, 0.9));
+  font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--theme-primary);
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%);
+  padding-right: 0.75rem;
+}
+
+.game-badge--win {
+  border-color: color-mix(in srgb, var(--success) 55%, transparent);
+  background: color-mix(in srgb, var(--success) 16%, rgba(5, 12, 10, 0.9));
+  color: var(--success);
+}
+
+.game-badge--loss {
+  border-color: color-mix(in srgb, var(--danger) 55%, transparent);
+  background: color-mix(in srgb, var(--danger) 14%, rgba(5, 12, 10, 0.9));
+  color: #fca5a5;
+}
+
+.game-badge--gold {
+  border-color: color-mix(in srgb, var(--mode-era) 55%, transparent);
+  background: color-mix(in srgb, var(--mode-era) 14%, rgba(5, 12, 10, 0.9));
+  color: var(--mode-era);
+}
+
+.game-badge--muted {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #9ca3af;
+}
+
+/* ── Stat cards ──────────────────────────────────────────────────────────── */
+.game-stat-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 28%, transparent);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent),
+    rgba(5, 12, 10, 0.88);
+  padding: 0.65rem 0.75rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.game-stat-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--theme-primary),
+    var(--theme-tertiary),
+    transparent
+  );
+}
+
+.game-stat-card__label {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.game-stat-card__value {
+  margin-top: 0.2rem;
+  font-family: var(--font-pitch), var(--font-display), Impact, sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+  color: #fff;
+  line-height: 1.1;
+}
+
+/* ── Pitch-line dividers ─────────────────────────────────────────────────── */
+.pitch-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--theme-tertiary) 45%, transparent) 20%,
+    color-mix(in srgb, var(--theme-primary) 35%, transparent) 50%,
+    color-mix(in srgb, var(--theme-tertiary) 45%, transparent) 80%,
+    transparent
+  );
+}
+
+/* ── Form inputs (non-browser default) ───────────────────────────────────── */
+.game-input {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 35%, rgba(255, 255, 255, 0.12));
+  background: rgba(3, 8, 6, 0.85);
+  padding: 0.625rem 0.875rem;
+  color: #fff;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.game-input:focus {
+  border-color: var(--theme-tertiary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--theme-primary) 22%, transparent);
+}
+
+.game-input::placeholder {
+  color: #6b7280;
+}
+
+/* ── Scoreboard logo mark ────────────────────────────────────────────────── */
+.logo-mark {
+  isolation: isolate;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+  position: relative;
+}
+
+.logo-mark-27 {
+  color: var(--theme-primary);
+}
+
+.logo-mark-dash {
+  color: var(--theme-tertiary);
+  margin: 0 0.02em;
+}
+
+.logo-mark-0 {
+  color: #f3f4f6;
+}
+
+.logo-mark::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin-top: 0.15em;
+  background: linear-gradient(
+    90deg,
+    var(--theme-primary),
+    var(--theme-tertiary),
+    transparent
+  );
+  opacity: 0.85;
+}
+
+[data-ui-theme="default"] .logo-mark-27 {
+  color: var(--mode-current);
+}
+
+[data-ui-theme="default"] .logo-mark-dash {
+  color: var(--mode-current-2);
+}
+
+/* Soften logo glow — scoreboard, not neon */
+[data-theme-logo-glow="true"] .logo-mark-27,
+[data-theme-logo-glow="true"] .logo-mark-0 {
+  text-shadow: 0 0 8px var(--theme-glow-soft);
+}
+
+/* ── Sidebar club menu ───────────────────────────────────────────────────── */
+.sidebar-section-label {
+  margin: 0.75rem 0.5rem 0.35rem;
+  padding: 0 0.35rem;
+  font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--theme-primary) 80%, #9ca3af);
+}
+
+.sidebar-nav-item-active {
+  border-color: color-mix(in srgb, var(--theme-tertiary) 55%, transparent) !important;
+  background: color-mix(in srgb, var(--theme-primary) 12%, rgba(5, 12, 10, 0.9)) !important;
+  color: var(--theme-primary) !important;
+  box-shadow: inset 3px 0 0 var(--theme-primary);
+}
+
+/* ── Arena surfaces (less tacky black gradients) ─────────────────────────── */
+.game-arena,
+.matchday-arena {
+  background:
+    radial-gradient(ellipse at 50% -8%, var(--theme-primary-soft) 0%, transparent 48%),
+    linear-gradient(180deg, #07100d 0%, #040807 100%);
+}
+
+.stadium-backdrop {
+  background:
+    radial-gradient(ellipse at 50% -12%, color-mix(in srgb, var(--theme-primary) 10%, transparent) 0%, transparent 50%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, transparent 30%, rgba(0, 0, 0, 0.35) 100%);
+}
+
+.stadium-lights {
+  background:
+    radial-gradient(ellipse at 8% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 36%),
+    radial-gradient(ellipse at 92% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 36%),
+    radial-gradient(ellipse at 50% 0%, var(--theme-primary-soft) 0%, transparent 42%);
+}
+
+/* ── Broadcast scoreboard ────────────────────────────────────────────────── */
+.matchday-scoreboard {
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--theme-primary) 16%, transparent) 0%,
+      rgba(5, 12, 10, 0.96) 22%,
+      rgba(5, 12, 10, 0.96) 100%
+    );
+  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 35%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 28px rgba(0, 0, 0, 0.4);
+}
+
+.scoreboard-value-panel {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 30%, transparent);
+}

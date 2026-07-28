@@ -37,6 +37,7 @@ const ALLOWLIST_FILES = new Set([
   "src/lib/ui/apply-ui-theme.ts",
   "src/lib/ui-themes.ts",
   "src/app/globals.css",
+  "src/styles/design-system.css",
   "src/lib/ui/game-button-variants.ts",
   "scripts/audit-button-colours.ts",
 ]);

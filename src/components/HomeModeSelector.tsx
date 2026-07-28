@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { GameBadge } from "@/components/ui/GameBadge";
 import { GameButton } from "@/components/ui/GameButton";
+import { GamePanel } from "@/components/ui/GamePanel";
+import { GameSectionTitle } from "@/components/ui/GameSectionTitle";
 import { buildPlayHref } from "@/lib/play-links";
 import {
   getNormalEraVariant,
@@ -10,7 +13,7 @@ import {
 } from "@/lib/storage/preferences";
 import { getQuickModeCurrentEraHint, getQuickSeasonStartLabel } from "@/lib/mode-labels";
 import { playModeClassicStart, playUiClick } from "@/lib/sound";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
@@ -46,40 +49,34 @@ export function HomeModeSelector() {
     <div>
       <GuestNotice variant="home" />
 
-      <div className="mx-auto flex max-w-xl flex-col gap-5">
-        <div
-          className={`group w-full ${SPACING.cardPaddingLg} transition ${CARD.featured} ${CARD.hero} border-theme-primary/35 hover:border-theme-primary/55`}
-        >
-          <p className={TYPO.sectionLabel}>Main Mode</p>
-          <h2 className={`${TYPO.cardTitle} mt-1 text-2xl text-white`}>
+      <div className="mx-auto flex max-w-2xl flex-col gap-5">
+        <GamePanel variant="featured" padded className={`${SPACING.cardPaddingLg}`}>
+          <div className="flex flex-wrap items-center gap-2">
+            <GameBadge>Featured</GameBadge>
+            <GameBadge tone="muted">Career</GameBadge>
+          </div>
+          <h2 className="mt-3 font-[family-name:var(--font-pitch)] text-3xl uppercase tracking-[0.04em] text-white sm:text-4xl">
             Manager Mode
           </h2>
-          <p className={`mt-3 ${TYPO.body}`}>
-            Take charge of a Super League club, manage contracts, develop
-            reserves, set tactics and play through the season.
+          <p className={`mt-3 max-w-lg ${TYPO.body}`}>
+            Take charge of a Super League club — contracts, reserves, tactics,
+            transfers, and a full season on the board.
           </p>
+          <div className="pitch-divider my-5" />
           <GameButton
             variant="theme"
             href="/manager"
-            className="mt-5"
             onClick={() => playUiClick()}
           >
-            Start Manager Mode
+            Enter the dugout
           </GameButton>
-        </div>
+        </GamePanel>
 
-        <div
-          className={`w-full ${SPACING.cardPaddingLg} transition ${CARD.hero} ${CARD.featured} ${
-            normalEraMode ? "border-accent-gold/35" : ""
-          }`}
-        >
-          <p className={TYPO.sectionLabel}>Quick Mode</p>
-          <h2 className={`${TYPO.cardTitle} mt-1 text-2xl text-white`}>
-            Spin & Simulate
-          </h2>
-          <p className={`mt-3 ${TYPO.body}`}>
-            Build your XIII position by position and simulate a full Super League
-            campaign. Can you go 27-0?
+        <GamePanel variant="elevated" padded>
+          <GameSectionTitle label="Quick modes" heading="Spin & simulate" />
+          <p className={`mt-2 ${TYPO.bodySm}`}>
+            Build your XIII position by position and chase 27-0. Secondary to
+            Manager Mode — faster sessions, same Super League feel.
           </p>
 
           <ChallengeCupVariantToggle
@@ -87,25 +84,26 @@ export function HomeModeSelector() {
             useShortLabels
             eraMode={normalEraMode}
             onEraModeChange={handleEraModeChange}
-            className="mt-5"
+            className="mt-4"
           />
 
           <p className={`mt-3 ${TYPO.bodySm} text-pitch-500`}>
             {getQuickModeCurrentEraHint(normalEraMode)}
           </p>
 
-          <ModeStartLink
-            href={normalHref}
-            eraMode={normalEraMode}
-            onClick={() => {
-              playUiClick();
-              playModeClassicStart("NORMAL");
-            }}
-            className="mt-5"
-          >
-            {getQuickSeasonStartLabel(normalEraMode)}
-          </ModeStartLink>
-        </div>
+          <div className="mt-4">
+            <ModeStartLink
+              href={normalHref}
+              eraMode={normalEraMode}
+              onClick={() => {
+                playUiClick();
+                playModeClassicStart("NORMAL");
+              }}
+            >
+              {getQuickSeasonStartLabel(normalEraMode)}
+            </ModeStartLink>
+          </div>
+        </GamePanel>
       </div>
     </div>
   );

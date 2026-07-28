@@ -256,13 +256,15 @@ export function ManagerSectionCard({
       className={`${surface} ${SPACING.cardPaddingMobile} ${accentBorder} ${className}`}
       style={style}
     >
-      {title && <p className={TYPO.sectionLabel}>{title}</p>}
-      {subtitle && (
-        <p className={`${title ? "mt-1" : ""} ${TYPO.bodySm} text-pitch-400`}>
-          {subtitle}
-        </p>
-      )}
-      {children}
+      <div className="game-panel__body relative z-[1]">
+        {title && <p className={TYPO.sectionLabel}>{title}</p>}
+        {subtitle && (
+          <p className={`${title ? "mt-1" : ""} ${TYPO.bodySm} text-pitch-400`}>
+            {subtitle}
+          </p>
+        )}
+        {children}
+      </div>
     </div>
   );
 }

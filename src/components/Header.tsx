@@ -22,7 +22,7 @@ export function Header() {
                 playMenuOpen();
                 setMenuOpen(true);
               }}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-lg text-pitch-300 transition hover:bg-pitch-800/45 hover:text-white sm:min-h-[44px] sm:w-auto sm:gap-2 sm:rounded-lg sm:border sm:border-pitch-600 sm:px-4 sm:text-sm sm:font-medium sm:text-gray-300 sm:hover:border-theme-primary sm:hover:bg-transparent sm:hover:text-white"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-theme-tertiary/30 bg-[rgba(5,12,10,0.65)] text-lg text-pitch-300 transition hover:border-theme-tertiary/55 hover:bg-theme-primary/10 hover:text-theme-primary sm:min-h-[44px] sm:w-auto sm:gap-2 sm:px-4 sm:text-sm sm:font-medium sm:text-gray-300"
               aria-label="Open menu"
             >
               <span aria-hidden className="leading-none sm:text-base">

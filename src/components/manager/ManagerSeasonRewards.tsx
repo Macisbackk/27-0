@@ -68,12 +68,13 @@ export function ManagerSeasonRewards({
         Return Home
       </GameButton>
 
-      <div className={`${CARD.elevated} ${SPACING.cardPaddingLg} text-center`}>
+      <div className={`${CARD.elevated} ${CARD.featured} ${SPACING.cardPaddingLg} text-center`}>
         <p className={TYPO.sectionLabel}>End of Season Rewards</p>
         <h1 className={`mt-2 ${TYPO.pageTitle}`}>
           {career.club} · {career.seasonYear}
         </h1>
-        <p className={`mt-2 text-2xl font-bold text-accent-gold`}>
+        <div className="pitch-divider mx-auto my-4 max-w-xs" />
+        <p className={`mt-2 font-[family-name:var(--font-pitch)] text-3xl tracking-wide text-accent-gold`}>
           {formatRewardTotal(lines)}
         </p>
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>

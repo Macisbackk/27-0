@@ -10,11 +10,11 @@ import type { ManagerCompetition } from "./types";
  * semantic colour is expressed as a left accent stripe (+ optional subtle tint).
  */
 
-/** Shared pill / badge chrome for manager mode. */
+/** Shared pill / badge chrome for manager mode — ticket-style chips. */
 export const MANAGER_PILL = {
-  base: "inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider",
+  base: "inline-flex items-center rounded-sm border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider",
   gold: "border-accent-gold/45 bg-accent-gold/12 text-accent-gold",
-  primary: "border-theme-primary/45 bg-theme-primary/12 text-theme-primary",
+  primary: "border-theme-tertiary/55 bg-theme-primary/12 text-theme-primary",
   sky: "border-sky-400/45 bg-sky-400/12 text-sky-300",
   amber: "border-amber-400/45 bg-amber-400/12 text-amber-300",
   red: "border-red-500/45 bg-red-500/12 text-red-300",
@@ -37,12 +37,12 @@ export const MANAGER_BORDER = {
 } as const;
 
 const ACCENT_STRIPE = {
-  gold: "border-l-4 border-l-accent-gold/60 bg-accent-gold/5",
-  primary: "border-l-4 border-l-theme-primary/60 bg-theme-primary/5",
-  red: "border-l-4 border-l-red-400/60 bg-red-500/5",
-  amber: "border-l-4 border-l-amber-400/60 bg-amber-500/5",
-  sky: "border-l-4 border-l-sky-400/55 bg-sky-400/5",
-  stone: "border-l-4 border-l-stone-400/55 bg-stone-500/5",
+  gold: "bg-accent-gold/5 ring-1 ring-inset ring-accent-gold/20",
+  primary: "bg-theme-primary/5 ring-1 ring-inset ring-theme-tertiary/25",
+  red: "bg-red-500/5 ring-1 ring-inset ring-red-400/20",
+  amber: "bg-amber-500/5 ring-1 ring-inset ring-amber-400/20",
+  sky: "bg-sky-400/5 ring-1 ring-inset ring-sky-400/20",
+  stone: "bg-stone-500/5 ring-1 ring-inset ring-stone-400/20",
 } as const;
 
 const COMPETITION_SURFACE: Record<
@@ -99,7 +99,7 @@ export function managerFixtureCardStyle(
 }
 
 export function managerClubAccentCardClass(): string {
-  return `${CARD.elevated} ${SPACING.cardPadding} border-l-4`;
+  return `${CARD.elevated} game-panel--flush ${SPACING.cardPadding} border-l-4`;
 }
 
 export function managerClubAccentCardStyle(club: string): CSSProperties {

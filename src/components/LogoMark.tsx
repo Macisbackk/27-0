@@ -1,4 +1,4 @@
-/** 27-0 wordmark — theme-aware; no black gradient on team themes. */
+/** 27-0 wordmark — scoreboard mark; Store theme accents; no black gradient. */
 export function LogoMark({
   className = "",
   size = "md",
@@ -13,13 +13,13 @@ export function LogoMark({
 
   return (
     <span
-      className={`logo-mark inline-flex items-baseline whitespace-nowrap font-black tracking-tight ${sizeClass} ${className}`}
+      className={`logo-mark inline-flex flex-col items-start whitespace-nowrap font-black tracking-tight ${sizeClass} ${className}`}
     >
-      <span className="logo-mark-accent">
-        <span className="logo-mark-accent-from">2</span>
-        <span className="logo-mark-accent-to">7</span>
+      <span className="inline-flex items-baseline leading-none">
+        <span className="logo-mark-27">27</span>
+        <span className="logo-mark-dash">-</span>
+        <span className="logo-mark-0">0</span>
       </span>
-      <span className="logo-mark-rest">-0</span>
     </span>
   );
 }

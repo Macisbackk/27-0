@@ -187,13 +187,15 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 
             <nav className="sidebar-nav-scroll flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overflow-x-hidden px-2.5 py-2">
               <section>
-                <p className={NAV.sectionLabel}>Play</p>
+                <p className={`${NAV.sectionLabel} sidebar-section-label !mx-0 !mt-0`}>
+                  Manager
+                </p>
                 <ul className={NAV.playModeList}>
                   <li className={NAV.playModeGroup}>
                     <Link
                       href="/manager"
                       onClick={handleNavClick}
-                      className={`${navLinkClass(pathname.startsWith("/manager"))} w-full`}
+                      className={`${navLinkClass(pathname.startsWith("/manager"))} w-full font-semibold`}
                     >
                       <span aria-hidden className={NAV.icon}>
                         📋
@@ -204,7 +206,14 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       )}
                     </Link>
                   </li>
+                </ul>
+              </section>
 
+              <section className={NAV.sectionGap}>
+                <p className={`${NAV.sectionLabel} sidebar-section-label !mx-0 !mt-0`}>
+                  Play
+                </p>
+                <ul className={NAV.playModeList}>
                   <li className={NAV.playModeGroup}>
                     <button
                       type="button"
@@ -237,9 +246,13 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
               </section>
 
               <section className={NAV.sectionGap}>
-                <p className={NAV.sectionLabel}>Game</p>
+                <p className={`${NAV.sectionLabel} sidebar-section-label !mx-0 !mt-0`}>
+                  Club
+                </p>
                 <ul className={NAV.list}>
-                  {MAIN_NAV_ITEMS.map((item) => {
+                  {MAIN_NAV_ITEMS.filter((item) =>
+                    ["/store", "/stats", "/leaderboard"].includes(item.href)
+                  ).map((item) => {
                     const active = isActive(item.href);
                     return (
                       <li key={item.href}>
@@ -259,12 +272,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       </li>
                     );
                   })}
-                </ul>
-              </section>
-
-              <section className={NAV.sectionGap}>
-                <p className={NAV.sectionLabel}>Account</p>
-                <ul className={NAV.list}>
                   <li>
                     {loading ? (
                       <div
@@ -303,6 +310,36 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       </Link>
                     )}
                   </li>
+                </ul>
+              </section>
+
+              <section className={NAV.sectionGap}>
+                <p className={`${NAV.sectionLabel} sidebar-section-label !mx-0 !mt-0`}>
+                  Extras
+                </p>
+                <ul className={NAV.list}>
+                  {MAIN_NAV_ITEMS.filter((item) =>
+                    ["/showcase", "/updates"].includes(item.href)
+                  ).map((item) => {
+                    const active = isActive(item.href);
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          onClick={handleNavClick}
+                          className={navLinkClass(active)}
+                        >
+                          <span aria-hidden className={NAV.icon}>
+                            {item.icon}
+                          </span>
+                          {item.label}
+                          {active && (
+                            <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
+                          )}
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               </section>
             </nav>

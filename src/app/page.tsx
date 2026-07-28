@@ -6,6 +6,7 @@ import { HomeModeSelector } from "@/components/HomeModeSelector";
 import { HowToPlaySection } from "@/components/HowToPlaySection";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
 import { LogoMark } from "@/components/LogoMark";
+import { GameHeader } from "@/components/ui/GameHeader";
 import { PageShell } from "@/components/ui/PageShell";
 import { LINK, PAGE, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -14,17 +15,17 @@ export default function HomePage() {
   return (
     <PageShell withLights compact>
       <div className={PAGE.sectionHero}>
-        <p className={TYPO.sectionLabel}>Rugby League Squad Builder</p>
-        <h1 className="mt-3">
-          <LogoMark size="lg" className="justify-center" />
-        </h1>
-        <p className={`mt-4 ${TYPO.pageSubtitle}`}>
-          Manager Mode puts you in the dugout. Quick Mode is the fast squad-builder
-          — can you go 27-0?
-        </p>
-        <p className={`mt-2 ${TYPO.bodySm}`}>
-          Build your squad on the team sheet and chase perfection.
-        </p>
+        <GameHeader
+          eyebrow="Super League matchday"
+          title={<LogoMark size="lg" className="justify-center" />}
+          subtitle={
+            <>
+              Manager Mode puts you in the dugout. Quick Mode is the fast
+              squad-builder — can you go 27-0?
+            </>
+          }
+          className="mx-auto max-w-2xl text-left sm:text-center [&_.game-header__title]:flex [&_.game-header__title]:justify-center"
+        />
       </div>
 
       <Suspense fallback={null}>
@@ -58,6 +59,7 @@ export default function HomePage() {
           </Link>
         </div>
         <JoeMellorEasterEgg />
+        <p className={`mt-2 ${TYPO.bodySm}`}>27-0 — rugby league management & draft</p>
       </div>
     </PageShell>
   );

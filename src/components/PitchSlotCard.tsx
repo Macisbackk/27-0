@@ -57,7 +57,7 @@ export function PitchSlotCard({
 
   return (
     <div
-      className={`pitch-slot-card flex shrink-0 flex-col rounded-lg border-2 border-accent-green/50 bg-black/75 shadow-[0_0_10px_rgba(34,197,94,0.2)] ${sizeClass} overflow-hidden ${className}`}
+      className={`pitch-slot-card flex shrink-0 flex-col rounded-md border border-theme-tertiary/45 bg-[rgba(5,12,10,0.92)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_4px_10px_rgba(0,0,0,0.35)] ${sizeClass} overflow-hidden ${className}`}
       title={player.name}
     >
       <div
@@ -110,7 +110,7 @@ export function PitchSlotCard({
         )}
         {!hardMode && (
           <span
-            className={`w-full shrink-0 text-center font-display font-black leading-none text-accent-green ${
+            className={`w-full shrink-0 text-center font-display font-black leading-none text-theme-primary ${
               fullPlayerNames
                 ? "text-[11px] sm:text-xs"
                 : compact

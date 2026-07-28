@@ -2,7 +2,7 @@
 
 import { memo, useCallback, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playPanelClose, playPanelExpand } from "@/lib/sound";
 
@@ -34,8 +34,8 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
 
   const panelClass =
     variant === "featured"
-      ? `${SPACING.sectionGap} w-full max-w-3xl matchday-panel ${CARD.featured} ${SPACING.cardPadding}`
-      : `${SPACING.sectionGap} w-full max-w-2xl matchday-panel p-4`;
+      ? `${SPACING.sectionGap} w-full max-w-3xl game-panel game-panel--elevated game-panel--featured ${SPACING.cardPadding}`
+      : `${SPACING.sectionGap} w-full max-w-2xl game-panel game-panel--elevated p-4`;
 
   const titleClass =
     variant === "featured"

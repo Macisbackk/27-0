@@ -263,11 +263,11 @@ export function ManagerPlayGame({
       aria-label="Live match"
     >
       <div
-        className={`card-glass mx-auto flex h-[100dvh] w-full max-w-lg flex-col overflow-hidden ${SPACING.cardPaddingSm}`}
+        className={`game-panel game-panel--elevated game-panel--flush mx-auto flex h-[100dvh] w-full max-w-lg flex-col overflow-hidden ${SPACING.cardPaddingSm}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Scoreboard */}
-        <header className="shrink-0 border-b border-pitch-700/50 pb-2 text-center">
+        <header className="matchday-scoreboard shrink-0 rounded-lg px-2 py-2 text-center">
           <div className="flex flex-wrap items-center justify-center gap-1.5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-400">
               {getManagerScheduledFixtureHeadline(sched)} ·{" "}
@@ -279,7 +279,7 @@ export function ManagerPlayGame({
             />
           </div>
 
-          <p className="mt-1.5 truncate text-base font-bold leading-tight text-white sm:text-lg">
+          <p className="mt-1.5 font-[family-name:var(--font-pitch)] text-lg uppercase tracking-wide leading-tight text-white sm:text-xl">
             <span className={live.isHome ? "text-theme-primary" : ""}>
               {homeName}
             </span>{" "}

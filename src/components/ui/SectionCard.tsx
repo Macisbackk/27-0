@@ -1,7 +1,9 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { GamePanel } from "@/components/ui/GamePanel";
+import { GameSectionTitle } from "@/components/ui/GameSectionTitle";
+import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 interface SectionCardProps {
@@ -20,16 +22,19 @@ export function SectionCard({
   className = "",
 }: SectionCardProps) {
   return (
-    <section
-      className={`${CARD.hero} ${featured ? CARD.featured : ""} ${SPACING.cardPadding} ${className}`}
+    <GamePanel
+      as="section"
+      variant={featured ? "featured" : "elevated"}
+      padded
+      className={className}
     >
-      {title && (
+      {title ? (
         <header className={SPACING.headingMargin}>
-          <h3 className={TYPO.sectionTitle}>{title}</h3>
-          {helper && <p className={`mt-1 ${TYPO.bodySm}`}>{helper}</p>}
+          <GameSectionTitle heading={title} />
+          {helper ? <p className={`mt-1 ${TYPO.bodySm}`}>{helper}</p> : null}
         </header>
-      )}
+      ) : null}
       {children}
-    </section>
+    </GamePanel>
   );
 }
