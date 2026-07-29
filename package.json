@@ -70,7 +70,8 @@
     "debug:dual-positions": "tsx scripts/debug-dual-positions.ts",
     "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts",
     "audit:button-colours": "tsx scripts/audit-button-colours.ts",
-    "audit:ui-consistency": "tsx scripts/audit-ui-consistency.ts"
+    "audit:ui-consistency": "tsx scripts/audit-ui-consistency.ts",
+    "audit:team-colours": "tsx scripts/audit-team-colours.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.0",

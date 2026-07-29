@@ -75,7 +75,7 @@ export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
         <div className={`mt-3 grid grid-cols-2 gap-2 ${TYPO.bodySm}`}>
           <div className={CARD.inset}>
             <p className={TYPO.statLabel}>Peak Rating</p>
-            <p className="mt-0.5 font-semibold text-theme-primary">
+            <p className="mt-0.5 font-semibold text-[color:var(--rating)]">
               {player.peakRating}
             </p>
           </div>

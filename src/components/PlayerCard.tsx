@@ -43,7 +43,7 @@ export function PlayerCard({
           </p>
         </div>
         {!hardMode && (
-          <span className="font-display text-sm font-bold text-theme-primary">
+          <span className="font-display text-sm font-bold text-[color:var(--rating)]">
             {player.peakRating}
           </span>
         )}

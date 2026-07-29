@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import {
   CLUB_CHOICE_CARD_CLASS,
   getClubChoiceCardStyle,
+  getPlayerCardColours,
 } from "@/lib/clubs";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -116,15 +117,18 @@ export function RLCardShell({
 }: RLCardShellProps) {
   const colorClub = clubColorOverride ?? club;
   const clubThemed = clubAccent === "full";
+  const playerColours = clubThemed ? null : getPlayerCardColours(colorClub);
   return (
     <div
       className={`rl-player-card rl-card-shell flex flex-col overflow-hidden ${
         clubThemed
           ? `${RL_CARD_RADIUS} ${RL_CARD_BORDER} ${RL_CARD_SHADOW} ${CLUB_CHOICE_CARD_CLASS}`
-          : CARD.base
+          : CARD.player
       } ${className}`}
       style={
-        clubThemed ? { ...getClubChoiceCardStyle(colorClub), ...style } : style
+        clubThemed
+          ? { ...getClubChoiceCardStyle(colorClub), ...style }
+          : { ...playerColours?.style, ...style }
       }
     >
       {children}
@@ -221,7 +225,7 @@ export function RLRatingDisplay({
   return (
     <div className={`shrink-0 text-center ${className}`}>
       <p
-        className={`font-bold uppercase tracking-wider text-theme-primary/80 ${
+        className={`font-bold uppercase tracking-wider text-[color:var(--rating)]/80 ${
           compact ? "text-[7px]" : large ? "text-[10px]" : "text-[8px]"
         }`}
       >
@@ -231,7 +235,7 @@ export function RLRatingDisplay({
         className={`rl-rating-value font-display font-black leading-none ${
           masked
             ? "text-gray-600"
-            : "text-theme-primary"
+            : "text-[color:var(--rating)]"
         } ${
           compact
             ? "text-2xl sm:text-6xl"

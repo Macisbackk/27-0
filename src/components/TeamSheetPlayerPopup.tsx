@@ -135,7 +135,7 @@ export function TeamSheetPlayerPopup({
                   {!hardMode && seasonStats?.rating !== undefined && (
                     <div className="flex justify-between gap-3">
                       <dt className="text-gray-500">Rating</dt>
-                      <dd className="font-semibold text-theme-primary">
+                      <dd className="font-semibold text-[color:var(--rating)]">
                         {seasonStats.rating}
                       </dd>
                     </div>
@@ -169,7 +169,7 @@ export function TeamSheetPlayerPopup({
                   {seasonStats?.awardWon && (
                     <div className="flex justify-between gap-3">
                       <dt className="shrink-0 text-gray-500">Award</dt>
-                      <dd className="min-w-0 text-right font-medium text-theme-primary break-words">
+                      <dd className="min-w-0 text-right font-medium text-accent-gold break-words">
                         {seasonStats.awardWon}
                       </dd>
                     </div>

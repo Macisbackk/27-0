@@ -406,7 +406,7 @@ export function ManagerContracts({
               </div>
               <div>
                 <p className="text-pitch-500 text-xs">Rating</p>
-                <p className="text-theme-primary">{selected.rating}</p>
+                <p className="text-[color:var(--rating)]">{selected.rating}</p>
               </div>
               {selectedAge && (
                 <div>

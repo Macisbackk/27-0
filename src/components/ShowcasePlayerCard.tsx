@@ -1,13 +1,15 @@
 "use client";
 
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import type { Player } from "@/lib/types";
+import { getPlayerCardColours } from "@/lib/clubs";
 import { formatPlayerDisplayName } from "@/lib/players/prime-year";
 import { formatShowcaseClubYear } from "@/lib/players/year-card";
+import { getPlayerColorClub } from "@/lib/players/run-club";
 import { RugbyLeaguePlayerCard } from "./cards/RugbyLeaguePlayerCard";
-import { ClubColourBar } from "./ClubBadge";
+import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
+import { GameButton } from "@/components/ui/GameButton";
 import { playPanelClose, playPanelExpand } from "@/lib/sound";
-import { CARD } from "@/lib/ui/design-system";
 
 interface ShowcasePlayerCardProps {
   player: Player;
@@ -28,6 +30,10 @@ function showcaseCardPropsEqual(
   );
 }
 
+/**
+ * Player Showcase row/card — club kit colours only for identity chrome.
+ * Store UI theme must not paint borders/washes on these cards.
+ */
 export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
   player,
   expanded,
@@ -36,6 +42,11 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
 }: ShowcasePlayerCardProps) {
   const displayName = formatPlayerDisplayName(player);
   const clubYearLabel = formatShowcaseClubYear(player);
+  const colorClub = getPlayerColorClub(player);
+  const cardColours = useMemo(
+    () => getPlayerCardColours(colorClub),
+    [colorClub]
+  );
 
   const handleToggle = useCallback(() => {
     if (expanded) playPanelClose();
@@ -55,19 +66,17 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
 
   return (
     <div
-      className={`showcase-player-card h-auto w-full min-w-0 self-start overflow-hidden transition ${
-        expanded
-          ? "showcase-player-card--expanded border-theme-primary/40"
-          : "hover:border-pitch-500/50"
-      } ${CARD.base}`}
+      className={`showcase-player-card game-panel game-panel--flush h-auto w-full min-w-0 self-start overflow-hidden border transition ${
+        expanded ? "showcase-player-card--expanded" : "hover:border-pitch-500/50"
+      }`}
+      style={expanded ? cardColours.expandedStyle : cardColours.style}
     >
-      <ClubColourBar club={player.club} />
+      <TeamColourStrip club={colorClub} thick={expanded} />
 
       <button
         type="button"
-        className={`flex w-full min-w-0 items-start gap-2 px-3 py-2 text-left transition sm:py-2.5 ${
-          expanded ? "bg-theme-primary/5" : "hover:bg-pitch-900/60"
-        }`}
+        className="flex w-full min-w-0 items-start gap-2 px-3 py-2 text-left transition hover:bg-white/[0.03] sm:py-2.5"
+        style={expanded ? { backgroundColor: cardColours.wash } : undefined}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
         aria-expanded={expanded}
@@ -96,15 +105,14 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
             showClubColourBar={false}
             className="!border-0 !bg-transparent !shadow-none"
           />
-          <button
-            type="button"
-            className="mt-2 w-full rounded-lg border border-pitch-600/50 px-3 py-2 text-xs font-medium text-gray-300 transition hover:border-theme-primary/40 hover:text-theme-primary"
-            onClick={() => {
-              onOpenDetail(player);
-            }}
+          <GameButton
+            variant="secondary"
+            size="sm"
+            className="mt-2 w-full"
+            onClick={() => onOpenDetail(player)}
           >
             Full profile
-          </button>
+          </GameButton>
         </div>
       )}
     </div>

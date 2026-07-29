@@ -227,6 +227,65 @@ export function getClubTheme(clubName: string): ClubTheme {
   };
 }
 
+/**
+ * Player/team identity colours for cards — NEVER Store UI theme.
+ * Use for Showcase, recruitment, pitch tiles, and other player surfaces.
+ */
+export type PlayerCardColours = {
+  colors: ClubColorSet;
+  /** Chromatic accent safe on dark UI */
+  accent: string;
+  /** Solid border colour (club secondary / kit edge) */
+  border: string;
+  /** Soft wash for selected/expanded states */
+  wash: string;
+  /** Inline styles for card chrome */
+  style: CSSProperties;
+  expandedStyle: CSSProperties;
+};
+
+function withAlpha(hex: string, alpha: number): string {
+  const raw = hex.replace("#", "").trim();
+  if (raw.length !== 6 && raw.length !== 3) {
+    return `color-mix(in srgb, ${hex} ${Math.round(alpha * 100)}%, transparent)`;
+  }
+  const full =
+    raw.length === 3
+      ? raw
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : raw;
+  const r = parseInt(full.slice(0, 2), 16);
+  const g = parseInt(full.slice(2, 4), 16);
+  const b = parseInt(full.slice(4, 6), 16);
+  if ([r, g, b].some((n) => Number.isNaN(n))) {
+    return `color-mix(in srgb, ${hex} ${Math.round(alpha * 100)}%, transparent)`;
+  }
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+export function getPlayerCardColours(clubName: string): PlayerCardColours {
+  const theme = getClubTheme(clubName);
+  const colors = theme.colors;
+  const accent = getClubIndicatorColor(clubName);
+  const border = accent;
+  return {
+    colors,
+    accent,
+    border,
+    wash: withAlpha(accent, 0.08),
+    style: {
+      borderColor: withAlpha(border, 0.45),
+    },
+    expandedStyle: {
+      borderColor: withAlpha(border, 0.65),
+      backgroundColor: withAlpha(accent, 0.06),
+      boxShadow: `inset 0 0 0 1px ${withAlpha(border, 0.25)}`,
+    },
+  };
+}
+
 export const CLUB_CHOICE_CARD_CLASS = "rounded-lg overflow-hidden";
 
 export function getClubChoiceCardStyle(clubName: string): CSSProperties {

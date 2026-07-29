@@ -70,6 +70,8 @@ export const CARD = {
   panel: "game-panel game-panel--elevated",
   glass: "game-panel game-panel--elevated",
   hero: "game-panel game-panel--elevated game-panel--featured",
+  /** Player/team identity cards — no Store theme accent strip (club strip owns identity). */
+  player: "game-panel game-panel--flush",
   scoreboard: "scoreboard-panel",
   scoreboardElevated: "scoreboard-panel scoreboard-panel--elevated",
   clipboard: "clipboard-panel",

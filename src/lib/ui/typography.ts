@@ -27,5 +27,5 @@ export const TYPO = {
   nav: "text-sm font-medium",
   identityLine: "text-sm font-semibold text-gray-300 sm:text-base",
   positionHighlight: "font-semibold text-white",
-  rating: "font-display font-bold text-theme-primary",
+  rating: "font-display font-bold text-[color:var(--rating)]",
 } as const;

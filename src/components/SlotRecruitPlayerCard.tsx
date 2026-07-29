@@ -15,8 +15,9 @@ import { getValueTier } from "@/lib/players/ratings";
 import { getNationalityAbbrev } from "@/lib/players/nationality";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
-import { getClubColors } from "@/lib/clubs";
+import { getClubColors, getPlayerCardColours } from "@/lib/clubs";
 import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
+import { getPlayerColorClub } from "@/lib/players/run-club";
 import { AchievementChipList } from "./cards/AchievementChipList";
 import {
   PlayerSpecialBadge,
@@ -26,6 +27,7 @@ import {
 import { StatBox, TIER_STAT_SPAN_CLASS } from "./ui/StatBox";
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
 
 interface SlotRecruitPlayerCardProps {
   player: Player;
@@ -44,7 +46,7 @@ function ratingBadgeClass(rating: number): string {
     return "bg-accent-gold/15 text-accent-gold ring-accent-gold/40";
   }
   if (rating >= 78) {
-    return "bg-theme-primary/15 text-theme-primary ring-theme-primary/40";
+    return "bg-[color:var(--rating)]/15 text-[color:var(--rating)] ring-[color:var(--rating)]/40";
   }
   return "bg-pitch-800/90 text-pitch-100 ring-pitch-600/50";
 }
@@ -61,7 +63,9 @@ export function SlotRecruitPlayerCard({
   onSelect,
   onToggleStats,
 }: SlotRecruitPlayerCardProps) {
-  const colors = getClubColors(clubColorOverride ?? player.club);
+  const colorClub = getPlayerColorClub(player, clubColorOverride);
+  const colors = getClubColors(colorClub);
+  const cardColours = getPlayerCardColours(colorClub);
   const displayName = formatPlayerDisplayName(player);
   const status = resolvePlayerStatus(player);
   const isGoat = isGoatPlayer(player);
@@ -89,13 +93,12 @@ export function SlotRecruitPlayerCard({
 
   return (
     <div
-      className={`${CARD.base} flex h-full min-w-0 flex-col overflow-hidden transition ${
-        topPick ? "border-accent-gold/45 ring-1 ring-accent-gold/25" : "hover:border-theme-primary/40"
+      className={`${CARD.player} flex h-full min-w-0 flex-col overflow-hidden transition ${
+        topPick ? "border-accent-gold/45 ring-1 ring-accent-gold/25" : ""
       } ${disabled ? "opacity-50" : ""}`}
-      style={{
-        boxShadow: `inset 3px 0 0 ${colors.primary}`,
-      }}
+      style={topPick ? undefined : cardColours.style}
     >
+      <TeamColourStrip club={colorClub} />
       <div className="flex min-w-0 flex-1 flex-col px-3 pt-3 pb-2 sm:px-4 sm:pt-4">
         <div className="flex min-w-0 items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
@@ -161,7 +164,7 @@ export function SlotRecruitPlayerCard({
           disabled={disabled}
           aria-expanded={statsExpanded}
           onClick={onToggleStats}
-          className="w-full rounded-lg border border-pitch-600/60 bg-pitch-950/50 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-theme-primary/35 hover:text-theme-primary disabled:cursor-not-allowed sm:text-[11px]"
+          className="w-full rounded-lg border border-pitch-600/60 bg-pitch-950/50 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-white/20 hover:text-white disabled:cursor-not-allowed sm:text-[11px]"
         >
           {statsExpanded ? "Hide stats" : "View full stats"}
         </button>

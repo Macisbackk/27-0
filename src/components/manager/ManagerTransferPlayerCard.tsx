@@ -32,7 +32,7 @@ function ratingBadgeClass(rating: number): string {
     return "bg-accent-gold/15 text-accent-gold ring-1 ring-accent-gold/35";
   }
   if (rating >= 78) {
-    return "bg-theme-primary/15 text-theme-primary ring-1 ring-theme-primary/35";
+    return "bg-[color:var(--rating)]/15 text-[color:var(--rating)] ring-1 ring-[color:var(--rating)]/35";
   }
   return "bg-pitch-800/80 text-pitch-200 ring-1 ring-pitch-600/50";
 }
@@ -87,7 +87,7 @@ export function ManagerTransferPlayerCard({
                 <span
                   className={`inline-flex rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
                     listed
-                      ? "border-theme-primary/40 bg-theme-primary/12 text-theme-primary"
+                      ? "border-sky-400/40 bg-sky-400/12 text-sky-300"
                       : "border-amber-400/40 bg-amber-400/10 text-amber-300"
                   }`}
                 >

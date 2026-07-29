@@ -57,7 +57,7 @@ export function EraBenchRoster({
                 {POSITION_SHORT[position]}
               </span>
               {!hardMode && (
-                <span className="shrink-0 font-display text-sm font-bold text-theme-primary">
+                <span className="shrink-0 font-display text-sm font-bold text-[color:var(--rating)]">
                   {player.peakRating}
                 </span>
               )}
