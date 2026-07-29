@@ -24,6 +24,7 @@ import { PlayoffBracketDisplay } from "./PlayoffBracketDisplay";
 import { Confetti } from "./Confetti";
 import { TYPO } from "@/lib/ui/typography";
 import { NORMAL } from "@/lib/ui/design-system";
+import { BodyPortal } from "@/components/ui/BodyPortal";
 
 const PLAYOFF_AWARD_TITLES: Record<string, string> = {
   "Player of the Season": "Best Player of the Play-Offs",
@@ -126,7 +127,8 @@ export function PlayoffReview({
   }, [playoffBracketState]);
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(0.5rem,env(safe-area-inset-top))] backdrop-blur-md">
+    <BodyPortal>
+    <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/90 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(0.5rem,env(safe-area-inset-top))] backdrop-blur-md">
       {isChampion && <Confetti />}
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-8 sm:py-12">
@@ -260,6 +262,7 @@ export function PlayoffReview({
         </motion.footer>
       </div>
     </div>
+    </BodyPortal>
   );
 }
 

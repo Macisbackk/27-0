@@ -38,6 +38,7 @@ import { NORMAL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GuestSaveNudge } from "@/components/EconomyExplainer";
 import { useAuth } from "@/lib/auth-context";
+import { BodyPortal } from "@/components/ui/BodyPortal";
 
 interface SeasonReviewProps {
   squad: SquadSlot[];
@@ -188,245 +189,294 @@ export function SeasonReview({
   }, [squad, seasonResult, seed, joeMellorMode, superSamHallasMode]);
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(0.5rem,env(safe-area-inset-top))] backdrop-blur-md">
-      {showCelebration && <Confetti />}
+    <BodyPortal>
+      <div className="fixed inset-0 z-[100] flex flex-col bg-black/92 backdrop-blur-md">
+        {showCelebration && <Confetti />}
 
-      <div className="stadium-lights pointer-events-none fixed inset-0" />
-      <div className="stadium-backdrop pointer-events-none fixed inset-0" />
+        <div className="stadium-lights pointer-events-none absolute inset-0" />
+        <div className="stadium-backdrop pointer-events-none absolute inset-0" />
 
-      <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-8 sm:py-12">
-        <motion.header
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-xl text-center"
+        <div
+          className={`relative min-h-0 flex-1 overflow-y-auto pt-[max(0.5rem,env(safe-area-inset-top))] ${
+            showPlayoffPrompt
+              ? "pb-28"
+              : "pb-[max(1rem,env(safe-area-inset-bottom))]"
+          }`}
         >
-          <p
-            className={`font-display text-xs font-semibold uppercase tracking-[0.3em] ${NORMAL.reviewAccent}`}
-          >
-            {reviewLabel}
-          </p>
-
-          <ReviewSubmissionNotice
-            submittedOnline={submittedOnline}
-            specialRun={isSpecialMode}
-          />
-
-          <motion.div
-            className="mt-4"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <p
-              className="font-display text-5xl font-black uppercase tracking-tight sm:text-6xl"
-              style={{
-                color: gradeInfo.color,
-                fontFamily: "var(--font-display)",
-              }}
+          <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-8 sm:py-12">
+            <motion.header
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full max-w-xl text-center"
             >
-              {gradeInfo.grade} Grade
-            </p>
-            <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-accent-gold">
-              {getSeasonStoryHeading(mode)}
-            </p>
-            <p className="mt-1 text-sm font-semibold text-gray-300">
-              {gradeInfo.label}
-            </p>
-            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-500">
-              {getSeasonReviewStoryBio(
-                mode,
-                gradeInfo.grade,
-                {
-                  wins: seasonResult.wins,
-                  losses: seasonResult.losses,
-                  leaguePosition: dreamTeamTablePosition,
-                  pointsDifference: seasonResult.pointsDifference,
-                  isPerfect: seasonResult.isPerfect,
-                },
-                dreamTeamTablePosition
-              )}
-            </p>
-          </motion.div>
+              <p
+                className={`font-display text-xs font-semibold uppercase tracking-[0.3em] ${NORMAL.reviewAccent}`}
+              >
+                {reviewLabel}
+              </p>
 
-          {isPerfect && (
-            <>
-              <motion.h1
-                className="mt-4 font-display text-3xl font-black text-accent-gold sm:text-5xl"
+              <ReviewSubmissionNotice
+                submittedOnline={submittedOnline}
+                specialRun={isSpecialMode}
+              />
+
+              <motion.div
+                className="mt-4"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.1 }}
               >
-                27-0 ACHIEVED
-              </motion.h1>
-            </>
-          )}
-        </motion.header>
-
-        <motion.div
-          className="mt-6 w-full max-w-xl"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-        >
-          {!showPlayoffPrompt && (
-            <ReturnHomeButton onBeforeNavigate={onReturnHome} />
-          )}
-        </motion.div>
-
-        {!hideEndOfRunNav && (
-          <motion.div
-            className="mt-6 w-full max-w-xl"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <ReviewPlayAgain
-              onPlayAgain={handlePlayAgain}
-              leaderboardHref="/leaderboard"
-              compact
-              hideReturnHome
-            />
-            <ClubFundsEarned payout={clubFundsPayout} />
-          </motion.div>
-        )}
-        {hideEndOfRunNav && clubFundsPayout && (
-          <motion.div
-            className="mt-6 w-full max-w-xl"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <ClubFundsEarned payout={clubFundsPayout} />
-          </motion.div>
-        )}
-
-        <CollapsibleReviewSection title="Season Summary" delay={0.32} defaultOpen>
-          <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
-            <p>
-              Regular Season Record:{" "}
-              <span className="font-semibold text-white">
-                {formatRecordWithPercentage(
-                  seasonResult.wins,
-                  seasonResult.losses
-                )}
-              </span>
-            </p>
-            {missedPlayoffs && (
-              <p className="font-semibold text-gray-500">Missed Play-Offs</p>
-            )}
-            <p>
-              League Position:{" "}
-              <span className="font-semibold text-white">
-                {leaguePositionLabel}
-              </span>
-            </p>
-            <p>
-              National Rank:{" "}
-              <span className="font-semibold text-white">
-                {runRank ? `#${runRank}` : "—"}
-              </span>
-            </p>
-            <p>
-              Total Team Value:{" "}
-              <span className="font-semibold text-accent-gold">
-                {formatValue(totalValue)}
-              </span>
-            </p>
-            <p className="pt-2 text-gray-500">{summaryMessage}</p>
-            {seasonResult.insights.length > 0 && (
-              <div className="border-t border-pitch-700/40 pt-3 text-center">
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-                  Season Highlights
-                </p>
-                <ul className="mx-auto mt-2 max-w-md space-y-1.5 text-sm text-gray-400">
-                  {seasonResult.insights.map((insight) => (
-                    <li
-                      key={insight}
-                      className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2 text-center leading-relaxed"
-                    >
-                      {insight}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection title="League Table" delay={0.34} defaultOpen>
-          <LeagueTable rows={leagueTable} />
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection
-          title="Match Results"
-          delay={0.36}
-          defaultOpen={false}
-          helper="Click any result to view full match details."
-        >
-          <div className="max-h-[28rem] space-y-2 overflow-y-auto overflow-x-hidden pr-1 text-left">
-            {seasonResult.fixtures.map((fixture) => {
-              const isSelected = selectedFixture?.round === fixture.round;
-              return (
-                <div
-                  key={fixture.round}
-                  ref={isSelected ? selectedRowRef : undefined}
+                <p
+                  className="font-display text-5xl font-black uppercase tracking-tight sm:text-6xl"
+                  style={{
+                    color: gradeInfo.color,
+                    fontFamily: "var(--font-display)",
+                  }}
                 >
-                  <FixtureResultRow
-                    fixture={fixture}
+                  {gradeInfo.grade} Grade
+                </p>
+                <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-accent-gold">
+                  {getSeasonStoryHeading(mode)}
+                </p>
+                <p className="mt-1 text-sm font-semibold text-gray-300">
+                  {gradeInfo.label}
+                </p>
+                <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-500">
+                  {getSeasonReviewStoryBio(
+                    mode,
+                    gradeInfo.grade,
+                    {
+                      wins: seasonResult.wins,
+                      losses: seasonResult.losses,
+                      leaguePosition: dreamTeamTablePosition,
+                      pointsDifference: seasonResult.pointsDifference,
+                      isPerfect: seasonResult.isPerfect,
+                    },
+                    dreamTeamTablePosition
+                  )}
+                </p>
+              </motion.div>
+
+              {isPerfect && (
+                <motion.h1
+                  className="mt-4 font-display text-3xl font-black text-accent-gold sm:text-5xl"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  27-0 ACHIEVED
+                </motion.h1>
+              )}
+            </motion.header>
+
+            <motion.div
+              className="mt-6 w-full max-w-xl"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+            >
+              {!showPlayoffPrompt && (
+                <ReturnHomeButton onBeforeNavigate={onReturnHome} />
+              )}
+              {showPlayoffPrompt && (
+                <div className="space-y-3">
+                  <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
+                    You qualified for the play-offs — complete the knockout stage
+                    to finish your season.
+                  </p>
+                  <GameButton
+                    variant="theme"
+                    className="w-full"
                     onClick={() => {
-                      if (!isSelected) playPanelExpand();
-                      else playPanelClose();
-                      setSelectedFixture(isSelected ? null : fixture);
+                      playUiClick();
+                      onContinuePlayoffs?.();
                     }}
-                    selected={isSelected}
-                  />
-                  <AnimatePresence initial={false}>
-                    {isSelected && (
-                      <MatchDetailsPanel
-                        key={fixture.round}
+                  >
+                    Continue to Play-Offs →
+                  </GameButton>
+                </div>
+              )}
+            </motion.div>
+
+            {!hideEndOfRunNav && (
+              <motion.div
+                className="mt-6 w-full max-w-xl"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <ReviewPlayAgain
+                  onPlayAgain={handlePlayAgain}
+                  leaderboardHref="/leaderboard"
+                  compact
+                  hideReturnHome
+                />
+                <ClubFundsEarned payout={clubFundsPayout} />
+              </motion.div>
+            )}
+            {hideEndOfRunNav && clubFundsPayout && (
+              <motion.div
+                className="mt-6 w-full max-w-xl"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <ClubFundsEarned payout={clubFundsPayout} />
+              </motion.div>
+            )}
+
+            <CollapsibleReviewSection title="Season Summary" delay={0.32} defaultOpen>
+              <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
+                <p>
+                  Regular Season Record:{" "}
+                  <span className="font-semibold text-white">
+                    {formatRecordWithPercentage(
+                      seasonResult.wins,
+                      seasonResult.losses
+                    )}
+                  </span>
+                </p>
+                {missedPlayoffs && (
+                  <p className="font-semibold text-gray-500">Missed Play-Offs</p>
+                )}
+                <p>
+                  League Position:{" "}
+                  <span className="font-semibold text-white">
+                    {leaguePositionLabel}
+                  </span>
+                </p>
+                <p>
+                  National Rank:{" "}
+                  <span className="font-semibold text-white">
+                    {runRank ? `#${runRank}` : "—"}
+                  </span>
+                </p>
+                <p>
+                  Total Team Value:{" "}
+                  <span className="font-semibold text-accent-gold">
+                    {formatValue(totalValue)}
+                  </span>
+                </p>
+                <p className="pt-2 text-gray-500">{summaryMessage}</p>
+                {seasonResult.insights.length > 0 && (
+                  <div className="border-t border-pitch-700/40 pt-3 text-center">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                      Season Highlights
+                    </p>
+                    <ul className="mx-auto mt-2 max-w-md space-y-1.5 text-sm text-gray-400">
+                      {seasonResult.insights.map((insight) => (
+                        <li
+                          key={insight}
+                          className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2 text-center leading-relaxed"
+                        >
+                          {insight}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </CollapsibleReviewSection>
+
+            <CollapsibleReviewSection title="League Table" delay={0.34} defaultOpen>
+              <LeagueTable rows={leagueTable} />
+            </CollapsibleReviewSection>
+
+            <CollapsibleReviewSection
+              title="Match Results"
+              delay={0.36}
+              defaultOpen={false}
+              helper="Click any result to view full match details."
+            >
+              <div className="max-h-[28rem] space-y-2 overflow-y-auto overflow-x-hidden pr-1 text-left">
+                {seasonResult.fixtures.map((fixture) => {
+                  const isSelected = selectedFixture?.round === fixture.round;
+                  return (
+                    <div
+                      key={fixture.round}
+                      ref={isSelected ? selectedRowRef : undefined}
+                    >
+                      <FixtureResultRow
                         fixture={fixture}
-                        seed={seed}
-                        userSquad={squad}
-                        currentSeasonOnly={!normalEraMode}
-                        onClose={() => {
-                          playPanelClose();
-                          setSelectedFixture(null);
+                        onClick={() => {
+                          if (!isSelected) playPanelExpand();
+                          else playPanelClose();
+                          setSelectedFixture(isSelected ? null : fixture);
                         }}
+                        selected={isSelected}
+                      />
+                      <AnimatePresence initial={false}>
+                        {isSelected && (
+                          <MatchDetailsPanel
+                            key={fixture.round}
+                            fixture={fixture}
+                            seed={seed}
+                            userSquad={squad}
+                            currentSeasonOnly={!normalEraMode}
+                            onClose={() => {
+                              playPanelClose();
+                              setSelectedFixture(null);
+                            }}
+                          />
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+            </CollapsibleReviewSection>
+
+            <CollapsibleReviewSection title="Squad Review" delay={0.38} defaultOpen={false}>
+              <SquadReviewSection
+                squad={squad}
+                awards={playerAwards}
+                tryScorers={seasonResult.tryScorers}
+                expectedTotalTries={expectedTries}
+                totalMatches={seasonResult.fixtures.length}
+              />
+            </CollapsibleReviewSection>
+
+            <motion.footer
+              className="mt-8 w-full max-w-xl space-y-3"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.65 }}
+            >
+              <div className="space-y-3">
+                {!loading && !isLoggedIn && !showPlayoffPrompt && (
+                  <GuestSaveNudge context="quick-season" />
+                )}
+                {showPlayoffPrompt ? (
+                  <GameButton
+                    variant="theme"
+                    className="w-full"
+                    onClick={() => {
+                      playUiClick();
+                      onContinuePlayoffs?.();
+                    }}
+                  >
+                    Continue to Play-Offs →
+                  </GameButton>
+                ) : (
+                  <>
+                    {!hideEndOfRunNav && (
+                      <ReviewPlayAgain
+                        onPlayAgain={handlePlayAgain}
+                        leaderboardHref="/leaderboard"
+                        hideReturnHome
                       />
                     )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
+                    <ReturnHomeButton onBeforeNavigate={onReturnHome} />
+                  </>
+                )}
+              </div>
+            </motion.footer>
           </div>
-        </CollapsibleReviewSection>
+        </div>
 
-        <CollapsibleReviewSection title="Squad Review" delay={0.38} defaultOpen={false}>
-          <SquadReviewSection
-            squad={squad}
-            awards={playerAwards}
-            tryScorers={seasonResult.tryScorers}
-            expectedTotalTries={expectedTries}
-            totalMatches={seasonResult.fixtures.length}
-          />
-        </CollapsibleReviewSection>
-
-        <motion.footer
-          className="mt-8 w-full max-w-xl space-y-3"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.65 }}
-        >
-          <div className="space-y-3">
-          {!loading && !isLoggedIn && !showPlayoffPrompt && (
-            <GuestSaveNudge context="quick-season" />
-          )}
-          {showPlayoffPrompt ? (
-            <>
-              <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
-                You qualified for the play-offs — complete the knockout stage to
-                finish your season.
-              </p>
+        {showPlayoffPrompt && (
+          <div className="relative z-[1] shrink-0 border-t border-theme-tertiary/25 bg-[rgba(5,10,9,0.98)] px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_32px_rgba(0,0,0,0.45)]">
+            <div className="mx-auto w-full max-w-xl">
               <GameButton
                 variant="theme"
                 className="w-full"
@@ -437,23 +487,11 @@ export function SeasonReview({
               >
                 Continue to Play-Offs →
               </GameButton>
-            </>
-          ) : (
-            <>
-              {!hideEndOfRunNav && (
-                <ReviewPlayAgain
-                  onPlayAgain={handlePlayAgain}
-                  leaderboardHref="/leaderboard"
-                  hideReturnHome
-                />
-              )}
-              <ReturnHomeButton onBeforeNavigate={onReturnHome} />
-            </>
-          )}
+            </div>
           </div>
-        </motion.footer>
+        )}
       </div>
-    </div>
+    </BodyPortal>
   );
 }
 

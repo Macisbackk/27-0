@@ -27,6 +27,7 @@ import {
 import { PlayoffMatchDetailsPanel } from "./PlayoffMatchDetailsPanel";
 import { BracketMobileRoundNav } from "./BracketMobileRoundNav";
 import { GameButton } from "./ui/GameButton";
+import { BodyPortal } from "@/components/ui/BodyPortal";
 import {
   PLAYOFF_ROUND_SHORT,
   PlayoffBracketDesktop,
@@ -184,7 +185,8 @@ export function PlayoffBracket({
   const userClub = state.userClub ?? DREAM_TEAM_NAME;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md">
+    <BodyPortal>
+    <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/90 backdrop-blur-md">
       <div className="stadium-lights pointer-events-none fixed inset-0" />
       <div className="relative mx-auto w-full max-w-5xl px-2 py-5 pb-28 sm:px-4 sm:py-8 md:pb-8">
         <PlayoffBracketHeader
@@ -309,5 +311,6 @@ export function PlayoffBracket({
         </div>
       </div>
     </div>
+    </BodyPortal>
   );
 }
