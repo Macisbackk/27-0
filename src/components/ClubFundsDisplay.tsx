@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   CLUB_FUNDS_INFO_LINES,
@@ -9,7 +9,6 @@ import {
 } from "@/lib/club-funds";
 import { useClubFunds } from "@/hooks/useClubFunds";
 import { playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
-import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { BodyPortal } from "./ui/BodyPortal";
 
@@ -18,12 +17,23 @@ interface ClubFundsDisplayProps {
   placement?: "desktop" | "mobile-under-logo";
 }
 
+interface DesktopAnchor {
+  top: number;
+  right: number;
+}
+
+/**
+ * Club Funds trigger + earnings panel.
+ * Panels always portal to document.body — sticky header overflow would clip absolute popovers.
+ */
 export function ClubFundsDisplay({
   placement = "desktop",
 }: ClubFundsDisplayProps) {
   const { balance, totalEarned, ready } = useClubFunds();
   const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [desktopAnchor, setDesktopAnchor] = useState<DesktopAnchor | null>(null);
   const isMobileUnderLogo = placement === "mobile-under-logo";
 
   const closePanel = () => {
@@ -31,13 +41,39 @@ export function ClubFundsDisplay({
     setOpen(false);
   };
 
+  useLayoutEffect(() => {
+    if (!open || isMobileUnderLogo) {
+      setDesktopAnchor(null);
+      return;
+    }
+
+    const updateAnchor = () => {
+      const el = triggerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      setDesktopAnchor({
+        top: rect.bottom + 8,
+        right: Math.max(8, window.innerWidth - rect.right),
+      });
+    };
+
+    updateAnchor();
+    window.addEventListener("resize", updateAnchor);
+    window.addEventListener("scroll", updateAnchor, true);
+    return () => {
+      window.removeEventListener("resize", updateAnchor);
+      window.removeEventListener("scroll", updateAnchor, true);
+    };
+  }, [open, isMobileUnderLogo]);
+
   useEffect(() => {
     if (!open || isMobileUnderLogo) return;
 
     const onPointerDown = (event: MouseEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) {
-        closePanel();
-      }
+      const target = event.target as Node;
+      if (triggerRef.current?.contains(target)) return;
+      if (panelRef.current?.contains(target)) return;
+      closePanel();
     };
 
     const onKey = (event: KeyboardEvent) => {
@@ -72,14 +108,14 @@ export function ClubFundsDisplay({
 
   const triggerClass = isMobileUnderLogo
     ? "flex min-h-[1.125rem] items-center justify-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[11px] font-semibold tabular-nums leading-none text-theme-primary transition hover:bg-pitch-800/35 hover:text-theme-primary active:bg-pitch-800/50"
-    : "header-control-btn flex h-11 min-h-[44px] items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-pitch-600/80 bg-pitch-900/25 px-2.5 font-semibold tabular-nums text-theme-primary transition hover:border-theme-primary/45 hover:bg-theme-primary/5 sm:px-3";
+    : "header-control-btn flex h-11 min-h-[44px] items-center justify-center gap-1.5 whitespace-nowrap rounded-xl border border-theme-tertiary/25 bg-[rgba(7,12,11,0.9)] px-2.5 font-semibold tabular-nums text-theme-primary transition hover:border-theme-tertiary/45 hover:bg-theme-primary/10 sm:px-3";
 
   return (
     <div
-      ref={rootRef}
       className={`relative shrink-0 ${isMobileUnderLogo ? "flex justify-center" : ""}`}
     >
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => {
           playUiClick();
@@ -111,61 +147,62 @@ export function ClubFundsDisplay({
         </span>
       </button>
 
-      {isMobileUnderLogo && (
-        <BodyPortal>
-          <AnimatePresence>
-            {open && (
+      <BodyPortal>
+        <AnimatePresence>
+          {open && isMobileUnderLogo && (
+            <motion.div
+              key="club-funds-mobile"
+              className="fixed inset-0 z-[200] flex items-end justify-center bg-black/65 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-[max(3.5rem,env(safe-area-inset-top))]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closePanel}
+            >
               <motion.div
-                key="club-funds-mobile"
-                className="fixed inset-0 z-[200] flex items-end justify-center bg-black/65 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-[max(3.5rem,env(safe-area-inset-top))]"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={closePanel}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Earn Club Funds"
+                className="club-funds-mobile-sheet game-panel game-panel--flush w-full max-w-md max-h-[min(85dvh,28rem)] overflow-y-auto overscroll-contain rounded-2xl border border-theme-tertiary/35 p-4 shadow-2xl"
+                initial={{ opacity: 0, y: 28, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 20, scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+                onClick={(event) => event.stopPropagation()}
               >
-                <motion.div
-                  role="dialog"
-                  aria-modal="true"
-                  aria-label="Earn Club Funds"
-                  className="club-funds-mobile-sheet w-full max-w-md max-h-[min(85dvh,28rem)] overflow-y-auto overscroll-contain rounded-2xl border border-theme-tertiary/35 p-4 shadow-2xl"
-                  initial={{ opacity: 0, y: 28, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 20, scale: 0.98 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={(event) => event.stopPropagation()}
-                >
-                  <ClubFundsPanelContent
-                    balance={balance}
-                    totalEarned={totalEarned}
-                    onClose={closePanel}
-                    mobile
-                  />
-                </motion.div>
+                <ClubFundsPanelContent
+                  balance={balance}
+                  totalEarned={totalEarned}
+                  onClose={closePanel}
+                  mobile
+                />
               </motion.div>
-            )}
-          </AnimatePresence>
-        </BodyPortal>
-      )}
+            </motion.div>
+          )}
 
-      <AnimatePresence>
-        {open && !isMobileUnderLogo && (
-          <motion.div
-            key="club-funds-desktop"
-            role="dialog"
-            aria-label="Earn Club Funds"
-            className={`absolute right-0 top-[calc(100%+0.5rem)] z-[80] w-[min(18rem,calc(100vw-2rem))] max-h-[min(70vh,24rem)] overflow-y-auto ${CARD.panel} border border-theme-tertiary/35 p-3 shadow-xl`}
-            initial={{ opacity: 0, y: -6, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -4, scale: 0.98 }}
-            transition={{ duration: 0.18 }}
-          >
-            <ClubFundsPanelContent
-              balance={balance}
-              totalEarned={totalEarned}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+          {open && !isMobileUnderLogo && desktopAnchor && (
+            <motion.div
+              key="club-funds-desktop"
+              ref={panelRef}
+              role="dialog"
+              aria-label="Earn Club Funds"
+              className="game-panel game-panel--flush fixed z-[200] w-[min(18rem,calc(100vw-2rem))] max-h-[min(70vh,24rem)] overflow-y-auto border border-theme-tertiary/35 p-3 shadow-xl"
+              style={{
+                top: desktopAnchor.top,
+                right: desktopAnchor.right,
+              }}
+              initial={{ opacity: 0, y: -6, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -4, scale: 0.98 }}
+              transition={{ duration: 0.18 }}
+            >
+              <ClubFundsPanelContent
+                balance={balance}
+                totalEarned={totalEarned}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </BodyPortal>
     </div>
   );
 }
