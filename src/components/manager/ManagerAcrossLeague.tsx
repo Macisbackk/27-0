@@ -11,6 +11,8 @@ import { ManagerLeagueTable } from "@/components/manager/ManagerLeagueTable";
 import { ManagerLeagueTransferCard } from "@/components/manager/ManagerTransferPlayerCard";
 import {
   ManagerNewsItem,
+  ManagerPage,
+  ManagerSection,
   ManagerSectionCard,
   ManagerViewHeader,
 } from "@/components/manager/manager-ui";
@@ -82,12 +84,14 @@ export function ManagerAcrossLeague({
 
   return (
     <>
-      <div className={`w-full ${SPACING.stackLg}`}>
+    <ManagerPage>
+      <ManagerSection>
         <ManagerViewHeader
           title="Across the League"
           subtitle={`Season ${career.seasonYear} · Week ${career.gameWeek} — news, squads and transfer activity from around Super League`}
         />
 
+        <div className="stat-section-stack">
         <ManagerClubSquadBrowser
           career={career}
           onViewUserSquad={onNavigate ? () => onNavigate("squad") : undefined}
@@ -265,7 +269,9 @@ export function ManagerAcrossLeague({
           </ManagerSectionCard>
         )}
 
-      </div>
+        </div>
+      </ManagerSection>
+    </ManagerPage>
       {clubSheetModal}
     </>
   );

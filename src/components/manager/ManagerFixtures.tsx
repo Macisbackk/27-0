@@ -546,7 +546,10 @@ export function ManagerFixtures({
   );
 
   const challengeCupItems = useMemo(
-    () => filteredItems.filter((i) => itemCompetition(i) === "challenge_cup"),
+    () =>
+      filteredItems.filter(
+        (i) => i.kind === "upcoming" && itemCompetition(i) === "challenge_cup"
+      ),
     [filteredItems]
   );
 
@@ -561,62 +564,42 @@ export function ManagerFixtures({
   );
 
   const playoffItems = useMemo(
-    () => filteredItems.filter((i) => itemCompetition(i) === "playoffs"),
+    () =>
+      filteredItems.filter(
+        (i) => i.kind === "upcoming" && itemCompetition(i) === "playoffs"
+      ),
     [filteredItems]
   );
 
+  /** Completed fixtures only under Results — never inside upcoming sections. */
   const completedResultsItems = useMemo(() => {
-    let items = filteredItems.filter((i) => i.kind === "played");
-    if (filter === "all") {
-      items = items.filter((i) => {
-        const comp = itemCompetition(i);
-        return comp === "league" || comp === "friendly" || !comp;
-      });
-    }
-    return filter === "results" ? items : [...items].reverse();
+    if (filter !== "results") return [];
+    return filteredItems.filter((i) => i.kind === "played");
   }, [filteredItems, filter]);
 
-  const showWcc = filter === "all" || filter === "wcc";
   const showChallengeCup = filter === "all" || filter === "cup";
   const showSuperLeague = filter === "all" || filter === "league";
   const showPlayoffs =
     (filter === "all" || filter === "playoffs") && playoffItems.length > 0;
   const showUpcomingFilter = filter === "upcoming" && upcomingItems.length > 0;
   const showCompletedResults =
-    (filter === "all" || filter === "results" || filter === "league") &&
-    completedResultsItems.length > 0;
+    filter === "results" && completedResultsItems.length > 0;
 
   const wccStats = getWccStats(career);
   const wccCurrentRaw = career.worldClubChallenge?.currentFixture;
-  const wccCurrent = wccCurrentRaw
-    ? resolveWccFixtureForDisplay(career, wccCurrentRaw)
-    : null;
-  const wccHistory = wccStats.results.slice().reverse();
+  const wccCurrent =
+    wccCurrentRaw && wccCurrentRaw.status !== "complete"
+      ? resolveWccFixtureForDisplay(career, wccCurrentRaw)
+      : null;
+  const wccHistory =
+    filter === "results" ? wccStats.results.slice().reverse() : [];
+  const showWcc =
+    filter === "all" ||
+    filter === "wcc" ||
+    (filter === "results" && wccHistory.length > 0);
 
-  let wccPanelContent: ReactNode;
-  if (wccCurrent) {
-    wccPanelContent = (
-      <div className="space-y-2">
-        <p className="font-semibold text-white">
-          {wccCurrent.superLeagueChampionName} vs {wccCurrent.nrlChampionName}
-        </p>
-        <p className={TYPO.bodySm}>
-          Game Week {wccCurrent.gameWeek} · Season {wccCurrent.seasonYear} · NRL
-          rating {wccCurrent.nrlChampionRating}
-        </p>
-        {wccCurrent.userInvolved ? (
-          <p className={`${TYPO.bodySm} text-accent-gold`}>
-            You are the Super League champion — Play or Simulate from Matchday
-            when Game Week 3 arrives.
-          </p>
-        ) : (
-          <p className={TYPO.bodySm}>
-            Another Super League club is involved this year.
-          </p>
-        )}
-      </div>
-    );
-  } else if (wccHistory.length > 0) {
+  let wccPanelContent: ReactNode = null;
+  if (filter === "results" && wccHistory.length > 0) {
     wccPanelContent = (
       <ul className="space-y-2">
         {wccHistory.map((r) => (
@@ -639,7 +622,36 @@ export function ManagerFixtures({
         ))}
       </ul>
     );
-  } else {
+  } else if (wccCurrent) {
+    wccPanelContent = (
+      <div className="space-y-2">
+        <p className="font-semibold text-white">
+          {wccCurrent.superLeagueChampionName} vs {wccCurrent.nrlChampionName}
+        </p>
+        <p className={TYPO.bodySm}>
+          Game Week {wccCurrent.gameWeek} · Season {wccCurrent.seasonYear} · NRL
+          rating {wccCurrent.nrlChampionRating}
+        </p>
+        {wccCurrent.userInvolved ? (
+          <p className={`${TYPO.bodySm} text-accent-gold`}>
+            You are the Super League champion — Play or Simulate from Matchday
+            when Game Week 3 arrives.
+          </p>
+        ) : (
+          <p className={TYPO.bodySm}>
+            Another Super League club is involved this year.
+          </p>
+        )}
+      </div>
+    );
+  } else if (filter === "wcc") {
+    wccPanelContent = (
+      <p className={TYPO.bodySm}>
+        No scheduled World Club Challenge fixture. Past WCC results are under
+        Results.
+      </p>
+    );
+  } else if (filter === "all") {
     wccPanelContent = (
       <p className={TYPO.bodySm}>
         World Club Challenge starts from your second season once a Super League
@@ -795,7 +807,7 @@ export function ManagerFixtures({
         </ScoreboardPanel>
       )}
 
-      {showWcc && (
+          {showWcc && wccPanelContent && (
         <GamePanel padded label="World Club Challenge">
           {wccPanelContent}
         </GamePanel>

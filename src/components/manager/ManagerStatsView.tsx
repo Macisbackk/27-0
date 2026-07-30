@@ -86,6 +86,7 @@ function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
 
   return (
     <>
+      <div className="stat-section-stack">
       <ManagerSectionCard title="Team" variant="elevated" accent="primary">
         <div className="mt-2 grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
           <ManagerStat
@@ -227,6 +228,7 @@ function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
           No player stats yet — play or simulate a match.
         </p>
       )}
+      </div>
     </>
   );
 }
@@ -237,6 +239,7 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
 
   return (
     <>
+      <div className="stat-section-stack">
       <ManagerSectionCard title="Milestones" variant="inset">
         <div className="mt-2 flex flex-wrap gap-2">
           {milestones.map((m) => (
@@ -443,6 +446,7 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
           Complete a season to build your career history.
         </p>
       )}
+      </div>
     </>
   );
 }
@@ -461,6 +465,7 @@ function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
 
   return (
     <>
+      <div className="stat-section-stack">
       <ManagerSectionCard title="League retirements" variant="featured" accent="gold">
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
           {retired.length} player{retired.length === 1 ? "" : "s"} have retired
@@ -548,6 +553,7 @@ function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
           the end of each season.
         </p>
       )}
+      </div>
     </>
   );
 }

@@ -56,9 +56,10 @@ export function HomeModeSelector() {
             <GameBadge tone="muted">Career</GameBadge>
           </div>
           <h2 className={`mt-3 ${TYPO.pageTitle}`}>Manager Mode</h2>
-          <p className={`mt-3 max-w-lg ${TYPO.body}`}>
-            Take charge of a Super League club — contracts, reserves, tactics,
-            transfers, and a full season on the board.
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-gray-200 sm:text-[1.05rem]">
+            Take charge of a Super League club. Build your squad, handle
+            contracts, develop reserves, manage transfers and chase trophies
+            across multiple seasons.
           </p>
           <div className="pitch-divider my-5" />
           <GameButton
@@ -72,9 +73,9 @@ export function HomeModeSelector() {
 
         <GamePanel variant="elevated" padded>
           <GameSectionTitle label="Quick play" heading="Normal Mode" />
-          <p className={`mt-2 ${TYPO.bodySm}`}>
-            Build your XIII position by position and chase 27-0. Faster sessions
-            alongside Manager Mode.
+          <p className="mt-2 max-w-xl text-[0.98rem] leading-relaxed text-gray-300">
+            Draft a 17 from Current or Era pools and try to build a side good
+            enough to go 27-0.
           </p>
 
           <ChallengeCupVariantToggle
@@ -85,7 +86,7 @@ export function HomeModeSelector() {
             className="mt-4"
           />
 
-          <p className={`mt-3 ${TYPO.bodySm}`}>
+          <p className={`mt-3 text-center ${TYPO.bodySm}`}>
             {getQuickModeCurrentEraHint(normalEraMode)}
           </p>
 

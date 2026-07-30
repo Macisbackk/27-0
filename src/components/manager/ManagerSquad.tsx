@@ -485,7 +485,7 @@ export function ManagerSquad({
       />
 
       {subTab === "tactics" ? (
-        <ManagerSection width="narrow">
+        <ManagerSection>
         <ClipboardPanel padded>
           <GameSectionHeader
             label="Tactics"

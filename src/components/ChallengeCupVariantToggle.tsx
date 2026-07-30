@@ -1,6 +1,6 @@
 "use client";
 
-import { TYPO } from "@/lib/ui/typography";
+import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import { playEraModeOff, playEraModeOn } from "@/lib/sound";
 
 type CupVariantId = "current" | "era";
@@ -21,7 +21,7 @@ interface ChallengeCupVariantToggleProps {
 }
 
 /**
- * Compact Current / Era segmented control.
+ * Compact centred Current / Era control.
  * Era selected = mode gold only; Current selected = mode green; idle = neutral.
  */
 export function ChallengeCupVariantToggle({
@@ -50,44 +50,17 @@ export function ChallengeCupVariantToggle({
   };
 
   return (
-    <div
-      className={`mode-switch-wrap ${compact ? "" : "flex w-full max-w-sm flex-col items-stretch"} ${className}`}
-    >
-      {!hideLabel && (
-        <p
-          className={`mb-1.5 w-full ${compact ? "px-1" : ""} ${TYPO.sectionLabel}`}
-        >
-          {sectionLabel}
-        </p>
-      )}
-      <div
-        className={
-          compact
-            ? "mode-switch mode-switch--sidebar"
-            : "mode-switch mode-switch--home"
-        }
-        role="tablist"
-        aria-label={sectionLabel}
-      >
-        <button
-          type="button"
-          role="tab"
-          aria-selected={!eraMode}
-          onClick={() => handleChange("current")}
-          className={!eraMode ? "active current" : ""}
-        >
-          {currentLabel}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={eraMode}
-          onClick={() => handleChange("era")}
-          className={eraMode ? "active era" : ""}
-        >
-          {eraLabel}
-        </button>
-      </div>
-    </div>
+    <GameSegmentedControl
+      className={className}
+      compact={compact}
+      label={hideLabel ? undefined : sectionLabel}
+      ariaLabel={sectionLabel}
+      value={eraMode ? "era" : "current"}
+      onChange={handleChange}
+      options={[
+        { id: "current", label: currentLabel, tone: "current" },
+        { id: "era", label: eraLabel, tone: "era" },
+      ]}
+    />
   );
 }

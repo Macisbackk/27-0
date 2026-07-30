@@ -171,28 +171,62 @@ body {
 }
 
 .mode-switch--sidebar,
-.mode-switch--home {
+.mode-switch--home,
+.mode-toggle {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4px;
   padding: 4px;
-  border-radius: 10px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  width: min(100%, 340px);
+  max-width: 100%;
+}
+
+.mode-toggle-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.mode-toggle-wrap__label {
+  margin-bottom: 0.4rem;
+  width: 100%;
+  text-align: center;
+}
+
+.mode-toggle--full {
   width: 100%;
   max-width: 100%;
 }
 
+.mode-toggle--compact {
+  width: min(100%, 280px);
+}
+
+.mode-toggle--compact button,
+.mode-switch--sidebar button {
+  min-height: 34px;
+  font-size: 0.84rem;
+}
+
+.mode-toggle {
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+}
+
 .mode-switch--home {
-  max-width: 20rem;
+  width: min(100%, 340px);
 }
 
 .mode-switch--sidebar button,
-.mode-switch--home button {
+.mode-switch--home button,
+.mode-toggle button {
   min-height: 34px;
-  border-radius: 8px;
-  font-size: 0.84rem;
-  font-weight: 700;
+  border-radius: 9px;
+  font-size: 0.86rem;
+  font-weight: 750;
   line-height: 1.12;
   border: 0;
   background: transparent;
@@ -201,25 +235,33 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-inline: 0.5rem;
+  padding-inline: 0.55rem;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.mode-switch--home button {
+.mode-switch--home button,
+.mode-toggle:not(.mode-toggle--compact) button {
   min-height: 40px;
   font-size: 0.88rem;
 }
 
 .mode-switch--sidebar button.active.current,
-.mode-switch--home button.active.current {
+.mode-switch--home button.active.current,
+.mode-toggle button.active.current {
   background: var(--mode-current, #22c55e);
   color: var(--mode-current-text, #06130b);
 }
 
 .mode-switch--sidebar button.active.era,
-.mode-switch--home button.active.era {
+.mode-switch--home button.active.era,
+.mode-toggle button.active.era {
   background: var(--mode-era, #eab308);
   color: var(--mode-era-text, #171000);
+}
+
+.mode-toggle button.active:not(.current):not(.era) {
+  background: var(--theme-primary);
+  color: var(--theme-text-on-primary, #06130b);
 }
 
 .achievement-popup-overlay {

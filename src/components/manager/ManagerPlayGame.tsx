@@ -426,7 +426,7 @@ export function ManagerPlayGame({
 
           {isHalftime && (
             <GameButton variant="theme" size="sm" onClick={handleStartSecondHalf}>
-              Start second half
+              Second Half
             </GameButton>
           )}
 

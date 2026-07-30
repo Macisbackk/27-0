@@ -39,6 +39,7 @@ const ALLOWLIST = new Set([
   "src/components/ui/ClipboardPanel.tsx",
   "src/components/ui/GamePanel.tsx",
   "src/components/ui/GameModal.tsx",
+  "src/components/ui/GameSegmentedControl.tsx",
 ]);
 
 const CHECKS: {

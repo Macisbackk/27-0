@@ -1,5 +1,6 @@
 "use client";
 
+import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import {
   SUB_TAB_BAR_SHELL,
   tabGroupButtonClass,
@@ -27,7 +28,10 @@ interface ManagerSubTabBarProps<T extends string> {
   hardAccent?: boolean;
 }
 
-/** Centered segmented sub-tabs — one shared style across Manager Mode. */
+/**
+ * Centered segmented sub-tabs.
+ * Two/three options use compact GameSegmentedControl; many tabs keep the scroll bar.
+ */
 export function ManagerSubTabBar<T extends string>({
   tabs,
   active,
@@ -38,6 +42,30 @@ export function ManagerSubTabBar<T extends string>({
   eraAccent = false,
   hardAccent = false,
 }: ManagerSubTabBarProps<T>) {
+  const useCompactToggle = !scrollable && tabs.length <= 3 && !hardAccent;
+
+  if (useCompactToggle) {
+    return (
+      <GameSegmentedControl
+        className={className}
+        ariaLabel={ariaLabel}
+        value={active}
+        onChange={onChange}
+        options={tabs.map((t) => ({
+          id: t.id,
+          label: t.label,
+          shortLabel: t.shortLabel,
+          tone:
+            t.variant === "era"
+              ? "era"
+              : t.variant === "current"
+                ? "current"
+                : "default",
+        }))}
+      />
+    );
+  }
+
   const shellClass = scrollable
     ? "flex w-full justify-center overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     : SUB_TAB_BAR_SHELL;
@@ -45,7 +73,7 @@ export function ManagerSubTabBar<T extends string>({
   const groupClass = `${tabGroupClass(hardAccent, false, eraAccent)}${
     scrollable
       ? " min-w-max w-max max-w-none"
-      : " w-full max-w-md sm:w-auto sm:min-w-[18rem]"
+      : " w-full max-w-[min(100%,21.25rem)]"
   } ${className ?? ""}`.trim();
 
   const buttonLayout = scrollable ? "scroll" : "equal";

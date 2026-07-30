@@ -746,7 +746,7 @@ export function ManagerHub({
   );
 
   const clubDetailsSections = (
-    <>
+    <div className="stat-section-stack">
       <ManagerClubFinancesPanel career={career} collapsible />
       <HubBoardBudgetAttendance
         career={career}
@@ -755,7 +755,7 @@ export function ManagerHub({
       />
       {scoringLeadersCard}
       {contractsCard}
-    </>
+    </div>
   );
 
   if (playoffsActive && hubCareer.playoffs) {
@@ -771,6 +771,7 @@ export function ManagerHub({
           {commandCentre}
           <GameSectionHeader label="Club office" title="Club details" className="sm:hidden" />
           <MobileDetailsAccordion title="Club details">
+            <div className="stat-section-stack">
             <HubBoardBudgetAttendance
               career={career}
               lastGate={lastGate}
@@ -779,6 +780,7 @@ export function ManagerHub({
             <ManagerClubFinancesPanel career={career} />
             {scoringLeadersCard}
             {contractsCard}
+            </div>
           </MobileDetailsAccordion>
           {quickActionsCard}
           </ManagerSection>

@@ -198,8 +198,8 @@ export function ManagerTactics({
 }) {
   return (
     <ManagerPage>
-      <h1 className={`text-center ${TYPO.pageTitle}`}>Tactics</h1>
-      <ManagerSection width="narrow">
+      <ManagerSection>
+        <h1 className={`text-center ${TYPO.pageTitle}`}>Tactics</h1>
         <ManagerTacticsPanel career={career} onChange={onChange} />
       </ManagerSection>
     </ManagerPage>
