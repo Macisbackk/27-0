@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import {
-  SPACING,
-} from "@/lib/ui/design-system";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
@@ -23,6 +20,7 @@ import {
   getManagerCareerMilestones,
 } from "@/lib/manager/managerCareerMilestones";
 import {
+  ManagerPage,
   ManagerSectionCard,
   ManagerStat,
   ManagerViewHeader,
@@ -39,7 +37,7 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
   const [tab, setTab] = useState<StatsTab>("season");
 
   return (
-    <div className={SPACING.stackLg}>
+    <ManagerPage>
       <ManagerViewHeader
         title="Stats"
         subtitle={
@@ -69,7 +67,7 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
       ) : (
         <RetiredPlayersPanel career={career} />
       )}
-    </div>
+    </ManagerPage>
   );
 }
 

@@ -5,7 +5,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
-import { CARD, PAGE, SPACING } from "@/lib/ui/design-system";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type {
   ManagerCareer,
@@ -75,6 +75,7 @@ import {
   ManagerClubFinancesPanel,
   ManagerFormStrip,
   ManagerNewsItem,
+  ManagerPage,
   ManagerSectionCard,
   ManagerStat,
   ManagerStatGrid,
@@ -759,7 +760,7 @@ export function ManagerHub({
   if (playoffsActive && hubCareer.playoffs) {
     return (
       <>
-        <div className={`${PAGE.section} ${hubMobilePad}`}>
+        <ManagerPage className={hubMobilePad}>
           <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
             {nextFixtureCard}
             {newsTickerCard}
@@ -778,7 +779,7 @@ export function ManagerHub({
             {contractsCard}
           </MobileDetailsAccordion>
           {quickActionsCard}
-        </div>
+        </ManagerPage>
         {stickyActions}
         {alertDialog}
         {clubSheetModal}
@@ -788,7 +789,7 @@ export function ManagerHub({
 
   return (
     <>
-      <div className={`${PAGE.section} ${hubMobilePad}`}>
+      <ManagerPage className={hubMobilePad}>
       <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
         {seasonProgressCard}
         {nextFixtureCard}
@@ -804,7 +805,7 @@ export function ManagerHub({
       </MobileDetailsAccordion>
 
       {quickActionsCard}
-    </div>
+    </ManagerPage>
     {stickyActions}
     {alertDialog}
     {clubSheetModal}

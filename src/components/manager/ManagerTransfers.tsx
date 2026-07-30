@@ -9,7 +9,7 @@ import {
   ManagerTransferResultModal,
   type TransferResultDetails,
 } from "@/components/manager/ManagerTransferResultModal";
-import { ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
+import { ManagerPage, ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
 import {
   canAffordAdditionalWage,
   evaluateClubSigningAppeal,
@@ -371,7 +371,7 @@ export function ManagerTransfers({
         : "Bid for any Super League player not on the transfer list — deals cost more";
 
   return (
-    <div className={`w-full ${SPACING.stackLg}`}>
+    <ManagerPage>
       <GameSectionHeader
         label="Transfers"
         title="Transfers"
@@ -858,6 +858,6 @@ export function ManagerTransfers({
           onClose={() => setTransferResult(null)}
         />
       )}
-    </div>
+    </ManagerPage>
   );
 }

@@ -2,11 +2,10 @@
 
 import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
+import { GamePanel } from "@/components/ui/GamePanel";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { GameTableRow } from "@/components/ui/GameTableRow";
-import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
-import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
+import { FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, ManagerReservePlayer } from "@/lib/manager/types";
 import { POSITION_SHORT } from "@/lib/positions";
@@ -40,9 +39,7 @@ import {
 } from "@/lib/manager/managerContracts";
 import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import { playUiClick } from "@/lib/sound";
-import {
-  ManagerPage,
-} from "@/components/manager/manager-ui";
+import { ManagerPage, ManagerStat } from "@/components/manager/manager-ui";
 import { ManagerReserveReleaseModal } from "@/components/manager/ManagerReserveReleaseModal";
 
 type ReserveFilter = "all" | "position" | "potential" | "rating" | "age";
@@ -74,6 +71,15 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     : null;
 
   const youthProspects = career.youthProspects ?? [];
+
+  const totalReserveWages = useMemo(
+    () =>
+      Object.values(career.reserveContracts ?? {}).reduce(
+        (s, c) => s + c.wagePerYear,
+        0
+      ),
+    [career.reserveContracts]
+  );
 
   const expiringReserveCount = useMemo(
     () =>
@@ -185,92 +191,123 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
   };
 
   return (
-    <ManagerPage wide>
+    <ManagerPage>
       <GameSectionHeader
         label="Academy"
         title="Reserves"
-        subtitle={`Youth & reserve squad · ${career.reserves.length} players · Reserve wages from ${formatWage(
-          Object.values(career.reserveContracts ?? {}).reduce(
-            (s, c) => s + c.wagePerYear,
-            0
-          )
-        )}/yr`}
+        subtitle={`Youth & reserve squad · ${career.club}`}
       />
 
       {message && (
         <p className={`${TYPO.bodySm} text-theme-primary`}>{message}</p>
       )}
 
-      {reserveShortfall > 0 && (
-        <ProgrammePanel variant="elevated" padded className="border-l-4 border-red-500/70">
-          <p className={TYPO.sectionLabel}>
-            Reserve listing short — {career.reserves.length}/{RESERVE_SQUAD_MIN}{" "}
-            registered
-          </p>
-          <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
-            {RESERVE_EMERGENCY_RECRUITMENT_EXCUSE}
-          </p>
-          <p className={`mt-2 ${TYPO.bodySm} text-accent-gold`}>
-            Without {RESERVE_SQUAD_MIN} registered players, reserve fixtures are
-            awarded as an 18-0 walkover defeat.
-          </p>
-          <GameButton
-            variant="theme"
-            size="sm"
-            className="mt-3"
-            disabled={!canAffordRecruitment}
-            onClick={handleEmergencyRecruitment}
-          >
-            {RESERVE_EMERGENCY_RECRUITMENT_TITLE} — £
-            {(RESERVE_RECRUITMENT_FEE / 1000).toFixed(0)}k
-            {reserveShortfall > 0
-              ? ` · register ${reserveShortfall} player${reserveShortfall === 1 ? "" : "s"}`
-              : ""}
-          </GameButton>
-          {!canAffordRecruitment && (
-            <p className={`mt-2 ${TYPO.bodySm} text-red-400`}>
-              Transfer budget £{(transferBudget / 1000).toFixed(0)}k — need £
-              {(RESERVE_RECRUITMENT_FEE / 1000).toFixed(0)}k
-            </p>
+      <GamePanel padded label="Reserve squad summary">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <ManagerStat
+            label="Squad size"
+            value={`${career.reserves.length} / ${RESERVE_SQUAD_MIN}`}
+            tone={reserveShortfall > 0 ? "red" : "default"}
+            large
+          />
+          <ManagerStat
+            label="Reserve wages"
+            value={`${formatWage(totalReserveWages)}/yr`}
+            tone="gold"
+            large
+          />
+          {expiringReserveCount > 0 && (
+            <ManagerStat
+              label="Renewals due"
+              value={String(expiringReserveCount)}
+              tone="amber"
+              large
+            />
           )}
-        </ProgrammePanel>
-      )}
+        </div>
+        {reserveShortfall > 0 && (
+          <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/5 p-3">
+            <p className={TYPO.sectionLabel}>
+              Reserve listing short — {career.reserves.length}/{RESERVE_SQUAD_MIN}{" "}
+              registered
+            </p>
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+              {RESERVE_EMERGENCY_RECRUITMENT_EXCUSE}
+            </p>
+            <p className={`mt-2 ${TYPO.bodySm} text-accent-gold`}>
+              Without {RESERVE_SQUAD_MIN} registered players, reserve fixtures are
+              awarded as an 18-0 walkover defeat.
+            </p>
+            <GameButton
+              variant="theme"
+              size="sm"
+              className="mt-3"
+              disabled={!canAffordRecruitment}
+              onClick={handleEmergencyRecruitment}
+            >
+              {RESERVE_EMERGENCY_RECRUITMENT_TITLE} — £
+              {(RESERVE_RECRUITMENT_FEE / 1000).toFixed(0)}k
+              {reserveShortfall > 0
+                ? ` · register ${reserveShortfall} player${reserveShortfall === 1 ? "" : "s"}`
+                : ""}
+            </GameButton>
+            {!canAffordRecruitment && (
+              <p className={`mt-2 ${TYPO.bodySm} text-red-400`}>
+                Transfer budget £{(transferBudget / 1000).toFixed(0)}k — need £
+                {(RESERVE_RECRUITMENT_FEE / 1000).toFixed(0)}k
+              </p>
+            )}
+          </div>
+        )}
+        {expiringReserveCount > 0 && (
+          <div className="mt-4 border-t border-pitch-700/40 pt-3">
+            <p className={`${TYPO.bodySm} text-accent-gold`}>
+              {expiringReserveCount} youth contract
+              {expiringReserveCount === 1 ? "" : "s"} need renewal
+            </p>
+            <GameButton
+              variant="theme"
+              size="sm"
+              className="mt-2"
+              onClick={() => {
+                playUiClick();
+                handleBulkRenewReserves();
+              }}
+            >
+              Renew all expiring reserves
+            </GameButton>
+          </div>
+        )}
+      </GamePanel>
 
       {youthProspects.length > 0 && (
-        <ProgrammePanel variant="elevated" padded className="border-l-4 border-theme-primary">
-          <p className={TYPO.sectionLabel}>Youth intake · {career.seasonYear}</p>
-          <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+        <GamePanel padded label={`Youth intake · ${career.seasonYear}`}>
+          <p className={`${TYPO.bodySm} text-pitch-300`}>
             {youthProspects.length} academy prospect
             {youthProspects.length === 1 ? "" : "s"} available to sign on cheap
             youth terms.
           </p>
-          <div className={`mt-3 ${SPACING.stackSm}`}>
+          <div className={`mt-3 divide-y divide-pitch-700/40 ${SPACING.stackSm}`}>
             {youthProspects.map((p) => {
               const previewWage = generateReserveYouthContract(p).wagePerYear;
               return (
-                <GameTableRow key={p.id} variant="ledger" className={`${SPACING.cardPaddingSm}`}>
-                  <div className="flex flex-wrap items-start justify-between gap-2">
-                    <div>
-                      <p className="font-medium text-white">{p.name}</p>
-                      <p className={`${TYPO.bodySm} text-pitch-400`}>
-                        {POSITION_SHORT[p.position]} · Age {p.age} ·{" "}
-                        {p.nationality}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold text-theme-primary">
-                        {p.rating}
-                      </p>
-                      <p className="text-xs text-pitch-500">
-                        POT {p.potentialRating}
-                      </p>
-                    </div>
-                  </div>
-                  <p className="mt-1 text-[11px] text-pitch-400">
-                    {getPotentialTier(p.potentialRating)} · Youth wage ~{" "}
-                    {formatWage(previewWage)}/yr
+                <div key={p.id} className="py-3 first:pt-0 last:pb-0">
+                  <p className="font-medium text-white">{p.name}</p>
+                  <p className={`${TYPO.bodySm} text-pitch-400`}>
+                    {POSITION_SHORT[p.position]} · Age {p.age} · {p.nationality}
                   </p>
-                  <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] font-semibold text-theme-primary">
+                      Rating {p.rating}
+                    </span>
+                    <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] font-semibold text-accent-gold">
+                      POT {p.potentialRating}
+                    </span>
+                    <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] text-pitch-300">
+                      {getPotentialTier(p.potentialRating)} · ~{formatWage(previewWage)}/yr
+                    </span>
+                  </div>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
                     <GameButton
                       variant="theme"
                       size="sm"
@@ -292,42 +329,21 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                       Pass
                     </GameButton>
                   </div>
-                </GameTableRow>
+                </div>
               );
             })}
           </div>
-        </ProgrammePanel>
-      )}
-
-      {expiringReserveCount > 0 && (
-        <ClipboardPanel padded>
-          <p className={TYPO.sectionLabel}>Reserve contracts</p>
-          <p className={`mt-1 ${TYPO.bodySm} text-accent-gold`}>
-            {expiringReserveCount} youth contract
-            {expiringReserveCount === 1 ? "" : "s"} need renewal
-          </p>
-          <GameButton
-            variant="theme"
-            size="sm"
-            className="mt-2"
-            onClick={() => {
-              playUiClick();
-              handleBulkRenewReserves();
-            }}
-          >
-            Renew all expiring reserves
-          </GameButton>
-        </ClipboardPanel>
+        </GamePanel>
       )}
 
       {(career.lastReserveResult || upcomingOpp) && (
-        <ClipboardPanel padded>
+        <GamePanel padded label="Reserve fixtures">
           {career.lastReserveResult && (
             <div>
-              <p className={TYPO.sectionLabel}>Latest Reserve Result</p>
+              <p className={TYPO.sectionLabel}>Latest result</p>
               {career.lastReserveResult.walkover ? (
                 <>
-                  <p className={`mt-1 font-medium text-white`}>
+                  <p className="mt-1 font-medium text-white">
                     {career.lastReserveResult.walkoverReason}
                   </p>
                   <p className={`${TYPO.bodySm} text-pitch-400`}>
@@ -338,14 +354,14 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                 </>
               ) : (
                 <>
-                  <p className={`mt-1 font-medium text-white`}>
+                  <p className="mt-1 font-medium text-white">
                     {career.club} Reserves {career.lastReserveResult.userScore} -{" "}
                     {career.lastReserveResult.oppScore}{" "}
                     {career.lastReserveResult.opponent}
                   </p>
                   {career.lastReserveResult.topPerformer && (
                     <p className={`${TYPO.bodySm} text-pitch-400`}>
-                      Top Performer: {career.lastReserveResult.topPerformer}
+                      Top performer: {career.lastReserveResult.topPerformer}
                     </p>
                   )}
                 </>
@@ -353,20 +369,18 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             </div>
           )}
           {upcomingOpp && !career.isSeasonComplete && (
-            <div className={career.lastReserveResult ? "mt-3" : ""}>
-              <p className={TYPO.sectionLabel}>Upcoming Reserve Fixture</p>
+            <div className={career.lastReserveResult ? "mt-4 border-t border-pitch-700/40 pt-4" : ""}>
+              <p className={TYPO.sectionLabel}>Upcoming</p>
               <p className={`mt-1 ${TYPO.bodySm} text-white`}>
                 {career.club} Reserves vs {upcomingOpp} Reserves
                 {nextFixture && ` · Round ${nextFixture.round}`}
               </p>
             </div>
           )}
-        </ClipboardPanel>
+        </GamePanel>
       )}
 
-      <div className={SPACING.stackLg}>
-      <div className={`${CARD.clipboard} ${SPACING.cardPadding}`}>
-        <p className={`${TYPO.sectionLabel} mb-2`}>Filters</p>
+      <GamePanel padded label="Filters">
         <div className="flex flex-wrap gap-2">
           {(
             [
@@ -415,128 +429,130 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             </button>
           ))}
         </div>
-      </div>
+      </GamePanel>
 
-      <div className={SPACING.stackSm}>
-        {rows.map((r) => {
-          const contract = career.reserveContracts?.[r.id];
-          const status = contract ? getContractStatus(contract) : null;
-          const needsRenew =
-            status === "expires_this_season" || status === "wants_renewal";
-          const signedRating = getReserveSignedRating(r);
-          const growthDelta = getReserveSignedGrowthDelta(r);
+      <GamePanel padded label={`Reserve players (${rows.length})`}>
+        <div className="divide-y divide-pitch-700/40">
+          {rows.map((r) => {
+            const contract = career.reserveContracts?.[r.id];
+            const status = contract ? getContractStatus(contract) : null;
+            const needsRenew =
+              status === "expires_this_season" || status === "wants_renewal";
+            const signedRating = getReserveSignedRating(r);
+            const growthDelta = getReserveSignedGrowthDelta(r);
 
-          return (
-            <GameTableRow
-              key={r.id}
-              variant="ledger"
-              className={`${SPACING.cardPaddingSm} ${
-                needsRenew ? "border-accent-gold/40" : ""
-              }`}
-            >
-              <div className="flex flex-wrap items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="font-medium text-white">{r.name}</p>
-                  <p className={`${TYPO.bodySm} text-pitch-400`}>
-                    {POSITION_SHORT[r.position]} · Age {r.age} · {r.nationality}
-                  </p>
-                  {contract && (
-                    <p className={`mt-0.5 text-[11px] text-pitch-500`}>
-                      {formatWage(contract.wagePerYear)}/yr ·{" "}
-                      {contract.yearsRemaining}yr left ·{" "}
-                      {status ? STATUS_LABELS[status] ?? status : "—"}
-                    </p>
+            return (
+              <GameTableRow
+                key={r.id}
+                variant="ledger"
+                className={`border-0 bg-transparent px-0 py-4 shadow-none first:pt-0 last:pb-0 ${
+                  needsRenew ? "rounded-lg ring-1 ring-accent-gold/30 !px-3" : ""
+                }`}
+              >
+                <p className="font-medium text-white">{r.name}</p>
+                <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
+                  {POSITION_SHORT[r.position]} · Age {r.age} · {r.nationality}
+                </p>
+
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] font-semibold text-pitch-300">
+                    Signed {signedRating}
+                  </span>
+                  <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] font-semibold text-theme-primary">
+                    Current {r.rating}
+                  </span>
+                  <span
+                    className={`rounded-md border px-2 py-0.5 text-[10px] font-semibold ${
+                      growthDelta > 0
+                        ? "border-theme-primary/40 bg-theme-primary/10 text-theme-primary"
+                        : growthDelta < 0
+                          ? "border-red-500/40 bg-red-500/10 text-red-300"
+                          : "border-pitch-600/60 bg-pitch-900/40 text-pitch-400"
+                    }`}
+                  >
+                    Growth {formatReserveGrowthDelta(growthDelta)}
+                  </span>
+                  <span className="rounded-md border border-accent-gold/40 bg-accent-gold/10 px-2 py-0.5 text-[10px] font-semibold text-accent-gold">
+                    POT {r.potentialRating}
+                  </span>
+                  {r.calledUpForNextMatch && (
+                    <span className="rounded-md border border-theme-primary/40 bg-theme-primary/10 px-2 py-0.5 text-[10px] font-semibold text-theme-primary">
+                      Called up
+                    </span>
                   )}
                 </div>
-                <div className="text-right">
-                  <p className="text-lg font-bold text-theme-primary">
-                    {r.rating}
-                  </p>
-                  <p className={`${TYPO.bodySm} text-pitch-500`}>
-                    POT {r.potentialRating}
-                  </p>
-                </div>
-              </div>
 
-              <p className={`mt-2 text-[10px] text-pitch-400 sm:text-[11px]`}>
-                Signed rating: {signedRating} · Current rating: {r.rating} ·
-                Growth: {formatReserveGrowthDelta(growthDelta)}
-              </p>
-
-              <div className="mt-2 grid grid-cols-2 gap-1 text-[10px] text-pitch-300 sm:grid-cols-4">
-                <span>{getPotentialTier(r.potentialRating)}</span>
-                <span>Form {r.form}</span>
-                <span>
-                  {r.reserveAppearances} apps · {r.reserveTries} tries
-                </span>
-                {r.calledUpForNextMatch && (
-                  <span className="font-semibold text-theme-primary">Called up</span>
+                {contract && (
+                  <p className={`mt-2 text-[11px] text-pitch-500`}>
+                    {formatWage(contract.wagePerYear)}/yr · {contract.yearsRemaining}yr
+                    left · {status ? STATUS_LABELS[status] ?? status : "—"}
+                  </p>
                 )}
-              </div>
 
-              <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                <GameButton
-                  variant="theme"
-                  size="sm"
-                  disabled={r.calledUpForNextMatch}
-                  onClick={() => {
-                    playUiClick();
-                    onUpdate(callUpReserveForNextMatch(career, r.id));
-                    setMessage(
-                      r.calledUpForNextMatch
-                        ? `${r.name} is already called up`
-                        : `${r.name} called up for next match`
-                    );
-                  }}
-                >
-                  {r.calledUpForNextMatch ? "Called up" : "Call up for next match"}
-                </GameButton>
-                {needsRenew && contract && (
+                <div className="mt-3 grid gap-2 border-t border-pitch-700/30 pt-3 sm:grid-cols-2">
+                  <GameButton
+                    variant="theme"
+                    size="sm"
+                    disabled={r.calledUpForNextMatch}
+                    onClick={() => {
+                      playUiClick();
+                      onUpdate(callUpReserveForNextMatch(career, r.id));
+                      setMessage(
+                        r.calledUpForNextMatch
+                          ? `${r.name} is already called up`
+                          : `${r.name} called up for next match`
+                      );
+                    }}
+                  >
+                    {r.calledUpForNextMatch ? "Called up" : "Call up"}
+                  </GameButton>
                   <GameButton
                     variant="theme"
                     size="sm"
                     onClick={() => {
                       playUiClick();
-                      handleRenewReserve(r.id);
+                      handlePromote(r.id);
                     }}
                   >
-                    Renew ({formatWage(
-                      (contract.renewalDemand ??
-                        generateReserveRenewalDemand(r, contract)
-                      ).wagePerYear
-                    )}
-                    /yr)
+                    Full-time contract
                   </GameButton>
-                )}
-                <GameButton
-                  variant="theme"
-                  size="sm"
-                  onClick={() => {
-                    playUiClick();
-                    handlePromote(r.id);
-                  }}
-                >
-                  Full-time contract
-                </GameButton>
-                <GameButton
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => handleReleaseClick(r)}
-                >
-                  Release
-                </GameButton>
-              </div>
-            </GameTableRow>
-          );
-        })}
-      </div>
+                  {needsRenew && contract && (
+                    <GameButton
+                      variant="theme"
+                      size="sm"
+                      onClick={() => {
+                        playUiClick();
+                        handleRenewReserve(r.id);
+                      }}
+                    >
+                      Renew (
+                      {formatWage(
+                        (contract.renewalDemand ??
+                          generateReserveRenewalDemand(r, contract)
+                        ).wagePerYear
+                      )}
+                      /yr)
+                    </GameButton>
+                  )}
+                  <GameButton
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => handleReleaseClick(r)}
+                  >
+                    Release
+                  </GameButton>
+                </div>
+              </GameTableRow>
+            );
+          })}
+        </div>
 
-      {rows.length === 0 && (
-        <p className={`${TYPO.bodySm} text-pitch-500`}>
-          No reserve players match your filters.
-        </p>
-      )}
-      </div>
+        {rows.length === 0 && (
+          <p className={`${TYPO.bodySm} text-pitch-500`}>
+            No reserve players match your filters.
+          </p>
+        )}
+      </GamePanel>
 
       {releaseTarget && (
         <ManagerReserveReleaseModal

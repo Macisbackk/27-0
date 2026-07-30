@@ -1,5 +1,6 @@
 "use client";
 
+import { ManagerPage } from "@/components/manager/manager-ui";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -11,7 +12,7 @@ interface ManagerTableProps {
 
 export function ManagerTable({ career }: ManagerTableProps) {
   return (
-    <div className={`w-full min-w-0 ${SPACING.stackLg}`}>
+    <ManagerPage>
       <h1 className={TYPO.pageTitle}>League Table</h1>
 
       <div className={`${CARD.base} -mx-1 overflow-x-auto px-1`}>
@@ -87,6 +88,6 @@ export function ManagerTable({ career }: ManagerTableProps) {
           </tbody>
         </table>
       </div>
-    </div>
+    </ManagerPage>
   );
 }

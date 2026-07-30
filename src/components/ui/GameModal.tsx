@@ -17,9 +17,9 @@ interface GameModalProps {
   panelRef?: RefObject<HTMLDivElement | null>;
 }
 
-const BACKDROP_BASE = `fixed inset-0 flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} sm:items-center`;
+const BACKDROP_BASE = `fixed inset-0 grid place-items-center overflow-y-auto bg-black/75 ${SPACING.modalBackdrop}`;
 
-/** Shared stadium-board modal chrome. */
+/** Shared stadium-board modal chrome — portaled above footer/nav. */
 export function GameModal({
   open,
   children,
@@ -27,7 +27,7 @@ export function GameModal({
   labelledBy,
   wide = false,
   className = "",
-  zClass = "z-40",
+  zClass = "z-[9999]",
   panelRef,
 }: GameModalProps) {
   if (!open) return null;
@@ -44,7 +44,7 @@ export function GameModal({
         <div
           ref={panelRef}
           tabIndex={panelRef ? -1 : undefined}
-          className={`${wide ? MODAL.panelWide : MODAL.panel} ${MODAL.panelPadding} ${className}`.trim()}
+          className={`${wide ? MODAL.panelWide : MODAL.panel} ${MODAL.panelPadding} my-4 max-h-[min(82vh,720px)] overflow-y-auto ${wide ? "w-[min(96vw,40rem)]" : "w-[min(92vw,520px)]"} ${className}`.trim()}
           onClick={(e) => e.stopPropagation()}
         >
           {children}

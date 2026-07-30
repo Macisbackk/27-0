@@ -37,6 +37,23 @@
   padding-inline: 0;
 }
 
+/* Manager tab content — same width language as game-page (shell already pads). */
+.manager-page {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  min-width: 0;
+}
+
+.manager-page--wide {
+  max-width: 100%;
+}
+
+.manager-welcome-modal {
+  width: min(92vw, 520px);
+  max-height: min(82vh, 720px);
+}
+
 /* ── Shared panel body ───────────────────────────────────────────────────── */
 .panel-body,
 .game-panel__body {

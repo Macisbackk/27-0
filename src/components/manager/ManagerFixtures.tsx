@@ -1,22 +1,24 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { ClubColorChip } from "@/components/ClubColorChip";
 import { FixtureResultRow } from "@/components/FixtureResultRow";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
-import { ManagerFormStrip, ManagerStat, leaguePositionTone, matchPredictionTone } from "@/components/manager/manager-ui";
+import {
+  ManagerFormStrip,
+  ManagerPage,
+  ManagerStat,
+  leaguePositionTone,
+  matchPredictionTone,
+} from "@/components/manager/manager-ui";
 import { getMatchPrediction } from "@/lib/manager/managerScoring";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getManagerOpponentPoolOptions } from "@/lib/manager/managerLeagueRosters";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
-import {
-  SPACING,
-} from "@/lib/ui/design-system";
-import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
+import { SPACING } from "@/lib/ui/design-system";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
-import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubColors } from "@/lib/clubs";
@@ -27,9 +29,7 @@ import {
   managerPillClass,
 } from "@/lib/manager/managerSurfaces";
 import { getFriendlyDualBorderStyle } from "@/lib/manager/managerFriendlyUi";
-import {
-  buildMergedDisplaySchedule,
-} from "@/lib/manager/managerChallengeCup";
+import { buildMergedDisplaySchedule } from "@/lib/manager/managerChallengeCup";
 import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
 import { getHomeFixtureAttendanceOutlook } from "@/lib/manager/managerAttendance";
 import {
@@ -259,8 +259,11 @@ function buildFixtureList(
   return items;
 }
 
-function FormStrip({ results }: { results: ("W" | "L" | "D")[] }) {
-  return <ManagerFormStrip results={results} />;
+function itemCompetition(
+  item: FixtureListItem
+): NonNullable<ManagerFixtureRecord["competition"]> {
+  if (item.kind === "played") return item.competition ?? "league";
+  return item.sched.competition ?? "league";
 }
 
 function UpcomingFixtureRow({
@@ -321,11 +324,7 @@ function UpcomingFixtureRow({
             cupRound={sched.cupRound}
             detailed={false}
           />
-          {isNext && (
-            <span className={managerPillClass("primary")}>
-              Next
-            </span>
-          )}
+          {isNext && <span className={managerPillClass("primary")}>Next</span>}
         </div>
         <span
           className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
@@ -376,6 +375,81 @@ function UpcomingFixtureRow({
         </div>
       ) : (
         <p className="mt-2 text-sm font-medium text-white">Opponent TBC</p>
+      )}
+    </div>
+  );
+}
+
+function PlayedFixtureRow({
+  item,
+  club,
+  onSelectFixture,
+}: {
+  item: Extract<FixtureListItem, { kind: "played" }>;
+  club: string;
+  onSelectFixture: (fixtureId: string) => void;
+}) {
+  const { fixture } = item;
+  const fixtureId = managerFixtureDisplayId(fixture);
+  const attendance = fixture.meta?.attendance?.attendance;
+
+  return (
+    <div className={SPACING.stackSm}>
+      <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+        {fixture.competition && (
+          <ManagerCompetitionBadge
+            competition={fixture.competition}
+            cupRound={fixture.meta?.cupRound}
+            detailed={false}
+          />
+        )}
+        {attendance != null && (
+          <span className={`shrink-0 ${TYPO.bodySm} text-pitch-500`}>
+            Attendance {attendance.toLocaleString()}
+          </span>
+        )}
+      </div>
+      <FixtureResultRow
+        fixture={fixture}
+        userTeamName={club}
+        roundLabel={getManagerPlayedFixtureLabel(fixture)}
+        cupHighlight={isChallengeCupFixture(fixture.competition)}
+        onClick={() => {
+          playUiClick();
+          onSelectFixture(fixtureId);
+        }}
+      />
+    </div>
+  );
+}
+
+function FixtureItemList({
+  items,
+  club,
+  onSelectFixture,
+}: {
+  items: FixtureListItem[];
+  club: string;
+  onSelectFixture: (fixtureId: string) => void;
+}) {
+  return (
+    <div className={SPACING.stackSm}>
+      {items.map((item) =>
+        item.kind === "upcoming" ? (
+          <UpcomingFixtureRow
+            key={item.key}
+            sched={item.sched}
+            club={club}
+            isNext={item.isNext}
+          />
+        ) : (
+          <PlayedFixtureRow
+            key={item.key}
+            item={item}
+            club={club}
+            onSelectFixture={onSelectFixture}
+          />
+        )
       )}
     </div>
   );
@@ -442,20 +516,14 @@ export function ManagerFixtures({
   );
 
   const filteredItems = useMemo(() => {
-    let items = allItems.filter((item) => {
-      const comp =
-        item.kind === "played"
-          ? item.competition ?? "league"
-          : item.sched.competition;
-      return matchesCompetitionFilter(comp, filter);
-    });
+    let items = allItems.filter((item) =>
+      matchesCompetitionFilter(itemCompetition(item), filter)
+    );
 
     if (filter === "upcoming") {
       items = items.filter((i) => i.kind === "upcoming");
     } else if (filter === "results") {
-      items = items
-        .filter((i) => i.kind === "played")
-        .reverse();
+      items = items.filter((i) => i.kind === "played").reverse();
     }
 
     return items;
@@ -464,31 +532,143 @@ export function ManagerFixtures({
   const playedCount = allItems.filter((i) => i.kind === "played").length;
   const upcomingCount = allItems.filter((i) => i.kind === "upcoming").length;
 
-  const showUpcomingFirst =
-    filter === "all" ||
-    filter === "upcoming" ||
-    filter === "league" ||
-    filter === "cup" ||
-    filter === "playoffs" ||
-    filter === "wcc";
-  const upcomingItems = filteredItems.filter((i) => {
-    if (i.kind !== "upcoming") return false;
-    if (filter === "all" && i.sched.competition === "world_club_challenge") {
-      return false;
+  const upcomingItems = useMemo(
+    () =>
+      filteredItems.filter((i) => {
+        if (i.kind !== "upcoming") return false;
+        if (filter === "all" && i.sched.competition === "world_club_challenge") {
+          return false;
+        }
+        return true;
+      }),
+    [filteredItems, filter]
+  );
+
+  const challengeCupItems = useMemo(
+    () => filteredItems.filter((i) => itemCompetition(i) === "challenge_cup"),
+    [filteredItems]
+  );
+
+  const leagueUpcomingItems = useMemo(
+    () =>
+      upcomingItems.filter(
+        (i) =>
+          i.kind === "upcoming" &&
+          (i.sched.competition === "league" || !i.sched.competition)
+      ),
+    [upcomingItems]
+  );
+
+  const playoffItems = useMemo(
+    () => filteredItems.filter((i) => itemCompetition(i) === "playoffs"),
+    [filteredItems]
+  );
+
+  const completedResultsItems = useMemo(() => {
+    let items = filteredItems.filter((i) => i.kind === "played");
+    if (filter === "all") {
+      items = items.filter((i) => {
+        const comp = itemCompetition(i);
+        return comp === "league" || comp === "friendly" || !comp;
+      });
     }
-    return true;
-  });
-  const playedItems = filteredItems.filter((i) => i.kind === "played");
-  const playedDisplay =
-    filter === "results" ? playedItems : [...playedItems].reverse();
+    return filter === "results" ? items : [...items].reverse();
+  }, [filteredItems, filter]);
+
+  const showWcc = filter === "all" || filter === "wcc";
+  const showChallengeCup = filter === "all" || filter === "cup";
+  const showSuperLeague = filter === "all" || filter === "league";
+  const showPlayoffs =
+    (filter === "all" || filter === "playoffs") && playoffItems.length > 0;
+  const showUpcomingFilter = filter === "upcoming" && upcomingItems.length > 0;
+  const showCompletedResults =
+    (filter === "all" || filter === "results" || filter === "league") &&
+    completedResultsItems.length > 0;
+
+  const wccStats = getWccStats(career);
+  const wccCurrentRaw = career.worldClubChallenge?.currentFixture;
+  const wccCurrent = wccCurrentRaw
+    ? resolveWccFixtureForDisplay(career, wccCurrentRaw)
+    : null;
+  const wccHistory = wccStats.results.slice().reverse();
+
+  let wccPanelContent: ReactNode;
+  if (wccCurrent) {
+    wccPanelContent = (
+      <div className="space-y-2">
+        <p className="font-semibold text-white">
+          {wccCurrent.superLeagueChampionName} vs {wccCurrent.nrlChampionName}
+        </p>
+        <p className={TYPO.bodySm}>
+          Game Week {wccCurrent.gameWeek} · Season {wccCurrent.seasonYear} · NRL
+          rating {wccCurrent.nrlChampionRating}
+        </p>
+        {wccCurrent.userInvolved ? (
+          <p className={`${TYPO.bodySm} text-accent-gold`}>
+            You are the Super League champion — Play or Simulate from Matchday
+            when Game Week 3 arrives.
+          </p>
+        ) : (
+          <p className={TYPO.bodySm}>
+            Another Super League club is involved this year.
+          </p>
+        )}
+      </div>
+    );
+  } else if (wccHistory.length > 0) {
+    wccPanelContent = (
+      <ul className="space-y-2">
+        {wccHistory.map((r) => (
+          <li
+            key={r.id}
+            className="rounded-lg border border-pitch-700/40 bg-pitch-900/30 p-3"
+          >
+            <p className="font-semibold text-white">
+              {r.seasonYear} — {r.superLeagueChampionName} {r.homeScore}–
+              {r.awayScore} {r.nrlChampionName}
+            </p>
+            <p className={TYPO.bodySm}>
+              Winner: {r.winnerName}
+              {r.userResult && r.userResult !== "not_involved"
+                ? ` · You ${r.userResult}`
+                : " · AI result"}
+            </p>
+            <p className={`mt-1 ${TYPO.bodySm}`}>{r.storySummary}</p>
+          </li>
+        ))}
+      </ul>
+    );
+  } else {
+    wccPanelContent = (
+      <p className={TYPO.bodySm}>
+        World Club Challenge starts from your second season once a Super League
+        champion has been crowned.
+      </p>
+    );
+  }
+
+  const showNextMatch =
+    nextFixture &&
+    !seasonComplete &&
+    shouldShowNextMatch(filter, nextFixture);
+
+  const hasAnySection =
+    showNextMatch ||
+    (showWcc && wccPanelContent) ||
+    (showChallengeCup && challengeCupItems.length > 0) ||
+    (showSuperLeague && leagueUpcomingItems.length > 0) ||
+    showPlayoffs ||
+    showUpcomingFilter ||
+    showCompletedResults;
 
   return (
-    <div className={`w-full min-w-0 overflow-x-hidden ${SPACING.stackLg}`}>
+    <ManagerPage>
       <GameSectionHeader
         label="Fixtures"
         title="Fixtures"
         subtitle={`Season ${career.seasonYear} · ${career.club}`}
       />
+
       <div className="flex w-full min-w-0 justify-center">
         <ManagerSubTabBar
           tabs={FILTERS}
@@ -499,9 +679,8 @@ export function ManagerFixtures({
         />
       </div>
 
-      <ProgrammePanel variant="elevated" padded>
-        <p className={TYPO.sectionLabel}>Season snapshot</p>
-        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <GamePanel padded label="Season">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <ManagerStat
             label="Record"
             value={`${career.wins}W – ${career.losses}L`}
@@ -531,7 +710,7 @@ export function ManagerFixtures({
               Form
             </p>
             <div className="mt-1">
-              <FormStrip results={recentForm} />
+              <ManagerFormStrip results={recentForm} />
             </div>
           </div>
         </div>
@@ -539,72 +718,9 @@ export function ManagerFixtures({
           {playedCount} played · {upcomingCount} remaining · Week{" "}
           {career.gameWeek}/{career.schedule.length}
         </p>
-      </ProgrammePanel>
+      </GamePanel>
 
-      {(filter === "all" || filter === "wcc") && (
-        <GamePanel padded label="World Club Challenge">
-          {career.worldClubChallenge?.currentFixture ? (
-            (() => {
-              const wcc = resolveWccFixtureForDisplay(
-                career,
-                career.worldClubChallenge.currentFixture
-              );
-              return (
-            <div className="space-y-2">
-              <p className="font-semibold text-white">
-                {wcc.superLeagueChampionName} vs {wcc.nrlChampionName}
-              </p>
-              <p className={`${TYPO.bodySm}`}>
-                Game Week {wcc.gameWeek} · Season {wcc.seasonYear} · NRL rating{" "}
-                {wcc.nrlChampionRating}
-              </p>
-              {wcc.userInvolved ? (
-                <p className={`${TYPO.bodySm} text-accent-gold`}>
-                  You are the Super League champion — Play or Simulate from Matchday
-                  when Game Week 3 arrives.
-                </p>
-              ) : (
-                <p className={TYPO.bodySm}>
-                  Another Super League club is involved this year.
-                </p>
-              )}
-            </div>
-              );
-            })()
-          ) : getWccStats(career).results.length > 0 ? (
-            <ul className="space-y-2">
-              {getWccStats(career)
-                .results.slice()
-                .reverse()
-                .map((r) => (
-                  <li
-                    key={r.id}
-                    className="rounded-lg border border-pitch-700/40 bg-pitch-900/30 p-3"
-                  >
-                    <p className="font-semibold text-white">
-                      {r.seasonYear} — {r.superLeagueChampionName} {r.homeScore}–
-                      {r.awayScore} {r.nrlChampionName}
-                    </p>
-                    <p className={TYPO.bodySm}>
-                      Winner: {r.winnerName}
-                      {r.userResult && r.userResult !== "not_involved"
-                        ? ` · You ${r.userResult}`
-                        : " · AI result"}
-                    </p>
-                    <p className={`mt-1 ${TYPO.bodySm}`}>{r.storySummary}</p>
-                  </li>
-                ))}
-            </ul>
-          ) : (
-            <p className={TYPO.bodySm}>
-              World Club Challenge starts from your second season once a Super
-              League champion has been crowned.
-            </p>
-          )}
-        </GamePanel>
-      )}
-
-      {nextFixture && !seasonComplete && shouldShowNextMatch(filter, nextFixture) && (
+      {showNextMatch && (
         <ScoreboardPanel
           variant="elevated"
           padded
@@ -616,7 +732,7 @@ export function ManagerFixtures({
           )}
         >
           <div className="flex flex-wrap items-center gap-2">
-            <p className={TYPO.sectionLabel}>Next match</p>
+            <p className={TYPO.sectionLabel}>Upcoming fixture</p>
             <ManagerCompetitionBadge
               competition={nextFixture.competition}
               cupRound={nextFixture.cupRound}
@@ -654,6 +770,13 @@ export function ManagerFixtures({
                 tone={matchPredictionTone(prediction)}
               />
             )}
+            {oppRating != null && (
+              <ManagerStat
+                label="Opponent rating"
+                value={String(oppRating)}
+                tone="default"
+              />
+            )}
           </div>
           <GameButton
             variant="secondary"
@@ -669,108 +792,77 @@ export function ManagerFixtures({
         </ScoreboardPanel>
       )}
 
-      {filteredItems.length === 0 ? (
-        <ClipboardPanel padded className="text-center">
-          <p className={`${TYPO.bodySm} text-pitch-400`}>
+      {showWcc && (
+        <GamePanel padded label="World Club Challenge">
+          {wccPanelContent}
+        </GamePanel>
+      )}
+
+      {showChallengeCup && challengeCupItems.length > 0 && (
+        <GamePanel
+          padded
+          label={`Challenge Cup (${challengeCupItems.length})`}
+        >
+          <FixtureItemList
+            items={challengeCupItems}
+            club={career.club}
+            onSelectFixture={onSelectFixture}
+          />
+        </GamePanel>
+      )}
+
+      {showSuperLeague && leagueUpcomingItems.length > 0 && (
+        <GamePanel
+          padded
+          label={`Super League fixtures (${leagueUpcomingItems.length})`}
+        >
+          <FixtureItemList
+            items={leagueUpcomingItems}
+            club={career.club}
+            onSelectFixture={onSelectFixture}
+          />
+        </GamePanel>
+      )}
+
+      {showPlayoffs && (
+        <GamePanel padded label={`Play-offs (${playoffItems.length})`}>
+          <FixtureItemList
+            items={playoffItems}
+            club={career.club}
+            onSelectFixture={onSelectFixture}
+          />
+        </GamePanel>
+      )}
+
+      {showUpcomingFilter && (
+        <GamePanel padded label={`Upcoming (${upcomingItems.length})`}>
+          <FixtureItemList
+            items={upcomingItems}
+            club={career.club}
+            onSelectFixture={onSelectFixture}
+          />
+        </GamePanel>
+      )}
+
+      {showCompletedResults && (
+        <GamePanel
+          padded
+          label={`Completed results (${completedResultsItems.length})`}
+        >
+          <FixtureItemList
+            items={completedResultsItems}
+            club={career.club}
+            onSelectFixture={onSelectFixture}
+          />
+        </GamePanel>
+      )}
+
+      {!hasAnySection && (
+        <GamePanel padded>
+          <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
             No fixtures match this filter.
           </p>
-        </ClipboardPanel>
-      ) : (
-        <div className={SPACING.stackLg}>
-          {showUpcomingFirst && upcomingItems.length > 0 && (
-            <section className={SPACING.stackSm}>
-              <h2 className={TYPO.sectionLabel}>
-                Upcoming
-                <span className="ml-2 font-normal text-pitch-500">
-                  ({upcomingItems.length})
-                </span>
-              </h2>
-              <div className={SPACING.stackSm}>
-                {upcomingItems.map((item) =>
-                  item.kind === "upcoming" ? (
-                    <UpcomingFixtureRow
-                      key={item.key}
-                      sched={item.sched}
-                      club={career.club}
-                      isNext={item.isNext}
-                    />
-                  ) : null
-                )}
-              </div>
-            </section>
-          )}
-
-          {playedDisplay.length > 0 && (
-            <section className={SPACING.stackSm}>
-              <h2 className={TYPO.sectionLabel}>
-                {filter === "results" ? "Results" : "Played"}
-                <span className="ml-2 font-normal text-pitch-500">
-                  ({playedDisplay.length})
-                </span>
-              </h2>
-              <div className={SPACING.stackSm}>
-                {playedDisplay.map((item) => {
-                  if (item.kind !== "played") return null;
-                  const { fixture } = item;
-                  const fixtureId = managerFixtureDisplayId(fixture);
-                  const attendance = fixture.meta?.attendance?.attendance;
-
-                  return (
-                    <div key={item.key} className={SPACING.stackSm}>
-                      <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 px-0.5">
-                        {fixture.competition && (
-                          <ManagerCompetitionBadge
-                            competition={fixture.competition}
-                            cupRound={fixture.meta?.cupRound}
-                            detailed={false}
-                          />
-                        )}
-                        {attendance != null && (
-                          <span className={`shrink-0 ${TYPO.bodySm} text-pitch-500`}>
-                            Attendance {attendance.toLocaleString()}
-                          </span>
-                        )}
-                      </div>
-                      <FixtureResultRow
-                        fixture={fixture}
-                        userTeamName={career.club}
-                        roundLabel={getManagerPlayedFixtureLabel(fixture)}
-                        cupHighlight={isChallengeCupFixture(fixture.competition)}
-                        onClick={() => {
-                          playUiClick();
-                          onSelectFixture(fixtureId);
-                        }}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          )}
-
-          {!showUpcomingFirst && upcomingItems.length > 0 && (
-            <section className={SPACING.stackSm}>
-              <h2 className={TYPO.sectionLabel}>
-                Upcoming
-                <span className="ml-2 font-normal text-pitch-500">
-                  ({upcomingItems.length})
-                </span>
-              </h2>
-              <div className={SPACING.stackSm}>
-                {upcomingItems.map((item) =>
-                  item.kind === "upcoming" ? (
-                    <UpcomingFixtureRow
-                      key={item.key}
-                      sched={item.sched}
-                      club={career.club}
-                      isNext={item.isNext}
-                    />
-                  ) : null
-                )}
-              </div>
-            </section>
-          )}
-        </div>
+        </GamePanel>
       )}
 
       {viewClubSheet && (
@@ -780,6 +872,6 @@ export function ManagerFixtures({
           onClose={() => setViewClubSheet(null)}
         />
       )}
-    </div>
+    </ManagerPage>
   );
 }
