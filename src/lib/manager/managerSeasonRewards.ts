@@ -2,6 +2,7 @@ import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import type { ClubFundsEarnedLine, ClubFundsPayoutResult } from "../club-funds";
 import { formatClubFunds } from "../club-funds";
 import { awardClubFundsLines } from "../storage/club-funds";
+import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import type { ManagerCareer, ManagerSeasonSummary } from "./types";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { didMeetManagerBoardExpectation } from "./club-config";
@@ -168,6 +169,11 @@ export function claimManagerSeasonRewards(
   if (!payout.awarded) {
     return { payout, career };
   }
+
+  dispatchAchievementCheck({
+    trigger: "manager-reward-claimed",
+    managerSeasonRewardClaimed: true,
+  });
 
   return {
     payout,

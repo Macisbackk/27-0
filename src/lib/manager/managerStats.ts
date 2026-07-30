@@ -1,6 +1,8 @@
 import { STORAGE_KEYS } from "../storage/keys";
 import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import { syncManagerLeaderboard } from "../storage/manager-leaderboard";
+import { triggerManagerSeasonAchievements } from "../achievements/achievementTriggers";
+import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import { isLoggedIn } from "../auth-session";
 import { isLeagueAndCupPhaseComplete } from "./managerChallengeCup";
 import { getUserLeagueTablePosition } from "./managerFixtures";
@@ -194,6 +196,7 @@ export function recordCareerStarted(club: string): void {
   stats.favouriteClub = topClub?.[0] ?? club;
   saveManagerStats(stats);
   syncManagerLeaderboard(stats);
+  dispatchAchievementCheck({ trigger: "manager-career-started", managerCareerStarted: true });
 }
 
 export function recordMatchResult(
@@ -278,9 +281,8 @@ export function recordSeasonComplete(career: ManagerCareer): void {
 
   saveManagerStats(stats);
   syncManagerLeaderboard(stats);
+  triggerManagerSeasonAchievements(career);
 }
-
-/** Credit end-of-season lifetime stats once per season year. */
 export function recordSeasonCompleteIfNeeded(
   career: ManagerCareer
 ): ManagerCareer {

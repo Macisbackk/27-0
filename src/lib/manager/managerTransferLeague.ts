@@ -17,6 +17,7 @@ import {
   inferSquadRole,
 } from "./managerContracts";
 import { getManagerClubTeamRating } from "./managerRating";
+import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import { getManagerModePlayerRating } from "./managerSquadRatings";
 import {
   findPlayerLeagueClub,
@@ -827,6 +828,8 @@ export function acceptIncomingOffer(
   );
   nextCareer = pushInboxMessage(nextCareer, saleMsg);
   nextCareer = syncManagerFinance(nextCareer);
+
+  dispatchAchievementCheck({ trigger: "player-sold", playerSold: true });
 
   return {
     ok: true,

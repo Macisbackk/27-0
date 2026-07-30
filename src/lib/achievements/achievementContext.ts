@@ -1,0 +1,179 @@
+import { getAllStats } from "../storage/stats";
+import { getClubFundsBalance, getClubFundsTotalEarned } from "../storage/club-funds";
+import { getUiThemeStoreState } from "../storage/ui-theme-store";
+import { UI_THEMES } from "../ui-themes";
+import { loadManagerStats } from "../manager/managerStats";
+
+/** Snapshot used to evaluate achievement progress and unlock conditions. */
+export type AchievementCheckContext = {
+  trigger?: string;
+  // Season / run
+  seasonWins?: number;
+  seasonLosses?: number;
+  isPerfectSeason?: boolean;
+  isUnbeatenSeason?: boolean;
+  madePlayoffs?: boolean;
+  lowRatedSquad?: boolean;
+  squadGrade?: string;
+  bradfordPlayerCount?: number;
+  winningRecord?: boolean;
+  // Match
+  matchWon?: boolean;
+  marginOfVictory?: number;
+  // Challenge cup
+  cupPlayed?: boolean;
+  cupWon?: boolean;
+  cupFinalReached?: boolean;
+  eraCup?: boolean;
+  beatStrongerTeam?: boolean;
+  // Manager session
+  managerCareerStarted?: boolean;
+  managerWin?: boolean;
+  managerSeasonComplete?: boolean;
+  managerFinishPosition?: number;
+  managerLeagueWinner?: boolean;
+  managerGrandFinalWinner?: boolean;
+  managerDoubleWinner?: boolean;
+  reserveCalledUp?: boolean;
+  reservePromoted?: boolean;
+  playerSigned?: boolean;
+  playerSold?: boolean;
+  contractRenewed?: boolean;
+  stadiumCapacityPct?: number;
+  boardConfidence?: number;
+  managerSeasonRewardClaimed?: boolean;
+  // Store
+  themePurchased?: boolean;
+  // Easter eggs
+  joeMellorComplete?: boolean;
+  superSamComplete?: boolean;
+  secretButtonTriggered?: boolean;
+  againstTheOddsComplete?: boolean;
+  bradfordChallengeComplete?: boolean;
+  goatMellorWin?: boolean;
+  profileOpened?: boolean;
+};
+
+export type AchievementProgressSnapshot = {
+  totalWins: number;
+  totalLosses: number;
+  totalSeasons: number;
+  managerSeasonsCompleted: number;
+  challengeCupsWon: number;
+  storeThemesUnlocked: number;
+  totalStoreThemes: number;
+  clubFundsBalance: number;
+  lifetimeClubFundsEarned: number;
+  unbeatenSeasons: number;
+  perfectSeasons: number;
+  playersSold: number;
+  playersSigned: number;
+  contractsRenewed: number;
+  reserveCallUps: number;
+  reservePromotions: number;
+  seasonWinsCurrent: number;
+  managerWins: number;
+  cupFinals: number;
+  managerCareersStarted: number;
+};
+
+function sumStatWins(): number {
+  const all = getAllStats();
+  const buckets = [
+    all.normal,
+    all.hard,
+    all.draftNormal,
+    all.draftHard,
+    all.eraNormal,
+  ];
+  return buckets.reduce((sum, s) => sum + (s.seasonWins ?? s.totalWins ?? 0), 0);
+}
+
+function sumStatLosses(): number {
+  const all = getAllStats();
+  const buckets = [
+    all.normal,
+    all.hard,
+    all.draftNormal,
+    all.draftHard,
+    all.eraNormal,
+  ];
+  return buckets.reduce(
+    (sum, s) => sum + (s.seasonLosses ?? s.totalLosses ?? 0),
+    0
+  );
+}
+
+function sumSeasons(): number {
+  const all = getAllStats();
+  const buckets = [
+    all.normal,
+    all.hard,
+    all.draftNormal,
+    all.draftHard,
+    all.eraNormal,
+  ];
+  return buckets.reduce((sum, s) => sum + (s.totalSeasonsSimulated ?? 0), 0);
+}
+
+function sumPerfectSeasons(): number {
+  const all = getAllStats();
+  const buckets = [
+    all.normal,
+    all.hard,
+    all.draftNormal,
+    all.draftHard,
+    all.eraNormal,
+  ];
+  return buckets.reduce((sum, s) => sum + (s.totalPerfectSeasons ?? 0), 0);
+}
+
+function sumUnbeatenSeasons(): number {
+  const all = getAllStats();
+  const normal = all.normal;
+  const hard = all.hard;
+  const era = all.eraNormal;
+  const unbeaten =
+    (normal.longestUnbeatenRun >= 27 ? normal.totalPerfectSeasons : 0) +
+    (hard.longestUnbeatenRun >= 27 ? hard.totalPerfectSeasons : 0) +
+    (era.longestUnbeatenRun >= 27 ? era.totalPerfectSeasons : 0);
+  return unbeaten;
+}
+
+/** Build progress from persisted stats plus any session overrides. */
+export function buildAchievementProgress(
+  ctx: AchievementCheckContext = {}
+): AchievementProgressSnapshot {
+  const manager = loadManagerStats();
+  const themeStore = getUiThemeStoreState();
+  const purchasedThemes = themeStore.unlockedThemeIds.filter(
+    (id) => id !== "default"
+  );
+
+  return {
+    totalWins: sumStatWins() + (manager.wins ?? 0),
+    totalLosses: sumStatLosses() + (manager.losses ?? 0),
+    totalSeasons: sumSeasons() + (manager.seasonsCompleted ?? 0),
+    managerSeasonsCompleted: manager.seasonsCompleted ?? 0,
+    challengeCupsWon: manager.challengeCups ?? 0,
+    storeThemesUnlocked: purchasedThemes.length,
+    totalStoreThemes: UI_THEMES.length - 1,
+    clubFundsBalance: getClubFundsBalance(),
+    lifetimeClubFundsEarned: getClubFundsTotalEarned(),
+    unbeatenSeasons: sumUnbeatenSeasons(),
+    perfectSeasons: sumPerfectSeasons(),
+    playersSold: 0,
+    playersSigned: 0,
+    contractsRenewed: 0,
+    reserveCallUps: 0,
+    reservePromotions: 0,
+    seasonWinsCurrent: ctx.seasonWins ?? 0,
+    managerWins: manager.wins ?? 0,
+    cupFinals: manager.cupFinals ?? 0,
+    managerCareersStarted: manager.careersStarted ?? 0,
+  };
+}
+
+export function buildBaseAchievementContext(): AchievementCheckContext {
+  return { profileOpened: true };
+}

@@ -7,6 +7,7 @@ import type {
   PlayerContract,
   RenewalDemand,
 } from "./types";
+import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import {
   computeWageBill,
   formatWage,
@@ -171,6 +172,8 @@ export function applyReserveRenewal(
       status: "renewed" as const,
     },
   };
+
+  dispatchAchievementCheck({ trigger: "contract-renewed", contractRenewed: true });
 
   return {
     ...career,

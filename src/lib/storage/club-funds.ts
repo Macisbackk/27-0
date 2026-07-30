@@ -7,6 +7,7 @@ import { computeClubFundsLines } from "../club-funds";
 import { STORAGE_KEYS } from "./keys";
 import { loadCloudClubFunds, saveCloudClubFunds } from "./club-funds-cloud";
 import { syncClubFundsLeaderboard } from "./club-funds-leaderboard";
+import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 
 export const CLUB_FUNDS_CHANGED_EVENT = "27-0-club-funds-changed";
 
@@ -205,6 +206,7 @@ export function awardClubFundsForRun(
   state.paidRunIds.push(payoutRunId);
   saveState(state);
   syncClubFundsLeaderboard(state.totalEarned);
+  dispatchAchievementCheck({ trigger: "club-funds-updated" });
 
   return {
     runId: input.runId,
@@ -238,6 +240,7 @@ export function awardClubFundsLines(
   state.paidRunIds.push(runId);
   saveState(state);
   syncClubFundsLeaderboard(state.totalEarned);
+  dispatchAchievementCheck({ trigger: "club-funds-updated" });
 
   return {
     runId,

@@ -60,6 +60,7 @@ import {
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { awardClubFundsForRun } from "@/lib/storage/club-funds";
 import { recordCompletedRun, recordPlayoffCompletion } from "@/lib/storage/run";
+import { triggerQuickSeasonAchievements } from "@/lib/achievements/achievementTriggers";
 import {
   playJoeMellorActivate,
   playSuperSamHallasActivate,
@@ -585,6 +586,25 @@ export function GameBoard({
         });
         setClubFundsPayout(payout);
       }
+
+      triggerQuickSeasonAchievements(
+        finalSquad,
+        {
+          wins: result.wins,
+          losses: result.losses,
+          leaguePosition: tablePosition,
+          pointsDifference: result.pointsDifference,
+          isPerfect: result.isPerfect,
+          squadStrength: result.squadStrength,
+          fixtures: result.fixtures,
+        },
+        {
+          joeMellorMode,
+          superSamHallasMode,
+          normalEraMode,
+          madePlayoffs: tablePosition <= 6,
+        }
+      );
     },
     [runId, mode, seed, difficulty, joeMellorMode, superSamHallasMode, normalEraMode]
   );
@@ -637,6 +657,25 @@ export function GameBoard({
         setSubmittedOnline(completed.submittedOnline);
         if (completed.nationalRank) setRunRank(completed.nationalRank);
       });
+
+      triggerQuickSeasonAchievements(
+        finalSquad,
+        {
+          wins: result.wins,
+          losses: result.losses,
+          leaguePosition: tablePosition,
+          pointsDifference: result.pointsDifference,
+          isPerfect: result.isPerfect,
+          squadStrength: result.squadStrength,
+          fixtures: result.fixtures,
+        },
+        {
+          joeMellorMode,
+          superSamHallasMode,
+          normalEraMode,
+          madePlayoffs: true,
+        }
+      );
     },
     [runId, mode, seed, difficulty, joeMellorMode, superSamHallasMode, normalEraMode]
   );

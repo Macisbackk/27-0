@@ -12,6 +12,7 @@ import {
 } from "./managerContracts";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { getManagerClubTeamRating } from "./managerRating";
+import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import {
   getLeagueClubRosterIds,
   getUserClubPlayerIds,
@@ -202,6 +203,7 @@ export function completeFreeAgentSigning(
   );
 
   const player = getPlayerById(playerId);
+  dispatchAchievementCheck({ trigger: "player-signed", playerSigned: true });
   return pushInboxMessage(
     signed,
     createFreeAgentSigningMessage(

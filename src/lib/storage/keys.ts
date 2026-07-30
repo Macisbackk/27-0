@@ -30,6 +30,7 @@ export const STORAGE_KEYS = {
   managerLeaderboard: "27-0-manager-leaderboard",
   managerActiveSlot: "27-0-manager-active-slot",
   managerOnboarding: "27-0-manager-onboarding",
+  achievements: "27-0-achievements",
 } as const;
 
 /** Bump when StoredStats shape changes — triggers one-time local migration. */

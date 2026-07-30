@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { MatchFixture } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
@@ -7,6 +8,8 @@ import type { SquadSlot } from "@/lib/types";
 import { resolveEraTeamClubName } from "@/lib/players/era-teams";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { generateSimulatedMatchEvents } from "@/lib/manager/matchEventGenerator";
+import { ManagerMatchEventLine } from "@/components/manager/ManagerMatchEventLine";
 import { TeamScoringBreakdown } from "./TeamScoringBreakdown";
 import { MatchPlayerOfTheMatchCard } from "./MatchPlayerOfTheMatchCard";
 
@@ -35,7 +38,7 @@ export function MatchDetailsPanel({
   fixture,
   onClose,
   roundLabel,
-  seed: _seed,
+  seed,
   userSquad,
   userTeamName = DREAM_TEAM_NAME,
   userClubColorOverride,
@@ -46,6 +49,33 @@ export function MatchDetailsPanel({
   scoringOnly = false,
 }: MatchDetailsPanelProps) {
   const detail = fixture.scoringDetail;
+
+  const matchEvents = useMemo(
+    () =>
+      generateSimulatedMatchEvents({
+        seed,
+        fixtureKey: `qm-r${fixture.round}-${fixture.opponent}`,
+        userClub: userTeamName,
+        opponent: fixture.opponent,
+        userScore: fixture.pointsFor,
+        oppScore: fixture.pointsAgainst,
+        userTries: fixture.triesFor,
+        oppTries: fixture.triesAgainst,
+        userScorers:
+          detail?.dreamTeam.tryScorers.map((s) => ({ name: s.name })) ?? [],
+      }),
+    [
+      seed,
+      fixture.round,
+      fixture.opponent,
+      fixture.pointsFor,
+      fixture.pointsAgainst,
+      fixture.triesFor,
+      fixture.triesAgainst,
+      userTeamName,
+      detail,
+    ]
+  );
 
   const scoringBlock = detail ? (
     <div className="space-y-4">
@@ -120,6 +150,24 @@ export function MatchDetailsPanel({
         </div>
 
         {scoringBlock}
+
+        {matchEvents.length > 0 ? (
+          <div>
+            <p className={TYPO.sectionLabel}>Match Events</p>
+            <ul className="mt-2 max-h-56 space-y-1 overflow-y-auto rounded-lg border border-pitch-700/40 bg-pitch-950/40 p-2">
+              {matchEvents
+                .filter((e) => e.type !== "half_time" && e.type !== "full_time")
+                .map((event, index) => (
+                  <ManagerMatchEventLine
+                    key={event.id ?? `${event.minute}-${index}`}
+                    event={event}
+                    userClub={userTeamName}
+                    opponentClub={fixture.opponent}
+                  />
+                ))}
+            </ul>
+          </div>
+        ) : null}
 
         {fixture.manOfTheMatch && !hideMotm && (
           <MatchPlayerOfTheMatchCard

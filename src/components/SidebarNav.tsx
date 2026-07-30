@@ -37,11 +37,11 @@ interface SidebarNavProps {
 }
 
 const MAIN_NAV_ITEMS = [
-  { href: "/store", label: "Store", icon: "ST" },
-  { href: "/showcase", label: "Player Showcase", icon: "PS" },
-  { href: "/stats", label: "Statistics", icon: "FX" },
-  { href: "/leaderboard", label: "Leaderboard", icon: "LB" },
-  { href: "/updates", label: "Updates", icon: "UP" },
+  { href: "/store", label: "Store" },
+  { href: "/showcase", label: "Player Showcase" },
+  { href: "/stats", label: "Statistics" },
+  { href: "/leaderboard", label: "Leaderboard" },
+  { href: "/updates", label: "Updates" },
 ] as const;
 
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
@@ -197,9 +197,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       onClick={handleNavClick}
                       className={`${navLinkClass(pathname.startsWith("/manager"))} w-full font-semibold`}
                     >
-                      <span aria-hidden className={NAV.icon}>
-                        MM
-                      </span>
                       Manager Mode
                       {pathname.startsWith("/manager") && (
                         <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-theme-primary" />
@@ -220,9 +217,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       onClick={handleNormalNavigate}
                       className={`${navLinkClass(isNormalActive, isNormalEra)} w-full`}
                     >
-                      <span aria-hidden className={NAV.icon}>
-                        QM
-                      </span>
                       Quick Mode
                       {isNormalActive && (
                         <span
@@ -261,9 +255,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                           onClick={handleNavClick}
                           className={navLinkClass(active)}
                         >
-                          <span aria-hidden className={NAV.icon}>
-                            {item.icon}
-                          </span>
                           {item.label}
                           {active && (
                             <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
@@ -286,9 +277,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         onClick={handleNavClick}
                         className={navLinkClass(pathname.startsWith("/profile"))}
                       >
-                        <span aria-hidden className={NAV.icon}>
-                          CP
-                        </span>
                         Coach Profile
                         {pathname.startsWith("/profile") && (
                           <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
@@ -300,9 +288,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         onClick={handleNavClick}
                         className={navLinkClass(pathname.startsWith("/login"))}
                       >
-                        <span aria-hidden className={NAV.icon}>
-                          IN
-                        </span>
                         Log In
                         {pathname.startsWith("/login") && (
                           <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
@@ -329,9 +314,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                           onClick={handleNavClick}
                           className={navLinkClass(active)}
                         >
-                          <span aria-hidden className={NAV.icon}>
-                            {item.icon}
-                          </span>
                           {item.label}
                           {active && (
                             <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />

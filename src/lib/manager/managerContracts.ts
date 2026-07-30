@@ -12,6 +12,7 @@ import type {
   SquadRole,
 } from "./types";
 import { clearRetirementIntentOnRenewal } from "./managerRetirement";
+import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import { canAffordRenewalWage, scaleManagerEconomy } from "./managerFinance";
 
 export function formatWage(amount: number): string {
@@ -404,6 +405,7 @@ export function applyRenewal(
   );
 
   const wageBill = computeWageBill(nextContracts);
+  dispatchAchievementCheck({ trigger: "contract-renewed", contractRenewed: true });
   return {
     ...career,
     contracts: nextContracts,

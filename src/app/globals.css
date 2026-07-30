@@ -170,6 +170,38 @@ body {
   max-height: 100dvh;
 }
 
+.mode-switch--sidebar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mode-switch--sidebar button {
+  min-height: 30px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted, #9ca3af);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.mode-switch--sidebar button.active.current {
+  background: var(--mode-current, #22c55e);
+  color: #06130b;
+}
+
+.mode-switch--sidebar button.active.era {
+  background: var(--mode-era, #eab308);
+  color: #171000;
+}
+
 .sidebar-nav-scroll {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;

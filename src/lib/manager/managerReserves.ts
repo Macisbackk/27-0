@@ -29,6 +29,7 @@ import {
 import { deductTransferFee } from "./managerFinance";
 import { reserveToPlayer, getManagerPlayerAge } from "./managerPlayers";
 import { reconcileLeagueRosters } from "./managerLeagueRosters";
+import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import type { Player } from "../types";
 import type { PlayerDevelopmentState } from "./types";
 
@@ -739,6 +740,7 @@ export function callUpReserveForNextMatch(
       reserve.name,
       POSITION_SHORT[reserve.position]
     );
+    dispatchAchievementCheck({ trigger: "reserve-called-up", reserveCalledUp: true });
   }
 
   return next;
@@ -825,6 +827,7 @@ export function promoteReserveToSquad(
       (id) => id !== reserveId
     ),
   });
+  dispatchAchievementCheck({ trigger: "reserve-promoted", reservePromoted: true });
   return { ok: true, career: reconcileLeagueClubReserveCounts(next) };
 }
 

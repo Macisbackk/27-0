@@ -1,10 +1,6 @@
 "use client";
 
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
-import {
-  nestedTabGroupButtonClass,
-  nestedTabGroupClass,
-} from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playEraModeOff, playEraModeOn } from "@/lib/sound";
 
@@ -67,18 +63,18 @@ export function ChallengeCupVariantToggle({
         </p>
       )}
       {compact ? (
-        <div className={nestedTabGroupClass(false, !eraMode, eraMode)}>
+        <div className="mode-switch mode-switch--sidebar">
           <button
             type="button"
             onClick={() => handleChange("current")}
-            className={nestedTabGroupButtonClass(!eraMode, "normal")}
+            className={!eraMode ? "active current" : ""}
           >
             {currentLabel}
           </button>
           <button
             type="button"
             onClick={() => handleChange("era")}
-            className={nestedTabGroupButtonClass(eraMode, "era")}
+            className={eraMode ? "active era" : ""}
           >
             {eraLabel}
           </button>

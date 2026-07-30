@@ -528,8 +528,10 @@ export function advanceLiveTick(
         type: "try",
         team: "user",
         playerName: scorer.name,
-        description: `${minute}' Try — ${scorer.name}`,
+        description: `${minute}' ${scorer.name} crashes over for ${career.club}`,
         points: 4,
+        importance: "major",
+        teamName: career.club,
       });
       if (rng() < 0.82) {
         userScore += 2;
@@ -539,8 +541,10 @@ export function advanceLiveTick(
           type: "goal",
           team: "user",
           playerName: kicker,
-          description: `${minute}' Goal — ${kicker}`,
+          description: `${minute}' ${kicker} converts`,
           points: 2,
+          importance: "high",
+          teamName: career.club,
         });
       }
       momentum += 8;
@@ -551,8 +555,10 @@ export function advanceLiveTick(
         minute,
         type: "try",
         team: "opponent",
-        description: `${minute}' Try — ${state.opponent}`,
+        description: `${minute}' ${state.opponent} score out wide`,
         points: 4,
+        importance: "major",
+        teamName: state.opponent,
       });
       if (rng() < 0.8) {
         oppScore += 2;
@@ -560,8 +566,10 @@ export function advanceLiveTick(
           minute,
           type: "goal",
           team: "opponent",
-          description: `${minute}' Goal — ${state.opponent}`,
+          description: `${minute}' Conversion added for ${state.opponent}`,
           points: 2,
+          importance: "high",
+          teamName: state.opponent,
         });
       }
       momentum -= 8;

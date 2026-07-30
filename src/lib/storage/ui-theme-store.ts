@@ -7,6 +7,7 @@ import {
 } from "../ui-themes";
 import { STORAGE_KEYS } from "./keys";
 import { getClubFundsBalance, spendClubFunds } from "./club-funds";
+import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import { loadCloudUiThemeStore, saveCloudUiThemeStore } from "./ui-theme-store-cloud";
 import { applyUiThemeById } from "../ui/apply-ui-theme";
 
@@ -147,6 +148,8 @@ export function purchaseUiTheme(themeId: string): UiThemePurchaseResult {
   state.purchaseIds = [...state.purchaseIds, purchaseId];
   state.selectedThemeId = themeId;
   saveState(state);
+
+  dispatchAchievementCheck({ trigger: "store-purchase", themePurchased: true });
 
   return { success: true, newBalance: spend.newBalance };
 }

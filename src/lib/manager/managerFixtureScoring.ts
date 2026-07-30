@@ -233,12 +233,12 @@ export function applyLiveEventsToFixtureScoring(
           userTryMap.set(playerId, { playerId, name, tries: 1 });
         }
       }
-      if (ev.type === "goal") {
+      if (ev.type === "goal" || ev.type === "conversion") {
         conversions++;
         kickerId = resolvePlayerIdByName(career, ev.playerName) ?? kickerId;
         kickerName = ev.playerName ?? kickerName;
       }
-      if (ev.type === "penalty") {
+      if (ev.type === "penalty" || ev.type === "penalty_goal") {
         penalties++;
         kickerId = resolvePlayerIdByName(career, ev.playerName) ?? kickerId;
         kickerName = ev.playerName ?? kickerName;
@@ -250,8 +250,8 @@ export function applyLiveEventsToFixtureScoring(
     }
 
     if (ev.team === "opponent") {
-      if (ev.type === "goal") oppConversions++;
-      if (ev.type === "penalty") oppPenalties++;
+      if (ev.type === "goal" || ev.type === "conversion") oppConversions++;
+      if (ev.type === "penalty" || ev.type === "penalty_goal") oppPenalties++;
       if (ev.type === "drop_goal") oppDropGoals++;
     }
   }

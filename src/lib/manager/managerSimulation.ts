@@ -3,6 +3,7 @@ import { getManagerPlayer } from "./managerPlayers";
 import { getManagerOpponentMatchRating, pruneLeagueListedPlayers } from "./managerLeagueRosters";
 import { simulateOneFixture } from "../game/season-simulation";
 import type { ManagerCareer, ManagerFixtureRecord } from "./types";
+import { generateEventsFromFixture } from "./matchEventGenerator";
 import {
   buildSquadSlotsFromMatchday,
   isPlayerUnavailable,
@@ -801,7 +802,8 @@ export function simulateManagerMatchLive(
   sched: NonNullable<ReturnType<typeof getNextManagerFixture>>
 ): { fixture: MatchFixture; liveEvents: import("./types").LiveMatchEvent[] } {
   const fixture = previewManagerMatchScoreline(career, sched);
-  return { fixture, liveEvents: [] };
+  const liveEvents = generateEventsFromFixture(career, fixture, sched.id);
+  return { fixture, liveEvents };
 }
 
 export function simulateManagerNextMatch(

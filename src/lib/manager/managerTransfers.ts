@@ -15,6 +15,7 @@ import {
 import { canAffordAdditionalWage, evaluateClubSigningAppeal, getManagerPlayerListingRating } from "./managerFinance";
 import { getManagerClubTeamRating } from "./managerRating";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
+import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 
 const INJURY_POOL: { type: InjuryType; min: number; max: number; serious: boolean }[] = [
   { type: "knock", min: 1, max: 1, serious: false },
@@ -158,6 +159,7 @@ export function signPlayer(
     transferMarket: career.transferMarket.filter((id) => id !== playerId),
     updatedAt: new Date().toISOString(),
   };
+  dispatchAchievementCheck({ trigger: "player-signed", playerSigned: true });
   return { ok: true, career: next };
 }
 

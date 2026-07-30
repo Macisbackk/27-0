@@ -262,12 +262,41 @@ export interface ManagerMatchMeta {
 }
 
 export interface LiveMatchEvent {
+  id?: string;
   minute: number;
-  type: "try" | "goal" | "penalty" | "drop_goal" | "note";
+  type:
+    | "try"
+    | "goal"
+    | "conversion"
+    | "missed_conversion"
+    | "penalty"
+    | "penalty_goal"
+    | "drop_goal"
+    | "big_break"
+    | "line_break"
+    | "try_saver"
+    | "knock_on"
+    | "forward_pass"
+    | "six_again"
+    | "goal_line_dropout"
+    | "captains_challenge"
+    | "sin_bin"
+    | "injury"
+    | "interchange"
+    | "momentum_shift"
+    | "note"
+    | "half_time"
+    | "full_time";
   team: "user" | "opponent";
+  teamId?: string;
+  teamName?: string;
   playerName?: string;
   description: string;
   points: number;
+  importance?: "low" | "medium" | "high" | "major";
+  possessionTeamId?: string;
+  territory?: "own_end" | "middle" | "opposition_20" | "goal_line";
+  relatedEventId?: string;
 }
 
 export interface ManagerFixtureRecord extends MatchFixture {

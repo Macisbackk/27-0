@@ -10,6 +10,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SoundUnlock } from "@/components/SoundUnlock";
 import { PwaInstallPrompt } from "@/components/PwaInstallPrompt";
 import { UiThemeProvider } from "@/components/UiThemeProvider";
+import { AchievementProvider } from "@/components/achievements/AchievementProvider";
 import { UI_THEME_BOOTSTRAP_SCRIPT } from "@/lib/ui/theme-bootstrap-script";
 
 const anton = Anton({
@@ -59,13 +60,15 @@ export default function RootLayout({
         <AuthProvider>
           <CoachbeardMergeRunner />
           <UiThemeProvider />
-          <SoundUnlock />
-          <PwaInstallPrompt />
-          <Header />
-          <main className="app-main flex min-w-0 max-w-full flex-1 flex-col overflow-x-clip">
-            {children}
-          </main>
-          <SiteFooter />
+          <AchievementProvider>
+            <SoundUnlock />
+            <PwaInstallPrompt />
+            <Header />
+            <main className="app-main flex min-w-0 max-w-full flex-1 flex-col overflow-x-clip">
+              {children}
+            </main>
+            <SiteFooter />
+          </AchievementProvider>
         </AuthProvider>
         <Analytics />
       </body>

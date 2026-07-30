@@ -37,6 +37,7 @@ import { ManagerIncomingBidModal } from "@/components/manager/ManagerIncomingBid
 import { ManagerRetirementIntentModal } from "@/components/manager/ManagerRetirementIntentModal";
 import { ManagerContractExpiryModal } from "@/components/manager/ManagerContractExpiryModal";
 import { ManagerReserveReportModal } from "@/components/manager/ManagerReserveReportModal";
+import { triggerManagerMatchAchievements } from "@/lib/achievements/achievementTriggers";
 import { ManagerPositionRetrainingCompleteModal } from "@/components/manager/ManagerPositionRetrainingCompleteModal";
 import { ManagerPlayoffsIntroModal } from "@/components/manager/ManagerPlayoffsIntroModal";
 import { ManagerObjectivesIntroModal } from "@/components/manager/ManagerObjectivesIntroModal";
@@ -806,6 +807,7 @@ export default function ManagerPage() {
       const margin = Math.abs(fixture.pointsFor - fixture.pointsAgainst);
       playResultSound(won, fixture);
       recordMatchResult(won, margin, won ? 25_000 : 10_000);
+      triggerManagerMatchAchievements(next, fixture);
     }
     if (next.preSeason.friendliesPlayed >= 2) {
       markOnboardingStepComplete("friendlies");

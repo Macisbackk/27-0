@@ -17,6 +17,8 @@ import { PageShell } from "@/components/ui/PageShell";
 import { RL_INFO_BOX_CLASS } from "@/components/cards/rl-card";
 import { BTN, CARD, LINK, PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { AchievementsSection } from "@/components/achievements/AchievementsSection";
+import { useAchievements } from "@/components/achievements/AchievementProvider";
 
 interface StoredStats {
   normal: UserStatsData;
@@ -74,6 +76,7 @@ export default function ProfilePage() {
   const [statsResetBusy, setStatsResetBusy] = useState(false);
   const [statsResetMsg, setStatsResetMsg] = useState<string | null>(null);
   const [statsResetError, setStatsResetError] = useState<string | null>(null);
+  const { notifyAchievements } = useAchievements();
 
   useEffect(() => {
     if (!loading && !isLoggedIn) {
@@ -99,6 +102,11 @@ export default function ProfilePage() {
       window.removeEventListener("stats-merged", refresh);
     };
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    notifyAchievements({ profileOpened: true });
+  }, [isLoggedIn, notifyAchievements]);
 
   const handlePasswordReset = async () => {
     if (!email) return;
@@ -207,6 +215,8 @@ export default function ProfilePage() {
             )}
           </dl>
         </SectionCard>
+
+        <AchievementsSection />
 
         <SectionCard
           title="Quick Mode snapshot"
