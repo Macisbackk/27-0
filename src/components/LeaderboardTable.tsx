@@ -35,6 +35,8 @@ import {
   MANAGER_LEADERBOARD_MODES,
 } from "@/lib/storage/manager-leaderboard";
 import { RecordWithPercentage, parseRecordWithPercentage } from "./RecordWithPercentage";
+import { GamePanel } from "@/components/ui/GamePanel";
+import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
@@ -413,16 +415,17 @@ export function LeaderboardTable() {
       )}
 
       {loading && entries.length === 0 ? (
-        <div className="programme-panel programme-panel--elevated p-12 text-center text-gray-500">
+        <GamePanel variant="elevated" className="p-12 text-center text-gray-500">
           Loading leaderboard…
-        </div>
+        </GamePanel>
       ) : entries.length === 0 ? (
-        <div className="programme-panel programme-panel--elevated p-12 text-center text-gray-500">
+        <GamePanel variant="elevated" className="p-12 text-center text-gray-500">
           {emptyStateMessage}
-        </div>
+        </GamePanel>
       ) : (
-        <div
-          className={`scoreboard-panel scoreboard-panel--elevated overflow-hidden transition-opacity ${
+        <ScoreboardPanel
+          variant="elevated"
+          className={`overflow-hidden transition-opacity ${
             loading ? "opacity-60" : "opacity-100"
           }`}
         >
@@ -502,7 +505,7 @@ export function LeaderboardTable() {
             </tbody>
           </table>
           </div>
-        </div>
+        </ScoreboardPanel>
       )}
 
       <p className="mt-4 text-center text-xs text-gray-600">

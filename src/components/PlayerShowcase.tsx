@@ -34,15 +34,13 @@ import {
   SHOWCASE_PAGE_SIZE,
   getShowcasePageSize,
 } from "./ShowcasePagination";
-import {
-  RL_FILTER_CHIP_ACTIVE,
-  RL_FILTER_CHIP_IDLE,
-  RL_FILTER_INPUT_CLASS,
-  RL_INFO_BOX_CLASS,
-  RL_SECTION_TITLE_CLASS,
-} from "./cards/rl-card";
+import { GameButton } from "@/components/ui/GameButton";
+import { GameHeader } from "@/components/ui/GameHeader";
+import { GamePanel } from "@/components/ui/GamePanel";
+import { GameStatCard } from "@/components/ui/GameStatCard";
+import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { playUiClick } from "@/lib/sound";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 const DEFAULT_FILTERS: ShowcaseFilters = {
@@ -256,75 +254,103 @@ export function PlayerShowcase() {
 
   return (
     <div className="space-y-8">
-      <header className="text-center">
-        <p className={RL_SECTION_TITLE_CLASS}>Player Database</p>
-        <h1 className={`mt-2 ${TYPO.pageTitle}`}>Player Showcase</h1>
-        <p className={`mt-2 ${TYPO.body}`}>
-          Browse every player in the 27-0 database
-        </p>
-      </header>
+      <GameHeader
+        eyebrow="Player Database"
+        title="Player Showcase"
+        subtitle="Browse every player in the 27-0 database"
+        className="[&_.game-header__eyebrow]:text-gray-400"
+      />
 
-      <section className={`${CARD.panel} ${SPACING.cardPadding}`}>
-        <h2 className={`mb-4 text-center ${TYPO.statLabel}`}>
-          Database Overview
-        </h2>
+      <GamePanel padded variant="elevated" flush>
+        <p className={`mb-4 ${TYPO.sectionTitle}`}>Database Overview</p>
         <div className={`grid ${SPACING.cardGridGap} sm:grid-cols-2 lg:grid-cols-3`}>
-          <StatChip label="Total Players" value={String(dbStats.total)} />
-          <StatChip label="Current Players" value={String(dbStats.current)} />
-          <StatChip label="Historic Players" value={String(dbStats.historic)} />
-          <StatChip label="Legends" value={String(dbStats.legends)} highlight />
-          <StatChip
+          <GameStatCard
+            neutral
+            label="Total Players"
+            value={String(dbStats.total)}
+          />
+          <GameStatCard
+            neutral
+            label="Current Players"
+            value={String(dbStats.current)}
+          />
+          <GameStatCard
+            neutral
+            label="Historic Players"
+            value={String(dbStats.historic)}
+          />
+          <GameStatCard
+            neutral
+            label="Legends"
+            value={<span className="text-accent-gold">{dbStats.legends}</span>}
+          />
+          <GameStatCard
+            neutral
             label="Highest Rated Player"
             value={
-              dbStats.highestRated
-                ? `${dbStats.highestRated.name} (${dbStats.highestRated.peakRating})`
-                : "—"
+              dbStats.highestRated ? (
+                <span className="text-accent-gold">
+                  {dbStats.highestRated.name} ({dbStats.highestRated.peakRating})
+                </span>
+              ) : (
+                "—"
+              )
             }
-            highlight
           />
-          <StatChip
+          <GameStatCard
+            neutral
             label="Highest Transfer Value"
             value={
-              dbStats.highestValue
-                ? `${dbStats.highestValue.name} (${formatValue(dbStats.highestValue.value)})`
-                : "—"
+              dbStats.highestValue ? (
+                <span className="text-accent-gold">
+                  {dbStats.highestValue.name} (
+                  {formatValue(dbStats.highestValue.value)})
+                </span>
+              ) : (
+                "—"
+              )
             }
-            highlight
           />
         </div>
-      </section>
+      </GamePanel>
 
       <div className="grid gap-4 lg:grid-cols-[280px_1fr] lg:gap-6">
-        <button
-          type="button"
-          onClick={() => {
-            playUiClick();
-            setFiltersOpen((open) => !open);
-          }}
-          className={`${CARD.panel} flex w-full items-center justify-between px-4 py-3 lg:hidden`}
-        >
-          <span className={TYPO.sectionTitle}>Filters</span>
-          <span className="text-xs text-gray-500">
-            {filtersOpen ? "Hide" : "Show"}
-          </span>
-        </button>
+        <GamePanel className="lg:hidden" variant="elevated" flush>
+          <button
+            type="button"
+            onClick={() => {
+              playUiClick();
+              setFiltersOpen((open) => !open);
+            }}
+            className="btn-press flex w-full items-center justify-between px-4 py-3"
+          >
+            <span className={TYPO.sectionTitle}>Filters</span>
+            <span className="text-xs text-gray-500">
+              {filtersOpen ? "Hide" : "Show"}
+            </span>
+          </button>
+        </GamePanel>
 
-        <aside
-          className={`${CARD.panel} flex max-h-[calc(100vh-6rem)] flex-col lg:sticky lg:top-20 ${
-            filtersOpen ? "flex" : "hidden lg:flex"
+        <GamePanel
+          variant="elevated"
+          flush
+          className={`lg:sticky lg:top-20 ${
+            filtersOpen ? "" : "hidden lg:block"
           }`}
         >
-          <div className={`flex shrink-0 items-center justify-between ${SPACING.buttonGap} border-b border-pitch-600/30 px-4 py-3 sm:px-5`}>
-            <h2 className={TYPO.sectionTitle}>
-              Filters
-            </h2>
-            <button
-              type="button"
+          <div className="flex max-h-[calc(100vh-6rem)] flex-col">
+          <div
+            className={`flex shrink-0 items-center justify-between ${SPACING.buttonGap} border-b border-pitch-600/30 px-4 py-3 sm:px-5`}
+          >
+            <h2 className={TYPO.sectionTitle}>Filters</h2>
+            <GameButton
+              variant="ghost"
+              size="sm"
+              fullWidth={false}
               onClick={resetFilters}
-              className="text-xs font-medium text-gray-500 transition hover:text-white"
             >
               Reset
-            </button>
+            </GameButton>
           </div>
 
           <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overflow-x-hidden p-4 sm:p-5">
@@ -334,7 +360,7 @@ export function PlayerShowcase() {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Name, club, position…"
-              className={RL_FILTER_INPUT_CLASS}
+              className={FILTER.input}
             />
           </FilterField>
 
@@ -344,7 +370,7 @@ export function PlayerShowcase() {
               onChange={(e) =>
                 updateFilters((f) => ({ ...f, club: e.target.value }))
               }
-              className={RL_FILTER_INPUT_CLASS}
+              className={FILTER.input}
             >
               <option value="all">All Teams</option>
               {clubs.map((c) => (
@@ -364,7 +390,7 @@ export function PlayerShowcase() {
                   position: e.target.value as Position | "all",
                 }))
               }
-              className={RL_FILTER_INPUT_CLASS}
+              className={FILTER.input}
             >
               <option value="all">All Positions</option>
               {POSITIONS.map((p) => (
@@ -384,7 +410,7 @@ export function PlayerShowcase() {
                   status: e.target.value as PlayerCategory | "all",
                 }))
               }
-              className={RL_FILTER_INPUT_CLASS}
+              className={FILTER.input}
             >
               <option value="current">Current</option>
               <option value="historic">Historic</option>
@@ -402,7 +428,7 @@ export function PlayerShowcase() {
                   ratingMin: e.target.value as RatingFilter,
                 }))
               }
-              className={RL_FILTER_INPUT_CLASS}
+              className={FILTER.input}
             >
               <option value="all">Any Rating</option>
               <option value="70">70+</option>
@@ -451,7 +477,7 @@ export function PlayerShowcase() {
                     setSortDir("desc");
                   }}
                   className={`rounded-lg border px-2.5 py-1.5 text-[11px] font-medium transition ${
-                    sortKey === key ? RL_FILTER_CHIP_ACTIVE : RL_FILTER_CHIP_IDLE
+                    sortKey === key ? FILTER.chipActive : FILTER.chipIdle
                   }`}
                 >
                   {label}
@@ -460,10 +486,14 @@ export function PlayerShowcase() {
             </div>
           </FilterField>
           </div>
-        </aside>
+          </div>
+        </GamePanel>
 
         <div className="min-w-0 space-y-4">
-          <div className="scoreboard-panel flex flex-wrap items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
+          <ScoreboardPanel
+            flush
+            className="flex flex-wrap items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3"
+          >
             <span className="text-sm font-medium text-white">
               {filtered.length} player{filtered.length !== 1 ? "s" : ""}
             </span>
@@ -475,7 +505,7 @@ export function PlayerShowcase() {
                     key={chip.key}
                     type="button"
                     onClick={chip.clear}
-                    className="inline-flex items-center gap-1 rounded-full border border-theme-primary/30 bg-theme-primary/10 px-2.5 py-0.5 text-[11px] font-medium text-theme-primary transition hover:bg-theme-primary/20"
+                    className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-0.5 text-[11px] font-medium transition ${FILTER.chipActive}`}
                   >
                     {chip.label}
                     <span aria-hidden>×</span>
@@ -483,12 +513,16 @@ export function PlayerShowcase() {
                 ))}
               </>
             )}
-          </div>
+          </ScoreboardPanel>
 
           {filtered.length === 0 ? (
-            <div className="programme-panel programme-panel--elevated px-4 py-10 text-center text-gray-500 sm:p-12">
+            <GamePanel
+              variant="elevated"
+              flush
+              className="px-4 py-10 text-center text-gray-500 sm:p-12"
+            >
               No players match your filters. Try adjusting or reset.
-            </div>
+            </GamePanel>
           ) : (
             <>
               <ShowcasePagination
@@ -536,31 +570,6 @@ export function PlayerShowcase() {
   );
 }
 
-function StatChip({
-  label,
-  value,
-  highlight,
-}: {
-  label: string;
-  value: string;
-  highlight?: boolean;
-}) {
-  return (
-    <div className={`${RL_INFO_BOX_CLASS} px-3 py-2.5`}>
-      <p className="text-[10px] font-medium uppercase tracking-wider text-gray-500">
-        {label}
-      </p>
-      <p
-        className={`mt-0.5 truncate text-sm font-semibold ${
-          highlight ? "text-accent-gold" : "text-white"
-        }`}
-      >
-        {value}
-      </p>
-    </div>
-  );
-}
-
 function FilterField({
   label,
   children,
@@ -592,7 +601,7 @@ function TierChip({
       type="button"
       onClick={onClick}
       className={`whitespace-nowrap rounded-md border px-2.5 py-1 text-[10px] font-medium transition ${
-        active ? RL_FILTER_CHIP_ACTIVE : RL_FILTER_CHIP_IDLE
+        active ? FILTER.chipActive : FILTER.chipIdle
       }`}
     >
       {children}

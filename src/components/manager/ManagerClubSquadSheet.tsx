@@ -197,7 +197,7 @@ export function ManagerClubSquadSheet({
   return (
     <BodyPortal>
       <div
-        className={`fixed inset-0 z-[95] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm`}
+        className={`fixed inset-0 z-[95] flex items-center justify-center bg-black/60 p-4`}
         role="presentation"
         onClick={handleClose}
       >

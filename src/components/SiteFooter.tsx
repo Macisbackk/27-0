@@ -17,7 +17,7 @@ export function SiteFooter() {
 
   if (minimalChrome) {
     return (
-      <footer className="site-footer relative mt-auto shrink-0 border-t border-pitch-700/45 bg-pitch-950/75 px-4 py-3 backdrop-blur-md">
+      <footer className="site-footer relative mt-auto shrink-0 border-t border-pitch-700/45 bg-pitch-950 px-4 py-3">
         <p className={`text-center break-words ${TYPO.bodySm}`}>{DISCLAIMER}</p>
       </footer>
     );
@@ -27,7 +27,7 @@ export function SiteFooter() {
 
   return (
     <footer
-      className={`site-footer relative mt-auto shrink-0 border-t border-pitch-700/45 bg-pitch-950/75 px-4 py-5 backdrop-blur-md ${
+      className={`site-footer relative mt-auto shrink-0 border-t border-pitch-700/45 bg-pitch-950 px-4 py-5 ${
         hideOnMobileManager ? "hidden sm:block" : ""
       }`}
     >

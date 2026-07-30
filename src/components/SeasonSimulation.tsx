@@ -17,6 +17,8 @@ import {
   SEASON_GAMES,
   formatFixtureScore,
 } from "@/lib/game/season-simulation";
+import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
+import { TYPO } from "@/lib/ui/typography";
 
 interface SeasonSimulationProps {
   result: SeasonResult;
@@ -89,14 +91,14 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
       </motion.h2>
 
       <div className="mt-6 w-full max-w-lg">
-        <div className="scoreboard-panel p-5 text-center sm:p-6">
-          <p className="text-sm text-gray-500">
+        <ScoreboardPanel className="p-5 text-center sm:p-6">
+          <p className={`text-sm ${TYPO.bodySm}`}>
             Round {currentRound} of {SEASON_GAMES}
           </p>
 
           <div className="mt-4 flex items-center justify-center gap-8">
             <div>
-              <p className="text-xs uppercase tracking-wider text-gray-500">
+              <p className={TYPO.statLabel}>
                 Wins
               </p>
               <motion.p
@@ -110,7 +112,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
             </div>
             <div className="text-xl text-gray-600">—</div>
             <div>
-              <p className="text-xs uppercase tracking-wider text-gray-500">
+              <p className={TYPO.statLabel}>
                 Losses
               </p>
               <motion.p
@@ -183,10 +185,10 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               )}
             </motion.div>
           )}
-        </div>
+        </ScoreboardPanel>
 
         <div className="mt-4 max-h-32 overflow-y-auto rounded-xl border border-pitch-700/50 bg-pitch-950/50 p-3">
-          <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+          <p className={`mb-2 ${TYPO.statLabel}`}>
             Results
           </p>
           <div className="space-y-1">

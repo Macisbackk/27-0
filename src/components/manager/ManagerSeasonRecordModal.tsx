@@ -78,7 +78,7 @@ export function ManagerSeasonRecordModal({
 
   return (
     <div
-      className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/80 ${SPACING.modalBackdrop} backdrop-blur-sm sm:items-center`}
+      className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/80 ${SPACING.modalBackdrop} sm:items-center`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="season-record-title"

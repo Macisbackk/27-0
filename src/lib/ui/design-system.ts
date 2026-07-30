@@ -159,12 +159,12 @@ export const BTN = {
   currentStartCompactHard:
     "game-button game-button--current game-button--current-hard btn-press-glow-hard game-button--sm w-full disabled:cursor-not-allowed disabled:opacity-50",
   secondary:
-    "border border-pitch-600 text-gray-300 hover:border-theme-tertiary/50 hover:text-white disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--secondary btn-press game-button--md disabled:cursor-not-allowed disabled:opacity-50",
   secondaryThemed:
     "game-button game-button--secondary btn-press game-button--md disabled:cursor-not-allowed disabled:opacity-50",
   secondaryLg: "btn-secondary text-center",
   danger:
-    "border border-red-600/50 bg-red-950/30 text-red-300 hover:border-red-500 hover:bg-red-950/50 disabled:cursor-not-allowed disabled:opacity-50",
+    "game-button game-button--danger btn-press game-button--md disabled:cursor-not-allowed disabled:opacity-50",
   success:
     "game-button game-button--success btn-press game-button--md disabled:cursor-not-allowed disabled:opacity-50",
   tabActive: "border-2 border-transparent bg-theme-primary text-[var(--theme-text-on-primary)]",

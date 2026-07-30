@@ -3,6 +3,8 @@
 import type { SquadSlot } from "@/lib/types";
 import { formatValue } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
+import { GamePanel } from "@/components/ui/GamePanel";
+import { TYPO } from "@/lib/ui/typography";
 import { SquadPlayerCard } from "./SquadPlayerCard";
 
 interface SquadPitchProps {
@@ -19,9 +21,9 @@ export function SquadPitch({
   totalSlots,
 }: SquadPitchProps) {
   return (
-    <div className="programme-panel programme-panel--elevated p-4 sm:p-5">
+    <GamePanel variant="elevated" className="p-4 sm:p-5">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
+        <h3 className={TYPO.sectionTitle}>
           Your Squad
         </h3>
         <div className="text-right">
@@ -35,7 +37,7 @@ export function SquadPitch({
       </div>
 
       <div className="relative rounded-xl bg-pitch-900/60 p-3 sm:p-4">
-        <div className="absolute inset-0 rounded-xl border border-theme-primary/10" />
+        <div className="absolute inset-0 rounded-xl border border-white/10" />
 
         <div className="relative space-y-2">
           <Row
@@ -74,7 +76,7 @@ export function SquadPitch({
           style={{ width: `${(filledCount / totalSlots) * 100}%` }}
         />
       </div>
-    </div>
+    </GamePanel>
   );
 }
 

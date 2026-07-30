@@ -186,7 +186,7 @@ export function PlayoffBracket({
 
   return (
     <BodyPortal>
-    <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/90 backdrop-blur-md">
+    <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/90">
       <div className="stadium-lights pointer-events-none fixed inset-0" />
       <div className="relative mx-auto w-full max-w-5xl px-2 py-5 pb-28 sm:px-4 sm:py-8 md:pb-8">
         <PlayoffBracketHeader

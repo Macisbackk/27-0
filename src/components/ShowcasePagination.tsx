@@ -1,6 +1,7 @@
 "use client";
 
-import { BTN } from "@/lib/ui/design-system";
+import { GameButton } from "@/components/ui/GameButton";
+import { GamePanel } from "@/components/ui/GamePanel";
 import { playUiClick } from "@/lib/sound";
 
 export const SHOWCASE_PAGE_SIZE = 50;
@@ -42,42 +43,45 @@ export function ShowcasePagination({
   };
 
   return (
-    <nav
-      className="programme-panel programme-panel--elevated flex min-w-0 flex-col gap-2 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:px-4 sm:py-3"
-      aria-label="Player showcase pagination"
-    >
-      <p className="min-w-0 text-center text-xs text-gray-500 sm:text-left sm:text-sm">
-        Showing{" "}
-        <span className="font-medium text-gray-300">
-          {rangeStart}–{rangeEnd}
-        </span>{" "}
-        of{" "}
-        <span className="font-medium text-gray-300">{totalItems}</span>
-      </p>
+    <GamePanel as="nav" variant="elevated" flush aria-label="Player showcase pagination">
+      <div className="flex min-w-0 flex-col gap-2 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:px-4 sm:py-3">
+        <p className="min-w-0 text-center text-xs text-gray-500 sm:text-left sm:text-sm">
+          Showing{" "}
+          <span className="font-medium text-gray-300">
+            {rangeStart}–{rangeEnd}
+          </span>{" "}
+          of{" "}
+          <span className="font-medium text-gray-300">{totalItems}</span>
+        </p>
 
-      <div className="flex min-w-0 items-center justify-center gap-2 sm:gap-3">
-        <button
-          type="button"
-          onClick={() => goTo(currentPage - 1)}
-          disabled={isFirst}
-          className={`${BTN.base} ${BTN.secondary} min-h-[44px] shrink-0 px-3 py-2 text-xs sm:px-4 sm:text-sm`}
-        >
-          Previous
-        </button>
+        <div className="flex min-w-0 items-center justify-center gap-2 sm:gap-3">
+          <GameButton
+            variant="secondary"
+            size="sm"
+            fullWidth={false}
+            disabled={isFirst}
+            onClick={() => goTo(currentPage - 1)}
+            className="shrink-0 px-3 text-xs sm:px-4 sm:text-sm"
+          >
+            Previous
+          </GameButton>
 
-        <span className="shrink-0 whitespace-nowrap text-xs font-medium text-white sm:text-sm">
-          Page {currentPage} of {totalPages}
-        </span>
+          <span className="shrink-0 whitespace-nowrap text-xs font-medium text-white sm:text-sm">
+            Page {currentPage} of {totalPages}
+          </span>
 
-        <button
-          type="button"
-          onClick={() => goTo(currentPage + 1)}
-          disabled={isLast}
-          className={`${BTN.base} ${BTN.secondary} min-h-[44px] shrink-0 px-3 py-2 text-xs sm:px-4 sm:text-sm`}
-        >
-          Next
-        </button>
+          <GameButton
+            variant="secondary"
+            size="sm"
+            fullWidth={false}
+            disabled={isLast}
+            onClick={() => goTo(currentPage + 1)}
+            className="shrink-0 px-3 text-xs sm:px-4 sm:text-sm"
+          >
+            Next
+          </GameButton>
+        </div>
       </div>
-    </nav>
+    </GamePanel>
   );
 }

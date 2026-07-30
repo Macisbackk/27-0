@@ -12,6 +12,8 @@ import {
   POSITION_DESCRIPTIONS,
   POSITION_TILE_LABEL,
 } from "@/lib/positions";
+import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
+import { TYPO } from "@/lib/ui/typography";
 import { PitchSlotCard, PITCH_SLOT_COMPACT_CLASS, PITCH_SLOT_REVIEW_CLASS, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
 
 interface RugbyPitchProps {
@@ -99,8 +101,8 @@ function RugbyPitchInner({
   return (
     <div className="relative w-full overflow-x-hidden">
       {!compact && !formationOnly && (
-        <div className="scoreboard-panel mb-3 flex items-center justify-between px-4 py-2">
-          <h3 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-theme-primary">
+        <ScoreboardPanel className="mb-3 flex items-center justify-between px-4 py-2">
+          <h3 className={TYPO.sectionTitle}>
             {headerTitle}
           </h3>
           <div className="text-right">
@@ -121,7 +123,7 @@ function RugbyPitchInner({
               {filledCount}/{totalSlots} filled
             </p>
           </div>
-        </div>
+        </ScoreboardPanel>
       )}
 
       <div
@@ -141,7 +143,7 @@ function RugbyPitchInner({
           }
         >
           <div
-            className={`relative w-full overflow-hidden rounded-2xl border border-theme-primary/30 shadow-[0_14px_34px_rgba(0,0,0,0.28)] rugby-pitch-pro ${
+            className={`relative w-full overflow-hidden rounded-[14px] border border-white/10 shadow-[0_14px_34px_rgba(0,0,0,0.28)] rugby-pitch-pro ${
               formationOnly
                 ? "aspect-[5/7.6] min-h-0 max-h-[min(68vh,480px)]"
                 : compact

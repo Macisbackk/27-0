@@ -88,6 +88,7 @@ import { GuestNotice } from "./GuestNotice";
 import { DraftPositionPlacement } from "./DraftPositionPlacement";
 import { LINK, BTN, CARD, SPACING, MODAL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { GameButton } from "@/components/ui/GameButton";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import {
   generateSlotTeamYearTargetForSlot,
@@ -1264,14 +1265,16 @@ export function GameBoard({
             <p className={`w-full text-center ${TYPO.bodySm} text-gray-400`}>
               Tap an empty position on the team sheet to spin for a team & year
             </p>
-            <button
-              type="button"
+            <GameButton
+              variant="theme"
+              size="sm"
+              fullWidth={false}
               onClick={handleAutofill}
               disabled={choosing}
-              className={`${BTN.base} ${BTN.greenOutlineSm} px-6`}
+              className="px-6"
             >
               Auto Fill Squad
-            </button>
+            </GameButton>
           </div>
         )}
 
@@ -1281,25 +1284,29 @@ export function GameBoard({
           !isDraftMode &&
           !isSlotRecruitMode && (
           <div className="mt-4 flex justify-center">
-            <button
-              type="button"
+            <GameButton
+              variant="theme"
+              size="sm"
+              fullWidth={false}
               onClick={handleAutofill}
-              className={`${BTN.base} ${BTN.greenOutlineSm} px-6`}
+              className="px-6"
             >
               Auto Fill Squad
-            </button>
+            </GameButton>
           </div>
         )}
 
         {phase === "pitch" && filledCount >= TOTAL_SLOTS && (
           <div className="mt-4 flex justify-center">
-            <button
-              type="button"
+            <GameButton
+              variant="theme"
+              size="sm"
+              fullWidth={false}
               onClick={() => startTournamentSimulation(squad)}
-              className={`${BTN.base} ${BTN.goldOutlineSm} px-6`}
+              className="px-6"
             >
               Simulate Season
-            </button>
+            </GameButton>
           </div>
         )}
 
@@ -1458,7 +1465,7 @@ export function GameBoard({
 
       {phase !== "review" && (
         <div
-          className="fixed inset-x-0 bottom-0 z-30 border-t border-pitch-700/60 bg-pitch-950/95 px-3 py-2 backdrop-blur-md sm:hidden"
+          className="fixed inset-x-0 bottom-0 z-30 border-t border-pitch-700/60 bg-pitch-950/95 px-3 py-2 sm:hidden"
           style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
         >
           <div className="mx-auto flex max-w-lg items-center gap-2">
@@ -1470,23 +1477,27 @@ export function GameBoard({
               Leave run
             </Link>
             {phase === "pitch" && filledCount < TOTAL_SLOTS && (
-              <button
-                type="button"
+              <GameButton
+                variant="theme"
+                size="sm"
+                fullWidth={false}
                 onClick={handleAutofill}
                 disabled={choosing}
-                className={`${BTN.base} ${BTN.greenOutlineSm} min-h-[44px] flex-1 px-3 text-xs`}
+                className="min-h-[44px] flex-1 px-3 text-xs"
               >
                 Auto Fill
-              </button>
+              </GameButton>
             )}
             {phase === "pitch" && filledCount >= TOTAL_SLOTS && (
-              <button
-                type="button"
+              <GameButton
+                variant="theme"
+                size="sm"
+                fullWidth={false}
                 onClick={() => startTournamentSimulation(squad)}
-                className={`${BTN.base} ${BTN.goldOutlineSm} min-h-[44px] flex-1 px-3 text-xs`}
+                className="min-h-[44px] flex-1 px-3 text-xs"
               >
                 Simulate Season
-              </button>
+              </GameButton>
             )}
           </div>
         </div>

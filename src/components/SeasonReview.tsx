@@ -190,7 +190,7 @@ export function SeasonReview({
 
   return (
     <BodyPortal>
-      <div className="fixed inset-0 z-[100] flex flex-col bg-black/92 backdrop-blur-md">
+      <div className="fixed inset-0 z-[100] flex flex-col bg-black/92">
         {showCelebration && <Confetti />}
 
         <div className="stadium-lights pointer-events-none absolute inset-0" />

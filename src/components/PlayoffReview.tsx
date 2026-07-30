@@ -128,7 +128,7 @@ export function PlayoffReview({
 
   return (
     <BodyPortal>
-    <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/90 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(0.5rem,env(safe-area-inset-top))] backdrop-blur-md">
+    <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/90 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(0.5rem,env(safe-area-inset-top))]">
       {isChampion && <Confetti />}
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-8 sm:py-12">

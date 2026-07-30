@@ -1,8 +1,8 @@
 #!/usr/bin/env npx tsx
 /**
  * Audits UI consistency for the 27-0 design system.
- * Flags: raw CTAs, card-glass/matchday-panel, hardcoded Current green,
- * soft rounded-xl dashboard cards, missing stadium button usage patterns.
+ * Flags: raw CTAs, legacy panels, glass/blur, soft radii, Current green leaks,
+ * plain text actions, page-specific card styles.
  * Run: npm run audit:ui-consistency
  */
 
@@ -61,10 +61,12 @@ const CHECKS: {
       file.includes("ManagerMobileBottomNav") ||
       file.includes("ManagerSubTabBar") ||
       file.includes("GameTabs") ||
+      file.includes("LeaderboardTabBar") ||
       file.includes("PitchSlot") ||
       file.includes("modal") ||
       file.toLowerCase().includes("dialog") ||
-      file.includes("GameTableRow"),
+      file.includes("GameTableRow") ||
+      file.includes("ShowcasePlayerCard"),
   },
   {
     id: "card-glass-hotspot",
@@ -81,6 +83,48 @@ const CHECKS: {
       file.includes("design-system") || file.includes("globals.css"),
   },
   {
+    id: "raw-programme-panel-string",
+    severity: "warn",
+    regex: /["'`][^"'`]*\bprogramme-panel\b/,
+    skipIf: (file) =>
+      file.includes("design-system") ||
+      file.includes("panelSurfaces") ||
+      file.includes("ProgrammePanel") ||
+      file.includes("GamePanel"),
+  },
+  {
+    id: "raw-scoreboard-panel-string",
+    severity: "warn",
+    regex: /["'`][^"'`]*\bscoreboard-panel\b/,
+    skipIf: (file) =>
+      file.includes("design-system") ||
+      file.includes("panelSurfaces") ||
+      file.includes("ScoreboardPanel") ||
+      file.includes("GamePanel"),
+  },
+  {
+    id: "backdrop-blur",
+    severity: "error",
+    regex: /\bbackdrop-blur(?:-sm|-md|-lg|-xl)?\b/g,
+    skipIf: (file) =>
+      file.includes("design-system.css") || file.includes("globals.css"),
+  },
+  {
+    id: "rounded-2xl-hotspot",
+    severity: "warn",
+    regex: /\brounded-2xl\b/g,
+    skipIf: (file) =>
+      file.includes("design-system") ||
+      file.includes("globals.css") ||
+      file.includes("GradeBadge") ||
+      file.includes("RecruitmentSlotReveal"),
+  },
+  {
+    id: "rounded-3xl-hotspot",
+    severity: "error",
+    regex: /\brounded-3xl\b/g,
+  },
+  {
     id: "hardcoded-current-green-class",
     severity: "error",
     regex: /\b(text|bg|border|from|to|via)-accent-green\b/g,
@@ -91,6 +135,11 @@ const CHECKS: {
       file.includes("design-system.css") ||
       file.includes("theme-css-vars") ||
       file.includes("ui-themes"),
+  },
+  {
+    id: "tailwind-emerald-lime",
+    severity: "error",
+    regex: /\b(bg|text|border|from|to)-(emerald|lime)-/g,
   },
   {
     id: "btn-primary-legacy",
@@ -105,7 +154,9 @@ const CHECKS: {
     skipIf: (file) =>
       file.includes("design-system") ||
       file.includes("globals.css") ||
-      file.includes("PitchSlot"),
+      file.includes("PitchSlot") ||
+      file.includes("FILTER") ||
+      file.includes("LeaderboardTabBar"),
   },
   {
     id: "neon-green-glow",
@@ -165,13 +216,13 @@ function main() {
   const warns = findings.filter((f) => f.severity === "warn");
 
   console.log(`UI consistency audit: ${errors.length} errors, ${warns.length} warnings`);
-  for (const f of [...errors, ...warns].slice(0, 100)) {
+  for (const f of [...errors, ...warns].slice(0, 120)) {
     console.log(
       `[${f.severity}] ${f.id} ${f.file}:${f.line} — ${f.snippet}`
     );
   }
-  if (findings.length > 100) {
-    console.log(`…and ${findings.length - 100} more`);
+  if (findings.length > 120) {
+    console.log(`…and ${findings.length - 120} more`);
   }
 
   if (errors.length > 0) {

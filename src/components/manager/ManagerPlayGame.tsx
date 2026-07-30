@@ -210,7 +210,7 @@ export function ManagerPlayGame({
       <div
         ref={panelRef}
         tabIndex={-1}
-        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 outline-none"
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 outline-none"
         role="dialog"
         aria-modal="true"
         aria-label="Live match unavailable"
@@ -258,7 +258,7 @@ export function ManagerPlayGame({
     <div
       ref={panelRef}
       tabIndex={-1}
-      className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-black/85 backdrop-blur-sm outline-none"
+      className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-black/85 outline-none"
       role="dialog"
       aria-modal="true"
       aria-label="Live match"

@@ -83,7 +83,7 @@ export function ManagerLeaguePlayerSheetModal({
   return (
     <BodyPortal>
       <div
-        className={`fixed inset-0 z-[100] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} backdrop-blur-sm sm:items-center`}
+        className={`fixed inset-0 z-[100] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} sm:items-center`}
         role="presentation"
         onClick={handleClose}
       >

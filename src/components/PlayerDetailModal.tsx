@@ -31,7 +31,7 @@ export function PlayerDetailModal({ player, onClose }: PlayerDetailModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-3 backdrop-blur-sm sm:items-center sm:p-4"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-3 sm:items-center sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-label={`${formatPlayerDisplayName(player)} player details`}

@@ -19,8 +19,9 @@ interface GamePanelProps {
   padded?: boolean;
   className?: string;
   style?: CSSProperties;
-  as?: "div" | "section" | "article";
+  as?: "div" | "section" | "article" | "nav";
   label?: string;
+  "aria-label"?: string;
 }
 
 /**
@@ -37,11 +38,13 @@ export function GamePanel({
   style,
   as: Tag = "div",
   label,
+  "aria-label": ariaLabel,
 }: GamePanelProps) {
   return (
     <Tag
       className={`${panelSurfaceClass(surface, variant, flush)} ${panelPaddedClass(padded)} ${className}`.trim()}
       style={style}
+      aria-label={ariaLabel}
     >
       <div className="panel-body game-panel__body relative z-[1]">
         {label && surface === "programme" ? (

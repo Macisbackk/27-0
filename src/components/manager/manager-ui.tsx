@@ -82,7 +82,7 @@ export function ManagerMobileBackBar({
 
   return (
     <div
-      className={`${placementClass} backdrop-blur-md sm:-mx-0 sm:rounded-none`}
+      className={`${placementClass} sm:-mx-0 sm:rounded-none`}
     >
       <button
         type="button"
@@ -289,9 +289,11 @@ const INBOX_MESSAGE_STYLE: Record<
   transfer_offer_in: {
     label: "Incoming Bid",
     icon: "IN",
-    badge: "border-emerald-400/45 bg-emerald-500/15 text-emerald-300",
-    iconBox: "border-emerald-400/45 bg-emerald-500/20 text-emerald-200",
-    accentBar: "bg-emerald-400",
+    badge:
+      "border-[color:var(--success)]/45 bg-[color:var(--success)]/15 text-[color:var(--success)]",
+    iconBox:
+      "border-[color:var(--success)]/45 bg-[color:var(--success)]/20 text-[color:var(--success)]",
+    accentBar: "bg-[color:var(--success)]",
   },
   transfer_offer_out: {
     label: "Bid Sent",
@@ -359,9 +361,9 @@ const INBOX_MESSAGE_STYLE: Record<
   youth_intake: {
     label: "Youth Intake",
     icon: "Y",
-    badge: "border-lime-400/45 bg-lime-500/15 text-lime-200",
-    iconBox: "border-lime-400/45 bg-lime-500/20 text-lime-100",
-    accentBar: "bg-lime-400",
+    badge: "border-theme-tertiary/45 bg-theme-primary/10 text-theme-primary",
+    iconBox: "border-theme-tertiary/45 bg-theme-primary/20 text-theme-primary",
+    accentBar: "bg-theme-primary",
   },
   retirement: {
     label: "Retirement",

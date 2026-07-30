@@ -37,15 +37,15 @@
 .matchday-panel {
   position: relative;
   overflow: hidden;
-  border-radius: 16px;
-  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 28%, transparent);
-  background: rgba(7, 12, 11, 0.94);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 12, 13, 0.96);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.26);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 
-/* Single kit accent strip — not a thick border frame */
+/* Single kit accent strip — Store theme only; never thick coloured frames */
 .game-panel::before,
 .programme-panel::before,
 .scoreboard-panel::before,
@@ -66,6 +66,36 @@
   );
   pointer-events: none;
   z-index: 0;
+}
+
+/* Explicit accent bar utility (Store theme). Do not apply on identity/player cards. */
+.game-panel__accent {
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--theme-primary),
+    var(--theme-secondary),
+    var(--theme-tertiary)
+  );
+}
+
+/*
+ * Player/team identity panels — neutral chrome only.
+ * Club colours come from TeamColourStrip / getClubColoursForCard inline styles.
+ * Never paint Store --theme-* borders on these surfaces.
+ */
+.game-panel--identity,
+.game-panel--player,
+.showcase-player-card {
+  border-color: rgba(148, 163, 184, 0.22) !important;
+  background: rgba(8, 12, 13, 0.96);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+}
+
+.game-panel--identity::before,
+.game-panel--player::before,
+.showcase-player-card::before {
+  display: none !important;
 }
 
 .game-panel::after,
@@ -91,7 +121,7 @@
   border-radius: 12px;
   background: rgba(5, 10, 9, 0.88);
   box-shadow: none;
-  border-color: color-mix(in srgb, var(--theme-tertiary) 18%, transparent);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .game-panel--inset::before,
@@ -114,16 +144,16 @@
 .programme-panel--featured,
 .scoreboard-panel--featured,
 .clipboard-panel--featured {
-  border-color: color-mix(in srgb, var(--theme-tertiary) 40%, transparent);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .programme-panel__label,
 .game-panel__label {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--theme-primary);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #9ca3af;
 }
 
 /* Scoreboard: slightly stronger match-centre feel without harsh geometry */
@@ -134,7 +164,7 @@
 
 .scoreboard-value-panel {
   background: rgba(0, 0, 0, 0.28);
-  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 20%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
 }
 
@@ -154,19 +184,19 @@
 .game-header__eyebrow,
 .game-section-header__label,
 .game-section-title__label {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--theme-primary) 90%, #9ca3af);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #9ca3af;
 }
 
 .game-header__title,
 .game-section-header__title {
   font-family: var(--font-display), "Arial Black", Impact, sans-serif;
-  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-size: clamp(1.4rem, 3vw, 1.85rem);
   font-weight: 800;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   text-transform: none;
   color: #fff;
   line-height: 1.2;
@@ -244,7 +274,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 20%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(5, 10, 9, 0.9);
   padding: 0.75rem 0.85rem;
   box-shadow: none;
@@ -262,6 +292,15 @@
     var(--theme-primary),
     transparent
   );
+}
+
+/* Neutral stat tile — no Store theme accent (Showcase / identity-adjacent chrome) */
+.game-stat-card--neutral {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.game-stat-card--neutral::after {
+  display: none;
 }
 
 .game-stat-card__label {

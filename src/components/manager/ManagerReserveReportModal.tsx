@@ -61,7 +61,7 @@ export function ManagerReserveReportModal({
 
   return (
     <div
-      className={`fixed inset-0 z-[94] flex items-end justify-center overflow-y-auto bg-black/80 ${SPACING.modalBackdrop} ${SPACING.safeBottom} backdrop-blur-sm sm:items-center sm:py-6`}
+      className={`fixed inset-0 z-[94] flex items-end justify-center overflow-y-auto bg-black/80 ${SPACING.modalBackdrop} ${SPACING.safeBottom} sm:items-center sm:py-6`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="reserve-report-title"

@@ -2,9 +2,8 @@
 
 import { useCallback } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { BodyPortal } from "@/components/ui/BodyPortal";
+import { GameModal } from "@/components/ui/GameModal";
 import { useModalA11y } from "@/hooks/useModalA11y";
-import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playPanelClose, playUiClick } from "@/lib/sound";
 
@@ -38,53 +37,39 @@ export function ManagerDialog({
 
   const panelRef = useModalA11y(open, handleCancel);
 
-  if (!open) return null;
-
   const handleConfirm = () => {
     playUiClick();
     onConfirm();
   };
 
   return (
-    <BodyPortal>
-      <div
-        className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} ${SPACING.safeBottom} backdrop-blur-sm sm:items-center`}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="manager-dialog-title"
-        onClick={handleCancel}
-      >
-        <div
-          ref={panelRef}
-          tabIndex={-1}
-          className={`game-modal-panel w-full max-w-md outline-none ${SPACING.cardPadding}`}
-          onClick={(e) => e.stopPropagation()}
+    <GameModal
+      open={open}
+      onClose={handleCancel}
+      labelledBy="manager-dialog-title"
+      zClass="z-[95]"
+      panelRef={panelRef}
+      className="max-w-md outline-none sm:max-w-md"
+    >
+      <h2 id="manager-dialog-title" className={TYPO.cardTitle}>
+        {title}
+      </h2>
+      <p className={`mt-2 ${TYPO.bodySm} text-pitch-300 whitespace-pre-line`}>
+        {message}
+      </p>
+      <div className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        {variant === "confirm" && (
+          <GameButton variant="secondary" onClick={handleCancel}>
+            {cancelLabel}
+          </GameButton>
+        )}
+        <GameButton
+          variant={destructive ? "danger" : "theme"}
+          onClick={handleConfirm}
         >
-          <h2 id="manager-dialog-title" className={TYPO.cardTitle}>
-            {title}
-          </h2>
-          <p className={`mt-2 ${TYPO.bodySm} text-pitch-300 whitespace-pre-line`}>
-            {message}
-          </p>
-          <div
-            className={`mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end ${
-              variant === "confirm" ? "" : ""
-            }`}
-          >
-            {variant === "confirm" && (
-              <GameButton variant="secondary" onClick={handleCancel}>
-                {cancelLabel}
-              </GameButton>
-            )}
-            <GameButton
-              variant={destructive ? "danger" : "theme"}
-              onClick={handleConfirm}
-            >
-              {confirmLabel}
-            </GameButton>
-          </div>
-        </div>
+          {confirmLabel}
+        </GameButton>
       </div>
-    </BodyPortal>
+    </GameModal>
   );
 }

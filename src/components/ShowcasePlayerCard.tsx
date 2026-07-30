@@ -2,7 +2,7 @@
 
 import { memo, useCallback, useMemo } from "react";
 import type { Player } from "@/lib/types";
-import { getPlayerCardColours } from "@/lib/clubs";
+import { getClubColoursForCard } from "@/lib/clubs";
 import { formatPlayerDisplayName } from "@/lib/players/prime-year";
 import { formatShowcaseClubYear } from "@/lib/players/year-card";
 import { getPlayerColorClub } from "@/lib/players/run-club";
@@ -44,7 +44,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
   const clubYearLabel = formatShowcaseClubYear(player);
   const colorClub = getPlayerColorClub(player);
   const cardColours = useMemo(
-    () => getPlayerCardColours(colorClub),
+    () => getClubColoursForCard(colorClub),
     [colorClub]
   );
 
@@ -89,7 +89,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
             {clubYearLabel}
           </span>
         </span>
-        <span className="shrink-0 self-start pt-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+        <span className="shrink-0 self-start pt-0.5 text-xs font-medium text-gray-500">
           {expanded ? "Close" : "View"}
         </span>
       </button>

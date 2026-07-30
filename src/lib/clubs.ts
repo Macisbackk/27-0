@@ -286,6 +286,11 @@ export function getPlayerCardColours(clubName: string): PlayerCardColours {
   };
 }
 
+/** Alias — preferred name for player/team card kit colours. */
+export function getClubColoursForCard(clubName: string): PlayerCardColours {
+  return getPlayerCardColours(clubName);
+}
+
 export const CLUB_CHOICE_CARD_CLASS = "rounded-lg overflow-hidden";
 
 export function getClubChoiceCardStyle(clubName: string): CSSProperties {

@@ -38,7 +38,7 @@ export function ManagerOnboardingModal({
 
   return (
     <div
-      className={`fixed inset-0 z-[94] flex items-end justify-center overflow-y-auto bg-black/80 ${SPACING.modalBackdrop} backdrop-blur-sm sm:items-center`}
+      className={`fixed inset-0 z-[94] flex items-end justify-center overflow-y-auto bg-black/80 ${SPACING.modalBackdrop} sm:items-center`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="onboarding-guide-title"

@@ -26,6 +26,8 @@ const PLAYER_CARD_FILES = [
   "PitchSlotCard.tsx",
   "SlotRecruitPlayerCard.tsx",
   "RugbyLeaguePlayerCard.tsx",
+  "SquadPlayerCard.tsx",
+  "TeamCard.tsx",
 ];
 
 const ALLOWLIST = new Set([
@@ -131,15 +133,19 @@ function main() {
       }
     }
 
-    // Showcase must call getPlayerCardColours
+    // Showcase must call getClubColoursForCard or getPlayerCardColours
     if (rel.endsWith("ShowcasePlayerCard.tsx")) {
-      if (!text.includes("getPlayerCardColours")) {
+      if (
+        !text.includes("getClubColoursForCard") &&
+        !text.includes("getPlayerCardColours")
+      ) {
         findings.push({
           file: rel,
           line: 1,
-          id: "showcase-missing-getPlayerCardColours",
+          id: "showcase-missing-club-helper",
           severity: "error",
-          snippet: "ShowcasePlayerCard must use getPlayerCardColours for club borders",
+          snippet:
+            "ShowcasePlayerCard must use getClubColoursForCard (or getPlayerCardColours) for club borders",
         });
       }
       if (
@@ -153,6 +159,15 @@ function main() {
           id: "showcase-store-theme-strip",
           severity: "error",
           snippet: "Showcase cards must flush Store theme accent strip (use CARD.player)",
+        });
+      }
+      if (!text.includes("TeamColourStrip")) {
+        findings.push({
+          file: rel,
+          line: 1,
+          id: "showcase-missing-team-strip",
+          severity: "warn",
+          snippet: "Showcase cards should render TeamColourStrip for kit identity",
         });
       }
     }

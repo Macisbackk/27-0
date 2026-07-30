@@ -25,15 +25,15 @@ interface LeaderboardTabBarProps<T extends string> {
 
 const ACCENT_ACTIVE: Record<LeaderboardTabAccent, string> = {
   theme:
-    "border-theme-primary/60 bg-theme-primary/14 text-theme-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_18px_var(--theme-glow-soft)]",
+    "border-theme-primary/60 bg-theme-primary/14 text-theme-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]",
   gold:
-    "border-accent-gold/60 bg-accent-gold/14 text-accent-gold shadow-[0_0_18px_rgba(251,191,36,0.2)]",
+    "border-accent-gold/60 bg-accent-gold/14 text-accent-gold shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]",
   green:
-    "border-mode-current/60 bg-mode-current/14 text-mode-current shadow-[0_0_18px_var(--mode-current-glow)]",
+    "border-mode-current/60 bg-mode-current/14 text-mode-current shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]",
   sky:
-    "border-sky-400/55 bg-sky-500/12 text-sky-300 shadow-[0_0_16px_rgba(56,189,248,0.18)]",
+    "border-sky-400/55 bg-sky-500/12 text-sky-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]",
   amber:
-    "border-amber-400/55 bg-amber-500/12 text-amber-300 shadow-[0_0_16px_rgba(245,158,11,0.16)]",
+    "border-amber-400/55 bg-amber-500/12 text-amber-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]",
 };
 
 const ACCENT_IDLE: Record<LeaderboardTabAccent, string> = {
@@ -58,7 +58,7 @@ const MODE_BUTTON_BASE =
   "btn-press box-border flex min-h-[48px] w-full items-center justify-center rounded-xl border-2 px-3 py-2.5 text-center transition";
 
 const CHIP_BUTTON_BASE =
-  "btn-press shrink-0 rounded-full border px-4 py-2.5 text-sm font-semibold transition min-h-[44px]";
+  "btn-press shrink-0 rounded-xl border px-4 py-2.5 text-sm font-semibold transition min-h-[44px]";
 
 function resolveAccent<T extends string>(
   tab: LeaderboardTabOption<T>,
@@ -120,7 +120,7 @@ export function LeaderboardTabBar<T extends string>({
   if (tier === "playStyle") {
     return (
       <div
-        className="rounded-2xl border border-pitch-600/55 bg-gradient-to-b from-pitch-900/90 to-pitch-950/95 p-1.5 shadow-[0_8px_28px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.04)]"
+        className="rounded-[14px] border border-pitch-600/55 bg-pitch-950/95 p-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.28)]"
         role="tablist"
         aria-label={ariaLabel}
       >

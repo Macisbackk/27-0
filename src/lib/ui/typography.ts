@@ -7,14 +7,13 @@ export const TYPO = {
   viewTitle:
     "font-display text-xl font-bold tracking-tight text-white sm:text-2xl lg:text-3xl",
   pageSubtitle: "text-base text-gray-300 sm:text-lg leading-relaxed",
-  sectionLabel:
-    "text-[0.6875rem] font-semibold uppercase tracking-wide text-theme-primary",
+  sectionLabel: "text-xs font-semibold text-theme-primary",
   sectionTitle:
     "font-display text-base font-bold tracking-tight text-white sm:text-lg",
   cardTitle: "font-display text-lg font-bold tracking-tight text-white sm:text-xl",
   playerName: "font-display text-xl font-semibold leading-tight text-white sm:text-2xl",
   playerNameSm: "font-display text-lg font-semibold leading-tight text-white",
-  clubName: "text-[11px] font-semibold uppercase tracking-wide text-gray-400 sm:text-xs",
+  clubName: "text-[11px] font-semibold tracking-tight text-gray-400 sm:text-xs",
   statLabel: "text-[0.6875rem] font-semibold uppercase tracking-wide text-gray-400",
   statValue: "text-sm font-semibold text-white",
   statValueLg:

@@ -15,7 +15,7 @@ export const LeagueTable = memo(function LeagueTable({ rows }: LeagueTableProps)
       <table className="w-full border-collapse text-left text-xs max-sm:min-w-[360px]">
         <thead>
           <tr className={`border-b border-pitch-700/60 ${TYPO.statLabel}`}>
-            <th className="sticky left-0 z-10 bg-pitch-950/95 px-2 py-2.5 backdrop-blur-sm">
+            <th className="sticky left-0 z-10 bg-pitch-950 px-2 py-2.5">
               Pos
             </th>
             <th className="min-w-[8rem] px-2 py-2.5">Team</th>
@@ -54,10 +54,10 @@ const LeagueTableRowView = memo(function LeagueTableRowView({
       }`}
     >
       <td
-        className={`sticky left-0 z-10 px-2 py-2.5 font-display font-bold backdrop-blur-sm ${
+        className={`sticky left-0 z-10 px-2 py-2.5 font-display font-bold ${
           highlight
             ? "bg-theme-primary/10 text-theme-primary"
-            : "bg-pitch-950/95 text-gray-400"
+            : "bg-pitch-950 text-gray-400"
         }`}
       >
         {row.position}
