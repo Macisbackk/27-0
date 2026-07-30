@@ -95,19 +95,21 @@ export function ensureManagerFixtureScoring(
         matchdayInterchange,
       }
     );
+    // Re-read after mutation — assigning `undefined` above narrows the property.
+    const enrichedDetail = (fixture as MatchFixture).scoringDetail;
     if (
-      fixture.scoringDetail &&
+      enrichedDetail &&
       preservedOpponent &&
       opponentScoringMatchesFixture({
         ...fixture,
         scoringDetail: {
-          dreamTeam: fixture.scoringDetail.dreamTeam,
+          dreamTeam: enrichedDetail.dreamTeam,
           opponent: preservedOpponent,
         },
       })
     ) {
       fixture.scoringDetail = {
-        ...fixture.scoringDetail,
+        ...enrichedDetail,
         opponent: preservedOpponent,
       };
     }
