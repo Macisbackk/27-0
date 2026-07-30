@@ -11,7 +11,7 @@ interface ManagerTableProps {
 
 export function ManagerTable({ career }: ManagerTableProps) {
   return (
-    <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
+    <div className={`w-full min-w-0 ${SPACING.stackLg}`}>
       <h1 className={TYPO.pageTitle}>League Table</h1>
 
       <div className={`${CARD.base} -mx-1 overflow-x-auto px-1`}>

@@ -45,11 +45,19 @@ import type {
   ManagerCareer,
   ManagerFixtureRecord,
   ManagerScheduledFixture,
+  WorldClubChallengeFixture,
 } from "@/lib/manager/types";
 import { playUiClick } from "@/lib/sound";
+import seedrandom from "seedrandom";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
-import { getWccStats } from "@/lib/manager/worldClubChallenge";
+import {
+  buildWorldClubChallengeScheduledFixture,
+  getWccStats,
+  isValidWorldClubChallengeFixture,
+  pickNrlChampion,
+  rollNrlChampionRating,
+} from "@/lib/manager/worldClubChallenge";
 import { GamePanel } from "@/components/ui/GamePanel";
 
 interface ManagerFixturesProps {
@@ -123,6 +131,37 @@ function matchesCompetitionFilter(
   return true;
 }
 
+function shouldShowNextMatch(
+  filter: FixtureFilter,
+  nextFixture: ManagerScheduledFixture | null
+): boolean {
+  if (!nextFixture) return false;
+  if (filter === "results") return false;
+  const comp = nextFixture.competition ?? "league";
+  if (filter === "all" || filter === "upcoming") return true;
+  if (filter === "wcc") return comp === "world_club_challenge";
+  if (filter === "cup") return comp === "challenge_cup";
+  if (filter === "league") return comp === "league" || !nextFixture.competition;
+  if (filter === "playoffs") return comp === "playoffs";
+  return true;
+}
+
+function resolveWccFixtureForDisplay(
+  career: ManagerCareer,
+  wcc: WorldClubChallengeFixture
+): WorldClubChallengeFixture {
+  if (isValidWorldClubChallengeFixture(wcc)) return wcc;
+  const nrlChampion = pickNrlChampion(career.seed, career.seasonYear);
+  const rng = seedrandom(
+    `${career.seed}-wcc-display-${career.seasonYear}-${nrlChampion}`
+  );
+  return {
+    ...wcc,
+    nrlChampionName: nrlChampion,
+    nrlChampionRating: rollNrlChampionRating(rng),
+  };
+}
+
 function buildFixtureList(
   career: ManagerCareer,
   nextFixture: ManagerScheduledFixture | null
@@ -192,6 +231,27 @@ function buildFixtureList(
         key: nextFixture.id,
         sched: nextFixture,
         isNext: true,
+      });
+    }
+  }
+
+  const wccCurrent = career.worldClubChallenge?.currentFixture;
+  if (wccCurrent?.status === "scheduled") {
+    const wcc = resolveWccFixtureForDisplay(career, wccCurrent);
+    const sched = buildWorldClubChallengeScheduledFixture(wcc);
+    const alreadyListed = items.some(
+      (i) =>
+        (i.kind === "upcoming" &&
+          (i.sched.id === sched.id ||
+            i.sched.competition === "world_club_challenge")) ||
+        (i.kind === "played" && i.fixture.fixtureId === sched.id)
+    );
+    if (!alreadyListed) {
+      items.push({
+        kind: "upcoming",
+        key: sched.id,
+        sched,
+        isNext: sched.id === nextFixture?.id,
       });
     }
   }
@@ -342,17 +402,20 @@ export function ManagerFixtures({
 
   const oppRating =
     nextFixture && !seasonComplete
-      ? nextFixture.competition === "friendly" &&
-        career.preSeason.activeFriendly
-        ? career.preSeason.activeFriendly.teamRating
-        : Math.round(
-            getOpponentMatchRating(
-              nextFixture.opponent,
-              readyCareer.seed,
-              nextFixture.round,
-              getManagerOpponentPoolOptions(readyCareer, nextFixture.opponent)
+      ? nextFixture.competition === "world_club_challenge" &&
+        career.worldClubChallenge?.currentFixture
+        ? career.worldClubChallenge.currentFixture.nrlChampionRating
+        : nextFixture.competition === "friendly" &&
+            career.preSeason.activeFriendly
+          ? career.preSeason.activeFriendly.teamRating
+          : Math.round(
+              getOpponentMatchRating(
+                nextFixture.opponent,
+                readyCareer.seed,
+                nextFixture.round,
+                getManagerOpponentPoolOptions(readyCareer, nextFixture.opponent)
+              )
             )
-          )
       : null;
 
   const prediction =
@@ -408,13 +471,19 @@ export function ManagerFixtures({
     filter === "cup" ||
     filter === "playoffs" ||
     filter === "wcc";
-  const upcomingItems = filteredItems.filter((i) => i.kind === "upcoming");
+  const upcomingItems = filteredItems.filter((i) => {
+    if (i.kind !== "upcoming") return false;
+    if (filter === "all" && i.sched.competition === "world_club_challenge") {
+      return false;
+    }
+    return true;
+  });
   const playedItems = filteredItems.filter((i) => i.kind === "played");
   const playedDisplay =
     filter === "results" ? playedItems : [...playedItems].reverse();
 
   return (
-    <div className={`mx-auto w-full min-w-0 max-w-3xl overflow-x-hidden ${SPACING.stackLg}`}>
+    <div className={`w-full min-w-0 overflow-x-hidden ${SPACING.stackLg}`}>
       <GameSectionHeader
         label="Fixtures"
         title="Fixtures"
@@ -475,17 +544,21 @@ export function ManagerFixtures({
       {(filter === "all" || filter === "wcc") && (
         <GamePanel padded label="World Club Challenge">
           {career.worldClubChallenge?.currentFixture ? (
+            (() => {
+              const wcc = resolveWccFixtureForDisplay(
+                career,
+                career.worldClubChallenge.currentFixture
+              );
+              return (
             <div className="space-y-2">
               <p className="font-semibold text-white">
-                {career.worldClubChallenge.currentFixture.superLeagueChampionName}{" "}
-                vs {career.worldClubChallenge.currentFixture.nrlChampionName}
+                {wcc.superLeagueChampionName} vs {wcc.nrlChampionName}
               </p>
               <p className={`${TYPO.bodySm}`}>
-                Game Week {career.worldClubChallenge.currentFixture.gameWeek} ·{" "}
-                Season {career.worldClubChallenge.currentFixture.seasonYear} · NRL
-                rating {career.worldClubChallenge.currentFixture.nrlChampionRating}
+                Game Week {wcc.gameWeek} · Season {wcc.seasonYear} · NRL rating{" "}
+                {wcc.nrlChampionRating}
               </p>
-              {career.worldClubChallenge.currentFixture.userInvolved ? (
+              {wcc.userInvolved ? (
                 <p className={`${TYPO.bodySm} text-accent-gold`}>
                   You are the Super League champion — Play or Simulate from Matchday
                   when Game Week 3 arrives.
@@ -496,6 +569,8 @@ export function ManagerFixtures({
                 </p>
               )}
             </div>
+              );
+            })()
           ) : getWccStats(career).results.length > 0 ? (
             <ul className="space-y-2">
               {getWccStats(career)
@@ -529,7 +604,7 @@ export function ManagerFixtures({
         </GamePanel>
       )}
 
-      {nextFixture && !seasonComplete && (
+      {nextFixture && !seasonComplete && shouldShowNextMatch(filter, nextFixture) && (
         <ScoreboardPanel
           variant="elevated"
           padded

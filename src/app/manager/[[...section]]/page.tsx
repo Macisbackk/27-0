@@ -1367,7 +1367,7 @@ export default function ManagerPage() {
     displayView === "hub" && !managerCelebrationModalsOpen;
 
   return (
-    <PageShell withLights compact width="wide">
+    <PageShell withLights compact>
       {displayView === "landing" && (
         <ManagerLanding
           saveSlots={saveSlots}

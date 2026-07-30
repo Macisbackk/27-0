@@ -65,9 +65,6 @@ const READONLY_INTERCHANGE_BOX_CLASS =
 const READONLY_INTERCHANGE_NAME_CLASS =
   "min-w-0 flex-1 text-[10px] font-medium leading-[1.15] text-white line-clamp-2 [overflow-wrap:anywhere] sm:text-xs sm:leading-tight";
 
-const READONLY_INTERCHANGE_META_CLASS =
-  "line-clamp-1 text-[9px] leading-tight text-pitch-400 sm:text-[10px]";
-
 function ReadonlyInterchangeSlot({
   player,
   shirtNumber,
@@ -80,11 +77,8 @@ function ReadonlyInterchangeSlot({
   onSelect?: () => void;
 }) {
   const content = (
-    <div className="player-slot flex h-full min-h-[86px] flex-col">
-      <p className="player-slot__role shrink-0 text-[10px] font-bold leading-[18px] text-gray-400">
-        Interchange {shirtNumber}
-      </p>
-      <div className="player-slot__name flex min-h-[34px] flex-1 items-center">
+    <div className="player-slot player-slot--interchange">
+      <div className="player-slot__name">
         <p
           className={`${READONLY_INTERCHANGE_NAME_CLASS} ${
             player ? "" : "text-pitch-500"
@@ -92,24 +86,24 @@ function ReadonlyInterchangeSlot({
         >
           {player?.name ?? "Empty"}
         </p>
-      </div>
-      <p
-        className={`${READONLY_INTERCHANGE_META_CLASS} player-slot__meta min-h-[18px]`}
-      >
         {player ? (
-          <>
-            {player.position.replaceAll("_", " ")} · {player.peakRating}
-            {listed ? (
-              <span className="font-bold uppercase tracking-wide text-theme-primary">
-                {" "}
-                · Listed
-              </span>
-            ) : null}
-          </>
-        ) : (
-          "\u00a0"
-        )}
-      </p>
+          <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
+            {player.peakRating}
+          </span>
+        ) : null}
+      </div>
+      <div className="player-slot__footer">
+        <span className="player-slot__role">Interchange {shirtNumber}</span>
+        <span className="player-slot__position">
+          {player ? player.position.replaceAll("_", " ") : "Bench"}
+          {player && listed ? (
+            <span className="font-bold uppercase tracking-wide text-theme-primary">
+              {" "}
+              · Listed
+            </span>
+          ) : null}
+        </span>
+      </div>
     </div>
   );
 

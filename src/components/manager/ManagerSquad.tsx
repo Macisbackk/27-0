@@ -92,12 +92,6 @@ const SQUAD_PLAYER_BOX_CLASS =
 const SQUAD_PLAYER_NAME_CLASS =
   "min-w-0 flex-1 text-[10px] font-medium leading-[1.15] text-white line-clamp-2 [overflow-wrap:anywhere] sm:text-xs sm:leading-tight";
 
-const SQUAD_PLAYER_META_CLASS =
-  "mt-0.5 line-clamp-1 text-[9px] leading-tight text-pitch-400 sm:text-[10px]";
-
-const SQUAD_PLAYER_STATUS_CLASS =
-  "mt-0.5 min-h-[1.125rem] line-clamp-1 text-[9px] font-medium leading-tight sm:min-h-[1.25rem] sm:text-[10px]";
-
 const SQUAD_POOL_GRID_CLASS =
   "grid w-max min-w-full grid-flow-col grid-rows-2 auto-cols-[7.5rem] items-stretch gap-x-1.5 gap-y-1.5 sm:auto-cols-[8.25rem] sm:gap-x-2 sm:gap-y-2";
 
@@ -146,24 +140,26 @@ function SquadPoolPlayerButton({
         onDoubleClick={onDoubleClick}
         className={squadPlayerBoxClass(poolRole, unavailable, isSuspension)}
       >
-        <div className="flex items-start justify-between gap-1">
-          <p className={SQUAD_PLAYER_NAME_CLASS}>{player.name}</p>
-          <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
-            {player.peakRating}
-          </span>
+        <div className="squad-player-card">
+          <div className="squad-player-card__name">
+            <p className={SQUAD_PLAYER_NAME_CLASS}>{player.name}</p>
+            <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
+              {player.peakRating}
+            </span>
+          </div>
+          <div className="squad-player-card__footer">
+            <span className="squad-player-card__meta">
+              {positions.map((p) => POSITION_SHORT[p]).join(" · ")} · {sourceLabel}
+            </span>
+            {unavailable && ps?.injury ? (
+              <span
+                className={`text-[9px] font-medium sm:text-[10px] ${unavailableTextClass(!!isSuspension)}`}
+              >
+                {formatInjuryLabel(ps.injury)}
+              </span>
+            ) : null}
+          </div>
         </div>
-        <p className={SQUAD_PLAYER_META_CLASS}>
-          {positions.map((p) => POSITION_SHORT[p]).join(" · ")} · {sourceLabel}
-        </p>
-        <p
-          className={`${SQUAD_PLAYER_STATUS_CLASS} ${
-            unavailable && ps?.injury
-              ? unavailableTextClass(!!isSuspension)
-              : "invisible"
-          }`}
-        >
-          {unavailable && ps?.injury ? formatInjuryLabel(ps.injury) : "\u00a0"}
-        </p>
       </button>
     </li>
   );
@@ -642,11 +638,8 @@ export function ManagerSquad({
                       isSuspension
                     )}
                   >
-                    <div className="player-slot flex h-full min-h-[86px] flex-col">
-                      <p className="player-slot__role shrink-0 text-[10px] font-bold leading-[18px] text-gray-400">
-                        Interchange {14 + i}
-                      </p>
-                      <div className="player-slot__name flex min-h-[34px] flex-1 items-center justify-between gap-1">
+                    <div className="player-slot player-slot--interchange">
+                      <div className="player-slot__name">
                         <p
                           className={`${SQUAD_PLAYER_NAME_CLASS} ${
                             player ? "" : "text-pitch-500"
@@ -660,20 +653,21 @@ export function ManagerSquad({
                           </span>
                         )}
                       </div>
-                      <p
-                        className={`${SQUAD_PLAYER_META_CLASS} player-slot__meta min-h-[18px]`}
-                      >
-                        {player
-                          ? `${player.position.replaceAll("_", " ")}`
-                          : "Bench"}
-                      </p>
+                      <div className="player-slot__footer">
+                        <span className="player-slot__role">
+                          Interchange {14 + i}
+                        </span>
+                        <span className="player-slot__position">
+                          {player
+                            ? player.position.replaceAll("_", " ")
+                            : "Bench"}
+                        </span>
+                      </div>
                       {unavailable ? (
                         <p className="text-[10px] text-red-400">
                           {isSuspension ? "Suspended" : "Injured"}
                         </p>
-                      ) : (
-                        <span className="min-h-[14px]" aria-hidden />
-                      )}
+                      ) : null}
                     </div>
                   </button>
                 );

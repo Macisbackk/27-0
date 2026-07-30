@@ -87,8 +87,9 @@ export const PAGE = {
 
 /** Manager Mode layout — fluid mobile-first spacing and grids. */
 export const MANAGER = {
-  page: `mx-auto w-full max-w-3xl ${PAGE.section}`,
-  pageWide: `mx-auto w-full max-w-5xl ${PAGE.section}`,
+  /** Full width of PageShell — do not nest a second max-width. */
+  page: `w-full min-w-0 ${PAGE.section}`,
+  pageWide: `w-full min-w-0 ${PAGE.section}`,
   /** Player pool above team sheet on mobile. */
   splitLayout:
     "grid gap-4 lg:grid-cols-[minmax(0,1fr)_min(100%,280px)] lg:gap-6 [&>*:first-child]:order-2 [&>*:last-child]:order-1 lg:[&>*:first-child]:order-1 lg:[&>*:last-child]:order-2",

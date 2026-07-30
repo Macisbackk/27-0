@@ -196,7 +196,7 @@ export function ManagerTactics({
   onChange: (tactics: ManagerTactics) => void;
 }) {
   return (
-    <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
+    <div className={`w-full min-w-0 ${SPACING.stackLg}`}>
       <h1 className={`text-center ${TYPO.pageTitle}`}>Tactics</h1>
       <ManagerTacticsPanel career={career} onChange={onChange} />
     </div>

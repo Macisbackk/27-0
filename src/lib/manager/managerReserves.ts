@@ -166,6 +166,21 @@ export function getPotentialTier(potential: number): string {
   return "Depth Potential";
 }
 
+export function getReserveSignedRating(reserve: ManagerReservePlayer): number {
+  return reserve.signedRating ?? reserve.baseRating ?? reserve.rating;
+}
+
+export function getReserveSignedGrowthDelta(
+  reserve: ManagerReservePlayer
+): number {
+  return reserve.rating - getReserveSignedRating(reserve);
+}
+
+export function formatReserveGrowthDelta(delta: number): string {
+  if (delta > 0) return `+${delta}`;
+  return String(delta);
+}
+
 export function getReserveSeasonGrowthDelta(
   reserve: ManagerReservePlayer
 ): number {
@@ -385,6 +400,7 @@ function generateReservePlayer(
     reserveTries: 0,
     calledUpForNextMatch: false,
     baseRating: rating,
+    signedRating: rating,
   };
 }
 

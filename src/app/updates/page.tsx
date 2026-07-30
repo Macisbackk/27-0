@@ -9,7 +9,7 @@ import { TYPO } from "@/lib/ui/typography";
 export default function UpdatesPage() {
   return (
     <PageShell withLights compact>
-      <div className={`mx-auto max-w-2xl ${PAGE.section}`}>
+      <div className={PAGE.section}>
         <header className="text-center">
           <p className={TYPO.sectionLabel}>Changelog</p>
           <h1 className="mt-2 font-display text-3xl font-black text-white sm:text-4xl">

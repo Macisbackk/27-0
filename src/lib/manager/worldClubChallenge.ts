@@ -11,6 +11,7 @@ import { generateSimulatedMatchEvents } from "./matchEventGenerator";
 import { validateMatchEvents } from "../game/validateMatchEvents";
 import type { MatchEventType } from "../game/match-events";
 import { snapToRLScore } from "../game/rl-scores";
+import { SUPER_LEAGUE_CLUBS } from "../clubs";
 
 export const NRL_WORLD_CLUB_CHALLENGE_TEAMS = [
   "Brisbane Broncos",
@@ -33,6 +34,8 @@ export const NRL_WORLD_CLUB_CHALLENGE_TEAMS = [
   "Perth Bears",
   "PNG Chiefs",
 ] as const;
+
+const NRL_TEAM_SET = new Set<string>(NRL_WORLD_CLUB_CHALLENGE_TEAMS);
 
 const NRL_FIRST_NAMES = {
   aus: [
@@ -148,6 +151,66 @@ export function pickNrlChampion(seed: string, seasonYear: number): string {
   ]!;
 }
 
+export function isNrlWorldClubChallengeTeam(name: string): boolean {
+  return NRL_TEAM_SET.has(name);
+}
+
+export function isValidWorldClubChallengeFixture(
+  fixture: Pick<WorldClubChallengeFixture, "nrlChampionName" | "superLeagueChampionName">
+): boolean {
+  if (!isNrlWorldClubChallengeTeam(fixture.nrlChampionName)) return false;
+  if (fixture.nrlChampionName === fixture.superLeagueChampionName) return false;
+  const isSuperLeague = SUPER_LEAGUE_CLUBS.some(
+    (c) => c.name === fixture.nrlChampionName
+  );
+  return !isSuperLeague;
+}
+
+/** Repair invalid WCC fixtures (e.g. old saves with Super League as NRL opponent). */
+export function sanitizeWorldClubChallengeState(
+  career: ManagerCareer
+): ManagerCareer {
+  const state = career.worldClubChallenge;
+  if (!state) return career;
+
+  let currentFixture = state.currentFixture;
+  if (currentFixture && !isValidWorldClubChallengeFixture(currentFixture)) {
+    const nrlChampion = pickNrlChampion(career.seed, career.seasonYear);
+    const rng = seedrandom(
+      `${career.seed}-wcc-repair-${career.seasonYear}-${nrlChampion}`
+    );
+    currentFixture = {
+      ...currentFixture,
+      nrlChampionName: nrlChampion,
+      nrlChampionRating: rollNrlChampionRating(rng),
+    };
+  }
+
+  const history = (state.history ?? []).map((r) => {
+    if (isNrlWorldClubChallengeTeam(r.nrlChampionName)) return r;
+    const nrlChampion = pickNrlChampion(
+      career.seed,
+      r.seasonYear
+    );
+    return {
+      ...r,
+      nrlChampionName: nrlChampion,
+      storySummary: r.storySummary.replace(
+        r.nrlChampionName,
+        nrlChampion
+      ),
+    };
+  });
+
+  return {
+    ...career,
+    worldClubChallenge: {
+      history,
+      currentFixture,
+    },
+  };
+}
+
 export function getPreviousSeasonChampion(
   career: ManagerCareer
 ): { name: string; seasonYear: number } | null {
@@ -246,7 +309,7 @@ export function createWorldClubChallengeFixture(
   );
   const userInvolved = prev.name === career.club;
 
-  return {
+  const fixture: WorldClubChallengeFixture = {
     id: `wcc-${career.seasonYear}`,
     seasonYear: career.seasonYear,
     gameWeek: 3,
@@ -257,6 +320,16 @@ export function createWorldClubChallengeFixture(
     status: "scheduled",
     userInvolved,
   };
+
+  if (!isValidWorldClubChallengeFixture(fixture)) {
+    console.warn("[WCC] Invalid NRL opponent generated — regenerating", fixture);
+    fixture.nrlChampionName = pickNrlChampion(
+      `${career.seed}-retry`,
+      career.seasonYear
+    );
+  }
+
+  return fixture;
 }
 
 function simulateScoreline(

@@ -126,6 +126,8 @@ export interface ManagerReservePlayer {
   eligiblePositions: Position[];
   rating: number;
   baseRating: number;
+  /** Rating when the player joined the reserve squad (lifetime growth baseline). */
+  signedRating?: number;
   potentialRating: number;
   developmentRate: number;
   form: number;

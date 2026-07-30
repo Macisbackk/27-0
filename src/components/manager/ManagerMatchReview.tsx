@@ -71,7 +71,7 @@ export function ManagerMatchReview({
 
   if (!fixture) {
     return (
-      <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
+      <div className={`w-full min-w-0 ${SPACING.stackLg}`}>
         <MatchReviewBackBar onClose={onClose} />
         <div className={`${CARD.elevated} ${SPACING.cardPaddingMobile} text-center space-y-4`}>
           <h1 className={TYPO.viewTitle}>Match not found</h1>
@@ -145,7 +145,7 @@ export function ManagerMatchReview({
     mobileTab === tab ? "block space-y-4" : "hidden sm:block sm:space-y-4";
 
   return (
-    <div className={`mx-auto max-w-3xl ${SPACING.stackLg}`}>
+    <div className={`w-full min-w-0 ${SPACING.stackLg}`}>
       <MatchReviewBackBar onClose={onClose} />
 
       <div className="flex flex-wrap items-center gap-3">

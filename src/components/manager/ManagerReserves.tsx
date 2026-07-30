@@ -14,8 +14,11 @@ import type { Position } from "@/lib/types";
 import {
   callUpReserveForNextMatch,
   fillReserveSquadMinimum,
+  formatReserveGrowthDelta,
   getPotentialTier,
   getReserveOpponent,
+  getReserveSignedGrowthDelta,
+  getReserveSignedRating,
   promoteReserveToSquad,
   releaseReserve,
   RESERVE_EMERGENCY_RECRUITMENT_EXCUSE,
@@ -41,7 +44,6 @@ import {
   ManagerPage,
 } from "@/components/manager/manager-ui";
 import { ManagerReserveReleaseModal } from "@/components/manager/ManagerReserveReleaseModal";
-import { ManagerReserveGrowthPanel } from "@/components/manager/ManagerReserveGrowthPanel";
 
 type ReserveFilter = "all" | "position" | "potential" | "rating" | "age";
 
@@ -362,12 +364,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         </ClipboardPanel>
       )}
 
-      <div className="lg:hidden">
-        <ManagerReserveGrowthPanel career={career} variant="mobile" />
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_min(100%,280px)] lg:gap-6">
-        <div className={SPACING.stackLg}>
+      <div className={SPACING.stackLg}>
       <div className={`${CARD.clipboard} ${SPACING.cardPadding}`}>
         <p className={`${TYPO.sectionLabel} mb-2`}>Filters</p>
         <div className="flex flex-wrap gap-2">
@@ -426,6 +423,8 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
           const status = contract ? getContractStatus(contract) : null;
           const needsRenew =
             status === "expires_this_season" || status === "wants_renewal";
+          const signedRating = getReserveSignedRating(r);
+          const growthDelta = getReserveSignedGrowthDelta(r);
 
           return (
             <GameTableRow
@@ -458,6 +457,11 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                   </p>
                 </div>
               </div>
+
+              <p className={`mt-2 text-[10px] text-pitch-400 sm:text-[11px]`}>
+                Signed rating: {signedRating} · Current rating: {r.rating} ·
+                Growth: {formatReserveGrowthDelta(growthDelta)}
+              </p>
 
               <div className="mt-2 grid grid-cols-2 gap-1 text-[10px] text-pitch-300 sm:grid-cols-4">
                 <span>{getPotentialTier(r.potentialRating)}</span>
@@ -532,11 +536,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
           No reserve players match your filters.
         </p>
       )}
-        </div>
-
-        <div className="hidden lg:block">
-          <ManagerReserveGrowthPanel career={career} variant="desktop" />
-        </div>
       </div>
 
       {releaseTarget && (

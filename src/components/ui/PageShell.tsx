@@ -1,11 +1,10 @@
 import type { ReactNode } from "react";
-import { SPACING } from "@/lib/ui/design-system";
 
-export type PageShellWidth = "default" | "wide" | "full";
+export type PageShellWidth = "default" | "wide" | "compact" | "full";
 
 interface PageShellProps {
   children: ReactNode;
-  /** Content max-width — matches home (4xl) or play (6xl). */
+  /** Content max-width — default 1180px site-wide. */
   width?: PageShellWidth;
   className?: string;
   innerClassName?: string;
@@ -15,12 +14,15 @@ interface PageShellProps {
   desktopFit?: boolean;
   /** Tighter vertical padding on desktop. */
   compact?: boolean;
+  /** When true, omit game-page horizontal padding (nested content already padded). */
+  flushX?: boolean;
 }
 
 const WIDTH_CLASS: Record<PageShellWidth, string> = {
-  default: "max-w-4xl",
-  wide: "max-w-6xl",
-  full: "max-w-[min(100%,90rem)]",
+  default: "game-page",
+  wide: "game-page game-page--wide",
+  compact: "game-page game-page--compact",
+  full: "game-page game-page--wide max-w-[min(100%,90rem)]",
 };
 
 export function PageShell({
@@ -31,6 +33,7 @@ export function PageShell({
   withLights = false,
   desktopFit = false,
   compact = false,
+  flushX = false,
 }: PageShellProps) {
   const padY = compact
     ? "py-5 sm:py-6 lg:py-4"
@@ -51,7 +54,7 @@ export function PageShell({
         />
       )}
       <div
-        className={`relative mx-auto flex w-full min-w-0 max-w-full flex-col ${WIDTH_CLASS[width]} ${SPACING.pageX} ${padY} ${desktopFit ? "lg:min-h-0 lg:flex-1" : ""} ${innerClassName}`}
+        className={`relative flex w-full min-w-0 max-w-full flex-col ${WIDTH_CLASS[width]} ${flushX ? "game-page--flush" : ""} ${padY} ${desktopFit ? "lg:min-h-0 lg:flex-1" : ""} ${innerClassName}`}
       >
         {children}
       </div>
@@ -75,3 +78,24 @@ export function PageShellBody({
     </div>
   );
 }
+
+/** Alias — shared content width wrapper inside an existing shell. */
+export function GamePage({
+  children,
+  width = "default",
+  className = "",
+}: {
+  children: ReactNode;
+  width?: Exclude<PageShellWidth, "full">;
+  className?: string;
+}) {
+  const widthClass =
+    width === "wide"
+      ? "game-page game-page--wide game-page--flush"
+      : width === "compact"
+        ? "game-page game-page--compact game-page--flush"
+        : "game-page game-page--flush";
+  return <div className={`${widthClass} ${className}`}>{children}</div>;
+}
+
+export { GamePage as PageContainer };

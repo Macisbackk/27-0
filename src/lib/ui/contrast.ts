@@ -152,3 +152,39 @@ export function getClubLogoTextColor(
     getLuminance(primary) <= getLuminance(secondary) ? primary : secondary;
   return getReadableTextColor(darker);
 }
+
+const NEAR_WHITE_LUM = 0.82;
+const NEAR_BLACK_LUM = 0.08;
+const SAFE_EVENT_ACCENT = "#d8dee9";
+
+export function isNearWhite(hex: string): boolean {
+  return getLuminance(hex) >= NEAR_WHITE_LUM;
+}
+
+/**
+ * Readable team accent for dark UI (match events, labels).
+ * Skips pure/near-white and near-black kit colours.
+ */
+export function getReadableTeamAccent(
+  primary: string,
+  secondary?: string,
+  tertiary?: string,
+  backgroundHex = "#0a1210"
+): string {
+  const candidates = [primary, secondary, tertiary].filter(
+    (c): c is string => Boolean(c)
+  );
+  for (const colour of candidates) {
+    const lum = getLuminance(colour);
+    if (lum >= NEAR_WHITE_LUM || lum <= NEAR_BLACK_LUM) continue;
+    if (getContrastRatio(colour, backgroundHex) >= 2.4) return colour;
+  }
+  // Prefer darkened near-white kit colours over soft-white wash
+  for (const colour of candidates) {
+    if (isNearWhite(colour)) {
+      const darkened = darkenHex(colour, 0.55);
+      if (getContrastRatio(darkened, backgroundHex) >= 2.4) return darkened;
+    }
+  }
+  return SAFE_EVENT_ACCENT;
+}

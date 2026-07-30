@@ -17,6 +17,26 @@
   z-index: 1;
 }
 
+/* ── Shared page width ───────────────────────────────────────────────────── */
+.game-page {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: clamp(0.85rem, 2.5vw, 1.5rem);
+}
+
+.game-page--wide {
+  max-width: 1280px;
+}
+
+.game-page--compact {
+  max-width: 980px;
+}
+
+.game-page--flush {
+  padding-inline: 0;
+}
+
 /* ── Shared panel body ───────────────────────────────────────────────────── */
 .panel-body,
 .game-panel__body {
@@ -45,33 +65,50 @@
   backdrop-filter: none;
 }
 
-/* Fixed interchange / player slot layout */
-.player-slot {
+/* Fixed interchange / squad player slot — name flexes, meta pinned to bottom */
+.player-slot,
+.squad-player-card {
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  min-height: 86px;
+  grid-template-rows: 1fr auto;
+  min-height: 88px;
   width: 100%;
+  height: 100%;
   text-align: left;
 }
 
-.player-slot__role {
-  min-height: 18px;
-  line-height: 18px;
+.player-slot__name,
+.squad-player-card__name {
+  align-self: center;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.player-slot__footer,
+.squad-player-card__footer {
+  min-height: 22px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.player-slot__role,
+.player-slot__position,
+.squad-player-card__meta {
+  line-height: 1;
+  white-space: nowrap;
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--text-muted, #9ca3af);
 }
 
-.player-slot__name {
-  min-height: 34px;
-  display: flex;
-  align-items: center;
-  line-height: 1.1;
-  overflow-wrap: anywhere;
-}
-
 .player-slot__meta {
-  min-height: 18px;
+  min-height: 0;
 }
 
 /* Single kit accent strip — Store theme only; never thick coloured frames */

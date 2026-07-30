@@ -30,6 +30,7 @@ import {
 } from "./managerFacilities";
 import { createManagerChallengeCup, reconcileChallengeCupFromFixtures } from "./managerChallengeCup";
 import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubReserveCounts } from "./managerReserves";
+import { sanitizeWorldClubChallengeState } from "./worldClubChallenge";
 import { stampManagerSaveVersion } from "./managerSaveVersion";
 import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
 import {
@@ -200,6 +201,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
       raw.reserves?.length
         ? raw.reserves.map((r) => ({
             ...r,
+            signedRating: r.signedRating ?? r.baseRating ?? r.rating,
             baseRating: r.baseRating ?? r.rating,
           }))
         : generateReserveSquad(raw.seed ?? "migrate", 24, raw.club),
@@ -276,6 +278,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     };
   }
   career = reconcileLeagueClubReserveCounts(career);
+  career = sanitizeWorldClubChallengeState(career);
   return syncManagerInboxMessages(career);
 }
 

@@ -31,7 +31,7 @@ export function SiteFooter() {
         hideOnMobileManager ? "hidden sm:block" : ""
       }`}
     >
-      <div className="mx-auto max-w-4xl">
+      <div className="game-page game-page--flush">
         <FooterSupportLinks />
         <p className={`mt-4 text-center break-words ${TYPO.bodySm}`}>{DISCLAIMER}</p>
       </div>

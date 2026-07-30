@@ -7,7 +7,8 @@ import type { ManagerCompetition } from "./types";
 
 /**
  * Manager border system — every surface keeps the neutral pitch outline from CARD;
- * semantic colour is expressed as a left accent stripe (+ optional subtle tint).
+ * Store theme provides the shared top accent strip via .game-panel::before.
+ * Competition tint is a soft wash only — never a left colour bar.
  */
 
 /** Shared pill / badge chrome for manager mode — ticket-style chips. */
@@ -36,13 +37,14 @@ export const MANAGER_BORDER = {
   interactiveHover: "hover:border-pitch-500/55",
 } as const;
 
+/** Soft competition wash — top theme strip comes from .game-panel::before. */
 const ACCENT_STRIPE = {
-  gold: "bg-accent-gold/5 ring-1 ring-inset ring-accent-gold/20",
-  primary: "bg-theme-primary/5 ring-1 ring-inset ring-theme-tertiary/25",
-  red: "bg-red-500/5 ring-1 ring-inset ring-red-400/20",
-  amber: "bg-amber-500/5 ring-1 ring-inset ring-amber-400/20",
-  sky: "bg-sky-400/5 ring-1 ring-inset ring-sky-400/20",
-  stone: "bg-stone-500/5 ring-1 ring-inset ring-stone-400/20",
+  gold: "bg-accent-gold/[0.04]",
+  primary: "bg-theme-primary/[0.04]",
+  red: "bg-red-500/[0.04]",
+  amber: "bg-amber-500/[0.04]",
+  sky: "bg-sky-400/[0.04]",
+  stone: "bg-stone-500/[0.04]",
 } as const;
 
 const COMPETITION_SURFACE: Record<
@@ -51,9 +53,9 @@ const COMPETITION_SURFACE: Record<
 > = {
   league: ACCENT_STRIPE.primary,
   cup: ACCENT_STRIPE.gold,
-  playoff: ACCENT_STRIPE.primary,
+  playoff: ACCENT_STRIPE.amber,
   friendly: ACCENT_STRIPE.sky,
-  wcc: ACCENT_STRIPE.gold,
+  wcc: ACCENT_STRIPE.sky,
 };
 
 export function managerCompetitionKey(
@@ -101,11 +103,14 @@ export function managerFixtureCardStyle(
 }
 
 export function managerClubAccentCardClass(): string {
-  return `${CARD.elevated} game-panel--flush ${SPACING.cardPadding} border-l-4`;
+  return `${CARD.elevated} game-panel--flush ${SPACING.cardPadding}`;
 }
 
 export function managerClubAccentCardStyle(club: string): CSSProperties {
-  return { borderLeftColor: getClubIndicatorColor(club) };
+  const accent = getClubIndicatorColor(club);
+  return {
+    borderTop: `3px solid ${accent}`,
+  };
 }
 
 export function managerFeaturedBannerClass(
@@ -231,7 +236,7 @@ export function managerFixtureRowClass(options: {
     return `${base} ${ACCENT_STRIPE.sky}`;
   }
   if (options.isNext) {
-    return `${base} border-l-4 border-l-theme-primary`;
+    return `${base} ${ACCENT_STRIPE.primary}`;
   }
 
   const key = managerCompetitionKey(options.competition);
