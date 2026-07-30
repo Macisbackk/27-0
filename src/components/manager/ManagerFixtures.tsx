@@ -49,6 +49,8 @@ import type {
 import { playUiClick } from "@/lib/sound";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
+import { getWccStats } from "@/lib/manager/worldClubChallenge";
+import { GamePanel } from "@/components/ui/GamePanel";
 
 interface ManagerFixturesProps {
   career: ManagerCareer;
@@ -62,7 +64,7 @@ type FixtureFilter =
   | "league"
   | "cup"
   | "playoffs"
-  | "friendlies";
+  | "wcc";
 
 type FixtureListItem =
   | {
@@ -85,7 +87,7 @@ const FILTERS: { id: FixtureFilter; label: string; shortLabel?: string }[] = [
   { id: "league", label: "League" },
   { id: "cup", label: "Cup" },
   { id: "playoffs", label: "Play-Offs", shortLabel: "Playoffs" },
-  { id: "friendlies", label: "Friendlies", shortLabel: "Friendlies" },
+  { id: "wcc", label: "World Club Challenge", shortLabel: "WCC" },
 ];
 
 function ordinal(n: number): string {
@@ -117,7 +119,7 @@ function matchesCompetitionFilter(
   if (filter === "league") return competition === "league" || !competition;
   if (filter === "cup") return competition === "challenge_cup";
   if (filter === "playoffs") return competition === "playoffs";
-  if (filter === "friendlies") return competition === "friendly";
+  if (filter === "wcc") return competition === "world_club_challenge";
   return true;
 }
 
@@ -405,7 +407,7 @@ export function ManagerFixtures({
     filter === "league" ||
     filter === "cup" ||
     filter === "playoffs" ||
-    filter === "friendlies";
+    filter === "wcc";
   const upcomingItems = filteredItems.filter((i) => i.kind === "upcoming");
   const playedItems = filteredItems.filter((i) => i.kind === "played");
   const playedDisplay =
@@ -469,6 +471,63 @@ export function ManagerFixtures({
           {career.gameWeek}/{career.schedule.length}
         </p>
       </ProgrammePanel>
+
+      {(filter === "all" || filter === "wcc") && (
+        <GamePanel padded label="World Club Challenge">
+          {career.worldClubChallenge?.currentFixture ? (
+            <div className="space-y-2">
+              <p className="font-semibold text-white">
+                {career.worldClubChallenge.currentFixture.superLeagueChampionName}{" "}
+                vs {career.worldClubChallenge.currentFixture.nrlChampionName}
+              </p>
+              <p className={`${TYPO.bodySm}`}>
+                Game Week {career.worldClubChallenge.currentFixture.gameWeek} ·{" "}
+                Season {career.worldClubChallenge.currentFixture.seasonYear} · NRL
+                rating {career.worldClubChallenge.currentFixture.nrlChampionRating}
+              </p>
+              {career.worldClubChallenge.currentFixture.userInvolved ? (
+                <p className={`${TYPO.bodySm} text-accent-gold`}>
+                  You are the Super League champion — Play or Simulate from Matchday
+                  when Game Week 3 arrives.
+                </p>
+              ) : (
+                <p className={TYPO.bodySm}>
+                  Another Super League club is involved this year.
+                </p>
+              )}
+            </div>
+          ) : getWccStats(career).results.length > 0 ? (
+            <ul className="space-y-2">
+              {getWccStats(career)
+                .results.slice()
+                .reverse()
+                .map((r) => (
+                  <li
+                    key={r.id}
+                    className="rounded-lg border border-pitch-700/40 bg-pitch-900/30 p-3"
+                  >
+                    <p className="font-semibold text-white">
+                      {r.seasonYear} — {r.superLeagueChampionName} {r.homeScore}–
+                      {r.awayScore} {r.nrlChampionName}
+                    </p>
+                    <p className={TYPO.bodySm}>
+                      Winner: {r.winnerName}
+                      {r.userResult && r.userResult !== "not_involved"
+                        ? ` · You ${r.userResult}`
+                        : " · AI result"}
+                    </p>
+                    <p className={`mt-1 ${TYPO.bodySm}`}>{r.storySummary}</p>
+                  </li>
+                ))}
+            </ul>
+          ) : (
+            <p className={TYPO.bodySm}>
+              World Club Challenge starts from your second season once a Super
+              League champion has been crowned.
+            </p>
+          )}
+        </GamePanel>
+      )}
 
       {nextFixture && !seasonComplete && (
         <ScoreboardPanel

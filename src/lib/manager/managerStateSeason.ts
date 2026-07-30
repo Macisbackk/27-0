@@ -48,6 +48,11 @@ import {
 import { getManagerSeasonTrophyLabels } from "./managerSeasonTrophies";
 import { applySeasonClubPrestigeDrift } from "./managerDifficulty";
 import { getClubFacilities } from "./managerFacilities";
+import {
+  resolveSeasonChampionForAdvance,
+  scheduleWorldClubChallengeForSeason,
+} from "./worldClubChallenge";
+import { hydrateManagerPlayerRegistryAges } from "./managerPlayers";
 
 export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary {
   const position = getUserLeagueTablePosition(career);
@@ -322,8 +327,15 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     summary,
     { seasonStartFacilities }
   );
-  return {
+
+  const previousSeasonChampion = resolveSeasonChampionForAdvance(career);
+
+  const withChampion: ManagerCareer = {
     ...withPrestige,
+    previousSeasonChampion,
     playerDevelopment: snapshotSquadSeasonStartRatings(withPrestige),
   };
+
+  const aged = hydrateManagerPlayerRegistryAges(withChampion);
+  return scheduleWorldClubChallengeForSeason(aged);
 }

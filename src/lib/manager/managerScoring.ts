@@ -16,6 +16,7 @@ import {
 } from "./managerTacticsScoring";
 import { getPlayerEligiblePositions } from "../players/player-positions";
 import type { Position } from "../types";
+import { generateNrlSquadNames } from "./worldClubChallenge";
 
 interface SquadEntry {
   player: NonNullable<SquadSlot["player"]>;
@@ -142,21 +143,49 @@ export function enrichManagerFixtureScoring(
       }
     : opponentOptions;
 
-  const oppSquad = selectClubMatchSquad(
-    fixture.opponent,
-    seed,
-    fixture.round,
-    oppPoolOptions
-  );
-  const oppEntries = oppSquad.map((p, i) => ({
-    id: p.id,
-    name: p.name,
-    position:
-      OPPONENT_LINEUP[i] ??
-      getPlayerEligiblePositions(p)[0] ??
-      p.position,
-    rating: p.peakRating,
-  }));
+  const isWcc =
+    opponentOptions?.fixtureKey?.startsWith("wcc-") ||
+    (opponentOptions?.career?.worldClubChallenge?.currentFixture?.nrlChampionName ===
+      fixture.opponent);
+
+  let oppEntries: {
+    id: string;
+    name: string;
+    position: Position;
+    rating: number;
+  }[];
+
+  if (isWcc && opponentOptions?.career) {
+    const nrl = generateNrlSquadNames(
+      opponentOptions.career.seed,
+      fixture.opponent,
+      13
+    );
+    oppEntries = nrl.map((p, i) => ({
+      id: p.id,
+      name: p.name,
+      position: OPPONENT_LINEUP[i] ?? "CENTRE",
+      rating:
+        opponentOptions.career?.worldClubChallenge?.currentFixture
+          ?.nrlChampionRating ?? 90,
+    }));
+  } else {
+    const oppSquad = selectClubMatchSquad(
+      fixture.opponent,
+      seed,
+      fixture.round,
+      oppPoolOptions
+    );
+    oppEntries = oppSquad.map((p, i) => ({
+      id: p.id,
+      name: p.name,
+      position:
+        OPPONENT_LINEUP[i] ??
+        getPlayerEligiblePositions(p)[0] ??
+        p.position,
+      rating: p.peakRating,
+    }));
+  }
   const oppWeights = buildOpponentWeights(oppEntries, tactics, rng);
   const oppAlloc = allocateTries(fixture.triesAgainst, oppWeights, rng);
 

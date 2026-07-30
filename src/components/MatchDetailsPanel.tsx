@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import type { MatchFixture } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import type { SquadSlot } from "@/lib/types";
+import type { ManagerFixtureRecord, LiveMatchEvent } from "@/lib/manager/types";
 import { resolveEraTeamClubName } from "@/lib/players/era-teams";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -49,33 +50,48 @@ export function MatchDetailsPanel({
   scoringOnly = false,
 }: MatchDetailsPanelProps) {
   const detail = fixture.scoringDetail;
+  const savedEvents: LiveMatchEvent[] | undefined = (
+    fixture as ManagerFixtureRecord
+  ).meta?.liveEvents;
 
-  const matchEvents = useMemo(
-    () =>
-      generateSimulatedMatchEvents({
-        seed,
-        fixtureKey: `qm-r${fixture.round}-${fixture.opponent}`,
-        userClub: userTeamName,
-        opponent: fixture.opponent,
-        userScore: fixture.pointsFor,
-        oppScore: fixture.pointsAgainst,
-        userTries: fixture.triesFor,
-        oppTries: fixture.triesAgainst,
-        userScorers:
-          detail?.dreamTeam.tryScorers.map((s) => ({ name: s.name })) ?? [],
-      }),
-    [
+  const matchEvents = useMemo(() => {
+    if (savedEvents && savedEvents.length > 0) return savedEvents;
+    return generateSimulatedMatchEvents({
       seed,
-      fixture.round,
-      fixture.opponent,
-      fixture.pointsFor,
-      fixture.pointsAgainst,
-      fixture.triesFor,
-      fixture.triesAgainst,
-      userTeamName,
-      detail,
-    ]
-  );
+      fixtureKey: `qm-r${fixture.round}-${fixture.opponent}`,
+      userClub: userTeamName,
+      opponent: fixture.opponent,
+      userScore: fixture.pointsFor,
+      oppScore: fixture.pointsAgainst,
+      userTries: fixture.triesFor,
+      oppTries: fixture.triesAgainst,
+      userScorers:
+        detail?.dreamTeam.tryScorers.map((s) => ({
+          name: s.name,
+          playerId: s.playerId,
+          tries: s.tries,
+        })) ?? [],
+      opponentScorers:
+        detail?.opponent.tryScorers.map((s) => ({
+          name: s.name,
+          playerId: s.playerId,
+          tries: s.tries,
+        })) ?? [],
+      userKicker: detail?.dreamTeam.kicking?.name,
+      opponentKicker: detail?.opponent.kicking?.name,
+    });
+  }, [
+    savedEvents,
+    seed,
+    fixture.round,
+    fixture.opponent,
+    fixture.pointsFor,
+    fixture.pointsAgainst,
+    fixture.triesFor,
+    fixture.triesAgainst,
+    userTeamName,
+    detail,
+  ]);
 
   const scoringBlock = detail ? (
     <div className="space-y-4">

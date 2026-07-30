@@ -46,13 +46,14 @@ const ACCENT_STRIPE = {
 } as const;
 
 const COMPETITION_SURFACE: Record<
-  "league" | "cup" | "playoff" | "friendly",
+  "league" | "cup" | "playoff" | "friendly" | "wcc",
   string
 > = {
   league: ACCENT_STRIPE.primary,
   cup: ACCENT_STRIPE.gold,
   playoff: ACCENT_STRIPE.primary,
   friendly: ACCENT_STRIPE.sky,
+  wcc: ACCENT_STRIPE.gold,
 };
 
 export function managerCompetitionKey(
@@ -61,6 +62,7 @@ export function managerCompetitionKey(
   if (isChallengeCupFixture(competition)) return "cup";
   if (competition === "playoffs") return "playoff";
   if (competition === "friendly") return "friendly";
+  if (competition === "world_club_challenge") return "wcc";
   return "league";
 }
 

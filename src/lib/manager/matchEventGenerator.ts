@@ -12,7 +12,9 @@ import {
   territoryForMinute,
   type MatchStoryMemory,
 } from "../match/matchEventTemplates";
-import type { ManagerCareer } from "./types";
+import { buildOpponentTryScoringDetail } from "./managerOpponentScoring";
+import { generateNrlSquadNames } from "./worldClubChallenge";
+import type { ManagerCareer, ManagerScheduledFixture } from "./types";
 import type { LiveMatchEvent } from "./types";
 
 type TeamSide = "user" | "opponent";
@@ -26,7 +28,14 @@ interface GeneratorInput {
   oppScore: number;
   userTries: number;
   oppTries: number;
-  userScorers?: { name: string }[];
+  userScorers?: { name: string; playerId?: string }[];
+  /** Named opponent try scorers — never club names. */
+  opponentScorers?: { name: string; playerId?: string }[];
+  /** Dedicated kickers per side — not try scorers unless they also scored. */
+  userKicker?: string;
+  opponentKicker?: string;
+  career?: ManagerCareer;
+  round?: number;
 }
 
 type FillerType =
@@ -39,7 +48,6 @@ type FillerType =
   | "forty_twenty"
   | "held_up"
   | "goal_line_dropout"
-  | "sin_bin"
   | "interchange";
 
 const FILLER_TYPES: FillerType[] = [
@@ -67,6 +75,29 @@ function opponentOf(side: TeamSide, input: GeneratorInput): string {
   return side === "user" ? input.opponent : input.userClub;
 }
 
+function expandScorerNames(
+  scorers: { name: string }[] | undefined,
+  tries: number,
+  fallbackLabel: string
+): string[] {
+  if (tries <= 0) return [];
+  if (!scorers || scorers.length === 0) {
+    return Array.from({ length: tries }, () => fallbackLabel);
+  }
+  const names: string[] = [];
+  for (const s of scorers) {
+    // Prefer repeating named scorers according to try counts when present
+    const count = Math.max(1, (s as { tries?: number }).tries ?? 1);
+    for (let i = 0; i < count && names.length < tries; i++) {
+      names.push(s.name);
+    }
+  }
+  while (names.length < tries) {
+    names.push(scorers[names.length % scorers.length]!.name);
+  }
+  return names.slice(0, tries);
+}
+
 function makeEvent(
   id: string,
   minute: number,
@@ -75,21 +106,36 @@ function makeEvent(
   type: LiveMatchEvent["type"],
   description: string,
   points = 0,
-  playerName?: string,
-  importance: MatchEventImportance = "medium"
+  opts?: {
+    playerName?: string;
+    kickerName?: string;
+    importance?: MatchEventImportance;
+    relatedEventId?: string;
+  }
 ): LiveMatchEvent {
-  const teamNameStr = teamName(side, input);
+  const isKick =
+    type === "goal" ||
+    type === "conversion" ||
+    type === "missed_conversion" ||
+    type === "penalty" ||
+    type === "penalty_goal" ||
+    type === "drop_goal" ||
+    type === "missed_drop_goal";
+
   return {
     id,
     minute,
     type,
     team: side,
-    playerName,
+    playerName: isKick ? undefined : opts?.playerName,
+    kickerName: isKick ? opts?.kickerName ?? opts?.playerName : undefined,
     description: eventMinutePrefix(minute, description),
     points,
-    importance,
+    importance: opts?.importance ?? "medium",
     teamId: side,
-    teamName: teamNameStr,
+    teamName: teamName(side, input),
+    opponentTeamName: opponentOf(side, input),
+    relatedEventId: opts?.relatedEventId,
   };
 }
 
@@ -167,6 +213,35 @@ function pickFillerType(
   return pick[Math.floor(rng() * pick.length)]!;
 }
 
+function resolveOpponentScorers(input: GeneratorInput): { name: string }[] {
+  if (input.opponentScorers && input.opponentScorers.length > 0) {
+    return input.opponentScorers;
+  }
+  if (input.career) {
+    return buildOpponentTryScoringDetail(
+      input.opponent,
+      Math.max(1, input.oppTries),
+      input.seed,
+      input.round ?? 1,
+      input.career.tactics,
+      input.fixtureKey,
+      input.career
+    );
+  }
+  return [];
+}
+
+function resolveKicker(
+  side: TeamSide,
+  input: GeneratorInput,
+  scorers: string[]
+): string {
+  if (side === "user" && input.userKicker) return input.userKicker;
+  if (side === "opponent" && input.opponentKicker) return input.opponentKicker;
+  // Prefer a named scorer only as last resort — still a real player name, never club
+  return scorers[0] ?? "the kicker";
+}
+
 /** Generate a coherent commentary feed that matches the final scoreline. */
 export function generateSimulatedMatchEvents(
   input: GeneratorInput
@@ -185,13 +260,25 @@ export function generateSimulatedMatchEvents(
     rngFor(input.seed, "ot")
   );
 
-  const userScorerNames =
-    input.userScorers?.map((s) => s.name) ?? ["Try scorer"];
-  const kicker = userScorerNames[0] ?? "Kicker";
+  const userScorerNames = expandScorerNames(
+    input.userScorers,
+    input.userTries,
+    "Try scorer"
+  );
+  const oppScorerPool = resolveOpponentScorers(input);
+  const oppScorerNames = expandScorerNames(
+    oppScorerPool,
+    input.oppTries,
+    "Opposition try scorer"
+  );
+
+  const userKicker = resolveKicker("user", input, userScorerNames);
+  const oppKicker = resolveKicker("opponent", input, oppScorerNames);
 
   const addTryChain = (side: TeamSide, minute: number, scorerName: string) => {
     const rng = rngFor(input.seed, `chain-${side}-${minute}`);
-    const club = teamName(side, input);
+    const kicker = side === "user" ? userKicker : oppKicker;
+    let relatedTryId = "";
 
     if (rng() < 0.55) {
       events.push(
@@ -203,46 +290,37 @@ export function generateSimulatedMatchEvents(
           "six_again",
           commentary("six_again", side, input, Math.max(1, minute - 2), memory, rng),
           0,
-          undefined,
-          "low"
+          { importance: "low" }
         )
       );
     }
     if (rng() < 0.4) {
+      const breakType: MatchEventType = rng() < 0.5 ? "line_break" : "big_break";
       events.push(
         makeEvent(
           nextId(),
           Math.max(1, minute - 1),
           side,
           input,
-          rng() < 0.5 ? "line_break" : "big_break",
-          commentary(
-            rng() < 0.5 ? "line_break" : "big_break",
-            side,
-            input,
-            Math.max(1, minute - 1),
-            memory,
-            rng,
-            scorerName
-          ),
+          breakType,
+          commentary(breakType, side, input, Math.max(1, minute - 1), memory, rng, scorerName),
           0,
-          scorerName,
-          "medium"
+          { playerName: scorerName, importance: "medium" }
         )
       );
     }
 
+    relatedTryId = nextId();
     events.push(
       makeEvent(
-        nextId(),
+        relatedTryId,
         minute,
         side,
         input,
         "try",
         commentary("try", side, input, minute, memory, rng, scorerName),
         4,
-        scorerName,
-        "major"
+        { playerName: scorerName, importance: "major" }
       )
     );
 
@@ -254,11 +332,14 @@ export function generateSimulatedMatchEvents(
           minute,
           side,
           input,
-          "goal",
-          commentary("goal", side, input, minute, memory, convRng, undefined, kicker),
+          "conversion",
+          commentary("conversion", side, input, minute, memory, convRng, undefined, kicker),
           2,
-          kicker,
-          "high"
+          {
+            kickerName: kicker,
+            importance: "high",
+            relatedEventId: relatedTryId,
+          }
         )
       );
     } else {
@@ -280,20 +361,24 @@ export function generateSimulatedMatchEvents(
             kicker
           ),
           0,
-          kicker,
-          "medium"
+          {
+            kickerName: kicker,
+            importance: "medium",
+            relatedEventId: relatedTryId,
+          }
         )
       );
     }
   };
 
   userTryMinutes.forEach((minute, i) => {
-    const scorer = userScorerNames[i % userScorerNames.length] ?? kicker;
+    const scorer = userScorerNames[i] ?? "Try scorer";
     addTryChain("user", minute, scorer);
   });
 
-  oppTryMinutes.forEach((minute) => {
-    addTryChain("opponent", minute, input.opponent);
+  oppTryMinutes.forEach((minute, i) => {
+    const scorer = oppScorerNames[i] ?? "Opposition try scorer";
+    addTryChain("opponent", minute, scorer);
   });
 
   const margin = input.userScore - input.oppScore;
@@ -304,6 +389,7 @@ export function generateSimulatedMatchEvents(
 
     if (lateRng() < 0.45) {
       const side: TeamSide = margin >= 0 ? "user" : "opponent";
+      const kicker = side === "user" ? userKicker : oppKicker;
       if (lateRng() < 0.35) {
         events.push(
           makeEvent(
@@ -314,8 +400,7 @@ export function generateSimulatedMatchEvents(
             "pressure_set",
             commentary("pressure_set", side, input, lateMinute - 2, memory, lateRng),
             0,
-            undefined,
-            "medium"
+            { importance: "medium" }
           )
         );
       }
@@ -325,17 +410,26 @@ export function generateSimulatedMatchEvents(
           lateMinute,
           side,
           input,
-          "penalty",
-          commentary("penalty", side, input, lateMinute, memory, lateRng, undefined, kicker),
+          "penalty_goal",
+          commentary(
+            "penalty_goal",
+            side,
+            input,
+            lateMinute,
+            memory,
+            lateRng,
+            undefined,
+            kicker
+          ),
           2,
-          kicker,
-          "high"
+          { kickerName: kicker, importance: "high" }
         )
       );
     }
 
     if (lateRng() < 0.3) {
       const side: TeamSide = margin >= 0 ? "user" : "opponent";
+      const kicker = side === "user" ? userKicker : oppKicker;
       const made = lateRng() < 0.52;
       events.push(
         makeEvent(
@@ -355,8 +449,7 @@ export function generateSimulatedMatchEvents(
             kicker
           ),
           made ? 1 : 0,
-          kicker,
-          "major"
+          { kickerName: kicker, importance: "major" }
         )
       );
     }
@@ -372,8 +465,7 @@ export function generateSimulatedMatchEvents(
           "knock_on",
           commentary("knock_on", trailing, input, 74, memory, lateRng),
           0,
-          undefined,
-          "medium"
+          { importance: "medium" }
         )
       );
     }
@@ -385,6 +477,12 @@ export function generateSimulatedMatchEvents(
     targetEventCount(input) - events.length - 2
   );
   let lastFillerMinute = 0;
+  const allPlayerNames = [
+    ...userScorerNames,
+    ...oppScorerNames,
+    userKicker,
+    oppKicker,
+  ].filter((n) => n && n !== "Try scorer" && n !== "Opposition try scorer");
 
   for (let i = 0; i < fillerTarget; i++) {
     const minute = Math.max(
@@ -402,8 +500,8 @@ export function generateSimulatedMatchEvents(
           : "user"
         : possessionSide;
     const playerName =
-      fillerType === "try_saver"
-        ? teamName(defendingSide, input)
+      fillerType === "try_saver" && allPlayerNames.length > 0
+        ? allPlayerNames[Math.floor(fillerRng() * allPlayerNames.length)]
         : undefined;
 
     events.push(
@@ -423,17 +521,20 @@ export function generateSimulatedMatchEvents(
           playerName
         ),
         0,
-        playerName,
-        fillerType === "try_saver" || fillerType === "sin_bin"
-          ? "medium"
-          : "low"
+        {
+          playerName,
+          importance: fillerType === "try_saver" ? "medium" : "low",
+        }
       )
     );
   }
 
-  if (rngFor(input.seed, "sinbin")() < 0.22) {
-    const side: TeamSide = rngFor(input.seed, "sinbin-side")() < 0.5 ? "user" : "opponent";
+  if (rngFor(input.seed, "sinbin")() < 0.22 && allPlayerNames.length > 0) {
+    const side: TeamSide =
+      rngFor(input.seed, "sinbin-side")() < 0.5 ? "user" : "opponent";
     const minute = 30 + Math.floor(rngFor(input.seed, "sinbin-m")() * 40);
+    const sinPlayer =
+      allPlayerNames[Math.floor(rngFor(input.seed, "sinbin-p")() * allPlayerNames.length)]!;
     events.push(
       makeEvent(
         nextId(),
@@ -441,10 +542,17 @@ export function generateSimulatedMatchEvents(
         side,
         input,
         "sin_bin",
-        commentary("sin_bin", side, input, minute, memory, rngFor(input.seed, "sinbin-t"), "the player"),
+        commentary(
+          "sin_bin",
+          side,
+          input,
+          minute,
+          memory,
+          rngFor(input.seed, "sinbin-t"),
+          sinPlayer
+        ),
         0,
-        "the player",
-        "high"
+        { playerName: sinPlayer, importance: "high" }
       )
     );
   }
@@ -458,8 +566,7 @@ export function generateSimulatedMatchEvents(
       "half_time",
       commentary("half_time", "user", input, 40, memory, rngFor(input.seed, "ht")),
       0,
-      undefined,
-      "major"
+      { importance: "major" }
     )
   );
   events.push(
@@ -471,8 +578,7 @@ export function generateSimulatedMatchEvents(
       "full_time",
       commentary("full_time", "user", input, 80, memory, rngFor(input.seed, "ft")),
       0,
-      undefined,
-      "major"
+      { importance: "major" }
     )
   );
 
@@ -486,11 +592,40 @@ export function generateSimulatedMatchEvents(
 export function generateEventsFromFixture(
   career: ManagerCareer,
   fixture: MatchFixture,
-  fixtureKey: string
+  fixtureKey: string,
+  sched?: Pick<ManagerScheduledFixture, "competition" | "opponent">
 ): LiveMatchEvent[] {
   const scorers =
-    fixture.scoringDetail?.dreamTeam.tryScorers.map((s) => ({ name: s.name })) ??
-    [];
+    fixture.scoringDetail?.dreamTeam.tryScorers.map((s) => ({
+      name: s.name,
+      playerId: s.playerId,
+      tries: s.tries,
+    })) ?? [];
+  let oppScorers =
+    fixture.scoringDetail?.opponent.tryScorers.map((s) => ({
+      name: s.name,
+      playerId: s.playerId,
+      tries: s.tries,
+    })) ?? [];
+
+  if (sched?.competition === "world_club_challenge") {
+    const nrlSquad = generateNrlSquadNames(
+      career.seed,
+      sched.opponent,
+      13
+    );
+    oppScorers = nrlSquad.map((p) => ({
+      name: p.name,
+      playerId: p.id,
+      tries: 0,
+    }));
+  }
+
+  const userKicker = fixture.scoringDetail?.dreamTeam.kicking?.name;
+  const oppKicker =
+    sched?.competition === "world_club_challenge" && oppScorers.length > 0
+      ? (oppScorers[6]?.name ?? oppScorers[0]?.name)
+      : fixture.scoringDetail?.opponent.kicking?.name;
 
   const events = generateSimulatedMatchEvents({
     seed: career.seed,
@@ -502,6 +637,11 @@ export function generateEventsFromFixture(
     userTries: fixture.triesFor,
     oppTries: fixture.triesAgainst,
     userScorers: scorers,
+    opponentScorers: oppScorers,
+    userKicker,
+    opponentKicker: oppKicker,
+    career,
+    round: fixture.round,
   });
 
   fixture.matchBio = buildMatchStoryFromEvents(
@@ -511,6 +651,7 @@ export function generateEventsFromFixture(
       teamId: e.teamId ?? e.team,
       teamName: e.teamName ?? (e.team === "user" ? career.club : fixture.opponent),
       playerName: e.playerName,
+      kickerName: e.kickerName,
       type: e.type as MatchEventType,
       description: e.description,
       importance: e.importance ?? "medium",

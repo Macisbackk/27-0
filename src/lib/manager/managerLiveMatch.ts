@@ -22,6 +22,9 @@ import {
   memoryFromEvents,
   territoryForMinute,
 } from "../match/matchEventTemplates";
+import { selectClubMatchSquad } from "../game/opponent-scorers";
+import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
+import { generateNrlSquadNames } from "./worldClubChallenge";
 
 export type { LiveMatchEvent };
 
@@ -301,8 +304,69 @@ function pickScorer(
   const player = getManagerPlayer(career, pick ?? "");
   return {
     id: pick ?? "",
-    name: player?.name ?? career.club,
+    name: player?.name ?? "Try scorer",
   };
+}
+
+function pickOpponentScorer(
+  career: ManagerCareer,
+  opponent: string,
+  seed: string,
+  round: number,
+  rng: () => number,
+  competition?: ManagerCompetition
+): { id: string; name: string } {
+  if (competition === "world_club_challenge") {
+    const squad = generateNrlSquadNames(seed, opponent, 13);
+    if (squad.length === 0) {
+      return { id: "nrl-scorer", name: "Try scorer" };
+    }
+    const pick = squad[Math.floor(rng() * squad.length)]!;
+    return { id: pick.id, name: pick.name };
+  }
+
+  const pool = selectClubMatchSquad(
+    opponent,
+    seed,
+    round,
+    getManagerOpponentPoolOptions(career, opponent)
+  );
+  if (pool.length === 0) {
+    return { id: "opp-scorer", name: "Opposition try scorer" };
+  }
+  const pick = pool[Math.floor(rng() * pool.length)]!;
+  return { id: pick.id, name: pick.name };
+}
+
+function pickOpponentKicker(
+  career: ManagerCareer,
+  opponent: string,
+  seed: string,
+  round: number,
+  rng: () => number,
+  competition?: ManagerCompetition
+): string {
+  if (competition === "world_club_challenge") {
+    const squad = generateNrlSquadNames(seed, opponent, 13);
+    if (squad.length === 0) return "Kicker";
+    return squad[6]?.name ?? squad[0]!.name;
+  }
+
+  const pool = selectClubMatchSquad(
+    opponent,
+    seed,
+    round,
+    getManagerOpponentPoolOptions(career, opponent)
+  );
+  const halves = pool.filter(
+    (p) =>
+      p.position === "SCRUM_HALF" ||
+      p.position === "STAND_OFF" ||
+      p.position === "FULLBACK"
+  );
+  const source = halves.length > 0 ? halves : pool;
+  if (source.length === 0) return "Opposition kicker";
+  return source[Math.floor(rng() * source.length)]!.name;
 }
 
 function pickKicker(career: ManagerCareer, rng: () => number): string {
@@ -449,6 +513,10 @@ function resolveLiveOpponentRating(
     const friendlyRating = career.preSeason.activeFriendly?.teamRating;
     if (friendlyRating != null) return friendlyRating;
   }
+  if (state.competition === "world_club_challenge") {
+    const wccRating = career.worldClubChallenge?.currentFixture?.nrlChampionRating;
+    if (wccRating != null) return wccRating;
+  }
   return getManagerOpponentMatchRating(
     career,
     state.opponent,
@@ -580,7 +648,8 @@ export function advanceLiveTick(
           minute,
           type: "goal",
           team: "user",
-          playerName: kicker,
+          kickerName: kicker,
+          playerName: undefined,
           description: eventMinutePrefix(minute, goalText),
           points: 2,
           importance: "high",
@@ -591,12 +660,20 @@ export function advanceLiveTick(
     } else if (oppTry) {
       oppTries++;
       oppScore += 4;
+      const scorer = pickOpponentScorer(
+        career,
+        state.opponent,
+        state.seed,
+        state.round,
+        rng,
+        state.competition
+      );
       const tryText = buildCommentaryLine(
         "try",
         {
           team: state.opponent,
           opponent: career.club,
-          player: state.opponent,
+          player: scorer.name,
           minute,
           area: territoryForMinute(minute),
           score: `${userScore}-${oppScore}`,
@@ -608,6 +685,8 @@ export function advanceLiveTick(
         minute,
         type: "try",
         team: "opponent",
+        playerName: scorer.name,
+        playerId: scorer.id,
         description: eventMinutePrefix(minute, tryText),
         points: 4,
         importance: "major",
@@ -615,11 +694,20 @@ export function advanceLiveTick(
       });
       if (rng() < 0.8) {
         oppScore += 2;
+        const kicker = pickOpponentKicker(
+          career,
+          state.opponent,
+          state.seed,
+          state.round,
+          rng,
+          state.competition
+        );
         const convText = buildCommentaryLine(
           "goal",
           {
             team: state.opponent,
             opponent: career.club,
+            kicker,
             minute,
             area: territoryForMinute(minute),
             score: `${userScore}-${oppScore}`,
@@ -631,6 +719,7 @@ export function advanceLiveTick(
           minute,
           type: "goal",
           team: "opponent",
+          kickerName: kicker,
           description: eventMinutePrefix(minute, convText),
           points: 2,
           importance: "high",
@@ -673,11 +762,34 @@ export function advanceLiveTick(
     const kicker = pickKicker(career, rng);
     events.push({
       minute: 80,
-      type: "penalty",
+      type: "penalty_goal",
       team: "user",
-      playerName: kicker,
-      description: `80' Penalty Goal — ${kicker}`,
+      kickerName: kicker,
+      description: eventMinutePrefix(
+        80,
+        buildCommentaryLine(
+          "penalty_goal",
+          {
+            team: career.club,
+            opponent: state.opponent,
+            kicker,
+            minute: 80,
+            area: territoryForMinute(80),
+            score: `${finalUser}-${finalOpp}`,
+          },
+          memoryFromEvents(
+            events.map((e) => ({
+              type: e.type as MatchEventType,
+              description: e.description,
+              playerName: e.playerName,
+            }))
+          ),
+          rng
+        )
+      ),
       points: 2,
+      teamName: career.club,
+      importance: "high",
     });
   }
 

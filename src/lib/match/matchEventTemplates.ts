@@ -196,11 +196,13 @@ export const MATCH_EVENT_TEMPLATES: Partial<Record<MatchEventType, TemplateEntry
 const DEFAULT_AREA = "middle third";
 
 function fillTemplate(text: string, ctx: MatchEventContext): string {
+  const player = ctx.player?.trim() || "the attacker";
+  const kicker = ctx.kicker?.trim() || "the kicker";
   return text
     .replaceAll("{team}", ctx.team)
     .replaceAll("{opponent}", ctx.opponent)
-    .replaceAll("{player}", ctx.player ?? "the attacker")
-    .replaceAll("{kicker}", ctx.kicker ?? ctx.player ?? "the kicker")
+    .replaceAll("{player}", player)
+    .replaceAll("{kicker}", kicker)
     .replaceAll("{minute}", String(ctx.minute))
     .replaceAll("{area}", ctx.area ?? DEFAULT_AREA)
     .replaceAll("{score}", ctx.score ?? "")

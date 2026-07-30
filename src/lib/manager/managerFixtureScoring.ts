@@ -225,6 +225,7 @@ export function applyLiveEventsToFixtureScoring(
   fixtureKey?: string
 ): void {
   const userTryMap = new Map<string, { playerId: string; name: string; tries: number }>();
+  const oppTryMap = new Map<string, { playerId: string; name: string; tries: number }>();
   const oppTryCountEvents = events.filter(
     (e) => e.type === "try" && e.team === "opponent"
   ).length;
@@ -243,9 +244,11 @@ export function applyLiveEventsToFixtureScoring(
       if (ev.type === "try") {
         const playerId =
           resolvePlayerIdByName(career, ev.playerName) ??
+          ev.playerId ??
           ev.playerName ??
           "unknown";
         const name = ev.playerName ?? "Try scorer";
+        if (name === career.club) continue;
         const existing = userTryMap.get(playerId);
         if (existing) {
           existing.tries++;
@@ -253,23 +256,40 @@ export function applyLiveEventsToFixtureScoring(
           userTryMap.set(playerId, { playerId, name, tries: 1 });
         }
       }
-      if (ev.type === "goal" || ev.type === "conversion") {
+      if (
+        ev.type === "goal" ||
+        ev.type === "conversion"
+      ) {
         conversions++;
-        kickerId = resolvePlayerIdByName(career, ev.playerName) ?? kickerId;
-        kickerName = ev.playerName ?? kickerName;
+        const kickName = ev.kickerName ?? ev.playerName;
+        kickerId = resolvePlayerIdByName(career, kickName) ?? kickerId;
+        kickerName = kickName ?? kickerName;
       }
       if (ev.type === "penalty" || ev.type === "penalty_goal") {
         penalties++;
-        kickerId = resolvePlayerIdByName(career, ev.playerName) ?? kickerId;
-        kickerName = ev.playerName ?? kickerName;
+        const kickName = ev.kickerName ?? ev.playerName;
+        kickerId = resolvePlayerIdByName(career, kickName) ?? kickerId;
+        kickerName = kickName ?? kickerName;
       }
       if (ev.type === "drop_goal") {
         dropGoals++;
+        const kickName = ev.kickerName ?? ev.playerName;
+        kickerId = resolvePlayerIdByName(career, kickName) ?? kickerId;
+        kickerName = kickName ?? kickerName;
       }
       continue;
     }
 
     if (ev.team === "opponent") {
+      if (ev.type === "try") {
+        const name = ev.playerName;
+        if (name && name !== fixture.opponent) {
+          const playerId = ev.playerId ?? name;
+          const existing = oppTryMap.get(playerId);
+          if (existing) existing.tries++;
+          else oppTryMap.set(playerId, { playerId, name, tries: 1 });
+        }
+      }
       if (ev.type === "goal" || ev.type === "conversion") oppConversions++;
       if (ev.type === "penalty" || ev.type === "penalty_goal") oppPenalties++;
       if (ev.type === "drop_goal") oppDropGoals++;
@@ -280,6 +300,7 @@ export function applyLiveEventsToFixtureScoring(
   const userTryTotal =
     fixture.triesFor ??
     userTryScorers.reduce((sum, t) => sum + t.tries, 0);
+  const oppTryFromEvents = [...oppTryMap.values()];
   const oppTryCount = fixture.triesAgainst ?? oppTryCountEvents;
 
   fixture.triesFor = userTryTotal;
@@ -294,8 +315,12 @@ export function applyLiveEventsToFixtureScoring(
     };
   }
 
-  const oppTryScorers: { playerId: string; name: string; tries: number }[] = [];
-  if (oppTryCount > 0) {
+  let oppTryScorers = oppTryFromEvents;
+  if (
+    oppTryCount > 0 &&
+    (oppTryScorers.length === 0 ||
+      oppTryScorers.reduce((s, t) => s + t.tries, 0) !== oppTryCount)
+  ) {
     const fromSquad = buildOpponentTryScoringDetail(
       fixture.opponent,
       oppTryCount,
@@ -306,7 +331,7 @@ export function applyLiveEventsToFixtureScoring(
       career
     );
     if (fromSquad.length > 0) {
-      oppTryScorers.push(...fromSquad);
+      oppTryScorers = fromSquad;
     }
   }
 
@@ -317,8 +342,8 @@ export function applyLiveEventsToFixtureScoring(
         fixture.scoringFor &&
         (conversions > 0 || penalties > 0 || dropGoals > 0)
           ? {
-              playerId: kickerId ?? userTryScorers[0]?.playerId ?? "kicker",
-              name: kickerName ?? userTryScorers[0]?.name ?? "Kicker",
+              playerId: kickerId ?? "kicker",
+              name: kickerName ?? "Kicker",
               conversions,
               conversionAttempts: fixture.scoringFor.tries,
               penalties,
@@ -326,8 +351,10 @@ export function applyLiveEventsToFixtureScoring(
             }
           : fixture.scoringFor
             ? {
-                playerId: userTryScorers[0]?.playerId ?? "kicker",
-                name: userTryScorers[0]?.name ?? "Kicker",
+                playerId: fixture.scoringFor
+                  ? (kickerId ?? "kicker")
+                  : "kicker",
+                name: kickerName ?? "Kicker",
                 conversions: fixture.scoringFor.conversions,
                 conversionAttempts: fixture.scoringFor.tries,
                 penalties: fixture.scoringFor.penalties,

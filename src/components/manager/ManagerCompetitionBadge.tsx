@@ -35,6 +35,14 @@ export function ManagerCompetitionBadge({
     );
   }
 
+  if (competition === "world_club_challenge") {
+    return (
+      <span className={`${managerPillClass("gold")} ${className}`}>
+        World Club Challenge
+      </span>
+    );
+  }
+
   if (!isChallengeCupFixture(competition)) return null;
 
   const label = detailed

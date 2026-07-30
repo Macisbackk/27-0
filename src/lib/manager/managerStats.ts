@@ -21,6 +21,8 @@ export const EMPTY_MANAGER_STATS: ManagerLifetimeStats = {
   superLeagueTitles: 0,
   challengeCups: 0,
   cupFinals: 0,
+  worldClubChallengeWins: 0,
+  worldClubChallengeAppearances: 0,
   topSixFinishes: 0,
   perfectSeasons: 0,
   winlessSeasons: 0,
@@ -95,6 +97,10 @@ export function sanitizeManagerStats(
     superLeagueTitles: Math.round(merged.superLeagueTitles),
     challengeCups: Math.round(merged.challengeCups),
     cupFinals: Math.round(merged.cupFinals),
+    worldClubChallengeWins: Math.round(merged.worldClubChallengeWins ?? 0),
+    worldClubChallengeAppearances: Math.round(
+      merged.worldClubChallengeAppearances ?? 0
+    ),
     topSixFinishes: Math.round(merged.topSixFinishes),
     perfectSeasons: Math.round(merged.perfectSeasons),
     winlessSeasons: Math.round(merged.winlessSeasons),

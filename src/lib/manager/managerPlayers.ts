@@ -104,6 +104,17 @@ export function getManagerPlayerAge(
   return getAgeAtYear(player, career.seasonYear);
 }
 
+/** Ensure every registry player has birthYear so seasonYear++ ages them correctly. */
+export function hydrateManagerPlayerRegistryAges(
+  career: ManagerCareer
+): ManagerCareer {
+  const registry = { ...career.playerRegistry };
+  for (const [id, player] of Object.entries(registry)) {
+    registry[id] = hydratePlayerBirthData(player);
+  }
+  return { ...career, playerRegistry: registry };
+}
+
 /** Recompute retirement age for display (fixes stale saves with bad birth data). */
 export function getRetiredPlayerDisplayAge(
   career: ManagerCareer,

@@ -59,6 +59,15 @@ function teamStrengthLabel(avg: number): { label: string; className: string } {
   };
 }
 
+const READONLY_INTERCHANGE_BOX_CLASS =
+  "flex h-full min-h-[4.5rem] w-full min-w-0 flex-col px-2 py-1.5 sm:min-h-[4.75rem] sm:px-2.5 sm:py-2";
+
+const READONLY_INTERCHANGE_NAME_CLASS =
+  "min-w-0 flex-1 text-[10px] font-medium leading-[1.15] text-white line-clamp-2 [overflow-wrap:anywhere] sm:text-xs sm:leading-tight";
+
+const READONLY_INTERCHANGE_META_CLASS =
+  "line-clamp-1 text-[9px] leading-tight text-pitch-400 sm:text-[10px]";
+
 function ReadonlyInterchangeSlot({
   player,
   shirtNumber,
@@ -71,29 +80,40 @@ function ReadonlyInterchangeSlot({
   onSelect?: () => void;
 }) {
   const content = (
-    <div className="flex min-h-[4.5rem] min-w-0 flex-col gap-1">
-      <div className="flex items-center justify-between gap-1">
-        <span className="text-[10px] font-semibold text-pitch-500">
-          {shirtNumber}
-        </span>
-        {player ? (
-          <span className="text-[10px] font-bold text-theme-primary">
-            {player.peakRating}
-          </span>
-        ) : null}
-      </div>
-      <p className="line-clamp-2 flex-1 text-xs font-medium leading-snug text-white [overflow-wrap:anywhere]">
-        {player?.name ?? "Empty"}
+    <div className="player-slot flex h-full min-h-[86px] flex-col">
+      <p className="player-slot__role shrink-0 text-[10px] font-bold leading-[18px] text-gray-400">
+        Interchange {shirtNumber}
       </p>
-      {listed ? (
-        <span className="text-[9px] font-bold uppercase tracking-wide text-theme-primary">
-          Listed
-        </span>
-      ) : null}
+      <div className="player-slot__name flex min-h-[34px] flex-1 items-center">
+        <p
+          className={`${READONLY_INTERCHANGE_NAME_CLASS} ${
+            player ? "" : "text-pitch-500"
+          }`}
+        >
+          {player?.name ?? "Empty"}
+        </p>
+      </div>
+      <p
+        className={`${READONLY_INTERCHANGE_META_CLASS} player-slot__meta min-h-[18px]`}
+      >
+        {player ? (
+          <>
+            {player.position.replaceAll("_", " ")} · {player.peakRating}
+            {listed ? (
+              <span className="font-bold uppercase tracking-wide text-theme-primary">
+                {" "}
+                · Listed
+              </span>
+            ) : null}
+          </>
+        ) : (
+          "\u00a0"
+        )}
+      </p>
     </div>
   );
 
-  const className = managerDataRowClass();
+  const className = `${managerDataRowClass()} ${READONLY_INTERCHANGE_BOX_CLASS}`;
 
   if (player && onSelect) {
     return (
@@ -294,7 +314,7 @@ export function ManagerClubSquadSheet({
 
             <div className={`${CARD.base} ${SPACING.cardPadding} mt-3`}>
               <p className={`${TYPO.sectionLabel} mb-2`}>Interchange</p>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <div className="grid grid-cols-2 auto-rows-fr items-stretch gap-2 sm:grid-cols-4">
                 {Array.from({ length: 4 }, (_, i) => {
                   const player = interchangePlayers[i];
                   const playerId = player?.id;

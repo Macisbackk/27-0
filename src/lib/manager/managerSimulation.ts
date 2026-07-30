@@ -57,6 +57,12 @@ import {
   preparePlayoffRound,
   userQualifiedForManagerPlayoffs,
 } from "./managerPlayoffs";
+import {
+  buildWorldClubChallengeScheduledFixture,
+  completeUserWorldClubChallenge,
+} from "./worldClubChallenge";
+import { validateMatchEvents } from "../game/validateMatchEvents";
+import type { MatchEventType } from "../game/match-events";
 
 export function getNextManagerFixture(
   career: ManagerCareer
@@ -64,6 +70,17 @@ export function getNextManagerFixture(
   const synced = syncManagerLeagueTable(career);
 
   const leagueOrCup = getNextLeagueOrCupFixture(synced);
+  const wcc = synced.worldClubChallenge?.currentFixture;
+  if (
+    wcc &&
+    wcc.status === "scheduled" &&
+    wcc.userInvolved &&
+    leagueOrCup &&
+    (leagueOrCup.competition === "league" || !leagueOrCup.competition) &&
+    leagueOrCup.round === 3
+  ) {
+    return buildWorldClubChallengeScheduledFixture(wcc);
+  }
   if (leagueOrCup) return leagueOrCup;
 
   if (!isLeagueAndCupPhaseComplete(synced)) return null;
@@ -220,6 +237,8 @@ export function applyManagerMatchResult(
   const isCup = sched.competition === "challenge_cup";
   const isPlayoff = sched.competition === "playoffs";
   const isFriendly = sched.competition === "friendly";
+  const isWcc = sched.competition === "world_club_challenge";
+  const skipsLeagueProgress = isCup || isPlayoff || isFriendly || isWcc;
 
   if (isCup && sched.cupMatchId && !isCupMatchReadyForResult(career, sched.cupMatchId)) {
     console.warn("Cup match not ready for result:", sched.cupMatchId);
@@ -255,11 +274,67 @@ export function applyManagerMatchResult(
   );
   const mods = getTacticModifiers(career.tactics);
 
+  let savedLiveEvents = options.liveEvents;
+
   if (options.liveEvents?.length) {
     applyLiveEventsToFixtureScoring(
       career,
       fixture,
       options.liveEvents,
+      sched.id
+    );
+    const validated = validateMatchEvents(
+      options.liveEvents.map((e) => ({
+        id: e.id ?? "",
+        minute: e.minute,
+        teamId: e.teamId ?? e.team,
+        teamName:
+          e.teamName ??
+          (e.team === "user" ? career.club : sched.opponent),
+        playerName: e.playerName,
+        kickerName: e.kickerName,
+        type: e.type as MatchEventType,
+        points: e.points,
+        description: e.description,
+        importance: e.importance ?? "medium",
+        relatedEventId: e.relatedEventId,
+      })),
+      { id: "user", name: career.club },
+      { id: "opp", name: sched.opponent },
+      {
+        pickFallbackPlayer: (teamId) => {
+          if (teamId === "user" || teamId === career.club) {
+            const id = career.matchdayXiii.find(Boolean);
+            return id
+              ? getManagerPlayer(career, id)?.name
+              : undefined;
+          }
+          return undefined;
+        },
+      }
+    );
+    if (
+      process.env.NODE_ENV === "development" &&
+      validated.issues.length > 0
+    ) {
+      console.warn("[Manager] Match event validation:", validated.issues);
+    }
+    savedLiveEvents = options.liveEvents.map((e, i) => {
+      const repaired = validated.events.find((v) => v.id === e.id) ??
+        validated.events[i];
+      if (!repaired) return e;
+      return {
+        ...e,
+        playerName: repaired.playerName ?? e.playerName,
+        kickerName: repaired.kickerName ?? e.kickerName,
+        points: repaired.points ?? e.points,
+        description: repaired.description || e.description,
+      };
+    });
+    applyLiveEventsToFixtureScoring(
+      career,
+      fixture,
+      savedLiveEvents,
       sched.id
     );
     const eventTryTotal =
@@ -328,10 +403,10 @@ export function applyManagerMatchResult(
   let leagueTable = career.leagueTable;
   let leagueStates = resolveLeagueClubStatesForFixture(
     career,
-    !isCup && !isFriendly && !isPlayoff ? round : career.gameWeek || round
+    !isCup && !skipsLeagueProgress ? round : career.gameWeek || round
   );
 
-  if (!isCup && !isFriendly && !isPlayoff) {
+  if (!isCup && !skipsLeagueProgress) {
     const sides = getLeagueFixtureSides(career.club, sched);
     const userIsListedHome = sides.homeTeam === career.club;
     const userMatch = {
@@ -417,7 +492,7 @@ export function applyManagerMatchResult(
     matchdayIdList,
     motmId
   );
-  const teamSeasonStats = isFriendly
+  const teamSeasonStats = isFriendly || isWcc
     ? career.teamSeasonStats
     : statsUpdate.teamSeasonStats;
   const recentForm = statsUpdate.recentForm;
@@ -490,7 +565,7 @@ export function applyManagerMatchResult(
       attendance: attendanceMeta ?? undefined,
       competition: sched.competition,
       cupRound: sched.cupRound,
-      liveEvents: options.liveEvents,
+      liveEvents: savedLiveEvents,
       matchdayXiii: [...career.matchdayXiii],
       matchdayInterchange: [...career.matchdayInterchange],
       xiiiSlotPositions: [...career.xiiiSlotPositions],
@@ -508,7 +583,7 @@ export function applyManagerMatchResult(
     tacticEffectivenessLine: effectivenessLine,
     attendance: attendanceMeta ?? undefined,
     playedLive: options.playedLive ?? false,
-    liveEvents: options.liveEvents,
+    liveEvents: savedLiveEvents,
     injuryCount: injuries.length,
     injuries: injuries.map(
       (i) => getPlayerById(i.playerId)?.name ?? "Player"
@@ -517,7 +592,7 @@ export function applyManagerMatchResult(
     backTries: back,
     recentForm: career.recentForm,
     tablePosition:
-      !isCup && !isFriendly && !isPlayoff ? position : undefined,
+      !isCup && !skipsLeagueProgress ? position : undefined,
   });
   fixtureWithMotm.matchBio = matchBio;
   record.matchBio = matchBio;
@@ -531,6 +606,8 @@ export function applyManagerMatchResult(
   if (isCup && !won) boardConfidence = Math.max(0, boardConfidence - 3);
   if (isPlayoff && won) boardConfidence = Math.min(100, boardConfidence + 6);
   if (isPlayoff && !won) boardConfidence = Math.max(0, boardConfidence - 5);
+  if (isWcc && won) boardConfidence = Math.min(100, boardConfidence + 5);
+  if (isWcc && !won) boardConfidence = Math.max(0, boardConfidence - 3);
 
   let wagePressureWeeks = career.wagePressureWeeks ?? 0;
   if (career.wageBill > career.wageBudget) {
@@ -568,9 +645,10 @@ export function applyManagerMatchResult(
             : 6_000) * commercialMult
       );
   const cupBonus = isCup && won ? 30_000 : 0;
+  const wccBonus = isWcc && won ? 40_000 : 0;
 
   const nextFixtureIndex =
-    isCup || isFriendly || isPlayoff
+    skipsLeagueProgress
       ? career.currentFixtureIndex
       : career.currentFixtureIndex + 1;
 
@@ -578,21 +656,21 @@ export function applyManagerMatchResult(
     ...working,
     leagueClubStates: leagueStates,
     leagueClubStatesWeek:
-      !isCup && !isFriendly && !isPlayoff
+      !isCup && !skipsLeagueProgress
         ? round
         : career.leagueClubStatesWeek,
     fixtures: [...career.fixtures, record],
     roundMatches: roundResults,
     leagueTable,
     currentRound: isFriendly ? career.currentRound : round,
-    gameWeek: isCup || isFriendly || isPlayoff ? career.gameWeek : round,
+    gameWeek: isCup || skipsLeagueProgress ? career.gameWeek : round,
     currentFixtureIndex: nextFixtureIndex,
     wins:
-      isFriendly || isCup || isPlayoff
+      skipsLeagueProgress
         ? career.wins
         : career.wins + (won ? 1 : 0),
     losses:
-      isFriendly || isCup || isPlayoff
+      skipsLeagueProgress
         ? career.losses
         : career.losses + (won ? 0 : 1),
     boardConfidence,
@@ -616,6 +694,9 @@ export function applyManagerMatchResult(
   if (cupBonus > 0) {
     finalCareer = applyClubRevenue(finalCareer, cupBonus, "cup_prize");
   }
+  if (wccBonus > 0) {
+    finalCareer = applyClubRevenue(finalCareer, wccBonus, "cup_prize");
+  }
   finalCareer = {
     ...finalCareer,
     isSeasonComplete: isManagerSeasonComplete(finalCareer),
@@ -637,11 +718,11 @@ export function applyManagerMatchResult(
   finalCareer = applyReserveMatchDevelopment(finalCareer, reserveResult);
   finalCareer = clearReserveCallUps(finalCareer);
   finalCareer = generateIncomingTransferOffers(finalCareer);
-  if (!isFriendly) {
+  if (!isFriendly && !isWcc) {
     finalCareer = generateUnsolicitedTransferOffers(finalCareer);
   }
   finalCareer = syncManagerInboxMessages(finalCareer);
-  if (!isCup && !isFriendly && !isPlayoff) {
+  if (!isCup && !skipsLeagueProgress) {
     finalCareer = tickPositionRetraining(finalCareer);
   }
   finalCareer = maybeAddReserveReport(finalCareer);
@@ -671,6 +752,20 @@ export function applyManagerMatchResult(
   }
   if (isFriendly) {
     finalCareer = completeFriendlyMatch(finalCareer);
+  }
+  if (isWcc) {
+    const storySummary =
+      fixtureWithMotm.matchBio ??
+      (won
+        ? `${career.club} lifted the World Club Challenge, beating ${sched.opponent} ${fixture.pointsFor}–${fixture.pointsAgainst}.`
+        : `${sched.opponent} beat ${career.club} ${fixture.pointsAgainst}–${fixture.pointsFor} in the World Club Challenge.`);
+    finalCareer = completeUserWorldClubChallenge(
+      finalCareer,
+      fixture.pointsFor,
+      fixture.pointsAgainst,
+      savedLiveEvents ?? [],
+      storySummary
+    );
   }
   finalCareer = syncManagerFinance(finalCareer);
   if (finalCareer.gameWeek % 3 === 0) {
@@ -703,6 +798,7 @@ export function previewManagerMatchScoreline(
 ): MatchFixture {
   const simCareer = resolveCareerForMatchSimulation(career);
   const isFriendly = sched.competition === "friendly";
+  const isWcc = sched.competition === "world_club_challenge";
   const round = sched.round;
   const squad = buildSquadSlotsFromMatchday(
     simCareer.matchdayXiii,
@@ -732,15 +828,18 @@ export function previewManagerMatchScoreline(
     simCareer
   );
   const friendlyRating = simCareer.preSeason.activeFriendly?.teamRating;
+  const wccRating = simCareer.worldClubChallenge?.currentFixture?.nrlChampionRating;
   const baseOppRating =
     isFriendly && friendlyRating
       ? friendlyRating
-      : getManagerOpponentMatchRating(
-          simCareer,
-          sched.opponent,
-          simCareer.seed,
-          round
-        );
+      : isWcc && wccRating != null
+        ? wccRating
+        : getManagerOpponentMatchRating(
+            simCareer,
+            sched.opponent,
+            simCareer.seed,
+            round
+          );
   const homeAdj = sched.isNeutral ? 0 : sched.isHome ? 5 : -1;
   const ratingGap = userRating - baseOppRating + homeAdj;
   const formFromRatings = Math.max(-3, Math.min(7, ratingGap * 0.4));
@@ -780,12 +879,12 @@ export function previewManagerMatchScoreline(
       seasonDropGoals: simCareer.matchSimState.seasonDropGoals,
     },
     {
-      currentSeasonOnly: !isFriendly,
+      currentSeasonOnly: !isFriendly && !isWcc,
       opponentRatingOverride: opponentRating,
       userRatingOverride: userRating,
       cupMode: sched.competition === "challenge_cup",
       managerCareerMode: true,
-      matchKey: isFriendly ? `${simCareer.seed}-${sched.id}` : undefined,
+      matchKey: isFriendly || isWcc ? `${simCareer.seed}-${sched.id}` : undefined,
     }
   );
 
@@ -802,7 +901,7 @@ export function simulateManagerMatchLive(
   sched: NonNullable<ReturnType<typeof getNextManagerFixture>>
 ): { fixture: MatchFixture; liveEvents: import("./types").LiveMatchEvent[] } {
   const fixture = previewManagerMatchScoreline(career, sched);
-  const liveEvents = generateEventsFromFixture(career, fixture, sched.id);
+  const liveEvents = generateEventsFromFixture(career, fixture, sched.id, sched);
   return { fixture, liveEvents };
 }
 

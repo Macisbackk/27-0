@@ -642,32 +642,39 @@ export function ManagerSquad({
                       isSuspension
                     )}
                   >
-                    <div className="flex items-start justify-between gap-1">
-                      <p
-                        className={`${SQUAD_PLAYER_NAME_CLASS} ${
-                          player ? "" : "text-pitch-500"
-                        }`}
-                      >
-                        {player?.name ?? "Empty"}
+                    <div className="player-slot flex h-full min-h-[86px] flex-col">
+                      <p className="player-slot__role shrink-0 text-[10px] font-bold leading-[18px] text-gray-400">
+                        Interchange {14 + i}
                       </p>
-                      {player && (
-                        <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
-                          {player.peakRating}
-                        </span>
+                      <div className="player-slot__name flex min-h-[34px] flex-1 items-center justify-between gap-1">
+                        <p
+                          className={`${SQUAD_PLAYER_NAME_CLASS} ${
+                            player ? "" : "text-pitch-500"
+                          }`}
+                        >
+                          {player?.name ?? "Empty"}
+                        </p>
+                        {player && (
+                          <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
+                            {player.peakRating}
+                          </span>
+                        )}
+                      </div>
+                      <p
+                        className={`${SQUAD_PLAYER_META_CLASS} player-slot__meta min-h-[18px]`}
+                      >
+                        {player
+                          ? `${player.position.replaceAll("_", " ")}`
+                          : "Bench"}
+                      </p>
+                      {unavailable ? (
+                        <p className="text-[10px] text-red-400">
+                          {isSuspension ? "Suspended" : "Injured"}
+                        </p>
+                      ) : (
+                        <span className="min-h-[14px]" aria-hidden />
                       )}
                     </div>
-                    <p className={SQUAD_PLAYER_META_CLASS}>
-                      Interchange {14 + i}
-                    </p>
-                    <p
-                      className={`${SQUAD_PLAYER_STATUS_CLASS} ${
-                        ps?.injury
-                          ? unavailableTextClass(!!isSuspension)
-                          : "invisible"
-                      }`}
-                    >
-                      {ps?.injury ? formatInjuryLabel(ps.injury) : "\u00a0"}
-                    </p>
                   </button>
                 );
               })}

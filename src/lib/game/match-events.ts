@@ -41,8 +41,12 @@ export interface MatchEvent {
   minute: number;
   teamId: string;
   teamName: string;
+  opponentTeamId?: string;
+  opponentTeamName?: string;
   playerId?: string;
   playerName?: string;
+  kickerId?: string;
+  kickerName?: string;
   type: MatchEventType;
   points?: number;
   description: string;

@@ -41,7 +41,12 @@ export type ContractStatus =
   | "renewed"
   | "leaving";
 
-export type ManagerCompetition = "league" | "challenge_cup" | "friendly" | "playoffs";
+export type ManagerCompetition =
+  | "league"
+  | "challenge_cup"
+  | "friendly"
+  | "playoffs"
+  | "world_club_challenge";
 
 export type CupRoundKey =
   | "round_one"
@@ -272,6 +277,7 @@ export interface LiveMatchEvent {
     | "penalty"
     | "penalty_goal"
     | "drop_goal"
+    | "missed_drop_goal"
     | "big_break"
     | "line_break"
     | "try_saver"
@@ -289,14 +295,20 @@ export interface LiveMatchEvent {
     | "forty_twenty"
     | "forced_error"
     | "held_up"
-    | "missed_drop_goal"
     | "note"
     | "half_time"
     | "full_time";
   team: "user" | "opponent";
   teamId?: string;
   teamName?: string;
+  opponentTeamId?: string;
+  opponentTeamName?: string;
+  /** Non-kicking player involved (try scorer, breaker, etc.). Never a team name. */
   playerName?: string;
+  playerId?: string;
+  /** Kicker only — never used as a try scorer. */
+  kickerName?: string;
+  kickerId?: string;
   description: string;
   points: number;
   importance?: "low" | "medium" | "high" | "major";
@@ -556,6 +568,36 @@ export interface PlayerDevelopmentChange {
   seasonImpact?: number;
 }
 
+export interface WorldClubChallengeFixture {
+  id: string;
+  seasonYear: number;
+  gameWeek: 3;
+  superLeagueChampionTeamId: string;
+  superLeagueChampionName: string;
+  nrlChampionName: string;
+  nrlChampionRating: number;
+  status: "scheduled" | "complete";
+  userInvolved: boolean;
+}
+
+export interface WorldClubChallengeResult {
+  id: string;
+  seasonYear: number;
+  superLeagueChampionName: string;
+  nrlChampionName: string;
+  homeScore: number;
+  awayScore: number;
+  winnerName: string;
+  userResult?: "won" | "lost" | "not_involved";
+  events: LiveMatchEvent[];
+  storySummary: string;
+}
+
+export interface WorldClubChallengeState {
+  history: WorldClubChallengeResult[];
+  currentFixture?: WorldClubChallengeFixture;
+}
+
 export interface ManagerCareer {
   id: string;
   club: string;
@@ -661,6 +703,10 @@ export interface ManagerCareer {
   retiredPlayers?: RetiredPlayer[];
   /** Save schema version for migrations. */
   saveVersion?: number;
+  /** World Club Challenge fixture + history (from season 2 onwards). */
+  worldClubChallenge?: WorldClubChallengeState;
+  /** Club that won Super League last season — drives WCC scheduling. */
+  previousSeasonChampion?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -675,6 +721,8 @@ export interface ManagerLifetimeStats {
   superLeagueTitles: number;
   challengeCups: number;
   cupFinals: number;
+  worldClubChallengeWins: number;
+  worldClubChallengeAppearances: number;
   topSixFinishes: number;
   perfectSeasons: number;
   winlessSeasons: number;

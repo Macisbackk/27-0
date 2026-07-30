@@ -40,6 +40,7 @@
     "enrich:wikipedia-birth": "tsx scripts/enrich-wikipedia-birth-years.ts",
     "enrich:wikipedia-birth:current": "tsx scripts/enrich-wikipedia-birth-years.ts --current-only",
     "validate:ages": "tsx scripts/validate-ages.ts",
+    "debug:manager-ageing": "tsx scripts/debug-manager-ageing.ts",
     "validate:rating-overrides": "tsx scripts/validate-rating-overrides.ts",
     "validate:ratings": "tsx scripts/validate-rating-overrides.ts",
     "validate:era-teams": "tsx scripts/validate-era-teams.ts",

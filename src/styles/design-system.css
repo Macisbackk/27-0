@@ -45,6 +45,35 @@
   backdrop-filter: none;
 }
 
+/* Fixed interchange / player slot layout */
+.player-slot {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 86px;
+  width: 100%;
+  text-align: left;
+}
+
+.player-slot__role {
+  min-height: 18px;
+  line-height: 18px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted, #9ca3af);
+}
+
+.player-slot__name {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.player-slot__meta {
+  min-height: 18px;
+}
+
 /* Single kit accent strip — Store theme only; never thick coloured frames */
 .game-panel::before,
 .programme-panel::before,
