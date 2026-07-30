@@ -35,13 +35,9 @@ function CompactOptionRow<T extends string>({
   onChange: (v: T) => void;
 }) {
   return (
-    <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-2.5">
-      <p
-        className={`${TYPO.sectionLabel} shrink-0 sm:w-[4.75rem] sm:text-left sm:text-[10px]`}
-      >
-        {label}
-      </p>
-      <div className="flex min-w-0 flex-1 flex-wrap justify-center gap-1 sm:justify-start sm:gap-1.5">
+    <div className="flex flex-col items-center gap-1.5 text-center">
+      <p className={`${TYPO.sectionLabel}`}>{label}</p>
+      <div className="flex min-w-0 flex-wrap justify-center gap-1.5">
         {options.map((opt) => (
           <button
             key={opt.value}
@@ -50,7 +46,7 @@ function CompactOptionRow<T extends string>({
               playUiClick();
               onChange(opt.value);
             }}
-            className={`rounded-md border px-2 py-1 text-[10px] leading-tight transition sm:px-2.5 sm:py-1.5 sm:text-xs ${
+            className={`rounded-md border px-2.5 py-1.5 text-xs leading-tight transition ${
               value === opt.value ? FILTER.chipActive : `${FILTER.chipIdle} btn-press`
             }`}
           >
@@ -70,7 +66,7 @@ function TacticsSetupPanel({
   onChange: (patch: Partial<ManagerTactics>) => void;
 }) {
   return (
-    <div className={`${CARD.stat} ${SPACING.cardPaddingSm} space-y-2.5`}>
+    <div className={`${CARD.stat} ${SPACING.cardPaddingSm} space-y-3`}>
       <CompactOptionRow
         label="Style"
         options={PLAYING_STYLE_OPTIONS}
@@ -90,7 +86,7 @@ function TacticsSetupPanel({
         onChange={(v) => onChange({ defenceFocus: v })}
       />
       <p
-        className={`border-t border-pitch-700/40 pt-2 text-[11px] leading-snug text-pitch-400 sm:text-xs`}
+        className={`mx-auto max-w-lg border-t border-pitch-700/40 pt-2 text-center text-[11px] leading-snug text-pitch-400 sm:text-xs`}
       >
         {PLAYING_STYLE_BIOS[tactics.playingStyle]}{" "}
         <span className="text-pitch-600">·</span> {ATTACK_FOCUS_BIOS[tactics.attackFocus]}{" "}

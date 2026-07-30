@@ -53,10 +53,16 @@ import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import { getHubNewsItems } from "@/lib/manager/managerNews";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
 import {
+  getManagerCupRoundLabel,
+  getManagerScheduledFixtureHeadline,
+  getManagerScheduledFixtureVenueLabel,
+  isChallengeCupFixture,
+} from "@/lib/manager/managerFixtureDisplay";
+import { getManagerMatchOccasionPresentation } from "@/lib/manager/managerMatchOccasion";
+import {
   managerClubAccentCardClass,
   managerClubAccentCardStyle,
   managerCompetitionPanelClass,
-  managerCompetitionSurfaceClass,
   managerFixtureCardStyle,
   managerPillClass,
   managerCalloutClass,
@@ -85,12 +91,6 @@ import {
   leaguePositionTone,
   matchPredictionTone,
 } from "@/components/manager/manager-ui";
-import {
-  getManagerCupRoundLabel,
-  getManagerScheduledFixtureHeadline,
-  getManagerScheduledFixtureVenueLabel,
-  isChallengeCupFixture,
-} from "@/lib/manager/managerFixtureDisplay";
 
 interface ManagerHubProps {
   career: ManagerCareer;
@@ -321,6 +321,9 @@ export function ManagerHub({
   const isCupFixture = nextFixture
     ? isChallengeCupFixture(nextFixture.competition)
     : false;
+  const matchOccasion = nextFixture
+    ? getManagerMatchOccasionPresentation(nextFixture)
+    : null;
 
   const oppRating =
     nextFixture && !seasonComplete
@@ -380,11 +383,11 @@ export function ManagerHub({
   const hubNews = getHubNewsItems(career);
 
   const nextFixtureCard =
-    nextFixture && !seasonComplete && !playoffsPending ? (
+    nextFixture && !seasonComplete && !playoffsPending && matchOccasion ? (
       <ScoreboardPanel
         variant="elevated"
         padded
-        className={`matchday-scoreboard ${managerCompetitionSurfaceClass(nextFixture.competition)}`}
+        className={`matchday-scoreboard ${matchOccasion.surfaceClass} ${matchOccasion.matchdayModifier}`.trim()}
         style={managerFixtureCardStyle(
           nextFixture.competition,
           career.club,
@@ -392,7 +395,7 @@ export function ManagerHub({
         )}
       >
         <GameSectionHeader
-          label="Next fixture"
+          label={matchOccasion.weekLabel}
           title={
             <>
               <span className="block sm:inline">{career.club}</span>{" "}
@@ -407,6 +410,10 @@ export function ManagerHub({
               <ManagerCompetitionBadge
                 competition={nextFixture.competition}
                 cupRound={nextFixture.cupRound}
+                playoffRound={nextFixture.playoffRound}
+                isNeutral={nextFixture.isNeutral}
+                venue={nextFixture.venue}
+                detailed={matchOccasion.isShowcase}
               />
               <span>
                 {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
@@ -415,15 +422,13 @@ export function ManagerHub({
             </span>
           }
         />
-        {(isCupFixture || isPlayoffFixture) && (
+        {matchOccasion.momentLine ? (
           <p
-            className={`mt-2 text-sm font-semibold ${
-              isPlayoffFixture ? "text-theme-primary" : "text-accent-gold"
-            }`}
+            className={`mt-2 text-sm font-semibold ${matchOccasion.momentTextClass}`}
           >
-            {getManagerScheduledFixtureHeadline(nextFixture)}
+            {matchOccasion.momentLine}
           </p>
-        )}
+        ) : null}
         <p className={`mt-1 sm:hidden ${TYPO.bodySm}`}>
           <span className="text-pitch-500">Week </span>
           <span className="font-semibold text-theme-primary">
@@ -452,13 +457,19 @@ export function ManagerHub({
             <ManagerStat label="Opponent rating" value={String(oppRating)} tone="default" />
           )}
           <ManagerStat
-            label={isPlayoffFixture ? "Play-off round" : "Game week"}
+            label={matchOccasion.roundStatLabel}
             value={
-              isPlayoffFixture && nextFixture.playoffRound
-                ? getPlayoffRoundLabel(nextFixture.playoffRound)
-                : `${career.gameWeek}/${career.schedule.length}`
+              matchOccasion.occasion === "grand_final" ||
+              matchOccasion.occasion === "cup_final" ||
+              matchOccasion.occasion === "wcc"
+                ? matchOccasion.badgeLabel
+                : isPlayoffFixture && nextFixture.playoffRound
+                  ? getPlayoffRoundLabel(nextFixture.playoffRound)
+                  : matchOccasion.occasion === "challenge_cup" && nextFixture.cupRound
+                    ? getManagerCupRoundLabel(nextFixture.cupRound)
+                    : `${career.gameWeek}/${career.schedule.length}`
             }
-            tone="muted"
+            tone={matchOccasion.isShowcase ? "gold" : "muted"}
           />
           {homeAttendanceOutlook && (
             <ManagerStat
@@ -504,7 +515,7 @@ export function ManagerHub({
               onPlayGame();
             }}
           >
-            {isPlayoffFixture ? "Play Play-Off Tie" : "Play Game"}
+            {matchOccasion.playCta}
           </GameButton>
           <GameButton
             variant="secondary"
@@ -515,7 +526,7 @@ export function ManagerHub({
               onSimulate();
             }}
           >
-            Simulate Match
+            {matchOccasion.simulateCta}
           </GameButton>
         </div>
       </ScoreboardPanel>
@@ -739,7 +750,12 @@ export function ManagerHub({
     <ManagerHubStickyActions
       visible={showStickyPlayBar}
       canPlay={canPlay}
-      isPlayoffFixture={!!isPlayoffFixture}
+      playLabel={matchOccasion?.playCtaShort ?? "Play Match"}
+      simulateLabel={
+        matchOccasion?.isShowcase
+          ? matchOccasion.simulateCta.replace(/^Simulate /, "")
+          : "Simulate"
+      }
       onPlayGame={onPlayGame}
       onSimulate={onSimulate}
     />

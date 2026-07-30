@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
 import { BracketRecap } from "@/components/BracketRecap";
 import { MatchDetailsPanel } from "@/components/MatchDetailsPanel";
 import { MatchPlayerOfTheMatchCard } from "@/components/MatchPlayerOfTheMatchCard";
@@ -14,15 +13,22 @@ import { buildSquadSlotsFromMatchday } from "@/lib/manager/managerSquad";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { ManagerMatchEventLine } from "@/components/manager/ManagerMatchEventLine";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
-import { ManagerMobileBackBar, ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
+import {
+  ManagerMobileBackBar,
+  ManagerPage,
+  ManagerSection,
+  ManagerSectionCard,
+  ManagerStat,
+} from "@/components/manager/manager-ui";
 import {
   getManagerCupRoundLabel,
   isChallengeCupFixture,
   managerFixtureDisplayId,
   resolveManagerFixtureRecord,
 } from "@/lib/manager/managerFixtureDisplay";
+import { ensureManagerFixtureScoring } from "@/lib/manager/managerFixtureScoring";
+import { getManagerMatchOccasionPresentation } from "@/lib/manager/managerMatchOccasion";
 import {
-  managerCompetitionSurfaceClass,
   managerCalloutClass,
   managerInsetPanelClass,
   managerResultBadgeClass,
@@ -71,29 +77,34 @@ export function ManagerMatchReview({
 
   if (!fixture) {
     return (
-      <div className={`w-full min-w-0 ${SPACING.stackLg}`}>
-        <MatchReviewBackBar onClose={onClose} />
-        <div className={`${CARD.elevated} ${SPACING.cardPaddingMobile} text-center space-y-4`}>
-          <h1 className={TYPO.viewTitle}>Match not found</h1>
-          <p className={`${TYPO.bodySm} text-pitch-400`}>
-            This result could not be loaded from your save.
-          </p>
-        </div>
-        <MatchReviewBackBar onClose={onClose} placement="bottom" />
-      </div>
+      <ManagerPage>
+        <ManagerSection>
+          <div className={SPACING.stackLg}>
+            <MatchReviewBackBar onClose={onClose} />
+            <div className={`${CARD.elevated} ${SPACING.cardPaddingMobile} text-center space-y-4`}>
+              <h1 className={TYPO.viewTitle}>Match not found</h1>
+              <p className={`${TYPO.bodySm} text-pitch-400`}>
+                This result could not be loaded from your save.
+              </p>
+            </div>
+            <MatchReviewBackBar onClose={onClose} placement="bottom" />
+          </div>
+        </ManagerSection>
+      </ManagerPage>
     );
   }
 
-  const isLastMatch =
-    career.lastMatchFixture != null &&
-    managerFixtureDisplayId(career.lastMatchFixture) ===
-      managerFixtureDisplayId(fixture);
-
   const squad = buildSquadSlotsFromMatchday(
-    fixture.meta?.matchdayXiii ??
-      (isLastMatch ? career.matchdayXiii : career.matchdayXiii.map(() => "")),
+    fixture.meta?.matchdayXiii ?? career.matchdayXiii,
     fixture.meta?.xiiiSlotPositions ?? career.xiiiSlotPositions,
     career
+  );
+  // Repair missing / mismatched try scorers so Match Review scoring always shows names.
+  ensureManagerFixtureScoring(
+    career,
+    fixture,
+    squad,
+    managerFixtureDisplayId(fixture)
   );
   const attendance = fixture.meta?.attendance;
   const won = fixture.result === "W";
@@ -144,8 +155,20 @@ export function ManagerMatchReview({
   const tabVisible = (tab: typeof mobileTab) =>
     mobileTab === tab ? "block space-y-4" : "hidden sm:block sm:space-y-4";
 
+  const matchOccasion = fixture.competition
+    ? getManagerMatchOccasionPresentation({
+        competition: fixture.competition,
+        cupRound: fixture.meta?.cupRound,
+        isNeutral: fixture.isNeutral,
+        venue: fixture.meta?.attendance?.venue,
+        round: fixture.round,
+      })
+    : null;
+
   return (
-    <div className={`w-full min-w-0 ${SPACING.stackLg}`}>
+    <ManagerPage>
+      <ManagerSection>
+      <div className={SPACING.stackLg}>
       <MatchReviewBackBar onClose={onClose} />
 
       <div className="flex flex-wrap items-center gap-3">
@@ -154,7 +177,9 @@ export function ManagerMatchReview({
           <ManagerCompetitionBadge
             competition={fixture.competition}
             cupRound={fixture.meta?.cupRound}
-            detailed={isChallengeCupFixture(fixture.competition)}
+            isNeutral={fixture.isNeutral}
+            venue={fixture.meta?.attendance?.venue}
+            detailed
           />
         )}
         <span
@@ -165,12 +190,19 @@ export function ManagerMatchReview({
       </div>
 
       <div
-        className={`${CARD.elevated} ${SPACING.cardPadding} text-center ${
-          fixture.competition
-            ? managerCompetitionSurfaceClass(fixture.competition)
+        className={`${CARD.elevated} ${SPACING.cardPadding} text-center matchday-scoreboard ${
+          matchOccasion
+            ? `${matchOccasion.surfaceClass} ${matchOccasion.matchdayModifier}`
             : ""
-        }`}
+        }`.trim()}
       >
+        {matchOccasion?.momentLine ? (
+          <p
+            className={`mb-2 text-xs font-semibold uppercase tracking-wider ${matchOccasion.momentTextClass}`}
+          >
+            {matchOccasion.weekLabel}
+          </p>
+        ) : null}
         <p className={`text-xl font-bold text-white sm:text-2xl`}>
           <span className={fixture.isHome ? "text-theme-primary" : ""}>
             {fixture.isHome ? career.club : fixture.opponent}
@@ -249,7 +281,6 @@ export function ManagerMatchReview({
       </div>
 
       <div className={tabVisible("stats")}>
-      <AnimatePresence>
         <MatchDetailsPanel
           fixture={fixture}
           onClose={onClose}
@@ -262,7 +293,6 @@ export function ManagerMatchReview({
           hideMotm
           scoringOnly
         />
-      </AnimatePresence>
 
       {attendance && (
         <ManagerSectionCard
@@ -409,6 +439,8 @@ export function ManagerMatchReview({
       )}
 
       <MatchReviewBackBar onClose={onClose} placement="bottom" />
-    </div>
+      </div>
+      </ManagerSection>
+    </ManagerPage>
   );
 }

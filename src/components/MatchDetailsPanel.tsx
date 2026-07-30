@@ -117,19 +117,15 @@ export function MatchDetailsPanel({
   );
 
   if (scoringOnly) {
+    // No height collapse animation — Match Review keeps this panel in a
+    // `hidden` mobile tab, which measures height as 0 and can clip scorers.
     return (
-      <motion.div
-        className={`match-details-expand overflow-hidden ${CARD.base}`}
-        initial={{ height: 0, opacity: 0, marginTop: 0 }}
-        animate={{ height: "auto", opacity: 1, marginTop: 0 }}
-        exit={{ height: 0, opacity: 0, marginTop: 0 }}
-        transition={{ duration: 0.22, ease: "easeOut" }}
-      >
+      <div className={CARD.base}>
         <div className={SPACING.cardPadding}>
           <p className={TYPO.sectionLabel}>Scoring</p>
           <div className="mt-3">{scoringBlock}</div>
         </div>
-      </motion.div>
+      </div>
     );
   }
 

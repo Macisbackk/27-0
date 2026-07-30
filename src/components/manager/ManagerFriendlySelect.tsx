@@ -6,6 +6,7 @@ import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
   ManagerPage,
+  ManagerSection,
   ManagerSectionCard,
   ManagerStat,
   ManagerViewHeader,
@@ -30,6 +31,7 @@ export function ManagerFriendlySelect({
 }: ManagerFriendlySelectProps) {
   return (
     <ManagerPage>
+      <ManagerSection>
       <ManagerViewHeader
         title="Choose Friendly Opponent"
         subtitle={`Pre-season Friendly ${friendlyNumber} of 2 — pick any club from your save · ${career.club}`}
@@ -80,6 +82,7 @@ export function ManagerFriendlySelect({
           </ManagerSectionCard>
         ))}
       </div>
+      </ManagerSection>
     </ManagerPage>
   );
 }

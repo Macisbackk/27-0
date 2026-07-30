@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import {
+  ManagerPage,
+  ManagerSection,
   ManagerSectionCard,
   ManagerStat,
 } from "@/components/manager/manager-ui";
@@ -24,6 +26,7 @@ import {
 } from "@/lib/manager/managerFacilities";
 import { getClubAttendanceProfile } from "@/lib/manager/managerAttendance";
 import { playUiClick } from "@/lib/sound";
+import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 
 interface ManagerClubProps {
   career: ManagerCareer;
@@ -79,14 +82,13 @@ export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
   };
 
   return (
-    <div className={`w-full ${SPACING.stackLg}`}>
-      <div>
-        <h1 className={TYPO.viewTitle}>Club</h1>
-        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-          Invest transfer funds to improve facilities — each area upgrades one
-          star at a time (0–5).
-        </p>
-      </div>
+    <ManagerPage>
+      <ManagerSection>
+      <GameSectionHeader
+        label="Facilities"
+        title="Club"
+        subtitle="Invest transfer funds to improve facilities — each area upgrades one star at a time (0–5)."
+      />
 
       <ManagerSectionCard title="Investment fund" variant="elevated" accent="primary">
         <div className="mt-2 grid grid-cols-2 gap-3">
@@ -115,7 +117,7 @@ export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
         </p>
       )}
 
-      <div className={`grid gap-3 lg:grid-cols-2 ${SPACING.cardGridGap}`}>
+      <div className={`grid gap-3 sm:grid-cols-2 ${SPACING.cardGridGap}`}>
         {facilityRows.map(({ type, level, cost, canAfford, maxed }) => (
           <ManagerSectionCard
             key={type}
@@ -175,6 +177,7 @@ export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
           </ManagerSectionCard>
         ))}
       </div>
-    </div>
+      </ManagerSection>
+    </ManagerPage>
   );
 }

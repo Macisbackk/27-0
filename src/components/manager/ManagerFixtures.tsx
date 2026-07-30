@@ -24,11 +24,11 @@ import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubColors } from "@/lib/clubs";
 import {
-  managerCompetitionSurfaceClass,
   managerFixtureCardStyle,
   managerFixtureRowClass,
   managerPillClass,
 } from "@/lib/manager/managerSurfaces";
+import { getManagerMatchOccasionPresentation } from "@/lib/manager/managerMatchOccasion";
 import { getFriendlyDualBorderStyle } from "@/lib/manager/managerFriendlyUi";
 import { buildMergedDisplaySchedule } from "@/lib/manager/managerChallengeCup";
 import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
@@ -323,6 +323,9 @@ function UpcomingFixtureRow({
           <ManagerCompetitionBadge
             competition={sched.competition}
             cupRound={sched.cupRound}
+            playoffRound={sched.playoffRound}
+            isNeutral={sched.isNeutral}
+            venue={sched.venue}
             detailed={false}
           />
           {isNext && <span className={managerPillClass("primary")}>Next</span>}
@@ -343,6 +346,15 @@ function UpcomingFixtureRow({
       <p className={`mt-2 break-words ${TYPO.bodySm} text-pitch-400`}>
         {getManagerScheduledFixtureHeadline(sched)}
       </p>
+      {(() => {
+        const occasion = getManagerMatchOccasionPresentation(sched);
+        if (!occasion.isShowcase || !occasion.momentLine) return null;
+        return (
+          <p className={`mt-1 text-xs font-semibold ${occasion.momentTextClass}`}>
+            {occasion.momentLine}
+          </p>
+        );
+      })()}
 
       {opponent !== "TBC" ? (
         <div className="mt-3 grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1 sm:gap-3">
@@ -401,6 +413,8 @@ function PlayedFixtureRow({
           <ManagerCompetitionBadge
             competition={fixture.competition}
             cupRound={fixture.meta?.cupRound}
+            isNeutral={fixture.isNeutral}
+            venue={fixture.meta?.attendance?.venue}
             detailed={false}
           />
         )}
@@ -665,6 +679,10 @@ export function ManagerFixtures({
     !seasonComplete &&
     shouldShowNextMatch(filter, nextFixture);
 
+  const nextMatchOccasion = showNextMatch
+    ? getManagerMatchOccasionPresentation(nextFixture)
+    : null;
+
   const hasAnySection =
     showNextMatch ||
     (showWcc && wccPanelContent) ||
@@ -735,11 +753,11 @@ export function ManagerFixtures({
         </p>
       </GamePanel>
 
-      {showNextMatch && (
+      {showNextMatch && nextFixture && nextMatchOccasion && (
         <ScoreboardPanel
           variant="elevated"
           padded
-          className={`matchday-scoreboard ${managerCompetitionSurfaceClass(nextFixture.competition)}`}
+          className={`matchday-scoreboard ${nextMatchOccasion.surfaceClass} ${nextMatchOccasion.matchdayModifier}`.trim()}
           style={managerFixtureCardStyle(
             nextFixture.competition,
             career.club,
@@ -747,11 +765,17 @@ export function ManagerFixtures({
           )}
         >
           <div className="flex flex-wrap items-center gap-2">
-            <p className={TYPO.sectionLabel}>Upcoming fixture</p>
+            <p className={TYPO.sectionLabel}>{nextMatchOccasion.weekLabel}</p>
             <ManagerCompetitionBadge
               competition={nextFixture.competition}
               cupRound={nextFixture.cupRound}
-              detailed={isChallengeCupFixture(nextFixture.competition)}
+              playoffRound={nextFixture.playoffRound}
+              isNeutral={nextFixture.isNeutral}
+              venue={nextFixture.venue}
+              detailed={
+                nextMatchOccasion.isShowcase ||
+                isChallengeCupFixture(nextFixture.competition)
+              }
             />
           </div>
           <p className="mt-2 break-words text-base font-bold leading-snug text-white sm:text-2xl">
@@ -761,6 +785,13 @@ export function ManagerFixtures({
             </span>{" "}
             <span className="block sm:inline">{nextFixture.opponent}</span>
           </p>
+          {nextMatchOccasion.momentLine ? (
+            <p
+              className={`mt-2 text-sm font-semibold ${nextMatchOccasion.momentTextClass}`}
+            >
+              {nextMatchOccasion.momentLine}
+            </p>
+          ) : null}
           <p className={`mt-1 break-words ${TYPO.bodySm} text-pitch-400`}>
             {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
             {getManagerScheduledFixtureVenueLabel(nextFixture)}

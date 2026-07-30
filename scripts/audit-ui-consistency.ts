@@ -206,6 +206,11 @@ const MANAGER_TAB_FILES: Record<string, { requireSection?: boolean; allowWide?: 
   "src/components/manager/ManagerStatsView.tsx": { requireSection: true },
   "src/components/manager/ManagerTable.tsx": { requireSection: true },
   "src/components/manager/ManagerTactics.tsx": { requireSection: true },
+  "src/components/manager/ManagerClub.tsx": { requireSection: true },
+  "src/components/manager/ManagerAcrossLeague.tsx": { requireSection: true },
+  "src/components/manager/ManagerFriendlySelect.tsx": { requireSection: true },
+  "src/components/manager/ManagerSquad.tsx": { requireSection: true },
+  "src/components/manager/ManagerMatchReview.tsx": { requireSection: true },
 };
 
 function walk(dir: string, out: string[] = []): string[] {
@@ -274,7 +279,9 @@ function auditManagerContainers(findings: Finding[]) {
     }
     if (
       !opts.allowWide &&
-      /ManagerSection\s+width=["']wide["']/.test(text) &&
+      (/ManagerSection\s+width=["']wide["']/.test(text) ||
+        /ManagerPage\s+wide\b/.test(text) ||
+        /manager-section--wide/.test(text)) &&
       !rel.includes("Squad")
     ) {
       findings.push({
@@ -283,6 +290,20 @@ function auditManagerContainers(findings: Finding[]) {
         id: "manager-unnecessary-wide",
         severity: "warn",
         snippet: "Prefer default manager-section (980px) like Transfers",
+      });
+    }
+    // Squad must still use the default 980px column (no page/section wide).
+    if (
+      rel.includes("ManagerSquad") &&
+      (/ManagerPage\s+wide\b/.test(text) ||
+        /ManagerSection\s+width=["']wide["']/.test(text))
+    ) {
+      findings.push({
+        file: rel,
+        line: 1,
+        id: "squad-stretched-wide",
+        severity: "error",
+        snippet: "Squad must use default ManagerSection width like Transfers",
       });
     }
   }

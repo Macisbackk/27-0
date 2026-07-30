@@ -96,7 +96,7 @@ function ReadonlyInterchangeSlot({
         </p>
       </div>
       <div className="player-slot__footer">
-        <span className="player-slot__position">
+        <span className="player-slot__position min-w-0 truncate">
           {player ? player.position.replaceAll("_", " ") : "Bench"}
         </span>
         {player ? (

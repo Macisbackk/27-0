@@ -24,11 +24,14 @@ function userTryTotal(fixture: MatchFixture): number {
   );
 }
 
-function scoringDetailMatchesFixture(fixture: MatchFixture): boolean {
+function userScoringMatchesFixture(fixture: MatchFixture): boolean {
   if (!fixture.scoringDetail) return false;
-  if (userTryTotal(fixture) !== fixture.triesFor) return false;
-  if (opponentScoringUsesClubLump(fixture)) return false;
+  return userTryTotal(fixture) === fixture.triesFor;
+}
 
+function opponentScoringMatchesFixture(fixture: MatchFixture): boolean {
+  if (!fixture.scoringDetail) return false;
+  if (opponentScoringUsesClubLump(fixture)) return false;
   const oppTryTotal = fixture.scoringDetail.opponent.tryScorers.reduce(
     (sum, s) => sum + s.tries,
     0
@@ -37,6 +40,12 @@ function scoringDetailMatchesFixture(fixture: MatchFixture): boolean {
     return false;
   }
   return true;
+}
+
+function scoringDetailMatchesFixture(fixture: MatchFixture): boolean {
+  return (
+    userScoringMatchesFixture(fixture) && opponentScoringMatchesFixture(fixture)
+  );
 }
 
 /** Ensure fixture scoring detail matches the final scoreline for match review. */
@@ -53,7 +62,24 @@ export function ensureManagerFixtureScoring(
   const matchdayInterchange =
     record.meta?.matchdayInterchange ?? career.matchdayInterchange;
 
-  if (!scoringDetailMatchesFixture(fixture)) {
+  const liveEvents = record.meta?.liveEvents;
+  if (
+    liveEvents &&
+    liveEvents.length > 0 &&
+    !scoringDetailMatchesFixture(fixture)
+  ) {
+    applyLiveEventsToFixtureScoring(
+      career,
+      fixture,
+      liveEvents,
+      fixtureKey
+    );
+  }
+
+  // Rebuild only when user try totals are wrong — do not wipe good user
+  // scorers just because opponent names need a repair.
+  if (!userScoringMatchesFixture(fixture)) {
+    const preservedOpponent = fixture.scoringDetail?.opponent;
     fixture.scoringDetail = undefined;
     enrichManagerFixtureScoring(
       squad,
@@ -69,9 +95,25 @@ export function ensureManagerFixtureScoring(
         matchdayInterchange,
       }
     );
+    if (
+      fixture.scoringDetail &&
+      preservedOpponent &&
+      opponentScoringMatchesFixture({
+        ...fixture,
+        scoringDetail: {
+          dreamTeam: fixture.scoringDetail.dreamTeam,
+          opponent: preservedOpponent,
+        },
+      })
+    ) {
+      fixture.scoringDetail = {
+        ...fixture.scoringDetail,
+        opponent: preservedOpponent,
+      };
+    }
   }
 
-  if (opponentScoringUsesClubLump(fixture)) {
+  if (!opponentScoringMatchesFixture(fixture)) {
     repairOpponentTryScorers(
       fixture,
       career.seed,
@@ -81,7 +123,7 @@ export function ensureManagerFixtureScoring(
     );
   }
 
-  if (!fixture.scoringDetail) {
+  if (!fixture.scoringDetail || !userScoringMatchesFixture(fixture)) {
     const entries = buildMatchdayScoringEntries(
       career,
       matchdayXiii,
@@ -102,6 +144,7 @@ export function ensureManagerFixtureScoring(
       .filter((s) => s.tries > 0);
 
     const oppName = fixture.opponent;
+    const existingOpp = fixture.scoringDetail?.opponent;
 
     fixture.scoringDetail = {
       dreamTeam: {
@@ -109,7 +152,7 @@ export function ensureManagerFixtureScoring(
         kicking: fixture.scoringFor
           ? {
               playerId: userTryScorers[0]?.playerId ?? "kicker",
-              name: userTryScorers[0]?.name ?? career.seed,
+              name: userTryScorers[0]?.name ?? career.club,
               conversions: fixture.scoringFor.conversions,
               conversionAttempts: fixture.scoringFor.tries,
               penalties: fixture.scoringFor.penalties,
@@ -117,7 +160,7 @@ export function ensureManagerFixtureScoring(
             }
           : null,
       },
-      opponent: {
+      opponent: existingOpp ?? {
         tryScorers:
           fixture.triesAgainst > 0
             ? buildOpponentTryScoringDetail(
@@ -142,6 +185,16 @@ export function ensureManagerFixtureScoring(
           : null,
       },
     };
+  }
+
+  if (!opponentScoringMatchesFixture(fixture)) {
+    repairOpponentTryScorers(
+      fixture,
+      career.seed,
+      career.tactics,
+      fixtureKey,
+      career
+    );
   }
 
   refreshManagerMatchBio(career, fixture);

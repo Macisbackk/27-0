@@ -34,6 +34,7 @@ import {
   getManagerScheduledFixtureHeadline,
   getManagerScheduledFixtureVenueLabel,
 } from "@/lib/manager/managerFixtureDisplay";
+import { getManagerMatchOccasionPresentation } from "@/lib/manager/managerMatchOccasion";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getManagerOpponentMatchRating } from "@/lib/manager/managerLeagueRosters";
 import { managerResultBadgeClass } from "@/lib/manager/managerSurfaces";
@@ -248,6 +249,7 @@ export function ManagerPlayGame({
   const isPreview = live.phase === "preview";
   const isHalftime = live.phase === "halftime";
   const matchEvents = [...live.events].reverse();
+  const matchOccasion = getManagerMatchOccasionPresentation(sched);
 
   const selectCommand = (cmd: LiveMatchCommand) => {
     playUiClick();
@@ -268,17 +270,34 @@ export function ManagerPlayGame({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Scoreboard */}
-        <header className="matchday-scoreboard shrink-0 px-2 py-2 text-center">
+        <header
+          className={`matchday-scoreboard shrink-0 px-2 py-2 text-center ${matchOccasion.surfaceClass} ${matchOccasion.matchdayModifier}`.trim()}
+        >
           <div className="flex flex-wrap items-center justify-center gap-1.5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-400">
-              {getManagerScheduledFixtureHeadline(sched)} ·{" "}
+              {matchOccasion.weekLabel} ·{" "}
               {getManagerScheduledFixtureVenueLabel(sched)}
             </p>
             <ManagerCompetitionBadge
               competition={sched.competition}
               cupRound={sched.cupRound}
+              playoffRound={sched.playoffRound}
+              isNeutral={sched.isNeutral}
+              venue={sched.venue}
+              detailed={matchOccasion.isShowcase}
             />
           </div>
+          {matchOccasion.momentLine ? (
+            <p
+              className={`mt-1 text-[11px] font-semibold ${matchOccasion.momentTextClass}`}
+            >
+              {matchOccasion.momentLine}
+            </p>
+          ) : (
+            <p className="mt-1 text-[10px] text-pitch-500">
+              {getManagerScheduledFixtureHeadline(sched)}
+            </p>
+          )}
 
           <p className="mt-1.5 font-[family-name:var(--font-pitch)] text-lg uppercase tracking-wide leading-tight text-white sm:text-xl">
             <span className={live.isHome ? "text-theme-primary" : ""}>

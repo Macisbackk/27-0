@@ -577,6 +577,8 @@ export interface WorldClubChallengeFixture {
   superLeagueChampionTeamId: string;
   superLeagueChampionName: string;
   nrlChampionName: string;
+  /** Stable NRL club id from data/nrl-clubs.json — set for new fixtures. */
+  nrlChampionId?: string;
   nrlChampionRating: number;
   status: "scheduled" | "complete";
   userInvolved: boolean;

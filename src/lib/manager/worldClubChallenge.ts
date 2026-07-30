@@ -12,132 +12,39 @@ import { validateMatchEvents } from "../game/validateMatchEvents";
 import type { MatchEventType } from "../game/match-events";
 import { snapToRLScore } from "../game/rl-scores";
 import { SUPER_LEAGUE_CLUBS } from "../clubs";
+import {
+  generateNrlSquadNames,
+  getNrlClubByName,
+  isNrlClubName,
+  NRL_WORLD_CLUB_CHALLENGE_TEAMS,
+} from "../nrl/nrlClubs";
 
-export const NRL_WORLD_CLUB_CHALLENGE_TEAMS = [
-  "Brisbane Broncos",
-  "Canberra Raiders",
-  "Canterbury-Bankstown Bulldogs",
-  "Cronulla Sharks",
-  "Dolphins",
-  "Gold Coast Titans",
-  "Manly Sea Eagles",
-  "Melbourne Storm",
-  "Newcastle Knights",
-  "North Queensland Cowboys",
-  "Parramatta Eels",
-  "Penrith Panthers",
-  "South Sydney Rabbitohs",
-  "St George Illawarra Dragons",
-  "Sydney Roosters",
-  "New Zealand Warriors",
-  "Wests Tigers",
-  "Perth Bears",
-  "PNG Chiefs",
-] as const;
+export {
+  generateNrlSquadNames,
+  NRL_WORLD_CLUB_CHALLENGE_TEAMS,
+} from "../nrl/nrlClubs";
 
-const NRL_TEAM_SET = new Set<string>(NRL_WORLD_CLUB_CHALLENGE_TEAMS);
-
-const NRL_FIRST_NAMES = {
-  aus: [
-    "Jack",
-    "Nathan",
-    "Dylan",
-    "Lachlan",
-    "Mitchell",
-    "Harry",
-    "Tom",
-    "Cameron",
-    "Reece",
-    "Ryan",
-    "Cooper",
-    "Jarome",
-    "Kalyn",
-  ],
-  nz: ["Dallin", "Kodi", "Jahrome", "Isaiah", "Joseph", "Charnze"],
-  samoa: ["Toa", "Junior", "Spencer", "Stephen", "Moses", "Tyrone"],
-  tonga: ["Sione", "Moeaki", "Addin", "Tui", "Taniela"],
-  fiji: ["Maika", "Viliame", "Sunia", "Semi", "Tui"],
-  cookIslands: ["Zane", "Brad", "Kayal", "Esan"],
-};
-
-const NRL_LAST_NAMES = {
-  aus: [
-    "Cleary",
-    "Edwards",
-    "Murray",
-    "Munster",
-    "Grant",
-    "Hunt",
-    "Walker",
-    "Walsh",
-    "Moses",
-    "Cherry-Evans",
-  ],
-  nz: ["Johnson", "Fisher-Harris", "Hughes", "Katoa", "Nikora"],
-  samoa: ["Luai", "Crichton", "To'o", "Leota", "Papali'i", "Suali'i"],
-  tonga: ["Fifita", "Fotuaika", "Kaufusi", "Haas", "Taukeiaho"],
-  fiji: ["Sivo", "Ravalawa", "Koroisau", "Kikau", "Utoikamanu"],
-  cookIslands: ["Marsters", "Takairangi", "Tanginoa"],
-};
-
-type NamePool = keyof typeof NRL_FIRST_NAMES;
-
-const POOL_WEIGHTS: { pool: NamePool; weight: number }[] = [
-  { pool: "aus", weight: 55 },
-  { pool: "nz", weight: 15 },
-  { pool: "samoa", weight: 12 },
-  { pool: "tonga", weight: 8 },
-  { pool: "fiji", weight: 7 },
-  { pool: "cookIslands", weight: 3 },
-];
-
-function pickPool(rng: () => number): NamePool {
-  const total = POOL_WEIGHTS.reduce((s, p) => s + p.weight, 0);
-  let roll = rng() * total;
-  for (const entry of POOL_WEIGHTS) {
-    roll -= entry.weight;
-    if (roll <= 0) return entry.pool;
+export function rollNrlChampionRating(
+  rng: () => number,
+  clubName?: string
+): number {
+  if (clubName) {
+    const club = getNrlClubByName(clubName);
+    if (club) {
+      const base =
+        club.strengthTier === 1
+          ? 84
+          : club.strengthTier === 2
+            ? 86
+            : club.strengthTier === 3
+              ? 89
+              : club.strengthTier === 4
+                ? 91
+                : 93;
+      const jitter = Math.floor(rng() * 4) - 1;
+      return Math.max(84, Math.min(95, base + jitter));
+    }
   }
-  return "aus";
-}
-
-function pickName(rng: () => number): string {
-  const pool = pickPool(rng);
-  const first =
-    NRL_FIRST_NAMES[pool][
-      Math.floor(rng() * NRL_FIRST_NAMES[pool].length)
-    ]!;
-  const lastPool = pickPool(rng);
-  const last =
-    NRL_LAST_NAMES[lastPool][
-      Math.floor(rng() * NRL_LAST_NAMES[lastPool].length)
-    ]!;
-  return `${first} ${last}`;
-}
-
-export function generateNrlSquadNames(
-  seed: string,
-  teamName: string,
-  count = 13
-): { id: string; name: string }[] {
-  const rng = seedrandom(`${seed}-nrl-squad-${teamName}`);
-  const used = new Set<string>();
-  const players: { id: string; name: string }[] = [];
-  let attempts = 0;
-  while (players.length < count && attempts < count * 20) {
-    attempts++;
-    const name = pickName(rng);
-    if (used.has(name) || name === teamName) continue;
-    used.add(name);
-    players.push({
-      id: `nrl-${teamName.toLowerCase().replace(/\s+/g, "-")}-${players.length}`,
-      name,
-    });
-  }
-  return players;
-}
-
-export function rollNrlChampionRating(rng: () => number): number {
   const roll = rng() * 100;
   if (roll < 30) return 86 + Math.floor(rng() * 3);
   if (roll < 85) return 89 + Math.floor(rng() * 4);
@@ -152,7 +59,7 @@ export function pickNrlChampion(seed: string, seasonYear: number): string {
 }
 
 export function isNrlWorldClubChallengeTeam(name: string): boolean {
-  return NRL_TEAM_SET.has(name);
+  return isNrlClubName(name);
 }
 
 export function isValidWorldClubChallengeFixture(
@@ -182,7 +89,8 @@ export function sanitizeWorldClubChallengeState(
     currentFixture = {
       ...currentFixture,
       nrlChampionName: nrlChampion,
-      nrlChampionRating: rollNrlChampionRating(rng),
+      nrlChampionId: getNrlClubByName(nrlChampion)?.id,
+      nrlChampionRating: rollNrlChampionRating(rng, nrlChampion),
     };
   }
 
@@ -316,7 +224,8 @@ export function createWorldClubChallengeFixture(
     superLeagueChampionTeamId: prev.name,
     superLeagueChampionName: prev.name,
     nrlChampionName: nrlChampion,
-    nrlChampionRating: rollNrlChampionRating(rng),
+    nrlChampionId: getNrlClubByName(nrlChampion)?.id,
+    nrlChampionRating: rollNrlChampionRating(rng, nrlChampion),
     status: "scheduled",
     userInvolved,
   };
@@ -326,6 +235,14 @@ export function createWorldClubChallengeFixture(
     fixture.nrlChampionName = pickNrlChampion(
       `${career.seed}-retry`,
       career.seasonYear
+    );
+    fixture.nrlChampionId = getNrlClubByName(fixture.nrlChampionName)?.id;
+    const repairRng = seedrandom(
+      `${career.seed}-wcc-rating-retry-${career.seasonYear}-${fixture.nrlChampionName}`
+    );
+    fixture.nrlChampionRating = rollNrlChampionRating(
+      repairRng,
+      fixture.nrlChampionName
     );
   }
 

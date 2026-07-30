@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import clubsData from "../../data/clubs.json";
+import { getAllNrlClubsAsClub, getNrlClubByName, nrlClubToClub } from "./nrl/nrlClubs";
 import {
   getClubPanelTextStyle,
   getClubPillBackground,
@@ -10,30 +11,23 @@ import { isBlackLike, UI_BLACK_TRIM, UI_THEME_WHITE_SOFT } from "./ui/theme-acce
 
 
 export interface Club {
-
   id: string;
-
   name: string;
-
   shortName: string;
-
   primaryColor: string;
-
   secondaryColor: string;
-
   accentColor?: string;
-
   active?: boolean;
-
   isCurrentSuperLeague?: boolean;
-
   playable?: boolean;
-
+  /** Present for NRL club records; Super League clubs omit or use super_league. */
+  league?: "super_league" | "nrl";
 }
 
-
-
-export const SUPER_LEAGUE_CLUBS: Club[] = clubsData as Club[];
+export const SUPER_LEAGUE_CLUBS: Club[] = (clubsData as Club[]).map((c) => ({
+  ...c,
+  league: c.league ?? "super_league",
+}));
 
 
 
@@ -81,23 +75,24 @@ function stripEraYearSuffix(name: string): string {
 }
 
 export function getClubByName(name: string): Club | undefined {
-
   const resolved = stripEraYearSuffix(CLUB_ALIASES[name] ?? name);
 
-  return SUPER_LEAGUE_CLUBS.find(
-
+  const sl = SUPER_LEAGUE_CLUBS.find(
     (c) =>
-
       c.name === resolved ||
-
       c.shortName === resolved ||
-
       c.id === resolved ||
-
       c.name.toLowerCase() === resolved.toLowerCase()
-
   );
+  if (sl) return sl;
 
+  const nrl = getNrlClubByName(resolved);
+  return nrl ? nrlClubToClub(nrl) : undefined;
+}
+
+/** All known clubs across Super League + NRL (NRL remains non-playable). */
+export function getAllClubs(): Club[] {
+  return [...SUPER_LEAGUE_CLUBS, ...getAllNrlClubsAsClub()];
 }
 
 

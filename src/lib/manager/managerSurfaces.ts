@@ -98,8 +98,10 @@ export function managerFixtureCardStyle(
   userClub: string,
   opponent: string
 ): CSSProperties | undefined {
-  if (competition !== "friendly") return undefined;
-  return getFriendlyDualBorderStyle(userClub, opponent);
+  if (competition === "friendly" || competition === "world_club_challenge") {
+    return getFriendlyDualBorderStyle(userClub, opponent);
+  }
+  return undefined;
 }
 
 export function managerClubAccentCardClass(): string {

@@ -1,65 +1,81 @@
 import type { CupRoundKey, ManagerCompetition } from "@/lib/manager/types";
+import { CUP_ROUND_LABELS } from "@/lib/manager/types";
 import {
-  getManagerCompetitionLabel,
-  isChallengeCupFixture,
-} from "@/lib/manager/managerFixtureDisplay";
+  getManagerMatchOccasionPresentation,
+  type ManagerMatchOccasionFixture,
+} from "@/lib/manager/managerMatchOccasion";
 import { managerPillClass } from "@/lib/manager/managerSurfaces";
 
 interface ManagerCompetitionBadgeProps {
   competition: ManagerCompetition;
   cupRound?: CupRoundKey;
+  playoffRound?: number;
+  isNeutral?: boolean;
+  venue?: string;
   className?: string;
-  /** When true, show full round name (e.g. Challenge Cup Semi-Final). */
+  /** When true, show full cup round name for early ties. */
   detailed?: boolean;
 }
 
 export function ManagerCompetitionBadge({
   competition,
   cupRound,
+  playoffRound,
+  isNeutral,
+  venue,
   className = "",
   detailed = false,
 }: ManagerCompetitionBadgeProps) {
-  if (competition === "playoffs") {
+  const fixture: ManagerMatchOccasionFixture = {
+    competition,
+    cupRound,
+    playoffRound,
+    isNeutral,
+    venue,
+    round: 0,
+  };
+  const presentation = getManagerMatchOccasionPresentation(fixture);
+
+  if (presentation.occasion === "league" && !detailed) {
+    return null;
+  }
+
+  if (
+    presentation.occasion === "challenge_cup" &&
+    !detailed &&
+    cupRound &&
+    cupRound !== "final"
+  ) {
+    const roundLabel = CUP_ROUND_LABELS[cupRound] ?? "Challenge Cup";
+    const short =
+      cupRound === "round_one"
+        ? "R1"
+        : cupRound === "quarter_final"
+          ? "QF"
+          : cupRound === "semi_final"
+            ? "SF"
+            : roundLabel;
     return (
-      <span className={`${managerPillClass("primary")} ${className}`}>
-        Play-Offs
+      <span
+        className={`${managerPillClass("gold")} ${className}`}
+        title={roundLabel}
+      >
+        Challenge Cup
+        <span className="ml-1.5 font-semibold normal-case tracking-normal text-accent-gold/90">
+          · {short}
+        </span>
       </span>
     );
   }
-
-  if (competition === "friendly") {
-    return (
-      <span className={`${managerPillClass("sky")} ${className}`}>
-        Friendly
-      </span>
-    );
-  }
-
-  if (competition === "world_club_challenge") {
-    return (
-      <span className={`${managerPillClass("gold")} ${className}`}>
-        World Club Challenge
-      </span>
-    );
-  }
-
-  if (!isChallengeCupFixture(competition)) return null;
-
-  const label = detailed
-    ? getManagerCompetitionLabel(competition, cupRound)
-    : "Challenge Cup";
 
   return (
     <span
-      className={`${managerPillClass("gold")} ${className}`}
-      title={detailed ? undefined : getManagerCompetitionLabel(competition, cupRound)}
+      className={`${managerPillClass(presentation.badgeTone)} ${className}`}
+      title={presentation.momentLine || undefined}
     >
-      {label}
-      {!detailed && cupRound ? (
-        <span className="ml-1.5 font-semibold normal-case tracking-normal text-accent-gold/90">
-          · {getManagerCompetitionLabel(competition, cupRound).replace(/^Challenge Cup /, "")}
-        </span>
-      ) : null}
+      {detailed && presentation.occasion === "challenge_cup" && cupRound
+        ? CUP_ROUND_LABELS[cupRound]
+        : presentation.badgeLabel}
     </span>
   );
 }

@@ -88,13 +88,14 @@ type SquadPoolEntry = ReturnType<typeof getSquadRosterPoolPlayers>[number];
 
 /** Shared footprint for squad pool + interchange player boxes. */
 const SQUAD_PLAYER_BOX_CLASS =
-  "flex h-full min-h-[4.5rem] w-full min-w-0 flex-col px-2 py-1.5 sm:min-h-[4.75rem] sm:px-2.5 sm:py-2";
+  "flex h-full min-h-[5.5rem] w-full min-w-0 flex-col overflow-hidden px-2 py-1.5 sm:min-h-[5.75rem] sm:px-2.5 sm:py-2";
 
 const SQUAD_PLAYER_NAME_CLASS =
-  "min-w-0 flex-1 text-[10px] font-medium leading-[1.15] text-white line-clamp-2 [overflow-wrap:anywhere] sm:text-xs sm:leading-tight";
+  "min-w-0 w-full text-[10px] font-medium leading-[1.15] text-white line-clamp-2 [overflow-wrap:anywhere] sm:text-xs sm:leading-tight";
 
+/** Horizontal scroll pool — two rows keeps cards readable without clipping ratings. */
 const SQUAD_POOL_GRID_CLASS =
-  "grid w-max min-w-full grid-flow-col grid-rows-2 auto-cols-[7.5rem] items-stretch gap-x-1.5 gap-y-1.5 sm:auto-cols-[8.25rem] sm:gap-x-2 sm:gap-y-2";
+  "grid w-max min-w-full grid-flow-col grid-rows-2 auto-cols-[minmax(6.75rem,7.5rem)] items-stretch gap-x-1.5 gap-y-1.5 sm:auto-cols-[minmax(7.25rem,8.25rem)] sm:gap-x-2 sm:gap-y-2";
 
 function squadPlayerBoxClass(
   selectionRole: SquadSelectionRole,
@@ -144,22 +145,22 @@ function SquadPoolPlayerButton({
         <div className="squad-player-card">
           <div className="squad-player-card__name">
             <p className={SQUAD_PLAYER_NAME_CLASS}>{player.name}</p>
+          </div>
+          <div className="squad-player-card__footer">
+            <span className="squad-player-card__meta min-w-0 truncate">
+              {positions.map((p) => POSITION_SHORT[p]).join(" · ")} · {sourceLabel}
+            </span>
             <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
               {player.peakRating}
             </span>
           </div>
-          <div className="squad-player-card__footer">
-            <span className="squad-player-card__meta">
-              {positions.map((p) => POSITION_SHORT[p]).join(" · ")} · {sourceLabel}
+          {unavailable && ps?.injury ? (
+            <span
+              className={`text-[9px] font-medium sm:text-[10px] ${unavailableTextClass(!!isSuspension)}`}
+            >
+              {formatInjuryLabel(ps.injury)}
             </span>
-            {unavailable && ps?.injury ? (
-              <span
-                className={`text-[9px] font-medium sm:text-[10px] ${unavailableTextClass(!!isSuspension)}`}
-              >
-                {formatInjuryLabel(ps.injury)}
-              </span>
-            ) : null}
-          </div>
+          ) : null}
         </div>
       </button>
     </li>
@@ -456,7 +457,8 @@ export function ManagerSquad({
   };
 
   return (
-    <ManagerPage wide>
+    <ManagerPage>
+      <ManagerSection>
       <ManagerViewHeader
         title={subTab === "tactics" ? "Tactics" : "Squad"}
         subtitle={subTab === "squad" ? squadHelpText : tacticsHelpText}
@@ -485,7 +487,6 @@ export function ManagerSquad({
       />
 
       {subTab === "tactics" ? (
-        <ManagerSection>
         <ClipboardPanel padded>
           <GameSectionHeader
             label="Tactics"
@@ -500,7 +501,6 @@ export function ManagerSquad({
             />
           </div>
         </ClipboardPanel>
-        </ManagerSection>
       ) : (
         <>
       {assignmentNotice && (
@@ -662,7 +662,7 @@ export function ManagerSquad({
                         </p>
                       </div>
                       <div className="player-slot__footer">
-                        <span className="player-slot__position">
+                        <span className="player-slot__position min-w-0 truncate">
                           {player
                             ? player.position.replaceAll("_", " ")
                             : "Bench"}
@@ -776,6 +776,7 @@ export function ManagerSquad({
       </div>
         </>
       )}
+      </ManagerSection>
 
       {modalPlayerId && (
         <ManagerSquadPlayerModal

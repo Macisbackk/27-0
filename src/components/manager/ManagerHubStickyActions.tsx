@@ -6,7 +6,8 @@ import { playSimulateRound, playUiClick } from "@/lib/sound";
 interface ManagerHubStickyActionsProps {
   visible: boolean;
   canPlay: boolean;
-  isPlayoffFixture: boolean;
+  playLabel: string;
+  simulateLabel: string;
   onPlayGame: () => void;
   onSimulate: () => void;
 }
@@ -15,7 +16,8 @@ interface ManagerHubStickyActionsProps {
 export function ManagerHubStickyActions({
   visible,
   canPlay,
-  isPlayoffFixture,
+  playLabel,
+  simulateLabel,
   onPlayGame,
   onSimulate,
 }: ManagerHubStickyActionsProps) {
@@ -34,7 +36,7 @@ export function ManagerHubStickyActions({
             onPlayGame();
           }}
         >
-          {isPlayoffFixture ? "Play Tie" : "Play Match"}
+          {playLabel}
         </GameButton>
         <GameButton
           variant="secondary"
@@ -47,7 +49,7 @@ export function ManagerHubStickyActions({
             onSimulate();
           }}
         >
-          Simulate
+          {simulateLabel}
         </GameButton>
       </div>
     </div>
