@@ -9,6 +9,7 @@ import { TYPO } from "@/lib/ui/typography";
 import {
   ManagerInboxMessageCard,
   ManagerPage,
+  ManagerSection,
 } from "@/components/manager/manager-ui";
 import type { InboxMessage, InboxMessageType, ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
@@ -146,6 +147,7 @@ export function ManagerInbox({
 
   return (
     <ManagerPage>
+      <ManagerSection>
       <GameSectionHeader
         label="Inbox"
         title="Club Mail"
@@ -422,6 +424,7 @@ export function ManagerInbox({
           </div>
         </section>
       )}
+      </ManagerSection>
     </ManagerPage>
   );
 }

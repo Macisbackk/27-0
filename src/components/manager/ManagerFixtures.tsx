@@ -7,6 +7,7 @@ import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetition
 import {
   ManagerFormStrip,
   ManagerPage,
+  ManagerSection,
   ManagerStat,
   leaguePositionTone,
   matchPredictionTone,
@@ -663,6 +664,7 @@ export function ManagerFixtures({
 
   return (
     <ManagerPage>
+      <ManagerSection>
       <GameSectionHeader
         label="Fixtures"
         title="Fixtures"
@@ -872,6 +874,7 @@ export function ManagerFixtures({
           onClose={() => setViewClubSheet(null)}
         />
       )}
+      </ManagerSection>
     </ManagerPage>
   );
 }

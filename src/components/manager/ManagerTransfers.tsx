@@ -9,7 +9,7 @@ import {
   ManagerTransferResultModal,
   type TransferResultDetails,
 } from "@/components/manager/ManagerTransferResultModal";
-import { ManagerPage, ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
+import { ManagerPage, ManagerSection, ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
 import {
   canAffordAdditionalWage,
   evaluateClubSigningAppeal,
@@ -372,6 +372,7 @@ export function ManagerTransfers({
 
   return (
     <ManagerPage>
+      <ManagerSection>
       <GameSectionHeader
         label="Transfers"
         title="Transfers"
@@ -851,6 +852,8 @@ export function ManagerTransfers({
         </div>
       </section>
       )}
+
+      </ManagerSection>
 
       {transferResult && (
         <ManagerTransferResultModal

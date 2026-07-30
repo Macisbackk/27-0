@@ -39,7 +39,7 @@ import {
 } from "@/lib/manager/managerContracts";
 import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import { playUiClick } from "@/lib/sound";
-import { ManagerPage, ManagerStat } from "@/components/manager/manager-ui";
+import { ManagerPage, ManagerSection, ManagerStat } from "@/components/manager/manager-ui";
 import { ManagerReserveReleaseModal } from "@/components/manager/ManagerReserveReleaseModal";
 
 type ReserveFilter = "all" | "position" | "potential" | "rating" | "age";
@@ -192,6 +192,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
 
   return (
     <ManagerPage>
+      <ManagerSection>
       <GameSectionHeader
         label="Academy"
         title="Reserves"
@@ -489,10 +490,12 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                   </p>
                 )}
 
-                <div className="mt-3 grid gap-2 border-t border-pitch-700/30 pt-3 sm:grid-cols-2">
+                <div className="mt-3 flex flex-wrap gap-2 border-t border-pitch-700/30 pt-3">
                   <GameButton
                     variant="theme"
                     size="sm"
+                    fullWidth={false}
+                    className="min-w-[7.5rem] flex-1 sm:flex-none"
                     disabled={r.calledUpForNextMatch}
                     onClick={() => {
                       playUiClick();
@@ -509,17 +512,21 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                   <GameButton
                     variant="theme"
                     size="sm"
+                    fullWidth={false}
+                    className="min-w-[7.5rem] flex-1 sm:flex-none"
                     onClick={() => {
                       playUiClick();
                       handlePromote(r.id);
                     }}
                   >
-                    Full-time contract
+                    Offer Full-Time
                   </GameButton>
                   {needsRenew && contract && (
                     <GameButton
                       variant="theme"
                       size="sm"
+                      fullWidth={false}
+                      className="min-w-[7.5rem] flex-1 sm:flex-none"
                       onClick={() => {
                         playUiClick();
                         handleRenewReserve(r.id);
@@ -537,6 +544,8 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                   <GameButton
                     variant="secondary"
                     size="sm"
+                    fullWidth={false}
+                    className="min-w-[7.5rem] flex-1 sm:flex-none"
                     onClick={() => handleReleaseClick(r)}
                   >
                     Release
@@ -562,6 +571,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
           onConfirm={handleReleaseConfirm}
         />
       )}
+      </ManagerSection>
     </ManagerPage>
   );
 }

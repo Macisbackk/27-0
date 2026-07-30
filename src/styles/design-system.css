@@ -37,7 +37,7 @@
   padding-inline: 0;
 }
 
-/* Manager tab content — same width language as game-page (shell already pads). */
+/* Manager tab content — outer page fills shell; sections constrain readable width. */
 .manager-page {
   width: 100%;
   max-width: 100%;
@@ -49,9 +49,39 @@
   max-width: 100%;
 }
 
+.manager-section {
+  width: 100%;
+  max-width: 980px;
+  margin-inline: auto;
+  min-width: 0;
+}
+
+.manager-section--wide {
+  max-width: 1180px;
+}
+
+.manager-section--narrow {
+  max-width: 820px;
+}
+
 .manager-welcome-modal {
   width: min(92vw, 520px);
   max-height: min(82vh, 720px);
+}
+
+/* Team/player identity — top club strip only; never Store theme accent */
+.team-card,
+.game-panel--player,
+.game-panel--identity {
+  position: relative;
+  overflow: hidden;
+}
+
+.team-card__accent {
+  display: block;
+  height: 3px;
+  width: 100%;
+  flex-shrink: 0;
 }
 
 /* ── Shared panel body ───────────────────────────────────────────────────── */
@@ -173,12 +203,20 @@
   border-color: rgba(148, 163, 184, 0.22) !important;
   background: rgba(8, 12, 13, 0.96);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+  outline: none;
 }
 
 .game-panel--identity::before,
 .game-panel--player::before,
 .showcase-player-card::before {
   display: none !important;
+  content: none !important;
+}
+
+/* Selected / hover states must stay neutral — club strip owns identity */
+.showcase-player-card:hover,
+.showcase-player-card--expanded {
+  border-color: rgba(148, 163, 184, 0.35) !important;
 }
 
 .game-panel::after,

@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { getClubIndicatorColor } from "../clubs";
+import { getClubColors, getClubIndicatorColor } from "../clubs";
 import { CARD, SPACING } from "../ui/design-system";
 import { getFriendlyDualBorderStyle } from "./managerFriendlyUi";
 import { isChallengeCupFixture } from "./managerFixtureDisplay";
@@ -103,13 +103,26 @@ export function managerFixtureCardStyle(
 }
 
 export function managerClubAccentCardClass(): string {
-  return `${CARD.elevated} game-panel--flush ${SPACING.cardPadding}`;
+  /* Identity surface only — no Store theme top strip (::before disabled via flush/player). */
+  return `game-panel game-panel--player game-panel--flush ${SPACING.cardPadding}`;
 }
 
 export function managerClubAccentCardStyle(club: string): CSSProperties {
-  const accent = getClubIndicatorColor(club);
+  const colors = getClubColors(club);
+  const primary = colors.primary;
+  const secondary = colors.secondary;
+  const tertiary = colors.accent ?? secondary;
   return {
-    borderTop: `3px solid ${accent}`,
+    // Top club gradient via border-image substitute — solid primary strip
+    borderTop: `3px solid ${getClubIndicatorColor(club)}`,
+    // Prevent theme/generic borders stacking over club identity
+    borderLeftColor: "rgba(255,255,255,0.08)",
+    borderRightColor: "rgba(255,255,255,0.08)",
+    borderBottomColor: "rgba(255,255,255,0.08)",
+    // CSS vars for optional team-card__accent usage
+    ["--club-primary" as string]: primary,
+    ["--club-secondary" as string]: secondary,
+    ["--club-tertiary" as string]: tertiary,
   };
 }
 

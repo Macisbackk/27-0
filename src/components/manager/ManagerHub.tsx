@@ -76,6 +76,7 @@ import {
   ManagerFormStrip,
   ManagerNewsItem,
   ManagerPage,
+  ManagerSection,
   ManagerSectionCard,
   ManagerStat,
   ManagerStatGrid,
@@ -761,6 +762,7 @@ export function ManagerHub({
     return (
       <>
         <ManagerPage className={hubMobilePad}>
+          <ManagerSection width="wide">
           <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
             {nextFixtureCard}
             {newsTickerCard}
@@ -779,6 +781,7 @@ export function ManagerHub({
             {contractsCard}
           </MobileDetailsAccordion>
           {quickActionsCard}
+          </ManagerSection>
         </ManagerPage>
         {stickyActions}
         {alertDialog}
@@ -790,6 +793,7 @@ export function ManagerHub({
   return (
     <>
       <ManagerPage className={hubMobilePad}>
+      <ManagerSection width="wide">
       <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
         {seasonProgressCard}
         {nextFixtureCard}
@@ -805,6 +809,7 @@ export function ManagerHub({
       </MobileDetailsAccordion>
 
       {quickActionsCard}
+      </ManagerSection>
     </ManagerPage>
     {stickyActions}
     {alertDialog}

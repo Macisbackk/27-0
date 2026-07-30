@@ -30,6 +30,7 @@ import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import {
   ManagerPage,
+  ManagerSection,
   ManagerViewHeader,
 } from "@/components/manager/manager-ui";
 import { ManagerTacticsPanel } from "@/components/manager/ManagerTactics";
@@ -484,6 +485,7 @@ export function ManagerSquad({
       />
 
       {subTab === "tactics" ? (
+        <ManagerSection width="narrow">
         <ClipboardPanel padded>
           <GameSectionHeader
             label="Tactics"
@@ -498,6 +500,7 @@ export function ManagerSquad({
             />
           </div>
         </ClipboardPanel>
+        </ManagerSection>
       ) : (
         <>
       {assignmentNotice && (

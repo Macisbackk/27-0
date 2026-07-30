@@ -54,11 +54,30 @@ export function ManagerPage({
   className?: string;
 }) {
   return (
-    <div
-      className={`manager-page ${wide ? "manager-page--wide" : ""} ${wide ? MANAGER.pageWide : MANAGER.page} ${className}`}
-    >
+    <div className={`${wide ? MANAGER.pageWide : MANAGER.page} ${className}`}>
       {children}
     </div>
+  );
+}
+
+/** Centred readable column inside ManagerPage. */
+export function ManagerSection({
+  width = "default",
+  children,
+  className = "",
+}: {
+  width?: "default" | "wide" | "narrow";
+  children: ReactNode;
+  className?: string;
+}) {
+  const widthClass =
+    width === "wide"
+      ? MANAGER.sectionWide
+      : width === "narrow"
+        ? MANAGER.sectionNarrow
+        : MANAGER.section;
+  return (
+    <div className={`${widthClass} ${className}`.trim()}>{children}</div>
   );
 }
 

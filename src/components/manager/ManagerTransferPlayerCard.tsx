@@ -72,12 +72,12 @@ export function ManagerTransferPlayerCard({
     >
       <div
         className={`border-b border-pitch-700/40 px-4 py-3 sm:px-4 ${
-          freeAgent ? "border-l-4 border-l-theme-primary" : ""
+          freeAgent ? "border-t-[3px] border-t-theme-primary" : ""
         }`}
         style={
           freeAgent
             ? undefined
-            : { borderLeftWidth: 4, borderLeftColor: accent }
+            : { borderTopWidth: 3, borderTopColor: accent }
         }
       >
         <div className="flex items-start justify-between gap-2">
@@ -236,7 +236,7 @@ export function ManagerLeagueTransferCard({
   return (
     <li
       className={`${managerDataRowClass()} p-3`}
-      style={{ borderLeftWidth: 3, borderLeftColor: getClubIndicatorColor(toClub) }}
+      style={{ borderTopWidth: 3, borderTopColor: getClubIndicatorColor(toClub) }}
     >
       <p className="truncate font-semibold text-white">{playerName}</p>
       <p className={`mt-1 ${TYPO.bodySm}`}>

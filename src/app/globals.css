@@ -1131,13 +1131,16 @@ body {
     gap: 0.45rem;
     width: auto;
     max-width: 100%;
+    min-height: 42px;
     border-radius: 12px;
     font-weight: 800;
     letter-spacing: 0.01em;
     text-transform: none;
-    line-height: 1;
+    line-height: 1.15;
     text-align: center;
     text-decoration: none;
+    white-space: normal;
+    overflow-wrap: anywhere;
     isolation: isolate;
     position: relative;
     z-index: 1;
@@ -1149,6 +1152,18 @@ body {
       background 120ms ease,
       border-color 120ms ease,
       filter 120ms ease;
+  }
+
+  .game-button--compact {
+    min-height: 36px;
+    padding-inline: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .game-button--sm {
@@ -2043,13 +2058,16 @@ button.game-button,
   justify-content: center !important;
   gap: 0.45rem;
   max-width: 100%;
+  min-height: 42px;
   border-radius: 12px !important;
   font-weight: 800 !important;
   letter-spacing: 0.01em;
   text-transform: none;
-  line-height: 1;
+  line-height: 1.15 !important;
   text-align: center;
   text-decoration: none !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
   isolation: isolate !important;
   position: relative !important;
   z-index: 1 !important;

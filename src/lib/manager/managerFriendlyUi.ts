@@ -1,26 +1,26 @@
 import type { CSSProperties } from "react";
 import { getClubColors } from "../clubs";
 
-/** Opponent kit colours only — for pre-season friendly selection cards. */
+/** Opponent kit colours only — top strip, no left colour bars. */
 export function getFriendlyOpponentBorderStyle(
   opponentClub: string
 ): CSSProperties {
   const opponent = getClubColors(opponentClub);
 
   return {
-    borderLeftWidth: 4,
-    borderRightWidth: 4,
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    borderLeftColor: opponent.primary,
-    borderRightColor: opponent.primary,
-    borderTopColor: opponent.secondary,
-    borderBottomColor: opponent.secondary,
-    backgroundImage: `linear-gradient(135deg, ${opponent.primary}16 0%, transparent 100%)`,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderTopWidth: 3,
+    borderLeftColor: "rgba(255,255,255,0.08)",
+    borderRightColor: "rgba(255,255,255,0.08)",
+    borderBottomColor: "rgba(255,255,255,0.08)",
+    borderTopColor: opponent.primary,
+    backgroundImage: `linear-gradient(135deg, ${opponent.primary}14 0%, transparent 100%)`,
   };
 }
 
-/** User club on the left, opponent on the right — primary + secondary kit colours. */
+/** Dual club identity via top strip only — no side bars. */
 export function getFriendlyDualBorderStyle(
   userClub: string,
   opponentClub: string
@@ -29,14 +29,20 @@ export function getFriendlyDualBorderStyle(
   const opponent = getClubColors(opponentClub);
 
   return {
-    borderLeftWidth: 4,
-    borderRightWidth: 4,
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    borderLeftColor: user.primary,
-    borderRightColor: opponent.primary,
-    borderTopColor: user.secondary,
-    borderBottomColor: opponent.secondary,
-    backgroundImage: `linear-gradient(135deg, ${user.primary}16 0%, transparent 46%, transparent 54%, ${opponent.primary}16 100%)`,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderTopWidth: 3,
+    borderLeftColor: "rgba(255,255,255,0.08)",
+    borderRightColor: "rgba(255,255,255,0.08)",
+    borderBottomColor: "rgba(255,255,255,0.08)",
+    borderTopColor: user.primary,
+    backgroundImage: [
+      `linear-gradient(to right, ${user.primary} 0 50%, ${opponent.primary} 50% 100%)`,
+      `linear-gradient(135deg, ${user.primary}12 0%, transparent 46%, transparent 54%, ${opponent.primary}12 100%)`,
+    ].join(", "),
+    backgroundSize: "100% 3px, auto",
+    backgroundPosition: "top, center",
+    backgroundRepeat: "no-repeat, no-repeat",
   };
 }

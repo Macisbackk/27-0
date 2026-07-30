@@ -27,7 +27,7 @@ import { releasePlayerWithCost } from "@/lib/manager/managerTransferLeague";
 import { getWageBillPercent, isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { playPanelClose, playUiClick } from "@/lib/sound";
-import { ManagerPage } from "@/components/manager/manager-ui";
+import { ManagerPage, ManagerSection } from "@/components/manager/manager-ui";
 import {
   managerCalloutClass,
   managerSectionAccentClass,
@@ -207,6 +207,7 @@ export function ManagerContracts({
 
   return (
     <ManagerPage>
+      <ManagerSection>
       <GameSectionHeader
         label="Contracts"
         title="Contracts"
@@ -381,6 +382,8 @@ export function ManagerContracts({
         })}
         </div>
       </ClipboardPanel>
+
+      </ManagerSection>
 
       {selected && (
         <div

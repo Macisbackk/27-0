@@ -21,6 +21,7 @@ import {
 } from "@/lib/manager/managerCareerMilestones";
 import {
   ManagerPage,
+  ManagerSection,
   ManagerSectionCard,
   ManagerStat,
   ManagerViewHeader,
@@ -38,6 +39,7 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
 
   return (
     <ManagerPage>
+      <ManagerSection>
       <ManagerViewHeader
         title="Stats"
         subtitle={
@@ -67,6 +69,7 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
       ) : (
         <RetiredPlayersPanel career={career} />
       )}
+      </ManagerSection>
     </ManagerPage>
   );
 }

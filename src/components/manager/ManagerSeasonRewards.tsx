@@ -137,7 +137,7 @@ export function ManagerSeasonRewards({
           playUiClick();
           onContinue();
         }}>
-          Continue to Next Season
+          Next Season
         </GameButton>
       )}
 

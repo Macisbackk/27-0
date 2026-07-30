@@ -1,6 +1,6 @@
 "use client";
 
-import { ManagerPage } from "@/components/manager/manager-ui";
+import { ManagerPage, ManagerSection } from "@/components/manager/manager-ui";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, ManagerTactics } from "@/lib/manager/types";
@@ -199,7 +199,9 @@ export function ManagerTactics({
   return (
     <ManagerPage>
       <h1 className={`text-center ${TYPO.pageTitle}`}>Tactics</h1>
-      <ManagerTacticsPanel career={career} onChange={onChange} />
+      <ManagerSection width="narrow">
+        <ManagerTacticsPanel career={career} onChange={onChange} />
+      </ManagerSection>
     </ManagerPage>
   );
 }

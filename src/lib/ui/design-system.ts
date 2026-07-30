@@ -88,8 +88,12 @@ export const PAGE = {
 /** Manager Mode layout — fluid mobile-first spacing and grids. */
 export const MANAGER = {
   /** Full width of PageShell — do not nest a second max-width. */
-  page: `w-full min-w-0 ${PAGE.section}`,
-  pageWide: `w-full min-w-0 ${PAGE.section}`,
+  page: `manager-page w-full min-w-0 ${PAGE.section}`,
+  pageWide: `manager-page manager-page--wide w-full min-w-0 ${PAGE.section}`,
+  /** Readable centred content column (forms, lists, fixtures). */
+  section: "manager-section",
+  sectionWide: "manager-section manager-section--wide",
+  sectionNarrow: "manager-section manager-section--narrow",
   /** Player pool above team sheet on mobile. */
   splitLayout:
     "grid gap-4 lg:grid-cols-[minmax(0,1fr)_min(100%,280px)] lg:gap-6 [&>*:first-child]:order-2 [&>*:last-child]:order-1 lg:[&>*:first-child]:order-1 lg:[&>*:last-child]:order-2",
@@ -100,6 +104,7 @@ export const MANAGER = {
   tabGrid:
     "flex snap-x snap-mandatory gap-1.5 overflow-x-auto pb-0.5 scroll-pl-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-4 sm:gap-2 sm:overflow-visible sm:pb-0 sm:snap-none lg:grid-cols-8",
   modalTitle: "font-display text-lg font-bold text-white sm:text-xl",
+  buttonRow: "flex flex-wrap gap-2",
 } as const;
 
 /** Form & filter inputs. */
