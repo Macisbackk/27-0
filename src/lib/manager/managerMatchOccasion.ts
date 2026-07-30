@@ -31,9 +31,11 @@ export type ManagerMatchOccasionFixture = Pick<
   | "playoffRound"
   | "isNeutral"
   | "venue"
-  | "label"
   | "round"
->;
+> & {
+  /** Optional; present on scheduled fixtures but not required for occasion resolution. */
+  label?: string;
+};
 
 export interface ManagerMatchOccasionPresentation {
   occasion: ManagerMatchOccasion;
