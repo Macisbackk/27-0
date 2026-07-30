@@ -1,6 +1,5 @@
 "use client";
 
-import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { TYPO } from "@/lib/ui/typography";
 import { playEraModeOff, playEraModeOn } from "@/lib/sound";
 
@@ -21,6 +20,10 @@ interface ChallengeCupVariantToggleProps {
   sectionLabel?: string;
 }
 
+/**
+ * Compact Current / Era segmented control.
+ * Era selected = mode gold only; Current selected = mode green; idle = neutral.
+ */
 export function ChallengeCupVariantToggle({
   eraMode,
   className = "",
@@ -33,11 +36,6 @@ export function ChallengeCupVariantToggle({
   const currentLabel =
     useShortLabels || compact ? "Current" : "Current Teams";
   const eraLabel = useShortLabels || compact ? "Era" : "Era Teams";
-
-  const tabs = [
-    { id: "current" as const, label: currentLabel, variant: "normal" as const },
-    { id: "era" as const, label: eraLabel, variant: "era" as const },
-  ];
 
   const handleChange = (id: CupVariantId) => {
     if (id === "era" && !eraMode) {
@@ -53,7 +51,7 @@ export function ChallengeCupVariantToggle({
 
   return (
     <div
-      className={`${compact ? "" : "flex flex-col items-stretch"} ${className}`}
+      className={`mode-switch-wrap ${compact ? "" : "flex w-full max-w-sm flex-col items-stretch"} ${className}`}
     >
       {!hideLabel && (
         <p
@@ -62,32 +60,34 @@ export function ChallengeCupVariantToggle({
           {sectionLabel}
         </p>
       )}
-      {compact ? (
-        <div className="mode-switch mode-switch--sidebar">
-          <button
-            type="button"
-            onClick={() => handleChange("current")}
-            className={!eraMode ? "active current" : ""}
-          >
-            {currentLabel}
-          </button>
-          <button
-            type="button"
-            onClick={() => handleChange("era")}
-            className={eraMode ? "active era" : ""}
-          >
-            {eraLabel}
-          </button>
-        </div>
-      ) : (
-        <ManagerSubTabBar
-          tabs={tabs}
-          active={eraMode ? "era" : "current"}
-          onChange={handleChange}
-          eraAccent={eraMode}
-          ariaLabel={sectionLabel}
-        />
-      )}
+      <div
+        className={
+          compact
+            ? "mode-switch mode-switch--sidebar"
+            : "mode-switch mode-switch--home"
+        }
+        role="tablist"
+        aria-label={sectionLabel}
+      >
+        <button
+          type="button"
+          role="tab"
+          aria-selected={!eraMode}
+          onClick={() => handleChange("current")}
+          className={!eraMode ? "active current" : ""}
+        >
+          {currentLabel}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={eraMode}
+          onClick={() => handleChange("era")}
+          className={eraMode ? "active era" : ""}
+        >
+          {eraLabel}
+        </button>
+      </div>
     </div>
   );
 }

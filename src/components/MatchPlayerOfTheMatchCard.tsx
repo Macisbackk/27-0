@@ -29,13 +29,13 @@ export function MatchPlayerOfTheMatchCard({
       } ${className}`}
     >
       <span
-        className={`absolute inset-y-0 left-0 w-1 ${
+        className={`absolute inset-x-0 top-0 h-0.5 ${
           isUserClub ? "bg-accent-gold" : "bg-pitch-500"
         }`}
         aria-hidden
       />
       <div
-        className={`flex items-stretch gap-3 pl-4 sm:gap-4 sm:pl-5 ${SPACING.cardPadding}`}
+        className={`flex items-stretch gap-3 sm:gap-4 ${SPACING.cardPadding}`}
       >
         <div
           className={`flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl border-2 sm:h-16 sm:w-16 ${

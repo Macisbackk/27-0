@@ -60,7 +60,7 @@ export function ManagerNav({
   return (
     <header className="space-y-1.5">
       <div
-        className={`${managerClubAccentCardClass()} flex items-center gap-2 !border-l-[3px] !px-2.5 !py-2 sm:gap-3 sm:!px-3 sm:!py-2.5`}
+        className={`${managerClubAccentCardClass()} flex items-center gap-2 !px-2.5 !py-2 sm:gap-3 sm:!px-3 sm:!py-2.5`}
         style={managerClubAccentCardStyle(club)}
       >
         <ClubLogoBox

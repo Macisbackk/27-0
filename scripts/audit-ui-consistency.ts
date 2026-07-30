@@ -170,7 +170,42 @@ const CHECKS: {
     skipIf: (_file, line) =>
       line.includes("GameButton") || line.includes("LINK."),
   },
+  {
+    id: "random-max-width",
+    severity: "warn",
+    regex: /\bmax-w-(?:4xl|5xl|6xl|7xl)\b/g,
+    skipIf: (file) =>
+      file.includes("design-system") ||
+      file.includes("PageShell") ||
+      file.includes("ManagerNav") ||
+      file.includes("ManagerMobileBottomNav"),
+  },
+  {
+    id: "left-accent-strip",
+    severity: "error",
+    regex: /\b(?:border-l-4|border-l-\[3px\]|!border-l-|inset-y-0 left-0 w-1)\b/g,
+    skipIf: (file) =>
+      file.includes("design-system.css") || file.includes("globals.css"),
+  },
+  {
+    id: "manager-missing-shared-container",
+    severity: "error",
+    regex: /export function Manager(?:Hub|Inbox|Reserves|Contracts|Transfers|Fixtures|StatsView|Table|FriendlySelect)\b/,
+    skipIf: () => true, // structural check handled in main()
+  },
 ];
+
+const MANAGER_TAB_FILES: Record<string, { requireSection?: boolean; allowWide?: boolean }> = {
+  "src/components/manager/ManagerHub.tsx": { requireSection: true },
+  "src/components/manager/ManagerInbox.tsx": { requireSection: true },
+  "src/components/manager/ManagerReserves.tsx": { requireSection: true },
+  "src/components/manager/ManagerContracts.tsx": { requireSection: true },
+  "src/components/manager/ManagerTransfers.tsx": { requireSection: true },
+  "src/components/manager/ManagerFixtures.tsx": { requireSection: true },
+  "src/components/manager/ManagerStatsView.tsx": { requireSection: true },
+  "src/components/manager/ManagerTable.tsx": { requireSection: true },
+  "src/components/manager/ManagerTactics.tsx": { requireSection: true },
+};
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const name of readdirSync(dir)) {
@@ -181,6 +216,75 @@ function walk(dir: string, out: string[] = []): string[] {
     else if (/\.(tsx|ts|css)$/.test(name)) out.push(full);
   }
   return out;
+}
+
+function auditManagerContainers(findings: Finding[]) {
+  const transfersPath = join(SRC, "components/manager/ManagerTransfers.tsx");
+  const fixturesPath = join(SRC, "components/manager/ManagerFixtures.tsx");
+  const reservesPath = join(SRC, "components/manager/ManagerReserves.tsx");
+  const transfers = readFileSync(transfersPath, "utf8");
+  const fixtures = readFileSync(fixturesPath, "utf8");
+  const reserves = readFileSync(reservesPath, "utf8");
+
+  const transfersUsesSection = /<ManagerSection[\s>]/.test(transfers);
+  const fixturesUsesSection = /<ManagerSection[\s>]/.test(fixtures);
+  const reservesUsesSection = /<ManagerSection[\s>]/.test(reserves);
+
+  if (transfersUsesSection && !fixturesUsesSection) {
+    findings.push({
+      file: "src/components/manager/ManagerFixtures.tsx",
+      line: 1,
+      id: "fixtures-width-vs-transfers",
+      severity: "error",
+      snippet: "Fixtures must use ManagerSection like Transfers",
+    });
+  }
+  if (transfersUsesSection && !reservesUsesSection) {
+    findings.push({
+      file: "src/components/manager/ManagerReserves.tsx",
+      line: 1,
+      id: "reserves-width-vs-transfers",
+      severity: "error",
+      snippet: "Reserves must use ManagerSection like Transfers",
+    });
+  }
+
+  if (/ManagerSection\s+width=["']wide["']/.test(fixtures)) {
+    findings.push({
+      file: "src/components/manager/ManagerFixtures.tsx",
+      line: 1,
+      id: "fixtures-stretched-wide",
+      severity: "error",
+      snippet: "Fixtures should not use manager-section--wide",
+    });
+  }
+
+  for (const [rel, opts] of Object.entries(MANAGER_TAB_FILES)) {
+    const full = join(ROOT, rel);
+    const text = readFileSync(full, "utf8");
+    if (opts.requireSection && !/<Manager(?:Page|Section)[\s>]/.test(text)) {
+      findings.push({
+        file: rel,
+        line: 1,
+        id: "manager-missing-shared-container",
+        severity: "error",
+        snippet: "Manager tab missing ManagerPage/ManagerSection",
+      });
+    }
+    if (
+      !opts.allowWide &&
+      /ManagerSection\s+width=["']wide["']/.test(text) &&
+      !rel.includes("Squad")
+    ) {
+      findings.push({
+        file: rel,
+        line: 1,
+        id: "manager-unnecessary-wide",
+        severity: "warn",
+        snippet: "Prefer default manager-section (980px) like Transfers",
+      });
+    }
+  }
 }
 
 function main() {
@@ -195,6 +299,7 @@ function main() {
     const lines = text.split(/\r?\n/);
 
     for (const check of CHECKS) {
+      if (check.id === "manager-missing-shared-container") continue;
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i]!;
         check.regex.lastIndex = 0;
@@ -211,6 +316,8 @@ function main() {
       }
     }
   }
+
+  auditManagerContainers(findings);
 
   const errors = findings.filter((f) => f.severity === "error");
   const warns = findings.filter((f) => f.severity === "warn");

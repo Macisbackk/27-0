@@ -537,11 +537,11 @@ export function ManagerInboxMessageCard({
         className={`${CARD.inset} relative flex items-center gap-3 overflow-hidden ${SPACING.listItem} opacity-80`}
       >
         <span
-          className={`absolute inset-y-0 left-0 w-1 ${style.accentBar}`}
+          className={`absolute inset-x-0 top-0 h-0.5 ${style.accentBar}`}
           aria-hidden
         />
         <span
-          className={`ml-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border text-[10px] font-bold ${style.iconBox}`}
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border text-[10px] font-bold ${style.iconBox}`}
           aria-hidden
         >
           {style.icon}
@@ -564,10 +564,10 @@ export function ManagerInboxMessageCard({
       className={`${CARD.elevated} relative flex flex-col overflow-hidden`}
     >
       <span
-        className={`absolute inset-y-0 left-0 w-1 ${style.accentBar}`}
+        className={`absolute inset-x-0 top-0 h-0.5 ${style.accentBar}`}
         aria-hidden
       />
-      <div className={`flex flex-1 flex-col gap-3 ${SPACING.cardPaddingSm} pl-5 sm:pl-4`}>
+      <div className={`flex flex-1 flex-col gap-3 ${SPACING.cardPaddingSm}`}>
         <header className="flex gap-3">
           <span
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border text-xs font-bold ${style.iconBox}`}

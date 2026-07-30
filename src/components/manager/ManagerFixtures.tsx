@@ -664,7 +664,7 @@ export function ManagerFixtures({
 
   return (
     <ManagerPage>
-      <ManagerSection>
+      <ManagerSection className="manager-fixtures">
       <GameSectionHeader
         label="Fixtures"
         title="Fixtures"
@@ -681,6 +681,7 @@ export function ManagerFixtures({
         />
       </div>
 
+      <div className="flex w-full min-w-0 flex-col gap-4 sm:gap-5">
       <GamePanel padded label="Season">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <ManagerStat
@@ -874,6 +875,7 @@ export function ManagerFixtures({
           onClose={() => setViewClubSheet(null)}
         />
       )}
+      </div>
       </ManagerSection>
     </ManagerPage>
   );

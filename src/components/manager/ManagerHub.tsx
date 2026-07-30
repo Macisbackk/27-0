@@ -762,7 +762,7 @@ export function ManagerHub({
     return (
       <>
         <ManagerPage className={hubMobilePad}>
-          <ManagerSection width="wide">
+          <ManagerSection>
           <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
             {nextFixtureCard}
             {newsTickerCard}
@@ -793,7 +793,7 @@ export function ManagerHub({
   return (
     <>
       <ManagerPage className={hubMobilePad}>
-      <ManagerSection width="wide">
+      <ManagerSection>
       <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
         {seasonProgressCard}
         {nextFixtureCard}

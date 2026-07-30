@@ -170,7 +170,8 @@ body {
   max-height: 100dvh;
 }
 
-.mode-switch--sidebar {
+.mode-switch--sidebar,
+.mode-switch--home {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4px;
@@ -178,28 +179,47 @@ body {
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+  max-width: 100%;
 }
 
-.mode-switch--sidebar button {
-  min-height: 30px;
+.mode-switch--home {
+  max-width: 20rem;
+}
+
+.mode-switch--sidebar button,
+.mode-switch--home button {
+  min-height: 34px;
   border-radius: 8px;
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   font-weight: 700;
+  line-height: 1.12;
   border: 0;
   background: transparent;
   color: var(--text-muted, #9ca3af);
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-inline: 0.5rem;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.mode-switch--sidebar button.active.current {
-  background: var(--mode-current, #22c55e);
-  color: #06130b;
+.mode-switch--home button {
+  min-height: 40px;
+  font-size: 0.88rem;
 }
 
-.mode-switch--sidebar button.active.era {
+.mode-switch--sidebar button.active.current,
+.mode-switch--home button.active.current {
+  background: var(--mode-current, #22c55e);
+  color: var(--mode-current-text, #06130b);
+}
+
+.mode-switch--sidebar button.active.era,
+.mode-switch--home button.active.era {
   background: var(--mode-era, #eab308);
-  color: #171000;
+  color: var(--mode-era-text, #171000);
 }
 
 .achievement-popup-overlay {
@@ -1131,12 +1151,12 @@ body {
     gap: 0.45rem;
     width: auto;
     max-width: 100%;
-    min-height: 42px;
+    min-height: 40px;
     border-radius: 12px;
     font-weight: 800;
     letter-spacing: 0.01em;
     text-transform: none;
-    line-height: 1.15;
+    line-height: 1.12;
     text-align: center;
     text-decoration: none;
     white-space: normal;
@@ -1155,9 +1175,9 @@ body {
   }
 
   .game-button--compact {
-    min-height: 36px;
-    padding-inline: 0.75rem;
-    font-size: 0.85rem;
+    min-height: 34px;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.84rem;
   }
 
   .button-row {
@@ -2058,12 +2078,12 @@ button.game-button,
   justify-content: center !important;
   gap: 0.45rem;
   max-width: 100%;
-  min-height: 42px;
+  min-height: 40px;
   border-radius: 12px !important;
   font-weight: 800 !important;
   letter-spacing: 0.01em;
   text-transform: none;
-  line-height: 1.15 !important;
+  line-height: 1.12 !important;
   text-align: center;
   text-decoration: none !important;
   white-space: normal !important;

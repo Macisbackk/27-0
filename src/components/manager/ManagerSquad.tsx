@@ -642,6 +642,16 @@ export function ManagerSquad({
                     )}
                   >
                     <div className="player-slot player-slot--interchange">
+                      <div className="player-slot__header">
+                        <span className="player-slot__role">
+                          Interchange {14 + i}
+                        </span>
+                        {unavailable ? (
+                          <span className="text-[10px] font-semibold text-red-400">
+                            {isSuspension ? "Sus" : "Inj"}
+                          </span>
+                        ) : null}
+                      </div>
                       <div className="player-slot__name">
                         <p
                           className={`${SQUAD_PLAYER_NAME_CLASS} ${
@@ -650,27 +660,19 @@ export function ManagerSquad({
                         >
                           {player?.name ?? "Empty"}
                         </p>
-                        {player && (
-                          <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
-                            {player.peakRating}
-                          </span>
-                        )}
                       </div>
                       <div className="player-slot__footer">
-                        <span className="player-slot__role">
-                          Interchange {14 + i}
-                        </span>
                         <span className="player-slot__position">
                           {player
                             ? player.position.replaceAll("_", " ")
                             : "Bench"}
                         </span>
+                        {player ? (
+                          <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
+                            {player.peakRating}
+                          </span>
+                        ) : null}
                       </div>
-                      {unavailable ? (
-                        <p className="text-[10px] text-red-400">
-                          {isSuspension ? "Suspended" : "Injured"}
-                        </p>
-                      ) : null}
                     </div>
                   </button>
                 );

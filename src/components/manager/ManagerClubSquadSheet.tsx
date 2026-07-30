@@ -78,6 +78,14 @@ function ReadonlyInterchangeSlot({
 }) {
   const content = (
     <div className="player-slot player-slot--interchange">
+      <div className="player-slot__header">
+        <span className="player-slot__role">Interchange {shirtNumber}</span>
+        {player && listed ? (
+          <span className="text-[9px] font-bold uppercase tracking-wide text-theme-primary">
+            Listed
+          </span>
+        ) : null}
+      </div>
       <div className="player-slot__name">
         <p
           className={`${READONLY_INTERCHANGE_NAME_CLASS} ${
@@ -86,23 +94,16 @@ function ReadonlyInterchangeSlot({
         >
           {player?.name ?? "Empty"}
         </p>
+      </div>
+      <div className="player-slot__footer">
+        <span className="player-slot__position">
+          {player ? player.position.replaceAll("_", " ") : "Bench"}
+        </span>
         {player ? (
           <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
             {player.peakRating}
           </span>
         ) : null}
-      </div>
-      <div className="player-slot__footer">
-        <span className="player-slot__role">Interchange {shirtNumber}</span>
-        <span className="player-slot__position">
-          {player ? player.position.replaceAll("_", " ") : "Bench"}
-          {player && listed ? (
-            <span className="font-bold uppercase tracking-wide text-theme-primary">
-              {" "}
-              · Listed
-            </span>
-          ) : null}
-        </span>
       </div>
     </div>
   );
