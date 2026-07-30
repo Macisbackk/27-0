@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { GamePanel } from "@/components/ui/GamePanel";
+import { BodyPortal } from "@/components/ui/BodyPortal";
 import { GameButton } from "@/components/ui/GameButton";
+import { GameBadge } from "@/components/ui/GameBadge";
 import type { AchievementUnlockResult } from "@/lib/achievements/achievementEngine";
 import { formatClubFunds } from "@/lib/club-funds";
 
@@ -16,50 +17,58 @@ export function AchievementUnlockedPopup({
   onDismiss,
 }: AchievementUnlockedPopupProps) {
   const { definition, rewardAmount } = result;
+  const titleId = `achievement-popup-title-${result.id}`;
 
   return (
-    <AnimatePresence>
-      <motion.div
-        className="pointer-events-none fixed inset-x-0 bottom-0 z-[120] flex justify-center px-3 pb-[max(1rem,env(safe-area-inset-bottom))] sm:bottom-4"
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 16 }}
-        transition={{ type: "spring", damping: 26, stiffness: 320 }}
-      >
-        <GamePanel
-          padded
-          className="pointer-events-auto w-full max-w-md shadow-2xl"
-          aria-label="Achievement unlocked"
+    <BodyPortal>
+      <AnimatePresence>
+        <motion.div
+          key={result.id}
+          className="achievement-popup-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={titleId}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          onClick={onDismiss}
         >
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
-                Achievement Unlocked
-              </p>
-              <p className="mt-1 font-display text-lg font-bold text-white">
-                {definition.name}
-              </p>
-              <p className="mt-1 text-sm text-pitch-200">
-                {definition.description}
-              </p>
-              {rewardAmount && rewardAmount > 0 ? (
-                <p className="mt-2 text-sm font-semibold text-accent-gold">
-                  +{formatClubFunds(rewardAmount)} Club Funds
-                </p>
-              ) : null}
-            </div>
+          <motion.div
+            className="achievement-popup-card"
+            initial={{ opacity: 0, scale: 0.94, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 6 }}
+            transition={{ type: "spring", damping: 26, stiffness: 340 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <GameBadge tone="theme" className="achievement-popup-kicker">
+              Achievement Unlocked
+            </GameBadge>
+            <h2 id={titleId} className="achievement-popup-title">
+              {definition.name}
+            </h2>
+            <p className="achievement-popup-description">
+              {definition.description}
+            </p>
+            {rewardAmount && rewardAmount > 0 ? (
+              <div className="achievement-popup-reward">
+                Reward: {formatClubFunds(rewardAmount)} Club Funds
+              </div>
+            ) : null}
             <GameButton
               type="button"
-              variant="ghost"
-              size="sm"
+              variant="theme"
+              size="md"
+              fullWidth={false}
               onClick={onDismiss}
-              className="shrink-0"
+              className="achievement-popup-button"
             >
-              Dismiss
+              Continue
             </GameButton>
-          </div>
-        </GamePanel>
-      </motion.div>
-    </AnimatePresence>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+    </BodyPortal>
   );
 }

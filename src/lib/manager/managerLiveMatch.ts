@@ -15,6 +15,13 @@ import { computeManagerTeamRating } from "./managerRating";
 import { getManagerPlayer, getManagerPlayerEligiblePositions } from "./managerPlayers";
 import { getMatchdayTryWeight } from "./managerTryScoring";
 import { previewManagerMatchScoreline } from "./managerSimulation";
+import { eventMinutePrefix } from "../game/match-events";
+import type { MatchEventType } from "../game/match-events";
+import {
+  buildCommentaryLine,
+  memoryFromEvents,
+  territoryForMinute,
+} from "../match/matchEventTemplates";
 
 export type { LiveMatchEvent };
 
@@ -471,6 +478,13 @@ export function advanceLiveTick(
   let userTries = state.userTries;
   let oppTries = state.oppTries;
   const events = [...state.events];
+  const memory = memoryFromEvents(
+    events.map((e) => ({
+      type: e.type as MatchEventType,
+      description: e.description,
+      playerName: e.playerName,
+    }))
+  );
 
   const userRating = computeManagerTeamRating(
     career.matchdayXiii,
@@ -523,12 +537,25 @@ export function advanceLiveTick(
       userTries++;
       userScore += 4;
       const scorer = pickScorer(career, command, rng);
+      const tryText = buildCommentaryLine(
+        "try",
+        {
+          team: career.club,
+          opponent: state.opponent,
+          player: scorer.name,
+          minute,
+          area: territoryForMinute(minute),
+          score: `${userScore}-${oppScore}`,
+        },
+        memory,
+        rng
+      );
       events.push({
         minute,
         type: "try",
         team: "user",
         playerName: scorer.name,
-        description: `${minute}' ${scorer.name} crashes over for ${career.club}`,
+        description: eventMinutePrefix(minute, tryText),
         points: 4,
         importance: "major",
         teamName: career.club,
@@ -536,12 +563,25 @@ export function advanceLiveTick(
       if (rng() < 0.82) {
         userScore += 2;
         const kicker = pickKicker(career, rng);
+        const goalText = buildCommentaryLine(
+          "goal",
+          {
+            team: career.club,
+            opponent: state.opponent,
+            kicker,
+            minute,
+            area: territoryForMinute(minute),
+            score: `${userScore}-${oppScore}`,
+          },
+          memory,
+          rng
+        );
         events.push({
           minute,
           type: "goal",
           team: "user",
           playerName: kicker,
-          description: `${minute}' ${kicker} converts`,
+          description: eventMinutePrefix(minute, goalText),
           points: 2,
           importance: "high",
           teamName: career.club,
@@ -551,22 +591,47 @@ export function advanceLiveTick(
     } else if (oppTry) {
       oppTries++;
       oppScore += 4;
+      const tryText = buildCommentaryLine(
+        "try",
+        {
+          team: state.opponent,
+          opponent: career.club,
+          player: state.opponent,
+          minute,
+          area: territoryForMinute(minute),
+          score: `${userScore}-${oppScore}`,
+        },
+        memory,
+        rng
+      );
       events.push({
         minute,
         type: "try",
         team: "opponent",
-        description: `${minute}' ${state.opponent} score out wide`,
+        description: eventMinutePrefix(minute, tryText),
         points: 4,
         importance: "major",
         teamName: state.opponent,
       });
       if (rng() < 0.8) {
         oppScore += 2;
+        const convText = buildCommentaryLine(
+          "goal",
+          {
+            team: state.opponent,
+            opponent: career.club,
+            minute,
+            area: territoryForMinute(minute),
+            score: `${userScore}-${oppScore}`,
+          },
+          memory,
+          rng
+        );
         events.push({
           minute,
           type: "goal",
           team: "opponent",
-          description: `${minute}' Conversion added for ${state.opponent}`,
+          description: eventMinutePrefix(minute, convText),
           points: 2,
           importance: "high",
           teamName: state.opponent,
@@ -574,12 +639,25 @@ export function advanceLiveTick(
       }
       momentum -= 8;
     } else if (rng() < 0.018 * mods.errorRisk) {
+      const errText = buildCommentaryLine(
+        "knock_on",
+        {
+          team: career.club,
+          opponent: state.opponent,
+          minute,
+          area: territoryForMinute(minute),
+          score: `${userScore}-${oppScore}`,
+        },
+        memory,
+        rng
+      );
       events.push({
         minute,
-        type: "note",
+        type: "knock_on",
         team: "user",
-        description: `${minute}' Error under pressure`,
+        description: eventMinutePrefix(minute, errText),
         points: 0,
+        teamName: career.club,
       });
       momentum -= 3;
     }

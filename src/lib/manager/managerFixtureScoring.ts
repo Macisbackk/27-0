@@ -5,6 +5,7 @@ import { getManagerPlayer } from "./managerPlayers";
 import type { LiveMatchEvent, ManagerCareer, ManagerFixtureRecord } from "./types";
 import { enrichManagerFixtureScoring } from "./managerScoring";
 import { generateManagerMatchBio } from "./manager-match-summary";
+import { buildMatchStoryFromEvents, type MatchEventType } from "../game/match-events";
 import { countTriesByPositionGroup } from "./managerTacticsScoring";
 import { buildMatchdayScoringEntries } from "./managerSquad";
 import { allocateWeightedTries } from "./managerTryScoring";
@@ -151,6 +152,25 @@ function refreshManagerMatchBio(
   fixture: MatchFixture
 ): void {
   const record = fixture as ManagerFixtureRecord;
+
+  const liveEvents = record.meta?.liveEvents;
+  if (liveEvents && liveEvents.length > 0) {
+    fixture.matchBio = buildMatchStoryFromEvents(
+      liveEvents.map((e) => ({
+        id: e.id ?? "",
+        minute: e.minute,
+        teamId: e.teamId ?? e.team,
+        teamName:
+          e.teamName ?? (e.team === "user" ? career.club : fixture.opponent),
+        playerName: e.playerName,
+        type: e.type as MatchEventType,
+        description: e.description,
+        importance: e.importance ?? "medium",
+      })),
+      career.club
+    );
+    return;
+  }
 
   const userScorers = fixture.scoringDetail?.dreamTeam.tryScorers ?? [];
   const xiii = record.meta?.matchdayXiii ?? career.matchdayXiii;
@@ -338,4 +358,10 @@ export function applyLiveEventsToFixtureScoring(
         : null,
     },
   };
+
+  const record = fixture as ManagerFixtureRecord;
+  if (record.meta) {
+    record.meta.liveEvents = events;
+  }
+  refreshManagerMatchBio(career, fixture);
 }

@@ -284,6 +284,12 @@ export interface LiveMatchEvent {
     | "injury"
     | "interchange"
     | "momentum_shift"
+    | "pressure_set"
+    | "last_tackle_kick"
+    | "forty_twenty"
+    | "forced_error"
+    | "held_up"
+    | "missed_drop_goal"
     | "note"
     | "half_time"
     | "full_time";
