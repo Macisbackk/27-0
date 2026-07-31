@@ -21,6 +21,7 @@ import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubColors } from "@/lib/clubs";
+import { getReadableNonBlackWhiteTeamTextColour } from "@/lib/ui/contrast";
 import {
   managerFixtureCardStyle,
   managerFixtureRowClass,
@@ -185,95 +186,100 @@ function WccWriteUpDetails({
   const slColors = getClubColors(result.superLeagueChampionName);
   const nrlColors = getClubColors(result.nrlChampionName);
   const winnerColors = getClubColors(result.winnerName);
+  const slText = getReadableNonBlackWhiteTeamTextColour(slColors);
+  const nrlText = getReadableNonBlackWhiteTeamTextColour(nrlColors);
 
   return (
-    <details className="group" open={defaultOpen || undefined}>
-      <summary
-        className={`flex cursor-pointer list-none items-center justify-between gap-2 rounded-lg border border-pitch-700/40 bg-pitch-900/30 px-3 py-2 [&::-webkit-details-marker]:hidden`}
-      >
-        <span className="min-w-0 flex-1">
-          {includeScoreline ? (
-            <span className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1">
-              <span className="text-pitch-400">{result.seasonYear} —</span>
-              <ClubColorChip
-                name={result.superLeagueChampionName}
-                primary={slColors.primary}
-                secondary={slColors.secondary}
-                compact
-                showAccent={false}
-              />
-              <span className="shrink-0 font-display text-sm font-bold text-white">
-                {result.homeScore}–{result.awayScore}
-              </span>
-              <ClubColorChip
-                name={result.nrlChampionName}
-                primary={nrlColors.primary}
-                secondary={nrlColors.secondary}
-                compact
-                showAccent={false}
-              />
+    <div className="wcc-result-card space-y-2">
+      {includeScoreline ? (
+        <div className="wcc-scoreline">
+          <div className="wcc-team wcc-team--home">
+            <span className="wcc-team-name" style={{ color: slText }}>
+              {result.superLeagueChampionName}
             </span>
-          ) : (
-            <span className="font-semibold text-white">Match write-up</span>
-          )}
-        </span>
-        <span className="flex shrink-0 items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-pitch-500">
-          Write-up
-          <span className="transition group-open:rotate-180" aria-hidden>
+          </div>
+          <div className="wcc-score text-white">
+            {result.homeScore} - {result.awayScore}
+          </div>
+          <div className="wcc-team wcc-team--away">
+            <span className="wcc-team-name" style={{ color: nrlText }}>
+              {result.nrlChampionName}
+            </span>
+          </div>
+        </div>
+      ) : null}
+      <details className="group" open={defaultOpen || undefined}>
+        <summary
+          className={`flex cursor-pointer list-none items-center justify-center gap-2 rounded-lg border border-pitch-700/40 bg-pitch-900/30 px-3 py-2 [&::-webkit-details-marker]:hidden`}
+        >
+          <span className="font-semibold text-white">
+            {includeScoreline ? `${result.seasonYear} write-up` : "Match write-up"}
+          </span>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-pitch-500 transition group-open:rotate-180" aria-hidden>
             ▼
           </span>
-        </span>
-      </summary>
-      <div className="mt-2 space-y-2 wcc-writeup-section rounded-lg bg-pitch-950/40 px-3 py-2">
-        <div className="flex min-w-0 flex-wrap items-center gap-2">
-          <span className={`${TYPO.bodySm} text-pitch-400`}>Winner:</span>
-          <ClubColorChip
-            name={result.winnerName}
-            primary={winnerColors.primary}
-            secondary={winnerColors.secondary}
-            compact
-            showAccent={false}
-          />
-          <span className={TYPO.bodySm}>
-            {result.userResult && result.userResult !== "not_involved"
-              ? `· You ${result.userResult}`
-              : "· AI result"}
-          </span>
+        </summary>
+        <div className="wcc-writeup wcc-writeup-section rounded-lg bg-pitch-950/40 px-3 py-2">
+          <div className="mb-2 flex min-w-0 flex-wrap items-center justify-center gap-2">
+            <span className={`${TYPO.bodySm} text-pitch-400`}>Winner:</span>
+            <span
+              className="font-semibold"
+              style={{
+                color: getReadableNonBlackWhiteTeamTextColour(winnerColors),
+              }}
+            >
+              {result.winnerName}
+            </span>
+            <span className={TYPO.bodySm}>
+              {result.userResult && result.userResult !== "not_involved"
+                ? `· You ${result.userResult}`
+                : "· AI result"}
+            </span>
+          </div>
+          <p className={TYPO.bodySm}>{result.storySummary}</p>
         </div>
-        <p className={TYPO.bodySm}>{result.storySummary}</p>
-      </div>
-    </details>
+      </details>
+    </div>
   );
 }
 
 function WccTeamVsLine({
   superLeagueName,
   nrlName,
+  homeScore,
+  awayScore,
+  writeUp,
 }: {
   superLeagueName: string;
   nrlName: string;
+  homeScore?: number;
+  awayScore?: number;
+  writeUp?: string;
 }) {
   const slColors = getClubColors(superLeagueName);
   const nrlColors = getClubColors(nrlName);
+  const slText = getReadableNonBlackWhiteTeamTextColour(slColors);
+  const nrlText = getReadableNonBlackWhiteTeamTextColour(nrlColors);
   return (
-    <div className="flex min-w-0 flex-wrap items-center gap-2">
-      <ClubColorChip
-        name={superLeagueName}
-        primary={slColors.primary}
-        secondary={slColors.secondary}
-        compact
-        showAccent={false}
-      />
-      <span className="shrink-0 text-xs font-bold uppercase tracking-wider text-pitch-500">
-        vs
-      </span>
-      <ClubColorChip
-        name={nrlName}
-        primary={nrlColors.primary}
-        secondary={nrlColors.secondary}
-        compact
-        showAccent={false}
-      />
+    <div className="wcc-result-card">
+      <div className="wcc-scoreline">
+        <div className="wcc-team wcc-team--home">
+          <span className="wcc-team-name" style={{ color: slText }}>
+            {superLeagueName}
+          </span>
+        </div>
+        <div className="wcc-score text-white">
+          {homeScore != null && awayScore != null
+            ? `${homeScore} - ${awayScore}`
+            : "vs"}
+        </div>
+        <div className="wcc-team wcc-team--away">
+          <span className="wcc-team-name" style={{ color: nrlText }}>
+            {nrlName}
+          </span>
+        </div>
+      </div>
+      {writeUp ? <p className="wcc-writeup text-pitch-300">{writeUp}</p> : null}
     </div>
   );
 }

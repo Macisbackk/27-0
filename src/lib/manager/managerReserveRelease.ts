@@ -4,6 +4,8 @@ import {
   releaseReserve,
 } from "./managerReserves";
 import { computeCareerWageBill } from "./managerReserveContracts";
+import { addPlayersToFreeAgents } from "./managerFreeAgents";
+import { reserveToPlayer } from "./managerPlayers";
 import type {
   ManagerCareer,
   ManagerReservePlayer,
@@ -115,6 +117,17 @@ export function previewReleaseExpiredContracts(
     }));
 }
 
+export function previewReleaseMarkedForRelease(
+  career: ManagerCareer
+): ReserveReleaseCandidate[] {
+  return career.reserves
+    .filter((r) => r.markedForRelease === true && !isOnMatchday(career, r.id))
+    .map((reserve) => ({
+      reserve,
+      reason: "Marked for release",
+    }));
+}
+
 export function previewReleaseBySettings(
   career: ManagerCareer
 ): ReserveReleaseCandidate[] {
@@ -181,9 +194,29 @@ export function applyReserveReleases(
   }
 
   let next = career;
+  const releasedReserves: ManagerReservePlayer[] = [];
   for (const item of list) {
+    releasedReserves.push(item.reserve);
     next = releaseReserve(next, item.reserve.id);
   }
+
+  // Released reserves join the free-agent market as unwanted depth.
+  const registry = { ...(next.playerRegistry ?? {}) };
+  for (const reserve of releasedReserves) {
+    registry[reserve.id] = reserveToPlayer(
+      { ...reserve, age: Math.max(18, reserve.age) },
+      next.seasonYear
+    );
+  }
+  next = addPlayersToFreeAgents(
+    { ...next, playerRegistry: registry },
+    releasedReserves.map((r) => ({
+      playerId: r.id,
+      formerClub: career.club,
+      source: "unwanted_reserve" as const,
+    }))
+  );
+
   next = {
     ...next,
     wageBill: computeCareerWageBill(next),

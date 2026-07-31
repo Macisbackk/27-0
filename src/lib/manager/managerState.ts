@@ -3,6 +3,7 @@ import type { ManagerCareer, ManagerSettings } from "./types";
 import { DEFAULT_MANAGER_SETTINGS, DEFAULT_TACTICS } from "./types";
 import { EMPTY_TEAM_SEASON_STATS, sanitizePlayerSeasonStats } from "./managerCareerStats";
 import { sanitizeInvalidScorerData } from "./managerScorerSanitize";
+import { ensureFreeAgentPool } from "./managerFreeAgents";
 import { initLeagueClubStates, ensureLeagueClubStates } from "./managerLeagueState";
 import {
   ensureLeagueClubRosters,
@@ -318,6 +319,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     playerSeasonStats: sanitizePlayerSeasonStats(career),
   };
   career = sanitizeInvalidScorerData(career);
+  career = ensureFreeAgentPool(career);
   return syncManagerInboxMessages(career);
 }
 

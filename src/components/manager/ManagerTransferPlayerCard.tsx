@@ -41,6 +41,9 @@ interface ManagerTransferPlayerCardProps {
   club: string;
   listed: boolean;
   freeAgent?: boolean;
+  freeAgentSourceLabel?: string;
+  /** Manager-mode age (career season). Prefer over real-calendar age. */
+  ageDisplay?: string | number;
   fee: number;
   /** Seller's listed/market fee when buyer-tier premium inflates the user's fee. */
   sellerListedFee?: number;
@@ -54,6 +57,8 @@ export function ManagerTransferPlayerCard({
   club,
   listed,
   freeAgent = false,
+  freeAgentSourceLabel,
+  ageDisplay,
   fee,
   sellerListedFee,
   wagePerYear,
@@ -63,6 +68,8 @@ export function ManagerTransferPlayerCard({
   const rating = player.peakRating;
   const positions = getPlayerEligiblePositions(player);
   const accent = freeAgent ? undefined : getClubIndicatorColor(club);
+  const ageValue =
+    ageDisplay != null ? String(ageDisplay) : formatPlayerAge(player);
 
   return (
     <ManagerSectionCard
@@ -99,16 +106,23 @@ export function ManagerTransferPlayerCard({
             </p>
             <div className="mt-1">
               {freeAgent ? (
-                <span className="inline-flex min-w-0 max-w-full items-center gap-1.5">
-                  <span
-                    className="h-3 w-1 shrink-0 rounded-full bg-theme-primary"
-                    aria-hidden
-                  />
-                  <span
-                    className={`min-w-0 truncate ${TYPO.identityLine} text-theme-primary`}
-                  >
-                    Free agent
+                <span className="inline-flex min-w-0 max-w-full flex-col gap-0.5">
+                  <span className="inline-flex min-w-0 max-w-full items-center gap-1.5">
+                    <span
+                      className="h-3 w-1 shrink-0 rounded-full bg-theme-primary"
+                      aria-hidden
+                    />
+                    <span
+                      className={`min-w-0 truncate ${TYPO.identityLine} text-theme-primary`}
+                    >
+                      Free agent
+                    </span>
                   </span>
+                  {freeAgentSourceLabel ? (
+                    <span className={`${TYPO.bodySm} text-pitch-500`}>
+                      {freeAgentSourceLabel}
+                    </span>
+                  ) : null}
                 </span>
               ) : (
                 <ClubNameLabel club={club} variant="inline" compact />
@@ -157,7 +171,7 @@ export function ManagerTransferPlayerCard({
         />
         <ManagerStat
           label="Age"
-          value={formatPlayerAge(player)}
+          value={ageValue}
           tone="muted"
         />
         <ManagerStat

@@ -118,7 +118,11 @@ export function releaseSurplusAiPlayers(
       const rating = player?.peakRating ?? 70;
       return { id, rating, age, youth: isAiYouthId(id) };
     })
-    .filter((row) => row.age >= 33 || (row.rating < ratingCap && !row.youth))
+    .filter(
+      (row) =>
+        row.age >= 18 &&
+        (row.age >= 33 || (row.rating < ratingCap && !row.youth))
+    )
     .sort((a, b) => {
       const scoreA = a.rating - (a.youth ? 8 : 0) + a.age * 0.15;
       const scoreB = b.rating - (b.youth ? 8 : 0) + b.age * 0.15;
@@ -136,7 +140,14 @@ export function releaseSurplusAiPlayers(
 
   return addPlayersToFreeAgents(
     career,
-    picks.map((row) => ({ playerId: row.id, formerClub: club })),
+    picks.map((row) => ({
+      playerId: row.id,
+      formerClub: club,
+      source:
+        row.age >= 30
+          ? ("contract_expired" as const)
+          : ("released_by_club" as const),
+    })),
     career.seasonYear
   );
 }

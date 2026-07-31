@@ -91,7 +91,7 @@ export function ManagerNav({
           type="button"
           onClick={() => navigate("inbox")}
           disabled={disabled}
-          className={`btn-press relative flex h-10 min-w-[6.5rem] items-center justify-center rounded-sm border px-4 transition ${
+          className={`btn-press relative flex h-10 min-w-[6.5rem] items-center justify-center rounded-sm border px-4 transition manager-inbox-button ${
             active === "inbox"
               ? "border-theme-primary/45 bg-theme-primary/12"
               : "border-pitch-600/50 bg-pitch-900/40 hover:border-pitch-500/55"

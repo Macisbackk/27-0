@@ -26,7 +26,7 @@ import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { formatWage } from "@/lib/manager/managerContracts";
-import { getManagerPlayer } from "@/lib/manager/managerPlayers";
+import { getManagerPlayer, getManagerPlayerAge } from "@/lib/manager/managerPlayers";
 import { applyManagerModeRatingToPlayer } from "@/lib/manager/managerSquadRatings";
 import {
   completePlayerPurchase,
@@ -38,6 +38,7 @@ import {
 import {
   completeFreeAgentSigning,
   evaluateFreeAgentOffer,
+  formatFreeAgentSource,
 } from "@/lib/manager/managerFreeAgents";
 import { getPlayerSigningDemand } from "@/lib/manager/managerTransfers";
 import { getPlayerById } from "@/lib/players";
@@ -603,7 +604,7 @@ export function ManagerTransfers({
       {tab === "freeAgents" && (
       <section className="space-y-3">
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
-          {freeAgents.map(({ player, formerClub, playerId }) => {
+          {freeAgents.map(({ player, formerClub, playerId, source }) => {
             const demand = getPlayerSigningDemand(career, player.id);
             const appeal = evaluateClubSigningAppeal(
               career.club,
@@ -616,6 +617,9 @@ export function ManagerTransfers({
             const canAffordNegotiated =
               appeal.allowed &&
               canAffordAdditionalWage(career, freeAgentOfferWage);
+            const age =
+              getManagerPlayerAge(career, playerId) ??
+              getManagerPlayerAge(career, player.id);
             return (
               <ManagerTransferPlayerCard
                 key={playerId}
@@ -623,6 +627,8 @@ export function ManagerTransfers({
                 club={formerClub}
                 listed={false}
                 freeAgent
+                freeAgentSourceLabel={formatFreeAgentSource(source)}
+                ageDisplay={age ?? "—"}
                 fee={0}
                 wagePerYear={isNegotiating ? freeAgentOfferWage : demand.wagePerYear}
                 yearsRequested={

@@ -135,6 +135,8 @@ export interface ManagerReservePlayer {
   reserveAppearances: number;
   reserveTries: number;
   calledUpForNextMatch: boolean;
+  /** Flagged by staff for bulk release tools. */
+  markedForRelease?: boolean;
 }
 
 export interface ReserveFixtureResult {
@@ -433,11 +435,20 @@ export interface LeagueListedPlayer {
   listedAtWeek: number;
 }
 
+export type FreeAgentSource =
+  | "released_by_club"
+  | "unwanted_reserve"
+  | "higher_club_depth"
+  | "contract_expired"
+  | "returning_player"
+  | "trialist";
+
 export interface FreeAgent {
   playerId: string;
   formerClub: string;
   sinceWeek: number;
   sinceSeason: number;
+  source?: FreeAgentSource;
 }
 
 export interface LeagueTransferActivity {

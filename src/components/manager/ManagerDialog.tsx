@@ -47,7 +47,7 @@ export function ManagerDialog({
       open={open}
       onClose={handleCancel}
       labelledBy="manager-dialog-title"
-      zClass="z-[95]"
+      zClass="z-[9999]"
       panelRef={panelRef}
       className="max-w-md outline-none sm:max-w-md"
     >

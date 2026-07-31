@@ -46,7 +46,7 @@ export function ManagerReserveReleaseModal({
 
   return (
     <div
-      className={`fixed inset-0 z-[90] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} sm:items-center`}
+      className={`fixed inset-0 z-[9999] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} pb-[max(1rem,env(safe-area-inset-bottom))] sm:items-center`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="reserve-release-title"

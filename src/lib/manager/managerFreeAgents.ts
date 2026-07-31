@@ -1,11 +1,16 @@
 import seedrandom from "seedrandom";
 import { getPlayerById } from "../players";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
-import type { FreeAgent, LeagueTransferActivity, ManagerCareer } from "./types";
+import type {
+  FreeAgent,
+  FreeAgentSource,
+  LeagueTransferActivity,
+  ManagerCareer,
+} from "./types";
 import type { BuyOffer } from "./managerTransferLeague";
 import { getProtectedTransferPlayerIds } from "./managerTransferLeague";
 import { getPlayerSigningDemand } from "./managerTransfers";
-import { getManagerPlayer } from "./managerPlayers";
+import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import {
   generateInitialContract,
   formatWage,
@@ -23,11 +28,122 @@ import { createInitialPlayerState } from "./managerSquad";
 import { syncManagerFinance, canAffordAdditionalWage, evaluateClubSigningAppeal, getManagerPlayerListingRating } from "./managerFinance";
 import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
+import { SQUAD_STRUCTURE } from "../positions";
+import type { Position } from "../types";
+import { computePlayerValue } from "../players/ratings";
 
 const MAX_TRANSFER_HISTORY = 32;
 /** Mid-season FA activity — kept high enough that AI clubs replace leavers. */
 const BASE_AI_FREE_AGENT_SIGN_CHANCE = 0.38;
 const BASE_AI_CONTRACT_EXPIRY_CHANCE = 0.32;
+const FREE_AGENT_MIN_AGE = 18;
+const FREE_AGENT_POOL_TARGET = 10;
+
+const FA_FIRST_NAMES = [
+  "Jack", "Tom", "Liam", "Ethan", "Noah", "Harvey", "Callum", "Ryan",
+  "Luke", "Ben", "Sam", "Joe", "Max", "Kai", "Connor", "Josh", "Alex",
+  "George", "Charlie", "Jordan", "Mitch", "Brad", "Dale", "Greg",
+];
+const FA_LAST_NAMES = [
+  "Walker", "Smith", "Jones", "Brown", "Wilson", "Taylor", "Davies",
+  "Evans", "Thomas", "Roberts", "Johnson", "White", "Harris", "Martin",
+  "Thompson", "Clarke", "Wright", "Hall", "Green", "Baker",
+];
+
+export const FREE_AGENT_SOURCE_LABELS: Record<FreeAgentSource, string> = {
+  released_by_club: "Released by club",
+  unwanted_reserve: "Former higher-club reserve",
+  higher_club_depth: "Former higher-club reserve",
+  contract_expired: "Contract expired",
+  returning_player: "Returning player",
+  trialist: "Trialist",
+};
+
+export function formatFreeAgentSource(source?: FreeAgentSource): string {
+  if (!source) return "Available free agent";
+  return FREE_AGENT_SOURCE_LABELS[source];
+}
+
+/** Weighted FA age: 18–20 10%, 21–24 30%, 25–29 35%, 30–33 20%, 34–36 5%. */
+export function pickWeightedFreeAgentAge(rng: () => number): number {
+  const roll = rng();
+  if (roll < 0.1) return 18 + Math.floor(rng() * 3);
+  if (roll < 0.4) return 21 + Math.floor(rng() * 4);
+  if (roll < 0.75) return 25 + Math.floor(rng() * 5);
+  if (roll < 0.95) return 30 + Math.floor(rng() * 4);
+  return 34 + Math.floor(rng() * 3);
+}
+
+function pickFreeAgentRating(rng: () => number): number {
+  const roll = rng();
+  if (roll < 0.45) return 58 + Math.floor(rng() * 11); // 58–68
+  if (roll < 0.85) return 69 + Math.floor(rng() * 7); // 69–75
+  if (roll < 0.97) return 76 + Math.floor(rng() * 5); // 76–80
+  return 81 + Math.floor(rng() * 3); // 81–83 rare
+}
+
+function ageBandForSource(source: FreeAgentSource, rng: () => number): number {
+  switch (source) {
+    case "trialist":
+      return 18 + Math.floor(rng() * 8); // 18–25
+    case "returning_player":
+      return 28 + Math.floor(rng() * 9); // 28–36
+    case "contract_expired":
+      return 23 + Math.floor(rng() * 11); // 23–33
+    case "higher_club_depth":
+    case "unwanted_reserve":
+      return 20 + Math.floor(rng() * 10); // 20–29
+    case "released_by_club":
+    default:
+      return pickWeightedFreeAgentAge(rng);
+  }
+}
+
+function pickFreeAgentSource(rng: () => number): FreeAgentSource {
+  const roll = rng();
+  if (roll < 0.28) return "released_by_club";
+  if (roll < 0.48) return "unwanted_reserve";
+  if (roll < 0.66) return "higher_club_depth";
+  if (roll < 0.82) return "contract_expired";
+  if (roll < 0.92) return "returning_player";
+  return "trialist";
+}
+
+function inferFreeAgentSource(
+  age: number,
+  rating: number,
+  preferred?: FreeAgentSource
+): FreeAgentSource {
+  if (preferred) return preferred;
+  if (age <= 25 && rating < 72) return "trialist";
+  if (age >= 28) return "returning_player";
+  if (rating <= 72) return "higher_club_depth";
+  return "released_by_club";
+}
+
+function clampFreeAgentBirthYear(
+  career: ManagerCareer,
+  playerId: string,
+  targetAge: number
+): ManagerCareer {
+  const player =
+    career.playerRegistry?.[playerId] ??
+    getManagerPlayer(career, playerId) ??
+    getPlayerById(playerId);
+  if (!player) return career;
+
+  const birthYear = career.seasonYear - Math.max(FREE_AGENT_MIN_AGE, targetAge);
+  const registry = {
+    ...(career.playerRegistry ?? {}),
+    [playerId]: {
+      ...player,
+      birthYear,
+      dateOfBirth: undefined,
+      yearsActive: `${Math.max(birthYear + 18, birthYear + 1)}–`,
+    },
+  };
+  return { ...career, playerRegistry: registry };
+}
 
 function freeAgentSignChanceForCareer(career: ManagerCareer): number {
   const seasonIndex = getLeagueSeasonIndex(career);
@@ -54,20 +170,41 @@ export function isFreeAgent(career: ManagerCareer, playerId: string): boolean {
 
 export function addPlayersToFreeAgents(
   career: ManagerCareer,
-  entries: { playerId: string; formerClub: string }[],
+  entries: {
+    playerId: string;
+    formerClub: string;
+    source?: FreeAgentSource;
+  }[],
   sinceSeason?: number
 ): ManagerCareer {
   if (entries.length === 0) return career;
 
   const existingIds = getFreeAgentIds(career);
   const userIds = getUserClubPlayerIds(career);
+  let next = career;
   const newAgents: FreeAgent[] = [...(career.freeAgents ?? [])];
   let leagueListedPlayers = career.leagueListedPlayers;
   let transferMarket = career.transferMarket;
+  let added = 0;
 
-  for (const { playerId, formerClub } of entries) {
+  for (const { playerId, formerClub, source } of entries) {
     if (existingIds.has(playerId)) continue;
     if (userIds.has(playerId)) continue;
+
+    let age = getManagerPlayerAge(next, playerId);
+    if (age != null && age < FREE_AGENT_MIN_AGE) {
+      const bumpTo = 18 + Math.floor(Math.abs(hashStr(playerId)) % 3);
+      next = clampFreeAgentBirthYear(next, playerId, bumpTo);
+      age = bumpTo;
+    }
+    if (age == null) {
+      next = clampFreeAgentBirthYear(next, playerId, pickWeightedFreeAgentAge(() => 0.5));
+      age = getManagerPlayerAge(next, playerId) ?? 24;
+    }
+    if (age < FREE_AGENT_MIN_AGE) continue;
+
+    const player = getManagerPlayer(next, playerId) ?? getPlayerById(playerId);
+    const rating = player?.peakRating ?? 70;
 
     leagueListedPlayers = leagueListedPlayers.filter(
       (l) => l.playerId !== playerId
@@ -77,21 +214,140 @@ export function addPlayersToFreeAgents(
     newAgents.push({
       playerId,
       formerClub,
-      sinceWeek: career.gameWeek,
-      sinceSeason: sinceSeason ?? career.seasonYear,
+      sinceWeek: next.gameWeek,
+      sinceSeason: sinceSeason ?? next.seasonYear,
+      source: inferFreeAgentSource(age, rating, source),
     });
     existingIds.add(playerId);
+    added += 1;
   }
 
-  if (newAgents.length === (career.freeAgents ?? []).length) return career;
+  if (added === 0) return next;
 
   return reconcileLeagueRosters({
-    ...career,
+    ...next,
     leagueListedPlayers,
     transferMarket,
     freeAgents: newAgents,
     updatedAt: new Date().toISOString(),
   });
+}
+
+function hashStr(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h << 5) - h + s.charCodeAt(i);
+  return h;
+}
+
+/** Age up under-18 free agents and assign missing source labels. */
+export function sanitizeFreeAgentsForCareer(
+  career: ManagerCareer
+): ManagerCareer {
+  const agents = career.freeAgents ?? [];
+  if (agents.length === 0) return career;
+
+  let next = career;
+  const sanitized: FreeAgent[] = [];
+
+  for (const agent of agents) {
+    let age = getManagerPlayerAge(next, agent.playerId);
+    if (age != null && age < FREE_AGENT_MIN_AGE) {
+      const bumpTo = 18 + Math.floor(Math.abs(hashStr(agent.playerId)) % 3);
+      next = clampFreeAgentBirthYear(next, agent.playerId, bumpTo);
+      age = bumpTo;
+    }
+    if (age == null) {
+      const bumpTo = pickWeightedFreeAgentAge(
+        seedrandom(`${next.seed}-fa-age-${agent.playerId}`)
+      );
+      next = clampFreeAgentBirthYear(next, agent.playerId, bumpTo);
+      age = bumpTo;
+    }
+
+    const player =
+      getManagerPlayer(next, agent.playerId) ?? getPlayerById(agent.playerId);
+    if (!player) continue;
+
+    sanitized.push({
+      ...agent,
+      source:
+        agent.source ??
+        inferFreeAgentSource(age, player.peakRating ?? 70),
+    });
+  }
+
+  return {
+    ...next,
+    freeAgents: sanitized,
+  };
+}
+
+/** Top up the FA pool with realistic released / depth / trialist profiles. */
+export function ensureFreeAgentPool(career: ManagerCareer): ManagerCareer {
+  let next = sanitizeFreeAgentsForCareer(career);
+  const existing = next.freeAgents ?? [];
+  if (existing.length >= FREE_AGENT_POOL_TARGET) return next;
+
+  const need = FREE_AGENT_POOL_TARGET - existing.length;
+  const rng = seedrandom(
+    `${next.seed}-fa-pool-s${next.seasonYear}-w${next.gameWeek}-${existing.length}`
+  );
+  const positions: Position[] = [];
+  for (const { position, count } of SQUAD_STRUCTURE) {
+    for (let i = 0; i < count; i++) positions.push(position);
+  }
+
+  const registry = { ...(next.playerRegistry ?? {}) };
+  const newAgents: FreeAgent[] = [...existing];
+  const existingIds = new Set(newAgents.map((a) => a.playerId));
+
+  for (let i = 0; i < need; i++) {
+    const source = pickFreeAgentSource(rng);
+    const age = Math.max(FREE_AGENT_MIN_AGE, ageBandForSource(source, rng));
+    const rating = pickFreeAgentRating(rng);
+    const position =
+      positions[Math.floor(rng() * positions.length)] ?? "CENTRE";
+    const club =
+      CURRENT_PLAYABLE_CLUBS[
+        Math.floor(rng() * CURRENT_PLAYABLE_CLUBS.length)
+      ] ?? "Free Agents";
+    const first =
+      FA_FIRST_NAMES[Math.floor(rng() * FA_FIRST_NAMES.length)] ?? "Sam";
+    const last =
+      FA_LAST_NAMES[Math.floor(rng() * FA_LAST_NAMES.length)] ?? "Walker";
+    const playerId = `mgr-fa-${next.seasonYear}-${next.gameWeek}-${i}-${Math.abs(hashStr(`${first}${last}${source}`))}`;
+    if (existingIds.has(playerId)) continue;
+
+    registry[playerId] = {
+      id: playerId,
+      name: `${first} ${last}`,
+      position,
+      peakRating: rating,
+      category: "current",
+      club: "",
+      value: computePlayerValue(rating, position, "current"),
+      nationality: "England",
+      birthYear: next.seasonYear - age,
+      yearsActive: `${next.seasonYear - Math.max(1, age - 18)}–`,
+      intlCaps: 0,
+    };
+
+    newAgents.push({
+      playerId,
+      formerClub: club,
+      sinceWeek: next.gameWeek,
+      sinceSeason: next.seasonYear,
+      source,
+    });
+    existingIds.add(playerId);
+  }
+
+  return {
+    ...next,
+    playerRegistry: registry,
+    freeAgents: newAgents,
+    updatedAt: new Date().toISOString(),
+  };
 }
 
 export function evaluateFreeAgentOffer(
@@ -221,7 +477,11 @@ export function completeFreeAgentSigning(
 /** Release fringe AI squad players at season end to populate the free-agent pool. */
 export function simulateAiContractExpiries(career: ManagerCareer): ManagerCareer {
   const rng = seedrandom(`${career.seed}-ai-expiry-s${career.seasonYear}`);
-  const entries: { playerId: string; formerClub: string }[] = [];
+  const entries: {
+    playerId: string;
+    formerClub: string;
+    source?: FreeAgentSource;
+  }[] = [];
 
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === career.club) continue;
@@ -238,24 +498,36 @@ export function simulateAiContractExpiries(career: ManagerCareer): ManagerCareer
       .filter((id) => !protectedIds.has(id) && !isFreeAgent(career, id))
       .map((id) => {
         const p = getManagerPlayer(career, id) ?? getPlayerById(id);
+        const age = getManagerPlayerAge(career, id) ?? 26;
         return {
           id,
           rating: p?.peakRating ?? 70,
+          age,
         };
       })
-      .filter((c) => c.rating < ratingCap)
+      .filter((c) => c.rating < ratingCap && c.age >= FREE_AGENT_MIN_AGE)
       .sort((a, b) => a.rating - b.rating);
 
     for (let i = 0; i < releaseSlots && candidates.length > 0; i++) {
       const pick =
         candidates[Math.floor(rng() * Math.min(4, candidates.length))]!;
-      entries.push({ playerId: pick.id, formerClub: club });
+      const source: FreeAgentSource =
+        pick.rating <= 72
+          ? "higher_club_depth"
+          : pick.age >= 30
+            ? "contract_expired"
+            : "released_by_club";
+      entries.push({
+        playerId: pick.id,
+        formerClub: club,
+        source,
+      });
       const idx = candidates.findIndex((c) => c.id === pick.id);
       if (idx >= 0) candidates.splice(idx, 1);
     }
   }
 
-  return addPlayersToFreeAgents(career, entries);
+  return ensureFreeAgentPool(addPlayersToFreeAgents(career, entries));
 }
 
 export function maybeAiSignFreeAgents(career: ManagerCareer): ManagerCareer {

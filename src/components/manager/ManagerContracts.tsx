@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { GameModal } from "@/components/ui/GameModal";
 import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { GameTableRow } from "@/components/ui/GameTableRow";
@@ -386,20 +387,14 @@ export function ManagerContracts({
       </ManagerSection>
 
       {selected && (
-        <div
-          className={`fixed inset-0 z-50 flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} sm:items-center`}
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Contract renewal for ${selected.player.name}`}
-          onClick={closeModal}
+        <GameModal
+          open
+          onClose={closeModal}
+          labelledBy="contract-renewal-title"
+          panelRef={contractPanelRef}
+          className="animate-fade-up outline-none"
         >
-          <div
-            ref={contractPanelRef}
-            tabIndex={-1}
-            className={`game-modal-panel max-h-[min(92vh,720px)] w-full max-w-lg overflow-y-auto outline-none ${SPACING.cardPadding} animate-fade-up`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className={TYPO.cardTitle}>{selected.player.name}</h2>
+            <h2 id="contract-renewal-title" className={TYPO.cardTitle}>{selected.player.name}</h2>
             <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
               <div>
                 <p className="text-pitch-500 text-xs">Position</p>
@@ -533,8 +528,7 @@ export function ManagerContracts({
                 Release Player
               </GameButton>
             </div>
-          </div>
-        </div>
+        </GameModal>
       )}
 
       <ManagerDialog
