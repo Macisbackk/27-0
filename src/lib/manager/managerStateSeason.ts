@@ -23,7 +23,7 @@ import {
 import { awardManagerSeasonBoardGrant } from "./managerSeasonRewards";
 import { addContractLeavingInboxMessage, clearSeasonTransferState } from "./managerInbox";
 import { createClubAttendanceData, applyAttendancePerformanceDrift } from "./managerAttendance";
-import { applySeasonAiReserveIntake } from "./managerReserves";
+import { applySeasonAiReserveIntake, ensureAllClubReserveDepth } from "./managerReserves";
 import {
   applyYearlyYouthIntake,
   tickReserveContractsForNewSeason,
@@ -338,5 +338,5 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   };
 
   const aged = hydrateManagerPlayerRegistryAges(withChampion);
-  return scheduleWorldClubChallengeForSeason(aged);
+  return ensureAllClubReserveDepth(scheduleWorldClubChallengeForSeason(aged));
 }

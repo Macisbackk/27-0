@@ -151,6 +151,7 @@ import {
   getReserveOpponent,
   simulateReserveFixture,
   tickLeagueClubReserveCounts,
+  ensureAllClubReserveDepth,
 } from "./managerReserves";
 import {
   generateIncomingTransferOffers,
@@ -718,6 +719,7 @@ export function applyManagerMatchResult(
 
   const reserveOpp = getReserveOpponent(sched.opponent, round, career.seed);
   finalCareer = tickLeagueClubReserveCounts(finalCareer, round);
+  finalCareer = ensureAllClubReserveDepth(finalCareer);
   const reserveResult = simulateReserveFixture(finalCareer, round, reserveOpp);
   finalCareer = applyYouthMatchDevelopment(finalCareer, { round, matchdayIds });
   finalCareer = applyReserveMatchDevelopment(finalCareer, reserveResult);

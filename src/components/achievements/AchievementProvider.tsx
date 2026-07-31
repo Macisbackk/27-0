@@ -145,12 +145,11 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
   return (
     <AchievementContext.Provider value={{ notifyAchievements }}>
       {children}
-      {active ? (
-        <AchievementUnlockedPopup
-          result={active}
-          onDismiss={dismissActive}
-        />
-      ) : null}
+      {/* Always mount popup shell so AnimatePresence can play exit (avoids flash-cut). */}
+      <AchievementUnlockedPopup
+        result={active}
+        onDismiss={dismissActive}
+      />
     </AchievementContext.Provider>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { ClubColorChip } from "@/components/ClubColorChip";
 import { FixtureResultRow } from "@/components/FixtureResultRow";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
@@ -191,15 +191,38 @@ function WccWriteUpDetails({
   includeScoreline?: boolean;
   defaultOpen?: boolean;
 }) {
+  const slColors = getClubColors(result.superLeagueChampionName);
+  const nrlColors = getClubColors(result.nrlChampionName);
+  const winnerColors = getClubColors(result.winnerName);
+
   return (
     <details className="group" open={defaultOpen || undefined}>
       <summary
         className={`flex cursor-pointer list-none items-center justify-between gap-2 rounded-lg border border-pitch-700/40 bg-pitch-900/30 px-3 py-2 [&::-webkit-details-marker]:hidden`}
       >
-        <span className="min-w-0 font-semibold text-white">
-          {includeScoreline
-            ? `${result.seasonYear} — ${result.superLeagueChampionName} ${result.homeScore}–${result.awayScore} ${result.nrlChampionName}`
-            : "Match write-up"}
+        <span className="min-w-0 flex-1">
+          {includeScoreline ? (
+            <span className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1">
+              <span className="text-pitch-400">{result.seasonYear} —</span>
+              <ClubColorChip
+                name={result.superLeagueChampionName}
+                primary={slColors.primary}
+                secondary={slColors.secondary}
+                compact
+              />
+              <span className="shrink-0 font-display text-sm font-bold text-white">
+                {result.homeScore}–{result.awayScore}
+              </span>
+              <ClubColorChip
+                name={result.nrlChampionName}
+                primary={nrlColors.primary}
+                secondary={nrlColors.secondary}
+                compact
+              />
+            </span>
+          ) : (
+            <span className="font-semibold text-white">Match write-up</span>
+          )}
         </span>
         <span className="flex shrink-0 items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-pitch-500">
           Write-up
@@ -208,16 +231,54 @@ function WccWriteUpDetails({
           </span>
         </span>
       </summary>
-      <div className="mt-2 space-y-1 rounded-lg border border-pitch-700/30 bg-pitch-950/40 px-3 py-2">
-        <p className={TYPO.bodySm}>
-          Winner: {result.winnerName}
-          {result.userResult && result.userResult !== "not_involved"
-            ? ` · You ${result.userResult}`
-            : " · AI result"}
-        </p>
+      <div className="mt-2 space-y-2 rounded-lg border border-pitch-700/30 bg-pitch-950/40 px-3 py-2">
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
+          <span className={`${TYPO.bodySm} text-pitch-400`}>Winner:</span>
+          <ClubColorChip
+            name={result.winnerName}
+            primary={winnerColors.primary}
+            secondary={winnerColors.secondary}
+            compact
+          />
+          <span className={TYPO.bodySm}>
+            {result.userResult && result.userResult !== "not_involved"
+              ? `· You ${result.userResult}`
+              : "· AI result"}
+          </span>
+        </div>
         <p className={TYPO.bodySm}>{result.storySummary}</p>
       </div>
     </details>
+  );
+}
+
+function WccTeamVsLine({
+  superLeagueName,
+  nrlName,
+}: {
+  superLeagueName: string;
+  nrlName: string;
+}) {
+  const slColors = getClubColors(superLeagueName);
+  const nrlColors = getClubColors(nrlName);
+  return (
+    <div className="flex min-w-0 flex-wrap items-center gap-2">
+      <ClubColorChip
+        name={superLeagueName}
+        primary={slColors.primary}
+        secondary={slColors.secondary}
+        compact
+      />
+      <span className="shrink-0 text-xs font-bold uppercase tracking-wider text-pitch-500">
+        vs
+      </span>
+      <ClubColorChip
+        name={nrlName}
+        primary={nrlColors.primary}
+        secondary={nrlColors.secondary}
+        compact
+      />
+    </div>
   );
 }
 
@@ -650,15 +711,9 @@ export function ManagerFixtures({
   const upcomingItems = useMemo(
     () =>
       sortUpcomingFirst(
-        filteredItems.filter((i) => {
-          if (i.kind !== "upcoming") return false;
-          if (filter === "all" && i.sched.competition === "world_club_challenge") {
-            return false;
-          }
-          return true;
-        })
+        filteredItems.filter((i) => i.kind === "upcoming")
       ),
-    [filteredItems, filter]
+    [filteredItems]
   );
 
   const challengeCupItems = useMemo(
@@ -693,35 +748,53 @@ export function ManagerFixtures({
     [filteredItems]
   );
 
+  /** Filter past-season WCC out of normal Results / All lists. */
+  const filterNormalPlayed = useCallback(
+    (items: FixtureListItem[]) => {
+      const currentWccId = getCurrentSeasonWccResult(career)?.id;
+      let sawCurrentWcc = false;
+      return items.filter((i) => {
+        if (i.kind !== "played") return true;
+        if (itemCompetition(i) !== "world_club_challenge") return true;
+        const id = i.fixture.fixtureId ?? i.key;
+        const isCurrent =
+          id === currentWccId ||
+          (currentWccId == null &&
+            career.fixtures.some(
+              (f) =>
+                f.competition === "world_club_challenge" &&
+                (f.fixtureId === id || f.fixtureId === i.key)
+            ));
+        if (!isCurrent) return false;
+        if (sawCurrentWcc) return false;
+        sawCurrentWcc = true;
+        return true;
+      });
+    },
+    [career]
+  );
+
+  /** All = scheduled + completed, chronological by round. */
+  const allTabItems = useMemo(() => {
+    if (filter !== "all") return [];
+    return filterNormalPlayed(filteredItems).sort(
+      (a, b) => itemRound(a) - itemRound(b)
+    );
+  }, [filteredItems, filter, filterNormalPlayed]);
+
   /** Completed fixtures only under Results — never inside upcoming sections.
    *  Current-season WCC may appear once; past WCC stays in the WCC tab only. */
   const completedResultsItems = useMemo(() => {
     if (filter !== "results") return [];
-    const currentWccId = getCurrentSeasonWccResult(career)?.id;
-    let sawCurrentWcc = false;
-    return filteredItems.filter((i) => {
-      if (i.kind !== "played") return false;
-      if (itemCompetition(i) !== "world_club_challenge") return true;
-      const id = i.fixture.fixtureId ?? i.key;
-      const isCurrent =
-        id === currentWccId ||
-        (currentWccId == null &&
-          career.fixtures.some(
-            (f) =>
-              f.competition === "world_club_challenge" &&
-              (f.fixtureId === id || f.fixtureId === i.key)
-          ));
-      if (!isCurrent) return false;
-      if (sawCurrentWcc) return false;
-      sawCurrentWcc = true;
-      return true;
-    });
-  }, [filteredItems, filter, career]);
+    return sortResultsNewestFirst(
+      filterNormalPlayed(filteredItems.filter((i) => i.kind === "played"))
+    );
+  }, [filteredItems, filter, filterNormalPlayed]);
 
-  const showChallengeCup = filter === "all" || filter === "cup";
-  const showSuperLeague = filter === "all" || filter === "league";
-  const showPlayoffs =
-    (filter === "all" || filter === "playoffs") && playoffItems.length > 0;
+  const showAllCombined = filter === "all" && allTabItems.length > 0;
+  const showChallengeCup = filter === "cup";
+  const showSuperLeague = filter === "league";
+  const showPlayoffs = filter === "playoffs" && playoffItems.length > 0;
   const showUpcomingFilter = filter === "upcoming" && upcomingItems.length > 0;
   const showCompletedResults =
     filter === "results" && completedResultsItems.length > 0;
@@ -741,7 +814,7 @@ export function ManagerFixtures({
         .reverse(),
     [wccStats.results, career.seasonYear]
   );
-  const showWcc = filter === "all" || filter === "wcc";
+  const showWcc = filter === "wcc";
 
   const wccPastResultsList =
     wccPastResults.length > 0 ? (
@@ -761,10 +834,10 @@ export function ManagerFixtures({
         {wccScheduled ? (
           <div className="space-y-2">
             <p className={`${TYPO.sectionLabel} text-sky-300`}>This season</p>
-            <p className="font-semibold text-white">
-              {wccScheduled.superLeagueChampionName} vs{" "}
-              {wccScheduled.nrlChampionName}
-            </p>
+            <WccTeamVsLine
+              superLeagueName={wccScheduled.superLeagueChampionName}
+              nrlName={wccScheduled.nrlChampionName}
+            />
             <p className={TYPO.bodySm}>
               Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear}{" "}
               · NRL rating {wccScheduled.nrlChampionRating}
@@ -811,10 +884,10 @@ export function ManagerFixtures({
   } else if (wccScheduled) {
     wccPanelContent = (
       <div className="space-y-2">
-        <p className="font-semibold text-white">
-          {wccScheduled.superLeagueChampionName} vs{" "}
-          {wccScheduled.nrlChampionName}
-        </p>
+        <WccTeamVsLine
+          superLeagueName={wccScheduled.superLeagueChampionName}
+          nrlName={wccScheduled.nrlChampionName}
+        />
         <p className={TYPO.bodySm}>
           Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear} ·
           NRL rating {wccScheduled.nrlChampionRating}
@@ -831,13 +904,6 @@ export function ManagerFixtures({
         )}
       </div>
     );
-  } else if (filter === "all" && !wccCurrentSeasonResult && wccStats.results.length === 0) {
-    wccPanelContent = (
-      <p className={TYPO.bodySm}>
-        World Club Challenge starts from your second season once a Super League
-        champion has been crowned.
-      </p>
-    );
   }
 
   const showNextMatch =
@@ -851,6 +917,7 @@ export function ManagerFixtures({
 
   const hasAnySection =
     showNextMatch ||
+    showAllCombined ||
     (showWcc && wccPanelContent) ||
     (showChallengeCup && challengeCupItems.length > 0) ||
     (showSuperLeague && leagueUpcomingItems.length > 0) ||
@@ -1007,6 +1074,17 @@ export function ManagerFixtures({
           {showWcc && wccPanelContent && (
         <GamePanel padded label="World Club Challenge">
           {wccPanelContent}
+        </GamePanel>
+      )}
+
+      {showAllCombined && (
+        <GamePanel padded label={`All fixtures (${allTabItems.length})`}>
+          <FixtureItemList
+            items={allTabItems}
+            club={career.club}
+            onSelectFixture={onSelectFixture}
+            compact={career.managerSettings?.compactFixtureRows}
+          />
         </GamePanel>
       )}
 

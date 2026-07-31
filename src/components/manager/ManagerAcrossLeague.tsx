@@ -14,8 +14,8 @@ import {
   ManagerPage,
   ManagerSection,
   ManagerSectionCard,
-  ManagerViewHeader,
 } from "@/components/manager/manager-ui";
+import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { formatWage } from "@/lib/manager/managerContracts";
@@ -86,7 +86,8 @@ export function ManagerAcrossLeague({
     <>
     <ManagerPage>
       <ManagerSection>
-        <ManagerViewHeader
+        <GameSectionHeader
+          label="League"
           title="Across the League"
           subtitle={`Season ${career.seasonYear} · Week ${career.gameWeek} — news, squads and transfer activity from around Super League`}
         />

@@ -3,18 +3,24 @@ import { OPPONENT_LINEUP } from "../game/opponent-scorers";
 import { getPlayerEligiblePositions } from "../players/player-positions";
 import {
   getFormationSlotPosition,
+  FORMATION_SLOT_POSITIONS,
 } from "../positions";
 import type { SquadSlot } from "../types";
 import { ERA_BENCH_FROM_STARTING_17 } from "../players/era-starting-17s";
 import type { Player, Position } from "../types";
 import type { ManagerCareer } from "./types";
-import { getManagerPlayer } from "./managerPlayers";
+import { getManagerPlayer, reserveToPlayer } from "./managerPlayers";
 import {
   getLeagueClubPlayerPool,
 } from "./managerLeagueRosters";
 import { toMatchdaySquadSlotsFromClubLineup } from "./matchday-lineup";
+import {
+  generateReservePlayer,
+  ensureClubReserveDepth,
+} from "./managerReserves";
 
 const STARTING_XIII_SLOTS = 13;
+const FULL_MATCHDAY = STARTING_XIII_SLOTS + ERA_BENCH_FROM_STARTING_17;
 
 export type ClubMatchdayLineupSlot = {
   player: Player;
@@ -26,6 +32,8 @@ export interface ClubMatchdayLineup {
   xiii: Array<ClubMatchdayLineupSlot | undefined>;
   interchange: Player[];
   isUserClub: boolean;
+  /** True when emergency generated players were needed to fill 17. */
+  usedEmergencyPlayers?: boolean;
 }
 
 export function getLineupXiiiPlayers(lineup: ClubMatchdayLineup): Player[] {
@@ -87,14 +95,40 @@ function buildLeagueClubInterchange(
   return candidates.slice(0, ERA_BENCH_FROM_STARTING_17);
 }
 
-function buildOpponentClubLineup(
+function createEmergencyOpponentPlayer(
+  career: ManagerCareer,
+  club: string,
+  matchRound: number,
+  index: number,
+  position: Position
+): Player {
+  const reserve = generateReservePlayer(
+    `${career.seed}-opp-fill-${club}-r${matchRound}`,
+    index,
+    position,
+    club,
+    0
+  );
+  const player = reserveToPlayer(reserve, career.seasonYear);
+  return {
+    ...player,
+    club,
+    id: `mgr-opp-emg-${career.seed}-${club}-${matchRound}-${index}`,
+  };
+}
+
+/**
+ * Always returns a full 13 + 4 matchday squad.
+ * Falls back through first-team pool → flexible fills → emergency generated players.
+ */
+export function buildFullOpponentMatchdaySquad(
   career: ManagerCareer,
   club: string,
   matchRound: number
 ): ClubMatchdayLineup {
   const pool = getLeagueClubPlayerPool(career, club);
   const { xiii, usedIds } = buildBestAvailableXiiiFromPool(pool);
-  const interchange = buildLeagueClubInterchange(
+  let interchange = buildLeagueClubInterchange(
     pool,
     usedIds,
     career.seed,
@@ -102,7 +136,81 @@ function buildOpponentClubLineup(
     club
   );
 
-  return { xiii, interchange, isUserClub: false };
+  for (const p of interchange) usedIds.add(p.id);
+
+  let usedEmergency = false;
+  let emergencyIndex = 0;
+
+  for (let i = 0; i < STARTING_XIII_SLOTS; i++) {
+    if (xiii[i]) continue;
+    const position =
+      OPPONENT_LINEUP[i] ??
+      FORMATION_SLOT_POSITIONS[i] ??
+      getFormationSlotPosition(i);
+    const emergency = createEmergencyOpponentPlayer(
+      career,
+      club,
+      matchRound,
+      emergencyIndex++,
+      position
+    );
+    usedIds.add(emergency.id);
+    xiii[i] = { player: emergency, position };
+    usedEmergency = true;
+  }
+
+  while (interchange.length < ERA_BENCH_FROM_STARTING_17) {
+    const benchPos =
+      FORMATION_SLOT_POSITIONS[interchange.length % FORMATION_SLOT_POSITIONS.length] ??
+      "PROP";
+    const leftover = pool.find((p) => !usedIds.has(p.id));
+    if (leftover) {
+      usedIds.add(leftover.id);
+      interchange = [...interchange, leftover];
+      continue;
+    }
+    const emergency = createEmergencyOpponentPlayer(
+      career,
+      club,
+      matchRound,
+      emergencyIndex++,
+      benchPos
+    );
+    usedIds.add(emergency.id);
+    interchange = [...interchange, emergency];
+    usedEmergency = true;
+  }
+
+  if (usedEmergency && process.env.NODE_ENV !== "production") {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[manager] Emergency players used to fill ${club} matchday squad (round ${matchRound}).`
+    );
+  }
+
+  const filled =
+    xiii.filter(Boolean).length + Math.min(interchange.length, ERA_BENCH_FROM_STARTING_17);
+  if (filled < FULL_MATCHDAY && process.env.NODE_ENV !== "production") {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[manager] ${club} matchday still short after emergency fill (${filled}/${FULL_MATCHDAY}).`
+    );
+  }
+
+  return {
+    xiii,
+    interchange: interchange.slice(0, ERA_BENCH_FROM_STARTING_17),
+    isUserClub: false,
+    usedEmergencyPlayers: usedEmergency,
+  };
+}
+
+function buildOpponentClubLineup(
+  career: ManagerCareer,
+  club: string,
+  matchRound: number
+): ClubMatchdayLineup {
+  return buildFullOpponentMatchdaySquad(career, club, matchRound);
 }
 
 function leagueGamesPlayed(career: ManagerCareer): number {
@@ -146,7 +254,8 @@ export function getClubMatchdayLineup(
   }
 
   const matchRound = round ?? Math.max(career.currentRound, career.gameWeek, 1);
-  return buildOpponentClubLineup(career, club, matchRound);
+  const deepened = ensureClubReserveDepth(career, club);
+  return buildOpponentClubLineup(deepened, club, matchRound);
 }
 
 export function getClubSquadAverageRating(

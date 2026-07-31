@@ -49,11 +49,25 @@ export function ManagerMatchdayFormation({
   onFilledSlotDoubleClick,
   onPlayerClick,
 }: ManagerMatchdayFormationProps) {
+  /** Narrow deps — whole `career` identity changes on every persist and caused sheet churn. */
+  const matchdaySignature = career
+    ? [
+        career.matchdayXiii.join(","),
+        career.matchdayInterchange.join(","),
+        career.xiiiSlotPositions?.join(",") ?? "",
+        career.squad
+          .map((p) => `${p.playerId}:${p.fitness ?? ""}:${p.injury?.type ?? ""}`)
+          .join("|"),
+        career.calledUpReserveIds?.join(",") ?? "",
+      ].join("::")
+    : "";
+
   const squad = useMemo(
     () =>
       squadOverride ??
       (career ? toMatchdaySquadSlotsFromCareer(career) : []),
-    [career, squadOverride]
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional narrow signature
+    [matchdaySignature, squadOverride]
   );
   const pitchClub = clubColorOverride ?? career?.club ?? "";
   const canInspectPlayers = Boolean(onPlayerClick);

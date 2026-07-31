@@ -25,9 +25,9 @@ import {
   ManagerSection,
   ManagerSectionCard,
   ManagerStat,
-  ManagerViewHeader,
   leaguePositionTone,
 } from "@/components/manager/manager-ui";
+import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { playUiClick } from "@/lib/sound";
 
 type StatsTab = "season" | "career" | "retired";
@@ -52,7 +52,8 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
   return (
     <ManagerPage>
       <ManagerSection>
-      <ManagerViewHeader
+      <GameSectionHeader
+        label="Stats"
         title="Stats"
         subtitle={
           tab === "season"
@@ -61,18 +62,18 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
               ? `All-time career record at ${career.club}`
               : "Players who have retired during this save"
         }
-        tabs={
-          <ManagerSubTabBar
-            tabs={[
-              { id: "season", label: "Season" },
-              { id: "career", label: "Career" },
-              { id: "retired", label: "Retired" },
-            ]}
-            active={tab}
-            onChange={setTab}
-          />
-        }
       />
+      <div className="flex w-full min-w-0 justify-center">
+        <ManagerSubTabBar
+          tabs={[
+            { id: "season", label: "Season" },
+            { id: "career", label: "Career" },
+            { id: "retired", label: "Retired" },
+          ]}
+          active={tab}
+          onChange={setTab}
+        />
+      </div>
 
       {tab === "season" ? (
         <SeasonStatsPanel career={career} />

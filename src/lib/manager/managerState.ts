@@ -29,7 +29,7 @@ import {
   getEffectiveStadiumCapacity,
 } from "./managerFacilities";
 import { createManagerChallengeCup, reconcileChallengeCupFromFixtures } from "./managerChallengeCup";
-import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubReserveCounts } from "./managerReserves";
+import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubReserveCounts, ensureAllClubReserveDepth } from "./managerReserves";
 import { sanitizeWorldClubChallengeState } from "./worldClubChallenge";
 import { stampManagerSaveVersion } from "./managerSaveVersion";
 import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
@@ -306,6 +306,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     };
   }
   career = reconcileLeagueClubReserveCounts(career);
+  career = ensureAllClubReserveDepth(career);
   career = sanitizeWorldClubChallengeState(career);
   career = {
     ...career,
@@ -509,6 +510,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     ...hydrated,
     playerDevelopment: snapshotSquadSeasonStartRatings(hydrated),
   };
+  hydrated = ensureAllClubReserveDepth(hydrated);
   saveManagerCareer(hydrated, targetSlot);
   return hydrated;
 }

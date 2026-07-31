@@ -45,6 +45,11 @@ interface RugbyPitchProps {
   formationOnly?: boolean;
   /** Manager squad editor — highlight slots for swap / assign. */
   slotAccent?: Partial<Record<number, "source" | "target">>;
+  /**
+   * When false, filled slots skip Framer entrance fades.
+   * Manager team sheets must stay stable across career re-renders.
+   */
+  animateSlotEntrance?: boolean;
 }
 
 /** Shared layout + typography for recruitment, review, and manager team sheets. */
@@ -52,9 +57,10 @@ export const TEAM_SHEET_RUGBY_PITCH_PROPS = {
   formationOnly: true,
   compact: true,
   hideValueSummary: true,
+  animateSlotEntrance: false,
 } as const satisfies Pick<
   RugbyPitchProps,
-  "formationOnly" | "compact" | "hideValueSummary"
+  "formationOnly" | "compact" | "hideValueSummary" | "animateSlotEntrance"
 >;
 
 function RugbyPitchInner({
@@ -77,6 +83,7 @@ function RugbyPitchInner({
   clubColorOverride,
   formationOnly = false,
   slotAccent,
+  animateSlotEntrance = true,
 }: RugbyPitchProps) {
   const lockedSet = useMemo(() => new Set(lockedSlots ?? []), [lockedSlots]);
   const headerTitle = formationOnly
@@ -192,6 +199,7 @@ function RugbyPitchInner({
                       placementPlayer={placementPlayer}
                       clubColorOverride={clubColorOverride}
                       slotSizeClass={slotSizeClass}
+                      animateEntrance={animateSlotEntrance}
                       onClick={
                         canClick ? () => onSlotClick!(slotIndex) : undefined
                       }
@@ -325,6 +333,7 @@ const SquadMarker = memo(function SquadMarker({
   placementPlayer,
   clubColorOverride,
   slotSizeClass = PITCH_SLOT_SIZE_CLASS,
+  animateEntrance = true,
   onClick,
   onDoubleClick,
 }: {
@@ -339,6 +348,7 @@ const SquadMarker = memo(function SquadMarker({
   placementPlayer?: Player | null;
   clubColorOverride?: string;
   slotSizeClass?: string;
+  animateEntrance?: boolean;
   onClick?: () => void;
   onDoubleClick?: (e: MouseEvent) => void;
 }) {
@@ -432,45 +442,51 @@ const SquadMarker = memo(function SquadMarker({
     );
   }
 
+  const card = interactive && onClick ? (
+    <button
+      type="button"
+      onClick={onClick}
+      onDoubleClick={onDoubleClick}
+      title={`${slot.label}: change or remove player`}
+      className={`btn-press select-none rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50 ${
+        accent === "source"
+          ? "ring-2 ring-theme-primary"
+          : accent === "target"
+            ? "ring-2 ring-accent-gold shadow-[0_0_12px_rgba(251,191,36,0.35)]"
+            : selected
+              ? "ring-2 ring-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.45)]"
+              : "hover:ring-2 hover:ring-theme-primary/40"
+      }`}
+    >
+      <PitchSlotCard
+        slot={slot}
+        hardMode={hardMode}
+        clubColorOverride={clubColorOverride}
+        compact={_compact}
+        fullPlayerNames={fullPlayerNames}
+      />
+    </button>
+  ) : (
+    <PitchSlotCard
+      slot={slot}
+      hardMode={hardMode}
+      clubColorOverride={clubColorOverride}
+      compact={_compact}
+      fullPlayerNames={fullPlayerNames}
+    />
+  );
+
+  if (!animateEntrance) {
+    return card;
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2 }}
     >
-      {interactive && onClick ? (
-        <button
-          type="button"
-          onClick={onClick}
-          onDoubleClick={onDoubleClick}
-          title={`${slot.label}: change or remove player`}
-          className={`btn-press select-none rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50 ${
-            accent === "source"
-              ? "ring-2 ring-theme-primary"
-              : accent === "target"
-                ? "ring-2 ring-accent-gold shadow-[0_0_12px_rgba(251,191,36,0.35)]"
-                : selected
-              ? "ring-2 ring-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.45)]"
-              : "hover:ring-2 hover:ring-theme-primary/40"
-          }`}
-        >
-          <PitchSlotCard
-            slot={slot}
-            hardMode={hardMode}
-            clubColorOverride={clubColorOverride}
-            compact={_compact}
-            fullPlayerNames={fullPlayerNames}
-          />
-        </button>
-      ) : (
-        <PitchSlotCard
-          slot={slot}
-          hardMode={hardMode}
-          clubColorOverride={clubColorOverride}
-          compact={_compact}
-          fullPlayerNames={fullPlayerNames}
-        />
-      )}
+      {card}
     </motion.div>
   );
 });

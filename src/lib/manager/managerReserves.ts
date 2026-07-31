@@ -54,10 +54,27 @@ const FRENCH_RESERVE_CLUBS = new Set([
 
 /** Minimum registered reserves required to field a side (RFL reserve listing). */
 export const RESERVE_SQUAD_MIN = 17;
+/** Soft floor — every club keeps at least this many reserves for depth. */
+export const RESERVE_DEPTH_MIN = 22;
+/** Preferred reserve listing size when topping up coverage. */
+export const RESERVE_DEPTH_TARGET = 26;
 export const RESERVE_SQUAD_MAX = 30;
 export const RESERVE_RECRUITMENT_FEE = 300_000;
 export const RESERVE_WALKOVER_SCORE = 18;
 export const RESERVE_WALKOVER_REASON = "Walkover — not enough players";
+
+/** Minimum positional coverage for a healthy reserve listing. */
+export const RESERVE_POSITION_COVERAGE: { position: Position; min: number }[] = [
+  { position: "FULLBACK", min: 2 },
+  { position: "WING", min: 4 },
+  { position: "CENTRE", min: 4 },
+  { position: "STAND_OFF", min: 2 },
+  { position: "SCRUM_HALF", min: 2 },
+  { position: "PROP", min: 4 },
+  { position: "HOOKER", min: 2 },
+  { position: "SECOND_ROW", min: 4 },
+  { position: "LOOSE_FORWARD", min: 2 },
+];
 
 export const RESERVE_EMERGENCY_RECRUITMENT_TITLE =
   "Academy development levy";
@@ -368,7 +385,7 @@ export function applyYouthMatchDevelopment(
   };
 }
 
-function generateReservePlayer(
+export function generateReservePlayer(
   seed: string,
   index: number,
   position: Position,
@@ -459,7 +476,7 @@ export function getReserveOpponent(club: string, round: number, seed: string): s
 export function initLeagueClubReserveCounts(): Record<string, number> {
   const counts: Record<string, number> = {};
   for (const club of CURRENT_PLAYABLE_CLUBS) {
-    counts[club] = 24;
+    counts[club] = RESERVE_DEPTH_TARGET;
   }
   return counts;
 }
@@ -499,10 +516,11 @@ export function tickLeagueClubReserveCounts(
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === career.club) continue;
     const rng = seedrandom(`${career.seed}-res-churn-r${round}-${club}`);
-    let count = counts[club] ?? 24;
-    if (rng() < 0.07 && count > 14) count -= 1;
-    if (rng() < 0.04 && count < 24) count += 1;
-    counts[club] = count;
+    let count = counts[club] ?? RESERVE_DEPTH_TARGET;
+    // Never drop AI clubs below the depth floor (was 14 — caused walkovers).
+    if (rng() < 0.07 && count > RESERVE_DEPTH_MIN) count -= 1;
+    if (rng() < 0.04 && count < RESERVE_DEPTH_TARGET) count += 1;
+    counts[club] = Math.max(RESERVE_DEPTH_MIN, count);
   }
 
   return { ...career, leagueClubReserveCounts: counts };
@@ -522,10 +540,130 @@ export function applySeasonAiReserveIntake(
     if (club === career.club) continue;
     const rng = seedrandom(`${career.seed}-res-intake-s${seasonYear}-${club}`);
     const intake = 2 + Math.floor(rng() * 3);
-    counts[club] = Math.min(24, (counts[club] ?? 24) + intake);
+    counts[club] = Math.min(
+      RESERVE_SQUAD_MAX,
+      Math.max(RESERVE_DEPTH_MIN, (counts[club] ?? RESERVE_DEPTH_TARGET) + intake)
+    );
   }
 
   return { ...career, leagueClubReserveCounts: counts };
+}
+
+function countReservePositions(
+  reserves: ManagerReservePlayer[]
+): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const reserve of reserves) {
+    counts[reserve.position] = (counts[reserve.position] ?? 0) + 1;
+  }
+  return counts;
+}
+
+function nextReserveCoverageGaps(
+  reserves: ManagerReservePlayer[]
+): Position[] {
+  const counts = countReservePositions(reserves);
+  const gaps: Position[] = [];
+  for (const { position, min } of RESERVE_POSITION_COVERAGE) {
+    const have = counts[position] ?? 0;
+    for (let i = have; i < min; i++) gaps.push(position);
+  }
+  return gaps;
+}
+
+/**
+ * Ensure a club has enough reserves (size + positional coverage).
+ * User club: generates and persists real reserve players.
+ * AI clubs: raises leagueClubReserveCounts floor.
+ */
+export function ensureClubReserveDepth(
+  career: ManagerCareer,
+  club: string
+): ManagerCareer {
+  if (club === career.club) {
+    const reserves = [...(career.reserves ?? [])];
+    if (
+      reserves.length >= RESERVE_DEPTH_MIN &&
+      nextReserveCoverageGaps(reserves).length === 0
+    ) {
+      return reconcileLeagueClubReserveCounts(career);
+    }
+
+    const facilities = getClubFacilities(career);
+    const existingIds = new Set(reserves.map((r) => r.id));
+    const reserveContracts = { ...(career.reserveContracts ?? {}) };
+    const startIndex = reserves.length;
+    let added = 0;
+
+    while (
+      reserves.length < RESERVE_SQUAD_MAX &&
+      (reserves.length < RESERVE_DEPTH_MIN ||
+        nextReserveCoverageGaps(reserves).length > 0)
+    ) {
+      const gaps = nextReserveCoverageGaps(reserves);
+      const gapPos = gaps[0] ?? "CENTRE";
+      let recruit = generateReservePlayer(
+        `${career.seed}-depth-${career.seasonYear}-${club}`,
+        startIndex + added,
+        gapPos,
+        club,
+        facilities.youth
+      );
+      let guard = 0;
+      while (existingIds.has(recruit.id) && guard < 8) {
+        recruit = generateReservePlayer(
+          `${career.seed}-depth-${career.seasonYear}-${club}-r${guard}`,
+          startIndex + added + guard * 17,
+          gapPos,
+          club,
+          facilities.youth
+        );
+        guard += 1;
+      }
+      if (existingIds.has(recruit.id)) break;
+      existingIds.add(recruit.id);
+      reserves.push(recruit);
+      reserveContracts[recruit.id] = generateReserveYouthContract(recruit);
+      added += 1;
+      if (added > 40) break;
+    }
+
+    if (added === 0) {
+      return reconcileLeagueClubReserveCounts(career);
+    }
+
+    const next: ManagerCareer = {
+      ...career,
+      reserves,
+      reserveContracts,
+      wageBill: computeCareerWageBill({
+        ...career,
+        reserves,
+        reserveContracts,
+      }),
+      updatedAt: new Date().toISOString(),
+    };
+    return reconcileLeagueClubReserveCounts(next);
+  }
+
+  const counts = {
+    ...(career.leagueClubReserveCounts ?? initLeagueClubReserveCounts()),
+  };
+  const current = counts[club] ?? RESERVE_DEPTH_TARGET;
+  if (current >= RESERVE_DEPTH_MIN) {
+    return career;
+  }
+  counts[club] = RESERVE_DEPTH_TARGET;
+  return { ...career, leagueClubReserveCounts: counts };
+}
+
+/** Ensure every Super League club meets reserve depth floors. */
+export function ensureAllClubReserveDepth(career: ManagerCareer): ManagerCareer {
+  let next = career;
+  for (const club of CURRENT_PLAYABLE_CLUBS) {
+    next = ensureClubReserveDepth(next, club);
+  }
+  return next;
 }
 
 function createReserveWalkoverResult(

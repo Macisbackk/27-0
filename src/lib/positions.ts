@@ -17,6 +17,32 @@ export const POSITION_LABELS: Record<Position, string> = {
   LOOSE_FORWARD: "Loose Forward",
 };
 
+/** Full display names for squad / reserve / interchange cards. */
+export const POSITION_FULL_NAMES: Record<Position, string> = {
+  FULLBACK: "Full Back",
+  WING: "Wing",
+  CENTRE: "Centre",
+  STAND_OFF: "Stand Off",
+  SCRUM_HALF: "Scrum Half",
+  PROP: "Prop Forward",
+  HOOKER: "Hooker",
+  SECOND_ROW: "Second Row",
+  LOOSE_FORWARD: "Loose Forward",
+};
+
+export function getFullPositionName(position: Position): string {
+  return POSITION_FULL_NAMES[position] ?? POSITION_LABELS[position] ?? position;
+}
+
+/** Dual-position line, e.g. "Prop Forward / Second Row". */
+export function getFullPositionNames(positions: Position[]): string {
+  const unique: Position[] = [];
+  for (const pos of positions) {
+    if (!unique.includes(pos)) unique.push(pos);
+  }
+  return unique.map(getFullPositionName).join(" / ");
+}
+
 /** Full uppercase position names for pitch cards and selection tiles. */
 export const POSITION_TILE_LABEL: Record<Position, string> = {
   FULLBACK: "FULL BACK",

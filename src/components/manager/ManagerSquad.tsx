@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { POSITION_SHORT } from "@/lib/positions";
+import { POSITION_SHORT, getFullPositionName, getFullPositionNames } from "@/lib/positions";
 import type { Position } from "@/lib/types";
 import type { ManagerCareer } from "@/lib/manager/types";
 import {
@@ -108,7 +108,7 @@ function squadPlayerBoxClass(
   return [
     squadSelectionClass(selectionRole),
     SQUAD_PLAYER_BOX_CLASS,
-    "btn-press select-none rounded-lg border text-left transition",
+    "btn-press select-none rounded-lg border text-center transition",
     unavailable ? `${unavailableAccentClass(!!isSuspension)} opacity-90` : "",
   ]
     .filter(Boolean)
@@ -147,14 +147,24 @@ function SquadPoolPlayerButton({
       >
         <div className="squad-side-player-card__main">
           <p className={SQUAD_PLAYER_NAME_CLASS}>{player.name}</p>
-          <p className="squad-side-player-card__meta">
-            {positions.map((p) => POSITION_SHORT[p]).join(" · ")} · {sourceLabel}
-            {unavailable && ps?.injury
-              ? ` · ${formatInjuryLabel(ps.injury)}`
-              : ""}
-          </p>
+          {unavailable && ps?.injury ? (
+            <div className="squad-side-player-card__statusRow">
+              <span
+                className={`rounded px-1 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${unavailableTextClass(isSuspension)}`}
+              >
+                {isSuspension ? "Suspended" : "Injured"}
+              </span>
+            </div>
+          ) : null}
+          <div className="squad-side-player-card__footer">
+            <span className="squad-side-player-card__meta">
+              {getFullPositionNames(positions)} · {sourceLabel}
+            </span>
+            <span className="squad-side-player-card__rating">
+              {player.peakRating}
+            </span>
+          </div>
         </div>
-        <div className="squad-side-player-card__rating">{player.peakRating}</div>
       </button>
     </li>
   );
@@ -526,11 +536,15 @@ export function ManagerSquad({
       )}
 
       {unavailablePlayers.length > 0 && (
-        <div className={managerAlertPanelClass("red")}>
+        <div className={`${managerAlertPanelClass("red")} text-center`}>
           <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-red-300/80">
-            Unavailable ({unavailablePlayers.length})
+            Unavailable
           </p>
-          <div className="flex flex-wrap gap-1.5">
+          <p className={`mb-2 ${TYPO.bodySm} text-pitch-300`}>
+            {unavailablePlayers.length} player
+            {unavailablePlayers.length === 1 ? "" : "s"} unavailable
+          </p>
+          <div className="mx-auto flex max-w-xl flex-col items-center gap-1.5">
             {unavailablePlayers.map((ps) => {
               const player = getManagerPlayer(career, ps.playerId);
               if (!player || !ps.injury) return null;
@@ -539,11 +553,10 @@ export function ManagerSquad({
               return (
                 <span
                   key={ps.playerId}
-                  className={`inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-md border px-2 py-0.5 text-[11px] ${unavailableAccentClass(isSuspension)}`}
+                  className={`inline-flex max-w-full flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 rounded-md border px-2 py-0.5 text-[11px] ${unavailableAccentClass(isSuspension)}`}
                 >
-                  <span className="truncate font-medium text-white">
-                    {player.name}
-                  </span>
+                  <span className="font-medium text-white">{player.name}</span>
+                  <span className="text-pitch-500">—</span>
                   <span className={unavailableTextClass(isSuspension)}>
                     {formatInjuryLabel(ps.injury)}
                   </span>
@@ -640,7 +653,9 @@ export function ManagerSquad({
                           Interchange {14 + i}
                         </span>
                         {unavailable ? (
-                          <span className="text-[10px] font-semibold text-red-400">
+                          <span
+                            className={`text-[10px] font-semibold ${unavailableTextClass(!!isSuspension)}`}
+                          >
                             {isSuspension ? "Sus" : "Inj"}
                           </span>
                         ) : null}
@@ -655,9 +670,9 @@ export function ManagerSquad({
                         </p>
                       </div>
                       <div className="player-slot__footer">
-                        <span className="player-slot__position min-w-0 truncate">
+                        <span className="player-slot__position">
                           {player
-                            ? player.position.replaceAll("_", " ")
+                            ? getFullPositionName(player.position)
                             : "Bench"}
                         </span>
                         {player ? (
