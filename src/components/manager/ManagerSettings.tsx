@@ -429,33 +429,6 @@ function ReserveDevelopmentSettingsCard({
             </h3>
             <ul className="divide-y divide-pitch-700/50">
               <SettingsToggle
-                label="Flag for review if potential is below"
-                description={`Mark reserves under ${dev.flagPotentialBelow} potential for review.`}
-                on={dev.flagLowPotentialEnabled}
-                onToggle={() =>
-                  patchDev({
-                    flagLowPotentialEnabled: !dev.flagLowPotentialEnabled,
-                  })
-                }
-              />
-            </ul>
-            <div
-              className={`mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2 ${dev.flagLowPotentialEnabled ? "" : "opacity-50"}`}
-            >
-              <SettingsNumberInput
-                label="Potential threshold"
-                value={dev.flagPotentialBelow}
-                min={50}
-                max={85}
-                disabled={!dev.flagLowPotentialEnabled}
-                onChange={(flagPotentialBelow) =>
-                  patchDev({ flagPotentialBelow })
-                }
-              />
-            </div>
-
-            <ul className="mt-3 divide-y divide-pitch-700/50">
-              <SettingsToggle
                 label="Flag for full-time deal if rating reaches"
                 description={`Promote candidates at ${dev.fullTimeRatingThreshold}+ rating.`}
                 on={dev.flagForFullTimeEnabled}
@@ -480,58 +453,6 @@ function ReserveDevelopmentSettingsCard({
                 }
               />
             </div>
-          </section>
-
-          <section>
-            <h3 className={`${TYPO.bodySm} font-semibold text-pitch-200`}>
-              Protections & squad size
-            </h3>
-            <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <SettingsNumberInput
-                label="Protect players under age"
-                value={dev.protectUnderAge}
-                min={16}
-                max={22}
-                onChange={(protectUnderAge) => patchDev({ protectUnderAge })}
-              />
-              <SettingsNumberInput
-                label="Minimum reserve squad size"
-                value={dev.minimumReserveSquadSize}
-                min={13}
-                max={30}
-                onChange={(minimumReserveSquadSize) =>
-                  patchDev({ minimumReserveSquadSize })
-                }
-              />
-            </div>
-            <ul className="mt-2 divide-y divide-pitch-700/50">
-              <SettingsToggle
-                label="Protect high-potential players"
-                description="Keep prospects with strong ceilings from release rules."
-                on={dev.protectHighPotentialPlayers}
-                onToggle={() =>
-                  patchDev({
-                    protectHighPotentialPlayers: !dev.protectHighPotentialPlayers,
-                  })
-                }
-              />
-            </ul>
-          </section>
-
-          <section>
-            <h3 className={`${TYPO.bodySm} font-semibold text-pitch-200`}>
-              Season-end automation
-            </h3>
-            <ul className="divide-y divide-pitch-700/50">
-              <SettingsToggle
-                label="Auto-release at season end"
-                description="Silently release matching development candidates when the season ends. Use Preview or Apply now for immediate control."
-                on={dev.autoReleaseEnabled}
-                onToggle={() =>
-                  patchDev({ autoReleaseEnabled: !dev.autoReleaseEnabled })
-                }
-              />
-            </ul>
           </section>
         </div>
 
@@ -597,7 +518,7 @@ function ReserveDevelopmentSettingsCard({
         title="Below minimum squad size"
         message={
           pendingForceApply
-            ? `Releasing ${pendingForceApply.length} player${pendingForceApply.length === 1 ? "" : "s"} would drop the reserve squad below the minimum (${dev.minimumReserveSquadSize}).\n\nForce release anyway?`
+            ? `Releasing ${pendingForceApply.length} player${pendingForceApply.length === 1 ? "" : "s"} would drop the reserve squad below the minimum listing size.\n\nForce release anyway?`
             : ""
         }
         confirmLabel="Force release"

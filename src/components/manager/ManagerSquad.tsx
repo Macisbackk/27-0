@@ -11,11 +11,10 @@ import {
   getManagerPlayerEligiblePositions,
 } from "@/lib/manager/managerPlayers";
 import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
-import { getUnavailableSquadPlayers, isPlayerUnavailable } from "@/lib/manager/managerSquad";
+import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import {
   tryAssignPlayerToMatchday,
   findPlayerMatchdaySlot,
-  getMatchdayPlayerIds,
   getReplacementCandidates,
   getSquadRosterPoolPlayers,
   type MatchdaySlotTarget,
@@ -416,16 +415,6 @@ export function ManagerSquad({
 
   const squadCheck = validateFitMatchdaySquad(resolveCareerForMatchSimulation(career));
 
-  const unavailablePlayers = useMemo(
-    () => getUnavailableSquadPlayers(career),
-    [career]
-  );
-
-  const matchdayIds = useMemo(
-    () => getMatchdayPlayerIds(career),
-    [career]
-  );
-
   const inSelectionMode =
     !!pendingAssignId || !!replaceSourcePlayerId || !!selectedTarget;
 
@@ -538,43 +527,6 @@ export function ManagerSquad({
           >
             Auto Fix Squad
           </GameButton>
-        </div>
-      )}
-
-      {unavailablePlayers.length > 0 && (
-        <div className={`${managerAlertPanelClass("red")} text-center`}>
-          <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-red-300/80">
-            Unavailable
-          </p>
-          <p className={`mb-2 ${TYPO.bodySm} text-pitch-300`}>
-            {unavailablePlayers.length} player
-            {unavailablePlayers.length === 1 ? "" : "s"} unavailable
-          </p>
-          <div className="mx-auto flex max-w-xl flex-col items-center gap-1.5">
-            {unavailablePlayers.map((ps) => {
-              const player = getManagerPlayer(career, ps.playerId);
-              if (!player || !ps.injury) return null;
-              const isSuspension = ps.injury.type === "suspension";
-              const onMatchday = matchdayIds.has(ps.playerId);
-              return (
-                <span
-                  key={ps.playerId}
-                  className={`inline-flex max-w-full flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 rounded-md border px-2 py-0.5 text-[11px] ${unavailableAccentClass(isSuspension)}`}
-                >
-                  <span className="font-medium text-white">{player.name}</span>
-                  <span className="text-pitch-500">—</span>
-                  <span className={unavailableTextClass(isSuspension)}>
-                    {formatInjuryLabel(ps.injury)}
-                  </span>
-                  {onMatchday && (
-                    <span className="text-[10px] font-medium text-amber-300">
-                      on sheet
-                    </span>
-                  )}
-                </span>
-              );
-            })}
-          </div>
         </div>
       )}
 

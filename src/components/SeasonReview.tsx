@@ -388,7 +388,7 @@ export function SeasonReview({
               defaultOpen={false}
               helper="Click any result to view full match details."
             >
-              <div className="max-h-[28rem] space-y-2 overflow-y-auto overflow-x-hidden pr-1 text-left">
+              <div className="space-y-2 overflow-x-hidden text-left">
                 {seasonResult.fixtures.map((fixture) => {
                   const isSelected = selectedFixture?.round === fixture.round;
                   return (

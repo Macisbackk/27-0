@@ -253,11 +253,23 @@ export function getReadableClubTextColour(colours: {
   );
 }
 
-/** Explicit helper for match-event team name text. */
-export function getReadableNonBlackWhiteTeamTextColour(colours: {
+/**
+ * Match-event team accent only — avoids white/black kit colours so event
+ * feed team names stay readable. Do not use for general club/UI text.
+ */
+export function getMatchEventTeamAccentColour(colours: {
   primary: string;
   secondary: string;
   accent?: string;
 }): string {
   return getReadableClubTextColour(colours);
+}
+
+/** @deprecated Use getMatchEventTeamAccentColour — match events only. */
+export function getReadableNonBlackWhiteTeamTextColour(colours: {
+  primary: string;
+  secondary: string;
+  accent?: string;
+}): string {
+  return getMatchEventTeamAccentColour(colours);
 }

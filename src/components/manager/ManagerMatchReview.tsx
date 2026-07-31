@@ -44,16 +44,14 @@ import {
 
 function MatchReviewBackBar({
   onClose,
-  placement = "top",
 }: {
   onClose: () => void;
-  placement?: "top" | "bottom";
 }) {
   return (
     <ManagerMobileBackBar
       label="Back to hub"
       onBack={onClose}
-      placement={placement}
+      placement="top"
     />
   );
 }
@@ -87,7 +85,7 @@ export function ManagerMatchReview({
                 This result could not be loaded from your save.
               </p>
             </div>
-            <MatchReviewBackBar onClose={onClose} placement="bottom" />
+            <MatchReviewBackBar onClose={onClose} />
           </div>
         </ManagerSection>
       </ManagerPage>
@@ -353,7 +351,7 @@ export function ManagerMatchReview({
       {fixture.meta?.liveEvents && fixture.meta.liveEvents.length > 0 && (
         <div className={`${CARD.base} ${SPACING.cardPadding}`}>
           <p className={TYPO.sectionLabel}>Match Events</p>
-          <ul className={`mt-2 max-h-48 overflow-y-auto ${SPACING.stackSm}`}>
+          <ul className={`mt-2 ${SPACING.stackSm}`}>
             {[...fixture.meta.liveEvents].reverse().map((ev, i) => (
               <ManagerMatchEventLine
                 key={`${ev.minute}-${i}`}
@@ -438,7 +436,7 @@ export function ManagerMatchReview({
         </div>
       )}
 
-      <MatchReviewBackBar onClose={onClose} placement="bottom" />
+      <MatchReviewBackBar onClose={onClose} />
       </div>
       </ManagerSection>
     </ManagerPage>

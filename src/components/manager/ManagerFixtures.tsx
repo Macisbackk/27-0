@@ -21,7 +21,6 @@ import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubColors } from "@/lib/clubs";
-import { getReadableNonBlackWhiteTeamTextColour } from "@/lib/ui/contrast";
 import {
   managerFixtureCardStyle,
   managerFixtureRowClass,
@@ -183,18 +182,12 @@ function WccWriteUpDetails({
   includeScoreline?: boolean;
   defaultOpen?: boolean;
 }) {
-  const slColors = getClubColors(result.superLeagueChampionName);
-  const nrlColors = getClubColors(result.nrlChampionName);
-  const winnerColors = getClubColors(result.winnerName);
-  const slText = getReadableNonBlackWhiteTeamTextColour(slColors);
-  const nrlText = getReadableNonBlackWhiteTeamTextColour(nrlColors);
-
   return (
     <div className="wcc-result-card space-y-2">
       {includeScoreline ? (
         <div className="wcc-scoreline">
           <div className="wcc-team wcc-team--home">
-            <span className="wcc-team-name" style={{ color: slText }}>
+            <span className="wcc-team-name text-white">
               {result.superLeagueChampionName}
             </span>
           </div>
@@ -202,7 +195,7 @@ function WccWriteUpDetails({
             {result.homeScore} - {result.awayScore}
           </div>
           <div className="wcc-team wcc-team--away">
-            <span className="wcc-team-name" style={{ color: nrlText }}>
+            <span className="wcc-team-name text-white">
               {result.nrlChampionName}
             </span>
           </div>
@@ -222,12 +215,7 @@ function WccWriteUpDetails({
         <div className="wcc-writeup wcc-writeup-section rounded-lg bg-pitch-950/40 px-3 py-2">
           <div className="mb-2 flex min-w-0 flex-wrap items-center justify-center gap-2">
             <span className={`${TYPO.bodySm} text-pitch-400`}>Winner:</span>
-            <span
-              className="font-semibold"
-              style={{
-                color: getReadableNonBlackWhiteTeamTextColour(winnerColors),
-              }}
-            >
+            <span className="font-semibold text-white">
               {result.winnerName}
             </span>
             <span className={TYPO.bodySm}>
@@ -256,15 +244,11 @@ function WccTeamVsLine({
   awayScore?: number;
   writeUp?: string;
 }) {
-  const slColors = getClubColors(superLeagueName);
-  const nrlColors = getClubColors(nrlName);
-  const slText = getReadableNonBlackWhiteTeamTextColour(slColors);
-  const nrlText = getReadableNonBlackWhiteTeamTextColour(nrlColors);
   return (
     <div className="wcc-result-card">
       <div className="wcc-scoreline">
         <div className="wcc-team wcc-team--home">
-          <span className="wcc-team-name" style={{ color: slText }}>
+          <span className="wcc-team-name text-white">
             {superLeagueName}
           </span>
         </div>
@@ -274,7 +258,7 @@ function WccTeamVsLine({
             : "vs"}
         </div>
         <div className="wcc-team wcc-team--away">
-          <span className="wcc-team-name" style={{ color: nrlText }}>
+          <span className="wcc-team-name text-white">
             {nrlName}
           </span>
         </div>

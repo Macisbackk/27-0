@@ -42,26 +42,14 @@ import { getReserveReportMonth } from "@/lib/manager/managerReserveReports";
 import { playUiClick } from "@/lib/sound";
 import { ManagerPage, ManagerSection, ManagerStat } from "@/components/manager/manager-ui";
 import { ManagerReserveReleaseModal } from "@/components/manager/ManagerReserveReleaseModal";
-import { ManagerDialog } from "@/components/manager/ManagerDialog";
+import { ManagerReserveReleaseToolsModal } from "@/components/manager/ManagerReserveReleaseToolsModal";
 import {
   applyReserveReleases,
   evaluateReservePlayerReview,
-  previewReleaseExpiredContracts,
-  previewReleaseMarkedForRelease,
-  previewReleaseOverAge,
-  previewReleaseUnderAge,
-  previewReleaseUnderRating,
-  type ReserveReleaseCandidate,
   type ReserveReviewFlag,
 } from "@/lib/manager/managerReserveRelease";
 
 type ReserveFilter = "all" | "position" | "potential" | "rating" | "age";
-type ReleaseToolId =
-  | "rating"
-  | "over_age"
-  | "under_age"
-  | "expired"
-  | "marked";
 
 const STATUS_LABELS: Record<string, string> = {
   expires_this_season: "Expires this season",
@@ -93,27 +81,6 @@ const REVIEW_CHIP: Record<
   },
 };
 
-function CompactReleasePreview({
-  candidates,
-}: {
-  candidates: ReserveReleaseCandidate[] | undefined;
-}) {
-  if (!candidates?.length) return null;
-  return (
-    <ul className="ml-[7.25rem] space-y-0.5 border-l border-pitch-700/40 pl-2">
-      {candidates.map(({ reserve, reason }) => (
-        <li
-          key={reserve.id}
-          className={`${TYPO.bodySm} truncate text-pitch-400`}
-          title={`${reserve.name} · ${reason}`}
-        >
-          <span className="text-pitch-200">{reserve.name}</span> · {reason}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 interface ManagerReservesProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
@@ -126,118 +93,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
   const [releaseTarget, setReleaseTarget] = useState<ManagerReservePlayer | null>(
     null
   );
-  const [bulkRating, setBulkRating] = useState(55);
-  const [bulkOverAge, setBulkOverAge] = useState(23);
-  const [bulkUnderAge, setBulkUnderAge] = useState(18);
-  const [previews, setPreviews] = useState<
-    Partial<Record<ReleaseToolId, ReserveReleaseCandidate[]>>
-  >({});
-  const [pendingRelease, setPendingRelease] = useState<{
-    tool: ReleaseToolId;
-    candidates: ReserveReleaseCandidate[];
-    label: string;
-    forceBelowMinimum: boolean;
-  } | null>(null);
-  const [forceDepth, setForceDepth] = useState(false);
-
-  const getToolCandidates = (tool: ReleaseToolId): ReserveReleaseCandidate[] => {
-    switch (tool) {
-      case "rating":
-        return previewReleaseUnderRating(career, bulkRating);
-      case "over_age":
-        return previewReleaseOverAge(career, bulkOverAge);
-      case "under_age":
-        return previewReleaseUnderAge(career, bulkUnderAge);
-      case "expired":
-        return previewReleaseExpiredContracts(career);
-      case "marked":
-        return previewReleaseMarkedForRelease(career);
-    }
-  };
-
-  const toolLabel = (tool: ReleaseToolId): string => {
-    switch (tool) {
-      case "rating":
-        return `under rating ${bulkRating}`;
-      case "over_age":
-        return `over age ${bulkOverAge}`;
-      case "under_age":
-        return `under age ${bulkUnderAge}`;
-      case "expired":
-        return "expired reserve contracts";
-      case "marked":
-        return "marked for release";
-    }
-  };
-
-  const handlePreviewTool = (tool: ReleaseToolId) => {
-    playUiClick();
-    const candidates = getToolCandidates(tool);
-    setPreviews((prev) => ({ ...prev, [tool]: candidates }));
-    setMessage(
-      candidates.length === 0
-        ? `No reserves match: ${toolLabel(tool)}`
-        : `Preview ${candidates.length} player${candidates.length === 1 ? "" : "s"} (${toolLabel(tool)})`
-    );
-  };
-
-  const handleApplyTool = (tool: ReleaseToolId) => {
-    playUiClick();
-    const candidates = previews[tool] ?? getToolCandidates(tool);
-    if (candidates.length === 0) {
-      setPreviews((prev) => ({ ...prev, [tool]: [] }));
-      setMessage(`No reserves match: ${toolLabel(tool)}`);
-      return;
-    }
-    setPreviews((prev) => ({ ...prev, [tool]: candidates }));
-    setPendingRelease({
-      tool,
-      candidates,
-      label: toolLabel(tool),
-      forceBelowMinimum: forceDepth,
-    });
-  };
-
-  const confirmPendingRelease = () => {
-    if (!pendingRelease) return;
-    const result = applyReserveReleases(
-      career,
-      pendingRelease.candidates,
-      { forceBelowMinimum: pendingRelease.forceBelowMinimum || forceDepth }
-    );
-    if (!result.ok && result.wouldBreachMinimum) {
-      setPendingRelease({
-        ...pendingRelease,
-        forceBelowMinimum: true,
-      });
-      setMessage(result.error ?? "Squad depth would drop below minimum");
-      return;
-    }
-    if (!result.ok || !result.career) {
-      setMessage(result.error ?? "Release failed");
-      setPendingRelease(null);
-      return;
-    }
-    onUpdate(result.career);
-    setPreviews((prev) => ({ ...prev, [pendingRelease.tool]: [] }));
-    setPendingRelease(null);
-    setMessage(
-      `Released ${result.released} reserve player${result.released === 1 ? "" : "s"}`
-    );
-  };
-
-  const toggleMarkedForRelease = (reserveId: string) => {
-    playUiClick();
-    onUpdate({
-      ...career,
-      reserves: career.reserves.map((r) =>
-        r.id === reserveId
-          ? { ...r, markedForRelease: !r.markedForRelease }
-          : r
-      ),
-      updatedAt: new Date().toISOString(),
-    });
-  };
+  const [releaseToolsOpen, setReleaseToolsOpen] = useState(false);
 
   const latestMonthlyReport = useMemo(
     () =>
@@ -450,160 +306,18 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         )}
       </GamePanel>
 
-      <GamePanel padded label="Release tools" className="mx-auto max-w-2xl">
-        <div className="space-y-2.5">
-          <div className="space-y-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className={`w-28 shrink-0 ${TYPO.bodySm} text-pitch-400`}>
-                Under rating
-              </span>
-              <input
-                type="number"
-                min={40}
-                max={99}
-                value={bulkRating}
-                onChange={(e) => setBulkRating(Number(e.target.value))}
-                className="w-14 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-1 text-sm text-white"
-              />
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={() => handlePreviewTool("rating")}
-              >
-                Preview
-              </GameButton>
-              <GameButton
-                variant="danger"
-                size="sm"
-                onClick={() => handleApplyTool("rating")}
-              >
-                Release
-              </GameButton>
-            </div>
-            <CompactReleasePreview candidates={previews.rating} />
-          </div>
-
-          <div className="space-y-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className={`w-28 shrink-0 ${TYPO.bodySm} text-pitch-400`}>
-                Over age
-              </span>
-              <input
-                type="number"
-                min={16}
-                max={40}
-                value={bulkOverAge}
-                onChange={(e) => setBulkOverAge(Number(e.target.value))}
-                className="w-14 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-1 text-sm text-white"
-              />
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={() => handlePreviewTool("over_age")}
-              >
-                Preview
-              </GameButton>
-              <GameButton
-                variant="danger"
-                size="sm"
-                onClick={() => handleApplyTool("over_age")}
-              >
-                Release
-              </GameButton>
-            </div>
-            <CompactReleasePreview candidates={previews.over_age} />
-          </div>
-
-          <div className="space-y-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className={`w-28 shrink-0 ${TYPO.bodySm} text-pitch-400`}>
-                Under age
-              </span>
-              <input
-                type="number"
-                min={16}
-                max={40}
-                value={bulkUnderAge}
-                onChange={(e) => setBulkUnderAge(Number(e.target.value))}
-                className="w-14 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-1 text-sm text-white"
-              />
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={() => handlePreviewTool("under_age")}
-              >
-                Preview
-              </GameButton>
-              <GameButton
-                variant="danger"
-                size="sm"
-                onClick={() => handleApplyTool("under_age")}
-              >
-                Release
-              </GameButton>
-            </div>
-            <CompactReleasePreview candidates={previews.under_age} />
-          </div>
-
-          <div className="space-y-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className={`w-28 shrink-0 ${TYPO.bodySm} text-pitch-400`}>
-                Expired contracts
-              </span>
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={() => handlePreviewTool("expired")}
-              >
-                Preview
-              </GameButton>
-              <GameButton
-                variant="danger"
-                size="sm"
-                onClick={() => handleApplyTool("expired")}
-              >
-                Release
-              </GameButton>
-            </div>
-            <CompactReleasePreview candidates={previews.expired} />
-          </div>
-
-          <div className="space-y-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className={`w-28 shrink-0 ${TYPO.bodySm} text-pitch-400`}>
-                Marked for release
-              </span>
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={() => handlePreviewTool("marked")}
-              >
-                Preview
-              </GameButton>
-              <GameButton
-                variant="danger"
-                size="sm"
-                onClick={() => handleApplyTool("marked")}
-              >
-                Release
-              </GameButton>
-            </div>
-            <CompactReleasePreview candidates={previews.marked} />
-          </div>
-        </div>
-
-        <label className="mt-3 flex cursor-pointer items-center gap-2 border-t border-pitch-700/40 pt-3">
-          <input
-            type="checkbox"
-            checked={forceDepth}
-            onChange={(e) => setForceDepth(e.target.checked)}
-            className="shrink-0"
-          />
-          <span className={`${TYPO.bodySm} text-pitch-400`}>
-            Force release below minimum depth
-          </span>
-        </label>
-      </GamePanel>
+      <div className="mx-auto flex max-w-2xl justify-center">
+        <GameButton
+          variant="secondary"
+          size="sm"
+          onClick={() => {
+            playUiClick();
+            setReleaseToolsOpen(true);
+          }}
+        >
+          Release Tools
+        </GameButton>
+      </div>
 
       <GamePanel padded label="Reserve squad summary">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -924,15 +638,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                       </GameButton>
                     )}
                     <GameButton
-                      variant={r.markedForRelease ? "theme" : "secondary"}
-                      size="sm"
-                      fullWidth={false}
-                      className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
-                      onClick={() => toggleMarkedForRelease(r.id)}
-                    >
-                      {r.markedForRelease ? "Unmark" : "Mark release"}
-                    </GameButton>
-                    <GameButton
                       variant="danger"
                       size="sm"
                       fullWidth={false}
@@ -988,27 +693,12 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         />
       )}
 
-      <ManagerDialog
-        open={pendingRelease !== null}
-        variant="confirm"
-        destructive
-        title="Confirm reserve releases"
-        message={
-          pendingRelease
-            ? [
-                `Release ${pendingRelease.candidates.length} reserve player${pendingRelease.candidates.length === 1 ? "" : "s"} (${pendingRelease.label})?`,
-                pendingRelease.forceBelowMinimum || forceDepth
-                  ? "This will drop squad depth below the minimum."
-                  : null,
-              ]
-                .filter(Boolean)
-                .join("\n\n")
-            : ""
-        }
-        confirmLabel="Release"
-        cancelLabel="Cancel"
-        onConfirm={confirmPendingRelease}
-        onCancel={() => setPendingRelease(null)}
+      <ManagerReserveReleaseToolsModal
+        open={releaseToolsOpen}
+        career={career}
+        onClose={() => setReleaseToolsOpen(false)}
+        onUpdate={onUpdate}
+        onMessage={setMessage}
       />
       </ManagerSection>
     </ManagerPage>

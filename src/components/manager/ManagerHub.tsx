@@ -41,6 +41,10 @@ import { getManagerDifficultyPressure } from "@/lib/manager/managerDifficulty";
 import { ManagerHubAlertsPanel } from "@/components/manager/ManagerHubAlertsPanel";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
+import {
+  getUnavailableSquadPlayers,
+} from "@/lib/manager/managerSquad";
+import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getManagerOpponentPoolOptions } from "@/lib/manager/managerLeagueRosters";
 import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
@@ -49,7 +53,6 @@ import {
   getTopGoalScorer,
   getTopTryScorer,
 } from "@/lib/manager/managerCareerStats";
-import { isPlayerUnavailable } from "@/lib/manager/managerSquad";
 import { getHubNewsItems } from "@/lib/manager/managerNews";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
 import {
@@ -306,9 +309,14 @@ export function ManagerHub({
     simCareer.xiiiSlotPositions,
     simCareer
   );
-  const injuryCount = career.squad.filter(
-    (p) => p.injury && isPlayerUnavailable(p)
+  const unavailablePlayers = getUnavailableSquadPlayers(career);
+  const injuredCount = unavailablePlayers.filter(
+    (p) => p.injury?.type !== "suspension"
   ).length;
+  const suspendedCount = unavailablePlayers.filter(
+    (p) => p.injury?.type === "suspension"
+  ).length;
+  const injuryCount = unavailablePlayers.length;
   const topScorer = getTopTryScorer(career.playerSeasonStats, career);
   const topKicker = getTopGoalScorer(career.playerSeasonStats, career);
   const ts = career.teamSeasonStats;
@@ -598,21 +606,60 @@ export function ManagerHub({
     ) : null;
 
   const contractsCard =
-    expiringCount > 0 || injuryCount > 0 ? (
+    expiringCount > 0 ? (
       <ManagerSectionCard
-        title="Contracts & Injuries"
+        title="Contracts"
         variant="inset"
-        accent={injuryCount > 0 ? "red" : "amber"}
+        accent="amber"
       >
-        {expiringCount > 0 && (
-          <p className={`mt-1 ${TYPO.bodySm} text-accent-gold`}>
-            {expiringCount} contract{expiringCount > 1 ? "s" : ""} expiring soon
-          </p>
-        )}
-        {injuryCount > 0 && (
-          <p className={`${TYPO.bodySm} text-red-300`}>
-            {injuryCount} player{injuryCount > 1 ? "s" : ""} unavailable
-          </p>
+        <p className={`mt-1 ${TYPO.bodySm} text-accent-gold`}>
+          {expiringCount} contract{expiringCount > 1 ? "s" : ""} expiring soon
+        </p>
+      </ManagerSectionCard>
+    ) : null;
+
+  const squadAvailabilityCard =
+    injuryCount > 0 ? (
+      <ManagerSectionCard
+        title="Squad Availability"
+        variant="inset"
+        accent="red"
+      >
+        <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+          {injuryCount} unavailable
+          {injuredCount > 0 ? ` · ${injuredCount} injured` : ""}
+          {suspendedCount > 0 ? ` · ${suspendedCount} suspended` : ""}
+        </p>
+        <ul className="mt-2 space-y-1">
+          {unavailablePlayers.map((ps) => {
+            const player = getManagerPlayer(career, ps.playerId);
+            if (!player || !ps.injury) return null;
+            return (
+              <li key={ps.playerId} className={`${TYPO.bodySm} text-pitch-300`}>
+                <span className="font-medium text-white">{player.name}</span>
+                <span className="text-pitch-500"> — </span>
+                <span
+                  className={
+                    ps.injury.type === "suspension"
+                      ? "text-amber-300"
+                      : "text-red-300"
+                  }
+                >
+                  {formatInjuryLabel(ps.injury)}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+        {onNavigate && (
+          <GameButton
+            variant="secondary"
+            size="sm"
+            className="mt-3"
+            onClick={() => onNavigate("squad")}
+          >
+            View Squad
+          </GameButton>
         )}
       </ManagerSectionCard>
     ) : null;
@@ -785,6 +832,7 @@ export function ManagerHub({
             {nextFixtureCard}
             {newsTickerCard}
             {hubStandingsCard}
+            {squadAvailabilityCard}
           </div>
           {commandCentre}
           <GameSectionHeader label="Club office" title="Club details" className="sm:hidden" />
@@ -819,6 +867,7 @@ export function ManagerHub({
         {nextFixtureCard}
         {newsTickerCard}
         {hubStandingsCard}
+        {squadAvailabilityCard}
       </div>
 
       {commandCentre}

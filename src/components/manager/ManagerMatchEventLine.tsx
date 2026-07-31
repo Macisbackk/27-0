@@ -1,5 +1,5 @@
 import { getClubColors } from "@/lib/clubs";
-import { getReadableNonBlackWhiteTeamTextColour } from "@/lib/ui/contrast";
+import { getMatchEventTeamAccentColour } from "@/lib/ui/contrast";
 import type { LiveMatchEvent } from "@/lib/manager/types";
 
 function stripEventMinutePrefix(description: string, minute: number): string {
@@ -23,7 +23,7 @@ export function ManagerMatchEventLine({
 }: ManagerMatchEventLineProps) {
   const teamClub = event.team === "user" ? userClub : opponentClub;
   const colors = getClubColors(teamClub);
-  const teamColor = getReadableNonBlackWhiteTeamTextColour(colors);
+  const teamColor = getMatchEventTeamAccentColour(colors);
   const body = stripEventMinutePrefix(event.description, event.minute);
 
   return (

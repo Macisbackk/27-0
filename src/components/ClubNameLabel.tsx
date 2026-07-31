@@ -3,7 +3,7 @@
 import { getClubColors, getClubIndicatorColor } from "@/lib/clubs";
 import { DREAM_TEAM_COLORS } from "@/lib/clubs/dream-team";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
-import { getReadableClubTextColour, getClubPillStyle } from "@/lib/ui/contrast";
+import { getClubPillStyle } from "@/lib/ui/contrast";
 import { type UiSurface } from "@/lib/ui/surfaces";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubDualSwatch } from "./ClubDualSwatch";
@@ -80,14 +80,6 @@ export function ClubNameLabel({
     );
   }
 
-  const textColor = getReadableClubTextColour({
-    primary: colors.primary,
-    secondary: colors.secondary,
-    accent:
-      "accent" in colors
-        ? (colors as { accent?: string }).accent
-        : undefined,
-  });
   const swatchSize = compact ? "sm" : "md";
   const nameClass = compact
     ? "line-clamp-2 text-[11px] leading-snug sm:text-xs"
@@ -126,8 +118,7 @@ export function ClubNameLabel({
         )}
         <p
           title={club}
-          className={`min-w-0 break-words font-display font-bold uppercase tracking-wide ${nameClass}`}
-          style={{ color: textColor }}
+          className={`min-w-0 break-words font-display font-bold uppercase tracking-wide text-white ${nameClass}`}
         >
           {club}
         </p>
