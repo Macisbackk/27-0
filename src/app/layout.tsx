@@ -56,7 +56,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: UI_THEME_BOOTSTRAP_SCRIPT }}
         />
       </head>
-      <body className="app-shell flex min-h-screen min-w-0 max-w-full flex-col overflow-x-clip">
+      <body className="app-shell flex min-h-dvh min-w-0 max-w-full flex-col overflow-x-clip bg-[var(--bg-primary)]">
         <AuthProvider>
           <CoachbeardMergeRunner />
           <UiThemeProvider />

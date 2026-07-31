@@ -24,7 +24,7 @@ export function ManagerHubStickyActions({
   if (!visible) return null;
 
   return (
-    <div className="manager-mobile-play-bar fixed inset-x-0 z-40 flex items-center border-t border-pitch-700/50 bg-pitch-950/98 px-3 sm:hidden">
+    <div className="manager-mobile-play-bar fixed inset-x-0 z-40 flex items-center border-t border-pitch-700/50 bg-pitch-950 px-3 sm:hidden">
       <div className="mx-auto flex w-full max-w-lg gap-2">
         <GameButton
           variant="theme"

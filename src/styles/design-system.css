@@ -1013,10 +1013,12 @@
   place-items: center;
   padding: 1rem;
   padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-  background: rgba(0, 0, 0, 0.68);
+  background: rgba(0, 0, 0, 0.78);
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
+.game-modal-card,
 .contract-modal-card {
   width: min(92vw, 520px);
   max-height: min(82vh, 720px);
@@ -1049,18 +1051,12 @@
 
 .game-modal-panel {
   position: relative;
-  overflow: hidden;
-  border-radius: 16px 16px 0 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: 16px;
   border: 1px solid color-mix(in srgb, var(--theme-tertiary) 28%, transparent);
   background: rgba(7, 12, 11, 0.98);
-  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.35);
-}
-
-@media (min-width: 640px) {
-  .game-modal-panel {
-    border-radius: 16px;
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.4);
-  }
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.4);
 }
 
 .game-modal-panel::before {
