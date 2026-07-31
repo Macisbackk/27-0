@@ -201,8 +201,11 @@ function WccWriteUpDetails({
             ? `${result.seasonYear} — ${result.superLeagueChampionName} ${result.homeScore}–${result.awayScore} ${result.nrlChampionName}`
             : "Match write-up"}
         </span>
-        <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-pitch-500 transition group-open:rotate-180">
+        <span className="flex shrink-0 items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-pitch-500">
           Write-up
+          <span className="transition group-open:rotate-180" aria-hidden>
+            ▼
+          </span>
         </span>
       </summary>
       <div className="mt-2 space-y-1 rounded-lg border border-pitch-700/30 bg-pitch-950/40 px-3 py-2">
@@ -319,6 +322,8 @@ function buildFixtureList(
   }
 
   for (const result of career.worldClubChallenge?.history ?? []) {
+    // Past WCC only belongs in the WCC tab — skip previous seasons here.
+    if (result.seasonYear !== career.seasonYear) continue;
     if (matchedFixtureIds.has(result.id)) continue;
     const alreadyListed = items.some(
       (i) =>
@@ -688,11 +693,30 @@ export function ManagerFixtures({
     [filteredItems]
   );
 
-  /** Completed fixtures only under Results — never inside upcoming sections. */
+  /** Completed fixtures only under Results — never inside upcoming sections.
+   *  Current-season WCC may appear once; past WCC stays in the WCC tab only. */
   const completedResultsItems = useMemo(() => {
     if (filter !== "results") return [];
-    return filteredItems.filter((i) => i.kind === "played");
-  }, [filteredItems, filter]);
+    const currentWccId = getCurrentSeasonWccResult(career)?.id;
+    let sawCurrentWcc = false;
+    return filteredItems.filter((i) => {
+      if (i.kind !== "played") return false;
+      if (itemCompetition(i) !== "world_club_challenge") return true;
+      const id = i.fixture.fixtureId ?? i.key;
+      const isCurrent =
+        id === currentWccId ||
+        (currentWccId == null &&
+          career.fixtures.some(
+            (f) =>
+              f.competition === "world_club_challenge" &&
+              (f.fixtureId === id || f.fixtureId === i.key)
+          ));
+      if (!isCurrent) return false;
+      if (sawCurrentWcc) return false;
+      sawCurrentWcc = true;
+      return true;
+    });
+  }, [filteredItems, filter, career]);
 
   const showChallengeCup = filter === "all" || filter === "cup";
   const showSuperLeague = filter === "all" || filter === "league";
@@ -759,29 +783,8 @@ export function ManagerFixtures({
         ) : wccCurrentSeasonResult ? (
           <div className="space-y-2">
             <p className={`${TYPO.sectionLabel} text-sky-300`}>This season</p>
-            <PlayedFixtureRow
-              item={{
-                kind: "played",
-                key: wccCurrentSeasonResult.id,
-                fixture: worldClubChallengeResultToFixtureRecord(
-                  wccCurrentSeasonResult,
-                  career.club
-                ),
-                competition: "world_club_challenge",
-                selectable: career.fixtures.some(
-                  (f) =>
-                    f.fixtureId === wccCurrentSeasonResult.id ||
-                    (f.competition === "world_club_challenge" &&
-                      f.round === 3 &&
-                      f.opponent === wccCurrentSeasonResult.nrlChampionName)
-                ),
-              }}
-              club={career.club}
-              onSelectFixture={onSelectFixture}
-            />
             <WccWriteUpDetails
               result={wccCurrentSeasonResult}
-              includeScoreline={false}
               defaultOpen={
                 career.managerSettings?.wccWriteUpExpandedByDefault ?? false
               }

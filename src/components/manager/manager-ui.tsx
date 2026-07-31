@@ -673,11 +673,11 @@ export function ManagerClubFinancesPanel({
           <span className={`${TYPO.sectionLabel} text-pitch-300`}>
             How income is allocated
           </span>
-          <span
-            className="text-[10px] font-bold uppercase tracking-wider text-pitch-500 transition group-open:rotate-180"
-            aria-hidden
-          >
+          <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-pitch-500">
             Info
+            <span className="transition group-open:rotate-180" aria-hidden>
+              ▼
+            </span>
           </span>
         </summary>
         <div className={`mt-2 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
@@ -713,8 +713,11 @@ export function ManagerClubFinancesPanel({
               Transfer fund {formatWage(transfer)} · Ops {formatWage(operating)}
             </p>
           </div>
-          <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-pitch-500 transition group-open:rotate-180">
+          <span className="flex shrink-0 items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-pitch-500">
             Expand
+            <span className="transition group-open:rotate-180" aria-hidden>
+              ▼
+            </span>
           </span>
         </summary>
         <div className={`mt-2 ${CARD.elevated} ${SPACING.cardPadding}`}>

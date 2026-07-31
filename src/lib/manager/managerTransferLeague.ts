@@ -38,6 +38,7 @@ import {
   pushInboxMessage,
   normalizeInboxMessage,
 } from "./managerInbox";
+import { addBoardTransferMilestoneInbox } from "./managerBoardInbox";
 
 function invalidatePlayerTransferOffers(
   career: ManagerCareer,
@@ -564,16 +565,22 @@ export function completePlayerPurchase(
 
   const player = getPlayerById(playerId);
   return pruneLeagueListedPlayers(
-    pushInboxMessage(
-      purchased,
-      createPlayerPurchaseMessage(
+    addBoardTransferMilestoneInbox(
+      pushInboxMessage(
         purchased,
-        playerId,
-        player?.name ?? "Player",
-        club,
-        offer.transferFee,
-        offer.wagePerYear
-      )
+        createPlayerPurchaseMessage(
+          purchased,
+          playerId,
+          player?.name ?? "Player",
+          club,
+          offer.transferFee,
+          offer.wagePerYear
+        )
+      ),
+      "signing",
+      player?.name ?? "Player",
+      offer.transferFee,
+      playerId
     )
   );
 }
@@ -827,6 +834,13 @@ export function acceptIncomingOffer(
     purchaseFee
   );
   nextCareer = pushInboxMessage(nextCareer, saleMsg);
+  nextCareer = addBoardTransferMilestoneInbox(
+    nextCareer,
+    "sale",
+    msg.playerName ?? getPlayerById(playerId)?.name ?? "Player",
+    msg.offerAmount,
+    playerId
+  );
   nextCareer = syncManagerFinance(nextCareer);
 
   dispatchAchievementCheck({ trigger: "player-sold", playerSold: true });

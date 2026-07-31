@@ -133,8 +133,7 @@
 }
 
 /* Fixed interchange / squad player slot — header / name / footer aligned */
-.player-slot,
-.squad-player-card {
+.player-slot {
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: 0.35rem;
@@ -145,8 +144,7 @@
 }
 
 .player-slot__header,
-.player-slot__footer,
-.squad-player-card__footer {
+.player-slot__footer {
   min-height: 18px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -157,8 +155,7 @@
   width: 100%;
 }
 
-.player-slot__name,
-.squad-player-card__name {
+.player-slot__name {
   display: flex;
   align-items: center;
   min-width: 0;
@@ -168,7 +165,6 @@
   overflow: hidden;
 }
 
-.squad-player-card__name > *,
 .player-slot__name > * {
   min-width: 0;
   max-width: 100%;
@@ -177,7 +173,6 @@
   white-space: nowrap;
 }
 
-.squad-player-card__rating,
 .player-slot__rating {
   flex-shrink: 0;
   justify-self: end;
@@ -190,8 +185,7 @@
 }
 
 .player-slot__role,
-.player-slot__position,
-.squad-player-card__meta {
+.player-slot__position {
   line-height: 1;
   min-width: 0;
   overflow: hidden;
@@ -213,16 +207,126 @@
   min-height: 0;
 }
 
-/* Pool cards keep name + footer (rating pinned in footer) */
+/* Side-panel squad pool — 2-col wrap; rating never clipped */
+.squad-side-player-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.squad-side-player-card {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.squad-side-player-card__main {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.squad-side-player-card__name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.squad-side-player-card__meta {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 0.15rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--text-muted, #9ca3af);
+}
+
+.squad-side-player-card__rating {
+  flex-shrink: 0;
+  min-width: 2.35rem;
+  max-width: 2.7rem;
+  text-align: right;
+  justify-self: end;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--theme-primary, #22c55e);
+}
+
+/* Legacy alias kept for any leftover markup */
 .squad-player-card {
+  display: grid;
   grid-template-rows: 1fr auto;
   min-height: 0;
   min-width: 0;
   gap: 0.25rem;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
+  text-align: left;
 }
 
-/* Single kit accent strip — Store theme only; never thick coloured frames */
+.squad-player-card__footer {
+  min-height: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.35rem;
+  line-height: 1;
+  min-width: 0;
+  width: 100%;
+}
+
+.squad-player-card__name {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.squad-player-card__name > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.squad-player-card__meta {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--text-muted, #9ca3af);
+}
+
+.squad-player-card__rating {
+  flex-shrink: 0;
+  justify-self: end;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.center-action-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
 .game-panel::before,
 .programme-panel::before,
 .scoreboard-panel::before,

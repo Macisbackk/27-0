@@ -7,6 +7,7 @@ import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { getClubColors } from "@/lib/clubs";
+import { getReadableClubTextColour } from "@/lib/ui/contrast";
 import { playSeasonComplete, playUiClick } from "@/lib/sound";
 
 interface ManagerLeagueWinnersModalProps {
@@ -19,6 +20,7 @@ export function ManagerLeagueWinnersModal({
   onContinue,
 }: ManagerLeagueWinnersModalProps) {
   const colors = getClubColors(career.club);
+  const badgeTextColour = getReadableClubTextColour(colors);
 
   const handleContinue = useCallback(() => {
     playUiClick();
@@ -57,9 +59,9 @@ export function ManagerLeagueWinnersModal({
           <span
             className="mt-3 inline-flex rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider"
             style={{
-              borderColor: `${colors.primary}80`,
-              backgroundColor: `${colors.primary}22`,
-              color: colors.primary,
+              borderColor: `${badgeTextColour}80`,
+              backgroundColor: `${badgeTextColour}22`,
+              color: badgeTextColour,
             }}
           >
             Regular season

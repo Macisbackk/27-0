@@ -20,6 +20,7 @@ import {
   NRL_WORLD_CLUB_CHALLENGE_TEAMS,
 } from "../nrl/nrlClubs";
 import { getManagerPlayer } from "./managerPlayers";
+import { addBoardWorldClubChallengeWinInbox } from "./managerBoardInbox";
 
 export {
   generateNrlSquadNames,
@@ -490,6 +491,7 @@ export function completeUserWorldClubChallenge(
         triggerManagerWorldClubChallengeAchievements(next);
       }
     );
+    return addBoardWorldClubChallengeWinInbox(next);
   }
 
   return next;

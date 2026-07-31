@@ -170,6 +170,7 @@ import {
   getManagerDifficultySimAdjustments,
   maybeAddBoardUltimatumInbox,
 } from "./managerDifficulty";
+import { maybeAddBoardMilestoneInbox } from "./managerBoardInbox";
 import {
   generateManagerMatchBio,
   selectManagerManOfTheMatch,
@@ -720,6 +721,7 @@ export function applyManagerMatchResult(
   const reserveResult = simulateReserveFixture(finalCareer, round, reserveOpp);
   finalCareer = applyYouthMatchDevelopment(finalCareer, { round, matchdayIds });
   finalCareer = applyReserveMatchDevelopment(finalCareer, reserveResult);
+  const calledUpReserveCount = finalCareer.calledUpReserveIds.length;
   finalCareer = clearReserveCallUps(finalCareer);
   finalCareer = generateIncomingTransferOffers(finalCareer);
   if (!isFriendly && !isWcc) {
@@ -796,6 +798,12 @@ export function applyManagerMatchResult(
       transferMarket: deduped.map((l) => l.playerId),
     };
   }
+
+  finalCareer = maybeAddBoardMilestoneInbox(finalCareer, {
+    fixture: record,
+    previousBoardConfidence: career.boardConfidence,
+    calledUpReserveCount,
+  });
 
   return { ok: true, career: pruneLeagueListedPlayers(finalCareer) };
 }

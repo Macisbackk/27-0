@@ -36,6 +36,7 @@ type RetiredSortKey =
   | "name"
   | "club"
   | "position"
+  | "age"
   | "peak"
   | "apps"
   | "tries"
@@ -315,29 +316,6 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
             tone={careerSave.challengeCups > 0 ? "gold" : "muted"}
           />
           <ManagerStat
-            label="World Club Challenge Wins"
-            value={String(
-              (career.worldClubChallenge?.history ?? []).filter(
-                (r) => r.userResult === "won"
-              ).length
-            )}
-            tone={
-              (career.worldClubChallenge?.history ?? []).some(
-                (r) => r.userResult === "won"
-              )
-                ? "gold"
-                : "muted"
-            }
-          />
-          <ManagerStat
-            label="World Club Challenge Apps"
-            value={String(
-              (career.worldClubChallenge?.history ?? []).filter(
-                (r) => r.userResult !== "not_involved"
-              ).length
-            )}
-          />
-          <ManagerStat
             label="Total trophies"
             value={String(careerSave.trophies)}
             tone={careerSave.trophies > 0 ? "gold" : "muted"}
@@ -381,35 +359,6 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
             tone={careerSave.perfectSeasons > 0 ? "gold" : "muted"}
           />
         </div>
-
-        {(career.worldClubChallenge?.history?.length ?? 0) > 0 && (
-          <div className="mt-4 space-y-2 border-t border-pitch-700/40 pt-4">
-            <p className={TYPO.sectionLabel}>World Club Challenge Results</p>
-            <ul className="space-y-2">
-              {[...(career.worldClubChallenge?.history ?? [])]
-                .reverse()
-                .map((r) => (
-                  <li
-                    key={r.id}
-                    className="rounded-lg border border-pitch-700/40 bg-pitch-900/30 p-3 text-sm"
-                  >
-                    <span className="font-semibold text-white">
-                      {r.seasonYear} — {r.superLeagueChampionName} {r.homeScore}–
-                      {r.awayScore} {r.nrlChampionName}
-                    </span>
-                    <span className="mt-1 block text-pitch-400">
-                      {r.userResult === "won"
-                        ? "Won"
-                        : r.userResult === "lost"
-                          ? "Lost"
-                          : "AI result"}{" "}
-                      · Winner: {r.winnerName}
-                    </span>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        )}
       </ManagerSectionCard>
 
       {careerSave.seasonRows.length > 0 ? (
@@ -492,6 +441,15 @@ function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
         case "position":
           cmp = a.positionLabel.localeCompare(b.positionLabel);
           break;
+        case "age": {
+          const ageA = getRetiredPlayerDisplayAge(career, a);
+          const ageB = getRetiredPlayerDisplayAge(career, b);
+          const unknownA = !Number.isFinite(ageA) || ageA <= 0;
+          const unknownB = !Number.isFinite(ageB) || ageB <= 0;
+          if (unknownA !== unknownB) return unknownA ? 1 : -1;
+          cmp = ageA - ageB;
+          break;
+        }
         case "peak":
           cmp = a.peakRating - b.peakRating;
           break;
@@ -586,9 +544,7 @@ function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
                   {thButton("name", "Player")}
                   {thButton("club", "Club")}
                   {thButton("position", "Pos", "center")}
-                  <th className="px-3 py-2 text-center font-semibold text-pitch-500">
-                    Age
-                  </th>
+                  {thButton("age", "Age", "center")}
                   {thButton("peak", "Peak", "center")}
                   {thButton("apps", "Apps", "center")}
                   {thButton("tries", "Tries", "center")}

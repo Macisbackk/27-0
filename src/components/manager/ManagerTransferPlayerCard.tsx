@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import { ClubNameLabel } from "@/components/ClubNameLabel";
 import {
   MANAGER_LABEL,
@@ -9,16 +10,14 @@ import {
   type ManagerValueTone,
 } from "@/components/manager/manager-ui";
 import { getClubIndicatorColor } from "@/lib/clubs";
-import {
-  managerDataRowClass,
-  managerListRowClass,
-} from "@/lib/manager/managerSurfaces";
 import { formatWage } from "@/lib/manager/managerContracts";
+import { managerPillClass } from "@/lib/manager/managerSurfaces";
 import { formatValue } from "@/lib/players";
 import { formatPlayerAge } from "@/lib/players/player-age";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Player } from "@/lib/types";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 export function transferRatingTone(rating: number): ManagerValueTone {
@@ -203,53 +202,32 @@ interface ManagerLeagueTransferCardProps {
   compact?: boolean;
 }
 
+/** Neutral Transfer Wire row — pitch border only, club identity via swatch. */
 export function ManagerLeagueTransferCard({
   playerName,
   fromClub,
   toClub,
   fee,
   week,
-  compact = false,
 }: ManagerLeagueTransferCardProps) {
-  if (compact) {
-    return (
-      <li className={`${managerListRowClass(false)} flex items-center gap-2 rounded-md px-2 py-1.5 text-xs`}>
-        <span
-          className="h-3 w-0.5 shrink-0 rounded-full"
-          style={{ backgroundColor: getClubIndicatorColor(toClub) }}
-          aria-hidden
-        />
-        <span className="min-w-0 flex-1 truncate font-medium text-white">
-          {playerName}
-        </span>
-        <span className="hidden min-w-0 truncate text-pitch-500 sm:inline">
-          {fromClub} → {toClub}
-        </span>
-        <span className="shrink-0 font-semibold text-accent-gold">
-          {fee <= 0 ? "Free" : formatWage(fee)}
-        </span>
-        <span className={`${MANAGER_LABEL} shrink-0 text-pitch-500`}>W{week}</span>
-      </li>
-    );
-  }
-
   return (
     <li
-      className={`${managerDataRowClass()} p-3`}
-      style={{ borderTopWidth: 3, borderTopColor: getClubIndicatorColor(toClub) }}
+      className={`${CARD.inset} game-panel--flush flex flex-wrap items-center gap-x-2 gap-y-1.5 ${SPACING.listItem}`}
     >
-      <p className="truncate font-semibold text-white">{playerName}</p>
-      <p className={`mt-1 ${TYPO.bodySm}`}>
-        <span className="text-pitch-400">{fromClub}</span>
-        <span className="mx-1.5 text-theme-primary">→</span>
-        <span className="font-medium text-theme-primary">{toClub}</span>
-      </p>
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-        <span className="font-semibold text-accent-gold">
-          {fee <= 0 ? "Free" : formatWage(fee)}
-        </span>
-        <span className={`${MANAGER_LABEL} text-pitch-500`}>Week {week}</span>
-      </div>
+      <ClubDualSwatch club={toClub} size="xs" />
+      <span className="min-w-0 flex-1 truncate font-medium text-white">
+        {playerName}
+      </span>
+      <span className={`min-w-0 truncate ${TYPO.bodySm} text-pitch-400`}>
+        {fromClub}
+        <span className="mx-1 text-pitch-500">→</span>
+        {toClub}
+      </span>
+      <span className="shrink-0 font-semibold text-accent-gold">
+        {fee <= 0 ? "Free" : formatWage(fee)}
+      </span>
+      <span className={managerPillClass("muted")}>Done</span>
+      <span className={`${MANAGER_LABEL} shrink-0 text-pitch-500`}>W{week}</span>
     </li>
   );
 }

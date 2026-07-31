@@ -49,7 +49,10 @@ interface ManagerSquadProps {
 const SINGLE_CLICK_DELAY_MS = 220;
 
 function useFinePointer(): boolean {
-  const [finePointer, setFinePointer] = useState(false);
+  const [finePointer, setFinePointer] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(pointer: fine)").matches;
+  });
 
   useEffect(() => {
     const mq = window.matchMedia("(pointer: fine)");
@@ -88,14 +91,14 @@ type SquadPoolEntry = ReturnType<typeof getSquadRosterPoolPlayers>[number];
 
 /** Shared footprint for squad pool + interchange player boxes. */
 const SQUAD_PLAYER_BOX_CLASS =
-  "flex h-full min-h-[5.5rem] w-full min-w-0 flex-col overflow-hidden px-2 py-1.5 sm:min-h-[5.75rem] sm:px-2.5 sm:py-2";
+  "squad-side-player-card flex h-full w-full min-w-0 flex-col overflow-hidden px-2 py-1.5 sm:px-2.5 sm:py-2";
 
 const SQUAD_PLAYER_NAME_CLASS =
-  "min-w-0 w-full truncate text-[10px] font-medium leading-[1.15] text-white sm:text-xs sm:leading-tight";
+  "squad-side-player-card__name text-[10px] font-medium leading-[1.15] text-white sm:text-xs sm:leading-tight";
 
-/** Horizontal scroll pool — two rows keeps cards readable without clipping ratings. */
+/** Wrap in 2 columns so ratings never clip (3-col horizontal strip was too wide for the side panel). */
 const SQUAD_POOL_GRID_CLASS =
-  "grid w-max min-w-full grid-flow-col grid-rows-2 auto-cols-[minmax(6.75rem,7.5rem)] items-stretch gap-x-1.5 gap-y-1.5 sm:auto-cols-[minmax(7.25rem,8.25rem)] sm:gap-x-2 sm:gap-y-2";
+  "squad-side-player-grid grid w-full min-w-0 grid-cols-2 items-stretch gap-1.5 sm:gap-2";
 
 function squadPlayerBoxClass(
   selectionRole: SquadSelectionRole,
@@ -135,33 +138,23 @@ function SquadPoolPlayerButton({
   const sourceLabel = isReserveCallUp ? "Res" : "Sqd";
 
   return (
-    <li className="h-full min-h-0">
+    <li className="min-w-0 w-full overflow-hidden">
       <button
         type="button"
         onClick={onClick}
         onDoubleClick={onDoubleClick}
         className={squadPlayerBoxClass(poolRole, unavailable, isSuspension)}
       >
-        <div className="squad-player-card">
-          <div className="squad-player-card__name">
-            <p className={SQUAD_PLAYER_NAME_CLASS}>{player.name}</p>
-          </div>
-          <div className="squad-player-card__footer">
-            <span className="squad-player-card__meta min-w-0 truncate">
-              {positions.map((p) => POSITION_SHORT[p]).join(" · ")} · {sourceLabel}
-            </span>
-            <span className="squad-player-card__rating text-[10px] font-bold text-theme-primary sm:text-xs">
-              {player.peakRating}
-            </span>
-          </div>
-          {unavailable && ps?.injury ? (
-            <span
-              className={`text-[9px] font-medium sm:text-[10px] ${unavailableTextClass(!!isSuspension)}`}
-            >
-              {formatInjuryLabel(ps.injury)}
-            </span>
-          ) : null}
+        <div className="squad-side-player-card__main">
+          <p className={SQUAD_PLAYER_NAME_CLASS}>{player.name}</p>
+          <p className="squad-side-player-card__meta">
+            {positions.map((p) => POSITION_SHORT[p]).join(" · ")} · {sourceLabel}
+            {unavailable && ps?.injury
+              ? ` · ${formatInjuryLabel(ps.injury)}`
+              : ""}
+          </p>
         </div>
+        <div className="squad-side-player-card__rating">{player.peakRating}</div>
       </button>
     </li>
   );
@@ -739,7 +732,7 @@ export function ManagerSquad({
             ))}
           </div>
           )}
-          <div className="min-w-0 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="min-w-0">
             <ul className={SQUAD_POOL_GRID_CLASS}>
               {displayPool.map((entry) => (
                 <SquadPoolPlayerButton

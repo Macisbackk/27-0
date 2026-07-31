@@ -193,6 +193,7 @@ export function ManagerAcrossLeague({
                   toClub={tx.toClub}
                   fee={tx.fee}
                   week={tx.week}
+                  compact
                 />
               ))}
             </ul>

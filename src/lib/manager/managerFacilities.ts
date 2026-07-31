@@ -6,6 +6,7 @@ import {
   scaleManagerEconomy,
   syncManagerFinance,
 } from "./managerFinance";
+import { addBoardFacilityUpgradeInbox } from "./managerBoardInbox";
 
 export const FACILITY_MAX_LEVEL = 5;
 
@@ -219,5 +220,7 @@ export function purchaseFacilityUpgrade(
     };
   }
 
-  return { ok: true, career: syncManagerFinance(next) };
+  next = syncManagerFinance(next);
+  next = addBoardFacilityUpgradeInbox(next, type, level + 1);
+  return { ok: true, career: next };
 }

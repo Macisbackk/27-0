@@ -154,16 +154,25 @@ export function getClubLogoTextColor(
 }
 
 const NEAR_WHITE_LUM = 0.82;
-const NEAR_BLACK_LUM = 0.08;
+const NEAR_BLACK_LUM = 0.1;
+/** Soft pitch accent — readable on dark UI, never pure black/white. */
 const SAFE_EVENT_ACCENT = "#d8dee9";
 
 export function isNearWhite(hex: string): boolean {
   return getLuminance(hex) >= NEAR_WHITE_LUM;
 }
 
+export function isNearBlack(hex: string): boolean {
+  return getLuminance(hex) <= NEAR_BLACK_LUM;
+}
+
+function isUnusableClubTextColour(hex: string): boolean {
+  return isNearWhite(hex) || isNearBlack(hex);
+}
+
 /**
- * Readable team accent for dark UI (match events, labels).
- * Skips pure/near-white and near-black kit colours.
+ * Readable team accent for dark UI (match events, labels, badge text).
+ * Skips pure/near-white and near-black kit colours — never returns #000/#fff.
  */
 export function getReadableTeamAccent(
   primary: string,
@@ -175,16 +184,36 @@ export function getReadableTeamAccent(
     (c): c is string => Boolean(c)
   );
   for (const colour of candidates) {
-    const lum = getLuminance(colour);
-    if (lum >= NEAR_WHITE_LUM || lum <= NEAR_BLACK_LUM) continue;
+    if (isUnusableClubTextColour(colour)) continue;
     if (getContrastRatio(colour, backgroundHex) >= 2.4) return colour;
   }
   // Prefer darkened near-white kit colours over soft-white wash
   for (const colour of candidates) {
     if (isNearWhite(colour)) {
       const darkened = darkenHex(colour, 0.55);
-      if (getContrastRatio(darkened, backgroundHex) >= 2.4) return darkened;
+      if (
+        !isUnusableClubTextColour(darkened) &&
+        getContrastRatio(darkened, backgroundHex) >= 2.4
+      ) {
+        return darkened;
+      }
     }
   }
   return SAFE_EVENT_ACCENT;
+}
+
+/**
+ * Prefer primary → secondary → accent for club-coloured TEXT/accents.
+ * Rejects near-black and near-white kit colours; badge backgrounds may still use them.
+ */
+export function getReadableClubTextColour(colours: {
+  primary: string;
+  secondary: string;
+  accent?: string;
+}): string {
+  return getReadableTeamAccent(
+    colours.primary,
+    colours.secondary,
+    colours.accent
+  );
 }
