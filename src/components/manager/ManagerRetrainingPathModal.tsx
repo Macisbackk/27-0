@@ -119,7 +119,7 @@ export function ManagerRetrainingPathModal({
 
         <p className={`mt-3 ${TYPO.bodySm} text-pitch-400`}>
           {selectedPath
-            ? `${formatRetrainingDuration(selectedPath.months)} training · learns ${formatRetrainingPathLabel(selectedPath.from, selectedPath.to)}`
+            ? `${formatRetrainingDuration(selectedPath.weeks)} training · learns ${formatRetrainingPathLabel(selectedPath.from, selectedPath.to)}`
             : "Pick a path to see duration and confirm."}
         </p>
 

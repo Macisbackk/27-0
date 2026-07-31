@@ -14,41 +14,58 @@ export const WEEKS_PER_MONTH = 4;
 export interface PositionRetrainingPath {
   from: Position;
   to: Position;
-  months: number;
+  /** Duration in manager game weeks. */
+  weeks: number;
 }
 
-/** Allowed primary → dual position retraining paths and durations. */
+/**
+ * Allowed primary → dual position retraining paths.
+ * Related forward/back switches: ~8–12 weeks.
+ * Moderate: ~14–18 weeks. Major: ~22–30 weeks.
+ * PF → LF is related forward work (~10 weeks), never multi-month.
+ */
 export const POSITION_RETRAINING_PATHS: PositionRetrainingPath[] = [
-  { from: "CENTRE", to: "SECOND_ROW", months: 2 },
-  { from: "CENTRE", to: "WING", months: 2 },
-  { from: "WING", to: "CENTRE", months: 3 },
-  { from: "SECOND_ROW", to: "PROP", months: 3 },
-  { from: "PROP", to: "SECOND_ROW", months: 2 },
-  { from: "HOOKER", to: "STAND_OFF", months: 6 },
-  { from: "HOOKER", to: "SCRUM_HALF", months: 6 },
-  { from: "HOOKER", to: "LOOSE_FORWARD", months: 5 },
-  { from: "WING", to: "FULLBACK", months: 1 },
-  { from: "STAND_OFF", to: "FULLBACK", months: 2 },
-  { from: "SCRUM_HALF", to: "FULLBACK", months: 2 },
-  { from: "STAND_OFF", to: "HOOKER", months: 4 },
-  { from: "SCRUM_HALF", to: "HOOKER", months: 4 },
-  { from: "SECOND_ROW", to: "LOOSE_FORWARD", months: 6 },
-  { from: "LOOSE_FORWARD", to: "STAND_OFF", months: 12 },
-  { from: "LOOSE_FORWARD", to: "SCRUM_HALF", months: 12 },
-  { from: "FULLBACK", to: "WING", months: 1 },
-  { from: "FULLBACK", to: "STAND_OFF", months: 5 },
-  { from: "FULLBACK", to: "SCRUM_HALF", months: 5 },
+  { from: "CENTRE", to: "SECOND_ROW", weeks: 10 },
+  { from: "CENTRE", to: "WING", weeks: 8 },
+  { from: "WING", to: "CENTRE", weeks: 10 },
+  { from: "SECOND_ROW", to: "PROP", weeks: 10 },
+  { from: "PROP", to: "SECOND_ROW", weeks: 8 },
+  { from: "PROP", to: "LOOSE_FORWARD", weeks: 10 },
+  { from: "LOOSE_FORWARD", to: "PROP", weeks: 10 },
+  { from: "SECOND_ROW", to: "LOOSE_FORWARD", weeks: 12 },
+  { from: "LOOSE_FORWARD", to: "SECOND_ROW", weeks: 12 },
+  { from: "HOOKER", to: "STAND_OFF", weeks: 18 },
+  { from: "HOOKER", to: "SCRUM_HALF", weeks: 18 },
+  { from: "HOOKER", to: "LOOSE_FORWARD", weeks: 12 },
+  { from: "WING", to: "FULLBACK", weeks: 8 },
+  { from: "STAND_OFF", to: "FULLBACK", weeks: 10 },
+  { from: "SCRUM_HALF", to: "FULLBACK", weeks: 10 },
+  { from: "STAND_OFF", to: "HOOKER", weeks: 16 },
+  { from: "SCRUM_HALF", to: "HOOKER", weeks: 16 },
+  { from: "STAND_OFF", to: "SCRUM_HALF", weeks: 10 },
+  { from: "SCRUM_HALF", to: "STAND_OFF", weeks: 10 },
+  { from: "LOOSE_FORWARD", to: "STAND_OFF", weeks: 26 },
+  { from: "LOOSE_FORWARD", to: "SCRUM_HALF", weeks: 26 },
+  { from: "FULLBACK", to: "WING", weeks: 8 },
+  { from: "FULLBACK", to: "STAND_OFF", weeks: 16 },
+  { from: "FULLBACK", to: "SCRUM_HALF", weeks: 16 },
 ];
 
 export function retrainingPathKey(from: Position, to: Position): string {
   return `${from}->${to}`;
 }
 
-export function getRetrainingDurationWeeks(months: number): number {
-  return months * WEEKS_PER_MONTH;
+export function getRetrainingDurationWeeks(weeks: number): number {
+  return weeks;
 }
 
-export function formatRetrainingDuration(months: number): string {
+/** Human-readable duration — prefer weeks for short paths. */
+export function formatRetrainingDuration(weeks: number): string {
+  if (weeks <= 0) return "Complete";
+  if (weeks < 16) {
+    return `${weeks} week${weeks === 1 ? "" : "s"}`;
+  }
+  const months = Math.round(weeks / WEEKS_PER_MONTH);
   if (months >= 12 && months % 12 === 0) {
     const years = months / 12;
     return years === 1 ? "1 year" : `${years} years`;
@@ -194,7 +211,7 @@ export function startPositionRetraining(
     };
   }
 
-  const totalWeeks = getRetrainingDurationWeeks(path.months);
+  const totalWeeks = getRetrainingDurationWeeks(path.weeks);
   const player = getManagerPlayer(career, playerId);
   const training: PlayerPositionRetraining = {
     fromPosition: primary,
@@ -218,7 +235,7 @@ export function startPositionRetraining(
     id: `retrain-start-${playerId}-${career.seasonYear}-w${career.gameWeek}-${targetPosition}`,
     type: "general",
     title: "Position retraining started",
-    body: `${player?.name ?? "Player"} began retraining from ${POSITION_LABELS[primary]} to ${POSITION_LABELS[targetPosition]} (${formatRetrainingDuration(path.months)}).`,
+    body: `${player?.name ?? "Player"} began retraining from ${POSITION_LABELS[primary]} to ${POSITION_LABELS[targetPosition]} (${formatRetrainingDuration(path.weeks)}).`,
     week: career.gameWeek,
     season: career.seasonYear,
     gameWeek: career.gameWeek,

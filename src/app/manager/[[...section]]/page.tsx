@@ -656,6 +656,28 @@ export default function ManagerPage() {
     setActiveSaveSlot(slot);
     careerSlotRef.current = null;
     setCareerState(null);
+    // Clear leftover celebration UI from a previous save in this SPA session.
+    setTrophyModalOpen(false);
+    setPendingTrophyCelebration(false);
+    setLeagueWinnersModalOpen(false);
+    setPendingLeagueWinnersCelebration(false);
+    setChallengeCupWinModalOpen(false);
+    setPendingChallengeCupCelebration(false);
+    setWccWinModalOpen(false);
+    setPendingWccCelebration(false);
+    setClubStarRiseModalOpen(false);
+    setPendingSeasonRecordCelebration(null);
+    setSeasonRecordModalOpen(null);
+    setIncomingBidModalOpen(false);
+    setPendingIncomingBidId(null);
+    setRetirementIntentModalOpen(false);
+    setPendingRetirementIntentId(null);
+    setContractExpiryModalOpen(false);
+    setPendingContractExpiryId(null);
+    setReserveReportModalOpen(false);
+    setPendingReserveReportId(null);
+    setPositionRetrainingCompleteModalOpen(false);
+    setPendingPositionRetrainingId(null);
     goToView("club-select");
   };
 
@@ -1237,8 +1259,12 @@ export default function ManagerPage() {
 
   const handleObjectivesIntroContinue = () => {
     if (!career) return;
-    recordCareerStarted(career.club);
+    // Persist intro dismissal first so the modal unmounts before any achievement popup.
     persist({ ...career, objectivesIntroShown: true });
+    // Defer unlock so the Continue click cannot hit the achievement overlay.
+    window.setTimeout(() => {
+      recordCareerStarted(career.club);
+    }, 400);
   };
 
   const handleObjectivesIntroBack = () => {

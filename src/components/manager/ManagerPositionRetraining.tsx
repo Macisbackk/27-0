@@ -6,6 +6,7 @@ import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, PlayerPositionRetraining } from "@/lib/manager/types";
 import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import {
+  formatRetrainingDuration,
   formatRetrainingPathLabel,
   getAvailableRetrainingTargets,
   getActiveRetraining,
@@ -21,11 +22,6 @@ import { ManagerRetrainingPathModal } from "@/components/manager/ManagerRetraini
 interface ManagerPositionRetrainingPanelProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
-}
-
-function weeksToMonthsLabel(weeks: number): string {
-  const months = Math.max(1, Math.ceil(weeks / WEEKS_PER_MONTH));
-  return `${months} mo`;
 }
 
 const RETRAINING_PLAYER_CARD_WIDTH =
@@ -79,7 +75,7 @@ function RetrainingPlayerCardFooter({
           <span className="text-pitch-500">
             {weeksDone}/{training.totalWeeks} wk
           </span>
-          <span className="text-pitch-400">{weeksToMonthsLabel(training.weeksRemaining)} left</span>
+          <span className="text-pitch-400">{formatRetrainingDuration(training.weeksRemaining)} left</span>
         </div>
         <div
           className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-pitch-800/90 ring-1 ring-pitch-700/50"
@@ -215,8 +211,9 @@ export function ManagerPositionRetrainingPanel({
     <div className={`${CARD.stat} ${SPACING.cardPaddingSm} text-center`}>
       <p className={TYPO.sectionLabel}>Dual Position Training</p>
       <p className={`mx-auto mt-2 max-w-lg ${TYPO.bodySm} text-pitch-400`}>
-        Single-role players can learn a second position over several months.
-        Progress advances each league week ({WEEKS_PER_MONTH} weeks = 1 month).
+        Single-role players can learn a second position over several weeks.
+        Related forward switches (like PF → LF) take about 10–12 weeks.
+        Progress advances each league week ({WEEKS_PER_MONTH} weeks ≈ 1 month).
         Players who already have dual roles cannot retrain.
       </p>
 
@@ -294,7 +291,7 @@ export function ManagerPositionRetrainingPanel({
       </div>
 
       <p className={`mx-auto mt-4 max-w-lg ${TYPO.bodySm} text-pitch-500`}>
-        CE→SR/WG · SR→PF/LF · PF→SR · HK→SO/SH/LF · HB→HK/FB · WG→CE/FB · LF→SO/SH ·
+        CE→SR/WG · SR→PF/LF · PF→SR/LF · HK→SO/SH/LF · HB→HK/FB · WG→CE/FB · LF→PF/SR/SO/SH ·
         FB→WG/SO/SH
       </p>
 

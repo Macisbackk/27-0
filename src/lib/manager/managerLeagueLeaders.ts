@@ -4,6 +4,7 @@ import type { ManagerCareer } from "./types";
 import { reconcileRoundMatches } from "./managerFixtures";
 import { getManagerPlayer } from "./managerPlayers";
 import { buildOpponentTryScoringDetail } from "./managerOpponentScoring";
+import { isInvalidPlayerName } from "./managerPlayerNameGuards";
 
 export interface LeagueTryScorerLeader {
   playerId: string;
@@ -14,13 +15,29 @@ export interface LeagueTryScorerLeader {
   isUserClub: boolean;
 }
 
+function isValidScorerEntry(
+  playerId: string,
+  name: string,
+  club: string,
+  teamNames: string[]
+): boolean {
+  if (isInvalidPlayerName(name, teamNames)) return false;
+  if (isInvalidPlayerName(playerId, teamNames)) return false;
+  if (playerId === club || name === club) return false;
+  return true;
+}
+
 function addTryScorers(
   tally: Map<string, { tries: number; club: string; name: string }>,
   club: string,
-  scorers: { playerId: string; name: string; tries: number }[]
+  scorers: { playerId: string; name: string; tries: number }[],
+  teamNames: string[]
 ): void {
   for (const scorer of scorers) {
     if (scorer.tries <= 0) continue;
+    if (!isValidScorerEntry(scorer.playerId, scorer.name, club, teamNames)) {
+      continue;
+    }
     const existing = tally.get(scorer.playerId);
     if (existing) {
       existing.tries += scorer.tries;
@@ -41,6 +58,13 @@ export function getLeagueTopTryScorers(
 ): LeagueTryScorerLeader[] {
   const synced = reconcileRoundMatches(career);
   const tally = new Map<string, { tries: number; club: string; name: string }>();
+  const teamNames = Array.from(
+    new Set([
+      synced.club,
+      ...(synced.roundMatches ?? []).flatMap((m) => [m.homeTeam, m.awayTeam]),
+      ...synced.fixtures.map((f) => f.opponent),
+    ])
+  );
 
   for (const match of synced.roundMatches ?? []) {
     const fixtureKey = `league-r${match.round}-${match.homeTeam}-vs-${match.awayTeam}`;
@@ -57,7 +81,8 @@ export function getLeagueTopTryScorers(
           undefined,
           fixtureKey,
           synced
-        )
+        ),
+        teamNames
       );
     }
 
@@ -73,7 +98,8 @@ export function getLeagueTopTryScorers(
           undefined,
           fixtureKey,
           synced
-        )
+        ),
+        teamNames
       );
     }
   }
@@ -83,12 +109,16 @@ export function getLeagueTopTryScorers(
     addTryScorers(
       tally,
       synced.club,
-      fixture.scoringDetail?.dreamTeam.tryScorers ?? []
+      fixture.scoringDetail?.dreamTeam.tryScorers ?? [],
+      teamNames
     );
   }
 
   return [...tally.entries()]
-    .filter(([, entry]) => entry.tries > 0)
+    .filter(([playerId, entry]) => {
+      if (entry.tries <= 0) return false;
+      return isValidScorerEntry(playerId, entry.name, entry.club, teamNames);
+    })
     .sort(
       (a, b) =>
         b[1].tries - a[1].tries ||
@@ -98,13 +128,16 @@ export function getLeagueTopTryScorers(
     .map(([playerId, entry]) => {
       const player =
         getManagerPlayer(synced, playerId) ?? getPlayerById(playerId);
+      const resolvedName = player?.name ?? entry.name;
+      if (isInvalidPlayerName(resolvedName, teamNames)) return null;
       return {
         playerId,
-        playerName: entry.name || player?.name || "Unknown",
+        playerName: resolvedName,
         club: entry.club,
         tries: entry.tries,
         position: player?.position ?? null,
         isUserClub: entry.club === synced.club,
       };
-    });
+    })
+    .filter((row): row is LeagueTryScorerLeader => row != null);
 }

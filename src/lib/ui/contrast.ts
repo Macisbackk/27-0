@@ -153,20 +153,56 @@ export function getClubLogoTextColor(
   return getReadableTextColor(darker);
 }
 
-const NEAR_WHITE_LUM = 0.82;
-const NEAR_BLACK_LUM = 0.1;
-/** Soft pitch accent — readable on dark UI, never pure black/white. */
-const SAFE_EVENT_ACCENT = "#d8dee9";
+const NEAR_WHITE_LUM = 0.72;
+const NEAR_BLACK_LUM = 0.14;
+/** Soft readable accent on dark UI — never pure black/white. */
+const SAFE_EVENT_ACCENT = "#9ecbff";
+
+const BLOCKED_HEX = new Set(
+  [
+    "#000000",
+    "#111111",
+    "#050505",
+    "#0a0a0a",
+    "#ffffff",
+    "#f8fafc",
+    "#f2f2f2",
+    "#eeeeee",
+    "#fafafa",
+    "white",
+    "black",
+  ].map((s) => s.toLowerCase())
+);
+
+function normalizeHexKey(hex: string): string {
+  const t = hex.trim().toLowerCase();
+  if (t === "white" || t === "black") return t;
+  const n = t.startsWith("#") ? t : `#${t}`;
+  if (n.length === 4) {
+    return `#${n[1]}${n[1]}${n[2]}${n[2]}${n[3]}${n[3]}`;
+  }
+  return n;
+}
 
 export function isNearWhite(hex: string): boolean {
+  if (BLOCKED_HEX.has(normalizeHexKey(hex))) {
+    const key = normalizeHexKey(hex);
+    return key === "white" || key === "#ffffff" || key.startsWith("#f");
+  }
   return getLuminance(hex) >= NEAR_WHITE_LUM;
 }
 
 export function isNearBlack(hex: string): boolean {
+  const key = normalizeHexKey(hex);
+  if (BLOCKED_HEX.has(key)) {
+    return key === "black" || key === "#000000" || key === "#111111" || key === "#050505" || key === "#0a0a0a";
+  }
   return getLuminance(hex) <= NEAR_BLACK_LUM;
 }
 
-function isUnusableClubTextColour(hex: string): boolean {
+function isBlockedClubTextColour(hex: string): boolean {
+  const key = normalizeHexKey(hex);
+  if (BLOCKED_HEX.has(key)) return true;
   return isNearWhite(hex) || isNearBlack(hex);
 }
 
@@ -184,15 +220,14 @@ export function getReadableTeamAccent(
     (c): c is string => Boolean(c)
   );
   for (const colour of candidates) {
-    if (isUnusableClubTextColour(colour)) continue;
+    if (isBlockedClubTextColour(colour)) continue;
     if (getContrastRatio(colour, backgroundHex) >= 2.4) return colour;
   }
-  // Prefer darkened near-white kit colours over soft-white wash
   for (const colour of candidates) {
     if (isNearWhite(colour)) {
       const darkened = darkenHex(colour, 0.55);
       if (
-        !isUnusableClubTextColour(darkened) &&
+        !isBlockedClubTextColour(darkened) &&
         getContrastRatio(darkened, backgroundHex) >= 2.4
       ) {
         return darkened;
@@ -216,4 +251,13 @@ export function getReadableClubTextColour(colours: {
     colours.secondary,
     colours.accent
   );
+}
+
+/** Explicit helper for match-event team name text. */
+export function getReadableNonBlackWhiteTeamTextColour(colours: {
+  primary: string;
+  secondary: string;
+  accent?: string;
+}): string {
+  return getReadableClubTextColour(colours);
 }

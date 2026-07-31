@@ -9,7 +9,7 @@ import type { AchievementUnlockResult } from "@/lib/achievements/achievementEngi
 import { formatClubFunds } from "@/lib/club-funds";
 
 /** Prevents the opening pointer event from instantly dismissing the overlay. */
-const OVERLAY_ARM_MS = 280;
+const OVERLAY_ARM_MS = 650;
 
 interface AchievementUnlockedPopupProps {
   result: AchievementUnlockResult | null;

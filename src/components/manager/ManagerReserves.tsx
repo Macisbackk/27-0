@@ -41,6 +41,15 @@ import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import { playUiClick } from "@/lib/sound";
 import { ManagerPage, ManagerSection, ManagerStat } from "@/components/manager/manager-ui";
 import { ManagerReserveReleaseModal } from "@/components/manager/ManagerReserveReleaseModal";
+import {
+  applyReserveReleases,
+  previewReleaseExpiredContracts,
+  previewReleaseOverAge,
+  previewReleaseUnderAge,
+  previewReleaseUnderRating,
+  type ReserveReleaseCandidate,
+} from "@/lib/manager/managerReserveRelease";
+import { getManagerSettings } from "@/lib/manager/managerReserveRelease";
 
 type ReserveFilter = "all" | "position" | "potential" | "rating" | "age";
 
@@ -64,6 +73,38 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
   const [releaseTarget, setReleaseTarget] = useState<ManagerReservePlayer | null>(
     null
   );
+  const [bulkRating, setBulkRating] = useState(60);
+  const [bulkOverAge, setBulkOverAge] = useState(23);
+  const [bulkUnderAge, setBulkUnderAge] = useState(18);
+  const [bulkPreview, setBulkPreview] = useState<ReserveReleaseCandidate[]>([]);
+
+  const runBulkRelease = (candidates: ReserveReleaseCandidate[], label: string) => {
+    if (candidates.length === 0) {
+      setMessage(`No reserves match: ${label}`);
+      setBulkPreview([]);
+      return;
+    }
+    setBulkPreview(candidates);
+    const confirmed = window.confirm(
+      `Release ${candidates.length} reserve player${candidates.length === 1 ? "" : "s"} (${label})?\nThis cannot be undone.`
+    );
+    if (!confirmed) return;
+    let result = applyReserveReleases(career, candidates);
+    if (!result.ok && result.wouldBreachMinimum) {
+      const force = window.confirm(`${result.error}\n\nForce release anyway?`);
+      if (!force) return;
+      result = applyReserveReleases(career, candidates, {
+        forceBelowMinimum: true,
+      });
+    }
+    if (!result.ok || !result.career) {
+      setMessage(result.error ?? "Release failed");
+      return;
+    }
+    onUpdate(result.career);
+    setBulkPreview([]);
+    setMessage(`Released ${result.released} reserve player${result.released === 1 ? "" : "s"}`);
+  };
 
   const nextFixture = getNextManagerFixture(career);
   const upcomingOpp = nextFixture
@@ -380,6 +421,149 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
           )}
         </GamePanel>
       )}
+
+      <GamePanel padded label="Release Tools">
+        <p className={`${TYPO.bodySm} text-pitch-400`}>
+          Bulk-release reserves by rating, age, or expired contracts. Called-up
+          matchday players are protected.
+        </p>
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <label className={`${TYPO.bodySm} text-pitch-400`}>
+            Under rating
+            <div className="mt-1 flex gap-2">
+              <input
+                type="number"
+                min={40}
+                max={90}
+                value={bulkRating}
+                onChange={(e) => setBulkRating(Number(e.target.value) || 60)}
+                className="w-full rounded-md border border-pitch-600/60 bg-pitch-950 px-2 py-1.5 text-white"
+              />
+              <GameButton
+                variant="danger"
+                size="sm"
+                fullWidth={false}
+                className="shrink-0"
+                onClick={() => {
+                  playUiClick();
+                  runBulkRelease(
+                    previewReleaseUnderRating(career, bulkRating),
+                    `under ${bulkRating} rating`
+                  );
+                }}
+              >
+                Release
+              </GameButton>
+            </div>
+          </label>
+          <label className={`${TYPO.bodySm} text-pitch-400`}>
+            Over age
+            <div className="mt-1 flex gap-2">
+              <input
+                type="number"
+                min={17}
+                max={35}
+                value={bulkOverAge}
+                onChange={(e) => setBulkOverAge(Number(e.target.value) || 23)}
+                className="w-full rounded-md border border-pitch-600/60 bg-pitch-950 px-2 py-1.5 text-white"
+              />
+              <GameButton
+                variant="danger"
+                size="sm"
+                fullWidth={false}
+                className="shrink-0"
+                onClick={() => {
+                  playUiClick();
+                  runBulkRelease(
+                    previewReleaseOverAge(career, bulkOverAge),
+                    `over age ${bulkOverAge}`
+                  );
+                }}
+              >
+                Release
+              </GameButton>
+            </div>
+          </label>
+          <label className={`${TYPO.bodySm} text-pitch-400`}>
+            Under age
+            <div className="mt-1 flex gap-2">
+              <input
+                type="number"
+                min={16}
+                max={22}
+                value={bulkUnderAge}
+                onChange={(e) => setBulkUnderAge(Number(e.target.value) || 18)}
+                className="w-full rounded-md border border-pitch-600/60 bg-pitch-950 px-2 py-1.5 text-white"
+              />
+              <GameButton
+                variant="danger"
+                size="sm"
+                fullWidth={false}
+                className="shrink-0"
+                onClick={() => {
+                  playUiClick();
+                  runBulkRelease(
+                    previewReleaseUnderAge(career, bulkUnderAge),
+                    `under age ${bulkUnderAge}`
+                  );
+                }}
+              >
+                Release
+              </GameButton>
+            </div>
+          </label>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <GameButton
+            variant="secondary"
+            size="sm"
+            fullWidth={false}
+            onClick={() => {
+              playUiClick();
+              runBulkRelease(
+                previewReleaseExpiredContracts(career),
+                "expired contracts"
+              );
+            }}
+          >
+            Release expired contracts
+          </GameButton>
+          <GameButton
+            variant="theme"
+            size="sm"
+            fullWidth={false}
+            onClick={() => {
+              playUiClick();
+              const settings = getManagerSettings(career);
+              const preview = previewReleaseUnderRating(
+                career,
+                settings.reserveReleaseSettings.releaseUnderRating
+              );
+              setBulkPreview(preview);
+              setMessage(
+                preview.length === 0
+                  ? "No players match settings preview"
+                  : `Preview ${preview.length}: ${preview
+                      .slice(0, 6)
+                      .map((p) => p.reserve.name)
+                      .join(", ")}`
+              );
+            }}
+          >
+            Preview settings rules
+          </GameButton>
+        </div>
+        {bulkPreview.length > 0 && (
+          <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+            Last preview ({bulkPreview.length}):{" "}
+            {bulkPreview
+              .slice(0, 8)
+              .map((p) => p.reserve.name)
+              .join(", ")}
+            {bulkPreview.length > 8 ? "…" : ""}
+          </p>
+        )}
+      </GamePanel>
 
       <GamePanel padded label="Filters">
         <div className="flex flex-wrap gap-2">

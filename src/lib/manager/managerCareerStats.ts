@@ -3,6 +3,7 @@ import type { SquadSlot } from "../types";
 import type { ManagerCareer, ManagerPlayerSeasonStats, ManagerTeamSeasonStats } from "./types";
 import { isInvalidPlayerName } from "./managerPlayerNameGuards";
 import { getManagerPlayer } from "./managerPlayers";
+import { computeMatchRatingFromEvents } from "./managerScorerSanitize";
 
 export const EMPTY_TEAM_SEASON_STATS: ManagerTeamSeasonStats = {
   played: 0,
@@ -25,6 +26,9 @@ export function createEmptyPlayerSeasonStats(
     tries: 0,
     goals: 0,
     playerOfMatch: 0,
+    ratingSum: 0,
+    matchRatings: [],
+    averageRating: undefined,
   };
 }
 
@@ -67,7 +71,7 @@ export function formLabel(score: number): string {
 
 export function updateStatsAfterMatch(
   career: ManagerCareer,
-  fixture: MatchFixture,
+  fixture: MatchFixture & { liveEvents?: import("./types").LiveMatchEvent[] },
   squad: SquadSlot[],
   xiiiIds: string[],
   motmPlayerId?: string | null
@@ -126,6 +130,28 @@ export function updateStatsAfterMatch(
   if (motmPlayerId && xiiiIds.includes(motmPlayerId)) {
     const stats = getOrCreatePlayerStats(playerSeasonStats, motmPlayerId);
     stats.playerOfMatch += 1;
+  }
+
+  const liveEvents = fixture.liveEvents ?? [];
+  const interchangeIds = new Set(
+    (career.matchdayInterchange ?? []).filter(Boolean)
+  );
+  for (const id of [...xiiiIds, ...interchangeIds]) {
+    if (!id || isInvalidPlayerName(id)) continue;
+    const matchRating = computeMatchRatingFromEvents({
+      playerId: id,
+      events: liveEvents,
+      won,
+      isStarter: xiiiIds.includes(id),
+      wasMotm: motmPlayerId === id,
+    });
+    const stats = getOrCreatePlayerStats(playerSeasonStats, id);
+    const ratings = [...(stats.matchRatings ?? []), matchRating];
+    const ratingSum = (stats.ratingSum ?? 0) + matchRating;
+    stats.matchRatings = ratings;
+    stats.ratingSum = ratingSum;
+    stats.averageRating =
+      Math.round((ratingSum / ratings.length) * 10) / 10;
   }
 
   const recentForm = buildRecentForm([...career.fixtures, fixture]);

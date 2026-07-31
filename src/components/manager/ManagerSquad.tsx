@@ -135,7 +135,6 @@ function SquadPoolPlayerButton({
   const ps = career.squad.find((p) => p.playerId === playerId);
   const isSuspension = ps?.injury?.type === "suspension";
   const positions = getManagerPlayerEligiblePositions(career, playerId);
-  const sourceLabel = isReserveCallUp ? "Res" : "Sqd";
 
   return (
     <li className="min-w-0 w-full overflow-hidden">
@@ -156,9 +155,16 @@ function SquadPoolPlayerButton({
               </span>
             </div>
           ) : null}
+          {isReserveCallUp ? (
+            <div className="squad-side-player-card__statusRow">
+              <span className="rounded px-1 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-theme-primary">
+                Reserve call-up
+              </span>
+            </div>
+          ) : null}
           <div className="squad-side-player-card__footer">
             <span className="squad-side-player-card__meta">
-              {getFullPositionNames(positions)} · {sourceLabel}
+              {getFullPositionNames(positions)}
             </span>
             <span className="squad-side-player-card__rating">
               {player.peakRating}

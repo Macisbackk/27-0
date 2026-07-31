@@ -156,6 +156,12 @@ export interface ManagerPlayerSeasonStats {
   tries: number;
   goals: number;
   playerOfMatch: number;
+  /** Running sum of match ratings (for average). */
+  ratingSum?: number;
+  /** Individual match ratings out of 10. */
+  matchRatings?: number[];
+  /** Average match rating out of 10. */
+  averageRating?: number;
 }
 
 export interface ManagerTeamSeasonStats {
@@ -386,6 +392,17 @@ export type ManagerView =
 
 export type ManagerAutoRenewContractYears = 1 | 2 | 3 | 4;
 
+export interface ManagerReserveReleaseSettings {
+  enableAutoReleaseByRating: boolean;
+  releaseUnderRating: number;
+  enableAutoReleaseByAge: boolean;
+  releaseOverAge: number;
+  enableAutoReleaseUnderAge: boolean;
+  releaseUnderAge: number;
+  protectHighPotentialPlayers: boolean;
+  minimumReserveSquadSize: number;
+}
+
 export interface ManagerSettings {
   autoRenewContractYears: ManagerAutoRenewContractYears;
   autoFixSquadBeforeMatch: boolean;
@@ -393,6 +410,7 @@ export interface ManagerSettings {
   compactFixtureRows: boolean;
   autoOpenNextFixture: boolean;
   wccWriteUpExpandedByDefault: boolean;
+  reserveReleaseSettings: ManagerReserveReleaseSettings;
 }
 
 export type LiveMatchPhase =
@@ -762,6 +780,17 @@ export const DEFAULT_TACTICS: ManagerTactics = {
   defenceFocus: "line_speed",
 };
 
+export const DEFAULT_RESERVE_RELEASE_SETTINGS: ManagerReserveReleaseSettings = {
+  enableAutoReleaseByRating: false,
+  releaseUnderRating: 55,
+  enableAutoReleaseByAge: false,
+  releaseOverAge: 23,
+  enableAutoReleaseUnderAge: false,
+  releaseUnderAge: 18,
+  protectHighPotentialPlayers: true,
+  minimumReserveSquadSize: 22,
+};
+
 export const DEFAULT_MANAGER_SETTINGS: ManagerSettings = {
   autoRenewContractYears: 2,
   autoFixSquadBeforeMatch: false,
@@ -769,6 +798,7 @@ export const DEFAULT_MANAGER_SETTINGS: ManagerSettings = {
   compactFixtureRows: false,
   autoOpenNextFixture: true,
   wccWriteUpExpandedByDefault: false,
+  reserveReleaseSettings: { ...DEFAULT_RESERVE_RELEASE_SETTINGS },
 };
 
 export const MANAGER_SEASON_GAMES = 27;

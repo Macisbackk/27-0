@@ -3,8 +3,8 @@
 import { getClubColors, getClubIndicatorColor } from "@/lib/clubs";
 import { DREAM_TEAM_COLORS } from "@/lib/clubs/dream-team";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
-import { getReadableTextColor, getClubPillStyle } from "@/lib/ui/contrast";
-import { UI_SURFACES, type UiSurface } from "@/lib/ui/surfaces";
+import { getReadableClubTextColour, getClubPillStyle } from "@/lib/ui/contrast";
+import { type UiSurface } from "@/lib/ui/surfaces";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 
@@ -80,7 +80,14 @@ export function ClubNameLabel({
     );
   }
 
-  const textColor = getReadableTextColor(UI_SURFACES[surface]);
+  const textColor = getReadableClubTextColour({
+    primary: colors.primary,
+    secondary: colors.secondary,
+    accent:
+      "accent" in colors
+        ? (colors as { accent?: string }).accent
+        : undefined,
+  });
   const swatchSize = compact ? "sm" : "md";
   const nameClass = compact
     ? "line-clamp-2 text-[11px] leading-snug sm:text-xs"

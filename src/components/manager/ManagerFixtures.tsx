@@ -5,11 +5,9 @@ import { ClubColorChip } from "@/components/ClubColorChip";
 import { FixtureResultRow } from "@/components/FixtureResultRow";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
 import {
-  ManagerFormStrip,
   ManagerPage,
   ManagerSection,
   ManagerStat,
-  leaguePositionTone,
   matchPredictionTone,
 } from "@/components/manager/manager-ui";
 import { getMatchPrediction } from "@/lib/manager/managerScoring";
@@ -40,7 +38,6 @@ import {
   isChallengeCupFixture,
   managerFixtureDisplayId,
 } from "@/lib/manager/managerFixtureDisplay";
-import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getNextManagerFixture, isManagerSeasonComplete } from "@/lib/manager/managerSimulation";
 import type {
   ManagerCareer,
@@ -103,12 +100,6 @@ const FILTERS: { id: FixtureFilter; label: string; shortLabel?: string }[] = [
   { id: "playoffs", label: "Play-Offs", shortLabel: "Playoffs" },
   { id: "wcc", label: "World Club Challenge", shortLabel: "WCC" },
 ];
-
-function ordinal(n: number): string {
-  const s = ["th", "st", "nd", "rd"];
-  const v = n % 100;
-  return `${n}${s[(v - 20) % 10] ?? s[v] ?? s[0]}`;
-}
 
 function findPlayedForSchedule(
   career: ManagerCareer,
@@ -209,6 +200,7 @@ function WccWriteUpDetails({
                 primary={slColors.primary}
                 secondary={slColors.secondary}
                 compact
+                showAccent={false}
               />
               <span className="shrink-0 font-display text-sm font-bold text-white">
                 {result.homeScore}–{result.awayScore}
@@ -218,6 +210,7 @@ function WccWriteUpDetails({
                 primary={nrlColors.primary}
                 secondary={nrlColors.secondary}
                 compact
+                showAccent={false}
               />
             </span>
           ) : (
@@ -231,7 +224,7 @@ function WccWriteUpDetails({
           </span>
         </span>
       </summary>
-      <div className="mt-2 space-y-2 rounded-lg border border-pitch-700/30 bg-pitch-950/40 px-3 py-2">
+      <div className="mt-2 space-y-2 wcc-writeup-section rounded-lg bg-pitch-950/40 px-3 py-2">
         <div className="flex min-w-0 flex-wrap items-center gap-2">
           <span className={`${TYPO.bodySm} text-pitch-400`}>Winner:</span>
           <ClubColorChip
@@ -239,6 +232,7 @@ function WccWriteUpDetails({
             primary={winnerColors.primary}
             secondary={winnerColors.secondary}
             compact
+            showAccent={false}
           />
           <span className={TYPO.bodySm}>
             {result.userResult && result.userResult !== "not_involved"
@@ -268,6 +262,7 @@ function WccTeamVsLine({
         primary={slColors.primary}
         secondary={slColors.secondary}
         compact
+        showAccent={false}
       />
       <span className="shrink-0 text-xs font-bold uppercase tracking-wider text-pitch-500">
         vs
@@ -277,6 +272,7 @@ function WccTeamVsLine({
         primary={nrlColors.primary}
         secondary={nrlColors.secondary}
         compact
+        showAccent={false}
       />
     </div>
   );
@@ -680,10 +676,6 @@ export function ManagerFixtures({
       ? getHomeFixtureAttendanceOutlook(career, nextFixture)
       : null;
 
-  const position = getUserLeaguePosition(career.leagueTable, career.club);
-  const ts = career.teamSeasonStats;
-  const recentForm = career.recentForm.slice(-5) as ("W" | "L" | "D")[];
-
   const allItems = useMemo(
     () => buildFixtureList(career, nextFixture),
     [career, nextFixture]
@@ -702,11 +694,6 @@ export function ManagerFixtures({
 
     return items;
   }, [allItems, filter]);
-
-  const playedCount = allItems.filter(
-    (i) => i.kind === "played" && i.selectable !== false
-  ).length;
-  const upcomingCount = allItems.filter((i) => i.kind === "upcoming").length;
 
   const upcomingItems = useMemo(
     () =>
@@ -945,47 +932,6 @@ export function ManagerFixtures({
       </div>
 
       <div className="flex w-full min-w-0 flex-col gap-4 sm:gap-5">
-      <GamePanel padded label="Season">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <ManagerStat
-            label="Record"
-            value={`${career.wins}W – ${career.losses}L`}
-            tone="default"
-            large
-          />
-          <ManagerStat
-            label="Points diff"
-            value={`${ts.pointsDifference > 0 ? "+" : ""}${ts.pointsDifference}`}
-            tone={
-              ts.pointsDifference > 0
-                ? "primary"
-                : ts.pointsDifference < 0
-                  ? "red"
-                  : "default"
-            }
-            large
-          />
-          <ManagerStat
-            label="League"
-            value={ordinal(position)}
-            tone={leaguePositionTone(position)}
-            large
-          />
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
-              Form
-            </p>
-            <div className="mt-1">
-              <ManagerFormStrip results={recentForm} />
-            </div>
-          </div>
-        </div>
-        <p className={`mt-3 ${TYPO.bodySm} text-pitch-500`}>
-          {playedCount} played · {upcomingCount} remaining · Week{" "}
-          {career.gameWeek}/{career.schedule.length}
-        </p>
-      </GamePanel>
-
       {showNextMatch && nextFixture && nextMatchOccasion && (
         <ScoreboardPanel
           variant="elevated"

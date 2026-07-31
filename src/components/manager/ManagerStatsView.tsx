@@ -195,6 +195,7 @@ function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
                 <th className="px-3 py-2 text-center">Apps</th>
                 <th className="px-3 py-2 text-center">Tries</th>
                 <th className="px-3 py-2 text-center">Goals</th>
+                <th className="px-3 py-2 text-center">Avg</th>
                 <th className="px-3 py-2 text-center sm:px-5">POTM</th>
               </tr>
             </thead>
@@ -232,6 +233,11 @@ function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
                   </td>
                   <td className="px-3 py-2 text-center text-sky-300">
                     {row.goals > 0 ? row.goals : "—"}
+                  </td>
+                  <td className="px-3 py-2 text-center tabular-nums text-white">
+                    {row.averageRating != null
+                      ? `${row.averageRating.toFixed(1)}/10`
+                      : "—"}
                   </td>
                   <td className="px-3 py-2 text-center text-accent-gold">
                     {row.playerOfMatch > 0 ? row.playerOfMatch : "—"}

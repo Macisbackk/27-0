@@ -2,6 +2,7 @@ import type { ChallengeCupBracketState } from "../game/challenge-cup-bracket";
 import type { ManagerCareer, ManagerSettings } from "./types";
 import { DEFAULT_MANAGER_SETTINGS, DEFAULT_TACTICS } from "./types";
 import { EMPTY_TEAM_SEASON_STATS, sanitizePlayerSeasonStats } from "./managerCareerStats";
+import { sanitizeInvalidScorerData } from "./managerScorerSanitize";
 import { initLeagueClubStates, ensureLeagueClubStates } from "./managerLeagueState";
 import {
   ensureLeagueClubRosters,
@@ -95,6 +96,10 @@ function hydrateManagerSettings(
     wccWriteUpExpandedByDefault:
       raw?.wccWriteUpExpandedByDefault ??
       DEFAULT_MANAGER_SETTINGS.wccWriteUpExpandedByDefault,
+    reserveReleaseSettings: {
+      ...DEFAULT_MANAGER_SETTINGS.reserveReleaseSettings,
+      ...(raw?.reserveReleaseSettings ?? {}),
+    },
   };
 }
 
@@ -312,6 +317,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     ...career,
     playerSeasonStats: sanitizePlayerSeasonStats(career),
   };
+  career = sanitizeInvalidScorerData(career);
   return syncManagerInboxMessages(career);
 }
 
