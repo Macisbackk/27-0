@@ -826,8 +826,9 @@ export function ManagerFixtures({
             </p>
             {wccScheduled.userInvolved ? (
               <p className={`${TYPO.bodySm} text-accent-gold`}>
-                You are the Super League champion — Play or Simulate from
-                Matchday when Game Week 3 arrives.
+                {career.seasonHistory.length === 0
+                  ? "Season invitation — face a top-tier NRL club in the World Club Challenge. Play or Simulate from Matchday when Game Week 3 arrives."
+                  : "You are the Super League champion — Play or Simulate from Matchday when Game Week 3 arrives."}
               </p>
             ) : (
               <p className={TYPO.bodySm}>
@@ -853,8 +854,8 @@ export function ManagerFixtures({
           </p>
         ) : (
           <p className={TYPO.bodySm}>
-            World Club Challenge starts from your second season once a Super
-            League champion has been crowned.
+            The World Club Challenge is scheduled each season — in season one
+            your club is invited to face a top-tier NRL side.
           </p>
         )}
         {wccPastResultsList ? (
@@ -880,8 +881,9 @@ export function ManagerFixtures({
         </p>
         {wccScheduled.userInvolved ? (
           <p className={`${TYPO.bodySm} text-accent-gold`}>
-            You are the Super League champion — Play or Simulate from Matchday
-            when Game Week 3 arrives.
+            {career.seasonHistory.length === 0
+              ? "Season invitation — face a top-tier NRL club in the World Club Challenge. Play or Simulate from Matchday when Game Week 3 arrives."
+              : "You are the Super League champion — Play or Simulate from Matchday when Game Week 3 arrives."}
           </p>
         ) : (
           <p className={TYPO.bodySm}>

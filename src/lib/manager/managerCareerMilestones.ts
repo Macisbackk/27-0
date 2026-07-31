@@ -68,11 +68,10 @@ function careerHasCleanSweep(career: ManagerCareer): boolean {
   ) {
     return true;
   }
-  return career.seasonHistory.some((season, index) =>
+  return career.seasonHistory.some((season) =>
     seasonHasCleanSweep(
       getSeasonSummaryTrophyLabels(season),
-      index >= 1 ||
-        getSeasonSummaryTrophyLabels(season).includes("World Club Challenge")
+      true
     )
   );
 }

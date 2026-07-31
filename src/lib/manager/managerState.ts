@@ -33,7 +33,7 @@ import {
 } from "./managerFacilities";
 import { createManagerChallengeCup, reconcileChallengeCupFromFixtures } from "./managerChallengeCup";
 import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubReserveCounts, ensureAllClubReserveDepth } from "./managerReserves";
-import { sanitizeWorldClubChallengeState } from "./worldClubChallenge";
+import { sanitizeWorldClubChallengeState, ensureWorldClubChallengeScheduled } from "./worldClubChallenge";
 import { stampManagerSaveVersion } from "./managerSaveVersion";
 import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
 import {
@@ -345,6 +345,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = reconcileLeagueClubReserveCounts(career);
   career = ensureAllClubReserveDepth(career);
   career = sanitizeWorldClubChallengeState(career);
+  career = ensureWorldClubChallengeScheduled(career);
   career = {
     ...career,
     playerSeasonStats: sanitizePlayerSeasonStats(career),

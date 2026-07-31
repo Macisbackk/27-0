@@ -86,7 +86,7 @@
 
 .manager-welcome-modal {
   width: min(92vw, 520px);
-  max-height: min(82vh, 720px);
+  max-height: min(78dvh, 720px);
 }
 
 /* Team/player identity — top club strip only; never Store theme accent */

@@ -17,6 +17,7 @@ import {
   generateNrlSquadNames,
   getNrlClubByName,
   isNrlClubName,
+  NRL_CLUBS,
   NRL_WORLD_CLUB_CHALLENGE_TEAMS,
 } from "../nrl/nrlClubs";
 import { getManagerPlayer } from "./managerPlayers";
@@ -61,6 +62,14 @@ export function pickNrlChampion(seed: string, seasonYear: number): string {
   ]!;
 }
 
+/** Elite NRL sides (tier 4–5) for season-one World Club Challenge invitations. */
+export function pickTopTierNrlChampion(seed: string, seasonYear: number): string {
+  const top = NRL_CLUBS.filter((c) => c.strengthTier >= 4);
+  const pool = top.length > 0 ? top : NRL_CLUBS;
+  const rng = seedrandom(`${seed}-nrl-top-champ-${seasonYear}`);
+  return pool[Math.floor(rng() * pool.length)]!.name;
+}
+
 export function isNrlWorldClubChallengeTeam(name: string): boolean {
   return isNrlClubName(name);
 }
@@ -99,17 +108,11 @@ export function sanitizeWorldClubChallengeState(
 
   const history = (state.history ?? []).map((r) => {
     if (isNrlWorldClubChallengeTeam(r.nrlChampionName)) return r;
-    const nrlChampion = pickNrlChampion(
-      career.seed,
-      r.seasonYear
-    );
+    const nrlChampion = pickNrlChampion(career.seed, r.seasonYear);
     return {
       ...r,
       nrlChampionName: nrlChampion,
-      storySummary: r.storySummary.replace(
-        r.nrlChampionName,
-        nrlChampion
-      ),
+      storySummary: r.storySummary.replace(r.nrlChampionName, nrlChampion),
     };
   });
 
@@ -199,11 +202,11 @@ export function buildWorldClubChallengeScheduledFixture(
   };
 }
 
-/** True when career has completed at least one season (second season onwards). */
+/** True when the career should include a World Club Challenge this season. */
 export function shouldScheduleWorldClubChallenge(
-  career: ManagerCareer
+  _career: ManagerCareer
 ): boolean {
-  return career.seasonHistory.length >= 1;
+  return true;
 }
 
 export function createWorldClubChallengeFixture(
@@ -211,21 +214,28 @@ export function createWorldClubChallengeFixture(
 ): WorldClubChallengeFixture | null {
   if (!shouldScheduleWorldClubChallenge(career)) return null;
 
+  const isFirstSeason = career.seasonHistory.length === 0;
   const prev = getPreviousSeasonChampion(career);
-  if (!prev) return null;
 
-  const nrlChampion = pickNrlChampion(career.seed, career.seasonYear);
+  // Season one: invitational — your club faces a random top-tier NRL side.
+  // Later seasons: previous Super League champion vs a random NRL champion.
+  const slName =
+    isFirstSeason || !prev ? career.club : prev.name;
+  const userInvolved = slName === career.club;
+  const nrlChampion =
+    isFirstSeason || !prev
+      ? pickTopTierNrlChampion(career.seed, career.seasonYear)
+      : pickNrlChampion(career.seed, career.seasonYear);
   const rng = seedrandom(
     `${career.seed}-wcc-rating-${career.seasonYear}-${nrlChampion}`
   );
-  const userInvolved = prev.name === career.club;
 
   const fixture: WorldClubChallengeFixture = {
     id: `wcc-${career.seasonYear}`,
     seasonYear: career.seasonYear,
     gameWeek: 3,
-    superLeagueChampionTeamId: prev.name,
-    superLeagueChampionName: prev.name,
+    superLeagueChampionTeamId: slName,
+    superLeagueChampionName: slName,
     nrlChampionName: nrlChampion,
     nrlChampionId: getNrlClubByName(nrlChampion)?.id,
     nrlChampionRating: rollNrlChampionRating(rng, nrlChampion),
@@ -235,10 +245,11 @@ export function createWorldClubChallengeFixture(
 
   if (!isValidWorldClubChallengeFixture(fixture)) {
     console.warn("[WCC] Invalid NRL opponent generated — regenerating", fixture);
-    fixture.nrlChampionName = pickNrlChampion(
-      `${career.seed}-retry`,
-      career.seasonYear
-    );
+    const repairPick =
+      isFirstSeason || !prev
+        ? pickTopTierNrlChampion(`${career.seed}-retry`, career.seasonYear)
+        : pickNrlChampion(`${career.seed}-retry`, career.seasonYear);
+    fixture.nrlChampionName = repairPick;
     fixture.nrlChampionId = getNrlClubByName(fixture.nrlChampionName)?.id;
     const repairRng = seedrandom(
       `${career.seed}-wcc-rating-retry-${career.seasonYear}-${fixture.nrlChampionName}`
@@ -432,6 +443,20 @@ export function scheduleWorldClubChallengeForSeason(
       currentFixture: fixture,
     },
   };
+}
+
+/** Schedule this season's WCC when missing (covers season-one careers and older saves). */
+export function ensureWorldClubChallengeScheduled(
+  career: ManagerCareer
+): ManagerCareer {
+  if (career.isSeasonComplete) return career;
+  const history = career.worldClubChallenge?.history ?? [];
+  const hasThisSeason =
+    career.worldClubChallenge?.currentFixture?.seasonYear ===
+      career.seasonYear ||
+    history.some((r) => r.seasonYear === career.seasonYear);
+  if (hasThisSeason) return career;
+  return scheduleWorldClubChallengeForSeason(career);
 }
 
 export function completeUserWorldClubChallenge(
