@@ -1017,10 +1017,34 @@
   overflow-y: auto;
 }
 
-.game-modal-card {
+.contract-modal-card {
   width: min(92vw, 520px);
   max-height: min(82vh, 720px);
   overflow-y: auto;
+  margin-inline: auto;
+}
+
+.contract-modal-body {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.contract-modal-summary {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.contract-modal-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.contract-modal-actions--danger {
+  margin-top: 0.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .game-modal-panel {

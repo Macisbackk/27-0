@@ -255,7 +255,17 @@ export function getClubMatchdayLineup(
 
   const matchRound = round ?? Math.max(career.currentRound, career.gameWeek, 1);
   const deepened = ensureClubReserveDepth(career, club);
-  return buildOpponentClubLineup(deepened, club, matchRound);
+  let lineup = buildOpponentClubLineup(deepened, club, matchRound);
+  const check = validateTeamSheet(lineup, { requireStarting13: true });
+  if (!check.ok) {
+    lineup = repairTeamSheetWithReserves(
+      deepened,
+      club,
+      lineup,
+      matchRound
+    );
+  }
+  return lineup;
 }
 
 export function getClubSquadAverageRating(
@@ -271,6 +281,116 @@ export function getClubSquadAverageRating(
     0
   );
   return Math.round(total / players.length);
+}
+
+export function validateTeamSheet(
+  lineup: ClubMatchdayLineup,
+  options?: { minPlayers?: number; requireStarting13?: boolean }
+): {
+  ok: boolean;
+  filledStarters: number;
+  filledBench: number;
+  gaps: number[];
+} {
+  const requireStarting13 = options?.requireStarting13 ?? true;
+  const minPlayers = options?.minPlayers ?? STARTING_XIII_SLOTS;
+  const gaps: number[] = [];
+  let filledStarters = 0;
+  for (let i = 0; i < STARTING_XIII_SLOTS; i++) {
+    if (lineup.xiii[i]?.player) filledStarters += 1;
+    else gaps.push(i);
+  }
+  const filledBench = lineup.interchange.filter(Boolean).length;
+  const ok = requireStarting13
+    ? filledStarters >= STARTING_XIII_SLOTS
+    : filledStarters + filledBench >= minPlayers;
+  return { ok, filledStarters, filledBench, gaps };
+}
+
+export function repairTeamSheetWithReserves(
+  career: ManagerCareer,
+  club: string,
+  lineup: ClubMatchdayLineup,
+  matchRound: number
+): ClubMatchdayLineup {
+  return generateEmergencyPlayersIfStillShort(
+    career,
+    club,
+    matchRound,
+    lineup
+  );
+}
+
+export function generateEmergencyPlayersIfStillShort(
+  career: ManagerCareer,
+  club: string,
+  matchRound: number,
+  lineup: ClubMatchdayLineup
+): ClubMatchdayLineup {
+  const xiii = [...lineup.xiii];
+  let interchange = [...lineup.interchange];
+  const usedIds = new Set<string>();
+  for (const row of xiii) {
+    if (row?.player) usedIds.add(row.player.id);
+  }
+  for (const p of interchange) usedIds.add(p.id);
+
+  const pool = getLeagueClubPlayerPool(career, club);
+  let usedEmergency = lineup.usedEmergencyPlayers ?? false;
+  let emergencyIndex = 100;
+
+  for (let i = 0; i < STARTING_XIII_SLOTS; i++) {
+    if (xiii[i]?.player) continue;
+    const position =
+      OPPONENT_LINEUP[i] ??
+      FORMATION_SLOT_POSITIONS[i] ??
+      getFormationSlotPosition(i);
+    const leftover = pool.find((p) => !usedIds.has(p.id));
+    if (leftover) {
+      usedIds.add(leftover.id);
+      xiii[i] = { player: leftover, position };
+      continue;
+    }
+    const emergency = createEmergencyOpponentPlayer(
+      career,
+      club,
+      matchRound,
+      emergencyIndex++,
+      position
+    );
+    usedIds.add(emergency.id);
+    xiii[i] = { player: emergency, position };
+    usedEmergency = true;
+  }
+
+  while (interchange.length < ERA_BENCH_FROM_STARTING_17) {
+    const benchPos =
+      FORMATION_SLOT_POSITIONS[interchange.length % FORMATION_SLOT_POSITIONS.length] ??
+      "PROP";
+    const leftover = pool.find((p) => !usedIds.has(p.id));
+    if (leftover) {
+      usedIds.add(leftover.id);
+      interchange = [...interchange, leftover];
+      continue;
+    }
+    const emergency = createEmergencyOpponentPlayer(
+      career,
+      club,
+      matchRound,
+      emergencyIndex++,
+      benchPos
+    );
+    usedIds.add(emergency.id);
+    interchange = [...interchange, emergency];
+    usedEmergency = true;
+  }
+
+  return {
+    ...lineup,
+    xiii,
+    interchange: interchange.slice(0, ERA_BENCH_FROM_STARTING_17),
+    usedEmergencyPlayers: usedEmergency,
+  };
 }
 
 export { leagueGamesPlayed };

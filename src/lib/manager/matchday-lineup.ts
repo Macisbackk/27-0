@@ -97,11 +97,28 @@ export function toMatchdaySquadSlotsFromClubLineup(
   lineup: ClubMatchdayLineup,
   career?: ManagerCareer
 ): SquadSlot[] {
-  const xiiiIds = Array.from({ length: XIII_SLOTS }, (_, slotIndex) => {
-    return lineup.xiii[slotIndex]?.player.id ?? "";
-  });
+  let squad = createEmptySquad();
   const slotPositions = Array.from({ length: XIII_SLOTS }, (_, slotIndex) => {
     return lineup.xiii[slotIndex]?.position ?? getFormationSlotPosition(slotIndex);
   });
-  return toMatchdaySquadSlots({ xiiiIds, slotPositions, career });
+
+  for (let i = 0; i < XIII_SLOTS; i++) {
+    const position = slotPositions[i] ?? getFormationSlotPosition(i);
+    squad = squad.map((slot) =>
+      slot.slotIndex === i ? { ...slot, position } : slot
+    );
+  }
+
+  for (let i = 0; i < XIII_SLOTS; i++) {
+    const row = lineup.xiii[i];
+    if (!row?.player) continue;
+    // Prefer the inline player object so emergency / ephemeral AI players render.
+    const resolved = row.player;
+    const penalty = career
+      ? getManagerFitnessRatingPenalty(career, resolved.id)
+      : 0;
+    squad = signPlayerToSlot(squad, resolved, i, penalty);
+  }
+
+  return squad;
 }

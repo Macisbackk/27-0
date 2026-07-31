@@ -392,60 +392,43 @@ export function ManagerContracts({
           onClose={closeModal}
           labelledBy="contract-renewal-title"
           panelRef={contractPanelRef}
-          className="animate-fade-up outline-none"
+          className="contract-modal-card animate-fade-up outline-none"
         >
-            <h2 id="contract-renewal-title" className={TYPO.cardTitle}>{selected.player.name}</h2>
-            <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
-              <div>
-                <p className="text-pitch-500 text-xs">Position</p>
-                <p className="text-white">
-                  {primaryPosition ? POSITION_SHORT[primaryPosition] : "—"}
-                </p>
-              </div>
-              <div>
-                <p className="text-pitch-500 text-xs">Rating</p>
-                <p className="text-[color:var(--rating)]">{selected.rating}</p>
-              </div>
-              {selectedAge && (
-                <div>
-                  <p className="text-pitch-500 text-xs">Age</p>
-                  <p>{selectedAge}</p>
-                </div>
-              )}
-              <div>
-                <p className="text-pitch-500 text-xs">Current wage</p>
-                <p>{formatWage(selected.contract.wagePerYear)}/yr</p>
-              </div>
-              <div>
-                <p className="text-pitch-500 text-xs">Years remaining</p>
-                <p>{selected.contract.yearsRemaining}</p>
-              </div>
-              <div>
-                <p className="text-pitch-500 text-xs">Squad role</p>
-                <p>{selected.contract.squadRole}</p>
-              </div>
-              <div>
-                <p className="text-pitch-500 text-xs">Contract status</p>
-                <p>{STATUS_LABELS[selected.status] ?? selected.status}</p>
-              </div>
-              <div>
-                <p className="text-pitch-500 text-xs">Happiness</p>
-                <p>{selected.contract.happiness}%</p>
-              </div>
+          <div className="contract-modal-body">
+            <div>
+              <h2 id="contract-renewal-title" className={TYPO.cardTitle}>
+                {selected.player.name}
+              </h2>
+              <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+                {primaryPosition ? POSITION_SHORT[primaryPosition] : "—"}
+                {selectedAge != null ? ` · Age ${selectedAge}` : ""}
+                {` · Rating ${selected.rating}`}
+              </p>
             </div>
 
-            {selected.contract.renewalDemand && (
-              <div className={`mt-4 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
-                <p className={TYPO.sectionLabel}>Current demand</p>
-                <p className={`${TYPO.bodySm} text-white`}>
+            <div className={`contract-modal-summary ${CARD.inset} ${SPACING.cardPaddingSm}`}>
+              <p className={TYPO.sectionLabel}>Current deal</p>
+              <p className={`${TYPO.bodySm} text-white`}>
+                {formatWage(selected.contract.wagePerYear)}/yr ·{" "}
+                {selected.contract.yearsRemaining} year
+                {selected.contract.yearsRemaining === 1 ? "" : "s"} left ·{" "}
+                {selected.contract.squadRole}
+              </p>
+              <p className={`${TYPO.bodySm} text-pitch-400`}>
+                {STATUS_LABELS[selected.status] ?? selected.status} · Happiness{" "}
+                {selected.contract.happiness}%
+              </p>
+              {selected.contract.renewalDemand && (
+                <p className={`mt-1 ${TYPO.bodySm} text-accent-gold`}>
+                  Demand:{" "}
                   {formatWage(selected.contract.renewalDemand.wagePerYear)}/yr ·{" "}
                   {selected.contract.renewalDemand.yearsRequested} years ·{" "}
                   {selected.contract.renewalDemand.squadRole}
                 </p>
-              </div>
-            )}
+              )}
+            </div>
 
-            <div className="mt-4 grid gap-3 md:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-3">
               <label className={TYPO.bodySm}>
                 <span className="text-pitch-400">Offer wage (£/yr)</span>
                 <input
@@ -453,7 +436,7 @@ export function ManagerContracts({
                   step={1000}
                   value={offerWage}
                   onChange={(e) => setOfferWage(Number(e.target.value))}
-                  className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1 text-white"
+                  className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1.5 text-white"
                 />
               </label>
               <label className={TYPO.bodySm}>
@@ -464,30 +447,30 @@ export function ManagerContracts({
                   max={4}
                   value={offerYears}
                   onChange={(e) => setOfferYears(Number(e.target.value))}
-                  className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1 text-white"
+                  className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1.5 text-white"
                 />
               </label>
               <label className={TYPO.bodySm}>
-                <span className="text-pitch-400">Offer squad role</span>
+                <span className="text-pitch-400">Offer role</span>
                 <select
                   value={offerRole}
                   onChange={(e) => setOfferRole(e.target.value as SquadRole)}
-                  className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1 text-white"
+                  className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1.5 text-white"
                 >
-                  {(["Star", "Starter", "Rotation", "Prospect", "Depth"] as const).map(
-                    (r) => (
-                      <option key={r} value={r}>
-                        {r}
-                      </option>
-                    )
-                  )}
+                  {(
+                    ["Star", "Starter", "Rotation", "Prospect", "Depth"] as const
+                  ).map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
                 </select>
               </label>
             </div>
 
             {lastResponse && (
               <div
-                className={`mt-4 rounded-lg border px-3 py-2 ${
+                className={`rounded-lg border px-3 py-2 ${
                   lastResponse.accepted
                     ? "border-theme-primary/40 bg-theme-primary/10"
                     : "border-red-500/40 bg-red-500/10"
@@ -504,9 +487,10 @@ export function ManagerContracts({
               </div>
             )}
 
-            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            <div className="contract-modal-actions">
               <GameButton
                 variant="theme"
+                fullWidth={false}
                 onClick={() => {
                   playUiClick();
                   submitOffer();
@@ -514,12 +498,14 @@ export function ManagerContracts({
               >
                 Offer Contract
               </GameButton>
-              <GameButton variant="secondary" onClick={closeModal}>
+              <GameButton variant="secondary" fullWidth={false} onClick={closeModal}>
                 Close
               </GameButton>
+            </div>
+            <div className="contract-modal-actions contract-modal-actions--danger">
               <GameButton
-                variant="secondary"
-                className="sm:col-span-2"
+                variant="danger"
+                fullWidth={false}
                 onClick={() => {
                   playUiClick();
                   handleRelease();
@@ -528,6 +514,7 @@ export function ManagerContracts({
                 Release Player
               </GameButton>
             </div>
+          </div>
         </GameModal>
       )}
 

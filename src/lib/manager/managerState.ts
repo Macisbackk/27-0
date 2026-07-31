@@ -4,6 +4,7 @@ import { DEFAULT_MANAGER_SETTINGS, DEFAULT_TACTICS } from "./types";
 import { EMPTY_TEAM_SEASON_STATS, sanitizePlayerSeasonStats } from "./managerCareerStats";
 import { sanitizeInvalidScorerData } from "./managerScorerSanitize";
 import { ensureFreeAgentPool } from "./managerFreeAgents";
+import { hydrateReserveTenure } from "./managerReserveRelease";
 import { initLeagueClubStates, ensureLeagueClubStates } from "./managerLeagueState";
 import {
   ensureLeagueClubRosters,
@@ -82,6 +83,34 @@ function hydrateManagerSettings(
       ? years
       : DEFAULT_MANAGER_SETTINGS.autoRenewContractYears;
 
+  const legacy = raw?.reserveReleaseSettings as
+    | Record<string, unknown>
+    | undefined;
+  const modern = raw?.reserveDevelopmentSettings;
+  const mergedDev = {
+    ...DEFAULT_MANAGER_SETTINGS.reserveDevelopmentSettings,
+    ...(modern ?? {}),
+  };
+
+  // Migrate legacy rating/age toggle fields if present on old saves.
+  if (legacy && !modern) {
+    if (typeof legacy.releaseUnderRating === "number") {
+      mergedDev.releaseIfRatingBelow = legacy.releaseUnderRating as number;
+    }
+    if (legacy.enableAutoReleaseByRating === true) {
+      mergedDev.releaseAfterYearsEnabled = true;
+      mergedDev.autoReleaseEnabled = true;
+    }
+    if (typeof legacy.minimumReserveSquadSize === "number") {
+      mergedDev.minimumReserveSquadSize =
+        legacy.minimumReserveSquadSize as number;
+    }
+    if (typeof legacy.protectHighPotentialPlayers === "boolean") {
+      mergedDev.protectHighPotentialPlayers =
+        legacy.protectHighPotentialPlayers as boolean;
+    }
+  }
+
   return {
     autoRenewContractYears,
     autoFixSquadBeforeMatch:
@@ -97,10 +126,8 @@ function hydrateManagerSettings(
     wccWriteUpExpandedByDefault:
       raw?.wccWriteUpExpandedByDefault ??
       DEFAULT_MANAGER_SETTINGS.wccWriteUpExpandedByDefault,
-    reserveReleaseSettings: {
-      ...DEFAULT_MANAGER_SETTINGS.reserveReleaseSettings,
-      ...(raw?.reserveReleaseSettings ?? {}),
-    },
+    reserveDevelopmentSettings: mergedDev,
+    reserveReleaseSettings: mergedDev,
   };
 }
 
@@ -236,6 +263,10 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
             ...r,
             signedRating: r.signedRating ?? r.baseRating ?? r.rating,
             baseRating: r.baseRating ?? r.rating,
+            signedSeasonYear: r.signedSeasonYear ?? raw.seasonYear,
+            yearsAtClub:
+              r.yearsAtClub ??
+              Math.max(0, (raw.seasonYear ?? 0) - (r.signedSeasonYear ?? raw.seasonYear ?? 0)),
           }))
         : generateReserveSquad(raw.seed ?? "migrate", 24, raw.club),
     reserveContracts:
@@ -319,6 +350,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     playerSeasonStats: sanitizePlayerSeasonStats(career),
   };
   career = sanitizeInvalidScorerData(career);
+  career = hydrateReserveTenure(career);
   career = ensureFreeAgentPool(career);
   return syncManagerInboxMessages(career);
 }

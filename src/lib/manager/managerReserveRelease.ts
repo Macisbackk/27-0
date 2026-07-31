@@ -2,19 +2,20 @@ import { pushInboxMessage } from "./managerInbox";
 import {
   RESERVE_DEPTH_MIN,
   releaseReserve,
+  getReserveSignedRating,
 } from "./managerReserves";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { addPlayersToFreeAgents } from "./managerFreeAgents";
 import { reserveToPlayer } from "./managerPlayers";
 import type {
   ManagerCareer,
+  ManagerReserveDevelopmentSettings,
   ManagerReservePlayer,
-  ManagerReserveReleaseSettings,
   ManagerSettings,
 } from "./types";
 import {
   DEFAULT_MANAGER_SETTINGS,
-  DEFAULT_RESERVE_RELEASE_SETTINGS,
+  DEFAULT_RESERVE_DEVELOPMENT_SETTINGS,
 } from "./types";
 
 export type ReserveReleaseReason =
@@ -22,36 +23,75 @@ export type ReserveReleaseReason =
   | "over_age"
   | "under_age"
   | "expired_contract"
-  | "settings_rules";
+  | "settings_rules"
+  | "stagnant_years"
+  | "low_growth"
+  | "marked";
+
+export type ReserveReviewFlag =
+  | "review"
+  | "promote"
+  | "protected"
+  | "release_candidate";
 
 export interface ReserveReleaseCandidate {
   reserve: ManagerReservePlayer;
   reason: string;
 }
 
-function getReleaseSettings(
+export interface ReservePlayerReview {
+  reserve: ManagerReservePlayer;
+  flags: ReserveReviewFlag[];
+  reasons: string[];
+}
+
+function getDevelopmentSettings(
   career: ManagerCareer
-): ManagerReserveReleaseSettings {
+): ManagerReserveDevelopmentSettings {
   return {
-    ...DEFAULT_RESERVE_RELEASE_SETTINGS,
-    ...(career.managerSettings?.reserveReleaseSettings ?? {}),
+    ...DEFAULT_RESERVE_DEVELOPMENT_SETTINGS,
+    ...(career.managerSettings?.reserveDevelopmentSettings ??
+      career.managerSettings?.reserveReleaseSettings ??
+      {}),
   };
 }
 
 export function getManagerSettings(career: ManagerCareer): ManagerSettings {
+  const reserveDevelopmentSettings = getDevelopmentSettings(career);
   return {
     ...DEFAULT_MANAGER_SETTINGS,
     ...(career.managerSettings ?? {}),
-    reserveReleaseSettings: getReleaseSettings(career),
+    reserveDevelopmentSettings,
+    reserveReleaseSettings: reserveDevelopmentSettings,
   };
 }
 
-function isProtectedHighPotential(
+export function getReserveYearsAtClub(
+  career: ManagerCareer,
+  reserve: ManagerReservePlayer
+): number {
+  if (typeof reserve.yearsAtClub === "number" && reserve.yearsAtClub >= 0) {
+    return reserve.yearsAtClub;
+  }
+  const signed = reserve.signedSeasonYear ?? career.seasonYear;
+  return Math.max(0, career.seasonYear - signed);
+}
+
+export function getReserveGrowth(reserve: ManagerReservePlayer): number {
+  return reserve.rating - getReserveSignedRating(reserve);
+}
+
+function isProtectedReserve(
+  career: ManagerCareer,
   reserve: ManagerReservePlayer,
-  settings: ManagerReserveReleaseSettings
+  settings: ManagerReserveDevelopmentSettings
 ): boolean {
+  if (reserve.age < settings.protectUnderAge) return true;
   if (!settings.protectHighPotentialPlayers) return false;
-  return reserve.potentialRating >= 78 || reserve.potentialRating - reserve.rating >= 8;
+  return (
+    reserve.potentialRating >= 78 ||
+    reserve.potentialRating - reserve.rating >= 8
+  );
 }
 
 function isOnMatchday(career: ManagerCareer, reserveId: string): boolean {
@@ -62,16 +102,86 @@ function isOnMatchday(career: ManagerCareer, reserveId: string): boolean {
   );
 }
 
+export function evaluateReservePlayerReview(
+  career: ManagerCareer,
+  reserve: ManagerReservePlayer
+): ReservePlayerReview {
+  const settings = getDevelopmentSettings(career);
+  const years = getReserveYearsAtClub(career, reserve);
+  const growth = getReserveGrowth(reserve);
+  const flags: ReserveReviewFlag[] = [];
+  const reasons: string[] = [];
+
+  if (isProtectedReserve(career, reserve, settings)) {
+    flags.push("protected");
+    reasons.push(
+      reserve.age < settings.protectUnderAge
+        ? `Protected under age ${settings.protectUnderAge}`
+        : "High potential prospect protected"
+    );
+  }
+
+  if (
+    settings.flagForFullTimeEnabled &&
+    reserve.rating >= settings.fullTimeRatingThreshold
+  ) {
+    flags.push("promote");
+    reasons.push(
+      `Reached ${reserve.rating} rating — consider a full-time deal`
+    );
+  }
+
+  if (
+    settings.releaseAfterYearsEnabled &&
+    years >= settings.releaseAfterYears &&
+    reserve.rating < settings.releaseIfRatingBelow &&
+    !flags.includes("protected")
+  ) {
+    flags.push("review");
+    flags.push("release_candidate");
+    reasons.push(
+      `Has been at the club ${years} year${years === 1 ? "" : "s"} and is still below ${settings.releaseIfRatingBelow} rating`
+    );
+  }
+
+  if (
+    settings.releaseIfGrowthBelowEnabled &&
+    years >= settings.growthCheckAfterYears &&
+    growth < settings.releaseIfGrowthBelow &&
+    !flags.includes("protected")
+  ) {
+    if (!flags.includes("review")) flags.push("review");
+    if (!flags.includes("release_candidate")) flags.push("release_candidate");
+    reasons.push(
+      `Growth is only ${growth >= 0 ? "+" : ""}${growth} after ${years} year${years === 1 ? "" : "s"}`
+    );
+  }
+
+  if (
+    settings.flagLowPotentialEnabled &&
+    reserve.potentialRating < settings.flagPotentialBelow &&
+    !flags.includes("protected")
+  ) {
+    if (!flags.includes("review")) flags.push("review");
+    reasons.push(
+      `Potential ${reserve.potentialRating} is below club threshold ${settings.flagPotentialBelow}`
+    );
+  }
+
+  if (reserve.markedForRelease && !flags.includes("release_candidate")) {
+    flags.push("release_candidate");
+    reasons.push("Marked for release");
+  }
+
+  return { reserve, flags, reasons };
+}
+
 export function previewReleaseUnderRating(
   career: ManagerCareer,
   rating: number
 ): ReserveReleaseCandidate[] {
   return career.reserves
-    .filter(
-      (r) =>
-        r.rating < rating &&
-        !isOnMatchday(career, r.id)
-    )
+    .filter((r) => r.rating < rating && !isOnMatchday(career, r.id))
     .map((reserve) => ({
       reserve,
       reason: `Rating ${reserve.rating} under ${rating}`,
@@ -128,30 +238,25 @@ export function previewReleaseMarkedForRelease(
     }));
 }
 
+/** Preview players matching development release rules (stagnation / low growth). */
 export function previewReleaseBySettings(
   career: ManagerCareer
 ): ReserveReleaseCandidate[] {
-  const settings = getReleaseSettings(career);
-  const seen = new Set<string>();
+  const settings = getDevelopmentSettings(career);
   const out: ReserveReleaseCandidate[] = [];
+  const seen = new Set<string>();
 
-  const pushUnique = (list: ReserveReleaseCandidate[]) => {
-    for (const item of list) {
-      if (seen.has(item.reserve.id)) continue;
-      if (isProtectedHighPotential(item.reserve, settings)) continue;
-      seen.add(item.reserve.id);
-      out.push(item);
-    }
-  };
-
-  if (settings.enableAutoReleaseByRating) {
-    pushUnique(previewReleaseUnderRating(career, settings.releaseUnderRating));
-  }
-  if (settings.enableAutoReleaseByAge) {
-    pushUnique(previewReleaseOverAge(career, settings.releaseOverAge));
-  }
-  if (settings.enableAutoReleaseUnderAge) {
-    pushUnique(previewReleaseUnderAge(career, settings.releaseUnderAge));
+  for (const reserve of career.reserves) {
+    if (isOnMatchday(career, reserve.id)) continue;
+    if (isProtectedReserve(career, reserve, settings)) continue;
+    const review = evaluateReservePlayerReview(career, reserve);
+    if (!review.flags.includes("release_candidate")) continue;
+    if (seen.has(reserve.id)) continue;
+    seen.add(reserve.id);
+    out.push({
+      reserve,
+      reason: review.reasons[0] ?? "Development release candidate",
+    });
   }
 
   return out;
@@ -178,7 +283,7 @@ export function applyReserveReleases(
     return { ok: false, released: 0, error: "No eligible reserves to release" };
   }
 
-  const settings = getReleaseSettings(career);
+  const settings = getDevelopmentSettings(career);
   const minSize = Math.max(
     RESERVE_DEPTH_MIN,
     settings.minimumReserveSquadSize || RESERVE_DEPTH_MIN
@@ -200,7 +305,6 @@ export function applyReserveReleases(
     next = releaseReserve(next, item.reserve.id);
   }
 
-  // Released reserves join the free-agent market as unwanted depth.
   const registry = { ...(next.playerRegistry ?? {}) };
   for (const reserve of releasedReserves) {
     registry[reserve.id] = reserveToPlayer(
@@ -244,20 +348,79 @@ export function applyReserveReleases(
   return { ok: true, career: next, released: list.length };
 }
 
-/** End-of-season / youth-intake auto release when settings enabled. */
+/** End-of-season auto release only when explicitly enabled. */
 export function applyConfiguredReserveAutoRelease(
   career: ManagerCareer
 ): ManagerCareer {
-  const settings = getReleaseSettings(career);
-  if (
-    !settings.enableAutoReleaseByRating &&
-    !settings.enableAutoReleaseByAge &&
-    !settings.enableAutoReleaseUnderAge
-  ) {
-    return career;
-  }
+  const settings = getDevelopmentSettings(career);
+  if (!settings.autoReleaseEnabled) return career;
   const preview = previewReleaseBySettings(career);
   if (preview.length === 0) return career;
   const result = applyReserveReleases(career, preview);
   return result.ok && result.career ? result.career : career;
+}
+
+/** Tick years-at-club and attach development review inbox notes. */
+export function tickReserveYearsAtClub(career: ManagerCareer): ManagerCareer {
+  const reserves = career.reserves.map((r) => {
+    const signedSeasonYear = r.signedSeasonYear ?? career.seasonYear;
+    const yearsAtClub = Math.max(0, career.seasonYear + 1 - signedSeasonYear);
+    return {
+      ...r,
+      signedSeasonYear,
+      signedRating: r.signedRating ?? r.baseRating ?? r.rating,
+      yearsAtClub,
+    };
+  });
+
+  let next: ManagerCareer = { ...career, reserves };
+  const reviews = reserves
+    .map((r) => evaluateReservePlayerReview(next, r))
+    .filter(
+      (r) =>
+        r.flags.includes("review") ||
+        r.flags.includes("promote") ||
+        r.flags.includes("release_candidate")
+    );
+
+  if (reviews.length === 0) return next;
+
+  const lines = reviews.slice(0, 8).map((r) => {
+    const flag = r.flags.includes("promote")
+      ? "Promote"
+      : r.flags.includes("release_candidate")
+        ? "Release"
+        : "Review";
+    return `${flag}: ${r.reserve.name} — ${r.reasons[0] ?? "Needs attention"}`;
+  });
+  const more =
+    reviews.length > 8 ? `\n…and ${reviews.length - 8} more` : "";
+
+  return pushInboxMessage(next, {
+    id: `reserve-dev-review-s${career.seasonYear + 1}`,
+    type: "reserve_report",
+    title: "Reserve development review",
+    body: lines.join("\n") + more,
+    week: 0,
+    season: career.seasonYear + 1,
+    gameWeek: 0,
+    createdAt: new Date().toISOString(),
+    read: false,
+  });
+}
+
+/** Migrate reserve tenure fields on load. */
+export function hydrateReserveTenure(career: ManagerCareer): ManagerCareer {
+  return {
+    ...career,
+    reserves: career.reserves.map((r) => {
+      const signedSeasonYear = r.signedSeasonYear ?? career.seasonYear;
+      const signedRating = r.signedRating ?? r.baseRating ?? r.rating;
+      const yearsAtClub =
+        typeof r.yearsAtClub === "number"
+          ? r.yearsAtClub
+          : Math.max(0, career.seasonYear - signedSeasonYear);
+      return { ...r, signedSeasonYear, signedRating, yearsAtClub };
+    }),
+  };
 }

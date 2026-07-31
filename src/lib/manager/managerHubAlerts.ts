@@ -5,7 +5,7 @@ import { countUnreadInbox } from "./managerInbox";
 import { isWageOverBudget } from "./managerFinance";
 import { validateFitMatchdaySquad } from "./managerMatchdayValidation";
 import { resolveCareerForMatchSimulation } from "./managerAutoFix";
-import { RESERVE_SQUAD_MIN } from "./managerReserves";
+import { RESERVE_MIN_PLAYERS } from "./managerReserves";
 import { getUserLeaguePosition } from "./managerFixtures";
 
 export type HubAlertTone = "primary" | "gold" | "amber" | "red";
@@ -23,7 +23,7 @@ export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
   const alerts: HubAlert[] = [];
   const unread = countUnreadInbox(career);
   const expiring = countExpiringContracts(career.contracts);
-  const reserveShort = Math.max(0, RESERVE_SQUAD_MIN - career.reserves.length);
+  const reserveShort = Math.max(0, RESERVE_MIN_PLAYERS - career.reserves.length);
   const squadCheck = validateFitMatchdaySquad(
     resolveCareerForMatchSimulation(career)
   );
@@ -57,8 +57,8 @@ export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
     alerts.push({
       id: "reserves",
       tone: "red",
-      title: `Reserves short (${career.reserves.length}/${RESERVE_SQUAD_MIN})`,
-      body: "Below 17 registered reserves risks an 18-0 walkover defeat.",
+      title: `Reserves short (${career.reserves.length}/${RESERVE_MIN_PLAYERS})`,
+      body: "Below 13 registered reserves risks an 18-0 walkover defeat.",
       actionLabel: "Manage reserves",
       actionView: "reserves",
     });

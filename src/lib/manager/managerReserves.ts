@@ -52,8 +52,12 @@ const FRENCH_RESERVE_CLUBS = new Set([
   "Catalans Dragons",
 ]);
 
-/** Minimum registered reserves required to field a side (RFL reserve listing). */
-export const RESERVE_SQUAD_MIN = 17;
+/** Minimum registered reserves required to *play* a reserve fixture. */
+export const RESERVE_MIN_PLAYERS = 13;
+/** Ideal matchday size: 13 starters + 4 interchange. */
+export const RESERVE_IDEAL_PLAYERS = 17;
+/** @deprecated Use RESERVE_MIN_PLAYERS — kept as alias for older call sites. */
+export const RESERVE_SQUAD_MIN = RESERVE_MIN_PLAYERS;
 /** Soft floor — every club keeps at least this many reserves for depth. */
 export const RESERVE_DEPTH_MIN = 22;
 /** Preferred reserve listing size when topping up coverage. */
@@ -61,7 +65,7 @@ export const RESERVE_DEPTH_TARGET = 26;
 export const RESERVE_SQUAD_MAX = 30;
 export const RESERVE_RECRUITMENT_FEE = 300_000;
 export const RESERVE_WALKOVER_SCORE = 18;
-export const RESERVE_WALKOVER_REASON = "Walkover — not enough players";
+export const RESERVE_WALKOVER_REASON = "Walkover — fewer than 13 reserve players";
 
 /** Minimum positional coverage for a healthy reserve listing. */
 export const RESERVE_POSITION_COVERAGE: { position: Position; min: number }[] = [
@@ -80,7 +84,7 @@ export const RESERVE_EMERGENCY_RECRUITMENT_TITLE =
   "Academy development levy";
 
 export const RESERVE_EMERGENCY_RECRUITMENT_EXCUSE =
-  "Under RFL Operational Rules, clubs must register at least 17 players for reserve fixtures. Pay a £300k academy development levy to fast-track performance-unit graduates onto the reserve listing for the remainder of the season.";
+  "Under RFL Operational Rules, clubs must register at least 13 players to fulfil a reserve fixture. Pay a £300k academy development levy to fast-track performance-unit graduates onto the reserve listing for the remainder of the season.";
 
 const FRENCH_FIRST_NAMES = [
   "Lucas", "Hugo", "Nathan", "Enzo", "Louis", "Theo", "Mathis", "Jules",
@@ -390,7 +394,8 @@ export function generateReservePlayer(
   index: number,
   position: Position,
   club?: string,
-  youthLevel = 0
+  youthLevel = 0,
+  seasonYear = new Date().getFullYear()
 ): ManagerReservePlayer {
   const rng = seedrandom(`${seed}-reserve-${index}`);
   const age = 17 + Math.floor(rng() * 6);
@@ -418,6 +423,8 @@ export function generateReservePlayer(
     calledUpForNextMatch: false,
     baseRating: rating,
     signedRating: rating,
+    signedSeasonYear: seasonYear,
+    yearsAtClub: 0,
   };
 }
 
@@ -440,18 +447,22 @@ export function createYouthProspect(
     index,
     position,
     club,
-    youthLevel
+    youthLevel,
+    seasonYear
   );
   return {
     ...player,
     id: `mgr-youth-${seasonYear}-${index}-${Math.abs(hashCode(player.name))}`,
+    signedSeasonYear: seasonYear,
+    yearsAtClub: 0,
   };
 }
 
 export function generateReserveSquad(
   seed: string,
   count = 24,
-  club?: string
+  club?: string,
+  seasonYear = new Date().getFullYear()
 ): ManagerReservePlayer[] {
   const positions: Position[] = [];
   for (const { position, count: c } of SQUAD_STRUCTURE) {
@@ -462,7 +473,7 @@ export function generateReserveSquad(
   const reserves: ManagerReservePlayer[] = [];
   for (let i = 0; i < count; i++) {
     const pos = shuffled[i % shuffled.length] ?? "CENTRE";
-    reserves.push(generateReservePlayer(seed, i, pos, club));
+    reserves.push(generateReservePlayer(seed, i, pos, club, 0, seasonYear));
   }
   return reserves;
 }
@@ -716,9 +727,12 @@ function generateEmergencyReserveRecruits(
 export function fillReserveSquadMinimum(
   career: ManagerCareer
 ): { ok: boolean; career?: ManagerCareer; error?: string } {
-  const shortfall = RESERVE_SQUAD_MIN - career.reserves.length;
+  const shortfall = RESERVE_MIN_PLAYERS - career.reserves.length;
   if (shortfall <= 0) {
-    return { ok: false, error: "Reserve squad already meets the 17-player minimum" };
+    return {
+      ok: false,
+      error: "Reserve squad already meets the 13-player matchday minimum",
+    };
   }
   if (career.reserves.length + shortfall > RESERVE_SQUAD_MAX) {
     return { ok: false, error: "Reserve squad is full" };
@@ -762,10 +776,10 @@ export function simulateReserveFixture(
   const userCount = getClubReserveCount(career, career.club);
   const oppCount = getClubReserveCount(career, opponentClub);
 
-  if (userCount < RESERVE_SQUAD_MIN) {
+  if (userCount < RESERVE_MIN_PLAYERS) {
     return createReserveWalkoverResult(round, opponentClub, false);
   }
-  if (oppCount < RESERVE_SQUAD_MIN) {
+  if (oppCount < RESERVE_MIN_PLAYERS) {
     return createReserveWalkoverResult(round, opponentClub, true);
   }
 

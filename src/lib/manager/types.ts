@@ -128,6 +128,10 @@ export interface ManagerReservePlayer {
   baseRating: number;
   /** Rating when the player joined the reserve squad (lifetime growth baseline). */
   signedRating?: number;
+  /** Season year when the player joined the reserve listing. */
+  signedSeasonYear?: number;
+  /** Completed seasons at the club since signing (updated at season end). */
+  yearsAtClub?: number;
   potentialRating: number;
   developmentRate: number;
   form: number;
@@ -394,16 +398,27 @@ export type ManagerView =
 
 export type ManagerAutoRenewContractYears = 1 | 2 | 3 | 4;
 
-export interface ManagerReserveReleaseSettings {
-  enableAutoReleaseByRating: boolean;
-  releaseUnderRating: number;
-  enableAutoReleaseByAge: boolean;
-  releaseOverAge: number;
-  enableAutoReleaseUnderAge: boolean;
-  releaseUnderAge: number;
+/** Development / review rules for the reserve listing. */
+export interface ManagerReserveDevelopmentSettings {
+  releaseAfterYearsEnabled: boolean;
+  releaseAfterYears: number;
+  releaseIfRatingBelow: number;
+  releaseIfGrowthBelowEnabled: boolean;
+  growthCheckAfterYears: number;
+  releaseIfGrowthBelow: number;
+  flagLowPotentialEnabled: boolean;
+  flagPotentialBelow: number;
+  flagForFullTimeEnabled: boolean;
+  fullTimeRatingThreshold: number;
+  protectUnderAge: number;
   protectHighPotentialPlayers: boolean;
   minimumReserveSquadSize: number;
+  /** When true, end-of-season auto-release may run after explicit confirmation tooling. */
+  autoReleaseEnabled: boolean;
 }
+
+/** @deprecated Prefer ManagerReserveDevelopmentSettings — kept for save migration. */
+export type ManagerReserveReleaseSettings = ManagerReserveDevelopmentSettings;
 
 export interface ManagerSettings {
   autoRenewContractYears: ManagerAutoRenewContractYears;
@@ -412,7 +427,9 @@ export interface ManagerSettings {
   compactFixtureRows: boolean;
   autoOpenNextFixture: boolean;
   wccWriteUpExpandedByDefault: boolean;
-  reserveReleaseSettings: ManagerReserveReleaseSettings;
+  reserveDevelopmentSettings: ManagerReserveDevelopmentSettings;
+  /** Legacy key — mirrored from reserveDevelopmentSettings on hydrate. */
+  reserveReleaseSettings?: ManagerReserveDevelopmentSettings;
 }
 
 export type LiveMatchPhase =
@@ -791,16 +808,27 @@ export const DEFAULT_TACTICS: ManagerTactics = {
   defenceFocus: "line_speed",
 };
 
-export const DEFAULT_RESERVE_RELEASE_SETTINGS: ManagerReserveReleaseSettings = {
-  enableAutoReleaseByRating: false,
-  releaseUnderRating: 55,
-  enableAutoReleaseByAge: false,
-  releaseOverAge: 23,
-  enableAutoReleaseUnderAge: false,
-  releaseUnderAge: 18,
-  protectHighPotentialPlayers: true,
-  minimumReserveSquadSize: 22,
-};
+export const DEFAULT_RESERVE_DEVELOPMENT_SETTINGS: ManagerReserveDevelopmentSettings =
+  {
+    releaseAfterYearsEnabled: false,
+    releaseAfterYears: 2,
+    releaseIfRatingBelow: 60,
+    releaseIfGrowthBelowEnabled: false,
+    growthCheckAfterYears: 2,
+    releaseIfGrowthBelow: 3,
+    flagLowPotentialEnabled: true,
+    flagPotentialBelow: 68,
+    flagForFullTimeEnabled: true,
+    fullTimeRatingThreshold: 72,
+    protectUnderAge: 18,
+    protectHighPotentialPlayers: true,
+    minimumReserveSquadSize: 22,
+    autoReleaseEnabled: false,
+  };
+
+/** @deprecated Use DEFAULT_RESERVE_DEVELOPMENT_SETTINGS */
+export const DEFAULT_RESERVE_RELEASE_SETTINGS =
+  DEFAULT_RESERVE_DEVELOPMENT_SETTINGS;
 
 export const DEFAULT_MANAGER_SETTINGS: ManagerSettings = {
   autoRenewContractYears: 2,
@@ -809,7 +837,8 @@ export const DEFAULT_MANAGER_SETTINGS: ManagerSettings = {
   compactFixtureRows: false,
   autoOpenNextFixture: true,
   wccWriteUpExpandedByDefault: false,
-  reserveReleaseSettings: { ...DEFAULT_RESERVE_RELEASE_SETTINGS },
+  reserveDevelopmentSettings: { ...DEFAULT_RESERVE_DEVELOPMENT_SETTINGS },
+  reserveReleaseSettings: { ...DEFAULT_RESERVE_DEVELOPMENT_SETTINGS },
 };
 
 export const MANAGER_SEASON_GAMES = 27;

@@ -22,8 +22,8 @@ import {
   releaseReserve,
   RESERVE_EMERGENCY_RECRUITMENT_EXCUSE,
   RESERVE_EMERGENCY_RECRUITMENT_TITLE,
+  RESERVE_MIN_PLAYERS,
   RESERVE_RECRUITMENT_FEE,
-  RESERVE_SQUAD_MIN,
 } from "@/lib/manager/managerReserves";
 import {
   bulkRenewExpiringReserveContracts,
@@ -45,12 +45,14 @@ import { ManagerReserveReleaseModal } from "@/components/manager/ManagerReserveR
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import {
   applyReserveReleases,
+  evaluateReservePlayerReview,
   previewReleaseExpiredContracts,
   previewReleaseMarkedForRelease,
   previewReleaseOverAge,
   previewReleaseUnderAge,
   previewReleaseUnderRating,
   type ReserveReleaseCandidate,
+  type ReserveReviewFlag,
 } from "@/lib/manager/managerReserveRelease";
 
 type ReserveFilter = "all" | "position" | "potential" | "rating" | "age";
@@ -68,6 +70,49 @@ const STATUS_LABELS: Record<string, string> = {
   wants_renewal: "Renewal due",
   renewed: "Renewed",
 };
+
+const REVIEW_CHIP: Record<
+  ReserveReviewFlag,
+  { label: string; className: string }
+> = {
+  review: {
+    label: "Review",
+    className: "border-amber-500/40 bg-amber-500/10 text-amber-300",
+  },
+  promote: {
+    label: "Promote",
+    className: "border-theme-primary/40 bg-theme-primary/10 text-theme-primary",
+  },
+  protected: {
+    label: "Protected",
+    className: "border-indigo-400/40 bg-indigo-500/10 text-indigo-200",
+  },
+  release_candidate: {
+    label: "Release Candidate",
+    className: "border-red-500/40 bg-red-500/10 text-red-300",
+  },
+};
+
+function CompactReleasePreview({
+  candidates,
+}: {
+  candidates: ReserveReleaseCandidate[] | undefined;
+}) {
+  if (!candidates?.length) return null;
+  return (
+    <ul className="ml-[7.25rem] space-y-0.5 border-l border-pitch-700/40 pl-2">
+      {candidates.map(({ reserve, reason }) => (
+        <li
+          key={reserve.id}
+          className={`${TYPO.bodySm} truncate text-pitch-400`}
+          title={`${reserve.name} · ${reason}`}
+        >
+          <span className="text-pitch-200">{reserve.name}</span> · {reason}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 interface ManagerReservesProps {
   career: ManagerCareer;
@@ -303,14 +348,14 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     setMessage(`${reserve.name} renewed at ${formatWage(demand.wagePerYear)}/yr`);
   };
 
-  const reserveShortfall = Math.max(0, RESERVE_SQUAD_MIN - career.reserves.length);
+  const reserveShortfall = Math.max(0, RESERVE_MIN_PLAYERS - career.reserves.length);
   const transferBudget =
     career.managerFinance?.transferBudget ?? career.budget;
   const canAffordRecruitment = transferBudget >= RESERVE_RECRUITMENT_FEE;
 
   const handleEmergencyRecruitment = () => {
     playUiClick();
-    const shortfall = RESERVE_SQUAD_MIN - career.reserves.length;
+    const shortfall = RESERVE_MIN_PLAYERS - career.reserves.length;
     const result = fillReserveSquadMinimum(career);
     if (!result.ok || !result.career) {
       setMessage(result.error ?? "Could not register emergency reserves");
@@ -348,11 +393,223 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         <p className={`${TYPO.bodySm} text-theme-primary`}>{message}</p>
       )}
 
+      <GamePanel padded label="Reserve fixtures">
+        {!career.isSeasonComplete && upcomingOpp ? (
+          <div>
+            <p className={TYPO.sectionLabel}>Next fixture</p>
+            <p className="mt-1 font-medium text-white">
+              {career.club} Reserves vs {upcomingOpp} Reserves
+              {nextFixture ? ` · Round ${nextFixture.round}` : ""}
+            </p>
+          </div>
+        ) : !career.lastReserveResult ? (
+          <p className={`${TYPO.bodySm} text-pitch-500`}>
+            No reserve fixtures scheduled or played yet.
+          </p>
+        ) : null}
+        {career.lastReserveResult && (
+          <div
+            className={
+              !career.isSeasonComplete && upcomingOpp
+                ? "mt-4 border-t border-pitch-700/40 pt-4"
+                : ""
+            }
+          >
+            <p className={TYPO.sectionLabel}>Latest result</p>
+            {career.lastReserveResult.walkover ? (
+              <>
+                <p className="mt-1 font-medium text-white">
+                  {career.lastReserveResult.walkoverReason}
+                </p>
+                <p className={`${TYPO.bodySm} text-pitch-400`}>
+                  {career.club} Reserves {career.lastReserveResult.userScore} -{" "}
+                  {career.lastReserveResult.oppScore}{" "}
+                  {career.lastReserveResult.opponent}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="mt-1 font-medium text-white">
+                  {career.club} Reserves {career.lastReserveResult.userScore} -{" "}
+                  {career.lastReserveResult.oppScore}{" "}
+                  {career.lastReserveResult.opponent}
+                </p>
+                {career.lastReserveResult.topPerformer && (
+                  <p className={`${TYPO.bodySm} text-pitch-400`}>
+                    Top performer: {career.lastReserveResult.topPerformer}
+                  </p>
+                )}
+              </>
+            )}
+          </div>
+        )}
+        {career.isSeasonComplete && !career.lastReserveResult && (
+          <p className={`${TYPO.bodySm} text-pitch-500`}>
+            Season complete — no further reserve fixtures.
+          </p>
+        )}
+      </GamePanel>
+
+      <GamePanel padded label="Release tools" className="mx-auto max-w-2xl">
+        <div className="space-y-2.5">
+          <div className="space-y-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={`w-28 shrink-0 ${TYPO.bodySm} text-pitch-400`}>
+                Under rating
+              </span>
+              <input
+                type="number"
+                min={40}
+                max={99}
+                value={bulkRating}
+                onChange={(e) => setBulkRating(Number(e.target.value))}
+                className="w-14 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-1 text-sm text-white"
+              />
+              <GameButton
+                variant="secondary"
+                size="sm"
+                onClick={() => handlePreviewTool("rating")}
+              >
+                Preview
+              </GameButton>
+              <GameButton
+                variant="danger"
+                size="sm"
+                onClick={() => handleApplyTool("rating")}
+              >
+                Release
+              </GameButton>
+            </div>
+            <CompactReleasePreview candidates={previews.rating} />
+          </div>
+
+          <div className="space-y-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={`w-28 shrink-0 ${TYPO.bodySm} text-pitch-400`}>
+                Over age
+              </span>
+              <input
+                type="number"
+                min={16}
+                max={40}
+                value={bulkOverAge}
+                onChange={(e) => setBulkOverAge(Number(e.target.value))}
+                className="w-14 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-1 text-sm text-white"
+              />
+              <GameButton
+                variant="secondary"
+                size="sm"
+                onClick={() => handlePreviewTool("over_age")}
+              >
+                Preview
+              </GameButton>
+              <GameButton
+                variant="danger"
+                size="sm"
+                onClick={() => handleApplyTool("over_age")}
+              >
+                Release
+              </GameButton>
+            </div>
+            <CompactReleasePreview candidates={previews.over_age} />
+          </div>
+
+          <div className="space-y-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={`w-28 shrink-0 ${TYPO.bodySm} text-pitch-400`}>
+                Under age
+              </span>
+              <input
+                type="number"
+                min={16}
+                max={40}
+                value={bulkUnderAge}
+                onChange={(e) => setBulkUnderAge(Number(e.target.value))}
+                className="w-14 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-1 text-sm text-white"
+              />
+              <GameButton
+                variant="secondary"
+                size="sm"
+                onClick={() => handlePreviewTool("under_age")}
+              >
+                Preview
+              </GameButton>
+              <GameButton
+                variant="danger"
+                size="sm"
+                onClick={() => handleApplyTool("under_age")}
+              >
+                Release
+              </GameButton>
+            </div>
+            <CompactReleasePreview candidates={previews.under_age} />
+          </div>
+
+          <div className="space-y-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={`w-28 shrink-0 ${TYPO.bodySm} text-pitch-400`}>
+                Expired contracts
+              </span>
+              <GameButton
+                variant="secondary"
+                size="sm"
+                onClick={() => handlePreviewTool("expired")}
+              >
+                Preview
+              </GameButton>
+              <GameButton
+                variant="danger"
+                size="sm"
+                onClick={() => handleApplyTool("expired")}
+              >
+                Release
+              </GameButton>
+            </div>
+            <CompactReleasePreview candidates={previews.expired} />
+          </div>
+
+          <div className="space-y-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={`w-28 shrink-0 ${TYPO.bodySm} text-pitch-400`}>
+                Marked for release
+              </span>
+              <GameButton
+                variant="secondary"
+                size="sm"
+                onClick={() => handlePreviewTool("marked")}
+              >
+                Preview
+              </GameButton>
+              <GameButton
+                variant="danger"
+                size="sm"
+                onClick={() => handleApplyTool("marked")}
+              >
+                Release
+              </GameButton>
+            </div>
+            <CompactReleasePreview candidates={previews.marked} />
+          </div>
+        </div>
+
+        <label className="mt-3 flex cursor-pointer items-center gap-2 border-t border-pitch-700/40 pt-3">
+          <input
+            type="checkbox"
+            checked={forceDepth}
+            onChange={(e) => setForceDepth(e.target.checked)}
+            className="shrink-0"
+          />
+          <span className={`${TYPO.bodySm} text-pitch-400`}>
+            Force release below minimum depth
+          </span>
+        </label>
+      </GamePanel>
+
       <GamePanel padded label="Reserve squad summary">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <ManagerStat
             label="Squad size"
-            value={`${career.reserves.length} / ${RESERVE_SQUAD_MIN}`}
+            value={`${career.reserves.length} / ${RESERVE_MIN_PLAYERS}`}
             tone={reserveShortfall > 0 ? "red" : "default"}
             large
           />
@@ -374,14 +631,14 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         {reserveShortfall > 0 && (
           <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/5 p-3">
             <p className={TYPO.sectionLabel}>
-              Reserve listing short — {career.reserves.length}/{RESERVE_SQUAD_MIN}{" "}
+              Reserve listing short — {career.reserves.length}/{RESERVE_MIN_PLAYERS}{" "}
               registered
             </p>
             <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
               {RESERVE_EMERGENCY_RECRUITMENT_EXCUSE}
             </p>
             <p className={`mt-2 ${TYPO.bodySm} text-accent-gold`}>
-              Without {RESERVE_SQUAD_MIN} registered players, reserve fixtures are
+              Without {RESERVE_MIN_PLAYERS} registered players, reserve fixtures are
               awarded as an 18-0 walkover defeat.
             </p>
             <GameButton
@@ -548,6 +805,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                 : [r.position]
               ) as Position[]
             );
+            const review = evaluateReservePlayerReview(career, r);
 
             return (
               <GameTableRow
@@ -561,11 +819,15 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                   <div className="reserve-player-card__header">
                     <div className="flex flex-wrap items-center gap-2">
                       <h3>{r.name}</h3>
-                      {r.markedForRelease ? (
-                        <span className="rounded-md border border-red-500/40 bg-red-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-red-300">
-                          Marked
+                      {review.flags.map((flag) => (
+                        <span
+                          key={flag}
+                          className={`rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${REVIEW_CHIP[flag].className}`}
+                          title={review.reasons.join(" · ")}
+                        >
+                          {REVIEW_CHIP[flag].label}
                         </span>
-                      ) : null}
+                      ))}
                     </div>
                     <p className={`${TYPO.bodySm} text-pitch-400`}>
                       {positionLabel || getFullPositionName(r.position)} · Age{" "}
@@ -693,52 +955,8 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         )}
       </GamePanel>
 
-      {(career.lastReserveResult || upcomingOpp) && (
-        <GamePanel padded label="Reserve fixtures">
-          {career.lastReserveResult && (
-            <div>
-              <p className={TYPO.sectionLabel}>Latest result</p>
-              {career.lastReserveResult.walkover ? (
-                <>
-                  <p className="mt-1 font-medium text-white">
-                    {career.lastReserveResult.walkoverReason}
-                  </p>
-                  <p className={`${TYPO.bodySm} text-pitch-400`}>
-                    {career.club} Reserves {career.lastReserveResult.userScore} -{" "}
-                    {career.lastReserveResult.oppScore}{" "}
-                    {career.lastReserveResult.opponent}
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="mt-1 font-medium text-white">
-                    {career.club} Reserves {career.lastReserveResult.userScore} -{" "}
-                    {career.lastReserveResult.oppScore}{" "}
-                    {career.lastReserveResult.opponent}
-                  </p>
-                  {career.lastReserveResult.topPerformer && (
-                    <p className={`${TYPO.bodySm} text-pitch-400`}>
-                      Top performer: {career.lastReserveResult.topPerformer}
-                    </p>
-                  )}
-                </>
-              )}
-            </div>
-          )}
-          {upcomingOpp && !career.isSeasonComplete && (
-            <div className={career.lastReserveResult ? "mt-4 border-t border-pitch-700/40 pt-4" : ""}>
-              <p className={TYPO.sectionLabel}>Upcoming</p>
-              <p className={`mt-1 ${TYPO.bodySm} text-white`}>
-                {career.club} Reserves vs {upcomingOpp} Reserves
-                {nextFixture && ` · Round ${nextFixture.round}`}
-              </p>
-            </div>
-          )}
-        </GamePanel>
-      )}
-
       {latestMonthlyReport && (
-        <GamePanel padded label="Monthly Reserve Report">
+        <GamePanel padded label="Monthly reserve report">
           <p className="font-medium text-white">{latestMonthlyReport.title}</p>
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
             Month {getReserveReportMonth(career)} · Season {career.seasonYear}
@@ -760,255 +978,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
           </div>
         </GamePanel>
       )}
-
-      <GamePanel padded label="Release tools">
-        <label className="flex cursor-pointer items-start gap-2">
-          <input
-            type="checkbox"
-            checked={forceDepth}
-            onChange={(e) => setForceDepth(e.target.checked)}
-            className="mt-0.5"
-          />
-          <span className={`${TYPO.bodySm} text-pitch-300`}>
-            Force release even if squad depth drops
-          </span>
-        </label>
-
-        <div className={`mt-4 divide-y divide-pitch-700/40 ${SPACING.stackSm}`}>
-          <div className="pb-4 first:pt-0">
-            <p className={TYPO.sectionLabel}>Release by Rating</p>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              <label className={`${TYPO.bodySm} text-pitch-400`}>
-                Under rating
-                <input
-                  type="number"
-                  min={40}
-                  max={99}
-                  value={bulkRating}
-                  onChange={(e) => setBulkRating(Number(e.target.value))}
-                  className="ml-2 w-16 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-1 text-white"
-                />
-              </label>
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={() => handlePreviewTool("rating")}
-              >
-                Preview
-              </GameButton>
-              <GameButton
-                variant="danger"
-                size="sm"
-                onClick={() => handleApplyTool("rating")}
-              >
-                Apply
-              </GameButton>
-            </div>
-            {(previews.rating?.length ?? 0) > 0 && (
-              <ul className="mt-3 space-y-1.5">
-                {previews.rating!.map(({ reserve, reason }) => (
-                  <li
-                    key={reserve.id}
-                    className="rounded-lg border border-pitch-700/45 bg-pitch-950/50 px-3 py-2 text-sm"
-                  >
-                    <span className="font-medium text-white">{reserve.name}</span>
-                    <span className="text-pitch-400">
-                      {" "}
-                      · Age {reserve.age} · Rating {reserve.rating} ·{" "}
-                      {getFullPositionName(reserve.position)}
-                    </span>
-                    <span className={`block ${TYPO.bodySm} text-pitch-500`}>
-                      {reason}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className="py-4">
-            <p className={TYPO.sectionLabel}>Release by Age over</p>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              <label className={`${TYPO.bodySm} text-pitch-400`}>
-                Over age
-                <input
-                  type="number"
-                  min={16}
-                  max={40}
-                  value={bulkOverAge}
-                  onChange={(e) => setBulkOverAge(Number(e.target.value))}
-                  className="ml-2 w-16 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-1 text-white"
-                />
-              </label>
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={() => handlePreviewTool("over_age")}
-              >
-                Preview
-              </GameButton>
-              <GameButton
-                variant="danger"
-                size="sm"
-                onClick={() => handleApplyTool("over_age")}
-              >
-                Apply
-              </GameButton>
-            </div>
-            {(previews.over_age?.length ?? 0) > 0 && (
-              <ul className="mt-3 space-y-1.5">
-                {previews.over_age!.map(({ reserve, reason }) => (
-                  <li
-                    key={reserve.id}
-                    className="rounded-lg border border-pitch-700/45 bg-pitch-950/50 px-3 py-2 text-sm"
-                  >
-                    <span className="font-medium text-white">{reserve.name}</span>
-                    <span className="text-pitch-400">
-                      {" "}
-                      · Age {reserve.age} · Rating {reserve.rating} ·{" "}
-                      {getFullPositionName(reserve.position)}
-                    </span>
-                    <span className={`block ${TYPO.bodySm} text-pitch-500`}>
-                      {reason}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className="py-4">
-            <p className={TYPO.sectionLabel}>Release by Age under</p>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              <label className={`${TYPO.bodySm} text-pitch-400`}>
-                Under age
-                <input
-                  type="number"
-                  min={16}
-                  max={40}
-                  value={bulkUnderAge}
-                  onChange={(e) => setBulkUnderAge(Number(e.target.value))}
-                  className="ml-2 w-16 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-1 text-white"
-                />
-              </label>
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={() => handlePreviewTool("under_age")}
-              >
-                Preview
-              </GameButton>
-              <GameButton
-                variant="danger"
-                size="sm"
-                onClick={() => handleApplyTool("under_age")}
-              >
-                Apply
-              </GameButton>
-            </div>
-            {(previews.under_age?.length ?? 0) > 0 && (
-              <ul className="mt-3 space-y-1.5">
-                {previews.under_age!.map(({ reserve, reason }) => (
-                  <li
-                    key={reserve.id}
-                    className="rounded-lg border border-pitch-700/45 bg-pitch-950/50 px-3 py-2 text-sm"
-                  >
-                    <span className="font-medium text-white">{reserve.name}</span>
-                    <span className="text-pitch-400">
-                      {" "}
-                      · Age {reserve.age} · Rating {reserve.rating} ·{" "}
-                      {getFullPositionName(reserve.position)}
-                    </span>
-                    <span className={`block ${TYPO.bodySm} text-pitch-500`}>
-                      {reason}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className="py-4">
-            <p className={TYPO.sectionLabel}>Expired contracts</p>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={() => handlePreviewTool("expired")}
-              >
-                Preview
-              </GameButton>
-              <GameButton
-                variant="danger"
-                size="sm"
-                onClick={() => handleApplyTool("expired")}
-              >
-                Apply
-              </GameButton>
-            </div>
-            {(previews.expired?.length ?? 0) > 0 && (
-              <ul className="mt-3 space-y-1.5">
-                {previews.expired!.map(({ reserve, reason }) => (
-                  <li
-                    key={reserve.id}
-                    className="rounded-lg border border-pitch-700/45 bg-pitch-950/50 px-3 py-2 text-sm"
-                  >
-                    <span className="font-medium text-white">{reserve.name}</span>
-                    <span className="text-pitch-400">
-                      {" "}
-                      · Age {reserve.age} · Rating {reserve.rating} ·{" "}
-                      {getFullPositionName(reserve.position)}
-                    </span>
-                    <span className={`block ${TYPO.bodySm} text-pitch-500`}>
-                      {reason}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className="pt-4">
-            <p className={TYPO.sectionLabel}>Marked for release</p>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={() => handlePreviewTool("marked")}
-              >
-                Preview
-              </GameButton>
-              <GameButton
-                variant="danger"
-                size="sm"
-                onClick={() => handleApplyTool("marked")}
-              >
-                Apply
-              </GameButton>
-            </div>
-            {(previews.marked?.length ?? 0) > 0 && (
-              <ul className="mt-3 space-y-1.5">
-                {previews.marked!.map(({ reserve, reason }) => (
-                  <li
-                    key={reserve.id}
-                    className="rounded-lg border border-pitch-700/45 bg-pitch-950/50 px-3 py-2 text-sm"
-                  >
-                    <span className="font-medium text-white">{reserve.name}</span>
-                    <span className="text-pitch-400">
-                      {" "}
-                      · Age {reserve.age} · Rating {reserve.rating} ·{" "}
-                      {getFullPositionName(reserve.position)}
-                    </span>
-                    <span className={`block ${TYPO.bodySm} text-pitch-500`}>
-                      {reason}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-      </GamePanel>
 
       {releaseTarget && (
         <ManagerReserveReleaseModal

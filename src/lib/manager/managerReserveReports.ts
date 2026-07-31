@@ -2,6 +2,7 @@ import type { ManagerCareer } from "./types";
 import type { InboxMessage } from "./types";
 import { getPotentialTier } from "./managerReserves";
 import { pushInboxMessage } from "./managerInbox";
+import { evaluateReservePlayerReview } from "./managerReserveRelease";
 
 /** In-game weeks between reserve reports (two calendar months at 4 weeks each). */
 const REPORT_INTERVAL_WEEKS = 8;
@@ -39,7 +40,31 @@ export function generateReserveReportMessage(
     );
     if (walkovers > 0) {
       lines.push(
-        `${walkovers} fixture${walkovers === 1 ? "" : "s"} decided by walkover (minimum 17 registered).`
+        `${walkovers} fixture${walkovers === 1 ? "" : "s"} decided by walkover (minimum 13 registered).`
+      );
+    }
+  }
+
+  const reviews = career.reserves
+    .map((r) => evaluateReservePlayerReview(career, r))
+    .filter(
+      (r) =>
+        r.flags.includes("review") ||
+        r.flags.includes("promote") ||
+        r.flags.includes("release_candidate")
+    )
+    .slice(0, 5);
+
+  if (reviews.length > 0) {
+    lines.push("Development notes:");
+    for (const review of reviews) {
+      const tag = review.flags.includes("promote")
+        ? "Promote"
+        : review.flags.includes("release_candidate")
+          ? "Review"
+          : "Review";
+      lines.push(
+        `${tag}: ${review.reserve.name} — ${review.reasons[0] ?? "Needs attention"}`
       );
     }
   }
