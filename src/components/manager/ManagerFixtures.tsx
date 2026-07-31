@@ -172,98 +172,97 @@ function sortResultsNewestFirst(items: FixtureListItem[]): FixtureListItem[] {
   return [...items].sort((a, b) => itemRound(b) - itemRound(a));
 }
 
-function WccWriteUpDetails({
+/** Completed WCC — same result-row chrome as other Results tabs, write-up below. */
+function WccResultBox({
   result,
-  /** When false, summary is just “Match write-up” (score shown separately). */
-  includeScoreline = true,
+  club,
   defaultOpen = false,
+  compact = false,
 }: {
   result: WorldClubChallengeResult;
-  includeScoreline?: boolean;
+  club: string;
   defaultOpen?: boolean;
+  compact?: boolean;
 }) {
+  const fixture = worldClubChallengeResultToFixtureRecord(result, club);
+  const userTeamName = fixture.userClub || result.superLeagueChampionName;
+
   return (
-    <div className="wcc-result-card space-y-2">
-      {includeScoreline ? (
-        <div className="wcc-scoreline">
-          <div className="wcc-team wcc-team--home">
-            <span className="wcc-team-name text-white">
-              {result.superLeagueChampionName}
-            </span>
-          </div>
-          <div className="wcc-score text-white">
-            {result.homeScore} - {result.awayScore}
-          </div>
-          <div className="wcc-team wcc-team--away">
-            <span className="wcc-team-name text-white">
-              {result.nrlChampionName}
-            </span>
-          </div>
-        </div>
-      ) : null}
+    <div className={compact ? "space-y-1" : SPACING.stackSm}>
+      <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+        <ManagerCompetitionBadge
+          competition="world_club_challenge"
+          isNeutral
+          detailed={false}
+        />
+        <span className={`shrink-0 ${TYPO.bodySm} text-pitch-500`}>
+          Season {result.seasonYear}
+        </span>
+      </div>
+      <FixtureResultRow
+        fixture={fixture}
+        userTeamName={userTeamName}
+        roundLabel={getManagerPlayedFixtureLabel(fixture)}
+        compact={compact}
+      />
       <details className="group" open={defaultOpen || undefined}>
         <summary
           className={`flex cursor-pointer list-none items-center justify-center gap-2 rounded-lg border border-pitch-700/40 bg-pitch-900/30 px-3 py-2 [&::-webkit-details-marker]:hidden`}
         >
-          <span className="font-semibold text-white">
-            {includeScoreline ? `${result.seasonYear} write-up` : "Match write-up"}
-          </span>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-pitch-500 transition group-open:rotate-180" aria-hidden>
+          <span className="font-semibold text-white">Match write-up</span>
+          <span
+            className="text-[10px] font-bold uppercase tracking-wider text-pitch-500 transition group-open:rotate-180"
+            aria-hidden
+          >
             ▼
           </span>
         </summary>
-        <div className="wcc-writeup wcc-writeup-section rounded-lg bg-pitch-950/40 px-3 py-2">
+        <div className="mt-2 rounded-lg border border-pitch-700/35 bg-pitch-950/40 px-3 py-2">
           <div className="mb-2 flex min-w-0 flex-wrap items-center justify-center gap-2">
             <span className={`${TYPO.bodySm} text-pitch-400`}>Winner:</span>
-            <span className="font-semibold text-white">
-              {result.winnerName}
-            </span>
+            <span className="font-semibold text-white">{result.winnerName}</span>
             <span className={TYPO.bodySm}>
               {result.userResult && result.userResult !== "not_involved"
                 ? `· You ${result.userResult}`
                 : "· AI result"}
             </span>
           </div>
-          <p className={TYPO.bodySm}>{result.storySummary}</p>
+          <p className={`${TYPO.bodySm} text-center text-pitch-300`}>
+            {result.storySummary}
+          </p>
         </div>
       </details>
     </div>
   );
 }
 
-function WccTeamVsLine({
-  superLeagueName,
-  nrlName,
-  homeScore,
-  awayScore,
-  writeUp,
+/** Scheduled WCC — same upcoming-row layout as other fixture tabs. */
+function WccScheduledBox({
+  wcc,
+  club,
+  isNext = false,
+  compact = false,
 }: {
-  superLeagueName: string;
-  nrlName: string;
-  homeScore?: number;
-  awayScore?: number;
-  writeUp?: string;
+  wcc: WorldClubChallengeFixture;
+  club: string;
+  isNext?: boolean;
+  compact?: boolean;
 }) {
+  const sched: ManagerScheduledFixture = {
+    ...buildWorldClubChallengeScheduledFixture(wcc),
+    isNeutral: true,
+    listedHome: wcc.superLeagueChampionName,
+    listedAway: wcc.nrlChampionName,
+  };
+
   return (
-    <div className="wcc-result-card">
-      <div className="wcc-scoreline">
-        <div className="wcc-team wcc-team--home">
-          <span className="wcc-team-name text-white">
-            {superLeagueName}
-          </span>
-        </div>
-        <div className="wcc-score text-white">
-          {homeScore != null && awayScore != null
-            ? `${homeScore} - ${awayScore}`
-            : "vs"}
-        </div>
-        <div className="wcc-team wcc-team--away">
-          <span className="wcc-team-name text-white">
-            {nrlName}
-          </span>
-        </div>
-      </div>
-      {writeUp ? <p className="wcc-writeup text-pitch-300">{writeUp}</p> : null}
+    <div className={compact ? "space-y-1" : SPACING.stackSm}>
+      <UpcomingFixtureRow
+        sched={sched}
+        club={club}
+        isNext={isNext}
+        compact={compact}
+      />
     </div>
   );
 }
@@ -795,10 +794,14 @@ export function ManagerFixtures({
 
   const wccPastResultsList =
     wccPastResults.length > 0 ? (
-      <ul className="space-y-2">
+      <ul className={career.managerSettings?.compactFixtureRows ? "space-y-1.5" : SPACING.stackSm}>
         {wccPastResults.map((r) => (
           <li key={r.id}>
-            <WccWriteUpDetails result={r} />
+            <WccResultBox
+              result={r}
+              club={career.club}
+              compact={career.managerSettings?.compactFixtureRows}
+            />
           </li>
         ))}
       </ul>
@@ -811,9 +814,11 @@ export function ManagerFixtures({
         {wccScheduled ? (
           <div className="space-y-2">
             <p className={`${TYPO.sectionLabel} text-sky-300`}>This season</p>
-            <WccTeamVsLine
-              superLeagueName={wccScheduled.superLeagueChampionName}
-              nrlName={wccScheduled.nrlChampionName}
+            <WccScheduledBox
+              wcc={wccScheduled}
+              club={career.club}
+              isNext={nextFixture?.id === wccScheduled.id}
+              compact={career.managerSettings?.compactFixtureRows}
             />
             <p className={TYPO.bodySm}>
               Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear}{" "}
@@ -833,11 +838,13 @@ export function ManagerFixtures({
         ) : wccCurrentSeasonResult ? (
           <div className="space-y-2">
             <p className={`${TYPO.sectionLabel} text-sky-300`}>This season</p>
-            <WccWriteUpDetails
+            <WccResultBox
               result={wccCurrentSeasonResult}
+              club={career.club}
               defaultOpen={
                 career.managerSettings?.wccWriteUpExpandedByDefault ?? false
               }
+              compact={career.managerSettings?.compactFixtureRows}
             />
           </div>
         ) : wccPastResults.length > 0 || wccStats.results.length > 0 ? (
@@ -861,9 +868,11 @@ export function ManagerFixtures({
   } else if (wccScheduled) {
     wccPanelContent = (
       <div className="space-y-2">
-        <WccTeamVsLine
-          superLeagueName={wccScheduled.superLeagueChampionName}
-          nrlName={wccScheduled.nrlChampionName}
+        <WccScheduledBox
+          wcc={wccScheduled}
+          club={career.club}
+          isNext={nextFixture?.id === wccScheduled.id}
+          compact={career.managerSettings?.compactFixtureRows}
         />
         <p className={TYPO.bodySm}>
           Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear} ·

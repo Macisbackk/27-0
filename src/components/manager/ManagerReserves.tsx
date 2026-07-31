@@ -306,19 +306,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         )}
       </GamePanel>
 
-      <div className="mx-auto flex max-w-2xl justify-center">
-        <GameButton
-          variant="secondary"
-          size="sm"
-          onClick={() => {
-            playUiClick();
-            setReleaseToolsOpen(true);
-          }}
-        >
-          Release Tools
-        </GameButton>
-      </div>
-
       <GamePanel padded label="Reserve squad summary">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <ManagerStat
@@ -341,6 +328,18 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
               large
             />
           )}
+        </div>
+        <div className="mt-3 flex justify-center">
+          <GameButton
+            variant="secondary"
+            size="sm"
+            onClick={() => {
+              playUiClick();
+              setReleaseToolsOpen(true);
+            }}
+          >
+            Release Tools
+          </GameButton>
         </div>
         {reserveShortfall > 0 && (
           <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/5 p-3">
