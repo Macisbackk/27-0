@@ -212,7 +212,7 @@ export function ManagerClubSquadSheet({
   return (
     <BodyPortal>
       <div
-        className={`fixed inset-0 z-[95] flex items-center justify-center bg-black/60 p-4`}
+        className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/60 p-4 ${SPACING.safeBottom} sm:items-center`}
         role="presentation"
         onClick={handleClose}
       >
@@ -222,7 +222,7 @@ export function ManagerClubSquadSheet({
           role="dialog"
           aria-modal="true"
           aria-labelledby="manager-club-sheet-title"
-          className="game-modal-panel flex max-h-[min(88vh,720px)] w-full max-w-md flex-col overflow-hidden outline-none sm:max-w-lg"
+          className="game-modal-panel flex max-h-[min(78dvh,720px)] w-full max-w-md flex-col overflow-hidden outline-none sm:max-w-lg"
           onClick={(e) => e.stopPropagation()}
         >
           <div

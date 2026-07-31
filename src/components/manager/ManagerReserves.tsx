@@ -397,7 +397,11 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
       </GamePanel>
 
       {youthProspects.length > 0 && (
-        <GamePanel padded label={`Youth intake · ${career.seasonYear}`}>
+        <GamePanel
+          padded
+          label={`Youth intake · ${career.seasonYear}`}
+          className="mx-auto max-w-2xl text-center"
+        >
           <p className={`${TYPO.bodySm} text-pitch-300`}>
             {youthProspects.length} academy prospect
             {youthProspects.length === 1 ? "" : "s"} available to sign on cheap
@@ -407,12 +411,16 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             {youthProspects.map((p) => {
               const previewWage = generateReserveYouthContract(p).wagePerYear;
               return (
-                <div key={p.id} className="py-3 first:pt-0 last:pb-0">
+                <div
+                  key={p.id}
+                  className="flex flex-col items-center py-3 first:pt-0 last:pb-0"
+                >
                   <p className="font-medium text-white">{p.name}</p>
                   <p className={`${TYPO.bodySm} text-pitch-400`}>
-                    {getFullPositionName(p.position)} · Age {p.age} · {p.nationality}
+                    {getFullPositionName(p.position)} · Age {p.age} ·{" "}
+                    {p.nationality}
                   </p>
-                  <div className="mt-2 flex flex-wrap gap-1.5">
+                  <div className="mt-2 flex flex-wrap justify-center gap-1.5">
                     <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] font-semibold text-theme-primary">
                       Rating {p.rating}
                     </span>
@@ -420,13 +428,15 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                       POT {p.potentialRating}
                     </span>
                     <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] text-pitch-300">
-                      {getPotentialTier(p.potentialRating)} · ~{formatWage(previewWage)}/yr
+                      {getPotentialTier(p.potentialRating)} · ~
+                      {formatWage(previewWage)}/yr
                     </span>
                   </div>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                  <div className="mt-3 flex w-full max-w-sm flex-col gap-2 sm:flex-row sm:justify-center">
                     <GameButton
                       variant="theme"
                       size="sm"
+                      className="sm:flex-1"
                       onClick={() => {
                         playUiClick();
                         handleSignProspect(p.id);
@@ -437,6 +447,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                     <GameButton
                       variant="secondary"
                       size="sm"
+                      className="sm:flex-1"
                       onClick={() => {
                         playUiClick();
                         handleDeclineProspect(p.id, p.name);

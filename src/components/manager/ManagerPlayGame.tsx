@@ -14,6 +14,7 @@ import {
   createLiveMatch,
   formatLiveClock,
   getLiveCommandLabel,
+  getLiveCommandShortLabel,
   getLiveMatchEvents,
   getMatchStatusLabel,
   HALFTIME_MINUTE,
@@ -260,13 +261,13 @@ export function ManagerPlayGame({
     <div
       ref={panelRef}
       tabIndex={-1}
-      className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-black/85 outline-none"
+      className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-black/85 outline-none pt-[max(0.5rem,env(safe-area-inset-top))] pb-[max(0.5rem,env(safe-area-inset-bottom))]"
       role="dialog"
       aria-modal="true"
       aria-label="Live match"
     >
       <div
-        className={`scoreboard-panel scoreboard-panel--elevated scoreboard-panel--flush mx-auto flex h-[100dvh] w-full max-w-lg flex-col overflow-hidden ${SPACING.cardPaddingSm}`}
+        className={`scoreboard-panel scoreboard-panel--elevated scoreboard-panel--flush mx-auto flex min-h-0 w-full max-w-lg flex-1 flex-col overflow-hidden ${SPACING.cardPaddingSm}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Scoreboard */}
@@ -514,19 +515,22 @@ function CommandGrid({
   onSelect: (cmd: LiveMatchCommand) => void;
 }) {
   return (
-    <div className="grid grid-cols-4 gap-1.5">
+    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
       {COMMANDS.map((cmd) => (
         <button
           key={cmd}
           type="button"
           onClick={() => onSelect(cmd)}
-          className={`btn-press min-h-[44px] rounded-lg border px-1 py-1.5 text-[10px] font-bold uppercase leading-tight tracking-wide transition sm:min-h-[40px] sm:text-[11px] ${
+          className={`btn-press min-h-[44px] min-w-0 rounded-lg border px-1 py-1.5 text-[10px] font-bold uppercase leading-tight tracking-wide transition sm:min-h-[40px] sm:text-[11px] ${
             command === cmd
               ? "border-theme-primary bg-theme-primary/15 text-theme-primary ring-1 ring-theme-primary/30"
               : "border-pitch-600/80 bg-pitch-900/60 text-pitch-300 hover:border-pitch-500 hover:text-white"
           }`}
         >
-          {getLiveCommandLabel(cmd)}
+          <span className="block truncate sm:hidden">
+            {getLiveCommandShortLabel(cmd)}
+          </span>
+          <span className="hidden sm:block">{getLiveCommandLabel(cmd)}</span>
         </button>
       ))}
     </div>

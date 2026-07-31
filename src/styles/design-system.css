@@ -925,11 +925,17 @@
   background: rgba(5, 10, 9, 0.92);
   padding: 0.625rem 0.875rem;
   color: #fff;
-  font-size: 0.875rem;
+  font-size: 1rem;
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
   -webkit-appearance: none;
   appearance: none;
+}
+
+@media (min-width: 640px) {
+  .game-input {
+    font-size: 0.875rem;
+  }
 }
 
 .game-input:focus {
@@ -958,7 +964,7 @@
 .game-modal-card,
 .contract-modal-card {
   width: min(92vw, 520px);
-  max-height: min(82vh, 720px);
+  max-height: min(78dvh, 720px);
   overflow-y: auto;
   margin-inline: auto;
 }

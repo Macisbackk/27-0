@@ -38,7 +38,7 @@ export function ManagerTransferResultModal({
 
   return (
     <div
-      className={`fixed inset-0 z-[90] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} sm:items-center`}
+      className={`fixed inset-0 z-[90] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} ${SPACING.safeBottom} overflow-y-auto sm:items-center`}
       role="dialog"
       aria-modal="true"
       onClick={handleClose}
@@ -46,7 +46,7 @@ export function ManagerTransferResultModal({
       <div
         ref={panelRef}
         tabIndex={-1}
-        className={`game-modal-panel w-full max-w-md overflow-hidden outline-none ${SPACING.cardPadding}`}
+        className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div

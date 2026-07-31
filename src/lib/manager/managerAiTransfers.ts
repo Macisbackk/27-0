@@ -13,11 +13,21 @@ import { RIVAL_CLUBS } from "./managerRivals";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 
 const MAX_TRANSFER_HISTORY = 32;
+/** Season one keeps the market quieter so the squad can settle. */
 const BASE_TRANSFER_CHANCE_PER_MATCH = 0.32;
+/** From season two onwards the league transfer window runs hotter. */
+const POST_FIRST_SEASON_TRANSFER_CHANCE = 0.5;
+const SEASON_TRANSFER_CHANCE_STEP = 0.08;
+const MAX_TRANSFER_CHANCE = 0.8;
 
 function transferChanceForCareer(career: ManagerCareer): number {
   const seasonIndex = getLeagueSeasonIndex(career);
-  return Math.min(0.64, BASE_TRANSFER_CHANCE_PER_MATCH + seasonIndex * 0.05);
+  if (seasonIndex <= 0) return BASE_TRANSFER_CHANCE_PER_MATCH;
+  return Math.min(
+    MAX_TRANSFER_CHANCE,
+    POST_FIRST_SEASON_TRANSFER_CHANCE +
+      (seasonIndex - 1) * SEASON_TRANSFER_CHANCE_STEP
+  );
 }
 
 function clubNeedsPosition(

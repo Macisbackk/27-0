@@ -132,6 +132,15 @@ body {
     touch-action: manipulation;
   }
 
+  /* iOS zooms focused inputs under 16px — keep controls readable without pinch-zoom. */
+  @media (max-width: 639px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+    }
+  }
+
   button:not(:disabled):not(.no-btn-press) {
     @apply btn-press;
   }

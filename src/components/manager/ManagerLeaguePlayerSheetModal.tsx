@@ -83,7 +83,7 @@ export function ManagerLeaguePlayerSheetModal({
   return (
     <BodyPortal>
       <div
-        className={`fixed inset-0 z-[100] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} sm:items-center`}
+        className={`fixed inset-0 z-[100] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} ${SPACING.safeBottom} overflow-y-auto sm:items-center`}
         role="presentation"
         onClick={handleClose}
       >
@@ -93,7 +93,7 @@ export function ManagerLeaguePlayerSheetModal({
           role="dialog"
           aria-modal="true"
           aria-labelledby="league-player-sheet-title"
-          className={`game-modal-panel w-full max-w-md outline-none ${SPACING.cardPadding}`}
+          className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-start gap-3">

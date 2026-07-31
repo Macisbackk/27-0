@@ -39,6 +39,7 @@ import {
   normalizeInboxMessage,
 } from "./managerInbox";
 import { addBoardTransferMilestoneInbox } from "./managerBoardInbox";
+import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 
 function invalidatePlayerTransferOffers(
   career: ManagerCareer,
@@ -148,6 +149,11 @@ export function generateLeagueListedPlayers(
 ): LeagueListedPlayer[] {
   const rng = seedrandom(`${seed}-league-listed-w${gameWeek}`);
   const listed: LeagueListedPlayer[] = [];
+  const seasonIndex = getLeagueSeasonIndex(career);
+  // Season one: 1–3 listings per club. Later seasons run a busier market.
+  const maxListPerClub =
+    seasonIndex <= 0 ? 3 : Math.min(5, 3 + Math.floor(seasonIndex / 2));
+  const minListPerClub = seasonIndex <= 0 ? 1 : 2;
 
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === career.club) continue;
@@ -155,7 +161,10 @@ export function generateLeagueListedPlayers(
     const pool = getListableClubPlayers(career, club);
     if (pool.length === 0) continue;
 
-    const listCount = Math.min(pool.length, 1 + Math.floor(rng() * 3));
+    const listCount = Math.min(
+      pool.length,
+      minListPerClub + Math.floor(rng() * (maxListPerClub - minListPerClub + 1))
+    );
     const remaining = [...pool];
 
     for (let i = 0; i < listCount; i++) {
@@ -591,6 +600,7 @@ export function generateIncomingTransferOffers(
   const rng = seedrandom(`${career.seed}-offers-w${career.gameWeek}`);
   const messages = [...career.inboxMessages];
   const clubFunds = { ...career.clubFunds };
+  const seasonBoost = getLeagueSeasonIndex(career) >= 1 ? 0.08 : 0;
 
   for (const [playerId, status] of Object.entries(career.playerTransferStatus)) {
     if (!status.listed) continue;
@@ -601,7 +611,7 @@ export function generateIncomingTransferOffers(
 
     const rating = player.peakRating;
     const priceRatio = status.askingPrice / Math.max(1, player.value);
-    let chance = 0.12;
+    let chance = 0.12 + seasonBoost;
     if (priceRatio <= 1.1) chance += 0.2;
     if (priceRatio > 1.5) chance -= 0.1;
     if (rating >= 82) chance += 0.1;
@@ -647,8 +657,14 @@ export function generateUnsolicitedTransferOffers(
   career: ManagerCareer
 ): ManagerCareer {
   const rng = seedrandom(`${career.seed}-unsolicited-w${career.gameWeek}`);
+  const seasonIndex = getLeagueSeasonIndex(career);
+  // Quiet in year one; from season two approaches land more often.
+  const approachChance =
+    seasonIndex <= 0
+      ? 0.05
+      : Math.min(0.14, 0.09 + (seasonIndex - 1) * 0.02);
 
-  if (rng() > 0.05) return career;
+  if (rng() > approachChance) return career;
 
   if (
     career.inboxMessages.some((m) => !m.resolved && m.unsolicited)

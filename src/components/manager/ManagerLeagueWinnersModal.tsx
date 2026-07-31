@@ -35,7 +35,7 @@ export function ManagerLeagueWinnersModal({
 
   return (
     <div
-      className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/80 ${SPACING.modalBackdrop} sm:items-center`}
+      className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/80 ${SPACING.modalBackdrop} ${SPACING.safeBottom} overflow-y-auto sm:items-center`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="league-winners-title"
@@ -43,7 +43,7 @@ export function ManagerLeagueWinnersModal({
       <div
         ref={panelRef}
         tabIndex={-1}
-        className={`game-modal-panel w-full max-w-md overflow-hidden outline-none ${SPACING.cardPadding}`}
+        className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div

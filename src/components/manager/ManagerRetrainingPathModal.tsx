@@ -66,7 +66,7 @@ export function ManagerRetrainingPathModal({
 
   return (
     <div
-      className={`fixed inset-0 z-[92] flex items-end justify-center bg-black/80 ${SPACING.modalBackdrop} sm:items-center`}
+      className={`fixed inset-0 z-[92] flex items-end justify-center bg-black/80 ${SPACING.modalBackdrop} ${SPACING.safeBottom} overflow-y-auto sm:items-center`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="retrain-path-title"
@@ -74,7 +74,7 @@ export function ManagerRetrainingPathModal({
       <div
         ref={panelRef}
         tabIndex={-1}
-        className={`game-modal-panel w-full max-w-md outline-none ${SPACING.cardPadding}`}
+        className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <p className={TYPO.sectionLabel}>Dual position training</p>

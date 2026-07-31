@@ -68,6 +68,13 @@ export function getLiveCommandLabel(cmd: LiveMatchCommand): string {
   return COMMAND_LABELS[cmd];
 }
 
+/** Compact labels for the live command grid on narrow screens. */
+export function getLiveCommandShortLabel(cmd: LiveMatchCommand): string {
+  if (cmd === "champagne") return "Champ.";
+  if (cmd === "balanced") return "Bal.";
+  return COMMAND_LABELS[cmd];
+}
+
 /** Map saved tactics to the live command used when simulating from the hub. */
 export function commandFromTactics(career: ManagerCareer): LiveMatchCommand {
   const { playingStyle, attackFocus, defenceFocus } = career.tactics;

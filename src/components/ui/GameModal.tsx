@@ -41,7 +41,7 @@ export function GameModal({
         <div
           ref={panelRef}
           tabIndex={panelRef ? -1 : undefined}
-          className={`game-modal-panel game-modal-card contract-modal-card p-3 sm:p-6 my-4 w-[min(92vw,520px)] max-w-[520px] max-h-[min(82vh,720px)] overflow-y-auto overflow-x-hidden ${wide ? "w-[min(96vw,40rem)] max-w-4xl" : ""} ${className}`.trim()}
+          className={`game-modal-panel game-modal-card contract-modal-card p-3 sm:p-6 my-4 w-[min(92vw,520px)] max-w-[520px] max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden ${wide ? "w-[min(96vw,40rem)] max-w-4xl" : ""} ${className}`.trim()}
           onClick={(e) => e.stopPropagation()}
         >
           {children}

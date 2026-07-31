@@ -196,7 +196,7 @@ export function ManagerSettings({ career, onUpdate }: ManagerSettingsProps) {
           </p>
           <fieldset className="mt-4">
             <legend className="sr-only">Auto-renew contract length</legend>
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {CONTRACT_YEAR_OPTIONS.map((years) => {
                 const selected = settings.autoRenewContractYears === years;
                 return (

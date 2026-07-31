@@ -752,6 +752,7 @@ export function applyManagerMatchResult(
   finalCareer = maybeAiSignFreeAgents(finalCareer);
   const leagueSeasonIndex = getLeagueSeasonIndex(finalCareer);
   if (leagueSeasonIndex >= 1) {
+    finalCareer = maybeGenerateAiTransfers(finalCareer);
     finalCareer = maybeAiSignFreeAgents(finalCareer);
   }
   if (leagueSeasonIndex >= 2) {
@@ -780,7 +781,8 @@ export function applyManagerMatchResult(
     );
   }
   finalCareer = syncManagerFinance(finalCareer);
-  if (finalCareer.gameWeek % 3 === 0) {
+  const listRefreshEvery = getLeagueSeasonIndex(finalCareer) >= 1 ? 2 : 3;
+  if (finalCareer.gameWeek % listRefreshEvery === 0) {
     const refreshed = generateLeagueListedPlayers(
       finalCareer,
       finalCareer.seed,
