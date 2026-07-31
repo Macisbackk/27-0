@@ -5,8 +5,7 @@ import { getClubStrength } from "./club-strength";
 import { buildOpponentScoringDetail, buildEraTeamScoringDetail } from "./opponent-scorers";
 import {
   decomposeRLScore,
-  pickRLScore,
-  snapToRLScore,
+  pickDecisiveScorePair,
 } from "./rl-scores";
 import { getWinnerLoserScoreBounds } from "./score-gap";
 import {
@@ -570,14 +569,15 @@ function simulateClubVsClub(
   const loserStrength = homeWins ? awayStr : homeStr + homeAdvantage;
   const ratingGap = Math.abs(winnerStrength - loserStrength);
   const bounds = getWinnerLoserScoreBounds(ratingGap, rng);
-  const winScore = pickRLScore(bounds.winnerMin, bounds.winnerMax, rng);
-  const lossScore = pickRLScore(bounds.loserMin, bounds.loserMax, rng);
-  let homeScore = snapToRLScore(homeWins ? winScore : lossScore);
-  let awayScore = snapToRLScore(homeWins ? lossScore : winScore);
-  if (homeScore === awayScore) {
-    if (homeWins) homeScore = snapToRLScore(homeScore + 2);
-    else awayScore = snapToRLScore(awayScore + 2);
-  }
+  const { winner: winScore, loser: lossScore } = pickDecisiveScorePair(
+    bounds.winnerMin,
+    bounds.winnerMax,
+    bounds.loserMin,
+    bounds.loserMax,
+    rng
+  );
+  const homeScore = homeWins ? winScore : lossScore;
+  const awayScore = homeWins ? lossScore : winScore;
   const homeScoring = decomposeRLScore(homeScore);
   const awayScoring = decomposeRLScore(awayScore);
 

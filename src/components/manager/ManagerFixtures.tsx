@@ -606,15 +606,16 @@ export function ManagerFixtures({
       ? resolveWccFixtureForDisplay(career, wccCurrentRaw)
       : null;
   const wccHistory =
-    filter === "results" ? wccStats.results.slice().reverse() : [];
+    filter === "results" || filter === "wcc"
+      ? wccStats.results.slice().reverse()
+      : [];
   const showWcc =
     filter === "all" ||
     filter === "wcc" ||
     (filter === "results" && wccHistory.length > 0);
 
-  let wccPanelContent: ReactNode = null;
-  if (filter === "results" && wccHistory.length > 0) {
-    wccPanelContent = (
+  const wccHistoryList =
+    wccHistory.length > 0 ? (
       <ul className="space-y-2">
         {wccHistory.map((r) => (
           <li
@@ -635,6 +636,49 @@ export function ManagerFixtures({
           </li>
         ))}
       </ul>
+    ) : null;
+
+  let wccPanelContent: ReactNode = null;
+  if (filter === "results" && wccHistoryList) {
+    wccPanelContent = wccHistoryList;
+  } else if (filter === "wcc") {
+    wccPanelContent = (
+      <div className="space-y-4">
+        {wccCurrent ? (
+          <div className="space-y-2">
+            <p className={`${TYPO.sectionLabel} text-sky-300`}>This season</p>
+            <p className="font-semibold text-white">
+              {wccCurrent.superLeagueChampionName} vs {wccCurrent.nrlChampionName}
+            </p>
+            <p className={TYPO.bodySm}>
+              Game Week {wccCurrent.gameWeek} · Season {wccCurrent.seasonYear} ·
+              NRL rating {wccCurrent.nrlChampionRating}
+            </p>
+            {wccCurrent.userInvolved ? (
+              <p className={`${TYPO.bodySm} text-accent-gold`}>
+                You are the Super League champion — Play or Simulate from
+                Matchday when Game Week 3 arrives.
+              </p>
+            ) : (
+              <p className={TYPO.bodySm}>
+                Another Super League club is involved this year.
+              </p>
+            )}
+          </div>
+        ) : (
+          <p className={TYPO.bodySm}>
+            {wccHistory.length > 0
+              ? "No World Club Challenge fixture scheduled this season."
+              : "World Club Challenge starts from your second season once a Super League champion has been crowned."}
+          </p>
+        )}
+        {wccHistoryList ? (
+          <div className="space-y-2">
+            <p className={`${TYPO.sectionLabel} text-sky-300`}>Past results</p>
+            {wccHistoryList}
+          </div>
+        ) : null}
+      </div>
     );
   } else if (wccCurrent) {
     wccPanelContent = (
@@ -657,13 +701,6 @@ export function ManagerFixtures({
           </p>
         )}
       </div>
-    );
-  } else if (filter === "wcc") {
-    wccPanelContent = (
-      <p className={TYPO.bodySm}>
-        No scheduled World Club Challenge fixture. Past WCC results are under
-        Results.
-      </p>
     );
   } else if (filter === "all") {
     wccPanelContent = (

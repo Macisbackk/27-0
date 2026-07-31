@@ -6,6 +6,10 @@ export const TYPO = {
   /** In-app manager screen titles. */
   viewTitle:
     "font-display text-[clamp(1.45rem,3vw,2rem)] font-bold tracking-tight text-white",
+  /** Home mode cards (Manager / Normal) — above body, below oversized hero. */
+  homeModeTitle:
+    "font-display text-[clamp(1.45rem,3vw,1.85rem)] font-bold tracking-tight text-white",
+  homeModeBody: "mt-2 max-w-xl text-[0.92rem] leading-relaxed text-gray-300",
   pageSubtitle: "text-[0.92rem] text-gray-300 leading-relaxed sm:text-base",
   sectionLabel: "text-[0.8rem] font-semibold text-theme-primary",
   sectionTitle:

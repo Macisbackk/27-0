@@ -74,6 +74,85 @@ export function snapToRLScore(score: number, allowDropGoal = false): number {
   );
 }
 
+/**
+ * Winning margin in points. Heavily reduced weight on 2pt (one kick) so
+ * scorelines like 22–20 are not over-produced by “winner = loser + 2” fixes.
+ */
+export function pickWinningMargin(rng: () => number): number {
+  const roll = rng();
+  if (roll < 0.1) return 2;
+  if (roll < 0.28) return 4;
+  if (roll < 0.48) return 6;
+  if (roll < 0.62) return 8;
+  if (roll < 0.73) return 10;
+  if (roll < 0.82) return 12;
+  if (roll < 0.89) return 14;
+  if (roll < 0.94) return 16;
+  if (roll < 0.97) return 18;
+  return 20 + Math.floor(rng() * 5) * 2;
+}
+
+/** Raise the winner so they lead by a realistic margin (never a flat +2 only). */
+export function ensureScoreAhead(
+  winnerScore: number,
+  loserScore: number,
+  rng: () => number,
+  allowDropGoal = false
+): number {
+  const snappedWinner = snapToRLScore(winnerScore, allowDropGoal);
+  const snappedLoser = snapToRLScore(loserScore, false);
+  if (snappedWinner > snappedLoser) return snappedWinner;
+  return snapToRLScore(snappedLoser + pickWinningMargin(rng), allowDropGoal);
+}
+
+/**
+ * Pick a correlated winner/loser pair inside the given bounds.
+ * Loser is chosen first, then a realistic margin is added — avoids independent
+ * rolls that collide and then collapse onto the same +2 scorelines.
+ */
+export function pickDecisiveScorePair(
+  winnerMin: number,
+  winnerMax: number,
+  loserMin: number,
+  loserMax: number,
+  rng: () => number,
+  options: ScorePickContext = {}
+): { winner: number; loser: number } {
+  const allowDropGoal = options.allowDropGoal ?? false;
+  let loser = pickRLScore(loserMin, loserMax, rng, { allowDropGoal: false });
+  let margin = pickWinningMargin(rng);
+  let winner = snapToRLScore(loser + margin, allowDropGoal);
+
+  if (winner < winnerMin) {
+    winner = pickRLScore(winnerMin, winnerMax, rng, { allowDropGoal });
+    const minMargin = Math.max(2, winner - loserMax);
+    const maxMargin = Math.max(minMargin, winner - loserMin);
+    margin = Math.min(maxMargin, Math.max(minMargin, pickWinningMargin(rng)));
+    margin = Math.max(2, Math.round(margin / 2) * 2);
+    loser = snapToRLScore(
+      Math.max(loserMin, Math.min(loserMax, winner - margin)),
+      false
+    );
+  } else if (winner > winnerMax + 6) {
+    // Soft-cap runaway winners: re-anchor inside the intended band.
+    winner = pickRLScore(winnerMin, winnerMax, rng, { allowDropGoal });
+    const minMargin = Math.max(2, winner - loserMax);
+    const maxMargin = Math.max(minMargin, winner - loserMin);
+    margin = Math.min(maxMargin, Math.max(minMargin, pickWinningMargin(rng)));
+    margin = Math.max(2, Math.round(margin / 2) * 2);
+    loser = snapToRLScore(
+      Math.max(loserMin, Math.min(loserMax, winner - margin)),
+      false
+    );
+  }
+
+  if (loser >= winner) {
+    winner = snapToRLScore(loser + Math.max(4, pickWinningMargin(rng)), allowDropGoal);
+  }
+
+  return { winner, loser };
+}
+
 export interface ScoreBreakdown {
   tries: number;
   conversions: number;

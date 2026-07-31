@@ -641,6 +641,8 @@ export interface ManagerCareer {
   seasonCompleteStatsRecordedForYear?: number | null;
   /** Challenge Cup win celebration shown after lifting the cup. */
   challengeCupCelebrationShown?: boolean;
+  /** World Club Challenge win celebration shown after lifting the trophy. */
+  worldClubChallengeCelebrationShown?: boolean;
   /** Last club star tier the rise celebration was shown for (1–5). */
   clubStarRiseCelebratedAt?: number;
   /** Previous star tier when a rise celebration is pending. */

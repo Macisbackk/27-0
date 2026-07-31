@@ -2,6 +2,7 @@ import { GameBadge } from "@/components/ui/GameBadge";
 import { GamePanel } from "@/components/ui/GamePanel";
 import { GameSectionTitle } from "@/components/ui/GameSectionTitle";
 import { SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 const GUIDE_ITEMS = [
   {
@@ -47,7 +48,7 @@ export function HowToPlaySection() {
           <p id="how-to-play-heading" className="sr-only">
             How to play
           </p>
-          <p className="mt-2 text-base leading-relaxed text-gray-300">
+          <p className={`mt-2 ${TYPO.body}`}>
             Manager Mode is the main career. Normal Mode is the quick draft —
             here&apos;s what each area does.
           </p>
@@ -64,12 +65,8 @@ export function HowToPlaySection() {
               <div className="flex">
                 <GameBadge tone={item.tone}>{item.tag}</GameBadge>
               </div>
-              <p className="mt-2 font-display text-[0.98rem] font-bold text-white">
-                {item.title}
-              </p>
-              <p className="mt-1.5 flex-1 text-[0.9rem] leading-relaxed text-gray-300">
-                {item.body}
-              </p>
+              <p className={`mt-2 ${TYPO.cardTitle}`}>{item.title}</p>
+              <p className={`mt-1.5 flex-1 ${TYPO.body}`}>{item.body}</p>
             </li>
           ))}
         </ul>

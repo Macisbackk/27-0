@@ -1,6 +1,6 @@
 import seedrandom from "seedrandom";
 import type { MatchFixture } from "../game/season-simulation";
-import { snapToRLScore, decomposeRLScore } from "../game/rl-scores";
+import { snapToRLScore, decomposeRLScore, pickWinningMargin } from "../game/rl-scores";
 import { getManagerOpponentMatchRating } from "./managerLeagueRosters";
 import type { Position } from "../types";
 import type {
@@ -300,12 +300,20 @@ function pickScorer(
   }
 
   const pick =
-    pickWeightedId(weighted, rng) ?? career.matchdayXiii[0] ?? career.matchdayInterchange[0];
-  const player = getManagerPlayer(career, pick ?? "");
-  return {
-    id: pick ?? "",
-    name: player?.name ?? "Try scorer",
-  };
+    pickWeightedId(weighted, rng) ??
+    career.matchdayXiii.find(Boolean) ??
+    career.matchdayInterchange.find(Boolean) ??
+    career.reserves[0]?.id;
+  const player = pick ? getManagerPlayer(career, pick) : undefined;
+  if (player) {
+    return { id: player.id, name: player.name };
+  }
+  // Last resort — never emit the "Try scorer" placeholder label.
+  const reserve = career.reserves[0];
+  if (reserve) {
+    return { id: reserve.id, name: reserve.name };
+  }
+  return { id: pick ?? "unknown", name: career.club };
 }
 
 function pickOpponentScorer(
@@ -319,7 +327,7 @@ function pickOpponentScorer(
   if (competition === "world_club_challenge") {
     const squad = generateNrlSquadNames(seed, opponent, 13);
     if (squad.length === 0) {
-      return { id: "nrl-scorer", name: "Try scorer" };
+      return { id: `${opponent}-scorer`, name: opponent };
     }
     const pick = squad[Math.floor(rng() * squad.length)]!;
     return { id: pick.id, name: pick.name };
@@ -623,6 +631,7 @@ export function advanceLiveTick(
         type: "try",
         team: "user",
         playerName: scorer.name,
+        playerId: scorer.id,
         description: eventMinutePrefix(minute, tryText),
         points: 4,
         importance: "major",
@@ -864,7 +873,10 @@ export function advanceLiveToFullTime(
 function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
   let userScore = snapToRLScore(state.userScore, false);
   let oppScore = snapToRLScore(state.oppScore, false);
-  if (userScore === oppScore) userScore += 2;
+  if (userScore === oppScore) {
+    const rng = seedrandom(`${state.seed}-live-finalize-${state.fixtureId}`);
+    userScore = snapToRLScore(userScore + pickWinningMargin(rng), false);
+  }
 
   const userTries = state.events.filter(
     (e) => e.type === "try" && e.team === "user"

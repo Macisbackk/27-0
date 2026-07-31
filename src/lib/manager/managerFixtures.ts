@@ -8,8 +8,7 @@ import {
 import { getManagerClubTeamRating } from "./managerRating";
 import {
   decomposeRLScore,
-  pickRLScore,
-  snapToRLScore,
+  pickDecisiveScorePair,
 } from "../game/rl-scores";
 import { MANAGER_SEASON_GAMES } from "./types";
 import type {
@@ -148,34 +147,21 @@ function simulateClubFixture(
   const homeWins = rng() < homeWinProb;
 
   const winnerMin = 14;
-  const winnerMax = 36;
+  const winnerMax = 40;
   const loserMin = 0;
-  const loserMax = 24;
+  const loserMax = 28;
 
-  let homeScore: number;
-  let awayScore: number;
+  const { winner, loser } = pickDecisiveScorePair(
+    winnerMin,
+    winnerMax,
+    loserMin,
+    loserMax,
+    rng,
+    { allowDropGoal: true }
+  );
 
-  if (homeWins) {
-    homeScore = snapToRLScore(
-      pickRLScore(winnerMin, winnerMax, rng, { allowDropGoal: true }),
-      true
-    );
-    awayScore = snapToRLScore(
-      pickRLScore(loserMin, loserMax, rng, { allowDropGoal: false }),
-      false
-    );
-    if (homeScore <= awayScore) homeScore = awayScore + 2;
-  } else {
-    awayScore = snapToRLScore(
-      pickRLScore(winnerMin, winnerMax, rng, { allowDropGoal: true }),
-      true
-    );
-    homeScore = snapToRLScore(
-      pickRLScore(loserMin, loserMax, rng, { allowDropGoal: false }),
-      false
-    );
-    if (awayScore <= homeScore) awayScore = homeScore + 2;
-  }
+  const homeScore = homeWins ? winner : loser;
+  const awayScore = homeWins ? loser : winner;
 
   return {
     homeScore,

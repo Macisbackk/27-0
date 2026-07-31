@@ -234,11 +234,17 @@ export function applyAiYouthIntakeToLeague(career: ManagerCareer): ManagerCareer
       );
       const playerId = `mgr-ai-${club.replace(/\s+/g, "-")}-${career.seasonYear}-${i}-${Math.abs(hashCode(prospect.name))}`;
       const player = reserveToPlayer({ ...prospect, id: playerId }, career.seasonYear);
-      registry[playerId] = player;
+      // Nudge AI youth toward first-team usefulness; user academy is separate.
+      const boostedRating = Math.min(
+        prospect.potentialRating - 1,
+        player.peakRating + 3
+      );
+      const boostedPlayer = { ...player, peakRating: boostedRating };
+      registry[playerId] = boostedPlayer;
       playerDevelopment[playerId] = initAiYouthDevelopment(
         career,
         playerId,
-        player.peakRating,
+        boostedRating,
         prospect.potentialRating,
         prospect.developmentRate
       );

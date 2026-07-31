@@ -8,10 +8,11 @@ export function getLeagueSeasonIndex(career: ManagerCareer): number {
 
 export function aiClubYouthLevel(club: string): number {
   const stars = getManagerClubConfig(club).difficulty;
-  if (stars >= 4.5) return 3;
-  if (stars >= 3.5) return 2;
-  if (stars >= 2.5) return 1;
-  return 0;
+  // +1 floor vs historic values so AI intake starts closer to usable ratings.
+  if (stars >= 4.5) return 4;
+  if (stars >= 3.5) return 3;
+  if (stars >= 2.5) return 2;
+  return 1;
 }
 
 export function initAiYouthDevelopment(

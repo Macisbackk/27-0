@@ -141,6 +141,7 @@ export type ManagerModalHeaderTone =
   | "primary"
   | "amber"
   | "red"
+  | "sky"
   | "stone"
   | "neutral";
 
@@ -149,6 +150,7 @@ const MODAL_HEADER_TONE: Record<ManagerModalHeaderTone, string> = {
   primary: `${MANAGER_BORDER.divider} bg-theme-primary/8`,
   amber: `${MANAGER_BORDER.divider} bg-amber-400/8`,
   red: `${MANAGER_BORDER.divider} bg-red-500/8`,
+  sky: `${MANAGER_BORDER.divider} bg-sky-400/8`,
   stone: `${MANAGER_BORDER.divider} bg-stone-500/8`,
   neutral: `${MANAGER_BORDER.divider} bg-pitch-900/40`,
 };

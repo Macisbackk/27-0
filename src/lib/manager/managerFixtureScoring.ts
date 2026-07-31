@@ -24,9 +24,33 @@ function userTryTotal(fixture: MatchFixture): number {
   );
 }
 
+/** Generic / missing names that should never appear in Match Review. */
+export function isPlaceholderTryScorerName(
+  name: string | undefined | null
+): boolean {
+  if (!name?.trim()) return true;
+  return /^(try scorer|opposition try scorer|unknown|kicker)$/i.test(
+    name.trim()
+  );
+}
+
+function scorersHavePlaceholders(
+  scorers: { name: string; playerId?: string }[]
+): boolean {
+  return scorers.some(
+    (s) =>
+      isPlaceholderTryScorerName(s.name) ||
+      isPlaceholderTryScorerName(s.playerId)
+  );
+}
+
 function userScoringMatchesFixture(fixture: MatchFixture): boolean {
   if (!fixture.scoringDetail) return false;
-  return userTryTotal(fixture) === fixture.triesFor;
+  if (userTryTotal(fixture) !== fixture.triesFor) return false;
+  const scorers = fixture.scoringDetail.dreamTeam.tryScorers;
+  if (fixture.triesFor > 0 && scorers.length === 0) return false;
+  if (scorersHavePlaceholders(scorers)) return false;
+  return true;
 }
 
 function opponentScoringMatchesFixture(fixture: MatchFixture): boolean {
@@ -37,6 +61,12 @@ function opponentScoringMatchesFixture(fixture: MatchFixture): boolean {
     0
   );
   if (fixture.triesAgainst > 0 && oppTryTotal !== fixture.triesAgainst) {
+    return false;
+  }
+  if (
+    fixture.triesAgainst > 0 &&
+    scorersHavePlaceholders(fixture.scoringDetail.opponent.tryScorers)
+  ) {
     return false;
   }
   return true;
@@ -257,7 +287,7 @@ function resolvePlayerIdByName(
   career: ManagerCareer,
   name: string | undefined
 ): string | undefined {
-  if (!name) return undefined;
+  if (!name || isPlaceholderTryScorerName(name)) return undefined;
   const allIds = [
     ...career.matchdayXiii,
     ...career.matchdayInterchange,
@@ -272,6 +302,69 @@ function resolvePlayerIdByName(
   return undefined;
 }
 
+function resolveUserTryIdentity(
+  career: ManagerCareer,
+  ev: LiveMatchEvent
+): { playerId: string; name: string } | null {
+  const fromId =
+    ev.playerId && !isPlaceholderTryScorerName(ev.playerId)
+      ? getManagerPlayer(career, ev.playerId)
+      : undefined;
+  if (fromId?.name) {
+    return { playerId: fromId.id, name: fromId.name };
+  }
+
+  const name = ev.playerName?.trim();
+  if (name && !isPlaceholderTryScorerName(name) && name !== career.club) {
+    const playerId =
+      resolvePlayerIdByName(career, name) ?? ev.playerId ?? name;
+    return { playerId, name };
+  }
+
+  return null;
+}
+
+/** Fill unnamed / placeholder try counts from the matchday squad. */
+function allocateRemainingUserTries(
+  career: ManagerCareer,
+  remaining: number,
+  existing: Map<string, { playerId: string; name: string; tries: number }>,
+  fixtureKey: string | undefined,
+  round: number,
+  matchdayXiii: string[],
+  xiiiSlotPositions: ManagerCareer["xiiiSlotPositions"],
+  matchdayInterchange: string[]
+): void {
+  if (remaining <= 0) return;
+  const entries = buildMatchdayScoringEntries(
+    career,
+    matchdayXiii,
+    xiiiSlotPositions,
+    matchdayInterchange
+  );
+  if (entries.length === 0) return;
+
+  const rng = seedrandom(
+    `${career.seed}-mgr-live-fill-${fixtureKey ?? `r${round}`}`
+  );
+  const weights = entries.map((e) => e.tryWeightMultiplier * (0.9 + rng() * 0.2));
+  const alloc = allocateWeightedTries(remaining, weights, rng);
+  entries.forEach((e, i) => {
+    const tries = alloc[i] ?? 0;
+    if (tries <= 0) return;
+    const existingEntry = existing.get(e.player.id);
+    if (existingEntry) {
+      existingEntry.tries += tries;
+    } else {
+      existing.set(e.player.id, {
+        playerId: e.player.id,
+        name: e.player.name,
+        tries,
+      });
+    }
+  });
+}
+
 /** Build scoring detail from live match events so review matches the played game. */
 export function applyLiveEventsToFixtureScoring(
   career: ManagerCareer,
@@ -279,11 +372,20 @@ export function applyLiveEventsToFixtureScoring(
   events: LiveMatchEvent[],
   fixtureKey?: string
 ): void {
+  const record = fixture as ManagerFixtureRecord;
+  const matchdayXiii = record.meta?.matchdayXiii ?? career.matchdayXiii;
+  const xiiiSlotPositions =
+    record.meta?.xiiiSlotPositions ?? career.xiiiSlotPositions;
+  const matchdayInterchange =
+    record.meta?.matchdayInterchange ?? career.matchdayInterchange;
+
   const userTryMap = new Map<string, { playerId: string; name: string; tries: number }>();
   const oppTryMap = new Map<string, { playerId: string; name: string; tries: number }>();
   const oppTryCountEvents = events.filter(
     (e) => e.type === "try" && e.team === "opponent"
   ).length;
+  let userTryEvents = 0;
+  let unresolvedUserTries = 0;
 
   let conversions = 0;
   let penalties = 0;
@@ -297,40 +399,46 @@ export function applyLiveEventsToFixtureScoring(
   for (const ev of events) {
     if (ev.team === "user") {
       if (ev.type === "try") {
-        const playerId =
-          resolvePlayerIdByName(career, ev.playerName) ??
-          ev.playerId ??
-          ev.playerName ??
-          "unknown";
-        const name = ev.playerName ?? "Try scorer";
-        if (name === career.club) continue;
-        const existing = userTryMap.get(playerId);
+        userTryEvents++;
+        const identity = resolveUserTryIdentity(career, ev);
+        if (!identity) {
+          unresolvedUserTries++;
+          continue;
+        }
+        const existing = userTryMap.get(identity.playerId);
         if (existing) {
           existing.tries++;
         } else {
-          userTryMap.set(playerId, { playerId, name, tries: 1 });
+          userTryMap.set(identity.playerId, {
+            playerId: identity.playerId,
+            name: identity.name,
+            tries: 1,
+          });
         }
       }
-      if (
-        ev.type === "goal" ||
-        ev.type === "conversion"
-      ) {
+      if (ev.type === "goal" || ev.type === "conversion") {
         conversions++;
         const kickName = ev.kickerName ?? ev.playerName;
-        kickerId = resolvePlayerIdByName(career, kickName) ?? kickerId;
-        kickerName = kickName ?? kickerName;
+        if (kickName && !isPlaceholderTryScorerName(kickName)) {
+          kickerId = resolvePlayerIdByName(career, kickName) ?? kickerId;
+          kickerName = kickName ?? kickerName;
+        }
       }
       if (ev.type === "penalty" || ev.type === "penalty_goal") {
         penalties++;
         const kickName = ev.kickerName ?? ev.playerName;
-        kickerId = resolvePlayerIdByName(career, kickName) ?? kickerId;
-        kickerName = kickName ?? kickerName;
+        if (kickName && !isPlaceholderTryScorerName(kickName)) {
+          kickerId = resolvePlayerIdByName(career, kickName) ?? kickerId;
+          kickerName = kickName ?? kickerName;
+        }
       }
       if (ev.type === "drop_goal") {
         dropGoals++;
         const kickName = ev.kickerName ?? ev.playerName;
-        kickerId = resolvePlayerIdByName(career, kickName) ?? kickerId;
-        kickerName = kickName ?? kickerName;
+        if (kickName && !isPlaceholderTryScorerName(kickName)) {
+          kickerId = resolvePlayerIdByName(career, kickName) ?? kickerId;
+          kickerName = kickName ?? kickerName;
+        }
       }
       continue;
     }
@@ -338,7 +446,11 @@ export function applyLiveEventsToFixtureScoring(
     if (ev.team === "opponent") {
       if (ev.type === "try") {
         const name = ev.playerName;
-        if (name && name !== fixture.opponent) {
+        if (
+          name &&
+          !isPlaceholderTryScorerName(name) &&
+          name !== fixture.opponent
+        ) {
           const playerId = ev.playerId ?? name;
           const existing = oppTryMap.get(playerId);
           if (existing) existing.tries++;
@@ -351,10 +463,44 @@ export function applyLiveEventsToFixtureScoring(
     }
   }
 
-  const userTryScorers = [...userTryMap.values()];
+  const namedUserTries = [...userTryMap.values()].reduce(
+    (sum, t) => sum + t.tries,
+    0
+  );
   const userTryTotal =
     fixture.triesFor ??
-    userTryScorers.reduce((sum, t) => sum + t.tries, 0);
+    (userTryEvents > 0 ? userTryEvents : namedUserTries);
+  const missingUserTries = Math.max(0, userTryTotal - namedUserTries);
+  allocateRemainingUserTries(
+    career,
+    unresolvedUserTries > 0 ? Math.max(missingUserTries, unresolvedUserTries) : missingUserTries,
+    userTryMap,
+    fixtureKey,
+    fixture.round,
+    matchdayXiii,
+    xiiiSlotPositions,
+    matchdayInterchange
+  );
+
+  // If still short after allocation, top up to the scoreline.
+  const afterAlloc = [...userTryMap.values()].reduce(
+    (sum, t) => sum + t.tries,
+    0
+  );
+  if (afterAlloc < userTryTotal) {
+    allocateRemainingUserTries(
+      career,
+      userTryTotal - afterAlloc,
+      userTryMap,
+      fixtureKey ? `${fixtureKey}-topup` : undefined,
+      fixture.round,
+      matchdayXiii,
+      xiiiSlotPositions,
+      matchdayInterchange
+    );
+  }
+
+  const userTryScorers = [...userTryMap.values()].filter((s) => s.tries > 0);
   const oppTryFromEvents = [...oppTryMap.values()];
   const oppTryCount = fixture.triesAgainst ?? oppTryCountEvents;
 
@@ -374,7 +520,8 @@ export function applyLiveEventsToFixtureScoring(
   if (
     oppTryCount > 0 &&
     (oppTryScorers.length === 0 ||
-      oppTryScorers.reduce((s, t) => s + t.tries, 0) !== oppTryCount)
+      oppTryScorers.reduce((s, t) => s + t.tries, 0) !== oppTryCount ||
+      scorersHavePlaceholders(oppTryScorers))
   ) {
     const fromSquad = buildOpponentTryScoringDetail(
       fixture.opponent,
@@ -397,8 +544,8 @@ export function applyLiveEventsToFixtureScoring(
         fixture.scoringFor &&
         (conversions > 0 || penalties > 0 || dropGoals > 0)
           ? {
-              playerId: kickerId ?? "kicker",
-              name: kickerName ?? "Kicker",
+              playerId: kickerId ?? userTryScorers[0]?.playerId ?? "kicker",
+              name: kickerName ?? userTryScorers[0]?.name ?? "Kicker",
               conversions,
               conversionAttempts: fixture.scoringFor.tries,
               penalties,
@@ -406,10 +553,8 @@ export function applyLiveEventsToFixtureScoring(
             }
           : fixture.scoringFor
             ? {
-                playerId: fixture.scoringFor
-                  ? (kickerId ?? "kicker")
-                  : "kicker",
-                name: kickerName ?? "Kicker",
+                playerId: kickerId ?? userTryScorers[0]?.playerId ?? "kicker",
+                name: kickerName ?? userTryScorers[0]?.name ?? "Kicker",
                 conversions: fixture.scoringFor.conversions,
                 conversionAttempts: fixture.scoringFor.tries,
                 penalties: fixture.scoringFor.penalties,
@@ -441,7 +586,6 @@ export function applyLiveEventsToFixtureScoring(
     },
   };
 
-  const record = fixture as ManagerFixtureRecord;
   if (record.meta) {
     record.meta.liveEvents = events;
   }

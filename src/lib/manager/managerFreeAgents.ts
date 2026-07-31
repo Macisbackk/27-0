@@ -25,21 +25,23 @@ import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 
 const MAX_TRANSFER_HISTORY = 32;
-const BASE_AI_FREE_AGENT_SIGN_CHANCE = 0.18;
-const BASE_AI_CONTRACT_EXPIRY_CHANCE = 0.42;
+/** Mid-season FA activity — kept high enough that AI clubs replace leavers. */
+const BASE_AI_FREE_AGENT_SIGN_CHANCE = 0.38;
+const BASE_AI_CONTRACT_EXPIRY_CHANCE = 0.32;
 
 function freeAgentSignChanceForCareer(career: ManagerCareer): number {
   const seasonIndex = getLeagueSeasonIndex(career);
-  return Math.min(0.42, BASE_AI_FREE_AGENT_SIGN_CHANCE + seasonIndex * 0.035);
+  return Math.min(0.72, BASE_AI_FREE_AGENT_SIGN_CHANCE + seasonIndex * 0.05);
 }
 
 function contractExpiryChanceForCareer(career: ManagerCareer): number {
   const seasonIndex = getLeagueSeasonIndex(career);
-  return Math.min(0.82, BASE_AI_CONTRACT_EXPIRY_CHANCE + seasonIndex * 0.05);
+  return Math.min(0.62, BASE_AI_CONTRACT_EXPIRY_CHANCE + seasonIndex * 0.04);
 }
 
 function releaseRatingCapForCareer(career: ManagerCareer): number {
-  return 78 + Math.min(8, getLeagueSeasonIndex(career));
+  // Softer than before — avoid dumping mid-70s depth every year.
+  return 74 + Math.min(5, Math.floor(getLeagueSeasonIndex(career) / 2));
 }
 
 export function getFreeAgentIds(career: ManagerCareer): Set<string> {
@@ -229,8 +231,8 @@ export function simulateAiContractExpiries(career: ManagerCareer): ManagerCareer
     const protectedIds = getProtectedTransferPlayerIds(career, club);
     const ratingCap = releaseRatingCapForCareer(career);
     const releaseSlots = Math.min(
-      3,
-      1 + Math.floor(getLeagueSeasonIndex(career) / 2)
+      2,
+      1 + Math.floor(getLeagueSeasonIndex(career) / 3)
     );
     const candidates = roster
       .filter((id) => !protectedIds.has(id) && !isFreeAgent(career, id))
@@ -267,27 +269,62 @@ export function maybeAiSignFreeAgents(career: ManagerCareer): ManagerCareer {
   );
   if (rng() > freeAgentSignChanceForCareer(career)) return career;
 
-  const agent = pool[Math.floor(rng() * pool.length)]!;
   const otherClubs = CURRENT_PLAYABLE_CLUBS.filter((c) => c !== career.club);
   if (otherClubs.length === 0) return career;
-  const toClub = otherClubs[Math.floor(rng() * otherClubs.length)]!;
 
-  const player =
-    getManagerPlayer(career, agent.playerId) ?? getPlayerById(agent.playerId);
-  if (!player) return career;
+  // Prefer clubs with the weakest squad average so mid-table sides recover.
+  const clubRanks = otherClubs
+    .map((club) => {
+      const ratings = getLeagueClubRosterIds(career, club)
+        .map((id) => getManagerPlayer(career, id)?.peakRating ?? 0)
+        .filter((r) => r > 0);
+      const avg =
+        ratings.length > 0
+          ? ratings.reduce((a, b) => a + b, 0) / ratings.length
+          : 72;
+      return { club, avg };
+    })
+    .sort((a, b) => a.avg - b.avg);
+
+  const shortlist = clubRanks.slice(0, Math.min(5, clubRanks.length));
+  const toClub =
+    shortlist[Math.floor(rng() * shortlist.length)]?.club ??
+    otherClubs[Math.floor(rng() * otherClubs.length)]!;
+  const squadAvg =
+    clubRanks.find((row) => row.club === toClub)?.avg ?? 72;
+
+  const scored = pool
+    .map((agent) => {
+      const player =
+        getManagerPlayer(career, agent.playerId) ?? getPlayerById(agent.playerId);
+      if (!player) return null;
+      return {
+        agent,
+        player,
+        upgrade: player.peakRating - squadAvg,
+      };
+    })
+    .filter(
+      (row): row is NonNullable<typeof row> =>
+        row != null && row.upgrade >= -4
+    )
+    .sort((a, b) => b.upgrade - a.upgrade);
+
+  const pick = scored[0];
+  if (!pick) return career;
 
   const activity: LeagueTransferActivity = {
-    id: `fa-ai-${career.gameWeek}-${agent.playerId}-${Date.now()}`,
+    id: `fa-ai-${career.gameWeek}-${pick.agent.playerId}-${Date.now()}`,
     week: career.gameWeek,
-    fromClub: agent.formerClub,
+    fromClub: pick.agent.formerClub,
     toClub,
-    playerId: agent.playerId,
-    playerName: player.name,
+    playerId: pick.agent.playerId,
+    playerName: pick.player.name,
     fee: 0,
   };
 
   const freeAgents = (career.freeAgents ?? []).filter(
-    (f) => f.playerId !== agent.playerId
+    (f) => f.playerId !== pick.agent.playerId
   );
 
   return transferLeaguePlayer(
@@ -299,8 +336,8 @@ export function maybeAiSignFreeAgents(career: ManagerCareer): ManagerCareer {
         MAX_TRANSFER_HISTORY
       ),
     },
-    agent.playerId,
-    agent.formerClub,
+    pick.agent.playerId,
+    pick.agent.formerClub,
     toClub
   );
 }

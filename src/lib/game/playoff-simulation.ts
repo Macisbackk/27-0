@@ -10,8 +10,7 @@ import {
 } from "./season-simulation";
 import {
   decomposeRLScore,
-  pickRLScore,
-  snapToRLScore,
+  pickDecisiveScorePair,
 } from "./rl-scores";
 import { distributeSeasonTries, type PlayerTryTotal } from "./season-tries";
 import type { SquadSlot } from "../types";
@@ -77,22 +76,20 @@ function simulateAiKnockout(
   const homeWins = rng() < 0.5 + ((homeStr - awayStr) / 100) * 0.7;
 
   const winMin = 14;
-  const winMax = 34;
+  const winMax = 38;
   const lossMin = 0;
-  const lossMax = 22;
+  const lossMax = 26;
 
-  let homeScore = snapToRLScore(
-    pickRLScore(homeWins ? winMin : lossMin, homeWins ? winMax : lossMax, rng),
-    homeWins
+  const { winner, loser } = pickDecisiveScorePair(
+    winMin,
+    winMax,
+    lossMin,
+    lossMax,
+    rng,
+    { allowDropGoal: true }
   );
-  let awayScore = snapToRLScore(
-    pickRLScore(homeWins ? lossMin : winMin, homeWins ? lossMax : winMax, rng),
-    !homeWins
-  );
-  if (homeScore === awayScore) {
-    if (homeWins) homeScore += 2;
-    else awayScore += 2;
-  }
+  const homeScore = homeWins ? winner : loser;
+  const awayScore = homeWins ? loser : winner;
 
   const homeScoring = decomposeRLScore(homeScore);
   const awayScoring = decomposeRLScore(awayScore);

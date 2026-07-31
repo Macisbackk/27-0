@@ -20,13 +20,21 @@ function isAiYouthId(playerId: string): boolean {
   return playerId.startsWith("mgr-ai-");
 }
 
+function clubSquadAverage(career: ManagerCareer, club: string): number {
+  const ratings = getLeagueClubRosterIds(career, club)
+    .map((id) => getManagerPlayer(career, id)?.peakRating ?? 0)
+    .filter((r) => r > 0);
+  if (ratings.length === 0) return 72;
+  return ratings.reduce((a, b) => a + b, 0) / ratings.length;
+}
+
 /** Accelerate homegrown AI players so they break into senior sides after a few seasons. */
 export function matureAiYouthInClub(
   career: ManagerCareer,
   club: string
 ): ManagerCareer {
   const seasonIndex = getLeagueSeasonIndex(career);
-  if (seasonIndex < 2) return career;
+  if (seasonIndex < 1) return career;
 
   const rng = seedrandom(
     `${career.seed}-ai-mature-${club}-s${career.seasonYear}`
@@ -53,12 +61,13 @@ export function matureAiYouthInClub(
     );
     if (current >= potential) continue;
 
+    // Stronger annual bumps so AI academies keep pace with retirements.
     const gain =
       age <= 21
-        ? 2 + Math.floor(rng() * 2)
+        ? 3 + Math.floor(rng() * 3)
         : age <= 24
-          ? 1 + Math.floor(rng() * 2)
-          : 1;
+          ? 2 + Math.floor(rng() * 2)
+          : 1 + Math.floor(rng() * 2);
     const after = Math.min(potential, current + gain);
     if (after <= current) continue;
 
@@ -82,13 +91,16 @@ export function matureAiYouthInClub(
   return { ...career, playerDevelopment, playerRegistry };
 }
 
-/** Release ageing or surplus AI squad players to create turnover and list space. */
+/**
+ * Light season-start prune — only ageing or clearly surplus depth.
+ * Heavier fringe releases already run via contract expiries.
+ */
 export function releaseSurplusAiPlayers(
   career: ManagerCareer,
   club: string
 ): ManagerCareer {
   const seasonIndex = getLeagueSeasonIndex(career);
-  const releaseCount = Math.min(3, 1 + Math.floor(seasonIndex / 2));
+  const releaseCount = Math.min(2, 1 + Math.floor(seasonIndex / 3));
   if (releaseCount <= 0) return career;
 
   const rng = seedrandom(
@@ -96,7 +108,7 @@ export function releaseSurplusAiPlayers(
   );
   const protectedIds = getProtectedTransferPlayerIds(career, club);
   const roster = getLeagueClubRosterIds(career, club);
-  const ratingCap = 78 + Math.min(8, seasonIndex);
+  const ratingCap = 72 + Math.min(4, Math.floor(seasonIndex / 2));
 
   const candidates = roster
     .filter((id) => !protectedIds.has(id))
@@ -106,7 +118,7 @@ export function releaseSurplusAiPlayers(
       const rating = player?.peakRating ?? 70;
       return { id, rating, age, youth: isAiYouthId(id) };
     })
-    .filter((row) => row.rating < ratingCap || row.age >= 32)
+    .filter((row) => row.age >= 33 || (row.rating < ratingCap && !row.youth))
     .sort((a, b) => {
       const scoreA = a.rating - (a.youth ? 8 : 0) + a.age * 0.15;
       const scoreB = b.rating - (b.youth ? 8 : 0) + b.age * 0.15;
@@ -129,24 +141,23 @@ export function releaseSurplusAiPlayers(
   );
 }
 
-/** Targeted upgrade signings from the free-agent pool at season start. */
-function aiClubSignBestFreeAgent(
+/**
+ * Targeted free-agent signing for one AI club.
+ * Accepts near-parity fills (upgrade >= -3) so squads replace leavers, not only upgrades.
+ */
+export function aiClubSignBestFreeAgent(
   career: ManagerCareer,
-  club: string
+  club: string,
+  minUpgrade = -3
 ): ManagerCareer {
+  const rosterIds = new Set(getLeagueClubRosterIds(career, club));
   const pool = (career.freeAgents ?? []).filter((agent) => {
     const owner = career.squad.some((s) => s.playerId === agent.playerId);
-    return !owner && !getLeagueClubRosterIds(career, club).includes(agent.playerId);
+    return !owner && !rosterIds.has(agent.playerId);
   });
   if (pool.length === 0) return career;
 
-  const rosterRatings = getLeagueClubRosterIds(career, club)
-    .map((id) => getManagerPlayer(career, id)?.peakRating ?? 0)
-    .filter((r) => r > 0);
-  const squadAvg =
-    rosterRatings.length > 0
-      ? rosterRatings.reduce((a, b) => a + b, 0) / rosterRatings.length
-      : 72;
+  const squadAvg = clubSquadAverage(career, club);
 
   const candidates = pool
     .map((agent) => {
@@ -161,11 +172,14 @@ function aiClubSignBestFreeAgent(
         upgrade: player.peakRating - squadAvg,
       };
     })
-    .filter((row): row is NonNullable<typeof row> => row != null && row.upgrade >= -2)
+    .filter(
+      (row): row is NonNullable<typeof row> =>
+        row != null && row.upgrade >= minUpgrade
+    )
     .sort((a, b) => b.upgrade - a.upgrade || b.rating - a.rating);
 
   const pick = candidates[0];
-  if (!pick || pick.upgrade < 0) return career;
+  if (!pick) return career;
 
   const activity: LeagueTransferActivity = {
     id: `fa-ai-pre-${career.seasonYear}-${club}-${pick.agent.playerId}`,
@@ -194,7 +208,8 @@ function aiClubSignBestFreeAgent(
 }
 
 /**
- * Season-start roster churn for AI clubs: youth maturation, releases, and a transfer burst.
+ * Season-start roster churn for AI clubs: youth maturation, light releases,
+ * multiple FA replacements, and a transfer burst.
  */
 export function simulateAiSeasonRosterActivity(
   career: ManagerCareer
@@ -202,18 +217,21 @@ export function simulateAiSeasonRosterActivity(
   const seasonIndex = getLeagueSeasonIndex(career);
   let next = career;
 
+  // Sign more than we prune so averages do not drift down over seasons.
+  const signsPerClub = Math.min(3, 1 + Math.floor((seasonIndex + 1) / 2));
+
   for (const club of CURRENT_PLAYABLE_CLUBS) {
     if (club === next.club) continue;
     next = matureAiYouthInClub(next, club);
     next = releaseSurplusAiPlayers(next, club);
-    if (seasonIndex >= 1) {
+    for (let i = 0; i < signsPerClub; i++) {
       next = aiClubSignBestFreeAgent(next, club);
     }
   }
 
   next = reconcileLeagueRosters(next);
 
-  const transferBursts = Math.min(6, 2 + Math.floor(seasonIndex / 2));
+  const transferBursts = Math.min(10, 4 + seasonIndex);
   for (let i = 0; i < transferBursts; i++) {
     next = maybeGenerateAiTransfers(next);
     next = maybeAiSignFreeAgents(next);

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { GameBadge } from "@/components/ui/GameBadge";
 import { GameButton } from "@/components/ui/GameButton";
 import { GamePanel } from "@/components/ui/GamePanel";
-import { GameSectionTitle } from "@/components/ui/GameSectionTitle";
 import { buildPlayHref } from "@/lib/play-links";
 import {
   getNormalEraVariant,
@@ -55,10 +54,8 @@ export function HomeModeSelector() {
             <GameBadge>Featured</GameBadge>
             <GameBadge tone="muted">Career</GameBadge>
           </div>
-          <h2 className="mt-3 font-display text-[clamp(2rem,5vw,2.85rem)] font-bold tracking-tight text-white">
-            Manager Mode
-          </h2>
-          <p className="mt-3 max-w-xl text-base leading-relaxed text-gray-200 sm:text-[1.05rem]">
+          <h2 className={`mt-3 ${TYPO.homeModeTitle}`}>Manager Mode</h2>
+          <p className={TYPO.homeModeBody}>
             Take charge of a Super League club. Build your squad, handle
             contracts, develop reserves, manage transfers and chase trophies
             across multiple seasons.
@@ -74,12 +71,9 @@ export function HomeModeSelector() {
         </GamePanel>
 
         <GamePanel variant="elevated" padded>
-          <GameSectionTitle
-            label="Quick play"
-            heading="Normal Mode"
-            className="[&_.game-section-title__heading]:text-[clamp(1.85rem,4.5vw,2.5rem)]"
-          />
-          <p className="mt-2 max-w-xl text-[0.98rem] leading-relaxed text-gray-300">
+          <p className={TYPO.sectionLabel}>Quick play</p>
+          <h2 className={`mt-1 ${TYPO.homeModeTitle}`}>Normal Mode</h2>
+          <p className={TYPO.homeModeBody}>
             Draft a 17 from Current or Era pools and try to build a side good
             enough to go 27-0.
           </p>

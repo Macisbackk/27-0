@@ -10,7 +10,9 @@ import {
 } from "./season-tries";
 import {
   decomposeRLScore,
+  ensureScoreAhead,
   pickRLScore,
+  pickWinningMargin,
   scoreHasDropGoal,
   snapToRLScore,
   type ScoreBreakdown,
@@ -238,26 +240,34 @@ function ensureDecisive(
   pointsFor: number,
   pointsAgainst: number,
   won: boolean,
-  allowDropGoal: boolean
+  allowDropGoal: boolean,
+  rng: () => number
 ): { pointsFor: number; pointsAgainst: number } {
   let pf = snapToRLScore(pointsFor, allowDropGoal);
   let pa = snapToRLScore(pointsAgainst, allowDropGoal);
 
   if (pf === pa) {
+    const margin = pickWinningMargin(rng);
     return won
-      ? { pointsFor: snapToRLScore(pf + 2, allowDropGoal), pointsAgainst: pa }
-      : { pointsFor: pf, pointsAgainst: snapToRLScore(pa + 2, allowDropGoal) };
+      ? {
+          pointsFor: snapToRLScore(pf + margin, allowDropGoal),
+          pointsAgainst: pa,
+        }
+      : {
+          pointsFor: pf,
+          pointsAgainst: snapToRLScore(pa + margin, allowDropGoal),
+        };
   }
   if (won && pf < pa) {
     return {
-      pointsFor: snapToRLScore(pa + 2, allowDropGoal),
+      pointsFor: ensureScoreAhead(pf, pa, rng, allowDropGoal),
       pointsAgainst: pa,
     };
   }
   if (!won && pf > pa) {
     return {
-      pointsFor: snapToRLScore(pa - 2, allowDropGoal),
-      pointsAgainst: pa,
+      pointsFor: pf,
+      pointsAgainst: ensureScoreAhead(pa, pf, rng, allowDropGoal),
     };
   }
   return { pointsFor: pf, pointsAgainst: pa };
@@ -532,7 +542,8 @@ function generateScoreline(
     adjustedFor,
     pointsAgainst,
     won,
-    allowDg
+    allowDg,
+    rng
   );
   if (
     won &&

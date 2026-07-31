@@ -342,7 +342,11 @@ export function applyManagerMatchResult(
         (sum, t) => sum + t.tries,
         0
       ) ?? 0;
-    if (eventTryTotal !== fixture.triesFor) {
+    const hasPlaceholderScorers =
+      fixture.scoringDetail?.dreamTeam.tryScorers.some((s) =>
+        /^(try scorer|opposition try scorer|unknown)$/i.test(s.name)
+      ) ?? false;
+    if (eventTryTotal !== fixture.triesFor || hasPlaceholderScorers) {
       enrichManagerFixtureScoring(squad, fixture, career.seed, career.tactics, {
         currentSeasonOnly: true,
         fixtureKey: sched.id,
@@ -743,12 +747,16 @@ export function applyManagerMatchResult(
   finalCareer = maybeGenerateAiTransfers(finalCareer);
   finalCareer = maybeAiSignFreeAgents(finalCareer);
   const leagueSeasonIndex = getLeagueSeasonIndex(finalCareer);
+  if (leagueSeasonIndex >= 1) {
+    finalCareer = maybeAiSignFreeAgents(finalCareer);
+  }
   if (leagueSeasonIndex >= 2) {
     finalCareer = maybeGenerateAiTransfers(finalCareer);
     finalCareer = maybeAiSignFreeAgents(finalCareer);
   }
   if (leagueSeasonIndex >= 4) {
     finalCareer = maybeGenerateAiTransfers(finalCareer);
+    finalCareer = maybeAiSignFreeAgents(finalCareer);
   }
   if (isFriendly) {
     finalCareer = completeFriendlyMatch(finalCareer);

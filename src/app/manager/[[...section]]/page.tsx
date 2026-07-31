@@ -31,6 +31,7 @@ import { ManagerSeasonRewards } from "@/components/manager/ManagerSeasonRewards"
 import { ManagerTrophyModal } from "@/components/manager/ManagerTrophyModal";
 import { ManagerLeagueWinnersModal } from "@/components/manager/ManagerLeagueWinnersModal";
 import { ManagerChallengeCupWinModal } from "@/components/manager/ManagerChallengeCupWinModal";
+import { ManagerWorldClubChallengeWinModal } from "@/components/manager/ManagerWorldClubChallengeWinModal";
 import { ManagerClubStarRiseModal } from "@/components/manager/ManagerClubStarRiseModal";
 import { ManagerSeasonRecordModal } from "@/components/manager/ManagerSeasonRecordModal";
 import { ManagerIncomingBidModal } from "@/components/manager/ManagerIncomingBidModal";
@@ -69,6 +70,7 @@ import { scrollToManagerHubNextFixture } from "@/lib/manager/managerHubScroll";
 import { shouldShowManagerObjectivesIntro } from "@/lib/manager/managerBoardObjectives";
 import { acknowledgePlayoffsIntro, needsPlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
 import { shouldShowChallengeCupCelebration } from "@/lib/manager/managerChallengeCup";
+import { shouldShowWorldClubChallengeCelebration } from "@/lib/manager/worldClubChallenge";
 import {
   resolvePendingSeasonRecordCelebration,
   shouldShowPerfectSeasonCelebration,
@@ -226,6 +228,8 @@ export default function ManagerPage() {
   const [challengeCupWinModalOpen, setChallengeCupWinModalOpen] = useState(false);
   const [pendingChallengeCupCelebration, setPendingChallengeCupCelebration] =
     useState(false);
+  const [wccWinModalOpen, setWccWinModalOpen] = useState(false);
+  const [pendingWccCelebration, setPendingWccCelebration] = useState(false);
   const [clubStarRiseModalOpen, setClubStarRiseModalOpen] = useState(false);
   const [pendingSeasonRecordCelebration, setPendingSeasonRecordCelebration] =
     useState<ManagerSeasonRecordCelebrationKind | null>(null);
@@ -339,6 +343,7 @@ export default function ManagerPage() {
       setReviewFixtureId(null);
       setPostMatchReviewFlow(false);
       setPendingChallengeCupCelebration(false);
+      setPendingWccCelebration(false);
       setPendingLeagueWinnersCelebration(false);
       setPendingTrophyCelebration(false);
       setPendingSeasonRecordCelebration(null);
@@ -434,14 +439,31 @@ export default function ManagerPage() {
 
   const continueCelebrationQueue = useCallback(
     (
-      fromStep: "cup" | "seasonRecord" | "leagueWinners" | "trophy" = "cup",
+      fromStep:
+        | "wcc"
+        | "cup"
+        | "seasonRecord"
+        | "leagueWinners"
+        | "trophy" = "wcc",
       nextCareer?: ManagerCareer | null
     ) => {
-      const steps = ["cup", "seasonRecord", "leagueWinners", "trophy"] as const;
+      const steps = [
+        "wcc",
+        "cup",
+        "seasonRecord",
+        "leagueWinners",
+        "trophy",
+      ] as const;
       const start = steps.indexOf(fromStep);
 
       for (let i = start; i < steps.length; i++) {
         const step = steps[i];
+        if (step === "wcc" && pendingWccCelebration) {
+          setPendingWccCelebration(false);
+          setWccWinModalOpen(true);
+          goToView("hub");
+          return;
+        }
         if (step === "cup" && pendingChallengeCupCelebration) {
           setPendingChallengeCupCelebration(false);
           setChallengeCupWinModalOpen(true);
@@ -480,6 +502,7 @@ export default function ManagerPage() {
     [
       career,
       goToView,
+      pendingWccCelebration,
       pendingChallengeCupCelebration,
       pendingLeagueWinnersCelebration,
       pendingSeasonRecordCelebration,
@@ -683,6 +706,8 @@ export default function ManagerPage() {
         if (reserveReport) {
           setPendingReserveReportId(reserveReport.id);
           setReserveReportModalOpen(true);
+        } else if (shouldShowWorldClubChallengeCelebration(saved)) {
+          setWccWinModalOpen(true);
         } else if (shouldShowChallengeCupCelebration(saved)) {
           setChallengeCupWinModalOpen(true);
         } else if (shouldShowLeagueWinnersCelebration(saved)) {
@@ -837,6 +862,8 @@ export default function ManagerPage() {
     const wonLeagueTable =
       !seasonRecord && shouldShowLeagueWinnersCelebration(withSeasonStats);
     const wonChallengeCup = shouldShowChallengeCupCelebration(withSeasonStats);
+    const wonWorldClubChallenge =
+      shouldShowWorldClubChallengeCelebration(withSeasonStats);
     const unsolicited = getPendingUnsolicitedOffer(withSeasonStats);
     const contractExpiry = getPendingContractExpiryPopup(withSeasonStats);
     const retirementIntent = getPendingRetirementIntentPopup(withSeasonStats);
@@ -854,6 +881,7 @@ export default function ManagerPage() {
         setPostMatchReviewFlow(true);
         setMatchReviewReturnView("hub");
         goToView("match-review", { syncUrl: false });
+        setPendingWccCelebration(wonWorldClubChallenge);
         setPendingChallengeCupCelebration(wonChallengeCup);
         setPendingSeasonRecordCelebration(seasonRecord);
         setPendingLeagueWinnersCelebration(wonLeagueTable);
@@ -868,6 +896,7 @@ export default function ManagerPage() {
       setPostMatchReviewFlow(true);
       setMatchReviewReturnView("hub");
       goToView("match-review", { syncUrl: false });
+      setPendingWccCelebration(wonWorldClubChallenge);
       setPendingChallengeCupCelebration(wonChallengeCup);
       setPendingSeasonRecordCelebration(seasonRecord);
       setPendingLeagueWinnersCelebration(wonLeagueTable);
@@ -910,7 +939,7 @@ export default function ManagerPage() {
       return;
     }
 
-    continueCelebrationQueue("cup");
+    continueCelebrationQueue("wcc");
   };
 
   const handleMatchReviewClose = () => {
@@ -924,6 +953,7 @@ export default function ManagerPage() {
         Boolean(pendingRetirementIntentId) ||
         Boolean(pendingPositionRetrainingId) ||
         Boolean(pendingReserveReportId) ||
+        pendingWccCelebration ||
         pendingChallengeCupCelebration ||
         pendingSeasonRecordCelebration ||
         pendingLeagueWinnersCelebration ||
@@ -1025,6 +1055,7 @@ export default function ManagerPage() {
     setContractExpiryModalOpen(false);
 
     const hasQueue =
+      pendingWccCelebration ||
       pendingChallengeCupCelebration ||
       pendingSeasonRecordCelebration ||
       pendingLeagueWinnersCelebration ||
@@ -1067,7 +1098,7 @@ export default function ManagerPage() {
     setPendingReserveReportId(null);
     setReserveReportModalOpen(false);
 
-    continueCelebrationQueue("cup", nextCareer);
+    continueCelebrationQueue("wcc", nextCareer);
   };
 
   const continueAfterRetirementIntent = (nextCareer: ManagerCareer) => {
@@ -1105,6 +1136,7 @@ export default function ManagerPage() {
     setPositionRetrainingCompleteModalOpen(false);
 
     const hasQueue =
+      pendingWccCelebration ||
       pendingChallengeCupCelebration ||
       pendingSeasonRecordCelebration ||
       pendingLeagueWinnersCelebration ||
@@ -1169,6 +1201,7 @@ export default function ManagerPage() {
     setReserveReportModalOpen(false);
 
     const hasQueue =
+      pendingWccCelebration ||
       pendingChallengeCupCelebration ||
       pendingSeasonRecordCelebration ||
       pendingLeagueWinnersCelebration ||
@@ -1234,6 +1267,14 @@ export default function ManagerPage() {
     persist(updated);
     setChallengeCupWinModalOpen(false);
     continueCelebrationQueue("seasonRecord", updated);
+  };
+
+  const handleWccWinModalContinue = () => {
+    if (!career) return;
+    const updated = { ...career, worldClubChallengeCelebrationShown: true };
+    persist(updated);
+    setWccWinModalOpen(false);
+    continueCelebrationQueue("cup", updated);
   };
 
   const handleTrophyModalContinue = () => {
@@ -1357,6 +1398,7 @@ export default function ManagerPage() {
     retirementIntentModalOpen ||
     positionRetrainingCompleteModalOpen ||
     reserveReportModalOpen ||
+    wccWinModalOpen ||
     challengeCupWinModalOpen ||
     leagueWinnersModalOpen ||
     trophyModalOpen ||
@@ -1642,6 +1684,13 @@ export default function ManagerPage() {
           career={career}
           kind={seasonRecordModalOpen}
           onContinue={handleSeasonRecordModalContinue}
+        />
+      )}
+
+      {career && wccWinModalOpen && (
+        <ManagerWorldClubChallengeWinModal
+          career={career}
+          onContinue={handleWccWinModalContinue}
         />
       )}
 

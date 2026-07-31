@@ -263,6 +263,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     leaguePhaseStatsRecordedForYear: null,
     seasonCompleteStatsRecordedForYear: null,
     challengeCupCelebrationShown: false,
+    worldClubChallengeCelebrationShown: false,
     wagePressureWeeks: 0,
     transferMarket: generateTransferMarket(withFreeAgents, newSeed, 0),
     squad: withFreeAgents.squad.map((p) => ({

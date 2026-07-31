@@ -135,7 +135,12 @@ export function validateMatchEvents(
     }
 
     if (event.type === "try") {
-      if (!event.playerName) {
+      const placeholder =
+        !event.playerName ||
+        /^(try scorer|opposition try scorer|unknown)$/i.test(
+          event.playerName.trim()
+        );
+      if (placeholder) {
         const fallback = options?.pickFallbackPlayer?.(event.teamId);
         if (fallback) {
           event.playerName = fallback;

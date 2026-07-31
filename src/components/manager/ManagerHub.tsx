@@ -384,6 +384,7 @@ export function ManagerHub({
 
   const nextFixtureCard =
     nextFixture && !seasonComplete && !playoffsPending && matchOccasion ? (
+      <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28">
       <ScoreboardPanel
         variant="elevated"
         padded
@@ -530,6 +531,7 @@ export function ManagerHub({
           </GameButton>
         </div>
       </ScoreboardPanel>
+      </div>
     ) : null;
 
   const newsTickerCard =
@@ -779,7 +781,7 @@ export function ManagerHub({
       <>
         <ManagerPage className={hubMobilePad}>
           <ManagerSection>
-          <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
+          <div className="space-y-4">
             {nextFixtureCard}
             {newsTickerCard}
             {hubStandingsCard}
@@ -812,7 +814,7 @@ export function ManagerHub({
     <>
       <ManagerPage className={hubMobilePad}>
       <ManagerSection>
-      <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28 space-y-4">
+      <div className="space-y-4">
         {seasonProgressCard}
         {nextFixtureCard}
         {newsTickerCard}

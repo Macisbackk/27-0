@@ -13,11 +13,11 @@ import { RIVAL_CLUBS } from "./managerRivals";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 
 const MAX_TRANSFER_HISTORY = 32;
-const BASE_TRANSFER_CHANCE_PER_MATCH = 0.22;
+const BASE_TRANSFER_CHANCE_PER_MATCH = 0.32;
 
 function transferChanceForCareer(career: ManagerCareer): number {
   const seasonIndex = getLeagueSeasonIndex(career);
-  return Math.min(0.48, BASE_TRANSFER_CHANCE_PER_MATCH + seasonIndex * 0.04);
+  return Math.min(0.64, BASE_TRANSFER_CHANCE_PER_MATCH + seasonIndex * 0.05);
 }
 
 function clubNeedsPosition(

@@ -10,7 +10,7 @@ import type {
 import { generateSimulatedMatchEvents } from "./matchEventGenerator";
 import { validateMatchEvents } from "../game/validateMatchEvents";
 import type { MatchEventType } from "../game/match-events";
-import { snapToRLScore } from "../game/rl-scores";
+import { pickWinningMargin, snapToRLScore } from "../game/rl-scores";
 import { SUPER_LEAGUE_CLUBS } from "../clubs";
 import {
   generateNrlSquadNames,
@@ -261,7 +261,10 @@ function simulateScoreline(
   let away = 14 + Math.floor(rng() * 20) - Math.round(diff * 0.3);
   home = snapToRLScore(Math.max(4, home), false);
   away = snapToRLScore(Math.max(6, away), false);
-  if (home === away) away = snapToRLScore(away + 2, false);
+  if (home === away) {
+    if (rng() < 0.5) home = snapToRLScore(home + pickWinningMargin(rng), false);
+    else away = snapToRLScore(away + pickWinningMargin(rng), false);
+  }
   const homeTries = Math.max(1, Math.round(home / 6));
   const awayTries = Math.max(1, Math.round(away / 6));
   return { home, away, homeTries, awayTries };
@@ -498,4 +501,34 @@ export function getWccStats(career: ManagerCareer): {
     appearances: userResults.length,
     results: history,
   };
+}
+
+/** Latest WCC win this season that has not yet been celebrated. */
+export function shouldShowWorldClubChallengeCelebration(
+  career: ManagerCareer
+): boolean {
+  if (career.worldClubChallengeCelebrationShown) return false;
+  const history = career.worldClubChallenge?.history ?? [];
+  const latest = history[history.length - 1];
+  if (!latest) return false;
+  if (latest.seasonYear !== career.seasonYear) return false;
+  return latest.userResult === "won";
+}
+
+/** Most recent WCC result for the user's club this season (win or loss). */
+export function getLatestUserWorldClubChallengeResult(
+  career: ManagerCareer
+): WorldClubChallengeResult | null {
+  const history = career.worldClubChallenge?.history ?? [];
+  for (let i = history.length - 1; i >= 0; i--) {
+    const result = history[i];
+    if (
+      result &&
+      result.seasonYear === career.seasonYear &&
+      result.userResult !== "not_involved"
+    ) {
+      return result;
+    }
+  }
+  return null;
 }

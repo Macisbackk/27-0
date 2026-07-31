@@ -8,6 +8,7 @@ const TROPHY_ORDER = [
   "League Leaders",
   "Super League Champions",
   "Challenge Cup",
+  "World Club Challenge",
   "Grand Final Runner-Up",
 ] as const;
 
@@ -28,11 +29,15 @@ export function getSeasonSummaryTrophyLabels(
   const challengeCupWon =
     summary.trophies.includes("Challenge Cup") ||
     summary.challengeCupResult === "Challenge Cup Winners";
+  const worldClubChallengeWon = summary.trophies.includes(
+    "World Club Challenge"
+  );
 
   return normalizeSeasonTrophyLabels({
     position: summary.position,
     playoffFinish: summary.playoffFinish ?? null,
     challengeCupWon,
+    worldClubChallengeWon,
     leagueTableSettled: true,
     existing: summary.trophies,
   });
@@ -42,6 +47,7 @@ function normalizeSeasonTrophyLabels(input: {
   position: number;
   playoffFinish: PlayoffFinish | null;
   challengeCupWon: boolean;
+  worldClubChallengeWon?: boolean;
   leagueTableSettled: boolean;
   existing?: string[];
 }): string[] {
@@ -58,6 +64,9 @@ function normalizeSeasonTrophyLabels(input: {
   }
   if (input.challengeCupWon) {
     add("Challenge Cup");
+  }
+  if (input.worldClubChallengeWon) {
+    add("World Club Challenge");
   }
   if (input.playoffFinish === "Grand Final Runner-Up") {
     add("Grand Final Runner-Up");
@@ -77,11 +86,15 @@ export function getManagerSeasonTrophyLabels(career: ManagerCareer): string[] {
     career.isSeasonComplete ||
     career.playoffsIntroAcknowledged ||
     career.playoffs != null;
+  const worldClubChallengeWon = (career.worldClubChallenge?.history ?? []).some(
+    (r) => r.seasonYear === career.seasonYear && r.userResult === "won"
+  );
 
   return normalizeSeasonTrophyLabels({
     position,
     playoffFinish,
     challengeCupWon: cupOutcome.isWinner,
+    worldClubChallengeWon,
     leagueTableSettled,
   });
 }

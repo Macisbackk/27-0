@@ -22,11 +22,11 @@ export function getWinnerLoserScoreBounds(
   const gap = clampGap(Math.abs(ratingGap));
 
   if (gap <= 5) {
-    return { winnerMin: 14, winnerMax: 42, loserMin: 0, loserMax: 28 };
+    return { winnerMin: 12, winnerMax: 40, loserMin: 0, loserMax: 30 };
   }
 
   if (gap <= 10) {
-    return { winnerMin: 22, winnerMax: 48, loserMin: 0, loserMax: 24 };
+    return { winnerMin: 16, winnerMax: 46, loserMin: 0, loserMax: 28 };
   }
 
   if (gap <= 15) {
