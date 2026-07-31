@@ -88,7 +88,7 @@ export function ManagerNav({
           type="button"
           onClick={() => navigate("inbox")}
           disabled={disabled}
-          className={`btn-press relative flex h-10 w-auto shrink-0 items-center justify-center gap-1.5 self-center rounded-sm border px-2.5 transition sm:h-10 sm:min-w-[5.5rem] ${
+          className={`btn-press relative flex h-10 min-w-10 shrink-0 items-center justify-center self-center rounded-sm border px-2.5 transition sm:min-w-[5.5rem] ${
             active === "inbox"
               ? "border-theme-primary/45 bg-theme-primary/12"
               : "border-pitch-600/50 bg-pitch-900/40 hover:border-pitch-500/55"
@@ -98,8 +98,8 @@ export function ManagerNav({
             unreadInbox > 0 ? `Inbox, ${unreadInbox} unread` : "Inbox"
           }
         >
-          <span className="flex items-center justify-center gap-1.5 leading-none">
-            <span className="text-base leading-none" aria-hidden>
+          <span className="pointer-events-none flex h-full w-full items-center justify-center gap-1.5 leading-none">
+            <span className="flex items-center justify-center text-base leading-none" aria-hidden>
               ✉
             </span>
             <span className="hidden font-display text-[10px] font-bold uppercase tracking-wide text-white sm:inline">
@@ -107,7 +107,7 @@ export function ManagerNav({
             </span>
           </span>
           {unreadLabel && active !== "inbox" ? (
-            <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-theme-primary px-1 text-[9px] font-bold leading-none text-[var(--theme-text-on-primary)]">
+            <span className="pointer-events-none absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-theme-primary px-1 text-[9px] font-bold leading-none text-[var(--theme-text-on-primary)]">
               {unreadLabel}
             </span>
           ) : null}

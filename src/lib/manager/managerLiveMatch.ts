@@ -308,12 +308,13 @@ function pickScorer(
   if (player) {
     return { id: player.id, name: player.name };
   }
-  // Last resort — never emit the "Try scorer" placeholder label.
-  const reserve = career.reserves[0];
-  if (reserve) {
-    return { id: reserve.id, name: reserve.name };
+  // Last resort — never emit a placeholder or club name as a try scorer.
+  const anySquad = career.squad[0];
+  if (anySquad) {
+    const p = getManagerPlayer(career, anySquad.playerId);
+    if (p) return { id: p.id, name: p.name };
   }
-  return { id: pick ?? "unknown", name: career.club };
+  return { id: "unknown", name: "Unknown" };
 }
 
 function pickOpponentScorer(
@@ -340,7 +341,12 @@ function pickOpponentScorer(
     getManagerOpponentPoolOptions(career, opponent)
   );
   if (pool.length === 0) {
-    return { id: "opp-scorer", name: "Opposition try scorer" };
+    const generated = generateNrlSquadNames(seed, opponent, 8);
+    if (generated.length > 0) {
+      const pick = generated[Math.floor(rng() * generated.length)]!;
+      return { id: pick.id, name: pick.name };
+    }
+    return { id: `${opponent.replace(/\s+/g, "-").toLowerCase()}-1`, name: "Home forward" };
   }
   const pick = pool[Math.floor(rng() * pool.length)]!;
   return { id: pick.id, name: pick.name };

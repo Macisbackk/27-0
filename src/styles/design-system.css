@@ -148,11 +148,13 @@
 .player-slot__footer,
 .squad-player-card__footer {
   min-height: 18px;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
   gap: 0.35rem;
   line-height: 1;
+  min-width: 0;
+  width: 100%;
 }
 
 .player-slot__name,
@@ -163,7 +165,24 @@
   min-height: 0;
   width: 100%;
   line-height: 1.12;
-  overflow-wrap: anywhere;
+  overflow: hidden;
+}
+
+.squad-player-card__name > *,
+.player-slot__name > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.squad-player-card__rating,
+.player-slot__rating {
+  flex-shrink: 0;
+  justify-self: end;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .player-slot--interchange .player-slot__name {

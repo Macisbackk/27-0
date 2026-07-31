@@ -452,7 +452,10 @@ export function renewManagerContract(
   );
 }
 
-export function bulkRenewExpiringContractsWithInbox(career: ManagerCareer): {
+export function bulkRenewExpiringContractsWithInbox(
+  career: ManagerCareer,
+  yearsOverride?: 1 | 2 | 3 | 4
+): {
   career: ManagerCareer;
   renewed: number;
   declined: number;
@@ -460,6 +463,9 @@ export function bulkRenewExpiringContractsWithInbox(career: ManagerCareer): {
   let working = ensureRenewalDemands(career);
   let renewed = 0;
   let declined = 0;
+  const years =
+    yearsOverride ??
+    working.managerSettings?.autoRenewContractYears;
 
   for (const ps of working.squad) {
     const contract = working.contracts[ps.playerId];
@@ -472,9 +478,13 @@ export function bulkRenewExpiringContractsWithInbox(career: ManagerCareer): {
     const demand =
       contract.renewalDemand ??
       generateRenewalDemand(ps.playerId, contract, working);
-    const result = evaluateRenewalOffer(ps.playerId, contract, demand, working);
+    const offer = {
+      ...demand,
+      yearsRequested: years ?? demand.yearsRequested,
+    };
+    const result = evaluateRenewalOffer(ps.playerId, contract, offer, working);
     if (result.accepted) {
-      working = renewManagerContract(working, ps.playerId, demand);
+      working = renewManagerContract(working, ps.playerId, offer);
       renewed++;
     } else {
       declined++;

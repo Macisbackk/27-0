@@ -183,6 +183,48 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     rewardClubFunds: 400_000,
   },
   {
+    id: "treble-winners",
+    name: "Treble Winners",
+    description: "Win three major trophies in one Manager season.",
+    category: "manager",
+    points: 125,
+    rewardClubFunds: 500_000,
+  },
+  {
+    id: "quadruple-winners",
+    name: "Quadruple Winners",
+    description: "Win four major trophies in one Manager season.",
+    category: "manager",
+    points: 150,
+    rewardClubFunds: 750_000,
+  },
+  {
+    id: "clean-sweep",
+    name: "Clean Sweep",
+    description:
+      "Win every available trophy in a Manager season.",
+    category: "manager",
+    points: 160,
+    rewardClubFunds: 800_000,
+  },
+  {
+    id: "world-champions",
+    name: "World Champions",
+    description: "Win the World Club Challenge in Manager Mode.",
+    category: "manager",
+    points: 80,
+    rewardClubFunds: 300_000,
+  },
+  {
+    id: "perfect-trophy-season",
+    name: "Perfect Trophy Season",
+    description:
+      "Go unbeaten and win every available trophy in a Manager season.",
+    category: "manager",
+    points: 200,
+    rewardClubFunds: 1_000_000,
+  },
+  {
     id: "academy-trust",
     name: "Academy Trust",
     description: "Call up a reserve player and win the match.",

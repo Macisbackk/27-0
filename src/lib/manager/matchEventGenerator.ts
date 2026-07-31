@@ -16,6 +16,7 @@ import { buildOpponentTryScoringDetail } from "./managerOpponentScoring";
 import { generateNrlSquadNames } from "./worldClubChallenge";
 import type { ManagerCareer, ManagerScheduledFixture } from "./types";
 import type { LiveMatchEvent } from "./types";
+import { isInvalidPlayerName } from "./managerPlayerNameGuards";
 
 type TeamSide = "user" | "opponent";
 
@@ -78,22 +79,25 @@ function opponentOf(side: TeamSide, input: GeneratorInput): string {
 function expandScorerNames(
   scorers: { name: string }[] | undefined,
   tries: number,
-  fallbackLabel: string
+  teamNames: string[]
 ): string[] {
   if (tries <= 0) return [];
-  if (!scorers || scorers.length === 0) {
-    return Array.from({ length: tries }, () => fallbackLabel);
-  }
+  const valid = (scorers ?? [])
+    .map((s) => s.name?.trim())
+    .filter(
+      (n): n is string => Boolean(n) && !isInvalidPlayerName(n, teamNames)
+    );
+  if (valid.length === 0) return [];
   const names: string[] = [];
-  for (const s of scorers) {
-    // Prefer repeating named scorers according to try counts when present
+  for (const s of scorers ?? []) {
+    if (!s.name || isInvalidPlayerName(s.name, teamNames)) continue;
     const count = Math.max(1, (s as { tries?: number }).tries ?? 1);
     for (let i = 0; i < count && names.length < tries; i++) {
       names.push(s.name);
     }
   }
   while (names.length < tries) {
-    names.push(scorers[names.length % scorers.length]!.name);
+    names.push(valid[names.length % valid.length]!);
   }
   return names.slice(0, tries);
 }
@@ -236,10 +240,25 @@ function resolveKicker(
   input: GeneratorInput,
   scorers: string[]
 ): string {
-  if (side === "user" && input.userKicker) return input.userKicker;
-  if (side === "opponent" && input.opponentKicker) return input.opponentKicker;
-  // Prefer a named scorer only as last resort — still a real player name, never club
-  return scorers[0] ?? "the kicker";
+  const teamNames = [input.userClub, input.opponent];
+  if (
+    side === "user" &&
+    input.userKicker &&
+    !isInvalidPlayerName(input.userKicker, teamNames)
+  ) {
+    return input.userKicker;
+  }
+  if (
+    side === "opponent" &&
+    input.opponentKicker &&
+    !isInvalidPlayerName(input.opponentKicker, teamNames)
+  ) {
+    return input.opponentKicker;
+  }
+  const valid = scorers.filter((n) => !isInvalidPlayerName(n, teamNames));
+  if (valid[0]) return valid[0];
+  // Last resort for commentary only — never used as a try scorer identity.
+  return side === "user" ? "the home kicker" : "the away kicker";
 }
 
 /** Generate a coherent commentary feed that matches the final scoreline. */
@@ -260,17 +279,50 @@ export function generateSimulatedMatchEvents(
     rngFor(input.seed, "ot")
   );
 
-  const userScorerNames = expandScorerNames(
+  const teamNames = [input.userClub, input.opponent];
+  let userScorerNames = expandScorerNames(
     input.userScorers,
     input.userTries,
-    "Try scorer"
+    teamNames
   );
+  if (userScorerNames.length < input.userTries && input.career) {
+    const fromMatchday = [
+      ...input.career.matchdayXiii,
+      ...input.career.matchdayInterchange,
+    ]
+      .map((id) => {
+        if (!id) return null;
+        const fromRegistry = input.career?.playerRegistry?.[id];
+        if (fromRegistry?.name) return fromRegistry.name;
+        const reserve = input.career?.reserves.find((r) => r.id === id);
+        return reserve?.name ?? null;
+      })
+      .filter(
+        (n): n is string => Boolean(n) && !isInvalidPlayerName(n, teamNames)
+      );
+    userScorerNames = expandScorerNames(
+      fromMatchday.map((name) => ({ name })),
+      input.userTries,
+      teamNames
+    );
+  }
+
   const oppScorerPool = resolveOpponentScorers(input);
-  const oppScorerNames = expandScorerNames(
+  let oppScorerNames = expandScorerNames(
     oppScorerPool,
     input.oppTries,
-    "Opposition try scorer"
+    teamNames
   );
+  if (oppScorerNames.length < input.oppTries) {
+    const nrl = generateNrlSquadNames(input.seed, input.opponent, 13);
+    if (nrl.length > 0) {
+      oppScorerNames = expandScorerNames(
+        nrl.map((p) => ({ name: p.name })),
+        input.oppTries,
+        teamNames
+      );
+    }
+  }
 
   const userKicker = resolveKicker("user", input, userScorerNames);
   const oppKicker = resolveKicker("opponent", input, oppScorerNames);
@@ -372,12 +424,14 @@ export function generateSimulatedMatchEvents(
   };
 
   userTryMinutes.forEach((minute, i) => {
-    const scorer = userScorerNames[i] ?? "Try scorer";
+    const scorer = userScorerNames[i];
+    if (!scorer || isInvalidPlayerName(scorer, teamNames)) return;
     addTryChain("user", minute, scorer);
   });
 
   oppTryMinutes.forEach((minute, i) => {
-    const scorer = oppScorerNames[i] ?? "Opposition try scorer";
+    const scorer = oppScorerNames[i];
+    if (!scorer || isInvalidPlayerName(scorer, teamNames)) return;
     addTryChain("opponent", minute, scorer);
   });
 
@@ -482,7 +536,7 @@ export function generateSimulatedMatchEvents(
     ...oppScorerNames,
     userKicker,
     oppKicker,
-  ].filter((n) => n && n !== "Try scorer" && n !== "Opposition try scorer");
+  ].filter((n) => n && !isInvalidPlayerName(n, teamNames));
 
   for (let i = 0; i < fillerTarget; i++) {
     const minute = Math.max(

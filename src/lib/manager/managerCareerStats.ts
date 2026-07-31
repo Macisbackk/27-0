@@ -1,6 +1,8 @@
 import type { MatchFixture } from "../game/season-simulation";
 import type { SquadSlot } from "../types";
 import type { ManagerCareer, ManagerPlayerSeasonStats, ManagerTeamSeasonStats } from "./types";
+import { isInvalidPlayerName } from "./managerPlayerNameGuards";
+import { getManagerPlayer } from "./managerPlayers";
 
 export const EMPTY_TEAM_SEASON_STATS: ManagerTeamSeasonStats = {
   played: 0,
@@ -100,11 +102,23 @@ export function updateStatsAfterMatch(
   }
 
   for (const scorer of userScorers) {
+    if (
+      isInvalidPlayerName(scorer.playerId) ||
+      isInvalidPlayerName(scorer.name) ||
+      !getManagerPlayer(career, scorer.playerId)
+    ) {
+      continue;
+    }
     const stats = getOrCreatePlayerStats(playerSeasonStats, scorer.playerId);
     stats.tries += scorer.tries;
   }
 
-  if (kicking?.playerId) {
+  if (
+    kicking?.playerId &&
+    !isInvalidPlayerName(kicking.playerId) &&
+    !isInvalidPlayerName(kicking.name) &&
+    getManagerPlayer(career, kicking.playerId)
+  ) {
     const stats = getOrCreatePlayerStats(playerSeasonStats, kicking.playerId);
     stats.goals += kicking.conversions + kicking.penalties;
   }
@@ -120,10 +134,13 @@ export function updateStatsAfterMatch(
 }
 
 export function getTopTryScorer(
-  stats: Record<string, ManagerPlayerSeasonStats>
+  stats: Record<string, ManagerPlayerSeasonStats>,
+  career?: ManagerCareer
 ): { playerId: string; tries: number } | null {
   let best: { playerId: string; tries: number } | null = null;
   for (const s of Object.values(stats)) {
+    if (isInvalidPlayerName(s.playerId)) continue;
+    if (career && !getManagerPlayer(career, s.playerId)) continue;
     if (!best || s.tries > best.tries) {
       best = { playerId: s.playerId, tries: s.tries };
     }
@@ -132,13 +149,29 @@ export function getTopTryScorer(
 }
 
 export function getTopGoalScorer(
-  stats: Record<string, ManagerPlayerSeasonStats>
+  stats: Record<string, ManagerPlayerSeasonStats>,
+  career?: ManagerCareer
 ): { playerId: string; goals: number } | null {
   let best: { playerId: string; goals: number } | null = null;
   for (const s of Object.values(stats)) {
+    if (isInvalidPlayerName(s.playerId)) continue;
+    if (career && !getManagerPlayer(career, s.playerId)) continue;
     if (!best || s.goals > best.goals) {
       best = { playerId: s.playerId, goals: s.goals };
     }
   }
   return best && best.goals > 0 ? best : null;
+}
+
+/** Drop placeholder / orphaned playerIds from season stats (old saves). */
+export function sanitizePlayerSeasonStats(
+  career: ManagerCareer
+): Record<string, ManagerPlayerSeasonStats> {
+  const next: Record<string, ManagerPlayerSeasonStats> = {};
+  for (const [id, stats] of Object.entries(career.playerSeasonStats ?? {})) {
+    if (isInvalidPlayerName(id)) continue;
+    if (!getManagerPlayer(career, id)) continue;
+    next[id] = stats;
+  }
+  return next;
 }

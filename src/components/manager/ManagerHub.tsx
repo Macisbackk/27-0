@@ -309,8 +309,8 @@ export function ManagerHub({
   const injuryCount = career.squad.filter(
     (p) => p.injury && isPlayerUnavailable(p)
   ).length;
-  const topScorer = getTopTryScorer(career.playerSeasonStats);
-  const topKicker = getTopGoalScorer(career.playerSeasonStats);
+  const topScorer = getTopTryScorer(career.playerSeasonStats, career);
+  const topKicker = getTopGoalScorer(career.playerSeasonStats, career);
   const ts = career.teamSeasonStats;
   const squadCheck = validateFitMatchdaySquad(simCareer);
   const playoffsPending = needsPlayoffsIntro(career);

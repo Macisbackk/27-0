@@ -17,6 +17,7 @@ import { ManagerClub } from "@/components/manager/ManagerClub";
 import { ManagerFixtures } from "@/components/manager/ManagerFixtures";
 import { ManagerAcrossLeague } from "@/components/manager/ManagerAcrossLeague";
 import { ManagerStatsView } from "@/components/manager/ManagerStatsView";
+import { ManagerSettings } from "@/components/manager/ManagerSettings";
 const ManagerPlayGame = dynamic(
   () =>
     import("@/components/manager/ManagerPlayGame").then((m) => ({
@@ -46,6 +47,7 @@ import { ManagerOnboardingModal } from "@/components/manager/ManagerOnboardingMo
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerFriendlySelect } from "@/components/manager/ManagerFriendlySelect";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
+import { autoFixMatchdaySquad } from "@/lib/manager/managerAutoFix";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
   loadManagerCareer,
@@ -960,13 +962,19 @@ export default function ManagerPage() {
         pendingTrophyCelebration ||
         !career.isSeasonComplete;
       continueAfterMatchReview();
-      if (landsOnHub) {
+      if (
+        landsOnHub &&
+        (career?.managerSettings?.autoOpenNextFixture ?? true)
+      ) {
         setPendingHubNextFixtureScroll(true);
       }
       return;
     }
     goToView(matchReviewReturnView);
-    if (matchReviewReturnView === "hub") {
+    if (
+      matchReviewReturnView === "hub" &&
+      (career?.managerSettings?.autoOpenNextFixture ?? true)
+    ) {
       setPendingHubNextFixtureScroll(true);
     }
   };
@@ -1287,7 +1295,10 @@ export default function ManagerPage() {
   const handleSimulate = () => {
     if (!career) return;
     const snapshot = career;
-    const ready = prepareCareerForNextMatch(career);
+    let ready = prepareCareerForNextMatch(career);
+    if (ready.managerSettings?.autoFixSquadBeforeMatch) {
+      ready = autoFixMatchdaySquad(ready).career;
+    }
     const check = validateFitMatchdaySquad(ready);
     if (!check.valid) {
       setAlertDialog({
@@ -1318,7 +1329,10 @@ export default function ManagerPage() {
 
   const handlePlayGame = () => {
     if (!career) return;
-    const ready = prepareCareerForNextMatch(career);
+    let ready = prepareCareerForNextMatch(career);
+    if (ready.managerSettings?.autoFixSquadBeforeMatch) {
+      ready = autoFixMatchdaySquad(ready).career;
+    }
     const check = validateFitMatchdaySquad(ready);
     if (!check.valid) {
       setAlertDialog({
@@ -1530,6 +1544,9 @@ export default function ManagerPage() {
                   />
                 )}
                 {displayView === "stats" && <ManagerStatsView career={career} />}
+                {displayView === "settings" && (
+                  <ManagerSettings career={career} onUpdate={persist} />
+                )}
               </>
             )}
           </div>

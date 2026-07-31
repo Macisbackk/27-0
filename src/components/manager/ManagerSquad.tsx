@@ -91,7 +91,7 @@ const SQUAD_PLAYER_BOX_CLASS =
   "flex h-full min-h-[5.5rem] w-full min-w-0 flex-col overflow-hidden px-2 py-1.5 sm:min-h-[5.75rem] sm:px-2.5 sm:py-2";
 
 const SQUAD_PLAYER_NAME_CLASS =
-  "min-w-0 w-full text-[10px] font-medium leading-[1.15] text-white line-clamp-2 [overflow-wrap:anywhere] sm:text-xs sm:leading-tight";
+  "min-w-0 w-full truncate text-[10px] font-medium leading-[1.15] text-white sm:text-xs sm:leading-tight";
 
 /** Horizontal scroll pool — two rows keeps cards readable without clipping ratings. */
 const SQUAD_POOL_GRID_CLASS =
@@ -150,7 +150,7 @@ function SquadPoolPlayerButton({
             <span className="squad-player-card__meta min-w-0 truncate">
               {positions.map((p) => POSITION_SHORT[p]).join(" · ")} · {sourceLabel}
             </span>
-            <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
+            <span className="squad-player-card__rating text-[10px] font-bold text-theme-primary sm:text-xs">
               {player.peakRating}
             </span>
           </div>
@@ -668,7 +668,7 @@ export function ManagerSquad({
                             : "Bench"}
                         </span>
                         {player ? (
-                          <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary sm:text-xs">
+                          <span className="player-slot__rating text-[10px] font-bold text-theme-primary sm:text-xs">
                             {player.peakRating}
                           </span>
                         ) : null}

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
-import type { ManagerCareer } from "@/lib/manager/types";
+import type { ManagerCareer, RetiredPlayer } from "@/lib/manager/types";
 import { getManagerPlayer, getRetiredPlayerDisplayAge } from "@/lib/manager/managerPlayers";
 import { getRetiredPlayerSaveStats } from "@/lib/manager/managerRetirement";
 import {
@@ -14,6 +14,7 @@ import {
   getTopGoalScorer,
   getTopTryScorer,
 } from "@/lib/manager/managerCareerStats";
+import { isInvalidPlayerName } from "@/lib/manager/managerPlayerNameGuards";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
 import { getManagerCareerSaveView } from "@/lib/manager/managerCareerSaveStats";
 import {
@@ -27,8 +28,18 @@ import {
   ManagerViewHeader,
   leaguePositionTone,
 } from "@/components/manager/manager-ui";
+import { playUiClick } from "@/lib/sound";
 
 type StatsTab = "season" | "career" | "retired";
+
+type RetiredSortKey =
+  | "name"
+  | "club"
+  | "position"
+  | "peak"
+  | "apps"
+  | "tries"
+  | "season";
 
 interface ManagerStatsViewProps {
   career: ManagerCareer;
@@ -76,12 +87,17 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
 
 function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
   const ts = career.teamSeasonStats;
-  const topScorer = getTopTryScorer(career.playerSeasonStats);
-  const topKicker = getTopGoalScorer(career.playerSeasonStats);
+  const topScorer = getTopTryScorer(career.playerSeasonStats, career);
+  const topKicker = getTopGoalScorer(career.playerSeasonStats, career);
   const position = getUserLeaguePosition(career.leagueTable, career.club);
 
   const playerRows = Object.values(career.playerSeasonStats)
-    .filter((p) => p.appearances > 0)
+    .filter(
+      (p) =>
+        p.appearances > 0 &&
+        !isInvalidPlayerName(p.playerId) &&
+        Boolean(getManagerPlayer(career, p.playerId)?.name)
+    )
     .sort((a, b) => b.tries - a.tries || b.appearances - a.appearances);
 
   return (
@@ -170,14 +186,14 @@ function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
 
       {playerRows.length > 0 ? (
         <ManagerSectionCard title="Player Stats" className="overflow-x-auto !p-0">
-          <table className="w-full min-w-[400px] text-left text-sm">
+          <table className="mt-2 w-full min-w-[400px] text-left text-sm">
             <thead>
               <tr className="border-b border-pitch-700/50 text-pitch-400">
-                <th className="px-3 py-2">Player</th>
+                <th className="px-3 py-2 sm:px-5">Player</th>
                 <th className="px-3 py-2 text-center">Apps</th>
                 <th className="px-3 py-2 text-center">Tries</th>
                 <th className="px-3 py-2 text-center">Goals</th>
-                <th className="px-3 py-2 text-center">POTM</th>
+                <th className="px-3 py-2 text-center sm:px-5">POTM</th>
               </tr>
             </thead>
             <tbody>
@@ -398,13 +414,13 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
 
       {careerSave.seasonRows.length > 0 ? (
         <ManagerSectionCard title="Season History" className="overflow-x-auto !p-0">
-          <table className="w-full min-w-[480px] text-left text-sm">
+          <table className="mt-2 w-full min-w-[480px] text-left text-sm">
             <thead>
               <tr className="border-b border-pitch-700/50 text-pitch-400">
-                <th className="px-3 py-2">Season</th>
+                <th className="px-3 py-2 sm:px-5">Season</th>
                 <th className="px-3 py-2 text-center">Finish</th>
                 <th className="px-3 py-2 text-center">Record</th>
-                <th className="px-3 py-2">Trophies</th>
+                <th className="px-3 py-2 sm:px-5">Trophies</th>
               </tr>
             </thead>
             <tbody>
@@ -452,16 +468,100 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
 }
 
 function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
-  const retired = [...(career.retiredPlayers ?? [])].sort((a, b) => {
-    if (b.seasonRetired !== a.seasonRetired) {
-      return b.seasonRetired - a.seasonRetired;
-    }
-    return a.playerName.localeCompare(b.playerName);
-  });
+  const [sortKey, setSortKey] = useState<RetiredSortKey>("season");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+
+  const retired = useMemo(() => {
+    const rows = [...(career.retiredPlayers ?? [])];
+    const dir = sortDir === "asc" ? 1 : -1;
+
+    rows.sort((a, b) => {
+      const clubA = a.club ?? career.club;
+      const clubB = b.club ?? career.club;
+      const statsA = getRetiredPlayerSaveStats(career, a);
+      const statsB = getRetiredPlayerSaveStats(career, b);
+
+      let cmp = 0;
+      switch (sortKey) {
+        case "name":
+          cmp = a.playerName.localeCompare(b.playerName);
+          break;
+        case "club":
+          cmp = clubA.localeCompare(clubB);
+          break;
+        case "position":
+          cmp = a.positionLabel.localeCompare(b.positionLabel);
+          break;
+        case "peak":
+          cmp = a.peakRating - b.peakRating;
+          break;
+        case "apps":
+          cmp = statsA.appearances - statsB.appearances;
+          break;
+        case "tries":
+          cmp = statsA.tries - statsB.tries;
+          break;
+        case "season":
+        default:
+          cmp = a.seasonRetired - b.seasonRetired;
+          break;
+      }
+
+      if (cmp !== 0) return cmp * dir;
+      return a.playerName.localeCompare(b.playerName);
+    });
+
+    return rows;
+  }, [career, sortDir, sortKey]);
 
   const leagueRetirements = retired.filter(
     (player) => (player.club ?? career.club) !== career.club
   ).length;
+
+  const toggleSort = (key: RetiredSortKey) => {
+    playUiClick();
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+      return;
+    }
+    setSortKey(key);
+    setSortDir(key === "name" || key === "club" || key === "position" ? "asc" : "desc");
+  };
+
+  const sortIndicator = (key: RetiredSortKey) =>
+    sortKey === key ? (sortDir === "asc" ? " ↑" : " ↓") : "";
+
+  const thButton = (
+    key: RetiredSortKey,
+    label: string,
+    align: "left" | "center" = "left"
+  ) => (
+    <th
+      className={`px-3 py-2 font-semibold ${
+        align === "center" ? "text-center" : "text-left"
+      }`}
+    >
+      <button
+        type="button"
+        onClick={() => toggleSort(key)}
+        className={`inline-flex items-center gap-0.5 rounded-sm transition hover:text-theme-primary ${
+          align === "center" ? "justify-center" : ""
+        } ${sortKey === key ? "text-theme-primary" : "text-pitch-500"}`}
+        aria-sort={
+          sortKey === key
+            ? sortDir === "asc"
+              ? "ascending"
+              : "descending"
+            : "none"
+        }
+      >
+        {label}
+        <span aria-hidden className="tabular-nums">
+          {sortIndicator(key)}
+        </span>
+      </button>
+    </th>
+  );
 
   return (
     <>
@@ -482,19 +582,21 @@ function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[560px] text-left text-sm">
               <thead>
-                <tr className="border-b border-pitch-700/50 text-[10px] uppercase tracking-wider text-pitch-500">
-                  <th className="px-3 py-2 font-semibold">Player</th>
-                  <th className="px-3 py-2 font-semibold">Club</th>
-                  <th className="px-3 py-2 text-center font-semibold">Pos</th>
-                  <th className="px-3 py-2 text-center font-semibold">Age</th>
-                  <th className="px-3 py-2 text-center font-semibold">Peak</th>
-                  <th className="px-3 py-2 text-center font-semibold">Apps</th>
-                  <th className="px-3 py-2 text-center font-semibold">Tries</th>
-                  <th className="px-3 py-2 text-center font-semibold">Season</th>
+                <tr className="border-b border-pitch-700/50 text-[10px] uppercase tracking-wider">
+                  {thButton("name", "Player")}
+                  {thButton("club", "Club")}
+                  {thButton("position", "Pos", "center")}
+                  <th className="px-3 py-2 text-center font-semibold text-pitch-500">
+                    Age
+                  </th>
+                  {thButton("peak", "Peak", "center")}
+                  {thButton("apps", "Apps", "center")}
+                  {thButton("tries", "Tries", "center")}
+                  {thButton("season", "Season", "center")}
                 </tr>
               </thead>
               <tbody>
-                {retired.map((player) => {
+                {retired.map((player: RetiredPlayer) => {
                   const club = player.club ?? career.club;
                   const isUserClub = club === career.club;
                   const saveStats = getRetiredPlayerSaveStats(career, player);

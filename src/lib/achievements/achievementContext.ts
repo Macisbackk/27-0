@@ -34,6 +34,11 @@ export type AchievementCheckContext = {
   managerLeagueWinner?: boolean;
   managerGrandFinalWinner?: boolean;
   managerDoubleWinner?: boolean;
+  managerTrebleWinner?: boolean;
+  managerQuadrupleWinner?: boolean;
+  managerCleanSweep?: boolean;
+  managerWorldClubChallengeWinner?: boolean;
+  managerPerfectTrophySeason?: boolean;
   reserveCalledUp?: boolean;
   reservePromoted?: boolean;
   playerSigned?: boolean;

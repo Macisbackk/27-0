@@ -271,6 +271,9 @@ export function ManagerSectionCard({
           : CARD.base;
 
   const accentBorder = accent ? managerSectionAccentClass(accent) : "";
+  // When callers zero card padding for flush tables, keep title/subtitle inset.
+  const flushPadding = /(?:^|\s)!?p-0(?:\s|$)/.test(className);
+  const headerPad = flushPadding ? "px-5 pt-5 sm:px-5 lg:px-6" : "";
 
   return (
     <div
@@ -278,9 +281,13 @@ export function ManagerSectionCard({
       style={style}
     >
       <div className="panel-body relative z-[1]">
-        {title && <p className={TYPO.sectionLabel}>{title}</p>}
+        {title && (
+          <p className={`${TYPO.sectionLabel} ${headerPad}`.trim()}>{title}</p>
+        )}
         {subtitle && (
-          <p className={`${title ? "mt-1" : ""} ${TYPO.bodySm} text-pitch-400`}>
+          <p
+            className={`${title ? "mt-1" : ""} ${headerPad} ${TYPO.bodySm} text-pitch-400`.trim()}
+          >
             {subtitle}
           </p>
         )}

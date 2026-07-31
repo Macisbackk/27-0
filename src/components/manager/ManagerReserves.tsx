@@ -473,9 +473,21 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                   >
                     Growth {formatReserveGrowthDelta(growthDelta)}
                   </span>
-                  <span className="rounded-md border border-accent-gold/40 bg-accent-gold/10 px-2 py-0.5 text-[10px] font-semibold text-accent-gold">
-                    POT {r.potentialRating}
-                  </span>
+                  {contract && (
+                    <>
+                      <span className="rounded-md border border-accent-gold/40 bg-accent-gold/10 px-2 py-0.5 text-[10px] font-semibold text-accent-gold">
+                        Contract {formatWage(contract.wagePerYear)}
+                      </span>
+                      <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] font-semibold text-pitch-300">
+                        {contract.yearsRemaining}y
+                      </span>
+                    </>
+                  )}
+                  {needsRenew && status && (
+                    <span className="rounded-md border border-accent-gold/40 bg-accent-gold/10 px-2 py-0.5 text-[10px] font-semibold text-accent-gold">
+                      {STATUS_LABELS[status] ?? status}
+                    </span>
+                  )}
                   {r.calledUpForNextMatch && (
                     <span className="rounded-md border border-theme-primary/40 bg-theme-primary/10 px-2 py-0.5 text-[10px] font-semibold text-theme-primary">
                       Called up
@@ -483,19 +495,12 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                   )}
                 </div>
 
-                {contract && (
-                  <p className={`mt-2 text-[11px] text-pitch-500`}>
-                    {formatWage(contract.wagePerYear)}/yr · {contract.yearsRemaining}yr
-                    left · {status ? STATUS_LABELS[status] ?? status : "—"}
-                  </p>
-                )}
-
-                <div className="mt-3 flex flex-wrap gap-2 border-t border-pitch-700/30 pt-3">
+                <div className="mt-3 flex flex-col gap-2 border-t border-pitch-700/30 pt-3 sm:flex-row sm:flex-wrap">
                   <GameButton
                     variant="theme"
                     size="sm"
                     fullWidth={false}
-                    className="min-w-[7.5rem] flex-1 sm:flex-none"
+                    className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
                     disabled={r.calledUpForNextMatch}
                     onClick={() => {
                       playUiClick();
@@ -513,7 +518,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                     variant="theme"
                     size="sm"
                     fullWidth={false}
-                    className="min-w-[7.5rem] flex-1 sm:flex-none"
+                    className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
                     onClick={() => {
                       playUiClick();
                       handlePromote(r.id);
@@ -526,7 +531,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                       variant="theme"
                       size="sm"
                       fullWidth={false}
-                      className="min-w-[7.5rem] flex-1 sm:flex-none"
+                      className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
                       onClick={() => {
                         playUiClick();
                         handleRenewReserve(r.id);
@@ -545,7 +550,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                     variant="secondary"
                     size="sm"
                     fullWidth={false}
-                    className="min-w-[7.5rem] flex-1 sm:flex-none"
+                    className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
                     onClick={() => handleReleaseClick(r)}
                   >
                     Release

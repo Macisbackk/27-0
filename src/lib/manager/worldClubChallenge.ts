@@ -3,6 +3,7 @@ import type {
   LiveMatchEvent,
   ManagerCareer,
   ManagerCompetition,
+  ManagerFixtureRecord,
   ManagerScheduledFixture,
   WorldClubChallengeFixture,
   WorldClubChallengeResult,
@@ -18,6 +19,7 @@ import {
   isNrlClubName,
   NRL_WORLD_CLUB_CHALLENGE_TEAMS,
 } from "../nrl/nrlClubs";
+import { getManagerPlayer } from "./managerPlayers";
 
 export {
   generateNrlSquadNames,
@@ -289,7 +291,7 @@ export function simulateWorldClubChallenge(
           .map((ps) => {
             const player = career.playerRegistry?.[ps!.playerId];
             return {
-              name: player?.name ?? "Try scorer",
+              name: player?.name ?? getManagerPlayer(career, ps!.playerId)?.name ?? "Forward",
               playerId: ps!.playerId,
             };
           })
@@ -474,13 +476,23 @@ export function completeUserWorldClubChallenge(
     saveManagerStats(stats);
   });
 
-  return {
+  const next: ManagerCareer = {
     ...career,
     worldClubChallenge: {
       history: [...(career.worldClubChallenge?.history ?? []), result],
       currentFixture: undefined,
     },
   };
+
+  if (userResult === "won") {
+    void import("../achievements/achievementTriggers").then(
+      ({ triggerManagerWorldClubChallengeAchievements }) => {
+        triggerManagerWorldClubChallengeAchievements(next);
+      }
+    );
+  }
+
+  return next;
 }
 
 export function isWorldClubChallengeCompetition(
@@ -501,6 +513,73 @@ export function getWccStats(career: ManagerCareer): {
     appearances: userResults.length,
     results: history,
   };
+}
+
+/** Convert a WCC history result into a fixture record for Results / list UI. */
+export function worldClubChallengeResultToFixtureRecord(
+  result: WorldClubChallengeResult,
+  careerClub: string
+): ManagerFixtureRecord {
+  const userInvolved = result.userResult === "won" || result.userResult === "lost";
+  const slWon = result.winnerName === result.superLeagueChampionName;
+  const userClub = userInvolved ? careerClub : result.superLeagueChampionName;
+  const pointsFor = result.homeScore;
+  const pointsAgainst = result.awayScore;
+  const triesFor = Math.max(0, Math.round(pointsFor / 6));
+  const triesAgainst = Math.max(0, Math.round(pointsAgainst / 6));
+  const resultLetter: "W" | "L" = userInvolved
+    ? result.userResult === "won"
+      ? "W"
+      : "L"
+    : slWon
+      ? "W"
+      : "L";
+
+  return {
+    round: 3,
+    opponent: result.nrlChampionName,
+    isHome: true,
+    pointsFor,
+    pointsAgainst,
+    triesFor,
+    triesAgainst,
+    scoringFor: {
+      tries: triesFor,
+      conversions: 0,
+      penalties: 0,
+      dropGoals: 0,
+      points: pointsFor,
+    },
+    scoringAgainst: {
+      tries: triesAgainst,
+      conversions: 0,
+      penalties: 0,
+      dropGoals: 0,
+      points: pointsAgainst,
+    },
+    result: resultLetter,
+    matchBio: result.storySummary,
+    userClub,
+    fixtureId: result.id,
+    competition: "world_club_challenge",
+    meta: {
+      injuries: [],
+      competition: "world_club_challenge",
+      liveEvents: result.events,
+    },
+  };
+}
+
+/** Current-season WCC history entry, if the fixture has already been completed. */
+export function getCurrentSeasonWccResult(
+  career: ManagerCareer
+): WorldClubChallengeResult | null {
+  const history = career.worldClubChallenge?.history ?? [];
+  for (let i = history.length - 1; i >= 0; i--) {
+    const result = history[i];
+    if (result && result.seasonYear === career.seasonYear) return result;
+  }
+  return null;
 }
 
 /** Latest WCC win this season that has not yet been celebrated. */

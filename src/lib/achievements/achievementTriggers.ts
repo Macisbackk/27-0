@@ -4,11 +4,64 @@ import { getSeasonGradeFromSquad } from "../grades";
 import { getSquadValue } from "../positions";
 import { getUserLeagueTablePosition } from "../manager/managerFixtures";
 import { getEffectiveStadiumCapacity, ensureClubFacilities } from "../manager/managerFacilities";
+import { getManagerSeasonTrophyLabels } from "../manager/managerSeasonTrophies";
+import { shouldScheduleWorldClubChallenge } from "../manager/worldClubChallenge";
 import type { ManagerCareer, ManagerFixtureRecord } from "../manager/types";
 import type { SquadSlot } from "../types";
 import type { AchievementCheckContext } from "./achievementContext";
 import { dispatchAchievementCheck } from "./achievementNotify";
 
+const MAJOR_TROPHY_LABELS = [
+  "League Leaders",
+  "Super League Champions",
+  "Challenge Cup",
+  "World Club Challenge",
+] as const;
+
+function getMajorTrophiesWon(labels: string[]): string[] {
+  return labels.filter((label) =>
+    (MAJOR_TROPHY_LABELS as readonly string[]).includes(label)
+  );
+}
+
+function getAvailableMajorTrophies(career: ManagerCareer): string[] {
+  const available: string[] = [
+    "League Leaders",
+    "Super League Champions",
+    "Challenge Cup",
+  ];
+  if (shouldScheduleWorldClubChallenge(career)) {
+    available.push("World Club Challenge");
+  }
+  return available;
+}
+
+function buildManagerTrophySeasonFlags(
+  career: ManagerCareer
+): Pick<
+  AchievementCheckContext,
+  | "managerTrebleWinner"
+  | "managerQuadrupleWinner"
+  | "managerCleanSweep"
+  | "managerWorldClubChallengeWinner"
+  | "managerPerfectTrophySeason"
+> {
+  const trophies = getMajorTrophiesWon(getManagerSeasonTrophyLabels(career));
+  const available = getAvailableMajorTrophies(career);
+  const majorCount = trophies.length;
+  const cleanSweep =
+    available.length > 0 && available.every((label) => trophies.includes(label));
+  const unbeaten = career.losses === 0 && career.wins > 0;
+  const worldClubChallengeWinner = trophies.includes("World Club Challenge");
+
+  return {
+    managerTrebleWinner: majorCount >= 3,
+    managerQuadrupleWinner: majorCount >= 4,
+    managerCleanSweep: cleanSweep,
+    managerWorldClubChallengeWinner: worldClubChallengeWinner,
+    managerPerfectTrophySeason: unbeaten && cleanSweep,
+  };
+}
 function countBradfordPlayers(squad: SquadSlot[]): number {
   return squad.filter((slot) => {
     const club = slot.player?.club ?? slot.player?.displayClub ?? "";
@@ -119,6 +172,7 @@ export function triggerManagerSeasonAchievements(career: ManagerCareer): void {
     career.playoffs?.finish === "Super League Champions";
   const cupWinner = cupOutcome.isWinner;
   const doubleWinner = leagueWinner && cupWinner;
+  const trophyFlags = buildManagerTrophySeasonFlags(career);
 
   triggerAchievementCheck({
     trigger: "manager-season-completed",
@@ -131,6 +185,20 @@ export function triggerManagerSeasonAchievements(career: ManagerCareer): void {
     cupFinalReached:
       cupOutcome.isWinner || cupOutcome.finish === "Runners-Up",
     boardConfidence: career.boardConfidence,
+    ...trophyFlags,
+  });
+}
+
+export function triggerManagerWorldClubChallengeAchievements(
+  career: ManagerCareer
+): void {
+  const trophyFlags = buildManagerTrophySeasonFlags(career);
+  if (!trophyFlags.managerWorldClubChallengeWinner) return;
+
+  triggerAchievementCheck({
+    trigger: "manager-world-club-challenge-won",
+    managerWorldClubChallengeWinner: true,
+    ...trophyFlags,
   });
 }
 

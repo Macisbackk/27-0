@@ -137,7 +137,7 @@ export function validateMatchEvents(
     if (event.type === "try") {
       const placeholder =
         !event.playerName ||
-        /^(try scorer|opposition try scorer|unknown)$/i.test(
+        /^(try[\s_-]*scorer|opposition[\s_-]*try[\s_-]*scorer|unknown([\s_-]*player)?|scorer|player)$/i.test(
           event.playerName.trim()
         );
       if (placeholder) {

@@ -12,6 +12,7 @@ export const MANAGER_ROUTE_SECTIONS: Partial<Record<ManagerView, string>> = {
   fixtures: "fixtures",
   "across-league": "across-league",
   stats: "stats",
+  settings: "settings",
   "club-select": "new",
 };
 
@@ -42,6 +43,7 @@ export const MANAGER_NAV_VIEWS: ManagerView[] = [
   "fixtures",
   "across-league",
   "stats",
+  "settings",
 ];
 
 export interface ParsedManagerPath {

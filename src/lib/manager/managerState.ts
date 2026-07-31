@@ -1,7 +1,7 @@
 import type { ChallengeCupBracketState } from "../game/challenge-cup-bracket";
-import type { ManagerCareer } from "./types";
-import { DEFAULT_TACTICS } from "./types";
-import { EMPTY_TEAM_SEASON_STATS } from "./managerCareerStats";
+import type { ManagerCareer, ManagerSettings } from "./types";
+import { DEFAULT_MANAGER_SETTINGS, DEFAULT_TACTICS } from "./types";
+import { EMPTY_TEAM_SEASON_STATS, sanitizePlayerSeasonStats } from "./managerCareerStats";
 import { initLeagueClubStates, ensureLeagueClubStates } from "./managerLeagueState";
 import {
   ensureLeagueClubRosters,
@@ -70,6 +70,33 @@ import {
   writeManagerCareerRaw,
   type ManagerSaveSlotSummary,
 } from "./managerSaveStorage";
+
+function hydrateManagerSettings(
+  raw: ManagerSettings | undefined
+): ManagerSettings {
+  const years = raw?.autoRenewContractYears;
+  const autoRenewContractYears =
+    years === 1 || years === 2 || years === 3 || years === 4
+      ? years
+      : DEFAULT_MANAGER_SETTINGS.autoRenewContractYears;
+
+  return {
+    autoRenewContractYears,
+    autoFixSquadBeforeMatch:
+      raw?.autoFixSquadBeforeMatch ??
+      DEFAULT_MANAGER_SETTINGS.autoFixSquadBeforeMatch,
+    showAchievementPopups:
+      raw?.showAchievementPopups ??
+      DEFAULT_MANAGER_SETTINGS.showAchievementPopups,
+    compactFixtureRows:
+      raw?.compactFixtureRows ?? DEFAULT_MANAGER_SETTINGS.compactFixtureRows,
+    autoOpenNextFixture:
+      raw?.autoOpenNextFixture ?? DEFAULT_MANAGER_SETTINGS.autoOpenNextFixture,
+    wccWriteUpExpandedByDefault:
+      raw?.wccWriteUpExpandedByDefault ??
+      DEFAULT_MANAGER_SETTINGS.wccWriteUpExpandedByDefault,
+  };
+}
 
 /** Backfill missing contract fields on older saves. */
 function hydrateLegacyContracts(
@@ -248,6 +275,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     lastSeasonDevelopmentReview: raw.lastSeasonDevelopmentReview,
     clubCareerTotals: raw.clubCareerTotals ?? {},
     retiredPlayers: raw.retiredPlayers ?? [],
+    managerSettings: hydrateManagerSettings(raw.managerSettings),
   };
 
   career = ensureRenewalDemands(career);
@@ -279,6 +307,10 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   }
   career = reconcileLeagueClubReserveCounts(career);
   career = sanitizeWorldClubChallengeState(career);
+  career = {
+    ...career,
+    playerSeasonStats: sanitizePlayerSeasonStats(career),
+  };
   return syncManagerInboxMessages(career);
 }
 
@@ -460,6 +492,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     leagueClubStatesWeek: 0,
     leagueClubRosters: initLeagueClubRosters(club),
     leagueClubReserveCounts: initLeagueClubReserveCounts(),
+    managerSettings: { ...DEFAULT_MANAGER_SETTINGS },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

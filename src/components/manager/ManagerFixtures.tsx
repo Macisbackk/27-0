@@ -47,6 +47,7 @@ import type {
   ManagerFixtureRecord,
   ManagerScheduledFixture,
   WorldClubChallengeFixture,
+  WorldClubChallengeResult,
 } from "@/lib/manager/types";
 import { playUiClick } from "@/lib/sound";
 import seedrandom from "seedrandom";
@@ -54,10 +55,12 @@ import { GameButton } from "@/components/ui/GameButton";
 import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
 import {
   buildWorldClubChallengeScheduledFixture,
+  getCurrentSeasonWccResult,
   getWccStats,
   isValidWorldClubChallengeFixture,
   pickNrlChampion,
   rollNrlChampionRating,
+  worldClubChallengeResultToFixtureRecord,
 } from "@/lib/manager/worldClubChallenge";
 import { GamePanel } from "@/components/ui/GamePanel";
 
@@ -81,6 +84,8 @@ type FixtureListItem =
       key: string;
       fixture: ManagerFixtureRecord;
       competition: ManagerFixtureRecord["competition"];
+      /** False for synthetic AI WCC rows that are not in career.fixtures. */
+      selectable?: boolean;
     }
   | {
       kind: "upcoming";
@@ -163,6 +168,56 @@ function resolveWccFixtureForDisplay(
   };
 }
 
+function itemRound(item: FixtureListItem): number {
+  if (item.kind === "upcoming") return item.sched.round;
+  return item.fixture.round;
+}
+
+function sortUpcomingFirst(items: FixtureListItem[]): FixtureListItem[] {
+  return [...items].sort((a, b) => itemRound(a) - itemRound(b));
+}
+
+function sortResultsNewestFirst(items: FixtureListItem[]): FixtureListItem[] {
+  return [...items].sort((a, b) => itemRound(b) - itemRound(a));
+}
+
+function WccWriteUpDetails({
+  result,
+  /** When false, summary is just “Match write-up” (score shown separately). */
+  includeScoreline = true,
+  defaultOpen = false,
+}: {
+  result: WorldClubChallengeResult;
+  includeScoreline?: boolean;
+  defaultOpen?: boolean;
+}) {
+  return (
+    <details className="group" open={defaultOpen || undefined}>
+      <summary
+        className={`flex cursor-pointer list-none items-center justify-between gap-2 rounded-lg border border-pitch-700/40 bg-pitch-900/30 px-3 py-2 [&::-webkit-details-marker]:hidden`}
+      >
+        <span className="min-w-0 font-semibold text-white">
+          {includeScoreline
+            ? `${result.seasonYear} — ${result.superLeagueChampionName} ${result.homeScore}–${result.awayScore} ${result.nrlChampionName}`
+            : "Match write-up"}
+        </span>
+        <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-pitch-500 transition group-open:rotate-180">
+          Write-up
+        </span>
+      </summary>
+      <div className="mt-2 space-y-1 rounded-lg border border-pitch-700/30 bg-pitch-950/40 px-3 py-2">
+        <p className={TYPO.bodySm}>
+          Winner: {result.winnerName}
+          {result.userResult && result.userResult !== "not_involved"
+            ? ` · You ${result.userResult}`
+            : " · AI result"}
+        </p>
+        <p className={TYPO.bodySm}>{result.storySummary}</p>
+      </div>
+    </details>
+  );
+}
+
 function buildFixtureList(
   career: ManagerCareer,
   nextFixture: ManagerScheduledFixture | null
@@ -181,6 +236,7 @@ function buildFixtureList(
         key: sched.id,
         fixture: played,
         competition: played.competition ?? sched.competition,
+        selectable: true,
       });
       continue;
     }
@@ -206,7 +262,11 @@ function buildFixtureList(
     const id = f.fixtureId ?? `extra-${f.round}-${f.competition}-${f.opponent}`;
     if (matchedFixtureIds.has(id)) return false;
     if (f.fixtureId) matchedFixtureIds.add(f.fixtureId);
-    return f.competition === "playoffs" || f.competition === "friendly";
+    return (
+      f.competition === "playoffs" ||
+      f.competition === "friendly" ||
+      f.competition === "world_club_challenge"
+    );
   });
 
   for (const fixture of extras) {
@@ -215,6 +275,7 @@ function buildFixtureList(
       key: fixture.fixtureId ?? `extra-${fixture.round}-${fixture.opponent}`,
       fixture,
       competition: fixture.competition,
+      selectable: true,
     });
   }
 
@@ -257,6 +318,24 @@ function buildFixtureList(
     }
   }
 
+  for (const result of career.worldClubChallenge?.history ?? []) {
+    if (matchedFixtureIds.has(result.id)) continue;
+    const alreadyListed = items.some(
+      (i) =>
+        i.kind === "played" &&
+        (i.fixture.fixtureId === result.id || i.key === result.id)
+    );
+    if (alreadyListed) continue;
+    matchedFixtureIds.add(result.id);
+    items.push({
+      kind: "played",
+      key: result.id,
+      fixture: worldClubChallengeResultToFixtureRecord(result, career.club),
+      competition: "world_club_challenge",
+      selectable: false,
+    });
+  }
+
   return items;
 }
 
@@ -271,10 +350,12 @@ function UpcomingFixtureRow({
   sched,
   club,
   isNext,
+  compact = false,
 }: {
   sched: ManagerScheduledFixture;
   club: string;
   isNext: boolean;
+  compact?: boolean;
 }) {
   const opponent = sched.opponent;
   const opponentColors = opponent !== "TBC" ? getClubColors(opponent) : null;
@@ -311,11 +392,11 @@ function UpcomingFixtureRow({
 
   return (
     <div
-      className={managerFixtureRowClass({
+      className={`${managerFixtureRowClass({
         isNext,
         competition: sched.competition,
         hasFriendlyStyle: Boolean(friendlyBorderStyle),
-      })}
+      })}${compact ? " !py-2" : ""}`}
       style={friendlyBorderStyle}
     >
       <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
@@ -397,17 +478,21 @@ function PlayedFixtureRow({
   item,
   club,
   onSelectFixture,
+  compact = false,
 }: {
   item: Extract<FixtureListItem, { kind: "played" }>;
   club: string;
   onSelectFixture: (fixtureId: string) => void;
+  compact?: boolean;
 }) {
   const { fixture } = item;
   const fixtureId = managerFixtureDisplayId(fixture);
   const attendance = fixture.meta?.attendance?.attendance;
+  const userTeamName = fixture.userClub || club;
+  const selectable = item.selectable !== false;
 
   return (
-    <div className={SPACING.stackSm}>
+    <div className={compact ? "space-y-1" : SPACING.stackSm}>
       <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
         {fixture.competition && (
           <ManagerCompetitionBadge
@@ -426,13 +511,17 @@ function PlayedFixtureRow({
       </div>
       <FixtureResultRow
         fixture={fixture}
-        userTeamName={club}
+        userTeamName={userTeamName}
         roundLabel={getManagerPlayedFixtureLabel(fixture)}
         cupHighlight={isChallengeCupFixture(fixture.competition)}
-        onClick={() => {
-          playUiClick();
-          onSelectFixture(fixtureId);
-        }}
+        onClick={
+          selectable
+            ? () => {
+                playUiClick();
+                onSelectFixture(fixtureId);
+              }
+            : undefined
+        }
       />
     </div>
   );
@@ -442,13 +531,15 @@ function FixtureItemList({
   items,
   club,
   onSelectFixture,
+  compact = false,
 }: {
   items: FixtureListItem[];
   club: string;
   onSelectFixture: (fixtureId: string) => void;
+  compact?: boolean;
 }) {
   return (
-    <div className={SPACING.stackSm}>
+    <div className={compact ? "space-y-1.5" : SPACING.stackSm}>
       {items.map((item) =>
         item.kind === "upcoming" ? (
           <UpcomingFixtureRow
@@ -456,6 +547,7 @@ function FixtureItemList({
             sched={item.sched}
             club={club}
             isNext={item.isNext}
+            compact={compact}
           />
         ) : (
           <PlayedFixtureRow
@@ -463,6 +555,7 @@ function FixtureItemList({
             item={item}
             club={club}
             onSelectFixture={onSelectFixture}
+            compact={compact}
           />
         )
       )}
@@ -536,51 +629,61 @@ export function ManagerFixtures({
     );
 
     if (filter === "upcoming") {
-      items = items.filter((i) => i.kind === "upcoming");
+      items = sortUpcomingFirst(items.filter((i) => i.kind === "upcoming"));
     } else if (filter === "results") {
-      items = items.filter((i) => i.kind === "played").reverse();
+      items = sortResultsNewestFirst(items.filter((i) => i.kind === "played"));
     }
 
     return items;
   }, [allItems, filter]);
 
-  const playedCount = allItems.filter((i) => i.kind === "played").length;
+  const playedCount = allItems.filter(
+    (i) => i.kind === "played" && i.selectable !== false
+  ).length;
   const upcomingCount = allItems.filter((i) => i.kind === "upcoming").length;
 
   const upcomingItems = useMemo(
     () =>
-      filteredItems.filter((i) => {
-        if (i.kind !== "upcoming") return false;
-        if (filter === "all" && i.sched.competition === "world_club_challenge") {
-          return false;
-        }
-        return true;
-      }),
+      sortUpcomingFirst(
+        filteredItems.filter((i) => {
+          if (i.kind !== "upcoming") return false;
+          if (filter === "all" && i.sched.competition === "world_club_challenge") {
+            return false;
+          }
+          return true;
+        })
+      ),
     [filteredItems, filter]
   );
 
   const challengeCupItems = useMemo(
     () =>
-      filteredItems.filter(
-        (i) => i.kind === "upcoming" && itemCompetition(i) === "challenge_cup"
+      sortUpcomingFirst(
+        filteredItems.filter(
+          (i) => i.kind === "upcoming" && itemCompetition(i) === "challenge_cup"
+        )
       ),
     [filteredItems]
   );
 
   const leagueUpcomingItems = useMemo(
     () =>
-      upcomingItems.filter(
-        (i) =>
-          i.kind === "upcoming" &&
-          (i.sched.competition === "league" || !i.sched.competition)
+      sortUpcomingFirst(
+        upcomingItems.filter(
+          (i) =>
+            i.kind === "upcoming" &&
+            (i.sched.competition === "league" || !i.sched.competition)
+        )
       ),
     [upcomingItems]
   );
 
   const playoffItems = useMemo(
     () =>
-      filteredItems.filter(
-        (i) => i.kind === "upcoming" && itemCompetition(i) === "playoffs"
+      sortUpcomingFirst(
+        filteredItems.filter(
+          (i) => i.kind === "upcoming" && itemCompetition(i) === "playoffs"
+        )
       ),
     [filteredItems]
   );
@@ -601,60 +704,48 @@ export function ManagerFixtures({
 
   const wccStats = getWccStats(career);
   const wccCurrentRaw = career.worldClubChallenge?.currentFixture;
-  const wccCurrent =
-    wccCurrentRaw && wccCurrentRaw.status !== "complete"
+  const wccScheduled =
+    wccCurrentRaw?.status === "scheduled"
       ? resolveWccFixtureForDisplay(career, wccCurrentRaw)
       : null;
-  const wccHistory =
-    filter === "results" || filter === "wcc"
-      ? wccStats.results.slice().reverse()
-      : [];
-  const showWcc =
-    filter === "all" ||
-    filter === "wcc" ||
-    (filter === "results" && wccHistory.length > 0);
+  const wccCurrentSeasonResult = getCurrentSeasonWccResult(career);
+  const wccPastResults = useMemo(
+    () =>
+      wccStats.results
+        .filter((r) => r.seasonYear !== career.seasonYear)
+        .slice()
+        .reverse(),
+    [wccStats.results, career.seasonYear]
+  );
+  const showWcc = filter === "all" || filter === "wcc";
 
-  const wccHistoryList =
-    wccHistory.length > 0 ? (
+  const wccPastResultsList =
+    wccPastResults.length > 0 ? (
       <ul className="space-y-2">
-        {wccHistory.map((r) => (
-          <li
-            key={r.id}
-            className="rounded-lg border border-pitch-700/40 bg-pitch-900/30 p-3"
-          >
-            <p className="font-semibold text-white">
-              {r.seasonYear} — {r.superLeagueChampionName} {r.homeScore}–
-              {r.awayScore} {r.nrlChampionName}
-            </p>
-            <p className={TYPO.bodySm}>
-              Winner: {r.winnerName}
-              {r.userResult && r.userResult !== "not_involved"
-                ? ` · You ${r.userResult}`
-                : " · AI result"}
-            </p>
-            <p className={`mt-1 ${TYPO.bodySm}`}>{r.storySummary}</p>
+        {wccPastResults.map((r) => (
+          <li key={r.id}>
+            <WccWriteUpDetails result={r} />
           </li>
         ))}
       </ul>
     ) : null;
 
   let wccPanelContent: ReactNode = null;
-  if (filter === "results" && wccHistoryList) {
-    wccPanelContent = wccHistoryList;
-  } else if (filter === "wcc") {
+  if (filter === "wcc") {
     wccPanelContent = (
       <div className="space-y-4">
-        {wccCurrent ? (
+        {wccScheduled ? (
           <div className="space-y-2">
             <p className={`${TYPO.sectionLabel} text-sky-300`}>This season</p>
             <p className="font-semibold text-white">
-              {wccCurrent.superLeagueChampionName} vs {wccCurrent.nrlChampionName}
+              {wccScheduled.superLeagueChampionName} vs{" "}
+              {wccScheduled.nrlChampionName}
             </p>
             <p className={TYPO.bodySm}>
-              Game Week {wccCurrent.gameWeek} · Season {wccCurrent.seasonYear} ·
-              NRL rating {wccCurrent.nrlChampionRating}
+              Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear}{" "}
+              · NRL rating {wccScheduled.nrlChampionRating}
             </p>
-            {wccCurrent.userInvolved ? (
+            {wccScheduled.userInvolved ? (
               <p className={`${TYPO.bodySm} text-accent-gold`}>
                 You are the Super League champion — Play or Simulate from
                 Matchday when Game Week 3 arrives.
@@ -665,32 +756,67 @@ export function ManagerFixtures({
               </p>
             )}
           </div>
+        ) : wccCurrentSeasonResult ? (
+          <div className="space-y-2">
+            <p className={`${TYPO.sectionLabel} text-sky-300`}>This season</p>
+            <PlayedFixtureRow
+              item={{
+                kind: "played",
+                key: wccCurrentSeasonResult.id,
+                fixture: worldClubChallengeResultToFixtureRecord(
+                  wccCurrentSeasonResult,
+                  career.club
+                ),
+                competition: "world_club_challenge",
+                selectable: career.fixtures.some(
+                  (f) =>
+                    f.fixtureId === wccCurrentSeasonResult.id ||
+                    (f.competition === "world_club_challenge" &&
+                      f.round === 3 &&
+                      f.opponent === wccCurrentSeasonResult.nrlChampionName)
+                ),
+              }}
+              club={career.club}
+              onSelectFixture={onSelectFixture}
+            />
+            <WccWriteUpDetails
+              result={wccCurrentSeasonResult}
+              includeScoreline={false}
+              defaultOpen={
+                career.managerSettings?.wccWriteUpExpandedByDefault ?? false
+              }
+            />
+          </div>
+        ) : wccPastResults.length > 0 || wccStats.results.length > 0 ? (
+          <p className={TYPO.bodySm}>
+            No World Club Challenge fixture scheduled this season.
+          </p>
         ) : (
           <p className={TYPO.bodySm}>
-            {wccHistory.length > 0
-              ? "No World Club Challenge fixture scheduled this season."
-              : "World Club Challenge starts from your second season once a Super League champion has been crowned."}
+            World Club Challenge starts from your second season once a Super
+            League champion has been crowned.
           </p>
         )}
-        {wccHistoryList ? (
+        {wccPastResultsList ? (
           <div className="space-y-2">
             <p className={`${TYPO.sectionLabel} text-sky-300`}>Past results</p>
-            {wccHistoryList}
+            {wccPastResultsList}
           </div>
         ) : null}
       </div>
     );
-  } else if (wccCurrent) {
+  } else if (wccScheduled) {
     wccPanelContent = (
       <div className="space-y-2">
         <p className="font-semibold text-white">
-          {wccCurrent.superLeagueChampionName} vs {wccCurrent.nrlChampionName}
+          {wccScheduled.superLeagueChampionName} vs{" "}
+          {wccScheduled.nrlChampionName}
         </p>
         <p className={TYPO.bodySm}>
-          Game Week {wccCurrent.gameWeek} · Season {wccCurrent.seasonYear} · NRL
-          rating {wccCurrent.nrlChampionRating}
+          Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear} ·
+          NRL rating {wccScheduled.nrlChampionRating}
         </p>
-        {wccCurrent.userInvolved ? (
+        {wccScheduled.userInvolved ? (
           <p className={`${TYPO.bodySm} text-accent-gold`}>
             You are the Super League champion — Play or Simulate from Matchday
             when Game Week 3 arrives.
@@ -702,7 +828,7 @@ export function ManagerFixtures({
         )}
       </div>
     );
-  } else if (filter === "all") {
+  } else if (filter === "all" && !wccCurrentSeasonResult && wccStats.results.length === 0) {
     wccPanelContent = (
       <p className={TYPO.bodySm}>
         World Club Challenge starts from your second season once a Super League
@@ -890,6 +1016,7 @@ export function ManagerFixtures({
             items={challengeCupItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
+            compact={career.managerSettings?.compactFixtureRows}
           />
         </GamePanel>
       )}
@@ -903,6 +1030,7 @@ export function ManagerFixtures({
             items={leagueUpcomingItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
+            compact={career.managerSettings?.compactFixtureRows}
           />
         </GamePanel>
       )}
@@ -913,6 +1041,7 @@ export function ManagerFixtures({
             items={playoffItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
+            compact={career.managerSettings?.compactFixtureRows}
           />
         </GamePanel>
       )}
@@ -923,6 +1052,7 @@ export function ManagerFixtures({
             items={upcomingItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
+            compact={career.managerSettings?.compactFixtureRows}
           />
         </GamePanel>
       )}
@@ -936,6 +1066,7 @@ export function ManagerFixtures({
             items={completedResultsItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
+            compact={career.managerSettings?.compactFixtureRows}
           />
         </GamePanel>
       )}

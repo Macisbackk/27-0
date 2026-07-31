@@ -74,11 +74,19 @@ function matchesFilter(msg: InboxMessage, filter: InboxFilter): boolean {
 }
 
 function InboxActionRow({ children }: { children: React.ReactNode }) {
-  return <div className="grid gap-2 sm:grid-cols-3">{children}</div>;
+  return (
+    <div className="mx-auto grid w-full max-w-lg gap-2 sm:grid-cols-3">
+      {children}
+    </div>
+  );
 }
 
 function InboxSingleAction({ children }: { children: React.ReactNode }) {
-  return <div className="grid gap-2">{children}</div>;
+  return (
+    <div className="mx-auto flex w-full max-w-xs justify-center sm:max-w-sm">
+      {children}
+    </div>
+  );
 }
 
 export function ManagerInbox({
@@ -153,7 +161,7 @@ export function ManagerInbox({
         title="Club Mail"
         subtitle="Club messages and transfer offers — auto-cleared after 7 weeks"
         action={
-          <div className="flex shrink-0 flex-wrap items-center gap-2">
+          <div className="flex shrink-0 flex-wrap items-center justify-center gap-2 sm:justify-end">
             {showViewAllAsSeen && (
               <GameButton
                 variant="secondary"
@@ -163,7 +171,7 @@ export function ManagerInbox({
                 View all as seen
               </GameButton>
             )}
-            <div className="flex flex-wrap items-center gap-1.5 text-xs">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs sm:justify-end">
               <span className="rounded-sm border border-pitch-700/50 bg-pitch-950/40 px-2 py-0.5 text-pitch-400">
                 Open{" "}
                 <span
@@ -228,18 +236,22 @@ export function ManagerInbox({
 
       {messages.length === 0 && (
         <ProgrammePanel variant="inset" padded>
-          <p className={`${TYPO.bodySm} text-pitch-400`}>
-            No new messages. Rival clubs may approach you about unlisted
-            players, or list your own squad to attract bids.
-          </p>
+          <div className="flex flex-col items-center justify-center gap-3 py-2 text-center">
+            <p className={`${TYPO.bodySm} text-pitch-400`}>
+              No new messages. Rival clubs may approach you about unlisted
+              players, or list your own squad to attract bids.
+            </p>
+          </div>
         </ProgrammePanel>
       )}
 
       {messages.length > 0 && filteredMessages.length === 0 && (
         <ProgrammePanel variant="inset" padded>
-          <p className={`${TYPO.bodySm} text-pitch-400`}>
-            No messages in this category.
-          </p>
+          <div className="flex flex-col items-center justify-center gap-3 py-2 text-center">
+            <p className={`${TYPO.bodySm} text-pitch-400`}>
+              No messages in this category.
+            </p>
+          </div>
         </ProgrammePanel>
       )}
 
@@ -279,7 +291,6 @@ export function ManagerInbox({
                           variant="secondary"
                           size="sm"
                           fullWidth
-                          className="sm:col-span-2"
                           onClick={() => setNegotiatingId(null)}
                         >
                           Cancel

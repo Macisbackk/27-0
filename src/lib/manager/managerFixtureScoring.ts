@@ -24,23 +24,20 @@ function userTryTotal(fixture: MatchFixture): number {
   );
 }
 
-/** Generic / missing names that should never appear in Match Review. */
-export function isPlaceholderTryScorerName(
-  name: string | undefined | null
-): boolean {
-  if (!name?.trim()) return true;
-  return /^(try scorer|opposition try scorer|unknown|kicker)$/i.test(
-    name.trim()
-  );
-}
+import {
+  isInvalidPlayerName,
+  isPlaceholderTryScorerName,
+} from "./managerPlayerNameGuards";
+
+export { isPlaceholderTryScorerName, isInvalidPlayerName };
 
 function scorersHavePlaceholders(
   scorers: { name: string; playerId?: string }[]
 ): boolean {
   return scorers.some(
     (s) =>
-      isPlaceholderTryScorerName(s.name) ||
-      isPlaceholderTryScorerName(s.playerId)
+      isInvalidPlayerName(s.name) ||
+      isInvalidPlayerName(s.playerId)
   );
 }
 
@@ -287,7 +284,7 @@ function resolvePlayerIdByName(
   career: ManagerCareer,
   name: string | undefined
 ): string | undefined {
-  if (!name || isPlaceholderTryScorerName(name)) return undefined;
+  if (!name || isInvalidPlayerName(name, [career.club])) return undefined;
   const allIds = [
     ...career.matchdayXiii,
     ...career.matchdayInterchange,
@@ -307,17 +304,18 @@ function resolveUserTryIdentity(
   ev: LiveMatchEvent
 ): { playerId: string; name: string } | null {
   const fromId =
-    ev.playerId && !isPlaceholderTryScorerName(ev.playerId)
+    ev.playerId && !isInvalidPlayerName(ev.playerId, [career.club])
       ? getManagerPlayer(career, ev.playerId)
       : undefined;
-  if (fromId?.name) {
+  if (fromId?.name && !isInvalidPlayerName(fromId.name, [career.club])) {
     return { playerId: fromId.id, name: fromId.name };
   }
 
   const name = ev.playerName?.trim();
-  if (name && !isPlaceholderTryScorerName(name) && name !== career.club) {
-    const playerId =
-      resolvePlayerIdByName(career, name) ?? ev.playerId ?? name;
+  if (name && !isInvalidPlayerName(name, [career.club])) {
+    const playerId = resolvePlayerIdByName(career, name);
+    // Never persist a bare display name as playerId — only real ids.
+    if (!playerId) return null;
     return { playerId, name };
   }
 

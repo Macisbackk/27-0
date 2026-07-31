@@ -82,6 +82,16 @@ function evaluateUnlock(
       return ctx.managerGrandFinalWinner === true;
     case "double-winners":
       return ctx.managerDoubleWinner === true;
+    case "treble-winners":
+      return ctx.managerTrebleWinner === true;
+    case "quadruple-winners":
+      return ctx.managerQuadrupleWinner === true;
+    case "clean-sweep":
+      return ctx.managerCleanSweep === true;
+    case "world-champions":
+      return ctx.managerWorldClubChallengeWinner === true;
+    case "perfect-trophy-season":
+      return ctx.managerPerfectTrophySeason === true;
     case "academy-trust":
       return ctx.reserveCalledUp === true && ctx.managerWin === true;
     case "youth-breakthrough":

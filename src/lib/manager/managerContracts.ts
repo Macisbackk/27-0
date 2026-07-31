@@ -415,7 +415,10 @@ export function applyRenewal(
 }
 
 /** Renew all expiring players at their current demand (or a fair default). */
-export function bulkRenewExpiringContracts(career: ManagerCareer): {
+export function bulkRenewExpiringContracts(
+  career: ManagerCareer,
+  yearsOverride?: 1 | 2 | 3 | 4
+): {
   career: ManagerCareer;
   renewed: number;
   declined: number;
@@ -423,6 +426,9 @@ export function bulkRenewExpiringContracts(career: ManagerCareer): {
   let working = ensureRenewalDemands(career);
   let renewed = 0;
   let declined = 0;
+  const years =
+    yearsOverride ??
+    working.managerSettings?.autoRenewContractYears;
 
   for (const ps of working.squad) {
     const contract = working.contracts[ps.playerId];
@@ -435,9 +441,13 @@ export function bulkRenewExpiringContracts(career: ManagerCareer): {
     const demand =
       contract.renewalDemand ??
       generateRenewalDemand(ps.playerId, contract, working);
-    const result = evaluateRenewalOffer(ps.playerId, contract, demand, working);
+    const offer: RenewalDemand = {
+      ...demand,
+      yearsRequested: years ?? demand.yearsRequested,
+    };
+    const result = evaluateRenewalOffer(ps.playerId, contract, offer, working);
     if (result.accepted) {
-      working = applyRenewal(working, ps.playerId, demand);
+      working = applyRenewal(working, ps.playerId, offer);
       renewed++;
     } else {
       declined++;

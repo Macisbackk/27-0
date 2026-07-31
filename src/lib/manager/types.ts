@@ -377,11 +377,23 @@ export type ManagerView =
   | "across-league"
   | "table"
   | "stats"
+  | "settings"
   | "play-game"
   | "match-review"
   | "season-review"
   | "development-review"
   | "season-rewards";
+
+export type ManagerAutoRenewContractYears = 1 | 2 | 3 | 4;
+
+export interface ManagerSettings {
+  autoRenewContractYears: ManagerAutoRenewContractYears;
+  autoFixSquadBeforeMatch: boolean;
+  showAchievementPopups: boolean;
+  compactFixtureRows: boolean;
+  autoOpenNextFixture: boolean;
+  wccWriteUpExpandedByDefault: boolean;
+}
 
 export type LiveMatchPhase =
   | "preview"
@@ -713,6 +725,8 @@ export interface ManagerCareer {
   worldClubChallenge?: WorldClubChallengeState;
   /** Club that won Super League last season — drives WCC scheduling. */
   previousSeasonChampion?: string | null;
+  /** Per-save manager preferences. */
+  managerSettings?: ManagerSettings;
   createdAt: string;
   updatedAt: string;
 }
@@ -746,6 +760,15 @@ export const DEFAULT_TACTICS: ManagerTactics = {
   playingStyle: "balanced",
   attackFocus: "middle",
   defenceFocus: "line_speed",
+};
+
+export const DEFAULT_MANAGER_SETTINGS: ManagerSettings = {
+  autoRenewContractYears: 2,
+  autoFixSquadBeforeMatch: false,
+  showAchievementPopups: true,
+  compactFixtureRows: false,
+  autoOpenNextFixture: true,
+  wccWriteUpExpandedByDefault: false,
 };
 
 export const MANAGER_SEASON_GAMES = 27;

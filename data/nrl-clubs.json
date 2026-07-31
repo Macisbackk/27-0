@@ -4,8 +4,8 @@
     "name": "Brisbane Broncos",
     "shortName": "BRI",
     "nickname": "Broncos",
-    "primaryColor": "#6B1E3A",
-    "secondaryColor": "#FDB913",
+    "primaryColor": "#5A0A2C",
+    "secondaryColor": "#FBBF24",
     "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
@@ -13,48 +13,75 @@
     "strengthTier": 4,
     "city": "Brisbane",
     "stadium": "Suncorp Stadium",
-    "nameBias": { "aus": 62, "nz": 10, "samoa": 12, "tonga": 8, "fiji": 5, "cookIslands": 2, "png": 1 }
+    "nameBias": {
+      "aus": 62,
+      "nz": 10,
+      "samoa": 12,
+      "tonga": 8,
+      "fiji": 5,
+      "cookIslands": 2,
+      "png": 1
+    }
   },
   {
     "id": "nrl-canberra-raiders",
     "name": "Canberra Raiders",
     "shortName": "CAN",
     "nickname": "Raiders",
-    "primaryColor": "#00A651",
+    "primaryColor": "#7AC143",
     "secondaryColor": "#FFFFFF",
-    "accentColor": "#C4D600",
+    "accentColor": "#003E29",
     "league": "nrl",
     "active": true,
     "playable": false,
     "strengthTier": 3,
     "city": "Canberra",
     "stadium": "GIO Stadium",
-    "nameBias": { "aus": 58, "nz": 14, "samoa": 10, "tonga": 8, "fiji": 6, "cookIslands": 3, "png": 1 }
+    "nameBias": {
+      "aus": 58,
+      "nz": 14,
+      "samoa": 10,
+      "tonga": 8,
+      "fiji": 6,
+      "cookIslands": 3,
+      "png": 1
+    }
   },
   {
     "id": "nrl-canterbury-bulldogs",
     "name": "Canterbury-Bankstown Bulldogs",
     "shortName": "CBY",
     "nickname": "Bulldogs",
-    "primaryColor": "#0055A4",
+    "primaryColor": "#0054A6",
     "secondaryColor": "#FFFFFF",
-    "accentColor": "#E30613",
+    "accentColor": "#111111",
     "league": "nrl",
     "active": true,
     "playable": false,
     "strengthTier": 3,
     "city": "Sydney",
     "stadium": "Accor Stadium",
-    "aliases": ["Canterbury Bulldogs", "Bulldogs"],
-    "nameBias": { "aus": 50, "nz": 12, "samoa": 16, "tonga": 12, "fiji": 6, "cookIslands": 3, "png": 1 }
+    "aliases": [
+      "Canterbury Bulldogs",
+      "Bulldogs"
+    ],
+    "nameBias": {
+      "aus": 50,
+      "nz": 12,
+      "samoa": 16,
+      "tonga": 12,
+      "fiji": 6,
+      "cookIslands": 3,
+      "png": 1
+    }
   },
   {
     "id": "nrl-cronulla-sharks",
     "name": "Cronulla Sharks",
     "shortName": "CRO",
     "nickname": "Sharks",
-    "primaryColor": "#00A9E0",
-    "secondaryColor": "#000000",
+    "primaryColor": "#00A3E0",
+    "secondaryColor": "#111111",
     "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
@@ -62,16 +89,26 @@
     "strengthTier": 3,
     "city": "Sydney",
     "stadium": "PointsBet Stadium",
-    "aliases": ["Cronulla-Sutherland Sharks"],
-    "nameBias": { "aus": 60, "nz": 12, "samoa": 10, "tonga": 8, "fiji": 6, "cookIslands": 3, "png": 1 }
+    "aliases": [
+      "Cronulla-Sutherland Sharks"
+    ],
+    "nameBias": {
+      "aus": 60,
+      "nz": 12,
+      "samoa": 10,
+      "tonga": 8,
+      "fiji": 6,
+      "cookIslands": 3,
+      "png": 1
+    }
   },
   {
     "id": "nrl-dolphins",
     "name": "Dolphins",
     "shortName": "DOL",
     "nickname": "Dolphins",
-    "primaryColor": "#E30613",
-    "secondaryColor": "#003366",
+    "primaryColor": "#D71920",
+    "secondaryColor": "#FFD100",
     "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
@@ -79,49 +116,77 @@
     "strengthTier": 3,
     "city": "Redcliffe",
     "stadium": "Suncorp Stadium",
-    "aliases": ["Redcliffe Dolphins"],
-    "nameBias": { "aus": 55, "nz": 12, "samoa": 12, "tonga": 10, "fiji": 7, "cookIslands": 3, "png": 1 }
+    "aliases": [
+      "Redcliffe Dolphins"
+    ],
+    "nameBias": {
+      "aus": 55,
+      "nz": 12,
+      "samoa": 12,
+      "tonga": 10,
+      "fiji": 7,
+      "cookIslands": 3,
+      "png": 1
+    }
   },
   {
     "id": "nrl-gold-coast-titans",
     "name": "Gold Coast Titans",
     "shortName": "GCT",
     "nickname": "Titans",
-    "primaryColor": "#009BDB",
-    "secondaryColor": "#FFFFFF",
-    "accentColor": "#FDB913",
+    "primaryColor": "#00A3E0",
+    "secondaryColor": "#FBBF24",
+    "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
     "playable": false,
     "strengthTier": 2,
     "city": "Gold Coast",
     "stadium": "Cbus Super Stadium",
-    "nameBias": { "aus": 55, "nz": 12, "samoa": 12, "tonga": 10, "fiji": 7, "cookIslands": 3, "png": 1 }
+    "nameBias": {
+      "aus": 55,
+      "nz": 12,
+      "samoa": 12,
+      "tonga": 10,
+      "fiji": 7,
+      "cookIslands": 3,
+      "png": 1
+    }
   },
   {
     "id": "nrl-manly-sea-eagles",
     "name": "Manly Sea Eagles",
     "shortName": "MAN",
     "nickname": "Sea Eagles",
-    "primaryColor": "#6F2C91",
+    "primaryColor": "#6B1734",
     "secondaryColor": "#FFFFFF",
-    "accentColor": "#8B1538",
+    "accentColor": "#111111",
     "league": "nrl",
     "active": true,
     "playable": false,
     "strengthTier": 3,
     "city": "Sydney",
     "stadium": "4 Pines Park",
-    "aliases": ["Manly-Warringah Sea Eagles"],
-    "nameBias": { "aus": 58, "nz": 12, "samoa": 12, "tonga": 8, "fiji": 6, "cookIslands": 3, "png": 1 }
+    "aliases": [
+      "Manly-Warringah Sea Eagles"
+    ],
+    "nameBias": {
+      "aus": 58,
+      "nz": 12,
+      "samoa": 12,
+      "tonga": 8,
+      "fiji": 6,
+      "cookIslands": 3,
+      "png": 1
+    }
   },
   {
     "id": "nrl-melbourne-storm",
     "name": "Melbourne Storm",
     "shortName": "MEL",
     "nickname": "Storm",
-    "primaryColor": "#6B2D7B",
-    "secondaryColor": "#FDB913",
+    "primaryColor": "#4B2E83",
+    "secondaryColor": "#FBBF24",
     "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
@@ -129,15 +194,23 @@
     "strengthTier": 5,
     "city": "Melbourne",
     "stadium": "AAMI Park",
-    "nameBias": { "aus": 48, "nz": 22, "samoa": 12, "tonga": 8, "fiji": 6, "cookIslands": 3, "png": 1 }
+    "nameBias": {
+      "aus": 48,
+      "nz": 22,
+      "samoa": 12,
+      "tonga": 8,
+      "fiji": 6,
+      "cookIslands": 3,
+      "png": 1
+    }
   },
   {
     "id": "nrl-newcastle-knights",
     "name": "Newcastle Knights",
     "shortName": "NEW",
     "nickname": "Knights",
-    "primaryColor": "#E30613",
-    "secondaryColor": "#003366",
+    "primaryColor": "#005EB8",
+    "secondaryColor": "#D71920",
     "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
@@ -145,15 +218,23 @@
     "strengthTier": 2,
     "city": "Newcastle",
     "stadium": "McDonald Jones Stadium",
-    "nameBias": { "aus": 62, "nz": 10, "samoa": 10, "tonga": 8, "fiji": 6, "cookIslands": 3, "png": 1 }
+    "nameBias": {
+      "aus": 62,
+      "nz": 10,
+      "samoa": 10,
+      "tonga": 8,
+      "fiji": 6,
+      "cookIslands": 3,
+      "png": 1
+    }
   },
   {
     "id": "nrl-north-queensland-cowboys",
     "name": "North Queensland Cowboys",
     "shortName": "NQL",
     "nickname": "Cowboys",
-    "primaryColor": "#003366",
-    "secondaryColor": "#FDB913",
+    "primaryColor": "#002B5C",
+    "secondaryColor": "#FBBF24",
     "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
@@ -161,16 +242,27 @@
     "strengthTier": 3,
     "city": "Townsville",
     "stadium": "Queensland Country Bank Stadium",
-    "aliases": ["NQ Cowboys", "Cowboys"],
-    "nameBias": { "aus": 60, "nz": 10, "samoa": 10, "tonga": 8, "fiji": 6, "cookIslands": 3, "png": 3 }
+    "aliases": [
+      "NQ Cowboys",
+      "Cowboys"
+    ],
+    "nameBias": {
+      "aus": 60,
+      "nz": 10,
+      "samoa": 10,
+      "tonga": 8,
+      "fiji": 6,
+      "cookIslands": 3,
+      "png": 3
+    }
   },
   {
     "id": "nrl-parramatta-eels",
     "name": "Parramatta Eels",
     "shortName": "PAR",
     "nickname": "Eels",
-    "primaryColor": "#003366",
-    "secondaryColor": "#FFD100",
+    "primaryColor": "#0057B8",
+    "secondaryColor": "#FBBF24",
     "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
@@ -178,31 +270,47 @@
     "strengthTier": 3,
     "city": "Sydney",
     "stadium": "CommBank Stadium",
-    "nameBias": { "aus": 52, "nz": 12, "samoa": 14, "tonga": 10, "fiji": 7, "cookIslands": 4, "png": 1 }
+    "nameBias": {
+      "aus": 52,
+      "nz": 12,
+      "samoa": 14,
+      "tonga": 10,
+      "fiji": 7,
+      "cookIslands": 4,
+      "png": 1
+    }
   },
   {
     "id": "nrl-penrith-panthers",
     "name": "Penrith Panthers",
     "shortName": "PEN",
     "nickname": "Panthers",
-    "primaryColor": "#000000",
-    "secondaryColor": "#00A9A5",
-    "accentColor": "#FDB913",
+    "primaryColor": "#111111",
+    "secondaryColor": "#00A3E0",
+    "accentColor": "#F15A24",
     "league": "nrl",
     "active": true,
     "playable": false,
     "strengthTier": 5,
     "city": "Sydney",
     "stadium": "BlueBet Stadium",
-    "nameBias": { "aus": 55, "nz": 14, "samoa": 14, "tonga": 8, "fiji": 5, "cookIslands": 3, "png": 1 }
+    "nameBias": {
+      "aus": 55,
+      "nz": 14,
+      "samoa": 14,
+      "tonga": 8,
+      "fiji": 5,
+      "cookIslands": 3,
+      "png": 1
+    }
   },
   {
     "id": "nrl-south-sydney-rabbitohs",
     "name": "South Sydney Rabbitohs",
     "shortName": "SOU",
     "nickname": "Rabbitohs",
-    "primaryColor": "#E30613",
-    "secondaryColor": "#006633",
+    "primaryColor": "#007A3D",
+    "secondaryColor": "#D71920",
     "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
@@ -210,33 +318,55 @@
     "strengthTier": 4,
     "city": "Sydney",
     "stadium": "Accor Stadium",
-    "aliases": ["Souths", "Rabbitohs"],
-    "nameBias": { "aus": 52, "nz": 12, "samoa": 14, "tonga": 10, "fiji": 7, "cookIslands": 4, "png": 1 }
+    "aliases": [
+      "Souths",
+      "Rabbitohs"
+    ],
+    "nameBias": {
+      "aus": 52,
+      "nz": 12,
+      "samoa": 14,
+      "tonga": 10,
+      "fiji": 7,
+      "cookIslands": 4,
+      "png": 1
+    }
   },
   {
     "id": "nrl-st-george-illawarra-dragons",
     "name": "St George Illawarra Dragons",
     "shortName": "SGI",
     "nickname": "Dragons",
-    "primaryColor": "#E30613",
+    "primaryColor": "#D71920",
     "secondaryColor": "#FFFFFF",
-    "accentColor": "#000000",
+    "accentColor": "#111111",
     "league": "nrl",
     "active": true,
     "playable": false,
     "strengthTier": 2,
     "city": "Wollongong",
     "stadium": "WIN Stadium",
-    "aliases": ["St George Dragons", "Dragons"],
-    "nameBias": { "aus": 58, "nz": 12, "samoa": 12, "tonga": 8, "fiji": 6, "cookIslands": 3, "png": 1 }
+    "aliases": [
+      "St George Dragons",
+      "Dragons"
+    ],
+    "nameBias": {
+      "aus": 58,
+      "nz": 12,
+      "samoa": 12,
+      "tonga": 8,
+      "fiji": 6,
+      "cookIslands": 3,
+      "png": 1
+    }
   },
   {
     "id": "nrl-sydney-roosters",
     "name": "Sydney Roosters",
     "shortName": "SYD",
     "nickname": "Roosters",
-    "primaryColor": "#E30613",
-    "secondaryColor": "#003366",
+    "primaryColor": "#002B5C",
+    "secondaryColor": "#D71920",
     "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
@@ -244,16 +374,27 @@
     "strengthTier": 5,
     "city": "Sydney",
     "stadium": "Allianz Stadium",
-    "aliases": ["Eastern Suburbs Roosters", "Roosters"],
-    "nameBias": { "aus": 50, "nz": 16, "samoa": 14, "tonga": 10, "fiji": 6, "cookIslands": 3, "png": 1 }
+    "aliases": [
+      "Eastern Suburbs Roosters",
+      "Roosters"
+    ],
+    "nameBias": {
+      "aus": 50,
+      "nz": 16,
+      "samoa": 14,
+      "tonga": 10,
+      "fiji": 6,
+      "cookIslands": 3,
+      "png": 1
+    }
   },
   {
     "id": "nrl-new-zealand-warriors",
     "name": "New Zealand Warriors",
     "shortName": "NZW",
     "nickname": "Warriors",
-    "primaryColor": "#000000",
-    "secondaryColor": "#00A651",
+    "primaryColor": "#111111",
+    "secondaryColor": "#00A3E0",
     "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
@@ -261,16 +402,27 @@
     "strengthTier": 3,
     "city": "Auckland",
     "stadium": "Go Media Stadium",
-    "aliases": ["Warriors", "NZ Warriors"],
-    "nameBias": { "aus": 20, "nz": 42, "samoa": 14, "tonga": 12, "fiji": 6, "cookIslands": 5, "png": 1 }
+    "aliases": [
+      "Warriors",
+      "NZ Warriors"
+    ],
+    "nameBias": {
+      "aus": 20,
+      "nz": 42,
+      "samoa": 14,
+      "tonga": 12,
+      "fiji": 6,
+      "cookIslands": 5,
+      "png": 1
+    }
   },
   {
     "id": "nrl-wests-tigers",
     "name": "Wests Tigers",
     "shortName": "WST",
     "nickname": "Tigers",
-    "primaryColor": "#F15A29",
-    "secondaryColor": "#000000",
+    "primaryColor": "#F58220",
+    "secondaryColor": "#111111",
     "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
@@ -278,15 +430,23 @@
     "strengthTier": 2,
     "city": "Sydney",
     "stadium": "Leichhardt Oval",
-    "nameBias": { "aus": 52, "nz": 12, "samoa": 14, "tonga": 10, "fiji": 7, "cookIslands": 4, "png": 1 }
+    "nameBias": {
+      "aus": 52,
+      "nz": 12,
+      "samoa": 14,
+      "tonga": 10,
+      "fiji": 7,
+      "cookIslands": 4,
+      "png": 1
+    }
   },
   {
     "id": "nrl-perth-bears",
     "name": "Perth Bears",
     "shortName": "PTH",
     "nickname": "Bears",
-    "primaryColor": "#1B365D",
-    "secondaryColor": "#C5A572",
+    "primaryColor": "#D71920",
+    "secondaryColor": "#111111",
     "accentColor": "#FFFFFF",
     "league": "nrl",
     "active": true,
@@ -294,24 +454,46 @@
     "strengthTier": 2,
     "city": "Perth",
     "stadium": "HBF Park",
-    "aliases": ["North Sydney Bears", "Bears"],
-    "nameBias": { "aus": 64, "nz": 10, "samoa": 10, "tonga": 7, "fiji": 5, "cookIslands": 3, "png": 1 }
+    "aliases": [
+      "North Sydney Bears",
+      "Bears"
+    ],
+    "nameBias": {
+      "aus": 64,
+      "nz": 10,
+      "samoa": 10,
+      "tonga": 7,
+      "fiji": 5,
+      "cookIslands": 3,
+      "png": 1
+    }
   },
   {
     "id": "nrl-png-chiefs",
     "name": "PNG Chiefs",
     "shortName": "PNG",
     "nickname": "Chiefs",
-    "primaryColor": "#CE1126",
-    "secondaryColor": "#000000",
-    "accentColor": "#FCD116",
+    "primaryColor": "#C8102E",
+    "secondaryColor": "#FBBF24",
+    "accentColor": "#111111",
     "league": "nrl",
     "active": true,
     "playable": false,
     "strengthTier": 2,
     "city": "Port Moresby",
     "stadium": "PNG Football Stadium",
-    "aliases": ["Papua New Guinea Chiefs", "Chiefs"],
-    "nameBias": { "aus": 18, "nz": 8, "samoa": 8, "tonga": 8, "fiji": 8, "cookIslands": 5, "png": 45 }
+    "aliases": [
+      "Papua New Guinea Chiefs",
+      "Chiefs"
+    ],
+    "nameBias": {
+      "aus": 18,
+      "nz": 8,
+      "samoa": 8,
+      "tonga": 8,
+      "fiji": 8,
+      "cookIslands": 5,
+      "png": 45
+    }
   }
 ]

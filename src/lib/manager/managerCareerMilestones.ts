@@ -1,4 +1,9 @@
 import { getManagerCareerSaveView } from "./managerCareerSaveStats";
+import {
+  getManagerSeasonTrophyLabels,
+  getSeasonSummaryTrophyLabels,
+} from "./managerSeasonTrophies";
+import { shouldScheduleWorldClubChallenge } from "./worldClubChallenge";
 import type { ManagerCareer } from "./types";
 
 export interface ManagerMilestone {
@@ -6,6 +11,109 @@ export interface ManagerMilestone {
   label: string;
   earned: boolean;
   detail?: string;
+}
+
+const MAJOR_TROPHY_LABELS = [
+  "League Leaders",
+  "Super League Champions",
+  "Challenge Cup",
+  "World Club Challenge",
+] as const;
+
+function majorTrophyCount(labels: string[]): number {
+  return labels.filter((label) =>
+    (MAJOR_TROPHY_LABELS as readonly string[]).includes(label)
+  ).length;
+}
+
+function majorTrophiesWon(labels: string[]): string[] {
+  return labels.filter((label) =>
+    (MAJOR_TROPHY_LABELS as readonly string[]).includes(label)
+  );
+}
+
+function seasonHasCleanSweep(
+  labels: string[],
+  wccAvailable: boolean
+): boolean {
+  const won = majorTrophiesWon(labels);
+  const available = [
+    "League Leaders",
+    "Super League Champions",
+    "Challenge Cup",
+    ...(wccAvailable ? ["World Club Challenge"] : []),
+  ];
+  return available.every((label) => won.includes(label));
+}
+
+function careerHasMajorTrophyCount(
+  career: ManagerCareer,
+  minCount: number
+): boolean {
+  if (majorTrophyCount(getManagerSeasonTrophyLabels(career)) >= minCount) {
+    return true;
+  }
+  return career.seasonHistory.some(
+    (season) =>
+      majorTrophyCount(getSeasonSummaryTrophyLabels(season)) >= minCount
+  );
+}
+
+function careerHasCleanSweep(career: ManagerCareer): boolean {
+  if (
+    seasonHasCleanSweep(
+      getManagerSeasonTrophyLabels(career),
+      shouldScheduleWorldClubChallenge(career)
+    )
+  ) {
+    return true;
+  }
+  return career.seasonHistory.some((season, index) =>
+    seasonHasCleanSweep(
+      getSeasonSummaryTrophyLabels(season),
+      index >= 1 ||
+        getSeasonSummaryTrophyLabels(season).includes("World Club Challenge")
+    )
+  );
+}
+
+function careerHasWorldClubChallengeWin(career: ManagerCareer): boolean {
+  if (
+    majorTrophiesWon(getManagerSeasonTrophyLabels(career)).includes(
+      "World Club Challenge"
+    )
+  ) {
+    return true;
+  }
+  return (
+    (career.worldClubChallenge?.history ?? []).some(
+      (result) => result.userResult === "won"
+    ) ||
+    career.seasonHistory.some((season) =>
+      getSeasonSummaryTrophyLabels(season).includes("World Club Challenge")
+    )
+  );
+}
+
+function careerHasPerfectTrophySeason(career: ManagerCareer): boolean {
+  if (
+    career.losses === 0 &&
+    career.wins > 0 &&
+    seasonHasCleanSweep(
+      getManagerSeasonTrophyLabels(career),
+      shouldScheduleWorldClubChallenge(career)
+    )
+  ) {
+    return true;
+  }
+  return career.seasonHistory.some((season, index) => {
+    if (season.losses !== 0 || season.wins <= 0) return false;
+    return seasonHasCleanSweep(
+      getSeasonSummaryTrophyLabels(season),
+      index >= 1 ||
+        getSeasonSummaryTrophyLabels(season).includes("World Club Challenge")
+    );
+  });
 }
 
 export function getManagerCareerMilestones(career: ManagerCareer): ManagerMilestone[] {
@@ -16,6 +124,11 @@ export function getManagerCareerMilestones(career: ManagerCareer): ManagerMilest
   const sl = stats.superLeagueTitles > 0;
   const topSix = stats.topSixFinishes >= 3;
   const earnings = stats.totalEarnings >= 500_000;
+  const treble = careerHasMajorTrophyCount(career, 3);
+  const quadruple = careerHasMajorTrophyCount(career, 4);
+  const cleanSweep = careerHasCleanSweep(career);
+  const worldChampions = careerHasWorldClubChallengeWin(career);
+  const perfectTrophy = careerHasPerfectTrophySeason(career);
 
   return [
     {
@@ -35,6 +148,31 @@ export function getManagerCareerMilestones(career: ManagerCareer): ManagerMilest
       label: "Challenge Cup winner",
       earned: cup,
       detail: cup ? `${stats.challengeCups} cup${stats.challengeCups === 1 ? "" : "s"}` : undefined,
+    },
+    {
+      id: "world-champions",
+      label: "World Club Challenge winners",
+      earned: worldChampions,
+    },
+    {
+      id: "treble-winners",
+      label: "Treble winners",
+      earned: treble,
+    },
+    {
+      id: "quadruple-winners",
+      label: "Quadruple winners",
+      earned: quadruple,
+    },
+    {
+      id: "clean-sweep",
+      label: "Clean sweep",
+      earned: cleanSweep,
+    },
+    {
+      id: "perfect-trophy-season",
+      label: "Perfect trophy season",
+      earned: perfectTrophy,
     },
     {
       id: "perfect-season",
@@ -73,6 +211,9 @@ export function getManagerCareerHeadlines(career: ManagerCareer): string[] {
     headlines.push(
       `${stats.challengeCups} Challenge Cup${stats.challengeCups === 1 ? "" : "s"}`
     );
+  }
+  if (careerHasWorldClubChallengeWin(career)) {
+    headlines.push("World Club Challenge winners");
   }
   if (stats.bestFinishLabel && stats.bestFinish === 1) {
     headlines.push("Finished 1st in the league table");
