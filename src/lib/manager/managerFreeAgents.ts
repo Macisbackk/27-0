@@ -530,14 +530,17 @@ export function simulateAiContractExpiries(career: ManagerCareer): ManagerCareer
   return ensureFreeAgentPool(addPlayersToFreeAgents(career, entries));
 }
 
-export function maybeAiSignFreeAgents(career: ManagerCareer): ManagerCareer {
+export function maybeAiSignFreeAgents(
+  career: ManagerCareer,
+  attempt = 0
+): ManagerCareer {
   const pool = (career.freeAgents ?? []).filter(
     (f) => !career.squad.some((s) => s.playerId === f.playerId)
   );
   if (pool.length === 0) return career;
 
   const rng = seedrandom(
-    `${career.seed}-fa-sign-w${career.gameWeek}-m${career.fixtures.length}`
+    `${career.seed}-fa-sign-w${career.gameWeek}-m${career.fixtures.length}-a${attempt}`
   );
   if (rng() > freeAgentSignChanceForCareer(career)) return career;
 
@@ -586,7 +589,7 @@ export function maybeAiSignFreeAgents(career: ManagerCareer): ManagerCareer {
   if (!pick) return career;
 
   const activity: LeagueTransferActivity = {
-    id: `fa-ai-${career.gameWeek}-${pick.agent.playerId}-${Date.now()}`,
+    id: `fa-ai-w${career.gameWeek}-a${attempt}-${pick.agent.playerId}`,
     week: career.gameWeek,
     fromClub: pick.agent.formerClub,
     toClub,

@@ -188,14 +188,14 @@ export function PlayoffBracket({
     <BodyPortal>
     <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/90">
       <div className="stadium-lights pointer-events-none fixed inset-0" />
-      <div className="relative mx-auto w-full max-w-5xl px-2 py-5 pb-28 sm:px-4 sm:py-8 md:pb-8">
+      <div className="relative mx-auto w-full max-w-5xl px-1.5 py-3 pb-28 sm:px-4 sm:py-8 md:pb-8">
         <PlayoffBracketHeader
           activeRound={activeRound}
           tournamentComplete={state.tournamentComplete}
         />
 
-        <div className="playoff-bracket-panel mx-auto mt-5 max-w-4xl p-3 sm:p-4 md:mt-6 md:p-5">
-        <div className="mx-auto max-w-3xl">
+        <div className="playoff-bracket-panel mx-auto mt-2 w-full max-w-none p-1.5 sm:mt-5 sm:max-w-4xl sm:p-4 md:mt-6 md:p-5">
+        <div className="mx-auto w-full max-w-none sm:max-w-3xl">
           <BracketMobileRoundNav
             rounds={ROUNDS}
             viewRound={mobileViewRound}
@@ -209,7 +209,7 @@ export function PlayoffBracket({
           />
         </div>
 
-        <div className="mx-auto mt-5 max-w-3xl space-y-3 md:hidden">
+        <div className="mx-auto mt-2 w-full max-w-none space-y-2.5 md:hidden sm:mt-5 sm:max-w-3xl sm:space-y-3">
           {getMatchesForRound(state, mobileViewRound).map((match) => (
             <PlayoffMatchCard
               key={match.id}

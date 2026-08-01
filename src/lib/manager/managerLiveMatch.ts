@@ -1,7 +1,8 @@
 import seedrandom from "seedrandom";
 import type { MatchFixture } from "../game/season-simulation";
 import { snapToRLScore, decomposeRLScore, pickWinningMargin } from "../game/rl-scores";
-import { getManagerOpponentMatchRating } from "./managerLeagueRosters";
+import { getDisplayedOpponentTeamRating } from "./managerOpponentRating";
+import { buildNrlMatchdayLineup } from "../nrl/nrlMatchdayLineup";
 import type { Position } from "../types";
 import type {
   LiveMatchCommand,
@@ -333,7 +334,16 @@ function pickOpponentScorer(
   competition?: ManagerCompetition
 ): { id: string; name: string } {
   if (competition === "world_club_challenge") {
-    const squad = generateNrlSquadNames(seed, opponent, 13);
+    const squad = buildNrlMatchdayLineup({
+      seed,
+      teamName: opponent,
+      teamRating:
+        career.worldClubChallenge?.currentFixture?.nrlChampionName === opponent
+          ? career.worldClubChallenge.currentFixture.nrlChampionRating
+          : undefined,
+      seasonYear: career.seasonYear,
+      count: 13,
+    }).players;
     if (squad.length === 0) {
       return { id: `${opponent}-scorer`, name: opponent };
     }
@@ -368,7 +378,16 @@ function pickOpponentKicker(
   competition?: ManagerCompetition
 ): string {
   if (competition === "world_club_challenge") {
-    const squad = generateNrlSquadNames(seed, opponent, 13);
+    const squad = buildNrlMatchdayLineup({
+      seed,
+      teamName: opponent,
+      teamRating:
+        career.worldClubChallenge?.currentFixture?.nrlChampionName === opponent
+          ? career.worldClubChallenge.currentFixture.nrlChampionRating
+          : undefined,
+      seasonYear: career.seasonYear,
+      count: 13,
+    }).players;
     if (squad.length === 0) return "Kicker";
     return squad[6]?.name ?? squad[0]!.name;
   }
@@ -525,25 +544,17 @@ export function createLiveMatch(
   };
 }
 
-/** Opponent strength for live ticks — friendlies use the picked opponent's saved rating. */
+/** Opponent strength for live ticks — same source as Hub display / instant sim. */
 function resolveLiveOpponentRating(
   career: ManagerCareer,
   state: LiveMatchState
 ): number {
-  if (state.competition === "friendly") {
-    const friendlyRating = career.preSeason.activeFriendly?.teamRating;
-    if (friendlyRating != null) return friendlyRating;
-  }
-  if (state.competition === "world_club_challenge") {
-    const wccRating = career.worldClubChallenge?.currentFixture?.nrlChampionRating;
-    if (wccRating != null) return wccRating;
-  }
-  return getManagerOpponentMatchRating(
-    career,
-    state.opponent,
-    state.seed,
-    state.round
-  );
+  return getDisplayedOpponentTeamRating(career, {
+    opponent: state.opponent,
+    round: state.round,
+    competition: state.competition,
+    id: state.fixtureId ?? `live-${state.round}`,
+  });
 }
 
 /** Advance live match; stops at maxMinute (40 for half-time, 80 for full time). */

@@ -53,9 +53,12 @@ function clubNeedsPosition(
   return needs[Math.floor(rng() * needs.length)] ?? null;
 }
 
-export function maybeGenerateAiTransfers(career: ManagerCareer): ManagerCareer {
+export function maybeGenerateAiTransfers(
+  career: ManagerCareer,
+  attempt = 0
+): ManagerCareer {
   const rng = seedrandom(
-    `${career.seed}-ai-transfer-w${career.gameWeek}-m${career.fixtures.length}`
+    `${career.seed}-ai-transfer-w${career.gameWeek}-m${career.fixtures.length}-a${attempt}`
   );
   if (rng() > transferChanceForCareer(career)) return career;
 
@@ -111,12 +114,16 @@ export function maybeGenerateAiTransfers(career: ManagerCareer): ManagerCareer {
 
   const listed = career.leagueListedPlayers.some((l) => l.playerId === playerId);
   const fee = Math.round(
-    getAskingPrice(playerId, listed, career.seed, career.gameWeek) *
+    getAskingPrice(playerId, listed, career.seed, career.gameWeek, career) *
       (0.88 + rng() * 0.3)
   );
 
+  const clubFunds = { ...career.clubFunds };
+  const buyerFunds = clubFunds[toClub] ?? 0;
+  if (fee > 0 && buyerFunds < fee) return career;
+
   const activity: LeagueTransferActivity = {
-    id: `ai-tx-${career.gameWeek}-${playerId}-${Date.now()}`,
+    id: `ai-tx-w${career.gameWeek}-a${attempt}-${playerId}`,
     week: career.gameWeek,
     fromClub,
     toClub,
@@ -129,9 +136,8 @@ export function maybeGenerateAiTransfers(career: ManagerCareer): ManagerCareer {
     (l) => l.playerId !== playerId
   );
 
-  const clubFunds = { ...career.clubFunds };
-  clubFunds[fromClub] = Math.max(0, (clubFunds[fromClub] ?? 0) - fee);
-  clubFunds[toClub] = (clubFunds[toClub] ?? 0) + fee;
+  clubFunds[toClub] = Math.max(0, buyerFunds - fee);
+  clubFunds[fromClub] = (clubFunds[fromClub] ?? 0) + fee;
 
   const withRoster = transferLeaguePlayer(
     {

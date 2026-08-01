@@ -11,21 +11,23 @@ interface LeagueTableProps {
 
 export const LeagueTable = memo(function LeagueTable({ rows }: LeagueTableProps) {
   return (
-    <div className="-mx-1 px-1 max-sm:overflow-x-auto sm:overflow-x-visible">
-      <table className="w-full border-collapse text-left text-xs max-sm:min-w-[360px]">
+    <div className="w-full min-w-0 max-w-full overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch]">
+      <table className="w-full min-w-0 border-collapse text-left text-[11px] sm:text-xs max-sm:min-w-[300px]">
         <thead>
           <tr className={`border-b border-pitch-700/60 ${TYPO.statLabel}`}>
-            <th className="sticky left-0 z-10 bg-pitch-950 px-2 py-2.5">
+            <th className="sticky left-0 z-10 bg-pitch-950 px-1.5 py-2 sm:px-2 sm:py-2.5">
               Pos
             </th>
-            <th className="min-w-[8rem] px-2 py-2.5">Team</th>
-            <th className="px-2 py-2.5 text-center">P</th>
-            <th className="px-2 py-2.5 text-center">W</th>
-            <th className="px-2 py-2.5 text-center">L</th>
+            <th className="min-w-0 max-w-[9rem] truncate px-1.5 py-2 sm:min-w-[8rem] sm:max-w-none sm:px-2 sm:py-2.5">
+              Team
+            </th>
+            <th className="px-1.5 py-2 text-center sm:px-2 sm:py-2.5">P</th>
+            <th className="px-1.5 py-2 text-center sm:px-2 sm:py-2.5">W</th>
+            <th className="px-1.5 py-2 text-center sm:px-2 sm:py-2.5">L</th>
             <th className="hidden px-2 py-2.5 text-center sm:table-cell">PF</th>
             <th className="hidden px-2 py-2.5 text-center sm:table-cell">PA</th>
             <th className="hidden px-2 py-2.5 text-center md:table-cell">PD</th>
-            <th className="px-2 py-2.5 text-center">Pts</th>
+            <th className="px-1.5 py-2 text-center sm:px-2 sm:py-2.5">Pts</th>
           </tr>
         </thead>
         <tbody>

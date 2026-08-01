@@ -822,12 +822,12 @@ export function ManagerFixtures({
             />
             <p className={TYPO.bodySm}>
               Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear}{" "}
-              · NRL rating {wccScheduled.nrlChampionRating}
+              · Team rating {wccScheduled.nrlChampionRating}
             </p>
             {wccScheduled.userInvolved ? (
               <p className={`${TYPO.bodySm} text-accent-gold`}>
                 {career.seasonHistory.length === 0
-                  ? "Season invitation — face a top-tier NRL club in the World Club Challenge. Play or Simulate from Matchday when Game Week 3 arrives."
+                  ? "Season invitation — face a top-tier NRL club. Play or Simulate from Matchday when Game Week 3 arrives."
                   : "You are the Super League champion — Play or Simulate from Matchday when Game Week 3 arrives."}
               </p>
             ) : (
@@ -877,12 +877,12 @@ export function ManagerFixtures({
         />
         <p className={TYPO.bodySm}>
           Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear} ·
-          NRL rating {wccScheduled.nrlChampionRating}
+          Team rating {wccScheduled.nrlChampionRating}
         </p>
         {wccScheduled.userInvolved ? (
           <p className={`${TYPO.bodySm} text-accent-gold`}>
             {career.seasonHistory.length === 0
-              ? "Season invitation — face a top-tier NRL club in the World Club Challenge. Play or Simulate from Matchday when Game Week 3 arrives."
+              ? "Season invitation — face a top-tier NRL club. Play or Simulate from Matchday when Game Week 3 arrives."
               : "You are the Super League champion — Play or Simulate from Matchday when Game Week 3 arrives."}
           </p>
         ) : (
@@ -946,17 +946,19 @@ export function ManagerFixtures({
         >
           <div className="flex flex-wrap items-center gap-2">
             <p className={TYPO.sectionLabel}>{nextMatchOccasion.weekLabel}</p>
-            <ManagerCompetitionBadge
-              competition={nextFixture.competition}
-              cupRound={nextFixture.cupRound}
-              playoffRound={nextFixture.playoffRound}
-              isNeutral={nextFixture.isNeutral}
-              venue={nextFixture.venue}
-              detailed={
-                nextMatchOccasion.isShowcase ||
-                isChallengeCupFixture(nextFixture.competition)
-              }
-            />
+            {nextMatchOccasion.occasion !== "wcc" ? (
+              <ManagerCompetitionBadge
+                competition={nextFixture.competition}
+                cupRound={nextFixture.cupRound}
+                playoffRound={nextFixture.playoffRound}
+                isNeutral={nextFixture.isNeutral}
+                venue={nextFixture.venue}
+                detailed={
+                  nextMatchOccasion.isShowcase ||
+                  isChallengeCupFixture(nextFixture.competition)
+                }
+              />
+            ) : null}
           </div>
           <p className="mt-2 break-words text-base font-bold leading-snug text-white sm:text-2xl">
             <span className="block sm:inline">{career.club}</span>{" "}
@@ -973,8 +975,12 @@ export function ManagerFixtures({
             </p>
           ) : null}
           <p className={`mt-1 break-words ${TYPO.bodySm} text-pitch-400`}>
-            {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
             {getManagerScheduledFixtureVenueLabel(nextFixture)}
+            {nextFixture.isNeutral
+              ? " · Neutral"
+              : nextFixture.isHome
+                ? " · Home"
+                : " · Away"}
           </p>
           {homeAttendanceOutlook && (
             <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>

@@ -13,7 +13,10 @@ import type {
   ManagerView,
 } from "@/lib/manager/types";
 import { getUserLeaguePosition } from "@/lib/manager/managerFixtures";
-import { getNextManagerFixture, isManagerSeasonComplete } from "@/lib/manager/managerSimulation";
+import { getNextManagerFixture, isManagerSeasonComplete, peekFixtureAfterMatchWeekAdvance } from "@/lib/manager/managerSimulation";
+import { canPlayNextMatch } from "@/lib/manager/managerMatchWeek";
+import { getHubOpponentRating } from "@/lib/manager/managerOpponentRating";
+import { ManagerMatchWeekPanel } from "@/components/manager/ManagerMatchWeekPanel";
 import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
 import { getCupBracketForDisplay, getCupHubStatus } from "@/lib/manager/managerChallengeCup";
 import { BracketRecap } from "@/components/BracketRecap";
@@ -46,8 +49,6 @@ import {
 } from "@/lib/manager/managerSquad";
 import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
-import { getManagerOpponentPoolOptions } from "@/lib/manager/managerLeagueRosters";
-import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
 import { getMatchPrediction } from "@/lib/manager/managerScoring";
 import {
   getTopGoalScorer,
@@ -99,6 +100,8 @@ interface ManagerHubProps {
   career: ManagerCareer;
   onPlayGame: () => void;
   onSimulate: () => void;
+  onAdvanceMatchWeek: () => void;
+  matchWeekProcessing?: boolean;
   onUpdate?: (career: ManagerCareer) => void;
   onNavigate?: (view: ManagerView) => void;
 }
@@ -277,6 +280,8 @@ export function ManagerHub({
   career,
   onPlayGame,
   onSimulate,
+  onAdvanceMatchWeek,
+  matchWeekProcessing = false,
   onUpdate,
   onNavigate,
 }: ManagerHubProps) {
@@ -300,7 +305,11 @@ export function ManagerHub({
       />
     ) : null;
 
+  const awaitingMatchWeek = career.matchWeekPhase === "awaiting_advance";
   const nextFixture = getNextManagerFixture(hubCareer);
+  const peekedNext = awaitingMatchWeek
+    ? peekFixtureAfterMatchWeekAdvance(hubCareer)
+    : nextFixture;
   const position = getUserLeaguePosition(career.leagueTable, career.club);
   const simCareer = resolveCareerForMatchSimulation(career);
   const teamRating = computeManagerTeamRating(
@@ -324,7 +333,12 @@ export function ManagerHub({
   const playoffsPending = needsPlayoffsIntro(career);
   const playoffsActive = isManagerPlayoffsActive(hubCareer);
   const seasonComplete = isManagerSeasonComplete(hubCareer);
-  const canPlay = squadCheck.valid && !seasonComplete && !playoffsPending;
+  const canPlay =
+    canPlayNextMatch(career) &&
+    squadCheck.valid &&
+    !seasonComplete &&
+    !playoffsPending &&
+    !matchWeekProcessing;
   const isPlayoffFixture = nextFixture?.competition === "playoffs";
   const isCupFixture = nextFixture
     ? isChallengeCupFixture(nextFixture.competition)
@@ -335,17 +349,7 @@ export function ManagerHub({
 
   const oppRating =
     nextFixture && !seasonComplete
-      ? nextFixture.competition === "friendly" &&
-        career.preSeason.activeFriendly
-        ? career.preSeason.activeFriendly.teamRating
-        : Math.round(
-            getOpponentMatchRating(
-              nextFixture.opponent,
-              hubCareer.seed,
-              nextFixture.round,
-              getManagerOpponentPoolOptions(hubCareer, nextFixture.opponent)
-            )
-          )
+      ? getHubOpponentRating(hubCareer, nextFixture)
       : null;
 
   const prediction =
@@ -392,7 +396,7 @@ export function ManagerHub({
 
   const nextFixtureCard =
     nextFixture && !seasonComplete && !playoffsPending && matchOccasion ? (
-      <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28">
+      <div id={!awaitingMatchWeek ? MANAGER_HUB_SCROLL_TARGET_ID : undefined} className="scroll-mt-28">
       <ScoreboardPanel
         variant="elevated"
         padded
@@ -416,17 +420,23 @@ export function ManagerHub({
           }
           subtitle={
             <span className="flex flex-wrap items-center gap-2">
-              <ManagerCompetitionBadge
-                competition={nextFixture.competition}
-                cupRound={nextFixture.cupRound}
-                playoffRound={nextFixture.playoffRound}
-                isNeutral={nextFixture.isNeutral}
-                venue={nextFixture.venue}
-                detailed={matchOccasion.isShowcase}
-              />
+              {matchOccasion.occasion !== "wcc" ? (
+                <ManagerCompetitionBadge
+                  competition={nextFixture.competition}
+                  cupRound={nextFixture.cupRound}
+                  playoffRound={nextFixture.playoffRound}
+                  isNeutral={nextFixture.isNeutral}
+                  venue={nextFixture.venue}
+                  detailed={matchOccasion.isShowcase}
+                />
+              ) : null}
               <span>
-                {getManagerScheduledFixtureHeadline(nextFixture)} ·{" "}
                 {getManagerScheduledFixtureVenueLabel(nextFixture)}
+                {nextFixture.isNeutral
+                  ? " · Neutral"
+                  : nextFixture.isHome
+                    ? " · Home"
+                    : " · Away"}
               </span>
             </span>
           }
@@ -469,9 +479,10 @@ export function ManagerHub({
             label={matchOccasion.roundStatLabel}
             value={
               matchOccasion.occasion === "grand_final" ||
-              matchOccasion.occasion === "cup_final" ||
-              matchOccasion.occasion === "wcc"
+              matchOccasion.occasion === "cup_final"
                 ? matchOccasion.badgeLabel
+                : matchOccasion.occasion === "wcc"
+                  ? "Club World Title"
                 : isPlayoffFixture && nextFixture.playoffRound
                   ? getPlayoffRoundLabel(nextFixture.playoffRound)
                   : matchOccasion.occasion === "challenge_cup" && nextFixture.cupRound
@@ -698,6 +709,21 @@ export function ManagerHub({
     <ManagerHubAlertsPanel alerts={hubAlerts} onNavigate={onNavigate} />
   );
 
+  const matchWeekCard = (
+    <div id={awaitingMatchWeek ? MANAGER_HUB_SCROLL_TARGET_ID : undefined} className="scroll-mt-28">
+      <ManagerMatchWeekPanel
+        career={career}
+        nextFixture={peekedNext}
+        processing={matchWeekProcessing}
+        onAdvance={onAdvanceMatchWeek}
+        onPlay={canPlay ? onPlayGame : undefined}
+        onSeasonComplete={
+          onNavigate ? () => onNavigate("season-review") : undefined
+        }
+      />
+    </div>
+  );
+
   const seasonProgressCard = (
     <div className={showStickyPlayBar ? "hidden sm:block" : undefined}>
     <ProgrammePanel padded>
@@ -829,7 +855,8 @@ export function ManagerHub({
         <ManagerPage className={hubMobilePad}>
           <ManagerSection>
           <div className="space-y-4">
-            {nextFixtureCard}
+            {matchWeekCard}
+            {!awaitingMatchWeek ? nextFixtureCard : null}
             {newsTickerCard}
             {hubStandingsCard}
             {squadAvailabilityCard}
@@ -864,7 +891,8 @@ export function ManagerHub({
       <ManagerSection>
       <div className="space-y-4">
         {seasonProgressCard}
-        {nextFixtureCard}
+        {matchWeekCard}
+        {!awaitingMatchWeek ? nextFixtureCard : null}
         {newsTickerCard}
         {hubStandingsCard}
         {squadAvailabilityCard}

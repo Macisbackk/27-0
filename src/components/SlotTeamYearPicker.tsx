@@ -141,7 +141,7 @@ export function SlotTeamYearPicker({
           </p>
         </div>
 
-        <div className={`${SPACING.cardPadding} pt-4 sm:pt-5`}>
+        <div className={`${SPACING.cardPadding} pt-3 sm:pt-5`}>
           {entries.length === 0 ? (
             <p className="py-10 text-center text-gray-500">
               No players available from this squad.
@@ -152,7 +152,7 @@ export function SlotTeamYearPicker({
                 Tap <span className="font-semibold text-theme-primary">Sign player</span>{" "}
                 to add them to your squad
               </p>
-              <div className="mx-auto grid max-h-[min(58vh,520px)] max-w-5xl grid-cols-1 gap-3 overflow-y-auto overflow-x-hidden pr-0.5 min-[520px]:grid-cols-3 sm:gap-4">
+              <div className="mx-auto grid max-h-[min(52vh,520px)] max-w-5xl grid-cols-1 gap-2 overflow-y-auto overflow-x-hidden pr-0.5 min-[520px]:grid-cols-3 sm:gap-4">
                 {sortedEntries.map(({ player }, index) => {
                   const statsExpanded = statsPlayerId === player.id;
                   const isTopPick =

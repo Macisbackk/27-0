@@ -11,7 +11,7 @@ import {
 } from "react";
 import {
   checkAchievements,
-  getUnseenAchievementPopups,
+  acknowledgeExistingAchievementPopups,
   markAchievementPopupSeen,
   type AchievementUnlockResult,
 } from "@/lib/achievements/achievementEngine";
@@ -79,12 +79,14 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     [enqueue]
   );
 
-  // Seed unseen popups once per mount. Never mark seen here.
+  // Persist acknowledgement for any previously unlocked achievements so
+  // login / refresh / mode entry never re-queues historical unlocks.
+  // Only locked→unlocked transitions (notifyAchievements) enqueue popups.
   useEffect(() => {
     if (hasSeededUnseenRef.current) return;
     hasSeededUnseenRef.current = true;
-    enqueue(getUnseenAchievementPopups());
-  }, [enqueue]);
+    acknowledgeExistingAchievementPopups();
+  }, []);
 
   useEffect(() => {
     const onCheck = (event: Event) => {
@@ -95,11 +97,13 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener(ACHIEVEMENT_CHECK_EVENT, onCheck);
   }, [notifyAchievements]);
 
-  // Promote next queued item to active. Do not mark seen on promote.
+  // Promote next queued item to active and acknowledge immediately so a
+  // mid-popup navigation/remount cannot replay it.
   useEffect(() => {
     if (active || queue.length === 0) return;
     const [next, ...rest] = queue;
     activeIdRef.current = next.id;
+    markAchievementPopupSeen(next.id);
     setActive(next);
     setQueue(rest);
   }, [active, queue]);

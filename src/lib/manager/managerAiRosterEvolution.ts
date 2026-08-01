@@ -244,8 +244,8 @@ export function simulateAiSeasonRosterActivity(
 
   const transferBursts = Math.min(10, 4 + seasonIndex);
   for (let i = 0; i < transferBursts; i++) {
-    next = maybeGenerateAiTransfers(next);
-    next = maybeAiSignFreeAgents(next);
+    next = maybeGenerateAiTransfers(next, i);
+    next = maybeAiSignFreeAgents(next, i);
   }
 
   return next;

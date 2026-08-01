@@ -1,6 +1,7 @@
 import { getPlayerById } from "../players";
 import { getManagerPlayer } from "./managerPlayers";
 import { getManagerOpponentMatchRating, pruneLeagueListedPlayers } from "./managerLeagueRosters";
+import { getWccOpponentTeamRating } from "./managerOpponentRating";
 import { simulateOneFixture } from "../game/season-simulation";
 import type { ManagerCareer, ManagerFixtureRecord } from "./types";
 import { generateEventsFromFixture } from "./matchEventGenerator";
@@ -36,6 +37,11 @@ import {
   getTacticModifiers,
 } from "./managerTacticsScoring";
 import { updateStatsAfterMatch } from "./managerCareerStats";
+import { formDeltaFromMatchRating } from "./managerMatchRating";
+import {
+  buildMatchWeekId,
+  markAwaitingMatchWeekAdvance,
+} from "./managerMatchWeek";
 import type { MatchFixture } from "../game/season-simulation";
 import { processMatchAttendance } from "./managerAttendance";
 import {
@@ -64,10 +70,48 @@ import {
 import { validateMatchEvents } from "../game/validateMatchEvents";
 import type { MatchEventType } from "../game/match-events";
 
+/**
+ * Peek the fixture that will be playable after Match Week Continue
+ * (schedule slot after the completed league game, or current next when ready).
+ */
+export function peekFixtureAfterMatchWeekAdvance(
+  career: ManagerCareer
+): ReturnType<typeof getNextManagerFixture> {
+  if (career.matchWeekPhase !== "awaiting_advance") {
+    return getNextManagerFixture(career);
+  }
+
+  const last = career.lastMatchFixture;
+  if (last?.competition === "league") {
+    const advanced: ManagerCareer = {
+      ...career,
+      currentFixtureIndex: career.currentFixtureIndex + 1,
+      gameWeek: last.round,
+      matchWeekPhase: "ready_to_play",
+      pendingMatchWeekId: null,
+    };
+    return getNextManagerFixture(advanced);
+  }
+
+  // Cup / WCC / playoff / friendly — calendar index unchanged; next is resolved
+  // after weekly systems (bracket already updated in apply).
+  const ready: ManagerCareer = {
+    ...career,
+    matchWeekPhase: "ready_to_play",
+    pendingMatchWeekId: null,
+  };
+  return getNextManagerFixture(ready);
+}
+
 export function getNextManagerFixture(
   career: ManagerCareer
 ): ReturnType<typeof getNextLeagueOrCupFixture> {
   const synced = syncManagerLeagueTable(career);
+
+  // While awaiting Match Week Continue, do not expose the completed fixture as playable.
+  if (synced.matchWeekPhase === "awaiting_advance") {
+    return null;
+  }
 
   const leagueOrCup = getNextLeagueOrCupFixture(synced);
   const wcc = synced.worldClubChallenge?.currentFixture;
@@ -230,6 +274,12 @@ export function applyManagerMatchResult(
     liveEvents?: import("./types").LiveMatchEvent[];
   } = {}
 ): ManagerMatchApplyResult {
+  if (career.matchWeekPhase === "awaiting_advance") {
+    return matchApplyFail(
+      career,
+      "Continue to the next Match Week before playing another fixture."
+    );
+  }
   const sched =
     options.schedOverride ?? getNextManagerFixture(career);
   if (!sched) {
@@ -425,18 +475,8 @@ export function applyManagerMatchResult(
       awayTries: userIsListedHome ? fixture.triesAgainst : fixture.triesFor,
     };
 
-    roundResults = [
-      ...career.roundMatches,
-      ...simulateRoundOtherMatches(
-        career.club,
-        sched.opponent,
-        round,
-        career.seed,
-        userMatch,
-        leagueStates,
-        career
-      ),
-    ];
+    // User result only — AI round fixtures process on Match Week Continue.
+    roundResults = [...career.roundMatches, userMatch];
     leagueTable = buildLeagueTableFromMatches(roundResults, career.club);
   }
 
@@ -471,20 +511,11 @@ export function applyManagerMatchResult(
         (t) => t.playerId === ps.playerId
       )?.tries ?? 0;
 
-    let form = ps.form;
-
-    if (played) {
-      if (won) {
-        form = Math.min(99, form + 3);
-      } else {
-        form = Math.max(1, form - 2);
-      }
-    }
-
     const inj = injuries.find((i) => i.playerId === ps.playerId);
     return {
       ...ps,
-      form,
+      // Form is updated from match ratings below (not win/loss-only).
+      form: ps.form,
       injury: inj?.injury ?? ps.injury,
       seasonAppearances: played ? ps.seasonAppearances + 1 : ps.seasonAppearances,
       seasonTries: ps.seasonTries + tryCount,
@@ -493,15 +524,27 @@ export function applyManagerMatchResult(
 
   const statsUpdate = updateStatsAfterMatch(
     career,
-    fixture,
+    { ...fixture, liveEvents: savedLiveEvents },
     squad,
     matchdayIdList,
-    motmId
+    motmId,
+    savedLiveEvents
   );
   const teamSeasonStats = isFriendly || isWcc
     ? career.teamSeasonStats
     : statsUpdate.teamSeasonStats;
   const recentForm = statsUpdate.recentForm;
+
+  // Rolling form from match performance ratings (ability stays separate).
+  nextSquad = nextSquad.map((ps) => {
+    const matchRating = statsUpdate.matchRatingsByPlayer[ps.playerId];
+    if (matchRating == null) return ps;
+    const delta = formDeltaFromMatchRating(matchRating);
+    return {
+      ...ps,
+      form: Math.max(1, Math.min(99, ps.form + delta)),
+    };
+  });
 
   let working: ManagerCareer = { ...career, squad: nextSquad };
 
@@ -653,11 +696,6 @@ export function applyManagerMatchResult(
   const cupBonus = isCup && won ? 30_000 : 0;
   const wccBonus = isWcc && won ? 40_000 : 0;
 
-  const nextFixtureIndex =
-    skipsLeagueProgress
-      ? career.currentFixtureIndex
-      : career.currentFixtureIndex + 1;
-
   const nextCareer: ManagerCareer = {
     ...working,
     leagueClubStates: leagueStates,
@@ -669,8 +707,9 @@ export function applyManagerMatchResult(
     roundMatches: roundResults,
     leagueTable,
     currentRound: isFriendly ? career.currentRound : round,
-    gameWeek: isCup || skipsLeagueProgress ? career.gameWeek : round,
-    currentFixtureIndex: nextFixtureIndex,
+    // gameWeek / fixture index stay until advanceManagerMatchWeek
+    gameWeek: career.gameWeek,
+    currentFixtureIndex: career.currentFixtureIndex,
     wins:
       skipsLeagueProgress
         ? career.wins
@@ -703,20 +742,8 @@ export function applyManagerMatchResult(
   if (wccBonus > 0) {
     finalCareer = applyClubRevenue(finalCareer, wccBonus, "cup_prize");
   }
-  finalCareer = {
-    ...finalCareer,
-    isSeasonComplete: isManagerSeasonComplete(finalCareer),
-  };
 
-  if (finalCareer.isSeasonComplete && !finalCareer.lastSeasonDevelopmentReview) {
-    const developed = developSquadAtSeasonEnd(finalCareer);
-    finalCareer = {
-      ...developed.career,
-      isSeasonComplete: true,
-      lastSeasonDevelopmentReview: developed.changes,
-    };
-  }
-
+  // Immediate match aftermath (reserves tied to this fixture opponent).
   const reserveOpp = getReserveOpponent(sched.opponent, round, career.seed);
   finalCareer = tickLeagueClubReserveCounts(finalCareer, round);
   finalCareer = ensureAllClubReserveDepth(finalCareer);
@@ -725,16 +752,7 @@ export function applyManagerMatchResult(
   finalCareer = applyReserveMatchDevelopment(finalCareer, reserveResult);
   const calledUpReserveCount = finalCareer.calledUpReserveIds.length;
   finalCareer = clearReserveCallUps(finalCareer);
-  finalCareer = generateIncomingTransferOffers(finalCareer);
-  if (!isFriendly && !isWcc) {
-    finalCareer = generateUnsolicitedTransferOffers(finalCareer);
-  }
   finalCareer = syncManagerInboxMessages(finalCareer);
-  if (!isCup && !skipsLeagueProgress) {
-    finalCareer = tickPositionRetraining(finalCareer);
-  }
-  finalCareer = maybeAddReserveReport(finalCareer);
-  finalCareer = rotateLatestNews(finalCareer);
   const keyMoment = getManagerMatchKeyMoment(
     record,
     career.club,
@@ -748,21 +766,6 @@ export function applyManagerMatchResult(
     );
   }
   finalCareer = maybeAddBoardUltimatumInbox(finalCareer);
-  finalCareer = maybeGenerateAiTransfers(finalCareer);
-  finalCareer = maybeAiSignFreeAgents(finalCareer);
-  const leagueSeasonIndex = getLeagueSeasonIndex(finalCareer);
-  if (leagueSeasonIndex >= 1) {
-    finalCareer = maybeGenerateAiTransfers(finalCareer);
-    finalCareer = maybeAiSignFreeAgents(finalCareer);
-  }
-  if (leagueSeasonIndex >= 2) {
-    finalCareer = maybeGenerateAiTransfers(finalCareer);
-    finalCareer = maybeAiSignFreeAgents(finalCareer);
-  }
-  if (leagueSeasonIndex >= 4) {
-    finalCareer = maybeGenerateAiTransfers(finalCareer);
-    finalCareer = maybeAiSignFreeAgents(finalCareer);
-  }
   if (isFriendly) {
     finalCareer = completeFriendlyMatch(finalCareer);
   }
@@ -781,27 +784,6 @@ export function applyManagerMatchResult(
     );
   }
   finalCareer = syncManagerFinance(finalCareer);
-  const listRefreshEvery = getLeagueSeasonIndex(finalCareer) >= 1 ? 2 : 3;
-  if (finalCareer.gameWeek % listRefreshEvery === 0) {
-    const refreshed = generateLeagueListedPlayers(
-      finalCareer,
-      finalCareer.seed,
-      finalCareer.gameWeek
-    );
-    const listedIds = new Set(refreshed.map((l) => l.playerId));
-    const preserved = finalCareer.leagueListedPlayers.filter(
-      (l) => !listedIds.has(l.playerId)
-    );
-    const merged = [...preserved, ...refreshed];
-    const deduped = Array.from(
-      new Map(merged.map((l) => [l.playerId, l])).values()
-    );
-    finalCareer = {
-      ...finalCareer,
-      leagueListedPlayers: deduped,
-      transferMarket: deduped.map((l) => l.playerId),
-    };
-  }
 
   finalCareer = maybeAddBoardMilestoneInbox(finalCareer, {
     fixture: record,
@@ -809,7 +791,188 @@ export function applyManagerMatchResult(
     calledUpReserveCount,
   });
 
+  const weekId = buildMatchWeekId(career, sched.id, round);
+  finalCareer = markAwaitingMatchWeekAdvance(finalCareer, weekId);
+
   return { ok: true, career: pruneLeagueListedPlayers(finalCareer) };
+}
+
+/**
+ * Process deferred Match Week systems once. Safe against double Continue /
+ * refresh — guarded by pendingMatchWeekId vs lastProcessedMatchWeekId.
+ */
+export function advanceManagerMatchWeek(
+  career: ManagerCareer
+): { ok: true; career: ManagerCareer } | { ok: false; career: ManagerCareer; error: string } {
+  if (career.matchWeekPhase !== "awaiting_advance") {
+    return {
+      ok: false,
+      career,
+      error: "There is no Match Week waiting to be advanced.",
+    };
+  }
+
+  const weekId = career.pendingMatchWeekId;
+  if (!weekId) {
+    return {
+      ok: true,
+      career: {
+        ...career,
+        matchWeekPhase: "ready_to_play",
+        pendingMatchWeekId: null,
+      },
+    };
+  }
+
+  if (career.lastProcessedMatchWeekId === weekId) {
+    return {
+      ok: true,
+      career: {
+        ...career,
+        matchWeekPhase: career.isSeasonComplete
+          ? "season_complete"
+          : "ready_to_play",
+        pendingMatchWeekId: null,
+      },
+    };
+  }
+
+  const last = career.lastMatchFixture;
+  const skipsLeagueProgress =
+    last?.competition === "challenge_cup" ||
+    last?.competition === "playoffs" ||
+    last?.competition === "friendly" ||
+    last?.competition === "world_club_challenge";
+
+  let next: ManagerCareer = { ...career };
+  const round = last?.round ?? career.currentRound;
+
+  if (last && last.competition === "league") {
+    const sched = career.schedule[career.currentFixtureIndex];
+    const sides = sched
+      ? getLeagueFixtureSides(career.club, sched)
+      : {
+          homeTeam: last.isHome ? career.club : last.opponent,
+          awayTeam: last.isHome ? last.opponent : career.club,
+        };
+    const userIsListedHome = sides.homeTeam === career.club;
+    const userMatch = {
+      round,
+      homeTeam: sides.homeTeam,
+      awayTeam: sides.awayTeam,
+      homeScore: userIsListedHome ? last.pointsFor : last.pointsAgainst,
+      awayScore: userIsListedHome ? last.pointsAgainst : last.pointsFor,
+      homeTries: userIsListedHome ? last.triesFor : last.triesAgainst,
+      awayTries: userIsListedHome ? last.triesAgainst : last.triesFor,
+    };
+
+    // Drop any incomplete user-only row for this round then expand with AI.
+    const withoutThisRoundUser = career.roundMatches.filter((m) => {
+      if (m.round !== round) return true;
+      const involvesUser =
+        m.homeTeam === career.club || m.awayTeam === career.club;
+      return !involvesUser;
+    });
+
+    const leagueStates = resolveLeagueClubStatesForFixture(career, round);
+    const roundResults = [
+      ...withoutThisRoundUser,
+      ...simulateRoundOtherMatches(
+        career.club,
+        last.opponent,
+        round,
+        career.seed,
+        userMatch,
+        leagueStates,
+        career
+      ),
+    ];
+    next = {
+      ...next,
+      roundMatches: roundResults,
+      leagueTable: buildLeagueTableFromMatches(roundResults, career.club),
+      gameWeek: round,
+      currentFixtureIndex: career.currentFixtureIndex + 1,
+      currentRound: round,
+    };
+  } else if (!skipsLeagueProgress && last) {
+    next = {
+      ...next,
+      gameWeek: round,
+      currentFixtureIndex: career.currentFixtureIndex + 1,
+      currentRound: round,
+    };
+  }
+
+  next = syncManagerLeagueTable(next);
+  next = generateIncomingTransferOffers(next);
+  if (
+    last?.competition !== "friendly" &&
+    last?.competition !== "world_club_challenge"
+  ) {
+    next = generateUnsolicitedTransferOffers(next);
+  }
+  next = syncManagerInboxMessages(next);
+  if (last?.competition === "league") {
+    next = tickPositionRetraining(next);
+  }
+  next = maybeAddReserveReport(next);
+  next = rotateLatestNews(next);
+
+  next = maybeGenerateAiTransfers(next, 0);
+  next = maybeAiSignFreeAgents(next, 0);
+  const leagueSeasonIndex = getLeagueSeasonIndex(next);
+  if (leagueSeasonIndex >= 1) {
+    next = maybeGenerateAiTransfers(next, 1);
+    next = maybeAiSignFreeAgents(next, 1);
+  }
+  if (leagueSeasonIndex >= 2) {
+    next = maybeGenerateAiTransfers(next, 2);
+    next = maybeAiSignFreeAgents(next, 2);
+  }
+  if (leagueSeasonIndex >= 4) {
+    next = maybeGenerateAiTransfers(next, 3);
+    next = maybeAiSignFreeAgents(next, 3);
+  }
+
+  next = syncManagerFinance(next);
+  const listRefreshEvery = getLeagueSeasonIndex(next) >= 1 ? 2 : 3;
+  const weekForRefresh = next.gameWeek;
+  if (weekForRefresh > 0 && weekForRefresh % listRefreshEvery === 0) {
+    const refreshed = generateLeagueListedPlayers(
+      next,
+      next.seed,
+      weekForRefresh
+    );
+    next = {
+      ...next,
+      leagueListedPlayers: refreshed,
+      transferMarket: refreshed.map((l) => l.playerId),
+    };
+  }
+
+  next = ensurePlayoffsReady(next);
+  const seasonDone = isManagerSeasonComplete(next);
+  if (seasonDone && !next.lastSeasonDevelopmentReview) {
+    const developed = developSquadAtSeasonEnd(next);
+    next = {
+      ...developed.career,
+      isSeasonComplete: true,
+      lastSeasonDevelopmentReview: developed.changes,
+    };
+  } else {
+    next = { ...next, isSeasonComplete: seasonDone };
+  }
+
+  next = {
+    ...pruneLeagueListedPlayers(next),
+    matchWeekPhase: next.isSeasonComplete ? "season_complete" : "ready_to_play",
+    pendingMatchWeekId: null,
+    lastProcessedMatchWeekId: weekId,
+    updatedAt: new Date().toISOString(),
+  };
+
+  return { ok: true, career: next };
 }
 
 export function previewManagerMatchScoreline(
@@ -848,12 +1011,11 @@ export function previewManagerMatchScoreline(
     simCareer
   );
   const friendlyRating = simCareer.preSeason.activeFriendly?.teamRating;
-  const wccRating = simCareer.worldClubChallenge?.currentFixture?.nrlChampionRating;
   const baseOppRating =
     isFriendly && friendlyRating
       ? friendlyRating
-      : isWcc && wccRating != null
-        ? wccRating
+      : isWcc
+        ? getWccOpponentTeamRating(simCareer, sched.opponent)
         : getManagerOpponentMatchRating(
             simCareer,
             sched.opponent,
@@ -928,6 +1090,12 @@ export function simulateManagerMatchLive(
 export function simulateManagerNextMatch(
   career: ManagerCareer
 ): ManagerMatchApplyResult {
+  if (career.matchWeekPhase === "awaiting_advance") {
+    return matchApplyFail(
+      career,
+      "Continue to the next Match Week before playing another fixture."
+    );
+  }
   if (isManagerSeasonComplete(career)) {
     return matchApplyFail(career, "The season is already complete.");
   }

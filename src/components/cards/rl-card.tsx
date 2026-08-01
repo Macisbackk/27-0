@@ -238,7 +238,7 @@ export function RLRatingDisplay({
             : "text-[color:var(--rating)]"
         } ${
           compact
-            ? "text-2xl sm:text-6xl"
+            ? "text-xl sm:text-5xl"
             : large
               ? "text-5xl sm:text-6xl"
               : "text-2xl sm:text-3xl"

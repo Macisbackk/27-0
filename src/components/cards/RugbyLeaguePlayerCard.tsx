@@ -273,7 +273,11 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-1.5">
+          <div
+            className={`grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-1.5 ${
+              mobileCompact ? "hidden sm:grid" : ""
+            }`}
+          >
             <StatBox
               label="Apps"
               value={appearancesValue}

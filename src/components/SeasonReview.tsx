@@ -190,7 +190,7 @@ export function SeasonReview({
 
   return (
     <BodyPortal>
-      <div className="fixed inset-0 z-[100] flex flex-col bg-black/92">
+      <div className="fixed inset-0 z-[100] flex flex-col overflow-x-hidden bg-black/92">
         {showCelebration && <Confetti />}
 
         <div className="stadium-lights pointer-events-none absolute inset-0" />
@@ -203,14 +203,14 @@ export function SeasonReview({
               : "pb-[max(1rem,env(safe-area-inset-bottom))]"
           }`}
         >
-          <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-8 sm:py-12">
+          <div className="relative mx-auto flex w-full max-w-3xl min-w-0 flex-col items-center overflow-x-hidden px-3 py-4 sm:px-4 sm:py-12">
             <motion.header
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="w-full max-w-xl text-center"
+              className="w-full max-w-xl min-w-0 text-center"
             >
               <p
-                className={`font-display text-xs font-semibold uppercase tracking-[0.3em] ${NORMAL.reviewAccent}`}
+                className={`font-display text-[10px] font-semibold uppercase tracking-wider sm:text-xs sm:tracking-[0.3em] ${NORMAL.reviewAccent}`}
               >
                 {reviewLabel}
               </p>
@@ -221,13 +221,13 @@ export function SeasonReview({
               />
 
               <motion.div
-                className="mt-4"
+                className="mt-3 sm:mt-4"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
               >
                 <p
-                  className="font-display text-5xl font-black uppercase tracking-tight sm:text-6xl"
+                  className="font-display text-3xl font-black uppercase tracking-tight sm:text-6xl"
                   style={{
                     color: gradeInfo.color,
                     fontFamily: "var(--font-display)",
@@ -235,13 +235,13 @@ export function SeasonReview({
                 >
                   {gradeInfo.grade} Grade
                 </p>
-                <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-accent-gold">
+                <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-accent-gold sm:mt-2 sm:text-xs">
                   {getSeasonStoryHeading(mode)}
                 </p>
                 <p className="mt-1 text-sm font-semibold text-gray-300">
                   {gradeInfo.label}
                 </p>
-                <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-500">
+                <p className="mx-auto mt-2 hidden max-w-md text-sm leading-relaxed text-gray-500 sm:mt-3 sm:block">
                   {getSeasonReviewStoryBio(
                     mode,
                     gradeInfo.grade,
@@ -259,7 +259,7 @@ export function SeasonReview({
 
               {isPerfect && (
                 <motion.h1
-                  className="mt-4 font-display text-3xl font-black text-accent-gold sm:text-5xl"
+                  className="mt-3 font-display text-2xl font-black text-accent-gold sm:mt-4 sm:text-5xl"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}

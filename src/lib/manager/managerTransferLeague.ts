@@ -201,9 +201,12 @@ export function getAskingPrice(
   playerId: string,
   listed: boolean,
   seed: string,
-  round: number
+  round: number,
+  career?: ManagerCareer
 ): number {
-  const player = getPlayerById(playerId);
+  const player = career
+    ? getManagerPlayer(career, playerId) ?? getPlayerById(playerId)
+    : getPlayerById(playerId);
   if (!player) return 0;
   const rng = seedrandom(`${seed}-price-${playerId}-r${round}`);
   if (listed) {
@@ -235,9 +238,21 @@ export function getSellerAskingPrice(
   if (listed) {
     const listedPrice = getLeagueListingAskingPrice(career, playerId, club);
     if (listedPrice != null) return listedPrice;
-    return getAskingPrice(playerId, listed, career.seed, career.gameWeek);
+    return getAskingPrice(
+      playerId,
+      listed,
+      career.seed,
+      career.gameWeek,
+      career
+    );
   }
-  return getAskingPrice(playerId, listed, career.seed, career.gameWeek);
+  return getAskingPrice(
+    playerId,
+    listed,
+    career.seed,
+    career.gameWeek,
+    career
+  );
 }
 
 /** Minimum fee the user's club must pay — seller asking price plus buyer-tier premium. */
@@ -727,7 +742,8 @@ export function generateUnsolicitedTransferOffers(
     ps.playerId,
     false,
     career.seed,
-    career.gameWeek
+    career.gameWeek,
+    career
   );
   const buyers = rivalTransferClubs(career.club);
   if (buyers.length === 0) return career;

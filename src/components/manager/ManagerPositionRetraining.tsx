@@ -25,10 +25,10 @@ interface ManagerPositionRetrainingPanelProps {
 }
 
 const RETRAINING_PLAYER_CARD_WIDTH =
-  "w-[10.5rem] shrink-0 sm:w-[11rem]";
+  "w-full min-w-0 max-w-full sm:w-[11rem] sm:max-w-none sm:justify-self-center";
 
 function retrainingCardShellClass(variant: "idle" | "selected" | "training" | "disabled"): string {
-  const base = `${CARD.inset} ${RETRAINING_PLAYER_CARD_WIDTH} flex flex-col rounded-lg border px-3 py-2.5 text-left transition`;
+  const base = `${CARD.inset} ${RETRAINING_PLAYER_CARD_WIDTH} flex flex-col rounded-lg border px-2.5 py-2 text-left transition sm:px-3 sm:py-2.5`;
   switch (variant) {
     case "selected":
       return `${base} border-theme-tertiary/60 bg-theme-primary/10`;
@@ -70,12 +70,14 @@ function RetrainingPlayerCardFooter({
 
     return (
       <div className="mt-2 min-h-[2.75rem]">
-        <div className="flex items-center justify-between gap-1 text-[10px] tabular-nums">
+        <div className="flex flex-wrap items-center justify-between gap-x-1 gap-y-0.5 text-[10px] tabular-nums">
           <span className="font-semibold text-theme-primary">{pct}%</span>
           <span className="text-pitch-500">
             {weeksDone}/{training.totalWeeks} wk
           </span>
-          <span className="text-pitch-400">{formatRetrainingDuration(training.weeksRemaining)} left</span>
+          <span className="basis-full text-pitch-400 sm:basis-auto">
+            {formatRetrainingDuration(training.weeksRemaining)} left
+          </span>
         </div>
         <div
           className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-pitch-800/90 ring-1 ring-pitch-700/50"
@@ -226,7 +228,7 @@ export function ManagerPositionRetrainingPanel({
 
       <div className="mt-4">
         <p className={`${TYPO.sectionLabel} mb-2`}>Squad players</p>
-        <div className="mx-auto grid max-w-3xl grid-cols-2 justify-items-center gap-2 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mx-auto grid w-full min-w-0 max-w-3xl grid-cols-2 gap-2 sm:grid-cols-3 sm:justify-items-center lg:grid-cols-4">
           {squadPlayers.map(({ entry, player, status }) => {
             const training = getActiveRetraining(career, entry.playerId);
             const positionLabel = formatPlayerPositionLabel(player, { short: true });

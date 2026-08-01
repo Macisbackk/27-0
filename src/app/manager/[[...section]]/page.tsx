@@ -64,6 +64,7 @@ import {
   type ManagerSaveSlotSummary,
 } from "@/lib/manager/managerState";
 import {
+  advanceManagerMatchWeek,
   getNextManagerFixture,
   prepareCareerForNextMatch,
   simulateManagerNextMatch,
@@ -263,6 +264,7 @@ export default function ManagerPage() {
     useState<ManagerView>("hub");
   const [pendingHubNextFixtureScroll, setPendingHubNextFixtureScroll] =
     useState(false);
+  const [matchWeekProcessing, setMatchWeekProcessing] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleteSlot, setDeleteSlot] = useState<number | null>(null);
   const [alertDialog, setAlertDialog] = useState<{
@@ -1320,6 +1322,13 @@ export default function ManagerPage() {
 
   const handleSimulate = () => {
     if (!career) return;
+    if (career.matchWeekPhase === "awaiting_advance") {
+      setAlertDialog({
+        title: "Match Week",
+        message: "Continue to the next Match Week before simulating another fixture.",
+      });
+      return;
+    }
     const snapshot = career;
     let ready = prepareCareerForNextMatch(career);
     if (ready.managerSettings?.autoFixSquadBeforeMatch) {
@@ -1355,6 +1364,13 @@ export default function ManagerPage() {
 
   const handlePlayGame = () => {
     if (!career) return;
+    if (career.matchWeekPhase === "awaiting_advance") {
+      setAlertDialog({
+        title: "Match Week",
+        message: "Continue to the next Match Week before playing another fixture.",
+      });
+      return;
+    }
     let ready = prepareCareerForNextMatch(career);
     if (ready.managerSettings?.autoFixSquadBeforeMatch) {
       ready = autoFixMatchdaySquad(ready).career;
@@ -1376,6 +1392,30 @@ export default function ManagerPage() {
     }
     persist(ready);
     setPlayGameOpen(true);
+  };
+
+  const handleAdvanceMatchWeek = () => {
+    if (!career || matchWeekProcessing) return;
+    if (career.matchWeekPhase !== "awaiting_advance") return;
+    setMatchWeekProcessing(true);
+    try {
+      const result = advanceManagerMatchWeek(career);
+      if (!result.ok) {
+        setAlertDialog({
+          title: "Match Week",
+          message: result.error,
+        });
+        return;
+      }
+      persist(result.career);
+      if (result.career.isSeasonComplete) {
+        goToView("season-review", { syncUrl: false });
+      } else if (result.career.managerSettings?.autoOpenNextFixture ?? true) {
+        setPendingHubNextFixtureScroll(true);
+      }
+    } finally {
+      setMatchWeekProcessing(false);
+    }
   };
 
   const handlePlayComplete = (next: ManagerCareer) => {
@@ -1518,6 +1558,8 @@ export default function ManagerPage() {
                     career={career}
                     onPlayGame={handlePlayGame}
                     onSimulate={handleSimulate}
+                    onAdvanceMatchWeek={handleAdvanceMatchWeek}
+                    matchWeekProcessing={matchWeekProcessing}
                     onUpdate={persist}
                     onNavigate={handleNavNavigate}
                   />

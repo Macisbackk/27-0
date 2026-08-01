@@ -3,6 +3,7 @@ import type { ManagerCareer, ManagerSettings } from "./types";
 import { DEFAULT_MANAGER_SETTINGS, DEFAULT_TACTICS } from "./types";
 import { EMPTY_TEAM_SEASON_STATS, sanitizePlayerSeasonStats } from "./managerCareerStats";
 import { sanitizeInvalidScorerData } from "./managerScorerSanitize";
+import { migrateMatchWeekFields } from "./managerMatchWeek";
 import { ensureFreeAgentPool } from "./managerFreeAgents";
 import { hydrateReserveTenure } from "./managerReserveRelease";
 import { initLeagueClubStates, ensureLeagueClubStates } from "./managerLeagueState";
@@ -353,6 +354,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = sanitizeInvalidScorerData(career);
   career = hydrateReserveTenure(career);
   career = ensureFreeAgentPool(career);
+  career = migrateMatchWeekFields(career);
   return syncManagerInboxMessages(career);
 }
 
@@ -488,6 +490,9 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     gameWeek: 0,
     currentFixtureIndex: 0,
     currentRound: 0,
+    matchWeekPhase: "ready_to_play",
+    pendingMatchWeekId: null,
+    lastProcessedMatchWeekId: null,
     leagueTable: buildLeagueTableFromMatches([], club),
     transferMarket: [],
     leagueListedPlayers: [],

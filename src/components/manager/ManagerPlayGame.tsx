@@ -37,7 +37,7 @@ import {
 } from "@/lib/manager/managerFixtureDisplay";
 import { getManagerMatchOccasionPresentation } from "@/lib/manager/managerMatchOccasion";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
-import { getManagerOpponentMatchRating } from "@/lib/manager/managerLeagueRosters";
+import { getDisplayedOpponentTeamRating } from "@/lib/manager/managerOpponentRating";
 import { managerResultBadgeClass } from "@/lib/manager/managerSurfaces";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
@@ -235,12 +235,7 @@ export function ManagerPlayGame({
     career.xiiiSlotPositions,
     career
   );
-  const oppRating = getManagerOpponentMatchRating(
-    career,
-    sched.opponent,
-    career.seed,
-    sched.round
-  );
+  const oppRating = getDisplayedOpponentTeamRating(career, sched);
 
   const homeName = live.isHome ? career.club : sched.opponent;
   const awayName = live.isHome ? sched.opponent : career.club;
@@ -279,14 +274,16 @@ export function ManagerPlayGame({
               {matchOccasion.weekLabel} ·{" "}
               {getManagerScheduledFixtureVenueLabel(sched)}
             </p>
-            <ManagerCompetitionBadge
-              competition={sched.competition}
-              cupRound={sched.cupRound}
-              playoffRound={sched.playoffRound}
-              isNeutral={sched.isNeutral}
-              venue={sched.venue}
-              detailed={matchOccasion.isShowcase}
-            />
+            {matchOccasion.occasion !== "wcc" ? (
+              <ManagerCompetitionBadge
+                competition={sched.competition}
+                cupRound={sched.cupRound}
+                playoffRound={sched.playoffRound}
+                isNeutral={sched.isNeutral}
+                venue={sched.venue}
+                detailed={matchOccasion.isShowcase}
+              />
+            ) : null}
           </div>
           {matchOccasion.momentLine ? (
             <p
@@ -294,11 +291,7 @@ export function ManagerPlayGame({
             >
               {matchOccasion.momentLine}
             </p>
-          ) : (
-            <p className="mt-1 text-[10px] text-pitch-500">
-              {getManagerScheduledFixtureHeadline(sched)}
-            </p>
-          )}
+          ) : null}
 
           <p className="mt-1.5 font-[family-name:var(--font-pitch)] text-lg uppercase tracking-wide leading-tight text-white sm:text-xl">
             <span className={live.isHome ? "text-theme-primary" : ""}>

@@ -974,6 +974,7 @@ body {
 
 .playoff-bracket-match--mobile {
   min-height: 0;
+  width: 100%;
 }
 
 .playoff-bracket-match--final {
@@ -1026,7 +1027,8 @@ body {
 }
 
 .playoff-bracket-team--mobile {
-  padding: 0.6rem 0.7rem;
+  padding: 0.75rem 0.8rem;
+  font-size: 0.95rem;
 }
 
 .playoff-bracket-team--winner {

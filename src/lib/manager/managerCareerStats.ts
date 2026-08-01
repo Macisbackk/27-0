@@ -1,9 +1,14 @@
 import type { MatchFixture } from "../game/season-simulation";
 import type { SquadSlot } from "../types";
-import type { ManagerCareer, ManagerPlayerSeasonStats, ManagerTeamSeasonStats } from "./types";
+import type {
+  LiveMatchEvent,
+  ManagerCareer,
+  ManagerPlayerSeasonStats,
+  ManagerTeamSeasonStats,
+} from "./types";
 import { isInvalidPlayerName } from "./managerPlayerNameGuards";
 import { getManagerPlayer } from "./managerPlayers";
-import { computeMatchRatingFromEvents } from "./managerScorerSanitize";
+import { computeMatchRatingFromEvents } from "./managerMatchRating";
 
 export const EMPTY_TEAM_SEASON_STATS: ManagerTeamSeasonStats = {
   played: 0,
@@ -71,14 +76,16 @@ export function formLabel(score: number): string {
 
 export function updateStatsAfterMatch(
   career: ManagerCareer,
-  fixture: MatchFixture & { liveEvents?: import("./types").LiveMatchEvent[] },
+  fixture: MatchFixture & { liveEvents?: LiveMatchEvent[] },
   squad: SquadSlot[],
   xiiiIds: string[],
-  motmPlayerId?: string | null
+  motmPlayerId?: string | null,
+  liveEventsOverride?: LiveMatchEvent[]
 ): {
   teamSeasonStats: ManagerTeamSeasonStats;
   playerSeasonStats: Record<string, ManagerPlayerSeasonStats>;
   recentForm: string[];
+  matchRatingsByPlayer: Record<string, number>;
 } {
   const won = fixture.result === "W";
   const teamSeasonStats: ManagerTeamSeasonStats = {
@@ -132,19 +139,27 @@ export function updateStatsAfterMatch(
     stats.playerOfMatch += 1;
   }
 
-  const liveEvents = fixture.liveEvents ?? [];
+  const liveEvents = liveEventsOverride ?? fixture.liveEvents ?? [];
   const interchangeIds = new Set(
     (career.matchdayInterchange ?? []).filter(Boolean)
   );
+  const matchRatingsByPlayer: Record<string, number> = {};
   for (const id of [...xiiiIds, ...interchangeIds]) {
     if (!id || isInvalidPlayerName(id)) continue;
+    const tryRow = userScorers.find((s) => s.playerId === id);
+    const isKicker = kicking?.playerId === id;
     const matchRating = computeMatchRatingFromEvents({
       playerId: id,
       events: liveEvents,
       won,
       isStarter: xiiiIds.includes(id),
       wasMotm: motmPlayerId === id,
+      tries: tryRow?.tries ?? 0,
+      conversions: isKicker ? kicking?.conversions ?? 0 : 0,
+      penalties: isKicker ? kicking?.penalties ?? 0 : 0,
+      dropGoals: isKicker ? kicking?.dropGoals ?? 0 : 0,
     });
+    matchRatingsByPlayer[id] = matchRating;
     const stats = getOrCreatePlayerStats(playerSeasonStats, id);
     const ratings = [...(stats.matchRatings ?? []), matchRating];
     const ratingSum = (stats.ratingSum ?? 0) + matchRating;
@@ -156,7 +171,12 @@ export function updateStatsAfterMatch(
 
   const recentForm = buildRecentForm([...career.fixtures, fixture]);
 
-  return { teamSeasonStats, playerSeasonStats, recentForm };
+  return {
+    teamSeasonStats,
+    playerSeasonStats,
+    recentForm,
+    matchRatingsByPlayer,
+  };
 }
 
 export function getTopTryScorer(

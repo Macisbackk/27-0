@@ -1,4 +1,4 @@
-import type { LiveMatchEvent, ManagerCareer, ManagerPlayerSeasonStats } from "./types";
+import type { ManagerCareer, ManagerPlayerSeasonStats } from "./types";
 import { isInvalidPlayerName } from "./managerPlayerNameGuards";
 
 /**
@@ -95,63 +95,13 @@ export function sanitizeInvalidScorerData(
 }
 
 /** Match impact rating out of 10 from live events + result. */
-export function computeMatchRatingFromEvents(params: {
-  playerId: string;
-  events: LiveMatchEvent[];
-  won: boolean;
-  isStarter: boolean;
-  wasMotm: boolean;
-}): number {
-  const { playerId, events, won, isStarter, wasMotm } = params;
-  let rating = isStarter ? 6.0 : 5.5;
-
-  for (const event of events) {
-    const involves =
-      event.playerId === playerId || event.kickerId === playerId;
-    if (!involves) continue;
-
-    switch (event.type) {
-      case "try":
-        rating += event.playerId === playerId ? 1.1 : 0;
-        break;
-      case "conversion":
-      case "penalty_goal":
-        rating += event.kickerId === playerId ? 0.35 : 0;
-        break;
-      case "drop_goal":
-        rating += event.playerId === playerId || event.kickerId === playerId ? 0.5 : 0;
-        break;
-      case "line_break":
-      case "big_break":
-        rating += 0.4;
-        break;
-      case "try_saver":
-        rating += 0.45;
-        break;
-      case "knock_on":
-      case "forward_pass":
-      case "forced_error":
-        rating -= 0.35;
-        break;
-      case "sin_bin":
-        rating -= 1.2;
-        break;
-      case "forty_twenty":
-        rating += 0.3;
-        break;
-      default:
-        break;
-    }
-  }
-
-  if (won) rating += 0.3;
-  else rating -= 0.15;
-  if (wasMotm) rating += 0.6;
-
-  return Math.round(Math.min(10, Math.max(1, rating)) * 10) / 10;
-}
-
-export function formatAverageRating(averageRating: number | undefined): string {
-  if (averageRating == null || Number.isNaN(averageRating)) return "—";
-  return `${averageRating.toFixed(1)}/10`;
-}
+export {
+  computeMatchRatingFromEvents,
+  diagnoseMatchRating,
+  formatAverageRating,
+  formDeltaFromMatchRating,
+} from "./managerMatchRating";
+export type {
+  MatchRatingBreakdown,
+  MatchRatingContribution,
+} from "./managerMatchRating";

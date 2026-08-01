@@ -16,7 +16,7 @@ import {
 } from "./managerTacticsScoring";
 import { getPlayerEligiblePositions } from "../players/player-positions";
 import type { Position } from "../types";
-import { generateNrlSquadNames } from "./worldClubChallenge";
+import { buildNrlMatchdayLineup } from "../nrl/nrlMatchdayLineup";
 
 interface SquadEntry {
   player: NonNullable<SquadSlot["player"]>;
@@ -156,18 +156,24 @@ export function enrichManagerFixtureScoring(
   }[];
 
   if (isWcc && opponentOptions?.career) {
-    const nrl = generateNrlSquadNames(
-      opponentOptions.career.seed,
-      fixture.opponent,
-      13
-    );
-    oppEntries = nrl.map((p, i) => ({
+    const career = opponentOptions.career;
+    const championRating =
+      career.worldClubChallenge?.currentFixture?.nrlChampionName ===
+      fixture.opponent
+        ? career.worldClubChallenge.currentFixture.nrlChampionRating
+        : undefined;
+    const lineup = buildNrlMatchdayLineup({
+      seed: career.seed,
+      teamName: fixture.opponent,
+      teamRating: championRating,
+      seasonYear: career.seasonYear,
+      count: 13,
+    });
+    oppEntries = lineup.players.map((p) => ({
       id: p.id,
       name: p.name,
-      position: OPPONENT_LINEUP[i] ?? "CENTRE",
-      rating:
-        opponentOptions.career?.worldClubChallenge?.currentFixture
-          ?.nrlChampionRating ?? 90,
+      position: p.position,
+      rating: p.rating,
     }));
   } else {
     const oppSquad = selectClubMatchSquad(

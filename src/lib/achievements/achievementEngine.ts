@@ -258,6 +258,24 @@ export function markAchievementPopupSeen(id: string): void {
   saveAchievements(next);
 }
 
+/**
+ * One-time / mount migration: mark every already-unlocked achievement as
+ * acknowledgement-complete without showing popups. Prevents login/refresh
+ * from replaying the entire unlock history. New unlocks still queue via
+ * checkAchievements → unlockAchievement (popupSeen: false).
+ */
+export function acknowledgeExistingAchievementPopups(): number {
+  const rows = loadAchievements();
+  let changed = 0;
+  const next = rows.map((row) => {
+    if (row.popupSeen === true) return row;
+    changed += 1;
+    return { ...row, popupSeen: true };
+  });
+  if (changed > 0) saveAchievements(next);
+  return changed;
+}
+
 export function checkAchievements(
   ctx: AchievementCheckContext = {}
 ): AchievementUnlockResult[] {

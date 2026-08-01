@@ -82,11 +82,11 @@ export function PlayerChoice({
       transition={{ duration: 0.4, ease: "easeOut" }}
       className="w-full"
     >
-      <header className="mb-2 border-b border-pitch-600/40 pb-2 text-center sm:mb-4 sm:pb-3">
+      <header className="mb-1.5 border-b border-pitch-600/40 pb-1.5 text-center sm:mb-4 sm:pb-3">
         <p className={`${RL_SECTION_TITLE_CLASS} text-[10px] sm:text-xs`}>
           {draftMode ? "Draft Pick" : "Recruitment"}
         </p>
-        <h2 className="mt-1 font-display text-lg font-black uppercase tracking-tight text-white sm:mt-2 sm:text-3xl">
+        <h2 className="mt-0.5 font-display text-base font-black uppercase tracking-tight text-white sm:mt-2 sm:text-3xl">
           {positionLabel}
         </h2>
         <p className="mt-1 hidden text-sm text-gray-400 sm:mt-2 sm:block">
@@ -95,7 +95,7 @@ export function PlayerChoice({
             : "Pick one signing — the other walks away forever"}
         </p>
         {showDraftRule && (
-          <p className="mx-auto mt-3 max-w-md rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-3 py-2 text-left text-xs text-gray-400">
+          <p className="mx-auto mt-2 hidden max-w-md rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-3 py-2 text-left text-xs text-gray-400 sm:mt-3 sm:block">
             <span className="font-display text-[10px] font-bold uppercase tracking-wider text-theme-primary">
               Draft Mode
             </span>
@@ -104,15 +104,15 @@ export function PlayerChoice({
         )}
 
         {draftMode && draftSquad && (
-          <div className="mx-auto mt-3 max-w-md sm:mt-4">
+          <div className="mx-auto mt-2 max-w-md sm:mt-4">
             <DraftPositionsRemaining squad={draftSquad} compact />
           </div>
         )}
 
         {!hardMode && (
-          <div className="mx-auto mt-2 inline-flex items-center gap-2 rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-3 py-1.5 sm:mt-4 sm:gap-3 sm:px-4 sm:py-2">
+          <div className="mx-auto mt-1.5 inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-2.5 py-1 sm:mt-4 sm:gap-3 sm:px-4 sm:py-2">
             <span className="font-display text-[9px] font-bold uppercase tracking-[0.15em] text-gray-500 sm:text-[10px] sm:tracking-[0.2em]">
-              Rerolls Remaining
+              Rerolls
             </span>
             <span
               className={`font-display text-xs font-bold sm:text-sm ${
@@ -126,12 +126,12 @@ export function PlayerChoice({
       </header>
 
       {!hardMode && onReroll && (
-        <div className="mb-3 flex justify-center sm:mb-5">
+        <div className="mb-2 flex justify-center sm:mb-5">
           <button
             type="button"
             onClick={onReroll}
             disabled={disabled || !rerollAvailable || rerollsRemaining <= 0}
-            className={`rounded-lg border px-3 py-2 font-display text-[10px] font-bold uppercase tracking-[0.12em] transition sm:px-5 sm:py-2.5 sm:text-xs sm:tracking-[0.18em] btn-press ${
+            className={`min-h-[44px] rounded-lg border px-4 py-2 font-display text-[10px] font-bold uppercase tracking-[0.12em] transition sm:px-5 sm:py-2.5 sm:text-xs sm:tracking-[0.18em] btn-press ${
               rerollAvailable && rerollsRemaining > 0 && !disabled
                 ? "border-theme-primary/50 bg-theme-primary/10 text-theme-primary hover:bg-theme-primary/20"
                 : "cursor-not-allowed border-pitch-700/60 bg-pitch-900/50 text-gray-600"
@@ -142,7 +142,7 @@ export function PlayerChoice({
         </div>
       )}
 
-      <div className="grid grid-cols-1 items-stretch gap-2 min-[400px]:grid-cols-2 sm:gap-3 md:gap-4">
+      <div className="grid grid-cols-2 items-stretch gap-2 sm:gap-3 md:gap-4">
         <ChoiceCard
           player={displayA}
           label="A"
@@ -196,7 +196,7 @@ function ChoiceCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
     >
-      <div className="mb-1 flex min-h-[16px] items-center justify-between px-0.5 sm:mb-2 sm:min-h-[22px] sm:px-1">
+      <div className="mb-0.5 flex min-h-[28px] items-center justify-between px-0.5 sm:mb-2 sm:min-h-[22px] sm:px-1">
         <span className="font-display text-[9px] font-bold uppercase tracking-wider text-gray-500 sm:text-[11px]">
           {label}
         </span>
@@ -205,7 +205,7 @@ function ChoiceCard({
             <span
               role="button"
               tabIndex={0}
-              className="rounded-full border border-pitch-600/50 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-theme-primary/40 hover:text-theme-primary sm:text-[10px]"
+              className="inline-flex min-h-[28px] items-center rounded-full border border-pitch-600/50 px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-theme-primary/40 hover:text-theme-primary sm:min-h-0 sm:text-[10px]"
               onClick={(e) => {
                 e.stopPropagation();
                 onViewDetails();
@@ -226,7 +226,7 @@ function ChoiceCard({
           </span>
         </span>
       </div>
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg transition sm:min-h-[320px] group-hover:opacity-95">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg transition sm:min-h-[280px] group-hover:opacity-95">
         <PlayerCard
           player={player}
           selectable
@@ -235,8 +235,8 @@ function ChoiceCard({
           compactMobile
         />
       </div>
-      <p className="mt-1 min-h-[16px] text-center text-[10px] text-gray-500 sm:text-[11px]">
-        {formatPositionFullNames(player)} · Tap to sign
+      <p className="mt-0.5 min-h-[14px] truncate text-center text-[9px] text-gray-500 sm:text-[11px]">
+        {formatPositionFullNames(player)}
       </p>
     </motion.button>
   );

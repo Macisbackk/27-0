@@ -3,33 +3,51 @@ import { TYPO } from "./typography";
 /** Shared spacing tokens — padding, gaps, section margins. */
 export const SPACING = {
   sectionGap: "mt-6",
-  /** Default card padding — roomier on small screens. */
-  cardPadding: "p-5 sm:p-6",
-  cardPaddingSm: "p-4 sm:p-5",
-  cardPaddingLg: "p-6 sm:p-8",
-  cardGridGap: "gap-3 sm:gap-4",
-  sectionContentTop: "pt-4",
-  sectionContentTopFeatured: "pt-5",
-  headingMargin: "mb-3",
+  /** Default card padding — denser on phones, roomier from sm+. */
+  cardPadding: "p-3 sm:p-6",
+  cardPaddingSm: "p-3 sm:p-5",
+  cardPaddingLg: "p-4 sm:p-8",
+  cardGridGap: "gap-2 sm:gap-4",
+  sectionContentTop: "pt-3 sm:pt-4",
+  sectionContentTopFeatured: "pt-4 sm:pt-5",
+  headingMargin: "mb-2 sm:mb-3",
   buttonGap: "gap-2",
-  pageX: "px-5 sm:px-6",
+  pageX: "px-3 sm:px-6",
   stackSm: "space-y-2",
-  stackMd: "space-y-3",
-  stackLg: "space-y-4",
+  stackMd: "space-y-2.5 sm:space-y-3",
+  stackLg: "space-y-3 sm:space-y-4",
   /** Vertical gap between navigation list items. */
   navItemGap: "space-y-1.5",
   /** Gap between navigation section groups (e.g. main nav → play → settings). */
   navSectionGap: "mt-3",
-  /** Manager cards — extra breathing room on phones. */
-  cardPaddingMobile: "p-5 sm:p-5 lg:p-6",
+  /** Manager cards — match Transfers tab density on phones. */
+  cardPaddingMobile: "p-3 sm:p-5 lg:p-6",
   /** Modal/sheet backdrop inset from screen edges. */
-  modalBackdrop: "p-4 sm:p-6",
+  modalBackdrop: "p-3 sm:p-6",
   /** Dense table cells on mobile. */
-  tableCell: "px-3 py-2 sm:px-2.5 sm:py-1.5",
+  tableCell: "px-2 py-1.5 sm:px-2.5 sm:py-1.5",
   /** Interactive list rows (squad pool, reserves, etc.). */
-  listItem: "px-3 py-2.5 sm:px-2.5 sm:py-2",
+  listItem: "px-2.5 py-2 sm:px-2.5 sm:py-2",
   /** Bottom safe-area padding for fixed sheets / modals. */
   safeBottom: "pb-[max(1rem,env(safe-area-inset-bottom))]",
+} as const;
+
+/** Shared mobile layout primitives — prefer these over one-off page patches. */
+export const MOBILE = {
+  /** Always-visible primary content block. */
+  primaryPanel: "w-full min-w-0 space-y-2 sm:space-y-3",
+  /** Compact 2-up choice grid (player picks, dual cards). */
+  choiceGrid: "grid grid-cols-2 items-stretch gap-2 sm:gap-3 md:gap-4",
+  /** Fluid card that never forces horizontal page scroll. */
+  compactCard: "w-full min-w-0 max-w-full overflow-hidden",
+  /** Dense section title on phones. */
+  sectionTitle: "text-base font-bold sm:text-xl",
+  /** Secondary copy hidden or collapsed on phones. */
+  secondaryCopy: "hidden text-sm text-gray-400 sm:block",
+  /** Touch-safe control (min 44px). */
+  touchTarget: "min-h-[44px] min-w-[44px]",
+  /** Prevent flex/grid children from blowing out the viewport. */
+  minZero: "min-w-0",
 } as const;
 
 /** Mobile-first modal / bottom-sheet pattern (matches ManagerDialog). */

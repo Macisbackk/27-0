@@ -101,24 +101,28 @@ export function PlayoffBracketHeader({
   tournamentComplete: boolean;
 }) {
   return (
-    <div className="playoff-bracket-header scoreboard-panel overflow-hidden px-4 py-5 text-center sm:px-6 sm:py-6">
+    <div className="playoff-bracket-header scoreboard-panel overflow-hidden px-3 py-2.5 text-center sm:px-6 sm:py-6">
       <div className="playoff-bracket-header__shine pointer-events-none" aria-hidden />
-      <p className="font-display text-[10px] font-bold uppercase tracking-[0.4em] text-mode-current sm:text-xs">
+      <p className="font-display text-[9px] font-bold uppercase tracking-[0.2em] text-mode-current sm:text-xs sm:tracking-[0.4em]">
         Super League Play-Offs
       </p>
-      <h2 className="mt-2 font-display text-2xl font-black tracking-tight text-white sm:text-3xl">
-        Knockout Bracket
+      <h2 className="mt-0.5 font-display text-lg font-black tracking-tight text-white sm:mt-2 sm:text-3xl">
+        {tournamentComplete
+          ? "Knockout Bracket"
+          : getPlayoffRoundLabel(activeRound)}
       </h2>
-      <p className="mt-2 text-sm text-gray-400">
+      <p className="mt-1 hidden text-sm text-gray-400 sm:mt-2 sm:block">
         {tournamentComplete
           ? "Play-offs complete — review the path to the trophy"
-          : `${getPlayoffRoundLabel(activeRound)} — simulate matches to advance`}
+          : "Simulate matches to advance"}
       </p>
 
-      <PlayoffBracketProgressStrip
-        activeRound={activeRound}
-        tournamentComplete={tournamentComplete}
-      />
+      <div className="mt-2 sm:mt-3">
+        <PlayoffBracketProgressStrip
+          activeRound={activeRound}
+          tournamentComplete={tournamentComplete}
+        />
+      </div>
     </div>
   );
 }

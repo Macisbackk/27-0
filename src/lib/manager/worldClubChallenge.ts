@@ -20,6 +20,7 @@ import {
   NRL_CLUBS,
   NRL_WORLD_CLUB_CHALLENGE_TEAMS,
 } from "../nrl/nrlClubs";
+import { buildNrlMatchdayLineup } from "../nrl/nrlMatchdayLineup";
 import { getManagerPlayer } from "./managerPlayers";
 import { addBoardWorldClubChallengeWinInbox } from "./managerBoardInbox";
 
@@ -230,6 +231,14 @@ export function createWorldClubChallengeFixture(
     `${career.seed}-wcc-rating-${career.seasonYear}-${nrlChampion}`
   );
 
+  const rolled = rollNrlChampionRating(rng, nrlChampion);
+  const lineup = buildNrlMatchdayLineup({
+    seed: career.seed,
+    teamName: nrlChampion,
+    teamRating: rolled,
+    seasonYear: career.seasonYear,
+  });
+
   const fixture: WorldClubChallengeFixture = {
     id: `wcc-${career.seasonYear}`,
     seasonYear: career.seasonYear,
@@ -238,7 +247,8 @@ export function createWorldClubChallengeFixture(
     superLeagueChampionName: slName,
     nrlChampionName: nrlChampion,
     nrlChampionId: getNrlClubByName(nrlChampion)?.id,
-    nrlChampionRating: rollNrlChampionRating(rng, nrlChampion),
+    // Persist the lineup-derived rating used by Hub / Play / sim.
+    nrlChampionRating: lineup.teamRating,
     status: "scheduled",
     userInvolved,
   };
@@ -254,10 +264,16 @@ export function createWorldClubChallengeFixture(
     const repairRng = seedrandom(
       `${career.seed}-wcc-rating-retry-${career.seasonYear}-${fixture.nrlChampionName}`
     );
-    fixture.nrlChampionRating = rollNrlChampionRating(
+    const repairRolled = rollNrlChampionRating(
       repairRng,
       fixture.nrlChampionName
     );
+    fixture.nrlChampionRating = buildNrlMatchdayLineup({
+      seed: career.seed,
+      teamName: fixture.nrlChampionName,
+      teamRating: repairRolled,
+      seasonYear: career.seasonYear,
+    }).teamRating;
   }
 
   return fixture;
