@@ -1,12 +1,9 @@
-import type {
-  InboxMessage,
-  ManagerCareer,
-  ManagerFixtureRecord,
-  ManagerScheduledFixture,
-} from "./types";
-import { getManagerScheduledFixtureVenueLabel } from "./managerFixtureDisplay";
-import { getUnavailableSquadPlayers } from "./managerSquad";
-import { countExpiringContracts } from "./managerContracts";
+import type { ManagerCareer } from "./types";
+import { getPendingUnsolicitedOffer } from "./managerTransferLeague";
+import { getPendingContractExpiryPopup } from "./managerInbox";
+import { getPendingRetirementIntentPopup } from "./managerRetirement";
+import { getPendingPositionRetrainingPopup } from "./managerPositionRetraining";
+import { getPendingReserveReportPopup } from "./managerReserveReports";
 
 export type MatchWeekPhase =
   | "ready_to_play"
@@ -32,21 +29,50 @@ export function getMatchWeekPhase(career: ManagerCareer): MatchWeekPhase {
   return "ready_to_play";
 }
 
+/** Next Fixture Play/Simulate — only when the calendar is ready. */
 export function canPlayNextMatch(career: ManagerCareer): boolean {
   return (
     getMatchWeekPhase(career) === "ready_to_play" && !career.isSeasonComplete
   );
 }
 
-export function getMatchWeekActionLabel(
+/** Unresolved decisions that must be handled before advancing again. */
+export function hasBlockingManagerDecision(career: ManagerCareer): boolean {
+  return Boolean(
+    getPendingUnsolicitedOffer(career) ||
+      getPendingRetirementIntentPopup(career)
+  );
+}
+
+/** Season Progress Advance Week — after a fixture, before the next is unlocked. */
+export function canAdvanceMatchWeek(career: ManagerCareer): boolean {
+  return (
+    getMatchWeekPhase(career) === "awaiting_advance" &&
+    !hasBlockingManagerDecision(career)
+  );
+}
+
+export function getAdvanceWeekButtonLabel(
   career: ManagerCareer,
   processing = false
-): string {
-  if (processing) return "Processing Match Week…";
+): { full: string; short: string } {
+  if (processing) return { full: "Advancing…", short: "…" };
+  if (getMatchWeekPhase(career) === "season_complete") {
+    return { full: "Season Complete", short: "Done" };
+  }
+  return { full: "Advance Week", short: "Advance" };
+}
+
+export function getAdvanceWeekHint(career: ManagerCareer): string | null {
   const phase = getMatchWeekPhase(career);
-  if (phase === "season_complete") return "Season Complete";
-  if (phase === "awaiting_advance") return "Continue to Next Match Week";
-  return "Play Next Match";
+  if (phase === "season_complete") {
+    return "Season complete — open season review.";
+  }
+  if (hasBlockingManagerDecision(career)) {
+    return "Resolve pending decisions first.";
+  }
+  if (phase === "awaiting_advance") return null;
+  return "Play your current fixture before advancing.";
 }
 
 export function markAwaitingMatchWeekAdvance(
@@ -67,7 +93,7 @@ export function markAwaitingMatchWeekAdvance(
   };
 }
 
-/** Blocks duplicate Continue presses for the same week id. */
+/** Blocks duplicate Advance Week presses for the same week id. */
 export function wasMatchWeekProcessed(
   career: ManagerCareer,
   weekId: string | null | undefined
@@ -76,110 +102,58 @@ export function wasMatchWeekProcessed(
   return career.lastProcessedMatchWeekId === weekId;
 }
 
-export interface MatchWeekPanelInfo {
-  phase: MatchWeekPhase;
-  currentWeek: number;
-  seasonGames: number;
-  lastResult: {
-    opponent: string;
-    pointsFor: number;
-    pointsAgainst: number;
-    result: "W" | "L" | "D";
-    competition?: string;
-  } | null;
-  nextFixture: ManagerScheduledFixture | null;
-  nextVenue: string | null;
-  unreadInboxCount: number;
-  availabilityWarnings: string[];
-  contractAlerts: string[];
-  transferAlerts: string[];
-  actionLabel: string;
-  canAdvance: boolean;
-  canPlay: boolean;
+/**
+ * Collect weekly popup event ids from career inbox (decision first, then info).
+ * Skips ids already acknowledged.
+ */
+export function collectWeeklyManagerEventIds(career: ManagerCareer): string[] {
+  const acked = new Set(career.acknowledgedManagerEventIds ?? []);
+  const ids: string[] = [];
+  const push = (id: string | undefined) => {
+    if (id && !acked.has(id) && !ids.includes(id)) ids.push(id);
+  };
+
+  push(getPendingUnsolicitedOffer(career)?.id);
+  push(getPendingRetirementIntentPopup(career)?.id);
+  push(getPendingContractExpiryPopup(career)?.id);
+  push(getPendingPositionRetrainingPopup(career)?.id);
+  push(getPendingReserveReportPopup(career)?.id);
+
+  return ids;
 }
 
-function lastResultSummary(
-  last: ManagerFixtureRecord | null
-): MatchWeekPanelInfo["lastResult"] {
-  if (!last) return null;
+export function withWeeklyManagerEventQueue(
+  career: ManagerCareer,
+  eventIds: string[]
+): ManagerCareer {
+  const acked = new Set(career.acknowledgedManagerEventIds ?? []);
+  const pending = eventIds.filter((id) => !acked.has(id));
   return {
-    opponent: last.opponent,
-    pointsFor: last.pointsFor,
-    pointsAgainst: last.pointsAgainst,
-    result: last.result,
-    competition: last.competition,
+    ...career,
+    pendingManagerEventIds: pending,
+    acknowledgedManagerEventIds: career.acknowledgedManagerEventIds ?? [],
   };
 }
 
-function unreadInbox(career: ManagerCareer): InboxMessage[] {
-  return (career.inboxMessages ?? []).filter((m) => !m.read && !m.resolved);
-}
-
-export function getMatchWeekPanelInfo(
+export function acknowledgeManagerEventId(
   career: ManagerCareer,
-  options?: {
-    processing?: boolean;
-    /** Caller supplies next / peeked fixture. */
-    nextFixture?: ManagerScheduledFixture | null;
-  }
-): MatchWeekPanelInfo {
-  const phase = getMatchWeekPhase(career);
-  const next = options?.nextFixture ?? null;
-
-  const unavailable = getUnavailableSquadPlayers(career);
-  const injured = unavailable.filter((p) => p.injury?.type !== "suspension");
-  const suspended = unavailable.filter((p) => p.injury?.type === "suspension");
-  const availabilityWarnings: string[] = [];
-  if (injured.length > 0) {
-    availabilityWarnings.push(
-      `${injured.length} injured player${injured.length === 1 ? "" : "s"}`
-    );
-  }
-  if (suspended.length > 0) {
-    availabilityWarnings.push(
-      `${suspended.length} suspension${suspended.length === 1 ? "" : "s"}`
-    );
-  }
-
-  const expiring = countExpiringContracts(career.contracts);
-  const contractAlerts: string[] = [];
-  if (expiring > 0) {
-    contractAlerts.push(
-      `${expiring} contract${expiring === 1 ? "" : "s"} expiring soon`
-    );
-  }
-
-  const transferAlerts: string[] = [];
-  const openOffers = (career.inboxMessages ?? []).filter(
-    (m) => m.type === "transfer" && !m.resolved
-  ).length;
-  if (openOffers > 0) {
-    transferAlerts.push(
-      `${openOffers} open transfer offer${openOffers === 1 ? "" : "s"}`
-    );
-  }
-
-  const processing = options?.processing ?? false;
-
+  eventId: string
+): ManagerCareer {
+  const acked = new Set(career.acknowledgedManagerEventIds ?? []);
+  acked.add(eventId);
+  const pending = (career.pendingManagerEventIds ?? []).filter(
+    (id) => id !== eventId
+  );
   return {
-    phase,
-    currentWeek: career.gameWeek,
-    seasonGames: career.schedule.length,
-    lastResult: lastResultSummary(career.lastMatchFixture),
-    nextFixture: next,
-    nextVenue: next ? getManagerScheduledFixtureVenueLabel(next) : null,
-    unreadInboxCount: unreadInbox(career).length,
-    availabilityWarnings,
-    contractAlerts,
-    transferAlerts,
-    actionLabel: getMatchWeekActionLabel(career, processing),
-    canAdvance: phase === "awaiting_advance" && !processing,
-    canPlay: canPlayNextMatch(career) && !processing,
+    ...career,
+    pendingManagerEventIds: pending,
+    acknowledgedManagerEventIds: [...acked],
   };
 }
 
 /**
  * Migrate older saves into a coherent Match Week phase without resetting progress.
+ * Session-only advancing flags are never left stuck true.
  */
 export function migrateMatchWeekFields(career: ManagerCareer): ManagerCareer {
   if (career.isSeasonComplete) {
@@ -188,6 +162,8 @@ export function migrateMatchWeekFields(career: ManagerCareer): ManagerCareer {
       matchWeekPhase: career.matchWeekPhase ?? "season_complete",
       pendingMatchWeekId: career.pendingMatchWeekId ?? null,
       lastProcessedMatchWeekId: career.lastProcessedMatchWeekId ?? null,
+      pendingManagerEventIds: career.pendingManagerEventIds ?? [],
+      acknowledgedManagerEventIds: career.acknowledgedManagerEventIds ?? [],
     };
   }
 
@@ -198,6 +174,8 @@ export function migrateMatchWeekFields(career: ManagerCareer): ManagerCareer {
       matchWeekPhase: "ready_to_play",
       pendingMatchWeekId: null,
       lastProcessedMatchWeekId: career.lastProcessedMatchWeekId ?? null,
+      pendingManagerEventIds: career.pendingManagerEventIds ?? [],
+      acknowledgedManagerEventIds: career.acknowledgedManagerEventIds ?? [],
     };
   }
 
@@ -205,5 +183,7 @@ export function migrateMatchWeekFields(career: ManagerCareer): ManagerCareer {
     ...career,
     pendingMatchWeekId: career.pendingMatchWeekId ?? null,
     lastProcessedMatchWeekId: career.lastProcessedMatchWeekId ?? null,
+    pendingManagerEventIds: career.pendingManagerEventIds ?? [],
+    acknowledgedManagerEventIds: career.acknowledgedManagerEventIds ?? [],
   };
 }

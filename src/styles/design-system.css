@@ -18,40 +18,57 @@
 }
 
 /* ── Shared page width ───────────────────────────────────────────────────── */
+:root {
+  --layout-page-max: 1180px;
+  --layout-page-wide: 1280px;
+  --layout-page-compact: 980px;
+  --layout-page-narrow: 820px;
+  --layout-page-pad-inline: clamp(0.85rem, 2.5vw, 1.5rem);
+}
+
 .game-page {
   width: 100%;
-  max-width: 1180px;
+  max-width: var(--layout-page-max);
   margin-inline: auto;
-  padding-inline: clamp(0.85rem, 2.5vw, 1.5rem);
+  padding-inline: var(--layout-page-pad-inline);
 }
 
 .game-page--wide {
-  max-width: 1280px;
+  max-width: var(--layout-page-wide);
 }
 
 .game-page--compact {
-  max-width: 980px;
+  max-width: var(--layout-page-compact);
 }
 
 .game-page--flush {
   padding-inline: 0;
 }
 
+/* Header / sticky chrome — same max width as game-page, own horizontal pad. */
+.app-chrome {
+  width: 100%;
+  max-width: var(--layout-page-max);
+  margin-inline: auto;
+  min-width: 0;
+  padding-inline: var(--layout-page-pad-inline);
+}
+
 /* Manager tab content — Transfers-style readable column inside game-page shell. */
 .manager-page {
   width: 100%;
-  max-width: 1180px;
+  max-width: var(--layout-page-max);
   margin-inline: auto;
   min-width: 0;
 }
 
 .manager-page--wide {
-  max-width: 1180px;
+  max-width: var(--layout-page-max);
 }
 
 .manager-section {
   width: 100%;
-  max-width: 980px;
+  max-width: var(--layout-page-compact);
   margin-inline: auto;
   min-width: 0;
   display: flex;
@@ -60,11 +77,11 @@
 }
 
 .manager-section--wide {
-  max-width: 1180px;
+  max-width: var(--layout-page-max);
 }
 
 .manager-section--narrow {
-  max-width: 820px;
+  max-width: var(--layout-page-narrow);
 }
 
 .stat-section-stack {

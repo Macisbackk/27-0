@@ -69,6 +69,11 @@ import {
   prepareCareerForNextMatch,
   simulateManagerNextMatch,
 } from "@/lib/manager/managerSimulation";
+import {
+  acknowledgeManagerEventId,
+  collectWeeklyManagerEventIds,
+  withWeeklyManagerEventQueue,
+} from "@/lib/manager/managerMatchWeek";
 import { scrollToManagerHubNextFixture } from "@/lib/manager/managerHubScroll";
 import { shouldShowManagerObjectivesIntro } from "@/lib/manager/managerBoardObjectives";
 import { acknowledgePlayoffsIntro, needsPlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
@@ -264,7 +269,7 @@ export default function ManagerPage() {
     useState<ManagerView>("hub");
   const [pendingHubNextFixtureScroll, setPendingHubNextFixtureScroll] =
     useState(false);
-  const [matchWeekProcessing, setMatchWeekProcessing] = useState(false);
+  const [advancingWeek, setAdvancingWeek] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleteSlot, setDeleteSlot] = useState<number | null>(null);
   const [alertDialog, setAlertDialog] = useState<{
@@ -890,16 +895,12 @@ export default function ManagerPage() {
     const wonChallengeCup = shouldShowChallengeCupCelebration(withSeasonStats);
     const wonWorldClubChallenge =
       shouldShowWorldClubChallengeCelebration(withSeasonStats);
-    const unsolicited = getPendingUnsolicitedOffer(withSeasonStats);
-    const contractExpiry = getPendingContractExpiryPopup(withSeasonStats);
-    const retirementIntent = getPendingRetirementIntentPopup(withSeasonStats);
-    const reserveReport = getPendingReserveReportPopup(withSeasonStats);
-    const retrainingComplete = getPendingPositionRetrainingPopup(withSeasonStats);
-    setPendingIncomingBidId(unsolicited?.id ?? null);
-    setPendingContractExpiryId(contractExpiry?.id ?? null);
-    setPendingRetirementIntentId(retirementIntent?.id ?? null);
-    setPendingPositionRetrainingId(retrainingComplete?.id ?? null);
-    setPendingReserveReportId(reserveReport?.id ?? null);
+    // Weekly popups (transfers, contracts, retraining, reserves) surface after Advance Week.
+    setPendingIncomingBidId(null);
+    setPendingContractExpiryId(null);
+    setPendingRetirementIntentId(null);
+    setPendingPositionRetrainingId(null);
+    setPendingReserveReportId(null);
 
     if (withSeasonStats.isSeasonComplete) {
       if (fixture) {
@@ -988,6 +989,7 @@ export default function ManagerPage() {
       continueAfterMatchReview();
       if (
         landsOnHub &&
+        career?.matchWeekPhase !== "awaiting_advance" &&
         (career?.managerSettings?.autoOpenNextFixture ?? true)
       ) {
         setPendingHubNextFixtureScroll(true);
@@ -997,6 +999,7 @@ export default function ManagerPage() {
     goToView(matchReviewReturnView);
     if (
       matchReviewReturnView === "hub" &&
+      career?.matchWeekPhase !== "awaiting_advance" &&
       (career?.managerSettings?.autoOpenNextFixture ?? true)
     ) {
       setPendingHubNextFixtureScroll(true);
@@ -1004,11 +1007,15 @@ export default function ManagerPage() {
   };
 
   const handleIncomingBidResolved = (nextCareer: ManagerCareer) => {
+    const resolvedId = pendingIncomingBidId;
     setIncomingBidModalOpen(false);
     setPendingIncomingBidId(null);
-    persist(nextCareer);
+    const cleared = resolvedId
+      ? acknowledgeManagerEventId(nextCareer, resolvedId)
+      : nextCareer;
+    persist(cleared);
 
-    const contractExpiry = getPendingContractExpiryPopup(nextCareer);
+    const contractExpiry = getPendingContractExpiryPopup(cleared);
     if (contractExpiry) {
       setPendingContractExpiryId(contractExpiry.id);
       setContractExpiryModalOpen(true);
@@ -1016,7 +1023,7 @@ export default function ManagerPage() {
       return;
     }
 
-    const retirementIntent = getPendingRetirementIntentPopup(nextCareer);
+    const retirementIntent = getPendingRetirementIntentPopup(cleared);
     if (retirementIntent) {
       setPendingRetirementIntentId(retirementIntent.id);
       setRetirementIntentModalOpen(true);
@@ -1024,7 +1031,7 @@ export default function ManagerPage() {
       return;
     }
 
-    continueAfterPositionRetrainingPopup(nextCareer);
+    continueAfterPositionRetrainingPopup(cleared);
   };
 
   const handleIncomingBidAccept = () => {
@@ -1068,8 +1075,8 @@ export default function ManagerPage() {
 
   const handleContractExpiryDismiss = () => {
     if (!career || !pendingContractExpiryId) return;
-    const next = acknowledgeContractExpiryPopup(
-      career,
+    const next = acknowledgeManagerEventId(
+      acknowledgeContractExpiryPopup(career, pendingContractExpiryId),
       pendingContractExpiryId
     );
     persist(next);
@@ -1078,8 +1085,8 @@ export default function ManagerPage() {
 
   const handleContractExpiryViewContracts = () => {
     if (!career || !pendingContractExpiryId) return;
-    const next = acknowledgeContractExpiryPopup(
-      career,
+    const next = acknowledgeManagerEventId(
+      acknowledgeContractExpiryPopup(career, pendingContractExpiryId),
       pendingContractExpiryId
     );
     persist(next);
@@ -1149,8 +1156,8 @@ export default function ManagerPage() {
 
   const handlePositionRetrainingCompleteContinue = () => {
     if (!career || !pendingPositionRetrainingId) return;
-    const next = acknowledgePositionRetrainingPopup(
-      career,
+    const next = acknowledgeManagerEventId(
+      acknowledgePositionRetrainingPopup(career, pendingPositionRetrainingId),
       pendingPositionRetrainingId
     );
     persist(next);
@@ -1159,8 +1166,8 @@ export default function ManagerPage() {
 
   const handlePositionRetrainingCompleteViewTactics = () => {
     if (!career || !pendingPositionRetrainingId) return;
-    const next = acknowledgePositionRetrainingPopup(
-      career,
+    const next = acknowledgeManagerEventId(
+      acknowledgePositionRetrainingPopup(career, pendingPositionRetrainingId),
       pendingPositionRetrainingId
     );
     persist(next);
@@ -1198,8 +1205,8 @@ export default function ManagerPage() {
       career,
       retirementIntentMessage.playerId
     );
-    const next = acknowledgeRetirementIntentPopup(
-      convinced,
+    const next = acknowledgeManagerEventId(
+      acknowledgeRetirementIntentPopup(convinced, pendingRetirementIntentId),
       pendingRetirementIntentId
     );
     persist(next);
@@ -1208,8 +1215,8 @@ export default function ManagerPage() {
 
   const handleRetirementIntentAcknowledge = () => {
     if (!career || !pendingRetirementIntentId) return;
-    const next = acknowledgeRetirementIntentPopup(
-      career,
+    const next = acknowledgeManagerEventId(
+      acknowledgeRetirementIntentPopup(career, pendingRetirementIntentId),
       pendingRetirementIntentId
     );
     persist(next);
@@ -1218,7 +1225,10 @@ export default function ManagerPage() {
 
   const handleReserveReportDismiss = () => {
     if (!career || !pendingReserveReportId) return;
-    const next = acknowledgeReserveReportPopup(career, pendingReserveReportId);
+    const next = acknowledgeManagerEventId(
+      acknowledgeReserveReportPopup(career, pendingReserveReportId),
+      pendingReserveReportId
+    );
     persist(next);
     setPendingReserveReportId(null);
     setReserveReportModalOpen(false);
@@ -1227,7 +1237,10 @@ export default function ManagerPage() {
 
   const handleReserveReportViewReserves = () => {
     if (!career || !pendingReserveReportId) return;
-    const next = acknowledgeReserveReportPopup(career, pendingReserveReportId);
+    const next = acknowledgeManagerEventId(
+      acknowledgeReserveReportPopup(career, pendingReserveReportId),
+      pendingReserveReportId
+    );
     persist(next);
     setPendingReserveReportId(null);
     setReserveReportModalOpen(false);
@@ -1394,27 +1407,57 @@ export default function ManagerPage() {
     setPlayGameOpen(true);
   };
 
-  const handleAdvanceMatchWeek = () => {
-    if (!career || matchWeekProcessing) return;
+  const handleAdvanceWeek = () => {
+    if (!career || advancingWeek) return;
     if (career.matchWeekPhase !== "awaiting_advance") return;
-    setMatchWeekProcessing(true);
+    setAdvancingWeek(true);
     try {
       const result = advanceManagerMatchWeek(career);
       if (!result.ok) {
         setAlertDialog({
-          title: "Match Week",
+          title: "Advance Week",
           message: result.error,
         });
         return;
       }
-      persist(result.career);
-      if (result.career.isSeasonComplete) {
+
+      const eventIds = collectWeeklyManagerEventIds(result.career);
+      const withQueue = withWeeklyManagerEventQueue(result.career, eventIds);
+      persist(withQueue);
+
+      // Weekly popups only — never auto-open or play the next fixture.
+      const unsolicited = getPendingUnsolicitedOffer(withQueue);
+      const contractExpiry = getPendingContractExpiryPopup(withQueue);
+      const retirementIntent = getPendingRetirementIntentPopup(withQueue);
+      const retrainingComplete = getPendingPositionRetrainingPopup(withQueue);
+      const reserveReport = getPendingReserveReportPopup(withQueue);
+
+      setPendingIncomingBidId(unsolicited?.id ?? null);
+      setPendingContractExpiryId(contractExpiry?.id ?? null);
+      setPendingRetirementIntentId(retirementIntent?.id ?? null);
+      setPendingPositionRetrainingId(retrainingComplete?.id ?? null);
+      setPendingReserveReportId(reserveReport?.id ?? null);
+
+      if (withQueue.isSeasonComplete) {
         goToView("season-review", { syncUrl: false });
-      } else if (result.career.managerSettings?.autoOpenNextFixture ?? true) {
-        setPendingHubNextFixtureScroll(true);
+        return;
       }
+
+      if (unsolicited) {
+        setIncomingBidModalOpen(true);
+      } else if (contractExpiry) {
+        setContractExpiryModalOpen(true);
+      } else if (retirementIntent) {
+        setRetirementIntentModalOpen(true);
+      } else if (retrainingComplete) {
+        setPositionRetrainingCompleteModalOpen(true);
+      } else if (reserveReport) {
+        setReserveReportModalOpen(true);
+      }
+
+      goToView("hub");
     } finally {
-      setMatchWeekProcessing(false);
+      setAdvancingWeek(false);
     }
   };
 
@@ -1558,8 +1601,8 @@ export default function ManagerPage() {
                     career={career}
                     onPlayGame={handlePlayGame}
                     onSimulate={handleSimulate}
-                    onAdvanceMatchWeek={handleAdvanceMatchWeek}
-                    matchWeekProcessing={matchWeekProcessing}
+                    onAdvanceWeek={handleAdvanceWeek}
+                    advancingWeek={advancingWeek}
                     onUpdate={persist}
                     onNavigate={handleNavNavigate}
                   />

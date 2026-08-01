@@ -9,7 +9,6 @@ import { LogoMark } from "@/components/LogoMark";
 import { GameHeader } from "@/components/ui/GameHeader";
 import { PageShell } from "@/components/ui/PageShell";
 import { LINK, PAGE, SPACING } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
 
 export default function HomePage() {
   return (
@@ -59,7 +58,6 @@ export default function HomePage() {
           </Link>
         </div>
         <JoeMellorEasterEgg />
-        <p className={`mt-2 ${TYPO.bodySm}`}>27-0 — rugby league management & draft</p>
       </div>
     </PageShell>
   );

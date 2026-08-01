@@ -1238,7 +1238,7 @@ export function GameBoard({
 
       <div
         ref={mainScrollRef}
-        className={`relative mx-auto flex w-full max-w-6xl flex-col overflow-x-hidden ${SPACING.pageX} py-4 pb-28 sm:py-5 sm:pb-8 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4`}
+        className="game-page relative flex flex-col overflow-x-hidden py-4 pb-28 sm:py-5 sm:pb-8 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4"
       >
       {(title || subtitle) && (
         <div className="pt-1 lg:pt-0">
@@ -1431,7 +1431,7 @@ export function GameBoard({
                 exit={{ opacity: 0 }}
               >
                 <motion.div
-                  className="w-full max-w-5xl max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden"
+                  className="w-full max-w-[var(--layout-page-max)] max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden"
                   initial={{ opacity: 0, y: 24, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 16 }}

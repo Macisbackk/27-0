@@ -70,39 +70,6 @@ import {
 import { validateMatchEvents } from "../game/validateMatchEvents";
 import type { MatchEventType } from "../game/match-events";
 
-/**
- * Peek the fixture that will be playable after Match Week Continue
- * (schedule slot after the completed league game, or current next when ready).
- */
-export function peekFixtureAfterMatchWeekAdvance(
-  career: ManagerCareer
-): ReturnType<typeof getNextManagerFixture> {
-  if (career.matchWeekPhase !== "awaiting_advance") {
-    return getNextManagerFixture(career);
-  }
-
-  const last = career.lastMatchFixture;
-  if (last?.competition === "league") {
-    const advanced: ManagerCareer = {
-      ...career,
-      currentFixtureIndex: career.currentFixtureIndex + 1,
-      gameWeek: last.round,
-      matchWeekPhase: "ready_to_play",
-      pendingMatchWeekId: null,
-    };
-    return getNextManagerFixture(advanced);
-  }
-
-  // Cup / WCC / playoff / friendly — calendar index unchanged; next is resolved
-  // after weekly systems (bracket already updated in apply).
-  const ready: ManagerCareer = {
-    ...career,
-    matchWeekPhase: "ready_to_play",
-    pendingMatchWeekId: null,
-  };
-  return getNextManagerFixture(ready);
-}
-
 export function getNextManagerFixture(
   career: ManagerCareer
 ): ReturnType<typeof getNextLeagueOrCupFixture> {
@@ -798,8 +765,8 @@ export function applyManagerMatchResult(
 }
 
 /**
- * Process deferred Match Week systems once. Safe against double Continue /
- * refresh — guarded by pendingMatchWeekId vs lastProcessedMatchWeekId.
+ * Process deferred Match Week systems once from Season Progress → Advance Week.
+ * Guarded by pendingMatchWeekId vs lastProcessedMatchWeekId.
  */
 export function advanceManagerMatchWeek(
   career: ManagerCareer

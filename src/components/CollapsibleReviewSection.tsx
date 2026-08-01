@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useCallback, useState, type ReactNode } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { GamePanel } from "@/components/ui/GamePanel";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -16,6 +16,11 @@ export interface CollapsibleReviewSectionProps {
   children: ReactNode;
 }
 
+/**
+ * Season / cup review accordion. Uses CSS grid row animation so nested
+ * expansions (Quick Mode match reviews) can grow the section without being
+ * clipped by a fixed Framer Motion height + overflow:hidden.
+ */
 export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
   title,
   helper,
@@ -25,6 +30,7 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
   children,
 }: CollapsibleReviewSectionProps) {
   const [open, setOpen] = useState(defaultOpen);
+
   const toggle = useCallback(() => {
     setOpen((v) => {
       if (v) playPanelClose();
@@ -40,7 +46,7 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
 
   return (
     <motion.div
-      className={`${SPACING.sectionGap} w-full ${featured ? "max-w-3xl" : "max-w-2xl"}`}
+      className={`${SPACING.sectionGap} w-full max-w-none`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay }}
@@ -68,33 +74,28 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
           <h3 className={`min-w-0 flex-1 ${titleClass}`}>{title}</h3>
         </button>
 
-        <AnimatePresence initial={false}>
-          {open && (
-            <motion.div
-              key="content"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
-              className="overflow-hidden"
+        <div
+          className="grid transition-[grid-template-rows] duration-200 ease-in-out"
+          style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
+        >
+          <div className={open ? "min-h-0 overflow-visible" : "min-h-0 overflow-hidden"}>
+            <div
+              className={
+                featured
+                  ? SPACING.sectionContentTopFeatured
+                  : SPACING.sectionContentTop
+              }
+              aria-hidden={!open}
             >
-              <div
-                className={
-                  featured
-                    ? SPACING.sectionContentTopFeatured
-                    : SPACING.sectionContentTop
-                }
-              >
-                {helper && (
-                  <p className={`${SPACING.headingMargin} ${TYPO.bodySm}`}>
-                    {helper}
-                  </p>
-                )}
-                {children}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              {helper && (
+                <p className={`${SPACING.headingMargin} ${TYPO.bodySm}`}>
+                  {helper}
+                </p>
+              )}
+              {children}
+            </div>
+          </div>
+        </div>
       </GamePanel>
     </motion.div>
   );

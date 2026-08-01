@@ -4,7 +4,7 @@ export type PageShellWidth = "default" | "wide" | "compact" | "full";
 
 interface PageShellProps {
   children: ReactNode;
-  /** Content max-width — default 1180px site-wide. */
+  /** Content max-width — default 1180px (Manager Mode shell). */
   width?: PageShellWidth;
   className?: string;
   innerClassName?: string;

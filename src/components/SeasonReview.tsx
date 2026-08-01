@@ -203,7 +203,8 @@ export function SeasonReview({
               : "pb-[max(1rem,env(safe-area-inset-bottom))]"
           }`}
         >
-          <div className="relative mx-auto flex w-full max-w-3xl min-w-0 flex-col items-center overflow-x-hidden px-3 py-4 sm:px-4 sm:py-12">
+          <div className="game-page relative flex w-full min-w-0 flex-col items-center py-4 sm:py-12">
+            <div className="manager-section w-full items-center px-0">
             <motion.header
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -385,16 +386,17 @@ export function SeasonReview({
             <CollapsibleReviewSection
               title="Match Results"
               delay={0.36}
-              defaultOpen={false}
+              defaultOpen
               helper="Click any result to view full match details."
             >
-              <div className="space-y-2 overflow-x-hidden text-left">
+              <div className="min-w-0 space-y-2 text-left">
                 {seasonResult.fixtures.map((fixture) => {
                   const isSelected = selectedFixture?.round === fixture.round;
                   return (
                     <div
                       key={fixture.round}
                       ref={isSelected ? selectedRowRef : undefined}
+                      className="min-w-0"
                     >
                       <FixtureResultRow
                         fixture={fixture}
@@ -407,17 +409,19 @@ export function SeasonReview({
                       />
                       <AnimatePresence initial={false}>
                         {isSelected && (
-                          <MatchDetailsPanel
-                            key={fixture.round}
-                            fixture={fixture}
-                            seed={seed}
-                            userSquad={squad}
-                            currentSeasonOnly={!normalEraMode}
-                            onClose={() => {
-                              playPanelClose();
-                              setSelectedFixture(null);
-                            }}
-                          />
+                          <div className="mt-1">
+                            <MatchDetailsPanel
+                              key={fixture.round}
+                              fixture={fixture}
+                              seed={seed}
+                              userSquad={squad}
+                              currentSeasonOnly={!normalEraMode}
+                              onClose={() => {
+                                playPanelClose();
+                                setSelectedFixture(null);
+                              }}
+                            />
+                          </div>
                         )}
                       </AnimatePresence>
                     </div>
@@ -471,12 +475,13 @@ export function SeasonReview({
                 )}
               </div>
             </motion.footer>
+            </div>
           </div>
         </div>
 
         {showPlayoffPrompt && (
-          <div className="relative z-[1] shrink-0 border-t border-theme-tertiary/25 bg-[rgba(5,10,9,0.98)] px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_32px_rgba(0,0,0,0.45)]">
-            <div className="mx-auto w-full max-w-xl">
+          <div className="relative z-[1] shrink-0 border-t border-theme-tertiary/25 bg-[rgba(5,10,9,0.98)] px-[var(--layout-page-pad-inline)] py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_32px_rgba(0,0,0,0.45)]">
+            <div className="mx-auto w-full max-w-[var(--layout-page-compact)]">
               <GameButton
                 variant="theme"
                 className="w-full"

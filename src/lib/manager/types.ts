@@ -720,13 +720,17 @@ export interface ManagerCareer {
   currentRound: number;
   /**
    * Match Week gate: ready_to_play | awaiting_advance | season_complete.
-   * After a fixture the career waits for Continue before weekly systems run.
+   * After a fixture the career waits for Advance Week (Season Progress) before weekly systems run.
    */
   matchWeekPhase?: import("./managerMatchWeek").MatchWeekPhase;
   /** Stable id of the completed fixture awaiting week processing. */
   pendingMatchWeekId?: string | null;
-  /** Last week id that finished processing — blocks duplicate Continues. */
+  /** Last week id that finished processing — blocks duplicate Advances. */
   lastProcessedMatchWeekId?: string | null;
+  /** Inbox / popup event ids waiting to be shown after Advance Week. */
+  pendingManagerEventIds?: string[];
+  /** Event ids already acknowledged this career (dedupe across refresh). */
+  acknowledgedManagerEventIds?: string[];
   leagueTable: ManagerLeagueRow[];
   transferMarket: string[];
   leagueListedPlayers: LeagueListedPlayer[];

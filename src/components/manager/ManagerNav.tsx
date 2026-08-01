@@ -119,7 +119,7 @@ export function ManagerNav({
 
       <div className="hidden flex-col items-center gap-1.5 sm:flex">
         <nav
-          className="flex w-full max-w-5xl flex-wrap justify-center gap-1 px-1"
+          className="flex w-full flex-wrap justify-center gap-1"
           aria-label="Manager sections"
         >
           {MANAGER_DESKTOP_NAV_TABS.map((tab) => (

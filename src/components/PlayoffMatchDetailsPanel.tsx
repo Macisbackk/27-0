@@ -39,11 +39,11 @@ export function PlayoffMatchDetailsPanel({
 
   return (
     <motion.div
-      className={`match-details-expand mt-4 overflow-hidden ${CARD.base} border-theme-primary/30 shadow-lg ${className}`}
-      initial={{ height: 0, opacity: 0 }}
-      animate={{ height: "auto", opacity: 1 }}
-      exit={{ height: 0, opacity: 0 }}
-      transition={{ duration: 0.22, ease: "easeOut" }}
+      className={`match-details-expand mt-4 ${CARD.base} border-theme-primary/30 shadow-lg ${className}`}
+      initial={{ opacity: 0, y: -6 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ duration: 0.18, ease: "easeOut" }}
     >
       <div className={`${SPACING.cardPadding} ${SPACING.stackLg}`}>
         <div className="flex items-start justify-between gap-3">

@@ -131,7 +131,8 @@ export function PlayoffReview({
     <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/90 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(0.5rem,env(safe-area-inset-top))]">
       {isChampion && <Confetti />}
 
-      <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-8 sm:py-12">
+      <div className="game-page relative flex w-full flex-col items-center py-8 sm:py-12">
+        <div className="manager-section w-full items-center px-0">
         <motion.header
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -260,6 +261,7 @@ export function PlayoffReview({
           />
           <ReturnHomeButton onBeforeNavigate={onReturnHome} />
         </motion.footer>
+        </div>
       </div>
     </div>
     </BodyPortal>

@@ -96,11 +96,22 @@ export const CARD = {
   clipboardElevated: "clipboard-panel clipboard-panel--elevated",
 } as const;
 
-/** Page layout helpers — pair with PageShell component. */
+/** Page layout helpers — pair with PageShell component.
+ *  Widths match Manager Mode (see design-system.css --layout-page-*). */
 export const PAGE = {
   section: "space-y-4 sm:space-y-5 lg:space-y-4",
   sectionHero: "text-center",
   cardStack: "flex flex-col gap-4 sm:gap-5",
+  /** Site shell — same 1180px as Manager PageShell. */
+  shell: "game-page",
+  shellWide: "game-page game-page--wide",
+  shellCompact: "game-page game-page--compact",
+  /** Header / sticky bars aligned to shell. */
+  chrome: "app-chrome",
+  /** Readable column — same as ManagerSection (980px). */
+  content: "manager-section",
+  contentWide: "manager-section manager-section--wide",
+  contentNarrow: "manager-section manager-section--narrow",
 } as const;
 
 /** Manager Mode layout — fluid mobile-first spacing and grids. */

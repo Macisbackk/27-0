@@ -131,11 +131,11 @@ export function MatchDetailsPanel({
 
   return (
     <motion.div
-      className={`match-details-expand overflow-hidden ${CARD.base} border-theme-primary/30 shadow-lg`}
-      initial={{ height: 0, opacity: 0, marginTop: 0 }}
-      animate={{ height: "auto", opacity: 1, marginTop: 4 }}
-      exit={{ height: 0, opacity: 0, marginTop: 0 }}
-      transition={{ duration: 0.22, ease: "easeOut" }}
+      className={`match-details-expand ${CARD.base} border-theme-primary/30 shadow-lg`}
+      initial={{ opacity: 0, y: -6 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ duration: 0.18, ease: "easeOut" }}
     >
       <div className={`${SPACING.cardPadding} ${SPACING.stackLg}`}>
         <div className="flex items-start justify-between gap-3">

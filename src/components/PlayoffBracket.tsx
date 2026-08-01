@@ -188,7 +188,7 @@ export function PlayoffBracket({
     <BodyPortal>
     <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/90">
       <div className="stadium-lights pointer-events-none fixed inset-0" />
-      <div className="relative mx-auto w-full max-w-5xl px-1.5 py-3 pb-28 sm:px-4 sm:py-8 md:pb-8">
+      <div className="game-page relative w-full py-3 pb-28 sm:py-8 md:pb-8">
         <PlayoffBracketHeader
           activeRound={activeRound}
           tournamentComplete={state.tournamentComplete}

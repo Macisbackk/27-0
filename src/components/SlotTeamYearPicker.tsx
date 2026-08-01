@@ -152,7 +152,7 @@ export function SlotTeamYearPicker({
                 Tap <span className="font-semibold text-theme-primary">Sign player</span>{" "}
                 to add them to your squad
               </p>
-              <div className="mx-auto grid max-h-[min(52vh,520px)] max-w-5xl grid-cols-1 gap-2 overflow-y-auto overflow-x-hidden pr-0.5 min-[520px]:grid-cols-3 sm:gap-4">
+              <div className="mx-auto grid max-h-[min(52vh,520px)] w-full grid-cols-1 gap-2 overflow-y-auto overflow-x-hidden pr-0.5 min-[520px]:grid-cols-3 sm:gap-4">
                 {sortedEntries.map(({ player }, index) => {
                   const statsExpanded = statsPlayerId === player.id;
                   const isTopPick =
