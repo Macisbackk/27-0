@@ -17,11 +17,21 @@ import {
 import { getPlayerEligiblePositions } from "../players/player-positions";
 import type { Position } from "../types";
 import { buildNrlMatchdayLineup } from "../nrl/nrlMatchdayLineup";
+import {
+  allocateWeightedTries,
+  sanitizeWeight,
+} from "./managerTryScoring";
+import {
+  computeAbilityScorerFactor,
+  resolvePlayerRating,
+} from "./managerTryScorerSelection";
 
 interface SquadEntry {
   player: NonNullable<SquadSlot["player"]>;
   playedPosition: Position;
   tryWeightMultiplier: number;
+  form?: number;
+  fitness?: number;
 }
 
 function pickKicker(entries: SquadEntry[]): SquadEntry | null {
@@ -31,27 +41,6 @@ function pickKicker(entries: SquadEntry[]): SquadEntry | null {
   );
   if (halves.length === 0) return entries[0] ?? null;
   return halves.sort((a, b) => b.player.peakRating - a.player.peakRating)[0]!;
-}
-
-function allocateTries(
-  totalTries: number,
-  weights: number[],
-  rng: () => number
-): number[] {
-  const alloc = new Array(weights.length).fill(0);
-  for (let t = 0; t < totalTries; t++) {
-    const sum = weights.reduce((a, b) => a + b, 0);
-    if (sum <= 0) break;
-    let roll = rng() * sum;
-    for (let i = 0; i < weights.length; i++) {
-      roll -= weights[i]!;
-      if (roll <= 0) {
-        alloc[i]++;
-        break;
-      }
-    }
-  }
-  return alloc;
 }
 
 function buildUserWeights(
@@ -68,11 +57,21 @@ function buildUserWeights(
       tactics.attackFocus,
       e.playedPosition
     );
-    const rating = e.player.peakRating;
+    const rating = resolvePlayerRating(e.player.peakRating, {
+      playerId: e.player.id,
+      name: e.player.name,
+    });
+    const ability = computeAbilityScorerFactor(
+      rating,
+      e.form ?? 50,
+      e.fitness ?? 100
+    );
     const variance = 0.85 + rng() * 0.3;
-    return Math.max(
-      0.1,
-      rating * style * attack * variance * e.tryWeightMultiplier
+    return sanitizeWeight(
+      Math.max(
+        0.05,
+        ability * style * attack * variance * e.tryWeightMultiplier
+      )
     );
   });
 }
@@ -130,8 +129,34 @@ export function enrichManagerFixtureScoring(
   const rng = seedrandom(
     `${seed}-mgr-tries-${opponentOptions?.fixtureKey ?? `r${fixture.round}`}`
   );
-  const userWeights = buildUserWeights(entries, tactics, rng);
-  const userAlloc = allocateTries(fixture.triesFor, userWeights, rng);
+  const userWeights = buildUserWeights(
+    entries.map((e) => {
+      const form =
+        opponentOptions?.career?.squad.find((p) => p.playerId === e.player.id)
+          ?.form ??
+        opponentOptions?.career?.reserves?.find((r) => r.id === e.player.id)
+          ?.form ??
+        50;
+      const fitness =
+        opponentOptions?.career?.squad.find((p) => p.playerId === e.player.id)
+          ?.fitness ??
+        opponentOptions?.career?.reserves?.find((r) => r.id === e.player.id)
+          ?.fitness ??
+        100;
+      return { ...e, form, fitness };
+    }),
+    tactics,
+    rng
+  );
+  const userAlloc = allocateWeightedTries(fixture.triesFor, userWeights, rng, {
+    positions: entries.map((e) => e.playedPosition),
+    ratings: entries.map((e) =>
+      resolvePlayerRating(e.player.peakRating, {
+        playerId: e.player.id,
+        name: e.player.name,
+      })
+    ),
+  });
 
   const oppPoolOptions = opponentOptions?.career
     ? {
@@ -193,7 +218,17 @@ export function enrichManagerFixtureScoring(
     }));
   }
   const oppWeights = buildOpponentWeights(oppEntries, tactics, rng);
-  const oppAlloc = allocateTries(fixture.triesAgainst, oppWeights, rng);
+  const oppAlloc = allocateWeightedTries(
+    fixture.triesAgainst,
+    oppWeights,
+    rng,
+    {
+      positions: oppEntries.map((p) => p.position),
+      ratings: oppEntries.map((p) =>
+        resolvePlayerRating(p.rating, { playerId: p.id, name: p.name })
+      ),
+    }
+  );
 
   const userKicker = pickKicker(entries);
   const scoringFor = fixture.scoringFor ?? {

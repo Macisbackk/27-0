@@ -1,4 +1,30 @@
 import type { Position } from "../types";
+import { getInMatchMultiTryMultiplier } from "../game/multi-try";
+
+export function sanitizeWeight(weight: number): number {
+  if (!Number.isFinite(weight) || weight < 0) return 0;
+  return weight;
+}
+
+/** Weighted pick that never collapses NaN/zero totals onto index 0. */
+export function pickWeightedIndexSafe(
+  weights: number[],
+  rng: () => number
+): number {
+  if (weights.length === 0) return -1;
+  const clean = weights.map(sanitizeWeight);
+  const sum = clean.reduce((a, b) => a + b, 0);
+  if (!(sum > 0)) {
+    const pool = clean.map((_, i) => i);
+    return pool[Math.floor(rng() * pool.length)] ?? 0;
+  }
+  let roll = rng() * sum;
+  for (let i = 0; i < clean.length; i++) {
+    roll -= clean[i]!;
+    if (roll <= 0) return i;
+  }
+  return clean.length - 1;
+}
 
 /**
  * Relative try likelihood for starters — backs finish most tries in rugby league;
@@ -39,24 +65,63 @@ export function getMatchdayTryWeight(
   return starter * benchShare;
 }
 
-/** Distribute a try total across players by weight (used in scoring fallbacks). */
+/**
+ * Distribute a try total across players by weight.
+ * Each try is drawn independently with diminishing multi-try odds.
+ */
 export function allocateWeightedTries(
   totalTries: number,
   weights: number[],
-  rng: () => number
+  rng: () => number,
+  context?: {
+    positions?: Position[];
+    ratings?: number[];
+  }
 ): number[] {
-  const alloc = new Array(weights.length).fill(0);
-  for (let t = 0; t < totalTries; t++) {
-    const sum = weights.reduce((a, b) => a + b, 0);
-    if (sum <= 0) break;
-    let roll = rng() * sum;
-    for (let i = 0; i < weights.length; i++) {
-      roll -= weights[i]!;
-      if (roll <= 0) {
-        alloc[i]++;
-        break;
-      }
+  const alloc = new Array(weights.length).fill(0) as number[];
+  if (totalTries <= 0 || weights.length === 0) return alloc;
+
+  const base = weights.map(sanitizeWeight);
+  if (base.every((w) => w <= 0)) {
+    // Uniform among all slots rather than collapsing to index 0.
+    for (let t = 0; t < totalTries; t++) {
+      const i = Math.floor(rng() * base.length);
+      alloc[i]!++;
     }
+    return alloc;
+  }
+
+  for (let t = 0; t < totalTries; t++) {
+    const effective = base.map((w, i) => {
+      const pos = context?.positions?.[i];
+      const rating = context?.ratings?.[i] ?? 70;
+      if (!pos) {
+        // Mild generic diminishing when position context unavailable.
+        const already = alloc[i] ?? 0;
+        const mult =
+          already <= 0
+            ? 1
+            : already === 1
+              ? 0.42
+              : already === 2
+                ? 0.18
+                : 0.06;
+        return sanitizeWeight(w * mult);
+      }
+      return sanitizeWeight(
+        w *
+          getInMatchMultiTryMultiplier(
+            alloc[i] ?? 0,
+            pos,
+            rating,
+            0,
+            totalTries
+          )
+      );
+    });
+    const pick = pickWeightedIndexSafe(effective, rng);
+    if (pick < 0) break;
+    alloc[pick]!++;
   }
   return alloc;
 }

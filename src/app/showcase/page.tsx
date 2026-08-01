@@ -4,7 +4,7 @@ import { PageShell } from "@/components/ui/PageShell";
 
 export default function ShowcasePage() {
   return (
-    <PageShell width="wide">
+    <PageShell withLights compact>
       <Suspense fallback={<p className="text-pitch-400">Loading showcase…</p>}>
         <PlayerShowcase />
       </Suspense>

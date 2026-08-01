@@ -41,6 +41,7 @@ export function SlotTeamYearPicker({
   hardMode,
 }: SlotTeamYearPickerProps) {
   const [statsPlayerId, setStatsPlayerId] = useState<string | null>(null);
+  const [respinLocked, setRespinLocked] = useState(false);
 
   const bio = useMemo(
     () => getSlotRevealBio(target.team, target.year),
@@ -59,10 +60,25 @@ export function SlotTeamYearPicker({
     [entries]
   );
   const topRating = sortedEntries[0]?.player.peakRating ?? 0;
+  const choiceCount = sortedEntries.length;
+
+  const choiceGridClass =
+    choiceCount <= 1
+      ? "mx-auto flex w-full max-w-sm justify-center"
+      : choiceCount === 2
+        ? "mx-auto grid w-full max-w-2xl grid-cols-1 place-content-center justify-items-center gap-3 min-[480px]:grid-cols-2 sm:gap-4"
+        : "mx-auto grid w-full max-w-4xl grid-cols-1 place-content-center justify-items-center gap-3 min-[520px]:grid-cols-2 lg:grid-cols-3 sm:gap-4";
+
+  const handleRespin = () => {
+    if (!onRespin || disabled || respinsRemaining <= 0 || respinLocked) return;
+    setRespinLocked(true);
+    playUiClick();
+    onRespin();
+  };
 
   return (
     <motion.div
-      className="w-full"
+      className="w-full min-w-0"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.32, ease: "easeOut" }}
@@ -117,21 +133,6 @@ export function SlotTeamYearPicker({
                 </span>
               </div>
             </div>
-            {onRespin && (
-              <button
-                type="button"
-                onClick={() => {
-                  playUiClick();
-                  onRespin();
-                }}
-                disabled={disabled || respinsRemaining <= 0}
-                className="shrink-0 rounded-lg border border-pitch-600 bg-pitch-900/90 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-gray-300 transition-colors hover:border-theme-primary/45 hover:bg-pitch-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:text-xs"
-              >
-                {respinsRemaining > 0
-                  ? `Respin ${respinsRemaining}/${maxRespins}`
-                  : "No respins"}
-              </button>
-            )}
           </div>
 
           <p
@@ -149,10 +150,13 @@ export function SlotTeamYearPicker({
           ) : (
             <>
               <p className={`mb-3 text-center ${TYPO.bodySm} text-gray-500`}>
-                Tap <span className="font-semibold text-theme-primary">Sign player</span>{" "}
+                Tap{" "}
+                <span className="font-semibold text-theme-primary">
+                  Sign player
+                </span>{" "}
                 to add them to your squad
               </p>
-              <div className="mx-auto grid max-h-[min(52vh,520px)] w-full grid-cols-1 gap-2 overflow-y-auto overflow-x-hidden pr-0.5 min-[520px]:grid-cols-3 sm:gap-4">
+              <div className={choiceGridClass}>
                 {sortedEntries.map(({ player }, index) => {
                   const statsExpanded = statsPlayerId === player.id;
                   const isTopPick =
@@ -163,8 +167,16 @@ export function SlotTeamYearPicker({
                   return (
                     <motion.div
                       key={player.id}
-                      className={`relative min-w-0 ${
-                        statsExpanded ? "min-[520px]:col-span-3" : ""
+                      className={`relative min-w-0 w-full ${
+                        choiceCount <= 1
+                          ? "max-w-sm"
+                          : choiceCount === 2
+                            ? "max-w-xs min-[480px]:max-w-none"
+                            : "max-w-sm min-[520px]:max-w-none"
+                      } ${
+                        statsExpanded && choiceCount >= 3
+                          ? "min-[520px]:col-span-2 lg:col-span-3 max-w-none"
+                          : ""
                       }`}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -193,6 +205,27 @@ export function SlotTeamYearPicker({
                   );
                 })}
               </div>
+
+              {onRespin && (
+                <div className="mx-auto mt-5 flex w-full max-w-md flex-col items-center gap-2">
+                  <GameButton
+                    variant="secondary"
+                    size="md"
+                    fullWidth
+                    disabled={
+                      disabled || respinsRemaining <= 0 || respinLocked
+                    }
+                    onClick={handleRespin}
+                  >
+                    {respinsRemaining > 0
+                      ? `Respin — ${respinsRemaining} remaining`
+                      : "No respins remaining"}
+                  </GameButton>
+                  <p className={`${TYPO.bodySm} text-center text-pitch-500`}>
+                    {maxRespins} respins per run · does not use a draft pick
+                  </p>
+                </div>
+              )}
             </>
           )}
         </div>

@@ -491,11 +491,44 @@ function InboxMessageMeta({ message }: { message: InboxMessage }) {
   const hasAsking = message.askingPrice != null;
   const hasPlayer = Boolean(message.playerName);
   const hasClub = Boolean(message.offerClub);
+  const isBoard =
+    message.type === "board" ||
+    message.sender === "Board" ||
+    message.id.startsWith("board-");
+  const hasDeadline = Boolean(message.deadlineLabel);
+  const hasAction = Boolean(message.requiredAction);
 
-  if (!hasOffer && !hasAsking && !hasPlayer && !hasClub) return null;
+  if (
+    !hasOffer &&
+    !hasAsking &&
+    !hasPlayer &&
+    !hasClub &&
+    !isBoard &&
+    !hasDeadline &&
+    !hasAction
+  ) {
+    return null;
+  }
 
   return (
     <div className={MANAGER.statGrid4}>
+      {isBoard && (
+        <ManagerStat label="From" value="Board" tone="primary" />
+      )}
+      {hasDeadline && (
+        <ManagerStat
+          label="Deadline"
+          value={message.deadlineLabel!}
+          tone="muted"
+        />
+      )}
+      {hasAction && (
+        <ManagerStat
+          label="Required"
+          value={message.requiredAction!}
+          tone="default"
+        />
+      )}
       {hasPlayer && (
         <ManagerStat label="Player" value={message.playerName!} tone="default" />
       )}
@@ -566,9 +599,17 @@ export function ManagerInboxMessageCard({
     );
   }
 
+  const sender =
+    message.sender ??
+    (message.type === "board" || message.id.startsWith("board-")
+      ? "Board"
+      : null);
+
   return (
     <article
-      className={`${CARD.elevated} relative flex flex-col overflow-hidden`}
+      className={`${CARD.base} relative flex flex-col overflow-hidden border-l-[3px] border-l-transparent ${
+        !message.read ? "border-l-theme-primary/70" : ""
+      }`}
     >
       <span
         className={`absolute inset-x-0 top-0 h-0.5 ${style.accentBar}`}
@@ -585,12 +626,29 @@ export function ManagerInboxMessageCard({
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
               <ManagerInboxBadge type={message.type} />
-              <span className={`${MANAGER_LABEL} text-pitch-500`}>{weekLabel}</span>
+              {sender && (
+                <span className={`${MANAGER_LABEL} text-pitch-300`}>
+                  {sender}
+                </span>
+              )}
+              <span className={`${MANAGER_LABEL} text-pitch-500`}>
+                {weekLabel}
+                {message.season ? ` · ${message.season}` : ""}
+              </span>
               {!message.read && (
                 <span className="rounded-full bg-theme-primary/20 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-theme-primary">
                   New
                 </span>
               )}
+              <span
+                className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
+                  message.resolved
+                    ? "bg-pitch-800 text-pitch-400"
+                    : "bg-pitch-800/80 text-pitch-300"
+                }`}
+              >
+                {message.resolved ? "Resolved" : "Open"}
+              </span>
             </div>
             <h3 className="mt-2 text-base font-semibold leading-snug text-white">
               {message.title}

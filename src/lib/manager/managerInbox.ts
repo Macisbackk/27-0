@@ -99,6 +99,22 @@ export function markInboxMessagesRead(career: ManagerCareer): ManagerCareer {
   };
 }
 
+/** Mark one message read without resolving (popup dismissed → stays in Open mail). */
+export function markInboxMessageRead(
+  career: ManagerCareer,
+  messageId: string
+): ManagerCareer {
+  const target = career.inboxMessages.find((m) => m.id === messageId);
+  if (!target || target.read) return career;
+  return {
+    ...career,
+    inboxMessages: career.inboxMessages.map((m) =>
+      m.id === messageId ? { ...m, read: true } : m
+    ),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
 function inboxMessageRequiresAction(msg: InboxMessage): boolean {
   if (msg.resolved) return false;
   return msg.type === "transfer" || msg.type === "transfer_offer_in";
@@ -565,11 +581,41 @@ export function purgeInvalidTransferOffers(career: ManagerCareer): ManagerCareer
 }
 
 export function hydrateInboxMessages(career: ManagerCareer): ManagerCareer {
+  const migrated = (career.inboxMessages ?? []).map((m) => {
+    let next = normalizeInboxMessage(m, career);
+    // Re-open unread board mail that was wrongly archived on create.
+    const isBoard =
+      next.type === "board" ||
+      next.id.startsWith("board-") ||
+      next.id.startsWith("board-ultimatum-") ||
+      next.id.startsWith("prestige-");
+    if (isBoard && next.read === false && next.resolved === true) {
+      next = { ...next, resolved: false };
+    }
+    // Ultimatums used type "news" — fold into Board filter.
+    if (next.id.startsWith("board-ultimatum-") && next.type === "news") {
+      next = { ...next, type: "board" };
+    }
+    if (
+      (next.id.startsWith("prestige-rise-") ||
+        next.id.startsWith("prestige-fall-")) &&
+      next.type === "news"
+    ) {
+      next = { ...next, type: "board", resolved: next.read ? true : false };
+    }
+    if (isBoard) {
+      next = {
+        ...next,
+        type: "board",
+        sender: next.sender ?? "Board",
+        eventId: next.eventId ?? next.id,
+      };
+    }
+    return next;
+  });
   const hydrated = {
     ...career,
-    inboxMessages: (career.inboxMessages ?? []).map((m) =>
-      normalizeInboxMessage(m, career)
-    ),
+    inboxMessages: migrated,
   };
   return purgeStaleInboxMessages(purgeInvalidTransferOffers(hydrated));
 }

@@ -235,24 +235,20 @@ export function ManagerInbox({
       )}
 
       {messages.length === 0 && (
-        <ProgrammePanel variant="inset" padded>
-          <div className="flex flex-col items-center justify-center gap-3 py-2 text-center">
-            <p className={`${TYPO.bodySm} text-pitch-400`}>
-              No new messages. Rival clubs may approach you about unlisted
-              players, or list your own squad to attract bids.
-            </p>
-          </div>
-        </ProgrammePanel>
+        <div className="py-6 text-center">
+          <p className={`${TYPO.bodySm} text-pitch-400`}>
+            No new messages. Rival clubs may approach you about unlisted
+            players, or list your own squad to attract bids.
+          </p>
+        </div>
       )}
 
       {messages.length > 0 && filteredMessages.length === 0 && (
-        <ProgrammePanel variant="inset" padded>
-          <div className="flex flex-col items-center justify-center gap-3 py-2 text-center">
-            <p className={`${TYPO.bodySm} text-pitch-400`}>
-              No messages in this category.
-            </p>
-          </div>
-        </ProgrammePanel>
+        <div className="py-4 text-center">
+          <p className={`${TYPO.bodySm} text-pitch-400`}>
+            No messages in this category.
+          </p>
+        </div>
       )}
 
       <div className={SPACING.stackMd}>

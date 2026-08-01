@@ -20,7 +20,7 @@ export function ChangelogAccordion({
   defaultOpenId = null,
 }: ChangelogAccordionProps) {
   const [openId, setOpenId] = useState<string | null>(
-    defaultOpenId ?? entries[0]?.id ?? null
+    defaultOpenId ?? entries[entries.length - 1]?.id ?? entries[0]?.id ?? null
   );
 
   const toggle = useCallback((id: string) => {

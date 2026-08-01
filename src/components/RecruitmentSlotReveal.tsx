@@ -213,6 +213,7 @@ export function RecruitmentSlotReveal({
                   isEraSpin ? formatSpinReelTeamName(team) : team
                 }
                 textClassName="slot-reveal-team-name"
+                useClubColors
               />
             </div>
             {isEraSpin && yearPlan && (

@@ -22,16 +22,26 @@ const BOARD_CONFIDENCE_JUMP = 8;
 const STRONG_GATE_CAPACITY_PCT = 0.9;
 const YOUTH_CALLUP_THRESHOLD = 3;
 
+export interface BoardMailOptions {
+  deadlineLabel?: string;
+  requiredAction?: string;
+}
+
 function appendBoardMail(
   career: ManagerCareer,
   id: string,
   title: string,
-  body: string
+  body: string,
+  options?: BoardMailOptions
 ): ManagerCareer {
-  if (career.inboxMessages.some((m) => m.id === id)) return career;
+  if (career.inboxMessages.some((m) => m.id === id || m.eventId === id)) {
+    return career;
+  }
   return pushInboxMessage(career, {
     id,
+    eventId: id,
     type: "board",
+    sender: "Board",
     title,
     body,
     week: career.gameWeek,
@@ -39,7 +49,10 @@ function appendBoardMail(
     gameWeek: career.gameWeek,
     createdAt: new Date().toISOString(),
     read: false,
-    resolved: true,
+    // Persist in Open mail until the manager dismisses — not auto-archived.
+    resolved: false,
+    deadlineLabel: options?.deadlineLabel,
+    requiredAction: options?.requiredAction,
   });
 }
 
@@ -241,12 +254,41 @@ function maybeConfidenceMail(
 ): ManagerCareer {
   if (previousBoardConfidence == null) return career;
   const jump = career.boardConfidence - previousBoardConfidence;
-  if (jump < BOARD_CONFIDENCE_JUMP) return career;
+  if (jump >= BOARD_CONFIDENCE_JUMP) {
+    return appendBoardMail(
+      career,
+      `board-confidence-boost-${seasonTag(career)}-w${career.gameWeek}`,
+      "Board — confidence rising",
+      `Board confidence has climbed to ${career.boardConfidence}% (up ${jump} points). The directors are noticing the progress — maintain this trajectory.`
+    );
+  }
+  if (jump <= -BOARD_CONFIDENCE_JUMP) {
+    return appendBoardMail(
+      career,
+      `board-confidence-drop-${seasonTag(career)}-w${career.gameWeek}`,
+      "Board — performance warning",
+      `Board confidence has fallen to ${career.boardConfidence}% (down ${Math.abs(jump)} points). Results must improve before the board reviews your position.`,
+      {
+        deadlineLabel: "Next board review",
+        requiredAction: "Improve league results and matchday performances",
+      }
+    );
+  }
+  return career;
+}
+
+function maybeWagePressureMail(career: ManagerCareer): ManagerCareer {
+  if (career.wageBill <= career.wageBudget) return career;
+  const over = career.wageBill - career.wageBudget;
   return appendBoardMail(
     career,
-    `board-confidence-boost-${seasonTag(career)}-w${career.gameWeek}`,
-    "Board — confidence rising",
-    `Board confidence has climbed to ${career.boardConfidence}% (up ${jump} points). The directors are noticing the progress — maintain this trajectory.`
+    `board-wage-warning-${seasonTag(career)}-w${career.gameWeek}`,
+    "Board — financial warning",
+    `The wage bill is ${over.toLocaleString()} over budget. The board expects corrective action through sales, releases, or wage discipline.`,
+    {
+      deadlineLabel: "Within 4 weeks",
+      requiredAction: "Bring the wage bill back under budget",
+    }
   );
 }
 
@@ -288,6 +330,7 @@ export function maybeAddBoardMilestoneInbox(
   next = maybePlayoffsMail(next);
   next = maybeAttendanceMail(next, fixture);
   next = maybeConfidenceMail(next, context.previousBoardConfidence);
+  next = maybeWagePressureMail(next);
 
   return next;
 }
@@ -342,5 +385,57 @@ export function addBoardTransferMilestoneInbox(
     `board-major-signing-${idBase}-${seasonTag(career)}`,
     "Board — major signing",
     `${playerName} arrives for ${formatWage(fee)}. The board backs this statement signing — make it count on the field.`
+  );
+}
+
+/** Unread board mail for weekly / hub popup queue (decision-first ordering). */
+export function getPendingBoardInboxPopup(
+  career: ManagerCareer
+): import("./types").InboxMessage | undefined {
+  const acked = new Set(career.acknowledgedManagerEventIds ?? []);
+  return career.inboxMessages.find(
+    (m) =>
+      (m.type === "board" || m.id.startsWith("board-")) &&
+      !m.read &&
+      !m.resolved &&
+      !acked.has(m.id)
+  );
+}
+
+/** Season objectives letter — once per season when intro is shown. */
+export function ensureBoardObjectivesInbox(
+  career: ManagerCareer
+): ManagerCareer {
+  const id = `board-objectives-s${career.seasonYear}`;
+  if (career.inboxMessages.some((m) => m.id === id || m.eventId === id)) {
+    return career;
+  }
+  return appendBoardMail(
+    career,
+    id,
+    "Board — season objectives",
+    `Primary target: ${career.boardExpectation}. The board starts at ${career.boardConfidence}% confidence. Hit your target at season's end to earn rewards and protect your job. Secondary aims: Challenge Cup progress, wage discipline, and squad development.`,
+    {
+      deadlineLabel: `End of ${career.seasonYear} season`,
+      requiredAction: `Deliver: ${career.boardExpectation}`,
+    }
+  );
+}
+
+/** End-of-season board review — once when the campaign closes. */
+export function ensureBoardEndOfSeasonReviewInbox(
+  career: ManagerCareer
+): ManagerCareer {
+  if (!career.isSeasonComplete) return career;
+  const id = `board-eos-review-s${career.seasonYear}`;
+  return appendBoardMail(
+    career,
+    id,
+    "Board — end-of-season review",
+    `The board has reviewed the ${career.seasonYear} campaign. Primary target was ${career.boardExpectation}. Final confidence sits at ${career.boardConfidence}%. Check Season Rewards and prepare for the next season.`,
+    {
+      deadlineLabel: "Off-season",
+      requiredAction: "Review season rewards and plan the next campaign",
+    }
   );
 }

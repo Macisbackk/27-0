@@ -554,6 +554,14 @@ export interface InboxMessage {
   createdAt: string;
   read: boolean;
   resolved?: boolean;
+  /** Display sender — Board mail always uses "Board". */
+  sender?: string;
+  /** Stable event id linking popups to the same inbox record (defaults to id). */
+  eventId?: string;
+  /** Optional deadline label (e.g. season end, next review). */
+  deadlineLabel?: string;
+  /** Optional required action for the manager. */
+  requiredAction?: string;
   playerId?: string;
   playerName?: string;
   offerClub?: string;

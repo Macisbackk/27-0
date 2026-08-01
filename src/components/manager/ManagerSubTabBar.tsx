@@ -43,6 +43,8 @@ export function ManagerSubTabBar<T extends string>({
   hardAccent = false,
 }: ManagerSubTabBarProps<T>) {
   const useCompactToggle = !scrollable && tabs.length <= 3 && !hardAccent;
+  // Enough tabs that equal flex would clip labels — use intentional horizontal scroll.
+  const useScrollRail = scrollable || tabs.length >= 5;
 
   if (useCompactToggle) {
     return (
@@ -66,17 +68,17 @@ export function ManagerSubTabBar<T extends string>({
     );
   }
 
-  const shellClass = scrollable
+  const shellClass = useScrollRail
     ? "flex w-full justify-center overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     : SUB_TAB_BAR_SHELL;
 
   const groupClass = `${tabGroupClass(hardAccent, false, eraAccent)}${
-    scrollable
+    useScrollRail
       ? " min-w-max w-max max-w-none"
-      : " w-full max-w-[min(100%,21.25rem)]"
+      : " w-full max-w-full"
   } ${className ?? ""}`.trim();
 
-  const buttonLayout = scrollable ? "scroll" : "equal";
+  const buttonLayout = useScrollRail ? "scroll" : "equal";
 
   return (
     <div className={shellClass}>
@@ -102,11 +104,17 @@ export function ManagerSubTabBar<T extends string>({
           >
             {shortLabel ? (
               <>
-                <span className="truncate sm:hidden">{shortLabel}</span>
-                <span className="hidden truncate sm:inline">{label}</span>
+                <span className="whitespace-normal text-center leading-tight sm:hidden">
+                  {shortLabel}
+                </span>
+                <span className="hidden whitespace-normal text-center leading-tight sm:inline">
+                  {label}
+                </span>
               </>
             ) : (
-              <span className="truncate">{label}</span>
+              <span className="whitespace-normal text-center leading-tight">
+                {label}
+              </span>
             )}
           </button>
         ))}

@@ -48,6 +48,10 @@ import {
   hydrateInboxMessages,
   syncManagerInboxMessages,
 } from "./managerInbox";
+import {
+  ensureBoardEndOfSeasonReviewInbox,
+  ensureBoardObjectivesInbox,
+} from "./managerBoardInbox";
 import { initPreSeasonState, ensureFriendlyChoices } from "./managerFriendlies";
 import { ensureCupBracketReady } from "./managerChallengeCup";
 import { ensurePlayoffsReady, syncPlayoffsIntroAcknowledged } from "./managerPlayoffs";
@@ -324,6 +328,9 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     challengeCup: reconcileChallengeCupFromFixtures(career),
   };
   career = hydrateInboxMessages(career);
+  if (career.objectivesIntroShown) {
+    career = ensureBoardObjectivesInbox(career);
+  }
   career = syncManagerFinance(career);
   career = ensureFriendlyChoices(career);
   career = ensureCupBracketReady(career);
@@ -334,6 +341,9 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     ...career,
     isSeasonComplete: isManagerSeasonComplete(career),
   };
+  if (career.isSeasonComplete) {
+    career = ensureBoardEndOfSeasonReviewInbox(career);
+  }
   career = ensureSeasonEndPlayerDevelopment(career);
   career = ensureLeagueClubRosters(career);
   career = normalizeMatchdayLineup(career);

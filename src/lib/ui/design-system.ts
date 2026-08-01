@@ -147,7 +147,7 @@ export const FILTER = {
   chipTouch:
     "min-h-[44px] rounded-lg border px-3 py-2 text-sm font-medium transition",
   tabGroup:
-    "mx-auto inline-flex w-fit max-w-full flex-nowrap rounded-xl border border-theme-tertiary/25 bg-[rgba(7,12,11,0.94)] p-1 sm:w-auto",
+    "mx-auto inline-flex w-fit max-w-full flex-nowrap items-stretch rounded-xl border border-theme-tertiary/25 bg-[rgba(7,12,11,0.94)] p-1 sm:w-auto",
 } as const;
 
 /** Centered shell for segmented sub-tab bars (Squad/Tactics, Transfers, Stats, etc.). */
@@ -375,9 +375,9 @@ export function tabGroupButtonClass(
 ): string {
   const sizing =
     layout === "scroll"
-      ? "shrink-0 whitespace-nowrap px-3.5 sm:flex-none sm:px-5"
-      : "min-w-0 flex-1";
-  const base = `${TYPO.button} btn-press box-border flex ${sizing} items-center justify-center text-center ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
+      ? "shrink-0 px-3.5 sm:flex-none sm:px-5"
+      : "min-w-0 flex-1 px-2 sm:px-3";
+  const base = `${TYPO.button} btn-press box-border flex ${sizing} items-center justify-center text-center leading-tight ${BTN.tabGroupInner} ${NAV_SIZE.modeTab}`;
   if (!active) {
     if (variant === "hard") return `${base} ${BTN.hardIdle}`;
     if (variant === "era") return `${base} ${BTN.toggleIdle}`;

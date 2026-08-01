@@ -1,5 +1,5 @@
 /** Must match `--slot-reel-item-h` in globals.css — single source for transform math. */
-export const SLOT_REEL_ITEM_HEIGHT_PX = 44;
+export const SLOT_REEL_ITEM_HEIGHT_PX = 52;
 
 /** Visible rows in the reel window (centre row is the selection line). */
 export const SLOT_REEL_VISIBLE_ROWS = 3;
@@ -7,7 +7,7 @@ export const SLOT_REEL_VISIBLE_ROWS = 3;
 /** Strip repetitions — keep minimal for DOM performance. */
 export const SLOT_REEL_STRIP_COPIES = 3;
 
-export const DEFAULT_SPIN_TICK_COUNT = 20;
+export const DEFAULT_SPIN_TICK_COUNT = 24;
 
 /** Vertical offset so item `index` sits on the centre selection line. */
 export function computeSlotReelScrollY(index: number): number {
@@ -42,7 +42,7 @@ export function computeSlotReelFinalIndex(pool: string[], finalValue: string): n
 export function easeSlotReelProgress(linear: number): number {
   if (linear <= 0) return 0;
   if (linear >= 1) return 1;
-  return 1 - Math.pow(1 - linear, 3.4);
+  return 1 - Math.pow(1 - linear, 3.6);
 }
 
 /** Slot-machine tick indices — lands exactly on final index. */
@@ -77,10 +77,10 @@ export function buildSpinReelTickIndices(
 export function buildSpinReelDelaysMs(tickCount: number): number[] {
   return Array.from({ length: tickCount }, (_, i) => {
     const progress = i / tickCount;
-    if (progress < 0.25) return 14 + Math.floor(progress * 22);
-    if (progress < 0.55) return 24 + Math.floor((progress - 0.25) * 48);
-    if (progress < 0.78) return 48 + Math.floor((progress - 0.55) * 72);
-    return 80 + Math.floor((progress - 0.78) * 220);
+    if (progress < 0.22) return 12 + Math.floor(progress * 28);
+    if (progress < 0.5) return 22 + Math.floor((progress - 0.22) * 55);
+    if (progress < 0.75) return 42 + Math.floor((progress - 0.5) * 90);
+    return 70 + Math.floor((progress - 0.75) * 260);
   });
 }
 
@@ -89,6 +89,8 @@ export interface SpinReelPlan {
   tickIndices: number[];
   finalIndex: number;
   delaysMs: number[];
+  /** Stable selected value the animation is guaranteed to land on. */
+  finalValue: string;
 }
 
 /** Precompute reel animation plan once before spin starts. */
@@ -103,5 +105,6 @@ export function buildSpinReelPlan(
     tickIndices: buildSpinReelTickIndices(pool, finalValue, tickCount),
     finalIndex: computeSlotReelFinalIndex(pool, finalValue),
     delaysMs: buildSpinReelDelaysMs(tickCount),
+    finalValue,
   };
 }

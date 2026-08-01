@@ -187,7 +187,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
           )}
         </ScoreboardPanel>
 
-        <div className="mt-4 max-h-32 overflow-y-auto rounded-xl border border-pitch-700/50 bg-pitch-950/50 p-3">
+        <div className="mt-4 rounded-xl border border-pitch-700/50 bg-pitch-950/50 p-3">
           <p className={`mb-2 ${TYPO.statLabel}`}>
             Results
           </p>

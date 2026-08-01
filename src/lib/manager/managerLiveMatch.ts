@@ -13,8 +13,16 @@ import type {
   LiveMatchEvent,
 } from "./types";
 import { computeManagerTeamRating } from "./managerRating";
-import { getManagerPlayer, getManagerPlayerEligiblePositions } from "./managerPlayers";
+import {
+  getManagerPlayer,
+  getManagerPlayerEligiblePositions,
+} from "./managerPlayers";
 import { getMatchdayTryWeight } from "./managerTryScoring";
+import {
+  buildMatchdayScorerCandidates,
+  pickScorerFromCandidates,
+  pickWeightedIndexSafe,
+} from "./managerTryScorerSelection";
 import { previewManagerMatchScoreline } from "./managerSimulation";
 import { eventMinutePrefix } from "../game/match-events";
 import type { MatchEventType } from "../game/match-events";
@@ -261,68 +269,52 @@ function scorerPositionBias(
   return 1;
 }
 
-function pickWeightedId(
-  weighted: { id: string; weight: number }[],
-  rng: () => number
-): string | undefined {
-  const sum = weighted.reduce((acc, entry) => acc + entry.weight, 0);
-  if (sum <= 0) return weighted[0]?.id;
-  let roll = rng() * sum;
-  for (const entry of weighted) {
-    roll -= entry.weight;
-    if (roll <= 0) return entry.id;
-  }
-  return weighted[weighted.length - 1]?.id;
-}
-
 function pickScorer(
   career: ManagerCareer,
   command: LiveMatchCommand,
-  rng: () => number
+  rng: () => number,
+  priorUserTryEvents: LiveMatchEvent[]
 ): { id: string; name: string } {
-  const weighted: { id: string; weight: number }[] = [];
-
-  for (let i = 0; i < career.matchdayXiii.length; i++) {
-    const id = career.matchdayXiii[i];
-    const pos = career.xiiiSlotPositions[i];
-    if (!id || !pos) continue;
-    weighted.push({
-      id,
-      weight:
-        getMatchdayTryWeight(pos, false) *
-        scorerPositionBias(pos, command, career.tactics.attackFocus),
-    });
+  const candidates = buildMatchdayScorerCandidates(career);
+  const triesAlready = candidates.map(
+    (c) =>
+      priorUserTryEvents.filter(
+        (e) => e.type === "try" && e.team === "user" && e.playerId === c.id
+      ).length
+  );
+  const teamTries = priorUserTryEvents.filter(
+    (e) => e.type === "try" && e.team === "user"
+  ).length;
+  const bias = (pos: Position) =>
+    scorerPositionBias(pos, command, career.tactics.attackFocus);
+  const picked = pickScorerFromCandidates(
+    candidates,
+    triesAlready,
+    Math.max(1, teamTries + 1),
+    rng,
+    bias
+  );
+  if (picked) {
+    return { id: picked.scorer.id, name: picked.scorer.name };
   }
-
-  for (const id of career.matchdayInterchange) {
+  // Last resort — resolve a real on-field / squad player; never fake "Try Scorer".
+  for (const id of [
+    ...career.matchdayXiii,
+    ...career.matchdayInterchange,
+  ]) {
     if (!id) continue;
-    const positions = getManagerPlayerEligiblePositions(career, id);
-    const pos = positions[0];
-    if (!pos) continue;
-    weighted.push({
-      id,
-      weight:
-        getMatchdayTryWeight(pos, true) *
-        scorerPositionBias(pos, command, career.tactics.attackFocus),
-    });
+    const p = getManagerPlayer(career, id);
+    if (p) return { id: p.id, name: p.name };
   }
-
-  const pick =
-    pickWeightedId(weighted, rng) ??
-    career.matchdayXiii.find(Boolean) ??
-    career.matchdayInterchange.find(Boolean) ??
-    career.reserves[0]?.id;
-  const player = pick ? getManagerPlayer(career, pick) : undefined;
-  if (player) {
-    return { id: player.id, name: player.name };
-  }
-  // Last resort — never emit a placeholder or club name as a try scorer.
   const anySquad = career.squad[0];
   if (anySquad) {
     const p = getManagerPlayer(career, anySquad.playerId);
     if (p) return { id: p.id, name: p.name };
   }
-  return { id: "unknown", name: "Unknown" };
+  if (process.env.NODE_ENV === "development") {
+    console.error("[scorer] no valid on-field player available for try");
+  }
+  return { id: "unresolved-scorer", name: "Unknown" };
 }
 
 function pickOpponentScorer(
@@ -432,8 +424,15 @@ function pickKicker(career: ManagerCareer, rng: () => number): string {
     }
   }
 
+  const pickIdx =
+    halves.length > 0
+      ? pickWeightedIndexSafe(
+          halves.map((h) => h.weight),
+          rng
+        )
+      : -1;
   const id =
-    pickWeightedId(halves, rng) ??
+    (pickIdx >= 0 ? halves[pickIdx]?.id : undefined) ??
     career.matchdayXiii[6] ??
     career.matchdayInterchange[0];
   return getManagerPlayer(career, id ?? "")?.name ?? "Kicker";
@@ -636,7 +635,7 @@ export function advanceLiveTick(
     if (userTry) {
       userTries++;
       userScore += 4;
-      const scorer = pickScorer(career, command, rng);
+      const scorer = pickScorer(career, command, rng, events);
       const tryText = buildCommentaryLine(
         "try",
         {

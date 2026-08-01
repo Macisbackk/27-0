@@ -78,11 +78,17 @@ export function GameSegmentedControl<T extends string>({
             >
               {opt.shortLabel ? (
                 <>
-                  <span className="truncate sm:hidden">{opt.shortLabel}</span>
-                  <span className="hidden truncate sm:inline">{opt.label}</span>
+                  <span className="whitespace-normal text-center leading-tight sm:hidden">
+                    {opt.shortLabel}
+                  </span>
+                  <span className="hidden whitespace-normal text-center leading-tight sm:inline">
+                    {opt.label}
+                  </span>
                 </>
               ) : (
-                <span className="truncate">{opt.label}</span>
+                <span className="whitespace-normal text-center leading-tight">
+                  {opt.label}
+                </span>
               )}
             </button>
           );

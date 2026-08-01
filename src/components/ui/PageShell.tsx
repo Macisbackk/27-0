@@ -41,7 +41,7 @@ export function PageShell({
 
   return (
     <div
-      className={`matchday-arena arena-surface relative flex min-h-full min-w-0 max-w-full flex-1 flex-col overflow-x-clip ${desktopFit ? "lg:desktop-page-fit" : ""} ${className}`}
+      className={`matchday-arena arena-surface relative flex min-h-full min-w-0 max-w-full flex-1 flex-col ${desktopFit ? "lg:desktop-page-fit" : ""} ${className}`}
     >
       <div
         className="stadium-backdrop pointer-events-none fixed inset-0"
@@ -72,7 +72,7 @@ export function PageShellBody({
 }) {
   return (
     <div
-      className={`flex min-h-0 min-w-0 flex-1 flex-col overflow-x-clip ${className} lg:desktop-scroll-rail lg:overflow-y-auto lg:overscroll-contain`}
+      className={`flex min-h-0 min-w-0 flex-1 flex-col ${className} lg:desktop-scroll-rail lg:overflow-y-auto lg:overscroll-contain`}
     >
       {children}
     </div>

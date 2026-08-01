@@ -9,14 +9,14 @@ import { TYPO } from "@/lib/ui/typography";
 export default function UpdatesPage() {
   return (
     <PageShell withLights compact>
-      <div className={PAGE.section}>
+      <div className={`${PAGE.content} ${PAGE.section}`}>
         <header className="text-center">
           <p className={TYPO.sectionLabel}>Changelog</p>
           <h1 className="mt-2 font-display text-3xl font-black text-white sm:text-4xl">
             Updates
           </h1>
           <p className="mx-auto mt-3 max-w-md text-sm text-gray-500">
-            What&apos;s new in 27-0 — latest changes first.
+            Major milestones in 27-0 — earliest first.
           </p>
         </header>
 

@@ -176,7 +176,9 @@ export function applySeasonClubPrestigeDrift(
     if (!next.inboxMessages.some((m) => m.id === msgId)) {
       next = pushInboxMessage(next, {
         id: msgId,
-        type: "news",
+        eventId: msgId,
+        type: "board",
+        sender: "Board",
         title: starDelta > 0 ? "Club status rising" : "Club status falling",
         body:
           starDelta > 0
@@ -187,7 +189,12 @@ export function applySeasonClubPrestigeDrift(
         gameWeek: 0,
         createdAt: new Date().toISOString(),
         read: false,
-        resolved: true,
+        resolved: false,
+        deadlineLabel: `Season ${nextSeason}`,
+        requiredAction:
+          starDelta > 0
+            ? "Meet the higher board expectation"
+            : "Stabilise results and restore confidence",
       });
     }
   }
@@ -374,7 +381,9 @@ export function maybeAddBoardUltimatumInbox(
 
   return pushInboxMessage(career, {
     id: msgId,
-    type: "news",
+    eventId: msgId,
+    type: "board",
+    sender: "Board",
     title: "Board ultimatum",
     body: `The board's confidence has dropped to ${career.boardConfidence}%. ${career.boardExpectation} is the minimum standard — improve results or face consequences.`,
     week: career.gameWeek,
@@ -382,6 +391,8 @@ export function maybeAddBoardUltimatumInbox(
     gameWeek: career.gameWeek,
     createdAt: new Date().toISOString(),
     read: false,
-    resolved: true,
+    resolved: false,
+    deadlineLabel: "Immediate",
+    requiredAction: "Win matches and restore board confidence",
   });
 }

@@ -39,6 +39,7 @@ import { ManagerIncomingBidModal } from "@/components/manager/ManagerIncomingBid
 import { ManagerRetirementIntentModal } from "@/components/manager/ManagerRetirementIntentModal";
 import { ManagerContractExpiryModal } from "@/components/manager/ManagerContractExpiryModal";
 import { ManagerReserveReportModal } from "@/components/manager/ManagerReserveReportModal";
+import { ManagerBoardMessageModal } from "@/components/manager/ManagerBoardMessageModal";
 import { triggerManagerMatchAchievements } from "@/lib/achievements/achievementTriggers";
 import { ManagerPositionRetrainingCompleteModal } from "@/components/manager/ManagerPositionRetrainingCompleteModal";
 import { ManagerPlayoffsIntroModal } from "@/components/manager/ManagerPlayoffsIntroModal";
@@ -76,6 +77,10 @@ import {
 } from "@/lib/manager/managerMatchWeek";
 import { scrollToManagerHubNextFixture } from "@/lib/manager/managerHubScroll";
 import { shouldShowManagerObjectivesIntro } from "@/lib/manager/managerBoardObjectives";
+import {
+  ensureBoardObjectivesInbox,
+  getPendingBoardInboxPopup,
+} from "@/lib/manager/managerBoardInbox";
 import { acknowledgePlayoffsIntro, needsPlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
 import { shouldShowChallengeCupCelebration } from "@/lib/manager/managerChallengeCup";
 import { shouldShowWorldClubChallengeCelebration } from "@/lib/manager/worldClubChallenge";
@@ -110,10 +115,11 @@ import {
   isAwaitingFriendlyChoice,
   selectFriendlyOpponent,
 } from "@/lib/manager/managerFriendlies";
-import { countUnreadInbox } from "@/lib/manager/managerInbox";
 import {
   acknowledgeContractExpiryPopup,
+  countUnreadInbox,
   getPendingContractExpiryPopup,
+  markInboxMessageRead,
 } from "@/lib/manager/managerInbox";
 import {
   acceptIncomingOffer,
@@ -260,6 +266,10 @@ export default function ManagerPage() {
     string | null
   >(null);
   const [reserveReportModalOpen, setReserveReportModalOpen] = useState(false);
+  const [pendingBoardMessageId, setPendingBoardMessageId] = useState<
+    string | null
+  >(null);
+  const [boardMessageModalOpen, setBoardMessageModalOpen] = useState(false);
   const [pendingPositionRetrainingId, setPendingPositionRetrainingId] =
     useState<string | null>(null);
   const [positionRetrainingCompleteModalOpen, setPositionRetrainingCompleteModalOpen] =
@@ -1223,6 +1233,48 @@ export default function ManagerPage() {
     continueAfterRetirementIntent(next);
   };
 
+  const continueAfterBoardMessage = (nextCareer: ManagerCareer) => {
+    const unsolicited = getPendingUnsolicitedOffer(nextCareer);
+    if (unsolicited) {
+      setPendingIncomingBidId(unsolicited.id);
+      setIncomingBidModalOpen(true);
+      goToView("hub");
+      return;
+    }
+    const contractExpiry = getPendingContractExpiryPopup(nextCareer);
+    if (contractExpiry) {
+      setPendingContractExpiryId(contractExpiry.id);
+      setContractExpiryModalOpen(true);
+      goToView("hub");
+      return;
+    }
+    continueAfterContractExpiry(nextCareer);
+  };
+
+  const handleBoardMessageDismiss = () => {
+    if (!career || !pendingBoardMessageId) return;
+    const next = acknowledgeManagerEventId(
+      markInboxMessageRead(career, pendingBoardMessageId),
+      pendingBoardMessageId
+    );
+    persist(next);
+    setPendingBoardMessageId(null);
+    setBoardMessageModalOpen(false);
+    continueAfterBoardMessage(next);
+  };
+
+  const handleBoardMessageViewInbox = () => {
+    if (!career || !pendingBoardMessageId) return;
+    const next = acknowledgeManagerEventId(
+      markInboxMessageRead(career, pendingBoardMessageId),
+      pendingBoardMessageId
+    );
+    persist(next);
+    setPendingBoardMessageId(null);
+    setBoardMessageModalOpen(false);
+    goToView("inbox");
+  };
+
   const handleReserveReportDismiss = () => {
     if (!career || !pendingReserveReportId) return;
     const next = acknowledgeManagerEventId(
@@ -1274,8 +1326,12 @@ export default function ManagerPage() {
 
   const handleObjectivesIntroContinue = () => {
     if (!career) return;
-    // Persist intro dismissal first so the modal unmounts before any achievement popup.
-    persist({ ...career, objectivesIntroShown: true });
+    // Persist intro dismissal + Inbox letter so board objectives stay in Club Mail.
+    const withObjectives = ensureBoardObjectivesInbox({
+      ...career,
+      objectivesIntroShown: true,
+    });
+    persist(withObjectives);
     // Defer unlock so the Continue click cannot hit the achievement overlay.
     window.setTimeout(() => {
       recordCareerStarted(career.club);
@@ -1426,12 +1482,14 @@ export default function ManagerPage() {
       persist(withQueue);
 
       // Weekly popups only — never auto-open or play the next fixture.
+      const boardMail = getPendingBoardInboxPopup(withQueue);
       const unsolicited = getPendingUnsolicitedOffer(withQueue);
       const contractExpiry = getPendingContractExpiryPopup(withQueue);
       const retirementIntent = getPendingRetirementIntentPopup(withQueue);
       const retrainingComplete = getPendingPositionRetrainingPopup(withQueue);
       const reserveReport = getPendingReserveReportPopup(withQueue);
 
+      setPendingBoardMessageId(boardMail?.id ?? null);
       setPendingIncomingBidId(unsolicited?.id ?? null);
       setPendingContractExpiryId(contractExpiry?.id ?? null);
       setPendingRetirementIntentId(retirementIntent?.id ?? null);
@@ -1443,7 +1501,9 @@ export default function ManagerPage() {
         return;
       }
 
-      if (unsolicited) {
+      if (boardMail) {
+        setBoardMessageModalOpen(true);
+      } else if (unsolicited) {
         setIncomingBidModalOpen(true);
       } else if (contractExpiry) {
         setContractExpiryModalOpen(true);
@@ -1510,12 +1570,18 @@ export default function ManagerPage() {
       ? career.inboxMessages.find((m) => m.id === pendingReserveReportId)
       : undefined;
 
+  const boardMessage =
+    career && pendingBoardMessageId
+      ? career.inboxMessages.find((m) => m.id === pendingBoardMessageId)
+      : undefined;
+
   const positionRetrainingMessage =
     career && pendingPositionRetrainingId
       ? career.inboxMessages.find((m) => m.id === pendingPositionRetrainingId)
       : undefined;
 
   const managerCelebrationModalsOpen =
+    boardMessageModalOpen ||
     incomingBidModalOpen ||
     contractExpiryModalOpen ||
     retirementIntentModalOpen ||
@@ -1767,6 +1833,14 @@ export default function ManagerPage() {
             onViewReserves={handleReserveReportViewReserves}
           />
         )}
+
+      {career && boardMessageModalOpen && boardMessage && (
+        <ManagerBoardMessageModal
+          message={boardMessage}
+          onDismiss={handleBoardMessageDismiss}
+          onViewInbox={handleBoardMessageViewInbox}
+        />
+      )}
 
       {career &&
         canShowManagerHubIntroModals &&

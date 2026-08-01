@@ -4,6 +4,7 @@ import { getPendingContractExpiryPopup } from "./managerInbox";
 import { getPendingRetirementIntentPopup } from "./managerRetirement";
 import { getPendingPositionRetrainingPopup } from "./managerPositionRetraining";
 import { getPendingReserveReportPopup } from "./managerReserveReports";
+import { getPendingBoardInboxPopup } from "./managerBoardInbox";
 
 export type MatchWeekPhase =
   | "ready_to_play"
@@ -115,6 +116,7 @@ export function collectWeeklyManagerEventIds(career: ManagerCareer): string[] {
 
   push(getPendingUnsolicitedOffer(career)?.id);
   push(getPendingRetirementIntentPopup(career)?.id);
+  push(getPendingBoardInboxPopup(career)?.id);
   push(getPendingContractExpiryPopup(career)?.id);
   push(getPendingPositionRetrainingPopup(career)?.id);
   push(getPendingReserveReportPopup(career)?.id);

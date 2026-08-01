@@ -1431,7 +1431,7 @@ export function GameBoard({
                 exit={{ opacity: 0 }}
               >
                 <motion.div
-                  className="w-full max-w-[var(--layout-page-max)] max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden"
+                  className="manager-section w-full min-w-0 max-h-[min(92dvh,900px)] overflow-x-hidden overflow-y-auto overscroll-contain"
                   initial={{ opacity: 0, y: 24, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 16 }}

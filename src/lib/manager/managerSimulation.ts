@@ -182,7 +182,10 @@ import {
   getManagerDifficultySimAdjustments,
   maybeAddBoardUltimatumInbox,
 } from "./managerDifficulty";
-import { maybeAddBoardMilestoneInbox } from "./managerBoardInbox";
+import {
+  ensureBoardEndOfSeasonReviewInbox,
+  maybeAddBoardMilestoneInbox,
+} from "./managerBoardInbox";
 import {
   generateManagerMatchBio,
   selectManagerManOfTheMatch,
@@ -938,6 +941,10 @@ export function advanceManagerMatchWeek(
     lastProcessedMatchWeekId: weekId,
     updatedAt: new Date().toISOString(),
   };
+
+  if (next.isSeasonComplete) {
+    next = ensureBoardEndOfSeasonReviewInbox(next);
+  }
 
   return { ok: true, career: next };
 }

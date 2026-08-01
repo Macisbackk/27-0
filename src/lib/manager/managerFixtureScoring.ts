@@ -162,8 +162,29 @@ export function ensureManagerFixtureScoring(
     const rng = seedrandom(
       `${career.seed}-mgr-fallback-${fixtureKey ?? `r${fixture.round}`}`
     );
-    const weights = entries.map((e) => e.tryWeightMultiplier * (0.9 + rng() * 0.2));
-    const alloc = allocateWeightedTries(fixture.triesFor, weights, rng);
+    const weights = entries.map((e) => {
+      const rating =
+        typeof e.player.peakRating === "number" &&
+        Number.isFinite(e.player.peakRating) &&
+        e.player.peakRating > 0
+          ? e.player.peakRating
+          : 55;
+      const ability = Math.pow(rating / 70, 1.55);
+      return Math.max(
+        0.05,
+        ability * e.tryWeightMultiplier * (0.9 + rng() * 0.2)
+      );
+    });
+    const alloc = allocateWeightedTries(fixture.triesFor, weights, rng, {
+      positions: entries.map((e) => e.playedPosition),
+      ratings: entries.map((e) =>
+        typeof e.player.peakRating === "number" &&
+        Number.isFinite(e.player.peakRating) &&
+        e.player.peakRating > 0
+          ? e.player.peakRating
+          : 55
+      ),
+    });
     const userTryScorers = entries
       .map((e, i) => ({
         playerId: e.player.id,

@@ -5,26 +5,7 @@ import { getDefenceConcedeMultiplier } from "./managerTacticsScoring";
 import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
 import type { ManagerCareer, ManagerTactics } from "./types";
 
-function allocateTries(
-  totalTries: number,
-  weights: number[],
-  rng: () => number
-): number[] {
-  const alloc = new Array(weights.length).fill(0);
-  for (let t = 0; t < totalTries; t++) {
-    const sum = weights.reduce((a, b) => a + b, 0);
-    if (sum <= 0) break;
-    let roll = rng() * sum;
-    for (let i = 0; i < weights.length; i++) {
-      roll -= weights[i]!;
-      if (roll <= 0) {
-        alloc[i]++;
-        break;
-      }
-    }
-  }
-  return alloc;
-}
+import { allocateWeightedTries } from "./managerTryScoring";
 
 /** Distribute opponent tries across named players from their match squad. */
 export function buildOpponentTryScoringDetail(
@@ -58,7 +39,10 @@ export function buildOpponentTryScoringDetail(
       : 1;
     return Math.max(0.1, rating * variance * defenceMod);
   });
-  const alloc = allocateTries(tries, weights, rng);
+  const alloc = allocateWeightedTries(tries, weights, rng, {
+    positions: oppSquad.map((p) => p.position),
+    ratings: oppSquad.map((p) => p.peakRating),
+  });
 
   return oppSquad
     .map((p, i) => ({
