@@ -202,10 +202,7 @@ export function ManagerLanding({
         {!loading &&
           (isLoggedIn
             ? "Careers auto-save to your account when you play. Export for an extra backup."
-            : "Sign in to keep careers on your account — otherwise they only live in this browser.")}{" "}
-        <a href="/updates" className="text-theme-primary underline">
-          See updates
-        </a>
+            : "Sign in to keep careers on your account — otherwise they only live in this browser.")}
       </p>
 
       <ManagerDialog

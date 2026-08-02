@@ -41,7 +41,6 @@ const MAIN_NAV_ITEMS = [
   { href: "/showcase", label: "Player Showcase" },
   { href: "/stats", label: "Statistics" },
   { href: "/leaderboard", label: "Leaderboard" },
-  { href: "/updates", label: "Updates" },
 ] as const;
 
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
@@ -304,7 +303,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 </p>
                 <ul className={NAV.list}>
                   {MAIN_NAV_ITEMS.filter((item) =>
-                    ["/showcase", "/updates"].includes(item.href)
+                    item.href === "/showcase"
                   ).map((item) => {
                     const active = isActive(item.href);
                     return (

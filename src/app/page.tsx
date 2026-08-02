@@ -53,9 +53,6 @@ export default function HomePage() {
           <Link href="/showcase" className={LINK.subtle}>
             Player Showcase →
           </Link>
-          <Link href="/updates" className={LINK.subtle}>
-            Updates →
-          </Link>
         </div>
         <JoeMellorEasterEgg />
       </div>
