@@ -116,11 +116,15 @@ export function getPlayerTryWeight(
   rating?: number
 ): number {
   const position = playedPosition ?? player.position;
-  const positionWeight = POSITION_TRY_WEIGHT[position];
-  const effectiveRating = rating ?? player.peakRating;
-  return (
+  const positionWeight = POSITION_TRY_WEIGHT[position] ?? 0.5;
+  const rawRating = rating ?? player.peakRating;
+  const effectiveRating =
+    typeof rawRating === "number" && Number.isFinite(rawRating) && rawRating > 0
+      ? rawRating
+      : 55;
+  const weight =
     positionWeight *
     getRatingTryModifier(effectiveRating, position) *
-    getCareerTryMultiplier(player)
-  );
+    getCareerTryMultiplier(player);
+  return Number.isFinite(weight) && weight > 0 ? weight : 0.05;
 }

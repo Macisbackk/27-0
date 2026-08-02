@@ -1581,20 +1581,19 @@ body {
   }
 
   .slot-reveal-reel {
-    /* Keep in sync with SLOT_REEL_ITEM_HEIGHT_PX in slot-reel.ts */
+    /* SlotReel owns the exact pixel height used for transform math. */
     --slot-reel-item-h: 52px;
-    height: calc(var(--slot-reel-item-h) * 3);
-    min-height: calc(var(--slot-reel-item-h) * 3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
     overflow: hidden;
+    box-sizing: border-box;
+    /* Height comes from SlotReel window — do not force a second height here. */
+    height: auto;
+    min-height: 0;
+    padding: 0;
   }
 
   .recruitment-spin-reel {
     --slot-reel-item-h: 52px;
-    height: calc(var(--slot-reel-item-h) * 3);
-    min-height: calc(var(--slot-reel-item-h) * 3);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.06),
       0 8px 28px rgba(0, 0, 0, 0.35);

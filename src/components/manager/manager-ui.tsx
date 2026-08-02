@@ -607,15 +607,11 @@ export function ManagerInboxMessageCard({
 
   return (
     <article
-      className={`${CARD.base} relative flex flex-col overflow-hidden border-l-[3px] border-l-transparent ${
-        !message.read ? "border-l-theme-primary/70" : ""
+      className={`relative flex flex-col border-b border-pitch-800/70 py-4 first:pt-0 last:border-b-0 ${
+        !message.read ? "pl-3 border-l-2 border-l-theme-primary/70" : ""
       }`}
     >
-      <span
-        className={`absolute inset-x-0 top-0 h-0.5 ${style.accentBar}`}
-        aria-hidden
-      />
-      <div className={`flex flex-1 flex-col gap-3 ${SPACING.cardPaddingSm}`}>
+      <div className="flex flex-1 flex-col gap-3">
         <header className="flex gap-3">
           <span
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border text-xs font-bold ${style.iconBox}`}

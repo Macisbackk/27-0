@@ -21,6 +21,7 @@ import { TYPO } from "@/lib/ui/typography";
 import { SlotReel, type SlotReelHandle } from "./SlotReel";
 
 const LAND_HOLD_MS = 320;
+const LAND_TRANSITION_MS = 280;
 const TICK_SOUND_INTERVAL = 4;
 
 interface RecruitmentSlotRevealProps {
@@ -39,6 +40,8 @@ export function RecruitmentSlotReveal({
   const yearReelRef = useRef<SlotReelHandle>(null);
   const shellRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+  const onCompleteRef = useRef(onComplete);
+  const clubPrimaryRef = useRef(getClubColors(target.team).primary);
   const [isSpinning, setIsSpinning] = useState(true);
   const [landed, setLanded] = useState(false);
 
@@ -46,6 +49,9 @@ export function RecruitmentSlotReveal({
     () => getClubColors(target.team),
     [target.team]
   );
+
+  onCompleteRef.current = onComplete;
+  clubPrimaryRef.current = clubColors.primary;
 
   const { teamPlan, yearPlan } = useMemo(() => {
     const t0 = spinTimingMark("reel-plan-start");
@@ -75,7 +81,7 @@ export function RecruitmentSlotReveal({
         shell.classList.add("slot-reel-lock-flash");
         shell.classList.remove("border-pitch-600/70", "bg-pitch-950/80");
         shell.classList.add("border-theme-primary/55", "bg-pitch-950/95");
-        (shell as HTMLElement).style.borderTopColor = clubColors.primary;
+        (shell as HTMLElement).style.borderTopColor = clubPrimaryRef.current;
       }
       if (resultRef.current) {
         resultRef.current.hidden = false;
@@ -88,7 +94,7 @@ export function RecruitmentSlotReveal({
         yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, false);
       }
       lockReels();
-      const timeoutId = window.setTimeout(() => onComplete(), 120);
+      const timeoutId = window.setTimeout(() => onCompleteRef.current(), 120);
       return () => window.clearTimeout(timeoutId);
     }
 
@@ -139,17 +145,21 @@ export function RecruitmentSlotReveal({
         return;
       }
 
+      // Snap to final index with transition, then lock after it settles.
       teamReelRef.current?.setScrollIndex(teamPlan.finalIndex, true);
       if (isEraSpin && yearPlan) {
         yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, true);
       }
-      lockReels();
       playSlotLand();
-      spinTimingMark("animation-end", tAnimStart);
 
       timeoutId = window.setTimeout(() => {
-        if (!cancelled) onComplete();
-      }, LAND_HOLD_MS);
+        if (cancelled) return;
+        lockReels();
+        spinTimingMark("animation-end", tAnimStart);
+        timeoutId = window.setTimeout(() => {
+          if (!cancelled) onCompleteRef.current();
+        }, LAND_HOLD_MS);
+      }, LAND_TRANSITION_MS);
     };
 
     timeoutId = window.setTimeout(runTick, 0);
@@ -158,7 +168,8 @@ export function RecruitmentSlotReveal({
       cancelled = true;
       if (timeoutId) window.clearTimeout(timeoutId);
     };
-  }, [teamPlan, yearPlan, onComplete, clubColors.primary, isEraSpin]);
+    // Intentionally exclude onComplete / clubColors — held in refs to avoid restarting mid-spin.
+  }, [teamPlan, yearPlan, isEraSpin]);
 
   return (
     <div
@@ -200,7 +211,7 @@ export function RecruitmentSlotReveal({
             }`}
           >
             <div
-              className={`slot-reveal-reel recruitment-spin-reel min-w-0 rounded-2xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1.5 py-1 ${
+              className={`slot-reveal-reel recruitment-spin-reel min-w-0 rounded-2xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1.5 ${
                 isEraSpin ? "flex-1" : "w-full"
               } ${isSpinning ? "recruitment-spin-reel--active" : ""} ${
                 landed ? "recruitment-spin-reel--landed" : ""
@@ -218,7 +229,7 @@ export function RecruitmentSlotReveal({
             </div>
             {isEraSpin && yearPlan && (
               <div
-                className={`slot-reveal-reel slot-reveal-year-reel recruitment-spin-reel recruitment-spin-year-reel min-w-0 shrink-0 flex-1 rounded-2xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1.5 py-1 ${
+                className={`slot-reveal-reel slot-reveal-year-reel recruitment-spin-reel recruitment-spin-year-reel min-w-0 shrink-0 flex-1 rounded-2xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1.5 ${
                   isSpinning ? "recruitment-spin-reel--active" : ""
                 } ${landed ? "recruitment-spin-reel--landed" : ""}`}
               >

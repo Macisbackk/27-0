@@ -50,12 +50,18 @@ export function normalizeInboxMessage(
     createdAt: raw.createdAt ?? new Date().toISOString(),
     read,
     resolved: raw.resolved,
+    sender: raw.sender,
+    eventId: raw.eventId,
+    deadlineLabel: raw.deadlineLabel,
+    requiredAction: raw.requiredAction,
     playerId: raw.playerId,
     playerName: raw.playerName,
     offerClub: raw.offerClub,
     offerAmount: raw.offerAmount,
     askingPrice: raw.askingPrice,
     unsolicited: raw.unsolicited,
+    retrainingFrom: raw.retrainingFrom,
+    retrainingTo: raw.retrainingTo,
   };
 }
 
@@ -117,10 +123,19 @@ export function markInboxMessageRead(
 
 function inboxMessageRequiresAction(msg: InboxMessage): boolean {
   if (msg.resolved) return false;
-  return msg.type === "transfer" || msg.type === "transfer_offer_in";
+  if (msg.type === "transfer" || msg.type === "transfer_offer_in") return true;
+  // Board ultimatums / objectives with actions stay open until manually dismissed.
+  if (
+    msg.type === "board" ||
+    msg.id.startsWith("board-") ||
+    msg.sender === "Board"
+  ) {
+    return true;
+  }
+  return Boolean(msg.requiredAction);
 }
 
-/** Mark everything read; dismiss informational messages (keeps open transfer bids). */
+/** Mark everything read; dismiss informational messages (keeps open transfer bids + board). */
 export function viewAllInboxAsSeen(career: ManagerCareer): ManagerCareer {
   let changed = false;
   const inboxMessages = career.inboxMessages.map((m) => {
@@ -535,12 +550,25 @@ export function purgeStaleInboxMessages(
   maxAgeWeeks = INBOX_MAX_AGE_WEEKS
 ): ManagerCareer {
   const inboxMessages = career.inboxMessages.filter((m) => {
-    if (!m.resolved && (m.type === "transfer" || m.type === "transfer_offer_in")) {
+    const isBoard =
+      m.type === "board" ||
+      m.id.startsWith("board-") ||
+      m.id.startsWith("prestige-") ||
+      m.sender === "Board";
+    // Keep open action mail (transfers + board) until the manager dismisses it.
+    if (
+      !m.resolved &&
+      (m.type === "transfer" ||
+        m.type === "transfer_offer_in" ||
+        isBoard)
+    ) {
       return true;
     }
     const season = m.season ?? career.seasonYear;
     if (season < career.seasonYear) return false;
     const week = m.gameWeek ?? m.week ?? 0;
+    // Prestige / season-boundary mail can be week 0 — keep for the season.
+    if (week <= 0 && season === career.seasonYear) return true;
     return career.gameWeek - week <= maxAgeWeeks && career.gameWeek >= week;
   });
   if (inboxMessages.length === career.inboxMessages.length) return career;
@@ -590,6 +618,17 @@ export function hydrateInboxMessages(career: ManagerCareer): ManagerCareer {
       next.id.startsWith("board-ultimatum-") ||
       next.id.startsWith("prestige-");
     if (isBoard && next.read === false && next.resolved === true) {
+      next = { ...next, resolved: false };
+    }
+    // Also reopen board mail that was bulk-archived by "View all as seen"
+    // before board was treated as action mail (keep once unread migration ran).
+    if (
+      isBoard &&
+      next.resolved === true &&
+      (next.id.startsWith("board-objectives-") ||
+        next.id.startsWith("board-ultimatum-") ||
+        next.requiredAction)
+    ) {
       next = { ...next, resolved: false };
     }
     // Ultimatums used type "news" — fold into Board filter.

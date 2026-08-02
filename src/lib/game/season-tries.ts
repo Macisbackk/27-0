@@ -122,30 +122,39 @@ function getMatchWeights(
   attack?: ReturnType<typeof getSeasonAttackProfile>
 ): number[] {
   return entries.map((e, i) => {
-    const rating = getEffectivePeakRating(e.slot);
+    const ratingRaw = getEffectivePeakRating(e.slot);
+    const rating =
+      typeof ratingRaw === "number" && Number.isFinite(ratingRaw) && ratingRaw > 0
+        ? ratingRaw
+        : 55;
     const outOfPosition = !canPlayPosition(e.player, e.playedPosition);
     const ratingFactor =
-      outOfPosition && e.player.peakRating > 0
+      outOfPosition &&
+      typeof e.player.peakRating === "number" &&
+      e.player.peakRating > 0
         ? Math.max(0.75, rating / e.player.peakRating)
         : 1;
-    const base =
+    const baseRaw =
       getPlayerTryWeight(e.player, e.playedPosition, rating) * ratingFactor;
+    const base = Number.isFinite(baseRaw) && baseRaw > 0 ? baseRaw : 0.05;
     const saturation = getTeammateRelativeSaturation(
-      seasonTotalsSoFar[i],
+      seasonTotalsSoFar[i]!,
       seasonTotalsSoFar
     );
     const positionPenalty = getPositionHighTryPenalty(
       e.playedPosition,
-      seasonTotalsSoFar[i]
+      seasonTotalsSoFar[i]!
     );
     const attackMod = attack
       ? getBackTryModifier(e.playedPosition, attack)
       : 1;
     const variance = 0.82 + rng() * 0.36;
-    return Math.max(
-      getMinMatchWeight(e.playedPosition),
+    const minW = getMinMatchWeight(e.playedPosition);
+    const next = Math.max(
+      minW,
       base * saturation * positionPenalty * attackMod * variance
     );
+    return Number.isFinite(next) && next > 0 ? next : minW;
   });
 }
 
@@ -239,14 +248,22 @@ function pickWeightedIndex(
   candidates: { i: number; weight: number }[],
   rng: () => number
 ): number {
-  const weightSum = candidates.reduce((sum, c) => sum + c.weight, 0);
-  if (weightSum <= 0) return candidates[0]?.i ?? 0;
+  if (candidates.length === 0) return 0;
+  const clean = candidates.map((c) => ({
+    i: c.i,
+    weight:
+      Number.isFinite(c.weight) && c.weight > 0 ? c.weight : 0,
+  }));
+  const weightSum = clean.reduce((sum, c) => sum + c.weight, 0);
+  if (!(weightSum > 0)) {
+    return clean[Math.floor(rng() * clean.length)]!.i;
+  }
   let pick = rng() * weightSum;
-  for (const c of candidates) {
+  for (const c of clean) {
     pick -= c.weight;
     if (pick <= 0) return c.i;
   }
-  return candidates[candidates.length - 1].i;
+  return clean[clean.length - 1]!.i;
 }
 
 function buildAllocContext(

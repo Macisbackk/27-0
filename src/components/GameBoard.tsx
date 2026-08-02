@@ -1238,7 +1238,11 @@ export function GameBoard({
 
       <div
         ref={mainScrollRef}
-        className="game-page relative flex flex-col overflow-x-hidden py-4 pb-28 sm:py-5 sm:pb-8 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4"
+        className={`game-page relative flex flex-col overflow-x-hidden py-4 pb-28 sm:py-5 sm:pb-8 lg:min-h-0 lg:flex-1 lg:pb-4 ${
+          phase === "review"
+            ? "lg:overflow-hidden"
+            : "lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail"
+        }`}
       >
       {(title || subtitle) && (
         <div className="pt-1 lg:pt-0">

@@ -140,6 +140,14 @@ export function SeasonReview({
     onFinalizeSeason?.();
   }, [onFinalizeSeason]);
 
+  useEffect(() => {
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, []);
+
   const leagueTable = useMemo(
     () => buildLeagueTable(seasonResult, seed),
     [seasonResult, seed]
@@ -190,19 +198,18 @@ export function SeasonReview({
 
   return (
     <BodyPortal>
-      <div className="fixed inset-0 z-[100] flex flex-col overflow-x-hidden bg-black/92">
+      <div
+        className={`fixed inset-0 z-[100] overflow-y-auto overflow-x-hidden bg-black/92 pt-[max(0.5rem,env(safe-area-inset-top))] ${
+          showPlayoffPrompt
+            ? "pb-28"
+            : "pb-[max(1rem,env(safe-area-inset-bottom))]"
+        }`}
+      >
         {showCelebration && <Confetti />}
 
-        <div className="stadium-lights pointer-events-none absolute inset-0" />
-        <div className="stadium-backdrop pointer-events-none absolute inset-0" />
+        <div className="stadium-lights pointer-events-none fixed inset-0" />
+        <div className="stadium-backdrop pointer-events-none fixed inset-0" />
 
-        <div
-          className={`relative min-h-0 flex-1 overflow-y-auto pt-[max(0.5rem,env(safe-area-inset-top))] ${
-            showPlayoffPrompt
-              ? "pb-28"
-              : "pb-[max(1rem,env(safe-area-inset-bottom))]"
-          }`}
-        >
           <div className="game-page relative flex w-full min-w-0 flex-col items-center py-4 sm:py-12">
             <div className="manager-section w-full items-center px-0">
             <motion.header
@@ -477,10 +484,9 @@ export function SeasonReview({
             </motion.footer>
             </div>
           </div>
-        </div>
 
         {showPlayoffPrompt && (
-          <div className="relative z-[1] shrink-0 border-t border-theme-tertiary/25 bg-[rgba(5,10,9,0.98)] px-[var(--layout-page-pad-inline)] py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_32px_rgba(0,0,0,0.45)]">
+          <div className="fixed inset-x-0 bottom-0 z-[1] border-t border-theme-tertiary/25 bg-[rgba(5,10,9,0.98)] px-[var(--layout-page-pad-inline)] py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_32px_rgba(0,0,0,0.45)]">
             <div className="mx-auto w-full max-w-[var(--layout-page-compact)]">
               <GameButton
                 variant="theme"
