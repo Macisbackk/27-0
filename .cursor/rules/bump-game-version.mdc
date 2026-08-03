@@ -22,5 +22,6 @@ Whenever you create a git commit **and** push it to the remote for this repo, al
 
 ## Do not skip
 
-- Every user request to "commit and push" (or equivalent) must leave `GAME_VERSION` one step higher than before that push.
-- If you already pushed without bumping, bump and push a follow-up commit right away.
+- Every user request to "commit and push" (or equivalent) that ships code/content changes must leave `GAME_VERSION` one step higher than before that push.
+- If you already pushed feature work without bumping, bump and push a follow-up commit right away.
+- Do **not** bump again for a commit that only updates `data/version.ts` and/or this rule (avoids an endless bump loop).
