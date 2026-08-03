@@ -1,0 +1,26 @@
+---
+description: Bump GAME_VERSION after every commit and push
+alwaysApply: true
+---
+
+# Version bump after commit and push
+
+Whenever you create a git commit **and** push it to the remote for this repo, also bump the public game version.
+
+## Source of truth
+
+- File: `data/version.ts`
+- Export: `GAME_VERSION` (format `v0.NN`, e.g. `v0.42`)
+
+## Procedure (required)
+
+1. Finish the feature/fix commit as usual.
+2. Before or immediately after that commit (same push), increment `GAME_VERSION` by **0.01** (e.g. `v0.42` → `v0.43`).
+3. Prefer including the bump in the **same** commit when you already know you will push. If the commit already exists, make a small follow-up commit that only updates `data/version.ts`.
+4. Push both the work and the version bump together so `origin` always shows the new footer version.
+5. Do **not** change `package.json` version or `MANAGER_SAVE_VERSION` unless the user asks or save migrations require it.
+
+## Do not skip
+
+- Every user request to "commit and push" (or equivalent) must leave `GAME_VERSION` one step higher than before that push.
+- If you already pushed without bumping, bump and push a follow-up commit right away.
