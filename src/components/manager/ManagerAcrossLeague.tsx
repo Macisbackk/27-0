@@ -35,8 +35,10 @@ import { getPlayerById } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
 import { ensureChampionshipSystems } from "@/lib/manager/championship/ensureChampionship";
+import { getChampionshipPlayer } from "@/lib/manager/championship/championshipSquads";
 import { isChampionshipClubName } from "@/lib/clubs/championship-clubs";
 import { isCurrentPlayableClub } from "@/lib/clubs/super-league-display";
+import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { playUiClick } from "@/lib/sound";
 
 export type AcrossTheLeagueCompetitionId = "super-league" | "championship";
@@ -55,6 +57,20 @@ export function isChampionshipSuperLeagueTransfer(
   const fromSl = isCurrentPlayableClub(tx.fromClub);
   const toSl = isCurrentPlayableClub(tx.toClub);
   return (fromChamp && toSl) || (fromSl && toChamp);
+}
+
+function resolveLeagueTransferPlayerName(
+  career: ManagerCareer,
+  tx: LeagueTransferActivity
+): string {
+  const stored = tx.playerName?.trim();
+  if (stored) return stored;
+  return (
+    getManagerPlayer(career, tx.playerId)?.name ??
+    getChampionshipPlayer(career.championshipSquads, tx.playerId)?.name ??
+    getPlayerById(tx.playerId)?.name ??
+    "Unknown player"
+  );
 }
 
 function filterNewsForCompetition(
@@ -133,20 +149,6 @@ export function ManagerAcrossLeague({
       .sort((a, b) => b.round - a.round)
       .slice(0, 8);
   }, [selectedCompetitionId, champFixtures]);
-
-  const upcomingFixtures = useMemo(() => {
-    if (selectedCompetitionId !== "championship") return [];
-    return champFixtures
-      .filter((f) => !f.played)
-      .slice()
-      .sort((a, b) => a.round - b.round)
-      .slice(0, 8);
-  }, [selectedCompetitionId, champFixtures]);
-
-  const leagueLeaders = useMemo(() => {
-    if (selectedCompetitionId !== "championship") return null;
-    return tableRows[0] ?? null;
-  }, [selectedCompetitionId, tableRows]);
 
   const otherClubListings = useMemo(() => {
     return career.leagueListedPlayers
@@ -309,29 +311,6 @@ export function ManagerAcrossLeague({
           defaultExpanded
         />
 
-        {selectedCompetitionId === "championship" && leagueLeaders ? (
-          <ManagerSectionCard title="League Leaders" variant="elevated">
-            <div className={`${CARD.inset} flex items-center gap-3 ${SPACING.cardPaddingSm}`}>
-              <ClubDualSwatch club={leagueLeaders.team} size="sm" />
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold text-white">{leagueLeaders.team}</p>
-                <p className={`${TYPO.bodySm} text-pitch-400`}>
-                  Top of the Championship · {leagueLeaders.played} played
-                </p>
-              </div>
-              <div className="shrink-0 text-right">
-                <p className="font-display text-lg font-black text-theme-primary">
-                  {leagueLeaders.leaguePoints} pts
-                </p>
-                <p className={`${TYPO.bodySm} text-pitch-500`}>
-                  PD {leagueLeaders.pointsDifference >= 0 ? "+" : ""}
-                  {leagueLeaders.pointsDifference}
-                </p>
-              </div>
-            </div>
-          </ManagerSectionCard>
-        ) : null}
-
         {selectedCompetitionId === "championship" && recentResults.length > 0 ? (
           <ManagerSectionCard title="Recent Results" variant="inset">
             <ul className="mt-2 space-y-2">
@@ -346,27 +325,6 @@ export function ManagerAcrossLeague({
                       {f.homeScore}–{f.awayScore}
                     </span>{" "}
                     {f.awayTeam}
-                  </span>
-                  <span className={`${TYPO.bodySm} shrink-0 text-pitch-500`}>
-                    R{f.round}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </ManagerSectionCard>
-        ) : null}
-
-        {selectedCompetitionId === "championship" &&
-        upcomingFixtures.length > 0 ? (
-          <ManagerSectionCard title="Upcoming Fixtures" variant="inset">
-            <ul className="mt-2 space-y-2">
-              {upcomingFixtures.map((f) => (
-                <li
-                  key={f.id}
-                  className={`${managerDataRowClass()} flex flex-wrap items-center justify-between gap-2 px-3 py-2`}
-                >
-                  <span className="min-w-0 flex-1 truncate text-sm text-white">
-                    {f.homeTeam} vs {f.awayTeam}
                   </span>
                   <span className={`${TYPO.bodySm} shrink-0 text-pitch-500`}>
                     R{f.round}
@@ -458,7 +416,7 @@ export function ManagerAcrossLeague({
               {leagueTransfers.map((tx) => (
                 <ManagerLeagueTransferCard
                   key={tx.id}
-                  playerName={tx.playerName}
+                  playerName={resolveLeagueTransferPlayerName(withChamp, tx)}
                   fromClub={tx.fromClub}
                   toClub={tx.toClub}
                   fee={tx.fee}

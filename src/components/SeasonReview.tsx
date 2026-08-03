@@ -209,7 +209,7 @@ export function SeasonReview({
             <motion.header
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="w-full max-w-xl min-w-0 text-center"
+              className="w-full min-w-0 text-center"
             >
               <p
                 className={`font-display text-[10px] font-semibold uppercase tracking-wider sm:text-xs sm:tracking-[0.3em] ${NORMAL.reviewAccent}`}
@@ -272,7 +272,7 @@ export function SeasonReview({
             </motion.header>
 
             <motion.div
-              className="mt-6 w-full max-w-xl"
+              className="mt-6 w-full"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
@@ -302,7 +302,7 @@ export function SeasonReview({
 
             {!hideEndOfRunNav && (
               <motion.div
-                className="mt-6 w-full max-w-xl"
+                className="mt-6 w-full"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
@@ -318,7 +318,7 @@ export function SeasonReview({
             )}
             {hideEndOfRunNav && clubFundsPayout && (
               <motion.div
-                className="mt-6 w-full max-w-xl"
+                className="mt-6 w-full"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
@@ -417,6 +417,7 @@ export function SeasonReview({
                               seed={seed}
                               userSquad={squad}
                               currentSeasonOnly={!normalEraMode}
+                              hideMatchStory
                               onClose={() => {
                                 playPanelClose();
                                 setSelectedFixture(null);
@@ -442,7 +443,7 @@ export function SeasonReview({
             </CollapsibleReviewSection>
 
             <motion.footer
-              className="mt-8 w-full max-w-xl space-y-3"
+              className="mt-8 w-full space-y-3"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.65 }}

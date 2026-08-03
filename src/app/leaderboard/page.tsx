@@ -6,7 +6,7 @@ import { TYPO } from "@/lib/ui/typography";
 
 export default async function LeaderboardPage() {
   return (
-    <PageShell withLights compact desktopFit width="compact">
+    <PageShell withLights compact desktopFit>
       <PageShellBody>
       <div className={PAGE.section}>
         <header>

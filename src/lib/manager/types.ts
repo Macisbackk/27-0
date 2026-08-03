@@ -808,6 +808,15 @@ export interface ManagerCareer {
   worldClubChallenge?: WorldClubChallengeState;
   /** Club that won Super League last season — drives WCC scheduling. */
   previousSeasonChampion?: string | null;
+  /**
+   * Prior season Super League table (position 1 = top) for Challenge Cup seeding.
+   * Updated on season advance.
+   */
+  previousSeasonLeagueTable?: { team: string; position: number }[];
+  /**
+   * Prior season Championship table for Challenge Cup Round One seeding.
+   */
+  previousSeasonChampionshipTable?: { team: string; position: number }[];
   /** Per-save manager preferences. */
   managerSettings?: ManagerSettings;
   createdAt: string;

@@ -151,7 +151,7 @@ export function SlotRecruitPlayerCard({
 
       <div className="mt-auto space-y-2 border-t border-pitch-700/45 px-3 py-3 sm:px-4">
         <GameButton
-          variant="current"
+          variant="theme"
           size="sm"
           fullWidth
           disabled={disabled}
@@ -164,7 +164,7 @@ export function SlotRecruitPlayerCard({
           disabled={disabled}
           aria-expanded={statsExpanded}
           onClick={onToggleStats}
-          className="w-full rounded-lg border border-pitch-600/60 bg-pitch-950/50 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-white/20 hover:text-white disabled:cursor-not-allowed sm:text-[11px]"
+          className="w-full rounded-lg border border-theme-primary/35 bg-theme-primary/5 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-theme-primary transition hover:border-theme-primary/55 hover:bg-theme-primary/12 disabled:cursor-not-allowed disabled:opacity-50 sm:text-[11px]"
         >
           {statsExpanded ? "Hide stats" : "View full stats"}
         </button>

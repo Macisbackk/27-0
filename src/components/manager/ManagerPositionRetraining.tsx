@@ -28,7 +28,7 @@ const RETRAINING_PLAYER_CARD_WIDTH =
   "w-full min-w-0 max-w-full sm:w-[11rem] sm:max-w-none sm:justify-self-center";
 
 function retrainingCardShellClass(variant: "idle" | "selected" | "training" | "disabled"): string {
-  const base = `${CARD.inset} ${RETRAINING_PLAYER_CARD_WIDTH} flex flex-col rounded-lg border px-2.5 py-2 text-left transition sm:px-3 sm:py-2.5`;
+  const base = `${CARD.inset} ${RETRAINING_PLAYER_CARD_WIDTH} flex flex-col items-center rounded-lg border px-2.5 py-2 text-center transition sm:items-stretch sm:px-3 sm:py-2.5 sm:text-left`;
   switch (variant) {
     case "selected":
       return `${base} border-theme-tertiary/60 bg-theme-primary/10`;
@@ -49,8 +49,8 @@ function RetrainingPlayerCardHeader({
   rating: number;
 }) {
   return (
-    <div className="flex items-start justify-between gap-2">
-      <p className="min-w-0 truncate text-xs font-semibold text-white">{name}</p>
+    <div className="flex w-full flex-col items-center gap-0.5 sm:flex-row sm:items-start sm:justify-between sm:gap-2">
+      <p className="min-w-0 max-w-full truncate text-xs font-semibold text-white">{name}</p>
       <span className="shrink-0 text-[10px] font-bold tabular-nums text-theme-primary">
         {rating}
       </span>
@@ -69,13 +69,13 @@ function RetrainingPlayerCardFooter({
     const weeksDone = training.totalWeeks - training.weeksRemaining;
 
     return (
-      <div className="mt-2 min-h-[2.75rem]">
-        <div className="flex flex-wrap items-center justify-between gap-x-1 gap-y-0.5 text-[10px] tabular-nums">
+      <div className="mt-2 w-full min-h-[2.75rem]">
+        <div className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 text-[10px] tabular-nums sm:justify-between">
           <span className="font-semibold text-theme-primary">{pct}%</span>
           <span className="text-pitch-500">
             {weeksDone}/{training.totalWeeks} wk
           </span>
-          <span className="basis-full text-pitch-400 sm:basis-auto">
+          <span className="basis-full text-center text-pitch-400 sm:basis-auto sm:text-left">
             {formatRetrainingDuration(training.weeksRemaining)} left
           </span>
         </div>
@@ -130,7 +130,7 @@ function RetrainingPlayerCard({
   const body = (
     <>
       <RetrainingPlayerCardHeader name={name} rating={rating} />
-      <p className={`mt-0.5 line-clamp-2 text-[10px] font-medium leading-tight ${subtitleClass}`}>
+      <p className={`mt-0.5 w-full line-clamp-2 text-[10px] font-medium leading-tight ${subtitleClass}`}>
         {subtitle}
       </p>
       <RetrainingPlayerCardFooter training={training} />

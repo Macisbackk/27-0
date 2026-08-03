@@ -22,7 +22,7 @@ import {
 } from "@/lib/manager/managerMatchWeek";
 import { getHubOpponentRating } from "@/lib/manager/managerOpponentRating";
 import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
-import { getCupHubStatus } from "@/lib/manager/managerChallengeCup";
+import { getCupHubStatus, shouldShowChallengeCupBracketOnHub } from "@/lib/manager/managerChallengeCup";
 import { ManagerChallengeCupBracket } from "@/components/manager/ManagerChallengeCupBracket";
 import { PlayoffBracketDisplay } from "@/components/PlayoffBracketDisplay";
 import {
@@ -60,7 +60,6 @@ import {
   getManagerCupRoundLabel,
   getManagerScheduledFixtureHeadline,
   getManagerScheduledFixtureVenueLabel,
-  isChallengeCupFixture,
 } from "@/lib/manager/managerFixtureDisplay";
 import { getManagerMatchOccasionPresentation } from "@/lib/manager/managerMatchOccasion";
 import {
@@ -201,7 +200,7 @@ function HubChallengeCupBracketPanel({
 }: {
   career: ManagerCareer;
   cupStatus: string;
-  nextFixture: ManagerScheduledFixture;
+  nextFixture?: ManagerScheduledFixture;
   onViewFullBracket?: () => void;
   onOpenMatchReview?: (fixtureId: string) => void;
   onOpenMatchPrep?: () => void;
@@ -327,9 +326,6 @@ export function ManagerHub({
   const advanceLabels = getAdvanceWeekButtonLabel(career, advancingWeek);
   const advanceHint = getAdvanceWeekHint(career);
   const isPlayoffFixture = nextFixture?.competition === "playoffs";
-  const isCupFixture = nextFixture
-    ? isChallengeCupFixture(nextFixture.competition)
-    : false;
   const matchOccasion = nextFixture
     ? getManagerMatchOccasionPresentation(nextFixture)
     : null;
@@ -795,13 +791,13 @@ export function ManagerHub({
     (playoffsActive || isPlayoffFixture);
 
   const hubStandingsCard =
-    isCupFixture && hubCareer.challengeCup && nextFixture ? (
+    shouldShowChallengeCupBracketOnHub(hubCareer, nextFixture) ? (
       <div className={SPACING.stackSm}>
         <GameSectionHeader label="Results" title="Challenge Cup" />
         <HubChallengeCupBracketPanel
           career={hubCareer}
           cupStatus={cupStatus}
-          nextFixture={nextFixture}
+          nextFixture={nextFixture ?? undefined}
           onViewFullBracket={
             onOpenCupFixtures ??
             (onNavigate ? () => onNavigate("fixtures") : undefined)

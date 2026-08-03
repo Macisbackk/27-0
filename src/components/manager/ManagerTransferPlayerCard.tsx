@@ -224,24 +224,30 @@ export function ManagerLeagueTransferCard({
   fee,
   week,
 }: ManagerLeagueTransferCardProps) {
+  const displayName = playerName.trim() || "Unknown player";
+
   return (
     <li
-      className={`${CARD.inset} game-panel--flush flex flex-wrap items-center gap-x-2 gap-y-1.5 ${SPACING.listItem}`}
+      className={`${CARD.inset} game-panel--flush flex flex-col gap-1.5 ${SPACING.listItem}`}
     >
-      <ClubDualSwatch club={toClub} size="xs" />
-      <span className="min-w-0 flex-1 truncate font-medium text-white">
-        {playerName}
-      </span>
-      <span className={`min-w-0 truncate ${TYPO.bodySm} text-pitch-400`}>
-        {fromClub}
-        <span className="mx-1 text-pitch-500">→</span>
-        {toClub}
-      </span>
-      <span className="shrink-0 font-semibold text-accent-gold">
-        {fee <= 0 ? "Free" : formatWage(fee)}
-      </span>
-      <span className={managerPillClass("muted")}>Done</span>
-      <span className={`${MANAGER_LABEL} shrink-0 text-pitch-500`}>W{week}</span>
+      <div className="flex min-w-0 items-center gap-2">
+        <ClubDualSwatch club={toClub} size="xs" />
+        <span className="min-w-0 flex-1 truncate font-medium text-white">
+          {displayName}
+        </span>
+        <span className="shrink-0 font-semibold text-accent-gold">
+          {fee <= 0 ? "Free" : formatWage(fee)}
+        </span>
+      </div>
+      <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+        <span className={`min-w-0 flex-1 truncate ${TYPO.bodySm} text-pitch-400`}>
+          {fromClub}
+          <span className="mx-1 text-pitch-500">→</span>
+          {toClub}
+        </span>
+        <span className={managerPillClass("muted")}>Done</span>
+        <span className={`${MANAGER_LABEL} shrink-0 text-pitch-500`}>W{week}</span>
+      </div>
     </li>
   );
 }

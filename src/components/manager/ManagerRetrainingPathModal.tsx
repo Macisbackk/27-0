@@ -74,7 +74,7 @@ export function ManagerRetrainingPathModal({
       <div
         ref={panelRef}
         tabIndex={-1}
-        className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
+        className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden text-center outline-none sm:text-left ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
         <p className={TYPO.sectionLabel}>Dual position training</p>
@@ -94,7 +94,7 @@ export function ManagerRetrainingPathModal({
         )}
 
         <p className={`mt-4 ${TYPO.sectionLabel}`}>Choose new position</p>
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-2 flex flex-wrap justify-center gap-2 sm:justify-start">
           {paths.map((path) => {
             const key = `${path.from}->${path.to}`;
             const active = selectedPathKey === key;

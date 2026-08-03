@@ -6,10 +6,10 @@ const VARIANT_STYLES: Record<
   { border: string; bg: string; title: string; rating: string }
 > = {
   positive: {
-    border: "border-[#22c55e]/30",
-    bg: "bg-[#22c55e]/8",
-    title: "text-[#22c55e]",
-    rating: "text-[#22c55e]",
+    border: "border-theme-primary/30",
+    bg: "bg-theme-primary/8",
+    title: "text-theme-primary",
+    rating: "text-theme-primary",
   },
   negative: {
     border: "border-red-500/30",
@@ -20,8 +20,8 @@ const VARIANT_STYLES: Record<
   neutral: {
     border: "border-pitch-600/40",
     bg: "bg-pitch-900/50",
-    title: "text-[#fbbf24]",
-    rating: "text-[#22c55e]",
+    title: "text-accent-gold",
+    rating: "text-theme-primary",
   },
 };
 

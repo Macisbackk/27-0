@@ -17,7 +17,7 @@ interface BracketRecapProps {
   matches: BracketMatch[];
   userClub: string;
   byeTeams?: [string, string];
-  /** Expanded Challenge Cup Round One byes (16 clubs). */
+  /** Expanded Challenge Cup bye lists (schema v2/v3). */
   expandedMeta?: ExpandedCupMeta;
   /** Display density — Hub uses hub-compact. */
   variant?: "full" | "hub-compact" | "mobile-round";
@@ -135,7 +135,11 @@ export function BracketRecap({
   onSelectAiMatch,
 }: BracketRecapProps) {
   const maxRound = detectMaxRound(matches);
-  const expanded = maxRound >= 6 || expandedMeta?.schemaVersion === 2;
+  const expanded =
+    maxRound >= 6 ||
+    expandedMeta?.schemaVersion === 2 ||
+    expandedMeta?.schemaVersion === 3 ||
+    expandedMeta?.schemaVersion === 4;
   const rounds = useMemo(
     () => Array.from({ length: maxRound }, (_, i) => i + 1),
     [maxRound]
@@ -154,6 +158,7 @@ export function BracketRecap({
 
   const mobileRoundMatches = matches.filter((m) => m.round === viewRound);
   const roundOneByes = expandedMeta?.roundOneByes ?? [];
+  const roundTwoByes = expandedMeta?.roundTwoByes ?? [];
   const desktopRounds = compact
     ? Array.from(
         new Set(
@@ -187,6 +192,19 @@ export function BracketRecap({
           </p>
           <ul className="grid grid-cols-2 gap-1.5">
             {roundOneByes.map((club) => (
+              <ByeClubChip key={club} club={club} userClub={userClub} />
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
+      {expanded && viewRound === 2 && roundTwoByes.length > 0 ? (
+        <div className="mt-3 rounded-lg border border-pitch-600/40 bg-pitch-900/40 p-3 md:hidden">
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-sky-300">
+            Seeded bye to Last 16
+          </p>
+          <ul className="grid grid-cols-2 gap-1.5">
+            {roundTwoByes.map((club) => (
               <ByeClubChip key={club} club={club} userClub={userClub} />
             ))}
           </ul>
@@ -230,6 +248,18 @@ export function BracketRecap({
             </p>
             <ul className="mx-auto grid max-w-5xl grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-8">
               {roundOneByes.map((club) => (
+                <ByeClubChip key={club} club={club} userClub={userClub} />
+              ))}
+            </ul>
+          </div>
+        ) : null}
+        {expanded && roundTwoByes.length > 0 && !compact ? (
+          <div className="mb-4 rounded-lg border border-pitch-600/40 bg-pitch-900/35 p-3">
+            <p className="mb-2 text-center text-[11px] font-semibold uppercase tracking-wide text-sky-300">
+              Last 16 — Seeded bye (top Super League finish)
+            </p>
+            <ul className="mx-auto grid max-w-5xl grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-8">
+              {roundTwoByes.map((club) => (
                 <ByeClubChip key={club} club={club} userClub={userClub} />
               ))}
             </ul>

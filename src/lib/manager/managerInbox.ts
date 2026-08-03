@@ -1,14 +1,14 @@
 import {
-  deriveCupOutcomeFromBracket,
-  getCupRoundLabel,
-} from "../game/challenge-cup-bracket";
-import { isSameManagerClub } from "../clubs/super-league-display";
-import type { InboxMessage, ManagerCareer } from "./types";
-import {
+  getManagerBracketRoundLabel,
   getPendingCupBracketRound,
   getUserCupMatch,
   prepareCupRound,
 } from "./managerChallengeCup";
+import {
+  deriveCupOutcomeFromBracket,
+} from "../game/challenge-cup-bracket";
+import { isSameManagerClub } from "../clubs/super-league-display";
+import type { InboxMessage, ManagerCareer } from "./types";
 import {
   computeManagerSeasonRewardLines,
   formatRewardTotal,
@@ -240,7 +240,10 @@ export function syncCupDrawInboxMessages(career: ManagerCareer): ManagerCareer {
   const msgId = `cup-draw-${cupMatch.matchId}`;
   if (career.inboxMessages.some((m) => m.id === msgId)) return career;
 
-  const roundLabel = getCupRoundLabel(cupMatch.round);
+  const roundLabel = getManagerBracketRoundLabel(
+    career.challengeCup,
+    cupMatch.round
+  );
   const venue = cupMatch.isHome ? "Home" : "Away";
 
   return pushInboxMessage(career, {

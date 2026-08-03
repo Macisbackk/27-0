@@ -143,7 +143,7 @@ export function PlayoffReview({
         <motion.header
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-xl text-center"
+          className="w-full text-center"
         >
           <p
             className={`font-display text-xs font-semibold uppercase tracking-[0.3em] ${NORMAL.reviewAccent}`}
@@ -164,7 +164,7 @@ export function PlayoffReview({
         </motion.header>
 
         <motion.div
-          className="mt-6 w-full max-w-xl"
+          className="mt-6 w-full"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -172,7 +172,7 @@ export function PlayoffReview({
         </motion.div>
 
         <motion.div
-          className="mt-4 w-full max-w-xl"
+          className="mt-4 w-full"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -256,7 +256,7 @@ export function PlayoffReview({
         </CollapsibleReviewSection>
 
         <motion.footer
-          className="mt-8 w-full max-w-xl space-y-3"
+          className="mt-8 w-full space-y-3"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}

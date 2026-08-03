@@ -7,9 +7,10 @@ import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import type { ManagerCareer, ManagerScheduledFixture } from "@/lib/manager/types";
 import {
   getCupBracketForDisplay,
+  getManagerBracketRoundLabel,
 } from "@/lib/manager/managerChallengeCup";
 import { getManagerCupRoundLabel } from "@/lib/manager/managerFixtureDisplay";
-import { getActiveRound, getCupRoundLabel } from "@/lib/game/challenge-cup-bracket";
+import { getActiveRound } from "@/lib/game/challenge-cup-bracket";
 import {
   isExpandedChallengeCup,
 } from "@/lib/manager/championship/championshipChallengeCup";
@@ -87,7 +88,7 @@ export function ManagerChallengeCupBracket({
 
   const roundLabel = nextFixture?.cupRound
     ? getManagerCupRoundLabel(nextFixture.cupRound)
-    : getCupRoundLabel(activeRound);
+    : getManagerBracketRoundLabel(cup, activeRound);
   const compact = variant === "hub-compact";
 
   return (

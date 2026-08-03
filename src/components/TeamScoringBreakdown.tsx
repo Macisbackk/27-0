@@ -73,7 +73,7 @@ export function TeamScoringBreakdown({
             </div>
           )}
           {hasTries && hasKicking && (
-            <div className="border-t border-pitch-700/35" aria-hidden />
+            <div className="border-t border-white/10" aria-hidden />
           )}
           {hasKicking && (
             <KickingSummarySection kicking={kicking} bare compact />

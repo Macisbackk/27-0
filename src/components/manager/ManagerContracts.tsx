@@ -388,12 +388,12 @@ export function ManagerContracts({
               }}
               className={`w-full ${urgent ? managerSectionAccentClass("gold") : ""}`}
             >
-              <div className="flex flex-col items-center gap-2 text-center sm:flex-row sm:justify-between sm:text-left">
-                <div className="flex min-w-0 flex-col items-center gap-2 sm:flex-row sm:items-center sm:gap-3">
+              <div className="flex w-full flex-col items-center gap-2 text-center sm:flex-row sm:justify-between sm:text-left">
+                <div className="flex min-w-0 w-full flex-col items-center gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-theme-primary/15 text-sm font-bold text-theme-primary">
                     {rating}
                   </span>
-                  <div className="min-w-0">
+                  <div className="min-w-0 w-full text-center sm:w-auto sm:text-left">
                     <p className="truncate font-medium text-white">
                       {player.name}
                     </p>

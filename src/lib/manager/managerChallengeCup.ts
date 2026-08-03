@@ -10,7 +10,12 @@ import {
   getMatchesForRound,
   simulateBracketMatch,
 } from "../game/challenge-cup-bracket";
-import { createExpandedChallengeCupBracket } from "./championship/championshipChallengeCup";
+import {
+  createExpandedChallengeCupBracket,
+  getExpandedCupRoundLabel,
+  isExpandedChallengeCup,
+  type CupSeedingStanding,
+} from "./championship/championshipChallengeCup";
 import type { MatchFixture } from "../game/season-simulation";
 import { buildSquadSlotsFromMatchday } from "./managerSquad";
 import type {
@@ -42,6 +47,24 @@ const BRACKET_ROUND_TO_KEY: Record<number, CupRoundKey> = {
   6: "final",
 };
 
+export function getCupBracketMaxRound(
+  cup: ChallengeCupBracketState | undefined
+): number {
+  if (!cup?.matches?.length) return 4;
+  return Math.max(4, ...cup.matches.map((m) => m.round));
+}
+
+/** Round label for manager cup UI (expanded 6-round or legacy 4-round). */
+export function getManagerBracketRoundLabel(
+  cup: ChallengeCupBracketState | undefined,
+  round: number
+): string {
+  if (cup && isExpandedChallengeCup(cup)) {
+    return getExpandedCupRoundLabel(round);
+  }
+  return getCupRoundLabel(round);
+}
+
 export const CHALLENGE_CUP_FINAL_VENUE = "Wembley Stadium";
 export const CHALLENGE_CUP_FINAL_ATTENDANCE_MIN = 72_000;
 export const CHALLENGE_CUP_FINAL_ATTENDANCE_MAX = 85_000;
@@ -53,8 +76,7 @@ export function isChallengeCupFinalFixture(
   >
 ): boolean {
   return (
-    fixture.competition === "challenge_cup" &&
-    (fixture.cupRound === "final" || fixture.isNeutral === true)
+    fixture.competition === "challenge_cup" && fixture.cupRound === "final"
   );
 }
 
@@ -89,9 +111,13 @@ function decorateCupFinalNeutral<
 
 export function createManagerChallengeCup(
   seed: string,
-  userClub: string
+  userClub: string,
+  seedingInput?: {
+    previousSeasonLeagueTable?: CupSeedingStanding[] | null;
+    previousSeasonChampionshipTable?: CupSeedingStanding[] | null;
+  }
 ): ChallengeCupBracketState {
-  return createExpandedChallengeCupBracket(`${seed}-cup`, userClub);
+  return createExpandedChallengeCupBracket(`${seed}-cup`, userClub, seedingInput);
 }
 
 export function countLeagueFixturesPlayed(career: ManagerCareer): number {
@@ -189,8 +215,7 @@ function simulateReadyAiCupMatches(
   maxSteps = 64
 ): ChallengeCupBracketState {
   const roundCap =
-    maxRound ??
-    Math.max(4, ...bracket.matches.map((m) => m.round), 0);
+    maxRound ?? getCupBracketMaxRound(bracket);
   let next = bracket;
   for (let step = 0; step < maxSteps; step++) {
     if (next.userEliminated || next.tournamentComplete) break;
@@ -205,7 +230,7 @@ function simulateAiUntilUserReady(
   bracket: ChallengeCupBracketState,
   squad: ReturnType<typeof buildSquadSlotsFromMatchday>
 ): ChallengeCupBracketState {
-  const maxRound = Math.max(4, ...bracket.matches.map((m) => m.round), 0);
+  const maxRound = getCupBracketMaxRound(bracket);
   const userMatch = getUserCupMatch(bracket);
   if (userMatch) {
     return simulateReadyAiCupMatches(bracket, squad, userMatch.round);
@@ -365,9 +390,10 @@ export function getUserCupMatch(
 
   const roundsToSearch =
     preferredRound !== undefined
-      ? [preferredRound, 1, 2, 3, 4].filter(
-          (round, index, all) => all.indexOf(round) === index
-        )
+      ? [
+          preferredRound,
+          ...Array.from({ length: getCupBracketMaxRound(bracket) }, (_, i) => i + 1),
+        ].filter((round, index, all) => all.indexOf(round) === index)
       : [getActiveRound(bracket)];
 
   for (const round of roundsToSearch) {
@@ -517,12 +543,12 @@ export function getCupHubStatus(career: ManagerCareer): string {
     const prepared = prepareCupRound(career);
     const match = getUserCupMatch(prepared, pending);
     if (match) {
-      return `Challenge Cup: ${getCupRoundLabel(match.round)} vs ${match.opponent}`;
+      return `Challenge Cup: ${getManagerBracketRoundLabel(prepared, match.round)} vs ${match.opponent}`;
     }
   }
 
   const active = getActiveRound(cup);
-  return `Challenge Cup: ${getCupRoundLabel(active)}`;
+  return `Challenge Cup: ${getManagerBracketRoundLabel(cup, active)}`;
 }
 
 export function isCupMatchReadyForResult(
@@ -600,7 +626,8 @@ export function applyCupMatchToBracket(
   }
 
   const userLost = fixture.result === "L";
-  const userWonFinal = match.round === 4 && fixture.result === "W";
+  const maxRound = getCupBracketMaxRound(bracket);
+  const userWonFinal = match.round === maxRound && fixture.result === "W";
 
   return {
     ...bracket,
@@ -755,14 +782,33 @@ export function cupRoundKeyToBracketRound(key: CupRoundKey): number {
 export function getCupBracketDisplayRound(career: ManagerCareer): number {
   const cup = career.challengeCup;
   if (!cup) return 1;
-  if (cup.userEliminated || cup.tournamentComplete) return 4;
+  const maxRound = getCupBracketMaxRound(cup);
+  if (cup.userEliminated || cup.tournamentComplete) return maxRound;
 
   const pending = getPendingCupBracketRound(career);
   if (pending !== null) return pending;
 
   const cupPlayed = countCupFixturesPlayed(career);
   if (cupPlayed === 0) return 1;
-  return Math.min(4, cupPlayed + 1);
+  return Math.min(maxRound, cupPlayed + 1);
+}
+
+/** Whether Hub should show the Challenge Cup bracket instead of the league table. */
+export function shouldShowChallengeCupBracketOnHub(
+  career: ManagerCareer,
+  nextFixture: ManagerScheduledFixture | null
+): boolean {
+  if (!career.challengeCup?.matches?.length) return false;
+  if (nextFixture?.competition === "challenge_cup") return true;
+  if (getPendingCupBracketRound(career) !== null) return true;
+  const last =
+    career.lastMatchFixture ??
+    career.fixtures[career.fixtures.length - 1] ??
+    null;
+  return (
+    career.matchWeekPhase === "awaiting_advance" &&
+    last?.competition === "challenge_cup"
+  );
 }
 
 /** Bracket view for UI — hides results from rounds the user has not reached. */

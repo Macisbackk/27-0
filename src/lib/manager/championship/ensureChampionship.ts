@@ -7,6 +7,8 @@ import {
 import {
   createExpandedChallengeCupBracket,
   isExpandedChallengeCup,
+  CHALLENGE_CUP_SCHEMA_VERSION,
+  standingsToCupSeeding,
 } from "./championshipChallengeCup";
 import { countCupFixturesPlayed } from "../managerChallengeCup";
 
@@ -57,19 +59,34 @@ export function ensureChampionshipSystems(
   const cupPlayed = countCupFixturesPlayed(next);
   const cup = next.challengeCup;
   const expanded = cup && isExpandedChallengeCup(cup);
-  if (!expanded && cupPlayed === 0) {
+  const schemaVersion =
+    expanded && "expandedMeta" in cup
+      ? (cup as { expandedMeta?: { schemaVersion?: number } }).expandedMeta
+          ?.schemaVersion ?? 0
+      : 0;
+  // Rebuild empty cups onto the latest seeded draw.
+  if (cupPlayed === 0 && (!expanded || schemaVersion < CHALLENGE_CUP_SCHEMA_VERSION)) {
     next = {
       ...next,
       challengeCup: createExpandedChallengeCupBracket(
         `${next.seed}-cup`,
-        next.club
+        next.club,
+        {
+          previousSeasonLeagueTable: standingsToCupSeeding(
+            next.previousSeasonLeagueTable
+          ),
+          previousSeasonChampionshipTable: standingsToCupSeeding(
+            next.previousSeasonChampionshipTable
+          ),
+        }
       ),
-      challengeCupSchemaVersion: 2,
+      challengeCupSchemaVersion: CHALLENGE_CUP_SCHEMA_VERSION,
     };
   } else if (expanded) {
     next = {
       ...next,
-      challengeCupSchemaVersion: 2,
+      challengeCupSchemaVersion:
+        schemaVersion || CHALLENGE_CUP_SCHEMA_VERSION,
     };
   }
 

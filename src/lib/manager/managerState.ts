@@ -179,6 +179,11 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   } as ManagerCareer);
 
   let challengeCup = raw.challengeCup as ChallengeCupBracketState | undefined;
+  const cupSeeding = {
+    previousSeasonLeagueTable: raw.previousSeasonLeagueTable ?? null,
+    previousSeasonChampionshipTable:
+      raw.previousSeasonChampionshipTable ?? null,
+  };
   if (!challengeCup?.matches?.length) {
     const cupPlayed = (raw.fixtures ?? []).some(
       (f) => f.competition === "challenge_cup"
@@ -186,11 +191,19 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     const isNewCareer =
       (raw.fixtures?.length ?? 0) === 0 && (raw.gameWeek ?? 0) === 0;
     if (!cupPlayed && (isNewCareer || !raw.challengeCup)) {
-      challengeCup = createManagerChallengeCup(raw.seed ?? "migrate", raw.club);
+      challengeCup = createManagerChallengeCup(
+        raw.seed ?? "migrate",
+        raw.club,
+        cupSeeding
+      );
     }
   }
   if (!challengeCup) {
-    challengeCup = createManagerChallengeCup(raw.seed ?? "migrate", raw.club);
+    challengeCup = createManagerChallengeCup(
+      raw.seed ?? "migrate",
+      raw.club,
+      cupSeeding
+    );
   }
 
   const clubFacilities = ensureClubFacilities(raw.clubFacilities);

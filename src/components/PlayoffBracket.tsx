@@ -198,8 +198,8 @@ export function PlayoffBracket({
           tournamentComplete={state.tournamentComplete}
         />
 
-        <div className="playoff-bracket-panel mx-auto mt-2 w-full max-w-none p-1.5 sm:mt-5 sm:max-w-4xl sm:p-4 md:mt-6 md:p-5">
-        <div className="mx-auto w-full max-w-none sm:max-w-3xl">
+        <div className="playoff-bracket-panel mx-auto mt-2 w-full max-w-[var(--layout-page-compact)] p-1.5 sm:mt-5 sm:p-4 md:mt-6 md:p-5">
+        <div className="mx-auto w-full">
           <BracketMobileRoundNav
             rounds={ROUNDS}
             viewRound={mobileViewRound}
@@ -209,11 +209,11 @@ export function PlayoffBracket({
             getShortLabel={(round) =>
               PLAYOFF_ROUND_SHORT[round] ?? getPlayoffRoundLabel(round)
             }
-            activeClassName="border-mode-current/55 bg-mode-current/12 text-mode-current"
+            activeClassName="border-theme-primary/55 bg-theme-primary/12 text-theme-primary"
           />
         </div>
 
-        <div className="mx-auto mt-2 w-full max-w-none space-y-2.5 md:hidden sm:mt-5 sm:max-w-3xl sm:space-y-3">
+        <div className="mx-auto mt-2 w-full space-y-2.5 md:hidden sm:mt-5 sm:space-y-3">
           {getMatchesForRound(state, mobileViewRound).map((match) => (
             <PlayoffMatchCard
               key={match.id}
@@ -293,7 +293,7 @@ export function PlayoffBracket({
           <div className="bracket-actions-center__group">
             {showProceedToNextRound && (
               <GameButton
-                variant="current"
+                variant="theme"
                 size="md"
                 fullWidth={false}
                 onClick={handleProceedToNextRound}

@@ -1,7 +1,7 @@
 import { getManagerPlayer } from "./managerPlayers";
 import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import type { ManagerCareer, ManagerSeasonSummary, SeasonHighlightResult } from "./types";
-import { buildManagerSchedule, buildLeagueTableFromMatches } from "./managerFixtures";
+import { buildManagerSchedule, buildLeagueTableFromMatches, getManagerLeagueTable } from "./managerFixtures";
 import { generateTransferMarket } from "./managerTransfers";
 import { generateLeagueListedPlayers } from "./managerTransferLeague";
 import { getUserLeagueTablePosition } from "./managerFixtures";
@@ -13,6 +13,10 @@ import {
   tickContractsForNewSeason,
 } from "./managerContracts";
 import { createManagerChallengeCup } from "./managerChallengeCup";
+import {
+  CHALLENGE_CUP_SCHEMA_VERSION,
+  standingsToCupSeeding,
+} from "./championship/championshipChallengeCup";
 import { userQualifiedForManagerPlayoffs } from "./managerPlayoffs";
 import { initPreSeasonState } from "./managerFriendlies";
 import {
@@ -171,6 +175,13 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
 export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const summary = buildSeasonSummary(career);
   const seasonStartFacilities = getClubFacilities(career);
+  // Snapshot final tables for next season's Challenge Cup seeding (year on year).
+  const previousSeasonLeagueTable = standingsToCupSeeding(
+    getManagerLeagueTable(career)
+  );
+  const previousSeasonChampionshipTable = standingsToCupSeeding(
+    career.championshipCompetition?.standings
+  );
   const withTotals = tickClubCareerTotals(career);
   const { career: afterRetirements } = applySeasonRetirements(withTotals);
   const afterLeagueRetirements = applyLeagueRetirements(afterRetirements);
@@ -261,8 +272,13 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     gateIncomeHistory: [],
     attendanceData: attendanceAfterSeason,
     seasonAttendance: { total: 0, count: 0, high: 0, low: 0 },
-    challengeCup: createManagerChallengeCup(newSeed, career.club),
-    challengeCupSchemaVersion: 2,
+    challengeCup: createManagerChallengeCup(newSeed, career.club, {
+      previousSeasonLeagueTable,
+      previousSeasonChampionshipTable,
+    }),
+    challengeCupSchemaVersion: CHALLENGE_CUP_SCHEMA_VERSION,
+    previousSeasonLeagueTable,
+    previousSeasonChampionshipTable,
     championshipCompetition: createChampionshipCompetition(
       newSeed,
       career.seasonYear + 1

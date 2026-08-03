@@ -1,21 +1,24 @@
-import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../../clubs/super-league-display";
-import { CHAMPIONSHIP_CLUB_NAMES } from "../../clubs/championship-clubs";
+import {
+  CHAMPIONSHIP_CLUBS,
+  CHAMPIONSHIP_CLUB_NAMES,
+} from "../../clubs/championship-clubs";
+import { getClubBaseStrength } from "../../game/club-strength";
 import type {
   BracketMatch,
   ChallengeCupBracketState,
 } from "../../game/challenge-cup-bracket";
 
-export const CHALLENGE_CUP_SCHEMA_VERSION = 2;
+/** Expanded cup draw schema — bump when bracket topology / seeding changes. */
+export const CHALLENGE_CUP_SCHEMA_VERSION = 4;
 
 /**
- * Expanded Challenge Cup (schema v2):
- * Round 1 preliminary — 2 Championship ties + 16 byes
- * Round 2 — 32 clubs (18 Champ + 14 Super League)
- * Round 3 — Last 16
- * Round 4 — Quarter-finals
- * Round 5 — Semi-finals
- * Round 6 — Final
+ * Expanded Challenge Cup (schema v4):
+ * Round 1 — all 20 Championship clubs (10 ties), seeded by prior Champ table.
+ * Round 2 — 10 Championship winners + 6 lowest Super League clubs (by prior table).
+ *            Top 8 Super League clubs (prior finish) receive a bye to the Last 16.
+ * Round 3 — Last 16 (8 R2 winners + 8 seeded SL byes)
+ * Round 4–6 — QF / SF / Final
  */
 export const EXPANDED_CUP_ROUND_LABELS: Record<number, string> = {
   1: "Round One",
@@ -26,15 +29,17 @@ export const EXPANDED_CUP_ROUND_LABELS: Record<number, string> = {
   6: "Final",
 };
 
-function shuffle<T>(items: readonly T[], rng: () => number): T[] {
-  const arr = [...items];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    const tmp = arr[i]!;
-    arr[i] = arr[j]!;
-    arr[j] = tmp;
-  }
-  return arr;
+/** Compact league finish used for year-on-year cup seeding. */
+export interface CupSeedingStanding {
+  team: string;
+  position: number;
+}
+
+export interface CupSeedingContext {
+  /** Super League clubs best → worst (league position 1 first). */
+  superLeagueOrder: string[];
+  /** Championship clubs best → worst. */
+  championshipOrder: string[];
 }
 
 function createMatch(
@@ -66,12 +71,73 @@ function createMatch(
   };
 }
 
+/**
+ * Standard 8-seed Last 16 home slots so top seeds are protected and meet late.
+ * Index = bracket slot; value = seed rank (0 = best).
+ */
+const LAST_16_SEED_SLOT_ORDER = [0, 7, 3, 4, 1, 6, 2, 5] as const;
+
+function orderFromStandings(
+  standings: CupSeedingStanding[] | undefined,
+  fallback: string[]
+): string[] {
+  if (!standings?.length) return [...fallback];
+  const byPos = [...standings].sort((a, b) => a.position - b.position);
+  const ordered = byPos.map((s) => s.team);
+  const seen = new Set(ordered);
+  for (const club of fallback) {
+    if (!seen.has(club)) ordered.push(club);
+  }
+  return ordered.filter((club, i, all) => all.indexOf(club) === i);
+}
+
+/** Default Super League order when no prior season table exists (best first). */
+export function defaultSuperLeagueSeedingOrder(): string[] {
+  return [...CURRENT_PLAYABLE_CLUBS].sort(
+    (a, b) => getClubBaseStrength(b) - getClubBaseStrength(a)
+  );
+}
+
+/** Default Championship order when no prior season table exists (best first). */
+export function defaultChampionshipSeedingOrder(): string[] {
+  return [...CHAMPIONSHIP_CLUBS]
+    .sort((a, b) => b.baseStrength - a.baseStrength)
+    .map((c) => c.name);
+}
+
+export function resolveCupSeedingContext(input: {
+  previousSeasonLeagueTable?: CupSeedingStanding[] | null;
+  previousSeasonChampionshipTable?: CupSeedingStanding[] | null;
+}): CupSeedingContext & { seedingSource: "previous_season" | "default_strength" } {
+  const hasSl = Boolean(input.previousSeasonLeagueTable?.length);
+  const hasChamp = Boolean(input.previousSeasonChampionshipTable?.length);
+  return {
+    superLeagueOrder: orderFromStandings(
+      input.previousSeasonLeagueTable ?? undefined,
+      defaultSuperLeagueSeedingOrder()
+    ),
+    championshipOrder: orderFromStandings(
+      input.previousSeasonChampionshipTable ?? undefined,
+      defaultChampionshipSeedingOrder()
+    ),
+    seedingSource:
+      hasSl || hasChamp ? "previous_season" : "default_strength",
+  };
+}
+
 export interface ExpandedCupMeta {
-  schemaVersion: 2;
-  /** 16 Championship clubs with a bye to Round Two. */
+  schemaVersion: 2 | 3 | 4;
+  /**
+   * Championship clubs with a bye into Round Two.
+   * Empty when all Championship clubs play Round One.
+   */
   roundOneByes: string[];
-  /** Four Championship clubs drawn into two Round One ties. */
-  roundOneParticipants: [string, string, string, string];
+  /** Championship clubs drawn into Round One ties (seeded pairing). */
+  roundOneParticipants: string[];
+  /** Super League clubs with a bye into the Last 16 (top prior finishers). */
+  roundTwoByes?: string[];
+  /** Seeding basis note for UI / debugging. */
+  seedingSource?: "previous_season" | "default_strength";
 }
 
 export type ExpandedChallengeCupState = ChallengeCupBracketState & {
@@ -79,84 +145,96 @@ export type ExpandedChallengeCupState = ChallengeCupBracketState & {
 };
 
 /**
- * Create the expanded 2026 Challenge Cup bracket.
- * Super League clubs enter at Round Two only. No NRL clubs.
+ * Create the expanded Challenge Cup bracket.
+ * Top Super League finishers (year-on-year) are seeded into Last 16 byes;
+ * lower finishers enter Round Two. Championship Round One is seeded 1v20, 2v19, …
  */
 export function createExpandedChallengeCupBracket(
   seed: string,
-  userClub: string
+  userClub: string,
+  seedingInput?: {
+    previousSeasonLeagueTable?: CupSeedingStanding[] | null;
+    previousSeasonChampionshipTable?: CupSeedingStanding[] | null;
+  }
 ): ExpandedChallengeCupState {
-  const rng = seedrandom(`${seed}-expanded-cup-v2`);
-  const championship = shuffle(CHAMPIONSHIP_CLUB_NAMES, rng);
-  if (championship.length !== 20) {
+  const resolved = resolveCupSeedingContext(seedingInput ?? {});
+
+  const championshipOrder = resolved.championshipOrder.filter((name) =>
+    CHAMPIONSHIP_CLUB_NAMES.includes(name)
+  );
+  for (const name of CHAMPIONSHIP_CLUB_NAMES) {
+    if (!championshipOrder.includes(name)) championshipOrder.push(name);
+  }
+  if (championshipOrder.length !== 20) {
     throw new Error(
-      `Challenge Cup needs 20 Championship clubs, got ${championship.length}`
+      `Challenge Cup needs 20 Championship clubs, got ${championshipOrder.length}`
     );
   }
 
-  const roundOneParticipants = championship.slice(0, 4) as [
-    string,
-    string,
-    string,
-    string,
-  ];
-  const roundOneByes = championship.slice(4);
-
-  const superLeague = shuffle([...CURRENT_PLAYABLE_CLUBS], rng);
-  if (superLeague.length !== 14) {
+  const superLeagueOrder = resolved.superLeagueOrder.filter((name) =>
+    (CURRENT_PLAYABLE_CLUBS as readonly string[]).includes(name)
+  );
+  for (const name of CURRENT_PLAYABLE_CLUBS) {
+    if (!superLeagueOrder.includes(name)) superLeagueOrder.push(name);
+  }
+  if (superLeagueOrder.length !== 14) {
     throw new Error(
-      `Challenge Cup needs 14 Super League clubs, got ${superLeague.length}`
+      `Challenge Cup needs 14 Super League clubs, got ${superLeagueOrder.length}`
     );
   }
 
-  for (const name of [...championship, ...superLeague]) {
+  for (const name of [...championshipOrder, ...superLeagueOrder]) {
     if (/\bNRL\b/i.test(name) || name.includes("(NRL)")) {
       throw new Error(`NRL club cannot enter Challenge Cup: ${name}`);
     }
   }
 
+  // Top 8 SL (best prior finish) bye to Last 16 — seeded last into protected slots.
+  const roundTwoByes = superLeagueOrder.slice(0, 8);
+  // Bottom 6 SL enter Round Two.
+  const roundTwoSuperLeague = superLeagueOrder.slice(8);
+
+  // Championship Round One: seed 1 vs 20, 2 vs 19, … (best plays lowest).
+  const roundOneParticipants = [...championshipOrder];
+  const roundOneByes: string[] = [];
+
   const matches: BracketMatch[] = [];
 
+  for (let i = 0; i < 10; i++) {
+    const home = championshipOrder[i]!;
+    const away = championshipOrder[19 - i]!;
+    matches.push(
+      createMatch(`1-${i}`, 1, i, home, away, null, userClub)
+    );
+  }
+
+  // Round Two: 6× (SL entrant vs R1 feeder) + 2× (R1 vs R1).
+  const r1Feeders = Array.from({ length: 10 }, (_, i) => `1-${i}`);
+  const slEnteringR2 = [...roundTwoSuperLeague];
+
+  for (let i = 0; i < 6; i++) {
+    matches.push(
+      createMatch(
+        `2-${i}`,
+        2,
+        i,
+        slEnteringR2[i]!,
+        null,
+        [r1Feeders[i]!],
+        userClub
+      )
+    );
+  }
   matches.push(
-    createMatch(
-      "1-0",
-      1,
-      0,
-      roundOneParticipants[0],
-      roundOneParticipants[1],
-      null,
-      userClub
-    ),
-    createMatch(
-      "1-1",
-      1,
-      1,
-      roundOneParticipants[2],
-      roundOneParticipants[3],
-      null,
-      userClub
-    )
+    createMatch("2-6", 2, 6, null, null, [r1Feeders[6]!, r1Feeders[7]!], userClub),
+    createMatch("2-7", 2, 7, null, null, [r1Feeders[8]!, r1Feeders[9]!], userClub)
   );
 
-  const roundTwoChampFixed = shuffle(
-    roundOneByes,
-    seedrandom(`${seed}-r2-champ`)
-  );
-  const r2PoolFixed = shuffle(
-    [...roundTwoChampFixed, ...superLeague],
-    seedrandom(`${seed}-r2-pool`)
-  );
-  const pool = [...r2PoolFixed];
-
-  matches.push(
-    createMatch("2-0", 2, 0, pool.shift() ?? null, null, ["1-0"], userClub),
-    createMatch("2-1", 2, 1, pool.shift() ?? null, null, ["1-1"], userClub)
-  );
-
-  for (let i = 0; i < 14; i++) {
-    const t1 = pool.shift() ?? null;
-    const t2 = pool.shift() ?? null;
-    matches.push(createMatch(`2-${i + 2}`, 2, i + 2, t1, t2, null, userClub));
+  // Last 16: place top seeds into protected bracket slots (seeded last).
+  const seededByes: (string | null)[] = Array.from({ length: 8 }, () => null);
+  for (let seedRank = 0; seedRank < 8; seedRank++) {
+    const slot = LAST_16_SEED_SLOT_ORDER[seedRank]!;
+    seededByes[slot] = roundTwoByes[seedRank]!;
   }
 
   for (let i = 0; i < 8; i++) {
@@ -165,9 +243,9 @@ export function createExpandedChallengeCupBracket(
         `3-${i}`,
         3,
         i,
+        seededByes[i]!,
         null,
-        null,
-        [`2-${i * 2}`, `2-${i * 2 + 1}`],
+        [`2-${i}`],
         userClub
       )
     );
@@ -206,15 +284,17 @@ export function createExpandedChallengeCupBracket(
   );
 
   const expandedMeta: ExpandedCupMeta = {
-    schemaVersion: 2,
+    schemaVersion: 4,
     roundOneByes,
     roundOneParticipants,
+    roundTwoByes,
+    seedingSource: resolved.seedingSource,
   };
 
   return {
     seed,
     userClub,
-    byeTeams: [roundOneByes[0]!, roundOneByes[1]!],
+    byeTeams: [roundTwoByes[0]!, roundTwoByes[1]!],
     matches,
     simState: { form: 0, seasonDropGoals: 0 },
     userEliminated: false,
@@ -228,9 +308,18 @@ export function isExpandedChallengeCup(
   cup: ChallengeCupBracketState
 ): cup is ExpandedChallengeCupState {
   const meta = (cup as Partial<ExpandedChallengeCupState>).expandedMeta;
-  return meta?.schemaVersion === 2;
+  const v = meta?.schemaVersion;
+  return v === 2 || v === 3 || v === 4;
 }
 
 export function getExpandedCupRoundLabel(round: number): string {
   return EXPANDED_CUP_ROUND_LABELS[round] ?? `Round ${round}`;
+}
+
+/** Snapshot standings for cup seeding (position 1 = top). */
+export function standingsToCupSeeding(
+  rows: { team: string; position: number }[] | undefined | null
+): CupSeedingStanding[] {
+  if (!rows?.length) return [];
+  return rows.map((r) => ({ team: r.team, position: r.position }));
 }
