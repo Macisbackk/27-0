@@ -13,6 +13,8 @@ export interface ManagerSubTabOption<T extends string> {
   label: string;
   /** Shorter label on narrow screens when many tabs share one row. */
   shortLabel?: string;
+  /** Tooltip / accessible full name when the visible label is abbreviated. */
+  title?: string;
   variant?: "normal" | "current" | "hard" | "era" | "gold";
 }
 
@@ -83,41 +85,47 @@ export function ManagerSubTabBar<T extends string>({
   return (
     <div className={shellClass}>
       <div className={groupClass} role="tablist" aria-label={ariaLabel}>
-        {tabs.map(({ id, label, shortLabel, variant = "normal" }) => (
-          <button
-            key={id}
-            type="button"
-            role="tab"
-            aria-selected={active === id}
-            title={label}
-            className={tabGroupButtonClass(
-              active === id,
-              variant,
-              buttonLayout
-            )}
-            onClick={() => {
-              if (active === id) return;
-              playTabChange();
-              playUiClick();
-              onChange(id);
-            }}
-          >
-            {shortLabel ? (
-              <>
-                <span className="whitespace-normal text-center leading-tight sm:hidden">
-                  {shortLabel}
+        {tabs.map(({ id, label, shortLabel, title, variant = "normal" }) => {
+          // Scroll rails pack many chips — prefer short labels so long names (WCC) fit.
+          const compactLabel = shortLabel ?? label;
+          const desktopLabel =
+            useScrollRail && shortLabel ? shortLabel : label;
+          return (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={active === id}
+              title={title ?? label}
+              className={tabGroupButtonClass(
+                active === id,
+                variant,
+                buttonLayout
+              )}
+              onClick={() => {
+                if (active === id) return;
+                playTabChange();
+                playUiClick();
+                onChange(id);
+              }}
+            >
+              {shortLabel && !useScrollRail ? (
+                <>
+                  <span className="whitespace-nowrap text-center leading-tight sm:hidden">
+                    {compactLabel}
+                  </span>
+                  <span className="hidden whitespace-nowrap text-center leading-tight sm:inline">
+                    {desktopLabel}
+                  </span>
+                </>
+              ) : (
+                <span className="whitespace-nowrap text-center leading-tight">
+                  {desktopLabel}
                 </span>
-                <span className="hidden whitespace-normal text-center leading-tight sm:inline">
-                  {label}
-                </span>
-              </>
-            ) : (
-              <span className="whitespace-normal text-center leading-tight">
-                {label}
-              </span>
-            )}
-          </button>
-        ))}
+              )}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

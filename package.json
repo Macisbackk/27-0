@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "validate:players": "tsx scripts/validate-players.ts",
+    "validate:championship": "tsx scripts/validate-championship.ts",
+    "simulate:championship": "tsx scripts/monte-carlo-championship.ts",
     "build:player-chunks": "tsx scripts/split-current-squads-chunks.ts",
     "sync:player-values": "tsx scripts/sync-player-values.ts",
     "apply:era-regression-fixes": "tsx scripts/apply-era-regression-fixes.ts",

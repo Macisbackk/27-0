@@ -17,6 +17,7 @@ import { userQualifiedForManagerPlayoffs } from "./managerPlayoffs";
 import { initPreSeasonState } from "./managerFriendlies";
 import {
   computeSeasonTransferBudget,
+  resyncCareerEconomyToClubStars,
   initManagerFinance,
   refreshClubFundsForSeason,
 } from "./managerFinance";
@@ -47,12 +48,14 @@ import {
   tickClubCareerTotals,
 } from "./managerRetirement";
 import { getManagerSeasonTrophyLabels } from "./managerSeasonTrophies";
-import { applySeasonClubPrestigeDrift } from "./managerDifficulty";
+import { applySeasonClubPrestigeDrift, getCareerClubStars } from "./managerDifficulty";
 import { getClubFacilities } from "./managerFacilities";
+import { createChampionshipCompetition } from "./championship/championshipLeague";
 import {
   resolveSeasonChampionForAdvance,
   scheduleWorldClubChallengeForSeason,
 } from "./worldClubChallenge";
+import { finalizePlayoffTournamentForChampion } from "./managerPlayoffs";
 import { hydrateManagerPlayerRegistryAges } from "./managerPlayers";
 
 export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary {
@@ -212,7 +215,8 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     newSeed,
     career.seasonYear + 1,
     summary,
-    prevFinance
+    prevFinance,
+    getCareerClubStars(career)
   );
 
   const carriedOperating =
@@ -258,6 +262,13 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     attendanceData: attendanceAfterSeason,
     seasonAttendance: { total: 0, count: 0, high: 0, low: 0 },
     challengeCup: createManagerChallengeCup(newSeed, career.club),
+    challengeCupSchemaVersion: 2,
+    championshipCompetition: createChampionshipCompetition(
+      newSeed,
+      career.seasonYear + 1
+    ),
+    championshipToSlTransfersThisSeason: 0,
+    championshipTransferCooldowns: {},
     playoffs: undefined,
     playoffsIntroAcknowledged: false,
     trophyCelebrationShown: false,
@@ -332,13 +343,16 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     summary,
     { seasonStartFacilities }
   );
+  const withStarEconomy = resyncCareerEconomyToClubStars(withPrestige, summary);
 
-  const previousSeasonChampion = resolveSeasonChampionForAdvance(career);
+  const previousSeasonChampion = resolveSeasonChampionForAdvance(
+    finalizePlayoffTournamentForChampion(career)
+  );
 
   const withChampion: ManagerCareer = {
-    ...withPrestige,
+    ...withStarEconomy,
     previousSeasonChampion,
-    playerDevelopment: snapshotSquadSeasonStartRatings(withPrestige),
+    playerDevelopment: snapshotSquadSeasonStartRatings(withStarEconomy),
   };
 
   const aged = hydrateManagerPlayerRegistryAges(withChampion);

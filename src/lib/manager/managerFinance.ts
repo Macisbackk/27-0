@@ -32,21 +32,36 @@ export function scaleManagerEconomy(amount: number): number {
   return Math.round(amount * MANAGER_ECONOMY_SCALE);
 }
 
-export function getClubStarTier(club: string): number {
+function clampClubStars(stars: number): number {
+  return Math.max(1, Math.min(5, Math.round(stars)));
+}
+
+/** Club star tier — pass career stars so prestige drift raises transfer reach. */
+export function getClubStarTier(
+  club: string,
+  careerStars?: number | null
+): number {
+  if (typeof careerStars === "number" && Number.isFinite(careerStars)) {
+    return clampClubStars(careerStars);
+  }
   return getManagerClubStarRating(club);
 }
 
-export function getComfortableSigningRating(club: string): number {
-  const stars = getClubStarTier(club);
+export function getComfortableSigningRating(
+  club: string,
+  careerStars?: number | null
+): number {
+  const stars = getClubStarTier(club, careerStars);
   return COMFORT_RATING_BY_STARS[stars] ?? COMFORT_RATING_BY_STARS[3]!;
 }
 
 /** Inflated transfer fee when a smaller club chases players above their tier. */
 export function getTransferFeePremium(
   club: string,
-  playerRating: number
+  playerRating: number,
+  careerStars?: number | null
 ): number {
-  const comfortable = getComfortableSigningRating(club);
+  const comfortable = getComfortableSigningRating(club, careerStars);
   if (playerRating <= comfortable) return 1;
   const gap = playerRating - comfortable;
   return 1 + gap * 0.14;
@@ -55,9 +70,12 @@ export function getTransferFeePremium(
 export function getBuyerAdjustedTransferFee(
   club: string,
   baseFee: number,
-  playerRating: number
+  playerRating: number,
+  careerStars?: number | null
 ): number {
-  return Math.round(baseFee * getTransferFeePremium(club, playerRating));
+  return Math.round(
+    baseFee * getTransferFeePremium(club, playerRating, careerStars)
+  );
 }
 
 export interface ClubSigningAppeal {
@@ -70,11 +88,12 @@ export interface ClubSigningAppeal {
 /** Whether a club can realistically attract a player — gates York/Huddersfield from elite signings. */
 export function evaluateClubSigningAppeal(
   club: string,
-  playerRating: number
+  playerRating: number,
+  careerStars?: number | null
 ): ClubSigningAppeal {
-  const stars = getClubStarTier(club);
-  const comfortable = getComfortableSigningRating(club);
-  const feePremium = getTransferFeePremium(club, playerRating);
+  const stars = getClubStarTier(club, careerStars);
+  const comfortable = getComfortableSigningRating(club, careerStars);
+  const feePremium = getTransferFeePremium(club, playerRating, careerStars);
 
   if (playerRating <= comfortable) {
     return { allowed: true, wagePremium: 1, feePremium: 1 };
@@ -235,9 +254,10 @@ function hashSeed(seed: string, club: string): number {
 
 export function computeFirstSeasonTransferBudget(
   club: string,
-  seed: string
+  seed: string,
+  careerStars?: number | null
 ): number {
-  const stars = getClubStarTier(club);
+  const stars = getClubStarTier(club, careerStars);
   const range = TRANSFER_RANGE_BY_STARS[stars] ?? TRANSFER_RANGE_BY_STARS[3]!;
   const t = hashSeed(seed, club) % 1000;
   const raw = Math.round(range[0] + ((range[1] - range[0]) * t) / 1000);
@@ -249,16 +269,17 @@ export function computeSeasonTransferBudget(
   seed: string,
   seasonYear: number,
   summary?: ManagerSeasonSummary,
-  prevFinance?: ManagerFinance
+  prevFinance?: ManagerFinance,
+  careerStars?: number | null
 ): number {
   const isFirstSeason = seasonYear <= new Date().getFullYear() && !summary;
   if (isFirstSeason && !prevFinance) {
-    return computeFirstSeasonTransferBudget(club, seed);
+    return computeFirstSeasonTransferBudget(club, seed, careerStars);
   }
 
   let base =
     prevFinance?.transferBudget ??
-    computeFirstSeasonTransferBudget(club, seed);
+    computeFirstSeasonTransferBudget(club, seed, careerStars);
   const position = summary?.position ?? 10;
   const wins = summary?.wins ?? 0;
 
@@ -273,11 +294,60 @@ export function computeSeasonTransferBudget(
   if (summary?.trophies.includes("Challenge Cup")) base += 120_000;
   else if (summary?.challengeCupResult?.includes("Final")) base += 60_000;
 
-  const stars = getClubStarTier(club);
+  const stars = getClubStarTier(club, careerStars);
   const range = TRANSFER_RANGE_BY_STARS[stars] ?? TRANSFER_RANGE_BY_STARS[3]!;
   const floor = scaleManagerEconomy(range[0]);
   const cap = scaleManagerEconomy(Math.round(range[1] * 1.3));
   return Math.max(floor, Math.min(cap, base));
+}
+
+/**
+ * After prestige/star drift, reclamp transfer + wage budgets to the career star tier
+ * so board targets and signing reach stay aligned.
+ */
+export function resyncCareerEconomyToClubStars(
+  career: ManagerCareer,
+  summary?: ManagerSeasonSummary
+): ManagerCareer {
+  const stars = getClubStarTier(career.club, career.difficulty);
+  const transferBudget = computeSeasonTransferBudget(
+    career.club,
+    career.seed,
+    career.seasonYear,
+    summary,
+    career.managerFinance,
+    stars
+  );
+  const withBudget: ManagerCareer = {
+    ...career,
+    budget: transferBudget,
+    managerFinance: {
+      ...career.managerFinance,
+      transferBudget,
+      clubFunds:
+        transferBudget + (career.managerFinance?.operatingBalance ?? 0),
+      wageBudget: career.managerFinance?.wageBudget ?? career.wageBudget ?? 0,
+      wageBill: career.managerFinance?.wageBill ?? career.wageBill ?? 0,
+      operatingBalance: career.managerFinance?.operatingBalance ?? 0,
+      seasonIncome: career.managerFinance?.seasonIncome ?? 0,
+      seasonTransferIncome: career.managerFinance?.seasonTransferIncome ?? 0,
+      seasonOperatingIncome: career.managerFinance?.seasonOperatingIncome ?? 0,
+      seasonSpending: career.managerFinance?.seasonSpending ?? 0,
+    },
+    clubFunds: {
+      ...career.clubFunds,
+      [career.club]: transferBudget,
+    },
+  };
+  const wageBudget = resolveWageBudgetForCareer(withBudget);
+  return {
+    ...withBudget,
+    wageBudget,
+    managerFinance: {
+      ...withBudget.managerFinance!,
+      wageBudget,
+    },
+  };
 }
 
 export function initManagerFinance(career: Partial<ManagerCareer>): ManagerFinance {
@@ -286,12 +356,12 @@ export function initManagerFinance(career: Partial<ManagerCareer>): ManagerFinan
   const transferBudget =
     career.budget ??
     career.managerFinance?.transferBudget ??
-    computeFirstSeasonTransferBudget(club, seed);
+    computeFirstSeasonTransferBudget(club, seed, career.difficulty);
   const operatingBalance = career.managerFinance?.operatingBalance ?? 0;
   const wageBudget =
     career.wageBudget ??
     resolveWageBudgetForCareer(career as ManagerCareer) ??
-    getWageBudgetForClub(club);
+    getWageBudgetForClub(club, career.difficulty);
   const wageBill =
     career.wageBill ??
     (career.contracts

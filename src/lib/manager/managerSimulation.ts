@@ -57,6 +57,7 @@ import {
   applyPlayoffMatchToBracket,
   buildPlayoffScheduledFixture,
   ensurePlayoffsReady,
+  finalizePlayoffTournamentForChampion,
   getUserPlayoffMatch,
   isPlayoffMatchReadyForResult,
   isPlayoffsPhaseComplete,
@@ -173,6 +174,10 @@ import { syncManagerInboxMessages } from "./managerInbox";
 import { completeFriendlyMatch } from "./managerFriendlies";
 import { maybeAddReserveReport } from "./managerReserveReports";
 import { rotateLatestNews } from "./managerNews";
+import {
+  tickChampionshipOnAdvance,
+} from "./championship/ensureChampionship";
+import { maybeAiSignChampionshipElite } from "./championship/championshipAiTransfers";
 import {
   addMatchKeyMomentInboxMessage,
   getManagerMatchKeyMoment,
@@ -556,7 +561,9 @@ export function applyManagerMatchResult(
     }
     playoffs = updated;
     working = { ...working, playoffs };
-    if (!playoffs.userEliminated && !playoffs.tournamentComplete) {
+    // Finish remaining AI ties even after the user is eliminated so WCC
+    // schedules against the real Super League champion, not the user by default.
+    if (!playoffs.tournamentComplete) {
       playoffs = advancePlayoffBracketAfterUserMatch(working);
       working = { ...working, playoffs };
     }
@@ -887,6 +894,8 @@ export function advanceManagerMatchWeek(
     next = tickPositionRetraining(next);
   }
   next = maybeAddReserveReport(next);
+  next = tickChampionshipOnAdvance(next);
+  next = maybeAiSignChampionshipElite(next);
   next = rotateLatestNews(next);
 
   next = maybeGenerateAiTransfers(next, 0);
@@ -922,6 +931,10 @@ export function advanceManagerMatchWeek(
   }
 
   next = ensurePlayoffsReady(next);
+  // After elimination (or season end), finish AI play-offs so WCC uses the real champion.
+  if (next.playoffs?.userEliminated || isManagerSeasonCompleteLite(next)) {
+    next = finalizePlayoffTournamentForChampion(next);
+  }
   const seasonDone = isManagerSeasonComplete(next);
   if (seasonDone && !next.lastSeasonDevelopmentReview) {
     const developed = developSquadAtSeasonEnd(next);

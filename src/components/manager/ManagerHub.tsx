@@ -23,6 +23,9 @@ import {
 import { getHubOpponentRating } from "@/lib/manager/managerOpponentRating";
 import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
 import { getCupBracketForDisplay, getCupHubStatus } from "@/lib/manager/managerChallengeCup";
+import {
+  isExpandedChallengeCup,
+} from "@/lib/manager/championship/championshipChallengeCup";
 import { BracketRecap } from "@/components/BracketRecap";
 import { PlayoffBracketDisplay } from "@/components/PlayoffBracketDisplay";
 import {
@@ -230,6 +233,9 @@ function HubChallengeCupBracketPanel({
           matches={cup.matches}
           userClub={cup.userClub}
           byeTeams={cup.byeTeams}
+          expandedMeta={
+            isExpandedChallengeCup(cup) ? cup.expandedMeta : undefined
+          }
         />
       </div>
     </div>

@@ -19,6 +19,55 @@ export function BracketMobileRoundNav({
   getShortLabel,
   activeClassName = "border-theme-primary/60 bg-theme-primary/15 text-theme-primary",
 }: BracketMobileRoundNavProps) {
+  const useSnapScroll = rounds.length >= 5;
+
+  if (useSnapScroll) {
+    return (
+      <div
+        className="bracket-round-nav flex snap-x snap-mandatory gap-1.5 overflow-x-auto pb-0.5 scroll-pl-1 [-ms-overflow-style:none] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden"
+        role="tablist"
+        aria-label="Bracket rounds"
+      >
+        {rounds.map((round) => {
+          const isViewing = viewRound === round;
+          const isLive = activeRound === round;
+          const shortLabel = getShortLabel?.(round) ?? getLabel(round);
+          const isFinal = round === rounds[rounds.length - 1];
+
+          return (
+            <button
+              key={round}
+              type="button"
+              role="tab"
+              aria-selected={isViewing}
+              onClick={() => onViewRoundChange(round)}
+              className={`min-w-[4.25rem] flex-none snap-start rounded-lg border px-2.5 py-2.5 text-center transition ${
+                isViewing
+                  ? activeClassName
+                  : "border-pitch-600/50 bg-pitch-900/50 text-gray-400 hover:border-pitch-500/60 hover:text-gray-200"
+              } ${isFinal && isLive ? "border-accent-gold/40" : ""}`}
+            >
+              <span className="block font-display text-xs font-black uppercase tracking-wide">
+                {shortLabel}
+              </span>
+              <span
+                className={`mt-0.5 block truncate text-[9px] font-medium uppercase tracking-wider ${
+                  isLive
+                    ? isFinal
+                      ? "text-accent-gold"
+                      : "text-mode-current"
+                    : "text-gray-500"
+                }`}
+              >
+                {isLive ? "Live" : getLabel(round)}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
   const columnClass =
     rounds.length >= 4
       ? "grid-cols-4"

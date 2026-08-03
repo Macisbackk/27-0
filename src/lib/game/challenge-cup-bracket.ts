@@ -459,11 +459,12 @@ export function getMatchesForRound(
 }
 
 export function getActiveRound(state: ChallengeCupBracketState): number {
-  for (let r = 1; r <= 4; r++) {
+  const maxRound = Math.max(4, ...state.matches.map((m) => m.round));
+  for (let r = 1; r <= maxRound; r++) {
     const roundMatches = getMatchesForRound(state, r);
     if (roundMatches.some((m) => m.status === "ready")) return r;
   }
-  return 4;
+  return maxRound;
 }
 
 export function canSimulateMatch(
@@ -775,9 +776,10 @@ function simulateUserMatch(
   completeMatch(m, homeScore, awayScore, winner, loser, scoringDetail, fixture);
   syncBracketAfterMatch(matches, state.userClub);
 
+  const maxRound = Math.max(4, ...state.matches.map((m) => m.round));
   const userLost = fixture.result === "L";
   const userWonFinal =
-    match.round === 4 && fixture.result === "W";
+    match.round === maxRound && fixture.result === "W";
   const tournamentComplete = userLost || userWonFinal;
 
   return {
@@ -890,7 +892,8 @@ export function simulateBracketTournament(
   squad: SquadSlot[]
 ): ChallengeCupBracketState {
   let next = state;
-  for (let round = 1; round <= 4; round++) {
+  const maxRound = Math.max(4, ...state.matches.map((m) => m.round));
+  for (let round = 1; round <= maxRound; round++) {
     if (next.tournamentComplete) break;
     next = simulateBracketRound(next, round, squad);
   }
@@ -898,16 +901,27 @@ export function simulateBracketTournament(
 }
 
 function deriveFinishFromEliminationRound(
-  eliminatedRound: number
+  eliminatedRound: number,
+  maxRound = 4
 ): { finish: CupFinish; label: string } {
-  if (eliminatedRound === 4) {
+  const fromFinal = maxRound - eliminatedRound;
+  if (fromFinal === 0) {
     return { finish: "Runners-Up", label: "Final Defeat" };
   }
-  if (eliminatedRound === 3) {
+  if (fromFinal === 1) {
     return { finish: "Semi Final", label: "Semi Final Exit" };
   }
-  if (eliminatedRound === 2) {
+  if (fromFinal === 2) {
     return { finish: "Quarter Final", label: "Quarter Final Exit" };
+  }
+  if (maxRound >= 6) {
+    if (fromFinal === 3) {
+      return { finish: "Last 16", label: "Last 16 Exit" };
+    }
+    if (eliminatedRound === 2) {
+      return { finish: "Round Two", label: "Round Two Exit" };
+    }
+    return { finish: "Round One", label: "Round One Exit" };
   }
   return { finish: "Round of 16", label: "Round of 16 Exit" };
 }
@@ -915,7 +929,10 @@ function deriveFinishFromEliminationRound(
 export function getBracketFinalWinner(
   matches: BracketMatch[]
 ): string | null {
-  const final = matches.find((m) => m.id === "4-0" && m.status === "complete");
+  const maxRound = Math.max(4, ...matches.map((m) => m.round));
+  const final = matches.find(
+    (m) => m.round === maxRound && m.status === "complete"
+  );
   return final?.winner ?? null;
 }
 
@@ -946,11 +963,15 @@ export function deriveCupOutcomeFromBracket(
 
   const eliminatedRound = getUserEliminatedRound(state);
   if (eliminatedRound !== null) {
-    const { finish, label } = deriveFinishFromEliminationRound(eliminatedRound);
+    const maxRound = Math.max(4, ...state.matches.map((m) => m.round));
+    const { finish, label } = deriveFinishFromEliminationRound(
+      eliminatedRound,
+      maxRound
+    );
     return { finish, label, isWinner: false };
   }
 
-  return { finish: "Round of 16", label: "Round of 16 Exit", isWinner: false };
+  return { finish: "Round of 16", label: "Cup Exit", isWinner: false };
 }
 
 function deriveFinish(
@@ -965,7 +986,8 @@ export function finalizeBracketDisplay(
   state: ChallengeCupBracketState
 ): ChallengeCupBracketState {
   let next = state;
-  for (let round = 1; round <= 4; round++) {
+  const maxRound = Math.max(4, ...state.matches.map((m) => m.round));
+  for (let round = 1; round <= maxRound; round++) {
     let progress = true;
     while (progress) {
       progress = false;

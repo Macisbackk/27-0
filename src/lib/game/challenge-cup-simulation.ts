@@ -22,7 +22,10 @@ export type CupFinish =
   | "Runners-Up"
   | "Semi Final"
   | "Quarter Final"
-  | "Round of 16";
+  | "Round of 16"
+  | "Last 16"
+  | "Round Two"
+  | "Round One";
 
 export const CUP_ROUND_NAMES = [
   "Round of 16",

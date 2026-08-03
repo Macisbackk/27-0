@@ -351,6 +351,7 @@
   font-weight: 700;
   color: #fff;
   overflow-wrap: anywhere;
+  text-align: center;
 }
 
 .reserve-player-card__header p {

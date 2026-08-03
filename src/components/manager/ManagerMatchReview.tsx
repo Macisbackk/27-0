@@ -266,6 +266,11 @@ export function ManagerMatchReview({
             matches={cupBracketSnapshot.matches}
             userClub={career.club}
             byeTeams={cupBracketSnapshot.byeTeams}
+            expandedMeta={
+              "expandedMeta" in cupBracketSnapshot
+                ? (cupBracketSnapshot as { expandedMeta?: import("@/lib/manager/championship/championshipChallengeCup").ExpandedCupMeta }).expandedMeta
+                : undefined
+            }
           />
         </div>
       )}

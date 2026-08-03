@@ -3,7 +3,6 @@ import type {
   ChallengeCupBracketState,
 } from "../game/challenge-cup-bracket";
 import {
-  createChallengeCupBracket,
   deriveCupOutcomeFromBracket,
   getActiveRound,
   getCupRoundLabel,
@@ -11,6 +10,7 @@ import {
   getMatchesForRound,
   simulateBracketMatch,
 } from "../game/challenge-cup-bracket";
+import { createExpandedChallengeCupBracket } from "./championship/championshipChallengeCup";
 import type { MatchFixture } from "../game/season-simulation";
 import { buildSquadSlotsFromMatchday } from "./managerSquad";
 import type {
@@ -23,18 +23,23 @@ import {
   needsPreSeasonFriendlies,
 } from "./managerFriendlies";
 
-const CUP_TRIGGERS_LEAGUE_GAMES = [5, 12, 19, 24];
+/** Cup rounds unlock after N Super League games — expanded 6-round format. */
+const CUP_TRIGGERS_LEAGUE_GAMES = [3, 7, 12, 17, 22, 26];
 const CUP_KEY_TO_BRACKET_ROUND: Record<CupRoundKey, number> = {
   round_one: 1,
-  quarter_final: 2,
-  semi_final: 3,
-  final: 4,
+  round_two: 2,
+  last_sixteen: 3,
+  quarter_final: 4,
+  semi_final: 5,
+  final: 6,
 };
 const BRACKET_ROUND_TO_KEY: Record<number, CupRoundKey> = {
   1: "round_one",
-  2: "quarter_final",
-  3: "semi_final",
-  4: "final",
+  2: "round_two",
+  3: "last_sixteen",
+  4: "quarter_final",
+  5: "semi_final",
+  6: "final",
 };
 
 export const CHALLENGE_CUP_FINAL_VENUE = "Wembley Stadium";
@@ -86,7 +91,7 @@ export function createManagerChallengeCup(
   seed: string,
   userClub: string
 ): ChallengeCupBracketState {
-  return createChallengeCupBracket(`${seed}-cup`, userClub);
+  return createExpandedChallengeCupBracket(`${seed}-cup`, userClub);
 }
 
 export function countLeagueFixturesPlayed(career: ManagerCareer): number {
@@ -180,14 +185,17 @@ function findReadyAiMatch(
 function simulateReadyAiCupMatches(
   bracket: ChallengeCupBracketState,
   squad: ReturnType<typeof buildSquadSlotsFromMatchday>,
-  maxRound = 4,
-  maxSteps = 48
+  maxRound?: number,
+  maxSteps = 64
 ): ChallengeCupBracketState {
+  const roundCap =
+    maxRound ??
+    Math.max(4, ...bracket.matches.map((m) => m.round), 0);
   let next = bracket;
   for (let step = 0; step < maxSteps; step++) {
     if (next.userEliminated || next.tournamentComplete) break;
     const aiReady = findReadyAiMatch(next);
-    if (!aiReady || aiReady.round > maxRound) break;
+    if (!aiReady || aiReady.round > roundCap) break;
     next = simulateBracketMatch(next, aiReady.id, squad);
   }
   return next;
@@ -197,13 +205,14 @@ function simulateAiUntilUserReady(
   bracket: ChallengeCupBracketState,
   squad: ReturnType<typeof buildSquadSlotsFromMatchday>
 ): ChallengeCupBracketState {
+  const maxRound = Math.max(4, ...bracket.matches.map((m) => m.round), 0);
   const userMatch = getUserCupMatch(bracket);
   if (userMatch) {
     return simulateReadyAiCupMatches(bracket, squad, userMatch.round);
   }
 
   let next = bracket;
-  for (let round = 1; round <= 4; round++) {
+  for (let round = 1; round <= maxRound; round++) {
     next = simulateReadyAiCupMatches(next, squad, round);
     if (getUserCupMatch(next)) return next;
     if (next.userEliminated || next.tournamentComplete) return next;
@@ -612,10 +621,12 @@ export function buildMergedDisplaySchedule(
   }));
 
   const cupSlots: { afterIndex: number; key: CupRoundKey }[] = [
-    { afterIndex: 4, key: "round_one" },
-    { afterIndex: 11, key: "quarter_final" },
-    { afterIndex: 18, key: "semi_final" },
-    { afterIndex: 23, key: "final" },
+    { afterIndex: 2, key: "round_one" },
+    { afterIndex: 6, key: "round_two" },
+    { afterIndex: 11, key: "last_sixteen" },
+    { afterIndex: 16, key: "quarter_final" },
+    { afterIndex: 21, key: "semi_final" },
+    { afterIndex: 25, key: "final" },
   ];
 
   const merged: ManagerScheduledFixture[] = [];

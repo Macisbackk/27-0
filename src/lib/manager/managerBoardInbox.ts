@@ -138,7 +138,11 @@ function maybeTrophyMails(career: ManagerCareer): ManagerCareer {
   return next;
 }
 
-function maybeTrebleMails(career: ManagerCareer): ManagerCareer {
+/**
+ * One composite honour mail per season (highest tier only).
+ * Avoids treble + clean-sweep + quadruple all stacking on the same night.
+ */
+function maybeCompositeHonourMail(career: ManagerCareer): ManagerCareer {
   const trophies = getManagerSeasonTrophyLabels(career);
   const majors = trophies.filter((t) =>
     [
@@ -149,23 +153,6 @@ function maybeTrebleMails(career: ManagerCareer): ManagerCareer {
     ].includes(t)
   );
   const year = seasonTag(career);
-  let next = career;
-
-  if (majors.length >= 4) {
-    next = appendBoardMail(
-      next,
-      `board-quad-${year}`,
-      "Board — quadruple season",
-      `Four major honours in one season. The board can scarcely believe it — this will be remembered as a golden year for the club.`
-    );
-  } else if (majors.length >= 3) {
-    next = appendBoardMail(
-      next,
-      `board-treble-${year}`,
-      "Board — treble winners",
-      `A treble season. The board congratulates everyone at the club on an extraordinary campaign.`
-    );
-  }
 
   const available = [
     "League Leaders",
@@ -177,16 +164,32 @@ function maybeTrebleMails(career: ManagerCareer): ManagerCareer {
   }
   const cleanSweep =
     available.length >= 3 && available.every((label) => majors.includes(label));
+
   if (cleanSweep) {
-    next = appendBoardMail(
-      next,
-      `board-clean-sweep-${year}`,
+    return appendBoardMail(
+      career,
+      `board-honours-${year}`,
       "Board — clean sweep",
       `Every major prize available has been claimed. The board salutes a clean sweep — a season for the history books.`
     );
   }
-
-  return next;
+  if (majors.length >= 4) {
+    return appendBoardMail(
+      career,
+      `board-honours-${year}`,
+      "Board — quadruple season",
+      `Four major honours in one season. The board can scarcely believe it — this will be remembered as a golden year for the club.`
+    );
+  }
+  if (majors.length >= 3) {
+    return appendBoardMail(
+      career,
+      `board-honours-${year}`,
+      "Board — treble winners",
+      `A treble season. The board congratulates everyone at the club on an extraordinary campaign.`
+    );
+  }
+  return career;
 }
 
 function maybeYouthUsageMail(
@@ -240,9 +243,10 @@ function maybeAttendanceMail(
   if (capacity <= 0 || attendance < capacity * STRONG_GATE_CAPACITY_PCT) {
     return career;
   }
+  // Once per season — repeating "strong gate" letters every home sell-out.
   return appendBoardMail(
     career,
-    `board-attendance-${seasonTag(career)}-w${career.gameWeek}`,
+    `board-attendance-${seasonTag(career)}`,
     "Board — strong gate",
     `A near-capacity crowd of ${attendance.toLocaleString()} turned out. The board notes the growing support — keep giving them nights like this.`
   );
@@ -255,9 +259,10 @@ function maybeConfidenceMail(
   if (previousBoardConfidence == null) return career;
   const jump = career.boardConfidence - previousBoardConfidence;
   if (jump >= BOARD_CONFIDENCE_JUMP) {
+    // Once per season — weekly boost letters were identical spam.
     return appendBoardMail(
       career,
-      `board-confidence-boost-${seasonTag(career)}-w${career.gameWeek}`,
+      `board-confidence-boost-${seasonTag(career)}`,
       "Board — confidence rising",
       `Board confidence has climbed to ${career.boardConfidence}% (up ${jump} points). The directors are noticing the progress — maintain this trajectory.`
     );
@@ -265,7 +270,7 @@ function maybeConfidenceMail(
   if (jump <= -BOARD_CONFIDENCE_JUMP) {
     return appendBoardMail(
       career,
-      `board-confidence-drop-${seasonTag(career)}-w${career.gameWeek}`,
+      `board-confidence-drop-${seasonTag(career)}`,
       "Board — performance warning",
       `Board confidence has fallen to ${career.boardConfidence}% (down ${Math.abs(jump)} points). Results must improve before the board reviews your position.`,
       {
@@ -280,9 +285,10 @@ function maybeConfidenceMail(
 function maybeWagePressureMail(career: ManagerCareer): ManagerCareer {
   if (career.wageBill <= career.wageBudget) return career;
   const over = career.wageBill - career.wageBudget;
+  // Once per season — weekly financial warnings repeated the same letter.
   return appendBoardMail(
     career,
-    `board-wage-warning-${seasonTag(career)}-w${career.gameWeek}`,
+    `board-wage-warning-${seasonTag(career)}`,
     "Board — financial warning",
     `The wage bill is ${over.toLocaleString()} over budget. The board expects corrective action through sales, releases, or wage discipline.`,
     {
@@ -303,7 +309,9 @@ export interface BoardMilestoneContext {
 
 /**
  * Append unique Club Board inbox messages for career milestones.
- * Safe to call repeatedly — message IDs prevent duplicates.
+ * Safe to call repeatedly — stable season-scoped IDs prevent duplicates.
+ * At most one "routine" letter (confidence / wage / attendance / youth)
+ * is added per call so a single result night cannot flood the inbox.
  */
 export function maybeAddBoardMilestoneInbox(
   career: ManagerCareer,
@@ -322,15 +330,28 @@ export function maybeAddBoardMilestoneInbox(
   const fixture = context.fixture ?? career.lastMatchFixture ?? null;
   let next = career;
 
+  // Milestone letters (unique season events) — always eligible.
   next = maybeWinStreakMail(next);
   next = maybeTrophyMails(next);
-  next = maybeTrebleMails(next);
-  next = maybeYouthUsageMail(next, context.calledUpReserveCount ?? 0);
+  next = maybeCompositeHonourMail(next);
   next = maybeRivalWinMail(next, fixture);
   next = maybePlayoffsMail(next);
-  next = maybeAttendanceMail(next, fixture);
-  next = maybeConfidenceMail(next, context.previousBoardConfidence);
-  next = maybeWagePressureMail(next);
+
+  // Routine letters — pick at most one new one this call.
+  const routineBuilders: Array<(c: ManagerCareer) => ManagerCareer> = [
+    (c) => maybeConfidenceMail(c, context.previousBoardConfidence),
+    (c) => maybeWagePressureMail(c),
+    (c) => maybeAttendanceMail(c, fixture),
+    (c) => maybeYouthUsageMail(c, context.calledUpReserveCount ?? 0),
+  ];
+
+  for (const build of routineBuilders) {
+    const candidate = build(next);
+    if (candidate.inboxMessages.length > next.inboxMessages.length) {
+      next = candidate;
+      break;
+    }
+  }
 
   return next;
 }

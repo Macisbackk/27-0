@@ -26,6 +26,7 @@ import {
 } from "./managerLeagueRosters";
 import { createInitialPlayerState } from "./managerSquad";
 import { syncManagerFinance, canAffordAdditionalWage, evaluateClubSigningAppeal, getManagerPlayerListingRating } from "./managerFinance";
+import { getCareerClubStars } from "./managerDifficulty";
 import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 import { SQUAD_STRUCTURE } from "../positions";
@@ -371,7 +372,11 @@ export function evaluateFreeAgentOffer(
 
   const signing = getPlayerSigningDemand(career, playerId);
   const rating = getManagerPlayerListingRating(career, playerId);
-  const appeal = evaluateClubSigningAppeal(career.club, rating);
+  const appeal = evaluateClubSigningAppeal(
+    career.club,
+    rating,
+    getCareerClubStars(career)
+  );
   if (!appeal.allowed) {
     return { accepted: false, reason: appeal.reason ?? "Signing blocked." };
   }

@@ -18,6 +18,7 @@ import {
   getWageBillPercent,
   isWageOverBudget,
 } from "@/lib/manager/managerFinance";
+import { getCareerClubStars } from "@/lib/manager/managerDifficulty";
 import { isSameManagerClub } from "@/lib/clubs/super-league-display";
 import { FILTER, SPACING } from "@/lib/ui/design-system";
 import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
@@ -137,7 +138,11 @@ export function ManagerTransfers({
     [career]
   );
 
-  const comfortableTarget = getComfortableSigningRating(career.club);
+  const careerStars = getCareerClubStars(career);
+  const comfortableTarget = getComfortableSigningRating(
+    career.club,
+    careerStars
+  );
 
   const listedPlayers = useMemo(() => {
     return career.leagueListedPlayers
@@ -473,7 +478,8 @@ export function ManagerTransfers({
             );
             const appeal = evaluateClubSigningAppeal(
               career.club,
-              player.peakRating
+              player.peakRating,
+              careerStars
             );
             const isNegotiating = listedNegotiateId === player.id;
             const canAffordFee = getTransferBudget(career) >= buyerFee;
@@ -608,7 +614,8 @@ export function ManagerTransfers({
             const demand = getPlayerSigningDemand(career, player.id);
             const appeal = evaluateClubSigningAppeal(
               career.club,
-              player.peakRating
+              player.peakRating,
+              careerStars
             );
             const isNegotiating = freeAgentNegotiateId === player.id;
             const canAffordAssistant =
@@ -782,7 +789,8 @@ export function ManagerTransfers({
             );
             const appeal = evaluateClubSigningAppeal(
               career.club,
-              player.peakRating
+              player.peakRating,
+              careerStars
             );
             const demand = getPlayerSigningDemand(career, player.id);
             const isOffering = offerPlayerId === player.id;

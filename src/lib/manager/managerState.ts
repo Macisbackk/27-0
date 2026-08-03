@@ -35,6 +35,7 @@ import {
 import { createManagerChallengeCup, reconcileChallengeCupFromFixtures } from "./managerChallengeCup";
 import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubReserveCounts, ensureAllClubReserveDepth } from "./managerReserves";
 import { sanitizeWorldClubChallengeState, ensureWorldClubChallengeScheduled } from "./worldClubChallenge";
+import { ensureChampionshipSystems } from "./championship/ensureChampionship";
 import { stampManagerSaveVersion } from "./managerSaveVersion";
 import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
 import {
@@ -365,6 +366,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = hydrateReserveTenure(career);
   career = ensureFreeAgentPool(career);
   career = migrateMatchWeekFields(career);
+  career = ensureChampionshipSystems(career);
   return syncManagerInboxMessages(career);
 }
 

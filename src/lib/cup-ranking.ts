@@ -28,15 +28,20 @@ export function getCupWinPercentage(
 export function getCupFinishRank(finish: string | null | undefined): number {
   switch (finish) {
     case "Winners":
-      return 5;
+      return 8;
     case "Runners-Up":
-      return 4;
+      return 7;
     case "Semi Final":
-      return 3;
+      return 6;
     case "Quarter Final":
-      return 2;
+      return 5;
+    case "Last 16":
     case "Round of 16":
-      return 1;
+      return 4;
+    case "Round Two":
+      return 3;
+    case "Round One":
+      return 2;
     default:
       return 0;
   }

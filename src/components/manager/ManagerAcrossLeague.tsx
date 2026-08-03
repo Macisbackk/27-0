@@ -89,7 +89,7 @@ export function ManagerAcrossLeague({
         <GameSectionHeader
           label="League"
           title="Across the League"
-          subtitle={`Season ${career.seasonYear} · Week ${career.gameWeek} — news, squads and transfer activity from around Super League`}
+          subtitle={`Season ${career.seasonYear} · Week ${career.gameWeek} — news, squads and transfer activity from around Super League and the Championship`}
         />
 
         <div className="stat-section-stack">

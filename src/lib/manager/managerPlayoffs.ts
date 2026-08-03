@@ -67,6 +67,11 @@ function findReadyAiPlayoffMatch(
     .sort((a, b) => a.round - b.round || a.slot - b.slot)[0];
 }
 
+/**
+ * Simulate remaining non-user playoff ties.
+ * Continues after the user is eliminated so the Grand Final still crowns
+ * a Super League champion for World Club Challenge scheduling.
+ */
 function simulateReadyAiPlayoffMatches(
   bracket: PlayoffBracketState,
   squad: ReturnType<typeof buildSquadSlotsFromMatchday>,
@@ -74,7 +79,7 @@ function simulateReadyAiPlayoffMatches(
 ): PlayoffBracketState {
   let next = bracket;
   for (let step = 0; step < maxSteps; step++) {
-    if (next.userEliminated || next.tournamentComplete) break;
+    if (next.tournamentComplete) break;
     const aiReady = findReadyAiPlayoffMatch(next);
     if (!aiReady) break;
     next = simulatePlayoffBracketMatch(next, aiReady.id, squad);
@@ -94,7 +99,11 @@ function simulateAiUntilUserPlayoffReady(
       (m) => m.isUserMatch && m.status === "ready"
     );
     if (userMatch) return next;
-    if (next.userEliminated || next.tournamentComplete) return next;
+    if (next.tournamentComplete) return next;
+    if (next.userEliminated) {
+      // User is out — finish the rest of the bracket for a real champion.
+      return simulateReadyAiPlayoffMatches(next, squad);
+    }
 
     const aiReady = findReadyAiPlayoffMatch(next);
     if (!aiReady) break;
@@ -107,15 +116,17 @@ export function advancePlayoffBracketAfterUserMatch(
   career: ManagerCareer
 ): PlayoffBracketState {
   const playoffs = career.playoffs;
-  if (!playoffs || playoffs.userEliminated || playoffs.tournamentComplete) {
-    return playoffs ?? createManagerPlayoffs(career);
+  if (!playoffs) {
+    return createManagerPlayoffs(career);
   }
+  if (playoffs.tournamentComplete) return playoffs;
 
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
     career.xiiiSlotPositions,
     career
   );
+  // Always finish AI ties after a user result (including elimination).
   return simulateReadyAiPlayoffMatches(playoffs, squad);
 }
 
@@ -123,15 +134,19 @@ export function preparePlayoffRound(
   career: ManagerCareer
 ): PlayoffBracketState {
   const bracket = career.playoffs;
-  if (!bracket || bracket.userEliminated || bracket.tournamentComplete) {
-    return bracket ?? createManagerPlayoffs(career);
+  if (!bracket) {
+    return createManagerPlayoffs(career);
   }
+  if (bracket.tournamentComplete) return bracket;
 
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,
     career.xiiiSlotPositions,
     career
   );
+  if (bracket.userEliminated) {
+    return simulateReadyAiPlayoffMatches(bracket, squad);
+  }
   return simulateAiUntilUserPlayoffReady(bracket, squad);
 }
 
@@ -324,19 +339,63 @@ export function applyPlayoffMatchToBracket(
     finish = "Super League Champions";
   }
 
+  // User elimination must NOT end the tournament — AI still plays for the title.
+  const gfDone = matches.find((x) => x.id === "gf")?.status === "complete";
+  const tournamentComplete = userWonFinal || gfDone === true;
+
   return {
     ...bracket,
     matches,
-    userEliminated: userLost,
-    tournamentComplete: userLost || userWonFinal,
+    userEliminated: userLost || bracket.userEliminated,
+    tournamentComplete,
     finish,
   };
+}
+
+/**
+ * Ensure a Super League Grand Final winner exists for WCC scheduling.
+ * Runs remaining AI playoff ties after user elimination, or an AI-only
+ * top-six bracket when the user missed the play-offs.
+ */
+export function finalizePlayoffTournamentForChampion(
+  career: ManagerCareer
+): ManagerCareer {
+  if (!isLeagueAndCupPhaseComplete(career)) return career;
+
+  const squad = buildSquadSlotsFromMatchday(
+    career.matchdayXiii,
+    career.xiiiSlotPositions,
+    career
+  );
+
+  if (!userQualifiedForManagerPlayoffs(career)) {
+    // AI-only play-offs among the top six (user club is outside the bracket).
+    let playoffs = career.playoffs;
+    if (!playoffs || !playoffs.tournamentComplete) {
+      playoffs = {
+        ...createManagerPlayoffs(career),
+        userEliminated: true,
+        finish: null,
+      };
+      playoffs = simulateReadyAiPlayoffMatches(playoffs, squad);
+    }
+    return { ...career, playoffs };
+  }
+
+  let playoffs = career.playoffs ?? createManagerPlayoffs(career);
+  if (!playoffs.tournamentComplete) {
+    playoffs = simulateReadyAiPlayoffMatches(playoffs, squad);
+  }
+  return { ...career, playoffs };
 }
 
 export function isPlayoffsPhaseComplete(career: ManagerCareer): boolean {
   if (!userQualifiedForManagerPlayoffs(career)) return true;
   const playoffs = career.playoffs;
   if (!playoffs) return false;
+  // Prefer a finished tournament; user elimination alone is enough for the
+  // manager to leave Matchday, but finalizePlayoffTournamentForChampion must
+  // still crown an AI champion before the next season / WCC.
   return playoffs.tournamentComplete || playoffs.userEliminated;
 }
 

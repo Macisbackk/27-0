@@ -142,6 +142,7 @@ export function getPreviousSeasonChampion(
       season.playoffFinish === "Super League Champions" ||
       season.trophies.includes("Super League Champions")
     ) {
+      // Only the user's own trophy history is stored here.
       return { name: career.club, seasonYear: season.seasonYear };
     }
   }
@@ -183,10 +184,8 @@ export function resolveSeasonChampionForAdvance(career: ManagerCareer): string {
     return career.club;
   }
 
-  if (career.previousSeasonChampion) {
-    return career.previousSeasonChampion;
-  }
-
+  // Never reuse previousSeasonChampion here — that incorrectly forced the user
+  // into World Club Challenge seasons after they were no longer champions.
   return pickAiSuperLeagueChampion(career, career.seasonYear);
 }
 
@@ -199,7 +198,7 @@ export function buildWorldClubChallengeScheduledFixture(
     opponent: wcc.nrlChampionName,
     isHome: true,
     competition: "world_club_challenge",
-    label: "World Club Challenge",
+    label: "WCC",
   };
 }
 
@@ -467,9 +466,51 @@ export function ensureWorldClubChallengeScheduled(
 ): ManagerCareer {
   if (career.isSeasonComplete) return career;
   const history = career.worldClubChallenge?.history ?? [];
+  const current = career.worldClubChallenge?.currentFixture;
+
+  // Repair saves where the user was wrongly forced into WCC despite not being
+  // the Super League champion — simulate the AI fixture instead.
+  if (
+    current &&
+    current.seasonYear === career.seasonYear &&
+    current.status === "scheduled"
+  ) {
+    const trueChampion =
+      career.previousSeasonChampion ?? current.superLeagueChampionName;
+    const shouldInvolveUser = trueChampion === career.club;
+    if (
+      current.superLeagueChampionName !== trueChampion ||
+      current.userInvolved !== shouldInvolveUser
+    ) {
+      if (!shouldInvolveUser) {
+        const fixture = {
+          ...current,
+          superLeagueChampionName: trueChampion,
+          superLeagueChampionTeamId: trueChampion,
+          userInvolved: false,
+          status: "complete" as const,
+        };
+        const result = simulateWorldClubChallenge(career, fixture);
+        return {
+          ...career,
+          worldClubChallenge: {
+            history: [
+              ...history.filter((r) => r.seasonYear !== career.seasonYear),
+              result,
+            ],
+            currentFixture: undefined,
+          },
+        };
+      }
+      return scheduleWorldClubChallengeForSeason({
+        ...career,
+        worldClubChallenge: { history, currentFixture: undefined },
+      });
+    }
+  }
+
   const hasThisSeason =
-    career.worldClubChallenge?.currentFixture?.seasonYear ===
-      career.seasonYear ||
+    current?.seasonYear === career.seasonYear ||
     history.some((r) => r.seasonYear === career.seasonYear);
   if (hasThisSeason) return career;
   return scheduleWorldClubChallengeForSeason(career);

@@ -29,7 +29,7 @@ export function getManagerCompetitionLabel(
   }
   if (competition === "playoffs") return "Play-Offs";
   if (competition === "friendly") return "Friendly";
-  if (competition === "world_club_challenge") return "World Club Challenge";
+  if (competition === "world_club_challenge") return "WCC";
   return "League";
 }
 
@@ -60,7 +60,7 @@ export function getManagerScheduledFixtureHeadline(
   if (sched.competition === "playoffs") return "Play-Offs";
   if (sched.competition === "friendly") return "Friendly";
   if (sched.competition === "world_club_challenge") {
-    return sched.label ?? "World Club Challenge";
+    return "WCC";
   }
   return `Round ${sched.round} — League`;
 }
@@ -78,7 +78,7 @@ export function getManagerPlayedFixtureLabel(
   if (fixture.competition === "playoffs") return "Play-Offs";
   if (fixture.competition === "friendly") return "Friendly";
   if (fixture.competition === "world_club_challenge") {
-    return "World Club Challenge";
+    return "WCC";
   }
   if (fixture.competition === "league" && fixture.isNeutral) return "Magic Weekend";
   return `Round ${fixture.round} — League`;

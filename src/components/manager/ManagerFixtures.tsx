@@ -91,14 +91,24 @@ type FixtureListItem =
       isNext: boolean;
     };
 
-const FILTERS: { id: FixtureFilter; label: string; shortLabel?: string }[] = [
+const FILTERS: {
+  id: FixtureFilter;
+  label: string;
+  shortLabel?: string;
+  title?: string;
+}[] = [
   { id: "all", label: "All" },
   { id: "upcoming", label: "Upcoming", shortLabel: "Next" },
   { id: "results", label: "Results" },
   { id: "league", label: "League" },
   { id: "cup", label: "Cup" },
   { id: "playoffs", label: "Play-Offs", shortLabel: "Playoffs" },
-  { id: "wcc", label: "World Club Challenge", shortLabel: "WCC" },
+  {
+    id: "wcc",
+    label: "WCC",
+    shortLabel: "WCC",
+    title: "World Club Challenge",
+  },
 ];
 
 function findPlayedForSchedule(
@@ -1025,7 +1035,7 @@ export function ManagerFixtures({
       )}
 
           {showWcc && wccPanelContent && (
-        <GamePanel padded label="World Club Challenge">
+        <GamePanel padded label="WCC">
           {wccPanelContent}
         </GamePanel>
       )}

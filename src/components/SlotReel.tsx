@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, memo, useImperativeHandle, useRef } from "react";
+import { forwardRef, memo, useImperativeHandle, useMemo, useRef } from "react";
 import {
   SLOT_REEL_ITEM_HEIGHT_PX,
   SLOT_REEL_VISIBLE_ROWS,
@@ -9,7 +9,9 @@ import {
 import { getClubColors } from "@/lib/clubs";
 
 export interface SlotReelHandle {
-  setScrollIndex: (index: number, animate: boolean) => void;
+  setScrollIndex: (index: number, animate?: boolean) => void;
+  /** Continuous pixel scroll — preferred during rAF spins. */
+  setScrollY: (y: number) => void;
 }
 
 export interface SlotReelProps {
@@ -29,8 +31,27 @@ export const SlotReel = memo(
     const stripRef = useRef<HTMLDivElement>(null);
     const viewportHeight = SLOT_REEL_ITEM_HEIGHT_PX * SLOT_REEL_VISIBLE_ROWS;
 
+    // Resolve colours once per strip — not on every parent re-render mid-spin.
+    const rowStyles = useMemo(() => {
+      if (!useClubColors) return null;
+      return strip.map((item) => {
+        const colors = getClubColors(item);
+        return {
+          backgroundColor: colors.primary,
+          color: "#ffffff",
+          textShadow: "0 1px 2px rgba(0,0,0,0.55)",
+        } as const;
+      });
+    }, [strip, useClubColors]);
+
     useImperativeHandle(ref, () => ({
-      setScrollIndex(index: number, animate: boolean) {
+      setScrollY(y: number) {
+        const el = stripRef.current;
+        if (!el) return;
+        el.style.transition = "none";
+        el.style.transform = `translate3d(0, ${y}px, 0)`;
+      },
+      setScrollIndex(index: number, animate = false) {
         const el = stripRef.current;
         if (!el) return;
         const y = computeSlotReelScrollY(index);
@@ -43,37 +64,31 @@ export const SlotReel = memo(
 
     return (
       <div
-        className={`slot-reel-window ${className ?? ""}`}
+        className={`slot-reel-window ${className ?? ""}`.trim()}
         style={{
           height: viewportHeight,
-          // Keep CSS var in lockstep with JS transform math.
           ["--slot-reel-item-h" as string]: `${SLOT_REEL_ITEM_HEIGHT_PX}px`,
         }}
       >
-        <div ref={stripRef} className="slot-reel-strip">
-          {strip.map((item, i) => {
-            const colors = useClubColors ? getClubColors(item) : null;
-            return (
-              <div
-                key={`${item}-${i}`}
-                className={`slot-reel-item slot-reveal-display-text text-center font-display font-black uppercase ${
-                  colors ? "text-white" : "text-theme-primary"
-                } ${textClassName ?? ""}`}
-                style={{
-                  height: SLOT_REEL_ITEM_HEIGHT_PX,
-                  ...(colors
-                    ? {
-                        backgroundColor: colors.primary,
-                        color: "#ffffff",
-                        textShadow: "0 1px 2px rgba(0,0,0,0.55)",
-                      }
-                    : null),
-                }}
-              >
-                {formatItem(item)}
-              </div>
-            );
-          })}
+        <div
+          ref={stripRef}
+          className="slot-reel-strip"
+          style={{ willChange: "transform" }}
+        >
+          {strip.map((item, i) => (
+            <div
+              key={`${item}-${i}`}
+              className={`slot-reel-item slot-reveal-display-text text-center font-display font-black uppercase ${
+                useClubColors ? "text-white" : "text-theme-primary"
+              } ${textClassName ?? ""}`}
+              style={{
+                height: SLOT_REEL_ITEM_HEIGHT_PX,
+                ...(rowStyles?.[i] ?? null),
+              }}
+            >
+              {formatItem(item)}
+            </div>
+          ))}
         </div>
       </div>
     );

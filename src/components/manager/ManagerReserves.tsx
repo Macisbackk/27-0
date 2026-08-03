@@ -541,7 +541,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
               >
                 <div className="reserve-player-card">
                   <div className="reserve-player-card__header">
-                    <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex flex-wrap items-center justify-center gap-2">
                       <h3>{r.name}</h3>
                       {review.flags.map((flag) => (
                         <span

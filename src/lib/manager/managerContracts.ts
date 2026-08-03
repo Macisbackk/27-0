@@ -248,15 +248,24 @@ export function resolveWageBudgetForCareer(career: ManagerCareer): number {
   const wageBill =
     computeWageBill(career.contracts) +
     computeWageBill(career.reserveContracts ?? {});
-  const tierFloor = getWageBudgetForClub(career.club);
+  const tierFloor = getWageBudgetForClub(
+    career.club,
+    career.difficulty
+  );
   const afterRenewals = projectWageBillAfterRenewals(career);
   const squadFloor = Math.round(Math.max(wageBill, afterRenewals) * 1.05);
   const floor = Math.max(tierFloor, squadFloor);
   return Math.max(career.wageBudget ?? 0, floor);
 }
 
-export function getWageBudgetForClub(club: string): number {
-  const stars = getManagerClubStarRating(club);
+export function getWageBudgetForClub(
+  club: string,
+  careerStars?: number | null
+): number {
+  const stars =
+    typeof careerStars === "number" && Number.isFinite(careerStars)
+      ? Math.max(1, Math.min(5, Math.round(careerStars)))
+      : getManagerClubStarRating(club);
   const byStars: Record<number, number> = {
     5: 3_750_000,
     4: 3_050_000,

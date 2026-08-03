@@ -166,10 +166,10 @@ export function getManagerMatchOccasionPresentation(
     case "wcc":
       return {
         occasion,
-        weekLabel: "World Club Challenge",
-        badgeLabel: "International",
+        weekLabel: "WCC",
+        badgeLabel: "WCC",
         badgeTone: "sky",
-        momentLine: "",
+        momentLine: "World Club Challenge — Super League vs NRL champions",
         playCta: "Play Match",
         playCtaShort: "Play",
         simulateCta: "Simulate Match",

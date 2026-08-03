@@ -13,6 +13,7 @@ import {
   inferSquadRole,
 } from "./managerContracts";
 import { canAffordAdditionalWage, evaluateClubSigningAppeal, getManagerPlayerListingRating } from "./managerFinance";
+import { getCareerClubStars } from "./managerDifficulty";
 import { getManagerClubTeamRating } from "./managerRating";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import { dispatchAchievementCheck } from "../achievements/achievementNotify";
@@ -65,7 +66,11 @@ export function getPlayerSigningDemand(
 ): PlayerSigningDemand {
   const base = getTransferDemand(career, playerId);
   const rating = getManagerPlayerListingRating(career, playerId);
-  const appeal = evaluateClubSigningAppeal(career.club, rating);
+  const appeal = evaluateClubSigningAppeal(
+    career.club,
+    rating,
+    getCareerClubStars(career)
+  );
   const wagePerYear = Math.round(base.wagePerYear * appeal.wagePremium);
   return {
     wagePerYear,

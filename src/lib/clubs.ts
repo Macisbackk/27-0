@@ -2,6 +2,10 @@ import type { CSSProperties } from "react";
 import clubsData from "../../data/clubs.json";
 import { getAllNrlClubsAsClub, getNrlClubByName, nrlClubToClub } from "./nrl/nrlClubs";
 import {
+  getChampionshipClubByName,
+  getChampionshipOnlyClubsAsClub,
+} from "./clubs/championship-clubs";
+import {
   getClubPanelTextStyle,
   getClubPillBackground,
   getLuminance,
@@ -22,6 +26,16 @@ export interface Club {
   playable?: boolean;
   /** Present for NRL club records; Super League clubs omit or use super_league. */
   league?: "super_league" | "nrl";
+  /** 2026 Championship metadata (lower-league expansion). */
+  abbreviation?: string;
+  country?: string;
+  competitionTier2026?: "championship";
+  previousTier2025?: "championship" | "league-one";
+  textColour?: string;
+  challengeCupEligible?: boolean;
+  managerSelectable?: boolean;
+  generatedSquad?: boolean;
+  baseStrength?: number;
 }
 
 export const SUPER_LEAGUE_CLUBS: Club[] = (clubsData as Club[]).map((c) => ({
@@ -77,6 +91,11 @@ function stripEraYearSuffix(name: string): string {
 export function getClubByName(name: string): Club | undefined {
   const resolved = stripEraYearSuffix(CLUB_ALIASES[name] ?? name);
 
+  const championship = getChampionshipClubByName(resolved);
+  if (championship) {
+    return championship;
+  }
+
   const sl = SUPER_LEAGUE_CLUBS.find(
     (c) =>
       c.name === resolved ||
@@ -90,9 +109,18 @@ export function getClubByName(name: string): Club | undefined {
   return nrl ? nrlClubToClub(nrl) : undefined;
 }
 
-/** All known clubs across Super League + NRL (NRL remains non-playable). */
+/** All known clubs across Super League + Championship + NRL (NRL remains non-playable). */
 export function getAllClubs(): Club[] {
-  return [...SUPER_LEAGUE_CLUBS, ...getAllNrlClubsAsClub()];
+  const champOnly = getChampionshipOnlyClubsAsClub();
+  const seen = new Set(SUPER_LEAGUE_CLUBS.map((c) => c.id));
+  const merged = [...SUPER_LEAGUE_CLUBS];
+  for (const club of champOnly) {
+    if (!seen.has(club.id)) {
+      seen.add(club.id);
+      merged.push(club);
+    }
+  }
+  return [...merged, ...getAllNrlClubsAsClub()];
 }
 
 

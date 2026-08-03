@@ -288,15 +288,15 @@ export function PlayoffBracket({
           )}
         </AnimatePresence>
 
-        <div className="bracket-sticky-actions bracket-actions-center mx-auto w-full max-w-3xl md:mt-4">
-          <div className="mx-auto flex w-full max-w-xs flex-col items-center justify-center gap-2 sm:max-w-none sm:flex-row sm:flex-wrap">
+        <div className="bracket-sticky-actions bracket-actions-center mt-4">
+          <div className="bracket-actions-center__group">
             {showProceedToNextRound && (
               <GameButton
                 variant="current"
                 size="md"
                 fullWidth={false}
                 onClick={handleProceedToNextRound}
-                className="w-full max-w-xs sm:w-auto md:hidden"
+                className="w-full min-w-[12rem] sm:w-auto md:hidden"
               >
                 Proceed to {getPlayoffRoundLabel(activeRound)}
               </GameButton>
@@ -307,7 +307,7 @@ export function PlayoffBracket({
               fullWidth={false}
               disabled={!canSimRound}
               onClick={handleSimulateRound}
-              className={`w-full max-w-xs sm:w-auto disabled:opacity-40 ${
+              className={`w-full min-w-[12rem] sm:w-auto disabled:opacity-40 ${
                 showProceedToNextRound ? "hidden md:inline-flex" : ""
               }`}
             >

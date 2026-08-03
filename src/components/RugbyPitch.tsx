@@ -448,14 +448,14 @@ const SquadMarker = memo(function SquadMarker({
       onClick={onClick}
       onDoubleClick={onDoubleClick}
       title={`${slot.label}: change or remove player`}
-      className={`btn-press select-none rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50 ${
+      className={`btn-press select-none rounded-lg outline-none ring-2 focus-visible:ring-theme-primary/50 ${
         accent === "source"
-          ? "ring-2 ring-theme-primary"
+          ? "ring-theme-primary"
           : accent === "target"
-            ? "ring-2 ring-accent-gold shadow-[0_0_12px_rgba(251,191,36,0.35)]"
+            ? "ring-accent-gold shadow-[0_0_12px_rgba(251,191,36,0.35)]"
             : selected
-              ? "ring-2 ring-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.45)]"
-              : "hover:ring-2 hover:ring-theme-primary/40"
+              ? "ring-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.45)]"
+              : "ring-transparent hover:ring-theme-primary/40"
       }`}
     >
       <PitchSlotCard

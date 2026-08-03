@@ -620,14 +620,13 @@ export function hydrateInboxMessages(career: ManagerCareer): ManagerCareer {
     if (isBoard && next.read === false && next.resolved === true) {
       next = { ...next, resolved: false };
     }
-    // Also reopen board mail that was bulk-archived by "View all as seen"
-    // before board was treated as action mail (keep once unread migration ran).
+    // Objectives letter only: reopen if bulk-archived before board was
+    // treated as action mail. Do not reopen dismissed ultimatums/warnings —
+    // that made the same board letters keep coming back.
     if (
       isBoard &&
       next.resolved === true &&
-      (next.id.startsWith("board-objectives-") ||
-        next.id.startsWith("board-ultimatum-") ||
-        next.requiredAction)
+      next.id.startsWith("board-objectives-")
     ) {
       next = { ...next, resolved: false };
     }
@@ -654,9 +653,81 @@ export function hydrateInboxMessages(career: ManagerCareer): ManagerCareer {
   });
   const hydrated = {
     ...career,
-    inboxMessages: migrated,
+    inboxMessages: collapseDuplicateBoardSpam(migrated),
   };
   return purgeStaleInboxMessages(purgeInvalidTransferOffers(hydrated));
+}
+
+/**
+ * Existing saves may contain weekly wage / confidence / attendance /
+ * ultimatum copies of the same letter. Keep the newest of each category
+ * per season and drop the rest.
+ */
+function collapseDuplicateBoardSpam(
+  messages: InboxMessage[]
+): InboxMessage[] {
+  const spamPrefixes = [
+    "board-wage-warning-",
+    "board-confidence-boost-",
+    "board-confidence-drop-",
+    "board-attendance-",
+    "board-ultimatum-",
+    "board-treble-",
+    "board-quad-",
+    "board-clean-sweep-",
+    "board-honours-",
+  ] as const;
+
+  const keep = new Set<string>();
+  const drop = new Set<string>();
+
+  for (const prefix of spamPrefixes) {
+    const matches = messages.filter((m) => m.id.startsWith(prefix));
+    if (matches.length <= 1) continue;
+
+    // Group by season year extracted from id when present.
+    const bySeason = new Map<string, InboxMessage[]>();
+    for (const m of matches) {
+      const seasonKey = String(m.season ?? "unknown");
+      const list = bySeason.get(seasonKey) ?? [];
+      list.push(m);
+      bySeason.set(seasonKey, list);
+    }
+
+    for (const group of bySeason.values()) {
+      if (group.length <= 1) continue;
+      const sorted = [...group].sort((a, b) => {
+        const weekDiff = (b.gameWeek ?? b.week ?? 0) - (a.gameWeek ?? a.week ?? 0);
+        if (weekDiff !== 0) return weekDiff;
+        return (b.createdAt ?? "").localeCompare(a.createdAt ?? "");
+      });
+      keep.add(sorted[0]!.id);
+      for (const extra of sorted.slice(1)) {
+        drop.add(extra.id);
+      }
+    }
+  }
+
+  // Composite honour overlap: prefer board-honours over older treble/quad/sweep.
+  const honourBySeason = new Map<string, InboxMessage>();
+  for (const m of messages) {
+    if (!m.id.startsWith("board-honours-")) continue;
+    honourBySeason.set(String(m.season ?? ""), m);
+  }
+  for (const m of messages) {
+    if (
+      m.id.startsWith("board-treble-") ||
+      m.id.startsWith("board-quad-") ||
+      m.id.startsWith("board-clean-sweep-")
+    ) {
+      if (honourBySeason.has(String(m.season ?? ""))) {
+        drop.add(m.id);
+      }
+    }
+  }
+
+  if (drop.size === 0) return messages;
+  return messages.filter((m) => !drop.has(m.id) || keep.has(m.id));
 }
 
 export function addReserveCallUpInboxMessage(

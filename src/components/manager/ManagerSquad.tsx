@@ -45,7 +45,7 @@ interface ManagerSquadProps {
   subTab: SquadSubTab;
 }
 
-const SINGLE_CLICK_DELAY_MS = 220;
+const SINGLE_CLICK_DELAY_MS = 280;
 
 function useFinePointer(): boolean {
   const [finePointer, setFinePointer] = useState(() => {
@@ -65,9 +65,10 @@ function useFinePointer(): boolean {
 }
 
 const SQUAD_SELECTION_CLASS = {
-  idle: "border-pitch-700/60 bg-pitch-900/50 hover:border-pitch-500",
+  // Keep a transparent ring on idle so selection rings never resize the box.
+  idle: "border-pitch-700/60 bg-pitch-900/50 ring-2 ring-transparent hover:border-pitch-500",
   source: "border-theme-primary bg-theme-primary/12 ring-2 ring-theme-primary/45",
-  target: "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50",
+  target: "border-accent-gold bg-accent-gold/10 ring-2 ring-accent-gold/50",
 } as const;
 
 type SquadSelectionRole = keyof typeof SQUAD_SELECTION_CLASS;
@@ -102,13 +103,15 @@ const SQUAD_POOL_GRID_CLASS =
 function squadPlayerBoxClass(
   selectionRole: SquadSelectionRole,
   unavailable?: boolean,
-  isSuspension?: boolean
+  isSuspension?: boolean,
+  dimmed = false
 ): string {
   return [
     squadSelectionClass(selectionRole),
     SQUAD_PLAYER_BOX_CLASS,
     "btn-press select-none rounded-lg border text-center transition",
     unavailable ? `${unavailableAccentClass(!!isSuspension)} opacity-90` : "",
+    dimmed ? "opacity-40" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -118,12 +121,14 @@ function SquadPoolPlayerButton({
   career,
   entry,
   poolRole,
+  dimmed,
   onClick,
   onDoubleClick,
 }: {
   career: ManagerCareer;
   entry: SquadPoolEntry;
   poolRole: SquadSelectionRole;
+  dimmed?: boolean;
   onClick: () => void;
   onDoubleClick?: (e: MouseEvent) => void;
 }) {
@@ -141,7 +146,12 @@ function SquadPoolPlayerButton({
         type="button"
         onClick={onClick}
         onDoubleClick={onDoubleClick}
-        className={squadPlayerBoxClass(poolRole, unavailable, isSuspension)}
+        className={squadPlayerBoxClass(
+          poolRole,
+          unavailable,
+          isSuspension,
+          dimmed
+        )}
       >
         <div className="squad-side-player-card__main">
           <p className={SQUAD_PLAYER_NAME_CLASS}>{player.name}</p>
@@ -181,7 +191,7 @@ export function ManagerSquad({
   subTab,
 }: ManagerSquadProps) {
   const finePointer = useFinePointer();
-  const matchdayClickTimerRef = useRef<number | null>(null);
+  const clickTimerRef = useRef<number | null>(null);
   const squadPoolPanelRef = useRef<HTMLDivElement>(null);
   const matchdayPanelRef = useRef<HTMLDivElement>(null);
   const [selectedTarget, setSelectedTarget] = useState<MatchdaySlotTarget | null>(
@@ -206,8 +216,8 @@ export function ManagerSquad({
 
   useEffect(
     () => () => {
-      if (matchdayClickTimerRef.current != null) {
-        window.clearTimeout(matchdayClickTimerRef.current);
+      if (clickTimerRef.current != null) {
+        window.clearTimeout(clickTimerRef.current);
       }
     },
     []
@@ -253,17 +263,14 @@ export function ManagerSquad({
   const squadPool = useMemo(() => getSquadRosterPoolPlayers(career), [career]);
 
   const filteredPool = useMemo(() => {
-    if (selectedTarget || replaceSlot) {
-      const eligibleIds = new Set(replacementCandidates.map((c) => c.playerId));
-      return squadPool.filter(({ playerId }) => eligibleIds.has(playerId));
-    }
+    // Keep the full (position-filtered) list during selection so cards don't jump.
     if (positionFilter === "all") return squadPool;
     return squadPool.filter(({ playerId }) =>
       getManagerPlayerEligiblePositions(career, playerId).includes(
         positionFilter
       )
     );
-  }, [squadPool, career, positionFilter, selectedTarget, replaceSlot, replacementCandidates]);
+  }, [squadPool, career, positionFilter]);
 
   const displayPool = useMemo(
     () =>
@@ -332,24 +339,32 @@ export function ManagerSquad({
     }
   };
 
+  const clearClickTimer = () => {
+    if (clickTimerRef.current != null) {
+      window.clearTimeout(clickTimerRef.current);
+      clickTimerRef.current = null;
+    }
+  };
+
   const handlePoolPlayerClick = (playerId: string, unavailable: boolean) => {
     if (unavailable) {
-      playUiClick();
       openPlayerModal(playerId);
       return;
     }
     if (!finePointer) {
-      playUiClick();
       openPlayerModal(playerId);
       return;
     }
     if (pendingAssignId === playerId) {
-      playUiClick();
       setPendingAssignId(null);
       return;
     }
     if (pendingAssignId) return;
     if (selectedTarget || replaceSourcePlayerId) {
+      if (!replaceCandidateIds.has(playerId)) {
+        setAssignmentNotice("That player is not eligible for this swap.");
+        return;
+      }
       handlePickPlayer(playerId);
       return;
     }
@@ -357,11 +372,24 @@ export function ManagerSquad({
     setPendingAssignId(playerId);
   };
 
-  const openPlayerModal = (playerId: string) => {
-    if (matchdayClickTimerRef.current != null) {
-      window.clearTimeout(matchdayClickTimerRef.current);
-      matchdayClickTimerRef.current = null;
+  const handlePoolPlayerPrimaryClick = (
+    playerId: string,
+    unavailable: boolean
+  ) => {
+    playUiClick();
+    if (unavailable || !finePointer) {
+      openPlayerModal(playerId);
+      return;
     }
+    clearClickTimer();
+    clickTimerRef.current = window.setTimeout(() => {
+      clickTimerRef.current = null;
+      handlePoolPlayerClick(playerId, unavailable);
+    }, SINGLE_CLICK_DELAY_MS);
+  };
+
+  const openPlayerModal = (playerId: string) => {
+    clearClickTimer();
     setModalPlayerId(playerId);
     setPendingAssignId(null);
     setSelectedTarget(null);
@@ -391,11 +419,9 @@ export function ManagerSquad({
       openPlayerModal(playerId);
       return;
     }
-    if (matchdayClickTimerRef.current != null) {
-      window.clearTimeout(matchdayClickTimerRef.current);
-    }
-    matchdayClickTimerRef.current = window.setTimeout(() => {
-      matchdayClickTimerRef.current = null;
+    clearClickTimer();
+    clickTimerRef.current = window.setTimeout(() => {
+      clickTimerRef.current = null;
       handleMatchdayPlayerClick(playerId);
     }, SINGLE_CLICK_DELAY_MS);
   };
@@ -448,10 +474,7 @@ export function ManagerSquad({
     setPendingAssignId(null);
     setReplaceSourcePlayerId(null);
     setModalPlayerId(null);
-    if (matchdayClickTimerRef.current != null) {
-      window.clearTimeout(matchdayClickTimerRef.current);
-      matchdayClickTimerRef.current = null;
-    }
+    clearClickTimer();
   };
 
   return (
@@ -649,34 +672,33 @@ export function ManagerSquad({
 
         <div ref={squadPoolPanelRef} className={`min-w-0 w-full ${CARD.clipboard} ${SPACING.cardPadding}`}>
           <p className={`${TYPO.sectionLabel} mb-2`}>Squad Players</p>
-          {pendingAssignId ? (
-            <p className={`mb-2 ${TYPO.bodySm} text-pitch-300`}>
-              <span className="font-semibold text-theme-primary">
-                {getManagerPlayer(career, pendingAssignId)?.name}
-              </span>{" "}
-              selected — pick a{" "}
-              <span className="font-semibold text-accent-gold">highlighted slot</span>
-            </p>
-          ) : replaceSourcePlayerId ? (
-            <p className={`mb-2 ${TYPO.bodySm} text-pitch-300`}>
-              Swapping{" "}
-              <span className="font-semibold text-theme-primary">
-                {getManagerPlayer(career, replaceSourcePlayerId)?.name}
-              </span>{" "}
-              — pick a{" "}
-              <span className="font-semibold text-accent-gold">highlighted player</span>
-            </p>
-          ) : selectedTarget ? (
-            <p className={`mb-2 ${TYPO.bodySm} text-pitch-300`}>
-              Slot selected — pick a{" "}
-              <span className="font-semibold text-accent-gold">highlighted player</span>
-            </p>
-          ) : (
-            <p className={`mb-2 ${TYPO.bodySm} text-pitch-500`}>
-              {squadPoolHelpText}
-            </p>
-          )}
-          {!(selectedTarget || replaceSourcePlayerId || pendingAssignId) && (
+          <div className={`mb-2 min-h-[2.75rem] ${TYPO.bodySm}`}>
+            {pendingAssignId ? (
+              <p className="text-pitch-300">
+                <span className="font-semibold text-theme-primary">
+                  {getManagerPlayer(career, pendingAssignId)?.name}
+                </span>{" "}
+                selected — pick a{" "}
+                <span className="font-semibold text-accent-gold">highlighted slot</span>
+              </p>
+            ) : replaceSourcePlayerId ? (
+              <p className="text-pitch-300">
+                Swapping{" "}
+                <span className="font-semibold text-theme-primary">
+                  {getManagerPlayer(career, replaceSourcePlayerId)?.name}
+                </span>{" "}
+                — pick a{" "}
+                <span className="font-semibold text-accent-gold">highlighted player</span>
+              </p>
+            ) : selectedTarget ? (
+              <p className="text-pitch-300">
+                Slot selected — pick a{" "}
+                <span className="font-semibold text-accent-gold">highlighted player</span>
+              </p>
+            ) : (
+              <p className="text-pitch-500">{squadPoolHelpText}</p>
+            )}
+          </div>
           <div className="mb-2 flex gap-1 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible">
             <button
               type="button"
@@ -704,18 +726,26 @@ export function ManagerSquad({
               </button>
             ))}
           </div>
-          )}
           <div className="min-w-0">
             <ul className={SQUAD_POOL_GRID_CLASS}>
-              {displayPool.map((entry) => (
+              {displayPool.map((entry) => {
+                const selectingForSlot =
+                  !!selectedTarget || !!replaceSourcePlayerId;
+                const dimmed =
+                  selectingForSlot &&
+                  !replaceCandidateIds.has(entry.playerId);
+                return (
                 <SquadPoolPlayerButton
                   key={entry.playerId}
                   career={career}
                   entry={entry}
                   poolRole={getPoolPlayerRole(entry.playerId)}
+                  dimmed={dimmed}
                   onClick={() => {
-                    playUiClick();
-                    handlePoolPlayerClick(entry.playerId, entry.unavailable);
+                    handlePoolPlayerPrimaryClick(
+                      entry.playerId,
+                      entry.unavailable
+                    );
                   }}
                   onDoubleClick={
                     finePointer
@@ -726,18 +756,24 @@ export function ManagerSquad({
                       : undefined
                   }
                 />
-              ))}
+                );
+              })}
             </ul>
           </div>
           {displayPool.length === 0 && (
             <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
-              {selectedTarget || replaceSourcePlayerId
-                ? "No eligible players for this slot."
-                : career.calledUpReserveIds.length === 0
-                  ? "No squad players available — call up reserves from the Reserves tab, or all fit players are already on the sheet."
-                  : "No fit squad players available — injured players are shown above; others may already be on the sheet."}
+              {career.calledUpReserveIds.length === 0
+                ? "No squad players available — call up reserves from the Reserves tab, or all fit players are already on the sheet."
+                : "No fit squad players available — injured players are shown above; others may already be on the sheet."}
             </p>
           )}
+          {displayPool.length > 0 &&
+            (selectedTarget || replaceSourcePlayerId) &&
+            replaceCandidateIds.size === 0 && (
+              <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+                No eligible players for this slot.
+              </p>
+            )}
         </div>
       </div>
         </>

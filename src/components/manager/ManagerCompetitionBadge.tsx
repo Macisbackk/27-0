@@ -50,11 +50,15 @@ export function ManagerCompetitionBadge({
     const short =
       cupRound === "round_one"
         ? "R1"
-        : cupRound === "quarter_final"
-          ? "QF"
-          : cupRound === "semi_final"
-            ? "SF"
-            : roundLabel;
+        : cupRound === "round_two"
+          ? "R2"
+          : cupRound === "last_sixteen"
+            ? "L16"
+            : cupRound === "quarter_final"
+              ? "QF"
+              : cupRound === "semi_final"
+                ? "SF"
+                : roundLabel;
     return (
       <span
         className={`${managerPillClass("gold")} ${className}`}

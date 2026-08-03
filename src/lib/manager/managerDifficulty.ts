@@ -180,10 +180,10 @@ export function applySeasonClubPrestigeDrift(
         type: "board",
         sender: "Board",
         title: starDelta > 0 ? "Club status rising" : "Club status falling",
-        body:
+          body:
           starDelta > 0
-            ? `Years of success have raised ${career.club} to a ${stars}-star club. Board expectations will increase.`
-            : `Persistent poor results have dropped ${career.club} to a ${stars}-star club.`,
+            ? `Years of success have raised ${career.club} to a ${stars}-star club. Board expectations, transfer targets, and budget floors will increase.`
+            : `Persistent poor results have dropped ${career.club} to a ${stars}-star club. Board expectations and transfer reach will ease.`,
         week: 0,
         season: nextSeason,
         gameWeek: 0,
@@ -376,8 +376,19 @@ export function maybeAddBoardUltimatumInbox(
   career: ManagerCareer
 ): ManagerCareer {
   if (career.boardConfidence >= 30) return career;
-  const msgId = `board-ultimatum-s${career.seasonYear}-w${career.gameWeek}`;
-  if (career.inboxMessages.some((m) => m.id === msgId)) return career;
+  // Once per season — weekly ultimatums repeated the same warning.
+  const msgId = `board-ultimatum-s${career.seasonYear}`;
+  if (
+    career.inboxMessages.some(
+      (m) =>
+        m.id === msgId ||
+        m.eventId === msgId ||
+        (typeof m.id === "string" &&
+          m.id.startsWith(`board-ultimatum-s${career.seasonYear}`))
+    )
+  ) {
+    return career;
+  }
 
   return pushInboxMessage(career, {
     id: msgId,

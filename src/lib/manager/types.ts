@@ -50,6 +50,8 @@ export type ManagerCompetition =
 
 export type CupRoundKey =
   | "round_one"
+  | "round_two"
+  | "last_sixteen"
   | "quarter_final"
   | "semi_final"
   | "final";
@@ -788,6 +790,19 @@ export interface ManagerCareer {
   retiredPlayers?: RetiredPlayer[];
   /** Save schema version for migrations. */
   saveVersion?: number;
+  /** Generated Championship squads (500 players) — persisted once per career. */
+  championshipSquads?: import("./championship/championshipSquads").ChampionshipSquadState;
+  /** Simulated Championship league competition. */
+  championshipCompetition?: import("./championship/championshipLeague").ChampionshipCompetitionState;
+  /** Schema markers for Championship / expanded cup migrations. */
+  challengeCupSchemaVersion?: number;
+  generatedChampionshipSquadsVersion?: number;
+  championshipCompetitionVersion?: number;
+  aiChampionshipTransferVersion?: number;
+  /** Elite Championship → Super League AI transfers this season. */
+  championshipToSlTransfersThisSeason?: number;
+  /** Player IDs recently rejected / cooled down for AI Champ→SL interest. */
+  championshipTransferCooldowns?: Record<string, number>;
   /** World Club Challenge fixture + history (from season 2 onwards). */
   worldClubChallenge?: WorldClubChallengeState;
   /** Club that won Super League last season — drives WCC scheduling. */
@@ -866,6 +881,8 @@ export const MANAGER_SEASON_GAMES = 27;
 
 export const CUP_ROUND_LABELS: Record<CupRoundKey, string> = {
   round_one: "Challenge Cup Round One",
+  round_two: "Challenge Cup Round Two",
+  last_sixteen: "Challenge Cup Last 16",
   quarter_final: "Challenge Cup Quarter-Final",
   semi_final: "Challenge Cup Semi-Final",
   final: "Challenge Cup Final",

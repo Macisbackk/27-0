@@ -31,6 +31,7 @@ import { getPlayerSigningDemand } from "./managerTransfers";
 import { createInitialPlayerState } from "./managerSquad";
 import { addPlayersToFreeAgents, completeFreeAgentSigning, isFreeAgent } from "./managerFreeAgents";
 import { syncManagerFinance, deductTransferFee, addTransferIncome, getTransferBudget, canAffordAdditionalWage, evaluateClubSigningAppeal, getBuyerAdjustedTransferFee, getManagerPlayerListingRating, computeFirstSeasonTransferBudget } from "./managerFinance";
+import { getCareerClubStars } from "./managerDifficulty";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import {
   createPlayerSaleMessage,
@@ -264,7 +265,12 @@ export function getBuyerMinimumTransferFee(
 ): number {
   const asking = getSellerAskingPrice(career, playerId, club, listed);
   const rating = getManagerPlayerListingRating(career, playerId);
-  const adjusted = getBuyerAdjustedTransferFee(career.club, asking, rating);
+  const adjusted = getBuyerAdjustedTransferFee(
+    career.club,
+    asking,
+    rating,
+    getCareerClubStars(career)
+  );
   return listed ? adjusted : Math.round(adjusted * 1.1);
 }
 
@@ -466,7 +472,11 @@ export function evaluateBuyOffer(
   let feeAcceptedSoftly = false;
 
   const rating = getManagerPlayerListingRating(career, playerId);
-  const appeal = evaluateClubSigningAppeal(career.club, rating);
+  const appeal = evaluateClubSigningAppeal(
+    career.club,
+    rating,
+    getCareerClubStars(career)
+  );
   if (!appeal.allowed) {
     return { accepted: false, reason: appeal.reason ?? "Signing blocked." };
   }

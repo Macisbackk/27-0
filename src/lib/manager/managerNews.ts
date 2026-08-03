@@ -7,9 +7,130 @@ import {
   MAGIC_WEEKEND_VENUE,
   isMagicWeekendFixture,
 } from "./managerMagicWeekend";
+import { isCurrentPlayableClub } from "../clubs/super-league-display";
 
 const MAX_STORED = 10;
 const DISPLAY_COUNT = 5;
+
+function championshipNewsItems(
+  career: ManagerCareer,
+  rng: () => number
+): LatestNewsItem[] {
+  const week = career.gameWeek;
+  const items: LatestNewsItem[] = [];
+  const competition = career.championshipCompetition;
+  if (!competition || week <= 0) return items;
+
+  const roundFixtures = competition.fixtures.filter(
+    (f) => f.played && f.round === Math.min(19, week)
+  );
+  if (roundFixtures.length === 0) return items;
+
+  const standings = competition.standings;
+  const leader = standings[0];
+  const bottom = standings[standings.length - 1];
+
+  if (leader && rng() < 0.55) {
+    items.push({
+      id: `news-champ-leader-w${week}`,
+      week,
+      type: "result",
+      text: `${leader.team} sit top of the Championship after Round ${Math.min(19, week)} (${leader.leaguePoints} pts).`,
+    });
+  }
+
+  const thrashings = roundFixtures
+    .filter(
+      (f) =>
+        f.homeScore != null &&
+        f.awayScore != null &&
+        Math.abs(f.homeScore - f.awayScore) >= 20
+    )
+    .sort(
+      (a, b) =>
+        Math.abs((b.homeScore ?? 0) - (b.awayScore ?? 0)) -
+        Math.abs((a.homeScore ?? 0) - (a.awayScore ?? 0))
+    );
+  const big = thrashings[0];
+  if (big && big.homeScore != null && big.awayScore != null) {
+    const homeWon = big.homeScore > big.awayScore;
+    const winner = homeWon ? big.homeTeam : big.awayTeam;
+    const loser = homeWon ? big.awayTeam : big.homeTeam;
+    const story = big.matchDetail?.story;
+    items.push({
+      id: `news-champ-result-${big.id}`,
+      week,
+      type: "result",
+      text:
+        story ??
+        `Championship: ${winner} thrashed ${loser} ${big.homeScore}-${big.awayScore}.`,
+    });
+  } else if (roundFixtures.length > 0 && rng() < 0.7) {
+    const pick =
+      roundFixtures[Math.floor(rng() * roundFixtures.length)]!;
+    if (pick.homeScore != null && pick.awayScore != null) {
+      items.push({
+        id: `news-champ-result-${pick.id}`,
+        week,
+        type: "result",
+        text:
+          pick.matchDetail?.story ??
+          `Championship: ${pick.homeTeam} ${pick.homeScore}-${pick.awayScore} ${pick.awayTeam}.`,
+      });
+    }
+  }
+
+  const hatTrick = roundFixtures
+    .flatMap((f) => {
+      const detail = f.matchDetail;
+      if (!detail) return [];
+      return [
+        ...detail.home.tryScorers.map((s) => ({
+          ...s,
+          club: f.homeTeam,
+          fixtureId: f.id,
+        })),
+        ...detail.away.tryScorers.map((s) => ({
+          ...s,
+          club: f.awayTeam,
+          fixtureId: f.id,
+        })),
+      ];
+    })
+    .filter((s) => s.tries >= 3)
+    .sort((a, b) => b.tries - a.tries)[0];
+  if (hatTrick) {
+    items.push({
+      id: `news-champ-hat-${hatTrick.fixtureId}-${hatTrick.playerId}`,
+      week,
+      type: "result",
+      text: `${hatTrick.name} ran riot for ${hatTrick.club} with a ${hatTrick.tries}-try haul in the Championship.`,
+    });
+  }
+
+  if (bottom && bottom.position >= 18 && rng() < 0.35) {
+    items.push({
+      id: `news-champ-bottom-w${week}`,
+      week,
+      type: "result",
+      text: `${bottom.team} remain rooted near the foot of the Championship table.`,
+    });
+  }
+
+  const champTransfers = (career.leagueTransfers ?? []).filter(
+    (tx) => tx.week >= week - 1 && !isCurrentPlayableClub(tx.fromClub)
+  );
+  for (const tx of champTransfers.slice(0, 1)) {
+    items.push({
+      id: `news-champ-tx-${tx.id}`,
+      week: tx.week,
+      type: "transfer",
+      text: `Championship exit: ${tx.playerName} leaves ${tx.fromClub} for Super League side ${tx.toClub}.`,
+    });
+  }
+
+  return items;
+}
 
 export function generateWeeklyNews(career: ManagerCareer): LatestNewsItem[] {
   const rng = seedrandom(`${career.seed}-news-w${career.gameWeek}`);
@@ -51,6 +172,8 @@ export function generateWeeklyNews(career: ManagerCareer): LatestNewsItem[] {
       });
     }
   }
+
+  items.push(...championshipNewsItems(career, rng));
 
   const recentPurchase = career.inboxMessages.find(
     (m) =>
@@ -133,6 +256,21 @@ export function generateWeeklyNews(career: ManagerCareer): LatestNewsItem[] {
       type: "transfer",
       text: `${listed.club} have ${listed.playerId ? "a player" : "talent"} available for around ${formatWage(listed.askingPrice)}.`,
     });
+  }
+
+  // Prefer a mix of SL + Championship headlines when both exist
+  const champIds = new Set(
+    items.filter((i) => i.id.includes("champ")).map((i) => i.id)
+  );
+  if (champIds.size > 0 && items.length > DISPLAY_COUNT) {
+    const preferred = [
+      ...items.filter((i) => champIds.has(i.id)).slice(0, 2),
+      ...items.filter((i) => !champIds.has(i.id)),
+    ];
+    const deduped = preferred.filter(
+      (item, idx, arr) => arr.findIndex((x) => x.id === item.id) === idx
+    );
+    return deduped.slice(0, DISPLAY_COUNT);
   }
 
   return items.slice(0, DISPLAY_COUNT);

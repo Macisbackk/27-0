@@ -1120,15 +1120,14 @@ body {
 
 @media (max-width: 767px) {
   .bracket-sticky-actions {
-    position: fixed;
-    left: 0;
-    right: 0;
+    position: sticky;
     bottom: 0;
     z-index: 30;
+    width: 100%;
     display: flex;
     justify-content: center;
-    margin-left: 0;
-    margin-right: 0;
+    align-items: center;
+    margin-inline: auto;
     border-top: 1px solid color-mix(in srgb, var(--theme-tertiary) 22%, transparent);
     background: color-mix(in srgb, var(--bg-primary) 94%, transparent);
     padding: 0.75rem 0.75rem max(0.75rem, env(safe-area-inset-bottom));
@@ -1139,30 +1138,41 @@ body {
 
 .bracket-actions-center {
   display: flex;
+  width: 100%;
   justify-content: center;
   align-items: center;
   text-align: center;
 }
 
-.bracket-actions-center .flex {
+.bracket-actions-center__group {
+  display: flex;
   width: 100%;
-  max-width: 20rem;
+  max-width: 16rem;
   margin-inline: auto;
+  flex-direction: column;
+  align-items: stretch;
   justify-content: center;
-  align-items: center;
+  gap: 0.5rem;
 }
 
 @media (min-width: 640px) {
-  .bracket-actions-center .flex {
+  .bracket-actions-center__group {
+    width: auto;
     max-width: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
   }
 }
 
 .bracket-sticky-actions {
   position: static;
   z-index: auto;
-  margin-left: 0;
-  margin-right: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-inline: auto;
   border-top: 0;
   background: transparent;
   padding: 0;
@@ -1174,9 +1184,19 @@ body {
   .bracket-sticky-actions {
     margin-top: 1rem;
   }
+}
 
-  .bracket-sticky-actions .flex {
-    justify-content: center;
+@media (max-width: 767px) {
+  /* Keep mobile sticky bar rules above the desktop static reset. */
+  .bracket-sticky-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 30;
+    border-top: 1px solid color-mix(in srgb, var(--theme-tertiary) 22%, transparent);
+    background: color-mix(in srgb, var(--bg-primary) 94%, transparent);
+    padding: 0.75rem 0.75rem max(0.75rem, env(safe-area-inset-bottom));
+    backdrop-filter: blur(14px);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
   }
 }
 
@@ -1612,29 +1632,18 @@ body {
   }
 
   .recruitment-spin-reel--active {
-    animation: recruitmentSpinPulse 1.1s ease-in-out infinite;
+    /* Avoid continuous box-shadow animation during spin — major mobile jank. */
+    animation: none;
   }
 
   .recruitment-spin-reel--landed {
     animation: none;
   }
 
-  @keyframes recruitmentSpinPulse {
-    0%,
-    100% {
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 8px 28px rgba(0, 0, 0, 0.35);
-    }
-    50% {
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        0 8px 32px rgba(148, 163, 184, 0.16);
-    }
-  }
-
   .recruitment-spin-backdrop {
-    backdrop-filter: blur(6px);
+    /* Solid dim only — backdrop-filter blur tanks mobile frame rate mid-spin. */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .recruitment-spin-panel {
