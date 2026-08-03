@@ -70,7 +70,7 @@ const TOGGLE_OPTIONS: {
   },
 ];
 
-function getSettings(career: ManagerCareer): ManagerSettings {
+export function resolveManagerSettings(career: ManagerCareer): ManagerSettings {
   const base = career.managerSettings ?? { ...DEFAULT_MANAGER_SETTINGS };
   const reserveDevelopmentSettings: ManagerReserveDevelopmentSettings = {
     ...DEFAULT_RESERVE_DEVELOPMENT_SETTINGS,
@@ -83,6 +83,31 @@ function getSettings(career: ManagerCareer): ManagerSettings {
     reserveDevelopmentSettings,
     reserveReleaseSettings: reserveDevelopmentSettings,
   };
+}
+
+function getSettings(career: ManagerCareer): ManagerSettings {
+  return resolveManagerSettings(career);
+}
+
+export function patchManagerCareerSettings(
+  career: ManagerCareer,
+  onUpdate: (career: ManagerCareer) => void,
+  settings: ManagerSettings,
+  patch: Partial<ManagerSettings>
+): void {
+  playUiClick();
+  const next = { ...settings, ...patch };
+  if (typeof window !== "undefined" && "showAchievementPopups" in patch) {
+    window.localStorage.setItem(
+      "manager-show-achievement-popups",
+      next.showAchievementPopups ? "1" : "0"
+    );
+  }
+  onUpdate({
+    ...career,
+    managerSettings: next,
+    updatedAt: new Date().toISOString(),
+  });
 }
 
 function SettingsToggle({
@@ -161,19 +186,7 @@ export function ManagerSettings({ career, onUpdate }: ManagerSettingsProps) {
   const settings = getSettings(career);
 
   const patchSettings = (patch: Partial<ManagerSettings>) => {
-    playUiClick();
-    const next = { ...settings, ...patch };
-    if (typeof window !== "undefined" && "showAchievementPopups" in patch) {
-      window.localStorage.setItem(
-        "manager-show-achievement-popups",
-        next.showAchievementPopups ? "1" : "0"
-      );
-    }
-    onUpdate({
-      ...career,
-      managerSettings: next,
-      updatedAt: new Date().toISOString(),
-    });
+    patchManagerCareerSettings(career, onUpdate, settings, patch);
   };
 
   return (
@@ -182,9 +195,27 @@ export function ManagerSettings({ career, onUpdate }: ManagerSettingsProps) {
         <GameSectionHeader
           label="Preferences"
           title="Settings"
-          subtitle="Tune contract renewals and Manager Mode behaviour for this save."
+          subtitle="Preferences now live on Contracts, Reserves, and Club."
         />
+        <p className={`${CARD.base} ${SPACING.cardPadding} ${TYPO.bodySm} text-pitch-400`}>
+          Contract renewals are under <span className="text-white">Contracts → Settings</span>.
+          Reserve rules are under <span className="text-white">Reserves → Settings</span>.
+          Matchday toggles are on the <span className="text-white">Club</span> page.
+        </p>
+        <GameplaySettingsCard settings={settings} onPatch={patchSettings} />
+      </ManagerSection>
+    </ManagerPage>
+  );
+}
 
+export function ContractSettingsCard({
+  settings,
+  onPatch,
+}: {
+  settings: ManagerSettings;
+  onPatch: (patch: Partial<ManagerSettings>) => void;
+}) {
+  return (
         <ManagerSectionCard
           title="Contract settings"
           variant="elevated"
@@ -214,7 +245,7 @@ export function ManagerSettings({ career, onUpdate }: ManagerSettingsProps) {
                       className="sr-only"
                       checked={selected}
                       onChange={() =>
-                        patchSettings({ autoRenewContractYears: years })
+                        onPatch({ autoRenewContractYears: years })
                       }
                     />
                     <span className="text-lg font-bold">{years}</span>
@@ -227,7 +258,17 @@ export function ManagerSettings({ career, onUpdate }: ManagerSettingsProps) {
             </div>
           </fieldset>
         </ManagerSectionCard>
+  );
+}
 
+export function GameplaySettingsCard({
+  settings,
+  onPatch,
+}: {
+  settings: ManagerSettings;
+  onPatch: (patch: Partial<ManagerSettings>) => void;
+}) {
+  return (
         <ManagerSectionCard title="Gameplay" variant="elevated">
           <ul className={`mt-2 divide-y divide-pitch-700/50`}>
             {TOGGLE_OPTIONS.map((option) => {
@@ -238,25 +279,33 @@ export function ManagerSettings({ career, onUpdate }: ManagerSettingsProps) {
                   label={option.label}
                   description={option.description}
                   on={on}
-                  onToggle={() => patchSettings({ [option.key]: !on })}
+                  onToggle={() => onPatch({ [option.key]: !on })}
                 />
               );
             })}
           </ul>
         </ManagerSectionCard>
+  );
+}
 
-        <ReserveDevelopmentSettingsCard
-          career={career}
-          settings={settings}
-          onPatch={patchSettings}
-          onUpdate={onUpdate}
-        />
-
-        <p className={`${CARD.base} ${SPACING.cardPadding} ${TYPO.bodySm} text-pitch-500`}>
-          Settings are stored with this save slot.
-        </p>
-      </ManagerSection>
-    </ManagerPage>
+export function ReserveDevelopmentSettingsPanel({
+  career,
+  settings,
+  onPatch,
+  onUpdate,
+}: {
+  career: ManagerCareer;
+  settings: ManagerSettings;
+  onPatch: (patch: Partial<ManagerSettings>) => void;
+  onUpdate: (career: ManagerCareer) => void;
+}) {
+  return (
+    <ReserveDevelopmentSettingsCard
+      career={career}
+      settings={settings}
+      onPatch={onPatch}
+      onUpdate={onUpdate}
+    />
   );
 }
 

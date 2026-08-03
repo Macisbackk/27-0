@@ -27,6 +27,11 @@ import {
 import { getClubAttendanceProfile } from "@/lib/manager/managerAttendance";
 import { playUiClick } from "@/lib/sound";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
+import {
+  GameplaySettingsCard,
+  patchManagerCareerSettings,
+  resolveManagerSettings,
+} from "@/components/manager/ManagerSettings";
 
 interface ManagerClubProps {
   career: ManagerCareer;
@@ -49,6 +54,7 @@ const FACILITY_ICONS: Record<FacilityType, string> = {
 
 export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
   const [error, setError] = useState<string | null>(null);
+  const settings = resolveManagerSettings(career);
   const facilities = getClubFacilities(career);
   const transferFund = getTransferBudget(career);
   const baseCapacity = getClubAttendanceProfile(career.club).capacity;
@@ -177,6 +183,13 @@ export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
           </ManagerSectionCard>
         ))}
       </div>
+
+      <GameplaySettingsCard
+        settings={settings}
+        onPatch={(patch) =>
+          patchManagerCareerSettings(career, onUpdate, settings, patch)
+        }
+      />
       </ManagerSection>
     </ManagerPage>
   );

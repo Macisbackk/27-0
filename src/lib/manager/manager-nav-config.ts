@@ -20,9 +20,9 @@ export const MANAGER_PRIMARY_NAV_TABS: ManagerNavTab[] = [
 export const MANAGER_MORE_NAV_TABS: ManagerNavTab[] = [
   { id: "club", label: "Club", shortLabel: "Club", icon: "🏟️" },
   { id: "fixtures", label: "Fixtures", shortLabel: "Fixt.", icon: "📅" },
+  { id: "calendar", label: "Calendar", shortLabel: "Cal.", icon: "🗓️" },
   { id: "across-league", label: "Across the League", shortLabel: "League", icon: "🏉" },
   { id: "stats", label: "Stats", shortLabel: "Stats", icon: "📊" },
-  { id: "settings", label: "Settings", shortLabel: "Set.", icon: "⚙️" },
 ];
 
 /** Full desktop tab bar — all sections visible (inbox remains in the header). */
@@ -36,9 +36,9 @@ export const MANAGER_MOBILE_MORE_NAV_TABS: ManagerNavTab[] = [
   { id: "club", label: "Club", shortLabel: "Club", icon: "🏟️" },
   { id: "inbox", label: "Inbox", shortLabel: "Inbox", icon: "✉" },
   { id: "fixtures", label: "Fixtures", shortLabel: "Fixt.", icon: "📅" },
+  { id: "calendar", label: "Calendar", shortLabel: "Cal.", icon: "🗓️" },
   { id: "across-league", label: "League", shortLabel: "League", icon: "🏉" },
   { id: "stats", label: "Stats", shortLabel: "Stats", icon: "📊" },
-  { id: "settings", label: "Settings", shortLabel: "Set.", icon: "⚙️" },
 ];
 
 export function isManagerMobileMoreNavView(view: ManagerView): boolean {

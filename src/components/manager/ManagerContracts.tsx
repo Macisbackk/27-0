@@ -28,11 +28,19 @@ import { releasePlayerWithCost } from "@/lib/manager/managerTransferLeague";
 import { getWageBillPercent, isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { playPanelClose, playUiClick } from "@/lib/sound";
-import { ManagerPage, ManagerSection } from "@/components/manager/manager-ui";
 import {
   managerCalloutClass,
   managerSectionAccentClass,
 } from "@/lib/manager/managerSurfaces";
+import { ManagerPage, ManagerSection } from "@/components/manager/manager-ui";
+import {
+  ManagerSubTabBar,
+} from "@/components/manager/ManagerSubTabBar";
+import {
+  ContractSettingsCard,
+  patchManagerCareerSettings,
+  resolveManagerSettings,
+} from "@/components/manager/ManagerSettings";
 import { markOnboardingStepComplete } from "@/lib/manager/managerOnboarding";
 
 type ContractFilter =
@@ -42,6 +50,8 @@ type ContractFilter =
   | "lowest_wage"
   | "position"
   | "role";
+
+type ContractsSubTab = "contracts" | "settings";
 
 const STATUS_LABELS: Record<string, string> = {
   expires_this_season: "Expires this season",
@@ -62,6 +72,7 @@ export function ManagerContracts({
   career,
   onUpdate,
 }: ManagerContractsProps) {
+  const [subTab, setSubTab] = useState<ContractsSubTab>("contracts");
   const [filter, setFilter] = useState<ContractFilter>("all");
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -75,6 +86,8 @@ export function ManagerContracts({
 
   const [bulkResult, setBulkResult] = useState<string | null>(null);
   const [releaseConfirmId, setReleaseConfirmId] = useState<string | null>(null);
+
+  const settings = resolveManagerSettings(career);
 
   useEffect(() => {
     markOnboardingStepComplete("finances");
@@ -215,6 +228,25 @@ export function ManagerContracts({
         subtitle="Manage wages, renewals, and squad roles"
       />
 
+      <ManagerSubTabBar
+        ariaLabel="Contracts sections"
+        active={subTab}
+        onChange={setSubTab}
+        tabs={[
+          { id: "contracts", label: "Squad deals" },
+          { id: "settings", label: "Settings" },
+        ]}
+      />
+
+      {subTab === "settings" ? (
+        <ContractSettingsCard
+          settings={settings}
+          onPatch={(patch) =>
+            patchManagerCareerSettings(career, onUpdate, settings, patch)
+          }
+        />
+      ) : (
+      <>
       <ProgrammePanel variant="featured" padded>
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
@@ -384,6 +416,8 @@ export function ManagerContracts({
         </div>
       </ClipboardPanel>
 
+      </>
+      )}
       </ManagerSection>
 
       {selected && (

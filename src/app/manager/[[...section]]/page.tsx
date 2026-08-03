@@ -15,6 +15,7 @@ import { ManagerInbox } from "@/components/manager/ManagerInbox";
 import { ManagerTransfers } from "@/components/manager/ManagerTransfers";
 import { ManagerClub } from "@/components/manager/ManagerClub";
 import { ManagerFixtures } from "@/components/manager/ManagerFixtures";
+import { ManagerCalendar } from "@/components/manager/ManagerCalendar";
 import { ManagerAcrossLeague } from "@/components/manager/ManagerAcrossLeague";
 import { ManagerStatsView } from "@/components/manager/ManagerStatsView";
 import { ManagerSettings } from "@/components/manager/ManagerSettings";
@@ -1713,6 +1714,9 @@ export default function ManagerPage() {
                       goToView("match-review", { syncUrl: false });
                     }}
                   />
+                )}
+                {displayView === "calendar" && (
+                  <ManagerCalendar career={career} onUpdate={persist} />
                 )}
                 {displayView === "across-league" && (
                   <ManagerAcrossLeague

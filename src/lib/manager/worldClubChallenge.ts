@@ -12,6 +12,8 @@ import { generateSimulatedMatchEvents } from "./matchEventGenerator";
 import { validateMatchEvents } from "../game/validateMatchEvents";
 import type { MatchEventType } from "../game/match-events";
 import { pickWinningMargin, snapToRLScore } from "../game/rl-scores";
+import { getClubBaseStrength } from "../game/club-strength";
+import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { SUPER_LEAGUE_CLUBS } from "../clubs";
 import {
   generateNrlSquadNames,
@@ -28,6 +30,31 @@ export {
   generateNrlSquadNames,
   NRL_WORLD_CLUB_CHALLENGE_TEAMS,
 } from "../nrl/nrlClubs";
+
+/** Minimum base strength for season-one WCC Super League invitees. */
+const SEASON_ONE_WCC_SL_MIN_STRENGTH = 78;
+
+/**
+ * Pick a top-tier Super League club for the season-one World Club Challenge.
+ * Excludes the user's club so the opener is always an AI showcase match.
+ */
+export function pickTopTierSuperLeagueChampion(
+  seed: string,
+  seasonYear: number,
+  excludeClub?: string
+): string {
+  const pool = CURRENT_PLAYABLE_CLUBS.filter(
+    (c) =>
+      getClubBaseStrength(c) >= SEASON_ONE_WCC_SL_MIN_STRENGTH &&
+      c !== excludeClub
+  );
+  const rng = seedrandom(`${seed}-sl-wcc-invite-${seasonYear}`);
+  if (pool.length === 0) {
+    const fallback = CURRENT_PLAYABLE_CLUBS.filter((c) => c !== excludeClub);
+    return fallback[Math.floor(rng() * fallback.length)] ?? "Wigan Warriors";
+  }
+  return pool[Math.floor(rng() * pool.length)]!;
+}
 
 export function rollNrlChampionRating(
   rng: () => number,
@@ -217,15 +244,25 @@ export function createWorldClubChallengeFixture(
   const isFirstSeason = career.seasonHistory.length === 0;
   const prev = getPreviousSeasonChampion(career);
 
-  // Season one: invitational — your club faces a random top-tier NRL side.
+  // Season one: top-tier Super League invitee vs top-tier NRL — always AI so
+  // weaker starter careers watch the result instead of playing it.
   // Later seasons: previous Super League champion vs a random NRL champion.
-  const slName =
-    isFirstSeason || !prev ? career.club : prev.name;
-  const userInvolved = slName === career.club;
-  const nrlChampion =
-    isFirstSeason || !prev
-      ? pickTopTierNrlChampion(career.seed, career.seasonYear)
-      : pickNrlChampion(career.seed, career.seasonYear);
+  const slName = isFirstSeason
+    ? pickTopTierSuperLeagueChampion(
+        career.seed,
+        career.seasonYear,
+        career.club
+      )
+    : prev?.name ??
+      pickTopTierSuperLeagueChampion(
+        career.seed,
+        career.seasonYear,
+        career.club
+      );
+  const userInvolved = !isFirstSeason && slName === career.club;
+  const nrlChampion = isFirstSeason
+    ? pickTopTierNrlChampion(career.seed, career.seasonYear)
+    : pickNrlChampion(career.seed, career.seasonYear);
   const rng = seedrandom(
     `${career.seed}-wcc-rating-${career.seasonYear}-${nrlChampion}`
   );
@@ -254,10 +291,9 @@ export function createWorldClubChallengeFixture(
 
   if (!isValidWorldClubChallengeFixture(fixture)) {
     console.warn("[WCC] Invalid NRL opponent generated — regenerating", fixture);
-    const repairPick =
-      isFirstSeason || !prev
-        ? pickTopTierNrlChampion(`${career.seed}-retry`, career.seasonYear)
-        : pickNrlChampion(`${career.seed}-retry`, career.seasonYear);
+    const repairPick = isFirstSeason
+      ? pickTopTierNrlChampion(`${career.seed}-retry`, career.seasonYear)
+      : pickNrlChampion(`${career.seed}-retry`, career.seasonYear);
     fixture.nrlChampionName = repairPick;
     fixture.nrlChampionId = getNrlClubByName(fixture.nrlChampionName)?.id;
     const repairRng = seedrandom(
@@ -467,6 +503,22 @@ export function ensureWorldClubChallengeScheduled(
   if (career.isSeasonComplete) return career;
   const history = career.worldClubChallenge?.history ?? [];
   const current = career.worldClubChallenge?.currentFixture;
+  const isFirstSeason = career.seasonHistory.length === 0;
+
+  // Season one must never force the user into a playable WCC — convert any
+  // leftover invitation into the AI showcase match.
+  if (
+    isFirstSeason &&
+    current &&
+    current.seasonYear === career.seasonYear &&
+    current.status === "scheduled" &&
+    current.userInvolved
+  ) {
+    return scheduleWorldClubChallengeForSeason({
+      ...career,
+      worldClubChallenge: { history, currentFixture: undefined },
+    });
+  }
 
   // Repair saves where the user was wrongly forced into WCC despite not being
   // the Super League champion — simulate the AI fixture instead.
@@ -475,11 +527,13 @@ export function ensureWorldClubChallengeScheduled(
     current.seasonYear === career.seasonYear &&
     current.status === "scheduled"
   ) {
-    const trueChampion =
-      career.previousSeasonChampion ?? current.superLeagueChampionName;
-    const shouldInvolveUser = trueChampion === career.club;
+    const trueChampion = isFirstSeason
+      ? current.superLeagueChampionName
+      : (career.previousSeasonChampion ?? current.superLeagueChampionName);
+    const shouldInvolveUser =
+      !isFirstSeason && trueChampion === career.club;
     if (
-      current.superLeagueChampionName !== trueChampion ||
+      (!isFirstSeason && current.superLeagueChampionName !== trueChampion) ||
       current.userInvolved !== shouldInvolveUser
     ) {
       if (!shouldInvolveUser) {

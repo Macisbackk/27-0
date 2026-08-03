@@ -19,6 +19,8 @@ export function ManagerLeagueTable({
   subtitle,
   onViewClub,
   defaultExpanded = false,
+  rows: rowsProp,
+  showDraws = false,
 }: {
   career: ManagerCareer;
   title?: string;
@@ -26,9 +28,12 @@ export function ManagerLeagueTable({
   onViewClub?: (club: string) => void;
   /** When true, show every club without compact top-five trimming. */
   defaultExpanded?: boolean;
+  /** Override standings (e.g. Championship). Defaults to Super League table. */
+  rows?: ManagerCareer["leagueTable"];
+  showDraws?: boolean;
 }) {
   const [expanded, setExpanded] = useState(defaultExpanded);
-  const rows = career.leagueTable;
+  const rows = rowsProp ?? career.leagueTable;
   if (rows.length === 0) return null;
 
   const userRow = rows.find((r) => r.isUserTeam);
@@ -139,6 +144,9 @@ export function ManagerLeagueTable({
               <th className={SPACING.tableCell}>Club</th>
               <th className={`${SPACING.tableCell} text-center`}>P</th>
               <th className={`${SPACING.tableCell} text-center`}>W</th>
+              {showDraws ? (
+                <th className={`${SPACING.tableCell} text-center`}>D</th>
+              ) : null}
               <th className={`${SPACING.tableCell} text-center`}>L</th>
               <th className={`hidden sm:table-cell ${SPACING.tableCell} text-center`}>
                 PF
@@ -155,6 +163,7 @@ export function ManagerLeagueTable({
           <tbody>
             {displayRows.map((row) => {
               const indicatorColor = getClubIndicatorColor(row.team);
+              const draws = Math.max(0, row.played - row.wins - row.losses);
               return (
                 <tr
                   key={row.team}
@@ -209,6 +218,9 @@ export function ManagerLeagueTable({
                   </td>
                   <td className={`${SPACING.tableCell} text-center`}>{row.played}</td>
                   <td className={`${SPACING.tableCell} text-center`}>{row.wins}</td>
+                  {showDraws ? (
+                    <td className={`${SPACING.tableCell} text-center`}>{draws}</td>
+                  ) : null}
                   <td className={`${SPACING.tableCell} text-center`}>{row.losses}</td>
                   <td className={`hidden sm:table-cell ${SPACING.tableCell} text-center`}>
                     {row.pointsFor}

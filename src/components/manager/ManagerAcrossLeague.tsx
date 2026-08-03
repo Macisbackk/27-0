@@ -25,6 +25,10 @@ import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import { getPlayerById } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
+import { ensureChampionshipSystems } from "@/lib/manager/championship/ensureChampionship";
+import { playUiClick } from "@/lib/sound";
+
+type TableCompetition = "super-league" | "championship";
 
 interface ManagerAcrossLeagueProps {
   career: ManagerCareer;
@@ -36,9 +40,19 @@ export function ManagerAcrossLeague({
   onNavigate,
 }: ManagerAcrossLeagueProps) {
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
+  const [competition, setCompetition] =
+    useState<TableCompetition>("super-league");
+  const [tableMenuOpen, setTableMenuOpen] = useState(false);
 
-  const newsItems = getLeagueNewsItems(career);
-  const leagueTransfers = career.leagueTransfers ?? [];
+  const withChamp = useMemo(() => ensureChampionshipSystems(career), [career]);
+  const newsItems = getLeagueNewsItems(withChamp);
+  const leagueTransfers = withChamp.leagueTransfers ?? [];
+  const tableTitle =
+    competition === "super-league" ? "Super League" : "Championship";
+  const tableRows =
+    competition === "super-league"
+      ? withChamp.leagueTable
+      : withChamp.championshipCompetition?.standings ?? [];
 
   const topTryScorers = useMemo(
     () => getLeagueTopTryScorers(career, 10),
@@ -113,12 +127,69 @@ export function ManagerAcrossLeague({
           )}
         </ManagerSectionCard>
 
-        <ManagerLeagueTable
-          career={career}
-          title="League Standings"
-          onViewClub={setViewClubSheet}
-          defaultExpanded
-        />
+        <div className="relative">
+          <button
+            type="button"
+            className={`${TYPO.sectionLabel} btn-press mb-2 inline-flex items-center gap-2 text-left text-white`}
+            aria-haspopup="menu"
+            aria-expanded={tableMenuOpen}
+            onClick={() => {
+              playUiClick();
+              setTableMenuOpen((o) => !o);
+            }}
+          >
+            {tableTitle} standings
+            <span className="text-xs font-normal text-pitch-400" aria-hidden>
+              ▾
+            </span>
+          </button>
+          {tableMenuOpen ? (
+            <div
+              role="menu"
+              className="absolute z-20 mt-0.5 min-w-[12rem] rounded-lg border border-pitch-600/70 bg-pitch-950 p-1 shadow-xl"
+            >
+              {(
+                [
+                  ["super-league", "Super League"],
+                  ["championship", "Championship"],
+                ] as const
+              ).map(([id, label]) => (
+                <button
+                  key={id}
+                  type="button"
+                  role="menuitem"
+                  className={`btn-press block w-full rounded-md px-3 py-2 text-left text-sm ${
+                    competition === id
+                      ? "bg-theme-primary/15 text-theme-primary"
+                      : "text-white hover:bg-pitch-800"
+                  }`}
+                  onClick={() => {
+                    playUiClick();
+                    setCompetition(id);
+                    setTableMenuOpen(false);
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          ) : null}
+          <ManagerLeagueTable
+            career={withChamp}
+            title={tableTitle}
+            subtitle={
+              competition === "super-league"
+                ? `Season ${career.seasonYear} Super League`
+                : `Season ${career.seasonYear} Championship`
+            }
+            rows={tableRows}
+            showDraws={competition === "championship"}
+            onViewClub={
+              competition === "super-league" ? setViewClubSheet : undefined
+            }
+            defaultExpanded
+          />
+        </div>
 
         <ManagerSectionCard title="Top Try Scorers" variant="elevated">
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>

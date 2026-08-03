@@ -41,6 +41,12 @@ import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import { getReserveReportMonth } from "@/lib/manager/managerReserveReports";
 import { playUiClick } from "@/lib/sound";
 import { ManagerPage, ManagerSection, ManagerStat } from "@/components/manager/manager-ui";
+import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
+import {
+  patchManagerCareerSettings,
+  ReserveDevelopmentSettingsPanel,
+  resolveManagerSettings,
+} from "@/components/manager/ManagerSettings";
 import { ManagerReserveReleaseModal } from "@/components/manager/ManagerReserveReleaseModal";
 import { ManagerReserveReleaseToolsModal } from "@/components/manager/ManagerReserveReleaseToolsModal";
 import {
@@ -50,6 +56,7 @@ import {
 } from "@/lib/manager/managerReserveRelease";
 
 type ReserveFilter = "all" | "position" | "potential" | "rating" | "age";
+type ReservesSubTab = "squad" | "settings";
 
 const STATUS_LABELS: Record<string, string> = {
   expires_this_season: "Expires this season",
@@ -87,6 +94,7 @@ interface ManagerReservesProps {
 }
 
 export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
+  const [subTab, setSubTab] = useState<ReservesSubTab>("squad");
   const [filter, setFilter] = useState<ReserveFilter>("all");
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
   const [message, setMessage] = useState<string | null>(null);
@@ -94,6 +102,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     null
   );
   const [releaseToolsOpen, setReleaseToolsOpen] = useState(false);
+  const settings = resolveManagerSettings(career);
 
   const latestMonthlyReport = useMemo(
     () =>
@@ -245,6 +254,27 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         subtitle={`Youth & reserve squad · ${career.club}`}
       />
 
+      <ManagerSubTabBar
+        ariaLabel="Reserves sections"
+        active={subTab}
+        onChange={setSubTab}
+        tabs={[
+          { id: "squad", label: "Squad" },
+          { id: "settings", label: "Settings" },
+        ]}
+      />
+
+      {subTab === "settings" ? (
+        <ReserveDevelopmentSettingsPanel
+          career={career}
+          settings={settings}
+          onPatch={(patch) =>
+            patchManagerCareerSettings(career, onUpdate, settings, patch)
+          }
+          onUpdate={onUpdate}
+        />
+      ) : (
+      <>
       {message && (
         <p className={`${TYPO.bodySm} text-theme-primary`}>{message}</p>
       )}
@@ -710,6 +740,8 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         onUpdate={onUpdate}
         onMessage={setMessage}
       />
+      </>
+      )}
       </ManagerSection>
     </ManagerPage>
   );

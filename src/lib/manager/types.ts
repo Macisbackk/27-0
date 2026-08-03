@@ -388,6 +388,7 @@ export type ManagerView =
   | "transfers"
   | "club"
   | "fixtures"
+  | "calendar"
   | "across-league"
   | "table"
   | "stats"

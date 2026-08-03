@@ -10,6 +10,7 @@ export const MANAGER_ROUTE_SECTIONS: Partial<Record<ManagerView, string>> = {
   transfers: "transfers",
   club: "club",
   fixtures: "fixtures",
+  calendar: "calendar",
   "across-league": "across-league",
   stats: "stats",
   settings: "settings",
@@ -41,6 +42,7 @@ export const MANAGER_NAV_VIEWS: ManagerView[] = [
   "transfers",
   "club",
   "fixtures",
+  "calendar",
   "across-league",
   "stats",
   "settings",
@@ -142,6 +144,8 @@ export function isManagerStateOverlayView(view: ManagerView): boolean {
 export function resolveManagerScreenFromPathname(pathname: string): ManagerView | null {
   const fromPath = managerViewFromPathname(pathname);
   if (fromPath === "club-select") return "club-select";
+  // Legacy Settings URL → Club (preferences moved to Club / Contracts / Reserves).
+  if (fromPath === "settings") return "club";
   const normalized = pathname.replace(/\/+$/, "") || "/manager";
   if (normalized === "/manager") return "landing";
   if (fromPath && isManagerNavView(fromPath)) return fromPath;

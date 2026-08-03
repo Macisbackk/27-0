@@ -842,7 +842,9 @@ export function ManagerFixtures({
               </p>
             ) : (
               <p className={TYPO.bodySm}>
-                Another Super League club is involved this year.
+                {career.seasonHistory.length === 0
+                  ? "Season-one showcase — a top-tier Super League club faces the NRL. Open the result below when it completes (AI match)."
+                  : "Another Super League club is involved this year — view the AI result when available."}
               </p>
             )}
           </div>
@@ -864,8 +866,9 @@ export function ManagerFixtures({
           </p>
         ) : (
           <p className={TYPO.bodySm}>
-            The World Club Challenge is scheduled each season — in season one
-            your club is invited to face a top-tier NRL side.
+            The World Club Challenge is scheduled each season — season one is a
+            top-tier Super League vs NRL showcase (AI result); later seasons
+            feature the Grand Final winners.
           </p>
         )}
         {wccPastResultsList ? (
@@ -897,7 +900,9 @@ export function ManagerFixtures({
           </p>
         ) : (
           <p className={TYPO.bodySm}>
-            Another Super League club is involved this year.
+            {career.seasonHistory.length === 0
+              ? "Season-one showcase — a top-tier Super League club faces the NRL (AI match)."
+              : "Another Super League club is involved this year."}
           </p>
         )}
       </div>
