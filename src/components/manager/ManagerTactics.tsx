@@ -3,6 +3,7 @@
 import { ManagerPage, ManagerSection } from "@/components/manager/manager-ui";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { CollapsibleDetails } from "@/components/ui/MobileLayout";
 import type { ManagerCareer, ManagerTactics } from "@/lib/manager/types";
 import {
   ATTACK_FOCUS_BIOS,
@@ -85,12 +86,15 @@ function TacticsSetupPanel({
         value={tactics.defenceFocus}
         onChange={(v) => onChange({ defenceFocus: v })}
       />
-      <p
-        className={`mx-auto max-w-lg border-t border-pitch-700/40 pt-2 text-center text-[11px] leading-snug text-pitch-400 sm:text-xs`}
-      >
-        {PLAYING_STYLE_BIOS[tactics.playingStyle]}{" "}
-        <span className="text-pitch-600">·</span> {ATTACK_FOCUS_BIOS[tactics.attackFocus]}{" "}
-        <span className="text-pitch-600">·</span> {DEFENCE_FOCUS_BIOS[tactics.defenceFocus]}
+      <p className={`mx-auto max-w-lg border-t border-pitch-700/40 pt-2 text-center ${TYPO.meta} sm:text-xs sm:leading-snug sm:text-pitch-400`}>
+        <span className="sm:hidden">Tap options to set your match plan</span>
+        <span className="hidden sm:inline">
+          {PLAYING_STYLE_BIOS[tactics.playingStyle]}{" "}
+          <span className="text-pitch-600">·</span>{" "}
+          {ATTACK_FOCUS_BIOS[tactics.attackFocus]}{" "}
+          <span className="text-pitch-600">·</span>{" "}
+          {DEFENCE_FOCUS_BIOS[tactics.defenceFocus]}
+        </span>
       </p>
     </div>
   );
@@ -176,10 +180,17 @@ export function ManagerTacticsPanel({
   return (
     <div className={SPACING.stackSm}>
       <TacticsSetupPanel tactics={t} onChange={update} />
-      <MatchImpactPreview tactics={t} />
-      <LivePlayPreview career={career} />
+      <CollapsibleDetails summary="Match impact & live play">
+        <MatchImpactPreview tactics={t} />
+        <LivePlayPreview career={career} />
+      </CollapsibleDetails>
       {onCareerUpdate && (
-        <ManagerPositionRetrainingPanel career={career} onUpdate={onCareerUpdate} />
+        <CollapsibleDetails summary="Dual position training">
+          <ManagerPositionRetrainingPanel
+            career={career}
+            onUpdate={onCareerUpdate}
+          />
+        </CollapsibleDetails>
       )}
     </div>
   );

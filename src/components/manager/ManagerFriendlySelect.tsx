@@ -33,7 +33,7 @@ export function ManagerFriendlySelect({
       <ManagerSection>
       <ManagerViewHeader
         title="Choose Friendly Opponent"
-        subtitle={`Pre-season Friendly ${friendlyNumber} of 2 — pick any club from your save · ${career.club}`}
+        subtitle={`Friendly ${friendlyNumber} of 2 · ${career.club}`}
       />
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">

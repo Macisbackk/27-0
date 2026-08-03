@@ -83,7 +83,7 @@ export function ManagerSeasonRewards({
           className="text-center [&_.game-section-header__title]:text-center"
         />
         <div className="pitch-divider mx-auto my-4 max-w-xs" />
-        <p className={`mt-2 font-[family-name:var(--font-pitch)] text-3xl tracking-wide text-accent-gold`}>
+        <p className={`mt-2 font-[family-name:var(--font-pitch)] text-2xl tracking-wide text-accent-gold sm:text-3xl`}>
           {formatRewardTotal(lines)}
         </p>
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>

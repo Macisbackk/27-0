@@ -1,6 +1,7 @@
 "use client";
 
 import { GameButton } from "@/components/ui/GameButton";
+import { StickyActionBar } from "@/components/ui/MobileLayout";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
 
 interface ManagerHubStickyActionsProps {
@@ -24,34 +25,32 @@ export function ManagerHubStickyActions({
   if (!visible) return null;
 
   return (
-    <div className="manager-mobile-play-bar fixed inset-x-0 z-40 flex items-center border-t border-pitch-700/50 bg-pitch-950 px-3 sm:hidden">
-      <div className="mx-auto flex w-full max-w-lg gap-2">
-        <GameButton
-          variant="theme"
-          size="sm"
-          className="min-h-[44px] min-w-0 flex-1"
-          disabled={!canPlay}
-          onClick={() => {
-            playUiClick();
-            onPlayGame();
-          }}
-        >
-          {playLabel}
-        </GameButton>
-        <GameButton
-          variant="secondary"
-          size="sm"
-          className="min-h-[44px] min-w-0 flex-1"
-          disabled={!canPlay}
-          onClick={() => {
-            playSimulateRound();
-            playUiClick();
-            onSimulate();
-          }}
-        >
-          {simulateLabel}
-        </GameButton>
-      </div>
-    </div>
+    <StickyActionBar aboveNav>
+      <GameButton
+        variant="theme"
+        size="sm"
+        className="min-h-[var(--mobile-tap-target)] min-w-0 flex-1"
+        disabled={!canPlay}
+        onClick={() => {
+          playUiClick();
+          onPlayGame();
+        }}
+      >
+        {playLabel}
+      </GameButton>
+      <GameButton
+        variant="secondary"
+        size="sm"
+        className="min-h-[var(--mobile-tap-target)] min-w-0 flex-1"
+        disabled={!canPlay}
+        onClick={() => {
+          playSimulateRound();
+          playUiClick();
+          onSimulate();
+        }}
+      >
+        {simulateLabel}
+      </GameButton>
+    </StickyActionBar>
   );
 }

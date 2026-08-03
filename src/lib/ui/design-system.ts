@@ -41,13 +41,19 @@ export const MOBILE = {
   /** Fluid card that never forces horizontal page scroll. */
   compactCard: "w-full min-w-0 max-w-full overflow-hidden",
   /** Dense section title on phones. */
-  sectionTitle: "text-base font-bold sm:text-xl",
+  sectionTitle:
+    "font-display text-[length:var(--text-section-title)] font-bold sm:text-xl",
   /** Secondary copy hidden or collapsed on phones. */
   secondaryCopy: "hidden text-sm text-gray-400 sm:block",
   /** Touch-safe control (min 44px). */
-  touchTarget: "min-h-[44px] min-w-[44px]",
+  touchTarget: "min-h-[var(--mobile-tap-target,44px)] min-w-[var(--mobile-tap-target,44px)]",
   /** Prevent flex/grid children from blowing out the viewport. */
   minZero: "min-w-0",
+  /** Bottom padding when a mobile action bar is present (no nested scroll). */
+  actionBarPad: "pb-[calc(var(--mobile-button-height)+1.25rem+env(safe-area-inset-bottom))]",
+  /** Manager Hub: pad for bottom nav + play bar. */
+  hubChromePad: "manager-mobile-hub-pad",
+  navChromePad: "manager-mobile-nav-pad",
 } as const;
 
 /** Mobile-first modal / bottom-sheet pattern (matches ManagerDialog). */

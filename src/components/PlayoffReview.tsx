@@ -150,7 +150,7 @@ export function PlayoffReview({
           >
             Super League Play-Off Review
           </p>
-          <h1 className="mt-4 font-display text-3xl font-black text-accent-gold sm:text-4xl">
+          <h1 className="mt-4 font-display text-2xl font-black text-accent-gold sm:text-3xl">
             {playoffResult.finish}
           </h1>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-500">

@@ -16,6 +16,7 @@ import {
   ManagerSectionCard,
 } from "@/components/manager/manager-ui";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
+import { CollapsibleDetails } from "@/components/ui/MobileLayout";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { formatWage } from "@/lib/manager/managerContracts";
@@ -189,12 +190,23 @@ export function ManagerAcrossLeague({
     <ManagerPage>
       <ManagerSection>
         <GameSectionHeader
+          size="page"
           label="League"
           title="Across the League"
           subtitle={
-            selectedCompetitionId === "super-league"
-              ? `Season ${career.seasonYear} · Week ${career.gameWeek} — Super League news, squads and transfer activity`
-              : `Season ${career.seasonYear} · Week ${career.gameWeek} — Championship standings, scorers and Super League–linked transfer wire`
+            <>
+              <span className="sm:hidden">
+                Season {career.seasonYear} · Week {career.gameWeek}
+                {selectedCompetitionId === "super-league"
+                  ? " · Super League"
+                  : " · Championship"}
+              </span>
+              <span className="hidden sm:inline">
+                {selectedCompetitionId === "super-league"
+                  ? `Season ${career.seasonYear} · Week ${career.gameWeek} — Super League news, squads and transfer activity`
+                  : `Season ${career.seasonYear} · Week ${career.gameWeek} — Championship standings, scorers and Super League–linked transfer wire`}
+              </span>
+            </>
           }
         />
 
@@ -262,15 +274,16 @@ export function ManagerAcrossLeague({
               : "Championship News"
           }
           variant="inset"
+          className="!p-2.5 sm:!p-4"
         >
           {newsItems.length > 0 ? (
-            <ul className={`mt-2 ${SPACING.stackSm}`}>
+            <ul className={`mt-1.5 space-y-1.5`}>
               {newsItems.map((item) => (
                 <ManagerNewsItem key={item.id} item={item} />
               ))}
             </ul>
           ) : (
-            <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+            <p className={`mt-1.5 ${TYPO.bodySm} text-pitch-500`}>
               {selectedCompetitionId === "super-league"
                 ? "No league headlines yet — play a match or advance the week for updates."
                 : "No Championship headlines yet — advance the Match Week for updates."}
@@ -459,11 +472,11 @@ export function ManagerAcrossLeague({
 
         {selectedCompetitionId === "super-league" &&
           otherClubListings.length > 0 && (
-          <ManagerSectionCard title="Players Listed by Other Clubs">
-            <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+          <CollapsibleDetails summary="Players Listed by Other Clubs">
+            <p className={`${TYPO.bodySm} text-pitch-400`}>
               Talent available on the market — head to Transfers to make an offer.
             </p>
-            <ul className="mt-3 space-y-2">
+            <ul className="mt-2 space-y-2">
               {otherClubListings.map((entry) => {
                 const positions = getPlayerEligiblePositions(entry.player);
                 const posLabel = positions.map((p) => POSITION_SHORT[p]).join("/");
@@ -493,16 +506,16 @@ export function ManagerAcrossLeague({
                 );
               })}
             </ul>
-          </ManagerSectionCard>
+          </CollapsibleDetails>
         )}
 
         {selectedCompetitionId === "super-league" &&
           freeAgentsElsewhere.length > 0 && (
-          <ManagerSectionCard title="Free Agents" variant="inset">
-            <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+          <CollapsibleDetails summary="Free Agents">
+            <p className={`${TYPO.bodySm} text-pitch-400`}>
               Recently released players still looking for a club.
             </p>
-            <ul className="mt-3 space-y-2">
+            <ul className="mt-2 space-y-2">
               {freeAgentsElsewhere.map((entry) => {
                 const positions = getPlayerEligiblePositions(entry.player);
                 const posLabel = positions.map((p) => POSITION_SHORT[p]).join("/");
@@ -526,7 +539,7 @@ export function ManagerAcrossLeague({
                 );
               })}
             </ul>
-          </ManagerSectionCard>
+          </CollapsibleDetails>
         )}
 
         </div>

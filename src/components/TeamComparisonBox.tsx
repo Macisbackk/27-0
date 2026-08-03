@@ -147,7 +147,7 @@ export const TeamComparisonBox = memo(function TeamComparisonBox({
           />
 
           <div className="flex items-center justify-center self-center px-2">
-            <span className="font-display text-3xl font-black uppercase tracking-widest text-gray-500">
+            <span className="font-display text-2xl font-black uppercase tracking-widest text-gray-500 sm:text-3xl">
               VS
             </span>
           </div>
@@ -344,7 +344,7 @@ const RatingBadge = memo(function RatingBadge({
         )}
       </div>
       <p
-        className={`mt-3 font-display text-4xl font-black leading-none sm:mt-4 sm:text-5xl ${ratingColor}`}
+        className={`mt-3 font-display text-3xl font-black leading-none sm:mt-4 sm:text-5xl ${ratingColor}`}
       >
         {formatTeamRating(rating)}
       </p>

@@ -146,7 +146,7 @@ function RugbyPitchInner({
           className={
             compact || formationOnly
               ? ""
-              : "max-h-[min(85vh,820px)] overflow-x-hidden overflow-y-auto sm:max-h-none sm:overflow-visible"
+              : "overflow-x-hidden sm:overflow-visible"
           }
         >
           <div
@@ -154,8 +154,8 @@ function RugbyPitchInner({
               formationOnly
                 ? "aspect-[5/7.6] min-h-0 max-h-[min(68vh,480px)]"
                 : compact
-                  ? "min-h-[420px] sm:min-h-[540px]"
-                  : "min-h-[480px] sm:min-h-[580px] md:min-h-[580px] lg:aspect-[5/8] lg:min-h-0"
+                  ? "min-h-[360px] sm:min-h-[540px]"
+                  : "min-h-[400px] sm:min-h-[580px] md:min-h-[580px] lg:aspect-[5/8] lg:min-h-0"
             }`}
           >
             <PitchMarkings />

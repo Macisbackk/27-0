@@ -88,9 +88,10 @@ import { SeasonSimulation } from "./SeasonSimulation";
 import { MatchdayScoreboard } from "./MatchdayScoreboard";
 import { GuestNotice } from "./GuestNotice";
 import { DraftPositionPlacement } from "./DraftPositionPlacement";
-import { LINK, BTN, CARD, SPACING, MODAL } from "@/lib/ui/design-system";
+import { LINK, BTN, CARD, SPACING, MODAL, MOBILE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "@/components/ui/GameButton";
+import { StickyActionBar } from "@/components/ui/MobileLayout";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import {
   generateSlotTeamYearTargetForSlot,
@@ -1255,7 +1256,7 @@ export function GameBoard({
         className={`game-page relative flex flex-col overflow-x-hidden ${
           isReviewPhase
             ? "overflow-y-visible py-2 pb-[max(1rem,env(safe-area-inset-bottom))] sm:py-4"
-            : "py-4 pb-28 sm:py-5 sm:pb-8 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4"
+            : `py-4 ${MOBILE.actionBarPad} sm:py-5 sm:pb-8 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4`
         }`}
       >
       {!isReviewPhase && (title || subtitle) && (
@@ -1521,15 +1522,11 @@ export function GameBoard({
       )}
 
       {!isReviewPhase && (
-        <div
-          className="fixed inset-x-0 bottom-0 z-30 border-t border-pitch-700/60 bg-pitch-950/95 px-3 py-2 sm:hidden"
-          style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
-        >
-          <div className="mx-auto flex max-w-lg items-center gap-2">
+        <StickyActionBar>
             <Link
               href="/"
               onClick={() => playUiClick()}
-              className={`${BTN.base} ${BTN.secondary} min-h-[44px] shrink-0 px-3 text-xs`}
+              className={`${BTN.base} ${BTN.secondary} min-h-[var(--mobile-tap-target)] shrink-0 px-3 text-xs`}
             >
               Leave run
             </Link>
@@ -1540,7 +1537,7 @@ export function GameBoard({
                 fullWidth={false}
                 onClick={handleAutofill}
                 disabled={choosing}
-                className="min-h-[44px] flex-1 px-3 text-xs"
+                className="min-h-[var(--mobile-tap-target)] flex-1 px-3 text-xs"
               >
                 Auto Fill
               </GameButton>
@@ -1551,13 +1548,12 @@ export function GameBoard({
                 size="sm"
                 fullWidth={false}
                 onClick={() => startTournamentSimulation(squad)}
-                className="min-h-[44px] flex-1 px-3 text-xs"
+                className="min-h-[var(--mobile-tap-target)] flex-1 px-3 text-xs"
               >
                 Simulate Season
               </GameButton>
             )}
-          </div>
-        </div>
+        </StickyActionBar>
       )}
 
       {isReviewPhase &&

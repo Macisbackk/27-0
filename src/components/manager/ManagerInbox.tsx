@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
+import { CollapsibleDetails } from "@/components/ui/MobileLayout";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
@@ -98,6 +99,7 @@ export function ManagerInbox({
   const [negotiatingId, setNegotiatingId] = useState<string | null>(null);
   const [counterAmount, setCounterAmount] = useState(0);
   const [filter, setFilter] = useState<InboxFilter>("all");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const messages = career.inboxMessages.filter((m) => !m.resolved);
   const filteredMessages = useMemo(
@@ -105,10 +107,14 @@ export function ManagerInbox({
     [messages, filter]
   );
 
+  const activeExpandedId =
+    expandedId && filteredMessages.some((m) => m.id === expandedId)
+      ? expandedId
+      : filteredMessages[0]?.id ?? null;
+
   const showViewAllAsSeen = canViewAllInboxAsSeen(career);
 
   const resolved = career.inboxMessages.filter((m) => m.resolved).slice(0, 10);
-  const bidCount = messages.filter((m) => matchesFilter(m, "transfer_offer_in")).length;
 
   const handleAccept = (id: string) => {
     const result = acceptIncomingOffer(career, id);
@@ -157,49 +163,26 @@ export function ManagerInbox({
     <ManagerPage>
       <ManagerSection>
       <GameSectionHeader
+        size="page"
         label="Inbox"
         title="Club Mail"
-        subtitle="Club messages and transfer offers — auto-cleared after 7 weeks"
+        subtitle={`${messages.length} open · Wk ${career.gameWeek}`}
+        collapseSubtitleOnMobile={false}
         action={
-          <div className="flex shrink-0 flex-wrap items-center justify-center gap-2 sm:justify-end">
-            {showViewAllAsSeen && (
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={handleViewAllAsSeen}
-              >
-                View all as seen
-              </GameButton>
-            )}
-            <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs sm:justify-end">
-              <span className="rounded-sm border border-pitch-700/50 bg-pitch-950/40 px-2 py-0.5 text-pitch-400">
-                Open{" "}
-                <span
-                  className={
-                    messages.length > 0
-                      ? "font-semibold text-theme-primary"
-                      : "font-medium text-pitch-300"
-                  }
-                >
-                  {messages.length}
-                </span>
-              </span>
-              {bidCount > 0 && (
-                <span className="rounded-sm border border-accent-gold/30 bg-accent-gold/10 px-2 py-0.5 text-pitch-400">
-                  Bids{" "}
-                  <span className="font-semibold text-accent-gold">{bidCount}</span>
-                </span>
-              )}
-              <span className="px-1 text-pitch-500">
-                {career.seasonYear} · Wk {career.gameWeek}
-              </span>
-            </div>
-          </div>
+          showViewAllAsSeen ? (
+            <GameButton
+              variant="secondary"
+              size="sm"
+              onClick={handleViewAllAsSeen}
+            >
+              Mark all seen
+            </GameButton>
+          ) : undefined
         }
       />
 
       {messages.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex gap-1.5 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible">
             {INBOX_FILTERS.map((f) => {
               const count =
                 f.id === "all"
@@ -213,8 +196,9 @@ export function ManagerInbox({
                   onClick={() => {
                     playUiClick();
                     setFilter(f.id);
+                    setExpandedId(null);
                   }}
-                  className={`rounded-sm border px-2.5 py-1 text-[11px] font-medium transition ${
+                  className={`shrink-0 rounded-sm border px-2.5 py-1.5 text-[11px] font-medium transition min-h-[36px] sm:min-h-[44px] ${
                     filter === f.id ? FILTER.chipActive : FILTER.chipIdle
                   }`}
                 >
@@ -252,8 +236,20 @@ export function ManagerInbox({
       )}
 
       <div className={SPACING.stackMd}>
-        {filteredMessages.map((msg) => (
-          <ManagerInboxMessageCard key={msg.id} message={msg}>
+        {filteredMessages.map((msg) => {
+          const isExpanded = msg.id === activeExpandedId;
+          return (
+          <ManagerInboxMessageCard
+            key={msg.id}
+            message={msg}
+            expanded={isExpanded}
+            onToggleExpand={() => {
+              playUiClick();
+              setExpandedId(isExpanded ? null : msg.id);
+            }}
+          >
+            {isExpanded ? (
+              <>
             {(msg.type === "transfer" || msg.type === "transfer_offer_in") &&
               msg.askingPrice != null && (
                 <>
@@ -413,13 +409,15 @@ export function ManagerInbox({
                 </GameButton>
               </InboxSingleAction>
             )}
+              </>
+            ) : null}
           </ManagerInboxMessageCard>
-        ))}
+          );
+        })}
       </div>
 
       {resolved.length > 0 && (
-        <section>
-          <h2 className={`${TYPO.sectionLabel} mb-3`}>Recent</h2>
+        <CollapsibleDetails summary={`Recent (${resolved.length})`}>
           <div className={SPACING.stackSm}>
             {resolved.map((msg) => (
               <ManagerInboxMessageCard
@@ -429,7 +427,7 @@ export function ManagerInbox({
               />
             ))}
           </div>
-        </section>
+        </CollapsibleDetails>
       )}
       </ManagerSection>
     </ManagerPage>

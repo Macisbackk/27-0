@@ -53,7 +53,7 @@ export function ManagerSeasonReview({
         <h1 className={`mt-2 text-center ${TYPO.pageTitle}`}>
           {career.club} · {career.seasonYear}
         </h1>
-        <p className={`mt-2 text-center text-3xl font-bold text-accent-gold`}>
+        <p className={`mt-2 text-center text-2xl font-bold text-accent-gold sm:text-3xl`}>
           {summary.position}
           {summary.position === 1
             ? "st"

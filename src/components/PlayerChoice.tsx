@@ -9,12 +9,16 @@ import {
   playGoatAppears,
   playHistoricPlayerAppears,
   playLegendAppears,
+  playUiClick,
 } from "@/lib/sound";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { DRAFT_MODE_RULE } from "@/lib/mode-labels";
 import { RL_SECTION_TITLE_CLASS } from "./cards/rl-card";
 import { PlayerCard } from "./PlayerCard";
 import { PlayerDetailModal } from "./PlayerDetailModal";
+import { MOBILE } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
+import { GameButton } from "@/components/ui/GameButton";
 
 interface PlayerChoiceProps {
   playerA: Player;
@@ -75,21 +79,28 @@ export function PlayerChoice({
     }
   }, [playerA, playerB]);
 
+  const canReroll =
+    !hardMode &&
+    !!onReroll &&
+    !!rerollAvailable &&
+    rerollsRemaining > 0 &&
+    !disabled;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="w-full"
+      className={`w-full ${MOBILE.minZero}`}
     >
-      <header className="mb-1.5 border-b border-pitch-600/40 pb-1.5 text-center sm:mb-4 sm:pb-3">
+      <header className="mb-2 text-center sm:mb-4">
         <p className={`${RL_SECTION_TITLE_CLASS} text-[10px] sm:text-xs`}>
           {draftMode ? "Draft Pick" : "Recruitment"}
         </p>
-        <h2 className="mt-0.5 font-display text-base font-black uppercase tracking-tight text-white sm:mt-2 sm:text-3xl">
+        <h2 className="mt-0.5 font-display text-base font-black uppercase tracking-tight text-white sm:mt-2 sm:text-2xl">
           {positionLabel}
         </h2>
-        <p className="mt-1 hidden text-sm text-gray-400 sm:mt-2 sm:block">
+        <p className={`mt-1 ${MOBILE.secondaryCopy}`}>
           {draftMode
             ? "Pick one player — then choose where they play on your team sheet."
             : "Pick one signing — the other walks away forever"}
@@ -108,41 +119,39 @@ export function PlayerChoice({
             <DraftPositionsRemaining squad={draftSquad} compact />
           </div>
         )}
+      </header>
 
-        {!hardMode && (
-          <div className="mx-auto mt-1.5 inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-2.5 py-1 sm:mt-4 sm:gap-3 sm:px-4 sm:py-2">
-            <span className="font-display text-[9px] font-bold uppercase tracking-[0.15em] text-gray-500 sm:text-[10px] sm:tracking-[0.2em]">
-              Rerolls
-            </span>
+      {!hardMode && onReroll ? (
+        <div className="mb-2 flex items-center justify-center gap-2 sm:mb-4">
+          <span className={`${TYPO.meta} uppercase tracking-wider`}>
+            Rerolls{" "}
             <span
-              className={`font-display text-xs font-bold sm:text-sm ${
-                rerollsRemaining > 0 ? "text-theme-primary" : "text-gray-500"
-              }`}
+              className={
+                rerollsRemaining > 0
+                  ? "font-bold text-theme-primary"
+                  : "font-bold text-pitch-500"
+              }
             >
               {rerollsRemaining}
             </span>
-          </div>
-        )}
-      </header>
-
-      {!hardMode && onReroll && (
-        <div className="mb-2 flex justify-center sm:mb-5">
-          <button
-            type="button"
-            onClick={onReroll}
-            disabled={disabled || !rerollAvailable || rerollsRemaining <= 0}
-            className={`min-h-[44px] rounded-lg border px-4 py-2 font-display text-[10px] font-bold uppercase tracking-[0.12em] transition sm:px-5 sm:py-2.5 sm:text-xs sm:tracking-[0.18em] btn-press ${
-              rerollAvailable && rerollsRemaining > 0 && !disabled
-                ? "border-theme-primary/50 bg-theme-primary/10 text-theme-primary hover:bg-theme-primary/20"
-                : "cursor-not-allowed border-pitch-700/60 bg-pitch-900/50 text-gray-600"
-            }`}
+          </span>
+          <GameButton
+            variant="secondary"
+            size="sm"
+            fullWidth={false}
+            disabled={!canReroll}
+            className="min-h-[var(--mobile-tap-target)] px-4"
+            onClick={() => {
+              playUiClick();
+              onReroll();
+            }}
           >
-            Reroll
-          </button>
+            Respin
+          </GameButton>
         </div>
-      )}
+      ) : null}
 
-      <div className="grid grid-cols-2 items-stretch gap-2 sm:gap-3 md:gap-4">
+      <div className={MOBILE.choiceGrid}>
         <ChoiceCard
           player={displayA}
           label="A"
@@ -191,7 +200,7 @@ function ChoiceCard({
       type="button"
       onClick={onChoose}
       disabled={disabled}
-      className="group btn-press flex h-full w-full min-w-0 flex-col text-left disabled:active:scale-100"
+      className={`group btn-press flex h-full w-full flex-col text-left disabled:active:scale-100 ${MOBILE.compactCard}`}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
@@ -235,7 +244,7 @@ function ChoiceCard({
           compactMobile
         />
       </div>
-      <p className="mt-0.5 min-h-[14px] truncate text-center text-[9px] text-gray-500 sm:text-[11px]">
+      <p className={`mt-0.5 hidden truncate text-center sm:block ${TYPO.meta}`}>
         {formatPositionFullNames(player)}
       </p>
     </motion.button>

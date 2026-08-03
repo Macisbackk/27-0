@@ -24,6 +24,67 @@
   --layout-page-compact: 980px;
   --layout-page-narrow: 820px;
   --layout-page-pad-inline: clamp(0.85rem, 2.5vw, 1.5rem);
+  --app-content-max-width: var(--layout-page-compact);
+
+  /* Mobile design tokens — denser phones, unchanged desktop via media queries */
+  --mobile-page-padding: 0.75rem;
+  --mobile-section-gap: 0.75rem;
+  --mobile-card-padding: 0.75rem;
+  --mobile-compact-card-padding: 0.625rem;
+  --mobile-control-gap: 0.5rem;
+  --mobile-header-height: 3rem;
+  --mobile-body-font-size: 0.875rem;
+  --mobile-secondary-font-size: 0.78rem;
+  --mobile-caption-font-size: 0.7rem;
+  --mobile-title-font-size: 1.28rem;
+  --mobile-section-title-size: 1.05rem;
+  --mobile-button-height: 2.75rem;
+  --mobile-tap-target: 2.75rem;
+  --mobile-line-height-body: 1.4;
+  --mobile-line-height-tight: 1.25;
+
+  --text-page-title: clamp(1.45rem, 3vw, 2rem);
+  --text-section-title: 1.1rem;
+  --text-section-header: clamp(1.15rem, 2.5vw, 1.45rem);
+  --text-card-title: 0.98rem;
+  --text-body: 0.92rem;
+  --text-small: 0.8rem;
+
+  --bp-narrow: 359px;
+  --bp-mobile: 639px;
+  --bp-tablet: 1023px;
+}
+
+@media (max-width: 639px) {
+  :root {
+    --layout-page-pad-inline: var(--mobile-page-padding);
+    --text-page-title: var(--mobile-title-font-size);
+    --text-section-title: var(--mobile-section-title-size);
+    --text-section-header: var(--mobile-section-title-size);
+    --text-card-title: 0.92rem;
+    --text-body: var(--mobile-body-font-size);
+    --text-small: var(--mobile-secondary-font-size);
+  }
+
+  .manager-section {
+    gap: var(--mobile-section-gap);
+  }
+
+  .stat-section-stack {
+    gap: var(--mobile-section-gap);
+  }
+
+  .game-section-header__subtitle {
+    line-height: var(--mobile-line-height-body);
+  }
+
+  /* Collapse long explanatory subtitles to 2 lines on phones */
+  .game-section-header__subtitle--collapse {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
 }
 
 .game-page {
@@ -91,14 +152,6 @@
 
 .manager-stat-section {
   margin-bottom: 0;
-}
-
-:root {
-  --text-page-title: clamp(1.45rem, 3vw, 2rem);
-  --text-section-title: 1.1rem;
-  --text-card-title: 0.98rem;
-  --text-body: 0.92rem;
-  --text-small: 0.8rem;
 }
 
 .manager-welcome-modal {
@@ -335,9 +388,17 @@
 .reserve-player-card {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
   min-width: 0;
   width: 100%;
+  padding-block: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .reserve-player-card {
+    gap: 0.75rem;
+    padding-block: 0.75rem;
+  }
 }
 
 .reserve-player-card__header {
@@ -347,28 +408,36 @@
 
 .reserve-player-card__header h3 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: #fff;
   overflow-wrap: anywhere;
   text-align: center;
 }
 
+@media (min-width: 640px) {
+  .reserve-player-card__header h3 {
+    font-size: 1rem;
+  }
+}
+
 .reserve-player-card__header p {
   margin: 0.2rem 0 0;
+  font-size: var(--mobile-caption-font-size, 0.7rem);
+  color: #9ca3af;
 }
 
 .reserve-player-card__ratings {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .reserve-player-card__actions {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
   width: 100%;
 }
 
@@ -684,19 +753,112 @@
 .game-header__title,
 .game-section-header__title {
   font-family: var(--font-display), "Arial Black", Impact, sans-serif;
-  font-size: var(--text-page-title, clamp(1.45rem, 3vw, 2rem));
+  font-size: var(--text-section-header, clamp(1.15rem, 2.5vw, 1.45rem));
   font-weight: 800;
   letter-spacing: -0.015em;
   text-transform: none;
   color: #fff;
   line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.game-section-header--page .game-section-header__title,
+.game-header__title {
+  font-size: var(--text-page-title, clamp(1.45rem, 3vw, 2rem));
 }
 
 .game-header__subtitle,
 .game-section-header__subtitle {
   font-size: var(--text-body, 0.92rem);
   color: #9ca3af;
-  line-height: 1.5;
+  line-height: 1.45;
+}
+
+/* Shared sticky mobile action bar */
+.mobile-action-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid color-mix(in srgb, #374151 55%, transparent);
+  background: color-mix(in srgb, #030706 94%, transparent);
+  padding: 0.5rem var(--mobile-page-padding)
+    max(0.5rem, env(safe-area-inset-bottom));
+  min-height: calc(
+    var(--mobile-button-height) + 1rem + env(safe-area-inset-bottom)
+  );
+}
+
+.mobile-action-bar--above-nav {
+  bottom: var(--manager-mobile-nav-h, 4.5rem);
+  padding-bottom: 0.5rem;
+  min-height: var(--manager-mobile-playbar-h, 3.75rem);
+}
+
+.mobile-action-bar__inner {
+  display: flex;
+  width: 100%;
+  max-width: var(--layout-page-compact);
+  margin-inline: auto;
+  gap: var(--mobile-control-gap);
+  min-width: 0;
+}
+
+/* Breakout for brackets/tables — local horizontal scroll only */
+.content-breakout {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+.compact-info-card {
+  width: 100%;
+  min-width: 0;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in srgb, #4b5563 45%, transparent);
+  background: color-mix(in srgb, #0a1210 80%, transparent);
+  padding: var(--mobile-compact-card-padding);
+}
+
+@media (min-width: 640px) {
+  .compact-info-card {
+    padding: 0.85rem 1rem;
+  }
+}
+
+.mobile-data-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid color-mix(in srgb, #374151 35%, transparent);
+}
+
+.mobile-data-row:last-child {
+  border-bottom: none;
+}
+
+.mobile-data-row__label {
+  font-size: var(--text-small);
+  color: #9ca3af;
+  min-width: 0;
+}
+
+.mobile-data-row__value {
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: #fff;
+  text-align: right;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .game-section-title {

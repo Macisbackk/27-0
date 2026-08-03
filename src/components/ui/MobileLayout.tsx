@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { GameButton } from "@/components/ui/GameButton";
 import { MOBILE, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { playUiClick } from "@/lib/sound";
 
 interface CollapsibleDetailsProps {
   summary: string;
@@ -100,6 +102,129 @@ export function ResponsiveInfoGrid({
   return (
     <div className={`grid ${colClass} gap-2 sm:gap-3 ${MOBILE.minZero} ${className}`}>
       {children}
+    </div>
+  );
+}
+
+interface CompactInfoCardProps {
+  children: ReactNode;
+  className?: string;
+}
+
+/** Priority-2 compact summary card — not a nested decorative box. */
+export function CompactInfoCard({
+  children,
+  className = "",
+}: CompactInfoCardProps) {
+  return (
+    <div className={`compact-info-card ${MOBILE.compactCard} ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+interface MobileDataRowProps {
+  label: ReactNode;
+  value: ReactNode;
+  className?: string;
+}
+
+export function MobileDataRow({
+  label,
+  value,
+  className = "",
+}: MobileDataRowProps) {
+  return (
+    <div className={`mobile-data-row ${className}`}>
+      <span className="mobile-data-row__label">{label}</span>
+      <span className="mobile-data-row__value">{value}</span>
+    </div>
+  );
+}
+
+interface ContentBreakoutProps {
+  children: ReactNode;
+  className?: string;
+  /** Accessible name for the scroll region. */
+  label?: string;
+}
+
+/** Local horizontal scroll for brackets/tables — page stays document-scroll. */
+export function ContentBreakout({
+  children,
+  className = "",
+  label = "Scrollable content",
+}: ContentBreakoutProps) {
+  return (
+    <div
+      className={`content-breakout ${className}`}
+      role="region"
+      aria-label={label}
+      tabIndex={0}
+    >
+      {children}
+    </div>
+  );
+}
+
+interface MobilePrimaryActionProps {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+  variant?: "theme" | "secondary" | "danger";
+  className?: string;
+}
+
+export function MobilePrimaryAction({
+  label,
+  onClick,
+  disabled,
+  variant = "theme",
+  className = "",
+}: MobilePrimaryActionProps) {
+  return (
+    <GameButton
+      variant={variant}
+      size="md"
+      className={`min-h-[var(--mobile-tap-target)] w-full sm:w-auto ${className}`}
+      disabled={disabled}
+      onClick={() => {
+        playUiClick();
+        onClick();
+      }}
+    >
+      {label}
+    </GameButton>
+  );
+}
+
+interface StickyActionBarProps {
+  children: ReactNode;
+  /** Sit above Manager Mode bottom nav. */
+  aboveNav?: boolean;
+  className?: string;
+  /** Hide on desktop (default true). */
+  mobileOnly?: boolean;
+}
+
+/**
+ * Shared mobile primary-action bar. Respects safe-area; does not create a
+ * nested scroll container. Pair with content bottom padding tokens.
+ */
+export function StickyActionBar({
+  children,
+  aboveNav = false,
+  className = "",
+  mobileOnly = true,
+}: StickyActionBarProps) {
+  return (
+    <div
+      className={`mobile-action-bar ${aboveNav ? "mobile-action-bar--above-nav" : ""} ${
+        mobileOnly ? "sm:hidden" : ""
+      } ${className}`.trim()}
+      role="toolbar"
+    >
+      <div className="mobile-action-bar__inner">{children}</div>
     </div>
   );
 }

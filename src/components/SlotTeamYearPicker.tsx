@@ -13,8 +13,9 @@ import {
 } from "@/lib/game/slot-team-year-pick";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import { playPlayerSelect, playUiClick } from "@/lib/sound";
-import { CARD, LINK, SPACING } from "@/lib/ui/design-system";
+import { CARD, LINK, SPACING, MOBILE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { CollapsibleDetails, StickyActionBar } from "@/components/ui/MobileLayout";
 import { SlotRecruitPlayerCard } from "./SlotRecruitPlayerCard";
 
 interface SlotTeamYearPickerProps {
@@ -135,26 +136,24 @@ export function SlotTeamYearPicker({
             </div>
           </div>
 
-          <p
-            className={`mt-3 rounded-lg border border-pitch-700/50 bg-pitch-950/55 px-3 py-2.5 ${TYPO.bodySm} leading-relaxed text-gray-400`}
-          >
-            {bio}
-          </p>
+          <CollapsibleDetails summary="Squad context">
+            <p className={`${TYPO.bodySm} leading-snug text-gray-400`}>{bio}</p>
+          </CollapsibleDetails>
         </div>
 
-        <div className={`${SPACING.cardPadding} pt-3 sm:pt-5`}>
+        <div className={`${SPACING.cardPadding} pt-3 sm:pt-5 ${onRespin ? MOBILE.actionBarPad : ""}`}>
           {entries.length === 0 ? (
             <p className="py-10 text-center text-gray-500">
               No players available from this squad.
             </p>
           ) : (
             <>
-              <p className={`mb-3 text-center ${TYPO.bodySm} text-gray-500`}>
+              <p className={`mb-3 text-center ${TYPO.meta}`}>
                 Tap{" "}
                 <span className="font-semibold text-theme-primary">
                   Sign player
                 </span>{" "}
-                to add them to your squad
+                to add them
               </p>
               <div className={choiceGridClass}>
                 {sortedEntries.map(({ player }, index) => {
@@ -207,24 +206,41 @@ export function SlotTeamYearPicker({
               </div>
 
               {onRespin && (
-                <div className="mx-auto mt-5 flex w-full max-w-md flex-col items-center gap-2">
-                  <GameButton
-                    variant="secondary"
-                    size="md"
-                    fullWidth
-                    disabled={
-                      disabled || respinsRemaining <= 0 || respinLocked
-                    }
-                    onClick={handleRespin}
-                  >
-                    {respinsRemaining > 0
-                      ? `Respin — ${respinsRemaining} remaining`
-                      : "No respins remaining"}
-                  </GameButton>
-                  <p className={`${TYPO.bodySm} text-center text-pitch-500`}>
-                    {maxRespins} respins per run · does not use a draft pick
-                  </p>
-                </div>
+                <>
+                  <div className="mx-auto mt-5 hidden w-full max-w-md flex-col items-center gap-2 sm:flex">
+                    <GameButton
+                      variant="secondary"
+                      size="md"
+                      fullWidth
+                      disabled={
+                        disabled || respinsRemaining <= 0 || respinLocked
+                      }
+                      onClick={handleRespin}
+                    >
+                      {respinsRemaining > 0
+                        ? `Respin — ${respinsRemaining} remaining`
+                        : "No respins remaining"}
+                    </GameButton>
+                    <p className={`${TYPO.meta} text-center`}>
+                      {maxRespins} respins per run · does not use a draft pick
+                    </p>
+                  </div>
+                  <StickyActionBar>
+                    <GameButton
+                      variant="secondary"
+                      size="sm"
+                      className="min-h-[var(--mobile-tap-target)] flex-1"
+                      disabled={
+                        disabled || respinsRemaining <= 0 || respinLocked
+                      }
+                      onClick={handleRespin}
+                    >
+                      {respinsRemaining > 0
+                        ? `Respin (${respinsRemaining})`
+                        : "No respins"}
+                    </GameButton>
+                  </StickyActionBar>
+                </>
               )}
             </>
           )}

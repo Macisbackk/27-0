@@ -103,7 +103,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               </p>
               <motion.p
                 key={wins}
-                className="font-display text-3xl font-black text-theme-primary sm:text-4xl"
+                className="font-display text-2xl font-black text-theme-primary sm:text-4xl"
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
               >
@@ -117,7 +117,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               </p>
               <motion.p
                 key={losses}
-                className="font-display text-3xl font-black text-red-400 sm:text-4xl"
+                className="font-display text-2xl font-black text-red-400 sm:text-4xl"
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
               >

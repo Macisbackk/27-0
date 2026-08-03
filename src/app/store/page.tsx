@@ -11,7 +11,7 @@ export default function StorePage() {
       <div className={PAGE.section}>
         <header className="text-center">
           <p className={TYPO.sectionLabel}>Club Shop</p>
-          <h1 className="mt-2 font-display text-3xl font-black text-white sm:text-4xl">
+          <h1 className={`mt-2 ${TYPO.pageTitle}`}>
             Store
           </h1>
           <p className="mx-auto mt-3 max-w-md text-sm text-gray-500">

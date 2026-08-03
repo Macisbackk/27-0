@@ -147,6 +147,7 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
     <ManagerPage>
       <ManagerSection>
         <GameSectionHeader
+          size="page"
           label="Schedule"
           title="Calendar"
           subtitle={`Season ${career.seasonYear} · select a date to review fixtures or sim forward`}

@@ -75,6 +75,7 @@
     "test:one-per-club-bracket": "tsx scripts/test-one-per-club-bracket.ts",
     "audit:button-colours": "tsx scripts/audit-button-colours.ts",
     "audit:ui-consistency": "tsx scripts/audit-ui-consistency.ts",
+    "audit:mobile": "tsx scripts/audit-mobile.ts",
     "audit:team-colours": "tsx scripts/audit-team-colours.ts"
   },
   "dependencies": {

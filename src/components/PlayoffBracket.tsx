@@ -29,6 +29,7 @@ import { BracketMobileRoundNav } from "./BracketMobileRoundNav";
 import { GameButton } from "./ui/GameButton";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
+import { MOBILE } from "@/lib/ui/design-system";
 import {
   PLAYOFF_ROUND_SHORT,
   PlayoffBracketDesktop,
@@ -190,7 +191,7 @@ export function PlayoffBracket({
   const userClub = state.userClub ?? DREAM_TEAM_NAME;
 
   return (
-    <DocumentPageShell diagnoseLabel="QuickModePlayoffBracket" className="pb-28 md:pb-8">
+    <DocumentPageShell diagnoseLabel="QuickModePlayoffBracket" className={`${MOBILE.actionBarPad} md:pb-8`}>
       <div className="relative w-full py-3 sm:py-8">
         <PlayoffBracketHeader
           activeRound={activeRound}

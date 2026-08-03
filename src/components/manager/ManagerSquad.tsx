@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CARD, SPACING, MANAGER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { CollapsibleDetails } from "@/components/ui/MobileLayout";
 import { POSITION_SHORT, getFullPositionName, getFullPositionNames } from "@/lib/positions";
 import type { Position } from "@/lib/types";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -26,7 +27,6 @@ import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidatio
 import { autoFixMatchdaySquad, autoSortMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { GameButton } from "@/components/ui/GameButton";
 import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
-import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import {
   ManagerPage,
   ManagerSection,
@@ -509,18 +509,11 @@ export function ManagerSquad({
 
       {subTab === "tactics" ? (
         <ClipboardPanel padded>
-          <GameSectionHeader
-            label="Tactics"
-            title="Match Plan"
-            subtitle={tacticsHelpText}
+          <ManagerTacticsPanel
+            career={career}
+            onChange={(tactics) => onUpdate({ ...career, tactics })}
+            onCareerUpdate={onUpdate}
           />
-          <div className="mt-3">
-            <ManagerTacticsPanel
-              career={career}
-              onChange={(tactics) => onUpdate({ ...career, tactics })}
-              onCareerUpdate={onUpdate}
-            />
-          </div>
         </ClipboardPanel>
       ) : (
         <>
@@ -553,7 +546,9 @@ export function ManagerSquad({
         </div>
       )}
 
-      <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_min(100%,440px)] lg:gap-6 [&>*:first-child]:order-2 [&>*:last-child]:order-1 lg:[&>*:first-child]:order-1 lg:[&>*:last-child]:order-2">
+      <div
+        className={`${MANAGER.splitLayout} lg:grid-cols-[minmax(0,1fr)_min(100%,440px)]`}
+      >
         <div
           ref={matchdayPanelRef}
           className={`mx-auto min-w-0 w-full max-w-[min(100%,26.25rem)] lg:mx-0 lg:max-w-none ${SPACING.stackMd}`}
@@ -570,8 +565,7 @@ export function ManagerSquad({
             onFilledSlotDoubleClick={handleMatchdayPlayerDoubleClick}
           />
 
-          <div className={`${CARD.clipboard} ${SPACING.cardPadding}`}>
-            <p className={`${TYPO.sectionLabel} mb-2`}>Interchange</p>
+          <CollapsibleDetails summary="Interchange (14–17)" defaultOpen={false}>
             <div className="grid grid-cols-2 auto-rows-fr items-stretch gap-2 sm:grid-cols-4">
               {Array.from({ length: 4 }, (_, i) => {
                 const playerId = career.matchdayInterchange[i] ?? "";
@@ -667,12 +661,18 @@ export function ManagerSquad({
                 );
               })}
             </div>
-          </div>
+          </CollapsibleDetails>
         </div>
 
         <div ref={squadPoolPanelRef} className={`min-w-0 w-full ${CARD.clipboard} ${SPACING.cardPadding}`}>
           <p className={`${TYPO.sectionLabel} mb-2`}>Squad Players</p>
-          <div className={`mb-2 min-h-[2.75rem] ${TYPO.bodySm}`}>
+          <div
+            className={`mb-2 ${TYPO.bodySm} ${
+              pendingAssignId || replaceSourcePlayerId || selectedTarget
+                ? "min-h-[2.75rem]"
+                : ""
+            }`}
+          >
             {pendingAssignId ? (
               <p className="text-pitch-300">
                 <span className="font-semibold text-theme-primary">
@@ -696,7 +696,7 @@ export function ManagerSquad({
                 <span className="font-semibold text-accent-gold">highlighted player</span>
               </p>
             ) : (
-              <p className="text-pitch-500">{squadPoolHelpText}</p>
+              <p className={`${TYPO.meta}`}>{squadPoolHelpText}</p>
             )}
           </div>
           <div className="mb-2 flex gap-1 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible">

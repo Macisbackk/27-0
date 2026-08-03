@@ -91,6 +91,7 @@ export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
     <ManagerPage>
       <ManagerSection>
       <GameSectionHeader
+        size="page"
         label="Facilities"
         title="Club"
         subtitle="Invest transfer funds to improve facilities — each area upgrades one star at a time (0–5)."

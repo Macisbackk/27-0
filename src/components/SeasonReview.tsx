@@ -34,7 +34,7 @@ import { userQualifiedForPlayoffs } from "@/lib/game/playoff-simulation";
 import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
 import { LeagueTable } from "./LeagueTable";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
-import { NORMAL } from "@/lib/ui/design-system";
+import { NORMAL, MOBILE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GuestSaveNudge } from "@/components/EconomyExplainer";
 import { useAuth } from "@/lib/auth-context";
@@ -198,7 +198,7 @@ export function SeasonReview({
       diagnoseLabel="QuickModeSeasonReview"
       className={
         showPlayoffPrompt
-          ? "pb-28"
+          ? MOBILE.actionBarPad
           : "pb-[max(1rem,env(safe-area-inset-bottom))]"
       }
     >
@@ -229,7 +229,7 @@ export function SeasonReview({
                 transition={{ delay: 0.1 }}
               >
                 <p
-                  className="font-display text-3xl font-black uppercase tracking-tight sm:text-6xl"
+                  className="font-display text-2xl font-black uppercase tracking-tight sm:text-5xl"
                   style={{
                     color: gradeInfo.color,
                     fontFamily: "var(--font-display)",
@@ -261,7 +261,7 @@ export function SeasonReview({
 
               {isPerfect && (
                 <motion.h1
-                  className="mt-3 font-display text-2xl font-black text-accent-gold sm:mt-4 sm:text-5xl"
+                  className="mt-3 font-display text-xl font-black text-accent-gold sm:mt-4 sm:text-4xl"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}

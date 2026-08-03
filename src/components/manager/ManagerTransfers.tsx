@@ -380,6 +380,7 @@ export function ManagerTransfers({
     <ManagerPage>
       <ManagerSection>
       <GameSectionHeader
+        size="page"
         label="Transfers"
         title="Transfers"
         subtitle={tabSubtitle}

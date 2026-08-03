@@ -83,7 +83,7 @@ export function MatchPlayerOfTheMatchCard({
         {tries > 0 && (
           <div className="hidden shrink-0 flex-col items-end justify-center pr-1 text-right sm:flex">
             <span
-              className={`font-display text-4xl font-black leading-none ${
+              className={`font-display text-2xl font-black leading-none sm:text-3xl ${
                 isUserClub ? "text-accent-gold" : "text-pitch-200"
               }`}
             >

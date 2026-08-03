@@ -223,6 +223,7 @@ export function ManagerContracts({
     <ManagerPage>
       <ManagerSection>
       <GameSectionHeader
+        size="page"
         label="Contracts"
         title="Contracts"
         subtitle="Manage wages, renewals, and squad roles"

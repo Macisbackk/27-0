@@ -193,6 +193,7 @@ export function ManagerSettings({ career, onUpdate }: ManagerSettingsProps) {
     <ManagerPage>
       <ManagerSection width="narrow">
         <GameSectionHeader
+          size="page"
           label="Preferences"
           title="Settings"
           subtitle="Preferences now live on Contracts, Reserves, and Club."

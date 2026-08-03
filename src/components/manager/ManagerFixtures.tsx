@@ -942,6 +942,7 @@ export function ManagerFixtures({
     <ManagerPage>
       <ManagerSection className="manager-fixtures">
       <GameSectionHeader
+        size="page"
         label="Fixtures"
         title="Fixtures"
         subtitle={`Season ${career.seasonYear} · ${career.club}`}

@@ -53,6 +53,7 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
     <ManagerPage>
       <ManagerSection>
       <GameSectionHeader
+        size="page"
         label="Stats"
         title="Stats"
         subtitle={

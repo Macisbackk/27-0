@@ -7,6 +7,7 @@ import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { GameTableRow } from "@/components/ui/GameTableRow";
 import { FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { CollapsibleDetails } from "@/components/ui/MobileLayout";
 import type { ManagerCareer, ManagerReservePlayer } from "@/lib/manager/types";
 import { POSITION_SHORT, getFullPositionName, getFullPositionNames } from "@/lib/positions";
 import type { Position } from "@/lib/types";
@@ -249,6 +250,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     <ManagerPage>
       <ManagerSection>
       <GameSectionHeader
+        size="page"
         label="Academy"
         title="Reserves"
         subtitle={`Youth & reserve squad · ${career.club}`}
@@ -657,35 +659,71 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                     >
                       Offer Full-Time
                     </GameButton>
-                    {needsRenew && contract && (
-                      <GameButton
-                        variant="theme"
-                        size="sm"
-                        fullWidth={false}
-                        className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
-                        onClick={() => {
-                          playUiClick();
-                          handleRenewReserve(r.id);
-                        }}
-                      >
-                        Renew (
-                        {formatWage(
-                          (contract.renewalDemand ??
-                            generateReserveRenewalDemand(r, contract)
-                          ).wagePerYear
-                        )}
-                        /yr)
-                      </GameButton>
-                    )}
-                    <GameButton
-                      variant="danger"
-                      size="sm"
-                      fullWidth={false}
-                      className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
-                      onClick={() => handleReleaseClick(r)}
-                    >
-                      Release
-                    </GameButton>
+                    <div className="sm:contents">
+                        <div className="sm:hidden">
+                          <CollapsibleDetails summary="More actions">
+                            {needsRenew && contract && (
+                              <GameButton
+                                variant="theme"
+                                size="sm"
+                                fullWidth
+                                className="mb-2"
+                                onClick={() => {
+                                  playUiClick();
+                                  handleRenewReserve(r.id);
+                                }}
+                              >
+                                Renew (
+                                {formatWage(
+                                  (contract.renewalDemand ??
+                                    generateReserveRenewalDemand(r, contract)
+                                  ).wagePerYear
+                                )}
+                                /yr)
+                              </GameButton>
+                            )}
+                            <GameButton
+                              variant="danger"
+                              size="sm"
+                              fullWidth
+                              onClick={() => handleReleaseClick(r)}
+                            >
+                              Release
+                            </GameButton>
+                          </CollapsibleDetails>
+                        </div>
+                        <div className="hidden sm:contents">
+                          {needsRenew && contract && (
+                            <GameButton
+                              variant="theme"
+                              size="sm"
+                              fullWidth={false}
+                              className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
+                              onClick={() => {
+                                playUiClick();
+                                handleRenewReserve(r.id);
+                              }}
+                            >
+                              Renew (
+                              {formatWage(
+                                (contract.renewalDemand ??
+                                  generateReserveRenewalDemand(r, contract)
+                                ).wagePerYear
+                              )}
+                              /yr)
+                            </GameButton>
+                          )}
+                          <GameButton
+                            variant="danger"
+                            size="sm"
+                            fullWidth={false}
+                            className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
+                            onClick={() => handleReleaseClick(r)}
+                          >
+                            Release
+                          </GameButton>
+                        </div>
+                      </div>
                   </div>
                 </div>
               </GameTableRow>

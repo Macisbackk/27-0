@@ -563,10 +563,15 @@ export function ManagerInboxMessageCard({
   message,
   children,
   compact = false,
+  expanded = true,
+  onToggleExpand,
 }: {
   message: InboxMessage;
   children?: ReactNode;
   compact?: boolean;
+  /** When false, show a compact summary row; tap to expand. */
+  expanded?: boolean;
+  onToggleExpand?: () => void;
 }) {
   const style = INBOX_MESSAGE_STYLE[message.type];
   const weekLabel = `Week ${message.gameWeek}`;
@@ -605,17 +610,53 @@ export function ManagerInboxMessageCard({
       ? "Board"
       : null);
 
+  if (!expanded) {
+    return (
+      <button
+        type="button"
+        onClick={onToggleExpand}
+        className={`${CARD.base} relative flex w-full items-center gap-3 overflow-hidden border-l-[3px] ${
+          !message.read ? "border-l-theme-primary/70" : "border-l-transparent"
+        } ${SPACING.listItem} text-left transition hover:bg-pitch-900/40`}
+      >
+        <span
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border text-[10px] font-bold ${style.iconBox}`}
+          aria-hidden
+        >
+          {style.icon}
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+            <ManagerInboxBadge type={message.type} />
+            {sender ? (
+              <span className={`${MANAGER_LABEL} text-pitch-300`}>{sender}</span>
+            ) : null}
+            <span className={`${MANAGER_LABEL} text-pitch-500`}>{weekLabel}</span>
+            {!message.read ? (
+              <span className="rounded-full bg-theme-primary/20 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-theme-primary">
+                New
+              </span>
+            ) : null}
+          </div>
+          <p className="mt-1 truncate text-sm font-semibold text-white">
+            {message.title}
+          </p>
+          <p className={`mt-0.5 line-clamp-1 ${TYPO.meta}`}>{message.body}</p>
+        </div>
+        <span className="shrink-0 text-pitch-500" aria-hidden>
+          ▸
+        </span>
+      </button>
+    );
+  }
+
   return (
     <article
-      className={`${CARD.base} relative flex flex-col overflow-hidden border-l-[3px] border-l-transparent ${
-        !message.read ? "border-l-theme-primary/70" : ""
+      className={`${CARD.base} relative flex flex-col overflow-hidden border-l-[3px] ${
+        !message.read ? "border-l-theme-primary/70" : "border-l-transparent"
       }`}
     >
-      <span
-        className={`absolute inset-x-0 top-0 h-0.5 ${style.accentBar}`}
-        aria-hidden
-      />
-      <div className={`flex flex-1 flex-col gap-3 ${SPACING.cardPaddingSm}`}>
+      <div className={`flex flex-1 flex-col gap-2.5 sm:gap-3 ${SPACING.cardPaddingSm}`}>
         <header className="flex gap-3">
           <span
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border text-xs font-bold ${style.iconBox}`}
@@ -640,24 +681,24 @@ export function ManagerInboxMessageCard({
                   New
                 </span>
               )}
-              <span
-                className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
-                  message.resolved
-                    ? "bg-pitch-800 text-pitch-400"
-                    : "bg-pitch-800/80 text-pitch-300"
-                }`}
-              >
-                {message.resolved ? "Resolved" : "Open"}
-              </span>
+              {onToggleExpand ? (
+                <button
+                  type="button"
+                  className={`${MANAGER_LABEL} text-pitch-400 underline-offset-2 hover:underline`}
+                  onClick={onToggleExpand}
+                >
+                  Collapse
+                </button>
+              ) : null}
             </div>
-            <h3 className="mt-2 text-base font-semibold leading-snug text-white">
+            <h3 className="mt-1.5 text-sm font-semibold leading-snug text-white sm:mt-2 sm:text-base">
               {message.title}
             </h3>
           </div>
         </header>
 
         <p
-          className={`${TYPO.bodySm} whitespace-pre-line leading-relaxed text-pitch-300`}
+          className={`${TYPO.bodySm} whitespace-pre-line leading-snug text-pitch-300 sm:leading-relaxed`}
         >
           {message.body}
         </p>

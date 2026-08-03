@@ -131,7 +131,7 @@ export function ManagerChallengeCupBracket({
       <div
         className={
           compact
-            ? "max-h-[28rem] min-w-0 overflow-x-auto overflow-y-auto"
+            ? "min-w-0 overflow-x-auto"
             : "min-w-0"
         }
       >
