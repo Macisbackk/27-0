@@ -16,6 +16,10 @@ import {
   type UnlockedAchievement,
 } from "./achievementStorage";
 import { awardClubFundsLines } from "../storage/club-funds";
+import {
+  ACHIEVEMENTS_BASELINE_VERSION,
+  STORAGE_KEYS,
+} from "../storage/keys";
 
 export type AchievementUnlockResult = {
   id: string;
@@ -274,6 +278,73 @@ export function acknowledgeExistingAchievementPopups(): number {
   });
   if (changed > 0) saveAchievements(next);
   return changed;
+}
+
+function readBaselineVersion(): number {
+  if (typeof window === "undefined") return 0;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.achievementsBaselineVersion);
+    const n = raw == null ? 0 : Number(raw);
+    return Number.isFinite(n) ? n : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function writeBaselineVersion(version: number): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(
+      STORAGE_KEYS.achievementsBaselineVersion,
+      String(version)
+    );
+  } catch {
+    /* ignore quota */
+  }
+}
+
+/**
+ * After local + account progress are available: union unlocked IDs from
+ * progress into storage, mark them all acknowledged, and record the baseline.
+ * Does not pay rewards or queue popups — imports/migrations must stay silent.
+ */
+export function synchronizeAchievementBaseline(
+  ctx: AchievementCheckContext = {}
+): { unlockedIds: string[]; migrated: boolean } {
+  const progress = buildAchievementProgress(ctx);
+  const existing = loadAchievements();
+  const byId = new Map(existing.map((row) => [row.id, row]));
+  const now = new Date().toISOString();
+  const needsMigration = readBaselineVersion() < ACHIEVEMENTS_BASELINE_VERSION;
+
+  for (const def of ACHIEVEMENT_DEFINITIONS) {
+    if (!evaluateUnlock(def, ctx, progress)) continue;
+    const prev = byId.get(def.id);
+    if (!prev) {
+      byId.set(def.id, {
+        id: def.id,
+        unlockedAt: now,
+        popupSeen: true,
+        // Historical / imported unlocks — do not re-pay club funds.
+        rewardClaimed: true,
+      });
+    } else {
+      byId.set(def.id, { ...prev, popupSeen: true });
+    }
+  }
+
+  // Existing rows without acknowledgement lists (legacy saves) are acknowledged.
+  const next = Array.from(byId.values()).map((row) => ({
+    ...row,
+    popupSeen: true,
+  }));
+  saveAchievements(next);
+  writeBaselineVersion(ACHIEVEMENTS_BASELINE_VERSION);
+
+  return {
+    unlockedIds: next.map((row) => row.id),
+    migrated: needsMigration,
+  };
 }
 
 export function checkAchievements(

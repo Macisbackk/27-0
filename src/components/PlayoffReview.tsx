@@ -24,7 +24,8 @@ import { PlayoffBracketDisplay } from "./PlayoffBracketDisplay";
 import { Confetti } from "./Confetti";
 import { TYPO } from "@/lib/ui/typography";
 import { NORMAL } from "@/lib/ui/design-system";
-import { BodyPortal } from "@/components/ui/BodyPortal";
+import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
+import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
 
 const PLAYOFF_AWARD_TITLES: Record<string, string> = {
   "Player of the Season": "Best Player of the Play-Offs",
@@ -61,6 +62,10 @@ export function PlayoffReview({
     playoffFinalizedRef.current = true;
     onFinalizeRun?.();
   }, [onFinalizeRun]);
+
+  useEffect(() => {
+    clearStaleBodyScrollLocks();
+  }, []);
 
   const isChampion = playoffResult.isChampion;
   const titleBio = useMemo(
@@ -127,11 +132,13 @@ export function PlayoffReview({
   }, [playoffBracketState]);
 
   return (
-    <BodyPortal>
-    <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/90 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(0.5rem,env(safe-area-inset-top))]">
+    <DocumentPageShell
+      diagnoseLabel="QuickModePlayoffReview"
+      className="pb-[max(1rem,env(safe-area-inset-bottom))]"
+    >
       {isChampion && <Confetti />}
 
-      <div className="game-page relative flex w-full flex-col items-center py-8 sm:py-12">
+      <div className="relative flex w-full flex-col items-center py-4 sm:py-8">
         <div className="manager-section w-full items-center px-0">
         <motion.header
           initial={{ opacity: 0, y: 20 }}
@@ -263,8 +270,7 @@ export function PlayoffReview({
         </motion.footer>
         </div>
       </div>
-    </div>
-    </BodyPortal>
+    </DocumentPageShell>
   );
 }
 

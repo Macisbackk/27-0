@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import type {
@@ -694,6 +695,13 @@ export function GameBoard({
     finalizeRegularSeason,
   ]);
 
+  useEffect(() => {
+    if (phase !== "review") return;
+    // Player selection / spin / achievement / match-detail locks must not
+    // survive into document-scrolled Match Review.
+    clearStaleBodyScrollLocks();
+  }, [phase, reviewStage]);
+
   const handleContinuePlayoffs = useCallback(() => {
     if (!seasonResult) return;
     finalizeRegularSeason(seasonResult, squad);
@@ -1231,20 +1239,26 @@ export function GameBoard({
         ? `${runKey}-pick-${activeOfferKey}-${currentRound?.optionA}-${currentRound?.optionB}`
         : "";
 
+  const isReviewPhase = phase === "review";
+
   return (
-    <div className="matchday-arena arena-surface relative flex min-h-full flex-1 flex-col lg:desktop-page-fit">
+    <div
+      className={`matchday-arena arena-surface relative flex flex-1 flex-col ${
+        isReviewPhase ? "min-h-0" : "min-h-full lg:desktop-page-fit"
+      }`}
+    >
       <div className="stadium-backdrop pointer-events-none fixed inset-0" />
       <div className="stadium-lights pointer-events-none fixed inset-0" />
 
       <div
         ref={mainScrollRef}
-        className={`game-page relative flex flex-col overflow-x-hidden py-4 pb-28 sm:py-5 sm:pb-8 lg:min-h-0 lg:flex-1 lg:pb-4 ${
-          phase === "review"
-            ? "lg:overflow-hidden"
-            : "lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail"
+        className={`game-page relative flex flex-col overflow-x-hidden ${
+          isReviewPhase
+            ? "overflow-y-visible py-2 pb-[max(1rem,env(safe-area-inset-bottom))] sm:py-4"
+            : "py-4 pb-28 sm:py-5 sm:pb-8 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4"
         }`}
       >
-      {(title || subtitle) && (
+      {!isReviewPhase && (title || subtitle) && (
         <div className="pt-1 lg:pt-0">
           <div className="flex flex-wrap items-center gap-3">
             {title && (
@@ -1255,10 +1269,9 @@ export function GameBoard({
         </div>
       )}
 
+      {!isReviewPhase && (
       <div>
-        {phase !== "review" && (
           <GuestNotice variant="play" />
-        )}
 
         <MatchdayScoreboard
             filledCount={filledCount}
@@ -1275,7 +1288,7 @@ export function GameBoard({
           </p>
         )}
 
-        {superSamHallasMode && phase !== "review" && (
+        {superSamHallasMode && (
           <motion.div
             className={`mt-4 overflow-hidden ${CARD.base} border-accent-gold/50 bg-accent-gold/15 px-3 py-3 text-center sm:px-4 sm:py-4`}
             initial={{ opacity: 0, scale: 0.96 }}
@@ -1288,7 +1301,7 @@ export function GameBoard({
           </motion.div>
         )}
 
-        {joeMellorMode && !superSamHallasMode && phase !== "review" && (
+        {joeMellorMode && !superSamHallasMode && (
           <motion.div
             className={`mt-4 overflow-hidden ${CARD.base} border-accent-gold/50 bg-accent-gold/15 px-3 py-3 text-center sm:px-4 sm:py-4`}
             initial={{ opacity: 0, scale: 0.96 }}
@@ -1505,8 +1518,9 @@ export function GameBoard({
           </AnimatePresence>
         </div>
       </div>
+      )}
 
-      {phase !== "review" && (
+      {!isReviewPhase && (
         <div
           className="fixed inset-x-0 bottom-0 z-30 border-t border-pitch-700/60 bg-pitch-950/95 px-3 py-2 sm:hidden"
           style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
@@ -1546,7 +1560,7 @@ export function GameBoard({
         </div>
       )}
 
-      {phase === "review" &&
+      {isReviewPhase &&
         seasonResult &&
         reviewStage === "regular" && (
         <SeasonReview
@@ -1569,7 +1583,7 @@ export function GameBoard({
         />
       )}
 
-      {phase === "review" &&
+      {isReviewPhase &&
         reviewStage === "playoffs" &&
         playoffBracketState &&
         seasonResult && (
@@ -1586,7 +1600,7 @@ export function GameBoard({
         />
       )}
 
-      {phase === "review" &&
+      {isReviewPhase &&
         seasonResult &&
         seasonResult.playoffResult &&
         reviewStage === "playoffFinal" && (

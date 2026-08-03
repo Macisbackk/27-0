@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { PlayoffBracketMatch } from "@/lib/game/playoff-bracket";
 import { getPlayoffRoundLabel } from "@/lib/game/playoff-bracket";
@@ -7,6 +8,7 @@ import { GRAND_FINAL_VENUE } from "@/lib/manager/managerPlayoffs";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { TeamScoringBreakdown } from "./TeamScoringBreakdown";
+import { generateFantasyMatchBio } from "@/lib/game/fantasy-match-summary";
 
 interface PlayoffMatchDetailsPanelProps {
   match: PlayoffBracketMatch;
@@ -19,6 +21,21 @@ export function PlayoffMatchDetailsPanel({
   onClose,
   className = "",
 }: PlayoffMatchDetailsPanelProps) {
+  const matchStory = useMemo(() => {
+    const fixture = match.userFixture;
+    if (!fixture) return null;
+    if (fixture.matchBio?.trim()) return fixture.matchBio;
+    try {
+      return generateFantasyMatchBio(
+        fixture,
+        `playoff-${match.id}`,
+        fixture.manOfTheMatch
+      );
+    } catch {
+      return null;
+    }
+  }, [match.id, match.userFixture]);
+
   if (
     !match.homeTeam ||
     !match.awayTeam ||
@@ -55,11 +72,11 @@ export function PlayoffMatchDetailsPanel({
               {venueLabel ? `${venueLabel} · ` : ""}
               {match.homeTeam} vs {match.awayTeam}
             </p>
-            {match.userFixture?.matchBio && (
+            {matchStory && (
               <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
                 <p className={TYPO.sectionTitle}>Match Story</p>
                 <p className={`mt-2 ${TYPO.bodySm}`}>
-                  {match.userFixture.matchBio}
+                  {matchStory}
                 </p>
               </div>
             )}

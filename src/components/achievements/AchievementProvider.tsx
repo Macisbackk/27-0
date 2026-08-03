@@ -11,20 +11,23 @@ import {
 } from "react";
 import {
   checkAchievements,
-  acknowledgeExistingAchievementPopups,
+  synchronizeAchievementBaseline,
   markAchievementPopupSeen,
   type AchievementUnlockResult,
 } from "@/lib/achievements/achievementEngine";
 import type { AchievementCheckContext } from "@/lib/achievements/achievementContext";
 import { ACHIEVEMENT_CHECK_EVENT } from "@/lib/achievements/achievementNotify";
+import { useAuth } from "@/lib/auth-context";
 import { AchievementUnlockedPopup } from "./AchievementUnlockedPopup";
 
 type AchievementContextValue = {
   notifyAchievements: (ctx?: AchievementCheckContext) => void;
+  isAchievementHydrated: boolean;
 };
 
 const AchievementContext = createContext<AchievementContextValue>({
   notifyAchievements: () => {},
+  isAchievementHydrated: false,
 });
 
 const POPUP_DURATION_MS = 5500;
@@ -43,12 +46,18 @@ export function useAchievements() {
 }
 
 export function AchievementProvider({ children }: { children: ReactNode }) {
+  const { loading: authLoading, user } = useAuth();
+  const userId = user?.id ?? null;
   const [queue, setQueue] = useState<AchievementUnlockResult[]>([]);
   const [active, setActive] = useState<AchievementUnlockResult | null>(null);
+  const [isAchievementHydrated, setIsAchievementHydrated] = useState(false);
   const dismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const queuedIdsRef = useRef<Set<string>>(new Set());
   const activeIdRef = useRef<string | null>(null);
-  const hasSeededUnseenRef = useRef(false);
+  const hydratedRef = useRef(false);
+  const baselineIdsRef = useRef<Set<string>>(new Set());
+  const pendingCtxRef = useRef<AchievementCheckContext | null>(null);
+  const baselineUserKeyRef = useRef<string | null>(null);
 
   const clearDismissTimer = useCallback(() => {
     if (dismissTimer.current) {
@@ -64,6 +73,7 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     for (const item of items) {
       if (queuedIdsRef.current.has(item.id)) continue;
       if (activeIdRef.current === item.id) continue;
+      if (baselineIdsRef.current.has(item.id)) continue;
       queuedIdsRef.current.add(item.id);
       fresh.push(item);
     }
@@ -71,22 +81,60 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     setQueue((prev) => [...prev, ...fresh]);
   }, []);
 
+  const finishHydration = useCallback(
+    (ctx: AchievementCheckContext = {}) => {
+      const userKey = userId ?? "guest";
+      const { unlockedIds } = synchronizeAchievementBaseline(ctx);
+      baselineIdsRef.current = new Set(unlockedIds);
+      baselineUserKeyRef.current = userKey;
+      hydratedRef.current = true;
+      setIsAchievementHydrated(true);
+
+      const pending = pendingCtxRef.current;
+      pendingCtxRef.current = null;
+      if (pending) {
+        enqueue(checkAchievements(pending));
+      }
+    },
+    [enqueue, userId]
+  );
+
   const notifyAchievements = useCallback(
     (ctx: AchievementCheckContext = {}) => {
+      if (!hydratedRef.current) {
+        pendingCtxRef.current = { ...pendingCtxRef.current, ...ctx };
+        return;
+      }
       const unlocked = checkAchievements(ctx);
       enqueue(unlocked);
     },
     [enqueue]
   );
 
-  // Persist acknowledgement for any previously unlocked achievements so
-  // login / refresh / mode entry never re-queues historical unlocks.
-  // Only locked→unlocked transitions (notifyAchievements) enqueue popups.
+  // Identity change: block popups until a fresh silent baseline runs.
   useEffect(() => {
-    if (hasSeededUnseenRef.current) return;
-    hasSeededUnseenRef.current = true;
-    acknowledgeExistingAchievementPopups();
-  }, []);
+    const userKey = userId ?? "guest";
+    if (baselineUserKeyRef.current === userKey && hydratedRef.current) {
+      return;
+    }
+    hydratedRef.current = false;
+    setIsAchievementHydrated(false);
+  }, [userId]);
+
+  // Guest / session-ready baseline once auth has finished its first pass.
+  useEffect(() => {
+    if (authLoading) return;
+    finishHydration();
+  }, [authLoading, userId, finishHydration]);
+
+  // Cloud hydrate completes with auth-state-changed — re-baseline silently.
+  useEffect(() => {
+    const onAuthChanged = () => {
+      finishHydration();
+    };
+    window.addEventListener("auth-state-changed", onAuthChanged);
+    return () => window.removeEventListener("auth-state-changed", onAuthChanged);
+  }, [finishHydration]);
 
   useEffect(() => {
     const onCheck = (event: Event) => {
@@ -97,8 +145,6 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener(ACHIEVEMENT_CHECK_EVENT, onCheck);
   }, [notifyAchievements]);
 
-  // Promote next queued item to active and acknowledge immediately so a
-  // mid-popup navigation/remount cannot replay it.
   useEffect(() => {
     if (active || queue.length === 0) return;
     const [next, ...rest] = queue;
@@ -108,8 +154,6 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     setQueue(rest);
   }, [active, queue]);
 
-  // Auto-dismiss timer starts only when a popup is actually active/shown.
-  // Cleanup clears the timer only — never marks seen (avoids remount flash).
   useEffect(() => {
     if (!active) return;
 
@@ -147,9 +191,10 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
   }, [active, clearDismissTimer]);
 
   return (
-    <AchievementContext.Provider value={{ notifyAchievements }}>
+    <AchievementContext.Provider
+      value={{ notifyAchievements, isAchievementHydrated }}
+    >
       {children}
-      {/* Always mount popup shell so AnimatePresence can play exit (avoids flash-cut). */}
       <AchievementUnlockedPopup
         result={active}
         onDismiss={dismissActive}

@@ -31,7 +31,12 @@ export const STORAGE_KEYS = {
   managerActiveSlot: "27-0-manager-active-slot",
   managerOnboarding: "27-0-manager-onboarding",
   achievements: "27-0-achievements",
+  /** One-time: existing unlocks treated as acknowledged; post-hydrate baseline set. */
+  achievementsBaselineVersion: "27-0-achievements-baseline-version",
 } as const;
+
+/** Bump when achievement hydration / acknowledgement migration changes. */
+export const ACHIEVEMENTS_BASELINE_VERSION = 1;
 
 /** Bump when StoredStats shape changes — triggers one-time local migration. */
 export const STATS_SCHEMA_VERSION = 3;

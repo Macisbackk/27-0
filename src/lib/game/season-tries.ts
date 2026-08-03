@@ -19,6 +19,7 @@ import {
   POSITION_TRY_WEIGHT,
   SEASON_TRY_THEORETICAL_MAX,
 } from "./try-weights";
+import { enrichFantasyFixtureSummary } from "./fantasy-match-summary";
 
 export { POSITION_TRY_WEIGHT } from "./try-weights";
 
@@ -205,6 +206,7 @@ function applyScoringDetails(
   seed: string,
   opponentOptions?: OpponentPoolOptions
 ): void {
+  const squadSlots = entries.map((entry) => entry.slot);
   fixtures.forEach((fixture, fi) => {
     const eraOpponent = getEraTeamByDisplayName(fixture.opponent);
     fixture.scoringDetail = {
@@ -219,6 +221,12 @@ function applyScoringDetails(
           )
         : buildOpponentScoringDetail(fixture, seed, opponentOptions),
     };
+    // Same scoringDetail drives Match Story, MOTM, and review panels.
+    enrichFantasyFixtureSummary(
+      fixture,
+      squadSlots,
+      `${seed}-bio-r${fixture.round}`
+    );
   });
 }
 

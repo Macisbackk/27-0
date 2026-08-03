@@ -1125,6 +1125,8 @@ body {
     right: 0;
     bottom: 0;
     z-index: 30;
+    display: flex;
+    justify-content: center;
     margin-left: 0;
     margin-right: 0;
     border-top: 1px solid color-mix(in srgb, var(--theme-tertiary) 22%, transparent);
@@ -1138,12 +1140,22 @@ body {
 .bracket-actions-center {
   display: flex;
   justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
 .bracket-actions-center .flex {
   width: 100%;
+  max-width: 20rem;
+  margin-inline: auto;
   justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .bracket-actions-center .flex {
+    max-width: none;
+  }
 }
 
 .bracket-sticky-actions {

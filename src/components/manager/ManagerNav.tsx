@@ -91,23 +91,19 @@ export function ManagerNav({
           type="button"
           onClick={() => navigate("inbox")}
           disabled={disabled}
-          className={`btn-press relative flex h-10 min-w-[6.5rem] items-center justify-center rounded-sm border px-4 transition manager-inbox-button ${
-            active === "inbox"
-              ? "border-theme-primary/45 bg-theme-primary/12"
-              : "border-pitch-600/50 bg-pitch-900/40 hover:border-pitch-500/55"
+          className={`btn-press relative shrink-0 rounded-sm px-2.5 py-2 text-center font-display text-[11px] font-bold uppercase tracking-wide transition sm:px-3 sm:text-xs ${
+            active === "inbox" ? BTN.tabActive : BTN.tabIdle
           } ${disabled ? "pointer-events-none opacity-40" : ""}`}
           aria-current={active === "inbox" ? "page" : undefined}
           aria-label={
             unreadInbox > 0 ? `Inbox, ${unreadInbox} unread` : "Inbox"
           }
         >
-          <span className="pointer-events-none flex items-center justify-center gap-1.5 leading-none">
+          <span className="pointer-events-none inline-flex items-center justify-center gap-1.5 leading-none">
             <span className="text-base leading-none" aria-hidden>
               ✉
             </span>
-            <span className="font-display text-[10px] font-bold uppercase tracking-wide text-white">
-              Inbox
-            </span>
+            <span>Inbox</span>
           </span>
           {unreadLabel && active !== "inbox" ? (
             <span className="pointer-events-none absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-theme-primary px-1 text-[9px] font-bold leading-none text-[var(--theme-text-on-primary)]">

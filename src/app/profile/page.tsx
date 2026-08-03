@@ -76,7 +76,7 @@ export default function ProfilePage() {
   const [statsResetBusy, setStatsResetBusy] = useState(false);
   const [statsResetMsg, setStatsResetMsg] = useState<string | null>(null);
   const [statsResetError, setStatsResetError] = useState<string | null>(null);
-  const { notifyAchievements } = useAchievements();
+  const { notifyAchievements, isAchievementHydrated } = useAchievements();
 
   useEffect(() => {
     if (!loading && !isLoggedIn) {
@@ -104,9 +104,9 @@ export default function ProfilePage() {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if (!isLoggedIn) return;
+    if (!isLoggedIn || !isAchievementHydrated) return;
     notifyAchievements({ profileOpened: true });
-  }, [isLoggedIn, notifyAchievements]);
+  }, [isLoggedIn, isAchievementHydrated, notifyAchievements]);
 
   const handlePasswordReset = async () => {
     if (!email) return;

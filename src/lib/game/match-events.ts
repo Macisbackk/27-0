@@ -85,6 +85,191 @@ export function stripEventMinutePrefix(
   return description.slice(prefix.length).trimStart();
 }
 
+/** Loose legacy / live event shapes accepted before normalisation. */
+export type LegacyMatchEventInput = {
+  id?: string;
+  matchId?: string;
+  minute?: number | string;
+  sequence?: number;
+  type?: string;
+  teamId?: string;
+  team?: string;
+  teamName?: string;
+  opponentTeamId?: string;
+  opponentTeamName?: string;
+  playerId?: string;
+  playerName?: string;
+  secondaryPlayerId?: string;
+  kickerId?: string;
+  kickerName?: string;
+  points?: number;
+  description?: string;
+  importance?: MatchEventImportance;
+  possessionTeamId?: string;
+  territory?: MatchEventTerritory;
+  relatedEventId?: string;
+  metadata?: Record<string, unknown>;
+};
+
+const MATCH_EVENT_TYPES = new Set<string>([
+  "try",
+  "conversion",
+  "goal",
+  "missed_conversion",
+  "penalty_goal",
+  "penalty",
+  "drop_goal",
+  "big_break",
+  "line_break",
+  "try_saver",
+  "knock_on",
+  "forward_pass",
+  "six_again",
+  "goal_line_dropout",
+  "captains_challenge",
+  "sin_bin",
+  "injury",
+  "interchange",
+  "momentum_shift",
+  "pressure_set",
+  "last_tackle_kick",
+  "forty_twenty",
+  "forced_error",
+  "held_up",
+  "missed_drop_goal",
+  "note",
+  "half_time",
+  "full_time",
+  "red_card",
+  "substitution",
+]);
+
+function coerceMinute(value: unknown): number | null {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return Math.max(0, Math.floor(value));
+  }
+  if (typeof value === "string" && value.trim() !== "") {
+    const n = Number(value);
+    if (Number.isFinite(n)) return Math.max(0, Math.floor(n));
+  }
+  return null;
+}
+
+function resolveTeamId(
+  raw: LegacyMatchEventInput,
+  userTeamId: string,
+  opponentTeamId: string
+): string {
+  if (typeof raw.teamId === "string" && raw.teamId.trim()) return raw.teamId;
+  if (raw.team === "user") return userTeamId;
+  if (raw.team === "opponent") return opponentTeamId;
+  if (typeof raw.teamName === "string" && raw.teamName.trim()) {
+    return raw.teamName;
+  }
+  return userTeamId;
+}
+
+/**
+ * Normalise legacy Quick Mode / Manager / saved events into one canonical shape.
+ * Invalid rows are skipped (dev-logged); one bad event must not crash the story.
+ */
+export function normalizeMatchEvents(
+  events: LegacyMatchEventInput[] | null | undefined,
+  options: {
+    matchId: string;
+    userTeamId: string;
+    opponentTeamId: string;
+    userTeamName?: string;
+    opponentTeamName?: string;
+  }
+): MatchEvent[] {
+  if (!events || events.length === 0) return [];
+
+  const normalised: MatchEvent[] = [];
+  const seenIds = new Set<string>();
+
+  events.forEach((raw, index) => {
+    try {
+      const minute = coerceMinute(raw.minute);
+      if (minute == null) {
+        if (process.env.NODE_ENV === "development") {
+          console.warn("[match-events] skip event with invalid minute", raw);
+        }
+        return;
+      }
+
+      let type = typeof raw.type === "string" ? raw.type : "note";
+      if (type === "red_card") type = "sin_bin";
+      if (type === "substitution") type = "interchange";
+      if (!MATCH_EVENT_TYPES.has(type)) {
+        if (process.env.NODE_ENV === "development") {
+          console.warn("[match-events] unknown type coerced to note", type);
+        }
+        type = "note";
+      }
+
+      const teamId = resolveTeamId(
+        raw,
+        options.userTeamId,
+        options.opponentTeamId
+      );
+      const teamName =
+        (typeof raw.teamName === "string" && raw.teamName.trim()) ||
+        (teamId === options.userTeamId
+          ? options.userTeamName ?? options.userTeamId
+          : options.opponentTeamName ?? options.opponentTeamId);
+
+      let id =
+        typeof raw.id === "string" && raw.id.trim()
+          ? raw.id
+          : `${options.matchId}-${minute}-${index}-${type}`;
+      if (seenIds.has(id)) {
+        id = `${id}-${index}`;
+      }
+      seenIds.add(id);
+
+      const playerName =
+        typeof raw.playerName === "string" &&
+        raw.playerName.trim() &&
+        !/^try scorer$/i.test(raw.playerName)
+          ? raw.playerName.trim()
+          : undefined;
+
+      normalised.push({
+        id,
+        minute,
+        teamId,
+        teamName,
+        opponentTeamId: raw.opponentTeamId,
+        opponentTeamName: raw.opponentTeamName,
+        playerId: raw.playerId,
+        playerName,
+        kickerId: raw.kickerId ?? raw.secondaryPlayerId,
+        kickerName: raw.kickerName,
+        type: type as MatchEventType,
+        points: typeof raw.points === "number" ? raw.points : undefined,
+        description:
+          typeof raw.description === "string" && raw.description.trim()
+            ? raw.description
+            : `${type.replace(/_/g, " ")}`,
+        importance: raw.importance ?? "medium",
+        possessionTeamId: raw.possessionTeamId,
+        territory: raw.territory,
+        relatedEventId: raw.relatedEventId,
+      });
+    } catch (err) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn("[match-events] failed to normalise event", raw, err);
+      }
+    }
+  });
+
+  return [...normalised].sort((a, b) => {
+    if (a.minute !== b.minute) return a.minute - b.minute;
+    return a.id.localeCompare(b.id);
+  });
+}
+
 export function buildMatchStoryFromEvents(
   events: MatchEvent[],
   userTeam?: string

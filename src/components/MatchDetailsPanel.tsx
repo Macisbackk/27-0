@@ -13,6 +13,11 @@ import { generateSimulatedMatchEvents } from "@/lib/manager/matchEventGenerator"
 import { ManagerMatchEventLine } from "@/components/manager/ManagerMatchEventLine";
 import { TeamScoringBreakdown } from "./TeamScoringBreakdown";
 import { MatchPlayerOfTheMatchCard } from "./MatchPlayerOfTheMatchCard";
+import {
+  buildMatchStoryFromEvents,
+  normalizeMatchEvents,
+} from "@/lib/game/match-events";
+import { generateFantasyMatchBio } from "@/lib/game/fantasy-match-summary";
 
 interface MatchDetailsPanelProps {
   fixture: MatchFixture;
@@ -53,12 +58,13 @@ export function MatchDetailsPanel({
   const savedEvents: LiveMatchEvent[] | undefined = (
     fixture as ManagerFixtureRecord
   ).meta?.liveEvents;
+  const matchId = `qm-r${fixture.round}-${fixture.opponent}`;
 
   const matchEvents = useMemo(() => {
     if (savedEvents && savedEvents.length > 0) return savedEvents;
     return generateSimulatedMatchEvents({
       seed,
-      fixtureKey: `qm-r${fixture.round}-${fixture.opponent}`,
+      fixtureKey: matchId,
       userClub: userTeamName,
       opponent: fixture.opponent,
       userScore: fixture.pointsFor,
@@ -83,7 +89,7 @@ export function MatchDetailsPanel({
   }, [
     savedEvents,
     seed,
-    fixture.round,
+    matchId,
     fixture.opponent,
     fixture.pointsFor,
     fixture.pointsAgainst,
@@ -91,6 +97,40 @@ export function MatchDetailsPanel({
     fixture.triesAgainst,
     userTeamName,
     detail,
+  ]);
+
+  const canonicalEvents = useMemo(
+    () =>
+      normalizeMatchEvents(matchEvents, {
+        matchId,
+        userTeamId: userTeamName,
+        opponentTeamId: fixture.opponent,
+        userTeamName,
+        opponentTeamName: fixture.opponent,
+      }),
+    [matchEvents, matchId, userTeamName, fixture.opponent]
+  );
+
+  const matchStory = useMemo(() => {
+    if (hideMatchStory) return null;
+    if (fixture.matchBio?.trim()) return fixture.matchBio;
+    try {
+      if (canonicalEvents.length > 0) {
+        return buildMatchStoryFromEvents(canonicalEvents, userTeamName);
+      }
+      return generateFantasyMatchBio(fixture, seed, fixture.manOfTheMatch);
+    } catch (err) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn("[MatchDetailsPanel] Match Story fallback failed", err);
+      }
+      return null;
+    }
+  }, [
+    hideMatchStory,
+    fixture,
+    seed,
+    canonicalEvents,
+    userTeamName,
   ]);
 
   const scoringBlock = detail ? (
@@ -149,10 +189,12 @@ export function MatchDetailsPanel({
               )}
               vs {fixture.opponent}
             </p>
-            {fixture.matchBio && !hideMatchStory && (
+            {matchStory && (
               <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
                 <p className={TYPO.sectionTitle}>Match Story</p>
-                <p className={`mt-2 whitespace-pre-line ${TYPO.bodySm}`}>{fixture.matchBio}</p>
+                <p className={`mt-2 whitespace-pre-line ${TYPO.bodySm}`}>
+                  {matchStory}
+                </p>
               </div>
             )}
           </div>

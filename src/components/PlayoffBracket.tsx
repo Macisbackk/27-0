@@ -27,7 +27,8 @@ import {
 import { PlayoffMatchDetailsPanel } from "./PlayoffMatchDetailsPanel";
 import { BracketMobileRoundNav } from "./BracketMobileRoundNav";
 import { GameButton } from "./ui/GameButton";
-import { BodyPortal } from "@/components/ui/BodyPortal";
+import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
+import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
 import {
   PLAYOFF_ROUND_SHORT,
   PlayoffBracketDesktop,
@@ -122,6 +123,10 @@ export function PlayoffBracket({
     matchDetailsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [selectedId, state.matches]);
 
+  useEffect(() => {
+    clearStaleBodyScrollLocks();
+  }, []);
+
   const handleSimulateMatch = useCallback(
     (matchId: string) => {
       if (!canSimulatePlayoffMatch(state, matchId)) return;
@@ -185,10 +190,8 @@ export function PlayoffBracket({
   const userClub = state.userClub ?? DREAM_TEAM_NAME;
 
   return (
-    <BodyPortal>
-    <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/90">
-      <div className="stadium-lights pointer-events-none fixed inset-0" />
-      <div className="game-page relative w-full py-3 pb-28 sm:py-8 md:pb-8">
+    <DocumentPageShell diagnoseLabel="QuickModePlayoffBracket" className="pb-28 md:pb-8">
+      <div className="relative w-full py-3 sm:py-8">
         <PlayoffBracketHeader
           activeRound={activeRound}
           tournamentComplete={state.tournamentComplete}
@@ -278,20 +281,22 @@ export function PlayoffBracket({
                 onClose={() => {
                   playPanelClose();
                   setSelectedId(null);
+                  clearStaleBodyScrollLocks();
                 }}
               />
             </div>
           )}
         </AnimatePresence>
 
-        <div className="bracket-sticky-actions mx-auto max-w-3xl md:mt-4">
-          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
+        <div className="bracket-sticky-actions bracket-actions-center mx-auto w-full max-w-3xl md:mt-4">
+          <div className="mx-auto flex w-full max-w-xs flex-col items-center justify-center gap-2 sm:max-w-none sm:flex-row sm:flex-wrap">
             {showProceedToNextRound && (
               <GameButton
                 variant="current"
                 size="md"
+                fullWidth={false}
                 onClick={handleProceedToNextRound}
-                className="w-full sm:w-auto md:hidden"
+                className="w-full max-w-xs sm:w-auto md:hidden"
               >
                 Proceed to {getPlayoffRoundLabel(activeRound)}
               </GameButton>
@@ -299,9 +304,10 @@ export function PlayoffBracket({
             <GameButton
               variant="secondary"
               size="md"
+              fullWidth={false}
               disabled={!canSimRound}
               onClick={handleSimulateRound}
-              className={`w-full sm:w-auto disabled:opacity-40 ${
+              className={`w-full max-w-xs sm:w-auto disabled:opacity-40 ${
                 showProceedToNextRound ? "hidden md:inline-flex" : ""
               }`}
             >
@@ -310,7 +316,6 @@ export function PlayoffBracket({
           </div>
         </div>
       </div>
-    </div>
-    </BodyPortal>
+    </DocumentPageShell>
   );
 }
