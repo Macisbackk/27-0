@@ -3,7 +3,6 @@
 import { GameButton } from "@/components/ui/GameButton";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import { SPACING } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
 import {
   ManagerPage,
   ManagerSection,
@@ -62,7 +61,7 @@ export function ManagerFriendlySelect({
               />
             </div>
 
-            <p className={`mt-3 line-clamp-2 ${TYPO.managerBody}`}>
+            <p className={`mt-3 line-clamp-2 min-h-[2.25rem] text-[0.72rem] leading-snug text-pitch-500`}>
               {getFriendlyAttendanceInterest(choice, career)}
             </p>
 

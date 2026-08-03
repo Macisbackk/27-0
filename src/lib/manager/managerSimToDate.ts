@@ -8,6 +8,7 @@ import {
 import { autoFixMatchdaySquad } from "./managerAutoFix";
 import { validateFitMatchdaySquad } from "./managerMatchdayValidation";
 import { getMatchWeekPhase } from "./managerMatchWeek";
+import { autoSelectFriendlyForSim } from "./managerFriendlies";
 
 export interface SimToDateResult {
   ok: boolean;
@@ -92,6 +93,10 @@ export function simulateCareerToGameWeek(
         weeksAdvanced,
       };
     }
+
+    // Unresolved pre-season friendly: auto-pick a valid opponent (seeded) and continue.
+    const autoFriendly = autoSelectFriendlyForSim(next);
+    next = autoFriendly.career;
 
     let ready = prepareCareerForNextMatch(next);
     if (ready.managerSettings?.autoFixSquadBeforeMatch !== false) {

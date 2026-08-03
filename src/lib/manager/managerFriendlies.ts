@@ -8,6 +8,8 @@ import {
 } from "./managerAttendance";
 import type {
   FriendlyOpponentChoice,
+  InboxMessage,
+  LatestNewsItem,
   ManagerCareer,
   PreSeasonState,
 } from "./types";
@@ -54,14 +56,26 @@ export function isAwaitingFriendlyChoice(career: ManagerCareer): boolean {
   );
 }
 
+function previousFriendlyClubs(career: ManagerCareer): string[] {
+  const clubs: string[] = [];
+  for (const f of career.fixtures) {
+    if (f.competition === "friendly" && f.opponent) {
+      clubs.push(f.opponent);
+    }
+  }
+  return clubs;
+}
+
 function buildFriendlyCandidates(
   userClub: string,
   seed: string,
-  friendlyIndex: number
+  friendlyIndex: number,
+  excludeClubs: string[] = []
 ): FriendlyOpponentChoice[] {
   const rng = seedrandom(`${seed}-friendly-${friendlyIndex}`);
+  const exclude = new Set([userClub, ...excludeClubs]);
   const pool: FriendlyOpponentChoice[] = CURRENT_PLAYABLE_CLUBS.filter(
-    (club) => club !== userClub
+    (club) => !exclude.has(club)
   ).map((club) => {
     const teamRating = Math.round(getManagerClubTeamRating(club));
     return {
@@ -79,7 +93,30 @@ function buildFriendlyCandidates(
     };
   });
 
-  const shuffled = [...pool].sort(() => rng() - 0.5);
+  // Fallback if exclusions emptied the pool (still never include user club).
+  const usable =
+    pool.length > 0
+      ? pool
+      : CURRENT_PLAYABLE_CLUBS.filter((club) => club !== userClub).map(
+          (club) => {
+            const teamRating = Math.round(getManagerClubTeamRating(club));
+            return {
+              id: `${club}-${CURRENT_SEASON}`,
+              club,
+              year: CURRENT_SEASON,
+              displayName: club,
+              difficulty: "balanced" as const,
+              teamRating,
+              attendanceInterest: attendanceInterestForFriendlyOpponent(
+                userClub,
+                club,
+                teamRating
+              ),
+            };
+          }
+        );
+
+  const shuffled = [...usable].sort(() => rng() - 0.5);
   return shuffled.slice(0, 3);
 }
 
@@ -93,7 +130,8 @@ export function ensureFriendlyChoices(career: ManagerCareer): ManagerCareer {
   const choices = buildFriendlyCandidates(
     career.club,
     career.seed,
-    career.preSeason.friendliesPlayed
+    career.preSeason.friendliesPlayed,
+    previousFriendlyClubs(career)
   );
 
   return {
@@ -133,6 +171,70 @@ export function selectFriendlyOpponent(
         friendlyIndex: career.preSeason.friendliesPlayed,
       },
     },
+  };
+}
+
+/**
+ * For Sim to Date: if a friendly opponent is still required, pick one with the
+ * seeded RNG, persist it, and continue — never overwrite a manual choice.
+ */
+export function autoSelectFriendlyForSim(career: ManagerCareer): {
+  career: ManagerCareer;
+  autoSelectedClub: string | null;
+} {
+  if (!isAwaitingFriendlyChoice(career)) {
+    return { career, autoSelectedClub: null };
+  }
+  if (career.preSeason.activeFriendly) {
+    return { career, autoSelectedClub: null };
+  }
+
+  let next = ensureFriendlyChoices(career);
+  const choices = next.preSeason.currentChoices;
+  if (choices.length === 0) {
+    return { career: next, autoSelectedClub: null };
+  }
+
+  const rng = seedrandom(
+    `${next.seed}-friendly-auto-${next.preSeason.friendliesPlayed}`
+  );
+  const pick = choices[Math.floor(rng() * choices.length)]!;
+  next = selectFriendlyOpponent(next, pick.id);
+
+  const note = `A friendly against ${pick.club} was arranged automatically.`;
+  const newsItem: LatestNewsItem = {
+    id: `news-friendly-auto-${next.seasonYear}-${next.preSeason.activeFriendly?.friendlyIndex ?? 0}`,
+    week: next.gameWeek,
+    type: "fixture",
+    text: note,
+  };
+  const inbox: InboxMessage = {
+    id: `inbox-friendly-auto-${next.seasonYear}-${next.preSeason.activeFriendly?.friendlyIndex ?? 0}`,
+    type: "fixture",
+    title: "Friendly arranged",
+    body: note,
+    week: next.gameWeek,
+    season: next.seasonYear,
+    gameWeek: next.gameWeek,
+    createdAt: new Date(0).toISOString(),
+    read: false,
+  };
+
+  // Stable IDs so replaying the same sim path does not duplicate notes.
+  const existingNews = (next.latestNews ?? []).some((n) => n.id === newsItem.id);
+  const existingInbox = (next.inboxMessages ?? []).some((m) => m.id === inbox.id);
+
+  return {
+    career: {
+      ...next,
+      latestNews: existingNews
+        ? next.latestNews
+        : [newsItem, ...(next.latestNews ?? [])].slice(0, 24),
+      inboxMessages: existingInbox
+        ? next.inboxMessages
+        : [inbox, ...(next.inboxMessages ?? [])].slice(0, 80),
+    },
+    autoSelectedClub: pick.club,
   };
 }
 

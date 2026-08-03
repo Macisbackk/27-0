@@ -9,6 +9,7 @@ import {
 } from "@/lib/manager/championship/championshipChallengeCup";
 import { getReadableTextColor } from "@/lib/ui/contrast";
 import { UI_SURFACES } from "@/lib/ui/surfaces";
+import { playUiClick } from "@/lib/sound";
 import { BracketMobileRoundNav } from "./BracketMobileRoundNav";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 
@@ -18,7 +19,20 @@ interface BracketRecapProps {
   byeTeams?: [string, string];
   /** Expanded Challenge Cup Round One byes (16 clubs). */
   expandedMeta?: ExpandedCupMeta;
+  /** Display density — Hub uses hub-compact. */
+  variant?: "full" | "hub-compact" | "mobile-round";
+  /** When set (compact Hub), prefer showing this round on mobile. */
+  focusRound?: number;
+  onSelectCompletedUserMatch?: (cupMatchId: string) => void;
+  onSelectUpcomingUserMatch?: (cupMatchId: string) => void;
+  onSelectAiMatch?: (cupMatchId: string) => void;
 }
+
+/** User-club highlight: sky ring — not Current green or Era gold. Club colours stay on the swatch. */
+const USER_CLUB_RING =
+  "ring-2 ring-sky-400/70 ring-offset-1 ring-offset-pitch-950";
+const USER_MATCH_SHELL =
+  "border-sky-400/45 bg-sky-950/25 shadow-[inset_0_0_0_1px_rgba(56,189,248,0.18)]";
 
 function detectMaxRound(matches: BracketMatch[]): number {
   return Math.max(4, ...matches.map((m) => m.round));
@@ -90,11 +104,35 @@ function CupRoundTitle({
   );
 }
 
+function ByeClubChip({ club, userClub }: { club: string; userClub: string }) {
+  const isUser = club === userClub;
+  return (
+    <li
+      className={`flex min-w-0 items-center gap-1.5 rounded-md px-1.5 py-1 text-[11px] font-semibold text-white md:text-xs ${
+        isUser ? USER_CLUB_RING : ""
+      }`}
+    >
+      <ClubDualSwatch club={club} size="xs" />
+      <span className="truncate text-white">{club}</span>
+      {isUser ? (
+        <span className="shrink-0 text-[9px] font-bold uppercase tracking-wide text-sky-300">
+          You
+        </span>
+      ) : null}
+    </li>
+  );
+}
+
 export function BracketRecap({
   matches,
   userClub,
   byeTeams,
   expandedMeta,
+  variant = "full",
+  focusRound,
+  onSelectCompletedUserMatch,
+  onSelectUpcomingUserMatch,
+  onSelectAiMatch,
 }: BracketRecapProps) {
   const maxRound = detectMaxRound(matches);
   const expanded = maxRound >= 6 || expandedMeta?.schemaVersion === 2;
@@ -103,14 +141,32 @@ export function BracketRecap({
     [maxRound]
   );
   const activeRound = getActiveRoundFromMatches(matches, maxRound);
-  const [viewRound, setViewRound] = useState(activeRound);
+  const [viewRound, setViewRound] = useState(focusRound ?? activeRound);
+  const compact = variant === "hub-compact";
 
   useEffect(() => {
+    if (focusRound != null) {
+      setViewRound(focusRound);
+      return;
+    }
     setViewRound((prev) => (prev < activeRound ? activeRound : prev));
-  }, [activeRound]);
+  }, [activeRound, focusRound]);
 
   const mobileRoundMatches = matches.filter((m) => m.round === viewRound);
   const roundOneByes = expandedMeta?.roundOneByes ?? [];
+  const desktopRounds = compact
+    ? Array.from(
+        new Set(
+          rounds.filter(
+            (r) =>
+              r === activeRound ||
+              r === activeRound - 1 ||
+              r === activeRound + 1 ||
+              r === maxRound
+          )
+        )
+      ).sort((a, b) => a - b)
+    : rounds;
 
   return (
     <div className="manager-cup-bracket-breakout min-w-0">
@@ -121,23 +177,17 @@ export function BracketRecap({
         onViewRoundChange={setViewRound}
         getLabel={(round) => getRoundLabel(round, expanded)}
         getShortLabel={(round) => getShortLabel(round, maxRound)}
-        activeClassName="border-accent-gold/55 bg-accent-gold/12 text-accent-gold shadow-[0_0_16px_rgba(251,191,36,0.12)]"
+        activeClassName="border-sky-400/55 bg-sky-500/12 text-sky-200 shadow-[0_0_16px_rgba(56,189,248,0.12)]"
       />
 
       {expanded && viewRound === 1 && roundOneByes.length > 0 ? (
         <div className="mt-3 rounded-lg border border-pitch-600/40 bg-pitch-900/40 p-3 md:hidden">
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-accent-gold">
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-sky-300">
             Bye to Round Two
           </p>
           <ul className="grid grid-cols-2 gap-1.5">
             {roundOneByes.map((club) => (
-              <li
-                key={club}
-                className="flex min-w-0 items-center gap-1.5 text-[11px] font-semibold text-white"
-              >
-                <ClubDualSwatch club={club} size="xs" />
-                <span className="truncate">{club}</span>
-              </li>
+              <ByeClubChip key={club} club={club} userClub={userClub} />
             ))}
           </ul>
         </div>
@@ -159,6 +209,9 @@ export function BracketRecap({
               byeTeams={byeTeams}
               expanded={expanded}
               mobile
+              onSelectCompletedUserMatch={onSelectCompletedUserMatch}
+              onSelectUpcomingUserMatch={onSelectUpcomingUserMatch}
+              onSelectAiMatch={onSelectAiMatch}
             />
           ))}
         </div>
@@ -170,38 +223,34 @@ export function BracketRecap({
       </div>
 
       <div className="hidden overflow-x-auto pb-2 md:block">
-        {expanded && roundOneByes.length > 0 ? (
+        {expanded && roundOneByes.length > 0 && !compact ? (
           <div className="mb-4 rounded-lg border border-pitch-600/40 bg-pitch-900/35 p-3">
-            <p className="mb-2 text-center text-[11px] font-semibold uppercase tracking-wide text-accent-gold">
+            <p className="mb-2 text-center text-[11px] font-semibold uppercase tracking-wide text-sky-300">
               Round One — Bye to Round Two
             </p>
             <ul className="mx-auto grid max-w-5xl grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-8">
               {roundOneByes.map((club) => (
-                <li
-                  key={club}
-                  className="flex min-w-0 items-center gap-1.5 text-xs font-semibold text-white"
-                >
-                  <ClubDualSwatch club={club} size="xs" />
-                  <span className="truncate">{club}</span>
-                </li>
+                <ByeClubChip key={club} club={club} userClub={userClub} />
               ))}
             </ul>
           </div>
         ) : null}
         <div
           className={`mx-auto flex items-stretch justify-center gap-3 ${
-            expanded
+            expanded && !compact
               ? "min-w-[72rem] max-w-none px-2"
-              : "w-full min-w-0 max-w-4xl gap-2"
+              : compact
+                ? "w-full min-w-0 max-w-5xl gap-2"
+                : "w-full min-w-0 max-w-4xl gap-2"
           }`}
         >
-          {rounds.map((round) => {
+          {desktopRounds.map((round) => {
             const roundMatches = matches.filter((m) => m.round === round);
             return (
               <div
                 key={round}
                 className={`cup-bracket-column flex flex-col ${
-                  expanded
+                  expanded && !compact
                     ? "min-w-[10.5rem] flex-none"
                     : "min-w-0 flex-1"
                 }`}
@@ -217,6 +266,9 @@ export function BracketRecap({
                       userClub={userClub}
                       byeTeams={byeTeams}
                       expanded={expanded}
+                      onSelectCompletedUserMatch={onSelectCompletedUserMatch}
+                      onSelectUpcomingUserMatch={onSelectUpcomingUserMatch}
+                      onSelectAiMatch={onSelectAiMatch}
                     />
                   ))}
                 </div>
@@ -235,23 +287,64 @@ function RecapMatch({
   byeTeams,
   expanded,
   mobile = false,
+  onSelectCompletedUserMatch,
+  onSelectUpcomingUserMatch,
+  onSelectAiMatch,
 }: {
   match: BracketMatch;
   userClub: string;
   byeTeams?: [string, string];
   expanded?: boolean;
   mobile?: boolean;
+  onSelectCompletedUserMatch?: (cupMatchId: string) => void;
+  onSelectUpcomingUserMatch?: (cupMatchId: string) => void;
+  onSelectAiMatch?: (cupMatchId: string) => void;
 }) {
+  const involvesUser =
+    match.isUserMatch ||
+    match.homeTeam === userClub ||
+    match.awayTeam === userClub ||
+    match.winner === userClub ||
+    match.loser === userClub;
+
+  const handleActivate = () => {
+    if (match.status === "complete" && match.isUserMatch) {
+      onSelectCompletedUserMatch?.(match.id);
+      return;
+    }
+    if (
+      (match.status === "ready" || match.status === "pending") &&
+      match.isUserMatch &&
+      match.homeTeam &&
+      match.awayTeam
+    ) {
+      onSelectUpcomingUserMatch?.(match.id);
+      return;
+    }
+    if (match.status === "complete" && !match.isUserMatch) {
+      onSelectAiMatch?.(match.id);
+    }
+  };
+
+  const interactive =
+    (match.status === "complete" &&
+      match.isUserMatch &&
+      !!onSelectCompletedUserMatch) ||
+    (match.status !== "complete" &&
+      match.isUserMatch &&
+      !!match.homeTeam &&
+      !!match.awayTeam &&
+      !!onSelectUpcomingUserMatch) ||
+    (match.status === "complete" &&
+      !match.isUserMatch &&
+      !!onSelectAiMatch);
+
   if (match.status !== "complete") {
     const home = match.homeTeam;
     const away = match.awayTeam;
     if (home || away) {
-      return (
-        <div
-          className={`cup-bracket-match rounded-lg border border-pitch-600/40 bg-pitch-900/40 ${
-            match.isUserMatch ? "ring-1 ring-accent-gold/35" : ""
-          } ${mobile ? "px-0 py-0.5 shadow-sm shadow-black/20" : "px-0 py-0"}`}
-        >
+      const body = (
+        <>
           <RecapTeam
             team={home}
             score={null}
@@ -269,30 +362,51 @@ function RecapMatch({
             userClub={userClub}
             mobile={mobile}
           />
-        </div>
+        </>
       );
+      const shellClass = `cup-bracket-match rounded-lg border ${
+        involvesUser
+          ? USER_MATCH_SHELL
+          : "border-pitch-600/40 bg-pitch-900/40"
+      } ${mobile ? "px-0 py-0.5 shadow-sm shadow-black/20" : "px-0 py-0"}`;
+
+      if (interactive) {
+        return (
+          <button
+            type="button"
+            className={`${shellClass} w-full text-left transition hover:brightness-110`}
+            onClick={() => {
+              playUiClick();
+              handleActivate();
+            }}
+          >
+            {body}
+          </button>
+        );
+      }
+      return <div className={shellClass}>{body}</div>;
     }
     return (
       <div
         className={`rounded-lg border border-pitch-600/30 bg-pitch-900/30 opacity-40 ${
-          mobile ? "px-3 py-3" : "px-2 py-2"
-        }`}
+          involvesUser ? USER_CLUB_RING : ""
+        } ${mobile ? "px-3 py-3" : "px-2 py-2"}`}
       >
         <p className={`${mobile ? "text-xs" : "text-[9px]"} text-gray-600`}>
-          —
+          {involvesUser ? `${userClub} path` : "—"}
         </p>
       </div>
     );
   }
 
-  return (
-    <div
-      className={`cup-bracket-match rounded-lg border px-0 py-0 ${
-        match.isUserMatch
-          ? "border-accent-gold/30 bg-accent-gold/5"
-          : "border-pitch-600/30 bg-pitch-900/40"
-      } ${mobile ? "py-0.5 shadow-sm shadow-black/20" : ""}`}
-    >
+  const shellClass = `cup-bracket-match rounded-lg border px-0 py-0 ${
+    involvesUser
+      ? USER_MATCH_SHELL
+      : "border-pitch-600/30 bg-pitch-900/40"
+  } ${mobile ? "py-0.5 shadow-sm shadow-black/20" : ""}`;
+
+  const body = (
+    <>
       <RecapTeam
         team={match.homeTeam}
         score={match.homeScore}
@@ -319,8 +433,25 @@ function RecapMatch({
         showByeAdvance={false}
         mobile={mobile}
       />
-    </div>
+    </>
   );
+
+  if (interactive) {
+    return (
+      <button
+        type="button"
+        className={`${shellClass} w-full text-left transition hover:brightness-110`}
+        onClick={() => {
+          playUiClick();
+          handleActivate();
+        }}
+      >
+        {body}
+      </button>
+    );
+  }
+
+  return <div className={shellClass}>{body}</div>;
 }
 
 function RecapTeam({
@@ -349,28 +480,34 @@ function RecapTeam({
   }
   const isUser = team === userClub;
 
-  const teamTextColor = isUser
-    ? undefined
-    : loser
-      ? "#6b7280"
-      : getReadableTextColor(
-          winner ? UI_SURFACES.bracketWinner : UI_SURFACES.bracketRow
-        );
+  const teamTextColor = loser
+    ? "#6b7280"
+    : getReadableTextColor(
+        winner ? UI_SURFACES.bracketWinner : UI_SURFACES.bracketRow
+      );
 
   return (
     <div
       className={`${mobile ? "px-3.5 py-2.5" : "px-2.5 py-1.5"} ${
-        winner ? "bg-theme-primary/10" : loser ? "opacity-40" : ""
-      }`}
+        winner ? "bg-theme-primary/10" : loser ? "opacity-50" : ""
+      } ${isUser ? "relative" : ""}`}
     >
-      <div className="flex items-center gap-2">
+      <div
+        className={`flex items-center gap-2 rounded-sm ${
+          isUser ? `-mx-1 px-1 ${USER_CLUB_RING}` : ""
+        }`}
+      >
         <ClubDualSwatch club={team} size={mobile ? "sm" : "xs"} />
         <span
-          className={`min-w-0 flex-1 break-words font-bold leading-snug ${
+          className={`min-w-0 flex-1 break-words font-bold leading-snug text-white ${
             mobile ? "text-[13px]" : "text-[11px]"
-          } ${isUser ? "text-accent-gold" : "text-white"}`}
+          }`}
           style={
-            !isUser && teamTextColor ? { color: teamTextColor } : undefined
+            !isUser && loser
+              ? { color: teamTextColor }
+              : !isUser && winner
+                ? { color: teamTextColor }
+                : undefined
           }
         >
           {team}
@@ -387,7 +524,7 @@ function RecapTeam({
       </div>
       {showByeAdvance && (
         <p
-          className={`mt-0.5 font-semibold uppercase tracking-wide text-accent-gold/90 ${
+          className={`mt-0.5 font-semibold uppercase tracking-wide text-sky-300/90 ${
             mobile ? "pl-7 text-[9px]" : "pl-6 text-[7px]"
           }`}
         >

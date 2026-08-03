@@ -281,6 +281,9 @@ export default function ManagerPage() {
   const [pendingHubNextFixtureScroll, setPendingHubNextFixtureScroll] =
     useState(false);
   const [advancingWeek, setAdvancingWeek] = useState(false);
+  const [fixturesInitialFilter, setFixturesInitialFilter] = useState<
+    "all" | "cup" | null
+  >(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleteSlot, setDeleteSlot] = useState<number | null>(null);
   const [alertDialog, setAlertDialog] = useState<{
@@ -634,6 +637,9 @@ export default function ManagerPage() {
 
   const handleNavNavigate = useCallback(
     (next: ManagerView) => {
+      if (next !== "fixtures") {
+        setFixturesInitialFilter(null);
+      }
       if (career && isAwaitingFriendlyChoice(career) && next !== "hub") {
         goToView("hub");
         return;
@@ -1672,6 +1678,16 @@ export default function ManagerPage() {
                     advancingWeek={advancingWeek}
                     onUpdate={persist}
                     onNavigate={handleNavNavigate}
+                    onOpenCupFixtures={() => {
+                      setFixturesInitialFilter("cup");
+                      handleNavNavigate("fixtures");
+                    }}
+                    onOpenMatchReview={(fixtureId) => {
+                      setReviewFixtureId(fixtureId);
+                      setPostMatchReviewFlow(false);
+                      setMatchReviewReturnView("hub");
+                      goToView("match-review", { syncUrl: false });
+                    }}
                   />
                 )}
 
@@ -1706,7 +1722,13 @@ export default function ManagerPage() {
                 )}
                 {displayView === "fixtures" && (
                   <ManagerFixtures
+                    key={fixturesInitialFilter ?? "all"}
                     career={career}
+                    initialFilter={fixturesInitialFilter ?? "all"}
+                    onOpenMatchPrep={() => {
+                      setPendingHubNextFixtureScroll(true);
+                      handleNavNavigate("hub");
+                    }}
                     onSelectFixture={(fixtureId) => {
                       setReviewFixtureId(fixtureId);
                       setPostMatchReviewFlow(false);

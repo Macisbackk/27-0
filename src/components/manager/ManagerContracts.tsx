@@ -248,22 +248,20 @@ export function ManagerContracts({
       ) : (
       <>
       <ProgrammePanel variant="featured" padded>
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <p className="text-xs uppercase tracking-wider text-pitch-500">
-              Wage bill
-            </p>
-            <p
-              className={`text-xl font-bold ${
-                overBudget ? "text-amber-300" : "text-white"
-              }`}
-            >
-              {formatWage(career.wageBill)}
-            </p>
-            <p className={`${TYPO.bodySm} text-pitch-400`}>
-              of {formatWage(career.wageBudget)} budget
-            </p>
-          </div>
+        <div className="flex flex-col items-center text-center">
+          <p className="text-xs uppercase tracking-wider text-pitch-500">
+            Wage bill
+          </p>
+          <p
+            className={`text-xl font-bold ${
+              overBudget ? "text-amber-300" : "text-white"
+            }`}
+          >
+            {formatWage(career.wageBill)}
+          </p>
+          <p className={`${TYPO.bodySm} text-pitch-400`}>
+            of {formatWage(career.wageBudget)} budget
+          </p>
         </div>
         <div className="mt-4">
           <div className="mb-1 flex justify-between text-xs text-pitch-400">
@@ -280,8 +278,8 @@ export function ManagerContracts({
           </div>
         </div>
         {expiringCount > 0 && (
-          <div className={`mt-4 flex flex-wrap items-center gap-2 ${managerCalloutClass("gold")}`}>
-            <p className={`flex-1 ${TYPO.bodySm} text-accent-gold`}>
+          <div className={`mt-4 flex flex-col items-center gap-2 text-center sm:flex-row sm:justify-center ${managerCalloutClass("gold")}`}>
+            <p className={`${TYPO.bodySm} text-accent-gold`}>
               {expiringCount} contract{expiringCount === 1 ? "" : "s"} expiring
               soon
             </p>
@@ -296,7 +294,7 @@ export function ManagerContracts({
           </div>
         )}
         {bulkResult && (
-          <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>{bulkResult}</p>
+          <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-300`}>{bulkResult}</p>
         )}
       </ProgrammePanel>
 
@@ -387,10 +385,10 @@ export function ManagerContracts({
                 playUiClick();
                 openRenewal(player.id);
               }}
-              className={`w-full text-left ${urgent ? managerSectionAccentClass("gold") : ""}`}
+              className={`w-full ${urgent ? managerSectionAccentClass("gold") : ""}`}
             >
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex min-w-0 items-center gap-3">
+              <div className="flex flex-col items-center gap-2 text-center sm:flex-row sm:justify-between sm:text-left">
+                <div className="flex min-w-0 flex-col items-center gap-2 sm:flex-row sm:items-center sm:gap-3">
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-theme-primary/15 text-sm font-bold text-theme-primary">
                     {rating}
                   </span>
@@ -428,7 +426,7 @@ export function ManagerContracts({
           panelRef={contractPanelRef}
           className="contract-modal-card animate-fade-up outline-none"
         >
-          <div className="contract-modal-body">
+          <div className="contract-modal-body text-center">
             <div>
               <h2 id="contract-renewal-title" className={TYPO.cardTitle}>
                 {selected.player.name}
@@ -462,7 +460,7 @@ export function ManagerContracts({
               )}
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-3 text-left sm:grid-cols-3">
               <label className={TYPO.bodySm}>
                 <span className="text-pitch-400">Offer wage (£/yr)</span>
                 <input
@@ -504,7 +502,7 @@ export function ManagerContracts({
 
             {lastResponse && (
               <div
-                className={`rounded-lg border px-3 py-2 ${
+                className={`rounded-lg border px-3 py-2 text-center ${
                   lastResponse.accepted
                     ? "border-theme-primary/40 bg-theme-primary/10"
                     : "border-red-500/40 bg-red-500/10"

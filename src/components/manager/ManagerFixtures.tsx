@@ -28,7 +28,7 @@ import {
 } from "@/lib/manager/managerSurfaces";
 import { getManagerMatchOccasionPresentation } from "@/lib/manager/managerMatchOccasion";
 import { getFriendlyDualBorderStyle } from "@/lib/manager/managerFriendlyUi";
-import { buildMergedDisplaySchedule } from "@/lib/manager/managerChallengeCup";
+import { buildMergedDisplaySchedule, getCupBracketForDisplay } from "@/lib/manager/managerChallengeCup";
 import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
 import { getHomeFixtureAttendanceOutlook } from "@/lib/manager/managerAttendance";
 import {
@@ -60,11 +60,7 @@ import {
   worldClubChallengeResultToFixtureRecord,
 } from "@/lib/manager/worldClubChallenge";
 import { GamePanel } from "@/components/ui/GamePanel";
-
-interface ManagerFixturesProps {
-  career: ManagerCareer;
-  onSelectFixture: (fixtureId: string) => void;
-}
+import { ManagerChallengeCupBracket } from "@/components/manager/ManagerChallengeCupBracket";
 
 type FixtureFilter =
   | "all"
@@ -74,6 +70,14 @@ type FixtureFilter =
   | "cup"
   | "playoffs"
   | "wcc";
+
+interface ManagerFixturesProps {
+  career: ManagerCareer;
+  onSelectFixture: (fixtureId: string) => void;
+  /** When opening from Hub "View Full Bracket", start on Cup. */
+  initialFilter?: FixtureFilter;
+  onOpenMatchPrep?: () => void;
+}
 
 type FixtureListItem =
   | {
@@ -565,7 +569,7 @@ function PlayedFixtureRow({
           />
         )}
         {attendance != null && (
-          <span className={`shrink-0 ${TYPO.bodySm} text-pitch-500`}>
+          <span className="shrink-0 text-[0.72rem] leading-snug text-pitch-500">
             Attendance {attendance.toLocaleString()}
           </span>
         )}
@@ -627,8 +631,10 @@ function FixtureItemList({
 export function ManagerFixtures({
   career,
   onSelectFixture,
+  initialFilter = "all",
+  onOpenMatchPrep,
 }: ManagerFixturesProps) {
-  const [filter, setFilter] = useState<FixtureFilter>("all");
+  const [filter, setFilter] = useState<FixtureFilter>(initialFilter);
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
 
   const readyCareer = syncBracketProgress(career);
@@ -918,10 +924,14 @@ export function ManagerFixtures({
     ? getManagerMatchOccasionPresentation(nextFixture)
     : null;
 
+  const hasCupBracket =
+    showChallengeCup && getCupBracketForDisplay(career) != null;
+
   const hasAnySection =
     showNextMatch ||
     showAllCombined ||
     (showWcc && wccPanelContent) ||
+    hasCupBracket ||
     (showChallengeCup && challengeCupItems.length > 0) ||
     (showSuperLeague && leagueUpcomingItems.length > 0) ||
     showPlayoffs ||
@@ -1056,7 +1066,18 @@ export function ManagerFixtures({
         </GamePanel>
       )}
 
-      {showChallengeCup && challengeCupItems.length > 0 && (
+      {showChallengeCup && hasCupBracket && (
+        <GamePanel padded label="Challenge Cup Bracket">
+          <ManagerChallengeCupBracket
+            career={career}
+            variant="full"
+            onOpenMatchReview={onSelectFixture}
+            onOpenMatchPrep={onOpenMatchPrep}
+          />
+        </GamePanel>
+      )}
+
+      {showChallengeCup && !hasCupBracket && challengeCupItems.length > 0 && (
         <GamePanel
           padded
           label={`Challenge Cup (${challengeCupItems.length})`}

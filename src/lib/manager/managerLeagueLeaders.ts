@@ -141,3 +141,90 @@ export function getLeagueTopTryScorers(
     })
     .filter((row): row is LeagueTryScorerLeader => row != null);
 }
+
+/**
+ * Championship try chart — aggregate from saved championshipCompetition match details.
+ * Deterministic: only reads persisted scorers (no re-simulation).
+ */
+export function getChampionshipTopTryScorers(
+  career: ManagerCareer,
+  limit = 10
+): LeagueTryScorerLeader[] {
+  const fixtures = career.championshipCompetition?.fixtures ?? [];
+  const tally = new Map<string, { tries: number; club: string; name: string }>();
+  const appearanceGames = new Map<string, number>();
+  const teamNames = Array.from(
+    new Set(fixtures.flatMap((f) => [f.homeTeam, f.awayTeam]))
+  );
+
+  for (const fixture of fixtures) {
+    if (!fixture.played || !fixture.matchDetail) continue;
+
+    addTryScorers(
+      tally,
+      fixture.homeTeam,
+      fixture.matchDetail.home.tryScorers,
+      teamNames
+    );
+    addTryScorers(
+      tally,
+      fixture.awayTeam,
+      fixture.matchDetail.away.tryScorers,
+      teamNames
+    );
+
+    for (const scorer of fixture.matchDetail.home.tryScorers) {
+      if (scorer.tries > 0) {
+        appearanceGames.set(
+          scorer.playerId,
+          (appearanceGames.get(scorer.playerId) ?? 0) + 1
+        );
+      }
+    }
+    for (const scorer of fixture.matchDetail.away.tryScorers) {
+      if (scorer.tries > 0) {
+        appearanceGames.set(
+          scorer.playerId,
+          (appearanceGames.get(scorer.playerId) ?? 0) + 1
+        );
+      }
+    }
+  }
+
+  return [...tally.entries()]
+    .filter(([playerId, entry]) => {
+      if (entry.tries <= 0) return false;
+      return isValidScorerEntry(playerId, entry.name, entry.club, teamNames);
+    })
+    .sort((a, b) => {
+      const triesDiff = b[1].tries - a[1].tries;
+      if (triesDiff !== 0) return triesDiff;
+      const appDiff =
+        (appearanceGames.get(a[0]) ?? 99) - (appearanceGames.get(b[0]) ?? 99);
+      if (appDiff !== 0) return appDiff;
+      const playerA = getPlayerById(a[0]);
+      const playerB = getPlayerById(b[0]);
+      const ratingDiff =
+        (playerB?.peakRating ?? 0) - (playerA?.peakRating ?? 0);
+      if (ratingDiff !== 0) return ratingDiff;
+      return a[1].name.localeCompare(b[1].name, undefined, {
+        sensitivity: "base",
+      });
+    })
+    .slice(0, limit)
+    .map(([playerId, entry]) => {
+      const player =
+        getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
+      const resolvedName = player?.name ?? entry.name;
+      if (isInvalidPlayerName(resolvedName, teamNames)) return null;
+      return {
+        playerId,
+        playerName: resolvedName,
+        club: entry.club,
+        tries: entry.tries,
+        position: player?.position ?? null,
+        isUserClub: entry.club === career.club,
+      };
+    })
+    .filter((row): row is LeagueTryScorerLeader => row != null);
+}

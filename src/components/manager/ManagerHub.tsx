@@ -22,16 +22,9 @@ import {
 } from "@/lib/manager/managerMatchWeek";
 import { getHubOpponentRating } from "@/lib/manager/managerOpponentRating";
 import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
-import { getCupBracketForDisplay, getCupHubStatus } from "@/lib/manager/managerChallengeCup";
-import {
-  isExpandedChallengeCup,
-} from "@/lib/manager/championship/championshipChallengeCup";
-import { BracketRecap } from "@/components/BracketRecap";
+import { getCupHubStatus } from "@/lib/manager/managerChallengeCup";
+import { ManagerChallengeCupBracket } from "@/components/manager/ManagerChallengeCupBracket";
 import { PlayoffBracketDisplay } from "@/components/PlayoffBracketDisplay";
-import {
-  getActiveRound,
-  getCupRoundLabel,
-} from "@/lib/game/challenge-cup-bracket";
 import {
   getPlayoffHubStatus,
   isManagerPlayoffsActive,
@@ -111,6 +104,8 @@ interface ManagerHubProps {
   advancingWeek?: boolean;
   onUpdate?: (career: ManagerCareer) => void;
   onNavigate?: (view: ManagerView) => void;
+  onOpenCupFixtures?: () => void;
+  onOpenMatchReview?: (fixtureId: string) => void;
 }
 
 function ordinal(n: number): string {
@@ -200,45 +195,27 @@ function HubChallengeCupBracketPanel({
   career,
   cupStatus,
   nextFixture,
+  onViewFullBracket,
+  onOpenMatchReview,
+  onOpenMatchPrep,
 }: {
   career: ManagerCareer;
   cupStatus: string;
   nextFixture: ManagerScheduledFixture;
+  onViewFullBracket?: () => void;
+  onOpenMatchReview?: (fixtureId: string) => void;
+  onOpenMatchPrep?: () => void;
 }) {
-  const cup = getCupBracketForDisplay(career);
-  if (!cup) return null;
-
-  const activeRound = getActiveRound(cup);
-  const roundLabel = nextFixture.cupRound
-    ? getManagerCupRoundLabel(nextFixture.cupRound)
-    : getCupRoundLabel(activeRound);
-
   return (
-    <div className={managerCompetitionPanelClass("challenge_cup")}>
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className={`${TYPO.sectionLabel} text-accent-gold`}>
-              Challenge Cup Bracket
-            </p>
-            <span className={managerPillClass("gold")}>{roundLabel}</span>
-          </div>
-          <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
-            <span className="text-accent-gold">{cupStatus}</span>
-          </p>
-        </div>
-      </div>
-      <div className="mt-3 min-w-0 overflow-hidden">
-        <BracketRecap
-          matches={cup.matches}
-          userClub={cup.userClub}
-          byeTeams={cup.byeTeams}
-          expandedMeta={
-            isExpandedChallengeCup(cup) ? cup.expandedMeta : undefined
-          }
-        />
-      </div>
-    </div>
+    <ManagerChallengeCupBracket
+      career={career}
+      variant="hub-compact"
+      statusLine={cupStatus}
+      nextFixture={nextFixture}
+      onViewFullBracket={onViewFullBracket}
+      onOpenMatchReview={onOpenMatchReview}
+      onOpenMatchPrep={onOpenMatchPrep}
+    />
   );
 }
 
@@ -294,6 +271,8 @@ export function ManagerHub({
   advancingWeek = false,
   onUpdate,
   onNavigate,
+  onOpenCupFixtures,
+  onOpenMatchReview,
 }: ManagerHubProps) {
   const [dialog, setDialog] = useState<{ title: string; message: string } | null>(
     null
@@ -823,6 +802,14 @@ export function ManagerHub({
           career={hubCareer}
           cupStatus={cupStatus}
           nextFixture={nextFixture}
+          onViewFullBracket={
+            onOpenCupFixtures ??
+            (onNavigate ? () => onNavigate("fixtures") : undefined)
+          }
+          onOpenMatchReview={onOpenMatchReview}
+          onOpenMatchPrep={
+            onNavigate ? () => onNavigate("hub") : undefined
+          }
         />
       </div>
     ) : showPlayoffBracket ? (

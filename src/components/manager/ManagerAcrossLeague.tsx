@@ -19,20 +19,60 @@ import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { formatWage } from "@/lib/manager/managerContracts";
-import { getLeagueTopTryScorers } from "@/lib/manager/managerLeagueLeaders";
+import {
+  getChampionshipTopTryScorers,
+  getLeagueTopTryScorers,
+} from "@/lib/manager/managerLeagueLeaders";
 import { getLeagueNewsItems } from "@/lib/manager/managerNews";
-import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
+import type {
+  LatestNewsItem,
+  LeagueTransferActivity,
+  ManagerCareer,
+  ManagerView,
+} from "@/lib/manager/types";
 import { getPlayerById } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
 import { ensureChampionshipSystems } from "@/lib/manager/championship/ensureChampionship";
+import { isChampionshipClubName } from "@/lib/clubs/championship-clubs";
+import { isCurrentPlayableClub } from "@/lib/clubs/super-league-display";
 import { playUiClick } from "@/lib/sound";
 
-type TableCompetition = "super-league" | "championship";
+export type AcrossTheLeagueCompetitionId = "super-league" | "championship";
 
 interface ManagerAcrossLeagueProps {
   career: ManagerCareer;
   onNavigate?: (view: ManagerView) => void;
+}
+
+/** Cross-tier Transfer Wire: one club Championship, the other Super League. */
+export function isChampionshipSuperLeagueTransfer(
+  tx: LeagueTransferActivity
+): boolean {
+  const fromChamp = isChampionshipClubName(tx.fromClub);
+  const toChamp = isChampionshipClubName(tx.toClub);
+  const fromSl = isCurrentPlayableClub(tx.fromClub);
+  const toSl = isCurrentPlayableClub(tx.toClub);
+  return (fromChamp && toSl) || (fromSl && toChamp);
+}
+
+function filterNewsForCompetition(
+  items: LatestNewsItem[],
+  competition: AcrossTheLeagueCompetitionId
+): LatestNewsItem[] {
+  if (competition === "super-league") {
+    return items.filter(
+      (item) =>
+        !item.id.includes("champ") &&
+        !/championship/i.test(item.text)
+    );
+  }
+  return items.filter(
+    (item) =>
+      item.id.includes("champ") ||
+      /championship/i.test(item.text) ||
+      item.type === "cup"
+  );
 }
 
 export function ManagerAcrossLeague({
@@ -40,24 +80,72 @@ export function ManagerAcrossLeague({
   onNavigate,
 }: ManagerAcrossLeagueProps) {
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
-  const [competition, setCompetition] =
-    useState<TableCompetition>("super-league");
+  const [selectedCompetitionId, setSelectedCompetitionId] =
+    useState<AcrossTheLeagueCompetitionId>("super-league");
   const [tableMenuOpen, setTableMenuOpen] = useState(false);
 
   const withChamp = useMemo(() => ensureChampionshipSystems(career), [career]);
-  const newsItems = getLeagueNewsItems(withChamp);
-  const leagueTransfers = withChamp.leagueTransfers ?? [];
-  const tableTitle =
-    competition === "super-league" ? "Super League" : "Championship";
-  const tableRows =
-    competition === "super-league"
-      ? withChamp.leagueTable
-      : withChamp.championshipCompetition?.standings ?? [];
+
+  const competitionLabel =
+    selectedCompetitionId === "super-league" ? "Super League" : "Championship";
+
+  const tableRows = useMemo(
+    () =>
+      selectedCompetitionId === "super-league"
+        ? withChamp.leagueTable
+        : withChamp.championshipCompetition?.standings ?? [],
+    [selectedCompetitionId, withChamp]
+  );
 
   const topTryScorers = useMemo(
-    () => getLeagueTopTryScorers(career, 10),
-    [career]
+    () =>
+      selectedCompetitionId === "super-league"
+        ? getLeagueTopTryScorers(withChamp, 10)
+        : getChampionshipTopTryScorers(withChamp, 10),
+    [selectedCompetitionId, withChamp]
   );
+
+  const newsItems = useMemo(
+    () =>
+      filterNewsForCompetition(
+        getLeagueNewsItems(withChamp),
+        selectedCompetitionId
+      ),
+    [withChamp, selectedCompetitionId]
+  );
+
+  const leagueTransfers = useMemo(() => {
+    const all = withChamp.leagueTransfers ?? [];
+    if (selectedCompetitionId === "super-league") {
+      return all.filter((tx) => !isChampionshipSuperLeagueTransfer(tx));
+    }
+    return all.filter(isChampionshipSuperLeagueTransfer);
+  }, [withChamp.leagueTransfers, selectedCompetitionId]);
+
+  const champFixtures = withChamp.championshipCompetition?.fixtures ?? [];
+
+  const recentResults = useMemo(() => {
+    if (selectedCompetitionId !== "championship") return [];
+    return champFixtures
+      .filter((f) => f.played && f.homeScore != null && f.awayScore != null)
+      .slice()
+      .sort((a, b) => b.round - a.round)
+      .slice(0, 8);
+  }, [selectedCompetitionId, champFixtures]);
+
+  const upcomingFixtures = useMemo(() => {
+    if (selectedCompetitionId !== "championship") return [];
+    return champFixtures
+      .filter((f) => !f.played)
+      .slice()
+      .sort((a, b) => a.round - b.round)
+      .slice(0, 8);
+  }, [selectedCompetitionId, champFixtures]);
+
+  const leagueLeaders = useMemo(() => {
+    if (selectedCompetitionId !== "championship") return null;
+    return tableRows[0] ?? null;
+  }, [selectedCompetitionId, tableRows]);
 
   const otherClubListings = useMemo(() => {
     return career.leagueListedPlayers
@@ -103,34 +191,25 @@ export function ManagerAcrossLeague({
         <GameSectionHeader
           label="League"
           title="Across the League"
-          subtitle={`Season ${career.seasonYear} · Week ${career.gameWeek} — news, squads and transfer activity from around Super League and the Championship`}
+          subtitle={
+            selectedCompetitionId === "super-league"
+              ? `Season ${career.seasonYear} · Week ${career.gameWeek} — Super League news, squads and transfer activity`
+              : `Season ${career.seasonYear} · Week ${career.gameWeek} — Championship standings, scorers and Super League–linked transfer wire`
+          }
         />
 
         <div className="stat-section-stack">
-        <ManagerClubSquadBrowser
-          career={career}
-          onViewUserSquad={onNavigate ? () => onNavigate("squad") : undefined}
-        />
+        {selectedCompetitionId === "super-league" ? (
+          <ManagerClubSquadBrowser
+            career={career}
+            onViewUserSquad={onNavigate ? () => onNavigate("squad") : undefined}
+          />
+        ) : null}
 
-        <ManagerSectionCard title="League News" variant="inset">
-          {newsItems.length > 0 ? (
-            <ul className={`mt-2 ${SPACING.stackSm}`}>
-              {newsItems.map((item) => (
-                <ManagerNewsItem key={item.id} item={item} />
-              ))}
-            </ul>
-          ) : (
-            <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
-              No league headlines yet — play a match or advance the week for
-              updates.
-            </p>
-          )}
-        </ManagerSectionCard>
-
-        <div className="relative">
+        <div className="relative z-20">
           <button
             type="button"
-            className={`${TYPO.sectionLabel} btn-press mb-2 inline-flex items-center gap-2 text-left text-white`}
+            className={`${TYPO.sectionLabel} btn-press mb-2 inline-flex max-w-full items-center gap-2 text-left text-white`}
             aria-haspopup="menu"
             aria-expanded={tableMenuOpen}
             onClick={() => {
@@ -138,7 +217,7 @@ export function ManagerAcrossLeague({
               setTableMenuOpen((o) => !o);
             }}
           >
-            {tableTitle} standings
+            <span className="truncate">{competitionLabel}</span>
             <span className="text-xs font-normal text-pitch-400" aria-hidden>
               ▾
             </span>
@@ -146,7 +225,7 @@ export function ManagerAcrossLeague({
           {tableMenuOpen ? (
             <div
               role="menu"
-              className="absolute z-20 mt-0.5 min-w-[12rem] rounded-lg border border-pitch-600/70 bg-pitch-950 p-1 shadow-xl"
+              className="absolute left-0 right-auto z-30 mt-0.5 min-w-[12rem] max-w-[min(100%,18rem)] rounded-lg border border-pitch-600/70 bg-pitch-950 p-1 shadow-xl"
             >
               {(
                 [
@@ -159,13 +238,13 @@ export function ManagerAcrossLeague({
                   type="button"
                   role="menuitem"
                   className={`btn-press block w-full rounded-md px-3 py-2 text-left text-sm ${
-                    competition === id
+                    selectedCompetitionId === id
                       ? "bg-theme-primary/15 text-theme-primary"
                       : "text-white hover:bg-pitch-800"
                   }`}
                   onClick={() => {
                     playUiClick();
-                    setCompetition(id);
+                    setSelectedCompetitionId(id);
                     setTableMenuOpen(false);
                   }}
                 >
@@ -174,26 +253,122 @@ export function ManagerAcrossLeague({
               ))}
             </div>
           ) : null}
-          <ManagerLeagueTable
-            career={withChamp}
-            title={tableTitle}
-            subtitle={
-              competition === "super-league"
-                ? `Season ${career.seasonYear} Super League`
-                : `Season ${career.seasonYear} Championship`
-            }
-            rows={tableRows}
-            showDraws={competition === "championship"}
-            onViewClub={
-              competition === "super-league" ? setViewClubSheet : undefined
-            }
-            defaultExpanded
-          />
         </div>
+
+        <ManagerSectionCard
+          title={
+            selectedCompetitionId === "super-league"
+              ? "League News"
+              : "Championship News"
+          }
+          variant="inset"
+        >
+          {newsItems.length > 0 ? (
+            <ul className={`mt-2 ${SPACING.stackSm}`}>
+              {newsItems.map((item) => (
+                <ManagerNewsItem key={item.id} item={item} />
+              ))}
+            </ul>
+          ) : (
+            <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+              {selectedCompetitionId === "super-league"
+                ? "No league headlines yet — play a match or advance the week for updates."
+                : "No Championship headlines yet — advance the Match Week for updates."}
+            </p>
+          )}
+        </ManagerSectionCard>
+
+        <ManagerLeagueTable
+          career={withChamp}
+          title={competitionLabel}
+          subtitle={
+            selectedCompetitionId === "super-league"
+              ? `Season ${career.seasonYear} Super League`
+              : `Season ${career.seasonYear} Championship`
+          }
+          rows={tableRows}
+          showDraws={selectedCompetitionId === "championship"}
+          onViewClub={
+            selectedCompetitionId === "super-league"
+              ? setViewClubSheet
+              : undefined
+          }
+          defaultExpanded
+        />
+
+        {selectedCompetitionId === "championship" && leagueLeaders ? (
+          <ManagerSectionCard title="League Leaders" variant="elevated">
+            <div className={`${CARD.inset} flex items-center gap-3 ${SPACING.cardPaddingSm}`}>
+              <ClubDualSwatch club={leagueLeaders.team} size="sm" />
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold text-white">{leagueLeaders.team}</p>
+                <p className={`${TYPO.bodySm} text-pitch-400`}>
+                  Top of the Championship · {leagueLeaders.played} played
+                </p>
+              </div>
+              <div className="shrink-0 text-right">
+                <p className="font-display text-lg font-black text-theme-primary">
+                  {leagueLeaders.leaguePoints} pts
+                </p>
+                <p className={`${TYPO.bodySm} text-pitch-500`}>
+                  PD {leagueLeaders.pointsDifference >= 0 ? "+" : ""}
+                  {leagueLeaders.pointsDifference}
+                </p>
+              </div>
+            </div>
+          </ManagerSectionCard>
+        ) : null}
+
+        {selectedCompetitionId === "championship" && recentResults.length > 0 ? (
+          <ManagerSectionCard title="Recent Results" variant="inset">
+            <ul className="mt-2 space-y-2">
+              {recentResults.map((f) => (
+                <li
+                  key={f.id}
+                  className={`${managerDataRowClass()} flex flex-wrap items-center justify-between gap-2 px-3 py-2`}
+                >
+                  <span className="min-w-0 flex-1 truncate text-sm text-white">
+                    {f.homeTeam}{" "}
+                    <span className="font-bold tabular-nums text-theme-primary">
+                      {f.homeScore}–{f.awayScore}
+                    </span>{" "}
+                    {f.awayTeam}
+                  </span>
+                  <span className={`${TYPO.bodySm} shrink-0 text-pitch-500`}>
+                    R{f.round}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </ManagerSectionCard>
+        ) : null}
+
+        {selectedCompetitionId === "championship" &&
+        upcomingFixtures.length > 0 ? (
+          <ManagerSectionCard title="Upcoming Fixtures" variant="inset">
+            <ul className="mt-2 space-y-2">
+              {upcomingFixtures.map((f) => (
+                <li
+                  key={f.id}
+                  className={`${managerDataRowClass()} flex flex-wrap items-center justify-between gap-2 px-3 py-2`}
+                >
+                  <span className="min-w-0 flex-1 truncate text-sm text-white">
+                    {f.homeTeam} vs {f.awayTeam}
+                  </span>
+                  <span className={`${TYPO.bodySm} shrink-0 text-pitch-500`}>
+                    R{f.round}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </ManagerSectionCard>
+        ) : null}
 
         <ManagerSectionCard title="Top Try Scorers" variant="elevated">
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-            Super League leading try scorers this season.
+            {selectedCompetitionId === "super-league"
+              ? "Super League leading try scorers this season."
+              : "Championship leading try scorers this season."}
           </p>
           {topTryScorers.length > 0 ? (
             <ol className="mt-3 space-y-2">
@@ -203,7 +378,7 @@ export function ManagerAcrossLeague({
                   : null;
                 return (
                   <li
-                    key={entry.playerId}
+                    key={`${selectedCompetitionId}-${entry.playerId}`}
                     className={`${CARD.inset} flex items-center gap-3 ${SPACING.cardPaddingSm} ${
                       entry.isUserClub
                         ? "border-theme-primary/35 bg-theme-primary/5"
@@ -245,16 +420,26 @@ export function ManagerAcrossLeague({
             </ol>
           ) : (
             <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
-              No league tries recorded yet — play a league match to open the
-              chart.
+              {selectedCompetitionId === "super-league"
+                ? "No league tries recorded yet — play a league match to open the chart."
+                : "No Championship tries recorded yet — advance the Match Week for results."}
             </p>
           )}
         </ManagerSectionCard>
 
         {leagueTransfers.length > 0 && (
-          <ManagerSectionCard title="Transfer Wire" variant="elevated">
+          <ManagerSectionCard
+            title={
+              selectedCompetitionId === "super-league"
+                ? "Transfer Wire"
+                : "Championship Transfer Wire"
+            }
+            variant="elevated"
+          >
             <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-              Completed moves between clubs this season.
+              {selectedCompetitionId === "super-league"
+                ? "Completed moves between Super League clubs this season."
+                : "Moves linking Championship and Super League clubs."}
             </p>
             <ul className="mt-3 max-h-80 space-y-2 overflow-y-auto">
               {leagueTransfers.map((tx) => (
@@ -272,7 +457,8 @@ export function ManagerAcrossLeague({
           </ManagerSectionCard>
         )}
 
-        {otherClubListings.length > 0 && (
+        {selectedCompetitionId === "super-league" &&
+          otherClubListings.length > 0 && (
           <ManagerSectionCard title="Players Listed by Other Clubs">
             <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
               Talent available on the market — head to Transfers to make an offer.
@@ -310,7 +496,8 @@ export function ManagerAcrossLeague({
           </ManagerSectionCard>
         )}
 
-        {freeAgentsElsewhere.length > 0 && (
+        {selectedCompetitionId === "super-league" &&
+          freeAgentsElsewhere.length > 0 && (
           <ManagerSectionCard title="Free Agents" variant="inset">
             <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
               Recently released players still looking for a club.
